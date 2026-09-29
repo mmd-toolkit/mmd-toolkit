@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Frontmatter: the third line is a delimiter line and closes the frontmatter; mermaid.js rejects the body `%YAML 1.2` as YAML, and the text after the frontmatter has no diagram type, so the input is rejected here too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "directives end mark is expected (2:1)\n\n 1 | %YAML 1.2\n 2 | \n-----^"
+  }
+}

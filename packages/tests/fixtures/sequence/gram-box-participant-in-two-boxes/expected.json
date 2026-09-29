@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar: a participant statement inside a box for an id that another box holds already is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "A same participant should only be defined in one Box: A can't be in 'a' and in 'b' at the same time."
+  }
+}

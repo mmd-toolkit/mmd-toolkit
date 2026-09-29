@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 20: minimal accepted example of `stateDiagram`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": null
+}

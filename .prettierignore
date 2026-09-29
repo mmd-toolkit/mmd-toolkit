@@ -1,0 +1,8 @@
+node_modules/
+lib/
+coverage/
+pnpm-lock.yaml
+CHANGELOG.md
+packages/tests/fixtures/
+packages/prettier-plugin-mmd/tests/fixtures/
+.claude/worktrees/

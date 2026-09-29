@@ -1,0 +1,109 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/swimlanes.md",
+    "line": 336
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "intake",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Receive request",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "plan",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Plan work",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "review",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "attention"
+        ],
+        "text": "Review contract",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "intake",
+        "end": "plan",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_intake_plan_0"
+      },
+      {
+        "start": "plan",
+        "end": "review",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_plan_review_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "attention",
+        "styles": [
+          "fill:#fff2cc",
+          "stroke:#d6a500",
+          "color:#111"
+        ]
+      }
+    ],
+    "subgraphs": [
+      {
+        "id": "ops",
+        "nodes": [
+          "intake",
+          "plan"
+        ],
+        "title": "Operations",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "legal",
+        "nodes": [
+          "review"
+        ],
+        "title": "Legal",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

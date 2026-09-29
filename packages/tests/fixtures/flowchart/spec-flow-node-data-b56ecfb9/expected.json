@@ -1,0 +1,174 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-node-data.spec.js",
+    "line": 322,
+    "test": "when parsing directions > should be possible to use @  syntax in labels"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "@A@",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "@for@ B@",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "@for@ c@",
+        "props": {}
+      },
+      {
+        "id": "E",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "@for@ E@",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "@for@ D@",
+        "type": "circle",
+        "props": {}
+      },
+      {
+        "id": "H1",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "@for@ H@",
+        "type": "hexagon",
+        "props": {}
+      },
+      {
+        "id": "H2",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "@for@ H@",
+        "type": "hexagon",
+        "props": {}
+      },
+      {
+        "id": "Q1",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "@for@ Q@",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "Q2",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "@for@ Q@",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "AS1",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "@for@ AS@",
+        "type": "odd",
+        "props": {}
+      },
+      {
+        "id": "AS2",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "@for@ AS@",
+        "type": "odd",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      },
+      {
+        "start": "A",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_C_0"
+      },
+      {
+        "start": "A",
+        "end": "E",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_E_0"
+      },
+      {
+        "start": "A",
+        "end": "D",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_D_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

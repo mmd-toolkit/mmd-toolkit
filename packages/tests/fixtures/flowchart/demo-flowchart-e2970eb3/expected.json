@@ -1,0 +1,202 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/flowchart.html",
+    "line": 799
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "TITLE",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "Link Click Events<br>(click the nodes below)",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "link test (open in same tab)",
+        "type": "square",
+        "props": {},
+        "link": "https://mermaid-js.github.io/mermaid/#/"
+      },
+      {
+        "id": "B",
+        "labelType": "string",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "link test (open in new tab)",
+        "type": "square",
+        "props": {},
+        "link": "https://mermaid-js.github.io/mermaid/#/",
+        "linkTarget": "_blank"
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "anchor test",
+        "type": "square",
+        "props": {},
+        "link": "#link-clicked"
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "mailto test",
+        "type": "square",
+        "props": {},
+        "link": "mailto:user@user.user"
+      },
+      {
+        "id": "E",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "other protocol test",
+        "type": "square",
+        "props": {},
+        "link": "notes://do-your-thing/id"
+      },
+      {
+        "id": "F",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "script test",
+        "type": "square",
+        "props": {},
+        "link": "javascript:alert('test')"
+      }
+    ],
+    "edges": [
+      {
+        "start": "TITLE",
+        "end": "A",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_TITLE_A_0"
+      },
+      {
+        "start": "TITLE",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_TITLE_B_0"
+      },
+      {
+        "start": "TITLE",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_TITLE_C_0"
+      },
+      {
+        "start": "TITLE",
+        "end": "D",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_TITLE_D_0"
+      },
+      {
+        "start": "TITLE",
+        "end": "E",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_TITLE_E_0"
+      },
+      {
+        "start": "TITLE",
+        "end": "F",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_TITLE_F_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "link test (open in same tab)"
+      },
+      {
+        "id": "B",
+        "text": "link test (open in new tab)"
+      },
+      {
+        "id": "D",
+        "text": "mailto test"
+      },
+      {
+        "id": "E",
+        "text": "other protocol test"
+      },
+      {
+        "id": "F",
+        "text": "script test"
+      }
+    ]
+  }
+}

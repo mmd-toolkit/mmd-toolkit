@@ -1,0 +1,361 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization, Arrows: the type, stroke, and length of single arrows from their markers, line, and length."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "D",
+        "props": {}
+      },
+      {
+        "id": "E",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "E",
+        "props": {}
+      },
+      {
+        "id": "F",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "F",
+        "props": {}
+      },
+      {
+        "id": "G",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "G",
+        "props": {}
+      },
+      {
+        "id": "H",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "H",
+        "props": {}
+      },
+      {
+        "id": "I",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "I",
+        "props": {}
+      },
+      {
+        "id": "J",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "J",
+        "props": {}
+      },
+      {
+        "id": "K",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "K",
+        "props": {}
+      },
+      {
+        "id": "L",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "L",
+        "props": {}
+      },
+      {
+        "id": "M",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "M",
+        "props": {}
+      },
+      {
+        "id": "N",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N",
+        "props": {}
+      },
+      {
+        "id": "O",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "O",
+        "props": {}
+      },
+      {
+        "id": "P",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "P",
+        "props": {}
+      },
+      {
+        "id": "Q",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Q",
+        "props": {}
+      },
+      {
+        "id": "R",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "R",
+        "props": {}
+      },
+      {
+        "id": "S",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "S",
+        "props": {}
+      },
+      {
+        "id": "T",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "T",
+        "props": {}
+      },
+      {
+        "id": "U",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "U",
+        "props": {}
+      },
+      {
+        "id": "V",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "V",
+        "props": {}
+      },
+      {
+        "id": "W",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "W",
+        "props": {}
+      },
+      {
+        "id": "X",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "X",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      },
+      {
+        "start": "C",
+        "end": "D",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C_D_0"
+      },
+      {
+        "start": "E",
+        "end": "F",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 2,
+        "id": "L_E_F_0"
+      },
+      {
+        "start": "G",
+        "end": "H",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 2,
+        "id": "L_G_H_0"
+      },
+      {
+        "start": "I",
+        "end": "J",
+        "type": "double_arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_I_J_0"
+      },
+      {
+        "start": "K",
+        "end": "L",
+        "type": "double_arrow_circle",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_K_L_0"
+      },
+      {
+        "start": "M",
+        "end": "N",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 2,
+        "id": "L_M_N_0"
+      },
+      {
+        "start": "O",
+        "end": "P",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "invisible",
+        "length": 1,
+        "id": "L_O_P_0"
+      },
+      {
+        "start": "Q",
+        "end": "R",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "thick",
+        "length": 1,
+        "id": "L_Q_R_0"
+      },
+      {
+        "start": "S",
+        "end": "T",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "dotted",
+        "length": 2,
+        "id": "L_S_T_0"
+      },
+      {
+        "start": "U",
+        "end": "V",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "dotted",
+        "length": 1,
+        "id": "L_U_V_0"
+      },
+      {
+        "start": "W",
+        "end": "X",
+        "type": "arrow_open",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 2,
+        "id": "L_W_X_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

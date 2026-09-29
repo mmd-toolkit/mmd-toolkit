@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 22: minimal accepted example of `quadrantChart`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": null
+}

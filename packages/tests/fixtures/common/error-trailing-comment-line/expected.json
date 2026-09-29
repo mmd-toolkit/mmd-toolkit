@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Configuration (reference) > Init directives: without an init directive, the comment line at the end is removed before detection, and the text is the error pseudo-diagram. Pair of config-init-detection-rejects."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

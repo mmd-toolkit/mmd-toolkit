@@ -1,0 +1,99 @@
+# mmd/sequence/no-duplicate-title
+
+英語版: [no-duplicate-title.md](./no-duplicate-title.md)
+
+タイトルをもう一度設定する `title` か `accTitle` の文を禁止する。
+
+<!-- begin auto-generated rule notice -->
+
+`recommended` の設定は、この規則を有効にしない。
+
+<!-- end auto-generated rule notice -->
+
+sequence の図にはタイトルが 2 つある。
+`title` が設定するタイトルと、
+`accTitle` が設定するアクセシブルなタイトルである。
+mermaid.js はそのどちらを設定する文も受理し、
+それぞれの文は、それより前に設定した値を黙って置き換える。
+2 つ目のタイトルは、たいてい、テキストを書き直した残りか、
+同じ部分を 2 回貼り付けたものである。
+
+## 規則の詳細
+
+この規則は、`title` の文（`title` か `title:` と書く）のうち最初のもの以外と、
+`accTitle` の文のうち最初のもの以外を、すべて報告する。
+`sequence` に当たる。
+
+`title first` と `title second` の後、タイトルは `second` になり、
+`accTitle` でも同じである。
+2 つのタイトルは別の値で、`title first` と `accTitle: second` は両方を設定し、
+どちらも報告しない。
+`loop` のようなブロックの中の文も、図全体のタイトルを設定するので、数える。
+
+`title` の文は、フロントマターのタイトルもエラーなしに置き換える。
+フロントマターに `title: From frontmatter` があると、
+`title From statement` のタイトルは `From statement` になる。
+規則はこれを報告しない。
+報告するには、パーサーが書かれたまま持つフロントマターの YAML を、
+読まなければならないからである。
+報告すべきかは、未決の問題である。
+
+この規則に**反する**コードの例:
+
+```mmd
+sequenceDiagram
+  title first
+  title second
+  A ->> B: x
+```
+
+```mmd
+sequenceDiagram
+  A ->> B: x
+  accTitle: first
+  accTitle: second
+```
+
+この規則に**従う**コードの例:
+
+```mmd
+sequenceDiagram
+  title first
+  accTitle: second
+  A ->> B: x
+```
+
+## オプション
+
+この規則にはオプションがない。
+
+## 関連する規則
+
+- [flowchart/no-duplicate-title](../flowchart/no-duplicate-title.ja.md)
+- [no-duplicate-description](./no-duplicate-description.ja.md)
+
+## 実装のための覚え書き
+
+この規則はまだ実装していない。
+ここには、実装するときに要ることを書く。
+
+### 木での現れ方
+
+ソースでそれより前に別の `SequenceTitleStatement` がある
+`SequenceTitleStatement` と、
+それより前に別の `SequenceAccTitleStatement` がある
+`SequenceAccTitleStatement`（`value` が null のものも含む）。
+文は、`SequenceDiagram` と、その中のすべてのブロックとセクションの
+`body` から、範囲の順に取る。
+規則は、型ごとに、最初のもの以外をすべて報告する。
+
+### fixture
+
+規則が依拠する mermaid.js の読み方は、
+`@mmd-toolkit/tests` の次の fixture に記録されている。
+
+- `sequence/db-title-replaces`
+- `sequence/db-acc-title-replaces`
+- `sequence/db-title-and-acc-title`
+- `sequence/db-title-replaces-frontmatter`
+- `sequence/db-title-legacy`

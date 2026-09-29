@@ -1,0 +1,67 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/subgraph.spec.js",
+    "line": 16,
+    "test": "when parsing subgraphs > should handle subgraph with tab indentation"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a1",
+        "props": {}
+      },
+      {
+        "id": "a2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a2",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a1",
+        "end": "a2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a1_a2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "One",
+        "nodes": [
+          "a2",
+          "a1"
+        ],
+        "title": "One",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

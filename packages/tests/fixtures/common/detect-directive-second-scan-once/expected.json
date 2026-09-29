@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: the second directive scan runs once. It removes the directive that starts at the second `%%{` and takes `flowchart LR` and its line break, and it does not look again at the first `%%{`, which the `%%` removal then turns into a line break; the detectors see a line break and `A-->B`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: \nA-->B"
+  }
+}

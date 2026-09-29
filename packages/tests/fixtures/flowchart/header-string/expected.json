@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The header context: the string `\"x\"` is read in the header context, and the grammar allows no string in the header, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nflowchart\"x\" TDA\n----------^\nExpecting 'NODIR', 'DIR', got 'STR'"
+  }
+}

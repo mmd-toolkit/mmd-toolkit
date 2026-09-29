@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Configuration (reference) > The text configuration: a number under a key containing `fontFamily` rejects the input with a TypeError."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "str is not iterable"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Grammar, vertex statements: `&` needs whitespace after it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nflowchart LRA &B\n---------------^\nExpecting 'SPACE', got 'NODE_STRING'"
+  }
+}

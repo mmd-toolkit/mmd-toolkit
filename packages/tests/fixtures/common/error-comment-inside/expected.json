@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md ErrorDiagram: `%%{ }` is diagram text, so the error pseudo-diagram's `RawText` tokens are `error`, `%%{`, and `}`, with the comment `%% c` outside the tokens between the first two."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

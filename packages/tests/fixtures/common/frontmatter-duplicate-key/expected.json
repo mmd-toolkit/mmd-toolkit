@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Configuration (reference) > Reading the frontmatter body: a mapping with the same key twice is a YAML syntax error, and the input is rejected with a YAMLException."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "duplicated mapping key (2:1)\n\n 1 | title: a\n 2 | title: b\n-----^"
+  }
+}

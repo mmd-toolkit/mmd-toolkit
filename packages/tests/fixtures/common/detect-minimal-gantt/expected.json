@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 11: minimal accepted example of `gantt`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": null
+}

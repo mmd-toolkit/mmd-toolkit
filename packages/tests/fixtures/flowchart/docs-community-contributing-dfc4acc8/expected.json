@@ -1,0 +1,78 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/community/contributing.md",
+    "line": 12
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "source",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Get the Source Code",
+        "props": {},
+        "type": "square"
+      },
+      {
+        "id": "requirements",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Install the Requirements",
+        "props": {},
+        "type": "square"
+      },
+      {
+        "id": "setup",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Install Packages",
+        "props": {},
+        "type": "square"
+      }
+    ],
+    "edges": [
+      {
+        "start": "source",
+        "end": "requirements",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_source_requirements_0"
+      },
+      {
+        "start": "requirements",
+        "end": "setup",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_requirements_setup_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

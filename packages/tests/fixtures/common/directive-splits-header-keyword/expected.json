@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md: both reject, at different stages. mermaid.js rejects `A-->` in the flowchart grammar; here the directive lies inside the header keyword `flowchart`, a `Keyword` unit. Not a divergence, because only the accept or reject decision and the Db are compared."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\nflowchart LRA-->\n----------------^\nExpecting 'AMP', 'COLON', 'PIPE', 'TESTSTR', 'DOWN', 'DEFAULT', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'EOF'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Detection: detection does not leave out a `;` before the keyword, so no diagram type is detected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: ;\nsequenceDiagram\nA->>B: x\n"
+  }
+}

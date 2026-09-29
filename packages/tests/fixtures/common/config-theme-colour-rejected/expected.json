@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Configuration (reference) > The effective configuration: mermaid rejects a theme variable it cannot parse as a colour."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Unsupported color format: \"notacolor\""
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Strings: an empty string as the text of a link is rejected by mermaid.js too; known-divergences.md, tokenless-empty-forms: a form meant as empty text is rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nflowchart LRA-->|\"\"|B\n-------------------^\nExpecting 'TAGEND', 'STR', 'MD_STR', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'PIPE'"
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Arrows: the closing arrow takes the `x` after the dashes as its head, so the arrow is `---x`, of type `arrow_cross`, and the vertex is `ray`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "ray",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "ray",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "ray",
+        "type": "arrow_cross",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 2,
+        "id": "L_A_ray_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

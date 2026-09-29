@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The alias context, rule 4: after `destroy A`, the statement ends at the line feed, and the next line is the message from `as` to A that the destroy awaits."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "as",
+        "description": "as",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "A"
+      },
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "prevActor": "as",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [
+      {
+        "id": "A",
+        "messageIndex": 0
+      }
+    ],
+    "messages": [
+      {
+        "from": "as",
+        "to": "A",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

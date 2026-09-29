@@ -1,0 +1,10 @@
+# Fixtures are compared byte for byte, and some examples end without a line
+# break or keep whitespace at the end of a line on purpose, so editors must
+# not change line endings, final line breaks, trailing whitespace, or indents.
+[*]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset

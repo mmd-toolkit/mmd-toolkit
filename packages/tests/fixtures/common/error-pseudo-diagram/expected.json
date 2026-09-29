@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: a text that is `error` is accepted as the error pseudo-diagram with no Db content."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

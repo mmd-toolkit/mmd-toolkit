@@ -1,0 +1,17 @@
+{
+  "message": "A subgraph member follows the member hasOwnProperty",
+  "range": [
+    49,
+    50
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 10
+    },
+    "end": {
+      "line": 4,
+      "column": 11
+    }
+  }
+}

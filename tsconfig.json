@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "preserve",
+    "moduleResolution": "Bundler",
+    "lib": ["es2022"],
+    "declaration": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedDeclarations": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": ["node"],
+    // Type-check workspace packages against their sources, not a stale lib/ build.
+    "paths": {
+      "@mmd-toolkit/parser": ["./packages/parser/src/index.ts"],
+      "@mmd-toolkit/tests": ["./packages/tests/src/index.ts"],
+      "@mmd-toolkit/tests/mermaid": ["./packages/tests/src/mermaid.ts"],
+      "@mmd-toolkit/tests/mutation": ["./packages/tests/src/mutation.ts"]
+    }
+  },
+  "include": [
+    "packages/*/src/**/*",
+    "packages/*/tests/**/*",
+    "packages/*/tools/**/*",
+    "packages/*/tsdown.config.ts",
+    "packages/*/vitest.config.ts",
+    "tools/**/*",
+    "vitest.config.ts"
+  ],
+  "exclude": ["**/lib/**", "**/node_modules/**", "packages/tests/fixtures/**"]
+}

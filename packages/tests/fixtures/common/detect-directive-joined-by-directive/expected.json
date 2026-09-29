@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: leaving out `%%{wrap}%%` joins `%%` and `{x}%%` into `%%{x}%%`, which the second directive scan removes; the detectors see `error`, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

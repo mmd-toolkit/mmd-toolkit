@@ -1,0 +1,227 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/flowchart.html",
+    "line": 723
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable",
+          "someclass"
+        ],
+        "text": "cylindrical<br />shape<br />test",
+        "type": "cylinder",
+        "props": {},
+        "link": "flowchart.html#link-clicked"
+      },
+      {
+        "id": "B1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Go shopping 1",
+        "type": "cylinder",
+        "props": {}
+      },
+      {
+        "id": "B2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Go shopping 2",
+        "type": "cylinder",
+        "props": {}
+      },
+      {
+        "id": "B3",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Go shopping 3",
+        "type": "cylinder",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Let me think...<br />Do I want something for work,<br />something to spend every free second with,<br />or something to get around?",
+        "type": "cylinder",
+        "props": {}
+      },
+      {
+        "id": "D",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Laptop",
+        "type": "cylinder",
+        "props": {}
+      },
+      {
+        "id": "E",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "iPhone",
+        "type": "cylinder",
+        "props": {}
+      },
+      {
+        "id": "F",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Car",
+        "type": "cylinder",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B1",
+        "type": "arrow_point",
+        "text": "Get money",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B1_0"
+      },
+      {
+        "start": "A",
+        "end": "B2",
+        "type": "arrow_point",
+        "text": "Get money",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B2_0"
+      },
+      {
+        "start": "A",
+        "end": "B3",
+        "type": "arrow_point",
+        "text": "Get money",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B3_0"
+      },
+      {
+        "start": "B1",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_B1_C_0"
+      },
+      {
+        "start": "B2",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_B2_C_0"
+      },
+      {
+        "start": "B3",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_B3_C_0"
+      },
+      {
+        "start": "C",
+        "end": "D",
+        "type": "arrow_point",
+        "text": "One",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C_D_0"
+      },
+      {
+        "start": "C",
+        "end": "E",
+        "type": "arrow_point",
+        "text": "Two",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C_E_0"
+      },
+      {
+        "start": "C",
+        "end": "F",
+        "type": "arrow_point",
+        "text": "Three",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C_F_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "someclass",
+        "styles": [
+          "fill:#f96"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "link test"
+      },
+      {
+        "id": "B",
+        "text": "click test"
+      }
+    ]
+  }
+}

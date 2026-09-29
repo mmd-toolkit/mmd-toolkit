@@ -1,0 +1,61 @@
+{
+  "name": "eslint-plugin-mmd",
+  "version": "0.0.0",
+  "description": "ESLint language plugin for the Mermaid diagram syntax (.mmd files and mermaid code blocks in Markdown)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git",
+    "directory": "packages/eslint-plugin-mmd"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.mts",
+      "default": "./lib/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24"
+  },
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "mermaid",
+    "mmd",
+    "linter"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "clean": "rimraf lib",
+    "test": "vitest run",
+    "update": "node tools/update-rules.ts && node tools/update-docs.ts",
+    "update:docs": "node tools/update-docs.ts",
+    "check:docs": "node tools/update-rules.ts --check && node tools/update-docs.ts --check",
+    "test:update": "rimraf --glob \"tests/**/__snapshots__\" && vitest run"
+  },
+  "peerDependencies": {
+    "eslint": "^10.0.0"
+  },
+  "dependencies": {
+    "@eslint/core": "^1.2.1",
+    "@eslint/plugin-kit": "^0.7.3",
+    "@mmd-toolkit/parser": "workspace:*",
+    "@ota-meshi/ast-token-store": "^0.3.0"
+  },
+  "devDependencies": {
+    "@eslint/markdown": "^8.0.3",
+    "@mmd-toolkit/tests": "workspace:*",
+    "eslint": "^10.0.0",
+    "eslint-snapshot-rule-tester": "0.1.0",
+    "prettier": "^3.9.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

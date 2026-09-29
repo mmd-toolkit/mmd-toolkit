@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Known divergences (directive-as-token-boundary): the lexer reads the diagram text `direction TB` and makes a direction line, as mermaid.js does, which accepts; here the directive lies inside the `Keyword` unit `direction`, and the input is rejected."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

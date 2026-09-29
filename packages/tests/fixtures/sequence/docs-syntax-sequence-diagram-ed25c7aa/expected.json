@@ -1,0 +1,86 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sequenceDiagram.md",
+    "line": 215
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "API",
+        "description": "Public API",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "boundary",
+        "nextActor": "Auth"
+      },
+      {
+        "name": "Auth",
+        "description": "Auth Service",
+        "wrap": false,
+        "prevActor": "API",
+        "links": {},
+        "properties": {},
+        "type": "control",
+        "nextActor": "DB"
+      },
+      {
+        "name": "DB",
+        "description": "User Database",
+        "wrap": false,
+        "prevActor": "Auth",
+        "links": {},
+        "properties": {},
+        "type": "database"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "API",
+        "to": "Auth",
+        "message": "Login request",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Auth",
+        "to": "DB",
+        "message": "Query user",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "DB",
+        "to": "Auth",
+        "message": "User data",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Auth",
+        "to": "API",
+        "message": "Access token",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

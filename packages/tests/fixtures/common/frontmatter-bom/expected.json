@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Frontmatter: a U+FEFF before only the opening delimiter is an indent mismatch; detection ignores the block after removing leading whitespace, and the flowchart grammar rejects the `---` lines."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n---title: Hello---\n^\nExpecting 'NEWLINE', 'SPACE', 'GRAPH', got 'LINK'"
+  }
+}

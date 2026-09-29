@@ -1,2 +1,60 @@
 # mmd-toolkit
-Third-party tooling for the Mermaid diagram syntax. Not affiliated with mermaid-js.
+
+Japanese version: [README.ja.md](./README.ja.md)
+
+Third-party tooling for the Mermaid diagram syntax: a formatter, a linter, a
+parser, a written specification, and a conformance corpus. Not affiliated with
+mermaid-js.
+
+`mmd` refers to the `.mmd` file extension used for Mermaid diagram text. It is
+unrelated to MultiMarkdown and MikuMikuDance, which also use the abbreviation.
+
+Flowchart and sequence diagrams are supported so far; the other diagram types
+follow. The formatter, the linter, and the parser are not published to npm yet:
+they will be released once every diagram type of mermaid.js is supported. The
+linter's rules are not written yet, apart from one written as a trial. The
+specification and the tests are used from this repository and are not published.
+
+## Packages
+
+| Package                                                 | What it is for                                                                         |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [`prettier-plugin-mmd`](./packages/prettier-plugin-mmd) | Format `.mmd` files and `mermaid` code blocks in Markdown with Prettier.               |
+| [`eslint-plugin-mmd`](./packages/eslint-plugin-mmd)     | Lint `.mmd` files and `mermaid` code blocks in Markdown with ESLint.                   |
+| [`@mmd-toolkit/parser`](./packages/parser)              | Parse Mermaid text into a syntax tree with positions, for linters and other tools.     |
+| [`@mmd-toolkit/spec`](./packages/spec)                  | Read how Mermaid text is parsed, as a specification independent of any implementation. |
+| [`@mmd-toolkit/tests`](./packages/tests)                | Test an implementation of the syntax against what mermaid.js does.                     |
+
+## What you can rely on
+
+mermaid.js is the reference, at the version recorded in the
+[specification](./packages/spec/docs/index.md).
+
+- The parser accepts and rejects the same text as mermaid.js, and reads an
+  accepted text as the same diagram.
+- The syntax tree loses nothing of the text: with the tree and the source, the
+  text is reproduced byte for byte.
+- Formatting a file twice gives the same result as formatting it once, and
+  formatting does not change the diagram. The few exceptions are listed in the
+  formatter's
+  [README](./packages/prettier-plugin-mmd/README.md#guarantees-and-limitations).
+
+The parser differs from mermaid.js on purpose for a few kinds of input, for
+example a directive (`%%{ ... }%%`) inside a keyword, which is a syntax error
+here, or the word `click` outside a click statement. Each is defined, with its
+reason, in the specification's
+[Known divergences](./packages/spec/docs/known-divergences.md).
+
+One more difference comes from what the parser is given, not from the syntax: it
+does not know the site configuration of mermaid.js, so a flowchart with more
+edges than `maxEdges` (500 by default), which mermaid.js rejects, is accepted
+and formatted.
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for how to build and test the
+repository.
+
+## License
+
+[MIT](./LICENSE)

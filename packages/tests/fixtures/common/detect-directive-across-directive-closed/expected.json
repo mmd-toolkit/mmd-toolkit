@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: the second directive scan finds `%%{`, whitespace, `x`, and `}%%` once `%%{wrap}%%` is left out, and removes it; the detectors see `error`."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

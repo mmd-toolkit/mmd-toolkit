@@ -1,0 +1,17 @@
+{
+  "message": "The message after create must go to the created participant",
+  "range": [
+    37,
+    45
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 8
+    }
+  }
+}

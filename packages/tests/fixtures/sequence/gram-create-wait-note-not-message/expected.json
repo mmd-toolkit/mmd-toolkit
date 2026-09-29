@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar, the participant awaiting creation and the participant awaiting destruction: a note over C is not a message, so the next message must still go to C, and `A->>B` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The created participant undefined does not have an associated creating message after its declaration. Please check the sequence diagram."
+  }
+}

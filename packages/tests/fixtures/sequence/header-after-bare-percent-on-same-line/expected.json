@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Detection: detection leaves out the `%%` with the rest of its line, keyword included, so no diagram type is detected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: A->>B: x\n"
+  }
+}

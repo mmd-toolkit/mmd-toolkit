@@ -1,0 +1,942 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/flowchart_expanded_node_shapes.html",
+    "line": 120
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A1",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "bang",
+        "props": {},
+        "type": "bang"
+      },
+      {
+        "id": "A2",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "notch-rect",
+        "props": {},
+        "type": "notch-rect"
+      },
+      {
+        "id": "A3",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "cloud",
+        "props": {},
+        "type": "cloud"
+      },
+      {
+        "id": "A4",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "hourglass",
+        "props": {},
+        "type": "hourglass"
+      },
+      {
+        "id": "A5",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "bolt",
+        "props": {},
+        "type": "bolt"
+      },
+      {
+        "id": "A6",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "brace",
+        "props": {},
+        "type": "brace"
+      },
+      {
+        "id": "A7",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "brace-r",
+        "props": {},
+        "type": "brace-r"
+      },
+      {
+        "id": "A8",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "braces",
+        "props": {},
+        "type": "braces"
+      },
+      {
+        "id": "A9",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "lean-r",
+        "props": {},
+        "type": "lean-r"
+      },
+      {
+        "id": "A10",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "lean-l",
+        "props": {},
+        "type": "lean-l"
+      },
+      {
+        "id": "A11",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "cyl",
+        "props": {},
+        "type": "cyl"
+      },
+      {
+        "id": "A12",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "diam",
+        "props": {},
+        "type": "diam"
+      },
+      {
+        "id": "A13",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "delay",
+        "props": {},
+        "type": "delay"
+      },
+      {
+        "id": "A14",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "h-cyl",
+        "props": {},
+        "type": "h-cyl"
+      },
+      {
+        "id": "A15",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "lin-cyl",
+        "props": {},
+        "type": "lin-cyl"
+      },
+      {
+        "id": "A16",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "curv-trap",
+        "props": {},
+        "type": "curv-trap"
+      },
+      {
+        "id": "A17",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "div-rect",
+        "props": {},
+        "type": "div-rect"
+      },
+      {
+        "id": "A18",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "doc",
+        "props": {},
+        "type": "doc"
+      },
+      {
+        "id": "A19",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "rounded",
+        "props": {},
+        "type": "rounded"
+      },
+      {
+        "id": "A20",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "tri",
+        "props": {},
+        "type": "tri"
+      },
+      {
+        "id": "A21",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "fork",
+        "props": {},
+        "type": "fork"
+      },
+      {
+        "id": "A22",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "win-pane",
+        "props": {},
+        "type": "win-pane"
+      },
+      {
+        "id": "A23",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "f-circ",
+        "props": {},
+        "type": "f-circ"
+      },
+      {
+        "id": "A24",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "lin-doc",
+        "props": {},
+        "type": "lin-doc"
+      },
+      {
+        "id": "A25",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "lin-rect",
+        "props": {},
+        "type": "lin-rect"
+      },
+      {
+        "id": "A26",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "notch-pent",
+        "props": {},
+        "type": "notch-pent"
+      },
+      {
+        "id": "A27",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "flip-tri",
+        "props": {},
+        "type": "flip-tri"
+      },
+      {
+        "id": "A28",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "sl-rect",
+        "props": {},
+        "type": "sl-rect"
+      },
+      {
+        "id": "A29",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "trap-t",
+        "props": {},
+        "type": "trap-t"
+      },
+      {
+        "id": "A30",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "docs",
+        "props": {},
+        "type": "docs"
+      },
+      {
+        "id": "A31",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "st-rect",
+        "props": {},
+        "type": "st-rect"
+      },
+      {
+        "id": "A32",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "odd",
+        "props": {},
+        "type": "odd"
+      },
+      {
+        "id": "A33",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "flag",
+        "props": {},
+        "type": "flag"
+      },
+      {
+        "id": "A34",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "hex",
+        "props": {},
+        "type": "hex"
+      },
+      {
+        "id": "A35",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "trap-b",
+        "props": {},
+        "type": "trap-b"
+      },
+      {
+        "id": "A36",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "rect",
+        "props": {},
+        "type": "rect"
+      },
+      {
+        "id": "A37",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "circle",
+        "props": {},
+        "type": "circle"
+      },
+      {
+        "id": "A38",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "sm-circ",
+        "props": {},
+        "type": "sm-circ"
+      },
+      {
+        "id": "A39",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "dbl-circ",
+        "props": {},
+        "type": "dbl-circ"
+      },
+      {
+        "id": "A40",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "fr-circ",
+        "props": {},
+        "type": "fr-circ"
+      },
+      {
+        "id": "A41",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "bow-rect",
+        "props": {},
+        "type": "bow-rect"
+      },
+      {
+        "id": "A42",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "fr-rect",
+        "props": {},
+        "type": "fr-rect"
+      },
+      {
+        "id": "A43",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "cross-circ",
+        "props": {},
+        "type": "cross-circ"
+      },
+      {
+        "id": "A44",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "tag-doc",
+        "props": {},
+        "type": "tag-doc"
+      },
+      {
+        "id": "A45",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "tag-rect",
+        "props": {},
+        "type": "tag-rect"
+      },
+      {
+        "id": "A46",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "stadium",
+        "props": {},
+        "type": "stadium"
+      },
+      {
+        "id": "A47",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "text",
+        "props": {},
+        "type": "text"
+      }
+    ],
+    "edges": [
+      {
+        "start": "A1",
+        "end": "A2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A1_A2_0"
+      },
+      {
+        "start": "A2",
+        "end": "A3",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A2_A3_0"
+      },
+      {
+        "start": "A3",
+        "end": "A4",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A3_A4_0"
+      },
+      {
+        "start": "A4",
+        "end": "A5",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A4_A5_0"
+      },
+      {
+        "start": "A5",
+        "end": "A6",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A5_A6_0"
+      },
+      {
+        "start": "A6",
+        "end": "A7",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A6_A7_0"
+      },
+      {
+        "start": "A7",
+        "end": "A8",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A7_A8_0"
+      },
+      {
+        "start": "A9",
+        "end": "A10",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A9_A10_0"
+      },
+      {
+        "start": "A10",
+        "end": "A11",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A10_A11_0"
+      },
+      {
+        "start": "A11",
+        "end": "A12",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A11_A12_0"
+      },
+      {
+        "start": "A12",
+        "end": "A13",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A12_A13_0"
+      },
+      {
+        "start": "A13",
+        "end": "A14",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A13_A14_0"
+      },
+      {
+        "start": "A14",
+        "end": "A15",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A14_A15_0"
+      },
+      {
+        "start": "A15",
+        "end": "A16",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A15_A16_0"
+      },
+      {
+        "start": "A17",
+        "end": "A18",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A17_A18_0"
+      },
+      {
+        "start": "A18",
+        "end": "A19",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A18_A19_0"
+      },
+      {
+        "start": "A19",
+        "end": "A20",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A19_A20_0"
+      },
+      {
+        "start": "A20",
+        "end": "A21",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A20_A21_0"
+      },
+      {
+        "start": "A21",
+        "end": "A22",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A21_A22_0"
+      },
+      {
+        "start": "A22",
+        "end": "A23",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A22_A23_0"
+      },
+      {
+        "start": "A23",
+        "end": "A24",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A23_A24_0"
+      },
+      {
+        "start": "A25",
+        "end": "A26",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A25_A26_0"
+      },
+      {
+        "start": "A26",
+        "end": "A27",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A26_A27_0"
+      },
+      {
+        "start": "A27",
+        "end": "A28",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A27_A28_0"
+      },
+      {
+        "start": "A28",
+        "end": "A29",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A28_A29_0"
+      },
+      {
+        "start": "A29",
+        "end": "A30",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A29_A30_0"
+      },
+      {
+        "start": "A30",
+        "end": "A31",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A30_A31_0"
+      },
+      {
+        "start": "A31",
+        "end": "A32",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A31_A32_0"
+      },
+      {
+        "start": "A33",
+        "end": "A34",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A33_A34_0"
+      },
+      {
+        "start": "A34",
+        "end": "A35",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A34_A35_0"
+      },
+      {
+        "start": "A35",
+        "end": "A36",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A35_A36_0"
+      },
+      {
+        "start": "A36",
+        "end": "A37",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A36_A37_0"
+      },
+      {
+        "start": "A37",
+        "end": "A38",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A37_A38_0"
+      },
+      {
+        "start": "A38",
+        "end": "A39",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A38_A39_0"
+      },
+      {
+        "start": "A39",
+        "end": "A40",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A39_A40_0"
+      },
+      {
+        "start": "A41",
+        "end": "A42",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A41_A42_0"
+      },
+      {
+        "start": "A42",
+        "end": "A43",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A42_A43_0"
+      },
+      {
+        "start": "A43",
+        "end": "A44",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A43_A44_0"
+      },
+      {
+        "start": "A44",
+        "end": "A45",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A44_A45_0"
+      },
+      {
+        "start": "A45",
+        "end": "A46",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A45_A46_0"
+      },
+      {
+        "start": "A46",
+        "end": "A47",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A46_A47_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

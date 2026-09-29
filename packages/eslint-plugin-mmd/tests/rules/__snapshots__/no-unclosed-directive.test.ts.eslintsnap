@@ -1,0 +1,47 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: no-unclosed-directive >> invalid >>> common/directive-unclosed
+Filename: common/directive-unclosed.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A-->B
+  3 | %%{init: {"x": 1}
+    | ^~~~~~~~~~~~~~~~~\ [1]
+  4 | C-->D
+    | ~~~~~ [1]
+
+[1] This directive has no closing `}%%`, so the text after it is part of the directive.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> common/directive-unclosed-after-header
+Filename: common/directive-unclosed-after-header.mmd
+
+Code:
+  1 | flowchart LR
+  2 | %%{init: {"theme": "dark"}}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  3 | A-->B
+    | ~~~~~ [1]
+  4 |
+
+[1] This directive has no closing `}%%`, so the text after it is part of the directive.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> common/directive-word-argument-unclosed-next-line
+Filename: common/directive-word-argument-unclosed-next-line.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A-->B
+  3 | %%{wrap
+    | ^~~~~~~\ [1]
+  4 | C-->D
+    | ~ [1]
+  5 |
+
+[1] This directive has no closing `}%%`, so the text after it is part of the directive.
+---

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The statement context, rule 2: the space after autonumber takes the line break, and the comment line is removed before the lexer reads the text, so the statement is not ended before actor. The input of mermaid.js issue #4293."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ramautonumber     actor Patient\n---------------------^\nExpecting 'NEWLINE', 'NUM', 'off', got 'participant_actor'"
+  }
+}

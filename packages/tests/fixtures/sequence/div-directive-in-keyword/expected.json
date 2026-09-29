@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, directive-as-token-boundary: mermaid.js reads `participant` without the directive and accepts; here the directive lies inside a keyword unit, and the input is rejected."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

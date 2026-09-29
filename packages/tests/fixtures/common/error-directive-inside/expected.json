@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md ErrorDiagram: the error pseudo-diagram's `RawText` tokens are `error`, `%%`, and `x`; the directive lies between the first two, outside the tokens."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

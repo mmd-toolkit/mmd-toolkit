@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The direction line: `;` is not whitespace, so `direction ; TB` is no direction line: it is the vertices `direction` and `TB`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "direction",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "direction",
+        "props": {}
+      },
+      {
+        "id": "TB",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "TB",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

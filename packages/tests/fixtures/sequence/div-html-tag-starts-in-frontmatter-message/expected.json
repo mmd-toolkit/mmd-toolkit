@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, html-tag-in-frontmatter: in mermaid.js the tag `<a` of the frontmatter reaches the `>` after `\"c\"`, so the message is `b='c'>d`; here tags are found only after the frontmatter, and the message is `b=\"c\">d`."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "B",
+        "message": "b='c'>d",
+        "wrap": false,
+        "type": 3,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

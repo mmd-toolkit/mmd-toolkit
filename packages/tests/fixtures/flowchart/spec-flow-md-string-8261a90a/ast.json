@@ -1,0 +1,771 @@
+{
+  "type": "Root",
+  "diagramType": "flowchart-v2",
+  "body": {
+    "type": "FlowchartDiagram",
+    "direction": null,
+    "body": [
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "A",
+                "range": [
+                  10,
+                  11
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 1
+                  }
+                }
+              },
+              "shape": {
+                "type": "FlowchartShape",
+                "name": "rectangle",
+                "property": null,
+                "label": {
+                  "type": "FlowchartLabel",
+                  "kind": "markdown",
+                  "value": "The cat in **the** hat",
+                  "range": [
+                    12,
+                    38
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 28
+                    }
+                  }
+                },
+                "range": [
+                  11,
+                  39
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 1
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 29
+                  }
+                }
+              },
+              "className": null,
+              "data": [],
+              "range": [
+                10,
+                39
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 0
+                },
+                "end": {
+                  "line": 2,
+                  "column": 29
+                }
+              }
+            }
+          ],
+          "range": [
+            10,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 29
+            }
+          }
+        },
+        "links": [
+          {
+            "type": "FlowchartLink",
+            "id": null,
+            "opening": {
+              "type": "FlowchartOpeningArrow",
+              "value": "--",
+              "startMarker": "none",
+              "line": "solid",
+              "range": [
+                39,
+                41
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 29
+                },
+                "end": {
+                  "line": 2,
+                  "column": 31
+                }
+              }
+            },
+            "arrow": {
+              "type": "FlowchartArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                68,
+                71
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 58
+                },
+                "end": {
+                  "line": 2,
+                  "column": 61
+                }
+              }
+            },
+            "label": {
+              "type": "FlowchartLabel",
+              "kind": "markdown",
+              "value": "The *bat* in the chat",
+              "range": [
+                42,
+                67
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 32
+                },
+                "end": {
+                  "line": 2,
+                  "column": 57
+                }
+              }
+            },
+            "target": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "B",
+                    "range": [
+                      71,
+                      72
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 61
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 62
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "The dog in the hog",
+                      "range": [
+                        73,
+                        93
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 2,
+                          "column": 63
+                        },
+                        "end": {
+                          "line": 2,
+                          "column": 83
+                        }
+                      }
+                    },
+                    "range": [
+                      72,
+                      94
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 62
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 84
+                      }
+                    }
+                  },
+                  "className": null,
+                  "data": [],
+                  "range": [
+                    71,
+                    94
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 61
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 84
+                    }
+                  }
+                }
+              ],
+              "range": [
+                71,
+                94
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 61
+                },
+                "end": {
+                  "line": 2,
+                  "column": 84
+                }
+              }
+            },
+            "range": [
+              39,
+              94
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 29
+              },
+              "end": {
+                "line": 2,
+                "column": 84
+              }
+            }
+          },
+          {
+            "type": "FlowchartLink",
+            "id": null,
+            "opening": {
+              "type": "FlowchartOpeningArrow",
+              "value": "--",
+              "startMarker": "none",
+              "line": "solid",
+              "range": [
+                95,
+                97
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 85
+                },
+                "end": {
+                  "line": 2,
+                  "column": 87
+                }
+              }
+            },
+            "arrow": {
+              "type": "FlowchartArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                119,
+                122
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 109
+                },
+                "end": {
+                  "line": 2,
+                  "column": 112
+                }
+              }
+            },
+            "label": {
+              "type": "FlowchartLabel",
+              "kind": "string",
+              "value": "The rat in the mat",
+              "range": [
+                98,
+                118
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 88
+                },
+                "end": {
+                  "line": 2,
+                  "column": 108
+                }
+              }
+            },
+            "target": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "C",
+                    "range": [
+                      122,
+                      123
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 112
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 113
+                      }
+                    }
+                  },
+                  "shape": null,
+                  "className": null,
+                  "data": [],
+                  "range": [
+                    122,
+                    123
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 112
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 113
+                    }
+                  }
+                }
+              ],
+              "range": [
+                122,
+                123
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 112
+                },
+                "end": {
+                  "line": 2,
+                  "column": 113
+                }
+              }
+            },
+            "range": [
+              95,
+              123
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 85
+              },
+              "end": {
+                "line": 2,
+                "column": 113
+              }
+            }
+          }
+        ],
+        "range": [
+          10,
+          123
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 113
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      124
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 114
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "flowchart",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        10,
+        11
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        11,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 1
+        },
+        "end": {
+          "line": 2,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"`The cat in **the** hat`\"",
+      "range": [
+        12,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        38,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 28
+        },
+        "end": {
+          "line": 2,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        39,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 29
+        },
+        "end": {
+          "line": 2,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"`The *bat* in the chat`\"",
+      "range": [
+        42,
+        67
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 32
+        },
+        "end": {
+          "line": 2,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        68,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 58
+        },
+        "end": {
+          "line": 2,
+          "column": 61
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        71,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 61
+        },
+        "end": {
+          "line": 2,
+          "column": 62
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        72,
+        73
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 62
+        },
+        "end": {
+          "line": 2,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"The dog in the hog\"",
+      "range": [
+        73,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 63
+        },
+        "end": {
+          "line": 2,
+          "column": 83
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        93,
+        94
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 83
+        },
+        "end": {
+          "line": 2,
+          "column": 84
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "--",
+      "range": [
+        95,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 85
+        },
+        "end": {
+          "line": 2,
+          "column": 87
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"The rat in the mat\"",
+      "range": [
+        98,
+        118
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 88
+        },
+        "end": {
+          "line": 2,
+          "column": 108
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        119,
+        122
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 109
+        },
+        "end": {
+          "line": 2,
+          "column": 112
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "C",
+      "range": [
+        122,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 112
+        },
+        "end": {
+          "line": 2,
+          "column": 113
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ";",
+      "range": [
+        123,
+        124
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 113
+        },
+        "end": {
+          "line": 2,
+          "column": 114
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    124
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 114
+    }
+  }
+}

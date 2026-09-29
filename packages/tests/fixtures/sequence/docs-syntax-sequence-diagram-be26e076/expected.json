@@ -1,0 +1,86 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sequenceDiagram.md",
+    "line": 200
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "API",
+        "description": "Public API",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "boundary",
+        "nextActor": "DB"
+      },
+      {
+        "name": "DB",
+        "description": "User Database",
+        "wrap": false,
+        "prevActor": "API",
+        "links": {},
+        "properties": {},
+        "type": "database",
+        "nextActor": "Svc"
+      },
+      {
+        "name": "Svc",
+        "description": "Auth Service",
+        "wrap": false,
+        "prevActor": "DB",
+        "links": {},
+        "properties": {},
+        "type": "control"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "API",
+        "to": "Svc",
+        "message": "Authenticate",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Svc",
+        "to": "DB",
+        "message": "Query user",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "DB",
+        "to": "Svc",
+        "message": "User data",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Svc",
+        "to": "API",
+        "message": "Token",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/examples.md",
+    "line": 111
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "web",
+        "description": "Web Browser",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "blog"
+      },
+      {
+        "name": "blog",
+        "description": "Blog Service",
+        "wrap": false,
+        "prevActor": "web",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "account"
+      },
+      {
+        "name": "account",
+        "description": "Account Service",
+        "wrap": false,
+        "prevActor": "blog",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "mail"
+      },
+      {
+        "name": "mail",
+        "description": "Mail Service",
+        "wrap": false,
+        "prevActor": "account",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "db"
+      },
+      {
+        "name": "db",
+        "description": "Storage",
+        "wrap": false,
+        "prevActor": "mail",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "web",
+        "to": "db",
+        "message": "The user must be logged in to submit blog posts",
+        "wrap": false,
+        "type": 2,
+        "placement": 2
+      },
+      {
+        "from": "web",
+        "to": "account",
+        "message": "Logs in using credentials",
+        "wrap": false,
+        "type": 0,
+        "activate": true,
+        "centralConnection": 0
+      },
+      {
+        "from": "account",
+        "message": "",
+        "wrap": false,
+        "type": 17,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "account",
+        "to": "db",
+        "message": "Query stored accounts",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "db",
+        "to": "account",
+        "message": "Respond with query result",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "Credentials not found",
+        "wrap": false,
+        "type": 12,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "account",
+        "to": "web",
+        "message": "Invalid credentials",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "Credentials found",
+        "wrap": false,
+        "type": 13,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "account",
+        "to": "web",
+        "message": "Successfully logged in",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "account",
+        "message": "",
+        "wrap": false,
+        "type": 18,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "web",
+        "to": "db",
+        "message": "When the user is authenticated, they can now submit new posts",
+        "wrap": false,
+        "type": 2,
+        "placement": 2
+      },
+      {
+        "from": "web",
+        "to": "blog",
+        "message": "Submit new post",
+        "wrap": false,
+        "type": 0,
+        "activate": true,
+        "centralConnection": 0
+      },
+      {
+        "from": "blog",
+        "message": "",
+        "wrap": false,
+        "type": 17,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "blog",
+        "to": "db",
+        "message": "Store post data",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "Notifications",
+        "wrap": false,
+        "type": 19,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "blog",
+        "to": "mail",
+        "message": "Send mail to blog subscribers",
+        "wrap": false,
+        "type": 25,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "blog",
+        "to": "db",
+        "message": "Store in-site notifications",
+        "wrap": false,
+        "type": 25,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "Response",
+        "wrap": false,
+        "type": 20,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "blog",
+        "to": "web",
+        "message": "Successfully posted",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "blog",
+        "message": "",
+        "wrap": false,
+        "type": 18,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 21,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 14,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

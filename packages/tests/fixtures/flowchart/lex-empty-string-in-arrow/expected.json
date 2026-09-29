@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Lexical structure, strings: `--` is an opening arrow, and the text of the link never closes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...wchart LRA --\"\"> B\n---------------------^\nExpecting 'LINK', 'UNICODE_TEXT', 'EDGE_TEXT', got '1'"
+  }
+}

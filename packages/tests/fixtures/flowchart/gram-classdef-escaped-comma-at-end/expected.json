@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Style, class, and link style statements: the grammar still reads the `,` after `\\` and needs a style after it, so the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...classDef c fill:x\\,\n----------------------^\nExpecting 'SPACE', 'COLON', 'STYLE', 'NUM', 'NODE_STRING', 'UNIT', 'BRKT', 'PCT', got 'NEWLINE'"
+  }
+}

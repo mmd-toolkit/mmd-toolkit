@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-style.spec.js",
+    "line": 171,
+    "test": "[Style] when parsing > should be possible to apply a class to a vertex with an id containing _"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "a_a",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "exClass"
+        ],
+        "text": "a_a",
+        "props": {}
+      },
+      {
+        "id": "b_b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b_b",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "a_a",
+        "end": "b_b",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a_a_b_b_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "exClass",
+        "styles": [
+          "background:#bbb",
+          "border:1px solid red"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

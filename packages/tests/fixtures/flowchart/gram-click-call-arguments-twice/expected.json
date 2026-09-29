@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click and callbacks: after skipping the `call` and parenthesis units, two callback arguments follow the name, which the grammar rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...k A call cb(y)call (x)\n-----------------------^\nExpecting 'SEMI', 'NEWLINE', 'SPACE', 'EOF', got 'CALLBACKARGS'"
+  }
+}

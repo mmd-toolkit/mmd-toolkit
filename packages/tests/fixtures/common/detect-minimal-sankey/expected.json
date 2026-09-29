@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 23: minimal accepted example of `sankey`. The header line alone is rejected, so the input has one minimal statement."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": null
+}

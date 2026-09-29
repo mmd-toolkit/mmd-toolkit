@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md (html-tag-in-frontmatter): in mermaid.js the tag `<a` in the frontmatter reaches the `>` in the label, and its quoted value runs from `z=\"` in the frontmatter to the `\"` after `x=`, so the `\"` after `y` stays and the flowchart grammar rejects the label. Here tags are found only in the text after the frontmatter, `<b x=\"y\">` is a tag, and the label is `<b x='y'>t`."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...wchart LRA[<b x='y\">t]\n----------------------^\nExpecting 'SQE', 'DOUBLECIRCLEEND', 'PE', '-)', 'STADIUMEND', 'SUBROUTINEEND', 'PIPE', 'CYLINDEREND', 'DIAMOND_STOP', 'TAGEND', 'TRAPEND', 'INVTRAPEND', 'UNICODE_TEXT', 'TEXT', 'TAGSTART', got 'STR'"
+  }
+}

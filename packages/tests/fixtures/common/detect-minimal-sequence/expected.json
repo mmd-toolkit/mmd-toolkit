@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 15: minimal accepted example of `sequence`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

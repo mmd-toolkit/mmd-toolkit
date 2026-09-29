@@ -1,0 +1,62 @@
+{
+  "name": "@mmd-toolkit/tests",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Conformance fixtures for the Mermaid diagram syntax, with expectations recorded from mermaid.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git",
+    "directory": "packages/tests"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.mts",
+      "default": "./lib/index.mjs"
+    },
+    "./mermaid": {
+      "types": "./lib/mermaid.d.mts",
+      "default": "./lib/mermaid.mjs"
+    },
+    "./mutation": {
+      "types": "./lib/mutation.d.mts",
+      "default": "./lib/mutation.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "fixtures"
+  ],
+  "engines": {
+    "node": "^22.18.0 || ^24.11.0 || >=26.0.0"
+  },
+  "keywords": [
+    "mermaid",
+    "mmd",
+    "conformance",
+    "fixtures"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "clean": "rimraf lib",
+    "test": "vitest run",
+    "fixtures:generate": "node ../../tools/fixtures.ts generate",
+    "fixtures:check": "node ../../tools/fixtures.ts generate --check",
+    "fixtures:add": "node ../../tools/fixtures.ts add",
+    "fixtures:add-many": "node ../../tools/fixtures.ts add-many",
+    "fixtures:collect": "node ../../tools/collect.ts",
+    "fixtures:set-divergence": "node ../../tools/fixtures.ts set-divergence",
+    "fixtures:set-note": "node ../../tools/fixtures.ts set-note",
+    "mutation": "node ../../tools/mutation.ts"
+  },
+  "devDependencies": {
+    "@csstools/css-color-parser": "4.2.4",
+    "@csstools/css-parser-algorithms": "4.0.1",
+    "@csstools/css-tokenizer": "4.0.2",
+    "@types/js-yaml": "4.0.9",
+    "js-yaml": "4.3.0",
+    "mermaid": "12.0.0"
+  }
+}

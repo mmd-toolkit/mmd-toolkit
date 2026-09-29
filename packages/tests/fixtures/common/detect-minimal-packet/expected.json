@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 24: minimal accepted example of `packet`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "packet",
+  "db": null
+}

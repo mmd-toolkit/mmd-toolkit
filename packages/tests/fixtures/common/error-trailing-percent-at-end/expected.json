@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: `error %% x` at the very end of the text is rejected, because detection only removes a `%%` that a line break follows."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: error %% x"
+  }
+}

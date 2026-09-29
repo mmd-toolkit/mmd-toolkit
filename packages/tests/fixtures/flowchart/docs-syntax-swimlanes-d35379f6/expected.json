@@ -1,0 +1,172 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/swimlanes.md",
+    "line": 259
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "submit",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Submit order",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "confirm",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Confirm delivery",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "check",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Check order",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "pack",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Pack items",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "collect",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Collect package",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "deliver",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Deliver package",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "submit",
+        "end": "check",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_submit_check_0"
+      },
+      {
+        "start": "check",
+        "end": "pack",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_check_pack_0"
+      },
+      {
+        "start": "pack",
+        "end": "collect",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_pack_collect_0"
+      },
+      {
+        "start": "collect",
+        "end": "deliver",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_collect_deliver_0"
+      },
+      {
+        "start": "deliver",
+        "end": "confirm",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_deliver_confirm_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "Customer",
+        "nodes": [
+          "submit",
+          "confirm"
+        ],
+        "title": "Customer",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Store",
+        "nodes": [
+          "check",
+          "pack"
+        ],
+        "title": "Store",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Carrier",
+        "nodes": [
+          "collect",
+          "deliver"
+        ],
+        "title": "Carrier",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

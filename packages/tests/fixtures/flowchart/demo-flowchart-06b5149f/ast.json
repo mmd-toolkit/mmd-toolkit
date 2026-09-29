@@ -1,0 +1,490 @@
+{
+  "type": "Root",
+  "diagramType": "flowchart-v2",
+  "body": {
+    "type": "FlowchartDiagram",
+    "direction": "LR",
+    "body": [
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "A",
+                "range": [
+                  9,
+                  10
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 0
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 1
+                  }
+                }
+              },
+              "shape": {
+                "type": "FlowchartShape",
+                "name": "rectangle",
+                "property": null,
+                "label": {
+                  "type": "FlowchartLabel",
+                  "kind": "string",
+                  "value": "$$\\alpha\\beta\\gamma\\delta\\epsilon\\zeta\\eta\\theta\\iota\\kappa\\lambda\\mu\\nu\\xi\\omicron\\pi\\rho\\sigma\\tau\\upsilon\\phi\\chi\\psi\\omega$$",
+                  "range": [
+                    11,
+                    141
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 2
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 132
+                    }
+                  }
+                },
+                "range": [
+                  10,
+                  142
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 1
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 133
+                  }
+                }
+              },
+              "className": null,
+              "data": [],
+              "range": [
+                9,
+                142
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 0
+                },
+                "end": {
+                  "line": 2,
+                  "column": 133
+                }
+              }
+            }
+          ],
+          "range": [
+            9,
+            142
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 133
+            }
+          }
+        },
+        "links": [
+          {
+            "type": "FlowchartLink",
+            "id": null,
+            "opening": null,
+            "arrow": {
+              "type": "FlowchartArrow",
+              "value": "-->",
+              "startMarker": "none",
+              "line": "solid",
+              "length": 2,
+              "endMarker": "arrow",
+              "range": [
+                143,
+                146
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 134
+                },
+                "end": {
+                  "line": 2,
+                  "column": 137
+                }
+              }
+            },
+            "label": null,
+            "target": {
+              "type": "FlowchartVertexGroup",
+              "vertices": [
+                {
+                  "type": "FlowchartVertex",
+                  "id": {
+                    "type": "Identifier",
+                    "name": "B",
+                    "range": [
+                      147,
+                      148
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 138
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 139
+                      }
+                    }
+                  },
+                  "shape": {
+                    "type": "FlowchartShape",
+                    "name": "rectangle",
+                    "property": null,
+                    "label": {
+                      "type": "FlowchartLabel",
+                      "kind": "string",
+                      "value": "$$\\Alpha\\Beta\\Gamma\\Delta\\Epsilon\\Zeta\\Eta\\Theta\\Iota\\Kappa\\Lambda\\Mu\\Nu\\Xi\\Omicron\\Pi\\Rho\\Sigma\\Tau\\Upsilon\\Phi\\Chi\\Psi\\Omega$$",
+                      "range": [
+                        149,
+                        279
+                      ],
+                      "loc": {
+                        "start": {
+                          "line": 2,
+                          "column": 140
+                        },
+                        "end": {
+                          "line": 2,
+                          "column": 270
+                        }
+                      }
+                    },
+                    "range": [
+                      148,
+                      280
+                    ],
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 139
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 271
+                      }
+                    }
+                  },
+                  "className": null,
+                  "data": [],
+                  "range": [
+                    147,
+                    280
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 138
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 271
+                    }
+                  }
+                }
+              ],
+              "range": [
+                147,
+                280
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 138
+                },
+                "end": {
+                  "line": 2,
+                  "column": 271
+                }
+              }
+            },
+            "range": [
+              143,
+              280
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 134
+              },
+              "end": {
+                "line": 2,
+                "column": 271
+              }
+            }
+          }
+        ],
+        "range": [
+          9,
+          280
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 271
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      280
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 271
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "graph",
+      "range": [
+        0,
+        5
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        6,
+        8
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 6
+        },
+        "end": {
+          "line": 1,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        9,
+        10
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        10,
+        11
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 1
+        },
+        "end": {
+          "line": 2,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"$$\\alpha\\beta\\gamma\\delta\\epsilon\\zeta\\eta\\theta\\iota\\kappa\\lambda\\mu\\nu\\xi\\omicron\\pi\\rho\\sigma\\tau\\upsilon\\phi\\chi\\psi\\omega$$\"",
+      "range": [
+        11,
+        141
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 132
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        141,
+        142
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 132
+        },
+        "end": {
+          "line": 2,
+          "column": 133
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        143,
+        146
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 134
+        },
+        "end": {
+          "line": 2,
+          "column": 137
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        147,
+        148
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 138
+        },
+        "end": {
+          "line": 2,
+          "column": 139
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        148,
+        149
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 139
+        },
+        "end": {
+          "line": 2,
+          "column": 140
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"$$\\Alpha\\Beta\\Gamma\\Delta\\Epsilon\\Zeta\\Eta\\Theta\\Iota\\Kappa\\Lambda\\Mu\\Nu\\Xi\\Omicron\\Pi\\Rho\\Sigma\\Tau\\Upsilon\\Phi\\Chi\\Psi\\Omega$$\"",
+      "range": [
+        149,
+        279
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 140
+        },
+        "end": {
+          "line": 2,
+          "column": 270
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        279,
+        280
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 270
+        },
+        "end": {
+          "line": 2,
+          "column": 271
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    280
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 271
+    }
+  }
+}

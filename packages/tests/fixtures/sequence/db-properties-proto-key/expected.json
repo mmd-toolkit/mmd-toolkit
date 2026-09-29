@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "SequenceDB copies the parsed properties into the actor key by key, so a __proto__ key sets the prototype of the properties object instead of adding a property; the summary records the own properties only."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {
+          "__proto__": {
+            "x": 1
+          },
+          "y": 2
+        },
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

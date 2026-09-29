@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sequenceDiagram.md",
+    "line": 230
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "API",
+        "description": "External Name",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "boundary",
+        "nextActor": "DB"
+      },
+      {
+        "name": "DB",
+        "description": "External DB",
+        "wrap": false,
+        "prevActor": "API",
+        "links": {},
+        "properties": {},
+        "type": "database"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "API",
+        "to": "DB",
+        "message": "Query",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "DB",
+        "to": "API",
+        "message": "Result",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

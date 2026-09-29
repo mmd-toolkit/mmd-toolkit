@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/config/configuration.md",
+    "line": 17
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "Hello Title",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "Hello",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Hello",
+        "props": {}
+      },
+      {
+        "id": "World",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "World",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "Hello",
+        "end": "World",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_Hello_World_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

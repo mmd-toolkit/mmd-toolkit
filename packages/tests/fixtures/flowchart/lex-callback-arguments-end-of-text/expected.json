@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click and callbacks: the text ends in the callback arguments context, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...Aclick A call cb(x\n---------------------^\nExpecting 'SEMI', 'NEWLINE', 'SPACE', 'EOF', got 'CALLBACKARGS'"
+  }
+}

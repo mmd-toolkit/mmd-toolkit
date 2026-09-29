@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 13: minimal accepted example of `pie`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "pie",
+  "db": null
+}

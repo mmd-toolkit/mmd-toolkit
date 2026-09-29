@@ -1,0 +1,120 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/swimlanes.md",
+    "line": 143
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "lead",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Qualify lead",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "quote",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Prepare quote",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "review",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Review terms",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "approve",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Approve quote",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "lead",
+        "end": "quote",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_lead_quote_0"
+      },
+      {
+        "start": "quote",
+        "end": "review",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_quote_review_0"
+      },
+      {
+        "start": "review",
+        "end": "approve",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_review_approve_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "sales",
+        "nodes": [
+          "lead",
+          "quote"
+        ],
+        "title": "Sales team",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "finance",
+        "nodes": [
+          "review",
+          "approve"
+        ],
+        "title": "Finance team",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

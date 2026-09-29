@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The id context, rule 4: an id before `@{` cannot contain `-`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Diagramparticipant A-B@{ \"type\": \"queue...\n----------------------^\nExpecting 'ACTOR', got 'INVALID'"
+  }
+}

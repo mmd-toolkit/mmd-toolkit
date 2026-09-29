@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Configuration (reference) > Init directives: with an init directive the detectors also run on a text in which the final `%% x` is not removed, so no detector matches and the input is rejected. Pair of error-trailing-comment-line."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: \nerror\n%% x"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 2594,
+    "test": "sequence db class > participant type parsing > should parse database participant"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "D",
+        "description": "D",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "database"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "D",
+        "to": "D",
+        "message": "test",
+        "wrap": false,
+        "type": 5,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization, the summary: a style needs at least one unit, so a `,` at the end of the line is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...Astyle A fill:#f00,\n----------------------^\nExpecting 'SPACE', 'COLON', 'STYLE', 'NUM', 'NODE_STRING', 'UNIT', 'BRKT', 'PCT', got 'NEWLINE'"
+  }
+}

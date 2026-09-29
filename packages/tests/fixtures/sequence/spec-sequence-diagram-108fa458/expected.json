@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 2408,
+    "test": "sequence db class > 2 should parse "
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Bob",
+        "description": "Bob",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "actor",
+        "nextActor": "Alice"
+      },
+      {
+        "name": "Alice",
+        "description": "Alice",
+        "wrap": false,
+        "prevActor": "Bob",
+        "links": {},
+        "properties": {},
+        "type": "actor"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "hey?",
+        "wrap": false,
+        "type": 33,
+        "activate": true,
+        "centralConnection": 61
+      },
+      {
+        "from": "Bob",
+        "message": "",
+        "wrap": false,
+        "type": 59,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "message": "",
+        "wrap": false,
+        "type": 60,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

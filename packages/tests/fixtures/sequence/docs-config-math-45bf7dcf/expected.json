@@ -1,0 +1,73 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/config/math.md",
+    "line": 24
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "1",
+        "description": "$$\\alpha$$",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "2"
+      },
+      {
+        "name": "2",
+        "description": "$$\\beta$$",
+        "wrap": false,
+        "prevActor": "1",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": {
+          "visible": true
+        },
+        "wrap": false,
+        "type": 26
+      },
+      {
+        "from": "1",
+        "to": "2",
+        "message": "Solve: $$\\sqrt{2+2}$$",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "2",
+        "to": "1",
+        "message": "Answer: $$2$$",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "2",
+        "to": "2",
+        "message": "$$\\sqrt{2+2}=\\sqrt{4}=2$$",
+        "wrap": false,
+        "type": 2,
+        "placement": 1
+      }
+    ]
+  }
+}

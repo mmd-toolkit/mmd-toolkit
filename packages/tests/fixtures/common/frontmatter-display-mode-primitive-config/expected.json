@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Frontmatter: `displayMode` with `config: 5` is rejected with a TypeError when displayMode is copied into the config."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot create property 'gantt' on number '5'"
+  }
+}

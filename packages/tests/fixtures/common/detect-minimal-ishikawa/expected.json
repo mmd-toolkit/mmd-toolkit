@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 30: minimal accepted example of `ishikawa`. The header line alone is rejected, so the input has one minimal statement."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": null
+}

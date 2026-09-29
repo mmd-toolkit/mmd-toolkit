@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Configuration (reference) > The text configuration: a string `themeVariables` containing a character outside the allowed set rejects the input with a TypeError."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot assign to read only property '1' of string 'a-b'"
+  }
+}

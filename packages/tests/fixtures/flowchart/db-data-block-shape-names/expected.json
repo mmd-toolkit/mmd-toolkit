@@ -1,0 +1,150 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Shapes: each name of a bracketed shape except `ellipse` is a word that mermaid.js accepts in a data block; the vertex type is the word as written."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "N0",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N0",
+        "props": {},
+        "type": "rectangle"
+      },
+      {
+        "id": "N1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N1",
+        "props": {},
+        "type": "rounded"
+      },
+      {
+        "id": "N2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N2",
+        "props": {},
+        "type": "circle"
+      },
+      {
+        "id": "N3",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N3",
+        "props": {},
+        "type": "double-circle"
+      },
+      {
+        "id": "N4",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N4",
+        "props": {},
+        "type": "diamond"
+      },
+      {
+        "id": "N5",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N5",
+        "props": {},
+        "type": "hexagon"
+      },
+      {
+        "id": "N6",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N6",
+        "props": {},
+        "type": "stadium"
+      },
+      {
+        "id": "N7",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N7",
+        "props": {},
+        "type": "framed-rectangle"
+      },
+      {
+        "id": "N8",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N8",
+        "props": {},
+        "type": "cylinder"
+      },
+      {
+        "id": "N9",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N9",
+        "props": {},
+        "type": "odd"
+      },
+      {
+        "id": "N10",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N10",
+        "props": {},
+        "type": "trapezoid-bottom"
+      },
+      {
+        "id": "N11",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N11",
+        "props": {},
+        "type": "lean-right"
+      },
+      {
+        "id": "N12",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N12",
+        "props": {},
+        "type": "trapezoid-top"
+      },
+      {
+        "id": "N13",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "N13",
+        "props": {},
+        "type": "lean-left"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

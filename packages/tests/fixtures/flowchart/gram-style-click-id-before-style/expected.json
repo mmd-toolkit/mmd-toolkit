@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click and callbacks: `fill:red` is a click id after `click`, which only a click statement and a subgraph name accept, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...RABstyle A click fill:red\n--------------------^\nExpecting 'SPACE', 'COLON', 'STYLE', 'NUM', 'NODE_STRING', 'UNIT', 'BRKT', 'PCT', got 'CLICK'"
+  }
+}

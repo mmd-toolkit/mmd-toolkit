@@ -1,0 +1,552 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: nodes >> invalid >>> flowchart/spec-swimlanes-diagram-20540af2
+Filename: flowchart/spec-swimlanes-diagram-20540af2.mmd
+
+Code:
+  1 | swimlane-beta TD
+    | ^~~~~~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~~~~~\ [2]
+  2 |   A --> B
+    | ~~~~~~~~~ [1]
+    | ~~~~~~~~~ [2]
+    |   ^~~~~~~ [3]
+    |   ^ [4] ^ [9]
+    |   ^ [5] ^ [10]
+    |   ^ [6] ^ [11]
+    |     ^~~~~ [7]
+    |     ^~~ [8]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartVertexStatement
+[4] FlowchartVertexGroup
+[5] FlowchartVertex
+[6] Identifier
+[7] FlowchartLink
+[8] FlowchartArrow
+[9] FlowchartVertexGroup
+[10] FlowchartVertex
+[11] Identifier
+---
+
+
+Test: nodes >> invalid >>> common/crlf
+Filename: common/crlf.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | A-->B
+    | ~~~~~\ [1]
+    | ~~~~~ [2]
+    | ^~~~~ [3]
+    | ^ [4]
+    | ^ [5]
+    | ^ [6]
+    |  ^~~~ [7]
+    |  ^~~ [8]
+    |     ^ [9]
+    |     ^ [10]
+    |     ^ [11]
+  3 |
+    | ~ [1]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartVertexStatement
+[4] FlowchartVertexGroup
+[5] FlowchartVertex
+[6] Identifier
+[7] FlowchartLink
+[8] FlowchartArrow
+[9] FlowchartVertexGroup
+[10] FlowchartVertex
+[11] Identifier
+---
+
+
+Test: nodes >> invalid >>> common/detect-minimal-flowchart-elk
+Filename: common/detect-minimal-flowchart-elk.mmd
+
+Code:
+  1 | flowchart-elk
+    | ^~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~ [2]
+
+[1] Root
+[2] FlowchartDiagram
+---
+
+
+Test: nodes >> invalid >>> flowchart/frontmatter-title-crlf
+Filename: flowchart/frontmatter-title-crlf.mmd
+
+Code:
+  1 | ---
+    | ^~~\ [1]
+  2 | title: Windows
+    | ~~~~~~~~~~~~~~\ [1]
+  3 | ---
+    | ~~~\ [1]
+  4 | flowchart LR
+    | ~~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  5 |   A
+    | ~~~\ [1]
+    | ~~~ [2]
+    |   ^ [3]
+    |   ^ [4]
+    |   ^ [5]
+    |   ^ [6]
+  6 |
+    | ~ [1]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartVertexStatement
+[4] FlowchartVertexGroup
+[5] FlowchartVertex
+[6] Identifier
+---
+
+
+Test: nodes >> invalid >>> common/config-directive-in-comment
+Filename: common/config-directive-in-comment.mmd
+
+Code:
+  1 | %% %%{init: {"flowchart": {"inheritDir": true}}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  2 | flowchart LR
+    | ~~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  3 |   subgraph S
+    | ~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~\ [3]
+    |            ^ [4]
+  4 |     A
+    | ~~~~~\ [1]
+    | ~~~~~\ [2]
+    | ~~~~~\ [3]
+    |     ^ [5]
+    |     ^ [6]
+    |     ^ [7]
+    |     ^ [8]
+  5 |   end
+    | ~~~~~\ [1]
+    | ~~~~~ [2]
+    | ~~~~~ [3]
+  6 |
+    | ~ [1]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartSubgraphStatement
+[4] FlowchartLabel
+[5] FlowchartVertexStatement
+[6] FlowchartVertexGroup
+[7] FlowchartVertex
+[8] Identifier
+---
+
+
+Test: nodes >> invalid >>> common/directive-in-label-text
+Filename: common/directive-in-label-text.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | A[x%%{init: {}}%%y]
+    | ~~~~~~~~~~~~~~~~~~~ [1]
+    | ~~~~~~~~~~~~~~~~~~~ [2]
+    | ^~~~~~~~~~~~~~~~~~~ [3]
+    | ^~~~~~~~~~~~~~~~~~~ [4]
+    | ^~~~~~~~~~~~~~~~~~~ [5]
+    | ^ [6]
+    |  ^~~~~~~~~~~~~~~~~~ [7]
+    |   ^~~~~~~~~~~~~~~~ [8]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartVertexStatement
+[4] FlowchartVertexGroup
+[5] FlowchartVertex
+[6] Identifier
+[7] FlowchartShape
+[8] FlowchartLabel
+---
+
+
+Test: nodes >> invalid >>> flowchart/lex-direction-line-percent-after-value
+Filename: flowchart/lex-direction-line-percent-after-value.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | subgraph S
+    | ~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~\ [3]
+    |          ^ [4]
+  3 | direction TB %% vertical
+    | ~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~\ [3]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~ [5]
+    |              ^~~~~~~~~~~ [6]
+  4 | A-->B
+    | ~~~~~\ [1]
+    | ~~~~~\ [2]
+    | ~~~~~\ [3]
+    | ^~~~~ [7]
+    | ^ [8]
+    | ^ [9]
+    | ^ [10]
+    |  ^~~~ [11]
+    |  ^~~ [12]
+    |     ^ [13]
+    |     ^ [14]
+    |     ^ [15]
+  5 | end
+    | ~~~\ [1]
+    | ~~~ [2]
+    | ~~~ [3]
+  6 |
+    | ~ [1]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartSubgraphStatement
+[4] FlowchartLabel
+[5] FlowchartDirectionStatement
+[6] FlowchartIgnoredText
+[7] FlowchartVertexStatement
+[8] FlowchartVertexGroup
+[9] FlowchartVertex
+[10] Identifier
+[11] FlowchartLink
+[12] FlowchartArrow
+[13] FlowchartVertexGroup
+[14] FlowchartVertex
+[15] Identifier
+---
+
+
+Test: nodes >> invalid >>> common/error-trailing-comment-line
+Filename: common/error-trailing-comment-line.mmd
+
+Code:
+  1 | error
+    | ^~~~~\ [1]
+    | ^~~~~ [2]
+  2 | %% x
+    | ~~~~ [1]
+
+[1] Root
+[2] ErrorDiagram
+---
+
+
+Test: nodes >> invalid >>> sequence/lex-hash-comment-after-unit
+Filename: sequence/lex-hash-comment-after-unit.mmd
+
+Code:
+  1 | sequenceDiagram
+    | ^~~~~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~~~~\ [2]
+  2 | autonumber # c
+    | ~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~ [3]
+  3 | A->>B: x
+    | ~~~~~~~~\ [1]
+    | ~~~~~~~~ [2]
+    | ^~~~~~~~ [4]
+    | ^ [5]  ^ [8]
+    |  ^~~ [6]
+    |     ^ [7]
+    |        ^ [9]
+  4 |
+    | ~ [1]
+
+[1] Root
+[2] SequenceDiagram
+[3] SequenceAutonumberStatement
+[4] SequenceMessageStatement
+[5] Identifier
+[6] SequenceArrow
+[7] Identifier
+[8] SequenceText
+[9] SequenceLiteral
+---
+
+
+Test: nodes >> invalid >>> sequence/lex-percent-comment-after-unit
+Filename: sequence/lex-percent-comment-after-unit.mmd
+
+Code:
+  1 | sequenceDiagram
+    | ^~~~~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~~~~\ [2]
+  2 | autonumber %% c
+    | ~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~ [3]
+  3 | A->>B: x
+    | ~~~~~~~~\ [1]
+    | ~~~~~~~~ [2]
+    | ^~~~~~~~ [4]
+    | ^ [5]  ^ [8]
+    |  ^~~ [6]
+    |     ^ [7]
+    |        ^ [9]
+  4 |
+    | ~ [1]
+
+[1] Root
+[2] SequenceDiagram
+[3] SequenceAutonumberStatement
+[4] SequenceMessageStatement
+[5] Identifier
+[6] SequenceArrow
+[7] Identifier
+[8] SequenceText
+[9] SequenceLiteral
+---
+
+
+Test: tokens >> invalid >>> flowchart/spec-swimlanes-diagram-20540af2
+Filename: flowchart/spec-swimlanes-diagram-20540af2.mmd
+
+Code:
+  1 | swimlane-beta TD
+    | ^~~~~~~~~~~~~ ^~
+    | [1]           [2]
+  2 |   A --> B
+    |   ^ [3] ^ [5]
+    |     ^~~ [4]
+
+[1] Keyword "swimlane-beta"
+[2] Keyword "TD"
+[3] Identifier "A"
+[4] Punctuator "-->"
+[5] Identifier "B"
+---
+
+
+Test: tokens >> invalid >>> common/crlf
+Filename: common/crlf.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~ ^~
+    | [1]       [2]
+  2 | A-->B
+    | ^ [3]
+    |  ^~~ [4]
+    |     ^ [5]
+  3 |
+
+[1] Keyword "flowchart"
+[2] Keyword "LR"
+[3] Identifier "A"
+[4] Punctuator "-->"
+[5] Identifier "B"
+---
+
+
+Test: tokens >> invalid >>> common/detect-minimal-flowchart-elk
+Filename: common/detect-minimal-flowchart-elk.mmd
+
+Code:
+  1 | flowchart-elk
+    | ^~~~~~~~~~~~~ [1]
+
+[1] Keyword "flowchart-elk"
+---
+
+
+Test: tokens >> invalid >>> flowchart/frontmatter-title-crlf
+Filename: flowchart/frontmatter-title-crlf.mmd
+
+Code:
+  1 | ---
+    | ^~~ [1]
+  2 | title: Windows
+    | ^~~~~~~~~~~~~~ [2]
+  3 | ---
+    | ^~~ [3]
+  4 | flowchart LR
+    | ^~~~~~~~~ ^~
+    | [4]       [5]
+  5 |   A
+    |   ^ [6]
+  6 |
+
+[1] Punctuator "---"
+[2] RawText "title: Windows"
+[3] Punctuator "---"
+[4] Keyword "flowchart"
+[5] Keyword "LR"
+[6] Identifier "A"
+---
+
+
+Test: tokens >> invalid >>> common/config-directive-in-comment
+Filename: common/config-directive-in-comment.mmd
+
+Code:
+  1 | %% %%{init: {"flowchart": {"inheritDir": true}}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+    | ^~~~~~~~~ ^~
+    | [2]       [3]
+  3 |   subgraph S
+    |   ^~~~~~~~ ^
+    |   [4]      [5]
+  4 |     A
+    |     ^ [6]
+  5 |   end
+    |   ^~~ [7]
+  6 |
+
+[1] Comment " %%{init: {\"flowchart\": {\"inheritDir\": true}}}%%"
+[2] Keyword "flowchart"
+[3] Keyword "LR"
+[4] Keyword "subgraph"
+[5] RawText "S"
+[6] Identifier "A"
+[7] Keyword "end"
+---
+
+
+Test: tokens >> invalid >>> common/directive-in-label-text
+Filename: common/directive-in-label-text.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~ ^~
+    | [1]       [2]
+  2 | A[x%%{init: {}}%%y]
+    | ^ [3]            ^ [7]
+    |  ^ [4]            ^ [8]
+    |   ^ [5]
+    |    ^~~~~~~~~~~~~~ [6]
+
+[1] Keyword "flowchart"
+[2] Keyword "LR"
+[3] Identifier "A"
+[4] Punctuator "["
+[5] RawText "x"
+[6] Directive "%%{init: {}}%%"
+[7] RawText "y"
+[8] Punctuator "]"
+---
+
+
+Test: tokens >> invalid >>> flowchart/lex-direction-line-percent-after-value
+Filename: flowchart/lex-direction-line-percent-after-value.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~ ^~
+    | [1]       [2]
+  2 | subgraph S
+    | ^~~~~~~~ ^
+    | [3]      [4]
+  3 | direction TB %% vertical
+    | ^~~~~~~~~ ^~ ^~~~~~~~~~~
+    | [5]      [6] [7]
+  4 | A-->B
+    | ^ [8]
+    |  ^~~ [9]
+    |     ^ [10]
+  5 | end
+    | ^~~ [11]
+  6 |
+
+[1] Keyword "flowchart"
+[2] Keyword "LR"
+[3] Keyword "subgraph"
+[4] RawText "S"
+[5] Keyword "direction"
+[6] Keyword "TB"
+[7] RawText "%% vertical"
+[8] Identifier "A"
+[9] Punctuator "-->"
+[10] Identifier "B"
+[11] Keyword "end"
+---
+
+
+Test: tokens >> invalid >>> common/error-trailing-comment-line
+Filename: common/error-trailing-comment-line.mmd
+
+Code:
+  1 | error
+    | ^~~~~ [1]
+  2 | %% x
+    | ^~~~ [2]
+
+[1] RawText "error"
+[2] Comment " x"
+---
+
+
+Test: tokens >> invalid >>> sequence/lex-hash-comment-after-unit
+Filename: sequence/lex-hash-comment-after-unit.mmd
+
+Code:
+  1 | sequenceDiagram
+    | ^~~~~~~~~~~~~~~ [1]
+  2 | autonumber # c
+    | ^~~~~~~~~~ ^~~
+    | [2]        [3]
+  3 | A->>B: x
+    | ^ [4]  ^ [8]
+    |  ^~~ [5]
+    |     ^ [6]
+    |      ^ [7]
+  4 |
+
+[1] Keyword "sequenceDiagram"
+[2] Keyword "autonumber"
+[3] Comment " c"
+[4] Identifier "A"
+[5] Punctuator "->>"
+[6] Identifier "B"
+[7] Punctuator ":"
+[8] RawText "x"
+---
+
+
+Test: tokens >> invalid >>> sequence/lex-percent-comment-after-unit
+Filename: sequence/lex-percent-comment-after-unit.mmd
+
+Code:
+  1 | sequenceDiagram
+    | ^~~~~~~~~~~~~~~ [1]
+  2 | autonumber %% c
+    | ^~~~~~~~~~ ^~~~
+    | [2]        [3]
+  3 | A->>B: x
+    | ^ [4]  ^ [8]
+    |  ^~~ [5]
+    |     ^ [6]
+    |      ^ [7]
+  4 |
+
+[1] Keyword "sequenceDiagram"
+[2] Keyword "autonumber"
+[3] Comment " c"
+[4] Identifier "A"
+[5] Punctuator "->>"
+[6] Identifier "B"
+[7] Punctuator ":"
+[8] RawText "x"
+---

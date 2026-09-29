@@ -1,0 +1,126 @@
+# prettier-plugin-mmd
+
+Japanese version: [README.ja.md](./README.ja.md)
+
+A [Prettier](https://prettier.io/) plugin that formats Mermaid diagrams: `.mmd`
+and `.mermaid` files, and `mermaid` code blocks in Markdown.
+
+This is a third-party project, not affiliated with mermaid-js. `mmd` here means
+the Mermaid diagram syntax, not MultiMarkdown or MikuMikuDance.
+
+## Installation
+
+The package is not published to npm yet. Once it is, install it next to
+Prettier 3. It needs Node.js `^20.19.0 || ^22.13.0 || >=24`.
+
+```sh
+npm install --save-dev prettier prettier-plugin-mmd
+```
+
+Then add it to your Prettier configuration. Prettier 3 does not find plugins by
+itself, so this entry is required:
+
+```json
+{
+  "plugins": ["prettier-plugin-mmd"]
+}
+```
+
+Prettier then formats Mermaid files and Markdown files as usual, for example:
+
+```sh
+npx prettier --write "**/*.{mmd,mermaid,md}"
+```
+
+## Example
+
+Input
+([statements-one-per-line/separated-by-semicolons-input.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
+
+```mmd
+flowchart LR
+  A --> B; B --> C; C --> D
+  subgraph S; E; F; end
+```
+
+Output
+([statements-one-per-line/separated-by-semicolons-output.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  B --> C
+  C --> D
+  subgraph S
+    E
+    F
+  end
+```
+
+## What is formatted
+
+- Files ending in `.mmd` or `.mermaid`.
+- Markdown code blocks whose info string starts with `mermaid` or `mmd`. The
+  match is case-sensitive: `Mermaid` is not formatted.
+- Flowcharts: diagrams that start with `flowchart`, `graph`, `flowchart-elk`, or
+  `swimlane-beta`. The formatting rules, with examples, are in
+  [docs/flowchart.md](./docs/flowchart.md).
+- Sequence diagrams: diagrams that start with `sequenceDiagram`. The formatting
+  rules, with examples, are in [docs/sequence.md](./docs/sequence.md).
+- The YAML frontmatter of these diagrams, with Prettier's YAML formatter.
+
+Other diagram types are not formatted yet (see below).
+
+## Options
+
+- `useTabs` and `tabWidth` set the indentation. The default is two spaces.
+- `endOfLine` sets the line endings.
+- `printWidth` has no effect: lines are never wrapped.
+
+## When a diagram is not formatted
+
+- Text that mermaid.js rejects is not changed. In a file, Prettier reports a
+  syntax error and leaves the file as it is. In Markdown, the code block is left
+  to Prettier, which prints it as code it does not format.
+- A few inputs that mermaid.js accepts are reported as syntax errors too. For
+  example, a directive inside a string, as in `A["a %%{init: {}}%% b"]`, and a
+  `click` that does not start a click statement, as in
+  `subgraph Handle click events`: in flowchart, `click` is a reserved word. An
+  empty string between tokens, as in `A-->|x""|B`, is reported too. The full
+  list is in [docs/compatibility.md](./docs/compatibility.md).
+- A diagram type other than flowchart and sequence is not changed, except that
+  line endings follow `endOfLine`. In Markdown, it is left to Prettier.
+
+## Guarantees and limitations
+
+- Formatting does not change the diagram: mermaid.js reads the same diagram
+  before and after.
+- One exception: whitespace at the end of a `style`, `classDef`, or `linkStyle`
+  line is removed. mermaid.js keeps it at the end of the last style.
+- Formatting a formatted diagram again changes nothing.
+- The content of directives, of `@{ ... }` data blocks, and of the frontmatter
+  is not checked. A diagram that mermaid.js rejects because of that content is
+  still formatted. Directives and data blocks are kept as written; the
+  frontmatter is formatted only when Prettier can read it as YAML.
+- A flowchart with more edges than mermaid.js allows, 500 by default (its
+  `maxEdges` site setting), is rejected by mermaid.js but still formatted: the
+  plugin does not know the site settings.
+- A byte order mark before the frontmatter is not handled as mermaid.js handles
+  it. A diagram that mermaid.js accepts may be reported as a syntax error, and
+  one that it rejects may be formatted.
+- In Markdown, Prettier removes whitespace at the end of the last line of every
+  code block. Where mermaid.js reads that whitespace, as in
+  `style A fill:#f00, `, the diagram changes.
+
+The reasons and the details are in
+[docs/compatibility.md](./docs/compatibility.md).
+
+## Documentation
+
+- [docs/flowchart.md](./docs/flowchart.md): the formatting rules for flowcharts.
+- [docs/sequence.md](./docs/sequence.md): the formatting rules for sequence
+  diagrams.
+- [docs/compatibility.md](./docs/compatibility.md): where the plugin differs
+  from mermaid.js, and why.
+- [docs/development.md](./docs/development.md): the tests and the fixtures, for
+  people who work on the plugin.

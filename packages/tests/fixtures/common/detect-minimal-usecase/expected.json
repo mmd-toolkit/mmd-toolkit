@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 39: minimal accepted example of `usecase`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "usecase",
+  "db": null
+}

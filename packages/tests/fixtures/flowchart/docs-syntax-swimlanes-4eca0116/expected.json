@@ -1,0 +1,106 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/swimlanes.md",
+    "line": 233
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "Support escalation",
+    "accDescr": "A request starts with the customer, is triaged by support, and may be escalated to engineering.",
+    "vertices": [
+      {
+        "id": "request",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Open request",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "triage",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Triage",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "resolve",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Resolve",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "request",
+        "end": "triage",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_request_triage_0"
+      },
+      {
+        "start": "triage",
+        "end": "resolve",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_triage_resolve_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "Customer",
+        "nodes": [
+          "request"
+        ],
+        "title": "Customer",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Support",
+        "nodes": [
+          "triage"
+        ],
+        "title": "Support",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Engineering",
+        "nodes": [
+          "resolve"
+        ],
+        "title": "Engineering",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}
