@@ -50,6 +50,7 @@
           "type": "StringLiteral",
           "value": "__proto__",
           "raw": "\"__proto__\"",
+          "closed": true,
           "range": [
             40,
             51

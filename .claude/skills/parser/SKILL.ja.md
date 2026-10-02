@@ -140,6 +140,10 @@ pin した mermaid.js の更新を扱う。
    subgraph の名前の中の `click` のトークンの種類、
    文の文脈の `,` と同じ単位の名前だった、click の文脈の `,`。
 3. 欠落が残っている間は、それに関わらない部分を実装する。
+4. 仕様は作業の間にも変わり、作ったものに関わることもある
+   （class では作業の間に、ノードの 2 つの欄の名前が変わり、1 つがなくなった）。
+   読んだときの文書の写しをリポジトリの外に取っておき、
+   4.8 節の確かめの前に、文書を写しと比べて、変わったところを実装する。
 
 ### 4.3 ノードの型とつなぎ込み
 
@@ -184,6 +188,7 @@ flowchart のファイルが手本になる。
    位置で種類が変わるなら位置による。
    sequence では、文脈が `;` をテキストとして読む所で `RawText` になり、
    字句解析器が単位から答える。
+   class では、その `;` を読み越えた字句解析器の一歩の文脈から答える。
 2. 共通の規則は、`DiagramTextReader` が各位置で適用済み。
    共通の規則とは、ディレクティブ、コメント領域、
    `style` と `classDef` の行の規則、実体参照、行終端子、
@@ -197,7 +202,11 @@ flowchart のファイルが手本になる。
    中間結果として作らない。
    flowchart では、mermaid.js の前処理を層ごとのパスで模した構造を作り、
    作り直した。
-3. 仕様の Lexical structure の文脈ごとに、規則を仕様の順に、
+3. ほかの図種の文書も述べる規則は、実装を 1 つにして両方で使う。
+   flowchart と class の方向の行は、
+   それぞれの値の一覧で `src/direction-line.ts` を使う。
+   2 つ目の図種が必要になったときに最初の図種から移し、書き直さない。
+4. 仕様の Lexical structure の文脈ごとに、規則を仕様の順に、
    規則 1 つにメソッド 1 つで書く
    （flowchart では `readInClickContext`、`readArrow`）。
    JSDoc で節と規則を名指しする。
@@ -205,7 +214,7 @@ flowchart のファイルが手本になる。
    文字は、`src/code-points.ts` の定数と、
    `src/character-classes.ts`、`src/scanning.ts` で比べる。
    正規表現は使わない。
-4. 単位は仕様の名前を持つ。
+5. 単位は仕様の名前を持つ。
    単位は `src/diagram-units.ts` の `readUnit` で作る。
    図種の `Unit` は `DiagramUnit<UnitName>` で、
    図種が要るときだけ自分の欄を足す
@@ -214,29 +223,29 @@ flowchart のファイルが手本になる。
    文法がテキストを別の読み方で読み直さないためである。
    矢印の単位は、矢印の記号と線を持ち、
    flowchart ではさらに線の文字の数を持つ。
-5. 字句解析器が大文字小文字を区別しないとき（sequence ではすべての規則）は、
+6. 字句解析器が大文字小文字を区別しないとき（sequence ではすべての規則）は、
    語を `src/scanning.ts` の `matchWordIgnoringCase` と
    `matchWholeWordIgnoringCase` で比べる。
    これらは Notation に従う。
    小文字にしてから比べることはしない。
-6. 図種の字句解析器が自分のコメントを読むとき
+7. 図種の字句解析器が自分のコメントを読むとき
    （図のコメント。sequence では、行の終わりまでの `#` と `%`）は、
    その範囲と値の始まりを返し、
    入口がそれを `DiagramAnalysis.comments` として `finishDiagram()` に渡す。
    共通の部分が、中のディレクティブとともに `Root.comments` に記録する。
    図のコメントの印は、図種の文書が定める。
-7. テストのヘルパーが同じ単位を読めるように、
+8. テストのヘルパーが同じ単位を読めるように、
    公開しない入口 `lex<図種>(input)` を置く。
    ヘルパーが要るもの（図のテキスト、単位、文脈を出た位置など）を返す
    （flowchart では `lexFlowchart`）。
    sequence の `lexSequence` は、
    `comment-takes-character` の場所を求めるために、
    文の文脈の規則が一致を始める位置も返す。
-8. 1 文字ずつ読む規則がある文脈では、
+9. 1 文字ずつ読む規則がある文脈では、
    実体参照のプレースホルダーを 1 単位として読む
    （common.md の Entities。flowchart では `afterOneCharacter`）。
-9. どの規則も一致しない位置では、その 1 文字を範囲にして `ParseError` を投げる
-   （`docs/error-positions.md`）。
+10. どの規則も一致しない位置では、その 1 文字を範囲にして `ParseError` を投げる
+    （`docs/error-positions.md`）。
 
 ### 4.5 文法
 
@@ -250,9 +259,15 @@ flowchart のファイルが手本になる。
    図種は、生成規則と `knownDivergenceAt()` を足す。
    `knownDivergenceAt()` は、既知の差異が名指す原因を探す。
    flowchart では `space` の単位の後の `click` と空の形、
-   sequence では空の形である。
+   sequence では空の形、
+   class では空の形か、空のジェネリクスの型の後の単位である。
    単位の空白を除いた範囲は、
    `src/diagram-units.ts` の `significantRangeOf` で求める。
+   項目のトークンがどこで切れるかは `breaksRun()` が決める。
+   ほかの項目の単位の間で切れる。
+   空白がどの単位にも属さない図種では、
+   2 つの単位の間に文字があるところでも切れる
+   （class では、内側の空白をトークンに含む `RawText` の項目は除く）。
 2. 文法は、ノード、
    空白だけでない単位それぞれのトークンの種類（`UnitWithKind`）、
    トークン（`PendingToken`）を作る。
@@ -274,6 +289,10 @@ flowchart のファイルが手本になる。
    （`ast.md` の Nodes。`SourceLexer.textOfRange`）。
    何も変換しない。
    `StringLiteral` と `NumericLiteral` は `raw` も持つ。
+   `Identifier` の名前は、そのトークンのテキストをつないだもので、
+   間の空白を含まない。
+   `identifierOf` は、項目の断片を `SourceLexer.piecesOf` から取る。
+   トークンを記録するときの断片と同じものである。
 5. 仕様が文法の外の拒否（Db を作るときの拒否）を挙げていれば、
    それもパーサーが行う。
    flowchart では、`hasOwnProperty` の後に続く subgraph のメンバーを、
@@ -346,6 +365,12 @@ flowchart のテストが手本になる。
    それぞれの境界に、空白、ディレクティブ、コメント行、`click` を置き、
    mermaid.js と比べ（3 節）、入力をテストに入れる
    （flowchart では `tests/differential/flowchart-source-reading.test.ts`）。
+   入力は生成する。
+   それぞれを、文の各位置に置く
+   （class では `tests/differential/class-source-reading.test.ts`）。
+   Db が境界で読む文字は、ソースからでなく変換した形で読む。
+   class では、ヘルパーが可視性の印の後の文字をソースから読んでいた。
+   印の後に置いたディレクティブ（mermaid.js は除く）が、それを示した。
 4. 第 3 層は `tests/helpers/check-tree.ts`。
    共通の不変条件はすでにある。
    `ast/<図種>.md` が木について述べること
@@ -456,6 +481,7 @@ pnpm run format:check
 MMD_DIFFERENTIAL_COUNT=5000 CI=true npx vitest run tests/differential/common-mermaid.test.ts
 MMD_MUTANTS_PER_FIXTURE=20 CI=true npx vitest run tests/differential/flowchart-mermaid.test.ts
 MMD_COMMENT_INPUTS=1000000 MMD_MUTANTS_PER_FIXTURE=20 CI=true npx vitest run tests/differential/sequence-mermaid.test.ts
+MMD_COMMENT_INPUTS=1000000 MMD_MUTANTS_PER_FIXTURE=20 CI=true npx vitest run tests/differential/class-mermaid.test.ts
 ```
 
 各確かめの時間の上限は、入力の数とともに増える
@@ -504,7 +530,8 @@ Langium の文法定義に合わせて変わる見込み。
   4.8 節で確かめ、4.10 節の形で結果を示す。
 - ほかの作業の途中で仕様の欠落が見つかった:
   先に仕様を直し（4.2 節の手順 2）、それから上を行う。
-- 既知の差異が足された（known-divergences.md）:
+- 既知の差異が足された
+  （文書は `known-divergences/<識別子>.md`。known-divergences.md が一覧）:
   パーサーは差異を区別しないので、テストが区別する。
   `tests/fixtures.test.ts` の検査にその分岐を足し、
   参照の読み方を、仕様の定義のとおりに書いて、
@@ -512,7 +539,7 @@ Langium の文法定義に合わせて変わる見込み。
   参照の読み方は、`tests/helpers/reference-inputs.ts` の参照入力か、
   字句解析器からその差異を除いた mermaid.js である。
   後者は、`comment-takes-character` と同じく、
-  `@mmd-toolkit/tests/mermaid` の `withoutDivergence` で、
+  `@mmd-toolkit/tests/mermaid` の `withoutDivergences` で、
   tests パッケージが用意するので、頼む。
   `tests/differential/mermaid-comparison.ts` と差分テストに、
   その申告と、申告した違いの確かめを、空振りを防ぐ検査とともに足す。
@@ -545,8 +572,8 @@ Langium の文法定義に合わせて変わる見込み。
    `tests/types.test.ts` の `allDiagramTypes`、`tests/detection.test.ts`、
    `tests/differential/common-inputs.ts` の見出しを直す。
 4. 仕様の一覧を写した表が、仕様と一致するかを確かめる。
-   flowchart では、
-   `src/diagrams/flowchart/unicode-letters.ts` の文字の範囲である。
+   flowchart と class では、
+   両者が共有する `src/unicode-letters.ts` の文字の範囲である。
 5. 4.7 節の手順 4 で木の違いを分類し、4.8 節で確かめる。
 6. 結果として、直したもの、木の違いの種類ごとの数、残る不一致を示す。
 

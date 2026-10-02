@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 1429,
+    "test": "given a class diagram with generics,  > when parsing valid generic classes > should handle generic class with brackets"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Dummy_Class",
+        "type": "T",
+        "label": "Dummy_Class",
+        "text": "Dummy_Class&lt;T&gt;",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "void methods",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "String data"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "Flight",
+        "type": "",
+        "label": "Flight",
+        "text": "Flight",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "Integer flightNumber"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "Date departureTime"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

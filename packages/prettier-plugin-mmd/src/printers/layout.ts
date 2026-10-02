@@ -101,6 +101,25 @@ function toAtom(token: Token): Atom {
   return { start: token.range[0], end: token.range[1] }
 }
 
+/**
+ * Whether the text of a statement from `start` to `end` lies on several
+ * lines and holds a comment or a directive. Where the lexer reads the line
+ * breaks inside a statement as whitespace, a printer joins the lines of the
+ * statement; such a statement cannot be joined, since a comment would take
+ * the rest of the line, and it is kept as written (docs/sequence.md and
+ * docs/class.md, Multi-line statements).
+ */
+export function spansLinesWithTrivia(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  return (
+    source.text.slice(start, end).includes("\n") &&
+    findTriviaBetween(source, start, end).length > 0
+  )
+}
+
 /** Fails when a token that the tree implies is missing. */
 export function expectToken(token: Token | undefined, what: string): Token {
   if (token === undefined) {

@@ -29,9 +29,7 @@ block, such as `loop`, sets the title of the whole diagram and is counted too.
 
 A `title` statement also replaces the title of the frontmatter without an error:
 with `title: From frontmatter` in the frontmatter, `title From statement` gives
-the title `From statement`. The rule does not report this, because it would have
-to read the YAML of the frontmatter, which the parser keeps as written; whether
-it should is an open question.
+the title `From statement`. The rule does not report this.
 
 Examples of **incorrect** code for this rule:
 
@@ -66,27 +64,3 @@ This rule has no options.
 
 - [flowchart/no-duplicate-title](../flowchart/no-duplicate-title.md)
 - [no-duplicate-description](./no-duplicate-description.md)
-
-## Implementation Notes
-
-The rule is not implemented yet. These notes are for implementing it.
-
-### How the tree shows it
-
-A `SequenceTitleStatement` when another `SequenceTitleStatement` comes before it
-in the source, and a `SequenceAccTitleStatement`, also one whose `value` is
-null, when another `SequenceAccTitleStatement` comes before it. The statements
-are taken from the `body` of the `SequenceDiagram` and of every block and
-section in it, in the order of their ranges; the rule reports each one after the
-first of its type.
-
-### Fixtures
-
-The behavior of mermaid.js that the rule relies on is recorded in these fixtures
-of `@mmd-toolkit/tests`:
-
-- `sequence/db-title-replaces`
-- `sequence/db-acc-title-replaces`
-- `sequence/db-title-and-acc-title`
-- `sequence/db-title-replaces-frontmatter`
-- `sequence/db-title-legacy`

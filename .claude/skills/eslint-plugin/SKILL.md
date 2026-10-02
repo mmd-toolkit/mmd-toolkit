@@ -59,9 +59,11 @@ back to the decision about the rule.
 ## 3. The form of a document
 
 The form follows the rule documents of ESLint (a one-line description, Rule
-Details with examples of incorrect and correct code, Options, Related Rules),
-with one section of this project at the end for implementing the rule. The
-English document:
+Details with examples of incorrect and correct code, Options, Related Rules). A
+rule document is for the users of the rule: it says what the rule reports and
+how mermaid.js reads the text that it reports. What implementing the rule needs
+(the condition on the tree and the fixtures) is in a second document, the rule
+notes, until the rule is implemented. The English rule document:
 
     # mmd/<diagram>/<name>
 
@@ -101,22 +103,30 @@ English document:
 
     - [<name>](./<name>.md)
 
-    ## Implementation Notes
+The English rule notes, `docs/rule-notes/<diagram>/<name>.md` (the same path as
+the rule document, under `docs/rule-notes/`):
+
+    # mmd/<diagram>/<name>
+
+    Japanese version: [<name>.ja.md](./<name>.ja.md)
+
+    Notes for implementing the rule [mmd/<diagram>/<name>](../../rules/<diagram>/<name>.md).
 
     The rule is not implemented yet. These notes are for implementing it.
 
-    ### How the tree shows it
+    ## How the tree shows it
 
-    ### Fixtures
+    ## Fixtures
 
 The Japanese document has the same parts: `英語版: [<name>.md](./<name>.md)`,
 `…を禁止する。`, `## 規則の詳細`, `### 図種ごとの現れ方`,
 `この規則に**反する**コードの例:`, `この規則に**従う**コードの例:`,
-`## オプション` with `この規則にはオプションがない。`, `## 関連する規則`,
-`## 実装のための覚え書き` with `この規則はまだ実装していない。` and
-`ここには、実装するときに要ることを書く。`, `### 木での現れ方`, and
-`### fixture`. Its links to other rule documents point to their Japanese
-documents (`.ja.md`).
+`## オプション` with `この規則にはオプションがない。`, and `## 関連する規則`.
+The Japanese rule notes have `英語版: [<name>.md](./<name>.md)`,
+`規則 [mmd/<diagram>/<name>](…) を実装するための覚え書き。`,
+`この規則はまだ実装していない。` and `ここには、実装するときに要ることを書く。`,
+`## 木での現れ方`, and `## fixture`. Links from a Japanese document to another
+document point to its Japanese version (`.ja.md`).
 
 How each part is written:
 
@@ -166,33 +176,38 @@ How each part is written:
 - Related Rules: only when the document has related rules, as a list of links.
 - When Not To Use It: written only when there is something real to say; no
   section is written for a sentence that would fit any rule.
-- Implementation Notes: it starts with "The rule is not implemented yet. These
-  notes are for implementing it." The section exists only until the rule is
-  implemented: then the condition lives in the code of the rule and the fixtures
-  in its tests, so remove the whole section and put in its place a section that
-  links to the source and the tests of the rule, as the Resources section of an
-  ESLint rule document does: `## Resources` with the items
+- The rule document describes what the author writes and how mermaid.js reads
+  it. It names no node type, field, or token kind of the tree; those belong to
+  the rule notes. The facts of mermaid.js, links to issues and pull requests,
+  and links to the known divergences of the specification stay in the rule
+  document, because a user needs them too.
+- Rule notes: they start with "The rule is not implemented yet. These notes are
+  for implementing it." They exist only until the rule is implemented: then the
+  condition lives in the code of the rule and the fixtures in its tests, so
+  delete the rule notes (both languages), and add to the rule document a section
+  that links to the source and the tests of the rule, as the Resources section
+  of an ESLint rule document does: `## Resources` with the items
   `[Rule source](../../src/rules/<name>.ts)` and
   `[Tests source](../../tests/rules/<name>.test.ts)` (one more `../` for a rule
   of a diagram type). The fixtures of the examples are then the ones that the
   test uses. Update the sentence at the start of the index that says which rules
   are implemented.
-- How the tree shows it: the condition, in node types, fields, token kinds and
-  values, and ranges. A common rule uses only the part of the tree that every
-  diagram type shares (Root, its tokens, comments, and directives, and the
-  shared leaf nodes); where a diagram type must supply more, the section says
-  what, and In each diagram type gives it. Whatever goes beyond the tree and the
-  tokens is named as such, with the design question it raises: reading the
-  source (whitespace is not in the tree), interpreting a value (HTML in a
-  label), reading embedded data (the argument of a directive), repeating a
+- How the tree shows it (in the rule notes): the condition, in node types,
+  fields, token kinds and values, and ranges. A common rule uses only the part
+  of the tree that every diagram type shares (Root, its tokens, comments, and
+  directives, and the shared leaf nodes); where a diagram type must supply more,
+  the section says what, and In each diagram type gives it. Whatever goes beyond
+  the tree and the tokens is named as such, with the design question it raises:
+  reading the source (whitespace is not in the tree), interpreting a value (HTML
+  in a label), reading embedded data (the argument of a directive), repeating a
   derivation of the Db (the id of a subgraph). When the tree and the tokens
   cannot show it at all, do not describe a way to lex the text again: either the
   tree needs to show more, which is a change of the specification of the tree
   (the spec skill), or the rule is not kept (the rule-ideas skill).
-- Fixtures: "The behavior of mermaid.js that the rule relies on is recorded in
-  these fixtures of `@mmd-toolkit/tests`:", followed by the fixtures that back
-  the claims and the examples. While some have no fixture yet, it ends with
-  "Fixtures for the other examples are being added."
+- Fixtures (in the rule notes): "The behavior of mermaid.js that the rule relies
+  on is recorded in these fixtures of `@mmd-toolkit/tests`:", followed by the
+  fixtures that back the claims and the examples. While some have no fixture
+  yet, it ends with "Fixtures for the other examples are being added."
   (`ほかの例の fixture は追加中である。`).
 
 ## 4. Checking, before and after writing
@@ -245,9 +260,9 @@ write its output to a file.
    take the smallest input that shows it, add it with the generator of
    `@mmd-toolkit/tests` (`pnpm run fixtures:add` in `packages/tests`, as
    `packages/tests/docs/maintaining-fixtures.md` describes), read the
-   `expected.json` it writes, and list the new fixture in the document. Until it
-   exists, the document ends its Fixtures section with the sentence for fixtures
-   being added.
+   `expected.json` it writes, and list the new fixture in the rule notes. Until
+   it exists, the rule notes end their Fixtures section with the sentence for
+   fixtures being added.
 
 ## 5. Checks after writing
 
@@ -320,6 +335,9 @@ skeleton that reports nothing.
 - When a document moves, its rule is renamed (section 6): change the sentence of
   Rule Details that names the diagram types and its relative links, and run
   `update`, which writes its title and its row in the index.
+- The rule notes move and are removed with their rule document; change the link
+  to the rule document in them. `update` and `check:docs` read `docs/rules/`
+  only and do not touch the rule notes.
 
 ## 9. The result of the work
 

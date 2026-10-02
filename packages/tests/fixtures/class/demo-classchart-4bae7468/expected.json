@@ -1,0 +1,84 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/classchart.html",
+    "line": 245
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Class1",
+        "type": "",
+        "label": "Class1",
+        "text": "Class1",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "ns"
+      },
+      {
+        "id": "Class2",
+        "type": "",
+        "label": "Class2",
+        "text": "Class2",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "ns"
+      }
+    ],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "This is a outer note"
+      },
+      {
+        "id": "note1",
+        "class": "Class1",
+        "text": "This is a outer note for Class1"
+      },
+      {
+        "id": "note2",
+        "text": "This is a inner note",
+        "parent": "ns"
+      },
+      {
+        "id": "note3",
+        "class": "Class1",
+        "text": "This is a inner note for Class1",
+        "parent": "ns"
+      }
+    ],
+    "namespaces": [
+      {
+        "id": "ns",
+        "label": "ns",
+        "classes": [
+          "Class1",
+          "Class2"
+        ],
+        "notes": [
+          "note2",
+          "note3"
+        ],
+        "children": [],
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

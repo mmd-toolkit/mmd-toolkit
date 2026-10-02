@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs"
+import { readdirSync } from "node:fs"
 import { describe, expect, expectTypeOf, it } from "vitest"
 import { KNOWN_DIVERGENCES } from "@mmd-toolkit/tests"
 import type {
@@ -14,6 +14,7 @@ import type {
   StringLiteral,
   Token,
 } from "../src/ast.ts"
+import type { ClassDiagram, ClassNode } from "../src/ast/class.ts"
 import type { FlowchartDiagram, FlowchartNode } from "../src/ast/flowchart.ts"
 import type { SequenceDiagram, SequenceNode } from "../src/ast/sequence.ts"
 import { ParseError } from "../src/errors.ts"
@@ -31,9 +32,10 @@ describe("the types of ast.md", () => {
       | "NumericLiteral"
       | FlowchartNode["type"]
       | SequenceNode["type"]
+      | ClassNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
-      ErrorDiagram | FlowchartDiagram | SequenceDiagram
+      ErrorDiagram | FlowchartDiagram | SequenceDiagram | ClassDiagram
     >()
   })
 
@@ -64,7 +66,7 @@ describe("the types of ast.md", () => {
       "type" | "name" | "range" | "loc"
     >()
     expectTypeOf<keyof StringLiteral>().toEqualTypeOf<
-      "type" | "value" | "raw" | "range" | "loc"
+      "type" | "value" | "raw" | "closed" | "range" | "loc"
     >()
     expectTypeOf<keyof NumericLiteral>().toEqualTypeOf<
       "type" | "value" | "raw" | "range" | "loc"
@@ -168,23 +170,20 @@ describe("the list of diagram types", () => {
 })
 
 /**
- * known-divergences.md: the identifiers of the known divergences that the
- * document defines, one second-level heading each, written as the
- * identifier in backticks.
+ * known-divergences/: the identifiers of the known divergences that the
+ * specification defines, one document `<identifier>.md` each, next to its
+ * Japanese version `<identifier>.ja.md`.
  */
 function definedDivergences(): string[] {
-  const text = readFileSync(
-    new URL("../../spec/docs/known-divergences.md", import.meta.url),
-    "utf8",
+  return readdirSync(
+    new URL("../../spec/docs/known-divergences/", import.meta.url),
   )
-  return text
-    .split("\n")
-    .filter((line) => line.startsWith("## `") && line.endsWith("`"))
-    .map((line) => line.slice("## `".length, -1))
+    .filter((name) => name.endsWith(".md") && !name.endsWith(".ja.md"))
+    .map((name) => name.slice(0, -".md".length))
 }
 
 describe("known divergences", () => {
-  it("are those of known-divergences.md, as @mmd-toolkit/tests lists them", () => {
+  it("are those that known-divergences/ defines, as @mmd-toolkit/tests lists them", () => {
     expect([...KNOWN_DIVERGENCES].sort()).toEqual(definedDivergences().sort())
   })
 

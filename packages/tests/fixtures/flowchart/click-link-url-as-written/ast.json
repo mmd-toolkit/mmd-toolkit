@@ -31,7 +31,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 15,
@@ -116,7 +116,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     21,
@@ -206,6 +206,7 @@
           "type": "StringLiteral",
           "value": "javascript:alert(1)",
           "raw": "\"javascript:alert(1)\"",
+          "closed": true,
           "range": [
             33,
             54
@@ -264,6 +265,7 @@
           "type": "StringLiteral",
           "value": "https://example.com",
           "raw": "\"https://example.com\"",
+          "closed": true,
           "range": [
             70,
             91

@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/classDiagram.md",
+    "line": 634
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "MyClass",
+        "type": "",
+        "label": "MyClass",
+        "text": "MyClass",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "This is a general note"
+      },
+      {
+        "id": "note1",
+        "class": "MyClass",
+        "text": "This is a note for a class"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

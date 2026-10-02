@@ -6,6 +6,7 @@
 import { visitorKeys } from "@mmd-toolkit/parser"
 import { describe, expect, it } from "vitest"
 import { valueNodeTypes } from "../src/printers/flowchart-layout.ts"
+import { classValueNodeTypes } from "../src/printers/class-layout.ts"
 import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
 
 /** The leaf node types that every diagram type shares (ast.md, Shared leaf nodes). */
@@ -46,6 +47,16 @@ const diagrams: readonly DiagramValues[] = [
     notValues: new Set([
       // An arrow, whose range is the range of one token, printed as the token.
       "SequenceArrow",
+    ]),
+  },
+  {
+    prefix: "Class",
+    values: classValueNodeTypes,
+    notValues: new Set([
+      // A class name of several name parts, printed as its tokens.
+      "Identifier",
+      // An arrow, printed as its tokens, which touch.
+      "ClassArrow",
     ]),
   },
 ]

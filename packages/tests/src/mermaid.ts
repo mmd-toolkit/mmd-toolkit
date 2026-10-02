@@ -28,16 +28,23 @@ import path from "node:path"
 import { pathToFileURL } from "node:url"
 import yaml from "js-yaml"
 import mermaid from "mermaid"
-import type { DivergenceRemoval, LexerRewrite } from "./divergence-removals.ts"
+import type {
+  DivergenceRemoval,
+  JisonLexer,
+  LexerRewrite,
+} from "./divergence-removals.ts"
 import {
   allRemovals,
   findRewrites,
+  overlapOf,
   withRewrites,
 } from "./divergence-removals.ts"
 import { dataBlockEffectsOf } from "./normalizers/data-blocks.ts"
 import { getDbPatches, normalizeDb } from "./normalizers/index.ts"
 import { toJsonObject } from "./normalizers/json.ts"
 import { errorName, isEnvironmentFailure } from "./rejections.ts"
+import type { RunMermaidOptions } from "./run-mermaid-options.ts"
+import { checkRunMermaidOptions } from "./run-mermaid-options.ts"
 import type {
   DataBlockEffect,
   DbSummary,
@@ -59,20 +66,7 @@ export { cssSupportsColor } from "./normalizers/browser-stand-ins.ts"
 
 export type { DivergenceRemoval } from "./divergence-removals.ts"
 
-export interface RunMermaidOptions {
-  /**
-   * Site configuration passed to `mermaid.initialize()`, as a host page would.
-   * Secure keys such as `securityLevel` and `maxEdges` can only be set here.
-   */
-  readonly config?: MermaidConfig
-  /**
-   * Runs mermaid.js with its lexer changed so that this known divergence does
-   * not arise, for this call only (see docs/expected-results.md). The input
-   * may be of any diagram type; only the lexer of the diagram type the
-   * divergence belongs to changes.
-   */
-  readonly withoutDivergence?: DivergenceRemoval
-}
+export type { RunMermaidOptions } from "./run-mermaid-options.ts"
 
 export type MermaidOutcome =
   | {
@@ -115,8 +109,7 @@ export const mermaidVersion: string = (
 let ready: Promise<void> | undefined
 
 /** The lexer rules to replace for each divergence removal, found at setup. */
-const removalRewrites: Map<DivergenceRemoval, readonly LexerRewrite[]> =
-  new Map()
+const removalRewrites: Map<DivergenceRemoval, LexerRewrite> = new Map()
 let queue: Promise<unknown> = Promise.resolve()
 
 /**
@@ -214,6 +207,7 @@ export function detectDiagramType(
   options: RunMermaidOptions = {},
 ): Promise<string | undefined> {
   return enqueue(() => {
+    checkRunMermaidOptions(options)
     initialize(options)
     try {
       return Promise.resolve(
@@ -260,14 +254,23 @@ async function runExclusive(
   text: string,
   options: RunMermaidOptions,
 ): Promise<MermaidRun> {
-  if (options.withoutDivergence === undefined) return runAsIs(text, options)
-  const rewrites = removalRewrites.get(options.withoutDivergence)
-  if (!rewrites) {
-    throw new MermaidEnvironmentError(
-      `no lexer rules were found for ${options.withoutDivergence}`,
-    )
-  }
-  return withRewrites(rewrites, () => runAsIs(text, options))
+  checkRunMermaidOptions(options)
+  const names = [...new Set(options.withoutDivergences ?? [])]
+  if (names.length === 0) return runAsIs(text, options)
+  const rewrites = names.map((name) => {
+    const rewrite = removalRewrites.get(name)
+    if (!rewrite) {
+      throw new MermaidEnvironmentError(`no lexer rules were found for ${name}`)
+    }
+    return [name, rewrite] as const
+  })
+  const overlap = overlapOf(rewrites)
+  if (overlap !== undefined) throw new Error(overlap)
+  const { result, problem } = await withRewrites(rewrites, () =>
+    runAsIs(text, options),
+  )
+  if (problem !== undefined) throw new MermaidEnvironmentError(problem)
+  return result
 }
 
 /**
@@ -321,6 +324,32 @@ async function diagramFromText(
 }
 
 /**
+ * Parses a sample text, which must be accepted and detected as
+ * `diagramType`, to reach that diagram type's parser and Db before any input.
+ */
+async function diagramOfSample(
+  sampleText: string,
+  diagramType: string,
+): Promise<Awaited<ReturnType<typeof mermaid.mermaidAPI.getDiagramFromText>>> {
+  initialize({})
+  let diagram: Awaited<ReturnType<typeof mermaid.mermaidAPI.getDiagramFromText>>
+  try {
+    diagram = await mermaid.mermaidAPI.getDiagramFromText(sampleText)
+  } catch (error) {
+    throw new MermaidEnvironmentError(
+      `mermaid rejects the sample text of ${diagramType}: ${JSON.stringify(sampleText)}`,
+      { cause: error },
+    )
+  }
+  if (diagram.type !== diagramType) {
+    throw new MermaidEnvironmentError(
+      `the sample text of ${diagramType} is detected as ${diagram.type}`,
+    )
+  }
+  return diagram
+}
+
+/**
  * Applies every Db patch (see `getDbPatches`) to its Db class, before any
  * input is parsed: a patch can supply a browser function the Db calls while
  * parsing, so an input parsed by an unpatched Db could fail. Ids that share a
@@ -329,13 +358,7 @@ async function diagramFromText(
 async function patchDbClasses(): Promise<void> {
   const patched = new Set<object>()
   for (const [diagramType, { sampleText, patch }] of getDbPatches()) {
-    initialize({})
-    const diagram = await mermaid.mermaidAPI.getDiagramFromText(sampleText)
-    if (diagram.type !== diagramType) {
-      throw new MermaidEnvironmentError(
-        `the sample text of the ${diagramType} Db patch is detected as ${diagram.type}`,
-      )
-    }
+    const diagram = await diagramOfSample(sampleText, diagramType)
     const prototype: unknown = Object.getPrototypeOf(diagram.db)
     if (typeof prototype !== "object" || prototype === null) {
       throw new MermaidEnvironmentError(
@@ -356,22 +379,24 @@ async function patchDbClasses(): Promise<void> {
  */
 async function findRemovalRewrites(): Promise<void> {
   for (const [name, removal] of allRemovals()) {
-    initialize({})
-    const diagram = await mermaid.mermaidAPI.getDiagramFromText(
+    const diagram = await diagramOfSample(
       removal.sampleText,
+      removal.diagramType,
     )
-    if (diagram.type !== removal.diagramType) {
-      throw new MermaidEnvironmentError(
-        `the sample text of ${name} is detected as ${diagram.type}`,
-      )
+    const { lexer } = diagram.parser as {
+      lexer?: { rules?: unknown; conditions?: unknown; setInput?: unknown }
     }
-    const { lexer } = diagram.parser as { lexer?: { rules?: unknown } }
-    if (!Array.isArray(lexer?.rules)) {
+    if (
+      !Array.isArray(lexer?.rules) ||
+      typeof lexer.conditions !== "object" ||
+      lexer.conditions === null ||
+      typeof lexer.setInput !== "function"
+    ) {
       throw new MermaidEnvironmentError(
         `the ${removal.diagramType} parser has no jison lexer`,
       )
     }
-    const rewrites = findRewrites(lexer.rules as RegExp[], removal)
+    const rewrites = findRewrites(lexer as JisonLexer, removal)
     if (typeof rewrites === "string") {
       throw new MermaidEnvironmentError(`${name}: ${rewrites}`)
     }

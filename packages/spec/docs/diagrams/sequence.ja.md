@@ -147,6 +147,12 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   [fixture: sequence/lex-directive-in-text] [fixture:
   sequence/lex-directive-in-id-run] [fixture:
   sequence/lex-directive-in-participant-id]
+  ディレクティブの隣の空白は、1 つの単位である id に残ります
+  （[Identifier](../ast.ja.md#identifier) を参照）。
+  `participant A%%{init: {}}%% c%%B` の参加者は `A c%%B`、
+  `Al%%{init: {}}%% c%%ice->>B: x` の参加者は `Al c%%ice` です。
+  [fixture: sequence/lex-directive-in-id-before-space] [fixture:
+  sequence/lex-directive-in-id-run-before-space]
 - `parti%%{init: {}}%%cipant A`、`A-%%{init: {}}%%>>B: x`、
   `autonumber 1%%{init: {}}%%0` では、
   ディレクティブがキーワード、矢印、数の中にあり、入力は拒否されます。
@@ -518,6 +524,7 @@ sequence/db-box-wrap-without-colour]
 | `"links"`、`"link"`、`"properties"`、`"details"` の文                             | SequenceLinksStatement、SequenceLinkStatement、SequencePropertiesStatement、SequenceDetailsStatement                                     |
 | `title-statement`                                                                 | SequenceTitleStatement                                                                                                                   |
 | `accessibility-statement`                                                         | SequenceAccTitleStatement、SequenceAccDescrStatement、SequenceAccDescrBlockStatement のどれか                                            |
+| `box-statement` の `"accDescr" "{" "}"`                                           | SequenceAccDescrBlockStatement                                                                                                           |
 | `loop`、`rect`、`opt`、`break` の `block-statement`                               | SequenceLoopStatement、SequenceRectStatement、SequenceOptStatement、SequenceBreakStatement                                               |
 | `alt`、`par`、`par_over`、`critical` の `block-statement`                         | SequenceAltStatement、SequenceParStatement、SequenceParOverStatement、SequenceCriticalStatement。各 `text-part line*` に SequenceSection |
 | `text-part`                                                                       | SequenceText。どちらの単位もなければ何も作らない                                                                                         |
@@ -568,7 +575,7 @@ sequence/db-wrapped-message-closed]
 participant-statement = ( "participant" | "actor" ) id data-block? ( "as" text-part )? newline
                       | "destroy" id newline
 data-block            = "@{" data-text? "}"
-box-statement         = "box" box-text? ( participant-statement | newline )* "end"
+box-statement         = "box" box-text? ( participant-statement | "accDescr" "{" "}" | newline )* "end"
 box-text              = color-candidate text? | text
 ```
 
@@ -580,9 +587,21 @@ box-text              = color-candidate text? | text
 A を作られた参加者として加え、何も destroy しません
 （[木から要約を作る](#木から要約を作る) を参照）。
 [fixture: sequence/gram-create-destroy]
-箱が持てるのは、参加者の文と空の行だけで、`create` もメッセージも置けません。
+箱が持てるのは、参加者の文、空の説明ブロック、空の行だけで、
+`create` もメッセージも置けません。
 [fixture: sequence/gram-box-create-participant] [fixture:
 sequence/gram-box-message-inside]
+箱の中の空の説明ブロックは、ほかの文が始まる位置と同じく、
+テキストのない説明のブロックの文です。
+それだけの行にあっても、括弧の間が空白だけで何行かにわたっても、
+同じ行に参加者の文や `end` が続いてもよく、何も変えません。
+[fixture: sequence/gram-box-empty-description-block-line] [fixture:
+sequence/gram-box-empty-description-block-lines] [fixture:
+sequence/gram-box-empty-description-block-then-participant] [fixture:
+sequence/gram-box-empty-description-block-before-end]
+テキストのある説明のブロックと説明の文は箱の文ではなく、どちらも拒否します。
+[fixture: sequence/gram-box-description-block-with-text] [fixture:
+sequence/gram-box-description-line]
 
 ### メッセージ
 
@@ -836,7 +855,7 @@ JSON でないテキストは何も変えず、入力は受理されます。
 Db を求める側は、その JSON を、木のテキストから、変換後の形で読みます。
 変換後の形では、エンティティはプレースホルダです。
 この JSON は、
-[`embedded-data-opaque`](../known-divergences.ja.md#embedded-data-opaque)
+[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)
 の意味での埋め込みデータではありません。
 mermaid.js はそれを理由に入力を拒否することがなく、
 木はそれをほかのテキストと同じく保つからです。
@@ -1080,7 +1099,7 @@ mermaid.js は、箱のテキストを色の候補と残りに分け、
 [known-divergences.ja.md](../known-divergences.ja.md) の差のうち、
 次のものが sequence に当てはまり、次のように現れます。
 
-- **[`directive-as-token-boundary`](../known-divergences.ja.md#directive-as-token-boundary)。**
+- **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md)。**
   キーワード、矢印、数、句読点の中のディレクティブは、
   ここでは入力を拒否させます。
   mermaid.js はそれを受理します。
@@ -1089,13 +1108,13 @@ mermaid.js は、箱のテキストを色の候補と残りに分け、
   （[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。
   [fixture: sequence/div-directive-in-keyword] [fixture:
   sequence/div-directive-in-arrow] [fixture: sequence/div-directive-in-number]
-- **[`embedded-data-opaque`](../known-divergences.ja.md#embedded-data-opaque)。**
+- **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)。**
   参加者のデータブロックの中身は読みません。
   mermaid.js はそれを YAML として読み、正しい YAML でない中身を拒否しますが、
   ここでは受理します。
   [fixture: sequence/spec-sequence-diagram-b8d593b1] [fixture:
   sequence/spec-sequence-diagram-335c8c00]
-- **[`html-tag-in-frontmatter`](../known-divergences.ja.md#html-tag-in-frontmatter)。**
+- **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   フロントマターに `title: <a` があると、
   `A-xB: b="c">d` のメッセージは、
   mermaid.js では `b='c'>d`、ここでは `b="c">d` です。
@@ -1104,16 +1123,17 @@ mermaid.js は、箱のテキストを色の候補と残りに分け、
   mermaid.js ではその `>` がタグを終え、両方が `b="c">d` を与えます。
   [fixture: sequence/div-html-tag-starts-in-frontmatter-message] [fixture:
   sequence/lex-html-tag-frontmatter-arrow-ends-tag]
-- **[`tokenless-empty-forms`](../known-divergences.ja.md#tokenless-empty-forms)。**
+- **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
   文を始めない空の説明ブロックは、ここでは入力を拒否させます。
   mermaid.js はそれにトークンを読まず、入力を受理します。
   `A->>accDescr {}B: x` と `note left of accDescr {} A: x` がそうです。
-  文が始まる位置の空の説明ブロックは、テキストのない説明のブロックの文で、
-  何も変えません。
-  [fixture: sequence/gram-empty-description-block-after-arrow] [fixture:
+  文が始まる位置の空の説明ブロックは、箱の中でも、
+  テキストのない説明のブロックの文で、何も変えません。
+  [fixture: sequence/gram-box-empty-description-block-line] [fixture:
+  sequence/gram-empty-description-block-after-arrow] [fixture:
   sequence/gram-empty-description-block-after-placement] [fixture:
   sequence/gram-acc-descr-block-empty-then-statement]
-- **[`comment-takes-character`](../known-divergences.ja.md#comment-takes-character)。**
+- **[`comment-takes-character`](../known-divergences/comment-takes-character.ja.md)。**
   数の直後か、文の文脈の規則が一致を始める空白でない文字の直後の `%%` は、
   ここではコメントを始め、その文字を保ちます。
   mermaid.js はその文字をコメントの一部として読み、`%%` の前に数を読みません。

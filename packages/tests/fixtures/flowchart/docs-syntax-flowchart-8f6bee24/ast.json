@@ -31,7 +31,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [
                 {
                   "type": "FlowchartDataBlock",
@@ -125,7 +125,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [
                 {
                   "type": "FlowchartDataBlock",
@@ -219,7 +219,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [
                 {
                   "type": "FlowchartDataBlock",
@@ -313,7 +313,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [
                 {
                   "type": "FlowchartDataBlock",
@@ -407,7 +407,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [
                 {
                   "type": "FlowchartDataBlock",

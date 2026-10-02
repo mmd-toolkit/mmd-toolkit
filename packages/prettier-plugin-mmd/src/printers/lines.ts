@@ -1,7 +1,9 @@
 import type { Doc, ParserOptions } from "prettier"
 import { builders, utils } from "prettier/doc"
+import type { StringLiteral } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { ItemRun } from "./gap.ts"
+import { walk } from "./layout.ts"
 import type { Source } from "./source.ts"
 
 const { hardline, literalline } = builders
@@ -22,6 +24,12 @@ export interface Line {
    * indented as its block (see `findDirectionTextLines`).
    */
   readonly writtenIndentation?: string
+  /**
+   * Whether the empty line before it holds one space, which a line of only
+   * whitespace in the source stands for (see `BlockRules`). Such a line
+   * comes before it also where `blankBefore` is false.
+   */
+  readonly spaceLineBefore?: boolean
 }
 
 /**
@@ -49,9 +57,19 @@ export function joinLines(lines: readonly Line[], indentation: string): Doc {
  */
 export function lineBreakBetween(
   previous: Line,
-  next: Pick<Line, "blankBefore" | "writtenIndentation">,
+  next: Pick<Line, "blankBefore" | "writtenIndentation" | "spaceLineBefore">,
   indentation: string,
 ): Doc {
+  if (next.spaceLineBefore === true) {
+    // Literal lines keep the end of the previous line and the space of the
+    // line between, and start the next line at the first column.
+    return [
+      literalline,
+      " ",
+      literalline,
+      next.writtenIndentation ?? indentation,
+    ]
+  }
   if (next.writtenIndentation !== undefined) {
     // A literal line starts at the first column, where the written
     // indentation follows; it keeps the end of the previous line too.
@@ -106,6 +124,34 @@ export function withTrailing(doc: Doc, run: ItemRun | null): Doc {
 export function withLeading(run: ItemRun | null, doc: Doc): Doc {
   if (run === null) return doc
   return [run.doc, run.spaceAfter ? " " : "", doc]
+}
+
+/**
+ * Whether the text ends inside something that mermaid.js reads to the end of
+ * the text, so that a line break added after it would become part of it: a
+ * directive that is not closed (see `endsInsideOpenDirective`), or a string
+ * that is not closed (see `findOpenString`).
+ */
+export function endsInsideOpenText(source: Source): boolean {
+  return endsInsideOpenDirective(source) || findOpenString(source) !== null
+}
+
+/**
+ * The string that is not closed, or null: a StringLiteral whose `closed` is
+ * false (ast.md, StringLiteral). Only a backquoted name of a class diagram
+ * can be one, and it runs to the end of the text. Its range ends at its
+ * last character that is not whitespace, while mermaid.js reads the name to
+ * the end of the text, the whitespace and line breaks after that character
+ * included (diagrams/class.md, Strings, backquoted names, and generic
+ * types), so a printer prints that text as written, with no line break
+ * after it.
+ */
+export function findOpenString(source: Source): StringLiteral | null {
+  const open: StringLiteral[] = []
+  walk(source.root.body, (node) => {
+    if (node.type === "StringLiteral" && !node.closed) open.push(node)
+  })
+  return open.at(0) ?? null
 }
 
 /**

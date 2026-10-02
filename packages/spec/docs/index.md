@@ -9,7 +9,7 @@ inputs are accepted, which are rejected, and what structure an accepted input
 denotes. It does not describe rendering or layout. It does not parse or check
 embedded data: the frontmatter body, directive arguments, and `@{ ... }` data
 blocks are kept as written (see
-[`embedded-data-opaque`](./known-divergences.md#embedded-data-opaque)). How
+[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.md)). How
 mermaid.js derives its configuration is described for reference, because some Db
 values depend on it.
 

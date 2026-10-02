@@ -68,7 +68,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 20,
@@ -227,7 +227,7 @@
                       }
                     }
                   },
-                  "className": {
+                  "cssClass": {
                     "type": "Identifier",
                     "name": "exClass",
                     "range": [
@@ -282,7 +282,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     64,
@@ -381,7 +381,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     70,
@@ -447,7 +447,7 @@
       },
       {
         "type": "FlowchartClassDefStatement",
-        "classNames": [
+        "cssClasses": [
           {
             "type": "Identifier",
             "name": "exClass",

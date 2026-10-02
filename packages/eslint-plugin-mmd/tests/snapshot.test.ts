@@ -5,7 +5,8 @@
  * here only observe: each reports every element it is given, so that the
  * snapshot marks its range in the text. The inputs cover the line
  * terminators, the diagram types of the flowchart nodes, the parts of the text
- * that are not nodes, and the comments of a sequence diagram.
+ * that are not nodes, the comments of a sequence diagram, and the statements,
+ * members, and comments of a class diagram.
  */
 import type { Rule } from "eslint"
 import { SnapshotRuleTester } from "eslint-snapshot-rule-tester"
@@ -40,6 +41,17 @@ const SHOWN_FIXTURES: readonly {
   // Comments of a sequence diagram: `#`, and `%%` in the middle of a line.
   { diagram: "sequence", name: "lex-hash-comment-after-unit" },
   { diagram: "sequence", name: "lex-percent-comment-after-unit" },
+  // A class diagram with generic names, cardinalities, labels, an annotation,
+  // and a class body.
+  { diagram: "class", name: "demo-classchart-83b40212" },
+  // The fields of a method, and the marks of its visibility and classifier.
+  { diagram: "class", name: "tokens-method-fields" },
+  // A namespace, with names in backquotes.
+  { diagram: "class", name: "spec-class-abe81127" },
+  // A comment after a relation, and, in a class body, `%%` after a member,
+  // which is part of the text of the member and not a comment.
+  { diagram: "class", name: "lex-comment-blank-line-after" },
+  { diagram: "class", name: "lex-member-percent" },
 ]
 
 const fixtures = new Map(

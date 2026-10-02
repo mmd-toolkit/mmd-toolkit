@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary, names: the written name `~~b` starts with `~`, so the id is `~~b` and there is no type. mermaid.js reads an empty generic type at the start of the backquotes and then the name `b` (name-start-reads-unit)."
+  },
+  "knownDivergence": "name-start-reads-unit",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "b",
+        "type": "",
+        "label": "b",
+        "text": "b",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/classDiagram.md",
+    "line": 123
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "Bank example",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "BankAccount",
+        "type": "",
+        "label": "BankAccount",
+        "text": "BankAccount",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "deposit",
+            "parameters": "amount",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "withdrawal",
+            "parameters": "amount",
+            "returnType": ""
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "String owner"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "Bigdecimal balance"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

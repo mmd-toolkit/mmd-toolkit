@@ -68,7 +68,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 25,
@@ -190,7 +190,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     56,

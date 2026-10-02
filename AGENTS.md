@@ -39,8 +39,9 @@ Correctness is defined by the pinned mermaid.js.
    - The maintainers of mermaid.js treat the behavior as a defect (the reserved
      word `click`).
 
-   Before proposing a divergence for a behavior that looks like a defect, search
-   the issues and pull requests of mermaid.js, and cite what is found as fact.
+   Before proposing a divergence for a behavior that looks like a defect, read
+   what the documentation of mermaid.js says about that syntax, search its
+   issues and pull requests, and cite what is found as fact.
 
 2. For accepted inputs, the Db matches mermaid.js, except where a Known
    divergence defines that an input is read differently.
@@ -153,13 +154,14 @@ Release only after every diagram type is done.
 - Its rules are implemented before the release, after every diagram type is
   done. Until then it holds what does not depend on a rule (the package, the
   language that gives ESLint the tree, their tests) and the rule ideas: one
-  document per idea under `docs/rules/`, with the fixtures that record what
-  mermaid.js does. Each idea also has a rule file under `src/rules/` that
-  reports nothing yet: it carries the name, the description, and whether the
-  rule is recommended, and the list of the rules in `docs/rules/index.md` and
-  the generated parts of the rule documents are written from these files
-  (`pnpm run update`). `pnpm run lint:docs` fails when the rule files and the
-  documents disagree.
+  document per idea under `docs/rules/`, written for the users of the rule, and
+  one under `docs/rule-notes/` for whoever implements it, with how the tree
+  shows what the rule reports and the fixtures that record what mermaid.js does.
+  Each idea also has a rule file under `src/rules/` that reports nothing yet: it
+  carries the name, the description, and whether the rule is recommended, and
+  the list of the rules in `docs/rules/index.md` and the generated parts of the
+  rule documents are written from these files (`pnpm run update`).
+  `pnpm run lint:docs` fails when the rule files and the documents disagree.
 - Is an ESLint language plugin (the `languages` of a plugin), not a custom
   parser: it gives ESLint the tree of `@mmd-toolkit/parser`, its tokens and
   comments, and its visitor keys.

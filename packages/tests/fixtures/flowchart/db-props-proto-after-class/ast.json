@@ -27,7 +27,7 @@
             }
           }
         ],
-        "className": {
+        "cssClass": {
           "type": "Identifier",
           "name": "c",
           "range": [
@@ -175,7 +175,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 23,

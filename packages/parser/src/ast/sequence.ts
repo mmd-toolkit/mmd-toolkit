@@ -138,7 +138,7 @@ export interface SequenceBoxStatement extends NodeBase {
   readonly type: "SequenceBoxStatement"
   /** The text after `box`; null when there is none. */
   readonly text: SequenceBoxText | null
-  /** The statements up to `end`, in source order: participant statements and destroy statements. */
+  /** The statements up to `end`, in source order: participant statements, destroy statements, and description block statements without text. */
   readonly body: readonly SequenceStatement[]
 }
 

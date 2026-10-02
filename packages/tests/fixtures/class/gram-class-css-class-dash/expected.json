@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Class statements: the CSS class after `:::` is one name part."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Diagramclass A:::my-class\n----------------------^\nExpecting 'NEWLINE', 'EOF', 'STRUCT_START', 'STRUCT_STOP', got 'MINUS'"
+  }
+}

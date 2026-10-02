@@ -162,6 +162,7 @@ function flowchartBlockRules(source: Source): BlockRules<FlowchartStatement> {
       statement.type === "FlowchartSubgraphStatement",
     isDroppedAtTopLevel: (statement) =>
       statement.type === "FlowchartEmptyStatement",
+    keepsWhitespaceLineAfterComment: false,
   }
 }
 

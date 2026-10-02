@@ -76,7 +76,13 @@ function ignoredText(value: string): FlowchartIgnoredText {
 
 /** A StringLiteral of the tree made by hand. */
 function stringLiteral(value: string): StringLiteral {
-  return { type: "StringLiteral", value, raw: `"${value}"`, ...place }
+  return {
+    type: "StringLiteral",
+    value,
+    raw: `"${value}"`,
+    closed: true,
+    ...place,
+  }
 }
 
 /** A NumericLiteral of the tree made by hand. */
@@ -88,14 +94,14 @@ function numericLiteral(value: number): NumericLiteral {
 function vertex(
   id: string,
   shape: FlowchartShape | null,
-  className: string | null,
+  cssClass: string | null,
   data: readonly FlowchartDataBlock[],
 ): FlowchartVertex {
   return {
     type: "FlowchartVertex",
     id: identifier(id),
     shape,
-    className: className === null ? null : identifier(className),
+    cssClass: cssClass === null ? null : identifier(cssClass),
     data,
     ...place,
   }
@@ -252,14 +258,14 @@ const diagram: FlowchartDiagram = {
     },
     {
       type: "FlowchartClassDefStatement",
-      classNames: [identifier("c"), null, identifier("d")],
+      cssClasses: [identifier("c"), null, identifier("d")],
       styles: [literal("fill:#f00")],
       ...place,
     },
     {
       type: "FlowchartClassStatement",
       ids: [identifier("A")],
-      className: identifier("c"),
+      cssClass: identifier("c"),
       ...place,
     },
     {
@@ -346,7 +352,7 @@ describe("the flowchart node types", () => {
       NodeFields | "vertices"
     >()
     expectTypeOf<keyof FlowchartVertex>().toEqualTypeOf<
-      NodeFields | "id" | "shape" | "className" | "data"
+      NodeFields | "id" | "shape" | "cssClass" | "data"
     >()
     expectTypeOf<keyof FlowchartShape>().toEqualTypeOf<
       NodeFields | "name" | "property" | "label"
@@ -385,10 +391,10 @@ describe("the flowchart node types", () => {
       NodeFields | "id" | "styles"
     >()
     expectTypeOf<keyof FlowchartClassDefStatement>().toEqualTypeOf<
-      NodeFields | "classNames" | "styles"
+      NodeFields | "cssClasses" | "styles"
     >()
     expectTypeOf<keyof FlowchartClassStatement>().toEqualTypeOf<
-      NodeFields | "ids" | "className"
+      NodeFields | "ids" | "cssClass"
     >()
     expectTypeOf<keyof FlowchartClickCallbackStatement>().toEqualTypeOf<
       NodeFields | "ids" | "callback" | "arguments" | "tooltip"
@@ -424,7 +430,7 @@ describe("the flowchart node types", () => {
   it("hold the values that the author writes as shared leaf nodes", () => {
     expectTypeOf<FlowchartVertex["id"]>().toEqualTypeOf<Identifier>()
     expectTypeOf<
-      FlowchartVertex["className"]
+      FlowchartVertex["cssClass"]
     >().toEqualTypeOf<Identifier | null>()
     expectTypeOf<FlowchartShapeProperty["name"]>().toEqualTypeOf<Identifier>()
     expectTypeOf<FlowchartShapeProperty["value"]>().toEqualTypeOf<Identifier>()
@@ -433,14 +439,14 @@ describe("the flowchart node types", () => {
     expectTypeOf<FlowchartStyleStatement["styles"]>().toEqualTypeOf<
       readonly (FlowchartLiteral | null)[]
     >()
-    expectTypeOf<FlowchartClassDefStatement["classNames"]>().toEqualTypeOf<
+    expectTypeOf<FlowchartClassDefStatement["cssClasses"]>().toEqualTypeOf<
       readonly (Identifier | null)[]
     >()
     expectTypeOf<FlowchartClassStatement["ids"]>().toEqualTypeOf<
       readonly (Identifier | null)[]
     >()
     expectTypeOf<
-      FlowchartClassStatement["className"]
+      FlowchartClassStatement["cssClass"]
     >().toEqualTypeOf<Identifier>()
     expectTypeOf<FlowchartClickCallbackStatement["ids"]>().toEqualTypeOf<
       readonly (Identifier | null)[]
@@ -518,7 +524,7 @@ describe("the visitor keys of the flowchart nodes", () => {
       FlowchartEmptyStatement: [],
       FlowchartVertexStatement: ["first", "links"],
       FlowchartVertexGroup: ["vertices"],
-      FlowchartVertex: ["id", "shape", "className", "data"],
+      FlowchartVertex: ["id", "shape", "cssClass", "data"],
       FlowchartShape: ["property", "label"],
       FlowchartShapeProperty: ["name", "value"],
       FlowchartLink: ["id", "opening", "arrow", "label", "target"],
@@ -528,8 +534,8 @@ describe("the visitor keys of the flowchart nodes", () => {
       FlowchartDataBlock: [],
       FlowchartSubgraphStatement: ["name", "title", "body"],
       FlowchartStyleStatement: ["id", "styles"],
-      FlowchartClassDefStatement: ["classNames", "styles"],
-      FlowchartClassStatement: ["ids", "className"],
+      FlowchartClassDefStatement: ["cssClasses", "styles"],
+      FlowchartClassStatement: ["ids", "cssClass"],
       FlowchartClickCallbackStatement: [
         "ids",
         "callback",

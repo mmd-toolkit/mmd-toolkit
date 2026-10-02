@@ -34,16 +34,16 @@ read from the source text directly:
 - diagram type detection, for every diagram type of mermaid.js 12.0.0.
 
 The diagram bodies implemented so far are the `error` pseudo-diagram, the
-flowchart (`flowchart-v2`, `flowchart-elk`, and `swimlane`), and the sequence
-diagram (`sequence`). Every other detected type throws
-`UnsupportedDiagramError`.
+flowchart (`flowchart-v2`, `flowchart-elk`, and `swimlane`), the sequence
+diagram (`sequence`), and the class diagram (`classDiagram`). Every other
+detected type throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
 The parser of each diagram follows its document,
-[`diagrams/flowchart.md`](../../spec/docs/diagrams/flowchart.md) or
-[`diagrams/sequence.md`](../../spec/docs/diagrams/sequence.md). It has three
-parts:
+[`diagrams/flowchart.md`](../../spec/docs/diagrams/flowchart.md),
+[`diagrams/sequence.md`](../../spec/docs/diagrams/sequence.md), or
+[`diagrams/class.md`](../../spec/docs/diagrams/class.md). It has three parts:
 
 - a lexer that divides the diagram text into units, under
   `src/diagrams/<diagram>/units.ts`;
@@ -57,12 +57,19 @@ What every diagram's lexer and parser do in the same way is in one place each: a
 unit and how it is read (`src/diagram-units.ts`), reading the units, the place
 of a node, the text of a range, the shared leaf nodes, and the tokens of an item
 of the grammar (`UnitGrammar` in `src/unit-grammar.ts`), and the empty forms of
-`tokenless-empty-forms` (`src/empty-forms.ts`). A diagram whose lexer reads
-diagram comments, as the sequence lexer reads `#` and `%`, hands them to the
+`tokenless-empty-forms` (`src/empty-forms.ts`). A rule that two diagram
+documents share is in one place too: the direction line of flowchart and class
+(`src/direction-line.ts`), and the Unicode letters of their letter rules
+(`src/unicode-letters.ts`). A diagram whose lexer reads diagram comments, as the
+sequence lexer reads `#` and `%` and the class lexer `%%`, hands them to the
 common part, which records them in `Root.comments`. The rejections that
 mermaid.js makes while it builds the Db are made by the parser after the
-grammar: `subgraph-members.ts` for the flowchart and `db-rejections.ts` for the
-sequence diagram.
+grammar: `subgraph-members.ts` for the flowchart, and `db-rejections.ts` for the
+sequence diagram and the class diagram. The class lexer divides each member line
+into its parts with the steps of
+[Member lines](../../spec/docs/diagrams/class.md#member-lines)
+(`src/diagrams/class/member-lines.ts`), both in a class body and in the label of
+a member statement, and rejects a method line that cannot be divided.
 
 It reads the diagram text without its directives. A directive inside a unit
 whose kind is not `RawText` or `Identifier` makes the input rejected. The tokens

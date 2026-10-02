@@ -15,6 +15,8 @@ export const diagramIds: Readonly<
   // `swimlane-beta` and `flowchart-elk` use the flowchart parser and Db.
   flowchart: ["flowchart-v2", "flowchart-elk", "swimlane"],
   sequence: ["sequence"],
+  // `classDiagram` and `classDiagram-v2` are both detected as `classDiagram`.
+  class: ["classDiagram"],
 }
 
 /**

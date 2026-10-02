@@ -68,7 +68,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 13,
@@ -208,7 +208,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     45,
@@ -335,7 +335,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 61,
@@ -475,7 +475,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     98,
@@ -602,7 +602,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 115,
@@ -742,7 +742,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     163,
@@ -1316,6 +1316,7 @@
           "type": "StringLiteral",
           "value": "flowchart.html#link-clicked",
           "raw": "\"flowchart.html#link-clicked\"",
+          "closed": true,
           "range": [
             448,
             477
@@ -1335,6 +1336,7 @@
           "type": "StringLiteral",
           "value": "link test",
           "raw": "\"link test\"",
+          "closed": true,
           "range": [
             478,
             489
@@ -1411,6 +1413,7 @@
           "type": "StringLiteral",
           "value": "click test",
           "raw": "\"click test\"",
+          "closed": true,
           "range": [
             508,
             520

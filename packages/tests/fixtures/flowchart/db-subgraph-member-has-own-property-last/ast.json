@@ -54,7 +54,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     24,
@@ -129,7 +129,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     26,

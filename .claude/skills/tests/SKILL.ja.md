@@ -138,6 +138,10 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
 
 - 足す図種の名前と、同じ Db を使う図種 ID の一覧。
   図種 ID は、mermaid.js の検出器の一覧と、図種の定義の `db` から分かる。
+  1 つの検出器が、いくつもの宣言の語を受け持つことがある。
+  `classDiagram` と `classDiagram-v2` は、
+  どちらも `classDiagram` として検出される。
+  図種の fixture は、図種 ID がいくつあっても 1 つのディレクトリに置く。
 - pin した版のタグの mermaid.js の clone。
   リポジトリの外に置く。
   作り方は `tools/README.md` にある。
@@ -147,6 +151,10 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
 1. clone の中で、その図種の文法定義（`.jison`）と Db クラスを開く。
    Db の private フィールドと、
    文法が呼ぶ Db のメソッド（`yy.` の呼び出し）を全部挙げる。
+   Db がブラウザのグローバル（`window`、`document`、`Option`、`CSS`）を
+   読む箇所をすべて探し、
+   それが mermaid の解析中に動くのか、描画の後にだけ動くのかを確かめる。
+   class の click のコールバックと tooltip は描画の後に動くので、何も要らない。
 2. 要約に含める欄の案を、
    欄ごとに「構文が決めるか」「含める理由」「落とすものと理由」の表にする。
    次のものは落とす候補として必ず問う。
@@ -157,6 +165,10 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
      （`textStyles`、sequence のメッセージの `id` とノートの一覧）。
    - サイト設定でだけ変わる値
      （`securityLevel: loose` のときだけ付く `haveCallback`）。
+     構文が決める欄で、サイト設定でも変わるものは含め、
+     Db のパッチがほかの設定のときの値を記録する
+     class のリンクの target は、
+     `securityLevel: sandbox` のときに `_top` になる。
      `securityLevel` を変えて全件を流し、要約が変わらないことを確かめる。
    - 整形が変える空白が値に残る場所（style の値の末尾の空白）。
      その図種の整形の方針と照らす
@@ -186,7 +198,8 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
    Db のパッチが要るか
    （リンクを `utils.formatUrl()` で保存する、データブロックを持つ）を確かめ、
    要るなら同じファイルに書いて `dbPatches` に登録する。
-   登録には、mermaid がその図種 ID として検出するテキストを添える。
+   登録には、mermaid が受理し、その図種 ID として検出するテキストを添える
+   （`classDiagram` だけでは拒否されるので、class の見本は class を 1 つ持つ）。
    `runMermaid()` は、どの入力を解析するよりも前に、
    すべての Db クラスにパッチを当てる。
    Db のメソッドが、Node にないブラウザの関数
@@ -247,6 +260,8 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
      TypeScript で transpile すると行番号がずれる。
      テストファイルを一時ディレクトリに写し、
      import のパスの引用符の中だけを書き換えて、そのまま import する。
+     テストの中の `import("...")` の呼び出しのパスも書き換える。
+     型だけの import は、Node が消すので、そのままにする。
    - macOS の一時ディレクトリはシンボリックリンクなので、
      スタックトレースの実パスと合わせるために `realpathSync` を通す。
    - Node は URL ごとにモジュールを 1 回しか評価しないので、
@@ -375,9 +390,12 @@ pie（最初の Langium の図）のときに書く。
      `MermaidEnvironmentError` を投げる。
      データブロックの記録は、ブロックが想定外のことをすると例外を投げる。
    - 既知の差を除いて動かすときの字句解析器の規則
-     （`src/divergence-removals.ts`、選択肢 `withoutDivergence`）:
-     `runMermaid()` はコンパイルされた形で規則を探し、
-     見つからなければ `MermaidEnvironmentError` で止まるので、テストが失敗する。
+     （`src/divergence-removals.ts`、選択肢 `withoutDivergences`）:
+     `runMermaid()` はコンパイルされた形で規則を探す。
+     試す順を変える規則は、その開始状態だけが試す規則の中から探す。
+     規則が見つからないか 2 つ以上見つかるとき、
+     または字句解析器が行のどこにいるかを呼び出しの中で決められないときに、
+     `MermaidEnvironmentError` で止まるので、テストが失敗する。
      そのときは新しい字句解析器を読み、
      その差がまだあるかを spec の SKILL の手順で確かめて、表か識別子を合わせる。
 4. `fixtures:check` を実行する。

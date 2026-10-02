@@ -33,14 +33,15 @@
 
 図の本体は、今のところ `error` 疑似図種と、
 flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
-シーケンス図（`sequence`）です。
+シーケンス図（`sequence`）と、クラス図（`classDiagram`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
 
 各図のパーサーは、その図の文書、
-[`diagrams/flowchart.md`](../../spec/docs/diagrams/flowchart.ja.md) か
-[`diagrams/sequence.md`](../../spec/docs/diagrams/sequence.ja.md) に従います。
+[`diagrams/flowchart.md`](../../spec/docs/diagrams/flowchart.ja.md)、
+[`diagrams/sequence.md`](../../spec/docs/diagrams/sequence.ja.md)、
+[`diagrams/class.md`](../../spec/docs/diagrams/class.ja.md) のどれかに従います。
 3 つの部分からなります。
 
 - 図のテキストを単位に分ける字句解析器（`src/diagrams/<図種>/units.ts`）
@@ -53,11 +54,22 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 単位の読み進め、ノードの位置、範囲のテキスト、共通の葉のノード、
 文法の項目のトークンは、`src/unit-grammar.ts` の `UnitGrammar` にあります。
 `tokenless-empty-forms` の空の形は `src/empty-forms.ts` にあります。
-シーケンス図の字句解析器が `#` と `%` を読むように、
+2 つの図の文書が共有する規則も 1 か所にあります。
+flowchart とクラス図の方向の行は `src/direction-line.ts`、
+両者の文字の規則の Unicode の文字は `src/unicode-letters.ts` にあります。
+シーケンス図の字句解析器が `#` と `%` を、
+クラス図の字句解析器が `%%` を読むように、
 図のコメントを読む図は、それを共通の部分に渡し、
 共通の部分が `Root.comments` に記録します。
 mermaid.js が Db を作るときに行う拒否は、パーサーが文法の後で行います。
-flowchart では `subgraph-members.ts`、シーケンス図では `db-rejections.ts` です。
+flowchart では `subgraph-members.ts`、
+シーケンス図とクラス図では `db-rejections.ts` です。
+クラス図の字句解析器は、各メンバーの行を、
+[メンバーの行](../../spec/docs/diagrams/class.ja.md#メンバーの行)
+の手順で部分に分けます。
+その手順は `src/diagrams/class/member-lines.ts` にあります。
+クラスの本体でも、メンバーの文のラベルでも同じで、
+分けられないメソッドの行は拒否します。
 
 図のテキストは、ディレクティブを除いて読みます。
 種類が `RawText` と `Identifier` 以外の単位の内側にディレクティブがあれば、

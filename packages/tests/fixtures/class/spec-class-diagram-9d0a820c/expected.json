@@ -1,0 +1,91 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 132,
+    "test": "given a basic class diagram,  > when parsing class definition > should handle syntactically nested namespace blocks"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Foo",
+        "type": "",
+        "label": "Foo",
+        "text": "Foo",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "bar",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Outer.Inner"
+      },
+      {
+        "id": "Baz",
+        "type": "",
+        "label": "Baz",
+        "text": "Baz",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "qux",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Outer"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "Outer",
+        "label": "Outer",
+        "classes": [
+          "Baz"
+        ],
+        "notes": [],
+        "children": [
+          "Outer.Inner"
+        ],
+        "explicit": true
+      },
+      {
+        "id": "Outer.Inner",
+        "label": "Inner",
+        "classes": [
+          "Foo"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "Outer",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

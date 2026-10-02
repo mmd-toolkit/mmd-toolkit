@@ -31,7 +31,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 13,
@@ -133,7 +133,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     21,
@@ -246,7 +246,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     34,
@@ -351,7 +351,7 @@
             }
           }
         ],
-        "className": {
+        "cssClass": {
           "type": "Identifier",
           "name": "c",
           "range": [

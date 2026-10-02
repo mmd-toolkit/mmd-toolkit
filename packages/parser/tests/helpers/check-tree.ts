@@ -1,11 +1,15 @@
 import { expect } from "vitest"
 import { isWhitespace } from "../../src/character-classes.ts"
 import type {
+  ClassArrow,
+  ClassAttribute,
+  ClassMethod,
   Comment,
   Directive,
   FlowchartDiagram,
   FlowchartLink,
   FlowchartShape,
+  Identifier,
   Location,
   Node,
   Position,
@@ -16,7 +20,11 @@ import type {
 } from "../../src/index.ts"
 import { traverseNodes } from "../../src/index.ts"
 import { openSource } from "../../src/parse.ts"
+import type { SourceLexer } from "../../src/source-lexer.ts"
+import type { DiagramUnit } from "../../src/diagram-units.ts"
+import { ClassSource } from "./class-source.ts"
 import { FlowchartSource } from "./flowchart-source.ts"
+import { SequenceSource } from "./sequence-source.ts"
 
 /** Something of the tree that has a place in the source: a node, a token, a comment, a directive, or the frontmatter. */
 interface Placed {
@@ -133,7 +141,8 @@ function afterDirectivesAt(
  * Where the mark of the diagram comment `comment` ends, as the document of
  * each diagram type that has diagram comments defines the mark: in a
  * sequence diagram (diagrams/sequence.md, Lexical structure), `#` when it
- * starts with `#`, `%%` when it starts with `%%`, and `%` otherwise. As in
+ * starts with `#`, `%%` when it starts with `%%`, and `%` otherwise; in a
+ * class diagram (diagrams/class.md, The statement context), `%%`. As in
  * the `%%` of a comment line, directives may lie between the two `%`.
  */
 function diagramCommentMarkEnd(
@@ -172,6 +181,33 @@ function inSourceOrder(parent: Node, children: readonly Node[]): Node[] {
     if (child === text) return arrow
     return child
   })
+}
+
+/**
+ * ast.md, Shared leaf nodes > Identifier: the name of `identifier` is the
+ * text of the range of each of its units without the whitespace at its
+ * ends, joined in order. Its units are those of `units`, the units of the
+ * diagram's lexer, whose text, without the whitespace at its ends, lies in
+ * its range; that they are its units, and not others, is checked through
+ * the Db, which is compared with mermaid.js.
+ */
+function expectIdentifierName(
+  lexer: SourceLexer,
+  units: readonly DiagramUnit<string>[],
+  identifier: Identifier,
+): void {
+  const written = units
+    .flatMap((unit) =>
+      unit.significantRange !== null &&
+      contains(identifier.range, unit.significantRange)
+        ? [lexer.textOfRange(...unit.significantRange, [])]
+        : [],
+    )
+    .join("")
+  expect(
+    identifier.name,
+    `the name ${JSON.stringify(identifier.name)} of ${label(identifier)} is not the texts of its units, ${JSON.stringify(written)}`,
+  ).toBe(written)
 }
 
 /**
@@ -504,10 +540,22 @@ export function checkInvariants(text: string, root: Root): void {
       expect(node.raw, `raw of ${label(node)}`).toBe(text.slice(...node.range))
     }
   }
+
+  // ast.md, Shared leaf nodes > StringLiteral: a string is closed by its
+  // second quote, so its `closed` is whether its `raw` has more than one
+  // character and ends with the quote that it starts with.
+  for (const node of nodes) {
+    if (node.type === "StringLiteral") {
+      const quote = node.raw.slice(0, 1)
+      expect(node.closed, `closed of ${label(node)}`).toBe(
+        node.raw.length > 1 && node.raw.endsWith(quote),
+      )
+    }
+  }
 }
 
 /**
- * ast.md, Shared leaf nodes, and ast/flowchart.md, Nodes and Tokens: for
+ * ast.md, Shared leaf nodes, and the Nodes and Tokens of each diagram: for
  * each node type, whether it is a value node: a node whose value is what
  * the author wrote, made of the units of one item of the grammar. The
  * other nodes are made of other nodes and of keywords and punctuation.
@@ -576,6 +624,30 @@ const valueNodeTypes: Readonly<Record<Node["type"], boolean>> = {
   SequenceText: false,
   SequenceLiteral: true,
   SequenceDataBlock: true,
+  ClassDiagram: false,
+  ClassDeclaration: false,
+  ClassMemberStatement: false,
+  ClassNameStatement: false,
+  ClassAnnotationStatement: false,
+  ClassRelationStatement: false,
+  ClassArrow: false,
+  ClassNamespaceStatement: false,
+  ClassNoteStatement: false,
+  ClassCallbackStatement: false,
+  ClassLinkStatement: false,
+  ClassStyleStatement: false,
+  ClassCssClassStatement: false,
+  ClassClassDefStatement: false,
+  ClassDirectionStatement: false,
+  ClassAccTitleStatement: false,
+  ClassAccDescrStatement: false,
+  ClassAccDescrBlockStatement: false,
+  ClassName: false,
+  ClassMethod: false,
+  ClassAttribute: false,
+  ClassAnnotation: false,
+  ClassLiteral: true,
+  ClassIgnoredText: true,
 }
 
 /** The node types of the data blocks, whose delimiters lie in their range. */
@@ -846,8 +918,8 @@ function checkValues(root: Root, source: FlowchartSource): void {
     const [start, end] = node.range
     switch (node.type) {
       case "Identifier":
-        value = node.name
-        break
+        expectIdentifierName(source.lexer, source.units, node)
+        continue
       case "FlowchartLiteral":
       case "FlowchartIgnoredText":
       case "FlowchartArrow":
@@ -967,15 +1039,14 @@ function checkErrorDiagramTokens(root: Root): void {
  * NumericLiteral the number that its `raw` writes.
  */
 function checkSequenceValues(text: string, root: Root): void {
-  const { lexer } = openSource(text)
+  const { lexer, units } = new SequenceSource(text, root)
   for (const node of nodesOf(root)) {
     const [start, end] = node.range
     let value: string | number, written: string | number
     switch (node.type) {
       case "Identifier":
-        value = node.name
-        written = lexer.textOfRange(start, end, [])
-        break
+        expectIdentifierName(lexer, units, node)
+        continue
       case "SequenceLiteral":
       case "SequenceBoxText":
       case "SequenceIgnoredStatement":
@@ -1159,6 +1230,188 @@ function checkSequenceArrow(root: Root, arrow: SequenceArrow): void {
 }
 
 /**
+ * ast/class.md: the value of every leaf node is the text of its range, or
+ * the part of it that its node type names: an Identifier, a ClassLiteral,
+ * and a ClassIgnoredText the whole text, a StringLiteral the text without
+ * its quotes, or without its opening quote alone when it is not closed
+ * (ast.md, StringLiteral), and a ClassArrow the texts of its tokens.
+ */
+function checkClassValues(text: string, root: Root): void {
+  const { lexer, units } = new ClassSource(text, root)
+  for (const node of nodesOf(root)) {
+    const [start, end] = node.range
+    let value: string, written: string
+    switch (node.type) {
+      case "Identifier":
+        expectIdentifierName(lexer, units, node)
+        continue
+      case "ClassLiteral":
+      case "ClassIgnoredText":
+        value = node.value
+        written = lexer.textOfRange(start, end, [])
+        break
+      case "StringLiteral":
+        value = node.value
+        written = lexer.textOfRange(start + 1, node.closed ? end - 1 : end, [])
+        break
+      case "ClassArrow":
+        value = node.value
+        written = tokensIn(root, node.range)
+          .filter((token) => token.type !== "Directive")
+          .map((token) => token.value)
+          .join("")
+        break
+      default:
+        continue
+    }
+    expect(
+      value,
+      `the value ${JSON.stringify(value)} of ${label(node)} is not the text of its range, ${JSON.stringify(written)}`,
+    ).toBe(written)
+  }
+}
+
+/** ast/class.md, ClassArrow: the marker of each relation end. */
+const CLASS_MARKERS: Readonly<Record<string, string>> = {
+  "<|": "triangle",
+  "|>": "triangle",
+  "*": "filled-diamond",
+  o: "hollow-diamond",
+  "<": "arrow",
+  ">": "arrow",
+  "()": "lollipop",
+}
+
+/** ast/class.md, ClassArrow: the line of each line token. */
+const CLASS_LINES: Readonly<Record<string, string>> = {
+  "--": "solid",
+  "..": "dotted",
+}
+
+/**
+ * ast/class.md, ClassArrow: each relation end and the line are one
+ * `Punctuator` token, and the fields are what the tokens write.
+ */
+function checkClassArrow(root: Root, arrow: ClassArrow): void {
+  const tokens = tokensIn(root, arrow.range).filter(
+    (token) => token.type !== "Directive",
+  )
+  for (const token of tokens) {
+    expect(token.type, `the kind of ${label(token)} in ${label(arrow)}`).toBe(
+      "Punctuator",
+    )
+  }
+  const values = tokens.map((token) => token.value)
+  const lineAt = values.findIndex((value) => value in CLASS_LINES)
+  expect(lineAt, `the line of ${label(arrow)}`).not.toBe(-1)
+  const before = values.slice(0, lineAt)
+  const after = values.slice(lineAt + 1)
+  expect(
+    before.length <= 1 && after.length <= 1,
+    `${label(arrow)} has at most one relation end on each side of its line`,
+  ).toBe(true)
+  expect(
+    {
+      startMarker: arrow.startMarker,
+      line: arrow.line,
+      endMarker: arrow.endMarker,
+    },
+    `the fields of ${label(arrow)}, written ${arrow.value}`,
+  ).toEqual({
+    startMarker: before.length === 0 ? "none" : CLASS_MARKERS[before[0]],
+    line: CLASS_LINES[values[lineAt]],
+    endMarker: after.length === 0 ? "none" : CLASS_MARKERS[after[0]],
+  })
+}
+
+/** ast/class.md, ClassMethod: the mark of each visibility. */
+const CLASS_VISIBILITY_MARKS: Readonly<Record<string, string>> = {
+  "+": "public",
+  "-": "private",
+  "#": "protected",
+  "~": "package",
+}
+
+/** ast/class.md, ClassMethod: the mark of each classifier. */
+const CLASS_CLASSIFIER_MARKS: Readonly<Record<string, string>> = {
+  $: "static",
+  "*": "abstract",
+}
+
+/**
+ * ast/class.md, ClassMethod and ClassAttribute: the marks of visibility and
+ * classifier are `Punctuator` tokens of the member: the visibility mark
+ * comes before every other `Punctuator`, and the classifier mark is the
+ * one `$` or `*` among them.
+ */
+function checkClassMember(
+  root: Root,
+  member: ClassMethod | ClassAttribute,
+): void {
+  const punctuators = tokensIn(root, member.range)
+    .filter((token) => token.type === "Punctuator")
+    .map((token) => token.value)
+  const [first] = punctuators
+  expect(member.visibility, `the visibility of ${label(member)}`).toBe(
+    first !== undefined && first in CLASS_VISIBILITY_MARKS
+      ? CLASS_VISIBILITY_MARKS[first]
+      : "none",
+  )
+  const classifiers = punctuators.filter(
+    (value) => value in CLASS_CLASSIFIER_MARKS,
+  )
+  expect(
+    classifiers.length,
+    `${label(member)} has at most one classifier mark`,
+  ).toBeLessThanOrEqual(1)
+  expect(member.classifier, `the classifier of ${label(member)}`).toBe(
+    classifiers.length === 0 ? "none" : CLASS_CLASSIFIER_MARKS[classifiers[0]],
+  )
+}
+
+/**
+ * ast/class.md: asserts what the class document states about its tree
+ * beyond the invariants of ast.md: the values of the leaf nodes are the
+ * texts of their ranges, the tokens of values lie in value nodes, and the
+ * fixed words and marks of a node are its tokens: the relation ends and
+ * the line of an arrow, the visibility and classifier marks of a member,
+ * the value of a direction statement, and the target of a link.
+ */
+function checkClassTree(text: string, root: Root): void {
+  checkClassValues(text, root)
+  checkTokensInValueNodes(text, root)
+  for (const node of nodesOf(root)) {
+    switch (node.type) {
+      case "ClassArrow":
+        checkClassArrow(root, node)
+        break
+      case "ClassMethod":
+      case "ClassAttribute":
+        checkClassMember(root, node)
+        break
+      case "ClassDirectionStatement":
+        expect(
+          tokensIn(root, node.range)
+            .filter((token) => token.type === "Keyword")
+            .map((token) => token.value),
+          `the keywords of ${label(node)}`,
+        ).toEqual(["direction", node.direction])
+        break
+      case "ClassLinkStatement": {
+        const last = tokensIn(root, node.range).at(-1)
+        expect(
+          last?.type === "Keyword" ? last.value : null,
+          `the target of ${label(node)} is its last token`,
+        ).toBe(node.target)
+        break
+      }
+      default:
+        break
+    }
+  }
+}
+
+/**
  * Asserts everything ast.md states about a tree returned by `parse(text)`:
  * the conditions of every tree, and the conditions of its diagram.
  */
@@ -1169,4 +1422,5 @@ export function checkTree(text: string, root: Root): void {
     checkFlowchartTree(text, root, root.body)
   }
   if (root.body.type === "SequenceDiagram") checkSequenceTree(text, root)
+  if (root.body.type === "ClassDiagram") checkClassTree(text, root)
 }

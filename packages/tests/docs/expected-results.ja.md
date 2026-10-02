@@ -70,20 +70,22 @@ Db クラスがリンクを保存するときに呼ぶ
 を通して到達します。
 外から差し替えられないので、
 図種ごとに登録した Db の差し替え
-（`src/normalizers/index.ts` の `getDbPatch()`）で、
-その図種の最初の Db を要約する前に Db クラスを変え、
+（`src/normalizers/index.ts` の `getDbPatches()`）で、
+どの入力を解析するよりも前に Db クラスを変え、
 URL を書かれたとおり（trim 済み）に保存させます。
 これは `securityLevel: loose` のときに `formatUrl()` が返す値です。
 そのため flowchart では
 （[`FlowDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L553-L562)）、
 `javascript:alert(1)` はそのまま、
 `https://example.com` の末尾に `/` は付きません。
-mermaid@12.0.0 では、class 図
-（[`classDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L414-L414)）
-と agentflow
+class 図の Db も同じことをし
+（[`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)）、
+さらに `securityLevel: sandbox` のときはリンクの target を `_top` にします。
+そのパッチは、ほかの値のときと同じく、
+書かれた target（なければ `_blank`）を保存させます。
+mermaid@12.0.0 では、agentflow の Db
 （[`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014)）
-の Db も `formatUrl()` を呼ぶので、
-それらの正規化関数を足すときに同じ差し替えが要ります。
+も `formatUrl()` を呼ぶので、その正規化関数を足すときに同じ差し替えが要ります。
 
 ## ラベルは HTML のサニタイズ前の値で記録する
 
@@ -206,19 +208,29 @@ mermaid@12.0.0 では、次の 2 つです。
 
 ## 既知の差を除いて動かす
 
-`runMermaid()` とその並びの関数は、選択肢 `withoutDivergence` を取ります。
-値は既知の差の識別子です。
-これを指定すると、その差が生じる字句解析器の規則を、
-仕様と同じに読む規則に置き換えて、mermaid.js を動かします。
-置き換えはその呼び出しの間だけです。
+`runMermaid()` とその並びの関数は、選択肢 `withoutDivergences` を取ります。
+値は既知の差の識別子の一覧です。
+これを指定すると、それらの差が生じる字句解析器の規則を置き換えるか、
+試す順を変えるかして、仕様と同じに読ませて、mermaid.js を動かします。
+変えるのはその呼び出しの間だけです。
 既定の実行、生成器、`expected.json` は、これを使いません。
 これらは mermaid.js をそのまま記録します。
 実装はこれを使って、印の付いた入力での mermaid.js との違いが、
-その差だけから来ることを確かめます。
+それらの差だけから来ることを確かめます。
 こうして読ませた mermaid.js と、自分を比べます。
+ある図種で仕様と mermaid.js の差が 2 つ以上あるとき、
+仕様と同じに読ませるには、
+1 つの入力でそのいくつかを同時に除く必要があることがあります。
+同じ識別子は 1 つと数え、空の一覧ではそのままの mermaid.js を動かします。
 入力はどの図種でもかまいません。
 変わるのはその差が属する図種の字句解析器だけなので、
-ほかの入力は既定と同じ結果になります。
+ほかの図種の差は何も変えません。
+1 つの字句解析器の同じ規則、同じ開始状態の並び、
+またはテキストを渡す同じ関数を変える 2 つの差は、同時には除けません。
+後から変えたほうが、もう一方を打ち消すためです。
+そのときは、呼び出しは両方の識別子を挙げたエラーを投げます。
+選択肢でないキーを持つ options を渡すと、呼び出しは `TypeError` を投げます。
+書き誤った選択肢で、そのままの mermaid.js を動かさないためです。
 
 規則は `src/divergence-removals.ts` に挙げてあり、
 pin した mermaid.js の字句解析器の中で、
@@ -231,11 +243,38 @@ pin した mermaid.js の字句解析器の中で、
 呼び出しは 1 つずつ動くので、
 置き換えた規則がほかの呼び出しに届くことはありません。
 
+規則を 2 つの形に置き換えることもあります。
+字句解析器は、今の行で空白しか読んでいないときに一方を、
+それ以外のときにもう一方を使います。
+ここでの行は、mermaid の前処理の後のテキスト、
+つまり字句解析器が読むテキストの行です。
+前処理は、改行を LF にそろえ、
+frontmatter、ディレクティブ、コメント行を取り除きます。
+字句解析器が読んだものは、渡されたテキストから残りを除いたものです。
+字句解析器が読んでいないテキストを戻して、残りがそのテキストの末尾でなくなると、
+呼び出しは、誤っているかもしれない結果を返さずに、
+`MermaidEnvironmentError` で止まります。
+
+字句解析器のある開始状態で、規則を試す順を変えることもあります。
+仕様と同じに読む規則を先に試し、規則そのものは変えません。
+そうした規則は、その開始状態だけが試す規則の中から探します。
+どの開始状態でも試す規則が、同じ形を持つことがあるためです。
+
 - `comment-takes-character`、sequence の字句解析器
   （[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)）:
   `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
   そうすると、コメントは `%%` から始まる。
   数の規則も、空白と改行の前だけでなく、`%%` の前でも数を終える。
+- `comment-takes-line-break`、class の字句解析器
+  （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)）:
+  `%%` と行の残りとその後の改行を読む規則を、
+  行の中でその前に空白しかないコメントにだけ使う。
+  単位の後のコメントは行の終わりで終わり、その後の改行は改行として読まれる。
+- `name-start-reads-unit`、class の字句解析器
+  （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）:
+  バッククォートの名前とジェネリクスの型の中で、
+  それを閉じる規則と中身を読む規則を先に試す。
+  そうすると、中身は何で始まっても、閉じる記号まで読まれる。
 
 ## テキストの大きさ
 

@@ -127,6 +127,11 @@ are those of the flowchart; the steps do not depend on the diagram type.
    of the click context, which had the same unit name as the `,` of the
    statement context.
 3. While a gap is open, implement what it does not touch.
+4. The specification can change while you work, also on what you have built
+   already (in class, two fields of a node were renamed and one was removed
+   during the work). Keep a copy of the documents as you read them, outside the
+   repository, and before the checks of 4.8, compare the documents with the copy
+   and implement what changed.
 
 ### 4.3 Node types and wiring
 
@@ -167,7 +172,8 @@ Add them in this order; the flowchart files are the model.
    It is one value when the diagram gives every such `;` one kind (the
    flowchart, `Punctuator`), and depends on the place when the kind does (in
    sequence, `RawText` where the context reads `;` as text, which the lexer
-   answers from its units).
+   answers from its units; in class, from the context of the step of the lexer
+   that read over the `;`).
 2. The common rules (directives, comment regions, the `style` and `classDef`
    line rule, entities, line terminators, HTML attribute quotes) are already
    applied, at each position, by `DiagramTextReader`; the diagram's lexer reads
@@ -178,39 +184,43 @@ Add them in this order; the flowchart files are the model.
    text, such as the text without directives, as an intermediate result: in the
    flowchart, a structure that copied the preprocessing passes of mermaid.js was
    built and rebuilt.
-3. For each context of the Lexical structure, write one method per rule, in the
+3. A rule that the document of another diagram states too (the direction line of
+   flowchart and class, with their own lists of values) has one implementation,
+   shared by both (`src/direction-line.ts`); move it out of the first diagram
+   when the second needs it, and do not write it again.
+4. For each context of the Lexical structure, write one method per rule, in the
    order of the specification (in the flowchart, `readInClickContext` and
    `readArrow`). The JSDoc names the section and the rule. A start condition of
    Jison is a context on a stack. Compare characters with the constants of
    `src/code-points.ts`, `src/character-classes.ts`, and `src/scanning.ts`; no
    regular expressions.
-4. A unit has the name of the specification. Build it with `readUnit` of
+5. A unit has the name of the specification. Build it with `readUnit` of
    `src/diagram-units.ts`; the diagram's `Unit` is `DiagramUnit<UnitName>`, with
    fields of its own only where the diagram needs them (in the flowchart, a
    string unit has the range of its content). What the lexer decides while it
    matches a unit and a node holds goes on the unit, so that the grammar does
    not read the text a second way: an arrow unit has the markers and the line of
    its arrow, and in the flowchart the number of its line characters.
-5. Where the lexer is case-insensitive (in sequence, every rule), compare words
+6. Where the lexer is case-insensitive (in sequence, every rule), compare words
    with `matchWordIgnoringCase` and `matchWholeWordIgnoringCase` of
    `src/scanning.ts`, which follow Notation, not with lower-casing.
-6. When the diagram's lexer reads comments of its own (diagram comments; in
+7. When the diagram's lexer reads comments of its own (diagram comments; in
    sequence, `#` and `%` to the end of the line), it returns their ranges and
    where their values start, and the entry passes them to `finishDiagram()` in
    `DiagramAnalysis.comments`; the common part records them in `Root.comments`
    with the directives inside them. The mark of a diagram comment is defined by
    the diagram document.
-7. So that the test helpers read the same units, add an entry that is not
+8. So that the test helpers read the same units, add an entry that is not
    public, `lex<Diagram>(input)`, which returns what the helpers need: the
    diagram text, the units, and where the lexer left a context, for example (in
    the flowchart, `lexFlowchart`; in sequence, `lexSequence`, which also returns
    where the rules of the statement context start their matches, for the places
    of `comment-takes-character`).
-8. In a context whose rules read one character at a time, read the placeholder
+9. In a context whose rules read one character at a time, read the placeholder
    of an entity as one unit (common.md, Entities; in the flowchart,
    `afterOneCharacter`).
-9. Where no rule matches, throw `ParseError` with that character as the range
-   (`docs/error-positions.md`).
+10. Where no rule matches, throw `ParseError` with that character as the range
+    (`docs/error-positions.md`).
 
 ### 4.5 The grammar
 
@@ -222,9 +232,13 @@ Add them in this order; the flowchart files are the model.
    unit that the grammar cannot read (`unexpected()`), with the empty forms; the
    diagram adds its productions and `knownDivergenceAt()`, which looks for the
    cause that a known divergence names (in the flowchart, a `click` and an empty
-   form after the `space` units; in sequence, an empty form). The range of a
-   unit without its whitespace is `significantRangeOf` of
-   `src/diagram-units.ts`.
+   form after the `space` units; in sequence, an empty form; in class, an empty
+   form, or the unit after an empty generic type). The range of a unit without
+   its whitespace is `significantRangeOf` of `src/diagram-units.ts`. Where the
+   tokens of an item break is `breaksRun()`: between units of other items; a
+   diagram whose whitespace belongs to no unit also breaks a run where
+   characters lie between two units (in class, except in a `RawText` item, whose
+   token holds the whitespace inside it).
 2. The grammar makes the nodes, the token kind of each unit that is not all
    whitespace (`UnitWithKind`), and the tokens (`PendingToken`). Take the kinds
    from the Tokens section of `ast/<diagram>.md`.
@@ -242,7 +256,10 @@ Add them in this order; the flowchart files are the model.
 4. The value of a leaf node is the text of its range without the directives, the
    comment regions, and the `;` that the line rule ignores (`ast.md`, Nodes;
    `SourceLexer.textOfRange`). Nothing is converted. `StringLiteral` and
-   `NumericLiteral` also have `raw`.
+   `NumericLiteral` also have `raw`. The name of an `Identifier` is the texts of
+   its tokens joined (`identifierOf`, which takes the pieces of its item from
+   `SourceLexer.piecesOf`, the same pieces that the tokens are recorded as), so
+   the whitespace between them is not part of it.
 5. When the specification lists rejections outside the grammar (made while the
    Db is built), the parser makes them too: in the flowchart, the grammar finds
    a subgraph member after `hasOwnProperty` (`subgraph-members.ts`); in
@@ -308,7 +325,12 @@ Steps:
    where the first style of a statement starts. Put whitespace, a directive, a
    comment line, and a `click` at each boundary, compare with mermaid.js (3),
    and add the inputs to a test (in the flowchart,
-   `tests/differential/flowchart-source-reading.test.ts`).
+   `tests/differential/flowchart-source-reading.test.ts`). Generate them: put
+   each of these at every place of the statement (in class,
+   `tests/differential/class-source-reading.test.ts`). A character that the Db
+   reads at a boundary is read in converted form, not from the source: in class,
+   the helper read the character after a visibility mark from the source, and a
+   directive put after the mark, which mermaid.js leaves out, showed it.
 4. Layer 3 is `tests/helpers/check-tree.ts`. The common invariants are there
    already; add what `ast/<diagram>.md` states about the tree (how value nodes
    and tokens relate, fixed words and their tokens) as checks of the diagram.
@@ -405,6 +427,7 @@ default (300 inputs per seed, 1 mutant per fixture):
 MMD_DIFFERENTIAL_COUNT=5000 CI=true npx vitest run tests/differential/common-mermaid.test.ts
 MMD_MUTANTS_PER_FIXTURE=20 CI=true npx vitest run tests/differential/flowchart-mermaid.test.ts
 MMD_COMMENT_INPUTS=1000000 MMD_MUTANTS_PER_FIXTURE=20 CI=true npx vitest run tests/differential/sequence-mermaid.test.ts
+MMD_COMMENT_INPUTS=1000000 MMD_MUTANTS_PER_FIXTURE=20 CI=true npx vitest run tests/differential/class-mermaid.test.ts
 ```
 
 The time limit of each check grows with its number of inputs (`timeoutFor` of
@@ -451,19 +474,19 @@ Langium.
   trees change, do 4.7, step 4. Check as in 4.8, and show the result as in 4.10.
 - A gap in the specification is found during other work: fix the specification
   first (4.2, step 2), then do the above.
-- A known divergence is added (known-divergences.md): the parser does not tell
-  it apart, so the tests do. Add its branch to the checks of
-  `tests/fixtures.test.ts`, and its reference reading, checked under "marked
-  fixtures differ only by their divergence", as the specification defines it: a
-  reference input in `tests/helpers/reference-inputs.ts`, or mermaid.js with the
-  divergence removed from its lexer (`withoutDivergence` of
-  `@mmd-toolkit/tests/mermaid`, as for `comment-takes-character`), which the
-  tests package provides; ask for it. Add its declaration and the check of the
-  declared differences to `tests/differential/mermaid-comparison.ts` and the
-  differential tests, with a guard against a vacuous check. Take every lexical
-  decision of the reference input and of the declaration from the parser's units
-  (4.6, step 2). Add it to "Known divergences" in `docs/testing.md` and to the
-  differences in the README.
+- A known divergence is added (its document `known-divergences/<id>.md`, listed
+  in known-divergences.md): the parser does not tell it apart, so the tests do.
+  Add its branch to the checks of `tests/fixtures.test.ts`, and its reference
+  reading, checked under "marked fixtures differ only by their divergence", as
+  the specification defines it: a reference input in
+  `tests/helpers/reference-inputs.ts`, or mermaid.js with the divergence removed
+  from its lexer (`withoutDivergences` of `@mmd-toolkit/tests/mermaid`, as for
+  `comment-takes-character`), which the tests package provides; ask for it. Add
+  its declaration and the check of the declared differences to
+  `tests/differential/mermaid-comparison.ts` and the differential tests, with a
+  guard against a vacuous check. Take every lexical decision of the reference
+  input and of the declaration from the parser's units (4.6, step 2). Add it to
+  "Known divergences" in `docs/testing.md` and to the differences in the README.
 - When the specification claims that its reference reading explains every
   difference (in sequence, `comment-takes-character`), check the claim on
   generated inputs as well as on the fixtures (4.6, step 6): put the form at
@@ -491,8 +514,8 @@ skill). The parser does not change behavior before the specification does.
    `tests/detection.test.ts`, and the headers in
    `tests/differential/common-inputs.ts`.
 4. Check that tables copied from lists of the specification (in the flowchart,
-   the letter ranges of `src/diagrams/flowchart/unicode-letters.ts`) still agree
-   with it.
+   the letter ranges of `src/unicode-letters.ts`, which flowchart and class
+   share) still agree with it.
 5. Classify the differences of the trees as in 4.7, step 4, and check as in 4.8.
 6. Show as the result: what was fixed, the number of differences of the trees by
    kind, and the mismatches that remain.

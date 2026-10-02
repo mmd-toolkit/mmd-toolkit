@@ -134,6 +134,33 @@ sequenceDiagram
   A ->> B: z
 ```
 
+空の説明ブロック `accDescr {}` は、それだけで 1 つの文です。
+`box` の中でも同じで、参加者の間に置けます。
+その後に同じ行で書かれた文や box の `end` は、それぞれの行に移し、
+mermaid.js は同じ box を読みます。
+
+入力 ([statements-one-per-line/empty-description-block-in-box-input.mmd](../tests/fixtures/sequence/statements-one-per-line/empty-description-block-in-box-input.mmd)):
+
+```mmd
+sequenceDiagram
+box G
+accDescr {} participant B
+participant C
+accDescr {} end
+```
+
+出力 ([statements-one-per-line/empty-description-block-in-box-output.mmd](../tests/fixtures/sequence/statements-one-per-line/empty-description-block-in-box-output.mmd)):
+
+```mmd
+sequenceDiagram
+  box G
+    accDescr {}
+    participant B
+    participant C
+    accDescr {}
+  end
+```
+
 ### 空行
 
 flowchart と同じです。

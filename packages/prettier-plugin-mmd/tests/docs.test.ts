@@ -29,6 +29,10 @@ const ruleDocuments: readonly {
     diagram: "sequence",
     rulesWithoutExamples: ["multi-line-statements"],
   },
+  {
+    diagram: "class",
+    rulesWithoutExamples: ["unclosed-backquoted-names"],
+  },
 ]
 const EXAMPLE_OPENING = "```mmd"
 const EXAMPLE_CLOSING = "```"

@@ -11,7 +11,7 @@
 フロントマターの本文、ディレクティブの引数、
 `@{ ... }`
 のデータブロックは書かれたとおりに保持します
-（[`embedded-data-opaque`](./known-divergences.ja.md#embedded-data-opaque) を参照）。
+（[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md) を参照）。
 mermaid.js が設定をどう求めるかは、一部の Db の値がそれに依存するので、
 参考として述べます。
 

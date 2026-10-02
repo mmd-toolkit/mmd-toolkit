@@ -331,7 +331,7 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
 で行い、フロントマター、ディレクティブ、
 コメント行を取り除く前にソース全体に適用します。
 フロントマターの中を除いて
-（[`html-tag-in-frontmatter`](./known-divergences.ja.md#html-tag-in-frontmatter) を参照）、
+（[`html-tag-in-frontmatter`](./known-divergences/html-tag-in-frontmatter.ja.md) を参照）、
 この仕様は、その帰結も含めて意図的にそのまま従います。
 
 - タグはコメント行の中で始まりえます。
@@ -435,7 +435,7 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
 本文に何が書かれていても入力は受理されます。
 mermaid.js は本文を YAML として解析し、
 入力を拒否することがあります
-（[`embedded-data-opaque`](./known-divergences.ja.md#embedded-data-opaque) を参照）。
+（[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md) を参照）。
 mermaid.js が本文をどう読むかは、
 [フロントマターの本文の読み方](#フロントマターの本文の読み方) で述べます。
 
@@ -652,7 +652,7 @@ common/directive-between-id-and-style] `A[mysty%%{init: {}}%%le:#x;]`
 矢印、キーワード、文字列のような、他の種類の単位の中のディレクティブは、
 入力を拒否させます。
 mermaid.js はそれを受理します。
-[`directive-as-token-boundary`](./known-divergences.ja.md#directive-as-token-boundary)
+[`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md)
 を見てください。
 
 コメント行の上のディレクティブは、
@@ -859,7 +859,7 @@ mermaid.js と同じく `error` 疑似図種です。
 mermaid.js は別の作り方をしたテキストで検出器をもう一度走らせ、
 それが入力を拒否することがあります。
 この仕様はそれを走らせません（[init ディレクティブ](#init-ディレクティブ) と
-[`embedded-data-opaque`](./known-divergences.ja.md#embedded-data-opaque) を参照）。
+[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md) を参照）。
 
 その後、検出器を登録順に試します。
 条件が最初に成り立ったものが図種を選びます。
@@ -1113,7 +1113,7 @@ U+00A0 や U+FEFF も含めて空白として扱います。
 入力が受理されるかどうかや、その木がどうなるかの判定には関わりません。
 この仕様の実装は、
 フロントマターの本文とディレクティブの引数を書かれたとおりに保持し、
-解析も検査もしません（[`embedded-data-opaque`](./known-divergences.ja.md#embedded-data-opaque) を参照）。
+解析も検査もしません（[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md) を参照）。
 この節は、
 mermaid.js がフロントマターとディレクティブから設定をどう求めるかを述べます。
 一部の図の Db がその設定を読むからです。
@@ -1568,9 +1568,9 @@ fixture は `renderDiagram()` に従います。
 [known-divergences.ja.md](./known-divergences.ja.md) で定める差のうち、
 次のものがこの文書で定めることに関わります。
 
-- [`directive-as-token-boundary`](./known-divergences.ja.md#directive-as-token-boundary):
+- [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md):
   `RawText` でも `Identifier` でもない単位の中のディレクティブ。
-- [`html-tag-in-frontmatter`](./known-divergences.ja.md#html-tag-in-frontmatter):
+- [`html-tag-in-frontmatter`](./known-divergences/html-tag-in-frontmatter.ja.md):
   フロントマターの中で始まる HTML タグ。
-- [`embedded-data-opaque`](./known-divergences.ja.md#embedded-data-opaque):
+- [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md):
   この仕様が解析も検査もしない埋め込みデータ。

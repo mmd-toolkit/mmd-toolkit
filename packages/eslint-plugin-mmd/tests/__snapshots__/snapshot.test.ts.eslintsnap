@@ -320,6 +320,413 @@ Code:
 ---
 
 
+Test: nodes >> invalid >>> class/demo-classchart-83b40212
+Filename: class/demo-classchart-83b40212.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | Class01~T~ <|-- AveryLongClass : Cool
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [3]
+    | ^~~~~~~~~~ [4]  ^~~~~~~~~~~~~~ [8]
+    | ^~~~~~~ [5]     ^~~~~~~~~~~~~~ [9]
+    |         ^ [6]                    ^~~~ [10]
+    |            ^~~~ [7]
+  3 | <<interface>> Class01
+    | ~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~ [11]
+    | ^~~~~~~~~~~~~ [12]
+    |   ^~~~~~~~~ [13]
+    |               ^~~~~~~ [14]
+    |               ^~~~~~~ [15]
+  4 | Class03~T~ "0" *-- "0..n" Class04
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [16]
+    | ^~~~~~~~~~ [17]    ^~~~~~ [22]
+    | ^~~~~~~ [18]   ^~~ [21]   ^~~~~~~ [23]
+    |         ^ [19]            ^~~~~~~ [24]
+    |            ^~~ [20]
+  5 | Class05 "1" o-- "many" Class06
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [25]
+    | ^~~~~~~ [26]    ^~~~~~ [30]
+    | ^~~~~~~ [27]           ^~~~~~~ [31]
+    |         ^~~ [28]       ^~~~~~~ [32]
+    |             ^~~ [29]
+  6 | Class07~T~ .. Class08
+    | ~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~ [33]
+    | ^~~~~~~~~~ [34]
+    | ^~~~~~~ [35]  ^~~~~~~ [38]
+    |         ^ [36]
+    |            ^~ [37]
+    |               ^~~~~~~ [39]
+  7 | Class09 "many" --> "1" C2 : Where am i?
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [40]
+    | ^~~~~~~ [41]   ^~~ [44]     ^~~~~~~~~~~ [48]
+    | ^~~~~~~ [42]       ^~~ [45]
+    |         ^~~~~~ [43]    ^~ [46]
+    |                        ^~ [47]
+  8 |   Class09 "0" --* "1..n" C3
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~ [49]
+    |   ^~~~~~~ [50]    ^~~~~~ [54]
+    |   ^~~~~~~ [51]           ^~ [55]
+    |           ^~~ [52]       ^~ [56]
+    |               ^~~ [53]
+  9 |   Class09 --|> Class07
+    | ~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~ [57]
+    |   ^~~~~~~ [58] ^~~~~~~ [61]
+    |   ^~~~~~~ [59] ^~~~~~~ [62]
+    |           ^~~~ [60]
+ 10 |   Class07 : equals()
+    | ~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~ [63]
+    |   ^~~~~~~ [64]
+    |   ^~~~~~~ [65]
+    |             ^~~~~~~~ [66]
+    |             ^~~~~~ [67]
+ 11 |   Class07 : Object[] elementData
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [68]
+    |   ^~~~~~~ [69]
+    |   ^~~~~~~ [70]
+    |             ^~~~~~~~~~~~~~~~~~~~ [71]
+    |             ^~~~~~~~~~~~~~~~~~~~ [72]
+ 12 |   Class01 : #size()
+    | ~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~ [73]
+    |   ^~~~~~~ [74]
+    |   ^~~~~~~ [75]
+    |             ^~~~~~~ [76]
+    |              ^~~~ [77]
+ 13 |   Class01 : -int chimp
+    | ~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~ [78]
+    |   ^~~~~~~ [79]
+    |   ^~~~~~~ [80]
+    |             ^~~~~~~~~~ [81]
+    |              ^~~~~~~~~ [82]
+ 14 |   Class01 : +int gorilla
+    | ~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [83]
+    |   ^~~~~~~ [84]
+    |   ^~~~~~~ [85]
+    |             ^~~~~~~~~~~~ [86]
+    |              ^~~~~~~~~~~ [87]
+ 15 |   Class08 <--> C2: Cool label
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [88]
+    |   ^~~~~~~ [89] ^~ [92]
+    |   ^~~~~~~ [90] ^~ [93]
+    |           ^~~~ [91]
+    |                    ^~~~~~~~~~ [94]
+ 16 |     class Class10 {
+    | ~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~\ [2]
+    |     ^~~~~~~~~~~~~~~\ [95]
+    |           ^~~~~~~ [96]
+    |           ^~~~~~~ [97]
+ 17 |     <<service>>
+    | ~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~~~~~~\ [95]
+    |     ^~~~~~~~~~~ [98]
+    |       ^~~~~~~ [99]
+ 18 |     int id
+    | ~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~\ [95]
+    |     ^~~~~~ [100]
+    |     ^~~~~~ [101]
+ 19 |     size()
+    | ~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~\ [95]
+    |     ^~~~~~ [102]
+    |     ^~~~ [103]
+ 20 |     }
+    | ~~~~~ [1]
+    | ~~~~~ [2]
+    | ~~~~~ [95]
+
+[1] Root
+[2] ClassDiagram
+[3] ClassRelationStatement
+[4] ClassName
+[5] Identifier
+[6] ClassLiteral
+[7] ClassArrow
+[8] ClassName
+[9] Identifier
+[10] ClassLiteral
+[11] ClassAnnotationStatement
+[12] ClassAnnotation
+[13] Identifier
+[14] ClassName
+[15] Identifier
+[16] ClassRelationStatement
+[17] ClassName
+[18] Identifier
+[19] ClassLiteral
+[20] StringLiteral
+[21] ClassArrow
+[22] StringLiteral
+[23] ClassName
+[24] Identifier
+[25] ClassRelationStatement
+[26] ClassName
+[27] Identifier
+[28] StringLiteral
+[29] ClassArrow
+[30] StringLiteral
+[31] ClassName
+[32] Identifier
+[33] ClassRelationStatement
+[34] ClassName
+[35] Identifier
+[36] ClassLiteral
+[37] ClassArrow
+[38] ClassName
+[39] Identifier
+[40] ClassRelationStatement
+[41] ClassName
+[42] Identifier
+[43] StringLiteral
+[44] ClassArrow
+[45] StringLiteral
+[46] ClassName
+[47] Identifier
+[48] ClassLiteral
+[49] ClassRelationStatement
+[50] ClassName
+[51] Identifier
+[52] StringLiteral
+[53] ClassArrow
+[54] StringLiteral
+[55] ClassName
+[56] Identifier
+[57] ClassRelationStatement
+[58] ClassName
+[59] Identifier
+[60] ClassArrow
+[61] ClassName
+[62] Identifier
+[63] ClassMemberStatement
+[64] ClassName
+[65] Identifier
+[66] ClassMethod
+[67] ClassLiteral
+[68] ClassMemberStatement
+[69] ClassName
+[70] Identifier
+[71] ClassAttribute
+[72] ClassLiteral
+[73] ClassMemberStatement
+[74] ClassName
+[75] Identifier
+[76] ClassMethod
+[77] ClassLiteral
+[78] ClassMemberStatement
+[79] ClassName
+[80] Identifier
+[81] ClassAttribute
+[82] ClassLiteral
+[83] ClassMemberStatement
+[84] ClassName
+[85] Identifier
+[86] ClassAttribute
+[87] ClassLiteral
+[88] ClassRelationStatement
+[89] ClassName
+[90] Identifier
+[91] ClassArrow
+[92] ClassName
+[93] Identifier
+[94] ClassLiteral
+[95] ClassDeclaration
+[96] ClassName
+[97] Identifier
+[98] ClassAnnotation
+[99] ClassLiteral
+[100] ClassAttribute
+[101] ClassLiteral
+[102] ClassMethod
+[103] ClassLiteral
+---
+
+
+Test: nodes >> invalid >>> class/tokens-method-fields
+Filename: class/tokens-method-fields.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | class A {
+    | ~~~~~~~~~\ [1]
+    | ~~~~~~~~~\ [2]
+    | ^~~~~~~~~\ [3]
+    |       ^ [4]
+    |       ^ [5]
+  3 | +foo(a: int) List~T~$
+    | ~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~~~~~~~~~~~~\ [3]
+    | ^~~~~~~~~~~~~~~~~~~~~ [6]
+    |  ^~~ [7]     ^~~~~~~ [9]
+    |      ^~~~~~ [8]
+  4 | }
+    | ~\ [1]
+    | ~ [2]
+    | ~ [3]
+  5 |
+    | ~ [1]
+
+[1] Root
+[2] ClassDiagram
+[3] ClassDeclaration
+[4] ClassName
+[5] Identifier
+[6] ClassMethod
+[7] ClassLiteral
+[8] ClassLiteral
+[9] ClassLiteral
+---
+
+
+Test: nodes >> invalid >>> class/spec-class-abe81127
+Filename: class/spec-class-abe81127.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | namespace `A::B` {
+    | ~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~\ [3]
+    |           ^~~~~~ [4]
+  3 | 	class `IPC::Sender`
+    | ~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~~~~~~~~~~~\ [3]
+    |  ^~~~~~~~~~~~~~~~~~~ [5]
+    |        ^~~~~~~~~~~~~ [6]
+    |        ^~~~~~~~~~~~~ [7]
+  4 | }
+    | ~ [1]
+    | ~ [2]
+    | ~ [3]
+
+[1] Root
+[2] ClassDiagram
+[3] ClassNamespaceStatement
+[4] StringLiteral
+[5] ClassDeclaration
+[6] ClassName
+[7] StringLiteral
+---
+
+
+Test: nodes >> invalid >>> class/lex-comment-blank-line-after
+Filename: class/lex-comment-blank-line-after.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | A --> B %% c
+    | ~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~\ [2]
+    | ^~~~~~~ [3]
+    | ^ [4] ^ [7]
+    | ^ [5] ^ [8]
+    |   ^~~ [6]
+  3 |   
+    | ~~\ [1]
+    | ~~\ [2]
+  4 | A : +int age
+    | ~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~ [2]
+    | ^~~~~~~~~~~~ [9]
+    | ^ [10]
+    | ^ [11]
+    |     ^~~~~~~~ [12]
+    |      ^~~~~~~ [13]
+  5 |
+    | ~ [1]
+
+[1] Root
+[2] ClassDiagram
+[3] ClassRelationStatement
+[4] ClassName
+[5] Identifier
+[6] ClassArrow
+[7] ClassName
+[8] Identifier
+[9] ClassMemberStatement
+[10] ClassName
+[11] Identifier
+[12] ClassAttribute
+[13] ClassLiteral
+---
+
+
+Test: nodes >> invalid >>> class/lex-member-percent
+Filename: class/lex-member-percent.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | class A {
+    | ~~~~~~~~~\ [1]
+    | ~~~~~~~~~\ [2]
+    | ^~~~~~~~~\ [3]
+    |       ^ [4]
+    |       ^ [5]
+  3 | +x %% c
+    | ~~~~~~~\ [1]
+    | ~~~~~~~\ [2]
+    | ~~~~~~~\ [3]
+    | ^~~~~~~ [6]
+    |  ^~~~~~ [7]
+  4 | }
+    | ~\ [1]
+    | ~ [2]
+    | ~ [3]
+  5 |
+    | ~ [1]
+
+[1] Root
+[2] ClassDiagram
+[3] ClassDeclaration
+[4] ClassName
+[5] Identifier
+[6] ClassAttribute
+[7] ClassLiteral
+---
+
+
 Test: tokens >> invalid >>> flowchart/spec-swimlanes-diagram-20540af2
 Filename: flowchart/spec-swimlanes-diagram-20540af2.mmd
 
@@ -549,4 +956,308 @@ Code:
 [6] Identifier "B"
 [7] Punctuator ":"
 [8] RawText "x"
+---
+
+
+Test: tokens >> invalid >>> class/demo-classchart-83b40212
+Filename: class/demo-classchart-83b40212.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~ [1]
+  2 | Class01~T~ <|-- AveryLongClass : Cool
+    | ^~~~~~~ [2]  ^~ [7]            ^ [9]
+    |        ^ [3]    ^~~~~~~~~~~~~~ [8]
+    |         ^ [4]                    ^~~~ [10]
+    |          ^ [5]
+    |            ^~ [6]
+  3 | <<interface>> Class01
+    | ^~ [11]    ^~ [13]
+    |   ^~~~~~~~~ [12]
+    |               ^~~~~~~ [14]
+  4 | Class03~T~ "0" *-- "0..n" Class04
+    | ^~~~~~~ [15]   ^ [20]     ^~~~~~~ [23]
+    |        ^ [16]   ^~ [21]
+    |         ^ [17]     ^~~~~~ [22]
+    |          ^ [18]
+    |            ^~~ [19]
+  5 | Class05 "1" o-- "many" Class06
+    | ^~~~~~~ [24] ^~ [27]   ^~~~~~~ [29]
+    |         ^~~ [25]
+    |             ^ [26]
+    |                 ^~~~~~ [28]
+  6 | Class07~T~ .. Class08
+    | ^~~~~~~ [30]  ^~~~~~~ [35]
+    |        ^ [31]
+    |         ^ [32]
+    |          ^ [33]
+    |            ^~ [34]
+  7 | Class09 "many" --> "1" C2 : Where am i?
+    | ^~~~~~~ [36]   ^~ [38] ^~ [41]
+    |         ^~~~~~ [37]       ^ [42]
+    |                  ^ [39]     ^~~~~~~~~~~ [43]
+    |                    ^~~ [40]
+  8 |   Class09 "0" --* "1..n" C3
+    |   ^~~~~~~ [44]  ^ [47]   ^~ [49]
+    |           ^~~ [45]
+    |               ^~ [46]
+    |                   ^~~~~~ [48]
+  9 |   Class09 --|> Class07
+    |   ^~~~~~~ [50] ^~~~~~~ [53]
+    |           ^~ [51]
+    |             ^~ [52]
+ 10 |   Class07 : equals()
+    |   ^~~~~~~ [54]    ^ [57]
+    |           ^ [55]   ^ [58]
+    |             ^~~~~~ [56]
+ 11 |   Class07 : Object[] elementData
+    |   ^~~~~~~ [59]
+    |           ^ [60]
+    |             ^~~~~~~~~~~~~~~~~~~~ [61]
+ 12 |   Class01 : #size()
+    |   ^~~~~~~ [62]   ^ [66]
+    |           ^ [63]  ^ [67]
+    |             ^ [64]
+    |              ^~~~ [65]
+ 13 |   Class01 : -int chimp
+    |   ^~~~~~~ [68]
+    |           ^ [69]
+    |             ^ [70]
+    |              ^~~~~~~~~ [71]
+ 14 |   Class01 : +int gorilla
+    |   ^~~~~~~ [72]
+    |           ^ [73]
+    |             ^ [74]
+    |              ^~~~~~~~~~~ [75]
+ 15 |   Class08 <--> C2: Cool label
+    |   ^~~~~~~ [76] ^~ [80]
+    |           ^ [77] ^ [81]
+    |            ^~ [78] ^~~~~~~~~~ [82]
+    |              ^ [79]
+ 16 |     class Class10 {
+    |     ^~~~~ ^~~~~~~ ^
+    |     [83]  [84]    [85]
+ 17 |     <<service>>
+    |     ^~ [86]  ^~ [88]
+    |       ^~~~~~~ [87]
+ 18 |     int id
+    |     ^~~~~~ [89]
+ 19 |     size()
+    |     ^~~~ [90]
+    |         ^ [91]
+    |          ^ [92]
+ 20 |     }
+    |     ^ [93]
+
+[1] Keyword "classDiagram"
+[2] Identifier "Class01"
+[3] Punctuator "~"
+[4] RawText "T"
+[5] Punctuator "~"
+[6] Punctuator "<|"
+[7] Punctuator "--"
+[8] Identifier "AveryLongClass"
+[9] Punctuator ":"
+[10] RawText "Cool"
+[11] Punctuator "<<"
+[12] Identifier "interface"
+[13] Punctuator ">>"
+[14] Identifier "Class01"
+[15] Identifier "Class03"
+[16] Punctuator "~"
+[17] RawText "T"
+[18] Punctuator "~"
+[19] String "\"0\""
+[20] Punctuator "*"
+[21] Punctuator "--"
+[22] String "\"0..n\""
+[23] Identifier "Class04"
+[24] Identifier "Class05"
+[25] String "\"1\""
+[26] Punctuator "o"
+[27] Punctuator "--"
+[28] String "\"many\""
+[29] Identifier "Class06"
+[30] Identifier "Class07"
+[31] Punctuator "~"
+[32] RawText "T"
+[33] Punctuator "~"
+[34] Punctuator ".."
+[35] Identifier "Class08"
+[36] Identifier "Class09"
+[37] String "\"many\""
+[38] Punctuator "--"
+[39] Punctuator ">"
+[40] String "\"1\""
+[41] Identifier "C2"
+[42] Punctuator ":"
+[43] RawText "Where am i?"
+[44] Identifier "Class09"
+[45] String "\"0\""
+[46] Punctuator "--"
+[47] Punctuator "*"
+[48] String "\"1..n\""
+[49] Identifier "C3"
+[50] Identifier "Class09"
+[51] Punctuator "--"
+[52] Punctuator "|>"
+[53] Identifier "Class07"
+[54] Identifier "Class07"
+[55] Punctuator ":"
+[56] RawText "equals"
+[57] Punctuator "("
+[58] Punctuator ")"
+[59] Identifier "Class07"
+[60] Punctuator ":"
+[61] RawText "Object[] elementData"
+[62] Identifier "Class01"
+[63] Punctuator ":"
+[64] Punctuator "#"
+[65] RawText "size"
+[66] Punctuator "("
+[67] Punctuator ")"
+[68] Identifier "Class01"
+[69] Punctuator ":"
+[70] Punctuator "-"
+[71] RawText "int chimp"
+[72] Identifier "Class01"
+[73] Punctuator ":"
+[74] Punctuator "+"
+[75] RawText "int gorilla"
+[76] Identifier "Class08"
+[77] Punctuator "<"
+[78] Punctuator "--"
+[79] Punctuator ">"
+[80] Identifier "C2"
+[81] Punctuator ":"
+[82] RawText "Cool label"
+[83] Keyword "class"
+[84] Identifier "Class10"
+[85] Punctuator "{"
+[86] Punctuator "<<"
+[87] RawText "service"
+[88] Punctuator ">>"
+[89] RawText "int id"
+[90] RawText "size"
+[91] Punctuator "("
+[92] Punctuator ")"
+[93] Punctuator "}"
+---
+
+
+Test: tokens >> invalid >>> class/tokens-method-fields
+Filename: class/tokens-method-fields.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~ [1]
+  2 | class A {
+    | ^~~~~ [2]
+    |       ^ [3]
+    |         ^ [4]
+  3 | +foo(a: int) List~T~$
+    | ^ [5]      ^ [9]    ^ [11]
+    |  ^~~ [6]     ^~~~~~~ [10]
+    |     ^ [7]
+    |      ^~~~~~ [8]
+  4 | }
+    | ^ [12]
+  5 |
+
+[1] Keyword "classDiagram"
+[2] Keyword "class"
+[3] Identifier "A"
+[4] Punctuator "{"
+[5] Punctuator "+"
+[6] RawText "foo"
+[7] Punctuator "("
+[8] RawText "a: int"
+[9] Punctuator ")"
+[10] RawText "List~T~"
+[11] Punctuator "$"
+[12] Punctuator "}"
+---
+
+
+Test: tokens >> invalid >>> class/spec-class-abe81127
+Filename: class/spec-class-abe81127.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~ [1]
+  2 | namespace `A::B` {
+    | ^~~~~~~~~ ^~~~~~ ^
+    | [2]       [3]    [4]
+  3 | 	class `IPC::Sender`
+    |  ^~~~~ ^~~~~~~~~~~~~
+    |  [5]   [6]
+  4 | }
+    | ^ [7]
+
+[1] Keyword "classDiagram"
+[2] Keyword "namespace"
+[3] String "`A::B`"
+[4] Punctuator "{"
+[5] Keyword "class"
+[6] String "`IPC::Sender`"
+[7] Punctuator "}"
+---
+
+
+Test: tokens >> invalid >>> class/lex-comment-blank-line-after
+Filename: class/lex-comment-blank-line-after.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~ [1]
+  2 | A --> B %% c
+    | ^ [2] ^ [5]
+    |   ^~ [3]
+    |     ^ [4]
+    |         ^~~~ [6]
+  3 |   
+  4 | A : +int age
+    | ^ [7]
+    |   ^ [8]
+    |     ^ [9]
+    |      ^~~~~~~ [10]
+  5 |
+
+[1] Keyword "classDiagram"
+[2] Identifier "A"
+[3] Punctuator "--"
+[4] Punctuator ">"
+[5] Identifier "B"
+[6] Comment " c"
+[7] Identifier "A"
+[8] Punctuator ":"
+[9] Punctuator "+"
+[10] RawText "int age"
+---
+
+
+Test: tokens >> invalid >>> class/lex-member-percent
+Filename: class/lex-member-percent.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~ [1]
+  2 | class A {
+    | ^~~~~ [2]
+    |       ^ [3]
+    |         ^ [4]
+  3 | +x %% c
+    | ^ [5]
+    |  ^~~~~~ [6]
+  4 | }
+    | ^ [7]
+  5 |
+
+[1] Keyword "classDiagram"
+[2] Keyword "class"
+[3] Identifier "A"
+[4] Punctuator "{"
+[5] Punctuator "+"
+[6] RawText "x %% c"
+[7] Punctuator "}"
 ---

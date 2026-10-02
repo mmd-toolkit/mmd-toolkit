@@ -64,18 +64,19 @@ values, they do not depend on `securityLevel`.
 `@braintree/sanitize-url` is reached through
 [`utils.formatUrl()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L247-L259),
 which Db classes call when they store a link. It cannot be replaced from
-outside, so a Db patch registered for the diagram type (`getDbPatch()` in
-`src/normalizers/index.ts`) changes the Db class, before the first Db of that
-type is summarized, to store the URL as written (trimmed), which is what
-`formatUrl()` returns under `securityLevel: loose`. For flowchart
+outside, so a Db patch registered for the diagram type (`getDbPatches()` in
+`src/normalizers/index.ts`) changes the Db class, before any input is parsed, to
+store the URL as written (trimmed), which is what `formatUrl()` returns under
+`securityLevel: loose`. For flowchart
 ([`FlowDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L553-L562)),
 `javascript:alert(1)` therefore stays as is and `https://example.com` gets no
-trailing slash. In mermaid@12.0.0, `formatUrl()` is also called by the Db of
-class diagrams
-([`classDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L414-L414))
-and agentflow
-([`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014));
-they need the same patch when their normalizers are added.
+trailing slash. The class Db does the same
+([`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)),
+and also sets the link target to `_top` under `securityLevel: sandbox`; its
+patch stores the target as written (or `_blank`), as the other levels give. In
+mermaid@12.0.0, `formatUrl()` is also called by the Db of agentflow
+([`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014)),
+which needs the same patch when its normalizer is added.
 
 ## Label text is recorded before HTML sanitization
 
@@ -182,15 +183,24 @@ no input meets an unpatched Db. In mermaid@12.0.0:
 
 ## Running without a known divergence
 
-`runMermaid()` and the functions beside it take the option `withoutDivergence`,
-the identifier of a known divergence. With it, mermaid.js runs with the lexer
-rules from which that divergence arises replaced by rules that read as the
-specification does, for the duration of the call only. The default run, the
-generator and `expected.json` never use it: they record mermaid.js as it is. An
-implementation uses it to check that a difference from mermaid.js on a marked
-input comes from the divergence alone, by comparing itself with mermaid.js read
-this way. The input may be of any diagram type; only the lexer of the diagram
-type the divergence belongs to changes, so other inputs give the default result.
+`runMermaid()` and the functions beside it take the option `withoutDivergences`,
+a list of identifiers of known divergences. With it, mermaid.js runs with the
+lexer rules from which those divergences arise replaced, or tried in another
+order, so that the lexer reads as the specification does, for the duration of
+the call only. The default run, the generator and `expected.json` never use it:
+they record mermaid.js as it is. An implementation uses it to check that a
+difference from mermaid.js on a marked input comes from the divergences alone,
+by comparing itself with mermaid.js read this way. Where the specification
+differs from mermaid.js in more than one way for a diagram type, an input may
+need several of them removed at once to be read as the specification does. Each
+identifier counts once, and an empty list runs mermaid.js as it is. The input
+may be of any diagram type; only the lexer of the diagram type a divergence
+belongs to changes, so a divergence of another diagram type changes nothing. Two
+divergences whose changes touch the same rule, the same rule order of a start
+state, or the function that gives one lexer its text cannot be removed together:
+the call throws an error that names both, since the change made last would undo
+the other. Options with a key that is no option make the call throw a
+`TypeError`, so that a misspelled option never runs mermaid.js as it is.
 
 The rules are listed in `src/divergence-removals.ts` and found in the lexer of
 the pinned mermaid.js by their compiled pattern, not by their position. When one
@@ -201,11 +211,36 @@ matches nothing, because the lexer picks the action of a rule by its position in
 the list. The calls run one at a time, so a replaced rule never reaches another
 call.
 
+A rule may also be replaced by two patterns, of which the lexer uses one when it
+has read only whitespace of the current line, and the other otherwise. A line
+here is a line of the text after mermaid's preprocessing, which the lexer reads:
+line breaks made line feeds, and the frontmatter, directives and comment lines
+taken out. What the lexer has read is the text it was given without what is left
+of it; when what is left is not an end of that text, because the lexer put back
+text that it had not read, the call stops with `MermaidEnvironmentError` instead
+of returning a result that may be wrong.
+
+In a start state of the lexer, the rules may also be tried in another order,
+with the rules that read as the specification does first; the rules themselves
+do not change. Such a rule is found among the rules that only that start state
+tries, since a rule that every start state tries can have the same pattern.
+
 - `comment-takes-character`, in the sequence lexer
   ([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)):
   the rule that reads a character other than `}` before `%%` together with the
   comment is taken out, so a comment starts at its `%%`; the rule for numbers
   also ends a number before `%%`, not only before a space or a line feed.
+- `comment-takes-line-break`, in the class lexer
+  ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
+  the rule that reads `%%`, the rest of the line and the line feeds after it
+  keeps that reading only for a comment with only whitespace before it on its
+  line; a comment after a unit ends at the end of its line, and the line feed
+  after it is read as a line feed.
+- `name-start-reads-unit`, in the class lexer
+  ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)):
+  inside a backquoted name and a generic type, the rule that closes it and the
+  rule that reads its text are tried first, so the text is read up to the
+  closing mark whatever it starts with.
 
 ## Text size
 

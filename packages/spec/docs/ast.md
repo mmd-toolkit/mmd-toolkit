@@ -138,17 +138,17 @@ wrote them, not in [converted form](./common.md#reading-a-source), which is how
 the lexer reads a text and how a diagram's Db normalization uses it. The value
 of a leaf node is the text of its range, or the part of it that its node type
 names; a [NumericLiteral](#numericliteral) holds the number that that text
-writes. Where the value is the text of the whole range, as for an
-[Identifier](#identifier) or a diagram's literal, it neither starts nor ends
-with whitespace, because a range runs from a token to a token, unless the node
-has no token; the whitespace written around a node belongs to no node. Where the
-value is the part inside delimiters that belong to the node's own tokens, such
-as the content of a [StringLiteral](#stringliteral) or of the string that a
-label starts with, or the text of a data block between `@{` and `}`, it keeps
-the whitespace written inside those delimiters, at its ends too: the label of
-`A[" x "]` has the value of a space, `x`, and a space, and the first data block
-of `A@{`, a line break, `shape: rect`, a line break, and `}` has the value of a
-line feed, `shape: rect`, and a line feed. [fixture:
+writes, and an [Identifier](#identifier) the texts of its units. Where the value
+is the text of the whole range, as for a diagram's literal, it neither starts
+nor ends with whitespace, because a range runs from a token to a token, unless
+the node has no token; the whitespace written around a node belongs to no node.
+Where the value is the part inside delimiters that belong to the node's own
+tokens, such as the content of a [StringLiteral](#stringliteral) or of the
+string that a label starts with, or the text of a data block between `@{` and
+`}`, it keeps the whitespace written inside those delimiters, at its ends too:
+the label of `A[" x "]` has the value of a space, `x`, and a space, and the
+first data block of `A@{`, a line break, `shape: rect`, a line break, and `}`
+has the value of a line feed, `shape: rect`, and a line feed. [fixture:
 flowchart/tokens-label-string-inner-whitespace] [fixture:
 flowchart/gram-data-consecutive-blocks] The two literal nodes,
 [StringLiteral](#stringliteral) and [NumericLiteral](#numericliteral), also have
@@ -184,15 +184,15 @@ token. The values of nodes skip those, but are not converted either (see
 The token kinds are these, and only these. Each diagram document says which
 kinds its tokens have; a kind is added here when a diagram needs it.
 
-| Kind         | Used by                                                                                                                                                                            | Meaning                                                                                                                                                                                |
-| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Keyword`    | [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens)                                                                                                       | A word with a fixed meaning at its position.                                                                                                                                           |
-| `Identifier` | [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens)                                                                                                       | A name that the author chooses.                                                                                                                                                        |
-| `Numeric`    | [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens)                                                                                                       | A number.                                                                                                                                                                              |
-| `String`     | [flowchart](./ast/flowchart.md#tokens)                                                                                                                                             | A quoted string, with its quotes.                                                                                                                                                      |
-| `RawText`    | every diagram (the frontmatter body), the `error` pseudo-diagram (see [ErrorDiagram](#errordiagram)), [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens) | Characters that the parser takes as one content without reading any structure in them, not enclosed in quotes (enclosed, they are a `String`), such as the text of a label or a style. |
-| `Punctuator` | every diagram (the frontmatter delimiters), [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens)                                                           | A delimiter, separator, or operator, such as `[` or `-->`.                                                                                                                             |
-| `Directive`  | every diagram                                                                                                                                                                      | A directive (see [Directive](#directive)).                                                                                                                                             |
+| Kind         | Used by                                                                                                                                                                                                            | Meaning                                                                                                                                                                                |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Keyword`    | [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens), [class](./ast/class.md#tokens)                                                                                                       | A word with a fixed meaning at its position.                                                                                                                                           |
+| `Identifier` | [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens), [class](./ast/class.md#tokens)                                                                                                       | A name that the author chooses.                                                                                                                                                        |
+| `Numeric`    | [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens)                                                                                                                                       | A number.                                                                                                                                                                              |
+| `String`     | [flowchart](./ast/flowchart.md#tokens), [class](./ast/class.md#tokens)                                                                                                                                             | A quoted string, with its quotes.                                                                                                                                                      |
+| `RawText`    | every diagram (the frontmatter body), the `error` pseudo-diagram (see [ErrorDiagram](#errordiagram)), [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens), [class](./ast/class.md#tokens) | Characters that the parser takes as one content without reading any structure in them, not enclosed in quotes (enclosed, they are a `String`), such as the text of a label or a style. |
+| `Punctuator` | every diagram (the frontmatter delimiters), [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens), [class](./ast/class.md#tokens)                                                           | A delimiter, separator, or operator, such as `[` or `-->`.                                                                                                                             |
+| `Directive`  | every diagram                                                                                                                                                                                                      | A directive (see [Directive](#directive)).                                                                                                                                             |
 
 Which characters form a token, and of which kind, is defined by each diagram
 document, except for the `Directive` tokens and the tokens of the frontmatter,
@@ -570,9 +570,9 @@ divergence (see [known-divergences.md](./known-divergences.md)).
 
 `Identifier` is also the name of a token kind, as in ESTree and ESLint, but a
 node and a token are different things. The node is reached from `Root.body`
-through child fields, and its `name` is the text of its range: the text of all
-its tokens, without the directives between them. A token is only in
-`Root.tokens`, and its `value` is the source text of its range.
+through child fields, and its `name` is the texts of its units joined in order
+(see [Identifier](#identifier)), without the directives in them. A token is only
+in `Root.tokens`, and its `value` is the source text of its range.
 `A%%{init: {}}%%B-->C` has one `Identifier` node with the name `AB`, and two
 `Identifier` tokens, `A` and `B`, with a `Directive` token between them.
 [fixture: flowchart/gram-id-across-directive]
@@ -588,24 +588,43 @@ whether something is an identifier is a matter of its syntactic form: it need
 not refer to anything, as the key of an object and the `prop` of `obj.prop` do
 not.
 
-| Field  | Type   | Meaning                                      |
-| ------ | ------ | -------------------------------------------- |
-| `name` | string | The text of its range (see [Nodes](#nodes)). |
+| Field  | Type   | Meaning                                              |
+| ------ | ------ | ---------------------------------------------------- |
+| `name` | string | The texts of its units, joined in order (see below). |
 
-Its tokens are `Identifier` tokens: one, or more when directives between its
-units cut it (see [common.md](./common.md#a-directive-is-a-token-boundary)).
-`A%%{init: {}}%%B-->C` has the vertex `AB`, whose Identifier has the two tokens
-`A` and `B`. [fixture: flowchart/gram-id-across-directive] Its range covers them
-all.
+Its `name` is made from the units of the diagram's lexer that it consists of
+(units are defined by each diagram document): the text of the range of each unit
+(see [Nodes](#nodes)), without the whitespace at its ends, joined in order.
+Whitespace inside one unit is part of the name, also next to a directive that
+cuts the unit; whitespace between two units is not. Its tokens are `Identifier`
+tokens: one for each unit, or more when a directive inside a unit cuts it (see
+[common.md](./common.md#a-directive-is-a-token-boundary)), and fewer where a
+diagram joins units into one token.
+
+- `A%%{init: {}}%%B-->C` has the vertex `AB`, whose Identifier is one unit cut
+  into the two tokens `A` and `B`. [fixture: flowchart/gram-id-across-directive]
+- In a class diagram, `class Foo Bar` declares a class whose Identifier has the
+  two units and tokens `Foo` and `Bar` and the name `FooBar`, and so does
+  `class Foo%%{init: {}}%% Bar`. [fixture: class/gram-name-spaces] [fixture:
+  class/lex-directive-between-name-parts]
+- In sequence, an id is one unit, which may contain whitespace:
+  `participant A B` has the participant `A B`, and
+  `participant A%%{init: {}}%% c%%B` the participant `A c%%B`, whose one unit is
+  cut into the tokens `A` and `c%%B`. [fixture: sequence/lex-id-context-space]
+  [fixture: sequence/lex-directive-in-id-before-space]
+
+Its range covers all its tokens.
 
 ### StringLiteral
 
-A string in quotes.
+A string in quotes: double quotes, or, for the backquoted names of class
+diagrams, backquotes.
 
-| Field   | Type   | Meaning                                                                                                                                                                                                                                                                                            |
-| ------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value` | string | Its content: what the diagram's string rules read between its delimiters, as the text of its range. With one pair of quotes, it is the text of its range without them; where a diagram nests delimiters, all of them are left out (for flowchart, see [Strings](./diagrams/flowchart.md#strings)). |
-| `raw`   | string | The source text of its range, with nothing left out and nothing converted: its quotes, and a comment region inside it, are part of it.                                                                                                                                                             |
+| Field    | Type    | Meaning                                                                                                                                                                                                                                                                                            |
+| -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`  | string  | Its content: what the diagram's string rules read between its delimiters, as the text of its range. With one pair of quotes, it is the text of its range without them; where a diagram nests delimiters, all of them are left out (for flowchart, see [Strings](./diagrams/flowchart.md#strings)). |
+| `raw`    | string  | The source text of its range, with nothing left out and nothing converted: its quotes, and a comment region inside it, are part of it.                                                                                                                                                             |
+| `closed` | boolean | Whether the string ends with its closing quote.                                                                                                                                                                                                                                                    |
 
 Its token is one `String` token, quotes included, and its range is that of the
 token, so `raw` equals the `value` of that token. `click A href "u"` has the URL
@@ -614,6 +633,25 @@ with the value `u` and the `raw` `"u"`; in `click A "u" "one`, a line break,
 and `two`, and its `raw` is the whole string, the comment line included.
 [fixture: flowchart/gram-click-href] [fixture:
 flowchart/tokens-string-literal-comment-line]
+
+A string is closed by its second quote. Where a diagram accepts a string that is
+not closed when the text ends, which only a backquoted name in a class diagram
+is (see
+[Strings, backquoted names, and generic types](./diagrams/class.md#strings-backquoted-names-and-generic-types)),
+its token and its range run to the last character of the source that is not
+whitespace or a line terminator, as every token ends (see
+[Invariants](#invariants)); line feeds inside it are part of it. Its `raw` has
+no closing quote, and its `value` is the text of its range without the opening
+quote. Its `closed` is false, as the `closed` of a [Directive](#directive) and
+of a description block such as
+[FlowchartAccDescrBlockStatement](./ast/flowchart.md#flowchartaccdescrblockstatement)
+is for those that are not closed; every other StringLiteral has `closed` true. A
+tool reads whether a string is closed from this field, and need not compare the
+characters of `raw`: a backquote alone before the end of the text is a
+backquoted name that is not closed, although its `raw` starts and ends with a
+backquote. [fixture: class/lex-backquote-unclosed-alone] [fixture:
+class/lex-backquote-unclosed] [fixture:
+class/tokens-backquote-unclosed-trailing-whitespace]
 
 ### NumericLiteral
 
@@ -642,6 +680,7 @@ of their own under `ast/`:
 - [Flowchart](./ast/flowchart.md): the diagram types `flowchart-v2`,
   `flowchart-elk`, and `swimlane`.
 - [Sequence](./ast/sequence.md): the diagram type `sequence`.
+- [Class](./ast/class.md): the diagram type `classDiagram`.
 
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of

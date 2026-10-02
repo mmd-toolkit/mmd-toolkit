@@ -68,7 +68,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 9,
@@ -208,7 +208,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     41,
@@ -335,7 +335,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 57,
@@ -475,7 +475,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     96,
@@ -602,7 +602,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 114,
@@ -742,7 +742,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     162,
@@ -1316,6 +1316,7 @@
           "type": "StringLiteral",
           "value": "index.html#link-clicked",
           "raw": "\"index.html#link-clicked\"",
+          "closed": true,
           "range": [
             447,
             472
@@ -1335,6 +1336,7 @@
           "type": "StringLiteral",
           "value": "link test",
           "raw": "\"link test\"",
+          "closed": true,
           "range": [
             473,
             484
@@ -1411,6 +1413,7 @@
           "type": "StringLiteral",
           "value": "click test",
           "raw": "\"click test\"",
+          "closed": true,
           "range": [
             503,
             515

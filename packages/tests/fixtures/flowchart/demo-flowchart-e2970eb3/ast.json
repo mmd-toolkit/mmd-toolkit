@@ -68,7 +68,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 9,
@@ -180,7 +180,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 63,
@@ -292,7 +292,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 97,
@@ -404,7 +404,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 130,
@@ -516,7 +516,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 145,
@@ -628,7 +628,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 160,
@@ -740,7 +740,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 183,
@@ -815,7 +815,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 198,
@@ -900,7 +900,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     208,
@@ -938,7 +938,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     212,
@@ -976,7 +976,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     216,
@@ -1014,7 +1014,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     220,
@@ -1052,7 +1052,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     224,
@@ -1090,7 +1090,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     228,
@@ -1180,6 +1180,7 @@
           "type": "StringLiteral",
           "value": "https://mermaid-js.github.io/mermaid/#/",
           "raw": "\"https://mermaid-js.github.io/mermaid/#/\"",
+          "closed": true,
           "range": [
             238,
             279
@@ -1199,6 +1200,7 @@
           "type": "StringLiteral",
           "value": "link test (open in same tab)",
           "raw": "\"link test (open in same tab)\"",
+          "closed": true,
           "range": [
             280,
             310
@@ -1256,6 +1258,7 @@
           "type": "StringLiteral",
           "value": "https://mermaid-js.github.io/mermaid/#/",
           "raw": "\"https://mermaid-js.github.io/mermaid/#/\"",
+          "closed": true,
           "range": [
             319,
             360
@@ -1275,6 +1278,7 @@
           "type": "StringLiteral",
           "value": "link test (open in new tab)",
           "raw": "\"link test (open in new tab)\"",
+          "closed": true,
           "range": [
             361,
             390
@@ -1332,6 +1336,7 @@
           "type": "StringLiteral",
           "value": "#link-clicked",
           "raw": "\"#link-clicked\"",
+          "closed": true,
           "range": [
             406,
             421
@@ -1390,6 +1395,7 @@
           "type": "StringLiteral",
           "value": "mailto:user@user.user",
           "raw": "\"mailto:user@user.user\"",
+          "closed": true,
           "range": [
             430,
             453
@@ -1409,6 +1415,7 @@
           "type": "StringLiteral",
           "value": "mailto test",
           "raw": "\"mailto test\"",
+          "closed": true,
           "range": [
             454,
             467
@@ -1466,6 +1473,7 @@
           "type": "StringLiteral",
           "value": "notes://do-your-thing/id",
           "raw": "\"notes://do-your-thing/id\"",
+          "closed": true,
           "range": [
             476,
             502
@@ -1485,6 +1493,7 @@
           "type": "StringLiteral",
           "value": "other protocol test",
           "raw": "\"other protocol test\"",
+          "closed": true,
           "range": [
             503,
             524
@@ -1542,6 +1551,7 @@
           "type": "StringLiteral",
           "value": "javascript:alert('test')",
           "raw": "\"javascript:alert('test')\"",
+          "closed": true,
           "range": [
             533,
             559
@@ -1561,6 +1571,7 @@
           "type": "StringLiteral",
           "value": "script test",
           "raw": "\"script test\"",
+          "closed": true,
           "range": [
             560,
             573

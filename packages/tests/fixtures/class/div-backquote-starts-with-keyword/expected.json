@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, name-start-reads-unit: a backquoted name may start with a keyword; here `note x` is the name. mermaid.js reads the keyword `note` and rejects the input."
+  },
+  "knownDivergence": "name-start-reads-unit",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nclassDiagramclass `note x`\n-------------------^\nExpecting 'ALPHA', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'NOTE'"
+  }
+}

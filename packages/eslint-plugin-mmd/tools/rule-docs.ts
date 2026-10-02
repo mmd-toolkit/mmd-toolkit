@@ -23,6 +23,14 @@ export const RULE_DOCS_DIR: string = fileURLToPath(
   new URL("../docs/rules/", import.meta.url),
 )
 
+/**
+ * The directory of the notes for implementing the rules: a rule's notes are at
+ * the same relative path as its document.
+ */
+export const RULE_NOTES_DIR: string = fileURLToPath(
+  new URL("../docs/rule-notes/", import.meta.url),
+)
+
 /** The suffix of a document in each language. */
 const SUFFIX: Record<DocumentLanguage, string> = { en: ".md", ja: ".ja.md" }
 
@@ -278,7 +286,10 @@ export async function renderDocuments(
   return documents
 }
 
-/** The rule documents under `docsDir`, by the rule name and language they are for. */
+/**
+ * The Markdown documents under `docsDir`, by the rule name and language they
+ * are for: the path without the suffix of its language.
+ */
 function documentsUnder(
   docsDir: string,
   directory = "",
@@ -296,19 +307,22 @@ function documentsUnder(
         : null
     if (language === null) continue
     const name = `${directory}${entry.slice(0, -SUFFIX[language].length)}`
-    if (name === "index") continue
     documents.push({ name, language })
   }
   return documents
 }
 
 /**
- * What does not match between the rules and their documents under `docsDir`:
- * a rule without a document in each language, a document without a rule, and
- * an English document whose first paragraph is not the rule's
- * `meta.docs.description`.
+ * What does not match between the rules and their documents under `docsDir`
+ * and their notes under `notesDir`: a rule without a document in each
+ * language, a document or notes without a rule, and an English document whose
+ * first paragraph is not the rule's `meta.docs.description`. A rule need not
+ * have notes: the notes of a rule are removed when it is implemented.
  */
-export function mismatches(docsDir: string = RULE_DOCS_DIR): string[] {
+export function mismatches(
+  docsDir: string = RULE_DOCS_DIR,
+  notesDir: string = RULE_NOTES_DIR,
+): string[] {
   const problems: string[] = []
   for (const name of Object.keys(rules)) {
     for (const language of ["en", "ja"] as const) {
@@ -326,10 +340,20 @@ export function mismatches(docsDir: string = RULE_DOCS_DIR): string[] {
     }
   }
   for (const { name, language } of documentsUnder(docsDir)) {
+    if (name === "index") continue
     if (!(name in rules)) {
       problems.push(
         `${ruleDocumentPath(docsDir, name, language)} is the document of no rule`,
       )
+    }
+  }
+  if (existsSync(notesDir)) {
+    for (const { name, language } of documentsUnder(notesDir)) {
+      if (!(name in rules)) {
+        problems.push(
+          `${ruleDocumentPath(notesDir, name, language)} is the notes document of no rule`,
+        )
+      }
     }
   }
   return problems

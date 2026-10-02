@@ -68,7 +68,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 9,
@@ -208,7 +208,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     28,
@@ -335,7 +335,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 35,
@@ -475,7 +475,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     54,
@@ -602,7 +602,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 61,
@@ -742,7 +742,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     80,

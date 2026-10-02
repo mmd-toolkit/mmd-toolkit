@@ -35,6 +35,17 @@ mermaid.js は、ほかのコメント行をラベルから取り除くが、
 `%%` の後に空白がある行はコメントで、報告しない。
 行末の空白はコードブロックの中に残らないので、下の例には載せない。
 
+mermaid.js がこうした行をテキストに残すのは、
+[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)
+がコメント行を取り除く式が、`%%` の後に 1 文字以上を求めるからである。
+2026-10-02 の時点で、これを変えるプルリクエスト
+[#7008](https://github.com/mermaid-js/mermaid/pull/7008)
+（「fix: empty comments」）は、
+open でマージされていない。
+それが参照する issue
+[#6505](https://github.com/mermaid-js/mermaid/issues/6505) は、
+open で、ラベルは「Type: Bug / Error」と「Status: Triage」である。
+
 この規則に**反する**コードの例:
 
 ```mmd
@@ -65,41 +76,3 @@ flowchart LR
 ## オプション
 
 この規則にはオプションがない。
-
-## 実装のための覚え書き
-
-この規則はまだ実装していない。
-ここには、実装するときに要ることを書く。
-
-### 木での現れ方
-
-規則は、`Root.comments` のコメントがない行で、次のどちらかを報告する。
-
-- `value` が `%%` の `Identifier` のトークンで、
-  ほかのトークンがない行にあるもの。
-  flowchart はそれを頂点の id として読む。
-- `FlowchartLabel` のトークン（`RawText` のトークン、
-  ラベルが文字列なら `String` のトークン）の `value` の中の行で、
-  2 つの行終端子に挟まれ、両端の空白を除くと `%%` であるもの。
-  トークンの値の中の行を読むことは値を読むことで、
-  テキストの字句解析のやり直しではない。
-
-後ろに空白があれば、その `%%` はコメントで、規則は報告しない。
-ラベルの中でも同じで、コメントについての条件がそれを除く。
-`%%%%{init: {}}%%` のように行にあるディレクティブはトークンではないので、
-これを変えない。
-
-### fixture
-
-規則が依拠する mermaid.js の読み方は、
-`@mmd-toolkit/tests` の次の fixture に記録されている。
-
-- `common/comment-bare`
-- `common/comment-bare-with-space`
-- `flowchart/comment-percent-before-directive`
-- `common/comment-bare-line-in-label`
-- `common/comment-bare-line-in-string-label`
-- `common/comment-percent-space-line-in-label`
-- `common/comment-bare-between-comment-lines`
-- `common/comment-bare-between-comment-lines-empty`
-- `common/comment-bare-between-comment-lines-space`

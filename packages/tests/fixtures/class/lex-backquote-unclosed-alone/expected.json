@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md StringLiteral: a backquote alone before the end of the text is a backquoted name that is not closed; its raw is one backquote, and its closed is false."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "\n\n",
+        "type": "",
+        "label": "\n\n",
+        "text": "\n\n",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

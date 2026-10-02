@@ -148,9 +148,12 @@ files the test's title path.
   `diagrams/swimlanes/swimlanesDiagram.spec.ts`, without `flow-huge.spec.js`:
   its one skipped test builds about 200,000 characters that mermaid.js rejects
   for exceeding `maxEdges`, which other fixtures cover. For sequence,
-  `diagrams/sequence/sequenceDiagram.spec.js`. The tests build most inputs in
-  loops and template literals, so each file is run against stubs and every text
-  it passes to mermaid.js is kept, rejected or not; the line is that of the call
+  `diagrams/sequence/sequenceDiagram.spec.js`. For class,
+  `diagrams/class/classDiagram.spec.ts`,
+  `diagrams/class/classDiagram-styles.spec.js` and
+  `diagrams/class/parser/class.spec.js`. The tests build most inputs in loops
+  and template literals, so each file is run against stubs and every text it
+  passes to mermaid.js is kept, rejected or not; the line is that of the call
   (`tools/src/spec-recorder.ts`). A text the detectors give another diagram type
   is left out.
 - Documentation: the `mermaid`, `mermaid-example` and `mermaid-nocode` blocks of

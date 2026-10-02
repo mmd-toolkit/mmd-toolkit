@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The statement context: `call` followed by the line feed enters the callback name context, which the text ends in."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...DiagramA --> call\n--------------------^\nExpecting 'STR', 'ALPHA', 'LINE', 'DOTTED_LINE', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'CALLBACK_NAME'"
+  }
+}

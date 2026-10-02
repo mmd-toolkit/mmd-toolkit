@@ -46,22 +46,3 @@ This rule has no options.
 ## Related Rules
 
 - [flowchart/no-ignored-text](../flowchart/no-ignored-text.md)
-
-## Implementation Notes
-
-The rule is not implemented yet. These notes are for implementing it.
-
-### How the tree shows it
-
-A `SequenceIgnoredStatement`.
-
-### Fixtures
-
-The behavior of mermaid.js that the rule relies on is recorded in these fixtures
-of `@mmd-toolkit/tests`:
-
-- `sequence/db-ignored-line-after-wrapped-message`
-- `sequence/db-wrapped-message-closed`
-- `sequence/lex-invalid-line-parenthesis`
-- `sequence/lex-invalid-line-slash`
-- `sequence/lex-invalid-line-two-units`

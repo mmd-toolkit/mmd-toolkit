@@ -8,7 +8,7 @@ unchanged. This document lists where that does not hold, and why.
 
 ## Inputs read differently from mermaid.js
 
-The parser that the plugin uses reads the same inputs as mermaid.js, with six
+The parser that the plugin uses reads the same inputs as mermaid.js, with nine
 deliberate differences, whose exact definitions are in the specification's
 [Known divergences](../../spec/docs/known-divergences.md), and without the site
 configuration.
@@ -50,7 +50,7 @@ as a syntax error and leaves it unchanged.
 
 In flowchart, `click` is a reserved word: the word `click` followed by
 whitespace may only start a click statement (the specification's
-[`click-reserved-word`](../../spec/docs/known-divergences.md#click-reserved-word)).
+[`click-reserved-word`](../../spec/docs/known-divergences/click-reserved-word.md)).
 mermaid.js enters its click context wherever it reads that word, and accepts
 some inputs that have it elsewhere, often drawing something other than what was
 written. For example, mermaid.js reads `A-->B click ""` as the edge from A to B,
@@ -68,7 +68,7 @@ In flowchart, an empty string (`""`), an empty call (`call ()`), and an empty
 description block (`accDescr {}`) that does not start a statement hold nothing,
 and they can lie between any two tokens, where the tree has no place for them
 (the specification's
-[`tokenless-empty-forms`](../../spec/docs/known-divergences.md#tokenless-empty-forms)).
+[`tokenless-empty-forms`](../../spec/docs/known-divergences/tokenless-empty-forms.md)).
 mermaid.js accepts them in many such places, as if they were not there:
 `A-->|x""|B` is the edge from A to B with the label `x`, and `A call ()-->B` and
 `A accDescr {}` are accepted too. The plugin reports such input as a syntax
@@ -78,6 +78,12 @@ formatted as any other: the whitespace between its tokens follows
 [Whitespace between tokens](./flowchart.md#whitespace-between-tokens), and a
 line break inside it is kept, with the `}` at the level of the `accDescr`.
 
+In a class diagram, the same holds for an empty string where the grammar takes
+none, an empty backquoted name, an empty generic type that does not end a class
+name, an empty call, and an empty description block that does not start a
+statement: `"" A --> B`, `class A``B`, and `class A~~B` are reported as syntax
+errors.
+
 This difference goes one way only: input that mermaid.js rejects is never
 accepted.
 
@@ -85,7 +91,7 @@ accepted.
 
 In a sequence diagram, a comment starts at its `%%`, and the character before
 the `%%` belongs to what comes before it (the specification's
-[`comment-takes-character`](../../spec/docs/known-divergences.md#comment-takes-character)).
+[`comment-takes-character`](../../spec/docs/known-divergences/comment-takes-character.md)).
 mermaid.js reads that character as part of the comment in some places: it reads
 `autonumber 5%% c` without the number 5, rejects `A->>B:%% c`, which is the
 message `%% c` here, and accepts a line `C%% c`, which is rejected here. The
@@ -93,6 +99,46 @@ plugin keeps whether whitespace is written before the mark of a comment, so that
 mermaid.js reads `autonumber 5%% c` as before. It prints `A->>B:%% c` as
 `A ->> B: %% c`, which mermaid.js reads as this specification does. It reports
 what this specification rejects as a syntax error and leaves it unchanged.
+
+This difference goes both ways.
+
+### A comment that takes the line breaks after it
+
+In a class diagram, a comment after a statement ends at the end of its line (the
+specification's
+[`comment-takes-line-break`](../../spec/docs/known-divergences/comment-takes-line-break.md)).
+mermaid.js reads the line breaks after it as part of the comment, up to a line
+of only whitespace, and the next line as part of the same statement: it rejects
+`A --> B %% c` followed by a line `class C`, which is two statements here, and
+reads `A --> B %% c` followed by a line `A : +int age` as a relation from A to
+`BA`. The plugin keeps comments where they are, and keeps a line of only
+whitespace after such a comment (see
+[A line of only whitespace after a comment](#a-line-of-only-whitespace-after-a-comment)),
+so that mermaid.js reads the formatted text as it read the input.
+
+This difference goes both ways.
+
+### A text that starts with `classDiagram` and a word character
+
+A text whose first word is `classDiagram` followed by an ASCII word character,
+such as `classDiagramX`, has no header and is rejected here (the specification's
+[`headerless-empty-ending`](../../spec/docs/known-divergences/headerless-empty-ending.md)).
+mermaid.js accepts it when the text ends with an empty title, description, or
+call, or a string opened at the end of a click statement. The plugin reports it
+as a syntax error and leaves it unchanged.
+
+This difference goes one way only: input that mermaid.js rejects is never
+accepted.
+
+### The start of a backquoted name or a generic type
+
+In a class diagram, a backquoted name or the text of a generic type may start
+with `"`, `~`, `<<`, `>>`, or a keyword such as `note` (the specification's
+[`name-start-reads-unit`](../../spec/docs/known-divergences/name-start-reads-unit.md)).
+mermaid.js reads that unit instead of the name: it rejects ``class `note` ``,
+which declares the class `note` here, and reads ``A `"1"` --> B`` with the
+cardinality `1`, where this is a relation from `A"1"`. The plugin keeps
+backquoted names and generic types as written.
 
 This difference goes both ways.
 
@@ -191,6 +237,36 @@ which the formatter does not write, is what joins its lines. So is a title with
 a comment line between `title` and its text: the comment line is removed before
 mermaid.js reads the text, so the line after it is the title. See
 [Multi-line statements](./sequence.md#multi-line-statements).
+
+## A line of only whitespace after a comment
+
+In a class diagram, a line of only whitespace right after a line that ends with
+a comment after a statement is printed as a line of one space, where any other
+empty line is printed without whitespace. mermaid.js reads the line breaks after
+such a comment as part of the comment, and the next line as part of the
+commented statement, unless a line of only whitespace comes between them (see
+[A comment that takes the line breaks after it](#a-comment-that-takes-the-line-breaks-after-it)):
+`A --> B %% c`, a line of two spaces, and `A : +int age` is a relation and a
+member, and without the spaces, a relation from A to `BA`. An editor that
+removes whitespace at the ends of lines removes that space too, and mermaid.js
+then reads the diagram otherwise. See [Comments](./class.md#comments).
+
+## Class labels and member lines
+
+In a class diagram, a member line and a generic type are kept as written: the
+whitespace after a visibility mark and between the two `~` is part of the Db. A
+label of only whitespace keeps the whitespace after its `:`, at the end of its
+line: `A --> B : ` has an empty title and `A --> B` none. On a line that holds a
+`;`, whether whitespace follows the `:` of a label is kept as written, since the
+line rule of mermaid.js reads a `:` directly followed by text up to a `#`. See
+[Labels](./class.md#labels) and [Member lines](./class.md#member-lines).
+
+## Unclosed backquoted names
+
+A backquoted name that is not closed runs to the end of the text, with the
+whitespace and line breaks at its end. It is printed as written to the end of
+the text, and no line break is added after it. See
+[Unclosed backquoted names](./class.md#unclosed-backquoted-names).
 
 ## Frontmatter
 

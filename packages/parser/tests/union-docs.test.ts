@@ -26,6 +26,14 @@ const DOCUMENTED_UNIONS: Readonly<Record<string, readonly string[]>> = {
     "SequenceNotePlacement",
     "SequenceWrap",
   ],
+  "src/ast/class.ts": [
+    "ClassArrowMarker",
+    "ClassArrowLine",
+    "ClassLinkTarget",
+    "ClassDirection",
+    "ClassVisibility",
+    "ClassClassifier",
+  ],
 }
 
 /** The descriptions of the values of one union type, as two lists of `[value, text]`. */

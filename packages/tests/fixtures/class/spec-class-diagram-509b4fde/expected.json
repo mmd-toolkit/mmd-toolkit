@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 2148,
+    "test": "given a class diagram with relationships,  > when parsing classDiagram with text labels > should parse two classes with text labels and css class shorthands"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "C1",
+        "type": "",
+        "label": "Class 1 with text label",
+        "text": "Class 1 with text label",
+        "shape": "classBox",
+        "cssClasses": "default styleClass1",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "member1"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "C2",
+        "type": "",
+        "label": "Class 2 !@#$%^&*() label",
+        "text": "Class 2 !@#$%^&*() label",
+        "shape": "classBox",
+        "cssClasses": "default styleClass2",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "C1",
+        "id2": "C2",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      }
+    ],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

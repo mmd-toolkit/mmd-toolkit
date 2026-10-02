@@ -92,6 +92,13 @@ const SPEC_FILES: Readonly<
   // participants of every shape, which the documentation and the demos also
   // show.
   sequence: () => ["diagrams/sequence/sequenceDiagram.spec.js"],
+  // The other test files of the directory test the Db, the member parser and
+  // the drawing functions on values built in code; they pass no text.
+  class: () => [
+    "diagrams/class/classDiagram.spec.ts",
+    "diagrams/class/classDiagram-styles.spec.js",
+    "diagrams/class/parser/class.spec.js",
+  ],
 }
 
 /** The fence lines that open a mermaid block in the documentation. */

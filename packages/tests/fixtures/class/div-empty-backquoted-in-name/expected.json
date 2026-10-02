@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, tokenless-empty-forms: an empty backquoted name inside a name."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "AB",
+        "type": "",
+        "label": "AB",
+        "text": "AB",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

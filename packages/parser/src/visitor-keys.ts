@@ -1,4 +1,5 @@
 import type { Node } from "./ast.ts"
+import { classVisitorKeys } from "./visitor-keys/class.ts"
 import { flowchartVisitorKeys } from "./visitor-keys/flowchart.ts"
 import { sequenceVisitorKeys } from "./visitor-keys/sequence.ts"
 
@@ -23,4 +24,5 @@ export const visitorKeys: VisitorKeys = {
   NumericLiteral: [],
   ...flowchartVisitorKeys,
   ...sequenceVisitorKeys,
+  ...classVisitorKeys,
 }

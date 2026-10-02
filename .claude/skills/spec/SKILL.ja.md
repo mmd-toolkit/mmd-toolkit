@@ -112,7 +112,7 @@ import { loadFixtures } from "<repo>/packages/tests/src/index.ts"
 import type { DiagramType } from "<repo>/packages/tests/src/index.ts"
 
 // The fixture directories; add a diagram type here when its directory exists.
-const diagrams: DiagramType[] = ["common", "flowchart"]
+const diagrams: DiagramType[] = ["common", "flowchart", "sequence", "class"]
 
 const wanted = process.argv[2]!
 for (const diagram of diagrams) {
@@ -201,8 +201,13 @@ fixture の引用（`[fixture:` の後で行が折り返されたものも読む
 
 ## 3. 図種を足すとき（工程 3）
 
-入力: その図種の工程 1 と 2
-（Db の正規化関数と、fixture の収集。tests の SKILL）が済んでいる。
+入力: その図種の工程 1 と 2（tests の SKILL）。
+Db の正規化関数と、収集した fixture。
+mermaid.js を読むこと（3.1）と木の案（3.3 の項目 4）は fixture が要らないので、
+収集の間に始めてよい。
+主張は、そのために書いた入力で確かめ（2.1）、
+収集した fixture が届いてから fixture にする。
+収集にすでにある入力に、主張のための 2 つ目の fixture を作らないためである。
 
 ### 3.1 mermaid.js を読む
 
@@ -275,7 +280,13 @@ index.md の「How to read a diagram document」の 5 節で書く。
 5. Known divergences: known-divergences.md の識別子のうち、
    この図種に当たるものと、
    それがこの図種でどう現れるか。
-   新しい差は known-divergences.md で定め、その表に行を足す。
+   新しい差は、それだけの文書 `known-divergences/<識別子>.md` と、
+   その `.ja.md` で定め、
+   known-divergences.md の表に行を足す。
+   文書は、known-divergences.md が挙げる部分を持つ
+   （構文、例のある差、mermaid.js がそう読む理由、規則とその理由、
+   書き手にとっての結果、見つかったときの mermaid.js の文書と issue、
+   件数と確かめ方）。
 
 ### 3.3 木のノードを足す
 

@@ -509,7 +509,7 @@ of characters that the string contexts read inside it are its **content**:
   an empty string is rejected: `""` alone on a line, `""A`, `A[""x]`,
   `A["a"""]`, and `A[x]""`. mermaid.js reads no token for an empty string and
   accepts these as if it were not there; they are the known divergence
-  [`tokenless-empty-forms`](../known-divergences.md#tokenless-empty-forms) (see
+  [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md) (see
   [Known divergences](#known-divergences)). Both reject `A --""> B`, because
   inside the text of a link the `""` does not end the opening `--`; [fixture:
   flowchart/lex-empty-string-line] [fixture:
@@ -639,7 +639,7 @@ unit of a click statement, which starts where a statement starts, and a `click`
 unit anywhere else makes the input rejected. mermaid.js enters its click context
 wherever its lexer reads `click` and whitespace, and accepts some inputs with
 such a `click` elsewhere; they are the known divergence
-[`click-reserved-word`](../known-divergences.md#click-reserved-word) (see
+[`click-reserved-word`](../known-divergences/click-reserved-word.md) (see
 [Known divergences](#known-divergences)). A click statement therefore has one
 `click` unit, at its start, and its click ids are those that the click context
 of that unit reads: `click A click href "u"`, `click A click B href "u"`,
@@ -703,7 +703,7 @@ alone on a line, `A call ()`, `call () B`, `A call ()-->B`, and `A-->call ()B`,
 also with a line feed between `(` and `)`; `A,call ()`, as the vertex `A,`; and,
 in a click statement, `click A call ()cb`, as `click A cb`, and
 `click A call ()href "u"`. They are the known divergence
-[`tokenless-empty-forms`](../known-divergences.md#tokenless-empty-forms). Both
+[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md). Both
 reject `A-->call () B`, because mermaid.js reads the whitespace after the empty
 call as a space before the target. [fixture: flowchart/gram-empty-call-line]
 [fixture: flowchart/gram-empty-call-after-vertex] [fixture:
@@ -765,7 +765,7 @@ it, and the input is rejected: `A accDescr {}`, `A accDescr {}-->B`, and
 `A accDescr {` and `}` on two lines. mermaid.js reads no token for an empty
 description block and accepts these, as if it were not there; these are the
 known divergence
-[`tokenless-empty-forms`](../known-divergences.md#tokenless-empty-forms). Both
+[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md). Both
 reject `A-->accDescr {} B`, because mermaid.js reads the space after the block
 as a space before the target, and `A accDescr {x}`, because a block with text is
 a statement of its own, which cannot start inside another. [fixture:
@@ -1071,7 +1071,7 @@ table, which mermaid.js gives it
 and `rectangle`. [fixture: flowchart/db-data-block-shape-names] The shape `(-` …
 `-)` has no such word: mermaid.js defines no shape `ellipse`, so
 `A@{ shape: ellipse }` is rejected by mermaid.js and accepted here (see
-[`embedded-data-opaque`](../known-divergences.md#embedded-data-opaque)), and
+[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md)), and
 drawing `A(-x-)` fails, which
 [issue #5976](https://github.com/mermaid-js/mermaid/issues/5976) reports, open
 and approved as a bug as of 2026-10-01; its acceptance and its Db are not
@@ -1188,7 +1188,14 @@ flowchart/gram-subgraph-name-end] So `subgraph Front end`, `A`, and `end` has
 the title `Front end`, a line feed, and `A`, and no members, while
 `subgraph fe [Front end]` has the id `fe`, the title `Front end`, and the member
 A. [fixture: flowchart/db-subgraph-name-end-word] [fixture:
-flowchart/db-subgraph-id-with-title-spaces]
+flowchart/db-subgraph-id-with-title-spaces] The documentation of flowcharts of
+mermaid.js warns at its start that the word `end` in all lowercase letters
+breaks a flowchart, and advises capitalizing it or any of its letters
+([flowchart.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L9-L11));
+it links to a workaround in
+[issue #1444](https://github.com/mermaid-js/mermaid/issues/1444), "Some node
+names break the diagrams", which was closed on 2020-06-23 with the labels
+`Type: Enhancement`, `Area: Documentation`, and `Good first issue!`.
 
 A name cannot contain a `click` unit, which only starts a click statement (see
 [Click and callbacks](#click-and-callbacks)): `subgraph click me`,
@@ -1834,7 +1841,7 @@ added. [fixture: flowchart/gram-data-consecutive-blocks]
 These divergences of [known-divergences.md](../known-divergences.md) apply to
 flowchart, and show in it as follows.
 
-- **[`directive-as-token-boundary`](../known-divergences.md#directive-as-token-boundary).**
+- **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.md).**
   The lexer reads the text as mermaid.js does, without its directives (see
   [Directives inside units](#directives-inside-units)), so, in the lexer and the
   grammar, a directive makes a difference only by lying inside a unit that is
@@ -1853,16 +1860,16 @@ flowchart, and show in it as follows.
   flowchart/div-directive-in-style-separator] [fixture:
   common/directive-in-string] [fixture:
   flowchart/div-directive-in-markdown-string]
-- **[`embedded-data-opaque`](../known-divergences.md#embedded-data-opaque).**
+- **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md).**
   The content of a data block is not read. mermaid.js reads it as YAML and
   rejects content that is not valid YAML and content that names an unknown
   shape; here they are accepted. [fixture: flowchart/div-data-invalid-yaml]
   [fixture: flowchart/div-data-unknown-shape]
-- **[`html-tag-in-frontmatter`](../known-divergences.md#html-tag-in-frontmatter).**
+- **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md).**
   In mermaid.js, an HTML tag that starts in the frontmatter can change how a `"`
   of the diagram is read; here it cannot. [fixture:
   flowchart/html-tag-starts-in-frontmatter]
-- **[`click-reserved-word`](../known-divergences.md#click-reserved-word).** A
+- **[`click-reserved-word`](../known-divergences/click-reserved-word.md).** A
   `click` unit that does not start a click statement makes the input rejected
   here (see [Click and callbacks](#click-and-callbacks)), while mermaid.js
   accepts these, for example: a `click` inside a statement, whose click context
@@ -1886,7 +1893,7 @@ flowchart, and show in it as follows.
   flowchart/db-subgraph-name-click-word] [fixture:
   flowchart/gram-subgraph-name-click-comma] [fixture:
   flowchart/gram-subgraph-name-bare-click]
-- **[`tokenless-empty-forms`](../known-divergences.md#tokenless-empty-forms).**
+- **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).**
   An empty string, an empty call, and an empty description block that does not
   start a statement make the input rejected here, because the tree has no place
   for them where they lie (see [Strings](#strings),

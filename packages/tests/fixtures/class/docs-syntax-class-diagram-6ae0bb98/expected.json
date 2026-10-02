@@ -1,0 +1,160 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/classDiagram.md",
+    "line": 471
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Developer",
+        "type": "",
+        "label": "Developer",
+        "text": "Developer",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "writeCode",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Company.Engineering.Backend"
+      },
+      {
+        "id": "Designer",
+        "type": "",
+        "label": "Designer",
+        "text": "Designer",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "createMockup",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Company.Engineering.Frontend"
+      },
+      {
+        "id": "CEO",
+        "type": "",
+        "label": "CEO",
+        "text": "CEO",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "makeDecisions",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Company"
+      }
+    ],
+    "relations": [
+      {
+        "id1": "CEO",
+        "id2": "Developer",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none",
+        "title": "oversees"
+      },
+      {
+        "id1": "CEO",
+        "id2": "Designer",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none",
+        "title": "oversees"
+      }
+    ],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "Company",
+        "label": "Company",
+        "classes": [
+          "CEO"
+        ],
+        "notes": [],
+        "children": [
+          "Company.Engineering"
+        ],
+        "explicit": true
+      },
+      {
+        "id": "Company.Engineering",
+        "label": "Engineering",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "Company.Engineering.Backend",
+          "Company.Engineering.Frontend"
+        ],
+        "parent": "Company",
+        "explicit": false
+      },
+      {
+        "id": "Company.Engineering.Backend",
+        "label": "Backend",
+        "classes": [
+          "Developer"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "Company.Engineering",
+        "explicit": true
+      },
+      {
+        "id": "Company.Engineering.Frontend",
+        "label": "Frontend",
+        "classes": [
+          "Designer"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "Company.Engineering",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

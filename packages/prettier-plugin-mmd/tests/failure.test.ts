@@ -34,6 +34,38 @@ describe("input the parser rejects", () => {
   )
 })
 
+// Class diagrams that mermaid.js and the parser reject: a `;` between
+// statements, and an empty body after a CSS class (diagrams/class.md, Class
+// statements). The error is on the line of the statement.
+const rejectedClassDiagrams = [
+  "classDiagram\nclass A; class B\n",
+  "classDiagram\nclass A:::c {}\n",
+]
+
+describe("a class diagram the parser rejects", () => {
+  it.each(rejectedClassDiagrams)(
+    "is reported as a syntax error in a standalone file: %j",
+    async (input) => {
+      const error: unknown = await formatMermaid(input).catch((e: unknown) => e)
+      expect(error).toBeInstanceOf(SyntaxError)
+      expect((error as Error).cause).toMatchObject({ name: "ParseError" })
+      expect((error as { loc?: unknown }).loc).toMatchObject({
+        start: { line: 2 },
+      })
+    },
+  )
+
+  it.each(rejectedClassDiagrams)(
+    "is left to Prettier inside Markdown: %j",
+    async (input) => {
+      const markdown = `Text\n\n\`\`\`mermaid\n${input}\`\`\`\n`
+      const formatted = await formatMarkdown(markdown)
+      expect(formatted).toBe(await formatMarkdownWithoutPlugin(markdown))
+      expect(formatted).toBe(markdown)
+    },
+  )
+})
+
 describe("input rejected because a directive lies inside a string", () => {
   // mermaid.js removes the directive and reads the label `a  b`; the parser
   // rejects a directive inside a string (fixture common/directive-in-string).

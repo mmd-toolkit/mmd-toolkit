@@ -132,7 +132,7 @@ export interface Unit extends DiagramUnit<UnitName> {
  * diagram text: its units, its diagram comments, in source order, the
  * characters other than whitespace at which a rule of the statement context
  * starts its match, in source order, which the tests need to find the
- * places of `comment-takes-character` (known-divergences.md), and the kind of
+ * places of known-divergences/comment-takes-character.md, and the kind of
  * the token of a `;` that the line rule ignores and that stands alone.
  */
 export interface SequenceLexing {

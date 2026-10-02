@@ -56,6 +56,7 @@ The plugin reads these diagram types:
 - Flowcharts: `flowchart-v2` (`flowchart` and `graph`), `flowchart-elk`, and
   `swimlane` (`swimlane-beta`).
 - Sequence diagrams: `sequence` (`sequenceDiagram`).
+- Class diagrams: `classDiagram` (`classDiagram` and `classDiagram-v2`).
 
 Other diagram types are reported as parse errors until they are supported.
 

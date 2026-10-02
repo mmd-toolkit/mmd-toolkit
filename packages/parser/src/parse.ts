@@ -1,6 +1,7 @@
 import type { Frontmatter, Range, Root } from "./ast.ts"
 import { buildDetectionInput, detect } from "./detection.ts"
 import type { DiagramInput } from "./diagram-parsing.ts"
+import { parseClassDiagram } from "./diagrams/class/index.ts"
 import { parseErrorDiagram } from "./diagrams/error.ts"
 import { parseSequenceDiagram } from "./diagrams/sequence/index.ts"
 import { parseFlowchartDiagram } from "./diagrams/flowchart/index.ts"
@@ -88,6 +89,8 @@ export function parse(text: string): Root {
       return parseFlowchartDiagram(input)
     case "sequence":
       return parseSequenceDiagram(input)
+    case "classDiagram":
+      return parseClassDiagram(input)
     default:
       throw new UnsupportedDiagramError(detected)
   }

@@ -68,7 +68,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 9,
@@ -208,7 +208,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     41,
@@ -335,7 +335,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 57,
@@ -475,7 +475,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     94,
@@ -602,7 +602,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 111,
@@ -742,7 +742,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     159,
@@ -1316,6 +1316,7 @@
           "type": "StringLiteral",
           "value": "flowchart.html#link-clicked",
           "raw": "\"flowchart.html#link-clicked\"",
+          "closed": true,
           "range": [
             444,
             473
@@ -1335,6 +1336,7 @@
           "type": "StringLiteral",
           "value": "link test",
           "raw": "\"link test\"",
+          "closed": true,
           "range": [
             474,
             485
@@ -1411,6 +1413,7 @@
           "type": "StringLiteral",
           "value": "click test",
           "raw": "\"click test\"",
+          "closed": true,
           "range": [
             504,
             516

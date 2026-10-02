@@ -8,6 +8,7 @@
  * of their own under `docs/ast/` and implemented in a file of the same name
  * under `ast/`.
  */
+import type { ClassDiagram, ClassNode } from "./ast/class.ts"
 import type { FlowchartDiagram, FlowchartNode } from "./ast/flowchart.ts"
 import type { SequenceDiagram, SequenceNode } from "./ast/sequence.ts"
 
@@ -167,7 +168,9 @@ export interface ErrorDiagram extends NodeBase {
 /**
  * ast.md, Shared leaf nodes > Identifier: a name that the author chooses,
  * such as an id. Its tokens are `Identifier` tokens: one, or more when
- * directives cut it; its range covers them all. No child fields.
+ * directives cut it, or when the grammar of its position allows whitespace
+ * between the parts of a name; its range covers them all. The whitespace
+ * between its tokens is not part of its name. No child fields.
  *
  * ```text
  * A --> B
@@ -182,7 +185,7 @@ export interface ErrorDiagram extends NodeBase {
  */
 export interface Identifier extends NodeBase {
   readonly type: "Identifier"
-  /** The text of its range (ast.md, Nodes). */
+  /** The texts of its tokens, joined in order (ast.md, Nodes). */
   readonly name: string
 }
 
@@ -203,6 +206,8 @@ export interface StringLiteral extends NodeBase {
   readonly value: string
   /** The source text of its range, with nothing left out and nothing converted: its quotes, and a comment region inside it, are part of it. */
   readonly raw: string
+  /** Whether the string ends with its closing quote; false only for a string that the text ends in, which only a backquoted name of a class diagram can be. */
+  readonly closed: boolean
 }
 
 /**
@@ -228,7 +233,8 @@ export interface NumericLiteral extends NodeBase {
  * ast.md, Root: DiagramBody. An `ErrorDiagram` or the body node type of a
  * diagram type. Each diagram adds its body type here.
  */
-export type DiagramBody = ErrorDiagram | FlowchartDiagram | SequenceDiagram
+export type DiagramBody =
+  ErrorDiagram | FlowchartDiagram | SequenceDiagram | ClassDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -308,3 +314,4 @@ export type Node =
   | NumericLiteral
   | FlowchartNode
   | SequenceNode
+  | ClassNode

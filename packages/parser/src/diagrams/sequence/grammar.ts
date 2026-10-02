@@ -78,7 +78,7 @@ const PARTICIPANT_KEYWORDS: readonly UnitName[] = [
  * The parser reads units only; it moves no cursor in the source. A unit
  * that no rule takes makes the input rejected, such as the units of an
  * empty description block that does not start a statement
- * (known-divergences.md, `tokenless-empty-forms`), for which
+ * (known-divergences/tokenless-empty-forms.md), for which
  * {@link SequenceGrammar.unexpected} names the form.
  */
 export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
@@ -295,7 +295,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Participants and boxes: `box-statement = "box" box-text? (
-   * participant-statement | newline )* "end"`.
+   * participant-statement | "accDescr" "{" "}" | newline )* "end"`.
    */
   private parseBoxStatement(): SequenceBoxStatement {
     const start = this.next
@@ -309,6 +309,8 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
         this.takeNewline()
       } else if (unit !== null && PARTICIPANT_KEYWORDS.includes(unit.name)) {
         body.push(this.parseParticipantStatement(this.next, false))
+      } else if (unit?.name === "accDescr") {
+        body.push(this.parseBoxDescriptionBlock())
       } else {
         throw this.unexpected(unit)
       }
@@ -327,6 +329,25 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
    * SequenceBoxText, or null when there is none. Each unit is a literal,
    * one `RawText` item.
    */
+  /**
+   * Participants and boxes: `"accDescr" "{" "}"` of a `box-statement`, an
+   * empty description block, a description block statement without text.
+   * A description block with text and a description statement are no
+   * statements of a box.
+   */
+  private parseBoxDescriptionBlock(): SequenceAccDescrBlockStatement {
+    const start = this.next
+    this.addItem("Keyword", [this.take("accDescr")])
+    this.addItem("Punctuator", [this.take("{")])
+    this.addItem("Punctuator", [this.take("}")])
+    return {
+      type: "SequenceAccDescrBlockStatement",
+      value: null,
+      closed: true,
+      ...this.placeFrom(start),
+    }
+  }
+
   private parseBoxText(): SequenceBoxText | null {
     const candidate = this.takeIf("color-candidate")
     const text = this.takeIf("text")

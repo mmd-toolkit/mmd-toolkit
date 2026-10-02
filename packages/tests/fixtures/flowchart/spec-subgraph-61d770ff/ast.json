@@ -31,7 +31,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 9,
@@ -116,7 +116,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     13,
@@ -229,7 +229,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     32,
@@ -267,7 +267,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     36,
@@ -352,7 +352,7 @@
                         }
                       },
                       "shape": null,
-                      "className": null,
+                      "cssClass": null,
                       "data": [],
                       "range": [
                         42,
@@ -390,7 +390,7 @@
                         }
                       },
                       "shape": null,
-                      "className": null,
+                      "cssClass": null,
                       "data": [],
                       "range": [
                         46,

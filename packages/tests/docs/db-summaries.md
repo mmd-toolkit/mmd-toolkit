@@ -95,3 +95,42 @@ Other values of the summary:
   records such a prototype as a first entry `__proto__`.
 - An actor's `type` and description can be set by its `@{ ... }` data block. See
   [embedded-data.md](./embedded-data.md).
+
+## class
+
+`normalizeClass()` (`src/normalizers/class.ts`) summarizes the Db of
+`classDiagram`, which mermaid.js detects for both `classDiagram` and
+`classDiagram-v2`. It keeps what `ClassDB` exposes through its getters, in the
+order the Db holds it: the direction, the titles, the classes with their members
+and methods, the relations, the notes, the namespaces, and the interfaces that
+lollipop relations create, which the renderer draws. A namespace lists its
+classes, notes and child namespaces by id. It drops the following, each for the
+reason given:
+
+- `classes[].domId` and `namespaces[].domId`: DOM ids built from counters, used
+  only for rendering.
+- The display text of a member or a method (`text`), built from its other
+  fields.
+- `notes[].index`: the number in the note's id.
+- The class definitions (`classDef`): the Db keeps them in a private map that
+  nothing reads
+  ([`ClassDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L40-L40));
+  what they change shows in `classes[].styles`.
+- Click callbacks: the Db keeps the function name and arguments only inside
+  closures.
+- Whitespace at the end of each style value (`classes[].styles`), as in the
+  flowchart summary: the grammar keeps the whitespace written before a comma or
+  the end of the line, and nothing reads it.
+
+Other values of the summary:
+
+- `classes[].text` is kept, although it is built from the label and the type:
+  `addClass` writes the type as `&lt;T&gt;` and a label statement as `<T>`
+  ([`addClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L112-L137)),
+  so the label and the type alone do not give it.
+- `classes[].haveCallback` is kept: unlike flowchart, `setClickEvent` sets it
+  under every `securityLevel`
+  ([`setClickEvent`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L434-L444)).
+- `classes[].link` is the URL as written (trimmed), and `classes[].linkTarget`
+  the target as written, or `_blank`, under every `securityLevel` (see
+  [expected-results.md](./expected-results.md)).

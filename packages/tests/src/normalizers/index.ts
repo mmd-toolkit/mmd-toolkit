@@ -1,4 +1,5 @@
 import type { DbSummary } from "../types.ts"
+import { normalizeClass, patchClassDb } from "./class.ts"
 import { normalizeFlowchart, patchFlowDb } from "./flowchart.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
 
@@ -22,6 +23,8 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["flowchart-elk", normalizeFlowchart],
   ["swimlane", normalizeFlowchart],
   ["sequence", normalizeSequence],
+  // `classDiagram` and `classDiagram-v2` are both detected as `classDiagram`.
+  ["classDiagram", normalizeClass],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])
@@ -34,6 +37,11 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
  *   `utils.formatUrl()`) have no effect, since summaries record values with
  *   the sanitizers disabled. Needed for every Db that calls `formatUrl()`:
  *   flowchart, class and agentflow in mermaid@12.0.0;
+ * - record a value that a site setting changes as the other settings give it
+ *   (the link target of class under `securityLevel: sandbox`), since summaries
+ *   are the same under every `securityLevel`;
+ * - give a stand-in for a browser function the Db calls while mermaid parses
+ *   (see `browser-stand-ins.ts`);
  * - record the effect of each `@{ ... }` data block (see `data-blocks.ts`),
  *   for every diagram type whose syntax has data blocks.
  */
@@ -61,6 +69,10 @@ const dbPatches: ReadonlyMap<string, DbPatchEntry> = new Map<
   ["flowchart-elk", { sampleText: "flowchart-elk LR\n", patch: patchFlowDb }],
   ["swimlane", { sampleText: "swimlane-beta LR\n", patch: patchFlowDb }],
   ["sequence", { sampleText: "sequenceDiagram\n", patch: patchSequenceDb }],
+  [
+    "classDiagram",
+    { sampleText: "classDiagram\n  class A\n", patch: patchClassDb },
+  ],
 ])
 
 /**

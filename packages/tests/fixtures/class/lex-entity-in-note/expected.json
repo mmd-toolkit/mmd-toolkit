@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The statement context: an entity in a string is part of its text, as its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "a ﬂ°amp¶ß b"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -166,6 +166,9 @@ pin した mermaid.js のタグにある mermaid.js のチェックアウトを�
   mermaid.js は `maxEdges` を超えるとして拒否するが、
   それは他の fixture で扱っている。
   sequence では、`diagrams/sequence/sequenceDiagram.spec.js`。
+  class では、`diagrams/class/classDiagram.spec.ts`、
+  `diagrams/class/classDiagram-styles.spec.js`、
+  `diagrams/class/parser/class.spec.js`。
   テストは入力の多くをループとテンプレートリテラルで作るので、
   各ファイルをスタブに対して実行し、mermaid.js に渡したテキストを、
   拒否されるものも含めてすべて取る。

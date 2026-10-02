@@ -31,7 +31,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 15,
@@ -116,7 +116,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     31,
@@ -229,7 +229,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     69,
@@ -314,7 +314,7 @@
                         }
                       },
                       "shape": null,
-                      "className": null,
+                      "cssClass": null,
                       "data": [],
                       "range": [
                         75,

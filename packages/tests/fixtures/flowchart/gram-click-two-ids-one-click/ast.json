@@ -31,7 +31,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 13,
@@ -106,7 +106,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 15,
@@ -199,6 +199,7 @@
           "type": "StringLiteral",
           "value": "u",
           "raw": "\"u\"",
+          "closed": true,
           "range": [
             32,
             35

@@ -9,7 +9,7 @@ import { lineEndOf, lineStartOf } from "./kept-lines.ts"
 import type { Line } from "./lines.ts"
 import {
   breakAfter,
-  endsInsideOpenDirective,
+  endsInsideOpenText,
   indentationOf,
   joinLines,
   lineBreakBetween,
@@ -48,6 +48,18 @@ export interface BlockRules<Statement extends Node> {
    * top level, such as a `;` of its own in flowchart.
    */
   readonly isDroppedAtTopLevel: (statement: Statement) => boolean
+  /**
+   * Whether a line of only whitespace after a line that ends with a comment
+   * is kept, as a line of one space where it stands among the comment lines
+   * and directive lines after that line, also at the start of a block.
+   * mermaid.js reads the line breaks after a comment that
+   * follows a unit of a class diagram as part of the comment, over empty
+   * lines and comment lines, up to a line of only whitespace (known
+   * divergence `comment-takes-line-break`), so without such a line it would
+   * read the next line as part of the statement, and formatting would
+   * change what it draws (docs/class.md, Comments).
+   */
+  readonly keepsWhitespaceLineAfterComment: boolean
 }
 
 /** Where a block of statements lies in the source, and which block it is. */
@@ -115,6 +127,16 @@ export function printBlock<Statement extends Node>(
   let offset = bounds.start
   let next = 0
   let continuesOpeningLine = false
+  let spaceLinePending = false
+
+  /**
+   * Adds a line, after a line of one space when the gap before it asks for
+   * one (see `BlockRules.keepsWhitespaceLineAfterComment`).
+   */
+  function pushLine(line: Line): void {
+    lines.push(spaceLinePending ? { ...line, spaceLineBefore: true } : line)
+    spaceLinePending = false
+  }
 
   /**
    * Adds the items of a gap: those on the line before it to that line, and
@@ -123,13 +145,17 @@ export function printBlock<Statement extends Node>(
   function addItemLines(gap: Gap): void {
     if (lines.length === 0) headerTrailing = gap.trailing
     else appendTrailing(lines, gap.trailing)
+    const keepsWhitespaceLines =
+      rules.keepsWhitespaceLineAfterComment && gap.trailingEndsWithComment
     for (const line of gap.lines) {
-      lines.push({
+      pushLine({
         doc: line.run.doc,
         blankBefore: lines.length > 0 && line.blankBefore,
         endsWithWhitespace: line.run.endsWithWhitespace,
+        spaceLineBefore: keepsWhitespaceLines && line.whitespaceLineBefore,
       })
     }
+    spaceLinePending = keepsWhitespaceLines && gap.whitespaceLineAfter
   }
 
   /** Whether the line that holds `position` keeps its statements together. */
@@ -218,7 +244,7 @@ export function printBlock<Statement extends Node>(
   if (isKept(bounds.start - 1)) {
     const stretch = findStretch(bounds.start, 0, 0, bounds.start)
     if (stretch.end > bounds.start) {
-      lines.push(printStretch(stretch))
+      pushLine(printStretch(stretch))
       continuesOpeningLine = true
       next = stretch.after
       offset = stretch.end
@@ -248,7 +274,7 @@ export function printBlock<Statement extends Node>(
     const gap = readGap(source, offset, start, "separator")
     addItemLines(gap)
     if (!startsStretch) {
-      lines.push({
+      pushLine({
         doc: withLeading(gap.leading, docs[index]),
         blankBefore: lines.length > 0 && gap.blankAfter,
         endsWithWhitespace: endsWithSpaceOrTab(
@@ -268,7 +294,7 @@ export function printBlock<Statement extends Node>(
       kept.writtenIndentation.has(lineStart) &&
       offset <= lineStart &&
       gap.leading === null
-    lines.push({
+    pushLine({
       ...line,
       doc: withLeading(gap.leading, line.doc),
       blankBefore: lines.length > 0 && gap.blankAfter,
@@ -333,7 +359,7 @@ export function printDiagramBlock(
           },
         ]
   const last = lines.at(-1) ?? header
-  const endOfText = endsInsideOpenDirective(source) ? "" : breakAfter(last, "")
+  const endOfText = endsInsideOpenText(source) ? "" : breakAfter(last, "")
   if (lines.length === 0) return [header.doc, endOfText]
   const headerBreak = block.continuesOpeningLine
     ? ""

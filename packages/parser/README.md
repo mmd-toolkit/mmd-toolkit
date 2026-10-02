@@ -59,7 +59,7 @@ object:
               },
               "range": [14, 21]
             },
-            "className": null,
+            "cssClass": null,
             "data": [],
             "range": [13, 21]
           }
@@ -88,7 +88,7 @@ object:
                 "type": "FlowchartVertex",
                 "id": { "type": "Identifier", "name": "B", "range": [26, 27] },
                 "shape": null,
-                "className": null,
+                "cssClass": null,
                 "data": [],
                 "range": [26, 27]
               }
@@ -112,6 +112,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - Flowcharts: `flowchart-v2` (`flowchart` and `graph`), `flowchart-elk`, and
   `swimlane` (`swimlane-beta`).
 - Sequence diagrams: `sequence` (`sequenceDiagram`).
+- Class diagrams: `classDiagram` (`classDiagram` and `classDiagram-v2`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -136,8 +137,9 @@ Returns the `Root` of the tree:
   token or a comment.
 - `comments`: every comment: each `%%` comment line, and each comment that a
   diagram's own lexer reads, such as `#` or `%` in the middle of a line in a
-  sequence diagram. Its `value` is the text after its mark: the `%%` of a
-  comment line, or the `#`, `%%`, or `%` that starts a sequence comment.
+  sequence diagram, or `%%` after a statement in a class diagram. Its `value` is
+  the text after its mark: the `%%` of a comment line or of a class comment, or
+  the `#`, `%%`, or `%` that starts a sequence comment.
 - `directives`: every `%%{ ... }%%` directive, with its `name`, its `value` (the
   text inside), and whether it is `closed`.
 - `frontmatter`: the frontmatter, or `null`. Its `value` is the YAML text as
@@ -189,8 +191,9 @@ The package exports a TypeScript type for every node, such as `Root`,
 `FlowchartVertex`, and `Identifier`, and `DiagramType`, the union of the diagram
 type ids. The names and fields are those of the specification's
 [`ast.md`](../spec/docs/ast.md),
-[`ast/flowchart.md`](../spec/docs/ast/flowchart.md), and
-[`ast/sequence.md`](../spec/docs/ast/sequence.md).
+[`ast/flowchart.md`](../spec/docs/ast/flowchart.md),
+[`ast/sequence.md`](../spec/docs/ast/sequence.md), and
+[`ast/class.md`](../spec/docs/ast/class.md).
 
 ## Walking the tree
 
@@ -240,33 +243,53 @@ these differences:
 
 - A directive inside a keyword, an arrow, a string, a number, or punctuation
   makes `parse()` throw, while mermaid.js reads the text around it as joined
-  ([`directive-as-token-boundary`](../spec/docs/known-divergences.md#directive-as-token-boundary)).
+  ([`directive-as-token-boundary`](../spec/docs/known-divergences/directive-as-token-boundary.md)).
 - The contents of the frontmatter, of directives, and of `@{ ... }` data blocks
   are not checked, so input that mermaid.js rejects because that content is
   malformed, has the wrong shape, or names something unknown, such as a shape,
   is accepted
-  ([`embedded-data-opaque`](../spec/docs/known-divergences.md#embedded-data-opaque)).
+  ([`embedded-data-opaque`](../spec/docs/known-divergences/embedded-data-opaque.md)).
 - An HTML tag that starts in the frontmatter does not change how the diagram's
   text is read
-  ([`html-tag-in-frontmatter`](../spec/docs/known-divergences.md#html-tag-in-frontmatter)).
+  ([`html-tag-in-frontmatter`](../spec/docs/known-divergences/html-tag-in-frontmatter.md)).
 - In a flowchart, `click` is a reserved word: `parse()` accepts it only at the
   start of a click statement, and throws for it anywhere else, as in
   `subgraph click me` or `click A href "u" click "tip"`, which mermaid.js
   accepts and often draws as something other than what was written
-  ([`click-reserved-word`](../spec/docs/known-divergences.md#click-reserved-word)).
+  ([`click-reserved-word`](../spec/docs/known-divergences/click-reserved-word.md)).
 - In a flowchart, an empty string (`""`) and an empty call (`call ()`) cannot be
   written anywhere, and an empty description block (`accDescr {}`) only where a
   statement starts: elsewhere `parse()` throws, as in `A[""x]` or
   `A call ()-->B`, while mermaid.js accepts such input as if they were not there
-  ([`tokenless-empty-forms`](../spec/docs/known-divergences.md#tokenless-empty-forms)).
+  ([`tokenless-empty-forms`](../spec/docs/known-divergences/tokenless-empty-forms.md)).
   In a sequence diagram, the same holds for the empty description block, as in
-  `A->>accDescr {}B: x`.
+  `A->>accDescr {}B: x`. In a class diagram, it holds for the empty string, the
+  empty call, and the empty description block, and also for an empty backquoted
+  name (` `` `) and an empty generic type (`~~`) that does not end a class name,
+  as in `class A~~B`; an empty string as a cardinality or a tooltip, and `~~` at
+  the end of a class name, are accepted.
 - In a sequence diagram, a comment starts at its `%%`, and a number may be
   followed by `%%`, while mermaid.js takes the character before the `%%` into
   the comment where a rule would start there: `autonumber 10%% c` starts at 10
   here, and mermaid.js rejects it; a line `C%% c` is rejected here, and
   mermaid.js reads it as a comment
-  ([`comment-takes-character`](../spec/docs/known-divergences.md#comment-takes-character)).
+  ([`comment-takes-character`](../spec/docs/known-divergences/comment-takes-character.md)).
+- In a class diagram, a comment after a statement ends at the end of its line,
+  while mermaid.js takes the line breaks after it and reads the next line as
+  part of the same statement: `A --> B %% c` followed by a line `class C` is
+  accepted here, and mermaid.js rejects it
+  ([`comment-takes-line-break`](../spec/docs/known-divergences/comment-takes-line-break.md)).
+- In a class diagram, a backquoted name and a generic type may start with any
+  character: ``class `note` `` declares the class `note`, which mermaid.js
+  rejects, and in ``A `"1"` --> B`` mermaid.js reads the string `"1"` as a
+  cardinality, while `parse()` reads a relation from the class `A"1"`
+  ([`name-start-reads-unit`](../spec/docs/known-divergences/name-start-reads-unit.md)).
+- A class diagram must start with its header, `classDiagram` or
+  `classDiagram-v2`, followed by a line break. mermaid.js accepts a text whose
+  header word runs into other word characters, as in `classDiagramX`, when the
+  text then ends right after `accTitle:` and a few other forms; `parse()` throws
+  for it
+  ([`headerless-empty-ending`](../spec/docs/known-divergences/headerless-empty-ending.md)).
 - `parse()` does not know the site configuration, so a flowchart with more edges
   than `maxEdges` (500 by default) is accepted.
 - A rejection for one of these differences is a `ParseError` like any other.
@@ -275,7 +298,8 @@ these differences:
 
 - The specification: [`ast.md`](../spec/docs/ast.md) (the tree),
   [`ast/flowchart.md`](../spec/docs/ast/flowchart.md) (the flowchart nodes),
-  [`ast/sequence.md`](../spec/docs/ast/sequence.md) (the sequence nodes), and
+  [`ast/sequence.md`](../spec/docs/ast/sequence.md) (the sequence nodes),
+  [`ast/class.md`](../spec/docs/ast/class.md) (the class nodes), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/error-positions.md`](./docs/error-positions.md): where a `ParseError`
   points.

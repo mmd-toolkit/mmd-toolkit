@@ -60,6 +60,36 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   - a participant statement inside a box for a participant that has another box
     already (`A participant cannot be in two boxes`): the id of the statement.
 
+## In a class diagram
+
+- When the first unit of the diagram text is not the header keyword, as in
+  `classDiagramX`, `range` is that unit, and the message is
+  `A class diagram starts with classDiagram or classDiagram-v2`. The lexer
+  reports it as soon as it reads the unit, also where the text then ends in a
+  context that may not end there.
+- Where no rule of the lexer matches, `range` is the character there, as at the
+  `"` of a string that is not closed.
+- When the text ends in a context that may not end there, `range` is what
+  entered that context, and the message says what is not closed: the `{` of a
+  member body or a namespace body
+  (`The member body has no } before the end of the text`,
+  `The namespace body has no } before the end of the text`), the first `~` of a
+  generic type (`The generic type has no closing ~ before the end of the text`),
+  the `call` and the `(` of a callback, as in a flowchart, `accTitle` and
+  `accDescr` (`accTitle has no text before the end of the text`,
+  `accDescr has no text before the end of the text`), and the `accDescr` of a
+  description block
+  (`The description block has no } before the end of the text`).
+- For a method line that cannot be divided, `range` is the member text, the line
+  without the whitespace at its ends, and the message is
+  `A method line needs a ( that is not its first character and that a ) follows`.
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace, and at the end of the text the empty range at the end of the text,
+  as in a flowchart.
+- For an annotation statement for a class that does not exist, a rejection
+  outside the grammar, `range` is the class name after the annotation, and the
+  message is `An annotation statement needs a class that exists`.
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input
@@ -87,7 +117,12 @@ rejected, `range` is the form that causes it, and the message names the cause:
   an empty form. An input that mermaid.js rejects as well, such as `A[""]`, is
   reported in the same way. Between a `click` at the start of a statement and
   its click ids, the first empty string is reported; when no click id follows
-  the empty strings, the `click` is.
+  the empty strings, the `click` is. In a class diagram, the empty forms also
+  include an empty backquoted name, its two backquotes, and an empty generic
+  type, its two `~`, with the messages
+  `An empty backquoted name cannot be written here` and
+  `An empty generic type can only end a class name`. An empty generic type is
+  found where the grammar cannot read the unit after it, as in `class A~~B`.
 
 `html-tag-in-frontmatter` changes which `"` characters are read as `'`. The
 parser does not tell that apart, so a rejection that follows from it is reported

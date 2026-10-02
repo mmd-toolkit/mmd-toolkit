@@ -391,8 +391,8 @@ class FlowchartDbBuilder {
         return []
       case "FlowchartClassDefStatement": {
         const styles = this.dbTextsOf(statement).map(classDefStyleOf)
-        for (const className of statement.classNames) {
-          const name = this.nameOf(className)
+        for (const cssClass of statement.cssClasses) {
+          const name = this.nameOf(cssClass)
           const classDef = this.classDefs.get(name) ?? { id: name, styles: [] }
           this.classDefs.set(name, classDef)
           classDef.styles.push(...styles)
@@ -402,7 +402,7 @@ class FlowchartDbBuilder {
       case "FlowchartClassStatement":
         this.classStep(
           statement.ids.map((id) => this.nameOf(id)),
-          this.nameOf(statement.className),
+          this.nameOf(statement.cssClass),
         )
         return []
       case "FlowchartClickCallbackStatement":
@@ -625,11 +625,11 @@ class FlowchartDbBuilder {
    * the vertex with each id, of the first edge with that id, and of the
    * last subgraph added with that id.
    */
-  private classStep(ids: readonly string[], className: string): void {
+  private classStep(ids: readonly string[], cssClass: string): void {
     for (const id of ids) {
-      this.vertices.get(id)?.classes.push(className)
-      this.edges.find((edge) => edge.id === id)?.classes.push(className)
-      this.lastSubgraphWithId(id)?.classes.push(className)
+      this.vertices.get(id)?.classes.push(cssClass)
+      this.edges.find((edge) => edge.id === id)?.classes.push(cssClass)
+      this.lastSubgraphWithId(id)?.classes.push(cssClass)
     }
   }
 
@@ -731,8 +731,8 @@ class FlowchartDbBuilder {
           }
         : null,
     )
-    if (vertex.className !== null) {
-      this.classStep(partsBetweenCommas(id), this.nameOf(vertex.className))
+    if (vertex.cssClass !== null) {
+      this.classStep(partsBetweenCommas(id), this.nameOf(vertex.cssClass))
     }
   }
 

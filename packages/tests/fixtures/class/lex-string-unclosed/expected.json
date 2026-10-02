@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Strings: a string that is not closed is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...assDiagramnote \"x\n--------------------^\nExpecting 'NEWLINE', 'EOF', 'STRUCT_STOP', got 'STR'"
+  }
+}

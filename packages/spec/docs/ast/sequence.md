@@ -76,10 +76,10 @@ Child fields: `id`. The range starts at `create` when it is there. With
 
 ### SequenceBoxStatement
 
-| Field  | Type                      | Meaning                                                                                     |
-| ------ | ------------------------- | ------------------------------------------------------------------------------------------- |
-| `text` | SequenceBoxText or null   | The text after `box`; null when there is none.                                              |
-| `body` | list of SequenceStatement | The statements up to `end`, in source order: participant statements and destroy statements. |
+| Field  | Type                      | Meaning                                                                                                                                 |
+| ------ | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `text` | SequenceBoxText or null   | The text after `box`; null when there is none.                                                                                          |
+| `body` | list of SequenceStatement | The statements up to `end`, in source order: participant statements, destroy statements, and description block statements without text. |
 
 Child fields: `text`, `body`.
 
@@ -218,8 +218,8 @@ As [FlowchartAccTitleStatement](./flowchart.md#flowchartacctitlestatement),
 [FlowchartAccDescrStatement](./flowchart.md#flowchartaccdescrstatement), and
 [FlowchartAccDescrBlockStatement](./flowchart.md#flowchartaccdescrblockstatement),
 with SequenceLiteral in place of FlowchartLiteral. An empty description block
-where a statement starts is a SequenceAccDescrBlockStatement whose `value` is
-null and whose `closed` is true.
+where a statement starts, also in the body of a box, is a
+SequenceAccDescrBlockStatement whose `value` is null and whose `closed` is true.
 
 ### SequenceLoopStatement, SequenceOptStatement, and SequenceBreakStatement
 
@@ -307,7 +307,7 @@ No child fields. Its value has no whitespace at its ends.
 | `value` | string | The text between `@{` and `}`, as written, whitespace included. |
 
 No child fields. The tree does not read the content (see
-[embedded-data-opaque](../known-divergences.md#embedded-data-opaque)). Its range
+[embedded-data-opaque](../known-divergences/embedded-data-opaque.md)). Its range
 runs from `@{` to `}`.
 
 ## Tokens

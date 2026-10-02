@@ -103,14 +103,14 @@ FlowchartAccDescrStatement、FlowchartAccDescrBlockStatement のどれかです�
 
 頂点の 1 回の出現です。
 
-| 欄          | 型                         | 意味                                                             |
-| ----------- | -------------------------- | ---------------------------------------------------------------- |
-| `id`        | Identifier                 | id。カンマを含む。                                               |
-| `shape`     | FlowchartShape または null | ラベルを伴う形。形なしで書かれた頂点では null。                  |
-| `className` | Identifier または null     | `:::` の後のクラス。カンマを含む。なければ null。                |
-| `data`      | FlowchartDataBlock の列    | 頂点の直後に続けて書いたデータブロック。ソースの順。なければ空。 |
+| 欄         | 型                         | 意味                                                             |
+| ---------- | -------------------------- | ---------------------------------------------------------------- |
+| `id`       | Identifier                 | id。カンマを含む。                                               |
+| `shape`    | FlowchartShape または null | ラベルを伴う形。形なしで書かれた頂点では null。                  |
+| `cssClass` | Identifier または null     | `:::` の後の CSS クラス。カンマを含む。なければ null。           |
+| `data`     | FlowchartDataBlock の列    | 頂点の直後に続けて書いたデータブロック。ソースの順。なければ空。 |
 
-子の欄: `id`、`shape`、`className`、`data`。
+子の欄: `id`、`shape`、`cssClass`、`data`。
 頂点の範囲はそのデータブロックを覆います。
 範囲は id から、データブロックがあれば最後のデータブロックまでで、
 その頂点を含む頂点のグループと頂点の文の範囲も同じです。
@@ -275,7 +275,7 @@ flowchart/db-arrow-dash-head-length]
 
 子の欄はありません。
 木は値を読みません
-（[`embedded-data-opaque`](../known-divergences.ja.md#embedded-data-opaque) を参照）。
+（[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md) を参照）。
 フロントマターと違い、値の範囲を別に持ちません。
 値はブロックのトークンの中にあります。
 [fixture: flowchart/gram-data-consecutive-blocks]
@@ -346,21 +346,21 @@ flowchart/db-style-whitespace-only-value]
 
 | 欄           | 型                                  | 意味                                                                                                                                                                                                   |
 | ------------ | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `classNames` | (Identifier または null) の列       | クラス名。`classDef` の後の `id-list` の、`,` の単位の間の部分。ソースの順。空の部分は null（[flowchart.ja.md](../diagrams/flowchart.ja.md#styleclasslinkstyle-の文) を参照）。                        |
+| `cssClasses` | (Identifier または null) の列       | CSS クラス。`classDef` の後の `id-list` の、`,` の単位の間の部分。ソースの順。空の部分は null（[flowchart.ja.md](../diagrams/flowchart.ja.md#styleclasslinkstyle-の文) を参照）。                      |
 | `styles`     | (FlowchartLiteral または null) の列 | スタイル。FlowchartStyleStatement と同じ。ただし、`\` の直後の `,` は 2 つのスタイルを分けず、スタイルの一部になる（[flowchart.ja.md](../diagrams/flowchart.ja.md#styleclasslinkstyle-の文) を参照）。 |
 
-子の欄: `classNames`、`styles`。
+子の欄: `cssClasses`、`styles`。
 [fixture: flowchart/db-classdef-names-empty] [fixture:
 flowchart/db-classdef-names-trailing-comma]
 
 ### FlowchartClassStatement
 
-| 欄          | 型                            | 意味                                                                                                         |
-| ----------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `ids`       | (Identifier または null) の列 | `class` の後の最初の id をリストとして読んだもの。その `id-list` の、`,` の単位の間の部分。空の部分は null。 |
-| `className` | Identifier                    | 2 つ目の id。カンマを含む。                                                                                  |
+| 欄         | 型                            | 意味                                                                                                         |
+| ---------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `ids`      | (Identifier または null) の列 | `class` の後の最初の id をリストとして読んだもの。その `id-list` の、`,` の単位の間の部分。空の部分は null。 |
+| `cssClass` | Identifier                    | 2 つ目の id、つまり CSS クラス。カンマを含む。                                                               |
 
-子の欄: `ids`、`className`。
+子の欄: `ids`、`cssClass`。
 [fixture: flowchart/db-class-ids-empty-first] [fixture:
 flowchart/db-class-ids-only-comma] [fixture: flowchart/gram-class-name-comma]
 

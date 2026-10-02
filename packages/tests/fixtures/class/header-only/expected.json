@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Detection: the grammar needs at least one statement after the header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nclassDiagram\n------------^\nExpecting 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NAMESPACE', 'ANNOTATION_START', 'CLASS', 'MEMBER', 'SEPARATOR', 'NOTE_FOR', 'NOTE', 'CLASSDEF', 'ALPHA', 'direction_tb', 'direction_bt', 'direction_rl', 'direction_lr', 'CALLBACK', 'LINK', 'CLICK', 'STYLE', 'CSSCLASS', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'EOF'"
+  }
+}

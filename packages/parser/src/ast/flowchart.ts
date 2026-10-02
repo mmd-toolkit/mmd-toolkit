@@ -121,7 +121,7 @@ export interface FlowchartVertexGroup extends NodeBase {
 
 /**
  * ast/flowchart.md, FlowchartVertex: one occurrence of a vertex. Its child
- * fields are `id`, `shape`, `className`, and `data`. Its range covers its
+ * fields are `id`, `shape`, `cssClass`, and `data`. Its range covers its
  * data blocks, and so do the ranges of the group and the statement that
  * hold it.
  *
@@ -136,8 +136,8 @@ export interface FlowchartVertex extends NodeBase {
   readonly id: Identifier
   /** The shape with its label; null when the vertex is written without one. */
   readonly shape: FlowchartShape | null
-  /** The class after `:::`, commas included; null when there is none. */
-  readonly className: Identifier | null
+  /** The CSS class after `:::`, commas included; null when there is none. */
+  readonly cssClass: Identifier | null
   /** The data blocks written right after the vertex, one after another, in source order; empty when there is none. */
   readonly data: readonly FlowchartDataBlock[]
 }
@@ -415,7 +415,7 @@ export interface FlowchartLabel extends NodeBase {
  * ast/flowchart.md, FlowchartDataBlock: one data block, from `@{` to the
  * `}` that closes it. Blocks written one after another are a node each, as
  * in the second example. No child fields. The tree does not read the value
- * (known-divergences.md, `embedded-data-opaque`).
+ * (known-divergences/embedded-data-opaque.md).
  *
  * ```text
  * A@{ shape: rect } --> B
@@ -476,7 +476,7 @@ export interface FlowchartStyleStatement extends NodeBase {
 
 /**
  * ast/flowchart.md, FlowchartClassDefStatement. Its child fields are
- * `classNames` and `styles`.
+ * `cssClasses` and `styles`.
  *
  * ```text
  * classDef a,b fill:#f00
@@ -486,10 +486,10 @@ export interface FlowchartStyleStatement extends NodeBase {
 export interface FlowchartClassDefStatement extends NodeBase {
   readonly type: "FlowchartClassDefStatement"
   /**
-   * The class names: the parts of the `id-list` after `classDef` between
+   * The CSS classes: the parts of the `id-list` after `classDef` between
    * its `,` units, in source order; null for a part that is empty.
    */
-  readonly classNames: readonly (Identifier | null)[]
+  readonly cssClasses: readonly (Identifier | null)[]
   /**
    * The styles, as in FlowchartStyleStatement, except that a `,` right
    * after a `\` does not separate two styles but is part of the style.
@@ -499,7 +499,7 @@ export interface FlowchartClassDefStatement extends NodeBase {
 
 /**
  * ast/flowchart.md, FlowchartClassStatement. Its child fields are `ids` and
- * `className`.
+ * `cssClass`.
  *
  * ```text
  * class A,B c;
@@ -513,8 +513,8 @@ export interface FlowchartClassStatement extends NodeBase {
    * between its `,` units; null for a part that is empty.
    */
   readonly ids: readonly (Identifier | null)[]
-  /** The second id, commas included. */
-  readonly className: Identifier
+  /** The second id, the CSS class, commas included. */
+  readonly cssClass: Identifier
 }
 
 /**

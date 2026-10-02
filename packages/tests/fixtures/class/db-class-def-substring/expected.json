@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary, styles: `classDef` applies to classes whose CSS classes contain its name anywhere."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default foo",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

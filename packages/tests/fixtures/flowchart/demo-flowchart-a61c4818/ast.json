@@ -68,7 +68,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 9,
@@ -180,7 +180,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 64,
@@ -292,7 +292,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 119,
@@ -367,7 +367,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 174,
@@ -470,7 +470,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     217,
@@ -560,7 +560,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 250,
@@ -663,7 +663,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     293,
@@ -753,6 +753,7 @@
           "type": "StringLiteral",
           "value": "/admin/user/view?id=1051",
           "raw": "\"/admin/user/view?id=1051\"",
+          "closed": true,
           "range": [
             365,
             391
@@ -772,6 +773,7 @@
           "type": "StringLiteral",
           "value": "AAA\n6000",
           "raw": "\"AAA\n6000\"",
+          "closed": true,
           "range": [
             392,
             402
@@ -829,6 +831,7 @@
           "type": "StringLiteral",
           "value": "/admin/user/view?id=1141",
           "raw": "\"/admin/user/view?id=1141\"",
+          "closed": true,
           "range": [
             442,
             468
@@ -848,6 +851,7 @@
           "type": "StringLiteral",
           "value": "BBB\n600",
           "raw": "\"BBB\n600\"",
+          "closed": true,
           "range": [
             469,
             478
@@ -905,6 +909,7 @@
           "type": "StringLiteral",
           "value": "/admin/user/view?id=1234",
           "raw": "\"/admin/user/view?id=1234\"",
+          "closed": true,
           "range": [
             518,
             544
@@ -924,6 +929,7 @@
           "type": "StringLiteral",
           "value": "CCC\n3000",
           "raw": "\"CCC\n3000\"",
+          "closed": true,
           "range": [
             545,
             555

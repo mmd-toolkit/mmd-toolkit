@@ -59,7 +59,7 @@ const tokenCount = root.tokens.length // 8
               },
               "range": [14, 21]
             },
-            "className": null,
+            "cssClass": null,
             "data": [],
             "range": [13, 21]
           }
@@ -88,7 +88,7 @@ const tokenCount = root.tokens.length // 8
                 "type": "FlowchartVertex",
                 "id": { "type": "Identifier", "name": "B", "range": [26, 27] },
                 "shape": null,
-                "className": null,
+                "cssClass": null,
                 "data": [],
                 "range": [26, 27]
               }
@@ -112,6 +112,7 @@ const tokenCount = root.tokens.length // 8
 - flowchart: `flowchart-v2`（`flowchart` と `graph`）、
   `flowchart-elk`、`swimlane`（`swimlane-beta`）。
 - シーケンス図: `sequence`（`sequenceDiagram`）。
+- クラス図: `classDiagram`（`classDiagram` と `classDiagram-v2`）。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -140,9 +141,9 @@ const tokenCount = root.tokens.length // 8
   空白でも行終端子でもない文字は、どれもトークンかコメントにあります。
 - `comments`: すべてのコメント。
   `%%` のコメント行と、図種の字句解析器がコメントとして読むもの
-  （シーケンス図の行の途中の `#` や `%` など）です。
+  （シーケンス図の行の途中の `#` や `%`、クラス図の文の後の `%%` など）です。
   `value` は印の後のテキストです。
-  印は、コメント行なら `%%`、
+  印は、コメント行とクラス図のコメントなら `%%`、
   シーケンス図のコメントなら先頭の `#`、`%%`、`%` です。
 - `directives`: すべての `%%{ ... }%%` のディレクティブ。
   `name`、`value`（内側のテキスト）、閉じているかどうかの `closed` を持ちます。
@@ -199,7 +200,8 @@ try {
 図種 id の合併型 `DiagramType` を公開しています。
 名前と欄は、仕様の [`ast.md`](../spec/docs/ast.ja.md)、
 [`ast/flowchart.md`](../spec/docs/ast/flowchart.ja.md)、
-[`ast/sequence.md`](../spec/docs/ast/sequence.ja.md) のものです。
+[`ast/sequence.md`](../spec/docs/ast/sequence.ja.md)、
+[`ast/class.md`](../spec/docs/ast/class.ja.md) のものです。
 
 ## 木を辿る
 
@@ -253,37 +255,62 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
 - キーワード、矢印、文字列、数、記号の内側にディレクティブがあると、
   `parse()` は例外を投げます。
   mermaid.js は前後のテキストをつないで読みます
-  （[`directive-as-token-boundary`](../spec/docs/known-divergences.ja.md#directive-as-token-boundary)）。
+  （[`directive-as-token-boundary`](../spec/docs/known-divergences/directive-as-token-boundary.ja.md)）。
 - フロントマター、ディレクティブ、
   `@{ ... }` のデータブロックの中身は確かめないので、中身が壊れている、
   形が違う、知らない名前（形の名前など）を挙げている、
   という理由で mermaid.js が拒否する入力も受理します
-  （[`embedded-data-opaque`](../spec/docs/known-divergences.ja.md#embedded-data-opaque)）。
+  （[`embedded-data-opaque`](../spec/docs/known-divergences/embedded-data-opaque.ja.md)）。
 - フロントマターで始まる HTML タグは、
   図のテキストの読み方を変えません
-  （[`html-tag-in-frontmatter`](../spec/docs/known-divergences.ja.md#html-tag-in-frontmatter)）。
+  （[`html-tag-in-frontmatter`](../spec/docs/known-divergences/html-tag-in-frontmatter.ja.md)）。
 - flowchart では、`click` は予約語です。
   `parse()` はクリックの文の始まりでだけ受け付け、
   `subgraph click me` や `click A href "u" click "tip"` のように、
   それ以外の場所では例外を投げます。
   mermaid.js はこれらを受理し、多くは書かれたものと違うものを描きます
-  （[`click-reserved-word`](../spec/docs/known-divergences.ja.md#click-reserved-word)）。
+  （[`click-reserved-word`](../spec/docs/known-divergences/click-reserved-word.ja.md)）。
 - flowchart では、空の文字列（`""`）と空の呼び出し（`call ()`）は、
   どこにも書けません。
   空の説明のブロック（`accDescr {}`）は、文の始まりにだけ書けます。
   それ以外の場所では、`A[""x]` や `A call ()-->B` のように、
   `parse()` は例外を投げます。
   mermaid.js は、それらがないかのように入力を受理します
-  （[`tokenless-empty-forms`](../spec/docs/known-divergences.ja.md#tokenless-empty-forms)）。
+  （[`tokenless-empty-forms`](../spec/docs/known-divergences/tokenless-empty-forms.ja.md)）。
   シーケンス図でも、空の説明のブロックについて同じです
   （`A->>accDescr {}B: x` など）。
+  クラス図では、空の文字列、空の呼び出し、空の説明のブロックに加えて、
+  空のバッククォートの名前（` `` `）と、
+  クラスの名前の終わりでない空のジェネリクスの型（`~~`）についても同じです
+  （`class A~~B` など）。
+  多重度やツールチップとしての空の文字列と、
+  クラスの名前の終わりの `~~` は受理します。
 - シーケンス図では、コメントは `%%` から始まり、
   数の後に `%%` が続いてもかまいません。
   mermaid.js は、そこで規則が始まるときには、
   `%%` の前の文字をコメントに含めます。
   `autonumber 10%% c` は、ここでは 10 から始まり、mermaid.js は拒否します。
   `C%% c` だけの行は、ここでは拒否し、mermaid.js はコメントとして読みます
-  （[`comment-takes-character`](../spec/docs/known-divergences.ja.md#comment-takes-character)）。
+  （[`comment-takes-character`](../spec/docs/known-divergences/comment-takes-character.ja.md)）。
+- クラス図では、文の後のコメントは、その行の終わりで終わります。
+  mermaid.js は、その後の改行も取り込み、
+  次の行を同じ文の続きとして読みます。
+  `A --> B %% c` の次に `class C` の行が続く入力は、
+  ここでは受理し、mermaid.js は拒否します
+  （[`comment-takes-line-break`](../spec/docs/known-divergences/comment-takes-line-break.ja.md)）。
+- クラス図では、バッククォートの名前とジェネリクスの型は、
+  どの文字で始まってもかまいません。
+  ``class `note` `` はクラス `note` を宣言し、mermaid.js はこれを拒否します。
+  ``A `"1"` --> B`` では、mermaid.js は文字列 `"1"` を多重度として読み、
+  `parse()` はクラス `A"1"` からの関係として読みます
+  （[`name-start-reads-unit`](../spec/docs/known-divergences/name-start-reads-unit.ja.md)）。
+- クラス図は、ヘッダー（`classDiagram` か `classDiagram-v2`）と改行で
+  始まらなければなりません。
+  mermaid.js は、`classDiagramX` のように、
+  ヘッダーの語にほかの語の文字が続くテキストも、
+  `accTitle:` などのすぐ後でテキストが終わるときは受理します。
+  `parse()` は例外を投げます
+  （[`headerless-empty-ending`](../spec/docs/known-divergences/headerless-empty-ending.ja.md)）。
 - `parse()` はサイトの設定を知らないので、
   辺の数が `maxEdges`（既定 500）を超える flowchart も受理します。
 - これらの違いによる拒否も、ほかと同じ `ParseError` です。
@@ -293,6 +320,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
 - 仕様: [`ast.md`](../spec/docs/ast.ja.md)（木）、
   [`ast/flowchart.md`](../spec/docs/ast/flowchart.ja.md)（flowchart のノード）、
   [`ast/sequence.md`](../spec/docs/ast/sequence.ja.md)（シーケンス図のノード）、
+  [`ast/class.md`](../spec/docs/ast/class.ja.md)（クラス図のノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/error-positions.ja.md`](./docs/error-positions.ja.md): `ParseError`
   が指す位置。

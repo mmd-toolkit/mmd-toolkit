@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/comment-takes-line-break: mermaid.js joins the next line to the header and rejects the text; here the comment ends at its line."
+  },
+  "knownDivergence": "comment-takes-line-break",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...sDiagram %% animalsclass Animal\n----------------------^\nExpecting 'NEWLINE', got 'CLASS'"
+  }
+}

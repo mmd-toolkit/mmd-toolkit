@@ -398,8 +398,10 @@ export class SourceLexer {
     }
     /** How many of `tokens` are recorded whole. */
     let recorded = 0
-    /** Whether a piece of the token `tokens[recorded]` is recorded already. */
-    let cut = false
+    /** The pieces of the token `tokens[recorded]`, once its first piece is reached. */
+    let pieces: readonly Range[] | null = null
+    /** How many of `pieces` are recorded. */
+    let piecesRecorded = 0
     /** How many of `diagramComments` are recorded. */
     let commentsRecorded = 0
     let offset = this.start
@@ -432,20 +434,22 @@ export class SourceLexer {
         continue
       }
       const token = tokens.at(recorded)
-      const startsPiece =
-        token !== undefined &&
-        (cut
-          ? token.range[0] < offset && offset < token.range[1]
-          : token.range[0] === offset)
-      if (!startsPiece) {
+      if (token !== undefined && pieces === null && token.range[0] === offset) {
+        pieces = this.piecesOf(token.range)
+      }
+      const piece = pieces?.[piecesRecorded]
+      if (token === undefined || pieces === null || piece?.[0] !== offset) {
         throw new Error(this.bug(`the character at ${offset} is in no token`))
       }
-      const end = this.endOfPiece(offset, token.range[1])
-      this.recordToken([offset, end], token.kind)
-      this.recordCommentRegionsIn(offset, end)
-      offset = end
-      cut = end !== token.range[1]
-      if (!cut) recorded += 1
+      this.recordToken(piece, token.kind)
+      this.recordCommentRegionsIn(piece[0], piece[1])
+      offset = piece[1]
+      piecesRecorded += 1
+      if (piecesRecorded === pieces.length) {
+        recorded += 1
+        pieces = null
+        piecesRecorded = 0
+      }
     }
     if (commentsRecorded !== diagramComments.length) {
       throw new Error(
@@ -461,6 +465,38 @@ export class SourceLexer {
         ),
       )
     }
+  }
+
+  /**
+   * common.md, A directive is a token boundary, and ast.md, Tokens: the
+   * pieces of the token whose range is `range`, in source order, each the
+   * range of a token that is recorded. A token that has a directive between
+   * two of its characters that are not whitespace is cut at the directive,
+   * and each piece is a part without the whitespace at its ends; a token
+   * without such a directive is one piece, its range. A piece starts at the
+   * first character of the diagram text that is not whitespace, after the
+   * directives and whitespace before it (see {@link SourceLexer.endOfPiece}
+   * for its end).
+   */
+  private piecesOf(range: Range): Range[] {
+    const pieces: Range[] = []
+    let offset = range[0]
+    while (offset < range[1]) {
+      const element = this.readAt(offset)
+      if (element.kind === "directive" || isWhitespaceCharacter(element)) {
+        offset = element.end
+        continue
+      }
+      const end = this.endOfPiece(element.start, range[1])
+      pieces.push([element.start, end])
+      offset = end
+    }
+    if (pieces.length === 0) {
+      throw new Error(
+        this.bug(`the token from ${range[0]} to ${range[1]} has no character`),
+      )
+    }
+    return pieces
   }
 
   /**

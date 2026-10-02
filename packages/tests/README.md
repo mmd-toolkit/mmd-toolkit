@@ -61,8 +61,8 @@ console.log(rejected.accepted, rejected.error.name)
 
 Each fixture is a directory `fixtures/<diagram>/<name>/` in this package
 (`getFixturesRoot()` gives its absolute path). `<diagram>` is a diagram type
-(`flowchart`, `sequence`) or `common`, for syntax that every diagram type shares
-(frontmatter, directives, comments, diagram detection).
+(`flowchart`, `sequence`, `class`) or `common`, for syntax that every diagram
+type shares (frontmatter, directives, comments, diagram detection).
 
 - `input.mmd`: the text under test, byte for byte.
 - `expected.json`: what mermaid.js did with it.
@@ -118,25 +118,31 @@ section of `docs/diagrams/<diagram>.md` in `@mmd-toolkit/spec`.
 
 Reads the fixtures. It does not load mermaid.js.
 
-- `loadFixtures(diagram)`: the fixtures of `"common"`, `"flowchart"` or
-  `"sequence"`, sorted by name. Each has `diagram`, `name`, `input` (the text of
-  `input.mmd`), `source`, `config` and `knownDivergence` (when set), and
-  `expected`: either `{ accepted: true, diagramType, db }` or
+- `loadFixtures(diagram)`: the fixtures of `"common"`, `"flowchart"`,
+  `"sequence"` or `"class"`, sorted by name. Each has `diagram`, `name`, `input`
+  (the text of `input.mmd`), `source`, `config` and `knownDivergence` (when
+  set), and `expected`: either `{ accepted: true, diagramType, db }` or
   `{ accepted: false, error }`.
 - `KNOWN_DIVERGENCES`: the identifiers a fixture's `knownDivergence` can have.
   Each is defined in the specification:
   - `directive-as-token-boundary`: see
-    [known-divergences.md](../spec/docs/known-divergences.md#directive-as-token-boundary).
+    [known-divergences/directive-as-token-boundary.md](../spec/docs/known-divergences/directive-as-token-boundary.md).
   - `html-tag-in-frontmatter`: see
-    [known-divergences.md](../spec/docs/known-divergences.md#html-tag-in-frontmatter).
+    [known-divergences/html-tag-in-frontmatter.md](../spec/docs/known-divergences/html-tag-in-frontmatter.md).
   - `embedded-data-opaque`: see
-    [known-divergences.md](../spec/docs/known-divergences.md#embedded-data-opaque).
+    [known-divergences/embedded-data-opaque.md](../spec/docs/known-divergences/embedded-data-opaque.md).
   - `click-reserved-word`: see
-    [known-divergences.md](../spec/docs/known-divergences.md#click-reserved-word).
+    [known-divergences/click-reserved-word.md](../spec/docs/known-divergences/click-reserved-word.md).
   - `tokenless-empty-forms`: see
-    [known-divergences.md](../spec/docs/known-divergences.md#tokenless-empty-forms).
+    [known-divergences/tokenless-empty-forms.md](../spec/docs/known-divergences/tokenless-empty-forms.md).
   - `comment-takes-character`: see
-    [known-divergences.md](../spec/docs/known-divergences.md#comment-takes-character).
+    [known-divergences/comment-takes-character.md](../spec/docs/known-divergences/comment-takes-character.md).
+  - `comment-takes-line-break`: see
+    [known-divergences/comment-takes-line-break.md](../spec/docs/known-divergences/comment-takes-line-break.md).
+  - `headerless-empty-ending`: see
+    [known-divergences/headerless-empty-ending.md](../spec/docs/known-divergences/headerless-empty-ending.md).
+  - `name-start-reads-unit`: see
+    [known-divergences/name-start-reads-unit.md](../spec/docs/known-divergences/name-start-reads-unit.md).
 - `getFixturesRoot()`: the absolute path of the `fixtures/` directory.
 - Types: `DiagramType`, `Fixture`, `FixtureSource`, `Expectation`,
   `ExpectedFile`, `DbSummary`, `MermaidConfig`, `MermaidError`.
@@ -158,10 +164,16 @@ Runs the pinned mermaid.js in Node.
   two results above from one run.
 - `MermaidEnvironmentError`: thrown when mermaid.js needs a browser feature that
   Node does not have.
-- `withoutDivergence` in the options of the three functions above: runs
-  mermaid.js read without that known divergence, for an implementation that
-  checks a divergence is the only cause of a difference. See
+- `withoutDivergences` in the options of the three functions above: runs
+  mermaid.js read without the listed known divergences, for an implementation
+  that checks the divergences are the only cause of a difference. The list holds
+  `comment-takes-character`, `comment-takes-line-break` and
+  `name-start-reads-unit` (the type `DivergenceRemoval`); divergences of one
+  diagram type can be removed together. See
   [docs/expected-results.md](./docs/expected-results.md).
+- Options with a key other than `config` and `withoutDivergences` make every
+  function of this module that takes options throw a `TypeError`, so that a
+  misspelled option is never ignored.
 - `cssSupportsColor(value)`: what the browser's `CSS.supports("color", value)`
   answers, as the stand-in that runs mermaid.js here gives it (a sequence `box`
   line asks it). For an implementation that takes this answer from outside. See

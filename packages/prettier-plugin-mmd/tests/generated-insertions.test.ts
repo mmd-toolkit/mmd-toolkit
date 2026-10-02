@@ -114,7 +114,7 @@ function isOnStyleLine({ fixture, offset }: Boundary): boolean {
 }
 
 /** The diagram types whose fixtures get insertions. */
-const diagrams: readonly DiagramType[] = ["flowchart", "sequence"]
+const diagrams: readonly DiagramType[] = ["flowchart", "sequence", "class"]
 
 /** The accepted fixtures of each diagram type. */
 const fixturesByDiagram: ReadonlyMap<DiagramType, readonly Fixture[]> = new Map(
@@ -192,6 +192,30 @@ describe.each(diagrams)(
     )
 
     it(
+      "a comment after the text of a line, and lines of only whitespace",
+      async ({ annotate }) => {
+        // In a class diagram, mermaid.js reads the line breaks after a
+        // comment that follows a unit as part of the comment, up to a line
+        // of only whitespace (docs/class.md, Comments).
+        const inputs = insertAt(
+          sampleBoundaries(fixtures, () => true),
+          [
+            "\n  \n",
+            " %% c\n  \n",
+            " %% c\n\n",
+            " %% c\n%% d\n  \n",
+            " %% c\n \t\n\n",
+          ],
+        )
+        const report = await checkGeneratedInputs(inputs)
+        await annotate(describeReport(report))
+        expect(report.checked).toBeGreaterThan(0)
+        expect(report.problems).toEqual([])
+      },
+      TIMEOUT,
+    )
+
+    it(
       "an unclosed directive at the end of the text, with whitespace after it",
       async ({ annotate }) => {
         const inputs = insertAt(sampleBoundaries(fixtures, isAtLastTokenEnd), [
@@ -199,6 +223,7 @@ describe.each(diagrams)(
           "\n%%{init: {}  \n",
           " %%{init: {} \n \n",
           "\n%%{init\t\n\n",
+          " %% c\n  \n",
         ])
         const report = await checkGeneratedInputs(inputs)
         await annotate(describeReport(report))

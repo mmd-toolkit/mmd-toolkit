@@ -117,7 +117,12 @@ The rules are the files under `src/rules/`: a common rule in
 file in camel case (`noIgnoredText` in `no-ignored-text.ts`). Its name in the
 plugin is its path without `.ts` (`flowchart/no-ignored-text`), its id is that
 name after the namespace (`mmd/flowchart/no-ignored-text`), and its documents
-are `docs/rules/<name>.md` and `docs/rules/<name>.ja.md`.
+are `docs/rules/<name>.md` and `docs/rules/<name>.ja.md`. The notes for
+implementing a rule, how the tree shows what it reports and the fixtures that
+record it, are kept apart from the documents for its users, in
+`docs/rule-notes/<name>.md` and `docs/rule-notes/<name>.ja.md`. A rule need not
+have notes: the notes of a rule are removed when it is implemented. `update` and
+`check:docs` read only their paths, to find notes that belong to no rule.
 
 The namespace is `mmd`, not a scoped name such as `@mmd-toolkit`: ESLint splits
 an id that starts with `@` into the plugin and the rule at its last `/`, so it
@@ -153,9 +158,16 @@ pnpm --filter eslint-plugin-mmd run check:docs
 
 The rest of the documents is written by hand. `check:docs` writes nothing and
 fails when `src/rules/index.ts` or a generated part is out of date, when a rule
-has no document in one of the languages, when a document belongs to no rule, or
-when the first paragraph of an English document is not `meta.docs.description`
-of its rule. Line breaks inside a first paragraph do not matter.
+has no document in one of the languages, when a document or notes belong to no
+rule, or when the first paragraph of an English document is not
+`meta.docs.description` of its rule. Line breaks inside a first paragraph do not
+matter.
+
+When the rules and the documents do not match in one of these ways, `update`
+writes `src/rules/index.ts` but none of the generated parts of the documents,
+and fails: the list in the index takes the Japanese descriptions from the
+documents, so it cannot be made while a document is missing. Fix the documents
+and run `update` again.
 
 To add a rule:
 

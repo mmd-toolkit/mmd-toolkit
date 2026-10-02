@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import type {
+  ClassStatement,
   Comment,
   Directive,
   ErrorDiagram,
@@ -903,6 +904,137 @@ describe("checkTree on a sequence diagram", () => {
         text: {
           ...statement.text,
           value: { ...statement.text.value, value: "y" },
+        },
+      }
+    })
+    expect(() => checkTree(source, broken)).toThrow(
+      "is not the text of its range",
+    )
+  })
+})
+
+describe("checkTree on a class diagram", () => {
+  // ast/class.md: what the document of the diagram states about its tree,
+  // beyond the invariants of ast.md.
+
+  /** The tree of the class diagram `source`, checked to pass first, with the first statement replaced by what `change` makes of it. */
+  function withFirstStatementChanged(
+    source: string,
+    change: (statement: ClassStatement) => ClassStatement,
+  ): Root {
+    const root = parse(source)
+    checkTree(source, root)
+    if (root.body.type !== "ClassDiagram") throw new Error("unexpected tree")
+    const [first, ...rest] = root.body.body
+    return { ...root, body: { ...root.body, body: [change(first), ...rest] } }
+  }
+
+  it("fails when the fields of the arrow of a relation are not what its tokens write", () => {
+    const source = "classDiagram\nA <|-- B"
+    const broken = withFirstStatementChanged(source, (statement) => {
+      if (statement.type !== "ClassRelationStatement") {
+        throw new Error("unexpected tree")
+      }
+      return {
+        ...statement,
+        arrow: { ...statement.arrow, startMarker: "arrow" },
+      }
+    })
+    expect(() => checkTree(source, broken)).toThrow("the fields of ClassArrow")
+  })
+
+  it("fails when the value of an arrow is not the texts of its tokens", () => {
+    const source = "classDiagram\nA <|  -- B"
+    const broken = withFirstStatementChanged(source, (statement) => {
+      if (statement.type !== "ClassRelationStatement") {
+        throw new Error("unexpected tree")
+      }
+      return { ...statement, arrow: { ...statement.arrow, value: "<|  --" } }
+    })
+    expect(() => checkTree(source, broken)).toThrow(
+      "is not the text of its range",
+    )
+  })
+
+  it("fails when the visibility or the classifier of a member is not its mark", () => {
+    const source = "classDiagram\nA : +x$"
+    for (const change of [
+      { visibility: "private" },
+      { classifier: "abstract" },
+    ] as const) {
+      const broken = withFirstStatementChanged(source, (statement) => {
+        if (
+          statement.type !== "ClassMemberStatement" ||
+          statement.member?.type !== "ClassAttribute"
+        ) {
+          throw new Error("unexpected tree")
+        }
+        return { ...statement, member: { ...statement.member, ...change } }
+      })
+      expect(() => checkTree(source, broken)).toThrow("of ClassAttribute")
+    }
+  })
+
+  it("fails when the direction of a direction statement is not its value token", () => {
+    const source = "classDiagram\ndirection LR"
+    const broken = withFirstStatementChanged(source, (statement) => {
+      if (statement.type !== "ClassDirectionStatement") {
+        throw new Error("unexpected tree")
+      }
+      return { ...statement, direction: "TB" }
+    })
+    expect(() => checkTree(source, broken)).toThrow(
+      "the keywords of ClassDirectionStatement",
+    )
+  })
+
+  it("fails when the target of a link is not its last token", () => {
+    const source = 'classDiagram\nlink A "u" _self'
+    const broken = withFirstStatementChanged(source, (statement) => {
+      if (statement.type !== "ClassLinkStatement") {
+        throw new Error("unexpected tree")
+      }
+      return { ...statement, target: null }
+    })
+    expect(() => checkTree(source, broken)).toThrow(
+      "the target of ClassLinkStatement",
+    )
+  })
+
+  it("fails when the closed of a StringLiteral does not agree with its text", () => {
+    const source = "classDiagram\nclass `x"
+    const broken = withFirstStatementChanged(source, (statement) => {
+      if (
+        statement.type !== "ClassDeclaration" ||
+        statement.name.name.type !== "StringLiteral"
+      ) {
+        throw new Error("unexpected tree")
+      }
+      return {
+        ...statement,
+        name: {
+          ...statement.name,
+          name: { ...statement.name.name, closed: true },
+        },
+      }
+    })
+    expect(() => checkTree(source, broken)).toThrow("closed of StringLiteral")
+  })
+
+  it("fails when the value of a StringLiteral is not its text without its quotes", () => {
+    const source = "classDiagram\nclass `a b`"
+    const broken = withFirstStatementChanged(source, (statement) => {
+      if (
+        statement.type !== "ClassDeclaration" ||
+        statement.name.name.type !== "StringLiteral"
+      ) {
+        throw new Error("unexpected tree")
+      }
+      return {
+        ...statement,
+        name: {
+          ...statement.name,
+          name: { ...statement.name.name, value: "`a b`" },
         },
       }
     })

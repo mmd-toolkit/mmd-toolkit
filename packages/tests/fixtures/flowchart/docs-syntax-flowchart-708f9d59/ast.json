@@ -31,7 +31,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 17,
@@ -116,7 +116,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     21,
@@ -206,7 +206,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 27,
@@ -291,7 +291,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     31,
@@ -381,7 +381,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 37,
@@ -466,7 +466,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     41,
@@ -556,7 +556,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 47,
@@ -641,7 +641,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     51,
@@ -731,6 +731,7 @@
           "type": "StringLiteral",
           "value": "https://www.github.com",
           "raw": "\"https://www.github.com\"",
+          "closed": true,
           "range": [
             65,
             89
@@ -789,6 +790,7 @@
           "type": "StringLiteral",
           "value": "https://www.github.com",
           "raw": "\"https://www.github.com\"",
+          "closed": true,
           "range": [
             109,
             133
@@ -808,6 +810,7 @@
           "type": "StringLiteral",
           "value": "Open this in a new tab",
           "raw": "\"Open this in a new tab\"",
+          "closed": true,
           "range": [
             134,
             158
@@ -865,6 +868,7 @@
           "type": "StringLiteral",
           "value": "https://www.github.com",
           "raw": "\"https://www.github.com\"",
+          "closed": true,
           "range": [
             183,
             207
@@ -923,6 +927,7 @@
           "type": "StringLiteral",
           "value": "https://www.github.com",
           "raw": "\"https://www.github.com\"",
+          "closed": true,
           "range": [
             232,
             256
@@ -942,6 +947,7 @@
           "type": "StringLiteral",
           "value": "Open this in a new tab",
           "raw": "\"Open this in a new tab\"",
+          "closed": true,
           "range": [
             257,
             281

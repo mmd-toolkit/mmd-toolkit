@@ -129,7 +129,9 @@ parser use the fixtures.
 
 - The name of the diagram type to add, and the diagram ids that share its Db
   (found in mermaid.js's list of detectors and in the `db` of each diagram
-  definition).
+  definition). One detector can stand for several keywords: `classDiagram` and
+  `classDiagram-v2` are both detected as `classDiagram`. The diagram type's
+  fixtures go in one directory, whatever ids it has.
 - A clone of mermaid.js at the tag of the pinned version (outside the
   repository; how to make it is in `tools/README.md`).
 
@@ -137,7 +139,10 @@ parser use the fixtures.
 
 1. In the clone, open the grammar definition (`.jison`) and the Db class of the
    diagram type. List every private field of the Db, and every Db method the
-   grammar calls (the `yy.` calls).
+   grammar calls (the `yy.` calls). Look for every place the Db reads a browser
+   global (`window`, `document`, `Option`, `CSS`), and whether it runs while
+   mermaid parses or only after rendering (class's click callbacks and tooltips
+   run after rendering and need nothing).
 2. Make a table of the proposed summary fields: for each field, whether the
    syntax determines it, why it is kept, and what is dropped and why. Always ask
    whether the following should be dropped (the flowchart and sequence examples
@@ -147,8 +152,11 @@ parser use the fixtures.
    - a value derived from other fields alone (`textStyles`, sequence's message
      `id` and the list of notes);
    - a value that only a site setting changes (`haveCallback`, set only under
-     `securityLevel: loose`). Run every fixture with a different `securityLevel`
-     and check that the summaries do not change;
+     `securityLevel: loose`). A field the syntax determines that a site setting
+     also changes is kept, and the Db patch records it as the other settings
+     give it (class's link target, `_top` under `securityLevel: sandbox`). Run
+     every fixture with a different `securityLevel` and check that the summaries
+     do not change;
    - whitespace left in a value where the formatter changes it (the whitespace
      at the end of style values). Compare with the formatting choices of the
      diagram type (`packages/prettier-plugin-mmd/docs/<diagram>.md`). Before
@@ -174,11 +182,12 @@ parser use the fixtures.
    register in `src/normalizers/index.ts` every diagram id that shares the Db.
    Check whether a Db patch is needed (the Db stores links through
    `utils.formatUrl()`, or the syntax has data blocks); if so, write it in the
-   same file and register it in `dbPatches`, with a text mermaid detects as the
-   diagram id: `runMermaid()` patches every Db class before any input is parsed.
-   A Db method that calls a browser function Node lacks (`window`, `document`,
-   `Option`) shows as a `MermaidEnvironmentError`. The patch then gives a
-   stand-in for that function during that call only
+   same file and register it in `dbPatches`, with a text mermaid accepts and
+   detects as the diagram id (`classDiagram` alone is rejected; the class sample
+   has a class): `runMermaid()` patches every Db class before any input is
+   parsed. A Db method that calls a browser function Node lacks (`window`,
+   `document`, `Option`) shows as a `MermaidEnvironmentError`. The patch then
+   gives a stand-in for that function during that call only
    (`src/normalizers/browser-stand-ins.ts`), without copying mermaid's
    processing. What the stand-in answers decides what implementations are
    compared with, so present the options with a recommendation and ask for a
@@ -225,7 +234,9 @@ parser use the fixtures.
      `register`) is stopped by the lint as an experimental feature, and
      transpiling with TypeScript moves the line numbers. Copy the test file into
      a temporary directory, rewrite only what is between the quotes of each
-     import path, and import the copy as it is.
+     import path, and import the copy as it is. Paths of `import("...")` calls
+     inside tests are rewritten too; a type-only import is left alone, since
+     Node removes it.
    - The temporary directory on macOS is a symbolic link, so pass it through
      `realpathSync` to match the real paths in stack traces.
    - Node evaluates a module once per URL, so put the stub modules in a separate
@@ -347,9 +358,11 @@ AGENTS.md, with the steps in the spec's skill). This skill does the following.
      `getDiagramFromText()` rejects, and the recording of data blocks throws
      when a block does what it does not expect;
    - the lexer rules of each divergence removal (`src/divergence-removals.ts`,
-     the option `withoutDivergence`): `runMermaid()` finds them by their
-     compiled pattern and stops with `MermaidEnvironmentError` when one is
-     missing, so the tests fail. Then read the new lexer, and check with the
+     the option `withoutDivergences`): `runMermaid()` finds them by their
+     compiled pattern (a rule whose order changes, among the rules that only its
+     start state tries) and stops with `MermaidEnvironmentError` when one is
+     missing or found twice, or when a call cannot tell where the lexer is in
+     its line, so the tests fail. Then read the new lexer, and check with the
      steps of the spec's skill whether the divergence still exists; change the
      table or the identifier to match.
 4. Run `fixtures:check`. It writes nothing, does not stop at a fixture that

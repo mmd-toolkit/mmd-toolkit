@@ -13,11 +13,9 @@ common to every diagram type or belongs to one diagram type.
 
 - A common rule has the id `mmd/<name>`, and its document is in this directory.
 - A rule of a diagram type has the id `mmd/<diagram>/<name>`, and its document
-  is in the directory `<diagram>/`. The directory is named after the document of
-  `@mmd-toolkit/spec` that defines the nodes of the diagram type
-  (`docs/ast/<diagram>.md`), and its rules apply to every diagram type whose
-  tree that document defines: the rules in `flowchart/` apply to `flowchart-v2`,
-  `flowchart-elk`, and `swimlane`.
+  is in the directory `<diagram>/`. One directory may hold the rules of several
+  diagram types that share their syntax: the rules in `flowchart/` apply to
+  `flowchart-v2`, `flowchart-elk`, and `swimlane`.
 
 <!-- begin auto-generated rules list -->
 
@@ -29,6 +27,19 @@ common to every diagram type or belongs to one diagram type.
 | ----------------------------------------------------------- | ---------------------------------------------------------------------------- | --- |
 | [no-ignored-init-directive](./no-ignored-init-directive.md) | Disallow a directive meant to configure the diagram that mermaid.js ignores. |     |
 | [no-unclosed-directive](./no-unclosed-directive.md)         | Disallow a directive without its closing `}%%`.                              |     |
+
+## class
+
+| Rule                                                            | Description                                                                 | ✅  |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------- | --- |
+| [no-bare-class-name](./class/no-bare-class-name.md)             | Disallow a class name alone on its line, which changes nothing.             |     |
+| [no-duplicate-description](./class/no-duplicate-description.md) | Disallow an `accDescr` statement that sets the description again.           |     |
+| [no-duplicate-title](./class/no-duplicate-title.md)             | Disallow an `accTitle` statement that sets the title again.                 |     |
+| [no-ignored-text](./class/no-ignored-text.md)                   | Disallow text that mermaid.js does not read.                                |     |
+| [no-inline-comment](./class/no-inline-comment.md)               | Disallow a comment after other text on its line.                            |     |
+| [no-redefined-class](./class/no-redefined-class.md)             | Disallow writing the label of a class again, differently.                   |     |
+| [no-unclosed-backquote](./class/no-unclosed-backquote.md)       | Disallow a backquoted class name without its closing backquote.             |     |
+| [no-unknown-class](./class/no-unknown-class.md)                 | Disallow a statement that refers to a class that the diagram does not have. |     |
 
 ## flowchart
 

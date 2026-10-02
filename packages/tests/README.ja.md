@@ -62,7 +62,7 @@ console.log(rejected.accepted, rejected.error.name)
 fixture は 1 件ごとに、
 このパッケージのディレクトリ `fixtures/<diagram>/<name>/` です
 （絶対パスは `getFixturesRoot()` で得られます）。
-`<diagram>` は図種（`flowchart`、`sequence`）か `common` です。
+`<diagram>` は図種（`flowchart`、`sequence`、`class`）か `common` です。
 `common` は、全図種に共通する構文
 （フロントマター、ディレクティブ、コメント、図種の検出）のためのものです。
 
@@ -124,7 +124,8 @@ fixture を読みます。
 mermaid.js は読み込みません。
 
 - `loadFixtures(diagram)`:
-  `"common"`、`"flowchart"`、`"sequence"` のどれかの fixture を、名前順に返す。
+  `"common"`、`"flowchart"`、`"sequence"`、`"class"` のどれかの fixture を、
+  名前順に返す。
   それぞれは `diagram`、`name`、`input`（`input.mmd` のテキスト）、`source`、
   `config` と `knownDivergence`（あるとき）、`expected` を持つ。
   `expected` は `{ accepted: true, diagramType, db }` か
@@ -132,22 +133,31 @@ mermaid.js は読み込みません。
 - `KNOWN_DIVERGENCES`: fixture の `knownDivergence` がとりうる識別子。
   それぞれ仕様で定義している。
   - `directive-as-token-boundary`:
-    [known-divergences.ja.md](../spec/docs/known-divergences.ja.md#directive-as-token-boundary)
+    [known-divergences/directive-as-token-boundary.ja.md](../spec/docs/known-divergences/directive-as-token-boundary.ja.md)
     を参照。
   - `html-tag-in-frontmatter`:
-    [known-divergences.ja.md](../spec/docs/known-divergences.ja.md#html-tag-in-frontmatter)
+    [known-divergences/html-tag-in-frontmatter.ja.md](../spec/docs/known-divergences/html-tag-in-frontmatter.ja.md)
     を参照。
   - `embedded-data-opaque`:
-    [known-divergences.ja.md](../spec/docs/known-divergences.ja.md#embedded-data-opaque)
+    [known-divergences/embedded-data-opaque.ja.md](../spec/docs/known-divergences/embedded-data-opaque.ja.md)
     を参照。
   - `click-reserved-word`:
-    [known-divergences.ja.md](../spec/docs/known-divergences.ja.md#click-reserved-word)
+    [known-divergences/click-reserved-word.ja.md](../spec/docs/known-divergences/click-reserved-word.ja.md)
     を参照。
   - `tokenless-empty-forms`:
-    [known-divergences.ja.md](../spec/docs/known-divergences.ja.md#tokenless-empty-forms)
+    [known-divergences/tokenless-empty-forms.ja.md](../spec/docs/known-divergences/tokenless-empty-forms.ja.md)
     を参照。
   - `comment-takes-character`:
-    [known-divergences.ja.md](../spec/docs/known-divergences.ja.md#comment-takes-character)
+    [known-divergences/comment-takes-character.ja.md](../spec/docs/known-divergences/comment-takes-character.ja.md)
+    を参照。
+  - `comment-takes-line-break`:
+    [known-divergences/comment-takes-line-break.ja.md](../spec/docs/known-divergences/comment-takes-line-break.ja.md)
+    を参照。
+  - `headerless-empty-ending`:
+    [known-divergences/headerless-empty-ending.ja.md](../spec/docs/known-divergences/headerless-empty-ending.ja.md)
+    を参照。
+  - `name-start-reads-unit`:
+    [known-divergences/name-start-reads-unit.ja.md](../spec/docs/known-divergences/name-start-reads-unit.ja.md)
     を参照。
 - `getFixturesRoot()`: `fixtures/` ディレクトリの絶対パス。
 - 型: `DiagramType`、`Fixture`、`FixtureSource`、`Expectation`、`ExpectedFile`、
@@ -172,10 +182,16 @@ pin した mermaid.js を Node で動かします。
   1 回の実行から `{ outcome, embedded }` として返す。
 - `MermaidEnvironmentError`:
   Node にないブラウザの機能を mermaid.js が必要としたときに投げる。
-- 上の 3 つの関数の options の `withoutDivergence`:
-  その既知の差を除いて読ませた mermaid.js を動かす。
+- 上の 3 つの関数の options の `withoutDivergences`:
+  一覧の既知の差を除いて読ませた mermaid.js を動かす。
   差が違いの唯一の原因であることを確かめる実装のためのもの。
+  一覧に入れられるのは `comment-takes-character`、`comment-takes-line-break`、
+  `name-start-reads-unit`（型 `DivergenceRemoval`）。
+  1 つの図種の差を同時に除ける。
   [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
+- `config` と `withoutDivergences` 以外のキーを持つ options を渡すと、
+  このモジュールの options を取る関数はどれも `TypeError` を投げる。
+  書き誤った選択肢が黙って無視されないようにするためのもの。
 - `cssSupportsColor(value)`:
   ブラウザの `CSS.supports("color", value)` が答えるもの。
   ここで mermaid.js を動かすときに与えている代役と同じ

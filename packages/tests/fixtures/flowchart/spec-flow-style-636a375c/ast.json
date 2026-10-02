@@ -7,7 +7,7 @@
     "body": [
       {
         "type": "FlowchartClassDefStatement",
-        "classNames": [
+        "cssClasses": [
           {
             "type": "Identifier",
             "name": "exClass",
@@ -106,7 +106,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 65,
@@ -191,7 +191,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     69,
@@ -277,7 +277,7 @@
             }
           }
         ],
-        "className": {
+        "cssClass": {
           "type": "Identifier",
           "name": "exClass",
           "range": [

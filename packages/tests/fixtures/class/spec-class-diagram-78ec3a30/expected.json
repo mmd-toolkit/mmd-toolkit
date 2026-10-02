@@ -1,0 +1,149 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 1999,
+    "test": "given a class diagram with relationships,  > when parsing basic relationships > should add relations between classes of different namespaces"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A1",
+        "type": "",
+        "label": "A1",
+        "text": "A1",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "foo : string"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "A"
+      },
+      {
+        "id": "B1",
+        "type": "",
+        "label": "B1",
+        "text": "B1",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "foo : bool"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "B"
+      },
+      {
+        "id": "A2",
+        "type": "",
+        "label": "A2",
+        "text": "A2",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "bar : int"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "A"
+      },
+      {
+        "id": "B2",
+        "type": "",
+        "label": "B2",
+        "text": "B2",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "bar : float"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "B"
+      }
+    ],
+    "relations": [
+      {
+        "id1": "A1",
+        "id2": "B1",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "A2",
+        "id2": "B2",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      }
+    ],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [
+          "A1",
+          "A2"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "classes": [
+          "B1",
+          "B2"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

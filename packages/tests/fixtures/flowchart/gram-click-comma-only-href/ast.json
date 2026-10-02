@@ -15,6 +15,7 @@
           "type": "StringLiteral",
           "value": "x",
           "raw": "\"x\"",
+          "closed": true,
           "range": [
             26,
             29

@@ -1,4 +1,4 @@
-import type { FlowchartNode, SequenceNode } from "../../src/index.ts"
+import type { ClassNode, FlowchartNode, SequenceNode } from "../../src/index.ts"
 
 /** ast.md, Shared leaf nodes: the node types, as the tests expect them. */
 export const sharedLeafNodeTypes: readonly string[] = [
@@ -88,11 +88,44 @@ export const allSequenceNodeTypes: Record<SequenceNode["type"], true> = {
   SequenceDataBlock: true,
 }
 
+/**
+ * Every node type of ast/class.md, in the order of that document. Being a
+ * `Record` over the type, this fails to type-check when a node type is
+ * missing here or is not in the type.
+ */
+export const allClassNodeTypes: Record<ClassNode["type"], true> = {
+  ClassDiagram: true,
+  ClassDeclaration: true,
+  ClassMemberStatement: true,
+  ClassNameStatement: true,
+  ClassAnnotationStatement: true,
+  ClassRelationStatement: true,
+  ClassArrow: true,
+  ClassNamespaceStatement: true,
+  ClassNoteStatement: true,
+  ClassCallbackStatement: true,
+  ClassLinkStatement: true,
+  ClassStyleStatement: true,
+  ClassCssClassStatement: true,
+  ClassClassDefStatement: true,
+  ClassDirectionStatement: true,
+  ClassAccTitleStatement: true,
+  ClassAccDescrStatement: true,
+  ClassAccDescrBlockStatement: true,
+  ClassName: true,
+  ClassMethod: true,
+  ClassAttribute: true,
+  ClassAnnotation: true,
+  ClassLiteral: true,
+  ClassIgnoredText: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
   ...Object.keys(allFlowchartNodeTypes),
   ...Object.keys(allSequenceNodeTypes),
+  ...Object.keys(allClassNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

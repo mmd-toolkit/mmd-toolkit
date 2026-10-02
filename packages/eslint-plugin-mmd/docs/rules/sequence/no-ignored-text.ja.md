@@ -47,23 +47,3 @@ sequenceDiagram
 ## 関連する規則
 
 - [flowchart/no-ignored-text](../flowchart/no-ignored-text.ja.md)
-
-## 実装のための覚え書き
-
-この規則はまだ実装していない。
-ここには、実装するときに要ることを書く。
-
-### 木での現れ方
-
-`SequenceIgnoredStatement`。
-
-### fixture
-
-規則が依拠する mermaid.js の読み方は、
-`@mmd-toolkit/tests` の次の fixture に記録されている。
-
-- `sequence/db-ignored-line-after-wrapped-message`
-- `sequence/db-wrapped-message-closed`
-- `sequence/lex-invalid-line-parenthesis`
-- `sequence/lex-invalid-line-slash`
-- `sequence/lex-invalid-line-two-units`

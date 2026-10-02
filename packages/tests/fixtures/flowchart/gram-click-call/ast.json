@@ -31,7 +31,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 13,
@@ -142,6 +142,7 @@
           "type": "StringLiteral",
           "value": "tip",
           "raw": "\"tip\"",
+          "closed": true,
           "range": [
             39,
             44

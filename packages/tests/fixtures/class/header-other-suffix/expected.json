@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Detection: `classDiagram-v3` is the keyword `classDiagram` followed by `-`, which the grammar rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nclassDiagram-v3class A\n------------^\nExpecting 'NEWLINE', got 'MINUS'"
+  }
+}

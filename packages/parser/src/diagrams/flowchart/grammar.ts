@@ -189,7 +189,7 @@ interface LabelUnits {
  *
  * The parser reads units only; it moves no cursor in the source. A unit
  * that no rule takes makes the input rejected, such as the units of an
- * empty form (known-divergences.md, `tokenless-empty-forms`), for which
+ * empty form (known-divergences/tokenless-empty-forms.md), for which
  * {@link FlowchartGrammar.unexpected} names the form.
  */
 export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
@@ -407,18 +407,18 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     const start = this.next
     const id = this.parseId()
     const shape = this.startsShape() ? this.parseShape() : null
-    let className: Identifier | null = null
+    let cssClass: Identifier | null = null
     const classMark = this.takeIf(":::")
     if (classMark !== null) {
       this.addItem("Punctuator", [classMark])
-      className = this.parseId()
+      cssClass = this.parseId()
     }
     const data = this.parseData()
     return {
       type: "FlowchartVertex",
       id,
       shape,
-      className,
+      cssClass,
       data,
       ...this.placeFrom(start),
     }
@@ -908,12 +908,12 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     const start = this.next
     this.addItem("Keyword", [this.take("classDef")])
     this.take("space")
-    const classNames = this.parseIdList()
+    const cssClasses = this.parseIdList()
     this.take("space")
     const styles = this.parseStyles(true)
     return {
       type: "FlowchartClassDefStatement",
-      classNames,
+      cssClasses,
       styles,
       ...this.placeFrom(start),
     }
@@ -926,11 +926,11 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     this.take("space")
     const ids = this.parseIdList()
     this.take("space")
-    const className = this.parseId()
+    const cssClass = this.parseId()
     return {
       type: "FlowchartClassStatement",
       ids,
-      className,
+      cssClass,
       ...this.placeFrom(start),
     }
   }
@@ -1071,16 +1071,16 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * Click statements: `click-statement = "click" click-ids (
-   * callback-name callback-arguments? ( space string )? | "href"? string (
-   * space string )? ( space link-target )? | name ( space string )? )` and
-   * `click-ids = ( click-id | click-comma )+`. The first and the third
-   * alternative call a function; the second links to a URL. The click ids
-   * are a list as an `id-list` is, parted at the `click-comma` units. The
-   * `click` is a `Keyword` token in no field. `click` is a reserved word
-   * (known-divergences.md, `click-reserved-word`): this is the only rule that reads a
-   * `click` unit, at the start of a statement, so a `click` unit anywhere
-   * else makes the input rejected.
+   * Click statements: `click-statement = "click" click-ids ( callback-name
+   * callback-arguments? ( space string )? | "href"? string ( space string )? (
+   * space link-target )? | name ( space string )? )` and `click-ids = (
+   * click-id | click-comma )+`. The first and the third alternative call a
+   * function; the second links to a URL. The click ids are a list as an
+   * `id-list` is, parted at the `click-comma` units. The `click` is a `Keyword`
+   * token in no field. `click` is a reserved word
+   * (known-divergences/click-reserved-word.md): this is the only rule that
+   * reads a `click` unit, at the start of a statement, so a `click` unit
+   * anywhere else makes the input rejected.
    */
   private parseClickStatement():
     FlowchartClickCallbackStatement | FlowchartClickUrlStatement {
@@ -1139,10 +1139,10 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Click and callbacks: a `click` that no click id follows starts no click
-   * statement (known-divergences.md, `click-reserved-word`), also when empty strings
-   * come between, which mermaid.js reads nothing for. Where click ids follow
-   * the empty strings, the first empty string is the cause instead
-   * (known-divergences.md, `tokenless-empty-forms`).
+   * statement (known-divergences/click-reserved-word.md), also when empty
+   * strings come between, which mermaid.js reads nothing for. Where click ids
+   * follow the empty strings, the first empty string is the cause instead
+   * (known-divergences/tokenless-empty-forms.md).
    */
   private checkClickIdsFollow(click: Unit): void {
     let after = this.next
@@ -1334,6 +1334,8 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
       type: "StringLiteral",
       value: this.textOf(place.range, this.delimitersOf(unit)),
       raw: this.lexer.text.slice(...place.range),
+      // Strings: the lexer rejects a string that the text ends in.
+      closed: true,
       ...place,
     }
   }
@@ -1357,8 +1359,8 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * known-divergences.md, `click-reserved-word`: the error for the `click` unit `click`,
-   * which does not start a click statement, at the word `click`.
+   * known-divergences/click-reserved-word.md: the error for the `click` unit
+   * `click`, which does not start a click statement, at the word `click`.
    */
   private reservedClick(click: Unit): ParseError {
     const range: Range = click.significantRange ?? [click.start, click.end]

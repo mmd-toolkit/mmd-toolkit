@@ -26,7 +26,7 @@ const DIRECTION_VALUES: readonly string[] = ["TB", "BT", "RL", "LR", "TD"]
  * vertices `accTitle` and `:`, while `accTitle` and `:` on two lines is an
  * accessibility title, and `A-->direction; TB` becomes a direction statement.
  * After `click`, a line break makes it a `click` unit, which may only start a
- * click statement (known-divergences.md, `click-reserved-word`): `A-->click; B` is
+ * click statement (known-divergences/click-reserved-word.md): `A-->click; B` is
  * accepted, and `A-->click` and `B` on two lines are rejected.
  */
 const wordsReadWithLineBreaks: ReadonlySet<string> = new Set([
@@ -81,7 +81,10 @@ function endsWithWordReadWithLineBreaks(identifier: Token): boolean {
  * `endsWithWordReadWithLineBreaks`): the `;` is kept, and the next
  * statement stays on its line: a line break in place of the `;` would be
  * read with the word. The whitespace within the statements may change, as
- * on any line.
+ * on any line. Directives between the word and the `;` are passed over:
+ * mermaid.js removes them before it reads the text, so
+ * `A-->click%%{init: {}}%%;B` is read as `A-->click;B` (common.md,
+ * Directives).
  */
 function findLinesAfterWords(
   source: Source,
@@ -97,7 +100,7 @@ function findLinesAfterWords(
     }
     const separator = tokens
       .slice(index + 1)
-      .find((token) => token.type !== "String")
+      .find((token) => token.type !== "String" && token.type !== "Directive")
     if (separator?.value === ";") {
       lines.add(lineStartOf(source, separator.range[0]))
     }

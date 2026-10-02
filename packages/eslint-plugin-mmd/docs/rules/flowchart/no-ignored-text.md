@@ -34,8 +34,8 @@ the line is a direction statement and makes no vertex and no link. The rule
 reports that too.
 
 Text after the direction that starts with `%%`, as in
-`direction TB %% vertical`, is not reported. It is meant as a comment, and
-mermaid.js drops it, as the author intended.
+`direction TB %% vertical`, is not reported. The author means it as a comment,
+and mermaid.js drops it, as the author intended.
 
 Examples of **incorrect** code for this rule:
 
@@ -79,28 +79,3 @@ flowchart LR
 ## Options
 
 This rule has no options.
-
-## Implementation Notes
-
-The rule is not implemented yet. These notes are for implementing it.
-
-### How the tree shows it
-
-A `FlowchartDirectionStatement` whose `textBefore` is not null, or whose
-`textAfter` is not null and has a `value` that does not start with `%%`. Each of
-the two is a `FlowchartIgnoredText` node with the range of the text. Looking at
-the start of the value is a reading of the value, not a second lexing of the
-text.
-
-### Fixtures
-
-The behavior of mermaid.js that the rule relies on is recorded in these fixtures
-of `@mmd-toolkit/tests`:
-
-- `flowchart/lex-direction-line-after-semicolon`
-- `flowchart/lex-direction-line-swallows-edge`
-- `flowchart/lex-direction-line-then-semicolon-statement`
-- `flowchart/lex-direction-line-own-line-after-link`
-- `flowchart/lex-direction-line-percent-after-value`
-- `flowchart/lex-direction-line-text-after-value`
-- `flowchart/lex-direction-line-in-label-with-link`

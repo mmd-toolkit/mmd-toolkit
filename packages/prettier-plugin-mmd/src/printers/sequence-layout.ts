@@ -15,13 +15,10 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  spansLinesWithTrivia,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
-import {
-  findStructuralToken,
-  findTokenStartingAt,
-  findTriviaBetween,
-} from "./source.ts"
+import { findStructuralToken, findTokenStartingAt } from "./source.ts"
 
 /**
  * The node types of a sequence diagram whose text is a value, printed as
@@ -266,11 +263,7 @@ function isKeptAsWritten(
   end: number,
 ): boolean {
   if (statement.type === "SequenceAccDescrBlockStatement") return false
-  const start = statement.range[0]
-  return (
-    source.text.slice(start, end).includes("\n") &&
-    findTriviaBetween(source, start, end).length > 0
-  )
+  return spansLinesWithTrivia(source, statement.range[0], end)
 }
 
 /**

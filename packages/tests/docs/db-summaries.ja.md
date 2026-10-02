@@ -106,3 +106,41 @@ actor の box は、`boxes` の中の位置で表します。
   要約は、そのようなプロトタイプを最初の項目 `__proto__` として記録する。
 - actor の `type` と説明は、その `@{ ... }` のデータブロックでも決まる。
   [embedded-data.ja.md](./embedded-data.ja.md) を参照。
+
+## class
+
+`normalizeClass()`（`src/normalizers/class.ts`）は、
+`classDiagram` の Db を要約します。
+mermaid.js は、`classDiagram` と `classDiagram-v2` のどちらも、
+この ID として検出します。
+`ClassDB` がゲッターで公開するものを、Db の持つ順に保ちます。
+向き、題、class（メンバーとメソッドとともに）、関係、ノート、名前空間、
+lollipop の関係が作るインターフェース（描画が描く）です。
+名前空間は、その class、ノート、子の名前空間を id で挙げます。
+次のものを、それぞれに書いた理由で捨てます。
+
+- `classes[].domId` と `namespaces[].domId`: 数え上げから作る DOM の id で、
+  描画にだけ使う。
+- メンバーとメソッドの表示用の文字列（`text`）: ほかの欄から作る。
+- `notes[].index`: ノートの id の番号と同じ。
+- class の定義（`classDef`）: Db は、何も読まない private の表に持つ
+  （[`ClassDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L40-L40)）。
+  定義が変えるものは、`classes[].styles` に出る。
+- click のコールバック: Db は、関数の名前と引数を閉包の中にだけ持つ。
+- style の各値の末尾の空白（`classes[].styles`）: flowchart の要約と同じ。
+  文法はコンマや行末の前に書いた空白を値に残すが、何もそれを読まない。
+
+要約のそのほかの値:
+
+- `classes[].text` は保つ。
+  ラベルと型から作られるが、
+  `addClass` は型を `&lt;T&gt;` と、ラベルの文は `<T>` と書く
+  （[`addClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L112-L137)）ので、
+  ラベルと型だけからは決まらない。
+- `classes[].haveCallback` は保つ。
+  flowchart と違い、`setClickEvent` はどの `securityLevel` でもこれを付ける
+  （[`setClickEvent`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L434-L444)）。
+- `classes[].link` は書かれたとおりの URL（trim 済み）、
+  `classes[].linkTarget` は書かれた target か `_blank` で、
+  どの `securityLevel` でも同じ
+  （[expected-results.ja.md](./expected-results.ja.md) を参照）。

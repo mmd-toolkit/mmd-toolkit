@@ -68,7 +68,7 @@
                   }
                 }
               },
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 13,
@@ -208,7 +208,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     41,
@@ -298,7 +298,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 56,
@@ -420,7 +420,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     62,
@@ -510,7 +510,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 199,
@@ -650,7 +650,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     210,
@@ -740,7 +740,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 220,
@@ -880,7 +880,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     231,
@@ -970,7 +970,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 241,
@@ -1110,7 +1110,7 @@
                       }
                     }
                   },
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     254,
@@ -1200,6 +1200,7 @@
           "type": "StringLiteral",
           "value": "flowchart.html#link-clicked",
           "raw": "\"flowchart.html#link-clicked\"",
+          "closed": true,
           "range": [
             269,
             298
@@ -1219,6 +1220,7 @@
           "type": "StringLiteral",
           "value": "link test",
           "raw": "\"link test\"",
+          "closed": true,
           "range": [
             299,
             310
@@ -1295,6 +1297,7 @@
           "type": "StringLiteral",
           "value": "click test",
           "raw": "\"click test\"",
+          "closed": true,
           "range": [
             329,
             341
@@ -1327,7 +1330,7 @@
       },
       {
         "type": "FlowchartClassDefStatement",
-        "classNames": [
+        "cssClasses": [
           {
             "type": "Identifier",
             "name": "someclass",
@@ -1404,7 +1407,7 @@
             }
           }
         ],
-        "className": {
+        "cssClass": {
           "type": "Identifier",
           "name": "someclass",
           "range": [
@@ -1459,7 +1462,7 @@
             }
           }
         ],
-        "className": {
+        "cssClass": {
           "type": "Identifier",
           "name": "someclass",
           "range": [

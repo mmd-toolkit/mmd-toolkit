@@ -78,6 +78,7 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   common: true,
   flowchart: true,
   sequence: true,
+  class: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

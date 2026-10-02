@@ -31,7 +31,7 @@
                 }
               },
               "shape": null,
-              "className": null,
+              "cssClass": null,
               "data": [],
               "range": [
                 9,
@@ -116,7 +116,7 @@
                     }
                   },
                   "shape": null,
-                  "className": null,
+                  "cssClass": null,
                   "data": [],
                   "range": [
                     13,
@@ -206,6 +206,7 @@
           "type": "StringLiteral",
           "value": "click.html",
           "raw": "\"click.html\"",
+          "closed": true,
           "range": [
             28,
             40

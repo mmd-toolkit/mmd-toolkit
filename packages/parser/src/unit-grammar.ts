@@ -97,7 +97,7 @@ export abstract class UnitGrammar<
   protected abstract knownDivergenceAt(unit: Unit): ParseError | null
 
   /**
-   * known-divergences.md, `tokenless-empty-forms`: the error for the empty
+   * known-divergences/tokenless-empty-forms.md: the error for the empty
    * form that `unit` belongs to (`emptyFormError`); null when it belongs to
    * none.
    */
@@ -199,12 +199,19 @@ export abstract class UnitGrammar<
 
   /**
    * ast.md, Shared leaf nodes > Identifier: the Identifier whose units are
-   * `units`, one `Identifier` item. Its name is the text of its range.
+   * `units`, one `Identifier` item. Its name is the text of the range of
+   * each unit without the whitespace at its ends, joined in order: the
+   * whitespace inside a unit is part of it, also next to a directive that
+   * cuts the unit, and the whitespace between two units is not.
    */
   protected identifierOf(units: readonly Unit[]): Identifier {
     this.addItem("Identifier", units)
     const place = this.placeOf(units)
-    return { type: "Identifier", name: this.textOf(place.range), ...place }
+    const name = units
+      .filter((unit) => unit.significantRange !== null)
+      .map((unit) => this.textOfUnit(unit))
+      .join("")
+    return { type: "Identifier", name, ...place }
   }
 
   /**
@@ -226,9 +233,8 @@ export abstract class UnitGrammar<
   /**
    * ast.md, Tokens: the tokens of one item of the grammar, whose units are
    * `units`, of kind `kind`. Every unit of the item has that kind. A token
-   * is a maximal run of units of the item that follow one another with
-   * nothing between them, without the whitespace at its ends; a run that
-   * is all whitespace gives no token.
+   * is a run of the item's units (see {@link UnitGrammar.runsOf}), without
+   * the whitespace at its ends; a run that is all whitespace gives no token.
    */
   protected addItem(kind: DiagramTokenKind, units: readonly Unit[]): void {
     for (const unit of units) {
@@ -236,26 +242,58 @@ export abstract class UnitGrammar<
         this.unitsWithKind.push({ kind, range: unit.significantRange })
       }
     }
-    let run: Unit[] = []
-    const closeRun = (): void => {
-      const significant = run.flatMap((unit) =>
-        unit.significantRange === null ? [] : [unit.significantRange],
-      )
-      if (significant.length > 0) {
-        this.tokens.push({
-          kind,
-          range: [significant[0][0], significant[significant.length - 1][1]],
-        })
-      }
-      run = []
+    for (const run of this.runsOf(kind, units)) {
+      const range = this.significantRangeOfRun(run)
+      if (range !== null) this.tokens.push({ kind, range })
     }
+  }
+
+  /**
+   * ast.md, Tokens: the runs of the units `units` of one item of kind
+   * `kind`, the maximal runs of units that follow one another with nothing
+   * between them, in source order. Where a run breaks is the diagram's to
+   * say (see {@link UnitGrammar.breaksRun}).
+   */
+  protected runsOf(kind: DiagramTokenKind, units: readonly Unit[]): Unit[][] {
+    const runs: Unit[][] = []
     for (const unit of units) {
-      const previous = run[run.length - 1]
-      if (previous !== undefined && unit.index !== previous.index + 1) {
-        closeRun()
+      const run = runs.at(-1)
+      const previous = run?.at(-1)
+      if (
+        run === undefined ||
+        previous === undefined ||
+        this.breaksRun(kind, previous, unit)
+      ) {
+        runs.push([unit])
+      } else {
+        run.push(unit)
       }
-      run.push(unit)
     }
-    closeRun()
+    return runs
+  }
+
+  /**
+   * ast.md, Tokens: whether a run of units of one item of kind `kind`
+   * breaks between `previous` and `unit`, the next unit of the item. It
+   * breaks where the units do not follow one another in the units of the
+   * text, which is where a unit of another item lies between them; a
+   * diagram whose whitespace belongs to no unit also breaks it where
+   * characters lie between them.
+   */
+  protected breaksRun(
+    _kind: DiagramTokenKind,
+    previous: Unit,
+    unit: Unit,
+  ): boolean {
+    return unit.index !== previous.index + 1
+  }
+
+  /** The source range from the first to the last character of `run` that is not whitespace; null when the run is all whitespace. */
+  private significantRangeOfRun(run: readonly Unit[]): Range | null {
+    const significant = run.flatMap((unit) =>
+      unit.significantRange === null ? [] : [unit.significantRange],
+    )
+    if (significant.length === 0) return null
+    return [significant[0][0], significant[significant.length - 1][1]]
   }
 }

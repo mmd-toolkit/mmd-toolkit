@@ -93,14 +93,14 @@ Child fields: `vertices`.
 
 One occurrence of a vertex.
 
-| Field       | Type                       | Meaning                                                                                                       |
-| ----------- | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `id`        | Identifier                 | The id, commas included.                                                                                      |
-| `shape`     | FlowchartShape or null     | The shape with its label; null when the vertex is written without one.                                        |
-| `className` | Identifier or null         | The class after `:::`, commas included; null when there is none.                                              |
-| `data`      | list of FlowchartDataBlock | The data blocks written right after the vertex, one after another, in source order; empty when there is none. |
+| Field      | Type                       | Meaning                                                                                                       |
+| ---------- | -------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `id`       | Identifier                 | The id, commas included.                                                                                      |
+| `shape`    | FlowchartShape or null     | The shape with its label; null when the vertex is written without one.                                        |
+| `cssClass` | Identifier or null         | The CSS class after `:::`, commas included; null when there is none.                                          |
+| `data`     | list of FlowchartDataBlock | The data blocks written right after the vertex, one after another, in source order; empty when there is none. |
 
-Child fields: `id`, `shape`, `className`, `data`. The range of a vertex covers
+Child fields: `id`, `shape`, `cssClass`, `data`. The range of a vertex covers
 its data blocks: it runs from its id to its last data block, when there is one,
 and so do the ranges of the vertex group and the vertex statement that contain
 it. [fixture: flowchart/gram-vertex-id-comma] [fixture:
@@ -244,7 +244,7 @@ another, as in `A@{ shape: rect }@{ label: x }`, are a node each.
 | `value` | string | The text of its range between `@{` and the `}` that closes it. |
 
 No child fields. The tree does not read the value (see
-[`embedded-data-opaque`](../known-divergences.md#embedded-data-opaque)). Unlike
+[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md)). Unlike
 the frontmatter, the block has no separate range for its value: the value lies
 in the block's tokens. [fixture: flowchart/gram-data-consecutive-blocks]
 
@@ -305,21 +305,21 @@ flowchart/gram-style-id-comma] [fixture: flowchart/gram-style-whitespace]
 
 | Field        | Type                               | Meaning                                                                                                                                                                                                                    |
 | ------------ | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `classNames` | list of (Identifier or null)       | The class names: the parts of the `id-list` after `classDef` between its `,` units, in source order; null for a part that is empty (see [flowchart.md](../diagrams/flowchart.md#style-class-and-link-style-statements)).   |
+| `cssClasses` | list of (Identifier or null)       | The CSS classes: the parts of the `id-list` after `classDef` between its `,` units, in source order; null for a part that is empty (see [flowchart.md](../diagrams/flowchart.md#style-class-and-link-style-statements)).   |
 | `styles`     | list of (FlowchartLiteral or null) | The styles, as in FlowchartStyleStatement, except that a `,` right after a `\` does not separate two styles but is part of the style (see [flowchart.md](../diagrams/flowchart.md#style-class-and-link-style-statements)). |
 
-Child fields: `classNames`, `styles`. [fixture:
+Child fields: `cssClasses`, `styles`. [fixture:
 flowchart/db-classdef-names-empty] [fixture:
 flowchart/db-classdef-names-trailing-comma]
 
 ### FlowchartClassStatement
 
-| Field       | Type                         | Meaning                                                                                                                 |
-| ----------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `ids`       | list of (Identifier or null) | The first id after `class`, as a list: the parts of its `id-list` between its `,` units; null for a part that is empty. |
-| `className` | Identifier                   | The second id, commas included.                                                                                         |
+| Field      | Type                         | Meaning                                                                                                                 |
+| ---------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `ids`      | list of (Identifier or null) | The first id after `class`, as a list: the parts of its `id-list` between its `,` units; null for a part that is empty. |
+| `cssClass` | Identifier                   | The second id, the CSS class, commas included.                                                                          |
 
-Child fields: `ids`, `className`. [fixture: flowchart/db-class-ids-empty-first]
+Child fields: `ids`, `cssClass`. [fixture: flowchart/db-class-ids-empty-first]
 [fixture: flowchart/db-class-ids-only-comma] [fixture:
 flowchart/gram-class-name-comma]
 

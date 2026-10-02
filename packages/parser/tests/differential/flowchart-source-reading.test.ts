@@ -8,11 +8,12 @@
  * mermaid.js, and the tree must pass the check.
  *
  * The inputs with an empty string were read by those helpers before the
- * specification rejected empty strings (known-divergences.md, `tokenless-empty-forms`).
- * They stay as inputs of that divergence: the parser rejects each at its
- * empty string, and where its lexer reads the reference input as the units
- * of the input but those of the empty strings, and accepts it, the Db of
- * the reference input is the Db that mermaid.js gives the input.
+ * specification rejected empty strings
+ * (known-divergences/tokenless-empty-forms.md). They stay as inputs of that
+ * divergence: the parser rejects each at its empty string, and where its lexer
+ * reads the reference input as the units of the input but those of the empty
+ * strings, and accepts it, the Db of the reference input is the Db that
+ * mermaid.js gives the input.
  */
 import { describe, expect, it } from "vitest"
 import { runMermaidWithEmbeddedData } from "@mmd-toolkit/tests/mermaid"

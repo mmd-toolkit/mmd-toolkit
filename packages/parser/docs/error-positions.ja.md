@@ -61,6 +61,42 @@
     （`A participant cannot be in two boxes`）。
     その文の id。
 
+## クラス図の中
+
+- 図のテキストの最初の単位がヘッダーのキーワードでないとき
+  （`classDiagramX` など）は、`range` はその単位で、メッセージは
+  `A class diagram starts with classDiagram or classDiagram-v2`。
+  字句解析器は、その単位を読んだところで報告する。
+  その後のテキストが、終わってはいけない文脈で終わるときも同じである。
+- 字句解析器のどの規則も一致しない位置では、`range` はその 1 文字。
+  閉じていない文字列の `"` もそうである。
+- 終わってはいけない文脈でテキストが終わるときは、
+  `range` はその文脈に入ったもので、メッセージは何が閉じていないかを示す。
+  - メンバーの本体の `{`。
+    メッセージは `The member body has no } before the end of the text`。
+  - 名前空間の本体の `{`。
+    メッセージは `The namespace body has no } before the end of the text`。
+  - ジェネリクスの型の最初の `~`。
+    メッセージは
+    `The generic type has no closing ~ before the end of the text`。
+  - コールバックの `call` と `(`。
+    flowchart と同じ。
+  - `accTitle`。
+    メッセージは `accTitle has no text before the end of the text`。
+  - `accDescr`。
+    メッセージは `accDescr has no text before the end of the text`。
+  - 説明のブロックの `accDescr`。
+    メッセージは
+    `The description block has no } before the end of the text`。
+- 分けられないメソッドの行では、
+  `range` はメンバーのテキスト（両端の空白を除いた行）で、メッセージは
+  `A method line needs a ( that is not its first character and that a ) follows`。
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲。
+  テキストの終わりでは、flowchart と同じく、テキストの終わりの空の範囲。
+- 文法の外の拒否である、ないクラスへの注釈の文では、
+  `range` は注釈の後のクラスの名前で、メッセージは
+  `An annotation statement needs a class that exists`。
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、
@@ -93,6 +129,13 @@
   文の始まりの `click` とその click の id の間では、
   最初の空の文字列を報告します。
   空の文字列の後に click の id がないときは、`click` を報告します。
+  クラス図では、空の形に、
+  空のバッククォートの名前（2 つのバッククォート）と、
+  空のジェネリクスの型（2 つの `~`）も入ります。
+  メッセージは `An empty backquoted name cannot be written here` と
+  `An empty generic type can only end a class name` です。
+  空のジェネリクスの型は、`class A~~B` のように、
+  文法がその後の単位を読めないところで見つけます。
 
 `html-tag-in-frontmatter` は、どの `"` を `'` として読むかを変えます。
 パーサーはそれを区別しないので、そこから起きる拒否は、上の規則で報告します。

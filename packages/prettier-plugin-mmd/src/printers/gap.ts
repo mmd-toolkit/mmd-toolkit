@@ -51,6 +51,11 @@ export interface ItemLine {
   readonly run: ItemRun
   /** Whether an empty line comes before it in the source. */
   readonly blankBefore: boolean
+  /**
+   * Whether a line of only whitespace comes before it in the source, after
+   * the line before it (see `BlockRules`).
+   */
+  readonly whitespaceLineBefore: boolean
 }
 
 /**
@@ -70,6 +75,14 @@ export interface Gap {
   readonly blankAfter: boolean
   /** Whether the gap breaks the line. */
   readonly breaksLine: boolean
+  /** Whether the line before the gap ends with a comment. */
+  readonly trailingEndsWithComment: boolean
+  /**
+   * Whether a line of only whitespace comes after the last line of `lines`,
+   * or, when there are none, after the line before the gap (see
+   * `BlockRules`).
+   */
+  readonly whitespaceLineAfter: boolean
 }
 
 /**
@@ -126,14 +139,21 @@ export function readGap(
   const last = rest.pop() as ScannedLine
   const ownLines: ItemLine[] = []
   let emptyLineSeen = false
+  let whitespaceLineSeen = false
   for (const line of rest) {
     const run = toRun(source, line.parts, line.spaceAfter, false)
     if (run === null) {
       if (line.canBeEmpty) emptyLineSeen = true
+      if (line.canBeEmpty && line.spaceAfter) whitespaceLineSeen = true
       continue
     }
-    ownLines.push({ run, blankBefore: emptyLineSeen })
+    ownLines.push({
+      run,
+      blankBefore: emptyLineSeen,
+      whitespaceLineBefore: whitespaceLineSeen,
+    })
     emptyLineSeen = false
+    whitespaceLineSeen = false
   }
   return {
     trailing: toRun(source, first.parts, first.spaceAfter, true),
@@ -141,6 +161,8 @@ export function readGap(
     leading: toRun(source, last.parts, last.spaceAfter, false),
     blankAfter: emptyLineSeen,
     breaksLine: true,
+    trailingEndsWithComment: first.parts.at(-1)?.item.type === "Comment",
+    whitespaceLineAfter: whitespaceLineSeen,
   }
 }
 
@@ -158,6 +180,8 @@ function readSingleLine(source: Source, line: ScannedLine): Gap {
     leading: toRun(source, after, line.spaceAfter, false),
     blankAfter: false,
     breaksLine: false,
+    trailingEndsWithComment: false,
+    whitespaceLineAfter: false,
   }
 }
 

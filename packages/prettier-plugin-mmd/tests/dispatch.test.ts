@@ -25,7 +25,7 @@ vi.mock("@mmd-toolkit/parser", async (importOriginal) => ({
 
 /** Throws the parser's error for an unsupported diagram type. */
 function throwUnsupported(): never {
-  throw new UnsupportedDiagramError("classDiagram")
+  throw new UnsupportedDiagramError("er")
 }
 
 beforeEach(() => {
@@ -83,26 +83,26 @@ describe("dispatch to diagram printers", () => {
   })
 
   it("prints a parsed diagram type without a printer unchanged", async () => {
-    parse.mockImplementation((text: string) => stubRoot(text, "ClassDiagram"))
-    const input = "classDiagram\n  Animal <|-- Duck  \n\n\n"
+    parse.mockImplementation((text: string) => stubRoot(text, "ErDiagram"))
+    const input = "erDiagram\n  A ||--o{ B : has  \n\n\n"
     expect(await formatMermaid(input)).toBe(input)
   })
 
   describe("a diagram type the parser does not support is printed unchanged", () => {
     const inputs = [
-      "classDiagram\n  Animal <|-- Duck  \n\n\n  %% comment\n",
-      "classDiagram\n\tAnimal <|-- Duck",
-      "\n\n---\ntitle: T\n---\nclassDiagram\n  Animal <|-- Duck\n",
-      "%%{init: {'theme': 'dark'}}%%\nclassDiagram\n  Animal <|-- Duck\n",
+      "erDiagram\n  A ||--o{ B : has  \n\n\n  %% comment\n",
+      "erDiagram\n\tA ||--o{ B : has",
+      "\n\n---\ntitle: T\n---\nerDiagram\n  A ||--o{ B : has\n",
+      "%%{init: {'theme': 'dark'}}%%\nerDiagram\n  A ||--o{ B : has\n",
     ]
     it("when the parser reports it by name only", async () => {
       // Two installed copies of the parser would defeat `instanceof`.
       parse.mockImplementation(() => {
-        throw Object.assign(new Error("classDiagram"), {
+        throw Object.assign(new Error("er"), {
           name: "UnsupportedDiagramError",
         })
       })
-      const input = "classDiagram\n  Animal <|-- Duck  \n"
+      const input = "erDiagram\n  A ||--o{ B : has  \n"
       expect(await formatMermaid(input)).toBe(input)
     })
 
@@ -117,15 +117,15 @@ describe("dispatch to diagram printers", () => {
         "- item",
         "",
         "  ```mermaid",
-        "  classDiagram",
-        "    Animal <|-- Duck",
+        "  erDiagram",
+        "    A ||--o{ B : has",
         "",
         "    %% comment",
         "  ```",
         "",
         "> ```mermaid",
-        "> classDiagram",
-        ">     Animal <|-- Duck",
+        "> erDiagram",
+        ">     A ||--o{ B : has",
         "> ```",
         "",
       ].join("\n")
@@ -140,16 +140,16 @@ describe("dispatch to diagram printers", () => {
         "- item",
         "",
         "  ```mermaid",
-        "  classDiagram  ",
+        "  erDiagram  ",
         "",
-        "    Animal <|-- Duck\t",
+        "    A ||--o{ B : has\t",
         "  ```",
         "",
       ].join("\n")
       const formatted = await formatMarkdown(markdown)
       expect(formatted).toBe(await formatMarkdownWithoutPlugin(markdown))
       expect(formatted).toBe(
-        "- item\n\n  ```mermaid\n  classDiagram\n\n    Animal <|-- Duck\n  ```\n",
+        "- item\n\n  ```mermaid\n  erDiagram\n\n    A ||--o{ B : has\n  ```\n",
       )
     })
 
@@ -157,7 +157,7 @@ describe("dispatch to diagram printers", () => {
       // Prettier strips trailing line breaks from every embedded document,
       // so the plugin declines the block instead of printing it.
       parse.mockImplementation(throwUnsupported)
-      const markdown = "```mermaid\nclassDiagram\n  Animal <|-- Duck\n\n\n```\n"
+      const markdown = "```mermaid\nerDiagram\n  A ||--o{ B : has\n\n\n```\n"
       const formatted = await formatMarkdown(markdown)
       expect(formatted).toBe(await formatMarkdownWithoutPlugin(markdown))
       expect(formatted).toBe(markdown)
@@ -166,11 +166,11 @@ describe("dispatch to diagram printers", () => {
 
   describe("a parsed diagram type without a printer is left to Prettier inside Markdown", () => {
     it.each([
-      "```mermaid\nclassDiagram\n  Animal <|-- Duck\n\n\n```\n",
-      "- item\n\n  ```mermaid\n  classDiagram  \n\n    Animal <|-- Duck\t\n  ```\n",
-      "> ```mmd\n> classDiagram\n>\n>   Animal <|-- Duck\n> ```\n",
+      "```mermaid\nerDiagram\n  A ||--o{ B : has\n\n\n```\n",
+      "- item\n\n  ```mermaid\n  erDiagram  \n\n    A ||--o{ B : has\t\n  ```\n",
+      "> ```mmd\n> erDiagram\n>\n>   A ||--o{ B : has\n> ```\n",
     ])("%j", async (markdown) => {
-      parse.mockImplementation((text: string) => stubRoot(text, "ClassDiagram"))
+      parse.mockImplementation((text: string) => stubRoot(text, "ErDiagram"))
       expect(await formatMarkdown(markdown)).toBe(
         await formatMarkdownWithoutPlugin(markdown),
       )
@@ -180,12 +180,11 @@ describe("dispatch to diagram printers", () => {
 
   it("prints the whole text unchanged even if the root does not cover it", async () => {
     // A root may span only from the first to the last token.
-    const input =
-      "\n%% leading\nclassDiagram\n  Animal <|-- Duck\n\n%% trailing\n"
-    const first = input.indexOf("classDiagram")
-    const last = input.indexOf("Duck") + 4
+    const input = "\n%% leading\nerDiagram\n  A ||--o{ B : has\n\n%% trailing\n"
+    const first = input.indexOf("erDiagram")
+    const last = input.indexOf("has") + 3
     parse.mockImplementation((text: string) => ({
-      ...stubRoot(text, "ClassDiagram"),
+      ...stubRoot(text, "ErDiagram"),
       range: [first, last],
     }))
     expect(await formatMermaid(input)).toBe(input)
@@ -195,17 +194,11 @@ describe("dispatch to diagram printers", () => {
     // Prettier normalizes line endings to "\n" before parsing and converts
     // them to `endOfLine` after printing. mermaid.js also treats "\r\n" and
     // "\r" as "\n", so the diagram does not change.
-    const input = "classDiagram\r\n  Animal <|-- Duck\r  %% c\r\n"
+    const input = "erDiagram\r\n  A ||--o{ B : has\r  %% c\r\n"
     it.each([
-      [{}, "classDiagram\n  Animal <|-- Duck\n  %% c\n"],
-      [
-        { endOfLine: "crlf" },
-        "classDiagram\r\n  Animal <|-- Duck\r\n  %% c\r\n",
-      ],
-      [
-        { endOfLine: "auto" },
-        "classDiagram\r\n  Animal <|-- Duck\r\n  %% c\r\n",
-      ],
+      [{}, "erDiagram\n  A ||--o{ B : has\n  %% c\n"],
+      [{ endOfLine: "crlf" }, "erDiagram\r\n  A ||--o{ B : has\r\n  %% c\r\n"],
+      [{ endOfLine: "auto" }, "erDiagram\r\n  A ||--o{ B : has\r\n  %% c\r\n"],
     ] as const)("with %j", async (options, expected) => {
       parse.mockImplementation(throwUnsupported)
       expect(await formatMermaid(input, "diagram.mmd", options)).toBe(expected)
@@ -213,7 +206,7 @@ describe("dispatch to diagram printers", () => {
 
     it("and a byte order mark is kept", async () => {
       parse.mockImplementation(throwUnsupported)
-      const withBom = "\uFEFFclassDiagram\n  Animal <|-- Duck\n"
+      const withBom = "\uFEFFerDiagram\n  A ||--o{ B : has\n"
       expect(await formatMermaid(withBom)).toBe(withBom)
     })
   })

@@ -109,7 +109,7 @@ import { loadFixtures } from "<repo>/packages/tests/src/index.ts"
 import type { DiagramType } from "<repo>/packages/tests/src/index.ts"
 
 // The fixture directories; add a diagram type here when its directory exists.
-const diagrams: DiagramType[] = ["common", "flowchart"]
+const diagrams: DiagramType[] = ["common", "flowchart", "sequence", "class"]
 
 const wanted = process.argv[2]!
 for (const diagram of diagrams) {
@@ -198,8 +198,12 @@ script.
 
 ## 3. Adding a diagram type (step 3)
 
-Input: steps 1 and 2 are done for the diagram type: its Db normalizer and its
-collected fixtures (the tests SKILL).
+Input: steps 1 and 2 for the diagram type (the tests SKILL): its Db normalizer
+and its collected fixtures. The reading of mermaid.js (3.1) and the proposal of
+the tree (item 4 of 3.3) do not need the fixtures and may start while they are
+collected; check the claims with inputs written for the purpose (2.1), and turn
+them into fixtures once the collected ones have arrived, so that a claim does
+not get a second fixture for an input that the collection already has.
 
 ### 3.1 Reading mermaid.js
 
@@ -267,7 +271,12 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the five sections of
    from.
 5. Known divergences: those of the identifiers in known-divergences.md that
    apply to the diagram type, and how they show in it. A new divergence is
-   defined in known-divergences.md, with a row in its table.
+   defined in a document of its own, `known-divergences/<identifier>.md` and its
+   `.ja.md`, with the parts that known-divergences.md lists (the syntax, the
+   difference with examples, why mermaid.js reads it so, the rule and why, what
+   it means for an author, the documentation and issues of mermaid.js where any
+   were found, the counts and how they are checked), and with a row in the table
+   of known-divergences.md.
 
 ### 3.3 Adding the nodes of the tree
 

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The namespace body context: `style` is not a keyword there, and the grammar takes no style statement in a namespace."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...mespace N {class Cstyle C fill:red}\n---------------------^\nExpecting 'STRUCT_STOP', 'NAMESPACE', 'CLASS', 'NOTE_FOR', 'NOTE', got 'ALPHA'"
+  }
+}

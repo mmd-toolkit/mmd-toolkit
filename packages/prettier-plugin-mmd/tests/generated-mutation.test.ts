@@ -22,7 +22,7 @@ const TIMEOUT =
 const SEED = 1
 
 /** The diagram types whose fixtures are mutated. */
-const diagrams: readonly DiagramType[] = ["flowchart", "sequence"]
+const diagrams: readonly DiagramType[] = ["flowchart", "sequence", "class"]
 
 /** The mutants of every fixture. */
 function* makeMutants(

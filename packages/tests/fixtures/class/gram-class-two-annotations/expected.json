@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Class statements: a class statement has at most one annotation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...agramclass A <<x>> <<y>>\n----------------------^\nExpecting 'NEWLINE', 'EOF', 'STRUCT_START', 'STRUCT_STOP', got 'ANNOTATION_START'"
+  }
+}

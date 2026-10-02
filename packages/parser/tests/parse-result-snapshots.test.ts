@@ -27,7 +27,12 @@ import {
 } from "./helpers/parse-result-files.ts"
 
 /** The fixture directories whose parse results are kept. */
-const diagrams: readonly DiagramType[] = ["common", "flowchart", "sequence"]
+const diagrams: readonly DiagramType[] = [
+  "common",
+  "flowchart",
+  "sequence",
+  "class",
+]
 
 /** What `parse()` gives for an input, as it is kept. */
 type ParseResult =

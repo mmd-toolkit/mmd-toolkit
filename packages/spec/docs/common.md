@@ -297,7 +297,7 @@ mermaid.js makes this replacement in
 so that the attribute values of HTML in a label can use `"` without a change to
 the grammar, and it applies it to the whole source before it removes the
 frontmatter, directives, and comment lines. Except in the frontmatter (see
-[`html-tag-in-frontmatter`](./known-divergences.md#html-tag-in-frontmatter)),
+[`html-tag-in-frontmatter`](./known-divergences/html-tag-in-frontmatter.md)),
 this specification follows it on purpose, with its consequences:
 
 - A tag can start on a comment line. `%% <a` on a comment line starts a tag that
@@ -389,7 +389,7 @@ not whitespace-only is not part of it.
 This specification does not parse the body. The tree keeps it as written (see
 [ast.md](./ast.md#frontmatter)), and an input is accepted whatever the body
 contains; mermaid.js parses it as YAML and can reject the input (see
-[`embedded-data-opaque`](./known-divergences.md#embedded-data-opaque)). How
+[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.md)). How
 mermaid.js reads the body is described in
 [Reading the frontmatter body](#reading-the-frontmatter-body).
 
@@ -574,7 +574,7 @@ in mermaid.js. [fixture: common/directive-in-style-rule] [fixture:
 common/directive-in-entity] A directive inside a unit of another kind, such as
 an arrow, a keyword, or a string, makes the input rejected, while mermaid.js
 accepts it; see
-[`directive-as-token-boundary`](./known-divergences.md#directive-as-token-boundary).
+[`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.md).
 
 A directive on a comment line is part of the comment (see
 [Comment lines](#comment-lines)). Each diagram document applies this rule to
@@ -748,7 +748,7 @@ These removals only affect detection; the diagram's grammar does not see them.
 When the text has an init directive, mermaid.js also runs the detectors once
 more on a text derived differently, and that run can reject the input; this
 specification does not run it (see [Init directives](#init-directives) and
-[`embedded-data-opaque`](./known-divergences.md#embedded-data-opaque)).
+[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.md)).
 
 The detectors are then tried in registration order. The first one whose
 condition holds selects the diagram type. No detector matching means the text is
@@ -961,7 +961,7 @@ This section is for reference. It does not take part in deciding whether an
 input is accepted or what its tree is: an implementation of this specification
 keeps the frontmatter body and the directive arguments as written, and neither
 parses nor checks them (see
-[`embedded-data-opaque`](./known-divergences.md#embedded-data-opaque)). The
+[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.md)). The
 section describes how mermaid.js derives its configuration from the frontmatter
 and the directives, because the Db of some diagrams reads that configuration.
 The Db normalization of each diagram takes the configuration into account, and
@@ -1351,9 +1351,9 @@ applies the same configuration but not the title. The fixtures follow
 These divergences, defined in [known-divergences.md](./known-divergences.md),
 concern what this document defines:
 
-- [`directive-as-token-boundary`](./known-divergences.md#directive-as-token-boundary):
+- [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.md):
   a directive inside a unit that is not `RawText` or `Identifier`;
-- [`html-tag-in-frontmatter`](./known-divergences.md#html-tag-in-frontmatter):
+- [`html-tag-in-frontmatter`](./known-divergences/html-tag-in-frontmatter.md):
   an HTML tag that starts in the frontmatter;
-- [`embedded-data-opaque`](./known-divergences.md#embedded-data-opaque):
+- [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.md):
   embedded data, which this specification neither parses nor checks.

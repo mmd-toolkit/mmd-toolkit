@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The statement context: a line of only spaces after a `%%` line is a `newline` unit of its own, so two `newline` units follow one another and the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...sDiagramclass A%%  class B\n--------------------^\nExpecting 'EOF', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NAMESPACE', 'ANNOTATION_START', 'CLASS', 'MEMBER', 'SEPARATOR', 'NOTE_FOR', 'NOTE', 'CLASSDEF', 'ALPHA', 'direction_tb', 'direction_bt', 'direction_rl', 'direction_lr', 'CALLBACK', 'LINK', 'CLICK', 'STYLE', 'CSSCLASS', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'NEWLINE'"
+  }
+}

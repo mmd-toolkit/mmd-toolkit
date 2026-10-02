@@ -93,7 +93,7 @@ describe("the flowchart tree", () => {
                   property: null,
                   range: [14, 17],
                 },
-                className: null,
+                cssClass: null,
                 data: [],
                 range: [13, 17],
               },
@@ -349,7 +349,7 @@ describe("the identifiers and literals of a flowchart", () => {
     ).toMatchObject([
       {
         type: "FlowchartClassDefStatement",
-        classNames: [
+        cssClasses: [
           { type: "Identifier", name: "a", range: [22, 23] },
           null,
           { type: "Identifier", name: "b", range: [25, 26] },
@@ -359,7 +359,7 @@ describe("the identifiers and literals of a flowchart", () => {
       {
         type: "FlowchartClassStatement",
         ids: [null, { type: "Identifier", name: "A" }],
-        className: { type: "Identifier", name: "c" },
+        cssClass: { type: "Identifier", name: "c" },
       },
     ])
     expect(tokensOf("classDef a,,b fill:#f00")).toEqual([
@@ -381,7 +381,7 @@ describe("the identifiers and literals of a flowchart", () => {
           vertices: [
             {
               id: { name: "A,B", range: [13, 16] },
-              className: { name: "c,d", range: [19, 22] },
+              cssClass: { name: "c,d", range: [19, 22] },
             },
           ],
         },
@@ -465,8 +465,8 @@ describe("the identifiers and literals of a flowchart", () => {
     ['subgraph click "" y\nend', [22, 27]],
     ['A\nclick A click B href "u"', [23, 28]],
   ])(
-    // known-divergences.md, `click-reserved-word`: a `click` unit that does not start
-    // a click statement makes the input rejected, reported at the word
+    // known-divergences/click-reserved-word.md: a `click` unit that does not
+    // start a click statement makes the input rejected, reported at the word
     // `click` (docs/error-positions.md, Known divergences).
     "rejects %j at its `click`, which does not start a click statement",
     (statements, range) => {
@@ -750,8 +750,8 @@ describe("the flowchart tokens", () => {
       [15, 27],
     ],
   ])(
-    // known-divergences.md, `tokenless-empty-forms`: an empty form that no rule takes
-    // makes the input rejected, reported at the whole form
+    // known-divergences/tokenless-empty-forms.md: an empty form that no rule
+    // takes makes the input rejected, reported at the whole form
     // (docs/error-positions.md, Known divergences).
     "rejects %j at its empty form",
     (statements, message, range) => {

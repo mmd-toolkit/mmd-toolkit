@@ -5,7 +5,8 @@
  * The tests build many inputs in loops and template literals, so reading
  * string literals out of the files would miss most of them. Instead each file
  * is copied into a working directory with only the paths of its imports
- * changed, to stub modules written next to it, and the copy is imported, so
+ * (declarations and `import("...")` calls) changed, to stub modules written
+ * next to it, and the copy is imported, so
  * every line stays where it is in the original. Then every test body is run
  * once:
  *
@@ -84,6 +85,8 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/flowchart/parser/flowParser.ts": ["default"],
   "diagrams/flowchart/flowDb.js": ["FlowDB"],
   "diagrams/sequence/sequenceDb.js": ["SequenceDB"],
+  "diagrams/class/parser/classDiagram.jison": ["parser"],
+  "diagrams/class/classDb.js": ["ClassDB"],
   "config.js": [
     "setConfig",
     "getConfig",
@@ -97,7 +100,7 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "mermaidAPI.js": ["mermaidAPI", "default"],
   "mermaid.js": ["default"],
   "Diagram.js": ["Diagram"],
-  "diagram-api/diagramAPI.js": ["setSiteConfig"],
+  "diagram-api/diagramAPI.js": ["setSiteConfig", "setConfig"],
   "diagram-api/diagram-orchestration.js": ["addDiagrams"],
 }
 
@@ -300,6 +303,10 @@ export async function recordSpecFile(
     },
     "diagrams/flowchart/flowDb.js": { FlowDB: anything },
     "diagrams/sequence/sequenceDb.js": { SequenceDB: anything },
+    "diagrams/class/parser/classDiagram.jison": {
+      parser: { parse: record, yy: anything },
+    },
+    "diagrams/class/classDb.js": { ClassDB: anything },
     "config.js": Object.fromEntries(
       (STUBBED_MODULES["config.js"] ?? []).map((name) => [name, anything]),
     ),
@@ -317,7 +324,10 @@ export async function recordSpecFile(
         fromText: (text: unknown) => Promise.resolve(record(text)),
       }),
     },
-    "diagram-api/diagramAPI.js": { setSiteConfig: anything },
+    "diagram-api/diagramAPI.js": {
+      setSiteConfig: anything,
+      setConfig: anything,
+    },
     "diagram-api/diagram-orchestration.js": { addDiagrams: () => undefined },
   }
 
@@ -387,10 +397,7 @@ function writeCopyWithStubs(
   const sourceFile = ts.createSourceFile(file, source, ts.ScriptTarget.Latest)
   let copy = ""
   let copied = 0
-  for (const statement of sourceFile.statements) {
-    if (!ts.isImportDeclaration(statement)) continue
-    const specifier = statement.moduleSpecifier
-    if (!ts.isStringLiteral(specifier)) continue
+  for (const specifier of moduleSpecifiers(sourceFile)) {
     const key = specifier.text.startsWith(".")
       ? path
           .relative(
@@ -419,6 +426,42 @@ function writeCopyWithStubs(
   )
   writeFileSync(copyPath, copy)
   return copyPath
+}
+
+/**
+ * The module paths a test file loads, in the order they appear: those of its
+ * import declarations, and those of `import("...")` calls with a literal path
+ * (some tests load a module inside a test). A type-only import is left out:
+ * Node removes it with the other types, so it loads nothing.
+ */
+function moduleSpecifiers(sourceFile: ts.SourceFile): ts.StringLiteral[] {
+  const specifiers: ts.StringLiteral[] = []
+
+  /**
+   * Collects the specifiers in `node` and its descendants.
+   */
+  function visit(node: ts.Node): void {
+    if (ts.isImportDeclaration(node)) {
+      if (
+        !node.importClause?.isTypeOnly &&
+        ts.isStringLiteral(node.moduleSpecifier)
+      ) {
+        specifiers.push(node.moduleSpecifier)
+      }
+      return
+    }
+    if (
+      ts.isCallExpression(node) &&
+      node.expression.kind === ts.SyntaxKind.ImportKeyword
+    ) {
+      const [argument] = node.arguments
+      if (argument && ts.isStringLiteral(argument)) specifiers.push(argument)
+    }
+    ts.forEachChild(node, visit)
+  }
+
+  visit(sourceFile)
+  return specifiers
 }
 
 /**

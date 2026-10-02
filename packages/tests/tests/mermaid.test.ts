@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, expectTypeOf, it } from "vitest"
 import {
   cssSupportsColor,
   detectDiagramType,
@@ -7,7 +7,10 @@ import {
   resolveEmbeddedData,
   runMermaid,
 } from "../src/mermaid.ts"
+import type { RunMermaidOptions } from "../src/mermaid.ts"
+import type { RUN_MERMAID_OPTION_KEYS } from "../src/run-mermaid-options.ts"
 import * as browserStandIns from "../src/normalizers/browser-stand-ins.ts"
+import type { MermaidConfig } from "../src/types.ts"
 import { errorName, isEnvironmentFailure } from "../src/rejections.ts"
 
 /**
@@ -492,13 +495,134 @@ describe("sequence data block effects", () => {
   })
 })
 
-describe("withoutDivergence", () => {
+describe("class summary", () => {
+  /** Returns the summary mermaid gives `text` with `config`. */
+  async function summary(
+    text: string,
+    config: MermaidConfig = {},
+  ): Promise<Record<string, unknown>> {
+    const outcome = await runMermaid(text, { config })
+    if (!outcome.accepted || !outcome.db) throw new Error("expected a Db")
+    return outcome.db
+  }
+
+  it("drops DOM ids, the display text of members and note indexes", async () => {
+    const db = await summary(
+      'classDiagram\n  class A {\n    +int x$\n    +foo(a) bool*\n  }\n  note for A "hi"\n',
+    )
+    expect(db.classes).toEqual([
+      {
+        id: "A",
+        type: "",
+        label: "A",
+        text: "A",
+        shape: "classBox",
+        cssClasses: "default",
+        methods: [
+          {
+            memberType: "method",
+            visibility: "+",
+            classifier: "*",
+            id: "foo",
+            parameters: "a",
+            returnType: "bool",
+          },
+        ],
+        members: [
+          {
+            memberType: "attribute",
+            visibility: "+",
+            classifier: "$",
+            id: "int x",
+          },
+        ],
+        annotations: [],
+        styles: [],
+      },
+    ])
+    expect(db.notes).toEqual([{ id: "note0", class: "A", text: "hi" }])
+  })
+
+  it("lists the classes, notes and children of a namespace by id", async () => {
+    const db = await summary(
+      "classDiagram\n  namespace N.M {\n    class A\n  }\n",
+    )
+    expect(db.namespaces).toEqual([
+      {
+        id: "N",
+        label: "N",
+        classes: [],
+        notes: [],
+        children: ["N.M"],
+        explicit: false,
+      },
+      {
+        id: "N.M",
+        label: "M",
+        classes: ["A"],
+        notes: [],
+        children: [],
+        parent: "N",
+        explicit: true,
+      },
+    ])
+  })
+
+  it("drops the whitespace at the end of style values", async () => {
+    const db = await summary(
+      "classDiagram\n  class B\n  style B fill:#0f0 , stroke:#333 \n",
+    )
+    expect((db.classes as { styles: string[] }[])[0]?.styles).toEqual([
+      "fill:#0f0",
+      " stroke:#333",
+    ])
+  })
+
+  it("records click links as written under every securityLevel", async () => {
+    const text =
+      'classDiagram\n  class A\n  class B\n  click A href "https://x" _self\n  click B href " "\n'
+    for (const securityLevel of ["strict", "sandbox"]) {
+      const db = await summary(text, { securityLevel })
+      const [a, b] = db.classes as { link?: string; linkTarget?: string }[]
+      expect([a?.link, a?.linkTarget], securityLevel).toEqual([
+        "https://x",
+        "_self",
+      ])
+      expect([b?.link, b?.linkTarget], securityLevel).toEqual([
+        undefined,
+        "_blank",
+      ])
+    }
+  })
+})
+
+describe("options", () => {
+  it("lists the keys of RunMermaidOptions", () => {
+    expectTypeOf<(typeof RUN_MERMAID_OPTION_KEYS)[number]>().toEqualTypeOf<
+      keyof RunMermaidOptions
+    >()
+  })
+
+  it("rejects a key it does not know, also one that a spread brought in", async () => {
+    const renamed = { withoutDivergence: "comment-takes-character" }
+    const text = "sequenceDiagram\n  A->>B: x\n"
+    await expect(runMermaid(text, { config: {}, ...renamed })).rejects.toThrow(
+      "unknown options withoutDivergence; the options are config, withoutDivergences",
+    )
+    await expect(
+      detectDiagramType(text, { config: {}, ...renamed }),
+    ).rejects.toThrow(TypeError)
+    expect((await runMermaid(text)).accepted).toBe(true)
+  })
+})
+
+describe("withoutDivergences", () => {
   const comment = "%%"
 
   it("reads a number before a comment as the specification does", async () => {
     const text = `sequenceDiagram\n  autonumber 5${comment} c\n  A->>B: x\n`
     const removed = await runMermaid(text, {
-      withoutDivergence: "comment-takes-character",
+      withoutDivergences: ["comment-takes-character"],
     })
     if (!removed.accepted || !removed.db) throw new Error("expected a Db")
     expect((removed.db.messages as { message: unknown }[])[0]?.message).toEqual(
@@ -518,7 +642,7 @@ describe("withoutDivergence", () => {
   it("puts the lexer back after the call, also when calls overlap", async () => {
     const text = `sequenceDiagram\n  autonumber 10${comment} c\n  A->>B: x\n`
     const [removed, asIs] = await Promise.all([
-      runMermaid(text, { withoutDivergence: "comment-takes-character" }),
+      runMermaid(text, { withoutDivergences: ["comment-takes-character"] }),
       runMermaid(text),
     ])
     expect(removed.accepted).toBe(true)
@@ -529,8 +653,138 @@ describe("withoutDivergence", () => {
   it("changes nothing for another diagram type", async () => {
     const text = `flowchart LR\n  A --> B\n  A${comment} c\n`
     expect(
-      await runMermaid(text, { withoutDivergence: "comment-takes-character" }),
+      await runMermaid(text, {
+        withoutDivergences: ["comment-takes-character"],
+      }),
     ).toEqual(await runMermaid(text))
+  })
+
+  /** Whether mermaid accepts `text` as is, and without the class divergence. */
+  async function acceptedWithAndWithoutLineBreak(
+    text: string,
+  ): Promise<[boolean, boolean]> {
+    const asIs = await runMermaid(text)
+    const removed = await runMermaid(text, {
+      withoutDivergences: ["comment-takes-line-break"],
+    })
+    return [asIs.accepted, removed.accepted]
+  }
+
+  it("ends a class comment after a unit at the end of its line", async () => {
+    expect(
+      await acceptedWithAndWithoutLineBreak(
+        `classDiagram\n  A --> B ${comment} c\n  class C\n`,
+      ),
+    ).toEqual([false, true])
+    expect(
+      await acceptedWithAndWithoutLineBreak(
+        `classDiagram\n  A ${comment} c\n  --> B\n`,
+      ),
+    ).toEqual([true, false])
+  })
+
+  it("lets a class comment alone on its line take its line break", async () => {
+    expect(
+      await acceptedWithAndWithoutLineBreak(
+        `classDiagram\n  class A\n  ${comment}\n  class B\n`,
+      ),
+    ).toEqual([true, true])
+  })
+
+  /**
+   * The classes and relations mermaid gives `text`, or `undefined` if it
+   * rejects it.
+   */
+  async function classesAndRelations(
+    text: string,
+    options: RunMermaidOptions = {},
+  ): Promise<{ classes: unknown; relations: unknown } | undefined> {
+    const outcome = await runMermaid(text, options)
+    if (!outcome.accepted || !outcome.db) return undefined
+    return { classes: outcome.db.classes, relations: outcome.db.relations }
+  }
+
+  const nameStart: RunMermaidOptions = {
+    withoutDivergences: ["name-start-reads-unit"],
+  }
+
+  it("reads a keyword at the start of a backquoted name as the name", async () => {
+    const text = "classDiagram\n  class `note`\n"
+    expect(await classesAndRelations(text)).toBeUndefined()
+    const removed = await classesAndRelations(text, nameStart)
+    expect((removed?.classes as { id: string }[]).map(({ id }) => id)).toEqual([
+      "note",
+    ])
+  })
+
+  it("reads a quote at the start of a backquoted name as part of the name", async () => {
+    const text = 'classDiagram\n  A `"1"` --> B\n'
+    const asIs = await classesAndRelations(text)
+    const removed = await classesAndRelations(text, nameStart)
+    expect((asIs?.classes as { id: string }[]).map(({ id }) => id)).toEqual([
+      "A",
+      "B",
+    ])
+    expect((removed?.classes as { id: string }[]).map(({ id }) => id)).toEqual([
+      'A"1"',
+      "B",
+    ])
+  })
+
+  it("leaves names that start with a character of the name as they are", async () => {
+    for (const text of [
+      "classDiagram\n  class A~T~\n",
+      "classDiagram\n  class `x`\n",
+      "classDiagram\n  class A~~\n",
+    ]) {
+      expect(await classesAndRelations(text, nameStart), text).toEqual(
+        await classesAndRelations(text),
+      )
+    }
+  })
+
+  it("removes several divergences of one lexer together", async () => {
+    const text = "classDiagram\n  class `note`\n  A --> B %% c\n  class C\n"
+    const both = await classesAndRelations(text, {
+      withoutDivergences: ["comment-takes-line-break", "name-start-reads-unit"],
+    })
+    expect((both?.classes as { id: string }[]).map(({ id }) => id)).toEqual([
+      "note",
+      "A",
+      "B",
+      "C",
+    ])
+    for (const withoutDivergences of [
+      [],
+      ["comment-takes-line-break"],
+      ["name-start-reads-unit"],
+    ] as const) {
+      expect(
+        await classesAndRelations(text, { withoutDivergences }),
+        JSON.stringify(withoutDivergences),
+      ).toBeUndefined()
+    }
+  })
+
+  it("counts each divergence once and ignores those of other diagram types", async () => {
+    const text = "classDiagram\n  class `note`\n  A --> B %% c\n  class C\n"
+    expect(
+      await classesAndRelations(text, {
+        withoutDivergences: [
+          "name-start-reads-unit",
+          "comment-takes-character",
+          "comment-takes-line-break",
+          "name-start-reads-unit",
+        ],
+      }),
+    ).toEqual(
+      await classesAndRelations(text, {
+        withoutDivergences: [
+          "comment-takes-line-break",
+          "name-start-reads-unit",
+        ],
+      }),
+    )
   })
 })
 

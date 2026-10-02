@@ -103,10 +103,11 @@ How it is built (under `src/printers/`):
 - Each diagram type has its printer (`<diagram>.ts`), which dispatches on its
   node types and gives `blocks.ts` its `BlockRules` (its kept lines, where a
   statement's printed text ends, which statements hold statements, which are
-  dropped at the top level); the layout of its statements and block headers,
-  with the gap rules of its decided items (`<diagram>-layout.ts`); and its kept
-  lines (`<diagram>-kept-lines.ts`). `BlockRules` takes the statement type of
-  the diagram type, so that its functions need no cast. When the statements of a
+  dropped at the top level, whether a line of only whitespace after a comment is
+  kept); the layout of its statements and block headers, with the gap rules of
+  its decided items (`<diagram>-layout.ts`); and its kept lines
+  (`<diagram>-kept-lines.ts`). `BlockRules` takes the statement type of the
+  diagram type, so that its functions need no cast. When the statements of a
   diagram type fall into kinds (blocks with one body, blocks of sections,
   statements that hold no other), decide the kinds in one function whose switch
   lists every statement type, checks each case against the type of its kind, and
@@ -177,9 +178,10 @@ Add these to the four tests of AGENTS.md. How they are built is in
 - How mermaid.js's reading is compared (`tests/mermaid-readings.ts`, used by the
   fixture, corpus, and generated-input tests): as the specification reads the
   text, with mermaid.js run without the known divergences that change the
-  reading (`withoutDivergence`), and, where mermaid.js as it is accepts both
-  texts, as mermaid.js reads it too. When a diagram type brings such a
-  divergence, add it there.
+  reading (`withoutDivergences`, all of them in one run), and, where mermaid.js
+  as it is accepts the text before formatting, as mermaid.js reads it too: it
+  must accept the text after formatting with the same Db. When a diagram type
+  brings such a divergence, add it there.
 - Unit tests: dispatch, failures, and Markdown code blocks
   (`tests/dispatch.test.ts`, `failure.test.ts`, `markdown.test.ts`,
   `markdown-flowchart.test.ts`). For a new diagram type, add an example that is
@@ -204,7 +206,8 @@ Add these to the four tests of AGENTS.md. How they are built is in
   - joined statements (two statements joined by `;`, of every kind, and with the
     words that start statements used as ids)
   - forms that belong to the diagram type (in flowchart, lines that hold a `;`
-    other than a separator; in sequence, messages of many forms)
+    other than a separator; in sequence, messages of many forms; in class,
+    relations, member statements, and class statements of many forms)
   - Choose inputs deterministically (a seed, every n-th boundary). Keep the
     regular run to a few minutes; the values that set the size are read from
     environment variables in one place, `tests/generated.ts` (see the full run

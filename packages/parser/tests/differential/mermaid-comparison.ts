@@ -29,15 +29,18 @@
  *   without its empty forms, reads in it the same units but theirs, and
  *   finds each of their click ids within one leaf node, agrees with
  *   mermaid.js on the original input; and it declares
- *   `tokenless-empty-forms` for a flowchart or a sequence diagram with an
- *   empty form that mermaid.js reads nothing for, and checks that the
- *   parser, where it accepts the text without those forms and reads in it
- *   the same units but theirs, agrees with mermaid.js on the original
- *   input. The divergences that go both ways, `html-tag-in-frontmatter`
- *   and `comment-takes-character`, are declared for a tree as well as for
- *   a rejection, and checked against mermaid.js in their reference reading:
+ *   `tokenless-empty-forms` for a flowchart, a sequence diagram, or a
+ *   class diagram with an empty form that mermaid.js reads nothing for,
+ *   and checks that the parser, where it accepts the text without those
+ *   forms and reads in it the same units but theirs, agrees with
+ *   mermaid.js on the original input. The divergences that go both ways,
+ *   `html-tag-in-frontmatter`, `comment-takes-character`,
+ *   `comment-takes-line-break`, and `name-start-reads-unit`, are declared
+ *   for a tree as well as for a
+ *   rejection, and checked against mermaid.js in their reference reading:
  *   on the input whose frontmatter starts no tag, and on the input itself
- *   with the two rules of the lexer of mermaid.js changed;
+ *   with the rules of the lexer of mermaid.js that the divergence names
+ *   changed;
  * - `UnsupportedDiagramError` (detected, not implemented yet): mermaid.js
  *   either accepts with the same diagram type id, or rejects in that
  *   diagram's own parser or for embedded data. A rejection by the common
@@ -86,6 +89,10 @@ import {
   withoutDirectives,
   withoutFrontmatterTagStarts,
   commentsAfterMatchStarts,
+  commentsAfterUnits,
+  CLASS_READING_REMOVALS,
+  namesStartingWithUnits,
+  rejectsWithoutHeader,
 } from "../helpers/reference-inputs.ts"
 
 /** What `parse()` does with a text. */
@@ -116,10 +123,10 @@ export function outcomeOf(text: string, config?: MermaidConfig): Outcome {
 }
 
 /**
- * known-divergences.md, `directive-as-token-boundary`: whether the parser rejects the
- * text and does not reject it without its directives. The divergence goes
- * one way only: a directive inside a unit that is not `RawText` or
- * `Identifier` makes the specification reject what mermaid.js accepts.
+ * known-divergences/directive-as-token-boundary.md: whether the parser rejects
+ * the text and does not reject it without its directives. The divergence goes
+ * one way only: a directive inside a unit that is not `RawText` or `Identifier`
+ * makes the specification reject what mermaid.js accepts.
  */
 function rejectsForDirective(
   text: string,
@@ -132,8 +139,8 @@ function rejectsForDirective(
 }
 
 /**
- * known-divergences.md, `click-reserved-word`: whether the parser rejects the text and
- * the text has a `click` unit that does not start a click statement. The
+ * known-divergences/click-reserved-word.md: whether the parser rejects the text
+ * and the text has a `click` unit that does not start a click statement. The
  * divergence goes one way only: the specification rejects what mermaid.js
  * accepts.
  */
@@ -143,8 +150,8 @@ function rejectsForReservedClick(text: string, root: Root | null): boolean {
 }
 
 /**
- * known-divergences.md, `tokenless-empty-forms`: whether the parser rejects the text
- * and the text has an empty form that mermaid.js reads nothing for. The
+ * known-divergences/tokenless-empty-forms.md: whether the parser rejects the
+ * text and the text has an empty form that mermaid.js reads nothing for. The
  * divergence goes one way only: the specification rejects what mermaid.js
  * accepts.
  */
@@ -154,7 +161,7 @@ function rejectsForEmptyForm(text: string, root: Root | null): boolean {
 }
 
 /**
- * known-divergences.md, `comment-takes-character`: whether the sequence
+ * known-divergences/comment-takes-character.md: whether the sequence
  * text has a `%%` where the two rules of mermaid.js that the divergence
  * names read otherwise than this specification. The divergence goes both
  * ways.
@@ -164,8 +171,17 @@ function commentTakesCharacter(text: string): boolean {
 }
 
 /**
- * known-divergences.md, `embedded-data-opaque`: whether the tree has embedded data,
- * which the parser never reads: frontmatter, a directive, or a data block
+ * known-divergences/comment-takes-line-break.md: whether the class
+ * text has a diagram comment that follows a unit on its line, whose line
+ * feed mermaid.js takes. The divergence goes both ways.
+ */
+function commentTakesLineBreak(text: string): boolean {
+  return (commentsAfterUnits(text)?.length ?? 0) > 0
+}
+
+/**
+ * known-divergences/embedded-data-opaque.md: whether the tree has embedded
+ * data, which the parser never reads: frontmatter, a directive, or a data block
  * of a flowchart or of a sequence participant.
  */
 function hasEmbeddedData(root: Root): boolean {
@@ -199,6 +215,14 @@ function hasEmbeddedData(root: Root): boolean {
  *   has an empty form that mermaid.js reads nothing for;
  * - `comment-takes-character` when a sequence text has a `%%` that
  *   mermaid.js would take the character before;
+ * - `comment-takes-line-break` when a class text has a diagram comment
+ *   after a unit on its line, whose line feed mermaid.js would take;
+ * - `name-start-reads-unit` when a class text has a backquoted name or a
+ *   generic type whose text starts with a unit that mermaid.js would read
+ *   instead;
+ * - `headerless-empty-ending` when the parser rejects a class text whose
+ *   first unit is not its header, which mermaid.js accepts where the text
+ *   ends in an empty match;
  * - `html-tag-in-frontmatter` when a tag that starts in the frontmatter
  *   changes which `"` mermaid.js reads as `'`;
  * - `embedded-data-opaque` for an accepted text with embedded data, which
@@ -214,7 +238,14 @@ function declaredDivergence(
   }
   if (rejectsForReservedClick(text, root)) return "click-reserved-word"
   if (rejectsForEmptyForm(text, root)) return "tokenless-empty-forms"
+  if (root === null && rejectsWithoutHeader(text)) {
+    return "headerless-empty-ending"
+  }
   if (commentTakesCharacter(text)) return "comment-takes-character"
+  if (commentTakesLineBreak(text)) return "comment-takes-line-break"
+  if ((namesStartingWithUnits(text)?.length ?? 0) > 0) {
+    return "name-start-reads-unit"
+  }
   if (frontmatterChangesAttributeQuotes(text)) return "html-tag-in-frontmatter"
   if (root !== null && hasEmbeddedData(root)) return "embedded-data-opaque"
   return undefined
@@ -265,9 +296,9 @@ function hasInitDirective(text: string): boolean {
 
 /**
  * Whether mermaid.js rejected the text for what its embedded data contains
- * (known-divergences.md, `embedded-data-opaque`), judged by the error it threw. The
- * forms are those of the fixtures that the bullets of that section, and
- * the Known divergences of diagrams/flowchart.md, cite:
+ * (known-divergences/embedded-data-opaque.md), judged by the error it threw.
+ * The forms are those of the fixtures that the bullets of that section, and the
+ * Known divergences of diagrams/flowchart.md, cite:
  *
  * - a `YAMLException` from the frontmatter body or from a data block;
  * - a `TypeError` from a configuration of the wrong shape: "Cannot create
@@ -372,6 +403,12 @@ export interface DecidedComparison {
    * or a rejection for another reason.
    */
   readonly unexplainedEmbeddedData: readonly MutationDivergence[]
+  /**
+   * The declared `headerless-empty-ending` differences that are not an
+   * input that mermaid.js accepts: the divergence goes one way only, and
+   * the parser rejects for the missing header.
+   */
+  readonly unexplainedHeaderless: readonly MutationDivergence[]
 }
 
 /**
@@ -399,6 +436,11 @@ export async function compareDecided(
           isEmbeddedDataRejection(divergence.text, divergence.mermaid)
         ),
     ),
+    unexplainedHeaderless: divergences.filter(
+      (divergence) =>
+        divergence.id === "headerless-empty-ending" &&
+        !(divergence.kind === "acceptance" && divergence.mermaid.accepted),
+    ),
   }
 }
 
@@ -416,12 +458,12 @@ export interface ExplainedDivergenceCheck {
 }
 
 /**
- * known-divergences.md, `directive-as-token-boundary`: every difference that the test
- * declared as this divergence. The parser rejects what mermaid.js accepts,
+ * known-divergences/directive-as-token-boundary.md: every difference that the
+ * test declared as this divergence. The parser rejects what mermaid.js accepts,
  * and without its directives the parser gives what mermaid.js gave for the
- * input, so that nothing but a directive explains the difference. A
- * declared input that mermaid.js rejects as well is no difference and
- * needs no explanation.
+ * input, so that nothing but a directive explains the difference. A declared
+ * input that mermaid.js rejects as well is no difference and needs no
+ * explanation.
  */
 export async function checkDirectiveDivergences(
   decided: readonly MutationInput[],
@@ -469,12 +511,11 @@ async function explainedByDirective(
 }
 
 /**
- * known-divergences.md, `click-reserved-word`: every difference that the test declared
- * as this divergence. The parser rejects what mermaid.js accepts, and where
- * mermaid.js gives the reference input the Db of the input
- * ({@link clickReferenceOf}), the parser gives it what mermaid.js gave for
- * the input, so that nothing but those `click` units explains the
- * difference.
+ * known-divergences/click-reserved-word.md: every difference that the test
+ * declared as this divergence. The parser rejects what mermaid.js accepts, and
+ * where mermaid.js gives the reference input the Db of the input ({@link
+ * clickReferenceOf}), the parser gives it what mermaid.js gave for the input,
+ * so that nothing but those `click` units explains the difference.
  */
 export async function checkReservedClickDivergences(
   decided: readonly MutationInput[],
@@ -523,7 +564,7 @@ async function explainedByReservedClick(
 }
 
 /**
- * known-divergences.md, `tokenless-empty-forms`: every difference that the test
+ * known-divergences/tokenless-empty-forms.md: every difference that the test
  * declared as this divergence. The parser rejects what mermaid.js accepts,
  * and where its lexer reads the reference input, the text without its
  * comment regions and without the empty forms that mermaid.js reads nothing
@@ -578,7 +619,8 @@ async function explainedByEmptyForms(
 /**
  * The check of the inputs for which the test declares a divergence that
  * goes both ways and that a reference reading explains:
- * `html-tag-in-frontmatter` or `comment-takes-character`.
+ * `html-tag-in-frontmatter`, `comment-takes-character`,
+ * `comment-takes-line-break`, or `name-start-reads-unit`.
  */
 export interface ReferenceDivergenceCheck {
   /** The inputs for which the parser does not give what mermaid.js gives in the reference reading. */
@@ -596,11 +638,11 @@ export interface ReferenceDivergenceCheck {
 /**
  * How mermaid.js is to read an input so that it reads it as this
  * specification does, but for the other known divergences: the text it
- * reads, and the divergence removed from its lexer, if any.
+ * reads, and the divergences removed from its lexer, if any.
  */
 export interface ReferenceReading {
   readonly text: string
-  readonly withoutDivergence?: DivergenceRemoval
+  readonly withoutDivergences?: readonly DivergenceRemoval[]
 }
 
 /**
@@ -633,9 +675,9 @@ async function checkAgainstReferenceReadings(
       reference.text,
       {
         ...(input.config === undefined ? {} : { config: input.config }),
-        ...(reference.withoutDivergence === undefined
+        ...(reference.withoutDivergences === undefined
           ? {}
-          : { withoutDivergence: reference.withoutDivergence }),
+          : { withoutDivergences: reference.withoutDivergences }),
       },
     )
     let agrees: boolean
@@ -658,7 +700,7 @@ async function checkAgainstReferenceReadings(
 }
 
 /**
- * known-divergences.md, `html-tag-in-frontmatter`: the reference reading is
+ * known-divergences/html-tag-in-frontmatter.md: the reference reading is
  * that of the input whose frontmatter starts no tag.
  */
 export function checkHtmlTagDivergences(
@@ -672,9 +714,9 @@ export function checkHtmlTagDivergences(
 }
 
 /**
- * known-divergences.md, `comment-takes-character`: the reference reading
+ * known-divergences/comment-takes-character.md: the reference reading
  * is that of the input itself by mermaid.js with the two rules of its
- * lexer that the divergence names changed (`withoutDivergence` of
+ * lexer that the divergence names changed (`withoutDivergences` of
  * `@mmd-toolkit/tests/mermaid`).
  */
 export function checkCommentDivergences(
@@ -683,7 +725,42 @@ export function checkCommentDivergences(
   return checkAgainstReferenceReadings(
     decided,
     "comment-takes-character",
-    (text) => ({ text, withoutDivergence: "comment-takes-character" }),
+    (text) => ({ text, withoutDivergences: ["comment-takes-character"] }),
+  )
+}
+
+/**
+ * known-divergences/comment-takes-line-break.md: the reference reading
+ * is that of the input itself by mermaid.js with the rule of its lexer
+ * that the divergence names changed (`withoutDivergences` of
+ * `@mmd-toolkit/tests/mermaid`), and with `name-start-reads-unit` removed
+ * as well, so that an input of both is read as this specification reads
+ * it (`CLASS_READING_REMOVALS`).
+ */
+export function checkLineBreakCommentDivergences(
+  decided: readonly MutationInput[],
+): Promise<ReferenceDivergenceCheck> {
+  return checkAgainstReferenceReadings(
+    decided,
+    "comment-takes-line-break",
+    (text) => ({ text, withoutDivergences: CLASS_READING_REMOVALS }),
+  )
+}
+
+/**
+ * known-divergences/name-start-reads-unit.md: the reference reading is
+ * that of the input itself by mermaid.js with the rules of its backquote
+ * and generic states that the divergence names reordered
+ * (`withoutDivergences` of `@mmd-toolkit/tests/mermaid`), and with
+ * `comment-takes-line-break` removed as well (`CLASS_READING_REMOVALS`).
+ */
+export function checkNameStartDivergences(
+  decided: readonly MutationInput[],
+): Promise<ReferenceDivergenceCheck> {
+  return checkAgainstReferenceReadings(
+    decided,
+    "name-start-reads-unit",
+    (text) => ({ text, withoutDivergences: CLASS_READING_REMOVALS }),
   )
 }
 

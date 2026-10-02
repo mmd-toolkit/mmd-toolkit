@@ -1,7 +1,11 @@
+import type { DivergenceRemoval } from "@mmd-toolkit/tests/mermaid"
 import type { Range, Root } from "../../src/index.ts"
 import { ParseError, traverseNodes, visitorKeys } from "../../src/index.ts"
 import { buildDetectionInput, detect } from "../../src/detection.ts"
 import { findDirectives } from "../../src/directives.ts"
+import type { ClassUnits } from "../../src/diagrams/class/index.ts"
+import { lexClass } from "../../src/diagrams/class/index.ts"
+import { MISSING_HEADER_MESSAGE } from "../../src/diagrams/class/units.ts"
 import { lexFlowchart } from "../../src/diagrams/flowchart/index.ts"
 import type { SequenceUnits } from "../../src/diagrams/sequence/index.ts"
 import { lexSequence } from "../../src/diagrams/sequence/index.ts"
@@ -12,6 +16,7 @@ import type {
   FlowchartLexing,
   Unit,
 } from "../../src/diagrams/flowchart/units.ts"
+import { isWordCharacter } from "../../src/character-classes.ts"
 import { openSource } from "../../src/parse.ts"
 import { readFrontmatterTrivia } from "../../src/frontmatter.ts"
 import { findAttributeQuotes } from "../../src/html-quotes.ts"
@@ -65,12 +70,12 @@ export function withoutFrontmatterTagStarts(text: string): string {
 }
 
 /**
- * known-divergences.md, `html-tag-in-frontmatter`: whether mermaid.js reads a different
- * set of `"` characters of the text as `'` than the specification does.
- * mermaid.js finds the tags from the start of the source, so a tag that
- * starts in the frontmatter can reach into the text; the specification
- * finds them from the start of the text. The tests declare the divergence
- * with this; the parser does not tell such an input apart.
+ * known-divergences/html-tag-in-frontmatter.md: whether mermaid.js reads a
+ * different set of `"` characters of the text as `'` than the specification
+ * does. mermaid.js finds the tags from the start of the source, so a tag that
+ * starts in the frontmatter can reach into the text; the specification finds
+ * them from the start of the text. The tests declare the divergence with this;
+ * the parser does not tell such an input apart.
  */
 export function frontmatterChangesAttributeQuotes(text: string): boolean {
   const textStart = textStartOf(text)
@@ -88,7 +93,7 @@ export function frontmatterChangesAttributeQuotes(text: string): boolean {
 }
 
 /**
- * known-divergences.md, `click-reserved-word`: the `click` units of the flowchart
+ * known-divergences/click-reserved-word.md: the `click` units of the flowchart
  * `text` that do not start a click statement. A `click` unit starts one
  * where a statement starts and click ids follow it (Click and callbacks):
  * where the unit before it, among those other than the `space` units, the
@@ -154,11 +159,11 @@ export interface ClickReference {
 }
 
 /**
- * known-divergences.md, `click-reserved-word`: the reference input of the flowchart
- * `text`. mermaid.js gives it the Db of `text` where it accepts it, where
- * its units are kept ({@link ClickReference.keepsUnits}), and where the text
- * of each click id lies within one leaf node of its tree
- * ({@link clickIdsWithinLeafNodes}). Null where {@link reservedClicksIn} is.
+ * known-divergences/click-reserved-word.md: the reference input of the
+ * flowchart `text`. mermaid.js gives it the Db of `text` where it accepts it,
+ * where its units are kept ({@link ClickReference.keepsUnits}), and where the
+ * text of each click id lies within one leaf node of its tree ({@link
+ * clickIdsWithinLeafNodes}). Null where {@link reservedClicksIn} is.
  */
 export function clickReferenceOf(text: string): ClickReference | null {
   const lexing = flowchartLexingOf(text)
@@ -199,9 +204,9 @@ export function clickReferenceOf(text: string): ClickReference | null {
 }
 
 /**
- * known-divergences.md, `click-reserved-word`: whether the text of each click id of
- * `reference` lies within the range of one leaf node of `root`, the tree
- * of the reference input. A leaf node is one without child fields.
+ * known-divergences/click-reserved-word.md: whether the text of each click id
+ * of `reference` lies within the range of one leaf node of `root`, the tree of
+ * the reference input. A leaf node is one without child fields.
  */
 export function clickIdsWithinLeafNodes(
   reference: ClickReference,
@@ -236,7 +241,7 @@ function afterDirectivesAt(
 }
 
 /**
- * known-divergences.md, `comment-takes-character`: the offsets, in source
+ * known-divergences/comment-takes-character.md: the offsets, in source
  * order, of the `%%` of the sequence diagram `text`, outside directives,
  * that come right after a `number` unit or right after a character other
  * than whitespace at which the lexer, in the statement context, starts the
@@ -269,6 +274,108 @@ export function commentsAfterMatchStarts(text: string): number[] | null {
     .sort((left, right) => left - right)
 }
 
+/**
+ * known-divergences/comment-takes-line-break.md and
+ * known-divergences/name-start-reads-unit.md: the divergences of the class lexer that a
+ * reference reading removes from mermaid.js, together, so that mermaid.js
+ * reads a class diagram as this specification does, apart from the other
+ * divergences, also where one input has both.
+ */
+export const CLASS_READING_REMOVALS: readonly DivergenceRemoval[] = [
+  "comment-takes-line-break",
+  "name-start-reads-unit",
+]
+
+/**
+ * known-divergences/comment-takes-line-break.md: the offsets, in source
+ * order, of the diagram comments of the class diagram `text` that follow a
+ * unit on their line: the comments whose line feed mermaid.js takes, where
+ * this specification does not. They come from the parser's lexer: a
+ * comment follows a unit on its line when a unit before it is not a
+ * `newline` unit, the last unit before every line. Null when `text` is no
+ * class diagram or its lexer rejects it.
+ */
+export function commentsAfterUnits(text: string): number[] | null {
+  const lexing = classLexingOf(text)
+  if (lexing === null) return null
+  return lexing.comments
+    .map((comment) => comment.range[0])
+    .filter((start) => {
+      const before = lexing.units.filter((unit) => unit.end <= start).at(-1)
+      return before !== undefined && before.name !== "newline"
+    })
+}
+
+/**
+ * known-divergences/name-start-reads-unit.md: the marks that mermaid.js
+ * reads before the text of a backquoted name or of a generic type, where
+ * that text starts with them; `~` too in a backquoted name.
+ */
+const NAME_START_MARKS: readonly string[] = ['"', "<<", ">>"]
+
+/** known-divergences/name-start-reads-unit.md: the keywords that mermaid.js reads there, where no word character follows them. */
+const NAME_START_KEYWORDS: readonly string[] = [
+  "cssClass",
+  "callback",
+  "link",
+  "click",
+  "note",
+  "href",
+]
+
+/** Whether `text` starts with one of the units of `name-start-reads-unit`; `~` counts when `tildeLeads`. */
+function startsWithNameStartUnit(text: string, tildeLeads: boolean): boolean {
+  if (tildeLeads && text.startsWith("~")) return true
+  if (NAME_START_MARKS.some((mark) => text.startsWith(mark))) return true
+  return NAME_START_KEYWORDS.some((keyword) => {
+    if (!text.startsWith(keyword)) return false
+    const after = text.codePointAt(keyword.length)
+    return after === undefined || !isWordCharacter(after)
+  })
+}
+
+/**
+ * known-divergences/name-start-reads-unit.md: the offsets, in source
+ * order, of the backquoted names and the generic texts of the class
+ * diagram `text` whose text starts with a unit that mermaid.js reads
+ * before it. The names and texts are the `backquoted` and `generic-text`
+ * units of the parser's lexer, read in converted form. Null when `text` is
+ * no class diagram or its lexer rejects it.
+ */
+export function namesStartingWithUnits(text: string): number[] | null {
+  const lexing = classLexingOf(text)
+  if (lexing === null) return null
+  return lexing.units
+    .filter(
+      (unit) =>
+        (unit.name === "backquoted" &&
+          startsWithNameStartUnit(unit.text.slice(1), true)) ||
+        (unit.name === "generic-text" &&
+          startsWithNameStartUnit(unit.text, false)),
+    )
+    .map((unit) => unit.start)
+}
+
+/**
+ * known-divergences/headerless-empty-ending.md: whether the parser's
+ * lexer rejects the class diagram `text` because its first unit is not a
+ * `header` unit (`MISSING_HEADER_MESSAGE`), which the lexer decides.
+ */
+export function rejectsWithoutHeader(text: string): boolean {
+  const { lexer, frontmatter } = openSource(text)
+  const diagramType = detect(buildDetectionInput(lexer).detectionText)
+  if (diagramType !== "classDiagram") return false
+  try {
+    lexClass({ lexer, frontmatter, diagramType })
+  } catch (error) {
+    if (error instanceof ParseError) {
+      return error.message === MISSING_HEADER_MESSAGE
+    }
+    throw error
+  }
+  return false
+}
+
 /** A unit of any diagram's lexer. */
 type AnyUnit = DiagramUnit<string>
 
@@ -283,7 +390,7 @@ interface DiagramUnits {
 }
 
 /**
- * known-divergences.md, `tokenless-empty-forms`: the empty forms of `text`
+ * known-divergences/tokenless-empty-forms.md: the empty forms of `text`
  * that mermaid.js reads nothing for and that the reference input leaves
  * out. Null when `text` is of a diagram type without a lexer here, or its
  * lexer rejects it.
@@ -310,12 +417,12 @@ export function withoutEmptyForms(text: string): string | null {
 }
 
 /**
- * known-divergences.md, `tokenless-empty-forms`: whether the parser's lexer reads the
- * reference input of the flowchart `text` ({@link withoutEmptyForms}) as
- * the units of `text` other than those of the removed empty forms, the
- * same names with the same texts in the same order. Only then does the
- * removal leave the units around each form as they were, and mermaid.js
- * gives the reference input, where it accepts it, the Db of `text`.
+ * known-divergences/tokenless-empty-forms.md: whether the parser's lexer reads
+ * the reference input of the flowchart `text` ({@link withoutEmptyForms}) as
+ * the units of `text` other than those of the removed empty forms, the same
+ * names with the same texts in the same order. Only then does the removal leave
+ * the units around each form as they were, and mermaid.js gives the reference
+ * input, where it accepts it, the Db of `text`.
  */
 export function keepsUnitsWithoutEmptyForms(text: string): boolean {
   const diagram = diagramUnitsOf(text)
@@ -465,6 +572,13 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
       startsStatementAfter: sequenceStatementStartsAfter,
     }
   }
+  const classLexing = classLexingOf(text)
+  if (classLexing !== null) {
+    return {
+      units: classLexing.units,
+      startsStatementAfter: classStatementStartsAfter,
+    }
+  }
   return null
 }
 
@@ -483,6 +597,37 @@ function sequenceLexingOf(text: string): SequenceUnits | null {
   } catch (error) {
     if (error instanceof ParseError) return null
     throw error
+  }
+}
+
+/** The units of the class diagram `text` as the parser's lexer reads them; null when `text` is no class diagram or its lexer rejects it. */
+function classLexingOf(text: string): ClassUnits | null {
+  const { lexer, frontmatter } = openSource(text)
+  const diagramType = detect(buildDetectionInput(lexer).detectionText)
+  if (diagramType !== "classDiagram") return null
+  try {
+    return lexClass({ lexer, frontmatter, diagramType })
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/**
+ * diagrams/class.md, Diagram and statements, and Empty description blocks:
+ * whether a statement starts after `before`, the units before the place,
+ * in source order: after a line break, and after an empty description
+ * block, which another statement follows on its line.
+ */
+function classStatementStartsAfter(before: readonly AnyUnit[]): boolean {
+  const last = before.at(-1)
+  switch (last?.name) {
+    case "newline":
+      return true
+    case "}":
+      return before.at(-2)?.name === "{" && before.at(-3)?.name === "accDescr"
+    default:
+      return false
   }
 }
 

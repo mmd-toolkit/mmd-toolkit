@@ -17,9 +17,7 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 - 共通の規則の id は `mmd/<名前>` で、文書はこのディレクトリにある。
 - 図種の規則の id は `mmd/<図種>/<名前>` で、
   文書はディレクトリ `<図種>/` にある。
-  ディレクトリの名前は、その図種のノードを定義する
-  `@mmd-toolkit/spec` の文書（`docs/ast/<図種>.md`）の名前で、
-  その規則は、その文書が木を定義するすべての図種に当たる。
+  構文を共有する複数の図種の規則を、1 つのディレクトリに置くことがある。
   `flowchart/` の規則は、`flowchart-v2`、`flowchart-elk`、`swimlane` に当たる。
 
 <!-- begin auto-generated rules list -->
@@ -32,6 +30,19 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | -------------------------------------------------------------- | ----------------------------------------------------------------------------- | --- |
 | [no-ignored-init-directive](./no-ignored-init-directive.ja.md) | 図を設定するつもりで書いたが、mermaid.js が無視するディレクティブを禁止する。 |     |
 | [no-unclosed-directive](./no-unclosed-directive.ja.md)         | 閉じる `}%%` のないディレクティブを禁止する。                                 |     |
+
+## class
+
+| 規則                                                               | 説明                                                             | ✅  |
+| ------------------------------------------------------------------ | ---------------------------------------------------------------- | --- |
+| [no-bare-class-name](./class/no-bare-class-name.ja.md)             | 何も変えない、クラス名だけの行を禁止する。                       |     |
+| [no-duplicate-description](./class/no-duplicate-description.ja.md) | 説明をもう一度設定する `accDescr` の文を禁止する。               |     |
+| [no-duplicate-title](./class/no-duplicate-title.ja.md)             | タイトルをもう一度設定する `accTitle` の文を禁止する。           |     |
+| [no-ignored-text](./class/no-ignored-text.ja.md)                   | mermaid.js が読まないテキストを禁止する。                        |     |
+| [no-inline-comment](./class/no-inline-comment.ja.md)               | 同じ行のほかのテキストの後に置いたコメントを禁止する。           |     |
+| [no-redefined-class](./class/no-redefined-class.ja.md)             | クラスのラベルを、後で違うものに書き直すことを禁止する。         |     |
+| [no-unclosed-backquote](./class/no-unclosed-backquote.ja.md)       | 閉じるバッククォートのない、バッククォートのクラス名を禁止する。 |     |
+| [no-unknown-class](./class/no-unknown-class.ja.md)                 | 図にないクラスを指す文を禁止する。                               |     |
 
 ## flowchart
 

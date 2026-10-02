@@ -121,7 +121,12 @@ rejected.
   the participant `Alice`, and `participant A%%{init: {}}%%B` the participant
   `AB`, as in mermaid.js. [fixture: sequence/lex-directive-in-text] [fixture:
   sequence/lex-directive-in-id-run] [fixture:
-  sequence/lex-directive-in-participant-id]
+  sequence/lex-directive-in-participant-id] Whitespace next to the directive
+  stays in the id, which is one unit (see [Identifier](../ast.md#identifier)):
+  `participant A%%{init: {}}%% c%%B` has the participant `A c%%B`, and
+  `Al%%{init: {}}%% c%%ice->>B: x` the participant `Al c%%ice`. [fixture:
+  sequence/lex-directive-in-id-before-space] [fixture:
+  sequence/lex-directive-in-id-run-before-space]
 - In `parti%%{init: {}}%%cipant A`, `A-%%{init: {}}%%>>B: x`, and
   `autonumber 1%%{init: {}}%%0`, the directive lies inside a keyword, an arrow,
   or a number, and the input is rejected, while mermaid.js accepts it (see
@@ -461,6 +466,7 @@ Each rule below makes a node of the tree, defined in
 | `"links"`, `"link"`, `"properties"`, `"details"` statements                       | SequenceLinksStatement, SequenceLinkStatement, SequencePropertiesStatement, SequenceDetailsStatement                                               |
 | `title-statement`                                                                 | SequenceTitleStatement                                                                                                                             |
 | `accessibility-statement`                                                         | SequenceAccTitleStatement, SequenceAccDescrStatement, or SequenceAccDescrBlockStatement                                                            |
+| `"accDescr" "{" "}"` of a `box-statement`                                         | SequenceAccDescrBlockStatement                                                                                                                     |
 | `block-statement` with `loop`, `rect`, `opt`, `break`                             | SequenceLoopStatement, SequenceRectStatement, SequenceOptStatement, SequenceBreakStatement                                                         |
 | `block-statement` with `alt`, `par`, `par_over`, `critical`                       | SequenceAltStatement, SequenceParStatement, SequenceParOverStatement, SequenceCriticalStatement, with a SequenceSection for each `text-part line*` |
 | `text-part`                                                                       | SequenceText, or nothing when it has neither unit                                                                                                  |
@@ -506,7 +512,7 @@ the message `call(x`. [fixture: sequence/db-ignored-line-after-wrapped-message]
 participant-statement = ( "participant" | "actor" ) id data-block? ( "as" text-part )? newline
                       | "destroy" id newline
 data-block            = "@{" data-text? "}"
-box-statement         = "box" box-text? ( participant-statement | newline )* "end"
+box-statement         = "box" box-text? ( participant-statement | "accDescr" "{" "}" | newline )* "end"
 box-text              = color-candidate text? | text
 ```
 
@@ -516,10 +522,21 @@ embedded data: its content is kept as written and not read (see
 statement, `destroy` included: `create destroy A` is a destroy statement with
 `create`, which adds A as a created participant and destroys nothing (see
 [Building the summary](#building-the-summary-from-the-tree)). [fixture:
-sequence/gram-create-destroy] A box holds only participant statements and empty
-lines, without `create` and without messages. [fixture:
-sequence/gram-box-create-participant] [fixture:
-sequence/gram-box-message-inside]
+sequence/gram-create-destroy] A box holds only participant statements, empty
+description blocks, and empty lines, without `create` and without messages.
+[fixture: sequence/gram-box-create-participant] [fixture:
+sequence/gram-box-message-inside] An empty description block in a box is a
+description block statement without text, as where any other statement starts:
+it may be on a line of its own, over several lines with only whitespace between
+its braces, or followed on the same line by a participant statement or by `end`,
+and it changes nothing. [fixture:
+sequence/gram-box-empty-description-block-line] [fixture:
+sequence/gram-box-empty-description-block-lines] [fixture:
+sequence/gram-box-empty-description-block-then-participant] [fixture:
+sequence/gram-box-empty-description-block-before-end] A description block with
+text and a description statement are no statements of a box, and both reject
+them. [fixture: sequence/gram-box-description-block-with-text] [fixture:
+sequence/gram-box-description-line]
 
 ### Messages
 
@@ -741,7 +758,7 @@ from 0, and a number, `true`, `false`, or `null` nothing. A text that is not
 JSON changes nothing, and the input is accepted. Whoever derives the Db reads
 the JSON from the text of the tree, in converted form, where an entity is a
 placeholder: the JSON is not embedded data in the sense of
-[`embedded-data-opaque`](../known-divergences.md#embedded-data-opaque), because
+[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md), because
 mermaid.js never rejects an input because of it, and the tree keeps it as text
 like any other. [fixture: sequence/db-links-not-json] [fixture:
 sequence/db-properties-not-json] [fixture: sequence/db-links-string-value]
@@ -954,7 +971,7 @@ sequence/db-data-block-alias-and-as]
 These divergences of [known-divergences.md](../known-divergences.md) apply to
 sequence, and show in it as follows.
 
-- **[`directive-as-token-boundary`](../known-divergences.md#directive-as-token-boundary).**
+- **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.md).**
   A directive inside a keyword, an arrow, a number, or punctuation makes the
   input rejected here, while mermaid.js accepts it:
   `parti%%{init: {}}%%cipant A`, `A-%%{init: {}}%%>>B: x`, and
@@ -962,28 +979,29 @@ sequence, and show in it as follows.
   [Directives inside units](#directives-inside-units)). [fixture:
   sequence/div-directive-in-keyword] [fixture: sequence/div-directive-in-arrow]
   [fixture: sequence/div-directive-in-number]
-- **[`embedded-data-opaque`](../known-divergences.md#embedded-data-opaque).**
+- **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md).**
   The content of a participant's data block is not read. mermaid.js reads it as
   YAML and rejects content that is not valid YAML; here it is accepted.
   [fixture: sequence/spec-sequence-diagram-b8d593b1] [fixture:
   sequence/spec-sequence-diagram-335c8c00]
-- **[`html-tag-in-frontmatter`](../known-divergences.md#html-tag-in-frontmatter).**
+- **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md).**
   With `title: <a` in the frontmatter, `A-xB: b="c">d` has the message `b='c'>d`
   in mermaid.js, whose tag reaches the `>` after `"c"`, and `b="c">d` here.
   Where an arrow with `>` lies between, as in `A->>B: b="c">d`, that `>` ends
   the tag in mermaid.js, and both give `b="c">d`. [fixture:
   sequence/div-html-tag-starts-in-frontmatter-message] [fixture:
   sequence/lex-html-tag-frontmatter-arrow-ends-tag]
-- **[`tokenless-empty-forms`](../known-divergences.md#tokenless-empty-forms).**
+- **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).**
   An empty description block that does not start a statement makes the input
   rejected here, while mermaid.js reads no token for it and accepts the input:
   `A->>accDescr {}B: x` and `note left of accDescr {} A: x`. An empty
-  description block where a statement starts is a description block statement
-  without text, which changes nothing. [fixture:
+  description block where a statement starts, also inside a box, is a
+  description block statement without text, which changes nothing. [fixture:
+  sequence/gram-box-empty-description-block-line] [fixture:
   sequence/gram-empty-description-block-after-arrow] [fixture:
   sequence/gram-empty-description-block-after-placement] [fixture:
   sequence/gram-acc-descr-block-empty-then-statement]
-- **[`comment-takes-character`](../known-divergences.md#comment-takes-character).**
+- **[`comment-takes-character`](../known-divergences/comment-takes-character.md).**
   A `%%` right after a number, or right after a character other than whitespace
   at which a rule of the statement context starts its match, starts a comment
   here and keeps that character, while mermaid.js reads the character as part of

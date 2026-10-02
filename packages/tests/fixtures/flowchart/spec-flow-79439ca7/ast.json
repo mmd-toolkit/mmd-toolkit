@@ -50,6 +50,7 @@
           "type": "StringLiteral",
           "value": "constructor",
           "raw": "\"constructor\"",
+          "closed": true,
           "range": [
             42,
             55

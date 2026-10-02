@@ -7,8 +7,8 @@ The tests are in `tests/`. They check the parser against the fixtures of
 
 ## Fixtures
 
-The tests parse every fixture in `common/`, `flowchart/`, and `sequence/`, and
-check:
+The tests parse every fixture in `common/`, `flowchart/`, `sequence/`, and
+`class/`, and check:
 
 - acceptance;
 - the diagram type;
@@ -24,9 +24,11 @@ The Db summary is built from the tree:
   helper is not public API.
 - Every lexical decision that the summary needs comes from the parser's units:
   where a string's content lies, which strings are empty, which `click` in a
-  subgraph name is a `click` unit, and where the first style of a statement
-  starts. The helpers never decide these by rules of their own; a wrong unit
-  shows as a Db that differs from mermaid.js.
+  subgraph name is a `click` unit, where the first style of a statement starts,
+  and, in a class diagram, the units of a name, a style, and a generic type, and
+  where a backquoted name that is not closed ends. The helpers never decide
+  these by rules of their own; a wrong unit shows as a Db that differs from
+  mermaid.js.
 - The parser does not read embedded data: the frontmatter title, the
   configuration, and what each data block sets. For these, the tests use what
   mermaid.js derives for the same text (`resolveEmbeddedData()` of
@@ -45,9 +47,9 @@ specification.
 
 Every fixture marked with a
 [known divergence](../../spec/docs/known-divergences.md) is also checked with a
-reference input, or for `comment-takes-character` with mermaid.js reading the
-input in another way. The check shows that the divergence alone explains the
-difference from mermaid.js:
+reference input, or for `comment-takes-character` and `comment-takes-line-break`
+with mermaid.js reading the input in another way. The check shows that the
+divergence alone explains the difference from mermaid.js:
 
 - `directive-as-token-boundary`: the parser reads the input without its
   directives, and must give what mermaid.js gave for the input.
@@ -64,8 +66,9 @@ difference from mermaid.js:
   a click statement is found from the parser's units.
 - `tokenless-empty-forms`: the parser rejects the input. The reference input is
   the input without its comment regions and without its empty forms: each empty
-  string, each empty call, and each empty description block that does not start
-  a statement. Where the parser's lexer reads it as the units of the input but
+  string, each empty call, each empty description block that does not start a
+  statement, and, in a class diagram, each empty backquoted name and each empty
+  generic type. Where the parser's lexer reads it as the units of the input but
   those of the empty forms, and the parser accepts it, the parser must give what
   mermaid.js gave for the input.
 - `comment-takes-character`: the input has a `%%`, outside directives, right
@@ -73,9 +76,19 @@ difference from mermaid.js:
   which the sequence lexer, in the statement context, starts the match of a
   rule, decided on the diagram text; both come from the parser's lexer.
   mermaid.js reads the input with the two rules of its lexer that the divergence
-  names changed (`withoutDivergence` of `@mmd-toolkit/tests/mermaid`), and the
+  names changed (`withoutDivergences` of `@mmd-toolkit/tests/mermaid`), and the
   parser must give what it gives: the same acceptance and, for an accepted
   input, the same Db.
+- `name-start-reads-unit`: the class diagram has a backquoted name or a generic
+  type whose text starts with `"`, `~` (in a backquoted name), `<<`, `>>`, or
+  one of the keywords that the divergence names, found from the parser's
+  `backquoted` and `generic-text` units. mermaid.js reads the input with the
+  rules of its lexer that the divergence names reordered, and the parser must
+  give what it gives.
+- `comment-takes-line-break`: the class diagram has a diagram comment that
+  follows a unit on its line, found from the parser's lexer and units.
+  mermaid.js reads the input with the rule of its lexer that the divergence
+  names changed, and the parser must give what it gives.
 
 ## Tree invariants
 
@@ -91,7 +104,8 @@ For a flowchart, it asserts what
 [`ast/flowchart.md`](../../spec/docs/ast/flowchart.md) states about the tree:
 
 - The value of every leaf node is the text of its range, or of the part of it
-  that its node type names. Where a string's content lies and which `;` the line
+  that its node type names; the name of an Identifier is the texts of its
+  tokens, joined in order. Where a string's content lies and which `;` the line
   rule ignores come from the parser's lexer and units.
 - Every token of a value lies in a value node. A token of a value is an
   `Identifier`, `RawText`, `Numeric`, or `String` token.
@@ -110,7 +124,8 @@ For a sequence diagram, it asserts what
 
 - The value of every leaf node is the text of its range, or of the part of it
   that its node type names: the text between `@{` and `}` of a data block, and
-  the number that the `raw` of a number writes.
+  the number that the `raw` of a number writes. The name of an Identifier is the
+  texts of its tokens, joined in order.
 - Every token of a value lies in a value node, and no `Keyword` or `Punctuator`
   token does, except the delimiters of a data block.
 - The fixed words and operators of a node are its tokens: `create` and the
@@ -121,6 +136,24 @@ For a sequence diagram, it asserts what
   start marker, its line, and its end marker.
 - Each part of a box text, the colour candidate and the remainder, is a token of
   its own.
+
+For a class diagram, it asserts what
+[`ast/class.md`](../../spec/docs/ast/class.md) states about the tree:
+
+- The value of every leaf node is the text of its range, or of the part of it
+  that its node type names: a StringLiteral the text without its quotes, or
+  without its opening quote alone when it is not closed, and an arrow the texts
+  of its tokens. The name of an Identifier is the texts of its tokens, joined in
+  order.
+- Every token of a value lies in a value node, and no `Keyword` or `Punctuator`
+  token does.
+- Each relation end and the line of an arrow are `Punctuator` tokens, at most
+  one end on each side of the line, and the fields of the arrow are what they
+  write.
+- The visibility and classifier marks of a member are its `Punctuator` tokens:
+  the visibility mark comes first, and there is at most one classifier mark.
+- The keywords of a direction statement are `direction` and its value, and the
+  target of a link is its last token.
 
 For the `error` pseudo-diagram, it asserts that the tokens other than the
 `Directive` tokens and the tokens of the frontmatter are `RawText` tokens and
@@ -165,6 +198,21 @@ The tests compare `parse()` with the pinned mermaid.js through
   `MMD_COMMENT_INPUTS=1000000 CI=true npx vitest run tests/differential/sequence-mermaid.test.ts`
   compares all of them. Every difference must be a known divergence, explained
   as below.
+- The class diagram is compared in the same way, on mutants of its fixtures
+  (`tests/differential/class-mermaid.test.ts`), and on the accepted fixture
+  inputs with a comment inserted, the inputs of `comment-takes-line-break`:
+  ` %% c` at the end of each line and after each space inside a line, and a line
+  of `%%` or of `%%{ }%%` after each line, 300 of them, spread evenly over all
+  of them; `MMD_COMMENT_INPUTS` raises the number as for the sequence diagram.
+  The places where its Db reads text at the boundaries of the units (the space
+  after a visibility mark, the units of a style and of a name, a generic type, a
+  label, or an annotation line that is all whitespace, and a backquoted name
+  that is not closed) are compared with a space, a tab, a directive, and a
+  comment line put at every place of such a statement, and the member lines with
+  one or two spaces or a tab put at every place of them, in a class body and in
+  a label: after a visibility mark, after `)`, after a return type before a
+  classifier mark, and after U+2028 and U+2029
+  (`tests/differential/class-source-reading.test.ts`).
 
 Inputs that once made a test helper take a lexical decision by a rule of its own
 are compared as well: the Db built from the tree must be that of mermaid.js, and
@@ -178,8 +226,13 @@ Every declared difference is checked:
   empty form, must give, where the parser accepts the reference input, what
   mermaid.js gave for the input;
 - a difference that goes both ways must be what mermaid.js gives for the
-  reference input, for `html-tag-in-frontmatter`, or for the input with the two
-  rules of its lexer changed, for `comment-takes-character`;
+  reference input, for `html-tag-in-frontmatter`, or for the input with the
+  rules of its lexer that the divergence names changed, for
+  `comment-takes-character`, `comment-takes-line-break`, and
+  `name-start-reads-unit`;
+- a rejection of a class diagram whose first unit is not its header
+  (`headerless-empty-ending`, which goes one way and has no reference reading)
+  must be of an input that mermaid.js accepts; the parser's lexer decides it;
 - a rejection of mermaid.js for embedded data must be one of the errors that the
   specification lists.
 
@@ -225,11 +278,11 @@ looks for files left behind names any that remain.
 
 ## Other tests
 
-- Every example in the comments of the node types (`src/ast/flowchart.ts` and
-  `src/ast/sequence.ts`) is parsed. The range that its `^` marks show is
-  compared with the range of the node.
+- Every example in the comments of the node types (`src/ast/flowchart.ts`,
+  `src/ast/sequence.ts`, and `src/ast/class.ts`) is parsed. The range that its
+  `^` marks show is compared with the range of the node.
 - The example in the Usage section of the README is parsed, and the values and
   the tree it shows are compared with the result.
 - Unit tests cover each rule of `common.md`, the detector table, `visitorKeys`
-  and `traverseNodes`, the flowchart tree and its tokens, and the sequence tree,
-  its tokens, and the rejections outside its grammar.
+  and `traverseNodes`, the flowchart tree and its tokens, and the sequence tree
+  and the class tree, their tokens, and the rejections outside their grammars.

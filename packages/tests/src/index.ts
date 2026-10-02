@@ -20,7 +20,7 @@ export type {
  * Fixture directories: one per diagram type, and `common` for syntax shared
  * by all diagram types (frontmatter, directives, comments, detection).
  */
-export type DiagramType = "common" | "flowchart" | "sequence"
+export type DiagramType = "common" | "flowchart" | "sequence" | "class"
 
 /**
  * Where a fixture input came from.
@@ -94,12 +94,15 @@ export const KNOWN_DIVERGENCES: readonly string[] = [
   // click context at every such `click` and accepts some inputs that have it
   // elsewhere; the spec rejects them. The difference goes one way only.
   "click-reserved-word",
-  // The spec rejects forms that are written but hold nothing: in flowchart, an
-  // empty string, an empty call (`call` with parentheses that hold only
-  // whitespace) and an empty description block that does not start a
-  // statement; in sequence, such an empty description block. mermaid's lexer
-  // reads no token for them and accepts an input as if they were not there.
-  // The difference goes one way only.
+  // The spec rejects forms that are written but hold nothing, where the tree
+  // has no place for them: in flowchart, an empty string, an empty call
+  // (`call` with parentheses that hold only whitespace) and an empty
+  // description block that does not start a statement; in sequence, such an
+  // empty description block; in class, these three and an empty backquoted
+  // name and an empty generic type, accepted as a node where the class grammar
+  // has a field that may be empty. mermaid's lexer reads no token for them and
+  // accepts an input as if they were not there. The difference goes one way
+  // only.
   "tokenless-empty-forms",
   // In sequence, a comment starts at its `%%`. mermaid's lexer reads the
   // character right before `%%` together with the comment, so the character
@@ -107,6 +110,24 @@ export const KNOWN_DIVERGENCES: readonly string[] = [
   // number right before `%%` is no number. Acceptance differs both ways, and
   // inputs both accept can differ in the Db.
   "comment-takes-character",
+  // In class, mermaid reads a comment that follows a unit on its line together
+  // with the line break after it, so the next line joins the line before; in
+  // the spec the comment ends at the end of the line. A comment with only
+  // whitespace before it on its line takes no line, as in mermaid. Acceptance
+  // differs both ways, and inputs both accept can differ in the Db.
+  "comment-takes-line-break",
+  // In class, the spec rejects a text without the header. mermaid's grammar
+  // has a start without one, which it takes only for a text whose header word
+  // runs on into other word characters (`classDiagramX`) and that ends, at the
+  // end of the text, in a statement with an empty value (`accTitle:`). The
+  // difference goes one way only.
+  "headerless-empty-ending",
+  // In class, the text of a backquoted name or of a generic type may start
+  // with any character. mermaid's lexer tries other rules first, so a `"`, a
+  // `~` (in a backquoted name), `<<`, `>>` or one of six keywords at the start
+  // is read as a unit of its own. Acceptance differs both ways, and inputs
+  // both accept can differ in the Db.
+  "name-start-reads-unit",
 ]
 
 /**

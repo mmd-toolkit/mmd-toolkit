@@ -73,6 +73,10 @@ flowchart LR
   `sequenceDiagram` で始まる図です。
   整形の規則は、
   例とともに [docs/sequence.ja.md](./docs/sequence.ja.md) にあります。
+- class 図。
+  `classDiagram` か `classDiagram-v2` で始まる図です。
+  整形の規則は、
+  例とともに [docs/class.ja.md](./docs/class.ja.md) にあります。
 - これらの図の YAML のフロントマター。
   Prettier の YAML 整形で整形します。
 
@@ -100,7 +104,7 @@ flowchart LR
   flowchart では、`click` は予約語です。
   `A-->|x""|B` のように、トークンの間に空の文字列がある場合もそうです。
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
-- flowchart と sequence 以外の図種は変えません。
+- flowchart、sequence、class 以外の図種は変えません。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
 
@@ -135,6 +139,7 @@ flowchart LR
 
 - [docs/flowchart.ja.md](./docs/flowchart.ja.md): flowchart の整形の規則。
 - [docs/sequence.ja.md](./docs/sequence.ja.md): sequence 図の整形の規則。
+- [docs/class.ja.md](./docs/class.ja.md): class 図の整形の規則。
 - [docs/compatibility.ja.md](./docs/compatibility.ja.md):
   mermaid.js と違う箇所と、その理由。
 - [docs/development.ja.md](./docs/development.ja.md): テストと fixture。

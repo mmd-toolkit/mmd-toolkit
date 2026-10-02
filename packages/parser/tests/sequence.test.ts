@@ -178,6 +178,24 @@ describe("the sequence tree", () => {
     ])
   })
 
+  it("makes an empty description block in a box a statement of the box, and rejects one with text", () => {
+    expect(
+      bodyOf(parseStatements("box G\naccDescr {} participant B\nend")),
+    ).toMatchObject([
+      {
+        type: "SequenceBoxStatement",
+        body: [
+          { type: "SequenceAccDescrBlockStatement", value: null, closed: true },
+          { type: "SequenceParticipantStatement", id: { name: "B" } },
+        ],
+      },
+    ])
+    expect(errorOf("box G\naccDescr {x}\nparticipant B\nend").range).toEqual([
+      HEADER.length + 16,
+      HEADER.length + 17,
+    ])
+  })
+
   it("makes a line of an `invalid` unit an ignored statement", () => {
     expect(bodyOf(parseStatements(")"))).toMatchObject([
       { type: "SequenceIgnoredStatement", value: ")" },

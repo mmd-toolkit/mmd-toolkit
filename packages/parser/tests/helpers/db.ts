@@ -2,6 +2,7 @@ import type { DbSummary } from "@mmd-toolkit/tests"
 import type { EmbeddedValues } from "@mmd-toolkit/tests/mermaid"
 import { cssSupportsColor } from "@mmd-toolkit/tests/mermaid"
 import type { Root } from "../../src/index.ts"
+import { classDbOf } from "./class-db.ts"
 import { flowchartDbOf } from "./flowchart-db.ts"
 import { sequenceDbOf } from "./sequence-db.ts"
 
@@ -33,6 +34,8 @@ export function dbOf(
     // `@mmd-toolkit/tests` gives mermaid.js too.
     case "SequenceDiagram":
       return sequenceDbOf(text, root, root.body, embedded, cssSupportsColor)
+    case "ClassDiagram":
+      return classDbOf(text, root, root.body, embedded)
     default:
       throw new Error(
         `dbOf: unknown body ${JSON.stringify(root.body satisfies never)}`,

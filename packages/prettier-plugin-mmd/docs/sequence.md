@@ -137,6 +137,35 @@ sequenceDiagram
   A ->> B: z
 ```
 
+An empty description block, `accDescr {}`, is a statement of its own, also in a
+`box`, where it may stand among the participants: a statement written after it
+on its line, or the `end` of the box, moves to a line of its own, and mermaid.js
+reads the same box.
+
+Input
+([statements-one-per-line/empty-description-block-in-box-input.mmd](../tests/fixtures/sequence/statements-one-per-line/empty-description-block-in-box-input.mmd)):
+
+```mmd
+sequenceDiagram
+box G
+accDescr {} participant B
+participant C
+accDescr {} end
+```
+
+Output
+([statements-one-per-line/empty-description-block-in-box-output.mmd](../tests/fixtures/sequence/statements-one-per-line/empty-description-block-in-box-output.mmd)):
+
+```mmd
+sequenceDiagram
+  box G
+    accDescr {}
+    participant B
+    participant C
+    accDescr {}
+  end
+```
+
 ### Blank lines
 
 As in a flowchart: a run of empty lines becomes one, and empty lines at the

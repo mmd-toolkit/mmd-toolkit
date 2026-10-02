@@ -25,10 +25,8 @@ import {
   LEFT_SQUARE_BRACKET,
   LESS_THAN_SIGN,
   LINE_FEED,
-  LINE_SEPARATOR,
   LOW_LINE,
   NUMBER_SIGN,
-  PARAGRAPH_SEPARATOR,
   PERCENT_SIGN,
   PLUS_SIGN,
   QUESTION_MARK,
@@ -65,7 +63,8 @@ import {
   skipWhile,
   skipWhitespace,
 } from "../../scanning.ts"
-import { isUnicodeLetter } from "./unicode-letters.ts"
+import { isUnicodeLetter } from "../../unicode-letters.ts"
+import { DirectionLineRule } from "../../direction-line.ts"
 import type { DiagramUnit } from "../../diagram-units.ts"
 import { readUnit } from "../../diagram-units.ts"
 
@@ -220,8 +219,8 @@ const HEADER_KEYWORDS = [
 /** The link targets of the statement context, rule 13. */
 const LINK_TARGETS = ["_self", "_blank", "_parent", "_top"] as const
 
-/** The values of a direction line, in the order in which they are tried. */
-const DIRECTION_LINE_VALUES = ["TB", "BT", "RL", "LR", "TD"] as const
+/** The direction line: the values, in the order in which they are tried. */
+const DIRECTION_LINE_VALUES: readonly string[] = ["TB", "BT", "RL", "LR", "TD"]
 
 /** The directions of the header context that are words, rule 2. */
 const HEADER_DIRECTION_WORDS = [
@@ -342,18 +341,14 @@ export class UnitLexer {
   /** Statement context, rule 10: whether a header keyword was read already. */
   private headerKeywordRead = false
 
-  /**
-   * The direction line: no direction line starts at a source offset before
-   * this one and at or after the place where the rule last found none. The
-   * rule looks at the rest of a line, and what it does not find from one
-   * place it does not find from a later place of the same line.
-   */
-  private noDirectionLineBefore = 0
+  /** Statement context, rule 14: the direction line, with the values of the flowchart. */
+  private readonly directionLine: DirectionLineRule
 
   public constructor(reader: DiagramText, lines: LineIndex) {
     this.reader = reader
     this.lines = lines
     this.position = reader.first()
+    this.directionLine = new DirectionLineRule(reader, DIRECTION_LINE_VALUES)
   }
 
   /** Divides the diagram text into units. Throws `ParseError` where no rule matches. */
@@ -744,83 +739,16 @@ export class UnitLexer {
   }
 
   /**
-   * Statement context, rule 14, The direction line. From `at`: a run of
-   * characters without line feeds, U+2028, or U+2029; `direction`; one or
-   * more whitespace, line feeds included; one of the values; and every
-   * character up to the next line feed. The values are tried in their
-   * order, and for a value the last `direction` of the run that it follows
-   * is taken. The characters before `direction` and after the value are
-   * `direction-text` units, unless they are empty or all whitespace.
+   * Statement context, rule 14, The direction line: the units of the
+   * direction line that starts at `at`, with the values of the flowchart
+   * (see `DirectionLineRule`).
    */
   private readDirectionLine(at: DiagramCharacter): boolean {
-    if (at.start < this.noDirectionLineBefore) return false
-    /** For each value, the last `direction` of the run that the value follows. */
-    const lastByValue = new Map<
-      string,
-      {
-        readonly keyword: DiagramCharacter
-        readonly keywordEnd: DiagramPosition
-        readonly value: DiagramCharacter
-        readonly valueEnd: DiagramPosition
-      }
-    >()
-    let runEnd: DiagramPosition = at
-    while (
-      runEnd !== null &&
-      !isOneOf(runEnd, [LINE_FEED, LINE_SEPARATOR, PARAGRAPH_SEPARATOR])
-    ) {
-      const keyword = this.word(runEnd, "direction")
-      if (keyword !== null && isWhitespaceAt(keyword.end)) {
-        const value = this.afterWhitespace(keyword.end)
-        for (const candidate of DIRECTION_LINE_VALUES) {
-          const valueMatch = this.word(value, candidate)
-          if (value !== null && valueMatch !== null) {
-            lastByValue.set(candidate, {
-              keyword: runEnd,
-              keywordEnd: keyword.end,
-              value,
-              valueEnd: valueMatch.end,
-            })
-          }
-        }
-      }
-      runEnd = this.reader.after(runEnd)
-    }
-    const found = DIRECTION_LINE_VALUES.map((value) =>
-      lastByValue.get(value),
-    ).find((occurrence) => occurrence !== undefined)
-    if (found === undefined) {
-      this.noDirectionLineBefore = runEnd === null ? Infinity : runEnd.start
-      return false
-    }
-    const lineEnd = skipWhile(
-      this.reader,
-      found.valueEnd,
-      (character) => character.codePoint !== LINE_FEED,
-    )
-    this.addUnitUnlessBlank("direction-text", at, found.keyword)
-    this.addUnit("direction", found.keyword, found.keywordEnd)
-    this.addUnit("direction-value", found.value, found.valueEnd)
-    if (found.valueEnd !== null) {
-      this.addUnitUnlessBlank("direction-text", found.valueEnd, lineEnd)
-    }
-    this.position = lineEnd
+    const line = this.directionLine.match(at)
+    if (line === null) return false
+    for (const unit of line.units) this.addUnit(unit.name, unit.from, unit.to)
+    this.position = line.end
     return true
-  }
-
-  /** Adds the unit like {@link UnitLexer.addUnit}, unless it would be empty or all whitespace. */
-  private addUnitUnlessBlank(
-    name: UnitName,
-    from: DiagramCharacter,
-    to: DiagramPosition,
-  ): void {
-    const firstSignificant = skipWhile(
-      this.reader,
-      from,
-      (character) =>
-        !samePosition(character, to) && isWhitespace(character.codePoint),
-    )
-    if (!samePosition(firstSignificant, to)) this.addUnit(name, from, to)
   }
 
   /**

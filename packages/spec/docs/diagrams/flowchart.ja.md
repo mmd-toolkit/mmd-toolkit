@@ -606,7 +606,7 @@ flowchart/lex-link-text-entity-then-double-dash]
   mermaid.js は空の文字列にトークンを読まず、
   これらをそれがないものとして受理します。
   これらは既知の差
-  [`tokenless-empty-forms`](../known-divergences.ja.md#tokenless-empty-forms) です
+  [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md) です
   （[既知の差](#既知の差) を参照）。
   `A --""> B` はどちらも拒否します。
   リンクのテキストの中では、`""` が開く `--` を終えないからです。
@@ -757,7 +757,7 @@ mermaid.js は、字句解析器が `click` と空白を読むところでは、
 どこでもクリックの文脈に入り、
 そのような `click` をほかの位置に持つ入力のいくつかを受理します。
 それらは既知の差
-[`click-reserved-word`](../known-divergences.ja.md#click-reserved-word)
+[`click-reserved-word`](../known-divergences/click-reserved-word.ja.md)
 です（[既知の差](#既知の差) を参照）。
 そのため、クリックの文は、始まりに `click` の単位を 1 つだけ持ち、
 そのクリックの id は、その単位のクリックの文脈が読むものです。
@@ -834,7 +834,7 @@ mermaid.js はそのどれにもトークンを読まず、
 クリックの文の中では、`click A cb` と同じものとしての `click A call ()cb`、
 `click A call ()href "u"` がそうです。
 これらは既知の差
-[`tokenless-empty-forms`](../known-divergences.ja.md#tokenless-empty-forms) です。
+[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md) です。
 `A-->call () B` はどちらも拒否します。
 mermaid.js は空の呼び出しの後の空白を、行き先の前の空白として読むからです。
 [fixture: flowchart/gram-empty-call-line]
@@ -906,7 +906,7 @@ flowchart/lex-acc-descr-block-unclosed-empty]
 mermaid.js は空の説明ブロックにトークンを読まず、
 これらを、それがないものとして受理します。
 これらは既知の差
-[`tokenless-empty-forms`](../known-divergences.ja.md#tokenless-empty-forms) です。
+[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md) です。
 `A-->accDescr {} B` は、どちらも拒否します。
 mermaid.js はブロックの後の空白を、行き先の前の空白として読むからです。
 `A accDescr {x}` も、どちらも拒否します。
@@ -1237,7 +1237,7 @@ Db の type は `square` と `rectangle` です。
 形 `(-` … `-)` にはそのような語がありません。
 mermaid.js は `ellipse` という形を定めていないので、
 `A@{ shape: ellipse }` は mermaid.js が拒否し、ここでは受理されます
-（[`embedded-data-opaque`](../known-divergences.ja.md#embedded-data-opaque) を参照）。
+（[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md) を参照）。
 また、`A(-x-)` を描くと失敗し、
 [issue #5976](https://github.com/mermaid-js/mermaid/issues/5976) がそれを報告していて、
 2026-10-01 の時点で未解決で、不具合として承認されています。
@@ -1377,6 +1377,14 @@ markdown 文字列も同じように続けられます。
 メンバー A を持ちます。
 [fixture: flowchart/db-subgraph-name-end-word] [fixture:
 flowchart/db-subgraph-id-with-title-spaces]
+mermaid.js の flowchart の文書は、冒頭で、
+小文字だけの語 `end` は flowchart を壊すと警告し、
+語かその文字のどれかを大文字にするよう勧めています
+（[flowchart.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L9-L11)）。
+その警告は、[issue #1444](https://github.com/mermaid-js/mermaid/issues/1444)
+「Some node names break the diagrams」の回避策にリンクしています。
+この issue は、ラベル `Type: Enhancement`、`Area: Documentation`、
+`Good first issue!` を持ち、2020-06-23 に閉じられました。
 
 名前は `click` の単位を含めません。
 `click` の単位はクリックの文を始めるだけだからです
@@ -2141,7 +2149,7 @@ flowchart/db-acc-descr-empty-block-after-block]
 [known-divergences.ja.md](../known-divergences.ja.md) の差のうち、
 次のものが flowchart に当てはまり、次のように現れます。
 
-- **[`directive-as-token-boundary`](../known-divergences.ja.md#directive-as-token-boundary)。**
+- **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md)。**
   字句解析器は mermaid.js
   と同じくディレクティブのないテキストを読むので
   （[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）、
@@ -2162,19 +2170,19 @@ flowchart/db-acc-descr-empty-block-after-block]
   flowchart/div-directive-in-style-separator] [fixture:
   common/directive-in-string] [fixture:
   flowchart/div-directive-in-markdown-string]
-- **[`embedded-data-opaque`](../known-divergences.ja.md#embedded-data-opaque)。**
+- **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)。**
   データブロックの中身は読みません。
   mermaid.js はそれを YAML として読み、YAML として正しくない中身と、
   知らない形を挙げる中身を拒否します。
   ここではそれらを受理します。
   [fixture: flowchart/div-data-invalid-yaml] [fixture:
   flowchart/div-data-unknown-shape]
-- **[`html-tag-in-frontmatter`](../known-divergences.ja.md#html-tag-in-frontmatter)。**
+- **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   mermaid.js では、フロントマターの中で始まる HTML タグが、
   図の `"` の読み方を変えることがあります。
   ここではそうなりません。
   [fixture: flowchart/html-tag-starts-in-frontmatter]
-- **[`click-reserved-word`](../known-divergences.ja.md#click-reserved-word)。**
+- **[`click-reserved-word`](../known-divergences/click-reserved-word.ja.md)。**
   クリックの文を始めない `click` の単位は、ここでは入力を拒否させます
   （[クリックとコールバック](#クリックとコールバック) を参照）。
   mermaid.js は、たとえば次のものを受理します。
@@ -2201,7 +2209,7 @@ flowchart/db-acc-descr-empty-block-after-block]
   [fixture: flowchart/db-subgraph-name-click-word]
   [fixture: flowchart/gram-subgraph-name-click-comma]
   [fixture: flowchart/gram-subgraph-name-bare-click]
-- **[`tokenless-empty-forms`](../known-divergences.ja.md#tokenless-empty-forms)。**
+- **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
   空の文字列、空の呼び出し、文を始めない空の説明ブロックは、
   それがある位置には木にそれを置く場所がないので、
   ここでは入力を拒否させます（[文字列](#文字列)、

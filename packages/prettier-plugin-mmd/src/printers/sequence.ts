@@ -271,6 +271,7 @@ function sequenceBlockRules(source: Source): BlockRules<SequenceStatement> {
     holdsStatements: (statement) =>
       classifySequenceStatement(statement).kind !== "simple",
     isDroppedAtTopLevel: () => false,
+    keepsWhitespaceLineAfterComment: false,
   }
 }
 

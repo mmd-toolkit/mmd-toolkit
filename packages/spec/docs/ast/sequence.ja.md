@@ -79,10 +79,10 @@ SequenceIgnoredStatement のどれかです。
 
 ### SequenceBoxStatement
 
-| 欄     | 型                          | 意味                                                    |
-| ------ | --------------------------- | ------------------------------------------------------- |
-| `text` | SequenceBoxText または null | `box` の後のテキスト。なければ null。                   |
-| `body` | SequenceStatement の列      | `end` までの文。ソースの順。参加者の文と destroy の文。 |
+| 欄     | 型                          | 意味                                                                                     |
+| ------ | --------------------------- | ---------------------------------------------------------------------------------------- |
+| `text` | SequenceBoxText または null | `box` の後のテキスト。なければ null。                                                    |
+| `body` | SequenceStatement の列      | `end` までの文。ソースの順。参加者の文、destroy の文、テキストのない説明のブロックの文。 |
 
 子の欄: `text`、`body`。
 
@@ -232,8 +232,8 @@ Db の正規化はそれをソースから読みます。
 [FlowchartAccDescrStatement](./flowchart.ja.md#flowchartaccdescrstatement)、
 [FlowchartAccDescrBlockStatement](./flowchart.ja.md#flowchartaccdescrblockstatement)
 と同じで、FlowchartLiteral の代わりに SequenceLiteral を使います。
-文が始まる位置の空の説明ブロックは、`value` が null で `closed` が真の
-SequenceAccDescrBlockStatement です。
+文が始まる位置の空の説明ブロックは、箱の本体の中でも、
+`value` が null で `closed` が真の SequenceAccDescrBlockStatement です。
 
 ### SequenceLoopStatement、SequenceOptStatement、SequenceBreakStatement
 
@@ -330,7 +330,7 @@ mermaid.js が 1 つの `invalid` の単位として読み、無視する行で�
 
 子の欄はありません。
 木はその中身を読みません
-（[embedded-data-opaque](../known-divergences.ja.md#embedded-data-opaque) を参照）。
+（[embedded-data-opaque](../known-divergences/embedded-data-opaque.ja.md) を参照）。
 範囲は `@{` から `}` までです。
 
 ## トークン

@@ -31,7 +31,7 @@
                 }
               },
               "shape": null,
-              "className": {
+              "cssClass": {
                 "type": "Identifier",
                 "name": "foo",
                 "range": [
@@ -86,7 +86,7 @@
                 }
               },
               "shape": null,
-              "className": {
+              "cssClass": {
                 "type": "Identifier",
                 "name": "bar",
                 "range": [
@@ -188,7 +188,7 @@
                     }
                   },
                   "shape": null,
-                  "className": {
+                  "cssClass": {
                     "type": "Identifier",
                     "name": "foobar",
                     "range": [
@@ -271,7 +271,7 @@
       },
       {
         "type": "FlowchartClassDefStatement",
-        "classNames": [
+        "cssClasses": [
           {
             "type": "Identifier",
             "name": "foo",
@@ -328,7 +328,7 @@
       },
       {
         "type": "FlowchartClassDefStatement",
-        "classNames": [
+        "cssClasses": [
           {
             "type": "Identifier",
             "name": "bar",
@@ -385,7 +385,7 @@
       },
       {
         "type": "FlowchartClassDefStatement",
-        "classNames": [
+        "cssClasses": [
           {
             "type": "Identifier",
             "name": "foobar",

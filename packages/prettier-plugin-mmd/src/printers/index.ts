@@ -1,5 +1,6 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
 import type { MermaidAst } from "../parser.ts"
+import { printClass } from "./class.ts"
 import { printFlowchart } from "./flowchart.ts"
 import { printSequence } from "./sequence.ts"
 import type { Source } from "./source.ts"
@@ -31,4 +32,5 @@ export const diagramPrinters: Readonly<
 > = {
   FlowchartDiagram: printFlowchart,
   SequenceDiagram: printSequence,
+  ClassDiagram: printClass,
 }

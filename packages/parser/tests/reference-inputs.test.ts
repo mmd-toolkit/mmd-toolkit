@@ -4,6 +4,8 @@ import {
   withoutDirectives,
   withoutFrontmatterTagStarts,
   commentsAfterMatchStarts,
+  commentsAfterUnits,
+  namesStartingWithUnits,
 } from "./helpers/reference-inputs.ts"
 
 describe("the reference input for `html-tag-in-frontmatter`", () => {
@@ -50,6 +52,45 @@ describe("the places of `comment-takes-character`", () => {
 
   it("decides on the diagram text, across the directives before the `%%`", () => {
     expect(placesIn("autonumber 1%%{init: {}}%%%% c")).toEqual([26])
+  })
+})
+
+describe("the places of `comment-takes-line-break`", () => {
+  it("finds a diagram comment that follows a unit on its line", () => {
+    expect(commentsAfterUnits("classDiagram\nA --> B %% c\n")).toEqual([21])
+    expect(commentsAfterUnits("classDiagram %% c\nclass A\n")).toEqual([13])
+  })
+
+  it("finds no comment of a comment-only line, nor `%%` in a label", () => {
+    expect(commentsAfterUnits("classDiagram\nclass A\n%%\nclass B\n")).toEqual(
+      [],
+    )
+    expect(commentsAfterUnits("classDiagram\n  %%{\nclass B\n")).toEqual([])
+    expect(commentsAfterUnits("classDiagram\nA : x %% c\n")).toEqual([])
+  })
+
+  it("is null for a text that is no class diagram", () => {
+    expect(commentsAfterUnits("sequenceDiagram\nA->>B: x %% c\n")).toBeNull()
+  })
+})
+
+describe("the places of `name-start-reads-unit`", () => {
+  it("finds a backquoted name or a generic text that starts with a unit that mermaid.js reads first", () => {
+    expect(namesStartingWithUnits('classDiagram\nclass `"x`\n')).toEqual([19])
+    expect(namesStartingWithUnits("classDiagram\nclass `~b`\n")).toEqual([19])
+    expect(namesStartingWithUnits("classDiagram\nclass `note x`\n")).toEqual([
+      19,
+    ])
+    expect(namesStartingWithUnits("classDiagram\nclass A~note x~\n")).toEqual([
+      21,
+    ])
+  })
+
+  it("finds no keyword that a word character follows, nor one later in the text, nor `~` at the start of a generic text", () => {
+    expect(namesStartingWithUnits("classDiagram\nclass `notex`\n")).toEqual([])
+    expect(namesStartingWithUnits("classDiagram\nclass `x note`\n")).toEqual([])
+    expect(namesStartingWithUnits("classDiagram\nclass A~ note~\n")).toEqual([])
+    expect(namesStartingWithUnits("classDiagram\nclass A~~\n")).toEqual([])
   })
 })
 
