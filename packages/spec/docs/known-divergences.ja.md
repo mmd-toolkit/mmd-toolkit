@@ -47,17 +47,17 @@ mermaid.js の issue と pull request を探し、
 
 ## 差の一覧
 
-| 識別子                                                                                 | 図種                       | 入力                                                            | 理由 |
-| -------------------------------------------------------------------------------------- | -------------------------- | --------------------------------------------------------------- | ---- |
-| [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md) | すべて                     | `RawText` でも `Identifier` でもない単位の中のディレクティブ    | 2    |
-| [`html-tag-in-frontmatter`](./known-divergences/html-tag-in-frontmatter.ja.md)         | すべて                     | フロントマターの中で始まる HTML タグ                            | 2    |
-| [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md)               | すべて                     | mermaid.js が拒否する埋め込みデータ                             | なし |
-| [`click-reserved-word`](./known-divergences/click-reserved-word.ja.md)                 | flowchart                  | クリックの文が始まらないところの語 `click`                      | 3    |
-| [`tokenless-empty-forms`](./known-divergences/tokenless-empty-forms.ja.md)             | flowchart、sequence、class | mermaid.js がトークンを読まない空の形                           | 1    |
-| [`comment-takes-character`](./known-divergences/comment-takes-character.ja.md)         | sequence                   | `%%` の直前の文字か数                                           | 2    |
-| [`comment-takes-line-break`](./known-divergences/comment-takes-line-break.ja.md)       | class                      | 行の中で単位の後にあるコメントの後の改行                        | 2    |
-| [`headerless-empty-ending`](./known-divergences/headerless-empty-ending.ja.md)         | class                      | 空の値で終わる、ヘッダーのないテキスト                          | 2    |
-| [`name-start-reads-unit`](./known-divergences/name-start-reads-unit.ja.md)             | class                      | キーワードか `"` で始まるバッククォートの名前とジェネリクスの型 | 2    |
+| 識別子                                                                                 | 図種                              | 入力                                                            | 理由 |
+| -------------------------------------------------------------------------------------- | --------------------------------- | --------------------------------------------------------------- | ---- |
+| [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md) | すべて                            | `RawText` でも `Identifier` でもない単位の中のディレクティブ    | 2    |
+| [`html-tag-in-frontmatter`](./known-divergences/html-tag-in-frontmatter.ja.md)         | すべて                            | フロントマターの中で始まる HTML タグ                            | 2    |
+| [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md)               | すべて                            | mermaid.js が拒否する埋め込みデータ                             | なし |
+| [`click-reserved-word`](./known-divergences/click-reserved-word.ja.md)                 | flowchart                         | クリックの文が始まらないところの語 `click`                      | 3    |
+| [`tokenless-empty-forms`](./known-divergences/tokenless-empty-forms.ja.md)             | flowchart、sequence、class、state | mermaid.js がトークンを読まない空の形                           | 1    |
+| [`comment-takes-character`](./known-divergences/comment-takes-character.ja.md)         | sequence                          | `%%` の直前の文字か数                                           | 2    |
+| [`comment-takes-line-break`](./known-divergences/comment-takes-line-break.ja.md)       | class                             | 行の中で単位の後にあるコメントの後の改行                        | 2    |
+| [`headerless-empty-ending`](./known-divergences/headerless-empty-ending.ja.md)         | class                             | 空の値で終わる、ヘッダーのないテキスト                          | 2    |
+| [`name-start-reads-unit`](./known-divergences/name-start-reads-unit.ja.md)             | class                             | キーワードか `"` で始まるバッククォートの名前とジェネリクスの型 | 2    |
 
 差の文書は、どれも同じ部分を持ちます。
 それが関わる構文、例のある差、mermaid.js がそう読む理由、

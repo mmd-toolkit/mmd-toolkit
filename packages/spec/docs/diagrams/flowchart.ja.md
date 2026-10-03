@@ -381,6 +381,13 @@ mermaid.js は `direction-text` の単位を読みません。
   flowchart/lex-direction-line-acc-title-tab-indented] [fixture:
   flowchart/lex-direction-line-acc-descr-subgraph-column-zero] [fixture:
   flowchart/lex-direction-line-acc-descr-subgraph-indented]
+  `subgraph a` の後の `end; direction TB` も同じです。
+  行の始めでは `end` の規則が先に当たって subgraph を閉じ、
+  残りが方向の行になりますが、
+  字下げすると行全体が方向の行になり、`end` は読まれず、
+  subgraph が閉じないので、拒否されます。
+  [fixture: flowchart/lex-direction-line-after-end-semicolon-column-zero]
+  [fixture: flowchart/lex-direction-line-after-end-semicolon-indented]
 - `;` は空白ではありません。
   `direction ; TB` は方向の行ではなく、頂点 `direction` と `TB` で、
   `A-->direction; TB` は頂点 `direction` へのリンクと頂点 `TB` です。
@@ -401,6 +408,12 @@ mermaid.js は `direction-text` の単位を読みません。
   flowchart/lex-direction-line-percent-after-value] [fixture:
   flowchart/lex-direction-line-in-string-label] [fixture:
   flowchart/lex-direction-line-in-label-with-link]
+  subgraph の中で、`direction TB;` は値の後のテキスト `;` を持ち、
+  `direction TB; -->B` はテキスト `; -->B` を持つので、リンクは読まれません。
+  一方、`-->B` が次の行にあると、リンクに元がなく、入力は拒否されます。
+  [fixture: flowchart/lex-direction-line-semicolon-after-value] [fixture:
+  flowchart/lex-direction-line-semicolon-link-after-value] [fixture:
+  flowchart/lex-direction-line-then-link-without-source]
 
 ### 矢印
 
@@ -899,13 +912,17 @@ flowchart/lex-acc-descr-block-unclosed-empty]
 [fixture: flowchart/db-acc-descr-empty-block-after-semicolon-keeps]
 [fixture: flowchart/db-acc-descr-empty-block-lines-keeps]
 [fixture: flowchart/db-acc-descr-block-comment-only-keeps]
+文の最後の単位の後、区切りの前でも、それは文です。
+`A accDescr {}` と、2 行に分けた `A accDescr {` と `}` は、
+頂点の文と説明ブロックの文です。
+ヘッダーの方向の後、その区切りの前でも同じです
+（[区切りの前の空の説明ブロック](#区切りの前の空の説明ブロック) を参照）。
 それ以外の位置では、それは文の中にあり、木にはそこにそれを置く場所がないので、
 文法のどの規則もそれを取らず、入力は拒否されます。
-`A accDescr {}`、`A accDescr {}-->B`、
-2 行に分けた `A accDescr {` と `}` がそうです。
+`A accDescr {}-->B` がそうです。
 mermaid.js は空の説明ブロックにトークンを読まず、
-これらを、それがないものとして受理します。
-これらは既知の差
+それがないものとして受理します。
+これは既知の差
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md) です。
 `A-->accDescr {} B` は、どちらも拒否します。
 mermaid.js はブロックの後の空白を、行き先の前の空白として読むからです。
@@ -1056,46 +1073,47 @@ U+FFC2–U+FFC7, U+FFCA–U+FFCF, U+FFD2–U+FFD7, U+FFDA–U+FFDC。
 次の各規則が、
 [ast/flowchart.ja.md](../ast/flowchart.ja.md) で定める木のノードを作ります。
 
-| 規則                                                                                            | ノード                                                                                                                                                                                                                       |
-| ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `diagram`                                                                                       | [`FlowchartDiagram`](../ast/flowchart.ja.md#flowchartdiagram)                                                                                                                                                                |
-| `empty-statement`                                                                               | [`FlowchartEmptyStatement`](../ast/flowchart.ja.md#flowchartemptystatement)                                                                                                                                                  |
-| `vertex-statement`                                                                              | [`FlowchartVertexStatement`](../ast/flowchart.ja.md#flowchartvertexstatement)                                                                                                                                                |
-| `vertex-group`                                                                                  | [`FlowchartVertexGroup`](../ast/flowchart.ja.md#flowchartvertexgroup)                                                                                                                                                        |
-| `vertex`                                                                                        | [`FlowchartVertex`](../ast/flowchart.ja.md#flowchartvertex)                                                                                                                                                                  |
-| `shape`                                                                                         | [`FlowchartShape`](../ast/flowchart.ja.md#flowchartshape)。`"[\|"` の選択肢では、さらに [`FlowchartShapeProperty`](../ast/flowchart.ja.md#flowchartshapeproperty)                                                            |
-| `label`, `link-text`, `subgraph-name`                                                           | [`FlowchartLabel`](../ast/flowchart.ja.md#flowchartlabel)                                                                                                                                                                    |
-| `id`、`id-list-part`、`click-id`、`edge-id`、`callback-name`、`name`、`"[\|"` の後の各 `id-run` | [`Identifier`](../ast.ja.md#identifier)                                                                                                                                                                                      |
-| クリックの文の `string`                                                                         | [`StringLiteral`](../ast.ja.md#stringliteral)                                                                                                                                                                                |
-| リンクスタイルの文の `number`                                                                   | [`NumericLiteral`](../ast.ja.md#numericliteral)                                                                                                                                                                              |
-| `style`、`callback-arguments`、`title-text`、`description-text`、`description-block-text`       | [`FlowchartLiteral`](../ast/flowchart.ja.md#flowchartliteral)。すべて空白の `style` は null（[FlowchartStyleStatement](../ast/flowchart.ja.md#flowchartstylestatement) を参照）                                              |
-| `data`                                                                                          | [`FlowchartDataBlock`](../ast/flowchart.ja.md#flowchartdatablock)                                                                                                                                                            |
-| `link`                                                                                          | [`FlowchartLink`](../ast/flowchart.ja.md#flowchartlink)。その行き先は、その後の頂点のグループ                                                                                                                                |
-| `arrow`                                                                                         | [`FlowchartArrow`](../ast/flowchart.ja.md#flowchartarrow)                                                                                                                                                                    |
-| `opening-arrow`                                                                                 | [`FlowchartOpeningArrow`](../ast/flowchart.ja.md#flowchartopeningarrow)                                                                                                                                                      |
-| `subgraph-statement`                                                                            | [`FlowchartSubgraphStatement`](../ast/flowchart.ja.md#flowchartsubgraphstatement)                                                                                                                                            |
-| `style-statement`                                                                               | [`FlowchartStyleStatement`](../ast/flowchart.ja.md#flowchartstylestatement)                                                                                                                                                  |
-| `class-def-statement`                                                                           | [`FlowchartClassDefStatement`](../ast/flowchart.ja.md#flowchartclassdefstatement)                                                                                                                                            |
-| `class-statement`                                                                               | [`FlowchartClassStatement`](../ast/flowchart.ja.md#flowchartclassstatement)                                                                                                                                                  |
-| `link-style-statement`                                                                          | [`FlowchartLinkStyleStatement`](../ast/flowchart.ja.md#flowchartlinkstylestatement)。`"default"` のときは [`FlowchartDefaultLinkStyleStatement`](../ast/flowchart.ja.md#flowchartdefaultlinkstylestatement)                  |
-| `click-statement`                                                                               | [`FlowchartClickCallbackStatement`](../ast/flowchart.ja.md#flowchartclickcallbackstatement)（1 つ目と 3 つ目の選択肢）。2 つ目の選択肢では [`FlowchartClickUrlStatement`](../ast/flowchart.ja.md#flowchartclickurlstatement) |
-| `direction-statement`                                                                           | [`FlowchartDirectionStatement`](../ast/flowchart.ja.md#flowchartdirectionstatement)                                                                                                                                          |
-| `title-statement`                                                                               | [`FlowchartAccTitleStatement`](../ast/flowchart.ja.md#flowchartacctitlestatement)                                                                                                                                            |
-| `description-statement`                                                                         | [`FlowchartAccDescrStatement`](../ast/flowchart.ja.md#flowchartaccdescrstatement)                                                                                                                                            |
-| `description-block-statement`                                                                   | [`FlowchartAccDescrBlockStatement`](../ast/flowchart.ja.md#flowchartaccdescrblockstatement)                                                                                                                                  |
+| 規則                                                                                                       | ノード                                                                                                                                                                                                                       |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `diagram`                                                                                                  | [`FlowchartDiagram`](../ast/flowchart.ja.md#flowchartdiagram)                                                                                                                                                                |
+| `empty-statement`                                                                                          | [`FlowchartEmptyStatement`](../ast/flowchart.ja.md#flowchartemptystatement)                                                                                                                                                  |
+| `vertex-statement`                                                                                         | [`FlowchartVertexStatement`](../ast/flowchart.ja.md#flowchartvertexstatement)                                                                                                                                                |
+| `vertex-group`                                                                                             | [`FlowchartVertexGroup`](../ast/flowchart.ja.md#flowchartvertexgroup)                                                                                                                                                        |
+| `vertex`                                                                                                   | [`FlowchartVertex`](../ast/flowchart.ja.md#flowchartvertex)                                                                                                                                                                  |
+| `shape`                                                                                                    | [`FlowchartShape`](../ast/flowchart.ja.md#flowchartshape)。`"[\|"` の選択肢では、さらに [`FlowchartShapeProperty`](../ast/flowchart.ja.md#flowchartshapeproperty)                                                            |
+| `label`, `link-text`, `subgraph-name`                                                                      | [`FlowchartLabel`](../ast/flowchart.ja.md#flowchartlabel)                                                                                                                                                                    |
+| `id`、`id-list-part`、`click-id`、`edge-id`、`name`、`"[\|"` の後の各 `id-run`                             | [`Identifier`](../ast.ja.md#identifier)                                                                                                                                                                                      |
+| クリックの文の `string`                                                                                    | [`StringLiteral`](../ast.ja.md#stringliteral)                                                                                                                                                                                |
+| リンクスタイルの文の `number`                                                                              | [`NumericLiteral`](../ast.ja.md#numericliteral)                                                                                                                                                                              |
+| `style`、`callback-name`、`callback-arguments`、`title-text`、`description-text`、`description-block-text` | [`FlowchartLiteral`](../ast/flowchart.ja.md#flowchartliteral)。すべて空白の `style` は null（[FlowchartStyleStatement](../ast/flowchart.ja.md#flowchartstylestatement) を参照）                                              |
+| `data`                                                                                                     | [`FlowchartDataBlock`](../ast/flowchart.ja.md#flowchartdatablock)                                                                                                                                                            |
+| `link`                                                                                                     | [`FlowchartLink`](../ast/flowchart.ja.md#flowchartlink)。その行き先は、その後の頂点のグループ                                                                                                                                |
+| `arrow`                                                                                                    | [`FlowchartArrow`](../ast/flowchart.ja.md#flowchartarrow)                                                                                                                                                                    |
+| `opening-arrow`                                                                                            | [`FlowchartOpeningArrow`](../ast/flowchart.ja.md#flowchartopeningarrow)                                                                                                                                                      |
+| `subgraph-statement`                                                                                       | [`FlowchartSubgraphStatement`](../ast/flowchart.ja.md#flowchartsubgraphstatement)                                                                                                                                            |
+| `style-statement`                                                                                          | [`FlowchartStyleStatement`](../ast/flowchart.ja.md#flowchartstylestatement)                                                                                                                                                  |
+| `class-def-statement`                                                                                      | [`FlowchartClassDefStatement`](../ast/flowchart.ja.md#flowchartclassdefstatement)                                                                                                                                            |
+| `class-statement`                                                                                          | [`FlowchartClassStatement`](../ast/flowchart.ja.md#flowchartclassstatement)                                                                                                                                                  |
+| `link-style-statement`                                                                                     | [`FlowchartLinkStyleStatement`](../ast/flowchart.ja.md#flowchartlinkstylestatement)。`"default"` のときは [`FlowchartDefaultLinkStyleStatement`](../ast/flowchart.ja.md#flowchartdefaultlinkstylestatement)                  |
+| `click-statement`                                                                                          | [`FlowchartClickCallbackStatement`](../ast/flowchart.ja.md#flowchartclickcallbackstatement)（1 つ目と 3 つ目の選択肢）。2 つ目の選択肢では [`FlowchartClickUrlStatement`](../ast/flowchart.ja.md#flowchartclickurlstatement) |
+| `direction-statement`                                                                                      | [`FlowchartDirectionStatement`](../ast/flowchart.ja.md#flowchartdirectionstatement)                                                                                                                                          |
+| `title-statement`                                                                                          | [`FlowchartAccTitleStatement`](../ast/flowchart.ja.md#flowchartacctitlestatement)                                                                                                                                            |
+| `description-statement`                                                                                    | [`FlowchartAccDescrStatement`](../ast/flowchart.ja.md#flowchartaccdescrstatement)                                                                                                                                            |
+| `description-block-statement`                                                                              | [`FlowchartAccDescrBlockStatement`](../ast/flowchart.ja.md#flowchartaccdescrblockstatement)                                                                                                                                  |
+| `empty-description-block`                                                                                  | テキストのない [`FlowchartAccDescrBlockStatement`](../ast/flowchart.ja.md#flowchartaccdescrblockstatement)。その前の文の後の文。subgraph の名前の後では、その本体の最初の文。ヘッダーの後では、図の最初の文                  |
 
 ### 図と文
 
 ```text
 diagram                     = header line*
-header                      = header-keyword ( no-direction | header-direction ( ";" | newline | space+ newline ) )
+header                      = header-keyword ( no-direction | header-direction ( empty-description-block* ";" | space* empty-description-block* newline ) )
 line                        = statement | empty-statement | newline | space
-statement                   = vertex-statement separator
-                            | style-statement separator
-                            | class-def-statement separator
-                            | class-statement separator
-                            | link-style-statement separator
-                            | click-statement separator
+statement                   = vertex-statement statement-end
+                            | style-statement statement-end
+                            | class-def-statement statement-end
+                            | class-statement statement-end
+                            | link-style-statement statement-end
+                            | click-statement statement-end
                             | subgraph-statement
                             | direction-statement
                             | title-statement
@@ -1114,7 +1132,9 @@ description-block-statement = "accDescr" "{" description-block-text? ( "}" | end
 `flowchart TD ;` は拒否されます。
 [fixture: flowchart/header-space-before-semicolon] subgraph、方向の文、
 アクセシビリティの文以外の文の後には、その区切り、つまり改行、`;`、
-テキストの終わりのどれかが続かなければなりません。
+テキストの終わりのどれかが続かなければならず、
+その前には空の説明ブロックしか置けません
+（[区切りの前の空の説明ブロック](#区切りの前の空の説明ブロック) を参照）。
 そのため、`class A c; %%{init: {}}%%` は受理されますが、`;` がなければ、
 ディレクティブの前の空白がクラス名の後の `space` の単位になり、
 入力は拒否されます。
@@ -1135,6 +1155,149 @@ flowchart/lex-quotes-after-class-name]
 flowchart/db-subgraph-member-empty-statement-end] [fixture:
 flowchart/gram-empty-statement-line] 区切りの後に続く改行は、
 それ自体が 1 つの行です。
+
+### 区切りの前の空の説明ブロック
+
+```text
+statement-end           = empty-description-block* separator
+empty-description-block = "accDescr" "{" "}"
+```
+
+`empty-description-block` は、`accDescr` の単位と `{` の単位に、
+`description-block-text` の単位なしで `}` の単位がすぐ続くものです。
+区切りが要る文は `statement-end` で終わります。
+文の最後の単位の後、区切りの前には、空の説明ブロックがいくつ来てもかまいません。
+それぞれ、その文の後に続く、テキストのない説明ブロックの文で、何も変えません。
+mermaid.js は空の説明ブロックにトークンを読まないので
+（[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md)
+を参照）、その文の後にすぐ区切りが続くものとして読みます。
+テキストのある説明ブロックと、ほかの文は、区切りの前に置けません。
+
+flowchart で区切り（改行、`;`、テキストの終わり）が要る文は、
+頂点、style、クラスの定義、class、リンクのスタイル、click の文で、
+subgraph の名前の後にも区切りが要ります。
+そのため、`A accDescr {}`、`A accDescr {} accDescr {}`、`A accDescr {};B`、
+`A --> B accDescr {}`、`style A fill:red accDescr {}`、
+`classDef c fill:red accDescr {}`、`linkStyle 0 stroke:red accDescr {}`、
+`subgraph S accDescr {}`、`click A href "u"accDescr {}` は受理されます。
+`A accDescr {`、改行、`}` も同じです。
+[fixture: flowchart/gram-empty-description-block-after-vertex] [fixture:
+flowchart/gram-empty-description-blocks-after-vertex] [fixture:
+flowchart/gram-empty-description-block-before-semicolon] [fixture:
+flowchart/gram-empty-description-block-after-link] [fixture:
+flowchart/gram-empty-description-block-after-style] [fixture:
+flowchart/gram-empty-description-block-after-classdef] [fixture:
+flowchart/gram-empty-description-block-after-linkstyle] [fixture:
+flowchart/gram-empty-description-block-after-subgraph-name] [fixture:
+flowchart/gram-empty-description-block-after-click-glued] [fixture:
+flowchart/gram-empty-description-block-line-feed]
+文法は、mermaid.js と同じく、文とその `statement-end` を、
+空の説明ブロックを除いて読みます。
+ブロックの前、間、後の `space` の単位は文の終わりの空白で、
+文の規則がそれを取るかどうかで決まります。
+頂点の文の終わりは空白を取り、
+style、クラスの定義、リンクのスタイルの文のスタイルと、
+subgraph の名前も空白を取るので、
+`A accDescr {} ;B`、`A accDescr {} accDescr {} ;B`、
+`style A fill:red accDescr {} ;B`、`subgraph S accDescr {} ;A` は受理されます。
+class の文、click の文、データブロックで終わる頂点の文は、空白を取りません。
+クラス名や URL の後の `space` の単位には文の続きが要り、
+改行が続かないデータブロックの後の空白は `space` の単位だからです
+（[`}` の後の空白](#-の後の空白) を参照）。
+そのため、`class A c accDescr {}`、`class A c accDescr {} ;B`、
+`click A href "u" accDescr {}`、`click A href "u"accDescr {} ;B`、
+`click A href "u"accDescr {} accDescr {}`、`A@{ shape: rect } accDescr {}`、
+`A@{ shape: rect }accDescr {} ;B` は、
+ブロックのない同じものと同じく拒否されます。
+一方、`click A href "u"accDescr {}accDescr {}` と
+`A@{ shape: rect }accDescr {}accDescr {}` は受理されます。
+ブロックの両側の `space` の単位は、2 つの単位のままです。
+`linkStyle 0 interpolate basis accDescr {} ;` では、
+1 つ目が補間の名前を終え、2 つ目がすべて空白のスタイルなので、
+入力は受理されますが、
+`linkStyle 0 interpolate basis`、空白 2 つ、`;` は拒否されます。
+改行で終わる、ブロックの `}` の後の空白は改行として読まれるので
+（[`}` の後の空白](#-の後の空白) を参照）、
+`click A href "u"accDescr {}` に空白と改行が続くものは受理されます。
+mermaid.js も同じに読みます。
+[fixture:
+flowchart/gram-empty-description-block-splits-spaces-after-interpolate]
+[fixture: flowchart/gram-interpolate-trailing-space] [fixture:
+flowchart/gram-empty-description-block-after-click-trailing-space]
+[fixture: flowchart/gram-empty-description-block-before-space-semicolon]
+[fixture: flowchart/gram-empty-description-blocks-before-space-semicolon]
+[fixture: flowchart/gram-empty-description-block-after-style-before-semicolon]
+[fixture:
+flowchart/gram-empty-description-block-after-linkstyle-before-semicolon]
+[fixture:
+flowchart/gram-empty-description-block-after-classdef-before-semicolon]
+[fixture:
+flowchart/gram-empty-description-block-after-subgraph-name-before-semicolon]
+[fixture: flowchart/gram-empty-description-block-after-data-block-glued]
+[fixture: flowchart/gram-empty-description-blocks-after-data-block-glued]
+[fixture: flowchart/gram-empty-description-blocks-after-click-glued] [fixture:
+flowchart/gram-empty-description-block-after-click-space] [fixture:
+flowchart/gram-empty-description-block-after-class-statement] [fixture:
+flowchart/gram-empty-description-block-after-class-statement-before-semicolon]
+[fixture: flowchart/gram-empty-description-block-after-click-before-semicolon]
+[fixture: flowchart/gram-empty-description-blocks-after-click-space-between]
+[fixture: flowchart/gram-empty-description-block-after-data-block-space]
+[fixture:
+flowchart/gram-empty-description-block-after-data-block-before-semicolon]
+[fixture:
+flowchart/gram-empty-description-blocks-after-data-block-space-between]
+subgraph の名前の区切りの前の空の説明ブロックは、その本体の最初の文で、
+subgraph の Db の名前のテキストはそれを除きます
+（[木から要約を作る](#木から要約を作る) を参照）。
+`subgraph "S"accDescr {}` の名前のテキストは `S` で、id は `S` ですが、
+ブロックの前の空白はそれに残り、
+`subgraph S accDescr {}` の名前のテキストは `S` と空白で、
+id は `subGraph0` です。
+[fixture: flowchart/gram-empty-description-block-after-subgraph-name]
+[fixture: flowchart/db-subgraph-name-text-without-empty-description-block]
+区切りが続かないブロックは文の中にあります。
+`A accDescr {} B` は両方が拒否し、mermaid.js が受理する `A accDescr {}-->B` は
+既知の差 `tokenless-empty-forms` です（[既知の差](#既知の差) を参照）。
+[fixture: flowchart/gram-empty-description-block-then-vertex] [fixture:
+flowchart/gram-empty-description-block-before-link]
+
+方向のあるヘッダーにも区切りが要ります。
+`;` か、前に空白だけがある改行です（[図と文](#図と文) を参照）。
+文の区切りの前と同じく、その区切りの前には空の説明ブロックが来てもかまいません。
+それぞれ、テキストのない説明ブロックの文で、図の最初の文です。
+mermaid.js は、ヘッダーの後にすぐ区切りが続くものとして読みます。
+文法はヘッダーをそのブロックを除いて読むので、
+ブロックの周りの `space` の単位は方向の後の空白で、その後には改行が要ります。
+そのため、改行と `A` が続くか、テキストの終わりにある
+`flowchart LR accDescr {}`、
+`flowchart LR`、空白 2 つ、`accDescr {} accDescr {}` に空白と改行が続くもの、
+`flowchart >accDescr {}` は受理され、ブロックのない同じ入力の Db を持ちます。
+`flowchart LR accDescr {};A` と `flowchart LR accDescr {} A` は、
+`flowchart LR ;A` と `flowchart LR  A` と同じく拒否され、
+ブロックにテキストのある `flowchart LR accDescr {x}` も拒否されます。
+`;` の前にブロックが来るのは、方向の後に空白がないとき、
+つまり `<`、`>`、`^` のすぐ後にブロックを書いたときだけです。
+`flowchart >accDescr {};A` と、ブロックが 2 つの同じものは、
+`flowchart >;A` と同じく受理され、
+`flowchart >accDescr {} accDescr {};A` は拒否されます。
+[fixture: flowchart/header-empty-description-block-glued-before-semicolon]
+[fixture: flowchart/header-empty-description-blocks-glued-before-semicolon]
+[fixture: flowchart/header-empty-description-blocks-space-before-semicolon]
+方向のないヘッダーには、ブロックを置く場所がありません。
+ヘッダーのキーワードの後で、ヘッダーの文脈は、
+改行を含む空白、方向、文字列だけを読むので
+（[ヘッダーの文脈](#ヘッダーの文脈) を参照）、
+`flowchart accDescr {}` は拒否されます。
+一方、`flowchart`、改行、`accDescr {}` は、文が始まるところのブロックです。
+mermaid.js もこれらを同じに読みます。
+[fixture: flowchart/header-empty-description-block-after-direction] [fixture:
+flowchart/header-empty-description-block-after-direction-at-end] [fixture:
+flowchart/header-empty-description-blocks-after-direction-spaces] [fixture:
+flowchart/header-empty-description-block-after-symbol-direction-glued]
+[fixture: flowchart/header-empty-description-block-before-semicolon] [fixture:
+flowchart/header-empty-description-block-then-statement] [fixture:
+flowchart/header-description-block-with-text-after-direction] [fixture:
+flowchart/header-empty-description-block-no-direction]
 
 ### 頂点の文
 
@@ -1332,7 +1495,7 @@ link-text = ( string | markdown-string | link-text-char ) link-text-char*
 ### subgraph
 
 ```text
-subgraph-statement = "subgraph" space subgraph-name ( "[" label "]" )? separator line* "end"
+subgraph-statement = "subgraph" space subgraph-name ( "[" label "]" )? statement-end line* "end"
 subgraph-name      = ( string | markdown-string | name-piece ) name-piece*
 name-piece         = number | id-run | letter | space | "-" | "&" | ":" | "*" | "#" | "v" | "^"
                    | "style" | "linkStyle" | "classDef" | "class" | header-keyword | "subgraph" | "end"
@@ -1728,6 +1891,8 @@ mermaid.js が HTML の無害化の前に持つ形で記録します。
 データブロックの値は読みません。
 ラベルは、変換した値の両端の空白を trim したものと、
 その種類をラベルの種類として与えます。
+`A["x"]` の後の `A["x "]` は、テキストを `x` のままにします。
+[fixture: flowchart/db-vertex-label-string-trailing-space-redefined]
 値が両端に空白を持つのは、先頭の文字列の区切りの内側か、
 ラベルがすべて空白のときだけです。
 ほかの値は [共通の葉のノード](../ast.ja.md#共通の葉のノード) の値で、
@@ -1737,7 +1902,8 @@ id とクラス名のリストの null の要素は、空のテキストを表�
 スタイルは、null かどうかにかかわらず、
 その Db のテキストで読みます（**スタイルの文**を参照）。
 [fixture: flowchart/db-linkstyle-whitespace-only-style] [fixture:
-flowchart/db-classdef-whitespace-only-style]アクセシビリティの文の null の
+flowchart/db-classdef-whitespace-only-style]
+アクセシビリティの文の null の
 `value` は、下の**アクセシビリティの文**で述べます。
 クリックの文の `arguments` は使いません。
 要約はコールバックの引数を除くからです。
@@ -1757,7 +1923,9 @@ flowchart/db-direction-statement-top-level-no-header-direction]
 プロパティを取ります。
 
 1. その id の辺があれば、何も起きません。
-   [fixture: flowchart/db-vertex-edge-id]
+   `A e1@--> B` の後の `style e1 fill:#f00` は、
+   頂点を加えず、スタイルも与えません。
+   [fixture: flowchart/db-vertex-edge-id] [fixture: flowchart/db-style-edge-id]
 2. その id の頂点がなければ、id、ラベルの種類 `text`、スタイルなし、
    クラスなしの頂点を末尾に加えます。
 3. ラベルがあれば、頂点は、既にテキストを持っていても、
@@ -1809,6 +1977,11 @@ flowchart/db-direction-statement-top-level-no-header-direction]
 その id で最後に加えた subgraph のクラスに、クラス名を加えます。
 [fixture: flowchart/db-class-on-edge-and-subgraph] [fixture:
 flowchart/db-class-vertex-id-with-comma]
+頂点は加えないので、まだ頂点のない id はクラスを得ません。
+`A --> B` の後の `class C foo` は何も変えず、
+`class A foo` の後に `A --> B` が続くと、A はクラスを持ちません。
+[fixture: flowchart/db-class-unknown-vertex] [fixture:
+flowchart/db-class-before-vertex]
 
 **頂点の文。** 頂点のグループを最初から最後まで、それぞれの頂点について、
 その形で頂点の手順を、次にクラスがあれば、
@@ -1951,7 +2124,7 @@ flowchart/db-subgraph-member-constructor-to-string] メンバー `hasOwnProperty
 - `id`: 名前のテキストを trim したもの。**名前のテキスト**は、
   mermaid.js が名前として読むテキストです。
   名前の値に、名前の終わりからその後に続くもの
-  （タイトルの `[` か区切り）までの範囲のテキストを続けて、
+  （タイトルの `[` か区切り）までの範囲のテキストを続け、
   変換した形にしたものです。
   `subgraph` の後の `space` の単位はそれに入りません。
   `subgraph %%{init: {}}%% a` のように、
@@ -1964,6 +2137,19 @@ flowchart/db-subgraph-member-constructor-to-string] メンバー `hasOwnProperty
   id は `subGraph0` です。
   [fixture: flowchart/db-subgraph-name-trailing-space] [fixture:
   flowchart/db-subgraph-counter]
+  名前の後の空の説明ブロックの前の空白と、そのようなブロックの間の空白は、
+  名前のテキストに残りますが、改行で終わる、最後のブロックの後の空白は
+  改行として読まれ（[`}` の後の空白](#-の後の空白) を参照）、それに入りません。
+  `subgraph S accDescr {}`、`subgraph S accDescr {};A`、
+  `subgraph "S"accDescr {} accDescr {}` の名前のテキストは空白を含み、
+  id は `subGraph0` ですが、`subgraph "S"accDescr {}` は、
+  行の終わりのブロックの後に空白があっても、
+  名前のテキストが `S` で、id は `S` です。
+  [fixture: flowchart/gram-empty-description-block-after-subgraph-name]
+  [fixture: flowchart/db-subgraph-name-space-before-empty-description-block]
+  [fixture: flowchart/db-subgraph-name-space-between-empty-description-blocks]
+  [fixture: flowchart/db-subgraph-name-text-without-empty-description-block]
+  [fixture: flowchart/db-subgraph-name-space-after-empty-description-block]
   空白の前の文字列やディレクティブは、これを変えません。
   行末に空白が続く `subgraph "S"` と `subgraph S%%{init: {}}%%` の id は
   `subGraph0` で、空白が続く `subgraph S` も同じです。
@@ -2015,6 +2201,20 @@ flowchart/db-subgraph-member-constructor-to-string] メンバー `hasOwnProperty
 最初のスタイルは、
 文の規則が `styles` の前に読む `space` の単位の終わりから始まり、
 最後のスタイルは文の区切りで終わります。
+すべての[範囲のテキスト](../ast.ja.md#ノード)と同じく、
+区切りの前の空の説明ブロックは除きます。
+`classDef c fill:red accDescr {}` と `linkStyle 0 stroke:red accDescr {}` の
+最後のスタイルの Db のテキストは、
+それぞれ `fill:red` と `stroke:red` に空白 1 つが続いたものです。
+`linkStyle 0 interpolate basis accDescr {} ;` の、
+すべて空白のスタイルの Db のテキストは空白 1 つです。
+[fixture: flowchart/gram-empty-description-block-after-style-before-semicolon]
+[fixture: flowchart/gram-empty-description-block-after-classdef] [fixture:
+flowchart/gram-empty-description-block-after-classdef-before-semicolon]
+[fixture: flowchart/gram-empty-description-block-after-linkstyle] [fixture:
+flowchart/gram-empty-description-block-after-linkstyle-before-semicolon]
+[fixture:
+flowchart/gram-empty-description-block-splits-spaces-after-interpolate]
 これは、どのノードも持たない、周りに書かれた空白を含めたスタイルで、
 null のスタイルもすべて空白の Db のテキストを持ちます。
 `style` は、
@@ -2113,7 +2313,13 @@ mermaid.js は、そのテキストを読んだ後、テキストの終わりで
 [fixture: flowchart/lex-acc-descr-block-unclosed] [fixture:
 flowchart/db-acc-descr-unclosed-replaces] [fixture:
 flowchart/db-acc-descr-unclosed-empty-replaces] [fixture:
-flowchart/db-acc-descr-unclosed-keeps-title] それ以外では、
+flowchart/db-acc-descr-unclosed-keeps-title]
+そのようなブロックはテキストの残りを取るので、
+`accDescr { x` の後や、`accDescr {` と行 `x` の後の行 `B --> C` は、
+辺を加えません。
+[fixture: flowchart/db-acc-descr-unclosed-takes-lines] [fixture:
+flowchart/db-acc-descr-unclosed-text-next-line]
+それ以外では、
 値が null の文は空のテキストを設定します。
 一方、テキストのない閉じた説明のブロックは何も変えません。
 `accDescr: x` の後にテキストの終わりの `accDescr:` が続くと説明は空になり、
@@ -2173,10 +2379,21 @@ flowchart/db-acc-descr-empty-block-after-block]
 - **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)。**
   データブロックの中身は読みません。
   mermaid.js はそれを YAML として読み、YAML として正しくない中身と、
-  知らない形を挙げる中身を拒否します。
+  知らない形を挙げる中身と、改行を持ち値が null の YAML である頂点の中身
+  （`A@{`、改行、`}`）を拒否します。
+  1 行の `A@{ }` は両方が受理します。
   ここではそれらを受理します。
+  [fixture: flowchart/div-data-block-line-break-only] [fixture:
+  flowchart/gram-data-block-space-only]
+  データブロックの中の `%%` だけの行はコメント行ではないので中身に残り、
+  mermaid.js はそれを YAML として拒否します。
+  `A@{`、行 `%%`、行 `shape: circle`、行 `}` は、
+  mermaid.js では拒否され、ここでは受理されます。
+  `%%` の行がなければ、どちらも受理します。
   [fixture: flowchart/div-data-invalid-yaml] [fixture:
-  flowchart/div-data-unknown-shape]
+  flowchart/div-data-unknown-shape] [fixture:
+  flowchart/div-data-block-bare-marker-line] [fixture:
+  flowchart/gram-data-block-shape-on-own-line]
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   mermaid.js では、フロントマターの中で始まる HTML タグが、
   図の `"` の読み方を変えることがあります。
@@ -2210,7 +2427,9 @@ flowchart/db-acc-descr-empty-block-after-block]
   [fixture: flowchart/gram-subgraph-name-click-comma]
   [fixture: flowchart/gram-subgraph-name-bare-click]
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
-  空の文字列、空の呼び出し、文を始めない空の説明ブロックは、
+  空の文字列、空の呼び出し、
+  文の始まりでも、文やヘッダーの区切りの前でもない、
+  文の中の空の説明ブロックは、
   それがある位置には木にそれを置く場所がないので、
   ここでは入力を拒否させます（[文字列](#文字列)、
   [クリックとコールバック](#クリックとコールバック)、

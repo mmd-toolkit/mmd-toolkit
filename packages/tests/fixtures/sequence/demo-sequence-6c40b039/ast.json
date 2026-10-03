@@ -9,7 +9,7 @@
         "kind": "actor",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Alice",
           "range": [
             22,
@@ -48,7 +48,7 @@
         "kind": "actor",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "John",
           "range": [
             34,
@@ -85,7 +85,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Alice",
           "range": [
             39,
@@ -127,7 +127,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "John",
           "range": [
             46,
@@ -198,7 +198,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "John",
           "range": [
             77,
@@ -240,7 +240,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Alice",
           "range": [
             84,

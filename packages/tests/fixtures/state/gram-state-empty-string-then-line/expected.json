@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state string context: the empty string is a unit, so the line break after it ends the state context, and `A` on the next line is a state; in `state`, a line break, and `A`, the whitespace after `state` takes the line break, and `A` is a state name that adds nothing."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

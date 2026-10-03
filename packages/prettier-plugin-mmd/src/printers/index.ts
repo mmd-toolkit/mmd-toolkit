@@ -3,6 +3,7 @@ import type { MermaidAst } from "../parser.ts"
 import { printClass } from "./class.ts"
 import { printFlowchart } from "./flowchart.ts"
 import { printSequence } from "./sequence.ts"
+import { printState } from "./state.ts"
 import type { Source } from "./source.ts"
 
 /**
@@ -33,4 +34,5 @@ export const diagramPrinters: Readonly<
   FlowchartDiagram: printFlowchart,
   SequenceDiagram: printSequence,
   ClassDiagram: printClass,
+  StateDiagram: printState,
 }

@@ -9,6 +9,7 @@
  * under `ast/`.
  */
 import type { ClassDiagram, ClassNode } from "./ast/class.ts"
+import type { StateDiagram, StateNode } from "./ast/state.ts"
 import type { FlowchartDiagram, FlowchartNode } from "./ast/flowchart.ts"
 import type { SequenceDiagram, SequenceNode } from "./ast/sequence.ts"
 
@@ -77,12 +78,17 @@ export type DiagramTokenKind =
 /**
  * ast.md, Tokens: the token kinds, shared by all diagram types: those of
  * the diagram's own tokens and of the frontmatter (see
- * {@link DiagramTokenKind}), and one more, the same in every diagram:
+ * {@link DiagramTokenKind}), and two more, the same in every diagram:
  *
+ * - `"StringFragment"`: A piece of a quoted string that a comment region cuts:
+ *   the text before or after the region, without the closing or the
+ *   opening quote.
  * - `"Directive"`: A directive outside every other token and every comment.
  */
 export type TokenKind =
   | DiagramTokenKind
+  /** A piece of a quoted string that a comment region cuts: the text before or after the region, without the closing or the opening quote. */
+  | "StringFragment"
   /** A directive outside every other token and every comment. */
   | "Directive"
 
@@ -108,9 +114,22 @@ export interface Token {
  */
 export interface Comment {
   readonly type: "Comment"
-  /** The source text of the comment after its `%%`, that is, after the second `%`. */
+  /**
+   * The characters of the comment's mark: `%%` for a comment line; for a
+   * diagram comment, `#`, `%%`, or `%` in sequence, `#` or `%%` in state,
+   * and `%%` in class. Null for a fragment of a diagram comment after a
+   * comment region, which has no mark.
+   */
+  readonly mark: "%%" | "#" | "%" | null
+  /**
+   * The source text after the mark, directives included; for a fragment
+   * without a mark, the source text of its range.
+   */
   readonly value: string
-  /** From the first `%` of the `%%` of the comment line to before the line terminator. */
+  /**
+   * From the mark, or the first character of a fragment without a mark, to
+   * the end of the comment (ast.md, Comment).
+   */
   readonly range: Range
   /** The same place as lines and columns. */
   readonly loc: Location
@@ -234,7 +253,11 @@ export interface NumericLiteral extends NodeBase {
  * diagram type. Each diagram adds its body type here.
  */
 export type DiagramBody =
-  ErrorDiagram | FlowchartDiagram | SequenceDiagram | ClassDiagram
+  | ErrorDiagram
+  | FlowchartDiagram
+  | SequenceDiagram
+  | ClassDiagram
+  | StateDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -315,3 +338,4 @@ export type Node =
   | FlowchartNode
   | SequenceNode
   | ClassNode
+  | StateNode

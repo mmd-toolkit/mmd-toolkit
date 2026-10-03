@@ -7,7 +7,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Consumer",
           "range": [
             21,
@@ -49,7 +49,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "API",
           "range": [
             32,
@@ -120,7 +120,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "API",
           "range": [
             56,
@@ -162,7 +162,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "BookingService",
           "range": [
             62,
@@ -272,7 +272,7 @@
           {
             "type": "SequenceMessageStatement",
             "from": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "API",
               "range": [
                 149,
@@ -314,7 +314,7 @@
             "activation": null,
             "toCentralConnection": false,
             "to": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "Consumer",
               "range": [
                 155,
@@ -401,7 +401,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "API",
           "range": [
             190,
@@ -443,7 +443,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "BillingService",
           "range": [
             196,

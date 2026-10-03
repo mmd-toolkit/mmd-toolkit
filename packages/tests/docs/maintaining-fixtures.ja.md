@@ -169,6 +169,10 @@ pin した mermaid.js のタグにある mermaid.js のチェックアウトを�
   class では、`diagrams/class/classDiagram.spec.ts`、
   `diagrams/class/classDiagram-styles.spec.js`、
   `diagrams/class/parser/class.spec.js`。
+  state では、`diagrams/state/` と `diagrams/state/parser/` のうち、
+  構文解析器を呼ぶテストファイルで、`stateRenderer.spec.js` は除く。
+  そのファイルは、図の代役とともに、描画の `draw()` にだけテキストを渡すので、
+  mermaid.js はそれを構文解析しない。
   テストは入力の多くをループとテンプレートリテラルで作るので、
   各ファイルをスタブに対して実行し、mermaid.js に渡したテキストを、
   拒否されるものも含めてすべて取る。

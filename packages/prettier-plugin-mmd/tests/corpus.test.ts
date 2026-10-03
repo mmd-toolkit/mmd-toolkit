@@ -39,6 +39,7 @@ const fixtures = [
   ...(await loadFixtures("flowchart")),
   ...(await loadFixtures("sequence")),
   ...(await loadFixtures("class")),
+  ...(await loadFixtures("state")),
 ].filter(isFormatted)
 
 describe("the conformance corpus", () => {

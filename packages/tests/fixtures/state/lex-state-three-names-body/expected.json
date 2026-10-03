@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The state context, rule 7: three words before `{` are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error: State name must be a single word. Found: \"a b c {\""
+  }
+}

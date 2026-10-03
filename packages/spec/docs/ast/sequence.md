@@ -54,7 +54,7 @@ A `participant` or `actor` statement.
 | --------- | ------------------------- | ---------------------------------------------------------------------------------------- |
 | `kind`    | string                    | `participant` or `actor`: the keyword, in lower case.                                    |
 | `created` | boolean                   | Whether `create` comes before the keyword.                                               |
-| `id`      | Identifier                | The id.                                                                                  |
+| `id`      | SequenceIdentifier        | The id.                                                                                  |
 | `data`    | SequenceDataBlock or null | The data block after the id; null when there is none.                                    |
 | `alias`   | SequenceText or null      | The text after `as`, which mermaid.js reads as the description; null when there is none. |
 
@@ -65,10 +65,10 @@ there.
 
 A `destroy` statement.
 
-| Field     | Type       | Meaning                                    |
-| --------- | ---------- | ------------------------------------------ |
-| `created` | boolean    | Whether `create` comes before the keyword. |
-| `id`      | Identifier | The id after `destroy`.                    |
+| Field     | Type               | Meaning                                    |
+| --------- | ------------------ | ------------------------------------------ |
+| `created` | boolean            | Whether `create` comes before the keyword. |
+| `id`      | SequenceIdentifier | The id after `destroy`.                    |
 
 Child fields: `id`. The range starts at `create` when it is there. With
 `created`, mermaid.js creates the participant instead of destroying it (see
@@ -99,15 +99,21 @@ colour.
 | `colorCandidate` | SequenceLiteral or null | The `color-candidate` unit, the part that mermaid.js asks about; null when there is none. |
 | `remainder`      | SequenceLiteral or null | The `text` unit after the candidate; null when there is none.                             |
 
-Child fields: `colorCandidate`, `remainder`. Each part is a unit and a token of
-its own (see [The line context](../diagrams/sequence.md#the-line-context)), so
-the range of each SequenceLiteral is the range of its token. In
-`box Purple Alice & John`, the candidate is `Purple` and the remainder
-`Alice & John`; in `box rgb(34, 56, 0) Group1`, the candidate is
-`rgb(34, 56, 0)` and the remainder `Group1`; in `box red-team`, the candidate is
-`red` and the remainder `-team`; in `box RGB(0, 0, 255) Team`, the candidate is
-`RGB`; and in `box -x`, there is no candidate, and the remainder is `-x`.
-[fixture: sequence/docs-syntax-sequence-diagram-93d3c0ff] [fixture:
+Child fields: `colorCandidate`, `remainder`. Each part is a unit of its own (see
+[The line context](../diagrams/sequence.md#the-line-context)), and the range of
+each SequenceLiteral is the range of its unit, without the whitespace at its
+ends. A part is one token, unless a directive cuts it into tokens of the same
+kind (see [Tokens](#tokens)): in `box Gr%%{init: {}}%%oup`, the candidate is
+`Group`, whose range covers the `RawText` tokens `Gr` and `oup` and the
+directive between them. [fixture:
+sequence/tokens-box-text-directive-in-candidate] [fixture:
+sequence/tokens-box-text-directive-in-remainder] In `box Purple Alice & John`,
+the candidate is `Purple` and the remainder `Alice & John`; in
+`box rgb(34, 56, 0) Group1`, the candidate is `rgb(34, 56, 0)` and the remainder
+`Group1`; in `box red-team`, the candidate is `red` and the remainder `-team`;
+in `box RGB(0, 0, 255) Team`, the candidate is `RGB`; and in `box -x`, there is
+no candidate, and the remainder is `-x`. [fixture:
+sequence/docs-syntax-sequence-diagram-93d3c0ff] [fixture:
 sequence/spec-sequence-diagram-97d37793] [fixture:
 sequence/db-box-colour-candidate-word-prefix] [fixture:
 sequence/db-box-colour-function-upper-case] [fixture:
@@ -117,12 +123,12 @@ sequence/db-box-no-colour-candidate]
 
 | Field                   | Type                 | Meaning                                                               |
 | ----------------------- | -------------------- | --------------------------------------------------------------------- |
-| `from`                  | Identifier           | The id before the arrow.                                              |
+| `from`                  | SequenceIdentifier   | The id before the arrow.                                              |
 | `fromCentralConnection` | boolean              | Whether `()` comes between the source and the arrow.                  |
 | `arrow`                 | SequenceArrow        | The arrow.                                                            |
 | `activation`            | string or null       | `+` or `-` after the arrow; null when there is none.                  |
 | `toCentralConnection`   | boolean              | Whether `()` comes between the arrow and the target.                  |
-| `to`                    | Identifier           | The id after the arrow.                                               |
+| `to`                    | SequenceIdentifier   | The id after the arrow.                                               |
 | `text`                  | SequenceText or null | The text after `:`; null when nothing but whitespace follows the `:`. |
 
 Child fields: `from`, `arrow`, `to`, `text`. `activation` is null when either
@@ -176,19 +182,19 @@ Child fields: `start`, `step`. A number may have a fraction, as `1.5`. When
 
 ### SequenceActivateStatement and SequenceDeactivateStatement
 
-| Field | Type       | Meaning                                                |
-| ----- | ---------- | ------------------------------------------------------ |
-| `id`  | Identifier | The id of the participant it activates or deactivates. |
+| Field | Type               | Meaning                                                |
+| ----- | ------------------ | ------------------------------------------------------ |
+| `id`  | SequenceIdentifier | The id of the participant it activates or deactivates. |
 
 Child fields: `id`.
 
 ### SequenceNoteStatement
 
-| Field       | Type                 | Meaning                                                               |
-| ----------- | -------------------- | --------------------------------------------------------------------- |
-| `placement` | string               | `left of`, `right of`, or `over`, in lower case with one space.       |
-| `ids`       | list of Identifier   | The id, or the two ids of `over` with a `,`.                          |
-| `text`      | SequenceText or null | The text after `:`; null when nothing but whitespace follows the `:`. |
+| Field       | Type                       | Meaning                                                               |
+| ----------- | -------------------------- | --------------------------------------------------------------------- |
+| `placement` | string                     | `left of`, `right of`, or `over`, in lower case with one space.       |
+| `ids`       | list of SequenceIdentifier | The id, or the two ids of `over` with a `,`.                          |
+| `text`      | SequenceText or null       | The text after `:`; null when nothing but whitespace follows the `:`. |
 
 Child fields: `ids`, `text`.
 
@@ -196,7 +202,7 @@ Child fields: `ids`, `text`.
 
 | Field  | Type                 | Meaning                                                               |
 | ------ | -------------------- | --------------------------------------------------------------------- |
-| `id`   | Identifier           | The id of the participant.                                            |
+| `id`   | SequenceIdentifier   | The id of the participant.                                            |
 | `text` | SequenceText or null | The text after `:`; null when nothing but whitespace follows the `:`. |
 
 Child fields: `id`, `text`. The text of `links` and `properties` is JSON, which
@@ -212,14 +218,61 @@ of `details` is the id of an element of the page.
 Child fields: `value`. The title of the Db keeps the whitespace written around
 the value, which the Db normalization reads from the source.
 
-### SequenceAccTitleStatement, SequenceAccDescrStatement, and SequenceAccDescrBlockStatement
+### SequenceAccTitleStatement
 
-As [FlowchartAccTitleStatement](./flowchart.md#flowchartacctitlestatement),
-[FlowchartAccDescrStatement](./flowchart.md#flowchartaccdescrstatement), and
-[FlowchartAccDescrBlockStatement](./flowchart.md#flowchartaccdescrblockstatement),
-with SequenceLiteral in place of FlowchartLiteral. An empty description block
-where a statement starts, also in the body of a box, is a
-SequenceAccDescrBlockStatement whose `value` is null and whose `closed` is true.
+An `accTitle:` statement with its text.
+
+| Field   | Type                    | Meaning                                                                         |
+| ------- | ----------------------- | ------------------------------------------------------------------------------- |
+| `value` | SequenceLiteral or null | The text after `accTitle:`, up to the end of the line; null when there is none. |
+
+Child fields: `value`. The whitespace after `:` is read with it, line breaks
+included, so the value is null only at the end of the text. `#` and `;` are
+characters of the text. [fixture: sequence/lex-acc-title-line-feed] [fixture:
+sequence/lex-acc-title-at-end] [fixture: sequence/lex-acc-title-hash]
+
+### SequenceAccDescrStatement
+
+An `accDescr:` statement with its text.
+
+| Field   | Type                    | Meaning                                                                         |
+| ------- | ----------------------- | ------------------------------------------------------------------------------- |
+| `value` | SequenceLiteral or null | The text after `accDescr:`, up to the end of the line; null when there is none. |
+
+Child fields: `value`. The whitespace after `:` is read with it, line breaks
+included, so the value is null only at the end of the text. [fixture:
+sequence/db-acc-descr-empty-replaces]
+
+### SequenceAccDescrBlockStatement
+
+An `accDescr {` statement with its text and its `}`, which it lacks when the
+text ends inside it. It is a node type of its own because it has a different
+effect on the Db than an `accDescr:` statement: a block that is not closed sets
+the empty description, whatever its text, and a closed block without text
+changes nothing (see
+[sequence.md](../diagrams/sequence.md#building-the-summary-from-the-tree)).
+
+| Field    | Type                    | Meaning                                                                                                                 |
+| -------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `value`  | SequenceLiteral or null | The text between `accDescr {` and `}`, or to the end of the text when the block is not closed; null when there is none. |
+| `closed` | boolean                 | Whether the block ends with `}`. It is false when the text ends inside the block.                                       |
+
+Child fields: `value`. The value of `accDescr { x` at the end of the text is
+`x`. [fixture: sequence/db-acc-descr-block-unclosed] `accDescr {` at the end of
+the text has the value null and is not closed. [fixture:
+sequence/lex-acc-descr-block-unclosed-empty] `accDescr {  }` is a closed block
+without text, whose value is null: the whitespace after `{` is read with the
+`{`. Such a block, an empty description block, is a statement where a statement
+starts, also in the body of a box, and after the last unit of a statement,
+before its `newline`, and right after the keyword `sequenceDiagram`, where a
+statement starts, it is the first statement of the diagram's `body` (see
+[sequence.md](../diagrams/sequence.md#empty-description-blocks-before-a-separator));
+elsewhere the input is rejected (see
+[sequence.md](../diagrams/sequence.md#known-divergences)). [fixture:
+sequence/db-acc-descr-spaces-block-keeps] [fixture:
+sequence/gram-acc-descr-block-empty-then-statement] [fixture:
+sequence/gram-box-empty-description-block-line] [fixture:
+sequence/header-empty-description-block]
 
 ### SequenceLoopStatement, SequenceOptStatement, and SequenceBreakStatement
 
@@ -275,6 +328,25 @@ A line that mermaid.js reads as one `invalid` unit and ignores, such as `)` or
 
 No child fields.
 
+### SequenceIdentifier
+
+The id of a participant: a name that may contain whitespace (see
+[Id runs](../diagrams/sequence.md#id-runs) and
+[The id context](../diagrams/sequence.md#the-id-context)).
+
+| Field  | Type   | Meaning                                                |
+| ------ | ------ | ------------------------------------------------------ |
+| `name` | string | The text of its range (see [ast.md](../ast.md#nodes)). |
+
+No child fields. An id is one unit. Its name has no whitespace at its ends, and
+whitespace inside it is part of it, also next to a directive that cuts the unit.
+Its tokens are `Identifier` tokens: one, or more when a directive inside the
+unit cuts it (see [Tokens](#tokens)). `participant A B` has the participant
+`A B`, and `participant A%%{init: {}}%% c%%B` the participant `A c%%B`, whose
+one unit is cut into the tokens `A` and `c%%B`. [fixture:
+sequence/lex-id-context-space] [fixture:
+sequence/lex-directive-in-id-before-space]
+
 ### SequenceText
 
 A text part (see [Text parts](../diagrams/sequence.md#text-parts)): a text with
@@ -320,7 +392,7 @@ it:
 | Kind         | Units                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `Keyword`    | the keywords: `sequenceDiagram`, `participant`, `actor`, `create`, `destroy`, `as`, `box`, `loop`, `rect`, `opt`, `alt`, `else`, `par`, `par_over`, `and`, `critical`, `option`, `break`, `end`, `note`, `left of`, `right of`, `over`, `links`, `link`, `properties`, `details`, `activate`, `deactivate`, `autonumber`, and `off`; the `title`, `title:`, `accTitle`, and `accDescr` units; a `wrap-prefix` unit |
-| `Identifier` | an `id` unit                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `Identifier` | an `id` unit, the unit of a [SequenceIdentifier](#sequenceidentifier)                                                                                                                                                                                                                                                                                                                                              |
 | `Numeric`    | a `number` unit                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `RawText`    | a `text`, `color-candidate`, `title-text`, `description-text`, `description-block-text`, or `data-text` unit; an `invalid` unit                                                                                                                                                                                                                                                                                    |
 | `Punctuator` | an `arrow` unit; `+`, `-`, `()`, `,`, `:`, `{`, `}`, and `@{`; a `newline` unit read from `;`                                                                                                                                                                                                                                                                                                                      |
@@ -328,8 +400,8 @@ it:
 A token holds its unit without the whitespace at its ends. A `newline` unit read
 from line feeds is whitespace and no token. Where a directive lies between two
 characters of a `RawText` or `Identifier` unit that are not whitespace, the unit
-is cut there: each piece, without the whitespace at its ends, is a token, and
-the directive between the pieces is a `Directive` token (see
+is cut there: each fragment, without the whitespace at its ends, is a token, and
+the directive between the fragments is a `Directive` token (see
 [ast.md](../ast.md#directive)). A directive inside a unit of another kind makes
 the input rejected (see
 [Directives inside units](../diagrams/sequence.md#directives-inside-units)).

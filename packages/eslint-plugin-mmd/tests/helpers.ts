@@ -25,7 +25,7 @@ export interface Observation {
   readonly visits: readonly Visit[]
 }
 
-/** The file name given to the Linter: the recommended configuration matches `.mmd`. */
+/** The file name given to the Linter: `LANGUAGE_CONFIG` matches `.mmd`. */
 const FILENAME = "input.mmd"
 
 /**
@@ -36,7 +36,19 @@ export function withoutByteOrderMark(text: string): string {
   return text.startsWith("\uFEFF") ? text.slice(1) : text
 }
 
-/** Lints `text` with the plugin's recommended configuration and the observing rule. */
+/**
+ * The recommended configuration without its rules: the Mermaid language for
+ * `.mmd` and `.mermaid` files, and no rule of the plugin. The tests of the
+ * language and of a rule start from it, so that the rules that the
+ * recommended configuration enables add no reports of their own.
+ */
+export const LANGUAGE_CONFIG: Linter.Config = {
+  ...plugin.configs.recommended,
+  name: "mmd/language",
+  rules: {},
+}
+
+/** Lints `text` with the Mermaid language and the observing rule. */
 export function observe(text: string): Observation {
   let sourceCode: MermaidSourceCode | null = null
   const visits: Visit[] = []
@@ -55,7 +67,7 @@ export function observe(text: string): Observation {
     },
   }
   const config: Linter.Config[] = [
-    plugin.configs.recommended,
+    LANGUAGE_CONFIG,
     {
       files: ["**/*.mmd"],
       plugins: { test: { rules: { observe: observer } } },
@@ -79,6 +91,12 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   flowchart: true,
   sequence: true,
   class: true,
+  state: true,
+}
+
+/** Whether `text` names a directory of fixtures of the conformance corpus. */
+export function isDiagramType(text: string): text is DiagramType {
+  return Object.hasOwn(CORPUS_DIAGRAMS, text)
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

@@ -17,6 +17,7 @@ import type {
 import type { ClassDiagram, ClassNode } from "../src/ast/class.ts"
 import type { FlowchartDiagram, FlowchartNode } from "../src/ast/flowchart.ts"
 import type { SequenceDiagram, SequenceNode } from "../src/ast/sequence.ts"
+import type { StateDiagram, StateNode } from "../src/ast/state.ts"
 import { ParseError } from "../src/errors.ts"
 
 // The checks on types run in the type checker (`tsc` covers tests/); the
@@ -33,9 +34,14 @@ describe("the types of ast.md", () => {
       | FlowchartNode["type"]
       | SequenceNode["type"]
       | ClassNode["type"]
+      | StateNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
-      ErrorDiagram | FlowchartDiagram | SequenceDiagram | ClassDiagram
+      | ErrorDiagram
+      | FlowchartDiagram
+      | SequenceDiagram
+      | ClassDiagram
+      | StateDiagram
     >()
   })
 
@@ -84,6 +90,7 @@ describe("the types of ast.md", () => {
       | "Identifier"
       | "Numeric"
       | "String"
+      | "StringFragment"
       | "RawText"
       | "Punctuator"
       | "Directive"
@@ -92,8 +99,9 @@ describe("the types of ast.md", () => {
 
   it("keeps the text of comments, directives, and the frontmatter in the source only", () => {
     expectTypeOf<keyof Comment>().toEqualTypeOf<
-      "type" | "value" | "range" | "loc"
+      "type" | "mark" | "value" | "range" | "loc"
     >()
+    expectTypeOf<Comment["mark"]>().toEqualTypeOf<"%%" | "#" | "%" | null>()
     expectTypeOf<keyof Directive>().toEqualTypeOf<
       "type" | "name" | "value" | "closed" | "range" | "loc"
     >()
@@ -110,7 +118,8 @@ describe("DiagramType", () => {
 
   it("includes the error pseudo-diagram and excludes `---`", () => {
     const accepted: DiagramType[] = ["error", "flowchart-v2", "swimlane"]
-    // @ts-expect-error `---` is detected but always rejected, so no Root has it.
+    // @ts-expect-error `---` is detected but always rejected, so no Root has
+    // it.
     const rejected: DiagramType = "---"
     // @ts-expect-error `flowchart` is a header keyword, not a diagram type id.
     const keyword: DiagramType = "flowchart"

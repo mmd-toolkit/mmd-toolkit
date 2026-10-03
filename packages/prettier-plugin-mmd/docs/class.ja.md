@@ -274,6 +274,32 @@ classDiagram
   A -- - B
 ```
 
+`call` の後に空白が続くとキーワードになり、
+字句解析は、単位が始まる位置でそれを読みます
+（diagrams/class.md の The statement context、規則 10）。
+そのため、単語 `call` で終わる名前に接した矢印、ラベルの `:`、`{` は、
+接したまま残します。
+前に空白を置くと、`A call()--> B` はクラス A のコールバックに、
+`call-->C` はコールバックの始まりになるからです。
+
+入力 ([arrow-spacing/touching-call-kept-input.mmd](../tests/fixtures/class/arrow-spacing/touching-call-kept-input.mmd)):
+
+```mmd
+classDiagram
+A call()--> B
+call-->C
+D call--|>E
+```
+
+出力 ([arrow-spacing/touching-call-kept-output.mmd](../tests/fixtures/class/arrow-spacing/touching-call-kept-output.mmd)):
+
+```mmd
+classDiagram
+  A call()--> B
+  call--> C
+  D call--|> E
+```
+
 ### ラベル
 
 関係やクラス名の後のラベルの `:` の両側には、
@@ -435,6 +461,9 @@ mermaid.js は、文の後のコメントの後の改行をコメントの一部
 空行にすると、mermaid.js が次の文をコメントのある文の一部として読むからです。
 その例は、空白が行末にあるので、ここには載せません
 （[フォルダー](../tests/fixtures/class/comments)の `comments/whitespace-line-kept` を参照）。
+ヘッダーと文を持つ行のコメントの後も同じです
+（`classDiagram accDescr {} %% c`。
+`comments/whitespace-line-after-header-comment-kept`）。
 
 ### ディレクティブ
 
@@ -534,7 +563,7 @@ class 図では、改行は文を終えます。
 ただし、`direction` の後では値が次の行にあってよく、
 `accTitle` と `accDescr` の `:` の後ではテキストが次の行にあってよいので、
 `direction`、改行、`LR` は `direction LR` と印字します。
-コメントかディレクティブを含む複数行の文は、sequence 図と同じく、
+コメントかディレクティブか `;` を含む複数行の文は、sequence 図と同じく、
 始まりから終わりまで書かれたまま残します
 （[複数行の文](./sequence.ja.md#複数行の文)を参照）。
 
@@ -620,6 +649,30 @@ classDiagram
   accDescr {} class A
 ```
 
+複数行に書かれたブロックは、その後に続く文を、ブロックが終わる行に残します。
+`accDescr`、改行、`{} class A` はクラス A を宣言しますが、
+`class A` を独立した行に置くと、ブロックが単独になり、入力が拒否されるからです。
+
+入力 ([empty-description-blocks/over-lines-kept-input.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-kept-input.mmd)):
+
+```mmd
+classDiagram
+accDescr
+{} class A
+accDescr {
+} class B
+```
+
+出力 ([empty-description-blocks/over-lines-kept-output.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-kept-output.mmd)):
+
+```mmd
+classDiagram
+  accDescr
+    {} class A
+  accDescr {
+  } class B
+```
+
 ### 閉じていないバッククォートの名前
 
 閉じていないバッククォートの名前はテキストの終わりまで続き、
@@ -641,6 +694,6 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
 - 文の後のコメントの `%%` の前に空白があるかどうかと、
   そうしたコメントの後の空白だけの行。後者は空白 1 つにする。
 - 方向の行の、`direction` の前と値の後のテキスト。
-- コメントかディレクティブを含む複数行の文。
+- コメントかディレクティブか `;` を含む複数行の文。
 - 閉じていないバッククォートの名前。テキストの終わりまで。
 - ヘッダーの綴り。`classDiagram` か `classDiagram-v2`。

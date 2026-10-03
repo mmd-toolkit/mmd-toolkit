@@ -35,15 +35,16 @@ read from the source text directly:
 
 The diagram bodies implemented so far are the `error` pseudo-diagram, the
 flowchart (`flowchart-v2`, `flowchart-elk`, and `swimlane`), the sequence
-diagram (`sequence`), and the class diagram (`classDiagram`). Every other
-detected type throws `UnsupportedDiagramError`.
+diagram (`sequence`), the class diagram (`classDiagram`), and the state diagram
+(`stateDiagram`). Every other detected type throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
 The parser of each diagram follows its document,
 [`diagrams/flowchart.md`](../../spec/docs/diagrams/flowchart.md),
-[`diagrams/sequence.md`](../../spec/docs/diagrams/sequence.md), or
-[`diagrams/class.md`](../../spec/docs/diagrams/class.md). It has three parts:
+[`diagrams/sequence.md`](../../spec/docs/diagrams/sequence.md),
+[`diagrams/class.md`](../../spec/docs/diagrams/class.md), or
+[`diagrams/state.md`](../../spec/docs/diagrams/state.md). It has three parts:
 
 - a lexer that divides the diagram text into units, under
   `src/diagrams/<diagram>/units.ts`;
@@ -58,26 +59,39 @@ unit and how it is read (`src/diagram-units.ts`), reading the units, the place
 of a node, the text of a range, the shared leaf nodes, and the tokens of an item
 of the grammar (`UnitGrammar` in `src/unit-grammar.ts`), and the empty forms of
 `tokenless-empty-forms` (`src/empty-forms.ts`). A rule that two diagram
-documents share is in one place too: the direction line of flowchart and class
-(`src/direction-line.ts`), and the Unicode letters of their letter rules
+documents share is in one place too: the direction line of flowchart, class, and
+state (`src/direction-line.ts`), whose words state compares case-insensitively,
+and the Unicode letters of the letter rules of flowchart and class
 (`src/unicode-letters.ts`). A diagram whose lexer reads diagram comments, as the
-sequence lexer reads `#` and `%` and the class lexer `%%`, hands them to the
-common part, which records them in `Root.comments`. The rejections that
-mermaid.js makes while it builds the Db are made by the parser after the
+sequence lexer reads `#` and `%`, the class lexer `%%`, and the state lexer `#`
+and `%%`, hands them to the common part, which records them in `Root.comments`,
+cut at the comment regions that lie inside them, as tokens are. The rejections
+that mermaid.js makes while it builds the Db are made by the parser after the
 grammar: `subgraph-members.ts` for the flowchart, and `db-rejections.ts` for the
-sequence diagram and the class diagram. The class lexer divides each member line
-into its parts with the steps of
+sequence diagram, the class diagram, and the state diagram. The class lexer
+divides each member line into its parts with the steps of
 [Member lines](../../spec/docs/diagrams/class.md#member-lines)
 (`src/diagrams/class/member-lines.ts`), both in a class body and in the label of
 a member statement, and rejects a method line that cannot be divided.
+
+The Db id of a flowchart subgraph is made in one place,
+`src/diagrams/flowchart/subgraph-ids.ts`, from the units: the range of its name
+text and the rule of
+[Subgraphs](../../spec/docs/diagrams/flowchart.md#building-the-summary-from-the-tree).
+The grammar reads it for the members of a subgraph, the public
+`flowchartSubgraphIds()` (`src/db-ids.ts`) gives it for a tree, lexing its text
+again, and the Db summary of the tests builds the Db from it.
 
 It reads the diagram text without its directives. A directive inside a unit
 whose kind is not `RawText` or `Identifier` makes the input rejected. The tokens
 are cut at the directives when they are recorded
 ([A directive is a token boundary](../../spec/docs/common.md#a-directive-is-a-token-boundary)),
-and each directive outside the tokens and the comments is recorded as a
-`Directive` token of its own. The frontmatter is recorded first, as its opening
-`---`, its body, and its closing `---`
+and at the comment regions that the units read through
+([`ast.md`, Comment](../../spec/docs/ast.md#comment)), whose directives before
+the comment's `%%` are then outside every token; the pieces of a `String` token
+are `StringFragment` tokens. Each directive outside the tokens and the comments
+is recorded as a `Directive` token of its own. The frontmatter is recorded
+first, as its opening `---`, its body, and its closing `---`
 ([`ast.md`, Frontmatter](../../spec/docs/ast.md#frontmatter)).
 
 ## Tools

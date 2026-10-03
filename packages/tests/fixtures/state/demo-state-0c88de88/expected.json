@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/state.html",
+    "line": 124
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "very very simple state",
+    "accDescr": "This is a state diagram showing one state",
+    "states": [
+      {
+        "id": "State1",
+        "shape": "rect",
+        "label": "State1",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

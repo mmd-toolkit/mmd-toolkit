@@ -1,0 +1,346 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "StateTerminal",
+            "range": [
+              29,
+              32
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 6
+              },
+              "end": {
+                "line": 3,
+                "column": 9
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            29,
+            32
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 6
+            },
+            "end": {
+              "line": 3,
+              "column": 9
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "State1",
+            "range": [
+              37,
+              43
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 14
+              },
+              "end": {
+                "line": 3,
+                "column": 20
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            37,
+            43
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 14
+            },
+            "end": {
+              "line": 3,
+              "column": 20
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          29,
+          43
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 6
+          },
+          "end": {
+            "line": 3,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "State1",
+            "range": [
+              50,
+              56
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 6
+              },
+              "end": {
+                "line": 4,
+                "column": 12
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            50,
+            56
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 6
+            },
+            "end": {
+              "line": 4,
+              "column": 12
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "StateTerminal",
+            "range": [
+              61,
+              64
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 17
+              },
+              "end": {
+                "line": 4,
+                "column": 20
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            61,
+            64
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 17
+            },
+            "end": {
+              "line": 4,
+              "column": 20
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          50,
+          64
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 6
+          },
+          "end": {
+            "line": 4,
+            "column": 20
+          }
+        }
+      }
+    ],
+    "range": [
+      7,
+      64
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 6
+      },
+      "end": {
+        "line": 4,
+        "column": 20
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        7,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        29,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        33,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "State1",
+      "range": [
+        37,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "State1",
+      "range": [
+        50,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        57,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 13
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        61,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 17
+        },
+        "end": {
+          "line": 4,
+          "column": 20
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    71
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 6
+    }
+  }
+}

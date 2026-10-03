@@ -9,7 +9,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "A",
           "range": [
             28,
@@ -48,7 +48,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "B",
           "range": [
             42,
@@ -86,7 +86,7 @@
         "type": "SequenceDestroyStatement",
         "created": true,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "C",
           "range": [
             59,
@@ -121,7 +121,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "A",
           "range": [
             61,
@@ -163,7 +163,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "C",
           "range": [
             65,
@@ -234,7 +234,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "A",
           "range": [
             70,
@@ -276,7 +276,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "B",
           "range": [
             74,

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md, Comment: the comment line cuts the text of the floating note into the `RawText` tokens `x` and `y`; the StateLiteral spans them, with the value `x`, a line feed, and `y`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "ast.md Identifier: the name of the callback is the text of its range, `f`, which is also its token; the space written before `(` belongs to no node."
+    "note": "ast/flowchart.md FlowchartLiteral: the name of the callback after `call` is the text of its range, `f`, which is also its RawText token; the space written before `(` belongs to no node."
   },
   "accepted": true,
   "diagramType": "flowchart-v2",

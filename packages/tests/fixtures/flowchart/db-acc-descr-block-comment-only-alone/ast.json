@@ -119,6 +119,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " c",
       "range": [
         26,

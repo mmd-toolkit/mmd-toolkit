@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Accessibility values: the whitespace after `accTitle:` may hold a line feed, and the line with only `%%` is no comment line, so the title is `%%`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "%%",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

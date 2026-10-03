@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context: a description may start with a second :, so A::c gives A the description :c."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": ":c",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

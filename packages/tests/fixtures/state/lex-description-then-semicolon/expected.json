@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context: a description ends before `;`, and a `;` that the line rule does not ignore is the state `;`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "x",
+        "description": [],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": ";",
+        "shape": "rect",
+        "label": ";",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

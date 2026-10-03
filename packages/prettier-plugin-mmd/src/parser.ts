@@ -149,15 +149,18 @@ function isParseError(error: unknown): error is ParseError {
  *
  * Prettier reads `loc` with 1-based lines and 1-based columns; the parser
  * uses 1-based lines and 0-based columns. The original error is kept as the
- * `cause`.
+ * `cause`. An error at a line feed ends at the start of the next line, where
+ * Prettier's code frame fails on a line that is empty or does not exist, so
+ * its `loc` has no end.
  */
 function toPrettierError(error: ParseError): SyntaxError {
   const converted = new SyntaxError(error.message, { cause: error })
+  const { start, end } = error.loc
+  const endsAtLineStart = end.column === 0 && end.line > start.line
   return Object.assign(converted, {
-    loc: {
-      start: toPrettierPosition(error.loc.start),
-      end: toPrettierPosition(error.loc.end),
-    },
+    loc: endsAtLineStart
+      ? { start: toPrettierPosition(start) }
+      : { start: toPrettierPosition(start), end: toPrettierPosition(end) },
   })
 }
 

@@ -87,6 +87,9 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/sequence/sequenceDb.js": ["SequenceDB"],
   "diagrams/class/parser/classDiagram.jison": ["parser"],
   "diagrams/class/classDb.js": ["ClassDB"],
+  "diagrams/state/parser/stateDiagram.jison": ["default", "parser"],
+  "diagrams/state/stateDb.js": ["StateDB"],
+  "diagrams/state/stateCommon.js": ["DEFAULT_DIAGRAM_DIRECTION"],
   "config.js": [
     "setConfig",
     "getConfig",
@@ -307,6 +310,12 @@ export async function recordSpecFile(
       parser: { parse: record, yy: anything },
     },
     "diagrams/class/classDb.js": { ClassDB: anything },
+    "diagrams/state/parser/stateDiagram.jison": {
+      default: { parser: { parse: record, yy: anything }, parse: record },
+      parser: { parse: record, yy: anything },
+    },
+    "diagrams/state/stateDb.js": { StateDB: anything },
+    "diagrams/state/stateCommon.js": { DEFAULT_DIAGRAM_DIRECTION: anything },
     "config.js": Object.fromEntries(
       (STUBBED_MODULES["config.js"] ?? []).map((name) => [name, anything]),
     ),

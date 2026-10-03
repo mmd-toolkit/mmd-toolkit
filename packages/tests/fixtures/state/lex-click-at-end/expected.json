@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context: the end of the text ends a click statement."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": [
+      {
+        "state": "A",
+        "url": "\"u\"",
+        "tooltip": ""
+      }
+    ]
+  }
+}

@@ -48,6 +48,19 @@ function inText(range: Range): Range {
 }
 
 describe("the class tree", () => {
+  it("makes the empty description blocks after the header and before the line break of a statement statements of their own", () => {
+    const text = "classDiagram accDescr {}\nA <|-- B accDescr {}\nclass C\n"
+    const root = parse(text)
+    checkTree(text, root)
+    const block = { type: "ClassAccDescrBlockStatement", value: null }
+    expect(bodyOf(root)).toMatchObject([
+      { ...block, range: [13, 24] },
+      { type: "ClassRelationStatement", range: [25, 33] },
+      { ...block, range: [34, 45] },
+      { type: "ClassDeclaration" },
+    ])
+  })
+
   it("makes one Identifier of the name parts of a class name, with a token for each run of them", () => {
     expect(tokensOf("class Foo Bar")).toEqual([
       ["Keyword", "class"],
@@ -250,7 +263,7 @@ describe("the class tree", () => {
       ["Keyword", "click"],
       ["Identifier", "A"],
       ["Keyword", "call"],
-      ["Identifier", "f"],
+      ["RawText", "f"],
       ["Punctuator", "("],
       ["RawText", "x"],
       ["Punctuator", ")"],

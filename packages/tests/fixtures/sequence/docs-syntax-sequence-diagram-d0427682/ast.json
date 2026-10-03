@@ -7,7 +7,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Alice",
           "range": [
             20,
@@ -49,7 +49,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "John",
           "range": [
             27,
@@ -159,7 +159,7 @@
           {
             "type": "SequenceMessageStatement",
             "from": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "John",
               "range": [
                 88,
@@ -201,7 +201,7 @@
             "activation": null,
             "toCentralConnection": false,
             "to": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "Alice",
               "range": [
                 95,

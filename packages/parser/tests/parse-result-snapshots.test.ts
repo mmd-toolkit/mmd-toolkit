@@ -32,6 +32,7 @@ const diagrams: readonly DiagramType[] = [
   "flowchart",
   "sequence",
   "class",
+  "state",
 ]
 
 /** What `parse()` gives for an input, as it is kept. */

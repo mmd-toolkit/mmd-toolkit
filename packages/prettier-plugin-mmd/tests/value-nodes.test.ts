@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest"
 import { valueNodeTypes } from "../src/printers/flowchart-layout.ts"
 import { classValueNodeTypes } from "../src/printers/class-layout.ts"
 import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
+import { stateValueNodeTypes } from "../src/printers/state-layout.ts"
 
 /** The leaf node types that every diagram type shares (ast.md, Shared leaf nodes). */
 const sharedLeafTypes = new Set([
@@ -59,6 +60,17 @@ const diagrams: readonly DiagramValues[] = [
       "ClassArrow",
     ]),
   },
+  {
+    prefix: "State",
+    values: stateValueNodeTypes,
+    notValues: new Set([
+      // `[*]`, a divider `--`, and `hide empty description`, each printed
+      // as its token.
+      "StateTerminal",
+      "StateDividerStatement",
+      "StateHideEmptyDescriptionStatement",
+    ]),
+  },
 ]
 
 it("the shared leaf node types are defined by the parser", () => {
@@ -70,8 +82,8 @@ describe.each(diagrams)(
   ({ prefix, values, notValues }) => {
     /**
      * The leaf node types of the diagram type: its own, whose names start
-     * with the name of the diagram type (AGENTS.md, `packages/spec`), and
-     * the shared ones.
+     * with the name of the diagram type (`.claude/skills/spec/SKILL.md`,
+     * Policies and criteria), and the shared ones.
      */
     const ownLeafTypes = leafTypes.filter(
       (type) => type.startsWith(prefix) || sharedLeafTypes.has(type),

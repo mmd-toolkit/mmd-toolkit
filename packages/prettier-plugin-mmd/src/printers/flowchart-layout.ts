@@ -19,12 +19,11 @@ import {
   findAccDescrBlockStretches,
   walk,
 } from "./layout.ts"
+import { flowchartDbTextsOf } from "./db-texts.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
   findStructuralTokenEndingBefore,
-  findTokensBetween,
-  isStructural,
   isWhitespace,
 } from "./source.ts"
 
@@ -124,11 +123,15 @@ function findOutdentedAtoms(
 /**
  * The stretches of a statement that are printed exactly as written:
  *
- * - a list of styles, from the end of the whitespace after the id or the
- *   names before it (see `findStylesStart`): the whitespace around its
- *   commas is part of the values that mermaid.js stores. When the list
- *   starts with a style that is all whitespace, which has no node, the whole
- *   statement is kept.
+ * - a list of styles, from where the Db text of its first style starts
+ *   (`flowchartDbTexts`): after the whitespace that follows the id or the
+ *   names before it, which is one space when printed
+ *   (docs/flowchart.md, Whitespace between tokens). Everything after it is
+ *   part of the first style, as mermaid.js reads it, directives and
+ *   whitespace included: in `style A %%{init: {}}%%  fill:red`, the two
+ *   spaces after the directive belong to the style. The whitespace around
+ *   its commas is part of the values that mermaid.js stores, also when a
+ *   style is all whitespace and has no node.
  * - the parentheses of a callback with the arguments between them.
  * - an `accDescr { ... }` block from the `{` to the end of its text and of
  *   the comments and directives after the text, when the text starts on a
@@ -158,10 +161,9 @@ function findKeptStretches(
     case "FlowchartClassDefStatement":
     case "FlowchartLinkStyleStatement":
     case "FlowchartDefaultLinkStyleStatement": {
-      const [first] = statement.styles
+      const first = flowchartDbTextsOf(source).styles.get(statement)?.at(0)
       if (first === undefined) return []
-      if (first === null) return [whole]
-      return [{ start: findStylesStart(source, statement, first), end }]
+      return [{ start: first.range[0], end }]
     }
     case "FlowchartClickCallbackStatement":
       if (spansLines(source, statement)) return [whole]
@@ -176,33 +178,6 @@ function findKeptStretches(
     default:
       return []
   }
-}
-
-/**
- * Where the text of the first style starts (diagrams/flowchart.md, Style
- * statements): after the whitespace that follows the last structural token
- * before the style, such as the id of `style A` or the last class name of
- * `classDef a,b`. That whitespace is one space when printed
- * (docs/flowchart.md, Whitespace between tokens).
- * Everything after it is part of the first style, as mermaid.js reads it,
- * directives and whitespace included, so it is kept as written: in
- * `style A %%{init: {}}%%  fill:red`, the two spaces after the directive
- * belong to the style.
- */
-function findStylesStart(
-  source: Source,
-  statement: FlowchartStatement,
-  first: Node,
-): number {
-  const head = expectToken(
-    findTokensBetween(source, statement.range[0], first.range[0])
-      .filter((token) => isStructural(source, token))
-      .at(-1),
-    "the id before a list of styles",
-  )
-  let start = head.range[1]
-  while (start < first.range[0] && isWhitespace(source.text[start])) start++
-  return start
 }
 
 /** Whether a statement's source contains a line terminator. */

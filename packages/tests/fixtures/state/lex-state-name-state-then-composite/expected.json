@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The state context, rule 7: a line feed after `state a` leaves the state context, and `B` is a definition statement."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "D",
+        "shape": "roundedWithTitle",
+        "label": "D",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "E",
+        "shape": "rect",
+        "label": "E",
+        "classes": [],
+        "styles": [],
+        "parentId": "D"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

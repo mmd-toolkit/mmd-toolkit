@@ -153,7 +153,14 @@ ESTree の木をたどる道具はこれを前提にします。
 
 **範囲のテキスト**は、範囲のソースのテキストから、
 その中にあって値として書かれたものではないもの、つまりディレクティブ、
-コメント領域、行単位の規則が無視する `;` を除いたものです。
+コメント領域、行単位の規則が無視する `;`、
+文の区切りの前にある、それぞれが独立の文である空の説明ブロックを除いたものです。
+葉のノードの範囲は、そのような文を持ちません。
+図の Db の正規化が文の区切りまで読む範囲は、持つことがあります。
+flowchart の `style` の文の最後のスタイルの範囲がそうで、
+`style A fill:red accDescr {}` のスタイルの Db のテキストは、
+mermaid.js と同じく `fill:red` と空白 1 つです。
+[fixture: flowchart/gram-empty-description-block-after-style]
 ほかには何も除かず、足さず、書き換えません。
 行終端、属性の引用符、エンティティは書き手が書いたとおりで、
 [変換した形](./common.ja.md#ソースの読み方) にはしません。
@@ -178,7 +185,7 @@ flowchart/gram-data-consecutive-blocks] 2 つのリテラルのノード、
 [StringLiteral](#stringliteral) と [NumericLiteral](#numericliteral) は、
 ESTree の `Literal` と同じく、欄 `raw` も持ちます。
 これは範囲のソースのテキストそのもので、何も除かないので、
-文字列の引用符やその中のコメント領域のように、
+文字列の引用符やその範囲の中のコメント領域のように、
 範囲のテキストが除くものも保ちます。
 
 値がリストである子の欄は、そのノードの型がそう述べるところでは、
@@ -205,25 +212,33 @@ ESTree の配列の穴と同じです。
 [common.ja.md](./common.ja.md) の変換は適用しません。
 行終端を `\n` として、属性の引用符を `'` として、
 エンティティをそのプレースホルダとして読むことも、
-トークンの中のコメント領域や行単位の規則が無視する `;` を飛ばすこともしません。
+トークンの中の、行単位の規則が無視する `;` を飛ばすこともしません。
+コメント領域はどのトークンの中にもなく、
+中にあることになるトークンを切ります（[Comment](#comment) を参照）。
 ノードの値はそれらを飛ばしますが、変換はしません（[ノード](#ノード) を参照）。
 
 トークンの種類は次のものだけです。
 各図の文書が、そのトークンがどの種類かを述べます。
 種類は、図が必要とするときにここに加えます。
 
-| 種類         | 使うもの                                                                                                                                                                                                                  | 意味                                                                                                                                                   |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Keyword`    | [flowchart](./ast/flowchart.ja.md#トークン)、[sequence](./ast/sequence.ja.md#トークン)、[class](./ast/class.ja.md#トークン)                                                                                               | その位置で決まった意味を持つ語。                                                                                                                       |
-| `Identifier` | [flowchart](./ast/flowchart.ja.md#トークン)、[sequence](./ast/sequence.ja.md#トークン)、[class](./ast/class.ja.md#トークン)                                                                                               | 書き手が選ぶ名前。                                                                                                                                     |
-| `Numeric`    | [flowchart](./ast/flowchart.ja.md#トークン)、[sequence](./ast/sequence.ja.md#トークン)                                                                                                                                    | 数。                                                                                                                                                   |
-| `String`     | [flowchart](./ast/flowchart.ja.md#トークン)、[class](./ast/class.ja.md#トークン)                                                                                                                                          | 引用符付きの文字列。引用符を含む。                                                                                                                     |
-| `RawText`    | すべての図（フロントマターの本文）、`error` 疑似図種（[ErrorDiagram](#errordiagram) を参照）、[flowchart](./ast/flowchart.ja.md#トークン)、[sequence](./ast/sequence.ja.md#トークン)、[class](./ast/class.ja.md#トークン) | パーサーが中の構造を読まずに 1 つの内容として扱う文字の並びで、引用符で囲まれていないもの（囲まれていれば `String`）。ラベルのテキストやスタイルなど。 |
-| `Punctuator` | すべての図（フロントマターの区切り）、[flowchart](./ast/flowchart.ja.md#トークン)、[sequence](./ast/sequence.ja.md#トークン)、[class](./ast/class.ja.md#トークン)                                                         | `[` や `-->` のような、区切り、区切り記号、演算子。                                                                                                    |
-| `Directive`  | すべての図                                                                                                                                                                                                                | ディレクティブ（[Directive](#directive) を参照）。                                                                                                     |
+| 種類             | 使うもの                                                                                                                                                                                                                                                       | 意味                                                                                                                                                   |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Keyword`        | [flowchart](./ast/flowchart.ja.md#トークン)、[sequence](./ast/sequence.ja.md#トークン)、[class](./ast/class.ja.md#トークン)、[state](./ast/state.ja.md#トークン)                                                                                               | その位置で決まった意味を持つ語。                                                                                                                       |
+| `Identifier`     | [flowchart](./ast/flowchart.ja.md#トークン)、[sequence](./ast/sequence.ja.md#トークン)、[class](./ast/class.ja.md#トークン)、[state](./ast/state.ja.md#トークン)                                                                                               | 書き手が選ぶ名前。                                                                                                                                     |
+| `Numeric`        | [flowchart](./ast/flowchart.ja.md#トークン)、[sequence](./ast/sequence.ja.md#トークン)、[state](./ast/state.ja.md#トークン)                                                                                                                                    | 数。                                                                                                                                                   |
+| `String`         | [flowchart](./ast/flowchart.ja.md#トークン)、[class](./ast/class.ja.md#トークン)、[state](./ast/state.ja.md#トークン)                                                                                                                                          | 引用符付きの文字列。引用符を含む。                                                                                                                     |
+| `StringFragment` | [flowchart](./ast/flowchart.ja.md#トークン)、[class](./ast/class.ja.md#トークン)、[state](./ast/state.ja.md#トークン)                                                                                                                                          | コメント領域が切った、引用符付きの文字列の断片。領域の前か後のテキストで、閉じの引用符か開きの引用符を持たない（[Comment](#comment) を参照）。         |
+| `RawText`        | すべての図（フロントマターの本文）、`error` 疑似図種（[ErrorDiagram](#errordiagram) を参照）、[flowchart](./ast/flowchart.ja.md#トークン)、[sequence](./ast/sequence.ja.md#トークン)、[class](./ast/class.ja.md#トークン)、[state](./ast/state.ja.md#トークン) | パーサーが中の構造を読まずに 1 つの内容として扱う文字の並びで、引用符で囲まれていないもの（囲まれていれば `String`）。ラベルのテキストやスタイルなど。 |
+| `Punctuator`     | すべての図（フロントマターの区切り）、[flowchart](./ast/flowchart.ja.md#トークン)、[sequence](./ast/sequence.ja.md#トークン)、[class](./ast/class.ja.md#トークン)、[state](./ast/state.ja.md#トークン)                                                         | `[` や `-->` のような、区切り、区切り記号、演算子。                                                                                                    |
+| `Directive`      | すべての図                                                                                                                                                                                                                                                     | ディレクティブ（[Directive](#directive) を参照）。                                                                                                     |
 
 どの文字がトークンになり、それがどの種類かは、各図の文書が定めます。
-ただし、`Directive` のトークンとフロントマターのトークンは、どの図でも同じです。
+ただし、`Directive` のトークン、`StringFragment` のトークン、
+フロントマターのトークンは、どの図でも同じです。
+閉じていない文字列の `String` のトークンは、閉じの引用符を持ちません
+（[StringLiteral](#stringliteral) を参照）。
+文字列が両方の引用符を持つかは、トークンの種類ではなく、
+その StringLiteral の `closed` の欄で分かります。
 
 空白と行終端は、どの図でも、単独ではトークンになりません。
 図の文法が行終端に意味を与える場所、たとえば文の終わりでは、
@@ -287,9 +302,24 @@ common/error-style-semicolon-inside]
 
 `type` は `Comment` です。
 
-| 欄      | 型     | 意味                                                                                                             |
-| ------- | ------ | ---------------------------------------------------------------------------------------------------------------- |
-| `value` | 文字列 | コメントの印より後のソースのテキスト。印は、コメント行なら `%%`（2 つ目の `%` より後）、図のコメントならその印。 |
+| 欄      | 型                                   | 意味                                                                                     |
+| ------- | ------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `mark`  | `%%`、`#`、`%` のどれか、または null | コメントの印。コメント行は `%%`、図のコメントはその印。コメント領域の後の断片では null。 |
+| `value` | 文字列                               | 印の後のソースのテキスト。印のない断片では、その範囲のテキスト。                         |
+
+`mark` は印の文字を持ちます。
+それは、いつも範囲の先頭のソースのテキストとは限りません。
+`%%%{init: {}}%%% c` では、印は最初と最後の `%` からなる `%%` で、
+その間にディレクティブがあります。
+印は次の 3 つです。
+コメント行と一部の図のコメントの `%%`、図のコメントの `#` と `%` です。
+コメントがほかの印を持つ図種は、それをこれに足します。
+図種の図のコメントがどの印を持つかは、その図の文書が定めます。
+[sequence](./diagrams/sequence.ja.md#単位と文脈) の `#`、`%%`、`%` がそうです。
+ツールは、コメントが印を持つかどうか、どの印を持つかを、この欄から読みます。
+[fixture: common/comment-percent-joined-by-directive] [fixture:
+sequence/lex-single-percent-comment] [fixture:
+state/lex-diagram-comment-across-comment-line]
 
 コメント行は `Comment` になり、**図のコメント**も `Comment` になります。
 図のコメントは、図自身の字句解析器がコメントとして読むテキストで、
@@ -299,7 +329,27 @@ common/error-style-semicolon-inside]
 範囲は印から始まり、行終端の手前で終わります。
 印は、コメント行の `%%` の最初の `%` か、図のコメントの印です。
 コメントは印から始まり、印より前の文字はコメントに含まれません。
+例外は、コメント領域の後の図のコメントの断片です（下を参照）。
 コメント領域が覆う空白だけの行と行終端は、空白と行終端です。
+コメントの中のディレクティブは、その後の行終端を取ることがあり、
+そのときコメントはその先まで続きます
+（[コメント行](./common.ja.md#コメント行) を参照）。
+ディレクティブがテキストの終わりまでをすべて取るところでは、
+コメントはディレクティブが終わるところで終わります。
+ディレクティブの走査が引数の後に取る空白は、ディレクティブの範囲の外にあり
+（[Directive](#directive) を参照）、コメントの範囲の外にもあるので、
+行終端で終わるコメントはありません。
+テキストの終わりで、空白と空行が続く `%% %%{init: {}` では、
+ディレクティブが `%%{init: {}` であるのと同じく、
+コメントは `%% %%{init: {}` です。
+終わりに改行があるときも、`%% %%{wrap`、行 `A`、空白の行のときも同じです。
+閉じたディレクティブの後では、走査は空白を取らないので、
+空白 2 つと改行が続く `%% %%{init: {}}%%` は、空白 2 つを持つコメントです。
+どのコメントも、行終端の前の空白を持つのと同じです。
+[fixture: common/comment-directive-unclosed-trailing-blank-lines] [fixture:
+common/comment-directive-unclosed-line-feed-at-end] [fixture:
+common/comment-directive-word-argument-trailing-blank-line] [fixture:
+common/comment-directive-closed-then-spaces]
 図のコメントは、トークンと同じく、
 行の規則が無視する `;` がないものとして見つけます（[トークン](#トークン) を参照）。
 そのような `;` は、その両側にコメントの文字があればコメントの中にあり、
@@ -320,13 +370,103 @@ Db が
 コメント行でない `%%` は [図のテキスト](./common.ja.md#ソースの読み方) で、
 トークンの一部です。
 
-コメントは、ふつうはどのトークンの外にもあります。
+コメント領域は、行の終わりまで続く図のコメントの中にあることもあります。
+その行の U+2028 か U+2029 の後のコメント行は、
+mermaid.js が読むときにはないので、
+行はコメント行の後に続きます。
+領域は、下のトークンと同じく、図のコメントを切ります。
+それぞれの断片、つまり領域の前か後のテキストから両端の空白と行終端を除いたものが
+`Comment` で、空か空白だけの断片は `Comment` になりません。
+領域の後の断片は印を持たず、その `mark` は null です。
+その範囲は最初の文字から始まり、値はその範囲のテキストです。
+state の `A %% x`、U+2029、行 `%% end`、行 `B` は、
+`%% x`、`%% end`、`B` のコメントをこの順に持ち、状態は A だけです。
+`B` の前に空行があると、
+図のコメントは `%% end` の後の改行で終わり、B は状態です。
+コメント行がなければ、`A %% x`、U+2029、`B` は 1 つのコメントです。
+U+2029 は図のコメントを終えないからです。
+[fixture: state/lex-diagram-comment-across-comment-line] [fixture:
+state/lex-hash-comment-across-comment-line] [fixture:
+state/lex-diagram-comment-across-comment-line-after-line-separator] [fixture:
+state/lex-diagram-comment-across-two-comment-lines] [fixture:
+state/lex-diagram-comment-across-blank-and-comment-line] [fixture:
+state/lex-diagram-comment-across-init-comment-line] [fixture:
+sequence/lex-hash-comment-across-comment-line] [fixture:
+state/lex-diagram-comment-empty-line-after-comment-line] [fixture:
+state/lex-diagram-comment-paragraph-separator-without-comment-line]
+行の規則が無視する `;` が図のコメントの中にあるか（上を参照）は、
+領域が切る前のコメント全体で、1 回だけ決めます。
+`;` の両側に、空白を含めてコメントの文字があれば、中にあります。
+その行の領域の後の文字と、領域の前の U+2028 か U+2029 も、その文字に入ります。
+その後で、領域がコメントを切ります。
+そのため state の `A %% style:#x;`、U+2029、行 `%% end` は、
+`;` を含むコメント `%% style:#x;` を持ちます。
+空白 2 つが続く `A %% style:#x;` と同じです。
+`;` の前に空白があれば、コメントは `%% style:#x ;` です。
+[fixture: state/tokens-ignored-semicolon-in-comment-before-comment-line]
+[fixture:
+state/tokens-ignored-semicolon-after-space-in-comment-before-comment-line]
+[fixture: state/tokens-ignored-semicolon-in-comment-across-comment-line]
+[fixture: state/tokens-ignored-semicolon-in-comment-before-spaces]
+
+コメントは、どのトークンの外にもあります。
 複数行の引用符付きラベルの中の `%%` のコメント行のように、
-コメント領域が 1 つのトークンの中にあるときは、
-字句解析器が領域を読み進めるので、トークンはその後も続きます。
-コメントの範囲はトークンの範囲の中にあり、
-トークンの `value` はそれを書かれたとおり含みます。
-[fixture: common/comment-in-string]
+コメント領域が 1 つの単位の読む中にあることがあります。
+字句解析器は領域を読み進めるので、単位はその後も続きますが
+（[コメント行](./common.ja.md#コメント行) を参照）、
+そのトークンは領域で切られます。
+各**断片**は、領域の前か後のトークンのテキストから、
+端の空白と行終端を除いたものです。
+領域が覆う空白だけの行と行終端は、
+ほかのところと同じく、どのトークンの外にもあります。
+空か、空白だけの断片は、トークンになりません。
+1 つのトークンの中に領域がいくつもあれば、それぞれで切ります。
+コメント領域を持ちうるのは、
+単位が行をまたぎうる `String` と `RawText` のトークンだけです。
+`String` のトークンの断片は `StringFragment` のトークンです。
+`RawText` のトークンの断片は、
+ディレクティブが切るトークンの断片が元の種類を持つのと同じく、
+`RawText` のトークンです（[Directive](#directive) を参照）。
+ラベル、StringLiteral、リテラルなど、単位のノードは断片と領域にまたがり、
+その値は、これまでどおり領域の前と後のテキストをつないだものです。
+`A["one`、行 `%% two`、行 `three"]` では、ラベルは `StringFragment` のトークン
+`"one` と `three"` を持ち、その間にコメントがあり、
+値は `one`、改行、`three` です。
+`A["`、行 `%% c`、行 `b"]` では、断片は `"` と `b"` です。
+`A[`、行 `%% c`、行 `b]` では、領域の前のテキストは空白だけなので、
+ラベルは `RawText` のトークン `b` だけを持ちます。
+[fixture: common/comment-in-string] [fixture:
+common/comment-blank-line-before-in-string] [fixture:
+flowchart/tokens-comment-region-after-opening-quote] [fixture:
+flowchart/tokens-comment-region-at-label-start]
+`%%` だけの行はコメント行ではない
+（[コメント行](./common.ja.md#コメント行)を参照）ので、断片の中に残ります。
+`A[a`、行 `%% c`、行 `%%`、行 `b]` では、
+断片は `a` と、`%%`、改行、`b` のテキストです。
+`%%` の行がコメント行の前にあるときは、断片は `a`、改行、`%%` と、`b` です。
+文字列の `A["a`、行 `%% c`、行 `%%`、行 `b"]` では、
+断片は `StringFragment` のトークン `"a` と、`%%`、改行、`b"` です。
+[fixture: flowchart/tokens-comment-region-then-bare-marker-line] [fixture:
+flowchart/tokens-comment-region-after-bare-marker-line] [fixture:
+flowchart/tokens-comment-region-then-bare-marker-line-in-string]
+そのような領域は、引用符付きの文字列、ラベルと辺のテキスト、説明のブロック、
+データブロック、`call` の後のコールバックの名前、バッククォートの名前、
+何行かにわたるノートの中にあります。
+[fixture: flowchart/tokens-string-literal-comment-line] [fixture:
+flowchart/tokens-comment-region-in-subgraph-title-string] [fixture:
+flowchart/tokens-comment-region-in-edge-text] [fixture:
+flowchart/tokens-comment-region-in-dashed-edge-text] [fixture:
+flowchart/tokens-comment-region-in-acc-descr-block] [fixture:
+flowchart/tokens-comment-region-in-data-block] [fixture:
+flowchart/tokens-comment-region-in-callback-name] [fixture:
+sequence/tokens-comment-region-in-acc-descr-block] [fixture:
+class/tokens-comment-region-in-acc-descr-block] [fixture:
+class/tokens-comment-region-in-click-string] [fixture:
+class/tokens-comment-region-in-backquoted-name] [fixture:
+class/tokens-comment-region-in-callback-name] [fixture:
+state/tokens-comment-region-in-alias-string] [fixture:
+state/tokens-comment-region-in-note-block] [fixture:
+state/tokens-comment-region-in-acc-descr-block]
 
 ### Directive
 
@@ -355,11 +495,12 @@ Db が
 ディレクティブはトークンの境界なので
 （[common.ja.md](./common.ja.md#ディレクティブはトークンの境界) を参照）、
 ほかのトークンの中にはありません。
-ただし、トークンの中にあるコメント領域の一部である場合は別です。
-字句解析器はそのような領域を、ディレクティブごと読み進めます。
-そのようなディレクティブと、コメントの中のディレクティブは、
-`Directive` のトークンを持ちません。
-その文字は、そのトークンかそのコメントに含まれます。
+コメントの中のディレクティブは、`Directive` のトークンを持たず、
+その文字はそのコメントに含まれます。
+コメント領域の中で、コメントの `%%` より前にあるディレクティブは、
+領域が 1 つの単位の読む中にあるときも、
+領域がその単位のトークンを切るので（[Comment](#comment) を参照）、
+どのトークンとコメントの外にもあり、`Directive` のトークンです。
 [fixture: common/comment-region-directive-in-string] [fixture:
 common/comment-directive-in-string]コメント行の `%%`
 より後にあるディレクティブは、コメントの範囲の中にあり、
@@ -380,6 +521,13 @@ mermaid.js はそれも設定のために読みます
 （[sequence](./diagrams/sequence.ja.md#単位と文脈) を参照）。
 [fixture: sequence/lex-diagram-comment-directive-between-marks] [fixture:
 sequence/lex-diagram-comment-directive-after-single-mark]
+どの図のコメントでも、印の後のディレクティブはコメントの範囲の中にあり、
+`Directive` のトークンを持ちません。
+sequence の `A->>B: x #c %%{init: {}}%%` の終わりでは、
+コメントは `#` から閉じの `%%` まで続き、
+state の `A --> B %% c %%{init: {}}%%` でも `%%` から同じです。
+[fixture: sequence/tokens-diagram-comment-directive-at-end] [fixture:
+state/tokens-diagram-comment-directive-at-end]
 
 `Root.directives` は設定には関わりません。
 この仕様はディレクティブの引数を解析せず、
@@ -444,10 +592,8 @@ common/frontmatter-line-separator-inside-body]
   トークンでは、そのテキストが `value` である。
 - `Root.tokens` はソースの順に並び、そのトークンは互いに重ならない。
 - どのトークンも、空白や行終端で始まらず、終わらない。
-- コメントは、どのトークンの外にもあるか、
-  1 つのトークンの範囲の中に完全に含まれる。
-- ディレクティブは、トークンの中にあるコメント領域の一部である場合を除き、
-  ほかのどのトークンの中にもない。
+- コメントは、どのトークンの外にもある。
+- ディレクティブは、ほかのどのトークンの中にもない。
   コメントの中、つまりその印の後か、
   `%%` の印の 2 つの `%` の間にはありうる。
   どのトークンとコメントの外にもある各ディレクティブには、
@@ -608,7 +754,7 @@ U+2029 の直後から始まり、それらはどれも並びを切るからで�
 `accTitle: x` の `x` は 1 語に見えますが、
 その位置は空白を含むテキストを許すので、リテラルです。
 
-- 文法が名前として読む位置と、
+- 文法が空白を含まない名前として読む位置と、
   プロパティの値のように文法が引用符のない 1 語だけを許す位置:
   [Identifier](#identifier)
 - 文法が引用符で囲んだ文字列を求める位置: [StringLiteral](#stringliteral)
@@ -617,6 +763,9 @@ U+2029 の直後から始まり、それらはどれも並びを切るからで�
   その終わりを文法が決める位置:
   [FlowchartLiteral](./ast/flowchart.ja.md#flowchartliteral) のような、
   図種のリテラル
+- 文法が、空白を含みうる名前として読む位置:
+  [SequenceIdentifier](./ast/sequence.ja.md#sequenceidentifier) のような、
+  図種の名前のノード
 - 文法が、テキスト、引用符の文字列、markdown の文字列、またはその並びを許し、
   どれで書いたかが種類として意味を持つ位置:
   [FlowchartLabel](./ast/flowchart.ja.md#flowchartlabel) のような、
@@ -624,9 +773,9 @@ U+2029 の直後から始まり、それらはどれも並びを切るからで�
 
 最初の 3 つはどの図種でも同じ形なので、ここで定め、
 名前に図種の接頭辞を付けません。
-引用符のないテキストやラベルをどう読むか、
+引用符のないテキスト、空白を含む名前、ラベルをどう読むか、
 たとえば両端の空白を保つかどうかは図種ごとに違うので、
-各図の文書が自分のリテラルとラベルを定めます。
+各図の文書が自分のリテラル、名前のノード、ラベルを定めます。
 ここで定める 3 つのノードは、どれも子の欄を持ちません。
 方向、形の名前、矢印の端の記号のような決まった集合の語は、
 図のノードの欄の文字列のままです。
@@ -663,11 +812,14 @@ ESTree のノードの `kind` と同じです。
 
 ### Identifier
 
-名前や、プロパティの値のように、
+空白を含まない名前や、プロパティの値のように、
 文法がそれしか許さない位置の引用符のない 1 語です。
 名前は、id やクラス名のように、その位置で文法が名前として読む語です。
-使える文字はその位置の文法が決めるので、コールバック名は空白を、
-click の id や辺の id はほかの記号を含むことがあります。
+使える文字はその位置の文法が決めるので、
+click の id や辺の id は記号を含むことがあります。
+空白を含みうる名前は、代わりに、
+[SequenceIdentifier](./ast/sequence.ja.md#sequenceidentifier) のような、
+図種の名前のノードです。
 ESTree と同じく、識別子かどうかは構文上の形で決まり、
 何かを参照する必要はありません。
 オブジェクトのキーや `obj.prop` の `prop` も参照ではありません。
@@ -678,10 +830,9 @@ ESTree と同じく、識別子かどうかは構文上の形で決まり、
 
 その `name` は、それをなす、図の字句解析器の単位から作ります
 （単位は図ごとの文書が定めます）。
-各単位の範囲のテキスト（[ノード](#ノード) を参照）から両端の空白を除き、
-順につないだものです。
-1 つの単位の中の空白は、単位を切るディレクティブの隣にあっても名前の一部で、
-2 つの単位の間の空白は名前の一部ではありません。
+各単位の範囲のテキスト（[ノード](#ノード) を参照）を、順につないだものです。
+これらの単位はどれも空白を含まないので、名前も空白を含みません。
+2 つの単位の間の空白は、名前の一部ではありません。
 そのトークンは `Identifier` のトークンで、単位ごとに 1 つです。
 単位の中のディレクティブが単位を切ると、それより多くなり
 （[common.ja.md](./common.ja.md#ディレクティブはトークンの境界) を参照）、
@@ -695,12 +846,6 @@ ESTree と同じく、識別子かどうかは構文上の形で決まり、
   `class Foo%%{init: {}}%% Bar` も同じです。
   [fixture: class/gram-name-spaces] [fixture:
   class/lex-directive-between-name-parts]
-- sequence では、id は 1 つの単位で、空白を含むことがあります。
-  `participant A B` の参加者は `A B` です。
-  `participant A%%{init: {}}%% c%%B` の参加者は `A c%%B` で、
-  その 1 つの単位はトークン `A` と `c%%B` に切られています。
-  [fixture: sequence/lex-id-context-space] [fixture:
-  sequence/lex-directive-in-id-before-space]
 
 範囲はそのすべてのトークンを覆います。
 
@@ -712,15 +857,18 @@ ESTree と同じく、識別子かどうかは構文上の形で決まり、
 | 欄       | 型     | 意味                                                                                                                                                                                                                                                               |
 | -------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `value`  | 文字列 | その中身。図の文字列の規則が区切りの間で読むものを、範囲のテキストとしたもの。引用符が 1 組なら範囲のテキストから引用符を除いたもので、図が区切りを入れ子にするところでは、区切りをすべて除く（flowchart は [文字列](./diagrams/flowchart.ja.md#文字列) を参照）。 |
-| `raw`    | 文字列 | その範囲のソースのテキスト。何も除かず、何も変換しない。引用符も、中のコメント領域も含む。                                                                                                                                                                         |
+| `raw`    | 文字列 | その範囲のソースのテキスト。何も除かず、何も変換しない。引用符も、範囲の中のコメント領域も含む。                                                                                                                                                                   |
 | `closed` | 真偽値 | 文字列が閉じの引用符で終わるか。                                                                                                                                                                                                                                   |
 
 そのトークンは、引用符を含む 1 つの `String` のトークンで、
 範囲はそのトークンの範囲なので、
 `raw` はそのトークンの `value` に等しくなります。
+コメント領域がそれを切るときは、そのトークンは `StringFragment` のトークンで、
+範囲はその最初から最後までで、領域を含みます（[Comment](#comment) を参照）。
 `click A href "u"` の URL の値は `u` で、`raw` は `"u"` です。
 `click A "u" "one`、改行、`%% c`、改行、`two"` では、ツールチップの値は `one`、
-改行、`two` で、その `raw` はコメント行を含む文字列の全体です。
+改行、`two` で、そのトークンは `StringFragment` のトークン `"one` と `two"` で、
+その `raw` はコメント行を含む文字列の全体です。
 [fixture: flowchart/gram-click-href] [fixture:
 flowchart/tokens-string-literal-comment-line]
 
@@ -779,6 +927,7 @@ sequence/db-autonumber-leading-zero]
   `swimlane`。
 - [Sequence](./ast/sequence.ja.md): 図種 `sequence`。
 - [Class](./ast/class.ja.md): 図種 `classDiagram`。
+- [State](./ast/state.ja.md): 図種 `stateDiagram`。
 
 図種のノードの型の名前は、`FlowchartVertex` のように、
 どれもその図種の名前で始めます。

@@ -1,0 +1,150 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateClassDefStatement",
+        "cssClass": {
+          "type": "Identifier",
+          "name": "a",
+          "range": [
+            27,
+            28
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 11
+            },
+            "end": {
+              "line": 2,
+              "column": 12
+            }
+          }
+        },
+        "styles": [],
+        "range": [
+          18,
+          30
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 14
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      30
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 14
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        18,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "a",
+      "range": [
+        27,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        29,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    31
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

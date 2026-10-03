@@ -1,0 +1,206 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateAccDescrBlockStatement",
+        "value": null,
+        "closed": true,
+        "range": [
+          18,
+          29
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 13
+          }
+        }
+      },
+      {
+        "type": "StateAccDescrBlockStatement",
+        "value": null,
+        "closed": true,
+        "range": [
+          29,
+          40
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 13
+          },
+          "end": {
+            "line": 2,
+            "column": 24
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      40
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 24
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        18,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        27,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        28,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        29,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        38,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 22
+        },
+        "end": {
+          "line": 2,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        39,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 23
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    41
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

@@ -10,6 +10,7 @@ import type {
   SequenceBoxText,
   SequenceDataBlock,
   SequenceDestroyStatement,
+  SequenceIdentifier,
   SequenceIgnoredStatement,
   SequenceLiteral,
   SequenceMessageStatement,
@@ -25,7 +26,7 @@ import type { UnitWithKind } from "../../diagram-parsing.ts"
 import { significantRangeOf } from "../../diagram-units.ts"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
-import type { NodePlace } from "../../unit-grammar.ts"
+import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"
 import type { SequenceLexing, Unit, UnitName } from "./units.ts"
 
@@ -83,7 +84,7 @@ const PARTICIPANT_KEYWORDS: readonly UnitName[] = [
  */
 export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
   public constructor(lexing: SequenceLexing, lexer: SourceLexer) {
-    super(lexing.units, lexer)
+    super(lexing.units, lexer, EMPTY_FORM_KINDS.sequence)
   }
 
   /**
@@ -122,7 +123,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
       } else if (unit.name === "invalid") {
         statements.push(this.parseIgnoredStatement())
       } else {
-        statements.push(this.parseStatement(unit))
+        statements.push(...this.parseStatement(unit))
       }
     }
   }
@@ -152,47 +153,65 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * Diagram and statements: `statement`. The message, autonumber,
+   * Diagram and statements: `statement`, with the empty description
+   * blocks after it. The participant, destroy, message, autonumber,
    * activation, note, and participant text statements end with a
-   * `newline`; the others need no separator.
+   * `statement-end`; the others need no separator.
    */
-  private parseStatement(first: Unit): SequenceStatement {
+  private parseStatement(first: Unit): SequenceStatement[] {
     switch (first.name) {
       case "participant":
       case "actor":
       case "destroy":
-        return this.parseParticipantStatement(this.next, false)
+        return this.withStatementEnd(
+          this.parseParticipantStatement(this.next, false),
+        )
       case "create": {
         const start = this.next
         this.addItem("Keyword", [this.take("create")])
-        return this.parseParticipantStatement(start, true)
+        return this.withStatementEnd(
+          this.parseParticipantStatement(start, true),
+        )
       }
       case "box":
-        return this.parseBoxStatement()
+        return [this.parseBoxStatement()]
       case "title":
       case "title:":
-        return this.parseTitleStatement()
+        return [this.parseTitleStatement()]
       case "accTitle":
-        return this.parseAccTitleStatement()
+        return [this.parseAccTitleStatement()]
       case "accDescr":
-        return this.parseAccDescrStatement()
+        return [this.parseAccDescrStatement()]
       case "loop":
       case "opt":
       case "break":
-        return this.parseSimpleBlock(first.name)
+        return [this.parseSimpleBlock(first.name)]
       case "rect":
-        return this.parseRectBlock()
+        return [this.parseRectBlock()]
       case "alt":
       case "par":
       case "par_over":
       case "critical":
-        return this.parseSectionBlock(first.name)
+        return [this.parseSectionBlock(first.name)]
       default:
-        break
+        return this.withStatementEnd(this.parseStatementWithNewline(first))
     }
-    const statement = this.parseStatementWithNewline(first)
+  }
+
+  /**
+   * Empty description blocks before a separator: the statement
+   * `statement`, read up to its last unit, and the empty description blocks
+   * of the `statement-end = empty-description-block* newline` after it,
+   * each a statement of its own; the `newline` is taken.
+   */
+  private withStatementEnd(statement: SequenceStatement): SequenceStatement[] {
+    const end = this.statementEndAt(["newline"], false)
+    const statements = [statement]
+    while (this.next < end) {
+      statements.push(this.parseEmptyDescriptionBlock())
+    }
     this.takeNewline()
-    return statement
+    return statements
   }
 
   /** Diagram and statements: the statements that a `newline` follows. */
@@ -220,8 +239,9 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
   /**
    * Participants and boxes: `participant-statement = ( "participant" |
    * "actor" ) id data-block? ( "as" text-part )? newline | "destroy" id
-   * newline`, with `create` before it when `created`; the node starts at
-   * the unit at `start`.
+   * newline`, with `create` before it when `created`, up to its last unit:
+   * the caller reads the `statement-end` that ends it in place of the
+   * `newline`. The node starts at the unit at `start`.
    */
   private parseParticipantStatement(
     start: number,
@@ -233,14 +253,13 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     }
     this.next += 1
     this.addItem("Keyword", [keyword])
-    const id = this.identifierOf([this.take("id")])
+    const id = this.sequenceIdentifierOf(this.take("id"))
     if (keyword.name === "destroy") {
-      this.takeNewline()
       return {
         type: "SequenceDestroyStatement",
         created,
         id,
-        ...this.placeFromWithoutNewline(start),
+        ...this.placeFrom(start),
       }
     }
     const data = this.nameAt(this.next) === "@{" ? this.parseDataBlock() : null
@@ -250,7 +269,6 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
       this.addItem("Keyword", [as])
       alias = this.parseTextPart()
     }
-    this.takeNewline()
     return {
       type: "SequenceParticipantStatement",
       kind: keyword.name === "actor" ? "actor" : "participant",
@@ -258,28 +276,19 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
       id,
       data,
       alias,
-      ...this.placeFromWithoutNewline(start),
+      ...this.placeFrom(start),
     }
   }
 
   /**
-   * The place of a statement whose units are those from index `start` up to
-   * the `newline` unit that ends it, which belongs to no statement.
-   */
-  private placeFromWithoutNewline(start: number): NodePlace {
-    return this.placeOf(this.units.slice(start, this.next - 1))
-  }
-
-  /**
-   * Participants and boxes: `data-block = "@{" data-text? "}"`. Its value
+   * Participants and boxes: `data-block = "@{" data-text "}"`. Its value
    * is the text between `@{` and `}`, as written.
    */
   private parseDataBlock(): SequenceDataBlock {
     const start = this.next
     const opening = this.take("@{")
     this.addItem("Punctuator", [opening])
-    const text = this.takeIf("data-text")
-    if (text !== null) this.addItem("RawText", [text])
+    this.addItem("RawText", [this.take("data-text")])
     const closing = this.take("}")
     this.addItem("Punctuator", [closing])
     const place = this.placeFrom(start)
@@ -308,9 +317,13 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
       if (unit?.name === "newline") {
         this.takeNewline()
       } else if (unit !== null && PARTICIPANT_KEYWORDS.includes(unit.name)) {
-        body.push(this.parseParticipantStatement(this.next, false))
+        body.push(
+          ...this.withStatementEnd(
+            this.parseParticipantStatement(this.next, false),
+          ),
+        )
       } else if (unit?.name === "accDescr") {
-        body.push(this.parseBoxDescriptionBlock())
+        body.push(this.parseEmptyDescriptionBlock())
       } else {
         throw this.unexpected(unit)
       }
@@ -330,12 +343,13 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
    * one `RawText` item.
    */
   /**
-   * Participants and boxes: `"accDescr" "{" "}"` of a `box-statement`, an
-   * empty description block, a description block statement without text.
-   * A description block with text and a description statement are no
-   * statements of a box.
+   * `"accDescr" "{" "}"`, an empty description block, a description block
+   * statement without text: of a `box-statement` (Participants and boxes),
+   * where a description block with text and a description statement are no
+   * statements, and of a `statement-end` (Empty description blocks before a
+   * separator).
    */
-  private parseBoxDescriptionBlock(): SequenceAccDescrBlockStatement {
+  private parseEmptyDescriptionBlock(): SequenceAccDescrBlockStatement {
     const start = this.next
     this.addItem("Keyword", [this.take("accDescr")])
     this.addItem("Punctuator", [this.take("{")])
@@ -370,7 +384,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
    */
   private parseMessageStatement(): SequenceMessageStatement {
     const start = this.next
-    const from = this.identifierOf([this.take("id")])
+    const from = this.sequenceIdentifierOf(this.take("id"))
     const fromCentralConnection = this.takePunctuator("()")
     const arrow = this.arrowOf(this.take("arrow"))
     let activation: SequenceActivation | null = null
@@ -384,7 +398,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     } else {
       toCentralConnection = this.takePunctuator("()")
     }
-    const to = this.identifierOf([this.take("id")])
+    const to = this.sequenceIdentifierOf(this.take("id"))
     this.addItem("Punctuator", [this.take(":")])
     const text = this.parseTextPart()
     return {
@@ -442,7 +456,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
   ): SequenceStatement {
     const start = this.next
     this.addItem("Keyword", [this.take(keyword)])
-    const id = this.identifierOf([this.take("id")])
+    const id = this.sequenceIdentifierOf(this.take("id"))
     const place = this.placeFrom(start)
     return keyword === "activate"
       ? { type: "SequenceActivateStatement", id, ...place }
@@ -469,9 +483,9 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     }
     this.next += 1
     this.addItem("Keyword", [placementUnit])
-    const ids = [this.identifierOf([this.take("id")])]
+    const ids = [this.sequenceIdentifierOf(this.take("id"))]
     if (placement === "over" && this.takePunctuator(",")) {
-      ids.push(this.identifierOf([this.take("id")]))
+      ids.push(this.sequenceIdentifierOf(this.take("id")))
     }
     this.addItem("Punctuator", [this.take(":")])
     const text = this.parseTextPart()
@@ -493,7 +507,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
   ): SequenceStatement {
     const start = this.next
     this.addItem("Keyword", [this.take(keyword)])
-    const id = this.identifierOf([this.take("id")])
+    const id = this.sequenceIdentifierOf(this.take("id"))
     this.addItem("Punctuator", [this.take(":")])
     const text = this.parseTextPart()
     const place = this.placeFrom(start)
@@ -685,6 +699,21 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
   /** Text parts: `wrap` after `wrap:` and `nowrap` after `nowrap:`, with or without the `:` before it. */
   private wrapOf(prefix: Unit): "wrap" | "nowrap" {
     return prefix.text.includes("nowrap") ? "nowrap" : "wrap"
+  }
+
+  /**
+   * ast/sequence.md, SequenceIdentifier: the id of the `id` unit `unit`,
+   * one `Identifier` item. Its name is the text of the unit's range
+   * without the whitespace at its ends: the whitespace inside it is part
+   * of it, also next to a directive that cuts the unit.
+   */
+  private sequenceIdentifierOf(unit: Unit): SequenceIdentifier {
+    this.addItem("Identifier", [unit])
+    return {
+      type: "SequenceIdentifier",
+      name: this.textOfUnit(unit),
+      ...this.placeOf([unit]),
+    }
   }
 
   /**

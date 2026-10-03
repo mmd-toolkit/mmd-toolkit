@@ -6,6 +6,7 @@ import type {
   FlowchartSubgraphStatement,
   Token,
 } from "@mmd-toolkit/parser"
+import { flowchartSubgraphIds } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"
@@ -15,13 +16,19 @@ import {
   printClosedBlock,
   printDiagramBlock,
 } from "./blocks.ts"
+import {
+  endBeforeBlocks,
+  flowchartDbTextsOf,
+  printedEndOf,
+} from "./db-texts.ts"
+import { lineEndOf } from "./kept-lines.ts"
 import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
 import {
   layoutHeader,
   layoutStatement,
   layoutSubgraphHeader,
 } from "./flowchart-layout.ts"
-import { endsWithSpaceOrTab, findWrittenWhitespaceEnd } from "./gap.ts"
+import { endsWithSpaceOrTab } from "./gap.ts"
 import { expectToken } from "./layout.ts"
 import { indentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
@@ -29,6 +36,8 @@ import {
   findStructuralToken,
   findTokenEndingBefore,
   findTokenStartingAt,
+  findTriviaBetween,
+  isWhitespace,
 } from "./source.ts"
 
 /**
@@ -138,15 +147,90 @@ function printSubgraph(
     },
     flowchartBlockRules(source),
   )
-  const header = openingLine(
-    printAtoms(source, layoutSubgraphHeader(source, subgraph, headerEnd), {
+  const spaceBeforeBlock = hasWhitespaceAfterBlocks(source, subgraph, headerEnd)
+  const headerDoc = printAtoms(
+    source,
+    layoutSubgraphHeader(source, subgraph, headerEnd),
+    {
       statement: indentationOf(options, depth),
       continuation: indentationOf(options, depth + 1),
-    }).doc,
+    },
+  ).doc
+  const header = openingLine(
+    spaceBeforeBlock ? [headerDoc, " "] : headerDoc,
     block,
-    endsWithSpaceOrTab(source.text.slice(subgraph.range[0], headerEnd)),
+    spaceBeforeBlock ||
+      endsWithSpaceOrTab(source.text.slice(subgraph.range[0], headerEnd)),
   )
   return printClosedBlock(header, block, endKeyword.value, depth, options)
+}
+
+/**
+ * The Db ids of the subgraphs of each source, read once per source: the
+ * parser reads the name text of a subgraph (diagrams/flowchart.md, Db
+ * normalization, Subgraphs), which this module does not read again.
+ */
+const subgraphIdsBySource = new WeakMap<
+  Source,
+  ReadonlyMap<FlowchartSubgraphStatement, string>
+>()
+
+/**
+ * Whether the name text of a subgraph without a title holds whitespace that
+ * neither its name nor the header up to `headerEnd` holds: whitespace around
+ * the empty description blocks that follow the name on its line, as in
+ * `subgraph "S"accDescr {} accDescr {}` and `subgraph "S"accDescr {} ;A`.
+ * The blocks read no token, so for mermaid.js that whitespace follows the
+ * name: the subgraph has the id `subGraph0` there, and the id `S` without
+ * it. The blocks move to lines of their own, and one space is printed after
+ * the header in their place (docs/flowchart.md, Subgraph names).
+ *
+ * The id that the parser reads from the text is not the name when the name
+ * text holds whitespace, so the whitespace that nothing in the header
+ * accounts for shows as an id that is not the name.
+ */
+function hasWhitespaceAfterBlocks(
+  source: Source,
+  subgraph: FlowchartSubgraphStatement,
+  headerEnd: number,
+): boolean {
+  if (
+    subgraph.title !== null ||
+    hasWhitespaceOutsideDirectives(source, subgraph.name.range[1], headerEnd) ||
+    [...subgraph.name.value].some(isWhitespace)
+  ) {
+    return false
+  }
+  let ids = subgraphIdsBySource.get(source)
+  if (ids === undefined) {
+    ids = flowchartSubgraphIds(source.root, source.text)
+    subgraphIdsBySource.set(source, ids)
+  }
+  return ids.get(subgraph) !== subgraph.name.value
+}
+
+/**
+ * Whether the text from `from` to `to` holds whitespace that no directive
+ * covers: mermaid.js removes the directives before it reads the text, so the
+ * whitespace inside one is not in it (common.md, Directives).
+ */
+function hasWhitespaceOutsideDirectives(
+  source: Source,
+  from: number,
+  to: number,
+): boolean {
+  let position = from
+  while (position < to) {
+    const covering = findTriviaBetween(source, position, position + 1).at(0)
+    if (covering?.type === "Directive") {
+      position = covering.range[1]
+    } else if (isWhitespace(source.text.charAt(position))) {
+      return true
+    } else {
+      position++
+    }
+  }
+  return false
 }
 
 /**
@@ -174,12 +258,12 @@ function flowchartBlockRules(source: Source): BlockRules<FlowchartStatement> {
  * needs a style after every `,` it reads, and the whitespace after the last
  * `,` is that style (diagrams/flowchart.md, Style, class, and link style
  * statements). `style A fill:red, ` is accepted and `style A fill:red,` is
- * rejected. A style that is all whitespace has no node, so it lies after the range. The
- * `,` may end the last token of the tree's last style: in
+ * rejected. A style that is all whitespace has no node, so it lies after the
+ * range. The `,` may end the last token of the tree's last style: in
  * `classDef c fill:x\, ` the `,` after the `\` belongs to the style
  * `fill:x\,`, yet the grammar reads it and needs the whitespace after it.
- * That whitespace belongs to the statement (see `findWrittenWhitespaceEnd`).
- * A subgraph ends at its `end`.
+ * That whitespace belongs to the statement: it ends where the Db text of
+ * the last style ends (`flowchartDbTexts`). A subgraph ends at its `end`.
  */
 function findPrintedEnd(source: Source, statement: FlowchartStatement): number {
   switch (statement.type) {
@@ -191,9 +275,18 @@ function findPrintedEnd(source: Source, statement: FlowchartStatement): number {
         findTokenEndingBefore(source, statement.range[1]),
         "the end of a style statement",
       )
-      return statement.styles.at(-1) === null || last.value.endsWith(",")
-        ? findWrittenWhitespaceEnd(source, statement.range[1], "ignored")
-        : statement.range[1]
+      if (statement.styles.at(-1) !== null && !last.value.endsWith(",")) {
+        return statement.range[1]
+      }
+      const lastText = flowchartDbTextsOf(source).styles.get(statement)?.at(-1)
+      return lastText === undefined
+        ? statement.range[1]
+        : printedEndOf(
+            source,
+            statement.range[1],
+            lastText.range[0],
+            endBeforeBlocks(lastText, statement.range[1]),
+          )
     }
     default:
       return statement.range[1]
@@ -223,17 +316,29 @@ function findHeaderEnd(source: Source, diagram: FlowchartDiagram): number {
 
 /**
  * Where the `subgraph` line ends: after the `]` of its title, or else after
- * its name with the whitespace after it (see `findWrittenWhitespaceEnd`). A
- * subgraph without a title whose name is followed by whitespace does not
- * get its name as its id: `subgraph S ` has the id `subGraph0`.
+ * its name with the whitespace after it, where the name text of the Db ends
+ * (`flowchartDbTexts`). A subgraph without a title whose name is followed by
+ * whitespace does not get its name as its id: `subgraph S ` has the id
+ * `subGraph0`. The empty description blocks after the name are statements
+ * of the subgraph, and the line ends before the first of them, or before
+ * the line feed that the name text of the Db may reach over: after a name
+ * that ends with `end`, which takes the line feed after it.
  */
 function findSubgraphHeaderEnd(
   source: Source,
   subgraph: FlowchartSubgraphStatement,
 ): number {
-  return subgraph.title === null
-    ? findWrittenWhitespaceEnd(source, subgraph.name.range[1], "separator")
-    : findTitleEnd(source, subgraph.title)
+  if (subgraph.title !== null) return findTitleEnd(source, subgraph.title)
+  const nameText = flowchartDbTextsOf(source).subgraphNameTexts.get(subgraph)
+  if (nameText === undefined) {
+    throw new Error(
+      `prettier-plugin-mmd: no name text for the subgraph at offset ${subgraph.range[0]}`,
+    )
+  }
+  return Math.min(
+    endBeforeBlocks(nameText, subgraph.name.range[1]),
+    lineEndOf(source, subgraph.name.range[1]),
+  )
 }
 
 /** The end of the `]` after a subgraph title. */

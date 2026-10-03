@@ -130,10 +130,10 @@ input rejected.
 A keyword, an arrow, a number, or a string is one token of the tree, whose text
 is the input at its range. A directive inside it would split the token, or make
 its text differ from the input, and the tree has no form for a keyword in two
-pieces. mermaid.js can read such an input only because it removes the directives
-as a step before reading, which is nothing that a specification would state as a
-rule of the syntax; this is the second of the reasons for a known divergence
-(see [known-divergences.md](../known-divergences.md)).
+fragments. mermaid.js can read such an input only because it removes the
+directives as a step before reading, which is nothing that a specification would
+state as a rule of the syntax; this is the second of the reasons for a known
+divergence (see [known-divergences.md](../known-divergences.md)).
 
 ## What it means for an author
 

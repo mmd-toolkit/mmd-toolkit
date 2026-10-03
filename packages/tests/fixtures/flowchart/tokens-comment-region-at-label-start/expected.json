@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md, Comment: the text before the comment region in the label is all whitespace, so it makes no token; the RawText token is `b`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateNoteEdge.spec.ts",
+    "line": 31,
+    "test": "state note edges > declares the note edge as dashed on the edge, not only in CSS"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Active",
+        "shape": "rect",
+        "label": "Active",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Idle",
+        "shape": "rect",
+        "label": "Idle",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "Active",
+        "position": "right of",
+        "text": "A note"
+      }
+    ],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "Active",
+        "label": ""
+      },
+      {
+        "start": "Active",
+        "end": "Idle",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

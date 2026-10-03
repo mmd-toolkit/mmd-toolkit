@@ -212,6 +212,80 @@ flowchart LR
   A --> Bdirection; LR
 ```
 
+同じ行で空の説明ブロックと `;` が続くスタイル文、
+クラス定義文、リンクスタイル文は、
+ブロックと `;` と一緒に、それらがまたがる行のまま残します。
+ブロックはトークンを読まないので、ブロックの前の空白が文の最後の単位を終わらせ、
+ブロックの後の空白が、空白だけの最後のスタイルになります。
+ブロックがなければそのスタイルはなくなり、残った形を mermaid.js は拒否します。
+`style A`、`classDef c`、`linkStyle 0 interpolate basis` に、
+空白と改行が続く形がそうです。
+
+入力 ([statements-one-per-line/empty-style-before-block-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/empty-style-before-block-kept-input.mmd)):
+
+```mmd
+flowchart LR
+A-->B
+linkStyle 0 interpolate basis accDescr {} ;
+classDef c accDescr {}accDescr {} ;
+style A accDescr {
+} ;B
+```
+
+出力 ([statements-one-per-line/empty-style-before-block-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/empty-style-before-block-kept-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  linkStyle 0 interpolate basis accDescr {} ;
+  classDef c accDescr {}accDescr {} ;
+  style A accDescr {
+  } ;B
+```
+
+単語が subgraph の名前や、
+スタイル、クラス定義、リンクスタイルのテキストの終わりにあるときも同じです。
+その単語は `end`、`click`、`call`、`href` で、
+スタイルのテキストでは、`fill:click` のように、
+文字でも数字でもない文字の後にあっても終わりの単語です。
+名前の中の `end` は、その後の空白を、改行も含めて取ります。
+そのため、`subgraph Front end` に改行と `A` が続くと、
+名前は `Front end`、改行、`A` で、メンバーはなく、
+`subgraph Front end ;` ではメンバー A があります。
+`Front pend` と `Front endx` は、単語で終わりません。
+ディレクティブが単語を切っていても同じです。
+mermaid.js はテキストを読む前にディレクティブを取り除くからです。
+
+入力 ([statements-one-per-line/semicolon-after-end-name-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-end-name-kept-input.mmd)):
+
+```mmd
+flowchart LR
+subgraph Front end ;
+A
+end
+subgraph "S" end;
+B
+end
+style B fill:click;
+C
+classDef c href;D
+```
+
+出力 ([statements-one-per-line/semicolon-after-end-name-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-end-name-kept-output.mmd)):
+
+```mmd
+flowchart LR
+  subgraph Front end ;
+    A
+  end
+  subgraph "S" end;
+    B
+  end
+  style B fill:click;
+  C
+  classDef c href;D
+```
+
 ### セミコロン
 
 文の終わりの `;` は取り除き、
@@ -239,6 +313,30 @@ flowchart LR;
 flowchart LR
   A --> B
   B --> C
+```
+
+文の終わりの `;` は、mermaid.js の行の規則が無視するものも取り除きます。
+`style` 文の CSS の色の後の `;` がそうです。
+mermaid.js はその `;` をテキストから取り除くので、落としても何も変わりません。
+
+入力 ([semicolons/ignored-removed-input.mmd](../tests/fixtures/flowchart/semicolons/ignored-removed-input.mmd)):
+
+```mmd
+flowchart LR
+A-->B
+style A fill:#f00;
+classDef c fill:#fff,stroke:#333;
+style B   fill:#0f0 ;
+```
+
+出力 ([semicolons/ignored-removed-output.mmd](../tests/fixtures/flowchart/semicolons/ignored-removed-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  style A fill:#f00
+  classDef c fill:#fff,stroke:#333
+  style B fill:#0f0
 ```
 
 入力 ([semicolons/kept-in-subgraph-input.mmd](../tests/fixtures/flowchart/semicolons/kept-in-subgraph-input.mmd)):
@@ -346,11 +444,13 @@ flowchart LR
 値の一部である空白は保ちます。
 スタイルの並びの `,` の前後の空白は mermaid.js がスタイルに残し、
 subgraph の名前の中の空白はそのタイトルになります。
-`style`・`classDef`・`linkStyle` の文では、id、クラス名、
-辺の番号の直後の空白だけを空白 1 つにします。
-その後から最後のスタイルまでは、ディレクティブと空白も含めて、
-書かれたまま残します。
-mermaid.js はそれを最初のスタイルの一部として読むからです。
+`style`・`classDef`・`linkStyle` の文では、
+最初のスタイルの前の空白は、mermaid.js の文の規則が読むものなので、
+そこにディレクティブがあるときも、空白 1 つにします。
+`style A %%{init: {}}%%  fill:red` と `style A %%{init: {}}%% fill:red` は、
+Db が同じです。
+最初のスタイルの始まりから最後のスタイルまでは、書かれたまま残します。
+mermaid.js はそれをスタイルの一部として読むからです。
 
 入力 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/collapsed-input.mmd)):
 
@@ -408,7 +508,7 @@ flowchart LR
   end
 ```
 
-入力 ([whitespace-between-tokens/style-after-two-items-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-two-items-kept-input.mmd)):
+入力 ([whitespace-between-tokens/style-after-directives-collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -420,16 +520,16 @@ linkStyle   0   %%{init: {}}%%  fill:red
 linkStyle default interpolate   basis   %%{init: {}}%%  %%{init: {}}%%stroke:red
 ```
 
-出力 ([whitespace-between-tokens/style-after-two-items-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-two-items-kept-output.mmd)):
+出力 ([whitespace-between-tokens/style-after-directives-collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
   A
-  style A %%{init: {}}%%  %%{init: {}}%%fill:red
-  classDef a,b %%{init: {}}%% %%{init: {}}%%  fill:red
+  style A %%{init: {}}%% %%{init: {}}%%fill:red
+  classDef a,b %%{init: {}}%% %%{init: {}}%% fill:red
   A --> A
-  linkStyle 0 %%{init: {}}%%  fill:red
-  linkStyle default interpolate basis %%{init: {}}%%  %%{init: {}}%%stroke:red
+  linkStyle 0 %%{init: {}}%% fill:red
+  linkStyle default interpolate basis %%{init: {}}%% %%{init: {}}%%stroke:red
 ```
 
 ### 矢印の前後の空白
@@ -1015,6 +1115,17 @@ mermaid.js はどちらの形も同じに読み、どちらも使われている
 書き手に任せます。
 タイトルなしで書かれた名前は、その後の空白を保ちます。
 mermaid.js はその空白を名前の一部として読みます。
+ヘッダーと同じ行に書かれた空の説明ブロックの周りの空白も同じです。
+ブロックの前、ブロックの間、最後のブロックと `;` の間の空白がそうで、
+`subgraph "S"accDescr {} accDescr {}` と
+`subgraph "U"accDescr {} ;` がその例です。
+ブロックは何のトークンも読まれず、その空白が名前の後に続くとみなされ、
+subgraph の id は `subGraph0` になり、空白がなければ `S` になります。
+最後のブロックの後の空白に改行が続くときは、改行として読まれ、数えません。
+ブロックはそれぞれの行に移し、ヘッダーの後に空白を 1 つ残します。
+これらの例は `subgraph-header/whitespace-before-block-kept` で、
+空白が行末にあるので、ここには載せません
+（[フォルダー](../tests/fixtures/flowchart/subgraph-header)を参照）。
 
 入力 ([subgraph-header/title-spacing-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-input.mmd)):
 

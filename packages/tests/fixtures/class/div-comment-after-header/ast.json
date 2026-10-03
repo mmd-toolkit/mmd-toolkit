@@ -82,6 +82,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " animals",
       "range": [
         13,

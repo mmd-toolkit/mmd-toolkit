@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Grammar, Composite states, aliases, and pseudostates: `%%{ }` starts no directive, because no word follows `{`; the `%%` is ignored text, and `{ }` the body of X."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

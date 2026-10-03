@@ -10,6 +10,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
+import { classDbTextsOf } from "./db-texts.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import { findClassSemicolonLines } from "./class-kept-lines.ts"
 import { lineStartOf } from "./kept-lines.ts"
@@ -21,16 +22,18 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
-  spansLinesWithTrivia,
+  spansLinesThatCannotJoin,
   walk,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
+  findStructuralTokenEndingBefore,
   findTokenEndingBefore,
   findTokensBetween,
   findTriviaBetween,
   isStructural,
+  isWhitespace,
 } from "./source.ts"
 
 /**
@@ -212,7 +215,7 @@ export function layoutBlockOpening(
  *   break inside a statement is whitespace to the lexer only after
  *   `direction` and after the `:` of `accTitle` and `accDescr`
  *   (diagrams/class.md, The statement context); one with a comment or a
- *   directive in it is kept as written (see `spansLinesWithTrivia`). The
+ *   directive in it is kept as written (see `spansLinesThatCannotJoin`). The
  *   lines of an `accDescr { ... }` block are lines of its text, and are
  *   kept (docs/class.md, Multi-line values).
  * - A relation has one space on each side of its arrow and of its
@@ -232,7 +235,7 @@ export function layoutClassStatement(
   const start = statement.range[0]
   if (
     statement.type !== "ClassAccDescrBlockStatement" &&
-    spansLinesWithTrivia(source, start, end)
+    spansLinesThatCannotJoin(source, start, end)
   ) {
     return {
       atoms: [{ start, end }],
@@ -300,7 +303,7 @@ export function findClassPrintedEnd(
   if (findOpenNameIn(source, statement) !== null) return source.text.length
   const colon = findBlankLabelColon(source, statement)
   if (colon === null) return statement.range[1]
-  return findWrittenWhitespaceEnd(source, colon.range[1], "ignored")
+  return findWrittenWhitespaceEnd(source, colon.range[1])
 }
 
 /**
@@ -380,7 +383,7 @@ function findBlankLabelStretches(source: Source, statement: Node): Atom[] {
   return [
     {
       start: colon.range[0],
-      end: findWrittenWhitespaceEnd(source, colon.range[1], "ignored"),
+      end: findWrittenWhitespaceEnd(source, colon.range[1]),
     },
   ]
 }
@@ -403,26 +406,27 @@ function findMemberStretches(statement: Node): Atom[] {
  * The generic types of the class names of a node before `end`, each from
  * its first `~` to its second, as written: the whitespace between the two
  * `~` is part of the type in the Db (diagrams/class.md, Building the
- * summary), also when the tree has no text for it.
+ * summary), also when the tree has no text for it. The Db text of a type
+ * (`classDbTexts`) lies between the two `~`, which are the structural tokens
+ * before and after it: directives and a `;` that the line rule ignores may
+ * lie between it and them.
  */
 function findGenericStretches(source: Source, node: Node, end: number): Atom[] {
-  const names: Node[] = []
-  walk(node, (child) => {
-    if (child.type === "ClassName" && child.range[1] <= end) names.push(child)
-  })
+  const types = classDbTextsOf(source).genericTypes
   const stretches: Atom[] = []
-  for (const name of names) {
-    const tildes = findTokensBetween(
-      source,
-      name.range[0],
-      name.range[1],
-    ).filter((token) => isStructural(source, token) && token.value === "~")
-    const [first] = tildes
-    const last = tildes.at(-1)
-    if (first !== undefined && last !== undefined && first !== last) {
-      stretches.push({ start: first.range[0], end: last.range[1] })
+  walk(node, (child) => {
+    if (child.type !== "ClassName" || child.range[1] > end) return
+    const type = types.get(child)
+    if (type === undefined) return
+    const opening = findStructuralTokenEndingBefore(source, type.range[0])
+    const closing = findStructuralToken(source, type.range[1])
+    if (opening?.value !== "~" || closing?.value !== "~") {
+      throw new Error(
+        `prettier-plugin-mmd: the generic type at offset ${type.range[0]} is not between two "~"`,
+      )
     }
-  }
+    stretches.push({ start: opening.range[0], end: closing.range[1] })
+  })
   return stretches
 }
 
@@ -451,7 +455,10 @@ function statementRules(
     case "ClassDeclaration":
       if (statement.members !== null) {
         const { opening, closing } = findMemberBraces(source, statement)
-        rules.set(opening.range[0], "space")
+        rules.set(
+          opening.range[0],
+          spaceAfterName(source, statement.name, opening.range[0]),
+        )
         if (isEmptyMemberBody(source, statement)) {
           rules.set(closing.range[0], "space")
         }
@@ -481,11 +488,38 @@ function addRelationRules(
     arrow.range[1],
   ).filter((token) => isStructural(source, token))
   for (const [index, token] of arrowTokens.entries()) {
-    rules.set(token.range[0], index === 0 ? "space" : "none")
+    rules.set(
+      token.range[0],
+      index === 0 && fromCardinality === null
+        ? spaceAfterName(source, statement.from, token.range[0])
+        : index === 0
+          ? "space"
+          : "none",
+    )
   }
   if (toCardinality !== null) rules.set(toCardinality.range[0], "space")
   rules.set(to.range[0], "space")
   addLabelRules(source, to, statement.label, rules)
+}
+
+/**
+ * The rule for the gap before a token that follows a class name: one space,
+ * except that a token that touches a name ending with the word `call` stays
+ * touching. `call` followed by whitespace is a keyword that the lexer reads
+ * where a unit starts (diagrams/class.md, the statement context, rule 10), so
+ * `A call()--> B` with a space before the arrow would be a callback.
+ */
+function spaceAfterName(
+  source: Source,
+  name: ClassName,
+  token: number,
+): GapRule {
+  if (token !== name.range[1]) return "space"
+  const text = source.text.slice(...name.range)
+  const before = text.at(-"call".length - 1)
+  const endsWithCall =
+    text.endsWith("call") && (before === undefined || isWhitespace(before))
+  return endsWithCall ? "none" : "space"
 }
 
 /**
@@ -509,7 +543,7 @@ function addLabelRules(
   if (text === null) return
   const colon = findStructuralToken(source, name.range[1])
   if (colon?.value !== ":" || colon.range[0] >= text.range[0]) return
-  rules.set(colon.range[0], "space")
+  rules.set(colon.range[0], spaceAfterName(source, name, colon.range[0]))
   const semicolonLines = findClassSemicolonLines(source)
   if (semicolonLines.has(lineStartOf(source, colon.range[0]))) return
   rules.set(text.range[0], "space")

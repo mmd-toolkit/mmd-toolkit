@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/state.md Tokens: the ignored `;` after the style is a RawText token; the style is `fill:#f00`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:#f00"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

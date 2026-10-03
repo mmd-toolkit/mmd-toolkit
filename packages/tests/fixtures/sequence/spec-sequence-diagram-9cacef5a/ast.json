@@ -9,7 +9,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "API",
           "range": [
             41,
@@ -63,7 +63,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "API",
           "range": [
             77,
@@ -105,7 +105,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "API",
           "range": [
             83,

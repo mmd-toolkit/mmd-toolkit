@@ -5,5 +5,15 @@
   },
   "accepted": true,
   "diagramType": "stateDiagram",
-  "db": null
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
 }

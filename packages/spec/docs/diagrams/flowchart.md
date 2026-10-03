@@ -319,7 +319,13 @@ where none of them applies, and it takes the rest of the line:
   flowchart/lex-direction-line-acc-title-indented] [fixture:
   flowchart/lex-direction-line-acc-title-tab-indented] [fixture:
   flowchart/lex-direction-line-acc-descr-subgraph-column-zero] [fixture:
-  flowchart/lex-direction-line-acc-descr-subgraph-indented]
+  flowchart/lex-direction-line-acc-descr-subgraph-indented] So does
+  `end; direction TB` after `subgraph a`: at the start of a line, the `end` rule
+  applies first and closes the subgraph, and the rest is a direction line, while
+  indented the whole line is a direction line, `end` is not read, and the
+  subgraph is left open, which is rejected. [fixture:
+  flowchart/lex-direction-line-after-end-semicolon-column-zero] [fixture:
+  flowchart/lex-direction-line-after-end-semicolon-indented]
 - A `;` is not whitespace: `direction ; TB` is no direction line but the
   vertices `direction` and `TB`, and `A-->direction; TB` is a link to the vertex
   `direction` and the vertex `TB`, while `direction`, a line break, and `TB` is
@@ -336,7 +342,13 @@ where none of them applies, and it takes the rest of the line:
   edges. [fixture: flowchart/lex-direction-line-then-semicolon-statement]
   [fixture: flowchart/lex-direction-line-percent-after-value] [fixture:
   flowchart/lex-direction-line-in-string-label] [fixture:
-  flowchart/lex-direction-line-in-label-with-link]
+  flowchart/lex-direction-line-in-label-with-link] In a subgraph,
+  `direction TB;` has the text `;` after the value, and `direction TB; -->B` the
+  text `; -->B`, so no link is read, while with `-->B` on the next line the link
+  has no source and the input is rejected. [fixture:
+  flowchart/lex-direction-line-semicolon-after-value] [fixture:
+  flowchart/lex-direction-line-semicolon-link-after-value] [fixture:
+  flowchart/lex-direction-line-then-link-without-source]
 
 ### Arrows
 
@@ -759,12 +771,16 @@ flowchart/db-acc-descr-block-comment-only-alone] [fixture:
 flowchart/db-acc-descr-empty-block-keeps] [fixture:
 flowchart/db-acc-descr-empty-block-after-semicolon-keeps] [fixture:
 flowchart/db-acc-descr-empty-block-lines-keeps] [fixture:
-flowchart/db-acc-descr-block-comment-only-keeps] Anywhere else it lies inside a
-statement, where the tree has no place for it, so no rule of the grammar takes
-it, and the input is rejected: `A accDescr {}`, `A accDescr {}-->B`, and
-`A accDescr {` and `}` on two lines. mermaid.js reads no token for an empty
-description block and accepts these, as if it were not there; these are the
-known divergence
+flowchart/db-acc-descr-block-comment-only-keeps] After the last unit of a
+statement and before its separator, it is a statement too: `A accDescr {}`, and
+`A accDescr {` and `}` on two lines, are a vertex statement and a description
+block statement, and so is one after the direction of the header, before its
+separator (see
+[Empty description blocks before a separator](#empty-description-blocks-before-a-separator)).
+Anywhere else it lies inside a statement, where the tree has no place for it, so
+no rule of the grammar takes it, and the input is rejected: `A accDescr {}-->B`.
+mermaid.js reads no token for an empty description block and accepts it, as if
+it were not there; this is the known divergence
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md). Both
 reject `A-->accDescr {} B`, because mermaid.js reads the space after the block
 as a space before the target, and `A accDescr {x}`, because a block with text is
@@ -905,46 +921,47 @@ and accepts the same sequences of units.
 Each rule below makes a node of the tree, defined in
 [ast/flowchart.md](../ast/flowchart.md):
 
-| Rule                                                                                                  | Node                                                                                                                                                                                                                               |
-| ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `diagram`                                                                                             | [`FlowchartDiagram`](../ast/flowchart.md#flowchartdiagram)                                                                                                                                                                         |
-| `empty-statement`                                                                                     | [`FlowchartEmptyStatement`](../ast/flowchart.md#flowchartemptystatement)                                                                                                                                                           |
-| `vertex-statement`                                                                                    | [`FlowchartVertexStatement`](../ast/flowchart.md#flowchartvertexstatement)                                                                                                                                                         |
-| `vertex-group`                                                                                        | [`FlowchartVertexGroup`](../ast/flowchart.md#flowchartvertexgroup)                                                                                                                                                                 |
-| `vertex`                                                                                              | [`FlowchartVertex`](../ast/flowchart.md#flowchartvertex)                                                                                                                                                                           |
-| `shape`                                                                                               | [`FlowchartShape`](../ast/flowchart.md#flowchartshape); with `"[\|"`, also a [`FlowchartShapeProperty`](../ast/flowchart.md#flowchartshapeproperty)                                                                                |
-| `label`, `link-text`, `subgraph-name`                                                                 | [`FlowchartLabel`](../ast/flowchart.md#flowchartlabel)                                                                                                                                                                             |
-| `id`, `id-list-part`, `click-id`, `edge-id`, `callback-name`, `name`, and each `id-run` after `"[\|"` | [`Identifier`](../ast.md#identifier)                                                                                                                                                                                               |
-| `string` in a click statement                                                                         | [`StringLiteral`](../ast.md#stringliteral)                                                                                                                                                                                         |
-| `number` in a link style statement                                                                    | [`NumericLiteral`](../ast.md#numericliteral)                                                                                                                                                                                       |
-| `style`, `callback-arguments`, `title-text`, `description-text`, and `description-block-text`         | [`FlowchartLiteral`](../ast/flowchart.md#flowchartliteral), or null for a `style` that is all whitespace (see [FlowchartStyleStatement](../ast/flowchart.md#flowchartstylestatement))                                              |
-| `data`                                                                                                | [`FlowchartDataBlock`](../ast/flowchart.md#flowchartdatablock)                                                                                                                                                                     |
-| `link`                                                                                                | [`FlowchartLink`](../ast/flowchart.md#flowchartlink), whose target is the vertex group after it                                                                                                                                    |
-| `arrow`                                                                                               | [`FlowchartArrow`](../ast/flowchart.md#flowchartarrow)                                                                                                                                                                             |
-| `opening-arrow`                                                                                       | [`FlowchartOpeningArrow`](../ast/flowchart.md#flowchartopeningarrow)                                                                                                                                                               |
-| `subgraph-statement`                                                                                  | [`FlowchartSubgraphStatement`](../ast/flowchart.md#flowchartsubgraphstatement)                                                                                                                                                     |
-| `style-statement`                                                                                     | [`FlowchartStyleStatement`](../ast/flowchart.md#flowchartstylestatement)                                                                                                                                                           |
-| `class-def-statement`                                                                                 | [`FlowchartClassDefStatement`](../ast/flowchart.md#flowchartclassdefstatement)                                                                                                                                                     |
-| `class-statement`                                                                                     | [`FlowchartClassStatement`](../ast/flowchart.md#flowchartclassstatement)                                                                                                                                                           |
-| `link-style-statement`                                                                                | [`FlowchartLinkStyleStatement`](../ast/flowchart.md#flowchartlinkstylestatement), or with `"default"` a [`FlowchartDefaultLinkStyleStatement`](../ast/flowchart.md#flowchartdefaultlinkstylestatement)                             |
-| `click-statement`                                                                                     | [`FlowchartClickCallbackStatement`](../ast/flowchart.md#flowchartclickcallbackstatement) for the first and third alternatives, and for the second a [`FlowchartClickUrlStatement`](../ast/flowchart.md#flowchartclickurlstatement) |
-| `direction-statement`                                                                                 | [`FlowchartDirectionStatement`](../ast/flowchart.md#flowchartdirectionstatement)                                                                                                                                                   |
-| `title-statement`                                                                                     | [`FlowchartAccTitleStatement`](../ast/flowchart.md#flowchartacctitlestatement)                                                                                                                                                     |
-| `description-statement`                                                                               | [`FlowchartAccDescrStatement`](../ast/flowchart.md#flowchartaccdescrstatement)                                                                                                                                                     |
-| `description-block-statement`                                                                         | [`FlowchartAccDescrBlockStatement`](../ast/flowchart.md#flowchartaccdescrblockstatement)                                                                                                                                           |
+| Rule                                                                                                           | Node                                                                                                                                                                                                                                                                       |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `diagram`                                                                                                      | [`FlowchartDiagram`](../ast/flowchart.md#flowchartdiagram)                                                                                                                                                                                                                 |
+| `empty-statement`                                                                                              | [`FlowchartEmptyStatement`](../ast/flowchart.md#flowchartemptystatement)                                                                                                                                                                                                   |
+| `vertex-statement`                                                                                             | [`FlowchartVertexStatement`](../ast/flowchart.md#flowchartvertexstatement)                                                                                                                                                                                                 |
+| `vertex-group`                                                                                                 | [`FlowchartVertexGroup`](../ast/flowchart.md#flowchartvertexgroup)                                                                                                                                                                                                         |
+| `vertex`                                                                                                       | [`FlowchartVertex`](../ast/flowchart.md#flowchartvertex)                                                                                                                                                                                                                   |
+| `shape`                                                                                                        | [`FlowchartShape`](../ast/flowchart.md#flowchartshape); with `"[\|"`, also a [`FlowchartShapeProperty`](../ast/flowchart.md#flowchartshapeproperty)                                                                                                                        |
+| `label`, `link-text`, `subgraph-name`                                                                          | [`FlowchartLabel`](../ast/flowchart.md#flowchartlabel)                                                                                                                                                                                                                     |
+| `id`, `id-list-part`, `click-id`, `edge-id`, `name`, and each `id-run` after `"[\|"`                           | [`Identifier`](../ast.md#identifier)                                                                                                                                                                                                                                       |
+| `string` in a click statement                                                                                  | [`StringLiteral`](../ast.md#stringliteral)                                                                                                                                                                                                                                 |
+| `number` in a link style statement                                                                             | [`NumericLiteral`](../ast.md#numericliteral)                                                                                                                                                                                                                               |
+| `style`, `callback-name`, `callback-arguments`, `title-text`, `description-text`, and `description-block-text` | [`FlowchartLiteral`](../ast/flowchart.md#flowchartliteral), or null for a `style` that is all whitespace (see [FlowchartStyleStatement](../ast/flowchart.md#flowchartstylestatement))                                                                                      |
+| `data`                                                                                                         | [`FlowchartDataBlock`](../ast/flowchart.md#flowchartdatablock)                                                                                                                                                                                                             |
+| `link`                                                                                                         | [`FlowchartLink`](../ast/flowchart.md#flowchartlink), whose target is the vertex group after it                                                                                                                                                                            |
+| `arrow`                                                                                                        | [`FlowchartArrow`](../ast/flowchart.md#flowchartarrow)                                                                                                                                                                                                                     |
+| `opening-arrow`                                                                                                | [`FlowchartOpeningArrow`](../ast/flowchart.md#flowchartopeningarrow)                                                                                                                                                                                                       |
+| `subgraph-statement`                                                                                           | [`FlowchartSubgraphStatement`](../ast/flowchart.md#flowchartsubgraphstatement)                                                                                                                                                                                             |
+| `style-statement`                                                                                              | [`FlowchartStyleStatement`](../ast/flowchart.md#flowchartstylestatement)                                                                                                                                                                                                   |
+| `class-def-statement`                                                                                          | [`FlowchartClassDefStatement`](../ast/flowchart.md#flowchartclassdefstatement)                                                                                                                                                                                             |
+| `class-statement`                                                                                              | [`FlowchartClassStatement`](../ast/flowchart.md#flowchartclassstatement)                                                                                                                                                                                                   |
+| `link-style-statement`                                                                                         | [`FlowchartLinkStyleStatement`](../ast/flowchart.md#flowchartlinkstylestatement), or with `"default"` a [`FlowchartDefaultLinkStyleStatement`](../ast/flowchart.md#flowchartdefaultlinkstylestatement)                                                                     |
+| `click-statement`                                                                                              | [`FlowchartClickCallbackStatement`](../ast/flowchart.md#flowchartclickcallbackstatement) for the first and third alternatives, and for the second a [`FlowchartClickUrlStatement`](../ast/flowchart.md#flowchartclickurlstatement)                                         |
+| `direction-statement`                                                                                          | [`FlowchartDirectionStatement`](../ast/flowchart.md#flowchartdirectionstatement)                                                                                                                                                                                           |
+| `title-statement`                                                                                              | [`FlowchartAccTitleStatement`](../ast/flowchart.md#flowchartacctitlestatement)                                                                                                                                                                                             |
+| `description-statement`                                                                                        | [`FlowchartAccDescrStatement`](../ast/flowchart.md#flowchartaccdescrstatement)                                                                                                                                                                                             |
+| `description-block-statement`                                                                                  | [`FlowchartAccDescrBlockStatement`](../ast/flowchart.md#flowchartaccdescrblockstatement)                                                                                                                                                                                   |
+| `empty-description-block`                                                                                      | [`FlowchartAccDescrBlockStatement`](../ast/flowchart.md#flowchartaccdescrblockstatement) without text, a statement after the statement before it; after the name of a subgraph, a statement at the start of its body; after the header, the first statement of the diagram |
 
 ### Diagram and statements
 
 ```text
 diagram                     = header line*
-header                      = header-keyword ( no-direction | header-direction ( ";" | newline | space+ newline ) )
+header                      = header-keyword ( no-direction | header-direction ( empty-description-block* ";" | space* empty-description-block* newline ) )
 line                        = statement | empty-statement | newline | space
-statement                   = vertex-statement separator
-                            | style-statement separator
-                            | class-def-statement separator
-                            | class-statement separator
-                            | link-style-statement separator
-                            | click-statement separator
+statement                   = vertex-statement statement-end
+                            | style-statement statement-end
+                            | class-def-statement statement-end
+                            | class-statement statement-end
+                            | link-style-statement statement-end
+                            | click-statement statement-end
                             | subgraph-statement
                             | direction-statement
                             | title-statement
@@ -962,12 +979,14 @@ The diagram ends at the end of the text. A `space` after the header's direction
 must be followed by a line feed: `flowchart TD ;` is rejected. [fixture:
 flowchart/header-space-before-semicolon] A statement other than a subgraph, a
 direction statement, and an accessibility statement must be followed by its
-separator: a line feed, a `;`, or the end of the text. So
-`class A c; %%{init: {}}%%` is accepted, while without the `;` the space before
-the directive is a `space` unit after the class name, and the input is rejected;
-In `class A c""` the quotes are characters of the id run, and the class is
-`c""`, while in `class A c;""` they are an empty string after the separator, and
-the input is rejected (see [Strings](#strings)). [fixture:
+separator: a line feed, a `;`, or the end of the text, with nothing but empty
+description blocks before it (see
+[Empty description blocks before a separator](#empty-description-blocks-before-a-separator)).
+So `class A c; %%{init: {}}%%` is accepted, while without the `;` the space
+before the directive is a `space` unit after the class name, and the input is
+rejected; In `class A c""` the quotes are characters of the id run, and the
+class is `c""`, while in `class A c;""` they are an empty string after the
+separator, and the input is rejected (see [Strings](#strings)). [fixture:
 flowchart/gram-separator-before-directive] [fixture:
 flowchart/gram-no-separator-before-directive] [fixture:
 flowchart/gram-separator-before-empty-string] [fixture:
@@ -980,6 +999,142 @@ empty statement. [fixture: flowchart/db-subgraph-member-empty-statement]
 [fixture: flowchart/db-subgraph-member-empty-statement-end] [fixture:
 flowchart/gram-empty-statement-line] A line feed that follows a separator is a
 line of its own.
+
+### Empty description blocks before a separator
+
+```text
+statement-end           = empty-description-block* separator
+empty-description-block = "accDescr" "{" "}"
+```
+
+An `empty-description-block` is an `accDescr` unit and a `{` unit followed
+directly by a `}` unit, with no `description-block-text` unit. A statement that
+needs a separator ends with a `statement-end`: after its last unit and before
+its separator, any number of empty description blocks may come. Each is a
+description block statement without text, a statement of its own after that
+statement, and changes nothing. mermaid.js reads no token for an empty
+description block (see
+[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.md)), so it
+reads the statement as followed directly by its separator. A description block
+with text and any other statement may not come before the separator.
+
+In flowchart, the statements that need a separator, a line feed, a `;`, or the
+end of the text, are the vertex, style, class definition, class, link style, and
+click statements, and the name of a subgraph has one after it too. So
+`A accDescr {}`, `A accDescr {} accDescr {}`, `A accDescr {};B`,
+`A --> B accDescr {}`, `style A fill:red accDescr {}`,
+`classDef c fill:red accDescr {}`, `linkStyle 0 stroke:red accDescr {}`,
+`subgraph S accDescr {}`, and `click A href "u"accDescr {}` are accepted, and so
+is `A accDescr {`, a line break, and `}`. [fixture:
+flowchart/gram-empty-description-block-after-vertex] [fixture:
+flowchart/gram-empty-description-blocks-after-vertex] [fixture:
+flowchart/gram-empty-description-block-before-semicolon] [fixture:
+flowchart/gram-empty-description-block-after-link] [fixture:
+flowchart/gram-empty-description-block-after-style] [fixture:
+flowchart/gram-empty-description-block-after-classdef] [fixture:
+flowchart/gram-empty-description-block-after-linkstyle] [fixture:
+flowchart/gram-empty-description-block-after-subgraph-name] [fixture:
+flowchart/gram-empty-description-block-after-click-glued] [fixture:
+flowchart/gram-empty-description-block-line-feed] The grammar reads a statement
+and its `statement-end` without their empty description blocks, as mermaid.js
+does: the `space` units before, between, and after the blocks are the whitespace
+at the end of the statement, and the rule of the statement takes them or not.
+The end of a vertex statement takes whitespace, and so do the styles of a style,
+class definition, or link style statement and the name of a subgraph, so
+`A accDescr {} ;B`, `A accDescr {} accDescr {} ;B`,
+`style A fill:red accDescr {} ;B`, and `subgraph S accDescr {} ;A` are accepted.
+A class statement, a click statement, and a vertex statement that ends with a
+data block take none, because the `space` unit after the class name or the URL
+must be followed by more of the statement, and whitespace after a data block
+that no line feed follows is a `space` unit (see
+[Whitespace after `}`](#whitespace-after-)). So `class A c accDescr {}`,
+`class A c accDescr {} ;B`, `click A href "u" accDescr {}`,
+`click A href "u"accDescr {} ;B`, `click A href "u"accDescr {} accDescr {}`,
+`A@{ shape: rect } accDescr {}`, and `A@{ shape: rect }accDescr {} ;B` are
+rejected, as the same without the blocks are, while
+`click A href "u"accDescr {}accDescr {}` and
+`A@{ shape: rect }accDescr {}accDescr {}` are accepted. The `space` units on the
+two sides of a block stay two units: in
+`linkStyle 0 interpolate basis accDescr {} ;`, the first ends the name of the
+interpolate and the second is a style that is all whitespace, so the input is
+accepted, while `linkStyle 0 interpolate basis`, two spaces, and `;` is
+rejected. Whitespace after the `}` of a block that a line feed ends is read as a
+line feed (see [Whitespace after `}`](#whitespace-after-)), so
+`click A href "u"accDescr {}` followed by a space and a line break is accepted.
+mermaid.js reads these the same way. [fixture:
+flowchart/gram-empty-description-block-splits-spaces-after-interpolate]
+[fixture: flowchart/gram-interpolate-trailing-space] [fixture:
+flowchart/gram-empty-description-block-after-click-trailing-space] [fixture:
+flowchart/gram-empty-description-block-before-space-semicolon] [fixture:
+flowchart/gram-empty-description-blocks-before-space-semicolon] [fixture:
+flowchart/gram-empty-description-block-after-style-before-semicolon] [fixture:
+flowchart/gram-empty-description-block-after-linkstyle-before-semicolon]
+[fixture:
+flowchart/gram-empty-description-block-after-classdef-before-semicolon]
+[fixture:
+flowchart/gram-empty-description-block-after-subgraph-name-before-semicolon]
+[fixture: flowchart/gram-empty-description-block-after-data-block-glued]
+[fixture: flowchart/gram-empty-description-blocks-after-data-block-glued]
+[fixture: flowchart/gram-empty-description-blocks-after-click-glued] [fixture:
+flowchart/gram-empty-description-block-after-click-space] [fixture:
+flowchart/gram-empty-description-block-after-class-statement] [fixture:
+flowchart/gram-empty-description-block-after-class-statement-before-semicolon]
+[fixture: flowchart/gram-empty-description-block-after-click-before-semicolon]
+[fixture: flowchart/gram-empty-description-blocks-after-click-space-between]
+[fixture: flowchart/gram-empty-description-block-after-data-block-space]
+[fixture:
+flowchart/gram-empty-description-block-after-data-block-before-semicolon]
+[fixture:
+flowchart/gram-empty-description-blocks-after-data-block-space-between] The
+empty description blocks before the separator of a subgraph's name are the first
+statements of its body, and the Db name text of the subgraph leaves them out
+(see [Building the summary](#building-the-summary-from-the-tree)):
+`subgraph "S"accDescr {}` has the name text `S` and the id `S`, while the
+whitespace before a block stays in it: `subgraph S accDescr {}` has the name
+text `S` and a space, and the id `subGraph0`. [fixture:
+flowchart/gram-empty-description-block-after-subgraph-name] [fixture:
+flowchart/db-subgraph-name-text-without-empty-description-block] A block that
+the separator does not follow lies inside a statement: `A accDescr {} B` is
+rejected by both, and `A accDescr {}-->B`, which mermaid.js accepts, is the
+known divergence `tokenless-empty-forms` (see
+[Known divergences](#known-divergences)). [fixture:
+flowchart/gram-empty-description-block-then-vertex] [fixture:
+flowchart/gram-empty-description-block-before-link]
+
+A header with a direction needs a separator too: a `;`, or a line feed with only
+whitespace before it (see [Diagram and statements](#diagram-and-statements)).
+Empty description blocks may come before that separator, as before the separator
+of a statement: each is a description block statement without text, the first
+statement of the diagram, and mermaid.js reads the header as followed directly
+by its separator. The grammar reads the header without its blocks, so the
+`space` units around them are whitespace after the direction, which a line feed
+must follow. So `flowchart LR accDescr {}`, followed by a line break and `A` or
+at the end of the text, `flowchart LR`, two spaces, and
+`accDescr {} accDescr {}` followed by a space and a line break, and
+`flowchart >accDescr {}` are accepted, with the Db of the same without the
+blocks. `flowchart LR accDescr {};A` and `flowchart LR accDescr {} A` are
+rejected, as `flowchart LR ;A` and `flowchart LR  A` are, and so is
+`flowchart LR accDescr {x}`, whose block has text. Before a `;`, the blocks come
+only where no whitespace follows the direction, which is after `<`, `>`, or `^`
+with the block written directly after it: `flowchart >accDescr {};A` and the
+same with two blocks are accepted, as `flowchart >;A` is, while
+`flowchart >accDescr {} accDescr {};A` is rejected. [fixture:
+flowchart/header-empty-description-block-glued-before-semicolon] [fixture:
+flowchart/header-empty-description-blocks-glued-before-semicolon] [fixture:
+flowchart/header-empty-description-blocks-space-before-semicolon] A header
+without a direction has no place for a block: after the header keyword, the
+header context reads only whitespace that contains a line feed, a direction, or
+a string (see [The header context](#the-header-context)), so
+`flowchart accDescr {}` is rejected, while `flowchart`, a line break, and
+`accDescr {}` is a block where a statement starts. mermaid.js reads these the
+same way. [fixture: flowchart/header-empty-description-block-after-direction]
+[fixture: flowchart/header-empty-description-block-after-direction-at-end]
+[fixture: flowchart/header-empty-description-blocks-after-direction-spaces]
+[fixture: flowchart/header-empty-description-block-after-symbol-direction-glued]
+[fixture: flowchart/header-empty-description-block-before-semicolon] [fixture:
+flowchart/header-empty-description-block-then-statement] [fixture:
+flowchart/header-description-block-with-text-after-direction] [fixture:
+flowchart/header-empty-description-block-no-direction]
 
 ### Vertex statements
 
@@ -1152,7 +1307,7 @@ or `text`, and its value is defined as for a label.
 ### Subgraphs
 
 ```text
-subgraph-statement = "subgraph" space subgraph-name ( "[" label "]" )? separator line* "end"
+subgraph-statement = "subgraph" space subgraph-name ( "[" label "]" )? statement-end line* "end"
 subgraph-name      = ( string | markdown-string | name-piece ) name-piece*
 name-piece         = number | id-run | letter | space | "-" | "&" | ":" | "*" | "#" | "v" | "^"
                    | "style" | "linkStyle" | "classDef" | "class" | header-keyword | "subgraph" | "end"
@@ -1493,12 +1648,13 @@ with whitespace after `}` read as in [Whitespace after `}`](#whitespace-after-);
 a data block's value is not read. Labels contribute their converted value
 trimmed of whitespace at both ends, which a value has only inside the delimiters
 of the string it starts with or when the label is all whitespace, and their kind
-as the label type. The other values are those of the
-[shared leaf nodes](../ast.md#shared-leaf-nodes): the `name` of an Identifier
-and the `value` of a StringLiteral, a NumericLiteral, or a FlowchartLiteral. A
-null element of a list of ids or class names stands for the empty text; styles,
-null or not, are read through their Db texts (see **Style statements**).
-[fixture: flowchart/db-linkstyle-whitespace-only-style] [fixture:
+as the label type: `A["x "]` after `A["x"]` leaves the text `x`. [fixture:
+flowchart/db-vertex-label-string-trailing-space-redefined] The other values are
+those of the [shared leaf nodes](../ast.md#shared-leaf-nodes): the `name` of an
+Identifier and the `value` of a StringLiteral, a NumericLiteral, or a
+FlowchartLiteral. A null element of a list of ids or class names stands for the
+empty text; styles, null or not, are read through their Db texts (see **Style
+statements**). [fixture: flowchart/db-linkstyle-whitespace-only-style] [fixture:
 flowchart/db-classdef-whitespace-only-style] A null `value` of an accessibility
 statement is described under **Accessibility statements** below. The `arguments`
 of a click statement are not used, because the summary leaves out the arguments
@@ -1517,8 +1673,9 @@ flowchart/db-direction-statement-top-level-no-header-direction]
 **The vertex step,** with an id, and optionally a label, a shape, styles, and a
 property:
 
-1. If an edge with that id exists, nothing happens. [fixture:
-   flowchart/db-vertex-edge-id]
+1. If an edge with that id exists, nothing happens: `style e1 fill:#f00` after
+   `A e1@--> B` adds no vertex and gives no style. [fixture:
+   flowchart/db-vertex-edge-id] [fixture: flowchart/db-style-edge-id]
 2. If no vertex has that id, a vertex is added at the end, with the id, the
    label type `text`, and no styles and no classes.
 3. With a label, the vertex takes its text and label type from the label, also
@@ -1560,7 +1717,10 @@ property:
 classes of the vertex with each id, of the first edge with that id, and of the
 last subgraph added with that id. [fixture:
 flowchart/db-class-on-edge-and-subgraph] [fixture:
-flowchart/db-class-vertex-id-with-comma]
+flowchart/db-class-vertex-id-with-comma] It adds no vertex, so an id that no
+vertex has yet gets no class: `class C foo` after `A --> B` changes nothing, and
+after `class A foo` and then `A --> B`, A has no class. [fixture:
+flowchart/db-class-unknown-vertex] [fixture: flowchart/db-class-before-vertex]
 
 **Vertex statements.** For each vertex group, from the first to the last: for
 each of its vertices, the vertex step with its shape, then the class step with
@@ -1682,14 +1842,27 @@ has:
   by the number of subgraphs added before it, instead. `subgraph a ` with a
   space after the name has the name text `a` and a space, and gets `subGraph0`.
   [fixture: flowchart/db-subgraph-name-trailing-space] [fixture:
-  flowchart/db-subgraph-counter] A string or a directive before the space
-  changes nothing of this: `subgraph "S"` and `subgraph S%%{init: {}}%%`, each
-  followed by a space at the end of its line, have the id `subGraph0`, and so
-  does `subgraph S` followed by a space; a later `A-->S` then links to a new
-  vertex `S`. In `subgraph "click me"`, `click` is inside a string and no
-  `click` unit, so the name text is `click me`, the id `subGraph0`, and the
-  title `click me`. [fixture: flowchart/db-subgraph-string-name-trailing-space]
-  [fixture: flowchart/db-subgraph-name-directive-trailing-space] [fixture:
+  flowchart/db-subgraph-counter] The whitespace before an empty description
+  block after the name, and between two such blocks, stays in the name text,
+  while the whitespace after the last block that a line feed ends is read as a
+  line feed (see [Whitespace after `}`](#whitespace-after-)) and is no part of
+  it: `subgraph S accDescr {}`, `subgraph S accDescr {};A`, and
+  `subgraph "S"accDescr {} accDescr {}` have a name text with a space, and get
+  `subGraph0`, while `subgraph "S"accDescr {}`, also with a space after the
+  block at the end of its line, has the name text `S` and the id `S`. [fixture:
+  flowchart/gram-empty-description-block-after-subgraph-name] [fixture:
+  flowchart/db-subgraph-name-space-before-empty-description-block] [fixture:
+  flowchart/db-subgraph-name-space-between-empty-description-blocks] [fixture:
+  flowchart/db-subgraph-name-text-without-empty-description-block] [fixture:
+  flowchart/db-subgraph-name-space-after-empty-description-block] A string or a
+  directive before the space changes nothing of this: `subgraph "S"` and
+  `subgraph S%%{init: {}}%%`, each followed by a space at the end of its line,
+  have the id `subGraph0`, and so does `subgraph S` followed by a space; a later
+  `A-->S` then links to a new vertex `S`. In `subgraph "click me"`, `click` is
+  inside a string and no `click` unit, so the name text is `click me`, the id
+  `subGraph0`, and the title `click me`. [fixture:
+  flowchart/db-subgraph-string-name-trailing-space] [fixture:
+  flowchart/db-subgraph-name-directive-trailing-space] [fixture:
   flowchart/db-subgraph-name-trailing-space-then-vertex] [fixture:
   flowchart/gram-subgraph-string-click-title] [fixture:
   flowchart/db-subgraph-string-click-name-member]
@@ -1730,16 +1903,29 @@ has:
 [text of the range](../ast.md#nodes) from the end of the `,` before it to the
 start of the `,` after it; the first style starts at the end of the `space` unit
 that the rule of the statement reads before `styles`, and the last one ends at
-the separator of the statement. It is the style with the whitespace written
-around it, which no node holds, and a style that is null has one too, all
-whitespace. `style` applies the vertex step with the id, not split at commas,
-and the Db texts of its styles, so it adds a vertex that no statement has made
-yet: `style C fill:red` after `A-->B` adds C with the style `fill:red`.
-[fixture: flowchart/db-style-unknown-vertex] A `style` statement before the
-other statements of a vertex gives it the style, as `style A fill:red` before
-`A-->B` does, and the vertex step does not look at subgraphs, so
-`style S fill:red` after `subgraph S` adds a vertex `S` beside the subgraph.
-[fixture: flowchart/db-style-before-vertex] [fixture:
+the separator of the statement. The empty description blocks before the
+separator are left out, as in every [text of a range](../ast.md#nodes): the last
+styles of `classDef c fill:red accDescr {}` and
+`linkStyle 0 stroke:red accDescr {}` have the Db texts `fill:red` and
+`stroke:red`, each followed by a space, and in
+`linkStyle 0 interpolate basis accDescr {} ;`, the style that is all whitespace
+has the Db text of one space. [fixture:
+flowchart/gram-empty-description-block-after-style-before-semicolon] [fixture:
+flowchart/gram-empty-description-block-after-classdef] [fixture:
+flowchart/gram-empty-description-block-after-classdef-before-semicolon]
+[fixture: flowchart/gram-empty-description-block-after-linkstyle] [fixture:
+flowchart/gram-empty-description-block-after-linkstyle-before-semicolon]
+[fixture:
+flowchart/gram-empty-description-block-splits-spaces-after-interpolate] It is
+the style with the whitespace written around it, which no node holds, and a
+style that is null has one too, all whitespace. `style` applies the vertex step
+with the id, not split at commas, and the Db texts of its styles, so it adds a
+vertex that no statement has made yet: `style C fill:red` after `A-->B` adds C
+with the style `fill:red`. [fixture: flowchart/db-style-unknown-vertex] A
+`style` statement before the other statements of a vertex gives it the style, as
+`style A fill:red` before `A-->B` does, and the vertex step does not look at
+subgraphs, so `style S fill:red` after `subgraph S` adds a vertex `S` beside the
+subgraph. [fixture: flowchart/db-style-before-vertex] [fixture:
 flowchart/db-style-subgraph-id] `classDef` reads each `\,` in the Db texts of
 its styles as `,`; for each class name, a class is added at the end if none has
 that name, and the styles are appended to it. `classDef c fill:a\ ,stroke:b` has
@@ -1810,13 +1996,17 @@ gives the empty description, and the title stays as it was. [fixture:
 flowchart/lex-acc-descr-block-unclosed] [fixture:
 flowchart/db-acc-descr-unclosed-replaces] [fixture:
 flowchart/db-acc-descr-unclosed-empty-replaces] [fixture:
-flowchart/db-acc-descr-unclosed-keeps-title] Otherwise, a statement whose value
-is null sets the empty text, while a closed description block without text
-changes nothing: `accDescr: x` followed by `accDescr:` at the end of the text
-gives the empty description, and so does `accDescr { x }` followed by it, while
-`accDescr: x` followed by `accDescr {  }` keeps `x`, as `accDescr { x }`
-followed by `accDescr {}` does. [fixture: flowchart/db-acc-title-empty-replaces]
-[fixture: flowchart/db-acc-descr-empty-replaces] [fixture:
+flowchart/db-acc-descr-unclosed-keeps-title] Such a block takes the rest of the
+text, so a line `B --> C` after `accDescr { x`, or after `accDescr {` and a line
+`x`, adds no edge. [fixture: flowchart/db-acc-descr-unclosed-takes-lines]
+[fixture: flowchart/db-acc-descr-unclosed-text-next-line] Otherwise, a statement
+whose value is null sets the empty text, while a closed description block
+without text changes nothing: `accDescr: x` followed by `accDescr:` at the end
+of the text gives the empty description, and so does `accDescr { x }` followed
+by it, while `accDescr: x` followed by `accDescr {  }` keeps `x`, as
+`accDescr { x }` followed by `accDescr {}` does. [fixture:
+flowchart/db-acc-title-empty-replaces] [fixture:
+flowchart/db-acc-descr-empty-replaces] [fixture:
 flowchart/db-acc-descr-block-then-empty-line] [fixture:
 flowchart/db-acc-descr-empty-block-keeps] [fixture:
 flowchart/db-acc-descr-empty-block-after-block]
@@ -1863,8 +2053,17 @@ flowchart, and show in it as follows.
 - **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md).**
   The content of a data block is not read. mermaid.js reads it as YAML and
   rejects content that is not valid YAML and content that names an unknown
-  shape; here they are accepted. [fixture: flowchart/div-data-invalid-yaml]
-  [fixture: flowchart/div-data-unknown-shape]
+  shape, and a vertex whose content holds a line break and is YAML whose value
+  is null, as in `A@{`, a line break, and `}`, while on one line, as in `A@{ }`,
+  both accept it; here they are accepted. [fixture:
+  flowchart/div-data-block-line-break-only] [fixture:
+  flowchart/gram-data-block-space-only] A line with only `%%` in a data block is
+  no comment line, so it stays in the content, which mermaid.js then rejects as
+  YAML: `A@{`, a line `%%`, a line `shape: circle`, and a line `}` is rejected
+  there and accepted here, and without the `%%` line both accept it. [fixture:
+  flowchart/div-data-invalid-yaml] [fixture: flowchart/div-data-unknown-shape]
+  [fixture: flowchart/div-data-block-bare-marker-line] [fixture:
+  flowchart/gram-data-block-shape-on-own-line]
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md).**
   In mermaid.js, an HTML tag that starts in the frontmatter can change how a `"`
   of the diagram is read; here it cannot. [fixture:
@@ -1894,9 +2093,10 @@ flowchart, and show in it as follows.
   flowchart/gram-subgraph-name-click-comma] [fixture:
   flowchart/gram-subgraph-name-bare-click]
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).**
-  An empty string, an empty call, and an empty description block that does not
-  start a statement make the input rejected here, because the tree has no place
-  for them where they lie (see [Strings](#strings),
+  An empty string, an empty call, and an empty description block inside a
+  statement, neither where a statement starts nor before the separator of a
+  statement or of the header, make the input rejected here, because the tree has
+  no place for them where they lie (see [Strings](#strings),
   [Click and callbacks](#click-and-callbacks), and
   [Accessibility values](#accessibility-values)), while mermaid.js reads no
   token for them and accepts many such inputs, for example: an empty string on a

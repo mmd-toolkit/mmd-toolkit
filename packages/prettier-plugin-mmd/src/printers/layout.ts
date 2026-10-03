@@ -103,20 +103,26 @@ function toAtom(token: Token): Atom {
 
 /**
  * Whether the text of a statement from `start` to `end` lies on several
- * lines and holds a comment or a directive. Where the lexer reads the line
- * breaks inside a statement as whitespace, a printer joins the lines of the
- * statement; such a statement cannot be joined, since a comment would take
- * the rest of the line, and it is kept as written (docs/sequence.md and
- * docs/class.md, Multi-line statements).
+ * lines and cannot be joined into one: it holds a comment or a directive, or
+ * a `;`. Where the lexer reads the line breaks inside a statement as
+ * whitespace, a printer joins the lines of the statement; a comment would
+ * then take the rest of the line, and a `;` could come to a line that
+ * matches the line rule (common.md, `style` and `classDef` lines) while it
+ * did not on its own line, so the rule would ignore it and the text would
+ * change: `classDef`, a line break, and `c fill:#f00;` has the entity `#f00;`
+ * in its style, and `classDef c fill:#f00;` has the style `fill:#f00`. Such a
+ * statement is kept as written (docs/sequence.md and docs/class.md,
+ * Multi-line statements).
  */
-export function spansLinesWithTrivia(
+export function spansLinesThatCannotJoin(
   source: Source,
   start: number,
   end: number,
 ): boolean {
+  const text = source.text.slice(start, end)
   return (
-    source.text.slice(start, end).includes("\n") &&
-    findTriviaBetween(source, start, end).length > 0
+    text.includes("\n") &&
+    (text.includes(";") || findTriviaBetween(source, start, end).length > 0)
   )
 }
 
@@ -205,4 +211,20 @@ export function findAccDescrBlockClosing(
   )
   expectValue(closing, "}")
   return closing.range[0]
+}
+
+/**
+ * The text with its ASCII letters in lower case. The lexer compares
+ * keywords case-insensitively (common.md, Notation), and with an ASCII word
+ * only the ASCII letters of either case match: a character outside ASCII
+ * whose uppercase would be an ASCII letter keeps itself.
+ */
+export function toAsciiLowerCase(text: string): string {
+  return [...text]
+    .map((character) =>
+      character >= "A" && character <= "Z"
+        ? character.toLowerCase()
+        : character,
+    )
+    .join("")
 }

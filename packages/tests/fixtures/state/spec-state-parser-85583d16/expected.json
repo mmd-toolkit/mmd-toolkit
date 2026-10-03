@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-parser.spec.js",
+    "line": 189,
+    "test": "state parser can parse... > colons in transition descriptions (issue #7418) > should allow a colon inside state description text"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "myState",
+        "shape": "rect",
+        "label": "status: active",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

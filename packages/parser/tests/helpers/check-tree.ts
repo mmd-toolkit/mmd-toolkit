@@ -1,5 +1,9 @@
 import { expect } from "vitest"
-import { isWhitespace } from "../../src/character-classes.ts"
+import {
+  isLineTerminatorCharacter,
+  isLineWhitespace,
+  isWhitespace,
+} from "../../src/character-classes.ts"
 import type {
   ClassArrow,
   ClassAttribute,
@@ -16,15 +20,20 @@ import type {
   Range,
   Root,
   SequenceArrow,
+  StateNoteStatement,
+  StatePseudostateDefinitionStatement,
   Token,
 } from "../../src/index.ts"
-import { traverseNodes } from "../../src/index.ts"
+import { ignoredSemicolons, traverseNodes } from "../../src/index.ts"
 import { openSource } from "../../src/parse.ts"
+import { lineTerminatorEnd, nextOffset } from "../../src/text-cursor.ts"
+import { readDirective } from "../../src/directives.ts"
 import type { SourceLexer } from "../../src/source-lexer.ts"
 import type { DiagramUnit } from "../../src/diagram-units.ts"
 import { ClassSource } from "./class-source.ts"
 import { FlowchartSource } from "./flowchart-source.ts"
 import { SequenceSource } from "./sequence-source.ts"
+import { StateSource } from "./state-source.ts"
 
 /** Something of the tree that has a place in the source: a node, a token, a comment, a directive, or the frontmatter. */
 interface Placed {
@@ -108,21 +117,155 @@ function commentRegionsOf(text: string): Range[] {
 }
 
 /**
- * common.md, `style` and `classDef` lines: the offsets of the `;` that the
- * line rule ignores in `text`, as the shared lexer decides them.
+ * common.md, The `style` and `classDef` lines: the offsets of the `;` of
+ * `text` that the line rule ignores (`ignoredSemicolons`).
  */
 function ignoredSemicolonsOf(text: string): Set<number> {
-  const offsets = new Set<number>()
-  for (const entry of openSource(text).lexer.lineEntries()) {
-    if (entry.kind === "segment") {
-      for (const offset of entry.ignoredSemicolons) offsets.add(offset)
-    }
-  }
-  return offsets
+  return new Set(ignoredSemicolons(text).map(([start]) => start))
 }
 
-/** The offset after the directives that start at `offset`, one after another; `offset` itself when none starts there. */
+/**
+ * ast.md, Comment: whether a comment region follows `offset` on its line,
+ * after line whitespace. A region can start with a whitespace-only line, so
+ * each offset is looked at before its whitespace is passed.
+ */
+function regionFollowsOnLine(
+  text: string,
+  offset: number,
+  commentRegions: readonly Range[],
+): boolean {
+  let current = offset
+  for (;;) {
+    const position = current
+    if (commentRegions.some(([start]) => start === position)) return true
+    const codePoint = text.codePointAt(current)
+    if (codePoint === undefined || !isLineWhitespace(codePoint)) return false
+    current = nextOffset(text, current)
+  }
+}
+
+/**
+ * ast.md, Comment: whether a comment region ends right before `offset`, with
+ * only line whitespace between, as before a fragment of a diagram comment
+ * that has no mark.
+ */
+function followsRegion(
+  text: string,
+  offset: number,
+  commentRegions: readonly Range[],
+): boolean {
+  let current = offset
+  for (;;) {
+    const position = current
+    if (commentRegions.some(([, end]) => end === position)) return true
+    // Line whitespace is all in the Basic Multilingual Plane, one code unit.
+    const codePoint = current > 0 ? text.codePointAt(current - 1) : undefined
+    if (codePoint === undefined || !isLineWhitespace(codePoint)) return false
+    current -= 1
+  }
+}
+
+/**
+ * ast.md, Comment, and common.md, Comment lines: checks where `comment`
+ * ends. It runs past a line terminator only where a directive in it takes
+ * that line terminator, and it ends at none that a directive takes. Where
+ * a directive in the comment takes all that follows to the end of the text,
+ * its scan reaching there, the comment ends where that directive ends. Where
+ * comment regions follow it on its line, after U+2028 or U+2029, it is a
+ * fragment of a diagram comment and ends at its last character that is not
+ * whitespace, a `;` that the line rule ignores among them, since that `;`
+ * has characters of the comment after it on its line. Otherwise it ends
+ * before the line terminator that ends its line, or at the end of the text,
+ * and a diagram comment before a `;` that the line rule ignores and that is
+ * its last character, which is among `ignoredSemicolonStarts`. So no comment
+ * ends with a line terminator.
+ */
+function checkCommentEnd(
+  text: string,
+  comment: Comment,
+  directives: readonly Directive[],
+  ignoredSemicolonStarts: ReadonlySet<number>,
+  commentRegions: readonly Range[],
+): void {
+  const end = comment.range[1]
+  expect(
+    isLineTerminatorCharacter(text.charCodeAt(end - 1)),
+    `${label(comment)} ends with a line terminator`,
+  ).toBe(false)
+  const inComment = directives.filter((directive) =>
+    contains(comment.range, directive.range),
+  )
+  // A comment runs on past a line terminator only where a directive in it
+  // takes that line terminator.
+  for (let offset = comment.range[0]; offset < end; offset++) {
+    if (!isLineTerminatorCharacter(text.charCodeAt(offset))) continue
+    expect(
+      inComment.some(
+        (directive) =>
+          directive.range[0] < offset && offset < scanEndOf(text, directive),
+      ),
+      `${label(comment)} runs past the line terminator at ${offset}, which no directive in it takes`,
+    ).toBe(true)
+  }
+  const lastDirective = inComment.at(-1)
+  if (
+    lastDirective !== undefined &&
+    scanEndOf(text, lastDirective) === text.length
+  ) {
+    expect(
+      end,
+      `${label(comment)} ends where the directive that takes the rest of the text ends`,
+    ).toBe(lastDirective.range[1])
+    return
+  }
+  if (regionFollowsOnLine(text, end, commentRegions)) {
+    expect(
+      isWhitespaceAt(text, end - 1),
+      `${label(comment)} ends with whitespace before a comment region`,
+    ).toBe(false)
+    return
+  }
+  expect(
+    ignoredSemicolonStarts.has(end - 1),
+    `${label(comment)} ends with a \`;\` that the line rule ignores`,
+  ).toBe(false)
+  const after = ignoredSemicolonStarts.has(end) ? end + 1 : end
+  expect(
+    after === text.length || lineTerminatorEnd(text, after) !== null,
+    `${label(comment)} ends where its line ends`,
+  ).toBe(true)
+  // common.md, Comment lines: the line terminator it ends at is the next one
+  // that is not part of a directive, that no directive scan takes.
+  expect(
+    directives.some(
+      (directive) =>
+        directive.range[0] < after && after < scanEndOf(text, directive),
+    ),
+    `${label(comment)} ends at a line terminator that a directive takes`,
+  ).toBe(false)
+}
+
+/**
+ * common.md, Where a directive is: where the scan of `directive` ends, after
+ * the whitespace and line terminators that it takes after its argument,
+ * which its range leaves out (ast.md, Directive). The text without the
+ * directives goes on there.
+ */
+function scanEndOf(text: string, directive: Directive): number {
+  const match = readDirective(text, directive.range[0])
+  if (match === null) {
+    throw new Error(`no directive starts at ${directive.range[0]}`)
+  }
+  return match.range[1]
+}
+
+/**
+ * The offset after the directives that start at `offset`, one after another,
+ * each with what its scan takes after it; `offset` itself when none starts
+ * there.
+ */
 function afterDirectivesAt(
+  text: string,
   offset: number,
   directives: readonly Directive[],
 ): number {
@@ -133,8 +276,25 @@ function afterDirectivesAt(
       (candidate) => candidate.range[0] === position,
     )
     if (directive === undefined) return current
-    current = directive.range[1]
+    current = scanEndOf(text, directive)
   }
+}
+
+/**
+ * The marks of the diagram comments of each diagram type, as its document
+ * defines them: diagrams/sequence.md, Units and contexts; diagrams/state.md,
+ * Comments; diagrams/class.md, The statement context. A flowchart and the
+ * `error` pseudo-diagram have only comment lines.
+ */
+const diagramCommentMarks: Record<
+  Root["body"]["type"],
+  readonly ("%%" | "#" | "%")[]
+> = {
+  ErrorDiagram: [],
+  FlowchartDiagram: [],
+  SequenceDiagram: ["#", "%%", "%"],
+  ClassDiagram: ["%%"],
+  StateDiagram: ["#", "%%"],
 }
 
 /**
@@ -153,7 +313,7 @@ function diagramCommentMarkEnd(
   const start = comment.range[0]
   if (text[start] === "#") return start + 1
   expect(text[start], `the mark of ${label(comment)}`).toBe("%")
-  const second = afterDirectivesAt(start + 1, directives)
+  const second = afterDirectivesAt(text, start + 1, directives)
   return second < comment.range[1] && text[second] === "%"
     ? second + 1
     : start + 1
@@ -185,11 +345,11 @@ function inSourceOrder(parent: Node, children: readonly Node[]): Node[] {
 
 /**
  * ast.md, Shared leaf nodes > Identifier: the name of `identifier` is the
- * text of the range of each of its units without the whitespace at its
- * ends, joined in order. Its units are those of `units`, the units of the
- * diagram's lexer, whose text, without the whitespace at its ends, lies in
- * its range; that they are its units, and not others, is checked through
- * the Db, which is compared with mermaid.js.
+ * text of the range of each of its units, joined in order, and holds no
+ * whitespace. Its units are those of `units`, the units of the diagram's
+ * lexer, whose text, without the whitespace at its ends, lies in its range;
+ * that they are its units, and not others, is checked through the Db,
+ * which is compared with mermaid.js.
  */
 function expectIdentifierName(
   lexer: SourceLexer,
@@ -208,6 +368,12 @@ function expectIdentifierName(
     identifier.name,
     `the name ${JSON.stringify(identifier.name)} of ${label(identifier)} is not the texts of its units, ${JSON.stringify(written)}`,
   ).toBe(written)
+  expect(
+    [...identifier.name].some((character) =>
+      isWhitespace(character.codePointAt(0) ?? 0),
+    ),
+    `the name ${JSON.stringify(identifier.name)} of ${label(identifier)} holds whitespace`,
+  ).toBe(false)
 }
 
 /**
@@ -309,26 +475,68 @@ export function checkInvariants(text: string, root: Root): void {
     )
   }
   const commentRegions = commentRegionsOf(text)
+  const ignoredSemicolonStarts = ignoredSemicolonsOf(text)
   for (const comment of comments) {
-    if (commentRegions.some((region) => contains(region, comment.range))) {
+    const isCommentLine = commentRegions.some((region) =>
+      contains(region, comment.range),
+    )
+    checkCommentEnd(
+      text,
+      comment,
+      directives,
+      isCommentLine ? new Set() : ignoredSemicolonStarts,
+      commentRegions,
+    )
+    if (isCommentLine) {
       // ast.md, Comment: the range of a comment line starts at the first `%`
       // of the `%%`, whose two `%` can have directives between them, and
       // `value` is the source text after the second `%`.
+      expect(comment.mark, `mark of ${label(comment)}`).toBe("%%")
       expect(text[comment.range[0]], `start of ${label(comment)}`).toBe("%")
-      const secondPercent = afterDirectivesAt(comment.range[0] + 1, directives)
+      const secondPercent = afterDirectivesAt(
+        text,
+        comment.range[0] + 1,
+        directives,
+      )
       expect(text[secondPercent], `the \`%%\` of ${label(comment)}`).toBe("%")
       expect(comment.value, `value of ${label(comment)}`).toBe(
         text.slice(secondPercent + 1, comment.range[1]),
       )
-    } else {
-      // ast.md, Comment: a comment outside the comment regions is a diagram
-      // comment, whose range starts at its mark and whose `value` is the
-      // source text after the mark.
+    } else if (comment.mark === null) {
+      // ast.md, Comment: a fragment of a diagram comment after a comment
+      // region has no mark; it starts at its first character, right after
+      // the region and the line whitespace after it, and its `value` is the
+      // source text of its range.
+      expect(
+        followsRegion(text, comment.range[0], commentRegions),
+        `${label(comment)} has no mark and follows no comment region`,
+      ).toBe(true)
+      expect(
+        isWhitespaceAt(text, comment.range[0]),
+        `${label(comment)} starts with whitespace`,
+      ).toBe(false)
       expect(comment.value, `value of ${label(comment)}`).toBe(
-        text.slice(
-          diagramCommentMarkEnd(text, comment, directives),
-          comment.range[1],
-        ),
+        text.slice(...comment.range),
+      )
+    } else {
+      // ast.md, Comment: another comment outside the comment regions is a
+      // diagram comment, whose range starts at its mark and whose `value` is
+      // the source text after the mark. `mark` holds the characters of the
+      // mark, without the directives between them.
+      expect(
+        diagramCommentMarks[body.type],
+        `mark of ${label(comment)} in a ${body.type}`,
+      ).toContain(comment.mark)
+      const markEnd = diagramCommentMarkEnd(text, comment, directives)
+      expect(comment.mark, `mark of ${label(comment)}`).toBe(
+        text[comment.range[0]] === "#"
+          ? "#"
+          : markEnd === comment.range[0] + 1
+            ? "%"
+            : "%%",
+      )
+      expect(comment.value, `value of ${label(comment)}`).toBe(
+        text.slice(markEnd, comment.range[1]),
       )
     }
   }
@@ -377,43 +585,34 @@ export function checkInvariants(text: string, root: Root): void {
     ).toBe(false)
   }
 
-  // Invariant 5: a comment lies outside all tokens, or entirely inside the
-  // range of one token.
+  // Invariant 5: a comment lies outside all tokens.
   for (const comment of comments) {
     for (const token of tokens) {
       expect(
-        !overlap(comment.range, token.range) ||
-          contains(token.range, comment.range),
-        `${label(comment)} lies partly inside ${label(token)}`,
-      ).toBe(true)
+        overlap(comment.range, token.range),
+        `${label(comment)} lies inside ${label(token)}`,
+      ).toBe(false)
     }
   }
 
-  // Invariant 6: a directive lies inside no other token, except as part of
-  // a comment region that lies inside a token. Every directive that lies
-  // outside all other tokens and all comments has exactly one `Directive`
-  // token, with its range, and every `Directive` token is such a
+  // Invariant 6: a directive lies inside no other token. Every directive
+  // that lies outside all other tokens and all comments has exactly one
+  // `Directive` token, with its range, and every `Directive` token is such a
   // directive's.
   const otherTokens = tokens.filter((token) => token.type !== "Directive")
   const directiveTokens = tokens.filter((token) => token.type === "Directive")
   const directivesOutside: Directive[] = []
   for (const directive of directives) {
-    let insideToken = false
     for (const token of otherTokens) {
-      if (!overlap(directive.range, token.range)) continue
-      insideToken = true
       expect(
-        commentRegions.some(
-          (region) =>
-            contains(region, directive.range) && contains(token.range, region),
-        ),
-        `${label(directive)} lies inside ${label(token)}, and not in a comment region inside that token`,
-      ).toBe(true)
+        overlap(directive.range, token.range),
+        `${label(directive)} lies inside ${label(token)}`,
+      ).toBe(false)
     }
     const insideComment = comments.some((comment) =>
       overlap(comment.range, directive.range),
     )
-    if (!insideToken && !insideComment) directivesOutside.push(directive)
+    if (!insideComment) directivesOutside.push(directive)
   }
   expect(
     directiveTokens.map((token) => token.range),
@@ -461,16 +660,16 @@ export function checkInvariants(text: string, root: Root): void {
   }
 
   // Invariant 9: `Root.range` covers the whole input, and the range of every
-  // other node runs from the start of its first token to the end of its
-  // last, inside the range of its parent. A node's tokens are never
-  // `Directive` tokens or tokens of the frontmatter. The tree does not say which tokens
-  // are a node's own, so what is checked is that the range starts where a
-  // token of the diagram starts and ends where one ends. A node without a token, which
+  // other node runs from the start of its first token to the end of its last,
+  // inside the range of its parent. A node's tokens are never `Directive`
+  // tokens or tokens of the frontmatter. The tree does not say which tokens are
+  // a node's own, so what is checked is that the range starts where a token of
+  // the diagram starts and ends where one ends. A node without a token, which
   // is a label that is all whitespace, covers its units instead (ast.md,
-  // Nodes). The units are not in the tree, so what is
-  // checked is that its value is all whitespace, that its range is not
-  // empty, and that it holds no character of a token and nothing but
-  // whitespace, line terminators, comments, and directives.
+  // Nodes). The units are not in the tree, so what is checked is that its value
+  // is all whitespace, that its range is not empty, and that it holds no
+  // character of a token and nothing but whitespace, line terminators,
+  // comments, and directives.
   expect(root.range, "the root covers the whole input").toEqual([
     0,
     text.length,
@@ -621,6 +820,7 @@ const valueNodeTypes: Readonly<Record<Node["type"], boolean>> = {
   SequenceCriticalStatement: false,
   SequenceSection: false,
   SequenceIgnoredStatement: true,
+  SequenceIdentifier: true,
   SequenceText: false,
   SequenceLiteral: true,
   SequenceDataBlock: true,
@@ -648,12 +848,45 @@ const valueNodeTypes: Readonly<Record<Node["type"], boolean>> = {
   ClassAnnotation: false,
   ClassLiteral: true,
   ClassIgnoredText: true,
+  StateDiagram: false,
+  StateDefinitionStatement: false,
+  StateTransitionStatement: false,
+  StateReference: false,
+  StateTerminal: false,
+  StateCompositeStatement: false,
+  StateAliasDefinitionStatement: false,
+  StatePseudostateDefinitionStatement: false,
+  StateDividerStatement: false,
+  StateNoteStatement: false,
+  StateFloatingNoteStatement: false,
+  StateClickStatement: false,
+  StateClassDefStatement: false,
+  StateClassStatement: false,
+  StateStyleStatement: false,
+  StateDirectionStatement: false,
+  StateAccTitleStatement: false,
+  StateAccDescrStatement: false,
+  StateAccDescrBlockStatement: false,
+  StateScaleStatement: false,
+  StateHideEmptyDescriptionStatement: false,
+  StateIgnoredStatement: true,
+  StateLiteral: true,
+  StateIgnoredText: true,
 }
 
 /** The node types of the data blocks, whose delimiters lie in their range. */
 const dataBlockNodeTypes: readonly Node["type"][] = [
   "FlowchartDataBlock",
   "SequenceDataBlock",
+]
+
+/**
+ * ast/state.md, StateIgnoredText: the value node types whose range holds
+ * the tokens of their units, of whatever kind the units have: the empty
+ * strings, empty description blocks, and `%%` of a StateIgnoredText.
+ */
+const nodeTypesWithTokensOfAnyKind: readonly Node["type"][] = [
+  "StateIgnoredText",
 ]
 
 /** Every node of the tree under `root`, in the order of a walk. */
@@ -671,20 +904,21 @@ function nodesOf(root: Root): Node[] {
 }
 
 /**
- * ast/flowchart.md and ast/sequence.md, Tokens: the tokens of a diagram and
- * the value nodes they lie in. A token of a value, `Identifier`, `RawText`, `Numeric`, or
- * `String`, lies in a value node. A `Keyword` or `Punctuator` token lies in
- * no value node, except the delimiters of a data block, which the block's
- * range covers. A `;` that the line rule ignores and that is a token of its
- * own is left out: it affects no value, whatever kind the diagram gives it
- * (ast.md, Tokens).
+ * The Tokens of each diagram's ast/<diagram>.md: the tokens of a diagram and
+ * the value nodes they lie in. A token of a value, `Identifier`, `RawText`,
+ * `Numeric`, `String`, or `StringFragment`, lies in a value node. A `Keyword`
+ * or `Punctuator` token lies in no value node, except the delimiters of a data
+ * block, which the block's range covers, and the tokens of the units of a node
+ * that holds them whatever their kind ({@link nodeTypesWithTokensOfAnyKind}). A
+ * `;` that the line rule ignores and that is a token of its own is left out: it
+ * affects no value, whatever kind the diagram gives it (ast.md, Tokens).
  */
 function checkTokensInValueNodes(text: string, root: Root): void {
-  const ignoredSemicolons = ignoredSemicolonsOf(text)
+  const ignoredSemicolonStarts = ignoredSemicolonsOf(text)
   const nodes = nodesOf(root)
   const valueNodes = nodes.filter((node) => valueNodeTypes[node.type])
   for (const token of diagramTokensOf(root)) {
-    if (token.value === ";" && ignoredSemicolons.has(token.range[0])) {
+    if (token.value === ";" && ignoredSemicolonStarts.has(token.range[0])) {
       continue
     }
     const holders = valueNodes.filter((node) =>
@@ -694,7 +928,8 @@ function checkTokensInValueNodes(text: string, root: Root): void {
       token.type === "Identifier" ||
       token.type === "RawText" ||
       token.type === "Numeric" ||
-      token.type === "String"
+      token.type === "String" ||
+      token.type === "StringFragment"
     if (isValue) {
       expect(
         holders.length > 0,
@@ -703,7 +938,9 @@ function checkTokensInValueNodes(text: string, root: Root): void {
     } else if (token.type === "Keyword" || token.type === "Punctuator") {
       const allowed = holders.every(
         (node) =>
-          token.type === "Punctuator" && dataBlockNodeTypes.includes(node.type),
+          nodeTypesWithTokensOfAnyKind.includes(node.type) ||
+          (token.type === "Punctuator" &&
+            dataBlockNodeTypes.includes(node.type)),
       )
       expect(
         allowed,
@@ -716,6 +953,13 @@ function checkTokensInValueNodes(text: string, root: Root): void {
 /** The tokens of `root` that lie in `range`. */
 function tokensIn(root: Root, range: Range): Token[] {
   return root.tokens.filter((token) => contains(range, token.range))
+}
+
+/** The ranges of the tokens of `root` in `range`, other than the `Directive` tokens. */
+function nonDirectiveTokenRangesIn(root: Root, range: Range): Range[] {
+  return tokensIn(root, range)
+    .filter((token) => token.type !== "Directive")
+    .map((token) => token.range)
 }
 
 /**
@@ -1001,12 +1245,12 @@ function checkFlowchartTree(
  * first invariant, by which every such character is in a token, four
  * conditions say that: every token is of the kind `RawText`, no token holds
  * whitespace or a line terminator, two tokens touch only when one of them
- * is a `;`, and every comment is outside the tokens. The tree does not tell
- * whether a `;` was ignored, so the third condition cannot ask for more.
+ * is a `;`. That every comment is outside the tokens holds for every tree
+ * (Invariants). The tree does not tell whether a `;` was ignored, so the
+ * third condition cannot ask for more.
  * Tokens of other diagrams do not satisfy these conditions.
  */
 function checkErrorDiagramTokens(root: Root): void {
-  const { comments } = root
   const tokens = diagramTokensOf(root)
   tokens.forEach((token, index) => {
     expect(token.type, `kind of ${label(token)}`).toBe("RawText")
@@ -1022,19 +1266,13 @@ function checkErrorDiagramTokens(root: Root): void {
         `${label(token)} touches the token before it, and neither is a \`;\``,
       ).toBe(true)
     }
-    for (const comment of comments) {
-      expect(
-        overlap(comment.range, token.range),
-        `${label(comment)} lies inside ${label(token)} of an ErrorDiagram`,
-      ).toBe(false)
-    }
   })
 }
 
 /**
- * ast/sequence.md: the value of every leaf node is the text of its range,
- * or the part of it that its node type names: an Identifier, a
- * SequenceLiteral, a SequenceBoxText, and a SequenceIgnoredStatement the
+ * ast/sequence.md: the value of every leaf node is the text of its range, or
+ * the part of it that its node type names: an Identifier, a SequenceIdentifier,
+ * a SequenceLiteral, a SequenceBoxText, and a SequenceIgnoredStatement the
  * whole text, a SequenceDataBlock the text between `@{` and `}`, and a
  * NumericLiteral the number that its `raw` writes.
  */
@@ -1047,6 +1285,10 @@ function checkSequenceValues(text: string, root: Root): void {
       case "Identifier":
         expectIdentifierName(lexer, units, node)
         continue
+      case "SequenceIdentifier":
+        value = node.name
+        written = lexer.textOfRange(start, end, [])
+        break
       case "SequenceLiteral":
       case "SequenceBoxText":
       case "SequenceIgnoredStatement":
@@ -1146,17 +1388,19 @@ function checkSequenceTree(text: string, root: Root): void {
         expect(keywords.includes("off"), `${label(node)}: off`).toBe(node.off)
         break
       case "SequenceBoxText": {
-        // ast/sequence.md, SequenceBoxText: each part is a token of its
-        // own, so the tokens of the text are those of its parts.
+        // ast/sequence.md, SequenceBoxText: each part is one token, unless a
+        // directive cuts it into tokens of the same kind, so the tokens of
+        // the text are those that lie in its parts. That the range of each
+        // part runs from a token to a token is invariant 9.
         const parts = [node.colorCandidate, node.remainder].filter(
           (part) => part !== null,
         )
         expect(
-          tokensIn(root, node.range)
-            .filter((token) => token.type !== "Directive")
-            .map((token) => token.range),
-          `the tokens of ${label(node)} are its parts`,
-        ).toEqual(parts.map((part) => part.range))
+          nonDirectiveTokenRangesIn(root, node.range),
+          `the tokens of ${label(node)} are those of its parts`,
+        ).toEqual(
+          parts.flatMap((part) => nonDirectiveTokenRangesIn(root, part.range)),
+        )
         break
       }
       case "SequenceAccDescrBlockStatement": {
@@ -1412,6 +1656,125 @@ function checkClassTree(text: string, root: Root): void {
 }
 
 /**
+ * ast/state.md: the value of every leaf node is the text of its range, or
+ * the part of it that its node type names: an Identifier, a StateLiteral,
+ * a StateIgnoredText, and a StateIgnoredStatement the whole text, and a
+ * StringLiteral, which is
+ * always closed in this diagram, the text between its quotes.
+ */
+function checkStateValues(text: string, root: Root): void {
+  const { lexer, units } = new StateSource(text, root)
+  for (const node of nodesOf(root)) {
+    const [start, end] = node.range
+    let value: string, written: string
+    switch (node.type) {
+      case "Identifier":
+        expectIdentifierName(lexer, units, node)
+        continue
+      case "StateLiteral":
+      case "StateIgnoredText":
+      case "StateIgnoredStatement":
+        value = node.value
+        written = lexer.textOfRange(start, end, [])
+        break
+      case "StringLiteral":
+        expect(node.closed, `${label(node)} is closed`).toBe(true)
+        value = node.value
+        written = lexer.textOfRange(start + 1, end - 1, [])
+        break
+      default:
+        continue
+    }
+    expect(
+      value,
+      `the value ${JSON.stringify(value)} of ${label(node)} is not the text of its range, ${JSON.stringify(written)}`,
+    ).toBe(written)
+  }
+}
+
+/** The values of the `Keyword` tokens of `root` in `range`, in lower case. */
+function lowerCaseKeywordsIn(root: Root, range: Range): string[] {
+  return tokensIn(root, range)
+    .filter((token) => token.type === "Keyword")
+    .map((token) => token.value.toLowerCase())
+}
+
+/**
+ * ast/state.md, StatePseudostateDefinitionStatement: the kind is the word
+ * of its mark, the last `Keyword` token, written in any case.
+ */
+function checkStatePseudostate(
+  root: Root,
+  statement: StatePseudostateDefinitionStatement,
+): void {
+  const mark = lowerCaseKeywordsIn(root, statement.range).at(-1)
+  expect(
+    [`<<${statement.kind}>>`, `[[${statement.kind}]]`],
+    `the kind of ${label(statement)}, written ${mark}`,
+  ).toContain(mark)
+}
+
+/**
+ * ast/state.md, StateNoteStatement: the position is the first word of its
+ * `position` token, the second `Keyword` token, written in any case.
+ */
+function checkStateNote(root: Root, statement: StateNoteStatement): void {
+  const position = lowerCaseKeywordsIn(root, statement.range)[1]
+  expect(
+    position,
+    `the position of ${label(statement)}, written ${position}`,
+  ).toBe(`${statement.position} of`)
+}
+
+/**
+ * ast/state.md: asserts what the state document states about its tree
+ * beyond the invariants of ast.md: the values of the leaf nodes are the
+ * texts of their ranges, the tokens of values lie in value nodes, and the
+ * fixed words and marks of a node are its tokens: `[*]` and `--`, the
+ * kind of a pseudostate, the position of a note, the value of a direction
+ * statement, and the `}` of a closed description block.
+ */
+function checkStateTree(text: string, root: Root): void {
+  checkStateValues(text, root)
+  checkTokensInValueNodes(text, root)
+  for (const node of nodesOf(root)) {
+    switch (node.type) {
+      case "StateTerminal":
+      case "StateDividerStatement":
+        expect(
+          tokensIn(root, node.range).map((token) => [token.type, token.value]),
+          `the token of ${label(node)}`,
+        ).toEqual([
+          ["Punctuator", node.type === "StateTerminal" ? "[*]" : "--"],
+        ])
+        break
+      case "StatePseudostateDefinitionStatement":
+        checkStatePseudostate(root, node)
+        break
+      case "StateNoteStatement":
+        checkStateNote(root, node)
+        break
+      case "StateDirectionStatement":
+        expect(
+          lowerCaseKeywordsIn(root, node.range),
+          `the keywords of ${label(node)}`,
+        ).toEqual(["direction", node.direction.toLowerCase()])
+        break
+      case "StateAccDescrBlockStatement": {
+        const last = tokensIn(root, node.range).at(-1)
+        expect(
+          last?.type === "Punctuator" && last.value === "}",
+          `${label(node)} is closed when it ends with }`,
+        ).toBe(node.closed)
+        break
+      }
+      default:
+        break
+    }
+  }
+}
+
+/**
  * Asserts everything ast.md states about a tree returned by `parse(text)`:
  * the conditions of every tree, and the conditions of its diagram.
  */
@@ -1423,4 +1786,5 @@ export function checkTree(text: string, root: Root): void {
   }
   if (root.body.type === "SequenceDiagram") checkSequenceTree(text, root)
   if (root.body.type === "ClassDiagram") checkClassTree(text, root)
+  if (root.body.type === "StateDiagram") checkStateTree(text, root)
 }

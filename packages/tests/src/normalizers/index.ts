@@ -2,6 +2,7 @@ import type { DbSummary } from "../types.ts"
 import { normalizeClass, patchClassDb } from "./class.ts"
 import { normalizeFlowchart, patchFlowDb } from "./flowchart.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
+import { normalizeState } from "./state.ts"
 
 /**
  * Turns a mermaid Db into its summary. Receives the Db right after parsing.
@@ -25,6 +26,8 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["sequence", normalizeSequence],
   // `classDiagram` and `classDiagram-v2` are both detected as `classDiagram`.
   ["classDiagram", normalizeClass],
+  // `stateDiagram` and `stateDiagram-v2` are both detected as `stateDiagram`.
+  ["stateDiagram", normalizeState],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])

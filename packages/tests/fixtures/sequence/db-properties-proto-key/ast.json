@@ -9,7 +9,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "A",
           "range": [
             30,
@@ -46,7 +46,7 @@
       {
         "type": "SequencePropertiesStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "A",
           "range": [
             45,

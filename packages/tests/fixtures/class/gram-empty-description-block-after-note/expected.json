@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Empty description blocks before a separator: an empty description block after the last unit of a statement, before the separator that the statement needs, is a description block statement without text after it; mermaid.js reads no token for it."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "class": "A",
+        "text": "x"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

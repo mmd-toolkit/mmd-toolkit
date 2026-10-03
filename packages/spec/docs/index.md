@@ -113,9 +113,10 @@ the Grammar section of the diagram document says which rule makes which node.
 ## Writing conventions
 
 - Do not write invisible or easily confused characters directly in these
-  documents: control characters, U+00A0, U+00AD, U+FEFF, U+200B–U+200F, U+2028,
-  U+2029, and the other Unicode space separators. Name them as `U+XXXX`. Fixture
-  inputs (`input.mmd`) contain the real characters, as intended.
+  documents: control characters other than tab, line feed, and carriage return,
+  U+00A0, U+00AD, U+FEFF, U+200B–U+200F, U+2028, U+2029, and the other Unicode
+  space separators. Name them as `U+XXXX`. Fixture inputs (`input.mmd`) contain
+  the real characters, as intended.
 - Do not write code in a programming language in the specification: no regular
   expressions and no type definitions in TypeScript or any other language. Data
   structures such as the abstract syntax tree are defined with field tables

@@ -42,6 +42,7 @@ import type {
   DiagramPosition,
   DiagramText,
 } from "../../diagram-text.ts"
+import { lineFeedAfter } from "../../diagram-text.ts"
 import type { DiagramUnit } from "../../diagram-units.ts"
 import { readUnit } from "../../diagram-units.ts"
 import { DirectionLineRule } from "../../direction-line.ts"
@@ -337,7 +338,11 @@ export class ClassUnitLexer {
     this.reader = reader
     this.lines = lines
     this.position = reader.first()
-    this.directionLine = new DirectionLineRule(reader, DIRECTION_LINE_VALUES)
+    this.directionLine = new DirectionLineRule(
+      reader,
+      DIRECTION_LINE_VALUES,
+      matchWord,
+    )
   }
 
   /**
@@ -585,13 +590,13 @@ export class ClassUnitLexer {
     if (at.codePoint !== PERCENT_SIGN || second?.codePoint !== PERCENT_SIGN) {
       return false
     }
-    let last = second
-    let position = this.reader.after(second)
-    while (position !== null && position.codePoint !== LINE_FEED) {
-      last = position
-      position = this.reader.after(position)
-    }
-    this.comments.push({ range: [at.start, last.end], valueStart: second.end })
+    const lineFeed = lineFeedAfter(this.reader, second)
+    this.comments.push({
+      range: [at.start, lineFeed.start],
+      mark: "%%",
+      valueStart: second.end,
+    })
+    let position: DiagramPosition = lineFeed
     if (!this.lineHasUnit) {
       while (position !== null && position.codePoint === LINE_FEED) {
         position = this.reader.after(position)

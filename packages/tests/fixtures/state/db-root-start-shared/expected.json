@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary: two [*] at the top level before the arrow are one state, root_start."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "A",
+        "label": ""
+      },
+      {
+        "start": "root_start",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

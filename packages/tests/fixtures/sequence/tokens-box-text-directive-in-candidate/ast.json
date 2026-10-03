@@ -1,0 +1,302 @@
+{
+  "type": "Root",
+  "diagramType": "sequence",
+  "body": {
+    "type": "SequenceDiagram",
+    "body": [
+      {
+        "type": "SequenceBoxStatement",
+        "text": {
+          "type": "SequenceBoxText",
+          "value": "Group",
+          "colorCandidate": {
+            "type": "SequenceLiteral",
+            "value": "Group",
+            "range": [
+              20,
+              39
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 4
+              },
+              "end": {
+                "line": 2,
+                "column": 23
+              }
+            }
+          },
+          "remainder": null,
+          "range": [
+            20,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 4
+            },
+            "end": {
+              "line": 2,
+              "column": 23
+            }
+          }
+        },
+        "body": [
+          {
+            "type": "SequenceParticipantStatement",
+            "kind": "participant",
+            "created": false,
+            "id": {
+              "type": "SequenceIdentifier",
+              "name": "A",
+              "range": [
+                52,
+                53
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 12
+                },
+                "end": {
+                  "line": 3,
+                  "column": 13
+                }
+              }
+            },
+            "data": null,
+            "alias": null,
+            "range": [
+              40,
+              53
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 13
+              }
+            }
+          }
+        ],
+        "range": [
+          16,
+          57
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 3
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      57
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 3
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {}",
+      "closed": true,
+      "range": [
+        22,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sequenceDiagram",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "box",
+      "range": [
+        16,
+        19
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Gr",
+      "range": [
+        20,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{init: {}}%%",
+      "range": [
+        22,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "oup",
+      "range": [
+        36,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 20
+        },
+        "end": {
+          "line": 2,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "participant",
+      "range": [
+        40,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        52,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        54,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    58
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 0
+    }
+  }
+}

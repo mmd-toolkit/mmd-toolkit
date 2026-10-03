@@ -114,7 +114,12 @@ function isOnStyleLine({ fixture, offset }: Boundary): boolean {
 }
 
 /** The diagram types whose fixtures get insertions. */
-const diagrams: readonly DiagramType[] = ["flowchart", "sequence", "class"]
+const diagrams: readonly DiagramType[] = [
+  "flowchart",
+  "sequence",
+  "class",
+  "state",
+]
 
 /** The accepted fixtures of each diagram type. */
 const fixturesByDiagram: ReadonlyMap<DiagramType, readonly Fixture[]> = new Map(
@@ -206,6 +211,30 @@ describe.each(diagrams)(
             " %% c\n%% d\n  \n",
             " %% c\n \t\n\n",
           ],
+        )
+        const report = await checkGeneratedInputs(inputs)
+        await annotate(describeReport(report))
+        expect(report.checked).toBeGreaterThan(0)
+        expect(report.problems).toEqual([])
+      },
+      TIMEOUT,
+    )
+
+    it(
+      "a U+2028 or U+2029, alone or with a comment before or after it",
+      async ({ annotate }) => {
+        // U+2028 and U+2029 are whitespace to the printer, but a comment may
+        // start right after them, and a diagram comment goes on past such a
+        // comment line (docs/sequence.md, Line separators).
+        const inputs = insertAt(
+          sampleBoundaries(fixtures, () => true),
+          ["\u2028", "\u2029"].flatMap((separator) => [
+            separator,
+            `${separator}%% c\n`,
+            ` %% c${separator}%% d\n`,
+            ` #c${separator}%% d\n`,
+            `${separator}%% c${separator}%% d\n`,
+          ]),
         )
         const report = await checkGeneratedInputs(inputs)
         await annotate(describeReport(report))

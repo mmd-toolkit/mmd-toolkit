@@ -1,0 +1,126 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/stateDiagram.md",
+    "line": 157
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "First",
+        "shape": "roundedWithTitle",
+        "label": "First",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "First_start",
+        "shape": "stateStart",
+        "label": "First_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "First"
+      },
+      {
+        "id": "second",
+        "shape": "rect",
+        "label": "second",
+        "classes": [],
+        "styles": [],
+        "parentId": "First"
+      },
+      {
+        "id": "First_end",
+        "shape": "stateEnd",
+        "label": "First_end",
+        "classes": [],
+        "styles": [],
+        "parentId": "First"
+      },
+      {
+        "id": "NamedComposite",
+        "shape": "roundedWithTitle",
+        "label": "Another Composite",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "NamedComposite_start",
+        "shape": "stateStart",
+        "label": "NamedComposite_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "NamedComposite"
+      },
+      {
+        "id": "namedSimple",
+        "shape": "rect",
+        "label": "Another simple",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "NamedComposite"
+      },
+      {
+        "id": "NamedComposite_end",
+        "shape": "stateEnd",
+        "label": "NamedComposite_end",
+        "classes": [],
+        "styles": [],
+        "parentId": "NamedComposite"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "First",
+        "label": ""
+      },
+      {
+        "start": "First_start",
+        "end": "second",
+        "label": ""
+      },
+      {
+        "start": "second",
+        "end": "First_end",
+        "label": ""
+      },
+      {
+        "start": "root_start",
+        "end": "NamedComposite",
+        "label": ""
+      },
+      {
+        "start": "NamedComposite_start",
+        "end": "namedSimple",
+        "label": ""
+      },
+      {
+        "start": "namedSimple",
+        "end": "NamedComposite_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

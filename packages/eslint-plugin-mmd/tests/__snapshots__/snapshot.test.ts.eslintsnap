@@ -278,9 +278,9 @@ Code:
 [2] SequenceDiagram
 [3] SequenceAutonumberStatement
 [4] SequenceMessageStatement
-[5] Identifier
+[5] SequenceIdentifier
 [6] SequenceArrow
-[7] Identifier
+[7] SequenceIdentifier
 [8] SequenceText
 [9] SequenceLiteral
 ---
@@ -312,9 +312,9 @@ Code:
 [2] SequenceDiagram
 [3] SequenceAutonumberStatement
 [4] SequenceMessageStatement
-[5] Identifier
+[5] SequenceIdentifier
 [6] SequenceArrow
-[7] Identifier
+[7] SequenceIdentifier
 [8] SequenceText
 [9] SequenceLiteral
 ---

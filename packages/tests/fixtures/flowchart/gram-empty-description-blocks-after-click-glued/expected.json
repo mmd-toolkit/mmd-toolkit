@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: without whitespace around them, two blocks may follow a click statement, which takes no whitespace at its end."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {},
+        "link": "u"
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

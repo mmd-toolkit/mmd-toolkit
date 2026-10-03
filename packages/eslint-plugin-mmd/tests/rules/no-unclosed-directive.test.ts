@@ -5,8 +5,8 @@
 import type { Rule } from "eslint"
 import { SnapshotRuleTester } from "eslint-snapshot-rule-tester"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import plugin from "../../src/index.ts"
 import { noUnclosedDirective } from "../../src/rules/no-unclosed-directive.ts"
+import { LANGUAGE_CONFIG } from "../helpers.ts"
 
 const fixtures = new Map(
   (await loadFixtures("common")).map((fixture) => [fixture.name, fixture]),
@@ -27,7 +27,7 @@ function fixtureCase(name: string): {
   }
 }
 
-const tester = new SnapshotRuleTester(plugin.configs.recommended)
+const tester = new SnapshotRuleTester(LANGUAGE_CONFIG)
 
 // The tester takes the rule types of JavaScript; ESLint runs a rule of any
 // language the same way.

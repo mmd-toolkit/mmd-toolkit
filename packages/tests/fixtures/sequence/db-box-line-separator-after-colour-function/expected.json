@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Box colours: a U+2028 after the colour candidate is outside that whitespace, so the split does not match; the box has the fill transparent and no name."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": [
+          "A"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

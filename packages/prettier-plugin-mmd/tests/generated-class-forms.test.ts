@@ -33,6 +33,8 @@ const names: readonly string[] = [
   "oB",
   "order",
   "noteX",
+  "A call",
+  "call",
 ]
 
 /** The relation ends (diagrams/class.md, Relations), and none. */
@@ -64,6 +66,9 @@ const labels: readonly string[] = [
   ":#f00;",
   " %% c",
   "%% c",
+  " : x: ",
+  " : x:\t",
+  " :: ",
 ]
 
 /** A relation statement. */
@@ -118,6 +123,8 @@ const memberTexts: readonly string[] = [
   "<< y z >>",
   "x %% c",
   "+x style:#a;",
+  "x: ",
+  "x:\t",
 ]
 
 /**

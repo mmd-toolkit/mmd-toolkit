@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Box colours: the same with two U+2029 between hsl and its (; the fill is transparent and the name the whole text."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "hsl  (0, 0%, 50%)",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": [
+          "A"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

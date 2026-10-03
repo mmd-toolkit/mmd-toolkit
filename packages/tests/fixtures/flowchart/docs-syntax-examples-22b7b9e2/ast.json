@@ -2047,6 +2047,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " Notice that no text in shape are added here instead that is appended further down",
       "range": [
         256,
@@ -2065,6 +2066,7 @@
     },
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " Comments after double percent signs",
       "range": [
         412,

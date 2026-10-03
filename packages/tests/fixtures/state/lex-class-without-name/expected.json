@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The class contexts: the class name may be empty."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

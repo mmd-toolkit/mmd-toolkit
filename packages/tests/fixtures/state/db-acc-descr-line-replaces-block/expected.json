@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Db normalization, Building the summary from the tree: a later accessibility statement replaces the value of an earlier one, whichever form each has."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "y",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

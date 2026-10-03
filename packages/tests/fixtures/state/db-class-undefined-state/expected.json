@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Db normalization, Building the summary from the tree: a class statement adds no state: the states A and B only."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:#f00"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

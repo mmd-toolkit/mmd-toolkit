@@ -102,8 +102,8 @@
           }
         },
         "callback": {
-          "type": "Identifier",
-          "name": "f\nn",
+          "type": "ClassLiteral",
+          "value": "f\nn",
           "range": [
             34,
             37
@@ -265,7 +265,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "f\nn",
       "range": [
         34,

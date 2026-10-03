@@ -6,9 +6,8 @@ import type { LineIndex } from "./positions.ts"
 
 /**
  * known-divergences/tokenless-empty-forms.md: the forms that are written
- * but hold nothing, for which mermaid.js reads no token. Flowchart has the
- * first three; sequence, whose grammar has no strings and no `call`, has the
- * empty description block only; class has all five.
+ * but hold nothing, for which mermaid.js reads no token, and that have no
+ * place in the tree (see {@link EMPTY_FORM_KINDS}).
  */
 export type EmptyFormKind =
   | "empty-string"
@@ -16,6 +15,28 @@ export type EmptyFormKind =
   | "empty-description-block"
   | "empty-backquoted-name"
   | "empty-generic-type"
+
+/**
+ * known-divergences/tokenless-empty-forms.md: the empty forms of each
+ * diagram type that has any. Flowchart has the first three; sequence,
+ * whose grammar has no strings and no `call`, has the empty description
+ * block only; class has all five; state has the empty description block
+ * only, since its empty strings are text that the tree holds.
+ */
+export const EMPTY_FORM_KINDS: Readonly<
+  Record<"flowchart" | "sequence" | "class" | "state", readonly EmptyFormKind[]>
+> = {
+  flowchart: ["empty-string", "empty-call", "empty-description-block"],
+  sequence: ["empty-description-block"],
+  class: [
+    "empty-string",
+    "empty-call",
+    "empty-description-block",
+    "empty-backquoted-name",
+    "empty-generic-type",
+  ],
+  state: ["empty-description-block"],
+}
 
 /** One empty form: its kind, its units, and its range, from its first character that is not whitespace to its last. */
 export interface EmptyForm<Unit extends DiagramUnit<string>> {
@@ -32,14 +53,15 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
   "empty-string": "An empty string cannot be written here",
   "empty-call": "An empty call cannot be written here",
   "empty-description-block":
-    "An empty description block can only be written where a statement starts",
+    "An empty description block can only be written where a statement starts or ends",
   "empty-backquoted-name": "An empty backquoted name cannot be written here",
   "empty-generic-type": "An empty generic type can only end a class name",
 }
 
 /**
- * The empty forms among `units`, the units of a diagram text, in source
- * order, wherever they lie: each `empty-string` unit (flowchart, Strings);
+ * The empty forms of the kinds `kinds` among `units`, the units of a
+ * diagram text, in source order, wherever they lie: each `empty-string`
+ * unit (flowchart, Strings);
  * each empty call, a `call` unit followed directly by a `(` and a `)` unit,
  * with only whitespace between them (flowchart, Click and callbacks); and
  * each empty description block, an `accDescr` and a `{` unit followed
@@ -52,6 +74,14 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
  * of these units has none of these forms.
  */
 export function emptyFormsOf<Unit extends DiagramUnit<string>>(
+  units: readonly Unit[],
+  kinds: readonly EmptyFormKind[],
+): EmptyForm<Unit>[] {
+  return allEmptyFormsOf(units).filter((form) => kinds.includes(form.kind))
+}
+
+/** The empty forms of every kind among `units` (see {@link emptyFormsOf}). */
+function allEmptyFormsOf<Unit extends DiagramUnit<string>>(
   units: readonly Unit[],
 ): EmptyForm<Unit>[] {
   const forms: EmptyForm<Unit>[] = []
@@ -79,6 +109,24 @@ export function emptyFormsOf<Unit extends DiagramUnit<string>>(
     }
   })
   return forms
+}
+
+/**
+ * ast.md, Nodes: the ranges of the empty description blocks among `units`,
+ * the units of a diagram text, that lie in `range`, which the text of the
+ * range leaves out. In a text that the grammar accepts, each of them is a
+ * statement of its own before the separator of a statement; the range of a
+ * leaf node holds none, and a range that a Db normalization reads up to the
+ * separator of a statement can.
+ */
+export function emptyDescriptionBlocksIn(
+  units: readonly DiagramUnit<string>[],
+  range: Range,
+): Range[] {
+  return allEmptyFormsOf(units)
+    .filter((form) => form.kind === "empty-description-block")
+    .map((form) => form.range)
+    .filter((block) => range[0] <= block[0] && block[1] <= range[1])
 }
 
 /**

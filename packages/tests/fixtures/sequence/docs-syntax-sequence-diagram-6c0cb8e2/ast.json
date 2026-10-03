@@ -49,7 +49,7 @@
               {
                 "type": "SequenceMessageStatement",
                 "from": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "Alice",
                   "range": [
                     45,
@@ -91,7 +91,7 @@
                 "activation": null,
                 "toCentralConnection": false,
                 "to": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "Bob",
                   "range": [
                     53,
@@ -217,7 +217,7 @@
               {
                 "type": "SequenceMessageStatement",
                 "from": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "Alice",
                   "range": [
                     100,
@@ -259,7 +259,7 @@
                 "activation": null,
                 "toCentralConnection": false,
                 "to": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "John",
                   "range": [
                     108,
@@ -362,7 +362,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Bob",
           "range": [
             138,
@@ -404,7 +404,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Alice",
           "range": [
             145,
@@ -475,7 +475,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "John",
           "range": [
             166,
@@ -517,7 +517,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Alice",
           "range": [
             174,

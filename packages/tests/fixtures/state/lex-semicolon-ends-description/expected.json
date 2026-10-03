@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context: a description ends at ;, and the rest is the id ;y."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "x",
+        "description": [],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": ";y",
+        "shape": "rect",
+        "label": ";y",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

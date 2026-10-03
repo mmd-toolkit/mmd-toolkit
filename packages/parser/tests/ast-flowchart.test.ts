@@ -451,9 +451,9 @@ describe("the flowchart node types", () => {
     expectTypeOf<FlowchartClickCallbackStatement["ids"]>().toEqualTypeOf<
       readonly (Identifier | null)[]
     >()
-    expectTypeOf<
-      FlowchartClickCallbackStatement["callback"]
-    >().toEqualTypeOf<Identifier>()
+    expectTypeOf<FlowchartClickCallbackStatement["callback"]>().toEqualTypeOf<
+      Identifier | FlowchartLiteral
+    >()
     expectTypeOf<
       FlowchartClickCallbackStatement["arguments"]
     >().toEqualTypeOf<FlowchartLiteral | null>()

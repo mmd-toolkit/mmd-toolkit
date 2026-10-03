@@ -29,6 +29,7 @@ import type { UnitWithKind } from "../../diagram-parsing.ts"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import type { NodePlace } from "../../unit-grammar.ts"
+import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"
 import type { ClassLexing, MemberLine, Unit, UnitName } from "./units.ts"
 import { isClosedBackquotedName } from "./units.ts"
@@ -116,20 +117,26 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
   private readonly writtenNames = new Map<ClassName, string>()
 
   public constructor(lexing: ClassLexing, lexer: SourceLexer) {
-    super(lexing.units, lexer)
+    super(lexing.units, lexer, EMPTY_FORM_KINDS.class)
     this.lexing = lexing
   }
 
   /**
-   * Diagram and statements: `diagram = "header" newline statement ( newline
-   * statement )* newline? end-of-text`.
+   * Diagram and statements: `diagram = "header" empty-description-block*
+   * newline statement ( statement-end statement )* empty-description-block*
+   * newline? end-of-text`. The empty description blocks after the header
+   * are the first statements of the body.
    */
   public parseDiagram(): ClassSyntax {
     this.addItem("Keyword", [this.take("header")])
-    this.take("newline")
     const body: ClassStatement[] = []
+    const headerEnd = this.statementEndAt(["newline"], false)
+    while (this.next < headerEnd) body.push(this.parseDescriptionBlock())
+    this.take("newline")
     this.parseStatement(body)
-    while (this.peek() !== null) {
+    for (;;) {
+      this.parseStatementEnd(body)
+      if (this.peek() === null) break
       this.take("newline")
       if (this.peek() === null) break
       this.parseStatement(body)
@@ -207,6 +214,17 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
         }
         throw this.unexpected(unit ?? null)
     }
+  }
+
+  /**
+   * Empty description blocks before a separator: `statement-end =
+   * empty-description-block* newline`, and `empty-description-block*` before
+   * the end of the text: the blocks, added to `body`, each a statement of
+   * its own. The `newline` is left to the caller.
+   */
+  private parseStatementEnd(body: ClassStatement[]): void {
+    const end = this.statementEndAt(["newline"], true)
+    while (this.next < end) body.push(this.parseDescriptionBlock())
   }
 
   /** Whether a class name starts at the next unit: a name part or a backquoted name. */
@@ -796,7 +814,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
       const call = this.takeIf("call")
       if (call !== null) {
         this.addItem("Keyword", [call])
-        const callback = this.identifierOf([this.take("callback-name")])
+        const callback = this.literalOf([this.take("callback-name")])
         this.addItem("Punctuator", [this.take("(")])
         const argumentsUnit = this.takeIf("callback-arguments")
         const callbackArguments =
@@ -938,8 +956,8 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
       })
       return
     }
-    this.addItem("Keyword", [this.take("accDescr")])
-    if (this.nameAt(this.next) === ":") {
+    if (this.nameAt(this.next + 1) === ":") {
+      this.addItem("Keyword", [this.take("accDescr")])
       this.addItem("Punctuator", [this.take(":")])
       const value = this.literalOf([this.take("description-text")])
       body.push({
@@ -949,6 +967,19 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
       })
       return
     }
+    const empty = this.nameAt(this.next + 2) === "}"
+    body.push(this.parseDescriptionBlock())
+    // Empty description blocks: another statement follows on the same line.
+    if (empty) this.parseStatement(body)
+  }
+
+  /**
+   * Other statements: `"accDescr" "{" description-block-text "}"`, and
+   * `empty-description-block = "accDescr" "{" "}"`.
+   */
+  private parseDescriptionBlock(): ClassAccDescrBlockStatement {
+    const start = this.next
+    this.addItem("Keyword", [this.take("accDescr")])
     this.addItem("Punctuator", [this.take("{")])
     const text = this.takeIf("description-block-text")
     const value =
@@ -956,14 +987,11 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
         ? null
         : this.literalOf([text])
     this.addItem("Punctuator", [this.take("}")])
-    const block: ClassAccDescrBlockStatement = {
+    return {
       type: "ClassAccDescrBlockStatement",
       value,
       ...this.placeFrom(start),
     }
-    body.push(block)
-    // Empty description blocks: another statement follows on the same line.
-    if (text === null) this.parseStatement(body)
   }
 
   /**

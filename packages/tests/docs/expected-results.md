@@ -242,6 +242,97 @@ tries, since a rule that every start state tries can have the same pattern.
   rule that reads its text are tried first, so the text is read up to the
   closing mark whatever it starts with.
 
+## The store of earlier results
+
+`runMermaid()` and `runMermaidWithEmbeddedData()` keep each result in a store on
+disk, and give a stored result back for the same text, options and code without
+running mermaid.js again. The pinned mermaid.js gives the same text with the
+same options the same result, so a stored result is the result of a new run; the
+tests that read the same inputs again and again (the differential tests, the
+generated-input tests) then spend their time on the implementation under test.
+
+- Where: `node_modules/.cache/mmd-toolkit/mermaid-runs/` at the root of the
+  repository, which git ignores: a directory for each identity of the code
+  (below), in it a directory for each day (in UTC), and in that one compressed
+  file per result. mermaid.js's whole configuration, which most results share,
+  is kept once per day in a file named by its hash, and a result names it. A
+  result is written in the directory of the day, and a result read from an
+  earlier day is moved to it with its configuration, so the day of a result is
+  the day it was last used. Removing `mermaid-runs/` empties the store; it fills
+  again as tests run.
+- What is no longer needed is removed without anyone asking, and nothing else.
+  When a process first uses the store, it records in the store that this tree
+  (the directory of this package, by its real path) uses the code of this tree
+  (run from `src/` and from `lib/`), and removes the results of every code that
+  no tree recorded in the store uses, which nothing will ever use again; it
+  reads only the names at the top of the store and the records of the trees.
+  Several trees use one store when they share `node_modules` (a copy of the
+  repository that links to it, say): the results of a code are kept while a tree
+  that is still there records it, and removed once every tree that recorded it
+  has recorded another code, when it next uses the store, or is gone. The rest
+  is done by a prune, which reads every name of the store and takes seconds for
+  a large one, so it runs in a Node.js process of its own, started by a process
+  that first uses the store when no prune runs and the last one ended more than
+  ten minutes ago. A prune removes the directories of past days left with no
+  result; while the store holds more than its most results, the results last
+  used longest ago, a day at a time from the oldest day, but never those of the
+  day; and the temporary files, older than an hour, that writes which stopped
+  half-way (their process ended) left. A result is never removed only because it
+  was last used long ago. When the store still holds more than its most results,
+  the prune leaves a file `.full` in it, and no process writes a result while
+  that file is there; until the next prune, the store may hold some more results
+  than its most.
+- How a directory is removed: a Node.js process of its own renames it to
+  `.removed-` followed by its process id, and deletes it; it goes on after the
+  process that started it ends, so that no process waits for the deleting. A
+  directory whose deleting process no longer runs is given to a new one; one
+  whose deleting process runs is left to it. A process that cannot be started
+  leaves the directory to a later prune. Whatever fails in the store (a file
+  that cannot be read, written or removed, a directory in the place of a file or
+  a file in the place of a directory, options that cannot be serialized) only
+  makes mermaid.js run again; it never makes a test fail. A process that cannot
+  read the files of its code (the build is being made, say) runs without the
+  store.
+- The most results: 2,000,000, about 8 GB on disk (a result takes about 4 KB,
+  the least a file takes). It was set larger than the results of the largest
+  runs that could be counted, each made once: the differential tests of the
+  parser at full size made 192,209 results for flowchart, sequence, class and
+  state, and the generated-input tests of the formatter at full size more than
+  540,000, which could not be counted to the end, since the count stopped at the
+  limit then set. How much room it leaves for later runs is not measured. When
+  the store reaches it, the results last used longest ago are removed first:
+  results stay the same, and only runs get slower, since mermaid.js runs again
+  for what was removed.
+- The key: the text and the options (`config`, `withoutDivergences`), serialized
+  as V8 does, which tells apart a field set to `undefined` from one left out and
+  `NaN` from `null`; the files of the code that decide a result (from source,
+  the files of `src/` that `mermaid.ts` imports at run time, listed in
+  `RESULT_FILES` and checked by a test; from the build, every file of `lib/`);
+  `pnpm-lock.yaml`; the installed version of mermaid.js; and the versions of
+  Node.js and V8. A change to any of them gives new keys, so a stored result
+  never outlives the code or the mermaid.js that made it. A change to the other
+  files of `src/` (the loader of the fixtures, the mutation core) keeps the
+  stored results.
+- What is stored: the results of runs. An error thrown instead of a result
+  (`MermaidEnvironmentError`, an error of the options) is not stored.
+- Reading and writing: each file is written under another name and then renamed,
+  so a process reading it at the same time sees the whole file or none, and is
+  compressed with a checksum. A file that cannot be read, does not match its
+  checksum, or holds the result of another key is no result: the run is made
+  again and the file written anew.
+- Turning it off: the environment variable `MMD_TOOLKIT_MERMAID_CACHE=disabled`,
+  a word that every reading of YAML takes as written. Unset or empty, the store
+  is used; any other value is an error, so that a value meant to turn it off
+  (`off`, `0`) never leaves it on. The generator (`fixtures:generate`,
+  `fixtures:check`, `add`, `add-many`) turns it off for itself, since the
+  fixtures record mermaid.js itself; so does the CI workflow, and so do the
+  tests of this package, which check how a run is made, but for one test of the
+  store, which runs a text through the store of the repository to check that the
+  run functions use it. `detectDiagramType()` does not use the store.
+- Which tests to run is decided by the rules for running tests (the skill
+  `conventions`), with the store or without it: the store makes a run shorter,
+  not a reason to run more.
+
 ## Text size
 
 `mermaid.parse()` does not apply `maxTextSize`; only rendering does

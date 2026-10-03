@@ -109,7 +109,7 @@ export function printAtoms(
   for (const atom of layout.atoms) {
     const text = source.text.slice(atom.start, atom.end)
     if (previous !== undefined) {
-      const gap = readGap(source, previous.end, atom.start, "ignored")
+      const gap = readGap(source, previous.end, atom.start, true)
       if (gap.breaksLine && layout.lineBreaks === "joined") {
         if (
           gap.trailing !== null ||

@@ -137,6 +137,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " c",
       "range": [
         33,
@@ -250,16 +251,52 @@
       }
     },
     {
-      "type": "String",
-      "value": "\"a\n%%{init: {}}%% %% c\nb\"",
+      "type": "StringFragment",
+      "value": "\"a",
       "range": [
         15,
-        40
+        17
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{init: {}}%%",
+      "range": [
+        18,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "StringFragment",
+      "value": "b\"",
+      "range": [
+        38,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
         },
         "end": {
           "line": 4,

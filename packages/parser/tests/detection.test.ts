@@ -126,14 +126,16 @@ describe("detect", () => {
 
 describe("removePercentRuns", () => {
   it.each([
-    // The whitespace before `%%`, the `%%`, and the rest of the line become one line break.
+    // The whitespace before `%%`, the `%%`, and the rest of the line become one
+    // line break.
     ["error %% x\n", "error\n"],
     ["error %% x\nmore", "error\nmore"],
     ["%%\nerror", "\nerror"],
     // A `%%` with no line break after it is left alone, and so is what follows.
     ["error %% x", "error %% x"],
     ["error %% x\n%% y", "error\n%% y"],
-    // The whitespace before reaches back across line breaks, but not into removed text.
+    // The whitespace before reaches back across line breaks, but not into
+    // removed text.
     ["a\n\n  %% x\nb", "a\nb"],
     ["a %% x\n \n%% y\nb", "a\n\nb"],
     // `\r\n` and `\r` are line breaks.
@@ -158,7 +160,8 @@ describe("buildDetectionInput", () => {
   })
 
   it.each([
-    // Directives and comment regions are left out, leading whitespace is removed.
+    // Directives and comment regions are left out, leading whitespace is
+    // removed.
     ["%%{init: {}}%%\n  pie\n%% c\n  x", "pie\n  x"],
     ["err%%{init: {}}%%or", "error"],
     // A comment whose `%%` has a directive between its two `%` is left out.

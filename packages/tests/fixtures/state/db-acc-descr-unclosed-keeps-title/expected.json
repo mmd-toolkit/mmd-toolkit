@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Db normalization, Building the summary from the tree: an accDescr block that is not closed sets the empty description and leaves the title as it was."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "t",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Db normalization, Building the summary from the tree: a note statement visits its state, which adds the state Z, without a shape."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Z",
+        "label": "Z",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "Z",
+        "position": "left of",
+        "text": "x"
+      }
+    ],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

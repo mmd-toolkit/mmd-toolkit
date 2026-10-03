@@ -1,5 +1,6 @@
-import type { Identifier, Range } from "../../ast.ts"
+import type { Range } from "../../ast.ts"
 import type {
+  SequenceIdentifier,
   SequenceMessageStatement,
   SequenceStatement,
 } from "../../ast/sequence.ts"
@@ -135,7 +136,7 @@ export class SequenceDbRejections {
    * inside the box `box` when it stands in one. Inside a box, a participant
    * that has another box already makes the input rejected.
    */
-  private addInBox(id: Identifier, box: number | null): void {
+  private addInBox(id: SequenceIdentifier, box: number | null): void {
     if (box !== null) {
       const existing = this.boxOfParticipant.get(id.name)
       if (existing !== undefined && existing !== box) {
@@ -151,7 +152,7 @@ export class SequenceDbRejections {
    * participant with that id exists already; the created participant waits
    * for its message.
    */
-  private create(id: Identifier): void {
+  private create(id: SequenceIdentifier): void {
     if (this.participants.has(id.name)) {
       throw this.rejection(
         "A participant that exists already cannot be created",

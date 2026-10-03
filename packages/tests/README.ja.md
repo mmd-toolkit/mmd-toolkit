@@ -62,7 +62,8 @@ console.log(rejected.accepted, rejected.error.name)
 fixture は 1 件ごとに、
 このパッケージのディレクトリ `fixtures/<diagram>/<name>/` です
 （絶対パスは `getFixturesRoot()` で得られます）。
-`<diagram>` は図種（`flowchart`、`sequence`、`class`）か `common` です。
+`<diagram>` は、図種（`flowchart`、`sequence`、`class`、`state`）か、
+`common` です。
 `common` は、全図種に共通する構文
 （フロントマター、ディレクティブ、コメント、図種の検出）のためのものです。
 
@@ -124,12 +125,15 @@ fixture を読みます。
 mermaid.js は読み込みません。
 
 - `loadFixtures(diagram)`:
-  `"common"`、`"flowchart"`、`"sequence"`、`"class"` のどれかの fixture を、
-  名前順に返す。
+  `"common"`、`"flowchart"`、`"sequence"`、`"class"`、`"state"`
+  のどれかの fixture を、名前順に返す。
   それぞれは `diagram`、`name`、`input`（`input.mmd` のテキスト）、`source`、
   `config` と `knownDivergence`（あるとき）、`expected` を持つ。
   `expected` は `{ accepted: true, diagramType, db }` か
   `{ accepted: false, error }`。
+  ファイルは 1 つずつ読む。
+  fixture を読むテストファイルが並列の worker で動いても、
+  開いているファイルの数がシステムの上限に届かないようにするためのもの。
 - `KNOWN_DIVERGENCES`: fixture の `knownDivergence` がとりうる識別子。
   それぞれ仕様で定義している。
   - `directive-as-token-boundary`:
@@ -192,6 +196,13 @@ pin した mermaid.js を Node で動かします。
 - `config` と `withoutDivergences` 以外のキーを持つ options を渡すと、
   このモジュールの options を取る関数はどれも `TypeError` を投げる。
   書き誤った選択肢が黙って無視されないようにするためのもの。
+- `runMermaid()` と `runMermaidWithEmbeddedData()` の結果は、
+  ディスクの貯蔵庫（リポジトリのルートの
+  `node_modules/.cache/mmd-toolkit/mermaid-runs/`）に置かれ、
+  同じテキスト、選択肢、コードに対して、そこから返される。
+  環境変数 `MMD_TOOLKIT_MERMAID_CACHE=disabled` で貯蔵庫を切り、
+  ディレクトリを消すと空になる。
+  [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
 - `cssSupportsColor(value)`:
   ブラウザの `CSS.supports("color", value)` が答えるもの。
   ここで mermaid.js を動かすときに与えている代役と同じ

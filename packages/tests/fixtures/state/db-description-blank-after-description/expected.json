@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Db normalization, Building the summary from the tree: a description that is all whitespace is no description: A keeps the label x and the empty description list."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "x",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context: ; is a character of an id, so the first transition goes to B;."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B;",
+        "shape": "rect",
+        "label": "B;",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "B;",
+        "label": ""
+      },
+      {
+        "start": "B",
+        "end": "C",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

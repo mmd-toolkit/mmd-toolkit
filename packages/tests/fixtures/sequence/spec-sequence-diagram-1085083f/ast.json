@@ -7,7 +7,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Alice",
           "range": [
             17,
@@ -49,7 +49,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Bob",
           "range": [
             24,
@@ -122,7 +122,7 @@
         "placement": "right of",
         "ids": [
           {
-            "type": "Identifier",
+            "type": "SequenceIdentifier",
             "name": "Bob",
             "range": [
               79,
@@ -233,7 +233,7 @@
           {
             "type": "SequenceMessageStatement",
             "from": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "Bob",
               "range": [
                 125,
@@ -275,7 +275,7 @@
             "activation": null,
             "toCentralConnection": false,
             "to": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "Alice",
               "range": [
                 131,
@@ -379,6 +379,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " Comment",
       "range": [
         54,

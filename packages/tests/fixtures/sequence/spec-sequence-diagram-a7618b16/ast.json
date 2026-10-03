@@ -9,7 +9,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             33,
@@ -81,7 +81,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             46,
@@ -123,7 +123,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "b",
           "range": [
             51,
@@ -196,7 +196,7 @@
         "kind": "participant",
         "created": true,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "c",
           "range": [
             86,
@@ -233,7 +233,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "b",
           "range": [
             90,
@@ -275,7 +275,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "c",
           "range": [
             95,
@@ -346,7 +346,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "c",
           "range": [
             109,
@@ -388,7 +388,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "b",
           "range": [
             115,
@@ -461,7 +461,7 @@
         "kind": "actor",
         "created": true,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "d",
           "range": [
             142,
@@ -533,7 +533,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             156,
@@ -575,7 +575,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "d",
           "range": [
             162,

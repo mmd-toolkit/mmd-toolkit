@@ -2,7 +2,14 @@ import type { UserConfig } from "tsdown"
 import { defineConfig } from "tsdown"
 
 const config: UserConfig = defineConfig({
-  entry: ["src/index.ts", "src/mermaid.ts", "src/mutation.ts"],
+  // `src/mermaid-run-store.ts` is an entry of its own so that the process that
+  // prunes the store loads it from the build (see `STORE_MODULE_URL`).
+  entry: [
+    "src/index.ts",
+    "src/mermaid.ts",
+    "src/mermaid-run-store.ts",
+    "src/mutation.ts",
+  ],
   outDir: "lib",
   dts: true,
   fixedExtension: true,

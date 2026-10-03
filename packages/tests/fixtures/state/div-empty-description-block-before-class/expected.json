@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Known divergences, tokenless-empty-forms: the `:::` after the block continues the statement `A`; mermaid.js gives A the class c; here it is rejected."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [
+          "c"
+        ],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

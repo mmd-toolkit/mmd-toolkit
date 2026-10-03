@@ -9,7 +9,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "A",
           "range": [
             28,
@@ -63,6 +63,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "#",
       "value": " c <x",
       "range": [
         30,

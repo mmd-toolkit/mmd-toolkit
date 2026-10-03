@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state context: the text after the mark is read as the next statement."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "x",
+        "shape": "choice",
+        "label": "x",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "y",
+        "shape": "rect",
+        "label": "y",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

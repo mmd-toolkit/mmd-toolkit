@@ -1,0 +1,868 @@
+# State diagram formatting rules
+
+Japanese version: [state.ja.md](./state.ja.md)
+
+How prettier-plugin-mmd formats a state diagram. Each rule below keeps what
+mermaid.js reads from the diagram; where a change would alter it, the text is
+kept as written, and the rule says where. Where a rule is the same as in a
+flowchart, it says so, and the reason is in [flowchart.md](./flowchart.md).
+
+Each rule has a folder of examples under
+[`tests/fixtures/state/`](../tests/fixtures/state), named as the rule's heading,
+as for flowcharts: each example is a pair of files, the input and the formatted
+output, and the tests check both that the plugin prints the output and that
+mermaid.js reads the same diagram from the input and the output. The examples in
+this document are copies of those files, and a test checks that they are the
+same.
+
+## Rules
+
+### Indentation
+
+The statements after the header stand one level deeper than the header. The
+statements of a composite state stand one level deeper than the line that opens
+it, and its `}` stands on a line of its own at the level of that line. A level
+is what Prettier's `useTabs` and `tabWidth` options say: two spaces by default.
+The indentation written in the input is not kept: whitespace at the start of a
+line is nothing to mermaid.js.
+
+Input
+([indentation/composite-states-input.mmd](../tests/fixtures/state/indentation/composite-states-input.mmd)):
+
+```mmd
+stateDiagram-v2
+[*] --> Active
+state Active {
+[*] --> Working
+        state Working {
+Step1 --> Step2
+}
+}
+```
+
+Output
+([indentation/composite-states-output.mmd](../tests/fixtures/state/indentation/composite-states-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  [*] --> Active
+  state Active {
+    [*] --> Working
+    state Working {
+      Step1 --> Step2
+    }
+  }
+```
+
+### Composite states
+
+The `{` of a composite state, and of an alias definition with a body, stands on
+the line of its name, after one space; a `{` written on the next line is moved
+there. A body written on one line, as in `state A { B --> C }`, is split into
+lines, and a divider `--` stands on a line of its own, at the level of the
+statements around it.
+
+Input
+([composite-states/split-input.mmd](../tests/fixtures/state/composite-states/split-input.mmd)):
+
+```mmd
+stateDiagram-v2
+state A { B --> C }
+state D
+{
+E
+}
+state F { G -- H }
+```
+
+Output
+([composite-states/split-output.mmd](../tests/fixtures/state/composite-states/split-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  state A {
+    B --> C
+  }
+  state D {
+    E
+  }
+  state F {
+    G
+    --
+    H
+  }
+```
+
+An empty body, with nothing but whitespace between its braces, is printed as
+`{ }`, however it is written, as in a class diagram.
+
+Input
+([composite-states/empty-unified-input.mmd](../tests/fixtures/state/composite-states/empty-unified-input.mmd)):
+
+```mmd
+stateDiagram-v2
+state A {}
+state B {   }
+state C {
+}
+state "d" as E {}
+```
+
+Output
+([composite-states/empty-unified-output.mmd](../tests/fixtures/state/composite-states/empty-unified-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  state A { }
+  state B { }
+  state C { }
+  state "d" as E { }
+```
+
+A `%%` right before a `{` is kept as written up to the `{`. `state X` followed
+by a line `%%{}` opens a body of X, with a `%%` that mermaid.js does not read,
+while `state X %%{}` on one line is X and the composite state `%%` with an empty
+body; and `%%` followed by a space is a comment. An empty description block
+before a `{` is kept as written too: `state "d" as A` followed by a line
+`accDescr {} {` has the id `A`, while written on one line the id is
+`A accDescr {}`, and mermaid.js rejects the body.
+
+Input
+([composite-states/percent-before-body-kept-input.mmd](../tests/fixtures/state/composite-states/percent-before-body-kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+state X
+%%{}
+state Y %%{}
+```
+
+Output
+([composite-states/percent-before-body-kept-output.mmd](../tests/fixtures/state/composite-states/percent-before-body-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  state X
+%%{}
+  state Y %%{}
+```
+
+Input
+([composite-states/empty-block-before-body-kept-input.mmd](../tests/fixtures/state/composite-states/empty-block-before-body-kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+state "d" as A
+  accDescr {} {
+B
+}
+state X ""
+accDescr {}{
+C
+}
+```
+
+Output
+([composite-states/empty-block-before-body-kept-output.mmd](../tests/fixtures/state/composite-states/empty-block-before-body-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  state "d" as A
+  accDescr {} {
+    B
+  }
+  state X ""
+accDescr {}{
+    C
+  }
+```
+
+A statement that follows a `state` name keeps its lines where it holds a `{`.
+The state context reads the name, the line feeds after it, and the next line up
+to its `{` as two names before a `{`, and mermaid.js rejects them: `state foo`
+followed by a line `state B {` is rejected, while `state B` followed by a line
+`{` is accepted. So the `{` is not moved to the line of its name there, and the
+lines of a note whose id is written on the next line stay as written.
+
+Input
+([composite-states/brace-after-state-name-kept-input.mmd](../tests/fixtures/state/composite-states/brace-after-state-name-kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+state foo
+state B
+{
+X
+}
+state bar
+note "x" as
+accDescr {}
+ N1
+```
+
+Output
+([composite-states/brace-after-state-name-kept-output.mmd](../tests/fixtures/state/composite-states/brace-after-state-name-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  state foo
+  state B
+{
+    X
+  }
+  state bar
+  note "x" as
+accDescr {}
+  N1
+```
+
+### Statements one per line
+
+Each statement stands on a line of its own. Nothing separates statements in a
+state diagram, and statements written on one line, as in `A --> B C --> D`, are
+moved to lines of their own; so is an empty description block after a click
+statement. The names after `state` stay on the line of `state`: `state a b` is
+two statements, and on a line of its own `b` would add the state b, which
+`state a b` does not. The same holds for the `""` that mermaid.js does not read
+in `state x "" y` and `state z ""`. A line that holds a `;` keeps its
+statements, as in a flowchart (see
+[Statements one per line](./flowchart.md#statements-one-per-line)); in a state
+diagram, a `;` is a character of an id.
+
+Input
+([statements-one-per-line/split-input.mmd](../tests/fixtures/state/statements-one-per-line/split-input.mmd)):
+
+```mmd
+stateDiagram-v2
+A --> B C --> D
+[*]x
+A
+click A href "https://example.com" accDescr {}
+```
+
+Output
+([statements-one-per-line/split-output.mmd](../tests/fixtures/state/statements-one-per-line/split-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A --> B
+  C --> D
+  [*]
+  x
+  A
+  click A href "https://example.com"
+  accDescr {}
+```
+
+Input
+([statements-one-per-line/state-names-kept-input.mmd](../tests/fixtures/state/statements-one-per-line/state-names-kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+state a b
+state x "" y
+state z ""
+```
+
+Output
+([statements-one-per-line/state-names-kept-output.mmd](../tests/fixtures/state/statements-one-per-line/state-names-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  state a b
+  state x "" y
+  state z ""
+```
+
+### Blank lines
+
+As in a flowchart: a run of empty lines becomes one, and empty lines at the
+start and the end of a body are dropped.
+
+Input
+([blank-lines/collapsed-input.mmd](../tests/fixtures/state/blank-lines/collapsed-input.mmd)):
+
+```mmd
+stateDiagram-v2
+
+
+A --> B
+
+
+
+state C {
+
+D
+
+
+E
+
+}
+```
+
+Output
+([blank-lines/collapsed-output.mmd](../tests/fixtures/state/blank-lines/collapsed-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A --> B
+
+  state C {
+    D
+
+    E
+  }
+```
+
+### Whitespace between tokens
+
+Within a line, a run of spaces and tabs between two tokens becomes one space,
+and tokens that touch keep touching, as in a flowchart. This holds for `:::`,
+the `""` that mermaid.js does not read, and the `,` of a style or a class
+statement; the quotes of a floating note are kept as written. Whether whitespace
+is written before a `""` is kept: `state x"" {` is the composite state `x""`,
+and `state x "" {` the composite state `x`. Keywords keep the case in which they
+are written: mermaid.js reads them in any case, and the position of a note, such
+as `Left Of`, is part of the diagram as written.
+
+Input
+([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-input.mmd)):
+
+```mmd
+stateDiagram-v2
+A   :::   highlight
+state   f1   <<fork>>
+state  ""   x
+classDef  c   fill:red ,  stroke:blue
+class   A,B   c
+scale   350   width
+hide empty description
+```
+
+Output
+([whitespace-between-tokens/collapsed-output.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A ::: highlight
+  state f1 <<fork>>
+  state "" x
+  classDef c fill:red , stroke:blue
+  class A,B c
+  scale 350 width
+  hide empty description
+```
+
+Input
+([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+STATE A {
+B
+}
+Note Left Of A : x
+HIDE EMPTY DESCRIPTION
+```
+
+Output
+([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  STATE A {
+    B
+  }
+  Note Left Of A : x
+  HIDE EMPTY DESCRIPTION
+```
+
+### Arrow spacing
+
+A transition has one space before and after its arrow: `A-->B` becomes
+`A --> B`.
+
+Input
+([arrow-spacing/spaced-input.mmd](../tests/fixtures/state/arrow-spacing/spaced-input.mmd)):
+
+```mmd
+stateDiagram-v2
+[*]-->A
+A-->B
+B  -->   [*]
+```
+
+Output
+([arrow-spacing/spaced-output.mmd](../tests/fixtures/state/arrow-spacing/spaced-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  [*] --> A
+  A --> B
+  B --> [*]
+```
+
+The words `scale`, `classDef`, `class`, `style`, `state`, `note`, and
+`stateDiagram`, in any case, are keywords only when whitespace follows them, and
+ids otherwise. A transition from an id spelled so, or from a state whose class
+after `:::` is spelled so, keeps its arrow touching on both sides, as
+`scale-->B`: `scale -->B` would start a scale statement. A description after
+such an id keeps its `:` touching the id.
+
+Input
+([arrow-spacing/touching-before-keyword-kept-input.mmd](../tests/fixtures/state/arrow-spacing/touching-before-keyword-kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+scale-->B
+A-->style:waiting
+style:waiting
+A:::state-->B
+```
+
+Output
+([arrow-spacing/touching-before-keyword-kept-output.mmd](../tests/fixtures/state/arrow-spacing/touching-before-keyword-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  scale-->B
+  A --> style: waiting
+  style: waiting
+  A:::state-->B
+```
+
+### Descriptions and labels
+
+The `:` of a description and of a transition label has one space on each side,
+as mermaid.js's documentation writes most of its labels: `A-->B:submit` becomes
+`A --> B : submit`. The text is kept as written. A description of only
+whitespace keeps the whitespace after its `:`: `A : ` gives no description,
+while `A :` is rejected. A description or a label that ends with `:` keeps the
+whitespace after it too: `A : x: ` is accepted, while `A : x:` is rejected,
+since a description cannot end with `:`. Those examples are not shown here,
+because the whitespace is at the end of a line (see
+`descriptions-and-labels/blank-kept` and
+`descriptions-and-labels/ending-colon-kept` in the
+[folder](../tests/fixtures/state/descriptions-and-labels)).
+
+Input
+([descriptions-and-labels/spaced-input.mmd](../tests/fixtures/state/descriptions-and-labels/spaced-input.mmd)):
+
+```mmd
+stateDiagram-v2
+A:waiting
+A-->B:submit
+B --> C :  approved
+```
+
+Output
+([descriptions-and-labels/spaced-output.mmd](../tests/fixtures/state/descriptions-and-labels/spaced-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A : waiting
+  A --> B : submit
+  B --> C : approved
+```
+
+On a line that holds a `;`, whether whitespace follows the `:` is kept as
+written, as in a class diagram (see [Labels](./class.md#labels)): the line rule
+of mermaid.js reads a `:` followed directly by text up to a `#`.
+
+Input
+([descriptions-and-labels/semicolon-line-kept-input.mmd](../tests/fixtures/state/descriptions-and-labels/semicolon-line-kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+styleA :#f00;
+```
+
+Output
+([descriptions-and-labels/semicolon-line-kept-output.mmd](../tests/fixtures/state/descriptions-and-labels/semicolon-line-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  styleA :#f00;
+```
+
+### Notes
+
+What follows the id of a note on one line, its `:` and its text, is kept as
+written: mermaid.js reads the text from right after the id, without its first
+two characters, so `note left of A:hi` has the text `i`, and
+`note right of A  : two spaces` the text `: two spaces`. The whitespace before
+the id becomes one space. A text that mermaid.js does not read right after the
+position, as in `note left of%%x A`, keeps touching the position. The text of a
+note over lines is kept as written, and `end note` stands at the level of the
+note. The quotes of a floating note are kept as written: `note ""floating" as N`
+has the text `floating`.
+
+Input ([notes/kept-input.mmd](../tests/fixtures/state/notes/kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+A
+note left of A:hi
+note right of A  : two spaces
+note left of%%x   A : t
+note left of    A : x
+```
+
+Output ([notes/kept-output.mmd](../tests/fixtures/state/notes/kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A
+  note left of A:hi
+  note right of A  : two spaces
+  note left of%%x A : t
+  note left of A : x
+```
+
+Input
+([notes/over-lines-input.mmd](../tests/fixtures/state/notes/over-lines-input.mmd)):
+
+```mmd
+stateDiagram-v2
+A
+note right of A
+  first line
+    second line
+      end note
+note ""floating" as N
+```
+
+Output
+([notes/over-lines-output.mmd](../tests/fixtures/state/notes/over-lines-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  A
+  note right of A
+    first line
+    second line
+  end note
+  note ""floating" as N
+```
+
+### Aliases
+
+The string, the `as`, and the id of an alias definition have one space between
+them, also where they were written touching: mermaid.js reads `"d"as A` as it
+reads `"d" as A`. The `""` that it does not read before and after the string
+stand apart from it in the same way. `asA` is no `as`, and is rejected. The
+second description, the text after the `:`, is kept as written: mermaid.js reads
+it with the whitespace at its ends, so `:short` and `: short` give different
+descriptions. The whitespace before the `:` becomes one space.
+
+Input
+([aliases/second-description-kept-input.mmd](../tests/fixtures/state/aliases/second-description-kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+state "Long name"as A:short
+state "d"  as   B :  two spaces
+state ""  "y"""as C
+state "d"as D{
+E
+}
+state "d" as F
+```
+
+Output
+([aliases/second-description-kept-output.mmd](../tests/fixtures/state/aliases/second-description-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  state "Long name" as A :short
+  state "d" as B :  two spaces
+  state "" "y" "" as C
+  state "d" as D {
+    E
+  }
+  state "d" as F
+```
+
+### Pseudostates
+
+A pseudostate mark, `<<fork>>`, `<<join>>`, `<<choice>>`, or the same words in
+`[[ ]]`, has one space before it, also where it was written touching its name:
+mermaid.js reads the name without the whitespace at its end, so
+`state f1<<fork>>` is read as `state f1 <<fork>>`.
+
+Input
+([pseudostates/mark-spaced-input.mmd](../tests/fixtures/state/pseudostates/mark-spaced-input.mmd)):
+
+```mmd
+stateDiagram-v2
+state f1<<fork>>
+state   c   [[choice]]
+state f 1<<join>>
+```
+
+Output
+([pseudostates/mark-spaced-output.mmd](../tests/fixtures/state/pseudostates/mark-spaced-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  state f1 <<fork>>
+  state c [[choice]]
+  state f 1 <<join>>
+```
+
+### Comments
+
+A comment on a line of its own, `%%` or `#`, stands at the level of the
+statements around it, and its text is kept as written. A comment after a
+statement stays on its line, and whether whitespace is written before its mark
+is kept. In a description, a label, a note, and a style, `%%` and `#` are part
+of the text.
+
+Input
+([comments/kept-input.mmd](../tests/fixtures/state/comments/kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+%% a comment line
+A --> B %% after a transition
+A --> C%%touching
+# a hash comment
+state D {
+        %% in a body
+E
+}
+```
+
+Output
+([comments/kept-output.mmd](../tests/fixtures/state/comments/kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  %% a comment line
+  A --> B %% after a transition
+  A --> C%%touching
+  # a hash comment
+  state D {
+    %% in a body
+    E
+  }
+```
+
+### Directives
+
+As in a flowchart: a directive on a line of its own stands at the level of the
+statements around it, and a directive on the line of a statement keeps the
+whitespace written on each side of it.
+
+Input
+([directives/kept-input.mmd](../tests/fixtures/state/directives/kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+%%{init: {}}%%
+state A {
+%%{init: {}}%%
+B
+}
+Fo%%{init: {}}%%o --> B
+```
+
+Output
+([directives/kept-output.mmd](../tests/fixtures/state/directives/kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  %%{init: {}}%%
+  state A {
+    %%{init: {}}%%
+    B
+  }
+  Fo%%{init: {}}%%o --> B
+```
+
+### Frontmatter YAML
+
+As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
+YAML formatter where that is safe (see
+[Frontmatter YAML](./flowchart.md#frontmatter-yaml)).
+
+Input
+([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/state/frontmatter-yaml/formatted-input.mmd)):
+
+```mmd
+---
+title:   T
+---
+stateDiagram-v2
+A --> B
+```
+
+Output
+([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/state/frontmatter-yaml/formatted-output.mmd)):
+
+```mmd
+---
+title: T
+---
+stateDiagram-v2
+  A --> B
+```
+
+### Multi-line values
+
+As in a flowchart: the lines of an `accDescr { ... }` block are kept as written,
+and its `}` stands at the level of its statement. The text of a floating note
+written over several lines is kept as written too.
+
+Input
+([multi-line-values/kept-input.mmd](../tests/fixtures/state/multi-line-values/kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+accDescr {
+  one
+    two
+      }
+note "line one
+  line two" as N
+```
+
+Output
+([multi-line-values/kept-output.mmd](../tests/fixtures/state/multi-line-values/kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  accDescr {
+  one
+    two
+  }
+  note "line one
+  line two" as N
+```
+
+### Multi-line statements
+
+A statement written over several lines is printed on one line. In a state
+diagram, a statement may go on to the next line after `state`, after `as`, after
+the position of a note, after `classDef` or `style` and their names, after
+`scale`, after `direction`, and after the `:` of `accTitle` and `accDescr`. So
+`classDef c` followed by a line `fill:red` is printed as `classDef c fill:red`;
+a line `B --> C` after `classDef a` is a style of `a`, not a transition, and the
+printed text shows it. A statement written over several lines with a comment or
+a directive in it is kept as written, from its start to its end, as in a
+sequence diagram (see
+[Multi-line statements](./sequence.md#multi-line-statements)).
+
+Input
+([multi-line-statements/joined-input.mmd](../tests/fixtures/state/multi-line-statements/joined-input.mmd)):
+
+```mmd
+stateDiagram-v2
+state
+A
+direction
+LR
+classDef c
+fill:red
+note right of
+A : x
+scale
+350 width
+accTitle:
+A title
+```
+
+Output
+([multi-line-statements/joined-output.mmd](../tests/fixtures/state/multi-line-statements/joined-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  state A
+  direction LR
+  classDef c fill:red
+  note right of A : x
+  scale 350 width
+  accTitle: A title
+```
+
+Input
+([multi-line-statements/comment-inside-kept-input.mmd](../tests/fixtures/state/multi-line-statements/comment-inside-kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+direction
+%% c
+LR
+```
+
+Output
+([multi-line-statements/comment-inside-kept-output.mmd](../tests/fixtures/state/multi-line-statements/comment-inside-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  direction
+%% c
+LR
+```
+
+A statement written over several lines that holds a `;` is kept as written too.
+The line rule of mermaid.js (common.md, `style` and `classDef` lines) reads the
+text of one line: in `classDef`, a line break, and `c fill:#f00;` it does not
+match the second line, so `#f00;` is an entity, while on one line, as
+`classDef c fill:#f00;`, it matches and ignores the `;`. Joining the lines would
+change the style.
+
+Input
+([multi-line-statements/semicolon-kept-input.mmd](../tests/fixtures/state/multi-line-statements/semicolon-kept-input.mmd)):
+
+```mmd
+stateDiagram-v2
+  classDef
+  c fill:#f00;
+```
+
+Output
+([multi-line-statements/semicolon-kept-output.mmd](../tests/fixtures/state/multi-line-statements/semicolon-kept-output.mmd)):
+
+```mmd
+stateDiagram-v2
+  classDef
+  c fill:#f00;
+```
+
+### Line separators
+
+A line that holds U+2028 or U+2029 is kept as written. In a state diagram, these
+characters bound the text in which mermaid.js looks for a pseudostate mark, a
+direction line, and a second name before a `{`: `state a`, U+2028, and
+`b <<fork>>` is the name `a` and the fork `b`, while with a space in place of
+the U+2028, it is the fork `a b`. That example is not shown here, because the
+character is invisible; its test writes the characters as escapes (see
+`tests/line-separators.test.ts`). A line that starts with U+2028 or U+2029 keeps
+it, with the whitespace before the first statement, as written: it is part of
+what the lexer reads, and a second formatting that read the line without it
+would read it as any other line.
+
+## Kept as written
+
+Some text is always kept as written, because changing it would change the
+diagram or the input would be rejected:
+
+- the text of a value: a description, a label, a note, an id after `as`, a
+  pseudostate name, a style, the CSS class of a `class` statement, and the text
+  of `accTitle` and `accDescr`;
+- what follows the id of a note on one line, the second description of an alias
+  definition, and the whitespace after the `:` of a description of only
+  whitespace;
+- the names and the `""` after `state`, on the line of `state`;
+- whether whitespace is written before a `""`, and before the mark of a comment
+  after a statement;
+- a `%%` or an empty description block right before a `{`, up to the `{`;
+- the lines of a statement that holds a `{` and follows a `state` name;
+- an arrow and a `:` touching an id that a space would make a keyword;
+- a line that holds U+2028 or U+2029;
+- a statement written over several lines with a comment, a directive, or a `;`
+  in it;
+- the text of a direction line before `direction` and after its value;
+- the case of keywords, and the spelling of the header, `stateDiagram` or
+  `stateDiagram-v2`.

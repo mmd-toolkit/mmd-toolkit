@@ -230,6 +230,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " ducks",
       "range": [
         30,

@@ -1,0 +1,351 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> docs/rules/flowchart/no-duplicate-description.md incorrect 1
+Filename: flowchart/no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   accDescr: first
+  3 |   accDescr: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   accDescr: first
+          3 |
+      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   accDescr: second
+          3 |
+---
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> docs/rules/flowchart/no-duplicate-description.md incorrect 2
+Filename: flowchart/no-duplicate-description-incorrect-2.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   accDescr { first }
+  3 |   accDescr: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   accDescr { first }
+          3 |
+      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   accDescr: second
+          3 |
+---
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> docs/rules/flowchart/no-duplicate-description.md incorrect 3
+Filename: flowchart/no-duplicate-description-incorrect-3.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     A
+  4 |     accDescr: inner
+  5 |   end
+  6 |   accDescr: outer
+    |   ^~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   subgraph S
+          3 |     A
+          4 |     accDescr: inner
+          5 |   end
+          6 |
+      - Remove the statement on line 4 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   subgraph S
+          3 |     A
+          4 |   end
+          5 |   accDescr: outer
+          6 |
+---
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> invalid/flowchart/db-acc-descr-block-replaces
+Filename: tests/fixtures/rules/flowchart/no-duplicate-description/invalid/flowchart/db-acc-descr-block-replaces-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | accDescr: x
+  4 | accDescr { y }
+    | ^~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | accDescr: x
+          4 |
+      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | accDescr { y }
+          4 |
+---
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> invalid/flowchart/db-acc-descr-block-then-empty-line
+Filename: tests/fixtures/rules/flowchart/no-duplicate-description/invalid/flowchart/db-acc-descr-block-then-empty-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | accDescr { x }
+  4 | accDescr:
+    | ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | accDescr { x }
+      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | accDescr:
+---
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> invalid/flowchart/db-acc-descr-empty-replaces
+Filename: tests/fixtures/rules/flowchart/no-duplicate-description/invalid/flowchart/db-acc-descr-empty-replaces-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | accDescr: x
+  4 | accDescr:
+    | ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | accDescr: x
+      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | accDescr:
+---
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> invalid/flowchart/db-acc-descr-line-replaces-block
+Filename: tests/fixtures/rules/flowchart/no-duplicate-description/invalid/flowchart/db-acc-descr-line-replaces-block-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accDescr { first }
+  3 | accDescr: second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accDescr { first }
+          3 |
+      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accDescr: second
+          3 |
+---
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> invalid/flowchart/db-acc-descr-outer-replaces-subgraph
+Filename: tests/fixtures/rules/flowchart/no-duplicate-description/invalid/flowchart/db-acc-descr-outer-replaces-subgraph-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 | A
+  4 | accDescr: inner
+  5 | end
+  6 | accDescr: outer
+    | ^~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | A
+          4 | accDescr: inner
+          5 | end
+          6 |
+      - Remove the statement on line 4 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | A
+          4 | end
+          5 | accDescr: outer
+          6 |
+---
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> invalid/flowchart/db-acc-descr-replaces
+Filename: tests/fixtures/rules/flowchart/no-duplicate-description/invalid/flowchart/db-acc-descr-replaces-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accDescr: first
+  3 | accDescr: second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accDescr: first
+          3 |
+      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accDescr: second
+          3 |
+---
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> invalid/flowchart/db-acc-repeated
+Filename: tests/fixtures/rules/flowchart/no-duplicate-description/invalid/flowchart/db-acc-repeated-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accTitle: a
+  3 | accTitle: b
+  4 | accDescr: c
+  5 | accDescr: d
+    | ^~~~~~~~~~~ [1]
+  6 | A
+  7 |
+
+[1] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accTitle: a
+          3 | accTitle: b
+          4 | accDescr: c
+          5 | A
+          6 |
+      - Remove the statement on line 4 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accTitle: a
+          3 | accTitle: b
+          4 | accDescr: d
+          5 | A
+          6 |
+---
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> invalid/semicolon-after-block-in-nested-subgraph
+Filename: tests/fixtures/rules/flowchart/no-duplicate-description/invalid/semicolon-after-block-in-nested-subgraph-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph P
+  3 | subgraph C
+  4 | accDescr {a}
+  5 | accDescr {b};
+    | ^~~~~~~~~~~~ [1]
+  6 | end
+  7 | end
+  8 |
+
+[1] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | subgraph P
+          3 | subgraph C
+          4 | accDescr {a}
+          5 | ;
+          6 | end
+          7 | end
+          8 |
+      - Remove the statement on line 4 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | subgraph P
+          3 | subgraph C
+          4 | accDescr {b};
+          5 | end
+          6 | end
+          7 |
+---
+
+
+Test: flowchart/no-duplicate-description >> invalid >>> invalid/semicolon-after-block-in-subgraph
+Filename: tests/fixtures/rules/flowchart/no-duplicate-description/invalid/semicolon-after-block-in-subgraph-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 | accDescr {a}
+  4 | accDescr {b};
+    | ^~~~~~~~~~~~ [1]
+  5 | end
+  6 |
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | accDescr {a}
+          4 | ;
+          5 | end
+          6 |
+      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | accDescr {b};
+          4 | end
+          5 |
+---

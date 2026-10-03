@@ -1,0 +1,346 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "StateTerminal",
+            "range": [
+              32,
+              35
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 10
+              },
+              "end": {
+                "line": 3,
+                "column": 13
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            32,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 10
+            },
+            "end": {
+              "line": 3,
+              "column": 13
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Still",
+            "range": [
+              40,
+              45
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 18
+              },
+              "end": {
+                "line": 3,
+                "column": 23
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            40,
+            45
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 18
+            },
+            "end": {
+              "line": 3,
+              "column": 23
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          32,
+          45
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 10
+          },
+          "end": {
+            "line": 3,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Still",
+            "range": [
+              56,
+              61
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 10
+              },
+              "end": {
+                "line": 4,
+                "column": 15
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            56,
+            61
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 10
+            },
+            "end": {
+              "line": 4,
+              "column": 15
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "StateTerminal",
+            "range": [
+              66,
+              69
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 20
+              },
+              "end": {
+                "line": 4,
+                "column": 23
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            66,
+            69
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 20
+            },
+            "end": {
+              "line": 4,
+              "column": 23
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          56,
+          69
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 10
+          },
+          "end": {
+            "line": 4,
+            "column": 23
+          }
+        }
+      }
+    ],
+    "range": [
+      9,
+      69
+    ],
+    "loc": {
+      "start": {
+        "line": 2,
+        "column": 8
+      },
+      "end": {
+        "line": 4,
+        "column": 23
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram",
+      "range": [
+        9,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        32,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        36,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Still",
+      "range": [
+        40,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Still",
+      "range": [
+        56,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        62,
+        65
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 16
+        },
+        "end": {
+          "line": 4,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        66,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 20
+        },
+        "end": {
+          "line": 4,
+          "column": 23
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    78
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 8
+    }
+  }
+}

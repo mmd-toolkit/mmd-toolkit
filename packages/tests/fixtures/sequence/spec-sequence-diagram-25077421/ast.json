@@ -9,7 +9,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             29,
@@ -83,7 +83,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "b",
           "range": [
             52,
@@ -157,7 +157,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "c",
           "range": [
             73,
@@ -229,7 +229,7 @@
       {
         "type": "SequenceLinksStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             92,
@@ -300,7 +300,7 @@
       {
         "type": "SequenceLinksStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "b",
           "range": [
             188,
@@ -371,7 +371,7 @@
       {
         "type": "SequenceLinksStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             247,
@@ -442,7 +442,7 @@
       {
         "type": "SequenceLinkStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             310,
@@ -513,7 +513,7 @@
       {
         "type": "SequenceLinkStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             355,
@@ -584,7 +584,7 @@
       {
         "type": "SequenceLinkStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             401,

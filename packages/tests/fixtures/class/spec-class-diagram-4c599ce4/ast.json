@@ -197,8 +197,8 @@
           }
         },
         "callback": {
-          "type": "Identifier",
-          "name": "functionCall",
+          "type": "ClassLiteral",
+          "value": "functionCall",
           "range": [
             66,
             78
@@ -469,7 +469,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "functionCall",
       "range": [
         66,

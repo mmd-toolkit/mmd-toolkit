@@ -7,7 +7,7 @@
       {
         "type": "SequenceActivateStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "A B",
           "range": [
             25,

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state context: <<fork>> is tried before <<join>>, so the fork has the name a <<join>> b."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "a <<join>> b",
+        "shape": "fork",
+        "label": "a <<join>> b",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

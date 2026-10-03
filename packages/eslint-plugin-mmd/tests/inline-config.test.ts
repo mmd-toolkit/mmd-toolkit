@@ -14,8 +14,8 @@ import type { Rule } from "eslint"
 import { Linter } from "eslint"
 import { SnapshotRuleTester } from "eslint-snapshot-rule-tester"
 import { describe, expect, it } from "vitest"
-import plugin from "../src/index.ts"
 import type { MermaidRuleDefinition } from "../src/index.ts"
+import { LANGUAGE_CONFIG, observe } from "./helpers.ts"
 
 /** The test case of an input of `tests/fixtures/inline-config/`. */
 async function inlineConfigCase(
@@ -44,7 +44,7 @@ const identifiers: MermaidRuleDefinition = {
   },
 }
 
-const tester = new SnapshotRuleTester(plugin.configs.recommended)
+const tester = new SnapshotRuleTester(LANGUAGE_CONFIG)
 
 // The tester takes the rule types of JavaScript; ESLint runs a rule of any
 // language the same way.
@@ -68,7 +68,7 @@ describe("a configuration comment that ESLint cannot read", () => {
     const messages = new Linter({ configType: "flat" }).verify(
       code,
       [
-        plugin.configs.recommended,
+        LANGUAGE_CONFIG,
         {
           files: ["**/*.mmd"],
           plugins: { "rule-to-test": { rules: { identifiers } } },
@@ -92,5 +92,31 @@ describe("a configuration comment that ESLint cannot read", () => {
         message: "A",
       }),
     ])
+  })
+})
+
+describe("a fragment of a diagram comment", () => {
+  // In a state diagram, U+2029 ends the comment `%% x` and starts a comment
+  // line `%% end`, after which the comment goes on: the rest is a comment
+  // without a mark, the continuation of the comment before it.
+  const fragmentText =
+    "stateDiagram-v2\nA %% x\u2029%% end\neslint-disable-next-line\nB\n"
+
+  it("is not read as a configuration comment", () => {
+    const sourceCode = observe(fragmentText).sourceCode
+    expect(sourceCode).not.toBeNull()
+    const fragment = sourceCode?.comments.find(
+      (comment) => comment.mark === null,
+    )
+    expect(fragment?.value).toBe("eslint-disable-next-line")
+    expect(sourceCode?.getInlineConfigNodes()).toEqual([])
+    expect(sourceCode?.getDisableDirectives().directives).toEqual([])
+  })
+
+  it("is read when it has a mark", () => {
+    const sourceCode = observe(
+      "stateDiagram-v2\n%% eslint-disable-next-line\nA\n",
+    ).sourceCode
+    expect(sourceCode?.getInlineConfigNodes()).toHaveLength(1)
   })
 })

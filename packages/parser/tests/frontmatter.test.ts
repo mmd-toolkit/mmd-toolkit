@@ -7,10 +7,12 @@ import { LineIndex } from "../src/positions.ts"
 
 describe("matchFrontmatter", () => {
   it.each([
-    // Condition 4: the body runs from the first content line to the closing line.
+    // Condition 4: the body runs from the first content line to the closing
+    // line.
     ["---\ntitle: x\n---\nerror", [4, 12], 17],
     ["---\na\nb\n---\n", [4, 7], 12],
-    // The frontmatter trivia includes the whitespace-only lines after the closing line.
+    // The frontmatter trivia includes the whitespace-only lines after the
+    // closing line.
     ["---\na\n---\n\n  \nx", [4, 5], 14],
     // A whitespace-only last line without a line terminator is not part of it.
     ["---\na\n---\n  ", [4, 5], 10],
@@ -19,16 +21,20 @@ describe("matchFrontmatter", () => {
     ["---\n\n---\n", [4, 4], 9],
     ["---\n  \n---\n", [4, 6], 11],
     ["---\n\n\n---\n", [5, 5], 10],
-    // Condition 4 comes first: a delimiter line after the first content line closes the block.
+    // Condition 4 comes first: a delimiter line after the first content line
+    // closes the block.
     ["---\n\n---\n---\n", [5, 8], 13],
     ["---\n---\n---\nx", [4, 7], 12],
-    // Only the first delimiter line after the first content line closes the block.
+    // Only the first delimiter line after the first content line closes the
+    // block.
     ["---\na\n---\nb\n---\n", [4, 5], 10],
-    // The delimiter lines may end with line whitespace, and `\r\n` and `\r` are line terminators.
+    // The delimiter lines may end with line whitespace, and `\r\n` and `\r` are
+    // line terminators.
     ["---  \na\n---\t\nx", [6, 7], 13],
     ["---\r\na\r\n---\r\nx", [5, 6], 13],
     ["---\ra\r---\rx", [4, 5], 10],
-    // The indent must repeat before the closing delimiter, character for character.
+    // The indent must repeat before the closing delimiter, character for
+    // character.
     ["  ---\n  a\n  ---\nx", [6, 9], 16],
     ["\uFEFF---\na\n\uFEFF---\nx", [5, 6], 12],
     // Condition 3: an indented `---` inside the body does not close the block.

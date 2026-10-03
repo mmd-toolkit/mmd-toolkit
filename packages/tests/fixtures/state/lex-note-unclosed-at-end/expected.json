@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Units and contexts: a note without its text at the end of the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...-v2  note left of A\n----------------------^"
+  }
+}

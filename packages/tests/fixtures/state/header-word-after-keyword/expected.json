@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Detection: stateDiagramX is detected and is no header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nstateDiagramX  A\n^\nExpecting 'SPACE', 'NL', 'SD', got 'ID'"
+  }
+}

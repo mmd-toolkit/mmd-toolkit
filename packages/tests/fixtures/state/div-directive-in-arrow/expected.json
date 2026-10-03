@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Known divergences, directive-as-token-boundary: the directive lies inside -->; mermaid.js accepts, and this specification rejects."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

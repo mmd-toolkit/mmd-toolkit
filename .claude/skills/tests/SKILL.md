@@ -14,20 +14,35 @@ The steps of the work on `@mmd-toolkit/tests` and `tools/`: the normalizer and
 the fixtures when a diagram type is added, keeping the fixture tools and lists
 that the other packages use, and updating the pinned mermaid.js. It is written
 so that the work can be done to the same quality from this document alone,
-without the conversation history or memory. Policies and criteria are not
-written here; this document points to them under "What to read first".
+without the conversation history or memory. The policies and criteria of the
+package are in section 1; what holds for every package is in AGENTS.md and in
+the skill `conventions`, which section 2 points to.
 
-## 1. What to read first
+## 1. Policies and criteria
 
-1. In AGENTS.md, the `packages/tests` section of "What each package is
-   responsible for", "Shared interfaces", and "Principles". The criteria change,
-   so read them for every piece of work.
+`packages/tests`, with the CLIs in `tools/`:
+
+- Pins mermaid as a devDependency and extracts mermaid's Db in Node (no DOM).
+- Defines the fixture format; keeps the loader and the README in step with it.
+- Provides the fixture generator and the mutation-diff harness. Whatever imports
+  mermaid (Db extraction, normalizers, the mutation core) lives in subpaths of
+  `@mmd-toolkit/tests`; the CLIs live in `tools/`.
+- Provides the CI job that regenerates fixtures and fails when mermaid's
+  behavior changed.
+- For each diagram type: extracting the truth (normalizer) and collecting
+  fixtures.
+
+## 2. What to read first
+
+1. Section 1 of this document; "Shared interfaces" and "Principles" in
+   AGENTS.md; and the skill `conventions` before writing code or a document. The
+   criteria change, so read them for every piece of work.
 2. `packages/tests/README.md`, the five documents in `packages/tests/docs/`, and
    `tools/README.md`. The fixture format, how the expected results are obtained,
    Db summaries, the values from embedded data, and the steps for maintaining
    and collecting fixtures are there.
 
-## 2. The working tree
+## 3. The working tree
 
 - The steps of this skill write only `packages/tests`, `tools/`, and the
   documents of this skill. When another package (`packages/spec`,
@@ -51,8 +66,8 @@ written here; this document points to them under "What to read first".
   into the real character. After writing source or documents, run
   `node scripts/check-invisible-chars.mjs` and make sure there are no invisible
   characters.
-- Always read the result of `eslint --fix` and Prettier. They can insert an
-  empty JSDoc or change what a regular expression means.
+- Read the result of `eslint --fix` and of Prettier, as the skill `conventions`
+  says.
 
 When the working tree is shared with other work:
 
@@ -63,7 +78,7 @@ When the working tree is shared with other work:
   `stash`, `checkout`, `reset`). Do not stop processes by name
   (`pkill -f vitest` also stops the tests of the other work).
 
-## 3. How to check (in every piece of work)
+## 4. How to check (in every piece of work)
 
 - Before taking in a claim, whoever makes it, check it by running mermaid.js.
   Put the following script in the working directory outside the repository as
@@ -96,10 +111,53 @@ When the working tree is shared with other work:
   left at the end of a style value was checked by putting each of the 23
   characters of JavaScript's `\s` there and running mermaid.js). Check that
   results do not change across every fixture, or every collected input.
-- Run the tests with `pnpm --filter @mmd-toolkit/tests test`. The whole test
-  suite is heavy, so under load run this package only. A test that reads every
-  fixture in one test gets an explicit time limit, set from its measured time
-  alone (do not rely on the default of 5 seconds).
+- Which tests to run, and when, follows "Running tests" in the skill
+  `conventions`. For this package:
+
+  | Code changed                                                | Test files to run (`tests/`)                                 |
+  | ----------------------------------------------------------- | ------------------------------------------------------------ |
+  | `src/index.ts` (format, loader, `KNOWN_DIVERGENCES`)        | `fixtures.test.ts`, `expected-changes.test.ts`               |
+  | `src/mermaid.ts`, `rejections.ts`, `run-mermaid-options.ts` | `mermaid.test.ts`, `mermaid-run-store.test.ts`               |
+  | `src/mermaid-run-store.ts`                                  | `mermaid-run-store.test.ts`                                  |
+  | `src/divergence-removals.ts`                                | `divergence-removals.test.ts`, `mermaid.test.ts`             |
+  | `src/normalizers/<diagram>.ts`, `normalizers/index.ts`      | `mermaid.test.ts`, `fixtures.test.ts`, then `fixtures:check` |
+  | `src/normalizers/data-blocks.ts`                            | `data-blocks.test.ts`, `mermaid.test.ts`                     |
+  | `src/normalizers/browser-stand-ins.ts`                      | `browser-stand-ins.test.ts`, `mermaid.test.ts`               |
+  | `src/normalizers/json.ts`                                   | `json.test.ts`, then `fixtures:check`                        |
+  | `src/expected-changes.ts`                                   | `expected-changes.test.ts`                                   |
+  | `src/mutation.ts`                                           | `mutation.test.ts`                                           |
+  | `tools/`                                                    | no test file; see below                                      |
+
+  The commands of `tools/` have no test file; each is checked by running it:
+  `add-many`, `set-divergence` and `set-note` with `--dry-run`, reading what
+  they would change; `generate` with `fixtures:check`; `tools/collect.ts` with
+  `--out` pointing outside the repository, reading the file it writes;
+  `tools/mutation.ts` on one fixture (`--fixture`) with a small `--count`.
+
+  Run one file with
+  `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<file>`.
+  `fixtures.test.ts` reads both READMEs (each known divergence has an item), so
+  it runs after a change to a README as well. The package has no sizes to raise:
+  its whole run (`pnpm --filter @mmd-toolkit/tests test`) is the run before a
+  completion is reported. `fixtures:check` runs after a change to how a result
+  is made or recorded (`src/mermaid.ts`, a normalizer, the format, the
+  generator), and before the completion of such a change is reported. After a
+  change to `src/`, rebuild `lib/` (below); the other packages run their own
+  tests of what they use. A test that reads every fixture in one test gets an
+  explicit time limit, set from its measured time alone (do not rely on the
+  default of 5 seconds).
+
+- `runMermaid()` gives back stored results for a text it has run before, keyed
+  by the code of `src/` or `lib/`, so a change to the code never gets an old
+  result (`docs/expected-results.md`). The tests of this package and the
+  generator run without the store, but for one test of the store, which runs a
+  text through the store of the repository; a probe runs with it unless
+  `MMD_TOOLKIT_MERMAID_CACHE=disabled` is set. Only the files of `src/` in
+  `RESULT_FILES` are in the key, so changing them makes every stored result
+  unused: keep that list right (a test checks it). A change to those files is
+  announced, before it is made, to those who run the tests, and is made when no
+  run at full size is going, whose stored results it would throw away; only a
+  fix of a wrong result goes in at once, announced all the same.
 - Check that the generator changes nothing with the hashes of the files, not
   only with the count it prints (run at the root of the repository).
 
@@ -113,9 +171,14 @@ When the working tree is shared with other work:
   ```
 
 - After changing `src/`, rebuild `lib/` with
-  `pnpm --filter @mmd-toolkit/tests run build`. The other packages read `lib/`.
+  `pnpm --filter @mmd-toolkit/tests run build`. Inside this repository, the
+  tests of the other packages, the tools and the type check read `src/` (through
+  the aliases of the vitest configurations, relative imports and the `paths` of
+  the root `tsconfig.json`), so a change to `src/` reaches their next run at
+  once. `lib/` is what the name of the package loads anywhere else, as in a
+  plain `node` script.
 
-## 4. Adding a diagram type (Jison)
+## 5. Adding a diagram type (Jison)
 
 Diagram types are added one at a time. Each is finished in this order before the
 next one starts: the normalizer and the fixtures (this section), the
@@ -125,7 +188,7 @@ before it: the Db normalization section of the specification is written from the
 list of summary fields, and the claims of the specification and the tests of the
 parser use the fixtures.
 
-### 4.1 Input
+### 5.1 Input
 
 - The name of the diagram type to add, and the diagram ids that share its Db
   (found in mermaid.js's list of detectors and in the `db` of each diagram
@@ -135,7 +198,7 @@ parser use the fixtures.
 - A clone of mermaid.js at the tag of the pinned version (outside the
   repository; how to make it is in `tools/README.md`).
 
-### 4.2 The normalizer
+### 5.2 The normalizer
 
 1. In the clone, open the grammar definition (`.jison`) and the Db class of the
    diagram type. List every private field of the Db, and every Db method the
@@ -170,7 +233,23 @@ parser use the fixtures.
      fixture what a key such as `__proto__` does: it stays an own property
      (flowchart), or it replaces the prototype (sequence's links and
      properties). `toJson` refuses the latter, so record the prototype as a
-     first entry `__proto__`.
+     first entry `__proto__`;
+   - the source of the summary, when the Db holds what it read in more than one
+     form. Take the form that holds every element once with what applies to it,
+     which is usually what the renderer reads, and write down why the other
+     forms are not taken (state: the statement tree keeps statements that change
+     nothing, and the table of states holds only the top level, so the summary
+     is taken from the layout data `getData()`);
+   - an id that mermaid.js makes at random (state's region after the last `--`).
+     Replace it, wherever it appears, with a name numbered in a stated order,
+     and check with two runs of the generator that the fixtures do not change;
+   - a value that depends on the time of the run or on chance, not on the text
+     (gantt reads dates, and may read today's). The store of earlier results
+     (`docs/expected-results.md`) gives back a result made on another day, so
+     such a value is either dropped from the summary, or the diagram type's
+     results are not stored, or what they depend on goes into the key of the
+     store. Check by running every fixture again on another day, and in another
+     order, and comparing with `expected.json`.
 3. Decide the table before writing. Decide it from the correctness criteria of
    AGENTS.md (for accepted inputs, the Db matches mermaid.js), from the rule
    that a summary keeps only what the syntax determines
@@ -212,7 +291,7 @@ parser use the fixtures.
    reasons. The Db normalization section of the specification is written from
    this list (the spec's skill).
 
-### 4.3 The fixtures
+### 5.3 The fixtures
 
 1. Inputs come from three places: the spec files of the diagram type, the
    mermaid blocks of the documentation, and the demos. Do not collect outside
@@ -269,7 +348,7 @@ parser use the fixtures.
    a data block, the frontmatter, a directive). Check by hand that an unusual
    error (`TypeError` and the like) is caused by the input. A
    `MermaidEnvironmentError` means mermaid.js uses a feature Node lacks; give a
-   stand-in as in 4.2 (`docs/expected-results.md`).
+   stand-in as in 5.2 (`docs/expected-results.md`).
 8. Run `fixtures:generate` twice, and check with the hash comparison above that
    the second run changes nothing. Run `fixtures:check`. Run the collection
    again and check that it finds nothing new (the names are stable).
@@ -277,15 +356,15 @@ parser use the fixtures.
    the unusual rejections, the fixtures marked, and the time `fixtures:generate`
    and `fixtures:check` take.
 
-## 5. Langium diagrams
+## 6. Langium diagrams
 
 To be written with pie (the first Langium diagram).
 
-## 6. Fixture tools and lists for the other packages
+## 7. Fixture tools and lists for the other packages
 
 The fixtures that back the claims of the specification are added with the tests
-generator (`fixtures:add-many` and the others; the `packages/spec` section of
-AGENTS.md, with the steps in the spec's skill). This skill does the following.
+generator (`fixtures:add-many` and the others; the policies and the steps are in
+the spec's skill). This skill does the following.
 
 1. Keep the tools and the format: the generator, `add`, `add-many`,
    `set-divergence`, `set-note`, the loader and the collection tools work as
@@ -319,11 +398,14 @@ AGENTS.md, with the steps in the spec's skill). This skill does the following.
 5. Show as the result what changed, the names added, the counts, and the result
    of `fixtures:check`.
 
-## 7. Updating mermaid.js
+## 8. Updating mermaid.js
 
 1. Change the devDependency `mermaid` in `packages/tests/package.json` to the
    new version, and run `pnpm install` (`pnpm-lock.yaml` is a shared file at the
-   root). Make the clone again at the tag of the new version.
+   root). Make the clone again at the tag of the new version. Run every step of
+   this section with `MMD_TOOLKIT_MERMAID_CACHE=disabled`, so that what is
+   compared is mermaid.js itself; the new version gives new keys to the store
+   anyway.
 2. Fix what is tied to the version. Find it by searching `packages/tests` and
    `tools/` (without `fixtures/`, `lib/` and `node_modules/`) for the old
    version and the old commit:
@@ -376,7 +458,7 @@ AGENTS.md, with the steps in the spec's skill). This skill does the following.
      `UnknownDiagramError` on the `common/` fixtures that use it; that belongs
      with detection below;
    - `summary fields`: a change inside the Db, unless the keys are ones an
-     author wrote. Decide, in the same table as in 4.2, whether to change the
+     author wrote. Decide, in the same table as in 5.2, whether to change the
      normalizer or to drop the field;
    - `detection`, or a diagram type that is new or gone: it concerns
      `diagramIds` and the specification's `packages/spec/docs/detection.md` (it

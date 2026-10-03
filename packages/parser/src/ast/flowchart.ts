@@ -538,11 +538,12 @@ export interface FlowchartClickCallbackStatement extends NodeBase {
    */
   readonly ids: readonly (Identifier | null)[]
   /**
-   * The name of the function: the characters up to `(`, which may contain
-   * whitespace and line breaks; the whitespace at its ends is not part of
-   * the name.
+   * The name of the function. After `call`, a FlowchartLiteral: the
+   * characters up to `(`, which may contain whitespace and line breaks,
+   * without the whitespace at its ends. Without `call`, as in `click A
+   * callback`, an Identifier, a click id.
    */
-  readonly callback: Identifier
+  readonly callback: Identifier | FlowchartLiteral
   /**
    * The arguments between the parentheses after a `call`, whose value is a
    * string with its whitespace and line feeds; null when there are none, or
@@ -598,9 +599,9 @@ export interface FlowchartClickUrlStatement extends NodeBase {
 
 /**
  * ast/flowchart.md, FlowchartLinkStyleStatement: a `linkStyle` statement for
- * numbered links. Its child fields are `indices`, `interpolate`, and
- * `styles`. `interpolate` is not null, or `styles` is not empty, or both. Each number names a link that a statement before it
- * has made.
+ * numbered links. Its child fields are `indices`, `interpolate`, and `styles`.
+ * `interpolate` is not null, or `styles` is not empty, or both. Each number
+ * names a link that a statement before it has made.
  *
  * ```text
  * A --> B --> C

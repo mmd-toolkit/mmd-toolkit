@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: the space after the class name is a `space` unit, which the class statement does not take, so the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...chart LRAclass A c accDescr {}\n---------------------^\nExpecting 'SEMI', 'NEWLINE', 'EOF', 'AMP', 'COLON', 'DOWN', 'DEFAULT', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'SPACE'"
+  }
+}

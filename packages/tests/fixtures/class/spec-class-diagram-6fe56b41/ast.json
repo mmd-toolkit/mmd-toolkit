@@ -136,8 +136,8 @@
           }
         },
         "callback": {
-          "type": "Identifier",
-          "name": "cb",
+          "type": "ClassLiteral",
+          "value": "cb",
           "range": [
             42,
             44
@@ -426,7 +426,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "cb",
       "range": [
         42,

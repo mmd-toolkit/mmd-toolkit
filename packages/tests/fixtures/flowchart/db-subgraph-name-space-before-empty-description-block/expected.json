@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization: the name text leaves out the empty description block but keeps the space before it, so it is `S` and a space, which contains whitespace, and the id of the subgraph is `subGraph0`, as with `subgraph S` and a space at the end of the line; the title is `S`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

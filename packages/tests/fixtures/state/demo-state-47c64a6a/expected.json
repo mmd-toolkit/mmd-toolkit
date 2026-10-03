@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/state.html",
+    "line": 187
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "Active",
+        "shape": "roundedWithTitle",
+        "label": "Active",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Idle",
+        "shape": "rect",
+        "label": "Idle",
+        "classes": [],
+        "styles": [],
+        "parentId": "Active"
+      },
+      {
+        "id": "Inactive",
+        "shape": "rect",
+        "label": "Inactive",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "Inactive",
+        "end": "Idle",
+        "label": "ACT"
+      },
+      {
+        "start": "Active",
+        "end": "Active",
+        "label": "LOG"
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

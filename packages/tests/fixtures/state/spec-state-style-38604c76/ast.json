@@ -1,0 +1,187 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateClassDefStatement",
+        "cssClass": {
+          "type": "Identifier",
+          "name": "exampleClass",
+          "range": [
+            26,
+            38
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 22
+            }
+          }
+        },
+        "styles": [
+          {
+            "type": "StateLiteral",
+            "value": "background:#bbb",
+            "range": [
+              39,
+              54
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 23
+              },
+              "end": {
+                "line": 2,
+                "column": 38
+              }
+            }
+          }
+        ],
+        "range": [
+          17,
+          54
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 1
+          },
+          "end": {
+            "line": 2,
+            "column": 38
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      55
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 39
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        17,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 1
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "exampleClass",
+      "range": [
+        26,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "background:#bbb",
+      "range": [
+        39,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 23
+        },
+        "end": {
+          "line": 2,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": ";",
+      "range": [
+        54,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 38
+        },
+        "end": {
+          "line": 2,
+          "column": 39
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    55
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 39
+    }
+  }
+}

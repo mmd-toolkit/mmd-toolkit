@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokenless-empty-forms: the empty description block lies inside the class name, between its name and its generic type, two fields of a ClassName; mermaid.js reads no token for it and accepts the input as the same without the block, and this specification rejects it."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "T",
+        "label": "A",
+        "text": "A&lt;T&gt;",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "type": "",
+        "label": "B",
+        "text": "B",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "A",
+        "id2": "B",
+        "relation": {
+          "type1": 1,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      }
+    ],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

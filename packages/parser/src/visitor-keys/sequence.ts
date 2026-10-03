@@ -37,6 +37,7 @@ export const sequenceVisitorKeys: Readonly<
   SequenceCriticalStatement: ["sections"],
   SequenceSection: ["text", "body"],
   SequenceIgnoredStatement: [],
+  SequenceIdentifier: [],
   SequenceText: ["value"],
   SequenceLiteral: [],
   SequenceDataBlock: [],

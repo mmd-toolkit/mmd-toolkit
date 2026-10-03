@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Comments: %% where a unit starts begins a diagram comment."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

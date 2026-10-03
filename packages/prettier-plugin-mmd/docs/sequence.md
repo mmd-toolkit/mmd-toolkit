@@ -530,6 +530,52 @@ sequenceDiagram
   end
 ```
 
+A `;` that stands right after a comment on its line is kept: it is the last `;`
+of a line that the line rule of mermaid.js ignores, and the comment ends before
+it. Where whitespace follows that `;` in the source, the `;` lies inside the
+comment, and the comment is printed with it. Dropping it in one case and keeping
+it in the other would make a second formatting differ from the first.
+
+Input
+([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):
+
+```mmd
+sequenceDiagram
+A->>B: x #style:#x;
+loop style:#x;
+A->>B: y
+end
+```
+
+Output
+([comments/semicolon-after-comment-kept-output.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-output.mmd)):
+
+```mmd
+sequenceDiagram
+  A ->> B: x #style:#x;
+  loop style:#x;
+    A ->> B: y
+  end
+```
+
+### Line separators
+
+U+2028 and U+2029 are whitespace, but two readings of mermaid.js depend on them,
+so the formatter keeps them where they matter. The characters are invisible, so
+there is no example here; the tests write them as escapes (see
+`tests/line-separators.test.ts`).
+
+- At the end of the text of a `box`, after the whitespace that may stand before
+  them. mermaid.js gives a box whose text holds such a character the fill
+  `transparent` and no name, and without it `box aqua` has the fill `aqua`. The
+  whitespace after the last of them is dropped.
+- Between a comment and the comment line that follows it on the same line. A
+  diagram comment goes on past such a comment line to the next line, so a line
+  break in place of the character would turn the text after it into a statement.
+  The comment, the comment line, and the text after it are printed as written,
+  without indentation: the tree lists them as comments, and the printer reads
+  them as one.
+
 ### Directives
 
 As in a flowchart: a directive on a line of its own stands at the level of the
@@ -598,9 +644,9 @@ whitespace (the specification's
 rule 2). So `Alice ->>`, a space, a line break, and `Bob: hi` is printed as
 `Alice ->> Bob: hi`.
 
-A statement written over several lines with a comment or a directive in it is
-kept as written, from its start to its end. It cannot stand on one line, and
-only the whitespace at the ends of its lines, which the formatter does not
+A statement written over several lines with a comment, a directive, or a `;` in
+it is kept as written, from its start to its end. It cannot stand on one line,
+and only the whitespace at the ends of its lines, which the formatter does not
 write, makes mermaid.js read its lines as one statement. A title with a comment
 line between its keyword and its text is such a statement. The lines of an
 `accDescr { ... }` block are lines of its text (see
@@ -679,11 +725,12 @@ Some text is always kept as written, because changing it would change the
 diagram or the input would be rejected:
 
 - the text of a value, with the whitespace inside it, and the text of a `box` as
-  a whole;
+  a whole, up to the last U+2028 or U+2029 that ends it;
 - the whitespace after the one character that follows `title` or `title:`;
 - the data block of a participant, and that it touches its id;
 - that an arrow touches a source spelled as a number or `title`;
-- a statement written over several lines with a comment or a directive in it,
-  such as a title with a comment line between its keyword and its text;
-- whether whitespace is written before the mark of a comment after a statement;
+- a statement written over several lines with a comment, a directive, or a `;`
+  in it, such as a title with a comment line between its keyword and its text;
+- whether whitespace is written before the mark of a comment after a statement,
+  and a U+2028 or U+2029 between a comment and a comment line after it;
 - the arrows, and the case of keywords.

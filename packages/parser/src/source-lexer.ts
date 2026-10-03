@@ -15,9 +15,14 @@ import type { EntityDelimiter } from "./entities.ts"
 import { frontmatterTokensOf } from "./frontmatter.ts"
 import { findAttributeQuotes } from "./html-quotes.ts"
 import type { CommentRegionEntry, LineEntry } from "./line-lookahead.ts"
-import { lookAheadFromCommentStart } from "./line-lookahead.ts"
+import { commentEnd, lookAheadFromCommentStart } from "./line-lookahead.ts"
 import { LineIndex } from "./positions.ts"
-import { lineTerminatorEnd, nextOffset, skipBackWhile } from "./text-cursor.ts"
+import {
+  lineTerminatorEnd,
+  nextOffset,
+  skipBackWhile,
+  skipWhile,
+} from "./text-cursor.ts"
 
 /**
  * common.md, Reading a source: one character of the diagram text as a
@@ -78,6 +83,36 @@ export interface ReadDirective {
   readonly start: number
   /** The offset after the directive. */
   readonly end: number
+}
+
+/**
+ * A part of a diagram comment, at its offset `at`, recorded in source order:
+ * a directive inside it, a comment region that cuts it, a fragment of it,
+ * or a `;` that the line rule ignores right after it.
+ */
+type DiagramCommentPart =
+  | {
+      readonly kind: "directive"
+      readonly at: number
+      readonly directive: DirectiveMatch
+    }
+  | {
+      readonly kind: "region"
+      readonly at: number
+      readonly region: CommentRegionEntry
+    }
+  | { readonly kind: "fragment"; readonly at: number; readonly range: Range }
+  | { readonly kind: "semicolon"; readonly at: number }
+
+/**
+ * ast.md, Comment: the kind of each piece of a token of kind `kind` that is
+ * recorded as `pieces` pieces: a piece of a `String` token cut by a comment
+ * region is a `StringFragment` token, and every other piece keeps the kind of
+ * its token. A directive never cuts a `String` token, since a directive
+ * inside a string makes the input rejected.
+ */
+function pieceKindOf(kind: DiagramTokenKind, pieces: number): TokenKind {
+  return kind === "String" && pieces > 1 ? "StringFragment" : kind
 }
 
 /** What a reader finds when it reads the text from an offset: the next character of the diagram text, or a directive that comes before it. */
@@ -367,20 +402,22 @@ export class SourceLexer {
   }
 
   /**
-   * ast.md, Tokens and Invariants: records the tokens of a diagram,
-   * `tokens`, in source order, walking the source once from `start` to the
-   * end, after the tokens of `frontmatter`, the frontmatter before `start`,
-   * when there is one (see `frontmatterTokensOf`). On the way it records each comment
-   * region's directives and comment and each directive, with a `Directive`
-   * token for each directive outside every token and comment, and passes
-   * whitespace and line terminators. A token
-   * with a directive between two of its characters that are not whitespace
-   * is recorded as its pieces (common.md, A directive is a token boundary).
-   * A `;` that the line rule ignores and that lies in none of the tokens is a
-   * token of its own, of the kind `ignoredSemicolonKindAt` of its offset,
-   * which the diagram gives a `;` that stands alone at its place. The end of every token is checked (see
-   * {@link SourceLexer.endOfPiece}), and a character that is not whitespace
-   * and lies in no token is a bug of the diagram's parser.
+   * ast.md, Tokens and Invariants: records the tokens of a diagram, `tokens`,
+   * in source order, walking the source once from `start` to the end, after the
+   * tokens of `frontmatter`, the frontmatter before `start`, when there is one
+   * (see `frontmatterTokensOf`). On the way it records each comment region's
+   * directives and comment and each directive, with a `Directive` token for
+   * each directive outside every token and comment, and passes whitespace and
+   * line terminators. A token with a directive or a comment region between two
+   * of its characters that are not whitespace is recorded as its pieces
+   * (common.md, A directive is a token boundary; ast.md, Comment), and the
+   * comment regions between the pieces lie outside every token. The pieces of a
+   * `String` token are `StringFragment` tokens. A `;` that the line rule
+   * ignores and that lies in none of the tokens is a token of its own, of the
+   * kind `ignoredSemicolonKindAt` of its offset, which the diagram gives a `;`
+   * that stands alone at its place. The end of every token is checked (see
+   * {@link SourceLexer.endOfPiece}), and a character that is not whitespace and
+   * lies in no token is a bug of the diagram's parser.
    */
   public recordTokens(
     tokens: readonly PendingToken[],
@@ -408,14 +445,16 @@ export class SourceLexer {
     while (offset < this.text.length) {
       const diagramComment = diagramComments.at(commentsRecorded)
       if (diagramComment?.range[0] === offset) {
-        this.recordDiagramComment(diagramComment)
+        offset = this.recordDiagramComment(
+          diagramComment,
+          ignoredSemicolonKindAt,
+        )
         commentsRecorded += 1
-        offset = diagramComment.range[1]
         continue
       }
       const found = this.ruleAt(offset)
       if (found.rule === "region") {
-        this.recordCommentRegion(found.entry, "outside-tokens")
+        this.recordCommentRegion(found.entry)
         offset = found.entry.end
         continue
       }
@@ -441,8 +480,7 @@ export class SourceLexer {
       if (token === undefined || pieces === null || piece?.[0] !== offset) {
         throw new Error(this.bug(`the character at ${offset} is in no token`))
       }
-      this.recordToken(piece, token.kind)
-      this.recordCommentRegionsIn(piece[0], piece[1])
+      this.recordToken(piece, pieceKindOf(token.kind, pieces.length))
       offset = piece[1]
       piecesRecorded += 1
       if (piecesRecorded === pieces.length) {
@@ -468,15 +506,16 @@ export class SourceLexer {
   }
 
   /**
-   * common.md, A directive is a token boundary, and ast.md, Tokens: the
-   * pieces of the token whose range is `range`, in source order, each the
-   * range of a token that is recorded. A token that has a directive between
-   * two of its characters that are not whitespace is cut at the directive,
-   * and each piece is a part without the whitespace at its ends; a token
-   * without such a directive is one piece, its range. A piece starts at the
-   * first character of the diagram text that is not whitespace, after the
-   * directives and whitespace before it (see {@link SourceLexer.endOfPiece}
-   * for its end).
+   * common.md, A directive is a token boundary, and ast.md, Tokens and
+   * Comment: the pieces of the token whose range is `range`, in source
+   * order, each the range of a token that is recorded. A token that has a
+   * directive or a comment region between two of its characters that are
+   * not whitespace is cut there, and each piece is a part without the
+   * whitespace and line terminators at its ends; a part that is all
+   * whitespace is no piece, and a token without such a cut is one piece,
+   * its range. A piece starts at the first character of the diagram text
+   * that is not whitespace, after the directives, comment regions, and
+   * whitespace before it (see {@link SourceLexer.endOfPiece} for its end).
    */
   private piecesOf(range: Range): Range[] {
     const pieces: Range[] = []
@@ -500,14 +539,15 @@ export class SourceLexer {
   }
 
   /**
-   * common.md, A directive is a token boundary, and ast.md, Tokens and
-   * Invariants: the end of the piece of a token that starts at `start`, in
-   * the token that ends at `tokenEnd`. A token that has a directive between
-   * two of its characters that are not whitespace is cut at the directive,
-   * and each piece, without the whitespace at its ends, is a token. The
-   * piece is read as the token rules read it, and its end is the end of its
-   * last character that is not whitespace before the next directive, or
-   * `tokenEnd` when no directive follows in the token.
+   * common.md, A directive is a token boundary, and ast.md, Tokens,
+   * Comment, and Invariants: the end of the piece of a token that starts at
+   * `start`, in the token that ends at `tokenEnd`. A token that has a
+   * directive or a comment region between two of its characters that are
+   * not whitespace is cut there, and each piece, without the whitespace at
+   * its ends, is a token. The piece is read as the token rules read it, and
+   * its end is the end of its last character that is not whitespace before
+   * the next directive or comment region, or `tokenEnd` when none follows
+   * in the token.
    *
    * The end is found by reading, so it is always the end of a character of
    * the diagram text that is not whitespace: at a character boundary, not
@@ -521,6 +561,7 @@ export class SourceLexer {
     let end = start
     let offset = start
     while (offset < tokenEnd) {
+      if (this.regionStartsAt(offset)) return end
       const element = this.readAt(offset)
       if (element.kind === "directive") return end
       if (element.endOfText) break
@@ -538,20 +579,19 @@ export class SourceLexer {
   }
 
   /**
-   * Comment lines: records the comment regions between `start` and `end`,
-   * inside a token, with their directives and comments. The token rules read
-   * through them.
+   * ast.md, Comment: whether a comment region starts at `offset`, where the
+   * reading of a token goes on, also after the `;` characters that the line
+   * rule ignores there. The reading passes a comment region as a whole, so
+   * that it starts at the end of a character that was read.
    */
-  private recordCommentRegionsIn(start: number, end: number): void {
-    let offset = start
-    while (offset < end) {
-      const found = this.ruleAt(offset)
-      if (found.rule === "region") {
-        this.recordCommentRegion(found.entry, "inside-token")
-        offset = found.entry.end
-      } else {
-        offset = this.characterEnd(offset)
-      }
+  private regionStartsAt(offset: number): boolean {
+    let current = offset
+    for (;;) {
+      if (current >= this.text.length) return false
+      const found = this.ruleAt(current)
+      if (found.rule === "region") return true
+      if (found.rule !== "ignored-semicolon") return false
+      current += 1
     }
   }
 
@@ -616,7 +656,8 @@ export class SourceLexer {
     if (last.kind === "region") {
       this.nextEntryStart = last.end
     } else {
-      // The separator after the last segment: a line terminator, or U+2028 or U+2029.
+      // The separator after the last segment: a line terminator, or U+2028 or
+      // U+2029.
       this.nextEntryStart =
         last.end >= this.text.length
           ? this.text.length
@@ -699,26 +740,20 @@ export class SourceLexer {
    * Comment lines, and ast.md, Comment and Directive: adds what a comment
    * region holds to the lists, in source order: its directives, those
    * before the comment's `%%` and those inside the comment, and its comment.
-   * A directive before the comment's `%%` lies outside the comment, and is a
-   * `Directive` token when the region lies outside the tokens, `place`; a
-   * directive inside the comment, or in a region inside a token, is part of
-   * that comment or token. The whitespace and line terminators of the region
-   * are in no list.
+   * A comment region lies outside every token, also where it cuts one. A
+   * directive before the comment's `%%` lies outside the comment and is a
+   * `Directive` token; a directive inside the comment is part of it. The
+   * whitespace and line terminators of the region are in no list.
    */
-  private recordCommentRegion(
-    region: CommentRegionEntry,
-    place: "outside-tokens" | "inside-token",
-  ): void {
+  private recordCommentRegion(region: CommentRegionEntry): void {
     for (const directive of region.directives.values()) {
       const beforeComment = directive.range[0] < region.comment[0]
-      this.recordDirective(
-        directive,
-        place === "outside-tokens" && beforeComment ? "token" : "no-token",
-      )
+      this.recordDirective(directive, beforeComment ? "token" : "no-token")
     }
     const end = region.comment[1]
     this.commentsRead.push({
       type: "Comment",
+      mark: "%%",
       value: this.text.slice(region.afterMarker, end),
       range: region.comment,
       loc: this.lines.location(region.comment),
@@ -727,27 +762,133 @@ export class SourceLexer {
 
   /**
    * ast.md, Comment and Directive: records the diagram comment `comment`,
-   * which a diagram's own lexer found, and the directives inside it, which
-   * are part of the comment and have no token of their own. The value of
-   * the comment is the source text after its mark.
+   * which a diagram's own lexer found, with the directives inside it, which
+   * are part of the comment and have no token of their own, and the comment
+   * regions inside it, in source order, and returns where its line ends.
+   *
+   * A comment region on its line, after U+2028 or U+2029, cuts the comment
+   * as it cuts a token: each fragment, the text before a region or after
+   * it without the whitespace and line terminators at its ends, is a
+   * `Comment`, and a fragment that is empty or all whitespace is none. The
+   * first fragment starts at the mark and has the comment's mark and the
+   * value after it; a fragment after a region has no mark, and the value of
+   * its range.
+   *
+   * The comment ends where its line ends, as `commentEnd` says, except
+   * that a `;` that the line rule ignores and that is its last character
+   * lies outside it, as a token of its own of the kind
+   * `ignoredSemicolonKindAt` gives: the comment is found as if that `;` were
+   * not there. That is decided on the whole comment, before the regions cut
+   * it, so a `;` with characters of the comment after it on its line, a
+   * U+2028 or U+2029 before a region among them, lies inside.
    */
-  private recordDiagramComment(comment: DiagramComment): void {
-    const [start, end] = comment.range
+  private recordDiagramComment(
+    comment: DiagramComment,
+    ignoredSemicolonKindAt: (offset: number) => DiagramTokenKind,
+  ): number {
+    const [start, lineEnd] = comment.range
+    const directives: DirectiveMatch[] = []
+    const regions: CommentRegionEntry[] = []
     let offset = start
-    while (offset < end) {
+    while (offset < lineEnd) {
       const found = this.ruleAt(offset)
-      if (found.rule === "directive") {
-        this.recordDirective(found.directive, "no-token")
+      if (found.rule === "region") {
+        regions.push(found.entry)
+        offset = found.entry.end
+      } else if (found.rule === "directive") {
+        directives.push(found.directive)
         offset = found.directive.range[1]
       } else {
         offset = this.characterEnd(offset)
       }
     }
+    const fragments: Range[] = []
+    let fragmentStart = start
+    for (const region of regions) {
+      const fragmentEnd = skipBackWhile(this.text, region.start, isWhitespace)
+      if (fragmentEnd > fragmentStart)
+        fragments.push([fragmentStart, fragmentEnd])
+      fragmentStart = Math.min(
+        skipWhile(this.text, region.end, isWhitespace),
+        lineEnd,
+      )
+    }
+    // Whether a `;` that the line rule ignores lies inside the comment is
+    // decided on the whole comment, before the regions cut it: only its
+    // last character, at the end of the line, lies outside.
+    const lastEnd = commentEnd(this.text, fragmentStart, lineEnd)
+    const semicolon = lastEnd - 1
+    const endsWithIgnoredSemicolon =
+      lastEnd > fragmentStart &&
+      this.ruleAt(semicolon).rule === "ignored-semicolon"
+    const end = endsWithIgnoredSemicolon ? semicolon : lastEnd
+    if (end > fragmentStart) fragments.push([fragmentStart, end])
+    const parts: DiagramCommentPart[] = [
+      ...directives.map((directive): DiagramCommentPart => ({
+        kind: "directive",
+        at: directive.range[0],
+        directive,
+      })),
+      ...regions.map((region): DiagramCommentPart => ({
+        kind: "region",
+        at: region.start,
+        region,
+      })),
+      ...fragments.map((fragment): DiagramCommentPart => ({
+        kind: "fragment",
+        at: fragment[0],
+        range: fragment,
+      })),
+      ...(endsWithIgnoredSemicolon
+        ? [{ kind: "semicolon", at: semicolon } as const]
+        : []),
+    ]
+    parts.sort((a, b) => a.at - b.at)
+    for (const part of parts) {
+      switch (part.kind) {
+        case "directive":
+          this.recordDirective(part.directive, "no-token")
+          break
+        case "region":
+          this.recordCommentRegion(part.region)
+          break
+        case "fragment":
+          this.recordCommentFragment(part.range, comment)
+          break
+        case "semicolon":
+          this.recordToken(
+            [part.at, part.at + 1],
+            ignoredSemicolonKindAt(part.at),
+          )
+          break
+        default:
+          throw new Error(
+            this.bug(
+              `unknown part of a diagram comment ${JSON.stringify(part satisfies never)}`,
+            ),
+          )
+      }
+    }
+    return lineEnd
+  }
+
+  /**
+   * Records the fragment `range` of the diagram comment `comment`. The
+   * fragment that starts at the comment's mark has the mark and the value
+   * after it; a fragment after a comment region has no mark, and the value
+   * of its range.
+   */
+  private recordCommentFragment(range: Range, comment: DiagramComment): void {
+    const startsAtMark = range[0] === comment.range[0]
     this.commentsRead.push({
       type: "Comment",
-      value: this.text.slice(comment.valueStart, end),
-      range: comment.range,
-      loc: this.lines.location(comment.range),
+      mark: startsAtMark ? comment.mark : null,
+      value: this.text.slice(
+        startsAtMark ? comment.valueStart : range[0],
+        range[1],
+      ),
+      range,
+      loc: this.lines.location(range),
     })
   }
 

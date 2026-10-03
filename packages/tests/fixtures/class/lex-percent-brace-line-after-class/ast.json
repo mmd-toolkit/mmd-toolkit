@@ -1,0 +1,174 @@
+{
+  "type": "Root",
+  "diagramType": "classDiagram",
+  "body": {
+    "type": "ClassDiagram",
+    "body": [
+      {
+        "type": "ClassDeclaration",
+        "name": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "Identifier",
+            "name": "A",
+            "range": [
+              21,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 8
+              },
+              "end": {
+                "line": 2,
+                "column": 9
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            21,
+            22
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 9
+            }
+          }
+        },
+        "label": null,
+        "cssClass": null,
+        "annotation": null,
+        "members": null,
+        "range": [
+          15,
+          22
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 9
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      22
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 9
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": "{}",
+      "range": [
+        25,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 6
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "classDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        15,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        21,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    30
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0
+    }
+  }
+}

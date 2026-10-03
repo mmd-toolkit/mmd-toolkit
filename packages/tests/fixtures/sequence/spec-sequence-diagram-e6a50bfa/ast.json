@@ -42,7 +42,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Alice",
           "range": [
             37,
@@ -84,7 +84,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Bob",
           "range": [
             44,
@@ -157,7 +157,7 @@
         "placement": "right of",
         "ids": [
           {
-            "type": "Identifier",
+            "type": "SequenceIdentifier",
             "name": "Bob",
             "range": [
               86,
@@ -229,7 +229,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Bob",
           "range": [
             102,
@@ -271,7 +271,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Alice",
           "range": [
             108,

@@ -7,7 +7,10 @@ Disallow an `accDescr {` block without its closing `}`.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
+
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 
 <!-- end auto-generated rule notice -->
 
@@ -20,7 +23,22 @@ the block holds.
 This rule reports an `accDescr {` block that is not closed by `}`. It applies to
 `flowchart-v2`, `flowchart-elk`, and `swimlane`.
 
-A description written before the block is replaced by the empty one.
+A description written before the block is replaced by the empty one. The
+statements after the block become its text: after `accDescr { x`, the line
+`B --> C` makes no link.
+
+For each report, the rule suggests closing the block:
+
+- At the end of the line of the `{`, when text follows the `{` on that line.
+  mermaid.js then reads that text as the description, and the lines after it as
+  statements.
+- At the end of the text, when the block has text on a later line. mermaid.js
+  then reads all the text after the `{` as the description.
+
+A block with nothing after its `{` gets no suggestion: closed there, it would be
+empty. When a description is set before the block, the closed block replaces it,
+and [no-duplicate-description](./no-duplicate-description.md) then reports the
+block: the text sets the description twice.
 
 Examples of **incorrect** code for this rule:
 
@@ -28,6 +46,13 @@ Examples of **incorrect** code for this rule:
 flowchart LR
   A
   accDescr { x
+```
+
+```mmd
+flowchart LR
+  A --> B
+  accDescr { x
+  B --> C
 ```
 
 Examples of **correct** code for this rule:
@@ -38,6 +63,13 @@ flowchart LR
   accDescr { y }
 ```
 
+```mmd
+flowchart LR
+  A --> B
+  accDescr { x }
+  B --> C
+```
+
 ## Options
 
 This rule has no options.
@@ -46,3 +78,12 @@ This rule has no options.
 
 - [no-empty-description-block](./no-empty-description-block.md)
 - [no-duplicate-description](./no-duplicate-description.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../../src/rules/flowchart/no-unclosed-description-block.ts)
+- [Tests source](../../../tests/rules/flowchart/no-unclosed-description-block.test.ts)
+
+<!-- end auto-generated rule resources -->

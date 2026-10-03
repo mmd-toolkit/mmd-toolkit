@@ -10,6 +10,7 @@ import type { DiagramUnit } from "./diagram-units.ts"
 import { significantRangeOf } from "./diagram-units.ts"
 import type { EmptyForm } from "./empty-forms.ts"
 import { emptyFormError, emptyFormsOf } from "./empty-forms.ts"
+import type { EmptyFormKind } from "./empty-forms.ts"
 import { ParseError } from "./errors.ts"
 import type { LineIndex } from "./positions.ts"
 import type { PendingToken, SourceLexer } from "./source-lexer.ts"
@@ -32,8 +33,12 @@ export abstract class UnitGrammar<
   Name extends string,
   Unit extends DiagramUnit<Name>,
 > {
-  /** The units of the diagram text, in source order. */
-  protected readonly units: readonly Unit[]
+  /**
+   * The units of the diagram text that the grammar reads, in source order:
+   * those of the lexer, without the units taken out
+   * ({@link UnitGrammar.takeOut}).
+   */
+  protected units: readonly Unit[]
 
   protected readonly lexer: SourceLexer
 
@@ -44,7 +49,8 @@ export abstract class UnitGrammar<
 
   /**
    * The empty form that each unit belongs to, for the units of the empty
-   * forms (see `emptyFormsOf`), which no rule of the grammar takes.
+   * forms of the diagram (see `emptyFormsOf`), which no rule of the
+   * grammar takes.
    */
   private readonly emptyFormOfUnit: ReadonlyMap<Unit, EmptyForm<Unit>>
 
@@ -52,12 +58,16 @@ export abstract class UnitGrammar<
 
   private readonly tokens: PendingToken[] = []
 
-  protected constructor(units: readonly Unit[], lexer: SourceLexer) {
+  protected constructor(
+    units: readonly Unit[],
+    lexer: SourceLexer,
+    emptyFormKinds: readonly EmptyFormKind[],
+  ) {
     this.units = units
     this.lexer = lexer
     this.lines = lexer.lines
     this.emptyFormOfUnit = new Map(
-      emptyFormsOf(units).flatMap((form) =>
+      emptyFormsOf(units, emptyFormKinds).flatMap((form) =>
         form.units.map((unit): [Unit, EmptyForm<Unit>] => [unit, form]),
       ),
     )
@@ -102,8 +112,60 @@ export abstract class UnitGrammar<
    * none.
    */
   protected emptyFormErrorAt(unit: Unit): ParseError | null {
-    const form = this.emptyFormOfUnit.get(unit)
-    return form === undefined ? null : emptyFormError(form, this.lines)
+    const form = this.emptyFormOf(unit)
+    return form === null ? null : emptyFormError(form, this.lines)
+  }
+
+  /** The empty form that `unit` belongs to; null when it belongs to none. */
+  protected emptyFormOf(unit: Unit): EmptyForm<Unit> | null {
+    return this.emptyFormOfUnit.get(unit) ?? null
+  }
+
+  /**
+   * Each diagram's Empty description blocks before a separator:
+   * `statement-end = empty-description-block* separator`, after the last
+   * unit of a statement. The index of its separator, the unit after the
+   * `empty-description-block`s that start at the next unit, which the
+   * caller reads as statements of their own; the separator is a unit named
+   * in `separators`, or, when `endOfText` holds, the end of the text, where
+   * the index is that of no unit. When no separator follows, the error is
+   * that of the first block, which then lies inside a statement, or of the
+   * unit, when no block comes before it.
+   */
+  protected statementEndAt(
+    separators: readonly Name[],
+    endOfText: boolean,
+  ): number {
+    let end = this.next
+    for (;;) {
+      const unit = this.units.at(end)
+      const form = unit === undefined ? null : this.emptyFormOf(unit)
+      if (form?.kind !== "empty-description-block" || form.units[0] !== unit) {
+        break
+      }
+      end += form.units.length
+    }
+    const separator = this.units.at(end)
+    const separates =
+      separator === undefined ? endOfText : separators.includes(separator.name)
+    if (!separates) throw this.unexpected(this.peek())
+    return end
+  }
+
+  /**
+   * Takes `units`, which all lie after the next unit, out of the units that
+   * the grammar reads; the units before the next one keep their indices.
+   */
+  protected takeOut(units: readonly Unit[]): void {
+    const taken = new Set(units)
+    for (const unit of units) {
+      if (this.units.indexOf(unit) < this.next) {
+        throw new Error(
+          `mmd-toolkit parser bug: the unit at ${unit.start} is read already`,
+        )
+      }
+    }
+    this.units = this.units.filter((unit) => !taken.has(unit))
   }
 
   /** The units that are not all whitespace, with their kinds, in source order. */
@@ -200,9 +262,8 @@ export abstract class UnitGrammar<
   /**
    * ast.md, Shared leaf nodes > Identifier: the Identifier whose units are
    * `units`, one `Identifier` item. Its name is the text of the range of
-   * each unit without the whitespace at its ends, joined in order: the
-   * whitespace inside a unit is part of it, also next to a directive that
-   * cuts the unit, and the whitespace between two units is not.
+   * each unit, joined in order; none of the units contains whitespace, so
+   * the whitespace between two units is not part of it.
    */
   protected identifierOf(units: readonly Unit[]): Identifier {
     this.addItem("Identifier", units)

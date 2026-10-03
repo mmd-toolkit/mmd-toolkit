@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state context: the id of a fork is the text before the mark, spaces included."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "f 1",
+        "shape": "fork",
+        "label": "f 1",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -82,7 +82,10 @@ In a class diagram, the same holds for an empty string where the grammar takes
 none, an empty backquoted name, an empty generic type that does not end a class
 name, an empty call, and an empty description block that does not start a
 statement: `"" A --> B`, `class A``B`, and `class A~~B` are reported as syntax
-errors.
+errors. In a state diagram, an empty description block inside a statement, as in
+`A accDescr {} --> B`, is reported as a syntax error, while an empty string
+after `state`, which mermaid.js reads as nothing, is text that it does not read
+and is kept as written.
 
 This difference goes one way only: input that mermaid.js rejects is never
 accepted.
@@ -203,9 +206,10 @@ statements, or moving a statement to a line of its own, can make it ignore
 another `;`, and change a label or an entity: `A[style:#x;];` has the label
 `style:` followed by the entity `#x;`, and `A[style:#x;]` the label `style:#x`.
 Both are accepted, so only the diagram shows the change. A line that holds a `;`
-other than one that separates statements therefore keeps its statements on it
-and its `;` where they are, whether the rule applies to it or not; the rule does
-not read the whitespace between other tokens, so that is formatted as usual. See
+other than one that separates statements or ends a statement therefore keeps its
+statements on it and its `;` where they are, whether the rule applies to it or
+not; the rule does not read the whitespace between other tokens, so that is
+formatted as usual. See
 [Statements one per line](./flowchart.md#statements-one-per-line).
 
 ## Lines that hold a direction text
@@ -267,6 +271,47 @@ A backquoted name that is not closed runs to the end of the text, with the
 whitespace and line breaks at its end. It is printed as written to the end of
 the text, and no line break is added after it. See
 [Unclosed backquoted names](./class.md#unclosed-backquoted-names).
+
+## State ids spelled as keywords
+
+In a state diagram, `scale`, `classDef`, `class`, `style`, `state`, `note`, and
+`stateDiagram`, in any case, are keywords only when whitespace follows them. A
+transition from an id spelled so keeps its arrow touching on both sides, as in
+`scale-->B`, and a description after such an id keeps its `:` touching it:
+`scale -->B` and `style :x` are rejected. See
+[Arrow spacing](./state.md#arrow-spacing).
+
+## State notes, aliases, and names
+
+In a state diagram, what follows the id of a note on one line is kept as
+written: mermaid.js reads the text of the note from right after the id, without
+its first two characters. The second description of an alias definition is kept
+as written, with the whitespace at its ends, which mermaid.js reads. The names
+and the empty strings after `state` stay on the line of `state`: on a line of
+its own, a second name would add a state. A `%%` or an empty description block
+right before a `{` is kept as written up to the `{`. See
+[Notes](./state.md#notes), [Aliases](./state.md#aliases),
+[Statements one per line](./state.md#statements-one-per-line), and
+[Composite states](./state.md#composite-states).
+
+## State lines that hold a line separator
+
+In a state diagram, a line that holds U+2028 or U+2029 is kept as written:
+mermaid.js stops at these characters when it looks for a pseudostate mark, a
+direction line, and a second name before a `{`, while the plugin reads them as
+whitespace. See [Line separators](./state.md#line-separators).
+
+## A comment line after U+2028 or U+2029
+
+mermaid.js reads a comment line that starts right after U+2028 or U+2029, and
+removes it together with its line break, so the text on the next line goes on
+where the comment line was cut in: `alt`, U+2028, `%% e`, and a line ` a` is
+`alt a`. The printer prints such a comment line on a line of its own. Where it
+lies inside a statement or a block opener, such as `alt`, `box`, `namespace`,
+`subgraph`, `style`, or the header of a diagram, formatting can give an output
+that is rejected or that mermaid.js reads differently, or throw. A diagram
+comment that such a comment line cuts is kept as written (see
+[Line separators](./sequence.md#line-separators)). This is a known limitation.
 
 ## Frontmatter
 

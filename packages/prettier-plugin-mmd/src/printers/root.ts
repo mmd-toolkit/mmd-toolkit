@@ -36,7 +36,7 @@ export function printRoot(
     })
     offset = root.frontmatter.range[1]
   }
-  const gap = readGap(source, offset, root.body.range[0], "separator")
+  const gap = readGap(source, offset, root.body.range[0], false)
   if (gap.trailing !== null) {
     // Without frontmatter, nothing precedes the first line of the text, so
     // its comments and directives are a line of their own.

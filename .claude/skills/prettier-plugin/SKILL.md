@@ -13,17 +13,30 @@ description:
 How to add the printer of a diagram type to `prettier-plugin-mmd`, and how to
 update the printers when mermaid.js is updated. It is written so that the same
 work can be done to the same quality from this document alone, without the
-conversation history or memory. Policies and criteria are in AGENTS.md; this
-document only points to them.
+conversation history or memory. The policies and criteria of the package are in
+the section Policies and criteria; what holds for every package is in AGENTS.md
+and in the skill `conventions`.
+
+## Policies and criteria
+
+`packages/prettier-plugin-mmd`:
+
+- Dispatch to per-diagram printers.
+- Input that fails to parse is returned unchanged.
+- Mermaid fences in Markdown are handled and tested.
+- Per-diagram printers follow formatting choices that are decided explicitly,
+  item by item.
+- Four tests: idempotence, Db agreement before and after formatting, no change
+  on failure, fences in Markdown.
 
 ## 1. What to read first
 
-1. In AGENTS.md, the `packages/prettier-plugin-mmd` section (what this package
-   is responsible for, and its four tests) and the Principles (the proper form,
-   no regular expressions, reading the result of an autofix, invisible
-   characters, English and Japanese document pairs, wrapped prose, the info
-   string `mmd` for code blocks of Mermaid text, no commits). The criteria
-   change, so read them every time.
+1. The section Policies and criteria of this document (what this package is
+   responsible for, and its four tests); the Principles of AGENTS.md (the proper
+   form, no commits); and the skill `conventions` (no regular expressions,
+   reading the result of an autofix, invisible characters, English and Japanese
+   document pairs, wrapped prose, the info string `mmd` for code blocks of
+   Mermaid text). The criteria change, so read them every time.
 2. The specification of the diagram type:
    `packages/spec/docs/diagrams/<diagram>.md` (the lexical rules, the grammar,
    how the Db is built) and the tree, `packages/spec/docs/ast.md` and
@@ -166,15 +179,18 @@ of a slanted shape) into the document in the same way.
 
 ## 6. Tests
 
-Add these to the four tests of AGENTS.md. How they are built is in
-`docs/development.md`.
+Add these to the four tests of the section Policies and criteria. How they are
+built is in `docs/development.md`.
 
 - Fixtures (`tests/fixtures/<diagram>/<rule>/<example>-input.mmd`,
   `-output.mmd`, and `-options.json` when needed): one folder per rule. Write
   the outputs with `pnpm --filter prettier-plugin-mmd run test:update`, and read
   the diff to check that the formatting is the intended one.
   `tests/format.test.ts` checks the outputs, idempotence, and that mermaid.js
-  reads the same Db.
+  reads the same Db. A text with invisible characters (U+2028, U+2029) is not a
+  fixture of this package: write it with escapes in test code, as
+  `tests/line-separators.test.ts` does, and check the bytes of the file after
+  writing it. Only the corpus in `packages/tests/fixtures/` holds such text.
 - How mermaid.js's reading is compared (`tests/mermaid-readings.ts`, used by the
   fixture, corpus, and generated-input tests): as the specification reads the
   text, with mermaid.js run without the known divergences that change the
@@ -207,7 +223,8 @@ Add these to the four tests of AGENTS.md. How they are built is in
     words that start statements used as ids)
   - forms that belong to the diagram type (in flowchart, lines that hold a `;`
     other than a separator; in sequence, messages of many forms; in class,
-    relations, member statements, and class statements of many forms)
+    relations, member statements, and class statements of many forms; in state,
+    transitions and every kind of statement with their whitespace changed)
   - Choose inputs deterministically (a seed, every n-th boundary). Keep the
     regular run to a few minutes; the values that set the size are read from
     environment variables in one place, `tests/generated.ts` (see the full run
@@ -216,15 +233,67 @@ Add these to the four tests of AGENTS.md. How they are built is in
   match the fixture folders of its diagram type, and its example code blocks
   match the fixture files. Add a new rules document to `ruleDocuments` there.
 
-Running the tests:
+Which tests to run (the rule for every package is in the skill `conventions`,
+Running tests; this is what belongs to this package):
 
-```sh
-pnpm vitest run --project prettier-plugin-mmd
-```
+- The part of the code and the test files that a change to it can affect. Run
+  these while working, with
+  `pnpm vitest run --project prettier-plugin-mmd <files>`. `-t <diagram>` (lower
+  case) narrows only four files, whose test names carry the diagram: `format`
+  and `corpus` (the names start with `<diagram>/`), `generated-insertions`
+  (`of <diagram>`), and `generated-mutation`
+  (`mutants of the <diagram> fixtures`). With `-t`, every other file is skipped
+  whole and nothing fails, so run the other files without it. The files in the
+  list below named `generated-*`, `value-nodes`, `sequence-layout`, and
+  `markdown-*` are such files, except the four.
 
-The full run: the size of the generated-input tests is given from outside with
-environment variables (Larger runs in `docs/development.md`). Do not edit the
-tests or make copies of them.
+  - A shared module (`blocks.ts`, `atoms.ts`, `gap.ts`, `layout.ts`, `lines.ts`,
+    `source.ts`, `kept-lines.ts`): the tests of every diagram type, that is, the
+    whole package at its default size.
+  - `flowchart*.ts`: `format`, `corpus`, `generated-insertions`, and
+    `generated-mutation` with `-t flowchart`; and, without `-t`,
+    `generated-label-edges`, `generated-line-semicolons`,
+    `generated-empty-blocks`, `generated-subgraph-names`,
+    `generated-comment-semicolons`, `generated-words-before-separators`,
+    `generated-line-endings`, `generated-directive-cuts`,
+    `generated-dangling-lines`, `generated-click-lines`,
+    `generated-ignored-semicolons`, `generated-statement-pairs`,
+    `markdown-flowchart`, and `value-nodes`.
+  - `sequence*.ts`: the four with `-t sequence`; and, without `-t`,
+    `generated-sequence-messages`, `generated-comment-semicolons`,
+    `generated-words-before-separators`, `generated-line-endings`,
+    `generated-directive-cuts`, `generated-dangling-lines`,
+    `generated-ignored-semicolons`, `generated-statement-pairs`,
+    `sequence-layout`, `markdown-sequence`, and `value-nodes`.
+  - `class*.ts`: the four with `-t class`; and, without `-t`,
+    `generated-class-forms`, `generated-comment-semicolons`,
+    `generated-line-endings`, `generated-directive-cuts`,
+    `generated-dangling-lines`, `generated-click-lines`,
+    `generated-ignored-semicolons`, `markdown-class`, and `value-nodes`.
+  - `state*.ts`: the four with `-t state`; and, without `-t`,
+    `generated-state-forms`, `generated-comment-semicolons`,
+    `generated-line-endings`, `generated-directive-cuts`,
+    `generated-dangling-lines`, `generated-click-lines`,
+    `generated-ignored-semicolons`, `line-separators`, `markdown-state`, and
+    `value-nodes`.
+  - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:
+    `dispatch`, `failure`, `markdown`, `plugin`, and the four with each diagram
+    type.
+  - `tests/mermaid-readings.ts`, `tests/generated.ts`: every test that imports
+    them.
+
+- The test that reads documents: `tests/docs.test.ts` reads the rules documents
+  (`docs/<diagram>.md`, English and Japanese), the READMEs, and the fixture
+  folders. Run it after a change to any of them, also a change to documents
+  only. No other test reads a document.
+- The default run is `pnpm vitest run --project prettier-plugin-mmd`. It leaves
+  out the generated-input tests until they are redesigned to cover kinds of
+  token boundaries instead of positions; `MMD_RUN_GENERATED_TESTS=1` includes
+  them. Run it once before reporting the work as done.
+- The full size is given from outside with environment variables (Larger runs in
+  `docs/development.md`): run it once before a step of the plan is reported as
+  finished or handed to a review, and not after each change. Do not edit the
+  tests or make copies of them.
 
 ```sh
 MMD_GENERATED_SAMPLE_EVERY=1 MMD_MUTANTS_PER_FIXTURE=30 pnpm vitest run --project prettier-plugin-mmd tests/generated- --reporter=verbose
@@ -269,9 +338,12 @@ When the working tree or the machine is shared with other work:
 
 ## 8. Checks and output
 
-- The regular test run, `npx tsc --noEmit` (at the root), `npx eslint` on this
-  package, and the document checks above pass.
-- The full run finds no problems.
+- The default-size run of the package passes once before the report, with
+  `npx tsc --noEmit` (at the root), `npx eslint` on this package, and the
+  document checks above.
+- The full-size run finds no problems, once before a step is reported as
+  finished or handed to a review.
+- Say what was run and what was not.
 - Show as the result, for each item of the decision or each finding: the files
   changed and how, the results on the reproducing inputs (acceptance kept, the
   same Db, idempotence, no exceptions), and the counts of the generated tests

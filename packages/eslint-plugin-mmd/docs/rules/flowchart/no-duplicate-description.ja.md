@@ -6,7 +6,9 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
+
+💡 この規則は、[エディタの提案](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)で手で直せる。
 
 <!-- end auto-generated rule notice -->
 
@@ -33,6 +35,10 @@ subgraph の中の文も、図全体の説明を設定するので、数える�
 [no-empty-description-block](./no-empty-description-block.ja.md) と
 [no-unclosed-description-block](./no-unclosed-description-block.ja.md)
 が報告する。
+
+報告ごとに、規則は 2 つの文のどちらかを消す書き換えを提案する。
+報告した文か、その前で説明を設定する文である。
+mermaid.js は、最後に残った説明を使う。
 
 この規則に**反する**コードの例:
 
@@ -74,3 +80,12 @@ flowchart LR
 - [no-duplicate-title](./no-duplicate-title.ja.md)
 - [no-empty-description-block](./no-empty-description-block.ja.md)
 - [no-unclosed-description-block](./no-unclosed-description-block.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../../src/rules/flowchart/no-duplicate-description.ts)
+- [テストのソース](../../../tests/rules/flowchart/no-duplicate-description.test.ts)
+
+<!-- end auto-generated rule resources -->

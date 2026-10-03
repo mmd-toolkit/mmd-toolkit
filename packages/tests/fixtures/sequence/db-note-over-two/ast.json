@@ -9,7 +9,7 @@
         "placement": "over",
         "ids": [
           {
-            "type": "Identifier",
+            "type": "SequenceIdentifier",
             "name": "A",
             "range": [
               26,
@@ -27,7 +27,7 @@
             }
           },
           {
-            "type": "Identifier",
+            "type": "SequenceIdentifier",
             "name": "B",
             "range": [
               28,

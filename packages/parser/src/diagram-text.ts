@@ -1,5 +1,6 @@
 import type { Range } from "./ast.ts"
 import { isOutsideBmp } from "./character-classes.ts"
+import { LINE_FEED } from "./code-points.ts"
 import type { ReadCharacter, SourceLexer } from "./source-lexer.ts"
 
 /**
@@ -44,6 +45,29 @@ export interface DiagramText {
   first(): DiagramCharacter
   /** The place after `character`. */
   after(character: DiagramCharacter): DiagramPosition
+}
+
+/**
+ * Each diagram's diagram comments: the line feed that ends the line of
+ * `character`, the first after it, which may be the `\n` that the diagram
+ * text ends with. The diagram text always ends with that `\n`, so one
+ * follows every character before it; none following is a bug of the
+ * caller, which asked after that last `\n`.
+ */
+export function lineFeedAfter(
+  reader: DiagramText,
+  character: DiagramCharacter,
+): DiagramCharacter {
+  let position = reader.after(character)
+  while (position !== null && position.codePoint !== LINE_FEED) {
+    position = reader.after(position)
+  }
+  if (position === null) {
+    throw new Error(
+      `mmd-toolkit parser bug: no line feed follows the character at ${character.start}`,
+    )
+  }
+  return position
 }
 
 /**

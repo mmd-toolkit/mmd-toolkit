@@ -9,7 +9,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "Alice",
           "range": [
             29,
@@ -48,7 +48,7 @@
         "placement": "over",
         "ids": [
           {
-            "type": "Identifier",
+            "type": "SequenceIdentifier",
             "name": "Alice",
             "range": [
               45,

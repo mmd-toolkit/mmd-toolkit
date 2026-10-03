@@ -177,12 +177,12 @@ class/db-note-text-spaces]
 
 `callback` の文か、`call` のある `click` の文です。
 
-| 欄          | 型                              | 意味                                                                       |
-| ----------- | ------------------------------- | -------------------------------------------------------------------------- |
-| `class`     | ClassName                       | `callback` か `click` の後のクラスの名前。                                 |
-| `callback`  | StringLiteral または Identifier | 関数名。クラスの名前の後の文字列か、`call` の後の `callback-name` の単位。 |
-| `arguments` | ClassLiteral または null        | `call` の後の `(` と `)` の間のテキスト。なければ null。                   |
-| `tooltip`   | StringLiteral または null       | 最後の文字列。なければ null。                                              |
+| 欄          | 型                                | 意味                                                                                       |
+| ----------- | --------------------------------- | ------------------------------------------------------------------------------------------ |
+| `class`     | ClassName                         | `callback` か `click` の後のクラスの名前。                                                 |
+| `callback`  | StringLiteral または ClassLiteral | 関数名。クラスの名前の後の文字列か、`call` の後の `callback-name` の単位（ClassLiteral）。 |
+| `arguments` | ClassLiteral または null          | `call` の後の `(` と `)` の間のテキスト。なければ null。                                   |
+| `tooltip`   | StringLiteral または null         | 最後の文字列。なければ null。                                                              |
 
 子の欄: `class`、`callback`、`arguments`、`tooltip`。
 どちらのキーワードを書いたかは、トークン（`callback` か `click`）で分かります。
@@ -286,11 +286,16 @@ class/lex-direction-line-value-then-text]
 | `value` | ClassLiteral または null | `{` と `}` の間のテキスト。空の説明ブロックでは null。 |
 
 子の欄: `value`。
-空の説明ブロックが文になるのは、文の始まりにあり、
-同じ行に別の文が続くときだけです
-（[空の説明ブロック](../diagrams/class.ja.md#空の説明ブロック) を参照）。
+空の説明ブロックが文になるのは、文の始まりにあり、同じ行に別の文が続くとき
+（[空の説明ブロック](../diagrams/class.ja.md#空の説明ブロック) を参照）と、
+文の最後の単位の後、改行の前にあるときです。
+ヘッダーの後、その改行の前では、図の `body` の最初の文です
+（[区切りの前の空の説明ブロック](../diagrams/class.ja.md#区切りの前の空の説明ブロック)
+を参照）。
 [fixture: class/spec-class-diagram-0926d7aa] [fixture:
-class/gram-empty-description-block-then-statement]
+class/gram-empty-description-block-then-statement] [fixture:
+class/gram-empty-description-block-after-note] [fixture:
+class/header-empty-description-block]
 
 ### ClassName
 
@@ -397,7 +402,8 @@ class/db-member-annotation-spaces]
 ### ClassLiteral
 
 空白を含みうる、引用符のないテキストです。
-関係のラベル、ジェネリクスの型、メンバーの行の部分、コールバックの引数、
+関係のラベル、ジェネリクスの型、メンバーの行の部分、
+`call` の後のコールバックの名前とその引数、
 スタイル、アクセシビリティのテキストです。
 
 | 欄      | 型     | 意味                                                         |
@@ -438,13 +444,16 @@ class/tokens-generic-blank] [fixture: class/tokens-annotation-blank]
 どれも [文法](../diagrams/class.ja.md#文法) の 1 つの**項目**に属し、
 この表がその項目に与える種類を持ちます。
 
-| 種類         | 項目とその単位                                                                                                                                                                                                                                                                                                    |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Keyword`    | `header` の単位。`class`、`namespace`、`style`、`classDef`、`cssClass`、`callback`、`link`、`click`、`note for`、`note`、`href`、`call`、`accTitle`、`accDescr` の単位。`direction` と `direction-value` の単位。`link-target` の単位                                                                             |
-| `Identifier` | バッククォートの名前の前にあるか、バッククォートの名前のない、クラスの名前や名前空間の名前の、名前の部分と `.` の単位。`style` の後の `word`。`classDef` の文の各 `word`。`cssClass` の文の `word`。文の `:::` の後や `<<` と `>>` の間の名前の部分。`callback-name` の単位                                       |
-| `String`     | `string` と `backquoted` の単位                                                                                                                                                                                                                                                                                   |
-| `RawText`    | `generic-text` の単位。`label` の単位の `:` の後のテキスト。`member-name`、`parameters`、`return-type`、`annotation-name` の単位。`callback-arguments` の単位。スタイル（そのすべての単位）。`title-text`、`description-text`、`description-block-text` の単位。`direction-text` の単位。方法の行の読まれない部分 |
-| `Punctuator` | `label` の単位の `:` と、`accTitle` と `accDescr` の後の `:`。`{`、`}`、`[`、`]`、`:::`、`<<`、`>>`、`~`、`(`、`)`、`,`。各関係の端と線。`visibility` と `classifier` の単位                                                                                                                                      |
+| 種類         | 項目とその単位                                                                                                                                                                                                                                                                                                                       |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Keyword`    | `header` の単位。`class`、`namespace`、`style`、`classDef`、`cssClass`、`callback`、`link`、`click`、`note for`、`note`、`href`、`call`、`accTitle`、`accDescr` の単位。`direction` と `direction-value` の単位。`link-target` の単位                                                                                                |
+| `Identifier` | バッククォートの名前の前にあるか、バッククォートの名前のない、クラスの名前や名前空間の名前の、名前の部分と `.` の単位。`style` の後の `word`。`classDef` の文の各 `word`。`cssClass` の文の `word`。文の `:::` の後や `<<` と `>>` の間の名前の部分                                                                                  |
+| `String`     | `string` と `backquoted` の単位                                                                                                                                                                                                                                                                                                      |
+| `RawText`    | `generic-text` の単位。`label` の単位の `:` の後のテキスト。`member-name`、`parameters`、`return-type`、`annotation-name` の単位。`callback-name` か `callback-arguments` の単位。スタイル（そのすべての単位）。`title-text`、`description-text`、`description-block-text` の単位。`direction-text` の単位。方法の行の読まれない部分 |
+| `Punctuator` | `label` の単位の `:` と、`accTitle` と `accDescr` の後の `:`。`{`、`}`、`[`、`]`、`:::`、`<<`、`>>`、`~`、`(`、`)`、`,`。各関係の端と線。`visibility` と `classifier` の単位                                                                                                                                                         |
+
+コメント領域が切る `String` のトークンは、`StringFragment` のトークンになります
+（[Comment](../ast.ja.md#comment) を参照）。
 
 **トークン**は、同じ項目で同じ種類の単位が、間に何も挟まずに続く最長の並び
 （スタイルとほかの `RawText` の項目では、空白を挟んでもよい）から、

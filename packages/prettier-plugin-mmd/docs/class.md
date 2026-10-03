@@ -280,6 +280,32 @@ classDiagram
   A -- - B
 ```
 
+`call` followed by whitespace is a keyword, and the lexer reads it where a unit
+starts (diagrams/class.md, the statement context, rule 10). So an arrow, the `:`
+of a label, or a `{` that touches a name that ends with the word `call` stays
+touching: with a space before it, `A call()--> B` would be a callback of the
+class A, and `call-->C` would start one.
+
+Input
+([arrow-spacing/touching-call-kept-input.mmd](../tests/fixtures/class/arrow-spacing/touching-call-kept-input.mmd)):
+
+```mmd
+classDiagram
+A call()--> B
+call-->C
+D call--|>E
+```
+
+Output
+([arrow-spacing/touching-call-kept-output.mmd](../tests/fixtures/class/arrow-spacing/touching-call-kept-output.mmd)):
+
+```mmd
+classDiagram
+  A call()--> B
+  call--> C
+  D call--|> E
+```
+
 ### Labels
 
 The `:` of a label after a relation or a class name has one space on each side,
@@ -450,7 +476,10 @@ Such a line is printed as a line of one space, where an empty line would let
 mermaid.js read the next statement as part of the commented one. That example is
 not shown here, because the space is at the end of a line (see
 `comments/whitespace-line-kept` in the
-[folder](../tests/fixtures/class/comments)).
+[folder](../tests/fixtures/class/comments)). It is so also after the comment of
+the line that holds the header and a statement, as in
+`classDiagram accDescr {} %% c`
+(`comments/whitespace-line-after-header-comment-kept`).
 
 ### Directives
 
@@ -554,9 +583,10 @@ A statement written over several lines is printed on one line. In a class
 diagram, a line break ends a statement except after `direction`, where the value
 may be on the next line, and after the `:` of `accTitle` and `accDescr`, where
 the text may be: so `direction`, a line break, and `LR` is printed as
-`direction LR`. A statement written over several lines with a comment or a
-directive in it is kept as written, from its start to its end, as in a sequence
-diagram (see [Multi-line statements](./sequence.md#multi-line-statements)).
+`direction LR`. A statement written over several lines with a comment, a
+directive, or a `;` in it is kept as written, from its start to its end, as in a
+sequence diagram (see
+[Multi-line statements](./sequence.md#multi-line-statements)).
 
 Input
 ([multi-line-statements/joined-input.mmd](../tests/fixtures/class/multi-line-statements/joined-input.mmd)):
@@ -649,6 +679,33 @@ classDiagram
   accDescr {} class A
 ```
 
+A block written over several lines keeps the statement that follows it on the
+line where the block ends: `accDescr`, a line break, and `{} class A` declares
+A, while with the `class A` on a line of its own the block would stand alone and
+the input would be rejected.
+
+Input
+([empty-description-blocks/over-lines-kept-input.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-kept-input.mmd)):
+
+```mmd
+classDiagram
+accDescr
+{} class A
+accDescr {
+} class B
+```
+
+Output
+([empty-description-blocks/over-lines-kept-output.mmd](../tests/fixtures/class/empty-description-blocks/over-lines-kept-output.mmd)):
+
+```mmd
+classDiagram
+  accDescr
+    {} class A
+  accDescr {
+  } class B
+```
+
 ### Unclosed backquoted names
 
 A backquoted name that is not closed runs to the end of the text, and mermaid.js
@@ -671,6 +728,7 @@ diagram or the input would be rejected:
 - whether whitespace is written before the `%%` of a comment after a statement,
   and a line of only whitespace after such a comment, as one space;
 - the text of a direction line before `direction` and after its value;
-- a statement written over several lines with a comment or a directive in it;
+- a statement written over several lines with a comment, a directive, or a `;`
+  in it;
 - a backquoted name that is not closed, to the end of the text;
 - the spelling of the header, `classDiagram` or `classDiagram-v2`.

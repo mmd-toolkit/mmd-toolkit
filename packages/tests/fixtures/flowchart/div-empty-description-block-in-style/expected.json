@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokenless-empty-forms: the empty description block lies inside the statement (in style); mermaid.js reads no token for it and accepts the input, and this specification rejects it."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "fill:red"
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

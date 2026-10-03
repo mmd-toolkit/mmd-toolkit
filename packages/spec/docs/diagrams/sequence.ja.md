@@ -98,6 +98,12 @@ sequence/lex-keyword-mixed-case] [fixture: sequence/lex-id-case]
 
 単位のほかに、字句解析器は**図のコメント**を読みます。
 行の終わりまで続き、mermaid.js が何もないものとして読むテキストです。
+その行は、行の U+2028 か U+2029 の後のコメント行を越えて続き、
+そのコメント領域が図のコメントを 2 つに切ります
+（[Comment](../ast.ja.md#comment) を参照）。
+`A->>B: y #c`、U+2029、行 `%% d`、行 `C->>D: z` のメッセージは、
+A から B への 1 つだけです。
+[fixture: sequence/lex-hash-comment-across-comment-line]
 これは [common.ja.md](../common.ja.md#コメント行) のコメント行ではありません。
 コメント行は字句解析器が読む前に除かれますが、
 図のコメントは行の途中からも始まります。
@@ -148,7 +154,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   sequence/lex-directive-in-id-run] [fixture:
   sequence/lex-directive-in-participant-id]
   ディレクティブの隣の空白は、1 つの単位である id に残ります
-  （[Identifier](../ast.ja.md#identifier) を参照）。
+  （[SequenceIdentifier](../ast/sequence.ja.md#sequenceidentifier) を参照）。
   `participant A%%{init: {}}%% c%%B` の参加者は `A c%%B`、
   `Al%%{init: {}}%% c%%ice->>B: x` の参加者は `Al c%%ice` です。
   [fixture: sequence/lex-directive-in-id-before-space] [fixture:
@@ -519,16 +525,16 @@ sequence/db-box-wrap-without-colour]
 | `message-statement`                                                               | SequenceMessageStatement                                                                                                                 |
 | `arrow`                                                                           | SequenceArrow                                                                                                                            |
 | `autonumber-statement`                                                            | SequenceAutonumberStatement                                                                                                              |
-| `"activate" id newline`、`"deactivate" id newline`                                | SequenceActivateStatement、SequenceDeactivateStatement                                                                                   |
+| `"activate" id statement-end`、`"deactivate" id statement-end`                    | SequenceActivateStatement、SequenceDeactivateStatement                                                                                   |
 | `note-statement`                                                                  | SequenceNoteStatement                                                                                                                    |
 | `"links"`、`"link"`、`"properties"`、`"details"` の文                             | SequenceLinksStatement、SequenceLinkStatement、SequencePropertiesStatement、SequenceDetailsStatement                                     |
 | `title-statement`                                                                 | SequenceTitleStatement                                                                                                                   |
 | `accessibility-statement`                                                         | SequenceAccTitleStatement、SequenceAccDescrStatement、SequenceAccDescrBlockStatement のどれか                                            |
-| `box-statement` の `"accDescr" "{" "}"`                                           | SequenceAccDescrBlockStatement                                                                                                           |
+| `empty-description-block`                                                         | テキストのない SequenceAccDescrBlockStatement。箱の文、またはその前の文の後の文                                                          |
 | `loop`、`rect`、`opt`、`break` の `block-statement`                               | SequenceLoopStatement、SequenceRectStatement、SequenceOptStatement、SequenceBreakStatement                                               |
 | `alt`、`par`、`par_over`、`critical` の `block-statement`                         | SequenceAltStatement、SequenceParStatement、SequenceParOverStatement、SequenceCriticalStatement。各 `text-part line*` に SequenceSection |
 | `text-part`                                                                       | SequenceText。どちらの単位もなければ何も作らない                                                                                         |
-| `id`                                                                              | Identifier                                                                                                                               |
+| `id`                                                                              | SequenceIdentifier                                                                                                                       |
 | `number`                                                                          | NumericLiteral                                                                                                                           |
 | テキスト部分の `text`、`title-text`、`description-text`、`description-block-text` | SequenceLiteral。すべて空白のタイトルなら null                                                                                           |
 | 行としての `invalid`                                                              | SequenceIgnoredStatement                                                                                                                 |
@@ -541,11 +547,11 @@ line                = statement | newline | invalid
 statement           = participant-statement
                     | "create" participant-statement
                     | box-statement
-                    | message-statement newline
-                    | autonumber-statement newline
-                    | ( "activate" | "deactivate" ) id newline
-                    | note-statement newline
-                    | ( "links" | "link" | "properties" | "details" ) id ":" text-part newline
+                    | message-statement statement-end
+                    | autonumber-statement statement-end
+                    | ( "activate" | "deactivate" ) id statement-end
+                    | note-statement statement-end
+                    | ( "links" | "link" | "properties" | "details" ) id ":" text-part statement-end
                     | title-statement
                     | accessibility-statement
                     | block-statement
@@ -569,19 +575,73 @@ sequence/gram-invalid-after-end]
 [fixture: sequence/db-ignored-line-after-wrapped-message] [fixture:
 sequence/db-wrapped-message-closed]
 
+### 区切りの前の空の説明ブロック
+
+```text
+statement-end           = empty-description-block* newline
+empty-description-block = "accDescr" "{" "}"
+```
+
+`empty-description-block` は、`accDescr` の単位と `{` の単位に、
+`description-block-text` の単位なしで `}` の単位がすぐ続くものです。
+区切りが要る文は `statement-end` で終わります。
+文の最後の単位の後、区切りの前には、空の説明ブロックがいくつ来てもかまいません。
+それぞれ、その文の後に続く、テキストのない説明ブロックの文で、何も変えません。
+mermaid.js は空の説明ブロックにトークンを読まないので
+（[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md)
+を参照）、その文の後にすぐ区切りが続くものとして読みます。
+テキストのある説明ブロックと、ほかの文は、区切りの前に置けません。
+
+sequence で `newline` の単位が要る文は、
+参加者、destroy、メッセージ、`autonumber`、
+activate と deactivate、ノート、links、link、properties、details の文です。
+ブロックがそのような文の最後の単位と `newline` の間に置けるのは、
+その単位がブロックと一緒に読まれないところだけです。
+テキスト、id、`as` の後の説明では、字句解析器は `accDescr {}` を
+そのテキストや id の一部として読みます。
+そのため、ブロックが置けるのは、参加者か actor のデータブロックの後と、
+`autonumber` の後です。
+`participant A@{ "type": "actor" } accDescr {}`、空白なしの同じもの、
+`autonumber accDescr {}` は受理されます。
+[fixture: sequence/gram-empty-description-block-after-participant-data]
+[fixture: sequence/gram-empty-description-block-after-actor-data-glued]
+[fixture: sequence/gram-empty-description-block-after-autonumber]
+ブロックの前の空白は単独で読まれるので、
+ブロックの後の改行が文の `newline` の単位です。
+`autonumber`、空白 2 つ、`accDescr {}`、改行は受理されますが、
+`autonumber`、空白 2 つ、改行は、空白が改行を隠すので拒否されます
+（[文の文脈](#文の文脈) を参照）。
+[fixture: sequence/gram-empty-description-block-after-autonumber-spaces]
+[fixture: sequence/lex-trailing-space-hides-line-break]
+同じ行でブロックの後にほかの文が続くと、mermaid.js と同じく拒否されます。
+`autonumber accDescr {} A->>B: x` です。
+[fixture: sequence/gram-empty-description-block-after-autonumber-then-message]
+
+キーワード `sequenceDiagram` のすぐ後、その行で文が始まってもよいので
+（[検出](#検出) を参照）、そこにある空の説明ブロックに固有の規則は要りません。
+それは文が始まるところにあり、図の最初の文です。
+`sequenceDiagram accDescr {}`、改行、`A->>B: x` は、
+mermaid.js と同じく受理されます。
+[fixture: sequence/header-empty-description-block]
+
 ### 参加者と箱
 
 ```text
-participant-statement = ( "participant" | "actor" ) id data-block? ( "as" text-part )? newline
-                      | "destroy" id newline
-data-block            = "@{" data-text? "}"
-box-statement         = "box" box-text? ( participant-statement | "accDescr" "{" "}" | newline )* "end"
+participant-statement = ( "participant" | "actor" ) id data-block? ( "as" text-part )? statement-end
+                      | "destroy" id statement-end
+data-block            = "@{" data-text "}"
+box-statement         = "box" box-text? ( participant-statement | empty-description-block | newline )* "end"
 box-text              = color-candidate text? | text
 ```
 
 `as` とその後のテキストは、参加者に説明を与えます。
 データブロックは埋め込みデータで、その中身は書かれたとおりに保たれ、読まれません
 （[Db の中のデータブロック](#db-の中のデータブロック) を参照）。
+データブロックは中身を要します。
+`participant A@{}` は mermaid.js と同じく拒否され、
+`participant A@{ }` と、波括弧の間に改行のあるものは受理されます。
+[fixture: sequence/gram-data-block-empty]
+[fixture: sequence/gram-data-block-line-break-only]
 `create` は、`destroy` を含め、どの参加者の文の前にも置けます。
 `create destroy A` は `create` の付いた destroy の文で、
 A を作られた参加者として加え、何も destroy しません
@@ -1046,6 +1106,33 @@ mermaid.js は、箱のテキストを色の候補と残りに分け、
 その答えはテキストから来ないので、箱の `name`、`fill`、`wrap` は、
 設定の値と同じく、木の外から与えます。
 
+分け方が受け取るテキストは、色の候補から `text` の単位の終わりまでで、
+終わりの空白も含みます。
+木の値はその空白を除くので、これはソースから読みます。
+その型が U+2028 か U+2029 を読むのは、1 か所だけです。
+色の候補の、`rgb`、`rgba`、`hsl`、`hsla` と `(` の間の空白です。
+テキストがほかの所に U+2028 か U+2029 を持つと、終わりにだけ持つときも、
+分け方は当てはまらず、
+箱は、テキストによらず `fill` が `transparent` で名前を持たず、
+答えは問い合わせません。
+行の終わりで U+2028 が続く `box red-team` と `box aqua`、
+`box red`、U+2029、`team` は、名前を持たず、`fill` は `transparent` です。
+テキストの前の U+2028 は、行の文脈が何も読まない空白なので
+（[行の文脈](#行の文脈) の規則 1）、
+`box`、空白、U+2028、`red team` は、`fill` が `red` で名前は `team` です。
+それらの文字が色の候補のその空白にだけあるときは、分け方は当てはまり、
+候補は、下の `rgb (0, 0, 255)` と同じく色ではありません。
+`box rgb`、U+2028、`(1, 2, 3) G` と、`hsl` と U+2029 2 つの同じ形は、
+`fill` が `transparent` で、U+2028 か U+2029 を含むテキスト全体が名前です。
+一方、`box rgb(1, 2, 3)`、U+2028、` G` は名前を持ちません。
+[fixture: sequence/db-box-line-separator-in-colour-function] [fixture:
+sequence/db-box-paragraph-separator-in-colour-function] [fixture:
+sequence/db-box-line-separator-after-colour-function]
+[fixture: sequence/db-box-line-separator-at-end] [fixture:
+sequence/db-box-paragraph-separator-in-text] [fixture:
+sequence/db-box-colour-then-line-separator] [fixture:
+sequence/db-box-line-separator-before-text]
+
 答えが与えられると、それらは SequenceBoxText から求まります
 （[SequenceBoxText](../ast/sequence.ja.md#sequenceboxtext) を参照）。
 色の候補が色なら、`fill` は候補で、名前は残りから来ます。
@@ -1124,7 +1211,8 @@ mermaid.js は、箱のテキストを色の候補と残りに分け、
   [fixture: sequence/div-html-tag-starts-in-frontmatter-message] [fixture:
   sequence/lex-html-tag-frontmatter-arrow-ends-tag]
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
-  文を始めない空の説明ブロックは、ここでは入力を拒否させます。
+  文の始まりでも `newline` の前でもない、文の中の空の説明ブロックは、
+  ここでは入力を拒否させます。
   mermaid.js はそれにトークンを読まず、入力を受理します。
   `A->>accDescr {}B: x` と `note left of accDescr {} A: x` がそうです。
   文が始まる位置の空の説明ブロックは、箱の中でも、

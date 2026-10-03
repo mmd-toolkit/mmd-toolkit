@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md, Comment: a comment region inside a quoted subgraph title cuts the String token into two StringFragment tokens."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "a\n  b",
+        "classes": [],
+        "labelType": "string"
+      }
+    ],
+    "tooltips": []
+  }
+}

@@ -1,6 +1,7 @@
 import type { Token } from "@mmd-toolkit/parser"
 import type { Doc } from "prettier"
 import { utils } from "prettier/doc"
+import { isLastOnItsLine } from "./kept-lines.ts"
 import type { Source, Trivia } from "./source.ts"
 import {
   findTokenStartingAt,
@@ -14,19 +15,12 @@ const { replaceEndOfLine } = utils
  * What a gap prints: comments, directives, and the tokens that the grammar
  * reads past. The tree lists comments, and directives as tokens, but places
  * them in no node (see `Trivia`). The other tokens are the `;` that the
- * line rule ignores within a statement: no node contains them. All of them are printed as written, and
- * on each side of each, whitespace is printed where the source has it and
- * nothing where it has none (docs/flowchart.md, Directives and Semicolons).
+ * line rule ignores (`ignoredSemicolons`): no node contains them. All of
+ * them are printed as written, and on each side of each, whitespace is
+ * printed where the source has it and nothing where it has none
+ * (docs/flowchart.md, Directives and Semicolons).
  */
 export type GapItem = Trivia | Token
-
-/**
- * How a `;` in a gap is read. Between statements, it separates them, and it
- * is not printed (docs/flowchart.md, Semicolons). Within a statement, it is one that the line rule
- * ignores (common.md, Reading a source): the statement goes on after it, and
- * it is an item.
- */
-export type SemicolonReading = "separator" | "ignored"
 
 /**
  * Items written next to each other on one line, printed as written: one
@@ -118,7 +112,14 @@ interface ScannedLine {
  * are whitespace, and the printer treats them so. But a comment may start
  * right after them (common.md, Comment lines), and a comment must start a
  * printed line, because a `%%` after other text on its line is not a
- * comment. The line breaks that the printer writes stand for either.
+ * comment. The line breaks that the printer writes stand for either. A
+ * diagram comment that a comment line cuts, with text after the comment line,
+ * is one comment here (see `createSource`).
+ *
+ * A `;` that the line rule ignores is an item, printed as written. A `;`
+ * that separates statements is dropped and counts as whitespace
+ * (docs/flowchart.md, Semicolons), unless `keepsSeparators` is set, as on a
+ * line that is kept together, where it is printed as written like an item.
  *
  * Throws when the gap holds any other text than whitespace, line
  * terminators, comments, directives, and `;` tokens: the tree places every
@@ -129,9 +130,9 @@ export function readGap(
   source: Source,
   start: number,
   end: number,
-  semicolons: SemicolonReading,
+  keepsSeparators: boolean,
 ): Gap {
-  const lines = scanLines(source, start, end, semicolons)
+  const lines = scanLines(source, start, end, keepsSeparators)
   if (lines.length === 1) {
     return readSingleLine(source, lines[0])
   }
@@ -190,7 +191,12 @@ function readSingleLine(source: Source, line: ScannedLine): Gap {
  *
  * - `item`: a comment, a directive, or a token that the grammar reads past
  *   (see `GapItem`).
- * - `separator`: a `;` that separates statements.
+ * - `separator`: a `;` that separates statements, other than one that
+ *   starts where a comment ends. A comment ends before a `;` only where
+ *   the line rule ignores it, and no characters of the comment follow it
+ *   (ast.md, Comment), so that `;` is an item, printed as written: with the
+ *   whitespace after it, the `;` lies inside the comment, and a `;` that was
+ *   dropped would make a second formatting differ from the first.
  * - `lineTerminator`: a line feed.
  * - `whitespace`: one whitespace character. `beforeComment` is set for a
  *   U+2028 or U+2029 that a comment follows on its line: a comment may start
@@ -213,7 +219,6 @@ export type GapElement =
 export function readGapElement(
   source: Source,
   offset: number,
-  semicolons: SemicolonReading,
 ): { readonly element: GapElement; readonly end: number } {
   const trivia = findTriviaBetween(source, offset, offset + 1).at(0)
   if (trivia !== undefined) {
@@ -230,11 +235,10 @@ export function readGapElement(
     return { element: { kind: "whitespace", beforeComment }, end: offset + 1 }
   }
   const token = findTokenStartingAt(source, offset)
-  if (token?.value === ";" && semicolons === "separator") {
-    return { element: { kind: "separator", token }, end: token.range[1] }
-  }
   if (token?.value === ";") {
-    return { element: { kind: "item", item: token }, end: token.range[1] }
+    return source.ignoredSemicolons.has(offset)
+      ? { element: { kind: "item", item: token }, end: token.range[1] }
+      : { element: { kind: "separator", token }, end: token.range[1] }
   }
   return { element: { kind: "text" }, end: offset + 1 }
 }
@@ -246,7 +250,7 @@ function scanLines(
   source: Source,
   start: number,
   end: number,
-  semicolons: SemicolonReading,
+  keepsSeparators: boolean,
 ): ScannedLine[] {
   const lines: ScannedLine[] = [newLine()]
   let current = lines[0]
@@ -270,18 +274,21 @@ function scanLines(
   }
 
   while (offset < end) {
-    const { element, end: elementEnd } = readGapElement(
-      source,
-      offset,
-      semicolons,
-    )
+    const { element, end: elementEnd } = readGapElement(source, offset)
     switch (element.kind) {
       case "item":
-        addPart(element.item, false)
+        if (!keepsSeparators && isDroppedSemicolon(source, element.item)) {
+          addPart(element.item, true)
+          current.afterLastSeparator = current.parts.length
+        } else {
+          addPart(element.item, false)
+        }
         break
       case "separator":
-        addPart(element.token, true)
-        current.afterLastSeparator = current.parts.length
+        addPart(element.token, !keepsSeparators)
+        if (!keepsSeparators) {
+          current.afterLastSeparator = current.parts.length
+        }
         break
       case "lineTerminator":
         breakLine(true)
@@ -300,6 +307,24 @@ function scanLines(
   }
   current.spaceAfter = spacePending
   return lines
+}
+
+/**
+ * Whether an item of a gap between statements is a `;` that the line rule
+ * ignores at the end of its line, which is dropped as a `;` that separates
+ * statements is: mermaid.js removes it from the text. Not one right after a
+ * comment: with whitespace after it, the `;` lies inside the comment, which
+ * is printed as written, and a `;` that was dropped only when it stands
+ * outside the comment would make a second formatting differ from the first
+ * (ast.md, Comment).
+ */
+function isDroppedSemicolon(source: Source, item: GapItem): boolean {
+  const offset = item.range[0]
+  return (
+    source.ignoredSemicolons.has(offset) &&
+    isLastOnItsLine(source, offset) &&
+    !source.root.comments.some((comment) => comment.range[1] === offset)
+  )
 }
 
 /**
@@ -404,20 +429,15 @@ export function endsWithSpaceOrTab(text: string): boolean {
  *
  * The text of a range leaves out the directives in it, so whitespace after
  * a directive counts: in `style A fill:red,%%{init: {}}%% ` the last style
- * is the space after the directive. Two values of the Db are read this way
- * (diagrams/flowchart.md, Db normalization): the last style of a style list,
- * which ends at the separator, and the name of a subgraph without a title,
- * whose id depends on whether whitespace follows it up to the separator.
- * The separator is a line terminator, a `;`, or the end of the text. A
- * comment also ends the scan: it may start after whitespace on the same
- * line, such as a U+2028 (common.md, Comment lines), and the whitespace
- * before it counts.
+ * is the space after the directive. The separator is a line terminator, a
+ * `;` that separates statements, or the end of the text. A comment also
+ * ends the scan: it may start after whitespace on the same line, such as a
+ * U+2028 (common.md, Comment lines), and the whitespace before it counts.
  *
- * After a list of styles, a `;` may be one that the line rule ignores:
- * `style A fill:red,; ` is accepted, its last style being the space after
- * the `;`. Which `;` the rule ignores is not in the tree, so there the scan
- * goes on past every `;` (`semicolons` is `"ignored"`); what it passes is
- * printed as written. After the name of a subgraph, a `;` separates.
+ * A `;` that the line rule ignores (`ignoredSemicolons`) is not the
+ * separator: `style A fill:red,; ` is accepted, its last style being the
+ * space after the `;`. The scan passes it, and what it passes is printed as
+ * written.
  *
  * The text is read as the gaps read it (`readGapElement`): the scan passes
  * whitespace and the items other than comments.
@@ -425,16 +445,11 @@ export function endsWithSpaceOrTab(text: string): boolean {
 export function findWrittenWhitespaceEnd(
   source: Source,
   offset: number,
-  semicolons: SemicolonReading,
 ): number {
   let position = offset
   let end = offset
   while (position < source.text.length) {
-    const { element, end: elementEnd } = readGapElement(
-      source,
-      position,
-      semicolons,
-    )
+    const { element, end: elementEnd } = readGapElement(source, position)
     if (element.kind === "whitespace") {
       end = elementEnd
     } else if (element.kind !== "item" || element.item.type === "Comment") {

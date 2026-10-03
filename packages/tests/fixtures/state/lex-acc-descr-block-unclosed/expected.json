@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Units and contexts: a description block that is not closed at the end of the text is accepted."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

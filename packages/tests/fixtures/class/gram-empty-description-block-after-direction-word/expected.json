@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Empty description blocks before a separator: the block keeps `direction` and `LR` from forming a direction line, so `direction` is a member statement without a label, the block is a description block statement after it, and `LR` on the next line is another member statement; no class, and the direction stays TB, as in mermaid.js, which reads `direction` and `LR` as words. Without the block, `direction`, a line break, and `LR` is a direction line (class/lex-direction-line-value-next-line)."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

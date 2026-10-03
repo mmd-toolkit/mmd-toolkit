@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-style.spec.js",
+    "line": 20,
+    "test": "ClassDefs and classes when parsing a State diagram > class for a state (classDef) > defining (classDef) > has \"classDef\" as a keyword, an id, and can set a css style attribute"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "exampleClass",
+        "styles": [
+          "background:#bbb"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

@@ -14,7 +14,7 @@
  * examples other than that of the diagram stand after the header line
  * `sequenceDiagram`.
  */
-import type { Identifier, NodeBase, NumericLiteral } from "../ast.ts"
+import type { NodeBase, NumericLiteral } from "../ast.ts"
 
 /**
  * ast/sequence.md, SequenceDiagram: the body of the diagram type
@@ -96,7 +96,7 @@ export interface SequenceParticipantStatement extends NodeBase {
   /** Whether `create` comes before the keyword. */
   readonly created: boolean
   /** The id. */
-  readonly id: Identifier
+  readonly id: SequenceIdentifier
   /** The data block after the id; null when there is none. */
   readonly data: SequenceDataBlock | null
   /** The text after `as`, which mermaid.js reads as the description; null when there is none. */
@@ -118,7 +118,7 @@ export interface SequenceDestroyStatement extends NodeBase {
   /** Whether `create` comes before the keyword. */
   readonly created: boolean
   /** The id after `destroy`. */
-  readonly id: Identifier
+  readonly id: SequenceIdentifier
 }
 
 /**
@@ -195,7 +195,7 @@ export type SequenceActivation =
 export interface SequenceMessageStatement extends NodeBase {
   readonly type: "SequenceMessageStatement"
   /** The id before the arrow. */
-  readonly from: Identifier
+  readonly from: SequenceIdentifier
   /** Whether `()` comes between the source and the arrow. */
   readonly fromCentralConnection: boolean
   /** The arrow. */
@@ -205,7 +205,7 @@ export interface SequenceMessageStatement extends NodeBase {
   /** Whether `()` comes between the arrow and the target. */
   readonly toCentralConnection: boolean
   /** The id after the arrow. */
-  readonly to: Identifier
+  readonly to: SequenceIdentifier
   /** The text after `:`; null when nothing but whitespace follows the `:`. */
   readonly text: SequenceText | null
 }
@@ -314,7 +314,7 @@ export interface SequenceAutonumberStatement extends NodeBase {
 export interface SequenceActivateStatement extends NodeBase {
   readonly type: "SequenceActivateStatement"
   /** The id of the participant it activates. */
-  readonly id: Identifier
+  readonly id: SequenceIdentifier
 }
 
 /**
@@ -329,7 +329,7 @@ export interface SequenceActivateStatement extends NodeBase {
 export interface SequenceDeactivateStatement extends NodeBase {
   readonly type: "SequenceDeactivateStatement"
   /** The id of the participant it deactivates. */
-  readonly id: Identifier
+  readonly id: SequenceIdentifier
 }
 
 /**
@@ -362,7 +362,7 @@ export interface SequenceNoteStatement extends NodeBase {
   /** Where the note is; see {@link SequenceNotePlacement}. */
   readonly placement: SequenceNotePlacement
   /** The id, or the two ids of `over` with a `,`. */
-  readonly ids: readonly Identifier[]
+  readonly ids: readonly SequenceIdentifier[]
   /** The text after `:`; null when nothing but whitespace follows the `:`. */
   readonly text: SequenceText | null
 }
@@ -380,7 +380,7 @@ export interface SequenceNoteStatement extends NodeBase {
 export interface SequenceLinksStatement extends NodeBase {
   readonly type: "SequenceLinksStatement"
   /** The id of the participant. */
-  readonly id: Identifier
+  readonly id: SequenceIdentifier
   /** The text after `:`; null when nothing but whitespace follows the `:`. */
   readonly text: SequenceText | null
 }
@@ -397,7 +397,7 @@ export interface SequenceLinksStatement extends NodeBase {
 export interface SequenceLinkStatement extends NodeBase {
   readonly type: "SequenceLinkStatement"
   /** The id of the participant. */
-  readonly id: Identifier
+  readonly id: SequenceIdentifier
   /** The text after `:`; null when nothing but whitespace follows the `:`. */
   readonly text: SequenceText | null
 }
@@ -415,7 +415,7 @@ export interface SequenceLinkStatement extends NodeBase {
 export interface SequencePropertiesStatement extends NodeBase {
   readonly type: "SequencePropertiesStatement"
   /** The id of the participant. */
-  readonly id: Identifier
+  readonly id: SequenceIdentifier
   /** The text after `:`; null when nothing but whitespace follows the `:`. */
   readonly text: SequenceText | null
 }
@@ -433,7 +433,7 @@ export interface SequencePropertiesStatement extends NodeBase {
 export interface SequenceDetailsStatement extends NodeBase {
   readonly type: "SequenceDetailsStatement"
   /** The id of the participant. */
-  readonly id: Identifier
+  readonly id: SequenceIdentifier
   /** The text after `:`; null when nothing but whitespace follows the `:`. */
   readonly text: SequenceText | null
 }
@@ -715,6 +715,24 @@ export type SequenceWrap =
   | "nowrap"
 
 /**
+ * ast/sequence.md, SequenceIdentifier: the id of a participant, a name
+ * that may contain whitespace. No child fields. It is one unit; its name
+ * is the text of the unit's range without the whitespace at its ends, and
+ * the whitespace inside it is part of it, also next to a directive that
+ * cuts the unit into several `Identifier` tokens.
+ *
+ * ```text
+ * participant A B
+ *             ^^^
+ * ```
+ */
+export interface SequenceIdentifier extends NodeBase {
+  readonly type: "SequenceIdentifier"
+  /** The text of its range, without the whitespace at its ends. */
+  readonly name: string
+}
+
+/**
  * ast/sequence.md, SequenceText: a text part, a text with an optional wrap
  * prefix. Its child field is `value`. The range runs from the prefix, or
  * from the text when there is no prefix, to the end of the text.
@@ -795,6 +813,7 @@ export type SequenceNode =
   | SequenceCriticalStatement
   | SequenceSection
   | SequenceIgnoredStatement
+  | SequenceIdentifier
   | SequenceText
   | SequenceLiteral
   | SequenceDataBlock

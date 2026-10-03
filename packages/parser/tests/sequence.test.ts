@@ -50,6 +50,22 @@ function semicolonKindsOf(statements: string): string[] {
 }
 
 describe("the sequence tree", () => {
+  it("makes an id a SequenceIdentifier, whose name keeps the whitespace inside it, also next to a directive that cuts its token", () => {
+    expect(bodyOf(parseStatements("participant A B"))).toMatchObject([
+      { id: { type: "SequenceIdentifier", name: "A B" } },
+    ])
+    const statements = "participant A%%{init: {}}%% c%%B"
+    expect(bodyOf(parseStatements(statements))).toMatchObject([
+      { id: { type: "SequenceIdentifier", name: "A c%%B" } },
+    ])
+    expect(tokensOf(statements)).toEqual([
+      ["Keyword", "participant"],
+      ["Identifier", "A"],
+      ["Directive", "%%{init: {}}%%"],
+      ["Identifier", "c%%B"],
+    ])
+  })
+
   it("makes the ids, the arrow, the activation, the `:`, and the text of a message tokens", () => {
     expect(tokensOf("Alice->>+Bob: Hi")).toEqual([
       ["Identifier", "Alice"],
@@ -260,6 +276,35 @@ describe("the sequence tree", () => {
       ["autonumber %%%{a}%% c\nA->>B: x", "%%{a}%% c"],
     ]) {
       expect(parseStatements(statements).comments).toMatchObject([{ value }])
+    }
+  })
+
+  it("cuts a diagram comment at a comment line after U+2029, and reads the line after it as a fragment without a mark", () => {
+    const root = parseStatements("A->>B: y #c\u2029%% d\nC->>D: z")
+    expect(root.comments.map(({ mark, value }) => [mark, value])).toEqual([
+      ["#", "c"],
+      ["%%", " d"],
+      [null, "C->>D: z"],
+    ])
+    expect(bodyOf(root)).toHaveLength(1)
+  })
+
+  it("ends a diagram comment where its line ends, a directive at its end included, and before a `;` that the line rule ignores and that is its last character", () => {
+    for (const [statements, value, semicolonKinds] of [
+      ["A->>B: x #c %%{init: {}}%%\nC->>D: y", "c %%{init: {}}%%", []],
+      // The directive takes the whitespace and the line feeds after it to
+      // the end of the text; the comment ends where the directive ends.
+      ["A->>B: x #c %%{init: {} \n \n\n", "c %%{init: {}", []],
+      ["A->>B: x #style:#x;", "style:#x", ["Punctuator"]],
+      ["A->>B: x #style:#x;  ", "style:#x;  ", []],
+      ["A->>B: x #style:#x;%%{init: {}}%%", "style:#x;%%{init: {}}%%", []],
+    ] as const) {
+      const root = parseStatements(statements)
+      expect(root.comments.map((comment) => comment.value)).toEqual([value])
+      expect(root.tokens.filter((token) => token.type === "Directive")).toEqual(
+        [],
+      )
+      expect(semicolonKindsOf(statements)).toEqual(semicolonKinds)
     }
   })
 

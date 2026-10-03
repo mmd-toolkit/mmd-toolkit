@@ -1,0 +1,200 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: flowchart/no-unclosed-description-block >> invalid >>> docs/rules/flowchart/no-unclosed-description-block.md incorrect 1
+Filename: flowchart/no-unclosed-description-block-incorrect-1.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accDescr { x
+    |   ^~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+    Suggestions:
+      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the description, and the lines after it as statements.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accDescr { x }
+          4 |
+---
+
+
+Test: flowchart/no-unclosed-description-block >> invalid >>> docs/rules/flowchart/no-unclosed-description-block.md incorrect 2
+Filename: flowchart/no-unclosed-description-block-incorrect-2.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   accDescr { x
+    |   ^~~~~~~~~~ [1]
+  4 |   B --> C
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+    Suggestions:
+      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the description, and the lines after it as statements.
+        Output:
+          1 | flowchart LR
+          2 |   A --> B
+          3 |   accDescr { x }
+          4 |   B --> C
+          5 |
+      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+        Output:
+          1 | flowchart LR
+          2 |   A --> B
+          3 |   accDescr { x
+          4 |   B --> C
+          5 | }
+          6 |
+---
+
+
+Test: flowchart/no-unclosed-description-block >> invalid >>> invalid/flowchart/db-acc-descr-unclosed-empty-replaces
+Filename: tests/fixtures/rules/flowchart/no-unclosed-description-block/invalid/flowchart/db-acc-descr-unclosed-empty-replaces-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | accDescr: d
+  4 | accDescr {
+    | ^~~~~~~~~~ [1]
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: flowchart/no-unclosed-description-block >> invalid >>> invalid/flowchart/db-acc-descr-unclosed-keeps-title
+Filename: tests/fixtures/rules/flowchart/no-unclosed-description-block/invalid/flowchart/db-acc-descr-unclosed-keeps-title-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | accTitle: t
+  4 | accDescr { x
+    | ^~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+    Suggestions:
+      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the description, and the lines after it as statements.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | accTitle: t
+          4 | accDescr { x }
+          5 |
+---
+
+
+Test: flowchart/no-unclosed-description-block >> invalid >>> invalid/flowchart/db-acc-descr-unclosed-replaces
+Filename: tests/fixtures/rules/flowchart/no-unclosed-description-block/invalid/flowchart/db-acc-descr-unclosed-replaces-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | accDescr: d
+  4 | accDescr { x
+    | ^~~~~~~~~~ [1]
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+    Suggestions:
+      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the description, and the lines after it as statements.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | accDescr: d
+          4 | accDescr { x }
+---
+
+
+Test: flowchart/no-unclosed-description-block >> invalid >>> invalid/flowchart/db-acc-descr-unclosed-takes-lines
+Filename: tests/fixtures/rules/flowchart/no-unclosed-description-block/invalid/flowchart/db-acc-descr-unclosed-takes-lines-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   accDescr { x
+    |   ^~~~~~~~~~ [1]
+  4 |   B --> C
+  5 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+    Suggestions:
+      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the description, and the lines after it as statements.
+        Output:
+          1 | flowchart LR
+          2 |   A --> B
+          3 |   accDescr { x }
+          4 |   B --> C
+          5 |
+      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+        Output:
+          1 | flowchart LR
+          2 |   A --> B
+          3 |   accDescr { x
+          4 |   B --> C
+          5 | }
+          6 |
+---
+
+
+Test: flowchart/no-unclosed-description-block >> invalid >>> invalid/flowchart/db-acc-descr-unclosed-text-next-line
+Filename: tests/fixtures/rules/flowchart/no-unclosed-description-block/invalid/flowchart/db-acc-descr-unclosed-text-next-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   accDescr {
+    |   ^~~~~~~~~~ [1]
+  4 |     x
+  5 |   B --> C
+  6 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+    Suggestions:
+      - Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.
+        Output:
+          1 | flowchart LR
+          2 |   A --> B
+          3 |   accDescr {
+          4 |     x
+          5 |   B --> C
+          6 | }
+          7 |
+---
+
+
+Test: flowchart/no-unclosed-description-block >> invalid >>> invalid/flowchart/lex-acc-descr-block-unclosed-empty
+Filename: tests/fixtures/rules/flowchart/no-unclosed-description-block/invalid/flowchart/lex-acc-descr-block-unclosed-empty-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | accDescr {
+    | ^~~~~~~~~~ [1]
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: flowchart/no-unclosed-description-block >> invalid >>> invalid/flowchart/lex-acc-descr-block-unclosed
+Filename: tests/fixtures/rules/flowchart/no-unclosed-description-block/invalid/flowchart/lex-acc-descr-block-unclosed-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | accDescr { x
+    | ^~~~~~~~~~ [1]
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+    Suggestions:
+      - Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the description, and the lines after it as statements.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | accDescr { x }
+---

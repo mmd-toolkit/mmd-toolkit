@@ -1,0 +1,159 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-colorIndex.spec.ts",
+    "line": 30,
+    "test": "state diagram colour slots > gives each composite its own slot, in containment order"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Boot",
+        "shape": "roundedWithTitle",
+        "label": "Boot",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Boot_start",
+        "shape": "stateStart",
+        "label": "Boot_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Boot"
+      },
+      {
+        "id": "Firmware",
+        "shape": "rect",
+        "label": "Firmware",
+        "classes": [],
+        "styles": [],
+        "parentId": "Boot"
+      },
+      {
+        "id": "Kernel",
+        "shape": "roundedWithTitle",
+        "label": "Kernel",
+        "classes": [],
+        "styles": [],
+        "parentId": "Boot",
+        "dir": "TB"
+      },
+      {
+        "id": "Kernel_start",
+        "shape": "stateStart",
+        "label": "Kernel_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Kernel"
+      },
+      {
+        "id": "Scheduler",
+        "shape": "rect",
+        "label": "Scheduler",
+        "classes": [],
+        "styles": [],
+        "parentId": "Kernel"
+      },
+      {
+        "id": "Drivers",
+        "shape": "roundedWithTitle",
+        "label": "Drivers",
+        "classes": [],
+        "styles": [],
+        "parentId": "Kernel",
+        "dir": "TB"
+      },
+      {
+        "id": "Drivers_start",
+        "shape": "stateStart",
+        "label": "Drivers_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Drivers"
+      },
+      {
+        "id": "Probe",
+        "shape": "rect",
+        "label": "Probe",
+        "classes": [],
+        "styles": [],
+        "parentId": "Drivers"
+      },
+      {
+        "id": "Running",
+        "shape": "roundedWithTitle",
+        "label": "Running",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Running_start",
+        "shape": "stateStart",
+        "label": "Running_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Running"
+      },
+      {
+        "id": "Serving",
+        "shape": "rect",
+        "label": "Serving",
+        "classes": [],
+        "styles": [],
+        "parentId": "Running"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "Boot",
+        "label": ""
+      },
+      {
+        "start": "Boot_start",
+        "end": "Firmware",
+        "label": ""
+      },
+      {
+        "start": "Kernel_start",
+        "end": "Scheduler",
+        "label": ""
+      },
+      {
+        "start": "Drivers_start",
+        "end": "Probe",
+        "label": ""
+      },
+      {
+        "start": "Boot",
+        "end": "Running",
+        "label": ""
+      },
+      {
+        "start": "Running_start",
+        "end": "Serving",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

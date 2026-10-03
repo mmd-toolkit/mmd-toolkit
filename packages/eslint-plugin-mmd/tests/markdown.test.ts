@@ -10,8 +10,8 @@ import markdown from "@eslint/markdown"
 import type { Linter } from "eslint"
 import { ESLint } from "eslint"
 import { describe, expect, it } from "vitest"
-import plugin from "../src/index.ts"
 import type { MermaidRuleDefinition } from "../src/index.ts"
+import { LANGUAGE_CONFIG } from "./helpers.ts"
 
 const fixturePath = fileURLToPath(
   new URL("fixtures/markdown/code-blocks.md", import.meta.url),
@@ -37,7 +37,7 @@ async function lintMarkdown(): Promise<Linter.LintMessage[]> {
     overrideConfigFile: true,
     overrideConfig: [
       ...markdown.configs.processor,
-      plugin.configs.recommended,
+      LANGUAGE_CONFIG,
       {
         files: ["**/*.mmd", "**/*.mermaid"],
         plugins: { test: { rules: { identifiers } } },

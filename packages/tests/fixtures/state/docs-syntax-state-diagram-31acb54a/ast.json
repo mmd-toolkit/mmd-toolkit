@@ -1,0 +1,193 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateAliasDefinitionStatement",
+        "textBeforeDescription": null,
+        "description": {
+          "type": "StringLiteral",
+          "value": "This is a state description",
+          "raw": "\"This is a state description\"",
+          "closed": true,
+          "range": [
+            26,
+            55
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 39
+            }
+          }
+        },
+        "textAfterDescription": null,
+        "id": {
+          "type": "StateLiteral",
+          "value": "s2",
+          "range": [
+            59,
+            61
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 43
+            },
+            "end": {
+              "line": 2,
+              "column": 45
+            }
+          }
+        },
+        "secondDescription": null,
+        "textAfter": null,
+        "textBeforeBody": null,
+        "body": null,
+        "range": [
+          20,
+          61
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 4
+          },
+          "end": {
+            "line": 2,
+            "column": 45
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      61
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 45
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        20,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"This is a state description\"",
+      "range": [
+        26,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "as",
+      "range": [
+        56,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 40
+        },
+        "end": {
+          "line": 2,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "s2",
+      "range": [
+        59,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 43
+        },
+        "end": {
+          "line": 2,
+          "column": 45
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    62
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

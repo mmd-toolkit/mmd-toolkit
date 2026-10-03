@@ -1,0 +1,142 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-v2.spec.js",
+    "line": 272,
+    "test": "state diagram V2,  > when parsing an info graph it > should State definition with quotes"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "State1",
+        "shape": "rect",
+        "label": "State1",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "State2",
+        "shape": "rect",
+        "label": "State2",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "root_end",
+        "shape": "stateEnd",
+        "label": "root_end",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "State3",
+        "shape": "roundedWithTitle",
+        "label": "State3",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "long1",
+        "shape": "rectWithTitle",
+        "label": "Accumulate Enough Data\nLong State Name",
+        "description": [
+          "Just a test"
+        ],
+        "classes": [],
+        "styles": [],
+        "parentId": "State3"
+      },
+      {
+        "id": "State3_start",
+        "shape": "stateStart",
+        "label": "State3_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "State3"
+      },
+      {
+        "id": "ProcessData",
+        "shape": "rect",
+        "label": "ProcessData",
+        "classes": [],
+        "styles": [],
+        "parentId": "State3"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "State1",
+        "label": ""
+      },
+      {
+        "start": "State1",
+        "end": "State2",
+        "label": "Succeeded"
+      },
+      {
+        "start": "State1",
+        "end": "root_end",
+        "label": "Aborted"
+      },
+      {
+        "start": "State2",
+        "end": "State3",
+        "label": "Succeeded"
+      },
+      {
+        "start": "State2",
+        "end": "root_end",
+        "label": "Aborted"
+      },
+      {
+        "start": "State3_start",
+        "end": "long1",
+        "label": ""
+      },
+      {
+        "start": "long1",
+        "end": "long1",
+        "label": "New Data"
+      },
+      {
+        "start": "long1",
+        "end": "ProcessData",
+        "label": "Enough Data"
+      },
+      {
+        "start": "State3",
+        "end": "State3",
+        "label": "Failed"
+      },
+      {
+        "start": "State3",
+        "end": "root_end",
+        "label": "Succeeded / Save Result"
+      },
+      {
+        "start": "State3",
+        "end": "root_end",
+        "label": "Aborted"
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

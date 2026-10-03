@@ -25,6 +25,7 @@ import type {
 } from "./sequence-layout.ts"
 import {
   classifySequenceStatement,
+  findBoxTextEnd,
   findTitleText,
   layoutBlockHeader,
   layoutSequenceHeader,
@@ -238,7 +239,10 @@ function openBlock(
     findTokenStartingAt(source, opening.start),
     "the keyword of a block",
   )
-  const headerEnd = opening.text?.range[1] ?? keyword.range[1]
+  const headerEnd =
+    opening.text?.type === "SequenceBoxText"
+      ? findBoxTextEnd(source, opening.text)
+      : (opening.text?.range[1] ?? keyword.range[1])
   const block = printBlock(
     docs,
     source,

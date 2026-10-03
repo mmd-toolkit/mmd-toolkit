@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context: click is a keyword where a unit starts."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...eDiagram-v2  A --> click\n----------------------^\nExpecting 'ID', 'EDGE_STATE', got 'CLICK'"
+  }
+}

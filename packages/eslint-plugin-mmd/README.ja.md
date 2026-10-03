@@ -12,11 +12,12 @@ mermaid-js とは関係のない第三者のプロジェクトです。
 ここでいう `mmd` は Mermaid の図の記法のことで、
 MultiMarkdown や MikuMikuDance ではありません。
 
-規則は、まだ書いていません。
-そのうち `mmd/no-unclosed-directive` だけを、試しに実装しています。
-これは推奨の設定に入っておらず、ほかの規則と一緒に書き直します。
-規則のアイディアは、
-[docs/rules/index.ja.md](./docs/rules/index.ja.md) にあります。
+規則は、図種ごとに、flowchart から実装しています。
+[docs/rules/index.ja.md](./docs/rules/index.ja.md) は、すべての規則を挙げ、
+まだ実装していない規則（何も報告しない）に印を付けています。
+`mmd/no-unclosed-directive` は、試しに実装したものです。
+これは推奨の設定に入っておらず、
+すべての図種に共通のほかの規則と一緒に書き直します。
 
 ## 導入
 

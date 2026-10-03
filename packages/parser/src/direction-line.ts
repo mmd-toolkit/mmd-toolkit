@@ -8,9 +8,9 @@ import type {
   DiagramPosition,
   DiagramText,
 } from "./diagram-text.ts"
+import type { Match } from "./scanning.ts"
 import {
   isWhitespaceAt,
-  matchWord,
   samePosition,
   skipWhile,
   skipWhitespace,
@@ -34,6 +34,18 @@ export interface DirectionLineMatch {
   readonly end: DiagramPosition
 }
 
+/**
+ * How the rule compares a word with the text: `matchWord` of `scanning.ts`
+ * where the diagram compares letters as written (flowchart and class), and
+ * `matchWordIgnoringCase` where it compares them case-insensitively
+ * (state).
+ */
+export type WordMatcher = (
+  reader: DiagramText,
+  from: DiagramPosition,
+  word: string,
+) => Match | null
+
 /** For a value, the last `direction` of the run that the value follows. */
 interface Occurrence {
   readonly keyword: DiagramCharacter
@@ -43,21 +55,25 @@ interface Occurrence {
 }
 
 /**
- * diagrams/flowchart.md and diagrams/class.md, The direction line, which
- * the two diagram types share with their own lists of values (flowchart
- * has `TD` as well). From a place: a run of characters without line feeds,
- * U+2028, or U+2029; `direction`; one or more whitespace, line feeds
- * included; one of the values; and every character up to the next line
+ * diagrams/flowchart.md, diagrams/class.md, and diagrams/state.md, The
+ * direction line, which the diagram types share with their own lists of values
+ * (flowchart has `TD` as well) and their own way of comparing words (state
+ * compares them case-insensitively). From a place: a run of characters without
+ * line feeds, U+2028, or U+2029; `direction`; one or more whitespace, line
+ * feeds included; one of the values; and every character up to the next line
  * feed. The values are tried in their order, and for a value the last
  * `direction` of the run that it follows is taken. The characters before
- * `direction` and after the value are `direction-text` units, unless they
- * are empty or all whitespace.
+ * `direction` and after the value are `direction-text` units, unless they are
+ * empty or all whitespace.
  */
 export class DirectionLineRule {
   private readonly reader: DiagramText
 
   /** The values, in the order in which they are tried. */
   private readonly values: readonly string[]
+
+  /** How `direction` and the values are compared with the text. */
+  private readonly matchWord: WordMatcher
 
   /**
    * No direction line starts at a source offset before this one and at or
@@ -67,9 +83,14 @@ export class DirectionLineRule {
    */
   private noDirectionLineBefore = 0
 
-  public constructor(reader: DiagramText, values: readonly string[]) {
+  public constructor(
+    reader: DiagramText,
+    values: readonly string[],
+    matchWord: WordMatcher,
+  ) {
     this.reader = reader
     this.values = values
+    this.matchWord = matchWord
   }
 
   /** The direction line that starts at `at`; null when none does. */
@@ -83,11 +104,11 @@ export class DirectionLineRule {
       runEnd.codePoint !== LINE_SEPARATOR &&
       runEnd.codePoint !== PARAGRAPH_SEPARATOR
     ) {
-      const keyword = matchWord(this.reader, runEnd, "direction")
+      const keyword = this.matchWord(this.reader, runEnd, "direction")
       if (keyword !== null && isWhitespaceAt(keyword.end)) {
         const value = skipWhitespace(this.reader, keyword.end)
         for (const candidate of this.values) {
-          const valueMatch = matchWord(this.reader, value, candidate)
+          const valueMatch = this.matchWord(this.reader, value, candidate)
           if (value !== null && valueMatch !== null) {
             lastByValue.set(candidate, {
               keyword: runEnd,

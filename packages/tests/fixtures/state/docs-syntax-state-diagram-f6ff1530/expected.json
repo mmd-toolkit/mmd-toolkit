@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/stateDiagram.md",
+    "line": 143
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "s1",
+        "shape": "rect",
+        "label": "s1",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "root_end",
+        "shape": "stateEnd",
+        "label": "root_end",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "s1",
+        "label": ""
+      },
+      {
+        "start": "s1",
+        "end": "root_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -34,6 +34,11 @@ const DOCUMENTED_UNIONS: Readonly<Record<string, readonly string[]>> = {
     "ClassVisibility",
     "ClassClassifier",
   ],
+  "src/ast/state.ts": [
+    "StatePseudostateKind",
+    "StateNotePosition",
+    "StateDirection",
+  ],
 }
 
 /** The descriptions of the values of one union type, as two lists of `[value, text]`. */

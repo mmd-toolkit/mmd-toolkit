@@ -9,7 +9,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "web",
           "range": [
             32,
@@ -83,7 +83,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "blog",
           "range": [
             67,
@@ -157,7 +157,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "account",
           "range": [
             104,
@@ -231,7 +231,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "mail",
           "range": [
             147,
@@ -305,7 +305,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "db",
           "range": [
             184,
@@ -379,7 +379,7 @@
         "placement": "over",
         "ids": [
           {
-            "type": "Identifier",
+            "type": "SequenceIdentifier",
             "name": "web",
             "range": [
               213,
@@ -397,7 +397,7 @@
             }
           },
           {
-            "type": "Identifier",
+            "type": "SequenceIdentifier",
             "name": "db",
             "range": [
               217,
@@ -469,7 +469,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "web",
           "range": [
             273,
@@ -511,7 +511,7 @@
         "activation": "+",
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "account",
           "range": [
             280,
@@ -582,7 +582,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "account",
           "range": [
             319,
@@ -624,7 +624,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "db",
           "range": [
             329,
@@ -695,7 +695,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "db",
           "range": [
             359,
@@ -737,7 +737,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "account",
           "range": [
             364,
@@ -850,7 +850,7 @@
               {
                 "type": "SequenceMessageStatement",
                 "from": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "account",
                   "range": [
                     438,
@@ -892,7 +892,7 @@
                 "activation": null,
                 "toCentralConnection": false,
                 "to": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "web",
                   "range": [
                     448,
@@ -1018,7 +1018,7 @@
               {
                 "type": "SequenceMessageStatement",
                 "from": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "account",
                   "range": [
                     508,
@@ -1060,7 +1060,7 @@
                 "activation": "-",
                 "toCentralConnection": false,
                 "to": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "web",
                   "range": [
                     519,
@@ -1133,7 +1133,7 @@
                 "placement": "over",
                 "ids": [
                   {
-                    "type": "Identifier",
+                    "type": "SequenceIdentifier",
                     "name": "web",
                     "range": [
                       566,
@@ -1151,7 +1151,7 @@
                     }
                   },
                   {
-                    "type": "Identifier",
+                    "type": "SequenceIdentifier",
                     "name": "db",
                     "range": [
                       570,
@@ -1223,7 +1223,7 @@
               {
                 "type": "SequenceMessageStatement",
                 "from": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "web",
                   "range": [
                     644,
@@ -1265,7 +1265,7 @@
                 "activation": "+",
                 "toCentralConnection": false,
                 "to": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "blog",
                   "range": [
                     651,
@@ -1336,7 +1336,7 @@
               {
                 "type": "SequenceMessageStatement",
                 "from": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "blog",
                   "range": [
                     681,
@@ -1378,7 +1378,7 @@
                 "activation": null,
                 "toCentralConnection": false,
                 "to": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "db",
                   "range": [
                     688,
@@ -1491,7 +1491,7 @@
                       {
                         "type": "SequenceMessageStatement",
                         "from": {
-                          "type": "Identifier",
+                          "type": "SequenceIdentifier",
                           "name": "blog",
                           "range": [
                             747,
@@ -1533,7 +1533,7 @@
                         "activation": null,
                         "toCentralConnection": false,
                         "to": {
-                          "type": "Identifier",
+                          "type": "SequenceIdentifier",
                           "name": "mail",
                           "range": [
                             754,
@@ -1604,7 +1604,7 @@
                       {
                         "type": "SequenceMessageStatement",
                         "from": {
-                          "type": "Identifier",
+                          "type": "SequenceIdentifier",
                           "name": "blog",
                           "range": [
                             802,
@@ -1646,7 +1646,7 @@
                         "activation": null,
                         "toCentralConnection": false,
                         "to": {
-                          "type": "Identifier",
+                          "type": "SequenceIdentifier",
                           "name": "db",
                           "range": [
                             809,
@@ -1772,7 +1772,7 @@
                       {
                         "type": "SequenceMessageStatement",
                         "from": {
-                          "type": "Identifier",
+                          "type": "SequenceIdentifier",
                           "name": "blog",
                           "range": [
                             874,
@@ -1814,7 +1814,7 @@
                         "activation": "-",
                         "toCentralConnection": false,
                         "to": {
-                          "type": "Identifier",
+                          "type": "SequenceIdentifier",
                           "name": "web",
                           "range": [
                             883,

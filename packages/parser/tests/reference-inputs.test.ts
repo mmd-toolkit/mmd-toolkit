@@ -99,13 +99,14 @@ describe("frontmatterChangesAttributeQuotes", () => {
     // A tag that starts in the frontmatter reaches a `"` of the text.
     ['---\ntitle: <a\n---\nflowchart LR\nA[b="c">d]\n', true],
     ['---\ntitle: <a\n---\n%% b="c">\nerror\n', true],
-    // A value that opens in the frontmatter closes at the first `"` of the
-    // text for mermaid.js, so the quotes of the tag in the text pair differently.
+    // A value that opens in the frontmatter closes at the first `"` of the text
+    // for mermaid.js, so the quotes of the tag in the text pair differently.
     ['---\ntitle: <a x="\n---\nA[<b c="d">e]', true],
     // A tag that starts in the frontmatter and ends at the `>` of a tag of
     // the text holds the same quoted values as that tag: no difference.
     ['---\ntitle: <a\n---\nA[<b c="d">e]>', false],
-    // A tag that starts and ends in the frontmatter changes nothing in the text.
+    // A tag that starts and ends in the frontmatter changes nothing in the
+    // text.
     ['---\ntitle: <a b="c">\n---\nA[<d e="f">g]', false],
     ['---\ntitle: x\n---\nA[<a href="u">t</a>]', false],
     // Without frontmatter the two readings are the same.

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: after the block, the vertex B comes before the separator, so the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...rt LRA accDescr {} B\n----------------------^\nExpecting 'SEMI', 'NEWLINE', 'EOF', 'AMP', 'START_LINK', 'LINK', 'LINK_ID', got 'NODE_STRING'"
+  }
+}

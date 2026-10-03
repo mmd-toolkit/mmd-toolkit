@@ -64,6 +64,20 @@ describe("fixtures", () => {
   )
 
   it(
+    "loads state fixtures",
+    async () => {
+      const fixtures = await loadFixtures("state")
+      expect(fixtures.length).toBeGreaterThan(0)
+      for (const fixture of fixtures) {
+        if (fixture.expected.accepted) {
+          expect(fixture.expected.diagramType).toBe("stateDiagram")
+        }
+      }
+    },
+    READS_EVERY_FIXTURE,
+  )
+
+  it(
     "loads common fixtures",
     async () => {
       const fixtures = await loadFixtures("common")
@@ -83,6 +97,7 @@ describe("fixtures", () => {
         ...(await loadFixtures("flowchart")),
         ...(await loadFixtures("sequence")),
         ...(await loadFixtures("class")),
+        ...(await loadFixtures("state")),
       ]
       for (const fixture of fixtures) {
         const file = path.join(
@@ -162,6 +177,7 @@ describe("fixtures", () => {
         ...(await loadFixtures("flowchart")),
         ...(await loadFixtures("sequence")),
         ...(await loadFixtures("class")),
+        ...(await loadFixtures("state")),
       ]
       for (const fixture of fixtures) {
         if (!fixture.expected.accepted) continue

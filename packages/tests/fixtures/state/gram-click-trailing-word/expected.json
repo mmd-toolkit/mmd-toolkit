@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Grammar: a click statement needs a line feed or the end of the text after it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...A  click A \"u\" \"t\" B\n----------------------^\nExpecting 'NL', got 'ID'"
+  }
+}

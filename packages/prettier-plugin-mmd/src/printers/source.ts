@@ -1,4 +1,5 @@
 import type { Comment, Root, Token } from "@mmd-toolkit/parser"
+import { ignoredSemicolons } from "@mmd-toolkit/parser"
 
 /**
  * A comment or a `Directive` token: text that belongs to no node, which the
@@ -22,6 +23,12 @@ export interface Source {
    * the text reads one list of what it covers.
    */
   readonly trivia: readonly Trivia[]
+  /**
+   * The offsets of the `;` that the line rule ignores (common.md, The
+   * `style` and `classDef` lines), from `ignoredSemicolons`: the tree does
+   * not tell them from the `;` that separates statements.
+   */
+  readonly ignoredSemicolons: ReadonlySet<number>
 }
 
 /**
@@ -37,14 +44,77 @@ export function isWhitespace(character: string): boolean {
 }
 
 /**
+ * Joins the comments of a diagram comment that a comment line cuts: a
+ * diagram comment goes on past a comment line that follows U+2028 or
+ * U+2029 on its line, and the tree lists the comment, the comment line, and
+ * the text after it, a comment with no mark, as comments (ast.md, Comment).
+ * Their text and what lies between them is one text for a printer: a
+ * U+2028 or U+2029, or a line break, in another place would end the diagram
+ * comment, and the text after the comment line would be read as part of the
+ * diagram. The comments from the first one before a U+2028 or U+2029 up to
+ * a comment with no mark become one comment, which is printed as written.
+ */
+function joinCommentFragments(
+  text: string,
+  comments: readonly Comment[],
+): Comment[] {
+  const joined: Comment[] = []
+  for (const [index, comment] of comments.entries()) {
+    if (comment.mark !== null) {
+      joined.push(comment)
+      continue
+    }
+    let first = index
+    while (first > 0) {
+      const gap = text.slice(
+        comments[first - 1].range[1],
+        comments[first].range[0],
+      )
+      first--
+      if (gap.includes("\u2028") || gap.includes("\u2029")) break
+    }
+    let start = comments[first]
+    while (
+      joined.length > 0 &&
+      joined[joined.length - 1].range[1] > start.range[0]
+    ) {
+      const overlapped = joined.pop() as Comment
+      if (overlapped.range[0] < start.range[0]) start = overlapped
+    }
+    joined.push({
+      ...start,
+      range: [start.range[0], comment.range[1]],
+      loc: { start: start.loc.start, end: comment.loc.end },
+    })
+  }
+  return joined
+}
+
+/**
  * Makes the printing context of a parsed document.
  */
 export function createSource(text: string, root: Root): Source {
-  const directives = root.tokens.filter((token) => token.type === "Directive")
-  const trivia = [...root.comments, ...directives].sort(
+  const comments = joinCommentFragments(text, root.comments)
+  const directives = root.tokens.filter(
+    (token) =>
+      token.type === "Directive" &&
+      !comments.some(
+        (comment) =>
+          comment.range[0] <= token.range[0] &&
+          token.range[1] <= comment.range[1],
+      ),
+  )
+  const trivia = [...comments, ...directives].sort(
     (a, b) => a.range[0] - b.range[0],
   )
-  return { text, root, trivia }
+  return {
+    text,
+    root,
+    trivia,
+    ignoredSemicolons: new Set(
+      ignoredSemicolons(text).map((range) => range[0]),
+    ),
+  }
 }
 
 /**

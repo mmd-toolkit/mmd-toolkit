@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The note contexts: the floating note id may start with `%%`; mermaid.js drops it, which the Db does not show."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

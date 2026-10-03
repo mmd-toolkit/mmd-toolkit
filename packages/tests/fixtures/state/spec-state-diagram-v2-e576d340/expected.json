@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-v2.spec.js",
+    "line": 465,
+    "test": "state diagram V2,  > when parsing an info graph it > retrieve the diagram direction correctly"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Still",
+        "shape": "rect",
+        "label": "Still",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "root_end",
+        "shape": "stateEnd",
+        "label": "root_end",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "Still",
+        "label": ""
+      },
+      {
+        "start": "Still",
+        "end": "root_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

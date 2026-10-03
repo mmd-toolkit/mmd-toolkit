@@ -8,15 +8,15 @@ import { noIgnoredText as classNoIgnoredText } from "./class/no-ignored-text.ts"
 import { noInlineComment as classNoInlineComment } from "./class/no-inline-comment.ts"
 import { noRedefinedClass as classNoRedefinedClass } from "./class/no-redefined-class.ts"
 import { noUnclosedBackquote as classNoUnclosedBackquote } from "./class/no-unclosed-backquote.ts"
-import { noUnknownClass as classNoUnknownClass } from "./class/no-unknown-class.ts"
+import { noUndef as classNoUndef } from "./class/no-undef.ts"
 import { noBareCommentMarker as flowchartNoBareCommentMarker } from "./flowchart/no-bare-comment-marker.ts"
 import { noDuplicateDescription as flowchartNoDuplicateDescription } from "./flowchart/no-duplicate-description.ts"
 import { noDuplicateTitle as flowchartNoDuplicateTitle } from "./flowchart/no-duplicate-title.ts"
 import { noEmptyDescriptionBlock as flowchartNoEmptyDescriptionBlock } from "./flowchart/no-empty-description-block.ts"
 import { noIgnoredText as flowchartNoIgnoredText } from "./flowchart/no-ignored-text.ts"
 import { noRedefinedVertex as flowchartNoRedefinedVertex } from "./flowchart/no-redefined-vertex.ts"
-import { noStyleUnknownId as flowchartNoStyleUnknownId } from "./flowchart/no-style-unknown-id.ts"
 import { noUnclosedDescriptionBlock as flowchartNoUnclosedDescriptionBlock } from "./flowchart/no-unclosed-description-block.ts"
+import { noUndef as flowchartNoUndef } from "./flowchart/no-undef.ts"
 import { noIgnoredInitDirective } from "./no-ignored-init-directive.ts"
 import { noUnclosedDirective } from "./no-unclosed-directive.ts"
 import { noCreateDestroy as sequenceNoCreateDestroy } from "./sequence/no-create-destroy.ts"
@@ -43,16 +43,16 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "class/no-inline-comment": classNoInlineComment,
   "class/no-redefined-class": classNoRedefinedClass,
   "class/no-unclosed-backquote": classNoUnclosedBackquote,
-  "class/no-unknown-class": classNoUnknownClass,
+  "class/no-undef": classNoUndef,
   "flowchart/no-bare-comment-marker": flowchartNoBareCommentMarker,
   "flowchart/no-duplicate-description": flowchartNoDuplicateDescription,
   "flowchart/no-duplicate-title": flowchartNoDuplicateTitle,
   "flowchart/no-empty-description-block": flowchartNoEmptyDescriptionBlock,
   "flowchart/no-ignored-text": flowchartNoIgnoredText,
   "flowchart/no-redefined-vertex": flowchartNoRedefinedVertex,
-  "flowchart/no-style-unknown-id": flowchartNoStyleUnknownId,
   "flowchart/no-unclosed-description-block":
     flowchartNoUnclosedDescriptionBlock,
+  "flowchart/no-undef": flowchartNoUndef,
   "sequence/no-create-destroy": sequenceNoCreateDestroy,
   "sequence/no-duplicate-description": sequenceNoDuplicateDescription,
   "sequence/no-duplicate-title": sequenceNoDuplicateTitle,

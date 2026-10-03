@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Grammar: scale needs width."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...agram-v2  scale 350\n----------------------^"
+  }
+}

@@ -204,7 +204,9 @@ agentflow の文書で、その字句解析器がこれらをどう扱うかを�
    （[エンティティ](#エンティティ)）読みます。
    コメント領域、行単位の規則が無視する `;`、ディレクティブは、
    ないかのように読み進めます。
-   その後、空白でない 2 つの文字の間にディレクティブを持つトークンは、
+   その後、コメント領域をまたぐトークンは、そこで切られ
+   （[コメント行](#コメント行)）、
+   空白でない 2 つの文字の間にディレクティブを持つトークンは、
    分けられるか、
    入力を拒否させます
    （[ディレクティブはトークンの境界](#ディレクティブはトークンの境界)）。
@@ -558,8 +560,15 @@ mermaid.js で確かめた帰結は次のとおりです。
   [fixture: common/directive-word-argument-then-more]
 - `%%{ }%%` や `%%{-x}%%` のように、
   `%%{` の後に語が続かないものはディレクティブではありません。
-  コメント行でもないので（後述）、[図のテキスト](#ソースの読み方) になります。
+  コメント行でもないので（後述）、[図のテキスト](#ソースの読み方) になり、
+  各図の字句解析器が読みます。
+  頂点の後の行の `%%{}` を、flowchart は拒否し、
+  sequence と class は図のコメントとして読み、
+  state はその `%%` を mermaid.js が読まないテキストとして読みます。
   [fixture: common/directive-empty-braces] [fixture:
+  flowchart/lex-percent-brace-line-after-vertex] [fixture:
+  sequence/lex-percent-brace-line-after-message] [fixture:
+  class/lex-percent-brace-line-after-class] [fixture:
   common/directive-non-word-start]
 - 名前も、その大文字小文字も関係ありません。
   `%%{INIT: ...}%%` も `%%{init: ...}%%` と同じくディレクティブです。
@@ -611,12 +620,13 @@ mermaid.js はディレクティブを取り除く前にそれを探すので、
   ディレクティブの隣の空白は関係ありません。
   `A[x %%{init: {}}%% y]` のラベルはトークン `x` と `y` を持ち、その値は `x`、
   空白 2 つ、`y` です。
-- コメント領域の中のディレクティブは、領域と一緒に読み進められ、
-  トークンを終えません。
-  トークンの中では、
-  字句解析器はコメント領域全体を（[コメント行](#コメント行) を参照）、
-  コメントの `%%` の前にあるものも後にあるものも含めて、
-  ディレクティブごと読み進めます。
+- コメント領域の中のディレクティブは、
+  字句解析器が領域全体を読み進めるので（[コメント行](#コメント行) を参照）、
+  領域と一緒に読み進められます。
+  1 つの単位の読む中にある領域でも同じで、領域はその単位のトークンを切ります。
+  コメントの `%%` の後のディレクティブはコメントの一部で、
+  その前のディレクティブは `Directive` のトークンです
+  （[ast.ja.md](./ast.ja.md#directive) を参照）。
   [fixture: common/comment-region-directive-in-string] [fixture:
   common/comment-directive-in-string]
 
@@ -685,10 +695,30 @@ U+2028、U+2029 の直後の位置です。**コメント**は、
    common/comment-mid-line-acc-title] [fixture: common/comment-mid-line-style]
 2. `%%` の後の、ディレクティブの一部でない最初の文字が存在し、`{` でなく、
    行終端の一部でもない。
+   そのため `%%` だけの行はコメント行でなく、何行かにわたるテキストの中では、
+   そのテキストの一部です。
+   flowchart の `A -->|a`、行 `%%`、`b| B` の辺のテキストは、
+   `a`、行 `%%`、`b` で、
+   同じように書いた subgraph のタイトルも同じです。
+   [fixture: flowchart/lex-percent-line-in-edge-label] [fixture:
+   flowchart/lex-percent-line-in-subgraph-title]
 
 コメントは、その `%%` の最初の `%` から行の終わり、
 つまりディレクティブの一部でない次の行終端まで伸びます。
 U+2028 と U+2029 はコメントを終えません。
+行終端は、ディレクティブの走査が取るもの（引数の後の空白を含む）の中にあるとき、
+ディレクティブの一部です
+（[ディレクティブの位置](#ディレクティブの位置) を参照）。
+そのため、コメントの中のディレクティブは、
+コメントを改行の先まで続けることがあります。
+`X` の後の行 `%% %%{wrap`、`A`、`B --> C` は 1 つのコメントです。
+ディレクティブが `A` とその後の改行を取るからで、
+mermaid.js は `A` も `B --> C` も読みません。
+[fixture: common/comment-directive-word-argument-takes-next-lines]
+ディレクティブの一部でない行終端が後に続かないとき、
+コメントはテキストの終わりまで伸びます。
+そのとき、その範囲は、終わりにあってディレクティブが取った空白を、
+ディレクティブの範囲と同じく除きます（[Comment](./ast.ja.md#comment) を参照）。
 コメントを含む行を**コメント行**と呼びます。
 
 コメントの**コメント領域**は、
@@ -747,6 +777,11 @@ U+2028 と U+2029 はコメントを終えません。
   `A[a`、改行、`%%` と空白、改行、`b]` のラベルは、`a`、改行、`b` です。
   [fixture: common/comment-bare-line-in-string-label] [fixture:
   common/comment-percent-space-line-in-label]
+  説明のブロック（コメント行の後でも）、ツールチップの文字列、
+  `accTitle:` の次の行のタイトルにも、同じく残ります。
+  [fixture: flowchart/lex-acc-descr-block-bare-marker-line-after-comment-line]
+  [fixture: flowchart/lex-tooltip-bare-marker-line] [fixture:
+  flowchart/lex-acc-title-bare-marker-next-line]
 - コメント行だけからなるテキストはトークンを持たず、検出で拒否されます。
   [fixture: common/comment-only]
 - ディレクティブは除かれるので、`%%{init: {}}%% %% c` の行は、
@@ -768,8 +803,12 @@ U+2028 と U+2029 はコメントを終えません。
 コメント行は、図の構文にも字句解析器の文脈にも依存せずに認識されます。
 字句解析器は、コメント領域がないかのように読み通します。
 複数行の引用符付きラベルのように、
-テキストがコメント領域をまたいで続くトークンは 1 つのトークンで、
+テキストがコメント領域をまたいで続く単位は 1 つの単位で、
 その値は領域の前後のテキストをつないだものです。
+ただし、コメント領域はどのトークンの中にもありません。
+そのような単位のトークンは領域で断片に切られ、
+文字列の断片は `StringFragment` のトークンです
+（[Comment](./ast.ja.md#comment) を参照）。
 [fixture: common/comment-in-string] [fixture:
 common/comment-blank-line-before-in-string]
 
@@ -777,6 +816,15 @@ common/comment-blank-line-before-in-string]
 受理は mermaid.js と同じになります。
 例は、引用符付きラベルの中のコメント行にある `"` です。
 [fixture: common/comment-with-quote-in-string]
+
+コメント領域は、図のコメント、
+つまり図自身の字句解析器が行の終わりまで読むコメントも、
+同じように切ります（[Comment](./ast.ja.md#comment) を参照）。
+図のコメントの行は、その行の U+2028 か U+2029 の後のコメント行を越えて続きます。
+mermaid.js は、コメント行を除いたテキストを読むからです。
+state で、`A %% x`、U+2029、行 `%% end`、行 `B` の後では、
+図のコメントは `B` に続き、mermaid.js は `B` を読みません。
+[fixture: state/lex-diagram-comment-across-comment-line]
 
 ## 先頭の空白
 

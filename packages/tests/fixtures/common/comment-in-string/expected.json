@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "common.md Comment lines: a comment line inside a quoted label is trivia; the label is one token whose value joins the text before and after the region."
+    "note": "common.md Comment lines and ast.md Comment: a comment line inside a quoted label is trivia; it cuts the String token into the StringFragment tokens `\"one` and `three\"`, and the label's value joins the text before and after the region."
   },
   "accepted": true,
   "diagramType": "flowchart-v2",

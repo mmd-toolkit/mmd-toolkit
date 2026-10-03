@@ -10,10 +10,12 @@ Mermaid text.
 This is a third-party project, not affiliated with mermaid-js. `mmd` here means
 the Mermaid diagram syntax, not MultiMarkdown or MikuMikuDance.
 
-The rules are not written yet. One of them, `mmd/no-unclosed-directive`, is
-implemented as a trial: it is not in the recommended configuration, and it will
-be written again with the others. The ideas for the rules are in
-[docs/rules/index.md](./docs/rules/index.md).
+The rules are being implemented one diagram type at a time, starting with
+flowcharts. [docs/rules/index.md](./docs/rules/index.md) lists every rule and
+marks those that are not implemented yet, which report nothing.
+`mmd/no-unclosed-directive` is implemented as a trial: it is not in the
+recommended configuration, and it will be written again with the other rules
+common to every diagram type.
 
 ## Installation
 

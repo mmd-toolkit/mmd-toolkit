@@ -41,7 +41,8 @@ describe("findDirectives", () => {
       '%%{init: {"x": 1}\nC-->D',
       [['%%{init: {"x": 1}\nC-->D', "init", 'init: {"x": 1}\nC-->D', false]],
     ],
-    // Free text stops before U+2028; the whitespace after it takes U+2028 and a `}%%` still closes.
+    // Free text stops before U+2028; the whitespace after it takes U+2028 and a
+    // `}%%` still closes.
     [
       "%%{init: {'theme':'dark'}\u2028}%%\nx",
       [
@@ -57,7 +58,8 @@ describe("findDirectives", () => {
       "%%{init: { \u2028}}%%\nx",
       [["%%{init: { \u2028", "init", "init: { \u2028", false]],
     ],
-    // Not directives: nothing but whitespace before `}`, or a non-word character first.
+    // Not directives: nothing but whitespace before `}`, or a non-word
+    // character first.
     ["%%{ }%%", []],
     ["%%{-x}%%", []],
     ["%%{", []],
@@ -72,7 +74,8 @@ describe("findDirectives", () => {
         ["%%{b}%%", "b", "b", true],
       ],
     ],
-    // A `%%{` that starts no directive is passed over, and the next one is found.
+    // A `%%{` that starts no directive is passed over, and the next one is
+    // found.
     ["%%{ }%%{a}%%", [["%%{a}%%", "a", "a", true]]],
     // A directive spans a lone `\r`.
     [

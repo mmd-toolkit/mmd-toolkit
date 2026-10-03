@@ -119,6 +119,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " My image with a constrained aspect ratio",
       "range": [
         15,

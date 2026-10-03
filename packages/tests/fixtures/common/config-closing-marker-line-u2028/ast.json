@@ -139,6 +139,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": "}%% x %%{init: {\"flowchart\": {\"inheritDir\": true}}}%%",
       "range": [
         0,

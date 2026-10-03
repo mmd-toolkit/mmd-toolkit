@@ -1,0 +1,475 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: flowchart/no-ignored-text >> invalid >>> docs/rules/flowchart/no-ignored-text.md incorrect 1
+Filename: flowchart/no-ignored-text-incorrect-1.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     A-->B; direction TB
+    |     ^~~~~~ [1]
+  4 |   end
+  5 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 |   subgraph S
+          3 |     A-->B;
+          4 |     direction TB
+          5 |   end
+          6 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> docs/rules/flowchart/no-ignored-text.md incorrect 2
+Filename: flowchart/no-ignored-text-incorrect-2.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A-->B direction TB
+    |   ^~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> docs/rules/flowchart/no-ignored-text.md incorrect 3
+Filename: flowchart/no-ignored-text-incorrect-3.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     direction TB; A-->B
+    |                 ^~~~~~~ [1]
+  4 |   end
+  5 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 |   subgraph S
+          3 |     direction TB
+          4 |     A-->B
+          5 |   end
+          6 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-acc-descr-subgraph-indented
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-acc-descr-subgraph-indented-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 |   accDescr: d ; direction LR
+    |   ^~~~~~~~~~~~~ [1]
+  4 | C
+  5 | end
+  6 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 |   accDescr: d
+          4 |   direction LR
+          5 | C
+          6 | end
+          7 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-acc-title-indented
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-acc-title-indented-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   accTitle: t;direction TB
+    |   ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 |   accTitle: t
+          3 |   direction TB
+          4 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-acc-title-tab-indented
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-acc-title-tab-indented-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | 	accTitle: t;direction TB
+    |  ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 | 	accTitle: t
+          3 | 	direction TB
+          4 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-after-semicolon
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-after-semicolon-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 | A-->B; direction TB
+    | ^~~~~~ [1]
+  4 | end
+  5 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | A-->B;
+          4 | direction TB
+          5 | end
+          6 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-directive-between
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-directive-between-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A-->B %%{init: {}}%% direction TB
+    | ^~~~~ [1]
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-in-label
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-in-label-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A[direction TB]
+    | ^~ [1]        ^ [2]
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+[2] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-in-label-with-link
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-in-label-with-link-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | A[Set direction LR]-->B
+    | ^~~~~ [1]         ^~~~~ [2]
+  3 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+[2] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-in-string-label
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-in-string-label-input.mmd
+
+Code:
+  1 | flowchart TB
+  2 | A["Set direction LR"]-->B
+    | ^~~~~~ [1]         ^~~~~~ [2]
+  3 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+[2] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-semicolon-link-after-value
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-semicolon-link-after-value-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph O
+  3 |   A
+  4 |   direction TB; -->B
+    |               ^~~~~~ [1]
+  5 | end
+  6 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-swallows-edge
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-swallows-edge-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A-->B direction TB
+    | ^~~~~ [1]
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-text-after-directive-inside
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-text-after-directive-inside-input.mmd
+
+Code:
+  1 | flowchart TD
+  2 | subgraph S
+  3 |   direction LR x%%{init: {}}%%y
+    |                ^~~~~~~~~~~~~~~~ [1]
+  4 |   A
+  5 | end
+  6 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-text-after-value
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-text-after-value-input.mmd
+
+Code:
+  1 | flowchart TD
+  2 | subgraph S
+  3 |   direction LR trailing
+    |                ^~~~~~~~ [1]
+  4 |   A
+  5 | end
+  6 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-text-before-directive-inside
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-text-before-directive-inside-input.mmd
+
+Code:
+  1 | flowchart TD
+  2 | subgraph S
+  3 |   A-%%{init: {}}%%->B direction LR
+    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  4 | end
+  5 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-then-semicolon-statement
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-then-semicolon-statement-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 | direction TB; A-->B
+    |             ^~~~~~~ [1]
+  4 | end
+  5 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | direction TB
+          4 | A-->B
+          5 | end
+          6 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/flowchart/lex-direction-line-value-next-line
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/flowchart/lex-direction-line-value-next-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 | A direction
+    | ^ [1]
+  4 | TB
+  5 | end
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/split-after-description-block
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/split-after-description-block-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accDescr { x }; direction TB
+    |   ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accDescr { x };
+          4 |   direction TB
+          5 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/split-after-direction-value
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/split-after-direction-value-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     direction TB;A-->B
+    |                 ^~~~~~ [1]
+  4 |   end
+  5 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 |   subgraph S
+          3 |     direction TB
+          4 |     A-->B
+          5 |   end
+          6 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/split-at-double-separator
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/split-at-double-separator-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   classDef c color:#111;; direction TB
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 |   classDef c color:#111
+          3 |   direction TB
+          4 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/split-drops-separator-in-title
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/split-drops-separator-in-title-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     A
+  4 |     accTitle: t; direction LR
+    |     ^~~~~~~~~~~~ [1]
+  5 |   end
+  6 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 |   subgraph S
+          3 |     A
+          4 |     accTitle: t
+          5 |     direction LR
+          6 |   end
+          7 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/split-reveals-duplicate-title
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/split-reveals-duplicate-title-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   accTitle: a
+  3 |   subgraph S
+  4 |     accTitle: t; direction LR
+    |     ^~~~~~~~~~~~ [1]
+  5 |   end
+  6 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 |   accTitle: a
+          3 |   subgraph S
+          4 |     accTitle: t
+          5 |     direction LR
+          6 |   end
+          7 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/split-without-space-after-separator
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/split-without-space-after-separator-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     A-->B;direction TB
+    |     ^~~~~~ [1]
+  4 |   end
+  5 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 |   subgraph S
+          3 |     A-->B;
+          4 |     direction TB
+          5 |   end
+          6 |
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/split-would-leave-bare-arrow
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/split-would-leave-bare-arrow-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   direction TB; -->B
+    |               ^~~~~~ [1]
+  4 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---

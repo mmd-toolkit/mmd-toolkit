@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Db normalization, Class definitions: a trailing `,` gives an empty last style: x and the empty text."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "a",
+        "styles": [
+          "x",
+          ""
+        ]
+      }
+    ],
+    "links": []
+  }
+}

@@ -9,7 +9,7 @@
         "placement": "left of",
         "ids": [
           {
-            "type": "Identifier",
+            "type": "SequenceIdentifier",
             "name": "A",
             "range": [
               29,
@@ -83,7 +83,7 @@
         "placement": "right of",
         "ids": [
           {
-            "type": "Identifier",
+            "type": "SequenceIdentifier",
             "name": "A",
             "range": [
               48,

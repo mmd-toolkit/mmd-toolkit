@@ -36,6 +36,7 @@ import type {
   DiagramPosition,
   DiagramText,
 } from "../../diagram-text.ts"
+import { lineFeedAfter } from "../../diagram-text.ts"
 import type { DiagramUnit } from "../../diagram-units.ts"
 import { readUnit } from "../../diagram-units.ts"
 import { ParseError } from "../../errors.ts"
@@ -630,22 +631,23 @@ export class SequenceUnitLexer {
   }
 
   /**
-   * A diagram comment: from its mark, which starts at `at` and whose last
-   * character is `markLast`, to the end of its line, up to and not including
-   * the line feed. The source text after the mark is the comment's value.
+   * A diagram comment: from its mark `mark`, which starts at `at` and whose
+   * last character is `markLast`, to the end of its line, up to and not
+   * including the line feed (see `DiagramComment`). The source text after
+   * the mark is the comment's value.
    */
-  private readComment(at: DiagramCharacter, markLast: DiagramCharacter): void {
-    let last = markLast
-    let position = this.reader.after(markLast)
-    while (position !== null && position.codePoint !== LINE_FEED) {
-      last = position
-      position = this.reader.after(position)
-    }
+  private readComment(
+    at: DiagramCharacter,
+    mark: "#" | "%%" | "%",
+    markLast: DiagramCharacter,
+  ): void {
+    const lineFeed = lineFeedAfter(this.reader, markLast)
     this.comments.push({
-      range: [at.start, last.end],
+      range: [at.start, lineFeed.start],
+      mark,
       valueStart: markLast.end,
     })
-    this.position = position
+    this.position = lineFeed
   }
 
   /**
@@ -654,7 +656,7 @@ export class SequenceUnitLexer {
    */
   private readHashComment(at: DiagramCharacter): boolean {
     if (at.codePoint !== NUMBER_SIGN) return false
-    this.readComment(at, at)
+    this.readComment(at, "#", at)
     return true
   }
 
@@ -720,7 +722,11 @@ export class SequenceUnitLexer {
     if (at.codePoint !== PERCENT_SIGN) return false
     const next = this.reader.after(at)
     if (next?.codePoint === LEFT_CURLY_BRACKET) return false
-    this.readComment(at, next?.codePoint === PERCENT_SIGN ? next : at)
+    if (next?.codePoint === PERCENT_SIGN) {
+      this.readComment(at, "%%", next)
+    } else {
+      this.readComment(at, "%", at)
+    }
     return true
   }
 

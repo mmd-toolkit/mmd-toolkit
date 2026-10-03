@@ -19,7 +19,7 @@ const keptLinesBySource = new WeakMap<Source, KeptLines>()
 export function findClassSemicolonLines(source: Source): ReadonlySet<number> {
   const cached = semicolonLinesBySource.get(source)
   if (cached !== undefined) return cached
-  const lines = findLinesWithOwnSemicolons(source, [diagramOf(source).range])
+  const lines = findLinesWithOwnSemicolons(source, false)
   semicolonLinesBySource.set(source, lines)
   return lines
 }
@@ -91,16 +91,27 @@ function findPercentMemberLines(
   return lines
 }
 
-/** The lines on which an empty description block starts a statement. */
+/**
+ * The lines on which an empty description block starts a statement, and the
+ * line on which it ends when it is written over several lines: the statement
+ * that follows it stands on that line, as in `accDescr`, a line break, and
+ * `{} class A`.
+ */
 function findEmptyDescriptionBlockLines(
   source: Source,
   statements: readonly ClassStatement[],
 ): number[] {
-  return statements
-    .filter(
-      (statement) =>
-        statement.type === "ClassAccDescrBlockStatement" &&
-        statement.value === null,
-    )
-    .map((statement) => lineStartOf(source, statement.range[0]))
+  const lines: number[] = []
+  for (const statement of statements) {
+    if (
+      statement.type === "ClassAccDescrBlockStatement" &&
+      statement.value === null
+    ) {
+      lines.push(
+        lineStartOf(source, statement.range[0]),
+        lineStartOf(source, statement.range[1] - 1),
+      )
+    }
+  }
+  return lines
 }

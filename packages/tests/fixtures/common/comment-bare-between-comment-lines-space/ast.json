@@ -200,6 +200,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " C-->D",
       "range": [
         19,
@@ -218,6 +219,7 @@
     },
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " ",
       "range": [
         28,
@@ -236,6 +238,7 @@
     },
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " D-->E",
       "range": [
         32,

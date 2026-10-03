@@ -81,13 +81,17 @@ rule reads belongs to the unit it produces, or to no unit when the rule produces
 none. At the end of the text, the lexer stops.
 
 Besides units, the lexer reads **diagram comments**: text that runs to the end
-of its line and that mermaid.js reads as nothing. They are not the comment lines
-of [common.md](../common.md#comment-lines), which are removed before the lexer
-reads the text: a diagram comment can start in the middle of a line. The
-**mark** of a diagram comment is `#` when it starts with `#`, `%%` when it
-starts with `%%`, and `%` otherwise, and its value is the text after the mark
-(see [Comment](../ast.md#comment)): the value of `%% c` is a space and `c`, as
-for a comment line, that of `% c` is the same, and that of `%%% c` is `%`, a
+of its line and that mermaid.js reads as nothing. The line goes on past a
+comment line that follows a U+2028 or U+2029 on it, whose comment region cuts
+the diagram comment in two (see [Comment](../ast.md#comment)): `A->>B: y #c`,
+U+2029, a line `%% d`, and a line `C->>D: z` have one message, from A to B.
+[fixture: sequence/lex-hash-comment-across-comment-line] They are not the
+comment lines of [common.md](../common.md#comment-lines), which are removed
+before the lexer reads the text: a diagram comment can start in the middle of a
+line. The **mark** of a diagram comment is `#` when it starts with `#`, `%%`
+when it starts with `%%`, and `%` otherwise, and its value is the text after the
+mark (see [Comment](../ast.md#comment)): the value of `%% c` is a space and `c`,
+as for a comment line, that of `% c` is the same, and that of `%%% c` is `%`, a
 space, and `c`. [fixture: sequence/lex-percent-comment-after-unit] [fixture:
 sequence/lex-single-percent-comment] [fixture:
 sequence/lex-percent-comment-three-percent] The mark is found in the text
@@ -122,7 +126,8 @@ rejected.
   `AB`, as in mermaid.js. [fixture: sequence/lex-directive-in-text] [fixture:
   sequence/lex-directive-in-id-run] [fixture:
   sequence/lex-directive-in-participant-id] Whitespace next to the directive
-  stays in the id, which is one unit (see [Identifier](../ast.md#identifier)):
+  stays in the id, which is one unit (see
+  [SequenceIdentifier](../ast/sequence.md#sequenceidentifier)):
   `participant A%%{init: {}}%% c%%B` has the participant `A c%%B`, and
   `Al%%{init: {}}%% c%%ice->>B: x` the participant `Al c%%ice`. [fixture:
   sequence/lex-directive-in-id-before-space] [fixture:
@@ -461,16 +466,16 @@ Each rule below makes a node of the tree, defined in
 | `message-statement`                                                               | SequenceMessageStatement                                                                                                                           |
 | `arrow`                                                                           | SequenceArrow                                                                                                                                      |
 | `autonumber-statement`                                                            | SequenceAutonumberStatement                                                                                                                        |
-| `"activate" id newline`, `"deactivate" id newline`                                | SequenceActivateStatement, SequenceDeactivateStatement                                                                                             |
+| `"activate" id statement-end`, `"deactivate" id statement-end`                    | SequenceActivateStatement, SequenceDeactivateStatement                                                                                             |
 | `note-statement`                                                                  | SequenceNoteStatement                                                                                                                              |
 | `"links"`, `"link"`, `"properties"`, `"details"` statements                       | SequenceLinksStatement, SequenceLinkStatement, SequencePropertiesStatement, SequenceDetailsStatement                                               |
 | `title-statement`                                                                 | SequenceTitleStatement                                                                                                                             |
 | `accessibility-statement`                                                         | SequenceAccTitleStatement, SequenceAccDescrStatement, or SequenceAccDescrBlockStatement                                                            |
-| `"accDescr" "{" "}"` of a `box-statement`                                         | SequenceAccDescrBlockStatement                                                                                                                     |
+| `empty-description-block`                                                         | SequenceAccDescrBlockStatement without text: a statement of a box, or a statement after the statement before it                                    |
 | `block-statement` with `loop`, `rect`, `opt`, `break`                             | SequenceLoopStatement, SequenceRectStatement, SequenceOptStatement, SequenceBreakStatement                                                         |
 | `block-statement` with `alt`, `par`, `par_over`, `critical`                       | SequenceAltStatement, SequenceParStatement, SequenceParOverStatement, SequenceCriticalStatement, with a SequenceSection for each `text-part line*` |
 | `text-part`                                                                       | SequenceText, or nothing when it has neither unit                                                                                                  |
-| `id`                                                                              | Identifier                                                                                                                                         |
+| `id`                                                                              | SequenceIdentifier                                                                                                                                 |
 | `number`                                                                          | NumericLiteral                                                                                                                                     |
 | `text` of a text part, `title-text`, `description-text`, `description-block-text` | SequenceLiteral, or null for a title that is all whitespace                                                                                        |
 | `invalid` as a line                                                               | SequenceIgnoredStatement                                                                                                                           |
@@ -483,11 +488,11 @@ line                = statement | newline | invalid
 statement           = participant-statement
                     | "create" participant-statement
                     | box-statement
-                    | message-statement newline
-                    | autonumber-statement newline
-                    | ( "activate" | "deactivate" ) id newline
-                    | note-statement newline
-                    | ( "links" | "link" | "properties" | "details" ) id ":" text-part newline
+                    | message-statement statement-end
+                    | autonumber-statement statement-end
+                    | ( "activate" | "deactivate" ) id statement-end
+                    | note-statement statement-end
+                    | ( "links" | "link" | "properties" | "details" ) id ":" text-part statement-end
                     | title-statement
                     | accessibility-statement
                     | block-statement
@@ -506,25 +511,74 @@ was meant to continue is such a line: `A->>B: call(x`, a line break, and `)` has
 the message `call(x`. [fixture: sequence/db-ignored-line-after-wrapped-message]
 [fixture: sequence/db-wrapped-message-closed]
 
+### Empty description blocks before a separator
+
+```text
+statement-end           = empty-description-block* newline
+empty-description-block = "accDescr" "{" "}"
+```
+
+An `empty-description-block` is an `accDescr` unit and a `{` unit followed
+directly by a `}` unit, with no `description-block-text` unit. A statement that
+needs a separator ends with a `statement-end`: after its last unit and before
+its separator, any number of empty description blocks may come. Each is a
+description block statement without text, a statement of its own after that
+statement, and changes nothing. mermaid.js reads no token for an empty
+description block (see
+[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.md)), so it
+reads the statement as followed directly by its separator. A description block
+with text and any other statement may not come before the separator.
+
+In sequence, the statements that need a `newline` unit are participant, destroy,
+message, `autonumber`, activate and deactivate, note, and links, link,
+properties, and details statements. A block can lie between the last unit of
+such a statement and its `newline` only where that unit is not read with it: in
+a text, an id, or a description after `as`, the lexer reads `accDescr {}` as
+part of the text or the id. So it lies after a data block of a participant or an
+actor and after `autonumber`: `participant A@{ "type": "actor" } accDescr {}`,
+the same without the space, and `autonumber accDescr {}` are accepted. [fixture:
+sequence/gram-empty-description-block-after-participant-data] [fixture:
+sequence/gram-empty-description-block-after-actor-data-glued] [fixture:
+sequence/gram-empty-description-block-after-autonumber] Whitespace before the
+block is read alone, so the line break after the block is the `newline` unit of
+the statement: `autonumber`, two spaces, `accDescr {}`, and a line break is
+accepted, while `autonumber`, two spaces, and a line break is rejected, because
+the spaces hide the line break (see
+[The statement context](#the-statement-context)). [fixture:
+sequence/gram-empty-description-block-after-autonumber-spaces] [fixture:
+sequence/lex-trailing-space-hides-line-break] Another statement after the block
+on the same line is rejected, as in mermaid.js:
+`autonumber accDescr {} A->>B: x`. [fixture:
+sequence/gram-empty-description-block-after-autonumber-then-message]
+
+A statement may start right after the keyword `sequenceDiagram`, on its line
+(see [Detection](#detection)), so an empty description block there needs no rule
+of its own: it lies where a statement starts and is the first statement of the
+diagram. `sequenceDiagram accDescr {}`, a line break, and `A->>B: x` is
+accepted, as in mermaid.js. [fixture: sequence/header-empty-description-block]
+
 ### Participants and boxes
 
 ```text
-participant-statement = ( "participant" | "actor" ) id data-block? ( "as" text-part )? newline
-                      | "destroy" id newline
-data-block            = "@{" data-text? "}"
-box-statement         = "box" box-text? ( participant-statement | "accDescr" "{" "}" | newline )* "end"
+participant-statement = ( "participant" | "actor" ) id data-block? ( "as" text-part )? statement-end
+                      | "destroy" id statement-end
+data-block            = "@{" data-text "}"
+box-statement         = "box" box-text? ( participant-statement | empty-description-block | newline )* "end"
 box-text              = color-candidate text? | text
 ```
 
 `as` and the text after it give the participant a description. The data block is
 embedded data: its content is kept as written and not read (see
-[Data blocks](#data-blocks-in-the-db)). `create` may come before any participant
-statement, `destroy` included: `create destroy A` is a destroy statement with
-`create`, which adds A as a created participant and destroys nothing (see
-[Building the summary](#building-the-summary-from-the-tree)). [fixture:
-sequence/gram-create-destroy] A box holds only participant statements, empty
-description blocks, and empty lines, without `create` and without messages.
-[fixture: sequence/gram-box-create-participant] [fixture:
+[Data blocks](#data-blocks-in-the-db)). It needs content: `participant A@{}` is
+rejected, as in mermaid.js, while `participant A@{ }` and the same with a line
+break between the braces are accepted. [fixture: sequence/gram-data-block-empty]
+[fixture: sequence/gram-data-block-line-break-only] `create` may come before any
+participant statement, `destroy` included: `create destroy A` is a destroy
+statement with `create`, which adds A as a created participant and destroys
+nothing (see [Building the summary](#building-the-summary-from-the-tree)).
+[fixture: sequence/gram-create-destroy] A box holds only participant statements,
+empty description blocks, and empty lines, without `create` and without
+messages. [fixture: sequence/gram-box-create-participant] [fixture:
 sequence/gram-box-message-inside] An empty description block in a box is a
 description block statement without text, as where any other statement starts:
 it may be on a line of its own, over several lines with only whitespace between
@@ -922,6 +976,31 @@ asks the browser whether the candidate is a colour (see
 The answer does not come from the text, so the `name`, `fill`, and `wrap` of a
 box are given from outside the tree, as a value of the configuration is.
 
+The text that the split gets runs from the colour candidate to the end of the
+`text` unit, the whitespace at its end included, which the values of the tree
+leave out, so this is read from the source. Its pattern reads a U+2028 or U+2029
+in one place only: in the whitespace between `rgb`, `rgba`, `hsl`, or `hsla` and
+the `(` of a colour candidate. When the text holds a U+2028 or U+2029 anywhere
+else, also only at its end, the split does not match, and the box has the fill
+`transparent` and no name, whatever the text, and no answer is asked for:
+`box red-team` and `box aqua`, each followed by U+2028 at the end of the line,
+and `box red`, U+2029, and `team`, have no name and the fill `transparent`. A
+U+2028 before the text is whitespace that the line context reads as nothing
+(rule 1 of [The line context](#the-line-context)), so `box`, a space, U+2028,
+and `red team` has the fill `red` and the name `team`. Where the only such
+characters lie in that whitespace of a colour candidate, the split matches, and
+the candidate, as `rgb (0, 0, 255)` below, is no colour: `box rgb`, U+2028, and
+`(1, 2, 3) G`, and the same with `hsl` and two U+2029, have the fill
+`transparent` and the whole text, the U+2028 or U+2029 included, as the name,
+while `box rgb(1, 2, 3)`, U+2028, and ` G` has no name. [fixture:
+sequence/db-box-line-separator-in-colour-function] [fixture:
+sequence/db-box-paragraph-separator-in-colour-function] [fixture:
+sequence/db-box-line-separator-after-colour-function] [fixture:
+sequence/db-box-line-separator-at-end] [fixture:
+sequence/db-box-paragraph-separator-in-text] [fixture:
+sequence/db-box-colour-then-line-separator] [fixture:
+sequence/db-box-line-separator-before-text]
+
 Given the answer, they come from the SequenceBoxText (see
 [SequenceBoxText](../ast/sequence.md#sequenceboxtext)). When the colour
 candidate is a colour, `fill` is the candidate and the name comes from the
@@ -992,11 +1071,12 @@ sequence, and show in it as follows.
   sequence/div-html-tag-starts-in-frontmatter-message] [fixture:
   sequence/lex-html-tag-frontmatter-arrow-ends-tag]
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).**
-  An empty description block that does not start a statement makes the input
-  rejected here, while mermaid.js reads no token for it and accepts the input:
-  `A->>accDescr {}B: x` and `note left of accDescr {} A: x`. An empty
-  description block where a statement starts, also inside a box, is a
-  description block statement without text, which changes nothing. [fixture:
+  An empty description block inside a statement, neither where a statement
+  starts nor before its `newline`, makes the input rejected here, while
+  mermaid.js reads no token for it and accepts the input: `A->>accDescr {}B: x`
+  and `note left of accDescr {} A: x`. An empty description block where a
+  statement starts, also inside a box, is a description block statement without
+  text, which changes nothing. [fixture:
   sequence/gram-box-empty-description-block-line] [fixture:
   sequence/gram-empty-description-block-after-arrow] [fixture:
   sequence/gram-empty-description-block-after-placement] [fixture:

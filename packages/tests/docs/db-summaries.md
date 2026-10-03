@@ -134,3 +134,58 @@ Other values of the summary:
 - `classes[].link` is the URL as written (trimmed), and `classes[].linkTarget`
   the target as written, or `_blank`, under every `securityLevel` (see
   [expected-results.md](./expected-results.md)).
+
+## state
+
+`normalizeState()` (`src/normalizers/state.ts`) summarizes the Db of
+`stateDiagram`, which mermaid.js detects for both `stateDiagram` and
+`stateDiagram-v2`. Its source is the layout data that the renderer draws,
+[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L763-L778),
+which mermaid.js builds from the statements while it parses. The Db holds two
+other forms, and neither is summarized: the statement tree keeps statements that
+change nothing (a `classDef`, `class` or `style` inside a composite state, a
+floating note, `scale`), and the table of states holds the top level only, since
+[`extract`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L249-L272)
+reads only the statements of the top level.
+
+The summary keeps, in the order of the layout data:
+
+- `states`: every node but notes, with its `id`, `shape`, `label` and
+  `description`, the composite state or region it lies in (`parentId`), and the
+  direction of a composite state or region (`dir`). `classes` and `styles` are
+  those that the table of states gives the node's id, which is where
+  [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L250-L254)
+  takes them; a state without an entry has none.
+- `notes`: each note, with the state it belongs to, its `position` and its
+  `text`.
+- `transitions`: each transition, with its `start`, `end` and `label`.
+- `classDefs`: the class definitions, with their `styles`.
+- `links`: each click, with its state, and its `url` and `tooltip` as written,
+  quotes included.
+- `direction`: the direction the renderer uses, from the last `direction`
+  statement of the top level
+  ([`getDir`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L185-L195));
+  `getDirection()`, which takes the first one, is not read by the renderer.
+- `title`, `accTitle` and `accDescr`.
+
+It drops the following, each for the reason given:
+
+- The fields of the layout data used only for drawing: DOM ids, edge ids,
+  padding, corner radii, `look`, label types and positions, the CSS class names
+  mermaid.js adds, the palette slot of a composite state, the arrow markers, and
+  the sizes `getData()` takes from the configuration.
+- Values derived from kept ones: whether a node is a group (from `shape`), the
+  styles of a node's classes (`cssCompiledStyles`, from `classDefs`),
+  `classDefs[].textStyles` (from `styles`), and the group around a state and its
+  notes, whose label and position are those of the last note.
+
+The region after the last `--` of a composite state gets an id that mermaid.js
+makes at random
+([`docTranslator`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L366-L375)).
+It is recorded as `generated-region-1`, `generated-region-2`, ... in the order
+of the nodes, wherever it appears: in the node's id, in the ids and labels of
+the start and end states of that region, in `parentId`, and in transitions. A
+region made by a `--` keeps its id `divider-id-<number>`, which a counter gives.
+
+Values are recorded as the Db holds them, whitespace included. The summary is
+the same under every `securityLevel`, `look` and `htmlLabels`.

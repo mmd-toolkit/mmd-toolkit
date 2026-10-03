@@ -1,0 +1,302 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateAliasDefinitionStatement",
+        "textBeforeDescription": null,
+        "description": {
+          "type": "StringLiteral",
+          "value": "d",
+          "raw": "\"d\"",
+          "closed": true,
+          "range": [
+            24,
+            27
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 11
+            }
+          }
+        },
+        "textAfterDescription": null,
+        "id": {
+          "type": "StateLiteral",
+          "value": "A : x",
+          "range": [
+            31,
+            36
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 15
+            },
+            "end": {
+              "line": 2,
+              "column": 20
+            }
+          }
+        },
+        "secondDescription": null,
+        "textAfter": null,
+        "textBeforeBody": null,
+        "body": [
+          {
+            "type": "StateDefinitionStatement",
+            "reference": {
+              "type": "StateReference",
+              "state": {
+                "type": "Identifier",
+                "name": "B",
+                "range": [
+                  45,
+                  46
+                ],
+                "loc": {
+                  "start": {
+                    "line": 4,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 4,
+                    "column": 5
+                  }
+                }
+              },
+              "cssClass": null,
+              "range": [
+                45,
+                46
+              ],
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 4
+                },
+                "end": {
+                  "line": 4,
+                  "column": 5
+                }
+              }
+            },
+            "description": null,
+            "range": [
+              45,
+              46
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 4
+              },
+              "end": {
+                "line": 4,
+                "column": 5
+              }
+            }
+          }
+        ],
+        "range": [
+          18,
+          50
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 5,
+            "column": 3
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      50
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 3
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        18,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"d\"",
+      "range": [
+        24,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "as",
+      "range": [
+        28,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A : x",
+      "range": [
+        31,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 15
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "{",
+      "range": [
+        39,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "B",
+      "range": [
+        45,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        49,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    51
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 6,
+      "column": 0
+    }
+  }
+}

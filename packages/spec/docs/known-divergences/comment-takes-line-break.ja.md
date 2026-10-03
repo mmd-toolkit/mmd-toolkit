@@ -22,9 +22,13 @@ classDiagram
 コメントは、`Animal <|-- Duck %% ducks` のように、文の後の同じ行にも書けます。
 この文書は、class 図の文の後のそのようなコメントについてのものです。
 それだけの行のコメントは、mermaid.js もこの仕様も同じに読みます。
-文の後のコメントも、テキストの最後の行にあるときは同じです。
+文の後のコメントも、テキストの最後の行にあるときは同じで、
+後にディレクティブだけの行が続くときもそうです。
+`%%` の前にディレクティブだけがある行も、コメント行です。
 [fixture: class/lex-comment-own-line] [fixture:
-class/lex-comment-on-last-line]
+class/lex-comment-on-last-line] [fixture:
+class/lex-comment-then-directive-at-end] [fixture:
+class/lex-directive-then-comment-line]
 
 ## 差
 
@@ -109,6 +113,13 @@ mermaid.js の字句解析器は、コメントを 1 つの規則で読みます
 文の後では、文を終える改行を除くので、
 文法は次の行を同じ文の一部として見ます。
 空白だけの行は、空白が改行でないので規則を止めますが、空の行は止めません。
+字句解析器はディレクティブのないテキストを読むので、
+ディレクティブだけの行はそれにとって空の行で、
+空白の後のディレクティブは空白だけの行を残します。
+`A <|-- B %% c`、行 `%%{init: {}}%%`、`class C` は、mermaid.js では拒否され、
+ディレクティブの前に空白があれば、どちらも関係とクラス C を読みます。
+[fixture: class/div-comment-then-directive-line] [fixture:
+class/lex-comment-then-indented-directive-line]
 ただし mermaid.js は、字句解析器がテキストを読む前に、
 `%%` の後に文字のある、ディレクティブでないコメント行を、
 すぐ前の空白だけの行と一緒に除きます

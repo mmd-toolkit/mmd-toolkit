@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "common.md A directive is a token boundary: the directive after the comment's `%%` is part of the comment region inside the quoted label, so the lexer reads through it with the region and the label is one token; its text is `a`, a line break, and `b`."
+    "note": "common.md A directive is a token boundary: the comment region cuts the quoted label into the StringFragment tokens `\"a` and `b\"`, and the directive after the comment's `%%` lies inside the comment and has no Directive token; the label is `a`, a line break, and `b`."
   },
   "accepted": true,
   "diagramType": "flowchart-v2",

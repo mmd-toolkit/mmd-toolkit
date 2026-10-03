@@ -1,0 +1,295 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateCompositeStatement",
+        "textBeforeId": null,
+        "id": {
+          "type": "Identifier",
+          "name": "foo",
+          "range": [
+            28,
+            31
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 12
+            },
+            "end": {
+              "line": 2,
+              "column": 15
+            }
+          }
+        },
+        "textBeforeBody": null,
+        "body": null,
+        "range": [
+          22,
+          31
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 6
+          },
+          "end": {
+            "line": 2,
+            "column": 15
+          }
+        }
+      },
+      {
+        "type": "StateFloatingNoteStatement",
+        "text": {
+          "type": "StateLiteral",
+          "value": "This is a floating note",
+          "range": [
+            44,
+            67
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 12
+            },
+            "end": {
+              "line": 3,
+              "column": 35
+            }
+          }
+        },
+        "id": {
+          "type": "StateLiteral",
+          "value": "N1",
+          "range": [
+            72,
+            74
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 40
+            },
+            "end": {
+              "line": 3,
+              "column": 42
+            }
+          }
+        },
+        "range": [
+          38,
+          74
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 6
+          },
+          "end": {
+            "line": 3,
+            "column": 42
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      74
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 42
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        22,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "foo",
+      "range": [
+        28,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        38,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "\"",
+      "range": [
+        43,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "This is a floating note",
+      "range": [
+        44,
+        67
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "\"",
+      "range": [
+        67,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 35
+        },
+        "end": {
+          "line": 3,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "as",
+      "range": [
+        69,
+        71
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 37
+        },
+        "end": {
+          "line": 3,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "N1",
+      "range": [
+        72,
+        74
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 40
+        },
+        "end": {
+          "line": 3,
+          "column": 42
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    81
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 6
+    }
+  }
+}

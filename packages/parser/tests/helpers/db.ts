@@ -5,6 +5,7 @@ import type { Root } from "../../src/index.ts"
 import { classDbOf } from "./class-db.ts"
 import { flowchartDbOf } from "./flowchart-db.ts"
 import { sequenceDbOf } from "./sequence-db.ts"
+import { stateDbOf } from "./state-db.ts"
 
 /**
  * Test helper: the Db summary that the tree `root` of the source `text`
@@ -36,6 +37,8 @@ export function dbOf(
       return sequenceDbOf(text, root, root.body, embedded, cssSupportsColor)
     case "ClassDiagram":
       return classDbOf(text, root, root.body, embedded)
+    case "StateDiagram":
+      return stateDbOf(text, root, root.body, embedded)
     default:
       throw new Error(
         `dbOf: unknown body ${JSON.stringify(root.body satisfies never)}`,

@@ -1,0 +1,100 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/stateDiagram.md",
+    "line": 295
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "roundedWithTitle",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "dir": "LR"
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "a",
+        "shape": "rect",
+        "label": "a",
+        "classes": [],
+        "styles": [],
+        "parentId": "B"
+      },
+      {
+        "id": "b",
+        "shape": "rect",
+        "label": "b",
+        "classes": [],
+        "styles": [],
+        "parentId": "B"
+      },
+      {
+        "id": "D",
+        "shape": "rect",
+        "label": "D",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "A",
+        "label": ""
+      },
+      {
+        "start": "A",
+        "end": "B",
+        "label": ""
+      },
+      {
+        "start": "B",
+        "end": "C",
+        "label": ""
+      },
+      {
+        "start": "a",
+        "end": "b",
+        "label": ""
+      },
+      {
+        "start": "B",
+        "end": "D",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

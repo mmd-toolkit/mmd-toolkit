@@ -211,13 +211,14 @@ its value is that whitespace.
 ### FlowchartLiteral
 
 A value that the author writes as a text without quotes at a position where the
-grammar allows whitespace in it and decides where it ends: a style, the
-arguments of a callback, or the text of an accessibility statement. The position
-decides, not what is written there: `accTitle: x` and the style `fill:red` are
-literals although each is one word, because their positions allow a text with
-whitespace, while the value of the property of a rectangle written with `[|` is
-an [Identifier](../ast.md#identifier), because its position allows only one word
-(see [Shared leaf nodes](../ast.md#shared-leaf-nodes)).
+grammar allows whitespace in it and decides where it ends: a style, the name of
+a callback after `call` and its arguments, or the text of an accessibility
+statement. The position decides, not what is written there: `accTitle: x` and
+the style `fill:red` are literals although each is one word, because their
+positions allow a text with whitespace, while the value of the property of a
+rectangle written with `[|` is an [Identifier](../ast.md#identifier), because
+its position allows only one word (see
+[Shared leaf nodes](../ast.md#shared-leaf-nodes)).
 
 | Field   | Type   | Meaning                                                |
 | ------- | ------ | ------------------------------------------------------ |
@@ -281,7 +282,12 @@ or one of these strings followed by text, and which of them is written gives the
 label type of the subgraph; a name with whitespace is not its id. The Db id and
 title of the subgraph are derived from `name`, `title`, and the source text that
 no node holds between the name and its title or separator (see
-[flowchart.md](../diagrams/flowchart.md#db-normalization)).
+[flowchart.md](../diagrams/flowchart.md#db-normalization)). The empty
+description blocks after the name or the title, before the separator, are the
+first statements of `body`, so that the child nodes stay in source order:
+`subgraph S accDescr {}`, a line `A`, and `end` has the body of a
+FlowchartAccDescrBlockStatement and a FlowchartVertexStatement. [fixture:
+flowchart/gram-empty-description-block-after-subgraph-name]
 
 ### FlowchartStyleStatement
 
@@ -328,12 +334,12 @@ flowchart/gram-class-name-comma]
 A click statement that calls a function: `click A callback`,
 `click A call callback(arguments)`.
 
-| Field       | Type                         | Meaning                                                                                                                                                                                                                         |
-| ----------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ids`       | list of (Identifier or null) | The click ids: the parts between the `click-comma` units, in source order; null for a part that is empty.                                                                                                                       |
-| `callback`  | Identifier                   | The name of the function: the characters up to `(`, which may contain whitespace and line breaks; the whitespace at its ends is not part of the name (see [Click and callbacks](../diagrams/flowchart.md#click-and-callbacks)). |
-| `arguments` | FlowchartLiteral or null     | The arguments between the parentheses after a `call`, whose value keeps its whitespace and line feeds; null when there are none, or when only whitespace is between the parentheses. The tree does not read them.               |
-| `tooltip`   | StringLiteral or null        | The tooltip string; null when there is none.                                                                                                                                                                                    |
+| Field       | Type                           | Meaning                                                                                                                                                                                                                                                                                                                |
+| ----------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ids`       | list of (Identifier or null)   | The click ids: the parts between the `click-comma` units, in source order; null for a part that is empty.                                                                                                                                                                                                              |
+| `callback`  | Identifier or FlowchartLiteral | The name of the function: after `call`, a FlowchartLiteral, the characters up to `(`, which may contain whitespace and line breaks, without the whitespace at its ends (see [Click and callbacks](../diagrams/flowchart.md#click-and-callbacks)); without `call`, as in `click A callback`, an Identifier, a click id. |
+| `arguments` | FlowchartLiteral or null       | The arguments between the parentheses after a `call`, whose value keeps its whitespace and line feeds; null when there are none, or when only whitespace is between the parentheses. The tree does not read them.                                                                                                      |
+| `tooltip`   | StringLiteral or null          | The tooltip string; null when there is none.                                                                                                                                                                                                                                                                           |
 
 Child fields: `ids`, `callback`, `arguments`, `tooltip`. [fixture:
 flowchart/tokens-callback-name-trailing-space]
@@ -448,12 +454,19 @@ changes nothing (see
 Child fields: `value`. The value of `accDescr { x` at the end of the text is
 `x`. [fixture: flowchart/lex-acc-descr-block-unclosed] `accDescr {  }` is a
 closed block without text, whose value is null: the whitespace after `{` is read
-with the `{`. Such a block starts a statement as every description block does,
-so `A accDescr {}` is rejected (see
+with the `{`. Such a block is a statement where a statement starts and also
+after the last unit of a statement, before its separator: `A accDescr {}` is a
+vertex statement and a FlowchartAccDescrBlockStatement, and after the name of a
+subgraph it is the first statement of the subgraph's body; after the direction
+of the header, before its separator, it is the first statement of the diagram's
+`body` (see
+[flowchart.md](../diagrams/flowchart.md#empty-description-blocks-before-a-separator)).
+Elsewhere it lies inside a statement, and the input is rejected (see
 [flowchart.md](../diagrams/flowchart.md#accessibility-values)). [fixture:
 flowchart/gram-acc-descr-block-empty] [fixture:
 flowchart/db-acc-descr-empty-block-keeps] [fixture:
-flowchart/gram-empty-description-block-after-vertex]
+flowchart/gram-empty-description-block-after-vertex] [fixture:
+flowchart/header-empty-description-block-after-direction]
 
 ## Tokens
 
@@ -463,23 +476,26 @@ that is not all whitespace belongs to one **item** of
 [the grammar](../diagrams/flowchart.md#grammar) and has the kind that this table
 gives for the item:
 
-| Kind         | Items and their units                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Keyword`    | a `header-keyword` or `header-direction` unit; a `subgraph`, `end`, `style`, `classDef`, `class`, `linkStyle`, `interpolate`, `href`, `accTitle`, or `accDescr` unit that begins or continues a statement; the `click` unit of a click statement; a `call` unit of a click statement; a `default` unit of a `linkStyle` statement; the `direction` and `direction-value` units of a direction statement; a `link-target` unit                                                                                                                                                                                   |
-| `Identifier` | an `id`, with all its units; an `id-list-part`, with all its units; an `edge-id` unit; a `click-id` unit of a click statement; the `callback-name` unit of a click statement; a `name`, with all its units; the two `id-run` units of a rectangle written with `[\|`, each an item of its own                                                                                                                                                                                                                                                                                                                   |
-| `Numeric`    | a `number` unit of a `linkStyle` statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `String`     | a `string` or `markdown-string` unit                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `RawText`    | the `text-run` units of a label; the `link-text-char` units of a link; the units of a `subgraph-name` other than its strings and markdown strings, each run of them that no string separates one item: the units of its name pieces; a style of the tree, with all its units, including a `,` right after a `\` in a `classDef` statement; the `title-text`, `description-text`, or `description-block-text` unit of a statement; the `callback-arguments` unit of a click statement; the `data-text` and `data-quote` units between a `data-start` unit and its `}`; a `direction-text` unit                   |
-| `Punctuator` | the units that open a shape, together one item: the units before the label in an alternative of the rule `shape`, except in its last alternative, where it is `"[\|"` alone; the units after the label in an alternative of the rule `shape`, together one item; every other unit that is not all whitespace, each an item of its own: the `\|` around the label of a link, the `:` and the `\|` of a rectangle written with `[\|`, `&`, `:::`, `,` other than the one just named, a `click-comma` unit of a click statement, `:`, `;`, `@`, `data-start` and `}`, arrows and opening arrows, `{`, `(`, and `)` |
+| Kind         | Items and their units                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Keyword`    | a `header-keyword` or `header-direction` unit; a `subgraph`, `end`, `style`, `classDef`, `class`, `linkStyle`, `interpolate`, `href`, `accTitle`, or `accDescr` unit that begins or continues a statement; the `click` unit of a click statement; a `call` unit of a click statement; a `default` unit of a `linkStyle` statement; the `direction` and `direction-value` units of a direction statement; a `link-target` unit                                                                                                                                                                                                                |
+| `Identifier` | an `id`, with all its units; an `id-list-part`, with all its units; an `edge-id` unit; a `click-id` unit of a click statement; a `name`, with all its units; the two `id-run` units of a rectangle written with `[\|`, each an item of its own                                                                                                                                                                                                                                                                                                                                                                                               |
+| `Numeric`    | a `number` unit of a `linkStyle` statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `String`     | a `string` or `markdown-string` unit                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `RawText`    | the `text-run` units of a label; the `callback-name` unit of a click statement; the `link-text-char` units of a link; the units of a `subgraph-name` other than its strings and markdown strings, each run of them that no string separates one item: the units of its name pieces; a style of the tree, with all its units, including a `,` right after a `\` in a `classDef` statement; the `title-text`, `description-text`, or `description-block-text` unit of a statement; the `callback-arguments` unit of a click statement; the `data-text` and `data-quote` units between a `data-start` unit and its `}`; a `direction-text` unit |
+| `Punctuator` | the units that open a shape, together one item: the units before the label in an alternative of the rule `shape`, except in its last alternative, where it is `"[\|"` alone; the units after the label in an alternative of the rule `shape`, together one item; every other unit that is not all whitespace, each an item of its own: the `\|` around the label of a link, the `:` and the `\|` of a rectangle written with `[\|`, `&`, `:::`, `,` other than the one just named, a `click-comma` unit of a click statement, `:`, `;`, `@`, `data-start` and `}`, arrows and opening arrows, `{`, `(`, and `)`                              |
+
+A `String` token that a comment region cuts becomes `StringFragment` tokens (see
+[Comment](../ast.md#comment)).
 
 A **token** is a maximal run of units of one item and one kind that follow one
 another with nothing between them but whitespace units of that item, without the
 whitespace at its ends. Where a directive lies between two characters of such a
-run that are not whitespace, the run is cut at the directive: each piece,
-without the whitespace at its ends, is a token, and a piece that is all
+run that are not whitespace, the run is cut at the directive: each fragment,
+without the whitespace at its ends, is a token, and a fragment that is all
 whitespace is no token (see
 [common.md](../common.md#a-directive-is-a-token-boundary)); the directive
-between the pieces is a `Directive` token of its own (see
+between the fragments is a `Directive` token of its own (see
 [ast.md](../ast.md#directive)). A directive inside one unit makes the input
 rejected unless the unit is `RawText` or `Identifier`. Each unit belongs to one
 item and has one kind, so this rule decides every token, and every character

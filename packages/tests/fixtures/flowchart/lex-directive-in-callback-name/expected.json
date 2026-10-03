@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "flowchart.md Directives inside units: the directive splits the `Identifier` token of the callback name, which is `cb`, as in mermaid.js."
+    "note": "flowchart.md Directives inside units: the directive splits the `RawText` token of the callback name, a FlowchartLiteral whose value is `cb`, as in mermaid.js."
   },
   "accepted": true,
   "diagramType": "flowchart-v2",

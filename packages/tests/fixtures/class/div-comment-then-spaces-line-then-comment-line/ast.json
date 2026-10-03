@@ -230,6 +230,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " c",
       "range": [
         21,
@@ -248,6 +249,7 @@
     },
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " x",
       "range": [
         29,

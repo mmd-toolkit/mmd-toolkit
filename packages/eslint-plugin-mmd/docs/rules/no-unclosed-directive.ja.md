@@ -69,7 +69,11 @@ flowchart LR
 
 - [no-ignored-init-directive](./no-ignored-init-directive.ja.md)
 
+<!-- begin auto-generated rule resources -->
+
 ## リソース
 
 - [規則のソース](../../src/rules/no-unclosed-directive.ts)
 - [テストのソース](../../tests/rules/no-unclosed-directive.test.ts)
+
+<!-- end auto-generated rule resources -->

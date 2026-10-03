@@ -61,8 +61,8 @@ console.log(rejected.accepted, rejected.error.name)
 
 Each fixture is a directory `fixtures/<diagram>/<name>/` in this package
 (`getFixturesRoot()` gives its absolute path). `<diagram>` is a diagram type
-(`flowchart`, `sequence`, `class`) or `common`, for syntax that every diagram
-type shares (frontmatter, directives, comments, diagram detection).
+(`flowchart`, `sequence`, `class`, `state`) or `common`, for syntax that every
+diagram type shares (frontmatter, directives, comments, diagram detection).
 
 - `input.mmd`: the text under test, byte for byte.
 - `expected.json`: what mermaid.js did with it.
@@ -119,10 +119,12 @@ section of `docs/diagrams/<diagram>.md` in `@mmd-toolkit/spec`.
 Reads the fixtures. It does not load mermaid.js.
 
 - `loadFixtures(diagram)`: the fixtures of `"common"`, `"flowchart"`,
-  `"sequence"` or `"class"`, sorted by name. Each has `diagram`, `name`, `input`
-  (the text of `input.mmd`), `source`, `config` and `knownDivergence` (when
-  set), and `expected`: either `{ accepted: true, diagramType, db }` or
-  `{ accepted: false, error }`.
+  `"sequence"`, `"class"` or `"state"`, sorted by name. Each has `diagram`,
+  `name`, `input` (the text of `input.mmd`), `source`, `config` and
+  `knownDivergence` (when set), and `expected`: either
+  `{ accepted: true, diagramType, db }` or `{ accepted: false, error }`. It
+  reads the files one at a time, so that test files loading the fixtures in
+  parallel workers stay within the system's limit of open files.
 - `KNOWN_DIVERGENCES`: the identifiers a fixture's `knownDivergence` can have.
   Each is defined in the specification:
   - `directive-as-token-boundary`: see
@@ -174,6 +176,12 @@ Runs the pinned mermaid.js in Node.
 - Options with a key other than `config` and `withoutDivergences` make every
   function of this module that takes options throw a `TypeError`, so that a
   misspelled option is never ignored.
+- The results of `runMermaid()` and `runMermaidWithEmbeddedData()` are kept in a
+  store on disk, `node_modules/.cache/mmd-toolkit/mermaid-runs/` at the root of
+  the repository, and given back for the same text, options and code. The
+  environment variable `MMD_TOOLKIT_MERMAID_CACHE=disabled` turns the store off,
+  and removing the directory empties it. See
+  [docs/expected-results.md](./docs/expected-results.md).
 - `cssSupportsColor(value)`: what the browser's `CSS.supports("color", value)`
   answers, as the stand-in that runs mermaid.js here gives it (a sequence `box`
   line asks it). For an implementation that takes this answer from outside. See

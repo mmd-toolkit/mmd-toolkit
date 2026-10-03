@@ -33,7 +33,8 @@
 
 図の本体は、今のところ `error` 疑似図種と、
 flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
-シーケンス図（`sequence`）と、クラス図（`classDiagram`）です。
+シーケンス図（`sequence`）と、クラス図（`classDiagram`）と、
+状態図（`stateDiagram`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -41,7 +42,8 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 各図のパーサーは、その図の文書、
 [`diagrams/flowchart.md`](../../spec/docs/diagrams/flowchart.ja.md)、
 [`diagrams/sequence.md`](../../spec/docs/diagrams/sequence.ja.md)、
-[`diagrams/class.md`](../../spec/docs/diagrams/class.ja.md) のどれかに従います。
+[`diagrams/class.md`](../../spec/docs/diagrams/class.ja.md)、
+[`diagrams/state.md`](../../spec/docs/diagrams/state.ja.md) のどれかに従います。
 3 つの部分からなります。
 
 - 図のテキストを単位に分ける字句解析器（`src/diagrams/<図種>/units.ts`）
@@ -54,16 +56,20 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 単位の読み進め、ノードの位置、範囲のテキスト、共通の葉のノード、
 文法の項目のトークンは、`src/unit-grammar.ts` の `UnitGrammar` にあります。
 `tokenless-empty-forms` の空の形は `src/empty-forms.ts` にあります。
-2 つの図の文書が共有する規則も 1 か所にあります。
-flowchart とクラス図の方向の行は `src/direction-line.ts`、
-両者の文字の規則の Unicode の文字は `src/unicode-letters.ts` にあります。
+複数の図の文書が共有する規則も 1 か所にあります。
+flowchart とクラス図と状態図の方向の行は `src/direction-line.ts` にあり、
+状態図はその語を大文字と小文字を区別せずに比べます。
+flowchart とクラス図の文字の規則の Unicode の文字は
+`src/unicode-letters.ts` にあります。
 シーケンス図の字句解析器が `#` と `%` を、
-クラス図の字句解析器が `%%` を読むように、
+クラス図の字句解析器が `%%` を、
+状態図の字句解析器が `#` と `%%` を読むように、
 図のコメントを読む図は、それを共通の部分に渡し、
 共通の部分が `Root.comments` に記録します。
+中にコメント領域があれば、トークンと同じく、そこで切ります。
 mermaid.js が Db を作るときに行う拒否は、パーサーが文法の後で行います。
 flowchart では `subgraph-members.ts`、
-シーケンス図とクラス図では `db-rejections.ts` です。
+シーケンス図とクラス図と状態図では `db-rejections.ts` です。
 クラス図の字句解析器は、各メンバーの行を、
 [メンバーの行](../../spec/docs/diagrams/class.ja.md#メンバーの行)
 の手順で部分に分けます。
@@ -71,11 +77,26 @@ flowchart では `subgraph-members.ts`、
 クラスの本体でも、メンバーの文のラベルでも同じで、
 分けられないメソッドの行は拒否します。
 
+flowchart の subgraph の Db の id は、1 か所で作ります。
+`src/diagrams/flowchart/subgraph-ids.ts` が、単位から、
+名前のテキストの範囲と
+[Subgraphs](../../spec/docs/diagrams/flowchart.ja.md#木から要約を作る)
+の規則で作ります。
+文法は subgraph の要素のためにこれを読み、
+公開の `flowchartSubgraphIds()`（`src/db-ids.ts`）は、
+テキストを字句解析し直して、木に対してこれを与えます。
+テストの Db の要約も、これから Db を組み立てます。
+
 図のテキストは、ディレクティブを除いて読みます。
 種類が `RawText` と `Identifier` 以外の単位の内側にディレクティブがあれば、
 入力を拒否します。
 トークンは、記録するときにディレクティブのところで切ります
 （[ディレクティブはトークンの境界](../../spec/docs/common.ja.md#ディレクティブはトークンの境界)）。
+単位が読み通すコメントの領域のところでも切ります
+（[`ast.md` の Comment](../../spec/docs/ast.ja.md#comment)）。
+そのため、領域の中のコメントの `%%` より前のディレクティブは、
+どのトークンの外にもあります。
+`String` のトークンの断片は、`StringFragment` のトークンです。
 トークンとコメントの外にある各ディレクティブは、
 それだけで 1 つの `Directive` のトークンとして記録します。
 フロントマターは最初に、

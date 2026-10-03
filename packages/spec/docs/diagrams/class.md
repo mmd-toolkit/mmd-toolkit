@@ -568,16 +568,16 @@ Each rule below makes a node of the tree, defined in
 The names are the name parts of a class name or a namespace name, before a
 backquoted name or without one, the name part after `:::` or between `<<` and
 `>>` of a statement, the `word` after `style`, the `word` units of a `classDef`
-statement before its styles, the `word` of a `cssClass` statement, and a
-`callback-name`. The texts without quotes are a `generic-text`, the text of a
-`label` after its `:`, the `member-name`, `parameters`, `return-type`, and
-`annotation-name` of a member line, `callback-arguments`, a `style`, and a
+statement before its styles, and the `word` of a `cssClass` statement. The texts
+without quotes are a `generic-text`, the text of a `label` after its `:`, the
+`member-name`, `parameters`, `return-type`, and `annotation-name` of a member
+line, `callback-name` and `callback-arguments`, a `style-text`, and a
 `title-text`, `description-text`, or `description-block-text`.
 
 ### Diagram and statements
 
 ```text
-diagram    = "header" newline statement ( newline statement )* newline? end-of-text
+diagram    = "header" empty-description-block* newline statement ( statement-end statement )* empty-description-block* newline? end-of-text
 statement  = relation-statement label?
            | member-statement
            | class-statement
@@ -597,6 +597,59 @@ Statements are separated by a `newline` unit, which may hold blank lines.
 Nothing else separates them: `class A; class B` is rejected (see
 [The statement context](#the-statement-context)). [fixture: class/lex-semicolon]
 [fixture: class/gram-blank-lines]
+
+### Empty description blocks before a separator
+
+```text
+statement-end           = empty-description-block* newline
+empty-description-block = "accDescr" "{" "}"
+```
+
+An `empty-description-block` is an `accDescr` unit and a `{` unit followed
+directly by a `}` unit, with no `description-block-text` unit. A statement that
+needs a separator ends with a `statement-end`: after its last unit and before
+its separator, any number of empty description blocks may come. Each is a
+description block statement without text, a statement of its own after that
+statement, and changes nothing. mermaid.js reads no token for an empty
+description block (see
+[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.md)), so it
+reads the statement as followed directly by its separator. A description block
+with text and any other statement may not come before the separator.
+
+In class, statements are separated by a line break, and the last statement may
+end at the end of the text, where the blocks come before it too:
+`empty-description-block* newline? end-of-text` in `diagram`. So the blocks may
+come after any statement: `note for A "x" accDescr {}`,
+`note for A "x" accDescr {} accDescr {}`, `A <|-- B accDescr {}`,
+`click A href "u" accDescr {}`, and `cssClass "A" c accDescr {}` are accepted,
+also at the end of the text. Whitespace before the block is no unit here.
+[fixture: class/gram-empty-description-block-after-note] [fixture:
+class/gram-empty-description-blocks-after-note] [fixture:
+class/gram-empty-description-block-after-relation] [fixture:
+class/gram-empty-description-block-after-click] [fixture:
+class/gram-empty-description-block-after-css-class] [fixture:
+class/gram-empty-description-block-after-statement-at-end] Another statement
+after the block on the same line is rejected, as in mermaid.js:
+`A <|-- B accDescr {} class C`. [fixture:
+class/gram-empty-description-block-after-relation-then-statement] Where a
+statement starts, a block is a statement that another statement follows on the
+same line (see [Empty description blocks](#empty-description-blocks)).
+
+The header needs a line break after it too, and empty description blocks may
+come before that line break, as before a separator
+(`"header" empty-description-block* newline` in `diagram`): each is the first
+statement of the diagram. `classDiagram accDescr {}`, a line break, and
+`class A` declares A, with the Db of the same without the block, and so does the
+same with two blocks. `classDiagram accDescr {} class A` is rejected, as the
+same without the block is, and so are `classDiagram accDescr {x}`, whose block
+has text, and `classDiagram accDescr {}` alone, as `classDiagram` alone is,
+because the grammar needs a statement after the line break of the header.
+mermaid.js reads these the same way. [fixture:
+class/header-empty-description-block] [fixture:
+class/header-empty-description-blocks] [fixture:
+class/header-empty-description-block-then-statement] [fixture:
+class/header-description-block-with-text] [fixture:
+class/header-empty-description-block-only]
 
 ### Class names
 
@@ -709,13 +762,12 @@ click-statement         = "callback" class-name string string-or-empty?
 style-statement         = "style" word styles
 class-def-statement     = "classDef" word ( "," word )* styles
 css-class-statement     = "cssClass" string word
-styles                  = style ( "," style )*
-style                   = ( word | ":" | "#" | "%" | "style" | label )+
+styles                  = style-text ( "," style-text )*
+style-text              = ( word | ":" | "#" | "%" | "style" | label )+
 direction-statement     = "direction-text"? "direction" "direction-value" "direction-text"?
 accessibility-statement = "accTitle" ":" title-text
                         | "accDescr" ":" description-text
                         | "accDescr" "{" description-block-text "}"
-empty-description-block = "accDescr" "{" "}"
 ```
 
 The text of a note, the URL of a link, the function name of `callback`, and the
@@ -1023,9 +1075,10 @@ class diagrams, and show in them as follows.
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).**
   An empty string where the grammar takes no string or only one that is not
   empty, an empty backquoted name, an empty generic type that does not end a
-  class name, an empty call, and an empty description block that does not start
-  a statement make the input rejected here, while mermaid.js reads no token for
-  them and accepts the input: `"" A --> B`, `class A""B`, `class A``B`,
+  class name, an empty call, and an empty description block inside a statement,
+  neither where a statement starts nor before the line break of a statement or
+  of the header, make the input rejected here, while mermaid.js reads no token
+  for them and accepts the input: `"" A --> B`, `class A""B`, `class A``B`,
   `class A~~B`, `A call () --> B`, and `A accDescr {} --> B`. An empty string as
   a cardinality or a tooltip is accepted by both, and so is an empty generic
   type at the end of a class name: `class A~~` declares A without a type.

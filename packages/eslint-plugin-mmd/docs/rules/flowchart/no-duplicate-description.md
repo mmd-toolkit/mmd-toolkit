@@ -7,7 +7,10 @@ Disallow an `accDescr` statement that sets the description again.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
+
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 
 <!-- end auto-generated rule notice -->
 
@@ -30,6 +33,10 @@ inside a subgraph sets the description of the whole diagram and is counted too.
 A block that holds no description and a block that is not closed are not
 counted; [no-empty-description-block](./no-empty-description-block.md) and
 [no-unclosed-description-block](./no-unclosed-description-block.md) report them.
+
+For each report, the rule suggests removing one of two statements: the reported
+one, or the one before it that sets the description. mermaid.js uses the last
+description that remains.
 
 Examples of **incorrect** code for this rule:
 
@@ -71,3 +78,12 @@ This rule has no options.
 - [no-duplicate-title](./no-duplicate-title.md)
 - [no-empty-description-block](./no-empty-description-block.md)
 - [no-unclosed-description-block](./no-unclosed-description-block.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../../src/rules/flowchart/no-duplicate-description.ts)
+- [Tests source](../../../tests/rules/flowchart/no-duplicate-description.test.ts)
+
+<!-- end auto-generated rule resources -->

@@ -596,6 +596,114 @@ describe("class summary", () => {
   })
 })
 
+describe("state summary", () => {
+  /** Returns the summary mermaid gives `text`. */
+  async function summary(text: string): Promise<Record<string, unknown>> {
+    const outcome = await runMermaid(text)
+    if (!outcome.accepted || !outcome.db) throw new Error("expected a Db")
+    return outcome.db
+  }
+
+  it("keeps states, notes and transitions without the fields for drawing", async () => {
+    const db = await summary(
+      "stateDiagram-v2\n  [*] --> A : go\n  A : one\n  A : two\n  note left of A : hi\n  note right of A : there\n",
+    )
+    expect(db.states).toEqual([
+      {
+        id: "root_start",
+        shape: "stateStart",
+        label: "root_start",
+        classes: [],
+        styles: [],
+      },
+      {
+        id: "A",
+        shape: "rectWithTitle",
+        label: "one",
+        description: ["two"],
+        classes: [],
+        styles: [],
+      },
+    ])
+    expect(db.notes).toEqual([
+      { state: "A", position: "left of", text: "hi" },
+      { state: "A", position: "right of", text: "there" },
+    ])
+    expect(db.transitions).toEqual([
+      { start: "root_start", end: "A", label: "go" },
+    ])
+  })
+
+  it("gives a state the classes and styles of the top level only", async () => {
+    const db = await summary(
+      "stateDiagram-v2\n  classDef bad fill:red,color:blue\n  state C {\n    class D bad\n    D\n    E\n  }\n  class E bad\n  style E fill:#0f0\n",
+    )
+    const states = db.states as {
+      id: string
+      classes: string[]
+      styles: string[]
+      parentId?: string
+    }[]
+    expect(
+      states.map(({ id, classes, styles, parentId }) => [
+        id,
+        classes,
+        styles,
+        parentId,
+      ]),
+    ).toEqual([
+      ["C", [], [], undefined],
+      ["D", [], [], "C"],
+      ["E", ["bad"], ["fill:#0f0"], "C"],
+    ])
+    expect(db.classDefs).toEqual([
+      { id: "bad", styles: ["fill:red", "color:blue"] },
+    ])
+  })
+
+  it("names the region after the last divider in order, wherever its id appears", async () => {
+    const text =
+      "stateDiagram-v2\n  state C {\n    A\n    --\n    [*] --> B\n  }\n  state D {\n    E\n    --\n    F\n  }\n"
+    const db = await summary(text)
+    const states = db.states as { id: string; parentId?: string }[]
+    expect(states.map(({ id, parentId }) => [id, parentId])).toEqual([
+      ["C", undefined],
+      ["divider-id-1", "C"],
+      ["A", "divider-id-1"],
+      ["generated-region-1", "C"],
+      ["generated-region-1_start", "generated-region-1"],
+      ["B", "generated-region-1"],
+      ["D", undefined],
+      ["divider-id-2", "D"],
+      ["E", "divider-id-2"],
+      ["generated-region-2", "D"],
+      ["F", "generated-region-2"],
+    ])
+    expect(db.transitions).toEqual([
+      { start: "generated-region-1_start", end: "B", label: "" },
+    ])
+    expect(await summary(text)).toEqual(db)
+  })
+
+  it("records the direction the renderer uses, the last of the top level", async () => {
+    const db = await summary(
+      "stateDiagram-v2\n  direction LR\n  state C {\n    direction BT\n    D\n  }\n  direction RL\n",
+    )
+    expect(db.direction).toBe("RL")
+    expect((db.states as { dir?: string }[])[0]?.dir).toBe("BT")
+  })
+
+  it("records each click with its state, and its url and tooltip as written", async () => {
+    const db = await summary(
+      'stateDiagram-v2\n  A\n  click A "https://a" "tip"\n  click A href "https://b"\n',
+    )
+    expect(db.links).toEqual([
+      { state: "A", url: '"https://a"', tooltip: '"tip"' },
+      { state: "A", url: '"https://b"', tooltip: "" },
+    ])
+  })
+})
+
 describe("options", () => {
   it("lists the keys of RunMermaidOptions", () => {
     expectTypeOf<(typeof RUN_MERMAID_OPTION_KEYS)[number]>().toEqualTypeOf<

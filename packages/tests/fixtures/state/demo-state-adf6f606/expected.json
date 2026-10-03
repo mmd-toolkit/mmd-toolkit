@@ -1,0 +1,90 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/state.html",
+    "line": 147
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "State1",
+        "shape": "rect",
+        "label": "State1",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "State2",
+        "shape": "rect",
+        "label": "State2",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "State3",
+        "shape": "rect",
+        "label": "State3",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "State4",
+        "shape": "rect",
+        "label": "State4",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "root_end",
+        "shape": "stateEnd",
+        "label": "root_end",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "State1",
+        "label": ""
+      },
+      {
+        "start": "State1",
+        "end": "State2",
+        "label": "Transition 1"
+      },
+      {
+        "start": "State1",
+        "end": "State3",
+        "label": "Transition 2"
+      },
+      {
+        "start": "State1",
+        "end": "State4",
+        "label": "Transition 3"
+      },
+      {
+        "start": "State1",
+        "end": "root_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

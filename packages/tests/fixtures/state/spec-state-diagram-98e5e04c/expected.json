@@ -1,0 +1,92 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram.spec.js",
+    "line": 380,
+    "test": "state diagram,  > when parsing an info graph it > should handle notes for composite states"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "NotShooting",
+        "shape": "roundedWithTitle",
+        "label": "Not Shooting State",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Idle",
+        "shape": "rect",
+        "label": "Idle mode",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "NotShooting"
+      },
+      {
+        "id": "Configuring",
+        "shape": "rect",
+        "label": "Configuring mode",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "NotShooting"
+      },
+      {
+        "id": "NotShooting_start",
+        "shape": "stateStart",
+        "label": "NotShooting_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "NotShooting"
+      }
+    ],
+    "notes": [
+      {
+        "state": "NotShooting",
+        "position": "right of",
+        "text": "This is a note on a composite state"
+      }
+    ],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "NotShooting",
+        "label": ""
+      },
+      {
+        "start": "NotShooting_start",
+        "end": "Idle",
+        "label": ""
+      },
+      {
+        "start": "Idle",
+        "end": "Configuring",
+        "label": "EvConfig"
+      },
+      {
+        "start": "Configuring",
+        "end": "Idle",
+        "label": "EvConfig"
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

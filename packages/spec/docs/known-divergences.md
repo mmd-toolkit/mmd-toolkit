@@ -42,17 +42,17 @@ that the tree depends on (`embedded-data-opaque`).
 
 ## The divergences
 
-| Identifier                                                                          | Diagram types              | Inputs                                                              | Reason |
-| ----------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------- | ------ |
-| [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.md) | all                        | A directive inside a unit that is not `RawText` or `Identifier`     | 2      |
-| [`html-tag-in-frontmatter`](./known-divergences/html-tag-in-frontmatter.md)         | all                        | An HTML tag that starts in the frontmatter                          | 2      |
-| [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.md)               | all                        | Embedded data that mermaid.js rejects                               | none   |
-| [`click-reserved-word`](./known-divergences/click-reserved-word.md)                 | flowchart                  | The word `click` where no click statement starts                    | 3      |
-| [`tokenless-empty-forms`](./known-divergences/tokenless-empty-forms.md)             | flowchart, sequence, class | An empty form that mermaid.js reads no token for                    | 1      |
-| [`comment-takes-character`](./known-divergences/comment-takes-character.md)         | sequence                   | A character or a number right before `%%`                           | 2      |
-| [`comment-takes-line-break`](./known-divergences/comment-takes-line-break.md)       | class                      | A line break after a comment that follows a unit on its line        | 2      |
-| [`headerless-empty-ending`](./known-divergences/headerless-empty-ending.md)         | class                      | A text without a header that ends with an empty value               | 2      |
-| [`name-start-reads-unit`](./known-divergences/name-start-reads-unit.md)             | class                      | A backquoted name or generic type that starts with a keyword or `"` | 2      |
+| Identifier                                                                          | Diagram types                     | Inputs                                                              | Reason |
+| ----------------------------------------------------------------------------------- | --------------------------------- | ------------------------------------------------------------------- | ------ |
+| [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.md) | all                               | A directive inside a unit that is not `RawText` or `Identifier`     | 2      |
+| [`html-tag-in-frontmatter`](./known-divergences/html-tag-in-frontmatter.md)         | all                               | An HTML tag that starts in the frontmatter                          | 2      |
+| [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.md)               | all                               | Embedded data that mermaid.js rejects                               | none   |
+| [`click-reserved-word`](./known-divergences/click-reserved-word.md)                 | flowchart                         | The word `click` where no click statement starts                    | 3      |
+| [`tokenless-empty-forms`](./known-divergences/tokenless-empty-forms.md)             | flowchart, sequence, class, state | An empty form that mermaid.js reads no token for                    | 1      |
+| [`comment-takes-character`](./known-divergences/comment-takes-character.md)         | sequence                          | A character or a number right before `%%`                           | 2      |
+| [`comment-takes-line-break`](./known-divergences/comment-takes-line-break.md)       | class                             | A line break after a comment that follows a unit on its line        | 2      |
+| [`headerless-empty-ending`](./known-divergences/headerless-empty-ending.md)         | class                             | A text without a header that ends with an empty value               | 2      |
+| [`name-start-reads-unit`](./known-divergences/name-start-reads-unit.md)             | class                             | A backquoted name or generic type that starts with a keyword or `"` | 2      |
 
 Each document of a divergence has the same parts: the syntax that it concerns,
 the difference with examples, why mermaid.js reads the inputs so, the rule of

@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/state.md Tokens: the ignored `;` lies between characters of the description, which is `style:#x B`, and is part of its token."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "style:#x B",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

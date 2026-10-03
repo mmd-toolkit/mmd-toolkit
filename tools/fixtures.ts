@@ -30,6 +30,10 @@ import {
   describeExpectedChange,
 } from "../packages/tests/src/expected-changes.ts"
 import { mermaidVersion } from "../packages/tests/src/mermaid.ts"
+import {
+  MERMAID_RUN_STORE_DISABLED,
+  MERMAID_RUN_STORE_SWITCH,
+} from "../packages/tests/src/mermaid-run-store.ts"
 import { STANDARD_REJECTIONS } from "../packages/tests/src/rejections.ts"
 import { diagramIds, isDiagramType } from "./src/diagrams.ts"
 import {
@@ -517,6 +521,11 @@ async function add(args: string[]): Promise<void> {
 }
 
 const [command, ...rest] = process.argv.slice(2)
+
+// The fixtures record what mermaid.js does, so every result is made by
+// mermaid.js itself and none is taken from the store of earlier results.
+// eslint-disable-next-line no-process-env -- the switch of the store is this variable, for this process as for any other
+process.env[MERMAID_RUN_STORE_SWITCH] = MERMAID_RUN_STORE_DISABLED
 
 try {
   switch (command) {

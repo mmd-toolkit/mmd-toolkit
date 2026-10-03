@@ -31,20 +31,4 @@ export class SequenceSource {
     this.diagramText = diagramText
     this.units = units
   }
-
-  /**
-   * The statement context, rules 13 and 14: the `title-text` unit of the
-   * title statement that starts at `statementStart`, which holds the
-   * whitespace that the title of the Db keeps.
-   */
-  public titleTextAt(statementStart: number): Unit {
-    const unit = this.units.find(
-      (candidate) =>
-        candidate.name === "title-text" && candidate.start > statementStart,
-    )
-    if (unit === undefined) {
-      throw new Error(`no title text after offset ${statementStart}`)
-    }
-    return unit
-  }
 }

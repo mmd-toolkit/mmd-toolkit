@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The composite body context: the state rule comes before the direction line here."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

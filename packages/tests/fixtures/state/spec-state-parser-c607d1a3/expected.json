@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-parser.spec.js",
+    "line": 235,
+    "test": "state parser can parse... > note parsing (issue #7089) > should not treat \"end note\" as a closing keyword when it is part of the note text"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "State1",
+        "shape": "rect",
+        "label": "State1",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "State2",
+        "shape": "rect",
+        "label": "State2",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "State1",
+        "position": "right of",
+        "text": "this sentence contains end note as part of the note text"
+      }
+    ],
+    "transitions": [
+      {
+        "start": "State1",
+        "end": "State2",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

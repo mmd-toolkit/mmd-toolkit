@@ -15,20 +15,35 @@ description:
 ほかのパッケージのために fixture の道具と一覧を保つこと、
 pin した mermaid.js の更新を扱う。
 会話の履歴や記憶がなくても、この文書だけで同じ品質で進められるように書く。
-方針と基準はここに書かない。
-下の「最初に読むもの」を指す。
+このパッケージの方針と基準は 1 の節にある。
+すべてのパッケージに当たるものは AGENTS.md と SKILL `conventions` にあり、
+2 の節がそれを指す。
 
-## 1. 最初に読むもの
+## 1. 方針と基準
 
-1. AGENTS.md の「各パッケージの責務」の `packages/tests` の節、
-   「共有するインターフェース」、「行動原則」。
+`packages/tests`（CLI は `tools/`）:
+
+- mermaid を devDependency として pin し、
+  Node（DOM なし）で mermaid の Db を取り出す。
+- fixture の形式を定め、ローダーと README をそれに合わせて保つ。
+- fixture 生成器と変異差分テストの枠組みを提供する。
+  mermaid を import する部分（Db 取り出し、正規化関数、変異差分の中核）は
+  `@mmd-toolkit/tests` のサブパスに、CLI は `tools/` に置く。
+- fixture を再生成し、
+  mermaid の挙動が変わっていたら失敗する CI ジョブを提供する。
+- 図種ごとに、正解の取り出し（正規化関数）と fixture の収集を行う。
+
+## 2. 最初に読むもの
+
+1. この文書の 1 の節、AGENTS.md の「共有するインターフェース」と「行動原則」、
+   コードや文書を書く前に SKILL `conventions`。
    基準は変わるので、作業のたびに読む。
 2. `packages/tests/README.md` と `packages/tests/docs/` の 5 つの文書、
    `tools/README.md`。
    fixture の形式、期待値の求め方、Db の要約、埋め込まれたデータの値、
    fixture の保守と収集の手順はそこにある。
 
-## 2. 作業ツリーの扱い
+## 3. 作業ツリーの扱い
 
 - この SKILL の手順が書くのは、`packages/tests`、`tools/`、
   この SKILL の文書だけ。
@@ -56,8 +71,7 @@ pin した mermaid.js の更新を扱う。
   `\u00a0` のようなエスケープを実際の文字に変えることがある。
   ソースや文書を書いたら `node scripts/check-invisible-chars.mjs` を実行し、
   見えない文字がないことを確かめる。
-- `eslint --fix` や Prettier の結果は必ず読む。
-  空の JSDoc や、意味の変わった正規表現が入ることがある。
+- `eslint --fix` と Prettier の結果は、SKILL `conventions` のとおり必ず読む。
 
 作業ツリーをほかの作業と共有しているとき:
 
@@ -68,7 +82,7 @@ pin した mermaid.js の更新を扱う。
   （`git add`、`git mv`、`stash`、`checkout`、`reset`）。
   プロセスを名前で止めない（`pkill -f vitest` は、ほかの作業のテストも止める）。
 
-## 3. 確かめ方（すべての作業で）
+## 4. 確かめ方（すべての作業で）
 
 - 主張は、それが誰のものでも、
   mermaid.js を実際に動かして確かめてから採り入れる。
@@ -105,10 +119,60 @@ pin した mermaid.js の更新を扱う。
   JavaScript の `\s` の 23 文字を 1 つずつ置いて mermaid.js に通して確かめた。
   fixture の全件や、収集した入力の全件に対して、
   前後で結果が変わらないことを確かめる。
-- テストは `pnpm --filter @mmd-toolkit/tests test` で実行する。
-  全体のテストは重いので、負荷が高いときは自分のパッケージだけを流す。
+- どのテストをいつ回すかは、SKILL `conventions` の「テストの実行」に従う。
+  このパッケージでは次のとおり。
+
+  | 変えたコード                                                | 回すテストのファイル（`tests/`）                               |
+  | ----------------------------------------------------------- | -------------------------------------------------------------- |
+  | `src/index.ts`（形式、ローダー、`KNOWN_DIVERGENCES`）       | `fixtures.test.ts`、`expected-changes.test.ts`                 |
+  | `src/mermaid.ts`、`rejections.ts`、`run-mermaid-options.ts` | `mermaid.test.ts`、`mermaid-run-store.test.ts`                 |
+  | `src/mermaid-run-store.ts`                                  | `mermaid-run-store.test.ts`                                    |
+  | `src/divergence-removals.ts`                                | `divergence-removals.test.ts`、`mermaid.test.ts`               |
+  | `src/normalizers/<図種>.ts`、`normalizers/index.ts`         | `mermaid.test.ts`、`fixtures.test.ts`、その後 `fixtures:check` |
+  | `src/normalizers/data-blocks.ts`                            | `data-blocks.test.ts`、`mermaid.test.ts`                       |
+  | `src/normalizers/browser-stand-ins.ts`                      | `browser-stand-ins.test.ts`、`mermaid.test.ts`                 |
+  | `src/normalizers/json.ts`                                   | `json.test.ts`、その後 `fixtures:check`                        |
+  | `src/expected-changes.ts`                                   | `expected-changes.test.ts`                                     |
+  | `src/mutation.ts`                                           | `mutation.test.ts`                                             |
+  | `tools/`                                                    | テストのファイルはない。下を参照                               |
+
+  `tools/` のコマンドにはテストのファイルがなく、それぞれ動かして確かめる。
+  `add-many`、`set-divergence`、`set-note` は `--dry-run` を付け、
+  変える予定のものを読む。
+  `generate` は `fixtures:check` で確かめる。
+  `tools/collect.ts` は、`--out` をリポジトリの外に向けて動かし、
+  書いたファイルを読む。
+  `tools/mutation.ts` は、1 つの fixture（`--fixture`）と
+  小さい `--count` で動かす。
+
+  1 つのファイルは
+  `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<ファイル>` で回す。
+  `fixtures.test.ts` は 2 つの README を読む（既知の差ごとに項目がある）ので、
+  README を変えたときにも回す。
+  このパッケージには大きくする量がない。
+  完了を報告する前の実行は、全体（`pnpm --filter @mmd-toolkit/tests test`）。
+  `fixtures:check` は、結果の作り方か記録の仕方
+  （`src/mermaid.ts`、正規化関数、形式、生成器）を変えた後と、
+  その変更の完了を報告する前に回す。
+  `src/` を変えたら `lib/` を作り直す（下）。
+  ほかのパッケージは、使うものについての自分のテストを回す。
   全件を 1 つのテストで読むテストには、
   単独の所要時間を測って時間制限を明示する（既定の 5 秒に頼らない）。
+
+- `runMermaid()` は、前に動かしたテキストに、貯めた結果を返す。
+  鍵に `src/` か `lib/` のコードが入るので、
+  コードを変えた後に古い結果が返ることはない（`docs/expected-results.md`）。
+  このパッケージのテストと生成器は、貯蔵庫を使わずに動く。
+  ただし、貯蔵庫のテストの 1 つは、リポジトリの貯蔵庫にテキストを 1 つ通す。
+  確かめのスクリプトは、`MMD_TOOLKIT_MERMAID_CACHE=disabled` を付けない限り、
+  貯蔵庫を使う。
+  鍵に入るのは `RESULT_FILES` にある `src/` のファイルだけで、
+  それを変えると、貯めた結果がすべて使われなくなる。
+  その一覧を正しく保つ（テストが確かめる）。
+  それらのファイルの変更は、入れる前に、テストを回す人に知らせる。
+  そして、全量の実行が動いていないときに入れる。
+  動いている全量の実行が貯めた結果を、捨てることになるためである。
+  すぐに入れてよいのは、誤った結果を直す変更だけで、そのときも知らせる。
 - 生成器が何も変えないことは、件数の表示だけでなく、
   ファイルのハッシュで確かめる（リポジトリのルートで実行する）。
 
@@ -123,9 +187,14 @@ pin した mermaid.js の更新を扱う。
 
 - `src/` を変えたら、
   `pnpm --filter @mmd-toolkit/tests run build` で `lib/` を作り直す。
-  ほかのパッケージは `lib/` を読む。
+  このリポジトリの中では、ほかのパッケージのテスト、ツール、型検査は、
+  `src/` を読む（vitest の設定の alias、相対の import、
+  ルートの `tsconfig.json` の `paths` による）。
+  そのため、`src/` の変更は、それらの次の実行にすぐ届く。
+  `lib/` は、それ以外の所でパッケージの名前が読み込むもので、
+  たとえば素の `node` のスクリプトから読まれる。
 
-## 4. 図種を足すとき（Jison の図）
+## 5. 図種を足すとき（Jison の図）
 
 図種は 1 つずつ足し、1 つの図種を、正規化関数と fixture（この節）、
 仕様（spec の SKILL）、parser（parser の SKILL）、
@@ -134,7 +203,7 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
 仕様の Db normalization の節は要約の欄の一覧から書き、
 仕様の主張と parser のテストは fixture を使う。
 
-### 4.1 入力
+### 5.1 入力
 
 - 足す図種の名前と、同じ Db を使う図種 ID の一覧。
   図種 ID は、mermaid.js の検出器の一覧と、図種の定義の `db` から分かる。
@@ -146,7 +215,7 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
   リポジトリの外に置く。
   作り方は `tools/README.md` にある。
 
-### 4.2 正規化関数
+### 5.2 正規化関数
 
 1. clone の中で、その図種の文法定義（`.jison`）と Db クラスを開く。
    Db の private フィールドと、
@@ -186,6 +255,23 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
      プロトタイプを置き換える（sequence の links と properties）。
      後者は `toJson` が拒むので、
      プロトタイプを最初の項目 `__proto__` として記録する。
+   - Db が読んだものを 2 つ以上の形で持つときの、要約の元。
+     各要素を 1 度ずつ、それに当たるものとともに持つ形を取る。
+     たいていは描画が読むもの。
+     ほかの形を取らない理由を書き残す
+     （state: 文の木は何も変えない文を持ち、状態の表は最上位だけを持つので、
+     要約はレイアウトのデータ `getData()` から取る）。
+   - mermaid.js が無作為に作る id（state の、最後の `--` の後の領域）。
+     現れるところすべてで、決めた順に番号を付けた名前に置き換え、
+     生成を 2 回動かして fixture が変わらないことを確かめる。
+   - テキストではなく、実行の時刻や偶然に依る値
+     （gantt は日付を読み、今日の日付を読むこともある）。
+     これまでの結果の貯蔵庫（`docs/expected-results.md`）は、
+     別の日に作った結果を返す。
+     そのため、そうした値は要約から落とすか、その図種の結果を貯めないか、
+     依るものを貯蔵庫の鍵に入れる。
+     確かめは、すべての fixture を別の日と別の順で動かし直し、
+     `expected.json` と比べて行う。
 3. 表を決めてから書く。
    決める根拠は、
    AGENTS.md の正しさの基準（受理する入力の Db は mermaid.js と一致する）と、
@@ -234,7 +320,7 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
 9. 結果として、要約の欄の一覧と、落とした欄とその理由を示す。
    仕様の Db normalization の節は、この一覧から書く（spec の SKILL）。
 
-### 4.3 fixture
+### 5.3 fixture
 
 1. 入力を集める場所は 3 つ: その図種の spec ファイル、
    docs の mermaid のブロック、demos。
@@ -295,7 +381,7 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
    標準外のエラー（`TypeError` など）は、入力が原因かを手で確かめる。
    `MermaidEnvironmentError` が出たら、
    Node にない機能を mermaid.js が使っている。
-   4.2 のとおり代役を与える（`docs/expected-results.md`）。
+   5.2 のとおり代役を与える（`docs/expected-results.md`）。
 8. `fixtures:generate` を 2 回実行し、
    上のハッシュの比較で 2 回目が何も変えないことを確かめる。
    `fixtures:check` を通す。
@@ -305,14 +391,14 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
    印を付けた fixture、
    `fixtures:generate` と `fixtures:check` の所要時間を示す。
 
-## 5. Langium の図
+## 6. Langium の図
 
 pie（最初の Langium の図）のときに書く。
 
-## 6. ほかのパッケージのための fixture の道具と一覧
+## 7. ほかのパッケージのための fixture の道具と一覧
 
 仕様の主張を支える fixture は、tests の生成器（`fixtures:add-many` など）で足す
-（AGENTS.md の `packages/spec` の節。手順は spec の SKILL）。
+（方針と手順は spec の SKILL）。
 この SKILL が行うのは次のこと。
 
 1. 道具と形式を保つ。
@@ -349,11 +435,14 @@ pie（最初の Langium の図）のときに書く。
    `fixtures:add-many` で足す（`fixtures:add` には印の指定がない）。
 5. 結果として、変えたもの、足した名前、件数、`fixtures:check` の結果を示す。
 
-## 7. mermaid.js を更新するとき
+## 8. mermaid.js を更新するとき
 
 1. `packages/tests/package.json` の devDependency `mermaid` を新しい版にし、
    `pnpm install` を実行する（`pnpm-lock.yaml` はルートの共有ファイル）。
    新しい版のタグで clone を作り直す。
+   この節の手順は、すべて `MMD_TOOLKIT_MERMAID_CACHE=disabled` を付けて動かす。
+   比べるのが mermaid.js そのものになるようにするため。
+   新しい版は、どのみち貯蔵庫に新しい鍵を与える。
 2. 版に結び付いた箇所を直す。
    古い版と古いコミットを、`packages/tests` と `tools/` で検索して見つける。
    `fixtures/`、`lib/`、`node_modules/` は除く。
@@ -410,7 +499,7 @@ pie（最初の Langium の図）のときに書く。
      これは下の検出の項に入れる。
    - `summary fields`: Db の内部の変化。
      ただし、キーが著者の書いたものなら、そうではない。
-     正規化関数を直すか、落とす欄にするかを、4.2 の表と同じ形で決める。
+     正規化関数を直すか、落とす欄にするかを、5.2 の表と同じ形で決める。
    - `detection`、図種が増えたか、なくなったもの:
      `diagramIds` と、仕様の `packages/spec/docs/detection.md` に関わる
      （detection.md は spec の SKILL の手順で直す）。

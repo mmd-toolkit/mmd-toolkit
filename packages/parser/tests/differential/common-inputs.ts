@@ -194,7 +194,8 @@ const fixed = [
   "x\u2028 style A:#f;",
   "-%%{x}%%--\n%% c\n---\nerror\n",
   "%%%{a}%%%\nerror\n",
-  // HTML tags on a comment line, in the frontmatter, and in a directive argument.
+  // HTML tags on a comment line, in the frontmatter, and in a directive
+  // argument.
   '%% <a b="c">\nerror',
   '---\ntitle: <a\n---\n%% b="c">\nerror\n',
   // The same tag before a text with no diagram type: both reject.

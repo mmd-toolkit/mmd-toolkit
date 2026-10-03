@@ -97,6 +97,40 @@
   `range` は注釈の後のクラスの名前で、メッセージは
   `An annotation statement needs a class that exists`。
 
+## 状態図の中
+
+- 字句解析器のどの規則も一致しない位置では、`range` はその 1 文字。
+  その後に空白しかなく、そこでテキストが終わるときは、
+  下のテキストの終わりの規則に従う。
+- `state` と `{` の間に語が 2 つあるときは、
+  `range` は最初の語から `{` までで、メッセージは
+  `A state name before { must be a single word`。
+- 終わってはいけない文脈でテキストが終わるときは、
+  `range` はその文脈に入ったもので、メッセージは何が閉じていないかを示す。
+  - 複合状態の本体の `{`。
+    メッセージは `The composite state has no } before the end of the text`。
+  - `state` の後の文字列を開く `"`。
+    メッセージは `The string has no closing " before the end of the text`。
+  - 浮いた note の、`note` の後の最初の `"`。
+    メッセージは `The floating note has no as before the end of the text`。
+  - 位置、状態、テキストのどれかがない note のキーワード `note`。
+    メッセージは `The note has no text before the end of the text`、
+    `The note has no state before the end of the text`、
+    `The note has no end note before the end of the text`。
+    最後のものは、`end note` の行が後に続かない複数行の note にも使う。
+  - `scale`。
+    メッセージは `scale has no width before the end of the text`。
+  - 後に何もない `classDef`、`class`、`style`。
+    メッセージは
+    `classDef has no class name before the end of the text`、
+    `class has no state before the end of the text`、
+    `style has no state before the end of the text`。
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲。
+  テキストの終わりでは、flowchart と同じく、テキストの終わりの空の範囲。
+- 文法の外の拒否である、説明を 2 つ以上持つ複合状態では、
+  `range` はその状態に最初に本体を与えた文で、メッセージは
+  `A composite state can have only one description`。
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、
@@ -120,7 +154,7 @@
   `accDescr` から `}` までの空の説明のブロックです。
   メッセージは `An empty string cannot be written here`、
   `An empty call cannot be written here`、
-  `An empty description block can only be written where a statement starts`
+  `An empty description block can only be written where a statement starts or ends`
   のいずれかです。
   文法は、`click` と同じように、止まったところでこれを見つけます。
   読めない単位か、その後の `space` でない最初の単位が、
@@ -136,6 +170,21 @@
   `An empty generic type can only end a class name` です。
   空のジェネリクスの型は、`class A~~B` のように、
   文法がその後の単位を読めないところで見つけます。
+  状態図では、空の説明のブロックを、
+  文法がその直後の単位を読めないところでも見つけます。
+  `A accDescr {} --> B` では、`A` の後のブロックは文で、
+  その後の `-->` は文を始めないので、そのブロックを報告します。
+  区切りの要る文の最後の単位の後、または flowchart と class のヘッダーの後で、
+  区切りや改行の前にある空の説明のブロックは、それぞれ文です。
+  その後に区切りや改行がないときは、最初のブロックが文の中にあることになり、
+  どの図種でもそのブロックを報告します。
+  flowchart の `A accDescr {} B` と `flowchart LR accDescr {} A` でも、
+  状態図の `click A "u" "t" accDescr {} B` でも、ブロックを報告します。
+  flowchart の文やヘッダーは、区切りの前のそのようなブロックを除いて読みます。
+  そのため、文が取らない、ブロックのまわりの空白は、
+  ブロックがないときと同じところで報告します。
+  `flowchart LR accDescr {};A` では、`flowchart LR ;A` と同じく、
+  空白の後の `;` を報告します。
 
 `html-tag-in-frontmatter` は、どの `"` を `'` として読むかを変えます。
 パーサーはそれを区別しないので、そこから起きる拒否は、上の規則で報告します。

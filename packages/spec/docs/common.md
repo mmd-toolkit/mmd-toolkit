@@ -181,8 +181,10 @@ lexer tries these in order:
    attribute quote as `'` ([HTML attribute quotes](#html-attribute-quotes)), and
    each entity as its placeholder ([Entities](#entities)). It reads through
    comment regions, the `;` that the line rule ignores, and directives as if
-   they were not there; a token with a directive between two of its characters
-   that are not whitespace is then split or makes the input rejected
+   they were not there; a token across a comment region is then cut at it
+   ([Comment lines](#comment-lines)), and a token with a directive between two
+   of its characters that are not whitespace is split or makes the input
+   rejected
    ([A directive is a token boundary](#a-directive-is-a-token-boundary)).
 
 The characters that the diagram's lexer reads are the **diagram text**: the
@@ -497,8 +499,14 @@ Consequences, each confirmed against mermaid.js:
   text. [fixture: common/directive-word-argument-then-more]
 - `%%{` not followed by a word, such as `%%{ }%%` or `%%{-x}%%`, is not a
   directive. It is also not a comment line (see below), so it is
-  [diagram text](#reading-a-source). [fixture: common/directive-empty-braces]
-  [fixture: common/directive-non-word-start]
+  [diagram text](#reading-a-source), which each diagram's lexer reads: on the
+  line after a vertex, flowchart rejects `%%{}`, sequence and class read it as a
+  diagram comment, and state reads its `%%` as text that mermaid.js does not
+  read. [fixture: common/directive-empty-braces] [fixture:
+  flowchart/lex-percent-brace-line-after-vertex] [fixture:
+  sequence/lex-percent-brace-line-after-message] [fixture:
+  class/lex-percent-brace-line-after-class] [fixture:
+  common/directive-non-word-start]
 - Neither the name nor its case matters: `%%{INIT: ...}%%` is a directive like
   `%%{init: ...}%%`. [fixture: common/directive-uppercase]
 
@@ -536,16 +544,18 @@ comment, it is a `Directive` token of its own (see
   `error` pseudo-diagram, every token is `RawText`, so a directive is allowed
   anywhere.
 - A token that has a directive between two of its characters that are not
-  whitespace is cut at the directive. Each piece, without the whitespace at its
-  ends, is a token of the same kind, and a piece that is all whitespace is no
-  token; the directive between the pieces is a `Directive` token. What the token
-  stood for, such as the value of a label or an id, does not change. Whitespace
-  next to the directive does not matter: the label of `A[x %%{init: {}}%% y]`
-  has the tokens `x` and `y`, and its value is `x`, two spaces, and `y`.
-- A directive inside a comment region is read through with the region and does
-  not end a token. Inside a token, the lexer reads through a whole comment
-  region (see [Comment lines](#comment-lines)), directives included, whether
-  they come before the comment's `%%` or after it. [fixture:
+  whitespace is cut at the directive. Each fragment, without the whitespace at
+  its ends, is a token of the same kind, and a fragment that is all whitespace
+  is no token; the directive between the fragments is a `Directive` token. What
+  the token stood for, such as the value of a label or an id, does not change.
+  Whitespace next to the directive does not matter: the label of
+  `A[x %%{init: {}}%% y]` has the tokens `x` and `y`, and its value is `x`, two
+  spaces, and `y`.
+- A directive inside a comment region is read through with the region, as the
+  lexer reads through the whole region (see [Comment lines](#comment-lines)),
+  also inside what one unit reads, whose token the region cuts. A directive
+  after the comment's `%%` is part of the comment; one before it is a
+  `Directive` token (see [ast.md](./ast.md#directive)). [fixture:
   common/comment-region-directive-in-string] [fixture:
   common/comment-directive-in-string]
 
@@ -600,11 +610,26 @@ conditions:
    common/comment-mid-line-subgraph-name] [fixture:
    common/comment-mid-line-acc-title] [fixture: common/comment-mid-line-style]
 2. The first character after the `%%` that is not part of a directive exists, is
-   not `{`, and is not part of a line terminator.
+   not `{`, and is not part of a line terminator. So a line with only `%%` is no
+   comment line, and inside a text of several lines it is part of the text: the
+   edge text of `A -->|a`, a line `%%`, and `b| B` in flowchart is `a`, the line
+   `%%`, and `b`, and so is a subgraph title written the same way. [fixture:
+   flowchart/lex-percent-line-in-edge-label] [fixture:
+   flowchart/lex-percent-line-in-subgraph-title]
 
 A comment extends from the first `%` of its `%%` to the end of its line, that
 is, to the next line terminator that is not part of a directive; U+2028 and
-U+2029 do not end it. A line that contains a comment is a **comment line**.
+U+2029 do not end it. A line terminator is part of a directive when it lies in
+what the directive scan takes, the whitespace after the argument included (see
+[Where a directive is](#where-a-directive-is)), so a directive in a comment can
+carry the comment over line breaks: after `X`, the lines `%% %%{wrap`, `A`, and
+`B --> C` are one comment, because the directive takes `A` and the line break
+after it, and mermaid.js reads neither `A` nor `B --> C`. [fixture:
+common/comment-directive-word-argument-takes-next-lines] When no line terminator
+follows that is not part of a directive, the comment extends to the end of the
+text; its range then leaves out the whitespace at its end that a directive took,
+as the range of the directive does (see [Comment](./ast.md#comment)). A line
+that contains a comment is a **comment line**.
 
 The **comment region** of a comment starts at the earliest comment start from
 which only whitespace and directives lead to the `%%`, and ends after the line
@@ -652,7 +677,12 @@ through the whole region, as described below.
   a comment line, also inside a label: `A[a`, a line break, `%%` and a space, a
   line break, and `b]` has the label `a`, a line feed, and `b`. [fixture:
   common/comment-bare-line-in-string-label] [fixture:
-  common/comment-percent-space-line-in-label]
+  common/comment-percent-space-line-in-label] It stays as well in a description
+  block, also after a comment line, in the string of a tooltip, and in a title
+  on the line after `accTitle:`. [fixture:
+  flowchart/lex-acc-descr-block-bare-marker-line-after-comment-line] [fixture:
+  flowchart/lex-tooltip-bare-marker-line] [fixture:
+  flowchart/lex-acc-title-bare-marker-next-line]
 - A text that consists only of comment lines has no tokens and is rejected by
   detection. [fixture: common/comment-only]
 - Directives are left out, so the line `%%{init: {}}%% %% c` is a directive
@@ -670,14 +700,24 @@ through the whole region, as described below.
 
 Comment lines are recognized independently of the diagram's syntax and of the
 context the lexer is in. The lexer reads through a comment region as if it were
-not there: a token whose text continues across a comment region, such as a
-multi-line quoted label, is one token, and its value is the text before and
-after the region joined. [fixture: common/comment-in-string] [fixture:
-common/comment-blank-line-before-in-string]
+not there: a unit whose text continues across a comment region, such as a
+multi-line quoted label, is one unit, and its value is the text before and after
+the region joined. A comment region lies inside no token, though: the token of
+such a unit is cut at the region into fragments, and a fragment of a string is a
+`StringFragment` token (see [Comment](./ast.md#comment)). [fixture:
+common/comment-in-string] [fixture: common/comment-blank-line-before-in-string]
 
 This keeps acceptance as in mermaid.js even when the comment line contains
 characters that are special inside the token, such as a `"` inside a quoted
 label. [fixture: common/comment-with-quote-in-string]
+
+A comment region cuts a diagram comment in the same way, a comment that a
+diagram's own lexer reads to the end of its line (see
+[Comment](./ast.md#comment)). Its line goes on past a comment line that follows
+a U+2028 or U+2029 on it, because mermaid.js reads the text without the comment
+line: in state, after `A %% x`, U+2029, a line `%% end`, and a line `B`, the
+diagram comment goes on with `B`, which mermaid.js does not read. [fixture:
+state/lex-diagram-comment-across-comment-line]
 
 ## Leading whitespace
 

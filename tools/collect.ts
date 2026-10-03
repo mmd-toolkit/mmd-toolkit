@@ -99,6 +99,19 @@ const SPEC_FILES: Readonly<
     "diagrams/class/classDiagram-styles.spec.js",
     "diagrams/class/parser/class.spec.js",
   ],
+  // The other test files of the directory test the Db and the renderers on
+  // values built in code. `stateRenderer.spec.js` passes a text to the
+  // renderer's `draw()` with a stand-in for the diagram, so mermaid.js never
+  // parses it.
+  state: () => [
+    "diagrams/state/stateDiagram.spec.js",
+    "diagrams/state/stateDiagram-v2.spec.js",
+    "diagrams/state/stateDiagram-colorIndex.spec.ts",
+    "diagrams/state/stateNoteEdge.spec.ts",
+    "diagrams/state/stateNoteNode.spec.js",
+    "diagrams/state/parser/state-parser.spec.js",
+    "diagrams/state/parser/state-style.spec.js",
+  ],
 }
 
 /** The fence lines that open a mermaid block in the documentation. */

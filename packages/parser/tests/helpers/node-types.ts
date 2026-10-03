@@ -1,4 +1,9 @@
-import type { ClassNode, FlowchartNode, SequenceNode } from "../../src/index.ts"
+import type {
+  ClassNode,
+  FlowchartNode,
+  SequenceNode,
+  StateNode,
+} from "../../src/index.ts"
 
 /** ast.md, Shared leaf nodes: the node types, as the tests expect them. */
 export const sharedLeafNodeTypes: readonly string[] = [
@@ -83,6 +88,7 @@ export const allSequenceNodeTypes: Record<SequenceNode["type"], true> = {
   SequenceCriticalStatement: true,
   SequenceSection: true,
   SequenceIgnoredStatement: true,
+  SequenceIdentifier: true,
   SequenceText: true,
   SequenceLiteral: true,
   SequenceDataBlock: true,
@@ -120,12 +126,45 @@ export const allClassNodeTypes: Record<ClassNode["type"], true> = {
   ClassIgnoredText: true,
 }
 
+/**
+ * Every node type of ast/state.md, in the order of that document. Being a
+ * `Record` over the type, this fails to type-check when a node type is
+ * missing here or is not in the type.
+ */
+export const allStateNodeTypes: Record<StateNode["type"], true> = {
+  StateDiagram: true,
+  StateDefinitionStatement: true,
+  StateTransitionStatement: true,
+  StateReference: true,
+  StateTerminal: true,
+  StateCompositeStatement: true,
+  StateAliasDefinitionStatement: true,
+  StatePseudostateDefinitionStatement: true,
+  StateDividerStatement: true,
+  StateNoteStatement: true,
+  StateFloatingNoteStatement: true,
+  StateClickStatement: true,
+  StateClassDefStatement: true,
+  StateClassStatement: true,
+  StateStyleStatement: true,
+  StateDirectionStatement: true,
+  StateAccTitleStatement: true,
+  StateAccDescrStatement: true,
+  StateAccDescrBlockStatement: true,
+  StateScaleStatement: true,
+  StateHideEmptyDescriptionStatement: true,
+  StateIgnoredStatement: true,
+  StateLiteral: true,
+  StateIgnoredText: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
   ...Object.keys(allFlowchartNodeTypes),
   ...Object.keys(allSequenceNodeTypes),
   ...Object.keys(allClassNodeTypes),
+  ...Object.keys(allStateNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

@@ -41,7 +41,8 @@ export function readDirective(
   if (nameEnd === nameStart) return null
   const name = text.slice(nameStart, nameEnd)
 
-  // `(whitespace* ":")?` is taken when a `:` follows the name and its whitespace.
+  // `(whitespace* ":")?` is taken when a `:` follows the name and its
+  // whitespace.
   let offset = nameEnd
   const afterNameWhitespace = skipWhile(text, offset, isWhitespace)
   if (text.codePointAt(afterNameWhitespace) === COLON) {

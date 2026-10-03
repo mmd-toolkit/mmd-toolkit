@@ -348,7 +348,11 @@ export class UnitLexer {
     this.reader = reader
     this.lines = lines
     this.position = reader.first()
-    this.directionLine = new DirectionLineRule(reader, DIRECTION_LINE_VALUES)
+    this.directionLine = new DirectionLineRule(
+      reader,
+      DIRECTION_LINE_VALUES,
+      matchWord,
+    )
   }
 
   /** Divides the diagram text into units. Throws `ParseError` where no rule matches. */

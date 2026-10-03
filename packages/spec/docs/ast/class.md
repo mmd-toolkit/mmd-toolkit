@@ -167,12 +167,12 @@ Child fields: `class`, `text`. [fixture: class/db-note-for-undefined-class]
 
 A `callback` statement, or a `click` statement with `call`.
 
-| Field       | Type                        | Meaning                                                                                       |
-| ----------- | --------------------------- | --------------------------------------------------------------------------------------------- |
-| `class`     | ClassName                   | The class name after `callback` or `click`.                                                   |
-| `callback`  | StringLiteral or Identifier | The function name: the string after the class name, or the `callback-name` unit after `call`. |
-| `arguments` | ClassLiteral or null        | The text between `(` and `)` after `call`; null when there is none.                           |
-| `tooltip`   | StringLiteral or null       | The string at the end; null when there is none.                                               |
+| Field       | Type                          | Meaning                                                                                                       |
+| ----------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `class`     | ClassName                     | The class name after `callback` or `click`.                                                                   |
+| `callback`  | StringLiteral or ClassLiteral | The function name: the string after the class name, or the `callback-name` unit after `call`, a ClassLiteral. |
+| `arguments` | ClassLiteral or null          | The text between `(` and `)` after `call`; null when there is none.                                           |
+| `tooltip`   | StringLiteral or null         | The string at the end; null when there is none.                                                               |
 
 Child fields: `class`, `callback`, `arguments`, `tooltip`. Which keyword was
 written is in the tokens: `callback` or `click`. In `click A call fn()`, the `(`
@@ -267,11 +267,16 @@ An `accDescr {` statement.
 | ------- | -------------------- | ------------------------------------------------------------------ |
 | `value` | ClassLiteral or null | The text between `{` and `}`; null for an empty description block. |
 
-Child fields: `value`. An empty description block is a statement only where a
+Child fields: `value`. An empty description block is a statement where a
 statement starts and another statement follows it on the same line (see
-[Empty description blocks](../diagrams/class.md#empty-description-blocks)).
+[Empty description blocks](../diagrams/class.md#empty-description-blocks)), and
+after the last unit of a statement, before its line break; after the header,
+before its line break, it is the first statement of the diagram's `body` (see
+[Empty description blocks before a separator](../diagrams/class.md#empty-description-blocks-before-a-separator)).
 [fixture: class/spec-class-diagram-0926d7aa] [fixture:
-class/gram-empty-description-block-then-statement]
+class/gram-empty-description-block-then-statement] [fixture:
+class/gram-empty-description-block-after-note] [fixture:
+class/header-empty-description-block]
 
 ### ClassName
 
@@ -373,8 +378,8 @@ class/db-member-annotation-spaces]
 ### ClassLiteral
 
 A text without quotes that may contain whitespace: the label of a relation, a
-generic type, a part of a member line, the arguments of a callback, a style, and
-an accessibility text.
+generic type, a part of a member line, the name of a callback after `call` and
+its arguments, a style, and an accessibility text.
 
 | Field   | Type   | Meaning                                               |
 | ------- | ------ | ----------------------------------------------------- |
@@ -411,22 +416,26 @@ not all whitespace belongs to one **item** of
 [the grammar](../diagrams/class.md#grammar) and has the kind that this table
 gives for the item:
 
-| Kind         | Items and their units                                                                                                                                                                                                                                                                                                               |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Keyword`    | a `header` unit; the `class`, `namespace`, `style`, `classDef`, `cssClass`, `callback`, `link`, `click`, `note for`, `note`, `href`, `call`, `accTitle`, and `accDescr` units; the `direction` and `direction-value` units; a `link-target` unit                                                                                    |
-| `Identifier` | the name parts and `.` units of a class name or a namespace name before a backquoted name or without one; the `word` after `style`; each `word` of a `classDef` statement; the `word` of a `cssClass` statement; the name part after `:::` or between `<<` and `>>` of a statement; a `callback-name` unit                          |
-| `String`     | a `string` or `backquoted` unit                                                                                                                                                                                                                                                                                                     |
-| `RawText`    | a `generic-text` unit; the text of a `label` unit after its `:`; a `member-name`, `parameters`, `return-type`, or `annotation-name` unit; a `callback-arguments` unit; a style, with all its units; a `title-text`, `description-text`, or `description-block-text` unit; a `direction-text` unit; an ignored part of a method line |
-| `Punctuator` | the `:` of a `label` unit and the `:` after `accTitle` and `accDescr`; `{`, `}`, `[`, `]`, `:::`, `<<`, `>>`, `~`, `(`, `)`, and `,`; each relation end and line; a `visibility` or `classifier` unit                                                                                                                               |
+| Kind         | Items and their units                                                                                                                                                                                                                                                                                                                                  |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Keyword`    | a `header` unit; the `class`, `namespace`, `style`, `classDef`, `cssClass`, `callback`, `link`, `click`, `note for`, `note`, `href`, `call`, `accTitle`, and `accDescr` units; the `direction` and `direction-value` units; a `link-target` unit                                                                                                       |
+| `Identifier` | the name parts and `.` units of a class name or a namespace name before a backquoted name or without one; the `word` after `style`; each `word` of a `classDef` statement; the `word` of a `cssClass` statement; the name part after `:::` or between `<<` and `>>` of a statement                                                                     |
+| `String`     | a `string` or `backquoted` unit                                                                                                                                                                                                                                                                                                                        |
+| `RawText`    | a `generic-text` unit; the text of a `label` unit after its `:`; a `member-name`, `parameters`, `return-type`, or `annotation-name` unit; a `callback-name` or `callback-arguments` unit; a style, with all its units; a `title-text`, `description-text`, or `description-block-text` unit; a `direction-text` unit; an ignored part of a method line |
+| `Punctuator` | the `:` of a `label` unit and the `:` after `accTitle` and `accDescr`; `{`, `}`, `[`, `]`, `:::`, `<<`, `>>`, `~`, `(`, `)`, and `,`; each relation end and line; a `visibility` or `classifier` unit                                                                                                                                                  |
+
+A `String` token that a comment region cuts becomes `StringFragment` tokens (see
+[Comment](../ast.md#comment)).
 
 A **token** is a maximal run of units of one item and one kind that follow one
 another with nothing between them, and, for a style and the other `RawText`
 items, also with whitespace between them; a token holds no whitespace at its
 ends. Where a directive lies between two characters of such a run that are not
-whitespace, the run is cut at the directive: each piece, without the whitespace
-at its ends, is a token, and the directive between the pieces is a `Directive`
-token of its own (see [ast.md](../ast.md#directive)). A directive inside one
-unit makes the input rejected unless the unit is `RawText` or `Identifier` (see
+whitespace, the run is cut at the directive: each fragment, without the
+whitespace at its ends, is a token, and the directive between the fragments is a
+`Directive` token of its own (see [ast.md](../ast.md#directive)). A directive
+inside one unit makes the input rejected unless the unit is `RawText` or
+`Identifier` (see
 [Directives inside units](../diagrams/class.md#directives-inside-units)).
 
 - A class name of name parts is one token for each run of them without

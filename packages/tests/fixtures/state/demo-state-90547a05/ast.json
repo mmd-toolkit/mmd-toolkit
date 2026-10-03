@@ -1,0 +1,820 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateDirectionStatement",
+        "textBefore": null,
+        "direction": "LR",
+        "textAfter": null,
+        "range": [
+          16,
+          28
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "StateDefinitionStatement",
+        "reference": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "State1",
+            "range": [
+              29,
+              35
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 6
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            29,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 0
+            },
+            "end": {
+              "line": 3,
+              "column": 6
+            }
+          }
+        },
+        "description": {
+          "type": "StateLiteral",
+          "value": "A state with a note",
+          "range": [
+            37,
+            56
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 27
+            }
+          }
+        },
+        "range": [
+          29,
+          56
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "StateNoteStatement",
+        "position": "right",
+        "textBeforeState": null,
+        "state": {
+          "type": "Identifier",
+          "name": "State1",
+          "range": [
+            71,
+            77
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 14
+            },
+            "end": {
+              "line": 4,
+              "column": 20
+            }
+          }
+        },
+        "text": {
+          "type": "StateLiteral",
+          "value": "Important information!<br />You can write notes.<br />And\\nthey\\ncan\\nbe\\nmulti-\\nline.",
+          "range": [
+            80,
+            167
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 2
+            },
+            "end": {
+              "line": 5,
+              "column": 89
+            }
+          }
+        },
+        "range": [
+          57,
+          176
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 8
+          }
+        }
+      },
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "State1",
+            "range": [
+              177,
+              183
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 0
+              },
+              "end": {
+                "line": 7,
+                "column": 6
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            177,
+            183
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 6
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "State2",
+            "range": [
+              188,
+              194
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 11
+              },
+              "end": {
+                "line": 7,
+                "column": 17
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            188,
+            194
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 11
+            },
+            "end": {
+              "line": 7,
+              "column": 17
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          177,
+          194
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 17
+          }
+        }
+      },
+      {
+        "type": "StateNoteStatement",
+        "position": "left",
+        "textBeforeState": null,
+        "state": {
+          "type": "Identifier",
+          "name": "State2",
+          "range": [
+            208,
+            214
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 13
+            },
+            "end": {
+              "line": 8,
+              "column": 19
+            }
+          }
+        },
+        "text": {
+          "type": "StateLiteral",
+          "value": "Notes can be to the left of a state\\n(like this one).",
+          "range": [
+            217,
+            270
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 22
+            },
+            "end": {
+              "line": 8,
+              "column": 75
+            }
+          }
+        },
+        "range": [
+          195,
+          270
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 75
+          }
+        }
+      },
+      {
+        "type": "StateNoteStatement",
+        "position": "right",
+        "textBeforeState": null,
+        "state": {
+          "type": "Identifier",
+          "name": "State2",
+          "range": [
+            285,
+            291
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 14
+            },
+            "end": {
+              "line": 9,
+              "column": 20
+            }
+          }
+        },
+        "text": {
+          "type": "StateLiteral",
+          "value": "Notes can be to the right of a state\\n(like this one).",
+          "range": [
+            294,
+            348
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 23
+            },
+            "end": {
+              "line": 9,
+              "column": 77
+            }
+          }
+        },
+        "range": [
+          271,
+          348
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 77
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      348
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 9,
+        "column": 77
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "direction",
+      "range": [
+        16,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        26,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "State1",
+      "range": [
+        29,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        35,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A state with a note",
+      "range": [
+        37,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        57,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "right of",
+      "range": [
+        62,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 5
+        },
+        "end": {
+          "line": 4,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "State1",
+      "range": [
+        71,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 14
+        },
+        "end": {
+          "line": 4,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Important information!<br />You can write notes.<br />And\\nthey\\ncan\\nbe\\nmulti-\\nline.",
+      "range": [
+        80,
+        167
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 89
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end note",
+      "range": [
+        168,
+        176
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "State1",
+      "range": [
+        177,
+        183
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        184,
+        187
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 7
+        },
+        "end": {
+          "line": 7,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "State2",
+      "range": [
+        188,
+        194
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 11
+        },
+        "end": {
+          "line": 7,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        195,
+        199
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "left of",
+      "range": [
+        200,
+        207
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 5
+        },
+        "end": {
+          "line": 8,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "State2",
+      "range": [
+        208,
+        214
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 13
+        },
+        "end": {
+          "line": 8,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        215,
+        216
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 20
+        },
+        "end": {
+          "line": 8,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Notes can be to the left of a state\\n(like this one).",
+      "range": [
+        217,
+        270
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 22
+        },
+        "end": {
+          "line": 8,
+          "column": 75
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        271,
+        275
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "right of",
+      "range": [
+        276,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 5
+        },
+        "end": {
+          "line": 9,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "State2",
+      "range": [
+        285,
+        291
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 14
+        },
+        "end": {
+          "line": 9,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        292,
+        293
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 21
+        },
+        "end": {
+          "line": 9,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Notes can be to the right of a state\\n(like this one).",
+      "range": [
+        294,
+        348
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 23
+        },
+        "end": {
+          "line": 9,
+          "column": 77
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    348
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 9,
+      "column": 77
+    }
+  }
+}

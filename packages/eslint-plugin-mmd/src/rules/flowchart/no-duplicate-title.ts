@@ -1,24 +1,53 @@
+import type { FlowchartAccTitleStatement } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../../rule-types.ts"
 import { ruleDocsUrl } from "../../rule-docs-url.ts"
+import { oneOfTwoRemovals } from "../../utils/removal.ts"
 
 /**
  * The rule `flowchart/no-duplicate-title`, described in
- * `docs/rules/flowchart/no-duplicate-title.md`.
- * It is a skeleton: it has the meta of the rule and reports nothing yet.
+ * `docs/rules/flowchart/no-duplicate-title.md`: every `accTitle` statement
+ * after the first, also in a subgraph and also one without text. ESLint visits
+ * the statements in the order of the source, so each one is compared with the
+ * one before it.
  */
-export const noDuplicateTitle: MermaidRuleDefinition<{ RuleOptions: [] }> = {
+export const noDuplicateTitle: MermaidRuleDefinition<{
+  RuleOptions: []
+  MessageIds: "duplicate" | "removeThis" | "removePrevious"
+}> = {
   meta: {
     type: "problem",
     docs: {
       description:
         "Disallow an `accTitle` statement that sets the title again.",
-      recommended: false,
+      recommended: true,
       url: ruleDocsUrl("flowchart/no-duplicate-title"),
     },
+    hasSuggestions: true,
     schema: [],
-    messages: {},
+    messages: {
+      duplicate:
+        "mermaid.js replaces the title set on line {{line}} with the one of this `accTitle`.",
+      removeThis:
+        "Remove this `accTitle` statement: mermaid.js uses the last title that remains.",
+      removePrevious:
+        "Remove the `accTitle` statement on line {{line}}: mermaid.js uses the last title that remains.",
+    },
   },
-  create() {
-    return {}
+  create(context) {
+    const { sourceCode } = context
+    let previous: FlowchartAccTitleStatement | null = null
+    return {
+      FlowchartAccTitleStatement(node) {
+        if (previous !== null) {
+          context.report({
+            node,
+            messageId: "duplicate",
+            data: { line: String(previous.loc.start.line) },
+            suggest: oneOfTwoRemovals(sourceCode, node, previous),
+          })
+        }
+        previous = node
+      },
+    }
   },
 }

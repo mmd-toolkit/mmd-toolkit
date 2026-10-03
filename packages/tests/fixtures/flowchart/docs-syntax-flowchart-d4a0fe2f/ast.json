@@ -373,6 +373,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " this is a comment A -- text --> B{node}",
       "range": [
         13,

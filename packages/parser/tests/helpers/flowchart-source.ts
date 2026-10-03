@@ -1,4 +1,4 @@
-import type { FlowchartLabel, Range, Root } from "../../src/index.ts"
+import type { Range, Root } from "../../src/index.ts"
 import type { Unit } from "../../src/diagrams/flowchart/units.ts"
 import type { DiagramTextReader } from "../../src/diagram-text.ts"
 import { lexFlowchart } from "../../src/diagrams/flowchart/index.ts"
@@ -9,8 +9,8 @@ import type { SourceLexer } from "../../src/source-lexer.ts"
  * Test helper, not public API: the source of a flowchart as the parser
  * reads it, with the shared lexer and the units of diagrams/flowchart.md,
  * Lexical structure. The helpers that read the source again take every
- * lexical decision from here: where a string's content lies, which `click`
- * is a `click` unit, and where a statement ends.
+ * lexical decision from here: where a string's content lies and which
+ * `click` is a `click` unit.
  */
 export class FlowchartSource {
   public readonly lexer: SourceLexer
@@ -57,38 +57,5 @@ export class FlowchartSource {
       [first.start, first.content[0]],
       [first.content[1], first.end],
     ]
-  }
-
-  /**
-   * Subgraphs: where the name text of the subgraph name `name` ends, at what
-   * follows the name: the start of the first `[`, `newline`, or `;` unit
-   * after it, the `[` of its title or its separator.
-   */
-  public nameTextEnd(name: FlowchartLabel): number {
-    const follower = this.units.find(
-      (unit) =>
-        unit.start >= name.range[1] &&
-        (unit.name === "[" || unit.name === "newline" || unit.name === ";"),
-    )
-    if (follower === undefined) {
-      throw new Error(`nothing follows the subgraph name at ${name.range[0]}`)
-    }
-    return follower.start
-  }
-
-  /**
-   * Where the statement that `offset` lies in ends: the start of the first
-   * `newline` or `;` unit that starts at or after `offset`, which is its
-   * separator. The last `newline` unit is the end of the text.
-   */
-  public separatorAfter(offset: number): number {
-    const separator = this.units.find(
-      (unit) =>
-        unit.start >= offset && (unit.name === "newline" || unit.name === ";"),
-    )
-    if (separator === undefined) {
-      throw new Error(`no separator after offset ${offset}`)
-    }
-    return separator.start
   }
 }

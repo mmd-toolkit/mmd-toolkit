@@ -22,6 +22,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " x",
       "range": [
         21,

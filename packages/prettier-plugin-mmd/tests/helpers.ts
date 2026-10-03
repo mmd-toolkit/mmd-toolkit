@@ -60,6 +60,7 @@ function findComments(text: string): Comment[] {
       const end = lineStart + line.length
       comments.push({
         type: "Comment",
+        mark: "%%",
         value: line.slice(commentStart + 2),
         range: [start, end],
         loc: { start: positionAt(text, start), end: positionAt(text, end) },

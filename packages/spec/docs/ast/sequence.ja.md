@@ -56,7 +56,7 @@ SequenceIgnoredStatement のどれかです。
 | --------- | ----------------------------- | ----------------------------------------------------------------------- |
 | `kind`    | 文字列                        | `participant` か `actor`。キーワードを小文字にしたもの。                |
 | `created` | 真偽値                        | キーワードの前に `create` があるかどうか。                              |
-| `id`      | Identifier                    | id。                                                                    |
+| `id`      | SequenceIdentifier            | id。                                                                    |
 | `data`    | SequenceDataBlock または null | id の後のデータブロック。なければ null。                                |
 | `alias`   | SequenceText または null      | `as` の後のテキスト。mermaid.js はそれを説明として読む。なければ null。 |
 
@@ -67,10 +67,10 @@ SequenceIgnoredStatement のどれかです。
 
 `destroy` の文です。
 
-| 欄        | 型         | 意味                                       |
-| --------- | ---------- | ------------------------------------------ |
-| `created` | 真偽値     | キーワードの前に `create` があるかどうか。 |
-| `id`      | Identifier | `destroy` の後の id。                      |
+| 欄        | 型                 | 意味                                       |
+| --------- | ------------------ | ------------------------------------------ |
+| `created` | 真偽値             | キーワードの前に `create` があるかどうか。 |
+| `id`      | SequenceIdentifier | `destroy` の後の id。                      |
 
 子の欄: `id`。
 `create` があるときは、範囲は `create` から始まります。
@@ -104,9 +104,16 @@ mermaid.js が問い合わせる前に分けるのと同じように字句解析
 | `remainder`      | SequenceLiteral または null | 候補の後の `text` の単位。なければ null。                                |
 
 子の欄: `colorCandidate`、`remainder`。
-どちらの部分もそれぞれ 1 つの単位で、1 つのトークンです
+どちらの部分もそれぞれ 1 つの単位です
 （[行の文脈](../diagrams/sequence.ja.md#行の文脈) を参照）。
-そのため、各 SequenceLiteral の範囲は、そのトークンの範囲です。
+各 SequenceLiteral の範囲は、その単位から両端の空白を除いた範囲です。
+部分は 1 つのトークンですが、
+ディレクティブが同じ種類のトークンに切ることがあります
+（[トークン](#トークン) を参照）。
+`box Gr%%{init: {}}%%oup` では、候補は `Group` で、その範囲は、
+`RawText` のトークン `Gr` と `oup` と、その間のディレクティブを覆います。
+[fixture: sequence/tokens-box-text-directive-in-candidate]
+[fixture: sequence/tokens-box-text-directive-in-remainder]
 `box Purple Alice & John` では、候補は `Purple` で、残りは `Alice & John` です。
 `box rgb(34, 56, 0) Group1` では、
 候補は `rgb(34, 56, 0)` で、残りは `Group1` です。
@@ -123,12 +130,12 @@ sequence/db-box-no-colour-candidate]
 
 | 欄                      | 型                       | 意味                                              |
 | ----------------------- | ------------------------ | ------------------------------------------------- |
-| `from`                  | Identifier               | 矢印の前の id。                                   |
+| `from`                  | SequenceIdentifier       | 矢印の前の id。                                   |
 | `fromCentralConnection` | 真偽値                   | 送り手と矢印の間に `()` があるかどうか。          |
 | `arrow`                 | SequenceArrow            | 矢印。                                            |
 | `activation`            | 文字列または null        | 矢印の後の `+` か `-`。なければ null。            |
 | `toCentralConnection`   | 真偽値                   | 矢印と宛先の間に `()` があるかどうか。            |
-| `to`                    | Identifier               | 矢印の後の id。                                   |
+| `to`                    | SequenceIdentifier       | 矢印の後の id。                                   |
 | `text`                  | SequenceText または null | `:` の後のテキスト。`:` の後が空白だけなら null。 |
 
 子の欄: `from`、`arrow`、`to`、`text`。
@@ -188,9 +195,9 @@ sequence/db-box-no-colour-candidate]
 
 ### SequenceActivateStatement と SequenceDeactivateStatement
 
-| 欄   | 型         | 意味                                  |
-| ---- | ---------- | ------------------------------------- |
-| `id` | Identifier | 活性化するか非活性化する参加者の id。 |
+| 欄   | 型                 | 意味                                  |
+| ---- | ------------------ | ------------------------------------- |
+| `id` | SequenceIdentifier | 活性化するか非活性化する参加者の id。 |
 
 子の欄: `id`。
 
@@ -199,7 +206,7 @@ sequence/db-box-no-colour-candidate]
 | 欄          | 型                       | 意味                                                   |
 | ----------- | ------------------------ | ------------------------------------------------------ |
 | `placement` | 文字列                   | `left of`、`right of`、`over`。小文字で、空白は 1 個。 |
-| `ids`       | Identifier の列          | id。`,` のある `over` なら 2 つの id。                 |
+| `ids`       | SequenceIdentifier の列  | id。`,` のある `over` なら 2 つの id。                 |
 | `text`      | SequenceText または null | `:` の後のテキスト。`:` の後が空白だけなら null。      |
 
 子の欄: `ids`、`text`。
@@ -208,7 +215,7 @@ sequence/db-box-no-colour-candidate]
 
 | 欄     | 型                       | 意味                                              |
 | ------ | ------------------------ | ------------------------------------------------- |
-| `id`   | Identifier               | 参加者の id。                                     |
+| `id`   | SequenceIdentifier       | 参加者の id。                                     |
 | `text` | SequenceText または null | `:` の後のテキスト。`:` の後が空白だけなら null。 |
 
 子の欄: `id`、`text`。
@@ -226,14 +233,68 @@ sequence/db-box-no-colour-candidate]
 Db のタイトルは、値の周りに書かれた空白を保ち、
 Db の正規化はそれをソースから読みます。
 
-### SequenceAccTitleStatement、SequenceAccDescrStatement、SequenceAccDescrBlockStatement
+### SequenceAccTitleStatement
 
-[FlowchartAccTitleStatement](./flowchart.ja.md#flowchartacctitlestatement)、
-[FlowchartAccDescrStatement](./flowchart.ja.md#flowchartaccdescrstatement)、
-[FlowchartAccDescrBlockStatement](./flowchart.ja.md#flowchartaccdescrblockstatement)
-と同じで、FlowchartLiteral の代わりに SequenceLiteral を使います。
-文が始まる位置の空の説明ブロックは、箱の本体の中でも、
-`value` が null で `closed` が真の SequenceAccDescrBlockStatement です。
+テキストを伴う `accTitle:` の文です。
+
+| 欄      | 型                          | 意味                                                          |
+| ------- | --------------------------- | ------------------------------------------------------------- |
+| `value` | SequenceLiteral または null | `accTitle:` の後の、行の終わりまでのテキスト。なければ null。 |
+
+子の欄: `value`。
+`:` の後の空白は改行も含めて一緒に読まれるので、
+値が null になるのはテキストの終わりだけです。
+`#` と `;` はテキストの文字です。
+[fixture: sequence/lex-acc-title-line-feed] [fixture:
+sequence/lex-acc-title-at-end] [fixture: sequence/lex-acc-title-hash]
+
+### SequenceAccDescrStatement
+
+テキストを伴う `accDescr:` の文です。
+
+| 欄      | 型                          | 意味                                                          |
+| ------- | --------------------------- | ------------------------------------------------------------- |
+| `value` | SequenceLiteral または null | `accDescr:` の後の、行の終わりまでのテキスト。なければ null。 |
+
+子の欄: `value`。
+`:` の後の空白は改行も含めて一緒に読まれるので、
+値が null になるのはテキストの終わりだけです。
+[fixture: sequence/db-acc-descr-empty-replaces]
+
+### SequenceAccDescrBlockStatement
+
+テキストと `}` を伴う `accDescr {` の文です。
+テキストがブロックの中で終わるときは `}` を持ちません。
+Db への効果が `accDescr:` の文と違うので、別のノードの型にしています。
+閉じていないブロックは、テキストにかかわらず説明を空にし、
+テキストのない閉じたブロックは何も変えません
+（[sequence.ja.md](../diagrams/sequence.ja.md#木から要約を作る) を参照）。
+
+| 欄       | 型                          | 意味                                                                                                |
+| -------- | --------------------------- | --------------------------------------------------------------------------------------------------- |
+| `value`  | SequenceLiteral または null | `accDescr {` と `}` の間のテキスト。ブロックが閉じていなければテキストの終わりまで。なければ null。 |
+| `closed` | 真偽値                      | ブロックが `}` で終わるかどうか。テキストがブロックの中で終わるときは偽。                           |
+
+子の欄: `value`。
+テキストの終わりの `accDescr { x` の値は `x` です。
+[fixture: sequence/db-acc-descr-block-unclosed]
+テキストの終わりの `accDescr {` は、値が null で、閉じていません。
+[fixture: sequence/lex-acc-descr-block-unclosed-empty]
+`accDescr {  }` はテキストのない閉じたブロックで、値は null です。
+`{` の後の空白は `{` と一緒に読まれます。
+そのようなブロック、つまり空の説明ブロックは、
+箱の本体の中も含めて、文が始まるところと、
+文の最後の単位の後、`newline` の前で文になります。
+文が始まるところであるキーワード `sequenceDiagram` のすぐ後では、
+図の `body` の最初の文です
+（[sequence.ja.md](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック)
+を参照）。
+ほかの場所では入力は拒否されます
+（[sequence.ja.md](../diagrams/sequence.ja.md#既知の差) を参照）。
+[fixture: sequence/db-acc-descr-spaces-block-keeps] [fixture:
+sequence/gram-acc-descr-block-empty-then-statement] [fixture:
+sequence/gram-box-empty-description-block-line] [fixture:
+sequence/header-empty-description-block]
 
 ### SequenceLoopStatement、SequenceOptStatement、SequenceBreakStatement
 
@@ -294,6 +355,29 @@ mermaid.js が 1 つの `invalid` の単位として読み、無視する行で�
 
 子の欄はありません。
 
+### SequenceIdentifier
+
+参加者の id です。空白を含みうる名前です
+（[id の並び](../diagrams/sequence.ja.md#id-の並び) と
+[id の文脈](../diagrams/sequence.ja.md#id-の文脈) を参照）。
+
+| 欄     | 型     | 意味                                                            |
+| ------ | ------ | --------------------------------------------------------------- |
+| `name` | 文字列 | その範囲のテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。 |
+
+子の欄はありません。
+id は 1 つの単位です。
+その名前は両端に空白を持たず、
+中の空白は、単位を切るディレクティブの隣にあっても名前の一部です。
+そのトークンは `Identifier` のトークンで、1 つです。
+単位の中のディレクティブが単位を切ると、それより多くなります
+（[トークン](#トークン) を参照）。
+`participant A B` の参加者は `A B` です。
+`participant A%%{init: {}}%% c%%B` の参加者は `A c%%B` で、
+その 1 つの単位はトークン `A` と `c%%B` に切られています。
+[fixture: sequence/lex-id-context-space] [fixture:
+sequence/lex-directive-in-id-before-space]
+
 ### SequenceText
 
 テキスト部分です
@@ -343,7 +427,7 @@ mermaid.js が 1 つの `invalid` の単位として読み、無視する行で�
 | 種類         | 単位                                                                                                                                                                                                                                                                                                                                                                                                  |
 | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `Keyword`    | キーワード: `sequenceDiagram`、`participant`、`actor`、`create`、`destroy`、`as`、`box`、`loop`、`rect`、`opt`、`alt`、`else`、`par`、`par_over`、`and`、`critical`、`option`、`break`、`end`、`note`、`left of`、`right of`、`over`、`links`、`link`、`properties`、`details`、`activate`、`deactivate`、`autonumber`、`off`。`title`、`title:`、`accTitle`、`accDescr` の単位。`wrap-prefix` の単位 |
-| `Identifier` | `id` の単位                                                                                                                                                                                                                                                                                                                                                                                           |
+| `Identifier` | `id` の単位。[SequenceIdentifier](#sequenceidentifier) の単位                                                                                                                                                                                                                                                                                                                                         |
 | `Numeric`    | `number` の単位                                                                                                                                                                                                                                                                                                                                                                                       |
 | `RawText`    | `text`、`color-candidate`、`title-text`、`description-text`、`description-block-text`、`data-text` の単位。`invalid` の単位                                                                                                                                                                                                                                                                           |
 | `Punctuator` | `arrow` の単位。`+`、`-`、`()`、`,`、`:`、`{`、`}`、`@{`。`;` から読む `newline` の単位                                                                                                                                                                                                                                                                                                               |

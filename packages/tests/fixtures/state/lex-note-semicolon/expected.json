@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note contexts: a note text on one line ends at ;, and the rest is the next statement."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": ";x",
+        "shape": "rect",
+        "label": ";x",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "A",
+        "position": "left of",
+        "text": "hi"
+      }
+    ],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

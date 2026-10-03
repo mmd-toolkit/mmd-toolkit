@@ -6,7 +6,9 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
+
+💡 この規則は、[エディタの提案](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)で手で直せる。
 
 <!-- end auto-generated rule notice -->
 
@@ -26,6 +28,10 @@ mermaid.js はどの `accTitle` の文も受理し、
 テキストのない `accTitle:` もタイトルを設定する。
 タイトルを空にするので、その前に書いたタイトルは失われる。
 subgraph の中の文も、図全体のタイトルを設定するので、数える。
+
+報告ごとに、規則は 2 つの文のどちらかを消す書き換えを提案する。
+報告した文か、その前の `accTitle` の文である。
+mermaid.js は、最後に残ったタイトルを使う。
 
 この規則に**反する**コードの例:
 
@@ -66,3 +72,12 @@ flowchart LR
 ## 関連する規則
 
 - [no-duplicate-description](./no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../../src/rules/flowchart/no-duplicate-title.ts)
+- [テストのソース](../../../tests/rules/flowchart/no-duplicate-title.test.ts)
+
+<!-- end auto-generated rule resources -->

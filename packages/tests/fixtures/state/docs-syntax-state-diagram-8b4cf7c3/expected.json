@@ -1,0 +1,78 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/stateDiagram.md",
+    "line": 223
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "if_state",
+        "shape": "choice",
+        "label": "if_state",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "IsPositive",
+        "shape": "rect",
+        "label": "IsPositive",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "False",
+        "shape": "rect",
+        "label": "False",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "True",
+        "shape": "rect",
+        "label": "True",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "IsPositive",
+        "label": ""
+      },
+      {
+        "start": "IsPositive",
+        "end": "if_state",
+        "label": ""
+      },
+      {
+        "start": "if_state",
+        "end": "False",
+        "label": "if n < 0"
+      },
+      {
+        "start": "if_state",
+        "end": "True",
+        "label": "if n >= 0"
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

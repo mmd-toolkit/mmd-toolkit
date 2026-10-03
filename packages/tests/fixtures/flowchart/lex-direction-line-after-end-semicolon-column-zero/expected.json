@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The direction line: at the start of the line the `end` rule applies first, so `end` closes the subgraph, and the rest after `;` is a direction line, which changes nothing outside a subgraph."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "a",
+        "nodes": [],
+        "title": "a",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

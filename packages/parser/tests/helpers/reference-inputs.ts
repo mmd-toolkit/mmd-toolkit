@@ -9,9 +9,12 @@ import { MISSING_HEADER_MESSAGE } from "../../src/diagrams/class/units.ts"
 import { lexFlowchart } from "../../src/diagrams/flowchart/index.ts"
 import type { SequenceUnits } from "../../src/diagrams/sequence/index.ts"
 import { lexSequence } from "../../src/diagrams/sequence/index.ts"
+import type { StateUnits } from "../../src/diagrams/state/index.ts"
+import { lexState } from "../../src/diagrams/state/index.ts"
 import type { DiagramUnit } from "../../src/diagram-units.ts"
 import type { EmptyForm } from "../../src/empty-forms.ts"
-import { emptyFormsOf } from "../../src/empty-forms.ts"
+import { EMPTY_FORM_KINDS, emptyFormsOf } from "../../src/empty-forms.ts"
+import type { EmptyFormKind } from "../../src/empty-forms.ts"
 import type {
   FlowchartLexing,
   Unit,
@@ -276,10 +279,10 @@ export function commentsAfterMatchStarts(text: string): number[] | null {
 
 /**
  * known-divergences/comment-takes-line-break.md and
- * known-divergences/name-start-reads-unit.md: the divergences of the class lexer that a
- * reference reading removes from mermaid.js, together, so that mermaid.js
- * reads a class diagram as this specification does, apart from the other
- * divergences, also where one input has both.
+ * known-divergences/name-start-reads-unit.md: the divergences of the class
+ * lexer that a reference reading removes from mermaid.js, together, so that
+ * mermaid.js reads a class diagram as this specification does, apart from the
+ * other divergences, also where one input has both.
  */
 export const CLASS_READING_REMOVALS: readonly DivergenceRemoval[] = [
   "comment-takes-line-break",
@@ -380,13 +383,31 @@ export function rejectsWithoutHeader(text: string): boolean {
 type AnyUnit = DiagramUnit<string>
 
 /**
- * The units of a diagram text as the parser's lexer reads them, and how a
- * statement start is found among them: whether a statement starts after
- * the units before a place.
+ * The units of a diagram text as the parser's lexer reads them, and how an
+ * empty description block that is a statement is found among them: where
+ * a statement starts, and before the separator of a statement (each
+ * diagram's Empty description blocks before a separator).
  */
 interface DiagramUnits {
   readonly units: readonly AnyUnit[]
-  readonly startsStatementAfter: (before: readonly AnyUnit[]) => boolean
+  /** The kinds of empty form that the diagram has (see `EMPTY_FORM_KINDS`). */
+  readonly emptyFormKinds: readonly EmptyFormKind[]
+  /**
+   * Whether a statement starts at the empty description block `block`,
+   * from the units before it and the units after it, in source order,
+   * without those of the empty forms that mermaid.js does not see.
+   */
+  readonly statementStartsAt: (
+    before: readonly AnyUnit[],
+    block: EmptyForm<AnyUnit>,
+    after: readonly AnyUnit[],
+  ) => boolean
+  /** The names of the units that separate a statement that needs a separator from what follows it. */
+  readonly separators: readonly string[]
+  /** Whether the end of the text is such a separator too. */
+  readonly endOfTextSeparates: boolean
+  /** The range that the reference input leaves out for the removed empty form `form`. */
+  readonly removedRangeOf: (form: EmptyForm<AnyUnit>) => Range
 }
 
 /**
@@ -403,17 +424,17 @@ export function removedEmptyFormsIn(text: string): EmptyForm<AnyUnit>[] | null {
 /**
  * `text` without its comment regions and without the empty forms that
  * mermaid.js reads nothing for: each empty string, each empty call from its
- * `call` to its `)`, and each empty description block that does not start a
- * statement from its `accDescr` to its `}`. This is the reference input
- * for `tokenless-empty-forms`; null where {@link removedEmptyFormsIn} is.
+ * `call` to its `)`, and each empty description block that is no
+ * statement, because it lies inside a statement, neither where a statement
+ * starts nor before its separator, from its `accDescr` to its `}`, with
+ * the whitespace around a block between `direction` and its value in class
+ * ({@link classRemovedRangeOf}). This is the reference input for
+ * `tokenless-empty-forms`; null where {@link removedEmptyFormsIn} is.
  */
 export function withoutEmptyForms(text: string): string | null {
-  const removed = removedEmptyFormsIn(text)
-  if (removed === null) return null
-  return withoutCommentRegionsAnd(
-    text,
-    removed.map((form) => form.range),
-  ).text
+  const diagram = diagramUnitsOf(text)
+  if (diagram === null) return null
+  return withoutCommentRegionsAnd(text, removedRangesOf(diagram)).text
 }
 
 /**
@@ -427,15 +448,20 @@ export function withoutEmptyForms(text: string): string | null {
 export function keepsUnitsWithoutEmptyForms(text: string): boolean {
   const diagram = diagramUnitsOf(text)
   if (diagram === null) return false
-  const forms = removedEmptyFormsOf(diagram)
-  const removed = new Set(forms.flatMap((form) => form.units))
+  const removed = new Set(
+    removedEmptyFormsOf(diagram).flatMap((form) => form.units),
+  )
   return readsAsUnits(
-    withoutCommentRegionsAnd(
-      text,
-      forms.map((form) => form.range),
-    ),
+    withoutCommentRegionsAnd(text, removedRangesOf(diagram)),
     diagram.units.filter((unit) => !removed.has(unit)),
     new Set(),
+  )
+}
+
+/** The ranges that the reference input of `diagram` leaves out for its removed empty forms. */
+function removedRangesOf(diagram: DiagramUnits): Range[] {
+  return removedEmptyFormsOf(diagram).map((form) =>
+    diagram.removedRangeOf(form),
   )
 }
 
@@ -473,28 +499,82 @@ function readsAsUnits(
 /**
  * The empty forms among the units of `diagram` that mermaid.js reads
  * nothing for: every empty string and every empty call, and every empty
- * description block that does not start a statement. Whether a block
- * starts one is read from the units before it other than the `space` units
- * and the units of the empty forms found here already, which mermaid.js
- * does not see.
+ * description block that is no statement, neither where a statement
+ * starts nor before its separator. Whether a block is one is read from the
+ * units around it other than the `space` units, and, before it, other than
+ * the units of the empty forms found here already, which mermaid.js does
+ * not see.
  */
-function removedEmptyFormsOf({
-  units,
-  startsStatementAfter,
-}: DiagramUnits): EmptyForm<AnyUnit>[] {
+function removedEmptyFormsOf(diagram: DiagramUnits): EmptyForm<AnyUnit>[] {
+  const { units, emptyFormKinds, statementStartsAt } = diagram
   const removed: EmptyForm<AnyUnit>[] = []
   const removedUnits = new Set<AnyUnit>()
-  for (const form of emptyFormsOf(units)) {
+  for (const form of emptyFormsOf(units, emptyFormKinds)) {
     if (form.kind === "empty-description-block") {
       const before = units
         .slice(0, form.units[0].index)
         .filter((unit) => unit.name !== "space" && !removedUnits.has(unit))
-      if (startsStatementAfter(before)) continue
+      const after = units
+        .slice((form.units.at(-1)?.index ?? 0) + 1)
+        .filter((unit) => unit.name !== "space")
+      if (
+        statementStartsAt(before, form, after) ||
+        separatorFollows(diagram, after)
+      ) {
+        continue
+      }
     }
     removed.push(form)
     for (const unit of form.units) removedUnits.add(unit)
   }
   return removed
+}
+
+/**
+ * Each diagram's Empty description blocks before a separator: whether
+ * `after`, the units after an empty description block, are other empty
+ * description blocks and then a separator of `diagram`, so that the block
+ * lies in a `statement-end = empty-description-block* separator`.
+ */
+function separatorFollows(
+  diagram: DiagramUnits,
+  after: readonly AnyUnit[],
+): boolean {
+  const separator = firstAfterEmptyDescriptionBlocks(after)
+  return separator === undefined
+    ? diagram.endOfTextSeparates
+    : diagram.separators.includes(separator.name)
+}
+
+/**
+ * The first of `units`, the units after an empty description block, that
+ * is not a unit of an empty description block right after it; undefined
+ * when there is none.
+ */
+function firstAfterEmptyDescriptionBlocks(
+  units: readonly AnyUnit[],
+): AnyUnit | undefined {
+  let index = 0
+  while (startsEmptyDescriptionBlock(units, index, 1)) index += 3
+  return units.at(index)
+}
+
+/**
+ * Whether an empty description block, `accDescr`, `{`, and `}` with no unit
+ * between them, has its first unit (`direction` 1) or its last unit
+ * (`direction` -1) at `index` of `units`.
+ */
+function startsEmptyDescriptionBlock(
+  units: readonly AnyUnit[],
+  index: number,
+  direction: 1 | -1,
+): boolean {
+  const names = ["accDescr", "{", "}"]
+  return names.every(
+    (name, offset) =>
+      units.at(direction === 1 ? index + offset : index - 2 + offset)?.name ===
+      name,
+  )
 }
 
 /** A text with ranges left out of it. */
@@ -569,14 +649,34 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
   if (sequence !== null) {
     return {
       units: sequence.units,
-      startsStatementAfter: sequenceStatementStartsAfter,
+      emptyFormKinds: EMPTY_FORM_KINDS.sequence,
+      statementStartsAt: (before) => sequenceStatementStartsAfter(before),
+      separators: ["newline"],
+      endOfTextSeparates: false,
+      removedRangeOf: (form) => form.range,
     }
   }
   const classLexing = classLexingOf(text)
   if (classLexing !== null) {
     return {
       units: classLexing.units,
-      startsStatementAfter: classStatementStartsAfter,
+      emptyFormKinds: EMPTY_FORM_KINDS.class,
+      statementStartsAt: (before) => classStatementStartsAfter(before),
+      separators: ["newline"],
+      endOfTextSeparates: true,
+      removedRangeOf: (form) => classRemovedRangeOf(classLexing.units, form),
+    }
+  }
+  const state = stateLexingOf(text)
+  if (state !== null) {
+    return {
+      units: state.units,
+      emptyFormKinds: EMPTY_FORM_KINDS.state,
+      statementStartsAt: (before, block, after) =>
+        stateStatementStartsAt(text, before, block, after),
+      separators: ["newline"],
+      endOfTextSeparates: true,
+      removedRangeOf: (form) => form.range,
     }
   }
   return null
@@ -584,7 +684,14 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
 
 /** The units of a flowchart, with how a statement start is found among them. */
 function flowchartUnits(units: readonly Unit[]): DiagramUnits {
-  return { units, startsStatementAfter: flowchartStatementStartsAfter }
+  return {
+    units,
+    emptyFormKinds: EMPTY_FORM_KINDS.flowchart,
+    statementStartsAt: (before) => flowchartStatementStartsAfter(before),
+    separators: ["newline", ";"],
+    endOfTextSeparates: true,
+    removedRangeOf: (form) => form.range,
+  }
 }
 
 /** The units of the sequence diagram `text` as the parser's lexer reads them; null when `text` is no sequence diagram or its lexer rejects it. */
@@ -611,6 +718,106 @@ function classLexingOf(text: string): ClassUnits | null {
     if (error instanceof ParseError) return null
     throw error
   }
+}
+
+/** The units of the state diagram `text` as the parser's lexer reads them; null when `text` is no state diagram or its lexer rejects it. */
+function stateLexingOf(text: string): StateUnits | null {
+  const { lexer, frontmatter } = openSource(text)
+  const diagramType = detect(buildDetectionInput(lexer).detectionText)
+  if (diagramType !== "stateDiagram") return null
+  try {
+    return lexState({ lexer, frontmatter, diagramType })
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/**
+ * diagrams/state.md, Other statements: whether a statement starts at the
+ * empty description block `block` of the state diagram `text`, from the
+ * units `before` and `after` it. A statement starts where the text of a
+ * line starts and right after each statement, so after every unit but
+ * those that a statement continues after: `-->`, `:::`, and the string of
+ * an alias. A block right after a state reference on its line, an `id` or
+ * `[*]` unit, lies inside the statement of the reference when the unit
+ * after it and the empty description blocks right after it continues that
+ * statement: `-->`, `:::`, or a description, as in `A accDescr {} --> B` and
+ * `A accDescr {} accDescr {} : x`. After a `click` on its line, no statement starts:
+ * a click statement needs a separator (Click statements). The blocks before
+ * the `{` of a body on the line after a name or an alias id, which the tree
+ * holds in `textBeforeBody` (Composite states, aliases, and pseudostates),
+ * stand where the text of that line starts or after another such block, so
+ * they are kept too.
+ */
+function stateStatementStartsAt(
+  text: string,
+  before: readonly AnyUnit[],
+  block: EmptyForm<AnyUnit>,
+  after: readonly AnyUnit[],
+): boolean {
+  const last = before.at(-1)
+  if (last === undefined) return true
+  const between = text.slice(last.end, block.range[0])
+  if (between.includes("\n") || between.includes("\r")) return true
+  const names = before.map((unit) => unit.name)
+  if (names.includes("click", names.lastIndexOf("newline") + 1)) return false
+  const next = firstAfterEmptyDescriptionBlocks(after)?.name
+  if (
+    (last.name === "id" || last.name === "[*]") &&
+    (next === "-->" || next === ":::" || next === "description")
+  ) {
+    return false
+  }
+  switch (last.name) {
+    case "-->":
+    case ":::":
+    case "string":
+      return false
+    default:
+      return true
+  }
+}
+
+/** diagrams/class.md, The direction line: the values of a direction. */
+const CLASS_DIRECTIONS: readonly string[] = ["TB", "BT", "RL", "LR"]
+
+/**
+ * known-divergences/tokenless-empty-forms.md, Counts and how they are
+ * checked: the range that the reference input of a class diagram, whose
+ * units are `units`, leaves out for the removed empty form `form`: the form,
+ * and for each of the empty description blocks between `direction` and
+ * its value on one line, also the whitespace around it, so that the two
+ * form one word, as mermaid.js joins the two name parts
+ * (`direction accDescr {} LR` and `direction accDescr {}accDescr {}LR`
+ * become `directionLR`).
+ */
+function classRemovedRangeOf(
+  units: readonly AnyUnit[],
+  form: EmptyForm<AnyUnit>,
+): Range {
+  if (form.kind !== "empty-description-block") return form.range
+  const first = form.units[0].index
+  const last = form.units.at(-1)?.index ?? first
+  let before = first - 1
+  while (startsEmptyDescriptionBlock(units, before, -1)) before -= 3
+  let after = last + 1
+  while (startsEmptyDescriptionBlock(units, after, 1)) after += 3
+  const word = units.at(before)
+  const value = units.at(after)
+  const previous = units.at(first - 1)
+  const next = units.at(last + 1)
+  if (
+    word?.name === "word" &&
+    word.text === "direction" &&
+    value?.name === "word" &&
+    CLASS_DIRECTIONS.includes(value.text) &&
+    previous !== undefined &&
+    next !== undefined
+  ) {
+    return [previous.end, next.start]
+  }
+  return form.range
 }
 
 /**

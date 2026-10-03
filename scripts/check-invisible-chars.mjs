@@ -2,10 +2,12 @@
 // easily confused character that must be written as an escape instead: C0 and
 // C1 control characters other than tab, line feed and carriage return, U+00A0,
 // U+00AD, U+1680, U+2000..U+200F, U+2028, U+2029, U+202F, U+205F, U+3000 and
-// U+FEFF (the set named in packages/spec/docs/index.md). Fixture inputs and
-// expectations under packages/tests/fixtures/ intentionally contain such
+// U+FEFF (the set named in packages/spec/docs/index.md). The fixtures of the
+// conformance corpus under packages/tests/fixtures/ intentionally contain such
 // characters and are skipped, as are generated and third-party directories and
-// the git worktrees under .claude/worktrees/.
+// the git worktrees under .claude/worktrees/. The fixtures and snapshots of the
+// other packages are checked: a test that needs such a character writes it as
+// an escape.
 import { readdirSync, readFileSync, statSync } from "node:fs"
 import path from "node:path"
 
@@ -15,9 +17,9 @@ const skipDirs = new Set([
   ".git",
   "lib",
   "coverage",
-  "fixtures",
   "worktrees",
 ])
+const corpusFixtures = path.join(root, "packages", "tests", "fixtures")
 const extensions = new Set([
   ".ts",
   ".mts",
@@ -30,6 +32,9 @@ const extensions = new Set([
   ".yml",
   ".yaml",
   ".toml",
+  ".mmd",
+  ".eslintsnap",
+  ".snap",
 ])
 
 /**
@@ -39,7 +44,7 @@ function walk(dir, out) {
   for (const name of readdirSync(dir)) {
     const full = path.join(dir, name)
     if (statSync(full).isDirectory()) {
-      if (!skipDirs.has(name)) walk(full, out)
+      if (!skipDirs.has(name) && full !== corpusFixtures) walk(full, out)
     } else if (extensions.has(path.extname(name))) {
       out.push(full)
     }

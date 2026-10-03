@@ -121,6 +121,27 @@ flowchart/db-data-label-number]
   [fixture: common/config-init-detection-rejects]
 - 正しい YAML でないデータブロック。
   [fixture: flowchart/div-data-invalid-yaml]
+- flowchart の頂点のデータブロックで、中身が改行を持ち、
+  値が null の YAML であるもの
+  （改行だけ、コメントだけ、`null`、`~`、文書の印だけなど）。
+  mermaid.js は、改行を持つ中身を YAML の文書として、
+  改行を持たない中身を波括弧の間のマッピングとして読み
+  （[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L143-L151)）、
+  その後で値の形を読むので、値がないと `TypeError` で失敗します
+  （[`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L235-L236)）。
+  `A@{`、改行、`}` はそこで拒否されますが、
+  1 行の `A@{ }` と `A@{ # c }` は両方が受理し、
+  mermaid.js が形を読まない辺の id の同じブロックも同じです。
+  sequence では、mermaid.js は改行があっても、
+  データブロックの中身をマッピングとして読み、
+  そのようなブロックを受理します。
+  [fixture: flowchart/div-data-block-line-break-only] [fixture:
+  flowchart/div-data-block-comment-then-line-break] [fixture:
+  flowchart/div-data-block-null-on-own-line] [fixture:
+  flowchart/gram-data-block-comment-one-line] [fixture:
+  flowchart/gram-data-block-space-only] [fixture:
+  flowchart/gram-data-block-edge-line-break-only] [fixture:
+  sequence/gram-data-block-line-break-only]
 
 差は一方向だけです。
 埋め込まれたデータが持つもののために、
@@ -160,9 +181,9 @@ mermaid.js は拒否します。
 
 ## 件数と確かめ方
 
-この差の印がある fixture は 20 件です。
-フロントマターについてのものが 7 件、ディレクティブについてのものが 6 件、
-flowchart と sequence のデータブロックについてのものが 7 件です。
+この差の印がある fixture は 25 件です。
+フロントマターについてのものが 8 件、ディレクティブについてのものが 6 件、
+flowchart と sequence のデータブロックについてのものが 11 件です。
 mermaid.js はそのどれも拒否し、この仕様はどれも受理します。
 
 parser の差分テストは、この差によるとしたすべての違いが、

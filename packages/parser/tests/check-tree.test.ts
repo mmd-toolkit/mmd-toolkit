@@ -12,6 +12,7 @@ import type {
   Root,
   Token,
   SequenceStatement,
+  StateStatement,
 } from "../src/index.ts"
 import { parse } from "../src/index.ts"
 import { LineIndex } from "../src/positions.ts"
@@ -120,6 +121,7 @@ function handMadeRoot(
     const range = rangeOf(source, piece)
     return {
       type: "Comment",
+      mark: "%%",
       value: piece.slice(2),
       range,
       loc: lines.location(range),
@@ -337,47 +339,36 @@ describe("checkTree", () => {
     )
   })
 
-  it("passes a directive inside a token when it is part of a comment region that lies inside the token", () => {
+  it("passes a token cut by a comment region, with a Directive token for the directive before the comment's `%%`", () => {
     // A token that continues across a comment line, as a multi-line quoted
-    // label does: the lexer reads through the whole comment region, with
-    // the directive before the comment's `%%` and the one inside the
-    // comment. No diagram that the parser supports has such a token yet, so
-    // the tree is made by hand and only the conditions of every tree apply.
+    // label does, is cut at the comment region: the region lies outside
+    // every token, the directive before the comment's `%%` has a
+    // `Directive` token, and the one inside the comment has none.
     const source = 'error "a\n%%{init: {}}%% %% c %%{wrap}%%\nb"'
     const root = handMadeRoot(source, {
-      tokens: ["error", '"a\n%%{init: {}}%% %% c %%{wrap}%%\nb"'],
+      tokens: ["error", '"a', "%%{init: {}}%%", 'b"'],
       comments: ["%% c %%{wrap}%%"],
       directives: ["%%{init: {}}%%", "%%{wrap}%%"],
     })
-    checkInvariants(source, root)
-  })
-
-  it("fails when a directive inside a token is not part of a comment region", () => {
-    // The directive stands on the line before the comment line, after other
-    // characters of the token: the comment region starts after the line
-    // terminator and does not hold it.
-    const source = 'error "a %%{x}%%\n%% c\nb"'
-    const root = handMadeRoot(source, {
-      tokens: ["error", '"a %%{x}%%\n%% c\nb"'],
-      comments: ["%% c"],
-      directives: ["%%{x}%%"],
-    })
-    expect(() => checkInvariants(source, root)).toThrow(
-      "Directive at 9-16 lies inside RawText at 6-24, and not in a comment region inside that token",
+    const tokens = root.tokens.map((token): Token =>
+      token.value === "%%{init: {}}%%"
+        ? { ...token, type: "Directive" }
+        : token,
     )
+    checkInvariants(source, { ...root, tokens })
   })
 
-  it("fails when the comment region of a directive inside a token does not lie inside the token", () => {
-    // The comment region starts at the space after the line terminator; the
-    // token starts at the directive, one character later.
-    const source = "error\n %%{x}%% %% c\nb"
+  it("fails when a comment region lies inside a token", () => {
+    // The token reads through the comment region instead of being cut
+    // there.
+    const source = 'error "a\n%%{init: {}}%% %% c\nb"'
     const root = handMadeRoot(source, {
-      tokens: ["error", "%%{x}%% %% c\nb"],
+      tokens: ["error", '"a\n%%{init: {}}%% %% c\nb"'],
       comments: ["%% c"],
-      directives: ["%%{x}%%"],
+      directives: ["%%{init: {}}%%"],
     })
     expect(() => checkInvariants(source, root)).toThrow(
-      "Directive at 7-14 lies inside RawText at 7-21, and not in a comment region inside that token",
+      "Comment at 24-28 lies inside RawText at 6-31",
     )
   })
 
@@ -404,7 +395,7 @@ describe("checkTree", () => {
       ...withDiagramTokens(root, error, percent, wide),
       body,
     }
-    expect(() => checkTree(text, broken)).toThrow("lies partly inside RawText")
+    expect(() => checkTree(text, broken)).toThrow("lies inside RawText")
   })
 
   it("fails when comments or directives overlap", () => {
@@ -413,12 +404,12 @@ describe("checkTree", () => {
     expect(() =>
       checkTree(text, { ...root, comments: [comment, comment] }),
     ).toThrow("overlaps the Comment before it")
-    // A directive listed twice, inside a comment region inside a token, so
-    // that it has no `Directive` token.
-    const source = 'error "a\n%%{init: {}}%% %% c\nb"'
+    // A directive listed twice, inside a comment, so that it has no
+    // `Directive` token.
+    const source = "error\n%% c %%{init: {}}%%"
     const twice = handMadeRoot(source, {
-      tokens: ["error", '"a\n%%{init: {}}%% %% c\nb"'],
-      comments: ["%% c"],
+      tokens: ["error"],
+      comments: ["%% c %%{init: {}}%%"],
       directives: ["%%{init: {}}%%", "%%{init: {}}%%"],
     })
     expect(() => checkInvariants(source, twice)).toThrow(
@@ -446,22 +437,23 @@ describe("checkTree", () => {
     ).toThrow("value of the frontmatter")
   })
 
-  it("fails when the frontmatter does not come before every comment and directive", () => {
+  it("fails when a comment lies in the frontmatter", () => {
     // The body of the frontmatter looks like a comment line. A comment made
-    // of it lies inside the body's token, which every other condition
-    // allows.
-    const source = "---\n%% c\n---\nerror"
+    // of it lies inside the body's token. A sequence diagram, which has
+    // diagram comments marked `%%`, lets the check reach that.
+    const source = "---\n%% c\n---\nsequenceDiagram\nA->>B: x\n"
     const root = parse(source)
     checkTree(source, root)
     const range: Range = [4, 8]
     const comment: Comment = {
       type: "Comment",
+      mark: "%%",
       value: " c",
       range,
       loc: new LineIndex(source).location(range),
     }
     expect(() => checkTree(source, { ...root, comments: [comment] })).toThrow(
-      "Comment at 4-8 comes before the end of the frontmatter",
+      "Comment at 4-8 lies inside RawText",
     )
   })
 
@@ -531,18 +523,176 @@ describe("checkTree", () => {
     checkTree(source, root)
   })
 
-  it("fails when a comment lies inside a token of an ErrorDiagram", () => {
-    // The comment line `%%c` is also listed as a token.
-    const source = "error\n%%c"
-    const root = handMadeRoot(source, {
-      tokens: ["error", "%%c"],
-      comments: ["%%c"],
-      directives: [],
-    })
-    checkInvariants(source, root)
-    expect(() => checkTree(source, root)).toThrow(
-      "Comment at 6-9 lies inside RawText at 6-9 of an ErrorDiagram",
+  it("fails when a comment does not end where its line ends", () => {
+    /**
+     * The tree of `source` with its one comment ending at `end`, without
+     * the tokens that the comment then covers.
+     */
+    function withCommentEnd(source: string, end: number): Root {
+      const root = parse(source)
+      const lines = new LineIndex(source)
+      const [comment] = root.comments
+      const range: Range = [comment.range[0], end]
+      const valueStart = comment.range[1] - comment.value.length
+      const broken: Comment = {
+        ...comment,
+        value: source.slice(valueStart, end),
+        range,
+        loc: lines.location(range),
+      }
+      return {
+        ...root,
+        comments: [broken],
+        tokens: root.tokens.filter(
+          (token) => token.range[1] <= range[0] || range[1] <= token.range[0],
+        ),
+      }
+    }
+
+    // A comment that runs on to the line terminator of the next line, a
+    // line of whitespace, has a line terminator that no directive takes.
+    const blankLine = "sequenceDiagram\nA->>B: x #c\n  \nC->>D: y\n"
+    checkTree(blankLine, withCommentEnd(blankLine, 27))
+    expect(() => checkTree(blankLine, withCommentEnd(blankLine, 30))).toThrow(
+      "which no directive in it takes",
     )
+    const commentLine = "flowchart LR\n%% c\n  \nA\n"
+    expect(() =>
+      checkTree(commentLine, withCommentEnd(commentLine, 20)),
+    ).toThrow("which no directive in it takes")
+
+    // A comment ends at the first line terminator that no directive takes:
+    // here the directive takes the line feed and `A`, so a comment that ends
+    // at that line feed, with the text after it in tokens, is wrong.
+    const word = "sequenceDiagram\nA->>B: x #c %%{wrap\nA\n"
+    const wordRoot = withCommentEnd(word, 35)
+    const lines = new LineIndex(word)
+    const tokenA: Range = [36, 37]
+    expect(() =>
+      checkTree(word, {
+        ...wordRoot,
+        tokens: [
+          ...wordRoot.tokens,
+          {
+            type: "RawText",
+            value: "A",
+            range: tokenA,
+            loc: lines.location(tokenA),
+          },
+        ],
+      }),
+    ).toThrow("ends at a line terminator that a directive takes")
+
+    const spaces = "sequenceDiagram\nA->>B: x #c  \nC->>D: y\n"
+    checkTree(spaces, withCommentEnd(spaces, 29))
+    expect(() => checkTree(spaces, withCommentEnd(spaces, 27))).toThrow(
+      "ends where its line ends",
+    )
+    expect(() => checkTree(spaces, withCommentEnd(spaces, 30))).toThrow(
+      "ends with a line terminator",
+    )
+    // A `;` that the line rule ignores and that is the last character of a
+    // diagram comment lies outside it, as a token of its own.
+    const semicolon = "sequenceDiagram\nA->>B: x #style:#x;\n"
+    checkTree(semicolon, withCommentEnd(semicolon, 34))
+    expect(() => checkTree(semicolon, withCommentEnd(semicolon, 35))).toThrow(
+      "ends with a `;` that the line rule ignores",
+    )
+    // A directive that takes all to the end of the text: the comment ends
+    // where the directive ends, without the whitespace that it took.
+    const directive = "flowchart LR\n%% %%{init: {} \n \n\n"
+    checkTree(directive, withCommentEnd(directive, 27))
+    expect(() => checkTree(directive, withCommentEnd(directive, 28))).toThrow(
+      "ends where the directive that takes the rest of the text ends",
+    )
+    expect(() => checkTree(directive, withCommentEnd(directive, 29))).toThrow(
+      "ends with a line terminator",
+    )
+  })
+
+  it("fails when the mark of a comment is not its mark, a fragment without a mark follows no comment region, or comments overlap", () => {
+    /** The tree of `source` with its comment at `index` changed by `change`. */
+    function withComment(
+      source: string,
+      index: number,
+      change: Partial<Pick<Comment, "mark" | "value" | "range">>,
+    ): Root {
+      const root = parse(source)
+      const lines = new LineIndex(source)
+      const comments = root.comments.map((comment, at): Comment => {
+        if (at !== index) return comment
+        const changed = { ...comment, ...change }
+        return { ...changed, loc: lines.location(changed.range) }
+      })
+      return {
+        ...root,
+        comments,
+        tokens: root.tokens.filter((token) =>
+          comments.every(
+            ({ range }) =>
+              token.range[1] <= range[0] || range[1] <= token.range[0],
+          ),
+        ),
+      }
+    }
+
+    // The text without the directives goes on where the scan of a directive
+    // ends, after the U+2028 and the line feed that it takes: the mark of
+    // `%`, the directive, U+2028, a line feed, and `%% e` is `%%`.
+    const scanned =
+      "sequenceDiagram\nautonumber %%%{init: {} style:#x;\u2028\n%% e\nC->>D: y\n"
+    checkTree(scanned, parse(scanned))
+    expect(parse(scanned).comments.map(({ mark }) => mark)).toEqual(["%%"])
+
+    // Each diagram type has the marks that its document defines.
+    const state = "stateDiagram-v2\nA #c\n"
+    expect(() =>
+      checkTree(state, withComment(state, 0, { mark: "%" })),
+    ).toThrow("in a StateDiagram")
+
+    const line = "flowchart LR\n%% c\nA\n"
+    expect(() => checkTree(line, withComment(line, 0, { mark: "#" }))).toThrow(
+      "mark of",
+    )
+    const hash = "sequenceDiagram\nA->>B: x #c\n"
+    expect(() => checkTree(hash, withComment(hash, 0, { mark: "%" }))).toThrow(
+      "mark of",
+    )
+    // The comments `%% x`, `%% end`, and `B`, the last without a mark.
+    const cut = "stateDiagram-v2\nA %% x\u2029%% end\nB\n"
+    checkTree(cut, parse(cut))
+    expect(() =>
+      checkTree(cut, withComment(cut, 0, { mark: null, value: "%% x" })),
+    ).toThrow("has no mark and follows no comment region")
+    expect(() => checkTree(cut, withComment(cut, 2, { mark: "%%" }))).toThrow(
+      "mark of",
+    )
+    expect(() =>
+      checkTree(
+        cut,
+        withComment(cut, 0, { range: [18, 23], value: " x\u2029" }),
+      ),
+    ).toThrow("ends with whitespace before a comment region")
+    const root = parse(cut)
+    expect(() =>
+      checkTree(cut, {
+        ...root,
+        comments: [root.comments[0], ...root.comments],
+      }),
+    ).toThrow("overlaps")
+    // A `;` that the line rule ignores and that a U+2029 follows has a
+    // character of the comment after it, so it lies inside the fragment.
+    const semicolon = "stateDiagram-v2\nA %% style:#x;\u2029%% end\n"
+    checkTree(semicolon, parse(semicolon))
+    expect(parse(semicolon).comments[0].range).toEqual([18, 30])
+    // At the end of the line it is the last character of the comment.
+    const lineEnd = "stateDiagram-v2\nA %% style:#x;\nB\n"
+    expect(() =>
+      checkTree(
+        lineEnd,
+        withComment(lineEnd, 0, { range: [18, 30], value: " style:#x;" }),
+      ),
+    ).toThrow("ends with a `;` that the line rule ignores")
   })
 
   it("fails when the root does not cover the whole input", () => {
@@ -887,7 +1037,7 @@ describe("checkTree on a sequence diagram", () => {
       }
       return { ...statement, text: { ...statement.text, colorCandidate: null } }
     })
-    expect(() => checkTree(source, broken)).toThrow("are its parts")
+    expect(() => checkTree(source, broken)).toThrow("are those of its parts")
   })
 
   it("fails when the value of a literal is not the text of its range", () => {
@@ -1036,6 +1186,114 @@ describe("checkTree on a class diagram", () => {
           ...statement.name,
           name: { ...statement.name.name, value: "`a b`" },
         },
+      }
+    })
+    expect(() => checkTree(source, broken)).toThrow(
+      "is not the text of its range",
+    )
+  })
+})
+
+describe("checkTree on a state diagram", () => {
+  // ast/state.md: what the document of the diagram states about its tree,
+  // beyond the invariants of ast.md.
+
+  /** The tree of the state diagram `source`, checked to pass first, with the first statement replaced by what `change` makes of it. */
+  function withFirstStatementChanged(
+    source: string,
+    change: (statement: StateStatement) => StateStatement,
+  ): Root {
+    const root = parse(source)
+    checkTree(source, root)
+    if (root.body.type !== "StateDiagram") throw new Error("unexpected tree")
+    const [first, ...rest] = root.body.body
+    return { ...root, body: { ...root.body, body: [change(first), ...rest] } }
+  }
+
+  it("fails when the kind of a pseudostate is not its mark", () => {
+    const source = "stateDiagram-v2\nstate f <<fork>>"
+    const broken = withFirstStatementChanged(source, (statement) => {
+      if (statement.type !== "StatePseudostateDefinitionStatement") {
+        throw new Error("unexpected tree")
+      }
+      return { ...statement, kind: "join" }
+    })
+    expect(() => checkTree(source, broken)).toThrow(
+      "the kind of StatePseudostateDefinitionStatement",
+    )
+  })
+
+  it("fails when the position of a note is not its position token", () => {
+    const source = "stateDiagram-v2\nnote left of A : x"
+    const broken = withFirstStatementChanged(source, (statement) => {
+      if (statement.type !== "StateNoteStatement") {
+        throw new Error("unexpected tree")
+      }
+      return { ...statement, position: "right" }
+    })
+    expect(() => checkTree(source, broken)).toThrow(
+      "the position of StateNoteStatement",
+    )
+  })
+
+  it("fails when the direction of a direction statement is not its value token", () => {
+    const source = "stateDiagram-v2\ndirection lr"
+    const broken = withFirstStatementChanged(source, (statement) => {
+      if (statement.type !== "StateDirectionStatement") {
+        throw new Error("unexpected tree")
+      }
+      return { ...statement, direction: "TB" }
+    })
+    expect(() => checkTree(source, broken)).toThrow(
+      "the keywords of StateDirectionStatement",
+    )
+  })
+
+  it("fails when the closed of a description block does not agree with its }", () => {
+    for (const source of [
+      "stateDiagram-v2\naccDescr { x }",
+      "stateDiagram-v2\naccDescr { x",
+    ]) {
+      const broken = withFirstStatementChanged(source, (statement) => {
+        if (statement.type !== "StateAccDescrBlockStatement") {
+          throw new Error("unexpected tree")
+        }
+        return { ...statement, closed: !statement.closed }
+      })
+      expect(() => checkTree(source, broken)).toThrow(
+        "is closed when it ends with }",
+      )
+    }
+  })
+
+  it("fails when the value of a StateLiteral is not the text of its range", () => {
+    const source = "stateDiagram-v2\nA : a b"
+    const broken = withFirstStatementChanged(source, (statement) => {
+      if (
+        statement.type !== "StateDefinitionStatement" ||
+        statement.description === null
+      ) {
+        throw new Error("unexpected tree")
+      }
+      return {
+        ...statement,
+        description: { ...statement.description, value: "a  b" },
+      }
+    })
+    expect(() => checkTree(source, broken)).toThrow(
+      "is not the text of its range",
+    )
+  })
+
+  it("fails when the value of a StringLiteral is not its text without its quotes", () => {
+    const source = 'stateDiagram-v2\nstate "a b" as A'
+    const broken = withFirstStatementChanged(source, (statement) => {
+      if (statement.type !== "StateAliasDefinitionStatement") {
+        throw new Error("unexpected tree")
+      }
+      return {
+        ...statement,
+        description: { ...statement.description, value: '"a b"' },
       }
     })
     expect(() => checkTree(source, broken)).toThrow(

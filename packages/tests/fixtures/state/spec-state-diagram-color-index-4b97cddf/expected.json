@@ -1,0 +1,121 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-colorIndex.spec.ts",
+    "line": 30,
+    "test": "state diagram colour slots > leaves a composite with its own classDef unstamped, but still spends its slot"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "First",
+        "shape": "roundedWithTitle",
+        "label": "First",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "First_start",
+        "shape": "stateStart",
+        "label": "First_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "First"
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "parentId": "First"
+      },
+      {
+        "id": "Second",
+        "shape": "roundedWithTitle",
+        "label": "Second",
+        "classes": [
+          "pinned"
+        ],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Second_start",
+        "shape": "stateStart",
+        "label": "Second_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Second"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "Second"
+      },
+      {
+        "id": "Third",
+        "shape": "roundedWithTitle",
+        "label": "Third",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Third_start",
+        "shape": "stateStart",
+        "label": "Third_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Third"
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": [],
+        "parentId": "Third"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "First_start",
+        "end": "A",
+        "label": ""
+      },
+      {
+        "start": "Second_start",
+        "end": "B",
+        "label": ""
+      },
+      {
+        "start": "Third_start",
+        "end": "C",
+        "label": ""
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "pinned",
+        "styles": [
+          "fill:#111827",
+          "stroke:#F59E0B"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

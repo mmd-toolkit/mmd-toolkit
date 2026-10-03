@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Units and contexts: a floating note whose text runs to the end of the text, without `as`, is rejected, because the text ends in a note context."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...iagram-v2  note \"x\n---------------------^\nExpecting 'AS', got 'NOTE_TEXT'"
+  }
+}

@@ -1,0 +1,637 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "StateTerminal",
+            "range": [
+              23,
+              26
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 6
+              },
+              "end": {
+                "line": 3,
+                "column": 9
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            23,
+            26
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 6
+            },
+            "end": {
+              "line": 3,
+              "column": 9
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Active",
+            "range": [
+              31,
+              37
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 14
+              },
+              "end": {
+                "line": 3,
+                "column": 20
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            31,
+            37
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 14
+            },
+            "end": {
+              "line": 3,
+              "column": 20
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          23,
+          37
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 6
+          },
+          "end": {
+            "line": 3,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Active",
+            "range": [
+              44,
+              50
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 6
+              },
+              "end": {
+                "line": 4,
+                "column": 12
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            44,
+            50
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 6
+            },
+            "end": {
+              "line": 4,
+              "column": 12
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Inactive",
+            "range": [
+              55,
+              63
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 17
+              },
+              "end": {
+                "line": 4,
+                "column": 25
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            55,
+            63
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 17
+            },
+            "end": {
+              "line": 4,
+              "column": 25
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          44,
+          63
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 6
+          },
+          "end": {
+            "line": 4,
+            "column": 25
+          }
+        }
+      },
+      {
+        "type": "StateNoteStatement",
+        "position": "left",
+        "textBeforeState": null,
+        "state": {
+          "type": "Identifier",
+          "name": "Active",
+          "range": [
+            84,
+            90
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 19
+            },
+            "end": {
+              "line": 6,
+              "column": 25
+            }
+          }
+        },
+        "text": {
+          "type": "StateLiteral",
+          "value": "this is a short<br/>note",
+          "range": [
+            93,
+            117
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 28
+            },
+            "end": {
+              "line": 6,
+              "column": 52
+            }
+          }
+        },
+        "range": [
+          71,
+          117
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 6
+          },
+          "end": {
+            "line": 6,
+            "column": 52
+          }
+        }
+      },
+      {
+        "type": "StateNoteStatement",
+        "position": "right",
+        "textBeforeState": null,
+        "state": {
+          "type": "Identifier",
+          "name": "Inactive",
+          "range": [
+            139,
+            147
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 20
+            },
+            "end": {
+              "line": 8,
+              "column": 28
+            }
+          }
+        },
+        "text": {
+          "type": "StateLiteral",
+          "value": "A note can also\n      be defined on\n      several lines",
+          "range": [
+            154,
+            209
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 6
+            },
+            "end": {
+              "line": 11,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          125,
+          224
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 6
+          },
+          "end": {
+            "line": 12,
+            "column": 14
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      224
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 12,
+        "column": 14
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        23,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        27,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Active",
+      "range": [
+        31,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Active",
+      "range": [
+        44,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        51,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 13
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Inactive",
+      "range": [
+        55,
+        63
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 17
+        },
+        "end": {
+          "line": 4,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        71,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 6
+        },
+        "end": {
+          "line": 6,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "left of",
+      "range": [
+        76,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 11
+        },
+        "end": {
+          "line": 6,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Active",
+      "range": [
+        84,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 19
+        },
+        "end": {
+          "line": 6,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        91,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 26
+        },
+        "end": {
+          "line": 6,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "this is a short<br/>note",
+      "range": [
+        93,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 28
+        },
+        "end": {
+          "line": 6,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        125,
+        129
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 6
+        },
+        "end": {
+          "line": 8,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "right of",
+      "range": [
+        130,
+        138
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 11
+        },
+        "end": {
+          "line": 8,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Inactive",
+      "range": [
+        139,
+        147
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 20
+        },
+        "end": {
+          "line": 8,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A note can also\n      be defined on\n      several lines",
+      "range": [
+        154,
+        209
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 6
+        },
+        "end": {
+          "line": 11,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end note",
+      "range": [
+        216,
+        224
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 6
+        },
+        "end": {
+          "line": 12,
+          "column": 14
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    231
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 13,
+      "column": 6
+    }
+  }
+}

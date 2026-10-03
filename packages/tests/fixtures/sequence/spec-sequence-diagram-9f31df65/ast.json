@@ -49,7 +49,7 @@
             "kind": "participant",
             "created": false,
             "id": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "a",
               "range": [
                 44,
@@ -123,7 +123,7 @@
             "kind": "participant",
             "created": false,
             "id": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "b",
               "range": [
                 69,
@@ -213,7 +213,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "c",
           "range": [
             98,
@@ -285,7 +285,7 @@
       {
         "type": "SequenceLinksStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             119,
@@ -356,7 +356,7 @@
       {
         "type": "SequenceLinksStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "b",
           "range": [
             217,
@@ -427,7 +427,7 @@
       {
         "type": "SequenceLinksStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             278,
@@ -498,7 +498,7 @@
       {
         "type": "SequenceLinkStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             343,
@@ -569,7 +569,7 @@
       {
         "type": "SequenceLinkStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             390,
@@ -640,7 +640,7 @@
       {
         "type": "SequenceLinkStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             438,

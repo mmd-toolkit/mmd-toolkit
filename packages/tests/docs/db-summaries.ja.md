@@ -144,3 +144,62 @@ lollipop の関係が作るインターフェース（描画が描く）です�
   `classes[].linkTarget` は書かれた target か `_blank` で、
   どの `securityLevel` でも同じ
   （[expected-results.ja.md](./expected-results.ja.md) を参照）。
+
+## state
+
+`normalizeState()`（`src/normalizers/state.ts`）は、
+`stateDiagram` の Db を要約します。
+mermaid.js は、`stateDiagram` と `stateDiagram-v2` のどちらも、
+この ID として検出します。
+要約の元は、描画が描くレイアウトのデータ
+（[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L763-L778)）で、
+mermaid.js は構文解析の間に、文からこれを作ります。
+Db はほかに 2 つの形を持ちますが、どちらも要約しません。
+文の木は、何も変えない文を持ちます
+（複合状態の中の `classDef`、`class`、`style`、浮いたノート、`scale`）。
+状態の表は最上位だけを持ちます。
+[`extract`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L249-L272)
+が最上位の文だけを読むためです。
+
+要約は、レイアウトのデータの順に、次のものを保ちます。
+
+- `states`: ノート以外のすべてのノード。
+  `id`、`shape`、`label`、`description`、
+  それが入る複合状態か領域（`parentId`）、
+  複合状態と領域の向き（`dir`）を持つ。
+  `classes` と `styles` は、状態の表がそのノードの id に与えるもの。
+  [`dataFetcher`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L250-L254)
+  もそこから取る。
+  表に項目のない状態は、どちらも持たない。
+- `notes`: 各ノート。属する状態、`position`、`text` を持つ。
+- `transitions`: 各遷移。`start`、`end`、`label` を持つ。
+- `classDefs`: class の定義。`styles` を持つ。
+- `links`: 各 click。状態と、
+  書かれたとおりの `url` と `tooltip`（引用符を含む）を持つ。
+- `direction`: 描画が使う向き。最上位の最後の `direction` の文から取る
+  （[`getDir`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/dataFetcher.ts#L185-L195)）。
+  最初のものを取る `getDirection()` は、描画が読まない。
+- `title`、`accTitle`、`accDescr`。
+
+次のものを、それぞれに書いた理由で捨てます。
+
+- レイアウトのデータのうち、描くためだけの欄。
+  DOM の id、辺の id、余白、角の半径、`look`、ラベルの種類と位置、
+  mermaid.js が足す CSS のクラス名、複合状態のパレットの番号、矢印の印、
+  `getData()` が設定から取る大きさ。
+- 保つ値から作る値。
+  ノードがグループかどうか（`shape` から）、
+  ノードの class の style（`cssCompiledStyles`、`classDefs` から）、
+  `classDefs[].textStyles`（`styles` から）、
+  状態とそのノートを囲むグループ（ラベルと位置は最後のノートのもの）。
+
+複合状態の最後の `--` の後の領域は、mermaid.js が無作為に作る id を持ちます
+（[`docTranslator`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L366-L375)）。
+これを、ノードの順に、
+`generated-region-1`、`generated-region-2`、…… と記録します。
+ノードの id、その領域の開始と終了の状態の id とラベル、`parentId`、
+遷移の中など、現れるところすべてで同じです。
+`--` が作る領域は、数え上げから付く id `divider-id-<番号>` のままです。
+
+値は、Db が持つとおりに、空白も含めて記録します。
+要約は、`securityLevel`、`look`、`htmlLabels` のどれでも同じです。

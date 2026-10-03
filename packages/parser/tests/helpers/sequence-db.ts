@@ -5,11 +5,13 @@ import type {
   EmbeddedValues,
 } from "@mmd-toolkit/tests/mermaid"
 import type {
+  DbText,
   Root,
   SequenceArrow,
   SequenceArrowMarker,
   SequenceBoxStatement,
   SequenceBoxText,
+  SequenceDbTexts,
   SequenceDiagram,
   SequenceLiteral,
   SequenceMessageStatement,
@@ -20,6 +22,8 @@ import type {
   SequenceText,
   SequenceTitleStatement,
 } from "../../src/index.ts"
+import { sequenceDbTexts } from "../../src/index.ts"
+import { sequenceBoxTexts } from "../../src/db-texts.ts"
 import { ConvertedText } from "./converted-text.ts"
 import { descriptionOf, setOwnProperty, trimmed } from "./db-values.ts"
 import { SequenceSource } from "./sequence-source.ts"
@@ -217,6 +221,12 @@ class SequenceDbBuilder {
   /** The converted form of ranges of the source. */
   private readonly text: ConvertedText
 
+  /** The texts that the Db reads past the range of a value node (`sequenceDbTexts`). */
+  private readonly dbTexts: SequenceDbTexts
+
+  /** Box colours: the text of each box that mermaid.js splits (`sequenceBoxTexts`). */
+  private readonly boxTexts: ReadonlyMap<SequenceBoxText, DbText>
+
   public constructor(
     source: string,
     root: Root,
@@ -226,6 +236,8 @@ class SequenceDbBuilder {
     this.root = root
     this.source = new SequenceSource(source, root)
     this.text = new ConvertedText(this.source.diagramText)
+    this.dbTexts = sequenceDbTexts(root, source)
+    this.boxTexts = sequenceBoxTexts(root, source)
     this.title = embedded.title ?? ""
     this.dataBlockEffects = [...embedded.dataBlockEffects]
     this.wrapSetting = wrapSettingOf(embedded.config)
@@ -507,6 +519,20 @@ class SequenceDbBuilder {
       text.colorCandidate === null
         ? null
         : this.text.of(text.colorCandidate.range)
+    // The split reads a U+2028 or U+2029 only in the whitespace between the
+    // name of a colour function and its `(`, the only whitespace that a
+    // colour candidate holds before its first `(`. With one anywhere else
+    // in the text it gets, its end included, it does not match, and the box
+    // has no name and no colour.
+    const split = this.boxTexts.get(text)
+    if (split === undefined) throw new Error("sequence Db: a box has no text")
+    const splitText = this.text.of(split.range, split.leftOut)
+    const separatorsReadUpTo =
+      candidate === null ? 0 : Math.max(candidate.indexOf("("), 0)
+    const unreadPart = splitText.slice(separatorsReadUpTo)
+    if (unreadPart.includes("\u2028") || unreadPart.includes("\u2029")) {
+      return { wrap: this.wrapSetting, fill: "transparent", actorKeys: [] }
+    }
     const isColor = candidate !== null && this.isColor(candidate)
     let nameText: string
     if (isColor) {
@@ -620,10 +646,11 @@ class SequenceDbBuilder {
     }
   }
 
-  /** Titles: `title` sets the title to the text of its `title-text` unit as written, whitespace included. */
+  /** Titles: `title` sets the title to the text of its `title-text` unit as written, whitespace included, whose range is that of `sequenceDbTexts`. */
   private applyTitle(statement: SequenceTitleStatement): void {
-    const unit = this.source.titleTextAt(statement.range[0])
-    this.title = this.text.of([unit.start, unit.end])
+    const title = this.dbTexts.titles.get(statement)
+    if (title === undefined) throw new Error("sequence Db: a title has no text")
+    this.title = this.text.of(title.range, title.leftOut)
   }
 
   /**

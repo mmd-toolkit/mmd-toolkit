@@ -624,17 +624,17 @@ class/lex-acc-title-next-line]
 クラスの名前や名前空間の名前の名前の部分。
 文の `:::` の後や `<<` と `>>` の間の名前の部分。
 `style` の後の `word`、`classDef` の文のスタイルの前の `word` の単位、
-`cssClass` の文の `word`、`callback-name`。
+`cssClass` の文の `word`。
 引用符のないテキストは次のものです。
 `generic-text`、`:` の後の `label` のテキスト、
 メンバーの行の `member-name`、`parameters`、`return-type`、`annotation-name`、
-`callback-arguments`、`style`、
+`callback-name` と `callback-arguments`、`style-text`、
 `title-text`、`description-text`、`description-block-text`。
 
 ### 図と文
 
 ```text
-diagram    = "header" newline statement ( newline statement )* newline? end-of-text
+diagram    = "header" empty-description-block* newline statement ( statement-end statement )* empty-description-block* newline? end-of-text
 statement  = relation-statement label?
            | member-statement
            | class-statement
@@ -654,6 +654,61 @@ statement  = relation-statement label?
 ほかのもので区切ることはできず、`class A; class B` は拒否されます
 （[文の文脈](#文の文脈) を参照）。
 [fixture: class/lex-semicolon] [fixture: class/gram-blank-lines]
+
+### 区切りの前の空の説明ブロック
+
+```text
+statement-end           = empty-description-block* newline
+empty-description-block = "accDescr" "{" "}"
+```
+
+`empty-description-block` は、`accDescr` の単位と `{` の単位に、
+`description-block-text` の単位なしで `}` の単位がすぐ続くものです。
+区切りが要る文は `statement-end` で終わります。
+文の最後の単位の後、区切りの前には、空の説明ブロックがいくつ来てもかまいません。
+それぞれ、その文の後に続く、テキストのない説明ブロックの文で、何も変えません。
+mermaid.js は空の説明ブロックにトークンを読まないので
+（[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md)
+を参照）、その文の後にすぐ区切りが続くものとして読みます。
+テキストのある説明ブロックと、ほかの文は、区切りの前に置けません。
+
+class では、文は改行で区切られ、最後の文はテキストの終わりで終わってもよく、
+そこでもブロックがその前に来ます（`diagram` の
+`empty-description-block* newline? end-of-text`）。
+そのため、ブロックはどの文の後にも置けます。
+`note for A "x" accDescr {}`、`note for A "x" accDescr {} accDescr {}`、
+`A <|-- B accDescr {}`、`click A href "u" accDescr {}`、
+`cssClass "A" c accDescr {}` は受理され、テキストの終わりでも同じです。
+ここでは、ブロックの前の空白は単位ではありません。
+[fixture: class/gram-empty-description-block-after-note] [fixture:
+class/gram-empty-description-blocks-after-note] [fixture:
+class/gram-empty-description-block-after-relation] [fixture:
+class/gram-empty-description-block-after-click] [fixture:
+class/gram-empty-description-block-after-css-class] [fixture:
+class/gram-empty-description-block-after-statement-at-end]
+同じ行でブロックの後にほかの文が続くと、mermaid.js と同じく拒否されます。
+`A <|-- B accDescr {} class C` です。
+[fixture: class/gram-empty-description-block-after-relation-then-statement]
+文が始まるところでは、ブロックは、同じ行に別の文が続く文です
+（[空の説明ブロック](#空の説明ブロック) を参照）。
+
+ヘッダーの後にも改行が要り、区切りの前と同じく、
+その改行の前には空の説明ブロックが来てもかまいません
+（`diagram` の `"header" empty-description-block* newline`）。
+それぞれ、図の最初の文です。
+`classDiagram accDescr {}`、改行、`class A` は A を宣言し、
+ブロックのない同じ入力の Db を持ちます。ブロックが 2 つでも同じです。
+`classDiagram accDescr {} class A` は、ブロックのない同じ入力と同じく拒否され、
+ブロックにテキストのある `classDiagram accDescr {x}` と、
+`classDiagram accDescr {}` だけのものも拒否されます。
+後者は `classDiagram` だけのものと同じで、
+文法はヘッダーの改行の後に文を求めるからです。
+mermaid.js もこれらを同じに読みます。
+[fixture: class/header-empty-description-block] [fixture:
+class/header-empty-description-blocks] [fixture:
+class/header-empty-description-block-then-statement] [fixture:
+class/header-description-block-with-text] [fixture:
+class/header-empty-description-block-only]
 
 ### クラスの名前
 
@@ -780,13 +835,12 @@ click-statement         = "callback" class-name string string-or-empty?
 style-statement         = "style" word styles
 class-def-statement     = "classDef" word ( "," word )* styles
 css-class-statement     = "cssClass" string word
-styles                  = style ( "," style )*
-style                   = ( word | ":" | "#" | "%" | "style" | label )+
+styles                  = style-text ( "," style-text )*
+style-text              = ( word | ":" | "#" | "%" | "style" | label )+
 direction-statement     = "direction-text"? "direction" "direction-value" "direction-text"?
 accessibility-statement = "accTitle" ":" title-text
                         | "accDescr" ":" description-text
                         | "accDescr" "{" description-block-text "}"
-empty-description-block = "accDescr" "{" "}"
 ```
 
 ノートのテキスト、リンクの URL、`callback` の関数名、`cssClass` の id は、
@@ -1157,7 +1211,8 @@ class 図に当てはまり、
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
   文法が文字列を取らないか、空でない文字列だけを取るところの空の文字列、
   空のバッククォートの名前、クラスの名前を終えない空のジェネリクスの型、
-  空の呼び出し、文を始めない空の説明ブロックは、
+  空の呼び出し、
+  文の始まりでも、文やヘッダーの改行の前でもない、文の中の空の説明ブロックは、
   ここでは入力を拒否にします。
   mermaid.js はそれらにトークンを読まず、入力を受理します。
   `"" A --> B`、`class A""B`、`class A``B`、`class A~~B`、

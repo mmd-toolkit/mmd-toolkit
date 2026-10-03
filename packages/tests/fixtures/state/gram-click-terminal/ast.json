@@ -1,0 +1,205 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateClickStatement",
+        "reference": {
+          "type": "StateReference",
+          "state": {
+            "type": "StateTerminal",
+            "range": [
+              24,
+              27
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 8
+              },
+              "end": {
+                "line": 2,
+                "column": 11
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            24,
+            27
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 11
+            }
+          }
+        },
+        "url": {
+          "type": "StringLiteral",
+          "value": "u",
+          "raw": "\"u\"",
+          "closed": true,
+          "range": [
+            33,
+            36
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 17
+            },
+            "end": {
+              "line": 2,
+              "column": 20
+            }
+          }
+        },
+        "tooltip": null,
+        "range": [
+          18,
+          36
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 20
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      36
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 20
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "click",
+      "range": [
+        18,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[*]",
+      "range": [
+        24,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "href",
+      "range": [
+        28,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"u\"",
+      "range": [
+        33,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    37
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

@@ -69,7 +69,11 @@ This rule has no options.
 
 - [no-ignored-init-directive](./no-ignored-init-directive.md)
 
+<!-- begin auto-generated rule resources -->
+
 ## Resources
 
 - [Rule source](../../src/rules/no-unclosed-directive.ts)
 - [Tests source](../../tests/rules/no-unclosed-directive.test.ts)
+
+<!-- end auto-generated rule resources -->

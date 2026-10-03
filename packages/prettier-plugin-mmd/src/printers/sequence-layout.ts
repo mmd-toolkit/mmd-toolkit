@@ -7,7 +7,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { findWrittenWhitespaceEnd } from "./gap.ts"
+import { printedEndOf, sequenceDbTextsOf } from "./db-texts.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -15,15 +15,24 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
-  spansLinesWithTrivia,
+  spansLinesThatCannotJoin,
+  toAsciiLowerCase,
 } from "./layout.ts"
+import { readGapElement } from "./gap.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken, findTokenStartingAt } from "./source.ts"
+import {
+  findStructuralToken,
+  findTokenStartingAt,
+  findTriviaBetween,
+  isWhitespace,
+} from "./source.ts"
 
 /**
  * The node types of a sequence diagram whose text is a value, printed as
- * written: the shared leaf nodes, of which no sequence statement holds a
- * `StringLiteral` yet, and the leaf nodes of the diagram type. They have no
+ * written: the shared leaf nodes, of which no sequence statement holds an
+ * `Identifier` or a `StringLiteral` yet, and the leaf nodes of the diagram
+ * type, among them `SequenceIdentifier`, the id of a participant, which may
+ * contain whitespace (ast/sequence.md, SequenceIdentifier). They have no
  * child fields; `tests/value-nodes.test.ts` checks that every other such
  * node type is left out on purpose.
  */
@@ -31,6 +40,7 @@ export const sequenceValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
   "Identifier",
   "StringLiteral",
   "NumericLiteral",
+  "SequenceIdentifier",
   "SequenceLiteral",
   "SequenceDataBlock",
   "SequenceIgnoredStatement",
@@ -157,7 +167,7 @@ export function layoutSequenceHeader(
  * candidate and the rest included: when the candidate is no colour,
  * mermaid.js takes the whole text as the name of the box
  * (diagrams/sequence.md, Box colours), so `box Group   1` has the name
- * `Group   1`.
+ * `Group   1`. It is kept up to `end` (see `findBoxTextEnd`).
  */
 export function layoutBlockHeader(
   source: Source,
@@ -166,9 +176,7 @@ export function layoutBlockHeader(
   text: Node | null,
 ): AtomLayout {
   const kept: Atom[] =
-    text?.type === "SequenceBoxText"
-      ? [{ start: text.range[0], end: text.range[1] }]
-      : []
+    text?.type === "SequenceBoxText" ? [{ start: text.range[0], end }] : []
   return {
     atoms: collectAtoms(
       source,
@@ -181,6 +189,31 @@ export function layoutBlockHeader(
     outdented: new Set(),
     lineBreaks: "kept",
   }
+}
+
+/**
+ * Where the printed text of a box ends: the end of its text, or, when a
+ * U+2028 or U+2029 follows it on its line, the end of the last of them. The
+ * split of the text of a box that asks for a colour does not match a text
+ * that holds one of them, also at its end, and then the box has no name and
+ * the fill `transparent` (diagrams/sequence.md, Box colours), so such a
+ * character is kept as written, with the whitespace and directives before
+ * it. Other whitespace after the text is dropped.
+ */
+export function findBoxTextEnd(source: Source, text: Node): number {
+  let end = text.range[1]
+  let offset = end
+  while (offset < source.text.length) {
+    const { element, end: elementEnd } = readGapElement(source, offset)
+    if (element.kind === "whitespace") {
+      const character = source.text[offset]
+      if (character === "\u2028" || character === "\u2029") end = elementEnd
+    } else if (element.kind !== "item" || element.item.type !== "Directive") {
+      break
+    }
+    offset = elementEnd
+  }
+  return end
 }
 
 /**
@@ -263,7 +296,7 @@ function isKeptAsWritten(
   end: number,
 ): boolean {
   if (statement.type === "SequenceAccDescrBlockStatement") return false
-  return spansLinesWithTrivia(source, statement.range[0], end)
+  return spansLinesThatCannotJoin(source, statement.range[0], end)
 }
 
 /**
@@ -291,32 +324,53 @@ function layoutTitle(
 
 /**
  * Where the text of a title lies: `separator`, the offset of the one
- * whitespace character after its keyword and the directives right after
- * the keyword, and `end`, the end of the text with the whitespace at its
- * end. The text starts after the separator and may be all whitespace; it
- * runs to a `#`, a `;`, or a line break (diagrams/sequence.md, The
- * statement context).
+ * whitespace character after its keyword, and `end`, the end of the Db text
+ * of the title, with the whitespace at its end (`sequenceDbTexts`). The text
+ * starts after the separator and may be all whitespace; it runs to a `#`,
+ * a `;` that the line rule does not ignore, or a line break
+ * (diagrams/sequence.md, The statement context).
+ *
+ * Between the keyword and the start of the Db text lie the separator, which
+ * is a line feed when the text is on the next line, and directives and
+ * comment regions (ast.md, Comment and Directive). The separator is the
+ * first whitespace character there that no directive or comment covers.
  */
 export function findTitleText(
   source: Source,
   statement: SequenceTitleStatement,
 ): { readonly separator: number; readonly end: number } {
+  const text = sequenceDbTextsOf(source).titles.get(statement)
+  if (text === undefined) {
+    throw new Error(
+      `prettier-plugin-mmd: no text for the title at offset ${statement.range[0]}`,
+    )
+  }
   const keyword = expectToken(
     findTokenStartingAt(source, statement.range[0]),
     "the keyword of a title",
   )
   let separator = keyword.range[1]
-  let directive = findTokenStartingAt(source, separator)
-  while (directive?.type === "Directive") {
-    separator = directive.range[1]
-    directive = findTokenStartingAt(source, separator)
+  while (separator < text.range[0]) {
+    const covering = findTriviaBetween(source, separator, separator + 1).at(0)
+    if (covering !== undefined) {
+      separator = covering.range[1]
+    } else if (isWhitespace(source.text.charAt(separator))) {
+      return {
+        separator,
+        end: printedEndOf(
+          source,
+          statement.range[1],
+          text.range[0],
+          text.range[1],
+        ),
+      }
+    } else {
+      separator++
+    }
   }
-  const end = findWrittenWhitespaceEnd(
-    source,
-    statement.value?.range[1] ?? separator + 1,
-    "separator",
+  throw new Error(
+    `prettier-plugin-mmd: no whitespace between the keyword of the title at offset ${statement.range[0]} and its text`,
   )
-  return { separator, end }
 }
 
 /** The gap rules of a statement: around its arrow and its `:`. */
@@ -422,22 +476,6 @@ function isNumber(text: string): boolean {
 /** Whether every character of a text is an ASCII digit. */
 function isDigits(text: string): boolean {
   return [...text].every((character) => character >= "0" && character <= "9")
-}
-
-/**
- * The text with its ASCII letters in lower case. The lexer compares
- * keywords case-insensitively (common.md, Notation), and with an ASCII word
- * only the ASCII letters of either case match: a character outside ASCII
- * whose uppercase would be an ASCII letter keeps itself.
- */
-function toAsciiLowerCase(text: string): string {
-  return [...text]
-    .map((character) =>
-      character >= "A" && character <= "Z"
-        ? character.toLowerCase()
-        : character,
-    )
-    .join("")
 }
 
 /**

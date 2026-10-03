@@ -6,7 +6,10 @@ Disallow an `accTitle` statement that sets the title again.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
+
+💡 This rule is manually fixable by
+[editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 
 <!-- end auto-generated rule notice -->
 
@@ -24,6 +27,10 @@ After `accTitle: first` and `accTitle: second`, the title is `second`.
 `accTitle:` with no text sets the title too: it makes the title empty, so a
 title written before it is lost. A statement inside a subgraph sets the title of
 the whole diagram and is counted too.
+
+For each report, the rule suggests removing one of two statements: the reported
+one, or the `accTitle` statement before it. mermaid.js uses the last title that
+remains.
 
 Examples of **incorrect** code for this rule:
 
@@ -64,3 +71,12 @@ This rule has no options.
 ## Related Rules
 
 - [no-duplicate-description](./no-duplicate-description.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../../src/rules/flowchart/no-duplicate-title.ts)
+- [Tests source](../../../tests/rules/flowchart/no-duplicate-title.test.ts)
+
+<!-- end auto-generated rule resources -->

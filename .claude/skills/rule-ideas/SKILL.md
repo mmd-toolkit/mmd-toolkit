@@ -2,9 +2,9 @@
 name: rule-ideas
 description:
   Find ideas for the rules of eslint-plugin-mmd and decide which rules to keep
-  (adoption, name, scope). Use when looking for new rule candidates, reviewing
-  proposed candidates, or rechecking existing rules against the adoption
-  criteria.
+  (adoption, name, scope, whether `recommended` enables them, suggestions). Use
+  when looking for new rule candidates, reviewing proposed candidates, or
+  rechecking existing rules against the adoption criteria.
 ---
 
 # Finding rule ideas and deciding which rules to keep (rule-ideas)
@@ -13,14 +13,17 @@ How to find candidate rules for `eslint-plugin-mmd` (an ESLint language plugin
 for Mermaid diagram text) and decide whether to keep each one, its name, and its
 scope. It is written so that the same decisions can be made from this document
 alone, without the conversation history or memory. The adoption criteria
-themselves are in AGENTS.md; this document describes how to apply them.
+themselves are in "Policies and criteria" in section 2; the rest of this
+document describes how to apply them.
 
 ## 1. What this procedure covers, and how to work
 
-- This procedure decides which rules exist, their names, and their scope. The
-  decisions are shown in the form of section 6.
-- The procedure itself writes no file of the repository. Working scripts and
-  their output are kept in a working directory outside the repository.
+- This procedure decides which rules exist, their names, their scope, and
+  whether the `recommended` configuration enables them. The decisions are shown
+  in the form of section 6.
+- The procedure itself writes no file of the repository, except the record of
+  the decisions on `recommended` in section 7 of this document. Working scripts
+  and their output are kept in a working directory outside the repository.
 - The decisions are recorded in the repository by the following procedures,
   which the same person may carry out next:
   - The rule documents (`packages/eslint-plugin-mmd/docs/rules/`) are written
@@ -44,27 +47,56 @@ themselves are in AGENTS.md; this document describes how to apply them.
   - Read the target before deleting or replacing it.
   - Do not change the git staging area, and do not use git mv or git rm.
 
-## 2. Applying the adoption criteria
+## 2. The adoption criteria, and how to apply them
 
-The criteria are in the `packages/eslint-plugin-mmd` section of AGENTS.md. Read
-them before every decision. This section shows how they are applied, by example.
+### Policies and criteria
+
+- A rule reports a mistake of the author that mermaid.js accepts without a word
+  and reads as something other than what was meant: a typing mistake, something
+  left unclosed, broken JSON, an id used twice. Each rule is checked by running
+  the pinned mermaid.js on an example of ordinary writing, and by formatting the
+  example.
+- The package holds no rule of these kinds:
+  - A stylistic rule: mermaid.js reads the text as written, and only a later
+    edit would break it.
+  - A rule for text that is obscure on purpose.
+  - A rule for a defect of mermaid.js: the author writes something correct and
+    meaningful and mermaid.js misreads it (`subgraph Front end`, CSS in a
+    label). Whether such a thing is reported to mermaid.js is a separate
+    question, which the user decides.
+  - A rule whose condition also matches a way of writing that an author means
+    (`A[Issue #123; fixed]` has the same form as the entity `#9829;`).
+  - A rule for what the formatter of this project already makes visible: when
+    the formatted text shows how mermaid.js reads it (`A---orders` is printed as
+    `A ---o rders`), a rule would only be a second thing to maintain.
+  - For now, a rule for a mistake that comes from not knowing the syntax, where
+    the specification's grammar or text says that the way of writing means
+    something else (`A"Start"` without brackets, `;` between styles).
+- A rule is common only when one definition, over the part of the tree that
+  every diagram type shares, covers every diagram type and they all behave the
+  same; otherwise it belongs to a diagram type, in `docs/rules/<diagram>/`.
+
+Read them before every decision. The rest of this section shows how they are
+applied, by example.
 
 ### Examples of decisions (made on 2026-10-01, run with mermaid 12.0.0)
 
 Kept (an author's mistake that mermaid accepts silently):
 
-| Input                                                                                                | What mermaid does                                                       | Rule                                                                                                                                                    |
-| ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| An empty `%%` line inside lines commented out together                                               | Makes the vertex `%%`                                                   | flowchart/no-bare-comment-marker (could also be read as a mermaid bug, but kept; a borderline case)                                                     |
-| `%%{init: {...}}` (the closing `%%` forgotten)                                                       | The directive runs to the end of the text, and the diagram is empty     | no-unclosed-directive (common)                                                                                                                          |
-| `%%{init: {"flowchart": {"inheritDir": true},}}%%` (a trailing comma)                                | All init configuration is dropped                                       | no-ignored-init-directive (common)                                                                                                                      |
-| `C-->A[End]` after `A[Start]-->B`                                                                    | The label of A becomes End                                              | flowchart/no-redefined-vertex                                                                                                                           |
-| `style C fill:red` (C mistyped)                                                                      | Adds a styled vertex C                                                  | flowchart/no-style-unknown-id                                                                                                                           |
-| An `accDescr {` block left unclosed                                                                  | The description is empty                                                | flowchart/no-unclosed-description-block                                                                                                                 |
-| `accDescr {}` in a diagram without a description (also with only whitespace inside, or on two lines) | Nothing happens (the description stays empty)                           | flowchart/no-empty-description-block                                                                                                                    |
-| `accDescr: second` after `accDescr: first`                                                           | The description is replaced by `second` without a word                  | flowchart/no-duplicate-description                                                                                                                      |
-| `accTitle: second` after `accTitle: first`                                                           | The title is replaced by `second` without a word                        | flowchart/no-duplicate-title                                                                                                                            |
-| `A-->B; direction TB` in a subgraph (the same with or without the `;`)                               | The rest of the direction line is dropped: A, B, and the edge disappear | flowchart/no-ignored-text (a direction statement is written on a line of its own; mermaid drops the statements written on the same line without a word) |
+| Input                                                                                                | What mermaid does                                                       | Rule                                                                                                                                                        |
+| ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| An empty `%%` line inside lines commented out together                                               | Makes the vertex `%%`                                                   | flowchart/no-bare-comment-marker (could also be read as a mermaid bug, but kept; a borderline case)                                                         |
+| `%%{init: {...}}` (the closing `%%` forgotten)                                                       | The directive runs to the end of the text, and the diagram is empty     | no-unclosed-directive (common)                                                                                                                              |
+| `%%{init: {"flowchart": {"inheritDir": true},}}%%` (a trailing comma)                                | All init configuration is dropped                                       | no-ignored-init-directive (common)                                                                                                                          |
+| `C-->A[End]` after `A[Start]-->B`                                                                    | The label of A becomes End                                              | flowchart/no-redefined-vertex                                                                                                                               |
+| `style C fill:red` (C mistyped)                                                                      | Adds a styled vertex C                                                  | flowchart/no-undef                                                                                                                                          |
+| `class C foo` or `click C href "…"` (C mistyped)                                                     | Nothing: no vertex gets the class or the link                           | flowchart/no-undef                                                                                                                                          |
+| `style C fill:red`, then `class C foo` (C mistyped in both)                                          | `style` adds the vertex C, and the class applies to it                  | flowchart/no-undef, on the `style` only: the first `style` of an id that nothing else defines is reported, and a vertex that `style` adds counts as defined |
+| An `accDescr {` block left unclosed                                                                  | The description is empty                                                | flowchart/no-unclosed-description-block                                                                                                                     |
+| `accDescr {}` in a diagram without a description (also with only whitespace inside, or on two lines) | Nothing happens (the description stays empty)                           | flowchart/no-empty-description-block                                                                                                                        |
+| `accDescr: second` after `accDescr: first`                                                           | The description is replaced by `second` without a word                  | flowchart/no-duplicate-description                                                                                                                          |
+| `accTitle: second` after `accTitle: first`                                                           | The title is replaced by `second` without a word                        | flowchart/no-duplicate-title                                                                                                                                |
+| `A-->B; direction TB` in a subgraph (the same with or without the `;`)                               | The rest of the direction line is dropped: A, B, and the edge disappear | flowchart/no-ignored-text (a direction statement is written on a line of its own; mermaid drops the statements written on the same line without a word)     |
 
 Dropped:
 
@@ -95,6 +127,8 @@ Dropped:
 | `+foo(a(b)) int` (in the Db, the method name `foo(a` and the parameters `b)`)                                                                                                                                  | Nothing the user sees: the drawn diagram shows `+foo(a(b)) : int`                                                                                                                                                                                                                                                                           |
 | `A x-->B`, `A o-- t -->B` (a start marker different from the end marker)                                                                                                                                       | A mermaid bug, already recognized: mermaid-js/mermaid#1665 (open, approved) says that arrows with different markers at their ends do not work. `A x-->B` is a longer plain arrow, and `A o-- t -->B` is drawn as a plain arrow                                                                                                              |
 | `A x-- t x--x B` (the start marker on both the opening and the closing arrow)                                                                                                                                  | Comes from not knowing the syntax. The specification says the edge is `INVALID` (drawn as a plain arrow); `A x-- t --x B` is the way to write it                                                                                                                                                                                            |
+| `style e1 fill:red` with the id `e1` of a link                                                                                                                                                                 | Comes from not knowing the syntax: `style` applies to vertices and subgraphs, and mermaid.js does nothing with it; a link takes a style from `linkStyle` or a class                                                                                                                                                                         |
+| `class A foo` or `click A …` before the vertex `A` is written                                                                                                                                                  | Looks like a mermaid bug: the id is written correctly, and mermaid.js does nothing with it only because of where the statement stands (`style` before the vertex works). Searched with "class before node", "class statement order node", "classes not applied node defined after": no issue found                                          |
 
 ### Questions for unclear cases
 
@@ -283,7 +317,7 @@ Example: `A---orders` becomes `A ---o rders` (run).
 
 ## 5. Common rule or rule of a diagram type
 
-The condition is in the `packages/eslint-plugin-mmd` section of AGENTS.md. Even
+The condition is the last item of "Policies and criteria" in section 2. Even
 when the cause is the shared syntax (a rule of `common.md`), the rule is not
 common when the lexer of a diagram type absorbs or rejects the input.
 
@@ -369,10 +403,193 @@ For each rule decided, show:
   checked on `parse()` (run).
 - The supporting fixtures: their names if they exist; otherwise the smallest
   inputs to add, with a contrasting example.
+- Whether the `recommended` configuration enables it, and why, decided by
+  section 7.
+- Its suggestions, or why it has none, decided by section 8.
 
-Show what was decided to be dropped as well, with the name and the criterion of
-AGENTS.md under which it was dropped.
+Show what was decided to be dropped as well, with the name and the item of
+"Policies and criteria" in section 2 under which it was dropped.
 
 When writing a rule document shows a new candidate, a needed change of scope or
 name, or that the tree cannot show something, decide it again with the same
 criteria and show the result in the same form.
+
+## 7. Whether `recommended` enables a rule
+
+Once a rule is kept, decide whether the `recommended` configuration enables it.
+As is usual for ESLint plugins, `recommended` is the set of rules that nearly
+every user wants on: rules whose reports are nearly always mistakes to fix.
+Every rule of this plugin reports such a mistake (the first item of "Policies
+and criteria" in section 2), so a rule is enabled unless it fails one of these
+four criteria:
+
+1. **Every report is a fact.** At every place the rule reports, mermaid.js reads
+   the text differently from what the author meant: it drops the text, reads it
+   as something else, rejects it, or replaces an earlier value. A rule that also
+   reports places that mermaid.js reads as the author meant is not enabled.
+2. **No intended way of writing is reported.** No form that an author writes on
+   purpose matches the condition. A kept rule normally meets this, since it is
+   also a criterion for keeping a rule; a rule for which a doubt about it
+   remains is not enabled.
+3. **The reports do not rest on behavior of mermaid.js that is expected to
+   change.** A rule is not enabled when a pull request that fixes the behavior
+   it relies on is open, or when the maintainers of mermaid.js say they will fix
+   it: once mermaid.js changes, users of the new version would get reports that
+   are no longer facts.
+4. **The fix is clear.** An author who gets a report knows what to write
+   instead.
+
+Behavior that looks like a defect of mermaid.js and is reported together with
+the mistake, because it lies in the same node, does not keep a rule out (the
+text `direction LR` inside a label, which flowchart/no-ignored-text reports
+together with the text on a direction line). mermaid.js drops that text too, so
+the report is a fact (criterion 1), and the author avoids it by rewriting the
+text (criterion 4); the rule is just not kept for it.
+
+The decision is recorded in the table below, with the reason for a rule that is
+not enabled or not enabled yet. The rule file keeps `recommended: false` until
+the rule is implemented; the implementation sets it from this table. A decision
+for a diagram type whose rules are not implemented yet is provisional: it is
+made again, with the same criteria, when the rules of that diagram type are
+implemented.
+
+Decisions (made on 2026-10-02, with mermaid 12.0.0):
+
+| Rule                                    | Enabled           | Reason when not enabled                                                                                  |
+| --------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------- |
+| flowchart/no-ignored-text               | yes               |                                                                                                          |
+| flowchart/no-bare-comment-marker        | no                | Criterion 3: [#7008](https://github.com/mermaid-js/mermaid/pull/7008) (open) reads the line as a comment |
+| flowchart/no-unclosed-description-block | yes               |                                                                                                          |
+| flowchart/no-empty-description-block    | yes               |                                                                                                          |
+| flowchart/no-duplicate-description      | yes               |                                                                                                          |
+| flowchart/no-duplicate-title            | yes               |                                                                                                          |
+| flowchart/no-redefined-vertex           | yes               |                                                                                                          |
+| flowchart/no-undef                      | yes               |                                                                                                          |
+| no-unclosed-directive                   | yes (provisional) |                                                                                                          |
+| no-ignored-init-directive               | yes (provisional) |                                                                                                          |
+| sequence/* (all 7 rules)                | yes (provisional) |                                                                                                          |
+| class/no-inline-comment                 | no (provisional)  | Criteria 1 and 3, below                                                                                  |
+| class/* (the other 7 rules)             | yes (provisional) |                                                                                                          |
+
+class/no-inline-comment: when a line of only whitespace follows the comment and
+no comment line follows that line, mermaid.js reads the next line apart, as the
+author meant, and the rule reports the comment there too (criterion 1). Whether
+mermaid.js will change is not settled: a reply in
+[#1646](https://github.com/mermaid-js/mermaid/issues/1646) (closed) says a
+comment at the end of a line should be supported, and
+[#6401](https://github.com/mermaid-js/mermaid/issues/6401) treats the behavior
+as intended (criterion 3).
+
+## 8. Suggestions
+
+Once a rule is kept, decide whether it offers suggestions (edits that are
+applied only when the user picks one in the editor), and what they are. A
+candidate edit becomes a suggestion only when it meets all five criteria below;
+where no candidate meets them, the rule offers none.
+
+1. **The candidates are few, and the reported text decides them (one to
+   three).** What an edit writes is decided by the positions of the tree and its
+   tokens, and the values of its nodes. An edit that needs a new name (a
+   mistyped id changed into another id, a reused id changed into a new one) is
+   no candidate: the text does not tell which name was meant.
+2. **Every candidate is something the author may have meant.** The result is one
+   of the forms that an author who made the mistake meant to write. An edit that
+   only silences the rule, whatever the author meant, is no candidate.
+3. **The parser accepts the result, the rule no longer reports that place, and
+   the edit writes no new mistake.** Closing an unclosed block while it is empty
+   is no candidate: the edit writes an empty block, which
+   no-empty-description-block reports. Another rule may report the result only
+   for a mistake that the text of the author already held and the edit makes
+   visible: closing an unclosed block after an earlier description shows that
+   the text sets the description twice, which no-duplicate-description reports.
+   The tests of a rule list the rules whose reports its suggestions may make
+   visible in this way, each with the mistake it shows, and fail on a report of
+   any other rule on a result. The rule document says it in a sentence.
+4. **The message of the suggestion can say how mermaid.js reads the result.**
+   That reading is checked by running an example through mermaid.js (run).
+5. **The result does not hang on invisible whitespace.** An edit that changes
+   the reading only through whitespace at the end of a line (a space after `%%`)
+   is no candidate: an editor that removes such whitespace on saving undoes it.
+
+No rule fixes automatically: the meaning may change, or what the author meant is
+not known, and every rule decided so far is in one of these cases. A fix is made
+only when the result is beyond doubt what the author meant and mermaid.js then
+reads it as meant.
+
+A rule document describes the suggestions in Rule Details, before the examples:
+for each suggestion, what it changes and how mermaid.js reads the text after it,
+and in one sentence where the rule offers none and why. The notice says that the
+rule has suggestions; it is generated.
+
+Decisions (made on 2026-10-02, with mermaid 12.0.0):
+
+| Rule                                    | Suggestions                                                    |
+| --------------------------------------- | -------------------------------------------------------------- |
+| flowchart/no-unclosed-description-block | Close at the end of this line; close at the end of the text    |
+| flowchart/no-empty-description-block    | Remove the empty block                                         |
+| flowchart/no-duplicate-description      | Remove this description; remove the description before it      |
+| flowchart/no-duplicate-title            | Remove this title; remove the title before it                  |
+| flowchart/no-ignored-text               | Split at the `;` so that the direction is on a line of its own |
+| flowchart/no-bare-comment-marker        | Remove the `%%` (in a text that spans lines, the line of `%%`) |
+| flowchart/no-redefined-vertex           | None: criterion 1 (the likely fix is a new id)                 |
+| flowchart/no-undef                      | None: criterion 1 (which id was meant is not known)            |
+
+- Close at the end of this line: ` }` at the end of the line of the `{`, only
+  when text that is not whitespace follows the `{` on that line. Close at the
+  end of the text: a line `}` after the last line, only when the block has text
+  on a line after the line of the `{` (with text only on that line, both edits
+  give the same result). `accDescr { Short`, then `A --> B`: closed at the end
+  of the line, the description is `Short` and the edge from A to B is read; a
+  block left open at the end of the text, with the lines `Long` and `text`,
+  closed at the end of the text, has those two lines as its description (run).
+  May make visible: no-duplicate-description, when a description is set before
+  the block (`accDescr: d`, then `accDescr { x` closed, gives `x`; run).
+- Remove: the statement, with its line when nothing else is on the line, or with
+  the whitespace up to the next statement on the same line. A `;` after it is
+  never removed: inside a subgraph, a `;` that stands alone is an empty
+  statement, which mermaid.js makes a member `;` of the subgraph, so removing it
+  changes the members (run: 40 of 148 removals of a duplicate description inside
+  a subgraph or a nested one changed the Db with the `;` removed, 0 with it
+  kept; a line of only `;` or `;;B` left behind reads as before). Removing an
+  empty block leaves the Db as it is (run). For the duplicates, mermaid.js uses
+  the last description or title that remains (run); a description inside a
+  subgraph is also a member of the subgraph in the Db, so removing it changes
+  the members as well (run). An empty block is removed only when it is the first
+  token on its line: after something on its line, removing the whitespace before
+  it changes the reading of some statements and keeping it changes others
+  (`autonumber ` in a sequence; a subgraph name that ends in a space), which the
+  tree does not tell (run: of 49,671 blocks first on their line, inserted into
+  the accepted fixtures of the four diagram types, 19 read differently after
+  removal, all in forms obscure on purpose: a keyword whose value continues on
+  the next line, a subgraph name that ends in `end`, and a statement whose
+  reading depends on its column).
+- Split at the `;`: offered only when every ignored text on the line is
+  separated from the direction by a `;` (the text before it ends with `;`, the
+  text after it starts with `;`); the whitespace after each such `;` becomes a
+  line break and the indentation of the line, and the `;` stays, as if the
+  author had broken the line after it (removing the `;` can change how
+  mermaid.js reads the line: `A[style:#x;];` and `A[style:#x;]` give `A`
+  different labels; run), except where the parse of the result does not read the
+  kept `;` as a separator but as part of a text, as after
+  `accTitle: What to buy`, whose text runs to the end of the line, or after the
+  direction value, where the rest of the line is dropped: there the `;` is
+  removed with the whitespace (the title is then `What to buy`, not
+  `What to buy;`; run); and only when the parser reads the result with the split
+  text as statements and nothing dropped on the line, because the text before or
+  after the `;` may be no statement on its own (`direction TB; -->B`, split, is
+  rejected; run). `A --> B; direction TB` in a subgraph, split, gives the edge
+  and the direction (run). Without the `;`, whether the text was meant as
+  statements is not known, and inside a label (`A[Set direction LR]-->B`) a line
+  break changes the label (run). May make visible: any other rule, because the
+  text becomes statements, and what they hold is what the author wrote
+  (`accTitle: a`, then `accTitle: t; direction LR` in a subgraph, split, gives
+  the title `t`, which no-duplicate-title reports; run).
+- Remove the `%%`: the `Identifier` token, with its line when only whitespace
+  remains; a directive on the line stays. In a text that spans lines (a label, a
+  description, a title, a string, a data block, and the name or the arguments of
+  the function that a `click` statement calls), the line of only `%%` with its
+  line break. Not reported: a line in a description block that is not closed
+  (the description is empty). The name and the arguments were checked by
+  recording what mermaid.js passes to `setClickEvent`: `click A call c`, `%%`,
+  `b()` gives the name `c`, `%%`, `b` on three lines, and `call f(1,`, `%%`,
+  `2)` gives the arguments `1,`, `%%`, `2` (run).

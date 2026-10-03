@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-colorIndex.spec.ts",
+    "line": 30,
+    "test": "state diagram colour slots > leaves plain states unslotted, so only containers are painted"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "Outer",
+        "shape": "roundedWithTitle",
+        "label": "Outer",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Outer_start",
+        "shape": "stateStart",
+        "label": "Outer_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Outer"
+      },
+      {
+        "id": "Inner",
+        "shape": "rect",
+        "label": "Inner",
+        "classes": [],
+        "styles": [],
+        "parentId": "Outer"
+      },
+      {
+        "id": "Done",
+        "shape": "rect",
+        "label": "Done",
+        "classes": [],
+        "styles": [],
+        "parentId": "Outer"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "Outer_start",
+        "end": "Inner",
+        "label": ""
+      },
+      {
+        "start": "Inner",
+        "end": "Done",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

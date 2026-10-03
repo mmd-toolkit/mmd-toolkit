@@ -707,8 +707,8 @@
           }
         ],
         "callback": {
-          "type": "Identifier",
-          "name": "callback",
+          "type": "FlowchartLiteral",
+          "value": "callback",
           "range": [
             174,
             182
@@ -1255,7 +1255,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "callback",
       "range": [
         174,

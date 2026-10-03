@@ -1,0 +1,89 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-style.spec.js",
+    "line": 233,
+    "test": "ClassDefs and classes when parsing a State diagram > class for a state (classDef) > applying to states in the diagram > comments parsing > working inside states"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Moving",
+        "shape": "roundedWithTitle",
+        "label": "Moving",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "Still",
+        "shape": "rect",
+        "label": "Still",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Crash",
+        "shape": "rect",
+        "label": "Crash",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "slow",
+        "shape": "rect",
+        "label": "slow",
+        "classes": [],
+        "styles": [],
+        "parentId": "Moving"
+      },
+      {
+        "id": "fast",
+        "shape": "rect",
+        "label": "fast",
+        "classes": [],
+        "styles": [],
+        "parentId": "Moving"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "Moving",
+        "label": ""
+      },
+      {
+        "start": "Moving",
+        "end": "Still",
+        "label": ""
+      },
+      {
+        "start": "Moving",
+        "end": "Crash",
+        "label": ""
+      },
+      {
+        "start": "slow",
+        "end": "fast",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

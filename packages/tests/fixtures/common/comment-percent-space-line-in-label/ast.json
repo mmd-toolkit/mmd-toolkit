@@ -137,6 +137,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " ",
       "range": [
         17,
@@ -230,15 +231,33 @@
     },
     {
       "type": "RawText",
-      "value": "a\n%% \nb",
+      "value": "a",
       "range": [
         15,
-        22
+        16
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "b",
+      "range": [
+        21,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
         },
         "end": {
           "line": 4,

@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The direction line: the line goes on after the value, so `; -->B` is the text after it and no link is read; the subgraph gets the direction `TB` and the member A."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "O",
+        "nodes": [
+          "A"
+        ],
+        "title": "O",
+        "classes": [],
+        "dir": "TB",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

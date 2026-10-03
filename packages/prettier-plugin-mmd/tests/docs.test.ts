@@ -23,15 +23,32 @@ const EXAMPLE_LINK_END = ".mmd)):"
 const ruleDocuments: readonly {
   readonly diagram: string
   readonly rulesWithoutExamples: readonly string[]
+  /**
+   * The rules whose examples are in test code, with no fixture folder,
+   * because they hold characters that no file of this package may hold:
+   * U+2028 and U+2029.
+   */
+  readonly rulesInTestCode: readonly string[]
 }[] = [
-  { diagram: "flowchart", rulesWithoutExamples: ["style-trailing-whitespace"] },
+  {
+    diagram: "flowchart",
+    rulesWithoutExamples: ["style-trailing-whitespace"],
+    rulesInTestCode: [],
+  },
   {
     diagram: "sequence",
-    rulesWithoutExamples: ["multi-line-statements"],
+    rulesWithoutExamples: ["line-separators", "multi-line-statements"],
+    rulesInTestCode: ["line-separators"],
   },
   {
     diagram: "class",
     rulesWithoutExamples: ["unclosed-backquoted-names"],
+    rulesInTestCode: [],
+  },
+  {
+    diagram: "state",
+    rulesWithoutExamples: ["line-separators"],
+    rulesInTestCode: ["line-separators"],
   },
 ]
 const EXAMPLE_OPENING = "```mmd"
@@ -147,16 +164,19 @@ const japaneseReadme = (await readDocument("README.ja.md")).examples
 
 describe.each(ruleDocuments)(
   "the $diagram rules document",
-  ({ diagram, rulesWithoutExamples }) => {
+  ({ diagram, rulesWithoutExamples, rulesInTestCode }) => {
     const { english, japanese } = rulesByDiagram.get(diagram) ?? {
       english: [],
       japanese: [],
     }
 
     it("has one rule for each fixture folder", async () => {
-      expect(english.map((rule) => folderOf(rule.heading)).sort()).toEqual(
-        await readRuleNames(diagram),
-      )
+      expect(
+        english
+          .map((rule) => folderOf(rule.heading))
+          .filter((folder) => !rulesInTestCode.includes(folder))
+          .sort(),
+      ).toEqual(await readRuleNames(diagram))
     })
 
     it("shows examples of every rule except the listed ones", () => {

@@ -14,26 +14,80 @@ description:
 How to write the specification under `packages/spec/docs/`, checking every claim
 against the pinned mermaid.js and the fixtures. It is written so that the same
 quality can be reached from this document alone, without the history of a
-conversation or memory. Policies and criteria are not repeated here; this
-document points to AGENTS.md and to the specification's documents.
+conversation or memory. The policies and criteria of the package are in the
+section Policies and criteria; what holds for every package is in AGENTS.md and
+in the skill `conventions`.
+
+## Policies and criteria
+
+`packages/spec`:
+
+- Defines the abstract syntax tree: in `docs/ast.md`, what every diagram shares
+  (the root with its lists of tokens, comments, and directives, the token kinds,
+  the leaf nodes for values that an author writes, the invariants); in
+  `docs/ast/<diagram>.md`, one document per diagram type, that diagram's nodes.
+  Every node type of a diagram starts with the diagram's name
+  (`FlowchartVertex`, `FlowchartLink`): node types share one namespace across
+  all diagram types, and other diagrams will want the same plain names. Token
+  kinds and the shared leaf nodes (`Identifier` for a name or a single bare word
+  without whitespace, `StringLiteral` for a quoted string, `NumericLiteral` for
+  a number) have the same form in every diagram and carry no prefix. Text
+  without quotes that may contain whitespace is read differently by each
+  diagram, so it is a literal node of the diagram (`FlowchartLiteral`), and a
+  name that may contain whitespace is a name node of the diagram
+  (`SequenceIdentifier`). Which of these a field holds is decided by what the
+  grammar allows at that position, not by how one example looks. As in ESTree, a
+  name or a value that an author writes is such a leaf node with its own range,
+  so that a tool can report on it or rewrite it without searching the tokens;
+  only words from a fixed set (a direction, a shape name, the marker at an end
+  of an arrow) are plain string fields. An arrow is a node of its own
+  (`FlowchartArrow`, `SequenceArrow`), with the markers at its ends and the kind
+  of its line as such fields, so that a tool reads them without reading the
+  characters of the arrow again. A node type says what the node is, never how
+  its text is lexed: there is no node type per token kind and no catch-all node.
+  Nodes have no generic `children` list; punctuation and keywords appear only as
+  tokens. Text that the author writes and mermaid.js does not read is a node of
+  the tree wherever it can be one (`FlowchartIgnoredText`); making it a node
+  comes before rejecting the input, and an input is rejected for such text only
+  when the text has no place of its own in the tree. This is the source of the
+  definition; implementations follow it.
+- For each diagram type, `docs/diagrams/<diagram>.md` with its five sections,
+  written from mermaid's grammar definition and Db class.
+- Every claim in the specification has a fixture, added through the tests
+  package's generator.
+- The items in each Db normalization section match the tests package's
+  normalizers.
+- The specification introduces no single-letter or abbreviated symbols (no "let
+  _T_ be the text", no italic one-letter names, no subscripts). Every concept is
+  named in words each time, or given a meaningful multi-word name at the start
+  of its section. Single-letter symbols only make the text harder to read.
+- The specification contains no code in any programming language: no regular
+  expressions, no TypeScript type definitions. Even where mermaid.js is
+  implemented with regular expressions, acceptance conditions are stated in
+  prose and grammar; the AST is defined with tables and prose, using
+  language-neutral types (integer, string, list of nodes). The parser's `ast.ts`
+  is an implementation of that definition, not its source. The specification is
+  independent of any implementation language.
 
 ## 1. What to read first
 
 The criteria change, so read these each time work starts.
 
-1. AGENTS.md
-   - Project: the measure of correctness, and the exceptions of the Known
-     divergences.
-   - The `packages/spec` section: the principles of the tree (the names of node
-     types, the shared leaf nodes, a type decided by what the grammar allows at
-     the position), the five sections, a fixture for every claim, no symbols, no
-     code in the specification.
-   - Principles: the English and Japanese pairs, invisible characters, prose
-     wrapped by Prettier, `mmd` as the info string of a code block with Mermaid
-     text, permalinks to the source of mermaid.js.
-   - Shared interfaces: parser, prettier-plugin, and eslint-plugin use the
-     definition of the tree. A change to it is a change for those packages too,
-     so the result of the work says what each of them has to change.
+1. The policies and criteria.
+   - The section Policies and criteria of this document: the principles of the
+     tree (the names of node types, the shared leaf nodes, a type decided by
+     what the grammar allows at the position), the five sections, a fixture for
+     every claim, no symbols, no code in the specification.
+   - AGENTS.md, Project: the measure of correctness, and the exceptions of the
+     Known divergences.
+   - AGENTS.md, Principles.
+   - The skill `conventions`: the English and Japanese pairs, invisible
+     characters, prose wrapped by Prettier, `mmd` as the info string of a code
+     block with Mermaid text, permalinks to the source of mermaid.js.
+   - AGENTS.md, Shared interfaces: parser, prettier-plugin, and eslint-plugin
+     use the definition of the tree. A change to it is a change for those
+     packages too, so the result of the work says what each of them has to
+     change.
 2. In the results of the work, say for each claim whether it was checked by
    running something (mermaid.js, the parser), by reading something (the source
    of mermaid.js, a document), or not checked.
@@ -155,7 +209,9 @@ pnpm run -s fixtures:check
 
 ### 2.4 Checking the specification's documents
 
-After every change, run from the root of the repository:
+A change to the specification's documents and fixtures is checked as follows
+(see Running tests in the skill `conventions`). After every change, run from the
+root of the repository:
 
 ```sh
 npx prettier --write packages/spec
@@ -173,7 +229,15 @@ the checked documents points to the commit recorded in
 `packages/spec/docs/index.md` (`scripts/check-mermaid-links.mjs`).
 
 When fixtures were added, also run `pnpm run -s fixtures:check` in
-`packages/tests`.
+`packages/tests`, which runs every fixture through mermaid.js again and fails
+when a result differs from the recorded one.
+
+Run no tests of the other packages: the parser, the formatter, and the linter
+run their own when they take up the change. One test of the parser reads the
+specification: `packages/parser/tests/types.test.ts` lists the documents under
+`docs/known-divergences/`, so the result of the work (3.6) says when a known
+divergence document was added or removed. Generated inputs (3.5) are run when a
+decision needs their counts, not as a check after each change.
 
 ### 2.5 Scripts that rewrite documents
 
@@ -190,8 +254,8 @@ script.
   it again (do not add anything twice).
 - After writing, run `npx prettier --write` to wrap the prose again.
 - The Write tool and shell here-documents can turn `\uXXXX` into the actual
-  character. Never write invisible characters into a document (AGENTS.md); run
-  `pnpm run lint:chars` after writing.
+  character. Never write invisible characters into a document (the skill
+  `conventions`); run `pnpm run lint:chars` after writing.
 - Enclose a code span whose example contains a backtick in double backticks
   (``A["`x`"]``). With single backticks, Prettier closes up the spaces around it
   and breaks it. After writing, look once at the rendered form.
@@ -288,14 +352,14 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the five sections of
 2. In the table of tokens, give every unit of the grammar a token kind and an
    item.
 3. Decide the type of a leaf node by what the grammar allows at its position
-   (AGENTS.md, Shared leaf nodes in ast.md).
+   (the section Policies and criteria, Shared leaf nodes in ast.md).
 4. Decide the shape of the nodes before writing them, once for the whole diagram
    type. First write a proposal outside the repository: every node type with its
    fields, and the points that need a decision, grouped as names, node or
    rejection for text that mermaid.js does not read, candidates for a known
    divergence, and changes to the shared parts (`ast.md`, `common.md`, the
    shared leaf nodes). Decide the shape by looking at the principles (the
-   `packages/spec` section of AGENTS.md, Design goals and Shared leaf nodes in
+   section Policies and criteria, Design goals and Shared leaf nodes in
    `ast.md`) and at the effect on the packages that use the tree (parser,
    prettier-plugin, eslint-plugin) as a whole. Where the principles leave a
    choice, present the options with examples, their grounds (the principles,
@@ -342,13 +406,13 @@ Do not decide a rule from hand-written examples only.
    example: the empty string, the empty call, and the empty description block,
    for which mermaid.js reads no token and the tree has no place, are one known
    divergence in every place they appear, instead of one rule for each place).
-4. Decide acceptance by one criterion (Project 1 and the `packages/spec` section
-   of AGENTS.md): accept and reject what mermaid.js accepts and rejects, and
-   give an accepted input mermaid.js's Db. Rejecting an input that mermaid.js
-   accepts needs both facts: mermaid.js accepts it, and the tree has no place
-   for what is written. So when a form is found that the author writes and
-   mermaid.js does not read, first check whether the tree has a place for it as
-   a node: a leaf node of the diagram, such as FlowchartIgnoredText, or a
+4. Decide acceptance by one criterion (Project 1 of AGENTS.md and the section
+   Policies and criteria): accept and reject what mermaid.js accepts and
+   rejects, and give an accepted input mermaid.js's Db. Rejecting an input that
+   mermaid.js accepts needs both facts: mermaid.js accepts it, and the tree has
+   no place for what is written. So when a form is found that the author writes
+   and mermaid.js does not read, first check whether the tree has a place for it
+   as a node: a leaf node of the diagram, such as FlowchartIgnoredText, or a
    statement, such as an empty description block where a statement starts. Only
    where it has none, reject the input as a known divergence, and say in the
    specification why the tree has no place for it. An input that mermaid.js
@@ -357,17 +421,38 @@ Do not decide a rule from hand-written examples only.
    creates A) is accepted in the same way: the tree shows what is written, and
    the Db is mermaid.js's. List such inputs with mermaid.js's result and report
    them as candidates for lint rules; that an input means something other than
-   what is written is no reason to reject it. Where mermaid.js's reading comes
-   from the order of its lexer's rules or from its pipeline rather than from a
-   rule of the syntax, write the direct rule instead, and list the inputs that
-   both accept and read differently as a known divergence with a reference input
+   what is written is no reason to reject it. Ask whether a node can hold the
+   text first, also where mermaid.js's reading comes from the order of its
+   lexer's rules or from its pipeline rather than from a rule of the syntax.
+   Only where no node can hold it, write the direct rule, and list the inputs
+   that are then read differently as a known divergence, proposed as 3.8 says
    (sequence: a comment that starts at `%%` keeps the character before it).
-5. Before generalizing a rule, list every place it applies to, and check that
-   acceptance does not change (flowchart example: the rule that reads the
-   placeholder of an entity as one unit would change acceptance under the letter
-   rule, rule 23, so its scope was limited; and skipping every `click` unit
-   joined the click ids of two click contexts and accepted inputs that
-   mermaid.js rejects, so the rule was narrowed).
+5. Before accepting a form in new places, or generalizing a rule, list where the
+   rule applies, and only then write it:
+   1. Every position where the form can appear, going through every rule of the
+      grammar of each diagram type, not only the end of a line: after the
+      header, after the heading of a statement with a body (the name of a
+      subgraph, a box, a namespace, a composite state), before and after
+      whitespace, before a `;`, and at the end of the text.
+   2. Every place where a value comes from the text of a range rather than from
+      units, such as a Db text that a Db normalization reads from the source
+      (the styles and the name text of a subgraph in flowchart), and whether the
+      form can lie inside such a range.
+   3. Generated inputs that cover every position listed in the first item, each
+      with the whitespace around the form (none, a space, two spaces, a tab, a
+      line break after it), compared with mermaid.js for acceptance and for the
+      Db, the values of the second item included.
+
+   When empty description blocks before a separator were first accepted, only
+   the end of a line was looked at; the place after the name of a subgraph, the
+   whitespace around the blocks, the Db text of a style, and the header line
+   were each found afterwards. Check also that acceptance does not change
+   elsewhere (flowchart example: the rule that reads the placeholder of an
+   entity as one unit would change acceptance under the letter rule, rule 23, so
+   its scope was limited; and skipping every `click` unit joined the click ids
+   of two click contexts and accepted inputs that mermaid.js rejects, so the
+   rule was narrowed).
+
 6. When a rule of the specification rests on behavior of mermaid.js that looks
    like a bug, such as a known divergence or a surprising reading, search the
    issues and pull requests of mermaid-js/mermaid with `gh` (outside the
@@ -385,6 +470,162 @@ Do not decide a rule from hand-written examples only.
 Show as the result of the work: the sections changed, the names of the fixtures
 added, what the parser has to fix (acceptance, tokens, the Db derivation), and
 the fixtures for which the parser needs an `ast.json`.
+
+### 3.7 Checks before the parser reads the specification
+
+The parser reads the specification as its only source. Before the diagram
+documents go to it, go through these checks for the diagram type; each comes
+from a gap that a parser found in an earlier diagram type. Write the result of
+each check in the output (3.6).
+
+1. **Unit names.** List every unit name of the lexical structure and the
+   grammar, the names of the rules of the grammar included. One name names one
+   unit: a keyword unit and a unit of text never share a name (state once used
+   `style` for both the keyword and the text of a style; it is `style-text`).
+2. **Every character in a unit.** In every context, every character that is not
+   whitespace belongs to a unit, a comment, or a stated rejection: separators
+   such as the `:` of a one-line note or of an alias, the `;` that the line rule
+   ignores, and text that a rule of mermaid.js reads and returns no token for
+   (an id that `processId` drops, an empty description block). Each unit has a
+   token kind in the table of tokens of `ast/<diagram>.md`, and the ignored `;`
+   has a kind for each context.
+3. **The grammar takes every unit.** Every unit that the table of tokens lists,
+   punctuation included, appears in a rule of the grammar, and every unit of a
+   rule comes from a rule of the lexical structure.
+4. **Comments.** Each diagram comment has its mark (`#`, `%%`) and its value,
+   with examples: a comment in an id, a comment after a statement, and a
+   directive between the characters of the mark or inside the value.
+5. **Forms that are not closed.** A node whose form is accepted without its
+   closing part (a description block at the end of the text) has a `closed`
+   field, as in the diagram types before it.
+6. **The tree document stands alone.** Each node has its own section and table
+   of fields in `ast/<diagram>.md`; no section is written as "as
+   `<OtherDiagram>Node`". The conditions under which a field is null, and the
+   empty forms, are in the table or below it.
+7. **The summary, field by field.** For each field of each record of the
+   summary, tally over all fixtures of the diagram type the three cases: the key
+   is missing, the value is empty, the value is set. Each case that occurs is
+   explained by a sentence of the Db normalization, with a fixture. Look in the
+   Db class for what is set only on the first visit, what accumulates, and what
+   an update leaves as it was (`Object.assign` keeps the keys that the new
+   object does not have).
+8. **What the Db reads from the source.** Where the tree drops something that
+   changes the Db (an empty item between `,`, a text that is all whitespace,
+   whether a `:` is there), the Db normalization says that the value is read
+   from the source, and the field's description in `ast/<diagram>.md` says so
+   too.
+9. **Ranges.** Every "any characters" says whether line feeds, U+2028, and
+   U+2029 are included, whether as many or as few as possible are read, and
+   where the rule is tried again (a rule is tried at every position of its
+   context, also after a unit that does not leave it).
+10. **Empty units.** For every string and text unit, say whether it may be
+    empty, and where the grammar takes an empty one (`string` and
+    `string-or-empty`).
+11. **Empty ends of lists.** For every list (statements of a body, items between
+    `,`, lines, the dividers of a body), say what happens when nothing follows
+    its last separator: a body that ends with a divider, a list of ids or styles
+    that ends with `,`, a text that ends right after a keyword. Check each with
+    mermaid.js and the Db class; mermaid.js often builds a different structure
+    when the last part is empty (state does not divide a body whose last
+    statement is a divider).
+12. **What follows a keyword.** For every keyword, check with mermaid.js what
+    happens when a word character, a digit, `-`, `:`, `#`, `%`, `{`, `"`, a line
+    feed, or the end of the text follows it, and say in the rule whether the
+    keyword may be followed by a word character. In jison, a rule whose pattern
+    ends with a word character, such as `"left of"`, gets `\b` at its end, and
+    one that ends with `\s+` or `\s*` does not.
+13. **Known divergences.** Every input of the diagram type that is a known
+    divergence, under a new identifier or an existing one, has the four answers
+    of 3.8 written down.
+
+The tally of item 7, over the records of the summary that are lists of objects:
+
+```ts
+// node <this file> <diagram> — tallies, for each field of each record of the
+// summary, a fixture where the key is missing, one where the value is empty,
+// and one where it is set.
+import { loadFixtures } from "<repo>/packages/tests/src/index.ts"
+import type { DiagramType } from "<repo>/packages/tests/src/index.ts"
+
+function kind(value: unknown): "missing" | "empty" | "set" {
+  if (value === undefined) return "missing"
+  if (value === "" || (Array.isArray(value) && value.length === 0))
+    return "empty"
+  return "set"
+}
+
+const fixtures = (await loadFixtures(process.argv[2] as DiagramType)).filter(
+  (fixture) => fixture.expected.accepted,
+)
+// The fields of each record, over all fixtures.
+const fields = new Map<string, Set<string>>()
+for (const fixture of fixtures) {
+  for (const [record, items] of Object.entries(fixture.expected.db)) {
+    if (!Array.isArray(items)) continue
+    const names = fields.get(record) ?? new Set<string>()
+    for (const item of items)
+      for (const name of Object.keys(item)) names.add(name)
+    fields.set(record, names)
+  }
+}
+const tally = new Map<string, Map<string, string>>()
+for (const fixture of fixtures) {
+  for (const [record, names] of fields) {
+    for (const item of fixture.expected.db[record] as Record<
+      string,
+      unknown
+    >[]) {
+      for (const name of names) {
+        const cases =
+          tally.get(`${record}.${name}`) ?? new Map<string, string>()
+        if (!cases.has(kind(item[name])))
+          cases.set(kind(item[name]), fixture.name)
+        tally.set(`${record}.${name}`, cases)
+      }
+    }
+  }
+}
+for (const [key, cases] of tally) console.log(key, Object.fromEntries(cases))
+```
+
+A field that never occurs as missing in the fixtures may still be missing for
+some input; read the Db class for each field whose value can be `undefined`.
+
+### 3.8 Proposing a known divergence
+
+A known divergence is proposed only after the first question of Project 1 in
+AGENTS.md has been answered. Every proposal, for a new identifier or for adding
+inputs to an existing one, writes down these four answers; a proposal without
+them is not decided:
+
+1. **The text.** Which text mermaid.js does not read, drops, or reads as
+   something other than what is written, with its range (from where to where).
+2. **The node.** How the tree would hold it: which node and which field, or
+   which other form. The forms the tree already has:
+   - a field with an ignored text node: `textBefore` and `textAfter` of a
+     direction statement and of `ClassMethod`, and the `textBefore…` and
+     `textAfter…` fields of the state statements, such as `textBeforeId`,
+     `textAfterDescription`, and the `textAfter` of a state alias;
+   - a statement: an empty description block where a statement starts or before
+     the separator of a statement, and a statement of text that is not read,
+     such as `StateIgnoredStatement` and `SequenceIgnoredStatement`;
+   - a character that no value includes: the `;` that the line rule ignores;
+   - trivia that cuts a token into fragments: a comment region, which cuts a
+     `String` token into `StringFragment` tokens and a `RawText` token into
+     `RawText` tokens, and a directive inside a `RawText` or `Identifier` unit,
+     which cuts it into tokens of the same kind.
+3. **The check.** With the text held so, whether acceptance and the Db agree
+   with mermaid.js, counted on generated inputs: compare mermaid.js on the input
+   with mermaid.js on the input without the text, or with another reference
+   input that mermaid.js reads as the tree would.
+4. **What stands in the way.** Only where no node can hold it: why, in terms of
+   the tree (no position where the text can lie, a value that would have to
+   change), or why the rule that would agree with mermaid.js copies the order of
+   its pipeline. That nobody would write the text, or that mermaid.js does not
+   read it, is no answer.
+
+The document of the divergence (`known-divergences/<identifier>.md`) says, in
+"The rule of this specification, and why", why the text is not held as a node.
 
 ## 4. When a gap in the specification is found
 
@@ -414,7 +655,8 @@ pass:
 1. Review the shared part as a whole, not only the sentence that prompted the
    change. List every sentence that depends on what changes, in `ast.md`,
    `common.md`, and every `ast/<diagram>.md` and `diagrams/<diagram>.md`, with
-   what it becomes.
+   what it becomes. When the change accepts a form in new places, list its
+   places and the values read from ranges first, as item 5 of 3.5 says.
 2. Write the proposal outside the repository: the options for each point that
    needs a decision, with a recommendation, and the effect on the packages that
    read the tree. Wait for the decision.

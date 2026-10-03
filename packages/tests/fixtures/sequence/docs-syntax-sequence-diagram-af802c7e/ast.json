@@ -49,7 +49,7 @@
               {
                 "type": "SequenceMessageStatement",
                 "from": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "Alice",
                   "range": [
                     45,
@@ -91,7 +91,7 @@
                 "activation": null,
                 "toCentralConnection": false,
                 "to": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "Bob",
                   "range": [
                     53,
@@ -217,7 +217,7 @@
               {
                 "type": "SequenceMessageStatement",
                 "from": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "Alice",
                   "range": [
                     101,
@@ -259,7 +259,7 @@
                 "activation": null,
                 "toCentralConnection": false,
                 "to": {
-                  "type": "Identifier",
+                  "type": "SequenceIdentifier",
                   "name": "John",
                   "range": [
                     109,
@@ -372,7 +372,7 @@
                       {
                         "type": "SequenceMessageStatement",
                         "from": {
-                          "type": "Identifier",
+                          "type": "SequenceIdentifier",
                           "name": "John",
                           "range": [
                             178,
@@ -414,7 +414,7 @@
                         "activation": null,
                         "toCentralConnection": false,
                         "to": {
-                          "type": "Identifier",
+                          "type": "SequenceIdentifier",
                           "name": "Charlie",
                           "range": [
                             185,
@@ -540,7 +540,7 @@
                       {
                         "type": "SequenceMessageStatement",
                         "from": {
-                          "type": "Identifier",
+                          "type": "SequenceIdentifier",
                           "name": "John",
                           "range": [
                             254,
@@ -582,7 +582,7 @@
                         "activation": null,
                         "toCentralConnection": false,
                         "to": {
-                          "type": "Identifier",
+                          "type": "SequenceIdentifier",
                           "name": "Diana",
                           "range": [
                             261,

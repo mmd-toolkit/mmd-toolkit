@@ -13,12 +13,21 @@
 `closed` が true の `SequenceAccDescrBlockStatement` のうち、
 その範囲（`{` のトークンから `}` のトークンまで）に、
 `Root.comments` のコメントが 1 つもないもの。
-文を始めない空のブロックは、parser の構文エラーになる（仕様の既知の差異の
-[`tokenless-empty-forms`](../../../../spec/docs/known-divergences/tokenless-empty-forms.ja.md)）。
-そのため、それを持つ木はない。
 この文は、`box G`、改行、`accDescr {}` のように、
-文が始まる場所なら `SequenceBoxStatement` の `body` の中にもあり、
-そこでも何も変えない。
+文が始まる場所なら `SequenceBoxStatement` の `body` の中にもある。
+また、`autonumber accDescr {}` や `sequenceDiagram accDescr {}` のように、
+同じ行の文の最後の部分の後やヘッダーの後にもある。
+どの場所でも何も変えない
+（受理される sequence の fixture の各行の終わりにブロックを足して確かめた。
+646 個のブロックのどれも、Db を変えなかった）。
+
+ブロックを消す提案は、ブロックが行の最初のトークンのときだけ出す。
+ブロックと後ろの空白を消し、行にほかに何もなければ行ごと消す。
+後ろの `;` は決して消さない
+（fixture から作ったそうしたブロック 13,004 個で、
+消した後の読み方は変わらなかった）。
+`autonumber accDescr {}` のように行の中で何かの後にあるブロックでは、
+ブロックの前の空白を消すと `autonumber ` の意味が変わるので、提案を出さない。
 
 ## fixture
 

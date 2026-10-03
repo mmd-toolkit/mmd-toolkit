@@ -1,0 +1,193 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateAliasDefinitionStatement",
+        "textBeforeDescription": null,
+        "description": {
+          "type": "StringLiteral",
+          "value": "as",
+          "raw": "\"as\"",
+          "closed": true,
+          "range": [
+            25,
+            29
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 12
+            },
+            "end": {
+              "line": 2,
+              "column": 16
+            }
+          }
+        },
+        "textAfterDescription": null,
+        "id": {
+          "type": "StateLiteral",
+          "value": "as",
+          "range": [
+            33,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 20
+            },
+            "end": {
+              "line": 2,
+              "column": 22
+            }
+          }
+        },
+        "secondDescription": null,
+        "textAfter": null,
+        "textBeforeBody": null,
+        "body": null,
+        "range": [
+          19,
+          35
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 6
+          },
+          "end": {
+            "line": 2,
+            "column": 22
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      35
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 22
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "state",
+      "range": [
+        19,
+        24
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"as\"",
+      "range": [
+        25,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "as",
+      "range": [
+        30,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "as",
+      "range": [
+        33,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 20
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    42
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 6
+    }
+  }
+}

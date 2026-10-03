@@ -7,7 +7,7 @@
       {
         "type": "SequenceLinkStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "A",
           "range": [
             21,

@@ -128,6 +128,7 @@ export function printBlock<Statement extends Node>(
   let next = 0
   let continuesOpeningLine = false
   let spaceLinePending = false
+  let stretchEndsWithComment = false
 
   /**
    * Adds a line, after a line of one space when the gap before it asks for
@@ -146,7 +147,9 @@ export function printBlock<Statement extends Node>(
     if (lines.length === 0) headerTrailing = gap.trailing
     else appendTrailing(lines, gap.trailing)
     const keepsWhitespaceLines =
-      rules.keepsWhitespaceLineAfterComment && gap.trailingEndsWithComment
+      rules.keepsWhitespaceLineAfterComment &&
+      (gap.trailingEndsWithComment || stretchEndsWithComment)
+    stretchEndsWithComment = false
     for (const line of gap.lines) {
       pushLine({
         doc: line.run.doc,
@@ -156,6 +159,13 @@ export function printBlock<Statement extends Node>(
       })
     }
     spaceLinePending = keepsWhitespaceLines && gap.whitespaceLineAfter
+  }
+
+  /** Whether a comment ends the text of a stretch that ends at `end`. */
+  function endsWithComment(end: number): boolean {
+    let trimmed = end
+    while (trimmed > 0 && isWhitespace(source.text[trimmed - 1])) trimmed--
+    return source.root.comments.some((comment) => comment.range[1] === trimmed)
   }
 
   /** Whether the line that holds `position` keeps its statements together. */
@@ -245,6 +255,7 @@ export function printBlock<Statement extends Node>(
     const stretch = findStretch(bounds.start, 0, 0, bounds.start)
     if (stretch.end > bounds.start) {
       pushLine(printStretch(stretch))
+      stretchEndsWithComment = endsWithComment(stretch.end)
       continuesOpeningLine = true
       next = stretch.after
       offset = stretch.end
@@ -271,7 +282,7 @@ export function printBlock<Statement extends Node>(
       startsStretch && isKept(statement.range[0])
         ? Math.max(offset, findContentStart(source, statement.range[0]))
         : statement.range[0]
-    const gap = readGap(source, offset, start, "separator")
+    const gap = readGap(source, offset, start, false)
     addItemLines(gap)
     if (!startsStretch) {
       pushLine({
@@ -302,10 +313,11 @@ export function printBlock<Statement extends Node>(
         ? { writtenIndentation: source.text.slice(lineStart, start) }
         : {}),
     })
+    stretchEndsWithComment = endsWithComment(stretch.end)
     next = stretch.after
     offset = stretch.end
   }
-  const gap = readGap(source, offset, bounds.end, "separator")
+  const gap = readGap(source, offset, bounds.end, false)
   addItemLines(gap)
   return {
     headerTrailing,
@@ -424,7 +436,7 @@ function printInlineGap(
   place: InlinePlace,
 ): Doc {
   if (start >= end) return ""
-  const gap = readGap(source, start, end, "ignored")
+  const gap = readGap(source, start, end, true)
   if (gap.breaksLine) {
     throw new Error(
       `prettier-plugin-mmd: a line break within a kept line at offset ${start}`,

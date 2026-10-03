@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-v2.spec.js",
+    "line": 45,
+    "test": "state diagram V2,  > when parsing an info graph it > simple with accDescription"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a simple description of the diagram",
+    "states": [
+      {
+        "id": "State1",
+        "shape": "rect",
+        "label": "this is another string",
+        "description": [],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "root_end",
+        "shape": "stateEnd",
+        "label": "root_end",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "State1",
+        "label": ""
+      },
+      {
+        "start": "State1",
+        "end": "root_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

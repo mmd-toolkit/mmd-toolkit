@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Units and contexts: a string that is not closed at the end of the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...agram-v2  state \"d\n---------------------^\nExpecting 'AS', got 'STATE_DESCR'"
+  }
+}

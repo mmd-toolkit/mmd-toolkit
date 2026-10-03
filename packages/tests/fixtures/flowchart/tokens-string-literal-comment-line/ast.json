@@ -178,6 +178,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " c",
       "range": [
         32,
@@ -306,16 +307,34 @@
       }
     },
     {
-      "type": "String",
-      "value": "\"one\n%% c\ntwo\"",
+      "type": "StringFragment",
+      "value": "\"one",
       "range": [
         27,
-        41
+        31
       ],
       "loc": {
         "start": {
           "line": 3,
           "column": 12
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "StringFragment",
+      "value": "two\"",
+      "range": [
+        37,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
         },
         "end": {
           "line": 5,

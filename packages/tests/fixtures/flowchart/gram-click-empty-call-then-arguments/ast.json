@@ -103,8 +103,8 @@
           }
         ],
         "callback": {
-          "type": "Identifier",
-          "name": "cb",
+          "type": "FlowchartLiteral",
+          "value": "cb",
           "range": [
             28,
             30
@@ -283,7 +283,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "cb",
       "range": [
         28,

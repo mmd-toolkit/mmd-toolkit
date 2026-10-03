@@ -137,6 +137,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " x=\"",
       "range": [
         18,
@@ -230,15 +231,33 @@
     },
     {
       "type": "RawText",
-      "value": "<a\n%% x=\"\ny\" z>e",
+      "value": "<a",
       "range": [
         15,
-        31
+        17
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "y\" z>e",
+      "range": [
+        25,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
         },
         "end": {
           "line": 4,

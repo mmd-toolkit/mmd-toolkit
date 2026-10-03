@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context: whitespace before a line feed takes it, so the click statement has no line feed after it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...lick A href \"u\"    B\n----------------------^\nExpecting 'NL', got 'ID'"
+  }
+}

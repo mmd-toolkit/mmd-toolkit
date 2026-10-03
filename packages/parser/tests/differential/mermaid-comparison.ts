@@ -304,7 +304,10 @@ function hasInitDirective(text: string): boolean {
  * - a `TypeError` from a configuration of the wrong shape: "Cannot create
  *   property ..." (a wrap flag or `displayMode` on a string or number),
  *   "str is not iterable" (a number or boolean under a CSS key), or "Cannot
- *   assign to read only property ..." (a string `themeVariables`);
+ *   assign to read only property ..." (a string `themeVariables`), and
+ *   "Cannot read properties of null (reading 'shape')" (a data block of a
+ *   flowchart vertex whose content holds a line break and is YAML without a
+ *   value);
  * - an `Error` "Unsupported color format ..." from a theme variable that is
  *   not a colour, or "No such shape: ..." from a data block that names an
  *   unknown shape;
@@ -325,7 +328,8 @@ function isEmbeddedDataRejection(
     return (
       message.startsWith("Cannot create property") ||
       message === "str is not iterable" ||
-      message.startsWith("Cannot assign to read only property")
+      message.startsWith("Cannot assign to read only property") ||
+      message === "Cannot read properties of null (reading 'shape')"
     )
   }
   if (name === "Error") {

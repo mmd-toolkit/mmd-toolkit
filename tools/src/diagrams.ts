@@ -17,6 +17,8 @@ export const diagramIds: Readonly<
   sequence: ["sequence"],
   // `classDiagram` and `classDiagram-v2` are both detected as `classDiagram`.
   class: ["classDiagram"],
+  // `stateDiagram` and `stateDiagram-v2` are both detected as `stateDiagram`.
+  state: ["stateDiagram"],
 }
 
 /**

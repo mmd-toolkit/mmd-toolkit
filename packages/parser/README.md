@@ -113,6 +113,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
   `swimlane` (`swimlane-beta`).
 - Sequence diagrams: `sequence` (`sequenceDiagram`).
 - Class diagrams: `classDiagram` (`classDiagram` and `classDiagram-v2`).
+- State diagrams: `stateDiagram` (`stateDiagram` and `stateDiagram-v2`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -134,12 +135,20 @@ Returns the `Root` of the tree:
   its body, a `RawText` token, unless the body is all whitespace. A token has a
   `type`, such as `Keyword` or `RawText`, and a `value`, the source text of its
   range. Every character that is not whitespace or a line terminator is in a
-  token or a comment.
+  token or a comment. A comment lies inside no token: a token that runs across a
+  comment line, such as a quoted label over several lines, is cut there into
+  pieces, and the pieces of a quoted string are `StringFragment` tokens.
 - `comments`: every comment: each `%%` comment line, and each comment that a
   diagram's own lexer reads, such as `#` or `%` in the middle of a line in a
-  sequence diagram, or `%%` after a statement in a class diagram. Its `value` is
-  the text after its mark: the `%%` of a comment line or of a class comment, or
-  the `#`, `%%`, or `%` that starts a sequence comment.
+  sequence diagram, `%%` after a statement in a class diagram, or `#` and `%%`
+  in a state diagram. Its `mark` is the characters of its mark: `%%` for a
+  comment line or a class comment, `#`, `%%`, or `%` for a sequence comment, and
+  `#` or `%%` for a state comment. Its `value` is the text after the mark. A
+  comment line after U+2028 or U+2029 cuts the comment of the diagram's lexer
+  that runs past it, as it cuts a token: the part after the comment line is a
+  comment of its own, whose `mark` is `null` and whose `value` is its text. In a
+  state diagram, `A %% x`, U+2029, a line `%% end`, and a line `B` have the
+  comments `%% x`, `%% end`, and `B`, and the only state A.
 - `directives`: every `%%{ ... }%%` directive, with its `name`, its `value` (the
   text inside), and whether it is `closed`.
 - `frontmatter`: the frontmatter, or `null`. Its `value` is the YAML text as
@@ -192,8 +201,88 @@ The package exports a TypeScript type for every node, such as `Root`,
 type ids. The names and fields are those of the specification's
 [`ast.md`](../spec/docs/ast.md),
 [`ast/flowchart.md`](../spec/docs/ast/flowchart.md),
-[`ast/sequence.md`](../spec/docs/ast/sequence.md), and
-[`ast/class.md`](../spec/docs/ast/class.md).
+[`ast/sequence.md`](../spec/docs/ast/sequence.md),
+[`ast/class.md`](../spec/docs/ast/class.md), and
+[`ast/state.md`](../spec/docs/ast/state.md).
+
+### Db ids
+
+mermaid.js gives some things of a diagram an id that the text does not write as
+one, and the tree, which keeps what is written, holds no such id. These
+functions give it.
+
+```ts
+import { flowchartSubgraphIds, parse } from "@mmd-toolkit/parser"
+
+const root = parse(text)
+const ids = flowchartSubgraphIds(root, text)
+// ids.get(subgraphStatement) is the id of that subgraph in the Db.
+```
+
+- `flowchartSubgraphIds(root, text)` returns, for each
+  `FlowchartSubgraphStatement` of a flowchart, the id of its subgraph: its name
+  text, trimmed, or `subGraph` and the number of subgraphs added before it, when
+  the subgraph has no title and its name text holds whitespace. A nested
+  subgraph is added before the one around it. For another diagram, the map is
+  empty.
+- `text` is the text that `root` was parsed from. It is needed because
+  whitespace after the name, up to the end of its line, makes the id a number,
+  and no node or token holds that whitespace.
+- An id is in the form of the values of the tree: as written, without directives
+  and comments, not converted. The id in the Db of mermaid.js is this text with
+  the entities, attribute quotes, and line terminators converted
+  ([`common.md`](../spec/docs/common.md#reading-a-source)).
+
+### Db texts
+
+Some values in the Db of mermaid.js are read from text past the range of their
+node: the whitespace around a value, a value that is all whitespace and has no
+node, and a `;` that the line rule ignores in between. A tool that keeps such a
+text as written, or builds the Db, gets where it lies from these functions.
+
+```ts
+import { flowchartDbTexts, ignoredSemicolons, parse } from "@mmd-toolkit/parser"
+
+const root = parse(text)
+const { styles } = flowchartDbTexts(root, text)
+// styles.get(styleStatement)[i].range is where mermaid.js reads the i-th style.
+```
+
+- `flowchartDbTexts(root, text)`, `sequenceDbTexts(root, text)`,
+  `classDbTexts(root, text)`, and `stateDbTexts(root, text)` each return a
+  record of maps, one for each kind of value that the diagram's Db reads past
+  the range of a node, keyed by the statement or node that holds the value. For
+  another diagram, the maps are empty.
+  - flowchart: `styles`, the Db text of each style of a `style`, `classDef`, or
+    `linkStyle` statement, null styles included, in the order of `styles`; and
+    `subgraphNameTexts`, the name text of each subgraph
+    ([`flowchart.md`](../spec/docs/diagrams/flowchart.md#building-the-summary-from-the-tree)).
+  - sequence: `titles`, the text of each title, whitespace included
+    ([`sequence.md`](../spec/docs/diagrams/sequence.md)).
+  - class: `genericTypes`, the text between the two `~` of a generic type, also
+    when it is all whitespace, by its `ClassName`
+    ([`class.md`](../spec/docs/diagrams/class.md)).
+  - state: `secondDescriptions`, the second description of an alias without a
+    body; and `noteTexts`, the text of a note on one line from the end of its id
+    ([`state.md`](../spec/docs/diagrams/state.md#building-the-summary-from-the-tree)).
+- Each entry is a `DbText`. Its value is the text of a range
+  ([`ast.md`](../spec/docs/ast.md#nodes)) from `range`, where mermaid.js reads
+  the value: without the directives, the comment regions, the `;` that the line
+  rule ignores, and the empty description blocks before the separator of a
+  statement, and without what the diagram's Db leaves out of that value.
+  `leftOut` lists the parts of that which the source alone does not show: the
+  empty description blocks, and the quotes of a subgraph name that starts with a
+  string. The functions give the range only; the Db then converts the text and
+  may drop its whitespace.
+- The range of a title starts at its text. Between `title` or `title:` and the
+  text lie one whitespace character, a line feed when the text is on the next
+  line, and the directives and comment regions there
+  ([`sequence.md`](../spec/docs/diagrams/sequence.md)), so the character before
+  the range is not always that whitespace.
+- `ignoredSemicolons(text)` returns the range of each `;` that the line rule
+  ignores ([`common.md`](../spec/docs/common.md)), in source order. A `;` token
+  whose range is in the list is ignored; another `;` token is a separator or a
+  character of a value.
 
 ## Walking the tree
 
@@ -267,7 +356,8 @@ these differences:
   empty call, and the empty description block, and also for an empty backquoted
   name (` `` `) and an empty generic type (`~~`) that does not end a class name,
   as in `class A~~B`; an empty string as a cardinality or a tooltip, and `~~` at
-  the end of a class name, are accepted.
+  the end of a class name, are accepted. In a state diagram, it holds for the
+  empty description block, as in `A accDescr {} --> B`.
 - In a sequence diagram, a comment starts at its `%%`, and a number may be
   followed by `%%`, while mermaid.js takes the character before the `%%` into
   the comment where a rule would start there: `autonumber 10%% c` starts at 10
@@ -299,7 +389,8 @@ these differences:
 - The specification: [`ast.md`](../spec/docs/ast.md) (the tree),
   [`ast/flowchart.md`](../spec/docs/ast/flowchart.md) (the flowchart nodes),
   [`ast/sequence.md`](../spec/docs/ast/sequence.md) (the sequence nodes),
-  [`ast/class.md`](../spec/docs/ast/class.md) (the class nodes), and
+  [`ast/class.md`](../spec/docs/ast/class.md) (the class nodes),
+  [`ast/state.md`](../spec/docs/ast/state.md) (the state nodes), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/error-positions.md`](./docs/error-positions.md): where a `ParseError`
   points.

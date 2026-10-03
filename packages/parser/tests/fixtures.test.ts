@@ -3,8 +3,8 @@
  * (Db summary, and the invariants of ast.md, by which the tree and the
  * source give the input back), on the fixtures of `@mmd-toolkit/tests`.
  *
- * The `error` pseudo-diagram, the flowchart diagram types, `sequence`, and
- * `classDiagram` have a parser.
+ * The `error` pseudo-diagram, the flowchart diagram types, `sequence`,
+ * `classDiagram`, and `stateDiagram` have a parser.
  * For every other detected type, `parse()` throws `UnsupportedDiagramError`,
  * and the test can only check that the type agrees with mermaid.js. The Db
  * summary is built from the tree, with the values that mermaid.js derives
@@ -281,6 +281,20 @@ describe("class fixtures", async () => {
   }
 })
 
+describe("state fixtures", async () => {
+  const fixtures = await loadFixtures("state")
+
+  it("has fixtures", () => {
+    expect(fixtures.length).toBeGreaterThan(0)
+  })
+
+  for (const fixture of fixtures) {
+    it(fixture.name, async () => {
+      await checkFixture(fixture)
+    })
+  }
+})
+
 /**
  * ast.md, ErrorDiagram: the tokens of the fixtures that section names, as it
  * states them, with their kinds: `RawText` tokens, and the `Directive`
@@ -358,6 +372,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     ...(await loadFixtures("flowchart")),
     ...(await loadFixtures("sequence")),
     ...(await loadFixtures("class")),
+    ...(await loadFixtures("state")),
   ]
 
   /** The fixtures that carry the mark `knownDivergence`. */

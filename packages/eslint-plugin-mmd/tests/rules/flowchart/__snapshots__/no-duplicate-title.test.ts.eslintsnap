@@ -1,0 +1,206 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: flowchart/no-duplicate-title >> invalid >>> docs/rules/flowchart/no-duplicate-title.md incorrect 1
+Filename: flowchart/no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   accTitle: first
+  3 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 |   accTitle: first
+          3 |
+      - Remove the `accTitle` statement on line 2: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 |   accTitle: second
+          3 |
+---
+
+
+Test: flowchart/no-duplicate-title >> invalid >>> docs/rules/flowchart/no-duplicate-title.md incorrect 2
+Filename: flowchart/no-duplicate-title-incorrect-2.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accTitle: x
+  4 |   accTitle:
+    |   ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the title set on line 3 with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accTitle: x
+          4 |
+      - Remove the `accTitle` statement on line 3: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accTitle:
+          4 |
+---
+
+
+Test: flowchart/no-duplicate-title >> invalid >>> docs/rules/flowchart/no-duplicate-title.md incorrect 3
+Filename: flowchart/no-duplicate-title-incorrect-3.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     A
+  4 |     accTitle: inner
+  5 |   end
+  6 |   accTitle: outer
+    |   ^~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the title set on line 4 with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 |   subgraph S
+          3 |     A
+          4 |     accTitle: inner
+          5 |   end
+          6 |
+      - Remove the `accTitle` statement on line 4: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 |   subgraph S
+          3 |     A
+          4 |   end
+          5 |   accTitle: outer
+          6 |
+---
+
+
+Test: flowchart/no-duplicate-title >> invalid >>> invalid/flowchart/db-acc-repeated
+Filename: tests/fixtures/rules/flowchart/no-duplicate-title/invalid/flowchart/db-acc-repeated-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accTitle: a
+  3 | accTitle: b
+    | ^~~~~~~~~~~ [1]
+  4 | accDescr: c
+  5 | accDescr: d
+  6 | A
+  7 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 | accTitle: a
+          3 | accDescr: c
+          4 | accDescr: d
+          5 | A
+          6 |
+      - Remove the `accTitle` statement on line 2: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 | accTitle: b
+          3 | accDescr: c
+          4 | accDescr: d
+          5 | A
+          6 |
+---
+
+
+Test: flowchart/no-duplicate-title >> invalid >>> invalid/flowchart/db-acc-title-empty-replaces
+Filename: tests/fixtures/rules/flowchart/no-duplicate-title/invalid/flowchart/db-acc-title-empty-replaces-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | accTitle: x
+  4 | accTitle:
+    | ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the title set on line 3 with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | accTitle: x
+      - Remove the `accTitle` statement on line 3: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | accTitle:
+---
+
+
+Test: flowchart/no-duplicate-title >> invalid >>> invalid/flowchart/db-acc-title-outer-replaces-subgraph
+Filename: tests/fixtures/rules/flowchart/no-duplicate-title/invalid/flowchart/db-acc-title-outer-replaces-subgraph-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 | A
+  4 | accTitle: inner
+  5 | end
+  6 | accTitle: outer
+    | ^~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the title set on line 4 with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | A
+          4 | accTitle: inner
+          5 | end
+          6 |
+      - Remove the `accTitle` statement on line 4: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 | A
+          4 | end
+          5 | accTitle: outer
+          6 |
+---
+
+
+Test: flowchart/no-duplicate-title >> invalid >>> invalid/flowchart/db-acc-title-replaces
+Filename: tests/fixtures/rules/flowchart/no-duplicate-title/invalid/flowchart/db-acc-title-replaces-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accTitle: first
+  3 | accTitle: second
+    | ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 | accTitle: first
+          3 |
+      - Remove the `accTitle` statement on line 2: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 | accTitle: second
+          3 |
+---

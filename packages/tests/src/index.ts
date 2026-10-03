@@ -1,4 +1,4 @@
-import { readdir, readFile } from "node:fs/promises"
+import { readdirSync, readFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import path from "node:path"
 import type {
@@ -20,7 +20,8 @@ export type {
  * Fixture directories: one per diagram type, and `common` for syntax shared
  * by all diagram types (frontmatter, directives, comments, detection).
  */
-export type DiagramType = "common" | "flowchart" | "sequence" | "class"
+export type DiagramType =
+  "common" | "flowchart" | "sequence" | "class" | "state"
 
 /**
  * Where a fixture input came from.
@@ -186,28 +187,39 @@ export function getFixturesRoot(): string {
 /**
  * Loads every fixture of the given diagram type, sorted by name.
  *
+ * The files are read one at a time, so that loading opens one file at once
+ * however many fixtures there are: test files that load the fixtures run in
+ * parallel workers, and opening every file of every fixture at once in each of
+ * them goes past the system's limit of open files.
+ *
  * A diagram type whose directory does not exist yet (one added to
  * `DiagramType` before its first fixture) has no fixtures. No test covers this,
  * because every current `DiagramType` has a directory.
  */
+// eslint-disable-next-line @typescript-eslint/require-await -- the signature stays asynchronous for the packages that call it
 export async function loadFixtures(diagram: DiagramType): Promise<Fixture[]> {
   const dir = path.join(fixturesRoot, diagram)
-  const entries = await readdir(dir, { withFileTypes: true }).catch(
-    (error: unknown) => {
-      if ((error as { code?: unknown }).code === "ENOENT") return []
-      throw error
-    },
-  )
-  const fixtures = await Promise.all(
-    entries
-      .filter((entry) => entry.isDirectory())
-      .map((entry) =>
-        readFixture(diagram, entry.name, path.join(dir, entry.name)),
-      ),
+  const fixtures = fixtureDirectories(dir).map((name) =>
+    readFixture(diagram, name, path.join(dir, name)),
   )
   return fixtures.sort((a, b) =>
     a.name < b.name ? -1 : a.name > b.name ? 1 : 0,
   )
+}
+
+/**
+ * The names of the fixture directories in `dir`, or none when `dir` does not
+ * exist.
+ */
+function fixtureDirectories(dir: string): string[] {
+  try {
+    return readdirSync(dir, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name)
+  } catch (error) {
+    if ((error as { code?: unknown }).code === "ENOENT") return []
+    throw error
+  }
 }
 
 /**
@@ -224,15 +236,9 @@ export function allowsUnsummarizedDb(diagram: DiagramType): boolean {
 /**
  * Reads one fixture directory.
  */
-async function readFixture(
-  diagram: DiagramType,
-  name: string,
-  dir: string,
-): Promise<Fixture> {
-  const [input, expectedJson] = await Promise.all([
-    readFile(path.join(dir, "input.mmd"), "utf8"),
-    readFile(path.join(dir, "expected.json"), "utf8"),
-  ])
+function readFixture(diagram: DiagramType, name: string, dir: string): Fixture {
+  const input = readFileSync(path.join(dir, "input.mmd"), "utf8")
+  const expectedJson = readFileSync(path.join(dir, "expected.json"), "utf8")
   const file = parseExpectedFile(expectedJson, `${diagram}/${name}`)
   if (file.accepted && file.db === null && !allowsUnsummarizedDb(diagram)) {
     throw new Error(

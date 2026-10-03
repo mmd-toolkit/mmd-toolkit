@@ -27,21 +27,52 @@ parser from its build in `lib/`: rebuild it with
 
 ## The tests
 
-| File                          | What it checks                                                                                                                                                                                                                                                                             |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `tests/language.test.ts`      | Every input of the conformance corpus of `@mmd-toolkit/tests`, run through ESLint: a rejected input is reported at the place of the parser's error; for an accepted one, ESLint visits the nodes in the order of `traverseNodes`, and its lines, columns, and parents agree with the tree. |
-| `tests/snapshot.test.ts`      | Snapshots of where ESLint sees the nodes, tokens, and comments of some inputs of the corpus.                                                                                                                                                                                               |
-| `tests/token-store.test.ts`   | The token methods of the source code, on every input of the corpus that the parser accepts, against answers computed from the ranges of the tree: the tokens and comments inside, before, and after each node, and whether whitespace lies between two tokens.                             |
-| `tests/inline-config.test.ts` | Snapshots of the comments that configure ESLint (`%% eslint-disable…`, `%% eslint <rule>: <config>`), with the inputs of `tests/fixtures/inline-config/`.                                                                                                                                  |
-| `tests/markdown.test.ts`      | The `mermaid` and `mmd` code blocks of `tests/fixtures/markdown/`, linted through the processor of `@eslint/markdown`: the reports are at the places of the Markdown file.                                                                                                                 |
-| `tests/rules/<rule>.test.ts`  | Each rule, with eslint-snapshot-rule-tester, on the inputs of the fixtures that the document of the rule cites.                                                                                                                                                                            |
+| File                          | What it checks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `tests/language.test.ts`      | Every input of the conformance corpus of `@mmd-toolkit/tests`, run through ESLint: a rejected input is reported at the place of the parser's error; for an accepted one, ESLint visits the nodes in the order of `traverseNodes`, and its lines, columns, and parents agree with the tree.                                                                                                                                                                                                                                                                                     |
+| `tests/snapshot.test.ts`      | Snapshots of where ESLint sees the nodes, tokens, and comments of some inputs of the corpus.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `tests/token-store.test.ts`   | The token methods of the source code, on every input of the corpus that the parser accepts, against answers computed from the ranges of the tree: the tokens and comments inside, before, and after each node, and whether whitespace lies between two tokens.                                                                                                                                                                                                                                                                                                                 |
+| `tests/inline-config.test.ts` | Snapshots of the comments that configure ESLint (`%% eslint-disable…`, `%% eslint <rule>: <config>`), with the inputs of `tests/fixtures/inline-config/`.                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| `tests/markdown.test.ts`      | The `mermaid` and `mmd` code blocks of `tests/fixtures/markdown/`, linted through the processor of `@eslint/markdown`: the reports are at the places of the Markdown file.                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `tests/diagram-rules.test.ts` | The rules of each diagram type, on every input of the corpus that the parser accepts and whose diagram is of another type: they report nothing.                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `tests/rule-cases.test.ts`    | The examples of every rule document, as `tests/rule-cases.ts` reads them: each document has incorrect and correct examples, and the parser accepts each one.                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `tests/rule-fixtures.test.ts` | The fixture directories of the rules: each belongs to a rule, and each copy of a corpus input is the same as the corpus, byte for byte.                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `tests/rules/<rule>.test.ts`  | Each implemented rule, through `testRule(name, rule)` of `tests/rule-test.ts`: eslint-snapshot-rule-tester on the cases that `ruleCases` of `tests/rule-cases.ts` gives, the examples of its English document (incorrect ones are invalid, correct ones valid) and the inputs of its fixture directory. For a rule that offers suggestions, each suggestion of each invalid case is applied too: the parser accepts the text that it gives, the rule reports less, and no other implemented rule reports more. The snapshot of the tester shows each suggestion and that text. |
 
 Tests of rules use eslint-snapshot-rule-tester (see [Snapshots](#snapshots)).
 The tests of the language use it where a snapshot shows the result best.
 
-The rules in the tests only observe: they report what ESLint gives them, so that
-the tests show what a rule of the plugin will see. They are not rules of the
-plugin.
+The rules in the tests of the language only observe: they report what ESLint
+gives them, so that the tests show what a rule of the plugin will see. They are
+not rules of the plugin. These tests, and the tests of the rules, start from
+`LANGUAGE_CONFIG` of `tests/helpers.ts`: the recommended configuration without
+its rules, so that the rules that it enables add no reports of their own.
+
+## The fixtures of the rules
+
+The inputs of the tests of a rule are in its fixture directory,
+`tests/fixtures/rules/<name>/`, laid out as in ota-meshi's ESLint plugins, which
+use the same tester: each `<case>-input.mmd` under `valid/` or `invalid/` is a
+case, also in a subdirectory, and a file or a directory whose name starts with
+`_` is not. The name of the file says what the case is for.
+
+- An input that records what mermaid.js does is a copy of the input of a fixture
+  of the conformance corpus, under `valid/<diagram>/` or `invalid/<diagram>/`
+  with the name of the corpus fixture:
+  `invalid/flowchart/db-acc-descr-unclosed-replaces-input.mmd` is the input of
+  `flowchart/db-acc-descr-unclosed-replaces` of `@mmd-toolkit/tests`, whose
+  `expected.json` records what mermaid.js reads. `tests/rule-fixtures.test.ts`
+  keeps each copy the same as the corpus.
+- An input written for the rule alone, such as a boundary of its condition, is
+  directly under `valid/` or `invalid/`.
+- No fixture file holds a character that `pnpm run lint:chars` checks for (the
+  list is in [`packages/spec/docs/index.md`](../../spec/docs/index.md)). A
+  corpus fixture that needs one is not copied; an input that a test needs with
+  such a character is written with escapes, in the test code or in a JSON
+  fixture, and is not a `.mmd` file that holds the character.
+
+The examples of the rule document are cases too, read from the document; they
+are not copied into the directory.
 
 ## Snapshots
 
@@ -120,9 +151,19 @@ name after the namespace (`mmd/flowchart/no-ignored-text`), and its documents
 are `docs/rules/<name>.md` and `docs/rules/<name>.ja.md`. The notes for
 implementing a rule, how the tree shows what it reports and the fixtures that
 record it, are kept apart from the documents for its users, in
-`docs/rule-notes/<name>.md` and `docs/rule-notes/<name>.ja.md`. A rule need not
-have notes: the notes of a rule are removed when it is implemented. `update` and
-`check:docs` read only their paths, to find notes that belong to no rule.
+`docs/rule-notes/<name>.md` and `docs/rule-notes/<name>.ja.md`.
+
+A rule is either implemented or a skeleton, and three facts say which; they
+change together when the rule is implemented:
+
+| Fact                         | Implemented | Skeleton                 |
+| ---------------------------- | ----------- | ------------------------ |
+| `meta.messages`              | not empty   | empty                    |
+| `tests/rules/<name>.test.ts` | exists      | does not exist           |
+| `docs/rule-notes/<name>.md`  | removed     | exists in both languages |
+
+No one of them decides alone: `check:docs` fails when the facts of a rule
+disagree.
 
 The namespace is `mmd`, not a scoped name such as `@mmd-toolkit`: ESLint splits
 an id that starts with `@` into the plugin and the rule at its last `/`, so it
@@ -147,20 +188,29 @@ pnpm --filter eslint-plugin-mmd run check:docs
 - In `docs/rules/index.md` and `index.ja.md`, everything between
   `<!-- begin auto-generated rules list -->` and
   `<!-- end auto-generated rules list -->`: a table of the rules for the common
-  rules and for each diagram type, with the description and a ✅ for the rules
-  that the `recommended` configuration enables. The English description is
-  `meta.docs.description`; the Japanese one is the first paragraph of the
-  Japanese document.
+  rules and for each diagram type, with the description, a ✅ for the rules that
+  the `recommended` configuration enables, a 💡 for the rules that offer
+  suggestions (`meta.hasSuggestions`), and a 🚧 for the skeletons. The English
+  description is `meta.docs.description`; the Japanese one is the first
+  paragraph of the Japanese document.
 - In each rule document, in both languages, the title (`# mmd/<name>`), and
   everything between `<!-- begin auto-generated rule notice -->` and
   `<!-- end auto-generated rule notice -->` after the first paragraph: whether
-  the `recommended` configuration enables the rule.
+  the `recommended` configuration enables the rule, and whether it offers
+  suggestions.
+- In the document of an implemented rule, in both languages, everything between
+  `<!-- begin auto-generated rule resources -->` and
+  `<!-- end auto-generated rule resources -->` at its end: the Resources
+  section, with links to the source and the test of the rule. The document of a
+  skeleton has none.
 
 The rest of the documents is written by hand. `check:docs` writes nothing and
 fails when `src/rules/index.ts` or a generated part is out of date, when a rule
 has no document in one of the languages, when a document or notes belong to no
-rule, or when the first paragraph of an English document is not
-`meta.docs.description` of its rule. Line breaks inside a first paragraph do not
+rule, when the first paragraph of an English document is not
+`meta.docs.description` of its rule, when the `mmd` code blocks of a Japanese
+document are not those of the English one, in the same order, or when a rule is
+neither implemented nor a skeleton. Line breaks inside a first paragraph do not
 matter.
 
 When the rules and the documents do not match in one of these ways, `update`
@@ -176,14 +226,54 @@ To add a rule:
    `docs.url`, `schema`, `messages`), and a `create` that returns no handler.
 2. Write its documents in both languages. The first paragraph of the English
    document is `meta.docs.description`, word for word.
-3. Run `update`, then `check:docs`.
+3. Write its notes in both languages.
+4. Run `update`, then `check:docs`.
 
-To rename a rule, rename its file, the argument of `ruleDocsUrl` in it, and its
-documents together, and run `update`. To remove a rule, remove its file and its
-documents, and run `update`. To change the description of a rule, change
-`meta.docs.description` and the first paragraph of the English document to the
-same sentence, change the first paragraph of the Japanese document, and run
-`update`.
+To implement a rule, give it its messages and its handlers, add its test, and
+remove its notes, in the same change; the fixtures of the notes go into the
+fixture directory of the rule. Then run `update`: it writes the Resources
+section of its documents and removes its 🚧 from the index.
+
+To rename a rule, rename its file, the argument of `ruleDocsUrl` in it, its
+documents, and its notes or its test together, and run `update`. To remove a
+rule, remove its file, its documents, and its notes or its test, and run
+`update`. To change the description of a rule, change `meta.docs.description`
+and the first paragraph of the English document to the same sentence, change the
+first paragraph of the Japanese document, and run `update`.
+
+## Writing a rule
+
+These choices hold for every rule, so that the rules read alike:
+
+- A rule of a diagram type has handlers only for the node types of its diagram
+  type, so that ESLint never calls it on another diagram; a rule that reads the
+  tokens or the comments does so from the handler of the diagram node, such as
+  `FlowchartDiagram`, not from `Root`. `tests/diagram-rules.test.ts` checks it.
+- A rule reads the tree and the tokens, and the values of nodes and tokens; it
+  does not lex the text again.
+- The id of a message is a word in camel case for what is reported (`unclosed`,
+  `duplicate`); a rule that reports two kinds of things has a message for each.
+  The message says in one sentence how mermaid.js reads the text, and takes
+  values through `data` (`{{line}}`).
+- A rule reports the node that its document names. What is not a node, such as a
+  directive or a token, is reported at its `loc`; a part of the value of a
+  token, at a `loc` from `sourceCode.getLocFromIndex`. Something that runs to
+  the end of the text, such as an unclosed block, is reported where it opens.
+- A rule has no options and no fix. It offers suggestions only as the rule-ideas
+  skill decides (`meta.hasSuggestions`), and each suggestion says how mermaid.js
+  reads the text after it is applied. The suggestions are built in functions of
+  their own, apart from `create`, which passes what they return to
+  `context.report`. A suggestion that removes a statement or a token removes the
+  range that `removalRange` of `src/utils/removal.ts` gives: the element, and
+  the whitespace or the line around it, so that no blank space is left. A `;`
+  after the element is never removed: it is the separator of the statement
+  before it, or an empty statement of its own, which is a member in a subgraph.
+- The test of a rule is one call of `testRule(name, rule, revealed)`. The third
+  argument names the rules whose reports a suggestion may reveal: mistakes that
+  the text already holds, which the rewrite makes visible. It is
+  `{ kind: "none" }` by default, `{ kind: "rules", rules }` with each rule and
+  the mistake that it shows, or `{ kind: "anyRule", because }` with the reason.
+  Any other rule that reports more after a suggestion fails the test.
 
 ## Types for rules
 

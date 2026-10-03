@@ -219,6 +219,80 @@ flowchart LR
   A --> Bdirection; LR
 ```
 
+A style, class definition, or link style statement that is followed on its line
+by empty description blocks and a `;` stays on its line with the blocks and the
+`;`, on every line they lie on. The blocks read no token, so the whitespace
+before them ends the last unit of the statement, and the whitespace after them
+is a last style that is all whitespace. Without the blocks that style is gone,
+and mermaid.js rejects what is left, as it rejects `style A`, `classDef c`, and
+`linkStyle 0 interpolate basis`, each followed by a space and a line break.
+
+Input
+([statements-one-per-line/empty-style-before-block-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/empty-style-before-block-kept-input.mmd)):
+
+```mmd
+flowchart LR
+A-->B
+linkStyle 0 interpolate basis accDescr {} ;
+classDef c accDescr {}accDescr {} ;
+style A accDescr {
+} ;B
+```
+
+Output
+([statements-one-per-line/empty-style-before-block-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/empty-style-before-block-kept-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  linkStyle 0 interpolate basis accDescr {} ;
+  classDef c accDescr {}accDescr {} ;
+  style A accDescr {
+  } ;B
+```
+
+The same holds where the word ends a subgraph name or the text of a style, a
+class definition, or a link style: `end`, `click`, `call`, and `href` there, and
+the text of a style may end with one after any character that is no letter or
+digit, as `fill:click` does. In a name, `end` takes the whitespace after it,
+line feeds included, so `subgraph Front end` followed by a line break and `A`
+has the name `Front end`, a line feed, and `A`, and no members, while
+`subgraph Front end ;` has the member A. `Front pend` and `Front endx` do not
+end with the word. A directive that cuts the word does not change that:
+mermaid.js removes directives before it reads the text.
+
+Input
+([statements-one-per-line/semicolon-after-end-name-kept-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-end-name-kept-input.mmd)):
+
+```mmd
+flowchart LR
+subgraph Front end ;
+A
+end
+subgraph "S" end;
+B
+end
+style B fill:click;
+C
+classDef c href;D
+```
+
+Output
+([statements-one-per-line/semicolon-after-end-name-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/semicolon-after-end-name-kept-output.mmd)):
+
+```mmd
+flowchart LR
+  subgraph Front end ;
+    A
+  end
+  subgraph "S" end;
+    B
+  end
+  style B fill:click;
+  C
+  classDef c href;D
+```
+
 ### Semicolons
 
 A `;` at the end of a statement is dropped, and so is a `;` that stands alone at
@@ -247,6 +321,32 @@ Output
 flowchart LR
   A --> B
   B --> C
+```
+
+A `;` that ends a statement is dropped also where the line rule of mermaid.js
+ignores it, as the `;` after a CSS color does in a `style` statement: mermaid.js
+removes that `;` from the text, so dropping it changes nothing.
+
+Input
+([semicolons/ignored-removed-input.mmd](../tests/fixtures/flowchart/semicolons/ignored-removed-input.mmd)):
+
+```mmd
+flowchart LR
+A-->B
+style A fill:#f00;
+classDef c fill:#fff,stroke:#333;
+style B   fill:#0f0 ;
+```
+
+Output
+([semicolons/ignored-removed-output.mmd](../tests/fixtures/flowchart/semicolons/ignored-removed-output.mmd)):
+
+```mmd
+flowchart LR
+  A --> B
+  style A fill:#f00
+  classDef c fill:#fff,stroke:#333
+  style B fill:#0f0
 ```
 
 Input
@@ -362,10 +462,11 @@ Within a line, a run of spaces and tabs between two tokens becomes one space.
 Whitespace that is part of a value is kept: the whitespace around the `,` of a
 list of styles, which mermaid.js keeps in the style, and the whitespace inside
 the name of a subgraph, which becomes its title. In a `style`, `classDef`, or
-`linkStyle` statement, only the whitespace right after the id, the class names,
-or the link numbers becomes one space. What follows it up to the last style,
-directives and whitespace included, is kept as written: mermaid.js reads it as
-part of the first style.
+`linkStyle` statement, the whitespace before the first style, which the
+statement rule of mermaid.js reads, becomes one space, also around a directive
+there: `style A %%{init: {}}%%  fill:red` and `style A %%{init: {}}%% fill:red`
+give the same Db. What follows the start of the first style, up to the last
+style, is kept as written: mermaid.js reads it as part of the styles.
 
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/collapsed-input.mmd)):
@@ -430,7 +531,7 @@ flowchart LR
 ```
 
 Input
-([whitespace-between-tokens/style-after-two-items-kept-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-two-items-kept-input.mmd)):
+([whitespace-between-tokens/style-after-directives-collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -443,16 +544,16 @@ linkStyle default interpolate   basis   %%{init: {}}%%  %%{init: {}}%%stroke:red
 ```
 
 Output
-([whitespace-between-tokens/style-after-two-items-kept-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-two-items-kept-output.mmd)):
+([whitespace-between-tokens/style-after-directives-collapsed-output.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/style-after-directives-collapsed-output.mmd)):
 
 ```mmd
 flowchart LR
   A
-  style A %%{init: {}}%%  %%{init: {}}%%fill:red
-  classDef a,b %%{init: {}}%% %%{init: {}}%%  fill:red
+  style A %%{init: {}}%% %%{init: {}}%%fill:red
+  classDef a,b %%{init: {}}%% %%{init: {}}%% fill:red
   A --> A
-  linkStyle 0 %%{init: {}}%%  fill:red
-  linkStyle default interpolate basis %%{init: {}}%%  %%{init: {}}%%stroke:red
+  linkStyle 0 %%{init: {}}%% fill:red
+  linkStyle default interpolate basis %%{init: {}}%% %%{init: {}}%%stroke:red
 ```
 
 ### Arrow spacing
@@ -1077,7 +1178,17 @@ Whether there is whitespace between the id of a subgraph and its title in
 brackets is kept as written; a run of it becomes one space. mermaid.js reads
 both forms the same, and both are in use, so the choice is left to the author. A
 name written without a title keeps the whitespace after it, which mermaid.js
-reads as part of the name.
+reads as part of the name. So does the whitespace around the empty description
+blocks written on the line of the header: before a block, between two blocks,
+and between the last block and a `;`, as in
+`subgraph "S"accDescr {} accDescr {}` and `subgraph "U"accDescr {} ;`. The
+blocks read no token, so that whitespace follows the name: the subgraph has the
+id `subGraph0`, and the id `S` without it. Whitespace after the last block that
+a line break follows is read as the line break, and does not count. The blocks
+move to lines of their own, and one space stays after the header. These examples
+are not shown here, because the whitespace is at the end of a line (see
+`subgraph-header/whitespace-before-block-kept` in the
+[folder](../tests/fixtures/flowchart/subgraph-header)).
 
 Input
 ([subgraph-header/title-spacing-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-input.mmd)):

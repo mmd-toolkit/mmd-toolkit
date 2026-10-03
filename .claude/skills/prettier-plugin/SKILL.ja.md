@@ -13,16 +13,28 @@ description:
 `prettier-plugin-mmd` に図種の printer を足す手順と、
 mermaid.js の更新のときに printer を直す手順。
 会話の履歴や記憶がなくても、この文書だけで同じ品質で進められるように書く。
-方針と基準は AGENTS.md にあり、ここでは指すだけにする。
+パッケージの方針と基準は「方針と基準」の節にある。
+どのパッケージにも当たるものは、AGENTS.md と SKILL `conventions` にある。
+
+## 方針と基準
+
+`packages/prettier-plugin-mmd`:
+
+- 図種ごとの printer への振り分け。
+- 解析に失敗した入力は変更せず返す。
+- Markdown 内の mermaid フェンスを対象にし、テストする。
+- 図種ごとの printer は、項目ごとに明示的に決めた整形方針に従う。
+- 4 点のテスト: 冪等、整形前後の Db 一致、失敗時は無変更、
+  Markdown 内のフェンス。
 
 ## 1. 最初に読むもの
 
-1. AGENTS.md の `packages/prettier-plugin-mmd` の節と Principles。
-   前者には、このパッケージの責任と 4 点のテストがある。
-   後者には、正しい形、正規表現を使わないこと、autofix の結果を読むこと、
+1. この文書の「方針と基準」の節、AGENTS.md の Principles、SKILL `conventions`。
+   1 つ目には、このパッケージの責任と 4 点のテストがある。
+   2 つ目には、正しい形と、コミットしないことがある。
+   3 つ目には、正規表現を使わないこと、autofix の結果を読むこと、
    見えない文字、英語と日本語の文書の対、文章の折り返し、
-   Mermaid のテキストのコードブロックの info string は `mmd` であること、
-   コミットしないことがある。
+   Mermaid のテキストのコードブロックの info string は `mmd` であることがある。
    基準は変わるので、毎回読む。
 2. 図種の仕様: `packages/spec/docs/diagrams/<図種>.md`
    （字句の規則、文法、Db の組み立て）と、
@@ -171,7 +183,7 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 
 ## 6. テスト
 
-4 点のテスト（AGENTS.md）に、次を加える。
+4 点のテスト（「方針と基準」の節）に、次を加える。
 構成は `docs/development.md` にある。
 
 - fixture 形式: 規則ごとに 1 つのフォルダー。
@@ -181,6 +193,11 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   差分を読んで意図した整形かを確かめる。
   `tests/format.test.ts` が、出力の一致、冪等、
   mermaid.js の Db の一致を確かめる。
+  U+2028 や U+2029 のような不可視文字を含むテキストは、
+  この package の fixture にしない。
+  `tests/line-separators.test.ts` のように、テストのコードにエスケープで書き、
+  書いた後にファイルのバイト列を確かめる。
+  その文字をそのまま持つのは、`packages/tests/fixtures/` のコーパスだけ。
 - mermaid.js の読み方の比べ方: `tests/mermaid-readings.ts` にあり、
   fixture、コーパス、生成した入力のテストが使う。
   仕様が読むとおりに比べるため、読み方を変える既知の差を取り除いて
@@ -216,6 +233,7 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   - 図種に特有の形: flowchart では、区切りでない `;` を含む行。
     sequence では、さまざまな形のメッセージ。
     class では、さまざまな形の関係、メンバー文、クラス文。
+    state では、遷移と、空白を変えたあらゆる種類の文。
   - 選び方は決定的にする（seed、境界の n 個目ごと）。
     通常の実行は全体で数分に収め、
     大きさを変える値は、`tests/generated.ts` の 1 か所で環境変数から読む
@@ -226,15 +244,68 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   例のコードブロックと fixture のファイルが一致することを確かめる。
   新しい規則の文書は、そこの `ruleDocuments` に足す。
 
-テストの実行:
+どのテストを回すか。
+全パッケージの決まりは SKILL `conventions` の「テストの実行」にあり、
+ここにはこのパッケージに固有のことを書く。
 
-```sh
-pnpm vitest run --project prettier-plugin-mmd
-```
-
-全件の実行: 生成した入力のテストの大きさは、
-環境変数で外から渡す（`docs/development.md` の Larger runs）。
-テストを書き換えたり、写しを作ったりしない。
+- コードの部分と、その変更が影響しうるテストのファイル。
+  作業の途中は、
+  `pnpm vitest run --project prettier-plugin-mmd <ファイル>` で回す。
+  `-t <図種>`（小文字）で絞れるのは、
+  テストの名前に図種が入る 4 つのファイルだけである。
+  `format` と `corpus`（名前が `<図種>/` で始まる）、
+  `generated-insertions`（`of <図種>`）、
+  `generated-mutation`（`mutants of the <図種> fixtures`）。
+  `-t` を付けると、ほかのファイルは丸ごと飛ばされ、何も失敗しない。
+  そのため、ほかのファイルは `-t` なしで回す。
+  次の一覧の `generated-*`、`value-nodes`、`sequence-layout`、`markdown-*` は、
+  上の 4 つを除いて、そうしたファイルである。
+  - 共有のモジュール: `blocks.ts`、`atoms.ts`、`gap.ts`、`layout.ts`、
+    `lines.ts`、`source.ts`、`kept-lines.ts`。
+    すべての図種のテスト、つまり既定のサイズのパッケージ全体。
+  - `flowchart*.ts`: `format`、`corpus`、`generated-insertions`、
+    `generated-mutation` を `-t flowchart` で。
+    `-t` なしで `generated-label-edges`、`generated-line-semicolons`、
+    `generated-empty-blocks`、`generated-subgraph-names`、
+    `generated-comment-semicolons`、`generated-words-before-separators`、
+    `generated-line-endings`、`generated-directive-cuts`、
+    `generated-dangling-lines`、`generated-click-lines`、
+    `generated-ignored-semicolons`、`generated-statement-pairs`、
+    `markdown-flowchart`、`value-nodes`。
+  - `sequence*.ts`: 4 つを `-t sequence` で。
+    `-t` なしで `generated-sequence-messages`、`generated-comment-semicolons`、
+    `generated-words-before-separators`、`generated-line-endings`、
+    `generated-directive-cuts`、`generated-dangling-lines`、
+    `generated-ignored-semicolons`、`generated-statement-pairs`、
+    `sequence-layout`、`markdown-sequence`、`value-nodes`。
+  - `class*.ts`: 4 つを `-t class` で。
+    `-t` なしで `generated-class-forms`、`generated-comment-semicolons`、
+    `generated-line-endings`、`generated-directive-cuts`、
+    `generated-dangling-lines`、`generated-click-lines`、
+    `generated-ignored-semicolons`、`markdown-class`、`value-nodes`。
+  - `state*.ts`: 4 つを `-t state` で。
+    `-t` なしで `generated-state-forms`、`generated-comment-semicolons`、
+    `generated-line-endings`、`generated-directive-cuts`、
+    `generated-dangling-lines`、`generated-click-lines`、
+    `generated-ignored-semicolons`、`line-separators`、
+    `markdown-state`、`value-nodes`。
+  - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:
+    `dispatch`、`failure`、`markdown`、`plugin`と、
+    図種ごとの 4 つ。
+  - `tests/mermaid-readings.ts`、`tests/generated.ts`:
+    それを import するすべてのテスト。
+- 文書を読むテスト: `tests/docs.test.ts` は、
+  規則の文書（`docs/<図種>.md`。英語と日本語）、README、
+  fixture のフォルダーを読む。
+  これらのどれかを変えたら、文書だけの変更でも回す。
+  ほかに文書を読むテストはない。
+- 既定の実行は `pnpm vitest run --project prettier-plugin-mmd` で、
+  生成入力のテストは、位置ではなくトークンの境界の種類を網羅する形に
+  見直すまで除く。`MMD_RUN_GENERATED_TESTS=1` で含める。
+  完了を報告する前に 1 回回す。
+- 全量のサイズは、環境変数で外から渡す（`docs/development.md` の Larger runs）。
+  工程の完了を報告する前か、review に出す前に 1 回回し、変更のたびには回さない。
+  テストを書き換えたり、写しを作ったりしない。
 
 ```sh
 MMD_GENERATED_SAMPLE_EVERY=1 MMD_MUTANTS_PER_FIXTURE=30 pnpm vitest run --project prettier-plugin-mmd tests/generated- --reporter=verbose
@@ -278,9 +349,12 @@ MMD_GENERATED_SAMPLE_EVERY=1 MMD_MUTANTS_PER_FIXTURE=30 pnpm vitest run --projec
 
 ## 8. 確かめ方と出力
 
-- 通常のテスト一式、`npx tsc --noEmit`（ルート）、
-  自分のパッケージの `npx eslint`、上の文書の検査が通る。
-- 全件の実行で問題が 0 件。
+- 既定のサイズのパッケージのテストが、報告の前に 1 回通る。
+  あわせて `npx tsc --noEmit`（ルート）、自分のパッケージの `npx eslint`、
+  上の文書の検査が通る。
+- 全量の実行で問題が 0 件。
+  工程の完了を報告する前か、review に出す前に 1 回。
+- 何を回し、何を回していないかを書く。
 - 結果として、項目（決定の項目、所見）ごとに次を示す: 変えたファイルと内容、
   再現例の結果（受理の維持、Db の一致、冪等、例外なし）、
   生成テストの件数（作った件数と確かめた件数）。

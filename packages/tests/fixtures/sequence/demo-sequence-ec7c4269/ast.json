@@ -66,7 +66,7 @@
             "kind": "participant",
             "created": false,
             "id": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "A",
               "range": [
                 56,
@@ -105,7 +105,7 @@
             "kind": "participant",
             "created": false,
             "id": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "J",
               "range": [
                 70,
@@ -217,7 +217,7 @@
             "kind": "participant",
             "created": false,
             "id": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "B",
               "range": [
                 145,
@@ -270,7 +270,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "A",
           "range": [
             151,
@@ -312,7 +312,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "J",
           "range": [
             155,
@@ -383,7 +383,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "J",
           "range": [
             183,
@@ -425,7 +425,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "A",
           "range": [
             187,
@@ -496,7 +496,7 @@
       {
         "type": "SequenceMessageStatement",
         "from": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "A",
           "range": [
             197,
@@ -538,7 +538,7 @@
         "activation": null,
         "toCentralConnection": false,
         "to": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "B",
           "range": [
             201,

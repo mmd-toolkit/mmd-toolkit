@@ -1,0 +1,9 @@
+stateDiagram-v2
+
+[*] --> Moving
+Moving --> Still
+Moving --> Crash
+state Moving {
+%% comment inside state
+slow  --> fast
+}

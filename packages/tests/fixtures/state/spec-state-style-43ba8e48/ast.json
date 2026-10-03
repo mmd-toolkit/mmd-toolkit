@@ -1,0 +1,368 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Moving",
+            "range": [
+              16,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 0
+              },
+              "end": {
+                "line": 2,
+                "column": 6
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            16,
+            22
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 0
+            },
+            "end": {
+              "line": 2,
+              "column": 6
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Crash",
+            "range": [
+              27,
+              32
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 11
+              },
+              "end": {
+                "line": 2,
+                "column": 16
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            27,
+            32
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 11
+            },
+            "end": {
+              "line": 2,
+              "column": 16
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          16,
+          32
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 16
+          }
+        }
+      },
+      {
+        "type": "StateTransitionStatement",
+        "from": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Moving",
+            "range": [
+              52,
+              58
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 0
+              },
+              "end": {
+                "line": 4,
+                "column": 6
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            52,
+            58
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 0
+            },
+            "end": {
+              "line": 4,
+              "column": 6
+            }
+          }
+        },
+        "to": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "Still",
+            "range": [
+              63,
+              68
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 11
+              },
+              "end": {
+                "line": 4,
+                "column": 16
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            63,
+            68
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 11
+            },
+            "end": {
+              "line": 4,
+              "column": 16
+            }
+          }
+        },
+        "label": null,
+        "range": [
+          52,
+          68
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 16
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      68
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 4,
+        "column": 16
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " comment between",
+      "range": [
+        33,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Moving",
+      "range": [
+        16,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        23,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Crash",
+      "range": [
+        27,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Moving",
+      "range": [
+        52,
+        58
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        59,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "Still",
+      "range": [
+        63,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 11
+        },
+        "end": {
+          "line": 4,
+          "column": 16
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    69
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 5,
+      "column": 0
+    }
+  }
+}

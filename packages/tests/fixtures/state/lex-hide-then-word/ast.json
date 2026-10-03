@@ -1,0 +1,276 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateDefinitionStatement",
+        "reference": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "hide",
+            "range": [
+              18,
+              22
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 2
+              },
+              "end": {
+                "line": 2,
+                "column": 6
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            18,
+            22
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 2
+            },
+            "end": {
+              "line": 2,
+              "column": 6
+            }
+          }
+        },
+        "description": null,
+        "range": [
+          18,
+          22
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 6
+          }
+        }
+      },
+      {
+        "type": "StateDefinitionStatement",
+        "reference": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "empty",
+            "range": [
+              23,
+              28
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 7
+              },
+              "end": {
+                "line": 2,
+                "column": 12
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            23,
+            28
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 7
+            },
+            "end": {
+              "line": 2,
+              "column": 12
+            }
+          }
+        },
+        "description": null,
+        "range": [
+          23,
+          28
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 7
+          },
+          "end": {
+            "line": 2,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "StateDefinitionStatement",
+        "reference": {
+          "type": "StateReference",
+          "state": {
+            "type": "Identifier",
+            "name": "descriptionx",
+            "range": [
+              29,
+              41
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 13
+              },
+              "end": {
+                "line": 2,
+                "column": 25
+              }
+            }
+          },
+          "cssClass": null,
+          "range": [
+            29,
+            41
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 13
+            },
+            "end": {
+              "line": 2,
+              "column": 25
+            }
+          }
+        },
+        "description": null,
+        "range": [
+          29,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 13
+          },
+          "end": {
+            "line": 2,
+            "column": 25
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      41
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 25
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "hide",
+      "range": [
+        18,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "empty",
+      "range": [
+        23,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "descriptionx",
+      "range": [
+        29,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    42
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

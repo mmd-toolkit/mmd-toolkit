@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Grammar: href needs a string."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...am-v2  click A href\n----------------------^\nExpecting 'STRING', got 'NL'"
+  }
+}

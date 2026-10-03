@@ -1,0 +1,56 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: flowchart/no-redefined-vertex >> invalid >>> docs/rules/flowchart/no-redefined-vertex.md incorrect 1
+Filename: flowchart/no-redefined-vertex-incorrect-1.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[Start] --> B
+  3 |   C --> A[End]
+    |          ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written on line 2 with these.
+---
+
+
+Test: flowchart/no-redefined-vertex >> invalid >>> invalid/flowchart/db-props-merge
+Filename: tests/fixtures/rules/flowchart/no-redefined-vertex/invalid/flowchart/db-props-merge-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A[|borders:lt|x]
+  3 | A[|b:r|y]
+    |  ^~~~~~~~ [1]
+
+[1] mermaid.js replaces the shape and the label of `A` written on line 2 with these.
+---
+
+
+Test: flowchart/no-redefined-vertex >> invalid >>> invalid/flowchart/db-vertex-label-redefined
+Filename: tests/fixtures/rules/flowchart/no-redefined-vertex/invalid/flowchart/db-vertex-label-redefined-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A[Start]-->B
+  3 | C-->A[End]
+    |      ^~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written on line 2 with these.
+---
+
+
+Test: flowchart/no-redefined-vertex >> invalid >>> invalid/label-differs-inside
+Filename: tests/fixtures/rules/flowchart/no-redefined-vertex/invalid/label-differs-inside-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A["x y"]
+  3 |   A["x  y"]
+    |    ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the shape and the label of `A` written on line 2 with these.
+---

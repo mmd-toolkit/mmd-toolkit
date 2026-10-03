@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Db normalization, Building the summary from the tree: the styles of a classDef are its text divided at each `,`, empty parts included: x, the empty text, and y."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "a",
+        "styles": [
+          "x",
+          "",
+          "y"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

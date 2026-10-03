@@ -83,6 +83,33 @@ describe("lookAheadFromCommentStart: comment regions", () => {
     // `\r\n` and a lone `\r` end the comment and the region.
     ["  %% c\r\ny", 0, "  %% c\r\n", "%% c", []],
     ["%% c\ry", 0, "%% c\r", "%% c", []],
+    // A directive that takes the rest of the text, line breaks included,
+    // carries the comment to the end of the text, and the comment leaves
+    // out the whitespace at its end that the directive took. Whitespace
+    // that no directive took stays, also at the end of the text.
+    [
+      "%% %%{init: {} \n \n\n",
+      0,
+      "%% %%{init: {} \n \n\n",
+      "%% %%{init: {}",
+      ["%%{init: {} \n \n\n"],
+    ],
+    ["%% %%{wrap \n\n", 0, "%% %%{wrap \n\n", "%% %%{wrap", ["%%{wrap \n\n"]],
+    [
+      "%% %%{wrap\nA\nB --> C\n",
+      0,
+      "%% %%{wrap\nA\nB --> C\n",
+      "%% %%{wrap\nA\nB --> C",
+      ["%%{wrap\nA\n"],
+    ],
+    [
+      "%% %%{init: {}}%%  ",
+      0,
+      "%% %%{init: {}}%%  ",
+      "%% %%{init: {}}%%  ",
+      ["%%{init: {}}%%"],
+    ],
+    ["%% c  ", 0, "%% c  ", "%% c  ", []],
   ])("%j at %i", (text, start, region, comment, directives) => {
     expect(entriesAt(text, start)).toMatchObject([
       { region, comment, directives },
@@ -104,9 +131,11 @@ describe("lookAheadFromCommentStart: the value of a comment", () => {
 
 describe("lookAheadFromCommentStart: line segments", () => {
   it.each([
-    // No comment: one segment up to the separator of the line where the look-ahead stopped.
+    // No comment: one segment up to the separator of the line where the
+    // look-ahead stopped.
     ["x %% a\ny", 0, [{ segment: "x %% a", ignored: [], directives: [] }]],
-    // `%%` needs a character after it that is not `{` and not a line terminator.
+    // `%%` needs a character after it that is not `{` and not a line
+    // terminator.
     ["%%\nx", 0, [{ segment: "%%", ignored: [], directives: [] }]],
     ["%%", 0, [{ segment: "%%", ignored: [], directives: [] }]],
     ["%%\r\nx", 0, [{ segment: "%%", ignored: [], directives: [] }]],

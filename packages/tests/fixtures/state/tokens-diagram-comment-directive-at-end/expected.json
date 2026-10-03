@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md Directive: a directive at the end of a diagram comment lies inside the comment's range and has no Directive token; the comment is %% c and the directive, and the next line is a transition."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "D",
+        "shape": "rect",
+        "label": "D",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": ""
+      },
+      {
+        "start": "C",
+        "end": "D",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

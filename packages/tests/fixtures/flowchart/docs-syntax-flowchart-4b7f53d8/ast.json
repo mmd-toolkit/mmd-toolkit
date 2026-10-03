@@ -991,6 +991,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " ^ These subgraphs are identical, except for the links to them:",
       "range": [
         197,
@@ -1009,6 +1010,7 @@
     },
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " Link *to* subgraph1: subgraph1 direction is maintained",
       "range": [
         268,
@@ -1027,6 +1029,7 @@
     },
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " Link *within* subgraph2:",
       "range": [
         356,
@@ -1045,6 +1048,7 @@
     },
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " subgraph2 inherits the direction of the top-level graph (LR)",
       "range": [
         388,

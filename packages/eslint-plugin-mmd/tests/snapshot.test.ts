@@ -12,9 +12,8 @@ import type { Rule } from "eslint"
 import { SnapshotRuleTester } from "eslint-snapshot-rule-tester"
 import type { Node } from "@mmd-toolkit/parser"
 import type { DiagramType } from "@mmd-toolkit/tests"
-import plugin from "../src/index.ts"
 import type { MermaidRuleDefinition } from "../src/index.ts"
-import { loadCorpus } from "./helpers.ts"
+import { LANGUAGE_CONFIG, loadCorpus } from "./helpers.ts"
 
 /** The fixtures whose inputs are shown, with what each one is chosen for. */
 const SHOWN_FIXTURES: readonly {
@@ -106,7 +105,7 @@ const tokens: MermaidRuleDefinition = {
   },
 }
 
-const tester = new SnapshotRuleTester(plugin.configs.recommended)
+const tester = new SnapshotRuleTester(LANGUAGE_CONFIG)
 
 // The tester takes the rule types of JavaScript; ESLint runs a rule of any
 // language the same way.

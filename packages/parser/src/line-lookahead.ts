@@ -6,11 +6,11 @@ import {
 } from "./character-classes.ts"
 import { LEFT_CURLY_BRACKET, PERCENT_SIGN } from "./code-points.ts"
 import type { DirectiveMatch } from "./directives.ts"
-import { readDirective } from "./directives.ts"
+import { findDirectives, readDirective } from "./directives.ts"
 import type { EntityDelimiter } from "./entities.ts"
 import { findEntityDelimiters } from "./entities.ts"
 import { decideIgnoredSemicolons } from "./line-rule.ts"
-import { lineTerminatorEnd, nextOffset } from "./text-cursor.ts"
+import { lineTerminatorEnd, nextOffset, skipBackWhile } from "./text-cursor.ts"
 
 /**
  * common.md, Reading a source, item 1: a comment region, found by the
@@ -22,7 +22,7 @@ export interface CommentRegionEntry {
   readonly start: number
   /** After the line terminator that ends the comment's line, or the end of the source. */
   readonly end: number
-  /** The comment: from the first `%` of its `%%` to the end of its line, without the line terminator. */
+  /** The comment: from the first `%` of its `%%` to the end of its line, without the line terminator ({@link commentEnd}). */
   readonly comment: Range
   /** The offset after the second `%` of the comment's `%%`. Directives can lie between the two `%`. */
   readonly afterMarker: number
@@ -168,7 +168,8 @@ export function lookAheadFromCommentStart(
  * Comment lines: the region of the comment whose `%%` starts at `marker`
  * and ends before `afterMarker`. The comment extends to the next line
  * terminator that is not part of a directive; U+2028 and U+2029 do not end
- * it. The look-ahead has read up to `resumeAt`.
+ * it. Its range ends as {@link commentEnd} says. The look-ahead has read up
+ * to `resumeAt`.
  */
 function commentRegion(
   text: string,
@@ -194,10 +195,33 @@ function commentRegion(
     kind: "region",
     start,
     end: lineTerminatorEnd(text, offset) ?? offset,
-    comment: [marker, offset],
+    comment: [marker, commentEnd(text, marker, offset)],
     afterMarker,
     directives: directivesByStart(directives),
   }
+}
+
+/**
+ * ast.md, Comment, and Comment lines: where the range of a comment that
+ * starts at `start` and runs to `lineEnd` ends. `lineEnd` is where the line
+ * terminator that ends the comment starts, which is not part of a
+ * directive, or the end of the text when no such line terminator follows.
+ * The range ends at `lineEnd`, except where the scan of a directive in the
+ * comment takes the whitespace up to the end of the text, its line
+ * terminators included, which only an unclosed one does: the range then
+ * leaves out that whitespace, as the range of the directive does, so no
+ * comment ends with a line terminator. Comment lines and the diagram
+ * comments of each diagram end by this rule.
+ */
+export function commentEnd(
+  text: string,
+  start: number,
+  lineEnd: number,
+): number {
+  if (lineEnd < text.length) return lineEnd
+  const last = findDirectives(text, start).at(-1)
+  if (last === undefined || last.range[1] !== text.length) return lineEnd
+  return skipBackWhile(text, text.length, isWhitespace)
 }
 
 /**

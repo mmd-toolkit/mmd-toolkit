@@ -90,6 +90,37 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   outside the grammar, `range` is the class name after the annotation, and the
   message is `An annotation statement needs a class that exists`.
 
+## In a state diagram
+
+- Where no rule of the lexer matches, `range` is the character there. When only
+  whitespace follows, so that the text ends there, the rule for the end of the
+  text below applies.
+- For two words between `state` and `{`, `range` runs from the first word to the
+  `{`, and the message is `A state name before { must be a single word`.
+- When the text ends in a context that may not end there, `range` is what
+  entered that context, and the message says what is not closed: the `{` of a
+  composite body (`The composite state has no } before the end of the text`),
+  the `"` that opens the string after `state`
+  (`The string has no closing " before the end of the text`), the first `"`
+  after `note` of a floating note
+  (`The floating note has no as before the end of the text`), the keyword `note`
+  of a note without its position, its state, or its text
+  (`The note has no text before the end of the text`,
+  `The note has no state before the end of the text`, and
+  `The note has no end note before the end of the text`, also for a note over
+  lines that no line of `end note` follows), `scale`
+  (`scale has no width before the end of the text`), and `classDef`, `class`,
+  and `style` with nothing after them
+  (`classDef has no class name before the end of the text`,
+  `class has no state before the end of the text`, and
+  `style has no state before the end of the text`).
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace, and at the end of the text the empty range at the end of the text,
+  as in a flowchart.
+- For a composite state with more than one description, a rejection outside the
+  grammar, `range` is the statement that first gave the state a body, and the
+  message is `A composite state can have only one description`.
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input
@@ -111,8 +142,8 @@ rejected, `range` is the form that causes it, and the message names the cause:
   from its `call` to its `)`, or an empty description block from its `accDescr`
   to its `}`. The message is `An empty string cannot be written here`,
   `An empty call cannot be written here`, or
-  `An empty description block can only be written where a statement starts`. The
-  grammar finds it where it stops, as for a `click`: when the unit that it
+  `An empty description block can only be written where a statement starts or ends`.
+  The grammar finds it where it stops, as for a `click`: when the unit that it
   cannot read, or the first unit after it that is not a `space` unit, belongs to
   an empty form. An input that mermaid.js rejects as well, such as `A[""]`, is
   reported in the same way. Between a `click` at the start of a statement and
@@ -122,7 +153,20 @@ rejected, `range` is the form that causes it, and the message names the cause:
   type, its two `~`, with the messages
   `An empty backquoted name cannot be written here` and
   `An empty generic type can only end a class name`. An empty generic type is
-  found where the grammar cannot read the unit after it, as in `class A~~B`.
+  found where the grammar cannot read the unit after it, as in `class A~~B`. In
+  a state diagram, an empty description block is also found where the grammar
+  cannot read the unit right after it: in `A accDescr {} --> B`, the block after
+  `A` is a statement, the `-->` after it starts none, and the block is reported.
+  After the last unit of a statement that needs a separator, or of the header of
+  a flowchart or a class diagram, empty description blocks before the separator
+  or the line break are statements of their own; when none follows them, the
+  first of them lies inside the statement and is reported, in every diagram
+  type: in `A accDescr {} B` and `flowchart LR accDescr {} A` of a flowchart and
+  in `click A "u" "t" accDescr {} B` of a state diagram, the block is reported.
+  A flowchart statement or header with such blocks before its separator is read
+  without them, so whitespace around them that the statement does not take is
+  reported where it would be without them: in `flowchart LR accDescr {};A`, the
+  `;` after the space is reported, as in `flowchart LR ;A`.
 
 `html-tag-in-frontmatter` changes which `"` characters are read as `'`. The
 parser does not tell that apart, so a rejection that follows from it is reported

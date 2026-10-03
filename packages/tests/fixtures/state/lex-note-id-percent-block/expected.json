@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The note contexts: the note id is empty, and the note over lines has the text from `%%x`: a note of the empty state."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [
+      {
+        "state": "",
+        "position": "left of",
+        "text": "%%x\n    t"
+      }
+    ],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

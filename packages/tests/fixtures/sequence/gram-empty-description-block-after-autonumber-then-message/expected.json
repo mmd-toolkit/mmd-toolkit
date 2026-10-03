@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Empty description blocks before a separator: after the block, a message comes before the `newline` unit that `autonumber` needs, so the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...onumber accDescr {} A->>B: x\n-----------------------^\nExpecting 'NEWLINE', 'NUM', 'off', got 'ACTOR'"
+  }
+}

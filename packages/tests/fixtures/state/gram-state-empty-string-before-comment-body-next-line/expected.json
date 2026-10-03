@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Composite states, aliases, and pseudostates: with the `{` of a body on the next line, the empty string after the name is the `textBeforeBody` of the composite state x, also with a comment after it on its line; x holds A."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "x",
+        "shape": "roundedWithTitle",
+        "label": "x",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "parentId": "x"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -314,7 +314,8 @@ describe("SourceLexer.recordTokens", () => {
   it("records an ignored `;` inside the token that goes on after it, and otherwise as a token of its own of the given kind", () => {
     // ast.md, Tokens.
     expect(recordEachCharacter("style A fill:#f00;\nx")).toEqual([
-      // With its `;` ignored, `#f00` is no entity, so each character is a token.
+      // With its `;` ignored, `#f00` is no entity, so each character is a
+      // token.
       ...eachAsText("styleAfill:#f00"),
       ["RawText", ";"],
       ["RawText", "x"],
@@ -348,7 +349,11 @@ describe("SourceLexer.recordTokens", () => {
     ])
   })
 
-  it("records the comment and the directives of a comment region inside a token", () => {
+  it("cuts a token at a comment region that it reads through, with a Directive token for the directive before the comment", () => {
+    // ast.md, Comment: the pieces of a `String` token are `StringFragment`
+    // tokens, the region lies outside them, the directive before the
+    // comment's `%%` is a `Directive` token, and the one inside the comment
+    // is part of it.
     const text = '"a\n%%{i}%% %% c %%{j}%%\nb"'
     const lexer = lexerOf(text)
     lexer.recordTokens(
@@ -357,10 +362,11 @@ describe("SourceLexer.recordTokens", () => {
       () => "RawText",
       null,
     )
-    // The directives are part of the token: they have no token of their own.
     expect(listed(lexer)).toEqual([
-      ["String", text],
+      ["StringFragment", '"a'],
+      ["Directive", "%%{i}%%"],
       ["Comment", "%% c %%{j}%%"],
+      ["StringFragment", 'b"'],
     ])
     expect(
       lexer.directives.map((directive) => text.slice(...directive.range)),

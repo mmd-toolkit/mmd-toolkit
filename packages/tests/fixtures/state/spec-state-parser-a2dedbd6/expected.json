@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-parser.spec.js",
+    "line": 95,
+    "test": "state parser can parse... > can handle \"as\" in a state name > assemble, assemblies, state assemble, state assemblies"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "assemble",
+        "shape": "rect",
+        "label": "assemble",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "assemblies",
+        "shape": "rect",
+        "label": "assemblies",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

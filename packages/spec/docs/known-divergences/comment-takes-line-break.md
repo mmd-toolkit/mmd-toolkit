@@ -24,8 +24,11 @@ A comment can also be written after a statement, on the same line, as in
 `Animal <|-- Duck %% ducks`. This document is about such a comment, after a
 statement of a class diagram. A comment on a line of its own is read the same by
 mermaid.js and by this specification, and so is a comment after a statement on
-the last line of the text. [fixture: class/lex-comment-own-line] [fixture:
-class/lex-comment-on-last-line]
+the last line of the text, also when only a line that holds a directive follows
+it. A line whose `%%` follows only a directive is a comment line too. [fixture:
+class/lex-comment-own-line] [fixture: class/lex-comment-on-last-line] [fixture:
+class/lex-comment-then-directive-at-end] [fixture:
+class/lex-directive-then-comment-line]
 
 ## The difference
 
@@ -110,9 +113,15 @@ another. The rule fits a comment on a line of its own, which it removes with its
 line break. After a statement, it removes the line break that ends the
 statement, so the grammar sees the next line as part of the same statement. A
 line of spaces stops the rule, because a space is no line feed; an empty line
-does not. Before its lexer reads the text, though, mermaid.js removes each
-comment line with text after its `%%`, other than a directive, together with the
-lines of only whitespace right before it
+does not. The lexer reads the text without its directives, so a line that holds
+only a directive is an empty line to it, and a directive after spaces leaves a
+line of spaces: `A <|-- B %% c`, a line `%%{init: {}}%%`, and `class C` is
+rejected by mermaid.js, while with spaces before the directive both read the
+relation and the class C. [fixture: class/div-comment-then-directive-line]
+[fixture: class/lex-comment-then-indented-directive-line] Before its lexer reads
+the text, though, mermaid.js removes each comment line with text after its `%%`,
+other than a directive, together with the lines of only whitespace right before
+it
 ([`cleanupComments`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)).
 A line of spaces right before such a comment line is then gone, and stops
 nothing: `A --> B %% c`, a line of spaces, `%% x`, and `A : +int age` is one

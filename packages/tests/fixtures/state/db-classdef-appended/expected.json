@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary: a second classDef of the same class adds its styles."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "a",
+          "b"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

@@ -113,6 +113,7 @@ const tokenCount = root.tokens.length // 8
   `flowchart-elk`、`swimlane`（`swimlane-beta`）。
 - シーケンス図: `sequence`（`sequenceDiagram`）。
 - クラス図: `classDiagram`（`classDiagram` と `classDiagram-v2`）。
+- 状態図: `stateDiagram`（`stateDiagram` と `stateDiagram-v2`）。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -139,12 +140,25 @@ const tokenCount = root.tokens.length // 8
   トークンは、`Keyword` や `RawText` などの `type` と、
   範囲のソースのテキストである `value` を持ちます。
   空白でも行終端子でもない文字は、どれもトークンかコメントにあります。
+  コメントはどのトークンの中にもありません。
+  複数行の引用符つきのラベルのように、コメント行をまたぐトークンは、
+  そこで断片に切られます。
+  引用符つきの文字列の断片は `StringFragment` のトークンです。
 - `comments`: すべてのコメント。
-  `%%` のコメント行と、図種の字句解析器がコメントとして読むもの
-  （シーケンス図の行の途中の `#` や `%`、クラス図の文の後の `%%` など）です。
-  `value` は印の後のテキストです。
+  `%%` のコメント行と、図種の字句解析器がコメントとして読むものです。
+  後者は、シーケンス図の行の途中の `#` や `%`、クラス図の文の後の `%%`、
+  状態図の `#` と `%%` などです。
+  `mark` は印の文字です。
   印は、コメント行とクラス図のコメントなら `%%`、
-  シーケンス図のコメントなら先頭の `#`、`%%`、`%` です。
+  シーケンス図のコメントなら先頭の `#`、`%%`、`%`、
+  状態図のコメントなら先頭の `#` か `%%` です。
+  `value` は印の後のテキストです。
+  U+2028 か U+2029 の後のコメント行は、
+  それをまたいで続く図種のコメントを、トークンと同じく切ります。
+  コメント行の後の部分は別のコメントで、
+  `mark` は `null`、`value` はそのテキストです。
+  状態図で `A %% x`、U+2029、行 `%% end`、行 `B` は、
+  コメント `%% x`、`%% end`、`B` を持ち、状態は A だけです。
 - `directives`: すべての `%%{ ... }%%` のディレクティブ。
   `name`、`value`（内側のテキスト）、閉じているかどうかの `closed` を持ちます。
 - `frontmatter`: フロントマター。
@@ -201,7 +215,96 @@ try {
 名前と欄は、仕様の [`ast.md`](../spec/docs/ast.ja.md)、
 [`ast/flowchart.md`](../spec/docs/ast/flowchart.ja.md)、
 [`ast/sequence.md`](../spec/docs/ast/sequence.ja.md)、
-[`ast/class.md`](../spec/docs/ast/class.ja.md) のものです。
+[`ast/class.md`](../spec/docs/ast/class.ja.md)、
+[`ast/state.md`](../spec/docs/ast/state.ja.md) のものです。
+
+### Db の id
+
+mermaid.js は、図のいくつかのものに、
+テキストが id として書いていない id を与えます。
+書かれたものを保つ木は、そうした id を持ちません。
+次の関数がそれを与えます。
+
+```ts
+import { flowchartSubgraphIds, parse } from "@mmd-toolkit/parser"
+
+const root = parse(text)
+const ids = flowchartSubgraphIds(root, text)
+// ids.get(subgraphStatement) は、その subgraph の Db の id。
+```
+
+- `flowchartSubgraphIds(root, text)` は、flowchart の各
+  `FlowchartSubgraphStatement` について、その subgraph の id を返します。
+  id は、名前のテキストの両端の空白を除いたものです。
+  題がなく、名前のテキストに空白があるときは、
+  `subGraph` と、それより前に加えられた subgraph の数です。
+  入れ子の subgraph は、外側のものより先に加えられます。
+  ほかの図では、空の対応を返します。
+- `text` は、`root` を parse したテキストです。
+  名前の後の、行の終わりまでの空白が id を数にしますが、
+  その空白はどのノードもトークンも持たないので、テキストが要ります。
+- id は、木の値と同じ形です。
+  書かれたとおりで、ディレクティブとコメントを除き、変換はしません。
+  mermaid.js の Db の id は、このテキストの実体参照、属性の引用符、
+  行終端子を変換したものです
+  （[`common.md`](../spec/docs/common.ja.md#ソースの読み方)）。
+
+### Db のテキスト
+
+mermaid.js の Db の値には、
+ノードの範囲の外のテキストから読まれるものがあります。
+値のまわりの空白、ノードを持たない空白だけの値、
+その間にある、行の規則が無視する `;` です。
+そうしたテキストを書かれたまま保つ道具や、Db を組み立てる道具は、
+それがどこにあるかを、次の関数から得ます。
+
+```ts
+import { flowchartDbTexts, ignoredSemicolons, parse } from "@mmd-toolkit/parser"
+
+const root = parse(text)
+const { styles } = flowchartDbTexts(root, text)
+// styles.get(styleStatement)[i].range は、mermaid.js が i 番目のスタイルを読む所。
+```
+
+- `flowchartDbTexts(root, text)`、`sequenceDbTexts(root, text)`、
+  `classDbTexts(root, text)`、`stateDbTexts(root, text)` は、
+  図の Db がノードの範囲の外まで読む値の種類ごとに、
+  1 つの対応を持つ記録を返します。
+  キーは、その値を持つ文かノードです。
+  ほかの図では、どの対応も空です。
+  - flowchart: `styles` は、`style`、`classDef`、`linkStyle` の文の各スタイルの
+    Db のテキストで、null のスタイルを含み、`styles` と同じ順です。
+    `subgraphNameTexts` は、各 subgraph の名前のテキストです
+    （[`flowchart.md`](../spec/docs/diagrams/flowchart.ja.md)）。
+  - sequence: `titles` は、各 title のテキストで、空白を含みます
+    （[`sequence.md`](../spec/docs/diagrams/sequence.ja.md)）。
+  - class: `genericTypes` は、ジェネリクスの 2 つの `~` の間のテキストで、
+    空白だけのものも含み、キーは `ClassName` です
+    （[`class.md`](../spec/docs/diagrams/class.ja.md)）。
+  - state: `secondDescriptions` は、本体のない別名の 2 つ目の説明です。
+    `noteTexts` は、1 行のノートの、id の終わりからのテキストです
+    （[`state.md`](../spec/docs/diagrams/state.ja.md)）。
+- 各項目は `DbText` です。
+  その値は、mermaid.js が値を読む所 `range` からの範囲のテキストです
+  （[`ast.md`](../spec/docs/ast.ja.md#ノード)）。
+  ディレクティブ、コメント領域、行の規則が無視する `;`、
+  文の区切りの前の空の説明のブロックを除き、
+  図の Db がその値から除くものも除きます。
+  `leftOut` は、そのうち、ソースだけからはわからないものの一覧です。
+  空の説明のブロックと、
+  文字列で始まる subgraph の名前の引用符がそれにあたります。
+  関数が与えるのは範囲だけです。
+  Db は、そのテキストを変換し、空白を落とすことがあります。
+- title の範囲は、そのテキストから始まります。
+  `title` や `title:` とテキストの間には、空白 1 文字
+  （テキストが次の行にあるときは改行）と、
+  そこにあるディレクティブとコメント領域があります
+  （[`sequence.md`](../spec/docs/diagrams/sequence.ja.md)）。
+  そのため、範囲の直前の文字が、いつもその空白とは限りません。
+- `ignoredSemicolons(text)` は、行の規則が無視する各 `;` の範囲を、
+  ソースの順に返します（[`common.md`](../spec/docs/common.ja.md)）。
+  範囲がこの一覧にある `;` のトークンは無視され、
+  ほかの `;` のトークンは、区切りか値の文字です。
 
 ## 木を辿る
 
@@ -285,6 +388,8 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   （`class A~~B` など）。
   多重度やツールチップとしての空の文字列と、
   クラスの名前の終わりの `~~` は受理します。
+  状態図では、空の説明のブロックについて同じです
+  （`A accDescr {} --> B` など）。
 - シーケンス図では、コメントは `%%` から始まり、
   数の後に `%%` が続いてもかまいません。
   mermaid.js は、そこで規則が始まるときには、
@@ -321,6 +426,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   [`ast/flowchart.md`](../spec/docs/ast/flowchart.ja.md)（flowchart のノード）、
   [`ast/sequence.md`](../spec/docs/ast/sequence.ja.md)（シーケンス図のノード）、
   [`ast/class.md`](../spec/docs/ast/class.ja.md)（クラス図のノード）、
+  [`ast/state.md`](../spec/docs/ast/state.ja.md)（状態図のノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/error-positions.ja.md`](./docs/error-positions.ja.md): `ParseError`
   が指す位置。

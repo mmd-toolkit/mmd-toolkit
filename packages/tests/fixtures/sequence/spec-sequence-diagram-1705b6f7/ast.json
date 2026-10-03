@@ -66,7 +66,7 @@
             "kind": "participant",
             "created": false,
             "id": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "a",
               "range": [
                 47,
@@ -140,7 +140,7 @@
             "kind": "participant",
             "created": false,
             "id": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "b",
               "range": [
                 72,
@@ -230,7 +230,7 @@
         "kind": "participant",
         "created": false,
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "c",
           "range": [
             101,
@@ -302,7 +302,7 @@
       {
         "type": "SequenceLinksStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             122,
@@ -373,7 +373,7 @@
       {
         "type": "SequenceLinksStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "b",
           "range": [
             220,
@@ -444,7 +444,7 @@
       {
         "type": "SequenceLinksStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             281,
@@ -515,7 +515,7 @@
       {
         "type": "SequenceLinkStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             346,
@@ -586,7 +586,7 @@
       {
         "type": "SequenceLinkStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             393,
@@ -657,7 +657,7 @@
       {
         "type": "SequenceLinkStatement",
         "id": {
-          "type": "Identifier",
+          "type": "SequenceIdentifier",
           "name": "a",
           "range": [
             441,

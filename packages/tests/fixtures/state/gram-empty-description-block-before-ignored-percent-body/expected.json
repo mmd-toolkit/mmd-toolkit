@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Composite states, aliases, and pseudostates: a block and then a %% before the { on the next line are one textBeforeBody; accepted."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "d",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "}",
+        "shape": "rect",
+        "label": "}",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

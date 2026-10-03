@@ -167,9 +167,14 @@ export class MermaidSourceCode extends TextSourceCodeBase<MermaidSourceCodeTypes
     return this.#getWalk().steps
   }
 
-  /** The comments that hold inline configuration or disable rules. */
+  /**
+   * The comments that hold inline configuration or disable rules. A comment
+   * without a mark is the rest of a diagram comment after a comment region,
+   * the continuation of the comment before it, and is not read as one.
+   */
   public getInlineConfigNodes(): Comment[] {
     return this.comments.filter((comment) => {
+      if (comment.mark === null) return false
       const label = this.#commentParser.parseDirective(comment.value)?.label
       return (
         label !== undefined &&

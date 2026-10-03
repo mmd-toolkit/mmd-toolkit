@@ -135,6 +135,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " <a",
       "range": [
         13,

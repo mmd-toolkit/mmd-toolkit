@@ -4,6 +4,7 @@ import type { DiagramInput } from "./diagram-parsing.ts"
 import { parseClassDiagram } from "./diagrams/class/index.ts"
 import { parseErrorDiagram } from "./diagrams/error.ts"
 import { parseSequenceDiagram } from "./diagrams/sequence/index.ts"
+import { parseStateDiagram } from "./diagrams/state/index.ts"
 import { parseFlowchartDiagram } from "./diagrams/flowchart/index.ts"
 import { ParseError, UnsupportedDiagramError } from "./errors.ts"
 import { readFrontmatterTrivia } from "./frontmatter.ts"
@@ -91,6 +92,8 @@ export function parse(text: string): Root {
       return parseSequenceDiagram(input)
     case "classDiagram":
       return parseClassDiagram(input)
+    case "stateDiagram":
+      return parseStateDiagram(input)
     default:
       throw new UnsupportedDiagramError(detected)
   }

@@ -66,6 +66,23 @@ describe("a class diagram the parser rejects", () => {
   )
 })
 
+// The parser reports the error at the line feed after `participant #c`, which
+// ends at the start of the next line, where Prettier's code frame fails on a
+// line that does not exist: the error has a start only. The U+2028 is written
+// as an escape.
+describe("an error that ends at the start of a line", () => {
+  it("is reported as a syntax error with a start only", async () => {
+    const error: unknown = await formatMermaid(
+      "sequenceDiagram\nparticipant #c\u2028%% e\n John\n",
+    ).catch((e: unknown) => e)
+    expect(error).toBeInstanceOf(SyntaxError)
+    expect((error as Error).cause).toMatchObject({ name: "ParseError" })
+    expect((error as { loc?: unknown }).loc).toEqual({
+      start: { line: 3, column: 6 },
+    })
+  })
+})
+
 describe("input rejected because a directive lies inside a string", () => {
   // mermaid.js removes the directive and reads the label `a  b`; the parser
   // rejects a directive inside a string (fixture common/directive-in-string).

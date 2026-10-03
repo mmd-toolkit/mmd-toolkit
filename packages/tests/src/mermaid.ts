@@ -45,6 +45,10 @@ import { toJsonObject } from "./normalizers/json.ts"
 import { errorName, isEnvironmentFailure } from "./rejections.ts"
 import type { RunMermaidOptions } from "./run-mermaid-options.ts"
 import { checkRunMermaidOptions } from "./run-mermaid-options.ts"
+import {
+  defaultMermaidRunStore,
+  isMermaidRunStoreOn,
+} from "./mermaid-run-store.ts"
 import type {
   DataBlockEffect,
   DbSummary,
@@ -171,18 +175,30 @@ export async function runMermaid(
   text: string,
   options: RunMermaidOptions = {},
 ): Promise<MermaidOutcome> {
-  return (await enqueue(() => runExclusive(text, options))).outcome
+  return (await runMermaidWithEmbeddedData(text, options)).outcome
 }
 
 /**
  * {@link runMermaid}, also returning the values mermaid derived from the
  * text's embedded data, from the same run.
+ *
+ * A result is taken from the store of earlier results when it holds one for
+ * the same text, options and code, and is stored after a run otherwise (see
+ * `mermaid-run-store.ts`). Errors are not stored.
  */
-export function runMermaidWithEmbeddedData(
+export async function runMermaidWithEmbeddedData(
   text: string,
   options: RunMermaidOptions = {},
 ): Promise<MermaidRun> {
-  return enqueue(() => runExclusive(text, options))
+  checkRunMermaidOptions(options)
+  const store = isMermaidRunStoreOn()
+    ? defaultMermaidRunStore(mermaidVersion)
+    : undefined
+  const stored = store?.read(text, options)
+  if (stored !== undefined) return stored
+  const run = await enqueue(() => runExclusive(text, options))
+  store?.write(text, options, run)
+  return run
 }
 
 /**
@@ -254,7 +270,6 @@ async function runExclusive(
   text: string,
   options: RunMermaidOptions,
 ): Promise<MermaidRun> {
-  checkRunMermaidOptions(options)
   const names = [...new Set(options.withoutDivergences ?? [])]
   if (names.length === 0) return runAsIs(text, options)
   const rewrites = names.map((name) => {

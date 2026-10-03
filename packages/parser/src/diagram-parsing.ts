@@ -37,11 +37,22 @@ export interface UnitWithKind {
 
 /**
  * ast.md, Comment: a diagram comment, text that a diagram's own lexer reads
- * as a comment: its range, from its mark to before the line terminator, and
- * where its value, the text after the mark, starts.
+ * as a comment: its range, from its mark to the end of its line, its mark,
+ * and where its value, the text after the mark, starts.
  */
 export interface DiagramComment {
+  /**
+   * From the mark to the end of its line: where the line feed that ends it
+   * starts, directives and comment regions before it included, or the end
+   * of the text. The comments of the tree that it makes, cut at the comment
+   * regions, are decided by `SourceLexer.recordTokens`.
+   */
   readonly range: Range
+  /**
+   * The characters of the mark, as the diagram's document defines it: `#`,
+   * `%%`, or `%` in sequence, `#` or `%%` in state, and `%%` in class.
+   */
+  readonly mark: "%%" | "#" | "%"
   readonly valueStart: number
 }
 

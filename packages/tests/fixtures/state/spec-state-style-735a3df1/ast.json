@@ -1,0 +1,295 @@
+{
+  "type": "Root",
+  "diagramType": "stateDiagram",
+  "body": {
+    "type": "StateDiagram",
+    "body": [
+      {
+        "type": "StateClassDefStatement",
+        "cssClass": {
+          "type": "Identifier",
+          "name": "exampleClass",
+          "range": [
+            26,
+            38
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 10
+            },
+            "end": {
+              "line": 2,
+              "column": 22
+            }
+          }
+        },
+        "styles": [
+          {
+            "type": "StateLiteral",
+            "value": "background:#bbb",
+            "range": [
+              39,
+              54
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 23
+              },
+              "end": {
+                "line": 2,
+                "column": 38
+              }
+            }
+          },
+          {
+            "type": "StateLiteral",
+            "value": "font-weight:bold",
+            "range": [
+              56,
+              72
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 40
+              },
+              "end": {
+                "line": 2,
+                "column": 56
+              }
+            }
+          },
+          {
+            "type": "StateLiteral",
+            "value": "font-style:italic",
+            "range": [
+              74,
+              91
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 58
+              },
+              "end": {
+                "line": 2,
+                "column": 75
+              }
+            }
+          }
+        ],
+        "range": [
+          17,
+          91
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 1
+          },
+          "end": {
+            "line": 2,
+            "column": 75
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      92
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 76
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "stateDiagram-v2",
+      "range": [
+        0,
+        15
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "classDef",
+      "range": [
+        17,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 1
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "exampleClass",
+      "range": [
+        26,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "background:#bbb",
+      "range": [
+        39,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 23
+        },
+        "end": {
+          "line": 2,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        54,
+        55
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 38
+        },
+        "end": {
+          "line": 2,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "font-weight:bold",
+      "range": [
+        56,
+        72
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 40
+        },
+        "end": {
+          "line": 2,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        72,
+        73
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 56
+        },
+        "end": {
+          "line": 2,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "font-style:italic",
+      "range": [
+        74,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 58
+        },
+        "end": {
+          "line": 2,
+          "column": 75
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": ";",
+      "range": [
+        91,
+        92
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 75
+        },
+        "end": {
+          "line": 2,
+          "column": 76
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    92
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 76
+    }
+  }
+}

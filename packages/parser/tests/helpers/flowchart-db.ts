@@ -5,11 +5,13 @@ import type {
   EmbeddedValues,
 } from "@mmd-toolkit/tests/mermaid"
 import { isWhitespace } from "../../src/character-classes.ts"
+import { flowchartDbTexts } from "../../src/index.ts"
 import type {
   FlowchartClassDefStatement,
   FlowchartClickCallbackStatement,
   FlowchartClickUrlStatement,
   FlowchartDataBlock,
+  FlowchartDbTexts,
   FlowchartDefaultLinkStyleStatement,
   FlowchartDiagram,
   FlowchartLabel,
@@ -29,11 +31,11 @@ import type {
   FlowchartOpeningArrow,
   FlowchartOpeningArrowLine,
   Identifier,
-  Range,
   Root,
   StringLiteral,
 } from "../../src/index.ts"
 import { FlowchartText } from "../../src/diagrams/flowchart/flowchart-text.ts"
+import { subgraphIdOf } from "../../src/diagrams/flowchart/subgraph-ids.ts"
 import { ConvertedText } from "./converted-text.ts"
 import { descriptionOf, setOwnProperty, trimmed } from "./db-values.ts"
 import { FlowchartSource } from "./flowchart-source.ts"
@@ -49,14 +51,6 @@ function withoutWhitespaceAtEnd(text: string): string {
   let end = text.length
   while (end > 0 && isWhitespace(text.charCodeAt(end - 1))) end -= 1
   return text.slice(0, end)
-}
-
-/** Whether `text` holds a whitespace character. */
-function holdsWhitespace(text: string): boolean {
-  for (let offset = 0; offset < text.length; offset += 1) {
-    if (isWhitespace(text.charCodeAt(offset))) return true
-  }
-  return false
 }
 
 /** Whether `text` is empty or all whitespace. */
@@ -304,7 +298,8 @@ class FlowchartDbBuilder {
   /** The converted form of ranges of the source. */
   private readonly text: ConvertedText
 
-  private readonly root: Root
+  /** The texts that the Db reads past the range of a value node (`flowchartDbTexts`). */
+  private readonly dbTexts: FlowchartDbTexts
 
   public constructor(
     source: string,
@@ -314,7 +309,7 @@ class FlowchartDbBuilder {
   ) {
     this.source = new FlowchartSource(source, root)
     this.text = new ConvertedText(new FlowchartText(this.source.diagramText))
-    this.root = root
+    this.dbTexts = flowchartDbTexts(root, source)
     this.direction = diagramDirectionOf(diagram.direction)
     // Db normalization, Subgraphs: a subgraph inherits the direction of the
     // diagram when `flowchart.inheritDir` of the effective configuration is
@@ -539,77 +534,28 @@ class FlowchartDbBuilder {
   }
 
   /**
-   * Style statements: the Db texts of the styles of `statement`. The Db text
-   * of a style is the text from the end of the `,` before it to the start of
-   * the `,` after it, in converted form; the first style starts at the end
-   * of the `space` unit that the rule of the statement reads before
-   * `styles`, and the last one ends at the separator of the statement. The
-   * `,` between the styles are the `Punctuator` tokens `,` after that start,
-   * which the grammar records only for the `,` that separate styles.
+   * Style statements: the Db texts of the styles of `statement`, in
+   * converted form; where each starts and ends is that of
+   * `flowchartDbTexts`.
    */
   private dbTextsOf(statement: StatementWithStyles): string[] {
-    const { styles } = statement
-    // `linkStyle` with `interpolate` may have no styles.
-    if (styles.length === 0) return []
-    const firstStart = this.stylesStartOf(statement)
-    const commas = this.root.tokens.filter(
-      (token) =>
-        token.type === "Punctuator" &&
-        token.value === "," &&
-        firstStart <= token.range[0] &&
-        token.range[1] <= statement.range[1],
-    )
-    return styles.map((_style, index) => {
-      const start = index === 0 ? firstStart : commas[index - 1].range[1]
-      const end =
-        index === styles.length - 1
-          ? this.source.separatorAfter(start)
-          : commas[index].range[0]
-      return this.text.of([start, end])
-    })
-  }
-
-  /**
-   * Style statements: where the Db text of the first style starts, the end
-   * of the `space` unit that the rule of `statement` reads before `styles`.
-   * The rules read the `space` units of a statement, other than those in
-   * its styles, in this order: `style` and `classDef` one after the keyword
-   * and one before `styles`; `linkStyle` one after the keyword, one after
-   * the numbers or `default`, and, with `interpolate`, one after
-   * `interpolate` and one after its name, before `styles`. The units are
-   * looked for up to the separator of the statement, not only in its range:
-   * the range runs to the last token, and when the first style is all
-   * whitespace, the `space` before it can lie after that token.
-   */
-  private stylesStartOf(statement: StatementWithStyles): number {
-    const spacesBefore =
-      (statement.type === "FlowchartLinkStyleStatement" ||
-        statement.type === "FlowchartDefaultLinkStyleStatement") &&
-      statement.interpolate !== null
-        ? 4
-        : 2
-    const start = statement.range[0]
-    const spaces = this.source
-      .unitsIn([start, this.source.separatorAfter(start)])
-      .filter((unit) => unit.name === "space")
-    const space = spaces[spacesBefore - 1]
-    if (space === undefined) {
-      throw new Error(`no space before the styles of ${statement.type}`)
+    const dbTexts = this.dbTexts.styles.get(statement)
+    if (dbTexts === undefined) {
+      throw new Error(`flowchart Db: no Db texts for ${statement.type}`)
     }
-    return space.end
+    return dbTexts.map(({ range, leftOut }) => this.text.of(range, leftOut))
   }
 
   /**
-   * Subgraphs: the name text of the subgraph statement `statement`: the
-   * name's value and the text from the end of the name to what follows it,
-   * the `[` of its title or its separator, in converted form, which is the
-   * text from the start of the name to that place without the delimiters of
-   * the string that the name starts with.
+   * Subgraphs: the name text of the subgraph statement `statement`, in
+   * converted form; its range is that of `flowchartDbTexts`.
    */
   private nameTextOf(statement: FlowchartSubgraphStatement): string {
-    const { name } = statement
-    const range: Range = [name.range[0], this.source.nameTextEnd(name)]
-    return this.text.of(range, this.source.stringDelimitersIn(name.range))
+    const nameText = this.dbTexts.subgraphNameTexts.get(statement)
+    if (nameText === undefined) {
+      throw new Error("flowchart Db: a subgraph has no name text")
+    }
+    return this.text.of(nameText.range, nameText.leftOut)
   }
 
   /** The subgraph added last with the id `id`, if there is one. */
@@ -821,10 +767,7 @@ class FlowchartDbBuilder {
     }
     const { name, title } = statement
     const nameText = this.nameTextOf(statement)
-    const id =
-      title === null && holdsWhitespace(nameText)
-        ? `subGraph${this.subgraphs.length}`
-        : trimmed(nameText)
+    const id = subgraphIdOf(nameText, title !== null, this.subgraphs.length)
     const subgraph: Subgraph = {
       id,
       nodes,

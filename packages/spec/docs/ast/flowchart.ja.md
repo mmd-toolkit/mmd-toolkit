@@ -237,7 +237,8 @@ flowchart/db-arrow-dash-head-length]
 
 文法が空白を含むことを許し、その終わりを決める位置に、
 書き手が引用符なしで書くテキストの値です。
-スタイル、コールバックの引数、アクセシビリティの文のテキストがそうです。
+スタイル、`call` の後のコールバックの名前とその引数、
+アクセシビリティの文のテキストがそうです。
 決めるのは書かれたものではなく位置です。
 `accTitle: x` とスタイル `fill:red` はどちらも 1 語ですが、
 その位置は空白を含むテキストを許すのでリテラルです。
@@ -320,6 +321,11 @@ flowchart/lex-direction-line-text-after-directive-inside]
 subgraph の Db の id とタイトルは、`name`、`title`、そしてどのノードも持たない、
 名前とそのタイトルか区切りとの間のソースのテキストから求めます
 （[flowchart.ja.md](../diagrams/flowchart.ja.md#db-の正規化) を参照）。
+名前かタイトルの後、区切りの前の空の説明ブロックは、`body` の最初の文です。
+子のノードをソースの順に保つためです。
+`subgraph S accDescr {}`、行 `A`、`end` の本体は、
+FlowchartAccDescrBlockStatement と FlowchartVertexStatement です。
+[fixture: flowchart/gram-empty-description-block-after-subgraph-name]
 
 ### FlowchartStyleStatement
 
@@ -369,12 +375,12 @@ flowchart/db-class-ids-only-comma] [fixture: flowchart/gram-class-name-comma]
 関数を呼ぶクリックの文です。
 `click A callback`、`click A call callback(arguments)`。
 
-| 欄          | 型                            | 意味                                                                                                                                                                          |
-| ----------- | ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ids`       | (Identifier または null) の列 | クリックの id。`click-comma` の単位の間の部分。ソースの順。空の部分は null。                                                                                                  |
-| `callback`  | Identifier                    | 関数の名前。`(` までの文字で、空白や改行を含むことがある。両端の空白は名前に含まない（[クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック) を参照）。 |
-| `arguments` | FlowchartLiteral または null  | `call` の後の括弧の間の引数。その値は空白と改行を保つ。括弧がないか、括弧の間が空白だけなら null。木はその中を読まない。                                                      |
-| `tooltip`   | StringLiteral または null     | ツールチップの文字列。なければ null。                                                                                                                                         |
+| 欄          | 型                                 | 意味                                                                                                                                                                                                                                                                                 |
+| ----------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ids`       | (Identifier または null) の列      | クリックの id。`click-comma` の単位の間の部分。ソースの順。空の部分は null。                                                                                                                                                                                                         |
+| `callback`  | Identifier または FlowchartLiteral | 関数の名前。`call` の後では FlowchartLiteral で、`(` までの文字。空白や改行を含むことがあり、両端の空白は含まない（[クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック) を参照）。`click A callback` のように `call` がなければ、Identifier（click の id）。 |
+| `arguments` | FlowchartLiteral または null       | `call` の後の括弧の間の引数。その値は空白と改行を保つ。括弧がないか、括弧の間が空白だけなら null。木はその中を読まない。                                                                                                                                                             |
+| `tooltip`   | StringLiteral または null          | ツールチップの文字列。なければ null。                                                                                                                                                                                                                                                |
 
 子の欄: `ids`、`callback`、`arguments`、`tooltip`。
 [fixture: flowchart/tokens-callback-name-trailing-space]
@@ -496,12 +502,19 @@ Db への効果が `accDescr:` の文と違うので、別のノードの型に�
 [fixture: flowchart/lex-acc-descr-block-unclosed]
 `accDescr {  }` はテキストのない閉じたブロックで、値は null です。
 `{` の後の空白は `{` と一緒に読まれます。
-そのようなブロックも、どの説明のブロックとも同じく文を始めるので、
-`A accDescr {}` は拒否されます
+そのようなブロックは、文が始まるところと、
+文の最後の単位の後、区切りの前で文です。
+`A accDescr {}` は頂点の文と FlowchartAccDescrBlockStatement で、
+subgraph の名前の後では、その subgraph の本体の最初の文で、
+ヘッダーの方向の後、その区切りの前では、図の `body` の最初の文です
+（[flowchart.ja.md](../diagrams/flowchart.ja.md#区切りの前の空の説明ブロック)
+を参照）。
+ほかの場所では文の中にあり、入力は拒否されます
 （[flowchart.ja.md](../diagrams/flowchart.ja.md#アクセシビリティの値) を参照）。
 [fixture: flowchart/gram-acc-descr-block-empty] [fixture:
 flowchart/db-acc-descr-empty-block-keeps] [fixture:
 flowchart/gram-empty-description-block-after-vertex]
+[fixture: flowchart/header-empty-description-block-after-direction]
 
 ## トークン
 
@@ -512,14 +525,17 @@ flowchart/gram-empty-description-block-after-vertex]
 どれも [文法](../diagrams/flowchart.ja.md#文法) の 1 つの**項目**に属し、
 この表がその項目に与える種類を持ちます。
 
-| 種類         | 項目とその単位                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Keyword`    | `header-keyword` と `header-direction` の単位。文を始めるか続ける `subgraph`、`end`、`style`、`classDef`、`class`、`linkStyle`、`interpolate`、`href`、`accTitle`、`accDescr` の単位。クリックの文の `click` の単位。クリックの文の `call` の単位。`linkStyle` の文の `default` の単位。方向の文の `direction` と `direction-value` の単位。`link-target` の単位                                                                                                                           |
-| `Identifier` | `id`（そのすべての単位）。`id-list-part`（そのすべての単位）。`edge-id` の単位。クリックの文の `click-id` の単位。クリックの文の `callback-name` の単位。`name`（そのすべての単位）。`[\|` で書いた長方形の 2 つの `id-run`（それぞれが 1 つの項目）                                                                                                                                                                                                                                       |
-| `Numeric`    | `linkStyle` の文の `number` の単位                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `String`     | `string` と `markdown-string` の単位                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `RawText`    | ラベルの `text-run` の単位。リンクの `link-text-char` の単位。`subgraph-name` の、文字列と markdown 文字列以外の単位（文字列で区切られない並びごとに 1 つの項目。名前の部品の単位）。木のスタイル（そのすべての単位。`classDef` の文で `\` の直後にある `,` を含む）。文の `title-text`、`description-text`、`description-block-text` の単位。クリックの文の `callback-arguments` の単位。`data-start` の単位とその `}` の間の `data-text` と `data-quote` の単位。`direction-text` の単位 |
-| `Punctuator` | 形を開く単位（まとめて 1 つの項目）。規則 `shape` の選択肢でラベルより前にある単位で、最後の選択肢では `"[\|"` だけ。規則 `shape` の選択肢でラベルより後にある単位（まとめて 1 つの項目）。すべて空白でない他の単位（それぞれが 1 つの項目）。リンクのラベルを囲む `\|`、`[\|` で書いた長方形の `:` と `\|`、`&`、`:::`、いま挙げたもの以外の `,`、クリックの文の `click-comma` の単位、`:`、`;`、`@`、`data-start` と `}`、矢印と開く矢印、`{`、`(`、`)`                                  |
+| 種類         | 項目とその単位                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Keyword`    | `header-keyword` と `header-direction` の単位。文を始めるか続ける `subgraph`、`end`、`style`、`classDef`、`class`、`linkStyle`、`interpolate`、`href`、`accTitle`、`accDescr` の単位。クリックの文の `click` の単位。クリックの文の `call` の単位。`linkStyle` の文の `default` の単位。方向の文の `direction` と `direction-value` の単位。`link-target` の単位                                                                                                                                                                  |
+| `Identifier` | `id`（そのすべての単位）。`id-list-part`（そのすべての単位）。`edge-id` の単位。クリックの文の `click-id` の単位。`name`（そのすべての単位）。`[\|` で書いた長方形の 2 つの `id-run`（それぞれが 1 つの項目）                                                                                                                                                                                                                                                                                                                     |
+| `Numeric`    | `linkStyle` の文の `number` の単位                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `String`     | `string` と `markdown-string` の単位                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `RawText`    | ラベルの `text-run` の単位。クリックの文の `callback-name` の単位。リンクの `link-text-char` の単位。`subgraph-name` の、文字列と markdown 文字列以外の単位（文字列で区切られない並びごとに 1 つの項目。名前の部品の単位）。木のスタイル（そのすべての単位。`classDef` の文で `\` の直後にある `,` を含む）。文の `title-text`、`description-text`、`description-block-text` の単位。クリックの文の `callback-arguments` の単位。`data-start` の単位とその `}` の間の `data-text` と `data-quote` の単位。`direction-text` の単位 |
+| `Punctuator` | 形を開く単位（まとめて 1 つの項目）。規則 `shape` の選択肢でラベルより前にある単位で、最後の選択肢では `"[\|"` だけ。規則 `shape` の選択肢でラベルより後にある単位（まとめて 1 つの項目）。すべて空白でない他の単位（それぞれが 1 つの項目）。リンクのラベルを囲む `\|`、`[\|` で書いた長方形の `:` と `\|`、`&`、`:::`、いま挙げたもの以外の `,`、クリックの文の `click-comma` の単位、`:`、`;`、`@`、`data-start` と `}`、矢印と開く矢印、`{`、`(`、`)`                                                                         |
+
+コメント領域が切る `String` のトークンは、`StringFragment` のトークンになります
+（[Comment](../ast.ja.md#comment) を参照）。
 
 **トークン**は、同じ項目で同じ種類の単位が、
 その項目の空白の単位だけを挟んで続く最長の並びから、両端の空白を除いたものです。

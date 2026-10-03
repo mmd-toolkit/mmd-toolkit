@@ -40,13 +40,14 @@ import { DIGIT_ZERO } from "../../code-points.ts"
 import { ParseError } from "../../errors.ts"
 import type { UnitWithKind } from "../../diagram-parsing.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
+import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"
 import { significantRangeOf } from "../../diagram-units.ts"
 import type { FlowchartLexing, Unit, UnitName } from "./units.ts"
 import type { SubgraphMember } from "./subgraph-members.ts"
+import { isNumberedSubgraph, subgraphNameTextOf } from "./subgraph-ids.ts"
 import {
   HAS_OWN_PROPERTY,
-  holdsWhitespace,
   isBlank,
   memberAfterHasOwnProperty,
   subgraphMembersOf,
@@ -70,6 +71,9 @@ export interface FlowchartSyntax {
   /** The tokens of the diagram, in source order. */
   readonly tokens: readonly PendingToken[]
 }
+
+/** Diagram and statements: the units of a `separator`, besides the end of the text. */
+const SEPARATORS: readonly UnitName[] = ["newline", ";"]
 
 /** Grammar, Vertex statements: the units that an id is made of. */
 const ID_PIECES: readonly UnitName[] = [
@@ -210,15 +214,29 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    */
   private edgeCount = 0
 
+  /** The units of the lexer, with the empty description blocks that the grammar takes out of its units. */
+  private readonly lexedUnits: readonly Unit[]
+
   public constructor(lexing: FlowchartLexing, lexer: SourceLexer) {
-    super(lexing.units, lexer)
+    super(lexing.units, lexer, EMPTY_FORM_KINDS.flowchart)
+    this.lexedUnits = lexing.units
   }
 
-  /** Grammar, Diagram and statements: `diagram = header line*`. */
+  /**
+   * Grammar, Diagram and statements: `diagram = header line*`, with
+   * `header = header-keyword ( no-direction | header-direction (
+   * empty-description-block* ";" | space* empty-description-block* newline
+   * ) )`. The header is read
+   * without its empty description blocks, as a statement is (see
+   * {@link FlowchartGrammar.takeOutStatementEnd}); they are the first
+   * statements of the body.
+   */
   public parseDiagram(): FlowchartSyntax {
     this.addItem("Keyword", [this.take("header-keyword")])
     let direction: string | null = null
+    let headerBlocks: FlowchartAccDescrBlockStatement[] = []
     if (this.takeIf("no-direction") === null) {
+      const blocks = this.takeOutStatementEnd()
       const headerDirection = this.take("header-direction")
       this.addItem("Keyword", [headerDirection])
       direction = this.textOfUnit(headerDirection)
@@ -229,8 +247,11 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
         this.takeAll("space")
         this.take("newline")
       }
+      headerBlocks = blocks.map((units) =>
+        this.emptyDescriptionBlockStatementOf(units),
+      )
     }
-    const body = this.parseLines(false)
+    const body = [...headerBlocks, ...this.parseLines(false)]
     return {
       direction,
       body,
@@ -261,7 +282,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
       } else if (unit.name === ";") {
         statements.push(this.parseEmptyStatement())
       } else {
-        statements.push(this.parseStatement(unit))
+        statements.push(...this.parseStatement(unit))
       }
     }
   }
@@ -274,27 +295,30 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * Diagram and statements: `statement`. The vertex, style, class
-   * definition, class, link style, and click statements take a separator,
-   * which belongs to no statement; the others do not.
+   * Diagram and statements: `statement`, with the empty description
+   * blocks after it. The vertex, style, class definition, class, link
+   * style, and click statements end with a `statement-end`, whose
+   * separator belongs to no statement; the others need no separator.
    */
-  private parseStatement(first: Unit): FlowchartStatement {
+  private parseStatement(first: Unit): FlowchartStatement[] {
     switch (first.name) {
       case "subgraph":
-        return this.parseSubgraphStatement()
+        return [this.parseSubgraphStatement()]
       case "direction-text":
       case "direction":
-        return this.parseDirectionStatement()
+        return [this.parseDirectionStatement()]
       case "accTitle":
-        return this.parseTitleStatement()
+        return [this.parseTitleStatement()]
       case "accDescr":
-        return this.parseDescriptionStatement()
-      default:
-        break
+        return [this.parseDescriptionStatement()]
+      default: {
+        const blocks = this.takeOutStatementEnd()
+        return [
+          this.parseStatementWithSeparator(first),
+          ...this.parseStatementEnd(blocks),
+        ]
+      }
     }
-    const statement = this.parseStatementWithSeparator(first)
-    this.parseSeparator()
-    return statement
   }
 
   /** Diagram and statements: the statements that a separator follows. */
@@ -325,17 +349,87 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
-  /** Diagram and statements: `separator = newline | ";" | end-of-text`. */
-  private parseSeparator(): void {
-    const unit = this.peek()
-    if (unit === null) return
-    if (unit.name === "newline") {
+  /**
+   * Empty description blocks before a separator: the grammar reads a
+   * statement and its `statement-end = empty-description-block* separator`
+   * without their empty description blocks, so the `space` units before,
+   * between, and after them are the whitespace at the end of the statement.
+   * Before a statement that needs a separator, this takes the blocks of its
+   * `statement-end` out of the units, and gives their units: the blocks in
+   * the run of `space` units and empty description blocks right before the
+   * first `newline` or `;` unit from the next unit, or before the end of the
+   * text, after the last unit of the statement; none when the run starts at
+   * the next unit, where the statement has no unit of its own. No `newline`
+   * or `;` unit lies inside a statement that needs a separator. The header
+   * is read the same way.
+   */
+  private takeOutStatementEnd(): (readonly Unit[])[] {
+    let separator = this.next
+    while (
+      separator < this.units.length &&
+      !SEPARATORS.includes(this.units[separator].name)
+    ) {
+      separator += 1
+    }
+    const blocks: (readonly Unit[])[] = []
+    let index = separator - 1
+    while (index >= this.next) {
+      const unit = this.units[index]
+      const form = this.emptyFormOf(unit)
+      if (unit.name === "space") {
+        index -= 1
+      } else if (
+        form?.kind === "empty-description-block" &&
+        form.units.at(-1) === unit
+      ) {
+        blocks.unshift(form.units)
+        index -= form.units.length
+      } else {
+        this.takeOut(blocks.flat())
+        return blocks
+      }
+    }
+    return []
+  }
+
+  /**
+   * Empty description blocks before a separator: `statement-end =
+   * empty-description-block* separator`, with `separator = newline | ";" |
+   * end-of-text`, whose blocks, the units `blocks`, were taken out of the
+   * units ({@link FlowchartGrammar.takeOutStatementEnd}): the blocks, each a
+   * description block statement without text; the separator is taken.
+   */
+  private parseStatementEnd(
+    blocks: readonly (readonly Unit[])[],
+  ): FlowchartAccDescrBlockStatement[] {
+    const separator = this.peek()
+    if (separator !== null) {
+      if (!SEPARATORS.includes(separator.name)) {
+        throw this.unexpected(separator)
+      }
       this.next += 1
-    } else if (unit.name === ";") {
-      this.next += 1
-      this.addItem("Punctuator", [unit])
-    } else {
-      throw this.unexpected(unit)
+      if (separator.name === ";") this.addItem("Punctuator", [separator])
+    }
+    return blocks.map((units) => this.emptyDescriptionBlockStatementOf(units))
+  }
+
+  /**
+   * Empty description blocks before a separator: the description block
+   * statement without text of the `empty-description-block` whose units,
+   * taken out of the units, are `units`.
+   */
+  private emptyDescriptionBlockStatementOf(
+    units: readonly Unit[],
+  ): FlowchartAccDescrBlockStatement {
+    const [keyword, opening, closing] = units
+    this.addItem("Keyword", [keyword])
+    this.addItem("Punctuator", [opening])
+    this.addItem("Punctuator", [closing])
+    return {
+      type: "FlowchartAccDescrBlockStatement",
+      value: null,
+      closed: true,
+      ...this.placeOf(units),
     }
   }
 
@@ -377,7 +471,9 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   /**
    * Vertex statements: `vertex-group = vertex ( data? space+ "&" space+
    * vertex )*`. The `data?` is read with the vertex before it. A repetition
-   * that cannot be completed is not taken.
+   * that cannot be completed is not taken; one where an empty form stands
+   * in place of the vertex is rejected at the form, which lies inside the
+   * statement (known-divergences/tokenless-empty-forms.md).
    */
   private parseVertexGroup(): FlowchartVertexGroup {
     const start = this.next
@@ -386,7 +482,11 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
       const ampersand = this.afterSpaces(this.next)
       if (ampersand === this.next || this.nameAt(ampersand) !== "&") break
       const vertex = this.afterSpaces(ampersand + 1)
-      if (vertex === ampersand + 1 || !this.isIdPieceAt(vertex)) break
+      const unit = this.units.at(vertex)
+      if (vertex === ampersand + 1 || unit === undefined) break
+      const emptyForm = this.emptyFormErrorAt(unit)
+      if (emptyForm !== null) throw emptyForm
+      if (!this.isIdPieceAt(vertex)) break
       this.addItem("Punctuator", [this.units[ampersand]])
       this.next = vertex
       vertices.push(this.parseVertex())
@@ -787,21 +887,20 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Subgraphs: `subgraph-statement = "subgraph" space subgraph-name
-   * ( "[" label "]" )? separator line* "end"`.
+   * ( "[" label "]" )? statement-end line* "end"`. The empty description
+   * blocks of the `statement-end` are the first statements of the body.
    */
   private parseSubgraphStatement(): FlowchartSubgraphStatement {
     const start = this.next
     this.addItem("Keyword", [this.take("subgraph")])
     this.take("space")
+    const blocks = this.takeOutStatementEnd()
     // Subgraphs: `subgraph-name = ( string | markdown-string | name-piece )
     // name-piece*`; the name is a label of its own.
     const nameUnits = this.parseStartingWithString(() =>
       this.takeWhile(NAME_PIECES),
     )
     const name = this.labelOf(nameUnits)
-    // Db normalization, Subgraphs: the name text runs from the start of the
-    // name to what follows it, the `[` of its title or its separator.
-    const nameTextEnd = this.peek()?.start ?? this.lexer.text.length
     let title: FlowchartLabel | null = null
     const bracket = this.takeIf("[")
     if (bracket !== null) {
@@ -809,8 +908,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
       title = this.parseLabel()
       this.addItem("Punctuator", [this.take("]")])
     }
-    this.parseSeparator()
-    const body = this.parseLines(true)
+    const body = [...this.parseStatementEnd(blocks), ...this.parseLines(true)]
     this.checkSubgraphMembers(body)
     this.addItem("Keyword", [this.take("end")])
     const statement: FlowchartSubgraphStatement = {
@@ -820,13 +918,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
       body,
       ...this.placeFrom(start),
     }
-    this.subgraphMembers.set(
-      statement,
-      this.subgraphMemberOf(nameUnits, name, title, [
-        name.range[0],
-        nameTextEnd,
-      ]),
-    )
+    this.subgraphMembers.set(statement, this.subgraphMemberOf(name, title))
     return statement
   }
 
@@ -853,38 +945,23 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Db normalization, Subgraphs: the member that the subgraph with the
-   * name `name`, read from `nameUnits`, and the title `title` gives the
-   * subgraph around it, its Db id; null when that id is empty or all
-   * whitespace. The id is the name text, trimmed, unless the subgraph has
-   * no title and its name text holds whitespace: then it is `subGraph` and
-   * a number, which is not `hasOwnProperty` and not empty. The name text
-   * is read from `nameTextRange`, from the start of the name to where what
-   * follows the name starts.
+   * name `name` and the title `title` gives the subgraph around it, its Db
+   * id (see `subgraphIdOf`); null when that id is empty or all
+   * whitespace. A numbered id is neither `hasOwnProperty` nor empty, so its
+   * number is not needed here.
    */
   private subgraphMemberOf(
-    nameUnits: LabelUnits,
     name: FlowchartLabel,
     title: FlowchartLabel | null,
-    nameTextRange: Range,
   ): SubgraphMember | null {
-    const nameText = this.nameTextOf(nameUnits, nameTextRange)
-    const numbered = title === null && holdsWhitespace(nameText)
+    const { range, leftOut } = subgraphNameTextOf(this.lexedUnits, name)
+    const nameText = this.textOf(range, leftOut)
+    const numbered = isNumberedSubgraph(nameText, title !== null)
     if (!numbered && isBlank(nameText)) return null
     return {
       isHasOwnProperty: !numbered && trimmed(nameText) === HAS_OWN_PROPERTY,
       range: name.range,
     }
-  }
-
-  /**
-   * Db normalization, Subgraphs: the name text of the name read from
-   * `nameUnits`: the text of `nameTextRange`, which runs from the start of
-   * the name to the `[` of the title or the separator, so that it holds the
-   * name's value and the text after it, without the delimiters of the
-   * string that the name starts with.
-   */
-  private nameTextOf(nameUnits: LabelUnits, nameTextRange: Range): string {
-    return this.textOf(nameTextRange, nameUnits.delimiters)
   }
 
   /** Style, class, and link style statements: `style-statement = "style" space id space styles`. */
@@ -1161,11 +1238,11 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    * name are empty, the arguments may follow a second `call`.
    */
   private parseCallback(): {
-    readonly callback: Identifier
+    readonly callback: FlowchartLiteral
     readonly callbackArguments: FlowchartLiteral | null
   } {
     this.addItem("Keyword", [this.take("call")])
-    const callback = this.identifierOf([this.take("callback-name")])
+    const callback = this.textLiteralOf([this.take("callback-name")])
     this.addItem("Punctuator", [this.take("(")])
     let argumentsUnit = this.takeIf("callback-arguments")
     this.addItem("Punctuator", [this.take(")")])
@@ -1252,18 +1329,26 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    */
   private parseDescriptionStatement():
     FlowchartAccDescrStatement | FlowchartAccDescrBlockStatement {
+    if (this.nameAt(this.next + 1) !== ":") return this.parseDescriptionBlock()
     const start = this.next
     this.addItem("Keyword", [this.take("accDescr")])
-    const colon = this.takeIf(":")
-    if (colon !== null) {
-      this.addItem("Punctuator", [colon])
-      const text = this.takeIf("description-text")
-      return {
-        type: "FlowchartAccDescrStatement",
-        value: text === null ? null : this.textLiteralOf([text]),
-        ...this.placeFrom(start),
-      }
+    this.addItem("Punctuator", [this.take(":")])
+    const text = this.takeIf("description-text")
+    return {
+      type: "FlowchartAccDescrStatement",
+      value: text === null ? null : this.textLiteralOf([text]),
+      ...this.placeFrom(start),
     }
+  }
+
+  /**
+   * Diagram and statements: `description-block-statement = "accDescr" "{"
+   * description-block-text? ( "}" | end-of-text )`, and the
+   * `empty-description-block` of a `statement-end`.
+   */
+  private parseDescriptionBlock(): FlowchartAccDescrBlockStatement {
+    const start = this.next
+    this.addItem("Keyword", [this.take("accDescr")])
     this.addItem("Punctuator", [this.take("{")])
     const text = this.takeIf("description-block-text")
     const value = text === null ? null : this.textLiteralOf([text])

@@ -9,6 +9,7 @@ import type {
   ClassLiteral,
   ClassMember,
   ClassMethod,
+  ClassDbTexts,
   ClassName,
   ClassNamespaceStatement,
   ClassNoteStatement,
@@ -19,6 +20,7 @@ import type {
   Root,
   StringLiteral,
 } from "../../src/index.ts"
+import { classDbTexts } from "../../src/index.ts"
 import { ClassSource } from "./class-source.ts"
 import { ConvertedText } from "./converted-text.ts"
 import { descriptionOf, trimmed } from "./db-values.ts"
@@ -151,10 +153,14 @@ class ClassDbBuilder {
   /** The converted form of ranges of the source. */
   private readonly text: ConvertedText
 
+  /** The texts that the Db reads past the range of a value node (`classDbTexts`). */
+  private readonly dbTexts: ClassDbTexts
+
   public constructor(source: string, root: Root, embedded: EmbeddedValues) {
     this.root = root
     this.source = new ClassSource(source, root)
     this.text = new ConvertedText(this.source.diagramText)
+    this.dbTexts = classDbTexts(root, source)
     this.title = embedded.title ?? ""
   }
 
@@ -589,15 +595,14 @@ class ClassDbBuilder {
 
   /**
    * Names: the written name of `name`: its name text, followed by `~`, the
-   * text of the generic type, and `~` when it has a `generic-text` unit.
+   * text of the generic type, and `~` when it has a `generic-text` unit,
+   * whose range is that of `classDbTexts`.
    */
   private writtenNameOf(name: ClassName): string {
     const nameText = this.nameTextOf(name.prefix, name.name)
-    const generic = this.source
-      .unitsIn(name.range)
-      .find((unit) => unit.name === "generic-text")
+    const generic = this.dbTexts.genericTypes.get(name)
     if (generic === undefined) return nameText
-    return `${nameText}~${this.text.of([generic.start, generic.end])}~`
+    return `${nameText}~${this.text.of(generic.range, generic.leftOut)}~`
   }
 
   /**

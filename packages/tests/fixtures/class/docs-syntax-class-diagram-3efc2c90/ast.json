@@ -196,6 +196,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " This whole line is a comment classDiagram class Shape <<interface>>",
       "range": [
         13,

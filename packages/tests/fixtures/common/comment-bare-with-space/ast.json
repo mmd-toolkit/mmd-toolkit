@@ -200,6 +200,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " ",
       "range": [
         13,

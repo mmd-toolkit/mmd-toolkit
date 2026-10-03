@@ -74,6 +74,7 @@ export type {
   SequenceDestroyStatement,
   SequenceDetailsStatement,
   SequenceDiagram,
+  SequenceIdentifier,
   SequenceIgnoredStatement,
   SequenceLinkStatement,
   SequenceLinksStatement,
@@ -131,6 +132,52 @@ export type {
   ClassStyleStatement,
   ClassVisibility,
 } from "./ast/class.ts"
+export type {
+  StateAccDescrBlockStatement,
+  StateAccDescrStatement,
+  StateAccTitleStatement,
+  StateAliasDefinitionStatement,
+  StateClassDefStatement,
+  StateClassStatement,
+  StateClickStatement,
+  StateCompositeStatement,
+  StateDefinitionStatement,
+  StateDiagram,
+  StateDirection,
+  StateDirectionStatement,
+  StateDividerStatement,
+  StateFloatingNoteStatement,
+  StateHideEmptyDescriptionStatement,
+  StateIgnoredStatement,
+  StateIgnoredText,
+  StateLiteral,
+  StateNode,
+  StateNotePosition,
+  StateNoteStatement,
+  StatePseudostateDefinitionStatement,
+  StatePseudostateKind,
+  StateReference,
+  StateScaleStatement,
+  StateStatement,
+  StateStyleStatement,
+  StateTerminal,
+  StateTransitionStatement,
+} from "./ast/state.ts"
+export { flowchartSubgraphIds } from "./db-ids.ts"
+export type {
+  ClassDbTexts,
+  DbText,
+  FlowchartDbTexts,
+  SequenceDbTexts,
+  StateDbTexts,
+} from "./db-texts.ts"
+export {
+  classDbTexts,
+  flowchartDbTexts,
+  ignoredSemicolons,
+  sequenceDbTexts,
+  stateDbTexts,
+} from "./db-texts.ts"
 export { ParseError, UnsupportedDiagramError } from "./errors.ts"
 export { parse } from "./parse.ts"
 export type { Visitor } from "./traverse.ts"

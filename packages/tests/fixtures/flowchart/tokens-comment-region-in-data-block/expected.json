@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md, Comment: a comment region inside a data block cuts its RawText token in two; mermaid.js removes the comment line before it reads the YAML."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "props": {},
+        "type": "rect"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

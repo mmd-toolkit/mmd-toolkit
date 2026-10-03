@@ -1,0 +1,68 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: the grammar reads the statement without its empty description blocks, so the spaces before, between, and after them are the whitespace at the end of the statement, which the styles of a class definition take; the input is accepted."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

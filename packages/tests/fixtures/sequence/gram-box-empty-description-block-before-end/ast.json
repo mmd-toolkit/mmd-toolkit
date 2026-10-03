@@ -49,7 +49,7 @@
             "kind": "participant",
             "created": false,
             "id": {
-              "type": "Identifier",
+              "type": "SequenceIdentifier",
               "name": "B",
               "range": [
                 40,

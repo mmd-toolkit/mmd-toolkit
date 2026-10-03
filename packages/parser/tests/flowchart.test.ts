@@ -337,6 +337,28 @@ describe("the flowchart tree", () => {
       },
     ])
   })
+
+  it("makes the empty description blocks before a separator statements after their statement, and those of the header and of a subgraph name the first statements of the body", () => {
+    const text =
+      "flowchart LR accDescr {}\nA accDescr {} ;B\nsubgraph S accDescr {}\nC\nend\n"
+    const root = parse(text)
+    checkTree(text, root)
+    const block = {
+      type: "FlowchartAccDescrBlockStatement",
+      value: null,
+      closed: true,
+    }
+    expect(bodyOf(root)).toMatchObject([
+      { ...block, range: [13, 24] },
+      { type: "FlowchartVertexStatement", range: [25, 26] },
+      { ...block, range: [27, 38] },
+      { type: "FlowchartVertexStatement" },
+      {
+        type: "FlowchartSubgraphStatement",
+        body: [{ ...block }, { type: "FlowchartVertexStatement" }],
+      },
+    ])
+  })
 })
 
 describe("the identifiers and literals of a flowchart", () => {
@@ -390,7 +412,7 @@ describe("the identifiers and literals of a flowchart", () => {
     ])
   })
 
-  it("splits the click ids at `,`, and makes the callback an Identifier, its arguments a FlowchartLiteral, and the tooltip a StringLiteral", () => {
+  it("splits the click ids at `,`, and makes the callback after `call` and its arguments FlowchartLiterals, and the tooltip a StringLiteral", () => {
     expect(
       bodyOf(parseStatements('click A,,B call f (1, 2) "tip"')),
     ).toMatchObject([
@@ -399,7 +421,7 @@ describe("the identifiers and literals of a flowchart", () => {
         ids: [{ name: "A" }, null, { name: "B" }],
         // Click and callbacks: the whitespace at the ends of the callback
         // name is not part of it.
-        callback: { type: "Identifier", name: "f", range: [29, 30] },
+        callback: { type: "FlowchartLiteral", value: "f", range: [29, 30] },
         arguments: { type: "FlowchartLiteral", value: "1, 2", range: [32, 36] },
         tooltip: { type: "StringLiteral", value: "tip", range: [38, 43] },
       },
@@ -711,7 +733,7 @@ describe("the flowchart tokens", () => {
       ["Keyword", "click"],
       ["Identifier", "A"],
       ["Keyword", "call"],
-      ["Identifier", "cb"],
+      ["RawText", "cb"],
       ["Punctuator", "("],
       ["Punctuator", ")"],
       ["Keyword", "call"],
@@ -722,12 +744,12 @@ describe("the flowchart tokens", () => {
     expect(bodyOf(parseStatements("click A call cb()call (x)"))).toMatchObject([
       {
         type: "FlowchartClickCallbackStatement",
-        callback: { name: "cb" },
+        callback: { type: "FlowchartLiteral", value: "cb" },
         arguments: { value: "x" },
       },
     ])
     expect(bodyOf(parseStatements("click A call cb()"))).toMatchObject([
-      { callback: { name: "cb" }, arguments: null },
+      { callback: { value: "cb" }, arguments: null },
     ])
   })
 
@@ -741,13 +763,8 @@ describe("the flowchart tokens", () => {
     ["call (\n)", "An empty call cannot be written here", [13, 21]],
     [
       "A accDescr {}-->B",
-      "An empty description block can only be written where a statement starts",
+      "An empty description block can only be written where a statement starts or ends",
       [15, 26],
-    ],
-    [
-      "A accDescr {\n}",
-      "An empty description block can only be written where a statement starts",
-      [15, 27],
     ],
   ])(
     // known-divergences/tokenless-empty-forms.md: an empty form that no rule
@@ -1163,13 +1180,15 @@ describe("directives in a flowchart", () => {
     )
   })
 
-  it("does not cut a token at a directive inside a comment region", () => {
-    // common.md: a directive inside a comment region is read through with
-    // the region and does not end a token.
+  it("cuts a string at a comment region, and leaves a directive inside the comment to it", () => {
+    // ast.md, Comment: the token of a string is cut at a comment region
+    // into StringFragment tokens, and a directive inside the comment has no
+    // token of its own.
     expect(tokensOf(`A["a\n%% c ${DIRECTIVE}\nb"]`)).toEqual([
       ["Identifier", "A"],
       ["Punctuator", "["],
-      ["String", `"a\n%% c ${DIRECTIVE}\nb"`],
+      ["StringFragment", '"a'],
+      ["StringFragment", 'b"'],
       ["Punctuator", "]"],
     ])
   })

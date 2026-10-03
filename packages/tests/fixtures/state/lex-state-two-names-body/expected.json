@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The state context: two names before { are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Error: State name must be a single word. Found: \"a b {\""
+  }
+}

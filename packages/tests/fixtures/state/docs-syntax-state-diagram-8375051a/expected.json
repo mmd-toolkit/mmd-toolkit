@@ -1,0 +1,134 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/stateDiagram.md",
+    "line": 176
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "First",
+        "shape": "roundedWithTitle",
+        "label": "First",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "First_start",
+        "shape": "stateStart",
+        "label": "First_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "First"
+      },
+      {
+        "id": "Second",
+        "shape": "roundedWithTitle",
+        "label": "Second",
+        "classes": [],
+        "styles": [],
+        "parentId": "First",
+        "dir": "TB"
+      },
+      {
+        "id": "Second_start",
+        "shape": "stateStart",
+        "label": "Second_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Second"
+      },
+      {
+        "id": "second",
+        "shape": "rect",
+        "label": "second",
+        "classes": [],
+        "styles": [],
+        "parentId": "Second"
+      },
+      {
+        "id": "Third",
+        "shape": "roundedWithTitle",
+        "label": "Third",
+        "classes": [],
+        "styles": [],
+        "parentId": "Second",
+        "dir": "TB"
+      },
+      {
+        "id": "Third_start",
+        "shape": "stateStart",
+        "label": "Third_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "Third"
+      },
+      {
+        "id": "third",
+        "shape": "rect",
+        "label": "third",
+        "classes": [],
+        "styles": [],
+        "parentId": "Third"
+      },
+      {
+        "id": "Third_end",
+        "shape": "stateEnd",
+        "label": "Third_end",
+        "classes": [],
+        "styles": [],
+        "parentId": "Third"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "First",
+        "label": ""
+      },
+      {
+        "start": "First_start",
+        "end": "Second",
+        "label": ""
+      },
+      {
+        "start": "Second_start",
+        "end": "second",
+        "label": ""
+      },
+      {
+        "start": "second",
+        "end": "Third",
+        "label": ""
+      },
+      {
+        "start": "Third_start",
+        "end": "third",
+        "label": ""
+      },
+      {
+        "start": "third",
+        "end": "Third_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

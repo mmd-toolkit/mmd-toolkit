@@ -237,6 +237,7 @@
   "comments": [
     {
       "type": "Comment",
+      "mark": "%%",
       "value": " c",
       "range": [
         19,
@@ -329,16 +330,34 @@
       }
     },
     {
-      "type": "String",
-      "value": "\"x\n\n%% c\ny\"",
+      "type": "StringFragment",
+      "value": "\"x",
       "range": [
         15,
-        26
+        17
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "StringFragment",
+      "value": "y\"",
+      "range": [
+        24,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
         },
         "end": {
           "line": 5,

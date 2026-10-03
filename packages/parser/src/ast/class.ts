@@ -289,8 +289,8 @@ export interface ClassCallbackStatement extends NodeBase {
   readonly type: "ClassCallbackStatement"
   /** The class name after `callback` or `click`. */
   readonly class: ClassName
-  /** The function name: the string after the class name, or the `callback-name` unit after `call`. */
-  readonly callback: StringLiteral | Identifier
+  /** The function name: the string after the class name, or the `callback-name` unit after `call`, a ClassLiteral. */
+  readonly callback: StringLiteral | ClassLiteral
   /** The text between `(` and `)` after `call`; null when there is none. */
   readonly arguments: ClassLiteral | null
   /** The string at the end; null when there is none. */
@@ -487,8 +487,8 @@ export interface ClassAccDescrBlockStatement extends NodeBase {
 }
 
 /**
- * ast/class.md, ClassName: a class name. Its child fields are `prefix`,
- * `name`, and `generic`. The name parts with whitespace or `.` between them are one
+ * ast/class.md, ClassName: a class name. Its child fields are `prefix`, `name`,
+ * and `generic`. The name parts with whitespace or `.` between them are one
  * Identifier, whose name leaves the whitespace out.
  *
  * ```text

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The statement context, rule 3: a string of a click statement may be empty."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": [
+      {
+        "state": "A",
+        "url": "\"\"",
+        "tooltip": "\"\""
+      }
+    ]
+  }
+}

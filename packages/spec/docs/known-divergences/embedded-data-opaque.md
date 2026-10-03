@@ -116,7 +116,26 @@ are these:
   common/config-theme-colour-rejected]
 - a failure of the second detection that mermaid.js runs when there is an init
   directive; [fixture: common/config-init-detection-rejects]
-- a data block that is no valid YAML. [fixture: flowchart/div-data-invalid-yaml]
+- a data block that is no valid YAML; [fixture: flowchart/div-data-invalid-yaml]
+- a data block of a flowchart vertex whose content holds a line break and is
+  YAML whose value is null, such as only a line break, only a comment, `null`,
+  `~`, or a document marker alone: mermaid.js reads content with a line break as
+  a YAML document, and content without one as a mapping between braces
+  ([`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L143-L151)),
+  and then reads the shape of the value, which fails with a `TypeError` when
+  there is none
+  ([`addVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L235-L236)).
+  `A@{`, a line break, and `}` is rejected there, while `A@{ }` and `A@{ # c }`,
+  on one line, are accepted by both, and so is the same block of an edge id, for
+  which mermaid.js reads no shape. In sequence, mermaid.js reads the content of
+  a data block as a mapping, also with a line break, and accepts such a block.
+  [fixture: flowchart/div-data-block-line-break-only] [fixture:
+  flowchart/div-data-block-comment-then-line-break] [fixture:
+  flowchart/div-data-block-null-on-own-line] [fixture:
+  flowchart/gram-data-block-comment-one-line] [fixture:
+  flowchart/gram-data-block-space-only] [fixture:
+  flowchart/gram-data-block-edge-line-break-only] [fixture:
+  sequence/gram-data-block-line-break-only]
 
 The difference goes one way only: no input is known that mermaid.js accepts and
 this specification rejects because of what embedded data contains. mermaid.js
@@ -153,8 +172,8 @@ left to other tools.
 
 ## Counts and how they are checked
 
-20 fixtures are marked with this divergence: 7 for the frontmatter, 6 for
-directives, and 7 for data blocks, in flowchart and in sequence. mermaid.js
+25 fixtures are marked with this divergence: 8 for the frontmatter, 6 for
+directives, and 11 for data blocks, in flowchart and in sequence. mermaid.js
 rejects each of them, and this specification accepts each.
 
 The differential test of the parser requires every difference that it attributes
