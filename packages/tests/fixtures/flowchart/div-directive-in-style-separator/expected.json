@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "flowchart.md Known divergences (directive-as-token-boundary): mermaid.js reads `:::` and gives A the class c; here the directive lies inside the `Punctuator` unit `:::`, and the input is rejected."
+    "note": "flowchart.md Known divergences (directive-as-token-boundary): mermaid.js reads `:::` and gives A the class c; here the directive lies inside the delimiter `:::`, and the input is rejected."
   },
   "knownDivergence": "directive-as-token-boundary",
   "accepted": true,

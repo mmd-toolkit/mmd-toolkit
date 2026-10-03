@@ -10,9 +10,8 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { printedEndOf, stateDbTextsOf } from "./db-texts.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
-import { lineStartOf } from "./kept-lines.ts"
+import { lineStartOf, printedEndOf } from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -278,7 +277,7 @@ export function layoutStateStatement(
     return keptAsWritten(start, end)
   }
   const kept = [
-    ...findNoteStretches(source, statement, end),
+    ...findNoteStretches(statement, end),
     ...findSecondDescriptionStretches(source, statement, end),
     ...findBlankDescriptionStretches(source, statement, end),
   ]
@@ -313,7 +312,10 @@ export function layoutStateStatement(
  * a line `%%{}`, it is text that opens a body of X. A line break before an
  * empty description block ends the name: `state "d" as A` followed by a line
  * `accDescr {} {` has the id `A`, while on one line the id is `A accDescr {}`
- * (diagrams/state.md, The statement context and The state context). So the
+ * (diagrams/state.md, The statement context and The state context), and a
+ * `state` keyword before the `{`, which the grammar ignores, starts a line of
+ * its own after `state "d" as A`: the line break ends the alias, and on the
+ * line of the alias the keyword would be part of it. So the
  * statement is kept as written up to its `{` (docs/state.md, Composite
  * states).
  */
@@ -322,6 +324,7 @@ function hasReadOtherwiseTextBeforeBody(
 ): boolean {
   const text = statement.textBeforeBody?.value ?? ""
   if (text.includes("%%") || text.includes("accDescr")) return true
+  if (toAsciiLowerCase(text).includes("state")) return true
   return (
     statement.type === "StateCompositeStatement" &&
     (statement.id?.name.startsWith("%%") ?? false)
@@ -361,7 +364,7 @@ function keptAsWritten(start: number, end: number): AtomLayout {
  * Where the printed text of a statement ends: at its last token, except
  * where the whitespace after it is part of a value (see
  * `findTrailingValueStart`): where the second description of an alias
- * definition ends (`stateDbTexts`), and, for a description or a label of
+ * definition ends, and, for a description or a label of
  * only whitespace, one that ends with `:`, and a note, the end of the
  * whitespace written after it, which the scan reads: it passes whitespace,
  * directives, and the `;` that the line rule ignores, and stops at any
@@ -372,8 +375,8 @@ export function findStatePrintedEnd(
   statement: StateStatement,
 ): number {
   if (statement.type === "StateAliasDefinitionStatement") {
-    const text = stateDbTextsOf(source).secondDescriptions.get(statement)
-    return text === undefined
+    const text = statement.secondDescription
+    return text === null
       ? statement.range[1]
       : printedEndOf(source, statement.range[1], text.range[0], text.range[1])
   }
@@ -417,13 +420,34 @@ function findTrailingValueStart(
     case "StateAliasDefinitionStatement":
       return findSecondDescriptionColon(source, statement)?.range[0] ?? null
     case "StateNoteStatement":
-      if (statement.text !== null || isNoteOverLines(source, statement)) {
-        return null
-      }
-      return findColonBefore(source, statement)?.range[0] ?? null
+      return findNoteTrailingValueStart(source, statement)
     default:
       return null
   }
+}
+
+/**
+ * Where the stretch of a note on one line starts whose trailing whitespace
+ * is part of what mermaid.js reads, or null: a note whose text is empty
+ * or only the `:` that stands in it, since the text needs a character after
+ * the `:`: `note left of A : ` and `note left of A  : ` are accepted, while
+ * the same without the whitespace is rejected. With two whitespace characters
+ * before the `:`, the tree has the `:` as the text, and the whitespace after
+ * it is no part of the text, which is trimmed.
+ */
+function findNoteTrailingValueStart(
+  source: Source,
+  statement: StateNoteStatement,
+): number | null {
+  if (isNoteOverLines(source, statement)) return null
+  const { text } = statement
+  if (text === null) {
+    return findColonBefore(source, statement)?.range[0] ?? null
+  }
+  return source.text.slice(text.range[0], text.range[1]) === ":" &&
+    text.range[1] === statement.range[1]
+    ? text.range[0]
+    : null
 }
 
 /**
@@ -514,16 +538,15 @@ function findSecondDescriptionStretches(
 
 /**
  * The `:` that starts the second description of an alias definition
- * without a body, or null: the last token of the structure before the Db
- * text of the description (`stateDbTexts`), which starts after the
- * directives that follow the `:`.
+ * without a body, or null: the last token of the structure before the
+ * description, which starts after the directives that follow the `:`.
  */
 function findSecondDescriptionColon(
   source: Source,
   statement: StateAliasDefinitionStatement,
 ): Token | null {
-  const text = stateDbTextsOf(source).secondDescriptions.get(statement)
-  if (text === undefined) return null
+  const text = statement.secondDescription
+  if (text === null) return null
   const colon = findStructuralTokenEndingBefore(source, text.range[0])
   return colon?.value === ":" ? colon : null
 }
@@ -542,23 +565,18 @@ function isNoteOverLines(
 
 /**
  * The stretch of a note on one line after its id: its `:` and its text, as
- * written, from where the Db text of the note starts (`stateDbTexts`).
- * mermaid.js reads the text of the note from right after its id, without
- * its first two characters: `note left of A:hi` has the text `i`, and
- * `note left of A  : hi` the text `: hi` (docs/state.md, Notes). A text that
- * mermaid.js does not read right after the position, `note left of%%x A`,
- * touches the position, as written, and stands before the id, one space
- * before it.
+ * written, from right after the id. mermaid.js reads the text of the note
+ * from there, without its first two characters: `note left of A:hi` has the
+ * text `i`, and `note left of A  : hi` the text `: hi` (docs/state.md,
+ * Notes). A text that mermaid.js does not read right after the position,
+ * `note left of%%x A`, touches the position, as written, and stands before
+ * the id, one space before it.
  */
-function findNoteStretches(
-  source: Source,
-  statement: StateStatement,
-  end: number,
-): Atom[] {
-  if (statement.type !== "StateNoteStatement") return []
-  const text = stateDbTextsOf(source).noteTexts.get(statement)
-  if (text === undefined) return []
-  return [{ start: text.range[0], end }]
+function findNoteStretches(statement: StateStatement, end: number): Atom[] {
+  if (statement.type !== "StateNoteStatement" || statement.state === null) {
+    return []
+  }
+  return [{ start: statement.state.range[1], end }]
 }
 
 /**
@@ -571,9 +589,15 @@ function layoutNoteOverLines(
   statement: StateNoteStatement,
   end: number,
 ): AtomLayout {
-  const endNote = expectToken(
+  const note = expectToken(
     findTokenEndingBefore(source, statement.range[1]),
-    "the `end note` of a note",
+    "the `note` of an `end note`",
+  )
+  // `end` and `note` are two tokens: the line that closes the note starts
+  // with the `end`.
+  const endKeyword = expectToken(
+    findStructuralTokenEndingBefore(source, note.range[0]),
+    "the `end` of an `end note`",
   )
   return {
     atoms: collectAtoms(
@@ -584,7 +608,7 @@ function layoutNoteOverLines(
       [],
     ),
     rules: new Map(),
-    outdented: new Set([endNote.range[0]]),
+    outdented: new Set([endKeyword.range[0]]),
     lineBreaks: "kept",
   }
 }

@@ -82,5 +82,30 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "API",
+        "set": {
+          "description": "Public API",
+          "type": "boundary"
+        }
+      },
+      {
+        "id": "Auth",
+        "set": {
+          "description": "Auth Service",
+          "type": "control"
+        }
+      },
+      {
+        "id": "DB",
+        "set": {
+          "description": "User Database",
+          "type": "database"
+        }
+      }
+    ]
   }
 }

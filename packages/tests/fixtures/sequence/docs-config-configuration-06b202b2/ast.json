@@ -382,7 +382,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Site",
       "range": [
         17,
@@ -418,7 +418,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "mermaid",
       "range": [
         24,
@@ -472,7 +472,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Site",
       "range": [
         45,
@@ -508,7 +508,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "mermaid",
       "range": [
         52,
@@ -562,7 +562,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "mermaid",
       "range": [
         77,
@@ -598,7 +598,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "mermaidAPI",
       "range": [
         87,

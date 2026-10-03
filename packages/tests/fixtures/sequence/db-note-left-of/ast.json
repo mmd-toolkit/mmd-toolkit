@@ -210,10 +210,10 @@
     },
     {
       "type": "Keyword",
-      "value": "left of",
+      "value": "left",
       "range": [
         21,
-        28
+        25
       ],
       "loc": {
         "start": {
@@ -222,12 +222,30 @@
         },
         "end": {
           "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        26,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
           "column": 12
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         29,
@@ -300,10 +318,10 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         39,
-        47
+        44
       ],
       "loc": {
         "start": {
@@ -312,12 +330,30 @@
         },
         "end": {
           "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        45,
+        47
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
           "column": 13
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         48,

@@ -346,7 +346,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         28,
@@ -382,7 +382,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         42,
@@ -472,7 +472,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C",
       "range": [
         70,
@@ -508,7 +508,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         76,
@@ -544,7 +544,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C",
       "range": [
         80,

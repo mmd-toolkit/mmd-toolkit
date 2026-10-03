@@ -660,7 +660,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         45,
@@ -696,7 +696,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         53,
@@ -786,7 +786,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         100,
@@ -822,7 +822,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "John",
       "range": [
         108,
@@ -894,7 +894,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         138,
@@ -930,7 +930,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         145,
@@ -984,7 +984,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "John",
       "range": [
         166,
@@ -1020,7 +1020,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         174,

@@ -173,34 +173,3 @@ each comment on a line of its own, or at least put a space before the `%%`.
   answered, in a reply marked as written by a bot, that comments after a
   statement are not supported, as the grammar is designed, and that this applies
   to every diagram type.
-
-## Counts and how they are checked
-
-Inputs were made from the accepted sequence fixtures that are not marked with a
-divergence, by inserting `%% c` after each character of the diagram text, 44,798
-of them. Each was run through mermaid.js and through the parser of this
-specification, and their acceptance and Db were compared:
-
-| Inputs | Rejected by mermaid.js, accepted by this specification | Accepted by both, a different Db | Accepted by mermaid.js, rejected by this specification |
-| ------ | -----------------------------------------------------: | -------------------------------: | -----------------------------------------------------: |
-| 44,798 |                                                  1,908 |                              543 |                                                    663 |
-
-The other 41,684 are read the same by both.
-
-These inputs were also checked against mermaid.js changed in only the two ways
-of its lexer described above: without the rule that reads a character and `%%`
-as a comment, and with a number that may also end before `%%`
-(`withoutDivergences: ["comment-takes-character"]`; see
-[Checking a divergence](../known-divergences.md#checking-a-divergence)). The
-differential test of the parser was run on all of them, 45,311 with the inputs
-made in the same way from the fixtures marked with this divergence and from the
-lines of the frontmatter: it compares the parser with mermaid.js on every input,
-and with the changed mermaid.js on every input whose difference it attributes to
-this divergence. It found no difference that this divergence or another known
-divergence does not explain; the inputs inserted in the frontmatter differ only
-as [`embedded-data-opaque`](./embedded-data-opaque.md).
-
-No input given to mermaid.js with its own lexer can serve instead of the changed
-one: its statement state reads a character followed by `%%` as a comment before
-any rule for ids, so no input gives it an id run, as in a message, whose second
-and third characters are `%%`.

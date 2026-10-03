@@ -177,7 +177,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Al",
       "range": [
         16,
@@ -213,7 +213,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "ice",
       "range": [
         32,
@@ -249,7 +249,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         38,

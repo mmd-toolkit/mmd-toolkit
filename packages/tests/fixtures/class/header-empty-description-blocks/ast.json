@@ -46,7 +46,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "A",
             "range": [
               42,
@@ -263,7 +263,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         42,

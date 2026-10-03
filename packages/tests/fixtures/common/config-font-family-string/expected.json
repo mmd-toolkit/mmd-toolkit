@@ -28,5 +28,13 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "fontFamily": "serif",
+      "themeVariables": {
+        "fontFamily": "serif"
+      }
+    }
   }
 }

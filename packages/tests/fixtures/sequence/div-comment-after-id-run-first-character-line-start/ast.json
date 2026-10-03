@@ -269,7 +269,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         16,
@@ -305,7 +305,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         20,
@@ -359,7 +359,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A%% clice",
       "range": [
         25,
@@ -395,7 +395,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         37,

@@ -513,6 +513,35 @@ classDiagram
   class Fo%%{init: {}}%%o
 ```
 
+A line of only `%`, or one that starts with `%{` without being a directive, is
+accepted between statements, but a line of only whitespace after it is a unit of
+its own, and the text is rejected (see [Comments](#comments)). A line of
+directives after such a line is not indented, so that it does not become one,
+and stays as written. A directive is not whitespace, so the line is no line of
+only whitespace for mermaid.js as it stands; with the indentation, it would be.
+
+Input
+([directives/bare-marker-input.mmd](../tests/fixtures/class/directives/bare-marker-input.mmd)):
+
+```mmd
+classDiagram
+A
+%%
+%%{init: {}}%%
+class C
+```
+
+Output
+([directives/bare-marker-output.mmd](../tests/fixtures/class/directives/bare-marker-output.mmd)):
+
+```mmd
+classDiagram
+  A
+  %%
+%%{init: {}}%%
+  class C
+```
+
 ### Frontmatter YAML
 
 As in a flowchart: the YAML between the `---` lines is formatted with Prettier's

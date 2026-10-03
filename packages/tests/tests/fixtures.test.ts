@@ -1,9 +1,12 @@
 import { readFile } from "node:fs/promises"
 import path from "node:path"
-import { describe, expect, it } from "vitest"
+import { beforeAll, describe, expect, it } from "vitest"
+import type { DiagramType, Fixture } from "../src/index.ts"
 import {
   KNOWN_DIVERGENCES,
   allowsUnsummarizedDb,
+  embeddedValuesOf,
+  getDefaultConfig,
   getFixturesRoot,
   loadFixtures,
   parseExpectedFile,
@@ -14,92 +17,87 @@ import { getNormalizer } from "../src/normalizers/index.ts"
 // Reading every fixture takes 0.5 to 3 s alone and grows with the fixtures.
 const READS_EVERY_FIXTURE = 30_000
 
+const DIAGRAMS: readonly DiagramType[] = [
+  "common",
+  "flowchart",
+  "sequence",
+  "class",
+  "state",
+]
+
+/** Every fixture, read once for all the tests of this file. */
+let allFixtures: Fixture[]
+
+/** The fixtures of `diagram`. */
+function fixturesOf(diagram: DiagramType): Fixture[] {
+  return allFixtures.filter((fixture) => fixture.diagram === diagram)
+}
+
+beforeAll(async () => {
+  allFixtures = (
+    await Promise.all(DIAGRAMS.map((diagram) => loadFixtures(diagram)))
+  ).flat()
+}, READS_EVERY_FIXTURE)
+
 describe("fixtures", () => {
-  it(
-    "loads flowchart fixtures",
-    async () => {
-      const fixtures = await loadFixtures("flowchart")
-      expect(fixtures.length).toBeGreaterThan(0)
-      for (const fixture of fixtures) {
-        expect(typeof fixture.input).toBe("string")
-        expect(["mermaid", "authored"]).toContain(fixture.source.kind)
-        if (fixture.expected.accepted) {
-          expect(fixture.expected.diagramType).toMatch(
-            /^flowchart-v2$|^flowchart-elk$|^swimlane$/u,
-          )
-        } else {
-          expect(typeof fixture.expected.error.name).toBe("string")
-        }
+  it("loads flowchart fixtures", () => {
+    const fixtures = fixturesOf("flowchart")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      expect(typeof fixture.input).toBe("string")
+      expect(["mermaid", "authored"]).toContain(fixture.source.kind)
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toMatch(
+          /^flowchart-v2$|^flowchart-elk$|^swimlane$/u,
+        )
+      } else {
+        expect(typeof fixture.expected.error.name).toBe("string")
       }
-    },
-    READS_EVERY_FIXTURE,
-  )
+    }
+  })
 
-  it(
-    "loads sequence fixtures",
-    async () => {
-      const fixtures = await loadFixtures("sequence")
-      expect(fixtures.length).toBeGreaterThan(0)
-      for (const fixture of fixtures) {
-        if (fixture.expected.accepted) {
-          expect(fixture.expected.diagramType).toBe("sequence")
-        }
+  it("loads sequence fixtures", () => {
+    const fixtures = fixturesOf("sequence")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("sequence")
       }
-    },
-    READS_EVERY_FIXTURE,
-  )
+    }
+  })
 
-  it(
-    "loads class fixtures",
-    async () => {
-      const fixtures = await loadFixtures("class")
-      expect(fixtures.length).toBeGreaterThan(0)
-      for (const fixture of fixtures) {
-        if (fixture.expected.accepted) {
-          expect(fixture.expected.diagramType).toBe("classDiagram")
-        }
+  it("loads class fixtures", () => {
+    const fixtures = fixturesOf("class")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("classDiagram")
       }
-    },
-    READS_EVERY_FIXTURE,
-  )
+    }
+  })
 
-  it(
-    "loads state fixtures",
-    async () => {
-      const fixtures = await loadFixtures("state")
-      expect(fixtures.length).toBeGreaterThan(0)
-      for (const fixture of fixtures) {
-        if (fixture.expected.accepted) {
-          expect(fixture.expected.diagramType).toBe("stateDiagram")
-        }
+  it("loads state fixtures", () => {
+    const fixtures = fixturesOf("state")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("stateDiagram")
       }
-    },
-    READS_EVERY_FIXTURE,
-  )
+    }
+  })
 
-  it(
-    "loads common fixtures",
-    async () => {
-      const fixtures = await loadFixtures("common")
-      expect(fixtures.length).toBeGreaterThan(0)
-      for (const fixture of fixtures) {
-        expect(fixture.diagram).toBe("common")
-      }
-    },
-    READS_EVERY_FIXTURE,
-  )
+  it("loads common fixtures", () => {
+    const fixtures = fixturesOf("common")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      expect(fixture.diagram).toBe("common")
+    }
+  })
 
   it(
     "stores every expected.json in canonical form",
     async () => {
-      const fixtures = [
-        ...(await loadFixtures("common")),
-        ...(await loadFixtures("flowchart")),
-        ...(await loadFixtures("sequence")),
-        ...(await loadFixtures("class")),
-        ...(await loadFixtures("state")),
-      ]
-      for (const fixture of fixtures) {
+      for (const fixture of allFixtures) {
         const file = path.join(
           getFixturesRoot(),
           fixture.diagram,
@@ -169,28 +167,98 @@ describe("fixtures", () => {
     expect(allowsUnsummarizedDb("flowchart")).toBe(false)
   })
 
-  it(
-    "records db null exactly when the diagram type has no normalizer",
-    async () => {
-      const fixtures = [
-        ...(await loadFixtures("common")),
-        ...(await loadFixtures("flowchart")),
-        ...(await loadFixtures("sequence")),
-        ...(await loadFixtures("class")),
-        ...(await loadFixtures("state")),
-      ]
-      for (const fixture of fixtures) {
-        if (!fixture.expected.accepted) continue
-        const hasNormalizer =
-          getNormalizer(fixture.expected.diagramType) !== undefined
-        expect(fixture.expected.db === null, fixture.name).toBe(!hasNormalizer)
-        if (fixture.expected.db === null) {
-          expect(allowsUnsummarizedDb(fixture.diagram), fixture.name).toBe(true)
-        }
+  it("records db null exactly when the diagram type has no normalizer", () => {
+    for (const fixture of allFixtures) {
+      if (!fixture.expected.accepted) continue
+      const hasNormalizer =
+        getNormalizer(fixture.expected.diagramType) !== undefined
+      expect(fixture.expected.db === null, fixture.name).toBe(!hasNormalizer)
+      if (fixture.expected.db === null) {
+        expect(allowsUnsummarizedDb(fixture.diagram), fixture.name).toBe(true)
       }
-    },
-    READS_EVERY_FIXTURE,
-  )
+    }
+  })
+
+  /**
+   * The marks of the known divergences whose fixtures hold the reading of the
+   * specification in `specified.json` where it differs from `expected.json`:
+   * three change the lexer of mermaid.js, and one the way it reads the
+   * frontmatter.
+   */
+  const READING_MARKS = [
+    "comment-takes-character",
+    "comment-takes-line-break",
+    "name-start-reads-unit",
+    "html-tag-in-frontmatter",
+  ]
+
+  it("has a specified reading for the fixtures of each mark that changes how mermaid.js reads", () => {
+    for (const mark of READING_MARKS) {
+      const marked = allFixtures.filter(
+        (fixture) => fixture.knownDivergence === mark,
+      )
+      expect(marked.length, mark).toBeGreaterThan(0)
+      // A reading that changed nothing would make the comparison with it the
+      // comparison with mermaid.js as it is.
+      expect(
+        marked.filter((fixture) => fixture.specified !== undefined).length,
+        mark,
+      ).toBeGreaterThan(0)
+    }
+  })
+
+  it("has a specified reading only in a fixture with such a mark, and one that differs from the recorded result", () => {
+    for (const fixture of allFixtures) {
+      if (fixture.specified === undefined) continue
+      const label = `${fixture.diagram}/${fixture.name}`
+      expect(READING_MARKS, label).toContain(fixture.knownDivergence)
+      const { embedded: _expectedEmbedded, ...expected } =
+        fixture.expected as Record<string, unknown>
+      const { embedded: _specifiedEmbedded, ...specified } =
+        fixture.specified as Record<string, unknown>
+      expect(specified, label).not.toEqual(expected)
+    }
+  })
+
+  it("builds the embedded values of a fixture from the defaults, its config and what it records", () => {
+    /** The fixture `name` of the diagram type `diagram`. */
+    function named(diagram: string, name: string): Fixture {
+      const found = allFixtures.find(
+        (fixture) => fixture.diagram === diagram && fixture.name === name,
+      )
+      if (found === undefined) throw new Error(`no fixture ${diagram}/${name}`)
+      return found
+    }
+
+    /** The value of `flowchart.inheritDir` in the embedded values of `fixture`. */
+    function inheritDirOf(fixture: Fixture): unknown {
+      const config = embeddedValuesOf(fixture)?.config as {
+        flowchart?: { inheritDir?: unknown }
+      }
+      return config.flowchart?.inheritDir
+    }
+
+    expect(inheritDirOf(named("flowchart", "config-inherit-dir-default"))).toBe(
+      false,
+    )
+    expect(inheritDirOf(named("flowchart", "config-inherit-dir-site"))).toBe(
+      true,
+    )
+    expect(
+      inheritDirOf(named("flowchart", "config-inherit-dir-frontmatter")),
+    ).toBe(true)
+    expect(
+      embeddedValuesOf(
+        named("common", "frontmatter-title-escaped-quotes-in-tag"),
+      )?.title,
+    ).toBeDefined()
+  })
+
+  it("holds the default configuration, which the recorded configurations differ from", () => {
+    const config = getDefaultConfig()
+    expect(typeof config).toBe("object")
+    expect(Object.keys(config).length).toBeGreaterThan(0)
+  })
 
   it("rejects malformed expected.json", () => {
     expect(() => parseExpectedFile("{}", "x")).toThrow(/source/u)

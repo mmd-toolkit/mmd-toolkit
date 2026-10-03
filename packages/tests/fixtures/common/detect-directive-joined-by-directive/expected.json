@@ -5,5 +5,10 @@
   },
   "accepted": true,
   "diagramType": "error",
-  "db": {}
+  "db": {},
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
 }

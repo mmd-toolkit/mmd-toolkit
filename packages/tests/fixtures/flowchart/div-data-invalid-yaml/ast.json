@@ -211,19 +211,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: rect",
+      "value": " shape: rect ",
       "range": [
-        17,
-        28
+        16,
+        29
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 4
+          "column": 3
         },
         "end": {
           "line": 2,
-          "column": 15
+          "column": 16
         }
       }
     },
@@ -265,19 +265,19 @@
     },
     {
       "type": "RawText",
-      "value": "label: x",
+      "value": " label: x ",
       "range": [
-        33,
-        41
+        32,
+        42
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 20
+          "column": 19
         },
         "end": {
           "line": 2,
-          "column": 28
+          "column": 29
         }
       }
     },

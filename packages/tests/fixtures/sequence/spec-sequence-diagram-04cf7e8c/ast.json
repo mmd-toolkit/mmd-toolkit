@@ -178,7 +178,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         29,
@@ -214,7 +214,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         47,
@@ -250,7 +250,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         65,

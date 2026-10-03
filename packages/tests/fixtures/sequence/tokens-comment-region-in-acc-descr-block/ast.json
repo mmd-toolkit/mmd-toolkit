@@ -249,10 +249,10 @@
     },
     {
       "type": "RawText",
-      "value": "a",
+      "value": "a\n",
       "range": [
         33,
-        34
+        35
       ],
       "loc": {
         "start": {
@@ -260,22 +260,22 @@
           "column": 4
         },
         "end": {
-          "line": 3,
-          "column": 5
+          "line": 4,
+          "column": 0
         }
       }
     },
     {
       "type": "RawText",
-      "value": "b",
+      "value": "    b",
       "range": [
-        48,
+        44,
         49
       ],
       "loc": {
         "start": {
           "line": 5,
-          "column": 4
+          "column": 0
         },
         "end": {
           "line": 5,
@@ -302,7 +302,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         56,
@@ -338,7 +338,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         62,

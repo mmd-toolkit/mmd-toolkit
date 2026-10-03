@@ -709,7 +709,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "a",
       "range": [
         29,
@@ -781,7 +781,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "b",
       "range": [
         52,
@@ -853,7 +853,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "c",
       "range": [
         73,
@@ -925,7 +925,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "a",
       "range": [
         92,
@@ -997,7 +997,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "b",
       "range": [
         188,
@@ -1069,7 +1069,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "a",
       "range": [
         247,
@@ -1141,7 +1141,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "a",
       "range": [
         310,
@@ -1213,7 +1213,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "a",
       "range": [
         355,
@@ -1285,7 +1285,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "a",
       "range": [
         401,

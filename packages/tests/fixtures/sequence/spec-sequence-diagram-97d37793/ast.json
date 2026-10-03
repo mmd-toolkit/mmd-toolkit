@@ -344,6 +344,24 @@
     },
     {
       "type": "RawText",
+      "value": " ",
+      "range": [
+        35,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 18
+        },
+        "end": {
+          "line": 3,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
       "value": "Group1",
       "range": [
         36,
@@ -379,7 +397,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         55,
@@ -415,7 +433,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         73,
@@ -451,7 +469,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         81,
@@ -487,7 +505,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         88,

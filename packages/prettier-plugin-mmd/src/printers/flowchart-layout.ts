@@ -19,11 +19,12 @@ import {
   findAccDescrBlockStretches,
   walk,
 } from "./layout.ts"
-import { flowchartDbTextsOf } from "./db-texts.ts"
+import { holdsJoiningRegion } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
   findStructuralTokenEndingBefore,
+  findTokensBetween,
   isWhitespace,
 } from "./source.ts"
 
@@ -51,8 +52,26 @@ export function layoutHeader(
   diagram: FlowchartDiagram,
   headerEnd: number,
 ): AtomLayout {
+  if (holdsJoiningRegion(source, diagram.range[0], headerEnd)) {
+    return keptAsWritten(diagram.range[0], headerEnd)
+  }
   return {
     atoms: collectAtoms(source, diagram.range[0], headerEnd, [], []),
+    rules: new Map(),
+    outdented: new Set(),
+    lineBreaks: "kept",
+  }
+}
+
+/**
+ * A layout of one atom, the text from `start` to `end` as written: a comment
+ * line cuts in, after a U+2028 or U+2029, and the line goes on after it, so
+ * the text cannot be printed with its parts on lines of their own
+ * (docs/compatibility.md, A comment line after U+2028 or U+2029).
+ */
+function keptAsWritten(start: number, end: number): AtomLayout {
+  return {
+    atoms: [{ start, end }],
     rules: new Map(),
     outdented: new Set(),
     lineBreaks: "kept",
@@ -68,6 +87,9 @@ export function layoutSubgraphHeader(
   subgraph: FlowchartSubgraphStatement,
   headerEnd: number,
 ): AtomLayout {
+  if (holdsJoiningRegion(source, subgraph.range[0], headerEnd)) {
+    return keptAsWritten(subgraph.range[0], headerEnd)
+  }
   const kept: Atom[] =
     subgraph.title === null
       ? [{ start: subgraph.name.range[0], end: headerEnd }]
@@ -92,6 +114,9 @@ export function layoutStatement(
   end: number,
 ): AtomLayout {
   const start = statement.range[0]
+  if (holdsJoiningRegion(source, start, end)) {
+    return keptAsWritten(start, end)
+  }
   const kept = findKeptStretches(source, statement, end)
   const values = collectValueNodes(statement, valueNodeTypes)
   const rules =
@@ -123,8 +148,8 @@ function findOutdentedAtoms(
 /**
  * The stretches of a statement that are printed exactly as written:
  *
- * - a list of styles, from where the Db text of its first style starts
- *   (`flowchartDbTexts`): after the whitespace that follows the id or the
+ * - a list of styles, from where its first style starts (`findStylesStart`):
+ *   after the whitespace that follows the id or the
  *   names before it, which is one space when printed
  *   (docs/flowchart.md, Whitespace between tokens). Everything after it is
  *   part of the first style, as mermaid.js reads it, directives and
@@ -161,9 +186,7 @@ function findKeptStretches(
     case "FlowchartClassDefStatement":
     case "FlowchartLinkStyleStatement":
     case "FlowchartDefaultLinkStyleStatement": {
-      const first = flowchartDbTextsOf(source).styles.get(statement)?.at(0)
-      if (first === undefined) return []
-      return [{ start: first.range[0], end }]
+      return [{ start: findStylesStart(source, statement), end }]
     }
     case "FlowchartClickCallbackStatement":
       if (spansLines(source, statement)) return [whole]
@@ -178,6 +201,38 @@ function findKeptStretches(
     default:
       return []
   }
+}
+
+/**
+ * Where the styles of a style, class definition, or link style statement
+ * start, as written: at the first style when it has a text, at the first `,`
+ * when the first style is all whitespace and has no node, and at the end of
+ * the statement's last token when no style has a text. The whitespace of a
+ * style that has no node lies after that token, and is part of what
+ * mermaid.js reads (ast/flowchart.md, FlowchartStyleStatement).
+ */
+function findStylesStart(
+  source: Source,
+  statement: Extract<
+    FlowchartStatement,
+    {
+      type:
+        | "FlowchartStyleStatement"
+        | "FlowchartClassDefStatement"
+        | "FlowchartLinkStyleStatement"
+        | "FlowchartDefaultLinkStyleStatement"
+    }
+  >,
+): number {
+  const first = statement.styles.find((style) => style !== null)
+  if (first === undefined) return statement.range[1]
+  if (statement.styles[0] !== null) return first.range[0]
+  const comma = findTokensBetween(
+    source,
+    statement.range[0],
+    first.range[0],
+  ).find((token) => token.value === ",")
+  return comma?.range[0] ?? first.range[0]
 }
 
 /** Whether a statement's source contains a line terminator. */

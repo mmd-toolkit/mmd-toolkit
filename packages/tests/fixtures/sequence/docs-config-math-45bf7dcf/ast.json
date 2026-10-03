@@ -547,7 +547,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "1",
       "range": [
         47,
@@ -619,7 +619,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         79,
@@ -673,7 +673,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "1",
       "range": [
         98,
@@ -709,7 +709,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         102,
@@ -763,7 +763,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         131,
@@ -799,7 +799,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "1",
       "range": [
         136,
@@ -872,10 +872,10 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         162,
-        170
+        167
       ],
       "loc": {
         "start": {
@@ -884,12 +884,30 @@
         },
         "end": {
           "line": 7,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        168,
+        170
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 15
+        },
+        "end": {
+          "line": 7,
           "column": 17
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         171,

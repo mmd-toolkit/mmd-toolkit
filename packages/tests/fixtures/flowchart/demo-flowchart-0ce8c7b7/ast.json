@@ -1067,6 +1067,24 @@
       }
     },
     {
+      "type": "RawText",
+      "value": " ",
+      "range": [
+        16,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 3
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
       "type": "Punctuator",
       "value": "))",
       "range": [
@@ -1193,6 +1211,24 @@
       }
     },
     {
+      "type": "RawText",
+      "value": " ",
+      "range": [
+        35,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 22
+        },
+        "end": {
+          "line": 2,
+          "column": 23
+        }
+      }
+    },
+    {
       "type": "Punctuator",
       "value": "))",
       "range": [
@@ -1243,6 +1279,24 @@
         "end": {
           "line": 3,
           "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " ",
+      "range": [
+        42,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 3
+        },
+        "end": {
+          "line": 3,
+          "column": 4
         }
       }
     },
@@ -1373,6 +1427,24 @@
       }
     },
     {
+      "type": "RawText",
+      "value": " ",
+      "range": [
+        61,
+        62
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 22
+        },
+        "end": {
+          "line": 3,
+          "column": 23
+        }
+      }
+    },
+    {
       "type": "Punctuator",
       "value": "))",
       "range": [
@@ -1423,6 +1495,24 @@
         "end": {
           "line": 4,
           "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " ",
+      "range": [
+        68,
+        69
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 3
+        },
+        "end": {
+          "line": 4,
+          "column": 4
         }
       }
     },
@@ -1549,6 +1639,24 @@
         "end": {
           "line": 4,
           "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " ",
+      "range": [
+        87,
+        88
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 22
+        },
+        "end": {
+          "line": 4,
+          "column": 23
         }
       }
     },

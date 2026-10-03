@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "class.md Directives inside units: a directive inside a name cuts its token; the class is `Foo`."
+    "note": "class.md Directives inside units: a directive inside a class name, a name that may contain whitespace, keeps the reading of mermaid.js; the class is `Foo`."
   },
   "accepted": true,
   "diagramType": "classDiagram",

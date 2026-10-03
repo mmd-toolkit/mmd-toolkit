@@ -407,19 +407,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: rounded",
+      "value": " shape: rounded ",
       "range": [
-        23,
-        37
+        22,
+        38
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 10
+          "column": 9
         },
         "end": {
           "line": 2,
-          "column": 24
+          "column": 25
         }
       }
     },
@@ -497,19 +497,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: rounded",
+      "value": " shape: rounded ",
       "range": [
-        46,
-        60
+        45,
+        61
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 33
+          "column": 32
         },
         "end": {
           "line": 2,
-          "column": 47
+          "column": 48
         }
       }
     },
@@ -623,19 +623,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: rounded",
+      "value": " shape: rounded ",
       "range": [
-        75,
-        89
+        74,
+        90
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 62
+          "column": 61
         },
         "end": {
           "line": 2,
-          "column": 76
+          "column": 77
         }
       }
     },

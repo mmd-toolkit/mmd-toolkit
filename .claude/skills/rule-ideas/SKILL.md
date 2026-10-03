@@ -268,6 +268,10 @@ for (const input of inputs) {
   - an example that is not reported (the corrected writing)
   - an intended way of writing (question 3 of section 2; for example `#9829;` or
     `R&D`)
+- A condition or a suggestion checked with generated inputs is checked kind by
+  kind: list the kinds of inputs first (which statement comes before the place,
+  where in its line the place is, what follows it), and run a few inputs of each
+  kind, as Running tests in the conventions SKILL says.
 - `runMermaid` gives a Db summary only for diagram types that have a normalizer
   (flowchart, for now); for other diagram types `db` is null. `parse()` also
   fails for diagram types it does not support yet, with
@@ -538,12 +542,22 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
   when text that is not whitespace follows the `{` on that line. Close at the
   end of the text: a line `}` after the last line, only when the block has text
   on a line after the line of the `{` (with text only on that line, both edits
-  give the same result). `accDescr { Short`, then `A --> B`: closed at the end
-  of the line, the description is `Short` and the edge from A to B is read; a
-  block left open at the end of the text, with the lines `Long` and `text`,
-  closed at the end of the text, has those two lines as its description (run).
-  May make visible: no-duplicate-description, when a description is set before
-  the block (`accDescr: d`, then `accDescr { x` closed, gives `x`; run).
+  give the same result). A directive is not text: there is no closing at the end
+  of the line when only directives follow the `{` on its line (the block would
+  be empty). A block that holds a directive that is not closed gets neither:
+  from that directive on, the directive decides what mermaid.js reads, wherever
+  the block is closed, so no message can say how the lines after it are read,
+  and some results are rejected (run: after `accDescr { d }`, the lines
+  `more %%{init: {}` and `A --> B` give the vertex `more` and no edge; with
+  `%%{wrap`, they give `more` and `B`; closing right before `%%{wrap` with a
+  line after it is rejected; closing at the end of the text a block with `d`,
+  then `more %%{wrap` and `A --> B`, gives the description `d` and
+  `more --> B`). `accDescr { Short`, then `A --> B`: closed at the end of the
+  line, the description is `Short` and the edge from A to B is read; a block
+  left open at the end of the text, with the lines `Long` and `text`, closed at
+  the end of the text, has those two lines as its description (run). May make
+  visible: no-duplicate-description, when a description is set before the block
+  (`accDescr: d`, then `accDescr { x` closed, gives `x`; run).
 - Remove: the statement, with its line when nothing else is on the line, or with
   the whitespace up to the next statement on the same line. A `;` after it is
   never removed: inside a subgraph, a `;` that stands alone is an empty
@@ -588,8 +602,11 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
   remains; a directive on the line stays. In a text that spans lines (a label, a
   description, a title, a string, a data block, and the name or the arguments of
   the function that a `click` statement calls), the line of only `%%` with its
-  line break. Not reported: a line in a description block that is not closed
-  (the description is empty). The name and the arguments were checked by
-  recording what mermaid.js passes to `setClickEvent`: `click A call c`, `%%`,
-  `b()` gives the name `c`, `%%`, `b` on three lines, and `call f(1,`, `%%`,
-  `2)` gives the arguments `1,`, `%%`, `2` (run).
+  line break, except where a directive, or its start or its end, is on that
+  line: the line would take the directive with it, and the rest of a directive
+  that spans lines is then not closed, which mermaid.js rejects (run). Not
+  reported: a line in a description block that is not closed (the description is
+  empty). The name and the arguments were checked by recording what mermaid.js
+  passes to `setClickEvent`: `click A call c`, `%%`, `b()` gives the name `c`,
+  `%%`, `b` on three lines, and `call f(1,`, `%%`, `2)` gives the arguments
+  `1,`, `%%`, `2` (run).

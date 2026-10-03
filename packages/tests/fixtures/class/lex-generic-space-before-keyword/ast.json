@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "A",
             "range": [
               19,
@@ -29,15 +29,15 @@
           },
           "generic": {
             "type": "ClassLiteral",
-            "value": "note",
+            "value": " note",
             "range": [
-              22,
+              21,
               26
             ],
             "loc": {
               "start": {
                 "line": 2,
-                "column": 9
+                "column": 8
               },
               "end": {
                 "line": 2,
@@ -136,7 +136,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         19,
@@ -173,15 +173,15 @@
     },
     {
       "type": "RawText",
-      "value": "note",
+      "value": " note",
       "range": [
-        22,
+        21,
         26
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 9
+          "column": 8
         },
         "end": {
           "line": 2,

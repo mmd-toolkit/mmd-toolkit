@@ -1,8 +1,9 @@
 {
   "source": {
     "kind": "authored",
-    "note": "common.md A directive is a token boundary: the lexer reads the diagram text `endx`, so `end` is not the keyword; the directive splits the `Identifier` token of the vertex `endx`, as in mermaid.js."
+    "note": "common.md A directive is a token boundary (directive-as-token-boundary): mermaid.js reads the vertex `endx`; here the directive lies inside the id, a name, and the input is rejected."
   },
+  "knownDivergence": "directive-as-token-boundary",
   "accepted": true,
   "diagramType": "flowchart-v2",
   "db": {

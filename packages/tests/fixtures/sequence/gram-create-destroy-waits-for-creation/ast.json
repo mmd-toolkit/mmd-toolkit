@@ -401,7 +401,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         28,
@@ -437,7 +437,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         42,
@@ -491,7 +491,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C",
       "range": [
         59,
@@ -509,7 +509,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         61,
@@ -545,7 +545,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C",
       "range": [
         65,
@@ -599,7 +599,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         70,
@@ -635,7 +635,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         74,

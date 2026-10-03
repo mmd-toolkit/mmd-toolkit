@@ -156,7 +156,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A-B",
       "range": [
         16,
@@ -192,7 +192,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C",
       "range": [
         22,

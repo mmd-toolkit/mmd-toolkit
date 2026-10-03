@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class01",
             "range": [
               13,
@@ -70,7 +70,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "AveryLongClass",
             "range": [
               26,
@@ -177,7 +177,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class01",
             "range": [
               63,
@@ -231,7 +231,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class03",
             "range": [
               71,
@@ -329,7 +329,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class04",
             "range": [
               94,
@@ -384,7 +384,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class05",
             "range": [
               102,
@@ -482,7 +482,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class06",
             "range": [
               125,
@@ -537,7 +537,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class07",
             "range": [
               133,
@@ -597,7 +597,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class08",
             "range": [
               144,
@@ -652,7 +652,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class09",
             "range": [
               152,
@@ -750,7 +750,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "C2",
             "range": [
               175,
@@ -822,7 +822,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class09",
             "range": [
               192,
@@ -920,7 +920,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "C3",
             "range": [
               215,
@@ -975,7 +975,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class09",
             "range": [
               218,
@@ -1035,7 +1035,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class07",
             "range": [
               231,
@@ -1090,7 +1090,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class07",
             "range": [
               239,
@@ -1185,7 +1185,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class07",
             "range": [
               258,
@@ -1276,7 +1276,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class01",
             "range": [
               289,
@@ -1371,7 +1371,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class01",
             "range": [
               307,
@@ -1462,7 +1462,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class01",
             "range": [
               328,
@@ -1553,7 +1553,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class08",
             "range": [
               351,
@@ -1613,7 +1613,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "C2",
             "range": [
               364,
@@ -1685,7 +1685,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class10",
             "range": [
               387,
@@ -1890,7 +1890,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class01",
       "range": [
         13,
@@ -1944,7 +1944,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "AveryLongClass",
       "range": [
         26,
@@ -2052,7 +2052,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class01",
       "range": [
         63,
@@ -2070,7 +2070,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class03",
       "range": [
         71,
@@ -2160,7 +2160,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class04",
       "range": [
         94,
@@ -2178,7 +2178,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class05",
       "range": [
         102,
@@ -2268,7 +2268,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class06",
       "range": [
         125,
@@ -2286,7 +2286,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class07",
       "range": [
         133,
@@ -2322,7 +2322,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class08",
       "range": [
         144,
@@ -2340,7 +2340,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class09",
       "range": [
         152,
@@ -2430,7 +2430,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C2",
       "range": [
         175,
@@ -2484,7 +2484,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class09",
       "range": [
         192,
@@ -2574,7 +2574,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C3",
       "range": [
         215,
@@ -2592,7 +2592,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class09",
       "range": [
         218,
@@ -2646,7 +2646,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class07",
       "range": [
         231,
@@ -2664,7 +2664,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class07",
       "range": [
         239,
@@ -2754,7 +2754,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class07",
       "range": [
         258,
@@ -2808,7 +2808,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class01",
       "range": [
         289,
@@ -2916,7 +2916,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class01",
       "range": [
         307,
@@ -2988,7 +2988,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class01",
       "range": [
         328,
@@ -3060,7 +3060,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class08",
       "range": [
         351,
@@ -3132,7 +3132,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C2",
       "range": [
         364,
@@ -3204,7 +3204,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class10",
       "range": [
         387,

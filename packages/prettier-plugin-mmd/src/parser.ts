@@ -86,7 +86,7 @@ export function parseDocument(text: string): MermaidDocument {
     if (isUnsupportedDiagramError(error)) {
       return { type: "VerbatimDocument", range }
     }
-    if (isParseError(error)) throw toPrettierError(error)
+    if (isParseError(error)) throw toPrettierError(error, text)
     throw error
   }
   const printDiagram = findDiagramPrinter(root.body.type)
@@ -147,28 +147,45 @@ function isParseError(error: unknown): error is ParseError {
 /**
  * Converts a `ParseError` to the error Prettier reports with a code frame.
  *
- * Prettier reads `loc` with 1-based lines and 1-based columns; the parser
- * uses 1-based lines and 0-based columns. The original error is kept as the
- * `cause`. An error at a line feed ends at the start of the next line, where
- * Prettier's code frame fails on a line that is empty or does not exist, so
- * its `loc` has no end.
+ * Prettier counts lines as its code frame does: a line ends at a line feed,
+ * a carriage return, U+2028, and U+2029, and a column is 1-based. The
+ * parser counts the lines that Mermaid has, which end at the first three
+ * only, so the position is made again from the offsets of the error. An
+ * error that ends at the start of a line has no end: the code frame fails
+ * on a line that is empty or does not exist. The original error is kept as
+ * the `cause`.
  */
-function toPrettierError(error: ParseError): SyntaxError {
+function toPrettierError(error: ParseError, text: string): SyntaxError {
   const converted = new SyntaxError(error.message, { cause: error })
-  const { start, end } = error.loc
-  const endsAtLineStart = end.column === 0 && end.line > start.line
+  const start = findPosition(text, error.range[0])
+  const end = findPosition(text, error.range[1])
+  const endsAtLineStart = end.column === 1 && end.line > start.line
   return Object.assign(converted, {
-    loc: endsAtLineStart
-      ? { start: toPrettierPosition(start) }
-      : { start: toPrettierPosition(start), end: toPrettierPosition(end) },
+    loc: endsAtLineStart ? { start } : { start, end },
   })
 }
 
 /**
- * Converts a 0-based column to the 1-based column Prettier expects.
+ * The 1-based line and column of an offset, with the line ends of Prettier's
+ * code frame: `\r\n`, `\n`, `\r`, U+2028, and U+2029.
  */
-function toPrettierPosition(position: Position): Position {
-  return { line: position.line, column: position.column + 1 }
+function findPosition(text: string, offset: number): Position {
+  let line = 1
+  let lineStart = 0
+  for (let index = 0; index < offset; index++) {
+    const character = text[index]
+    if (character === "\r" && text[index + 1] === "\n") continue
+    if (
+      character === "\n" ||
+      character === "\r" ||
+      character === "\u2028" ||
+      character === "\u2029"
+    ) {
+      line++
+      lineStart = index + 1
+    }
+  }
+  return { line, column: offset - lineStart + 1 }
 }
 
 export const mermaidParser: Parser<MermaidAst> = {

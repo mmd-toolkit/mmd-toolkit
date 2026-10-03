@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary from the tree: each value is read in converted form, so the entity in a cardinality is its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "type": "",
+        "label": "B",
+        "text": "B",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "A",
+        "id2": "B",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "1ﬂ°amp¶ß",
+        "relationTitle2": "none"
+      }
+    ],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

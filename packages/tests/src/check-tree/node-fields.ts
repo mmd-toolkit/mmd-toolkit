@@ -1,0 +1,506 @@
+import type { FieldSpec } from "./field-spec.ts"
+
+/**
+ * The fields of each node type and record of the tree, as the tables of the
+ * tree documents of the specification describe them: ast.md, `ast/<diagram>.md`,
+ * and parser/docs/tokens.md (`Token`, `Comment`, the lists of `Root`, and the
+ * frontmatter tokens). The specification defines the form of a tree; this
+ * table is its copy for the check of a tree, and
+ * `tests/check-tree-node-fields.test.ts` requires it to agree with the tables.
+ * The fields `type`, `range`, and `loc`, which every node and record has, are
+ * not listed. A type that its document describes with no field table has none
+ * (`ErrorDiagram`, `FlowchartEmptyStatement`, `StateDividerStatement`,
+ * `StateHideEmptyDescriptionStatement`, `StateTerminal`).
+ */
+export const NODE_FIELDS: Readonly<
+  Record<string, Readonly<Record<string, FieldSpec>>>
+> = {
+  ClassAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  ClassAccDescrStatement: {
+    value: { shape: "node" },
+  },
+  ClassAccTitleStatement: {
+    value: { shape: "node" },
+  },
+  ClassAnnotation: {
+    name: { shape: "nodeOrNull" },
+  },
+  ClassAnnotationStatement: {
+    annotation: { shape: "node" },
+    class: { shape: "node" },
+  },
+  ClassArrow: {
+    value: { shape: "value", valueType: "string" },
+    startMarker: { shape: "value", valueType: "string" },
+    line: { shape: "value", valueType: "string" },
+    endMarker: { shape: "value", valueType: "string" },
+  },
+  ClassAttribute: {
+    visibility: { shape: "value", valueType: "string" },
+    name: { shape: "nodeOrNull" },
+    classifier: { shape: "value", valueType: "string" },
+  },
+  ClassCallbackStatement: {
+    class: { shape: "node" },
+    callback: { shape: "node" },
+    arguments: { shape: "nodeOrNull" },
+    tooltip: { shape: "nodeOrNull" },
+  },
+  ClassClassDefStatement: {
+    cssClasses: { shape: "nodeList" },
+    styles: { shape: "nodeList" },
+  },
+  ClassCssClassStatement: {
+    idList: { shape: "node" },
+    cssClass: { shape: "node" },
+  },
+  ClassDeclaration: {
+    name: { shape: "node" },
+    label: { shape: "nodeOrNull" },
+    cssClass: { shape: "nodeOrNull" },
+    annotation: { shape: "nodeOrNull" },
+    members: { shape: "nodeListOrNull" },
+  },
+  ClassDiagram: {
+    body: { shape: "nodeList" },
+  },
+  ClassDirectionStatement: {
+    textBefore: { shape: "nodeOrNull" },
+    direction: { shape: "value", valueType: "string" },
+    textAfter: { shape: "nodeOrNull" },
+  },
+  ClassIgnoredText: {
+    value: { shape: "value", valueType: "string" },
+  },
+  ClassLinkStatement: {
+    class: { shape: "node" },
+    url: { shape: "node" },
+    tooltip: { shape: "nodeOrNull" },
+    target: { shape: "value", valueType: "stringOrNull" },
+  },
+  ClassLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  ClassMemberStatement: {
+    class: { shape: "node" },
+    member: { shape: "nodeOrNull" },
+  },
+  ClassIdentifier: {
+    name: { shape: "value", valueType: "string" },
+  },
+  ClassMethod: {
+    visibility: { shape: "value", valueType: "string" },
+    name: { shape: "nodeOrNull" },
+    parameters: { shape: "nodeOrNull" },
+    returnType: { shape: "nodeOrNull" },
+    classifier: { shape: "value", valueType: "string" },
+    textBefore: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeOrNull" },
+  },
+  ClassName: {
+    prefix: { shape: "nodeOrNull" },
+    name: { shape: "node" },
+    generic: { shape: "nodeOrNull" },
+  },
+  ClassNamespaceStatement: {
+    prefix: { shape: "nodeOrNull" },
+    name: { shape: "node" },
+    label: { shape: "nodeOrNull" },
+    body: { shape: "nodeListWithNull" },
+  },
+  ClassNameStatement: {
+    name: { shape: "node" },
+  },
+  ClassNoteStatement: {
+    class: { shape: "nodeOrNull" },
+    text: { shape: "node" },
+  },
+  ClassRelationStatement: {
+    from: { shape: "node" },
+    fromCardinality: { shape: "nodeOrNull" },
+    arrow: { shape: "node" },
+    toCardinality: { shape: "nodeOrNull" },
+    to: { shape: "node" },
+    label: { shape: "nodeOrNull" },
+  },
+  ClassStyleStatement: {
+    id: { shape: "node" },
+    styles: { shape: "nodeList" },
+  },
+  ErrorDiagram: {},
+  FlowchartEmptyStatement: {},
+  StateDividerStatement: {},
+  StateHideEmptyDescriptionStatement: {},
+  StateTerminal: {},
+  Comment: {
+    mark: { shape: "value", valueType: "stringOrNull" },
+    value: { shape: "value", valueType: "string" },
+  },
+  Directive: {
+    name: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+    closed: { shape: "value", valueType: "boolean" },
+  },
+  FlowchartAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+    closed: { shape: "value", valueType: "boolean" },
+  },
+  FlowchartAccDescrStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  FlowchartAccTitleStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  FlowchartArrow: {
+    value: { shape: "value", valueType: "string" },
+    startMarker: { shape: "value", valueType: "string" },
+    line: { shape: "value", valueType: "string" },
+    length: { shape: "value", valueType: "number" },
+    endMarker: { shape: "value", valueType: "string" },
+  },
+  FlowchartClassDefStatement: {
+    cssClasses: { shape: "nodeListWithNull" },
+    styles: { shape: "nodeListWithNull" },
+  },
+  FlowchartClassStatement: {
+    ids: { shape: "nodeListWithNull" },
+    cssClass: { shape: "node" },
+  },
+  FlowchartClickCallbackStatement: {
+    ids: { shape: "nodeListWithNull" },
+    callback: { shape: "node" },
+    arguments: { shape: "nodeOrNull" },
+    tooltip: { shape: "nodeOrNull" },
+  },
+  FlowchartClickUrlStatement: {
+    ids: { shape: "nodeListWithNull" },
+    url: { shape: "node" },
+    tooltip: { shape: "nodeOrNull" },
+    target: { shape: "value", valueType: "stringOrNull" },
+  },
+  FlowchartDataBlock: {
+    value: { shape: "value", valueType: "string" },
+  },
+  FlowchartDefaultLinkStyleStatement: {
+    interpolate: { shape: "nodeOrNull" },
+    styles: { shape: "nodeListWithNull" },
+  },
+  FlowchartDiagram: {
+    direction: { shape: "value", valueType: "stringOrNull" },
+    body: { shape: "nodeList" },
+  },
+  FlowchartDirectionStatement: {
+    textBefore: { shape: "nodeOrNull" },
+    direction: { shape: "value", valueType: "string" },
+    textAfter: { shape: "nodeOrNull" },
+  },
+  FlowchartIgnoredText: {
+    value: { shape: "value", valueType: "string" },
+  },
+  FlowchartLabel: {
+    kind: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+  },
+  FlowchartLink: {
+    id: { shape: "nodeOrNull" },
+    opening: { shape: "nodeOrNull" },
+    arrow: { shape: "node" },
+    label: { shape: "nodeOrNull" },
+    target: { shape: "node" },
+  },
+  FlowchartLinkStyleStatement: {
+    indices: { shape: "nodeList" },
+    interpolate: { shape: "nodeOrNull" },
+    styles: { shape: "nodeListWithNull" },
+  },
+  FlowchartLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  FlowchartOpeningArrow: {
+    value: { shape: "value", valueType: "string" },
+    startMarker: { shape: "value", valueType: "string" },
+    line: { shape: "value", valueType: "string" },
+  },
+  FlowchartShape: {
+    name: { shape: "value", valueType: "string" },
+    property: { shape: "nodeOrNull" },
+    label: { shape: "node" },
+  },
+  FlowchartShapeProperty: {
+    name: { shape: "node" },
+    value: { shape: "node" },
+  },
+  FlowchartStyleStatement: {
+    id: { shape: "node" },
+    styles: { shape: "nodeListWithNull" },
+  },
+  FlowchartSubgraphStatement: {
+    name: { shape: "node" },
+    title: { shape: "nodeOrNull" },
+    body: { shape: "nodeList" },
+  },
+  FlowchartVertex: {
+    id: { shape: "node" },
+    shape: { shape: "nodeOrNull" },
+    cssClass: { shape: "nodeOrNull" },
+    data: { shape: "nodeList" },
+  },
+  FlowchartVertexGroup: {
+    vertices: { shape: "nodeList" },
+  },
+  FlowchartVertexStatement: {
+    first: { shape: "node" },
+    links: { shape: "nodeList" },
+  },
+  Frontmatter: {
+    value: { shape: "value", valueType: "string" },
+    valueRange: { shape: "value", valueType: "range" },
+  },
+  Identifier: {
+    name: { shape: "value", valueType: "string" },
+  },
+  NumericLiteral: {
+    value: { shape: "value", valueType: "number" },
+    raw: { shape: "value", valueType: "string" },
+  },
+  Root: {
+    diagramType: { shape: "value", valueType: "string" },
+    body: { shape: "node" },
+    frontmatter: { shape: "nodeOrNull", record: "Frontmatter" },
+    directives: { shape: "nodeList", record: "Directive" },
+    comments: { shape: "nodeList", record: "Comment" },
+    tokens: { shape: "nodeList", record: "Token" },
+  },
+  SequenceAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+    closed: { shape: "value", valueType: "boolean" },
+  },
+  SequenceAccDescrStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  SequenceAccTitleStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  SequenceActivateStatement: {
+    id: { shape: "node" },
+  },
+  SequenceAltStatement: {
+    sections: { shape: "nodeList" },
+  },
+  SequenceArrow: {
+    value: { shape: "value", valueType: "string" },
+    startMarker: { shape: "value", valueType: "string" },
+    line: { shape: "value", valueType: "string" },
+    endMarker: { shape: "value", valueType: "string" },
+  },
+  SequenceAutonumberStatement: {
+    start: { shape: "nodeOrNull" },
+    step: { shape: "nodeOrNull" },
+    off: { shape: "value", valueType: "boolean" },
+  },
+  SequenceBoxStatement: {
+    text: { shape: "nodeOrNull" },
+    body: { shape: "nodeList" },
+  },
+  SequenceBoxText: {
+    value: { shape: "value", valueType: "string" },
+    colorCandidate: { shape: "nodeOrNull" },
+    remainder: { shape: "nodeOrNull" },
+  },
+  SequenceBreakStatement: {
+    text: { shape: "nodeOrNull" },
+    body: { shape: "nodeList" },
+  },
+  SequenceCriticalStatement: {
+    sections: { shape: "nodeList" },
+  },
+  SequenceDataBlock: {
+    value: { shape: "value", valueType: "string" },
+  },
+  SequenceDeactivateStatement: {
+    id: { shape: "node" },
+  },
+  SequenceDestroyStatement: {
+    created: { shape: "value", valueType: "boolean" },
+    id: { shape: "node" },
+  },
+  SequenceDetailsStatement: {
+    id: { shape: "node" },
+    text: { shape: "nodeOrNull" },
+  },
+  SequenceDiagram: {
+    body: { shape: "nodeList" },
+  },
+  SequenceIdentifier: {
+    name: { shape: "value", valueType: "string" },
+  },
+  SequenceIgnoredStatement: {
+    value: { shape: "value", valueType: "string" },
+  },
+  SequenceLinksStatement: {
+    id: { shape: "node" },
+    text: { shape: "nodeOrNull" },
+  },
+  SequenceLinkStatement: {
+    id: { shape: "node" },
+    text: { shape: "nodeOrNull" },
+  },
+  SequenceLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  SequenceLoopStatement: {
+    text: { shape: "nodeOrNull" },
+    body: { shape: "nodeList" },
+  },
+  SequenceMessageStatement: {
+    from: { shape: "node" },
+    fromCentralConnection: { shape: "value", valueType: "boolean" },
+    arrow: { shape: "node" },
+    activation: { shape: "value", valueType: "stringOrNull" },
+    toCentralConnection: { shape: "value", valueType: "boolean" },
+    to: { shape: "node" },
+    text: { shape: "nodeOrNull" },
+  },
+  SequenceNoteStatement: {
+    placement: { shape: "value", valueType: "string" },
+    ids: { shape: "nodeList" },
+    text: { shape: "nodeOrNull" },
+  },
+  SequenceOptStatement: {
+    text: { shape: "nodeOrNull" },
+    body: { shape: "nodeList" },
+  },
+  SequenceParOverStatement: {
+    sections: { shape: "nodeList" },
+  },
+  SequenceParStatement: {
+    sections: { shape: "nodeList" },
+  },
+  SequenceParticipantStatement: {
+    kind: { shape: "value", valueType: "string" },
+    created: { shape: "value", valueType: "boolean" },
+    id: { shape: "node" },
+    data: { shape: "nodeOrNull" },
+    alias: { shape: "nodeOrNull" },
+  },
+  SequencePropertiesStatement: {
+    id: { shape: "node" },
+    text: { shape: "nodeOrNull" },
+  },
+  SequenceRectStatement: {
+    color: { shape: "nodeOrNull" },
+    body: { shape: "nodeList" },
+  },
+  SequenceSection: {
+    text: { shape: "nodeOrNull" },
+    body: { shape: "nodeList" },
+  },
+  SequenceText: {
+    wrap: { shape: "value", valueType: "stringOrNull" },
+    value: { shape: "nodeOrNull" },
+  },
+  SequenceTitleStatement: {
+    value: { shape: "node" },
+  },
+  StateAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+    closed: { shape: "value", valueType: "boolean" },
+  },
+  StateAccDescrStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  StateAccTitleStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  StateAliasDefinitionStatement: {
+    textBeforeDescription: { shape: "nodeOrNull" },
+    description: { shape: "node" },
+    textAfterDescription: { shape: "nodeOrNull" },
+    id: { shape: "nodeOrNull" },
+    secondDescription: { shape: "nodeOrNull" },
+    textAfter: { shape: "nodeOrNull" },
+    textBeforeBody: { shape: "nodeOrNull" },
+    body: { shape: "nodeListOrNull" },
+  },
+  StateClassDefStatement: {
+    cssClass: { shape: "node" },
+    styles: { shape: "nodeListWithNull" },
+  },
+  StateClassStatement: {
+    states: { shape: "nodeList" },
+    cssClass: { shape: "nodeOrNull" },
+  },
+  StateClickStatement: {
+    reference: { shape: "node" },
+    url: { shape: "node" },
+    tooltip: { shape: "nodeOrNull" },
+  },
+  StateCompositeStatement: {
+    textBeforeId: { shape: "nodeOrNull" },
+    id: { shape: "nodeOrNull" },
+    textBeforeBody: { shape: "nodeOrNull" },
+    body: { shape: "nodeListOrNull" },
+  },
+  StateDefinitionStatement: {
+    reference: { shape: "node" },
+    description: { shape: "nodeOrNull" },
+  },
+  StateDiagram: {
+    body: { shape: "nodeList" },
+  },
+  StateDirectionStatement: {
+    textBefore: { shape: "nodeOrNull" },
+    direction: { shape: "value", valueType: "string" },
+    textAfter: { shape: "nodeOrNull" },
+  },
+  StateFloatingNoteStatement: {
+    text: { shape: "nodeOrNull" },
+    id: { shape: "nodeOrNull" },
+  },
+  StateIgnoredStatement: {
+    value: { shape: "value", valueType: "string" },
+  },
+  StateIgnoredText: {
+    value: { shape: "value", valueType: "string" },
+  },
+  StateLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  StateNoteStatement: {
+    position: { shape: "value", valueType: "string" },
+    textBeforeState: { shape: "nodeOrNull" },
+    state: { shape: "nodeOrNull" },
+    textBeforeText: { shape: "nodeOrNull" },
+    text: { shape: "nodeOrNull" },
+  },
+  StatePseudostateDefinitionStatement: {
+    id: { shape: "nodeOrNull" },
+    kind: { shape: "value", valueType: "string" },
+  },
+  StateReference: {
+    state: { shape: "node" },
+    cssClass: { shape: "nodeOrNull" },
+  },
+  StateScaleStatement: {
+    width: { shape: "node" },
+  },
+  StateStyleStatement: {
+    states: { shape: "nodeListWithNull" },
+    styles: { shape: "nodeListWithNull" },
+  },
+  StateTransitionStatement: {
+    from: { shape: "node" },
+    to: { shape: "node" },
+    label: { shape: "nodeOrNull" },
+  },
+  StringLiteral: {
+    value: { shape: "value", valueType: "string" },
+    raw: { shape: "value", valueType: "string" },
+    closed: { shape: "value", valueType: "boolean" },
+  },
+  Token: {
+    value: { shape: "value", valueType: "string" },
+  },
+}

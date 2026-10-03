@@ -560,15 +560,51 @@
     },
     {
       "type": "Keyword",
-      "value": "hide empty description",
+      "value": "hide",
       "range": [
         23,
-        45
+        27
       ],
       "loc": {
         "start": {
           "line": 3,
           "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "empty",
+      "range": [
+        28,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 11
+        },
+        "end": {
+          "line": 3,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "description",
+      "range": [
+        34,
+        45
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 17
         },
         "end": {
           "line": 3,

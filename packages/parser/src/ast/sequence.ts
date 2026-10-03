@@ -147,7 +147,8 @@ export interface SequenceBoxStatement extends NodeBase {
  * two parts into which mermaid.js splits it before it asks the browser
  * whether the first part is a colour. Its child fields are
  * `colorCandidate` and `remainder`. It does not say whether the candidate
- * is a colour.
+ * is a colour. In its parts, U+2028 and U+2029, which mermaid.js reads,
+ * count as characters that are not whitespace.
  *
  * ```text
  * box Purple Alice & John
@@ -157,11 +158,11 @@ export interface SequenceBoxStatement extends NodeBase {
  */
 export interface SequenceBoxText extends NodeBase {
   readonly type: "SequenceBoxText"
-  /** The text of its range. */
+  /** Its written text. */
   readonly value: string
   /** The part that mermaid.js asks about; null when the text starts with neither a word nor a colour function. */
   readonly colorCandidate: SequenceLiteral | null
-  /** The rest of the text after the candidate; null when nothing but whitespace follows it. */
+  /** The `text` unit after the candidate, U+2028 and U+2029 counting as no whitespace; null when there is none. */
   readonly remainder: SequenceLiteral | null
 }
 
@@ -274,7 +275,7 @@ export type SequenceArrowLine =
  */
 export interface SequenceArrow extends NodeBase {
   readonly type: "SequenceArrow"
-  /** The text of its range. */
+  /** Its written text. */
   readonly value: string
   /** The marker at the end of the line at the source; see {@link SequenceArrowMarker}. */
   readonly startMarker: SequenceArrowMarker
@@ -439,9 +440,8 @@ export interface SequenceDetailsStatement extends NodeBase {
 }
 
 /**
- * ast/sequence.md, SequenceTitleStatement. Its child field is `value`. The
- * title of the Db keeps the whitespace written around the value, which the
- * Db normalization reads from the source.
+ * ast/sequence.md, SequenceTitleStatement. Its child field is `value`, the
+ * whole title text, whitespace included, which the title of the Db keeps.
  *
  * ```text
  * title Greetings
@@ -450,8 +450,8 @@ export interface SequenceDetailsStatement extends NodeBase {
  */
 export interface SequenceTitleStatement extends NodeBase {
   readonly type: "SequenceTitleStatement"
-  /** The text after `title` or `title:`; null when it is all whitespace. */
-  readonly value: SequenceLiteral | null
+  /** The `title-text` unit: the text after `title` or `title:` and one whitespace character, whitespace included. */
+  readonly value: SequenceLiteral
 }
 
 /**
@@ -697,7 +697,7 @@ export interface SequenceSection extends NodeBase {
  */
 export interface SequenceIgnoredStatement extends NodeBase {
   readonly type: "SequenceIgnoredStatement"
-  /** The text of its range: the one character. */
+  /** Its written text: the one character. */
   readonly value: string
 }
 
@@ -719,7 +719,7 @@ export type SequenceWrap =
  * that may contain whitespace. No child fields. It is one unit; its name
  * is the text of the unit's range without the whitespace at its ends, and
  * the whitespace inside it is part of it, also next to a directive that
- * cuts the unit into several `Identifier` tokens.
+ * cuts the unit into several `RawText` tokens.
  *
  * ```text
  * participant A B
@@ -728,7 +728,7 @@ export type SequenceWrap =
  */
 export interface SequenceIdentifier extends NodeBase {
   readonly type: "SequenceIdentifier"
-  /** The text of its range, without the whitespace at its ends. */
+  /** Its written text, without the whitespace at its ends. */
   readonly name: string
 }
 
@@ -762,7 +762,7 @@ export interface SequenceText extends NodeBase {
  */
 export interface SequenceLiteral extends NodeBase {
   readonly type: "SequenceLiteral"
-  /** The text of its range. */
+  /** Its written text. */
   readonly value: string
 }
 

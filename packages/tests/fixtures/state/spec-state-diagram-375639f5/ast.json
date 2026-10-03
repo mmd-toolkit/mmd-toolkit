@@ -80,6 +80,7 @@
             }
           }
         },
+        "textBeforeText": null,
         "text": {
           "type": "StateLiteral",
           "value": "Line1<br>Line2<br/>Line3<br />Line4<br\t/>Line5",
@@ -189,15 +190,33 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         41,
-        49
+        46
       ],
       "loc": {
         "start": {
           "line": 3,
           "column": 13
+        },
+        "end": {
+          "line": 3,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        47,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 19
         },
         "end": {
           "line": 3,
@@ -243,15 +262,33 @@
     },
     {
       "type": "Keyword",
-      "value": "end note",
+      "value": "end",
       "range": [
         122,
-        130
+        125
       ],
       "loc": {
         "start": {
           "line": 5,
           "column": 8
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        126,
+        130
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 12
         },
         "end": {
           "line": 5,

@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "C1",
             "range": [
               19,
@@ -125,7 +125,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "C2",
             "range": [
               70,
@@ -202,7 +202,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "C1",
             "range": [
               132,
@@ -262,7 +262,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "C2",
             "range": [
               139,
@@ -423,7 +423,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C1",
       "range": [
         19,
@@ -585,7 +585,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C2",
       "range": [
         70,
@@ -657,7 +657,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C1",
       "range": [
         132,
@@ -711,7 +711,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C2",
       "range": [
         139,

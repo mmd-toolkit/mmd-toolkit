@@ -83,7 +83,7 @@
     ],
     "range": [
       0,
-      63
+      62
     ],
     "loc": {
       "start": {
@@ -92,7 +92,7 @@
       },
       "end": {
         "line": 1,
-        "column": 63
+        "column": 62
       }
     }
   },
@@ -245,7 +245,7 @@
       }
     },
     {
-      "type": "Punctuator",
+      "type": "IgnoredSemicolon",
       "value": ";",
       "range": [
         62,

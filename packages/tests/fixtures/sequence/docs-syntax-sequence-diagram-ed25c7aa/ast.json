@@ -681,7 +681,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         32,
@@ -718,19 +718,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\": \"boundary\", \"alias\": \"Public API\"",
+      "value": " \"type\": \"boundary\", \"alias\": \"Public API\" ",
       "range": [
-        38,
-        79
+        37,
+        80
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 22
+          "column": 21
         },
         "end": {
           "line": 2,
-          "column": 63
+          "column": 64
         }
       }
     },
@@ -771,7 +771,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Auth",
       "range": [
         98,
@@ -808,19 +808,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\": \"control\", \"alias\": \"Auth Service\"",
+      "value": " \"type\": \"control\", \"alias\": \"Auth Service\" ",
       "range": [
-        105,
-        147
+        104,
+        148
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 23
+          "column": 22
         },
         "end": {
           "line": 3,
-          "column": 65
+          "column": 66
         }
       }
     },
@@ -861,7 +861,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "DB",
       "range": [
         166,
@@ -898,19 +898,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\": \"database\", \"alias\": \"User Database\"",
+      "value": " \"type\": \"database\", \"alias\": \"User Database\" ",
       "range": [
-        171,
-        215
+        170,
+        216
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 21
+          "column": 20
         },
         "end": {
           "line": 4,
-          "column": 65
+          "column": 66
         }
       }
     },
@@ -933,7 +933,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         222,
@@ -969,7 +969,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Auth",
       "range": [
         228,
@@ -1023,7 +1023,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Auth",
       "range": [
         252,
@@ -1059,7 +1059,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "DB",
       "range": [
         259,
@@ -1113,7 +1113,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "DB",
       "range": [
         278,
@@ -1149,7 +1149,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Auth",
       "range": [
         284,
@@ -1203,7 +1203,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Auth",
       "range": [
         304,
@@ -1239,7 +1239,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         312,

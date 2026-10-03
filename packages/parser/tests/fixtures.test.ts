@@ -1,119 +1,167 @@
 /**
- * Layer 1 (acceptance), and where the parser builds a tree layers 2 and 3
- * (Db summary, and the invariants of ast.md, by which the tree and the
- * source give the input back), on the fixtures of `@mmd-toolkit/tests`.
+ * The fixtures of `@mmd-toolkit/tests`, parsed: for each fixture, what
+ * `parse()` gives must be what the fixture records for this parser, the tree
+ * in `ast.json` or the error in `parse-error.json`, next to its input in
+ * `packages/tests/fixtures/<diagram>/<fixture name>/`; and the acceptance
+ * must be what the fixture records of mermaid.js, as its `knownDivergence`
+ * mark asks. Whether the recorded trees keep the conditions of the
+ * specification and give the Db of mermaid.js is a check of the corpus
+ * (`@mmd-toolkit/tests`, `check-tree-corpus.test.ts` and
+ * `db-from-tree.test.ts`), not of the parser.
  *
- * The `error` pseudo-diagram, the flowchart diagram types, `sequence`,
- * `classDiagram`, and `stateDiagram` have a parser.
- * For every other detected type, `parse()` throws `UnsupportedDiagramError`,
- * and the test can only check that the type agrees with mermaid.js. The Db
- * summary is built from the tree, with the values that mermaid.js derives
- * from embedded data for the same text (`resolveEmbeddedData()`).
+ * The files: for an input that the parser accepts, the tree, as
+ * `JSON.stringify(root, null, 2)`, locations included, in `ast.json`; for an
+ * input that it rejects, the `message`, `range`, and `loc` of the
+ * `ParseError`, in `parse-error.json`; for a diagram type that it does not
+ * support yet, neither. Outside CI a missing file is written; `vitest -u`
+ * (`pnpm run test:update`) writes the files anew. Only this test writes
+ * these two files; the other files of a fixture belong to
+ * `@mmd-toolkit/tests`.
  *
  * The parser does not tell a known divergence apart; the `knownDivergence`
- * mark of a fixture alone decides what is expected.
+ * mark of a fixture alone decides what acceptance is expected.
  *
- * - Without a mark, the result must be that of mermaid.js.
- * - With `directive-as-token-boundary`, `click-reserved-word`,
+ * - Without a mark, the acceptance and the diagram type of mermaid.js.
+ * - With `directive-as-token-boundary`,
+ *   `ignored-semicolon-as-token-boundary`, `click-reserved-word`,
  *   `tokenless-empty-forms`, or `headerless-empty-ending` the specification
  *   rejects what mermaid.js accepts, never the reverse.
  * - With `html-tag-in-frontmatter`, `comment-takes-character`,
- *   `comment-takes-line-break`, or `name-start-reads-unit` it gives the
- *   opposite acceptance, or the same acceptance with another Db.
+ *   `comment-takes-line-break`, or `name-start-reads-unit`, the acceptance
+ *   and the diagram type of the reading of the specification, which the
+ *   fixture records where it differs from that of mermaid.js
+ *   (`specified.json`).
  * - With `embedded-data-opaque` it accepts what mermaid.js rejects.
  *
- * Any other disagreement fails. For every mark but the last, a second test
- * checks with a reference input, or for `comment-takes-character` and
- * `comment-takes-line-break` with mermaid.js reading the input with the
- * rules of its lexer that the divergence names changed,
- * that the divergence is the only cause of the difference (see "marked
- * fixtures differ only by their divergence").
+ * For every mark but the last, a second test checks, with the parser's own
+ * lexer, that the input has the form of its divergence, and, for a
+ * divergence that goes one way, that the parser gives for a reference input
+ * without that form what mermaid.js gave for the input (see "marked fixtures
+ * differ only by their divergence"). No mermaid.js runs here: every result
+ * compared with is recorded in the corpus.
  */
-import { isDeepStrictEqual } from "node:util"
+import { existsSync, readdirSync } from "node:fs"
+import path from "node:path"
 import { describe, expect, it } from "vitest"
 import type { Expectation, Fixture } from "@mmd-toolkit/tests"
-import { loadFixtures } from "@mmd-toolkit/tests"
-import type {
-  DivergenceRemoval,
-  EmbeddedValues,
-} from "@mmd-toolkit/tests/mermaid"
 import {
-  resolveEmbeddedData,
-  runMermaidWithEmbeddedData,
-} from "@mmd-toolkit/tests/mermaid"
-import type { Root, Token } from "../src/index.ts"
+  embeddedValuesOf,
+  getFixturesRoot,
+  loadFixtures,
+} from "@mmd-toolkit/tests"
+import type { EmbeddedValues } from "@mmd-toolkit/tests/mermaid"
+import type { Location, Range, Root, Token } from "../src/index.ts"
 import { ParseError, UnsupportedDiagramError, parse } from "../src/index.ts"
-import { checkTree } from "./helpers/check-tree.ts"
-import { dbOf } from "./helpers/db.ts"
-import { exceedsMaxEdges } from "./helpers/flowchart-edges.ts"
+import { dbOfTree } from "./helpers/db-of-tree.ts"
+import type { Outcome } from "./helpers/known-divergences.ts"
+import {
+  declaredDivergence,
+  oneWayDivergencesIn,
+  outcomeOf,
+} from "./helpers/known-divergences.ts"
 import {
   clickIdsWithinLeafNodes,
   clickReferenceOf,
-  keepsUnitsWithoutEmptyForms,
-  removedEmptyFormsIn,
-  reservedClicksIn,
-  withoutDirectives,
-  withoutEmptyForms,
-  withoutFrontmatterTagStarts,
   commentsAfterMatchStarts,
   commentsAfterUnits,
-  CLASS_READING_REMOVALS,
+  frontmatterChangesAttributeQuotes,
+  keepsUnitsWithoutEmptyForms,
   namesStartingWithUnits,
   rejectsWithoutHeader,
+  removedEmptyFormsIn,
+  reservedClicksIn,
+  withIgnoredSemicolonsAtSegmentEnds,
+  withoutDirectives,
+  withoutEmptyForms,
 } from "./helpers/reference-inputs.ts"
+import { RECORDED_DIAGRAMS } from "./helpers/recorded-diagrams.ts"
 
-/** What `parse()` does with an input. */
-type Outcome =
-  | { readonly kind: "tree"; readonly text: string; readonly root: Root }
-  | { readonly kind: "unsupported"; readonly diagramType: string }
-  | { readonly kind: "rejected" }
+/** The name of the file that holds the tree of an accepted input. */
+const AST_FILE = "ast.json"
 
-/**
- * What `parse()` does with an input, together with the one rejection of
- * mermaid.js that depends on the site configuration `config` and that
- * `parse()` therefore does not make: more Db edges than `maxEdges`
- * (diagrams/flowchart.md, Rejections outside the grammar).
- */
-function outcomeOf(input: string, config?: Fixture["config"]): Outcome {
+/** The name of the file that holds the error of a rejected input. */
+const ERROR_FILE = "parse-error.json"
+
+/** The record of a `ParseError` in `parse-error.json`. */
+interface ParseErrorRecord {
+  readonly message: string
+  readonly range: Range
+  readonly loc: Location
+}
+
+/** What `parse()` gives for an input, as the fixture records it. */
+type ParseResult =
+  | { readonly kind: "tree"; readonly root: Root }
+  | { readonly kind: "error"; readonly error: ParseErrorRecord }
+  | { readonly kind: "unsupported" }
+
+/** What `parse()` gives for `input`. */
+function resultOf(input: string): ParseResult {
   try {
-    const root = parse(input)
-    return exceedsMaxEdges(root, config)
-      ? { kind: "rejected" }
-      : { kind: "tree", text: input, root }
+    return { kind: "tree", root: parse(input) }
   } catch (error) {
-    if (error instanceof UnsupportedDiagramError) {
-      return { kind: "unsupported", diagramType: error.diagramType }
+    if (error instanceof ParseError) {
+      const { message, range, loc } = error
+      return { kind: "error", error: { message, range, loc } }
     }
-    if (error instanceof ParseError) return { kind: "rejected" }
+    if (error instanceof UnsupportedDiagramError) return { kind: "unsupported" }
     throw error
   }
 }
 
+/** The file that records `result`, and its content; null for an unsupported diagram type. */
+function recordOf(
+  result: ParseResult,
+): { readonly file: string; readonly content: string } | null {
+  switch (result.kind) {
+    case "tree":
+      return {
+        file: AST_FILE,
+        content: `${JSON.stringify(result.root, null, 2)}\n`,
+      }
+    case "error":
+      return {
+        file: ERROR_FILE,
+        content: `${JSON.stringify(result.error, null, 2)}\n`,
+      }
+    case "unsupported":
+      return null
+    default:
+      throw new Error(
+        `unknown parse result ${JSON.stringify(result satisfies never)}`,
+      )
+  }
+}
+
 /**
- * Asserts that `outcome` is what mermaid.js did, as far as the parser can
- * tell: the same acceptance; for an accepted input the same diagram type
- * and, when the parser builds a tree and mermaid.js gave a Db summary, the
- * same Db, built with `embedded`, the values that mermaid.js derived from
- * the embedded data of the text it read. When the diagram type is not
- * supported yet and mermaid.js rejected the input, the rejection must come
- * from the diagram's own parser: no diagram type, and the `---`
- * pseudo-diagram, are decided by the rules this parser implements.
+ * The fixtures under `directory`, a directory of fixtures of one diagram,
+ * that have both an `ast.json` and a `parse-error.json`. A fixture records
+ * one parse result, so there should be none. Only the files are looked at.
  */
-function expectSameAsMermaid(
-  outcome: Outcome,
-  mermaid: Expectation,
-  embedded: EmbeddedValues | undefined,
-): void {
+function fixturesWithBothRecords(directory: string): string[] {
+  return readdirSync(directory, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .filter(
+      (name) =>
+        existsSync(path.join(directory, name, AST_FILE)) &&
+        existsSync(path.join(directory, name, ERROR_FILE)),
+    )
+}
+
+/**
+ * Asserts that `outcome` has the acceptance that mermaid.js had in
+ * `mermaid`, a result that the fixture records, and, for an accepted input,
+ * the same diagram type. When the diagram type is not supported yet and
+ * mermaid.js rejected the input, the rejection must come from the diagram's
+ * own parser: no diagram type, and the `---` pseudo-diagram, are decided by
+ * the rules this parser implements.
+ */
+function expectSameAcceptance(outcome: Outcome, mermaid: Expectation): void {
   if (mermaid.accepted) {
-    expect(outcome.kind).not.toBe("rejected")
+    expect(outcome.kind).not.toBe("reject")
     if (outcome.kind === "tree") {
       expect(outcome.root.diagramType).toBe(mermaid.diagramType)
-      if (mermaid.db !== null) {
-        if (embedded === undefined) {
-          throw new Error("mermaid.js accepted the text but gave no values")
-        }
-        expect(dbOf(outcome.text, outcome.root, embedded)).toEqual(mermaid.db)
-      }
     } else if (outcome.kind === "unsupported") {
       expect(outcome.diagramType).toBe(mermaid.diagramType)
     }
@@ -126,6 +174,29 @@ function expectSameAsMermaid(
       ).toBe(false)
     }
   }
+}
+
+/**
+ * Asserts that `outcome`, the outcome of a reference input, is what
+ * mermaid.js did in `mermaid` for the input itself: the same acceptance and
+ * diagram type and, for a tree when mermaid.js gave a Db summary, the same
+ * Db, built from the tree as `@mmd-toolkit/tests` builds it from a recorded
+ * tree, with `embedded`, the values that mermaid.js derived from the
+ * embedded data of the input.
+ */
+function expectSameAsMermaid(
+  outcome: Outcome,
+  mermaid: Expectation,
+  embedded: EmbeddedValues | undefined,
+): void {
+  expectSameAcceptance(outcome, mermaid)
+  if (!mermaid.accepted || mermaid.db === null || outcome.kind !== "tree") {
+    return
+  }
+  if (embedded === undefined) {
+    throw new Error("mermaid.js accepted the text but gave no values")
+  }
+  expect(dbOfTree(outcome.text, outcome.root, embedded)).toEqual(mermaid.db)
 }
 
 /**
@@ -145,160 +216,111 @@ function clickReferenceOutcomeOf(
   return clickIdsWithinLeafNodes(reference, outcome.root) ? outcome : null
 }
 
-/** The values that mermaid.js derives from the embedded data of the input of `fixture`. */
-function embeddedOf(fixture: Fixture): Promise<EmbeddedValues | undefined> {
-  return resolveEmbeddedData(
-    fixture.input,
-    fixture.config === undefined ? {} : { config: fixture.config },
-  )
-}
+/** The known divergences that go one way only: the parser rejects what mermaid.js accepts. */
+const ONE_WAY_DIVERGENCES: readonly (string | undefined)[] = [
+  "directive-as-token-boundary",
+  "ignored-semicolon-as-token-boundary",
+  "click-reserved-word",
+  "tokenless-empty-forms",
+  "headerless-empty-ending",
+]
 
 /**
- * Guards against a reference reading that changes nothing: whether
- * mermaid.js, read with `removals` removed from its lexer, gives for some
- * of `fixtures` another acceptance or another Db than `expected.json`,
- * which records mermaid.js as it is.
+ * The acceptance of one fixture, as its mark, or the lack of one, asks for
+ * it: `outcome` is what `parse()` gives for its input, with the rejection
+ * by the site configuration (`outcomeOf`).
  */
-async function readingChangesSomeFixture(
-  fixtures: readonly Fixture[],
-  removals: readonly DivergenceRemoval[],
-): Promise<boolean> {
-  for (const fixture of fixtures) {
-    const { outcome } = await runMermaidWithEmbeddedData(fixture.input, {
-      ...(fixture.config === undefined ? {} : { config: fixture.config }),
-      withoutDivergences: removals,
-    })
-    const { expected } = fixture
-    if (outcome.accepted !== expected.accepted) return true
-    if (
-      outcome.accepted &&
-      expected.accepted &&
-      !isDeepStrictEqual(outcome.db, expected.db)
-    ) {
-      return true
-    }
-  }
-  return false
-}
-
-/**
- * Checks one fixture: the invariants of the tree, if there is one, and the
- * agreement with mermaid.js that its mark, or the lack of one, asks for.
- */
-async function checkFixture(fixture: Fixture): Promise<void> {
+function checkAcceptance(fixture: Fixture, outcome: Outcome): void {
   const { expected, knownDivergence } = fixture
-  const outcome = outcomeOf(fixture.input, fixture.config)
-  if (outcome.kind === "tree") checkTree(fixture.input, outcome.root)
-
   if (knownDivergence === undefined) {
-    expectSameAsMermaid(outcome, expected, await embeddedOf(fixture))
+    expectSameAcceptance(outcome, expected)
   } else if (knownDivergence === "embedded-data-opaque") {
     // The parser never rejects for what embedded data contains.
     expect(expected.accepted).toBe(false)
-    expect(outcome.kind).not.toBe("rejected")
+    expect(outcome.kind).not.toBe("reject")
   } else if (outcome.kind === "unsupported") {
     // The divergence shows in the diagram's own grammar, which this
     // parser does not have yet; only the detected type can be checked.
     if (expected.accepted) {
       expect(outcome.diagramType).toBe(expected.diagramType)
     }
-  } else if (
-    knownDivergence === "directive-as-token-boundary" ||
-    knownDivergence === "click-reserved-word" ||
-    knownDivergence === "tokenless-empty-forms" ||
-    knownDivergence === "headerless-empty-ending"
-  ) {
+  } else if (ONE_WAY_DIVERGENCES.includes(knownDivergence)) {
     // One way only: a directive inside a unit that may not have one, a
     // `click` that does not start a click statement, an empty form that no
     // rule takes, and a class diagram without its header are rejected here
-    // and accepted by mermaid.js.
+    // and accepted by mermaid.js. The input has the form of its mark,
+    // found by the rule of that divergence, and the rejection is that of
+    // such a divergence, where the parser rejects for it, as
+    // `helpers/known-divergences.ts` declares it. An input may have two of
+    // them, as an empty string before a `click` that does not start a
+    // click statement; the parser rejects at the first, whose divergence
+    // is then the one declared.
     expect(expected.accepted).toBe(true)
-    expect(outcome.kind).toBe("rejected")
-  } else if (outcome.kind === "rejected") {
-    // The opposite acceptance.
-    expect(expected.accepted).toBe(true)
-  } else if (expected.accepted) {
-    // Both accept: the divergence changes the Db only. The Db is checked
-    // against the reference reading under "marked fixtures differ only by
-    // their divergence".
-    expect(outcome.root.diagramType).toBe(expected.diagramType)
+    expect(outcome.kind).toBe("reject")
+    expect(oneWayDivergencesIn(fixture.input, fixture.config)).toContain(
+      knownDivergence,
+    )
+    expect(ONE_WAY_DIVERGENCES).toContain(
+      declaredDivergence(fixture.input, fixture.config, outcome),
+    )
+  } else {
+    // Both ways: the acceptance and the diagram type of the reading of the
+    // specification, which the corpus records where it differs from that
+    // of mermaid.js (`specified.json`); the Db of that reading is checked
+    // by the corpus.
+    expectSameAcceptance(outcome, fixture.specified ?? expected)
   }
 }
 
-describe("common fixtures", async () => {
-  const fixtures = await loadFixtures("common")
+for (const diagram of RECORDED_DIAGRAMS) {
+  describe(`${diagram} fixtures`, async () => {
+    const fixtures = await loadFixtures(diagram)
+    const directory = path.join(getFixturesRoot(), diagram)
+    const recordedFiles = new Map<string, string>()
 
-  it("has fixtures", () => {
-    expect(fixtures.length).toBeGreaterThan(0)
-  })
-
-  for (const fixture of fixtures) {
-    it(fixture.name, async () => {
-      await checkFixture(fixture)
+    it("has fixtures", () => {
+      expect(fixtures.length).toBeGreaterThan(0)
     })
-  }
-})
 
-describe("flowchart fixtures", async () => {
-  const fixtures = await loadFixtures("flowchart")
+    for (const fixture of fixtures) {
+      const result = resultOf(fixture.input)
+      const record = recordOf(result)
+      if (record !== null) recordedFiles.set(fixture.name, record.file)
+      it(fixture.name, async () => {
+        if (record !== null) {
+          await expect(record.content).toMatchFileSnapshot(
+            path.join(directory, fixture.name, record.file),
+          )
+        }
+        checkAcceptance(fixture, outcomeOf(fixture.input, fixture.config))
+      })
+    }
 
-  it("has fixtures", () => {
-    expect(fixtures.length).toBeGreaterThan(0)
-  })
-
-  for (const fixture of fixtures) {
-    it(fixture.name, async () => {
-      await checkFixture(fixture)
+    it("no fixture has both `ast.json` and `parse-error.json`", () => {
+      expect(fixturesWithBothRecords(directory)).toEqual([])
     })
-  }
-})
 
-describe("sequence fixtures", async () => {
-  const fixtures = await loadFixtures("sequence")
-
-  it("has fixtures", () => {
-    expect(fixtures.length).toBeGreaterThan(0)
-  })
-
-  for (const fixture of fixtures) {
-    it(fixture.name, async () => {
-      await checkFixture(fixture)
+    it("has no `ast.json` or `parse-error.json` left behind: each fixture has the one file of its result, and a directory without an input has none", () => {
+      const leftBehind = readdirSync(directory, { withFileTypes: true })
+        .filter((entry) => entry.isDirectory())
+        .flatMap((entry) =>
+          [AST_FILE, ERROR_FILE]
+            .filter((file) =>
+              existsSync(path.join(directory, entry.name, file)),
+            )
+            .filter((file) => recordedFiles.get(entry.name) !== file)
+            .map((file) => `${entry.name}/${file}`),
+        )
+      expect(leftBehind).toEqual([])
     })
-  }
-})
-
-describe("class fixtures", async () => {
-  const fixtures = await loadFixtures("class")
-
-  it("has fixtures", () => {
-    expect(fixtures.length).toBeGreaterThan(0)
   })
-
-  for (const fixture of fixtures) {
-    it(fixture.name, async () => {
-      await checkFixture(fixture)
-    })
-  }
-})
-
-describe("state fixtures", async () => {
-  const fixtures = await loadFixtures("state")
-
-  it("has fixtures", () => {
-    expect(fixtures.length).toBeGreaterThan(0)
-  })
-
-  for (const fixture of fixtures) {
-    it(fixture.name, async () => {
-      await checkFixture(fixture)
-    })
-  }
-})
+}
 
 /**
  * ast.md, ErrorDiagram: the tokens of the fixtures that section names, as it
- * states them, with their kinds: `RawText` tokens, and the `Directive`
- * token of a directive between them.
+ * states them, with their kinds: `RawText` tokens, and the `Directive` token
+ * of a directive and the `IgnoredSemicolon` token of an ignored `;` between
+ * them.
  */
 const errorDiagramTokens: Readonly<
   Record<string, readonly (readonly [Token["type"], string])[]>
@@ -331,12 +353,14 @@ const errorDiagramTokens: Readonly<
     ["RawText", "error"],
     ["RawText", "%%"],
     ["RawText", "style:#f"],
-    ["RawText", ";"],
+    ["IgnoredSemicolon", ";"],
   ],
   "error-style-semicolon-inside": [
     ["RawText", "error"],
     ["RawText", "%%"],
-    ["RawText", "style:#f;x"],
+    ["RawText", "style:#f"],
+    ["IgnoredSemicolon", ";"],
+    ["RawText", "x"],
   ],
   "error-split-by-directive": [
     ["RawText", "err"],
@@ -384,13 +408,13 @@ describe("marked fixtures differ only by their divergence", async () => {
 
   // known-divergences/directive-as-token-boundary.md: mermaid.js removes each
   // directive and joins the text around it, and the specification reads
-  // the text in the same way, but rejects a directive inside a unit that
-  // is not `RawText` or `Identifier`. The reference input is the fixture
-  // input without its directives, and the parser must give for it what
-  // mermaid.js gave for the input. The reference input differs from the
-  // input only by its directives, so when the parser agrees with mermaid.js
-  // on the reference input, the directives alone explain that the parser
-  // rejects the input itself.
+  // the text in the same way, but rejects a directive inside a token that
+  // may not be cut, one that is not a text or a string. The reference input
+  // is the fixture input without its directives, and the parser must give
+  // for it what mermaid.js gave for the input. The reference input differs
+  // from the input only by its directives, so when the parser agrees with
+  // mermaid.js on the reference input, the directives alone explain that
+  // the parser rejects the input itself.
   describe("directive-as-token-boundary", () => {
     const fixturesWithMark = marked("directive-as-token-boundary")
 
@@ -399,11 +423,36 @@ describe("marked fixtures differ only by their divergence", async () => {
     })
 
     for (const fixture of fixturesWithMark) {
-      it(`${fixture.diagram}/${fixture.name}`, async () => {
+      it(`${fixture.diagram}/${fixture.name}`, () => {
         expectSameAsMermaid(
           outcomeOf(withoutDirectives(fixture.input)),
           fixture.expected,
-          await embeddedOf(fixture),
+          embeddedValuesOf(fixture, fixture.expected),
+        )
+      })
+    }
+  })
+
+  // known-divergences/ignored-semicolon-as-token-boundary.md: mermaid.js
+  // removes the `;` that the line rule ignores from its line, and the
+  // specification leaves it out of the diagram text in the same way, but
+  // rejects it inside a token that may not be cut. The reference input is
+  // the fixture input with each such `;` moved to the end of its line
+  // segment, where both still ignore it and it lies in no token, and the
+  // parser must give for it what mermaid.js gave for the input.
+  describe("ignored-semicolon-as-token-boundary", () => {
+    const fixturesWithMark = marked("ignored-semicolon-as-token-boundary")
+
+    it("has fixtures", () => {
+      expect(fixturesWithMark.length).toBeGreaterThan(0)
+    })
+
+    for (const fixture of fixturesWithMark) {
+      it(`${fixture.diagram}/${fixture.name}`, () => {
+        expectSameAsMermaid(
+          outcomeOf(withIgnoredSemicolonsAtSegmentEnds(fixture.input)),
+          fixture.expected,
+          embeddedValuesOf(fixture, fixture.expected),
         )
       })
     }
@@ -430,14 +479,14 @@ describe("marked fixtures differ only by their divergence", async () => {
     })
 
     for (const fixture of fixturesWithMark) {
-      it(`${fixture.diagram}/${fixture.name}`, async () => {
+      it(`${fixture.diagram}/${fixture.name}`, () => {
         expect(reservedClicksIn(fixture.input)?.length).toBeGreaterThan(0)
         const outcome = clickReferenceOutcomeOf(fixture)
         if (outcome === null) return
         expectSameAsMermaid(
           outcome,
           fixture.expected,
-          await embeddedOf(fixture),
+          embeddedValuesOf(fixture, fixture.expected),
         )
       })
     }
@@ -452,8 +501,9 @@ describe("marked fixtures differ only by their divergence", async () => {
   })
 
   // known-divergences/tokenless-empty-forms.md: mermaid.js reads nothing for an
-  // empty string, an empty call, and an empty description block that does
-  // not start a statement, and the specification rejects them. The
+  // empty string, an empty call, an empty description block that is not a
+  // statement, and, in a class diagram, an empty backquoted name and an
+  // empty generic type, and the specification rejects them. The
   // reference input is the fixture input without its comment regions and
   // without those forms. Where the parser's lexer reads it as the units of
   // the input other than those of the forms, and the parser accepts it, it
@@ -469,7 +519,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     })
 
     for (const fixture of fixturesWithMark) {
-      it(`${fixture.diagram}/${fixture.name}`, async () => {
+      it(`${fixture.diagram}/${fixture.name}`, () => {
         expect(removedEmptyFormsIn(fixture.input)?.length).toBeGreaterThan(0)
         const reference = withoutEmptyForms(fixture.input)
         if (reference === null) {
@@ -481,7 +531,7 @@ describe("marked fixtures differ only by their divergence", async () => {
         expectSameAsMermaid(
           outcome,
           fixture.expected,
-          await embeddedOf(fixture),
+          embeddedValuesOf(fixture, fixture.expected),
         )
       })
     }
@@ -500,12 +550,11 @@ describe("marked fixtures differ only by their divergence", async () => {
     })
   })
 
-  // known-divergences/comment-takes-character.md: in sequence, a
-  // comment starts at its `%%` here, while mermaid.js takes the character
-  // right before it into the comment where a rule would start there, and
-  // reads no number before it. Each fixture has such a `%%`, and mermaid.js
-  // with the two rules of its lexer that the divergence names changed
-  // (`withoutDivergences`) must give what the parser gives for the input.
+  // known-divergences/comment-takes-character.md: in sequence, a comment
+  // starts at its `%%` here, while mermaid.js takes the character right
+  // before it into the comment where a rule would start there, and reads no
+  // number before it. Each fixture has such a `%%`, found by the parser's
+  // lexer; the reading of the specification is recorded in the corpus.
   describe("comment-takes-character", () => {
     const fixturesWithMark = marked("comment-takes-character")
 
@@ -513,29 +562,11 @@ describe("marked fixtures differ only by their divergence", async () => {
       expect(fixturesWithMark.length).toBeGreaterThan(0)
     })
 
-    // Guards against a reading that changes nothing, which would compare
-    // the parser with mermaid.js as it is.
-    it("reads some of them otherwise than mermaid.js as it is", async () => {
-      expect(
-        await readingChangesSomeFixture(fixturesWithMark, [
-          "comment-takes-character",
-        ]),
-      ).toBe(true)
-    })
-
     for (const fixture of fixturesWithMark) {
-      it(`${fixture.diagram}/${fixture.name}`, async () => {
+      it(`${fixture.diagram}/${fixture.name}`, () => {
         const places = commentsAfterMatchStarts(fixture.input)
         if (places === null) throw new Error("the input is no sequence")
         expect(places.length).toBeGreaterThan(0)
-        const { outcome: mermaid, embedded } = await runMermaidWithEmbeddedData(
-          fixture.input,
-          {
-            ...(fixture.config === undefined ? {} : { config: fixture.config }),
-            withoutDivergences: ["comment-takes-character"],
-          },
-        )
-        expectSameAsMermaid(outcomeOf(fixture.input), mermaid, embedded)
       })
     }
   })
@@ -543,10 +574,7 @@ describe("marked fixtures differ only by their divergence", async () => {
   // known-divergences/comment-takes-line-break.md: in class diagrams, a
   // comment that follows a unit on its line ends at the end of the line
   // here, while mermaid.js takes the line feeds after it. Each fixture has
-  // such a comment, and mermaid.js with the rule of its lexer that the
-  // divergence names changed, and with `name-start-reads-unit` removed as
-  // well (`withoutDivergences`, `CLASS_READING_REMOVALS`), must give what
-  // the parser gives for the input.
+  // such a comment, found by the parser's lexer and units.
   describe("comment-takes-line-break", () => {
     const fixturesWithMark = marked("comment-takes-line-break")
 
@@ -554,30 +582,11 @@ describe("marked fixtures differ only by their divergence", async () => {
       expect(fixturesWithMark.length).toBeGreaterThan(0)
     })
 
-    // Guards against a reading that changes nothing, which would compare
-    // the parser with mermaid.js as it is.
-    it("reads some of them otherwise than mermaid.js as it is", async () => {
-      expect(
-        await readingChangesSomeFixture(
-          fixturesWithMark,
-          CLASS_READING_REMOVALS,
-        ),
-      ).toBe(true)
-    })
-
     for (const fixture of fixturesWithMark) {
-      it(`${fixture.diagram}/${fixture.name}`, async () => {
+      it(`${fixture.diagram}/${fixture.name}`, () => {
         const places = commentsAfterUnits(fixture.input)
         if (places === null) throw new Error("the input is no class diagram")
         expect(places.length).toBeGreaterThan(0)
-        const { outcome: mermaid, embedded } = await runMermaidWithEmbeddedData(
-          fixture.input,
-          {
-            ...(fixture.config === undefined ? {} : { config: fixture.config }),
-            withoutDivergences: CLASS_READING_REMOVALS,
-          },
-        )
-        expectSameAsMermaid(outcomeOf(fixture.input), mermaid, embedded)
       })
     }
   })
@@ -585,11 +594,8 @@ describe("marked fixtures differ only by their divergence", async () => {
   // known-divergences/name-start-reads-unit.md: in class diagrams,
   // mermaid.js reads `"`, `~`, `<<`, `>>`, or a keyword at the start of a
   // backquoted name or of a generic type as that unit, and this
-  // specification reads the text. Each fixture has such a name, and
-  // mermaid.js with the rules of its lexer that the divergence names
-  // reordered, and with `comment-takes-line-break` removed as well
-  // (`withoutDivergences`, `CLASS_READING_REMOVALS`), must give what the
-  // parser gives.
+  // specification reads the text. Each fixture has such a name, found by
+  // the parser's units.
   describe("name-start-reads-unit", () => {
     const fixturesWithMark = marked("name-start-reads-unit")
 
@@ -597,30 +603,11 @@ describe("marked fixtures differ only by their divergence", async () => {
       expect(fixturesWithMark.length).toBeGreaterThan(0)
     })
 
-    // Guards against a reading that changes nothing, which would compare
-    // the parser with mermaid.js as it is.
-    it("reads some of them otherwise than mermaid.js as it is", async () => {
-      expect(
-        await readingChangesSomeFixture(
-          fixturesWithMark,
-          CLASS_READING_REMOVALS,
-        ),
-      ).toBe(true)
-    })
-
     for (const fixture of fixturesWithMark) {
-      it(`${fixture.diagram}/${fixture.name}`, async () => {
+      it(`${fixture.diagram}/${fixture.name}`, () => {
         const places = namesStartingWithUnits(fixture.input)
         if (places === null) throw new Error("the input is no class diagram")
         expect(places.length).toBeGreaterThan(0)
-        const { outcome: mermaid, embedded } = await runMermaidWithEmbeddedData(
-          fixture.input,
-          {
-            ...(fixture.config === undefined ? {} : { config: fixture.config }),
-            withoutDivergences: CLASS_READING_REMOVALS,
-          },
-        )
-        expectSameAsMermaid(outcomeOf(fixture.input), mermaid, embedded)
       })
     }
   })
@@ -645,12 +632,10 @@ describe("marked fixtures differ only by their divergence", async () => {
   })
 
   // known-divergences/html-tag-in-frontmatter.md: mermaid.js also finds HTML
-  // tags that start in the frontmatter. The reference input is the fixture
-  // input whose frontmatter starts no tag, so mermaid.js reads it as the
-  // specification reads the input, and the parser must give for the input what
-  // mermaid.js gives for the reference input. The values that depend on the
-  // frontmatter (the title, the configuration) come from the reference input,
-  // whose frontmatter holds `(` where the input holds `<`.
+  // tags that start in the frontmatter. Each fixture has such a tag, whose
+  // start changes which `"` mermaid.js reads as `'`, found by the parser's
+  // reading of the frontmatter and of the attribute quotes; the reading of
+  // the specification is recorded in the corpus.
   describe("html-tag-in-frontmatter", () => {
     const fixturesWithMark = marked("html-tag-in-frontmatter")
 
@@ -659,36 +644,9 @@ describe("marked fixtures differ only by their divergence", async () => {
     })
 
     for (const fixture of fixturesWithMark) {
-      it(`${fixture.diagram}/${fixture.name}`, async () => {
-        const reference = withoutFrontmatterTagStarts(fixture.input)
-        expect(reference).not.toBe(fixture.input)
-        const { outcome: mermaid, embedded } = await runMermaidWithEmbeddedData(
-          reference,
-          fixture.config === undefined ? {} : { config: fixture.config },
-        )
-        expectSameAsMermaid(outcomeOf(fixture.input), mermaid, embedded)
+      it(`${fixture.diagram}/${fixture.name}`, () => {
+        expect(frontmatterChangesAttributeQuotes(fixture.input)).toBe(true)
       })
     }
-
-    // Guards against the check passing vacuously.
-    it("compares the reference input of most of them", async () => {
-      let compared = 0
-      for (const fixture of fixturesWithMark) {
-        const reference = withoutFrontmatterTagStarts(fixture.input)
-        const { outcome: mermaid } = await runMermaidWithEmbeddedData(
-          reference,
-          fixture.config === undefined ? {} : { config: fixture.config },
-        )
-        const outcome = outcomeOf(fixture.input, fixture.config)
-        if (
-          mermaid.accepted &&
-          mermaid.db !== null &&
-          outcome.kind === "tree"
-        ) {
-          compared += 1
-        }
-      }
-      expect(compared * 2).toBeGreaterThan(fixturesWithMark.length)
-    })
   })
 })

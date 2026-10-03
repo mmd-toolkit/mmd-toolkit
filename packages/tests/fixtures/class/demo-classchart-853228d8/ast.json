@@ -8,7 +8,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Company.Engineering.Backend",
           "range": [
             84,
@@ -33,7 +33,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Developer",
                 "range": [
                   124,
@@ -188,7 +188,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Company.Engineering.Frontend",
           "range": [
             195,
@@ -213,7 +213,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Designer",
                 "range": [
                   236,
@@ -368,7 +368,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Company",
           "range": [
             308,
@@ -393,7 +393,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "CEO",
                 "range": [
                   328,
@@ -509,7 +509,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "CEO",
             "range": [
               369,
@@ -569,7 +569,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Developer",
             "range": [
               377,
@@ -641,7 +641,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "CEO",
             "range": [
               400,
@@ -701,7 +701,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Designer",
             "range": [
               408,
@@ -899,7 +899,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Company.Engineering.Backend",
       "range": [
         84,
@@ -953,7 +953,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Developer",
       "range": [
         124,
@@ -1187,7 +1187,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Company.Engineering.Frontend",
       "range": [
         195,
@@ -1241,7 +1241,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Designer",
       "range": [
         236,
@@ -1475,7 +1475,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Company",
       "range": [
         308,
@@ -1529,7 +1529,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "CEO",
       "range": [
         328,
@@ -1673,7 +1673,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "CEO",
       "range": [
         369,
@@ -1727,7 +1727,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Developer",
       "range": [
         377,
@@ -1781,7 +1781,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "CEO",
       "range": [
         400,
@@ -1835,7 +1835,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Designer",
       "range": [
         408,

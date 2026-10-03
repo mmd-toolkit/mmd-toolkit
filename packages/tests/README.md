@@ -66,6 +66,14 @@ diagram type shares (frontmatter, directives, comments, diagram detection).
 
 - `input.mmd`: the text under test, byte for byte.
 - `expected.json`: what mermaid.js did with it.
+- `specified.json`: what an implementation of the specification gives for the
+  input, present only where that is not what mermaid.js did: the result of
+  mermaid.js read without the known divergence that changes how it reads the
+  input. Only fixtures with the mark `comment-takes-character`,
+  `comment-takes-line-break`, `name-start-reads-unit` or
+  `html-tag-in-frontmatter` have it. Where it is there, it is the result to
+  match; where it is not, the result to match is `expected.json`. See
+  [docs/expected-results.md](./docs/expected-results.md).
 - `ast.json`: the tree that the reference implementation (`@mmd-toolkit/parser`)
   returns for the input, present only for inputs it accepts.
 - `parse-error.json`: the `message`, `range` and `loc` of the `ParseError` with
@@ -80,15 +88,16 @@ diagram type that the reference implementation does not support yet
 
 The fields of `expected.json`:
 
-| Field             | Meaning                                                                                                                              |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `source`          | Where the input came from: `{ kind: "mermaid", ref, path, line?, test? }`, or `{ kind: "authored", note }` for one written here.     |
-| `config`          | Optional. The site configuration to run the input with, as passed to `mermaid.initialize()`.                                         |
-| `knownDivergence` | Optional. The specification deliberately differs from mermaid.js on this input. The rest of the file is still what mermaid.js does.  |
-| `accepted`        | Whether mermaid.js accepts the input.                                                                                                |
-| `diagramType`     | For accepted inputs: the diagram id mermaid.js detects, such as `flowchart-v2`.                                                      |
-| `db`              | For accepted inputs: a summary of mermaid.js's Db, as plain JSON. `null` only in `common/`, for diagram types without a summary yet. |
-| `error`           | For rejected inputs: the `name` and `message` of mermaid.js's error. The message is for people; implementations need not match it.   |
+| Field             | Meaning                                                                                                                                                                                                  |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `source`          | Where the input came from: `{ kind: "mermaid", ref, path, line?, test? }`, or `{ kind: "authored", note }` for one written here.                                                                         |
+| `config`          | Optional. The site configuration to run the input with, as passed to `mermaid.initialize()`.                                                                                                             |
+| `knownDivergence` | Optional. The specification deliberately differs from mermaid.js on this input. The rest of the file is still what mermaid.js does.                                                                      |
+| `accepted`        | Whether mermaid.js accepts the input.                                                                                                                                                                    |
+| `diagramType`     | For accepted inputs: the diagram id mermaid.js detects, such as `flowchart-v2`.                                                                                                                          |
+| `db`              | For accepted inputs: a summary of mermaid.js's Db, as plain JSON. `null` only in `common/`, for diagram types without a summary yet.                                                                     |
+| `error`           | For rejected inputs: the `name` and `message` of mermaid.js's error. The message is for people; implementations need not match it.                                                                       |
+| `embedded`        | Optional, for accepted inputs. The values mermaid.js derives from the embedded data that the Db depends on: `config`, `title`, `dataBlockEffects`. See [docs/embedded-data.md](./docs/embedded-data.md). |
 
 For example, `fixtures/flowchart/config-inherit-dir-site/expected.json`, with
 the Db shortened:
@@ -109,8 +118,13 @@ the Db shortened:
 }
 ```
 
-The fields of each diagram type's `db` are specified in the "Db normalization"
-section of `docs/diagrams/<diagram>.md` in `@mmd-toolkit/spec`.
+The fields of each diagram type's `db` are described in
+[docs/db-summaries.md](./docs/db-summaries.md), and the steps that build them
+from a tree in [docs/db-from-tree/](./docs/db-from-tree/).
+
+`fixtures/default-config.json` is mermaid.js's configuration for a text that
+changes nothing in it (`getDefaultConfig()`); the `embedded.config` of a fixture
+is what the input changes in it.
 
 ## API
 
@@ -129,6 +143,8 @@ Reads the fixtures. It does not load mermaid.js.
   Each is defined in the specification:
   - `directive-as-token-boundary`: see
     [known-divergences/directive-as-token-boundary.md](../spec/docs/known-divergences/directive-as-token-boundary.md).
+  - `ignored-semicolon-as-token-boundary`: see
+    [known-divergences/ignored-semicolon-as-token-boundary.md](../spec/docs/known-divergences/ignored-semicolon-as-token-boundary.md).
   - `html-tag-in-frontmatter`: see
     [known-divergences/html-tag-in-frontmatter.md](../spec/docs/known-divergences/html-tag-in-frontmatter.md).
   - `embedded-data-opaque`: see
@@ -146,8 +162,28 @@ Reads the fixtures. It does not load mermaid.js.
   - `name-start-reads-unit`: see
     [known-divergences/name-start-reads-unit.md](../spec/docs/known-divergences/name-start-reads-unit.md).
 - `getFixturesRoot()`: the absolute path of the `fixtures/` directory.
+- `getDefaultConfig()`: the configuration that `embedded.config` is a difference
+  from (`fixtures/default-config.json`).
+- `embeddedValuesOf(fixture)`: the values `resolveEmbeddedData()` gives for the
+  input of a fixture, built from what the fixture records, for the reading to
+  match (`specified`, else `expected`). `undefined` for a rejection.
+- `findBoundaries(source)`, `findInnerPlaces(source)` and
+  `selectByKey(lists, perKey, keyOf)`: the parts of the kinds of the places in a
+  text where a generated or differential test puts something, and the choice of
+  a few places of each key the caller makes from them. `source` is the tokens,
+  comments and directives of a parsed text as plain values. See
+  [docs/boundary-kinds.md](./docs/boundary-kinds.md).
+- `dbFromTree(text, tree, embedded, isColor)`: the Db summary that a recorded
+  tree (`ast.json`) denotes, built without a parser, and
+  `exceedsMaxEdges(tree, config)` / `flowchartEdgeCount(tree)` for the limit on
+  the edges of a flowchart tree. See
+  [docs/db-from-tree.md](./docs/db-from-tree.md).
+- `checkTree(text, tree)`: the conditions that the specification states for a
+  recorded tree (`ast.json`) that do not hold, none for a tree that satisfies
+  them all. See [docs/check-tree.md](./docs/check-tree.md).
 - Types: `DiagramType`, `Fixture`, `FixtureSource`, `Expectation`,
-  `ExpectedFile`, `DbSummary`, `MermaidConfig`, `MermaidError`.
+  `ExpectedFile`, `RecordedEmbedded`, `DbSummary`, `MermaidConfig`,
+  `MermaidError`.
 
 ### `@mmd-toolkit/tests/mermaid`
 
@@ -217,7 +253,10 @@ console.log(report.compared, report.mismatches.length)
 - `generatedInputs(generator, seeds, count, prefix)` names the texts of an input
   generator, to pass to `compareAll()` or `runMutationDiff()`.
 - The command line:
-  `pnpm --filter @mmd-toolkit/tests run mutation --candidate <module>`.
+  `pnpm --filter @mmd-toolkit/tests run mutation --candidate <module>`. Each
+  fixture gets one mutant for each edit operator that applies to it unless
+  `--count` says otherwise (see
+  [docs/mutation-testing.md](./docs/mutation-testing.md)).
 
 The other exports of the three entry points are used by this repository's tools;
 they are listed in
@@ -256,6 +295,12 @@ they are listed in
   leaves out.
 - [docs/mutation-testing.md](./docs/mutation-testing.md): how texts are mutated
   and compared, and the report.
+- [docs/boundary-kinds.md](./docs/boundary-kinds.md): the kinds of the places in
+  a text, and choosing places by kind.
+- [docs/db-from-tree.md](./docs/db-from-tree.md): building the Db from a
+  recorded tree, and what it reads.
+- [docs/check-tree.md](./docs/check-tree.md): checking a recorded tree against
+  the conditions of the specification.
 - [docs/maintaining-fixtures.md](./docs/maintaining-fixtures.md): for
   maintainers, adding, changing, renaming and collecting fixtures.
 - [tools/README.md](../../tools/README.md): for maintainers, the command-line

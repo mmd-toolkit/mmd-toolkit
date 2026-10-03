@@ -180,5 +180,10 @@
       }
     ],
     "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "layout": "dagre"
+    }
   }
 }

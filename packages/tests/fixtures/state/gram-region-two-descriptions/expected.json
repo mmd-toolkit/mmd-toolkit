@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Rejections outside the grammar: a region is a state with a body, so two descriptions for `divider-id-1` make the input rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Group nodes can only have label. Remove the additional description for node [divider-id-1]"
+  }
+}

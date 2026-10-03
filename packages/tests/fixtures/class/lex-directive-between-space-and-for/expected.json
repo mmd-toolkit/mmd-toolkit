@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The shared rules: a directive between the space and `for` lies between two units; the note is for A, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "class": "A",
+        "text": "t"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

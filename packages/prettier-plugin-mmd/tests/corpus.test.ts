@@ -11,7 +11,11 @@ import { loadFixtures } from "@mmd-toolkit/tests"
 import type { RunMermaidOptions } from "@mmd-toolkit/tests/mermaid"
 import { parseDocument } from "../src/parser.ts"
 import { formatMermaid } from "./helpers.ts"
-import { describeReadingChange, readWithMermaid } from "./mermaid-readings.ts"
+import {
+  describeReadingChange,
+  readingsOfFixture,
+  readWithMermaid,
+} from "./mermaid-readings.ts"
 
 /**
  * Whether the plugin formats the input, rather than printing it as written
@@ -60,7 +64,8 @@ describe("the conformance corpus", () => {
         fixture.config === undefined ? {} : { config: fixture.config }
       expect(
         describeReadingChange(
-          await readWithMermaid(fixture.input, options),
+          readingsOfFixture(fixture) ??
+            (await readWithMermaid(fixture.input, options)),
           await readWithMermaid(output, options),
         ),
         output,

@@ -285,19 +285,19 @@
     },
     {
       "type": "RawText",
-      "value": "__proto__: null",
+      "value": " __proto__: null ",
       "range": [
-        32,
-        47
+        31,
+        48
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 4
+          "column": 3
         },
         "end": {
           "line": 4,
-          "column": 19
+          "column": 20
         }
       }
     },

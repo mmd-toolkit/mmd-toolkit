@@ -231,10 +231,10 @@
     },
     {
       "type": "RawText",
-      "value": "a",
+      "value": "a\n",
       "range": [
         15,
-        16
+        17
       ],
       "loc": {
         "start": {
@@ -242,8 +242,8 @@
           "column": 2
         },
         "end": {
-          "line": 2,
-          "column": 3
+          "line": 3,
+          "column": 0
         }
       }
     },

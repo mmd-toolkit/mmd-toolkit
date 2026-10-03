@@ -1,14 +1,19 @@
 import type { SuggestedEdit } from "@eslint/core"
 import type {
-  DbText,
   FlowchartAccDescrBlockStatement,
   FlowchartSubgraphStatement,
 } from "@mmd-toolkit/parser"
-import { flowchartDbTexts, flowchartSubgraphIds } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../../rule-types.ts"
 import { ruleDocsUrl } from "../../rule-docs-url.ts"
 import type { MermaidSourceCode } from "../../source-code.ts"
 import { removalRange } from "../../utils/removal.ts"
+import {
+  blocksInNameText,
+  holdsWhitespace,
+  isEmptyBlock,
+  nameOwnText,
+  subgraphIdsOf,
+} from "../../utils/subgraph-ids.ts"
 
 /**
  * The suggestion for an empty block: remove it, which changes nothing in the
@@ -24,11 +29,6 @@ function removalSuggestion(
     messageId: "removeBlock",
     fix: (fixer) => fixer.removeRange(range),
   }
-}
-
-/** Whether `value` holds a whitespace character. */
-function holdsWhitespace(value: string): boolean {
-  return [...value].some((character) => character.trim() === "")
 }
 
 /**
@@ -70,41 +70,27 @@ export const noEmptyDescriptionBlock: MermaidRuleDefinition<{
     const { sourceCode } = context
     let subgraphIds: ReadonlyMap<FlowchartSubgraphStatement, string> | null =
       null
-    let nameTexts: ReadonlyMap<FlowchartSubgraphStatement, DbText> | null = null
 
     /**
      * The subgraph whose generated id an empty block can be blamed on: the id
      * of a subgraph without a title is made from its name text, which can
      * include what follows the name (see "Building the summary from the
-     * tree", Subgraphs, in `packages/spec/docs/diagrams/flowchart.md`). So
-     * `block` qualifies when it starts in the name text of the subgraph that
-     * `flowchartDbTexts` gives, and the id is not the name although the name
-     * holds no whitespace of its own. The id is taken from
-     * `flowchartSubgraphIds`, not derived again here. The block itself
-     * changes nothing.
+     * tree", Subgraphs, in `packages/tests/docs/db-from-tree/flowchart.md`). So
+     * `block` qualifies when it is one of the empty blocks that the Db reads into
+     * that name text (`blocksInNameText`), and the id is not the name although
+     * the name holds no whitespace of its own. The block itself changes
+     * nothing.
      */
     function subgraphNamedByTextAfterName(
       block: FlowchartAccDescrBlockStatement,
     ): FlowchartSubgraphStatement | null {
       const subgraph = sourceCode.getParent(block)
       if (subgraph?.type !== "FlowchartSubgraphStatement") return null
-      if (subgraph.title !== null || holdsWhitespace(subgraph.name.value)) {
-        return null
-      }
-      nameTexts ??= flowchartDbTexts(
-        sourceCode.ast,
-        sourceCode.text,
-      ).subgraphNameTexts
-      const nameText = nameTexts.get(subgraph)
-      if (
-        nameText === undefined ||
-        block.range[0] < nameText.range[0] ||
-        nameText.range[1] <= block.range[0]
-      ) {
-        return null
-      }
-      subgraphIds ??= flowchartSubgraphIds(sourceCode.ast, sourceCode.text)
-      return subgraphIds.get(subgraph) === subgraph.name.value ? null : subgraph
+      const name = nameOwnText(sourceCode, subgraph)
+      if (subgraph.title !== null || holdsWhitespace(name)) return null
+      if (!blocksInNameText(sourceCode, subgraph).includes(block)) return null
+      subgraphIds ??= subgraphIdsOf(sourceCode)
+      return subgraphIds.get(subgraph) === name ? null : subgraph
     }
 
     /**
@@ -114,8 +100,9 @@ export const noEmptyDescriptionBlock: MermaidRuleDefinition<{
      * name text, so the line terminator after the block can be what ends the
      * name, and removing the block with its line would join the lines after
      * it to the name. The tree holds no node for the U+2028 and the U+2029,
-     * which are no line terminators of its positions, so they are looked for
-     * between the end of the name and the start of the block.
+     * which are no line terminators of its positions: they are in the value
+     * of the name, which holds the whitespace after it, and between the end of
+     * the name and the start of the block.
      */
     function startsNameTextWithLineBreakingUnit(
       block: FlowchartAccDescrBlockStatement,
@@ -123,24 +110,18 @@ export const noEmptyDescriptionBlock: MermaidRuleDefinition<{
       const subgraph = sourceCode.getParent(block)
       if (subgraph?.type !== "FlowchartSubgraphStatement") return false
       const before = subgraph.body.slice(0, subgraph.body.indexOf(block))
-      const onlyEmptyBlocksBefore = before.every(
-        (statement) =>
-          statement.type === "FlowchartAccDescrBlockStatement" &&
-          statement.closed &&
-          statement.value === null,
-      )
+      const onlyEmptyBlocksBefore = before.every(isEmptyBlock)
       if (!onlyEmptyBlocksBefore) return false
       const between = [subgraph.name.range[1], block.range[0]] as const
+      const textBefore = subgraph.name.value + sourceCode.text.slice(...between)
       const lineSeparators = ["\u2028", "\u2029"]
       return (
-        lineSeparators.some((separator) =>
-          sourceCode.text.slice(...between).includes(separator),
-        ) ||
+        lineSeparators.some((separator) => textBefore.includes(separator)) ||
         sourceCode.ast.directives.some(
           (directive) =>
             !directive.closed &&
-            between[0] <= directive.range[0] &&
-            directive.range[0] < between[1],
+            subgraph.name.range[0] <= directive.range[0] &&
+            directive.range[0] < block.range[0],
         )
       )
     }
@@ -166,7 +147,9 @@ export const noEmptyDescriptionBlock: MermaidRuleDefinition<{
         context.report({
           node,
           messageId: subgraph === null ? "empty" : "emptyAfterSubgraphName",
-          data: { name: subgraph?.name.value ?? "" },
+          data: {
+            name: subgraph === null ? "" : nameOwnText(sourceCode, subgraph),
+          },
           suggest: suggestable ? [removalSuggestion(sourceCode, node)] : [],
         })
       },

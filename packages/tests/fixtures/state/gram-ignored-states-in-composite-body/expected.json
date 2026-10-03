@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Statement context rule 17: in a composite body, `state %% c` before `state {` is an ignored-state unit too, and the body is that of X."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "P",
+        "shape": "roundedWithTitle",
+        "label": "P",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "parentId": "P",
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "X"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

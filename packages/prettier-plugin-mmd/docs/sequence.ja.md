@@ -161,6 +161,49 @@ sequenceDiagram
   end
 ```
 
+`autonumber` の後、または、データブロックで終わり `as` のない
+`participant` と `actor` の後の、ディレクティブに続く `;` は残します。
+mermaid.js はディレクティブを取り除き、
+行末の空白が、文に必要な改行を隠すからです。
+その文の最後の単位は、後ろの空白を読みません。
+`autonumber`、空白、`%%{wrap}%%`、`;` は受理され、
+`;` がないと拒否されます。
+ほかの文の最後の単位、つまりテキスト、id、`as` の後の説明は、
+後ろの空白を一緒に読みます
+（sequence の仕様の文の文脈と、そこの「区切りの前の空の説明ブロック」を参照）。
+
+入力 ([statements-one-per-line/autonumber-directive-kept-input.mmd](../tests/fixtures/sequence/statements-one-per-line/autonumber-directive-kept-input.mmd)):
+
+```mmd
+sequenceDiagram
+autonumber %%{wrap}%%;
+A->>B: x
+```
+
+出力 ([statements-one-per-line/autonumber-directive-kept-output.mmd](../tests/fixtures/sequence/statements-one-per-line/autonumber-directive-kept-output.mmd)):
+
+```mmd
+sequenceDiagram
+  autonumber %%{wrap}%%;
+  A ->> B: x
+```
+
+入力 ([statements-one-per-line/data-block-directive-kept-input.mmd](../tests/fixtures/sequence/statements-one-per-line/data-block-directive-kept-input.mmd)):
+
+```mmd
+sequenceDiagram
+participant A@{ "type": "actor" } %%{wrap}%%;
+A->>B: x
+```
+
+出力 ([statements-one-per-line/data-block-directive-kept-output.mmd](../tests/fixtures/sequence/statements-one-per-line/data-block-directive-kept-output.mmd)):
+
+```mmd
+sequenceDiagram
+  participant A@{ "type": "actor" } %%{wrap}%%;
+  A ->> B: x
+```
+
 ### 空行
 
 flowchart と同じです。
@@ -540,7 +583,7 @@ sequenceDiagram
 ### 行区切り
 
 U+2028 と U+2029 は空白ですが、
-mermaid.js の読み方の 2 つがそれに左右されるため、
+mermaid.js の読み方のいくつかがそれに左右されるため、
 関係する所では書かれたまま残します。
 文字が見えないので、ここに例はありません。
 テストは文字をエスケープで書きます (`tests/line-separators.test.ts` を参照)。
@@ -555,6 +598,27 @@ mermaid.js の読み方の 2 つがそれに左右されるため、
   コメントとコメント行とその後のテキストは、
   字下げなしで書かれたまま印字します。
   木はそれらをコメントとして並べますが、printer は 1 つとして読みます。
+- 閉じていないディレクティブの直後。
+  そのようなディレクティブのテキストはこの文字の手前で止まり、
+  文字はディレクティブにとって空白ではありません。
+  文字を空白や改行で印字すると、
+  ディレクティブが残りのテキストに届いてしまいます。
+  これはすべての図種で同じです。
+- `title` の後の 1 つの空白文字としての U+2028 か U+2029。
+  `title`、U+2028、` ;` は、`;` ごと書かれたまま残します。
+- 文の 2 つの部分の間（すべての図種）。
+  間の空白に U+2028 か U+2029 があるときは、書かれたまま残します。
+  この文字は、mermaid.js のすべての規則で空白として読まれるわけではないからです
+  （`class A`、U+2028、` direction LR` は 1 つの名前で、
+  `class A`、改行、` direction LR` は文と方向になります）。
+- 行の規則が無視する `;` と、その後に U+2028 か U+2029 がある行。
+  行の規則は、文字の手前までを行として読むので、その行を書かれたまま残します。
+- printer が残す U+2028 か U+2029 の後の `;`。
+  `box`、タイトル、subgraph の名前のテキストの終わりにあるものがその例です。
+  mermaid.js は、U+2028 か U+2029 の直後に始まるコメント行を、
+  その前の改行ごと取り除くので、間にある `;` が、
+  改行とその後のコメント行が次の行をつなぐのを防ぎます。
+  `box red`、U+2028、`;`、行 `%% c` では、箱のテキストは `;` で終わります。
 
 ### ディレクティブ
 

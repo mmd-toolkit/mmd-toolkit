@@ -508,19 +508,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: circle\n        other: \"clock\"",
+      "value": "\n        shape: circle\n        other: \"clock\"\n     ",
       "range": [
-        46,
-        82
+        37,
+        88
       ],
       "loc": {
         "start": {
-          "line": 4,
-          "column": 8
+          "line": 3,
+          "column": 9
         },
         "end": {
-          "line": 5,
-          "column": 22
+          "line": 6,
+          "column": 5
         }
       }
     },
@@ -634,19 +634,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: circle\n        other: \"clock\"",
+      "value": "\n        shape: circle\n        other: \"clock\"\n     ",
       "range": [
-        115,
-        151
+        106,
+        157
       ],
       "loc": {
         "start": {
-          "line": 8,
-          "column": 8
+          "line": 7,
+          "column": 16
         },
         "end": {
-          "line": 9,
-          "column": 22
+          "line": 10,
+          "column": 5
         }
       }
     },

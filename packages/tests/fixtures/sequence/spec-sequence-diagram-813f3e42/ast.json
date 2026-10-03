@@ -343,7 +343,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         17,
@@ -379,7 +379,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         25,
@@ -470,10 +470,10 @@
     },
     {
       "type": "Keyword",
-      "value": "left of",
+      "value": "left",
       "range": [
         169,
-        176
+        173
       ],
       "loc": {
         "start": {
@@ -482,12 +482,30 @@
         },
         "end": {
           "line": 4,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        174,
+        176
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 10
+        },
+        "end": {
+          "line": 4,
           "column": 12
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         177,
@@ -541,7 +559,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         195,
@@ -577,7 +595,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         201,

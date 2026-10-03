@@ -142,10 +142,10 @@
     },
     {
       "type": "StringFragment",
-      "value": "`a",
+      "value": "`a\n",
       "range": [
         21,
-        23
+        24
       ],
       "loc": {
         "start": {
@@ -153,22 +153,22 @@
           "column": 8
         },
         "end": {
-          "line": 2,
-          "column": 10
+          "line": 3,
+          "column": 0
         }
       }
     },
     {
       "type": "StringFragment",
-      "value": "b`",
+      "value": "  b`",
       "range": [
-        33,
+        31,
         35
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 2
+          "column": 0
         },
         "end": {
           "line": 4,

@@ -38,7 +38,6 @@ import type {
 } from "../../ast/flowchart.ts"
 import { DIGIT_ZERO } from "../../code-points.ts"
 import { ParseError } from "../../errors.ts"
-import type { UnitWithKind } from "../../diagram-parsing.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import { UnitGrammar } from "../../unit-grammar.ts"
@@ -56,7 +55,7 @@ import {
 
 /**
  * What the grammar makes of the units of a flowchart: the header's
- * direction, the statements, the kinds of the units, and the tokens. The
+ * direction, the statements, and the tokens. The
  * grammar reads the diagram text, which has no directives (diagrams/
  * flowchart.md, Directives inside units), so a directive can lie inside
  * the range of a unit or of a token here.
@@ -66,8 +65,6 @@ export interface FlowchartSyntax {
   readonly direction: string | null
   /** The statements of the diagram, in source order. */
   readonly body: readonly FlowchartStatement[]
-  /** The units that are not all whitespace, in source order. */
-  readonly units: readonly UnitWithKind[]
   /** The tokens of the diagram, in source order. */
   readonly tokens: readonly PendingToken[]
 }
@@ -198,7 +195,7 @@ interface LabelUnits {
  */
 export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   /**
-   * Db normalization, Subgraphs: the member that each subgraph read so far
+   * Rejections outside the grammar, Subgraph members: the member that each subgraph read so far
    * gives the subgraph around it, its Db id; null when that id is empty or
    * all whitespace.
    */
@@ -208,9 +205,9 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   >()
 
   /**
-   * Db normalization, Links: how many Db edges the statements read so far
-   * make. Rejections outside the grammar: a `linkStyle` number must name one
-   * of them.
+   * Rejections outside the grammar, Link style numbers: how many edges the
+   * statements read so far make; a `linkStyle` number must name one of
+   * them.
    */
   private edgeCount = 0
 
@@ -218,7 +215,8 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   private readonly lexedUnits: readonly Unit[]
 
   public constructor(lexing: FlowchartLexing, lexer: SourceLexer) {
-    super(lexing.units, lexer, EMPTY_FORM_KINDS.flowchart)
+    // The flowchart lexer reads no diagram comments.
+    super(lexing.units, lexer, EMPTY_FORM_KINDS.flowchart, [])
     this.lexedUnits = lexing.units
   }
 
@@ -255,7 +253,6 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     return {
       direction,
       body,
-      units: this.unitsWithKindInOrder(),
       tokens: this.tokensInOrder(),
     }
   }
@@ -449,7 +446,8 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     while (this.startsLink()) {
       const link = this.parseLink()
       this.takeSpacesAfterGroup(link.target)
-      // Db normalization, Links: one edge for each pair of vertices.
+      // Rejections outside the grammar, Link style numbers: one edge for each
+      // pair of vertices.
       this.edgeCount += source.vertices.length * link.target.vertices.length
       links.push(link)
       source = link.target
@@ -578,7 +576,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   /**
    * Vertex statements: `data = ( data-start ( data-text | data-quote )*
    * "}" )+`, read as a list: each block, from its `@{` to its `}`, is a
-   * FlowchartDataBlock, whose value is the text of its range between them.
+   * FlowchartDataBlock, whose value is its written text between them.
    * No block is an empty list.
    */
   private parseData(): FlowchartDataBlock[] {
@@ -754,7 +752,22 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     }
     const pieces = takePieces()
     if (units.length === 0 && pieces.length === 0) throw this.unexpected(first)
-    this.addItem("RawText", pieces)
+    // The text after a string goes on with the value that the string
+    // starts.
+    if (units.length > 0) this.addItemContinuingValue("RawText", pieces)
+    else this.addItem("RawText", pieces)
+    const firstPiece = pieces.at(0)
+    const lastPiece = pieces.at(-1)
+    if (
+      units.length === 0 &&
+      firstPiece !== undefined &&
+      lastPiece !== undefined &&
+      pieces.every((piece) => piece.significantRange === null)
+    ) {
+      // A label that is all whitespace has one token of that whitespace,
+      // which is its value (docs/tokens.md, Tokens).
+      this.addWhitespaceToken("RawText", [firstPiece.start, lastPiece.end])
+    }
     units.push(...pieces)
     return { kind, units, delimiters }
   }
@@ -898,7 +911,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     // Subgraphs: `subgraph-name = ( string | markdown-string | name-piece )
     // name-piece*`; the name is a label of its own.
     const nameUnits = this.parseStartingWithString(() =>
-      this.takeWhile(NAME_PIECES),
+      this.withNameWhitespaceKept(this.takeWhile(NAME_PIECES)),
     )
     const name = this.labelOf(nameUnits)
     let title: FlowchartLabel | null = null
@@ -923,10 +936,37 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
+   * ast/flowchart.md, FlowchartSubgraphStatement: the name pieces `pieces`,
+   * just read, with the whitespace that mermaid.js reads into the name of a
+   * subgraph without a title kept in its tokens: the `space` units at the
+   * end of the name, up to the separator or the first empty description
+   * block, which was taken out of the units. With a title, mermaid.js reads
+   * no whitespace before its `[`.
+   */
+  private withNameWhitespaceKept(pieces: readonly Unit[]): Unit[] {
+    if (this.nameAt(this.next) === "[") return [...pieces]
+    const kept = [...pieces]
+    let end = kept.length
+    while (end > 0 && kept[end - 1].name === "space") end -= 1
+    // The unit before the first space at the end: the last piece that is
+    // not a space, or the unit before the pieces, a string or the `space`
+    // after `subgraph`.
+    let previous =
+      end > 0 ? kept[end - 1] : this.units[this.next - kept.length - 1]
+    for (let index = end; index < kept.length; index += 1) {
+      const space = kept[index]
+      // An empty description block lies between them.
+      if (space.index !== previous.index + 1) break
+      kept[index] = withWhitespaceKept(space)
+      previous = space
+    }
+    return kept
+  }
+
+  /**
    * Rejections outside the grammar, Subgraph members: a subgraph whose body
    * is `body` is rejected when a member `hasOwnProperty` is followed by
-   * another member, among its own members (Db normalization, Subgraphs),
-   * before those that an earlier subgraph has are left out. The error is
+   * another member, among its own members, before those that an earlier subgraph has are left out. The error is
    * reported at the first member after `hasOwnProperty`.
    */
   private checkSubgraphMembers(body: readonly FlowchartStatement[]): void {
@@ -944,7 +984,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * Db normalization, Subgraphs: the member that the subgraph with the
+   * Rejections outside the grammar, Subgraph members: the member that the subgraph with the
    * name `name` and the title `title` gives the subgraph around it, its Db
    * id (see `subgraphIdOf`); null when that id is empty or all
    * whitespace. A numbered id is neither `hasOwnProperty` nor empty, so its
@@ -1015,7 +1055,9 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   /**
    * Style, class, and link style statements: `styles = style ( "," style )*`
    * and `style = ( number | id-run | ":" | "#" | space | "style" )+`. Each
-   * style of the tree is one literal, or null when it is all whitespace. In
+   * style of the tree is one literal, from its start after a `,`, whitespace
+   * included, or from its first character that is not whitespace, to its
+   * last such character, or null when it is all whitespace. In
    * a `classDef` statement (`inClassDef`), a `,` right after a `\` in the
    * diagram text does not separate two styles of the tree: the styles on
    * its two sides, with the `,`, are one style. The grammar still needs a
@@ -1023,6 +1065,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    */
   private parseStyles(inClassDef: boolean): (FlowchartLiteral | null)[] {
     const styles: (FlowchartLiteral | null)[] = []
+    let afterComma = false
     for (;;) {
       const pieces = this.takeStylePieces()
       if (inClassDef) {
@@ -1031,12 +1074,23 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
         }
       }
       const allWhitespace = pieces.every(
-        (piece) => piece.significantRange === null,
+        (piece) => piece.nonWhitespaceRange === null,
       )
-      styles.push(allWhitespace ? null : this.textLiteralOf(pieces))
+      if (allWhitespace) {
+        styles.push(null)
+      } else {
+        // ast/flowchart.md, FlowchartStyleStatement: mermaid.js reads the
+        // whitespace at the start of a style after a `,`.
+        styles.push(
+          this.textLiteralOf(
+            afterComma ? withLeadingWhitespaceKept(pieces) : pieces,
+          ),
+        )
+      }
       const comma = this.takeIf(",")
       if (comma === null) return styles
       this.addItem("Punctuator", [comma])
+      afterComma = true
     }
   }
 
@@ -1304,7 +1358,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     const place = this.placeOf([unit])
     return {
       type: "FlowchartIgnoredText",
-      value: this.textOf(place.range),
+      value: this.unreadTextOf(place.range),
       ...place,
     }
   }
@@ -1395,7 +1449,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * FlowchartLiteral: the literal whose units are `units`, one `RawText`
-   * item. Its value is the text of its range.
+   * item. Its value is its written text.
    */
   private textLiteralOf(units: readonly Unit[]): FlowchartLiteral {
     this.addItem("RawText", units)
@@ -1409,8 +1463,8 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * ast.md, Shared leaf nodes > StringLiteral: the StringLiteral of the
-   * `string` unit `unit`, one `String` item. Its value is its content: the
-   * text of its range without the delimiters of the string contexts.
+   * `string` unit `unit`, one `String` item. Its value is its content: its
+   * written text without the delimiters of the string contexts.
    */
   private stringLiteralOf(unit: Unit): StringLiteral {
     this.addItem("String", [unit])
@@ -1486,4 +1540,26 @@ function linkTargetOf(text: string): FlowchartLinkTarget {
         `mmd-toolkit parser bug: unknown link target ${JSON.stringify(text)}`,
       )
   }
+}
+
+/**
+ * ast.md, Tokens: the `space` unit `unit`, whose whitespace mermaid.js reads
+ * as part of a value, with a token of all of it, as a unit whose whitespace
+ * at its ends is kept (see `UnitEnds`).
+ */
+function withWhitespaceKept(unit: Unit): Unit {
+  return { ...unit, significantRange: [unit.start, unit.end] }
+}
+
+/** ast/flowchart.md, FlowchartStyleStatement: the units `pieces` of a style, with the `space` units at their start kept in its tokens. */
+function withLeadingWhitespaceKept(pieces: readonly Unit[]): Unit[] {
+  const kept = [...pieces]
+  for (
+    let index = 0;
+    index < kept.length && kept[index].name === "space";
+    index += 1
+  ) {
+    kept[index] = withWhitespaceKept(kept[index])
+  }
+  return kept
 }

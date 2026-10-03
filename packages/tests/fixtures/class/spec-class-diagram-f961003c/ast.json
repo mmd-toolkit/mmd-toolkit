@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Something",
             "range": [
               39,
@@ -143,7 +143,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Something",
             "range": [
               165,
@@ -268,7 +268,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Something",
       "range": [
         39,
@@ -359,10 +359,10 @@
     },
     {
       "type": "Keyword",
-      "value": "note for",
+      "value": "note",
       "range": [
         156,
-        164
+        160
       ],
       "loc": {
         "start": {
@@ -371,12 +371,30 @@
         },
         "end": {
           "line": 6,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "for",
+      "range": [
+        161,
+        164
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 25
+        },
+        "end": {
+          "line": 6,
           "column": 28
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Something",
       "range": [
         165,

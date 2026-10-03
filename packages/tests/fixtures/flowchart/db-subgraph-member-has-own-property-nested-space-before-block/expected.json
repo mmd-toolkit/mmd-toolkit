@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Rejections outside the grammar: the nested `subgraph hasOwnProperty accDescr {}` has a name text with a space and a generated id, so the member `A` after it changes nothing."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [],
+        "title": "hasOwnProperty",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "O",
+        "nodes": [
+          "subGraph0",
+          "A"
+        ],
+        "title": "O",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

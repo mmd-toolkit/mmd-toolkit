@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Style statements and ast/flowchart.md FlowchartStyleStatement: mermaid.js reads the whitespace after a `,` as written, tabs included; the second style is two tabs and `stroke:#333`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "fill:red",
+          "\t\tstroke:#333"
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

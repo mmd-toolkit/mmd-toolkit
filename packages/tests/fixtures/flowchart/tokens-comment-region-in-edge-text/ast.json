@@ -330,10 +330,10 @@
     },
     {
       "type": "RawText",
-      "value": "a",
+      "value": "a\n",
       "range": [
         21,
-        22
+        23
       ],
       "loc": {
         "start": {
@@ -341,22 +341,22 @@
           "column": 8
         },
         "end": {
-          "line": 2,
-          "column": 9
+          "line": 3,
+          "column": 0
         }
       }
     },
     {
       "type": "RawText",
-      "value": "b",
+      "value": "  b",
       "range": [
-        32,
+        30,
         33
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 2
+          "column": 0
         },
         "end": {
           "line": 4,

@@ -1,4 +1,4 @@
-import type { DiagramTokenKind, Range } from "../../ast.ts"
+import type { Range } from "../../ast.ts"
 import {
   isAsciiDigit,
   isAsciiLetter,
@@ -43,7 +43,7 @@ import type {
   DiagramText,
 } from "../../diagram-text.ts"
 import { lineFeedAfter } from "../../diagram-text.ts"
-import type { DiagramUnit } from "../../diagram-units.ts"
+import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
 import { readUnit } from "../../diagram-units.ts"
 import { DirectionLineRule } from "../../direction-line.ts"
 import { ParseError } from "../../errors.ts"
@@ -51,6 +51,7 @@ import type { LineIndex } from "../../positions.ts"
 import type { Match } from "../../scanning.ts"
 import {
   isCodePointAt,
+  matchSpacedWords,
   matchWholeWord,
   matchWord,
   samePosition,
@@ -85,7 +86,7 @@ export type UnitName =
   | "callback"
   | "link"
   | "click"
-  | "note for"
+  | "for"
   | "note"
   | "<<"
   | ">>"
@@ -134,12 +135,6 @@ export type UnitName =
  */
 export interface MemberLine {
   readonly kind: MemberLineKind
-  /**
-   * Building the summary from the tree: the source range of the member name
-   * text of a method or an attribute line, whose first character the Db
-   * reads; null for an annotation line and a blank line.
-   */
-  readonly nameText: Range | null
 }
 
 /**
@@ -197,20 +192,7 @@ export interface ClassLexing {
    * that cannot be divided.
    */
   readonly memberLineOfLabel: (label: Unit) => readonly Unit[]
-  /**
-   * ast/class.md, Tokens: the kind of a `;` that the line rule ignores, at
-   * `offset`, when it is a token of its own.
-   */
-  readonly ignoredSemicolonKindAt: (offset: number) => DiagramTokenKind
 }
-
-/** ast/class.md, Tokens: the contexts that read a `;` as text. */
-const CONTEXTS_THAT_READ_SEMICOLONS: readonly Context[] = [
-  "title",
-  "description",
-  "description-block",
-  "member",
-]
 
 /**
  * known-divergences/headerless-empty-ending.md: the message of the error
@@ -226,13 +208,12 @@ const DIRECTION_LINE_VALUES: readonly string[] = ["TB", "BT", "RL", "LR"]
 /** The statement context, rule 8: the header keywords, the longer first. */
 const HEADER_KEYWORDS: readonly string[] = ["classDiagram-v2", "classDiagram"]
 
-/** The shared rules, rule 1: the keywords, `note for` before `note`. */
+/** The shared rules, rule 1: the keywords of one word, after `note for`. */
 const SHARED_KEYWORDS: readonly (UnitName & string)[] = [
   "cssClass",
   "callback",
   "link",
   "click",
-  "note for",
   "note",
 ]
 
@@ -307,12 +288,6 @@ export class ClassUnitLexer {
 
   private readonly comments: DiagramComment[] = []
 
-  /** Where each step of the lexer started, and in which context, in source order. */
-  private readonly steps: {
-    readonly start: number
-    readonly context: Context
-  }[] = []
-
   /** The stack of contexts; the last one is the current context. */
   private readonly contexts: Context[] = ["statement"]
 
@@ -352,7 +327,6 @@ export class ClassUnitLexer {
   public lex(): ClassLexing {
     while (this.position !== null) {
       const context = this.currentContext()
-      this.steps.push({ start: this.position.start, context })
       this.readInContext(this.position, context)
       if (this.units.length > 0 && !this.headerChecked) this.checkHeader()
     }
@@ -361,26 +335,7 @@ export class ClassUnitLexer {
       units: this.units,
       comments: this.comments,
       memberLineOfLabel: (label) => this.memberLineOfLabel(label),
-      ignoredSemicolonKindAt: (offset) =>
-        this.readsSemicolonAt(offset) ? "RawText" : "Punctuator",
     }
-  }
-
-  /**
-   * ast/class.md, Tokens: whether the context at `offset`, the place of a
-   * `;` that the line rule ignores and that lies in no token, reads a `;`
-   * as text: whether the step of the lexer that read over it, the last one
-   * that started before it, read in one of
-   * {@link CONTEXTS_THAT_READ_SEMICOLONS}. No rule of the other contexts
-   * reads a `;`.
-   */
-  private readsSemicolonAt(offset: number): boolean {
-    const step = this.steps
-      .filter((candidate) => candidate.start < offset)
-      .at(-1)
-    return (
-      step !== undefined && CONTEXTS_THAT_READ_SEMICOLONS.includes(step.context)
-    )
   }
 
   /**
@@ -431,14 +386,19 @@ export class ClassUnitLexer {
     return unit
   }
 
-  /** Adds the unit named `name` that reads the characters from `from` up to, and not including, `to`. */
+  /**
+   * Adds the unit named `name` that reads the characters from `from` up to,
+   * and not including, `to`, whose token leaves out the whitespace at its
+   * ends as `ends` says.
+   */
   private addUnit(
     name: UnitName,
     from: DiagramCharacter,
     to: DiagramPosition,
+    ends: UnitEnds = "trim-whitespace",
   ): Unit {
     const unit: Unit = {
-      ...readUnit(this.reader, name, this.units.length, from, to, null),
+      ...readUnit(this.reader, name, this.units.length, from, to, null, ends),
       memberLine: null,
       label: null,
     }
@@ -447,13 +407,14 @@ export class ClassUnitLexer {
     return unit
   }
 
-  /** Reads the unit named `name` from `at` up to `to`, as a unit of its own, and goes on after it. */
+  /** Reads the unit named `name` from `at` up to `to`, as a unit of its own, and goes on after it; `ends` as in {@link ClassUnitLexer.addUnit}. */
   private read(
     name: UnitName,
     at: DiagramCharacter,
     to: DiagramPosition,
+    ends: UnitEnds = "trim-whitespace",
   ): Unit {
-    const unit = this.addUnit(name, at, to)
+    const unit = this.addUnit(name, at, to, ends)
     this.position = to
     return unit
   }
@@ -734,6 +695,18 @@ export class ClassUnitLexer {
 
   /** diagrams/class.md, The shared rules, rules 1 to 15, in order; `inStatement` for the statement context, where `:`, `,`, and `#` are units of their own. */
   private readSharedRules(at: DiagramCharacter, inStatement: boolean): boolean {
+    const noteFor = matchSpacedWords(
+      this.reader,
+      at,
+      ["note", "for"],
+      matchWord,
+    )
+    if (noteFor !== null) {
+      const [note, forWord] = noteFor
+      this.read("note", note.start, note.end)
+      this.read("for", forWord.start, forWord.end)
+      return true
+    }
     for (const keyword of SHARED_KEYWORDS) {
       const match = this.wholeWord(at, keyword)
       if (match !== null) {
@@ -842,7 +815,9 @@ export class ClassUnitLexer {
       (character) => character.codePoint !== GRAVE_ACCENT,
     )
     if (closing === null) {
-      this.read("backquoted", at, null)
+      // ast/class.md, Tokens: mermaid.js reads the name to the end of the
+      // source, whitespace and line feeds included.
+      this.read("backquoted", at, null, "keep-whitespace")
       return true
     }
     const empty = samePosition(content, closing)
@@ -1015,12 +990,20 @@ export class ClassUnitLexer {
         this.lines.location(range),
       )
     }
-    const memberLine: MemberLine = {
-      kind: divided.kind,
-      nameText: divided.nameText,
-    }
+    const memberLine: MemberLine = { kind: divided.kind }
+    // The division gives each part its exact range, the whitespace at its
+    // ends that mermaid.js reads included (Member lines), so the token of a
+    // part is the whole part; a blank member has no token.
     return divided.parts.map((part): Unit => ({
-      ...readUnit(this.reader, part.name, -1, part.from, part.to, null),
+      ...readUnit(
+        this.reader,
+        part.name,
+        -1,
+        part.from,
+        part.to,
+        null,
+        part.name === "blank-member" ? "trim-whitespace" : "keep-whitespace",
+      ),
       memberLine,
       label: null,
     }))
@@ -1108,10 +1091,13 @@ export class ClassUnitLexer {
       this.leave()
       return
     }
+    // ast/class.md, ClassName: mermaid.js reads the generic type as written,
+    // whitespace and line breaks included.
     this.read(
       "generic-text",
       at,
       skipWhile(this.reader, at, (character) => character.codePoint !== TILDE),
+      "keep-whitespace",
     )
   }
 

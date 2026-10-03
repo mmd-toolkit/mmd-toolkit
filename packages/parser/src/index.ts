@@ -115,6 +115,7 @@ export type {
   ClassDiagram,
   ClassDirection,
   ClassDirectionStatement,
+  ClassIdentifier,
   ClassIgnoredText,
   ClassLinkStatement,
   ClassLinkTarget,
@@ -163,21 +164,6 @@ export type {
   StateTerminal,
   StateTransitionStatement,
 } from "./ast/state.ts"
-export { flowchartSubgraphIds } from "./db-ids.ts"
-export type {
-  ClassDbTexts,
-  DbText,
-  FlowchartDbTexts,
-  SequenceDbTexts,
-  StateDbTexts,
-} from "./db-texts.ts"
-export {
-  classDbTexts,
-  flowchartDbTexts,
-  ignoredSemicolons,
-  sequenceDbTexts,
-  stateDbTexts,
-} from "./db-texts.ts"
 export { ParseError, UnsupportedDiagramError } from "./errors.ts"
 export { parse } from "./parse.ts"
 export type { Visitor } from "./traverse.ts"

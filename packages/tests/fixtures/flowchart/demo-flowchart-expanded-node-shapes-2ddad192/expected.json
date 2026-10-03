@@ -938,5 +938,389 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "look": "handDrawn",
+      "handDrawnSeed": 1
+    },
+    "dataBlockEffects": [
+      {
+        "id": "A1",
+        "set": {
+          "labelType": "markdown",
+          "text": "bang",
+          "type": "bang"
+        }
+      },
+      {
+        "id": "A2",
+        "set": {
+          "labelType": "markdown",
+          "text": "notch-rect",
+          "type": "notch-rect"
+        }
+      },
+      {
+        "id": "A3",
+        "set": {
+          "labelType": "markdown",
+          "text": "cloud",
+          "type": "cloud"
+        }
+      },
+      {
+        "id": "A4",
+        "set": {
+          "labelType": "markdown",
+          "text": "hourglass",
+          "type": "hourglass"
+        }
+      },
+      {
+        "id": "A5",
+        "set": {
+          "labelType": "markdown",
+          "text": "bolt",
+          "type": "bolt"
+        }
+      },
+      {
+        "id": "A6",
+        "set": {
+          "labelType": "markdown",
+          "text": "brace",
+          "type": "brace"
+        }
+      },
+      {
+        "id": "A7",
+        "set": {
+          "labelType": "markdown",
+          "text": "brace-r",
+          "type": "brace-r"
+        }
+      },
+      {
+        "id": "A8",
+        "set": {
+          "labelType": "markdown",
+          "text": "braces",
+          "type": "braces"
+        }
+      },
+      {
+        "id": "A9",
+        "set": {
+          "labelType": "markdown",
+          "text": "lean-r",
+          "type": "lean-r"
+        }
+      },
+      {
+        "id": "A10",
+        "set": {
+          "labelType": "markdown",
+          "text": "lean-l",
+          "type": "lean-l"
+        }
+      },
+      {
+        "id": "A11",
+        "set": {
+          "labelType": "markdown",
+          "text": "cyl",
+          "type": "cyl"
+        }
+      },
+      {
+        "id": "A12",
+        "set": {
+          "labelType": "markdown",
+          "text": "diam",
+          "type": "diam"
+        }
+      },
+      {
+        "id": "A13",
+        "set": {
+          "labelType": "markdown",
+          "text": "delay",
+          "type": "delay"
+        }
+      },
+      {
+        "id": "A14",
+        "set": {
+          "labelType": "markdown",
+          "text": "h-cyl",
+          "type": "h-cyl"
+        }
+      },
+      {
+        "id": "A15",
+        "set": {
+          "labelType": "markdown",
+          "text": "lin-cyl",
+          "type": "lin-cyl"
+        }
+      },
+      {
+        "id": "A16",
+        "set": {
+          "labelType": "markdown",
+          "text": "curv-trap",
+          "type": "curv-trap"
+        }
+      },
+      {
+        "id": "A17",
+        "set": {
+          "labelType": "markdown",
+          "text": "div-rect",
+          "type": "div-rect"
+        }
+      },
+      {
+        "id": "A18",
+        "set": {
+          "labelType": "markdown",
+          "text": "doc",
+          "type": "doc"
+        }
+      },
+      {
+        "id": "A19",
+        "set": {
+          "labelType": "markdown",
+          "text": "rounded",
+          "type": "rounded"
+        }
+      },
+      {
+        "id": "A20",
+        "set": {
+          "labelType": "markdown",
+          "text": "tri",
+          "type": "tri"
+        }
+      },
+      {
+        "id": "A21",
+        "set": {
+          "labelType": "markdown",
+          "text": "fork",
+          "type": "fork"
+        }
+      },
+      {
+        "id": "A22",
+        "set": {
+          "labelType": "markdown",
+          "text": "win-pane",
+          "type": "win-pane"
+        }
+      },
+      {
+        "id": "A23",
+        "set": {
+          "labelType": "markdown",
+          "text": "f-circ",
+          "type": "f-circ"
+        }
+      },
+      {
+        "id": "A24",
+        "set": {
+          "labelType": "markdown",
+          "text": "lin-doc",
+          "type": "lin-doc"
+        }
+      },
+      {
+        "id": "A25",
+        "set": {
+          "labelType": "markdown",
+          "text": "lin-rect",
+          "type": "lin-rect"
+        }
+      },
+      {
+        "id": "A26",
+        "set": {
+          "labelType": "markdown",
+          "text": "notch-pent",
+          "type": "notch-pent"
+        }
+      },
+      {
+        "id": "A27",
+        "set": {
+          "labelType": "markdown",
+          "text": "flip-tri",
+          "type": "flip-tri"
+        }
+      },
+      {
+        "id": "A28",
+        "set": {
+          "labelType": "markdown",
+          "text": "sl-rect",
+          "type": "sl-rect"
+        }
+      },
+      {
+        "id": "A29",
+        "set": {
+          "labelType": "markdown",
+          "text": "trap-t",
+          "type": "trap-t"
+        }
+      },
+      {
+        "id": "A30",
+        "set": {
+          "labelType": "markdown",
+          "text": "docs",
+          "type": "docs"
+        }
+      },
+      {
+        "id": "A31",
+        "set": {
+          "labelType": "markdown",
+          "text": "st-rect",
+          "type": "st-rect"
+        }
+      },
+      {
+        "id": "A32",
+        "set": {
+          "labelType": "markdown",
+          "text": "odd",
+          "type": "odd"
+        }
+      },
+      {
+        "id": "A33",
+        "set": {
+          "labelType": "markdown",
+          "text": "flag",
+          "type": "flag"
+        }
+      },
+      {
+        "id": "A34",
+        "set": {
+          "labelType": "markdown",
+          "text": "hex",
+          "type": "hex"
+        }
+      },
+      {
+        "id": "A35",
+        "set": {
+          "labelType": "markdown",
+          "text": "trap-b",
+          "type": "trap-b"
+        }
+      },
+      {
+        "id": "A36",
+        "set": {
+          "labelType": "markdown",
+          "text": "rect",
+          "type": "rect"
+        }
+      },
+      {
+        "id": "A37",
+        "set": {
+          "labelType": "markdown",
+          "text": "circle",
+          "type": "circle"
+        }
+      },
+      {
+        "id": "A38",
+        "set": {
+          "labelType": "markdown",
+          "text": "sm-circ",
+          "type": "sm-circ"
+        }
+      },
+      {
+        "id": "A39",
+        "set": {
+          "labelType": "markdown",
+          "text": "dbl-circ",
+          "type": "dbl-circ"
+        }
+      },
+      {
+        "id": "A40",
+        "set": {
+          "labelType": "markdown",
+          "text": "fr-circ",
+          "type": "fr-circ"
+        }
+      },
+      {
+        "id": "A41",
+        "set": {
+          "labelType": "markdown",
+          "text": "bow-rect",
+          "type": "bow-rect"
+        }
+      },
+      {
+        "id": "A42",
+        "set": {
+          "labelType": "markdown",
+          "text": "fr-rect",
+          "type": "fr-rect"
+        }
+      },
+      {
+        "id": "A43",
+        "set": {
+          "labelType": "markdown",
+          "text": "cross-circ",
+          "type": "cross-circ"
+        }
+      },
+      {
+        "id": "A44",
+        "set": {
+          "labelType": "markdown",
+          "text": "tag-doc",
+          "type": "tag-doc"
+        }
+      },
+      {
+        "id": "A45",
+        "set": {
+          "labelType": "markdown",
+          "text": "tag-rect",
+          "type": "tag-rect"
+        }
+      },
+      {
+        "id": "A46",
+        "set": {
+          "labelType": "markdown",
+          "text": "stadium",
+          "type": "stadium"
+        }
+      },
+      {
+        "id": "A47",
+        "set": {
+          "labelType": "markdown",
+          "text": "text",
+          "type": "text"
+        }
+      }
+    ]
   }
 }

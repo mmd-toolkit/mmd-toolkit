@@ -1,10 +1,11 @@
-import type { DiagramTokenKind, Range } from "../../ast.ts"
+import type { Range } from "../../ast.ts"
 import type {
   SequenceArrowLine,
   SequenceArrowMarker,
 } from "../../ast/sequence.ts"
 import {
   isAsciiDigit,
+  isLineSegmentSeparator,
   isWhitespace,
   isWordCharacter,
 } from "../../character-classes.ts"
@@ -37,7 +38,7 @@ import type {
   DiagramText,
 } from "../../diagram-text.ts"
 import { lineFeedAfter } from "../../diagram-text.ts"
-import type { DiagramUnit } from "../../diagram-units.ts"
+import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
 import { readUnit } from "../../diagram-units.ts"
 import { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"
@@ -45,6 +46,7 @@ import type { Match } from "../../scanning.ts"
 import {
   isCodePointAt,
   isWhitespaceAt,
+  matchSpacedWords,
   matchWholeWordIgnoringCase,
   matchWord,
   matchWordIgnoringCase,
@@ -78,8 +80,9 @@ export type UnitName =
   | "option"
   | "break"
   | "end"
-  | "left of"
-  | "right of"
+  | "left"
+  | "right"
+  | "of"
   | "links"
   | "link"
   | "properties"
@@ -133,14 +136,12 @@ export interface Unit extends DiagramUnit<UnitName> {
  * diagram text: its units, its diagram comments, in source order, the
  * characters other than whitespace at which a rule of the statement context
  * starts its match, in source order, which the tests need to find the
- * places of known-divergences/comment-takes-character.md, and the kind of
- * the token of a `;` that the line rule ignores and that stands alone.
+ * places of known-divergences/comment-takes-character.md.
  */
 export interface SequenceLexing {
   readonly units: readonly Unit[]
   readonly comments: readonly DiagramComment[]
   readonly statementMatchStarts: readonly Range[]
-  readonly ignoredSemicolonKindAt: (offset: number) => DiagramTokenKind
 }
 
 /** diagrams/sequence.md, Units and contexts: the contexts of the lexer. */
@@ -153,20 +154,6 @@ type Context =
   | "title"
   | "description"
   | "description-block"
-
-/**
- * ast/sequence.md, Tokens: the units whose contexts read a `;` as a
- * character of the unit, the title, description, description block, and
- * data contexts (Accessibility values, The data context). Their runs stop
- * only at a line feed or at `}`, so a `;` that the line rule ignores and
- * that lies inside such a unit or right at its end is read there as text.
- */
-const UNITS_THAT_READ_SEMICOLONS: readonly UnitName[] = [
-  "title-text",
-  "description-text",
-  "description-block-text",
-  "data-text",
-]
 
 /** A keyword of the statement context and the context that it enters, if any. */
 interface StatementKeyword {
@@ -198,8 +185,6 @@ const STATEMENT_KEYWORDS: readonly StatementKeyword[] = [
   { word: "option", unit: "option", enters: "line" },
   { word: "break", unit: "break", enters: "line" },
   { word: "end", unit: "end", enters: null },
-  { word: "left of", unit: "left of", enters: null },
-  { word: "right of", unit: "right of", enters: null },
   { word: "links", unit: "links", enters: null },
   { word: "link", unit: "link", enters: null },
   { word: "properties", unit: "properties", enters: null },
@@ -474,32 +459,14 @@ export class SequenceUnitLexer {
       start: this.sourceEnd,
       end: this.sourceEnd,
       significantRange: null,
+      nonWhitespaceRange: null,
       arrow: null,
     })
     return {
       units: this.units,
       comments: this.comments,
       statementMatchStarts: this.statementMatchStarts,
-      ignoredSemicolonKindAt: (offset) =>
-        this.readsSemicolonAt(offset) ? "RawText" : "Punctuator",
     }
-  }
-
-  /**
-   * ast/sequence.md, Tokens: whether the context at `offset`, the place of a
-   * `;` that the line rule ignores and that lies in no token, reads a `;` as
-   * text: whether a unit of {@link UNITS_THAT_READ_SEMICOLONS} holds the
-   * place or ends right before it. Everywhere else the statement context
-   * reads a `;`, as a `newline` unit; the id and line contexts stop before it
-   * and leave.
-   */
-  private readsSemicolonAt(offset: number): boolean {
-    return this.units.some(
-      (unit) =>
-        UNITS_THAT_READ_SEMICOLONS.includes(unit.name) &&
-        unit.start < offset &&
-        offset <= unit.end,
-    )
   }
 
   /** The current context: the top of the stack. */
@@ -571,9 +538,10 @@ export class SequenceUnitLexer {
     from: DiagramCharacter,
     to: DiagramPosition,
     text: string | null = null,
+    ends: UnitEnds = "trim-whitespace",
   ): void {
     this.units.push({
-      ...readUnit(this.reader, name, this.units.length, from, to, text),
+      ...readUnit(this.reader, name, this.units.length, from, to, text, ends),
       arrow: null,
     })
   }
@@ -589,6 +557,24 @@ export class SequenceUnitLexer {
       text += String.fromCodePoint(position.codePoint)
     }
     return text
+  }
+
+  /** Whether the characters from `from` up to `to` are all whitespace other than U+2028 and U+2029, or none. */
+  private isAllWhitespaceButLineSeparators(
+    from: DiagramPosition,
+    to: DiagramPosition,
+  ): boolean {
+    for (
+      let position = from;
+      position !== null && !samePosition(position, to);
+      position = this.reader.after(position)
+    ) {
+      const { codePoint } = position
+      if (!isWhitespace(codePoint) || isLineSegmentSeparator(codePoint)) {
+        return false
+      }
+    }
+    return true
   }
 
   /** Whether the characters from `from` up to `to` are all whitespace, or none. */
@@ -769,7 +755,11 @@ export class SequenceUnitLexer {
     return matchWord(this.reader, position, "%%") !== null
   }
 
-  /** The statement context, rules 6 to 12: a keyword of {@link STATEMENT_KEYWORDS}. */
+  /**
+   * The statement context, rules 6 to 12: a keyword of
+   * {@link STATEMENT_KEYWORDS}, or, in rule 11, the keyword `left of` or
+   * `right of`.
+   */
   private readStatementKeyword(at: DiagramCharacter): boolean {
     for (const { word, unit, enters } of STATEMENT_KEYWORDS) {
       const match = this.keyword(at, word)
@@ -777,6 +767,29 @@ export class SequenceUnitLexer {
       this.addUnit(unit, at, match.end)
       this.position = match.end
       if (enters !== null) this.enter(enters)
+      return true
+    }
+    return this.readNotePlacement(at)
+  }
+
+  /**
+   * The statement context, rule 11: the keyword `left of` or `right of`,
+   * read case-insensitively with one space between the two words, a `left`
+   * or `right` unit and an `of` unit.
+   */
+  private readNotePlacement(at: DiagramCharacter): boolean {
+    for (const side of ["left", "right"] as const) {
+      const words = matchSpacedWords(
+        this.reader,
+        at,
+        [side, "of"],
+        matchWordIgnoringCase,
+      )
+      if (words === null) continue
+      const [sideWord, ofWord] = words
+      this.addUnit(side, sideWord.start, sideWord.end)
+      this.addUnit("of", ofWord.start, ofWord.end)
+      this.position = ofWord.end
       return true
     }
     return false
@@ -799,7 +812,9 @@ export class SequenceUnitLexer {
     const textEnd = this.skipNone(textStart, TEXT_END)
     if (textStart === null || samePosition(textStart, textEnd)) return false
     this.addUnit(colon === null ? "title" : "title:", at, textStart)
-    this.addUnit("title-text", textStart, textEnd)
+    // ast/sequence.md, Tokens: the token of the title text is the whole
+    // unit, whose whitespace mermaid.js keeps in the title.
+    this.addUnit("title-text", textStart, textEnd, null, "keep-whitespace")
     this.position = textEnd
     return true
   }
@@ -1191,22 +1206,37 @@ export class SequenceUnitLexer {
 
   /**
    * diagrams/sequence.md, The line context: whitespace other than line
-   * feeds; `#` and the rest of its line; only as the first unit after
-   * `box`, a colour candidate; and the rest of the line up to `#`, `;`, or a
-   * line feed, which leaves the context: after `box`, a `text` unit unless
-   * it is all whitespace, and after another keyword a text part.
+   * feeds, except right after a colour candidate; `#` and the rest of its
+   * line; only as the first unit after `box`, a colour candidate; and the
+   * rest of the line up to `#`, `;`, or a line feed, which leaves the
+   * context: after `box`, a `text` unit unless it is all whitespace other
+   * than U+2028 and U+2029, and after another keyword a text part.
    */
   private readInLineContext(at: DiagramCharacter): void {
-    if (isWhitespace(at.codePoint) && at.codePoint !== LINE_FEED) {
+    const previous = this.units.at(-1)?.name
+    if (
+      isWhitespace(at.codePoint) &&
+      at.codePoint !== LINE_FEED &&
+      previous !== "color-candidate"
+    ) {
       this.position = this.afterLineWhitespace(at)
       return
     }
     if (this.readHashComment(at)) return
-    const previous = this.units.at(-1)?.name
     if (previous === "box" && this.readColorCandidate(at)) return
     if (previous === "box" || previous === "color-candidate") {
+      // Box colours: the text of a box keeps U+2028 and U+2029, which
+      // mermaid.js reads, as characters that are not whitespace.
       const end = this.skipNone(at, TEXT_END)
-      if (!this.isAllWhitespace(at, end)) this.addUnit("text", at, end)
+      if (!this.isAllWhitespaceButLineSeparators(at, end)) {
+        this.addUnit(
+          "text",
+          at,
+          end,
+          null,
+          "trim-whitespace-but-line-separators",
+        )
+      }
       this.position = end
     } else {
       this.readTextPart(at)
@@ -1276,7 +1306,8 @@ export class SequenceUnitLexer {
 
   /**
    * diagrams/sequence.md, The data context: one or more characters other
-   * than `}`, a `data-text` unit; or `}`, a `}` unit, which leaves the data
+   * than `}`, a `data-text` unit, whose token keeps the whitespace at its
+   * ends, which the value of the data block holds (ast.md, Nodes); or `}`, a `}` unit, which leaves the data
    * context, and either enters the alias context, where whitespace, the
    * keyword `as`, and one whitespace character follow, or leaves the id
    * context.
@@ -1288,7 +1319,7 @@ export class SequenceUnitLexer {
         at,
         (character) => character.codePoint !== RIGHT_CURLY_BRACKET,
       )
-      this.addUnit("data-text", at, end)
+      this.addUnit("data-text", at, end, null, "keep-whitespace")
       this.position = end
       return
     }

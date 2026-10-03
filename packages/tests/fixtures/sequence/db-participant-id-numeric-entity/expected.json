@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary from the tree: each value is read in converted form, so the numeric entity in the id is its placeholder: the participant is `Aﬂ°°35¶ß`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Aﬂ°°35¶ß",
+        "description": "Aﬂ°°35¶ß",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

@@ -286,7 +286,16 @@ export interface StateNoteStatement extends NodeBase {
    * `%%`, which the note text then starts with.
    */
   readonly state: Identifier | null
-  /** The text of the note; null when it is empty or all whitespace. */
+  /**
+   * On one line, the character after a `:` right after the note id, which
+   * mermaid.js drops; null when there is none.
+   */
+  readonly textBeforeText: StateIgnoredText | null
+  /**
+   * The text of the note that mermaid.js reads, which starts with the `:`
+   * after two whitespace characters; null when it is empty or all
+   * whitespace.
+   */
   readonly text: StateLiteral | null
 }
 
@@ -342,8 +351,12 @@ export interface StateClassDefStatement extends NodeBase {
   readonly type: "StateClassDefStatement"
   /** The CSS class after `classDef`. */
   readonly cssClass: Identifier
-  /** The styles, separated by `,` units, in source order. */
-  readonly styles: readonly StateLiteral[]
+  /**
+   * The styles, one for each part between `,` units, in source order; null
+   * for a part that is empty or all whitespace. A `classDef` statement
+   * without text has none.
+   */
+  readonly styles: readonly (StateLiteral | null)[]
 }
 
 /**
@@ -376,8 +389,11 @@ export interface StateStyleStatement extends NodeBase {
   readonly type: "StateStyleStatement"
   /** The ids of the states, in source order; null for an empty item between `,`. */
   readonly states: readonly (Identifier | null)[]
-  /** The styles, as in StateClassDefStatement. */
-  readonly styles: readonly StateLiteral[]
+  /**
+   * The styles, as in StateClassDefStatement, except that a `style`
+   * statement without text has one null style.
+   */
+  readonly styles: readonly (StateLiteral | null)[]
 }
 
 /**
@@ -525,7 +541,7 @@ export interface StateHideEmptyDescriptionStatement extends NodeBase {
  */
 export interface StateIgnoredStatement extends NodeBase {
   readonly type: "StateIgnoredStatement"
-  /** The text of its range: the run of empty strings, with the whitespace between them. */
+  /** Its written text: the run of empty strings, with the whitespace between them. */
   readonly value: string
 }
 
@@ -544,7 +560,7 @@ export interface StateIgnoredStatement extends NodeBase {
  */
 export interface StateLiteral extends NodeBase {
   readonly type: "StateLiteral"
-  /** The text of its range (ast.md, Nodes). */
+  /** Its written text (ast.md, Nodes). */
   readonly value: string
 }
 
@@ -563,7 +579,7 @@ export interface StateLiteral extends NodeBase {
  */
 export interface StateIgnoredText extends NodeBase {
   readonly type: "StateIgnoredText"
-  /** The text of its range. */
+  /** Its written text. */
   readonly value: string
 }
 

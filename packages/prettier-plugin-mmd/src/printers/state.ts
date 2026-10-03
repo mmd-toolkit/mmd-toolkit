@@ -205,6 +205,7 @@ function stateBlockRules(source: Source): BlockRules<StateStatement> {
     },
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
+    keepsDirectiveLinesUnindentedAfterBareMarker: false,
   }
 }
 

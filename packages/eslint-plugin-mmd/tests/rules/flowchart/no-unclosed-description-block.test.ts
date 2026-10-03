@@ -10,10 +10,16 @@ testRule(
   "flowchart/no-unclosed-description-block",
   noUnclosedDescriptionBlock,
   {
-    kind: "rules",
-    rules: {
-      "flowchart/no-duplicate-description":
-        "A description set before the block, which the closed block replaces.",
+    revealed: {
+      kind: "rules",
+      rules: {
+        "flowchart/no-duplicate-description":
+          "A description set before the block, which the closed block replaces.",
+      },
+    },
+    claims: {
+      closeAtLineEnd: { kind: "setsDescription", from: "restOfLine" },
+      closeAtTextEnd: { kind: "setsDescription", from: "restOfText" },
     },
   },
 )

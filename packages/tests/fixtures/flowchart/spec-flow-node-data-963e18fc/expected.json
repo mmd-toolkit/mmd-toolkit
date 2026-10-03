@@ -32,5 +32,17 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "D",
+        "set": {
+          "labelType": "markdown",
+          "text": "DD",
+          "type": "rounded"
+        }
+      }
+    ]
   }
 }

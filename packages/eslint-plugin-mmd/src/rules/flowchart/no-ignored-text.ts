@@ -68,12 +68,14 @@ function leadingSeparatorsEnd(value: string): number {
  * Whether the rule reports `text`, which stands on the `side` of the
  * direction on its line. Text that is only `;` and whitespace drops nothing:
  * the `;` ends the statement before it, as after `end`. Text after the value
- * that starts with `%%` is meant as a comment, and mermaid.js drops it as the
- * author meant.
+ * from a `%%` on is meant as a comment, which mermaid.js drops as the author
+ * meant; so only what stands before that `%%` counts, and a `;` there ends a
+ * statement, as before.
  */
 function isReported(text: FlowchartIgnoredText, side: Side): boolean {
-  if (side === "after" && text.value.startsWith("%%")) return false
-  return ![...text.value].every(isSeparatorOrSpace)
+  const comment = side === "after" ? text.value.indexOf("%%") : -1
+  const counted = comment === -1 ? text.value : text.value.slice(0, comment)
+  return ![...counted].every(isSeparatorOrSpace)
 }
 
 /** The texts of the direction statement `node` that the rule reports. */
@@ -88,9 +90,16 @@ function reportedTexts(node: FlowchartDirectionStatement): ReportedText[] {
   return texts
 }
 
-/** Whether `token` is a `;` token, a separator of statements. */
-function isSeparatorToken(token: Token | Comment): boolean {
-  return token.type === "Punctuator" && token.value === ";"
+/**
+ * Whether `token` is a `;` token: a separator of statements, or a `;` that the
+ * line rule of `style` and `classDef` ignores (an `IgnoredSemicolon` token).
+ * Both stand in the places of a separator and are no part of a text.
+ */
+function isSemicolonToken(token: Token | Comment): boolean {
+  return (
+    (token.type === "Punctuator" && token.value === ";") ||
+    token.type === "IgnoredSemicolon"
+  )
 }
 
 /**
@@ -98,25 +107,26 @@ function isSeparatorToken(token: Token | Comment): boolean {
  * or null where no `;` stands between them. The gap between them runs from the
  * token on their left to the token on their right: the text and `direction`
  * for the text before `direction`, the direction value and the text for the
- * text after the value. It holds `;` tokens and whitespace, and the `;` and
- * whitespace that the text has at that edge (`direction` and the value have
- * none); `drop` is the whole gap, and `keep` its part after its last `;`.
+ * text after the value. It holds `;` tokens (also ignored ones) and
+ * whitespace, and the `;` and whitespace that the text has at that edge
+ * (`direction` and the value have none); `drop` is the whole gap, and `keep`
+ * its part after its last `;`.
  */
 function breakOf(
   sourceCode: MermaidSourceCode,
   { text, side }: ReportedText,
 ): Break | null {
-  const notSeparator = {
-    filter: (token: Token | Comment) => !isSeparatorToken(token),
+  const notSemicolon = {
+    filter: (token: Token | Comment) => !isSemicolonToken(token),
   }
   const [left, right] =
     side === "before"
       ? [
           sourceCode.getLastToken(text),
-          sourceCode.getTokenAfter(text, notSeparator),
+          sourceCode.getTokenAfter(text, notSemicolon),
         ]
       : [
-          sourceCode.getTokenBefore(text, notSeparator),
+          sourceCode.getTokenBefore(text, notSemicolon),
           sourceCode.getFirstToken(text),
         ]
   if (left === null || right === null) return null
@@ -184,7 +194,7 @@ function splitIsRead(
     split.keepsSeparators &&
     !breaks.every((index) =>
       root.tokens.some(
-        (token) => token.range[0] === index - 1 && isSeparatorToken(token),
+        (token) => token.range[0] === index - 1 && isSemicolonToken(token),
       ),
     )
   ) {

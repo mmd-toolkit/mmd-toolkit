@@ -136,7 +136,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         22,
@@ -173,19 +173,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\": \"actor\"",
+      "value": " \"type\": \"actor\" ",
       "range": [
-        26,
-        41
+        25,
+        42
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 10
+          "column": 9
         },
         "end": {
           "line": 2,
-          "column": 25
+          "column": 26
         }
       }
     },

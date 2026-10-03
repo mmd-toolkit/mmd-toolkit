@@ -475,19 +475,19 @@
     },
     {
       "type": "RawText",
-      "value": "animation: fast",
+      "value": " animation: fast ",
       "range": [
-        33,
-        48
+        32,
+        49
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 7
+          "column": 6
         },
         "end": {
           "line": 3,
-          "column": 22
+          "column": 23
         }
       }
     },

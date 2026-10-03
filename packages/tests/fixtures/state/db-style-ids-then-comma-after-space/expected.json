@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The classDef, class, and style contexts: the ids end at the whitespace after them, and a `,` after that whitespace separates the styles; `style A,B , x` styles A and B with an empty style and `x`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [
+          "",
+          "x"
+        ]
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [
+          "",
+          "x"
+        ]
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

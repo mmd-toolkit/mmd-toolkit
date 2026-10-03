@@ -26,6 +26,7 @@
             }
           }
         },
+        "textBeforeText": null,
         "text": {
           "type": "StateLiteral",
           "value": "style:#x",
@@ -117,15 +118,33 @@
     },
     {
       "type": "Keyword",
-      "value": "left of",
+      "value": "left",
       "range": [
         23,
-        30
+        27
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        28,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
         },
         "end": {
           "line": 2,
@@ -170,7 +189,7 @@
       }
     },
     {
-      "type": "RawText",
+      "type": "IgnoredSemicolon",
       "value": ";",
       "range": [
         45,
@@ -189,15 +208,33 @@
     },
     {
       "type": "Keyword",
-      "value": "end note",
+      "value": "end",
       "range": [
         49,
-        57
+        52
       ],
       "loc": {
         "start": {
           "line": 4,
           "column": 2
+        },
+        "end": {
+          "line": 4,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        53,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
         },
         "end": {
           "line": 4,

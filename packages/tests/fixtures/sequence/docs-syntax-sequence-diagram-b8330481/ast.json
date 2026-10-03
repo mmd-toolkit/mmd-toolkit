@@ -435,7 +435,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         32,
@@ -507,7 +507,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "J",
       "range": [
         59,
@@ -561,7 +561,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         73,
@@ -597,7 +597,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "J",
       "range": [
         77,
@@ -651,7 +651,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "J",
       "range": [
         109,
@@ -687,7 +687,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         113,

@@ -906,7 +906,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         20,
@@ -942,7 +942,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         28,
@@ -996,7 +996,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         62,
@@ -1032,7 +1032,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         68,
@@ -1122,7 +1122,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Carl",
       "range": [
         124,
@@ -1140,7 +1140,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         133,
@@ -1176,7 +1176,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Carl",
       "range": [
         141,
@@ -1266,7 +1266,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "D",
       "range": [
         173,
@@ -1320,7 +1320,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Carl",
       "range": [
         189,
@@ -1356,7 +1356,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "D",
       "range": [
         196,
@@ -1428,7 +1428,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Carl",
       "range": [
         215,
@@ -1446,7 +1446,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         224,
@@ -1482,7 +1482,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Carl",
       "range": [
         231,
@@ -1554,7 +1554,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         265,
@@ -1572,7 +1572,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         273,
@@ -1608,7 +1608,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         279,

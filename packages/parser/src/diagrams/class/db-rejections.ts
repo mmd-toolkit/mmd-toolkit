@@ -13,8 +13,8 @@ import { classIdOf } from "./names.ts"
  * grammar accepts and mermaid.js rejects while it builds the Db. The
  * statements are walked in source order, the items of a namespace where
  * the namespace stands, and the walk keeps the ids of the classes added so
- * far (Building the summary from the tree, Adding a class). The first
- * statement that makes the input rejected throws a `ParseError` there. A
+ * far. The first statement that makes the input rejected throws a
+ * `ParseError` there. A
  * method line that cannot be divided, the other rejection of the section,
  * is made by the lexer, which divides the member lines.
  */
@@ -49,7 +49,7 @@ export class ClassDbRejections {
     for (const statement of statements) this.apply(statement)
   }
 
-  /** Building the summary from the tree: which classes one statement adds, in the order of the Db, and the check of an annotation statement. */
+  /** Rejections outside the grammar: which classes one statement adds, in the order of the Db, and the check of an annotation statement. */
   private apply(
     statement: ClassStatement | ClassNamespaceStatement["body"][number],
   ): void {

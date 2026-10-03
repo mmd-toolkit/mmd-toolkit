@@ -365,7 +365,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice-in-Wonderland",
       "range": [
         29,
@@ -401,7 +401,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         61,
@@ -419,7 +419,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice-in-Wonderland",
       "range": [
         65,
@@ -455,7 +455,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         86,
@@ -509,7 +509,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         116,
@@ -545,7 +545,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice-in-Wonderland",
       "range": [
         122,

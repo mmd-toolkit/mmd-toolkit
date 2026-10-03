@@ -173,7 +173,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "D",
       "range": [
         39,
@@ -210,19 +210,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type: \"entity\"",
+      "value": " \"type: \"entity\" ",
       "range": [
-        43,
-        58
+        42,
+        59
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 22
+          "column": 21
         },
         "end": {
           "line": 3,
-          "column": 37
+          "column": 38
         }
       }
     },
@@ -263,7 +263,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "E",
       "range": [
         79,
@@ -300,19 +300,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\": \"dat\n      abase",
+      "value": " \"type\": \"dat\n      abase ",
       "range": [
-        83,
-        107
+        82,
+        108
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 22
+          "column": 21
         },
         "end": {
           "line": 5,
-          "column": 11
+          "column": 12
         }
       }
     },

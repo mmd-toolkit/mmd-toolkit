@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "BankAccount",
             "range": [
               51,
@@ -68,7 +68,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "BankAccount",
             "range": [
               67,
@@ -159,7 +159,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "BankAccount",
             "range": [
               99,
@@ -250,7 +250,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "BankAccount",
             "range": [
               137,
@@ -362,7 +362,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "BankAccount",
             "range": [
               172,
@@ -600,7 +600,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "BankAccount",
       "range": [
         51,
@@ -618,7 +618,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "BankAccount",
       "range": [
         67,
@@ -690,7 +690,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "BankAccount",
       "range": [
         99,
@@ -762,7 +762,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "BankAccount",
       "range": [
         137,
@@ -888,7 +888,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "BankAccount",
       "range": [
         172,

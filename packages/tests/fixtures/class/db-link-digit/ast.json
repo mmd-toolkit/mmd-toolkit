@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "1A",
             "range": [
               19,
@@ -68,7 +68,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "1A",
             "range": [
               27,
@@ -195,7 +195,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "1A",
       "range": [
         19,
@@ -231,7 +231,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "1A",
       "range": [
         27,

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md A directive is a token boundary: a directive inside a string; the note is `ab`, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "ab"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "flowchart.md Known divergences (directive-as-token-boundary): mermaid.js reads the keyword `href` and accepts; here the directive lies inside the `Keyword` unit `href`, and the input is rejected."
+    "note": "flowchart.md Known divergences (directive-as-token-boundary): mermaid.js reads the keyword `href` and accepts; here the directive lies inside the keyword `href`, and the input is rejected."
   },
   "knownDivergence": "directive-as-token-boundary",
   "accepted": true,

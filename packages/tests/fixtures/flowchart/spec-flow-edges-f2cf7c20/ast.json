@@ -475,19 +475,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: 'rect'",
+      "value": " shape: 'rect' ",
       "range": [
-        28,
-        41
+        27,
+        42
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 4
+          "column": 3
         },
         "end": {
           "line": 3,
-          "column": 17
+          "column": 18
         }
       }
     },

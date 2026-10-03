@@ -1,0 +1,208 @@
+{
+  "type": "Root",
+  "diagramType": "classDiagram",
+  "body": {
+    "type": "ClassDiagram",
+    "body": [
+      {
+        "type": "ClassDirectionStatement",
+        "textBefore": {
+          "type": "ClassIgnoredText",
+          "value": "x  y",
+          "range": [
+            15,
+            33
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 2
+            },
+            "end": {
+              "line": 2,
+              "column": 20
+            }
+          }
+        },
+        "direction": "LR",
+        "textAfter": null,
+        "range": [
+          15,
+          46
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 33
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      46
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 33
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {}",
+      "closed": true,
+      "range": [
+        17,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "classDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "x ",
+      "range": [
+        15,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{init: {}}%%",
+      "range": [
+        17,
+        31
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " y",
+      "range": [
+        31,
+        33
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
+        },
+        "end": {
+          "line": 2,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "direction",
+      "range": [
+        34,
+        43
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 21
+        },
+        "end": {
+          "line": 2,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        44,
+        46
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 31
+        },
+        "end": {
+          "line": 2,
+          "column": 33
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    47
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

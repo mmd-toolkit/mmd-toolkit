@@ -8,7 +8,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Company.Engineering.Backend",
           "range": [
             33,
@@ -33,7 +33,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Developer",
                 "range": [
                   81,
@@ -147,7 +147,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Company",
           "range": [
             166,
@@ -172,7 +172,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "CEO",
                 "range": [
                   194,
@@ -339,7 +339,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Company.Engineering.Backend",
       "range": [
         33,
@@ -393,7 +393,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Developer",
       "range": [
         81,
@@ -555,7 +555,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Company",
       "range": [
         166,
@@ -609,7 +609,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "CEO",
       "range": [
         194,

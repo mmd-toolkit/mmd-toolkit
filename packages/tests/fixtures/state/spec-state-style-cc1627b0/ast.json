@@ -312,7 +312,7 @@
       }
     },
     {
-      "type": "RawText",
+      "type": "IgnoredSemicolon",
       "value": ";",
       "range": [
         80,

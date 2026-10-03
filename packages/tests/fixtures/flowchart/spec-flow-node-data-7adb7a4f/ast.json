@@ -462,19 +462,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: rounded",
+      "value": " shape: rounded ",
       "range": [
-        26,
-        40
+        25,
+        41
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 13
+          "column": 12
         },
         "end": {
           "line": 2,
-          "column": 27
+          "column": 28
         }
       }
     },
@@ -552,19 +552,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: rounded",
+      "value": " shape: rounded ",
       "range": [
-        49,
-        63
+        48,
+        64
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 36
+          "column": 35
         },
         "end": {
           "line": 2,
-          "column": 50
+          "column": 51
         }
       }
     },

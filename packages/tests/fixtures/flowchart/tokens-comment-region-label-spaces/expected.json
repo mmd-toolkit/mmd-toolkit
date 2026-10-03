@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Comment regions in tokens: the space and the line feed before the region, and the spaces after it, belong to the fragments: the tokens are `a ` with a line feed, and two spaces and `b`; the label is `a `, a line feed, two spaces, and `b`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a \n  b",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

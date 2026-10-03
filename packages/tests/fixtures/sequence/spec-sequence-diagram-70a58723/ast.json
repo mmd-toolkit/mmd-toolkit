@@ -269,7 +269,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice-in-Wonderland",
       "range": [
         17,
@@ -305,7 +305,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         38,
@@ -359,7 +359,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         68,
@@ -395,7 +395,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice-in-Wonderland",
       "range": [
         74,

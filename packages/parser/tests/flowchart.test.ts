@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest"
 import type { FlowchartLink, FlowchartStatement, Root } from "../src/index.ts"
 import { ParseError, parse } from "../src/index.ts"
-import { checkTree } from "./helpers/check-tree.ts"
-import { flowchartEdgeCount } from "./helpers/flowchart-edges.ts"
+import { problemsOfTree } from "./helpers/tree-problems.ts"
+import { flowchartEdgeCount } from "@mmd-toolkit/tests"
 
 // Expectations come from diagrams/flowchart.md (the lexer and the grammar)
 // and ast/flowchart.md (the nodes and the tokens).
@@ -17,7 +17,7 @@ const DIRECTIVE = "%%{init: {}}%%"
 function parseStatements(statements: string): Root {
   const text = HEADER + statements
   const root = parse(text)
-  checkTree(text, root)
+  expect(problemsOfTree(text, root)).toEqual([])
   return root
 }
 
@@ -49,7 +49,7 @@ describe("the flowchart tree", () => {
   it("has the header's direction and the statements, with the tokens on the root", () => {
     const text = "flowchart LR\nA[x] -->|t| B;"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(root.diagramType).toBe("flowchart-v2")
     expect(root.tokens.map((token) => [token.type, token.value])).toEqual([
       ["Keyword", "flowchart"],
@@ -146,7 +146,7 @@ describe("the flowchart tree", () => {
     expect(root.body).toMatchObject({ direction: null, body: [] })
   })
 
-  it("makes each value the text of its range: without the whitespace around it, with the whitespace inside it", () => {
+  it("makes each value its written text: without the whitespace around it, with the whitespace inside it", () => {
     expect(
       bodyOf(parseStatements("A[ x ]\nstyle A fill:#f00 , stroke:#333 ")),
     ).toMatchObject([
@@ -154,14 +154,91 @@ describe("the flowchart tree", () => {
       {
         type: "FlowchartStyleStatement",
         id: { name: "A" },
-        // ast/flowchart.md, FlowchartStyleStatement: a style holds its text
-        // without the whitespace at its ends, which belongs to no node.
+        // ast/flowchart.md, FlowchartStyleStatement: a style holds the
+        // whitespace at its start after a `,`, which mermaid.js reads, and
+        // not the whitespace at its end, which belongs to no node.
         styles: [
           { type: "FlowchartLiteral", value: "fill:#f00", range: [28, 37] },
-          { type: "FlowchartLiteral", value: "stroke:#333", range: [40, 51] },
+          { type: "FlowchartLiteral", value: " stroke:#333", range: [39, 51] },
         ],
       },
     ])
+  })
+
+  it("makes the whitespace at the start of a style after a `,` part of its token, and a style that is all whitespace null", () => {
+    expect(tokensOf("style A fill:#f00 ,\t stroke:#333 ").slice(-3)).toEqual([
+      ["RawText", "fill:#f00"],
+      ["Punctuator", ","],
+      ["RawText", "\t stroke:#333"],
+    ])
+    expect(bodyOf(parseStatements("style A fill:#f00,  "))).toMatchObject([
+      { styles: [{ value: "fill:#f00" }, null] },
+    ])
+    // A `;` that the line rule ignores cuts a style, and the whitespace after
+    // it at the end belongs to no token.
+    expect(tokensOf("style A fill:#f00;stroke:#0f0").slice(-3)).toEqual([
+      ["RawText", "fill:#f00"],
+      ["IgnoredSemicolon", ";"],
+      ["RawText", "stroke:#0f0"],
+    ])
+    expect(
+      bodyOf(parseStatements("style A fill:#f00;stroke:#0f0")),
+    ).toMatchObject([{ styles: [{ value: "fill:#f00stroke:#0f0" }] }])
+    expect(tokensOf("style A fill:#f00;  ").slice(-2)).toEqual([
+      ["RawText", "fill:#f00"],
+      ["IgnoredSemicolon", ";"],
+    ])
+    // A directive cuts it, and the whitespace on both sides of the
+    // directive, which the style reads, is in the pieces.
+    const directive = "style A fill:#f00, %%{init: {}}%%  stroke:#333"
+    expect(tokensOf(directive).slice(-3)).toEqual([
+      ["RawText", " "],
+      ["Directive", "%%{init: {}}%%"],
+      ["RawText", "  stroke:#333"],
+    ])
+    expect(bodyOf(parseStatements(directive))).toMatchObject([
+      { styles: [{ value: "fill:#f00" }, { value: "   stroke:#333" }] },
+    ])
+  })
+
+  it("makes the whitespace after the name of a subgraph without a title part of the name, up to the separator or the first empty description block", () => {
+    const cases: [string, string, [string, string][]][] = [
+      ["subgraph S \nend", "S ", [["RawText", "S "]]],
+      ["subgraph S accDescr {}\nend", "S ", [["RawText", "S "]]],
+      // After a string, the whitespace is a token of its own.
+      [
+        'subgraph "S" \nend',
+        "S ",
+        [
+          ["String", '"S"'],
+          ["RawText", " "],
+        ],
+      ],
+      // With a title, mermaid.js reads no whitespace before its `[`.
+      ["subgraph a  [T]\nend", "a", [["RawText", "a"]]],
+      // After a string, the whitespace on both sides of a directive, which
+      // the name reads, is in the pieces.
+      [
+        'subgraph "S" %%{init: {}}%% \nA\nend',
+        "S  ",
+        [
+          ["String", '"S"'],
+          ["RawText", " "],
+          ["Directive", "%%{init: {}}%%"],
+          ["RawText", " "],
+        ],
+      ],
+      // The whitespace between the blocks belongs to no token.
+      ['subgraph "S"accDescr {} accDescr {}\nend', "S", [["String", '"S"']]],
+    ]
+    for (const [statements, value, nameTokens] of cases) {
+      expect(bodyOf(parseStatements(statements))).toMatchObject([
+        { name: { value } },
+      ])
+      expect(tokensOf(statements).slice(1, 1 + nameTokens.length)).toEqual(
+        nameTokens,
+      )
+    }
   })
 
   it("makes a link's arrows and label from its units, and joins the pieces of an id", () => {
@@ -342,7 +419,7 @@ describe("the flowchart tree", () => {
     const text =
       "flowchart LR accDescr {}\nA accDescr {} ;B\nsubgraph S accDescr {}\nC\nend\n"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     const block = {
       type: "FlowchartAccDescrBlockStatement",
       value: null,
@@ -602,7 +679,7 @@ describe("the identifiers and literals of a flowchart", () => {
   })
 
   it("keeps what the author wrote in a value: entities, attribute quotes, the whitespace after `}`, and line terminators", () => {
-    // ast.md, Nodes: the text of a range is not converted.
+    // ast.md, Nodes: the written text is not converted.
     expect(bodyOf(parseStatements("A[a #amp; b]"))).toMatchObject([
       { first: { vertices: [{ shape: { label: { value: "a #amp; b" } } }] } },
     ])
@@ -805,7 +882,7 @@ describe("the flowchart tokens", () => {
     ])
   })
 
-  it("keeps a `;` that the line rule ignores inside a token, or makes it a Punctuator of its own", () => {
+  it("makes a `;` that the line rule ignores an IgnoredSemicolon token, which cuts a text that it lies inside", () => {
     // `A[x;]`: the `;` is not ignored, and is a character of the label.
     expect(tokensOf("A[x;]")).toEqual([
       ["Identifier", "A"],
@@ -813,28 +890,60 @@ describe("the flowchart tokens", () => {
       ["RawText", "x;"],
       ["Punctuator", "]"],
     ])
-    // `A[mystyle:#x;]`: the `;` is ignored, and no character of the label's
-    // token follows it.
+    // `A[mystyle:#x;]`: the `;` is ignored.
     expect(tokensOf("A[mystyle:#x;]")).toEqual([
       ["Identifier", "A"],
       ["Punctuator", "["],
       ["RawText", "mystyle:#x"],
-      ["Punctuator", ";"],
+      ["IgnoredSemicolon", ";"],
       ["Punctuator", "]"],
     ])
-    // Inside an arrow, the `;` lies between two characters of the token;
-    // the value of the arrow is the text of its range, without the `;`.
-    const root = parseStatements("A[style:#x] -;-> B")
-    expect(root.tokens.map((token) => token.value)).toContain("-;->")
-    expect(bodyOf(root)).toMatchObject([
-      { links: [{ arrow: { value: "-->", length: 2, endMarker: "arrow" } }] },
+    expect(tokensOf("A[my;style:#x;]")).toEqual([
+      ["Identifier", "A"],
+      ["Punctuator", "["],
+      ["RawText", "my;style:#x"],
+      ["IgnoredSemicolon", ";"],
+      ["Punctuator", "]"],
     ])
   })
 
-  it("gives a label that is all whitespace no token, and the range between its delimiters", () => {
+  it.each([
+    ["an arrow", "A[style:#x] -;-> B"],
+    ["an id", "A[style:#x] --> B;b"],
+    ["a keyword", "A[style:#x];sub;graph S\nend"],
+    ["a delimiter", "A[style:#x]:::c;d"],
+    ["a delimiter of two units", "A[style:#x];B(;(c))"],
+    [
+      "a number of a linkStyle statement",
+      "A-->B-->C-->D-->E-->F-->G-->H-->I-->J-->K-->L\nZ[style:#x];linkStyle 1;0 stroke:red",
+    ],
+  ])(
+    "rejects a `;` that the line rule ignores inside %s",
+    (_unit, statements) => {
+      // common.md, `style` and `classDef` lines: only a text and a string may
+      // have an ignored `;` inside them. The error is at the `;`, the last of
+      // the line.
+      const text = HEADER + statements
+      const semicolon = text.lastIndexOf(";")
+      let caught: unknown
+      try {
+        parse(text)
+      } catch (error) {
+        caught = error
+      }
+      expect(caught).toBeInstanceOf(ParseError)
+      expect(caught).toMatchObject({
+        message: "Unexpected ; that the line rule ignores",
+        range: [semicolon, semicolon + 1],
+      })
+    },
+  )
+
+  it("gives a label that is all whitespace one token of that whitespace, and the range between its delimiters", () => {
     expect(tokensOf("A[ ]")).toEqual([
       ["Identifier", "A"],
       ["Punctuator", "["],
+      ["RawText", " "],
       ["Punctuator", "]"],
     ])
     expect(bodyOf(parseStatements("A[ ]\nB-->| |C"))).toMatchObject([
@@ -998,7 +1107,7 @@ describe("directives in a flowchart", () => {
   it("reads through a directive between tokens or in whitespace", () => {
     const text = "flowchart LR\nA --> %%{init: {}}%% B\n%%{wrap}%%\nC"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(root.directives.map((directive) => directive.name)).toEqual([
       "init",
       "wrap",
@@ -1010,16 +1119,17 @@ describe("directives in a flowchart", () => {
   })
 
   it("cuts a RawText token at a directive and keeps the value of the label", () => {
-    // common.md, A directive is a token boundary: each piece, without the
-    // whitespace at its ends, is a token, and the directive between them is
-    // a `Directive` token; the value does not change.
+    // docs/tokens.md, A token that a directive cuts: each piece, with the
+    // whitespace next to the directive, which the label reads, is a token,
+    // and the directive between them is a `Directive` token; the value does
+    // not change.
     const root = parseStatements(`A[x ${DIRECTIVE} y]`)
     expect(root.tokens.slice(2).map((token) => token.value)).toEqual([
       "A",
       "[",
-      "x",
+      "x ",
       DIRECTIVE,
-      "y",
+      " y",
       "]",
     ])
     expect(bodyOf(root)).toMatchObject([
@@ -1037,41 +1147,22 @@ describe("directives in a flowchart", () => {
       ["RawText", "y"],
       ["Punctuator", "]"],
     ])
-    // A piece that is all whitespace is no token.
+    // A piece that is all whitespace is a token too, as the label reads it.
     expect(tokensOf(`A[x ${DIRECTIVE} ${DIRECTIVE} y]`)).toEqual([
       ["Identifier", "A"],
       ["Punctuator", "["],
-      ["RawText", "x"],
+      ["RawText", "x "],
       ["Directive", DIRECTIVE],
+      ["RawText", " "],
       ["Directive", DIRECTIVE],
-      ["RawText", "y"],
+      ["RawText", " y"],
       ["Punctuator", "]"],
     ])
   })
 
-  it("cuts an Identifier token at a directive and keeps the id", () => {
-    // diagrams/flowchart.md, Directives inside units: the lexer reads the
-    // id run `styleA`, and the keyword `end` of `en` and `d`.
-    const root = parseStatements(`style${DIRECTIVE}A-->B`)
-    expect(root.tokens.slice(2).map((token) => token.value)).toEqual([
-      "style",
-      DIRECTIVE,
-      "A",
-      "-->",
-      "B",
-    ])
-    expect(bodyOf(root)).toMatchObject([
-      // ast.md, Identifier: the name is the text of all its tokens, and the
-      // range covers them all.
-      {
-        first: {
-          vertices: [
-            { id: { name: "styleA", range: [13, 33] }, range: [13, 33] },
-          ],
-        },
-      },
-    ])
-    expect(() => parse(`${HEADER}A-->en${DIRECTIVE}d`)).toThrow(ParseError)
+  it("cuts a text at a directive, also one that starts with a keyword", () => {
+    // diagrams/flowchart.md, Directives inside units: the name text of a
+    // subgraph is a text, which a directive may cut.
     expect(tokensOf(`subgraph sty${DIRECTIVE}le x\nend`)).toEqual([
       ["Keyword", "subgraph"],
       ["RawText", "sty"],
@@ -1081,29 +1172,39 @@ describe("directives in a flowchart", () => {
     ])
   })
 
-  it("allows a directive between two units, which cuts a token of several units", () => {
-    expect(tokensOf(`A(${DIRECTIVE}(x))`)).toEqual([
+  it("reads a keyword across a directive, as mermaid.js reads the text without it", () => {
+    // The lexer reads the keyword `end` of `en` and `d`, after which the
+    // grammar finds no vertex.
+    expect(() => parse(`${HEADER}A-->en${DIRECTIVE}d`)).toThrow(
+      expect.objectContaining({ message: "Unexpected token" }),
+    )
+  })
+
+  it("allows a directive between two tokens", () => {
+    expect(tokensOf(`A${DIRECTIVE}(x)`)).toEqual([
       ["Identifier", "A"],
-      ["Punctuator", "("],
       ["Directive", DIRECTIVE],
       ["Punctuator", "("],
       ["RawText", "x"],
-      ["Punctuator", "))"],
+      ["Punctuator", ")"],
     ])
     expect(tokensOf(`accTitle${DIRECTIVE}: a ${DIRECTIVE} b`)).toEqual([
       ["Keyword", "accTitle"],
       ["Directive", DIRECTIVE],
       ["Punctuator", ":"],
-      ["RawText", "a"],
+      ["RawText", "a "],
       ["Directive", DIRECTIVE],
-      ["RawText", "b"],
+      ["RawText", " b"],
     ])
   })
 
   it.each([
+    ["an id", `A${DIRECTIVE}B-->C`],
+    ["an id that starts with a keyword", `style${DIRECTIVE}A-->B`],
     ["an arrow", `A--${DIRECTIVE}>B`],
-    ["a string", `A["a ${DIRECTIVE} b"]`],
     ["a keyword", `click A hr${DIRECTIVE}ef "u"`],
+    ["a delimiter of two units", `A(${DIRECTIVE}(x))`],
+    ["the closing delimiter of two units", `A{{x}${DIRECTIVE}}`],
     ["a delimiter", `A::${DIRECTIVE}:c`],
     ["the start of a data block", `A@${DIRECTIVE}{ shape: rect }`],
     [
@@ -1111,9 +1212,8 @@ describe("directives in a flowchart", () => {
       `A-->B-->C-->D-->E-->F-->G-->H-->I-->J-->K-->L\nlinkStyle 1${DIRECTIVE}0 stroke:red`,
     ],
   ])("rejects a directive inside %s", (_unit, statements) => {
-    // A unit that is not RawText or Identifier may not have a directive
-    // between two of its characters that are not whitespace. The error is
-    // at the directive.
+    // common.md, A directive is a token boundary: only a text and a string
+    // may have a directive inside them. The error is at the directive.
     const text = HEADER + statements
     const directiveStart = text.indexOf(DIRECTIVE)
     let caught: unknown
@@ -1174,20 +1274,27 @@ describe("directives in a flowchart", () => {
       "ot;b",
       "]",
     ])
-    // In a string, the directive inside the entity is inside a String unit.
-    expect(() => parse(`${HEADER}A["a#qu${DIRECTIVE}ot;b"]`)).toThrow(
-      "Unexpected directive",
-    )
+    // In a string, the directive inside the entity lies inside the string
+    // unit, which it cuts into StringFragment tokens.
+    expect(tokensOf(`A["a#qu${DIRECTIVE}ot;b"]`)).toEqual([
+      ["Identifier", "A"],
+      ["Punctuator", "["],
+      ["StringFragment", '"a#qu'],
+      ["Directive", DIRECTIVE],
+      ["StringFragment", 'ot;b"'],
+      ["Punctuator", "]"],
+    ])
   })
 
   it("cuts a string at a comment region, and leaves a directive inside the comment to it", () => {
-    // ast.md, Comment: the token of a string is cut at a comment region
-    // into StringFragment tokens, and a directive inside the comment has no
-    // token of its own.
+    // docs/tokens.md, Comment regions in tokens: the token of a string is
+    // cut at a comment region into StringFragment tokens, the line feed
+    // before the region in the first, and a directive inside the comment
+    // has no token of its own.
     expect(tokensOf(`A["a\n%% c ${DIRECTIVE}\nb"]`)).toEqual([
       ["Identifier", "A"],
       ["Punctuator", "["],
-      ["StringFragment", '"a'],
+      ["StringFragment", '"a\n'],
       ["StringFragment", 'b"'],
       ["Punctuator", "]"],
     ])

@@ -143,6 +143,9 @@ const tokenCount = root.tokens.length // 8
   コメントはどのトークンの中にもありません。
   複数行の引用符つきのラベルのように、コメント行をまたぐトークンは、
   そこで断片に切られます。
+  中にディレクティブや、行の規則が無視する `;` を持つ、
+  テキストや引用符つきの文字列も同じです
+  （[トークン](./docs/tokens.ja.md#トークン) を参照）。
   引用符つきの文字列の断片は `StringFragment` のトークンです。
 - `comments`: すべてのコメント。
   `%%` のコメント行と、図種の字句解析器がコメントとして読むものです。
@@ -168,8 +171,8 @@ const tokenCount = root.tokens.length // 8
 
 トークン、コメント、ディレクティブ、フロントマターはノードではありません。
 これらの一覧から読みます。
-欄とトークンの種類は、[`ast.md` のトークン](../spec/docs/ast.ja.md#トークン)と、
-[コメント、ディレクティブ、フロントマター](../spec/docs/ast.ja.md#コメントディレクティブフロントマター)。
+欄とトークンの種類は、[トークン](./docs/tokens.ja.md#トークン)と、
+[コメント、ディレクティブ、フロントマター](../spec/docs/ast.ja.md#ディレクティブとフロントマター)。
 
 ### 位置
 
@@ -217,94 +220,6 @@ try {
 [`ast/sequence.md`](../spec/docs/ast/sequence.ja.md)、
 [`ast/class.md`](../spec/docs/ast/class.ja.md)、
 [`ast/state.md`](../spec/docs/ast/state.ja.md) のものです。
-
-### Db の id
-
-mermaid.js は、図のいくつかのものに、
-テキストが id として書いていない id を与えます。
-書かれたものを保つ木は、そうした id を持ちません。
-次の関数がそれを与えます。
-
-```ts
-import { flowchartSubgraphIds, parse } from "@mmd-toolkit/parser"
-
-const root = parse(text)
-const ids = flowchartSubgraphIds(root, text)
-// ids.get(subgraphStatement) は、その subgraph の Db の id。
-```
-
-- `flowchartSubgraphIds(root, text)` は、flowchart の各
-  `FlowchartSubgraphStatement` について、その subgraph の id を返します。
-  id は、名前のテキストの両端の空白を除いたものです。
-  題がなく、名前のテキストに空白があるときは、
-  `subGraph` と、それより前に加えられた subgraph の数です。
-  入れ子の subgraph は、外側のものより先に加えられます。
-  ほかの図では、空の対応を返します。
-- `text` は、`root` を parse したテキストです。
-  名前の後の、行の終わりまでの空白が id を数にしますが、
-  その空白はどのノードもトークンも持たないので、テキストが要ります。
-- id は、木の値と同じ形です。
-  書かれたとおりで、ディレクティブとコメントを除き、変換はしません。
-  mermaid.js の Db の id は、このテキストの実体参照、属性の引用符、
-  行終端子を変換したものです
-  （[`common.md`](../spec/docs/common.ja.md#ソースの読み方)）。
-
-### Db のテキスト
-
-mermaid.js の Db の値には、
-ノードの範囲の外のテキストから読まれるものがあります。
-値のまわりの空白、ノードを持たない空白だけの値、
-その間にある、行の規則が無視する `;` です。
-そうしたテキストを書かれたまま保つ道具や、Db を組み立てる道具は、
-それがどこにあるかを、次の関数から得ます。
-
-```ts
-import { flowchartDbTexts, ignoredSemicolons, parse } from "@mmd-toolkit/parser"
-
-const root = parse(text)
-const { styles } = flowchartDbTexts(root, text)
-// styles.get(styleStatement)[i].range は、mermaid.js が i 番目のスタイルを読む所。
-```
-
-- `flowchartDbTexts(root, text)`、`sequenceDbTexts(root, text)`、
-  `classDbTexts(root, text)`、`stateDbTexts(root, text)` は、
-  図の Db がノードの範囲の外まで読む値の種類ごとに、
-  1 つの対応を持つ記録を返します。
-  キーは、その値を持つ文かノードです。
-  ほかの図では、どの対応も空です。
-  - flowchart: `styles` は、`style`、`classDef`、`linkStyle` の文の各スタイルの
-    Db のテキストで、null のスタイルを含み、`styles` と同じ順です。
-    `subgraphNameTexts` は、各 subgraph の名前のテキストです
-    （[`flowchart.md`](../spec/docs/diagrams/flowchart.ja.md)）。
-  - sequence: `titles` は、各 title のテキストで、空白を含みます
-    （[`sequence.md`](../spec/docs/diagrams/sequence.ja.md)）。
-  - class: `genericTypes` は、ジェネリクスの 2 つの `~` の間のテキストで、
-    空白だけのものも含み、キーは `ClassName` です
-    （[`class.md`](../spec/docs/diagrams/class.ja.md)）。
-  - state: `secondDescriptions` は、本体のない別名の 2 つ目の説明です。
-    `noteTexts` は、1 行のノートの、id の終わりからのテキストです
-    （[`state.md`](../spec/docs/diagrams/state.ja.md)）。
-- 各項目は `DbText` です。
-  その値は、mermaid.js が値を読む所 `range` からの範囲のテキストです
-  （[`ast.md`](../spec/docs/ast.ja.md#ノード)）。
-  ディレクティブ、コメント領域、行の規則が無視する `;`、
-  文の区切りの前の空の説明のブロックを除き、
-  図の Db がその値から除くものも除きます。
-  `leftOut` は、そのうち、ソースだけからはわからないものの一覧です。
-  空の説明のブロックと、
-  文字列で始まる subgraph の名前の引用符がそれにあたります。
-  関数が与えるのは範囲だけです。
-  Db は、そのテキストを変換し、空白を落とすことがあります。
-- title の範囲は、そのテキストから始まります。
-  `title` や `title:` とテキストの間には、空白 1 文字
-  （テキストが次の行にあるときは改行）と、
-  そこにあるディレクティブとコメント領域があります
-  （[`sequence.md`](../spec/docs/diagrams/sequence.ja.md)）。
-  そのため、範囲の直前の文字が、いつもその空白とは限りません。
-- `ignoredSemicolons(text)` は、行の規則が無視する各 `;` の範囲を、
-  ソースの順に返します（[`common.md`](../spec/docs/common.ja.md)）。
-  範囲がこの一覧にある `;` のトークンは無視され、
-  ほかの `;` のトークンは、区切りか値の文字です。
 
 ## 木を辿る
 
@@ -355,10 +270,14 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
 拒否するものを拒否します。
 ただし次の違いがあります。
 
-- キーワード、矢印、文字列、数、記号の内側にディレクティブがあると、
-  `parse()` は例外を投げます。
+- 空白を含まない名前、キーワード、矢印、数、記号の内側に
+  ディレクティブがあると、`parse()` は例外を投げます。
   mermaid.js は前後のテキストをつないで読みます
   （[`directive-as-token-boundary`](../spec/docs/known-divergences/directive-as-token-boundary.ja.md)）。
+- `style` 行と `classDef` 行の規則が無視する `;` が、
+  そのようなトークンの内側にあるときも、例外を投げます。
+  mermaid.js はその `;` を除き、前後のテキストをつないで読みます
+  （[`ignored-semicolon-as-token-boundary`](../spec/docs/known-divergences/ignored-semicolon-as-token-boundary.ja.md)）。
 - フロントマター、ディレクティブ、
   `@{ ... }` のデータブロックの中身は確かめないので、中身が壊れている、
   形が違う、知らない名前（形の名前など）を挙げている、
@@ -428,6 +347,9 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   [`ast/class.md`](../spec/docs/ast/class.ja.md)（クラス図のノード）、
   [`ast/state.md`](../spec/docs/ast/state.ja.md)（状態図のノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
+- [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
+  [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、
+  木の不変条件。
 - [`docs/error-positions.ja.md`](./docs/error-positions.ja.md): `ParseError`
   が指す位置。
 - [`docs/development.ja.md`](./docs/development.ja.md): パーサーの作り。

@@ -1,9 +1,8 @@
 {
   "source": {
     "kind": "authored",
-    "note": "known-divergences.md (directive-as-token-boundary): mermaid.js removes the directive from the quoted label and accepts it as `a  b`; here the directive lies inside a `String` unit, and the input is rejected."
+    "note": "common.md A directive is a token boundary: a string unit may have a directive between any two of its characters; the directive keeps the spaces around it, and the label is `a  b`, as in mermaid.js."
   },
-  "knownDivergence": "directive-as-token-boundary",
   "accepted": true,
   "diagramType": "flowchart-v2",
   "db": {

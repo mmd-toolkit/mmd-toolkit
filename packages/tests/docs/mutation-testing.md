@@ -89,10 +89,23 @@ the difference.
 ## The command line
 
 ```sh
-pnpm --filter @mmd-toolkit/tests run mutation --candidate <module> --count 20 --seed 1
+pnpm --filter @mmd-toolkit/tests run mutation --candidate <module> --seed 1
 ```
 
 `<module>` default-exports the candidate. Every fixture of `--diagram` (default
 `flowchart`), or those named with `--fixture`, is mutated. The CLI lists
 divergences by identifier and does not fail on them; it exits with 1 on any
 mismatch or skipped text.
+
+A fixture is mutated once with each edit operator that applies to it (a fixture
+of one line has no line to swap), in an order that a seed and the fixture
+decide, at a position chosen at random among those of the operator. So the first
+mutants of a fixture use different operators, and every operator that applies is
+used, whatever the seed. `--count` is the number of mutants of each fixture;
+without it, there is one round, one mutant for each operator that applies. With
+`--count` of one, the operator is chosen at random among those that apply. More
+than one round uses an operator again: raise `--count` to widen the forms of the
+mutants of an operator, not to be surer: more mutants of the same kind find
+nothing more. An operator with few places (swapping two lines of a text of
+three) has few distinct mutants, and no other operator takes its place, so a
+fixture can get fewer mutants than `--count`.

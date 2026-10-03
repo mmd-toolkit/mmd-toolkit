@@ -495,6 +495,35 @@ classDiagram
   class Fo%%{init: {}}%%o
 ```
 
+`%` だけの行や、ディレクティブではないのに `%{` で始まる行は、
+文の間にあっても受理されますが、
+その後の空白だけの行はそれだけで 1 つの単位になり、入力は拒否されます
+（[コメント](#コメント)を参照）。
+そのような行の後のディレクティブだけの行は、字下げせず、書かれたまま残します。
+ディレクティブは空白ではないので、
+mermaid.js にとって、その行は空白だけの行ではありませんが、
+字下げすると空白だけの行になります。
+
+入力 ([directives/bare-marker-input.mmd](../tests/fixtures/class/directives/bare-marker-input.mmd)):
+
+```mmd
+classDiagram
+A
+%%
+%%{init: {}}%%
+class C
+```
+
+出力 ([directives/bare-marker-output.mmd](../tests/fixtures/class/directives/bare-marker-output.mmd)):
+
+```mmd
+classDiagram
+  A
+  %%
+%%{init: {}}%%
+  class C
+```
+
 ### フロントマターの YAML
 
 flowchart と同じです。

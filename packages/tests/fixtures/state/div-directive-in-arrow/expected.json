@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "state.md Known divergences, directive-as-token-boundary: the directive lies inside -->; mermaid.js accepts, and this specification rejects."
+    "note": "state.md Known divergences, directive-as-token-boundary: the directive lies inside the arrow `-->`; mermaid.js accepts, and this specification rejects."
   },
   "knownDivergence": "directive-as-token-boundary",
   "accepted": true,

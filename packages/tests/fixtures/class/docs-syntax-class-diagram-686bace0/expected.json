@@ -156,5 +156,10 @@
     "notes": [],
     "namespaces": [],
     "interfaces": []
+  },
+  "embedded": {
+    "config": {
+      "layout": "dagre"
+    }
   }
 }

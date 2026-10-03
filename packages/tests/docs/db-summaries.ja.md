@@ -12,8 +12,9 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
 内部のカウンタと DOM の ID は捨てます。
 正規化関数は `src/normalizers/` にあり、Db クラスごとに 1 つで、
 `src/normalizers/index.ts` に図種 ID ごとに登録します。
-各図種の要約の形は、`@mmd-toolkit/spec` の `docs/diagrams/<diagram>.md` の
-「Db normalization」の節で定めます。
+各図種の要約の形は下に述べ、木からそれを作る手順は
+[db-from-tree/](./db-from-tree/)（`flowchart.ja.md`、`sequence.ja.md`、
+`class.ja.md`、`state.ja.md`）にあります。
 
 ## 要約がまだない図種
 
@@ -28,6 +29,21 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
 
 ## flowchart
 
+要約の欄は次のとおりです。
+
+| 欄             | 内容                                                                                                                                                                                                                  |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `direction`    | 図の方向。                                                                                                                                                                                                            |
+| `title`        | フロントマターのタイトル。                                                                                                                                                                                            |
+| `accTitle`     | アクセシビリティのタイトル。なければ空のテキスト。                                                                                                                                                                    |
+| `accDescr`     | アクセシビリティの説明。なければ空のテキスト。                                                                                                                                                                        |
+| `vertices`     | 頂点。加えた順。`id`、`labelType`、`styles`、`classes`、`text`、`type`、`props`、`link`、`linkTarget`、およびデータブロックだけが設定する欄 `icon`、`form`、`pos`、`img`、`constraint`、`assetWidth`、`assetHeight`。 |
+| `edges`        | 辺。加えた順。`start`、`end`、`type`、`stroke`、`length`、`text`、`labelType`、`classes`、`isUserDefinedId`、`id`、`interpolate`、`style`、およびデータブロックだけが設定する `animate` と `animation`。              |
+| `edgeDefaults` | `linkStyle default` による `interpolate` と `style`。設定されていなければそれぞれ null。                                                                                                                              |
+| `classDefs`    | `classDef` で定めたクラス。定めた順。`id` と `styles`。                                                                                                                                                               |
+| `subgraphs`    | subgraph。加えた順。`id`、`nodes`、`title`、`classes`、`labelType`、`dir`、およびデータブロックだけが設定する `metadata`。                                                                                            |
+| `tooltips`     | ツールチップ。その id に最初にツールチップが与えられた順。`id` と `text`。                                                                                                                                            |
+
 `normalizeFlowchart()`（`src/normalizers/flowchart.ts`）は、
 `FlowDB` を共有する `flowchart-v2`、`flowchart-elk`、
 `swimlane` の Db を要約します。
@@ -37,6 +53,9 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
 - `vertices[].domId`: カウンタから作る DOM の ID で、描画にだけ使う。
 - `classDefs[].textStyles`: 描画のために `styles` から導いた値
   （`color` を含む要素の `fill` を `bgFill` に置き換えたもの）。
+- `FlowchartDirectionStatement` の `textBefore` と `textAfter`
+  （[ast/flowchart.ja.md](../../spec/docs/ast/flowchart.ja.md#flowchartdirectionstatement)）:
+  mermaid.js が読まない方向の行のテキスト。
 - `vertices[].haveCallback`:
   サイト設定の `securityLevel: loose` のときだけ付く。
   click があったことは class `clickable` で分かる。
@@ -49,6 +68,9 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
   mermaid.js はそれをどこでも読まず、整形はこれらの行の末尾の空白を消す。
   消す文字は `String.prototype.trimEnd()` が消すもので、
   文法がそこに残しうる文字とちょうど一致する。
+  木では、その空白は style の範囲の外にある
+  （[db-from-tree/flowchart.ja.md](./db-from-tree/flowchart.ja.md) の
+  **スタイルの文**を参照）。
   値の先頭の空白は残す。
   Db を変えることがあるため
   （`linkStyle` は、`fill` で始まる値がないときに `fill:none` を足す）。
@@ -60,12 +82,35 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
   は HTML の無害化の前の値で、
   `vertices[].link` は書かれたとおりの URL（trim 済み）です。
   [expected-results.ja.md](./expected-results.ja.md) を参照してください。
+- すべて空白の style は空のテキストになる。
+  `style A fill:#f00, ` の style は `fill:#f00` と空のテキスト。
+  [fixture: flowchart/gram-style-whitespace] [fixture:
+  flowchart/db-style-whitespace-only-value] [fixture:
+  flowchart/db-style-trailing-comma]
+- こうすることで、`securityLevel` が `strict`、`loose`、`antiscript`、
+  `sandbox` のどれかである限り、要約は `securityLevel` に依存しない。
 - 節点の `icon`、`form`、`pos`、`img`、`constraint`、`assetWidth`、
   `assetHeight`、辺の `animate` と `animation`、subgraph の `metadata` は、
   `@{ ... }` のデータブロックだけが設定します。
   [embedded-data.ja.md](./embedded-data.ja.md) を参照してください。
 
 ## sequence
+
+要約の欄は次のとおりです。
+
+| 欄                | 中身                                                                      |
+| ----------------- | ------------------------------------------------------------------------- |
+| `title`           | タイトル。                                                                |
+| `accTitle`        | アクセシビリティのタイトル。なければ空のテキスト。                        |
+| `accDescr`        | アクセシビリティの説明。なければ空のテキスト。                            |
+| `actors`          | 参加者。最初に加えた順。                                                  |
+| `boxes`           | 箱。ソースの順。`name`、`wrap`、`fill`、`actorKeys`。                     |
+| `createdActors`   | 作られた参加者。`id` と `messageIndex`。                                  |
+| `destroyedActors` | destroy された参加者。`id` と `messageIndex`。                            |
+| `messages`        | メッセージ、ノート、autonumber の設定、活性化、ブロックの始まりと終わり。 |
+
+参加者は、`name`、`description`、`wrap`、`prevActor`、`nextActor`、
+`links`、`properties`、`type`、`box`（その箱の `boxes` の中の位置）を持ちます。
 
 `normalizeSequence()`（`src/normalizers/sequence.ts`）は、
 `sequence` の Db を要約します。
@@ -109,6 +154,35 @@ actor の box は、`boxes` の中の位置で表します。
 
 ## class
 
+要約の欄は次のとおりです。
+
+| 欄           | 内容                                                  |
+| ------------ | ----------------------------------------------------- |
+| `direction`  | 方向。方向の文が設定しなければ `TB`。                 |
+| `title`      | フロントマターのタイトル。なければ空のテキスト。      |
+| `accTitle`   | アクセシビリティのタイトル。なければ空のテキスト。    |
+| `accDescr`   | アクセシビリティの説明。なければ空のテキスト。        |
+| `classes`    | クラス。最初に加えられた順。                          |
+| `relations`  | 関係。ソースの順。                                    |
+| `notes`      | ノート。ソースの順。                                  |
+| `namespaces` | 名前空間。最初に加えられた順。                        |
+| `interfaces` | lollipop の関係が加えるインターフェース。ソースの順。 |
+
+クラスは、`id`、`type`、`label`、`text`、いつも `classBox` の `shape`、
+`cssClasses`、`methods`、`members`、`annotations`、`styles` と、
+設定されていれば `parent`、`link`、`linkTarget`、`haveCallback`、
+`tooltip` を持ちます。
+方法は、`memberType`（`method`）、`visibility`、`classifier`、`id`、
+`parameters`、`returnType` を持ちます。
+属性は `members` にあり、`memberType`（`attribute`）、`visibility`、
+`classifier`、`id` を持ちます。
+関係は、`id1`、`id2`、`type1`、`type2`、`lineType` を持つ `relation`、
+`relationTitle1`、`relationTitle2` と、ラベルがあれば `title` を持ちます。
+ノートは、`id`、`text` と、設定されていれば `class` と `parent` を持ちます。
+名前空間は、`id`、`label`、その `classes`、`notes`、`children` の id、
+`explicit` と、あれば `parent` を持ちます。
+インターフェースは、`id`、`label`、`classId` を持ちます。
+
 `normalizeClass()`（`src/normalizers/class.ts`）は、
 `classDiagram` の Db を要約します。
 mermaid.js は、`classDiagram` と `classDiagram-v2` のどちらも、
@@ -146,6 +220,28 @@ lollipop の関係が作るインターフェース（描画が描く）です�
   （[expected-results.ja.md](./expected-results.ja.md) を参照）。
 
 ## state
+
+要約の欄は次のとおりです。
+
+| 欄            | 中身                                         |
+| ------------- | -------------------------------------------- |
+| `direction`   | 図の向き。                                   |
+| `title`       | フロントマターのタイトルか、空のテキスト。   |
+| `accTitle`    | アクセシビリティのタイトルか、空のテキスト。 |
+| `accDescr`    | アクセシビリティの説明か、空のテキスト。     |
+| `states`      | 状態。そのノードの順。                       |
+| `notes`       | ノート。そのノードの順。                     |
+| `transitions` | 遷移。ソースの順。                           |
+| `classDefs`   | クラスの定義。最初の `classDef` の文の順。   |
+| `links`       | 最上位の click の文。ソースの順。            |
+
+状態は、`id`、`label`、`classes`、`styles` と、
+設定されていれば `shape`、`description`、`parentId`、`dir` を持ちます
+（[木から要約を作る](./db-from-tree/state.ja.md#木から要約を作る) を参照）。
+ノートは、`state`、`position`、`text` を持ちます。
+遷移は、`start`、`end`、`label` を持ちます。
+クラスの定義は、`id` と `styles` を持ちます。
+リンクは、`state`、`url`、`tooltip` を持ちます。
 
 `normalizeState()`（`src/normalizers/state.ts`）は、
 `stateDiagram` の Db を要約します。

@@ -48,15 +48,15 @@
         },
         "secondDescription": {
           "type": "StateLiteral",
-          "value": "y",
+          "value": " y",
           "range": [
-            35,
+            34,
             36
           ],
           "loc": {
             "start": {
               "line": 2,
-              "column": 19
+              "column": 18
             },
             "end": {
               "line": 2,
@@ -212,15 +212,15 @@
     },
     {
       "type": "RawText",
-      "value": "y",
+      "value": " y",
       "range": [
-        35,
+        34,
         36
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 19
+          "column": 18
         },
         "end": {
           "line": 2,

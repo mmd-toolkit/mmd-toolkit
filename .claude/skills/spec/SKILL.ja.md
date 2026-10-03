@@ -56,12 +56,20 @@ description:
   そのようなテキストを理由に入力を拒否するのは、
   木の中に自分の置き場所がないときだけ。
   定義の出どころはここで、実装はこれに従う。
-- 図種ごとに `docs/diagrams/<図>.md` の 5 節を、
+- 図種ごとに `docs/diagrams/<図>.md` の 4 節（判定、字句、
+  文法と文法の外の拒否、既知の差）を、
   mermaid の文法定義と Db クラスから書く。
+  入力を受理するかどうかを決めるものは、ここで定める。
+  mermaid.js が Db を組み立てる途中で決めるものも同じ。
+- 仕様が定めるのは、構文と木の形（ノードの型、欄、値）である。
+  木がトークンと位置をどう持つかは、parser の仕様（`packages/parser/docs`）
+  である。
+  記録した木を mermaid.js の Db とどう照らすかは、
+  tests の文書（`packages/tests/docs`）である。
+  仕様の文書は、parser のトークンと位置の仕様に言及しない。
+  参照は、parser の文書から仕様への一方向である。
 - 仕様の主張ごとに fixture を用意する。
   fixture の追加は tests パッケージの生成器を使う。
-- Db normalization の節に書いた項目を、
-  tests パッケージの正規化関数と対応させる。
 - 仕様では一文字の記号や略号を導入しない。
   「_T_ をテキストとする」のような書き方、斜体の一文字の名前、添字を使わない。
   対象は毎回言葉で書くか、節の冒頭で意味の分かる語句に名前を付ける。
@@ -81,7 +89,7 @@ description:
 1. 方針と基準。
    - この文書の「方針と基準」の節: 木の定義の原則
      （ノードの型の名前、共通の葉のノード、型は位置で文法が許すもので決める）、
-     5 節、すべての主張に fixture、
+     4 節、すべての主張に fixture、
      記号を作らない、仕様にコードを書かない。
    - AGENTS.md の Project: 正しさの基準と、Known divergences の例外。
    - AGENTS.md の Principles。
@@ -96,7 +104,7 @@ description:
    読んで確かめたか（mermaid.js のソース、文書）、
    確かめていないかを区別して示す。
 3. `packages/spec/docs/index.md`
-   （文書の構成、図種の文書の 5 節、書き方の約束、pin した commit）、
+   （適合、図種の文書の 4 節、書き方の約束、pin した commit）、
    `common.md`、`ast.md`、
    既存の図種の `diagrams/<図種>.md` と `ast/<図種>.md`。
    木の原則とその理由は、`ast.md` の「設計の目標」と「共通の葉のノード」にある。
@@ -228,9 +236,11 @@ pnpm run -s lint:docs
 pnpm run -s lint:chars
 ```
 
-`pnpm run lint:docs` は、日英の対のほかに、仕様の文書のリンク、アンカー、
+`pnpm run lint:docs` は、日英の対のほかに、仕様の文書と、
+parser と tests の文書（`packages/parser/docs`、`packages/tests/docs`）の
+リンク、アンカー、
 fixture の引用（`[fixture:` の後で行が折り返されたものも読む）、
-日英の引用の集合、見出しの構造を確かめる（`scripts/check-spec-docs.mjs`）。
+日英の引用の集合、見出しの構造を確かめる（`scripts/check-doc-citations.mjs`）。
 検査の対象の文書の mermaid.js へのリンクが、
 すべて `packages/spec/docs/index.md` に記録した commit
 を指していることも確かめる（`scripts/check-mermaid-links.mjs`）。
@@ -246,7 +256,7 @@ parser、整形器、lint は、変更を取り込むときに自分のテスト
 `packages/parser/tests/types.test.ts` は
 `docs/known-divergences/` の文書を並べるので、
 既知の差の文書を足したか除いたときは、作業の結果（3.6）にそう書く。
-生成した入力（3.5）は、決定にその件数が要るときに回し、
+生成した入力（3.5）は、決定にそれが要るときに回し、
 変更のたびの確かめには回さない。
 
 ### 2.5 文書を書き換えるスクリプト
@@ -328,8 +338,9 @@ pin した版のタグで clone する。
    例外を投げる箇所（文法の外の拒否）を探す。
    テキストではなくブラウザに依る値（`window.CSS` や `document`）も探す。
    sequence の例: box の色。
-   そのような値は木では決めず、サイトの設定と同じく、
-   外から与える値として Db の正規化に書く。
+   そのような値は木では決めない。
+   サイトの設定と同じく外から与える値として、
+   tests の `docs/db-from-tree/<図種>.md` が書くので、tests に知らせる。
 4. 前処理の順序（common.md の Reading a source）と、
    検出（detection.md）を確かめる。
 
@@ -340,16 +351,16 @@ pie のときに書く。
 ### 3.2 図種の文書を書く
 
 `docs/diagrams/<図種>.md` と `.ja.md` を、
-index.md の「How to read a diagram document」の 5 節で書く。
+index.md の「How to read a diagram document」の 4 節で書く。
 
 1. Detection: detection.md の該当の検出器を指す。
 2. Lexical structure: 単位と文脈を、各文脈の規則の一覧（適用する順）で書く。
    flowchart.md の「Units and contexts」が形の例。
 3. Grammar: common.md の Notation で書く。
    各規則がどのノードを作るかを表にする。
-4. Db normalization: tests の正規化関数の項目と一致させる。
-   値ごとに、木のどの欄とソースのどこから導くかを書く。
-5. Known divergences: known-divergences.md の識別子のうち、
+   文法が受理した後で mermaid.js が拒否する入力を、
+   それを決めるものすべてとともに書く（Rejections outside the grammar）。
+4. Known divergences: known-divergences.md の識別子のうち、
    この図種に当たるものと、
    それがこの図種でどう現れるか。
    新しい差は、それだけの文書 `known-divergences/<識別子>.md` と、
@@ -357,8 +368,12 @@ index.md の「How to read a diagram document」の 5 節で書く。
    known-divergences.md の表に行を足す。
    文書は、known-divergences.md が挙げる部分を持つ
    （構文、例のある差、mermaid.js がそう読む理由、規則とその理由、
-   書き手にとっての結果、見つかったときの mermaid.js の文書と issue、
-   件数と確かめ方）。
+   書き手にとっての結果、見つかったときの mermaid.js の文書と issue）。
+
+図種の Db の要約と、それを木から作る手順は、
+`@mmd-toolkit/tests` の文書（`docs/db-summaries.md` と
+`docs/db-from-tree/<図種>.md`）で、tests が書く。
+そこに要るものは tests に知らせる。
 
 ### 3.3 木のノードを足す
 
@@ -388,11 +403,18 @@ index.md の「How to read a diagram document」の 5 節で書く。
    決めたら、すべての欄を原則と照らす。
    決めた形が原則や mermaid.js と食い違うと分かったら、
    変える前に根拠を添えてそれを示す。
-5. 値は範囲のテキスト（ast.md の Nodes）。
-   範囲の外の空白が mermaid.js の結果に効く箇所は、値に入れず、
-   Db の手順がソースから読むと書く。
-   flowchart の例: スタイルの Db のテキスト、
-   subgraph の名前のテキスト（名前の前と後の空白）。
+5. 値は範囲のテキストで、
+   値のトークンと範囲は、mermaid.js が値として読むテキストを、
+   mermaid.js が読む空白を含めて覆う（ast.md の Nodes と Tokens）。
+   sequence のタイトル、class のジェネリクスの型、
+   flowchart の `,` の後のスタイルは、その空白を持つ。
+   mermaid.js が読むものがほかのノードをまたぐために、
+   どのトークンも持てないところだけ、
+   `ast/<diagram>.md` の欄の説明に理由を書く。
+   Db がそれをソースから読むことは、
+   tests の `docs/db-from-tree/<図種>.md` が書くので、
+   tests に知らせる。
+   flowchart の例: subgraph の名前のすぐ後の空の説明ブロックの間の空白。
 
 ### 3.4 主張と fixture を対応させる
 
@@ -416,9 +438,12 @@ index.md の「How to read a diagram document」の 5 節で書く。
 
 手で書いた例だけで規則を決めない。
 
-1. 規則の境界に当たる小さな部品を組み合わせた入力を、数百から数千件生成する。
+1. 入力を種類ごとに生成する。
+   規則が触れる境界の種類と、そこに置ける小さな部品を挙げる。
    部品は、空白、タブ、改行、空の文字列、ディレクティブ、コメント行、`;`、
    キーワード、文字列、テキストの終わり。
+   境界の種類と部品の組ごとに、数件の入力で覆う。
+   確かさを増すには、すでに覆った種類の件数を増やさず、欠けている種類を足す。
 2. mermaid.js と、parser の `parse()` と `dbOf()` に掛け、
    受理・拒否と値の違いを集める。
    parser がまだ読まない図種では、mermaid.js の結果を、
@@ -465,17 +490,18 @@ index.md の「How to read a diagram document」の 5 節で書く。
       （subgraph の名前、箱、名前空間、合成状態）、
       空白の前と後、`;` の前、テキストの終わり。
    2. 値を単位からではなく範囲のテキストから取るところ。
-      Db の正規化がソースから読む Db のテキストなど
-      （flowchart のスタイルと subgraph の名前のテキスト）で、
+      名前の後に空の説明ブロックが続くときソースから読む、
+      flowchart の subgraph の名前のテキストなどで、
       その形がそのような範囲の中に入りうるかを確かめる。
-   3. 1 で挙げたすべての位置を覆う生成入力。
-      それぞれに形の周りの空白
+   3. 1 で挙げた位置の種類を、種類ごとに数件で覆う生成入力。
+      それぞれに形の周りの空白の各種類
       （なし、空白 1 つ、空白 2 つ、タブ、後の改行）を付け、
       受理と、2 の値を含む Db を mermaid.js と比べる。
 
    区切りの前の空の説明ブロックを受理にしたときは、
    行の終わりだけを見ていたので、
-   subgraph の名前の後の置き場、ブロックの周りの空白、スタイルの Db のテキスト、
+   subgraph の名前の後の置き場、ブロックの周りの空白、
+   Db がスタイルに読んだテキスト、
    ヘッダーの行が、後から 1 つずつ見つかった。
    ほかのところで受理が変わらないことも確かめる。
    flowchart の例: エンティティの置き換え文字を 1 単位として読む規則は、
@@ -539,16 +565,21 @@ parser は仕様だけを源として読む。
 7. **要約を欄ごとに。**
    要約の各記録の各欄について、図種のすべての fixture で、
    キーがない、値が空、値がある、の 3 つの場合を数える。
-   現れた場合は、どれも Db の正規化の文で説明され、fixture を持つ。
+   現れた場合は、どれも tests の `docs/db-from-tree/<図種>.md` の文で説明され、
+   fixture を持つ。説明する文のない場合は tests に知らせる。
    最初の訪れでだけ決まるもの、積み重なるもの、
    更新がそのまま残すもの
    （`Object.assign` は新しいオブジェクトにないキーを残す）を、
    Db のクラスで探す。
-8. **Db がソースから読むもの。**
-   木が落とすものが Db を変えるとき
-   （`,` の間の空の項目、空白だけのテキスト、`:` があるかどうか）、
-   Db の正規化はその値をソースから読むと述べ、
-   `ast/<diagram>.md` のその欄の説明も同じことを述べる。
+8. **値の外で Db が読むもの。**
+   木は Db を変えるものを持つ。
+   値として（mermaid.js が読む空白。空白だけの値も）、
+   列の null の要素として（`,` の間の空の項目）、
+   トークンとして（`:` があるかどうか）持つ。
+   どのノードもトークンも持てないところだけ、
+   `ast/<diagram>.md` のその欄の説明がその理由を述べ、
+   Db がそれをソースから読むことは、
+   tests の `docs/db-from-tree/<図種>.md` が述べる。
 9. **範囲。**
    「任意の文字」は、どれも、改行、U+2028、U+2029 を含むかどうか、
    できるだけ多く読むか少なく読むか、規則がどこでもう一度試されるかを述べる
@@ -652,8 +683,8 @@ fixture でキーがないことが一度もない欄も、ある入力ではな
    - トークンを断片に切るトリビア:
      `String` のトークンを `StringFragment` のトークンに、
      `RawText` のトークンを `RawText` のトークンに切るコメントの領域と、
-     `RawText` か `Identifier` の単位の中の、
-     それを同じ種類のトークンに切るディレクティブ。
+     `String` か `RawText` のトークンの中の、
+     それを同じように切るディレクティブ。
 3. **確かめ。**
    そう持ったとき、受理・拒否と Db が mermaid.js と一致するかを、
    生成した入力で数える。

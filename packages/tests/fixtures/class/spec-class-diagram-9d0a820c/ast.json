@@ -8,7 +8,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Outer",
           "range": [
             31,
@@ -31,7 +31,7 @@
             "type": "ClassNamespaceStatement",
             "prefix": null,
             "name": {
-              "type": "Identifier",
+              "type": "ClassIdentifier",
               "name": "Inner",
               "range": [
                 59,
@@ -56,7 +56,7 @@
                   "type": "ClassName",
                   "prefix": null,
                   "name": {
-                    "type": "Identifier",
+                    "type": "ClassIdentifier",
                     "name": "Foo",
                     "range": [
                       85,
@@ -172,7 +172,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Baz",
                 "range": [
                   154,
@@ -339,7 +339,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Outer",
       "range": [
         31,
@@ -393,7 +393,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Inner",
       "range": [
         59,
@@ -447,7 +447,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Foo",
       "range": [
         85,
@@ -609,7 +609,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Baz",
       "range": [
         154,

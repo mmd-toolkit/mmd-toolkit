@@ -130,6 +130,7 @@
 - 文法の外の拒否である、説明を 2 つ以上持つ複合状態では、
   `range` はその状態に最初に本体を与えた文で、メッセージは
   `A composite state can have only one description`。
+  区切られた本体の領域では、それを閉じる divider の文である。
 
 ## 既知の差異
 
@@ -137,9 +138,14 @@
 `range` は原因の形で、メッセージは原因を示します。
 
 - `directive-as-token-boundary`:
-  ディレクティブを含められない単位（矢印、キーワード、文字列など）の内側に、
+  切ってはならないトークン
+  （名前、数、キーワード、矢印、ほかの区切り記号）の内側に、
   ディレクティブがあるときは、`range` はそのディレクティブで、
   メッセージは `Unexpected directive`。
+- `ignored-semicolon-as-token-boundary`:
+  そのようなトークンの内側に、行の規則が無視する `;` があるときは、
+  `range` はその `;` で、
+  メッセージは `Unexpected ; that the line rule ignores`。
 - `click-reserved-word`: クリックの文を始めない `click` では、
   `range` は語 `click` で、メッセージは
   `click is a reserved word: it may only start a click statement`。

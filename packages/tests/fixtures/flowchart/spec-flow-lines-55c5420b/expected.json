@@ -74,5 +74,21 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "e1",
+        "set": {
+          "interpolate": "basis"
+        }
+      },
+      {
+        "id": "uniqueName",
+        "set": {
+          "interpolate": "cardinal"
+        }
+      }
+    ]
   }
 }

@@ -98,7 +98,7 @@
     ],
     "range": [
       0,
-      92
+      91
     ],
     "loc": {
       "start": {
@@ -107,7 +107,7 @@
       },
       "end": {
         "line": 2,
-        "column": 76
+        "column": 75
       }
     }
   },
@@ -260,7 +260,7 @@
       }
     },
     {
-      "type": "RawText",
+      "type": "IgnoredSemicolon",
       "value": ";",
       "range": [
         91,

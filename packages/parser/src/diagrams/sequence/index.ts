@@ -30,23 +30,20 @@ export function lexSequence(input: DiagramInput): SequenceUnits {
 /**
  * diagrams/sequence.md: the parser of the diagram type `sequence`. The
  * lexer of Lexical structure divides the diagram text into units and finds
- * its diagram comments, the grammar of Grammar makes the statements, the
- * kinds of the units, and the tokens from them, and the walk of Rejections
+ * its diagram comments, the grammar of Grammar makes the statements and
+ * the tokens from them, and the walk of Rejections
  * outside the grammar rejects what mermaid.js rejects while it builds the
  * Db. The common part finishes the tree (see `finishDiagram`).
  */
 export function parseSequenceDiagram(input: DiagramInput): Root {
-  const { text, ...lexing } = lexSequence(input)
+  const lexing = lexSequence(input)
   const syntax = new SequenceGrammar(lexing, input.lexer).parseDiagram()
   new SequenceDbRejections(input.lexer.lines).check(syntax.body)
   return finishDiagram(
     input,
-    text,
     {
-      units: syntax.units,
       tokens: syntax.tokens,
       comments: lexing.comments,
-      ignoredSemicolonKindAt: lexing.ignoredSemicolonKindAt,
     },
     // ast/sequence.md, SequenceDiagram: the range runs from the keyword to
     // the last token of the diagram.

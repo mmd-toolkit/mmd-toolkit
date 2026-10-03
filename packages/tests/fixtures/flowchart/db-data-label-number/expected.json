@@ -28,5 +28,16 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": 12
+        }
+      }
+    ]
   }
 }

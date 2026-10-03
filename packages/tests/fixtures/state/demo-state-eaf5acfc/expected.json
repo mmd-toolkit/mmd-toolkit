@@ -114,5 +114,8 @@
       }
     ],
     "links": []
+  },
+  "embedded": {
+    "title": "Very simple diagram"
   }
 }

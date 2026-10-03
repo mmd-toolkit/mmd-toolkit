@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "label: \"This is a\n          multiline string\"\n        other: \"clock\"",
+      "value": "\n        label: \"This is a\n          multiline string\"\n        other: \"clock\"\n     ",
       "range": [
-        31,
-        99
+        22,
+        105
       ],
       "loc": {
         "start": {
-          "line": 3,
-          "column": 8
+          "line": 2,
+          "column": 9
         },
         "end": {
-          "line": 5,
-          "column": 22
+          "line": 6,
+          "column": 5
         }
       }
     },

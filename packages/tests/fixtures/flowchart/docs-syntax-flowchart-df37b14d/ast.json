@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: flip-tri, label: \"Manual file\"",
+      "value": " shape: flip-tri, label: \"Manual file\" ",
       "range": [
-        21,
-        58
+        20,
+        59
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
-          "column": 45
+          "column": 46
         }
       }
     },

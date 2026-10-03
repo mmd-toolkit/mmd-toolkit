@@ -69,5 +69,13 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "config": {
+      "sequence": {
+        "forceMenus": true
+      }
+    },
+    "title": "With forced menus"
   }
 }

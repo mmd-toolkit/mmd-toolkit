@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "C",
             "range": [
               19,
@@ -66,7 +66,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "N",
           "range": [
             31,
@@ -91,7 +91,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "C",
                 "range": [
                   41,
@@ -216,7 +216,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C",
       "range": [
         19,
@@ -252,7 +252,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "N",
       "range": [
         31,
@@ -306,7 +306,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C",
       "range": [
         41,

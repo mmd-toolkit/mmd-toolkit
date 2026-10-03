@@ -26,14 +26,19 @@ export function lexState(input: DiagramInput): StateUnits {
 /**
  * diagrams/state.md: the parser of the diagram type `stateDiagram`. The
  * lexer of Lexical structure divides the diagram text into units and finds
- * its diagram comments, the grammar of Grammar makes the statements, the
- * kinds of the units, and the tokens from them, and the walk of Rejections
+ * its diagram comments, the grammar of Grammar makes the statements and
+ * the tokens from them, and the walk of Rejections
  * outside the grammar rejects what mermaid.js rejects while it builds the
  * Db. The common part finishes the tree (see `finishDiagram`).
  */
 export function parseStateDiagram(input: DiagramInput): Root {
-  const { text, ...lexing } = lexState(input)
-  const syntax = new StateGrammar(lexing.units, input.lexer).parseDiagram()
+  const lexing = lexState(input)
+  const syntax = new StateGrammar(
+    lexing.units,
+    lexing.noteColonsInText,
+    lexing.comments,
+    input.lexer,
+  ).parseDiagram()
   new StateDbRejections(
     input.lexer.lines,
     syntax.stateIds,
@@ -42,12 +47,9 @@ export function parseStateDiagram(input: DiagramInput): Root {
   ).check(syntax.body)
   return finishDiagram(
     input,
-    text,
     {
-      units: syntax.units,
       tokens: syntax.tokens,
       comments: lexing.comments,
-      ignoredSemicolonKindAt: lexing.ignoredSemicolonKindAt,
     },
     // ast/state.md, StateDiagram: the range runs from the header keyword to
     // the last token of the diagram.

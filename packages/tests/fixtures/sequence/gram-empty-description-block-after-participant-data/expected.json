@@ -23,5 +23,15 @@
     "createdActors": [],
     "destroyedActors": [],
     "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "type": "actor"
+        }
+      }
+    ]
   }
 }

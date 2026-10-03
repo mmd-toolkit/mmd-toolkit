@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Directives inside units: a directive inside the name of a namespace, a name that may contain whitespace, keeps the reading of mermaid.js; the namespace is `Foo`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Foo"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "Foo",
+        "label": "Foo",
+        "classes": [
+          "A"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

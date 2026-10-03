@@ -213,6 +213,24 @@
     },
     {
       "type": "RawText",
+      "value": " ",
+      "range": [
+        24,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
       "value": "Gr",
       "range": [
         25,
@@ -284,7 +302,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         57,

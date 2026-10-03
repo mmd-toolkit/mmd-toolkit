@@ -399,7 +399,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         41,
@@ -436,19 +436,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"boundary\", \"alias\": \"Public API\"",
+      "value": " \"type\" : \"boundary\", \"alias\": \"Public API\" ",
       "range": [
-        47,
-        89
+        46,
+        90
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 24
+          "column": 23
         },
         "end": {
           "line": 3,
-          "column": 66
+          "column": 67
         }
       }
     },
@@ -489,7 +489,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Auth",
       "range": [
         110,
@@ -526,19 +526,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"control\", \"alias\": \"Auth Controller\"",
+      "value": " \"type\" : \"control\", \"alias\": \"Auth Controller\" ",
       "range": [
-        117,
-        163
+        116,
+        164
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 25
+          "column": 24
         },
         "end": {
           "line": 4,
-          "column": 71
+          "column": 72
         }
       }
     },
@@ -561,7 +561,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         172,
@@ -597,7 +597,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Auth",
       "range": [
         178,
@@ -651,7 +651,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Auth",
       "range": [
         198,
@@ -687,7 +687,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         206,

@@ -111,5 +111,33 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "e1",
+        "set": {
+          "animate": true
+        }
+      },
+      {
+        "id": "e2",
+        "set": {
+          "animate": false
+        }
+      },
+      {
+        "id": "e3",
+        "set": {
+          "animate": true
+        }
+      },
+      {
+        "id": "e3",
+        "set": {
+          "animate": false
+        }
+      }
+    ]
   }
 }

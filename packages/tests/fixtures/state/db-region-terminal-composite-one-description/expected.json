@@ -1,0 +1,72 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Rejections outside the grammar: one description for `divider-id-1_start` is accepted."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "divider-id-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "X",
+        "dir": "TB"
+      },
+      {
+        "id": "divider-id-1_start",
+        "shape": "roundedWithTitle",
+        "label": "a",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-1",
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-1_start"
+      },
+      {
+        "id": "generated-region-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "X",
+        "dir": "TB"
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": [],
+        "parentId": "generated-region-1"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -137,7 +137,9 @@ Returns the `Root` of the tree:
   range. Every character that is not whitespace or a line terminator is in a
   token or a comment. A comment lies inside no token: a token that runs across a
   comment line, such as a quoted label over several lines, is cut there into
-  pieces, and the pieces of a quoted string are `StringFragment` tokens.
+  pieces, and so is a text or a quoted string with a directive or a `;` that the
+  line rule ignores inside it (see [Tokens](./docs/tokens.md#tokens)); the
+  pieces of a quoted string are `StringFragment` tokens.
 - `comments`: every comment: each `%%` comment line, and each comment that a
   diagram's own lexer reads, such as `#` or `%` in the middle of a line in a
   sequence diagram, `%%` after a statement in a class diagram, or `#` and `%%`
@@ -157,8 +159,8 @@ Returns the `Root` of the tree:
 
 Tokens, comments, directives, and the frontmatter are not nodes. You read them
 from these lists. Their fields and the token kinds:
-[`ast.md`, Tokens](../spec/docs/ast.md#tokens) and
-[Comments, directives, and frontmatter](../spec/docs/ast.md#comments-directives-and-frontmatter).
+[Tokens](./docs/tokens.md#tokens) and
+[Comments, directives, and frontmatter](../spec/docs/ast.md#directives-and-frontmatter).
 
 ### Positions
 
@@ -204,85 +206,6 @@ type ids. The names and fields are those of the specification's
 [`ast/sequence.md`](../spec/docs/ast/sequence.md),
 [`ast/class.md`](../spec/docs/ast/class.md), and
 [`ast/state.md`](../spec/docs/ast/state.md).
-
-### Db ids
-
-mermaid.js gives some things of a diagram an id that the text does not write as
-one, and the tree, which keeps what is written, holds no such id. These
-functions give it.
-
-```ts
-import { flowchartSubgraphIds, parse } from "@mmd-toolkit/parser"
-
-const root = parse(text)
-const ids = flowchartSubgraphIds(root, text)
-// ids.get(subgraphStatement) is the id of that subgraph in the Db.
-```
-
-- `flowchartSubgraphIds(root, text)` returns, for each
-  `FlowchartSubgraphStatement` of a flowchart, the id of its subgraph: its name
-  text, trimmed, or `subGraph` and the number of subgraphs added before it, when
-  the subgraph has no title and its name text holds whitespace. A nested
-  subgraph is added before the one around it. For another diagram, the map is
-  empty.
-- `text` is the text that `root` was parsed from. It is needed because
-  whitespace after the name, up to the end of its line, makes the id a number,
-  and no node or token holds that whitespace.
-- An id is in the form of the values of the tree: as written, without directives
-  and comments, not converted. The id in the Db of mermaid.js is this text with
-  the entities, attribute quotes, and line terminators converted
-  ([`common.md`](../spec/docs/common.md#reading-a-source)).
-
-### Db texts
-
-Some values in the Db of mermaid.js are read from text past the range of their
-node: the whitespace around a value, a value that is all whitespace and has no
-node, and a `;` that the line rule ignores in between. A tool that keeps such a
-text as written, or builds the Db, gets where it lies from these functions.
-
-```ts
-import { flowchartDbTexts, ignoredSemicolons, parse } from "@mmd-toolkit/parser"
-
-const root = parse(text)
-const { styles } = flowchartDbTexts(root, text)
-// styles.get(styleStatement)[i].range is where mermaid.js reads the i-th style.
-```
-
-- `flowchartDbTexts(root, text)`, `sequenceDbTexts(root, text)`,
-  `classDbTexts(root, text)`, and `stateDbTexts(root, text)` each return a
-  record of maps, one for each kind of value that the diagram's Db reads past
-  the range of a node, keyed by the statement or node that holds the value. For
-  another diagram, the maps are empty.
-  - flowchart: `styles`, the Db text of each style of a `style`, `classDef`, or
-    `linkStyle` statement, null styles included, in the order of `styles`; and
-    `subgraphNameTexts`, the name text of each subgraph
-    ([`flowchart.md`](../spec/docs/diagrams/flowchart.md#building-the-summary-from-the-tree)).
-  - sequence: `titles`, the text of each title, whitespace included
-    ([`sequence.md`](../spec/docs/diagrams/sequence.md)).
-  - class: `genericTypes`, the text between the two `~` of a generic type, also
-    when it is all whitespace, by its `ClassName`
-    ([`class.md`](../spec/docs/diagrams/class.md)).
-  - state: `secondDescriptions`, the second description of an alias without a
-    body; and `noteTexts`, the text of a note on one line from the end of its id
-    ([`state.md`](../spec/docs/diagrams/state.md#building-the-summary-from-the-tree)).
-- Each entry is a `DbText`. Its value is the text of a range
-  ([`ast.md`](../spec/docs/ast.md#nodes)) from `range`, where mermaid.js reads
-  the value: without the directives, the comment regions, the `;` that the line
-  rule ignores, and the empty description blocks before the separator of a
-  statement, and without what the diagram's Db leaves out of that value.
-  `leftOut` lists the parts of that which the source alone does not show: the
-  empty description blocks, and the quotes of a subgraph name that starts with a
-  string. The functions give the range only; the Db then converts the text and
-  may drop its whitespace.
-- The range of a title starts at its text. Between `title` or `title:` and the
-  text lie one whitespace character, a line feed when the text is on the next
-  line, and the directives and comment regions there
-  ([`sequence.md`](../spec/docs/diagrams/sequence.md)), so the character before
-  the range is not always that whitespace.
-- `ignoredSemicolons(text)` returns the range of each `;` that the line rule
-  ignores ([`common.md`](../spec/docs/common.md)), in source order. A `;` token
-  whose range is in the list is ignored; another `;` token is a separator or a
-  character of a value.
 
 ## Walking the tree
 
@@ -330,9 +253,14 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
 `parse()` accepts and rejects what mermaid.js 12.0.0 accepts and rejects, with
 these differences:
 
-- A directive inside a keyword, an arrow, a string, a number, or punctuation
-  makes `parse()` throw, while mermaid.js reads the text around it as joined
+- A directive inside a name without whitespace, a keyword, an arrow, a number,
+  or punctuation makes `parse()` throw, while mermaid.js reads the text around
+  it as joined
   ([`directive-as-token-boundary`](../spec/docs/known-divergences/directive-as-token-boundary.md)).
+- So does a `;` that the line rule of `style` and `classDef` lines ignores
+  inside such a token, while mermaid.js removes the `;` and reads the text
+  around it as joined
+  ([`ignored-semicolon-as-token-boundary`](../spec/docs/known-divergences/ignored-semicolon-as-token-boundary.md)).
 - The contents of the frontmatter, of directives, and of `@{ ... }` data blocks
   are not checked, so input that mermaid.js rejects because that content is
   malformed, has the wrong shape, or names something unknown, such as a shape,
@@ -392,6 +320,9 @@ these differences:
   [`ast/class.md`](../spec/docs/ast/class.md) (the class nodes),
   [`ast/state.md`](../spec/docs/ast/state.md) (the state nodes), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
+- [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
+  and [`docs/positions.md`](./docs/positions.md): positions, the ranges of
+  nodes, and the invariants of the tree.
 - [`docs/error-positions.md`](./docs/error-positions.md): where a `ParseError`
   points.
 - [`docs/development.md`](./docs/development.md): how the parser is built.

@@ -591,7 +591,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "1",
       "range": [
         29,
@@ -627,7 +627,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         43,
@@ -663,7 +663,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "3",
       "range": [
         57,
@@ -699,7 +699,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "4",
       "range": [
         71,
@@ -717,7 +717,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "1",
       "range": [
         73,
@@ -753,7 +753,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         77,
@@ -844,10 +844,10 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         107,
-        115
+        112
       ],
       "loc": {
         "start": {
@@ -856,12 +856,30 @@
         },
         "end": {
           "line": 8,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        113,
+        115
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 11
+        },
+        "end": {
+          "line": 8,
           "column": 13
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         116,
@@ -933,7 +951,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         141,
@@ -969,7 +987,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "3",
       "range": [
         145,
@@ -1060,10 +1078,10 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         177,
-        185
+        182
       ],
       "loc": {
         "start": {
@@ -1072,12 +1090,30 @@
         },
         "end": {
           "line": 10,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        183,
+        185
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 11
+        },
+        "end": {
+          "line": 10,
           "column": 13
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "3",
       "range": [
         186,

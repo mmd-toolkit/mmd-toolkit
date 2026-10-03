@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               19,
@@ -68,7 +68,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               26,
@@ -128,7 +128,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Duck",
             "range": [
               38,
@@ -254,7 +254,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         19,
@@ -272,7 +272,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         26,
@@ -326,7 +326,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Duck",
       "range": [
         38,

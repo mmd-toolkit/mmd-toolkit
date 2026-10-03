@@ -48,7 +48,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               79,
@@ -108,7 +108,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Duck",
             "range": [
               91,
@@ -163,7 +163,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Duck",
             "range": [
               109,
@@ -237,7 +237,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               177,
@@ -297,7 +297,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Fish",
             "range": [
               189,
@@ -352,7 +352,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               198,
@@ -412,7 +412,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Zebra",
             "range": [
               210,
@@ -467,7 +467,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               220,
@@ -558,7 +558,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               242,
@@ -649,7 +649,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               270,
@@ -744,7 +744,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               294,
@@ -839,7 +839,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Duck",
             "range": [
               320,
@@ -1017,7 +1017,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Fish",
             "range": [
               401,
@@ -1154,7 +1154,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Zebra",
             "range": [
               465,
@@ -1435,7 +1435,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         79,
@@ -1489,7 +1489,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Duck",
       "range": [
         91,
@@ -1508,10 +1508,10 @@
     },
     {
       "type": "Keyword",
-      "value": "note for",
+      "value": "note",
       "range": [
         100,
-        108
+        104
       ],
       "loc": {
         "start": {
@@ -1520,12 +1520,30 @@
         },
         "end": {
           "line": 7,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "for",
+      "range": [
+        105,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 9
+        },
+        "end": {
+          "line": 7,
           "column": 12
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Duck",
       "range": [
         109,
@@ -1561,7 +1579,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         177,
@@ -1615,7 +1633,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Fish",
       "range": [
         189,
@@ -1633,7 +1651,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         198,
@@ -1687,7 +1705,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Zebra",
       "range": [
         210,
@@ -1705,7 +1723,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         220,
@@ -1777,7 +1795,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         242,
@@ -1849,7 +1867,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         270,
@@ -1957,7 +1975,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         294,
@@ -2083,7 +2101,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Duck",
       "range": [
         320,
@@ -2335,7 +2353,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Fish",
       "range": [
         401,
@@ -2515,7 +2533,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Zebra",
       "range": [
         465,

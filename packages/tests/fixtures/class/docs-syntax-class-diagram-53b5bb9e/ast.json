@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "BankAccount",
             "range": [
               19,
@@ -68,7 +68,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "BankAccount",
             "range": [
               31,
@@ -159,7 +159,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "BankAccount",
             "range": [
               59,
@@ -250,7 +250,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "BankAccount",
             "range": [
               93,
@@ -362,7 +362,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "BankAccount",
             "range": [
               124,
@@ -525,7 +525,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "BankAccount",
       "range": [
         19,
@@ -543,7 +543,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "BankAccount",
       "range": [
         31,
@@ -615,7 +615,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "BankAccount",
       "range": [
         59,
@@ -687,7 +687,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "BankAccount",
       "range": [
         93,
@@ -813,7 +813,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "BankAccount",
       "range": [
         124,

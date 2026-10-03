@@ -8,7 +8,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "space",
           "range": [
             24,
@@ -33,7 +33,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Square",
                 "range": [
                   42,
@@ -366,7 +366,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "space",
       "range": [
         24,
@@ -420,7 +420,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Square",
       "range": [
         42,

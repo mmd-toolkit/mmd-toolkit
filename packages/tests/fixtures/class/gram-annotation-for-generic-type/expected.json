@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Rejections outside the grammar: `class A~T~` adds no class `T`, so `<<interface>> T` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot read properties of undefined (reading 'annotations')"
+  }
+}

@@ -8,7 +8,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Namespace1",
           "range": [
             23,
@@ -33,7 +33,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Class1",
                 "range": [
                   42,
@@ -248,7 +248,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Class2",
                 "range": [
                   96,
@@ -373,7 +373,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Namespace1",
       "range": [
         23,
@@ -427,7 +427,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class1",
       "range": [
         42,
@@ -643,7 +643,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class2",
       "range": [
         96,

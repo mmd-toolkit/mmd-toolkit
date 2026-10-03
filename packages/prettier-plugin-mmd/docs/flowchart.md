@@ -160,7 +160,7 @@ accTitle: style:#x;y;
 C[style:#x;] --> D;
 E[style:#x;];F[y;]
 G[x;]; style H fill:#f00;
-I[style:#x;]-->J;K   -->L
+I[style:#x;]-->J;   -->L
 ```
 
 Output
@@ -174,7 +174,7 @@ flowchart LR
   C[style:#x;] --> D;
   E[style:#x;];F[y;]
   G[x;]; style H fill:#f00;
-  I[style:#x;] --> J;K --> L
+  I[style:#x;] --> J; --> L
 ```
 
 A line also keeps its statements together and its `;` in place when a statement
@@ -1134,7 +1134,7 @@ flowchart %%{init: {}}%%LR
 A directive that is not closed runs to the end of the text, as mermaid.js reads
 it. Its range ends at its last character that is not whitespace (the
 specification's
-[Comments, directives, and frontmatter](../../spec/docs/ast.md#comments-directives-and-frontmatter)),
+[Comments, directives, and frontmatter](../../spec/docs/ast.md#directives-and-frontmatter)),
 so the whitespace after it is whitespace at the end of the text and is formatted
 as such: the text ends with one line break after the directive. When the text
 ends right after the directive, no line break is added, since mermaid.js would
@@ -1185,10 +1185,47 @@ and between the last block and a `;`, as in
 blocks read no token, so that whitespace follows the name: the subgraph has the
 id `subGraph0`, and the id `S` without it. Whitespace after the last block that
 a line break follows is read as the line break, and does not count. The blocks
-move to lines of their own, and one space stays after the header. These examples
-are not shown here, because the whitespace is at the end of a line (see
-`subgraph-header/whitespace-before-block-kept` in the
-[folder](../tests/fixtures/flowchart/subgraph-header)).
+stay on the line of the header, as written, with the `;` and the directives
+after them: on a line of their own, the whitespace would be read otherwise, and
+a `;` after a block and a directive would be read as a vertex.
+
+Input
+([subgraph-header/whitespace-before-block-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/whitespace-before-block-kept-input.mmd)):
+
+```mmd
+flowchart LR
+subgraph "S"accDescr {} accDescr {}
+A
+end
+subgraph "T"accDescr {}
+B
+end
+subgraph "U"accDescr {} ;
+C
+end
+subgraph "V"accDescr {} %%{init: {}}%%;
+D
+end
+```
+
+Output
+([subgraph-header/whitespace-before-block-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/whitespace-before-block-kept-output.mmd)):
+
+```mmd
+flowchart LR
+  subgraph "S"accDescr {} accDescr {}
+    A
+  end
+  subgraph "T"accDescr {}
+    B
+  end
+  subgraph "U"accDescr {} ;
+    C
+  end
+  subgraph "V"accDescr {} %%{init: {}}%%;
+    D
+  end
+```
 
 Input
 ([subgraph-header/title-spacing-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-input.mmd)):

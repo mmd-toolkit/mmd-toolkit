@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Customer",
             "range": [
               17,
@@ -108,7 +108,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Ticket",
             "range": [
               38,
@@ -163,7 +163,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Student",
             "range": [
               49,
@@ -261,7 +261,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Course",
             "range": [
               72,
@@ -316,7 +316,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Galaxy",
             "range": [
               83,
@@ -395,7 +395,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Star",
             "range": [
               101,
@@ -500,7 +500,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Customer",
       "range": [
         17,
@@ -590,7 +590,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Ticket",
       "range": [
         38,
@@ -608,7 +608,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Student",
       "range": [
         49,
@@ -698,7 +698,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Course",
       "range": [
         72,
@@ -716,7 +716,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Galaxy",
       "range": [
         83,
@@ -788,7 +788,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Star",
       "range": [
         101,

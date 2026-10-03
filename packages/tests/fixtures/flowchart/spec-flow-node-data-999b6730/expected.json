@@ -48,5 +48,23 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "n4",
+        "set": {
+          "labelType": "markdown",
+          "text": "label for n4"
+        }
+      },
+      {
+        "id": "n5",
+        "set": {
+          "labelType": "markdown",
+          "text": "label for n5"
+        }
+      }
+    ]
   }
 }

@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "# c",
+      "value": " # c\n",
       "range": [
-        17,
-        20
+        16,
+        21
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 4
+          "column": 3
         },
         "end": {
-          "line": 2,
-          "column": 7
+          "line": 3,
+          "column": 0
         }
       }
     },

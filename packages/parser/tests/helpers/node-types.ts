@@ -118,6 +118,7 @@ export const allClassNodeTypes: Record<ClassNode["type"], true> = {
   ClassAccTitleStatement: true,
   ClassAccDescrStatement: true,
   ClassAccDescrBlockStatement: true,
+  ClassIdentifier: true,
   ClassName: true,
   ClassMethod: true,
   ClassAttribute: true,

@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Known divergences (ignored-semicolon-as-token-boundary): the line matches the `style` rule, and mermaid.js reads it without the `;`, with the data block of B; here the ignored `;` lies inside the delimiter `@{`, and the input is rejected."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "Z",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "style:#x",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {},
+        "type": "rect"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "B",
+        "set": {
+          "type": "rect"
+        }
+      }
+    ]
+  }
+}

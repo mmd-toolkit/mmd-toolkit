@@ -28,5 +28,12 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "gantt": {
+        "displayMode": "compact"
+      }
+    }
   }
 }

@@ -1,0 +1,172 @@
+{
+  "type": "Root",
+  "diagramType": "classDiagram",
+  "body": {
+    "type": "ClassDiagram",
+    "body": [
+      {
+        "type": "ClassDeclaration",
+        "name": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "ClassIdentifier",
+            "name": "FooBar",
+            "range": [
+              21,
+              28
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 8
+              },
+              "end": {
+                "line": 2,
+                "column": 15
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            21,
+            28
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 2,
+              "column": 15
+            }
+          }
+        },
+        "label": null,
+        "cssClass": null,
+        "annotation": null,
+        "members": null,
+        "range": [
+          15,
+          28
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 15
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      28
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 15
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "classDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        15,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Fo",
+      "range": [
+        21,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "oBar",
+      "range": [
+        24,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    29
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

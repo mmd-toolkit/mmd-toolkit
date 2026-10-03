@@ -30,6 +30,37 @@ fixture の読み方は [README](../README.ja.md) にあります。
 
 fixture の名前は小文字のケバブケースです。
 
+## 名前
+
+fixture の名前は、小文字のケバブケースで `<接頭辞>-<話題>` です。
+同じ話題に入力が多いときは、末尾に入力の SHA-256 の先頭 8 桁の 16 進数を付けます
+（収集の道具が、mermaid.js から取った入力に付けるのと同じ）。
+話題は、その入力が示すものの名前で、どの文の、どこに何があるかです。
+接頭辞は、その fixture で失敗したときに、何の失敗になるかを示します。
+
+- `lex-`: テキストを単位に分けるやり方。名前、文字列、コメント、
+  ディレクティブやコメントが始まれる場所（図種の字句の規則）。
+- `gram-`: 単位から作られる文とノード（文法と木）。
+- `db-`: Db の要約の値。何を持ち、値をどう作るか。
+- `tokens-`: 木のトークンとコメント。トークンやコメントの始まりと終わり、
+  範囲が除くもの。
+- `div-`: 既知の差の印を持つ入力。
+- `config-`、`frontmatter-`、`directive-`、`comment-`、`entity-`、`detect-`、
+  `header-`、`html-`、`error-`: 仕様の共通の規則（`common.md`）を、
+  示す規則で分けたもの。
+- `spec-`、`docs-`、`demo-`: mermaid.js から取った入力（そのテスト、
+  文書、デモ）。収集の道具が名前を付ける
+  （下の「mermaid から取った入力」を参照）。
+
+1 つの入力が複数のものを示すときは、失敗が何についてのものになるかで、
+接頭辞を選びます。
+
+話題の後に、入力が持つものの印を付けてよく、複数あるときはこの順です。
+`u2028` か `u2029`（その文字が入力にある）、
+`directive` か `open-directive`（ディレクティブ、または閉じていないもの）、
+`semicolon`（`;`）。
+話題がすでにディレクティブを名前に持つときは、印として繰り返しません。
+
 ## `ast.json` と `parse-error.json`
 
 `expected.json` は、このパッケージの生成器を通して mermaid.js から作ります。
@@ -42,7 +73,8 @@ fixture の名前は小文字のケバブケースです。
 入力と一緒に読めるよう、入力の隣に置きます。
 このパッケージはこれらを読みも書きも検査もせず、parser にも依存しません。
 生成器、`add`、`add-many`、`set-divergence`、`set-note`、収集の道具、
-`loadFixtures()` が扱うのは `input.mmd` と `expected.json` だけで、
+`loadFixtures()` が扱うのは `input.mmd`、`expected.json`、
+`specified.json` だけで、
 fixture のディレクトリにあるほかのファイルはそのまま残します。
 ここで足した fixture には、
 parser のテストが走るまでどちらのファイルもありません。
@@ -77,9 +109,10 @@ parser のテストが走るまでどちらのファイルもありません。
 （または `pnpm --filter @mmd-toolkit/tests run ...`）。
 
 ```sh
-# pin した mermaid から全 expected.json を作り直す。
+# pin した mermaid から、全 expected.json、specified.json、
+# default-config.json を作り直す。
 pnpm run fixtures:generate
-# 変わる expected.json があれば失敗する。
+# それらのどれかが変わるなら失敗する。
 pnpm run fixtures:check
 # 手で書いた fixture を足す（入力は標準入力か --input）。
 pnpm run fixtures:add flowchart subgraph-inherits-dir \
@@ -94,7 +127,8 @@ pnpm run fixtures:add-many common entries.json --note "..." --dry-run
 pnpm run fixtures:collect flowchart --mermaid <checkout> --out flowchart.json
 pnpm run fixtures:add-many flowchart flowchart.json
 # fixture に既知の差の印を付ける: { "<diagram>/<name>": "<識別子>" か null }。
-# その欄だけが変わり、mermaid は動かさない。
+# その欄と、それに左右される specified.json だけが変わる
+# （specified の読みがある印の fixture には mermaid.js を動かす）。
 pnpm run fixtures:set-divergence divergences.json --dry-run
 # 手で書いた fixture の note を差し替える: { "<diagram>/<name>": "<note>" }。
 pnpm run fixtures:set-note notes.json --dry-run

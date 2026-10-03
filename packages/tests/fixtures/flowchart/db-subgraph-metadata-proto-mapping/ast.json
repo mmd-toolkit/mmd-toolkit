@@ -285,19 +285,19 @@
     },
     {
       "type": "RawText",
-      "value": "__proto__:\n    key: val",
+      "value": "\n  __proto__:\n    key: val\n",
       "range": [
-        34,
-        57
+        31,
+        58
       ],
       "loc": {
         "start": {
-          "line": 5,
-          "column": 2
+          "line": 4,
+          "column": 3
         },
         "end": {
-          "line": 6,
-          "column": 12
+          "line": 7,
+          "column": 0
         }
       }
     },

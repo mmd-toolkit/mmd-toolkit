@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: tri, label: \"Extract\"",
+      "value": " shape: tri, label: \"Extract\" ",
       "range": [
-        21,
-        49
+        20,
+        50
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
-          "column": 36
+          "column": 37
         }
       }
     },

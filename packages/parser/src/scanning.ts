@@ -3,6 +3,7 @@ import {
   isWordCharacter,
   matchesIgnoringCase,
 } from "./character-classes.ts"
+import { SPACE } from "./code-points.ts"
 import type {
   DiagramCharacter,
   DiagramPosition,
@@ -129,4 +130,46 @@ export function matchWholeWordIgnoringCase(
 ): Match | null {
   const match = matchWordIgnoringCase(reader, from, word)
   return match === null || isWordCharacterAt(match.end) ? null : match
+}
+
+/** Where one word of a keyword of several words lies (see {@link matchSpacedWords}). */
+export interface WordPlace {
+  /** The first character of the word. */
+  readonly start: DiagramCharacter
+  /** The place after its last character. */
+  readonly end: DiagramPosition
+}
+
+/**
+ * A keyword of several words, `words`, read from `from`: each word as
+ * `matchOne` reads it, with one space, U+0020, between each two, and no
+ * word character after the last; null when the diagram text differs. The
+ * diagram text has no directives and no `;` that the line rule ignores, so
+ * one next to the space lies between two words, and one between two spaces
+ * makes them two spaces, which do not match.
+ */
+export function matchSpacedWords(
+  reader: DiagramText,
+  from: DiagramCharacter,
+  words: readonly string[],
+  matchOne: (
+    reader: DiagramText,
+    from: DiagramPosition,
+    word: string,
+  ) => Match | null,
+): WordPlace[] | null {
+  const places: WordPlace[] = []
+  let start: DiagramPosition = from
+  for (const [index, word] of words.entries()) {
+    if (index > 0) {
+      if (!isCodePointAt(start, SPACE)) return null
+      start = reader.after(start)
+    }
+    if (start === null) return null
+    const match = matchOne(reader, start, word)
+    if (match === null) return null
+    places.push({ start, end: match.end })
+    start = match.end
+  }
+  return isWordCharacterAt(start) ? null : places
 }

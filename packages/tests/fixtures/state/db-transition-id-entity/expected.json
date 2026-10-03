@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary from the tree: each value is read in converted form, so the entity in an id of a transition is its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "Aﬂ°amp¶ß",
+        "shape": "rect",
+        "label": "Aﬂ°amp¶ß",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "Aﬂ°amp¶ß",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

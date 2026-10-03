@@ -385,6 +385,30 @@ Code:
 ---
 
 
+Test: flowchart/no-ignored-text >> invalid >>> invalid/split-before-direction-with-comment-after-value
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/split-before-direction-with-comment-after-value-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     A-->B; direction TB; %% c
+    |     ^~~~~~ [1]
+  4 |   end
+  5 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+    Suggestions:
+      - Split the line at the `;`: mermaid.js then reads the text as statements, and the direction as a direction statement.
+        Output:
+          1 | flowchart LR
+          2 |   subgraph S
+          3 |     A-->B;
+          4 |     direction TB; %% c
+          5 |   end
+          6 |
+---
+
+
 Test: flowchart/no-ignored-text >> invalid >>> invalid/split-drops-separator-in-title
 Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/split-drops-separator-in-title-input.mmd
 
@@ -470,6 +494,21 @@ Code:
   3 |   direction TB; -->B
     |               ^~~~~~ [1]
   4 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart/no-ignored-text >> invalid >>> invalid/text-before-comment-after-value-in-subgraph
+Filename: tests/fixtures/rules/flowchart/no-ignored-text/invalid/text-before-comment-after-value-in-subgraph-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     direction TB; x %% c
+    |                 ^~~~~~~~ [1]
+  4 |   end
+  5 |
 
 [1] mermaid.js reads this line as a `direction` statement and drops this text.
 ---

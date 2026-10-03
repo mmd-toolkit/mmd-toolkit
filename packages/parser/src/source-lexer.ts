@@ -9,6 +9,7 @@ import type {
 } from "./ast.ts"
 import { isWhitespace } from "./character-classes.ts"
 import { APOSTROPHE } from "./code-points.ts"
+import { ParseError } from "./errors.ts"
 import type { DiagramComment } from "./diagram-parsing.ts"
 import type { DirectiveMatch } from "./directives.ts"
 import type { EntityDelimiter } from "./entities.ts"
@@ -59,18 +60,6 @@ export interface ReadCharacter {
 }
 
 /**
- * Whether `character` is a whitespace character or a line terminator. Its
- * converted form tells: a line terminator is read as `\n`, which is
- * whitespace, as is the `\n` read at the end of the text; an attribute quote
- * and an entity are read as characters that are not whitespace; every other
- * character is read as itself.
- */
-function isWhitespaceCharacter(character: ReadCharacter): boolean {
-  const codePoint = character.text.codePointAt(0)
-  return codePoint !== undefined && isWhitespace(codePoint)
-}
-
-/**
  * common.md, A directive is a token boundary: a directive where the next
  * character of the diagram text would be. A directive is not diagram text.
  * The diagram's token rules go on at `end` as if the directive were absent,
@@ -105,11 +94,11 @@ type DiagramCommentPart =
   | { readonly kind: "semicolon"; readonly at: number }
 
 /**
- * ast.md, Comment: the kind of each piece of a token of kind `kind` that is
+ * `docs/tokens.md`, Tokens, Comment regions in tokens, and A token that a
+ * directive cuts: the kind of each piece of a token of kind `kind` that is
  * recorded as `pieces` pieces: a piece of a `String` token cut by a comment
- * region is a `StringFragment` token, and every other piece keeps the kind of
- * its token. A directive never cuts a `String` token, since a directive
- * inside a string makes the input rejected.
+ * region, an ignored `;`, or a directive is a `StringFragment` token, and
+ * every other piece keeps the kind of its token.
  */
 function pieceKindOf(kind: DiagramTokenKind, pieces: number): TokenKind {
   return kind === "String" && pieces > 1 ? "StringFragment" : kind
@@ -126,8 +115,34 @@ export type ReadElement = ReadCharacter | ReadDirective
 export interface PendingToken {
   /** The token kind. */
   readonly kind: DiagramTokenKind
-  /** Where the token is in the source, from its first to its last character that is not whitespace. */
+  /**
+   * Where the token is in the source, from its first to its last character
+   * that is not whitespace, or with the whitespace at its ends where it is
+   * that of a value that mermaid.js reads (ast.md, Tokens).
+   */
   readonly range: Range
+}
+
+/**
+ * A place inside a token where the reading passes something that is not
+ * diagram text, and so the token is cut (`docs/tokens.md`, Tokens): a
+ * directive, a comment region, or a `;` that the line rule ignores, at
+ * `range`.
+ */
+interface Cut {
+  readonly cause: "directive" | "comment-region" | "ignored-semicolon"
+  readonly range: Range
+}
+
+/**
+ * common.md, A directive is a token boundary, and `style` and `classDef`
+ * lines: whether a token of kind `kind` may be cut, which only a `String`
+ * token and a `RawText` token may. A directive or a `;` that the line rule
+ * ignores inside a token of any other kind, a name, a number, a keyword, an
+ * arrow, or another delimiter, makes the input rejected.
+ */
+function mayBeCut(kind: DiagramTokenKind): boolean {
+  return kind === "String" || kind === "RawText"
 }
 
 /** The rule of Reading a source that applies at a position, or none. */
@@ -256,12 +271,12 @@ export class SourceLexer {
   }
 
   /**
-   * ast.md, Nodes: the text of the range from `start` to `end`: its source
-   * text without the directives, the comment regions, and the `;` that the
-   * line rule ignores, and without `leftOut`, the ranges that the node's
-   * type leaves out as well, such as the delimiters of a string, in source
-   * order. Nothing is converted: line
-   * terminators, attribute quotes, and entities stay as written.
+   * ast.md, Nodes: the written text over the range from `start` to `end`:
+   * its source text without the directives, the comment regions, and the
+   * `;` that the line rule ignores, and without `leftOut`, the ranges that
+   * the node's type leaves out as well, such as the delimiters of a string,
+   * in source order. Nothing is converted: line terminators, attribute
+   * quotes, and entities stay as written.
    */
   public textOfRange(
     start: number,
@@ -408,21 +423,20 @@ export class SourceLexer {
    * (see `frontmatterTokensOf`). On the way it records each comment region's
    * directives and comment and each directive, with a `Directive` token for
    * each directive outside every token and comment, and passes whitespace and
-   * line terminators. A token with a directive or a comment region between two
-   * of its characters that are not whitespace is recorded as its pieces
-   * (common.md, A directive is a token boundary; ast.md, Comment), and the
-   * comment regions between the pieces lie outside every token. The pieces of a
-   * `String` token are `StringFragment` tokens. A `;` that the line rule
-   * ignores and that lies in none of the tokens is a token of its own, of the
-   * kind `ignoredSemicolonKindAt` of its offset, which the diagram gives a `;`
-   * that stands alone at its place. The end of every token is checked (see
-   * {@link SourceLexer.endOfPiece}), and a character that is not whitespace and
-   * lies in no token is a bug of the diagram's parser.
+   * line terminators. A token with a directive, a comment region, or a `;`
+   * that the line rule ignores in its range is recorded as its pieces
+   * (common.md, A directive is a token boundary; `docs/tokens.md`, Tokens
+   * and Comment regions in tokens), and the comment regions between the
+   * pieces lie outside every token. The pieces of a `String` token are
+   * `StringFragment` tokens. Every `;` that the line rule ignores and that
+   * lies outside every comment is an `IgnoredSemicolon` token of its own.
+   * The end of every token is checked (see {@link SourceLexer.piecesOf}),
+   * and a character that is not whitespace and lies in no token is a bug of
+   * the diagram's parser.
    */
   public recordTokens(
     tokens: readonly PendingToken[],
     diagramComments: readonly DiagramComment[],
-    ignoredSemicolonKindAt: (offset: number) => DiagramTokenKind,
     frontmatter: Frontmatter | null,
   ): void {
     if (this.recorded)
@@ -445,10 +459,7 @@ export class SourceLexer {
     while (offset < this.text.length) {
       const diagramComment = diagramComments.at(commentsRecorded)
       if (diagramComment?.range[0] === offset) {
-        offset = this.recordDiagramComment(
-          diagramComment,
-          ignoredSemicolonKindAt,
-        )
+        offset = this.recordDiagramComment(diagramComment)
         commentsRecorded += 1
         continue
       }
@@ -464,30 +475,35 @@ export class SourceLexer {
         continue
       }
       if (found.rule === "ignored-semicolon") {
-        this.recordToken([offset, offset + 1], ignoredSemicolonKindAt(offset))
+        this.recordToken([offset, offset + 1], "IgnoredSemicolon")
         offset += 1
+        continue
+      }
+      // A token, or one of its pieces, starts here, also with whitespace
+      // where it is that of a value (ast.md, Tokens).
+      const token = tokens.at(recorded)
+      if (token !== undefined && pieces === null && token.range[0] === offset) {
+        const cut = this.piecesOf(token)
+        this.rejectCut(token, cut.cuts)
+        pieces = cut.pieces
+      }
+      const piece = pieces?.[piecesRecorded]
+      if (token !== undefined && pieces !== null && piece?.[0] === offset) {
+        this.recordToken(piece, pieceKindOf(token.kind, pieces.length))
+        offset = piece[1]
+        piecesRecorded += 1
+        if (piecesRecorded === pieces.length) {
+          recorded += 1
+          pieces = null
+          piecesRecorded = 0
+        }
         continue
       }
       if (this.isWhitespaceAt(offset)) {
         offset = this.characterEnd(offset)
         continue
       }
-      const token = tokens.at(recorded)
-      if (token !== undefined && pieces === null && token.range[0] === offset) {
-        pieces = this.piecesOf(token.range)
-      }
-      const piece = pieces?.[piecesRecorded]
-      if (token === undefined || pieces === null || piece?.[0] !== offset) {
-        throw new Error(this.bug(`the character at ${offset} is in no token`))
-      }
-      this.recordToken(piece, pieceKindOf(token.kind, pieces.length))
-      offset = piece[1]
-      piecesRecorded += 1
-      if (piecesRecorded === pieces.length) {
-        recorded += 1
-        pieces = null
-        piecesRecorded = 0
-      }
+      throw new Error(this.bug(`the character at ${offset} is in no token`))
     }
     if (commentsRecorded !== diagramComments.length) {
       throw new Error(
@@ -506,92 +522,104 @@ export class SourceLexer {
   }
 
   /**
-   * common.md, A directive is a token boundary, and ast.md, Tokens and
-   * Comment: the pieces of the token whose range is `range`, in source
-   * order, each the range of a token that is recorded. A token that has a
-   * directive or a comment region between two of its characters that are
-   * not whitespace is cut there, and each piece is a part without the
-   * whitespace and line terminators at its ends; a part that is all
-   * whitespace is no piece, and a token without such a cut is one piece,
-   * its range. A piece starts at the first character of the diagram text
-   * that is not whitespace, after the directives, comment regions, and
-   * whitespace before it (see {@link SourceLexer.endOfPiece} for its end).
+   * `docs/tokens.md`, Tokens, Comment regions in tokens, and A token that a
+   * directive cuts: the pieces of the token `token`, in source order, each
+   * the range of a token that is recorded. A token that has a directive, a
+   * comment region, or a `;` that the line rule ignores in it is cut there
+   * into the parts between the cuts, which the reading passes; a token
+   * without such a cut is one piece, its range. The range of a token is the
+   * text that mermaid.js reads as its value, so each part keeps the
+   * whitespace and line terminators next to a cut, which mermaid.js reads
+   * as part of the value; a part that is empty is no piece. Also returns
+   * the cuts, in source order. A token that ends inside a character or after
+   * the end of the text is a bug of the diagram's parser.
    */
-  private piecesOf(range: Range): Range[] {
+  private piecesOf(token: PendingToken): {
+    readonly pieces: Range[]
+    readonly cuts: Cut[]
+  } {
+    const [tokenStart, tokenEnd] = token.range
     const pieces: Range[] = []
-    let offset = range[0]
-    while (offset < range[1]) {
-      const element = this.readAt(offset)
-      if (element.kind === "directive" || isWhitespaceCharacter(element)) {
-        offset = element.end
-        continue
-      }
-      const end = this.endOfPiece(element.start, range[1])
-      pieces.push([element.start, end])
-      offset = end
-    }
-    if (pieces.length === 0) {
-      throw new Error(
-        this.bug(`the token from ${range[0]} to ${range[1]} has no character`),
-      )
-    }
-    return pieces
-  }
-
-  /**
-   * common.md, A directive is a token boundary, and ast.md, Tokens,
-   * Comment, and Invariants: the end of the piece of a token that starts at
-   * `start`, in the token that ends at `tokenEnd`. A token that has a
-   * directive or a comment region between two of its characters that are
-   * not whitespace is cut there, and each piece, without the whitespace at
-   * its ends, is a token. The piece is read as the token rules read it, and
-   * its end is the end of its last character that is not whitespace before
-   * the next directive or comment region, or `tokenEnd` when none follows
-   * in the token.
-   *
-   * The end is found by reading, so it is always the end of a character of
-   * the diagram text that is not whitespace: at a character boundary, not
-   * inside a line terminator or a comment region, after no directive, and
-   * not at a `;` that the line rule ignores, which the reading passes. A
-   * token whose end is not such an end, because it ends with whitespace, a
-   * line terminator, a comment region, or an ignored `;`, inside a character,
-   * or after the end of the text, is a bug of the diagram's parser.
-   */
-  private endOfPiece(start: number, tokenEnd: number): number {
-    let end = start
-    let offset = start
+    const cuts: Cut[] = []
+    let pieceStart = tokenStart
+    let offset = tokenStart
     while (offset < tokenEnd) {
-      if (this.regionStartsAt(offset)) return end
-      const element = this.readAt(offset)
-      if (element.kind === "directive") return end
-      if (element.endOfText) break
-      if (!isWhitespaceCharacter(element)) end = element.end
-      offset = element.end
+      // A comment region, an ignored `;`, and a directive cut the token;
+      // the reading passes each, a region as a whole.
+      const found = this.ruleAt(offset)
+      let cut: Cut | null = null
+      if (found.rule === "region") {
+        cut = { cause: "comment-region", range: [offset, found.entry.end] }
+      } else if (found.rule === "ignored-semicolon") {
+        cut = { cause: "ignored-semicolon", range: [offset, offset + 1] }
+      } else {
+        const element = this.readAt(offset)
+        if (element.kind === "directive") {
+          cut = { cause: "directive", range: [offset, element.end] }
+        } else if (element.endOfText) break
+        else {
+          offset = element.end
+          continue
+        }
+      }
+      if (pieceStart < offset) pieces.push([pieceStart, offset])
+      cuts.push(cut)
+      offset = cut.range[1]
+      pieceStart = offset
     }
-    if (end !== tokenEnd) {
+    if (offset !== tokenEnd) {
       throw new Error(
         this.bug(
-          `the token from ${start} to ${tokenEnd} does not end with a character of the diagram text that is not whitespace`,
+          `the token from ${tokenStart} to ${tokenEnd} does not end at the end of a character of the diagram text`,
         ),
       )
     }
-    return end
+    if (pieceStart < tokenEnd) pieces.push([pieceStart, tokenEnd])
+    if (pieces.length === 0) {
+      throw new Error(
+        this.bug(
+          `the token from ${tokenStart} to ${tokenEnd} has no character`,
+        ),
+      )
+    }
+    return { pieces, cuts }
   }
 
   /**
-   * ast.md, Comment: whether a comment region starts at `offset`, where the
-   * reading of a token goes on, also after the `;` characters that the line
-   * rule ignores there. The reading passes a comment region as a whole, so
-   * that it starts at the end of a character that was read.
+   * common.md, A directive is a token boundary, and `style` and `classDef`
+   * lines: throws `ParseError` at the first of the cuts `cuts` of the token
+   * `token` when its kind may not be cut (see {@link mayBeCut}): the
+   * directive, or the `;` that the line rule ignores. A comment region cuts
+   * only tokens whose units span lines, `String` and `RawText` tokens
+   * (`docs/tokens.md`, Comment regions in tokens); one inside a token of
+   * another kind is a bug of the diagram's parser.
    */
-  private regionStartsAt(offset: number): boolean {
-    let current = offset
-    for (;;) {
-      if (current >= this.text.length) return false
-      const found = this.ruleAt(current)
-      if (found.rule === "region") return true
-      if (found.rule !== "ignored-semicolon") return false
-      current += 1
+  private rejectCut(token: PendingToken, cuts: readonly Cut[]): void {
+    const [cut] = cuts
+    if (cut === undefined || mayBeCut(token.kind)) return
+    switch (cut.cause) {
+      case "comment-region":
+        throw new Error(
+          this.bug(
+            `the comment region at ${cut.range[0]} cuts the ${token.kind} token at ${token.range[0]}`,
+          ),
+        )
+      case "directive":
+        throw new ParseError(
+          "Unexpected directive",
+          cut.range,
+          this.lines.location(cut.range),
+        )
+      case "ignored-semicolon":
+        throw new ParseError(
+          "Unexpected ; that the line rule ignores",
+          cut.range,
+          this.lines.location(cut.range),
+        )
+      default:
+        throw new Error(
+          this.bug(`unknown cut ${JSON.stringify(cut.cause satisfies never)}`),
+        )
     }
   }
 
@@ -776,16 +804,12 @@ export class SourceLexer {
    *
    * The comment ends where its line ends, as `commentEnd` says, except
    * that a `;` that the line rule ignores and that is its last character
-   * lies outside it, as a token of its own of the kind
-   * `ignoredSemicolonKindAt` gives: the comment is found as if that `;` were
-   * not there. That is decided on the whole comment, before the regions cut
+   * lies outside it, as an `IgnoredSemicolon` token: the comment is found as
+   * if that `;` were not there. That is decided on the whole comment, before the regions cut
    * it, so a `;` with characters of the comment after it on its line, a
    * U+2028 or U+2029 before a region among them, lies inside.
    */
-  private recordDiagramComment(
-    comment: DiagramComment,
-    ignoredSemicolonKindAt: (offset: number) => DiagramTokenKind,
-  ): number {
+  private recordDiagramComment(comment: DiagramComment): number {
     const [start, lineEnd] = comment.range
     const directives: DirectiveMatch[] = []
     const regions: CommentRegionEntry[] = []
@@ -856,10 +880,7 @@ export class SourceLexer {
           this.recordCommentFragment(part.range, comment)
           break
         case "semicolon":
-          this.recordToken(
-            [part.at, part.at + 1],
-            ignoredSemicolonKindAt(part.at),
-          )
+          this.recordToken([part.at, part.at + 1], "IgnoredSemicolon")
           break
         default:
           throw new Error(

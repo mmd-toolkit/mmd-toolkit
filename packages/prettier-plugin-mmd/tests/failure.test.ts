@@ -66,35 +66,40 @@ describe("a class diagram the parser rejects", () => {
   )
 })
 
-// The parser reports the error at the line feed after `participant #c`, which
-// ends at the start of the next line, where Prettier's code frame fails on a
-// line that does not exist: the error has a start only. The U+2028 is written
-// as an escape.
-describe("an error that ends at the start of a line", () => {
-  it("is reported as a syntax error with a start only", async () => {
-    const error: unknown = await formatMermaid(
+// Prettier's code frame ends a line at U+2028 and U+2029 too, which Mermaid
+// does not, so the position of an error is counted again from its offsets,
+// and an error that ends at the start of a line has a start only. With the
+// parser's lines the frame failed on a line that does not exist (a
+// `RangeError`). The characters are written as escapes.
+describe("an error in a text with U+2028 or U+2029", () => {
+  it.each([
+    [
       "sequenceDiagram\nparticipant #c\u2028%% e\n John\n",
-    ).catch((e: unknown) => e)
+      { start: { line: 4, column: 6 } },
+    ],
+    [
+      'stateDiagram-v2\nstate X ""\u2029% c\naccDescr {} {\nB\n}\n',
+      { start: { line: 3, column: 3 }, end: { line: 4, column: 11 } },
+    ],
+  ])("is reported as a syntax error: %j", async (input, loc) => {
+    const error: unknown = await formatMermaid(input).catch((e: unknown) => e)
     expect(error).toBeInstanceOf(SyntaxError)
     expect((error as Error).cause).toMatchObject({ name: "ParseError" })
-    expect((error as { loc?: unknown }).loc).toEqual({
-      start: { line: 3, column: 6 },
-    })
+    expect((error as { loc?: unknown }).loc).toEqual(loc)
   })
 })
 
-describe("input rejected because a directive lies inside a string", () => {
-  // mermaid.js removes the directive and reads the label `a  b`; the parser
-  // rejects a directive inside a string (fixture common/directive-in-string).
-  const input = 'flowchart LR\nA["a %%{init: {}}%% b"]-->B\n'
+describe("input rejected because a directive lies inside a keyword", () => {
+  // mermaid.js removes the directive and reads the keyword `subgraph`; the
+  // parser rejects a directive inside a keyword (known divergence
+  // directive-as-token-boundary).
+  const input = "flowchart LR\nsub%%{init: {}}%%graph S\nA\nend\n"
 
   it("is reported as a syntax error in a standalone file", async () => {
     const error: unknown = await formatMermaid(input).catch((e: unknown) => e)
     expect(error).toBeInstanceOf(SyntaxError)
     expect((error as Error).cause).toMatchObject({ name: "ParseError" })
-    expect((error as Error).message).toContain(
-      '> 2 | A["a %%{init: {}}%% b"]-->B',
-    )
+    expect((error as Error).message).toContain("> 2 | sub%%{init: {}}%%graph S")
   })
 
   it("is left to Prettier inside Markdown", async () => {

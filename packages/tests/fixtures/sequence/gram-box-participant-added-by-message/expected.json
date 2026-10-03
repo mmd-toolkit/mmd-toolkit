@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar: A, added by a message, gets the first box from the participant statement inside it, so the participant statement inside the second box is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "A same participant should only be defined in one Box: A can't be in 'G' and in 'H' at the same time."
+  }
+}

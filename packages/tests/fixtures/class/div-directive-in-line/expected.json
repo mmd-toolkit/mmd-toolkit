@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "class.md Directives inside units: a directive inside the line `--` makes the input rejected here; mermaid.js accepts it."
+    "note": "class.md Known divergences (directive-as-token-boundary): the directive lies inside the line `--` of the relation; mermaid.js accepts with the arrow `-->`, this specification rejects."
   },
   "knownDivergence": "directive-as-token-boundary",
   "accepted": true,

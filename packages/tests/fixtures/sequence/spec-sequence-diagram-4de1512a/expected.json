@@ -55,5 +55,21 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "Alice",
+        "set": {
+          "type": "boundary"
+        }
+      },
+      {
+        "id": "Bob",
+        "set": {
+          "type": "control"
+        }
+      }
+    ]
   }
 }

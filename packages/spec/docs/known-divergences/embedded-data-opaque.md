@@ -146,8 +146,8 @@ gives no Db for these inputs, so their fixtures record only the rejection.
 mermaid.js parses the frontmatter body and the data blocks as YAML, and the
 arguments of some directives as JSON, derives configuration and diagram data
 from them, and checks the result, before or while it draws (see
-[Configuration (reference)](../common.md#configuration-reference)). A failure of
-any of these steps rejects the input.
+[Configuration (reference)](../../../tests/docs/configuration.md#configuration-reference)).
+A failure of any of these steps rejects the input.
 
 ## The rule of this specification, and why
 
@@ -169,14 +169,3 @@ configuration value of the wrong type, or a shape that mermaid.js does not know
 is accepted by this toolkit and formatted, while mermaid.js rejects it. Such a
 mistake is not reported by the parser; checking the values of embedded data is
 left to other tools.
-
-## Counts and how they are checked
-
-25 fixtures are marked with this divergence: 8 for the frontmatter, 6 for
-directives, and 11 for data blocks, in flowchart and in sequence. mermaid.js
-rejects each of them, and this specification accepts each.
-
-The differential test of the parser requires every difference that it attributes
-to this divergence to be an input that mermaid.js rejects, for what its embedded
-data contains; a difference in the Db or in the diagram type is never explained
-by it.

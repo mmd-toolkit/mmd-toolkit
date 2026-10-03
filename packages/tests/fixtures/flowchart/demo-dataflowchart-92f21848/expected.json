@@ -74,5 +74,17 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "DataStore",
+        "set": {
+          "labelType": "markdown",
+          "text": "Datastore",
+          "type": "datastore"
+        }
+      }
+    ]
   }
 }

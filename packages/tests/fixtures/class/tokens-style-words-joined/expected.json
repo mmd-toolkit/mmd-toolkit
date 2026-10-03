@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/class.md ClassLiteral: the value of a style is the texts of its tokens joined; mermaid.js drops the whitespace between two units of a style, and that whitespace lies in no token, while whitespace inside a label stays; `a b` has the tokens `a` and `b` and the value `ab`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "ab"
+        ]
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

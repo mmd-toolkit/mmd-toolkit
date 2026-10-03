@@ -10,8 +10,7 @@ denotes. It does not describe rendering or layout. It does not parse or check
 embedded data: the frontmatter body, directive arguments, and `@{ ... }` data
 blocks are kept as written (see
 [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.md)). How
-mermaid.js derives its configuration is described for reference, because some Db
-values depend on it.
+mermaid.js derives its configuration is outside this specification.
 
 The reference for every statement in this document is the behavior of a pinned
 mermaid.js version. The pinned version is recorded in
@@ -43,29 +42,25 @@ The specification is derived from three sources in the mermaid.js repository:
 
 ## Conformance
 
-An implementation of this specification reads a source text and does three
-things:
+An implementation of this specification reads a source text and does two things:
 
 1. It accepts the source exactly when this specification accepts it. That is
    when mermaid.js accepts it, except for the inputs defined in
    [known-divergences.md](./known-divergences.md). Where acceptance depends on
    the configuration, as with the limit on the number of flowchart edges, the
-   check is made like a Db value that depends on the configuration (item 3), by
-   whoever holds the configuration; the text alone does not decide it.
+   check is made by whoever holds the configuration; the text alone does not
+   decide it.
 2. For an accepted source, it produces the tree defined in [ast.md](./ast.md)
    and in the document of its diagram type under `ast/`. The tree loses nothing
    of the source: every character is in a token, a comment, a directive, or the
    frontmatter, or it is whitespace, as defined in
    [Notation](./common.md#notation), or a line terminator.
-3. For an accepted source, it determines the values that the Db of mermaid.js
-   holds, in the normalized form that the Db normalization section of each
-   diagram document defines. Where a value depends on the configuration, the
-   configuration is the one mermaid.js derives (see
-   [Configuration (reference)](./common.md#configuration-reference)).
 
-The fixtures cited as `[fixture: <category>/<name>]` show each of these for
-concrete inputs: `expected.json` records whether mermaid.js accepts the input,
-the detected id, and the normalized Db.
+The tokens and the positions of the tree, and how the tree is checked against
+the values that the Db of mermaid.js holds, are outside this specification. The
+fixtures cited as `[fixture: <category>/<name>]` show the acceptance and the
+tree for concrete inputs: `expected.json` records whether mermaid.js accepts the
+input, the detected id, and the normalized Db.
 
 ## Terminology
 
@@ -75,8 +70,9 @@ the detected id, and the normalized Db.
   and it is named by the id that mermaid.js reports, such as `flowchart-v2` or
   `sequence` (the DiagramType of [ast.md](./ast.md#root)).
 - **trivia** — the parts of the source that are not diagram tokens: frontmatter,
-  directives, comments, and whitespace, as defined in [common.md](./common.md)
-  and [ast.md](./ast.md#comments-directives-and-frontmatter).
+  directives, comments, the `;` that the line rule ignores, and the whitespace
+  outside every token, as defined in [common.md](./common.md) and
+  [ast.md](./ast.md#directives-and-frontmatter).
 - **unit** and **context** — a diagram document describes its lexer as reading
   units of the diagram text, in contexts that the units enter and leave.
   mermaid.js parses most diagrams with a Jison lexer that switches between
@@ -93,13 +89,9 @@ Each document under `diagrams/` has the same sections:
 1. **Detection** — how the diagram type is recognized.
 2. **Lexical structure** — how the lexer divides the diagram text into units,
    and in which contexts.
-3. **Grammar** — the statements of the diagram and how they compose.
-4. **Db normalization** — processing that happens after the grammar and affects
-   what a text means. The diagram title from the frontmatter and the Db values
-   that depend on the configuration do not come from the tree: whoever checks Db
-   values derives them with mermaid.js's own functions (see
-   [Configuration (reference)](./common.md#configuration-reference)).
-5. **Known divergences** — which of the divergences defined in
+3. **Grammar** — the statements of the diagram and how they compose, and the
+   inputs that mermaid.js rejects after its grammar has accepted them.
+4. **Known divergences** — which of the divergences defined in
    [known-divergences.md](./known-divergences.md) apply to the diagram type, and
    how they show in it. A divergence is a group of inputs for which this
    specification deliberately differs from mermaid.js, named by a divergence
@@ -107,8 +99,8 @@ Each document under `diagrams/` has the same sections:
    merely surprising is described in the other sections and followed.
 
 Each document under `ast/` defines the nodes of one diagram type's tree, with
-their fields and child fields, and which characters form tokens of which kind;
-the Grammar section of the diagram document says which rule makes which node.
+their fields and child fields. The Grammar section of the diagram document says
+which rule makes which node.
 
 ## Writing conventions
 

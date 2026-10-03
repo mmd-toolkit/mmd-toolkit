@@ -193,15 +193,15 @@
     },
     {
       "type": "RawText",
-      "value": "shape: rounded",
+      "value": " shape: rounded",
       "range": [
-        23,
+        22,
         37
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 10
+          "column": 9
         },
         "end": {
           "line": 2,

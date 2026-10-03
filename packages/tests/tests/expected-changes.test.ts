@@ -27,6 +27,18 @@ function changeOf(previous: Expectation, next: Expectation): string {
 }
 
 describe("classifyExpectedChange", () => {
+  it("reports a change of the embedded values when the Db is the same", () => {
+    const previous: Expectation = {
+      accepted: true,
+      diagramType: "flowchart-v2",
+      db: { direction: "LR" },
+      embedded: { title: "a" },
+    }
+    const next: Expectation = { ...previous, embedded: { title: "b" } }
+    expect(changeOf(previous, next)).toBe("embedded values")
+    expect(changeOf(previous, previous)).toBe("file format only")
+  })
+
   it("reports a change of acceptance with both outcomes", () => {
     expect(
       changeOf(accepted({ direction: "LR" }), rejected("Error", "Parse error")),

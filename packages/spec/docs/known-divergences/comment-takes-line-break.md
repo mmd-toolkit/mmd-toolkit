@@ -104,6 +104,12 @@ text; where they happen to form one, it reads a statement that the author did
 not write. This specification reads the comment as a comment, and the line after
 it as the next statement.
 
+With a comment after a relation, then a line with only `%%`, and then a line of
+spaces, mermaid.js takes the line feeds after the comment and after the `%%` and
+reads one line break, while this specification reads two, and rejects the text,
+as both do without the comment after the relation. [fixture:
+class/div-comment-then-comment-only-line]
+
 ## Why mermaid.js reads it so
 
 The lexer of mermaid.js reads a comment with one rule
@@ -176,38 +182,3 @@ comment, which mermaid.js joins, is rejected by this specification.
   2026-10-02, #1646 is closed with the label `Type: Enhancement`. #1645 is about
   comments inside the body of a class, not after a statement; it is closed, with
   the labels `Type: Bug / Error` and `Status: Approved` among others.
-
-## Counts and how they are checked
-
-Inputs were made from the accepted class fixtures that are not marked with a
-divergence, by inserting ` %% c` at the end of each line, by inserting `%% c`
-and a space after each space inside a line, and by inserting a line `%%` or
-`%%{ }%%` after each line, all in the diagram text, not in the frontmatter. Each
-was run through mermaid.js and through the parser of this specification, and
-their acceptance and Db were compared:
-
-| Inputs                                 | Rejected by mermaid.js, accepted by this specification | Accepted by both, a different Db | Accepted by mermaid.js, rejected by this specification |
-| -------------------------------------- | -----------------------------------------------------: | -------------------------------: | -----------------------------------------------------: |
-| ` %% c` at the end of a line, 2,728    |                                                    633 |                                8 |                                                      0 |
-| `%% c` after a space in a line, 22,053 |                                                     83 |                              146 |                                                      9 |
-| a comment line inserted, 5,924         |                                                      0 |                                0 |                                                      4 |
-
-The other 29,822 are read the same by both. The 4 inputs with an inserted line
-have a comment after a statement, then the inserted line, and then a line of
-spaces: mermaid.js takes the line feeds after both comments and reads one line
-break, while this specification reads two, and rejects the text, as both do
-without the comment after the statement. [fixture:
-class/div-comment-then-comment-only-line]
-
-These inputs were also checked against mermaid.js changed so that it keeps the
-rule of the comment when only whitespace comes before the `%%` on its line, and
-otherwise uses a rule that reads `%%` and the rest of the line only
-(`withoutDivergences: ["comment-takes-line-break"]`; see
-[Checking a divergence](../known-divergences.md#checking-a-divergence)). The
-differential test of the parser was run on all of them, 30,938 with the inputs
-made in the same way from the fixtures marked with this divergence and from the
-lines of the frontmatter: it compares the parser with mermaid.js on every input,
-and with the changed mermaid.js on every input whose difference it attributes to
-this divergence. It found no difference that this divergence or another known
-divergence does not explain; the inputs inserted in the frontmatter differ only
-as [`embedded-data-opaque`](./embedded-data-opaque.md).

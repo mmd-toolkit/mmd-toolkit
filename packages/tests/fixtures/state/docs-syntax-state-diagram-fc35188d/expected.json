@@ -84,5 +84,8 @@
     ],
     "classDefs": [],
     "links": []
+  },
+  "embedded": {
+    "title": "Simple sample"
   }
 }

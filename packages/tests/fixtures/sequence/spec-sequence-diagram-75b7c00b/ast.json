@@ -1105,7 +1105,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "1",
       "range": [
         29,
@@ -1177,7 +1177,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         64,
@@ -1249,7 +1249,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "3",
       "range": [
         100,
@@ -1321,7 +1321,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "4",
       "range": [
         137,
@@ -1375,7 +1375,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "1",
       "range": [
         163,
@@ -1411,7 +1411,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         167,
@@ -1484,10 +1484,10 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         193,
-        201
+        198
       ],
       "loc": {
         "start": {
@@ -1496,12 +1496,30 @@
         },
         "end": {
           "line": 8,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        199,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 11
+        },
+        "end": {
+          "line": 8,
           "column": 13
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         202,
@@ -1555,7 +1573,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "2",
       "range": [
         223,
@@ -1591,7 +1609,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "3",
       "range": [
         227,
@@ -1664,10 +1682,10 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         254,
-        262
+        259
       ],
       "loc": {
         "start": {
@@ -1676,12 +1694,30 @@
         },
         "end": {
           "line": 10,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        260,
+        262
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 11
+        },
+        "end": {
+          "line": 10,
           "column": 13
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "3",
       "range": [
         263,
@@ -1735,7 +1771,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "3",
       "range": [
         285,
@@ -1771,7 +1807,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "4",
       "range": [
         289,
@@ -1844,10 +1880,10 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         317,
-        325
+        322
       ],
       "loc": {
         "start": {
@@ -1856,12 +1892,30 @@
         },
         "end": {
           "line": 12,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        323,
+        325
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 11
+        },
+        "end": {
+          "line": 12,
           "column": 13
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "4",
       "range": [
         326,
@@ -1915,7 +1969,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "4",
       "range": [
         349,
@@ -1951,7 +2005,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "1",
       "range": [
         353,
@@ -2024,10 +2078,10 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         382,
-        390
+        387
       ],
       "loc": {
         "start": {
@@ -2036,12 +2090,30 @@
         },
         "end": {
           "line": 14,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        388,
+        390
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 11
+        },
+        "end": {
+          "line": 14,
           "column": 13
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "1",
       "range": [
         391,

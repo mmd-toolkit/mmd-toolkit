@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "C1",
             "range": [
               19,
@@ -122,7 +122,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "C1",
             "range": [
               63,
@@ -176,7 +176,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "C1",
             "range": [
               66,
@@ -318,7 +318,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C1",
       "range": [
         19,
@@ -444,7 +444,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C1",
       "range": [
         63,
@@ -462,7 +462,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C1",
       "range": [
         66,

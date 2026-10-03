@@ -174,7 +174,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         28,
@@ -211,10 +211,10 @@
     },
     {
       "type": "Keyword",
-      "value": "LEFT OF",
+      "value": "LEFT",
       "range": [
         35,
-        42
+        39
       ],
       "loc": {
         "start": {
@@ -223,12 +223,30 @@
         },
         "end": {
           "line": 3,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "OF",
+      "range": [
+        40,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 10
+        },
+        "end": {
+          "line": 3,
           "column": 12
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         43,

@@ -133,7 +133,12 @@ pin した mermaid.js の更新を扱う。
   | `src/normalizers/browser-stand-ins.ts`                      | `browser-stand-ins.test.ts`、`mermaid.test.ts`                 |
   | `src/normalizers/json.ts`                                   | `json.test.ts`、その後 `fixtures:check`                        |
   | `src/expected-changes.ts`                                   | `expected-changes.test.ts`                                     |
+  | `src/recorded-embedded.ts`                                  | `recorded-embedded.test.ts`、その後 `fixtures:check`           |
   | `src/mutation.ts`                                           | `mutation.test.ts`                                             |
+  | `src/boundary-kinds.ts`                                     | `boundary-kinds.test.ts`                                       |
+  | `src/db-from-tree/`                                         | `db-from-tree.test.ts`、`converted-text.test.ts`               |
+  | `src/source-scan.ts`                                        | `source-scan.test.ts`                                          |
+  | `src/check-tree/`                                           | `check-tree-corpus.test.ts`、`check-tree*.test.ts`             |
   | `tools/`                                                    | テストのファイルはない。下を参照                               |
 
   `tools/` のコマンドにはテストのファイルがなく、それぞれ動かして確かめる。
@@ -142,8 +147,10 @@ pin した mermaid.js の更新を扱う。
   `generate` は `fixtures:check` で確かめる。
   `tools/collect.ts` は、`--out` をリポジトリの外に向けて動かし、
   書いたファイルを読む。
-  `tools/mutation.ts` は、1 つの fixture（`--fixture`）と
-  小さい `--count` で動かす。
+  `tools/mutation.ts` は、1 つの fixture（`--fixture`）で動かす。
+  `--count` を省くと 1 周（当てはまる編集の演算子ごとに 1 件）で、
+  増やすのは、ある演算子の変異の形を広げたいときだけにする
+  （確かさのためではない）。
 
   1 つのファイルは
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<ファイル>` で回す。
@@ -170,8 +177,8 @@ pin した mermaid.js の更新を扱う。
   それを変えると、貯めた結果がすべて使われなくなる。
   その一覧を正しく保つ（テストが確かめる）。
   それらのファイルの変更は、入れる前に、テストを回す人に知らせる。
-  そして、全量の実行が動いていないときに入れる。
-  動いている全量の実行が貯めた結果を、捨てることになるためである。
+  そして、長い実行が動いていないときに入れる。
+  動いている長い実行が貯めた結果を、捨てることになるためである。
   すぐに入れてよいのは、誤った結果を直す変更だけで、そのときも知らせる。
 - 生成器が何も変えないことは、件数の表示だけでなく、
   ファイルのハッシュで確かめる（リポジトリのルートで実行する）。
@@ -200,8 +207,10 @@ pin した mermaid.js の更新を扱う。
 仕様（spec の SKILL）、parser（parser の SKILL）、
 printer（prettier-plugin の SKILL）の順に終えてから次の図種に進む。
 後の作業は前の作業の結果を使う。
-仕様の Db normalization の節は要約の欄の一覧から書き、
+仕様と parser は要約の欄の一覧（`docs/db-summaries.ja.md`）を参照し、
 仕様の主張と parser のテストは fixture を使う。
+木から要約を作る手順は、仕様の木の文書の後に、ここに書く
+（`docs/db-from-tree/<図種>.ja.md` と `src/db-from-tree/<図種>.ts`）。
 
 ### 5.1 入力
 
@@ -276,7 +285,7 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
    決める根拠は、
    AGENTS.md の正しさの基準（受理する入力の Db は mermaid.js と一致する）と、
    要約は構文が決める情報だけを持つこと（`docs/db-summaries.md`）、
-   使う側への影響（仕様の Db normalization の節、parser の Db の導出）。
+   使う側への影響（仕様と parser が参照する要約の欄、木からの Db の導出）。
    分からない形（データブロックの記録など）は、
    リポジトリの外の作業用のディレクトリで試作して確かめてから決める。
 4. `packages/tests/src/normalizers/<図種>.ts` に正規化関数を書き、
@@ -318,7 +327,7 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
 8. `docs/db-summaries.md` と `.ja.md` に、
    その図種の節（何を落とし、なぜか）を書く。
 9. 結果として、要約の欄の一覧と、落とした欄とその理由を示す。
-   仕様の Db normalization の節は、この一覧から書く（spec の SKILL）。
+   仕様と parser は、この一覧を参照する（`docs/db-summaries.ja.md`）。
 
 ### 5.3 fixture
 
@@ -423,16 +432,34 @@ pie（最初の Langium の図）のときに書く。
    ディレクトリごと通常の `mv` で動かし、`fixtures:check` を通す。
    tests と tools の中に旧名の参照がないことを grep で確かめる。
    仕様の本文の参照は、spec の SKILL の手順で直す。
-4. ほかのパッケージのテストが読み誤った形を、
-   回帰の入力として fixture にするときは、
+4. parser が失敗した入力（review、生成した入力、差分テストが見つけたもの）を
+   残すときは、コーパスの fixture にする。
+   parser のファイルに残した失敗の入力は、
+   ほかの実装のためには残らず、
+   fixture は、すべての実装が確かめるためである。
+   フォーマッターと規則の入力は、それぞれのパッケージに残す。
    期待（受理・拒否、Db の値）を足す前に mermaid.js で確かめる。
    合わなければ足さずに、そのことを示す。
+   失敗の原因が、仕様にその形の文がないことなら、先に仕様に文を足す。
+   形ごとに 1 件だけ残す。
+   入力の形は、入力のうち、字と数字の並びをそれぞれ 1 つの印にしたものである
+   （キーワードは、書かれた大文字小文字のまま残すので、
+   `State` と `state` は別の形である）。
+   ほかの文字は、すべて残す。
+   空白、U+2028、U+2029、記号、ディレクティブとコメントの中身である。
+   比べるのは、失敗の入力の同じファイルの中だけにする。
+   別の種類の失敗で見つかった同じ形は、別の理由で残してあるので、落とさない。
    入力をほかのパッケージのファイルから取るときは、読むだけにし、
    文字列は構文木で取り出してバイト単位で一致させる。
    名前は既存の付け方に合わせる
-   （`gram-`、`lex-`、`db-`、`config-` などの接頭辞と、示すものの名前）。
-   note に何を示す入力かを書いて、
+   （`gram-`、`lex-`、`db-`、`tokens-`、`config-` などの接頭辞と、
+   示すものの名前。同じ話題の入力が多いときは、
+   入力の SHA-256 の先頭 8 桁の 16 進数を付ける）。
+   note には、何を示す入力かを書く
+   （見つけた review や実行の呼び名は書かない）。
    `fixtures:add-many` で足す（`fixtures:add` には印の指定がない）。
+   実装のテストは、新しい fixture をほかの fixture と同じに読む。
+   そのあと、失敗の入力のファイルは、それを持っていたパッケージから消す。
 5. 結果として、変えたもの、足した名前、件数、`fixtures:check` の結果を示す。
 
 ## 8. mermaid.js を更新するとき
@@ -507,6 +534,11 @@ pie（最初の Langium の図）のときに書く。
      （生成器は、標準の拒否のほかの名前を一覧に出す）。
    - `error message only`: 何もしない。
      実装は message を比べないため。
+   - `embedded values`: 入力が与えるタイトル、データブロックの効果、設定の変更。
+     実装が、それらから Db を組み続けられるかを確かめる。
+     mermaid.js の既定値の変更は、`default-config.json` の変更として現れる。
+   - `specified.json added`、`removed`、変更: 読み方を変える印のある fixture
+     への、仕様どおりの読み。`acceptance` や `Db values` と同じに扱う。
    - `MermaidEnvironmentError` で作れない fixture:
      `mermaid.parse()` と `getDiagramFromText()` が食い違うか、
      Node にない機能を mermaid.js が使っている。

@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "A1",
             "range": [
               19,
@@ -70,7 +70,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "B1",
             "range": [
               26,
@@ -123,7 +123,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "A",
           "range": [
             45,
@@ -148,7 +148,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "A1",
                 "range": [
                   63,
@@ -244,7 +244,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "A2",
                 "range": [
                   116,
@@ -354,7 +354,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "B",
           "range": [
             176,
@@ -379,7 +379,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "B1",
                 "range": [
                   194,
@@ -475,7 +475,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "B2",
                 "range": [
                   245,
@@ -587,7 +587,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "A2",
             "range": [
               297,
@@ -647,7 +647,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "B2",
             "range": [
               304,
@@ -735,7 +735,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A1",
       "range": [
         19,
@@ -789,7 +789,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B1",
       "range": [
         26,
@@ -825,7 +825,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         45,
@@ -879,7 +879,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A1",
       "range": [
         63,
@@ -987,7 +987,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A2",
       "range": [
         116,
@@ -1113,7 +1113,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         176,
@@ -1167,7 +1167,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B1",
       "range": [
         194,
@@ -1275,7 +1275,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B2",
       "range": [
         245,
@@ -1383,7 +1383,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A2",
       "range": [
         297,
@@ -1437,7 +1437,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B2",
       "range": [
         304,

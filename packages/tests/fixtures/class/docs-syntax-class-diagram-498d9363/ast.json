@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               23,
@@ -68,7 +68,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Vehicle",
             "range": [
               34,
@@ -128,7 +128,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Car",
             "range": [
               47,
@@ -234,7 +234,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         23,
@@ -252,7 +252,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Vehicle",
       "range": [
         34,
@@ -306,7 +306,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Car",
       "range": [
         47,

@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Shape",
             "range": [
               19,
@@ -153,7 +153,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Shape",
       "range": [
         19,

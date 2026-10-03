@@ -11,8 +11,10 @@
  * diagram type (or the named ones) is mutated and each mutant compared between
  * mermaid.js and the candidate. Exits with 1 when any mutant disagrees, or
  * when mermaid could not decide a mutant in Node (reported as skipped).
- * Differences the candidate declares as known divergences are listed by
- * identifier and do not fail.
+ * Each fixture gets one mutant for each edit operator that applies to it, in
+ * an order chosen at random for the fixture; `--count` gives that many mutants
+ * instead (more than one round uses an operator again). Differences the candidate declares as known divergences are
+ * listed by identifier and do not fail.
  */
 /* eslint-disable no-console -- a command-line tool reports on the console */
 import path from "node:path"
@@ -33,7 +35,7 @@ const { values } = parseArgs({
     candidate: { type: "string" },
     diagram: { type: "string", default: "flowchart" },
     fixture: { type: "string", multiple: true },
-    count: { type: "string", default: "20" },
+    count: { type: "string" },
     seed: { type: "string", default: "1" },
     limit: { type: "string", default: "20" },
     require: { type: "string", multiple: true },
@@ -85,7 +87,7 @@ async function main(): Promise<void> {
     })),
     candidate as Candidate,
     {
-      count: Number(values.count),
+      ...(values.count === undefined ? {} : { count: Number(values.count) }),
       seed: Number(values.seed),
       require: requiredParts(values.require ?? []),
     },

@@ -62,7 +62,7 @@ export class SequenceDbRejections {
     for (const statement of statements) this.apply(statement, box)
   }
 
-  /** Building the summary from the tree: what one statement does to the participants, in the order of the Db. */
+  /** Rejections outside the grammar: what one statement does to the participants, in the order of the Db. */
   private apply(statement: SequenceStatement, box: number | null): void {
     switch (statement.type) {
       case "SequenceParticipantStatement":

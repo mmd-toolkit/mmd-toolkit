@@ -10,10 +10,9 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { classDbTextsOf } from "./db-texts.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
 import { findClassSemicolonLines } from "./class-kept-lines.ts"
-import { lineStartOf } from "./kept-lines.ts"
+import { holdsJoiningRegion, lineStartOf } from "./kept-lines.ts"
 import { findOpenString } from "./lines.ts"
 import {
   collectAtoms,
@@ -40,11 +39,12 @@ import {
  * The node types of a class diagram whose text is a value, printed as
  * written: the shared leaf nodes other than `Identifier`, of which no class
  * statement holds a `NumericLiteral` yet, and the leaf nodes of the diagram
- * type. An `Identifier` is printed as its tokens instead, since a class
- * name of several name parts is one `Identifier` over the whitespace
- * between them (docs/class.md, Whitespace between tokens). They have no
- * child fields; `tests/value-nodes.test.ts` checks that every other such
- * node type is left out on purpose.
+ * type other than `ClassIdentifier`. An `Identifier` and a `ClassIdentifier`
+ * are printed as their tokens instead, since a class name of several name
+ * parts is one `ClassIdentifier` over the whitespace between them
+ * (docs/class.md, Whitespace between tokens). They have no child fields;
+ * `tests/value-nodes.test.ts` checks that every other such node type is left
+ * out on purpose.
  */
 export const classValueNodeTypes: ReadonlySet<Node["type"]> = new Set([
   "StringLiteral",
@@ -189,6 +189,18 @@ export function layoutBlockOpening(
   statement: ClassNamespaceStatement | ClassDeclaration,
   opening: Token,
 ): AtomLayout {
+  if (holdsJoiningRegion(source, statement.range[0], opening.range[1])) {
+    // A comment line cuts in, after a U+2028 or U+2029, and the line goes on
+    // after it: `namespace N`, U+2028, `%% e`, and a line ` {` is the
+    // namespace with its `{`. The line is kept as written
+    // (docs/compatibility.md, A comment line after U+2028 or U+2029).
+    return {
+      atoms: [{ start: statement.range[0], end: opening.range[1] }],
+      rules: new Map(),
+      outdented: new Set(),
+      lineBreaks: "kept",
+    }
+  }
   const rules = new Map<number, GapRule>([[opening.range[0], "space"]])
   return {
     atoms: collectAtoms(
@@ -406,23 +418,23 @@ function findMemberStretches(statement: Node): Atom[] {
  * The generic types of the class names of a node before `end`, each from
  * its first `~` to its second, as written: the whitespace between the two
  * `~` is part of the type in the Db (diagrams/class.md, Building the
- * summary), also when the tree has no text for it. The Db text of a type
- * (`classDbTexts`) lies between the two `~`, which are the structural tokens
- * before and after it: directives and a `;` that the line rule ignores may
- * lie between it and them.
+ * summary), and it is the value of `generic`, the whole `generic-text` unit
+ * (ast/class.md, ClassName). The `~` are the structural tokens before and
+ * after it: directives and a `;` that the line rule ignores may lie between
+ * it and them. A name with the two `~` and nothing between them has no
+ * generic and nothing to keep.
  */
 function findGenericStretches(source: Source, node: Node, end: number): Atom[] {
-  const types = classDbTextsOf(source).genericTypes
   const stretches: Atom[] = []
   walk(node, (child) => {
     if (child.type !== "ClassName" || child.range[1] > end) return
-    const type = types.get(child)
-    if (type === undefined) return
-    const opening = findStructuralTokenEndingBefore(source, type.range[0])
-    const closing = findStructuralToken(source, type.range[1])
+    const { generic } = child
+    if (generic === null) return
+    const opening = findStructuralTokenEndingBefore(source, generic.range[0])
+    const closing = findStructuralToken(source, generic.range[1])
     if (opening?.value !== "~" || closing?.value !== "~") {
       throw new Error(
-        `prettier-plugin-mmd: the generic type at offset ${type.range[0]} is not between two "~"`,
+        `prettier-plugin-mmd: the generic type at offset ${generic.range[0]} is not between two "~"`,
       )
     }
     stretches.push({ start: opening.range[0], end: closing.range[1] })

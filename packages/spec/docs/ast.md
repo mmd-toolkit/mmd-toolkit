@@ -3,9 +3,9 @@
 Japanese version: [ast.ja.md](./ast.ja.md)
 
 This document defines the abstract syntax tree of Mermaid text. An
-implementation of this specification produces trees that use the node names,
-field names, and token kinds defined here. A change to the tree is made here
-first, and implementations follow it.
+implementation of this specification produces trees that use the node names and
+field names defined here. A change to the tree is made here first, and
+implementations follow it.
 
 ## Design goals
 
@@ -13,20 +13,7 @@ first, and implementations follow it.
   structure and the values of what it stands for, and holds its child nodes in
   named fields, such as `Root.body`. No node has a generic list of children.
   Punctuation and keywords are not nodes; they appear only as tokens.
-- **Lists of tokens and comments.** As in ESLint, the root holds every token in
-  source order in `tokens` and every comment in `comments`. Every character that
-  is not whitespace or a line terminator is in a token or a comment, as tools
-  built for ESLint expect. A directive is a token too, of the kind `Directive`,
-  and so are the delimiters and the body of the frontmatter; the root also lists
-  directives and the frontmatter as records with fields of their own, in
-  `directives` and `frontmatter`. Comments are not tokens.
-- **Positioned.** Every node, token, comment, directive, and frontmatter carries
-  `range` and `loc`, following the ESTree convention.
-- **Lossless.** The tree loses nothing of the input. Every character of the
-  input is in a token or a comment, or it is whitespace, as defined in
-  [Notation](./common.md#notation), or a line terminator (see
-  [Invariants](#invariants)). With the source text and the ranges, the input is
-  reproduced exactly.
+
 - **Diagram-agnostic root.** The root holds the parts shared by all diagrams.
   The body node type depends on the diagram type.
 - **What a node is.** A node type names what the node stands for in the
@@ -38,8 +25,7 @@ first, and implementations follow it.
   positions mean different things, such as `A,B`, which is one name as the id of
   a vertex and a list of names after `class`. The tree does not copy the steps
   by which mermaid.js builds its Db, such as joining parts and splitting them
-  again; those steps are written in the Db normalization of each diagram
-  document.
+  again.
 
 ## How fields are described
 
@@ -48,57 +34,24 @@ meaning. The types are written in words:
 
 - **integer**, **string**, and **boolean** have their usual meaning. A
   **number** may have a fraction.
-- **offset pair** is two integers, a start offset and an end offset, as
-  described under [Positions](#positions).
+
 - **list of**, followed by a type, is a sequence of values of that type, in
   order.
 - A type followed by **or null** is either a value of that type or the absence
   of a value.
 - Parentheses group a type: **list of (Identifier or null)** is a list whose
   elements are each an Identifier or null.
-- A node type name, such as **Comment**, is a node of that type. **Token** is a
-  token as described under [Tokens](#tokens).
-- **position** and **location** are the records described under
-  [Positions](#positions).
+- A node type name, such as **Identifier**, is a node of that type.
 
 Every field is set when the node is created and is never changed afterwards.
-
-## Positions
-
-- Offsets count UTF-16 code units, as ESTree and Prettier do. The source text
-  between the two offsets of a `range` is the text of the node, token, comment,
-  directive, or frontmatter that has it.
-- A `range` is an offset pair: a 0-based start offset and an end offset that is
-  not included.
-- A `loc` is a location: a `start` and an `end` position. Each position has a
-  `line`, counted from 1, and a `column`, counted from 0 in UTF-16 code units.
-- `\r\n`, a lone `\r`, and `\n` each end a line, because these are the sequences
-  mermaid.js normalizes to `\n` (see
-  [Line terminators](./common.md#line-terminators)). U+2028 and U+2029 do not
-  end a line.
-
-| Record   | Field    | Type     | Meaning                                      |
-| -------- | -------- | -------- | -------------------------------------------- |
-| position | `line`   | integer  | Line number, counted from 1.                 |
-| position | `column` | integer  | Column, counted from 0 in UTF-16 code units. |
-| location | `start`  | position | Position of the first character.             |
-| location | `end`    | position | Position just after the last character.      |
-
-The specification uses two units on purpose. The rules of
-[common.md](./common.md) speak of characters, and a character is a Unicode code
-point (see [Notation](./common.md#notation)). Positions count UTF-16 code units.
-A character outside the Basic Multilingual Plane is one character but two code
-units, so it advances `range` offsets and `column` by 2.
 
 ## Nodes
 
 Every node has these fields:
 
-| Field   | Type        | Meaning                                    |
-| ------- | ----------- | ------------------------------------------ |
-| `type`  | string      | The name of the node type, such as `Root`. |
-| `range` | offset pair | Where the node is in the source.           |
-| `loc`   | location    | The same place as lines and columns.       |
+| Field  | Type   | Meaning                                    |
+| ------ | ------ | ------------------------------------------ |
+| `type` | string | The name of the node type, such as `Root`. |
 
 Each node type adds its own fields, and a node's child nodes are the values of
 some of those fields. Each node type states its **child fields**: the fields
@@ -115,297 +68,67 @@ fields keep one order, as ESLint's visitor keys of `TemplateLiteral` keep
 document says so at each such node; a tool that needs the source order sorts the
 child nodes by their ranges.
 
-A node's range runs from the start of its first token to the end of its last
-token; only `Root.range` covers the whole input. A node's tokens are the tokens
-of the construct it stands for, never a `Directive` token or a token of the
-frontmatter, although a `Directive` token may lie inside the range of a node,
-between two of its tokens; each node type says which they are where that is not
-plain, and a token between two nodes, such as a separator, may belong to
-neither. A node without a token, which a diagram document allows only for a node
-whose text is all whitespace, covers its units instead: its range runs from the
-start of its first unit to the end of its last
-([units](./common.md#a-directive-is-a-token-boundary) are defined by each
-diagram document). The range of a node covers the ranges of all its child nodes,
-as tools that walk an ESTree tree, such as those that find the node at a
-position or that attach comments, expect; where the tokens of a construct alone
-would not give that, the node type says how its range is extended.
-
-The **text of a range** is the source text of the range without what lies in it
-but is not written as part of a value: the directives, the comment regions, the
+The **written text** of a value, or of a unit, is the source text from the first
+to the last character that mermaid.js reads as it, without what lies there but
+is not written as part of the value: the directives, the comment regions, the
 `;` that the line rule ignores, and the empty description blocks before the
-separator of a statement, each a statement of its own. The range of a leaf node
-holds no such statement; a range that a diagram's Db normalization reads up to
-the separator of a statement can, such as that of the last style of a flowchart
-`style` statement: the style of `style A fill:red accDescr {}` has the Db text
-`fill:red` and a space, as in mermaid.js. [fixture:
-flowchart/gram-empty-description-block-after-style] Nothing else is left out,
+separator of a statement, each a statement of its own. Nothing else is left out,
 added, or rewritten: line terminators, attribute quotes, and entities stay as
 the author wrote them, not in [converted form](./common.md#reading-a-source),
-which is how the lexer reads a text and how a diagram's Db normalization uses
-it. The value of a leaf node is the text of its range, or the part of it that
-its node type names; a [NumericLiteral](#numericliteral) holds the number that
-that text writes, and an [Identifier](#identifier) the texts of its units. Where
-the value is the text of the whole range, as for a diagram's literal, it neither
-starts nor ends with whitespace, because a range runs from a token to a token,
-unless the node has no token; the whitespace written around a node belongs to no
-node. Where the value is the part inside delimiters that belong to the node's
-own tokens, such as the content of a [StringLiteral](#stringliteral) or of the
-string that a label starts with, or the text of a data block between `@{` and
-`}`, it keeps the whitespace written inside those delimiters, at its ends too:
-the label of `A[" x "]` has the value of a space, `x`, and a space, and the
-first data block of `A@{`, a line break, `shape: rect`, a line break, and `}`
-has the value of a line feed, `shape: rect`, and a line feed. [fixture:
+which is how the lexer reads a text. The written text starts or ends with
+whitespace or a line terminator only where mermaid.js reads it as part of the
+value; other whitespace written around a node belongs to no node. The value of a
+leaf node is its written text, or the part of it that its node type names: a
+[NumericLiteral](#numericliteral) holds the number that its written text writes,
+and an [Identifier](#identifier), a
+[ClassIdentifier](./ast/class.md#classidentifier), and a style of a class
+diagram (see [ClassLiteral](./ast/class.md#classliteral)), the written texts of
+its units joined in order. Where the value is the part inside delimiters that
+belong to the node's own text, such as the content of a
+[StringLiteral](#stringliteral) between its quotes or of the string that a label
+starts with, or the text of a data block between `@{` and `}`, it keeps the
+whitespace written inside those delimiters, at its ends too: the label of
+`A[" x "]` has the value of a space, `x`, and a space, and the first data block
+of `A@{`, a line break, `shape: rect`, a line break, and `}` has the value of a
+line feed, `shape: rect`, and a line feed. [fixture:
 flowchart/tokens-label-string-inner-whitespace] [fixture:
 flowchart/gram-data-consecutive-blocks] The two literal nodes,
 [StringLiteral](#stringliteral) and [NumericLiteral](#numericliteral), also have
-the field `raw`, as ESTree's `Literal` does: it is the source text of the range
-itself, with nothing left out, so it keeps what the text of the range leaves
-out, such as the quotes of a string and a comment region within its range.
+the field `raw`, as ESTree's `Literal` does: it is the source text of the
+literal from its first to its last character, with nothing left out, so it keeps
+what the written text leaves out, such as the quotes of a string and a directive
+or a comment region inside the string.
+
+A node of text that mermaid.js does not read, a
+[FlowchartIgnoredText](./ast/flowchart.md#flowchartignoredtext), a
+[ClassIgnoredText](./ast/class.md#classignoredtext), a
+[StateIgnoredText](./ast/state.md#stateignoredtext), a
+[StateIgnoredStatement](./ast/state.md#stateignoredstatement), or a
+[SequenceIgnoredStatement](./ast/sequence.md#sequenceignoredstatement), shows
+what the author wrote there as written: its written text is the source text of
+its range without the directives, the comment regions, the comments, and the `;`
+that the line rule ignores. The whitespace and line terminators between its
+units are part of it, and a comment is not: after `state "d" as A`, the lines
+`state %% c` and `state {` with a body give A the `textBeforeBody` of `state`, a
+space, a line feed, two spaces, and `state`, and in
+`state X "" %%{init: {}}%% ""` followed by a line `{` with a body, it is the two
+empty strings with the two spaces between them. [fixture:
+state/tokens-ignored-text-comment-between-units] [fixture:
+state/tokens-ignored-text-hash-comment-between-units] [fixture:
+state/tokens-ignored-text-directive-between-empty-strings] [fixture:
+state/tokens-ignored-statement-directive-between-empty-strings] [fixture:
+class/tokens-ignored-text-directive-before-direction] [fixture:
+class/tokens-ignored-text-directive-after-direction] [fixture:
+flowchart/tokens-ignored-text-directive-before-direction]
 
 A child field whose value is a list may have null elements where its node type
 says so, as in ESTree's array holes; a tool that walks the tree skips them.
 
-## Tokens
+## Directives and frontmatter
 
-A token is one lexical unit of the diagram, as the diagram's lexer reads it, or
-a directive or a part of the frontmatter (see
-[Comments, directives, and frontmatter](#comments-directives-and-frontmatter)).
-The tokens are listed in `Root.tokens`; they are not nodes and are not the
-values of node fields.
-
-| Field   | Type        | Meaning                                        |
-| ------- | ----------- | ---------------------------------------------- |
-| `type`  | string      | The token kind, one of the kinds listed below. |
-| `value` | string      | The source text of `range`, as written.        |
-| `range` | offset pair | Where the token is in the source.              |
-| `loc`   | location    | The same place as lines and columns.           |
-
-`value` is the source text of the token's range, as ESLint's tokens have it. The
-conversions of [common.md](./common.md) do not apply to it: reading a line
-terminator as `\n`, an attribute quote as `'`, or an entity as its placeholder;
-nor does it skip a `;` that the line rule ignores inside the token. A comment
-region lies inside no token: it cuts a token that it would lie inside (see
-[Comment](#comment)). The values of nodes skip those, but are not converted
-either (see [Nodes](#nodes)).
-
-The token kinds are these, and only these. Each diagram document says which
-kinds its tokens have; a kind is added here when a diagram needs it.
-
-| Kind             | Used by                                                                                                                                                                                                                                            | Meaning                                                                                                                                                                                |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Keyword`        | [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens), [class](./ast/class.md#tokens), [state](./ast/state.md#tokens)                                                                                                       | A word with a fixed meaning at its position.                                                                                                                                           |
-| `Identifier`     | [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens), [class](./ast/class.md#tokens), [state](./ast/state.md#tokens)                                                                                                       | A name that the author chooses.                                                                                                                                                        |
-| `Numeric`        | [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens), [state](./ast/state.md#tokens)                                                                                                                                       | A number.                                                                                                                                                                              |
-| `String`         | [flowchart](./ast/flowchart.md#tokens), [class](./ast/class.md#tokens), [state](./ast/state.md#tokens)                                                                                                                                             | A quoted string, with its quotes.                                                                                                                                                      |
-| `StringFragment` | [flowchart](./ast/flowchart.md#tokens), [class](./ast/class.md#tokens), [state](./ast/state.md#tokens)                                                                                                                                             | A fragment of a quoted string that a comment region cuts: the text before or after the region, without the closing or the opening quote (see [Comment](#comment)).                     |
-| `RawText`        | every diagram (the frontmatter body), the `error` pseudo-diagram (see [ErrorDiagram](#errordiagram)), [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens), [class](./ast/class.md#tokens), [state](./ast/state.md#tokens) | Characters that the parser takes as one content without reading any structure in them, not enclosed in quotes (enclosed, they are a `String`), such as the text of a label or a style. |
-| `Punctuator`     | every diagram (the frontmatter delimiters), [flowchart](./ast/flowchart.md#tokens), [sequence](./ast/sequence.md#tokens), [class](./ast/class.md#tokens), [state](./ast/state.md#tokens)                                                           | A delimiter, separator, or operator, such as `[` or `-->`.                                                                                                                             |
-| `Directive`      | every diagram                                                                                                                                                                                                                                      | A directive (see [Directive](#directive)).                                                                                                                                             |
-
-Which characters form a token, and of which kind, is defined by each diagram
-document, except for the `Directive` tokens, the `StringFragment` tokens, and
-the tokens of the frontmatter, which are the same in every diagram. A `String`
-token of a string that is not closed has no closing quote (see
-[StringLiteral](#stringliteral)): whether a string has both quotes is told by
-the `closed` field of its StringLiteral, not by the kind of its tokens.
-
-Whitespace and line terminators are never tokens on their own, in any diagram.
-Where the diagram's grammar gives a line terminator meaning, for example as the
-end of a statement, the lexer reads it, but no token or node is made for it;
-what it separates shows in the structure of the tree, such as the list of
-statements. Where whitespace or line terminators lie inside the range of a
-token, as in the text of a label or a multi-line quoted string, they are part of
-that token. How the lexer reads a line terminator is a rule of
-[Line terminators](./common.md#line-terminators), not a matter of tokens.
-
-The lexer reads through a `;` that the
-[`style` and `classDef` line rule](./common.md#style-and-classdef-lines) ignores
-as if it were not there, so the tokens around it are found as if it were absent.
-The `;` itself then lies inside a token when characters of that token lie on
-both sides of it. Otherwise it is a token of its own, of the kind that the
-diagram gives a `;` that stands alone at that position. This rule is the same
-for every diagram. No token kind and no field of a node tells whether a `;` was
-ignored, and an ignored `;` affects no value of any node. So the list of tokens
-does not tell an ignored `;` that is a token of its own from a `;` that the
-grammar reads: in flowchart, `style A fill:#f00;` and `style A fill:red;` both
-end in a `Punctuator` token `;`, which the line rule ignores in the first and
-which is the separator of the statement in the second. Which `;` are ignored is
-found by applying the line rule to the source. [fixture:
-flowchart/tokens-style-semicolon-ignored] [fixture:
-flowchart/tokens-style-semicolon-separator] The grammar does not read an ignored
-`;`, so it never makes a node: in flowchart, only a `;` that the grammar reads
-as a line of its own makes an empty statement. In the `error` pseudo-diagram,
-for example, `style:#f;` at the end of a line is the `RawText` token `style:#f`
-followed by the `RawText` token `;`, while `style:#f;x` is one `RawText` token
-(see [ErrorDiagram](#errordiagram)). [fixture:
-common/error-style-semicolon-trailing] [fixture:
-common/error-style-semicolon-inside]
-
-## Comments, directives, and frontmatter
-
-These are not nodes. The root lists them as records in `comments`, `directives`,
-and `frontmatter`; no node holds them, and a tool that walks the tree does not
-visit them. Each record has a `type`, a `range`, and a `loc`. Its text is the
-source text of its range; the fields below hold its content. A comment is not a
-token. A directive that lies outside every token and every comment is also a
-token in `Root.tokens`, of the kind `Directive`, with the same range as the
-record. The frontmatter is two or three tokens, which divide its range (see
-[Frontmatter](#frontmatter)). A directive's record and its token have the same
-name, as `Identifier` names both a node and a token kind (see
-[Shared leaf nodes](#shared-leaf-nodes)), and they hold different things under
-`value`: the record its content, as described below, and the token the source
-text of its range, as every token does.
-
-### Comment
-
-`type` is `Comment`.
-
-| Field   | Type                               | Meaning                                                                                                                    |
-| ------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `mark`  | one of `%%`, `#`, and `%`, or null | The comment's mark: `%%` for a comment line, or the mark of a diagram comment. Null for a fragment after a comment region. |
-| `value` | string                             | The source text after the mark; for a fragment without a mark, the text of its range.                                      |
-
-`mark` holds the characters of the mark, which are not always the source text at
-the start of the range: in `%%%{init: {}}%%% c`, the mark is `%%`, made of the
-first and the last `%`, with a directive between them. The marks are these
-three: `%%`, of a comment line and of some diagram comments, and `#` and `%`, of
-diagram comments; a diagram type whose comments have another mark adds it to
-them. Which marks the diagram comments of a diagram type have is defined by its
-diagram's document, such as `#`, `%%`, and `%` in
-[sequence](./diagrams/sequence.md#units-and-contexts). A tool reads whether a
-comment has a mark, and which, from this field. [fixture:
-common/comment-percent-joined-by-directive] [fixture:
-sequence/lex-single-percent-comment] [fixture:
-state/lex-diagram-comment-across-comment-line]
-
-A comment line produces a `Comment`, and so does a **diagram comment**: text
-that a diagram's own lexer reads as a comment, which its document defines, such
-as a `#` or a `%%` in the middle of a line in
-[sequence](./diagrams/sequence.md#the-statement-context). The range starts at
-the mark, the first `%` of the `%%` of a comment line or the mark of a diagram
-comment, and ends before the line terminator; a comment starts at its mark, and
-no character before the mark is part of it. A fragment of a diagram comment
-after a comment region is the exception (see below). The whitespace-only lines
-and the line terminator that the comment region also covers are whitespace and
-line terminators. A directive in a comment can take the line terminators after
-it, so that the comment runs on past them (see
-[Comment lines](./common.md#comment-lines)). Where it takes all that follows, to
-the end of the text, the comment ends where the directive ends: the whitespace
-that the directive scan takes after the argument is outside the directive's
-range (see [Directive](#directive)), and outside the comment's too, so no
-comment ends with a line terminator. In `%% %%{init: {}` followed by a space and
-blank lines at the end of the text, the comment is `%% %%{init: {}`, as the
-directive is `%%{init: {}`, and so it is with a line feed at the end and with
-`%% %%{wrap`, a line `A`, and a line of a space. After a closed directive the
-scan takes no whitespace, so `%% %%{init: {}}%%` followed by two spaces and a
-line break is a comment with the two spaces, as any comment keeps the whitespace
-before its line terminator. [fixture:
-common/comment-directive-unclosed-trailing-blank-lines] [fixture:
-common/comment-directive-unclosed-line-feed-at-end] [fixture:
-common/comment-directive-word-argument-trailing-blank-line] [fixture:
-common/comment-directive-closed-then-spaces] A diagram comment is found, as
-tokens are, as if a `;` that the line rule ignores were not there (see
-[Tokens](#tokens)): such a `;` lies inside the comment when characters of the
-comment lie on both sides of it, and otherwise it is a token of its own. At the
-end of `A->>B: x #style:#x;` in sequence, the comment is `#style:#x`, and the
-`;` after it is a token. In every diagram but agentflow, a comment line never
-holds such a `;`, because the line rule leaves comment regions out of its line
-segments (see
-[`style` and `classDef` lines](./common.md#style-and-classdef-lines)). [fixture:
-sequence/tokens-comment-then-ignored-semicolon] A diagram whose Db sets
-[`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L66-L76)
-(agentflow in the pinned mermaid.js) sees comment lines in its parser input; its
-document says how the tree represents them. A `%%` that is not a comment line,
-such as a trailing `%%` after a statement or a line containing only `%%`, is
-[diagram text](./common.md#reading-a-source) and is part of a token.
-
-A comment region can also lie inside a diagram comment, which runs to the end of
-its line: a comment line that follows a U+2028 or U+2029 on that line is gone
-when mermaid.js reads it, so the line goes on after the comment line. The region
-cuts the diagram comment as it cuts a token, below: each fragment, the text
-before the region or after it without the whitespace and line terminators at its
-ends, is a `Comment`, and a fragment that is empty or all whitespace is none.
-The fragment after the region has no mark, and its `mark` is null: its range
-starts at its first character, and its value is the text of its range. In state,
-`A %% x`, U+2029, a line `%% end`, and a line `B` have the comments `%% x`,
-`%% end`, and `B`, in this order, and the only state A; with an empty line
-before `B`, the diagram comment ends at the line feed after `%% end`, and B is a
-state. Without the comment line, `A %% x`, U+2029, and `B` is one comment, since
-U+2029 does not end a diagram comment. [fixture:
-state/lex-diagram-comment-across-comment-line] [fixture:
-state/lex-hash-comment-across-comment-line] [fixture:
-state/lex-diagram-comment-across-comment-line-after-line-separator] [fixture:
-state/lex-diagram-comment-across-two-comment-lines] [fixture:
-state/lex-diagram-comment-across-blank-and-comment-line] [fixture:
-state/lex-diagram-comment-across-init-comment-line] [fixture:
-sequence/lex-hash-comment-across-comment-line] [fixture:
-state/lex-diagram-comment-empty-line-after-comment-line] [fixture:
-state/lex-diagram-comment-paragraph-separator-without-comment-line] Whether a
-`;` that the line rule ignores lies inside a diagram comment (see above) is
-decided once, on the whole comment before a region cuts it: it lies inside when
-characters of the comment lie on both sides of it, whitespace included, among
-them the characters of its line after the region and a U+2028 or U+2029 before
-the region. Then the region cuts the comment. So in state, `A %% style:#x;`,
-U+2029, and a line `%% end` have the comment `%% style:#x;`, with the `;`, as
-`A %% style:#x;` followed by two spaces has, and with a space before the `;` the
-comment is `%% style:#x ;`. [fixture:
-state/tokens-ignored-semicolon-in-comment-before-comment-line] [fixture:
-state/tokens-ignored-semicolon-after-space-in-comment-before-comment-line]
-[fixture: state/tokens-ignored-semicolon-in-comment-across-comment-line]
-[fixture: state/tokens-ignored-semicolon-in-comment-before-spaces]
-
-A comment lies outside all tokens. A comment region can lie inside what one unit
-reads, for example a `%%` comment line inside a multi-line quoted label: the
-lexer reads through the region, so the unit continues after it (see
-[Comment lines](./common.md#comment-lines)), but its token is cut at the region.
-Each **fragment** is the text of the token before the region, or after it,
-without the whitespace and line terminators at its ends; the whitespace-only
-lines and the line terminators that the region covers are outside every token,
-as they are anywhere else. A fragment that is empty or all whitespace is no
-token. Where several regions lie inside one token, it is cut at each. Only
-`String` and `RawText` tokens can hold a comment region, because only their
-units may span lines. The fragments of a `String` token are `StringFragment`
-tokens; the fragments of a `RawText` token are `RawText` tokens, as the
-fragments of a token that a directive cuts keep its kind (see
-[Directive](#directive)). The node of the unit, such as a label, a
-StringLiteral, or a literal, spans the fragments and the region, and its value
-is the text before and after the region joined, as before. In `A["one`, a line
-`%% two`, and a line `three"]`, the label has the `StringFragment` tokens `"one`
-and `three"`, with the comment between them, and the value `one`, a line feed,
-and `three`; in `A["`, a line `%% c`, and a line `b"]`, the fragments are `"`
-and `b"`; and in `A[`, a line `%% c`, and a line `b]`, the text before the
-region is all whitespace, so the label has the one `RawText` token `b`.
-[fixture: common/comment-in-string] [fixture:
-common/comment-blank-line-before-in-string] [fixture:
-flowchart/tokens-comment-region-after-opening-quote] [fixture:
-flowchart/tokens-comment-region-at-label-start] A line with only `%%` is no
-comment line (see [Comment lines](./common.md#comment-lines)), so it stays in a
-fragment: in `A[a`, a line `%% c`, a line `%%`, and a line `b]`, the fragments
-are `a` and the text `%%`, a line feed, and `b`; with the `%%` line before the
-comment line, they are `a`, a line feed, and `%%`, and `b`; and in the string
-`A["a`, a line `%% c`, a line `%%`, and a line `b"]`, they are the
-`StringFragment` tokens `"a` and `%%`, a line feed, and `b"`. [fixture:
-flowchart/tokens-comment-region-then-bare-marker-line] [fixture:
-flowchart/tokens-comment-region-after-bare-marker-line] [fixture:
-flowchart/tokens-comment-region-then-bare-marker-line-in-string] Such regions
-lie in quoted strings, in the text of labels and of edges, in description
-blocks, in data blocks, in a callback name after `call`, in a backquoted name,
-and in a note over lines. [fixture:
-flowchart/tokens-string-literal-comment-line] [fixture:
-flowchart/tokens-comment-region-in-subgraph-title-string] [fixture:
-flowchart/tokens-comment-region-in-edge-text] [fixture:
-flowchart/tokens-comment-region-in-dashed-edge-text] [fixture:
-flowchart/tokens-comment-region-in-acc-descr-block] [fixture:
-flowchart/tokens-comment-region-in-data-block] [fixture:
-flowchart/tokens-comment-region-in-callback-name] [fixture:
-sequence/tokens-comment-region-in-acc-descr-block] [fixture:
-class/tokens-comment-region-in-acc-descr-block] [fixture:
-class/tokens-comment-region-in-click-string] [fixture:
-class/tokens-comment-region-in-backquoted-name] [fixture:
-class/tokens-comment-region-in-callback-name] [fixture:
-state/tokens-comment-region-in-alias-string] [fixture:
-state/tokens-comment-region-in-note-block] [fixture:
-state/tokens-comment-region-in-acc-descr-block]
+These are not nodes. The root lists them as records in `directives` and
+`frontmatter`; no node holds them, and a tool that walks the tree does not visit
+them. Each record has a `type`; the fields below hold its content.
 
 ### Directive
 
@@ -425,145 +148,37 @@ takes after the argument is removed with the directive, as the whitespace-only
 lines of a comment region are with a comment, and in the tree it is whitespace,
 outside the directive. `name` is the directive's name as defined there. The tree
 does not parse the argument. `value` holds what is written between the
-delimiters, the name included, as the `value` of a comment and of the
-frontmatter does.
-
-A directive is a token boundary (see
-[common.md](./common.md#a-directive-is-a-token-boundary)), so it lies inside no
-other token. A directive inside a comment has no `Directive` token: its
-characters are in that comment. A directive in a comment region before the
-comment's `%%` lies outside every token and comment, also where the region lies
-inside what one unit reads, because the region cuts that unit's token (see
-[Comment](#comment)), so it is a `Directive` token. [fixture:
-common/comment-region-directive-in-string] [fixture:
-common/comment-directive-in-string] A directive after the `%%` of a comment line
-lies inside the comment's range, and mermaid.js still reads it for configuration
-(see [The configuration scan](./common.md#the-configuration-scan)). [fixture:
-common/directive-in-comment] A directive before the comment's `%%`, as in
-`%%{init: {}}%% %% note`, lies outside the comment, which starts at its `%%`.
-[fixture: common/comment-after-directive] In `%%%{init: {}}%%% c`, the comment's
-`%%` is the first and the last `%`, so the directive between them lies inside
-the comment's range, and the comment's `value` is a space and `c`. [fixture:
-common/comment-percent-joined-by-directive] The same holds for a diagram comment
-whose mark is `%%`: its mark is found in the text without directives, a
-directive may lie between its two `%`, and its `value` is the source text after
-the mark, directives included (see
-[sequence](./diagrams/sequence.md#units-and-contexts)). [fixture:
-sequence/lex-diagram-comment-directive-between-marks] [fixture:
-sequence/lex-diagram-comment-directive-after-single-mark] A directive after the
-mark of any diagram comment lies inside the comment's range and has no
-`Directive` token: at the end of `A->>B: x #c %%{init: {}}%%` in sequence, the
-comment runs from `#` to the closing `%%`, and so it does from `%%` in
-`A --> B %% c %%{init: {}}%%` in state. [fixture:
-sequence/tokens-diagram-comment-directive-at-end] [fixture:
-state/tokens-diagram-comment-directive-at-end]
+delimiters, the name included, as the `value` of the frontmatter does.
 
 `Root.directives` plays no part in configuration: this specification does not
 parse directive arguments, and mermaid.js finds the directives that configure
 the diagram with a scan of its own, which differs from them in rare cases (see
-[The configuration scan](./common.md#the-configuration-scan)).
+[The configuration scan](../../tests/docs/configuration.md#the-configuration-scan)).
 
 ### Frontmatter
 
 `type` is `Frontmatter`.
 
-| Field        | Type        | Meaning                                                              |
-| ------------ | ----------- | -------------------------------------------------------------------- |
-| `value`      | string      | The YAML text between the delimiter lines, as written in the source. |
-| `valueRange` | offset pair | Where `value` is in the source.                                      |
+| Field   | Type   | Meaning                                                              |
+| ------- | ------ | -------------------------------------------------------------------- |
+| `value` | string | The YAML text between the delimiter lines, as written in the source. |
 
-The range runs from the `---` of the opening delimiter line through the closing
-`---`. The indent before the opening `---`, and the whitespace and blank lines
-after the closing delimiter, which the frontmatter rule also covers, are
-whitespace and line terminators. `value` is the body as defined in
-[common.md](./common.md#frontmatter); it is not dedented, and the tree does not
-parse the YAML.
-
-The frontmatter's range holds these tokens, in this order: the opening `---`, a
-`Punctuator` token; the body, a `RawText` token from the first character of the
-body that is not whitespace to the last one, when the body is not all
-whitespace; and the closing `---`, a `Punctuator` token. Everything else in the
-range is whitespace and line terminators: the whitespace after each `---` on its
-line, the whitespace-only lines before the body, and the whitespace at the start
-and the end of the body, the indent of its first line included. The indent of
-the other lines of the body lies inside the body's token, and `value` keeps the
-body with all its indents. A delimiter line holds nothing but its indent, `---`,
-and line whitespace, so no other token lies on it; U+2028 after a `---` is line
-whitespace. [fixture: common/frontmatter-indented] [fixture:
-flowchart/frontmatter-title-crlf] [fixture:
-common/frontmatter-bom-both-delimiters] [fixture:
-common/frontmatter-blank-line-then-delimiter-only] [fixture:
-common/frontmatter-line-separator-after-opening] [fixture:
-common/frontmatter-line-separator-end-of-body] [fixture:
-common/frontmatter-line-separator-inside-body]
-
-The delimiters and the body are separate tokens because they are separate lines:
-the line breaks and the indents between them are layout, which a tool reads as
-whitespace, as it does between the tokens of a diagram. A directive is one
-token: it is one run of text, and its name and argument are held by its record.
-Like every token, the tokens of the frontmatter belong to no node; the
-`Punctuator` token `---` of the opening delimiter is not the `---` link of a
-flowchart, which lies in the diagram's range.
-
-## Invariants
-
-Every tree satisfies these conditions:
-
-- Every character of the input is in a token or a comment, or it is whitespace
-  or a line terminator. Whitespace is the set defined in
-  [Notation](./common.md#notation), which includes U+00A0, U+FEFF, U+2028, and
-  U+2029.
-- The text of every token, comment, directive, and frontmatter equals the source
-  text of its range; for a token, that text is `value`.
-- `Root.tokens` is in source order, and its tokens do not overlap.
-- No token starts or ends with whitespace or a line terminator.
-- A comment lies outside all tokens.
-- A directive lies inside no other token. It may lie inside a comment: after its
-  mark, or between the two `%` of a `%%` mark. Every directive that lies outside
-  all tokens and comments has exactly one `Directive` token, with the
-  directive's range, and every `Directive` token is such a directive's.
-- No two comments overlap, and no two directives overlap.
-- When there is frontmatter, the first tokens are the tokens in its range: the
-  opening `---`, the body when it is not all whitespace, and the closing `---`
-  (see [Frontmatter](#frontmatter)). They come before all comments and
-  directives.
-- The range of a node runs from the start of its first token to the end of its
-  last token, and `Root.range` covers the whole input. Apart from `Root`, every
-  node defined in this document has at least one token: an `ErrorDiagram` has at
-  least the token that holds `error`. The exception is a
-  [FlowchartLabel](./ast/flowchart.md#flowchartlabel) that is all whitespace,
-  whose range covers its units (see [Nodes](#nodes)).
-- The range of a node covers the ranges of its child nodes. The child nodes of a
-  node do not overlap, and they are in source order when taken in the order of
-  the child fields, each list in its own order, except at the nodes whose
-  documents say otherwise (see [Nodes](#nodes)).
-- The `raw` of a node that has it, a StringLiteral or a NumericLiteral, equals
-  the source text of its range.
-
-The second condition is about the source text: `Token.value` and the text of
-every comment, directive, and frontmatter equal the input in their ranges. The
-values of nodes, which leave out comment regions, directives, and the `;` that
-the line rule ignores, are not part of it.
+`value` is the body as defined in [common.md](./common.md#frontmatter); it is
+not dedented, and the tree does not parse the YAML.
 
 ## Root
 
 `type` is `Root`.
 
-| Field         | Type                | Meaning                                                                                      |
-| ------------- | ------------------- | -------------------------------------------------------------------------------------------- |
-| `diagramType` | DiagramType         | The diagram type id as mermaid.js reports it, such as `flowchart-v2`.                        |
-| `body`        | DiagramBody         | The diagram body.                                                                            |
-| `frontmatter` | Frontmatter or null | The frontmatter, if the source has one.                                                      |
-| `comments`    | list of Comment     | Every comment, in source order.                                                              |
-| `directives`  | list of Directive   | Every directive, in source order.                                                            |
-| `tokens`      | list of Token       | Every token, `Directive` tokens and the tokens of the frontmatter included, in source order. |
+| Field         | Type                | Meaning                                                               |
+| ------------- | ------------------- | --------------------------------------------------------------------- |
+| `diagramType` | DiagramType         | The diagram type id as mermaid.js reports it, such as `flowchart-v2`. |
+| `body`        | DiagramBody         | The diagram body.                                                     |
+| `frontmatter` | Frontmatter or null | The frontmatter, if the source has one.                               |
+| `directives`  | list of Directive   | Every directive, in source order.                                     |
 
-`Root.range` is `[0, input.length]`. Its only child field is `body`;
-`frontmatter`, `comments`, `directives`, and `tokens` are lists, not child
-fields. Every character that is not whitespace or a line terminator is in
-`tokens` or `comments`, so a tool that goes through tokens and comments
-together, as ESLint's `SourceCode` does, finds no gap at a directive or at the
-frontmatter.
+Its only child field is `body`; `frontmatter` and `directives` are not child
+fields.
 
 `diagramType` is the id that
 [`mermaid.parse()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L96-L117)
@@ -600,55 +215,7 @@ the diagram sections below: a
 `type` is `ErrorDiagram`. A node with no other fields and no child fields.
 
 The body of the `error` pseudo-diagram (see
-[common.md](./common.md#diagram-detection)); `diagramType` is `error`. Its
-tokens, besides the `Directive` tokens and the tokens of the frontmatter, are
-made from the maximal runs of characters that are not whitespace or line
-terminators in the text without its directives and comment regions; each is a
-`RawText` token. Whitespace or a line terminator ends a run, and a directive
-between two characters of a run cuts it, as it cuts every token (see
-[common.md](./common.md#a-directive-is-a-token-boundary)). A `;` that the line
-rule ignores follows the rule of [Tokens](#tokens): it is part of a run's token
-when characters of the run lie on both sides of it, and otherwise a `RawText`
-token of its own, because the pseudo-diagram gives every character that is not
-whitespace the kind `RawText`. The node's range runs from the start of its first
-token to the end of its last. There is always at least one token, the one that
-holds `error`.
-
-The runs are made of the characters of the text, not of the
-[diagram text](./common.md#reading-a-source): a `;` that the line rule ignores
-is not diagram text, but it is in a token. A comment is always outside the
-tokens, because a comment region starts at a comment start, which is the start
-of the text or right after a line terminator, U+2028, or U+2029, and each of
-those ends a run.
-
-The detectors see the text only after the extra removals of detection, so the
-tokens can be more than the word `error`:
-
-- `%%`, a line break, and `error` give the tokens `%%` and `error`. [fixture:
-  common/error-bare-percent-line]
-- `error %% x` followed by a line break gives `error`, `%%`, and `x`. The `%% x`
-  is not a comment, because it is not a comment line; only detection leaves it
-  out. [fixture: common/error-trailing-percent]
-- `error%%{wrap}%%` gives the one token `error`, followed by the `Directive`
-  token of the directive. [fixture: common/error-directive-adjacent]
-- `error %%{init: {}}%% %% x` followed by a line break gives `error`, `%%`, and
-  `x`, with the `Directive` token of the directive between the first two.
-  [fixture: common/error-directive-inside]
-- `error`, a line break, `%% c`, a line break, and `%%{ }` followed by a line
-  break gives `error`, `%%{`, and `}`, with the comment `%% c` between the first
-  two, outside the tokens: `%%{ }` is not a directive and not a comment line.
-  [fixture: common/error-comment-inside]
-- `error %% style:#f;` followed by a line break gives `error`, `%%`, `style:#f`,
-  and `;`. The line rule ignores the `;`, and no character of the run follows
-  it, so it is a token of its own. `error %% style:#f;x` gives the last token
-  `style:#f;x`, with the ignored `;` inside it. [fixture:
-  common/error-style-semicolon-trailing] [fixture:
-  common/error-style-semicolon-inside]
-
-A directive inside the word, as in `err%%{init: {}}%%or`, is left out by
-detection, which sees `error`, so the input is the `error` pseudo-diagram, as in
-mermaid.js; the directive cuts the run into the tokens `err` and `or`, with its
-`Directive` token between them. [fixture: common/error-split-by-directive]
+[common.md](./common.md#diagram-detection)); `diagramType` is `error`.
 
 ## Shared leaf nodes
 
@@ -671,7 +238,9 @@ literal.
   [FlowchartLiteral](./ast/flowchart.md#flowchartliteral).
 - A position where the grammar reads a name that may contain whitespace: a name
   node of the diagram type, such as
-  [SequenceIdentifier](./ast/sequence.md#sequenceidentifier).
+  [SequenceIdentifier](./ast/sequence.md#sequenceidentifier) and
+  [ClassIdentifier](./ast/class.md#classidentifier).
+
 - A position where the grammar allows a text, a string in quotes, a markdown
   string, or a sequence of them, and which of them is written matters as a kind:
   a label of the diagram type, such as
@@ -703,15 +272,6 @@ rejecting the input: a diagram document rejects an input because of such text
 only where the tree has no place for a node of it, and then as a known
 divergence (see [known-divergences.md](./known-divergences.md)).
 
-`Identifier` is also the name of a token kind, as in ESTree and ESLint, but a
-node and a token are different things. The node is reached from `Root.body`
-through child fields, and its `name` is the texts of its units joined in order
-(see [Identifier](#identifier)), without the directives in them. A token is only
-in `Root.tokens`, and its `value` is the source text of its range.
-`A%%{init: {}}%%B-->C` has one `Identifier` node with the name `AB`, and two
-`Identifier` tokens, `A` and `B`, with a `Directive` token between them.
-[fixture: flowchart/gram-id-across-directive]
-
 ### Identifier
 
 A name without whitespace, or a single word without quotes at a position where
@@ -720,65 +280,58 @@ word that the grammar reads as a name at its position, such as an id or a class
 name; the grammar of that position decides which characters it may contain, so a
 click id or an edge id may contain symbols. A name that may contain whitespace
 is a name node of the diagram type instead, such as
-[SequenceIdentifier](./ast/sequence.md#sequenceidentifier). As in ESTree,
-whether something is an identifier is a matter of its syntactic form: it need
-not refer to anything, as the key of an object and the `prop` of `obj.prop` do
-not.
+[SequenceIdentifier](./ast/sequence.md#sequenceidentifier) and
+[ClassIdentifier](./ast/class.md#classidentifier). As in ESTree, whether
+something is an identifier is a matter of its syntactic form: it need not refer
+to anything, as the key of an object and the `prop` of `obj.prop` do not.
 
 | Field  | Type   | Meaning                                              |
 | ------ | ------ | ---------------------------------------------------- |
 | `name` | string | The texts of its units, joined in order (see below). |
 
 Its `name` is made from the units of the diagram's lexer that it consists of
-(units are defined by each diagram document): the text of the range of each unit
-(see [Nodes](#nodes)), joined in order. None of these units contains whitespace,
-so the name contains none; whitespace between two units is not part of it. Its
-tokens are `Identifier` tokens: one for each unit, or more when a directive
-inside a unit cuts it (see
-[common.md](./common.md#a-directive-is-a-token-boundary)), and fewer where a
-diagram joins units into one token.
-
-- `A%%{init: {}}%%B-->C` has the vertex `AB`, whose Identifier is one unit cut
-  into the two tokens `A` and `B`. [fixture: flowchart/gram-id-across-directive]
-- In a class diagram, `class Foo Bar` declares a class whose Identifier has the
-  two units and tokens `Foo` and `Bar` and the name `FooBar`, and so does
-  `class Foo%%{init: {}}%% Bar`. [fixture: class/gram-name-spaces] [fixture:
-  class/lex-directive-between-name-parts]
-
-Its range covers all its tokens.
+(units are defined by each diagram document): the written text of each unit (see
+[Nodes](#nodes)), joined in order. No whitespace lies inside or between these
+units, so the name contains none.
 
 ### StringLiteral
 
 A string in quotes: double quotes, or, for the backquoted names of class
 diagrams, backquotes.
 
-| Field    | Type    | Meaning                                                                                                                                                                                                                                                                                            |
-| -------- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `value`  | string  | Its content: what the diagram's string rules read between its delimiters, as the text of its range. With one pair of quotes, it is the text of its range without them; where a diagram nests delimiters, all of them are left out (for flowchart, see [Strings](./diagrams/flowchart.md#strings)). |
-| `raw`    | string  | The source text of its range, with nothing left out and nothing converted: its quotes, and a comment region within its range, are part of it.                                                                                                                                                      |
-| `closed` | boolean | Whether the string ends with its closing quote.                                                                                                                                                                                                                                                    |
+| Field    | Type    | Meaning                                                                                                                                                                                                                                                                                  |
+| -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`  | string  | Its content: what the diagram's string rules read between its delimiters, as its written text. With one pair of quotes, it is its written text without them; where a diagram nests delimiters, all of them are left out (for flowchart, see [Strings](./diagrams/flowchart.md#strings)). |
+| `raw`    | string  | The source text of the string from its opening quote to its closing quote, or to its last character when it is not closed, with nothing left out and nothing converted: its quotes, and a directive, a comment region, or an ignored `;` inside it, are part of it.                      |
+| `closed` | boolean | Whether the string ends with its closing quote.                                                                                                                                                                                                                                          |
 
-Its token is one `String` token, quotes included, and its range is that of the
-token, so `raw` equals the `value` of that token. Where comment regions cut it,
-its tokens are `StringFragment` tokens, and its range runs from the first of
-them to the last, the regions included (see [Comment](#comment)).
 `click A href "u"` has the URL with the value `u` and the `raw` `"u"`; in
 `click A "u" "one`, a line break, `%% c`, a line break, and `two"`, the tooltip
-has the value `one`, a line feed, and `two`, its tokens are the `StringFragment`
-tokens `"one` and `two"`, and its `raw` is the whole string, the comment line
-included. [fixture: flowchart/gram-click-href] [fixture:
-flowchart/tokens-string-literal-comment-line]
+has the value `one`, a line feed, and `two`, and its `raw` is the whole string,
+the comment line included. [fixture: flowchart/gram-click-href] [fixture:
+flowchart/tokens-string-literal-comment-line] In the same way, the URL of
+`click A href "u%%{init: {}}%%v"` has the value `uv`, and its `raw` is the whole
+string, the directive included. [fixture:
+flowchart/lex-directive-in-click-href-string]
 
 A string is closed by its second quote. Where a diagram accepts a string that is
 not closed when the text ends, which only a backquoted name in a class diagram
 is (see
 [Strings, backquoted names, and generic types](./diagrams/class.md#strings-backquoted-names-and-generic-types)),
-its token and its range run to the last character of the source that is not
-whitespace or a line terminator, as every token ends (see
-[Invariants](#invariants)); line feeds inside it are part of it. Its `raw` has
-no closing quote, and its `value` is the text of its range without the opening
-quote. Its `closed` is false, as the `closed` of a [Directive](#directive) and
-of a description block such as
+its written text runs to the last character that mermaid.js reads into the name:
+the last character of the source that is not part of a directive or a comment
+region, the whitespace and line terminators at the end included, which
+mermaid.js reads into the name; line feeds inside it are part of it too. A
+directive after that last character is not part of the string: `A --> `,
+`` `b``, a space, and `%%{init: {}}%%` at the end of the text has the string
+`` `b`` and the space, with the value `b` and a space. [fixture:
+class/lex-backquote-unclosed-directive-at-end] In a class diagram, `class`,
+`` `x``, a line break, and `%%{init: {}}%%` followed by a line break has the
+value `x` and two line feeds, the line feed after the directive included.
+[fixture: class/lex-backquote-unclosed-directive-after-line-break] Its `raw` has
+no closing quote, and its `value` is its written text without the opening quote.
+Its `closed` is false, as the `closed` of a [Directive](#directive) and of a
+description block such as
 [FlowchartAccDescrBlockStatement](./ast/flowchart.md#flowchartaccdescrblockstatement)
 is for those that are not closed; every other StringLiteral has `closed` true. A
 tool reads whether a string is closed from this field, and need not compare the
@@ -792,25 +345,22 @@ class/tokens-backquote-unclosed-trailing-whitespace]
 
 A number.
 
-| Field   | Type   | Meaning                                              |
-| ------- | ------ | ---------------------------------------------------- |
-| `value` | number | The number that the characters of its token write.   |
-| `raw`   | string | The source text of its range: the number as written. |
+| Field   | Type   | Meaning                                       |
+| ------- | ------ | --------------------------------------------- |
+| `value` | number | The number that its written text writes.      |
+| `raw`   | string | The number as written, with nothing left out. |
 
-Its token is one `Numeric` token, and its range is that of the token, so `raw`
-equals the `value` of that token: in `linkStyle 0,1 stroke:red`, the first
-number has the value zero and the `raw` `0`. [fixture:
-flowchart/db-linkstyle-shared-fill] Which forms a number may take is decided by
-the grammar of its position: in flowchart only digits, so every number is an
-integer; in sequence also a fraction, so `autonumber .5` starts at the number
-one half, with the `raw` `.5`, and `autonumber 05` at five. [fixture:
+In `linkStyle 0,1 stroke:red`, the first number has the value zero and the `raw`
+`0`. [fixture: flowchart/db-linkstyle-shared-fill] Which forms a number may take
+is decided by the grammar of its position: in flowchart only digits, so every
+number is an integer; in sequence also a fraction, so `autonumber .5` starts at
+the number one half, with the `raw` `.5`, and `autonumber 05` at five. [fixture:
 sequence/db-autonumber-fraction] [fixture: sequence/db-autonumber-leading-zero]
 
 ## Diagram nodes
 
-The nodes of each diagram type, with their fields and child fields, and which
-characters of the diagram form tokens of which kind, are defined in a document
-of their own under `ast/`:
+The nodes of each diagram type, with their fields and child fields, are defined
+in a document of their own under `ast/`:
 
 - [Flowchart](./ast/flowchart.md): the diagram types `flowchart-v2`,
   `flowchart-elk`, and `swimlane`.
@@ -820,5 +370,5 @@ of their own under `ast/`:
 
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of
-names across all diagram types. The [shared leaf nodes](#shared-leaf-nodes) and
-the token kinds above are shared by all diagram types and have no prefix.
+names across all diagram types. The [shared leaf nodes](#shared-leaf-nodes) are
+shared by all diagram types and have no prefix.

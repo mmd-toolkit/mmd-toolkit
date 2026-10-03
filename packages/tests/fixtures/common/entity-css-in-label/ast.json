@@ -211,15 +211,51 @@
     },
     {
       "type": "RawText",
-      "value": "<span style='color:#f00;font-weight:bold;'>x</span>",
+      "value": "<span style='color:#f00;font-weight:bold",
       "range": [
         15,
-        66
+        55
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "IgnoredSemicolon",
+      "value": ";",
+      "range": [
+        55,
+        56
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 42
+        },
+        "end": {
+          "line": 2,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "'>x</span>",
+      "range": [
+        56,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 43
         },
         "end": {
           "line": 2,

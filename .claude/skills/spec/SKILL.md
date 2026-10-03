@@ -51,12 +51,20 @@ in the skill `conventions`.
   comes before rejecting the input, and an input is rejected for such text only
   when the text has no place of its own in the tree. This is the source of the
   definition; implementations follow it.
-- For each diagram type, `docs/diagrams/<diagram>.md` with its five sections,
-  written from mermaid's grammar definition and Db class.
+- For each diagram type, `docs/diagrams/<diagram>.md` with its four sections
+  (detection, lexical structure, grammar with the rejections outside the
+  grammar, known divergences), written from mermaid's grammar definition and Db
+  class. What decides whether an input is accepted is defined here, also where
+  mermaid.js decides it while it builds its Db.
+- The specification defines the syntax and the shape of the tree: node types,
+  fields, and values. How the tree gets its tokens and positions is the
+  specification of the parser (`packages/parser/docs`), and how a recorded tree
+  is checked against the Db of mermaid.js is a document of the tests
+  (`packages/tests/docs`). The documents of the specification do not refer to
+  the parser's specification of tokens and positions: references run from the
+  parser's documents to the specification.
 - Every claim in the specification has a fixture, added through the tests
   package's generator.
-- The items in each Db normalization section match the tests package's
-  normalizers.
 - The specification introduces no single-letter or abbreviated symbols (no "let
   _T_ be the text", no italic one-letter names, no subscripts). Every concept is
   named in words each time, or given a meaningful multi-word name at the start
@@ -76,7 +84,7 @@ The criteria change, so read these each time work starts.
 1. The policies and criteria.
    - The section Policies and criteria of this document: the principles of the
      tree (the names of node types, the shared leaf nodes, a type decided by
-     what the grammar allows at the position), the five sections, a fixture for
+     what the grammar allows at the position), the four sections, a fixture for
      every claim, no symbols, no code in the specification.
    - AGENTS.md, Project: the measure of correctness, and the exceptions of the
      Known divergences.
@@ -91,11 +99,11 @@ The criteria change, so read these each time work starts.
 2. In the results of the work, say for each claim whether it was checked by
    running something (mermaid.js, the parser), by reading something (the source
    of mermaid.js, a document), or not checked.
-3. `packages/spec/docs/index.md` (the documents, the five sections of a diagram
-   document, the writing conventions, the pinned commit), `common.md`, `ast.md`,
-   and the `diagrams/<diagram>.md` and `ast/<diagram>.md` of the diagram types
-   already written. The principles of the tree and their reasons are under
-   Design goals and Shared leaf nodes in `ast.md`.
+3. `packages/spec/docs/index.md` (the conformance, the four sections of a
+   diagram document, the writing conventions, the pinned commit), `common.md`,
+   `ast.md`, and the `diagrams/<diagram>.md` and `ast/<diagram>.md` of the
+   diagram types already written. The principles of the tree and their reasons
+   are under Design goals and Shared leaf nodes in `ast.md`.
 4. `packages/tests/docs/maintaining-fixtures.md` (the commands and rules for
    fixtures) and `packages/tests/README.md` (the form of a fixture).
 
@@ -221,11 +229,12 @@ pnpm run -s lint:chars
 ```
 
 Besides the English and Japanese pairs, `pnpm run lint:docs` checks the links of
-the specification's documents, their anchors, the fixture citations (also those
-wrapped after `[fixture:`), the same set of citations in each English document
-and its Japanese pair, and the same heading structure in both
-(`scripts/check-spec-docs.mjs`). It also checks that every link to mermaid.js in
-the checked documents points to the commit recorded in
+the specification's documents and of the parser's and the tests' documents
+(`packages/parser/docs`, `packages/tests/docs`), their anchors, the fixture
+citations (also those wrapped after `[fixture:`), the same set of citations in
+each English document and its Japanese pair, and the same heading structure in
+both (`scripts/check-doc-citations.mjs`). It also checks that every link to
+mermaid.js in the checked documents points to the commit recorded in
 `packages/spec/docs/index.md` (`scripts/check-mermaid-links.mjs`).
 
 When fixtures were added, also run `pnpm run -s fixtures:check` in
@@ -237,7 +246,7 @@ run their own when they take up the change. One test of the parser reads the
 specification: `packages/parser/tests/types.test.ts` lists the documents under
 `docs/known-divergences/`, so the result of the work (3.6) says when a known
 divergence document was added or removed. Generated inputs (3.5) are run when a
-decision needs their counts, not as a check after each change.
+decision needs them, not as a check after each change.
 
 ### 2.5 Scripts that rewrite documents
 
@@ -310,8 +319,9 @@ Every link from the specification is a permalink to the commit recorded in
    spreading, rewrites with regular expressions, the places that throw
    (rejections outside the grammar), and the values that depend on the browser
    rather than on the text, such as `window.CSS` or `document` (sequence: the
-   colour of a box). Such a value is not decided by the tree; say in the Db
-   normalization that it is supplied from outside, as a site configuration is.
+   colour of a box). Such a value is not decided by the tree; tell tests, whose
+   `docs/db-from-tree/<diagram>.md` says that it is supplied from outside, as a
+   site configuration is.
 4. Check the order of the preprocessing (Reading a source in common.md) and the
    detection (detection.md).
 
@@ -321,7 +331,7 @@ To be written for pie.
 
 ### 3.2 Writing the diagram document
 
-Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the five sections of
+Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the four sections of
 "How to read a diagram document" in index.md.
 
 1. Detection: point to the detector in detection.md.
@@ -329,18 +339,19 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the five sections of
    context in the order they are tried. "Units and contexts" in flowchart.md is
    an example of the form.
 3. Grammar: in the Notation of common.md, with a table of the node that each
-   rule makes.
-4. Db normalization: the same items as the tests package's normalizer. For each
-   value, say which fields of the tree and which parts of the source it comes
-   from.
-5. Known divergences: those of the identifiers in known-divergences.md that
+   rule makes, and the inputs that mermaid.js rejects after its grammar has
+   accepted them, with all that decides them (Rejections outside the grammar).
+4. Known divergences: those of the identifiers in known-divergences.md that
    apply to the diagram type, and how they show in it. A new divergence is
    defined in a document of its own, `known-divergences/<identifier>.md` and its
    `.ja.md`, with the parts that known-divergences.md lists (the syntax, the
    difference with examples, why mermaid.js reads it so, the rule and why, what
    it means for an author, the documentation and issues of mermaid.js where any
-   were found, the counts and how they are checked), and with a row in the table
-   of known-divergences.md.
+   were found), and with a row in the table of known-divergences.md.
+
+The Db summary of a diagram type and how it is built from the tree are documents
+of `@mmd-toolkit/tests` (`docs/db-summaries.md` and
+`docs/db-from-tree/<diagram>.md`), written by tests; tell tests what they need.
 
 ### 3.3 Adding the nodes of the tree
 
@@ -367,10 +378,15 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the five sections of
    decision, and write the shape that is chosen. Then check every field against
    the principles. When a decided shape turns out to conflict with a principle
    or with mermaid.js, say so with the evidence before changing it.
-5. A value is the text of its range (Nodes in ast.md). Where whitespace outside
-   a range affects mermaid.js's result, do not put it in the value; say that the
-   Db steps read it from the source. Flowchart examples: the Db text of a style,
-   and the name text of a subgraph (the whitespace before and after the name).
+5. A value is the text of its range, and the tokens and the range of a value
+   cover the text that mermaid.js reads as the value, whitespace included where
+   mermaid.js reads it (Nodes and Tokens in ast.md): a sequence title, a class
+   generic type, and a flowchart style after its `,` keep their whitespace. Only
+   where no token can hold what mermaid.js reads, because it runs across other
+   nodes, say why in the field's description in `ast/<diagram>.md`, and tell
+   tests, whose `docs/db-from-tree/<diagram>.md` says that the Db reads it from
+   the source. Flowchart example: the whitespace between the empty description
+   blocks right after the name of a subgraph.
 
 ### 3.4 Matching claims with fixtures
 
@@ -393,9 +409,12 @@ Each time a claim is written:
 
 Do not decide a rule from hand-written examples only.
 
-1. Generate inputs (hundreds to thousands) that combine small pieces at the
-   rule's boundaries: spaces, tabs, line breaks, empty strings, directives,
-   comment lines, `;`, keywords, strings, and the end of the text.
+1. Generate inputs by kind. List the kinds of boundary that the rule touches and
+   the small pieces that can lie there: spaces, tabs, line breaks, empty
+   strings, directives, comment lines, `;`, keywords, strings, and the end of
+   the text. Cover each combination of a kind of boundary and a piece with a few
+   inputs. To be more certain, add a kind that is missing, not more inputs of a
+   kind already covered.
 2. Run them through mermaid.js and through the parser's `parse()` and `dbOf()`,
    and collect the differences in acceptance and in values. For a diagram type
    that the parser does not read yet, compare mermaid.js's results with what the
@@ -435,22 +454,23 @@ Do not decide a rule from hand-written examples only.
       subgraph, a box, a namespace, a composite state), before and after
       whitespace, before a `;`, and at the end of the text.
    2. Every place where a value comes from the text of a range rather than from
-      units, such as a Db text that a Db normalization reads from the source
-      (the styles and the name text of a subgraph in flowchart), and whether the
-      form can lie inside such a range.
-   3. Generated inputs that cover every position listed in the first item, each
-      with the whitespace around the form (none, a space, two spaces, a tab, a
-      line break after it), compared with mermaid.js for acceptance and for the
-      Db, the values of the second item included.
+      units, such as the name text of a subgraph in flowchart, which is read
+      from the source where empty description blocks follow the name, and
+      whether the form can lie inside such a range.
+   3. Generated inputs that cover each kind of position listed in the first item
+      with a few inputs, each with each kind of whitespace around the form
+      (none, a space, two spaces, a tab, a line break after it), compared with
+      mermaid.js for acceptance and for the Db, the values of the second item
+      included.
 
    When empty description blocks before a separator were first accepted, only
    the end of a line was looked at; the place after the name of a subgraph, the
-   whitespace around the blocks, the Db text of a style, and the header line
-   were each found afterwards. Check also that acceptance does not change
-   elsewhere (flowchart example: the rule that reads the placeholder of an
-   entity as one unit would change acceptance under the letter rule, rule 23, so
-   its scope was limited; and skipping every `click` unit joined the click ids
-   of two click contexts and accepted inputs that mermaid.js rejects, so the
+   whitespace around the blocks, the text that the Db read for a style, and the
+   header line were each found afterwards. Check also that acceptance does not
+   change elsewhere (flowchart example: the rule that reads the placeholder of
+   an entity as one unit would change acceptance under the letter rule, rule 23,
+   so its scope was limited; and skipping every `click` unit joined the click
+   ids of two click contexts and accepted inputs that mermaid.js rejects, so the
    rule was narrowed).
 
 6. When a rule of the specification rests on behavior of mermaid.js that looks
@@ -505,15 +525,18 @@ each check in the output (3.6).
 7. **The summary, field by field.** For each field of each record of the
    summary, tally over all fixtures of the diagram type the three cases: the key
    is missing, the value is empty, the value is set. Each case that occurs is
-   explained by a sentence of the Db normalization, with a fixture. Look in the
-   Db class for what is set only on the first visit, what accumulates, and what
-   an update leaves as it was (`Object.assign` keeps the keys that the new
+   explained, with a fixture, by a sentence of `docs/db-from-tree/<diagram>.md`
+   of the tests package; a case that no sentence explains goes to tests. Look in
+   the Db class for what is set only on the first visit, what accumulates, and
+   what an update leaves as it was (`Object.assign` keeps the keys that the new
    object does not have).
-8. **What the Db reads from the source.** Where the tree drops something that
-   changes the Db (an empty item between `,`, a text that is all whitespace,
-   whether a `:` is there), the Db normalization says that the value is read
-   from the source, and the field's description in `ast/<diagram>.md` says so
-   too.
+8. **What the Db reads beyond the values.** The tree holds what changes the Db:
+   as values (whitespace that mermaid.js reads, also a value that is all
+   whitespace), as null elements of a list (an empty item between `,`), or as
+   tokens (whether a `:` is there). Only where no node or token can hold it, the
+   field's description in `ast/<diagram>.md` says why, and
+   `docs/db-from-tree/<diagram>.md` of the tests package says that the Db reads
+   it from the source.
 9. **Ranges.** Every "any characters" says whether line feeds, U+2028, and
    U+2029 are included, whether as many or as few as possible are read, and
    where the rule is tried again (a rule is tried at every position of its
@@ -612,8 +635,8 @@ them is not decided:
    - a character that no value includes: the `;` that the line rule ignores;
    - trivia that cuts a token into fragments: a comment region, which cuts a
      `String` token into `StringFragment` tokens and a `RawText` token into
-     `RawText` tokens, and a directive inside a `RawText` or `Identifier` unit,
-     which cuts it into tokens of the same kind.
+     `RawText` tokens, and a directive inside a `String` or `RawText` token,
+     which cuts it in the same way.
 3. **The check.** With the text held so, whether acceptance and the Db agree
    with mermaid.js, counted on generated inputs: compare mermaid.js on the input
    with mermaid.js on the input without the text, or with another reference

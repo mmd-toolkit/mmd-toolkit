@@ -1,0 +1,1506 @@
+[
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2029%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2029%% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2029%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2029%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2029%% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2029%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} \u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} \u2028%% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} \u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} \u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} \u2028%% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} \u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028 %% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028 %% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028 %% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028 %% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028 %% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028 %% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\naccDescr {}\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c\r\naccDescr {}\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\naccDescr {}\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\naccDescr {}\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\naccDescr {}\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\naccDescr {}\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\naccDescr {}\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\naccDescr {}\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\naccDescr {}\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\naccDescr {}\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n%% c\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n%% c\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2029%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2029%% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2029%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2029%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2029%% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2029%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {} \u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {} \u2028%% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {} \u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {} \u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {} \u2028%% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {} \u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028 %% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028 %% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028 %% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028 %% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028 %% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028 %% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\naccDescr {}\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c\r\naccDescr {}\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\naccDescr {}\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\naccDescr {}\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\naccDescr {}\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\naccDescr {}\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n  \n%% b\naccDescr {}\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\naccDescr {}\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\n%% b\n%% c\naccDescr {}\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\naccDescr {}\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\n  \nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% c %%{init: {}}%%\r\n  \r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\n  \n%% b\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n%% c\n ;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\n%% b\n%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n%% c\r\n ;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S accDescr {} accDescr {}%%{init: {}}%%\u2028%% a\r\n%% b\r\n%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph header with empty description blocks: whitespace-only lines among the comment lines, directives around the U+2028, and CRLF"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2029%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2029%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S \u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S \u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028 %% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028 %% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028 %% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028 %% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% c\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% c\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% c %%{init: {}}%%\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% c %%{init: {}}%%\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% c %%{init: {}}%%\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% a\n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% a\n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% a\r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% a\r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% a\n%% b\n%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%%% a\n%% b\n%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S%%{init: {}}%%\u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S%%{init: {}}%%\u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2029%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2029%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2029%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2029%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\" \u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\" \u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\" \u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\" \u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028 %% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028 %% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028 %% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028 %% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% c\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% c\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% c %%{init: {}}%%\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% c %%{init: {}}%%\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% c %%{init: {}}%%\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\n%% b\n%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\n%% b\n%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"%%{init: {}}%%\u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph \"S\"%%{init: {}}%%\u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph \"S\"%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2029%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2029%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2029%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2029%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x \u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x \u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x \u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x \u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028 %% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028 %% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028 %% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028 %% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% c\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% c\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% c %%{init: {}}%%\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% c %%{init: {}}%%\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% c %%{init: {}}%%\n\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% c %%{init: {}}%%\r\n\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% a\n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% a\n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% a\r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% a\r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% a\n%% b\n%% c\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x\u2028%%{init: {}}%%%% a\n%% b\n%% c\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x\u2028%%{init: {}}%%%% a\r\n%% b\r\n%% c\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x%%{init: {}}%%\u2028%% a\n  \n%% b\n;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S x%%{init: {}}%%\u2028%% a\n  \n%% b\n;;\nB\nend\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  },
+  {
+    "text": "flowchart LR\r\nsubgraph S x%%{init: {}}%%\u2028%% a\r\n  \r\n%% b\r\n;;\r\nB\r\nend\r\n",
+    "note": "comment lines after U+2028 or U+2029 that follow a subgraph name: whitespace-only lines among the comment lines, and a run of semicolons after them"
+  }
+]

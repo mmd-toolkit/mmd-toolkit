@@ -48,19 +48,19 @@
         },
         "secondDescription": {
           "type": "StateLiteral",
-          "value": "x",
+          "value": " x ",
           "range": [
-            35,
-            36
+            34,
+            37
           ],
           "loc": {
             "start": {
               "line": 2,
-              "column": 19
+              "column": 18
             },
             "end": {
               "line": 2,
-              "column": 20
+              "column": 21
             }
           }
         },
@@ -229,19 +229,19 @@
     },
     {
       "type": "RawText",
-      "value": "x",
+      "value": " x ",
       "range": [
-        35,
-        36
+        34,
+        37
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 19
+          "column": 18
         },
         "end": {
           "line": 2,
-          "column": 20
+          "column": 21
         }
       }
     },

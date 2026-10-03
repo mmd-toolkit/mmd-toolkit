@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import type { Range, Root } from "../src/index.ts"
 import { ParseError, parse } from "../src/index.ts"
-import { checkTree } from "./helpers/check-tree.ts"
+import { problemsOfTree } from "./helpers/tree-problems.ts"
 
 // Expectations come from diagrams/class.md (the lexer, the grammar, and the
 // rejections outside the grammar) and ast/class.md (the nodes and the
@@ -14,7 +14,7 @@ const HEADER = "classDiagram\n"
 function parseStatements(statements: string): Root {
   const text = HEADER + statements
   const root = parse(text)
-  checkTree(text, root)
+  expect(problemsOfTree(text, root)).toEqual([])
   return root
 }
 
@@ -51,7 +51,7 @@ describe("the class tree", () => {
   it("makes the empty description blocks after the header and before the line break of a statement statements of their own", () => {
     const text = "classDiagram accDescr {}\nA <|-- B accDescr {}\nclass C\n"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     const block = { type: "ClassAccDescrBlockStatement", value: null }
     expect(bodyOf(root)).toMatchObject([
       { ...block, range: [13, 24] },
@@ -61,16 +61,19 @@ describe("the class tree", () => {
     ])
   })
 
-  it("makes one Identifier of the name parts of a class name, with a token for each run of them", () => {
+  it("makes one ClassIdentifier of the name parts of a class name, with a RawText token for each run of them", () => {
     expect(tokensOf("class Foo Bar")).toEqual([
       ["Keyword", "class"],
-      ["Identifier", "Foo"],
-      ["Identifier", "Bar"],
+      ["RawText", "Foo"],
+      ["RawText", "Bar"],
     ])
     expect(bodyOf(parseStatements("class Foo Bar"))).toMatchObject([
       {
         type: "ClassDeclaration",
-        name: { prefix: null, name: { type: "Identifier", name: "FooBar" } },
+        name: {
+          prefix: null,
+          name: { type: "ClassIdentifier", name: "FooBar" },
+        },
       },
     ])
   })
@@ -78,7 +81,7 @@ describe("the class tree", () => {
   it("makes the name parts before a backquoted name its prefix", () => {
     expect(tokensOf("class A.`b c`")).toEqual([
       ["Keyword", "class"],
-      ["Identifier", "A."],
+      ["RawText", "A."],
       ["String", "`b c`"],
     ])
     expect(bodyOf(parseStatements("class A.`b c`"))).toMatchObject([
@@ -106,10 +109,66 @@ describe("the class tree", () => {
     ])
   })
 
+  it("cuts a backquoted name that is not closed at a directive inside it, also after its last character that is not whitespace", () => {
+    // A directive between two characters that are not whitespace lies
+    // inside the string unit, as in a closed one.
+    expect(tokensOf("class `x%%{init: {}}%%y")).toEqual([
+      ["Keyword", "class"],
+      ["StringFragment", "`x"],
+      ["Directive", "%%{init: {}}%%"],
+      ["StringFragment", "y"],
+    ])
+    expect(bodyOf(parseStatements("class `x%%{init: {}}%%y"))).toMatchObject([
+      { name: { name: { value: "xy", closed: false } } },
+    ])
+    // A closed directive on the next line: the name reads the line feeds on
+    // both sides of it, so each is in the fragment next to it.
+    expect(tokensOf("class `x\n%%{init: {}}%%\n")).toEqual([
+      ["Keyword", "class"],
+      ["StringFragment", "`x\n"],
+      ["Directive", "%%{init: {}}%%"],
+      ["StringFragment", "\n"],
+    ])
+    expect(bodyOf(parseStatements("class `x\n%%{init: {}}%%\n"))).toMatchObject(
+      [{ name: { name: { value: "x\n\n", closed: false } } }],
+    )
+    // Two directives one after the other, and whitespace on both sides.
+    expect(tokensOf("class `x\n%%{init: {}}%%%%{init: {}}%%\n")).toEqual([
+      ["Keyword", "class"],
+      ["StringFragment", "`x\n"],
+      ["Directive", "%%{init: {}}%%"],
+      ["Directive", "%%{init: {}}%%"],
+      ["StringFragment", "\n"],
+    ])
+    expect(tokensOf("class `x %%{init: {}}%% \n")).toEqual([
+      ["Keyword", "class"],
+      ["StringFragment", "`x "],
+      ["Directive", "%%{init: {}}%%"],
+      ["StringFragment", " \n"],
+    ])
+    expect(bodyOf(parseStatements("class `x %%{init: {}}%% \n"))).toMatchObject(
+      [{ name: { name: { value: "x  \n" } } }],
+    )
+  })
+
+  it("ends a backquoted name that is not closed at its last source character, before a directive, one that is not closed, or a comment line at the end of the source", () => {
+    for (const [statements, end, last] of [
+      ["A --> `b %%{init: {}}%%", 9, "`b "],
+      ["class `x\n%%{init:", 9, "`x\n"],
+      ["class `x\n%% c", 9, "`x\n"],
+    ] as const) {
+      const root = parseStatements(statements)
+      const name = root.tokens.find((token) => token.type === "String")
+      expect(name?.value).toBe(last)
+      expect(name?.range[1]).toBe(inText([0, end])[1])
+      expect(root.body.range[1]).toBe(inText([0, end])[1])
+    }
+  })
+
   it("makes the text between the two `~` of a generic type a literal, and the `~` tokens", () => {
     expect(tokensOf("class Map~K, V~")).toEqual([
       ["Keyword", "class"],
-      ["Identifier", "Map"],
+      ["RawText", "Map"],
       ["Punctuator", "~"],
       ["RawText", "K, V"],
       ["Punctuator", "~"],
@@ -119,13 +178,99 @@ describe("the class tree", () => {
     ])
   })
 
+  it("keeps the whitespace that mermaid.js reads in a value: a generic type, a member-line annotation, a member name that starts with a space, a return type before a classifier mark, and a backquoted name that is not closed", () => {
+    // ast/class.md, ClassName: the generic is the whole generic text.
+    expect(bodyOf(parseStatements("class A~ T ~"))).toMatchObject([
+      { name: { generic: { value: " T " } } },
+    ])
+    expect(bodyOf(parseStatements("class A~ ~"))).toMatchObject([
+      { name: { generic: { value: " " } } },
+    ])
+    // ClassAnnotation: as a member line, the whole text between `<<` and
+    // `>>`; in an annotation statement, an Identifier without whitespace.
+    expect(bodyOf(parseStatements("class A {\n<< y z >>\n}"))).toMatchObject([
+      { members: [{ type: "ClassAnnotation", name: { value: " y z " } }] },
+    ])
+    expect(bodyOf(parseStatements("class A\n<< interface >> A"))).toMatchObject(
+      [{}, { annotation: { name: { type: "Identifier", name: "interface" } } }],
+    )
+    // ClassMethod and ClassAttribute: a member name text that starts with a
+    // space keeps it, one with a tab does not.
+    expect(
+      bodyOf(parseStatements("class A {\n+ foo()\n+\tbar()\n}")),
+    ).toMatchObject([
+      { members: [{ name: { value: " foo" } }, { name: { value: "bar" } }] },
+    ])
+    // The return type keeps the whitespace before a classifier mark that
+    // ends it.
+    expect(bodyOf(parseStatements("class A {\n+get() Foo $\n}"))).toMatchObject(
+      [
+        {
+          members: [{ returnType: { value: "Foo " }, classifier: "static" }],
+        },
+      ],
+    )
+    // StringLiteral: a backquoted name that is not closed runs to the end of
+    // the source, the line feed at its end included.
+    const unclosed = parseStatements("class `x\n")
+    expect(bodyOf(unclosed)).toMatchObject([
+      {
+        name: { name: { type: "StringLiteral", value: "x\n", closed: false } },
+      },
+    ])
+    expect(unclosed.tokens.at(-1)?.value).toBe("`x\n")
+  })
+
+  it("gives a member no name when its name text is empty, the whitespace at the end of the line belonging to no unit", () => {
+    // diagrams/class.md, Member lines: an empty member name text makes no
+    // unit, while one space before a classifier mark is the name.
+    for (const statements of [
+      "class A {\n+ \n}",
+      "class A {\n+  \n}",
+      "class A {\n+ \t\n}",
+      "A : + ",
+    ]) {
+      const root = parseStatements(statements)
+      const member =
+        root.body.type === "ClassDiagram"
+          ? root.body.body.flatMap((statement) =>
+              statement.type === "ClassDeclaration"
+                ? statement.members
+                : statement.type === "ClassMemberStatement"
+                  ? [statement.member]
+                  : [],
+            )[0]
+          : undefined
+      expect(member).toMatchObject({ type: "ClassAttribute", name: null })
+    }
+    expect(bodyOf(parseStatements("class A {\n+ $\n}"))).toMatchObject([
+      {
+        members: [
+          {
+            type: "ClassAttribute",
+            name: { value: " " },
+            classifier: "static",
+          },
+        ],
+      },
+    ])
+  })
+
+  it("cuts a member name at a `;` that the line rule ignores, the space after it in the piece after it", () => {
+    expect(tokensOf("class A {\n+x style:#a; b\n}").slice(4, 7)).toEqual([
+      ["RawText", "x style:#a"],
+      ["IgnoredSemicolon", ";"],
+      ["RawText", " b"],
+    ])
+  })
+
   it("makes each relation end and the line of a relation tokens of their own", () => {
     expect(tokensOf("A <|  --  * B")).toEqual([
-      ["Identifier", "A"],
+      ["RawText", "A"],
       ["Punctuator", "<|"],
       ["Punctuator", "--"],
       ["Punctuator", "*"],
-      ["Identifier", "B"],
+      ["RawText", "B"],
     ])
     expect(bodyOf(parseStatements("A <|  --  * B"))).toMatchObject([
       {
@@ -147,10 +292,10 @@ describe("the class tree", () => {
 
   it("makes the label of a relation a literal after its `:` token", () => {
     expect(tokensOf("class A\nA --> B : x").slice(2)).toEqual([
-      ["Identifier", "A"],
+      ["RawText", "A"],
       ["Punctuator", "--"],
       ["Punctuator", ">"],
-      ["Identifier", "B"],
+      ["RawText", "B"],
       ["Punctuator", ":"],
       ["RawText", "x"],
     ])
@@ -160,7 +305,7 @@ describe("the class tree", () => {
     const statements = "class A {\n+foo(a: int) List~T~$\n}"
     expect(tokensOf(statements)).toEqual([
       ["Keyword", "class"],
-      ["Identifier", "A"],
+      ["RawText", "A"],
       ["Punctuator", "{"],
       ["Punctuator", "+"],
       ["RawText", "foo"],
@@ -219,7 +364,7 @@ describe("the class tree", () => {
 
   it("makes an annotation line in a member statement a ClassAnnotation with a literal name", () => {
     expect(tokensOf("A : <<x>>")).toEqual([
-      ["Identifier", "A"],
+      ["RawText", "A"],
       ["Punctuator", ":"],
       ["Punctuator", "<<"],
       ["RawText", "x"],
@@ -233,27 +378,77 @@ describe("the class tree", () => {
     ])
   })
 
-  it("makes a style one token, whitespace inside included, with the `,` of its label", () => {
+  it("makes a style one token for each run of its units without whitespace between them, the `,` of its label included", () => {
     expect(
       tokensOf("class A\nstyle A fill : #f00 , stroke-width: 2px").slice(2),
     ).toEqual([
       ["Keyword", "style"],
       ["Identifier", "A"],
-      ["RawText", "fill : #f00 , stroke-width: 2px"],
+      ["RawText", "fill"],
+      ["RawText", ": #f00 , stroke-width: 2px"],
     ])
   })
 
-  it("gives a `;` that the line rule ignores the kind that the context at its place reads", () => {
+  it("keeps in a style the whitespace of a label before the `:` of the next label, and drops that between units", () => {
+    // diagrams/class.md: a label ends at `:`, so `: a ` keeps its space,
+    // which mermaid.js reads; ast/class.md, ClassLiteral: the value is the
+    // written texts of the units joined.
+    const root = parseStatements("class A\nstyle A fill : a : b")
+    expect(root.tokens.slice(-2).map((token) => token.value)).toEqual([
+      "fill",
+      ": a : b",
+    ])
+    const statement =
+      root.body.type === "ClassDiagram" ? root.body.body.at(-1) : undefined
+    expect(
+      statement?.type === "ClassStyleStatement"
+        ? statement.styles.map((style) => style.value)
+        : null,
+    ).toEqual(["fill: a : b"])
+  })
+
+  it("keeps in a style the whitespace of a label before a directive that cuts its token", () => {
+    // The directive lies between the label `: a ` and the next label, so
+    // it cuts the token, and the space at the end of the label, which the
+    // style reads, is in the fragment before it.
+    const root = parseStatements("class A\nstyle A fill : a %%{init: {}}%%: b")
+    expect(root.tokens.slice(-4).map((token) => token.value)).toEqual([
+      "fill",
+      ": a ",
+      "%%{init: {}}%%",
+      ": b",
+    ])
+    const statement =
+      root.body.type === "ClassDiagram" ? root.body.body.at(-1) : undefined
+    expect(
+      statement?.type === "ClassStyleStatement"
+        ? statement.styles.map((style) => style.value)
+        : null,
+    ).toEqual(["fill: a : b"])
+  })
+
+  it("keeps in a style the whitespace of a label before a `;` that the line rule ignores", () => {
+    // The ignored `;` cuts the run of the two labels, as a directive does.
+    expect(
+      tokensOf("class A\nstyle A fill:#f00,color ;:blue").slice(-3),
+    ).toEqual([
+      ["RawText", "fill:#f00,color "],
+      ["IgnoredSemicolon", ";"],
+      ["RawText", ":blue"],
+    ])
+  })
+
+  it("makes a `;` that the line rule ignores an IgnoredSemicolon token in every context", () => {
     expect(tokensOf("class A\nstyle A fill:#f00;").at(-1)).toEqual([
-      "Punctuator",
+      "IgnoredSemicolon",
       ";",
     ])
     expect(tokensOf("accTitle: style:#x;\nclass A")[3]).toEqual([
-      "RawText",
+      "IgnoredSemicolon",
       ";",
     ])
     expect(tokensOf("class A {\n+x style:#a;\n}").at(-2)).toEqual([
-      "RawText",
+      "IgnoredSemicolon",
       ";",
     ])
   })
@@ -261,7 +456,7 @@ describe("the class tree", () => {
   it("makes the keyword, `call`, the parentheses, and the arguments of a callback tokens", () => {
     expect(tokensOf('click A call f(x) "t"')).toEqual([
       ["Keyword", "click"],
-      ["Identifier", "A"],
+      ["RawText", "A"],
       ["Keyword", "call"],
       ["RawText", "f"],
       ["Punctuator", "("],
@@ -271,10 +466,11 @@ describe("the class tree", () => {
     ])
   })
 
-  it("makes `note for` one keyword", () => {
+  it("makes `note for` a keyword for each word", () => {
     expect(tokensOf('note for A "x"')).toEqual([
-      ["Keyword", "note for"],
-      ["Identifier", "A"],
+      ["Keyword", "note"],
+      ["Keyword", "for"],
+      ["RawText", "A"],
       ["String", '"x"'],
     ])
   })

@@ -156,7 +156,7 @@ accTitle: style:#x;y;
 C[style:#x;] --> D;
 E[style:#x;];F[y;]
 G[x;]; style H fill:#f00;
-I[style:#x;]-->J;K   -->L
+I[style:#x;]-->J;   -->L
 ```
 
 出力 ([statements-one-per-line/line-with-semicolon-kept-output.mmd](../tests/fixtures/flowchart/statements-one-per-line/line-with-semicolon-kept-output.mmd)):
@@ -169,7 +169,7 @@ flowchart LR
   C[style:#x;] --> D;
   E[style:#x;];F[y;]
   G[x;]; style H fill:#f00;
-  I[style:#x;] --> J;K --> L
+  I[style:#x;] --> J; --> L
 ```
 
 文が id `accTitle`、`accDescr`、`direction`、`click`、`call`、`href` のどれか、
@@ -1068,7 +1068,7 @@ flowchart %%{init: {}}%%LR
 閉じていないディレクティブは、mermaid.js が読むとおり、
 テキストの終わりまで続きます。
 その範囲は、空白でない最後の文字で終わります
-（仕様の[コメント、ディレクティブ、フロントマター](../../spec/docs/ast.ja.md#コメントディレクティブフロントマター)）。
+（仕様の[コメント、ディレクティブ、フロントマター](../../spec/docs/ast.ja.md#ディレクティブとフロントマター)）。
 そのため、その後の空白はテキストの末尾の空白で、そのとおりに整形します。
 テキストは、ディレクティブの後の改行 1 つで終わります。
 テキストがディレクティブの直後で終わるときは、改行を足しません。
@@ -1122,10 +1122,46 @@ mermaid.js はその空白を名前の一部として読みます。
 ブロックは何のトークンも読まれず、その空白が名前の後に続くとみなされ、
 subgraph の id は `subGraph0` になり、空白がなければ `S` になります。
 最後のブロックの後の空白に改行が続くときは、改行として読まれ、数えません。
-ブロックはそれぞれの行に移し、ヘッダーの後に空白を 1 つ残します。
-これらの例は `subgraph-header/whitespace-before-block-kept` で、
-空白が行末にあるので、ここには載せません
-（[フォルダー](../tests/fixtures/flowchart/subgraph-header)を参照）。
+ブロックは、`;` とその後のディレクティブとともに、
+ヘッダーの行に書かれたまま残します。
+ブロックが独立した行にあると、空白は別に読まれ、
+ブロックとディレクティブの後の `;` は頂点として読まれます。
+
+入力 ([subgraph-header/whitespace-before-block-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/whitespace-before-block-kept-input.mmd)):
+
+```mmd
+flowchart LR
+subgraph "S"accDescr {} accDescr {}
+A
+end
+subgraph "T"accDescr {}
+B
+end
+subgraph "U"accDescr {} ;
+C
+end
+subgraph "V"accDescr {} %%{init: {}}%%;
+D
+end
+```
+
+出力 ([subgraph-header/whitespace-before-block-kept-output.mmd](../tests/fixtures/flowchart/subgraph-header/whitespace-before-block-kept-output.mmd)):
+
+```mmd
+flowchart LR
+  subgraph "S"accDescr {} accDescr {}
+    A
+  end
+  subgraph "T"accDescr {}
+    B
+  end
+  subgraph "U"accDescr {} ;
+    C
+  end
+  subgraph "V"accDescr {} %%{init: {}}%%;
+    D
+  end
+```
 
 入力 ([subgraph-header/title-spacing-kept-input.mmd](../tests/fixtures/flowchart/subgraph-header/title-spacing-kept-input.mmd)):
 

@@ -126,5 +126,10 @@
     ],
     "classDefs": [],
     "links": []
+  },
+  "embedded": {
+    "config": {
+      "layout": "dagre"
+    }
   }
 }

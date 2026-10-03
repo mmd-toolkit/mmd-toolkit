@@ -172,5 +172,12 @@
       }
     ],
     "interfaces": []
+  },
+  "embedded": {
+    "config": {
+      "class": {
+        "hierarchicalNamespaces": false
+      }
+    }
   }
 }

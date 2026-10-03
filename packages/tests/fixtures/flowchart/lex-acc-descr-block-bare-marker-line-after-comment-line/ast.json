@@ -248,10 +248,10 @@
     },
     {
       "type": "RawText",
-      "value": "first",
+      "value": "first\n",
       "range": [
         26,
-        31
+        32
       ],
       "loc": {
         "start": {
@@ -259,8 +259,8 @@
           "column": 0
         },
         "end": {
-          "line": 4,
-          "column": 5
+          "line": 5,
+          "column": 0
         }
       }
     },

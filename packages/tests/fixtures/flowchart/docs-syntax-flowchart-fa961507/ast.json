@@ -475,19 +475,19 @@
     },
     {
       "type": "RawText",
-      "value": "animate: true",
+      "value": " animate: true ",
       "range": [
-        33,
-        46
+        32,
+        47
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 7
+          "column": 6
         },
         "end": {
           "line": 3,
-          "column": 20
+          "column": 21
         }
       }
     },

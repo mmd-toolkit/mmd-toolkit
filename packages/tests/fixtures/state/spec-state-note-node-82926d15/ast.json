@@ -155,6 +155,7 @@
             }
           }
         },
+        "textBeforeText": null,
         "text": {
           "type": "StateLiteral",
           "value": "hello",
@@ -372,15 +373,33 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         62,
-        70
+        67
       ],
       "loc": {
         "start": {
           "line": 6,
           "column": 7
+        },
+        "end": {
+          "line": 6,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        68,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 13
         },
         "end": {
           "line": 6,

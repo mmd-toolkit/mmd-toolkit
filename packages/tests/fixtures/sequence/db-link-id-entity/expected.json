@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary from the tree: each value is read in converted form, so the entity in the id of a link statement is its placeholder, the same participant as the one declared."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Aﬂ°amp¶ß",
+        "description": "Aﬂ°amp¶ß",
+        "wrap": false,
+        "links": {
+          "L": "http://x"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

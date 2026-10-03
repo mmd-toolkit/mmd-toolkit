@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md `style` and `classDef` lines: the line matches the `style` rule, and its last `;` lies inside a class name, a name that may contain whitespace, which may hold it; the relation goes to `BC`, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "BC",
+        "type": "",
+        "label": "BC",
+        "text": "BC",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "A",
+        "id2": "BC",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "style:#x",
+        "relationTitle2": "none"
+      }
+    ],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

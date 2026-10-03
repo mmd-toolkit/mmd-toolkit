@@ -5,7 +5,7 @@ import type {
   NumericLiteral,
   Range,
 } from "./ast.ts"
-import type { UnitWithKind } from "./diagram-parsing.ts"
+import type { DiagramComment } from "./diagram-parsing.ts"
 import type { DiagramUnit } from "./diagram-units.ts"
 import { significantRangeOf } from "./diagram-units.ts"
 import type { EmptyForm } from "./empty-forms.ts"
@@ -24,7 +24,7 @@ export interface NodePlace {
 /**
  * What every diagram's recursive-descent grammar does with its units, as
  * ast.md decides it: reading the units one by one, the place of a node
- * made of units, the text of a range, the shared leaf nodes, and the
+ * made of units, the written text of a value, the shared leaf nodes, and the
  * tokens of the items of the grammar. A diagram's grammar extends it with
  * one method per production, and with the error for a unit that it cannot
  * read where it stands.
@@ -54,17 +54,20 @@ export abstract class UnitGrammar<
    */
   private readonly emptyFormOfUnit: ReadonlyMap<Unit, EmptyForm<Unit>>
 
-  private readonly unitsWithKind: UnitWithKind[] = []
-
   private readonly tokens: PendingToken[] = []
+
+  /** The diagram comments that the diagram's lexer read, in source order; none for a diagram whose lexer reads none. */
+  private readonly diagramComments: readonly DiagramComment[]
 
   protected constructor(
     units: readonly Unit[],
     lexer: SourceLexer,
     emptyFormKinds: readonly EmptyFormKind[],
+    diagramComments: readonly DiagramComment[],
   ) {
     this.units = units
     this.lexer = lexer
+    this.diagramComments = diagramComments
     this.lines = lexer.lines
     this.emptyFormOfUnit = new Map(
       emptyFormsOf(units, emptyFormKinds).flatMap((form) =>
@@ -168,11 +171,6 @@ export abstract class UnitGrammar<
     this.units = this.units.filter((unit) => !taken.has(unit))
   }
 
-  /** The units that are not all whitespace, with their kinds, in source order. */
-  protected unitsWithKindInOrder(): UnitWithKind[] {
-    return [...this.unitsWithKind].sort((a, b) => a.range[0] - b.range[0])
-  }
-
   /** The tokens of the items read so far, in source order. */
   protected tokensInOrder(): PendingToken[] {
     return [...this.tokens].sort((a, b) => a.range[0] - b.range[0])
@@ -248,22 +246,34 @@ export abstract class UnitGrammar<
     return { range, loc: this.lines.location(range) }
   }
 
-  /** ast.md, Nodes: the text of the range `range`, without `delimiters`. */
+  /** ast.md, Nodes: the written text over the range `range`, without `delimiters`. */
   protected textOf(range: Range, delimiters: readonly Range[] = []): string {
     const leftOut = [...delimiters].sort((a, b) => a[0] - b[0])
     return this.lexer.textOfRange(range[0], range[1], leftOut)
   }
 
-  /** The text of the range of `unit` without its whitespace, for the words and arrows that are strings in the tree. */
+  /**
+   * ast.md, Nodes: the written text over the range `range` of a node of text
+   * that mermaid.js does not read, which leaves out the comments in the
+   * range too, the diagram comments of the diagram's lexer as well as the
+   * comment regions.
+   */
+  protected unreadTextOf(range: Range): string {
+    const comments = this.diagramComments
+      .map((comment) => comment.range)
+      .filter(([start, end]) => range[0] <= start && end <= range[1])
+    return this.textOf(range, comments)
+  }
+
+  /** The written text of `unit` without the whitespace at its ends, for the words and arrows that are strings in the tree. */
   protected textOfUnit(unit: Unit): string {
     return this.textOf(significantRangeOf(unit))
   }
 
   /**
    * ast.md, Shared leaf nodes > Identifier: the Identifier whose units are
-   * `units`, one `Identifier` item. Its name is the text of the range of
-   * each unit, joined in order; none of the units contains whitespace, so
-   * the whitespace between two units is not part of it.
+   * `units`, one `Identifier` item. Its name is the written text of each
+   * unit, joined in order; no whitespace lies inside or between the units.
    */
   protected identifierOf(units: readonly Unit[]): Identifier {
     this.addItem("Identifier", units)
@@ -295,17 +305,77 @@ export abstract class UnitGrammar<
    * ast.md, Tokens: the tokens of one item of the grammar, whose units are
    * `units`, of kind `kind`. Every unit of the item has that kind. A token
    * is a run of the item's units (see {@link UnitGrammar.runsOf}), without
-   * the whitespace at its ends; a run that is all whitespace gives no token.
+   * the whitespace at its ends unless a unit keeps it; a run that is all
+   * whitespace gives no token.
    */
   protected addItem(kind: DiagramTokenKind, units: readonly Unit[]): void {
-    for (const unit of units) {
-      if (unit.significantRange !== null) {
-        this.unitsWithKind.push({ kind, range: unit.significantRange })
+    this.addUnitsAndTokens(kind, units, false)
+  }
+
+  /**
+   * ast.md, Tokens: the tokens of an item of kind `kind`, whose units are
+   * `units`, that goes on with a value that starts before it, in another
+   * item, as the text after the string that a label starts with: the
+   * whitespace at the start of its first token lies inside the value, which
+   * mermaid.js reads, so the token keeps it (`docs/tokens.md`, Tokens).
+   */
+  protected addItemContinuingValue(
+    kind: DiagramTokenKind,
+    units: readonly Unit[],
+  ): void {
+    this.addUnitsAndTokens(kind, units, true)
+  }
+
+  /**
+   * `docs/tokens.md`, Tokens: one token of kind `kind` of the whitespace at
+   * `range`, which a value holds and the token of no unit does: the value of
+   * a label that is all whitespace, and the whitespace between the parts of
+   * a sequence box text. A cut in it cuts it as any token.
+   */
+  protected addWhitespaceToken(kind: DiagramTokenKind, range: Range): void {
+    this.tokens.push({ kind, range })
+  }
+
+  /**
+   * The range from the first to the last character of the diagram text in
+   * `range`, the characters that no directive, comment region, or `;` that
+   * the line rule ignores holds (common.md, Reading a source); null when
+   * there is none. A token starts and ends with such a character.
+   */
+  protected diagramTextIn(range: Range): Range | null {
+    let first: number | null = null
+    let last = range[0]
+    let offset = range[0]
+    while (offset < range[1]) {
+      const element = this.lexer.readAt(offset)
+      if (element.kind === "character") {
+        if (element.endOfText || element.start >= range[1]) break
+        first ??= element.start
+        last = element.end
       }
+      offset = element.end
     }
+    return first === null ? null : [first, last]
+  }
+
+  /**
+   * The tokens of one item, of kind `kind`,
+   * whose units are `units`, the units of an item that goes on with a value
+   * that starts before it when `continuesValue` is true
+   * ({@link UnitGrammar.addItemContinuingValue}).
+   */
+  private addUnitsAndTokens(
+    kind: DiagramTokenKind,
+    units: readonly Unit[],
+    continuesValue: boolean,
+  ): void {
+    let first = true
     for (const run of this.runsOf(kind, units)) {
       const range = this.significantRangeOfRun(run)
-      if (range !== null) this.tokens.push({ kind, range })
+      if (range === null) continue
+      const start = first && continuesValue ? run[0].start : range[0]
+      this.tokens.push({ kind, range: [start, range[1]] })
+      first = false
     }
   }
 

@@ -2,20 +2,22 @@
 
 Japanese version: [class.ja.md](./class.ja.md)
 
-This document defines the nodes and tokens of the tree for the diagram type
-`classDiagram`. The shared parts of the tree are defined in [ast.md](../ast.md);
-how the source is read, and which grammar rule makes which node, is defined in
+This document defines the nodes of the tree for the diagram type `classDiagram`.
+The shared parts of the tree are defined in [ast.md](../ast.md); how the source
+is read, and which grammar rule makes which node, is defined in
 [diagrams/class.md](../diagrams/class.md).
 
 The body of this diagram type is a [ClassDiagram](#classdiagram). The values of
 the fields keep what the author wrote, as [ast.md](../ast.md#nodes) defines the
-text of a range; they are not in the converted form of
-[common.md](../common.md#reading-a-source), which the Db normalization of
-[diagrams/class.md](../diagrams/class.md#building-the-summary-from-the-tree)
-applies where it uses them. Whitespace outside the range of a node is not part
-of its value; it matters to the Db in three places, the space before the name of
-a member, the whitespace inside an annotation line, and the text of a style,
-where the Db normalization reads the source.
+written text of a value; they are not in the converted form of
+[common.md](../common.md#reading-a-source). The whitespace that mermaid.js reads
+as part of a value is part of its written text (see [Nodes](../ast.md#nodes)):
+in this diagram type, the whitespace of a generic type, of an annotation in a
+member line, at the start of a member name that starts with a space, before a
+classifier mark that ends a return type, and at the end of a backquoted name
+that is not closed (see [ClassName](#classname), [ClassMethod](#classmethod),
+and [ClassAnnotation](#classannotation)). Other whitespace is not part of any
+value.
 
 A **class** is a box of the diagram, named by a class name. The word does not
 refer to a CSS class, which is called a CSS class throughout.
@@ -28,8 +30,7 @@ refer to a CSS class, which is called a CSS class throughout.
 | ------ | ---------------------- | -------------------------------- |
 | `body` | list of ClassStatement | The statements, in source order. |
 
-Child fields: `body`. The header keyword is not a field. The range runs from the
-header keyword to the last token of the diagram.
+Child fields: `body`. The header keyword is not a field.
 
 **ClassStatement** is a ClassDeclaration, ClassMemberStatement,
 ClassNameStatement, ClassAnnotationStatement, ClassRelationStatement,
@@ -58,26 +59,29 @@ A `class` statement.
 
 Child fields: `name`, `label`, `cssClass`, `annotation`, `members`. At most one
 of `cssClass` and `annotation` is set. A member line of only whitespace makes no
-node, so `class A { }` has an empty list, and `class A` has null. [fixture:
+node, because mermaid.js adds nothing for it, whatever whitespace it holds, so
+`class A { }` has an empty list, and `class A` has null. [fixture:
 class/gram-class-css-class-blank-body] [fixture:
 class/spec-class-diagram-4eb71456]
 
 ### ClassMemberStatement
 
-A class name with a label, which adds a member: `A : +int x`.
+A class name with a label: `A : +int x`.
 
 | Field    | Type                | Meaning                                                                                  |
 | -------- | ------------------- | ---------------------------------------------------------------------------------------- |
 | `class`  | ClassName           | The class name before `:`.                                                               |
 | `member` | ClassMember or null | The member line after `:`; null when the text after `:` is all whitespace, as in `A : `. |
 
-Child fields: `class`, `member`. `A : ` adds the class A and no member.
-[fixture: class/gram-member-statement] [fixture:
-class/db-member-statement-blank]
+Child fields: `class`, `member`. `A : ` has no member, and so has `A :` followed
+by four spaces: mermaid.js adds no member for a label of only whitespace,
+whatever its amount, so that whitespace is no value. [fixture:
+class/gram-member-statement] [fixture: class/db-member-statement-blank]
+[fixture: class/db-member-statement-blank-spaces]
 
 ### ClassNameStatement
 
-A class name alone on its line, without a label, which changes nothing: `Foo`.
+A class name alone on its line, without a label: `Foo`.
 
 | Field  | Type      | Meaning         |
 | ------ | --------- | --------------- |
@@ -89,10 +93,10 @@ Child fields: `name`. [fixture: class/gram-name-alone]
 
 `<<interface>> A`.
 
-| Field        | Type            | Meaning                                          |
-| ------------ | --------------- | ------------------------------------------------ |
-| `annotation` | ClassAnnotation | The annotation, from `<<` to `>>`.               |
-| `class`      | ClassName       | The class name after it, which the Db annotates. |
+| Field        | Type            | Meaning                            |
+| ------------ | --------------- | ---------------------------------- |
+| `annotation` | ClassAnnotation | The annotation, from `<<` to `>>`. |
+| `class`      | ClassName       | The class name after it.           |
 
 Child fields: `annotation`, `class`. [fixture:
 class/spec-class-diagram-280c04be]
@@ -109,48 +113,41 @@ class/spec-class-diagram-280c04be]
 | `label`           | ClassLiteral or null  | The text of the label after `:`, without the `:`; null when there is none or it is all whitespace. |
 
 Child fields: `from`, `fromCardinality`, `arrow`, `toCardinality`, `to`,
-`label`. A cardinality may be an empty string, which the Db reads as none:
-`A "" --> B` has the StringLiteral with the empty value. [fixture:
-class/gram-cardinality-empty] [fixture: class/spec-class-diagram-840a462d]
+`label`. A cardinality may be an empty string: `A "" --> B` has the
+StringLiteral with the empty value. [fixture: class/gram-cardinality-empty]
+[fixture: class/spec-class-diagram-840a462d]
 
 ### ClassArrow
 
 The arrow of a relation: a line with optional relation ends.
 
-| Field         | Type   | Meaning                                      |
-| ------------- | ------ | -------------------------------------------- |
-| `value`       | string | The texts of its tokens, joined in order.    |
-| `startMarker` | string | The relation end before the line: see below. |
-| `line`        | string | `solid` for `--`, `dotted` for `..`.         |
-| `endMarker`   | string | The relation end after the line: see below.  |
+| Field         | Type   | Meaning                                          |
+| ------------- | ------ | ------------------------------------------------ |
+| `value`       | string | The written texts of its units, joined in order. |
+| `startMarker` | string | The relation end before the line: see below.     |
+| `line`        | string | `solid` for `--`, `dotted` for `..`.             |
+| `endMarker`   | string | The relation end after the line: see below.      |
 
 The markers are `triangle` for `<|` and `|>`, `filled-diamond` for `*`,
 `hollow-diamond` for `o`, `arrow` for `<` and `>`, `lollipop` for `()`, and
 `none` when there is no relation end. Each relation end and the line are units
-and tokens of their own, which may have whitespace between them; the range runs
-from the first to the last, and `value` leaves the whitespace out:
-`A <|  --  * B` has the value `<|--*`, the start marker `triangle`, the line
-`solid`, and the end marker `filled-diamond`. [fixture:
+of their own, which may have whitespace between them, and `value` leaves the
+whitespace out: `A <|  --  * B` has the value `<|--*`, the start marker
+`triangle`, the line `solid`, and the end marker `filled-diamond`. [fixture:
 class/gram-relation-spaces] The words describe the drawn mark, not what
-mermaid.js calls the relation: `*` is composition and `o` aggregation in the Db,
-and `()` at one end, when the other end has no relation end, makes the name at
-its own end an interface of the class at the other end, while with relation ends
-at both ends, both names are classes (see
-[Building the summary](../diagrams/class.md#building-the-summary-from-the-tree)).
-[fixture: class/docs-syntax-class-diagram-b06c5b3c] [fixture:
-class/db-lollipop-both] No child fields.
+mermaid.js calls the relation. No child fields.
 
 ### ClassNamespaceStatement
 
 | Field    | Type                                                                       | Meaning                                                                                           |
 | -------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `prefix` | Identifier or null                                                         | The name parts before a backquoted name, as in [ClassName](#classname); null when there are none. |
-| `name`   | Identifier or StringLiteral                                                | The name of the namespace: its name parts, or its backquoted name.                                |
+| `prefix` | ClassIdentifier or null                                                    | The name parts before a backquoted name, as in [ClassName](#classname); null when there are none. |
+| `name`   | ClassIdentifier or StringLiteral                                           | The name of the namespace: its name parts, or its backquoted name.                                |
 | `label`  | StringLiteral or null                                                      | The string between `[` and `]`; null when there is none.                                          |
 | `body`   | list of (ClassDeclaration, ClassNoteStatement, or ClassNamespaceStatement) | The items of the body, in source order.                                                           |
 
 Child fields: `prefix`, `name`, `label`, `body`. `namespace a.b` has the
-Identifier `a.b`. [fixture: class/spec-class-diagram-95acf03b] [fixture:
+ClassIdentifier `a.b`. [fixture: class/spec-class-diagram-95acf03b] [fixture:
 class/db-namespace-nested]
 
 ### ClassNoteStatement
@@ -175,8 +172,8 @@ A `callback` statement, or a `click` statement with `call`.
 | `tooltip`   | StringLiteral or null         | The string at the end; null when there is none.                                                               |
 
 Child fields: `class`, `callback`, `arguments`, `tooltip`. Which keyword was
-written is in the tokens: `callback` or `click`. In `click A call fn()`, the `(`
-and `)` are tokens of the statement, and `arguments` is null. [fixture:
+written, `callback` or `click`, appears in no field. In `click A call fn()`, the
+`(` and `)` are tokens of the statement, and `arguments` is null. [fixture:
 class/spec-class-diagram-6fe56b41] [fixture: class/db-callback-names-comma]
 
 ### ClassLinkStatement
@@ -201,17 +198,15 @@ Child fields: `class`, `url`, `tooltip`. [fixture: class/db-click-href]
 | `styles` | list of ClassLiteral | The styles, separated by `,` units, in source order. |
 
 Child fields: `id`, `styles`. A `,` inside a label of a style does not separate
-two styles in the tree; the Db splits the text at every `,` (see
-[Building the summary](../diagrams/class.md#building-the-summary-from-the-tree)):
-`style A fill:#f00,stroke:#333` has one style in the tree and two in the Db.
-[fixture: class/gram-style-dash-in-label] [fixture: class/db-style-spaces]
+two styles in the tree: `style A fill:#f00,stroke:#333` has one style. [fixture:
+class/gram-style-dash-in-label] [fixture: class/db-style-spaces]
 
 ### ClassCssClassStatement
 
-| Field      | Type          | Meaning                                                                       |
-| ---------- | ------------- | ----------------------------------------------------------------------------- |
-| `idList`   | StringLiteral | The string after `cssClass`, a list of class names that the Db splits at `,`. |
-| `cssClass` | Identifier    | The CSS class.                                                                |
+| Field      | Type          | Meaning                      |
+| ---------- | ------------- | ---------------------------- |
+| `idList`   | StringLiteral | The string after `cssClass`. |
+| `cssClass` | Identifier    | The CSS class.               |
 
 Child fields: `idList`, `cssClass`. [fixture: class/db-css-class-list-space]
 
@@ -233,10 +228,9 @@ class/spec-class-diagram-styles-2057adab]
 | `direction`  | string                   | `TB`, `BT`, `RL`, or `LR`.                                                                                          |
 | `textAfter`  | ClassIgnoredText or null | The text of the direction line after the value, or null when there is none.                                         |
 
-Child fields: `textBefore`, `textAfter`. The range covers the whole direction
-line. `class A direction LR` has the text `class A` before `direction`, and
-`direction TBX` the text `X` after the value. [fixture:
-class/lex-direction-line-class-statement] [fixture:
+Child fields: `textBefore`, `textAfter`. `class A direction LR` has the text
+`class A` before `direction`, and `direction TBX` the text `X` after the value.
+[fixture: class/lex-direction-line-class-statement] [fixture:
 class/lex-direction-line-value-then-text]
 
 ### ClassAccTitleStatement
@@ -283,31 +277,31 @@ class/header-empty-description-block]
 A class name: in a class statement, at the ends of a relation, and after
 `note for`, `click`, `callback`, and `link`.
 
-| Field     | Type                        | Meaning                                                                                                    |
-| --------- | --------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `prefix`  | Identifier or null          | The name parts written before a backquoted name; null when there are none.                                 |
-| `name`    | Identifier or StringLiteral | The name parts, or the backquoted name.                                                                    |
-| `generic` | ClassLiteral or null        | The text between the two `~` of a generic type; null when there is none, or it is empty or all whitespace. |
+| Field     | Type                             | Meaning                                                                                                                     |
+| --------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `prefix`  | ClassIdentifier or null          | The name parts written before a backquoted name; null when there are none.                                                  |
+| `name`    | ClassIdentifier or StringLiteral | The name parts, or the backquoted name.                                                                                     |
+| `generic` | ClassLiteral or null             | The `generic-text` unit between the two `~` of a generic type, whitespace included; null when there is none or it is empty. |
 
 Child fields: `prefix`, `name`, `generic`. The name parts with whitespace or `.`
-between them are one Identifier, whose name leaves the whitespace out (see
-[Identifier](../ast.md#identifier)): `class Foo Bar` has the Identifier
-`FooBar`, and `class a.b.C` the Identifier `a.b.C`. [fixture:
-class/gram-name-dots] A backquoted name is a StringLiteral:
+between them are one [ClassIdentifier](#classidentifier): `class Foo Bar` has
+the ClassIdentifier `FooBar`, and `class a.b.C` the ClassIdentifier `a.b.C`.
+[fixture: class/gram-name-dots] A backquoted name is a StringLiteral:
 ``class `Odd Name` `` has the StringLiteral with the value `Odd Name`. When name
 parts come before a backquoted name, they are the `prefix`: ``class A.`b c` ``
 has the prefix `A.` and the StringLiteral `b c`. `class A~~` has the two `~`
-tokens and no generic. [fixture: class/gram-name-spaces] [fixture:
+tokens and no generic. mermaid.js reads a generic type as written, whitespace
+and line breaks included, so the generic is the whole `generic-text` unit:
+`class A~ T ~` has the generic of a space, `T`, and a space, and `class A~ ~`
+the generic of one space; `note for A~ T ~` keeps it in the note's class name.
+[fixture: class/db-generic-spaces] [fixture: class/db-generic-blank] [fixture:
+class/tokens-generic-blank] [fixture: class/db-note-for-generic-spaces]
+[fixture: class/gram-name-spaces] [fixture:
 class/docs-syntax-class-diagram-01f18827] [fixture:
 class/gram-name-prefix-backquoted] [fixture: class/gram-generic-empty-at-end]
-[fixture: class/db-generic-type] No field is the id of the class in the Db,
-which is the written name before its first `~`, the prefix included (see
-[Building the summary](../diagrams/class.md#building-the-summary-from-the-tree)):
-``class A.`b c` `` has the name `b c` and the id `A.b c`, and ``class `a~b` ``
-the name `a~b`, the id `a`, and the type `b`. [fixture:
-class/db-backquoted-name-tilde] A backquoted name that is not closed is a
-StringLiteral without its closing quote (see
-[StringLiteral](../ast.md#stringliteral)). [fixture:
+[fixture: class/db-generic-type] No field holds the id of the class. A
+backquoted name that is not closed is a StringLiteral without its closing quote
+(see [StringLiteral](../ast.md#stringliteral)). [fixture:
 class/lex-backquote-unclosed]
 
 ### ClassMethod
@@ -326,23 +320,27 @@ A member line with parentheses, as divided under
 | `textAfter`  | ClassIgnoredText or null | The text after the part that mermaid.js reads, see below; null when there is none.      |
 
 Child fields: `textBefore`, `name`, `parameters`, `returnType`, `textAfter`. The
-marks of visibility and classifier, `(`, and `)` are `Punctuator` tokens and the
-words of the fields: `+foo(a: int) List~T~$` has the visibility `public`, the
-name `foo`, the parameters `a: int`, the return type `List~T~`, and the
-classifier `static`. [fixture: class/tokens-method-fields] [fixture:
-class/lex-member-classifiers] [fixture:
-class/lex-member-method-nested-parentheses] The ignored texts are there only
-when the line has U+2028 or U+2029 (see
+marks of visibility and classifier, `(`, and `)` are tokens and the words of the
+fields: `+foo(a: int) List~T~$` has the visibility `public`, the name `foo`, the
+parameters `a: int`, the return type `List~T~`, and the classifier `static`.
+[fixture: class/tokens-method-fields] [fixture: class/lex-member-classifiers]
+[fixture: class/lex-member-method-nested-parentheses] The ignored texts are
+there only when the line has U+2028 or U+2029 (see
 [Member lines](../diagrams/class.md#member-lines)). [fixture:
 class/lex-member-method-line-separator-before] [fixture:
 class/lex-member-method-line-separator-after]
 
-The values of `name` and `returnType` have no whitespace at their ends. The Db
-reads two runs of whitespace from the source instead: a space before the name,
-when the member name text starts with one, and the whitespace between the return
-type and a classifier mark that ends it (see
-[Building the summary](../diagrams/class.md#building-the-summary-from-the-tree)).
-[fixture: class/lex-member-method-segment-space-before-name] [fixture:
+mermaid.js reads two runs of whitespace at the ends of these values, so they are
+in the `name` and the `returnType` (see
+[Member lines](../diagrams/class.md#member-lines)): the whitespace at the start
+of a member name text that starts with a space (U+0020), which mermaid.js makes
+one space, and the whitespace between a return type and a classifier mark that
+ends it. `+ foo()` has the name of a space and `foo`, and `+getInstance() Foo $`
+the return type `Foo` and a space. Other whitespace at their ends is outside
+them: with a tab in place of the space after `+`, the name is `foo`. [fixture:
+class/db-method-name-space] [fixture:
+class/lex-member-method-segment-space-before-name] [fixture:
+class/db-member-name-tab] [fixture:
 class/db-method-return-type-space-before-classifier]
 
 ### ClassAttribute
@@ -362,18 +360,40 @@ class/lex-member-annotation-unclosed]
 
 An annotation: `<<interface>>`.
 
-| Field  | Type                              | Meaning                                                                  |
-| ------ | --------------------------------- | ------------------------------------------------------------------------ |
-| `name` | Identifier, ClassLiteral, or null | The text between `<<` and `>>`; null when it is empty or all whitespace. |
+| Field  | Type                              | Meaning                                                |
+| ------ | --------------------------------- | ------------------------------------------------------ |
+| `name` | Identifier, ClassLiteral, or null | The text between `<<` and `>>`; null when it is empty. |
 
-Child fields: `name`. The range runs from `<<` to `>>`. After the name of a
-class statement and in an annotation statement, the grammar allows one name part
-between `<<` and `>>`, so the name is an Identifier. As a member line, it may be
-any text, whitespace included, so it is a ClassLiteral: `<< y z >>` in a body
-has the name `y z`, and the Db keeps the spaces around it (see
-[Building the summary](../diagrams/class.md#building-the-summary-from-the-tree)).
+Child fields: `name`. After the name of a class statement and in an annotation
+statement, the grammar allows one name part between `<<` and `>>`, so the name
+is an Identifier. mermaid.js reads that name without the whitespace around it:
+`<< interface >> A` and `class A << interface >>` have the Identifier
+`interface`. [fixture: class/db-annotation-statement-spaces] [fixture:
+class/db-class-annotation-spaces] As a member line, in a body or in a member
+statement, it may be any text, and mermaid.js reads it as written, whitespace
+included, so it is a ClassLiteral of the whole `annotation-name` unit:
+`<< y z >>` in a body has the name of a space, `y z`, and a space, and `<<  >>`
+the name of two spaces, also in `A : <<  >>`. [fixture:
+class/tokens-annotation-blank] [fixture: class/tokens-annotation-blank-label]
 [fixture: class/spec-class-diagram-280c04be] [fixture:
 class/db-member-annotation-spaces]
+
+### ClassIdentifier
+
+A class name or a namespace name written without quotes: name parts, with
+whitespace or a `.` between them (see
+[Class names](../diagrams/class.md#class-names)), before a backquoted name or
+without one.
+
+| Field  | Type   | Meaning                                                                         |
+| ------ | ------ | ------------------------------------------------------------------------------- |
+| `name` | string | The written texts of its units, joined in order (see [Nodes](../ast.md#nodes)). |
+
+No child fields. Whitespace between two of its units is not part of the name, as
+mermaid.js leaves it out: `class Foo Bar` and `class Fo oBar` both declare the
+class `FooBar`, and `class Fo%%{init: {}}%%o` the class `Foo`. [fixture:
+class/gram-name-spaces] [fixture: class/gram-name-space-inside-word] [fixture:
+class/lex-directive-in-name]
 
 ### ClassLiteral
 
@@ -381,20 +401,32 @@ A text without quotes that may contain whitespace: the label of a relation, a
 generic type, a part of a member line, the name of a callback after `call` and
 its arguments, a style, and an accessibility text.
 
-| Field   | Type   | Meaning                                               |
-| ------- | ------ | ----------------------------------------------------- |
-| `value` | string | The text of its range (see [Nodes](../ast.md#nodes)). |
+| Field   | Type   | Meaning                                                                                                       |
+| ------- | ------ | ------------------------------------------------------------------------------------------------------------- |
+| `value` | string | Its written text (see [Nodes](../ast.md#nodes)); for a style, the written texts of its units joined in order. |
 
-No child fields. The whitespace around the text is outside the range, so the
-value neither starts nor ends with whitespace. As in flowchart, a literal always
-has a token: where the text is all whitespace, the field holds null instead, and
-where the Db needs that whitespace, it reads it from the units (see
-[Building the summary](../diagrams/class.md#building-the-summary-from-the-tree)).
-A relation label, a generic type, and an annotation of only whitespace are null:
-`A --> B : `, `class A~ ~`, and `<<  >>` in a body. A relation label of only
-whitespace still gives the Db an empty title, which the `:` token of the
-statement shows. [fixture: class/tokens-relation-label-blank] [fixture:
-class/tokens-generic-blank] [fixture: class/tokens-annotation-blank]
+No child fields. The value starts or ends with whitespace only where mermaid.js
+reads it: a generic type, an annotation of a member line, a member name that
+starts with a space, and a return type before a classifier mark (see
+[ClassName](#classname), [ClassAnnotation](#classannotation), and
+[ClassMethod](#classmethod)). There, a text of only whitespace is a value of
+that whitespace, as in `class A~ ~` and `<<  >>` in a body. Elsewhere,
+mermaid.js trims the text, the whitespace around it is not part of the value,
+and a text of only whitespace makes the field null: `A --> B : ` has no label.
+mermaid.js still reads a relation label of only whitespace as an empty title,
+which no field of the tree shows. [fixture: class/tokens-relation-label-blank]
+[fixture: class/tokens-generic-blank] [fixture: class/tokens-annotation-blank]
+The value of a style is the written texts of its units joined in order, as the
+name of an [Identifier](../ast.md#identifier) is: mermaid.js drops the
+whitespace between the units of a style, so `style A fill : #f00` has the style
+`fill: #f00`, while a flowchart and a state diagram keep that space. [fixture:
+class/db-style-spaces] [fixture: class/tokens-style-words-joined] [fixture:
+class/tokens-style-directive-inside-label] [fixture:
+class/tokens-style-label-keeps-space-before-next-colon] [fixture:
+class/tokens-style-label-space-before-directive] [fixture:
+class/tokens-classdef-label-holds-comma] [fixture:
+flowchart/db-style-space-before-colon-kept] [fixture:
+state/db-style-space-before-colon-kept]
 
 ### ClassIgnoredText
 
@@ -402,82 +434,8 @@ Text that the author wrote and mermaid.js does not read: the text before
 `direction` and after its value on a direction line, and the parts of a method
 line around the part that mermaid.js reads.
 
-| Field   | Type   | Meaning                |
-| ------- | ------ | ---------------------- |
-| `value` | string | The text of its range. |
+| Field   | Type   | Meaning                                           |
+| ------- | ------ | ------------------------------------------------- |
+| `value` | string | Its written text (see [ast.md](../ast.md#nodes)). |
 
 No child fields.
-
-## Tokens
-
-The tokens are made from the units of
-[diagrams/class.md](../diagrams/class.md#lexical-structure). Every unit that is
-not all whitespace belongs to one **item** of
-[the grammar](../diagrams/class.md#grammar) and has the kind that this table
-gives for the item:
-
-| Kind         | Items and their units                                                                                                                                                                                                                                                                                                                                  |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Keyword`    | a `header` unit; the `class`, `namespace`, `style`, `classDef`, `cssClass`, `callback`, `link`, `click`, `note for`, `note`, `href`, `call`, `accTitle`, and `accDescr` units; the `direction` and `direction-value` units; a `link-target` unit                                                                                                       |
-| `Identifier` | the name parts and `.` units of a class name or a namespace name before a backquoted name or without one; the `word` after `style`; each `word` of a `classDef` statement; the `word` of a `cssClass` statement; the name part after `:::` or between `<<` and `>>` of a statement                                                                     |
-| `String`     | a `string` or `backquoted` unit                                                                                                                                                                                                                                                                                                                        |
-| `RawText`    | a `generic-text` unit; the text of a `label` unit after its `:`; a `member-name`, `parameters`, `return-type`, or `annotation-name` unit; a `callback-name` or `callback-arguments` unit; a style, with all its units; a `title-text`, `description-text`, or `description-block-text` unit; a `direction-text` unit; an ignored part of a method line |
-| `Punctuator` | the `:` of a `label` unit and the `:` after `accTitle` and `accDescr`; `{`, `}`, `[`, `]`, `:::`, `<<`, `>>`, `~`, `(`, `)`, and `,`; each relation end and line; a `visibility` or `classifier` unit                                                                                                                                                  |
-
-A `String` token that a comment region cuts becomes `StringFragment` tokens (see
-[Comment](../ast.md#comment)).
-
-A **token** is a maximal run of units of one item and one kind that follow one
-another with nothing between them, and, for a style and the other `RawText`
-items, also with whitespace between them; a token holds no whitespace at its
-ends. Where a directive lies between two characters of such a run that are not
-whitespace, the run is cut at the directive: each fragment, without the
-whitespace at its ends, is a token, and the directive between the fragments is a
-`Directive` token of its own (see [ast.md](../ast.md#directive)). A directive
-inside one unit makes the input rejected unless the unit is `RawText` or
-`Identifier` (see
-[Directives inside units](../diagrams/class.md#directives-inside-units)).
-
-- A class name of name parts is one token for each run of them without
-  whitespace between them: `Foo-Bar` and `a.b.C` are one token each, and
-  `class Foo Bar` has the two tokens `Foo` and `Bar`, and the Identifier
-  `FooBar`. [fixture: class/gram-name-spaces] [fixture:
-  class/gram-name-dash-spaces]
-- A label is one unit, from its `:`, and two tokens: the `:` and the text
-  without the whitespace around it. In a member statement, the text is a member
-  line, divided into the tokens of its parts. [fixture: class/lex-label-percent]
-  [fixture: class/gram-member-statement]
-- A style is one `RawText` token, whitespace inside included, and so is each
-  style of a `classDef` statement. A `,` unit separates two styles:
-  `style A bold,italic` has the style tokens `bold` and `italic`, with a `,`
-  token between them. A `,` inside a label is part of the style:
-  `style A fill : #f00 , stroke-width: 2px` is one style token, because the `,`
-  lies in the label `: #f00 , stroke-width`, and the Db splits its text at the
-  `,`. [fixture: class/tokens-style-comma-unit] [fixture: class/db-style-spaces]
-- In a click statement with `call`, the `(` and `)` belong to the statement; the
-  `call` token and the `(` and `)` tokens are in its range.
-- The two `~` of a generic type are `Punctuator` tokens of the ClassName, also
-  when nothing is between them.
-- The units of a relation end and of a line are each one `Punctuator` token,
-  also when no whitespace separates them: `<|--` is the two tokens `<|` and
-  `--`.
-- A backquoted name that is not closed is one `String` token up to the last
-  character of the source that is not whitespace or a line terminator; the
-  whitespace and line feeds after it belong to no token, while the Db reads them
-  from the unit (see
-  [Building the summary](../diagrams/class.md#building-the-summary-from-the-tree)).
-  [fixture: class/tokens-backquote-unclosed-trailing-whitespace]
-- A `;` that the line rule ignores follows the rule of
-  [ast.md](../ast.md#tokens): it is inside a token when characters of that token
-  lie on both sides of it, and otherwise a token of its own. Such a token is a
-  `RawText` token in the title, description, description block, and member
-  contexts, which read a `;` as text, and a `Punctuator` token elsewhere, where
-  no rule of the lexer reads a `;`: in `style A fill:#f00;` and
-  `classDef c fill:#f00;`, the style is `fill:#f00` and the `;` after it is a
-  `Punctuator` token, also with a space before it, while in
-  `accTitle: style:#x;` and in a member line `+x style:#a;`, the `;` after the
-  text is a `RawText` token. [fixture: class/tokens-style-ignored-semicolon]
-  [fixture: class/tokens-style-space-ignored-semicolon] [fixture:
-  class/tokens-class-def-ignored-semicolon] [fixture:
-  class/tokens-acc-title-ignored-semicolon] [fixture:
-  class/tokens-member-ignored-semicolon]

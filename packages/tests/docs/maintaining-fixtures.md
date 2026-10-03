@@ -26,7 +26,36 @@ existing fixtures with `fixtures:set-note` and `fixtures:set-divergence`.
   specification deliberately departs from mermaid.js. Each identifier is a
   heading of `docs/known-divergences.md` in `@mmd-toolkit/spec`.
 
-Fixture names are lowercase kebab-case.
+## Names
+
+Fixture names are lowercase kebab-case, `<prefix>-<topic>`, with the first 8
+hexadecimal digits of the SHA-256 of the input at the end where many inputs
+share a topic (as the collector names the inputs it takes from mermaid.js). The
+topic names what the input shows: which statement, and where in it what stands.
+The prefix tells what a failure on the fixture would be a failure of:
+
+- `lex-`: how the text is divided into units: names, strings, comments, and
+  where a directive or a comment can start (the lexical rules of a diagram).
+- `gram-`: which statements and nodes the units make (the grammar and the tree).
+- `db-`: the values of the Db summary: what it keeps, how a value is made.
+- `tokens-`: the tokens and comments of the tree: where a token or a comment
+  starts and ends, and what the ranges leave out.
+- `div-`: an input that carries a mark of a known divergence.
+- `config-`, `frontmatter-`, `directive-`, `comment-`, `entity-`, `detect-`,
+  `header-`, `html-`, `error-`: the shared rules of the specification
+  (`common.md`) by the rule they show.
+- `spec-`, `docs-`, `demo-`: inputs taken from mermaid.js (its tests, its
+  documentation, its demos), named by the collector (see "Inputs taken from
+  mermaid" below).
+
+An input that shows more than one thing takes the prefix of the thing a failure
+on it would be about.
+
+After the topic, a name may carry marks of what the input holds, in this order
+where there are several: `u2028` or `u2029` (the character is in the input),
+`directive` or `open-directive` (a directive, or one that is not closed), and
+`semicolon` (a `;`). A topic that already names the directive does not repeat it
+as a mark.
 
 ## `ast.json` and `parse-error.json`
 
@@ -38,9 +67,10 @@ specification (`@mmd-toolkit/parser`), whose tests write them as file snapshots:
 a `ParseError`. They sit next to the input so that both can be read together.
 Nothing in this package reads, writes or checks them, and this package does not
 depend on the parser: the generator, `add`, `add-many`, `set-divergence`,
-`set-note`, the collector and `loadFixtures()` handle only `input.mmd` and
-`expected.json`, and leave any other file in a fixture's directory as it is. A
-fixture added here has neither file until the parser's tests run.
+`set-note`, the collector and `loadFixtures()` handle only `input.mmd`,
+`expected.json` and `specified.json`, and leave any other file in a fixture's
+directory as it is. A fixture added here has neither file until the parser's
+tests run.
 
 ## Exports for the tools
 
@@ -69,9 +99,10 @@ tests use. They are not meant for testing an implementation.
 Run from `packages/tests` (or with `pnpm --filter @mmd-toolkit/tests run ...`).
 
 ```sh
-# Regenerate every expected.json from the pinned mermaid.
+# Regenerate every expected.json, specified.json and default-config.json from
+# the pinned mermaid.
 pnpm run fixtures:generate
-# Fail if any expected.json would change.
+# Fail if any of those files would change.
 pnpm run fixtures:check
 # Add a hand-written fixture (input on stdin or --input).
 pnpm run fixtures:add flowchart subgraph-inherits-dir \
@@ -87,7 +118,8 @@ pnpm run fixtures:add-many common entries.json --note "..." --dry-run
 pnpm run fixtures:collect flowchart --mermaid <checkout> --out flowchart.json
 pnpm run fixtures:add-many flowchart flowchart.json
 # Mark fixtures as known divergences: { "<diagram>/<name>": "<id>" or null }.
-# Only that field changes; mermaid is not run.
+# Only that field changes, and specified.json, which depends on it (mermaid.js
+# runs for a fixture whose mark has a specified reading).
 pnpm run fixtures:set-divergence divergences.json --dry-run
 # Replace notes of hand-written fixtures: { "<diagram>/<name>": "<note>" }.
 pnpm run fixtures:set-note notes.json --dry-run

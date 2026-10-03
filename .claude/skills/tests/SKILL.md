@@ -125,14 +125,21 @@ When the working tree is shared with other work:
   | `src/normalizers/browser-stand-ins.ts`                      | `browser-stand-ins.test.ts`, `mermaid.test.ts`               |
   | `src/normalizers/json.ts`                                   | `json.test.ts`, then `fixtures:check`                        |
   | `src/expected-changes.ts`                                   | `expected-changes.test.ts`                                   |
+  | `src/recorded-embedded.ts`                                  | `recorded-embedded.test.ts`, then `fixtures:check`           |
   | `src/mutation.ts`                                           | `mutation.test.ts`                                           |
+  | `src/boundary-kinds.ts`                                     | `boundary-kinds.test.ts`                                     |
+  | `src/db-from-tree/`                                         | `db-from-tree.test.ts`, `converted-text.test.ts`             |
+  | `src/source-scan.ts`                                        | `source-scan.test.ts`                                        |
+  | `src/check-tree/`                                           | `check-tree-corpus.test.ts`, `check-tree*.test.ts`           |
   | `tools/`                                                    | no test file; see below                                      |
 
   The commands of `tools/` have no test file; each is checked by running it:
   `add-many`, `set-divergence` and `set-note` with `--dry-run`, reading what
   they would change; `generate` with `fixtures:check`; `tools/collect.ts` with
   `--out` pointing outside the repository, reading the file it writes;
-  `tools/mutation.ts` on one fixture (`--fixture`) with a small `--count`.
+  `tools/mutation.ts` on one fixture (`--fixture`). Without `--count`, one
+  round: one mutant for each edit operator that applies; raise it only to widen
+  the forms of an operator's mutants, not to be surer.
 
   Run one file with
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<file>`.
@@ -156,8 +163,8 @@ When the working tree is shared with other work:
   `RESULT_FILES` are in the key, so changing them makes every stored result
   unused: keep that list right (a test checks it). A change to those files is
   announced, before it is made, to those who run the tests, and is made when no
-  run at full size is going, whose stored results it would throw away; only a
-  fix of a wrong result goes in at once, announced all the same.
+  long run is going, whose stored results it would throw away; only a fix of a
+  wrong result goes in at once, announced all the same.
 - Check that the generator changes nothing with the hashes of the files, not
   only with the count it prints (run at the root of the repository).
 
@@ -184,9 +191,11 @@ Diagram types are added one at a time. Each is finished in this order before the
 next one starts: the normalizer and the fixtures (this section), the
 specification (the spec's skill), the parser (the parser's skill), the printer
 (the prettier-plugin's skill). Each piece of work uses the results of the ones
-before it: the Db normalization section of the specification is written from the
-list of summary fields, and the claims of the specification and the tests of the
-parser use the fixtures.
+before it: the specification and the parser refer to the list of summary fields
+(`docs/db-summaries.md`), and the claims of the specification and the tests of
+the parser use the fixtures. The steps that build the summary from a tree are
+written here after the tree document of the specification
+(`docs/db-from-tree/<diagram>.md` and `src/db-from-tree/<diagram>.ts`).
 
 ### 5.1 Input
 
@@ -288,8 +297,8 @@ parser use the fixtures.
 8. Write the section of the diagram type in `docs/db-summaries.md` and `.ja.md`
    (what is dropped, and why).
 9. Show as the result the summary fields, and the dropped fields with their
-   reasons. The Db normalization section of the specification is written from
-   this list (the spec's skill).
+   reasons. The specification and the parser refer to this list
+   (`docs/db-summaries.md`).
 
 ### 5.3 The fixtures
 
@@ -387,14 +396,30 @@ the spec's skill). This skill does the following.
    plain `mv` and run `fixtures:check`. Check with grep that nothing in tests
    and tools refers to the old name. References in the text of the specification
    are fixed by the steps of the spec's skill.
-4. To keep a form that another package's tests misread as a regression input,
-   check the expectations (acceptance, Db values) with mermaid.js before adding
-   it. If they disagree, do not add it, and show that. When the input comes from
-   another package's file, only read it, take the strings out through the syntax
-   tree, and match them byte for byte. Follow the existing names (prefixes such
-   as `gram-`, `lex-`, `db-`, `config-`, and the name of what the input shows),
-   write in the note what the input shows, and add it with `fixtures:add-many`
-   (`fixtures:add` cannot set a mark).
+4. To keep an input on which the parser failed (found by a review, a generated
+   input, a differential run), make it a fixture of the corpus: the input of a
+   failure kept in a file of the parser is not kept for the other
+   implementations, and every implementation checks the fixtures. The inputs of
+   the formatter and of the lint rules stay in their packages. Check the
+   expectations (acceptance, Db values) with mermaid.js before adding it. If
+   they disagree, do not add it, and show that. If the failure is that the
+   specification has no sentence for the form, the specification gets the
+   sentence first. Keep one input of each shape, where the shape of an input is
+   the input with each run of letters and digits replaced by one mark (a keyword
+   is kept in the case it is written in, so `State` and `state` are two shapes)
+   and every other character kept: blanks, U+2028, U+2029, punctuation, and the
+   text of directives and comments. Inputs are compared with the other inputs of
+   the same file of failures only: the same shape found for another kind of
+   failure is kept, since it was kept for another reason. When the input comes
+   from another package's file, only read it, take the strings out through the
+   syntax tree, and match them byte for byte. Follow the existing names
+   (prefixes such as `gram-`, `lex-`, `db-`, `tokens-`, `config-`, a name of
+   what the input shows and, for many inputs of one topic, the first 8
+   hexadecimal digits of the SHA-256 of the input), write in the note what the
+   input shows (not the name of the review or the run that found it), and add it
+   with `fixtures:add-many` (`fixtures:add` cannot set a mark). The tests of the
+   implementations read the new fixture with the others; the file of the
+   failure's input is then removed from the package that had it.
 5. Show as the result what changed, the names added, the counts, and the result
    of `fixtures:check`.
 
@@ -467,6 +492,13 @@ the spec's skill). This skill does the following.
      generator lists the names outside the standard rejections);
    - `error message only`: nothing to do, since implementations do not compare
      it;
+   - `embedded values`: a change in the title, the data block effects or the
+     configuration that an input gives. Check that the implementations still
+     build their Db from them; a change of mermaid.js's defaults shows as a
+     change of `default-config.json`;
+   - `specified.json added`, `removed` or changed: the reading of the
+     specification for a fixture with a mark that changes how mermaid.js reads,
+     as for `acceptance` and `Db values`;
    - a fixture that cannot be generated because of a `MermaidEnvironmentError`:
      `mermaid.parse()` and `getDiagramFromText()` disagree, or mermaid.js uses a
      feature Node lacks. The steps of `runMermaid()` no longer hold. How to

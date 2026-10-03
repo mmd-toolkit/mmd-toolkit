@@ -248,7 +248,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "as",
       "range": [
         28,
@@ -284,7 +284,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "as",
       "range": [
         40,
@@ -302,7 +302,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "as",
       "range": [
         43,
@@ -356,7 +356,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         51,

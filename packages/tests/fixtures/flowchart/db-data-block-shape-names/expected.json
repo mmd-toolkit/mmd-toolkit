@@ -146,5 +146,93 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "N0",
+        "set": {
+          "type": "rectangle"
+        }
+      },
+      {
+        "id": "N1",
+        "set": {
+          "type": "rounded"
+        }
+      },
+      {
+        "id": "N2",
+        "set": {
+          "type": "circle"
+        }
+      },
+      {
+        "id": "N3",
+        "set": {
+          "type": "double-circle"
+        }
+      },
+      {
+        "id": "N4",
+        "set": {
+          "type": "diamond"
+        }
+      },
+      {
+        "id": "N5",
+        "set": {
+          "type": "hexagon"
+        }
+      },
+      {
+        "id": "N6",
+        "set": {
+          "type": "stadium"
+        }
+      },
+      {
+        "id": "N7",
+        "set": {
+          "type": "framed-rectangle"
+        }
+      },
+      {
+        "id": "N8",
+        "set": {
+          "type": "cylinder"
+        }
+      },
+      {
+        "id": "N9",
+        "set": {
+          "type": "odd"
+        }
+      },
+      {
+        "id": "N10",
+        "set": {
+          "type": "trapezoid-bottom"
+        }
+      },
+      {
+        "id": "N11",
+        "set": {
+          "type": "lean-right"
+        }
+      },
+      {
+        "id": "N12",
+        "set": {
+          "type": "trapezoid-top"
+        }
+      },
+      {
+        "id": "N13",
+        "set": {
+          "type": "lean-left"
+        }
+      }
+    ]
   }
 }

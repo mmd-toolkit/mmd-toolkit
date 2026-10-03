@@ -177,7 +177,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Al",
       "range": [
         16,
@@ -213,16 +213,16 @@
       }
     },
     {
-      "type": "Identifier",
-      "value": "c%%ice",
+      "type": "RawText",
+      "value": " c%%ice",
       "range": [
-        33,
+        32,
         39
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 17
+          "column": 16
         },
         "end": {
           "line": 2,
@@ -249,7 +249,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         42,

@@ -8,7 +8,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Company.Project.Module.SubModule",
           "range": [
             23,
@@ -33,7 +33,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Report",
                 "range": [
                   66,
@@ -222,7 +222,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Company.Project.Module",
           "range": [
             149,
@@ -247,7 +247,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Admin",
                 "range": [
                   182,
@@ -363,7 +363,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Admin",
             "range": [
               218,
@@ -423,7 +423,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Report",
             "range": [
               228,
@@ -546,7 +546,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Company.Project.Module.SubModule",
       "range": [
         23,
@@ -600,7 +600,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Report",
       "range": [
         66,
@@ -870,7 +870,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Company.Project.Module",
       "range": [
         149,
@@ -924,7 +924,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Admin",
       "range": [
         182,
@@ -1068,7 +1068,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Admin",
       "range": [
         218,
@@ -1122,7 +1122,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Report",
       "range": [
         228,

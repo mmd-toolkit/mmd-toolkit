@@ -196,5 +196,8 @@
     ],
     "namespaces": [],
     "interfaces": []
+  },
+  "embedded": {
+    "title": "Animal example"
   }
 }

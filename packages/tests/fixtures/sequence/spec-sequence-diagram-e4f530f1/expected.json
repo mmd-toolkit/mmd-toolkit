@@ -46,5 +46,21 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "Alice",
+        "set": {
+          "type": "collections"
+        }
+      },
+      {
+        "id": "Bob",
+        "set": {
+          "type": "control"
+        }
+      }
+    ]
   }
 }

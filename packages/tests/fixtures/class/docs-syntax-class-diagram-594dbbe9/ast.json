@@ -48,7 +48,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "MyClass",
             "range": [
               60,
@@ -122,7 +122,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "MyClass",
             "range": [
               107,
@@ -250,10 +250,10 @@
     },
     {
       "type": "Keyword",
-      "value": "note for",
+      "value": "note",
       "range": [
         51,
-        59
+        55
       ],
       "loc": {
         "start": {
@@ -262,12 +262,30 @@
         },
         "end": {
           "line": 3,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "for",
+      "range": [
+        56,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 9
+        },
+        "end": {
+          "line": 3,
           "column": 12
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "MyClass",
       "range": [
         60,
@@ -321,7 +339,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "MyClass",
       "range": [
         107,

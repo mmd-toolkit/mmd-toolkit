@@ -87,7 +87,7 @@ Other diagram types are not formatted yet (see below).
   syntax error and leaves the file as it is. In Markdown, the code block is left
   to Prettier, which prints it as code it does not format.
 - A few inputs that mermaid.js accepts are reported as syntax errors too. For
-  example, a directive inside a string, as in `A["a %%{init: {}}%% b"]`, and a
+  example, a directive inside a keyword, as in `sub%%{init: {}}%%graph S`, and a
   `click` that does not start a click statement, as in
   `subgraph Handle click events`: in flowchart, `click` is a reserved word. An
   empty string between tokens, as in `A-->|x""|B`, is reported too. The full

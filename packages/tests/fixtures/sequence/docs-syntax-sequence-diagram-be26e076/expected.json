@@ -82,5 +82,27 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "API",
+        "set": {
+          "type": "boundary"
+        }
+      },
+      {
+        "id": "DB",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "Svc",
+        "set": {
+          "type": "control"
+        }
+      }
+    ]
   }
 }

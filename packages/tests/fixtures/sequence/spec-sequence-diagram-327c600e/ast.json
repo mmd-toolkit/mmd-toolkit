@@ -356,7 +356,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         35,
@@ -393,19 +393,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"database\"",
+      "value": " \"type\" : \"database\" ",
       "range": [
-        39,
-        58
+        38,
+        59
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 16
+          "column": 15
         },
         "end": {
           "line": 3,
-          "column": 35
+          "column": 36
         }
       }
     },
@@ -482,7 +482,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         92,
@@ -519,19 +519,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"queue\"",
+      "value": " \"type\" : \"queue\" ",
       "range": [
-        96,
-        112
+        95,
+        113
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 16
+          "column": 15
         },
         "end": {
           "line": 4,
-          "column": 32
+          "column": 33
         }
       }
     },
@@ -590,7 +590,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         138,
@@ -626,7 +626,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         142,

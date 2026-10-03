@@ -36,10 +36,13 @@ A line becomes a direction statement also when it is not meant as one. When
 the line is a direction statement and makes no vertex and no link. The rule
 reports that too.
 
-Text after the direction that starts with `%%`, as in
-`direction TB %% vertical`, is not reported. The author means it as a comment,
-and mermaid.js drops it, as the author intended. Neither is text that is only a
-`;`, as in `direction TB;`: mermaid.js drops nothing that the author meant.
+Text after the direction value is not reported when nothing but `;` and
+whitespace stands before its first `%%`, or in all of it when it has no `%%`, as
+in `direction TB %% vertical`, `direction TB; %% vertical`, and `direction TB;`.
+The author means the text from the `%%` on as a comment, and a `;` only ends the
+statement, so mermaid.js, which drops the text, drops nothing that the author
+meant. Other text before the `%%` is reported: in `direction TB; x %% c`, the
+`x` is dropped.
 
 When a `;` separates every reported text on the line from the direction, as in
 `A-->B; direction TB`, the rule suggests splitting the line there: the

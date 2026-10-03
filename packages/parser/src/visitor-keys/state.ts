@@ -25,7 +25,7 @@ export const stateVisitorKeys: Readonly<
   ],
   StatePseudostateDefinitionStatement: ["id"],
   StateDividerStatement: [],
-  StateNoteStatement: ["textBeforeState", "state", "text"],
+  StateNoteStatement: ["textBeforeState", "state", "textBeforeText", "text"],
   StateFloatingNoteStatement: ["text", "id"],
   StateClickStatement: ["reference", "url", "tooltip"],
   StateClassDefStatement: ["cssClass", "styles"],

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md A directive is a token boundary: a directive inside an empty string of the state context, accepted as `state \"\" A` is."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

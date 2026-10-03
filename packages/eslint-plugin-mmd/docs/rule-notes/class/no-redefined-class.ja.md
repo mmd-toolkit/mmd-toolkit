@@ -15,7 +15,7 @@
 クラスの id は、クラス名のどの欄（`prefix`、`name`、`generic`）でもない。
 接頭を含めたクラス名のテキストの、最初の `~` より前の部分で、
 規則は Db の導き方を繰り返すことになる
-（仕様の diagrams/class.md の Building the summary from the tree）。
+（tests パッケージの docs/db-from-tree/class.md の Building the summary from the tree）。
 
 ## fixture
 

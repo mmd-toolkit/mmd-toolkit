@@ -8,7 +8,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Company.Project.Module",
           "range": [
             23,
@@ -33,7 +33,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "User",
                 "range": [
                   56,
@@ -191,7 +191,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Admin",
                 "range": [
                   136,
@@ -407,7 +407,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Report",
                 "range": [
                   231,
@@ -598,7 +598,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Admin",
             "range": [
               316,
@@ -658,7 +658,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "User",
             "range": [
               326,
@@ -730,7 +730,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Admin",
             "range": [
               341,
@@ -790,7 +790,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Report",
             "range": [
               351,
@@ -913,7 +913,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Company.Project.Module",
       "range": [
         23,
@@ -967,7 +967,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "User",
       "range": [
         56,
@@ -1201,7 +1201,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Admin",
       "range": [
         136,
@@ -1525,7 +1525,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Report",
       "range": [
         231,
@@ -1777,7 +1777,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Admin",
       "range": [
         316,
@@ -1831,7 +1831,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "User",
       "range": [
         326,
@@ -1885,7 +1885,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Admin",
       "range": [
         341,
@@ -1939,7 +1939,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Report",
       "range": [
         351,

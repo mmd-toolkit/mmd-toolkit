@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: notch-pent, label: \"Loop limit\"",
+      "value": " shape: notch-pent, label: \"Loop limit\" ",
       "range": [
-        21,
-        59
+        20,
+        60
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
-          "column": 46
+          "column": 47
         }
       }
     },

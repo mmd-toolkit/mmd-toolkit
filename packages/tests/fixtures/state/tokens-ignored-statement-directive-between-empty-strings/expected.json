@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md Nodes: the written text of a node of text that mermaid.js does not read is the source text of its range without directives, comment regions, comments, and the ignored `;`; the StateIgnoredStatement is the two empty strings with the two spaces between them."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

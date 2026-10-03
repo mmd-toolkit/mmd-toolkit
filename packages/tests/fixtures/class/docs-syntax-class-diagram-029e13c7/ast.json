@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "classA",
             "range": [
               13,
@@ -70,7 +70,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "classB",
             "range": [
               25,
@@ -142,7 +142,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "classC",
             "range": [
               45,
@@ -202,7 +202,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "classD",
             "range": [
               56,
@@ -274,7 +274,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "classE",
             "range": [
               77,
@@ -334,7 +334,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "classF",
             "range": [
               88,
@@ -439,7 +439,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "classA",
       "range": [
         13,
@@ -493,7 +493,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "classB",
       "range": [
         25,
@@ -547,7 +547,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "classC",
       "range": [
         45,
@@ -601,7 +601,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "classD",
       "range": [
         56,
@@ -655,7 +655,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "classE",
       "range": [
         77,
@@ -709,7 +709,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "classF",
       "range": [
         88,

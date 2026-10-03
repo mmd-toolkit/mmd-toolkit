@@ -1,0 +1,26 @@
+[
+  {
+    "text": "sequenceDiagram\nA->>B: x\u2028# c\nC->>D: y\n",
+    "note": "a # comment after U+2028 or U+2029 is read by the lexer of the sequence diagram and joins no lines: only a %% comment line is removed with its line break"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\u2029# c\nC->>D: y\n",
+    "note": "a # comment after U+2028 or U+2029 is read by the lexer of the sequence diagram and joins no lines: only a %% comment line is removed with its line break"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\u2028# c\n;C->>D: y\n",
+    "note": "a # comment after U+2028 or U+2029 is read by the lexer of the sequence diagram and joins no lines: only a %% comment line is removed with its line break"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\u2028# c\n\nC->>D: y\n",
+    "note": "a # comment after U+2028 or U+2029 is read by the lexer of the sequence diagram and joins no lines: only a %% comment line is removed with its line break"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\u2028# c\n  \n%% d\nC->>D: y\n",
+    "note": "a # comment after U+2028 or U+2029 is read by the lexer of the sequence diagram and joins no lines: only a %% comment line is removed with its line break"
+  },
+  {
+    "text": "sequenceDiagram\nalt a\u2028# c\nA->>B: y\nend\n",
+    "note": "a # comment after U+2028 or U+2029 is read by the lexer of the sequence diagram and joins no lines: only a %% comment line is removed with its line break"
+  }
+]

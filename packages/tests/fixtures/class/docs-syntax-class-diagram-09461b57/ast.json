@@ -8,7 +8,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Auth",
           "range": [
             27,
@@ -52,7 +52,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "UserService",
                 "range": [
                   74,
@@ -260,7 +260,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Auth",
       "range": [
         27,
@@ -368,7 +368,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "UserService",
       "range": [
         74,

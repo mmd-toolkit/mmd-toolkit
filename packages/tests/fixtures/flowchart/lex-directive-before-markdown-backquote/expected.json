@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md A directive is a token boundary: a directive between the quote and the backquote that open a markdown string lies inside the string unit; the label is `a`, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "a",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

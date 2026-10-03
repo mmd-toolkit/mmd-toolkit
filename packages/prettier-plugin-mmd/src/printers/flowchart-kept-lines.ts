@@ -1,6 +1,16 @@
-import type { FlowchartStatement, Range, Root } from "@mmd-toolkit/parser"
+import type {
+  FlowchartAccDescrBlockStatement,
+  FlowchartStatement,
+  FlowchartSubgraphStatement,
+  Range,
+  Root,
+} from "@mmd-toolkit/parser"
 import type { KeptLines } from "./kept-lines.ts"
-import { findLinesWithOwnSemicolons, lineStartOf } from "./kept-lines.ts"
+import {
+  findLinesWithOwnSemicolons,
+  lineEndOf,
+  lineStartOf,
+} from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findTriviaBetween, isWhitespace } from "./source.ts"
 
@@ -51,12 +61,61 @@ export function findFlowchartKeptLines(source: Source): KeptLines {
       ...findLinesWithOwnSemicolons(source, true),
       ...findLinesAfterWords(source, statements),
       ...findLinesAfterEmptyStyle(source, statements),
+      ...findLinesOfSubgraphBlocks(source, statements),
     ]),
-    verbatim: directionText,
+    verbatim: new Set([
+      ...directionText,
+      ...findStyleLinesWithLineSeparators(source, statements),
+    ]),
     writtenIndentation: directionText,
   }
   keptLinesBySource.set(source, kept)
   return kept
+}
+
+/**
+ * The lines of a `style`, `classDef`, or `linkStyle` statement that hold a
+ * U+2028 or U+2029 and a `;`, from the start of the statement to the end of
+ * the line: the line is printed as written, from where its statement starts,
+ * so a U+2028 or U+2029 before the statement is not printed and does not
+ * count. The line rule
+ * of mermaid.js, which ignores the last `;` of such a line (common.md, The
+ * `style` and `classDef` lines), reads the text up to the character, and the
+ * style that is all whitespace after an empty description block reads it as
+ * something other than whitespace, so with the character printed as a space
+ * the `;` would be read otherwise: `classDef c fill:#f96;`, U+2028, and `;`
+ * is accepted, and with a space in place of the U+2028 it is rejected.
+ */
+function findStyleLinesWithLineSeparators(
+  source: Source,
+  statements: readonly FlowchartStatement[],
+): number[] {
+  const lines: number[] = []
+  for (const statement of statements) {
+    if (statement.type === "FlowchartSubgraphStatement") {
+      lines.push(...findStyleLinesWithLineSeparators(source, statement.body))
+      continue
+    }
+    if (
+      statement.type !== "FlowchartStyleStatement" &&
+      statement.type !== "FlowchartClassDefStatement" &&
+      statement.type !== "FlowchartLinkStyleStatement" &&
+      statement.type !== "FlowchartDefaultLinkStyleStatement"
+    ) {
+      continue
+    }
+    const line = source.text.slice(
+      statement.range[0],
+      lineEndOf(source, statement.range[1]),
+    )
+    if (
+      line.includes(";") &&
+      (line.includes("\u2028") || line.includes("\u2029"))
+    ) {
+      lines.push(lineStartOf(source, statement.range[0]))
+    }
+  }
+  return lines
 }
 
 /**
@@ -278,4 +337,59 @@ function collectDirectionStatementRanges(
     }
   }
   return ranges
+}
+
+/**
+ * The lines of the empty description blocks that follow the name of a
+ * subgraph without a title on its line, with the line of the `subgraph`: the
+ * blocks stay on that line as written. The blocks read no token, so for
+ * mermaid.js the whitespace around them, and the `;` that follows them, belong
+ * to the name, and the line break after the header is hidden by whitespace
+ * that ends it: with the blocks on a line of their own, `subgraph S`, a space,
+ * `accDescr {}`, a space, a `;`, and a directive is read as `subgraph S` and
+ * the vertex `;` (diagrams/flowchart.md, Subgraphs; ast/flowchart.md,
+ * FlowchartSubgraphStatement).
+ */
+function findLinesOfSubgraphBlocks(
+  source: Source,
+  statements: readonly FlowchartStatement[],
+): number[] {
+  const lines: number[] = []
+  for (const statement of statements) {
+    if (statement.type !== "FlowchartSubgraphStatement") continue
+    lines.push(...findLinesOfSubgraphBlocks(source, statement.body))
+    const blocks = findHeaderBlocks(source, statement)
+    if (blocks.length === 0) continue
+    lines.push(
+      lineStartOf(source, statement.range[0]),
+      ...blocks.map((block) => lineStartOf(source, block.range[1] - 1)),
+    )
+  }
+  return lines
+}
+
+/**
+ * The empty description blocks that follow the name of a subgraph without a
+ * title on its line, one after the other, as far as they are written on the
+ * line where the previous one ends.
+ */
+export function findHeaderBlocks(
+  source: Source,
+  subgraph: FlowchartSubgraphStatement,
+): FlowchartAccDescrBlockStatement[] {
+  if (subgraph.title !== null) return []
+  const blocks: FlowchartAccDescrBlockStatement[] = []
+  let previousLine = lineStartOf(source, subgraph.name.range[1] - 1)
+  for (const next of subgraph.body) {
+    if (
+      next.type !== "FlowchartAccDescrBlockStatement" ||
+      next.value !== null ||
+      lineStartOf(source, next.range[0]) !== previousLine
+    ) {
+      break
+    }
+    blocks.push(next)
+    previousLine = lineStartOf(source, next.range[1] - 1)
+  }
+  return blocks
 }

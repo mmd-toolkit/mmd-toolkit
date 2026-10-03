@@ -18,7 +18,7 @@ import type {
   StateStatement,
   StateStyleStatement,
 } from "../../ast/state.ts"
-import type { UnitWithKind } from "../../diagram-parsing.ts"
+import type { DiagramComment } from "../../diagram-parsing.ts"
 import type { EmptyForm } from "../../empty-forms.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import type { ParseError } from "../../errors.ts"
@@ -31,12 +31,10 @@ import { PSEUDOSTATE_MARKS } from "./units.ts"
 export interface StateSyntax {
   /** The statements of the diagram, in source order. */
   readonly body: readonly StateStatement[]
-  /** The units that are not all whitespace, in source order. */
-  readonly units: readonly UnitWithKind[]
   /** The tokens of the diagram, in source order. */
   readonly tokens: readonly PendingToken[]
   /**
-   * Building the summary from the tree, Ids: the id of each state that a
+   * Rejections outside the grammar: the id of each state that a
    * composite state, a definition, or an alias names, in converted form,
    * which the rejections outside the grammar read.
    */
@@ -76,8 +74,17 @@ const STATE_CONTEXT_STARTS: readonly UnitName[] = [
 export class StateGrammar extends UnitGrammar<UnitName, Unit> {
   private readonly stateIds = new Map<Identifier | StateLiteral, string>()
 
-  public constructor(units: readonly Unit[], lexer: SourceLexer) {
-    super(units, lexer, EMPTY_FORM_KINDS.state)
+  /** The `:` units of notes that start the note text (`StateLexing.noteColonsInText`). */
+  private readonly noteColonsInText: ReadonlySet<Unit>
+
+  public constructor(
+    units: readonly Unit[],
+    noteColonsInText: ReadonlySet<Unit>,
+    comments: readonly DiagramComment[],
+    lexer: SourceLexer,
+  ) {
+    super(units, lexer, EMPTY_FORM_KINDS.state, comments)
+    this.noteColonsInText = noteColonsInText
   }
 
   /** Diagram and statements: `diagram = newline* "header" line*`. */
@@ -87,7 +94,6 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     const body = this.parseLines(false)
     return {
       body,
-      units: this.unitsWithKindInOrder(),
       tokens: this.tokensInOrder(),
       stateIds: this.stateIds,
     }
@@ -217,7 +223,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
-  /** Building the summary from the tree, Ids: the Identifier of the id unit `unit`, whose converted text is kept as the id of its state. */
+  /** Rejections outside the grammar, the id of a state: the Identifier of the id unit `unit`, whose converted text is kept as the id of its state. */
   private stateIdOf(unit: Unit): Identifier {
     const identifier = this.identifierOf([unit])
     this.stateIds.set(identifier, unit.text)
@@ -262,7 +268,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     const place = this.placeOf([unit])
     return {
       type: "StateIgnoredText",
-      value: this.textOf(place.range),
+      value: this.unreadTextOf(place.range),
       ...place,
     }
   }
@@ -340,7 +346,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     const place = this.placeOf(units)
     return {
       type: "StateIgnoredStatement",
-      value: this.textOf(place.range),
+      value: this.unreadTextOf(place.range),
       ...place,
     }
   }
@@ -377,10 +383,10 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Composite states and aliases: `empty-string* empty-description-block*
-   * ignored-text?` before the `{` of a body (an alias has no empty strings
-   * there), which the grammar takes there only, one StateIgnoredText from
-   * the first of them to the last; null when there are none, or when no `{`
-   * follows them.
+   * ( ignored-state empty-string* | ignored-text )?` before the `{` of a
+   * body (an alias has no empty strings before the blocks), which the
+   * grammar takes there only, one StateIgnoredText from the first of them
+   * to the last; null when there are none, or when no `{` follows them.
    */
   private parseTextBeforeBody(): StateIgnoredText | null {
     let end = this.next
@@ -391,6 +397,10 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
       block = this.emptyDescriptionBlockAt(end)
     ) {
       end += block.units.length
+    }
+    while (this.nameAt(end) === "ignored-state") {
+      end += 1
+      while (this.nameAt(end) === "empty-string") end += 1
     }
     if (this.nameAt(end) === "ignored-text") end += 1
     if (end === this.next || this.nameAt(end) !== "{") return null
@@ -410,18 +420,18 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * ast/state.md, StateIgnoredText: the text of the empty strings, the
-   * empty description blocks, and the `%%` among `units`, from the first to
-   * the last, each unit an item of its own, of the kind of its unit
-   * (ast/state.md, Tokens): an empty string a `String` item, the `accDescr`
-   * of a block a `Keyword` item and its braces `Punctuator` items, a `%%` a
-   * `RawText` item.
+   * empty description blocks, the `ignored-state` unit, and the `%%` among
+   * `units`, from the first to the last, each unit an item of its own, of
+   * the kind of its unit (ast/state.md, Tokens): an empty string a `String`
+   * item, the `accDescr` of a block and an `ignored-state` unit a `Keyword`
+   * item, the braces of a block `Punctuator` items, a `%%` a `RawText` item.
    */
   private ignoredTextOfUnits(units: readonly Unit[]): StateIgnoredText {
     for (const unit of units) this.addItem(ignoredUnitKindOf(unit), [unit])
     const place = this.placeOf(units)
     return {
       type: "StateIgnoredText",
-      value: this.textOf(place.range),
+      value: this.unreadTextOf(place.range),
       ...place,
     }
   }
@@ -531,8 +541,8 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * Notes: `note-statement = "note" position ignored-text? note-id? ( ":"
-   * note-text? | note-text? "end note" )` and `floating-note-statement =
+   * Notes: `note-statement = "note" position "of" ignored-text? note-id?
+   * ( ":" note-text? | note-text? "end" "note" )` and `floating-note-statement =
    * "note" '"'+ floating-note-text '"'+ "as" floating-note-id?`.
    */
   private parseNoteStatement():
@@ -553,30 +563,50 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     }
     const position = this.take("position")
     this.addItem("Keyword", [position])
+    this.addItem("Keyword", [this.take("of")])
     const textBeforeState = this.optionalIgnoredText(
       this.takeIf("ignored-text"),
     )
     const noteId = this.takeIf("note-id")
     const state = noteId === null ? null : this.identifierOf([noteId])
     const colon = this.takeIf(":")
+    let textBeforeText: StateIgnoredText | null = null
     let text: StateLiteral | null
     if (colon !== null) {
       this.addItem("Punctuator", [colon])
-      text = this.optionalLiteral(this.take("note-text"))
+      textBeforeText = this.optionalIgnoredText(this.takeIf("ignored-text"))
+      const noteText = this.takeIf("note-text")
+      text = this.noteColonsInText.has(colon)
+        ? this.noteTextFromColon(colon, noteText)
+        : this.optionalLiteral(noteText)
     } else {
       text = this.optionalLiteral(this.takeIf("note-text"))
-      this.addItem("Keyword", [this.take("end note")])
+      this.addItem("Keyword", [this.take("end")])
+      this.addItem("Keyword", [this.take("note")])
     }
     return {
       type: "StateNoteStatement",
-      position: this.textOfUnit(position).toLowerCase().startsWith("left")
-        ? "left"
-        : "right",
+      position:
+        this.textOfUnit(position).toLowerCase() === "left" ? "left" : "right",
       textBeforeState,
       state,
+      textBeforeText,
       text,
       ...this.placeFrom(start),
     }
+  }
+
+  /**
+   * ast/state.md, StateNoteStatement: the text of a note on one line that
+   * starts with its `:`, after two whitespace characters, and holds the
+   * `Punctuator` token of the `:` and the `note-text` unit, if any, whose
+   * item is `RawText` and goes on with the value that the `:` starts, so
+   * that its token keeps the whitespace after the `:`.
+   */
+  private noteTextFromColon(colon: Unit, noteText: Unit | null): StateLiteral {
+    if (noteText !== null) this.addItemContinuingValue("RawText", [noteText])
+    const place = this.placeOf(noteText === null ? [colon] : [colon, noteText])
+    return { type: "StateLiteral", value: this.textOf(place.range), ...place }
   }
 
   /**
@@ -616,38 +646,41 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     const start = this.next
     this.addItem("Keyword", [this.take("classDef")])
     const cssClass = this.identifierOf([this.take("class-name")])
+    const styles = this.parseStyles()
     return {
       type: "StateClassDefStatement",
       cssClass,
-      styles: this.parseStyles(),
+      // ast/state.md, StateClassDefStatement: without text, the one empty
+      // part is no style, as mermaid.js adds none.
+      styles: styles.length === 1 && styles[0] === null ? [] : styles,
       ...this.placeFrom(start),
     }
   }
 
   /**
    * Other statements: `styles = style? ( "," style? )*`, with the
-   * `style-text` units: the styles, an empty one making no node.
+   * `style-text` units: one style for each part between `,` units, null
+   * for a part that is empty or all whitespace, which has no unit.
    */
-  private parseStyles(): StateLiteral[] {
-    const styles: StateLiteral[] = []
+  private parseStyles(): (StateLiteral | null)[] {
+    const styles: (StateLiteral | null)[] = []
     for (;;) {
-      const style = this.optionalLiteral(this.takeIf("style-text"))
-      if (style !== null) styles.push(style)
+      styles.push(this.optionalLiteral(this.takeIf("style-text")))
       const comma = this.takeIf(",")
       if (comma === null) return styles
       this.addItem("Punctuator", [comma])
     }
   }
 
-  /** Other statements: `class-statement = "class" id ( "," id )* css-class?`. */
+  /** Other statements: `class-statement = "class" id ( id-comma id )* css-class?`. */
   private parseClassStatement(): StateClassStatement {
     const start = this.next
     this.addItem("Keyword", [this.take("class")])
     const states = [this.identifierOf([this.take("id")])]
     for (
-      let comma = this.takeIf(",");
+      let comma = this.takeIf("id-comma");
       comma !== null;
-      comma = this.takeIf(",")
+      comma = this.takeIf("id-comma")
     ) {
       this.addItem("Punctuator", [comma])
       states.push(this.identifierOf([this.take("id")]))
@@ -660,7 +693,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
-  /** Other statements: `style-statement = "style" id? ( "," id? )* styles`. */
+  /** Other statements: `style-statement = "style" id? ( id-comma id? )* styles`. */
   private parseStyleStatement(): StateStyleStatement {
     const start = this.next
     this.addItem("Keyword", [this.take("style")])
@@ -668,7 +701,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     for (;;) {
       const id = this.takeIf("id")
       states.push(id === null ? null : this.identifierOf([id]))
-      const comma = this.takeIf(",")
+      const comma = this.takeIf("id-comma")
       if (comma === null) break
       this.addItem("Punctuator", [comma])
     }
@@ -749,10 +782,12 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
     return { type: "StateScaleStatement", width, ...this.placeFrom(start) }
   }
 
-  /** Other statements: `"hide"`. */
+  /** Other statements: `"hide" "empty" "description"`. */
   private parseHideStatement(): StateStatement {
     const start = this.next
     this.addItem("Keyword", [this.take("hide")])
+    this.addItem("Keyword", [this.take("empty")])
+    this.addItem("Keyword", [this.take("description-word")])
     return {
       type: "StateHideEmptyDescriptionStatement",
       ...this.placeFrom(start),
@@ -781,6 +816,7 @@ function ignoredUnitKindOf(unit: Unit): DiagramTokenKind {
     case "empty-string":
       return "String"
     case "accDescr":
+    case "ignored-state":
       return "Keyword"
     case "{":
     case "}":

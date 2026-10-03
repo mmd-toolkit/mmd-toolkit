@@ -475,6 +475,10 @@ id の前の空白は空白 1 つにします。
 `note left of%%x A` のように位置の直後にある、mermaid.js が読まないテキストは、
 位置に接したまま残します。
 複数行のノートの本文は書かれたまま残し、`end note` はノートと同じ段に置きます。
+本文のない 1 行のノートは、説明と同じく、`:` の後の空白を残します。
+`note left of A : ` は受理され、`note left of A :` は拒否されます。
+`:` の前に空白が 2 つあり、後ろに何もないノートも同じです。
+その本文は `:` だけです。
 浮いたノートの引用符は書かれたまま残します。
 `note ""floating" as N` の本文は `floating` です。
 
@@ -637,7 +641,7 @@ state A {
 %%{init: {}}%%
 B
 }
-Fo%%{init: {}}%%o --> B
+Foo%%{init: {}}%% --> B
 ```
 
 出力 ([directives/kept-output.mmd](../tests/fixtures/state/directives/kept-output.mmd)):
@@ -649,7 +653,7 @@ stateDiagram-v2
     %%{init: {}}%%
     B
   }
-  Fo%%{init: {}}%%o --> B
+  Foo%%{init: {}}%% --> B
 ```
 
 ### フロントマターの YAML

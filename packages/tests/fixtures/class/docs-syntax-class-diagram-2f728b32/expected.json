@@ -60,5 +60,8 @@
     "notes": [],
     "namespaces": [],
     "interfaces": []
+  },
+  "embedded": {
+    "title": "Bank example"
   }
 }

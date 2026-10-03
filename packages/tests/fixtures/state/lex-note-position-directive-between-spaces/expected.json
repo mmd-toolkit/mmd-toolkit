@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note context: without the directive, two spaces lie between `left` and `of`, so this is no position, and the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\n...agram-v2  A  note left  of A: t\n---------------------^"
+  }
+}

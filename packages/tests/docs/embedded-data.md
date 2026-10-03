@@ -2,9 +2,8 @@
 
 Japanese version: [embedded-data.ja.md](./embedded-data.ja.md)
 
-This document explains the values `resolveEmbeddedData()` and
-`runMermaidWithEmbeddedData()` hand to an implementation, and what comparing
-with them checks.
+This document explains the values that mermaid.js derives from the embedded data
+of an input, how the fixtures record them, and what comparing with them checks.
 
 ## Why an implementation needs them
 
@@ -13,8 +12,37 @@ contents of directives, and `@{ ... }` data blocks. A parser neither parses nor
 validates them (Known divergence `embedded-data-opaque`). Some Db values still
 depend on that data, for example a subgraph direction on `flowchart.inheritDir`,
 the title on the frontmatter `title`, and the fields only data blocks set
-(`icon`, `animate`, `metadata`, ...). To build those, an implementation's test
-takes the values from mermaid.js:
+(`icon`, `animate`, `metadata`, ...). To build those, an implementation takes
+the values from the fixture.
+
+## Where the values are
+
+Every accepted result in `expected.json` (and in `specified.json`, see
+[expected-results.md](./expected-results.md)) may have a field `embedded`:
+`{ config?, title?, dataBlockEffects? }`. A field is left out where the input
+gives no such value, and `embedded` where it gives none. Of the accepted
+fixtures, about 250 have it; the rest need nothing from embedded data.
+
+- `title` and `dataBlockEffects` are the values below.
+- `config` is what the input changes in mermaid.js's configuration, not the
+  whole configuration, which is large (23 KB) and the same for almost every
+  fixture. It is the values that differ from the configuration mermaid.js has
+  for a text that changes nothing in it, read with the fixture's own `config`.
+  An implementation takes a key from `embedded.config`, then from the `config`
+  of the fixture, then from the defaults in
+  [`fixtures/default-config.json`](../fixtures/default-config.json)
+  (`getDefaultConfig()`). An object is merged key by key; an array and any other
+  value replace.
+
+`embeddedValuesOf(fixture)` builds these values from the fixture: the defaults,
+then the fixture's `config`, then `embedded.config`. When an input changes
+`theme`, mermaid.js recomputes `themeVariables` and may drop some of its keys;
+the difference does not record drops, so the built configuration can hold a key
+that mermaid.js's own lacks (16 of the accepted fixtures). No Db value depends
+on those keys.
+
+The functions of `@mmd-toolkit/tests/mermaid` give the values for any text, with
+the whole configuration:
 
 - `resolveEmbeddedData(text, { config })` returns
   `{ config, title, dataBlockEffects }`. It returns `undefined` when mermaid.js
@@ -24,16 +52,15 @@ takes the values from mermaid.js:
 - The mutation differential test passes the same values to the candidate as its
   third argument (see [mutation-testing.md](./mutation-testing.md)).
 
-None of these values is stored in `expected.json`: the whole configuration is
-large, and a change of mermaid.js's defaults would touch every fixture.
+The generator records the fixtures' values from them, and `fixtures:check`
+compares the recorded values with mermaid.js.
 
 ## `config` and `title`
 
-- `config` is mermaid.js's whole configuration for the text: its defaults, the
-  site configuration, the frontmatter `config` and the directives, merged by
-  mermaid.js itself, and read with `mermaidAPI.getConfig()` right after
-  `mermaid.parse()`. Per-diagram appearance defaults (such as `look`) are not in
-  it; they do not affect Db summaries.
+- The whole `config` is mermaid.js's configuration for the text, derived as
+  [configuration.md](./configuration.md) describes, and read with
+  `mermaidAPI.getConfig()` right after `mermaid.parse()`. Per-diagram appearance
+  defaults (such as `look`) are not in it; they do not affect Db summaries.
 - `title` is the frontmatter title, as `render()` passes it to the Db (see
   [expected-results.md](./expected-results.md)).
 

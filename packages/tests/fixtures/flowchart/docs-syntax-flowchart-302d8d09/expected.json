@@ -34,5 +34,20 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "User Icon",
+          "icon": "fa:user",
+          "form": "square",
+          "pos": "t",
+          "assetHeight": 60
+        }
+      }
+    ]
   }
 }

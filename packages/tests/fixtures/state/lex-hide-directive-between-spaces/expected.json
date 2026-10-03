@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context, rule 21: without the directive, two spaces lie between `hide` and `empty`, so this is no `hide empty description`, and the line is the three states `hide`, `empty`, and `description`, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "hide",
+        "shape": "rect",
+        "label": "hide",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "empty",
+        "shape": "rect",
+        "label": "empty",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "description",
+        "shape": "rect",
+        "label": "description",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

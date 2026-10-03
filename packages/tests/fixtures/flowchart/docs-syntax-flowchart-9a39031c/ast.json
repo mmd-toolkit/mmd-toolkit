@@ -213,19 +213,19 @@
     },
     {
       "type": "RawText",
-      "value": "img: \"https://mermaid.js.org/favicon.svg\", label: \"My example image label\", pos: \"t\", h: 60, constraint: \"on\"",
+      "value": " img: \"https://mermaid.js.org/favicon.svg\", label: \"My example image label\", pos: \"t\", h: 60, constraint: \"on\" ",
       "range": [
-        65,
-        174
+        64,
+        175
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 3,
-          "column": 115
+          "column": 116
         }
       }
     },

@@ -1321,19 +1321,19 @@
     },
     {
       "type": "RawText",
-      "value": "animate: true",
+      "value": " animate: true ",
       "range": [
-        70,
-        83
+        69,
+        84
       ],
       "loc": {
         "start": {
           "line": 5,
-          "column": 9
+          "column": 8
         },
         "end": {
           "line": 5,
-          "column": 22
+          "column": 23
         }
       }
     },
@@ -1393,19 +1393,19 @@
     },
     {
       "type": "RawText",
-      "value": "animate: false",
+      "value": " animate: false ",
       "range": [
-        95,
-        109
+        94,
+        110
       ],
       "loc": {
         "start": {
           "line": 6,
-          "column": 9
+          "column": 8
         },
         "end": {
           "line": 6,
-          "column": 23
+          "column": 24
         }
       }
     },
@@ -1465,19 +1465,19 @@
     },
     {
       "type": "RawText",
-      "value": "animate: true",
+      "value": " animate: true ",
       "range": [
-        121,
-        134
+        120,
+        135
       ],
       "loc": {
         "start": {
           "line": 7,
-          "column": 9
+          "column": 8
         },
         "end": {
           "line": 7,
-          "column": 22
+          "column": 23
         }
       }
     },
@@ -1537,19 +1537,19 @@
     },
     {
       "type": "RawText",
-      "value": "animate: false",
+      "value": " animate: false ",
       "range": [
-        146,
-        160
+        145,
+        161
       ],
       "loc": {
         "start": {
           "line": 8,
-          "column": 9
+          "column": 8
         },
         "end": {
           "line": 8,
-          "column": 23
+          "column": 24
         }
       }
     },

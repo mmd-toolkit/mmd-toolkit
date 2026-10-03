@@ -2003,7 +2003,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "web",
       "range": [
         32,
@@ -2075,7 +2075,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "blog",
       "range": [
         67,
@@ -2147,7 +2147,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "account",
       "range": [
         104,
@@ -2219,7 +2219,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "mail",
       "range": [
         147,
@@ -2291,7 +2291,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "db",
       "range": [
         184,
@@ -2381,7 +2381,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "web",
       "range": [
         213,
@@ -2417,7 +2417,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "db",
       "range": [
         217,
@@ -2471,7 +2471,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "web",
       "range": [
         273,
@@ -2525,7 +2525,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "account",
       "range": [
         280,
@@ -2579,7 +2579,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "account",
       "range": [
         319,
@@ -2615,7 +2615,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "db",
       "range": [
         329,
@@ -2669,7 +2669,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "db",
       "range": [
         359,
@@ -2705,7 +2705,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "account",
       "range": [
         364,
@@ -2795,7 +2795,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "account",
       "range": [
         438,
@@ -2831,7 +2831,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "web",
       "range": [
         448,
@@ -2921,7 +2921,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "account",
       "range": [
         508,
@@ -2975,7 +2975,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "web",
       "range": [
         519,
@@ -3065,7 +3065,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "web",
       "range": [
         566,
@@ -3101,7 +3101,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "db",
       "range": [
         570,
@@ -3155,7 +3155,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "web",
       "range": [
         644,
@@ -3209,7 +3209,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "blog",
       "range": [
         651,
@@ -3263,7 +3263,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "blog",
       "range": [
         681,
@@ -3299,7 +3299,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "db",
       "range": [
         688,
@@ -3389,7 +3389,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "blog",
       "range": [
         747,
@@ -3425,7 +3425,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "mail",
       "range": [
         754,
@@ -3479,7 +3479,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "blog",
       "range": [
         802,
@@ -3515,7 +3515,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "db",
       "range": [
         809,
@@ -3605,7 +3605,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "blog",
       "range": [
         874,
@@ -3659,7 +3659,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "web",
       "range": [
         883,

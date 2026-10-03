@@ -415,15 +415,15 @@
     },
     {
       "type": "RawText",
-      "value": "label: \"label for n4\"",
+      "value": " label: \"label for n4\"",
       "range": [
-        48,
+        47,
         69
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 35
+          "column": 34
         },
         "end": {
           "line": 2,
@@ -505,15 +505,15 @@
     },
     {
       "type": "RawText",
-      "value": "label: \"label for n5\"",
+      "value": " label: \"label for n5\"",
       "range": [
-        80,
+        79,
         101
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 67
+          "column": 66
         },
         "end": {
           "line": 2,

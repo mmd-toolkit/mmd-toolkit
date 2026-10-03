@@ -218,6 +218,10 @@ mermaid@12.0.0 では、次の 2 つです。
 実装はこれを使って、印の付いた入力での mermaid.js との違いが、
 それらの差だけから来ることを確かめます。
 こうして読ませた mermaid.js と、自分を比べます。
+すべての入力を、こう読ませた mermaid.js と同じに受理・拒否し、
+同じ Db を返すものでなければなりません。
+これを使えるのは、`comment-takes-character`、`comment-takes-line-break`、
+`name-start-reads-unit` です。
 ある図種で仕様と mermaid.js の差が 2 つ以上あるとき、
 仕様と同じに読ませるには、
 1 つの入力でそのいくつかを同時に除く必要があることがあります。
@@ -231,6 +235,29 @@ mermaid@12.0.0 では、次の 2 つです。
 そのときは、呼び出しは両方の識別子を挙げたエラーを投げます。
 選択肢でないキーを持つ options を渡すと、呼び出しは `TypeError` を投げます。
 書き誤った選択肢で、そのままの mermaid.js を動かさないためです。
+
+仕様が何を出すかを知るために、
+実装が mermaid.js をこのように動かす必要はありません。
+mermaid.js の入力の読み方を変える既知の差の印
+（`comment-takes-character`、`comment-takes-line-break`、
+`name-start-reads-unit`、`html-tag-in-frontmatter`）を持つ fixture は、
+それを `expected.json` と違うときに、`specified.json` に記録します。
+生成器は、その差を外して mermaid.js に読ませた結果を取ります
+（`comment-takes-line-break` と `name-start-reads-unit` は、
+どちらも class の字句解析器を変えるので、2 つを一緒に外します）。
+`html-tag-in-frontmatter` では、フロントマターの `<` を `(` にして
+HTML タグが始まらないようにした入力を mermaid.js に読ませた結果です。
+mermaid.js がその入力を拒否するときは、仕様どおりの読みも拒否で、
+`specified.json` に `accepted: false` とエラーを記録します
+（`(` への置き換えが YAML を壊したときは、読みを作れないので、
+生成器が止まります。その fixture の読みの作り方を決めます）。
+Db の title は書かれたとおりのフロントマターの title で、
+`embedded` の値は書かれたとおりの入力のものです。
+ほかの印には、このファイルは要りません。
+仕様が mermaid.js の受理するものを拒否する
+（`directive-as-token-boundary`、`ignored-semicolon-as-token-boundary`、
+`click-reserved-word`、`tokenless-empty-forms`、`headerless-empty-ending`）か、
+拒否するものを受理する（`embedded-data-opaque`）からです。
 
 規則は `src/divergence-removals.ts` に挙げてあり、
 pin した mermaid.js の字句解析器の中で、
@@ -265,6 +292,10 @@ frontmatter、ディレクティブ、コメント行を取り除きます。
   `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
   そうすると、コメントは `%%` から始まる。
   数の規則も、空白と改行の前だけでなく、`%%` の前でも数を終える。
+  変えない mermaid.js のどんな入力も、変えたものの代わりにならない。
+  その文の状態は、id の規則より先に、1 文字と `%%` をコメントに読むので、
+  メッセージのように、2 文字目と 3 文字目が `%%` の id の連なりを、
+  どの入力も与えられないからである。
 - `comment-takes-line-break`、class の字句解析器
   （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)）:
   `%%` と行の残りとその後の改行を読む規則を、
@@ -343,13 +374,15 @@ pin した mermaid.js は、同じテキストと同じ選択肢に同じ結果�
   貯蔵庫を使わずに動きます。
 - 上限の件数: 2,000,000。ディスクで約 8 GB です
   （1 件は、ファイルの最小の大きさの約 4 KB）。
-  数えられた最も大きな実行（それぞれ 1 回だけ行ったもの）の結果より、
-  大きく置いた値です。
-  parser の差分テストの全量は、
-  flowchart、sequence、class、state で 192,209 件を作りました。
-  整形の生成入力のテストの全量は 540,000 件より多く作りましたが、
+  当時の最も大きな実行の結果より、大きく置いた値です。
+  当時のテストには、すべての入力を回す実行がありました。
+  整形の生成入力のテストは 540,000 件より多く作りましたが、
   当時の上限で数えるのが止まったので、最後まで数えられませんでした。
-  この後の実行にどれだけ余裕があるかは、測っていません。
+  parser の差分テストは、
+  flowchart、sequence、class、state で 192,209 件を作りました。
+  その実行はもうありません。
+  大きさが 1 つのテストに対して、この上限がどれだけ余裕を残すかは、
+  測っていません。
   貯蔵庫が上限に届くと、最後に使ってから最も長い結果から消えます。
   結果は変わらず、消えたものは mermaid.js を動かし直すので、遅くなるだけです。
 - 鍵: テキストと選択肢（`config`、`withoutDivergences`）を、

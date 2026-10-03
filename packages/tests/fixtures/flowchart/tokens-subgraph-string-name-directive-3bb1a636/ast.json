@@ -1,0 +1,228 @@
+{
+  "type": "Root",
+  "diagramType": "flowchart-v2",
+  "body": {
+    "type": "FlowchartDiagram",
+    "direction": "LR",
+    "body": [
+      {
+        "type": "FlowchartSubgraphStatement",
+        "name": {
+          "type": "FlowchartLabel",
+          "kind": "string",
+          "value": "S ",
+          "range": [
+            22,
+            40
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 9
+            },
+            "end": {
+              "line": 2,
+              "column": 27
+            }
+          }
+        },
+        "title": null,
+        "body": [],
+        "range": [
+          13,
+          44
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 3
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      44
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 3
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {}",
+      "closed": true,
+      "range": [
+        25,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 26
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "flowchart",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        10,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 10
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "subgraph",
+      "range": [
+        13,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"S\"",
+      "range": [
+        22,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{init: {}}%%",
+      "range": [
+        25,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " ",
+      "range": [
+        39,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 26
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "end",
+      "range": [
+        41,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    45
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 4,
+      "column": 0
+    }
+  }
+}

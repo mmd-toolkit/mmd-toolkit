@@ -1,13 +1,14 @@
 import { describe, expect, it } from "vitest"
+import type { DiagramTokenKind } from "../src/ast.ts"
 import type { DiagramAnalysis, DiagramInput } from "../src/diagram-parsing.ts"
 import { finishDiagram, openDiagramText } from "../src/diagram-parsing.ts"
 import { ParseError } from "../src/index.ts"
 import type { DiagramPosition } from "../src/diagram-text.ts"
 import { SourceLexer } from "../src/source-lexer.ts"
 
-// Expectations come from common.md, Reading a source and A directive is a
-// token boundary, and from the promises of `DiagramAnalysis`, which
-// `finishDiagram` checks.
+// Expectations come from common.md, Reading a source, A directive is a
+// token boundary, and `style` and `classDef` lines, and from the promises
+// of `DiagramAnalysis`, which `finishDiagram` checks.
 
 /** The input of a diagram whose text is `text`, read from its start. */
 function inputOf(text: string): DiagramInput {
@@ -18,23 +19,12 @@ function inputOf(text: string): DiagramInput {
   }
 }
 
-/** Finishes the tree of `text` with `analysis`; the body is an ErrorDiagram. */
-function finish(
-  text: string,
-  analysis: Omit<DiagramAnalysis, "comments" | "ignoredSemicolonKindAt">,
-) {
-  const input = inputOf(text)
-  const reader = openDiagramText(input)
-  // The reader is read to its end, so that it knows the directives.
-  for (let position: DiagramPosition = reader.first(); position !== null;) {
-    position = reader.after(position)
-  }
-  return finishDiagram(
-    input,
-    reader,
-    { ...analysis, comments: [], ignoredSemicolonKindAt: () => "RawText" },
-    (place) => ({ type: "ErrorDiagram", ...place }),
-  )
+/** Finishes the tree of `text` with the tokens `tokens`; the body is an ErrorDiagram. */
+function finish(text: string, tokens: DiagramAnalysis["tokens"]) {
+  return finishDiagram(inputOf(text), { tokens, comments: [] }, (place) => ({
+    type: "ErrorDiagram",
+    ...place,
+  }))
 }
 
 describe("openDiagramText", () => {
@@ -53,10 +43,7 @@ describe("openDiagramText", () => {
 
 describe("finishDiagram", () => {
   it("records the tokens, cut at the directives, and builds the root", () => {
-    const root = finish("ab%%{x}%%cd", {
-      units: [{ kind: "RawText", range: [0, 11] }],
-      tokens: [{ kind: "RawText", range: [0, 11] }],
-    })
+    const root = finish("ab%%{x}%%cd", [{ kind: "RawText", range: [0, 11] }])
     expect(root.tokens.map((token) => [token.type, token.value])).toEqual([
       ["RawText", "ab"],
       ["Directive", "%%{x}%%"],
@@ -66,48 +53,84 @@ describe("finishDiagram", () => {
     expect(root.directives.map((directive) => directive.name)).toEqual(["x"])
   })
 
-  it("rejects a directive inside a unit of a kind other than RawText and Identifier", () => {
-    expect(() =>
-      finish("ab%%{x}%%cd", {
-        units: [{ kind: "Keyword", range: [0, 11] }],
-        tokens: [{ kind: "Keyword", range: [0, 11] }],
-      }),
-    ).toThrow(ParseError)
+  it("cuts a String token at a directive inside it into StringFragment tokens", () => {
+    const root = finish('"a%%{x}%%b"', [{ kind: "String", range: [0, 11] }])
+    expect(root.tokens.map((token) => [token.type, token.value])).toEqual([
+      ["StringFragment", '"a'],
+      ["Directive", "%%{x}%%"],
+      ["StringFragment", 'b"'],
+    ])
   })
 
-  it.each<
-    [string, Omit<DiagramAnalysis, "comments" | "ignoredSemicolonKindAt">]
-  >([
+  it("cuts a RawText token at a `;` that the line rule ignores", () => {
+    const root = finish("style:#a;b", [{ kind: "RawText", range: [0, 10] }])
+    expect(root.tokens.map((token) => [token.type, token.value])).toEqual([
+      ["RawText", "style:#a"],
+      ["IgnoredSemicolon", ";"],
+      ["RawText", "b"],
+    ])
+  })
+
+  it.each<DiagramTokenKind>(["Identifier", "Keyword", "Punctuator", "Numeric"])(
+    "rejects a directive inside a %s token at the directive",
+    (kind) => {
+      expect(() => finish("ab%%{x}%%cd", [{ kind, range: [0, 11] }])).toThrow(
+        expect.objectContaining({
+          constructor: ParseError,
+          message: "Unexpected directive",
+          range: [2, 9],
+        }),
+      )
+    },
+  )
+
+  it.each<DiagramTokenKind>(["Identifier", "Keyword", "Punctuator", "Numeric"])(
+    "rejects a `;` that the line rule ignores inside a %s token at the `;`",
+    (kind) => {
+      expect(() =>
+        finish("style:#a;b", [
+          { kind: "RawText", range: [0, 7] },
+          { kind, range: [7, 10] },
+        ]),
+      ).toThrow(
+        expect.objectContaining({
+          constructor: ParseError,
+          message: "Unexpected ; that the line rule ignores",
+          range: [8, 9],
+        }),
+      )
+    },
+  )
+
+  it.each<[string, string, DiagramAnalysis["tokens"]]>([
     [
       "out of source order",
-      {
-        units: [],
-        tokens: [
-          { kind: "RawText", range: [2, 3] },
-          { kind: "RawText", range: [0, 1] },
-        ],
-      },
+      "a b",
+      [
+        { kind: "RawText", range: [2, 3] },
+        { kind: "RawText", range: [0, 1] },
+      ],
     ],
     [
       "overlapping",
-      {
-        units: [
-          { kind: "RawText", range: [0, 2] },
-          { kind: "RawText", range: [1, 3] },
-        ],
-        tokens: [],
-      },
+      "a b",
+      [
+        { kind: "RawText", range: [0, 2] },
+        { kind: "RawText", range: [1, 3] },
+      ],
     ],
-    ["empty", { units: [{ kind: "RawText", range: [1, 1] }], tokens: [] }],
+    ["empty", "a b", [{ kind: "RawText", range: [1, 1] }]],
     [
-      "starting with whitespace",
-      { units: [], tokens: [{ kind: "RawText", range: [1, 3] }] },
+      "leaving a character in no token",
+      "a b",
+      [{ kind: "RawText", range: [0, 1] }],
     ],
     [
-      "ending with whitespace",
-      { units: [{ kind: "RawText", range: [0, 2] }], tokens: [] },
+      "of a kind that a comment region cuts",
+      "a\n%% c\nb",
+      [{ kind: "Identifier", range: [0, 8] }],
     ],
-  ])("fails as a parser bug on units or tokens %s", (_what, analysis) => {
-    expect(() => finish("a b", analysis)).toThrow("mmd-toolkit parser bug")
+  ])("fails as a parser bug on tokens %s", (_what, text, tokens) => {
+    expect(() => finish(text, tokens)).toThrow("mmd-toolkit parser bug")
   })
 })

@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: hex, label: \"Prepare conditional\"",
+      "value": " shape: hex, label: \"Prepare conditional\" ",
       "range": [
-        21,
-        61
+        20,
+        62
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
-          "column": 48
+          "column": 49
         }
       }
     },

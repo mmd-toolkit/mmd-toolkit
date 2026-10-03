@@ -30,7 +30,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Student",
             "range": [
               36,
@@ -126,7 +126,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "IdCard",
             "range": [
               79,
@@ -259,7 +259,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Bike",
             "range": [
               132,
@@ -392,7 +392,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Student",
             "range": [
               177,
@@ -490,7 +490,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "IdCard",
             "range": [
               197,
@@ -562,7 +562,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Student",
             "range": [
               216,
@@ -660,7 +660,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Bike",
             "range": [
               236,
@@ -819,7 +819,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Student",
       "range": [
         36,
@@ -927,7 +927,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "IdCard",
       "range": [
         79,
@@ -1071,7 +1071,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bike",
       "range": [
         132,
@@ -1197,7 +1197,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Student",
       "range": [
         177,
@@ -1287,7 +1287,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "IdCard",
       "range": [
         197,
@@ -1341,7 +1341,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Student",
       "range": [
         216,
@@ -1431,7 +1431,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bike",
       "range": [
         236,

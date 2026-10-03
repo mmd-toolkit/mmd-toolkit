@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class11",
             "range": [
               13,
@@ -70,7 +70,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class12",
             "range": [
               26,
@@ -125,7 +125,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class11",
             "range": [
               43,
@@ -232,7 +232,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class11",
       "range": [
         13,
@@ -286,7 +286,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class12",
       "range": [
         26,
@@ -305,10 +305,10 @@
     },
     {
       "type": "Keyword",
-      "value": "note for",
+      "value": "note",
       "range": [
         34,
-        42
+        38
       ],
       "loc": {
         "start": {
@@ -317,12 +317,30 @@
         },
         "end": {
           "line": 3,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "for",
+      "range": [
+        39,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 5
+        },
+        "end": {
+          "line": 3,
           "column": 8
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class11",
       "range": [
         43,

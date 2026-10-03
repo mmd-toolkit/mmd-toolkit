@@ -340,15 +340,51 @@
     },
     {
       "type": "RawText",
-      "value": "fill:#f00; style B fill:#0f0",
+      "value": "fill:#f00",
       "range": [
         25,
-        53
+        34
       ],
       "loc": {
         "start": {
           "line": 4,
           "column": 8
+        },
+        "end": {
+          "line": 4,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "IgnoredSemicolon",
+      "value": ";",
+      "range": [
+        34,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 17
+        },
+        "end": {
+          "line": 4,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " style B fill:#0f0",
+      "range": [
+        35,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 18
         },
         "end": {
           "line": 4,

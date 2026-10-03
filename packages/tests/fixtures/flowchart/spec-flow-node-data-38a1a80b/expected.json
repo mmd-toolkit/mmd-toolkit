@@ -102,5 +102,30 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "C",
+        "set": {
+          "labelType": "markdown",
+          "text": "for c"
+        }
+      },
+      {
+        "id": "E",
+        "set": {
+          "labelType": "markdown",
+          "text": "for E"
+        }
+      },
+      {
+        "id": "D",
+        "set": {
+          "labelType": "markdown",
+          "text": "for D"
+        }
+      }
+    ]
   }
 }

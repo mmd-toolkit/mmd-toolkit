@@ -834,6 +834,24 @@
     },
     {
       "type": "RawText",
+      "value": " ",
+      "range": [
+        34,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 14
+        },
+        "end": {
+          "line": 2,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
       "value": "Alice & John",
       "range": [
         35,
@@ -869,7 +887,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         64,
@@ -905,7 +923,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "J",
       "range": [
         82,
@@ -978,6 +996,24 @@
     },
     {
       "type": "RawText",
+      "value": " ",
+      "range": [
+        107,
+        108
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 15
+        },
+        "end": {
+          "line": 6,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
       "value": "Group",
       "range": [
         108,
@@ -1013,7 +1049,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         130,
@@ -1049,7 +1085,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C",
       "range": [
         148,
@@ -1085,7 +1121,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         162,
@@ -1121,7 +1157,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "J",
       "range": [
         166,
@@ -1175,7 +1211,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "J",
       "range": [
         198,
@@ -1211,7 +1247,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         202,
@@ -1265,7 +1301,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         216,
@@ -1301,7 +1337,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         220,
@@ -1355,7 +1391,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         254,
@@ -1391,7 +1427,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "C",
       "range": [
         258,

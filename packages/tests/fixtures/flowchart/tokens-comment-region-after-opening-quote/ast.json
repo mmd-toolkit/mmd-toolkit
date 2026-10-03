@@ -231,10 +231,10 @@
     },
     {
       "type": "StringFragment",
-      "value": "\"",
+      "value": "\"\n",
       "range": [
         17,
-        18
+        19
       ],
       "loc": {
         "start": {
@@ -242,22 +242,22 @@
           "column": 4
         },
         "end": {
-          "line": 2,
-          "column": 5
+          "line": 3,
+          "column": 0
         }
       }
     },
     {
       "type": "StringFragment",
-      "value": "b\"",
+      "value": "  b\"",
       "range": [
-        28,
+        26,
         30
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 2
+          "column": 0
         },
         "end": {
           "line": 4,

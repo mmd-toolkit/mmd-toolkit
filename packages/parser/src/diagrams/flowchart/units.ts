@@ -65,7 +65,7 @@ import {
 } from "../../scanning.ts"
 import { isUnicodeLetter } from "../../unicode-letters.ts"
 import { DirectionLineRule } from "../../direction-line.ts"
-import type { DiagramUnit } from "../../diagram-units.ts"
+import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
 import { readUnit } from "../../diagram-units.ts"
 
 /**
@@ -154,8 +154,9 @@ export type UnitName =
 /**
  * diagrams/flowchart.md, Lexical structure: what the lexer reads from the
  * diagram text: its units; the whitespace characters with which it left a
- * click context, which belong to no unit and which the Db leaves out of a
- * subgraph's name text and of a style (Db normalization).
+ * click context, which belong to no unit and which the name text of a
+ * subgraph leaves out (Rejections outside the grammar, Subgraph members), as
+ * the Db does of a style.
  */
 export interface FlowchartLexing {
   readonly units: readonly Unit[]
@@ -474,14 +475,16 @@ export class UnitLexer {
     name: UnitName,
     from: DiagramCharacter,
     to: DiagramPosition,
+    ends: UnitEnds = "trim-whitespace",
   ): void {
-    this.addUnitWithText(name, from, to, null, null)
+    this.addUnitWithText(name, from, to, null, null, ends)
   }
 
   /**
    * Adds the unit named `name` that reads the characters from `from` up to,
    * and not including, `to`. Its text is `text`, or those characters when
-   * `text` is null; `content` is where the content of a string lies.
+   * `text` is null; `content` is where the content of a string lies; its
+   * token keeps the whitespace at its ends as `ends` says.
    */
   private addUnitWithText(
     name: UnitName,
@@ -489,9 +492,10 @@ export class UnitLexer {
     to: DiagramPosition,
     text: string | null,
     content: Range | null,
+    ends: UnitEnds = "trim-whitespace",
   ): void {
     this.units.push({
-      ...readUnit(this.reader, name, this.units.length, from, to, text),
+      ...readUnit(this.reader, name, this.units.length, from, to, text, ends),
       content,
       arrow: null,
     })
@@ -1163,8 +1167,9 @@ export class UnitLexer {
   /**
    * diagrams/flowchart.md, Data blocks, the data context: `"` is a
    * `data-quote` unit and enters the data string context; one or more
-   * characters other than `}`, `^`, and `"` are a `data-text` unit; `}` is a
-   * `}` unit and leaves the context.
+   * characters other than `}`, `^`, and `"` are a `data-text` unit, whose
+   * token keeps the whitespace at its ends, which the value of the data
+   * block holds (ast.md, Nodes); `}` is a `}` unit and leaves the context.
    */
   private readInDataContext(at: DiagramCharacter): void {
     if (at.codePoint === QUOTATION_MARK) {
@@ -1190,7 +1195,7 @@ export class UnitLexer {
         ]),
     )
     if (samePosition(end, at)) throw this.noRuleMatches(at)
-    this.addUnit("data-text", at, end)
+    this.addUnit("data-text", at, end, "keep-whitespace")
     this.position = end
   }
 
@@ -1211,7 +1216,7 @@ export class UnitLexer {
       at,
       (character) => character.codePoint !== QUOTATION_MARK,
     )
-    this.addUnit("data-text", at, end)
+    this.addUnit("data-text", at, end, "keep-whitespace")
     this.position = end
   }
 

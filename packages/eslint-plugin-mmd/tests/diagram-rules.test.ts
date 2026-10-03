@@ -3,16 +3,17 @@
  * other diagram types. A rule of a diagram type has handlers only for the node
  * types of its diagram type, so ESLint never calls them on another diagram;
  * a rule that starts from `Root` and forgets to look at the diagram type is
- * caught here. Every input of the corpus that the parser accepts is run with
- * the rules of every diagram type but its own.
+ * caught here. A few inputs of the corpus that the parser accepts for each
+ * type of diagram (`tests/corpus-kinds.ts`) are run with the rules of every
+ * diagram type but its own.
  */
 import type { Linter } from "eslint"
 import { Linter as LinterClass } from "eslint"
 import { describe, expect, it } from "vitest"
 import type { DiagramBody } from "@mmd-toolkit/parser"
-import { parse } from "@mmd-toolkit/parser"
 import { rules } from "../src/rules/index.ts"
-import { LANGUAGE_CONFIG, loadCorpus, withoutByteOrderMark } from "./helpers.ts"
+import { kindedInputs, pickByKind } from "./corpus-kinds.ts"
+import { LANGUAGE_CONFIG, loadCorpus } from "./helpers.ts"
 
 /**
  * The directories of the rules of a diagram type, each with the type of the
@@ -44,21 +45,25 @@ function otherDiagramRules(body: DiagramBody["type"]): Linter.Config {
   }
 }
 
-/** The inputs of the corpus that the parser accepts, each with the type of its diagram. */
-const accepted = (await loadCorpus()).flatMap((fixture) => {
-  try {
-    const root = parse(withoutByteOrderMark(fixture.input))
-    return [
-      {
-        name: `${fixture.diagram}/${fixture.name}`,
-        input: fixture.input,
-        body: root.body.type,
-      },
-    ]
-  } catch {
-    return []
-  }
-})
+/**
+ * A few inputs of the corpus that the parser accepts for each type of diagram,
+ * each with the type of its diagram: whether a rule reports on another diagram
+ * does not depend on the other kinds of input.
+ */
+const accepted = pickByKind(
+  kindedInputs(await loadCorpus()).filter((input) => input.root !== null),
+  (input) => input.kinds.filter((kind) => kind.startsWith("body:")),
+).flatMap((input) =>
+  input.root === null
+    ? []
+    : [
+        {
+          name: input.name,
+          input: input.fixture.input,
+          body: input.root.body.type,
+        },
+      ],
+)
 
 const linter = new LinterClass({ configType: "flat" })
 

@@ -9,11 +9,12 @@ mermaid-js.
 `mmd` refers to the `.mmd` file extension used for Mermaid diagram text. It is
 unrelated to MultiMarkdown and MikuMikuDance, which also use the abbreviation.
 
-Flowchart and sequence diagrams are supported so far; the other diagram types
-follow. The formatter, the linter, and the parser are not published to npm yet:
-they will be released once every diagram type of mermaid.js is supported. The
-linter's rules are not written yet, apart from one written as a trial. The
-specification and the tests are used from this repository and are not published.
+Flowchart, sequence, class, and state diagrams are supported so far; the other
+diagram types follow. The formatter, the linter, and the parser are not
+published to npm yet: they will be released once every diagram type of
+mermaid.js is supported. The linter's rules are implemented for flowcharts so
+far. The specification and the tests are used from this repository and are not
+published.
 
 ## Packages
 
@@ -49,6 +50,20 @@ One more difference comes from what the parser is given, not from the syntax: it
 does not know the site configuration of mermaid.js, so a flowchart with more
 edges than `maxEdges` (500 by default), which mermaid.js rejects, is accepted
 and formatted.
+
+## Writing another implementation
+
+The specification and the conformance corpus are kept apart from the parser so
+that a parser can be written in another language from them alone. An
+implementation follows these documents:
+
+| What the implementation does                        | Documents                                                                                                                                                                                                                                                                                                                                      |
+| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Accepts and rejects a source                        | [common.md](./packages/spec/docs/common.md), [detection.md](./packages/spec/docs/detection.md), `diagrams/<diagram>.md`, and [known-divergences.md](./packages/spec/docs/known-divergences.md) of the specification                                                                                                                            |
+| Builds the tree: its node types, fields, and values | [ast.md](./packages/spec/docs/ast.md) and `ast/<diagram>.md` of the specification                                                                                                                                                                                                                                                              |
+| Gives the tree its tokens and positions             | [tokens.md](./packages/parser/docs/tokens.md), `tokens/<diagram>.md`, [positions.md](./packages/parser/docs/positions.md), and `positions/<diagram>.md` of the parser                                                                                                                                                                          |
+| Compares its results with the conformance corpus    | [the fixtures](./packages/tests/README.md#what-the-fixtures-contain) and [`ast.json` and `parse-error.json`](./packages/tests/docs/maintaining-fixtures.md#astjson-and-parse-errorjson) of the tests                                                                                                                                           |
+| Checks the recorded trees against mermaid.js        | [db-summaries.md](./packages/tests/docs/db-summaries.md), [db-from-tree.md](./packages/tests/docs/db-from-tree.md), `db-from-tree/<diagram>.md`, [check-tree.md](./packages/tests/docs/check-tree.md), [configuration.md](./packages/tests/docs/configuration.md), and [embedded-data.md](./packages/tests/docs/embedded-data.md) of the tests |
 
 ## Contributing
 

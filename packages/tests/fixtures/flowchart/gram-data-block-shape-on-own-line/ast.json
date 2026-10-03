@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: circle",
+      "value": "\nshape: circle\n",
       "range": [
-        17,
-        30
+        16,
+        31
       ],
       "loc": {
         "start": {
-          "line": 3,
-          "column": 0
+          "line": 2,
+          "column": 3
         },
         "end": {
-          "line": 3,
-          "column": 13
+          "line": 4,
+          "column": 0
         }
       }
     },

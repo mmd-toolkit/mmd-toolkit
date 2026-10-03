@@ -469,7 +469,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         32,
@@ -506,19 +506,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\": \"boundary\", \"alias\": \"Internal Name\"",
+      "value": " \"type\": \"boundary\", \"alias\": \"Internal Name\" ",
       "range": [
-        38,
-        82
+        37,
+        83
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 22
+          "column": 21
         },
         "end": {
           "line": 2,
-          "column": 66
+          "column": 67
         }
       }
     },
@@ -595,7 +595,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "DB",
       "range": [
         118,
@@ -632,19 +632,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\": \"database\", \"alias\": \"Internal DB\"",
+      "value": " \"type\": \"database\", \"alias\": \"Internal DB\" ",
       "range": [
-        123,
-        165
+        122,
+        166
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 21
+          "column": 20
         },
         "end": {
           "line": 3,
-          "column": 63
+          "column": 64
         }
       }
     },
@@ -703,7 +703,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         187,
@@ -739,7 +739,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "DB",
       "range": [
         193,
@@ -793,7 +793,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "DB",
       "range": [
         207,
@@ -829,7 +829,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         213,

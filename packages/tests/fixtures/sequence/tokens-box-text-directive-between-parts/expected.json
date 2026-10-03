@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Tokens: the whitespace on both sides of a directive between the parts of a box text are RawText tokens of their own, held by the box text."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "G",
+        "wrap": false,
+        "fill": "Aqua",
+        "actorKeys": [
+          "A"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

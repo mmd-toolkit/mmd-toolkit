@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary from the tree: each value is read in converted form, so the entity in the accessibility title is its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "xﬂ°amp¶ßy",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

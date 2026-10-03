@@ -93,6 +93,7 @@ describe("the types of ast.md", () => {
       | "StringFragment"
       | "RawText"
       | "Punctuator"
+      | "IgnoredSemicolon"
       | "Directive"
     >()
   })

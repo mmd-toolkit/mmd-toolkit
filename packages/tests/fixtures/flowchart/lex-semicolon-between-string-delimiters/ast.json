@@ -210,16 +210,52 @@
       }
     },
     {
-      "type": "String",
-      "value": "\"style:#x\";``\"\"",
+      "type": "StringFragment",
+      "value": "\"style:#x\"",
       "range": [
         15,
-        30
+        25
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "IgnoredSemicolon",
+      "value": ";",
+      "range": [
+        25,
+        26
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "StringFragment",
+      "value": "``\"\"",
+      "range": [
+        26,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 13
         },
         "end": {
           "line": 2,

@@ -108,5 +108,33 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "D",
+        "set": {
+          "type": "rounded"
+        }
+      },
+      {
+        "id": "E",
+        "set": {
+          "type": "rounded"
+        }
+      },
+      {
+        "id": "F",
+        "set": {
+          "type": "rounded"
+        }
+      },
+      {
+        "id": "G",
+        "set": {
+          "type": "rounded"
+        }
+      }
+    ]
   }
 }

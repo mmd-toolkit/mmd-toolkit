@@ -55,5 +55,22 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "U",
+        "set": {
+          "description": "End User"
+        }
+      },
+      {
+        "id": "DB",
+        "set": {
+          "description": "User Database",
+          "type": "database"
+        }
+      }
+    ]
   }
 }

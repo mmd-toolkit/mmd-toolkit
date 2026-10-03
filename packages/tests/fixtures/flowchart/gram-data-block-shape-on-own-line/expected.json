@@ -29,5 +29,15 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "type": "circle"
+        }
+      }
+    ]
   }
 }

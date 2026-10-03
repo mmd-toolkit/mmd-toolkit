@@ -71,5 +71,10 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "layout": "dagre"
+    }
   }
 }

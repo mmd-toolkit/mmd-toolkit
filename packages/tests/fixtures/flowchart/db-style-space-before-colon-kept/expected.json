@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Building the summary from the tree: unlike in a class diagram, the style text keeps the space before the `:`: the style is `fill : #f00`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "fill : #f00"
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

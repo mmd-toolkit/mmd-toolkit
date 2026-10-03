@@ -26,25 +26,22 @@ export function lexClass(input: DiagramInput): ClassUnits {
 /**
  * diagrams/class.md: the parser of the diagram type `classDiagram`. The
  * lexer of Lexical structure divides the diagram text into units and finds
- * its diagram comments, the grammar of Grammar makes the statements, the
- * kinds of the units, and the tokens from them, and the walk of Rejections
+ * its diagram comments, the grammar of Grammar makes the statements and
+ * the tokens from them, and the walk of Rejections
  * outside the grammar rejects what mermaid.js rejects while it builds the
  * Db. The common part finishes the tree (see `finishDiagram`).
  */
 export function parseClassDiagram(input: DiagramInput): Root {
-  const { text, ...lexing } = lexClass(input)
+  const lexing = lexClass(input)
   const syntax = new ClassGrammar(lexing, input.lexer).parseDiagram()
   new ClassDbRejections(input.lexer.lines, syntax.writtenNames).check(
     syntax.body,
   )
   return finishDiagram(
     input,
-    text,
     {
-      units: syntax.units,
       tokens: syntax.tokens,
       comments: lexing.comments,
-      ignoredSemicolonKindAt: lexing.ignoredSemicolonKindAt,
     },
     // ast/class.md, ClassDiagram: the range runs from the keyword to the
     // last token of the diagram.

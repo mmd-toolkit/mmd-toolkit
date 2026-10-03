@@ -230,7 +230,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         41,
@@ -267,19 +267,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"alias\": \"Public API\"",
+      "value": " \"alias\": \"Public API\" ",
       "range": [
-        47,
-        68
+        46,
+        69
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 24
+          "column": 23
         },
         "end": {
           "line": 3,
-          "column": 45
+          "column": 46
         }
       }
     },
@@ -302,7 +302,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         77,
@@ -338,7 +338,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         83,

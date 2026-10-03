@@ -30,7 +30,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               26,
@@ -90,7 +90,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Dog",
             "range": [
               38,
@@ -145,7 +145,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               42,
@@ -205,7 +205,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Cat",
             "range": [
               54,
@@ -260,7 +260,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Cat",
             "range": [
               67,
@@ -334,7 +334,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Dog",
             "range": [
               101,
@@ -429,7 +429,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Dog",
             "range": [
               114,
@@ -593,7 +593,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         26,
@@ -647,7 +647,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Dog",
       "range": [
         38,
@@ -665,7 +665,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         42,
@@ -719,7 +719,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Cat",
       "range": [
         54,
@@ -738,10 +738,10 @@
     },
     {
       "type": "Keyword",
-      "value": "note for",
+      "value": "note",
       "range": [
         58,
-        66
+        62
       ],
       "loc": {
         "start": {
@@ -750,12 +750,30 @@
         },
         "end": {
           "line": 5,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "for",
+      "range": [
+        63,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 5
+        },
+        "end": {
+          "line": 5,
           "column": 8
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Cat",
       "range": [
         67,
@@ -791,7 +809,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Dog",
       "range": [
         101,
@@ -881,7 +899,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Dog",
       "range": [
         114,

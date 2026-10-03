@@ -8,7 +8,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Platform",
           "range": [
             23,
@@ -31,7 +31,7 @@
             "type": "ClassNamespaceStatement",
             "prefix": null,
             "name": {
-              "type": "Identifier",
+              "type": "ClassIdentifier",
               "name": "Auth",
               "range": [
                 46,
@@ -56,7 +56,7 @@
                   "type": "ClassName",
                   "prefix": null,
                   "name": {
-                    "type": "Identifier",
+                    "type": "ClassIdentifier",
                     "name": "UserService",
                     "range": [
                       63,
@@ -197,7 +197,7 @@
                   "type": "ClassName",
                   "prefix": null,
                   "name": {
-                    "type": "Identifier",
+                    "type": "ClassIdentifier",
                     "name": "TokenManager",
                     "range": [
                       124,
@@ -352,7 +352,7 @@
             "type": "ClassNamespaceStatement",
             "prefix": null,
             "name": {
-              "type": "Identifier",
+              "type": "ClassIdentifier",
               "name": "Data",
               "range": [
                 207,
@@ -377,7 +377,7 @@
                   "type": "ClassName",
                   "prefix": null,
                   "name": {
-                    "type": "Identifier",
+                    "type": "ClassIdentifier",
                     "name": "Repository",
                     "range": [
                       224,
@@ -534,7 +534,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Gateway",
                 "range": [
                   283,
@@ -650,7 +650,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "UserService",
             "range": [
               312,
@@ -710,7 +710,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "TokenManager",
             "range": [
               328,
@@ -782,7 +782,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Gateway",
             "range": [
               348,
@@ -842,7 +842,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "UserService",
             "range": [
               360,
@@ -914,7 +914,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Gateway",
             "range": [
               384,
@@ -974,7 +974,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Repository",
             "range": [
               396,
@@ -1097,7 +1097,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Platform",
       "range": [
         23,
@@ -1151,7 +1151,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Auth",
       "range": [
         46,
@@ -1205,7 +1205,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "UserService",
       "range": [
         63,
@@ -1421,7 +1421,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "TokenManager",
       "range": [
         124,
@@ -1655,7 +1655,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Data",
       "range": [
         207,
@@ -1709,7 +1709,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Repository",
       "range": [
         224,
@@ -1943,7 +1943,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Gateway",
       "range": [
         283,
@@ -2087,7 +2087,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "UserService",
       "range": [
         312,
@@ -2141,7 +2141,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "TokenManager",
       "range": [
         328,
@@ -2195,7 +2195,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Gateway",
       "range": [
         348,
@@ -2249,7 +2249,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "UserService",
       "range": [
         360,
@@ -2303,7 +2303,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Gateway",
       "range": [
         384,
@@ -2357,7 +2357,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Repository",
       "range": [
         396,

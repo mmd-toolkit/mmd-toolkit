@@ -1,0 +1,213 @@
+{
+  "type": "Root",
+  "diagramType": "classDiagram",
+  "body": {
+    "type": "ClassDiagram",
+    "body": [
+      {
+        "type": "ClassDeclaration",
+        "name": {
+          "type": "ClassName",
+          "prefix": null,
+          "name": {
+            "type": "StringLiteral",
+            "value": "xy\n",
+            "raw": "`x%%{init: {}}%%y\n",
+            "closed": false,
+            "range": [
+              21,
+              39
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 8
+              },
+              "end": {
+                "line": 3,
+                "column": 0
+              }
+            }
+          },
+          "generic": null,
+          "range": [
+            21,
+            39
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 8
+            },
+            "end": {
+              "line": 3,
+              "column": 0
+            }
+          }
+        },
+        "label": null,
+        "cssClass": null,
+        "annotation": null,
+        "members": null,
+        "range": [
+          15,
+          39
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 3,
+            "column": 0
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      39
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 0
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {}",
+      "closed": true,
+      "range": [
+        23,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "classDiagram",
+      "range": [
+        0,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "class",
+      "range": [
+        15,
+        20
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "StringFragment",
+      "value": "`x",
+      "range": [
+        21,
+        23
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 8
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{init: {}}%%",
+      "range": [
+        23,
+        37
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 10
+        },
+        "end": {
+          "line": 2,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "StringFragment",
+      "value": "y\n",
+      "range": [
+        37,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 24
+        },
+        "end": {
+          "line": 3,
+          "column": 0
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    39
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

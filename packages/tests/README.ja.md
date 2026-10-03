@@ -70,6 +70,13 @@ fixture は 1 件ごとに、
 - `input.mmd`: 検査するテキスト。
   バイト単位でそのまま。
 - `expected.json`: mermaid.js がその入力をどう扱ったか。
+- `specified.json`: 仕様どおりの実装がその入力に対して出す結果。
+  それが mermaid.js の結果と違うときにだけある。
+  入力の読み方を変える既知の差を外して、mermaid.js に読ませた結果である。
+  印が `comment-takes-character`、`comment-takes-line-break`、
+  `name-start-reads-unit`、`html-tag-in-frontmatter` の fixture だけにある。
+  あるときは、これが合わせる結果で、ないときは `expected.json` が合わせる結果。
+  [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
 - `ast.json`: 参照実装（`@mmd-toolkit/parser`）がその入力に対して返す木。
   参照実装が受理する入力にだけある。
 - `parse-error.json`: 参照実装がその入力を拒否する `ParseError` の、
@@ -85,15 +92,16 @@ fixture には、`ast.json` と `parse-error.json` のどちらか一方まで�
 
 `expected.json` の欄:
 
-| 欄                | 意味                                                                                                                      |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `source`          | 入力の出どころ。`{ kind: "mermaid", ref, path, line?, test? }`、またはここで書いた入力なら `{ kind: "authored", note }`。 |
-| `config`          | 省略可能。入力を実行するときのサイト設定。`mermaid.initialize()` に渡す形。                                               |
-| `knownDivergence` | 省略可能。この入力では、仕様が意図して mermaid.js と違う。ファイルの残りは mermaid.js の結果のまま。                      |
-| `accepted`        | mermaid.js が入力を受理するか。                                                                                           |
-| `diagramType`     | 受理する入力で、mermaid.js が検出する図種 ID。例: `flowchart-v2`。                                                        |
-| `db`              | 受理する入力で、mermaid.js の Db の要約（素の JSON）。`null` になるのは `common/` だけで、要約がまだない図種のとき。      |
-| `error`           | 拒否する入力で、mermaid.js のエラーの `name` と `message`。message は人が読むためのもので、実装が合わせる必要はない。     |
+| 欄                | 意味                                                                                                                                                                                  |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `source`          | 入力の出どころ。`{ kind: "mermaid", ref, path, line?, test? }`、またはここで書いた入力なら `{ kind: "authored", note }`。                                                             |
+| `config`          | 省略可能。入力を実行するときのサイト設定。`mermaid.initialize()` に渡す形。                                                                                                           |
+| `knownDivergence` | 省略可能。この入力では、仕様が意図して mermaid.js と違う。ファイルの残りは mermaid.js の結果のまま。                                                                                  |
+| `accepted`        | mermaid.js が入力を受理するか。                                                                                                                                                       |
+| `diagramType`     | 受理する入力で、mermaid.js が検出する図種 ID。例: `flowchart-v2`。                                                                                                                    |
+| `db`              | 受理する入力で、mermaid.js の Db の要約（素の JSON）。`null` になるのは `common/` だけで、要約がまだない図種のとき。                                                                  |
+| `error`           | 拒否する入力で、mermaid.js のエラーの `name` と `message`。message は人が読むためのもので、実装が合わせる必要はない。                                                                 |
+| `embedded`        | 省略可能。受理する入力で、埋め込みのデータから mermaid.js が導く、Db が頼る値。`config`、`title`、`dataBlockEffects`。[docs/embedded-data.ja.md](./docs/embedded-data.ja.md) を参照。 |
 
 例として `fixtures/flowchart/config-inherit-dir-site/expected.json`
 を示します（Db は短くしています）。
@@ -114,8 +122,12 @@ fixture には、`ast.json` と `parse-error.json` のどちらか一方まで�
 }
 ```
 
-図種ごとの `db` の欄は、`@mmd-toolkit/spec` の `docs/diagrams/<diagram>.md` の
-「Db normalization」の節で定めています。
+図種ごとの `db` の欄は [docs/db-summaries.ja.md](./docs/db-summaries.ja.md) に、
+木からそれを作る手順は [docs/db-from-tree/](./docs/db-from-tree/) にあります。
+
+`fixtures/default-config.json` は、何も変えないテキストに対する
+mermaid.js の設定です（`getDefaultConfig()`）。
+fixture の `embedded.config` は、その入力がこの設定に起こす変更です。
 
 ## API
 
@@ -138,6 +150,9 @@ mermaid.js は読み込みません。
   それぞれ仕様で定義している。
   - `directive-as-token-boundary`:
     [known-divergences/directive-as-token-boundary.ja.md](../spec/docs/known-divergences/directive-as-token-boundary.ja.md)
+    を参照。
+  - `ignored-semicolon-as-token-boundary`:
+    [known-divergences/ignored-semicolon-as-token-boundary.ja.md](../spec/docs/known-divergences/ignored-semicolon-as-token-boundary.ja.md)
     を参照。
   - `html-tag-in-frontmatter`:
     [known-divergences/html-tag-in-frontmatter.ja.md](../spec/docs/known-divergences/html-tag-in-frontmatter.ja.md)
@@ -164,8 +179,30 @@ mermaid.js は読み込みません。
     [known-divergences/name-start-reads-unit.ja.md](../spec/docs/known-divergences/name-start-reads-unit.ja.md)
     を参照。
 - `getFixturesRoot()`: `fixtures/` ディレクトリの絶対パス。
+- `getDefaultConfig()`: `embedded.config` がそれとの差になる設定
+  （`fixtures/default-config.json`）。
+- `embeddedValuesOf(fixture)`: fixture の入力について
+  `resolveEmbeddedData()` が返す値を、fixture が記録したものから作る。
+  合わせる読み（`specified`、なければ `expected`）に対する値。
+  拒否のときは `undefined`。
+- `findBoundaries(source)`、`findInnerPlaces(source)`、
+  `selectByKey(lists, perKey, keyOf)`: 生成テストと差分テストがテキストの中の
+  場所に何かを入れるときの、その場所の種類の部分と、
+  使う側がそれから作る鍵ごとに数か所を選ぶ関数。
+  `source` は、構文解析したテキストのトークン、コメント、ディレクティブを、
+  ただの値で表したもの。
+  [docs/boundary-kinds.ja.md](./docs/boundary-kinds.ja.md) を参照。
+- `dbFromTree(text, tree, embedded, isColor)`:
+  記録した木（`ast.json`）が表す Db の要約を、パーサーなしで作る関数。
+  `exceedsMaxEdges(tree, config)` と `flowchartEdgeCount(tree)` は、
+  flowchart の木の辺の上限を確かめる。
+  [docs/db-from-tree.ja.md](./docs/db-from-tree.ja.md) を参照。
+- `checkTree(text, tree)`:
+  記録した木（`ast.json`）について、仕様が述べる条件のうち成り立たないもの。
+  すべてを満たす木では空。
+  [docs/check-tree.ja.md](./docs/check-tree.ja.md) を参照。
 - 型: `DiagramType`、`Fixture`、`FixtureSource`、`Expectation`、`ExpectedFile`、
-  `DbSummary`、`MermaidConfig`、`MermaidError`。
+  `RecordedEmbedded`、`DbSummary`、`MermaidConfig`、`MermaidError`。
 
 ### `@mmd-toolkit/tests/mermaid`
 
@@ -242,6 +279,9 @@ console.log(report.compared, report.mismatches.length)
   `compareAll()` や `runMutationDiff()` に渡せる形にする。
 - コマンドライン:
   `pnpm --filter @mmd-toolkit/tests run mutation --candidate <module>`。
+  `--count` を指定しなければ、fixture ごとに、
+  当てはまる編集の演算子ごとに 1 件変異させます
+  （[docs/mutation-testing.ja.md](./docs/mutation-testing.ja.md) を参照）。
 
 3 つの入口のほかの export は、このリポジトリの道具が使うものです。
 一覧は [docs/maintaining-fixtures.ja.md](./docs/maintaining-fixtures.ja.md)
@@ -282,6 +322,12 @@ console.log(report.compared, report.mismatches.length)
   Db の要約が持つものと捨てるもの。
 - [docs/mutation-testing.ja.md](./docs/mutation-testing.ja.md):
   テキストの変異のさせ方と比べ方、報告。
+- [docs/boundary-kinds.ja.md](./docs/boundary-kinds.ja.md):
+  テキストの中の場所の種類と、種類ごとに場所を選ぶ方法。
+- [docs/db-from-tree.ja.md](./docs/db-from-tree.ja.md):
+  記録した木から Db を作ることと、その読む欄。
+- [docs/check-tree.ja.md](./docs/check-tree.ja.md):
+  記録した木が仕様の条件を満たすことの検査。
 - [docs/maintaining-fixtures.ja.md](./docs/maintaining-fixtures.ja.md):
   保守する人向け。
   fixture を足す、変える、改名する、集める方法。

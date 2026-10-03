@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import type { Range, Root } from "../src/index.ts"
 import { ParseError, UnsupportedDiagramError, parse } from "../src/index.ts"
-import { checkTree } from "./helpers/check-tree.ts"
+import { problemsOfTree } from "./helpers/tree-problems.ts"
 
 /**
  * Types and source texts of the tokens and comments of the root, in source
@@ -45,7 +45,7 @@ function parseError(text: string): ParseError {
 describe("parse: the error pseudo-diagram", () => {
   it("parses a bare `error`", () => {
     const root = parse("error")
-    checkTree("error", root)
+    expect(problemsOfTree("error", root)).toEqual([])
     const loc = { start: { line: 1, column: 0 }, end: { line: 1, column: 5 } }
     expect(root).toEqual({
       type: "Root",
@@ -80,7 +80,7 @@ describe("parse: the error pseudo-diagram", () => {
     const text =
       "---\ntitle: x\n---\n\n\n%% note\n%%{init: {}}%%\n  error  \n\n"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["Punctuator", "---"],
       ["RawText", "title: x"],
@@ -103,7 +103,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("keeps the indent before the opening `---` and the trailing whitespace of the closing delimiter line outside the frontmatter", () => {
     const text = "  ---  \n  title: x\n  ---  \n\nerror"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["Punctuator", "---"],
       ["RawText", "title: x"],
@@ -117,7 +117,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("takes the last whitespace-only line as the body when the first content line closes the frontmatter", () => {
     const text = "---\n\n  \n---\nerror"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(root.frontmatter).toMatchObject({
       value: "  ",
       valueRange: [5, 7],
@@ -130,7 +130,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("makes the body one token from its first character that is not whitespace to its last, the indent of its other lines inside", () => {
     const text = "---\n  a: 1\n  b: 2  \n---\nerror"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(
       root.tokens.slice(0, 3).map((token) => [token.type, token.value]),
     ).toEqual([
@@ -144,7 +144,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("lists a directive that lies inside a comment, inside the comment's range, without a token", () => {
     const text = "%% a %%{init: {}}%% b\nerror"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["Comment", "%% a %%{init: {}}%% b"],
       ["RawText", "error"],
@@ -156,7 +156,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("keeps a directive before the `%%` of a comment line outside the comment", () => {
     const text = "%%{init: {}}%% %% after\nerror"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["Directive", "%%{init: {}}%%"],
       ["Comment", "%% after"],
@@ -169,7 +169,7 @@ describe("parse: the error pseudo-diagram", () => {
     // comment extends through the directive to the next line terminator.
     const text = "%% a %%{init:\n{}}%% b\nerror"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["Comment", "%% a %%{init:\n{}}%% b"],
       ["RawText", "error"],
@@ -181,7 +181,7 @@ describe("parse: the error pseudo-diagram", () => {
     // `%% x` is not a comment, because it is not a comment line.
     const text = "error %%{init: {}}%% %% x\n"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["RawText", "error"],
       ["Directive", "%%{init: {}}%%"],
@@ -193,7 +193,7 @@ describe("parse: the error pseudo-diagram", () => {
     // `%%{ }` is not a directive and not a comment line.
     const withComment = "error\n%% c\n%%{ }\n"
     const rootWithComment = parse(withComment)
-    checkTree(withComment, rootWithComment)
+    expect(problemsOfTree(withComment, rootWithComment)).toEqual([])
     expect(listed(withComment, rootWithComment)).toEqual([
       ["RawText", "error"],
       ["Comment", "%% c"],
@@ -209,7 +209,7 @@ describe("parse: the error pseudo-diagram", () => {
     // neither converted form is whitespace, so neither ends a run.
     const text = 'error %% <a b="c"> #amp; x\n'
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(tokenValues(root)).toEqual([
       "error",
       "%%",
@@ -223,7 +223,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("ends a token before a directive", () => {
     const text = "error%%{wrap}%%"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["RawText", "error"],
       ["Directive", "%%{wrap}%%"],
@@ -234,7 +234,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("lists directives next to each other separately", () => {
     const text = "%%{a}%%%%{b}%%error"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["Directive", "%%{a}%%"],
       ["Directive", "%%{b}%%"],
@@ -245,7 +245,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("does not treat a bare `%%` line as a comment", () => {
     const text = "%%\nerror"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(root.comments).toEqual([])
     expect(tokenValues(root)).toEqual(["%%", "error"])
     expect(bodyText(text, root)).toBe("%%\nerror")
@@ -254,7 +254,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("keeps CRLF and lone CR line terminators", () => {
     for (const text of ["error\r\n%% c\r\n", "error\r%% c\r"]) {
       const root = parse(text)
-      checkTree(text, root)
+      expect(problemsOfTree(text, root)).toEqual([])
       expect(root.comments[0].loc).toEqual({
         start: { line: 2, column: 0 },
         end: { line: 2, column: 4 },
@@ -270,7 +270,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("starts a comment line after U+2028, which stays outside the tokens and the comment", () => {
     const text = "error\u2028%% c"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["RawText", "error"],
       ["Comment", "%% c"],
@@ -283,7 +283,7 @@ describe("parse: the error pseudo-diagram", () => {
     // its text.
     const text = "\uFEFF---\ntitle: x\n---\nerror"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(root.frontmatter).toBeNull()
     expect(tokenValues(root)).toEqual(["---", "title:", "x", "---", "error"])
     expect(root.body.range).toEqual([1, 23])
@@ -292,7 +292,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("lets detection remove a `%%` run only when a line break follows it", () => {
     const text = "error %% x\n"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(tokenValues(root)).toEqual(["error", "%%", "x"])
     expect(parseError("error %% x").range).toEqual([0, 10])
   })
@@ -302,7 +302,7 @@ describe("parse: the error pseudo-diagram", () => {
     // detection removes the block again after the leading whitespace.
     const text = "\n---\ntitle: T\n---\nerror\n"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(root.frontmatter).toBeNull()
     expect(tokenValues(root)).toEqual(["---", "title:", "T", "---", "error"])
     expect(bodyText(text, root)).toBe("---\ntitle: T\n---\nerror")
@@ -311,7 +311,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("reads a lone `\\r` inside a directive as a line break", () => {
     const text = "%%{init: {'theme':\r'dark'}}%%\nerror"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["Directive", "%%{init: {'theme':\r'dark'}}%%"],
       ["RawText", "error"],
@@ -325,7 +325,7 @@ describe("parse: the error pseudo-diagram", () => {
     )
     const text = "%%{init: dark\nerror"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(root.directives).toMatchObject([
       { value: "init: dark", closed: false, range: [0, 13] },
     ])
@@ -343,7 +343,7 @@ describe("parse: the error pseudo-diagram", () => {
       "%%{init: {bad json}}%%\nerror",
     ]) {
       const root = parse(text)
-      checkTree(text, root)
+      expect(problemsOfTree(text, root)).toEqual([])
       expect(root.diagramType).toBe("error")
     }
   })
@@ -354,7 +354,7 @@ describe("parse: the error pseudo-diagram", () => {
     // removes the `---` block again.
     const text = "\n---\r\n%% c\n\n---\nerror\n"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["RawText", "---"],
       ["Comment", "%% c"],
@@ -367,7 +367,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("starts a comment region right after U+2028, indent included", () => {
     const text = "error\u2028  %% c"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["RawText", "error"],
       ["Comment", "%% c"],
@@ -379,7 +379,7 @@ describe("parse: the error pseudo-diagram", () => {
     // and the second U+2028 before the comment; they are in no list.
     const text = "error\u2028 \u2028%% c"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["RawText", "error"],
       ["Comment", "%% c"],
@@ -389,7 +389,7 @@ describe("parse: the error pseudo-diagram", () => {
   it("applies the line rule to the segment after U+2028, and makes the ignored `;` at its end a token", () => {
     const text = "error %% x\u2028 style A:#f;\n"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(tokenValues(root)).toEqual([
       "error",
       "%%",
@@ -398,38 +398,43 @@ describe("parse: the error pseudo-diagram", () => {
       "A:#f",
       ";",
     ])
-    expect(bodyText(text, root)).toBe("error %% x\u2028 style A:#f;")
+    // The body ends before the ignored `;`, the token of no node.
+    expect(bodyText(text, root)).toBe("error %% x\u2028 style A:#f")
     const whole = "error\u2028  "
     expect(tokenValues(parse(whole))).toEqual(["error"])
   })
 
-  it("makes the `;` that the line rule ignores at the end of a run a token of its own", () => {
-    // No character of the run follows the `;`, so it is not inside the
-    // token before it.
+  it("makes the `;` that the line rule ignores at the end of a run an IgnoredSemicolon token, which the body does not cover", () => {
     const text = "error %% style:#f;\n"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(root.tokens.map((token) => [token.type, token.value])).toEqual([
       ["RawText", "error"],
       ["RawText", "%%"],
       ["RawText", "style:#f"],
-      ["RawText", ";"],
+      ["IgnoredSemicolon", ";"],
     ])
     expect(root.tokens[3].range).toEqual([17, 18])
-    expect(root.body.range).toEqual([0, 18])
+    expect(root.body.range).toEqual([0, 17])
   })
 
-  it("keeps the ignored `;` inside the token when more characters follow it", () => {
+  it("cuts a run at an ignored `;` that more characters follow", () => {
     const text = "error %% style:#f;x\n"
     const root = parse(text)
-    checkTree(text, root)
-    expect(tokenValues(root)).toEqual(["error", "%%", "style:#f;x"])
+    expect(problemsOfTree(text, root)).toEqual([])
+    expect(root.tokens.map((token) => [token.type, token.value])).toEqual([
+      ["RawText", "error"],
+      ["RawText", "%%"],
+      ["RawText", "style:#f"],
+      ["IgnoredSemicolon", ";"],
+      ["RawText", "x"],
+    ])
   })
 
   it("makes an ignored `;` at the start of a run, and each of two at its end, a token of its own", () => {
     const leading = "error %% style:#f ;x\n"
     const rootLeading = parse(leading)
-    checkTree(leading, rootLeading)
+    expect(problemsOfTree(leading, rootLeading)).toEqual([])
     expect(tokenValues(rootLeading)).toEqual([
       "error",
       "%%",
@@ -441,7 +446,7 @@ describe("parse: the error pseudo-diagram", () => {
     // the one before it.
     const two = "error %% classDef style:#a;;\n"
     const rootTwo = parse(two)
-    checkTree(two, rootTwo)
+    expect(problemsOfTree(two, rootTwo)).toEqual([])
     expect(tokenValues(rootTwo)).toEqual([
       "error",
       "%%",
@@ -455,16 +460,16 @@ describe("parse: the error pseudo-diagram", () => {
   it("makes an ignored `;` that stands alone a token of its own, and ends it before a directive", () => {
     const alone = "error %% style:#f ;\n"
     const rootAlone = parse(alone)
-    checkTree(alone, rootAlone)
+    expect(problemsOfTree(alone, rootAlone)).toEqual([])
     expect(tokenValues(rootAlone)).toEqual(["error", "%%", "style:#f", ";"])
     const beforeDirective = "error %% style:#f;%%{wrap}%%\n"
     const rootBeforeDirective = parse(beforeDirective)
-    checkTree(beforeDirective, rootBeforeDirective)
+    expect(problemsOfTree(beforeDirective, rootBeforeDirective)).toEqual([])
     expect(listed(beforeDirective, rootBeforeDirective)).toEqual([
       ["RawText", "error"],
       ["RawText", "%%"],
       ["RawText", "style:#f"],
-      ["RawText", ";"],
+      ["IgnoredSemicolon", ";"],
       ["Directive", "%%{wrap}%%"],
     ])
   })
@@ -478,7 +483,7 @@ describe("parse: the flowchart diagram types", () => {
     ["swimlane-beta LR\nA-->B", "swimlane"],
   ])("%j is a FlowchartDiagram of type %s", (text, diagramType) => {
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(root.diagramType).toBe(diagramType)
     expect(root.body.type).toBe("FlowchartDiagram")
   })
@@ -561,7 +566,7 @@ describe("parse: rejected input", () => {
     // directive cuts the run into two tokens (ast.md, ErrorDiagram).
     const split = "err%%{init: {}}%%or"
     const splitRoot = parse(split)
-    checkTree(split, splitRoot)
+    expect(problemsOfTree(split, splitRoot)).toEqual([])
     expect(listed(split, splitRoot)).toEqual([
       ["RawText", "err"],
       ["Directive", "%%{init: {}}%%"],
@@ -572,7 +577,7 @@ describe("parse: rejected input", () => {
     // the text after the second `%` (ast.md, Comment).
     const comment = "%%%{init: {}}%%% c\nerror"
     const commentRoot = parse(comment)
-    checkTree(comment, commentRoot)
+    expect(problemsOfTree(comment, commentRoot)).toEqual([])
     expect(commentRoot.comments).toMatchObject([
       { value: " c", range: [0, 18] },
     ])
@@ -583,7 +588,7 @@ describe("parse: rejected input", () => {
     // source: `%%` and `{x}%%` are tokens.
     const joined = "error %%%%{wrap}%%{x}%%"
     const joinedRoot = parse(joined)
-    checkTree(joined, joinedRoot)
+    expect(problemsOfTree(joined, joinedRoot)).toEqual([])
     expect(listed(joined, joinedRoot)).toEqual([
       ["RawText", "error"],
       ["RawText", "%%"],
@@ -594,7 +599,7 @@ describe("parse: rejected input", () => {
     // comment, and detection removes it with its line break.
     const percent = "%%%{a}%%%\nerror"
     const percentRoot = parse(percent)
-    checkTree(percent, percentRoot)
+    expect(problemsOfTree(percent, percentRoot)).toEqual([])
     expect(percentRoot.comments).toEqual([])
     expect(percentRoot.tokens.map((token) => token.value)).toEqual([
       "%",
@@ -610,7 +615,7 @@ describe("parse: rejected input", () => {
     // removed; the detectors see `error`. The tree keeps the source as is.
     const text = "%%{\n%%{wrap}%%\nx}%%error"
     const root = parse(text)
-    checkTree(text, root)
+    expect(problemsOfTree(text, root)).toEqual([])
     expect(listed(text, root)).toEqual([
       ["RawText", "%%{"],
       ["Directive", "%%{wrap}%%"],

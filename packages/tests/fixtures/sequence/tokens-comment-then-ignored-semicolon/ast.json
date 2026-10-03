@@ -120,7 +120,7 @@
     ],
     "range": [
       0,
-      35
+      24
     ],
     "loc": {
       "start": {
@@ -129,7 +129,7 @@
       },
       "end": {
         "line": 2,
-        "column": 19
+        "column": 8
       }
     }
   },
@@ -176,7 +176,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         16,
@@ -212,7 +212,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         20,
@@ -266,7 +266,7 @@
       }
     },
     {
-      "type": "Punctuator",
+      "type": "IgnoredSemicolon",
       "value": ";",
       "range": [
         34,

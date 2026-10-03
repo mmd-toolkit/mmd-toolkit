@@ -30,7 +30,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Fruit",
             "range": [
               26,
@@ -90,7 +90,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Apple",
             "range": [
               37,
@@ -145,7 +145,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Apple",
             "range": [
               43,
@@ -240,7 +240,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Apple",
             "range": [
               59,
@@ -335,7 +335,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Fruit",
             "range": [
               84,
@@ -395,7 +395,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Pineapple",
             "range": [
               95,
@@ -450,7 +450,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Pineapple",
             "range": [
               105,
@@ -545,7 +545,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Pineapple",
             "range": [
               125,
@@ -640,7 +640,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Pineapple",
             "range": [
               154,
@@ -804,7 +804,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Fruit",
       "range": [
         26,
@@ -858,7 +858,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Apple",
       "range": [
         37,
@@ -876,7 +876,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Apple",
       "range": [
         43,
@@ -966,7 +966,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Apple",
       "range": [
         59,
@@ -1074,7 +1074,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Fruit",
       "range": [
         84,
@@ -1128,7 +1128,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Pineapple",
       "range": [
         95,
@@ -1146,7 +1146,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Pineapple",
       "range": [
         105,
@@ -1236,7 +1236,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Pineapple",
       "range": [
         125,
@@ -1344,7 +1344,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Pineapple",
       "range": [
         154,

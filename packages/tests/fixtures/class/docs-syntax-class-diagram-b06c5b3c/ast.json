@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class01",
             "range": [
               21,
@@ -147,7 +147,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class01",
             "range": [
               63,
@@ -207,7 +207,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "bar",
             "range": [
               76,
@@ -262,7 +262,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class02",
             "range": [
               82,
@@ -322,7 +322,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "bar",
             "range": [
               95,
@@ -377,7 +377,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "foo",
             "range": [
               102,
@@ -437,7 +437,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Class01",
             "range": [
               111,
@@ -543,7 +543,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class01",
       "range": [
         21,
@@ -669,7 +669,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class01",
       "range": [
         63,
@@ -723,7 +723,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "bar",
       "range": [
         76,
@@ -741,7 +741,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class02",
       "range": [
         82,
@@ -795,7 +795,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "bar",
       "range": [
         95,
@@ -813,7 +813,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "foo",
       "range": [
         102,
@@ -867,7 +867,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class01",
       "range": [
         111,

@@ -265,7 +265,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         41,
@@ -302,19 +302,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"boundary\", \"alias\": \"Internal Name\"",
+      "value": " \"type\" : \"boundary\", \"alias\": \"Internal Name\" ",
       "range": [
-        47,
-        92
+        46,
+        93
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 24
+          "column": 23
         },
         "end": {
           "line": 3,
-          "column": 69
+          "column": 70
         }
       }
     },
@@ -373,7 +373,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         118,
@@ -409,7 +409,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "API",
       "range": [
         124,

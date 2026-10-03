@@ -45,7 +45,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "A",
             "range": [
               59,
@@ -193,10 +193,10 @@
     },
     {
       "type": "RawText",
-      "value": "a",
+      "value": "a\n",
       "range": [
         30,
-        31
+        32
       ],
       "loc": {
         "start": {
@@ -204,22 +204,22 @@
           "column": 4
         },
         "end": {
-          "line": 3,
-          "column": 5
+          "line": 4,
+          "column": 0
         }
       }
     },
     {
       "type": "RawText",
-      "value": "b",
+      "value": "    b",
       "range": [
-        45,
+        41,
         46
       ],
       "loc": {
         "start": {
           "line": 5,
-          "column": 4
+          "column": 0
         },
         "end": {
           "line": 5,
@@ -264,7 +264,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         59,

@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: notch-rect, label: \"Card\"",
+      "value": " shape: notch-rect, label: \"Card\" ",
       "range": [
-        21,
-        53
+        20,
+        54
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
-          "column": 40
+          "column": 41
         }
       }
     },

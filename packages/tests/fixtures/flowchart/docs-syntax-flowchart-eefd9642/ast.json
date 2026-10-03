@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: sm-circ, label: \"Small start\"",
+      "value": " shape: sm-circ, label: \"Small start\" ",
       "range": [
-        21,
-        57
+        20,
+        58
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
-          "column": 44
+          "column": 45
         }
       }
     },

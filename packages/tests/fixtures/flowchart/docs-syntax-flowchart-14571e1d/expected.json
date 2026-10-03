@@ -104,5 +104,10 @@
       }
     ],
     "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "htmlLabels": false
+    }
   }
 }

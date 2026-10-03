@@ -20,7 +20,7 @@
 `ClassNamespaceStatement` の `body` の中からも取る。
 
 2 つの段階が木の外に出て、Db の導き方を繰り返す
-（仕様の diagrams/class.md の Building the summary from the tree）。
+（tests パッケージの docs/db-from-tree/class.md の Building the summary from the tree）。
 クラスの id は、クラス名のどの欄（`prefix`、`name`、`generic`）でもなく、
 接頭を含めたクラス名のテキストの、最初の `~` より前の部分である。
 また、`A ()-- B` のように片方の端だけが lollipop の関係は、

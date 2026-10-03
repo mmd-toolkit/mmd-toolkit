@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary from the tree: each value is read in converted form, so the entity in the id of a participant in a box is its placeholder, also in `actorKeys`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Aﬂ°amp¶ß",
+        "description": "Aﬂ°amp¶ß",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "G",
+        "wrap": false,
+        "fill": "Aqua",
+        "actorKeys": [
+          "Aﬂ°amp¶ß"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

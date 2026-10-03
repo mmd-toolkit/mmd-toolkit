@@ -10,10 +10,11 @@ mermaid-js とは無関係です。
 `mmd` は Mermaid の図のテキストに使われる拡張子 `.mmd` を指します。
 同じ略称を使う MultiMarkdown や MikuMikuDance とは関係ありません。
 
-いま対応している図種は flowchart と sequence で、ほかの図種は順に対応します。
+いま対応している図種は flowchart、sequence、class、state で、
+ほかの図種は順に対応します。
 フォーマッター、リンター、パーサーは、まだ npm に公開していません。
 mermaid.js のすべての図種に対応してから公開します。
-リンターの規則は、試しに書いた 1 つを除いて、まだ書いていません。
+リンターの規則は、いまは flowchart の分を実装しています。
 仕様とテストは、このリポジトリの中で使うもので、公開しません。
 
 ## パッケージ
@@ -53,6 +54,20 @@ click の文の外にある語 `click` も同じです。
 パーサーは mermaid.js のサイト設定を知らないので、
 辺の数が `maxEdges`（既定は 500）を超える flowchart を、
 mermaid.js は拒否しますが、ここでは受理し、整形します。
+
+## 別の実装を書く
+
+仕様と適合性のコーパスをパーサーから分けてあるのは、
+それだけを見て、別の言語でパーサーを書けるようにするためです。
+実装は、次の文書に従います。
+
+| 実装がすること                   | 文書                                                                                                                                                                                                                                                                                                                                                                 |
+| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ソースを受理し、拒否する         | 仕様の [common.ja.md](./packages/spec/docs/common.ja.md)、[detection.ja.md](./packages/spec/docs/detection.ja.md)、`diagrams/<図種>.ja.md`、[known-divergences.ja.md](./packages/spec/docs/known-divergences.ja.md)                                                                                                                                                  |
+| 木を作る（ノードの型、欄、値）   | 仕様の [ast.ja.md](./packages/spec/docs/ast.ja.md)、`ast/<図種>.ja.md`                                                                                                                                                                                                                                                                                               |
+| 木にトークンと位置を付ける       | パーサーの [tokens.ja.md](./packages/parser/docs/tokens.ja.md)、`tokens/<図種>.ja.md`、[positions.ja.md](./packages/parser/docs/positions.ja.md)、`positions/<図種>.ja.md`                                                                                                                                                                                           |
+| 結果を適合性のコーパスと比べる   | テストの [fixture](./packages/tests/README.ja.md#fixture-の中身) と [`ast.json` と `parse-error.json`](./packages/tests/docs/maintaining-fixtures.ja.md#astjson-と-parse-errorjson)                                                                                                                                                                                  |
+| 記録した木を mermaid.js と照らす | テストの [db-summaries.ja.md](./packages/tests/docs/db-summaries.ja.md)、[db-from-tree.ja.md](./packages/tests/docs/db-from-tree.ja.md)、`db-from-tree/<図種>.ja.md`、[check-tree.ja.md](./packages/tests/docs/check-tree.ja.md)、[configuration.ja.md](./packages/tests/docs/configuration.ja.md)、[embedded-data.ja.md](./packages/tests/docs/embedded-data.ja.md) |
 
 ## 開発に参加する
 

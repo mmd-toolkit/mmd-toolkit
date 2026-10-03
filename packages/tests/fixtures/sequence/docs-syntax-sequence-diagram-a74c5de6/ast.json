@@ -266,7 +266,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Service",
       "range": [
         70,
@@ -302,7 +302,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "DB",
       "range": [
         80,

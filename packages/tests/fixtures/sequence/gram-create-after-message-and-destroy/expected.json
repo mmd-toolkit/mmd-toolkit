@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar: the participant added by a message stays added after `destroy`, so a later `create` of it is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "It is not possible to have actors with the same id, even if one is destroyed before the next is created. Use 'AS' aliases to simulate the behavior"
+  }
+}

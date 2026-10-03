@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "label: \"This is a string with}\"\n        other: \"clock\"",
+      "value": "\n        label: \"This is a string with}\"\n        other: \"clock\"\n     ",
       "range": [
-        31,
-        85
+        22,
+        91
       ],
       "loc": {
         "start": {
-          "line": 3,
-          "column": 8
+          "line": 2,
+          "column": 9
         },
         "end": {
-          "line": 4,
-          "column": 22
+          "line": 5,
+          "column": 5
         }
       }
     },

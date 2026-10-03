@@ -586,3 +586,75 @@ Code:
           4 | b]
           5 |
 ---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/string-directive-before-marker-on-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/string-directive-before-marker-on-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A["a
+  3 | %%{init: {}}%% %%
+    |                ^~ [1]
+  4 | b"]
+  5 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/string-directive-ends-on-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/string-directive-ends-on-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A["a
+  3 | %%{init: {
+  4 | }}%% %%
+    |      ^~ [1]
+  5 | b"]
+  6 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/string-directive-on-line-before-marker
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/string-directive-on-line-before-marker-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A["a
+  3 | %%{init: {}}%%
+  4 | %%
+    | ^~ [1]
+  5 | b"]
+  6 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then has no line `%%`.
+        Output:
+          1 | flowchart LR
+          2 |   A["a
+          3 | %%{init: {}}%%
+          4 | b"]
+          5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/tooltip-directive-ends-on-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/tooltip-directive-ends-on-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   click A "https://example.com" "one
+  4 | %%{init: {
+  5 | }}%% %%
+    |      ^~ [1]
+  6 | two"
+  7 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---

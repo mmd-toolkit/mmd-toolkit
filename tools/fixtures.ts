@@ -10,16 +10,19 @@
  * See packages/tests/docs/maintaining-fixtures.md.
  */
 /* eslint-disable no-console -- a command-line tool reports on the console */
-import { readFileSync, writeFileSync } from "node:fs"
+import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import path from "node:path"
 import { parseArgs } from "node:util"
 import {
   KNOWN_DIVERGENCES,
   fixtureSourceProblem,
+  getFixturesRoot,
   serializeExpectedFile,
+  serializeSpecifiedFile,
 } from "../packages/tests/src/index.ts"
 import type {
   DiagramType,
+  Expectation,
   ExpectedFile,
   FixtureSource,
   MermaidConfig,
@@ -37,8 +40,11 @@ import {
 import { STANDARD_REJECTIONS } from "../packages/tests/src/rejections.ts"
 import { diagramIds, isDiagramType } from "./src/diagrams.ts"
 import {
+  SPECIFIED_FILE,
+  baselineConfigOf,
   fixtureKey,
   generateExpected,
+  generateSpecified,
   headOf,
   isFixtureName,
   readFixtures,
@@ -100,13 +106,11 @@ async function generate(args: string[]): Promise<void> {
     for (const fixture of readFixtures(diagram)) {
       total++
       const id = `${diagram}/${fixture.name}`
-      let file: ExpectedFile
+      const head = headOf(fixture.file)
+      let file: ExpectedFile, specified: Expectation | undefined
       try {
-        file = await generateExpected(
-          diagram,
-          fixture.input,
-          headOf(fixture.file),
-        )
+        file = await generateExpected(diagram, fixture.input, head)
+        specified = await generateSpecified(diagram, fixture.input, head, file)
       } catch (error) {
         failed.push(
           `${id}: ${error instanceof Error ? error.message : String(error)}`,
@@ -116,19 +120,36 @@ async function generate(args: string[]): Promise<void> {
       if (!file.accepted && !STANDARD_REJECTIONS.includes(file.error.name)) {
         unusual.push(`${id}: ${describeError(file.error)}`)
       }
-      const next = serializeExpectedFile(file)
-      const expectedPath = path.join(fixture.dir, "expected.json")
-      if (readFileSync(expectedPath, "utf8") === next) continue
       const mark =
         fixture.file.knownDivergence === undefined
           ? ""
           : ` [knownDivergence: ${fixture.file.knownDivergence}]`
-      changed.push(
-        `${id}: ${describeExpectedChange(classifyExpectedChange(fixture.file, file))}${mark}`,
-      )
-      if (!values.check) writeFileSync(expectedPath, next)
+      const next = serializeExpectedFile(file)
+      const expectedPath = path.join(fixture.dir, "expected.json")
+      if (readFileSync(expectedPath, "utf8") !== next) {
+        changed.push(
+          `${id}: ${describeExpectedChange(classifyExpectedChange(fixture.file, file))}${mark}`,
+        )
+        if (!values.check) writeFileSync(expectedPath, next)
+      }
+      const specifiedPath = path.join(fixture.dir, SPECIFIED_FILE)
+      const nextSpecified =
+        specified === undefined ? undefined : serializeSpecifiedFile(specified)
+      const previousSpecified = existsSync(specifiedPath)
+        ? readFileSync(specifiedPath, "utf8")
+        : undefined
+      if (previousSpecified !== nextSpecified) {
+        changed.push(
+          `${id}: ${describeSpecifiedChange(fixture.specified, specified)}${mark}`,
+        )
+        if (!values.check) {
+          if (nextSpecified === undefined) rmSync(specifiedPath)
+          else writeFileSync(specifiedPath, nextSpecified)
+        }
+      }
     }
   }
+  await generateDefaultConfig(values.check, changed)
   const verb = values.check ? "would change" : "changed"
   console.log(
     `${total} fixtures, ${changed.length} ${verb} (mermaid@${mermaidVersion})`,
@@ -148,6 +169,42 @@ async function generate(args: string[]): Promise<void> {
     )
     process.exitCode = 1
   }
+}
+
+/** The file of the default configuration in the fixtures directory. */
+const DEFAULT_CONFIG_PATH = path.join(getFixturesRoot(), "default-config.json")
+
+/**
+ * Writes `default-config.json`, the configuration mermaid.js has for a text
+ * that changes nothing in it and a fixture without a `config`; with `check`,
+ * only reports in `changed` that the file would change.
+ */
+async function generateDefaultConfig(
+  check: boolean,
+  changed: string[],
+): Promise<void> {
+  const next = `${JSON.stringify(await baselineConfigOf(undefined), null, 2)}\n`
+  const previous = existsSync(DEFAULT_CONFIG_PATH)
+    ? readFileSync(DEFAULT_CONFIG_PATH, "utf8")
+    : undefined
+  if (previous === next) return
+  changed.push(
+    `default-config.json: ${previous === undefined ? "added" : "changed"}`,
+  )
+  if (!check) writeFileSync(DEFAULT_CONFIG_PATH, next)
+}
+
+/**
+ * Describes how `specified.json` of a fixture changes: added, removed, or
+ * changed (then as the change of the result).
+ */
+function describeSpecifiedChange(
+  previous: Expectation | undefined,
+  next: Expectation | undefined,
+): string {
+  if (previous === undefined) return "specified.json added"
+  if (next === undefined) return "specified.json removed"
+  return `specified.json: ${describeExpectedChange(classifyExpectedChange(previous, next))}`
 }
 
 /**
@@ -244,9 +301,9 @@ async function addMany(args: string[]): Promise<void> {
         : [`${entry.name}: ${describeError(expected.error)}`],
     ),
   )
-  for (const { entry, file: expected } of planned) {
+  for (const { entry, file: expected, specified } of planned) {
     if (!values["dry-run"])
-      writeNewFixture(diagram, entry.name, entry.input, expected)
+      writeNewFixture(diagram, entry.name, entry.input, expected, specified)
   }
   console.log(
     `${values["dry-run"] ? "would add" : "added"} ${planned.length} fixtures to ${diagram}/`,
@@ -275,7 +332,11 @@ interface Batch {
   readonly names: Set<string>
   /** Input and configuration keys taken, with the fixture holding each. */
   readonly keys: Map<string, string>
-  readonly planned: { entry: BatchEntry; file: ExpectedFile }[]
+  readonly planned: {
+    entry: BatchEntry
+    file: ExpectedFile
+    specified: Expectation | undefined
+  }[]
   readonly skipped: string[]
   readonly disagreements: string[]
   readonly problems: string[]
@@ -331,15 +392,22 @@ async function planEntry(entry: BatchEntry, batch: Batch): Promise<void> {
     )
     return
   }
-  let expected: ExpectedFile
+  let expected: ExpectedFile, specified: Expectation | undefined
   try {
-    expected = await generateExpected(batch.diagram, entry.input, {
+    const head = {
       source,
       ...(entry.config ? { config: entry.config } : {}),
       ...(entry.knownDivergence === undefined
         ? {}
         : { knownDivergence: entry.knownDivergence }),
-    })
+    }
+    expected = await generateExpected(batch.diagram, entry.input, head)
+    specified = await generateSpecified(
+      batch.diagram,
+      entry.input,
+      head,
+      expected,
+    )
   } catch (error) {
     batch.problems.push(
       `${entry.name}: ${error instanceof Error ? error.message : String(error)}`,
@@ -354,7 +422,7 @@ async function planEntry(entry: BatchEntry, batch: Batch): Promise<void> {
       `${entry.name}: observed ${entry.accepted ? "accepted" : "rejected"}, mermaid ${actual}`,
     )
   }
-  batch.planned.push({ entry, file: expected })
+  batch.planned.push({ entry, file: expected, specified })
   batch.names.add(entry.name)
   batch.keys.set(key, entry.name)
 }
@@ -362,10 +430,11 @@ async function planEntry(entry: BatchEntry, batch: Batch): Promise<void> {
 /**
  * Sets or removes `knownDivergence` in existing fixtures, from a JSON object
  * mapping `<diagram>/<name>` to a divergence identifier, or to `null` to
- * remove it. Only that field changes; mermaid is not run.
+ * remove it. Only that field changes, and `specified.json`, which depends on
+ * it: mermaid.js runs only for a fixture whose mark has a specified reading.
  */
-function setDivergence(args: string[]): void {
-  updateHeads(args, (file, value) => {
+async function setDivergence(args: string[]): Promise<void> {
+  await updateHeads(args, true, (file, value) => {
     if (value !== null && !KNOWN_DIVERGENCES.includes(value as string)) {
       return `must be null or one of ${KNOWN_DIVERGENCES.join(", ")}`
     }
@@ -379,8 +448,8 @@ function setDivergence(args: string[]): void {
  * mapping `<diagram>/<name>` to the new note. Only that field changes;
  * mermaid is not run.
  */
-function setNote(args: string[]): void {
-  updateHeads(args, (file, value) => {
+async function setNote(args: string[]): Promise<void> {
+  await updateHeads(args, false, (file, value) => {
     if (typeof value !== "string" || !value.trim()) {
       return "the note must be a non-empty string"
     }
@@ -392,15 +461,38 @@ function setNote(args: string[]): void {
 }
 
 /**
+ * Writes or removes the `specified.json` of a fixture whose mark changed:
+ * the reading of the specification depends on the mark, so the file does too.
+ * This runs mermaid.js, for a fixture whose mark has such a reading.
+ */
+async function writeSpecifiedFor(item: {
+  readonly diagram: DiagramType
+  readonly dir: string
+  readonly input: string
+  readonly updated: ExpectedFile
+}): Promise<void> {
+  const specified = await generateSpecified(
+    item.diagram,
+    item.input,
+    headOf(item.updated),
+    item.updated,
+  )
+  const file = path.join(item.dir, SPECIFIED_FILE)
+  if (specified === undefined) rmSync(file, { force: true })
+  else writeFileSync(file, serializeSpecifiedFile(specified))
+}
+
+/**
  * Applies `update` to the `expected.json` of each fixture named in a JSON
  * object `{ "<diagram>/<name>": value }`. `update` returns the new content,
  * or a problem. Nothing is written if any entry has a problem or names an
  * unknown fixture. With `--dry-run`, only lists what would change.
  */
-function updateHeads(
+async function updateHeads(
   args: string[],
+  changesMark: boolean,
   update: (file: ExpectedFile, value: unknown) => ExpectedFile | string,
-): void {
+): Promise<void> {
   const { values, positionals } = parseArgs({
     args,
     options: { "dry-run": { type: "boolean", default: false } },
@@ -413,13 +505,21 @@ function updateHeads(
     unknown
   >
   const problems: string[] = []
-  const updates: { path: string; next: string; label: string }[] = []
+  const updates: {
+    diagram: DiagramType
+    dir: string
+    input: string
+    updated: ExpectedFile
+    path: string
+    next: string
+    label: string
+  }[] = []
   for (const [label, value] of Object.entries(mapping)) {
     const [diagramName = "", name = ""] = label.split("/")
     const fixture = isDiagramType(diagramName)
       ? readFixtures(diagramName).find((item) => item.name === name)
       : undefined
-    if (!fixture) {
+    if (!fixture || !isDiagramType(diagramName)) {
       problems.push(`${label}: no such fixture`)
       continue
     }
@@ -429,6 +529,10 @@ function updateHeads(
       continue
     }
     updates.push({
+      diagram: diagramName,
+      dir: fixture.dir,
+      input: fixture.input,
+      updated,
       path: path.join(fixture.dir, "expected.json"),
       next: serializeExpectedFile(updated),
       label: `${label}: ${value === null ? "removed" : String(value)}`,
@@ -439,7 +543,9 @@ function updateHeads(
     throw new Error("nothing written; fix the entries above")
   }
   for (const item of updates) {
-    if (!values["dry-run"]) writeFileSync(item.path, item.next)
+    if (values["dry-run"]) continue
+    writeFileSync(item.path, item.next)
+    if (changesMark) await writeSpecifiedFor(item)
   }
   list(
     values["dry-run"] ? "would update" : "updated",
@@ -539,10 +645,10 @@ try {
       await addMany(rest)
       break
     case "set-divergence":
-      setDivergence(rest)
+      await setDivergence(rest)
       break
     case "set-note":
-      setNote(rest)
+      await setNote(rest)
       break
     default:
       usage()

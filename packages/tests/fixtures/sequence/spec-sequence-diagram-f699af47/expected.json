@@ -111,5 +111,45 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "Alice",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "Bob",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "Carl",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "David",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "Eve",
+        "set": {
+          "type": "database"
+        }
+      },
+      {
+        "id": "Favela",
+        "set": {
+          "type": "database"
+        }
+      }
+    ]
   }
 }

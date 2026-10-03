@@ -31,5 +31,8 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "title": "Node with text"
   }
 }

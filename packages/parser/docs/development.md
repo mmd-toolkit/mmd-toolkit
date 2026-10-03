@@ -11,6 +11,8 @@ For how the parser is tested, see [`testing.md`](./testing.md).
   [`ast.md`](../../spec/docs/ast.md),
   [`detection.md`](../../spec/docs/detection.md), and the diagram documents
   under [`diagrams/`](../../spec/docs/diagrams).
+- The tokens and the positions of the tree are specified in this package:
+  [`tokens.md`](./tokens.md) and [`positions.md`](./positions.md).
 - The fixtures of [`@mmd-toolkit/tests`](../../tests) belong to the
   specification too.
 - The source of mermaid.js is not a source of behavior for this package.
@@ -56,9 +58,9 @@ The parser of each diagram follows its document,
 
 What every diagram's lexer and parser do in the same way is in one place each: a
 unit and how it is read (`src/diagram-units.ts`), reading the units, the place
-of a node, the text of a range, the shared leaf nodes, and the tokens of an item
-of the grammar (`UnitGrammar` in `src/unit-grammar.ts`), and the empty forms of
-`tokenless-empty-forms` (`src/empty-forms.ts`). A rule that two diagram
+of a node, the written text of a value, the shared leaf nodes, and the tokens of
+an item of the grammar (`UnitGrammar` in `src/unit-grammar.ts`), and the empty
+forms of `tokenless-empty-forms` (`src/empty-forms.ts`). A rule that two diagram
 documents share is in one place too: the direction line of flowchart, class, and
 state (`src/direction-line.ts`), whose words state compares case-insensitively,
 and the Unicode letters of the letter rules of flowchart and class
@@ -77,42 +79,49 @@ a member statement, and rejects a method line that cannot be divided.
 The Db id of a flowchart subgraph is made in one place,
 `src/diagrams/flowchart/subgraph-ids.ts`, from the units: the range of its name
 text and the rule of
-[Subgraphs](../../spec/docs/diagrams/flowchart.md#building-the-summary-from-the-tree).
-The grammar reads it for the members of a subgraph, the public
-`flowchartSubgraphIds()` (`src/db-ids.ts`) gives it for a tree, lexing its text
-again, and the Db summary of the tests builds the Db from it.
+[Subgraphs](../../tests/docs/db-from-tree/flowchart.md#building-the-summary-from-the-tree).
+The grammar reads it for the members of a subgraph, for the rejections that
+mermaid.js makes while it builds the Db.
 
-It reads the diagram text without its directives. A directive inside a unit
-whose kind is not `RawText` or `Identifier` makes the input rejected. The tokens
-are cut at the directives when they are recorded
-([A directive is a token boundary](../../spec/docs/common.md#a-directive-is-a-token-boundary)),
+It reads the diagram text without its directives. The tokens are cut at the
+directives and at the `;` that the line rule ignores when they are recorded
+([A directive is a token boundary](../../spec/docs/common.md#a-directive-is-a-token-boundary)
+and
+[`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)),
 and at the comment regions that the units read through
-([`ast.md`, Comment](../../spec/docs/ast.md#comment)), whose directives before
-the comment's `%%` are then outside every token; the pieces of a `String` token
-are `StringFragment` tokens. Each directive outside the tokens and the comments
-is recorded as a `Directive` token of its own. The frontmatter is recorded
-first, as its opening `---`, its body, and its closing `---`
+([`ast.md`, Comment](./tokens.md#comment)), whose directives before the
+comment's `%%` are then outside every token; the pieces of a `String` token are
+`StringFragment` tokens. Only a `RawText` token and a `String` token may be cut:
+a directive or an ignored `;` inside a token of another kind makes the input
+rejected, at the directive or the `;`, which `SourceLexer.recordTokens` decides
+for every diagram in one place. Each directive outside the tokens and the
+comments is recorded as a `Directive` token of its own. The frontmatter is
+recorded first, as its opening `---`, its body, and its closing `---`
 ([`ast.md`, Frontmatter](../../spec/docs/ast.md#frontmatter)).
 
 ## Tools
 
 `tools/` holds scripts for working on the parser. They are not built and not
-published. Run them in `packages/parser`:
+published. The scripts of `package.json` run them with
+`node --conditions=source`, so that `@mmd-toolkit/tests` is read from its
+source, as the tests read it. Run them in `packages/parser`:
 
 - `pnpm run compare-with-mermaid <file>`: `<file>` is a JSON array of input
   strings. For each input, it prints the input and whether `parse()` and the
   pinned mermaid.js agree: `same: accepted, same Db`, `same: rejected`, or
   `DIFF:` with the two acceptances or the two Db summaries. It prints
   `BUG or broken tree:` when `parse()` throws something other than a
-  `ParseError` or the tree fails the check of the tree. The Db summary of the
-  tree is built as the fixture tests build it, so an input of a known divergence
-  prints `DIFF`.
+  `ParseError` or the tree check of `@mmd-toolkit/tests` (`checkTree`) lists a
+  condition that the tree breaks. The Db summary of the tree is built as
+  `@mmd-toolkit/tests` builds it from a recorded tree (`dbFromTree`), so an
+  input of a known divergence prints `DIFF`.
 - `pnpm run show-trees <diagram> <fixture>...`: prints the input and the tree of
   each fixture's `ast.json`, one node per line, indented under its parent. A
   line has the node's plain fields, such as a direction or the markers of an
   arrow. For a node with a written value, it also has the value and the range,
   and the source text of the range when that differs from the value. The tokens
-  follow.
+  follow. For a fixture that the parser rejects, it prints the error of its
+  `parse-error.json`: the message, the range, and the source text of the range.
 - `pnpm run diff-trees <copy> <diagram>`: `<copy>` is a copy of
   `packages/tests/fixtures/<diagram>` taken before a change. It compares the
   parse results, `ast.json` and `parse-error.json`. It prints the files that are
@@ -120,3 +129,7 @@ published. Run them in `packages/parser`:
   rejected now. It then prints how many fixtures have each kind of difference:
   the same field of the same node type, or of the error, with the list indexes
   left out. Each difference follows, with the value before and after.
+
+`tools/explore/` holds the explorations, which generate inputs and compare them
+with the pinned mermaid.js, apart from the tests: `pnpm run explore` runs them
+(see [`testing.md`](./testing.md#explorations-against-mermaidjs)).

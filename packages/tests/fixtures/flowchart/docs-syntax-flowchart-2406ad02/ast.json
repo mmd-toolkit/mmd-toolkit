@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: hourglass, label: \"Collate\"",
+      "value": " shape: hourglass, label: \"Collate\" ",
       "range": [
-        21,
-        55
+        20,
+        56
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
-          "column": 42
+          "column": 43
         }
       }
     },

@@ -121,6 +121,36 @@ Code:
 ---
 
 
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-quoted-name-ending-with-space
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-quoted-name-ending-with-space-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph "a " accDescr {}
+    |                 ^~~~~~~~~~~ [1]
+  3 |   A
+  4 |   end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-quoted-name-with-directive-and-space
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-quoted-name-with-directive-and-space-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph "a %%{init: {}}%%" accDescr {}
+    |                               ^~~~~~~~~~~ [1]
+  3 |   A
+  4 |   end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
 Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-quoted-subgraph-name-and-trailing-space
 Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-quoted-subgraph-name-and-trailing-space-input.mmd
 

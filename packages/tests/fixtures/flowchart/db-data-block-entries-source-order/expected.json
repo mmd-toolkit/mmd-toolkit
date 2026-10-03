@@ -101,5 +101,37 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "a"
+        }
+      },
+      {
+        "id": "B",
+        "set": {
+          "labelType": "markdown",
+          "text": "b"
+        }
+      },
+      {
+        "id": "C",
+        "set": {
+          "labelType": "markdown",
+          "text": "c"
+        }
+      },
+      {
+        "id": "D",
+        "set": {
+          "labelType": "markdown",
+          "text": "d"
+        }
+      }
+    ]
   }
 }

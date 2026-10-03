@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "flowchart.md Lexical structure, the direction line: the lexer reads the diagram text `directionTB`, which is no direction line, so the input is rejected, as in mermaid.js."
+    "note": "flowchart.md Lexical structure, the direction line: the diagram text `directionTB` is no direction line but an id, and the directive lies inside it, a name; the input is rejected, as in mermaid.js."
   },
   "accepted": false,
   "error": {

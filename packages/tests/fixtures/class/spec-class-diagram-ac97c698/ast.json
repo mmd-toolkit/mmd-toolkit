@@ -8,7 +8,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Namespace1",
           "range": [
             23,
@@ -33,7 +33,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Class1",
                 "range": [
                   42,
@@ -105,7 +105,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Namespace2",
           "range": [
             61,
@@ -130,7 +130,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Class1",
                 "range": [
                   80,
@@ -202,7 +202,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Namespace3",
           "range": [
             99,
@@ -227,7 +227,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Class1",
                 "range": [
                   118,
@@ -456,7 +456,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Namespace4",
           "range": [
             178,
@@ -481,7 +481,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Class1",
                 "range": [
                   197,
@@ -696,7 +696,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Class2",
                 "range": [
                   251,
@@ -978,7 +978,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Namespace1",
       "range": [
         23,
@@ -1032,7 +1032,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class1",
       "range": [
         42,
@@ -1086,7 +1086,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Namespace2",
       "range": [
         61,
@@ -1140,7 +1140,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class1",
       "range": [
         80,
@@ -1194,7 +1194,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Namespace3",
       "range": [
         99,
@@ -1248,7 +1248,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class1",
       "range": [
         118,
@@ -1482,7 +1482,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Namespace4",
       "range": [
         178,
@@ -1536,7 +1536,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class1",
       "range": [
         197,
@@ -1752,7 +1752,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Class2",
       "range": [
         251,

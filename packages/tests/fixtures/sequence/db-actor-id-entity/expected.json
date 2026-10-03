@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary from the tree: each value is read in converted form, so the entity in the id of an actor is its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Aﬂ°amp¶ß",
+        "description": "Aﬂ°amp¶ß",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "actor"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

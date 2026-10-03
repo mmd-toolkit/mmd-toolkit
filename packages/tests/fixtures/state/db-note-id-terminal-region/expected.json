@@ -1,0 +1,67 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary from the tree, Ids: a state whose id is `[*]` in a composite statement, an alias or pseudostate definition, or a note statement has the id of its parent followed by `_start`; in the last region of Y, the note on `[*]` is a note on that region's id followed by `_start`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "Y",
+        "shape": "roundedWithTitle",
+        "label": "Y",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "divider-id-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "Y",
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-1"
+      },
+      {
+        "id": "generated-region-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "Y",
+        "dir": "TB"
+      },
+      {
+        "id": "generated-region-1_start",
+        "label": "generated-region-1_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "generated-region-1"
+      }
+    ],
+    "notes": [
+      {
+        "state": "generated-region-1_start",
+        "position": "left of",
+        "text": "x"
+      }
+    ],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

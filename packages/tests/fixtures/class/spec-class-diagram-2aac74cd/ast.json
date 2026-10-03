@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Foo1",
             "range": [
               19,
@@ -513,7 +513,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "User",
             "range": [
               169,
@@ -592,15 +592,15 @@
             "visibility": "public",
             "name": {
               "type": "ClassLiteral",
-              "value": "getName",
+              "value": " getName",
               "range": [
-                198,
+                197,
                 205
               ],
               "loc": {
                 "start": {
                   "line": 19,
-                  "column": 2
+                  "column": 1
                 },
                 "end": {
                   "line": 19,
@@ -633,15 +633,15 @@
             "visibility": "public",
             "name": {
               "type": "ClassLiteral",
-              "value": "getAddress",
+              "value": " getAddress",
               "range": [
-                210,
+                209,
                 220
               ],
               "loc": {
                 "start": {
                   "line": 20,
-                  "column": 2
+                  "column": 1
                 },
                 "end": {
                   "line": 20,
@@ -711,15 +711,15 @@
             "visibility": "public",
             "name": {
               "type": "ClassLiteral",
-              "value": "setName",
+              "value": " setName",
               "range": [
-                243,
+                242,
                 250
               ],
               "loc": {
                 "start": {
                   "line": 22,
-                  "column": 2
+                  "column": 1
                 },
                 "end": {
                   "line": 22,
@@ -968,7 +968,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Foo1",
       "range": [
         19,
@@ -1274,7 +1274,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "User",
       "range": [
         169,
@@ -1347,15 +1347,15 @@
     },
     {
       "type": "RawText",
-      "value": "getName",
+      "value": " getName",
       "range": [
-        198,
+        197,
         205
       ],
       "loc": {
         "start": {
           "line": 19,
-          "column": 2
+          "column": 1
         },
         "end": {
           "line": 19,
@@ -1419,15 +1419,15 @@
     },
     {
       "type": "RawText",
-      "value": "getAddress",
+      "value": " getAddress",
       "range": [
-        210,
+        209,
         220
       ],
       "loc": {
         "start": {
           "line": 20,
-          "column": 2
+          "column": 1
         },
         "end": {
           "line": 20,
@@ -1509,15 +1509,15 @@
     },
     {
       "type": "RawText",
-      "value": "setName",
+      "value": " setName",
       "range": [
-        243,
+        242,
         250
       ],
       "loc": {
         "start": {
           "line": 22,
-          "column": 2
+          "column": 1
         },
         "end": {
           "line": 22,

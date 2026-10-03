@@ -329,19 +329,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: circle\n        other: \"clock\"",
+      "value": "\n        shape: circle\n        other: \"clock\"\n     ",
       "range": [
-        37,
-        73
+        28,
+        79
       ],
       "loc": {
         "start": {
-          "line": 3,
-          "column": 8
+          "line": 2,
+          "column": 15
         },
         "end": {
-          "line": 4,
-          "column": 22
+          "line": 5,
+          "column": 5
         }
       }
     },

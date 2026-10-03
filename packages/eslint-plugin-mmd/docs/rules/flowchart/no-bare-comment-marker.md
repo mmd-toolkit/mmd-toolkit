@@ -66,10 +66,12 @@ labels "Type: Bug / Error" and "Status: Triage".
 
 For each report, the rule suggests removing the `%%`, with its line when only
 whitespace is left on it; a directive on the line stays. Inside a text that
-spans lines, it suggests removing the line of only `%%`. mermaid.js then makes
-no vertex `%%`, and the text or the data block has no line `%%`, so that a data
-block that the line made invalid is read. Adding a space after the `%%` is not
-suggested: an editor that removes whitespace at the end of lines would undo it.
+spans lines, it suggests removing the line of only `%%`, unless a directive, or
+the start or the end of one, is on that line: the line would take it with it.
+mermaid.js then makes no vertex `%%`, and the text or the data block has no line
+`%%`, so that a data block that the line made invalid is read. Adding a space
+after the `%%` is not suggested: an editor that removes whitespace at the end of
+lines would undo it.
 
 Examples of **incorrect** code for this rule:
 

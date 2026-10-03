@@ -30,7 +30,10 @@ export interface Mutant {
 export interface MutateOptions {
   /** Seed of the pseudo-random choice of edits. Default 1. */
   readonly seed?: number
-  /** Number of distinct mutants to return, at most. Default 20. */
+  /**
+   * Number of distinct mutants to return, at most. Default: one round, that is
+   * one mutant for each edit operator that applies to the input.
+   */
   readonly count?: number
 }
 
@@ -185,16 +188,43 @@ const OPERATORS: readonly Operator[] = [
   },
 ]
 
+/** The most times a mutant is looked for with one operator, when it equals the input or an earlier mutant. */
+const MOST_ATTEMPTS_PER_MUTANT = 20
+
+/**
+ * Returns `items` in an order chosen by `pick` (Fisher–Yates).
+ */
+function shuffled<T>(items: readonly T[], pick: () => number): T[] {
+  const order = [...items]
+  for (let last = order.length - 1; last > 0; last--) {
+    const chosen = pick() % (last + 1)
+    const other = order[chosen]
+    order[chosen] = order[last]
+    order[last] = other
+  }
+  return order
+}
+
 /**
  * Returns up to `count` distinct mutants of `input`, each one edit away from
  * it. The same input and seed always give the same mutants.
  *
- * Each mutant picks an operator uniformly among those applicable, then a
- * position uniformly, so token and line edits are not drowned out by the far
- * more numerous character edits.
+ * The operators that apply to the input (an operator applies when it has a
+ * place to edit) are put in an order chosen by the seed and the input, and
+ * mutant n uses the operator n modulo their number, at a position chosen
+ * uniformly among its positions. So the first mutants use different operators,
+ * and with `count` at least the number of the operators that apply, every one
+ * of them is used at least once, whatever the seed: token and line edits are
+ * not drowned out by the far more numerous character edits, and not left to
+ * chance. Without `count`, one mutant is made for each operator that applies.
+ * With `count` 1, the operator is chosen uniformly among those that apply.
+ *
+ * A mutant that equals the input or an earlier mutant is looked for again with
+ * the same operator, at most 20 times; when none is found, there is no mutant
+ * for that n, and no other operator takes its place, since the operator that
+ * was due is the one that must be used.
  */
 export function mutate(input: string, options: MutateOptions = {}): Mutant[] {
-  const count = options.count ?? 20
   const random = mulberry32(hashString(`${options.seed ?? 1}\u0000${input}`))
 
   /** Returns a pseudo-random unsigned 32-bit integer. */
@@ -203,26 +233,28 @@ export function mutate(input: string, options: MutateOptions = {}): Mutant[] {
   }
 
   const shape = shapeOf(input)
-  const applicable = OPERATORS.filter((operator) => operator.size(shape) > 0)
+  const order = shuffled(
+    OPERATORS.filter((operator) => operator.size(shape) > 0),
+    pick,
+  )
+  if (order.length === 0) return []
+  const count = options.count ?? order.length
   const seen = new Set<string>([input])
   const mutants: Mutant[] = []
-  const maxAttempts = count * 20
-  for (
-    let attempt = 0;
-    mutants.length < count && attempt < maxAttempts;
-    attempt++
-  ) {
-    if (!applicable.length) break
-    const operator = applicable[pick() % applicable.length]
-    const mutant = operator.apply(
-      input,
-      shape,
-      pick() % operator.size(shape),
-      pick,
-    )
-    if (seen.has(mutant.text)) continue
-    seen.add(mutant.text)
-    mutants.push(mutant)
+  for (let n = 0; n < count; n++) {
+    const operator = order[n % order.length]
+    for (let attempt = 0; attempt < MOST_ATTEMPTS_PER_MUTANT; attempt++) {
+      const mutant = operator.apply(
+        input,
+        shape,
+        pick() % operator.size(shape),
+        pick,
+      )
+      if (seen.has(mutant.text)) continue
+      seen.add(mutant.text)
+      mutants.push(mutant)
+      break
+    }
   }
   return mutants
 }

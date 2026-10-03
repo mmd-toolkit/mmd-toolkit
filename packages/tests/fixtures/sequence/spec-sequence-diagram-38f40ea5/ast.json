@@ -399,7 +399,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "U",
       "range": [
         35,
@@ -436,19 +436,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"actor\", \"alias\": \"End User\"",
+      "value": " \"type\" : \"actor\", \"alias\": \"End User\" ",
       "range": [
-        39,
-        76
+        38,
+        77
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 16
+          "column": 15
         },
         "end": {
           "line": 3,
-          "column": 53
+          "column": 54
         }
       }
     },
@@ -489,7 +489,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "DB",
       "range": [
         91,
@@ -526,19 +526,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"database\", \"alias\": \"User Database\"",
+      "value": " \"type\" : \"database\", \"alias\": \"User Database\" ",
       "range": [
-        96,
-        141
+        95,
+        142
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 17
+          "column": 16
         },
         "end": {
           "line": 4,
-          "column": 62
+          "column": 63
         }
       }
     },
@@ -561,7 +561,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "U",
       "range": [
         150,
@@ -597,7 +597,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "DB",
       "range": [
         154,
@@ -651,7 +651,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "DB",
       "range": [
         170,
@@ -687,7 +687,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "U",
       "range": [
         176,

@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Animal",
             "range": [
               21,
@@ -68,7 +68,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Mineral",
             "range": [
               36,
@@ -287,7 +287,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Animal",
       "range": [
         21,
@@ -323,7 +323,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Mineral",
       "range": [
         36,

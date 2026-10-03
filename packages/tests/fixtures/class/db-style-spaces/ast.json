@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "A",
             "range": [
               19,
@@ -85,7 +85,7 @@
         "styles": [
           {
             "type": "ClassLiteral",
-            "value": "fill : #f00 , stroke-width: 2px",
+            "value": "fill: #f00 , stroke-width: 2px",
             "range": [
               29,
               60
@@ -174,7 +174,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         19,
@@ -229,15 +229,33 @@
     },
     {
       "type": "RawText",
-      "value": "fill : #f00 , stroke-width: 2px",
+      "value": "fill",
       "range": [
         29,
-        60
+        33
       ],
       "loc": {
         "start": {
           "line": 3,
           "column": 8
+        },
+        "end": {
+          "line": 3,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": ": #f00 , stroke-width: 2px",
+      "range": [
+        34,
+        60
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 13
         },
         "end": {
           "line": 3,

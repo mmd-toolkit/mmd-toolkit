@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "flowchart.md Known divergences (directive-as-token-boundary): mermaid.js reads the arrow `--->` and accepts; here the directive lies inside the arrow unit, of kind `Punctuator`, and the input is rejected."
+    "note": "flowchart.md Known divergences (directive-as-token-boundary): mermaid.js reads the arrow `--->` and accepts; here the directive lies inside the arrow, and the input is rejected."
   },
   "knownDivergence": "directive-as-token-boundary",
   "accepted": true,

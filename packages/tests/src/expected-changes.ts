@@ -9,7 +9,7 @@ import type { JsonValue } from "./types.ts"
 /**
  * How the expectation of a fixture changed. When several things changed, the
  * first kind in this order is reported: acceptance, detection, summary fields,
- * Db values.
+ * Db values, embedded values.
  */
 export type ExpectedChange =
   /** mermaid.js accepted the input and now rejects it, or the reverse. */
@@ -36,6 +36,8 @@ export type ExpectedChange =
     }
   /** Both accepted with the same keys, and some value differs. */
   | { readonly kind: "db-values" }
+  /** Both accepted with the same Db, and the embedded values differ. */
+  | { readonly kind: "embedded" }
   /** Both rejected, and the name of the error differs. */
   | {
       readonly kind: "error-name"
@@ -76,6 +78,9 @@ export function classifyExpectedChange(
     if (JSON.stringify(previous.db) !== JSON.stringify(next.db)) {
       return { kind: "db-values" }
     }
+    if (JSON.stringify(previous.embedded) !== JSON.stringify(next.embedded)) {
+      return { kind: "embedded" }
+    }
     return { kind: "format" }
   }
   if (!previous.accepted && !next.accepted) {
@@ -110,6 +115,8 @@ export function describeExpectedChange(change: ExpectedChange): string {
       ].join(" ")
     case "db-values":
       return "Db values"
+    case "embedded":
+      return "embedded values"
     case "error-name":
       return `error name: ${change.previous} -> ${change.next}`
     case "error-message":

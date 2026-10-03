@@ -268,19 +268,19 @@
     },
     {
       "type": "RawText",
-      "value": "label: x",
+      "value": " label: x ",
       "range": [
-        17,
-        25
+        16,
+        26
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 4
+          "column": 3
         },
         "end": {
           "line": 2,
-          "column": 12
+          "column": 13
         }
       }
     },

@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Car",
             "range": [
               19,
@@ -68,7 +68,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Driver",
             "range": [
               23,
@@ -128,7 +128,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Car",
             "range": [
               33,
@@ -200,7 +200,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Car",
             "range": [
               48,
@@ -260,7 +260,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Wheel",
             "range": [
               56,
@@ -332,7 +332,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Car",
             "range": [
               73,
@@ -392,7 +392,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Person",
             "range": [
               80,
@@ -515,7 +515,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Car",
       "range": [
         19,
@@ -533,7 +533,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Driver",
       "range": [
         23,
@@ -569,7 +569,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Car",
       "range": [
         33,
@@ -623,7 +623,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Car",
       "range": [
         48,
@@ -677,7 +677,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Wheel",
       "range": [
         56,
@@ -731,7 +731,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Car",
       "range": [
         73,
@@ -767,7 +767,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Person",
       "range": [
         80,

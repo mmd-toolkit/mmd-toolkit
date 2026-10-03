@@ -133,39 +133,3 @@ flowchart/gram-subgraph-name-string-click]
   answered on 2026-02-27, in a reply marked as written by a bot, that this is a
   reserved keyword collision, approved for a fix. How mermaid.js will change is
   not decided.
-
-## Counts and how they are checked
-
-86 fixtures are marked with this divergence, all in flowchart; mermaid.js
-accepts each of them, and this specification rejects each.
-
-For each such input, the differential test of the parser compares the parser
-with mermaid.js on a **reference input**: the input without its comment regions,
-without its empty forms (see
-[`tokenless-empty-forms`](./tokenless-empty-forms.md)), and without, for each
-`click` unit that does not start a click statement, the word `click`, the
-whitespace after it, and the one whitespace character with which the lexer
-leaves the click context that it entered, if there is one. mermaid.js gives the
-reference input the same Db as the input where three conditions hold: mermaid.js
-accepts the reference input; the lexer of this specification reads the reference
-input as the units of the input other than the removed ones, except the click
-ids and `click-comma` units that the click contexts of those `click` units read,
-whose text it may read as other units that start and end where each of them
-does; and the text of each of those click ids lies within the range of one leaf
-node of the tree of the reference input. `A:click "" b-->C` becomes `A:b-->C`,
-with the vertex `A:b` and its edge to C in both, and `subgraph click me`
-followed by an empty line becomes `subgraph me`, with the id `me` in both.
-[fixture: flowchart/db-vertex-id-bare-click] [fixture:
-flowchart/db-subgraph-id-click-blank-line]
-
-Otherwise the removal joins what lies on both sides, or puts the text of a click
-id where the statement context reads it otherwise, and mermaid.js may read the
-reference input otherwise. Some joins give the same Db: `subgraph click me`, a
-line break, and `A` becomes `subgraph meA`, with the id `meA` in both, because
-mermaid.js joins the click id and the next line in the same way. Others do not:
-in `subgraph click m;e`, the `;` of the click id becomes a separator in the
-reference input `subgraph m;e`, which has the id `m` instead of `m;e`, and in
-`subgraph click a,b` the `,` becomes a `,` unit, which a name does not take, so
-mermaid.js rejects `subgraph a,b`. [fixture: flowchart/gram-subgraph-name-click]
-[fixture: flowchart/gram-subgraph-name-click-semicolon-in-id] [fixture:
-flowchart/gram-subgraph-name-click-comma]

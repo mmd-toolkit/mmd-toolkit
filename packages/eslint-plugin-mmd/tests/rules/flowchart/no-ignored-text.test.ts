@@ -6,7 +6,12 @@ import { noIgnoredText } from "../../../src/rules/flowchart/no-ignored-text.ts"
 import { testRule } from "../../rule-test.ts"
 
 testRule("flowchart/no-ignored-text", noIgnoredText, {
-  kind: "anyRule",
-  because:
-    "The text split off becomes statements, and any rule may report a mistake in them.",
+  revealed: {
+    kind: "anyRule",
+    because:
+      "The text split off becomes statements, and any rule may report a mistake in them.",
+  },
+  // The text that mermaid.js dropped is read as statements. The direction is
+  // read as before: the Db is the same there.
+  claims: { splitAtSeparator: { kind: "readsDroppedTextAsStatements" } },
 })

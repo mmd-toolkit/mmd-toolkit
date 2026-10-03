@@ -194,5 +194,8 @@
     "notes": [],
     "namespaces": [],
     "interfaces": []
+  },
+  "embedded": {
+    "title": "Demo Class Diagram"
   }
 }

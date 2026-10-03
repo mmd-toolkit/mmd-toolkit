@@ -36,9 +36,15 @@ For each report, the rule suggests closing the block:
   then reads all the text after the `{` as the description.
 
 A block with nothing after its `{` gets no suggestion: closed there, it would be
-empty. When a description is set before the block, the closed block replaces it,
-and [no-duplicate-description](./no-duplicate-description.md) then reports the
-block: the text sets the description twice.
+empty. A directive is not text: with only a directive after the `{`, the block
+gets no suggestion at the end of the line. A block that holds a directive that
+is not closed gets no suggestion: from that directive on, the directive decides
+what mermaid.js reads, wherever the block is closed. After `accDescr { d }`, the
+lines `more %%{init: {}` and `A --> B` give no edge from A to B, and with
+`%%{wrap` in place of `%%{init: {}`, closing the block right before the
+directive is rejected. When a description is set before the block, the closed
+block replaces it, and [no-duplicate-description](./no-duplicate-description.md)
+then reports the block: the text sets the description twice.
 
 Examples of **incorrect** code for this rule:
 

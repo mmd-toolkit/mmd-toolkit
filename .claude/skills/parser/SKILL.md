@@ -3,9 +3,9 @@ name: parser
 description:
   Implement a diagram type in @mmd-toolkit/parser from the specification and the
   fixtures only. This covers its node types, its hand-written lexer and
-  recursive-descent parser, the four layers of tests, and the AST snapshots. It
-  also covers recording and checking the parse result of each fixture (its tree
-  in ast.json, or its error in parse-error.json), finding gaps in the
+  recursive-descent parser, the tests on the fixtures, and the recorded trees.
+  It also covers recording and checking the parse result of each fixture (its
+  tree in ast.json, or its error in parse-error.json), finding gaps in the
   specification, and fixing the parser when the pinned mermaid.js is updated.
   Use when a diagram type is added to the parser, when fixtures are added or a
   rule of the specification changes, or when mermaid.js is updated.
@@ -14,9 +14,9 @@ description:
 # Adding the parser of a diagram type (parser)
 
 The steps of the work on `@mmd-toolkit/parser`: implementing a diagram type from
-the specification alone (its lexer, its recursive-descent parser, the four
-layers of tests, the snapshots), following added fixtures and changed rules, and
-updating the pinned mermaid.js. It is written so that the same quality is
+the specification alone (its lexer, its recursive-descent parser, the tests on
+the fixtures, the recorded trees), following added fixtures and changed rules,
+and updating the pinned mermaid.js. It is written so that the same quality is
 reached without the history of earlier work. The policies and criteria of the
 package are in the section Policies and criteria; what holds for every package
 is in AGENTS.md and in the skill `conventions`. The examples are those of the
@@ -37,14 +37,16 @@ flowchart; the steps do not depend on the diagram type.
   names: the shared part of `docs/ast.md` in `ast.ts`, and each diagram's nodes
   of `docs/ast/<diagram>.md` in `ast/<diagram>.ts`.
 - Diagram-type detection and dispatch to per-diagram parsers.
-- A test helper checks that the tokens, comments, directives, and frontmatter
-  hold the input at their ranges and that only whitespace and line terminators
-  lie outside them. It is not public API.
 - Per-diagram parsers are hand-written lexers and recursive-descent parsers. No
   parser generators.
-- Four test layers: accept/reject agreement, Db-equivalent JSON agreement,
-  coverage of the input by the tokens and trivia, mutation diff. AST snapshots
-  are kept.
+- The tests on the fixtures: the parse result of each fixture equals the one
+  recorded next to it (`ast.json` or `parse-error.json`), and the acceptance
+  agrees with mermaid.js as the marks of known divergences ask. The recorded
+  trees are checked by `@mmd-toolkit/tests`: the conditions of the tree
+  (`checkTree`), and the Db that it builds from them against the Db that each
+  fixture records. The tests run neither mermaid.js nor generated inputs; the
+  explorations in `tools/explore/` compare generated inputs with mermaid.js to
+  find what the corpus lacks, and what they find is closed by a fixture.
 
 ## 1. What to read first
 
@@ -55,8 +57,9 @@ flowchart; the steps do not depend on the diagram type.
    characters, the documents). The criteria change, so read them for each piece
    of work.
 2. `packages/parser/docs/development.md` (how the parser is built, and the
-   tools), `docs/testing.md` (what the tests check), and
-   `docs/error-positions.md` (where a `ParseError` points).
+   tools), `docs/tokens.md` and `docs/positions.md` (the tokens, the positions,
+   and the invariants of the tree), `docs/testing.md` (what the tests check),
+   and `docs/error-positions.md` (where a `ParseError` points).
 3. The specification: `packages/spec/docs/common.md`, `ast.md`, `detection.md`,
    `diagrams/<diagram>.md`, and `ast/<diagram>.md`, and the fixtures in
    `packages/tests/fixtures/<diagram>/`. The behavior to implement is only what
@@ -66,9 +69,9 @@ flowchart; the steps do not depend on the diagram type.
 
 - The steps of this skill write `packages/parser` and the `ast.json` and
   `parse-error.json` files in `packages/tests/fixtures/<diagram>/<fixture>/`,
-  which the snapshot test writes. They do not write the other files of a
-  fixture, the specification, or the other packages; when one of those must
-  change, change it with the steps of that package's skill (spec, tests,
+  which the fixture test writes. They do not write the other files of a fixture,
+  the specification, or the other packages; when one of those must change,
+  change it with the steps of that package's skill (spec, tests,
   prettier-plugin).
 - The configuration at the root (`package.json`, `pnpm-lock.yaml`,
   `tsconfig.json`, `eslint.config.mjs`, `prettier.config.js`,
@@ -79,7 +82,7 @@ flowchart; the steps do not depend on the diagram type.
 - Do not edit a tracked file for a while to change how a check runs, such as the
   number of inputs of a test. When the working tree is shared with other work,
   the file can be staged in that state, and a run that is cut off never restores
-  it. The sizes of the differential tests come from environment variables (4.8).
+  it.
 - The Write tool and shell here-documents can turn an escape such as `\u00a0`
   into the real character. The sources and tests of `packages/parser` are ASCII
   only (every other character is written as an escape), so after writing, check
@@ -95,12 +98,11 @@ flowchart; the steps do not depend on the diagram type.
   by the intent of the rule, with the reason
   (`eslint-comments/require-description` asks for it).
 - The tests are heavy. Under a high load (a load average of `uptime` above the
-  number of CPUs) the tests that run mermaid.js time out. When one does, run
-  that file alone before judging. Run long checks (the larger sizes of 4.8) in
-  the background, with the output in a file outside the repository. When the
-  working tree is shared with other work, stop only what you started, by its
-  task id or process id; never by name (`pkill -f vitest` stops the runs of
-  others too).
+  number of CPUs) the checks that run mermaid.js time out. When one does, run
+  that file alone before judging. Run long checks in the background, with the
+  output in a file outside the repository. When the working tree is shared with
+  other work, stop only what you started, by its task id or process id; never by
+  name (`pkill -f vitest` stops the runs of others too).
 
 ## 3. How to check (in every piece of work)
 
@@ -112,17 +114,18 @@ flowchart; the steps do not depend on the diagram type.
   pnpm run compare-with-mermaid <file>
   ```
 
-  It prints, for each input, whether `parse()`, the check of the tree, and the
-  Db agree with mermaid.js (`docs/development.md`, Tools). An input of a known
-  divergence prints `DIFF`; read it against the Known divergences of the
+  It prints, for each input, whether `parse()` and the Db built from its tree
+  agree with mermaid.js, and whether the tree check of `@mmd-toolkit/tests`
+  finds a problem in the tree (`docs/development.md`, Tools). An input of a
+  known divergence prints `DIFF`; read it against the Known divergences of the
   specification.
 
 - Do not check with hand-written examples alone. For a rule whose boundaries
   matter, generate inputs that put a character or a unit at every position, and
-  compare them (4.6). In the flowchart, an example written by hand for a test
-  was rejected by mermaid.js, because its line feed left the click context; run
-  an example for a test or a comment through the command above before writing
-  it.
+  compare them in an exploration (4.6, step 3). In the flowchart, an example
+  written by hand for a test was rejected by mermaid.js, because its line feed
+  left the click context; run an example for a test or a comment through the
+  command above before writing it.
 - In every result, show for each claim whether it was checked by running
   something, checked by reading code or documents, or not checked.
 - Run what a change can affect (the skill `conventions`, Running tests). While
@@ -130,16 +133,15 @@ flowchart; the steps do not depend on the diagram type.
   `packages/parser` (`npx vitest run <files>`; a diagram's part of
   `tests/fixtures.test.ts` with `-t "<diagram> fixtures"`):
 
-  | Changed part                                                                    | Test files                                                                                                                                                           |
-  | ------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `src/diagrams/<diagram>/`                                                       | `tests/<diagram>.test.ts`, `tests/fixtures.test.ts`, `tests/parse-result-snapshots.test.ts`                                                                          |
-  | `src/ast.ts`, `src/ast/<diagram>.ts`, `src/visitor-keys*`                       | `tests/types.test.ts`, `tests/traverse.test.ts`, `tests/ast-<diagram>-examples.test.ts`, `tests/union-docs.test.ts`, and for flowchart `tests/ast-flowchart.test.ts` |
-  | `src/unit-grammar.ts`, `src/empty-forms.ts`, `src/diagram-*.ts`                 | `tests/<diagram>.test.ts` of every diagram, `tests/diagram-parsing.test.ts`, `tests/fixtures.test.ts`                                                                |
-  | the common rules (`src/source-lexer.ts`, `directives.ts`, `entities.ts`, ...)   | the test file of the same name, `tests/fixtures.test.ts`, `tests/differential/common-invariants.test.ts`                                                             |
-  | `src/db-ids.ts`, `src/db-texts.ts`, `src/diagrams/flowchart/subgraph-ids.ts`    | `tests/db-ids.test.ts`, `tests/db-texts.test.ts`, `tests/fixtures.test.ts`                                                                                           |
-  | `src/parse.ts`, `src/index.ts`                                                  | `tests/parse.test.ts`, `tests/readme-example.test.ts`                                                                                                                |
-  | `tests/helpers/<diagram>-db.ts`, `<diagram>-source.ts`, `check-tree.ts`         | `tests/fixtures.test.ts`, `tests/check-tree.test.ts`                                                                                                                 |
-  | `tests/helpers/reference-inputs.ts`, `tests/differential/mermaid-comparison.ts` | `tests/reference-inputs.test.ts`, `tests/fixtures.test.ts`, the differential tests at their default size                                                             |
+  | Changed part                                                                  | Test files                                                                                                                                                           |
+  | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | `src/diagrams/<diagram>/`                                                     | `tests/<diagram>.test.ts`, `tests/fixtures.test.ts`                                                                                                                  |
+  | `src/ast.ts`, `src/ast/<diagram>.ts`, `src/visitor-keys*`                     | `tests/types.test.ts`, `tests/traverse.test.ts`, `tests/ast-<diagram>-examples.test.ts`, `tests/union-docs.test.ts`, and for flowchart `tests/ast-flowchart.test.ts` |
+  | `src/unit-grammar.ts`, `src/empty-forms.ts`, `src/diagram-*.ts`               | `tests/<diagram>.test.ts` of every diagram, `tests/diagram-parsing.test.ts`, `tests/fixtures.test.ts`                                                                |
+  | the common rules (`src/source-lexer.ts`, `directives.ts`, `entities.ts`, ...) | the test file of the same name, `tests/fixtures.test.ts`                                                                                                             |
+  | `src/diagrams/flowchart/subgraph-ids.ts`                                      | `tests/fixtures.test.ts`                                                                                                                                             |
+  | `src/parse.ts`, `src/index.ts`                                                | `tests/parse.test.ts`, `tests/readme-example.test.ts`                                                                                                                |
+  | `tests/helpers/reference-inputs.ts`, `tests/helpers/known-divergences.ts`     | `tests/reference-inputs.test.ts`, `tests/fixtures.test.ts`                                                                                                           |
 
   The tests that read documents, which a change of those documents alone also
   runs: `tests/readme-example.test.ts` (the example of `README.md` and
@@ -147,25 +149,27 @@ flowchart; the steps do not depend on the diagram type.
   `packages/spec/docs/known-divergences/`), and the tests of the examples and
   the unions in the comments of `src/ast.ts` and `src/ast/*.ts`
   (`tests/ast-<diagram>-examples.test.ts`, `tests/union-docs.test.ts`). The
-  whole suite at its default size and the differential tests at full size are
-  run as 4.8 says.
+  whole suite is run as 4.8 says. When the lexing or the grammar of a diagram
+  type changes, its explorations are run as well (4.6, step 3).
 
 ## 4. Adding a diagram type (Jison)
 
 ### 4.1 Input
 
-- The specification of the diagram is written: the five sections of
-  `packages/spec/docs/diagrams/<diagram>.md` have no "To be written", and
-  `packages/spec/docs/ast/<diagram>.md` exists (the spec skill).
-- The fixtures of the diagram and its normalizer exist in `packages/tests` (the
-  tests skill).
+- The specification of the diagram is written: the sections of
+  `packages/spec/docs/diagrams/<diagram>.md` (Detection, Lexical structure,
+  Grammar with its Rejections outside the grammar, and Known divergences) have
+  no "To be written", and `packages/spec/docs/ast/<diagram>.md` exists (the spec
+  skill).
+- The fixtures of the diagram, its Db summary
+  (`packages/tests/docs/db-from-tree/<diagram>.md`), and the checks of its
+  recorded trees exist in `packages/tests` (the tests skill).
 
 ### 4.2 Reading the specification, and its gaps first
 
 1. Read `diagrams/<diagram>.md` and `ast/<diagram>.md` through, and list the
    units of implementation outside the repository: the lexical rules, the
-   productions of the grammar, the items of the Db normalization, the fields of
-   the nodes, the token kinds.
+   productions of the grammar, the fields of the nodes, the token kinds.
 2. For each line of the list, check that the text of the specification and the
    fixtures decide the implementation in one way. What they do not decide, where
    the specification and a fixture disagree, and where mermaid.js (3) disagrees
@@ -202,10 +206,10 @@ Add them in this order; the flowchart files are the model.
    `flowchart-elk`, and `swimlane`). From then on, the diagram type is parsed
    wherever the tests met it as an unsupported type: an example of an
    unsupported type in `tests/parse.test.ts` changes to another type that is
-   still unsupported, and the mutants of the common differential test
-   (`tests/differential/common-mermaid.test.ts`) that are of this type are
-   compared as trees. A mismatch there is a difference of the diagram, read as
-   in 4.2, step 2.
+   still unsupported, and the mutants of the common exploration
+   (`tools/explore/common-mermaid.test.ts`) that are of this type are compared
+   as trees. A mismatch there is a difference of the diagram, read as in 4.2,
+   step 2.
 
 ### 4.4 The lexer
 
@@ -214,16 +218,14 @@ Add them in this order; the flowchart files are the model.
    with `openDiagramText(input)`, divides it into units with the lexer, makes
    the statements and tokens with the grammar, and passes them to
    `finishDiagram()`. The smallest model is `src/diagrams/error.ts`.
-   `finishDiagram()` checks the promises of the units and tokens, rejects a
-   directive inside a unit, records the tokens with the `Directive` tokens and
-   the tokens of the frontmatter, and builds the `Root`. Write
-   `ignoredSemicolonKindAt` from the Tokens section of `ast/<diagram>.md`: the
-   kind of a `;` that the line rule ignores and that stands alone, at its place.
-   It is one value when the diagram gives every such `;` one kind (the
-   flowchart, `Punctuator`), and depends on the place when the kind does (in
-   sequence, `RawText` where the context reads `;` as text, which the lexer
-   answers from its units; in class, from the context of the step of the lexer
-   that read over the `;`).
+   `finishDiagram()` checks the promises of the tokens, records the tokens with
+   the `Directive` tokens and the tokens of the frontmatter, and builds the
+   `Root`. A `;` that the line rule ignores is an `IgnoredSemicolon` token in
+   every diagram, which the shared lexer records; the diagram gives it no kind.
+   The shared lexer cuts a token at a directive and at such a `;` inside it, and
+   rejects the input where the token is of a kind that may not be cut, any kind
+   but `RawText` and `String` (`SourceLexer.recordTokens`); the diagram does not
+   decide this again.
 2. The common rules (directives, comment regions, the `style` and `classDef`
    line rule, entities, line terminators, HTML attribute quotes) are already
    applied, at each position, by `DiagramTextReader`; the diagram's lexer reads
@@ -283,21 +285,29 @@ Add them in this order; the flowchart files are the model.
 1. A recursive descent over the units, one method per production of the Grammar,
    whose JSDoc names the production. The grammar extends `UnitGrammar` of
    `src/unit-grammar.ts`, which reads the units (`take`, `takeIf`, `peek`),
-   places a node (`placeOf`, `placeFrom`), reads the text of a range, makes the
-   shared leaf nodes, the tokens of an item (`addItem`), and the error for a
-   unit that the grammar cannot read (`unexpected()`), with the empty forms; the
-   diagram adds its productions and `knownDivergenceAt()`, which looks for the
-   cause that a known divergence names (in the flowchart, a `click` and an empty
-   form after the `space` units; in sequence, an empty form; in class, an empty
-   form, or the unit after an empty generic type). The range of a unit without
-   its whitespace is `significantRangeOf` of `src/diagram-units.ts`. Where the
-   tokens of an item break is `breaksRun()`: between units of other items; a
-   diagram whose whitespace belongs to no unit also breaks a run where
-   characters lie between two units (in class, except in a `RawText` item, whose
-   token holds the whitespace inside it).
-2. The grammar makes the nodes, the token kind of each unit that is not all
-   whitespace (`UnitWithKind`), and the tokens (`PendingToken`). Take the kinds
-   from the Tokens section of `ast/<diagram>.md`.
+   places a node (`placeOf`, `placeFrom`), reads the written text of a value,
+   makes the shared leaf nodes, the tokens of an item (`addItem`), and the error
+   for a unit that the grammar cannot read (`unexpected()`), with the empty
+   forms; the diagram adds its productions and `knownDivergenceAt()`, which
+   looks for the cause that a known divergence names (in the flowchart, a
+   `click` and an empty form after the `space` units; in sequence, an empty
+   form; in class, an empty form, or the unit after an empty generic type). The
+   range of a unit's token is `significantRangeOf` of `src/diagram-units.ts`:
+   the unit without its whitespace, unless the lexer reads the unit with other
+   `UnitEnds`, for the units whose tokens keep whitespace that mermaid.js reads
+   as part of a value, which the Tokens section of `ast/<diagram>.md` names (in
+   sequence, the `title-text` unit of `title`, and the box text; in class, the
+   generic text, a backquoted name that is not closed, and the parts of a member
+   line, whose division gives each its exact range). Where the tokens of an item
+   break is `breaksRun()`: between units of other items; a diagram whose
+   whitespace belongs to no unit also breaks a run where characters lie between
+   two units (in state, except in a `RawText` item, whose token holds the
+   whitespace inside it; in class, the items whose tokens are the runs without
+   whitespace, a style and a name of name parts, take them from
+   `runsWithNothingBetween()`).
+2. The grammar makes the nodes and the tokens (`PendingToken`), with the token
+   kind of each item. Take the kinds from the Tokens section of
+   `ast/<diagram>.md`.
 3. The grammar reads every unit; none is skipped. Text that mermaid.js does not
    read is a node where the tree has a place for it; a unit that cannot be
    written where it stands is taken by no rule, so the input is rejected, and
@@ -309,13 +319,14 @@ Add them in this order; the flowchart files are the model.
    one such form. A unit can still lie in the range of a node and belong to no
    field (in the flowchart, the `call` and the parentheses of a callback in a
    click statement); the specification says where.
-4. The value of a leaf node is the text of its range without the directives, the
-   comment regions, and the `;` that the line rule ignores (`ast.md`, Nodes;
-   `SourceLexer.textOfRange`). Nothing is converted. `StringLiteral` and
-   `NumericLiteral` also have `raw`. The name of an `Identifier` is the texts of
-   its tokens joined (`identifierOf`, which takes the pieces of its item from
-   `SourceLexer.piecesOf`, the same pieces that the tokens are recorded as), so
-   the whitespace between them is not part of it.
+4. The value of a leaf node is its written text: the source text of the value
+   without the directives, the comment regions, the `;` that the line rule
+   ignores, and the empty description blocks that are statements of their own
+   (`ast.md`, Nodes; `SourceLexer.textOfRange`). Nothing is converted.
+   `StringLiteral` and `NumericLiteral` also have `raw`. The name of an
+   `Identifier` is the texts of its tokens joined (`identifierOf`, which takes
+   the pieces of its item from `SourceLexer.piecesOf`, the same pieces that the
+   tokens are recorded as), so the whitespace between them is not part of it.
 5. When the specification lists rejections outside the grammar (made while the
    Db is built), the parser makes them too: in the flowchart, the grammar finds
    a subgraph member after `hasOwnProperty` (`subgraph-members.ts`); in
@@ -332,94 +343,75 @@ Add them in this order; the flowchart files are the model.
 The flowchart tests are the model. The files to add, or to add a `case` of the
 diagram to:
 
-| File                                           | What to add                            |
-| ---------------------------------------------- | -------------------------------------- |
-| `tests/helpers/node-types.ts`                  | the `Record` of every node type        |
-| `tests/types.test.ts`                          | the union of `Node`                    |
-| `tests/helpers/db.ts`                          | the `case` of `dbOf()`                 |
-| `tests/helpers/<diagram>-db.ts`                | the steps of the Db normalization      |
-| `tests/helpers/<diagram>-source.ts`            | the helper that reads the units        |
-| `tests/helpers/check-tree.ts`                  | the checks of the diagram's tree       |
-| `tests/check-tree.test.ts`                     | broken trees                           |
-| `tests/fixtures.test.ts`                       | the `describe` of the fixtures         |
-| `tests/parse-result-snapshots.test.ts`         | the list `diagrams`                    |
-| `tests/differential/<diagram>-mermaid.test.ts` | layer 4                                |
-| `tests/ast-<diagram>-examples.test.ts`         | the examples in the node type comments |
-| `tests/helpers/reference-inputs.ts`            | the diagram's units for the references |
-| `tests/<diagram>.test.ts`                      | unit tests of the tree and tokens      |
+| File                                      | What to add                            |
+| ----------------------------------------- | -------------------------------------- |
+| `tests/helpers/node-types.ts`             | the `Record` of every node type        |
+| `tests/types.test.ts`                     | the union of `Node`                    |
+| `tests/helpers/recorded-diagrams.ts`      | the diagram in `RECORDED_DIAGRAMS`     |
+| `tools/explore/<diagram>-mermaid.test.ts` | the exploration of mutants             |
+| `tests/ast-<diagram>-examples.test.ts`    | the examples in the node type comments |
+| `tests/helpers/reference-inputs.ts`       | the diagram's units for the references |
+| `tests/<diagram>.test.ts`                 | unit tests of the tree and tokens      |
 
 Steps:
 
-1. Layers 1 to 3 run in `tests/fixtures.test.ts`. The Db summary is built from
-   the tree by `tests/helpers/<diagram>-db.ts`: write the items of the Db
-   normalization one by one, in the order of the specification. The values are
-   read in converted form (`tests/helpers/converted-text.ts`, given the reader
-   of the diagram's lexer: in the flowchart `FlowchartText`, in sequence the
-   diagram text itself). Steps that several diagrams share are in
-   `tests/helpers/db-values.ts`. Values that come from embedded data are taken
-   from the argument `embedded`. A value that the specification gives from
-   outside the tree and that is not embedded data (in sequence, whether a box's
-   colour candidate is a colour) is taken from what `@mmd-toolkit/tests` gives
-   mermaid.js; when it is not exported, ask for it, and do not write a stand-in.
-   Where the Db depends on a token that no field holds (in sequence, `as` with
-   nothing after it gives the empty description), read the token, and report it
-   to the specification.
-2. The helpers take every lexical decision from the parser's units (where a
-   string's content lies, which strings are empty, where a statement ends):
-   `<Diagram>Source` (in the flowchart, `FlowchartSource`). A rule of their own
-   hides a wrong unit and shows a wrong helper as a difference from mermaid.js;
-   in the flowchart, the helpers read the content of strings by rules of their
-   own and were rebuilt to take it from the units. A helper reads the source
-   itself only for what the comparison with mermaid.js cannot check (`loc`, the
-   value of a comment; `docs/testing.md`, "What the tests read from the source
-   themselves").
-3. Find where text outside a node's range changes the Db. For each item of the
-   Db normalization, check whether the text it reads lies inside a node's range;
-   for text outside, take its boundaries from the units. Examples from the
-   flowchart: the name text of a subgraph runs from the start of the name to the
-   `[` (the whitespace after the name included), and the end of the `space` unit
-   where the first style of a statement starts. Put whitespace, a directive, a
-   comment line, and a `click` at each boundary, compare with mermaid.js (3),
-   and add the inputs to a test (in the flowchart,
-   `tests/differential/flowchart-source-reading.test.ts`). Generate them: put
-   each of these at every place of the statement (in class,
-   `tests/differential/class-source-reading.test.ts`). A character that the Db
-   reads at a boundary is read in converted form, not from the source: in class,
-   the helper read the character after a visibility mark from the source, and a
-   directive put after the mark, which mermaid.js leaves out, showed it. A unit
-   that is all whitespace at the end of a statement lies after the range of the
-   statement, which ends at its last token; find it from the units next to a
-   unit of the statement, not inside the range (in state, the second description
-   of an alias and the text of a note on one line that are all whitespace).
-4. Layer 3 is `tests/helpers/check-tree.ts`. The common invariants are there
-   already; add what `ast/<diagram>.md` states about the tree (how value nodes
-   and tokens relate, fixed words and their tokens) as checks of the diagram.
-   Give the check broken trees in `tests/check-tree.test.ts`.
-5. Layer 4 is `tests/differential/<diagram>-mermaid.test.ts`: it compares
-   mutants of the fixtures with mermaid.js, as
-   `tests/differential/mermaid-comparison.ts` describes.
-6. For a rule whose boundaries matter, add a test of generated inputs. Example
-   from the flowchart: `tests/differential/entity-units.test.ts` puts an entity
-   at every position of a link text and an ellipse label.
-7. Keep every input that was once read wrong as a regression input in a test.
+1. `tests/fixtures.test.ts` compares the parse result of each fixture with the
+   one recorded next to it, and checks the acceptance against mermaid.js as the
+   mark of the fixture asks (4.7). It checks neither the tree nor the Db:
+   `@mmd-toolkit/tests` checks each recorded tree (`checkTree`) and builds its
+   Db, which it compares with the Db that the fixture records (the tests skill).
+   Where the Db needs what the tree does not hold, the tree lacks it: report it
+   to the specification, with the input and the result of mermaid.js. What
+   `ast/<diagram>.md` states about the tree of a new diagram type is checked by
+   `@mmd-toolkit/tests` (`checkTree`); ask the tests package for it. The unit
+   tests check their own trees with the same check
+   (`tests/helpers/tree-problems.ts`).
+2. Find where text outside a node's range decides a reading. Example from the
+   flowchart: the name text of a subgraph runs to its separator, and where empty
+   description blocks follow the name, the whitespace between them lies outside
+   every node. Put whitespace, a directive, a comment line, and a `click` at
+   each boundary, and compare with mermaid.js (3) in an exploration (in the
+   flowchart, `tools/explore/flowchart-source-reading.test.ts`). Generate them:
+   put each of these at every place of the statement (in class,
+   `tools/explore/class-source-reading.test.ts`). A unit that is all whitespace
+   at the end of a statement lies after the range of the statement, which ends
+   at its last token; find it from the units next to a unit of the statement,
+   not inside the range.
+3. The explorations in `tools/explore/` are not tests (`docs/testing.md`,
+   Explorations against mermaid.js). They compare generated inputs with
+   mermaid.js, as `tools/explore/mermaid-comparison.ts` describes:
+   `<diagram>-mermaid.test.ts` mutants of the fixtures. Run them when the lexing
+   or the grammar of the diagram changes, with `pnpm run explore` in
+   `packages/parser`
+   (`npx vitest run --config tools/explore/vitest.config.ts <files>` for some of
+   them). A difference that one finds is closed by a fixture of the corpus (the
+   tests skill), and by a sentence of the specification where it does not state
+   the reading (the spec skill); an input kept only in a list of this package is
+   not kept.
+4. For a rule whose boundaries matter, add an exploration of generated inputs.
+   Example from the flowchart: `tools/explore/entity-units.test.ts` puts an
+   entity at every position of a link text and an ellipse label.
+5. Every input that was once read wrong becomes a fixture of the corpus: give it
+   to the tests package with a note on the failure (the tests skill).
 
-### 4.7 Snapshots
+### 4.7 Recorded parse results
 
 The parse result of every fixture is recorded next to its input: the tree of an
 accepted input in `ast.json`, and the `message`, `range`, and `loc` of the
 `ParseError` of a rejected one in `parse-error.json` (`docs/testing.md`,
-Parse-result snapshots). A rejection is thus recorded as fully as a tree: where
-the parser reports it is part of the result.
+Recorded parse results). The fixture test compares each result with its file. A
+rejection is thus recorded as fully as a tree: where the parser reports it is
+part of the result.
 
 1. Write and read these files only for fixtures whose rules are implemented. Run
-   earlier, the snapshot test writes the result of the current parser, which is
-   wrong, and it then passes as a snapshot.
-2. Run the snapshot test once outside CI, in `packages/parser`, without `-u`; it
+   earlier, the fixture test writes the result of the current parser, which is
+   wrong, and it then passes as recorded.
+2. Run the fixture test once outside CI, in `packages/parser`, without `-u`; it
    writes the missing files (in CI, a missing file fails). Use `-u` only for a
    change that changes existing results (step 4):
 
    ```sh
-   pnpm run test tests/parse-result-snapshots.test.ts
+   pnpm run test tests/fixtures.test.ts
    ```
 
 3. Read the new results against the specification, in `packages/parser`:
@@ -439,8 +431,8 @@ the parser reports it is part of the result.
 
 4. Use `-u` only for a change that changes existing results. Before such a
    change, copy the fixtures outside the repository; after the change, rewrite
-   the files with `pnpm run test:update`, which runs the snapshot test alone
-   with `-u`, and classify the differences, in `packages/parser`:
+   the files with `pnpm run test:update`, which runs the fixture test alone with
+   `-u`, and classify the differences, in `packages/parser`:
 
    ```sh
    rm -rf <directory>/ast-before && cp -R ../tests/fixtures/<diagram> <directory>/ast-before
@@ -458,10 +450,17 @@ the parser reports it is part of the result.
    the result of every fixture that has none, including fixtures added meanwhile
    for rules not implemented yet; each `new:` line must be a fixture whose rule
    is implemented, and the file of any other is deleted (step 1). Show the
-   number of fixtures of each kind in the result. Run this also when the fixture
-   tests pass: a node that changes nothing in the Db shows a wrong change only
-   here (in state, a floating note id that a careless edit made end at its first
-   character).
+   number of fixtures of each kind in the result. A node whose fields the Db
+   does not read shows a wrong change only here (in state, a floating note id
+   that a careless edit made end at its first character; the value strings of
+   the leaf nodes and the position of a state note are such fields). After the
+   files are rewritten, run the checks of the corpus on them, in
+   `packages/tests`; the parser tests pass with any recorded tree, so only these
+   show a tree that breaks a condition or gives another Db:
+
+   ```sh
+   npx vitest run tests/check-tree-corpus.test.ts tests/db-from-tree.test.ts
+   ```
 
 ### 4.8 Checks before finishing
 
@@ -469,6 +468,13 @@ In `packages/parser`:
 
 ```sh
 CI=true pnpm run test
+```
+
+In `packages/tests`, the checks of the corpus on the recorded trees (4.7, step
+4):
+
+```sh
+npx vitest run tests/check-tree-corpus.test.ts tests/db-from-tree.test.ts
 ```
 
 At the root:
@@ -482,29 +488,15 @@ pnpm run format:check
 ```
 
 Run the whole suite once, before the work is reported as done, not after each
-change. The full differential checks, run once before a step of the plan is
-reported as finished or handed to a review, in `packages/parser`, in the
-background with the output in a file. The sizes come from environment variables;
-a size below the default makes the guard against a vacuous comparison fail, so
-use at least the default (300 inputs per seed, 1 mutant per fixture):
+change. It runs no generated inputs (the skill `conventions`, Running tests).
+When the lexing or the grammar of a diagram type changed, run its explorations
+too (4.6, step 3): an exploration takes its inputs by kind and each combination
+once, and more assurance is gained by adding a kind of input that is missing,
+never by raising a count.
 
-```sh
-MMD_DIFFERENTIAL_COUNT=5000 CI=true npx vitest run tests/differential/common-mermaid.test.ts
-MMD_MUTANTS_PER_FIXTURE=20 CI=true npx vitest run tests/differential/flowchart-mermaid.test.ts
-MMD_COMMENT_INPUTS=1000000 MMD_MUTANTS_PER_FIXTURE=20 CI=true npx vitest run tests/differential/sequence-mermaid.test.ts
-MMD_COMMENT_INPUTS=1000000 MMD_MUTANTS_PER_FIXTURE=20 CI=true npx vitest run tests/differential/class-mermaid.test.ts
-MMD_COMMENT_INPUTS=1000000 MMD_MUTANTS_PER_FIXTURE=20 CI=true npx vitest run tests/differential/state-mermaid.test.ts
-```
-
-Each `<diagram>-source-reading.test.ts` beside it runs with its
-`<diagram>-mermaid.test.ts`.
-
-The time limit of each check grows with its number of inputs (`timeoutFor` of
-`tests/differential/run-size.ts`); a check that still times out under a high
-load is run again when the load is lower, before it is judged.
-
-The work is done when every fixture passes the four layers and the mutation test
-shows no new mismatch.
+The work is done when every fixture passes the fixture test, the recorded trees
+pass the tree check of `@mmd-toolkit/tests` and give the Db that the corpus
+records, and every difference that the explorations find is closed by a fixture.
 
 ### 4.9 Documents
 
@@ -514,7 +506,8 @@ Change the `.md` and the `.ja.md` in the same change.
   specification for the types.
 - `docs/development.md`: what is implemented, and how the diagram's parser is
   built.
-- `docs/testing.md`: the list of fixtures, and the checks of the diagram's tree.
+- `docs/testing.md`: the list of fixtures, and what the tests of the diagram
+  check.
 - `docs/error-positions.md`: the positions in the diagram.
 
 Run `npx prettier --write` on them, and pass `pnpm run lint:docs` and
@@ -525,9 +518,9 @@ Run `npx prettier --write` on them, and pass `pnpm run lint:docs` and
 
 Show as the result: what was implemented, file by file; the gaps in the
 specification that were found, and which of them are still open; the number of
-tests and their results; the number of snapshots (new, and changed, by kind);
-the exported types; the changed documents. For each claim, show whether it was
-run, read, or not checked.
+tests and their results; the number of recorded results (new, and changed, by
+kind); the exported types; the changed documents. For each claim, show whether
+it was run, read, or not checked.
 
 ## 5. Langium diagrams
 
@@ -554,34 +547,36 @@ Langium.
   before implementing it, list every position where the form can stand, every
   unit that can come before and after it there (whitespace, a separator, a
   comment, another such form, the header), and every place that reads the text
-  of a range that can now contain it (the name text of a subgraph, the Db text
-  of a style). Compare generated inputs over that whole list with mermaid.js,
-  and report every difference to the specification at once. When the empty
+  of a range that can now contain it (the name text of a subgraph, the text of a
+  style). Compare generated inputs over that whole list with mermaid.js, and
+  report every difference to the specification at once. When the empty
   description blocks before a separator were accepted in this way one place at a
   time, the place of a block after a subgraph name, the whitespace around the
-  blocks, the Db text of a style, the header line, a comment after a block, and
-  a run of blocks inside a statement were found one after another.
+  blocks, the text of a style, the header line, a comment after a block, and a
+  run of blocks inside a statement were found one after another.
 - A gap in the specification is found during other work: fix the specification
   first (4.2, step 2), then do the above.
 - A known divergence is added (its document `known-divergences/<id>.md`, listed
   in known-divergences.md): the parser does not tell it apart, so the tests do.
-  Add its branch to the checks of `tests/fixtures.test.ts`, and its reference
-  reading, checked under "marked fixtures differ only by their divergence", as
-  the specification defines it: a reference input in
-  `tests/helpers/reference-inputs.ts`, or mermaid.js with the divergence removed
-  from its lexer (`withoutDivergences` of `@mmd-toolkit/tests/mermaid`, as for
-  `comment-takes-character`), which the tests package provides; ask for it. Add
-  its declaration and the check of the declared differences to
-  `tests/differential/mermaid-comparison.ts` and the differential tests, with a
-  guard against a vacuous check. Take every lexical decision of the reference
-  input and of the declaration from the parser's units (4.6, step 2). Add it to
-  "Known divergences" in `docs/testing.md` and to the differences in the README.
+  Add its branch to the checks of `tests/fixtures.test.ts`, with a check under
+  "marked fixtures differ only by their divergence" that the input has the form
+  of the divergence, found by the parser's lexer, and, for a divergence that
+  goes one way, a reference input in `tests/helpers/reference-inputs.ts` whose
+  Db must be that of mermaid.js for the input. For a divergence that goes both
+  ways, the reading of the specification is recorded in the corpus
+  (`specified.json`, by mermaid.js with the divergence removed from its lexer),
+  which the tests package makes; ask for it. Add its declaration to
+  `tests/helpers/known-divergences.ts`, and the check of the declared
+  differences to `tools/explore/mermaid-comparison.ts` and the explorations,
+  with a guard against a vacuous check. Take every lexical decision of the
+  reference input and of the declaration from the parser's units, not from rules
+  of its own. Add it to "Known divergences" in `docs/testing.md` and to the
+  differences in the README.
 - When the specification claims that its reference reading explains every
   difference (in sequence, `comment-takes-character`), check the claim on
-  generated inputs as well as on the fixtures (4.6, step 6): put the form at
+  generated inputs as well as on the fixtures (4.6, step 4): put the form at
   every position of the accepted fixtures and compare `parse()` of each input
-  with mermaid.js in the reference reading, in a differential test whose size an
-  environment variable raises (`MMD_COMMENT_INPUTS`). The other known
+  with mermaid.js in the reference reading, in an exploration. The other known
   divergences are declared and checked there as everywhere. Report every
   remaining class to the specification with an example, the result of
   mermaid.js, and the count.
@@ -596,12 +591,12 @@ skill). The parser does not change behavior before the specification does.
    as in 4.2, step 2.
 2. Fix what is tied to the version. `grep -rn '12\.0\.0' packages/parser` finds
    it: the README, `docs/development.md`, `docs/testing.md`, and the comment of
-   `tests/differential/common-inputs.ts`, each with its `.ja.md`.
+   `tools/explore/common-inputs.ts`, each with its `.ja.md`.
 3. When diagram type ids are added or changed: following `detection.md` and the
    DiagramType of `ast.md`, fix `src/detection.ts`, `DiagramType` in
    `src/ast.ts`, `allDiagramTypes` in `tests/types.test.ts`,
    `tests/detection.test.ts`, and the headers in
-   `tests/differential/common-inputs.ts`.
+   `tools/explore/common-inputs.ts`.
 4. Check that tables copied from lists of the specification (in the flowchart,
    the letter ranges of `src/unicode-letters.ts`, which flowchart and class
    share) still agree with it.

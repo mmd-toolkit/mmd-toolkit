@@ -78,19 +78,23 @@ export type DiagramTokenKind =
 /**
  * ast.md, Tokens: the token kinds, shared by all diagram types: those of
  * the diagram's own tokens and of the frontmatter (see
- * {@link DiagramTokenKind}), and two more, the same in every diagram:
+ * {@link DiagramTokenKind}), and three more, the same in every diagram:
  *
- * - `"StringFragment"`: A piece of a quoted string that a comment region cuts:
- *   the text before or after the region, without the closing or the
- *   opening quote.
+ * - `"StringFragment"`: A piece of a quoted string that a comment region, a
+ *   `;` that the line rule ignores, or a directive cuts: the text before or
+ *   after it, without the closing or the opening quote.
  * - `"Directive"`: A directive outside every other token and every comment.
+ * - `"IgnoredSemicolon"`: A `;` that the `style` and `classDef` line rule
+ *   ignores, outside every comment, which no grammar reads.
  */
 export type TokenKind =
   | DiagramTokenKind
-  /** A piece of a quoted string that a comment region cuts: the text before or after the region, without the closing or the opening quote. */
+  /** A piece of a quoted string that a comment region, a `;` that the line rule ignores, or a directive cuts: the text before or after it, without the closing or the opening quote. */
   | "StringFragment"
   /** A directive outside every other token and every comment. */
   | "Directive"
+  /** A `;` that the `style` and `classDef` line rule ignores, outside every comment, which no grammar reads. */
+  | "IgnoredSemicolon"
 
 /**
  * ast.md, Tokens: one lexical unit of the diagram, a directive that lies
@@ -186,10 +190,9 @@ export interface ErrorDiagram extends NodeBase {
 
 /**
  * ast.md, Shared leaf nodes > Identifier: a name that the author chooses,
- * such as an id. Its tokens are `Identifier` tokens: one, or more when
- * directives cut it, or when the grammar of its position allows whitespace
- * between the parts of a name; its range covers them all. The whitespace
- * between its tokens is not part of its name. No child fields.
+ * such as an id, which contains no whitespace. Its token is one
+ * `Identifier` token, which a directive or a `;` that the line rule
+ * ignores may not cut. No child fields.
  *
  * ```text
  * A --> B
@@ -197,14 +200,11 @@ export interface ErrorDiagram extends NodeBase {
  *
  * click A,B href "u"
  *         ^
- *
- * A%%{init: {}}%%B --> C
- * ^^^^^^^^^^^^^^^^
  * ```
  */
 export interface Identifier extends NodeBase {
   readonly type: "Identifier"
-  /** The texts of its tokens, joined in order (ast.md, Nodes). */
+  /** The written texts of its units, joined in order (ast.md, Nodes). */
   readonly name: string
 }
 
@@ -221,7 +221,7 @@ export interface Identifier extends NodeBase {
  */
 export interface StringLiteral extends NodeBase {
   readonly type: "StringLiteral"
-  /** Its content: the text of its range without the delimiters of the string, however they nest. */
+  /** Its content: its written text without the delimiters of the string, however they nest. */
   readonly value: string
   /** The source text of its range, with nothing left out and nothing converted: its quotes, and a comment region inside it, are part of it. */
   readonly raw: string

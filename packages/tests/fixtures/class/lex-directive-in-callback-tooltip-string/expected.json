@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md A directive is a token boundary: a directive inside the tooltip string of a callback statement, accepted as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

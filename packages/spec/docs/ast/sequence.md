@@ -2,23 +2,23 @@
 
 Japanese version: [sequence.ja.md](./sequence.ja.md)
 
-This document defines the nodes and tokens of the tree for the diagram type
-`sequence`. The shared parts of the tree are defined in [ast.md](../ast.md); how
-the source is read, and which grammar rule makes which node, is defined in
+This document defines the nodes of the tree for the diagram type `sequence`. The
+shared parts of the tree are defined in [ast.md](../ast.md); how the source is
+read, and which grammar rule makes which node, is defined in
 [diagrams/sequence.md](../diagrams/sequence.md).
 
 The body of this diagram type is a [SequenceDiagram](#sequencediagram). The
 values of the fields keep what the author wrote, as [ast.md](../ast.md#nodes)
-defines the text of a range; they are not in the converted form of
-[common.md](../common.md#reading-a-source), which the Db normalization of
-[diagrams/sequence.md](../diagrams/sequence.md#building-the-summary-from-the-tree)
-applies where it uses them. Whitespace outside the range of a node is not part
-of its value; it matters to the Db in one place, the title, where the Db
-normalization reads it from the source.
+defines the written text of a value; they are not in the converted form of
+[common.md](../common.md#reading-a-source). The whitespace that mermaid.js reads
+as part of a value is part of its written text (see [Nodes](../ast.md#nodes)):
+in this diagram type, the whitespace of a title, and a U+2028 or U+2029 in a box
+text (see [SequenceTitleStatement](#sequencetitlestatement) and
+[SequenceBoxText](#sequenceboxtext)). Other whitespace is not part of any value.
 
-A **participant** is one of the lifelines of the diagram, named by an id. It is
-called an actor in the Db of mermaid.js; this document keeps the word actor for
-the participants that the keyword `actor` declares.
+A **participant** is one of the lifelines of the diagram, named by an id.
+mermaid.js calls it an actor; this document keeps the word actor for the
+participants that the keyword `actor` declares.
 
 ## Nodes
 
@@ -28,8 +28,7 @@ the participants that the keyword `actor` declares.
 | ------ | ------------------------- | -------------------------------- |
 | `body` | list of SequenceStatement | The statements, in source order. |
 
-Child fields: `body`. The keyword `sequenceDiagram` is not a field. The range
-runs from the keyword to the last token of the diagram.
+Child fields: `body`. The keyword `sequenceDiagram` is not a field.
 
 **SequenceStatement** is a SequenceParticipantStatement,
 SequenceDestroyStatement, SequenceBoxStatement, SequenceMessageStatement,
@@ -58,8 +57,7 @@ A `participant` or `actor` statement.
 | `data`    | SequenceDataBlock or null | The data block after the id; null when there is none.                                    |
 | `alias`   | SequenceText or null      | The text after `as`, which mermaid.js reads as the description; null when there is none. |
 
-Child fields: `id`, `data`, `alias`. The range starts at `create` when it is
-there.
+Child fields: `id`, `data`, `alias`.
 
 ### SequenceDestroyStatement
 
@@ -70,9 +68,7 @@ A `destroy` statement.
 | `created` | boolean            | Whether `create` comes before the keyword. |
 | `id`      | SequenceIdentifier | The id after `destroy`.                    |
 
-Child fields: `id`. The range starts at `create` when it is there. With
-`created`, mermaid.js creates the participant instead of destroying it (see
-[Building the summary](../diagrams/sequence.md#building-the-summary-from-the-tree)).
+Child fields: `id`.
 
 ### SequenceBoxStatement
 
@@ -87,25 +83,37 @@ Child fields: `text`, `body`.
 
 The text written after `box`, a `box-text` of the grammar. mermaid.js reads a
 colour and a name from it, and which part is the colour depends on a question
-that it asks the browser (see
-[Box colours](../diagrams/sequence.md#box-colours)). The node therefore holds
-the text as a whole and the two parts into which the lexer divides it, as
-mermaid.js does before it asks; it does not say whether the first part is a
-colour.
+that it asks the browser. The node therefore holds the text as a whole and the
+two parts into which the lexer divides it, as mermaid.js does before it asks; it
+does not say whether the first part is a colour.
 
 | Field            | Type                    | Meaning                                                                                   |
 | ---------------- | ----------------------- | ----------------------------------------------------------------------------------------- |
-| `value`          | string                  | The text of its range.                                                                    |
+| `value`          | string                  | Its written text: the whole text, the whitespace between its two parts included.          |
 | `colorCandidate` | SequenceLiteral or null | The `color-candidate` unit, the part that mermaid.js asks about; null when there is none. |
 | `remainder`      | SequenceLiteral or null | The `text` unit after the candidate; null when there is none.                             |
 
 Child fields: `colorCandidate`, `remainder`. Each part is a unit of its own (see
-[The line context](../diagrams/sequence.md#the-line-context)), and the range of
-each SequenceLiteral is the range of its unit, without the whitespace at its
-ends. A part is one token, unless a directive cuts it into tokens of the same
-kind (see [Tokens](#tokens)): in `box Gr%%{init: {}}%%oup`, the candidate is
-`Group`, whose range covers the `RawText` tokens `Gr` and `oup` and the
-directive between them. [fixture:
+[The line context](../diagrams/sequence.md#the-line-context)). mermaid.js reads
+every U+2028 and U+2029 of the text, which change how it splits the text, and
+trims the other whitespace at the ends of the parts. So in a box text, U+2028
+and U+2029 count as characters that are not whitespace: the written text of each
+SequenceLiteral is its unit without the other whitespace at its ends, and the
+box text ends where its last part ends; the whitespace between the two parts is
+in the value of the box text and in neither part. [fixture:
+sequence/tokens-box-text-space-between-parts] [fixture:
+sequence/tokens-box-text-directive-then-space-before-remainder] `box red-team`
+followed by U+2028 has the remainder `-team` and U+2028, and with a space before
+and after the U+2028, the remainder `-team`, a space, and U+2028, the space
+after it outside; `box aqua`, two spaces, and U+2028 has the remainder U+2028
+alone, a value of whitespace only; and `box red-team` followed by two spaces has
+the remainder `-team`. [fixture: sequence/db-box-line-separator-at-end]
+[fixture: sequence/db-box-spaces-around-line-separator-at-end] [fixture:
+sequence/db-box-colour-then-spaces-and-line-separator] [fixture:
+sequence/tokens-box-text-trailing-spaces] In `box Gr%%{init: {}}%%oup`, the
+candidate is `Group`, and in `box red%%{init: {}}%%-team`, as in `box red-team`,
+the candidate is `red` and the remainder `-team`. [fixture:
+sequence/tokens-box-text-directive-between-parts-without-space] [fixture:
 sequence/tokens-box-text-directive-in-candidate] [fixture:
 sequence/tokens-box-text-directive-in-remainder] In `box Purple Alice & John`,
 the candidate is `Purple` and the remainder `Alice & John`; in
@@ -141,16 +149,16 @@ The arrow of a message.
 
 | Field         | Type   | Meaning                                                      |
 | ------------- | ------ | ------------------------------------------------------------ |
-| `value`       | string | The text of its range.                                       |
+| `value`       | string | Its written text.                                            |
 | `startMarker` | string | The marker at the end of the source: one of the words below. |
 | `line`        | string | `solid` for `-`, `dotted` for `--`.                          |
 | `endMarker`   | string | The marker at the end of the target: one of the words below. |
 
-No child fields. Its range is its token. An arrow is written as an optional
-start marker, the line, `-` or `--`, and then its end marker; with no end
-marker, a `>` follows the line (`->`, `-->`), except after a half marker at the
-start, where nothing follows (`/|-`). Each of the 26 arrows has its own
-combination of these fields. The markers are:
+No child fields. An arrow is written as an optional start marker, the line, `-`
+or `--`, and then its end marker; with no end marker, a `>` follows the line
+(`->`, `-->`), except after a half marker at the start, where nothing follows
+(`/|-`). Each of the 26 arrows has its own combination of these fields. The
+markers are:
 
 - `none`: no marker;
 - `arrow`: `>>` at the end, `<<` at the start;
@@ -211,12 +219,18 @@ of `details` is the id of an element of the page.
 
 ### SequenceTitleStatement
 
-| Field   | Type                    | Meaning                                                             |
-| ------- | ----------------------- | ------------------------------------------------------------------- |
-| `value` | SequenceLiteral or null | The text after `title` or `title:`; null when it is all whitespace. |
+| Field   | Type            | Meaning                                                                                                      |
+| ------- | --------------- | ------------------------------------------------------------------------------------------------------------ |
+| `value` | SequenceLiteral | The `title-text` unit: the text after `title` or `title:` and one whitespace character, whitespace included. |
 
-Child fields: `value`. The title of the Db keeps the whitespace written around
-the value, which the Db normalization reads from the source.
+Child fields: `value`. mermaid.js keeps the title as it is written, whitespace
+included, so the value is the written text of the whole `title-text` unit:
+`title`, two spaces, `x`, and two spaces has the value of a space, `x`, and two
+spaces; `title` followed by four spaces the value of three spaces; and `title`,
+a line break, two spaces, and `A->>B: x` the value of the two spaces and
+`A->>B: x`. [fixture: sequence/db-title-spaces] [fixture:
+sequence/db-title-whitespace-only] [fixture:
+sequence/db-title-next-line-indented]
 
 ### SequenceAccTitleStatement
 
@@ -246,11 +260,7 @@ sequence/db-acc-descr-empty-replaces]
 ### SequenceAccDescrBlockStatement
 
 An `accDescr {` statement with its text and its `}`, which it lacks when the
-text ends inside it. It is a node type of its own because it has a different
-effect on the Db than an `accDescr:` statement: a block that is not closed sets
-the empty description, whatever its text, and a closed block without text
-changes nothing (see
-[sequence.md](../diagrams/sequence.md#building-the-summary-from-the-tree)).
+text ends inside it.
 
 | Field    | Type                    | Meaning                                                                                                                 |
 | -------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------- |
@@ -303,8 +313,7 @@ A block of sections: `alt` with `else`, `par` and `par_over` with `and`, and
 
 Child fields: `sections`. Every section has the same form, a text and the
 statements after it, so the first one, after the block's keyword, is a section
-like those after `else`, `and`, or `option`. mermaid.js gives the first section
-an entry of another type in its Db; that is a matter of the Db normalization.
+like those after `else`, `and`, or `option`.
 
 ### SequenceSection
 
@@ -313,18 +322,16 @@ an entry of another type in its Db; that is a matter of the Db normalization.
 | `text` | SequenceText or null      | The text after the keyword that starts the section; null when there is none. |
 | `body` | list of SequenceStatement | The statements up to the next section or to `end`, in source order.          |
 
-Child fields: `text`, `body`. The range starts at the keyword that starts the
-section, `else`, `and`, or `option`, or, for the first section, the keyword of
-the block, and ends at its last token; `end` belongs to the block.
+Child fields: `text`, `body`.
 
 ### SequenceIgnoredStatement
 
 A line that mermaid.js reads as one `invalid` unit and ignores, such as `)` or
 `/` alone (see [Grammar](../diagrams/sequence.md#grammar)).
 
-| Field   | Type   | Meaning                                   |
-| ------- | ------ | ----------------------------------------- |
-| `value` | string | The text of its range: the one character. |
+| Field   | Type   | Meaning                                                              |
+| ------- | ------ | -------------------------------------------------------------------- |
+| `value` | string | Its written text (see [ast.md](../ast.md#nodes)): the one character. |
 
 No child fields.
 
@@ -334,16 +341,15 @@ The id of a participant: a name that may contain whitespace (see
 [Id runs](../diagrams/sequence.md#id-runs) and
 [The id context](../diagrams/sequence.md#the-id-context)).
 
-| Field  | Type   | Meaning                                                |
-| ------ | ------ | ------------------------------------------------------ |
-| `name` | string | The text of its range (see [ast.md](../ast.md#nodes)). |
+| Field  | Type   | Meaning                                           |
+| ------ | ------ | ------------------------------------------------- |
+| `name` | string | Its written text (see [ast.md](../ast.md#nodes)). |
 
 No child fields. An id is one unit. Its name has no whitespace at its ends, and
-whitespace inside it is part of it, also next to a directive that cuts the unit.
-Its tokens are `Identifier` tokens: one, or more when a directive inside the
-unit cuts it (see [Tokens](#tokens)). `participant A B` has the participant
-`A B`, and `participant A%%{init: {}}%% c%%B` the participant `A c%%B`, whose
-one unit is cut into the tokens `A` and `c%%B`. [fixture:
+whitespace inside it is part of it, also next to a directive inside the unit.
+
+`participant A B` has the participant `A B`, and
+`participant A%%{init: {}}%% c%%B` the participant `A c%%B`. [fixture:
 sequence/lex-id-context-space] [fixture:
 sequence/lex-directive-in-id-before-space]
 
@@ -357,20 +363,22 @@ an optional wrap prefix.
 | `wrap`  | string or null          | `wrap` for the prefix `wrap:`, `nowrap` for `nowrap:`, with or without the `:` before it; null when there is no prefix. |
 | `value` | SequenceLiteral or null | The text after the prefix; null when there is none.                                                                     |
 
-Child fields: `value`. The range runs from the prefix, or from the text when
-there is no prefix, to the end of the text. A text part with neither a prefix
-nor a text makes no node: the field that would hold it is null.
+Child fields: `value`. A text part with neither a prefix nor a text makes no
+node: the field that would hold it is null.
 
 ### SequenceLiteral
 
 A text without quotes that the author writes at a position where the grammar
 allows whitespace in it and decides where it ends.
 
-| Field   | Type   | Meaning                                                |
-| ------- | ------ | ------------------------------------------------------ |
-| `value` | string | The text of its range (see [ast.md](../ast.md#nodes)). |
+| Field   | Type   | Meaning                                           |
+| ------- | ------ | ------------------------------------------------- |
+| `value` | string | Its written text (see [ast.md](../ast.md#nodes)). |
 
-No child fields. Its value has no whitespace at its ends.
+No child fields. Its value has whitespace at its ends only where mermaid.js
+reads it: in a title, and in the parts of a box text, where a U+2028 or U+2029
+counts as no whitespace (see [SequenceTitleStatement](#sequencetitlestatement)
+and [SequenceBoxText](#sequenceboxtext)).
 
 ### SequenceDataBlock
 
@@ -379,57 +387,4 @@ No child fields. Its value has no whitespace at its ends.
 | `value` | string | The text between `@{` and `}`, as written, whitespace included. |
 
 No child fields. The tree does not read the content (see
-[embedded-data-opaque](../known-divergences/embedded-data-opaque.md)). Its range
-runs from `@{` to `}`.
-
-## Tokens
-
-The tokens are made from the units of
-[diagrams/sequence.md](../diagrams/sequence.md#lexical-structure). Every unit
-that is not all whitespace is one token, of the kind that this table gives for
-it:
-
-| Kind         | Units                                                                                                                                                                                                                                                                                                                                                                                                              |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Keyword`    | the keywords: `sequenceDiagram`, `participant`, `actor`, `create`, `destroy`, `as`, `box`, `loop`, `rect`, `opt`, `alt`, `else`, `par`, `par_over`, `and`, `critical`, `option`, `break`, `end`, `note`, `left of`, `right of`, `over`, `links`, `link`, `properties`, `details`, `activate`, `deactivate`, `autonumber`, and `off`; the `title`, `title:`, `accTitle`, and `accDescr` units; a `wrap-prefix` unit |
-| `Identifier` | an `id` unit, the unit of a [SequenceIdentifier](#sequenceidentifier)                                                                                                                                                                                                                                                                                                                                              |
-| `Numeric`    | a `number` unit                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `RawText`    | a `text`, `color-candidate`, `title-text`, `description-text`, `description-block-text`, or `data-text` unit; an `invalid` unit                                                                                                                                                                                                                                                                                    |
-| `Punctuator` | an `arrow` unit; `+`, `-`, `()`, `,`, `:`, `{`, `}`, and `@{`; a `newline` unit read from `;`                                                                                                                                                                                                                                                                                                                      |
-
-A token holds its unit without the whitespace at its ends. A `newline` unit read
-from line feeds is whitespace and no token. Where a directive lies between two
-characters of a `RawText` or `Identifier` unit that are not whitespace, the unit
-is cut there: each fragment, without the whitespace at its ends, is a token, and
-the directive between the fragments is a `Directive` token (see
-[ast.md](../ast.md#directive)). A directive inside a unit of another kind makes
-the input rejected (see
-[Directives inside units](../diagrams/sequence.md#directives-inside-units)).
-
-- The `:` before a text, and the `:` after `accTitle` and `accDescr`, are
-  `Punctuator` tokens of the statement and belong to no field.
-- The wrap prefix of a text, such as `wrap:` or `:nowrap:`, is one `Keyword`
-  token, the first token of its [SequenceText](#sequencetext).
-- A `;` that ends a statement is a `Punctuator` token that belongs to no
-  statement, as a line break belongs to none.
-- A `;` that the line rule ignores and that is a token of its own (see
-  [Tokens](../ast.md#tokens)) has the kind of the unit that the context at its
-  place reads for a `;`. It is a `Punctuator` in the statement context, where it
-  is a `newline` unit, also right after a diagram comment read there (see
-  [Comment](../ast.md#comment)): in `loop style:#x;` the text `style:` leaves
-  the line context, `#x` is a comment of the statement context, and the `;`
-  after it is a `Punctuator` token. It is a `RawText` in the title, description,
-  description block, and data contexts, which read a `;` as text: with
-  `accTitle: style:#x;`, the title is `style:#x` and the `;` after it is a
-  `RawText` token, and in `participant A@{ style:#x; }` the `;` after `style:#x`
-  is a `RawText` token, with the whitespace and the `}` after it outside it.
-  After `participant A@{ "style": "x:#y" }`, a `;` is a `Punctuator` token. A
-  `;` that lies between characters of a token, as in `"x:#y;"` inside a data
-  block, is part of that token. [fixture:
-  sequence/tokens-acc-title-ignored-semicolon] [fixture:
-  sequence/tokens-acc-descr-ignored-semicolon] [fixture:
-  sequence/tokens-acc-descr-block-ignored-semicolon] [fixture:
-  sequence/tokens-data-block-ignored-semicolon-alone] [fixture:
-  sequence/tokens-data-block-then-ignored-semicolon] [fixture:
-  sequence/tokens-loop-comment-then-ignored-semicolon] [fixture:
-  sequence/tokens-comment-then-ignored-semicolon]
+[embedded-data-opaque](../known-divergences/embedded-data-opaque.md)).

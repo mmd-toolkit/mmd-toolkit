@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "A",
             "range": [
               21,
@@ -68,7 +68,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "A",
             "range": [
               31,
@@ -215,7 +215,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         21,
@@ -251,7 +251,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         31,
@@ -288,10 +288,10 @@
     },
     {
       "type": "StringFragment",
-      "value": "\"u",
+      "value": "\"u\n",
       "range": [
         38,
-        40
+        41
       ],
       "loc": {
         "start": {
@@ -299,22 +299,22 @@
           "column": 15
         },
         "end": {
-          "line": 3,
-          "column": 17
+          "line": 4,
+          "column": 0
         }
       }
     },
     {
       "type": "StringFragment",
-      "value": "v\"",
+      "value": "  v\"",
       "range": [
-        50,
+        48,
         52
       ],
       "loc": {
         "start": {
           "line": 5,
-          "column": 2
+          "column": 0
         },
         "end": {
           "line": 5,

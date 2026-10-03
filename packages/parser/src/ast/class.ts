@@ -241,9 +241,9 @@ export interface ClassArrow extends NodeBase {
 export interface ClassNamespaceStatement extends NodeBase {
   readonly type: "ClassNamespaceStatement"
   /** The name parts before a backquoted name, as in ClassName; null when there are none. */
-  readonly prefix: Identifier | null
+  readonly prefix: ClassIdentifier | null
   /** The name of the namespace: its name parts, or its backquoted name. */
-  readonly name: Identifier | StringLiteral
+  readonly name: ClassIdentifier | StringLiteral
   /** The string between `[` and `]`; null when there is none. */
   readonly label: StringLiteral | null
   /** The items of the body, in source order. */
@@ -487,9 +487,31 @@ export interface ClassAccDescrBlockStatement extends NodeBase {
 }
 
 /**
+ * ast/class.md, ClassIdentifier: the name parts of a class name or a
+ * namespace name, with the `.` between them, which may be written with
+ * whitespace between them. Its name is the written texts of the parts and
+ * the `.`, joined in order, without the whitespace, which mermaid.js does
+ * not read. Its tokens are `RawText` tokens, one for each run of parts
+ * with no whitespace between them.
+ *
+ * ```text
+ * class Foo Bar
+ *       ^^^^^^^
+ *
+ * class a.b.C
+ *       ^^^^^
+ * ```
+ */
+export interface ClassIdentifier extends NodeBase {
+  readonly type: "ClassIdentifier"
+  /** The texts of its parts, joined in order, without the whitespace between them. */
+  readonly name: string
+}
+
+/**
  * ast/class.md, ClassName: a class name. Its child fields are `prefix`, `name`,
  * and `generic`. The name parts with whitespace or `.` between them are one
- * Identifier, whose name leaves the whitespace out.
+ * ClassIdentifier, whose name leaves the whitespace out.
  *
  * ```text
  * class Map~K, V~
@@ -502,9 +524,9 @@ export interface ClassAccDescrBlockStatement extends NodeBase {
 export interface ClassName extends NodeBase {
   readonly type: "ClassName"
   /** The name parts written before a backquoted name; null when there are none. */
-  readonly prefix: Identifier | null
+  readonly prefix: ClassIdentifier | null
   /** The name parts, or the backquoted name. */
-  readonly name: Identifier | StringLiteral
+  readonly name: ClassIdentifier | StringLiteral
   /** The text between the two `~` of a generic type; null when there is none or it is empty. */
   readonly generic: ClassLiteral | null
 }
@@ -630,7 +652,7 @@ export interface ClassAnnotation extends NodeBase {
  */
 export interface ClassLiteral extends NodeBase {
   readonly type: "ClassLiteral"
-  /** The text of its range. */
+  /** Its written text. */
   readonly value: string
 }
 
@@ -647,7 +669,7 @@ export interface ClassLiteral extends NodeBase {
  */
 export interface ClassIgnoredText extends NodeBase {
   readonly type: "ClassIgnoredText"
-  /** The text of its range. */
+  /** Its written text. */
   readonly value: string
 }
 
@@ -671,6 +693,7 @@ export type ClassNode =
   | ClassAccTitleStatement
   | ClassAccDescrStatement
   | ClassAccDescrBlockStatement
+  | ClassIdentifier
   | ClassName
   | ClassMethod
   | ClassAttribute

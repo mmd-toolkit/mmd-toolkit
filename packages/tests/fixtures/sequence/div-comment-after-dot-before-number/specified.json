@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...eDiagramautonumber .%% c5A->>B: x\n----------------------^\nExpecting 'NEWLINE', 'NUM', 'off', got 'ACTOR'"
+  }
+}

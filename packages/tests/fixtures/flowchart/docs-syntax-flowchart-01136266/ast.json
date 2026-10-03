@@ -1274,19 +1274,19 @@
     },
     {
       "type": "RawText",
-      "value": "view: collapsed",
+      "value": " view: collapsed ",
       "range": [
-        125,
-        140
+        124,
+        141
       ],
       "loc": {
         "start": {
           "line": 8,
-          "column": 10
+          "column": 9
         },
         "end": {
           "line": 8,
-          "column": 25
+          "column": 26
         }
       }
     },

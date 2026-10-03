@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Rejections outside the grammar: a class statement in the body of a namespace adds its class, so the annotation statement after the namespace is accepted."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [
+          "i"
+        ],
+        "styles": [],
+        "parent": "N"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "N",
+        "label": "N",
+        "classes": [
+          "A"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

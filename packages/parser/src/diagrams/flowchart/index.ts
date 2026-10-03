@@ -29,24 +29,18 @@ export function lexFlowchart(input: DiagramInput): FlowchartUnits {
  * `flowchart-elk`, and `swimlane`, which share one grammar. It reads the
  * diagram text, which has no directives, with the rule of Whitespace after
  * `}`: the lexer of Lexical structure divides it into units, and the
- * grammar of Grammar makes the statements, the kinds of the units, and the
- * tokens from them. The common part finishes the tree (see
+ * grammar of Grammar makes the statements and the tokens from them. The common part finishes the tree (see
  * `finishDiagram`).
  */
 export function parseFlowchartDiagram(input: DiagramInput): Root {
-  const { text, ...lexing } = lexFlowchart(input)
+  const lexing = lexFlowchart(input)
   const syntax = new FlowchartGrammar(lexing, input.lexer).parseDiagram()
   return finishDiagram(
     input,
-    text,
     {
-      units: syntax.units,
       tokens: syntax.tokens,
       // ast/flowchart.md: the flowchart lexer reads no diagram comments.
       comments: [],
-      // ast/flowchart.md, Tokens: a `;` that the line rule ignores and that
-      // stands alone is a `Punctuator`, wherever it lies.
-      ignoredSemicolonKindAt: () => "Punctuator",
     },
     // ast/flowchart.md, FlowchartDiagram: its tokens are all the tokens of
     // the diagram text, from the header keyword to the last token.

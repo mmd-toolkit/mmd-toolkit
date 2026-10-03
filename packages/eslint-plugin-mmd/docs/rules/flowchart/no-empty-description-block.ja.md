@@ -38,7 +38,7 @@ mermaid.js もそう読む。
 そこでも説明を設定せず、規則は同じように報告するが、1 つだけ例外がある。
 題のない subgraph の名前の後では、空のブロックの周りの空白が、
 subgraph の名前の一部になり、id を決めることがある
-（仕様の [木から要約を作る](../../../../spec/docs/diagrams/flowchart.ja.md#木から要約を作る)
+（tests パッケージの Db の文書の [木から要約を作る](../../../../tests/docs/db-from-tree/flowchart.ja.md#木から要約を作る)
 の subgraph の id）。
 名前そのものは空白を持たないのに、`subgraph S accDescr {}` のように、
 subgraph が名前でなく自動で作った id になると、

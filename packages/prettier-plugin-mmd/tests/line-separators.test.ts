@@ -64,6 +64,9 @@ const examples: readonly (readonly [string, string, string])[] = [
  *   `transparent`; without the character, `box aqua` has the fill `aqua`.
  *   The whitespace around the character stays up to it, and what follows it
  *   is dropped.
+ * - A `;` after the character at the end of the text stays: mermaid.js
+ *   removes a comment line that follows the character, with the line breaks
+ *   before it, and without the `;` the next line would join the text.
  * - A diagram comment goes on past a comment line that follows U+2029 on its
  *   line, so `C->>D: z` below is part of the comment, and with a line break
  *   in place of the U+2029 it is a message. The comment, the comment line, and
@@ -81,9 +84,29 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  box aqua  \u2028\n    participant A\n  end\n",
   ],
   [
+    "a `;` after U+2028 at the end of the text of a box",
+    "sequenceDiagram\nbox red\u2028 ;;\n\n  %% c\nparticipant A\nend\n",
+    "sequenceDiagram\n  box red\u2028 ;\n    %% c\n    participant A\n  end\n",
+  ],
+  [
+    "a `;` after U+2028 at the end of a title",
+    "sequenceDiagram\ntitle T\u2028;\n%% c\nA->>B: x\n",
+    "sequenceDiagram\n  title T\u2028;\n  %% c\n  A ->> B: x\n",
+  ],
+  [
+    "a `#` comment after U+2028, which joins no lines",
+    "sequenceDiagram\nA->>B:   x\u2028# c\nC->>D: y\n",
+    "sequenceDiagram\n  A ->> B: x # c\n  C ->> D: y\n",
+  ],
+  [
+    "a `%%` comment line after U+2028, which joins the next line",
+    "sequenceDiagram\nA->>B:   x\u2028%% c\nC->>D: y\n",
+    "sequenceDiagram\n  A->>B:   x\u2028%% c\nC->>D: y\n",
+  ],
+  [
     "U+2029 after a comment that a comment line follows",
     "sequenceDiagram\nA->>B: y #c\u2029%% d\nC->>D: z\n",
-    "sequenceDiagram\n  A ->> B: y #c\u2029%% d\nC->>D: z\n",
+    "sequenceDiagram\n  A->>B: y #c\u2029%% d\nC->>D: z\n",
   ],
 ]
 

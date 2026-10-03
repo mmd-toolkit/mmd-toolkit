@@ -152,7 +152,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         28,
@@ -189,19 +189,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"alias\": \"Q\"",
+      "value": " \"alias\": \"Q\" ",
       "range": [
-        32,
-        44
+        31,
+        45
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 16
+          "column": 15
         },
         "end": {
           "line": 2,
-          "column": 28
+          "column": 29
         }
       }
     },

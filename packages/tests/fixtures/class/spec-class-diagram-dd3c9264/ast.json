@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Dummy_Class",
             "range": [
               19,
@@ -198,7 +198,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Dummy_Class",
       "range": [
         19,

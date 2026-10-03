@@ -24,7 +24,10 @@
             }
           }
         },
-        "styles": [],
+        "styles": [
+          null,
+          null
+        ],
         "range": [
           18,
           30

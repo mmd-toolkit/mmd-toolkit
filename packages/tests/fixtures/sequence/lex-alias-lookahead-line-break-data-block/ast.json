@@ -230,7 +230,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         28,
@@ -267,19 +267,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\": \"queue\"",
+      "value": " \"type\": \"queue\" ",
       "range": [
-        32,
-        47
+        31,
+        48
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 16
+          "column": 15
         },
         "end": {
           "line": 2,
-          "column": 31
+          "column": 32
         }
       }
     },
@@ -302,7 +302,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "as",
       "range": [
         50,
@@ -338,7 +338,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         57,

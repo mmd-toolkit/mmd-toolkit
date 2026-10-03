@@ -1,0 +1,194 @@
+[
+  {
+    "text": "flowchart LR\nA-->B\n\u2028linkStyle 0 stroke:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028linkStyle 0 stroke:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028linkStyle 0 stroke:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028linkStyle 0 stroke:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029linkStyle 0 stroke:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029linkStyle 0 stroke:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029linkStyle 0 stroke:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029linkStyle 0 stroke:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028linkStyle 0 stroke:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028linkStyle 0 stroke:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028linkStyle 0 stroke:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028linkStyle 0 stroke:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 linkStyle 0 stroke:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 linkStyle 0 stroke:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 linkStyle 0 stroke:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 linkStyle 0 stroke:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028style A fill:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028style A fill:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028style A fill:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028style A fill:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029style A fill:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029style A fill:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029style A fill:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029style A fill:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028style A fill:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028style A fill:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028style A fill:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028style A fill:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 style A fill:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 style A fill:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 style A fill:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 style A fill:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028classDef c fill:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028classDef c fill:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028classDef c fill:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028classDef c fill:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029classDef c fill:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029classDef c fill:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029classDef c fill:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2029classDef c fill:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028classDef c fill:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028classDef c fill:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028classDef c fill:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n  \u2028classDef c fill:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 classDef c fill:red;",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 classDef c fill:red;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 classDef c fill:red ;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  },
+  {
+    "text": "flowchart LR\nA-->B\n\u2028 classDef c fill:red;;\n",
+    "note": "a style, classDef, or linkStyle line that starts with U+2028 or U+2029 and ends with a ';': the first formatting kept the ';' and the second dropped it"
+  }
+]

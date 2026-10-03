@@ -106,5 +106,14 @@
       }
     ],
     "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "flowchart": {
+        "nodeSpacing": 1,
+        "rankSpacing": 1
+      }
+    },
+    "title": "Subgraph nodeSpacing and rankSpacing example"
   }
 }

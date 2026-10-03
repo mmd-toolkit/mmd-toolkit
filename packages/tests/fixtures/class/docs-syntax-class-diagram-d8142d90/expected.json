@@ -30,5 +30,12 @@
     "notes": [],
     "namespaces": [],
     "interfaces": []
+  },
+  "embedded": {
+    "config": {
+      "class": {
+        "hideEmptyMembersBox": true
+      }
+    }
   }
 }

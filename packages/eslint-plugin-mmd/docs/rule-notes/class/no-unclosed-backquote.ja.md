@@ -9,7 +9,9 @@
 
 ## 木での現れ方
 
-`name` が、`closed` が偽の `StringLiteral` である `ClassName`。
+`name` が、`closed` が偽の `StringLiteral` である `ClassName`
+（`ClassName` の `name` は `ClassIdentifier` か `StringLiteral` で、
+`closed` を持つのは `StringLiteral` だけ）。
 ``class ` `` のようにバッククォート 1 つだけの名前も、閉じていない。
 
 ## fixture

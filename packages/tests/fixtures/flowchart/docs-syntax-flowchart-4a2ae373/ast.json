@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: subproc, label: \"This is a subprocess\"",
+      "value": " shape: subproc, label: \"This is a subprocess\" ",
       "range": [
-        21,
-        66
+        20,
+        67
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
-          "column": 53
+          "column": 54
         }
       }
     },

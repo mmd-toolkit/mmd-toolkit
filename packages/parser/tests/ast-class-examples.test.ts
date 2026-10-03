@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest"
 import type { Node, Range } from "../src/index.ts"
 import { parse, traverseNodes } from "../src/index.ts"
 import { examplesIn } from "./helpers/ast-examples.ts"
-import { checkTree } from "./helpers/check-tree.ts"
+import { problemsOfTree } from "./helpers/tree-problems.ts"
 import { allClassNodeTypes } from "./helpers/node-types.ts"
 
 // The comments of `src/ast/class.ts` show examples of the syntax of each
@@ -34,7 +34,7 @@ describe("the examples in the comments of the class node types", () => {
       const text = isDiagram ? input : HEADER + input
       const offset = isDiagram ? 0 : HEADER.length
       const root = parse(text)
-      checkTree(text, root)
+      expect(problemsOfTree(text, root)).toEqual([])
       const ranges: Range[] = []
       traverseNodes(root, {
         enterNode(node: Node) {

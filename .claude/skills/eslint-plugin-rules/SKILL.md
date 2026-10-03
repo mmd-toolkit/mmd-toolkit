@@ -48,12 +48,17 @@ after writing it.
   removed, the values that a function of the Db receives, whether the input is
   accepted. When the summary of the Db hides the fact, wrap the function of the
   Db that receives it and record what it is given.
-- Generate inputs: insert the text of the mistake at every line of the corpus,
-  with the separators, the whitespace, the comments, and the directives that can
-  come around it, and mutate the examples of the document. Compare the reports
-  of the rule with the fact in both directions: a mistake that is not reported,
-  and a report that is not a mistake. Run mermaid.js on every input that the
-  comparison needs.
+- Explore with generated inputs, to find what the corpus and the fixtures of the
+  rule lack. List the kinds of input that the rule meets (which statement the
+  mistake stands in, where in a line, which separator, whitespace, comment, or
+  directive stands next to it, which context it is in), and take each
+  combination once; mutate the examples of the document to find a kind that is
+  missing. Compare the reports of the rule with the fact in both directions: a
+  mistake that is not reported, and a report that is not a mistake. Run
+  mermaid.js on every input that the comparison needs. Do not repeat a kind to
+  raise a count. A failure that it finds is closed by a fixture (section 4), and
+  by a sentence of the specification where the specification did not state the
+  reading. Say in the report which kinds the exploration covers.
 - A rule whose condition depends on something defined anywhere in the diagram
   (ids, vertices that a statement creates) needs inputs where the definition
   comes after the use and where it comes before it, and a statement that creates
@@ -64,8 +69,9 @@ after writing it.
   do, and applies each suggestion; replace `<repo>` with the absolute path of
   the root of the repository, as in those scripts. Put the scripts outside the
   repository and run them with `node <file>`, never with `tsx`. Calls to
-  mermaid.js are serialized and slow: run a large check in the background, write
-  its output to a file, and read the counts, not only a sample.
+  mermaid.js are serialized and slow: run a check that takes long in the
+  background, write its output to a file, and read the counts, not only a
+  sample.
 
   ```ts
   import { Linter } from "<repo>/packages/eslint-plugin-mmd/node_modules/eslint/lib/api.js"
@@ -94,11 +100,16 @@ after writing it.
   `recommended`, and whether the rule offers suggestions come from the
   rule-ideas skill; a rule has no fix.
 - A suggestion is built in a function of its own, apart from `create`. Check its
-  result with mermaid.js: apply it to every input of the generated check, and
-  confirm that the parser accepts the text, that the Db is the one that the
-  message says (the Db of the text as the author meant it), and that the rule
-  reports less. A message states what is true after the suggestion is applied,
-  for every place where it is offered.
+  result with mermaid.js, in the exploration of section 2: apply it to the
+  inputs of the exploration, and confirm that the parser accepts the text, that
+  the Db is the one that the message says (the Db of the text as the author
+  meant it), and that the rule reports less. A message states what is true after
+  the suggestion is applied, for every place where it is offered. State what
+  each suggestion claims in the option `claims` of `testRule`: the test reads
+  the output with mermaid.js and checks the claim. A claim says all that the
+  message says and the Db can show (the value of a description, the text read as
+  statements, a line less in a text). What the Db cannot show is named with
+  `notShownByDb`, never passed silently.
 - Use the helpers of `src/utils/` before writing another. When a helper rests on
   an assumption that a new rule breaks, read the tree to decide it (not the
   text), and check the other rules that use the helper again.
@@ -108,8 +119,8 @@ after writing it.
   of operands would make unnecessary. When asked to tidy a rule, make it
   smarter, not shorter: the aim is that each decision is made once, and a line
   count is not the aim. Show that the behavior has not changed by running the
-  old and the new version on the same generated inputs and comparing the reports
-  and the suggestions, besides the snapshots.
+  old and the new version on the same inputs of an exploration and comparing the
+  reports and the suggestions, besides the snapshots.
 - A defect found in your own code is fixed without waiting to be told. An
   objection to a design that was decided for you is stated once, before
   implementing, with the code open; if the answer does not change, implement
@@ -144,11 +155,11 @@ work as done.
 | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | A rule file `src/rules/<path>.ts`                    | `tests/rules/<path>.test.ts`                                                                                                             |
 | The handlers of a rule of a diagram type             | the same, and `tests/diagram-rules.test.ts`                                                                                              |
-| A helper of `src/utils/`                             | the tests of the rules that import it (search for the import)                                                                            |
+| A helper of `src/utils/`                             | the tests of the rules that import it (search for the import); `tests/subgraph-ids.test.ts` for `subgraph-ids.ts`                        |
 | The fixture directory of a rule                      | `tests/rules/<path>.test.ts` and `tests/rule-fixtures.test.ts`                                                                           |
 | The examples of the English document of a rule       | `tests/rules/<path>.test.ts` and `tests/rule-cases.test.ts`                                                                              |
 | A rule added, renamed, or removed                    | the tests above for the rule, and `tests/rules-index.test.ts`                                                                            |
-| `tests/rule-test.ts` or `tests/rule-cases.ts`        | every `tests/rules/**/*.test.ts` and `tests/rule-cases.test.ts`                                                                          |
+| `tests/rule-test.ts` or `tests/rule-cases.ts`        | every `tests/rules/**/*.test.ts`, `tests/rule-cases.test.ts`, and `tests/suggestion-claims.test.ts`                                      |
 | `src/language.ts`, `src/source-code.ts`, token store | `tests/language.test.ts`, `tests/token-store.test.ts`, `tests/snapshot.test.ts`, `tests/inline-config.test.ts`, `tests/markdown.test.ts` |
 | The parser, when the plugin reads the changed nodes  | the language tests above, `tests/diagram-rules.test.ts`, and the tests of the rules that read those nodes                                |
 
@@ -158,13 +169,21 @@ the rule), and the command `pnpm run check:docs`, which reads the documents of
 the rules and the index. A change to a document runs them only when it changes
 what they read: the examples, the first paragraph, or the files of the rules.
 
-The tests that go over every input of the corpus are `tests/language.test.ts`,
-`tests/token-store.test.ts`, and `tests/diagram-rules.test.ts`. Run them when
-the change reaches the language, the source code, a handler of a diagram type,
-or the parser, and not after a change to one rule. The package has no separate
-full size: its suite has one size. The generated check of section 2 is the run
-at full size: run it on all the inputs once, before reporting the work as done,
-and on a few inputs of the change while working.
+The tests of the language, `tests/language.test.ts`,
+`tests/token-store.test.ts`, and `tests/diagram-rules.test.ts`, run on a few
+inputs of each kind of the corpus (`tests/corpus-kinds.ts`). Run them when the
+change reaches the language, the source code, a handler of a diagram type, or
+the parser, and not after a change to one rule.
+
+The tests take their inputs from the corpus and from the fixture directories of
+the rules, and what mermaid.js reads from the `expected.json` of the corpus
+fixture. The text that a suggestion produces is a text of the implementation
+that is in no corpus: `testRule` reads it with mermaid.js and checks it against
+what the suggestion claims (the option `claims`, and `docs/development.md`); for
+an input that is no copy of a corpus input, it reads the Db of the input with
+mermaid.js too. The exploration of section 2 is run while working on a rule and
+once before reporting the work as done; a failure it finds becomes a fixture, so
+that the tests keep it.
 
 ## 5. Finish the change
 
@@ -191,10 +210,10 @@ and on a few inputs of the change while working.
 Report the result to the one who asked for it. Say for each claim whether it was
 checked by running something, checked by reading, or not checked. Give what
 changed (the rule, the fixtures, the snapshots with the reason for each
-difference), the counts of the generated check, what was run and what was not
-(the tests, the checks), and what is still open or unverified. Have the result
-reviewed, fix what the review finds (section 7), and report again, until the
-review finds nothing.
+difference), the kinds and the counts of the exploration, what was run and what
+was not (the tests, the checks), and what is still open or unverified. Have the
+result reviewed, fix what the review finds (section 7), and report again, until
+the review finds nothing.
 
 ## 7. Fix what the review finds
 
@@ -208,7 +227,7 @@ finding:
    another rule, another diagram type, another form of the input, or the same
    words in another document. Fix the kind, not only the point.
 3. Before reporting, check what the fix newly allows or changes. A fix that
-   changes behavior is compared with mermaid.js on generated inputs, as in
-   section 2. For a fix to a document, search for the same wording elsewhere.
+   changes behavior is compared with mermaid.js in the exploration of section 2.
+   For a fix to a document, search for the same wording elsewhere.
 4. State in the report the range that the fix can affect, and how it was
    checked.

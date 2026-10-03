@@ -475,7 +475,7 @@
       }
     },
     {
-      "type": "Punctuator",
+      "type": "IgnoredSemicolon",
       "value": ";",
       "range": [
         63,

@@ -158,6 +158,15 @@ mermaid.js は `direction` と値を、メンバーの文の 2 つの名前の�
 [fixture: class/div-empty-description-block-before-direction-value-glued]
 [fixture: class/div-empty-description-block-between-direction-and-value-label]
 
+class と state では、ブロックは、
+空白をまたぐ mermaid.js のほかの規則が当たるのも妨げます。
+mermaid.js は `accTitle accDescr {}: t` を、
+メンバーか説明を持つ名前 `accTitle` として読みますが、
+`accTitle : t` は題です。
+この仕様は、ブロックがその文の中にあるので、この入力を拒否します。
+[fixture: class/div-empty-description-block-between-acc-title-and-colon]
+[fixture: state/div-empty-description-block-between-acc-title-and-colon]
+
 この仕様は、木に場所のあるところでは、そのような形をノードにし、
 それ以外のところでは入力を拒否します。
 場所は次のとおりです。
@@ -220,7 +229,6 @@ state の合成状態と別名の文の中では、名前の次の行の本体�
 次の場所は例で、mermaid.js がそのようなブロックを受理する文のノードごとに
 少なくとも 1 つと、当たる理由を挙げます。
 場所を尽くしてはおらず、場所は上の規則で決まります。
-規則は、下の件数で、生成した入力で確かめています。
 flowchart では:
 
 - FlowchartVertexStatement と、
@@ -399,7 +407,7 @@ flowchart の 856 件（受理 770、拒否 86）、class の 638 件と sequenc
 その空白は効果を保つので、`subgraph S accDescr {}` の id は、
 名前の後に空白のある `subgraph S` と同じく `subGraph0` で、
 `subgraph S` の id は `S` です
-（[flowchart](../diagrams/flowchart.ja.md#木から要約を作る) を参照）。
+（[flowchart](../diagrams/flowchart.ja.md#文法の外での拒否) を参照）。
 flowchart の 86 件は、ブロックの前の空白のために拒否されます
 （[flowchart](../diagrams/flowchart.ja.md#区切りの前の空の説明ブロック)
 を参照）。
@@ -529,102 +537,3 @@ mermaid.js がそれらを受理するのは、ほかのテキストの隣で何
 それを除けば、たいていはどちらも同じに読むテキストになります（下を参照）。
 mermaid.js のテスト、文書、デモから集めた入力に、
 これらの形を持つものはありません。
-
-## 件数と確かめ方
-
-parser の差分テストは、そのような入力を、その**参照入力**と比べます。
-参照入力は、入力から、コメントの領域と空の形を除いたものです。
-空の形とは、それぞれの空の文字列、`call` から `)` までのそれぞれの空の呼び出し、
-説明ブロックの文でない空の説明ブロック
-（文の始まりでも、文やヘッダーの区切りの前でもない、文の中にあり、
-state の文の `textBeforeBody` が持たないもの）の
-`accDescr` から `}` までです。
-ブロックが文かどうかは、その前の空の文字列と空の呼び出しを除いて決めます。
-間に空白しかない、続けて書いたブロックは、
-最後のブロックの後に続くものでまとめて決めます。
-`""accDescr {}` に改行と `A` が続くものでは、
-空の文字列を除くとブロックが文を始めるので、ブロックは参照入力に残ります。
-[fixture: flowchart/lex-empty-string-before-empty-description-block]
-class の同じ行の `direction` とその値の間の 1 つ以上のブロックでは、
-参照入力はブロックのまわりの空白も除き、`direction` と値を 1 つの語にします。
-mermaid.js が 2 つの名前の部分をつなぐのと同じです。
-`direction accDescr {} LR` の参照入力は `directionLR` で、
-`direction accDescr {}accDescr {}LR` も同じです。
-[fixture: class/div-empty-description-block-between-direction-and-value]
-[fixture: class/div-empty-description-blocks-between-direction-and-value]
-
-この仕様の字句解析器が、参照入力を、空の形の単位以外の入力の単位として読み、
-mermaid.js が入力を受理するところでは、
-parser は、mermaid.js が入力に与える Db を参照入力に与えることになっています。
-`A[""x]` は `A[x]` になり、`click A call ()cb` は `click A cb` になります。
-[fixture: flowchart/tokens-empty-string-in-label] [fixture:
-flowchart/gram-click-empty-call-before-callback]
-そうでなければ、除くことで形の両側にあるものがほかの単位につながり、
-mermaid.js が参照入力を別に読むことがあります。
-`style A "" fill:red` では、
-空の文字列の前と後の空白が 1 つの `space` の単位になるので、
-参照入力のスタイルは、空白と `fill:red` ではなく `fill:red` です。
-`A:""::c` では、`:` と `::` が `:::` になるので、
-参照入力は、頂点 `A:::c` ではなく、クラス `c` を持つ頂点 `A` を持ちます。
-`flowchart""TD` は `flowchartTD` になり、mermaid.js はそれを拒否します。
-[fixture: flowchart/gram-style-empty-string-before-first-style]
-[fixture: flowchart/lex-empty-string-splits-triple-colon] [fixture:
-flowchart/header-empty-string-no-space]
-
-各図種の受理される fixture のうち、
-コメント、ディレクティブ、フロントマターがなく、差の印がないものから、
-ヘッダーの後の各行の、各空白の後と行の終わりに、
-その図種の空の形をそれぞれ差し込んで、入力を作りました。
-各図種から、そのうちの約 2,000 件を等間隔に取りました。
-それぞれを mermaid.js とこの仕様の parser で読み、受理と Db を比べました。
-
-| 図種      | 取った件数、作った件数のうち | mermaid.js は拒否、この仕様は受理 | 両方受理、Db が違う | mermaid.js は受理、この仕様は拒否 |
-| --------- | ---------------------------: | --------------------------------: | ------------------: | --------------------------------: |
-| flowchart |     33,909 件のうち 2,120 件 |                                88 |                   0 |                             1,073 |
-| sequence  |      7,965 件のうち 2,655 件 |                                 0 |                   0 |                               105 |
-| class     |    115,762 件のうち 2,031 件 |                                 0 |                   0 |                               678 |
-
-flowchart の 88 件はデータブロックを持つ入力で、
-mermaid.js はその中身のために拒否します。
-[`embedded-data-opaque`](./embedded-data-opaque.ja.md) の入力です。
-残りは、どちらも同じに読みます。
-その中には、形が区切りの前の空の説明ブロックである、
-flowchart の 62 件、sequence の 16 件、class の 5 件が入ります。
-それは文です（上を参照）。
-mermaid.js が受理しこの仕様が拒否する 1,856 件のそれぞれについて、
-parser の差分テストは、上で述べたとおり、
-その参照入力で違いが説明されることを確かめ、
-説明されないものはありませんでした。
-
-ブロックが木にある場所は、すべての図種で、
-ブロックが置ける位置と、その前後に来るものでも確かめました。
-入力は、差の印、コメント、フロントマターのない、
-受理される fixture から作りました。
-2 つのトークンの間の境目のすべてで、トークンのすぐ後、次のトークンのすぐ前、
-その間の各行の頭に、
-2 つのトークンの種類とその間の空白の形の組ごとに 2 か所ずつ、
-ブロックを 9 か 10 の書き方で書きました。
-ブロックだけ、空白かタブの後か前、間に空白のあるものとない 2 つのブロック、
-後に続くコメント `%% c`（sequence と state では `# c` も）、ディレクティブです。
-39,019 件のうち、両方が拒否するものが 15,936 件、
-両方が受理し Db が同じものが 17,792 件、
-既知の差の宣言どおりに違うものが 5,252 件で、
-残りの 39 件は、この文書と各図種の文書が述べる形で、
-その Db はブロックのない入力の Db でした。
-さらに 4,480 件は、state で、各名前か別名の行と、
-次の行の本体の `{` の前に置けるもの
-（空の説明ブロック、空の文字列、`%%`、コメント行、空行）を組み合わせたもので、
-受理と Db は mermaid.js と一致しました。
-ほかの書き方（`accDescr{}`、2 行にまたがる波括弧、タブ、CRLF、3 つのブロック、
-`;`、`;;`、空の文字列、隣のディレクティブ）の 35,344 件でも、
-ほかの違いは見つかりませんでした。
-宣言された違いの中には、上の class の方向の行と同じく、
-ブロックが、空白をまたぐ mermaid.js の字句の規則が当たるのを妨げる、
-入力があります。
-class と state で、mermaid.js は `accTitle accDescr {}: t` を、
-メンバーか説明を持つ名前 `accTitle` として読みますが、
-その参照入力 `accTitle : t` は題です。
-上で述べた、mermaid.js が参照入力を別に読む入力の 1 つで、
-この仕様には、mermaid.js と同じに読まれる入力がありません。
-[fixture: class/div-empty-description-block-between-acc-title-and-colon]
-[fixture: state/div-empty-description-block-between-acc-title-and-colon]

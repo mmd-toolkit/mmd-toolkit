@@ -32,6 +32,7 @@ export const classVisitorKeys: Readonly<
   ClassAccTitleStatement: ["value"],
   ClassAccDescrStatement: ["value"],
   ClassAccDescrBlockStatement: ["value"],
+  ClassIdentifier: [],
   ClassName: ["prefix", "name", "generic"],
   ClassMethod: ["textBefore", "name", "parameters", "returnType", "textAfter"],
   ClassAttribute: ["name"],

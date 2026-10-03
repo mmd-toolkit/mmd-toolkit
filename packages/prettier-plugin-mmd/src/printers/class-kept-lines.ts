@@ -1,6 +1,10 @@
 import type { ClassStatement } from "@mmd-toolkit/parser"
 import type { KeptLines } from "./kept-lines.ts"
-import { findLinesWithOwnSemicolons, lineStartOf } from "./kept-lines.ts"
+import {
+  findLinesWithOwnSemicolons,
+  findLinesWithSeparatorAfterIgnoredSemicolon,
+  lineStartOf,
+} from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 
 /** The lines that hold a `;`, of each source, found once per source. */
@@ -45,7 +49,7 @@ export function findClassKeptLines(source: Source): KeptLines {
       ...findEmptyDescriptionBlockLines(source, body),
       ...findPercentMemberLines(source, body),
     ]),
-    verbatim: new Set(),
+    verbatim: findLinesWithSeparatorAfterIgnoredSemicolon(source),
     writtenIndentation: new Set(),
   }
   keptLinesBySource.set(source, kept)

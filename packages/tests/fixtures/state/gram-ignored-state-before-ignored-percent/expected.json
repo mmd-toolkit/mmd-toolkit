@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Statement context rule 17: `state \"\" \"\"` is followed by the `%%` of `%%{ }%%{`, an ignored-text unit, so it is an ignored-state unit."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A : x",
+        "shape": "roundedWithTitle",
+        "label": "d",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

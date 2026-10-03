@@ -8,7 +8,7 @@
         "type": "SequenceBoxStatement",
         "text": {
           "type": "SequenceBoxText",
-          "value": "red-team",
+          "value": "red-team ",
           "colorCandidate": {
             "type": "SequenceLiteral",
             "value": "red",
@@ -29,10 +29,10 @@
           },
           "remainder": {
             "type": "SequenceLiteral",
-            "value": "-team",
+            "value": "-team ",
             "range": [
               23,
-              28
+              29
             ],
             "loc": {
               "start": {
@@ -41,13 +41,13 @@
               },
               "end": {
                 "line": 2,
-                "column": 12
+                "column": 13
               }
             }
           },
           "range": [
             20,
-            28
+            29
           ],
           "loc": {
             "start": {
@@ -56,7 +56,7 @@
             },
             "end": {
               "line": 2,
-              "column": 12
+              "column": 13
             }
           }
         },
@@ -192,10 +192,10 @@
     },
     {
       "type": "RawText",
-      "value": "-team",
+      "value": "-team ",
       "range": [
         23,
-        28
+        29
       ],
       "loc": {
         "start": {
@@ -204,7 +204,7 @@
         },
         "end": {
           "line": 2,
-          "column": 12
+          "column": 13
         }
       }
     },
@@ -227,7 +227,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         42,

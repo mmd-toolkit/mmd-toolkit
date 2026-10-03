@@ -190,17 +190,40 @@ order, so that the lexer reads as the specification does, for the duration of
 the call only. The default run, the generator and `expected.json` never use it:
 they record mermaid.js as it is. An implementation uses it to check that a
 difference from mermaid.js on a marked input comes from the divergences alone,
-by comparing itself with mermaid.js read this way. Where the specification
-differs from mermaid.js in more than one way for a diagram type, an input may
-need several of them removed at once to be read as the specification does. Each
-identifier counts once, and an empty list runs mermaid.js as it is. The input
-may be of any diagram type; only the lexer of the diagram type a divergence
-belongs to changes, so a divergence of another diagram type changes nothing. Two
-divergences whose changes touch the same rule, the same rule order of a start
-state, or the function that gives one lexer its text cannot be removed together:
-the call throws an error that names both, since the change made last would undo
-the other. Options with a key that is no option make the call throw a
-`TypeError`, so that a misspelled option never runs mermaid.js as it is.
+by comparing itself with mermaid.js read this way: it is to accept and reject
+every input as mermaid.js read this way does, and to give it the same Db. This
+is available for `comment-takes-character`, `comment-takes-line-break` and
+`name-start-reads-unit`. Where the specification differs from mermaid.js in more
+than one way for a diagram type, an input may need several of them removed at
+once to be read as the specification does. Each identifier counts once, and an
+empty list runs mermaid.js as it is. The input may be of any diagram type; only
+the lexer of the diagram type a divergence belongs to changes, so a divergence
+of another diagram type changes nothing. Two divergences whose changes touch the
+same rule, the same rule order of a start state, or the function that gives one
+lexer its text cannot be removed together: the call throws an error that names
+both, since the change made last would undo the other. Options with a key that
+is no option make the call throw a `TypeError`, so that a misspelled option
+never runs mermaid.js as it is.
+
+An implementation does not have to run mermaid.js this way to know what the
+specification gives: the fixtures with the mark of a divergence that changes how
+mermaid.js reads an input (`comment-takes-character`,
+`comment-takes-line-break`, `name-start-reads-unit` and
+`html-tag-in-frontmatter`) record it in `specified.json`, where it differs from
+`expected.json`. The generator takes it from mermaid.js read without the
+divergence (for `comment-takes-line-break` and `name-start-reads-unit`, without
+both, since both change the class lexer). For `html-tag-in-frontmatter` it is
+mermaid.js reading the input whose frontmatter has `(` where it has `<`, so that
+no HTML tag starts in it; the title of the Db is the title of the frontmatter as
+written, and the values in `embedded` are those of the input as written. When
+mermaid.js rejects that input, the specified reading is the rejection
+(`accepted: false` and the error). If the replacement itself made the YAML of
+the frontmatter invalid, the generator stops: how that reading is made has to be
+decided for the fixture. The other marks need no such file: the specification
+rejects what mermaid.js accepts (`directive-as-token-boundary`,
+`ignored-semicolon-as-token-boundary`, `click-reserved-word`,
+`tokenless-empty-forms`, `headerless-empty-ending`), or accepts what it rejects
+(`embedded-data-opaque`).
 
 The rules are listed in `src/divergence-removals.ts` and found in the lexer of
 the pinned mermaid.js by their compiled pattern, not by their position. When one
@@ -229,7 +252,11 @@ tries, since a rule that every start state tries can have the same pattern.
   ([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)):
   the rule that reads a character other than `}` before `%%` together with the
   comment is taken out, so a comment starts at its `%%`; the rule for numbers
-  also ends a number before `%%`, not only before a space or a line feed.
+  also ends a number before `%%`, not only before a space or a line feed. No
+  input given to mermaid.js with its own lexer can serve instead of the changed
+  one: its statement state reads a character followed by `%%` as a comment
+  before any rule for ids, so no input gives it an id run, as in a message,
+  whose second and third characters are `%%`.
 - `comment-takes-line-break`, in the class lexer
   ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
   the rule that reads `%%`, the rest of the line and the line feeds after it
@@ -295,14 +322,14 @@ generated-input tests) then spend their time on the implementation under test.
   store.
 - The most results: 2,000,000, about 8 GB on disk (a result takes about 4 KB,
   the least a file takes). It was set larger than the results of the largest
-  runs that could be counted, each made once: the differential tests of the
-  parser at full size made 192,209 results for flowchart, sequence, class and
-  state, and the generated-input tests of the formatter at full size more than
-  540,000, which could not be counted to the end, since the count stopped at the
-  limit then set. How much room it leaves for later runs is not measured. When
-  the store reaches it, the results last used longest ago are removed first:
-  results stay the same, and only runs get slower, since mermaid.js runs again
-  for what was removed.
+  runs of the time, when the tests still had runs over every input: more than
+  540,000 for the generated-input tests of the formatter (the count stopped at
+  the limit then set) and 192,209 for the differential tests of the parser
+  (flowchart, sequence, class and state). Those runs are gone, and how much room
+  the limit leaves for the tests of one size is not measured. When the store
+  reaches it, the results last used longest ago are removed first: results stay
+  the same, and only runs get slower, since mermaid.js runs again for what was
+  removed.
 - The key: the text and the options (`config`, `withoutDivergences`), serialized
   as V8 does, which tells apart a field set to `undefined` from one left out and
   `NaN` from `null`; the files of the code that decide a result (from source,

@@ -2,8 +2,8 @@
 
 英語版: [embedded-data.md](./embedded-data.md)
 
-この文書は、
-`resolveEmbeddedData()` と `runMermaidWithEmbeddedData()` が実装に渡す値と、
+この文書は、入力の埋め込まれたデータから mermaid.js が導く値と、
+fixture がそれを記録する方法と、
 それと比べて確かめられることを説明します。
 
 ## 実装がそれを必要とする理由
@@ -16,7 +16,40 @@
 例えば subgraph の向きは `flowchart.inheritDir` に、
 title はフロントマターの `title` に左右され、
 データブロックだけが設定する欄（`icon`、`animate`、`metadata` など）もあります。
-それらを作るために、実装のテストは mermaid.js から値を受け取ります。
+それらを作るために、実装は fixture から値を受け取ります。
+
+## 値のある場所
+
+`expected.json` の受理の結果（と `specified.json`。
+[expected-results.ja.md](./expected-results.ja.md) を参照）は、
+欄 `embedded`（`{ config?, title?, dataBlockEffects? }`）を持つことがあります。
+入力がその値を与えないときは、その欄を置かず、
+どれも与えないときは `embedded` を置きません。
+受理する fixture のうち、持つのは 250 件ほどで、
+残りは埋め込まれたデータから何も要りません。
+
+- `title` と `dataBlockEffects` は、下に書く値です。
+- `config` は、設定の全体ではなく、
+  入力が mermaid.js の設定に起こす変更です。
+  設定の全体は大きく（23 KB）、ほとんどの fixture で同じだからです。
+  何も変えないテキストに対する mermaid.js の設定を、
+  fixture 自身の `config` で読んだものとの差です。
+  実装は、キーを `embedded.config`、fixture の `config`、
+  [`fixtures/default-config.json`](../fixtures/default-config.json) の既定値
+  （`getDefaultConfig()`）の順に探します。
+  オブジェクトはキーごとに重ね、配列とその他の値は置き換えます。
+
+`embeddedValuesOf(fixture)` は、これらの値を fixture から作ります。
+既定値に、fixture の `config`、`embedded.config` の順に重ねます。
+入力が `theme` を変えると、mermaid.js は `themeVariables` を計算し直して、
+そのキーのいくつかを落とすことがあります。
+差は、落とされたキーを記録しないので、作った設定には、
+mermaid.js 自身の設定にないキーが残ることがあります
+（受理する fixture のうち 16 件）。
+Db の値は、それらのキーに左右されません。
+
+`@mmd-toolkit/tests/mermaid` の関数は、設定の全体を含む値を、
+どのテキストにも返します。
 
 - `resolveEmbeddedData(text, { config })` は
   `{ config, title, dataBlockEffects }` を返す。
@@ -27,15 +60,13 @@ title はフロントマターの `title` に左右され、
 - 変異差分テストは、同じ値を比較対象の 3 つ目の引数として渡す
   （[mutation-testing.ja.md](./mutation-testing.ja.md) を参照）。
 
-これらの値はどれも `expected.json` には保存しません。
-設定の全体は大きく、
-mermaid.js の既定値が変わるとすべての fixture に差分が出るためです。
+生成器は、これらから fixture の値を記録し、
+`fixtures:check` が、記録した値を mermaid.js と比べます。
 
 ## `config` と `title`
 
-- `config` は、mermaid.js がそのテキストを解析するときの設定の全体です。
-  mermaid.js の既定値、サイト設定、フロントマターの `config`、
-  ディレクティブを mermaid.js 自身が合成したもので、
+- 全体の `config` は、mermaid.js がそのテキストを解析するときの設定で、
+  [configuration.ja.md](./configuration.ja.md) が述べる手順で導かれます。
   `mermaid.parse()` の直後に `mermaidAPI.getConfig()` で読みます。
   図種ごとの見た目の既定値（`look` など）は含みません。
   Db の要約には影響しません。

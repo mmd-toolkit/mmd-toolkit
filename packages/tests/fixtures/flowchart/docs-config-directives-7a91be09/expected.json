@@ -85,5 +85,10 @@
       }
     ],
     "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "logLevel": 2
+    }
   }
 }

@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The composite body context: rule 5, the direction line, is tried before the id rule, so a body line `%%{ }direction LR` sets the direction LR of A."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "LR"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

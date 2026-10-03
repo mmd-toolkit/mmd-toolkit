@@ -14,7 +14,7 @@ where the `value` of the labels differs. The rule reports the later one. The id
 of a class is none of the fields of the class name (`prefix`, `name`, and
 `generic`): it is the text of the class name, its prefix included, before its
 first `~`, a derivation of the Db that the rule repeats (see Building the
-summary from the tree in the specification's diagrams/class.md).
+summary from the tree in the tests package's docs/db-from-tree/class.md).
 
 ## Fixtures
 

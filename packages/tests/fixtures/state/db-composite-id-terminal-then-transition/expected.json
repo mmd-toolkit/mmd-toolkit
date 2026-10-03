@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary from the tree, Ids: a state whose id is `[*]` in a composite statement, an alias or pseudostate definition, or a note statement has the id of its parent followed by `_start`; the composite state `[*]` and the start of the transition are the one state `root_start`, with the shape of its first visit."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "roundedWithTitle",
+        "label": "root_start",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "root_start"
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "A",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

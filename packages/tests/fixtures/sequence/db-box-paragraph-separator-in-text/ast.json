@@ -29,15 +29,15 @@
           },
           "remainder": {
             "type": "SequenceLiteral",
-            "value": "team",
+            "value": " team",
             "range": [
-              24,
+              23,
               28
             ],
             "loc": {
               "start": {
                 "line": 2,
-                "column": 8
+                "column": 7
               },
               "end": {
                 "line": 2,
@@ -192,15 +192,15 @@
     },
     {
       "type": "RawText",
-      "value": "team",
+      "value": " team",
       "range": [
-        24,
+        23,
         28
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
@@ -227,7 +227,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         41,

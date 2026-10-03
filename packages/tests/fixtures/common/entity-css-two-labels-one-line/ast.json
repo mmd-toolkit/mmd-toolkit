@@ -438,15 +438,51 @@
     },
     {
       "type": "RawText",
-      "value": "<span style='color:#00f;'>b</span>",
+      "value": "<span style='color:#00f",
       "range": [
         57,
-        91
+        80
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 44
+        },
+        "end": {
+          "line": 2,
+          "column": 67
+        }
+      }
+    },
+    {
+      "type": "IgnoredSemicolon",
+      "value": ";",
+      "range": [
+        80,
+        81
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 67
+        },
+        "end": {
+          "line": 2,
+          "column": 68
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "'>b</span>",
+      "range": [
+        81,
+        91
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 68
         },
         "end": {
           "line": 2,

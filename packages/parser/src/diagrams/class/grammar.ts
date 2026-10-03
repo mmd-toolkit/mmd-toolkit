@@ -1,4 +1,4 @@
-import type { DiagramTokenKind, Identifier, StringLiteral } from "../../ast.ts"
+import type { Identifier, StringLiteral } from "../../ast.ts"
 import type {
   ClassAccDescrBlockStatement,
   ClassAnnotation,
@@ -12,6 +12,7 @@ import type {
   ClassDeclaration,
   ClassDirection,
   ClassDirectionStatement,
+  ClassIdentifier,
   ClassIgnoredText,
   ClassLinkStatement,
   ClassLinkTarget,
@@ -25,7 +26,6 @@ import type {
   ClassStyleStatement,
   ClassVisibility,
 } from "../../ast/class.ts"
-import type { UnitWithKind } from "../../diagram-parsing.ts"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
 import type { NodePlace } from "../../unit-grammar.ts"
@@ -38,12 +38,10 @@ import { isClosedBackquotedName } from "./units.ts"
 export interface ClassSyntax {
   /** The statements of the diagram, in source order. */
   readonly body: readonly ClassStatement[]
-  /** The units that are not all whitespace, in source order. */
-  readonly units: readonly UnitWithKind[]
   /** The tokens of the diagram, in source order. */
   readonly tokens: readonly PendingToken[]
   /**
-   * Building the summary from the tree, Names: the written name of each
+   * Rejections outside the grammar: the written name of each
    * class name, in converted form, which the rejections outside the
    * grammar read.
    */
@@ -117,7 +115,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
   private readonly writtenNames = new Map<ClassName, string>()
 
   public constructor(lexing: ClassLexing, lexer: SourceLexer) {
-    super(lexing.units, lexer, EMPTY_FORM_KINDS.class)
+    super(lexing.units, lexer, EMPTY_FORM_KINDS.class, lexing.comments)
     this.lexing = lexing
   }
 
@@ -143,25 +141,66 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
     }
     return {
       body,
-      units: this.unitsWithKindInOrder(),
       tokens: this.tokensInOrder(),
       writtenNames: this.writtenNames,
     }
   }
 
   /**
-   * ast/class.md, Tokens: a run of units of a `RawText` item goes on over
-   * the whitespace between them; a run of an item of another kind breaks
-   * where characters lie between two of its units, because whitespace
-   * belongs to no unit (diagrams/class.md, Units and contexts).
+   * ast/class.md, Tokens: whether `unit` follows `previous` with nothing of
+   * the diagram text between them: the next character of the diagram text
+   * after `previous` is the first of `unit`. Directives and the `;` that
+   * the line rule ignores may lie between them, which the diagram text
+   * leaves out (common.md, Reading a source).
    */
-  protected override breaksRun(
-    kind: DiagramTokenKind,
-    previous: Unit,
-    unit: Unit,
-  ): boolean {
-    if (super.breaksRun(kind, previous, unit)) return true
-    return kind !== "RawText" && previous.end !== unit.start
+  private followsWithNothingBetween(previous: Unit, unit: Unit): boolean {
+    let offset = previous.end
+    for (;;) {
+      const element = this.lexer.readAt(offset)
+      if (element.kind === "character") return element.start === unit.start
+      offset = element.end
+    }
+  }
+
+  /**
+   * ast/class.md, Tokens: the runs of `units` whose units follow one
+   * another with nothing of the diagram text between them (see
+   * {@link ClassGrammar.followsWithNothingBetween}), in source order:
+   * whitespace, which belongs to no unit (diagrams/class.md, Units and
+   * contexts), breaks a run.
+   */
+  private runsWithNothingBetween(units: readonly Unit[]): Unit[][] {
+    const runs: Unit[][] = []
+    for (const unit of units) {
+      const run = runs.at(-1)
+      const previous = run?.at(-1)
+      if (
+        run !== undefined &&
+        previous !== undefined &&
+        this.followsWithNothingBetween(previous, unit)
+      ) {
+        run.push(unit)
+      } else {
+        runs.push([unit])
+      }
+    }
+    return runs
+  }
+
+  /**
+   * ast/class.md, ClassIdentifier: the ClassIdentifier whose units are the
+   * name parts and `.` units `units`. Its tokens are `RawText` tokens, one
+   * for each run of units with nothing between them; its name is the
+   * written text of each unit, joined in order, so the whitespace between
+   * two runs, which mermaid.js does not read, is not part of it.
+   */
+  private classIdentifierOf(units: readonly Unit[]): ClassIdentifier {
+    for (const run of this.runsWithNothingBetween(units)) {
+      this.addItem("RawText", run)
+    }
+    const place = this.placeOf(units)
+    const name = units.map((unit) => this.textOfUnit(unit)).join("")
+    return { type: "ClassIdentifier", name, ...place }
   }
 
   /**
@@ -181,7 +220,6 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
       case "namespace":
         body.push(this.parseNamespaceStatement())
         return
-      case "note for":
       case "note":
         body.push(this.parseNoteStatement())
         return
@@ -248,8 +286,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
       const text = this.takeIf("generic-text")
       if (text !== null) {
         writtenName = `${nameText}~${text.text}~`
-        if (text.significantRange !== null) generic = this.literalOf([text])
-        else this.addItem("RawText", [text])
+        generic = this.literalOf([text])
       }
       this.addItem("Punctuator", [this.take("~")])
     }
@@ -267,11 +304,11 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
   /**
    * Class names: the name parts and `.` of a class name or a namespace
    * name, and its backquoted name: its `prefix` and `name`, and its name text
-   * (Building the summary from the tree, Names).
+   * (Rejections outside the grammar).
    */
   private parseNameParts(): {
-    readonly prefix: Identifier | null
-    readonly name: Identifier | StringLiteral
+    readonly prefix: ClassIdentifier | null
+    readonly name: ClassIdentifier | StringLiteral
     readonly nameText: string
   } {
     const parts: Unit[] = []
@@ -288,7 +325,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
     const backquoted = this.takeIf("backquoted")
     if (backquoted !== null) {
       return {
-        prefix: parts.length === 0 ? null : this.identifierOf(parts),
+        prefix: parts.length === 0 ? null : this.classIdentifierOf(parts),
         name: this.stringLiteralOf(backquoted),
         nameText: nameText + this.contentOf(backquoted),
       }
@@ -297,11 +334,11 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
     if (last === undefined || last.name === ".") {
       throw this.unexpected(this.peek())
     }
-    return { prefix: null, name: this.identifierOf(parts), nameText }
+    return { prefix: null, name: this.classIdentifierOf(parts), nameText }
   }
 
   /**
-   * Building the summary from the tree, Names: the text of the `backquoted`
+   * Rejections outside the grammar: the text of the `backquoted`
    * unit `unit` between its backquotes, in converted form. A backquoted
    * name that is not closed runs to the end of the text and ends with the
    * line feed that the lexer reads after the last character (common.md,
@@ -316,7 +353,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
   /**
    * ast.md, Shared leaf nodes > StringLiteral: the StringLiteral of the
    * `string`, `empty-string`, `backquoted`, or `empty-backquoted` unit
-   * `unit`, one `String` item. Its value is the text of its range without
+   * `unit`, one `String` item. Its value is its written text without
    * its quotes, and without the opening one alone when it is not closed.
    */
   private stringLiteralOf(unit: Unit): StringLiteral {
@@ -346,7 +383,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
     return unit === null ? null : this.stringLiteralOf(unit)
   }
 
-  /** ClassLiteral: the literal whose units are `units`, one `RawText` item. Its value is the text of its range. */
+  /** ClassLiteral: the literal whose units are `units`, one `RawText` item. Its value is its written text. */
   private literalOf(units: readonly Unit[]): ClassLiteral {
     this.addItem("RawText", units)
     const place = this.placeOf(units)
@@ -359,7 +396,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
     const place = this.placeOf([unit])
     return {
       type: "ClassIgnoredText",
-      value: this.textOf(place.range),
+      value: this.unreadTextOf(place.range),
       ...place,
     }
   }
@@ -483,8 +520,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
         let name: ClassLiteral | null = null
         for (const unit of units) {
           if (unit.name === "annotation-name") {
-            if (unit.significantRange !== null) name = this.literalOf([unit])
-            else this.addItem("RawText", [unit])
+            name = this.literalOf([unit])
           } else {
             this.addItem("Punctuator", [unit])
           }
@@ -755,7 +791,6 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
     switch (this.nameAt(this.next)) {
       case "class":
         return this.parseClassDeclaration()
-      case "note for":
       case "note":
         return this.parseNoteStatement()
       case "namespace":
@@ -765,16 +800,15 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
-  /** Other statements: `note-statement = "note for" class-name string | "note" string`. */
+  /** Other statements: `note-statement = "note" "for" class-name string | "note" string`. */
   private parseNoteStatement(): ClassNoteStatement {
     const start = this.next
     let name: ClassName | null = null
-    const noteFor = this.takeIf("note for")
+    this.addItem("Keyword", [this.take("note")])
+    const noteFor = this.takeIf("for")
     if (noteFor !== null) {
       this.addItem("Keyword", [noteFor])
       name = this.parseClassName()
-    } else {
-      this.addItem("Keyword", [this.take("note")])
     }
     const text = this.parseString()
     return {
@@ -881,8 +915,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Other statements: `styles = style ( "," style )*`, with `style = ( word
-   * | ":" | "#" | "%" | "style" | label )+`. Each style is one `RawText`
-   * item, whitespace inside included.
+   * | ":" | "#" | "%" | "style" | label )+`.
    */
   private parseStyles(): ClassLiteral[] {
     const styles = [this.parseStyle()]
@@ -893,11 +926,27 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
     return styles
   }
 
-  /** Other statements: one `style`. */
+  /**
+   * Other statements: one `style`, whose tokens are the runs of its units
+   * with nothing between them, each one `RawText` item: mermaid.js drops
+   * the whitespace between two units of a style (ast/class.md, Tokens). Its
+   * value is the written texts of its units joined in order (ast/class.md,
+   * ClassLiteral): a label keeps the whitespace before the `:` of the next
+   * label, also where a directive lies between them, and only the
+   * whitespace at the end of the style, after its range, is left out.
+   */
   private parseStyle(): ClassLiteral {
     const units = this.takeWhile(STYLE_UNITS)
     if (units.length === 0) throw this.unexpected(this.peek())
-    return this.literalOf(units)
+    for (const run of this.runsWithNothingBetween(units)) {
+      this.addItem("RawText", run)
+    }
+    const place = this.placeOf(units)
+    const end = place.range[1]
+    const value = units
+      .map((unit) => this.textOf([unit.start, Math.min(unit.end, end)]))
+      .join("")
+    return { type: "ClassLiteral", value, ...place }
   }
 
   /** Other statements: `css-class-statement = "cssClass" string word`. */

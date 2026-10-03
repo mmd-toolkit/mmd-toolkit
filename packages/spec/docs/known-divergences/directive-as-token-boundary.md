@@ -25,75 +25,87 @@ mermaid.js removes every directive from the text before it reads the diagram,
 wherever the directive is, and joins the text before and after it. This
 specification reads the text in the same way (see
 [A directive is a token boundary](../common.md#a-directive-is-a-token-boundary)),
-with one exception, which this document is about: a directive inside a unit that
-is not `RawText` or `Identifier`, such as a keyword, an arrow, a number, or a
-string.
+with one exception, which this document is about: a directive inside a name, a
+keyword, a delimiter such as `:::`, an arrow, or a number. A name here is one
+without whitespace; a name that may contain whitespace, such as the id of a
+participant in a sequence diagram or a class name, is read as a text.
 
 ## The difference
 
 Each example is a whole diagram.
 
-1. A directive inside a string:
-
-   ```mmd
-   flowchart LR
-     A["a %%{init: {}}%% b"] --> B
-   ```
-
-2. A directive inside an arrow:
-
-   ```mmd
-   flowchart LR
-     A-%%{init: {}}%%-->B
-   ```
-
-3. A directive inside a keyword:
+1. A directive inside a keyword:
 
    ```mmd
    sequenceDiagram
      parti%%{init: {}}%%cipant A
    ```
 
-4. A directive inside a relation:
+2. A directive inside a delimiter:
 
    ```mmd
-   classDiagram
-     A -%%{init: {}}%%-> B
+   flowchart LR
+     A::%%{init: {}}%%:c
+     classDef c fill:#f00
    ```
 
-5. A directive inside an id:
+3. A directive inside a name:
+
+   ```mmd
+   flowchart LR
+     A%%{init: {}}%%B-->C
+   ```
+
+4. A directive inside an arrow:
+
+   ```mmd
+   flowchart LR
+     A-%%{init: {}}%%-->B
+   ```
+
+5. A directive inside a number:
 
    ```mmd
    sequenceDiagram
-     Al%%{init: {}}%%ice ->> B: x
+     autonumber 1%%{init: {}}%%0
+     A->>B: x
    ```
 
-6. A directive inside the text of a label:
+6. A directive inside a string:
+
+   ```mmd
+   flowchart LR
+     A["a %%{init: {}}%% b"]-->B
+   ```
+
+7. A directive inside the text of a label:
 
    ```mmd
    flowchart LR
      A[x%%{init: {}}%%y]
    ```
 
-| Example | mermaid.js                         | This specification |
-| ------- | ---------------------------------- | ------------------ |
-| 1       | the vertex A with the label `a  b` | rejected           |
-| 2       | an edge from A to B, as `A--->B`   | rejected           |
-| 3       | the participant A                  | rejected           |
-| 4       | the relation from A to B           | rejected           |
-| 5       | the message from `Alice` to B      | the same           |
-| 6       | the vertex A with the label `xy`   | the same           |
+| Example | mermaid.js                                           | This specification |
+| ------- | ---------------------------------------------------- | ------------------ |
+| 1       | the participant A                                    | rejected           |
+| 2       | the vertex A with the class c                        | rejected           |
+| 3       | an edge from the vertex `AB` to C                    | rejected           |
+| 4       | an edge from A to B, as `A--->B`                     | rejected           |
+| 5       | the numbering of messages from 10                    | rejected           |
+| 6       | the vertex A with the label `a`, two spaces, and `b` | the same           |
+| 7       | the vertex A with the label `xy`                     | the same           |
 
-[fixture: common/directive-in-string] [fixture:
+[fixture: sequence/div-directive-in-keyword] [fixture:
+flowchart/div-directive-in-style-separator] [fixture:
+flowchart/div-directive-in-id] [fixture:
 flowchart/div-directive-in-arrow-length] [fixture:
-sequence/div-directive-in-keyword] [fixture: class/div-directive-in-line]
-[fixture: sequence/lex-directive-in-id-run] [fixture:
-common/directive-in-label-text]
+sequence/div-directive-in-number] [fixture: common/directive-in-string]
+[fixture: common/directive-in-label-text]
 
 So mermaid.js reads every input as the text without its directives. This
-specification does so too, except that a unit that is not `RawText` or
-`Identifier` cannot have a directive inside it; such an input is rejected. Where
-mermaid.js rejects the text without its directives, both reject the input:
+specification does so too, except that a name, a keyword, a delimiter, an arrow,
+and a number cannot have a directive inside them; such an input is rejected.
+Where mermaid.js rejects the text without its directives, both reject the input:
 `flow%%{init: {}}%%chart LR` followed by a line `A-->` is rejected by the
 flowchart grammar of mermaid.js, and by this specification because the directive
 lies inside the header keyword. [fixture:
@@ -106,8 +118,9 @@ and it gives every input that both accept the same Db.
 Each diagram document lists the units of its own that this concerns, in its
 Known divergences section:
 [flowchart](../diagrams/flowchart.md#known-divergences),
-[sequence](../diagrams/sequence.md#known-divergences), and
-[class](../diagrams/class.md#known-divergences).
+[sequence](../diagrams/sequence.md#known-divergences),
+[class](../diagrams/class.md#known-divergences), and
+[state](../diagrams/state.md#known-divergences).
 
 ## Why mermaid.js reads it so
 
@@ -122,27 +135,30 @@ comes from the order of these steps.
 ## The rule of this specification, and why
 
 In this specification, a directive is a token boundary: the text before and
-after it is read as if it were joined, as in mermaid.js, so that an id or the
-text of a label can hold a directive. A unit that is not `RawText` or
-`Identifier` stands for its text as a whole, and a directive inside it makes the
-input rejected.
+after it is read as if it were joined, as in mermaid.js, so that a text, a
+string, or a name that may contain whitespace can hold a directive. A name, a
+keyword, a delimiter, an arrow, and a number stand for their text as a whole,
+and a directive inside one of them makes the input rejected.
 
-A keyword, an arrow, a number, or a string is one token of the tree, whose text
-is the input at its range. A directive inside it would split the token, or make
-its text differ from the input, and the tree has no form for a keyword in two
-fragments. mermaid.js can read such an input only because it removes the
-directives as a step before reading, which is nothing that a specification would
-state as a rule of the syntax; this is the second of the reasons for a known
-divergence (see [known-divergences.md](../known-divergences.md)).
+A string can be cut into fragments already: a comment region can lie inside it,
+and its tokens are then the fragments before and after the region. A directive
+inside a string is held in the same way, and the value of the string leaves it
+out, as it leaves out a comment region (see [Nodes](../ast.md#nodes)). A text is
+prose, and so is a name that may contain whitespace; a directive inside them is
+held in the same way. This specification does not cut the token of a name, a
+number, an arrow, a keyword, or a delimiter at a directive: each of them is read
+as its text as a whole. mermaid.js can read a directive inside one of them only
+because it removes the directives as a step before reading, which is nothing
+that a specification would state as a rule of the syntax; this is the second of
+the reasons for a known divergence (see
+[known-divergences.md](../known-divergences.md)).
 
 ## What it means for an author
 
-A directive inside a keyword, an arrow, a number, or a string is rejected by
-this toolkit. mermaid.js accepts it and reads the text as if the directive were
-not there; in a string, the directive leaves the spaces around it, as in example
-
-1. To write a diagram that both read the same, put each directive on a line of
-   its own.
+A directive inside a name, a keyword, a delimiter, an arrow, or a number is
+rejected by this toolkit. mermaid.js accepts it and reads the text as if the
+directive were not there. To write a diagram that both read the same, put each
+directive on a line of its own.
 
 ## The documentation of mermaid.js and its tests
 
@@ -167,26 +183,3 @@ not there; in a string, the directive leaves the spaces around it, as in example
   and
   [`exampleConfig.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/.vitepress/theme/exampleConfig.spec.ts).
   The flowchart parser tests contain no directive at all.
-
-## Counts and how they are checked
-
-Inputs were made from the accepted fixtures of flowchart, sequence, and class
-that have no comment, no directive, and no frontmatter and are not marked with a
-divergence, by inserting `%%{init: {}}%%` between each two characters of a line.
-From each diagram type, about 1,500 of them were taken at even intervals. Each
-was run through mermaid.js and through the parser of this specification, and
-their acceptance and Db were compared:
-
-| Diagram type | Inputs taken, of those made | Rejected by mermaid.js, accepted by this specification | Accepted by both, a different Db | Accepted by mermaid.js, rejected by this specification |
-| ------------ | --------------------------: | -----------------------------------------------------: | -------------------------------: | -----------------------------------------------------: |
-| flowchart    |            1,515 of 101,449 |                                                      0 |                                0 |                                                    373 |
-| sequence     |             1,525 of 36,588 |                                                      0 |                                0 |                                                    457 |
-| class        |             1,537 of 50,706 |                                                      0 |                                0 |                                                    486 |
-
-The others are read the same by both.
-
-For each input that this specification rejects for a directive inside a unit,
-the differential test of the parser compares the parser with mermaid.js on a
-**reference input**: the input without its directives, with the text around each
-joined. The parser is to give the reference input what mermaid.js gives the
-input. For all 1,316 differences above, it did.

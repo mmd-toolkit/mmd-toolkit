@@ -143,31 +143,3 @@ it too, except when the text ends with one of the empty forms above, which are
 themselves unfinished statements; then mermaid.js draws the diagram without a
 word. Writing the header correctly makes the text read the same by both: with an
 empty form at the end, both then reject it.
-
-## Counts and how they are checked
-
-Inputs were made from 12 words in place of the header (`classDiagram`,
-`classDiagram-v2`, `classDiagramX`, `classDiagram_`, `classDiagram2`,
-`classDiagramclassDiagram`, `classDiagram-v2X`, `classDiagramé`,
-`classDiagram-x`, `classDiagram x`, `classDiagram.x`, and `classDiagram:x`), 4
-kinds of statements before the end (none, a class, a relation, a note), and 21
-endings (the seven forms, and others that are not empty, such as `accTitle: x`,
-or that are unfinished in other ways, such as `class A {`), 1,008 in all. Each
-was run through mermaid.js and through the parser of this specification, and
-their acceptance and Db were compared.
-
-| Inputs                | Rejected by mermaid.js, accepted by this specification | Accepted by both, a different Db | Accepted by mermaid.js, rejected by this specification |
-| --------------------- | -----------------------------------------------------: | -------------------------------: | -----------------------------------------------------: |
-| with a header, 168    |                                                      0 |                                0 |                                                      0 |
-| without a header, 840 |                                                      0 |                                0 |                                                    112 |
-
-The 112 inputs are the seven endings, 16 each, after the 4 words
-`classDiagramX`, `classDiagram_`, `classDiagram2`, and
-`classDiagramclassDiagram`. The other words without a header, which do not
-continue `classDiagram` with an ASCII word character, are rejected by both with
-every ending. The difference goes one way only.
-
-There is no mermaid.js changed to read as this specification does for this
-divergence. The differential test of the parser requires every difference that
-it attributes to this divergence to be an input that mermaid.js accepts and the
-parser rejects because the text has no header.

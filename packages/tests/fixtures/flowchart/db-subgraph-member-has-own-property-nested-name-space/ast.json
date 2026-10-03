@@ -33,10 +33,10 @@
             "name": {
               "type": "FlowchartLabel",
               "kind": "text",
-              "value": "hasOwnProperty",
+              "value": "hasOwnProperty ",
               "range": [
                 33,
-                47
+                48
               ],
               "loc": {
                 "start": {
@@ -45,7 +45,7 @@
                 },
                 "end": {
                   "line": 3,
-                  "column": 23
+                  "column": 24
                 }
               }
             },
@@ -269,10 +269,10 @@
     },
     {
       "type": "RawText",
-      "value": "hasOwnProperty",
+      "value": "hasOwnProperty ",
       "range": [
         33,
-        47
+        48
       ],
       "loc": {
         "start": {
@@ -281,7 +281,7 @@
         },
         "end": {
           "line": 3,
-          "column": 23
+          "column": 24
         }
       }
     },

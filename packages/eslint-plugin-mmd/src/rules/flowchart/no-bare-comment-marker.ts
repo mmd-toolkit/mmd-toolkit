@@ -1,10 +1,5 @@
 import type { SuggestedEdit } from "@eslint/core"
-import type {
-  Comment,
-  FlowchartDataBlock,
-  Range,
-  Token,
-} from "@mmd-toolkit/parser"
+import type { FlowchartDataBlock, Range, Token } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../../rule-types.ts"
 import { ruleDocsUrl } from "../../rule-docs-url.ts"
 import type { MermaidSourceCode } from "../../source-code.ts"
@@ -31,36 +26,55 @@ function valueLines(value: string): ValueLine[] {
   return lines
 }
 
-/** Whether `element` is a comment, or a token other than a directive. */
-function isNotDirective(element: Token | Comment): boolean {
-  return element.type !== "Directive"
+/**
+ * Whether only whitespace and directives stand between `index` and the line
+ * terminator before it (`side` "before") or after it ("after"), or the start or
+ * the end of the text. mermaid.js takes the directives out before it reads the
+ * lines, so they do not count.
+ */
+function reachesLineBoundary(
+  sourceCode: MermaidSourceCode,
+  index: number,
+  side: "before" | "after",
+): boolean {
+  const { text } = sourceCode
+  const step = side === "before" ? -1 : 1
+  let position = index
+  for (;;) {
+    const at = side === "before" ? position - 1 : position
+    const character = text[at]
+    if (character === undefined || character === "\n" || character === "\r") {
+      return true
+    }
+    const directive = sourceCode.ast.directives.find(
+      (each) => each.range[0] <= at && at < each.range[1],
+    )
+    if (directive !== undefined) {
+      position = side === "before" ? directive.range[0] : directive.range[1]
+    } else if (character.trim() === "") {
+      position += step
+    } else {
+      return false
+    }
+  }
 }
 
 /**
  * The places of the `%%` of the lines of `token` that hold only `%%` and fill
- * their line of the source. A line of the value fills its line of the source
- * when, before it, there is a line terminator of the value or the token or
- * comment before the token ends on an earlier line, and, after it, a line
- * terminator of the value or the token or comment after the token starts on a
- * later line; directives on the line do not count. A token that a comment
- * region cuts is one of its pieces, and the same holds for it.
+ * their line of the source: only whitespace and directives stand on the line
+ * besides the `%%`, also where the line of the value starts or ends in another
+ * token, such as the piece of a string that a directive or a comment region
+ * cuts.
  */
 function bareMarkers(sourceCode: MermaidSourceCode, token: Token): number[] {
-  const options = { includeComments: true, filter: isNotDirective }
-  const before = sourceCode.getTokenBefore(token, options)
-  const after = sourceCode.getTokenAfter(token, options)
-  const startsLine =
-    before === null || before.loc.end.line < token.loc.start.line
-  const endsLine = after === null || token.loc.end.line < after.loc.start.line
-  const lines = valueLines(token.value)
-  const markers: number[] = []
-  for (const [index, line] of lines.entries()) {
-    if (line.text.trim() !== "%%") continue
-    if (index === 0 && !startsLine) continue
-    if (index === lines.length - 1 && !endsLine) continue
-    markers.push(token.range[0] + line.start + line.text.indexOf("%%"))
-  }
-  return markers
+  return valueLines(token.value)
+    .filter((line) => line.text.trim() === "%%")
+    .map((line) => token.range[0] + line.start + line.text.indexOf("%%"))
+    .filter(
+      (marker) =>
+        reachesLineBoundary(sourceCode, marker, "before") &&
+        reachesLineBoundary(sourceCode, marker + "%%".length, "after"),
+    )
 }
 
 /**
@@ -80,7 +94,9 @@ function markerRemoval(
  * The suggestion for a line `%%` in a text, on the line `line` of the source:
  * remove the line with its line terminator. The line terminator may lie
  * outside the token, between the pieces of a token that a comment cuts, so
- * the line is taken from the source.
+ * the line is taken from the source. There is none where a directive lies on
+ * the line, or ends or starts there: the directive is not part of the text,
+ * and removing the line would remove it too.
  */
 function lineRemoval<
   MessageId extends "removeTextLine" | "removeDataLine" | "removeCallbackLine",
@@ -88,14 +104,22 @@ function lineRemoval<
   sourceCode: MermaidSourceCode,
   line: number,
   messageId: MessageId,
-): SuggestedEdit<MessageId> {
+): SuggestedEdit<MessageId>[] {
+  if (
+    sourceCode.ast.directives.some(
+      (directive) =>
+        directive.loc.start.line <= line && line <= directive.loc.end.line,
+    )
+  ) {
+    return []
+  }
   const range: Range = [
     sourceCode.getIndexFromLoc({ line, column: 0 }),
     line < sourceCode.lines.length
       ? sourceCode.getIndexFromLoc({ line: line + 1, column: 0 })
       : sourceCode.text.length,
   ]
-  return { messageId, fix: (fixer) => fixer.removeRange(range) }
+  return [{ messageId, fix: (fixer) => fixer.removeRange(range) }]
 }
 
 /**
@@ -189,8 +213,8 @@ export const noBareCommentMarker: MermaidRuleDefinition<{
       return "text"
     }
 
-    /** The suggestion for the line `%%` at `marker`, in `token`, at `place`. */
-    function suggestionFor(
+    /** The suggestions for the line `%%` at `marker`, in `token`, at `place`. */
+    function suggestionsFor(
       token: Token,
       marker: number,
       place: Place,
@@ -199,9 +223,9 @@ export const noBareCommentMarker: MermaidRuleDefinition<{
       | "removeCallbackLine"
       | "removeTextLine"
       | "removeDataLine"
-    > {
+    >[] {
       const line = sourceCode.getLocFromIndex(marker).line
-      if (place === "vertex") return markerRemoval(sourceCode, token)
+      if (place === "vertex") return [markerRemoval(sourceCode, token)]
       if (place === "callback") {
         return lineRemoval(sourceCode, line, "removeCallbackLine")
       }
@@ -233,7 +257,7 @@ export const noBareCommentMarker: MermaidRuleDefinition<{
                 end: sourceCode.getLocFromIndex(marker + "%%".length),
               },
               messageId: place,
-              suggest: [suggestionFor(token, marker, place)],
+              suggest: suggestionsFor(token, marker, place),
             })
           }
         }

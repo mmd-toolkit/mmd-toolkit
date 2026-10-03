@@ -225,15 +225,15 @@
           },
           {
             "type": "FlowchartLiteral",
-            "value": "fill:red",
+            "value": " fill:red",
             "range": [
-              45,
+              44,
               53
             ],
             "loc": {
               "start": {
                 "line": 3,
-                "column": 26
+                "column": 25
               },
               "end": {
                 "line": 3,
@@ -441,15 +441,15 @@
     },
     {
       "type": "RawText",
-      "value": "fill:red",
+      "value": " fill:red",
       "range": [
-        45,
+        44,
         53
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 26
+          "column": 25
         },
         "end": {
           "line": 3,

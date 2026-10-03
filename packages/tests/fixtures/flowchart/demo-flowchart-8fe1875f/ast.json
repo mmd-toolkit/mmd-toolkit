@@ -2617,15 +2617,15 @@
           },
           {
             "type": "FlowchartLiteral",
-            "value": "stroke-width:4px",
+            "value": " stroke-width:4px",
             "range": [
-              332,
+              331,
               348
             ],
             "loc": {
               "start": {
                 "line": 13,
-                "column": 37
+                "column": 36
               },
               "end": {
                 "line": 13,
@@ -5208,15 +5208,15 @@
     },
     {
       "type": "RawText",
-      "value": "stroke-width:4px",
+      "value": " stroke-width:4px",
       "range": [
-        332,
+        331,
         348
       ],
       "loc": {
         "start": {
           "line": 13,
-          "column": 37
+          "column": 36
         },
         "end": {
           "line": 13,

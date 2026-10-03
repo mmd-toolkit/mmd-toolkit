@@ -67,5 +67,49 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "File Handling",
+          "type": "manual-file"
+        }
+      },
+      {
+        "id": "B",
+        "set": {
+          "labelType": "markdown",
+          "text": "User Input",
+          "type": "manual-input"
+        }
+      },
+      {
+        "id": "C",
+        "set": {
+          "labelType": "markdown",
+          "text": "Multiple Documents",
+          "type": "docs"
+        }
+      },
+      {
+        "id": "D",
+        "set": {
+          "labelType": "markdown",
+          "text": "Process Automation",
+          "type": "procs"
+        }
+      },
+      {
+        "id": "E",
+        "set": {
+          "labelType": "markdown",
+          "text": "Paper Records",
+          "type": "paper-tape"
+        }
+      }
+    ]
   }
 }

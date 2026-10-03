@@ -469,7 +469,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         41,
@@ -506,19 +506,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"boundary\"",
+      "value": " \"type\" : \"boundary\" ",
       "range": [
-        49,
-        68
+        48,
+        69
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 26
+          "column": 25
         },
         "end": {
           "line": 3,
-          "column": 45
+          "column": 46
         }
       }
     },
@@ -595,7 +595,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         103,
@@ -632,19 +632,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"control\"",
+      "value": " \"type\" : \"control\" ",
       "range": [
-        109,
-        127
+        108,
+        128
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 24
+          "column": 23
         },
         "end": {
           "line": 4,
-          "column": 42
+          "column": 43
         }
       }
     },
@@ -703,7 +703,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         150,
@@ -739,7 +739,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         158,
@@ -793,7 +793,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         177,
@@ -829,7 +829,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         184,

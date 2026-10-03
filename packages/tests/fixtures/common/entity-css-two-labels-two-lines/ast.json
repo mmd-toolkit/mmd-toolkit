@@ -498,15 +498,51 @@
     },
     {
       "type": "RawText",
-      "value": "<span style='color:#f00;'>a</span>",
+      "value": "<span style='color:#f00",
       "range": [
         15,
-        49
+        38
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "IgnoredSemicolon",
+      "value": ";",
+      "range": [
+        38,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 25
+        },
+        "end": {
+          "line": 2,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "'>a</span>",
+      "range": [
+        39,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 26
         },
         "end": {
           "line": 2,
@@ -570,15 +606,51 @@
     },
     {
       "type": "RawText",
-      "value": "<span style='color:#00f;'>b</span>",
+      "value": "<span style='color:#00f",
       "range": [
         53,
-        87
+        76
       ],
       "loc": {
         "start": {
           "line": 3,
           "column": 2
+        },
+        "end": {
+          "line": 3,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "IgnoredSemicolon",
+      "value": ";",
+      "range": [
+        76,
+        77
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 25
+        },
+        "end": {
+          "line": 3,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "'>b</span>",
+      "range": [
+        77,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 26
         },
         "end": {
           "line": 3,

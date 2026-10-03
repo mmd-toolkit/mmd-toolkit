@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "flowchart.md Rejections outside the grammar, subgraph members: the directive is left out of the id `hasOwnProperty`, which is a member followed by `A`."
+    "note": "flowchart.md Known divergences (directive-as-token-boundary): the directive lies inside the id, a name, and the input is rejected; mermaid.js rejects it too, as the member `hasOwnProperty` is followed by `A`."
   },
   "accepted": false,
   "error": {

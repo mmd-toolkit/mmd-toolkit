@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Tokens: an ignored `;` cuts the value of a style, and the space before it, which mermaid.js reads as part of the value, belongs to the fragment before it: the tokens are `fill:#f00,color `, the `;`, and `:blue`, and mermaid.js has the styles `fill:#f00` and `color :blue`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill:#f00",
+          "color :blue"
+        ]
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

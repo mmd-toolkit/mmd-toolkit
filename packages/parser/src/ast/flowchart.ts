@@ -335,7 +335,7 @@ export type FlowchartOpeningArrowLine =
  */
 export interface FlowchartArrow extends NodeBase {
   readonly type: "FlowchartArrow"
-  /** The text of its range. */
+  /** Its written text. */
   readonly value: string
   /** The marker before the line; see {@link FlowchartArrowMarker}. */
   readonly startMarker: FlowchartArrowMarker
@@ -359,7 +359,7 @@ export interface FlowchartArrow extends NodeBase {
  */
 export interface FlowchartOpeningArrow extends NodeBase {
   readonly type: "FlowchartOpeningArrow"
-  /** The text of its range. */
+  /** Its written text. */
   readonly value: string
   /** The marker before the line; see {@link FlowchartArrowMarker}. */
   readonly startMarker: FlowchartArrowMarker
@@ -405,7 +405,7 @@ export interface FlowchartLabel extends NodeBase {
   /** How the label starts; see {@link FlowchartLabelKind}. */
   readonly kind: FlowchartLabelKind
   /**
-   * The text of its range, without the delimiters of the string or markdown
+   * Its written text, without the delimiters of the string or markdown
    * string that it starts with.
    */
   readonly value: string
@@ -427,7 +427,7 @@ export interface FlowchartLabel extends NodeBase {
  */
 export interface FlowchartDataBlock extends NodeBase {
   readonly type: "FlowchartDataBlock"
-  /** The text of its range between `@{` and the `}` that closes it. */
+  /** Its written text between `@{` and the `}` that closes it. */
   readonly value: string
 }
 
@@ -642,7 +642,7 @@ export interface FlowchartDefaultLinkStyleStatement extends NodeBase {
  * ast/flowchart.md, FlowchartDirectionStatement: the value of a direction
  * line, as written after `direction`. In a subgraph, the last one is the
  * subgraph's `dir` in the Db, as written; outside a subgraph it changes
- * nothing (diagrams/flowchart.md, Db normalization).
+ * nothing (`packages/tests/docs/db-from-tree/flowchart.md`).
  *
  * - `"TB"`: Written `TB`.
  * - `"BT"`: Written `BT`.
@@ -754,7 +754,7 @@ export interface FlowchartAccDescrBlockStatement extends NodeBase {
  * ast/flowchart.md, FlowchartLiteral: a value that the author writes as
  * text without quotes, at a position where the grammar allows whitespace in
  * it and decides where it ends: a style, the arguments of a callback, or the
- * text of an accessibility statement. Its value is the text of its range, so
+ * text of an accessibility statement. Its value is its written text, so
  * it keeps the whitespace inside it and has none at its ends. No child
  * fields.
  *
@@ -771,7 +771,7 @@ export interface FlowchartAccDescrBlockStatement extends NodeBase {
  */
 export interface FlowchartLiteral extends NodeBase {
   readonly type: "FlowchartLiteral"
-  /** The text of its range. */
+  /** Its written text. */
   readonly value: string
 }
 
@@ -779,7 +779,7 @@ export interface FlowchartLiteral extends NodeBase {
  * ast/flowchart.md, FlowchartIgnoredText: text that the author writes but
  * that mermaid.js does not read, and that has no effect on the diagram: the
  * text of a direction line before `direction` and after the value. Its
- * value is the text of its range, which runs from its first token to its
+ * value is its written text, which runs from its first token to its
  * last. No child fields.
  *
  * ```text
@@ -792,7 +792,7 @@ export interface FlowchartLiteral extends NodeBase {
  */
 export interface FlowchartIgnoredText extends NodeBase {
   readonly type: "FlowchartIgnoredText"
-  /** The text of its range. */
+  /** Its written text. */
   readonly value: string
 }
 

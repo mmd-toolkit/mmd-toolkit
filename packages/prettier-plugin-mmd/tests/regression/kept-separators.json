@@ -1,0 +1,174 @@
+[
+  {
+    "text": "sequenceDiagram\nbox red\u2028;\n%% c\nparticipant A\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red team\u2028;\n%% c\nparticipant A\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox team\u2028;\n%% c\nparticipant A\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox rgb(1, 2, 3) G\u2028;\n%% c\nparticipant A\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox aqua\u2028;\n%% c\nparticipant A\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox Group   1\u2028;\n%% c\nparticipant A\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox transparent x\u2028;\n%% c\nparticipant A\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028;\n%% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028;\n\n%% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028;\n  %% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028 ;\n%% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028 ;\n\n%% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028 ;\n  %% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028;;\n%% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028;;\n\n%% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028;;\n  %% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028%%{wrap}%%;\n%% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028%%{wrap}%%;\n\n%% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nbox red\u2028%%{wrap}%%;\n  %% c\nparticipant Z\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028;\n%% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028;\n\n%% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028;\n  %% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028 ;\n%% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028 ;\n\n%% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028 ;\n  %% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028;;\n%% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028;;\n\n%% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028;;\n  %% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028%%{wrap}%%;\n%% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028%%{wrap}%%;\n\n%% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\ntitle T\u2028%%{wrap}%%;\n  %% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber\u2028%%{wrap}%%;\n%% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber\u2028%%{wrap}%%;\n\n%% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber\u2028%%{wrap}%%;\n  %% c\nZ->>Y: z\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028;\n%% c\nZ\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028;\n\n%% c\nZ\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028;\n  %% c\nZ\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028 ;\n%% c\nZ\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028 ;\n\n%% c\nZ\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028 ;\n  %% c\nZ\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{wrap}%%;\n%% c\nZ\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{wrap}%%;\n\n%% c\nZ\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{wrap}%%;\n  %% c\nZ\nend\n",
+    "note": "review (49): a ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  }
+]

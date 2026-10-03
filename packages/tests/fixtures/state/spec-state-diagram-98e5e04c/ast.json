@@ -602,6 +602,7 @@
             }
           }
         },
+        "textBeforeText": null,
         "text": {
           "type": "StateLiteral",
           "value": "This is a note on a composite state",
@@ -1233,15 +1234,33 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         312,
-        320
+        317
       ],
       "loc": {
         "start": {
           "line": 13,
           "column": 13
+        },
+        "end": {
+          "line": 13,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        318,
+        320
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 19
         },
         "end": {
           "line": 13,

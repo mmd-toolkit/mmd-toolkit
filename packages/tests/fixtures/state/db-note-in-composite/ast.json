@@ -49,6 +49,7 @@
                 }
               }
             },
+            "textBeforeText": null,
             "text": {
               "type": "StateLiteral",
               "value": "x",
@@ -210,15 +211,33 @@
     },
     {
       "type": "Keyword",
-      "value": "left of",
+      "value": "left",
       "range": [
         37,
-        44
+        41
       ],
       "loc": {
         "start": {
           "line": 3,
           "column": 9
+        },
+        "end": {
+          "line": 3,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        42,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 14
         },
         "end": {
           "line": 3,

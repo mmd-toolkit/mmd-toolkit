@@ -28,7 +28,10 @@ writing the shape and label that the vertex already has: after `A[x]` and
 `A[y]`, a third `A[y]` changes nothing and is not reported. A shape or a label
 set by a data block, as in `A@{ shape: rect }`, is not compared. Labels are
 compared without the whitespace at their ends, which mermaid.js removes:
-`A["x"]` and then `A["x "]` is not reported.
+`A["x"]` and then `A["x "]` is not reported. The kind of the label (text,
+string, or markdown string) is not compared: after `A["x"]`, ``A["`x`"]`` writes
+the same text for the same vertex, which is no id reused for another vertex, and
+mermaid.js uses the label written last.
 
 Examples of **incorrect** code for this rule:
 

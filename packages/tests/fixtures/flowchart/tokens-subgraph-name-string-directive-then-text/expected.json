@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokens.md Tokens: in a subgraph name, the text run after the string starts at the space and the directive cuts it: the tokens are `\"a\"`, ` `, the directive, and ` b`, and the title is `a  b`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "A"
+        ],
+        "title": "a  b",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

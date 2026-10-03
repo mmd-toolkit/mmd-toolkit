@@ -44,11 +44,14 @@ function recordEachCharacter(text: string): [string, string][] {
       element.kind === "character" &&
       !isWhitespace(element.text.codePointAt(0) ?? SPACE)
     if (isToken) {
-      tokens.push({ kind: "RawText", range: [element.start, element.end] })
+      tokens.push({
+        kind: "RawText",
+        range: [element.start, element.end],
+      })
     }
     offset = element.end
   }
-  lexer.recordTokens(tokens, [], () => "RawText", null)
+  lexer.recordTokens(tokens, [], null)
   return listed(lexer)
 }
 
@@ -223,7 +226,6 @@ describe("SourceLexer.recordTokens", () => {
         { kind: "Keyword", range: [4, 5] },
       ],
       [],
-      () => "Punctuator",
       null,
     )
     expect(lexer.tokens).toEqual([
@@ -305,29 +307,36 @@ describe("SourceLexer.recordTokens", () => {
         { kind: "RawText", range: [9, 10] },
       ],
       [],
-      () => "RawText",
       null,
     )
     expect(lexer.comments.map((comment) => comment.range)).toEqual([[4, 8]])
   })
 
-  it("records an ignored `;` inside the token that goes on after it, and otherwise as a token of its own of the given kind", () => {
+  it("records an ignored `;` as an `IgnoredSemicolon` token of its own, which cuts a token that goes on after it", () => {
     // ast.md, Tokens.
     expect(recordEachCharacter("style A fill:#f00;\nx")).toEqual([
       // With its `;` ignored, `#f00` is no entity, so each character is a
       // token.
       ...eachAsText("styleAfill:#f00"),
-      ["RawText", ";"],
+      ["IgnoredSemicolon", ";"],
       ["RawText", "x"],
     ])
     const inside = lexerOf("style:#f;x")
-    inside.recordTokens(
-      [{ kind: "RawText", range: [0, 10] }],
-      [],
-      () => "Punctuator",
-      null,
-    )
-    expect(inside.tokens.map((token) => token.value)).toEqual(["style:#f;x"])
+    inside.recordTokens([{ kind: "RawText", range: [0, 10] }], [], null)
+    expect(inside.tokens.map((token) => [token.type, token.value])).toEqual([
+      ["RawText", "style:#f"],
+      ["IgnoredSemicolon", ";"],
+      ["RawText", "x"],
+    ])
+    // The pieces of a `String` token that an ignored `;` cuts are
+    // `StringFragment` tokens.
+    const string = lexerOf('"style:#f;x"')
+    string.recordTokens([{ kind: "String", range: [0, 12] }], [], null)
+    expect(string.tokens.map((token) => [token.type, token.value])).toEqual([
+      ["StringFragment", '"style:#f'],
+      ["IgnoredSemicolon", ";"],
+      ["StringFragment", 'x"'],
+    ])
     const alone = lexerOf("style:#f ; x")
     alone.recordTokens(
       [
@@ -335,35 +344,30 @@ describe("SourceLexer.recordTokens", () => {
         { kind: "RawText", range: [11, 12] },
       ],
       [],
-      () => "Punctuator",
       null,
     )
     expect(alone.tokens.map((token) => [token.type, token.value])).toEqual([
       ["RawText", "style:#f"],
-      ["Punctuator", ";"],
+      ["IgnoredSemicolon", ";"],
       ["RawText", "x"],
     ])
     expect(recordEachCharacter("x\u2028 style A:#f;")).toEqual([
       ...eachAsText("xstyleA:#f"),
-      ["RawText", ";"],
+      ["IgnoredSemicolon", ";"],
     ])
   })
 
   it("cuts a token at a comment region that it reads through, with a Directive token for the directive before the comment", () => {
-    // ast.md, Comment: the pieces of a `String` token are `StringFragment`
-    // tokens, the region lies outside them, the directive before the
-    // comment's `%%` is a `Directive` token, and the one inside the comment
-    // is part of it.
+    // docs/tokens.md, Comment regions in tokens: the pieces of a `String`
+    // token are `StringFragment` tokens, the line feed before the region is
+    // in the piece before it, the region lies outside them, the directive
+    // before the comment's `%%` is a `Directive` token, and the one inside
+    // the comment is part of it.
     const text = '"a\n%%{i}%% %% c %%{j}%%\nb"'
     const lexer = lexerOf(text)
-    lexer.recordTokens(
-      [{ kind: "String", range: [0, text.length] }],
-      [],
-      () => "RawText",
-      null,
-    )
+    lexer.recordTokens([{ kind: "String", range: [0, text.length] }], [], null)
     expect(listed(lexer)).toEqual([
-      ["StringFragment", '"a'],
+      ["StringFragment", '"a\n'],
       ["Directive", "%%{i}%%"],
       ["Comment", "%% c %%{j}%%"],
       ["StringFragment", 'b"'],
@@ -373,52 +377,52 @@ describe("SourceLexer.recordTokens", () => {
     ).toEqual(["%%{i}%%", "%%{j}%%"])
   })
 
-  it("cuts a token at a directive between two of its characters that are not whitespace", () => {
-    // common.md, A directive is a token boundary: each piece, without the
-    // whitespace at its ends, is a token of the same kind, and a piece that
-    // is all whitespace is no token.
+  it("cuts a token at each directive inside it, and keeps in the pieces the whitespace next to the cuts", () => {
+    // docs/tokens.md, A token that a directive cuts: the range of a token is
+    // the text of its value, so each piece, with the whitespace next to the
+    // cuts, is a token of the same kind, also a piece that is all
+    // whitespace.
     const text = "ab%%{x}%%cd e %%{y}%% %%{z}%% f"
     const lexer = lexerOf(text)
-    lexer.recordTokens(
-      [{ kind: "RawText", range: [0, text.length] }],
-      [],
-      () => "RawText",
-      null,
-    )
+    lexer.recordTokens([{ kind: "RawText", range: [0, text.length] }], [], null)
     expect(listed(lexer)).toEqual([
       ["RawText", "ab"],
       ["Directive", "%%{x}%%"],
-      ["RawText", "cd e"],
+      ["RawText", "cd e "],
       ["Directive", "%%{y}%%"],
+      ["RawText", " "],
       ["Directive", "%%{z}%%"],
-      ["RawText", "f"],
+      ["RawText", " f"],
     ])
-    // A `;` that the line rule ignores and that no character of a piece
-    // follows is a token of its own.
+    // A `;` that the line rule ignores is a token of its own.
     const semicolon = lexerOf("style:#f; %%{x}%% y")
-    semicolon.recordTokens(
-      [{ kind: "RawText", range: [0, 19] }],
-      [],
-      () => "Punctuator",
-      null,
-    )
+    semicolon.recordTokens([{ kind: "RawText", range: [0, 19] }], [], null)
     expect(semicolon.tokens.map((token) => [token.type, token.value])).toEqual([
       ["RawText", "style:#f"],
-      ["Punctuator", ";"],
+      ["IgnoredSemicolon", ";"],
+      ["RawText", " "],
       ["Directive", "%%{x}%%"],
-      ["RawText", "y"],
+      ["RawText", " y"],
+    ])
+  })
+
+  it("makes a piece that is all whitespace a token, at the ends of the token too", () => {
+    // docs/tokens.md, Tokens: whitespace that the value reads is in its
+    // tokens, also where a directive cuts it from the rest.
+    const text = " %%{x}%% "
+    const lexer = lexerOf(text)
+    lexer.recordTokens([{ kind: "RawText", range: [0, text.length] }], [], null)
+    expect(listed(lexer)).toEqual([
+      ["RawText", " "],
+      ["Directive", "%%{x}%%"],
+      ["RawText", " "],
     ])
   })
 
   it("records the tokens only once", () => {
     const lexer = lexerOf("x")
-    lexer.recordTokens(
-      [{ kind: "RawText", range: [0, 1] }],
-      [],
-      () => "RawText",
-      null,
-    )
-    expect(() => lexer.recordTokens([], [], () => "RawText", null)).toThrow(
+    lexer.recordTokens([{ kind: "RawText", range: [0, 1] }], [], null)
+    expect(() => lexer.recordTokens([], [], null)).toThrow(
       "the tokens are recorded twice",
     )
   })
@@ -434,7 +438,7 @@ describe("SourceLexer.recordTokens rejects the tokens that a diagram's parser ge
   /** Whether recording `tokens` over `text` fails as a bug of the diagram's parser. */
   function fails(text: string, tokens: readonly PendingToken[]): void {
     expect(() => {
-      lexerOf(text).recordTokens(tokens, [], () => "RawText", null)
+      lexerOf(text).recordTokens(tokens, [], null)
     }).toThrow("mmd-toolkit parser bug")
   }
 

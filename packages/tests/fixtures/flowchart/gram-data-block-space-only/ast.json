@@ -192,6 +192,24 @@
       }
     },
     {
+      "type": "RawText",
+      "value": " ",
+      "range": [
+        16,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 3
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
       "type": "Punctuator",
       "value": "}",
       "range": [

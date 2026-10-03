@@ -331,10 +331,10 @@
     },
     {
       "type": "StringFragment",
-      "value": "\"x",
+      "value": "\"x\n",
       "range": [
         15,
-        17
+        18
       ],
       "loc": {
         "start": {
@@ -342,8 +342,8 @@
           "column": 2
         },
         "end": {
-          "line": 2,
-          "column": 4
+          "line": 3,
+          "column": 0
         }
       }
     },

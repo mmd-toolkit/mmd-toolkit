@@ -1,4 +1,4 @@
-import type { NumericLiteral } from "../../ast.ts"
+import type { NumericLiteral, Range } from "../../ast.ts"
 import type {
   SequenceAccDescrBlockStatement,
   SequenceAccDescrStatement,
@@ -22,7 +22,6 @@ import type {
   SequenceText,
   SequenceTitleStatement,
 } from "../../ast/sequence.ts"
-import type { UnitWithKind } from "../../diagram-parsing.ts"
 import { significantRangeOf } from "../../diagram-units.ts"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
@@ -32,7 +31,7 @@ import type { SequenceLexing, Unit, UnitName } from "./units.ts"
 
 /**
  * What the grammar makes of the units of a sequence diagram: the
- * statements, the kinds of the units, and the tokens. The grammar reads the
+ * statements and the tokens. The grammar reads the
  * diagram text, which has no directives (diagrams/sequence.md, Directives
  * inside units), so a directive can lie inside the range of a unit or of a
  * token here.
@@ -40,8 +39,6 @@ import type { SequenceLexing, Unit, UnitName } from "./units.ts"
 export interface SequenceSyntax {
   /** The statements of the diagram, in source order. */
   readonly body: readonly SequenceStatement[]
-  /** The units that are not all whitespace, in source order. */
-  readonly units: readonly UnitWithKind[]
   /** The tokens of the diagram, in source order. */
   readonly tokens: readonly PendingToken[]
 }
@@ -84,7 +81,7 @@ const PARTICIPANT_KEYWORDS: readonly UnitName[] = [
  */
 export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
   public constructor(lexing: SequenceLexing, lexer: SourceLexer) {
-    super(lexing.units, lexer, EMPTY_FORM_KINDS.sequence)
+    super(lexing.units, lexer, EMPTY_FORM_KINDS.sequence, lexing.comments)
   }
 
   /**
@@ -98,7 +95,6 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     const body = this.parseLines([])
     return {
       body,
-      units: this.unitsWithKindInOrder(),
       tokens: this.tokensInOrder(),
     }
   }
@@ -147,7 +143,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     const place = this.placeOf([unit])
     return {
       type: "SequenceIgnoredStatement",
-      value: this.textOf(place.range),
+      value: this.unreadTextOf(place.range),
       ...place,
     }
   }
@@ -338,11 +334,6 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * Participants and boxes: `box-text = color-candidate text? | text`, a
-   * SequenceBoxText, or null when there is none. Each unit is a literal,
-   * one `RawText` item.
-   */
-  /**
    * `"accDescr" "{" "}"`, an empty description block, a description block
    * statement without text: of a `box-statement` (Participants and boxes),
    * where a description block with text and a description statement are no
@@ -362,10 +353,29 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
+  /**
+   * Participants and boxes: `box-text = color-candidate text? | text`, a
+   * SequenceBoxText, or null when there is none. Each unit is a literal,
+   * one `RawText` item, and the whitespace between them, which the value of
+   * the box text holds and neither literal does, is a `RawText` token of
+   * the box text itself (`docs/tokens/sequence.md`).
+   */
   private parseBoxText(): SequenceBoxText | null {
     const candidate = this.takeIf("color-candidate")
     const text = this.takeIf("text")
     if (candidate === null && text === null) return null
+    const between: Range | null =
+      candidate?.significantRange == null || text?.significantRange == null
+        ? null
+        : this.diagramTextIn([
+            candidate.significantRange[1],
+            text.significantRange[0],
+          ])
+    if (between !== null) {
+      // The whitespace between the parts, which the value holds and neither
+      // part does, is a token of the box text itself.
+      this.addWhitespaceToken("RawText", between)
+    }
     const place = this.placeOf(
       [candidate, text].filter((unit) => unit !== null),
     )
@@ -464,7 +474,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * Other statements: `note-statement = "note" ( "left of" | "right of" )
+   * Other statements: `note-statement = "note" ( "left" | "right" ) "of"
    * id ":" text-part | "note" "over" id ( "," id )? ":" text-part`.
    */
   private parseNoteStatement(): SequenceNoteStatement {
@@ -472,9 +482,9 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     this.addItem("Keyword", [this.take("note")])
     const placementUnit = this.peek()
     let placement: SequenceNotePlacement
-    if (placementUnit?.name === "left of") {
+    if (placementUnit?.name === "left") {
       placement = "left of"
-    } else if (placementUnit?.name === "right of") {
+    } else if (placementUnit?.name === "right") {
       placement = "right of"
     } else if (placementUnit?.name === "over") {
       placement = "over"
@@ -483,6 +493,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     }
     this.next += 1
     this.addItem("Keyword", [placementUnit])
+    if (placement !== "over") this.addItem("Keyword", [this.take("of")])
     const ids = [this.sequenceIdentifierOf(this.take("id"))]
     if (placement === "over" && this.takePunctuator(",")) {
       ids.push(this.sequenceIdentifierOf(this.take("id")))
@@ -529,7 +540,8 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Other statements: `title-statement = ( "title" | "title:" )
-   * title-text`. The value is null when the title text is all whitespace.
+   * title-text`. The value is the whole title text, whitespace included,
+   * also when it is all whitespace.
    */
   private parseTitleStatement(): SequenceTitleStatement {
     const start = this.next
@@ -538,7 +550,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     const text = this.take("title-text")
     return {
       type: "SequenceTitleStatement",
-      value: text.significantRange === null ? null : this.literalOf([text]),
+      value: this.literalOf([text]),
       ...this.placeFrom(start),
     }
   }
@@ -703,12 +715,13 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * ast/sequence.md, SequenceIdentifier: the id of the `id` unit `unit`,
-   * one `Identifier` item. Its name is the text of the unit's range
-   * without the whitespace at its ends: the whitespace inside it is part
-   * of it, also next to a directive that cuts the unit.
+   * one `RawText` item, as a name that may contain whitespace. Its name is
+   * the text of the unit's range without the whitespace at its ends: the
+   * whitespace inside it is part of it, also next to a directive that cuts
+   * the unit.
    */
   private sequenceIdentifierOf(unit: Unit): SequenceIdentifier {
-    this.addItem("Identifier", [unit])
+    this.addItem("RawText", [unit])
     return {
       type: "SequenceIdentifier",
       name: this.textOfUnit(unit),
@@ -718,7 +731,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * SequenceLiteral: the literal whose units are `units`, one `RawText`
-   * item. Its value is the text of its range.
+   * item. Its value is its written text.
    */
   private literalOf(units: readonly Unit[]): SequenceLiteral {
     this.addItem("RawText", units)

@@ -1,20 +1,54 @@
-import { readdirSync, readFileSync } from "node:fs"
+import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import path from "node:path"
 import type {
-  DbSummary,
-  JsonObject,
-  MermaidConfig,
-  MermaidError,
-} from "./types.ts"
-
-export type {
+  DataBlockEffect,
   DbSummary,
   JsonObject,
   JsonValue,
   MermaidConfig,
   MermaidError,
 } from "./types.ts"
+import type { EmbeddedValues } from "./mermaid.ts"
+
+export type {
+  DataBlockEffect,
+  DbSummary,
+  JsonObject,
+  JsonValue,
+  MermaidConfig,
+  MermaidError,
+} from "./types.ts"
+
+export type { EmbeddedValues } from "./mermaid.ts"
+export { checkTree } from "./check-tree/index.ts"
+export type { CheckedRoot, TreeProblem } from "./check-tree/index.ts"
+export { dbFromTree } from "./db-from-tree/index.ts"
+export {
+  exceedsMaxEdges,
+  flowchartEdgeCount,
+} from "./db-from-tree/flowchart.ts"
+export type {
+  ColorAnswer,
+  DbTreeRoot,
+  DiagramBody,
+} from "./db-from-tree/index.ts"
+export {
+  findBoundaries,
+  findInnerPlaces,
+  selectByKey,
+} from "./boundary-kinds.ts"
+export type {
+  InnerPlace,
+  InnerPosition,
+  KindComment,
+  KindDirective,
+  KindRange,
+  KindSource,
+  KindToken,
+  LinePosition,
+  TextBoundary,
+} from "./boundary-kinds.ts"
 
 /**
  * Fixture directories: one per diagram type, and `common` for syntax shared
@@ -47,6 +81,27 @@ export type FixtureSource =
     }
 
 /**
+ * The values mermaid.js derives from the embedded data of an input (the
+ * frontmatter, the directives, the `@{ ... }` data blocks) that an
+ * implementation needs to build the Db and does not read from the text. Each
+ * field is left out where the input gives no such value. See
+ * `docs/embedded-data.md`.
+ */
+export interface RecordedEmbedded {
+  /**
+   * What the input changes in mermaid.js's configuration: the values that
+   * differ from the defaults (`getDefaultConfig()`) overlaid with the
+   * fixture's own `config`. An implementation reads a key from here, then
+   * from the fixture's `config`, then from the defaults.
+   */
+  readonly config?: MermaidConfig
+  /** The frontmatter title, as `render()` passes it to the Db. */
+  readonly title?: string
+  /** What each `@{ ... }` data block did to the Db, in the order applied. */
+  readonly dataBlockEffects?: readonly DataBlockEffect[]
+}
+
+/**
  * What mermaid.js did with the fixture input.
  */
 export type Expectation =
@@ -62,6 +117,8 @@ export type Expectation =
        * turns `null` into a summary on regeneration.
        */
       readonly db: DbSummary | null
+      /** The values derived from the embedded data; see {@link RecordedEmbedded}. */
+      readonly embedded?: RecordedEmbedded
     }
   | {
       /** mermaid.js rejected the input. */
@@ -80,6 +137,11 @@ export const KNOWN_DIVERGENCES: readonly string[] = [
   // both ways: the spec rejects some inputs mermaid accepts, and accepts some
   // mermaid rejects.
   "directive-as-token-boundary",
+  // A `;` that the line rule ignores is a token boundary in the same way,
+  // inside a name, a number, a keyword, an arrow, or a delimiter. mermaid.js
+  // removes the `;` before it reads the line and joins the text on both
+  // sides; the spec does not join them and rejects the input.
+  "ignored-semicolon-as-token-boundary",
   // Embedded data is opaque to the parser: the frontmatter YAML, the contents
   // of directives, and `@{ ... }` data blocks. It neither parses nor validates
   // them. The spec accepts inputs that mermaid rejects because of that data
@@ -171,6 +233,14 @@ export interface Fixture {
   readonly knownDivergence?: string
   /** What mermaid.js did with the input. */
   readonly expected: Expectation
+  /**
+   * What an implementation of the specification gives for the input, where
+   * that is not what mermaid.js did: the result of mermaid.js read without
+   * the known divergence that changes how it reads the input (see
+   * `docs/expected-results.md`). Only fixtures that carry such a mark have
+   * it. Without it, the result to match is `expected`.
+   */
+  readonly specified?: Expectation
 }
 
 const fixturesRoot: string = fileURLToPath(
@@ -182,6 +252,66 @@ const fixturesRoot: string = fileURLToPath(
  */
 export function getFixturesRoot(): string {
   return fixturesRoot
+}
+
+/** The name of the file that holds the specified reading of a fixture. */
+const SPECIFIED_FILE = "specified.json"
+
+/** The name of the file of the default configuration, in the fixtures directory. */
+const DEFAULT_CONFIG_FILE = "default-config.json"
+
+/**
+ * Returns the configuration mermaid.js has for a text that changes nothing in
+ * it and a fixture without a `config`: the defaults that
+ * {@link RecordedEmbedded.config} is a difference from.
+ */
+export function getDefaultConfig(): MermaidConfig {
+  return JSON.parse(
+    readFileSync(path.join(fixturesRoot, DEFAULT_CONFIG_FILE), "utf8"),
+  ) as MermaidConfig
+}
+
+/**
+ * The values mermaid.js derived from the embedded data of the input of
+ * `fixture`, as `resolveEmbeddedData()` gives them, built from what the fixture
+ * records: the configuration is the defaults, overlaid with the fixture's own
+ * `config` and then with the `embedded.config` of `result` (key by key for an
+ * object, an array and any other value replace). `result` is the reading to
+ * match, by default `specified`, else `expected`. `undefined` for a rejection.
+ *
+ * mermaid.js recomputes some keys of the configuration when an input changes
+ * `theme` and may drop some of `themeVariables`; the drops are not recorded, so
+ * the result can hold a key that mermaid.js's own value lacks. No Db value
+ * depends on those keys.
+ */
+export function embeddedValuesOf(
+  fixture: Fixture,
+  result: Expectation = fixture.specified ?? fixture.expected,
+): EmbeddedValues | undefined {
+  if (!result.accepted) return undefined
+  const { embedded } = result
+  return {
+    config: overlay(
+      overlay(getDefaultConfig(), fixture.config),
+      embedded?.config,
+    ) as MermaidConfig,
+    title: embedded?.title,
+    dataBlockEffects: embedded?.dataBlockEffects ?? [],
+  }
+}
+
+/** `base` with the values of `over` laid over it; objects are merged. */
+function overlay(base: JsonValue, over: JsonValue | undefined): JsonValue {
+  if (over === undefined) return base
+  if (isObject(base) && isObject(over)) {
+    const merged: Record<string, JsonValue> = { ...base }
+    for (const [key, value] of Object.entries(over)) {
+      const inner = base[key]
+      merged[key] = inner === undefined ? value : overlay(inner, value)
+    }
+    return merged
+  }
+  return over
 }
 
 /**
@@ -246,6 +376,13 @@ function readFixture(diagram: DiagramType, name: string, dir: string): Fixture {
     )
   }
   const { source, config, knownDivergence, ...expected } = file
+  const specifiedFile = path.join(dir, SPECIFIED_FILE)
+  const specified = existsSync(specifiedFile)
+    ? parseSpecifiedFile(
+        readFileSync(specifiedFile, "utf8"),
+        `${diagram}/${name}`,
+      )
+    : undefined
   return {
     diagram,
     name,
@@ -254,6 +391,7 @@ function readFixture(diagram: DiagramType, name: string, dir: string): Fixture {
     ...(config ? { config } : {}),
     ...(knownDivergence === undefined ? {} : { knownDivergence }),
     expected,
+    ...(specified === undefined ? {} : { specified }),
   }
 }
 
@@ -280,24 +418,80 @@ export function parseExpectedFile(json: string, label: string): ExpectedFile {
   ) {
     fail(`\`knownDivergence\` must be one of ${KNOWN_DIVERGENCES.join(", ")}`)
   }
+  const problemWithResult = expectationProblem(value)
+  if (problemWithResult) fail(problemWithResult)
+  return value as unknown as ExpectedFile
+}
+
+/**
+ * Parses and checks the shape of a `specified.json` file: the result part of
+ * an `expected.json`, without the hand-written head.
+ */
+export function parseSpecifiedFile(json: string, label: string): Expectation {
+  const value = JSON.parse(json) as unknown
+  const problem = isObject(value) ? expectationProblem(value) : "not an object"
+  if (problem) throw new Error(`${label}/${SPECIFIED_FILE}: ${problem}`)
+  return value as Expectation
+}
+
+/**
+ * Returns what is wrong with the result part of an `expected.json` or a
+ * `specified.json`, if anything.
+ */
+function expectationProblem(
+  value: Record<string, unknown>,
+): string | undefined {
   if (value.accepted === true) {
-    if (typeof value.diagramType !== "string") fail("missing `diagramType`")
+    if (typeof value.diagramType !== "string") return "missing `diagramType`"
     if (value.db !== null && !isObject(value.db)) {
-      fail("`db` must be an object or null")
+      return "`db` must be an object or null"
     }
-  } else if (value.accepted === false) {
+    return value.embedded === undefined
+      ? undefined
+      : recordedEmbeddedProblem(value.embedded)
+  }
+  if (value.accepted === false) {
     const error = value.error
     if (
       !isObject(error) ||
       typeof error.name !== "string" ||
       typeof error.message !== "string"
     ) {
-      fail("`error` must have `name` and `message`")
+      return "`error` must have `name` and `message`"
     }
-  } else {
-    fail("`accepted` must be a boolean")
+    return undefined
   }
-  return value as unknown as ExpectedFile
+  return "`accepted` must be a boolean"
+}
+
+/** Returns what is wrong with an `embedded` field, if anything. */
+function recordedEmbeddedProblem(embedded: unknown): string | undefined {
+  if (!isObject(embedded)) return "`embedded` must be an object"
+  if (embedded.config !== undefined && !isObject(embedded.config)) {
+    return "`embedded.config` must be an object"
+  }
+  if (embedded.title !== undefined && typeof embedded.title !== "string") {
+    return "`embedded.title` must be a string"
+  }
+  const effects = embedded.dataBlockEffects
+  if (
+    effects !== undefined &&
+    !(
+      Array.isArray(effects) &&
+      effects.every(
+        (effect) =>
+          isObject(effect) &&
+          typeof effect.id === "string" &&
+          isObject(effect.set),
+      )
+    )
+  ) {
+    return "`embedded.dataBlockEffects` must be a list of { id, set }"
+  }
+  if (Object.keys(embedded).length === 0) {
+    return "`embedded` is left out when it holds nothing"
+  }
+  return undefined
 }
 
 /**
@@ -350,19 +544,49 @@ export function serializeExpectedFile(file: ExpectedFile): string {
       ? {}
       : { knownDivergence: file.knownDivergence }),
   }
-  const ordered: JsonObject = file.accepted
-    ? {
-        ...head,
-        accepted: true,
-        diagramType: file.diagramType,
-        db: file.db,
-      }
-    : {
-        ...head,
-        accepted: false,
-        error: { name: file.error.name, message: file.error.message },
-      }
+  const ordered: JsonObject = { ...head, ...resultFields(file) }
   return `${JSON.stringify(ordered, null, 2)}\n`
+}
+
+/**
+ * Serializes `specified.json` in its canonical form, as
+ * {@link serializeExpectedFile} does for `expected.json`.
+ */
+export function serializeSpecifiedFile(result: Expectation): string {
+  return `${JSON.stringify(resultFields(result), null, 2)}\n`
+}
+
+/** The fields of the result part, in their canonical order. */
+function resultFields(result: Expectation): JsonObject {
+  if (!result.accepted) {
+    return {
+      accepted: false,
+      error: { name: result.error.name, message: result.error.message },
+    }
+  }
+  const embedded = result.embedded
+  return {
+    accepted: true,
+    diagramType: result.diagramType,
+    db: result.db,
+    ...(embedded === undefined
+      ? {}
+      : {
+          embedded: {
+            ...(embedded.config === undefined
+              ? {}
+              : { config: embedded.config }),
+            ...(embedded.title === undefined ? {} : { title: embedded.title }),
+            ...(embedded.dataBlockEffects === undefined
+              ? {}
+              : {
+                  dataBlockEffects: embedded.dataBlockEffects.map(
+                    ({ id, set }) => ({ id, set }),
+                  ),
+                }),
+          },
+        }),
+  }
 }
 
 /**

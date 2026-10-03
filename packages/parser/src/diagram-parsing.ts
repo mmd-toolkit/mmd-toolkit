@@ -1,6 +1,5 @@
 import type {
   DiagramBody,
-  DiagramTokenKind,
   DiagramType,
   Frontmatter,
   Location,
@@ -8,10 +7,7 @@ import type {
   Root,
 } from "./ast.ts"
 import { DiagramTextReader } from "./diagram-text.ts"
-import { ParseError } from "./errors.ts"
 import type { PendingToken, SourceLexer } from "./source-lexer.ts"
-import { isWhitespace } from "./character-classes.ts"
-import { codePointBefore } from "./text-cursor.ts"
 
 /**
  * What a diagram's parser starts from: the shared lexer, which `parse()`
@@ -22,17 +18,6 @@ export interface DiagramInput {
   readonly lexer: SourceLexer
   readonly frontmatter: Frontmatter | null
   readonly diagramType: DiagramType
-}
-
-/**
- * ast/<diagram>.md, Tokens: a unit of the diagram's lexer that is not all
- * whitespace, with the token kind of the item it belongs to.
- */
-export interface UnitWithKind {
-  /** The token kind of the unit's item. */
-  readonly kind: DiagramTokenKind
-  /** The source range from the first to the last character of the unit that is not whitespace. */
-  readonly range: Range
 }
 
 /**
@@ -58,26 +43,20 @@ export interface DiagramComment {
 
 /**
  * What a diagram's parser makes of the diagram text, which has no
- * directives: its units with their kinds, and its tokens, before the
- * directives cut them. {@link finishDiagram} checks both.
+ * directives: its tokens, before the directives cut them, and its diagram
+ * comments. {@link finishDiagram} checks the tokens.
  */
 export interface DiagramAnalysis {
-  /** The units that are not all whitespace, in source order, without overlapping. */
-  readonly units: readonly UnitWithKind[]
   /**
    * The tokens, in source order, without overlapping, each from its first
-   * to its last character that is not whitespace. A directive can lie
-   * inside one.
+   * to its last character that is not whitespace, or with the whitespace at
+   * its ends where it is that of a value that mermaid.js reads (ast.md,
+   * Tokens). A directive or a `;` that the line rule ignores can lie inside
+   * one; the shared lexer cuts it there.
    */
   readonly tokens: readonly PendingToken[]
   /** The diagram comments, in source order, outside the tokens. */
   readonly comments: readonly DiagramComment[]
-  /**
-   * ast.md, Tokens: the kind that the diagram gives a `;` that stands alone
-   * at the place `offset` of a `;` that the line rule ignores and that lies
-   * in none of the tokens.
-   */
-  readonly ignoredSemicolonKindAt: (offset: number) => DiagramTokenKind
 }
 
 /** The range and location of a node. */
@@ -104,36 +83,32 @@ export function openDiagramText(input: DiagramInput): DiagramTextReader {
 }
 
 /**
- * common.md, A directive is a token boundary, and ast.md: finishes the tree
- * of a diagram whose text `text` was read and analysed into `analysis`. It
- * checks the analysis, rejects the input when a directive lies inside a unit
- * that may not have one, records the tokens through the shared lexer, which
- * cuts them at the directives and records the comments and directives, with
- * the `Directive` tokens and the tokens of the frontmatter, and builds the
+ * ast.md: finishes the tree of a diagram whose text was read and analysed
+ * into `analysis`. It checks the analysis, records the tokens through the
+ * shared lexer, which cuts them at the directives and the `;` that the line
+ * rule ignores, rejecting the input where a token of a kind that may not be
+ * cut has one inside it, and records the comments and directives, with the
+ * `Directive` tokens and the tokens of the frontmatter, and builds the
  * root. `bodyAt` makes the body node at its place: from the start of the
  * first of the diagram's own tokens to the end of the last, which no
- * `Directive` token and no token in the range of the frontmatter is
- * (ast.md, Nodes).
+ * `Directive` token, no `IgnoredSemicolon` token, and no token in the range
+ * of the frontmatter is (ast.md, Nodes).
  */
 export function finishDiagram(
   input: DiagramInput,
-  text: DiagramTextReader,
   analysis: DiagramAnalysis,
   bodyAt: (place: Place) => DiagramBody,
 ): Root {
   const { lexer } = input
-  checkAnalysis(lexer.text, analysis)
-  rejectDirectiveInsideUnit(input, analysis.units, text.directives)
-  lexer.recordTokens(
-    analysis.tokens,
-    analysis.comments,
-    analysis.ignoredSemicolonKindAt,
-    input.frontmatter,
-  )
+  checkAnalysis(lexer.text, analysis.tokens)
+  lexer.recordTokens(analysis.tokens, analysis.comments, input.frontmatter)
   const { tokens } = lexer
   const frontmatterEnd = input.frontmatter?.range[1] ?? 0
   const diagramTokens = tokens.filter(
-    (token) => token.type !== "Directive" && token.range[0] >= frontmatterEnd,
+    (token) =>
+      token.type !== "Directive" &&
+      token.type !== "IgnoredSemicolon" &&
+      token.range[0] >= frontmatterEnd,
   )
   const first = diagramTokens.at(0)
   const last = diagramTokens.at(-1)
@@ -158,69 +133,21 @@ export function finishDiagram(
 }
 
 /**
- * The promises of {@link DiagramAnalysis}: the units and the tokens are in
- * source order and do not overlap, and each starts and ends with a
- * character of the source that is not whitespace. A broken promise is a bug
- * of the diagram's parser.
+ * The promises of {@link DiagramAnalysis}: the tokens `tokens` are in source
+ * order, do not overlap, are not empty, and lie in the source. Where a token
+ * starts or ends with whitespace is the diagram's to say, and the check of
+ * the tree checks it against the values (ast.md, Invariants). A broken
+ * promise is a bug of the diagram's parser.
  */
-function checkAnalysis(source: string, analysis: DiagramAnalysis): void {
-  const lists: readonly [string, readonly { readonly range: Range }[]][] = [
-    ["unit", analysis.units],
-    ["token", analysis.tokens],
-  ]
-  for (const [what, list] of lists) {
-    let previousEnd = 0
-    for (const { range } of list) {
-      const [start, end] = range
-      if (start < previousEnd || end <= start || end > source.length) {
-        throw new Error(
-          `mmd-toolkit parser bug: the ${what} at ${start} to ${end} is empty, outside the source, or out of source order`,
-        )
-      }
-      const first = source.codePointAt(start)
-      const last = codePointBefore(source, end)
-      if (
-        first === undefined ||
-        last === undefined ||
-        isWhitespace(first) ||
-        isWhitespace(last)
-      ) {
-        throw new Error(
-          `mmd-toolkit parser bug: the ${what} at ${start} to ${end} starts or ends with whitespace`,
-        )
-      }
-      previousEnd = end
-    }
-  }
-}
-
-/**
- * common.md, A directive is a token boundary: a unit of a kind other than
- * `RawText` and `Identifier` may not have a directive between two of its
- * characters that are not whitespace. Throws `ParseError` at the first
- * directive that lies inside such a unit. `units` and `directives` are in
- * source order.
- */
-function rejectDirectiveInsideUnit(
-  input: DiagramInput,
-  units: readonly UnitWithKind[],
-  directives: readonly Range[],
-): void {
-  /** The first directive that does not end before the unit at hand starts. */
-  let next = 0
-  for (const unit of units) {
-    while (next < directives.length && directives[next][1] <= unit.range[0]) {
-      next += 1
-    }
-    if (next === directives.length) return
-    const directive = directives[next]
-    const insideUnit = directive[0] < unit.range[1]
-    if (insideUnit && unit.kind !== "RawText" && unit.kind !== "Identifier") {
-      throw new ParseError(
-        "Unexpected directive",
-        directive,
-        input.lexer.lines.location(directive),
+function checkAnalysis(source: string, tokens: readonly PendingToken[]): void {
+  let previousEnd = 0
+  for (const { range } of tokens) {
+    const [start, end] = range
+    if (start < previousEnd || end <= start || end > source.length) {
+      throw new Error(
+        `mmd-toolkit parser bug: the token at ${start} to ${end} is empty, outside the source, or out of source order`,
       )
     }
+    previousEnd = end
   }
 }

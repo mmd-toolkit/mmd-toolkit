@@ -1407,15 +1407,15 @@
     },
     {
       "type": "RawText",
-      "value": "label: \"@for@ c@\"",
+      "value": " label: \"@for@ c@\"",
       "range": [
-        50,
+        49,
         67
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 37
+          "column": 36
         },
         "end": {
           "line": 2,

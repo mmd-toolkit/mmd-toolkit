@@ -232,10 +232,10 @@
     },
     {
       "type": "RawText",
-      "value": "<a",
+      "value": "<a ",
       "range": [
         15,
-        17
+        18
       ],
       "loc": {
         "start": {
@@ -244,7 +244,7 @@
         },
         "end": {
           "line": 2,
-          "column": 4
+          "column": 5
         }
       }
     },
@@ -268,15 +268,15 @@
     },
     {
       "type": "RawText",
-      "value": "href=\"u\">t",
+      "value": " href=\"u\">t",
       "range": [
-        33,
+        32,
         43
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 20
+          "column": 19
         },
         "end": {
           "line": 2,

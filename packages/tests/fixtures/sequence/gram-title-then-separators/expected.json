@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The statement context, rule 13: the title-text stops at `;`, so the title is `a`, and the two `;` are separators, which the line rule does not ignore (no `#` after a `:`)."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "a",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

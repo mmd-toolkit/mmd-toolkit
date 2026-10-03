@@ -185,10 +185,10 @@
         "name": {
           "type": "FlowchartLabel",
           "kind": "text",
-          "value": "S",
+          "value": "S ",
           "range": [
             30,
-            31
+            32
           ],
           "loc": {
             "start": {
@@ -197,7 +197,7 @@
             },
             "end": {
               "line": 3,
-              "column": 10
+              "column": 11
             }
           }
         },
@@ -443,10 +443,10 @@
     },
     {
       "type": "RawText",
-      "value": "S",
+      "value": "S ",
       "range": [
         30,
-        31
+        32
       ],
       "loc": {
         "start": {
@@ -455,7 +455,7 @@
         },
         "end": {
           "line": 3,
-          "column": 10
+          "column": 11
         }
       }
     },

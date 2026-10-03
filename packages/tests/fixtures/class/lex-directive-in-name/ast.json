@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Foo",
             "range": [
               19,
@@ -140,7 +140,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Fo",
       "range": [
         19,
@@ -176,7 +176,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "o",
       "range": [
         35,

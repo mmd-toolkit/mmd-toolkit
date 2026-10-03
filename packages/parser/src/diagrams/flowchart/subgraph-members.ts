@@ -13,7 +13,7 @@ import { isWhitespace } from "../../character-classes.ts"
 export const HAS_OWN_PROPERTY = "hasOwnProperty"
 
 /**
- * diagrams/flowchart.md, Db normalization, Subgraphs: a member of a
+ * diagrams/flowchart.md, Rejections outside the grammar, Subgraph members: a member of a
  * subgraph that is not empty or all whitespace, as the rejection of
  * Subgraph members needs it. The rejection only asks whether a member is
  * `hasOwnProperty` and whether it is empty or all whitespace; the value as
@@ -55,9 +55,9 @@ export function trimmed(text: string): string {
 }
 
 /**
- * Db normalization, Vertex statements: the members of `statement`, the ids
- * of its last group, then those of the group before it, and so on back to
- * the first group.
+ * Rejections outside the grammar, Subgraph members: the members of
+ * `statement`, the ids of its last group, then those of the group before
+ * it, and so on back to the first group.
  */
 function vertexStatementMembers(
   statement: FlowchartVertexStatement,
@@ -75,8 +75,8 @@ function vertexStatementMembers(
 }
 
 /**
- * Db normalization, Subgraphs: the members of a subgraph whose body is
- * `body`, in the order of the body, other than those that are empty or all
+ * Rejections outside the grammar, Subgraph members: the members of a
+ * subgraph whose body is `body`, in the order of the body, other than those that are empty or all
  * whitespace: the members of its vertex statements, the Db id of each
  * nested subgraph, the value of each accessibility statement whose value is
  * not null, and `;` for each empty statement. `nestedMember` gives the

@@ -154,33 +154,3 @@ mermaid.js もそれを拒否しますが、
 そのとき mermaid.js は何も言わずに図を描きます。
 ヘッダーを正しく書けば、どちらも同じに読みます。
 終わりに空の形があれば、そのときはどちらも拒否します。
-
-## 件数と確かめ方
-
-ヘッダーの場所の 12 の語
-（`classDiagram`、`classDiagram-v2`、`classDiagramX`、`classDiagram_`、
-`classDiagram2`、`classDiagramclassDiagram`、`classDiagram-v2X`、
-`classDiagramé`、`classDiagram-x`、`classDiagram x`、`classDiagram.x`、
-`classDiagram:x`）、
-終わりの前の 4 種の文（なし、クラス、関係、ノート）、
-21 の終わり（7 つの形と、`accTitle: x` のように空でないものや、
-`class A {` のようにほかの形で書きかけのもの）から、
-合わせて 1,008 件の入力を作りました。
-それぞれを mermaid.js とこの仕様の parser で読み、
-受理と Db を比べました。
-
-| 入力                      | mermaid.js は拒否、この仕様は受理 | 両方受理、Db が違う | mermaid.js は受理、この仕様は拒否 |
-| ------------------------- | --------------------------------: | ------------------: | --------------------------------: |
-| ヘッダーのあるもの 168 件 |                                 0 |                   0 |                                 0 |
-| ヘッダーのないもの 840 件 |                                 0 |                   0 |                               112 |
-
-112 件は、4 つの語 `classDiagramX`、`classDiagram_`、`classDiagram2`、
-`classDiagramclassDiagram` の後の 7 つの終わりで、それぞれ 16 件です。
-ヘッダーのないほかの語は、`classDiagram` の後に ASCII の語の文字が続かず、
-どの終わりでもどちらも拒否します。
-差は一方向だけです。
-
-この差には、この仕様のとおりに読むように替えた mermaid.js はありません。
-parser の差分テストは、この差によるとした違いがすべて、
-mermaid.js が受理し、
-テキストにヘッダーがないために parser が拒否する入力であることを求めます。

@@ -54,8 +54,10 @@ const diagrams: readonly DiagramValues[] = [
     prefix: "Class",
     values: classValueNodeTypes,
     notValues: new Set([
-      // A class name of several name parts, printed as its tokens.
+      // A name without whitespace, printed as its token.
       "Identifier",
+      // A class name of several name parts, printed as its tokens.
+      "ClassIdentifier",
       // An arrow, printed as its tokens, which touch.
       "ClassArrow",
     ]),

@@ -1,0 +1,1066 @@
+[
+  {
+    "text": "sequenceDiagram\nA->>B: x #c\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c\u2028%% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c\u2029  %% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c\u2028 \n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c\u2028\n\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c\u2028\n%% e\n%% f\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (sequence # after message)"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c ;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c\u2028\n%% e;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%%\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%%\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%%\u2028%% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%%\u2029  %% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%%\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%%\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%%\u2028 \n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%%\u2028\n\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%%\u2028\n%% e\n%% f\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%%\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (sequence # after message)"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%% ;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}}%%\u2028\n%% e;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {} ;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {};\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {};;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}; ;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {};;  \nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{init: {}#x;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #c %%{wrap\u2028;\n%% e",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # after message); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x;\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x;\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x;\u2028 \n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x;\u2028\n\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x;\u2028\n%% e\n%% f\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x;\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (sequence # trigger)"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; ;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x;\u2028\n%% e;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}}%%\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}}%%\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}}%%\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}}%%\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}}%%\u2028 \n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}}%%\u2028\n\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}}%%\u2028\n%% e\n%% f\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}}%%\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (sequence # trigger)"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}}%% ;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}}%%\u2028\n%% e;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {} \nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}\t\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}  \nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {} ;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {};\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {};;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}; ;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}: \nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}\n\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}\n\n\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}\n \n\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}\r\n\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}\r\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {} x\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {};;  \nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{init: {}#x;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x #style:#x; %%{wrap\u2028;\n%% e",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # trigger); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c\u2028%% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c\u2029  %% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c\u2028 \n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c\u2028\n\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c\u2028\n%% e\n%% f\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (sequence %% after autonumber)"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c ;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c\u2028\n%% e;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%%\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%%\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%%\u2028%% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%%\u2029  %% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%%\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%%\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%%\u2028 \n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%%\u2028\n\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%%\u2028\n%% e\n%% f\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%%\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (sequence %% after autonumber)"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%% ;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}}%%\u2028\n%% e;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {} ;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {};\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {};;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}; ;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {};;  \nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{init: {}#x;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber %% c %%{wrap\u2028;\n%% e",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence %% after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x;\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x;\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x;\u2028 \n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x;\u2028\n\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x;\u2028\n%% e\n%% f\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x;\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (sequence % after autonumber)"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; ;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x;\u2028\n%% e;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}}%%\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}}%%\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}}%%\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}}%%\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}}%%\u2028 \n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}}%%\u2028\n\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}}%%\u2028\n%% e\n%% f\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}}%%\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (sequence % after autonumber)"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}}%% ;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}}%%\u2028\n%% e;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {} \nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}\t\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}  \nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {} ;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {};\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {};;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}; ;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}: \nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}\n\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}\n\n\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}\n \n\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}\r\n\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}\r\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {} x\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {};;  \nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{init: {}#x;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nautonumber % style:#x; %%{wrap\u2028;\n%% e",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence % after autonumber); failed: prettier threw"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c\u2028%% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c\u2029  %% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c\u2028 \n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c\u2028\n\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c\u2028\n%% e\n%% f\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (sequence # alone)"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c ;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c\u2028\n%% e;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%%\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%%\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%%\u2028%% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%%\u2029  %% d\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%%\u2028\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%%\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%%\u2028 \n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%%\u2028\n\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%%\u2028\n%% e\n%% f\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%%\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (sequence # alone)"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%% ;\u2029\n%% e\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "sequenceDiagram\nA->>B: x\n#c %%{init: {}}%%\u2028\n%% e;\nC->>D: y\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (sequence # alone); failed: prettier not idempotent"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c\u2028%% d\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c\u2029  %% d\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c\u2028 \n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c\u2028\n\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c\u2028\n%% e\n%% f\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (state # after state)"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c ;\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c\u2028\n%% e;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%%\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%%\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%%\u2028%% d\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%%\u2029  %% d\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%%\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%%\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%%\u2028 \n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%%\u2028\n\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%%\u2028\n%% e\n%% f\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%%\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (state # after state)"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%% ;\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}}%%\u2028\n%% e;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {} ;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {};\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {};;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}; ;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {};;  \nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{init: {}#x;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #c %%{wrap\u2028;\n%% e",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c\u2028%% d\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c\u2029  %% d\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c\u2028 \n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c\u2028\n\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c\u2028\n%% e\n%% f\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (state %% after state)"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c ;\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c\u2028\n%% e;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%%\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%%\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%%\u2028%% d\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%%\u2029  %% d\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%%\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%%\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%%\u2028 \n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%%\u2028\n\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%%\u2028\n%% e\n%% f\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%%\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (state %% after state)"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%% ;\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}}%%\u2028\n%% e;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {} ;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {};\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {};;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}; ;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {};;  \nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{init: {}#x;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA %% c %%{wrap\u2028;\n%% e",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state %% after state); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x;\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x;\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x;\u2028%% d",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x;\u2029  %% d",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x;\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x;\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x;\u2028 \n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x;\u2028\n\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x;\u2028\n%% e\n%% f\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x;\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (state # trigger)"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; ;\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x;\u2028\n%% e;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%%\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%%\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%%\u2028%% d",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%%\u2029  %% d",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%%\u2028\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%%\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%%\u2028 \n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%%\u2028\n\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%%\u2028\n%% e\n%% f\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%%\u2029\n%%{init: {}}%% %% e",
+    "note": "review (45): the end of a comment before a directive after U+2029 (a check of the parser's tree at the time, not of the printer) (state # trigger)"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%% ;\u2029\n%% e\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}}%%\u2028\n%% e;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier changes the reading"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {} \nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}\t\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}  \nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {} ;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {};\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {};;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}; ;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}: \nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}\n\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}\n\n\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}\n \n\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}\r\n\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}\r\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {} x\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {};;  \nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{init: {}#x;\nC --> D\n",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  },
+  {
+    "text": "stateDiagram-v2\nA #style:#x; %%{wrap\u2028;\n%% e",
+    "note": "review (45) major 1: a diagram comment cut by comment regions (state # trigger); failed: prettier threw"
+  }
+]

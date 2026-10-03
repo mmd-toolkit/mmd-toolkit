@@ -65,5 +65,28 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "description": "Service A",
+          "type": "boundary"
+        }
+      },
+      {
+        "id": "B",
+        "set": {
+          "type": "control"
+        }
+      },
+      {
+        "id": "C",
+        "set": {
+          "type": "database"
+        }
+      }
+    ]
   }
 }

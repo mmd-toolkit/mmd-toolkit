@@ -1,0 +1,146 @@
+/**
+ * ast.md, Shared leaf nodes, and the Nodes and Tokens of each diagram: the
+ * node types that are value nodes: a node whose value is what the author
+ * wrote, made of the units of one item of the grammar. The other nodes are
+ * made of other nodes and of keywords and punctuation.
+ */
+export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "Identifier",
+  "StringLiteral",
+  "NumericLiteral",
+  "FlowchartLabel",
+  "FlowchartDataBlock",
+  "FlowchartLiteral",
+  "FlowchartIgnoredText",
+  "SequenceBoxText",
+  "SequenceIgnoredStatement",
+  "SequenceIdentifier",
+  "SequenceLiteral",
+  "SequenceDataBlock",
+  "ClassIdentifier",
+  "ClassLiteral",
+  "ClassIgnoredText",
+  "StateIgnoredStatement",
+  "StateLiteral",
+  "StateIgnoredText",
+])
+
+/**
+ * The node types that are not value nodes. Together with
+ * {@link VALUE_NODE_TYPES} they are every node type of the trees of the
+ * specification; a test requires every type that a recorded tree has to be in
+ * one of the two, so that a new node type is classified when it is added.
+ */
+export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
+  "Root",
+  "ErrorDiagram",
+  "FlowchartDiagram",
+  "FlowchartEmptyStatement",
+  "FlowchartVertexStatement",
+  "FlowchartVertexGroup",
+  "FlowchartVertex",
+  "FlowchartShape",
+  "FlowchartShapeProperty",
+  "FlowchartLink",
+  "FlowchartArrow",
+  "FlowchartOpeningArrow",
+  "FlowchartSubgraphStatement",
+  "FlowchartStyleStatement",
+  "FlowchartClassDefStatement",
+  "FlowchartClassStatement",
+  "FlowchartClickCallbackStatement",
+  "FlowchartClickUrlStatement",
+  "FlowchartLinkStyleStatement",
+  "FlowchartDefaultLinkStyleStatement",
+  "FlowchartDirectionStatement",
+  "FlowchartAccTitleStatement",
+  "FlowchartAccDescrStatement",
+  "FlowchartAccDescrBlockStatement",
+  "SequenceDiagram",
+  "SequenceParticipantStatement",
+  "SequenceDestroyStatement",
+  "SequenceBoxStatement",
+  "SequenceMessageStatement",
+  "SequenceArrow",
+  "SequenceAutonumberStatement",
+  "SequenceActivateStatement",
+  "SequenceDeactivateStatement",
+  "SequenceNoteStatement",
+  "SequenceLinksStatement",
+  "SequenceLinkStatement",
+  "SequencePropertiesStatement",
+  "SequenceDetailsStatement",
+  "SequenceTitleStatement",
+  "SequenceAccTitleStatement",
+  "SequenceAccDescrStatement",
+  "SequenceAccDescrBlockStatement",
+  "SequenceLoopStatement",
+  "SequenceOptStatement",
+  "SequenceBreakStatement",
+  "SequenceRectStatement",
+  "SequenceAltStatement",
+  "SequenceParStatement",
+  "SequenceParOverStatement",
+  "SequenceCriticalStatement",
+  "SequenceSection",
+  "SequenceText",
+  "ClassDiagram",
+  "ClassDeclaration",
+  "ClassMemberStatement",
+  "ClassNameStatement",
+  "ClassAnnotationStatement",
+  "ClassRelationStatement",
+  "ClassArrow",
+  "ClassNamespaceStatement",
+  "ClassNoteStatement",
+  "ClassCallbackStatement",
+  "ClassLinkStatement",
+  "ClassStyleStatement",
+  "ClassCssClassStatement",
+  "ClassClassDefStatement",
+  "ClassDirectionStatement",
+  "ClassAccTitleStatement",
+  "ClassAccDescrStatement",
+  "ClassAccDescrBlockStatement",
+  "ClassName",
+  "ClassMethod",
+  "ClassAttribute",
+  "ClassAnnotation",
+  "StateDiagram",
+  "StateDefinitionStatement",
+  "StateTransitionStatement",
+  "StateReference",
+  "StateTerminal",
+  "StateCompositeStatement",
+  "StateAliasDefinitionStatement",
+  "StatePseudostateDefinitionStatement",
+  "StateDividerStatement",
+  "StateNoteStatement",
+  "StateFloatingNoteStatement",
+  "StateClickStatement",
+  "StateClassDefStatement",
+  "StateClassStatement",
+  "StateStyleStatement",
+  "StateDirectionStatement",
+  "StateAccTitleStatement",
+  "StateAccDescrStatement",
+  "StateAccDescrBlockStatement",
+  "StateScaleStatement",
+  "StateHideEmptyDescriptionStatement",
+])
+
+/** The node types of the data blocks, whose delimiters lie in their range. */
+export const DATA_BLOCK_NODE_TYPES: ReadonlySet<string> = new Set([
+  "FlowchartDataBlock",
+  "SequenceDataBlock",
+])
+
+/**
+ * ast/state.md, StateIgnoredText: the value node types whose range holds the
+ * tokens of their units, of whatever kind the units have: the empty strings,
+ * empty description blocks, `ignored-state` unit, and `%%` of a
+ * StateIgnoredText.
+ */
+export const NODE_TYPES_WITH_TOKENS_OF_ANY_KIND: ReadonlySet<string> = new Set([
+  "StateIgnoredText",
+])

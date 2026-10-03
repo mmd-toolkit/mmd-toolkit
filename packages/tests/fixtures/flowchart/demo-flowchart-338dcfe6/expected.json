@@ -416,5 +416,8 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "title": "This is a complicated flow"
   }
 }

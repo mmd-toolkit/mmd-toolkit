@@ -2,15 +2,21 @@
 
 英語版: [state.md](./state.md)
 
-この文書は、図種 `stateDiagram` の木のノードとトークンを定めます。
+この文書は、図種 `stateDiagram` の木のノードを定めます。
 木の共通の部分は [ast.ja.md](../ast.ja.md) で定めます。
 ソースの読み方と、どの文法の規則がどのノードを作るかは、
 [diagrams/state.ja.md](../diagrams/state.ja.md) で定めます。
 
 この図種の本文は [StateDiagram](#statediagram) です。
-欄の値は、[ast.ja.md](../ast.ja.md#ノード) が定める範囲のテキストとして、
+欄の値は、[ast.ja.md](../ast.ja.md#ノード) が定める値の書かれたテキストとして、
 書き手が書いたものを保ちます。
 [common.ja.md](../common.ja.md#ソースの読み方) の変換した形ではありません。
+mermaid.js が値の一部として読む空白は、
+その書かれたテキストの一部です
+（[ノード](../ast.ja.md#ノード) を参照）。
+この図種では、別名の 2 つ目の説明の空白です
+（[StateAliasDefinitionStatement](#statealiasdefinitionstatement) を参照）。
+ほかの空白は、どの値にも入りません。
 
 **状態**は図の箱の 1 つで、その id で名指されます。
 遷移は 1 つの状態から別の状態へ向かいます。
@@ -28,7 +34,6 @@
 ヘッダーのキーワードは欄ではありません。
 `stateDiagram` と `stateDiagram-v2` は同じに読まれます
 （[検出](../diagrams/state.ja.md#検出) を参照）。
-範囲は、ヘッダーのキーワードから図の最後のトークンまでです。
 
 **StateStatement** は、StateDefinitionStatement、StateTransitionStatement、
 StateCompositeStatement、StateAliasDefinitionStatement、
@@ -55,8 +60,11 @@ Db にその id の状態がなければ状態を加え、その説明を加え�
 | `description` | StateLiteral または null | `:` の後のテキスト。`:` がないか、その後が空白だけなら null。 |
 
 子の欄: `reference`、`description`。
-`A : ` は、Db と同じく説明を持ちません。
-[fixture: state/gram-description-blank]
+`A : ` は、Db と同じく説明を持たず、空白 4 個が続く `A :` も同じです。
+mermaid.js は、空白だけの説明を、その量によらず説明のないものとして読むので、
+その空白は値ではありません。
+[fixture: state/gram-description-blank] [fixture:
+state/gram-description-blank-spaces]
 
 ### StateTransitionStatement
 
@@ -67,7 +75,7 @@ Db にその id の状態がなければ状態を加え、その説明を加え�
 | `label` | StateLiteral または null | `:` の後のテキスト。ないか、空白だけなら null。 |
 
 子の欄: `from`、`to`、`label`。
-矢印 `-->` は `Punctuator` のトークンで、ノードではありません。
+矢印 `-->` はトークンで、ノードではありません。
 state 図の矢印はこの 1 つだけで、端の印がなく、線の種類も 1 つなので、
 矢印のノードには置く欄がありません。
 [fixture: state/lex-percent-in-label]
@@ -96,12 +104,12 @@ Db でのその id は、それがある合成状態から作られます
 
 `state A { … }` と `state A`。
 
-| 欄               | 型                               | 意味                                                                 |
-| ---------------- | -------------------------------- | -------------------------------------------------------------------- |
-| `textBeforeId`   | StateIgnoredText または null     | 名前の前の空の文字列。なければ null。                                |
-| `id`             | Identifier または null           | `state` の後の名前。`state` だけなら null。                          |
-| `textBeforeBody` | StateIgnoredText または null     | 本体の `{` の前の空の文字列、空の説明ブロック、`%%`。なければ null。 |
-| `body`           | StateStatement の列、または null | `{` と `}` の間の文。本体がなければ null。                           |
+| 欄               | 型                               | 意味                                                                                         |
+| ---------------- | -------------------------------- | -------------------------------------------------------------------------------------------- |
+| `textBeforeId`   | StateIgnoredText または null     | 名前の前の空の文字列。なければ null。                                                        |
+| `id`             | Identifier または null           | `state` の後の名前。`state` だけなら null。                                                  |
+| `textBeforeBody` | StateIgnoredText または null     | 本体の `{` の前の空の文字列、空の説明ブロック、`ignored-state` の単位、`%%`。なければ null。 |
+| `body`           | StateStatement の列、または null | `{` と `}` の間の文。本体がなければ null。                                                   |
 
 子の欄: `textBeforeId`、`id`、`textBeforeBody`、`body`。
 `textBeforeId` と `textBeforeBody` は、mermaid.js が読まないテキストを持ちます。
@@ -115,6 +123,12 @@ Db でのその id は、それがある合成状態から作られます
 名前の次の行の `{` の前の空の説明ブロックも持ち、
 `state X ""` の後の行 `accDescr {} {` は、
 空の文字列からブロックまでの 1 つの StateIgnoredText を持ちます。
+`ignored-state` の単位、
+つまり後の行の、mermaid.js がトークンを読まない各 `state` と、
+その後の空の文字列も持ちます。
+`state X ""` の後の行 `state {` は、空の文字列から `state` までの
+1 つの StateIgnoredText を持ち、本体は X のものです。
+[fixture: state/gram-ignored-state-before-body-next-line]
 [fixture: state/gram-state-empty-string-before-name] [fixture:
 state/gram-state-empty-string-between-name-and-body] [fixture:
 state/gram-ignored-percent-before-body-next-line] [fixture:
@@ -139,16 +153,16 @@ state/lex-state-keyword-alone]
 `state "説明" as A`、`state "説明" as A : もう 1 つ`、
 `state "説明" as A { … }`。
 
-| 欄                      | 型                               | 意味                                                                                   |
-| ----------------------- | -------------------------------- | -------------------------------------------------------------------------------------- |
-| `textBeforeDescription` | StateIgnoredText または null     | 説明の前の空の文字列。なければ null。                                                  |
-| `description`           | StringLiteral                    | 引用符の中の説明。                                                                     |
-| `textAfterDescription`  | StateIgnoredText または null     | 説明の後、`as` の前の空の文字列。なければ null。                                       |
-| `id`                    | StateLiteral または null         | `as` の後の id。空なら null。                                                          |
-| `secondDescription`     | StateLiteral または null         | 本体がないとき、最初の `:` と 2 つ目の `:` または終わりの間のテキスト。なければ null。 |
-| `textAfter`             | StateIgnoredText または null     | 本体がないとき、2 つ目の `:` からのテキスト。なければ null。                           |
-| `textBeforeBody`        | StateIgnoredText または null     | 本体の `{` の前の空の説明ブロックと、`%%` からのテキスト。なければ null。              |
-| `body`                  | StateStatement の列、または null | `{` と `}` の間の文。本体がなければ null。                                             |
+| 欄                      | 型                               | 意味                                                                                                                   |
+| ----------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `textBeforeDescription` | StateIgnoredText または null     | 説明の前の空の文字列。なければ null。                                                                                  |
+| `description`           | StringLiteral                    | 引用符の中の説明。                                                                                                     |
+| `textAfterDescription`  | StateIgnoredText または null     | 説明の後、`as` の前の空の文字列。なければ null。                                                                       |
+| `id`                    | StateLiteral または null         | `as` の後の id。空なら null。                                                                                          |
+| `secondDescription`     | StateLiteral または null         | 本体がないとき、最初の `:` と 2 つ目の `:` または終わりの間の `second-description` の単位。空白を含む。なければ null。 |
+| `textAfter`             | StateIgnoredText または null     | 本体がないとき、2 つ目の `:` からのテキスト。なければ null。                                                           |
+| `textBeforeBody`        | StateIgnoredText または null     | 本体の `{` の前の空の説明ブロック、`ignored-state` の単位、空の文字列、`%%` からのテキスト。なければ null。            |
+| `body`                  | StateStatement の列、または null | `{` と `}` の間の文。本体がなければ null。                                                                             |
 
 子の欄: `textBeforeDescription`、`description`、`textAfterDescription`、
 `id`、`secondDescription`、`textAfter`、`textBeforeBody`、`body`。
@@ -161,6 +175,9 @@ state/lex-state-keyword-alone]
 そのとき別名は id を持ちません（`state "d" as %% c {`）。
 または、別名の次の行の、ディレクティブを始めない `{` の前の、
 空の説明ブロックと `%%` です（行 `accDescr {} {` が続く `state "d" as A`）。
+または、`ignored-state` の単位とその後の空の文字列です（いくつ続いてもよい）
+（行 `state {` が続く `state "d" as A`）。
+[fixture: state/gram-ignored-state-before-alias-body-next-line]
 [fixture: state/lex-alias-id-ignored-percent-before-body] [fixture:
 state/lex-alias-id-ignored-percent-brace] [fixture:
 state/gram-ignored-percent-before-alias-body-next-line] [fixture:
@@ -172,13 +189,20 @@ id は空白を持て、本体の前では `:` も持てます。
 state/lex-alias-second-description] [fixture: state/lex-alias-third-part]
 [fixture: state/lex-alias-colon-before-body] [fixture:
 state/lex-alias-without-id]
-`secondDescription` は、`:` がないときと、
-`:` の後のテキストが空か空白だけのときに null です。
-mermaid.js は、後の 2 つの場合も状態に 2 つ目の説明を与えます。
-文が `:` のトークンを持つとき、Db の手順はそれをソースから読みます
-（[state.ja.md](../diagrams/state.ja.md#木から要約を作る) を参照）。
-[fixture: state/db-alias-colon-empty-second] [fixture:
-state/db-alias-colon-spaces-second]
+mermaid.js は 2 つ目の説明を、空白を含めて書かれたとおりに読むので、
+`secondDescription` は、空白だけのときも単位の全体です。
+`state "d" as A : x  : y` の値は、空白、`x`、空白 2 個で、
+空白 2 個が続く `state "d" as A :` の値は空白 2 個です。
+`:` がないときと、`:` の後に何もないときは null です。
+後者では mermaid.js は状態に空の 2 つ目の説明を与え、
+それは木のどの欄にも現れません。
+行の規則が無視する `;` の後の空白は、その中に残ります。
+空白 2 個が続く `state "d" as A style:#x;` は、別名の id `A style` と、
+2 つ目の説明 `#x` と空白 2 個を持ちます。
+[fixture: state/lex-alias-third-part] [fixture:
+state/db-alias-colon-spaces-second] [fixture:
+state/db-alias-colon-empty-second] [fixture:
+state/tokens-alias-ignored-semicolon-then-spaces]
 
 ### StatePseudostateDefinitionStatement
 
@@ -205,14 +229,15 @@ id は空白を持てます。`state f 1 <<fork>>` は fork `f 1` です。
 `note left of A : テキスト`、そして `note right of A`、その後の行のテキスト、
 `end note`。
 
-| 欄                | 型                           | 意味                                                |
-| ----------------- | ---------------------------- | --------------------------------------------------- |
-| `position`        | 文字列                       | `left` か `right`。                                 |
-| `textBeforeState` | StateIgnoredText または null | 位置のすぐ後の `%%` からのテキスト。なければ null。 |
-| `state`           | Identifier または null       | `of` の後の状態の id。空なら null。                 |
-| `text`            | StateLiteral または null     | ノートのテキスト。空か空白だけなら null。           |
+| 欄                | 型                           | 意味                                                            |
+| ----------------- | ---------------------------- | --------------------------------------------------------------- |
+| `position`        | 文字列                       | `left` か `right`。                                             |
+| `textBeforeState` | StateIgnoredText または null | 位置のすぐ後の `%%` からのテキスト。なければ null。             |
+| `state`           | Identifier または null       | `of` の後の状態の id。空なら null。                             |
+| `textBeforeText`  | StateIgnoredText または null | 1 行のとき、mermaid.js が落とす `:` の後の文字。なければ null。 |
+| `text`            | StateLiteral または null     | mermaid.js が読むノートのテキスト。空か空白だけなら null。      |
 
-子の欄: `textBeforeState`、`state`、`text`。
+子の欄: `textBeforeState`、`state`、`textBeforeText`、`text`。
 `textBeforeState` は、mermaid.js が読まないテキストです。
 位置のすぐ後に空白なしで続く `%%` と、
 その後の `:`、改行、空白、`-` 以外の文字で、
@@ -223,6 +248,20 @@ id は空白を持てます。`state f 1 <<fork>>` は fork `f 1` です。
 `state` は null で、テキストは `%%` で始まります。
 [fixture: state/lex-note-mixed-case] [fixture: state/lex-note-block]
 [fixture: state/lex-note-block-empty] [fixture: state/lex-note-id-percent-block]
+
+1 行のとき、mermaid.js は、ノートの id のすぐ後からのテキストを、
+最初の 2 文字と両端の空白を除いて読みます
+（[ノートの文脈](../diagrams/state.ja.md#ノートの文脈) を参照）。
+`text` と `textBeforeText` はその読み方を示します。
+`:` の前に空白が 2 つあると、`:` はテキストの一部です。
+`note left of A  :hi` のテキストは `:hi` です。
+`:` がノートの id のすぐ後にあるとき、`:` の後の文字は、
+空白でなければ `textBeforeText` です。
+`note left of A:hi` ではそれが `h` でテキストは `i` で、
+`note left of A:h` ではそれが `h` でテキストはありません。
+[fixture: state/lex-note-two-spaces-before-colon] [fixture:
+state/lex-note-colon-without-space] [fixture:
+state/lex-note-colon-then-one-character]
 
 ### StateFloatingNoteStatement
 
@@ -236,7 +275,7 @@ id は空白を持てます。`state f 1 <<fork>>` は fork `f 1` です。
 
 子の欄: `text`、`id`。
 [fixture: state/lex-floating-note-id-spaces]
-引用符は文の `Punctuator` のトークンで、どの欄にも属しません。
+引用符は文のトークンで、どの欄にも属しません。
 テキストの前と後に、それぞれ 2 つ以上あることもあります
 （[ノートの文脈](../diagrams/state.ja.md#ノートの文脈) を参照）。
 [fixture: state/lex-floating-note-extra-quote-before-text] [fixture:
@@ -262,17 +301,22 @@ click の文とその改行の間の空の説明ブロックは、その一部�
 
 ### StateClassDefStatement
 
-| 欄         | 型                | 意味                                       |
-| ---------- | ----------------- | ------------------------------------------ |
-| `cssClass` | Identifier        | `classDef` の後の CSS クラス。             |
-| `styles`   | StateLiteral の列 | `,` の単位で区切ったスタイル。ソースの順。 |
+| 欄         | 型                               | 意味                                                            |
+| ---------- | -------------------------------- | --------------------------------------------------------------- |
+| `cssClass` | Identifier                       | `classDef` の後の CSS クラス。                                  |
+| `styles`   | （StateLiteral または null）の列 | `,` の単位で区切ったスタイル。ソースの順。空のスタイルは null。 |
 
 子の欄: `cssClass`、`styles`。
-2 つの `,` の間の空のスタイルはノードを作りません。
-Db の手順は、空のものも含めて、スタイルをソースから読みます
-（[state.ja.md](../diagrams/state.ja.md#木から要約を作る) を参照）。
+スタイルは、mermaid.js がテキストを各 `,` で分けた部分なので、
+部分ごとに 1 つあり、
+空か空白だけの部分は、mermaid.js が空のテキストとして読むもので、null です。
+`classDef a x,,y` のスタイルは `x`、null、`y` で、
+`classDef a ,` は null を 2 つ持ちます。
+一方、テキストのない `classDef` の文は、mermaid.js がスタイルを加えないので、
+スタイルを持ちません。
 [fixture: state/lex-classdef-percent] [fixture:
 state/lex-classdef-without-styles] [fixture: state/db-classdef-empty-items]
+[fixture: state/db-classdef-comma-only]
 
 ### StateClassStatement
 
@@ -291,16 +335,23 @@ state/lex-classdef-without-styles] [fixture: state/db-classdef-empty-items]
 
 `style A,B fill:#f00`。
 
-| 欄       | 型                             | 意味                                               |
-| -------- | ------------------------------ | -------------------------------------------------- |
-| `states` | （Identifier または null）の列 | 状態の id。ソースの順。`,` の間の空の項目は null。 |
-| `styles` | StateLiteral の列              | StateClassDefStatement と同じスタイル。            |
+| 欄       | 型                               | 意味                                               |
+| -------- | -------------------------------- | -------------------------------------------------- |
+| `states` | （Identifier または null）の列   | 状態の id。ソースの順。`,` の間の空の項目は null。 |
+| `styles` | （StateLiteral または null）の列 | StateClassDefStatement と同じスタイル。            |
 
 子の欄: `states`、`styles`。
-2 つの `,` の間の空のスタイルはノードを作らず、
-StateClassDefStatement と同じく、Db の手順はスタイルをソースから読みます。
+スタイルは、空の部分を null とする StateClassDefStatement と同じものですが、
+テキストのない `style` の文は、mermaid.js が空のスタイル 1 つを与えるので、
+null のスタイルを 1 つ持ちます。
+`style A x, ,y` のスタイルは `x`、null、`y` で、
+`style A` は null のスタイル 1 つを持ちます。
+id はその後の空白で終わります。
+`style A ,x` は、状態 A 1 つと、スタイル null と `x` を持ちます。
+[fixture: state/db-style-comma-after-space]
 [fixture: state/lex-style-empty-id] [fixture:
 state/lex-style-without-styles] [fixture: state/db-style-empty-items]
+[fixture: state/db-style-whitespace-item] [fixture: state/db-style-without-text]
 
 ### StateDirectionStatement
 
@@ -311,7 +362,6 @@ state/lex-style-without-styles] [fixture: state/db-style-empty-items]
 | `textAfter`  | StateIgnoredText または null | 方向の行の値の後のテキスト。なければ null。            |
 
 子の欄: `textBefore`、`textAfter`。
-範囲は方向の行の全体です。
 [fixture: state/lex-direction-line-in-description] [fixture:
 state/lex-direction-lower-case]
 
@@ -349,8 +399,7 @@ state/lex-direction-lower-case]
 テキストがブロックの中で終わるときは `}` を持ちません。
 Db への効果が `accDescr:` の文と違うので、別のノードの型にしています。
 閉じていないブロックは、テキストにかかわらず説明を空にし、
-テキストのない閉じたブロックは何も変えません
-（[state.ja.md](../diagrams/state.ja.md#木から要約を作る) を参照）。
+テキストのない閉じたブロックは何も変えません。
 
 | 欄       | 型                       | 意味                                                                                                |
 | -------- | ------------------------ | --------------------------------------------------------------------------------------------------- |
@@ -411,12 +460,11 @@ mermaid.js はそれを読まず、この文は Db に何も加えません。
 state/gram-state-empty-string-after-name] [fixture:
 state/gram-state-empty-string-after-name-before-comment]
 
-| 欄      | 型     | 意味                                                     |
-| ------- | ------ | -------------------------------------------------------- |
-| `value` | 文字列 | その範囲のテキスト。一続きの空の文字列と、その間の空白。 |
+| 欄      | 型     | 意味                                                                                                  |
+| ------- | ------ | ----------------------------------------------------------------------------------------------------- |
+| `value` | 文字列 | その書かれたテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。一続きの空の文字列と、その間の空白。 |
 
 子の欄はありません。
-範囲は、一続きの最初の `"` から最後の `"` までです。
 
 ### StateLiteral
 
@@ -425,13 +473,17 @@ state/gram-state-empty-string-after-name-before-comment]
 浮いたノートのテキスト、スタイル、`class` の文の CSS クラス、
 アクセシビリティのテキストです。
 
-| 欄      | 型     | 意味                                                         |
-| ------- | ------ | ------------------------------------------------------------ |
-| `value` | 文字列 | その範囲のテキスト（[ノード](../ast.ja.md#ノード) を参照）。 |
+| 欄      | 型     | 意味                                                           |
+| ------- | ------ | -------------------------------------------------------------- |
+| `value` | 文字列 | その書かれたテキスト（[ノード](../ast.ja.md#ノード) を参照）。 |
 
 子の欄はありません。
-テキストの周りの空白は範囲の外なので、値は空白で始まらず、空白で終わりません。
-テキストが空白だけのところでは、欄は代わりに null を持ちます。
+値が空白で始まるか終わるのは、mermaid.js がそれを読む別名の 2 つ目の説明だけで、
+そこでは空白だけのテキストはその空白の値です
+（[StateAliasDefinitionStatement](#statealiasdefinitionstatement) を参照）。
+ほかのところでは、mermaid.js がテキストの両端を削り、
+その周りの空白は値の一部ではなく、
+テキストが空白だけなら欄は代わりに null を持ちます。
 
 ### StateIgnoredText
 
@@ -439,89 +491,16 @@ state/gram-state-empty-string-after-name-before-comment]
 方向の行の `direction` の前と値の後のテキスト、
 別名の定義の id の後の 2 つ目の `:` からのテキスト、
 本体の `{` の前か、ノートの位置のすぐ後の、`%%` からのテキスト、
-名前の次の行の本体の `{` の前の空の説明ブロック、
+mermaid.js が落とすノートの `:` の後の文字、
+名前の後の行の本体の `{` の前の空の説明ブロックと `ignored-state` の単位、
 そして合成状態か別名の文の欄にある state の文脈の空の文字列です。
 間に空白しかない一続きの空の文字列は 1 つのノードで、
 名前の後の空の文字列と、同じ本体の前の `%%` も 1 つのノードです。
 独立の文である空の文字列は、代わりに
 [StateIgnoredStatement](#stateignoredstatement) です。
 
-| 欄      | 型     | 意味                 |
-| ------- | ------ | -------------------- |
-| `value` | 文字列 | その範囲のテキスト。 |
+| 欄      | 型     | 意味                                                              |
+| ------- | ------ | ----------------------------------------------------------------- |
+| `value` | 文字列 | その書かれたテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。 |
 
 子の欄はありません。
-範囲は、それが持つ単位のトークンを、種類を問わず含み、
-それぞれは [トークン](#トークン) がその単位に与える種類を持ちます。
-空の文字列の `String` のトークン、`%%` の `RawText` のトークン、
-空の説明ブロックの `Keyword` のトークン `accDescr` と、
-`Punctuator` のトークン `{` と `}` です。
-トークンの種類は単位で決まり、それを持つノードでは決まりません。
-[fixture: state/gram-empty-description-block-before-alias-body-next-line]
-
-## トークン
-
-トークンは、
-[diagrams/state.ja.md](../diagrams/state.ja.md#字句構造) の単位から作ります。
-すべて空白でない単位は、
-どれも [文法](../diagrams/state.ja.md#文法) の 1 つの**項目**に属し、
-この表がその項目に与える種類を持ちます。
-
-| 種類         | 項目とその単位                                                                                                                                                                                                                                                                                         |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `Keyword`    | `header` の単位。`state`、`as`、`note`、`position`、`end note`、`click`、`href`、`classDef`、`class`、`style`、`scale`、`width`、`hide`、`accTitle`、`accDescr` の単位。疑似状態の印。`direction` と `direction-value` の単位                                                                          |
-| `Identifier` | `id`、`state-name`、`class-name`、`note-id` の単位                                                                                                                                                                                                                                                     |
-| `Numeric`    | `number` の単位                                                                                                                                                                                                                                                                                        |
-| `String`     | `string` か `empty-string` の単位                                                                                                                                                                                                                                                                      |
-| `RawText`    | `description` の単位の `:` の後のテキスト。`alias-id`、`second-description`、`pseudostate-name`、`note-text`、`floating-note-text`、`floating-note-id`、`style-text`、`css-class` の単位。`title-text`、`description-text`、`description-block-text` の単位。`direction-text` と `ignored-text` の単位 |
-| `Punctuator` | `description` の単位の `:`、別名の文の `:` の単位、1 行のノートの `:` の単位、`accTitle` と `accDescr` の後の `:`。`-->`、`--`、`:::`、`[*]`、`{`、`}`、`,`。浮いたノートの `"` の単位                                                                                                                 |
-
-コメント領域が切る `String` のトークンは、`StringFragment` のトークンになります
-（[Comment](../ast.ja.md#comment) を参照）。
-
-**トークン**は、同じ項目で同じ種類の単位が、間に何も挟まずに続く最長の並び
-（`RawText` の項目では、空白を挟んでもよい）です。
-トークンは端に空白を持ちません。
-そのような並びの、空白でない 2 つの文字の間にディレクティブがあるときは、
-[ast.ja.md](../ast.ja.md#directive) のとおり、並びはディレクティブで切られます。
-
-- `position` の単位は、語の間の空白を含めて 1 つの `Keyword` のトークンです。
-  `left of`。
-  `end note` と `hide empty description` も同じです。
-- 説明は、その `:` からの 1 つの単位で、2 つのトークンです。
-  `:` と、周りの空白を除いたテキストです。
-- 浮いたノートの `"` の単位は、2 つが続くところでも、
-  それぞれ 1 つの `Punctuator` のトークンです。
-  `note ""x" as N` は 3 つの `"` のトークンを持ち、
-  2 つは `RawText` のトークン `x` の前に、1 つはその後にあります。
-  [fixture: state/lex-floating-note-extra-quote-before-text]
-- 空の説明ブロックの単位は、文の `textBeforeBody` の中でも種類を保ちます。
-  `Keyword` のトークン `accDescr` と、`Punctuator` のトークン `{` と `}` で、
-  StateIgnoredText の範囲の中にあります
-  （[StateIgnoredText](#stateignoredtext) を参照）。
-- 行の規則が無視する `;` は、
-  [ast.ja.md](../ast.ja.md#トークン) の規則に従います。
-  あるトークンの文字がその両側にあれば、そのトークンの中にあり、
-  そうでなければそれ自体がトークンです。
-  そのトークンは、その場所の文脈が `;` について読む単位の種類を持ちます。
-  `;` をテキストとして読む、別名の id、タイトル、説明、説明ブロック、
-  スタイル、クラス名の文脈と、複数行のノートでは `RawText` のトークンで、
-  `;` が id の文字である文の文脈と合成状態の本体では、
-  `Identifier` のトークンです。
-  `classDef c fill:#f00;` では、スタイルは `fill:#f00` で、
-  その後の `;` は `RawText` のトークンです。
-  `accTitle: style:#x;` と、複数行のノートの `style:#x` の後も同じです。
-  `A : style:#x;` では、説明は `style:#x` で、
-  その後の `;` は `Identifier` のトークンで、状態を加えません。
-  一方、行の規則が変えない `A : x;` では、`;` は状態の id です。
-  `A : style:#x; B` では、`;` は説明の文字の間にあり、
-  説明は `style:#x B` で、`;` はそのトークンの一部です。
-  [fixture: state/tokens-classdef-ignored-semicolon] [fixture:
-  state/tokens-acc-title-ignored-semicolon] [fixture:
-  state/tokens-note-block-ignored-semicolon] [fixture:
-  state/tokens-alias-ignored-semicolon] [fixture:
-  state/tokens-description-ignored-semicolon] [fixture:
-  state/tokens-composite-description-ignored-semicolon] [fixture:
-  state/lex-description-then-semicolon] [fixture:
-  state/tokens-description-ignored-semicolon-inside] [fixture:
-  state/tokens-class-ignored-semicolon]

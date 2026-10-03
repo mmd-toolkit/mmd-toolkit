@@ -43,5 +43,13 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {}
+      }
+    ]
   }
 }

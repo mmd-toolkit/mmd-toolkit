@@ -4,18 +4,17 @@ import { emptyDescriptionBlocksIn } from "../../empty-forms.ts"
 import { holdsWhitespace, trimmed } from "./subgraph-members.ts"
 import type { Unit } from "./units.ts"
 
-// diagrams/flowchart.md, Db normalization, Subgraphs: how the Db id of a
-// subgraph is made from its name. The grammar (for the members of a
-// subgraph), the public `flowchartSubgraphIds()`, and the Db summary of the
-// tests read the id in this one way.
+// diagrams/flowchart.md, Rejections outside the grammar, Subgraph members:
+// how the id of a subgraph is made from its name, which the grammar reads
+// for the members of a subgraph.
 
-/** Subgraphs: where the name text of a subgraph lies in the source. */
+/** Subgraph members: where the name text of a subgraph lies in the source. */
 export interface SubgraphNameText {
   /** From the start of the name to what follows it, the `[` of its title or its separator. */
   readonly range: Range
   /**
    * What the name text leaves out of the range: the delimiters of the
-   * string that the name starts with, and what the text of the range
+   * string that the name starts with, and what the written text
    * leaves out besides the directives and the comment regions, the empty
    * description blocks in it (ast.md, Nodes).
    */
@@ -23,7 +22,7 @@ export interface SubgraphNameText {
 }
 
 /**
- * Subgraphs: the name text of the subgraph name `name`, among the units
+ * Subgraph members: the name text of the subgraph name `name`, among the units
  * `units` of the diagram text: the name's value, then the text up to the
  * first `[`, `newline`, or `;` unit after the name, without the delimiters
  * of the string or markdown string that the name starts with, as the text
@@ -60,7 +59,7 @@ export function subgraphNameTextOf(
 }
 
 /**
- * Subgraphs: whether the Db id of a subgraph is a number instead of its
+ * Subgraph members: whether the Db id of a subgraph is a number instead of its
  * name text: when the subgraph has no title and its name text `nameText`
  * contains whitespace.
  */
@@ -72,7 +71,7 @@ export function isNumberedSubgraph(
 }
 
 /**
- * Subgraphs: the Db id of a subgraph with the name text `nameText`: the
+ * Subgraph members: the Db id of a subgraph with the name text `nameText`: the
  * name text, trimmed, or, for a numbered subgraph, `subGraph` followed by
  * `number`, the number of subgraphs added before it.
  */

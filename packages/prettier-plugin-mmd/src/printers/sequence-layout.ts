@@ -7,7 +7,6 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
-import { printedEndOf, sequenceDbTextsOf } from "./db-texts.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -18,7 +17,7 @@ import {
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
-import { readGapElement } from "./gap.ts"
+import { holdsJoiningRegion, printedEndOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -167,7 +166,9 @@ export function layoutSequenceHeader(
  * candidate and the rest included: when the candidate is no colour,
  * mermaid.js takes the whole text as the name of the box
  * (diagrams/sequence.md, Box colours), so `box Group   1` has the name
- * `Group   1`. It is kept up to `end` (see `findBoxTextEnd`).
+ * `Group   1`. The text ends where its last part ends, a U+2028 or U+2029
+ * at its end included: they count as characters that are not whitespace
+ * there (ast/sequence.md, SequenceBoxText), so the text is printed as it is.
  */
 export function layoutBlockHeader(
   source: Source,
@@ -175,8 +176,23 @@ export function layoutBlockHeader(
   end: number,
   text: Node | null,
 ): AtomLayout {
+  if (holdsJoiningRegion(source, start, end)) {
+    // A comment line cuts in, after a U+2028 or U+2029, and the text goes on
+    // after it: `alt`, U+2028, `%% e`, and a line ` a` is `alt a`. The
+    // header cannot be printed with its text on its own line, so it is kept
+    // as written (docs/compatibility.md, A comment line after U+2028 or
+    // U+2029).
+    return {
+      atoms: [{ start, end }],
+      rules: new Map(),
+      outdented: new Set(),
+      lineBreaks: "kept",
+    }
+  }
   const kept: Atom[] =
-    text?.type === "SequenceBoxText" ? [{ start: text.range[0], end }] : []
+    text?.type === "SequenceBoxText"
+      ? [{ start: text.range[0], end: text.range[1] }]
+      : []
   return {
     atoms: collectAtoms(
       source,
@@ -189,31 +205,6 @@ export function layoutBlockHeader(
     outdented: new Set(),
     lineBreaks: "kept",
   }
-}
-
-/**
- * Where the printed text of a box ends: the end of its text, or, when a
- * U+2028 or U+2029 follows it on its line, the end of the last of them. The
- * split of the text of a box that asks for a colour does not match a text
- * that holds one of them, also at its end, and then the box has no name and
- * the fill `transparent` (diagrams/sequence.md, Box colours), so such a
- * character is kept as written, with the whitespace and directives before
- * it. Other whitespace after the text is dropped.
- */
-export function findBoxTextEnd(source: Source, text: Node): number {
-  let end = text.range[1]
-  let offset = end
-  while (offset < source.text.length) {
-    const { element, end: elementEnd } = readGapElement(source, offset)
-    if (element.kind === "whitespace") {
-      const character = source.text[offset]
-      if (character === "\u2028" || character === "\u2029") end = elementEnd
-    } else if (element.kind !== "item" || element.item.type !== "Directive") {
-      break
-    }
-    offset = elementEnd
-  }
-  return end
 }
 
 /**
@@ -306,17 +297,21 @@ function isKeptAsWritten(
  * whitespace after that character, at its end included, and that character
  * may be a line break, after which the next line is the title: `title`, a
  * line break, and `A->>B: x` is printed as `title A->>B: x`, which shows
- * how mermaid.js reads it.
+ * how mermaid.js reads it. A U+2028 or U+2029 in its place is kept, as it
+ * is where it ends the text: a `;` after it stays, and with the character
+ * printed as a space the `;` of a second formatting would be dropped.
  */
 function layoutTitle(
   source: Source,
   statement: SequenceTitleStatement,
 ): AtomLayout {
   const { separator, end } = findTitleText(source, statement)
-  const text: Atom = { start: separator + 1, end }
+  const keepsSeparator =
+    source.text[separator] === "\u2028" || source.text[separator] === "\u2029"
+  const text: Atom = { start: keepsSeparator ? separator : separator + 1, end }
   return {
     atoms: [{ start: statement.range[0], end: separator }, text],
-    rules: new Map([[text.start, "space"]]),
+    rules: keepsSeparator ? new Map() : new Map([[text.start, "space"]]),
     outdented: new Set(),
     lineBreaks: "joined",
   }
@@ -324,13 +319,13 @@ function layoutTitle(
 
 /**
  * Where the text of a title lies: `separator`, the offset of the one
- * whitespace character after its keyword, and `end`, the end of the Db text
- * of the title, with the whitespace at its end (`sequenceDbTexts`). The text
- * starts after the separator and may be all whitespace; it runs to a `#`,
- * a `;` that the line rule does not ignore, or a line break
- * (diagrams/sequence.md, The statement context).
+ * whitespace character after its keyword, and `end`, the end of the value
+ * of the title, whitespace at its end included (ast/sequence.md,
+ * SequenceTitleStatement). The text starts after the separator and may be
+ * all whitespace; it runs to a `#`, a `;` that the line rule does not
+ * ignore, or a line break (diagrams/sequence.md, The statement context).
  *
- * Between the keyword and the start of the Db text lie the separator, which
+ * Between the keyword and the start of the value lie the separator, which
  * is a line feed when the text is on the next line, and directives and
  * comment regions (ast.md, Comment and Directive). The separator is the
  * first whitespace character there that no directive or comment covers.
@@ -339,18 +334,13 @@ export function findTitleText(
   source: Source,
   statement: SequenceTitleStatement,
 ): { readonly separator: number; readonly end: number } {
-  const text = sequenceDbTextsOf(source).titles.get(statement)
-  if (text === undefined) {
-    throw new Error(
-      `prettier-plugin-mmd: no text for the title at offset ${statement.range[0]}`,
-    )
-  }
+  const { value } = statement
   const keyword = expectToken(
     findTokenStartingAt(source, statement.range[0]),
     "the keyword of a title",
   )
   let separator = keyword.range[1]
-  while (separator < text.range[0]) {
+  while (separator < value.range[0]) {
     const covering = findTriviaBetween(source, separator, separator + 1).at(0)
     if (covering !== undefined) {
       separator = covering.range[1]
@@ -360,8 +350,8 @@ export function findTitleText(
         end: printedEndOf(
           source,
           statement.range[1],
-          text.range[0],
-          text.range[1],
+          value.range[0],
+          value.range[1],
         ),
       }
     } else {

@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Statement context rule 17: two `state` lines with a comment followed by `C` are no ignored-state units, since no `{` follows; they are statements `state`, and C a state."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rectWithTitle",
+        "label": "d",
+        "description": [
+          " x"
+        ],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

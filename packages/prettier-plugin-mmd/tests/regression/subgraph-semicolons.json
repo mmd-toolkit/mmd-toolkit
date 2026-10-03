@@ -1,0 +1,158 @@
+[
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{wrap}%%;;\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{wrap}%%;;\n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{wrap}%%;; \nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{wrap}%%;; \n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%;;\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%;;\n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%;; \nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{init: {}}%%;; \n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{wrap}%% %%{wrap}%%;;\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{wrap}%% %%{wrap}%%;;\n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{wrap}%% %%{wrap}%%;; \nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028%%{wrap}%% %%{wrap}%%;; \n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{wrap}%%;;\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{wrap}%%;;\n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{wrap}%%;; \nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{wrap}%%;; \n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{init: {}}%%;;\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{init: {}}%%;;\n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{init: {}}%%;; \nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{init: {}}%%;; \n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{wrap}%% %%{wrap}%%;;\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{wrap}%% %%{wrap}%%;;\n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{wrap}%% %%{wrap}%%;; \nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S \u2028%%{wrap}%% %%{wrap}%%;; \n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{wrap}%%;;\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{wrap}%%;;\n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{wrap}%%;; \nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{wrap}%%;; \n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{init: {}}%%;;\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{init: {}}%%;;\n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{init: {}}%%;; \nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{init: {}}%%;; \n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{wrap}%% %%{wrap}%%;;\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{wrap}%% %%{wrap}%%;;\n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{wrap}%% %%{wrap}%%;; \nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2029%%{wrap}%% %%{wrap}%%;; \n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028;;\n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028;;\n\n%% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\u2028;;\n  %% c\nZ\nend\n",
+    "note": "review (49) re-review: ;; after a U+2028 or U+2029 at the end of a subgraph name"
+  }
+]

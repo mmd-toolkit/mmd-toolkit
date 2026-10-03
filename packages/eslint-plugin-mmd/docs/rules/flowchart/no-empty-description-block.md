@@ -38,11 +38,12 @@ description there either, and the rule reports it in the same way, with one
 exception. After the name of a subgraph that has no title, whitespace around an
 empty block can become part of the name of the subgraph, which decides its id
 (the id of a subgraph in
-[Building the summary from the tree](../../../../spec/docs/diagrams/flowchart.md#building-the-summary-from-the-tree)
-in the specification). When the name has no whitespace of its own and the
-subgraph gets a generated id instead, as in `subgraph S accDescr {}`, `style S`
-and links to `S` no longer reach it. The message of the rule says so for each
-empty block between the name and the end of its line or a `;`.
+[Building the summary from the tree](../../../../tests/docs/db-from-tree/flowchart.md#building-the-summary-from-the-tree)
+in the documents of the Db of the tests package). When the name has no
+whitespace of its own and the subgraph gets a generated id instead, as in
+`subgraph S accDescr {}`, `style S` and links to `S` no longer reach it. The
+message of the rule says so for each empty block between the name and the end of
+its line or a `;`.
 
 For a block that starts its line, the rule suggests removing it, with the
 whitespace after it, or with its line when nothing else is on the line. A `;`

@@ -65,7 +65,8 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
    ソースの文字列と範囲があれば、入力をバイト単位で再現できる。
 4. 整形は冪等で、整形前後で Db が変わらない。
 
-図種は 1 つずつ進める。flowchart と sequence が済んでいる。
+図種は 1 つずつ進める。
+flowchart、sequence、class、state が済んでいる。
 リリースは全図種が完成してから。
 
 ## 各パッケージの責務
@@ -77,13 +78,23 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 - `packages/tests`（CLI は `tools/`）: mermaid.js を pin し、
   その Db を取り出し、fixture の形式を定め、
   適合コーパスと、それを作って確かめる道具を持つ。
+  コーパスが記録する木の確かめも持つ。
+  記録した木から Db を作って mermaid.js の Db と比べ、
+  木の不変条件を確かめる。
   SKILL は `tests`。
-- `packages/spec`: 構文と抽象構文木を定義する。
+- `packages/spec`: 構文と、抽象構文木の形（ノードの型、欄、値）を定義する。
+  入力を受理するかどうかを決めるものは、すべてここで定める。
   定義の出どころはここで、実装はこれに従う。
+  仕様の文書は、parser のトークンと位置の仕様に言及しない。
   SKILL は `spec`。
-- `packages/parser`: 仕様の参照実装。
+- `packages/parser`: 仕様の参照実装であり、
+  木のトークンと位置の仕様（`docs/tokens.md`、`docs/positions.md`）を持つ。
   実装する挙動は、すべて仕様と fixture から取り、
   mermaid.js のソースからは取らない。
+  parser は、仕様とこれらの文書とコーパスから、
+  別の言語でも書けるものにする。
+  そのため、parser のテストは、結果を fixture の記録と比べ、
+  mermaid.js も生成した入力も動かさない。
   SKILL は `parser`。
 - `packages/prettier-plugin-mmd`: フォーマッター。
   図種ごとに printer を持ち、項目ごとに明示的に決めた整形方針に従う。
@@ -100,14 +111,16 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
 これらを変えると使う側のパッケージに影響する。
 変える前に知らせる。
 
-| インターフェース                             | 定義する側    | 使う側                                 |
-| -------------------------------------------- | ------------- | -------------------------------------- |
-| fixture の形式とローダー                     | tests         | spec、parser、prettier-plugin          |
-| mermaid の Db を取り出す関数                 | tests         | parser、prettier-plugin                |
-| 生成器と変異差分テストの CLI                 | tests         | spec、parser                           |
-| Db の正規化形式                              | tests と spec | parser                                 |
-| AST の定義（`docs/ast.md`、`docs/ast/*.md`） | spec          | parser、prettier-plugin、eslint-plugin |
-| `parse()` の API                             | parser        | prettier-plugin、eslint-plugin         |
+| インターフェース                             | 定義する側 | 使う側                                 |
+| -------------------------------------------- | ---------- | -------------------------------------- |
+| fixture の形式とローダー                     | tests      | spec、parser、prettier-plugin          |
+| mermaid の Db を取り出す関数                 | tests      | parser、prettier-plugin                |
+| 生成器と変異差分テストの CLI                 | tests      | spec、parser                           |
+| 生成入力の境目の種類                         | tests      | parser、prettier-plugin                |
+| Db の要約と、記録した木の確かめ              | tests      | parser                                 |
+| AST の定義（`docs/ast.md`、`docs/ast/*.md`） | spec       | parser、prettier-plugin、eslint-plugin |
+| トークンと位置（`docs/tokens.md` ほか）      | parser     | tests、prettier-plugin、eslint-plugin  |
+| parser の API（`parse()`、エラー、木の走査） | parser     | prettier-plugin、eslint-plugin         |
 
 ## 行動原則
 
@@ -147,5 +160,9 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
     例外は、書き方そのものを示すための例である。
   - テストは、変更が影響しうるものを回す。
     パッケージの全体は、作業の完了を報告する前に 1 回回す。
-    全量の実行は、計画の工程ごとに 1 回回す。
+    parser のテストは生成した入力を回さない。
+    parser では、生成した入力はコーパスに欠けているものを見つける道具で、
+    見つけたものは fixture にする。
+    ほかのパッケージの生成入力のテストは、サイズが 1 つで、
+    入力の種類を種類ごとに数件で覆う。
 - コミットと push はユーザーの指示があったときだけ行う。

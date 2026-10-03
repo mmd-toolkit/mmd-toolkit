@@ -44,5 +44,8 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "title": "<a"
   }
 }

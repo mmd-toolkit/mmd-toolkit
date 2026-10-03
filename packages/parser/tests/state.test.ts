@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import type { Range, Root } from "../src/index.ts"
 import { ParseError, parse } from "../src/index.ts"
-import { checkTree } from "./helpers/check-tree.ts"
+import { problemsOfTree } from "./helpers/tree-problems.ts"
 
 // Expectations come from diagrams/state.md (the lexer, the grammar, and the
 // rejections outside the grammar) and ast/state.md (the nodes and the
@@ -14,7 +14,7 @@ const HEADER = "stateDiagram-v2\n"
 function parseStatements(statements: string): Root {
   const text = HEADER + statements
   const root = parse(text)
-  checkTree(text, root)
+  expect(problemsOfTree(text, root)).toEqual([])
   return root
 }
 
@@ -87,7 +87,7 @@ describe("the state tree", () => {
     ])
   })
 
-  it("divides the id of an alias at its first and its second `:`", () => {
+  it("divides the id of an alias at its first and its second `:`, the second description with its whitespace", () => {
     const statements = 'state "d" as A : more : rest'
     expect(tokensOf(statements)).toEqual([
       ["Keyword", "state"],
@@ -95,7 +95,7 @@ describe("the state tree", () => {
       ["Keyword", "as"],
       ["RawText", "A"],
       ["Punctuator", ":"],
-      ["RawText", "more"],
+      ["RawText", " more "],
       ["RawText", ": rest"],
     ])
     expect(bodyOf(parseStatements(statements))).toMatchObject([
@@ -103,9 +103,44 @@ describe("the state tree", () => {
         type: "StateAliasDefinitionStatement",
         description: { value: "d", raw: '"d"', closed: true },
         id: { type: "StateLiteral", value: "A" },
-        secondDescription: { type: "StateLiteral", value: "more" },
+        secondDescription: { type: "StateLiteral", value: " more " },
         textAfter: { type: "StateIgnoredText", value: ": rest" },
         body: null,
+      },
+    ])
+  })
+
+  it("makes a second description of whitespace alone a literal, and none after a `:` that nothing follows", () => {
+    const spaces = 'state "d" as A :  '
+    expect(tokensOf(spaces).slice(-2)).toEqual([
+      ["Punctuator", ":"],
+      ["RawText", "  "],
+    ])
+    const root = parseStatements(spaces)
+    expect(bodyOf(root)).toMatchObject([
+      {
+        secondDescription: { value: "  ", range: inText([16, 18]) },
+        range: inText([0, 18]),
+      },
+    ])
+    expect(root.body.range).toEqual([0, HEADER.length + 18])
+    expect(bodyOf(parseStatements('state "d" as A :'))).toMatchObject([
+      { secondDescription: null, range: inText([0, 16]) },
+    ])
+  })
+
+  it("cuts a second description at a `;` that the line rule ignores, the whitespace after it kept", () => {
+    const statements = 'state "d" as A style:#x;  '
+    expect(tokensOf(statements).slice(-4)).toEqual([
+      ["Punctuator", ":"],
+      ["RawText", "#x"],
+      ["IgnoredSemicolon", ";"],
+      ["RawText", "  "],
+    ])
+    expect(bodyOf(parseStatements(statements))).toMatchObject([
+      {
+        id: { value: "A style" },
+        secondDescription: { value: "#x  ", range: inText([21, 26]) },
       },
     ])
   })
@@ -125,10 +160,11 @@ describe("the state tree", () => {
     ])
   })
 
-  it("makes the position of a note one keyword, and `end note` one keyword", () => {
+  it("makes each word of the position of a note and of `end note` a keyword", () => {
     expect(tokensOf("note left of A : hi")).toEqual([
       ["Keyword", "note"],
-      ["Keyword", "left of"],
+      ["Keyword", "left"],
+      ["Keyword", "of"],
       ["Identifier", "A"],
       ["Punctuator", ":"],
       ["RawText", "hi"],
@@ -136,17 +172,64 @@ describe("the state tree", () => {
     const block = "note right of A\n  x\nend note"
     expect(tokensOf(block)).toEqual([
       ["Keyword", "note"],
-      ["Keyword", "right of"],
+      ["Keyword", "right"],
+      ["Keyword", "of"],
       ["Identifier", "A"],
       ["RawText", "x"],
-      ["Keyword", "end note"],
+      ["Keyword", "end"],
+      ["Keyword", "note"],
     ])
     expect(bodyOf(parseStatements(block))).toMatchObject([
       { type: "StateNoteStatement", position: "right", text: { value: "x" } },
     ])
+    // A directive next to the space lies between two keywords.
+    expect(
+      tokensOf("A\nnote left of A\nt\nend%%{init: {}}%% note").slice(-3),
+    ).toEqual([
+      ["Keyword", "end"],
+      ["Directive", "%%{init: {}}%%"],
+      ["Keyword", "note"],
+    ])
   })
 
-  it("makes an empty id of a style statement null, and no node of an empty style", () => {
+  it("makes the text of a note on one line what mermaid.js reads after the two characters it drops", () => {
+    // One whitespace character and the `:`, or the `:` and whitespace.
+    for (const statements of ["note left of A :hi", "note left of A: hi"]) {
+      expect(bodyOf(parseStatements(statements))).toMatchObject([
+        { textBeforeText: null, text: { value: "hi" } },
+      ])
+    }
+    // Two whitespace characters, and the `:` is part of the text.
+    // The text after the `:` goes on with the value that the `:` starts,
+    // so its token keeps the space after the `:`.
+    expect(tokensOf("note left of A  : hi ").slice(-2)).toEqual([
+      ["Punctuator", ":"],
+      ["RawText", " hi"],
+    ])
+    expect(bodyOf(parseStatements("note left of A  : hi "))).toMatchObject([
+      {
+        textBeforeText: null,
+        text: { value: ": hi", range: inText([16, 20]) },
+      },
+    ])
+    // The `:` right after the id, and the character after it dropped.
+    expect(tokensOf("note left of A:hi").slice(-3)).toEqual([
+      ["Punctuator", ":"],
+      ["RawText", "h"],
+      ["RawText", "i"],
+    ])
+    expect(bodyOf(parseStatements("note left of A:hi"))).toMatchObject([
+      {
+        textBeforeText: { type: "StateIgnoredText", value: "h" },
+        text: { value: "i" },
+      },
+    ])
+    expect(bodyOf(parseStatements("note left of A:h"))).toMatchObject([
+      { textBeforeText: { value: "h" }, text: null },
+    ])
+  })
+
+  it("makes an empty id of a style statement null", () => {
     const statements = "A\nstyle A,,B fill:red, stroke:blue"
     expect(tokensOf(statements).slice(1)).toEqual([
       ["Keyword", "style"],
@@ -168,21 +251,54 @@ describe("the state tree", () => {
     ])
   })
 
-  it("gives a `;` that the line rule ignores the kind that the context at its place reads", () => {
-    // The styles context reads a `;` as text; after a description and after
-    // the text of a note on one line, the statement context reads it as a
-    // character of an id.
+  it("makes a style that is empty or all whitespace null, and a style statement without text one null style", () => {
+    expect(bodyOf(parseStatements("style A x, ,y"))).toMatchObject([
+      { styles: [{ value: "x" }, null, { value: "y" }] },
+    ])
+    expect(tokensOf("style A x, ,y").slice(2)).toEqual([
+      ["RawText", "x"],
+      ["Punctuator", ","],
+      ["Punctuator", ","],
+      ["RawText", "y"],
+    ])
+    expect(bodyOf(parseStatements("style A x,"))).toMatchObject([
+      { styles: [{ value: "x" }, null] },
+    ])
+    expect(bodyOf(parseStatements("style A"))).toMatchObject([
+      { styles: [null] },
+    ])
+    expect(bodyOf(parseStatements("style A  "))).toMatchObject([
+      { styles: [null] },
+    ])
+  })
+
+  it("makes a style of a classDef that is empty or all whitespace null, and none of a classDef without text", () => {
+    expect(bodyOf(parseStatements("classDef a x,,y"))).toMatchObject([
+      { styles: [{ value: "x" }, null, { value: "y" }] },
+    ])
+    expect(bodyOf(parseStatements("classDef a ,"))).toMatchObject([
+      { styles: [null, null] },
+    ])
+    expect(bodyOf(parseStatements("classDef a"))).toMatchObject([
+      { styles: [] },
+    ])
+    expect(bodyOf(parseStatements("classDef a  "))).toMatchObject([
+      { styles: [] },
+    ])
+  })
+
+  it("makes a `;` that the line rule ignores an IgnoredSemicolon token in every context", () => {
     expect(tokensOf("classDef c fill:#f00;").slice(-2)).toEqual([
       ["RawText", "fill:#f00"],
-      ["RawText", ";"],
+      ["IgnoredSemicolon", ";"],
     ])
     expect(tokensOf("A : style:#x;").slice(-2)).toEqual([
       ["RawText", "style:#x"],
-      ["Identifier", ";"],
+      ["IgnoredSemicolon", ";"],
     ])
     expect(tokensOf("note left of style :#x;").slice(-2)).toEqual([
       ["RawText", "#x"],
-      ["Identifier", ";"],
+      ["IgnoredSemicolon", ";"],
     ])
   })
 
@@ -201,6 +317,45 @@ describe("the state tree", () => {
         textAfter: { type: "StateIgnoredText", value: "y" },
       },
     ])
+  })
+
+  it("reads a direction line before the `%%` of a `{` that starts no directive, also in a composite body, where such a `%%` is rejected otherwise", () => {
+    expect(bodyOf(parseStatements("%%{}direction LR"))).toMatchObject([
+      {
+        type: "StateDirectionStatement",
+        textBefore: { type: "StateIgnoredText", value: "%%{}" },
+      },
+    ])
+    expect(
+      bodyOf(parseStatements("state A {\n  %%{ }direction LR\n  B\n}")),
+    ).toMatchObject([
+      {
+        body: [
+          {
+            type: "StateDirectionStatement",
+            textBefore: { type: "StateIgnoredText", value: "%%{ }" },
+          },
+          {},
+        ],
+      },
+    ])
+    expect(
+      bodyOf(parseStatements("state A {\n  %%{}direction LR\n  B\n}")),
+    ).toMatchObject([
+      {
+        type: "StateCompositeStatement",
+        body: [
+          {
+            type: "StateDirectionStatement",
+            textBefore: { type: "StateIgnoredText", value: "%%{}" },
+            direction: "LR",
+          },
+          { type: "StateDefinitionStatement" },
+        ],
+      },
+    ])
+    // The composite body context has no rule for the `{` after the `%%`.
+    expect(errorOf("state A {\n  %%{}B\n}").range).toEqual(inText([14, 15]))
   })
 
   it("makes `--` in a composite body a divider", () => {
@@ -303,14 +458,16 @@ describe("the state tree", () => {
     // At the end of the line, the `;` is the last character of the comment
     // and a token of its own; the whitespace before it stays in the comment.
     expect(valuesOf("A %% style:#x ;")).toEqual([" style:#x "])
-    expect(semicolonTokensOf("A %% style:#x ;")).toEqual([["Identifier", ";"]])
+    expect(semicolonTokensOf("A %% style:#x ;")).toEqual([
+      ["IgnoredSemicolon", ";"],
+    ])
   })
 
   it("ends a diagram comment where its line ends, a directive at its end included, and before a `;` that the line rule ignores and that is its last character", () => {
     for (const [statements, value, semicolons] of [
       ["A #c %%{init: {}}%%\nB", "c %%{init: {}}%%", []],
       ["A --> B %% c %%{init: {} \n\n", " c %%{init: {}", []],
-      ["A #style:#x;\nB", "style:#x", [["Identifier", ";"]]],
+      ["A #style:#x;\nB", "style:#x", [["IgnoredSemicolon", ";"]]],
       ["A #style:#x;  \nB", "style:#x;  ", []],
     ] as const) {
       const root = parseStatements(statements)
@@ -355,6 +512,16 @@ describe("the state tree", () => {
         textBeforeState: { type: "StateIgnoredText", value: "%%x" },
         state: { name: "A" },
         text: { value: "t" },
+      },
+    ])
+    // A directive between the position and the `%%` is no character of the
+    // diagram text, so the `%%` is still right after the position.
+    expect(
+      bodyOf(parseStatements("note left of%%{init: {}}%%%%x A : t")),
+    ).toMatchObject([
+      {
+        textBeforeState: { type: "StateIgnoredText", value: "%%x" },
+        state: { name: "A" },
       },
     ])
   })
@@ -491,9 +658,11 @@ describe("the state tree", () => {
     ])
   })
 
-  it("makes `hide empty description` one keyword, and the number of `scale` a NumericLiteral", () => {
+  it("makes each word of `hide empty description` a keyword, and the number of `scale` a NumericLiteral", () => {
     expect(tokensOf("hide empty description")).toEqual([
-      ["Keyword", "hide empty description"],
+      ["Keyword", "hide"],
+      ["Keyword", "empty"],
+      ["Keyword", "description"],
     ])
     expect(tokensOf("scale 350 width")).toEqual([
       ["Keyword", "scale"],

@@ -169,25 +169,3 @@ the same way, start such a name or type with another character.
   `Graph: Class`. On 2026-03-02 a collaborator answered, in a reply marked as
   written by a bot, that backquotes around a class name are a workaround for
   dots in a class name.
-
-## Counts and how they are checked
-
-Inputs were made from 17 contents between backquotes and 8 between `~`, most of
-them starting with one of these units, each in 12 places of a statement, 300 in
-all. Each was run through mermaid.js and through the parser of this
-specification, and their acceptance and Db were compared:
-
-| Inputs | Rejected by mermaid.js, accepted by this specification | Accepted by both, a different Db | Accepted by mermaid.js, rejected by this specification |
-| ------ | -----------------------------------------------------: | -------------------------------: | -----------------------------------------------------: |
-| 300    |                                                    138 |                                4 |                                                      8 |
-
-The other 150 are read the same by both.
-
-The same 300 inputs were also run through mermaid.js changed so that, in its
-states for backquoted names and generic types, the rules for the text come
-before the shared rules (`withoutDivergences: ["name-start-reads-unit"]`; see
-[Checking a divergence](../known-divergences.md#checking-a-divergence)). The
-parser accepted and rejected all 300 as the changed mermaid.js did, and gave
-every accepted input the same Db. The differential test of the parser makes the
-same comparison with the changed mermaid.js for every input that it attributes
-to this divergence.

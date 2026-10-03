@@ -210,16 +210,52 @@
       }
     },
     {
-      "type": "String",
-      "value": "\"<span style='color:#f00;font-weight:bold;'>x</span>\"",
+      "type": "StringFragment",
+      "value": "\"<span style='color:#f00;font-weight:bold",
       "range": [
         15,
-        68
+        56
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "IgnoredSemicolon",
+      "value": ";",
+      "range": [
+        56,
+        57
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 43
+        },
+        "end": {
+          "line": 2,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "StringFragment",
+      "value": "'>x</span>\"",
+      "range": [
+        57,
+        68
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 44
         },
         "end": {
           "line": 2,

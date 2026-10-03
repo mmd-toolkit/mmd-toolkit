@@ -151,6 +151,13 @@ direction `TB` and declares no class, while `direction LR` sets `LR`, and
 [fixture: class/div-empty-description-block-before-direction-value-glued]
 [fixture: class/div-empty-description-block-between-direction-and-value-label]
 
+In class and state, a block also keeps another rule of mermaid.js that spans
+whitespace from matching: mermaid.js reads `accTitle accDescr {}: t` as the name
+`accTitle` with a member or a description, while `accTitle : t` is a title. This
+specification rejects the input, since the block lies inside that statement.
+[fixture: class/div-empty-description-block-between-acc-title-and-colon]
+[fixture: state/div-empty-description-block-between-acc-title-and-colon]
+
 This specification makes such a form a node where the tree has a place for it,
 and rejects the input elsewhere. The places are these: an empty description
 block where a statement starts, also inside a sequence box, is a description
@@ -210,8 +217,7 @@ statement can follow. [fixture:
 state/gram-empty-description-block-before-alias-body-next-line] The places below
 are examples, at least one for each statement node in which mermaid.js accepts
 such a block, with the reason that applies; they do not exhaust the places,
-which the rule above decides, and the counts below check the rule with generated
-inputs. In flowchart:
+which the rule above decides. In flowchart:
 
 - Between two units of a FlowchartVertexStatement, with its FlowchartVertexGroup
   and FlowchartLink: `A accDescr {}-->B`, `A-->accDescr {}B`,
@@ -385,8 +391,8 @@ the Db of the input with the block left out and the whitespace around it kept
 where they are accepted: that whitespace keeps its effect, so
 `subgraph S accDescr {}` has the id `subGraph0`, as `subgraph S` followed by a
 space has, while `subgraph S` has the id `S` (see
-[flowchart](../diagrams/flowchart.md#building-the-summary-from-the-tree)). The
-86 of flowchart are rejected because of the whitespace before the block (see
+[flowchart](../diagrams/flowchart.md#rejections-outside-the-grammar)). The 86 of
+flowchart are rejected because of the whitespace before the block (see
 [flowchart](../diagrams/flowchart.md#empty-description-blocks-before-a-separator)),
 and 59 of the 97 of sequence are accepted although the same line without the
 block, with a space at its end, is rejected (see
@@ -500,92 +506,3 @@ toolkit rejects such a text and reports the form; removing it gives a text that
 both read the same way, in most cases (see below). None of the inputs collected
 from the tests, the documentation, and the demos of mermaid.js contains one of
 them.
-
-## Counts and how they are checked
-
-The differential test of the parser compares such an input with its **reference
-input**: the input without its comment regions and without its empty forms, each
-empty string, each empty call from its `call` to its `)`, and each empty
-description block that is not a description block statement, because it lies
-inside a statement, neither where a statement starts nor before the separator of
-a statement or of the header, and is not held by the `textBeforeBody` of a state
-statement, from its `accDescr` to its `}`. Whether a block is a statement is
-decided without the empty strings and empty calls before it, and blocks written
-one after another, with only whitespace between them, are decided together, by
-what follows the last of them: in `""accDescr {}` followed by a line break and
-`A`, the block starts a statement once the empty string is removed, so it stays
-in the reference input. [fixture:
-flowchart/lex-empty-string-before-empty-description-block] For one or more
-blocks between `direction` and its value on one line in class, the reference
-input also leaves out the whitespace around the blocks, so that `direction` and
-the value form one word, as mermaid.js joins the two name parts:
-`direction accDescr {} LR` has the reference input `directionLR`, and so has
-`direction accDescr {}accDescr {}LR`. [fixture:
-class/div-empty-description-block-between-direction-and-value] [fixture:
-class/div-empty-description-blocks-between-direction-and-value]
-
-Where the lexer of this specification reads the reference input as the units of
-the input other than those of the empty forms, and mermaid.js accepts the input,
-the parser is to give the reference input the Db that mermaid.js gives the
-input: `A[""x]` becomes `A[x]`, and `click A call ()cb` becomes `click A cb`.
-[fixture: flowchart/tokens-empty-string-in-label] [fixture:
-flowchart/gram-click-empty-call-before-callback] Otherwise the removal joins
-what lies on both sides of a form into other units, and mermaid.js may read the
-reference input otherwise. In `style A "" fill:red`, the spaces before and after
-the empty string become one `space` unit, so the style of the reference input is
-`fill:red` instead of a space and `fill:red`. In `A:""::c`, `:` and `::` become
-`:::`, so the reference input has the vertex `A` with the class `c` instead of
-the vertex `A:::c`. `flowchart""TD` becomes `flowchartTD`, which mermaid.js
-rejects. [fixture: flowchart/gram-style-empty-string-before-first-style]
-[fixture: flowchart/lex-empty-string-splits-triple-colon] [fixture:
-flowchart/header-empty-string-no-space]
-
-Inputs were made from the accepted fixtures of each diagram type that have no
-comment, no directive, and no frontmatter and are not marked with a divergence,
-by inserting each empty form of the diagram type after each space and at the end
-of each line after the header. From each diagram type, about 2,000 of them were
-taken at even intervals. Each was run through mermaid.js and through the parser
-of this specification, and their acceptance and Db were compared:
-
-| Diagram type | Inputs taken, of those made | Rejected by mermaid.js, accepted by this specification | Accepted by both, a different Db | Accepted by mermaid.js, rejected by this specification |
-| ------------ | --------------------------: | -----------------------------------------------------: | -------------------------------: | -----------------------------------------------------: |
-| flowchart    |             2,120 of 33,909 |                                                     88 |                                0 |                                                  1,073 |
-| sequence     |              2,655 of 7,965 |                                                      0 |                                0 |                                                    105 |
-| class        |            2,031 of 115,762 |                                                      0 |                                0 |                                                    678 |
-
-The 88 inputs of flowchart have a data block, which mermaid.js rejects for its
-content; they are inputs of [`embedded-data-opaque`](./embedded-data-opaque.md).
-The others are read the same by both, among them the 62 of flowchart, 16 of
-sequence, and 5 of class whose form is an empty description block before a
-separator, which is a statement (see above). For each of the 1,856 inputs that
-mermaid.js accepts and this specification rejects, the differential test of the
-parser checked that its reference input explains the difference, as described
-above, and found none that it does not explain.
-
-The places where a block is held were also checked by where a block can lie and
-what comes around it, in every diagram type. The inputs were made from the
-accepted fixtures without a divergence, comments, and frontmatter: every
-boundary between two tokens, right after a token, right before the next, and at
-each line start between them, grouped by the kinds of the two tokens and the
-whitespace between them, two of each group, with a block written there in nine
-or ten ways (alone, after or before a space or a tab, two blocks with and
-without a space between, followed by a comment `%% c`, `# c` in sequence and
-state, or a directive). Of the 39,019 inputs, 15,936 are rejected by both and
-17,792 accepted by both with the same Db; 5,252 differ as the known divergences
-declare them; and the 39 others are the forms that this document and the
-documents of the diagram types describe, whose Db is that of the input without
-the blocks. Another 4,480 inputs combine, in state, each name or alias line with
-what may come before the `{` of a body on the next line: empty description
-blocks, empty strings, `%%`, comment lines, and empty lines; their acceptance
-and Db agree with mermaid.js. 35,344 more inputs, with the block written in
-other ways (`accDescr{}`, its braces on two lines, tabs, CRLF, three blocks,
-`;`, `;;`, empty strings, and directives next to it), found no other difference.
-Among the declared differences are the inputs where the block keeps a lexer rule
-of mermaid.js that spans whitespace from matching, as on the direction line of
-class above: in class and state, mermaid.js reads `accTitle accDescr {}: t` as
-the name `accTitle` with a member or a description, while its reference input
-`accTitle : t` is a title: it is one of the inputs whose reference input
-mermaid.js reads otherwise, described above, and no input of this specification
-is read as mermaid.js reads it. [fixture:
-class/div-empty-description-block-between-acc-title-and-colon] [fixture:
-state/div-empty-description-block-between-acc-title-and-colon]

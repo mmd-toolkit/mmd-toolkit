@@ -26,17 +26,35 @@
             }
           }
         },
-        "text": {
-          "type": "StateLiteral",
-          "value": "hi",
+        "textBeforeText": {
+          "type": "StateIgnoredText",
+          "value": "h",
           "range": [
             33,
-            35
+            34
           ],
           "loc": {
             "start": {
               "line": 2,
               "column": 17
+            },
+            "end": {
+              "line": 2,
+              "column": 18
+            }
+          }
+        },
+        "text": {
+          "type": "StateLiteral",
+          "value": "i",
+          "range": [
+            34,
+            35
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 18
             },
             "end": {
               "line": 2,
@@ -117,15 +135,33 @@
     },
     {
       "type": "Keyword",
-      "value": "left of",
+      "value": "left",
       "range": [
         23,
-        30
+        27
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        28,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
         },
         "end": {
           "line": 2,
@@ -171,15 +207,33 @@
     },
     {
       "type": "RawText",
-      "value": "hi",
+      "value": "h",
       "range": [
         33,
-        35
+        34
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 17
+        },
+        "end": {
+          "line": 2,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "i",
+      "range": [
+        34,
+        35
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 18
         },
         "end": {
           "line": 2,

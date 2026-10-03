@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "common.md A directive is a token boundary: without the directive the text is `style Afill:red`, which the grammar rejects, as in mermaid.js."
+    "note": "common.md A directive is a token boundary: without the directive the text is `style Afill:red`, and the directive lies inside the id `Afill`, a name; the input is rejected, and mermaid.js, whose grammar rejects that text, rejects it too."
   },
   "accepted": false,
   "error": {

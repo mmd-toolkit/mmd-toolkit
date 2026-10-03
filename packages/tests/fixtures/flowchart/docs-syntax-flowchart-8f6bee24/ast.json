@@ -569,15 +569,15 @@
     },
     {
       "type": "RawText",
-      "value": "shape: manual-file, label: \"File Handling\"",
+      "value": " shape: manual-file, label: \"File Handling\"",
       "range": [
-        21,
+        20,
         63
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
@@ -641,15 +641,15 @@
     },
     {
       "type": "RawText",
-      "value": "shape: manual-input, label: \"User Input\"",
+      "value": " shape: manual-input, label: \"User Input\"",
       "range": [
-        73,
+        72,
         113
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 3,
@@ -713,15 +713,15 @@
     },
     {
       "type": "RawText",
-      "value": "shape: docs, label: \"Multiple Documents\"",
+      "value": " shape: docs, label: \"Multiple Documents\"",
       "range": [
-        123,
+        122,
         163
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 4,
@@ -785,15 +785,15 @@
     },
     {
       "type": "RawText",
-      "value": "shape: procs, label: \"Process Automation\"",
+      "value": " shape: procs, label: \"Process Automation\"",
       "range": [
-        173,
+        172,
         214
       ],
       "loc": {
         "start": {
           "line": 5,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 5,
@@ -857,15 +857,15 @@
     },
     {
       "type": "RawText",
-      "value": "shape: paper-tape, label: \"Paper Records\"",
+      "value": " shape: paper-tape, label: \"Paper Records\"",
       "range": [
-        224,
+        223,
         265
       ],
       "loc": {
         "start": {
           "line": 6,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 6,

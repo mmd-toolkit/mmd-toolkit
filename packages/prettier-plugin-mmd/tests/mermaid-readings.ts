@@ -3,11 +3,14 @@
  * keep (docs/development.md, The tests), and how a reading changed.
  */
 import { isDeepStrictEqual } from "node:util"
+import type { Expectation, Fixture } from "@mmd-toolkit/tests"
+import { embeddedValuesOf } from "@mmd-toolkit/tests"
 import type {
   DivergenceRemoval,
   MermaidRun,
   RunMermaidOptions,
 } from "@mmd-toolkit/tests/mermaid"
+import { parse } from "@mmd-toolkit/parser"
 import { runMermaidWithEmbeddedData } from "@mmd-toolkit/tests/mermaid"
 
 /**
@@ -43,17 +46,35 @@ export interface Readings {
   readonly asIs: MermaidReading
 }
 
+/**
+ * Whether the known divergences of `readingDivergences` can change what
+ * mermaid.js reads from the text: they change the lexer of sequence and
+ * class diagrams only, so the other diagram types are read once. A text
+ * that the parser rejects is read both ways.
+ */
+function isReadDifferentlyWithoutDivergences(text: string): boolean {
+  try {
+    const { diagramType } = parse(text)
+    return diagramType === "sequence" || diagramType === "classDiagram"
+  } catch {
+    return true
+  }
+}
+
 /** Reads a text with mermaid.js in both ways (see `Readings`). */
 export async function readWithMermaid(
   text: string,
   options: RunMermaidOptions = {},
 ): Promise<Readings> {
+  const specified = await read(text, {
+    ...options,
+    withoutDivergences: readingDivergences,
+  })
   return {
-    specified: await read(text, {
-      ...options,
-      withoutDivergences: readingDivergences,
-    }),
-    asIs: await read(text, options),
+    specified,
+    asIs: isReadDifferentlyWithoutDivergences(text)
+      ? await read(text, options)
+      : specified,
   }
 }
 
@@ -81,6 +102,61 @@ export function describeReadingChange(
     return "changes the Db of mermaid.js as it is"
   }
   return null
+}
+
+/**
+ * The readings of the input of a fixture, taken from the corpus instead of
+ * mermaid.js: as mermaid.js is, what `expected` records, and as the
+ * specification reads it, what `specified` records, which only the fixtures
+ * that carry a mark that changes the reading have (the other fixtures are read
+ * the same both ways). `undefined` where the text has to be read with
+ * mermaid.js: where the corpus has no summary of the Db yet, where the
+ * reading of the specification comes from a known divergence that the run of
+ * mermaid.js cannot remove, and where the input has embedded data that changes
+ * the configuration. The recorded
+ * configuration is a difference from the defaults, laid over them again, and
+ * mermaid.js drops some keys of its own configuration when an input changes
+ * the theme, so the two do not compare equal (`embeddedValuesOf`).
+ */
+export function readingsOfFixture(fixture: Fixture): Readings | undefined {
+  if (
+    fixture.specified !== undefined &&
+    !(readingDivergences as readonly string[]).includes(
+      fixture.knownDivergence ?? "",
+    )
+  ) {
+    // The divergence cannot be removed from the run of mermaid.js, so the
+    // output cannot be read as the specification reads it: both texts are
+    // read with mermaid.js as it is.
+    return undefined
+  }
+  const asIs = readingOf(fixture, fixture.expected)
+  const specified =
+    fixture.specified === undefined
+      ? asIs
+      : readingOf(fixture, fixture.specified)
+  return asIs === undefined || specified === undefined
+    ? undefined
+    : { specified, asIs }
+}
+
+/** What mermaid.js read, as the corpus records it. */
+function readingOf(
+  fixture: Fixture,
+  result: Expectation,
+): MermaidReading | undefined {
+  if (!result.accepted) return { rejectedWith: result.error.name }
+  if (result.db === null || result.embedded?.config !== undefined) {
+    return undefined
+  }
+  return {
+    outcome: {
+      accepted: true,
+      diagramType: result.diagramType,
+      db: result.db,
+    },
+    embedded: embeddedValuesOf(fixture, result),
+  }
 }
 
 /** Runs mermaid.js once. */

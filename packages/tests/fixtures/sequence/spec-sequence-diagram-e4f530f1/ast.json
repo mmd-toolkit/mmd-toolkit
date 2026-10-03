@@ -286,7 +286,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         43,
@@ -323,19 +323,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"collections\"",
+      "value": " \"type\" : \"collections\" ",
       "range": [
-        51,
-        73
+        50,
+        74
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 28
+          "column": 27
         },
         "end": {
           "line": 3,
-          "column": 50
+          "column": 51
         }
       }
     },
@@ -376,7 +376,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         96,
@@ -413,19 +413,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"control\"",
+      "value": " \"type\" : \"control\" ",
       "range": [
-        102,
-        120
+        101,
+        121
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 26
+          "column": 25
         },
         "end": {
           "line": 4,
-          "column": 44
+          "column": 45
         }
       }
     },
@@ -448,7 +448,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         131,
@@ -484,7 +484,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         139,

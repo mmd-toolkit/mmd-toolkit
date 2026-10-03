@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Customer",
             "range": [
               21,
@@ -143,7 +143,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Order",
             "range": [
               79,
@@ -334,7 +334,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "LineItem",
             "range": [
               152,
@@ -430,7 +430,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Payment",
             "range": [
               193,
@@ -582,7 +582,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Customer",
             "range": [
               249,
@@ -680,7 +680,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Order",
             "range": [
               270,
@@ -752,7 +752,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Order",
             "range": [
               287,
@@ -850,7 +850,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "LineItem",
             "range": [
               305,
@@ -922,7 +922,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Order",
             "range": [
               327,
@@ -982,7 +982,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Payment",
             "range": [
               337,
@@ -1105,7 +1105,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Customer",
       "range": [
         21,
@@ -1249,7 +1249,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Order",
       "range": [
         79,
@@ -1483,7 +1483,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "LineItem",
       "range": [
         152,
@@ -1591,7 +1591,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Payment",
       "range": [
         193,
@@ -1789,7 +1789,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Customer",
       "range": [
         249,
@@ -1879,7 +1879,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Order",
       "range": [
         270,
@@ -1933,7 +1933,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Order",
       "range": [
         287,
@@ -2023,7 +2023,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "LineItem",
       "range": [
         305,
@@ -2077,7 +2077,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Order",
       "range": [
         327,
@@ -2131,7 +2131,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Payment",
       "range": [
         337,

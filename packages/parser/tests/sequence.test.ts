@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest"
 import type { Range, Root, SequenceStatement } from "../src/index.ts"
 import { ParseError, parse } from "../src/index.ts"
-import { checkTree } from "./helpers/check-tree.ts"
+import { problemsOfTree } from "./helpers/tree-problems.ts"
 
 // Expectations come from diagrams/sequence.md (the lexer, the grammar, and
 // the rejections outside the grammar) and ast/sequence.md (the nodes and
@@ -14,7 +14,7 @@ const HEADER = "sequenceDiagram\n"
 function parseStatements(statements: string): Root {
   const text = HEADER + statements
   const root = parse(text)
-  checkTree(text, root)
+  expect(problemsOfTree(text, root)).toEqual([])
   return root
 }
 
@@ -50,7 +50,7 @@ function semicolonKindsOf(statements: string): string[] {
 }
 
 describe("the sequence tree", () => {
-  it("makes an id a SequenceIdentifier, whose name keeps the whitespace inside it, also next to a directive that cuts its token", () => {
+  it("makes an id a SequenceIdentifier with a RawText token, whose name keeps the whitespace inside it, also next to a directive that cuts its token", () => {
     expect(bodyOf(parseStatements("participant A B"))).toMatchObject([
       { id: { type: "SequenceIdentifier", name: "A B" } },
     ])
@@ -60,18 +60,18 @@ describe("the sequence tree", () => {
     ])
     expect(tokensOf(statements)).toEqual([
       ["Keyword", "participant"],
-      ["Identifier", "A"],
+      ["RawText", "A"],
       ["Directive", "%%{init: {}}%%"],
-      ["Identifier", "c%%B"],
+      ["RawText", " c%%B"],
     ])
   })
 
   it("makes the ids, the arrow, the activation, the `:`, and the text of a message tokens", () => {
     expect(tokensOf("Alice->>+Bob: Hi")).toEqual([
-      ["Identifier", "Alice"],
+      ["RawText", "Alice"],
       ["Punctuator", "->>"],
       ["Punctuator", "+"],
-      ["Identifier", "Bob"],
+      ["RawText", "Bob"],
       ["Punctuator", ":"],
       ["RawText", "Hi"],
     ])
@@ -155,6 +155,34 @@ describe("the sequence tree", () => {
       bodyOf(parseStatements("PARTICIPANT A\nNote LEFT OF A: x")),
     ).toMatchObject([
       { type: "SequenceParticipantStatement", kind: "participant" },
+      { type: "SequenceNoteStatement", placement: "left of" },
+    ])
+  })
+
+  it("makes each word of `left of` a keyword, with a directive or an ignored `;` next to the space between two tokens", () => {
+    expect(tokensOf("Note LEFT OF A: x").slice(0, 3)).toEqual([
+      ["Keyword", "Note"],
+      ["Keyword", "LEFT"],
+      ["Keyword", "OF"],
+    ])
+    expect(
+      tokensOf("participant A\nNote left%%{init: {}}%% of A: t").slice(2, 6),
+    ).toEqual([
+      ["Keyword", "Note"],
+      ["Keyword", "left"],
+      ["Directive", "%%{init: {}}%%"],
+      ["Keyword", "of"],
+    ])
+    const statements =
+      'participant A@{ "alias": "style:#x" };Note left; of A: t'
+    expect(tokensOf(statements).slice(-7, -3)).toEqual([
+      ["Keyword", "Note"],
+      ["Keyword", "left"],
+      ["IgnoredSemicolon", ";"],
+      ["Keyword", "of"],
+    ])
+    expect(bodyOf(parseStatements(statements))).toMatchObject([
+      {},
       { type: "SequenceNoteStatement", placement: "left of" },
     ])
   })
@@ -258,9 +286,40 @@ describe("the sequence tree", () => {
     ])
   })
 
-  it("gives a title the value without the whitespace around it", () => {
+  it("gives a title the whole title text as its value and its token, whitespace included", () => {
+    // ast/sequence.md, SequenceTitleStatement: `title`, two spaces, `x`, and
+    // two spaces has the value of a space, `x`, and two spaces; `title`
+    // followed by four spaces the value of three spaces.
     expect(bodyOf(parseStatements("title  x  "))).toMatchObject([
-      { type: "SequenceTitleStatement", value: { value: "x" } },
+      {
+        type: "SequenceTitleStatement",
+        value: { value: " x  ", range: [22, 26] },
+      },
+    ])
+    expect(tokensOf("title  x  ")).toEqual([
+      ["Keyword", "title"],
+      ["RawText", " x  "],
+    ])
+    expect(bodyOf(parseStatements("title    "))).toMatchObject([
+      { type: "SequenceTitleStatement", value: { value: "   " } },
+    ])
+    expect(tokensOf("title    ")).toEqual([
+      ["Keyword", "title"],
+      ["RawText", "   "],
+    ])
+    // A directive cuts the title, and the whitespace next to it is in the
+    // pieces, the whitespace at the end of the value a token of its own.
+    expect(tokensOf("title x %%{init: {}}%%  ")).toEqual([
+      ["Keyword", "title"],
+      ["RawText", "x "],
+      ["Directive", "%%{init: {}}%%"],
+      ["RawText", "  "],
+    ])
+    // `accTitle:` trims its text, as mermaid.js does.
+    expect(tokensOf("accTitle:  x  ")).toEqual([
+      ["Keyword", "accTitle"],
+      ["Punctuator", ":"],
+      ["RawText", "x"],
     ])
   })
 
@@ -295,7 +354,7 @@ describe("the sequence tree", () => {
       // The directive takes the whitespace and the line feeds after it to
       // the end of the text; the comment ends where the directive ends.
       ["A->>B: x #c %%{init: {} \n \n\n", "c %%{init: {}", []],
-      ["A->>B: x #style:#x;", "style:#x", ["Punctuator"]],
+      ["A->>B: x #style:#x;", "style:#x", ["IgnoredSemicolon"]],
       ["A->>B: x #style:#x;  ", "style:#x;  ", []],
       ["A->>B: x #style:#x;%%{init: {}}%%", "style:#x;%%{init: {}}%%", []],
     ] as const) {
@@ -312,6 +371,30 @@ describe("the sequence tree", () => {
     expect(tokensOf("box red-team\nparticipant A\nend").slice(1, 3)).toEqual([
       ["RawText", "red"],
       ["RawText", "-team"],
+    ])
+    // The whitespace between them, which the value of the box text holds
+    // and neither part does, is a token of its own.
+    expect(tokensOf("box Aqua G\nparticipant A\nend").slice(1, 4)).toEqual([
+      ["RawText", "Aqua"],
+      ["RawText", " "],
+      ["RawText", "G"],
+    ])
+    // A directive right after the colour candidate lies outside that
+    // whitespace, which is no token when the directive is all between them.
+    expect(
+      tokensOf("box red%%{init: {}}%%-team\nparticipant A\nend").slice(1, 4),
+    ).toEqual([
+      ["RawText", "red"],
+      ["Directive", "%%{init: {}}%%"],
+      ["RawText", "-team"],
+    ])
+    expect(
+      tokensOf("box red%%{init: {}}%% text\nparticipant A\nend").slice(1, 5),
+    ).toEqual([
+      ["RawText", "red"],
+      ["Directive", "%%{init: {}}%%"],
+      ["RawText", " "],
+      ["RawText", "text"],
     ])
     expect(
       bodyOf(parseStatements("box RGB(0, 0, 255) Team\nparticipant A\nend")),
@@ -348,22 +431,16 @@ describe("the sequence tree", () => {
     )
   })
 
-  it("gives a `;` that the line rule ignores the kind that the context at its place reads", () => {
-    expect(semicolonKindsOf("accTitle: style:#x;\nA->>B: y")).toEqual([
-      "RawText",
-    ])
-    expect(semicolonKindsOf("accDescr {\nstyle:#x;\n}\nA->>B: y")).toEqual([
-      "RawText",
-    ])
-    expect(semicolonKindsOf("participant A@{ style:#x; }\nA->>B: y")).toEqual([
-      "RawText",
-    ])
-    expect(
-      semicolonKindsOf('participant A@{ "style": "x:#y" };\nA->>B: y'),
-    ).toEqual(["Punctuator"])
-    expect(semicolonKindsOf("loop style:#x;\nA->>B: y\nend")).toEqual([
-      "Punctuator",
-    ])
+  it("makes a `;` that the line rule ignores an IgnoredSemicolon token in every context", () => {
+    for (const statements of [
+      "accTitle: style:#x;\nA->>B: y",
+      "accDescr {\nstyle:#x;\n}\nA->>B: y",
+      "participant A@{ style:#x; }\nA->>B: y",
+      'participant A@{ "style": "x:#y" };\nA->>B: y',
+      "loop style:#x;\nA->>B: y\nend",
+    ]) {
+      expect(semicolonKindsOf(statements)).toEqual(["IgnoredSemicolon"])
+    }
   })
 
   it("ends a statement at a line break between an id and `as`, and reads the next line as a statement of its own", () => {

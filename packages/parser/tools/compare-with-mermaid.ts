@@ -13,21 +13,24 @@
  */
 import { readFileSync } from "node:fs"
 import { isDeepStrictEqual } from "node:util"
-import { runMermaidWithEmbeddedData } from "../../tests/src/mermaid.ts"
+import { runMermaidWithEmbeddedData } from "@mmd-toolkit/tests/mermaid"
 import { ParseError, parse } from "../src/index.ts"
-import { checkTree } from "../tests/helpers/check-tree.ts"
-import { dbOf } from "../tests/helpers/db.ts"
+import { problemsOfTree } from "../tests/helpers/tree-problems.ts"
+import { dbOfTree } from "../tests/helpers/db-of-tree.ts"
 
 /** How `parse()` and the check of the tree agree with mermaid.js on `input`. */
 async function verdictOf(input: string): Promise<string> {
   const run = await runMermaidWithEmbeddedData(input)
   try {
     const root = parse(input)
-    checkTree(input, root)
+    const [problem] = problemsOfTree(input, root)
+    if (problem !== undefined) {
+      return `BUG or broken tree: ${problem.where}: ${problem.message}`
+    }
     if (!run.outcome.accepted || run.embedded === undefined) {
       return "DIFF: mermaid.js rejects, parse() accepts"
     }
-    const db = dbOf(input, root, run.embedded)
+    const db = dbOfTree(input, root, run.embedded)
     if (isDeepStrictEqual(db, run.outcome.db)) return "same: accepted, same Db"
     return `DIFF: Db\n  mermaid.js ${JSON.stringify(run.outcome.db)}\n  parse()    ${JSON.stringify(db)}`
   } catch (error) {

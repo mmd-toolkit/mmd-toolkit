@@ -1,4 +1,4 @@
-import type { DiagramTokenKind, Range } from "../../ast.ts"
+import type { Range } from "../../ast.ts"
 import {
   isAsciiDigit,
   isLineSegmentSeparator,
@@ -24,7 +24,7 @@ import type {
   DiagramText,
 } from "../../diagram-text.ts"
 import { lineFeedAfter } from "../../diagram-text.ts"
-import type { DiagramUnit } from "../../diagram-units.ts"
+import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
 import { readUnit } from "../../diagram-units.ts"
 import { DirectionLineRule } from "../../direction-line.ts"
 import { ParseError } from "../../errors.ts"
@@ -32,6 +32,7 @@ import type { LineIndex } from "../../positions.ts"
 import type { Match } from "../../scanning.ts"
 import {
   isCodePointAt,
+  matchSpacedWords,
   matchWholeWordIgnoringCase,
   matchWordIgnoringCase,
   samePosition,
@@ -63,6 +64,8 @@ export type UnitName =
   | "note"
   | "header"
   | "hide"
+  | "empty"
+  | "description-word"
   | "[*]"
   | "id"
   | "description"
@@ -77,16 +80,19 @@ export type UnitName =
   | "alias-id"
   | "second-description"
   | "ignored-text"
+  | "ignored-state"
   | "class-name"
+  | "id-comma"
   | ","
   | "css-class"
   | "style-text"
   | "number"
   | "width"
   | "position"
+  | "of"
   | "note-id"
   | "note-text"
-  | "end note"
+  | "end"
   | "floating-note-id"
   | "floating-note-text"
   | '"'
@@ -173,32 +179,14 @@ const END_OF_TEXT_MESSAGES: Readonly<Record<Context, string | null>> = {
   "description-block": null,
 }
 
-/**
- * The contexts that read a `;` as a character of a text; the others read
- * it as a character of an id, for the kind of a `;` that the line rule
- * ignores and that stands alone.
- */
-const CONTEXTS_THAT_READ_TEXT: readonly Context[] = [
-  "state-string",
-  "alias-id",
-  "styles",
-  "class-name",
-  "note-text",
-  "floating-note",
-  "floating-note-id",
-  "title",
-  "description",
-  "description-block",
-]
-
 /** The direction line: the values, in the order in which they are tried. */
 const DIRECTION_LINE_VALUES: readonly string[] = ["TB", "BT", "RL", "LR"]
 
 /** The statement context, rule 20: the header keywords, the longer first. */
 const HEADER_KEYWORDS: readonly string[] = ["stateDiagram-v2", "stateDiagram"]
 
-/** The note context, rule 1: the positions. */
-const NOTE_POSITIONS: readonly string[] = ["left of", "right of"]
+/** The note context, rule 1: the first words of the positions. */
+const NOTE_SIDES: readonly string[] = ["left", "right"]
 
 /** diagrams/state.md, Lexical structure: what the lexer reads from the diagram text. */
 export interface StateLexing {
@@ -206,10 +194,11 @@ export interface StateLexing {
   /** The diagram comments, in source order. */
   readonly comments: readonly DiagramComment[]
   /**
-   * ast.md, Tokens: the kind of a `;` that the line rule ignores, at
-   * `offset`, when it is a token of its own.
+   * The note text context, rule 1: the `:` units of notes on one line that
+   * two or more whitespace characters precede, which mermaid.js reads as
+   * the first character of the note text.
    */
-  readonly ignoredSemicolonKindAt: (offset: number) => DiagramTokenKind
+  readonly noteColonsInText: ReadonlySet<Unit>
 }
 
 /**
@@ -229,11 +218,8 @@ export class StateUnitLexer {
 
   private readonly comments: DiagramComment[] = []
 
-  /** Where each step of the lexer started, and in which context, in source order. */
-  private readonly steps: {
-    readonly start: number
-    readonly context: Context
-  }[] = []
+  /** See {@link StateLexing.noteColonsInText}. */
+  private readonly noteColonsInText = new Set<Unit>()
 
   /** The stack of contexts; the last one is the current context. */
   private readonly contexts: Context[] = ["statement"]
@@ -268,30 +254,14 @@ export class StateUnitLexer {
   public lex(): StateLexing {
     while (this.position !== null) {
       const context = this.currentContext()
-      this.steps.push({ start: this.position.start, context })
       this.readInContext(this.position, context)
     }
     this.checkEndOfText()
     return {
       units: this.units,
       comments: this.comments,
-      ignoredSemicolonKindAt: (offset) =>
-        this.readsTextAt(offset) ? "RawText" : "Identifier",
+      noteColonsInText: this.noteColonsInText,
     }
-  }
-
-  /**
-   * ast.md, Tokens: whether the step of the lexer that read over `offset`,
-   * the place of a `;` that the line rule ignores and that lies in no
-   * token, read in a context that reads a `;` as text. No step starts at
-   * such a `;`, which the lexer reads through, except one that starts
-   * where a text before it ended.
-   */
-  private readsTextAt(offset: number): boolean {
-    const step = this.steps
-      .filter((candidate) => candidate.start <= offset)
-      .at(-1)
-    return step !== undefined && CONTEXTS_THAT_READ_TEXT.includes(step.context)
   }
 
   /** The current context: the top of the stack. */
@@ -320,18 +290,43 @@ export class StateUnitLexer {
     this.enter(context, entry ?? [0, 0])
   }
 
-  /** Adds the unit named `name` that reads the characters from `from` up to, and not including, `to`. */
+  /**
+   * Adds the unit named `name` that reads the characters from `from` up to,
+   * and not including, `to`, whose token leaves out the whitespace at its
+   * ends as `ends` says.
+   */
   private addUnit(
     name: UnitName,
     from: DiagramCharacter,
     to: DiagramPosition,
+    ends: UnitEnds = "trim-whitespace",
   ): Unit {
+    if (name === "{" || name === "ignored-text") this.markIgnoredStates()
     const unit: Unit = {
-      ...readUnit(this.reader, name, this.units.length, from, to, null),
+      ...readUnit(this.reader, name, this.units.length, from, to, null, ends),
       description: null,
     }
     this.units.push(unit)
     return unit
+  }
+
+  /**
+   * The statement context, rule 17, for a `{` or an `ignored-text` unit about
+   * to be added: when the last unit before it that is not an `empty-string`
+   * unit is a `state` unit, that unit is an `ignored-state` unit instead,
+   * which mermaid.js reads no token for, so that the `{` starts the body of
+   * the statement before it; and so is a `state` unit before an
+   * `ignored-state` unit in the same way, from right to left.
+   */
+  private markIgnoredStates(): void {
+    let index = this.units.length - 1
+    for (;;) {
+      while (this.units[index]?.name === "empty-string") index -= 1
+      const unit = this.units[index]
+      if (unit?.name !== "state") return
+      this.units[index] = { ...unit, name: "ignored-state" }
+      index -= 1
+    }
   }
 
   /** Reads the unit named `name` from `at` up to `to`, and goes on after it. */
@@ -489,7 +484,6 @@ export class StateUnitLexer {
       this.skipWhitespaceOf(at, isLineWhitespaceOrSeparator) ||
       this.readHashComment(at) ||
       this.readPercentComment(at) ||
-      this.readIgnoredPercent(at) ||
       this.readEnteringKeyword(at, "classDef", "classDef", "classDef") ||
       this.readEnteringKeyword(at, "class", "class", "class") ||
       this.readEnteringKeyword(at, "style", "style", "style") ||
@@ -610,21 +604,27 @@ export class StateUnitLexer {
   /** Comments: `%%` not followed by `{`, and the rest of its line, a diagram comment whose mark is `%%`. */
   private readPercentComment(at: DiagramCharacter): boolean {
     const second = this.reader.after(at)
-    if (at.codePoint !== PERCENT_SIGN || second?.codePoint !== PERCENT_SIGN) {
-      return false
-    }
-    if (isCodePointAt(this.reader.after(second), LEFT_CURLY_BRACKET)) {
-      return false
-    }
+    if (!this.startsPercentComment(at) || second === null) return false
     this.readComment(at, "%%", second.end)
     return true
   }
 
+  /** Comments: whether `%%` not followed by `{` starts at `at`. */
+  private startsPercentComment(at: DiagramCharacter): boolean {
+    const second = this.reader.after(at)
+    return (
+      at.codePoint === PERCENT_SIGN &&
+      second?.codePoint === PERCENT_SIGN &&
+      !isCodePointAt(this.reader.after(second), LEFT_CURLY_BRACKET)
+    )
+  }
+
   /**
-   * The statement context, rule 9, and the composite body context, rule 3:
-   * `%%` followed by a `{` that starts no directive, an `ignored-text`
-   * unit, which mermaid.js does not read. A `{` that starts a directive
-   * is never read here, since the directives are not in the text.
+   * The statement context, rule 9: `%%` followed by a `{` that starts no
+   * directive, an `ignored-text` unit, which mermaid.js does not read. A
+   * `{` that starts a directive is never read here, since the directives
+   * are not in the text. The composite body context has no such rule: the
+   * `%%` is an id there, and the `{` has no rule.
    */
   private readIgnoredPercent(at: DiagramCharacter): boolean {
     const second = this.reader.after(at)
@@ -742,9 +742,24 @@ export class StateUnitLexer {
     return false
   }
 
-  /** The statement context, rule 21: `hide empty description`, with one space between the words, a `hide` unit. */
+  /**
+   * The statement context, rule 21: `hide empty description`, read
+   * case-insensitively with one space between the words, a `hide`, an
+   * `empty`, and a `description-word` unit.
+   */
   private readHide(at: DiagramCharacter): boolean {
-    return this.readKeyword(at, "hide empty description", "hide")
+    const words = matchSpacedWords(
+      this.reader,
+      at,
+      ["hide", "empty", "description"],
+      matchWordIgnoringCase,
+    )
+    if (words === null) return false
+    const [hide, empty, description] = words
+    this.read("hide", hide.start, hide.end)
+    this.read("empty", empty.start, empty.end)
+    this.read("description-word", description.start, description.end)
+    return true
   }
 
   /** The text `text` at `at`, a unit named `name`. */
@@ -1022,12 +1037,21 @@ export class StateUnitLexer {
     const secondColon = rest.findIndex(
       (character) => character.codePoint === COLON,
     )
+    // ast/state.md, StateAliasDefinitionStatement: mermaid.js reads the
+    // second description as written, whitespace included.
     if (secondColon === -1) {
-      if (rest.length > 0) this.addUnit("second-description", rest[0], end)
+      if (rest.length > 0) {
+        this.addUnit("second-description", rest[0], end, "keep-whitespace")
+      }
       return
     }
     if (secondColon > 0) {
-      this.addUnit("second-description", rest[0], rest[secondColon])
+      this.addUnit(
+        "second-description",
+        rest[0],
+        rest[secondColon],
+        "keep-whitespace",
+      )
     }
     this.addUnit("ignored-text", rest[secondColon], end)
   }
@@ -1062,7 +1086,8 @@ export class StateUnitLexer {
    * `end` has a body: a `{` there, or on the next line, after the line
    * feed of the line of `end` and only what the `textBeforeBody` may hold
    * before it: whitespace other than line feed, empty description blocks,
-   * and a `%%` right before the `{`.
+   * and a `%%` right before the `{`, or `ignored-state` units
+   * ({@link bodyFollowsIgnoredStates}).
    * Comment lines between are not read, and an id that ends before a `%%`
    * that starts a comment has the rest of its line in that comment.
    */
@@ -1083,25 +1108,160 @@ export class StateUnitLexer {
       )
     }
     if (lineFeed === null || lineFeed.codePoint !== LINE_FEED) return false
-    let next = skipWhile(
-      this.reader,
-      this.reader.after(lineFeed),
-      (character) => isLineWhitespaceOrSeparator(character.codePoint),
-    )
+    const outer = this.contextAroundState()
+    let next = this.afterTriviaWithoutUnit(this.reader.after(lineFeed), outer)
     for (
       let block = this.afterEmptyDescriptionBlock(next);
       block !== null;
       block = this.afterEmptyDescriptionBlock(next)
     ) {
-      next = skipWhile(this.reader, block, (character) =>
-        isLineWhitespaceOrSeparator(character.codePoint),
+      next = this.afterTriviaWithoutUnit(block, outer)
+    }
+    return (
+      isCodePointAt(next, LEFT_CURLY_BRACKET) ||
+      isIgnoredPercentAt(this.reader, next) ||
+      this.bodyFollowsIgnoredStates(next, outer)
+    )
+  }
+
+  /** Units and contexts: the context that the state context was entered from, the statement or the composite body context. */
+  private contextAroundState(): "statement" | "composite" {
+    return this.contexts.at(-2) === "composite" ? "composite" : "statement"
+  }
+
+  /**
+   * Units and contexts, read ahead from `at` in `context`: the place after
+   * the text there that makes no unit. In the statement context, that is
+   * one or more whitespace characters whose first is no line feed, line
+   * feeds included (rule 7), since line feeds first are a `newline` unit
+   * (rule 6), and a diagram comment there ends with a line feed, which is
+   * one; in the composite body context, every whitespace character, line
+   * feeds included, and the diagram comments between them (rules 1 to 3
+   * and 7), since no line feed makes a unit there.
+   */
+  private afterTriviaWithoutUnit(
+    at: DiagramPosition,
+    context: "statement" | "composite",
+  ): DiagramPosition {
+    if (context === "statement") {
+      if (at === null || at.codePoint === LINE_FEED) return at
+      return isWhitespace(at.codePoint) ? skipWhitespace(this.reader, at) : at
+    }
+    let next = skipWhitespace(this.reader, at)
+    while (next !== null && this.startsDiagramComment(next)) {
+      next = skipWhitespace(
+        this.reader,
+        skipWhile(
+          this.reader,
+          next,
+          (character) => character.codePoint !== LINE_FEED,
+        ),
       )
     }
-    const secondPercent = next === null ? null : this.reader.after(next)
-    if (isPercentPairAt(this.reader, next) && secondPercent !== null) {
-      next = this.reader.after(secondPercent)
+    return next
+  }
+
+  /** Comments: whether a diagram comment starts at `at`, `#`, or `%%` not followed by `{`. */
+  private startsDiagramComment(at: DiagramCharacter): boolean {
+    return at.codePoint === NUMBER_SIGN || this.startsPercentComment(at)
+  }
+
+  /**
+   * The statement context, rule 17, read ahead from `at` in `outer`, the
+   * context that holds the statement: whether one or more `state` units
+   * start there that are `ignored-state` units, a `{` unit after them, or an
+   * `ignored-text` unit, a `%%` right before a `{` (rule 9).
+   */
+  private bodyFollowsIgnoredStates(
+    at: DiagramPosition,
+    outer: "statement" | "composite",
+  ): boolean {
+    let next = at
+    let states = 0
+    for (
+      let after = this.afterNamelessState(next, outer);
+      after !== null;
+      after = this.afterNamelessState(next, outer)
+    ) {
+      states += 1
+      next = after
     }
-    return isCodePointAt(next, LEFT_CURLY_BRACKET)
+    return (
+      states > 0 &&
+      (isCodePointAt(next, LEFT_CURLY_BRACKET) ||
+        isIgnoredPercentAt(this.reader, next))
+    )
+  }
+
+  /**
+   * The statement context, rule 17, read ahead from `at` in `outer`: the
+   * place after a `state` unit that starts at `at` and that the state
+   * context reads no name after; null when none starts there. After `state`
+   * and its whitespace, line feeds included, the state context reads
+   * whitespace other than line feed, empty strings, and a comment up to a
+   * line feed, which leaves the context; `outer` then reads empty strings
+   * and the text that makes no unit there ({@link afterTriviaWithoutUnit}).
+   * Without that line feed, only a `{` may follow.
+   */
+  private afterNamelessState(
+    at: DiagramPosition,
+    outer: "statement" | "composite",
+  ): DiagramPosition | null {
+    if (at === null) return null
+    const word = matchWordIgnoringCase(this.reader, at, "state")
+    if (word === null || !isWhitespaceCharacter(word.end)) return null
+    // The state context, rules 1 to 3, 5, and 9.
+    let next = this.afterEmptyStrings(skipWhitespace(this.reader, word.end))
+    if (next !== null && this.startsDiagramComment(next)) {
+      next = skipWhile(
+        this.reader,
+        next,
+        (character) => character.codePoint !== LINE_FEED,
+      )
+    }
+    if (!isCodePointAt(next, LINE_FEED) || next === null) {
+      return isCodePointAt(next, LEFT_CURLY_BRACKET) ? next : null
+    }
+    // The context around the state context, after the line feed.
+    next = this.reader.after(next)
+    for (;;) {
+      const after = this.afterEmptyString(
+        this.afterTriviaWithoutUnit(next, outer),
+      )
+      if (after === null) break
+      next = after
+    }
+    return this.afterTriviaWithoutUnit(next, outer)
+  }
+
+  /**
+   * The state context, read ahead from `at`: the place after the empty
+   * strings there and the whitespace other than line feed around them.
+   */
+  private afterEmptyStrings(at: DiagramPosition): DiagramPosition {
+    let next = at
+    for (;;) {
+      next = skipWhile(this.reader, next, (character) =>
+        isLineWhitespaceOrSeparator(character.codePoint),
+      )
+      const after = this.afterEmptyString(next)
+      if (after === null) return next
+      next = after
+    }
+  }
+
+  /** Strings: the place after the empty string `""` that starts at `at`; null when none starts there. */
+  private afterEmptyString(at: DiagramPosition): DiagramPosition | null {
+    const second = at === null ? null : this.reader.after(at)
+    if (
+      at === null ||
+      at.codePoint !== QUOTATION_MARK ||
+      !isCodePointAt(second, QUOTATION_MARK) ||
+      second === null
+    ) {
+      return null
+    }
+    return this.reader.after(second)
   }
 
   /**
@@ -1169,8 +1329,8 @@ export class StateUnitLexer {
   /**
    * The class context: one or more word characters, followed by zero or
    * more of `,`, zero or more whitespace, and one or more word characters:
-   * an `id` unit for each run of word characters and a `,` unit for each
-   * `,`; enters the class name context.
+   * an `id` unit for each run of word characters and an `id-comma` unit
+   * for each `,`; enters the class name context.
    */
   private readInClassContext(at: DiagramCharacter): void {
     let end = skipWhile(this.reader, at, (character) =>
@@ -1185,7 +1345,7 @@ export class StateUnitLexer {
       const wordEnd = skipWhile(this.reader, word, (character) =>
         isWordCharacter(character.codePoint),
       )
-      this.addUnit(",", comma, this.reader.after(comma))
+      this.addUnit("id-comma", comma, this.reader.after(comma))
       this.addUnit("id", word, wordEnd)
       end = wordEnd
     }
@@ -1196,8 +1356,9 @@ export class StateUnitLexer {
   /**
    * The style context: one or more word characters and `,`, and one or more
    * whitespace characters, line feeds included: an `id` unit for each run
-   * of word characters and a `,` unit for each `,`; enters the styles
-   * context.
+   * of word characters and an `id-comma` unit for each `,`; enters the
+   * styles context. The ids end at the whitespace after them, so a `,`
+   * after that whitespace is one of the styles.
    */
   private readInStyleContext(at: DiagramCharacter): void {
     const end = skipWhile(
@@ -1213,7 +1374,7 @@ export class StateUnitLexer {
     while (position !== null && !samePosition(position, end)) {
       if (position.codePoint === COMMA) {
         const after = this.reader.after(position)
-        this.addUnit(",", position, after)
+        this.addUnit("id-comma", position, after)
         position = after
       } else {
         const wordEnd = skipWhile(this.reader, position, (character) =>
@@ -1316,15 +1477,23 @@ export class StateUnitLexer {
   }
 
   /**
-   * The note context: `left of` or `right of`, not followed by a word
-   * character, a `position` unit, which enters the note id context; or
-   * `"`, which enters the floating note context.
+   * The note context: `left of` or `right of`, read case-insensitively with
+   * one space between the words and not followed by a word character, a
+   * `position` unit for `left` or `right` and an `of` unit, which enter the
+   * note id context; or `"`, which enters the floating note context.
    */
   private readInNoteContext(at: DiagramCharacter): void {
-    for (const position of NOTE_POSITIONS) {
-      const match = matchWholeWordIgnoringCase(this.reader, at, position)
-      if (match === null) continue
-      this.read("position", at, match.end)
+    for (const side of NOTE_SIDES) {
+      const words = matchSpacedWords(
+        this.reader,
+        at,
+        [side, "of"],
+        matchWordIgnoringCase,
+      )
+      if (words === null) continue
+      const [sideWord, ofWord] = words
+      this.read("position", sideWord.start, sideWord.end)
+      this.read("of", ofWord.start, ofWord.end)
       // The note contexts that follow keep `note` as what entered them.
       this.replace("note-id")
       return
@@ -1348,12 +1517,11 @@ export class StateUnitLexer {
    * it, after which the context reads on.
    */
   private readNoteId(at: DiagramCharacter): void {
-    const previous = this.units.at(-1)
-    if (
-      previous?.name === "position" &&
-      previous.end === at.start &&
-      isPercentPairAt(this.reader, at)
-    ) {
+    // Right after the `of` unit of the position, which this context was
+    // entered with, `at` is the character of the diagram text after it, so
+    // the `%%` there has no whitespace before it; a directive between them
+    // is no character of the diagram text.
+    if (this.units.at(-1)?.name === "of" && isPercentPairAt(this.reader, at)) {
       // A `%%` right after the position: the characters of an id from it
       // are text that mermaid.js does not read, and the context reads on.
       this.read(
@@ -1380,17 +1548,23 @@ export class StateUnitLexer {
   /**
    * The note text context: zero or more whitespace, `:`, and one or more
    * characters other than `:`, `;`, and line feed, as many as possible: a
-   * `:` unit and a `note-text` unit; or any characters, as few as possible,
-   * then a line feed, zero or more whitespace characters, and `end note`:
-   * a `note-text` unit for the characters before the line feed and an `end
-   * note` unit. Either leaves the note contexts.
+   * `:` unit, an `ignored-text` unit for the character after it when the
+   * `:` follows the note id directly and that character is not whitespace,
+   * and a `note-text` unit for the characters after them; or any
+   * characters, as few as possible, then a line feed, zero or more
+   * whitespace characters, and `end note`: a `note-text` unit for the
+   * characters before the line feed and an `end note` unit. Either leaves
+   * the note contexts. mermaid.js reads a note text on one line without its
+   * first two characters, so with two whitespace characters before the
+   * `:`, the `:` is the first character of the text that it reads
+   * ({@link StateLexing.noteColonsInText}).
    */
   private readInNoteTextContext(at: DiagramCharacter): void {
     const colon = skipWhitespace(this.reader, at)
     if (colon !== null && colon.codePoint === COLON) {
-      const textStart = this.reader.after(colon)
+      const afterColon = this.reader.after(colon)
       let last: DiagramCharacter | null = null
-      let end: DiagramPosition = textStart
+      let end: DiagramPosition = afterColon
       while (
         end !== null &&
         end.codePoint !== COLON &&
@@ -1400,13 +1574,20 @@ export class StateUnitLexer {
         last = end
         end = this.reader.after(end)
       }
-      if (textStart !== null && last !== null) {
-        this.addUnit(":", colon, textStart)
-        this.read("note-text", textStart, end)
+      if (afterColon !== null && last !== null) {
+        const whitespaceBefore = this.charactersBetween(at, colon)
+        const colonUnit = this.addUnit(":", colon, afterColon)
+        if (whitespaceBefore >= 2) this.noteColonsInText.add(colonUnit)
+        let textStart: DiagramPosition = afterColon
+        if (whitespaceBefore === 0 && !isWhitespace(afterColon.codePoint)) {
+          textStart = this.reader.after(afterColon)
+          this.addUnit("ignored-text", afterColon, textStart)
+        }
+        if (textStart !== null && !samePosition(textStart, end)) {
+          this.addUnit("note-text", textStart, end)
+        }
+        this.position = end
         this.leaveNote()
-        // A `;` that the line rule ignores after the text lies where the
-        // text has ended, in the context that the note leaves to.
-        this.steps.push({ start: last.end, context: this.currentContext() })
         return
       }
     }
@@ -1417,17 +1598,41 @@ export class StateUnitLexer {
     ) {
       if (position.codePoint !== LINE_FEED) continue
       const word = skipWhitespace(this.reader, this.reader.after(position))
-      const endNote = matchWholeWordIgnoringCase(this.reader, word, "end note")
-      if (word === null || endNote === null) continue
+      if (word === null) continue
+      const endNote = matchSpacedWords(
+        this.reader,
+        word,
+        ["end", "note"],
+        matchWordIgnoringCase,
+      )
+      if (endNote === null) continue
       if (!samePosition(position, at)) {
         this.addUnit("note-text", at, position)
       }
-      this.read("end note", word, endNote.end)
+      const [end, note] = endNote
+      this.read("end", end.start, end.end)
+      this.read("note", note.start, note.end)
       this.leaveNote()
       return
     }
     // No `end note` follows: the text ends in the note.
     throw this.endOfTextError() ?? this.noRuleMatches(at)
+  }
+
+  /** How many characters of the diagram text lie from `from` up to, and not including, `to`. */
+  private charactersBetween(
+    from: DiagramCharacter,
+    to: DiagramCharacter,
+  ): number {
+    let count = 0
+    for (
+      let position: DiagramPosition = from;
+      position !== null && !samePosition(position, to);
+      position = this.reader.after(position)
+    ) {
+      count += 1
+    }
+    return count
   }
 
   /** Leaves the note contexts, back to the context that `note` was read in. */
@@ -1522,6 +1727,19 @@ function isPercentPairAt(
     position !== null &&
     position.codePoint === PERCENT_SIGN &&
     isCodePointAt(reader.after(position), PERCENT_SIGN)
+  )
+}
+
+/** The statement context, rule 9: whether `%%` and a `{` after it start at `position`, an `ignored-text` unit. */
+function isIgnoredPercentAt(
+  reader: DiagramText,
+  position: DiagramPosition,
+): boolean {
+  const second = position === null ? null : reader.after(position)
+  return (
+    isPercentPairAt(reader, position) &&
+    second !== null &&
+    isCodePointAt(reader.after(second), LEFT_CURLY_BRACKET)
   )
 }
 

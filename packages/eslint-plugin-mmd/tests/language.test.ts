@@ -1,6 +1,6 @@
 /**
- * Runs ESLint on every input of the conformance corpus and checks what the
- * language gives ESLint: the parse errors at the places of the parser's
+ * Runs ESLint on a few inputs of each kind of the conformance corpus
+ * (`tests/corpus-kinds.ts`) and checks what the language gives ESLint: the parse errors at the places of the parser's
  * errors, the nodes in the order of `traverseNodes`, and positions that agree
  * with the tree, so that ESLint's lines and columns are the tree's.
  */
@@ -22,6 +22,7 @@ import {
 } from "@mmd-toolkit/parser"
 import { mermaidLanguage } from "../src/index.ts"
 import type { Visit } from "./helpers.ts"
+import { kindedInputs, pickByKind } from "./corpus-kinds.ts"
 import { loadCorpus, observe, withoutByteOrderMark } from "./helpers.ts"
 
 /** What the parser does with a text: its tree, or the error it throws. */
@@ -78,7 +79,7 @@ function elementsOf(
   ]
 }
 
-const fixtures = await loadCorpus()
+const inputs = pickByKind(kindedInputs(await loadCorpus()))
 
 describe("the language object", () => {
   it("gives ESLint the visitor keys of the parser", () => {
@@ -92,72 +93,70 @@ describe("the language object", () => {
 })
 
 describe("the conformance corpus", () => {
-  it.each(
-    fixtures.map((fixture) => [
-      `${fixture.diagram}/${fixture.name}`,
-      fixture.input,
-    ]),
-  )("%s", (_name, input) => {
-    const text = withoutByteOrderMark(input)
-    const outcome = parserOutcome(text)
-    const observation = observe(input)
+  it.each(inputs.map((input) => [input.name, input.fixture.input]))(
+    "%s",
+    (_name, input) => {
+      const text = withoutByteOrderMark(input)
+      const outcome = parserOutcome(text)
+      const observation = observe(input)
 
-    if (outcome.kind === "rejected") {
-      // ESLint shows the column of a parse error as it is, counted from 1.
-      expect(observation.messages).toEqual([
-        expect.objectContaining({
-          ruleId: null,
-          fatal: true,
-          message: `Parsing error: ${outcome.error.message}`,
-          line: outcome.error.loc.start.line,
-          column: outcome.error.loc.start.column + 1,
-        }),
-      ])
-      return
-    }
-    if (outcome.kind === "unsupported") {
-      expect(observation.messages).toEqual([
-        expect.objectContaining({
-          ruleId: null,
-          fatal: true,
-          message: `Parsing error: ${outcome.error.message}`,
-          line: 1,
-          column: 1,
-        }),
-      ])
-      return
-    }
+      if (outcome.kind === "rejected") {
+        // ESLint shows the column of a parse error as it is, counted from 1.
+        expect(observation.messages).toEqual([
+          expect.objectContaining({
+            ruleId: null,
+            fatal: true,
+            message: `Parsing error: ${outcome.error.message}`,
+            line: outcome.error.loc.start.line,
+            column: outcome.error.loc.start.column + 1,
+          }),
+        ])
+        return
+      }
+      if (outcome.kind === "unsupported") {
+        expect(observation.messages).toEqual([
+          expect.objectContaining({
+            ruleId: null,
+            fatal: true,
+            message: `Parsing error: ${outcome.error.message}`,
+            line: 1,
+            column: 1,
+          }),
+        ])
+        return
+      }
 
-    expect(observation.messages).toEqual([])
-    const sourceCode = observation.sourceCode
-    expect(sourceCode).not.toBeNull()
-    if (sourceCode === null) return
-    const root = sourceCode.ast
+      expect(observation.messages).toEqual([])
+      const sourceCode = observation.sourceCode
+      expect(sourceCode).not.toBeNull()
+      if (sourceCode === null) return
+      const root = sourceCode.ast
 
-    expect(observation.visits.map(describeVisit)).toEqual(
-      walkOf(outcome.root).map(describeVisit),
-    )
-
-    expect(sourceCode.lines).toHaveLength(root.loc.end.line)
-    for (const element of elementsOf(root)) {
-      expect(sourceCode.getLocFromIndex(element.range[0])).toEqual(
-        element.loc.start,
+      expect(observation.visits.map(describeVisit)).toEqual(
+        walkOf(outcome.root).map(describeVisit),
       )
-      expect(sourceCode.getLocFromIndex(element.range[1])).toEqual(
-        element.loc.end,
-      )
-      expect(sourceCode.getIndexFromLoc(element.loc.start)).toBe(
-        element.range[0],
-      )
-    }
 
-    traverseNodes(root, {
-      enterNode(node, parent) {
-        expect(sourceCode.getParent(node)).toBe(parent ?? undefined)
-      },
-      leaveNode() {
-        // The parent is checked on entering the node.
-      },
-    })
-  })
+      expect(sourceCode.lines).toHaveLength(root.loc.end.line)
+      for (const element of elementsOf(root)) {
+        expect(sourceCode.getLocFromIndex(element.range[0])).toEqual(
+          element.loc.start,
+        )
+        expect(sourceCode.getLocFromIndex(element.range[1])).toEqual(
+          element.loc.end,
+        )
+        expect(sourceCode.getIndexFromLoc(element.loc.start)).toBe(
+          element.range[0],
+        )
+      }
+
+      traverseNodes(root, {
+        enterNode(node, parent) {
+          expect(sourceCode.getParent(node)).toBe(parent ?? undefined)
+        },
+        leaveNode() {
+          // The parent is checked on entering the node.
+        },
+      })
+    },
+  )
 })

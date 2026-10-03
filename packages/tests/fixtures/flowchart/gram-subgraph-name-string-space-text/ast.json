@@ -213,15 +213,15 @@
     },
     {
       "type": "RawText",
-      "value": "b",
+      "value": " b",
       "range": [
-        26,
+        25,
         27
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 13
+          "column": 12
         },
         "end": {
           "line": 2,

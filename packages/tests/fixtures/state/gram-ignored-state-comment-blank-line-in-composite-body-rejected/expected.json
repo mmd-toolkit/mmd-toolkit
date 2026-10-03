@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context, rule 17: in a composite body, the line feed after the comment leaves the state context, and the composite body context has no rule for `{`, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 6. Unrecognized text.\n...    state %% c    {      B    }  }\n---------------------^"
+  }
+}

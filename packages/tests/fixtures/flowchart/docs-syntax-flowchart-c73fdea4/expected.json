@@ -53,5 +53,10 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "htmlLabels": false
+    }
   }
 }

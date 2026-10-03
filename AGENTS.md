@@ -62,8 +62,8 @@ Correctness is defined by the pinned mermaid.js.
    reproduced byte for byte.
 4. Formatting is idempotent and does not change the Db.
 
-The diagram types are done one at a time; flowchart and sequence are done.
-Release only after every diagram type is done.
+The diagram types are done one at a time; flowchart, sequence, class, and state
+are done. Release only after every diagram type is done.
 
 ## What each package is responsible for
 
@@ -73,12 +73,22 @@ package.
 
 - `packages/tests`, with the CLIs in `tools/`: pins mermaid.js, extracts its Db,
   defines the fixture format, and holds the conformance corpus and the tools
-  that generate and check it. Skill `tests`.
-- `packages/spec`: defines the syntax and the abstract syntax tree. It is the
-  source of the definition; implementations follow it. Skill `spec`.
-- `packages/parser`: the reference implementation of the specification. Every
-  behavior it implements comes from the specification and the fixtures, never
-  from the source of mermaid.js. Skill `parser`.
+  that generate and check it. It also checks the trees that the corpus records:
+  it builds the Db from a recorded tree and compares it with the Db of
+  mermaid.js, and it checks the invariants of the tree. Skill `tests`.
+- `packages/spec`: defines the syntax and the shape of the abstract syntax tree
+  (node types, fields, values), and whatever decides whether an input is
+  accepted. It is the source of the definition; implementations follow it. Its
+  documents do not refer to the parser's specification of tokens and positions.
+  Skill `spec`.
+- `packages/parser`: the reference implementation of the specification, and the
+  specification of the tokens and positions of the tree (its `docs/tokens.md`
+  and `docs/positions.md`). Every behavior it implements comes from the
+  specification and the fixtures, never from the source of mermaid.js. A parser
+  is to be writable in another language from the specification, these documents,
+  and the corpus, so the tests of the parser compare its results with what the
+  fixtures record and run neither mermaid.js nor generated inputs. Skill
+  `parser`.
 - `packages/prettier-plugin-mmd`: the formatter, with one printer for each
   diagram type, following formatting choices that are decided explicitly, item
   by item. Skill `prettier-plugin`.
@@ -93,14 +103,16 @@ package.
 Changing one of these affects the packages that use it; tell them before
 changing it.
 
-| Interface                                       | Defined in     | Used by                                |
-| ----------------------------------------------- | -------------- | -------------------------------------- |
-| Fixture format and loader                       | tests          | spec, parser, prettier-plugin          |
-| Function that extracts mermaid's Db             | tests          | parser, prettier-plugin                |
-| Generator and mutation-diff CLIs                | tests          | spec, parser                           |
-| Db normalization format                         | tests and spec | parser                                 |
-| AST definition (`docs/ast.md`, `docs/ast/*.md`) | spec           | parser, prettier-plugin, eslint-plugin |
-| The `parse()` API                               | parser         | prettier-plugin, eslint-plugin         |
+| Interface                                       | Defined in | Used by                                |
+| ----------------------------------------------- | ---------- | -------------------------------------- |
+| Fixture format and loader                       | tests      | spec, parser, prettier-plugin          |
+| Function that extracts mermaid's Db             | tests      | parser, prettier-plugin                |
+| Generator and mutation-diff CLIs                | tests      | spec, parser                           |
+| Boundary kinds of generated inputs              | tests      | parser, prettier-plugin                |
+| Db summaries and the checks of recorded trees   | tests      | parser                                 |
+| AST definition (`docs/ast.md`, `docs/ast/*.md`) | spec       | parser, prettier-plugin, eslint-plugin |
+| Tokens and positions (`docs/tokens.md`, …)      | parser     | tests, prettier-plugin, eslint-plugin  |
+| The parser API (`parse()`, errors, traversal)   | parser     | prettier-plugin, eslint-plugin         |
 
 ## Principles
 
@@ -135,6 +147,8 @@ changing it.
   - A code block of Mermaid text has the info string `mmd` and is written as the
     formatter prints it, unless the example is there to show a way of writing.
   - Run the tests that a change can affect, and the whole suite of the package
-    once before reporting the work as done; the runs at full size once for each
-    step of the plan.
+    once before reporting the work as done. The tests of the parser run no
+    generated inputs: for the parser, generated inputs find what the corpus
+    lacks, and what they find becomes a fixture. A generated test of another
+    package has one size: it covers the kinds of inputs with a few of each.
 - Commit and push only when the user says so.

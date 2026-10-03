@@ -146,7 +146,16 @@ export function printAtoms(
           current = [current, spaced ? " " : "", withLeading(gap.leading, "")]
         }
       } else {
-        current.push(spaceFor(layout.rules.get(atom.start), previous, atom))
+        const written = source.text.slice(previous.end, atom.start)
+        // A U+2028 or U+2029 is not whitespace to every rule of mermaid.js,
+        // which reads `class A`, U+2028, and ` direction LR` as one name,
+        // and the same with a space as a statement and a direction: the gap
+        // stays as written.
+        current.push(
+          written.includes("\u2028") || written.includes("\u2029")
+            ? written
+            : spaceFor(layout.rules.get(atom.start), previous, atom),
+        )
       }
     }
     current.push(printAsWritten(source, atom.start, atom.end))

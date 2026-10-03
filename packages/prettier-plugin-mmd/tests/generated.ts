@@ -13,47 +13,6 @@ import {
   readWithMermaid,
 } from "./mermaid-readings.ts"
 
-/** The default of `sampleEvery`: a run of a few minutes. */
-export const DEFAULT_SAMPLE_EVERY = 64
-
-/** The default of `mutantsPerFixture`. */
-export const DEFAULT_MUTANTS_PER_FIXTURE = 4
-
-/**
- * The insertion tests take every `sampleEvery`-th usable token boundary:
- * `DEFAULT_SAMPLE_EVERY`, or the positive integer that
- * `MMD_GENERATED_SAMPLE_EVERY` gives. 1 takes every boundary, the full
- * check, which takes hours; the tracked tests are not edited for that.
- */
-export const sampleEvery: number = readPositiveInteger(
-  "MMD_GENERATED_SAMPLE_EVERY",
-  DEFAULT_SAMPLE_EVERY,
-)
-
-/**
- * The mutation test makes `mutantsPerFixture` mutants of each fixture:
- * `DEFAULT_MUTANTS_PER_FIXTURE`, or the positive integer that
- * `MMD_MUTANTS_PER_FIXTURE` gives.
- */
-export const mutantsPerFixture: number = readPositiveInteger(
-  "MMD_MUTANTS_PER_FIXTURE",
-  DEFAULT_MUTANTS_PER_FIXTURE,
-)
-
-/** Reads a positive integer from an environment variable, if it is set. */
-function readPositiveInteger(variable: string, defaultValue: number): number {
-  // eslint-disable-next-line no-process-env -- the size of a run comes from outside, so that a larger check does not edit the tracked tests
-  const written = process.env[variable]
-  if (written === undefined) return defaultValue
-  const value = Number(written)
-  if (!Number.isInteger(value) || value <= 0) {
-    throw new Error(
-      `${variable} must be a positive integer, not ${JSON.stringify(written)}`,
-    )
-  }
-  return value
-}
-
 /** A generated input, with the site configuration to run it with. */
 export interface GeneratedInput {
   readonly text: string

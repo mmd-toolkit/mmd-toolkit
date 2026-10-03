@@ -90,12 +90,30 @@ machine. Run what a change can affect, not everything after every change.
 - A change to code, while working on it: run the test files that the change can
   affect (`vitest run <files>`). The skill of the package says which test files
   go with which part of the code.
-- Before reporting the work as done: run the whole suite of the package once, at
-  its default size, and the checks of the repository (`pnpm run lint`,
-  `pnpm run format:check`).
-- The runs at full size (the differential tests over every mutant, the
-  generated-input tests at full size): run them once, before a step of the plan
-  is reported as finished or handed to a review, and not after each change.
+- Before reporting the work as done: run the whole suite of the package once,
+  and the checks of the repository (`pnpm run lint`, `pnpm run format:check`).
+- The tests of the parser run no generated inputs and do not run mermaid.js.
+  What a parser must do is stated by the specification and by the conformance
+  corpus (`packages/tests/fixtures/`): an input, whether mermaid.js accepts it,
+  and what mermaid.js reads. A parser in any language is checked with the same
+  fixtures, so the tests of the parser take their inputs and their expected
+  results from the corpus. A check of the corpus itself (that what a fixture
+  records is what mermaid.js does) belongs to `packages/tests`.
+- For the parser, generated inputs are a tool for finding what the corpus lacks.
+  The parser runs them with its exploration command, not with its tests, when
+  the lexing or the grammar of a diagram type changes. An exploration takes
+  inputs by kind (which tokens meet at a boundary, where in a line, which
+  statement, which text is inserted) and takes each combination once; it does
+  not repeat a kind to raise a count. A failure it finds is closed by a fixture
+  in the corpus, and by a sentence of the specification too where the
+  specification did not state the reading. An input that is kept only in a list
+  inside the parser is not kept.
+- A generated test of another package (the formatter) has one size. It covers
+  the kinds of inputs (which tokens meet at a boundary, where in a line, which
+  statement), with a few inputs of each kind, and has no larger "full" run: a
+  run over every position or every mutant repeats the same check on the same
+  kind of input and finds nothing more. To gain assurance, add a kind that is
+  missing; do not raise a count.
 - A result that was just reported for the same state of the tree is not run
   again by someone else; a check of another kind (other inputs, another method)
   is.

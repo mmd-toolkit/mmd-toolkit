@@ -36,5 +36,15 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "API",
+        "set": {
+          "type": "boundary"
+        }
+      }
+    ]
   }
 }

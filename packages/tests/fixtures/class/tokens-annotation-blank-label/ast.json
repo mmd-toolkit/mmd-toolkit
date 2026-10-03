@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "A",
             "range": [
               13,
@@ -45,7 +45,24 @@
         },
         "member": {
           "type": "ClassAnnotation",
-          "name": null,
+          "name": {
+            "type": "ClassLiteral",
+            "value": "  ",
+            "range": [
+              19,
+              21
+            ],
+            "loc": {
+              "start": {
+                "line": 2,
+                "column": 6
+              },
+              "end": {
+                "line": 2,
+                "column": 8
+              }
+            }
+          },
           "range": [
             17,
             23
@@ -115,7 +132,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         13,
@@ -165,6 +182,24 @@
         "end": {
           "line": 2,
           "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "  ",
+      "range": [
+        19,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 8
         }
       }
     },

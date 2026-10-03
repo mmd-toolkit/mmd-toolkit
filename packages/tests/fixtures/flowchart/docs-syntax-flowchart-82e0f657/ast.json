@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: text, label: \"This is a text block\"",
+      "value": " shape: text, label: \"This is a text block\" ",
       "range": [
-        21,
-        63
+        20,
+        64
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
-          "column": 50
+          "column": 51
         }
       }
     },

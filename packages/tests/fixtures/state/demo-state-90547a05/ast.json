@@ -117,6 +117,7 @@
             }
           }
         },
+        "textBeforeText": null,
         "text": {
           "type": "StateLiteral",
           "value": "Important information!<br />You can write notes.<br />And\\nthey\\ncan\\nbe\\nmulti-\\nline.",
@@ -262,6 +263,7 @@
             }
           }
         },
+        "textBeforeText": null,
         "text": {
           "type": "StateLiteral",
           "value": "Notes can be to the left of a state\\n(like this one).",
@@ -317,6 +319,7 @@
             }
           }
         },
+        "textBeforeText": null,
         "text": {
           "type": "StateLiteral",
           "value": "Notes can be to the right of a state\\n(like this one).",
@@ -498,15 +501,33 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         62,
-        70
+        67
       ],
       "loc": {
         "start": {
           "line": 4,
           "column": 5
+        },
+        "end": {
+          "line": 4,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        68,
+        70
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 11
         },
         "end": {
           "line": 4,
@@ -552,15 +573,33 @@
     },
     {
       "type": "Keyword",
-      "value": "end note",
+      "value": "end",
       "range": [
         168,
-        176
+        171
       ],
       "loc": {
         "start": {
           "line": 6,
           "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "note",
+      "range": [
+        172,
+        176
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
         },
         "end": {
           "line": 6,
@@ -642,15 +681,33 @@
     },
     {
       "type": "Keyword",
-      "value": "left of",
+      "value": "left",
       "range": [
         200,
-        207
+        204
       ],
       "loc": {
         "start": {
           "line": 8,
           "column": 5
+        },
+        "end": {
+          "line": 8,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        205,
+        207
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 10
         },
         "end": {
           "line": 8,
@@ -732,15 +789,33 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         276,
-        284
+        281
       ],
       "loc": {
         "start": {
           "line": 9,
           "column": 5
+        },
+        "end": {
+          "line": 9,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        282,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 11
         },
         "end": {
           "line": 9,

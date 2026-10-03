@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "A",
             "range": [
               21,
@@ -50,7 +50,24 @@
           {
             "type": "ClassMethod",
             "visibility": "none",
-            "name": null,
+            "name": {
+              "type": "ClassLiteral",
+              "value": " ",
+              "range": [
+                31,
+                32
+              ],
+              "loc": {
+                "start": {
+                  "line": 3,
+                  "column": 6
+                },
+                "end": {
+                  "line": 3,
+                  "column": 7
+                }
+              }
+            },
             "parameters": {
               "type": "ClassLiteral",
               "value": "c",
@@ -178,7 +195,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         21,
@@ -228,6 +245,24 @@
         "end": {
           "line": 3,
           "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " ",
+      "range": [
+        31,
+        32
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 7
         }
       }
     },

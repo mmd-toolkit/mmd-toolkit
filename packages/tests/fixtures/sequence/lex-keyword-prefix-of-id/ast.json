@@ -269,7 +269,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "ender",
       "range": [
         16,
@@ -305,7 +305,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         24,
@@ -359,7 +359,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "notes",
       "range": [
         29,
@@ -395,7 +395,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "B",
       "range": [
         37,

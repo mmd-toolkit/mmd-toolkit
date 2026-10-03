@@ -49,5 +49,13 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "e1",
+        "set": {}
+      }
+    ]
   }
 }

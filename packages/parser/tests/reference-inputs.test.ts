@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import {
   frontmatterChangesAttributeQuotes,
+  withIgnoredSemicolonsAtSegmentEnds,
   withoutDirectives,
   withoutFrontmatterTagStarts,
   commentsAfterMatchStarts,
@@ -22,6 +23,19 @@ describe("the reference input for `directive-as-token-boundary`", () => {
     expect(withoutDirectives("err%%{init: {}}%%or")).toBe("error")
     expect(withoutDirectives("---\na: '%%{x}%%'\n---\n%%{a}%%x%%{b}%%")).toBe(
       "---\na: '%%{x}%%'\n---\nx",
+    )
+  })
+})
+
+describe("the reference input for `ignored-semicolon-as-token-boundary`", () => {
+  it("moves each `;` that the line rule ignores to the end of its line segment", () => {
+    expect(
+      withIgnoredSemicolonsAtSegmentEnds(
+        "flowchart LR\nZ[style:#x];linkStyle 1;0 stroke:red\nA-->B",
+      ),
+    ).toBe("flowchart LR\nZ[style:#x];linkStyle 10 stroke:red;\nA-->B")
+    expect(withIgnoredSemicolonsAtSegmentEnds("flowchart LR\nA-->B;")).toBe(
+      "flowchart LR\nA-->B;",
     )
   })
 })

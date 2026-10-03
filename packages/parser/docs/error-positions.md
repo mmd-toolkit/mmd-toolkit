@@ -118,7 +118,8 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   whitespace, and at the end of the text the empty range at the end of the text,
   as in a flowchart.
 - For a composite state with more than one description, a rejection outside the
-  grammar, `range` is the statement that first gave the state a body, and the
+  grammar, `range` is the statement that first gave the state a body, which for
+  a region of a divided body is the divider statement that closes it, and the
   message is `A composite state can have only one description`.
 
 ## Known divergences
@@ -126,9 +127,12 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input
 rejected, `range` is the form that causes it, and the message names the cause:
 
-- `directive-as-token-boundary`: for a directive inside a unit that may not have
-  one, such as an arrow, a keyword, or a string, `range` is the directive, and
-  the message is `Unexpected directive`.
+- `directive-as-token-boundary`: for a directive inside a token that may not be
+  cut, a name, a number, a keyword, an arrow, or another delimiter, `range` is
+  the directive, and the message is `Unexpected directive`.
+- `ignored-semicolon-as-token-boundary`: for a `;` that the line rule ignores
+  inside such a token, `range` is the `;`, and the message is
+  `Unexpected ; that the line rule ignores`.
 - `click-reserved-word`: for a `click` that does not start a click statement,
   `range` is the word `click`, and the message is
   `click is a reserved word: it may only start a click statement`. The grammar

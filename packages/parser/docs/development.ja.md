@@ -11,6 +11,9 @@
   [`ast.md`](../../spec/docs/ast.ja.md)、
   [`detection.md`](../../spec/docs/detection.ja.md) と、
   [`diagrams/`](../../spec/docs/diagrams) の下の各図の文書です。
+- 木のトークンと位置は、このパッケージの
+  [`tokens.md`](./tokens.ja.md) と [`positions.md`](./positions.ja.md)
+  が定めます。
 - [`@mmd-toolkit/tests`](../../tests) の fixture も仕様の一部です。
 - mermaid.js のソースは、このパッケージの挙動の出どころではありません。
 - 仕様に書かれていないことは、ここで埋めずに仕様へ報告します。
@@ -53,7 +56,7 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 
 どの図の字句解析器とパーサーも同じように行うことは、それぞれ 1 か所にあります。
 単位とその読み方は `src/diagram-units.ts` にあります。
-単位の読み進め、ノードの位置、範囲のテキスト、共通の葉のノード、
+単位の読み進め、ノードの位置、値の書かれたテキスト、共通の葉のノード、
 文法の項目のトークンは、`src/unit-grammar.ts` の `UnitGrammar` にあります。
 `tokenless-empty-forms` の空の形は `src/empty-forms.ts` にあります。
 複数の図の文書が共有する規則も 1 か所にあります。
@@ -80,23 +83,25 @@ flowchart では `subgraph-members.ts`、
 flowchart の subgraph の Db の id は、1 か所で作ります。
 `src/diagrams/flowchart/subgraph-ids.ts` が、単位から、
 名前のテキストの範囲と
-[Subgraphs](../../spec/docs/diagrams/flowchart.ja.md#木から要約を作る)
+[Subgraphs](../../tests/docs/db-from-tree/flowchart.ja.md#木から要約を作る)
 の規則で作ります。
-文法は subgraph の要素のためにこれを読み、
-公開の `flowchartSubgraphIds()`（`src/db-ids.ts`）は、
-テキストを字句解析し直して、木に対してこれを与えます。
-テストの Db の要約も、これから Db を組み立てます。
+文法は、mermaid.js が Db を作るときに行う拒否のために、
+subgraph の要素についてこれを読みます。
 
 図のテキストは、ディレクティブを除いて読みます。
-種類が `RawText` と `Identifier` 以外の単位の内側にディレクティブがあれば、
-入力を拒否します。
-トークンは、記録するときにディレクティブのところで切ります
-（[ディレクティブはトークンの境界](../../spec/docs/common.ja.md#ディレクティブはトークンの境界)）。
+トークンは、記録するときに、
+ディレクティブと、行の規則が無視する `;` のところで切ります
+（[ディレクティブはトークンの境界](../../spec/docs/common.ja.md#ディレクティブはトークンの境界)、
+[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)）。
 単位が読み通すコメントの領域のところでも切ります
-（[`ast.md` の Comment](../../spec/docs/ast.ja.md#comment)）。
+（[`ast.md` の Comment](./tokens.ja.md#comment)）。
 そのため、領域の中のコメントの `%%` より前のディレクティブは、
 どのトークンの外にもあります。
 `String` のトークンの断片は、`StringFragment` のトークンです。
+切ってよいのは、`RawText` と `String` のトークンだけです。
+ほかの種類のトークンの内側にディレクティブや無視される `;` があれば、
+そのディレクティブか `;` のところで入力を拒否します。
+これは、すべての図種について、`SourceLexer.recordTokens` が 1 か所で決めます。
 トークンとコメントの外にある各ディレクティブは、
 それだけで 1 つの `Directive` のトークンとして記録します。
 フロントマターは最初に、
@@ -107,6 +112,8 @@ flowchart の subgraph の Db の id は、1 か所で作ります。
 
 `tools/` には、パーサーの作業に使うスクリプトがあります。
 ビルドも公開もされません。
+`package.json` のスクリプトは、`node --conditions=source` で動かします。
+テストと同じく、`@mmd-toolkit/tests` をそのソースから読むためです。
 `packages/parser` で実行します。
 
 - `pnpm run compare-with-mermaid <ファイル>`:
@@ -115,8 +122,10 @@ flowchart の subgraph の Db の id は、1 か所で作ります。
   `same: accepted, same Db`、`same: rejected`、または `DIFF:` と、
   2 つの受理・拒否か 2 つの Db の要約です。
   `parse()` が `ParseError` 以外を投げたとき、
-  または木が木の検査を通らないときは、`BUG or broken tree:` を出します。
-  木の Db の要約は fixture のテストと同じに作るので、
+  または `@mmd-toolkit/tests` の木の検査（`checkTree`）が、
+  木の破る条件を挙げたときは、`BUG or broken tree:` を出します。
+  木の Db の要約は、`@mmd-toolkit/tests` が記録した木から作るのと同じに
+  （`dbFromTree`）作るので、
   既知の差異に当たる入力は `DIFF` になります。
 - `pnpm run show-trees <図種> <fixture>...`:
   各 fixture の入力と、`ast.json` の木を出します。
@@ -125,6 +134,8 @@ flowchart の subgraph の Db の id は、1 か所で作ります。
   書かれた値を持つノードでは、値と範囲も出し、
   範囲のテキストが値と違うときは、そのテキストも出します。
   その後にトークンを出します。
+  パーサーが拒否する fixture では、`parse-error.json` のエラーを出します。
+  メッセージ、範囲、範囲のソースのテキストです。
 - `pnpm run diff-trees <写し> <図種>`:
   `<写し>` は、変更の前に取った `packages/tests/fixtures/<図種>` の写しです。
   パースの結果、つまり `ast.json` と `parse-error.json` を比べます。
@@ -134,3 +145,8 @@ flowchart の subgraph の Db の id は、1 か所で作ります。
   違いの種類は、リストの位置を除いた、同じノードの型の同じ欄か、
   エラーの同じ欄です。
   その後に、違いを 1 つずつ、前と後の値とともに出します。
+
+`tools/explore/` には探索があります。
+探索は、テストとは別に、入力を生成して pin した mermaid.js と比べます。
+`pnpm run explore` が回します
+（[`testing.md`](./testing.ja.md#mermaidjs-と比べる探索)を見てください）。

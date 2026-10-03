@@ -100,7 +100,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A # c",
       "range": [
         28,

@@ -2,23 +2,25 @@
 
 英語版: [sequence.md](./sequence.md)
 
-この文書は、図種 `sequence` の木のノードとトークンを定めます。
+この文書は、図種 `sequence` の木のノードを定めます。
 木の共通の部分は [ast.ja.md](../ast.ja.md) で定めます。
 ソースの読み方と、どの文法の規則がどのノードを作るかは、
 [diagrams/sequence.ja.md](../diagrams/sequence.ja.md) で定めます。
 
 この図種の本文は [SequenceDiagram](#sequencediagram) です。
-欄の値は、[ast.ja.md](../ast.ja.md#ノード) が定める範囲のテキストとして、
+欄の値は、[ast.ja.md](../ast.ja.md#ノード) が定める値の書かれたテキストとして、
 書き手が書いたものを保ちます。
-[common.ja.md](../common.ja.md#ソースの読み方) の変換した形ではなく、
-変換は [diagrams/sequence.ja.md](../diagrams/sequence.ja.md#木から要約を作る)
-の Db の正規化が、値を使うところで行います。
-ノードの範囲の外の空白は、その値に入りません。
-それが Db に効くのはタイトルの 1 か所で、
-そこでは Db の正規化がそれをソースから読みます。
+[common.ja.md](../common.ja.md#ソースの読み方) の変換した形ではありません。
+mermaid.js が値の一部として読む空白は、
+その書かれたテキストの一部です
+（[ノード](../ast.ja.md#ノード) を参照）。
+この図種では、タイトルの空白と、箱のテキストの U+2028 か U+2029 です
+（[SequenceTitleStatement](#sequencetitlestatement) と
+[SequenceBoxText](#sequenceboxtext) を参照）。
+ほかの空白は、どの値にも入りません。
 
 **参加者**は、図の生存線の 1 つで、id で名指されます。
-mermaid.js の Db では actor と呼ばれます。
+mermaid.js はそれを actor と呼びます。
 この文書では、actor という語を、
 キーワード `actor` が宣言する参加者に取っておきます。
 
@@ -32,7 +34,6 @@ mermaid.js の Db では actor と呼ばれます。
 
 子の欄: `body`。
 キーワード `sequenceDiagram` は欄ではありません。
-範囲は、キーワードから図の最後のトークンまでです。
 
 **SequenceStatement** は、SequenceParticipantStatement、
 SequenceDestroyStatement、SequenceBoxStatement、SequenceMessageStatement、
@@ -61,7 +62,6 @@ SequenceIgnoredStatement のどれかです。
 | `alias`   | SequenceText または null      | `as` の後のテキスト。mermaid.js はそれを説明として読む。なければ null。 |
 
 子の欄: `id`、`data`、`alias`。
-`create` があるときは、範囲は `create` から始まります。
 
 ### SequenceDestroyStatement
 
@@ -73,9 +73,6 @@ SequenceIgnoredStatement のどれかです。
 | `id`      | SequenceIdentifier | `destroy` の後の id。                      |
 
 子の欄: `id`。
-`create` があるときは、範囲は `create` から始まります。
-`created` が真なら、mermaid.js は参加者を destroy せずに作ります
-（[木から要約を作る](../diagrams/sequence.ja.md#木から要約を作る) を参照）。
 
 ### SequenceBoxStatement
 
@@ -90,8 +87,7 @@ SequenceIgnoredStatement のどれかです。
 
 `box` の後に書かれたテキストで、文法の `box-text` です。
 mermaid.js はそこから色と名前を読みますが、どの部分が色かは、
-mermaid.js がブラウザに問い合わせる問いの答えに依ります
-（[箱の色](../diagrams/sequence.ja.md#箱の色) を参照）。
+mermaid.js がブラウザに問い合わせる問いの答えに依ります。
 そのため、このノードは、テキストの全体と、
 mermaid.js が問い合わせる前に分けるのと同じように字句解析器が分ける、
 2 つの部分を持ちます。
@@ -99,19 +95,35 @@ mermaid.js が問い合わせる前に分けるのと同じように字句解析
 
 | 欄               | 型                          | 意味                                                                     |
 | ---------------- | --------------------------- | ------------------------------------------------------------------------ |
-| `value`          | 文字列                      | その範囲のテキスト。                                                     |
+| `value`          | 文字列                      | その書かれたテキスト。テキストの全体で、2 つの部分の間の空白を含む。     |
 | `colorCandidate` | SequenceLiteral または null | `color-candidate` の単位。mermaid.js が問い合わせる部分。なければ null。 |
 | `remainder`      | SequenceLiteral または null | 候補の後の `text` の単位。なければ null。                                |
 
 子の欄: `colorCandidate`、`remainder`。
 どちらの部分もそれぞれ 1 つの単位です
 （[行の文脈](../diagrams/sequence.ja.md#行の文脈) を参照）。
-各 SequenceLiteral の範囲は、その単位から両端の空白を除いた範囲です。
-部分は 1 つのトークンですが、
-ディレクティブが同じ種類のトークンに切ることがあります
-（[トークン](#トークン) を参照）。
-`box Gr%%{init: {}}%%oup` では、候補は `Group` で、その範囲は、
-`RawText` のトークン `Gr` と `oup` と、その間のディレクティブを覆います。
+mermaid.js は、テキストの分け方を変える U+2028 と U+2029 をすべて読み、
+部分の両端のほかの空白を削ります。
+そのため、箱のテキストでは、U+2028 と U+2029 は空白でない文字として数えます。
+各 SequenceLiteral の書かれたテキストは、
+その単位から両端のほかの空白を除いたもので、
+箱のテキストは、最後の部分が終わる所で終わります。
+2 つの部分の間の空白は、箱のテキストの値に入り、どちらの部分にも入りません。
+[fixture: sequence/tokens-box-text-space-between-parts]
+[fixture: sequence/tokens-box-text-directive-then-space-before-remainder]
+U+2028 が続く `box red-team` の残りは、`-team` と U+2028 で、
+U+2028 の前後に空白があれば、残りは `-team`、空白、U+2028 で、
+その後の空白は外にあります。
+`box aqua`、空白 2 個、U+2028 の残りは U+2028 だけで、空白だけの値です。
+空白 2 個が続く `box red-team` の残りは `-team` です。
+[fixture: sequence/db-box-line-separator-at-end] [fixture:
+sequence/db-box-spaces-around-line-separator-at-end] [fixture:
+sequence/db-box-colour-then-spaces-and-line-separator] [fixture:
+sequence/tokens-box-text-trailing-spaces]
+`box Gr%%{init: {}}%%oup` では、候補は `Group` です。
+`box red%%{init: {}}%%-team` では、`box red-team` と同じく、
+候補は `red` で、残りは `-team` です。
+[fixture: sequence/tokens-box-text-directive-between-parts-without-space]
 [fixture: sequence/tokens-box-text-directive-in-candidate]
 [fixture: sequence/tokens-box-text-directive-in-remainder]
 `box Purple Alice & John` では、候補は `Purple` で、残りは `Alice & John` です。
@@ -148,13 +160,12 @@ sequence/db-box-no-colour-candidate]
 
 | 欄            | 型     | 意味                                   |
 | ------------- | ------ | -------------------------------------- |
-| `value`       | 文字列 | その範囲のテキスト。                   |
+| `value`       | 文字列 | その書かれたテキスト。                 |
 | `startMarker` | 文字列 | 送り手の側の端の記号。下の語のどれか。 |
 | `line`        | 文字列 | `-` は `solid`、`--` は `dotted`。     |
 | `endMarker`   | 文字列 | 宛先の側の端の記号。下の語のどれか。   |
 
 子の欄はありません。
-範囲はそのトークンです。
 矢印は、省略できる始まりの記号、線（`-` か `--`）、終わりの記号の順に書きます。
 終わりの記号がなければ、線の後に `>` が続きます（`->`、`-->`）。
 ただし、始まりに半分の記号があるときは、線の後に何も続きません（`/|-`）。
@@ -225,13 +236,19 @@ sequence/db-box-no-colour-candidate]
 
 ### SequenceTitleStatement
 
-| 欄      | 型                          | 意味                                                      |
-| ------- | --------------------------- | --------------------------------------------------------- |
-| `value` | SequenceLiteral または null | `title` か `title:` の後のテキスト。すべて空白なら null。 |
+| 欄      | 型              | 意味                                                                                 |
+| ------- | --------------- | ------------------------------------------------------------------------------------ |
+| `value` | SequenceLiteral | `title-text` の単位。`title` か `title:` と 1 個の空白の後のテキストで、空白を含む。 |
 
 子の欄: `value`。
-Db のタイトルは、値の周りに書かれた空白を保ち、
-Db の正規化はそれをソースから読みます。
+mermaid.js はタイトルを空白を含めて書かれたとおりに保つので、
+値は `title-text` の単位の全体の書かれたテキストです。
+`title`、空白 2 個、`x`、空白 2 個の値は、空白、`x`、空白 2 個で、
+空白 4 個が続く `title` の値は空白 3 個で、
+`title`、改行、空白 2 個、`A->>B: x` の値は、空白 2 個と `A->>B: x` です。
+[fixture: sequence/db-title-spaces] [fixture:
+sequence/db-title-whitespace-only] [fixture:
+sequence/db-title-next-line-indented]
 
 ### SequenceAccTitleStatement
 
@@ -265,10 +282,6 @@ sequence/lex-acc-title-at-end] [fixture: sequence/lex-acc-title-hash]
 
 テキストと `}` を伴う `accDescr {` の文です。
 テキストがブロックの中で終わるときは `}` を持ちません。
-Db への効果が `accDescr:` の文と違うので、別のノードの型にしています。
-閉じていないブロックは、テキストにかかわらず説明を空にし、
-テキストのない閉じたブロックは何も変えません
-（[sequence.ja.md](../diagrams/sequence.ja.md#木から要約を作る) を参照）。
 
 | 欄       | 型                          | 意味                                                                                                |
 | -------- | --------------------------- | --------------------------------------------------------------------------------------------------- |
@@ -327,8 +340,6 @@ sequence/header-empty-description-block]
 どの節も、テキストとその後の文という同じ形を持ちます。
 そのため、ブロックのキーワードの後の最初の節も、
 `else`、`and`、`option` の後の節と同じ節です。
-mermaid.js は最初の節に Db で別の型の項目を与えますが、
-それは Db の正規化の事柄です。
 
 ### SequenceSection
 
@@ -338,10 +349,6 @@ mermaid.js は最初の節に Db で別の型の項目を与えますが、
 | `body` | SequenceStatement の列   | 次の節か `end` までの文。ソースの順。               |
 
 子の欄: `text`、`body`。
-範囲は、節を始めるキーワードから始まり、その最後のトークンで終わります。
-節を始めるキーワードは、`else`、`and`、`option`、
-最初の節ならブロックのキーワードです。
-`end` はブロックに属します。
 
 ### SequenceIgnoredStatement
 
@@ -349,9 +356,9 @@ mermaid.js が 1 つの `invalid` の単位として読み、無視する行で�
 `)` や `/` だけの行がそうです
 （[文法](../diagrams/sequence.ja.md#文法) を参照）。
 
-| 欄      | 型     | 意味                              |
-| ------- | ------ | --------------------------------- |
-| `value` | 文字列 | その範囲のテキスト。その 1 文字。 |
+| 欄      | 型     | 意味                                                                           |
+| ------- | ------ | ------------------------------------------------------------------------------ |
+| `value` | 文字列 | その書かれたテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。その 1 文字。 |
 
 子の欄はありません。
 
@@ -361,20 +368,16 @@ mermaid.js が 1 つの `invalid` の単位として読み、無視する行で�
 （[id の並び](../diagrams/sequence.ja.md#id-の並び) と
 [id の文脈](../diagrams/sequence.ja.md#id-の文脈) を参照）。
 
-| 欄     | 型     | 意味                                                            |
-| ------ | ------ | --------------------------------------------------------------- |
-| `name` | 文字列 | その範囲のテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。 |
+| 欄     | 型     | 意味                                                              |
+| ------ | ------ | ----------------------------------------------------------------- |
+| `name` | 文字列 | その書かれたテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。 |
 
 子の欄はありません。
 id は 1 つの単位です。
 その名前は両端に空白を持たず、
-中の空白は、単位を切るディレクティブの隣にあっても名前の一部です。
-そのトークンは `Identifier` のトークンで、1 つです。
-単位の中のディレクティブが単位を切ると、それより多くなります
-（[トークン](#トークン) を参照）。
+中の空白は、単位の中のディレクティブの隣にあっても名前の一部です。
 `participant A B` の参加者は `A B` です。
-`participant A%%{init: {}}%% c%%B` の参加者は `A c%%B` で、
-その 1 つの単位はトークン `A` と `c%%B` に切られています。
+`participant A%%{init: {}}%% c%%B` の参加者は `A c%%B` です。
 [fixture: sequence/lex-id-context-space] [fixture:
 sequence/lex-directive-in-id-before-space]
 
@@ -390,7 +393,6 @@ sequence/lex-directive-in-id-before-space]
 | `value` | SequenceLiteral または null | 接頭辞の後のテキスト。なければ null。                                                                     |
 
 子の欄: `value`。
-範囲は、接頭辞（接頭辞がなければテキスト）から、テキストの終わりまでです。
 接頭辞もテキストもないテキスト部分は、ノードを作りません。
 それを持つはずの欄は null です。
 
@@ -399,12 +401,15 @@ sequence/lex-directive-in-id-before-space]
 文法が空白を含むことを許し、その終わりを決める位置に、
 書き手が引用符なしで書くテキストです。
 
-| 欄      | 型     | 意味                                                            |
-| ------- | ------ | --------------------------------------------------------------- |
-| `value` | 文字列 | その範囲のテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。 |
+| 欄      | 型     | 意味                                                              |
+| ------- | ------ | ----------------------------------------------------------------- |
+| `value` | 文字列 | その書かれたテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。 |
 
 子の欄はありません。
-値は両端に空白を持ちません。
+値が両端に空白を持つのは、mermaid.js がそれを読むところだけです。
+タイトルと、U+2028 か U+2029 を空白に数えない箱のテキストの部分です
+（[SequenceTitleStatement](#sequencetitlestatement) と
+[SequenceBoxText](#sequenceboxtext) を参照）。
 
 ### SequenceDataBlock
 
@@ -415,62 +420,3 @@ sequence/lex-directive-in-id-before-space]
 子の欄はありません。
 木はその中身を読みません
 （[embedded-data-opaque](../known-divergences/embedded-data-opaque.ja.md) を参照）。
-範囲は `@{` から `}` までです。
-
-## トークン
-
-トークンは、
-[diagrams/sequence.ja.md](../diagrams/sequence.ja.md#字句構造)
-の単位から作ります。
-すべて空白ではない各単位は 1 つのトークンで、その種類はこの表のとおりです。
-
-| 種類         | 単位                                                                                                                                                                                                                                                                                                                                                                                                  |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Keyword`    | キーワード: `sequenceDiagram`、`participant`、`actor`、`create`、`destroy`、`as`、`box`、`loop`、`rect`、`opt`、`alt`、`else`、`par`、`par_over`、`and`、`critical`、`option`、`break`、`end`、`note`、`left of`、`right of`、`over`、`links`、`link`、`properties`、`details`、`activate`、`deactivate`、`autonumber`、`off`。`title`、`title:`、`accTitle`、`accDescr` の単位。`wrap-prefix` の単位 |
-| `Identifier` | `id` の単位。[SequenceIdentifier](#sequenceidentifier) の単位                                                                                                                                                                                                                                                                                                                                         |
-| `Numeric`    | `number` の単位                                                                                                                                                                                                                                                                                                                                                                                       |
-| `RawText`    | `text`、`color-candidate`、`title-text`、`description-text`、`description-block-text`、`data-text` の単位。`invalid` の単位                                                                                                                                                                                                                                                                           |
-| `Punctuator` | `arrow` の単位。`+`、`-`、`()`、`,`、`:`、`{`、`}`、`@{`。`;` から読む `newline` の単位                                                                                                                                                                                                                                                                                                               |
-
-トークンは、その単位から両端の空白を除いたものです。
-改行から読む `newline` の単位は空白で、トークンになりません。
-`RawText` か `Identifier` の単位の、
-空白でない 2 つの文字の間にディレクティブがあれば、単位はそこで切られます。
-各断片から両端の空白を除いたものがトークンで、
-断片の間のディレクティブは `Directive` のトークンです
-（[ast.ja.md](../ast.ja.md#directive) を参照）。
-ほかの種類の単位の中のディレクティブは、入力を拒否させます
-（[単位の中のディレクティブ](../diagrams/sequence.ja.md#単位の中のディレクティブ) を参照）。
-
-- テキストの前の `:` と、`accTitle` と `accDescr` の後の `:` は、
-  文の `Punctuator` のトークンで、どの欄にも属しません。
-- テキストの折り返しの接頭辞（`wrap:` や `:nowrap:`）は、
-  1 つの `Keyword` のトークンで、
-  その [SequenceText](#sequencetext) の最初のトークンです。
-- 文を終える `;` は、改行と同じく、
-  どの文にも属さない `Punctuator` のトークンです。
-- 行の規則が無視し、それだけで 1 つのトークンになる `;`
-  （[トークン](../ast.ja.md#トークン) を参照）は、
-  その位置の文脈が `;` に読む単位の種類を持ちます。
-  文の文脈では `newline` の単位なので `Punctuator` で、
-  そこで読む図のコメントの直後でも同じです（[Comment](../ast.ja.md#comment) を参照）。
-  `loop style:#x;` では、テキスト `style:` が行の文脈を出て、
-  `#x` は文の文脈のコメントで、その後の `;` は `Punctuator` のトークンです。
-  題、説明、説明のブロック、データの文脈では、
-  `;` をテキストとして読むので `RawText` です。
-  `accTitle: style:#x;` では、題は `style:#x` で、
-  その後の `;` は `RawText` のトークンです。
-  `participant A@{ style:#x; }` では、
-  `style:#x` の後の `;` は `RawText` のトークンで、
-  その後の空白と `}` はその外にあります。
-  `participant A@{ "style": "x:#y" }` の後の `;` は、
-  `Punctuator` のトークンです。
-  データブロックの中の `"x:#y;"` のように、トークンの文字の間にある `;` は、
-  そのトークンの一部です。
-  [fixture: sequence/tokens-acc-title-ignored-semicolon] [fixture:
-  sequence/tokens-acc-descr-ignored-semicolon] [fixture:
-  sequence/tokens-acc-descr-block-ignored-semicolon] [fixture:
-  sequence/tokens-data-block-ignored-semicolon-alone] [fixture:
-  sequence/tokens-data-block-then-ignored-semicolon] [fixture:
-  sequence/tokens-loop-comment-then-ignored-semicolon] [fixture:
-  sequence/tokens-comment-then-ignored-semicolon]

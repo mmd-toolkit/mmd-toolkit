@@ -170,5 +170,16 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "C",
+        "set": {
+          "labelType": "markdown",
+          "text": "@for@ c@"
+        }
+      }
+    ]
   }
 }

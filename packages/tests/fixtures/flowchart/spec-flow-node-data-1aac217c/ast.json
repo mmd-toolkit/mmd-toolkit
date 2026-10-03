@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: this-shape-does-not-exist",
+      "value": " shape: this-shape-does-not-exist ",
       "range": [
-        23,
-        55
+        22,
+        56
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 10
+          "column": 9
         },
         "end": {
           "line": 2,
-          "column": 42
+          "column": 43
         }
       }
     },

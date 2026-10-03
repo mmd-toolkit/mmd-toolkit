@@ -8,18 +8,26 @@ unchanged. This document lists where that does not hold, and why.
 
 ## Inputs read differently from mermaid.js
 
-The parser that the plugin uses reads the same inputs as mermaid.js, with nine
+The parser that the plugin uses reads the same inputs as mermaid.js, with a few
 deliberate differences, whose exact definitions are in the specification's
 [Known divergences](../../spec/docs/known-divergences.md), and without the site
 configuration.
 
-### Directives inside a token
+### Directives and `;` inside a token
 
-A directive (`%%{ ... }%%`) is read as mermaid.js reads it: it is removed, and
-the text on its two sides is joined. It may not lie inside a keyword, an arrow,
-a string, a number, or punctuation, although mermaid.js accepts that. Such input
-is reported as a syntax error and left unchanged. For example, mermaid.js reads
-`A["a %%{init: {}}%% b"]` as a node with the label `a  b`.
+A directive (`%%{ ... }%%`) and a `;` that the line rule ignores (see
+[Lines that hold a `;`](#lines-that-hold-a-)) are read as mermaid.js reads them:
+they are removed, and the text on their two sides is joined. They may lie
+between any two tokens, and inside a string, a backquoted name, and a text that
+may contain whitespace: the text of a label, a class name, a participant id of a
+sequence diagram. They may not lie inside a name without whitespace (the id of a
+flowchart or state diagram), a number, a keyword, an arrow, or a delimiter such
+as `:::` or `((`, although mermaid.js accepts that. Such input is reported as a
+syntax error and left unchanged. For example, mermaid.js reads
+`sub%%{init: {}}%%graph S` as the keyword `subgraph`, and `A%%{init: {}}%%B-->C`
+as the node `AB`. Where the input is accepted, the directive is printed as
+written with the text around it: `A["a %%{init: {}}%% b"]` is a node with the
+label `a  b`.
 
 This difference goes one way only: input that mermaid.js rejects is never
 accepted.
@@ -303,15 +311,29 @@ whitespace. See [Line separators](./state.md#line-separators).
 
 ## A comment line after U+2028 or U+2029
 
-mermaid.js reads a comment line that starts right after U+2028 or U+2029, and
-removes it together with its line break, so the text on the next line goes on
-where the comment line was cut in: `alt`, U+2028, `%% e`, and a line ` a` is
-`alt a`. The printer prints such a comment line on a line of its own. Where it
-lies inside a statement or a block opener, such as `alt`, `box`, `namespace`,
-`subgraph`, `style`, or the header of a diagram, formatting can give an output
-that is rejected or that mermaid.js reads differently, or throw. A diagram
-comment that such a comment line cuts is kept as written (see
-[Line separators](./sequence.md#line-separators)). This is a known limitation.
+mermaid.js removes the comment lines from the text before it reads it. A comment
+line `%%` is removed with the whitespace-only lines and the directives before
+it, and with the line break that ends it (the comment region of the
+specification's [Comment lines](../../spec/docs/common.md#comment-lines)). When
+the region starts right after U+2028 or U+2029, or right where another region of
+this kind ends, the text before it and the text after it become one line: `alt`,
+U+2028, `%% e`, and a line ` a` is `alt a`. A `#` comment is no such region: the
+lexer of its diagram reads it. Nor is a `%%` with nothing after it, or a line
+that starts with `%%{` without being a directive: mermaid.js does not remove
+these as comment lines, and a class diagram reads them itself.
+
+A line that mermaid.js reads this way runs over several lines of the source. The
+formatter prints it as written, from its first line to its end, with the
+statements that stand on it: it does not format the whitespace between them, and
+it does not indent the lines after the comment line. This is one rule for every
+statement, block opening, and header; a diagram comment that such a comment line
+cuts is printed as written as well (see
+[Line separators](./sequence.md#line-separators)). The line ends at the first
+line break that no region removes, so what stands on the line after the comment
+lines is part of it: a `;` there ends the name of a `subgraph` line without a
+title and stays where it is. An empty line or a line of only whitespace ends the
+line, unless a comment line follows it: before a comment line, such lines belong
+to the region and are removed with it.
 
 ## Frontmatter
 

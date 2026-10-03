@@ -10,7 +10,7 @@ mermaid.js での正解の出どころ:
   のテスト
 
 この文書は、図種 `sequence` を扱います。
-木のノードとトークンは [ast/sequence.ja.md](../ast/sequence.ja.md) で定めます。
+木のノードは [ast/sequence.ja.md](../ast/sequence.ja.md) で定めます。
 
 ## 検出
 
@@ -34,12 +34,13 @@ sequence/header-statement-same-line]
 `%%` だけの行や、ディレクティブではない `%%{ }%%` は、
 キーワードの前にあってよく、
 テキストはそれでも sequence と判定されます。
-字句解析器は、そのような行を図のコメント（[文の文脈](#文の文脈) の規則 4）として、
+字句解析器は、そのような行を図のコメント
+（[文の文脈](#文の文脈) の規則 4）として、
 その改行を `newline` の単位として読みます。
 文法は、mermaid.js の文法と同じく、キーワードの前に `newline` の単位を許します
 （[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L136-L140)）。
-コメントは `Root.comments` に入り、
-改行から読む `newline` の単位はトークンではなく、
+コメントはどのノードにも属さず、
+改行から読む `newline` の単位はノードを作らず、
 SequenceDiagram はキーワードから始まります。
 判定が除かない、キーワードの前のテキスト（`#` の行など）と、
 キーワードと同じ行の `%%`（判定はキーワードごと除きます）では、
@@ -99,8 +100,7 @@ sequence/lex-keyword-mixed-case] [fixture: sequence/lex-id-case]
 単位のほかに、字句解析器は**図のコメント**を読みます。
 行の終わりまで続き、mermaid.js が何もないものとして読むテキストです。
 その行は、行の U+2028 か U+2029 の後のコメント行を越えて続き、
-そのコメント領域が図のコメントを 2 つに切ります
-（[Comment](../ast.ja.md#comment) を参照）。
+そのコメント領域が図のコメントを 2 つに切ります。
 `A->>B: y #c`、U+2029、行 `%% d`、行 `C->>D: z` のメッセージは、
 A から B への 1 つだけです。
 [fixture: sequence/lex-hash-comment-across-comment-line]
@@ -108,8 +108,7 @@ A から B への 1 つだけです。
 コメント行は字句解析器が読む前に除かれますが、
 図のコメントは行の途中からも始まります。
 図のコメントの**印**は、`#` で始まるものは `#`、`%%` で始まるものは `%%`、
-それ以外は `%` で、その値は印の後のテキストです
-（[Comment](../ast.ja.md#comment) を参照）。
+それ以外は `%` で、その値は印の後のテキストです。
 `%% c` の値は、コメント行と同じく空白と `c` で、`% c` の値も同じです。
 `%%% c` の値は `%`、空白、`c` です。
 [fixture: sequence/lex-percent-comment-after-unit] [fixture:
@@ -140,11 +139,18 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 読みます。
 その後、
 [ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界)
-の規則が、単位とそこから作るトークン
-（[ast/sequence.ja.md](../ast/sequence.ja.md#トークン)）に当てはまります。
-種類が `RawText` か `Identifier` の単位の中のディレクティブは、
-そのトークンを切り、入力は mermaid.js の読み方を保ちます。
-ほかの種類の単位の中のディレクティブは、入力を拒否させます。
+の規則が、単位に当てはまります。
+テキストと文字列の単位の中のディレクティブは、
+入力の mermaid.js の読み方を保ち、
+名前の単位を含む、ほかの単位の中のディレクティブは、入力を拒否させます。
+名前の単位はありません。
+**テキストの単位**は、
+空白を含みうる名前である
+[SequenceIdentifier](../ast/sequence.ja.md#sequenceidentifier) の単位、
+つまり `id` の単位と、
+`text`、`color-candidate`、`title-text`、`description-text`、
+`description-block-text`、`data-text` の単位と、`invalid` の単位です。
+文字列の単位はありません。
 
 - `A->>B: x%%{init: {}}%%y` のメッセージは `xy`、
   `Al%%{init: {}}%%ice->>B: x` の参加者は `Alice`、
@@ -156,9 +162,15 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
   ディレクティブの隣の空白は、1 つの単位である id に残ります
   （[SequenceIdentifier](../ast/sequence.ja.md#sequenceidentifier) を参照）。
   `participant A%%{init: {}}%% c%%B` の参加者は `A c%%B`、
-  `Al%%{init: {}}%% c%%ice->>B: x` の参加者は `Al c%%ice` です。
+  `Al%%{init: {}}%% c%%ice->>B: x` の参加者は `Al c%%ice`、
+  `participant A %%{init: {}}%% B` の参加者は `A`、空白 2 つ、`B` です。
   [fixture: sequence/lex-directive-in-id-before-space] [fixture:
-  sequence/lex-directive-in-id-run-before-space]
+  sequence/lex-directive-in-id-run-before-space] [fixture:
+  sequence/tokens-directive-participant-spaces]
+  無視される `;` も同じで、`style` の規則に当たる行では、
+  `participant B;C` の参加者は `BC`、`B;C->>E: m` は `BC` からのメッセージです。
+  [fixture: sequence/tokens-ignored-semicolon-in-participant-id] [fixture:
+  sequence/tokens-ignored-semicolon-in-message-id]
 - `parti%%{init: {}}%%cipant A`、`A-%%{init: {}}%%>>B: x`、
   `autonumber 1%%{init: {}}%%0` では、
   ディレクティブがキーワード、矢印、数の中にあり、入力は拒否されます。
@@ -197,9 +209,26 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 10. キーワード `loop`、`rect`、`opt`、`alt`、`else`、`par`、`par_over`、`and`、
     `critical`、`option`、`break`: キーワードを名前とする単位。
     行の文脈に入ります。
-11. キーワード `end`、2 語の間が空白 1 個の `left of` と `right of`、
-    `links`、`link`、`properties`、`details`、`over`、`note`:
+11. キーワード `end`、`links`、`link`、`properties`、`details`、`over`、`note`:
     キーワードを名前とする単位。
+    2 語の間が空白 1 個のキーワード `left of` か `right of`:
+    `left` か `right` の単位と、`of` の単位。
+    語の間が空白 2 個かタブなら、入力は拒否されます。
+    空白は図のテキストで数え、
+    その隣のディレクティブや無視される `;` は 2 つの単位の間にあります。
+    `Note left%%{init: {}}%% of A: t`、`Note left %%{init: {}}%%of A: t`、
+    `Note right%%{init: {}}%% of A: t` はノートで、
+    `style` の規則に当たる行の `Note left; of A: t` もそうです。
+    `Note left %%{init: {}}%% of A: t` は空白が 2 個なので拒否されます。
+    どれも mermaid.js と同じです。
+    [fixture: sequence/lex-note-position-two-spaces] [fixture:
+    sequence/lex-note-position-tab] [fixture:
+    sequence/lex-directive-between-left-and-of] [fixture:
+    sequence/lex-directive-between-space-and-of] [fixture:
+    sequence/lex-directive-between-right-and-of] [fixture:
+    sequence/tokens-ignored-semicolon-between-left-and-of] [fixture:
+    sequence/tokens-ignored-semicolon-between-space-and-of] [fixture:
+    sequence/lex-note-position-directive-between-spaces]
 12. キーワード `activate` と `deactivate`: キーワードを名前とする単位。
     id の文脈に入ります。
 13. `title`、改行でもよい 1 個の空白、`#`、`;`、改行以外の 1 個以上の文字:
@@ -284,11 +313,19 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 - `title` は、改行でもよい 1 個の空白と、次の行の残りを取ります。
   `title`、改行、`A->>B: x` のタイトルは `A->>B: x` で、メッセージはありません。
   `title x A->>B: y` のタイトルは `x A->>B: y` です。
+  次の行の字下げはタイトルの一部です。
+  `title`、改行、空白 2 個、`A->>B: x` のタイトルは、
+  空白 2 個と `A->>B: x` です。
+  `#` か `;` はタイトルを終えます。
+  `title a;;` のタイトルは `a` で、
+  その後のそれぞれの `;` は `newline` の単位です。
   [fixture: sequence/lex-title-line-break] [fixture:
-  sequence/lex-title-rest-of-line]
+  sequence/lex-title-rest-of-line] [fixture:
+  sequence/db-title-next-line-indented] [fixture:
+  sequence/gram-title-then-separators]
 - `,`、`;`、規則 22 から 24 の文字は id の並びを終えます。
   そして `invalid` の単位の行は受理されます（[文法](#文法) を参照）。
-  `)`、`/`、`\`、`<`、`>` だけの行は受理され、何も変えません。
+  `)`、`/`、`\`、`<`、`>` だけの行は受理されます。
   [fixture: sequence/lex-invalid-line-parenthesis] [fixture:
   sequence/lex-invalid-line-slash] [fixture:
   sequence/lex-invalid-line-two-units]
@@ -416,7 +453,7 @@ sequence/lex-alias-lookahead-line-break-as-alone]
 行の文脈には、`box`、`as`、ブロックのキーワード（文の文脈の規則 10）で入ります。
 行の残りを読みます。
 
-1. 改行以外の空白: 何もしない。
+1. 改行以外の空白。ただし色の候補の直後を除く: 何もしない。
 2. `#` とその行の残り: 図のコメント。
 3. `box` の後の最初の単位としてだけ、**色の候補**。
    小文字の `rgb`、`rgba`、`hsl`、`hsla` のどれかに、0 個以上の空白、`(`、
@@ -424,7 +461,8 @@ sequence/lex-alias-lookahead-line-break-as-alone]
    そうでなければ、1 個以上の語の文字（ASCII の英字、数字、`_`）。
    `color-candidate` の単位。
 4. `#`、`;`、改行以外の 0 個以上の文字:
-   `box` の後では、すべて空白でなければ `text` の単位。
+   `box` の後では、
+   すべて U+2028 と U+2029 のほかの空白でなければ `text` の単位。
    それ以外では、テキスト部分として読みます
    （[テキスト部分](#テキスト部分) を参照）。
    行の文脈を出ます。
@@ -433,6 +471,14 @@ sequence/lex-alias-lookahead-line-break-as-alone]
 `alt;B->>A: y` は空のテキストの `alt` のブロックと、それに続くメッセージです。
 [fixture: sequence/spec-sequence-diagram-01f0c47f] [fixture:
 sequence/spec-sequence-diagram-453b7670]
+色の候補の後では、規則 4 が、候補の終わりから、空白を含めて行の残りを読みます。
+mermaid.js は、`box` の後の空白を飛ばした後、
+その後のテキスト全体を 1 つの単位として読むからです。
+`box aqua`、空白 2 個、U+2028 は、
+候補 `aqua` と、空白 2 個と U+2028 のテキストを持ち、
+空白 2 個が続く `box red-team` は、テキスト `-team` と空白 2 個を持ちます。
+[fixture: sequence/db-box-colour-then-spaces-and-line-separator] [fixture:
+sequence/tokens-box-text-trailing-spaces]
 
 ### データの文脈
 
@@ -487,11 +533,10 @@ mermaid.js も、候補が色かを問い合わせる前に、同じように分
 `box rgb(1, 2, 3) a) b` は候補 `rgb(1, 2, 3) a)` とテキスト `b`、
 `box rgb( a` は候補 `rgb` とテキスト `( a` を持ち、
 `box -x` は候補を持たず、テキスト `-x` を持ちます。
-分け方は答えに依らないので、どちらも単位で、したがってトークンです。
+分け方は答えに依らないので、どちらも単位です。
 候補が色かどうかは答えに依り、折り返しの接頭辞の位置も依ります。
 候補が色でなければ、接頭辞は候補と残りを合わせたテキストから読むからです。
-そのため、`box` の後に `wrap-prefix` の単位はありません
-（[箱の色](#箱の色) を参照）。
+そのため、`box` の後に `wrap-prefix` の単位はありません。
 [fixture: sequence/spec-sequence-diagram-9f31df65] [fixture:
 sequence/db-box-colour-without-space] [fixture:
 sequence/db-box-colour-function-last-parenthesis] [fixture:
@@ -536,7 +581,7 @@ sequence/db-box-wrap-without-colour]
 | `text-part`                                                                       | SequenceText。どちらの単位もなければ何も作らない                                                                                         |
 | `id`                                                                              | SequenceIdentifier                                                                                                                       |
 | `number`                                                                          | NumericLiteral                                                                                                                           |
-| テキスト部分の `text`、`title-text`、`description-text`、`description-block-text` | SequenceLiteral。すべて空白のタイトルなら null                                                                                           |
+| テキスト部分の `text`、`title-text`、`description-text`、`description-block-text` | SequenceLiteral                                                                                                                          |
 | 行としての `invalid`                                                              | SequenceIgnoredStatement                                                                                                                 |
 
 ### 図と文
@@ -565,8 +610,7 @@ statement           = participant-statement
 `end` の後の同じ行に別の文を続けられます。
 `loop x`、メッセージ、`end A->>B: z` は、ループの後にメッセージを持ちます。
 [fixture: sequence/gram-statement-after-end]
-`invalid` の単位の行は受理されて、木では SequenceIgnoredStatement になり、
-Db の何も変えません。
+`invalid` の単位の行は受理されて、木では SequenceIgnoredStatement になります。
 `end` の後の同じ行でも同じです。
 [fixture: sequence/lex-invalid-line-parenthesis] [fixture:
 sequence/gram-invalid-after-end]
@@ -586,7 +630,7 @@ empty-description-block = "accDescr" "{" "}"
 `description-block-text` の単位なしで `}` の単位がすぐ続くものです。
 区切りが要る文は `statement-end` で終わります。
 文の最後の単位の後、区切りの前には、空の説明ブロックがいくつ来てもかまいません。
-それぞれ、その文の後に続く、テキストのない説明ブロックの文で、何も変えません。
+それぞれ、その文の後に続く、テキストのない説明ブロックの文です。
 mermaid.js は空の説明ブロックにトークンを読まないので
 （[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md)
 を参照）、その文の後にすぐ区切りが続くものとして読みます。
@@ -634,18 +678,16 @@ box-statement         = "box" box-text? ( participant-statement | empty-descript
 box-text              = color-candidate text? | text
 ```
 
-`as` とその後のテキストは、参加者に説明を与えます。
-データブロックは埋め込みデータで、その中身は書かれたとおりに保たれ、読まれません
-（[Db の中のデータブロック](#db-の中のデータブロック) を参照）。
+データブロックは埋め込みデータで、その中身は書かれたとおりに保たれ、
+読まれません。
 データブロックは中身を要します。
 `participant A@{}` は mermaid.js と同じく拒否され、
 `participant A@{ }` と、波括弧の間に改行のあるものは受理されます。
 [fixture: sequence/gram-data-block-empty]
 [fixture: sequence/gram-data-block-line-break-only]
 `create` は、`destroy` を含め、どの参加者の文の前にも置けます。
-`create destroy A` は `create` の付いた destroy の文で、
-A を作られた参加者として加え、何も destroy しません
-（[木から要約を作る](#木から要約を作る) を参照）。
+`create destroy A` は `create` の付いた destroy の文です
+（[文法の外での拒否](#文法の外での拒否) を参照）。
 [fixture: sequence/gram-create-destroy]
 箱が持てるのは、参加者の文、空の説明ブロック、空の行だけで、
 `create` もメッセージも置けません。
@@ -654,7 +696,7 @@ sequence/gram-box-message-inside]
 箱の中の空の説明ブロックは、ほかの文が始まる位置と同じく、
 テキストのない説明のブロックの文です。
 それだけの行にあっても、括弧の間が空白だけで何行かにわたっても、
-同じ行に参加者の文や `end` が続いてもよく、何も変えません。
+同じ行に参加者の文や `end` が続いてもかまいません。
 [fixture: sequence/gram-box-empty-description-block-line] [fixture:
 sequence/gram-box-empty-description-block-lines] [fixture:
 sequence/gram-box-empty-description-block-then-participant] [fixture:
@@ -670,8 +712,8 @@ message-statement = id arrow ( "+" | "-" | "()" )? id ":" text-part
                   | id "()" arrow "()"? id ":" text-part
 ```
 
-矢印の後の `+` は宛先を活性化し、`-` は送り手を非活性化します。
-矢印の後か前、またはその両方の `()` は、中央の接続を表します。
+メッセージは、矢印の後に `+` か `-` を、
+矢印の後か前、またはその両方に `()` を持てますが、
 `+` と `-` は `()` と組み合わせられません。
 メッセージはテキストを要りますが、それは `:` の後が空でもかまいません。
 `A->>B` は拒否され、`A->>B:` は受理されます。
@@ -682,7 +724,7 @@ sequence/lex-empty-text]
 
 ```text
 autonumber-statement    = "autonumber" ( number number? | "off" )?
-note-statement          = "note" ( "left of" | "right of" ) id ":" text-part
+note-statement          = "note" ( "left" | "right" ) "of" id ":" text-part
                         | "note" "over" id ( "," id )? ":" text-part
 text-part               = wrap-prefix? text?
 title-statement         = ( "title" | "title:" ) title-text
@@ -704,344 +746,55 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
 `loop`、改行、`end` は、空のテキストのループです。
 [fixture: sequence/gram-block-empty-text]
 
-## Db の正規化
-
-フロントマターの図のタイトルと、設定に依る Db の値は、木からは来ません。
-Db の値を確かめる側が、mermaid.js 自身の関数で求めます
-（[設定（参考）](../common.ja.md#設定参考) を参照）。
-ここでは、折り返しの接頭辞のないテキストが受け取る折り返しの設定がそれです。
-設定の `wrap`、なければ `sequence.wrap`、なければ偽です。
-[fixture: sequence/config-wrap-site] [fixture:
-sequence/config-sequence-wrap-site] [fixture:
-sequence/config-wrap-site-nowrap-prefix]
-
-### 要約
-
-fixture は、mermaid.js の Db を、次の欄を持つ要約として記録します。
-要約を作るのは、`@mmd-toolkit/tests` の
-[`normalizeSequence()`](../../../tests/src/normalizers/sequence.ts) です。
-
-| 欄                | 中身                                                                      |
-| ----------------- | ------------------------------------------------------------------------- |
-| `title`           | タイトル。                                                                |
-| `accTitle`        | アクセシビリティのタイトル。なければ空のテキスト。                        |
-| `accDescr`        | アクセシビリティの説明。なければ空のテキスト。                            |
-| `actors`          | 参加者。最初に加えた順。                                                  |
-| `boxes`           | 箱。ソースの順。`name`、`wrap`、`fill`、`actorKeys`。                     |
-| `createdActors`   | 作られた参加者。`id` と `messageIndex`。                                  |
-| `destroyedActors` | destroy された参加者。`id` と `messageIndex`。                            |
-| `messages`        | メッセージ、ノート、autonumber の設定、活性化、ブロックの始まりと終わり。 |
-
-参加者は、`name`、`description`、`wrap`、`prevActor`、`nextActor`、
-`links`、`properties`、`type`、`box`（その箱の `boxes` の中の位置）を持ちます。
-Db が設定しない欄はありません。
-要約は、描画だけが使うものを除きます。
-文字列にした一覧の中のメッセージの位置、描画が埋める欄、
-ノートの別の一覧（各ノートはメッセージでもある）、連番を表示するかどうかです。
-テキストは、mermaid.js が HTML の無害化の前に持つとおりに記録します
-（[サニタイザは無効にする](../../../tests/docs/expected-results.ja.md#サニタイザは無効にする)
-を参照）。
-
-### 木から要約を作る
-
-文はソースの順に適用し、ブロックの自分の項目はその本体の前と後に適用します。
-各文は次のとおりです。
-下のテキスト部分の**テキスト**は、
-その `text` の単位から両端の空白を除いたもので、
-`text` の単位がなければ空のテキストです
-（[テキスト部分](#テキスト部分) を参照）。
-その**折り返し**は、`wrap:` の後なら真、`nowrap:` の後なら偽、
-それ以外は設定の折り返しの設定です。
-
-**参加者。**
-id、説明、種類、データブロックを持つ参加者を加えると、次のようになります。
-
-- 箱の中では、その id の参加者がすでにあって箱を持たなければ、
-  参加者はその箱を持ち、
-  ほかの箱を持っていれば、入力は拒否されます
-  （[文法の外での拒否](#文法の外での拒否) を参照）。
-  これは次の 2 つの項目より先に起こるので、
-  ほかに何も変わらないときも起こります。
-  [fixture: sequence/db-box-existing-participant-joins-box] [fixture:
-  sequence/gram-box-participant-in-two-boxes]
-- その id の参加者がすでにあり、文が説明を持たないときは、
-  ほかに何も変わりません。
-  `participant A as Alice` の後の `participant A` は、説明 `Alice` を保ちます。
-  [fixture: sequence/db-participant-redeclared-without-alias]
-- それ以外では、参加者を新しく記録します。
-  `name` は id、`description` は説明かなければ id、`wrap` は説明の折り返し、
-  `type` は種類、`links` と `properties` は空、
-  `prevActor` は最後に加えた参加者の id（あれば）です。
-  その参加者は `nextActor` にこの id を持ちます。
-  すでにあった参加者は、`actors` の中の位置と箱を保ちます。
-  その links と properties は空になり、`prevActor` は最後に加えた参加者で、
-  それは自分自身のこともあります。
-  `participant A`、`participant B`、`participant A as Alice` の後では、
-  A は説明 `Alice` と `prevActor` B を持ち、B は `nextActor` A を持ちます。
-  [fixture: sequence/db-participant-redeclared-with-alias] [fixture:
-  sequence/db-participant-redeclared-after-links] [fixture:
-  sequence/db-participant-redeclared-itself-previous]
-- 箱の中で参加者を記録するときは、初めて記録する参加者はその箱を持ち、
-  参加者を記録するたびに、箱は `actorKeys` の最後にその id を加えます。
-  `box a`、`participant A`、`participant A as X`、`end` では、
-  `actorKeys` は A を 2 回持ちます。
-  `participant A` が 2 つなら 1 回です。
-  箱の前と箱の中の `participant A` では、
-  `actorKeys` は空で、A はその箱を持ちます。
-  箱の外では、参加者は箱を保ちます。
-  [fixture: sequence/spec-sequence-diagram-f1763a40] [fixture:
-  sequence/db-box-participant-twice-with-alias] [fixture:
-  sequence/db-box-participant-twice] [fixture:
-  sequence/db-box-existing-participant-with-alias] [fixture:
-  sequence/db-box-participant-redeclared-outside]
-
-参加者の文は、その id を、`as` のテキストがあればそれを説明とし、
-種類 `participant` か `actor` として加えます。
-データブロックが設定する `type` と説明は、木からは求めません
-（[Db の中のデータブロック](#db-の中のデータブロック) を参照）。
-メッセージ、ノート、`links`、`link`、`properties`、`details` の文は、
-まず、それが挙げる各 id を、説明なし、種類 `participant` で加えます。
-そのため、すでにある id は変わりません。
-`activate`、`deactivate`、`destroy` は何も加えません。
-[fixture: sequence/lex-activate-id-space]
-
-**create と destroy。**
-参加者の文の前の `create` は、その id の参加者がすでにあれば拒否されます
-（[文法の外での拒否](#文法の外での拒否) を参照）。
-そうでなければ参加者を加え、その id を `createdActors` に記録します。
-`messageIndex` は、それまでの `messages` の項目の数です。
-`destroy` は、同じように id を `destroyedActors` に記録します。
-[fixture: sequence/db-create-participant] [fixture:
-sequence/db-destroy-participant] [fixture:
-sequence/db-create-participant-before-message]
-`create` の付いた destroy の文は、
-その id で `create participant` と同じことをします。
-種類が `participant` で、id を説明とする参加者を加え、
-`createdActors` に記録します。
-`destroyedActors` には何も記録せず、`create` の後の検査が当てはまります
-（[文法の外での拒否](#文法の外での拒否) を参照）。
-[fixture: sequence/gram-create-destroy] [fixture:
-sequence/db-create-destroy-then-destroy] [fixture:
-sequence/gram-create-destroy-without-message] [fixture:
-sequence/gram-create-destroy-existing]
-
-**メッセージ。**
-メッセージの文は、`messages` に項目を 1 つ加えます。
-`from` と `to` は 2 つの id、`message` はテキスト、`wrap` はその折り返し、
-`type` は矢印の番号（[矢印](#矢印) を参照）で、
-`activate` と `centralConnection` を持ちます。
-その後は次のとおりです。
-
-- `+` のとき: `activate` は真。その後に、宛先の型 17 の項目。
-- `-` のとき: `activate` は偽。その後に、送り手の型 18 の項目。
-- 矢印の後の `()` のとき: `activate` は真で、`centralConnection` は 59。
-  その後に、宛先の型 59 の項目。
-- 矢印の前の `()` のとき: `activate` は偽で、`centralConnection` は 60。
-  その後に、送り手の型 60 の項目。
-- 両方のとき: `activate` は真で、`centralConnection` は 61。
-  その後に、宛先の型 59 の項目と、送り手の型 60 の項目。
-- それ以外: `activate` は偽で、`centralConnection` は 0。
-
-1 つの参加者の項目は、`from` にその id を持ち、`to` を持たず、
-`message` は空、`wrap` は設定の折り返しの設定、`activate` は偽、
-`centralConnection` は 0 です。
-`activate` と `deactivate` は、そのような型 17 と型 18 の項目を加えます。
-[fixture: sequence/db-message-activate-target] [fixture:
-sequence/db-message-central-connection-target] [fixture:
-sequence/db-message-central-connection-source] [fixture:
-sequence/db-message-central-connection-both]
-
-**ノート。**
-ノートは項目を 1 つ加えます。
-その項目は、`from` と `to` にその id（`,` のある `over` なら 2 つの id）を持ち、
-`message` はテキスト、`wrap` はその折り返し、`type` は 2 です。
-`placement` は、`left of` なら 0、`right of` なら 1、`over` なら 2 です。
-[fixture: sequence/db-note-over-two] [fixture: sequence/db-note-left-of]
-
-**autonumber。**
-`autonumber` は、`message` が `visible` 真で、
-数が続くときは `start` と `step` を持つ型 26 の項目を加えます。
-`start` は 1 つ目の数で、`step` は 2 つ目の数、なければ 1 です。
-`autonumber off` は、`visible` が偽で、数を持ちません。
-その `wrap` は偽です。
-[fixture: sequence/db-autonumber-bare] [fixture:
-sequence/db-autonumber-start] [fixture: sequence/db-autonumber-start-step]
-[fixture: sequence/db-autonumber-off]
-
-**ブロック。**
-ブロックは、始まりにテキストとその折り返しの項目を、
-各 `else`、`and`、`option` にそのテキストの項目を、
-`end` に空のテキストと設定の折り返しの設定の項目を加えます。
-型は次のとおりです。
-
-| ブロック   | 始まり | 節  | 終わり |
-| ---------- | ------ | --- | ------ |
-| `loop`     | 10     |     | 11     |
-| `alt`      | 12     | 13  | 14     |
-| `opt`      | 15     |     | 16     |
-| `par`      | 19     | 20  | 21     |
-| `rect`     | 22     |     | 23     |
-| `critical` | 27     | 28  | 29     |
-| `break`    | 30     |     | 31     |
-| `par_over` | 32     | 20  | 21     |
-
-ブロックの項目は、`from` と `to` を持たず、`activate` は偽、
-`centralConnection` は 0 です。
-`rect` のテキストは、描画が塗りの色として使います。
-Db はそれをテキストとして持ちます。
-[fixture: sequence/db-block-loop-wrap] [fixture: sequence/db-block-alt]
-[fixture: sequence/db-block-opt] [fixture: sequence/db-block-rect] [fixture:
-sequence/db-block-critical] [fixture: sequence/db-block-par] [fixture:
-sequence/db-block-par-over] [fixture: sequence/db-block-break]
-
-**箱。**
-箱は、`actorKeys` が空の項目を `boxes` に加え、
-その中の参加者の文がそれぞれの id を加えます。
-その中の destroy の文は何も加えません。
-[fixture: sequence/db-box-empty] [fixture: sequence/db-box-destroy-inside]
-その `name`、`fill`、`wrap` は、テキストの始まりが色かどうかに依り、
-mermaid.js はそれをブラウザに問い合わせます。
-これらは木の外から与えます（[箱の色](#箱の色) を参照）。
-
-**links と properties。**
-`links` と `properties` は、テキストを JSON として読み、
-その値の各キーを、参加者の `links` か `properties` に写します。
-前の文のキーに加え、すでにあるキーは置き換えます。
-JSON のオブジェクトのキーはその名前です。
-JSON の配列は、各要素を 0 から数えた位置の下に与え、
-JSON の文字列は、各 UTF-16 コード単位を 0 から数えた位置の下に与えます。
-数、`true`、`false`、`null` は何も与えません。
-JSON でないテキストは何も変えず、入力は受理されます。
-Db を求める側は、その JSON を、木のテキストから、変換後の形で読みます。
-変換後の形では、エンティティはプレースホルダです。
-この JSON は、
-[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)
-の意味での埋め込みデータではありません。
-mermaid.js はそれを理由に入力を拒否することがなく、
-木はそれをほかのテキストと同じく保つからです。
-[fixture: sequence/db-links-not-json] [fixture:
-sequence/db-properties-not-json] [fixture: sequence/db-links-string-value]
-[fixture: sequence/db-properties-string-value] [fixture:
-sequence/db-links-array-value] [fixture: sequence/db-links-number-value]
-[fixture: sequence/db-links-two-statements] [fixture: sequence/db-links-entity]
-[fixture: sequence/db-links-object] [fixture: sequence/db-links-trailing-comma]
-[fixture: sequence/db-properties-trailing-comma]
-テキストのない文のテキストは空のテキストで、JSON ではありません。
-`links A:` と `properties A:` は何も変えません。
-[fixture: sequence/db-links-empty] [fixture: sequence/db-properties-empty]
-[fixture:
-sequence/db-links-proto-key] [fixture: sequence/db-properties-proto-key]
-`link` は 1 つのリンクを設定します。
-そのラベルは、最初の `@` より前のテキストから `@` の直前の 1 文字を除いたもの、
-URL はその `@` より後のテキストで、それぞれ両端の空白を除きます。
-`@` が最初の文字なら、その前に文字はなく、
-ラベルはテキストから最後の 1 文字を除いたものです。
-`@` が 2 番目の文字なら、ラベルは空です。
-`@` がないときは、ラベルはテキストから最後の 2 文字を除いたもの、
-URL はテキスト全体です。
-`link A: Dash @ https://x` は `Dash` を、
-`link A: Dash@https://x` は `Das` を、
-`link A: @ https://alic` は `@ https://ali` に `https://alic` を設定し、
-`link A: x@https://u` は空のラベルを設定し、
-`link A: no at` は `no` に `no at` を設定します。
-[fixture: sequence/db-link-label] [fixture: sequence/db-link-without-space]
-[fixture: sequence/db-link-at-first] [fixture: sequence/db-link-at-second]
-[fixture: sequence/db-link-at-only] [fixture: sequence/db-link-without-at]
-[fixture: sequence/db-link-without-at-url]
-テキストが空なら、`link A:` は `@` を持たず、空のラベルに空の URL を設定します。
-[fixture: sequence/db-link-empty]
-`details` は、テキストがなくても、何も変えません。
-mermaid.js は、テキストを id とするページの要素を探しますが、
-ページは図のテキストの一部ではなく、要約はそれのないページとして作ります。
-[fixture: sequence/db-details-empty]
-
-**タイトル。**
-`title` は、タイトルを、`title-text` の単位のテキストに、
-空白を含めて書かれたとおりに設定します。
-`title`、空白 2 個、`x`、空白 2 個のタイトルは、空白、`x`、空白 2 個です。
-`title:` も同じです。
-`accTitle:` はアクセシビリティのタイトルを、
-`accDescr:` と `accDescr {` は説明を設定します。
-[flowchart.ja.md](./flowchart.ja.md#木から要約を作る) と同じく、
-両端の空白を除き、各改行とその後の空白を 1 つの改行として読み、
-後の文が前の文を置き換え、閉じていない `accDescr {` のブロックは説明を空にし、
-テキストのない閉じたブロックは何も変えません。
-[fixture: sequence/db-title-spaces] [fixture: sequence/db-title-legacy]
-[fixture: sequence/db-acc-descr-block-lines] [fixture:
-sequence/db-acc-descr-block-unclosed] [fixture:
-sequence/db-acc-descr-line-alone] [fixture:
-sequence/db-acc-descr-block-after-message]
-
-文はブロックの中も含めてソースの順に適用され、
-3 つの値はどれも最後に設定されたものを保ちます。
-タイトルは、木からは来ないフロントマターのタイトルから始まり
-（[Db の正規化](#db-の正規化) を参照）、`title` の文がそれを置き換えます。
-フロントマターに `title: From frontmatter` があるとき、
-`title From statement` のタイトルは `From statement` です。
-`title first` と `title second` は `second` を与え、
-`accTitle:` と `accDescr:` も、同じ種類の前の文を同じように置き換えます。
-`accDescr:` の行は前のブロックの説明も置き換え、
-ループの後の `accDescr: outer` は、
-ループの中の `accDescr: inner` を置き換えます。
-タイトルとアクセシビリティのタイトルは別の値です。
-`title first` と `accTitle: second` は、
-タイトル `first` とアクセシビリティのタイトル `second` を与えます。
-テキストのない閉じたブロックは、空白、改行、コメント行だけを持つものも、
-何も変えません。
-`accDescr: x` の後の `accDescr {}` と `accDescr { }` は `x` を保ちます。
-[fixture: sequence/db-title-replaces-frontmatter] [fixture:
-sequence/db-title-replaces] [fixture: sequence/db-acc-title-replaces] [fixture:
-sequence/db-acc-descr-replaces] [fixture:
-sequence/db-acc-descr-line-replaces-block] [fixture:
-sequence/db-acc-descr-outer-replaces-loop] [fixture:
-sequence/db-title-and-acc-title] [fixture:
-sequence/db-acc-descr-empty-block-keeps] [fixture:
-sequence/db-acc-descr-spaces-block-keeps] [fixture:
-sequence/db-acc-descr-comment-block-keeps] [fixture:
-sequence/db-acc-descr-empty-block-after-message] [fixture:
-sequence/db-acc-descr-empty-block-spaces-after-message] [fixture:
-sequence/db-acc-descr-empty-block-lines-after-message] [fixture:
-sequence/db-acc-descr-block-comment-only-after-message]
-
-### 矢印
-
-メッセージの `type` は、その矢印の線と記号から決まる番号です
-（[SequenceArrow](../ast/sequence.ja.md#sequencearrow) を参照）。
-
-- 半分の記号がないとき: 線 `solid` では、記号なしは 5、
-  終わりの記号 `arrow` は 0、`cross` は 3、`open-arrow` は 24、
-  始まりと終わりの記号 `arrow` は 33 です。
-  線 `dotted` では 1 大きく、6、1、4、25、34 です。
-- 終わりの記号が `half-arrow-top`、`half-arrow-bottom`、`half-stick-top`、
-  `half-stick-bottom` のとき: 線 `solid` では 41、42、43、44、
-  `dotted` では 51、52、53、54 です。
-- そのような始まりの記号のとき: 線 `solid` では 45、46、47、48、
-  `dotted` では 55、56、57、58 です。
-
-そのため、`->>` は 0、`<<-->>` は 34、`-//` は 44、`//--` は 57 です。
-[fixture: sequence/db-arrow-types]
-
 ### 文法の外での拒否
 
 mermaid.js は、文法が受理する入力の一部を、Db を作る間に拒否します。
 どれも、ソースの順の文から決まります。
 
 - **活性化していない参加者の非活性化。**
-  `deactivate` か、矢印の後の `-` による参加者の型 18 の項目は、
-  その参加者のそれまでの型 17 の項目が型 18 の項目より多くないとき、
+  参加者は、それについての `activate` の文と、
+  矢印の後に `+` のあるメッセージ（その行き先について）で**活性化**し、
+  それについての `deactivate` の文と、
+  矢印の後に `-` のあるメッセージ（その出どころについて）で**非活性化**します。
+  矢印の前か後の `()` は、どちらもしません。
+  非活性化は、その前の、その参加者の活性化が非活性化より多くないとき、
   拒否されます。
-  [fixture: sequence/gram-deactivate-inactive] [fixture:
-  sequence/gram-deactivate-after-message]
+  [fixture: sequence/gram-deactivate-inactive]
+  [fixture: sequence/gram-deactivate-after-message]
+  [fixture: sequence/db-activation-plus-then-minus]
+  [fixture: sequence/db-activation-twice-deactivation-twice]
+  [fixture: sequence/gram-deactivate-after-activate-deactivate]
+  [fixture: sequence/gram-deactivate-after-central-connection]
+  [fixture: sequence/db-deactivate-after-plus]
+  [fixture: sequence/db-minus-after-activate]
 - **すでにある参加者の create。**
-  参加者がすでに持つ id の `create`。
+  それより前に**加えられた**参加者の id の `create`。
+  参加者を加えるのは、参加者の文、`create` の付いた destroy の文、
+  そしてメッセージ、ノート、`links`、`link`、`properties`、`details` の文で、
+  それが挙げる各 id についてです。
+  `activate`、`deactivate`、`create` の付かない destroy の文は加えません。
   [fixture: sequence/gram-create-existing]
+  [fixture: sequence/gram-create-after-message]
+  [fixture: sequence/gram-create-after-note]
+  [fixture: sequence/gram-create-after-links]
+  [fixture: sequence/gram-create-after-message-and-destroy]
+  [fixture: sequence/db-create-after-activate]
+  [fixture: sequence/db-create-after-destroy-only]
 - **`create` や `destroy` の後のメッセージ。**
   下を参照。
   [fixture: sequence/gram-create-without-message] [fixture:
   sequence/gram-destroy-without-message]
 - **2 つの箱に入る参加者。**
   ほかの箱をすでに持つ参加者についての、箱の中の参加者の文。
+  参加者は、箱を持たないときに箱の中の参加者の文が挙げると、
+  **その箱を持ちます**。
+  箱の外の参加者の文と、箱の中の destroy の文は、どの箱も変えません。
   [fixture: sequence/gram-box-participant-in-two-boxes]
+  [fixture: sequence/gram-box-participant-added-by-message]
+  [fixture: sequence/db-box-existing-participant-joins-box]
+  [fixture: sequence/db-box-same-participant-twice]
+  [fixture: sequence/db-box-participant-outside-after]
+  [fixture: sequence/db-box-destroy-in-other-box]
 
 `create` と `destroy` の後のメッセージのために、
 文を適用する間、2 つの場所を保ちます。
@@ -1097,97 +850,13 @@ sequence/gram-create-wait-across-else] [fixture: sequence/gram-create-last]
 sequence/gram-create-destroy-waits-for-creation] [fixture:
 sequence/gram-create-destroy-message-to-other]
 
-### 箱の色
-
-mermaid.js は、箱のテキストを色の候補と残りに分け、
-候補が色かどうかをブラウザに問い合わせます
-（[`parseBoxData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419)
-を参照）。
-その答えはテキストから来ないので、箱の `name`、`fill`、`wrap` は、
-設定の値と同じく、木の外から与えます。
-
-分け方が受け取るテキストは、色の候補から `text` の単位の終わりまでで、
-終わりの空白も含みます。
-木の値はその空白を除くので、これはソースから読みます。
-その型が U+2028 か U+2029 を読むのは、1 か所だけです。
-色の候補の、`rgb`、`rgba`、`hsl`、`hsla` と `(` の間の空白です。
-テキストがほかの所に U+2028 か U+2029 を持つと、終わりにだけ持つときも、
-分け方は当てはまらず、
-箱は、テキストによらず `fill` が `transparent` で名前を持たず、
-答えは問い合わせません。
-行の終わりで U+2028 が続く `box red-team` と `box aqua`、
-`box red`、U+2029、`team` は、名前を持たず、`fill` は `transparent` です。
-テキストの前の U+2028 は、行の文脈が何も読まない空白なので
-（[行の文脈](#行の文脈) の規則 1）、
-`box`、空白、U+2028、`red team` は、`fill` が `red` で名前は `team` です。
-それらの文字が色の候補のその空白にだけあるときは、分け方は当てはまり、
-候補は、下の `rgb (0, 0, 255)` と同じく色ではありません。
-`box rgb`、U+2028、`(1, 2, 3) G` と、`hsl` と U+2029 2 つの同じ形は、
-`fill` が `transparent` で、U+2028 か U+2029 を含むテキスト全体が名前です。
-一方、`box rgb(1, 2, 3)`、U+2028、` G` は名前を持ちません。
-[fixture: sequence/db-box-line-separator-in-colour-function] [fixture:
-sequence/db-box-paragraph-separator-in-colour-function] [fixture:
-sequence/db-box-line-separator-after-colour-function]
-[fixture: sequence/db-box-line-separator-at-end] [fixture:
-sequence/db-box-paragraph-separator-in-text] [fixture:
-sequence/db-box-colour-then-line-separator] [fixture:
-sequence/db-box-line-separator-before-text]
-
-答えが与えられると、それらは SequenceBoxText から求まります
-（[SequenceBoxText](../ast/sequence.ja.md#sequenceboxtext) を参照）。
-色の候補が色なら、`fill` は候補で、名前は残りから来ます。
-そうでなければ、`fill` は `transparent` で、名前はテキスト全体から来ます。
-名前の始まりの折り返しの接頭辞は、テキスト部分と同じく `wrap` を決め
-（[テキスト部分](#テキスト部分) を参照）、名前はその残りです。
-名前が空のときや、箱がテキストを持たないときは、箱は `name` を持ちません。
-ブラウザの答えでは、次のようになります。
-
-- `box green Group 1` は fill `green` と名前 `Group 1` を、
-  `box Group 1` は fill `transparent` と名前 `Group 1` を持ちます。
-  [fixture: sequence/spec-sequence-diagram-f1763a40] [fixture:
-  sequence/spec-sequence-diagram-1705b6f7]
-- `box aqua` は fill `aqua` を持ち、名前を持ちません。
-  テキストのない箱は fill `transparent` を持ち、名前を持ちません。
-  [fixture: sequence/spec-sequence-diagram-9f31df65] [fixture:
-  sequence/db-box-no-text]
-- `box rgb(34, 56, 0) Group1` は fill `rgb(34, 56, 0)` を、
-  `box Purple Alice & John` は fill `Purple` と名前 `Alice & John` を持ちます。
-  [fixture: sequence/spec-sequence-diagram-97d37793] [fixture:
-  sequence/docs-syntax-sequence-diagram-93d3c0ff] [fixture:
-  sequence/demo-sequence-ec7c4269]
-- `box red-team` は fill `red` と名前 `-team` を持ちます。
-  [fixture: sequence/db-box-colour-candidate-word-prefix]
-- `box RGB(0, 0, 255) Team` の候補は語 `RGB` で、
-  `rgb (0, 0, 255)` は色ではありません。
-  どちらの箱も、fill `transparent` を持ち、テキスト全体を名前とします。
-  [fixture: sequence/db-box-colour-function-upper-case] [fixture:
-  sequence/db-box-colour-function-space]
-- `box aqua wrap:Group` は fill `aqua` を、
-  `box wrap:Group` は fill `transparent` を持ちます。
-  どちらも名前 `Group` と `wrap` 真を持ちます。
-  [fixture: sequence/db-box-wrap-after-colour] [fixture:
-  sequence/db-box-wrap-without-colour]
-- `#` はテキストを終えます。`box aqua G # c` の名前は `G` です。
-  [fixture: sequence/lex-box-hash-comment]
-
-### Db の中のデータブロック
-
-参加者の `@{ ... }` のブロックが設定する `type` と説明は、
-`@mmd-toolkit/tests` の `dataBlockEffects` から来ます。
-データブロックを持つ参加者の文ごとに 1 項目です
-（[`dataBlockEffects`](../../../tests/docs/embedded-data.ja.md#datablockeffects)
-を参照）。
-`as` の説明は、ブロックの説明より優先します。
-`participant A@{ "alias": "Q" } as R` は説明 `R` を持ちます。
-[fixture: sequence/db-data-block-alias-and-as]
-
 ## 既知の差
 
 [known-divergences.ja.md](../known-divergences.ja.md) の差のうち、
 次のものが sequence に当てはまり、次のように現れます。
 
 - **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md)。**
-  キーワード、矢印、数、句読点の中のディレクティブは、
+  キーワード、区切り記号、矢印、数の中のディレクティブは、
   ここでは入力を拒否させます。
   mermaid.js はそれを受理します。
   `parti%%{init: {}}%%cipant A`、`A-%%{init: {}}%%>>B: x`、
@@ -1195,6 +864,17 @@ sequence/db-box-line-separator-before-text]
   （[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。
   [fixture: sequence/div-directive-in-keyword] [fixture:
   sequence/div-directive-in-arrow] [fixture: sequence/div-directive-in-number]
+- **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
+  `participant Z@{ "style": "x:#y" };` の後のような、
+  `style` の規則に当たる行で、数、キーワード、矢印の中の無視される `;` は、
+  ここでは入力を拒否させ、mermaid.js はそれを受理します。
+  `autonumber 1;0`、`autonumber 1 1;0`、`parti;cipant B`、
+  `Note le;ft of A: t`、`A-;>>B: m` がそうです。
+  [fixture: sequence/div-ignored-semicolon-in-autonumber-start] [fixture:
+  sequence/div-ignored-semicolon-in-autonumber-step] [fixture:
+  sequence/div-ignored-semicolon-in-keyword] [fixture:
+  sequence/div-ignored-semicolon-in-position-word] [fixture:
+  sequence/div-ignored-semicolon-in-arrow]
 - **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)。**
   参加者のデータブロックの中身は読みません。
   mermaid.js はそれを YAML として読み、正しい YAML でない中身を拒否しますが、

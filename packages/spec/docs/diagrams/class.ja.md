@@ -11,7 +11,7 @@ mermaid.js での正解の出どころ:
   のテスト（`*.spec.ts`）
 
 この文書は、図種 `classDiagram` を扱います。
-木のノードとトークンは [ast/class.ja.md](../ast/class.ja.md) で定めます。
+木のノードは [ast/class.ja.md](../ast/class.ja.md) で定めます。
 
 ## 検出
 
@@ -40,7 +40,7 @@ class/header-statement-same-line] [fixture: class/header-only]
 ヘッダーの前にあってよく、テキストはそれでも class 図と判定されます。
 そのような行はコメントだけの行で、行として数えません
 （[文の文脈](#文の文脈) の規則 2）。
-コメントは `Root.comments` に入り、ClassDiagram はヘッダーから始まります。
+コメントはどのノードにも属さず、ClassDiagram はヘッダーから始まります。
 文の間でも、そのような行は同じく受理されます。
 一方、その後の空白だけの行はそれだけで `newline` の単位になり、
 mermaid.js と同じく入力は拒否されます。
@@ -67,7 +67,7 @@ class/header-after-empty-braces-line] [fixture: class/header-after-hash-line]
 
 この図の mermaid.js の字句解析器は、
 文字を書かれたとおりの大文字小文字で比べます。
-`Class A` は class の文ではなく、何も宣言しない名前 `ClassA` だけの文で、
+`Class A` は class の文ではなく、名前 `ClassA` だけの文で、
 `Note "x"` は拒否されます。
 [fixture: class/lex-keyword-upper-case] [fixture: class/lex-note-upper-case]
 下の**キーワード**は、後に語の文字が続かない語です
@@ -81,8 +81,7 @@ class/lex-keyword-before-dash]
 ### 単位と文脈
 
 字句解析器は、図のテキストを**単位**に分けます。
-文法は単位の上に書かれ、木のトークンは単位から作られます
-（[ast/class.ja.md](../ast/class.ja.md#トークン) を参照）。
+文法は単位の上に書かれます。
 各単位は、文法が使う名前と、
 **テキスト**、つまりそれが読んだ文字を変換した形で持ちます。
 
@@ -124,29 +123,75 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 読みます。
 その後、
 [ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界)
-の規則が、単位とそこから作るトークン
-（[ast/class.ja.md](../ast/class.ja.md#トークン)）に当てはまります。
-種類が `RawText` か `Identifier` の単位の中のディレクティブは、
-そのトークンを切り、入力は mermaid.js の読み方を保ちます。
-ほかの種類の単位の中のディレクティブは、入力を拒否にします。
+の規則が、単位に当てはまります。
+テキストと文字列の単位の中のディレクティブは、
+入力の mermaid.js の読み方を保ち、
+名前の単位を含む、ほかの単位の中のディレクティブは、入力を拒否させます。
+**名前の単位**は、
+`style` の後の `word`、`classDef` の文の各 `word`、`cssClass` の文の `word`、
+文の `:::` の後や `<<` と `>>` の間の名前の部分です。
+**テキストの単位**は、
+バッククォートの名前の前にあるか、バッククォートの名前のない、
+クラスの名前や名前空間の名前の、間に空白を置ける名前の部分と `.` の単位、
+`generic-text` の単位、`label` の単位の `:` の後のテキスト、
+`member-name`、`parameters`、`return-type`、`annotation-name` の単位、
+`callback-name` か `callback-arguments` の単位、スタイルのすべての単位、
+`title-text`、`description-text`、`description-block-text` の単位、
+`direction-text` の単位、方法の行の読まれない部分です。
+**文字列の単位**は、`string` と `backquoted` の単位です。
 
-- `class Fo%%{init: {}}%%o` は `Foo` を宣言し、
+- `class Fo%%{init: {}}%%o` は `Foo` を、
+  `class A%%{init: {}}%%.B` はクラス `A.B` を、
+  `namespace Fo%%{init: {}}%%o {` は名前空間 `Foo` を宣言し、
   `A : +fo%%{init: {}}%%o()` は方法 `foo` を加え、
   `A --> B : x%%{init: {}}%%y` はラベル `xy` を持ちます。
   どれも mermaid.js と同じです。
+  無視される `;` も同じで、多重度 `"style:#x"` の後の
+  `A "style:#x" --> B;C` は `BC` への関係を持ちます。
   [fixture: class/lex-directive-in-name] [fixture:
+  class/lex-directive-in-dotted-name] [fixture:
+  class/lex-directive-in-namespace-name] [fixture:
   class/lex-directive-in-member] [fixture: class/lex-directive-in-label]
+  [fixture: class/tokens-ignored-semicolon-in-relation-name]
 - 2 つの単位の間のディレクティブは、単位の種類によらず許されます。
   `A <|%%{init: {}}%%-- B` は extension です。
   [fixture: class/lex-directive-between-relation-end-and-line]
+- 文字列とバッククォートの名前の中のディレクティブは、
+  単位の中のどこにあっても、mermaid.js の読み方を保ちます。
+  `note "a%%{init: {}}%%b"` のノートは `ab`、
+  `note "a %%{init: {}}%% b"` のノートは `a`、空白 2 つ、`b` で、
+  ``class `a %%{init: {}}%% b` `` は `a`、空白 2 つ、`b` のクラスを宣言し、
+  ``class `%%{init: {}}%%a` `` と ``class `a%%{init: {}}%%` `` は
+  クラス `a` を宣言します。
+  [fixture: class/lex-directive-in-note-string] [fixture:
+  class/lex-directive-in-string-spaces] [fixture:
+  class/lex-directive-in-backquoted-name] [fixture:
+  class/lex-directive-in-backquoted-name-spaces] [fixture:
+  class/lex-directive-in-backquoted-name-after-open] [fixture:
+  class/lex-directive-in-backquoted-name-before-close] [fixture:
+  class/lex-directive-in-backquoted-name-with-quotes]
+  クラスのノートの文字列、多重度、リンクの URL、コールバックのツールチップ、
+  関係の中と名前空間のバッククォートの名前も同じです。
+  [fixture: class/lex-directive-in-note-for-string] [fixture:
+  class/lex-directive-in-cardinality] [fixture:
+  class/lex-directive-in-link-string] [fixture:
+  class/lex-directive-in-callback-tooltip-string] [fixture:
+  class/lex-directive-in-backquoted-relation-end] [fixture:
+  class/lex-directive-in-backquoted-namespace]
+  ディレクティブだけの文字列とバッククォートの名前は、空のものとして読まれます。
+  `note "%%{init: {}}%%"` と ``class `%%{init: {}}%%` `` は、
+  区切りの間に何もないときと同じく拒否され、
+  `A "%%{init: {}}%%" --> B` は、`A "" --> B` と同じく空の多重度を持ちます。
+  [fixture: class/lex-directive-in-string-only] [fixture:
+  class/lex-directive-in-backquoted-name-only] [fixture:
+  class/lex-directive-in-empty-cardinality]
 - `cla%%{init: {}}%%ss A`、`A -%%{init: {}}%%-> B`、
-  `note "a%%{init: {}}%%b"`、`class A:%%{init: {}}%%::c` では、
-  ディレクティブはキーワード、線、文字列、`:::` の中にあり、
+  `class A:%%{init: {}}%%::c` では、
+  ディレクティブはキーワード、線、`:::` の中にあり、
   入力は拒否されます。mermaid.js はそれを受理します
   （[既知の差](#既知の差) を参照）。
   [fixture: class/div-directive-in-keyword] [fixture:
-  class/div-directive-in-line] [fixture: class/div-directive-in-string]
-  [fixture: class/div-directive-in-triple-colon]
+  class/div-directive-in-line] [fixture: class/div-directive-in-triple-colon]
 
 ### 文の文脈
 
@@ -154,8 +199,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 
 1. **方向の行**（下を参照）。
 2. `%%` と、改行までの行の残り: 図のコメント。
-   その印は `%%` で、値は印の後のテキストです
-   （[Comment](../ast.ja.md#comment) を参照）。
+   その印は `%%` で、値は印の後のテキストです。
    `%%` の前が空白だけの行のほとんどは、
    [common.ja.md](../common.ja.md#コメント行) のコメント行で、
    字句解析器が読む前に除かれます。
@@ -250,8 +294,8 @@ mermaid.js は `direction-text` の単位を読みません。
 を参照）から、値 `TD` を除いたものです。
 ここでは最初の規則なので、文の文脈の各行の始まりで試され、行の全体を取ります。
 
-- `class A direction LR` は方向の行で、クラスを宣言しません。
-  `A --> B : set direction LR now` も方向の行で、関係を持ちません。
+- `class A direction LR` は class の文ではなく方向の行で、
+  `A --> B : set direction LR now` も関係の文ではなく方向の行です。
   [fixture: class/lex-direction-line-class-statement] [fixture:
   class/lex-direction-line-in-label]
 - 引用符は規則を妨げません。
@@ -265,7 +309,7 @@ mermaid.js は `direction-text` の単位を読みません。
 - `direction LR direction TB` の値は `TB` です。
   `direction TBX` の値は `TB` で、その後のテキストは `X` です。
   `direction`、改行、`LR` の値は `LR` です。
-  `direction lr` は方向の行ではなく、何も宣言しない名前 `directionlr` です。
+  `direction lr` は方向の行ではなく、名前 `directionlr` です。
   [fixture: class/lex-direction-line-two-values] [fixture:
   class/lex-direction-line-value-then-text] [fixture:
   class/lex-direction-line-value-next-line] [fixture:
@@ -278,8 +322,9 @@ mermaid.js は `direction-text` の単位を読みません。
 
 ### 共有の規則
 
-1. キーワード `cssClass`、`callback`、`link`、`click`、
-   2 語の間に空白 1 つの `note for`、`note`: キーワードの名前の単位。
+1. 2 語の間に空白 1 つのキーワード `note for`: `note` の単位と `for` の単位。
+   キーワード `cssClass`、`callback`、`link`、`click`、`note`:
+   キーワードの名前の単位。
 2. `<<` と `>>`: そのテキストの名前の単位。
 3. キーワード `href`: `href` の単位。
 4. `~`: `~` の単位。ジェネリクスの文脈に入る。
@@ -304,6 +349,14 @@ mermaid.js は `direction-text` の単位を読みません。
 `note for` には、ちょうど 1 つの空白が要ります。
 空白 2 つの `note  for A "x"` と、タブにしたものは拒否されます。
 [fixture: class/lex-note-for-two-spaces] [fixture: class/lex-note-for-tab]
+空白は図のテキストで数え、その隣のディレクティブは 2 つの単位の間にあります。
+`note%%{init: {}}%% for A "t"` と `note %%{init: {}}%%for A "t"` は
+A のノートで、
+`note %%{init: {}}%% for A "t"` は空白が 2 つなので拒否されます。
+どれも mermaid.js と同じです。
+[fixture: class/lex-directive-between-note-and-for] [fixture:
+class/lex-directive-between-space-and-for] [fixture:
+class/lex-note-for-directive-between-spaces]
 
 ### クラスの文脈
 
@@ -355,7 +408,7 @@ class/lex-member-quote-inside]
 ### メンバーの行
 
 mermaid.js は、メンバーの行を 1 つのテキストとして読み、
-メンバーを Db に加えるときに、それを部分に分けます
+メンバーを加えるときに、それを部分に分けます
 （[`addMember`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L277-L297)、
 [`ClassMember`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classTypes.ts#L80-L134)）。
 分け方はテキストだけで決まるので、字句解析器が分け、各部分は単位になります。
@@ -378,10 +431,37 @@ mermaid.js は、メンバーの行を 1 つのテキストとして読み、
 **可視性の記号**は、方法の行や属性の行の始まりの `+`、`-`、`#`、`~` のどれかで、
 **分類子の記号**は `$` か `*` です。
 
+属性の行の**メンバーの名前のテキスト**は、メンバーのテキストの、
+可視性の記号またはその始めから、分類子の記号またはその終わりまでのテキストです。
+方法の行のものは、分けた区間かメンバーのテキストの、
+分けて置いた可視性の記号の後、またはその始めから、開き括弧までのテキストです
+（下を参照）。
+その `member-name` の単位は、メンバーの名前のテキストから、
+終わりの空白と、最初の文字が空白（U+0020）でなければ始まりの空白を、
+除いたものです。
+空白だけのメンバーの名前のテキストは、空白で始まればそれが単位で、
+そうでなければ単位を作りません。
+空のメンバーの名前のテキストも単位を作りません。
+行の終わりの空白はどの単位にも属さないので、
+空白 1 つが続くメンバーの行 `+` は、空のメンバーの名前のテキストを持ち、
+名前を持たず、メンバーの id は空です。
+一方、`+`、空白、`$` のメンバーの名前のテキストは空白 1 つで、それが単位で、
+メンバーの id は空白 1 つです。
+[fixture: class/db-member-visibility-then-space] [fixture:
+class/db-member-visibility-space-then-classifier]
+理由は、mermaid.js がメンバーの名前のテキストを空白ごと取り、
+その始まりの空白を、最初の文字が空白なら空白 1 つにし、
+そうでなければ除くからです。
+mermaid.js のメンバーの名前は書かれたテキストの範囲にならないので、
+名前の値は書かれた範囲です。
+`+  spaced name` の名前は空白 2 個と `spaced name` で、
+メンバーの名前は空白 1 つと `spaced name` です。
+[fixture: class/db-member-name-space] [fixture:
+class/db-member-name-space-then-tab] [fixture: class/db-member-name-tab]
+
 属性の行は、始まりの可視性の記号の `visibility` の単位、
 終わりの分類子の記号の `classifier` の単位、
-その間のテキストから両端の空白を除いた、
-空でないものの `member-name` の単位に分けます。
+そのメンバーの名前のテキストの `member-name` の単位に分けます。
 
 方法の行は、次のように分けます。
 まず、行が可視性の記号で始まれば、それを離し、残りを分けます。
@@ -394,15 +474,19 @@ mermaid.js は、メンバーの行を 1 つのテキストとして読み、
 単位は次の順です。
 
 1. 離した可視性の記号の `visibility` の単位。
-2. 開き括弧の前のテキストから両端の空白を除いた、
-   空でないものの `member-name` の単位。
+2. メンバーの名前のテキスト、つまり開き括弧の前のテキストの、
+   `member-name` の単位。
 3. `(` の単位、2 つの括弧の間のテキストから両端の空白を除いた、
    空でないものの `parameters` の単位、`)` の単位。
 4. 閉じ括弧の直後の文字が分類子の記号なら、その `classifier` の単位。
 5. 残りから両端の空白を除いた、空でないものの `return-type` の単位。
    それが分類子の記号で終わり、項目 4 が何も見つけていなければ、
    その記号は `classifier` の単位で、`return-type` の単位は、
-   その前の空白を除いて、その前で終わります。
+   残りの空白でない最初の文字から、記号の前の空白を含めて記号の前までの、
+   空でないものです。
+   mermaid.js は、戻り値の型の両端を削ってから記号を除くからです。
+   [fixture: class/db-method-return-type-space-before-classifier] [fixture:
+   class/db-method-return-type-blank-before-classifier]
 
 mermaid.js は、方法の行を、文字が U+2028 と U+2029 に合わないパターンで分け、
 行の 1 つの部分を読みます。
@@ -443,7 +527,7 @@ U+2028 と U+2029 がなければ、これは、
 残りもメンバーのテキストの全体も分けられないとき、入力は拒否される、
 ということです。
 `x)` と `(a)` は、mermaid.js と同じく拒否されます。
-mermaid.js では、その Db がそれらに対してエラーを投げます
+mermaid.js は、文法が受理した後に、それらに対してエラーを投げます
 （[文法の外での拒否](#文法の外での拒否) を参照）。
 [fixture: class/lex-member-method-without-opening] [fixture:
 class/lex-member-method-parenthesis-first]
@@ -516,6 +600,24 @@ class/lex-namespace-body-style] [fixture: class/lex-direction-in-namespace]
 名前は閉じていません。
 [fixture: class/lex-backquote-unclosed] [fixture:
 class/lex-backquote-unclosed-takes-lines]
+その残りの、名前の空白でない最後の文字の後にあるディレクティブは、
+mermaid.js がどこでも除くもので、
+その後に名前の空白か行終端が続くときは名前の中にあり、
+そうでなければ名前の後にあります。
+`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、
+`x` に改行 3 つが続くクラスを宣言し、
+ディレクティブが `x` のすぐ後と空行の後にあり、その後に改行が続く形も、
+それぞれの空白を持って同じです。
+`` `b`` と空白の後のテキストの終わりにあるときは、
+クラスは `b`、空白、改行です。
+名前の空白でない 2 つの文字の間のディレクティブも、名前の中にあります。
+`class`、`` `x``、ディレクティブ、`y`、改行は、
+`xy` に改行 2 つが続くクラスを宣言します。
+[fixture: class/lex-backquote-unclosed-directive-inside]
+[fixture: class/lex-backquote-unclosed-directive-after-line-break] [fixture:
+class/lex-backquote-unclosed-directive-right-after-name] [fixture:
+class/lex-backquote-unclosed-directive-after-empty-line] [fixture:
+class/lex-backquote-unclosed-directive-at-end]
 
 `~`（共有の規則 4）は `~` の単位で、ジェネリクスの文脈に入ります。
 そこでは、`~` は `~` の単位で文脈を出て、
@@ -531,7 +633,8 @@ mermaid.js の字句解析器は、バッククォートの状態とジェネリ
 （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L89-L112)）。
 テキストがそのどれかで始まると（キーワードでは、後に語の文字が続かないとき）、
 mermaid.js は名前の代わりにその単位を読み、テキストはその後で読みます。
-これらの入力は既知の差 `name-start-reads-unit` です（[既知の差](#既知の差) を参照）。
+これらの入力は既知の差 `name-start-reads-unit` です
+（[既知の差](#既知の差) を参照）。
 そのため、キーワード `note` をバッククォートでクラスの名前として書いた
 ``class `note` `` は、ここではクラス `note` を宣言し、mermaid.js は拒否します。
 `` class `"x` `` と `class A~note x~` は、
@@ -546,7 +649,6 @@ class/div-generic-starts-with-keyword]
 どちらも同じに読みます。
 `` class `notex` ``、`` class `x note` ``、`class A~linkx~`、`class A~ note~` は
 どちらも受理し、`` class A`~T~` `` はどちらでも A に型 `T` を与えます。
-Db が名前のテキスト `A~T~` をその `~` で分けるからです。
 [fixture: class/lex-backquote-keyword-prefix] [fixture:
 class/lex-backquote-keyword-later] [fixture: class/lex-generic-keyword-prefix]
 [fixture: class/lex-generic-space-before-keyword] [fixture:
@@ -615,13 +717,15 @@ class/lex-acc-title-next-line]
 | `annotation-line` と `"<<" name-part ">>"`           | ClassAnnotation                                                             |
 | `method-line`、`attribute-line`                      | ClassMethod、ClassAttribute。`blank-member` はノードを作らない              |
 | `string`、`string-or-empty`、`"backquoted"`          | StringLiteral                                                               |
+| クラスの名前と名前空間の名前（下に挙げる）           | ClassIdentifier                                                             |
 | 名前（下に挙げる）                                   | Identifier                                                                  |
 | 引用符のないテキスト（下に挙げる）                   | ClassLiteral                                                                |
 | `ignored-text`                                       | ClassIgnoredText                                                            |
 
-名前は次のものです。
+クラスの名前と名前空間の名前は、
 バッククォートの名前の前にあるか、バッククォートの名前のない、
-クラスの名前や名前空間の名前の名前の部分。
+クラスの名前や名前空間の名前の、名前の部分と `.` の単位です。
+名前は次のものです。
 文の `:::` の後や `<<` と `>>` の間の名前の部分。
 `style` の後の `word`、`classDef` の文のスタイルの前の `word` の単位、
 `cssClass` の文の `word`。
@@ -666,7 +770,7 @@ empty-description-block = "accDescr" "{" "}"
 `description-block-text` の単位なしで `}` の単位がすぐ続くものです。
 区切りが要る文は `statement-end` で終わります。
 文の最後の単位の後、区切りの前には、空の説明ブロックがいくつ来てもかまいません。
-それぞれ、その文の後に続く、テキストのない説明ブロックの文で、何も変えません。
+それぞれ、その文の後に続く、テキストのない説明ブロックの文です。
 mermaid.js は空の説明ブロックにトークンを読まないので
 （[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md)
 を参照）、その文の後にすぐ区切りが続くものとして読みます。
@@ -696,8 +800,8 @@ class/gram-empty-description-block-after-statement-at-end]
 その改行の前には空の説明ブロックが来てもかまいません
 （`diagram` の `"header" empty-description-block* newline`）。
 それぞれ、図の最初の文です。
-`classDiagram accDescr {}`、改行、`class A` は A を宣言し、
-ブロックのない同じ入力の Db を持ちます。ブロックが 2 つでも同じです。
+`classDiagram accDescr {}`、改行、`class A` は受理され、
+ブロックのない同じ入力と同じに読まれます。ブロックが 2 つでも同じです。
 `classDiagram accDescr {} class A` は、ブロックのない同じ入力と同じく拒否され、
 ブロックにテキストのある `classDiagram accDescr {x}` と、
 `classDiagram accDescr {}` だけのものも拒否されます。
@@ -786,12 +890,12 @@ method-line          = ignored-text? visibility? member-name? "(" parameters? ")
 attribute-line       = visibility? member-name? classifier?
 ```
 
-ラベルのあるメンバーの文は、メンバーを加えます。
-ラベルの `:` の後のテキストはメンバーの行で、
+ラベルのあるメンバーの文では、ラベルの `:` の後のテキストはメンバーの行で、
 [メンバーの行](#メンバーの行) で述べるとおりに分けます。
-それが空白だけのとき（`A : ` など）は、文はクラスを加え、メンバーを加えません。
-ラベルがなければ、何も変えません。
-`Foo` の行はクラスを宣言しません。
+それが空白だけのとき（`A : ` など）は、
+空白だけのメンバーの行で、ノードを作りません。
+ラベルのないメンバーの文は、クラスの名前だけの文です。
+`Foo` の行がそうです。
 class 図には title の文がなく、
 `title Animals` もそのような行で、クラスの名前 `titleAnimals` です。
 [fixture: class/gram-member-statement] [fixture:
@@ -812,6 +916,9 @@ line               = "--" | ".."
 関係の単位の間には空白を置けます。
 `A <|  --  * B` は、両端に `<|` と `*` を持つ線 `--` です。
 [fixture: class/gram-relation-spaces] [fixture: class/gram-cardinality-empty]
+`:` の後に何もない `A --> B :` は拒否されます。
+ラベルには `:` の後に 1 文字以上が要るからです。
+[fixture: class/gram-relation-colon-only]
 
 ### 名前空間
 
@@ -827,7 +934,7 @@ namespace-item      = class-statement | note-statement | namespace-statement
 ### ほかの文
 
 ```text
-note-statement          = "note for" class-name string | "note" string
+note-statement          = "note" "for" class-name string | "note" string
 click-statement         = "callback" class-name string string-or-empty?
                         | "link" class-name string string-or-empty? "link-target"?
                         | "click" class-name "call" callback-name "(" callback-arguments? ")" string-or-empty?
@@ -879,310 +986,59 @@ class/gram-empty-description-block-alone]
 
 ### 文法の外での拒否
 
-mermaid.js は、文法が受理した後に、Db の中で次の入力を拒否します。
+mermaid.js は、文法が受理した後に、次の入力を拒否します。
 この仕様も拒否します。
 
 - 存在しないクラスへの注釈の文。
   A を加える文より前の `<<interface>> A` は拒否されます
   （[`addAnnotation`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L263-L266)）。
   `class A` の後なら受理されます。
-  [fixture: class/db-annotation-statement-undefined-class] [fixture:
-  class/spec-class-diagram-280c04be]
+  クラスを**加える**のは、クラスの文、ラベルのあるメンバーの文、関係の文で、
+  その各クラス名について、名前空間の本体の中でも加えます。
+  ただし、端が `()` だけの関係の、`()` の側の名前はインターフェースを指し、
+  クラスを加えません。
+  クラス名だけの文、ノート、click、`cssClass`、スタイルの文は加えません。
+  注釈の文が指し、文が加えるのは、そのクラス名の **id** のクラスです。
+  クラス名の**名前のテキスト**は、ジェネリクスの型の前にある単位のテキストを、
+  バッククォートの名前のバッククォートを除いてつないだものです。
+  単位の間の空白はその一部ではありません。
+  バッククォートの名前が閉じていなければ、
+  そのテキストはテキストの終わりまで続き、
+  名前のテキストは改行で終わります。
+  字句解析器が最後の文字の後に読む改行です。
+  **書いた名前**は、名前のテキストに、
+  クラス名が generic を持つとき、`~`、その値（空白を含む）、`~` を続けたものです
+  （[ClassName](../ast/class.ja.md#classname) を参照）。
+  その id は、`~` を持ち、その最初の `~` が最初の文字でないとき、
+  最初の `~` の前のテキストで、そうでなければ書いた名前です。
+  そのため、`class A~T~` と ``class `A~T` `` はクラス `A` を加え、
+  `<<interface>> A` と `<<interface>> A~T~` はそれを指しますが、
+  ``class `~A` `` はクラス `~A` を加え、
+  `` <<interface>> `~A` `` はそれを指し、`<<interface>> A` は指しません
+  （mermaid.js は `~` で始まるバッククォートの名前を拒否します。
+  [`name-start-reads-unit`](../known-divergences/name-start-reads-unit.ja.md) を参照）。
+  `class A~T~` はクラス `T` を加えません。
+  [fixture: class/db-annotation-after-generic-class]
+  [fixture: class/db-annotation-generic-after-generic-class]
+  [fixture: class/db-annotation-generic-after-class]
+  [fixture: class/db-annotation-after-backquoted-tilde-class]
+  [fixture: class/div-annotation-after-backquoted-leading-tilde-class]
+  [fixture: class/div-annotation-backquoted-leading-tilde-class]
+  [fixture: class/gram-annotation-for-generic-type]
+  [fixture: class/db-backquoted-name-unclosed]
+  [fixture: class/db-annotation-statement-undefined-class]
+  [fixture: class/spec-class-diagram-280c04be]
+  [fixture: class/db-annotation-after-member-statement]
+  [fixture: class/db-annotation-after-relation]
+  [fixture: class/db-annotation-after-lollipop-class]
+  [fixture: class/db-annotation-after-namespace-class]
+  [fixture: class/gram-annotation-after-lollipop-interface]
+  [fixture: class/gram-annotation-after-note-for]
+  [fixture: class/gram-annotation-after-style]
+  [fixture: class/gram-annotation-after-name-statement]
+  [fixture: class/gram-annotation-after-css-class]
+  [fixture: class/gram-annotation-after-click]
 - 分けられない方法の行。`x)` など（[メンバーの行](#メンバーの行) を参照）。
-
-## Db の正規化
-
-フロントマターの図のタイトルは、木から来ません。
-Db の値を確かめる人は、それを mermaid.js 自身の関数で求めます
-（[設定（参考）](../common.ja.md#設定参考) を参照）。
-[fixture: class/docs-syntax-class-diagram-2f728b32]
-
-### 要約
-
-fixture は、mermaid.js の Db を、次の欄を持つ要約として記録します。
-`@mmd-toolkit/tests` の
-[`normalizeClass()`](../../../tests/src/normalizers/class.ts) が作ります。
-
-| 欄           | 内容                                                  |
-| ------------ | ----------------------------------------------------- |
-| `direction`  | 方向。方向の文が設定しなければ `TB`。                 |
-| `title`      | フロントマターのタイトル。なければ空のテキスト。      |
-| `accTitle`   | アクセシビリティのタイトル。なければ空のテキスト。    |
-| `accDescr`   | アクセシビリティの説明。なければ空のテキスト。        |
-| `classes`    | クラス。最初に加えられた順。                          |
-| `relations`  | 関係。ソースの順。                                    |
-| `notes`      | ノート。ソースの順。                                  |
-| `namespaces` | 名前空間。最初に加えられた順。                        |
-| `interfaces` | lollipop の関係が加えるインターフェース。ソースの順。 |
-
-クラスは、`id`、`type`、`label`、`text`、いつも `classBox` の `shape`、
-`cssClasses`、`methods`、`members`、`annotations`、`styles` と、
-設定されていれば `parent`、`link`、`linkTarget`、`haveCallback`、
-`tooltip` を持ちます。
-方法は、`memberType`（`method`）、`visibility`、`classifier`、`id`、
-`parameters`、`returnType` を持ちます。
-属性は `members` にあり、`memberType`（`attribute`）、`visibility`、
-`classifier`、`id` を持ちます。
-関係は、`id1`、`id2`、`type1`、`type2`、`lineType` を持つ `relation`、
-`relationTitle1`、`relationTitle2` と、ラベルがあれば `title` を持ちます。
-ノートは、`id`、`text` と、設定されていれば `class` と `parent` を持ちます。
-名前空間は、`id`、`label`、その `classes`、`notes`、`children` の id、
-`explicit` と、あれば `parent` を持ちます。
-インターフェースは、`id`、`label`、`classId` を持ちます。
-要約は、描画だけが使うものを除きます。
-DOM の id、メンバーの表示のテキスト、ノートの id の中の番号、
-クラスの定義そのもの（それが変えるものはクラスの `styles` に表れます）、
-クリックのコールバック、各スタイルの終わりの空白です。
-テキストは、mermaid.js が HTML のサニタイズの前に持つとおりに記録します
-（[サニタイザは無効にする](../../../tests/docs/expected-results.ja.md#サニタイザは無効にする)
-を参照）。
-
-### 木から要約を作る
-
-文はソースの順に当て、名前空間の項目はその中の順に当てます。
-各文は次のとおりです。
-
-**名前。**
-クラスの名前の**名前のテキスト**は、ジェネリクスの型の前にある単位のテキストを、
-バッククォートの名前のバッククォートを除いてつないだものです。
-単位の間の空白はその一部ではありません。
-バッククォートの名前が閉じていなければ、そのテキストはテキストの終わりまで続き、
-名前のテキストは改行で終わります。
-字句解析器が最後の文字の後に読む改行です。
-**書いた名前**は、名前のテキストに、
-クラスの名前が `generic-text` の単位を持つとき、
-`~`、その単位のテキスト（空白を含む）、`~` を続けたものです。
-空白だけのジェネリクスの型は、木ではノードを持ちませんが
-（[ClassName](../ast/class.ja.md#classname) を参照）、これも数えます。
-そのため、`class A~ ~` は型が空白 1 つの A を、
-`class A~ T ~` は型が空白、`T`、空白の A を宣言し、
-`class A~~` は型のない A を宣言します。
-[fixture: class/db-generic-blank] [fixture: class/db-generic-spaces]
-書いた名前の **id** と**型**は、
-`~` を持ち、その最初の `~` が最初の文字でないとき、最初の `~` の前のテキストと、
-最初の `~` と 2 つ目の `~` の間（なければ終わりまで）のテキストです。
-そうでなければ、id は書いた名前で、型は空です。
-最初の `~` が最初の文字である ``class `~a~b` `` は、
-型のない `~a~b` を宣言します。
-[fixture: class/div-backquote-starts-with-tilde-and-type]
-そのため、`class Map~K, V~` は型 `K, V` の `Map` を宣言し、
-``class `a~b` `` は型 `b` の `a` を宣言します。
-[fixture: class/db-generic-type] [fixture: class/db-backquoted-name-tilde]
-[fixture: class/db-backquoted-name-unclosed]
-
-**クラスを加える。**
-書いた名前でクラスを加えるとき、その id のクラスがあれば、何もしません。
-なければ、その id と型のクラスを加えます。
-`label` は id、
-`text` は id に、型が空でなければ `&lt;`、型、`&gt;` を続けたもの、
-`cssClasses` は `default` で、一覧は空です。
-そのため、クラスの型は、最初に加えられたところで書いたものです。
-`class A` の後の `class A~T~` は、A に型を与えません。
-[fixture: class/db-class-type-first-added]
-
-**class の文。**
-class の文は、そのクラスを加え、それから次のことをします。
-
-- ラベルは、`label` を文字列のテキストにし、
-  `text` を、そのテキストに、
-  クラスに型があれば `<`、型、`>` を続けたものにします。
-  後のラベルは前のラベルを置き換え、
-  ラベルのない class の文は、クラスが持つラベルを保ちます。
-  [fixture: class/db-class-label-type] [fixture:
-  class/db-class-label-redefined] [fixture:
-  class/db-class-label-kept-without-label]
-- `:::` は、クラスにその名前の部分の CSS クラスを与えます
-  （下の **CSS クラス** を参照）。
-- 注釈は、その名前の部分を `annotations` に加えます。
-- メンバーの行は、CSS クラスや注釈の後に、メンバーの文と同じく順に加えます。
-  クラスがすでに持つメンバーに加えるので、
-  同じクラスの本体のある 2 つのクラスの文は、両方のメンバーを順に与えます。
-  `+int x` を持つ `class A {` と `+int y` を持つ `class A {` は、
-  A にメンバー `int x` と `int y` を与えます。
-  [fixture: class/db-class-members-added]
-
-**メンバーの文とメンバーの行。**
-ラベルのあるメンバーの文は、そのクラスを加え、
-それからラベルのメンバーの行を加えます。
-メンバーの行は、クラスに次のものを加えます。
-
-- 注釈の行は、`<<` と `>>` の間のテキストを、空白を含めて `annotations` に。
-  空か空白だけで、木では null のときも同じです。
-  [fixture: class/db-member-annotation-spaces] [fixture:
-  class/tokens-annotation-blank] [fixture: class/tokens-annotation-blank-label]
-- 方法の行は `methods` に。
-  `visibility` は可視性の記号か空のテキスト、
-  `classifier` は分類子の記号か空のテキスト、`id` はメンバーの名前、
-  `parameters` は、その単位のテキストか空のテキストです。
-  `returnType` は、その単位のテキストか空のテキストで、
-  分類子の記号が戻り値の型を終えるとき（[メンバーの行](#メンバーの行) の項目 5）は、
-  その後に、単位とその記号の間の空白が続きます。
-  `+getInstance() Foo $` の戻り値の型は `Foo` と空白 1 つで、
-  `+foo(a) a b`、タブ、`*` の戻り値の型は `a b` とタブです。
-  [fixture: class/db-method-return-type-space-before-classifier] [fixture:
-  class/db-method-return-type-tab-before-classifier]
-- 属性の行は、同じように `members` に。
-  `parameters` と `returnType` は持ちません。
-- 空白だけのメンバーの行は、何も加えません。
-
-メンバーの名前は、`member-name` の単位のテキストか空のテキストで、
-その**メンバーの名前のテキスト**が空白（U+0020）で始まるなら、
-その前に空白が 1 つ付きます。
-方法の行のメンバーの名前のテキストは、分けた区間かメンバーのテキストの、
-分けて置いた可視性の記号の後、またはその始めから、開き括弧までのテキストです。
-属性の行のメンバーの名前のテキストは、メンバーのテキストの、
-可視性の記号またはその始めから、分類子の記号またはその終わりまでのテキストです。
-`+  spaced name  ` の id は空白 1 つと `spaced name` で、
-`+ foo()` の id は空白 1 つと `foo` です。
-`x`、U+2028、` b(c)` の id は空白 1 つと `b` で、
-`x`、U+2028、` (c)` の id は空白 1 つです。
-最後のものの空白をタブにすると、id は空です。
-[fixture: class/db-member-name-space] [fixture: class/db-method-name-space]
-[fixture: class/lex-member-method-segment-space-before-name] [fixture:
-class/lex-member-method-segment-space-only-name] [fixture:
-class/lex-member-method-segment-tab-only-name]
-
-**注釈の文。**
-注釈の文は、その名前の部分を、
-クラスの名前の id のクラスの `annotations` に加えます。
-そのクラスは存在しなければなりません
-（[文法の外での拒否](#文法の外での拒否) を参照）。
-
-**関係。**
-関係の文は、そのクラスの名前の 2 つの書いた名前を持ち、
-その関係から `type1`、`type2`、`lineType` を持ちます。
-関係の端の `o` は 0、`<|` と `|>` は 1、`*` は 2、`<` と `>` は 3、`()` は 4、
-端がなければテキスト `none` です。
-線の `--` は 0、`..` は 1 です。
-`type1` が 4 で `type2` が `none` のとき、文は 2 つ目の書いた名前のクラスと、
-インターフェースを加えます。
-インターフェースは、
-id が `interface` にそれより前のインターフェースの数を続けたもの、
-`label` が 1 つ目の書いた名前、`classId` が 2 つ目の書いた名前で、
-その id が 1 つ目のクラスの名前の代わりになります。
-`type2` が 4 で `type1` が `none` のときは、
-2 つの名前を入れ替えて同じことをします。
-それ以外では、両方の書いた名前のクラスを、1 つ目から加えます。
-それから関係を加えます。
-`id1` と `id2` は 2 つの名前の id かインターフェースの id、
-`relationTitle1` と `relationTitle2` は、
-文字列のテキストから両端の空白を除いたもので、
-文字列がないか空なら `none`、
-`label` の単位があれば、`title` は、
-`:` の後のラベルのテキストから両端の空白を除いたものです。
-空白だけのラベルは、木では null ですが
-（[ClassRelationStatement](../ast/class.ja.md#classrelationstatement) を参照）、
-空のタイトルを与えます。
-`A --> B : ` のタイトルは空のテキストで、`A --> B` はタイトルを持ちません。
-`:` の後に何もない `A --> B :` は拒否されます。
-ラベルには `:` の後に 1 文字以上が要るからです。
-[fixture: class/tokens-relation-label-blank] [fixture:
-class/gram-relation-colon-only]
-[fixture: class/db-relation-types] [fixture:
-class/docs-syntax-class-diagram-bc06236e] [fixture:
-class/docs-syntax-class-diagram-b06c5b3c] [fixture: class/db-lollipop-both]
-[fixture: class/db-cardinality-spaces] [fixture: class/db-relation-label-quotes]
-
-**名前空間。**
-名前空間の名前の**名前のテキスト**は、クラスの名前と同じように作ります。
-名前空間の文は、その名前のテキストの**修飾された id** を持ちます。
-それは、それを含む名前空間の文の修飾された id、`.`、名前のテキストで、
-いちばん外では名前のテキストだけです。
-修飾された id の名前空間があれば、それは明示されたものになり、
-ラベルはその `label` を置き換えます。
-なければ、修飾された id と、その `.` の前の各部分について、最初のものから、
-その id の名前空間がなければ加えます。
-`label` は最後の `.` の後の部分で、修飾された id 自身ではラベルのテキスト、
-`parent` は 1 つ短い id、
-`explicit` は修飾された id 自身では真、その前の部分では偽です。
-修飾された id の名前空間がすでにあれば、明示されたものになります。
-そのような名前空間は、それぞれ親の `children` に加えます。
-それから本体の項目を当て、その後、本体の各 class の文は、
-そのクラスの `parent` を修飾された id にし、
-クラスの id を名前空間の `classes` に加えます。
-本体の各ノートの文は、そのノートについて同じことをします。
-[fixture: class/spec-class-diagram-95acf03b] [fixture:
-class/db-namespace-nested] [fixture: class/db-namespace-redeclared-label]
-[fixture: class/db-namespace-moves-class]
-
-**ノート。**
-ノートの文はノートを加えます。
-`id` は `note` にそれより前のノートの数を続けたもの、
-`text` は書いたとおりの文字列のテキストで、
-`note for` の後では `class` が書いた名前です。
-クラスは加えません。
-[fixture: class/db-note-text-spaces] [fixture:
-class/db-note-for-undefined-class]
-
-**クリックの文。**
-これらの文では、クラスの名前の書いた名前は、`,` で区切った名前の一覧で、
-各手順は各名前に順に当てます。
-
-- `callback` と、`call` の `click` は、各名前の id のクラスがあれば、
-  その `haveCallback` を設定し、それから CSS クラス `clickable` を与えます
-  （**CSS クラス** を参照）。
-- `link` と、`href` の `click` は、各名前のクラスがあれば、その `link` を、
-  URL から両端の空白を除いたものにし、それが空なら設定しません。
-  `linkTarget` はリンクのターゲットか `_blank` にします。
-  それから CSS クラス `clickable` を与えます。
-  ASCII の数字で始まる名前は、CSS クラスと同じく、
-  `classId-` に名前を続けたもので探します。
-- 空でないツールチップは、その後、
-  各名前の id のクラスがあれば、その `tooltip` を設定します。
-
-そのため、存在しないクラスへのクリックの文は、何も変えません。
-コールバックの関数名と引数は、要約に含まれません。
-[fixture: class/db-click-href] [fixture: class/db-click-link-as-written]
-[fixture: class/spec-class-diagram-6fe56b41] [fixture:
-class/db-callback-names-comma] [fixture: class/db-link-url-spaces] [fixture:
-class/db-link-undefined-class] [fixture: class/db-click-undefined-class]
-[fixture: class/db-callback-undefined-class]
-
-**CSS クラス。**
-`:::`、`cssClass`、クリックの文から書いた名前に CSS クラスを与えるときは、
-書いた名前を各 `,` で分けます。
-各名前について、ASCII の数字で始まる名前は、
-`classId-` に名前を続けたもので探し、
-その id のクラスがあれば、その `cssClasses` に空白と CSS クラスを加えます。
-そのため、`class 1A:::c` は、CSS クラス `c` のない `1A` を宣言します。
-`,` の後の空白は次の名前の一部です。
-`cssClass "A, B" c` は、A にだけ `c` を与えます。
-[fixture: class/db-css-class-digit] [fixture:
-class/db-css-class-statement-digit] [fixture: class/db-css-class-list-space]
-クラスのない名前への CSS クラスは、何も変えません。
-[fixture: class/db-css-class-undefined-class]
-
-**スタイル。**
-スタイルのテキストは、その単位のテキストを、間の空白を除いてつないだものです。
-ラベルの中の空白は残ります。
-スタイルの文の**スタイルの値**は、
-そのスタイルのテキストを各 `,` で分けたものです。
-`style` は、それを、id がその語のクラスがあれば、その `styles` に加えます。
-そのため、クラスを加える文より前の `style` の文は、何も変えません。
-[fixture: class/db-style-before-class]
-`classDef` は、それを、その名前ごとに順に、
-`cssClasses` がその名前をどこかに含むクラスの `styles` に加えます。
-より長い CSS クラスの中に含むものも数えます。
-`classDef fo fill:red` は CSS クラス `foo` のクラスに当てはまり、
-`classDef default fill:red` はすべてのクラスに当てはまります。
-当てはまるのは、その時点でその CSS クラスを持つクラスだけです。
-後でそれを得たクラスはスタイルを得ません。
-[fixture: class/db-style-spaces] [fixture: class/db-style-undefined-class]
-[fixture: class/db-class-def-substring] [fixture:
-class/db-class-def-default] [fixture: class/db-class-def-order]
-
-**ほかの文。**
-方向の文は、`direction` をその値にします。
-`accTitle:` はアクセシビリティのタイトルを、
-`accDescr:` と `accDescr {` は説明を設定します。
-[flowchart.ja.md](./flowchart.ja.md#木から要約を作る) と同じく、
-両端の空白を除き、各改行とその後の空白を 1 つの改行として読み、
-後の文が前の文を置き換えます。
-`accDescr:` の行がブロックを置き換えるのも同じです。
-[fixture: class/db-acc-title-spaces] [fixture:
-class/spec-class-diagram-0926d7aa] [fixture: class/db-acc-title-replaces]
-[fixture: class/db-acc-descr-replaces] [fixture:
-class/db-acc-descr-line-replaces-block]
 
 ## 既知の差
 
@@ -1191,14 +1047,20 @@ class 図に当てはまり、
 次のように表れます。
 
 - **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md)。**
-  キーワード、線、文字列、`:::` の中のディレクティブは、
+  キーワード、空白のない名前、区切り記号、矢印の中のディレクティブは、
   ここでは入力を拒否にし、mermaid.js はそれを受理します。
   `cla%%{init: {}}%%ss A`、`A -%%{init: {}}%%-> B`、
-  `note "a%%{init: {}}%%b"`、`class A:%%{init: {}}%%::c` です
+  `class A:%%{init: {}}%%::c` です
   （[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。
   [fixture: class/div-directive-in-keyword] [fixture:
-  class/div-directive-in-line] [fixture: class/div-directive-in-string]
-  [fixture: class/div-directive-in-triple-colon]
+  class/div-directive-in-line] [fixture: class/div-directive-in-triple-colon]
+- **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
+  多重度 `"style:#x"` の後では行が `style` の規則に当たり、
+  関係の線か端の中の無視される `;` は、ここでは入力を拒否させ、
+  mermaid.js はそれを受理します。
+  `A "style:#x" -;-> B` と `A "style:#x" <;|-- B` がそうです。
+  [fixture: class/div-ignored-semicolon-in-relation-line] [fixture:
+  class/div-ignored-semicolon-in-relation-end]
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   フロントマターに `title: <a` があると、`A : b="c">d` は、
   mermaid.js ではメンバー `b='c'>d` を加えます。

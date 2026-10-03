@@ -80,7 +80,9 @@
             }
           }
         ],
-        "styles": [],
+        "styles": [
+          null
+        ],
         "range": [
           22,
           29

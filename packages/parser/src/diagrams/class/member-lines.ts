@@ -11,9 +11,9 @@ import {
   PARAGRAPH_SEPARATOR,
   PLUS_SIGN,
   RIGHT_PARENTHESIS,
+  SPACE,
   TILDE,
 } from "../../code-points.ts"
-import type { Range } from "../../ast.ts"
 import type { DiagramCharacter, DiagramPosition } from "../../diagram-text.ts"
 
 /** diagrams/class.md, Member lines: the units that a member line is divided into. */
@@ -45,12 +45,6 @@ export interface MemberLinePart {
 export interface DividedMemberLine {
   readonly kind: MemberLineKind
   readonly parts: readonly MemberLinePart[]
-  /**
-   * Building the summary from the tree: the source range of the member name
-   * text of a method or an attribute line, which may be empty and may start
-   * with whitespace; null for an annotation line and a blank line.
-   */
-  readonly nameText: Range | null
 }
 
 /** Member lines: the visibility marks, at the start of a method or attribute line. */
@@ -73,8 +67,6 @@ interface Span {
 /** The parts of a method line around and inside its parentheses, as found in one text. */
 interface MethodDivision {
   readonly parts: readonly NamedSpan[]
-  /** The member name text: from after the visibility mark that was set apart, or from the start of the text, to the opening parenthesis. */
-  readonly nameText: Span
   /** Where the return type ends, the start of what follows the part that mermaid.js reads. */
   readonly end: number
 }
@@ -101,6 +93,20 @@ class MemberLineDivision {
   }
 
   /**
+   * Member lines: the `member-name` unit of the member name text `text`:
+   * the text without the whitespace at its end, and without the whitespace
+   * at its start unless its first character is a space (U+0020), which
+   * mermaid.js reads; a text of only whitespace is the unit when it starts
+   * with a space. Null when there is no unit, also for an empty text, whose
+   * first character is none.
+   */
+  public memberNameOf(text: Span): Span | null {
+    const trimmed = this.trimmed(text)
+    if (text.start === text.end || !this.isAt(text.start, SPACE)) return trimmed
+    return { start: text.start, end: trimmed?.end ?? text.end }
+  }
+
+  /**
    * Member lines: what the member text `text` is, an annotation line, a
    * method line, or an attribute line, tried in that order, and its units;
    * null units for a method line that cannot be divided.
@@ -108,24 +114,17 @@ class MemberLineDivision {
   public divide(text: Span): {
     readonly kind: MemberLineKind
     readonly spans: readonly NamedSpan[] | null
-    readonly nameText: Span | null
   } {
     if (this.isAnnotationLine(text)) {
       return {
         kind: "annotation",
         spans: this.annotationLine(text),
-        nameText: null,
       }
     }
     if (this.isMethodLine(text)) {
-      const method = this.methodLine(text)
-      return {
-        kind: "method",
-        spans: method?.spans ?? null,
-        nameText: method?.nameText ?? null,
-      }
+      return { kind: "method", spans: this.methodLine(text) }
     }
-    return { kind: "attribute", ...this.attributeLine(text) }
+    return { kind: "attribute", spans: this.attributeLine(text) }
   }
 
   /** Member lines, item 1: the member text starts with `<<` and ends with `>>`. */
@@ -166,13 +165,10 @@ class MemberLineDivision {
   /**
    * Member lines: an attribute line, a `visibility` unit for a visibility
    * mark at its start, a `classifier` unit for a classifier mark at its end,
-   * and a `member-name` unit for the text between, without the whitespace
-   * at its ends, when that is not empty.
+   * and the `member-name` unit of the text between, its member name text
+   * (see {@link MemberLineDivision.memberNameOf}).
    */
-  public attributeLine(text: Span): {
-    readonly spans: NamedSpan[]
-    readonly nameText: Span
-  } {
+  public attributeLine(text: Span): NamedSpan[] {
     const spans: NamedSpan[] = []
     let { start, end } = text
     if (this.isMarkAt(start, VISIBILITY_MARKS)) {
@@ -184,10 +180,10 @@ class MemberLineDivision {
       classifier = { name: "classifier", start: end - 1, end }
       end -= 1
     }
-    const name = this.trimmed({ start, end })
+    const name = this.memberNameOf({ start, end })
     if (name !== null) spans.push({ name: "member-name", ...name })
     if (classifier !== null) spans.push(classifier)
-    return { spans, nameText: { start, end } }
+    return spans
   }
 
   /**
@@ -196,10 +192,7 @@ class MemberLineDivision {
    * is, and the text before that segment and after the return type are
    * `ignored-text` units. Null when nothing can be divided.
    */
-  public methodLine(text: Span): {
-    readonly spans: NamedSpan[]
-    readonly nameText: Span
-  } | null {
+  public methodLine(text: Span): NamedSpan[] | null {
     const segments = this.segmentsOf(text)
     for (const [index, segment] of segments.entries()) {
       const next = segments.at(index + 1)
@@ -211,7 +204,7 @@ class MemberLineDivision {
       spans.push(...division.parts)
       const after = this.trimmed({ start: division.end, end: text.end })
       if (after !== null) spans.push({ name: "ignored-text", ...after })
-      return { spans, nameText: division.nameText }
+      return spans
     }
     return null
   }
@@ -293,7 +286,7 @@ class MemberLineDivision {
     }
     if (closing === -1 || opening === -1) return null
     const spans: NamedSpan[] = []
-    const name = this.trimmed({ start: text.start, end: opening })
+    const name = this.memberNameOf({ start: text.start, end: opening })
     if (name !== null) spans.push({ name: "member-name", ...name })
     spans.push({ name: "(", start: opening, end: opening + 1 })
     const parameters = this.trimmed({ start: opening + 1, end: closing })
@@ -323,11 +316,15 @@ class MemberLineDivision {
         !classifierFound &&
         this.isMarkAt(returnType.end - 1, CLASSIFIER_MARKS)
       ) {
-        const shorter = this.trimmed({
-          start: returnType.start,
-          end: returnType.end - 1,
-        })
-        if (shorter !== null) spans.push({ name: "return-type", ...shorter })
+        // mermaid.js trims the return type before it removes the mark, so
+        // the whitespace before the mark is part of the return type.
+        if (returnType.end - 1 > returnType.start) {
+          spans.push({
+            name: "return-type",
+            start: returnType.start,
+            end: returnType.end - 1,
+          })
+        }
         spans.push({
           name: "classifier",
           start: returnType.end - 1,
@@ -339,7 +336,6 @@ class MemberLineDivision {
     }
     return {
       parts: spans,
-      nameText: { start: text.start, end: opening },
       end: returnEnd,
     }
   }
@@ -378,12 +374,10 @@ export function divideMemberLine(
     return {
       kind: "blank",
       parts: [{ name: "blank-member", from: characters[0], to: end }],
-      nameText: null,
     }
   }
-  const { kind, spans, nameText } = division.divide(text)
+  const { kind, spans } = division.divide(text)
   if (spans === null) return null
-  const endOffset = end?.start ?? characters[characters.length - 1].end
   return {
     kind,
     parts: spans.map((span) => ({
@@ -391,12 +385,5 @@ export function divideMemberLine(
       from: characters[span.start],
       to: characters.at(span.end) ?? end,
     })),
-    nameText:
-      nameText === null
-        ? null
-        : [
-            characters.at(nameText.start)?.start ?? endOffset,
-            characters.at(nameText.end)?.start ?? endOffset,
-          ],
   }
 }

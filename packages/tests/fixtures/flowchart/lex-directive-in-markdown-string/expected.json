@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md A directive is a token boundary: a markdown string is a string unit, which may have a directive between any two of its characters; the label is `a  b`, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "a  b",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

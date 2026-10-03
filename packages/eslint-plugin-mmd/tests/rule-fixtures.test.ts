@@ -9,6 +9,7 @@
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs"
 import { describe, expect, it } from "vitest"
+import type { DiagramType, Fixture } from "@mmd-toolkit/tests"
 import { loadFixtures } from "@mmd-toolkit/tests"
 import { rules } from "../src/rules/index.ts"
 import { isDiagramType } from "./helpers.ts"
@@ -55,6 +56,18 @@ const copies = fixtureRuleNames().flatMap((name) =>
   }),
 )
 
+/** The corpus fixtures of each diagram type, read once for all the copies. */
+const corpus = new Map<DiagramType, Promise<Fixture[]>>()
+
+/** The fixtures of the corpus directory of `diagram`. */
+function corpusFixtures(diagram: DiagramType): Promise<Fixture[]> {
+  const cached = corpus.get(diagram)
+  if (cached !== undefined) return cached
+  const loaded = loadFixtures(diagram)
+  corpus.set(diagram, loaded)
+  return loaded
+}
+
 describe("the fixture directories of the rules", () => {
   it("each belong to a rule", () => {
     for (const name of fixtureRuleNames()) {
@@ -65,7 +78,7 @@ describe("the fixture directories of the rules", () => {
   it.each(copies.map((copy) => [copy.path, copy]))(
     "%s is the input of the corpus fixture of its name",
     async (_path, copy) => {
-      const fixture = (await loadFixtures(copy.diagram)).find(
+      const fixture = (await corpusFixtures(copy.diagram)).find(
         (candidate) => candidate.name === copy.fixture,
       )
       expect(fixture).toBeDefined()

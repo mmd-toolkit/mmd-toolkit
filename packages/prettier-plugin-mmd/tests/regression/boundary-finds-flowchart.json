@@ -1,0 +1,22 @@
+[
+  {
+    "text": "flowchart LR\nclassDef c fill:#f96;\u2028;\nclass A c;\n",
+    "note": "found by the boundary tests of flowchart: a style, classDef, or linkStyle line that holds U+2028 or U+2029 and a ; an ignored ; and a ; with U+2028 between"
+  },
+  {
+    "text": "flowchart LR\nclassDef c fill:#f96;\u2029;\u2029\nA\n",
+    "note": "found by the boundary tests of flowchart: a style, classDef, or linkStyle line that holds U+2028 or U+2029 and a ; same with U+2029"
+  },
+  {
+    "text": "flowchart LR\nclassDef c fill:#f96;\u2028 ;\nA\n",
+    "note": "found by the boundary tests of flowchart: a style, classDef, or linkStyle line that holds U+2028 or U+2029 and a ; same with a space"
+  },
+  {
+    "text": "flowchart LR\nA\nstyle A fill:#f00,accDescr {}\u2028; ",
+    "note": "found by the boundary tests of flowchart: a style, classDef, or linkStyle line that holds U+2028 or U+2029 and a ; an empty description block, U+2028, and a ;"
+  },
+  {
+    "text": "flowchart LR\nsubgraph S\n  style A fill:#f00;\u2028 ;\n  A\nend\n",
+    "note": "found by the boundary tests of flowchart: a style, classDef, or linkStyle line that holds U+2028 or U+2029 and a ; in a subgraph"
+  }
+]

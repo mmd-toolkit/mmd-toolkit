@@ -494,8 +494,11 @@ two characters, so `note left of A:hi` has the text `i`, and
 the id becomes one space. A text that mermaid.js does not read right after the
 position, as in `note left of%%x A`, keeps touching the position. The text of a
 note over lines is kept as written, and `end note` stands at the level of the
-note. The quotes of a floating note are kept as written: `note ""floating" as N`
-has the text `floating`.
+note. A note on one line with no text keeps the whitespace after its `:`, as a
+description does: `note left of A : ` is accepted, while `note left of A :` is
+rejected; so does a note with two whitespace characters before the `:` and
+nothing after it, whose text is the `:` alone. The quotes of a floating note are
+kept as written: `note ""floating" as N` has the text `floating`.
 
 Input ([notes/kept-input.mmd](../tests/fixtures/state/notes/kept-input.mmd)):
 
@@ -664,7 +667,7 @@ state A {
 %%{init: {}}%%
 B
 }
-Fo%%{init: {}}%%o --> B
+Foo%%{init: {}}%% --> B
 ```
 
 Output
@@ -677,7 +680,7 @@ stateDiagram-v2
     %%{init: {}}%%
     B
   }
-  Fo%%{init: {}}%%o --> B
+  Foo%%{init: {}}%% --> B
 ```
 
 ### Frontmatter YAML

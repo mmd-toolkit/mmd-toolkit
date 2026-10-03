@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "known-divergences.md (directive-as-token-boundary): mermaid.js reads `flowchart LR` and accepts; here detection also sees `flowchart`, but the directive lies inside the header keyword, a `Keyword` unit, and the input is rejected."
+    "note": "known-divergences.md (directive-as-token-boundary): mermaid.js reads `flowchart LR` and accepts; here detection also sees `flowchart`, but the directive lies inside the header keyword, and the input is rejected."
   },
   "knownDivergence": "directive-as-token-boundary",
   "accepted": true,

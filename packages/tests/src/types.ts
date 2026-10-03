@@ -27,9 +27,8 @@ export interface MermaidError {
 
 /**
  * Normalized summary of a diagram Db: only what the syntax determines, as
- * plain JSON. The shape depends on the diagram type; see the "Db normalization"
- * section of `docs/diagrams/<diagram>.md` in `@mmd-toolkit/spec` and the
- * normalizer in `src/normalizers/`.
+ * plain JSON. The shape depends on the diagram type; see `docs/db-summaries.md`
+ * and the normalizer in `src/normalizers/`.
  */
 export type DbSummary = JsonObject
 

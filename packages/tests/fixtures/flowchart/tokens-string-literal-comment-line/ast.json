@@ -308,10 +308,10 @@
     },
     {
       "type": "StringFragment",
-      "value": "\"one",
+      "value": "\"one\n",
       "range": [
         27,
-        31
+        32
       ],
       "loc": {
         "start": {
@@ -319,8 +319,8 @@
           "column": 12
         },
         "end": {
-          "line": 3,
-          "column": 16
+          "line": 4,
+          "column": 0
         }
       }
     },

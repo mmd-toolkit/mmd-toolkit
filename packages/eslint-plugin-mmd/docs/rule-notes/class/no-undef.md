@@ -18,12 +18,12 @@ ids of the classes are taken from the `name` of every `ClassDeclaration`, the
 `ClassRelationStatement`, also in the `body` of a `ClassNamespaceStatement`.
 
 Two steps go beyond the tree, and repeat derivations of the Db (see Building the
-summary from the tree in the specification's diagrams/class.md). The id of a
-class is none of the fields of the class name (`prefix`, `name`, and `generic`):
-it is the text of the class name, its prefix included, before its first `~`. And
-a relation with a lollipop at one end only, as in `A ()-- B`, makes the class at
-that end an interface, so it adds only the class at the other end. Splitting the
-list of `cssClass` at `,` is a reading of the value.
+summary from the tree in the tests package's docs/db-from-tree/class.md). The id
+of a class is none of the fields of the class name (`prefix`, `name`, and
+`generic`): it is the text of the class name, its prefix included, before its
+first `~`. And a relation with a lollipop at one end only, as in `A ()-- B`,
+makes the class at that end an interface, so it adds only the class at the other
+end. Splitting the list of `cssClass` at `,` is a reading of the value.
 
 ## Fixtures
 

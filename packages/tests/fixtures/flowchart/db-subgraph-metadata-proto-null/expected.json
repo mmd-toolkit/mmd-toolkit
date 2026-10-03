@@ -39,5 +39,17 @@
       }
     ],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "metadata": {
+            "__proto__": null
+          }
+        }
+      }
+    ]
   }
 }

@@ -124,7 +124,7 @@ for tags only in the text it reads; what the frontmatter contains does not
 change how the text is read (see
 [HTML attribute quotes](../common.md#html-attribute-quotes)). A value derived
 from the frontmatter, such as the title, is the one that mermaid.js derives (see
-[Frontmatter configuration](../common.md#frontmatter-configuration)).
+[Frontmatter configuration](../../../tests/docs/configuration.md#frontmatter-configuration)).
 
 That a tag can reach from the frontmatter into the text comes from the order of
 the steps of mermaid.js: the replacement runs before the frontmatter is removed.
@@ -141,27 +141,3 @@ reject, reject one that it would accept, or change the text of a label, a title,
 or a message. This toolkit reads the diagram as it would without the
 frontmatter. Closing the tag in the title, or leaving out the `<`, makes both
 read the same.
-
-## Counts and how they are checked
-
-Inputs were made from the fixtures of flowchart, sequence, and class that have a
-`"`, have no frontmatter, and are not marked with a divergence, by putting
-before each of them a frontmatter with `title: <a` and one with `title: <a z="`,
-1,196 in all. Each was run through mermaid.js and through the parser of this
-specification, and their acceptance and Db were compared:
-
-| Inputs                        | Rejected by mermaid.js, accepted by this specification | Accepted by both, a different Db | Accepted by mermaid.js, rejected by this specification |
-| ----------------------------- | -----------------------------------------------------: | -------------------------------: | -----------------------------------------------------: |
-| from accepted fixtures, 1,068 |                                                     98 |                                7 |                                                      0 |
-| from rejected fixtures, 128   |                                                      0 |                                0 |                                                      0 |
-
-The other 1,091 are read the same by both. Inputs that mermaid.js accepts and
-this specification rejects, as in example 1, are not among them.
-
-For each input in which a tag that starts in the frontmatter changes which `"`
-mermaid.js reads as `'`, 120 of these, the differential test of the parser
-compares the parser with mermaid.js on a **reference input**: the input with
-every `<` of its frontmatter replaced by `(`, so that no tag starts there. The
-values that come from the frontmatter, such as the title, are taken from the run
-of mermaid.js on the reference input. The parser gave every one of the 120 the
-reading of mermaid.js on its reference input.

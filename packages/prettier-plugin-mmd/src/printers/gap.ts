@@ -4,6 +4,8 @@ import { utils } from "prettier/doc"
 import { isLastOnItsLine } from "./kept-lines.ts"
 import type { Source, Trivia } from "./source.ts"
 import {
+  findDirectiveEndingAt,
+  isCommentLine,
   findTokenStartingAt,
   findTriviaBetween,
   isWhitespace,
@@ -50,6 +52,14 @@ export interface ItemLine {
    * the line before it (see `BlockRules`).
    */
   readonly whitespaceLineBefore: boolean
+  /** Whether the line holds nothing but directives. */
+  readonly directivesOnly: boolean
+  /**
+   * Whether the line holds a `%%` comment that mermaid.js does not read as a
+   * comment line: a line of only `%%`, or one that starts with `%%{` without
+   * being a directive (see `isCommentLine`).
+   */
+  readonly bareMarker: boolean
 }
 
 /**
@@ -152,6 +162,15 @@ export function readGap(
       run,
       blankBefore: emptyLineSeen,
       whitespaceLineBefore: whitespaceLineSeen,
+      directivesOnly: line.parts.every(
+        (part) => part.item.type === "Directive",
+      ),
+      bareMarker: line.parts.some(
+        (part) =>
+          part.item.type === "Comment" &&
+          part.item.mark === "%%" &&
+          !isCommentLine(source.text, source.root, part.item),
+      ),
     })
     emptyLineSeen = false
     whitespaceLineSeen = false
@@ -199,8 +218,8 @@ function readSingleLine(source: Source, line: ScannedLine): Gap {
  *   dropped would make a second formatting differ from the first.
  * - `lineTerminator`: a line feed.
  * - `whitespace`: one whitespace character. `beforeComment` is set for a
- *   U+2028 or U+2029 that a comment follows on its line: a comment may start
- *   right after it (common.md, Comment lines), and a printed comment must
+ *   U+2028 or U+2029 that the comment line of a region that joins lines
+ *   follows on its line (`Source.joiningRegions`): a printed comment must
  *   start a line, because a `%%` after other text on its line is not a
  *   comment.
  * - `text`: anything else, which belongs to a node.
@@ -230,8 +249,8 @@ export function readGapElement(
   }
   if (isWhitespace(character)) {
     const beforeComment =
-      (character === "\u2028" || character === "\u2029") &&
-      isFollowedByComment(source, offset + 1)
+      isLineSeparator(character) &&
+      isFollowedByJoiningRegion(source, offset + 1)
     return { element: { kind: "whitespace", beforeComment }, end: offset + 1 }
   }
   const token = findTokenStartingAt(source, offset)
@@ -241,6 +260,49 @@ export function readGapElement(
       : { element: { kind: "separator", token }, end: token.range[1] }
   }
   return { element: { kind: "text" }, end: offset + 1 }
+}
+
+/**
+ * Whether a `;` that separates statements follows a U+2028 or U+2029 that
+ * lies before the gap, which the thing before the gap prints as written (the
+ * text of a box, a title, or a subgraph name ends with it): only whitespace
+ * and directives lie between them on the line. Such a `;` is kept, as an item.
+ * mermaid.js removes a comment line that starts right after U+2028 or
+ * U+2029, with the whitespace and line breaks before it, so without the `;`
+ * between them the line break and a comment line that follows would be
+ * removed and the next line would go on where the character stands: `box
+ * red`, U+2028, `;`, and a line `%% c` end the text of the box at the `;`.
+ * A U+2028 or U+2029 in the gap is printed as whitespace, and the `;` after
+ * it is dropped with it.
+ */
+function isAfterKeptLineSeparator(
+  source: Source,
+  gapStart: number,
+  offset: number,
+): boolean {
+  let position = offset
+  while (position > 0) {
+    const directive = findDirectiveEndingAt(source, position)
+    if (directive !== undefined) {
+      // The character that stops a directive that is not closed is part of
+      // the directive, which is printed as written (see `createSource`).
+      if (isLineSeparator(source.text[position - 1])) return true
+      position = directive.range[0]
+      continue
+    }
+    const character = source.text[position - 1]
+    if (isLineSeparator(character)) {
+      return position - 1 < gapStart
+    }
+    if (character === "\n" || !isWhitespace(character)) return false
+    position--
+  }
+  return false
+}
+
+/** Whether a character is U+2028 or U+2029. */
+function isLineSeparator(character: string | undefined): boolean {
+  return character === "\u2028" || character === "\u2029"
 }
 
 /**
@@ -284,12 +346,17 @@ function scanLines(
           addPart(element.item, false)
         }
         break
-      case "separator":
-        addPart(element.token, !keepsSeparators)
+      case "separator": {
+        const staysWithPrevious =
+          !keepsSeparators && isAfterKeptLineSeparator(source, start, offset)
+        addPart(element.token, !(keepsSeparators || staysWithPrevious))
+        // A `;` that stays after a U+2028 or U+2029 ends what stands with
+        // the thing before the gap, as a `;` that is dropped does.
         if (!keepsSeparators) {
           current.afterLastSeparator = current.parts.length
         }
         break
+      }
       case "lineTerminator":
         breakLine(true)
         break
@@ -328,15 +395,19 @@ function isDroppedSemicolon(source: Source, item: GapItem): boolean {
 }
 
 /**
- * Whether a comment starts at `offset` after nothing but whitespace and
- * directives on the same line.
+ * Whether the comment line of a region that joins lines starts at `offset`
+ * after nothing but whitespace and directives on the same line.
  */
-function isFollowedByComment(source: Source, offset: number): boolean {
+function isFollowedByJoiningRegion(source: Source, offset: number): boolean {
   const { text } = source
   let position = offset
   while (position < text.length) {
     const trivia = findTriviaBetween(source, position, position + 1).at(0)
-    if (trivia?.type === "Comment") return true
+    if (trivia?.type === "Comment") {
+      return source.joiningRegions.some(
+        (region) => region.comment.range[0] === trivia.range[0],
+      )
+    }
     if (trivia?.type === "Directive") {
       position = trivia.range[1]
       continue

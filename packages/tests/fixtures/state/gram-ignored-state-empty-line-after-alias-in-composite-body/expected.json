@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context, rule 17: a line feed makes no unit in a composite body, so after an empty line `state {` starts the body of `A : x` there, which is not divided."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "Y",
+        "shape": "roundedWithTitle",
+        "label": "Y",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "A : x",
+        "shape": "roundedWithTitle",
+        "label": "d",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "Y",
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "A : x"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

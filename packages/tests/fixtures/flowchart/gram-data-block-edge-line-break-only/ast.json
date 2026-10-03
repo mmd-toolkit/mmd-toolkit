@@ -474,6 +474,24 @@
       }
     },
     {
+      "type": "RawText",
+      "value": "\n",
+      "range": [
+        28,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 4
+        },
+        "end": {
+          "line": 4,
+          "column": 0
+        }
+      }
+    },
+    {
       "type": "Punctuator",
       "value": "}",
       "range": [

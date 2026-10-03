@@ -56,7 +56,10 @@ why.
 - Boundary insertion: at every token boundary of every accepted fixture of the
   diagram type, insert each of: a space, a tab, two spaces, a directive (closed
   and unclosed), a comment line, an empty line, an empty description block, a
-  `;`. Do not thin the positions at the boundaries the change concerns.
+  `;`. Take boundaries by kind (the kinds of the tokens before and after, and
+  the place in the line), a few of each kind; every kind that the change
+  concerns is taken, none left out. Running every position of every fixture
+  repeats one check thousands of times and is not a stronger review.
 - Line endings, after every statement form: ` ;`, `;`, `;;`, `; ;`, `: `, a
   trailing space, a trailing tab, a trailing comment, a trailing directive
   (closed and unclosed), a blank line, `\r\n`, and the end of the text without a
@@ -85,6 +88,12 @@ why.
   edit (a suggestion that removes a line removes its line terminator too) and
   comparing the Db. One input that mixes the two attributes the suggestion's
   effect to the message.
+
+Check the parts before generating with them: each inserted string is what its
+name says. Parse it alone and read the result (a "closed directive" has
+`closed: true`, a "comment line" is one `Comment`, a "line separator" is
+U+2028). A part that is not what it claims makes every result built on it a
+claim about something else, and the review does not notice.
 
 An input on which the implementation and mermaid.js disagree is not a finding
 until the known divergences are ruled out: run mermaid.js again on the input
@@ -160,6 +169,10 @@ Every review has a section on proper form, also when the behavior is right:
   added to the inputs of every later review.
 - When the same item reaches a third round with new findings, the review stops
   and reports the origins before anything else is fixed.
+- A finding against the parser or the specification whose input the conformance
+  corpus lacks names the fixture to add: the input is kept in the corpus
+  (`packages/tests/fixtures/`), where a parser in any language is checked with
+  it, and not in a list inside the parser.
 - The report says what the reviewer did not look at and why, so that nobody
   reads a pass as exhaustive.
 
@@ -172,5 +185,5 @@ Every review has a section on proper form, also when the behavior is right:
   (`MMD_TOOLKIT_MERMAID_CACHE=disabled`), unless the copy reads the tree's own
   `packages/tests` and so shares its key.
 - Stop only one's own tasks, by task id or PID; never a process by name.
-- Do not start a long run while another full-size run is going; the load
-  multiplies both.
+- Do not start a long run while another long run is going; the load multiplies
+  both.

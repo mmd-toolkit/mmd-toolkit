@@ -34,11 +34,11 @@ export function textStartOf(text: string): number {
  * `text` with every directive removed and the text around it joined: the
  * reference input for `directive-as-token-boundary`. The specification
  * reads the text without its directives, as mermaid.js does, and differs
- * only in rejecting a directive inside a unit that is not `RawText` or
- * `Identifier`; the reference input has no directive, so the parser must
- * give for it what mermaid.js gives for `text`. The directives are the
- * ones the parser finds; the fixtures and the comparison of every other
- * input check that scan.
+ * only in rejecting a directive inside a token that may not be cut, one
+ * that is not a text or a string; the reference input has no directive, so
+ * the parser must give for it what mermaid.js gives for `text`. The
+ * directives are the ones the parser finds; the fixtures and the
+ * comparison of every other input check that scan.
  */
 export function withoutDirectives(text: string): string {
   let joined = ""
@@ -48,6 +48,57 @@ export function withoutDirectives(text: string): string {
     offset = directive.range[1]
   }
   return joined + text.slice(offset)
+}
+
+/**
+ * `text` with each `;` that the line rule ignores moved to the end of its
+ * line segment, before the separator that ends it: the reference input for
+ * `ignored-semicolon-as-token-boundary`. mermaid.js removes such a `;`
+ * from its line before it reads the line, and the specification leaves it
+ * out of the diagram text, so both read the same diagram text in the
+ * result as in `text`: at the end of its segment the `;` is still the last
+ * of the segment, so the line rule still ignores it, and it lies after the
+ * text of the segment, inside no token. The specification differs only in
+ * rejecting such a `;` inside a token that may not be cut, one that is not
+ * a text or a string, so the parser must give for the result what
+ * mermaid.js gives for `text`. Where a token runs on over the end of the
+ * segment, the moved `;` lies inside it, and the result may be read
+ * otherwise. The `;` are the ones the parser's line rule finds; the
+ * fixtures and the comparison of every other input check that rule.
+ */
+export function withIgnoredSemicolonsAtSegmentEnds(text: string): string {
+  let moved = ""
+  let offset = 0
+  for (const { semicolons, end } of ignoredSemicolonsBySegment(text)) {
+    for (const semicolon of semicolons) {
+      moved += text.slice(offset, semicolon)
+      offset = semicolon + 1
+    }
+    moved += text.slice(offset, end) + ";".repeat(semicolons.length)
+    offset = end
+  }
+  return moved + text.slice(offset)
+}
+
+/**
+ * common.md, `style` and `classDef` lines: the `;` that the line rule
+ * ignores in `text`, as the parser's line rule finds them, for each line
+ * segment that has any: their offsets, in source order, and where the
+ * separator that ends the segment is, or the end of the text.
+ */
+export function ignoredSemicolonsBySegment(
+  text: string,
+): { readonly semicolons: readonly number[]; readonly end: number }[] {
+  const segments: { semicolons: number[]; end: number }[] = []
+  for (const entry of openSource(text).lexer.lineEntries()) {
+    if (entry.kind === "segment" && entry.ignoredSemicolons.size > 0) {
+      segments.push({
+        semicolons: [...entry.ignoredSemicolons].sort((a, b) => a - b),
+        end: entry.end,
+      })
+    }
+  }
+  return segments
 }
 
 /**
@@ -783,12 +834,12 @@ function stateStatementStartsAt(
 const CLASS_DIRECTIONS: readonly string[] = ["TB", "BT", "RL", "LR"]
 
 /**
- * known-divergences/tokenless-empty-forms.md, Counts and how they are
- * checked: the range that the reference input of a class diagram, whose
- * units are `units`, leaves out for the removed empty form `form`: the form,
- * and for each of the empty description blocks between `direction` and
- * its value on one line, also the whitespace around it, so that the two
- * form one word, as mermaid.js joins the two name parts
+ * `docs/testing.md`, Known divergences, `tokenless-empty-forms`: the range
+ * that the reference input of a class diagram, whose units are `units`,
+ * leaves out for the removed empty form `form`: the form, and for each of
+ * the empty description blocks between `direction` and its value on one
+ * line, also the whitespace around it, so that the two form one word, as
+ * mermaid.js joins the two name parts
  * (`direction accDescr {} LR` and `direction accDescr {}accDescr {}LR`
  * become `directionLR`).
  */

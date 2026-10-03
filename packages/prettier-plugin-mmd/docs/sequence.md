@@ -166,6 +166,52 @@ sequenceDiagram
   end
 ```
 
+A `;` after the directives that follow an `autonumber`, or a `participant` or an
+`actor` that ends with a data block and has no `as`, is kept. mermaid.js removes
+the directive, and whitespace at the end of the line then hides the line break
+from the statement, which needs one, and whose last unit reads no whitespace:
+`autonumber`, a space, `%%{wrap}%%`, and `;` are accepted, while the same
+without the `;` is rejected. The last unit of the other statements, a text, an
+id, or a description after `as`, reads the whitespace with it (see the statement
+context of the sequence specification, and Empty description blocks before a
+separator there).
+
+Input
+([statements-one-per-line/autonumber-directive-kept-input.mmd](../tests/fixtures/sequence/statements-one-per-line/autonumber-directive-kept-input.mmd)):
+
+```mmd
+sequenceDiagram
+autonumber %%{wrap}%%;
+A->>B: x
+```
+
+Output
+([statements-one-per-line/autonumber-directive-kept-output.mmd](../tests/fixtures/sequence/statements-one-per-line/autonumber-directive-kept-output.mmd)):
+
+```mmd
+sequenceDiagram
+  autonumber %%{wrap}%%;
+  A ->> B: x
+```
+
+Input
+([statements-one-per-line/data-block-directive-kept-input.mmd](../tests/fixtures/sequence/statements-one-per-line/data-block-directive-kept-input.mmd)):
+
+```mmd
+sequenceDiagram
+participant A@{ "type": "actor" } %%{wrap}%%;
+A->>B: x
+```
+
+Output
+([statements-one-per-line/data-block-directive-kept-output.mmd](../tests/fixtures/sequence/statements-one-per-line/data-block-directive-kept-output.mmd)):
+
+```mmd
+sequenceDiagram
+  participant A@{ "type": "actor" } %%{wrap}%%;
+  A ->> B: x
+```
+
 ### Blank lines
 
 As in a flowchart: a run of empty lines becomes one, and empty lines at the
@@ -560,9 +606,9 @@ sequenceDiagram
 
 ### Line separators
 
-U+2028 and U+2029 are whitespace, but two readings of mermaid.js depend on them,
-so the formatter keeps them where they matter. The characters are invisible, so
-there is no example here; the tests write them as escapes (see
+U+2028 and U+2029 are whitespace, but some readings of mermaid.js depend on
+them, so the formatter keeps them where they matter. The characters are
+invisible, so there is no example here; the tests write them as escapes (see
 `tests/line-separators.test.ts`).
 
 - At the end of the text of a `box`, after the whitespace that may stand before
@@ -575,6 +621,26 @@ there is no example here; the tests write them as escapes (see
   The comment, the comment line, and the text after it are printed as written,
   without indentation: the tree lists them as comments, and the printer reads
   them as one.
+- Right after a directive that is not closed. The text of such a directive stops
+  before the character, which is no whitespace to it: with the character printed
+  as a space or a line break, the directive would reach the rest of the text.
+  This holds in every diagram type.
+- As the whitespace character that follows `title`: `title`, U+2028, and ` ;`
+  stays as written, with the `;`.
+- Between two parts of a statement, in every diagram type: the whitespace
+  between them stays as written when it holds a U+2028 or U+2029, since the
+  character is not whitespace to every rule of mermaid.js (`class A`, U+2028,
+  and ` direction LR` is one name, while `class A`, a line break, and
+  ` direction LR` is a statement and a direction).
+- On a line that holds a `;` that the line rule ignores and, after it, a U+2028
+  or U+2029: the line rule reads the text up to the character as the line, so
+  the line is printed as written.
+- A `;` after a U+2028 or U+2029 that the printer keeps, such as the one at the
+  end of the text of a `box`, a title, or a subgraph name. mermaid.js removes a
+  comment line that starts right after U+2028 or U+2029 with the line breaks
+  before it, so the `;` between them keeps the line break and a comment line
+  after it from joining the next line: `box red`, U+2028, `;`, and a line `%% c`
+  end the text of the box at the `;`.
 
 ### Directives
 

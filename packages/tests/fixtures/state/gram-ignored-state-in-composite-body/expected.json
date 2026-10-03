@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context, rule 17: a `state` unit that only empty strings separate from the next `{` unit is an `ignored-state` unit, which the grammar takes before the `{` of a body as part of the textBeforeBody; the same holds in a composite body: B is in X, and X in Y."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "Y",
+        "shape": "roundedWithTitle",
+        "label": "Y",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "parentId": "Y",
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "X"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

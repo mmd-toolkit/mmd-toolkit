@@ -29,15 +29,15 @@
           },
           "remainder": {
             "type": "SequenceLiteral",
-            "value": "G",
+            "value": "  G",
             "range": [
-              34,
+              32,
               35
             ],
             "loc": {
               "start": {
                 "line": 2,
-                "column": 18
+                "column": 16
               },
               "end": {
                 "line": 2,
@@ -192,15 +192,15 @@
     },
     {
       "type": "RawText",
-      "value": "G",
+      "value": "  G",
       "range": [
-        34,
+        32,
         35
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 18
+          "column": 16
         },
         "end": {
           "line": 2,
@@ -227,7 +227,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "A",
       "range": [
         48,

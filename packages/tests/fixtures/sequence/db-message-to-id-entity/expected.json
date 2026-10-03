@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary from the tree: each value is read in converted form, so the entity in the id after the arrow is its placeholder, in the participant and in `to`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Bﬂ°quot¶ß"
+      },
+      {
+        "name": "Bﬂ°quot¶ß",
+        "description": "Bﬂ°quot¶ß",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "Bﬂ°quot¶ß",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

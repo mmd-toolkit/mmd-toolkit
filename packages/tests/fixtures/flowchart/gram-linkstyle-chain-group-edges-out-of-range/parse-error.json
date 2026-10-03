@@ -1,0 +1,17 @@
+{
+  "message": "linkStyle 4 does not name a link that exists",
+  "range": [
+    45,
+    46
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 12
+    },
+    "end": {
+      "line": 3,
+      "column": 13
+    }
+  }
+}

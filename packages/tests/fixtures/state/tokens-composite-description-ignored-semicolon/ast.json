@@ -261,7 +261,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "IgnoredSemicolon",
       "value": ";",
       "range": [
         44,

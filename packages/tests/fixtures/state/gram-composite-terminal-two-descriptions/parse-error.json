@@ -1,0 +1,17 @@
+{
+  "message": "A composite state can have only one description",
+  "range": [
+    18,
+    37
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 2
+    },
+    "end": {
+      "line": 4,
+      "column": 3
+    }
+  }
+}

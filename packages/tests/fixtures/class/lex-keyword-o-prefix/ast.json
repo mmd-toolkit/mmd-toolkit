@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "order",
             "range": [
               19,
@@ -119,7 +119,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "order",
       "range": [
         19,

@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Known divergences (ignored-semicolon-as-token-boundary): the line matches the `style` rule, and mermaid.js reads it without the `;`, with a note left of A; here the ignored `;` lies inside the keyword `left`, and the input is rejected."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "style:#x",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "A",
+        "message": "t",
+        "wrap": false,
+        "type": 2,
+        "placement": 0
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "description": "style:#x"
+        }
+      }
+    ]
+  }
+}

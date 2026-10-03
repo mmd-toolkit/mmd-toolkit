@@ -10,8 +10,8 @@
  */
 import { existsSync, readFileSync, readdirSync } from "node:fs"
 import path from "node:path"
-import { getFixturesRoot } from "../../tests/src/index.ts"
-import type { JsonValue } from "../../tests/src/types.ts"
+import type { JsonValue } from "@mmd-toolkit/tests"
+import { getFixturesRoot } from "@mmd-toolkit/tests"
 
 /** One difference: where in the tree of `fixture`, and the two values. */
 interface Difference {

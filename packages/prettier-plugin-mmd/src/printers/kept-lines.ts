@@ -77,6 +77,27 @@ export function findLinesWithOwnSemicolons(
 }
 
 /**
+ * The lines that hold a `;` that the line rule ignores and, after it on the
+ * line, a U+2028 or U+2029: the line is printed as written. The line rule of
+ * mermaid.js (common.md, The `style` and `classDef` lines) reads the text up
+ * to the character as the line, which ends with that `;`, so with the
+ * character printed as a space the line would end elsewhere, and the `;`
+ * that follows it would be read otherwise.
+ */
+export function findLinesWithSeparatorAfterIgnoredSemicolon(
+  source: Source,
+): ReadonlySet<number> {
+  const lines = new Set<number>()
+  for (const offset of source.ignoredSemicolons) {
+    const rest = source.text.slice(offset + 1, lineEndOf(source, offset))
+    if (rest.includes("\u2028") || rest.includes("\u2029")) {
+      lines.add(lineStartOf(source, offset))
+    }
+  }
+  return lines
+}
+
+/**
  * Whether nothing but whitespace follows the `;` at `offset` on its line: no
  * token, comment, or directive starts after it before the line ends. A `;`
  * that the line rule ignores and that ends its line is at the end of a
@@ -93,14 +114,16 @@ export function isLastOnItsLine(source: Source, offset: number): boolean {
 
 /**
  * The offset where the line that holds `offset` starts: after the last line
- * feed before it that no comment or directive spans. A directive, an unclosed
- * one in a comment, and a diagram comment that a comment line cuts (see
- * `createSource`) may span lines, and the printers keep them whole, so their
- * line feeds do not end a line.
+ * feed before it that no comment or directive spans, and that no comment
+ * region that joins lines removes (`Source.removedLineFeeds`). A directive, an
+ * unclosed one in a comment, and a diagram comment that a comment line cuts
+ * (see `createSource`) may span lines, and the printers keep them whole, so
+ * their line feeds do not end a line. A line is the text that mermaid.js
+ * reads as one line, which may run over several lines of the source.
  */
 export function lineStartOf(source: Source, offset: number): number {
   let lineFeed = source.text.lastIndexOf("\n", offset - 1)
-  while (lineFeed !== -1 && isSpannedByTrivia(source, lineFeed)) {
+  while (lineFeed !== -1 && isNotALineBreak(source, lineFeed)) {
     lineFeed = source.text.lastIndexOf("\n", lineFeed - 1)
   }
   return lineFeed + 1
@@ -109,19 +132,72 @@ export function lineStartOf(source: Source, offset: number): number {
 /**
  * The offset of the line feed that ends the line holding `offset`, or the
  * end of the text: the first line feed from it that no comment or directive
- * spans.
+ * spans and that no comment region that joins lines removes (see
+ * `lineStartOf`).
  */
 export function lineEndOf(source: Source, offset: number): number {
   let lineFeed = source.text.indexOf("\n", offset)
-  while (lineFeed !== -1 && isSpannedByTrivia(source, lineFeed)) {
+  while (lineFeed !== -1 && isNotALineBreak(source, lineFeed)) {
     lineFeed = source.text.indexOf("\n", lineFeed + 1)
   }
   return lineFeed === -1 ? source.text.length : lineFeed
 }
 
-/** Whether a comment or a directive spans an offset. */
-function isSpannedByTrivia(source: Source, offset: number): boolean {
-  return source.trivia.some(
-    (item) => item.range[0] < offset && offset < item.range[1],
+/** Whether the line feed at `offset` ends no line: a comment or a directive spans it, or a region removes it. */
+function isNotALineBreak(source: Source, offset: number): boolean {
+  return (
+    source.removedLineFeeds.has(offset) ||
+    source.trivia.some(
+      (item) => item.range[0] < offset && offset < item.range[1],
+    )
   )
+}
+
+/**
+ * Whether a comment line of a region that joins lines starts in the range
+ * from `start` to `end`. mermaid.js reads the text before and after the
+ * region as one line (`Source.joiningRegions`), so the range cannot be
+ * printed with its parts on lines of their own, and is printed as written
+ * (docs/compatibility.md, A comment line after U+2028 or U+2029).
+ */
+export function holdsJoiningRegion(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  return source.joiningRegions.some(
+    (region) =>
+      start <= region.comment.range[0] && region.comment.range[0] < end,
+  )
+}
+
+/**
+ * The kept lines with the lines that hold a removed line feed added as
+ * verbatim lines: a line that mermaid.js reads over several lines of the
+ * source is printed as written, from its first line to its end.
+ */
+export function withJoinedLines(source: Source, kept: KeptLines): KeptLines {
+  const joinedLines = [...source.removedLineFeeds].map((lineFeed) =>
+    lineStartOf(source, lineFeed),
+  )
+  return {
+    ...kept,
+    verbatim: new Set([...kept.verbatim, ...joinedLines]),
+  }
+}
+
+/**
+ * Where the printed text of a statement that ends at `statementEnd` ends,
+ * when a text that starts at `textStart` ends at `textEnd`: the end of the
+ * text, but not past the line that it starts on. After an unclosed
+ * directive, the range of the text reaches the lines after it, which the
+ * printer prints as lines of their own, not as part of the statement.
+ */
+export function printedEndOf(
+  source: Source,
+  statementEnd: number,
+  textStart: number,
+  textEnd: number,
+): number {
+  return Math.max(statementEnd, Math.min(textEnd, lineEndOf(source, textStart)))
 }

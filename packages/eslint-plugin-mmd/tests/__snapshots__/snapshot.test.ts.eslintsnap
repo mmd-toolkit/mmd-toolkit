@@ -472,99 +472,99 @@ Code:
 [2] ClassDiagram
 [3] ClassRelationStatement
 [4] ClassName
-[5] Identifier
+[5] ClassIdentifier
 [6] ClassLiteral
 [7] ClassArrow
 [8] ClassName
-[9] Identifier
+[9] ClassIdentifier
 [10] ClassLiteral
 [11] ClassAnnotationStatement
 [12] ClassAnnotation
 [13] Identifier
 [14] ClassName
-[15] Identifier
+[15] ClassIdentifier
 [16] ClassRelationStatement
 [17] ClassName
-[18] Identifier
+[18] ClassIdentifier
 [19] ClassLiteral
 [20] StringLiteral
 [21] ClassArrow
 [22] StringLiteral
 [23] ClassName
-[24] Identifier
+[24] ClassIdentifier
 [25] ClassRelationStatement
 [26] ClassName
-[27] Identifier
+[27] ClassIdentifier
 [28] StringLiteral
 [29] ClassArrow
 [30] StringLiteral
 [31] ClassName
-[32] Identifier
+[32] ClassIdentifier
 [33] ClassRelationStatement
 [34] ClassName
-[35] Identifier
+[35] ClassIdentifier
 [36] ClassLiteral
 [37] ClassArrow
 [38] ClassName
-[39] Identifier
+[39] ClassIdentifier
 [40] ClassRelationStatement
 [41] ClassName
-[42] Identifier
+[42] ClassIdentifier
 [43] StringLiteral
 [44] ClassArrow
 [45] StringLiteral
 [46] ClassName
-[47] Identifier
+[47] ClassIdentifier
 [48] ClassLiteral
 [49] ClassRelationStatement
 [50] ClassName
-[51] Identifier
+[51] ClassIdentifier
 [52] StringLiteral
 [53] ClassArrow
 [54] StringLiteral
 [55] ClassName
-[56] Identifier
+[56] ClassIdentifier
 [57] ClassRelationStatement
 [58] ClassName
-[59] Identifier
+[59] ClassIdentifier
 [60] ClassArrow
 [61] ClassName
-[62] Identifier
+[62] ClassIdentifier
 [63] ClassMemberStatement
 [64] ClassName
-[65] Identifier
+[65] ClassIdentifier
 [66] ClassMethod
 [67] ClassLiteral
 [68] ClassMemberStatement
 [69] ClassName
-[70] Identifier
+[70] ClassIdentifier
 [71] ClassAttribute
 [72] ClassLiteral
 [73] ClassMemberStatement
 [74] ClassName
-[75] Identifier
+[75] ClassIdentifier
 [76] ClassMethod
 [77] ClassLiteral
 [78] ClassMemberStatement
 [79] ClassName
-[80] Identifier
+[80] ClassIdentifier
 [81] ClassAttribute
 [82] ClassLiteral
 [83] ClassMemberStatement
 [84] ClassName
-[85] Identifier
+[85] ClassIdentifier
 [86] ClassAttribute
 [87] ClassLiteral
 [88] ClassRelationStatement
 [89] ClassName
-[90] Identifier
+[90] ClassIdentifier
 [91] ClassArrow
 [92] ClassName
-[93] Identifier
+[93] ClassIdentifier
 [94] ClassLiteral
 [95] ClassDeclaration
 [96] ClassName
-[97] Identifier
+[97] ClassIdentifier
 [98] ClassAnnotation
 [99] ClassLiteral
 [100] ClassAttribute
@@ -605,7 +605,7 @@ Code:
 [2] ClassDiagram
 [3] ClassDeclaration
 [4] ClassName
-[5] Identifier
+[5] ClassIdentifier
 [6] ClassMethod
 [7] ClassLiteral
 [8] ClassLiteral
@@ -679,13 +679,13 @@ Code:
 [2] ClassDiagram
 [3] ClassRelationStatement
 [4] ClassName
-[5] Identifier
+[5] ClassIdentifier
 [6] ClassArrow
 [7] ClassName
-[8] Identifier
+[8] ClassIdentifier
 [9] ClassMemberStatement
 [10] ClassName
-[11] Identifier
+[11] ClassIdentifier
 [12] ClassAttribute
 [13] ClassLiteral
 ---
@@ -721,7 +721,7 @@ Code:
 [2] ClassDiagram
 [3] ClassDeclaration
 [4] ClassName
-[5] Identifier
+[5] ClassIdentifier
 [6] ClassAttribute
 [7] ClassLiteral
 ---
@@ -924,9 +924,9 @@ Code:
 [1] Keyword "sequenceDiagram"
 [2] Keyword "autonumber"
 [3] Comment " c"
-[4] Identifier "A"
+[4] RawText "A"
 [5] Punctuator "->>"
-[6] Identifier "B"
+[6] RawText "B"
 [7] Punctuator ":"
 [8] RawText "x"
 ---
@@ -951,9 +951,9 @@ Code:
 [1] Keyword "sequenceDiagram"
 [2] Keyword "autonumber"
 [3] Comment " c"
-[4] Identifier "A"
+[4] RawText "A"
 [5] Punctuator "->>"
-[6] Identifier "B"
+[6] RawText "B"
 [7] Punctuator ":"
 [8] RawText "x"
 ---
@@ -1050,20 +1050,20 @@ Code:
     |     ^ [93]
 
 [1] Keyword "classDiagram"
-[2] Identifier "Class01"
+[2] RawText "Class01"
 [3] Punctuator "~"
 [4] RawText "T"
 [5] Punctuator "~"
 [6] Punctuator "<|"
 [7] Punctuator "--"
-[8] Identifier "AveryLongClass"
+[8] RawText "AveryLongClass"
 [9] Punctuator ":"
 [10] RawText "Cool"
 [11] Punctuator "<<"
 [12] Identifier "interface"
 [13] Punctuator ">>"
-[14] Identifier "Class01"
-[15] Identifier "Class03"
+[14] RawText "Class01"
+[15] RawText "Class03"
 [16] Punctuator "~"
 [17] RawText "T"
 [18] Punctuator "~"
@@ -1071,68 +1071,68 @@ Code:
 [20] Punctuator "*"
 [21] Punctuator "--"
 [22] String "\"0..n\""
-[23] Identifier "Class04"
-[24] Identifier "Class05"
+[23] RawText "Class04"
+[24] RawText "Class05"
 [25] String "\"1\""
 [26] Punctuator "o"
 [27] Punctuator "--"
 [28] String "\"many\""
-[29] Identifier "Class06"
-[30] Identifier "Class07"
+[29] RawText "Class06"
+[30] RawText "Class07"
 [31] Punctuator "~"
 [32] RawText "T"
 [33] Punctuator "~"
 [34] Punctuator ".."
-[35] Identifier "Class08"
-[36] Identifier "Class09"
+[35] RawText "Class08"
+[36] RawText "Class09"
 [37] String "\"many\""
 [38] Punctuator "--"
 [39] Punctuator ">"
 [40] String "\"1\""
-[41] Identifier "C2"
+[41] RawText "C2"
 [42] Punctuator ":"
 [43] RawText "Where am i?"
-[44] Identifier "Class09"
+[44] RawText "Class09"
 [45] String "\"0\""
 [46] Punctuator "--"
 [47] Punctuator "*"
 [48] String "\"1..n\""
-[49] Identifier "C3"
-[50] Identifier "Class09"
+[49] RawText "C3"
+[50] RawText "Class09"
 [51] Punctuator "--"
 [52] Punctuator "|>"
-[53] Identifier "Class07"
-[54] Identifier "Class07"
+[53] RawText "Class07"
+[54] RawText "Class07"
 [55] Punctuator ":"
 [56] RawText "equals"
 [57] Punctuator "("
 [58] Punctuator ")"
-[59] Identifier "Class07"
+[59] RawText "Class07"
 [60] Punctuator ":"
 [61] RawText "Object[] elementData"
-[62] Identifier "Class01"
+[62] RawText "Class01"
 [63] Punctuator ":"
 [64] Punctuator "#"
 [65] RawText "size"
 [66] Punctuator "("
 [67] Punctuator ")"
-[68] Identifier "Class01"
+[68] RawText "Class01"
 [69] Punctuator ":"
 [70] Punctuator "-"
 [71] RawText "int chimp"
-[72] Identifier "Class01"
+[72] RawText "Class01"
 [73] Punctuator ":"
 [74] Punctuator "+"
 [75] RawText "int gorilla"
-[76] Identifier "Class08"
+[76] RawText "Class08"
 [77] Punctuator "<"
 [78] Punctuator "--"
 [79] Punctuator ">"
-[80] Identifier "C2"
+[80] RawText "C2"
 [81] Punctuator ":"
 [82] RawText "Cool label"
 [83] Keyword "class"
-[84] Identifier "Class10"
+[84] RawText "Class10"
 [85] Punctuator "{"
 [86] Punctuator "<<"
 [87] RawText "service"
@@ -1166,7 +1166,7 @@ Code:
 
 [1] Keyword "classDiagram"
 [2] Keyword "class"
-[3] Identifier "A"
+[3] RawText "A"
 [4] Punctuator "{"
 [5] Punctuator "+"
 [6] RawText "foo"
@@ -1224,12 +1224,12 @@ Code:
   5 |
 
 [1] Keyword "classDiagram"
-[2] Identifier "A"
+[2] RawText "A"
 [3] Punctuator "--"
 [4] Punctuator ">"
-[5] Identifier "B"
+[5] RawText "B"
 [6] Comment " c"
-[7] Identifier "A"
+[7] RawText "A"
 [8] Punctuator ":"
 [9] Punctuator "+"
 [10] RawText "int age"
@@ -1255,7 +1255,7 @@ Code:
 
 [1] Keyword "classDiagram"
 [2] Keyword "class"
-[3] Identifier "A"
+[3] RawText "A"
 [4] Punctuator "{"
 [5] Punctuator "+"
 [6] RawText "x %% c"

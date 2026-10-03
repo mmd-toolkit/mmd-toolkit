@@ -205,30 +205,34 @@ built is in `docs/development.md`.
 - The corpus: `tests/corpus.test.ts` checks idempotence and the Db on every
   fixture of the diagram type in `@mmd-toolkit/tests` that the plugin formats.
   Add the diagram type to what it loads.
-- Generated-input tests (`tests/generated.ts` and `tests/generated-*.test.ts`):
+- Generated-input tests (`tests/generated.ts`, `tests/boundaries-*`,
+  `statement-endings-*`, `forms-*`, `separators`, `line-shapes`, `mutation`):
   hand-written examples and the corpus alone miss whole families of missing
-  rules (in flowchart, missing rules that not one of the 1,426 corpus inputs
-  showed were found with generated inputs). Make these for each diagram type;
-  the insertion, mutation, and joined-statement tests run over a list of diagram
-  types, to which a new diagram type is added with its statements:
-  - mutation (`mutate()` of `@mmd-toolkit/tests/mutation`, a few per fixture,
-    with a fixed seed)
-  - insertion at token boundaries (a directive with whitespace placed in four
-    ways, two directives, a line break, an empty line, or a comment line, the
-    `;` that the line rule deals with, and, after the last token, a directive
-    that is not closed, with whitespace after it)
-  - the ends of values (every pair of opening and closing brackets of a label,
-    times ASCII punctuation, times placements)
-  - joined statements (two statements joined by `;`, of every kind, and with the
-    words that start statements used as ids)
-  - forms that belong to the diagram type (in flowchart, lines that hold a `;`
-    other than a separator; in sequence, messages of many forms; in class,
-    relations, member statements, and class statements of many forms; in state,
-    transitions and every kind of statement with their whitespace changed)
-  - Choose inputs deterministically (a seed, every n-th boundary). Keep the
-    regular run to a few minutes; the values that set the size are read from
-    environment variables in one place, `tests/generated.ts` (see the full run
-    below). Each test records its counts as an annotation with `describeReport`.
+  rules. The inputs are chosen by kind, so that no kind is tried by chance, and
+  are the same on every run; there is one size, the regular run. The kinds of
+  boundaries are defined by `findBoundaries` and `selectByKey` of
+  `@mmd-toolkit/tests` (`tests/boundary-kinds.ts` only builds the key of these
+  tests).
+  - boundaries: a boundary of a fixture has a kind, the element before it, its
+    place in the line, and the element after it (at the end of a line, also the
+    statement keyword); every kind is tried with every family of text (a
+    directive, two, a line break, a comment, a U+2028 or U+2029, a directive
+    that is not closed), and the places at the end of a line, of the text, and
+    of a comment with sequences of pieces (`pieces.ts`)
+  - statements (`statement-endings.ts`): a statement of every node type of the
+    parser, taken from the fixtures, with sequences of the same pieces at the
+    end of its first line
+  - forms (`forms-*`): the axes of a form (names, arrows, whitespace, labels)
+    combined so that every pair of values of two axes stands together
+    (`pairwise.ts`); the failures that stand in three axes or more are in the
+    sequences of pieces and in the regression collection
+  - `;` and line shapes (`separators`, `line-shapes`), mutants (`mutation`)
+  - the regression collection (`tests/regression/*.json`) holds the inputs of
+    failures that were fixed, which are formatted on every run
+  - Each test records its counts as an annotation with `describeReport`. To find
+    out whether the generation finds a failure that was fixed, put the fix back
+    in a copy of `src` (in the scratchpad), run the new tests against it, and
+    check that one of them fails.
 - The document test (`tests/docs.test.ts`): the headings of each rules document
   match the fixture folders of its diagram type, and its example code blocks
   match the fixture files. Add a new rules document to `ruleDocuments` there.
@@ -239,70 +243,42 @@ Running tests; this is what belongs to this package):
 - The part of the code and the test files that a change to it can affect. Run
   these while working, with
   `pnpm vitest run --project prettier-plugin-mmd <files>`. `-t <diagram>` (lower
-  case) narrows only four files, whose test names carry the diagram: `format`
-  and `corpus` (the names start with `<diagram>/`), `generated-insertions`
-  (`of <diagram>`), and `generated-mutation`
-  (`mutants of the <diagram> fixtures`). With `-t`, every other file is skipped
-  whole and nothing fails, so run the other files without it. The files in the
-  list below named `generated-*`, `value-nodes`, `sequence-layout`, and
-  `markdown-*` are such files, except the four.
+  case) narrows only two files, whose test names carry the diagram: `format` and
+  `corpus` (the names start with `<diagram>/`). With `-t`, every other file is
+  skipped whole and nothing fails, so run the other files without it.
 
   - A shared module (`blocks.ts`, `atoms.ts`, `gap.ts`, `layout.ts`, `lines.ts`,
     `source.ts`, `kept-lines.ts`): the tests of every diagram type, that is, the
-    whole package at its default size.
-  - `flowchart*.ts`: `format`, `corpus`, `generated-insertions`, and
-    `generated-mutation` with `-t flowchart`; and, without `-t`,
-    `generated-label-edges`, `generated-line-semicolons`,
-    `generated-empty-blocks`, `generated-subgraph-names`,
-    `generated-comment-semicolons`, `generated-words-before-separators`,
-    `generated-line-endings`, `generated-directive-cuts`,
-    `generated-dangling-lines`, `generated-click-lines`,
-    `generated-ignored-semicolons`, `generated-statement-pairs`,
-    `markdown-flowchart`, and `value-nodes`.
-  - `sequence*.ts`: the four with `-t sequence`; and, without `-t`,
-    `generated-sequence-messages`, `generated-comment-semicolons`,
-    `generated-words-before-separators`, `generated-line-endings`,
-    `generated-directive-cuts`, `generated-dangling-lines`,
-    `generated-ignored-semicolons`, `generated-statement-pairs`,
-    `sequence-layout`, `markdown-sequence`, and `value-nodes`.
-  - `class*.ts`: the four with `-t class`; and, without `-t`,
-    `generated-class-forms`, `generated-comment-semicolons`,
-    `generated-line-endings`, `generated-directive-cuts`,
-    `generated-dangling-lines`, `generated-click-lines`,
-    `generated-ignored-semicolons`, `markdown-class`, and `value-nodes`.
-  - `state*.ts`: the four with `-t state`; and, without `-t`,
-    `generated-state-forms`, `generated-comment-semicolons`,
-    `generated-line-endings`, `generated-directive-cuts`,
-    `generated-dangling-lines`, `generated-click-lines`,
-    `generated-ignored-semicolons`, `line-separators`, `markdown-state`, and
+    whole package.
+  - `flowchart*.ts`: `format`, `corpus` with `-t flowchart`; and, without `-t`,
+    `boundaries-flowchart`, `statement-endings-flowchart`, `forms-flowchart`,
+    `separators`, `line-shapes`, `mutation`, `regression`, `markdown-flowchart`,
+    and `value-nodes`.
+  - `sequence*.ts`: `format` and `corpus` with `-t sequence`; and, without `-t`,
+    `boundaries-sequence`, `statement-endings-sequence`, `forms-sequence`,
+    `sequence-newline-units`, `separators`, `line-shapes`, `mutation`,
+    `regression`, `line-separators`, `sequence-layout`, `markdown-sequence`, and
+    `value-nodes`.
+  - `class*.ts`: `format` and `corpus` with `-t class`; and, without `-t`,
+    `boundaries-class`, `statement-endings-class`, `forms-class`, `line-shapes`,
+    `mutation`, `regression`, `markdown-class`, and `value-nodes`.
+  - `state*.ts`: `format` and `corpus` with `-t state`; and, without `-t`,
+    `boundaries-state`, `statement-endings-state`, `forms-state`, `line-shapes`,
+    `mutation`, `regression`, `line-separators`, `markdown-state`, and
     `value-nodes`.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:
-    `dispatch`, `failure`, `markdown`, `plugin`, and the four with each diagram
+    `dispatch`, `failure`, `markdown`, `plugin`, and the files of each diagram
     type.
-  - `tests/mermaid-readings.ts`, `tests/generated.ts`: every test that imports
+  - `tests/mermaid-readings.ts`, `tests/generated.ts`, `tests/pieces.ts`,
+    `tests/pairwise.ts`, `tests/checked-groups.ts`: every test that imports
     them.
 
 - The test that reads documents: `tests/docs.test.ts` reads the rules documents
   (`docs/<diagram>.md`, English and Japanese), the READMEs, and the fixture
   folders. Run it after a change to any of them, also a change to documents
   only. No other test reads a document.
-- The default run is `pnpm vitest run --project prettier-plugin-mmd`. It leaves
-  out the generated-input tests until they are redesigned to cover kinds of
-  token boundaries instead of positions; `MMD_RUN_GENERATED_TESTS=1` includes
-  them. Run it once before reporting the work as done.
-- The full size is given from outside with environment variables (Larger runs in
-  `docs/development.md`): run it once before a step of the plan is reported as
-  finished or handed to a review, and not after each change. Do not edit the
-  tests or make copies of them.
-
-```sh
-MMD_GENERATED_SAMPLE_EVERY=1 MMD_MUTANTS_PER_FIXTURE=30 pnpm vitest run --project prettier-plugin-mmd tests/generated- --reporter=verbose
-```
-
-- It takes hours: run it in the background and wait for it to finish. The counts
-  appear in the verbose output as each test's annotation.
-- When the code changes, a full run in progress checks the old code. Stop it,
-  and run it again after the change.
+- The default run is `pnpm vitest run --project prettier-plugin-mmd`. It is the
+  only size. Run it once before reporting the work as done.
 
 When the working tree or the machine is shared with other work:
 
@@ -341,8 +317,6 @@ When the working tree or the machine is shared with other work:
 - The default-size run of the package passes once before the report, with
   `npx tsc --noEmit` (at the root), `npx eslint` on this package, and the
   document checks above.
-- The full-size run finds no problems, once before a step is reported as
-  finished or handed to a review.
 - Say what was run and what was not.
 - Show as the result, for each item of the decision or each finding: the files
   changed and how, the results on the reproducing inputs (acceptance kept, the
@@ -400,7 +374,7 @@ When the working tree or the machine is shared with other work:
 1. Updating the pin of mermaid.js, regenerating the fixtures, and classifying
    the differences come first, with the tests SKILL. Their results are the
    input.
-2. Run the regular tests and the full run.
+2. Run the regular tests.
 3. Classify the failures:
    - The Db of a corpus input or fixture differs before and after formatting:
      mermaid.js's lexing or grammar changed, and the premise of a printer rule

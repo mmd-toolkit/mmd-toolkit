@@ -5,12 +5,14 @@
  * parent, with its plain fields (a direction, the markers, the line, and
  * the length of an arrow, a kind) and, for a
  * node that holds a written value, the value, its range, and the source
- * text of the range when that differs from the value; then the tokens.
+ * text of the range when that differs from the value; then the tokens. For
+ * a fixture that the parser rejects, it prints the error of its
+ * `parse-error.json`: the message, the range, and the source text of the range.
  */
-import { readFileSync } from "node:fs"
+import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
-import { getFixturesRoot } from "../../tests/src/index.ts"
-import type { JsonObject, JsonValue } from "../../tests/src/types.ts"
+import type { JsonObject, JsonValue } from "@mmd-toolkit/tests"
+import { getFixturesRoot } from "@mmd-toolkit/tests"
 
 /** Whether `value` is a JSON object, not an array and not null. */
 function isJsonObject(value: JsonValue): value is JsonObject {
@@ -69,10 +71,21 @@ if (diagram === undefined || names.length === 0) {
 for (const name of names) {
   const directory = path.join(getFixturesRoot(), diagram, name)
   const source = readFileSync(path.join(directory, "input.mmd"), "utf8")
+  process.stdout.write(`== ${name} ${JSON.stringify(source)}\n`)
+  if (!existsSync(path.join(directory, "ast.json"))) {
+    // A fixture that the parser rejects records its error instead.
+    const error = JSON.parse(
+      readFileSync(path.join(directory, "parse-error.json"), "utf8"),
+    ) as { readonly message: string; readonly range: readonly [number, number] }
+    const [start, end] = error.range
+    process.stdout.write(
+      `  rejected: ${error.message} [${start}, ${end}] ${JSON.stringify(source.slice(start, end))}\n`,
+    )
+    continue
+  }
   const root = JSON.parse(
     readFileSync(path.join(directory, "ast.json"), "utf8"),
   ) as { readonly body: JsonValue; readonly tokens: readonly Token[] }
-  process.stdout.write(`== ${name} ${JSON.stringify(source)}\n`)
   printNodes(root.body, source, 1)
   const tokens = root.tokens.map(
     (token) => `${token.type} ${JSON.stringify(token.value)}`,

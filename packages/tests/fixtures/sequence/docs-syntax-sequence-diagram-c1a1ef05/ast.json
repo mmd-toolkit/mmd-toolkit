@@ -382,7 +382,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         32,
@@ -419,19 +419,19 @@
     },
     {
       "type": "RawText",
-      "value": "\"type\" : \"entity\"",
+      "value": " \"type\" : \"entity\" ",
       "range": [
-        40,
-        57
+        39,
+        58
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 24
+          "column": 23
         },
         "end": {
           "line": 2,
-          "column": 41
+          "column": 42
         }
       }
     },
@@ -472,7 +472,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         76,
@@ -490,7 +490,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         84,
@@ -526,7 +526,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         92,
@@ -580,7 +580,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Bob",
       "range": [
         116,
@@ -616,7 +616,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Alice",
       "range": [
         122,

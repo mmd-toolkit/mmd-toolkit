@@ -193,19 +193,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: framed-circle, label: \"Stop\"",
+      "value": " shape: framed-circle, label: \"Stop\" ",
       "range": [
-        21,
-        56
+        20,
+        57
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 8
+          "column": 7
         },
         "end": {
           "line": 2,
-          "column": 43
+          "column": 44
         }
       }
     },

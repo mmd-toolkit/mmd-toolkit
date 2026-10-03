@@ -9,7 +9,9 @@ import { noEmptyDescriptionBlock } from "../../../src/rules/flowchart/no-empty-d
 import { LANGUAGE_CONFIG } from "../../helpers.ts"
 import { testRule } from "../../rule-test.ts"
 
-testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock)
+testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
+  claims: { removeBlock: { kind: "keepsDb" } },
+})
 
 // A U+2028 or a U+2029 cannot stand in a fixture file (see `docs/development.md`),
 // so these inputs are written with escapes. Neither is a line terminator of the

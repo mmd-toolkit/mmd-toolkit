@@ -1,0 +1,320 @@
+{
+  "type": "Root",
+  "diagramType": "flowchart-v2",
+  "body": {
+    "type": "FlowchartDiagram",
+    "direction": "LR",
+    "body": [
+      {
+        "type": "FlowchartVertexStatement",
+        "first": {
+          "type": "FlowchartVertexGroup",
+          "vertices": [
+            {
+              "type": "FlowchartVertex",
+              "id": {
+                "type": "Identifier",
+                "name": "A",
+                "range": [
+                  15,
+                  16
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 2
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 3
+                  }
+                }
+              },
+              "shape": {
+                "type": "FlowchartShape",
+                "name": "rectangle",
+                "property": null,
+                "label": {
+                  "type": "FlowchartLabel",
+                  "kind": "string",
+                  "value": "a#amp;b",
+                  "range": [
+                    17,
+                    40
+                  ],
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 27
+                    }
+                  }
+                },
+                "range": [
+                  16,
+                  41
+                ],
+                "loc": {
+                  "start": {
+                    "line": 2,
+                    "column": 3
+                  },
+                  "end": {
+                    "line": 2,
+                    "column": 28
+                  }
+                }
+              },
+              "cssClass": null,
+              "data": [],
+              "range": [
+                15,
+                41
+              ],
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 2
+                },
+                "end": {
+                  "line": 2,
+                  "column": 28
+                }
+              }
+            }
+          ],
+          "range": [
+            15,
+            41
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 2
+            },
+            "end": {
+              "line": 2,
+              "column": 28
+            }
+          }
+        },
+        "links": [],
+        "range": [
+          15,
+          41
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 2
+          },
+          "end": {
+            "line": 2,
+            "column": 28
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      41
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 28
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [
+    {
+      "type": "Directive",
+      "name": "init",
+      "value": "init: {}",
+      "closed": true,
+      "range": [
+        22,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 23
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "flowchart",
+      "range": [
+        0,
+        9
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "LR",
+      "range": [
+        10,
+        12
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 10
+        },
+        "end": {
+          "line": 1,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "A",
+      "range": [
+        15,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 2
+        },
+        "end": {
+          "line": 2,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        16,
+        17
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 3
+        },
+        "end": {
+          "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "StringFragment",
+      "value": "\"a#am",
+      "range": [
+        17,
+        22
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 2,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Directive",
+      "value": "%%{init: {}}%%",
+      "range": [
+        22,
+        36
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 9
+        },
+        "end": {
+          "line": 2,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "StringFragment",
+      "value": "p;b\"",
+      "range": [
+        36,
+        40
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 23
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        40,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    42
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 0
+    }
+  }
+}

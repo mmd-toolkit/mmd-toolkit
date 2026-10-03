@@ -72,5 +72,13 @@
         "centralConnection": 0
       }
     ]
+  },
+  "embedded": {
+    "config": {
+      "sequence": {
+        "width": 300,
+        "wrap": true
+      }
+    }
   }
 }

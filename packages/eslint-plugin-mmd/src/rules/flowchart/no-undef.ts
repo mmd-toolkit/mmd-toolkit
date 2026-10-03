@@ -4,9 +4,9 @@ import type {
   FlowchartClickUrlStatement,
   FlowchartStyleStatement,
 } from "@mmd-toolkit/parser"
-import { flowchartSubgraphIds } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../../rule-types.ts"
 import { ruleDocsUrl } from "../../rule-docs-url.ts"
+import { subgraphIdsOf } from "../../utils/subgraph-ids.ts"
 
 /** A statement that names ids of the diagram: `class` or `click`. */
 type IdsStatement =
@@ -22,7 +22,7 @@ type IdsStatement =
  * adds a new vertex; for `class` and `click`, it does nothing. A vertex that a
  * `style` adds is a vertex of the diagram too: only the first `style` of such
  * an id adds it and is reported, and a `class` or `click` of the id is not. The ids of the
- * subgraphs are those of the Db of mermaid.js, which `flowchartSubgraphIds`
+ * subgraphs are those of the Db of mermaid.js, which `subgraphIdsOf`
  * gives; like the other ids, they are in the form of the values of the tree,
  * so they compare as they are. The rule suggests nothing: which id the author
  * meant is not in the text.
@@ -73,10 +73,7 @@ export const noUndef: MermaidRuleDefinition<{
       FlowchartClickCallbackStatement: collectIds,
       FlowchartClickUrlStatement: collectIds,
       "FlowchartDiagram:exit"() {
-        for (const id of flowchartSubgraphIds(
-          sourceCode.ast,
-          sourceCode.text,
-        ).values()) {
+        for (const id of subgraphIdsOf(sourceCode).values()) {
           definedIds.add(id)
         }
         // In the order of the source: a `style` of an id that nothing

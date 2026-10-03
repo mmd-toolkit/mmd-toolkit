@@ -174,7 +174,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "John",
       "range": [
         32,
@@ -211,10 +211,10 @@
     },
     {
       "type": "Keyword",
-      "value": "right of",
+      "value": "right",
       "range": [
         46,
-        54
+        51
       ],
       "loc": {
         "start": {
@@ -223,12 +223,30 @@
         },
         "end": {
           "line": 3,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        52,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 15
+        },
+        "end": {
+          "line": 3,
           "column": 17
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "John",
       "range": [
         55,

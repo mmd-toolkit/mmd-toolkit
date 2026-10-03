@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed backquoted class name followed, at the end of the text, by a comment line. mermaid.js reads the classes \"A\"; \"x  \\n\\n\"."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "x  \n\n",
+        "type": "",
+        "label": "x  \n\n",
+        "text": "x  \n\n",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

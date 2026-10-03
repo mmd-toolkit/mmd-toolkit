@@ -19,5 +19,10 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
   }
 }

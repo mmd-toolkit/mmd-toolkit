@@ -96,7 +96,7 @@ mermaid.js がテキストを拒否したときは `undefined` です。
 ## コマンドライン
 
 ```sh
-pnpm --filter @mmd-toolkit/tests run mutation --candidate <module> --count 20 --seed 1
+pnpm --filter @mmd-toolkit/tests run mutation --candidate <module> --seed 1
 ```
 
 `<module>` は比較対象を default export します。
@@ -104,3 +104,20 @@ pnpm --filter @mmd-toolkit/tests run mutation --candidate <module> --count 20 --
 または `--fixture` で名前を挙げたものを変異させます。
 CLI は既知の差を識別子ごとに表示し、それでは失敗しません。
 不一致か `skipped` が 1 件でもあれば、終了コード 1 で終わります。
+
+fixture は、当てはまる編集の演算子を、seed と fixture が決める順に、
+1 回ずつ使って変異させます
+（1 行の fixture には、入れ替える行がありません）。
+位置は、その演算子の位置から無作為に選びます。
+そのため、fixture の最初の変異は別々の演算子を使い、
+当てはまる演算子は、seed によらず、すべて使われます。
+`--count` は、fixture ごとの変異の数です。
+省くと 1 周、つまり当てはまる演算子ごとに 1 件です。
+`--count` が 1 のときは、当てはまる演算子から無作為に 1 つを選びます。
+1 周を超えると、演算子をもう一度使います。
+`--count` を増やすのは、ある演算子の変異の形を広げたいときで、
+確かさのためではありません。
+同じ種類の変異を増やしても、新しく見つかるものはありません。
+位置の少ない演算子（3 行のテキストの 2 行の入れ替えなど）は、
+違う変異が少なく、別の演算子がその代わりをしないので、
+`--count` より少ない変異になる fixture があります。

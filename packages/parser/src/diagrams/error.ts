@@ -41,14 +41,9 @@ export function parseErrorDiagram(input: DiagramInput): Root {
   }
   return finishDiagram(
     input,
-    text,
     {
-      units: runs,
       tokens: runs,
       comments: [],
-      // ast.md, ErrorDiagram: every character that is not whitespace is
-      // `RawText`, so is a `;` that stands alone.
-      ignoredSemicolonKindAt: () => "RawText",
     },
     (place) => ({ type: "ErrorDiagram", ...place }),
   )

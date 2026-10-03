@@ -700,7 +700,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "a",
       "range": [
         33,
@@ -754,7 +754,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "a",
       "range": [
         46,
@@ -790,7 +790,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "b",
       "range": [
         51,
@@ -880,7 +880,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "c",
       "range": [
         86,
@@ -898,7 +898,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "b",
       "range": [
         90,
@@ -934,7 +934,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "c",
       "range": [
         95,
@@ -988,7 +988,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "c",
       "range": [
         109,
@@ -1024,7 +1024,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "b",
       "range": [
         115,
@@ -1114,7 +1114,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "d",
       "range": [
         142,
@@ -1168,7 +1168,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "a",
       "range": [
         156,
@@ -1204,7 +1204,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "d",
       "range": [
         162,

@@ -11,8 +11,9 @@ A summary keeps only what the syntax determines, as plain JSON: collections
 become arrays in declaration order, `undefined` fields are omitted, internal
 counters and DOM ids are dropped. The normalizers live in `src/normalizers/`,
 one per Db class, registered by diagram id in `src/normalizers/index.ts`. The
-summary of each diagram type is specified in the "Db normalization" section of
-`docs/diagrams/<diagram>.md` in `@mmd-toolkit/spec`.
+summary of each diagram type is described below, and the steps that build it
+from a tree are in [db-from-tree/](./db-from-tree/) (`flowchart.md`,
+`sequence.md`, `class.md`, `state.md`).
 
 ## Diagram types without a summary yet
 
@@ -27,6 +28,21 @@ comparison where `db` is `null`; the loader rejects `db: null` outside
 
 ## Flowchart
 
+The fields of the summary:
+
+| Field          | Content                                                                                                                                                                                                                                                            |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `direction`    | The direction of the diagram.                                                                                                                                                                                                                                      |
+| `title`        | The title from the frontmatter.                                                                                                                                                                                                                                    |
+| `accTitle`     | The accessibility title, or the empty text.                                                                                                                                                                                                                        |
+| `accDescr`     | The accessibility description, or the empty text.                                                                                                                                                                                                                  |
+| `vertices`     | The vertices, in the order in which they were added: `id`, `labelType`, `styles`, `classes`, `text`, `type`, `props`, `link`, `linkTarget`, and the fields that only data blocks set: `icon`, `form`, `pos`, `img`, `constraint`, `assetWidth`, and `assetHeight`. |
+| `edges`        | The edges, in the order in which they were added: `start`, `end`, `type`, `stroke`, `length`, `text`, `labelType`, `classes`, `isUserDefinedId`, `id`, `interpolate`, `style`, and `animate` and `animation`, which only data blocks set.                          |
+| `edgeDefaults` | `interpolate` and `style` from `linkStyle default`, each null when not set.                                                                                                                                                                                        |
+| `classDefs`    | The classes defined by `classDef`, in the order in which they were defined: `id` and `styles`.                                                                                                                                                                     |
+| `subgraphs`    | The subgraphs, in the order in which they were added: `id`, `nodes`, `title`, `classes`, `labelType`, `dir`, and `metadata`, which only data blocks set.                                                                                                           |
+| `tooltips`     | The tooltips, in the order in which their ids were first given one: `id` and `text`.                                                                                                                                                                               |
+
 `normalizeFlowchart()` (`src/normalizers/flowchart.ts`) summarizes the Db of
 `flowchart-v2`, `flowchart-elk` and `swimlane`, which share `FlowDB`. It keeps
 what `FlowDB` exposes through its getters and drops the following, each for the
@@ -35,6 +51,9 @@ reason given:
 - `vertices[].domId`: a DOM id built from a counter, used only for rendering.
 - `classDefs[].textStyles`: derived from `styles` for rendering (the entries
   containing `color`, with `fill` replaced by `bgFill`).
+- `textBefore` and `textAfter` of a
+  [FlowchartDirectionStatement](../../spec/docs/ast/flowchart.md#flowchartdirectionstatement):
+  the text of a direction line that mermaid.js does not read.
 - `vertices[].haveCallback`: set only under `securityLevel: loose`, a site
   setting; the click itself shows as the class `clickable`.
 - Click callback names and arguments: kept only inside closures.
@@ -45,20 +64,47 @@ reason given:
   value, but nothing in mermaid.js reads it, and the formatter removes
   whitespace at the end of these lines. The characters removed are those of
   `String.prototype.trimEnd()`, which are exactly the ones the grammar can leave
-  there. Whitespace at the start of a value is kept: it can change the Db
-  (`linkStyle` adds `fill:none` when no value starts with `fill`).
+  there. In the tree, that whitespace is outside the range of the style (see
+  **Style statements** in
+  [db-from-tree/flowchart.md](./db-from-tree/flowchart.md)). Whitespace at the
+  start of a value is kept: it can change the Db (`linkStyle` adds `fill:none`
+  when no value starts with `fill`).
 
 Other values of the summary:
 
 - Texts (labels, subgraph and diagram titles, `accTitle`, `accDescr`, tooltips)
   are recorded before HTML sanitization, and `vertices[].link` is the URL as
   written (trimmed); see [expected-results.md](./expected-results.md).
+- A style that is all whitespace gives the empty text: `style A fill:#f00, ` has
+  the styles `fill:#f00` and the empty text. [fixture:
+  flowchart/gram-style-whitespace] [fixture:
+  flowchart/db-style-whitespace-only-value] [fixture:
+  flowchart/db-style-trailing-comma]
+- With these choices the summary does not depend on `securityLevel`, as long as
+  it is one of `strict`, `loose`, `antiscript`, and `sandbox`.
 - `icon`, `form`, `pos`, `img`, `constraint`, `assetWidth` and `assetHeight` of
   vertices, `animate` and `animation` of edges, and `metadata` of subgraphs are
   set only by `@{ ... }` data blocks; see
   [embedded-data.md](./embedded-data.md).
 
 ## sequence
+
+The fields of the summary:
+
+| Field             | Content                                                                                   |
+| ----------------- | ----------------------------------------------------------------------------------------- |
+| `title`           | The title.                                                                                |
+| `accTitle`        | The accessibility title, or the empty text.                                               |
+| `accDescr`        | The accessibility description, or the empty text.                                         |
+| `actors`          | The participants, in the order in which they were first added.                            |
+| `boxes`           | The boxes, in source order: `name`, `wrap`, `fill`, and `actorKeys`.                      |
+| `createdActors`   | The created participants: `id` and `messageIndex`.                                        |
+| `destroyedActors` | The destroyed participants: `id` and `messageIndex`.                                      |
+| `messages`        | The messages, notes, autonumber settings, activations, and the starts and ends of blocks. |
+
+A participant has `name`, `description`, `wrap`, `prevActor`, `nextActor`,
+`links`, `properties`, `type`, and `box`, the position of its box in `boxes`. A
+field that the Db leaves unset is absent.
 
 `normalizeSequence()` (`src/normalizers/sequence.ts`) summarizes the Db of
 `sequence`. It keeps what `SequenceDB` exposes through its getters: the actors
@@ -98,6 +144,32 @@ Other values of the summary:
 
 ## class
 
+The fields of the summary:
+
+| Field        | Content                                                      |
+| ------------ | ------------------------------------------------------------ |
+| `direction`  | The direction, `TB` unless a direction statement sets it.    |
+| `title`      | The title of the frontmatter, or the empty text.             |
+| `accTitle`   | The accessibility title, or the empty text.                  |
+| `accDescr`   | The accessibility description, or the empty text.            |
+| `classes`    | The classes, in the order in which they were first added.    |
+| `relations`  | The relations, in source order.                              |
+| `notes`      | The notes, in source order.                                  |
+| `namespaces` | The namespaces, in the order in which they were first added. |
+| `interfaces` | The interfaces that lollipop relations add, in source order. |
+
+A class has `id`, `type`, `label`, `text`, `shape`, which is always `classBox`,
+`cssClasses`, `methods`, `members`, `annotations`, `styles`, and, when they are
+set, `parent`, `link`, `linkTarget`, `haveCallback`, and `tooltip`. A method has
+`memberType` (`method`), `visibility`, `classifier`, `id`, `parameters`, and
+`returnType`; an attribute, in `members`, has `memberType` (`attribute`),
+`visibility`, `classifier`, and `id`. A relation has `id1`, `id2`, `relation`
+with `type1`, `type2`, and `lineType`, `relationTitle1`, `relationTitle2`, and,
+when it has a label, `title`. A note has `id`, `text`, and, when they are set,
+`class` and `parent`. A namespace has `id`, `label`, the ids of its `classes`,
+`notes`, and `children`, `explicit`, and, when it has one, `parent`. An
+interface has `id`, `label`, and `classId`.
+
 `normalizeClass()` (`src/normalizers/class.ts`) summarizes the Db of
 `classDiagram`, which mermaid.js detects for both `classDiagram` and
 `classDiagram-v2`. It keeps what `ClassDB` exposes through its getters, in the
@@ -136,6 +208,27 @@ Other values of the summary:
   [expected-results.md](./expected-results.md)).
 
 ## state
+
+The fields of the summary:
+
+| Field         | Content                                                                  |
+| ------------- | ------------------------------------------------------------------------ |
+| `direction`   | The direction of the diagram.                                            |
+| `title`       | The title of the frontmatter, or the empty text.                         |
+| `accTitle`    | The accessibility title, or the empty text.                              |
+| `accDescr`    | The accessibility description, or the empty text.                        |
+| `states`      | The states, in the order of their nodes.                                 |
+| `notes`       | The notes, in the order of their nodes.                                  |
+| `transitions` | The transitions, in source order.                                        |
+| `classDefs`   | The class definitions, in the order of their first `classDef` statement. |
+| `links`       | The click statements at the top level, in source order.                  |
+
+A state has `id`, `label`, `classes`, and `styles`, and, when they are set,
+`shape`, `description`, `parentId`, and `dir` (see
+[Building the summary from the tree](./db-from-tree/state.md#building-the-summary-from-the-tree)).
+A note has `state`, `position`, and `text`. A transition has `start`, `end`, and
+`label`. A class definition has `id` and `styles`. A link has `state`, `url`,
+and `tooltip`.
 
 `normalizeState()` (`src/normalizers/state.ts`) summarizes the Db of
 `stateDiagram`, which mermaid.js detects for both `stateDiagram` and

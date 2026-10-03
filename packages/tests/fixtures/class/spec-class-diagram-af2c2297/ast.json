@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Car",
             "range": [
               19,
@@ -68,7 +68,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Car",
             "range": [
               23,
@@ -231,7 +231,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Car",
       "range": [
         19,
@@ -249,7 +249,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Car",
       "range": [
         23,

@@ -101,8 +101,8 @@ flowchart LR
   Markdown では、コードブロックを Prettier に任せ、
   Prettier は整形しないコードとして印字します。
 - mermaid.js が受理する入力の一部も、構文エラーとして報告します。
-  たとえば、`A["a %%{init: {}}%% b"]` のように、
-  文字列の中にディレクティブがある場合です。
+  たとえば、`sub%%{init: {}}%%graph S` のように、
+  キーワードの中にディレクティブがある場合です。
   また、`subgraph Handle click events` のように、
   click 文を始めない `click` がある場合です。
   flowchart では、`click` は予約語です。

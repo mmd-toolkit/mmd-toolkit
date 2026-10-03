@@ -11692,19 +11692,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: bang, label: bang",
+      "value": " shape: bang, label: bang ",
       "range": [
-        19,
-        43
+        18,
+        44
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 5
+          "column": 4
         },
         "end": {
           "line": 3,
-          "column": 29
+          "column": 30
         }
       }
     },
@@ -11764,19 +11764,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: notch-rect, label: notch-rect",
+      "value": " shape: notch-rect, label: notch-rect ",
       "range": [
-        51,
-        87
+        50,
+        88
       ],
       "loc": {
         "start": {
           "line": 4,
-          "column": 5
+          "column": 4
         },
         "end": {
           "line": 4,
-          "column": 41
+          "column": 42
         }
       }
     },
@@ -11836,19 +11836,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: cloud, label: cloud",
+      "value": " shape: cloud, label: cloud ",
       "range": [
-        95,
-        121
+        94,
+        122
       ],
       "loc": {
         "start": {
           "line": 5,
-          "column": 5
+          "column": 4
         },
         "end": {
           "line": 5,
-          "column": 31
+          "column": 32
         }
       }
     },
@@ -11908,19 +11908,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: hourglass, label: hourglass",
+      "value": " shape: hourglass, label: hourglass ",
       "range": [
-        129,
-        163
+        128,
+        164
       ],
       "loc": {
         "start": {
           "line": 6,
-          "column": 5
+          "column": 4
         },
         "end": {
           "line": 6,
-          "column": 39
+          "column": 40
         }
       }
     },
@@ -11980,19 +11980,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: bolt, label: bolt",
+      "value": " shape: bolt, label: bolt ",
       "range": [
-        171,
-        195
+        170,
+        196
       ],
       "loc": {
         "start": {
           "line": 7,
-          "column": 5
+          "column": 4
         },
         "end": {
           "line": 7,
-          "column": 29
+          "column": 30
         }
       }
     },
@@ -12052,19 +12052,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: brace, label: brace",
+      "value": " shape: brace, label: brace ",
       "range": [
-        203,
-        229
+        202,
+        230
       ],
       "loc": {
         "start": {
           "line": 8,
-          "column": 5
+          "column": 4
         },
         "end": {
           "line": 8,
-          "column": 31
+          "column": 32
         }
       }
     },
@@ -12124,19 +12124,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: brace-r, label: brace-r",
+      "value": " shape: brace-r, label: brace-r ",
       "range": [
-        237,
-        267
+        236,
+        268
       ],
       "loc": {
         "start": {
           "line": 9,
-          "column": 5
+          "column": 4
         },
         "end": {
           "line": 9,
-          "column": 35
+          "column": 36
         }
       }
     },
@@ -12196,19 +12196,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: braces, label: braces",
+      "value": " shape: braces, label: braces ",
       "range": [
-        275,
-        303
+        274,
+        304
       ],
       "loc": {
         "start": {
           "line": 10,
-          "column": 5
+          "column": 4
         },
         "end": {
           "line": 10,
-          "column": 33
+          "column": 34
         }
       }
     },
@@ -12268,19 +12268,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: lean-r, label: lean-r",
+      "value": " shape: lean-r, label: lean-r ",
       "range": [
-        311,
-        339
+        310,
+        340
       ],
       "loc": {
         "start": {
           "line": 11,
-          "column": 5
+          "column": 4
         },
         "end": {
           "line": 11,
-          "column": 33
+          "column": 34
         }
       }
     },
@@ -12340,19 +12340,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: lean-l, label: lean-l",
+      "value": " shape: lean-l, label: lean-l ",
       "range": [
-        348,
-        376
+        347,
+        377
       ],
       "loc": {
         "start": {
           "line": 12,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 12,
-          "column": 34
+          "column": 35
         }
       }
     },
@@ -12412,19 +12412,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: cyl, label: cyl",
+      "value": " shape: cyl, label: cyl ",
       "range": [
-        385,
-        407
+        384,
+        408
       ],
       "loc": {
         "start": {
           "line": 13,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 13,
-          "column": 28
+          "column": 29
         }
       }
     },
@@ -12484,19 +12484,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: diam, label: diam",
+      "value": " shape: diam, label: diam ",
       "range": [
-        416,
-        440
+        415,
+        441
       ],
       "loc": {
         "start": {
           "line": 14,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 14,
-          "column": 30
+          "column": 31
         }
       }
     },
@@ -12556,19 +12556,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: delay, label: delay",
+      "value": " shape: delay, label: delay ",
       "range": [
-        449,
-        475
+        448,
+        476
       ],
       "loc": {
         "start": {
           "line": 15,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 15,
-          "column": 32
+          "column": 33
         }
       }
     },
@@ -12628,19 +12628,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: h-cyl, label: h-cyl",
+      "value": " shape: h-cyl, label: h-cyl ",
       "range": [
-        484,
-        510
+        483,
+        511
       ],
       "loc": {
         "start": {
           "line": 16,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 16,
-          "column": 32
+          "column": 33
         }
       }
     },
@@ -12700,19 +12700,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: lin-cyl, label: lin-cyl",
+      "value": " shape: lin-cyl, label: lin-cyl ",
       "range": [
-        519,
-        549
+        518,
+        550
       ],
       "loc": {
         "start": {
           "line": 17,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 17,
-          "column": 36
+          "column": 37
         }
       }
     },
@@ -12772,19 +12772,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: curv-trap, label: curv-trap",
+      "value": " shape: curv-trap, label: curv-trap ",
       "range": [
-        558,
-        592
+        557,
+        593
       ],
       "loc": {
         "start": {
           "line": 18,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 18,
-          "column": 40
+          "column": 41
         }
       }
     },
@@ -12844,19 +12844,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: div-rect, label: div-rect",
+      "value": " shape: div-rect, label: div-rect ",
       "range": [
-        601,
-        633
+        600,
+        634
       ],
       "loc": {
         "start": {
           "line": 19,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 19,
-          "column": 38
+          "column": 39
         }
       }
     },
@@ -12916,19 +12916,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: doc, label: doc",
+      "value": " shape: doc, label: doc ",
       "range": [
-        642,
-        664
+        641,
+        665
       ],
       "loc": {
         "start": {
           "line": 20,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 20,
-          "column": 28
+          "column": 29
         }
       }
     },
@@ -12988,19 +12988,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: rounded, label: rounded",
+      "value": " shape: rounded, label: rounded ",
       "range": [
-        673,
-        703
+        672,
+        704
       ],
       "loc": {
         "start": {
           "line": 21,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 21,
-          "column": 36
+          "column": 37
         }
       }
     },
@@ -13060,19 +13060,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: tri, label: tri",
+      "value": " shape: tri, label: tri ",
       "range": [
-        712,
-        734
+        711,
+        735
       ],
       "loc": {
         "start": {
           "line": 22,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 22,
-          "column": 28
+          "column": 29
         }
       }
     },
@@ -13132,19 +13132,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: fork, label: fork",
+      "value": " shape: fork, label: fork ",
       "range": [
-        743,
-        767
+        742,
+        768
       ],
       "loc": {
         "start": {
           "line": 23,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 23,
-          "column": 30
+          "column": 31
         }
       }
     },
@@ -13204,19 +13204,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: win-pane, label: win-pane",
+      "value": " shape: win-pane, label: win-pane ",
       "range": [
-        776,
-        808
+        775,
+        809
       ],
       "loc": {
         "start": {
           "line": 24,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 24,
-          "column": 38
+          "column": 39
         }
       }
     },
@@ -13276,19 +13276,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: f-circ, label: f-circ",
+      "value": " shape: f-circ, label: f-circ ",
       "range": [
-        817,
-        845
+        816,
+        846
       ],
       "loc": {
         "start": {
           "line": 25,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 25,
-          "column": 34
+          "column": 35
         }
       }
     },
@@ -13348,19 +13348,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: lin-doc, label: lin-doc",
+      "value": " shape: lin-doc, label: lin-doc ",
       "range": [
-        854,
-        884
+        853,
+        885
       ],
       "loc": {
         "start": {
           "line": 26,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 26,
-          "column": 36
+          "column": 37
         }
       }
     },
@@ -13420,19 +13420,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: lin-rect, label: lin-rect",
+      "value": " shape: lin-rect, label: lin-rect ",
       "range": [
-        893,
-        925
+        892,
+        926
       ],
       "loc": {
         "start": {
           "line": 27,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 27,
-          "column": 38
+          "column": 39
         }
       }
     },
@@ -13492,19 +13492,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: notch-pent, label: notch-pent",
+      "value": " shape: notch-pent, label: notch-pent ",
       "range": [
-        934,
-        970
+        933,
+        971
       ],
       "loc": {
         "start": {
           "line": 28,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 28,
-          "column": 42
+          "column": 43
         }
       }
     },
@@ -13564,19 +13564,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: flip-tri, label: flip-tri",
+      "value": " shape: flip-tri, label: flip-tri ",
       "range": [
-        979,
-        1011
+        978,
+        1012
       ],
       "loc": {
         "start": {
           "line": 29,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 29,
-          "column": 38
+          "column": 39
         }
       }
     },
@@ -13636,19 +13636,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: sl-rect, label: sl-rect",
+      "value": " shape: sl-rect, label: sl-rect ",
       "range": [
-        1020,
-        1050
+        1019,
+        1051
       ],
       "loc": {
         "start": {
           "line": 30,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 30,
-          "column": 36
+          "column": 37
         }
       }
     },
@@ -13708,19 +13708,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: trap-t, label: trap-t",
+      "value": " shape: trap-t, label: trap-t ",
       "range": [
-        1059,
-        1087
+        1058,
+        1088
       ],
       "loc": {
         "start": {
           "line": 31,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 31,
-          "column": 34
+          "column": 35
         }
       }
     },
@@ -13780,19 +13780,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: docs, label: docs",
+      "value": " shape: docs, label: docs ",
       "range": [
-        1096,
-        1120
+        1095,
+        1121
       ],
       "loc": {
         "start": {
           "line": 32,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 32,
-          "column": 30
+          "column": 31
         }
       }
     },
@@ -13852,19 +13852,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: st-rect, label: st-rect",
+      "value": " shape: st-rect, label: st-rect ",
       "range": [
-        1129,
-        1159
+        1128,
+        1160
       ],
       "loc": {
         "start": {
           "line": 33,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 33,
-          "column": 36
+          "column": 37
         }
       }
     },
@@ -13924,19 +13924,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: odd, label: odd",
+      "value": " shape: odd, label: odd ",
       "range": [
-        1168,
-        1190
+        1167,
+        1191
       ],
       "loc": {
         "start": {
           "line": 34,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 34,
-          "column": 28
+          "column": 29
         }
       }
     },
@@ -13996,19 +13996,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: flag, label: flag",
+      "value": " shape: flag, label: flag ",
       "range": [
-        1199,
-        1223
+        1198,
+        1224
       ],
       "loc": {
         "start": {
           "line": 35,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 35,
-          "column": 30
+          "column": 31
         }
       }
     },
@@ -14068,19 +14068,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: hex, label: hex",
+      "value": " shape: hex, label: hex ",
       "range": [
-        1232,
-        1254
+        1231,
+        1255
       ],
       "loc": {
         "start": {
           "line": 36,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 36,
-          "column": 28
+          "column": 29
         }
       }
     },
@@ -14140,19 +14140,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: trap-b, label: trap-b",
+      "value": " shape: trap-b, label: trap-b ",
       "range": [
-        1263,
-        1291
+        1262,
+        1292
       ],
       "loc": {
         "start": {
           "line": 37,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 37,
-          "column": 34
+          "column": 35
         }
       }
     },
@@ -14212,19 +14212,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: rect, label: rect",
+      "value": " shape: rect, label: rect ",
       "range": [
-        1300,
-        1324
+        1299,
+        1325
       ],
       "loc": {
         "start": {
           "line": 38,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 38,
-          "column": 30
+          "column": 31
         }
       }
     },
@@ -14284,19 +14284,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: circle, label: circle",
+      "value": " shape: circle, label: circle ",
       "range": [
-        1333,
-        1361
+        1332,
+        1362
       ],
       "loc": {
         "start": {
           "line": 39,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 39,
-          "column": 34
+          "column": 35
         }
       }
     },
@@ -14356,19 +14356,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: sm-circ, label: sm-circ",
+      "value": " shape: sm-circ, label: sm-circ ",
       "range": [
-        1370,
-        1400
+        1369,
+        1401
       ],
       "loc": {
         "start": {
           "line": 40,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 40,
-          "column": 36
+          "column": 37
         }
       }
     },
@@ -14428,19 +14428,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: dbl-circ, label: dbl-circ",
+      "value": " shape: dbl-circ, label: dbl-circ ",
       "range": [
-        1409,
-        1441
+        1408,
+        1442
       ],
       "loc": {
         "start": {
           "line": 41,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 41,
-          "column": 38
+          "column": 39
         }
       }
     },
@@ -14500,19 +14500,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: fr-circ, label: fr-circ",
+      "value": " shape: fr-circ, label: fr-circ ",
       "range": [
-        1450,
-        1480
+        1449,
+        1481
       ],
       "loc": {
         "start": {
           "line": 42,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 42,
-          "column": 36
+          "column": 37
         }
       }
     },
@@ -14572,19 +14572,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: bow-rect, label: bow-rect",
+      "value": " shape: bow-rect, label: bow-rect ",
       "range": [
-        1489,
-        1521
+        1488,
+        1522
       ],
       "loc": {
         "start": {
           "line": 43,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 43,
-          "column": 38
+          "column": 39
         }
       }
     },
@@ -14644,19 +14644,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: fr-rect, label: fr-rect",
+      "value": " shape: fr-rect, label: fr-rect ",
       "range": [
-        1530,
-        1560
+        1529,
+        1561
       ],
       "loc": {
         "start": {
           "line": 44,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 44,
-          "column": 36
+          "column": 37
         }
       }
     },
@@ -14716,19 +14716,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: cross-circ, label: cross-circ",
+      "value": " shape: cross-circ, label: cross-circ ",
       "range": [
-        1569,
-        1605
+        1568,
+        1606
       ],
       "loc": {
         "start": {
           "line": 45,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 45,
-          "column": 42
+          "column": 43
         }
       }
     },
@@ -14788,19 +14788,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: tag-doc, label: tag-doc",
+      "value": " shape: tag-doc, label: tag-doc ",
       "range": [
-        1614,
-        1644
+        1613,
+        1645
       ],
       "loc": {
         "start": {
           "line": 46,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 46,
-          "column": 36
+          "column": 37
         }
       }
     },
@@ -14860,19 +14860,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: tag-rect, label: tag-rect",
+      "value": " shape: tag-rect, label: tag-rect ",
       "range": [
-        1653,
-        1685
+        1652,
+        1686
       ],
       "loc": {
         "start": {
           "line": 47,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 47,
-          "column": 38
+          "column": 39
         }
       }
     },
@@ -14932,19 +14932,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: stadium, label: stadium",
+      "value": " shape: stadium, label: stadium ",
       "range": [
-        1694,
-        1724
+        1693,
+        1725
       ],
       "loc": {
         "start": {
           "line": 48,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 48,
-          "column": 36
+          "column": 37
         }
       }
     },
@@ -15004,19 +15004,19 @@
     },
     {
       "type": "RawText",
-      "value": "shape: text, label: text",
+      "value": " shape: text, label: text ",
       "range": [
-        1733,
-        1757
+        1732,
+        1758
       ],
       "loc": {
         "start": {
           "line": 49,
-          "column": 6
+          "column": 5
         },
         "end": {
           "line": 49,
-          "column": 30
+          "column": 31
         }
       }
     },

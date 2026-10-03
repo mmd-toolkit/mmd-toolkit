@@ -215,7 +215,7 @@ describe("dispatch to diagram printers", () => {
 describe("parse errors", () => {
   it("are reported with a code frame at the parser's position", async () => {
     const input = "flowchart LR\n  A --> \n"
-    const original = new ParseError("Expecting a node", [23, 24], {
+    const original = new ParseError("Expecting a node", [21, 22], {
       start: { line: 2, column: 8 },
       end: { line: 2, column: 9 },
     })
@@ -225,10 +225,9 @@ describe("parse errors", () => {
     const error: unknown = await formatMermaid(input).catch((e: unknown) => e)
     expect(error).toBeInstanceOf(SyntaxError)
     const { message, loc, cause } = error as SyntaxError & { loc: unknown }
-    expect(loc).toEqual({
-      start: { line: 2, column: 9 },
-      end: { line: 2, column: 10 },
-    })
+    // The error is at the line feed, which ends at the start of the next
+    // line: the position has a start only (see `toPrettierError`).
+    expect(loc).toEqual({ start: { line: 2, column: 9 } })
     expect(message).toContain("Expecting a node")
     // The caret sits under the 0-based column 8 reported by the parser.
     expect(message).toContain(`> 2 |   A --> \n    | ${" ".repeat(8)}^`)

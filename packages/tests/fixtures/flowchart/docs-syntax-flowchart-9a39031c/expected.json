@@ -34,5 +34,20 @@
     "classDefs": [],
     "subgraphs": [],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "My example image label",
+          "pos": "t",
+          "img": "https://mermaid.js.org/favicon.svg",
+          "constraint": "on",
+          "assetHeight": 60
+        }
+      }
+    ]
   }
 }

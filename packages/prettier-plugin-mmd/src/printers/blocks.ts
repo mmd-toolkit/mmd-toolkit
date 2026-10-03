@@ -5,7 +5,12 @@ import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
 import { endsWithSpaceOrTab, readGap } from "./gap.ts"
 import type { KeptLines } from "./kept-lines.ts"
-import { lineEndOf, lineStartOf } from "./kept-lines.ts"
+import {
+  holdsJoiningRegion,
+  lineEndOf,
+  lineStartOf,
+  withJoinedLines,
+} from "./kept-lines.ts"
 import type { Line } from "./lines.ts"
 import {
   breakAfter,
@@ -60,6 +65,15 @@ export interface BlockRules<Statement extends Node> {
    * change what it draws (docs/class.md, Comments).
    */
   readonly keepsWhitespaceLineAfterComment: boolean
+  /**
+   * Whether a line of only directives right after a line of only `%%`, or
+   * after more such lines, is printed without indentation, as written. In a
+   * class diagram, a line of only whitespace after such a `%%` line is a
+   * `newline` unit of its own, and the line of a directive, with the
+   * indentation before it, is one (diagrams/class.md, The statement
+   * context), so with the indentation the text would be rejected.
+   */
+  readonly keepsDirectiveLinesUnindentedAfterBareMarker: boolean
 }
 
 /** Where a block of statements lies in the source, and which block it is. */
@@ -121,7 +135,7 @@ export function printBlock<Statement extends Node>(
   rules: BlockRules<Statement>,
 ): PrintedBlock {
   const { statements } = bounds
-  const { kept } = rules
+  const kept = withJoinedLines(source, rules.kept)
   const lines: Line[] = []
   let headerTrailing: ItemRun | null = null
   let offset = bounds.start
@@ -129,6 +143,15 @@ export function printBlock<Statement extends Node>(
   let continuesOpeningLine = false
   let spaceLinePending = false
   let stretchEndsWithComment = false
+
+  /**
+   * Whether a line of the body has been added: the part of the opening line
+   * that is kept as written is a line of the block, but a blank line after
+   * it is a blank line after the opening line, which is dropped.
+   */
+  function hasBodyLines(): boolean {
+    return lines.length > (continuesOpeningLine ? 1 : 0)
+  }
 
   /**
    * Adds a line, after a line of one space when the gap before it asks for
@@ -150,12 +173,19 @@ export function printBlock<Statement extends Node>(
       rules.keepsWhitespaceLineAfterComment &&
       (gap.trailingEndsWithComment || stretchEndsWithComment)
     stretchEndsWithComment = false
+    let afterBareMarker = false
     for (const line of gap.lines) {
+      const unindented: boolean =
+        rules.keepsDirectiveLinesUnindentedAfterBareMarker &&
+        afterBareMarker &&
+        line.directivesOnly
+      afterBareMarker = line.bareMarker || unindented
       pushLine({
         doc: line.run.doc,
-        blankBefore: lines.length > 0 && line.blankBefore,
+        blankBefore: hasBodyLines() && line.blankBefore,
         endsWithWhitespace: line.run.endsWithWhitespace,
         spaceLineBefore: keepsWhitespaceLines && line.whitespaceLineBefore,
+        ...(unindented ? { writtenIndentation: "" } : {}),
       })
     }
     spaceLinePending = keepsWhitespaceLines && gap.whitespaceLineAfter
@@ -213,7 +243,8 @@ export function printBlock<Statement extends Node>(
     const covered = statements.slice(stretch.first, stretch.after)
     if (
       covered.some(rules.holdsStatements) ||
-      holdsVerbatimLine(source, kept, stretch.start, stretch.end)
+      holdsVerbatimLine(source, kept, stretch.start, stretch.end) ||
+      holdsJoiningRegion(source, stretch.start, stretch.end)
     ) {
       return {
         doc: printAsWritten(source, stretch.start, stretch.end),
@@ -287,7 +318,7 @@ export function printBlock<Statement extends Node>(
     if (!startsStretch) {
       pushLine({
         doc: withLeading(gap.leading, docs[index]),
-        blankBefore: lines.length > 0 && gap.blankAfter,
+        blankBefore: hasBodyLines() && gap.blankAfter,
         endsWithWhitespace: endsWithSpaceOrTab(
           source.text.slice(statement.range[0], end),
         ),
@@ -308,7 +339,7 @@ export function printBlock<Statement extends Node>(
     pushLine({
       ...line,
       doc: withLeading(gap.leading, line.doc),
-      blankBefore: lines.length > 0 && gap.blankAfter,
+      blankBefore: hasBodyLines() && gap.blankAfter,
       ...(keepsIndentation
         ? { writtenIndentation: source.text.slice(lineStart, start) }
         : {}),

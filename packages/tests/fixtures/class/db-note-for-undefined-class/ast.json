@@ -10,7 +10,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Z",
             "range": [
               22,
@@ -118,10 +118,10 @@
     },
     {
       "type": "Keyword",
-      "value": "note for",
+      "value": "note",
       "range": [
         13,
-        21
+        17
       ],
       "loc": {
         "start": {
@@ -130,12 +130,30 @@
         },
         "end": {
           "line": 2,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "for",
+      "range": [
+        18,
+        21
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 5
+        },
+        "end": {
+          "line": 2,
           "column": 8
         }
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Z",
       "range": [
         22,

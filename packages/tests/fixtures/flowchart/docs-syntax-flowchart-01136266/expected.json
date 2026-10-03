@@ -134,5 +134,17 @@
       }
     ],
     "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "one",
+        "set": {
+          "metadata": {
+            "view": "collapsed"
+          }
+        }
+      }
+    ]
   }
 }

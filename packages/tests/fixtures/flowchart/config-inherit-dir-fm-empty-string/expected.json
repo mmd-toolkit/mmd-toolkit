@@ -27,5 +27,12 @@
       }
     ],
     "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "flowchart": {
+        "inheritDir": ""
+      }
+    }
   }
 }

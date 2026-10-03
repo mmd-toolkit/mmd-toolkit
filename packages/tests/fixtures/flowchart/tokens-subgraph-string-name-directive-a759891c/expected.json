@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Whitespace before a directive after the string name of a subgraph. mermaid.js reads the subgraphs id \"subGraph0\" title \"S\"."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

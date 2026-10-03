@@ -8,7 +8,7 @@
         "type": "ClassNamespaceStatement",
         "prefix": null,
         "name": {
-          "type": "Identifier",
+          "type": "ClassIdentifier",
           "name": "Company.Project.Module",
           "range": [
             31,
@@ -33,7 +33,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "User",
                 "range": [
                   72,
@@ -91,7 +91,7 @@
               "type": "ClassName",
               "prefix": null,
               "name": {
-                "type": "Identifier",
+                "type": "ClassIdentifier",
                 "name": "Admin",
                 "range": [
                   93,
@@ -165,7 +165,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "Admin",
             "range": [
               119,
@@ -225,7 +225,7 @@
           "type": "ClassName",
           "prefix": null,
           "name": {
-            "type": "Identifier",
+            "type": "ClassIdentifier",
             "name": "User",
             "range": [
               129,
@@ -348,7 +348,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Company.Project.Module",
       "range": [
         31,
@@ -402,7 +402,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "User",
       "range": [
         72,
@@ -438,7 +438,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Admin",
       "range": [
         93,
@@ -474,7 +474,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "Admin",
       "range": [
         119,
@@ -528,7 +528,7 @@
       }
     },
     {
-      "type": "Identifier",
+      "type": "RawText",
       "value": "User",
       "range": [
         129,

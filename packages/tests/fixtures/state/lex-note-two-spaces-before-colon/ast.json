@@ -26,17 +26,18 @@
             }
           }
         },
+        "textBeforeText": null,
         "text": {
           "type": "StateLiteral",
-          "value": "hi",
+          "value": ":hi",
           "range": [
-            35,
+            34,
             37
           ],
           "loc": {
             "start": {
               "line": 2,
-              "column": 19
+              "column": 18
             },
             "end": {
               "line": 2,
@@ -117,15 +118,33 @@
     },
     {
       "type": "Keyword",
-      "value": "left of",
+      "value": "left",
       "range": [
         23,
-        30
+        27
       ],
       "loc": {
         "start": {
           "line": 2,
           "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "of",
+      "range": [
+        28,
+        30
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 12
         },
         "end": {
           "line": 2,

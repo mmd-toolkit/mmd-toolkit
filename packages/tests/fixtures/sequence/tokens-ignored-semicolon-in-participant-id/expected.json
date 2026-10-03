@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md `style` and `classDef` lines: the line matches the `style` rule, and its last `;` lies inside a participant id, a name that may contain whitespace, which may hold it; the participant is `BC`, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Z",
+        "description": "Z",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "BC"
+      },
+      {
+        "name": "BC",
+        "description": "BC",
+        "wrap": false,
+        "prevActor": "Z",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "Z",
+        "set": {}
+      }
+    ]
+  }
+}

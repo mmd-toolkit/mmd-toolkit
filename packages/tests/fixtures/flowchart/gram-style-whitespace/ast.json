@@ -121,15 +121,15 @@
           },
           {
             "type": "FlowchartLiteral",
-            "value": "stroke:#333",
+            "value": " stroke:#333",
             "range": [
-              35,
+              34,
               46
             ],
             "loc": {
               "start": {
                 "line": 3,
-                "column": 20
+                "column": 19
               },
               "end": {
                 "line": 3,
@@ -301,15 +301,15 @@
     },
     {
       "type": "RawText",
-      "value": "stroke:#333",
+      "value": " stroke:#333",
       "range": [
-        35,
+        34,
         46
       ],
       "loc": {
         "start": {
           "line": 3,
-          "column": 20
+          "column": 19
         },
         "end": {
           "line": 3,

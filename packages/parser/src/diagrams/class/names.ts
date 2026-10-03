@@ -1,10 +1,10 @@
 import { TILDE } from "../../code-points.ts"
 
 /**
- * diagrams/class.md, Building the summary from the tree, Names: the id of
- * the written name `writtenName`, the text before its first `~` when it
- * has a `~` and its first `~` is not its first character, and the written
- * name otherwise.
+ * diagrams/class.md, Rejections outside the grammar: the id of the
+ * written name `writtenName`, the text before its first `~` when it has a
+ * `~` and its first `~` is not its first character, and the written name
+ * otherwise.
  */
 export function classIdOf(writtenName: string): string {
   const characters = [...writtenName]
