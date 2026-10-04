@@ -10,6 +10,18 @@ mermaid-js とは関係のない第三者のプロジェクトです。
 ここでいう `mmd` は Mermaid の図の記法のことで、
 MultiMarkdown や MikuMikuDance ではありません。
 
+## Playground
+
+ブラウザーで、このプラグインによる整形結果を確認できます。
+**Formatted**タブは編集に合わせて更新され、
+**Indent**と**Use tabs**で字下げを設定できます。
+**Apply to source**で、入力を整形結果に置き換えられます。
+
+公開予定URL:
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
+
+操作方法は[Playgroundの使い方](../playground/README.ja.md)を参照してください。
+
 ## 導入
 
 このパッケージは、まだ npm に公開していません。

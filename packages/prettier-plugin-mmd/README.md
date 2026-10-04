@@ -8,6 +8,17 @@ and `.mermaid` files, and `mermaid` code blocks in Markdown.
 This is a third-party project, not affiliated with mermaid-js. `mmd` here means
 the Mermaid diagram syntax, not MultiMarkdown or MikuMikuDance.
 
+## Playground
+
+Preview this plugin's formatting in the browser. The **Formatted** tab updates
+as you edit, with **Indent** and **Use tabs** controls. Use **Apply to source**
+to replace the input with the result.
+
+Planned public URL:
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
+
+For usage, see the [Playground guide](../playground/README.md).
+
 ## Installation
 
 The package is not published to npm yet. Once it is, install it next to

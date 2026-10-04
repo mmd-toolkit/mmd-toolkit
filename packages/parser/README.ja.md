@@ -7,6 +7,18 @@ Mermaid 記法（`.mmd`）のパーサーです。
 
 mermaid-js とは無関係の第三者プロジェクトです。
 
+## Playground
+
+ブラウザーで、このパーサーが返す構文木、トークン、コメント、
+ディレクティブ、フロントマターを確認できます。
+ツリーの項目を選ぶとソースの対応範囲が強調表示され、
+ソースのカーソルを動かすと対応する項目が選択されます。
+
+公開予定URL:
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
+
+操作方法は[Playgroundの使い方](../playground/README.ja.md)を参照してください。
+
 ## 導入
 
 ```sh

@@ -17,6 +17,16 @@ marks those that are not implemented yet, which report nothing.
 recommended configuration, and it will be written again with the other rules
 common to every diagram type.
 
+## Playground
+
+Use the browser Playground to inspect the AST and tokens that rules read, and
+share an input by URL.
+
+Planned public URL:
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
+
+For usage, see the [Playground guide](../playground/README.md).
+
 ## Installation
 
 The package is not published to npm yet. Once it is, install it next to

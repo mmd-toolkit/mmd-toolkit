@@ -7,6 +7,17 @@ a tree that keeps every character of the input, with the position of every part.
 
 It is a third-party project, not affiliated with mermaid-js.
 
+## Playground
+
+Inspect the AST, tokens, comments, directives, and frontmatter returned by this
+parser in the browser. Selecting a tree entry highlights its source range, and
+moving the source cursor selects the corresponding entry.
+
+Planned public URL:
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
+
+For usage, see the [Playground guide](../playground/README.md).
+
 ## Installation
 
 ```sh
