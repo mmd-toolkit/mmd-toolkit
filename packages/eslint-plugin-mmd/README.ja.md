@@ -19,16 +19,6 @@ MultiMarkdown や MikuMikuDance ではありません。
 これは推奨の設定に入っておらず、
 すべての図種に共通のほかの規則と一緒に書き直します。
 
-## Playground
-
-規則が参照する構文木やトークンをブラウザーで確認し、
-入力をURLで共有できます。
-
-公開予定URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
-
-操作方法は[Playgroundの使い方](../playground/README.ja.md)を参照してください。
-
 ## 導入
 
 このパッケージは、まだ npm に公開していません。

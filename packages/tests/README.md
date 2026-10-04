@@ -8,17 +8,6 @@ against mermaid.js. Every fixture records what the pinned mermaid.js
 
 This is a third-party project, unrelated to mermaid-js.
 
-## Playground
-
-Paste a fixture's `input.mmd` text into **Source** in the browser Playground to
-inspect the reference parser's result and preview formatting. Share the input by
-URL when discussing a fixture.
-
-Planned public URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
-
-For usage, see the [Playground guide](../playground/README.md).
-
 ## Installation
 
 The package is private and is used inside this repository's workspace. Add it as

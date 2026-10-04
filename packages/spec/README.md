@@ -11,17 +11,6 @@ This is a third-party project, not affiliated with mermaid-js. The package is
 not published to npm; the specification is the set of documents under
 [`docs/`](./docs).
 
-## Playground
-
-Use the browser Playground to inspect how the reference parser represents
-Mermaid text as a syntax tree, alongside the AST definitions in this
-specification.
-
-Planned public URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
-
-For usage, see the [Playground guide](../playground/README.md).
-
 ## mermaid.js version
 
 The specification follows mermaid 12.0.0, at the commit

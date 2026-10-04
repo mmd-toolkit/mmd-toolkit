@@ -11,16 +11,6 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 このパッケージは npm に公開しません。
 仕様は [`docs/`](./docs) の下の文書です。
 
-## Playground
-
-仕様のAST定義と見比べながら、参照パーサーがMermaidのテキストを
-どのような構文木にするかをブラウザーで確認できます。
-
-公開予定URL:
-[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
-
-操作方法は[Playgroundの使い方](../playground/README.ja.md)を参照してください。
-
 ## mermaid.js の版
 
 この仕様は、
