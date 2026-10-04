@@ -36,5 +36,10 @@
     "tools/**/*",
     "vitest.config.ts"
   ],
-  "exclude": ["**/lib/**", "**/node_modules/**", "packages/tests/fixtures/**"]
+  "exclude": [
+    "**/lib/**",
+    "**/node_modules/**",
+    "packages/tests/fixtures/**",
+    "packages/playground/**"
+  ]
 }

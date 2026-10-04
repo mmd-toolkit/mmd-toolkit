@@ -6,6 +6,8 @@ export default [
       "**/node_modules/",
       "**/lib/",
       "**/coverage/",
+      "**/test-results/",
+      "**/playwright-report/",
       "packages/tests/fixtures/",
       ".claude/worktrees/",
       // Working data whose inputs intentionally contain unusual whitespace.
@@ -16,12 +18,50 @@ export default [
   ...myPlugin.config({
     node: true,
     ts: true,
+    vue3: { withTs: true },
     json: true,
     yaml: true,
     md: true,
     prettier: true,
     packageJson: true,
   }),
+  {
+    files: ["packages/playground/tests/e2e/*.ts"],
+    rules: {
+      // page.evaluate callbacks run in the browser, including navigator access.
+      "n/no-unsupported-features/node-builtins": "off",
+    },
+  },
+  {
+    files: ["packages/playground/**/*.{ts,vue}"],
+    languageOptions: {
+      parserOptions: { project: "./packages/playground/tsconfig.json" },
+    },
+  },
+  {
+    files: ["packages/playground/src/**/*.{ts,vue}"],
+    languageOptions: {
+      globals: {
+        window: "readonly",
+        document: "readonly",
+        navigator: "readonly",
+        performance: "readonly",
+        Blob: "readonly",
+        TextEncoder: "readonly",
+        TextDecoder: "readonly",
+        CompressionStream: "readonly",
+        DecompressionStream: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+      },
+    },
+    rules: {
+      // Browser modules use Vite's worker, CSS and workspace-source resolution.
+      "n/no-missing-import": "off",
+      "n/no-unsupported-features/node-builtins": "off",
+      "n/no-unsupported-features/es-builtins": "off",
+    },
+  },
   {
     files: ["**/*.{js,ts,mjs,mts,cjs,cts}"],
     rules: {

@@ -1,5 +1,7 @@
 # mmd-toolkit
 
+<img src="./packages/playground/public/mmd-toolkit.svg" alt="" width="64" height="64" />
+
 Japanese version: [README.ja.md](./README.ja.md)
 
 Third-party tooling for the Mermaid diagram syntax: a formatter, a linter, a
@@ -15,6 +17,21 @@ published to npm yet: they will be released once every diagram type of
 mermaid.js is supported. The linter's rules are implemented for flowcharts so
 far. The specification and the tests are used from this repository and are not
 published.
+
+## Playground
+
+The Playground lets you edit Mermaid text, inspect its syntax tree and tokens,
+and preview Prettier formatting in your browser.
+
+Planned public URL:
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
+
+Choose a sample from **Examples** or paste text into **Source**. The **AST** and
+**Formatted** tabs update as you edit. Choose **Share**, then **Copy Link**, to
+copy a URL that restores the input and indentation settings.
+
+See the [Playground guide](./packages/playground/README.md) for tree navigation,
+formatting options, and applying the formatted result.
 
 ## Packages
 

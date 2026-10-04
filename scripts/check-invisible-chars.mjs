@@ -18,10 +18,15 @@ const skipDirs = new Set([
   "lib",
   "coverage",
   "worktrees",
+  "test-results",
+  "playwright-report",
 ])
 const corpusFixtures = path.join(root, "packages", "tests", "fixtures")
 const extensions = new Set([
   ".ts",
+  ".vue",
+  ".css",
+  ".html",
   ".mts",
   ".cts",
   ".js",

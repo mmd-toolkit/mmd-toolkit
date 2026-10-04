@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "lib": ["es2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client", "node"],
+    "isolatedDeclarations": false,
+    "paths": {
+      "@mmd-toolkit/parser": ["../parser/src/index.ts"],
+      "prettier-plugin-mmd": ["../prettier-plugin-mmd/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.vue", "tests/**/*.ts", "*.ts"],
+  "exclude": ["lib", "node_modules"]
+}

@@ -1,5 +1,7 @@
 # mmd-toolkit
 
+<img src="./packages/playground/public/mmd-toolkit.svg" alt="" width="64" height="64" />
+
 英語版: [README.md](./README.md)
 
 Mermaid の図の記法のためのサードパーティ製ツール群です。
@@ -16,6 +18,22 @@ mermaid-js とは無関係です。
 mermaid.js のすべての図種に対応してから公開します。
 リンターの規則は、いまは flowchart の分を実装しています。
 仕様とテストは、このリポジトリの中で使うもので、公開しません。
+
+## Playground
+
+ブラウザーでMermaidのテキストを編集し、構文木やトークン、
+Prettierによる整形結果を確認できます。
+
+公開予定URL:
+[Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
+
+**Examples**でサンプルを選ぶか、**Source**にテキストを貼り付けます。
+編集に合わせて、**AST**と**Formatted**の表示が更新されます。
+**Share**を開き、**Copy Link**で、入力と字下げ設定を復元できるURLを
+コピーできます。
+
+ツリーの操作、整形の設定、整形結果の適用については、
+[Playgroundの使い方](./packages/playground/README.ja.md)を参照してください。
 
 ## パッケージ
 

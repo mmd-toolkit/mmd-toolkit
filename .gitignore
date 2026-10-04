@@ -144,6 +144,8 @@ vite.config.ts.timestamp-*
 
 # build output
 lib/
+playwright-report/
+test-results/
 
 # per-session git worktrees created by the Claude app
 .claude/worktrees/
