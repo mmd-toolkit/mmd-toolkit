@@ -56,13 +56,19 @@ interface Playground {
   share: () => Promise<void>
 }
 
-/** Coordinates source revisions, lazy formatting, sharing and the immutable AST. */
+/**
+ * Coordinates source revisions, lazy formatting, sharing and the immutable AST.
+ * Source and indentation are persisted in the URL; view and theme choices stay
+ * local. Parser and formatter hot updates invalidate results without editing
+ * the input or remounting its editor.
+ */
 export function usePlayground(): Playground {
   const source = ref(examples[0].source)
   const tabWidth = ref(2)
   const useTabs = ref(false)
   const tab = ref<"ast" | "formatted">("ast")
   const astView = ref("tree")
+  // Treat parser objects as snapshots: observe replacements, not their fields.
   const root = shallowRef<Root | null>(null)
   const selection = shallowRef<TreeSelection | null>(null)
   const diagnostic = shallowRef<Diagnostic | null>(null)
@@ -82,8 +88,12 @@ export function usePlayground(): Playground {
   const editorFailure = ref("")
   const dark = ref(window.matchMedia("(prefers-color-scheme: dark)").matches)
   let themeChosen = false
+  // Derived results depend on edits and implementation updates. The request
+  // counter also distinguishes concurrent formats of the same revision.
   let revision = 0
   let formatRequest = 0
+  // URL state depends only on editable inputs. Navigation also invalidates
+  // pending compression/restoration when a new hash or user edit takes over.
   let stateRevision = 0
   let navigation = 0
   let disposed = false
@@ -149,6 +159,7 @@ export function usePlayground(): Playground {
 
   /** Lazily loads Prettier, then discards results superseded by edits or hot updates. */
   async function formatNow(): Promise<void> {
+    // Capture inputs before either the lazy import or Prettier can yield.
     const request = ++formatRequest
     const currentRevision = revision
     const text = source.value
@@ -218,6 +229,7 @@ export function usePlayground(): Playground {
     }
     try {
       const hash = await encodeState(sharedState())
+      // An older compression must not overwrite a newer edit or navigated hash.
       if (
         disposed ||
         currentRevision !== stateRevision ||
@@ -307,7 +319,10 @@ export function usePlayground(): Playground {
     }
   }
 
-  /** Performs clipboard access directly from a separate, explicit user gesture. */
+  /**
+   * Starts clipboard access in its own button gesture, keeping it within the
+   * browser's transient user activation rather than awaiting URL compression.
+   */
   async function copyLink(): Promise<void> {
     const url = shareUrl.value
     if (!url) return
@@ -342,6 +357,7 @@ export function usePlayground(): Playground {
     (value) => document.documentElement.classList.toggle("dark", value),
     { immediate: true },
   )
+  // Clear stale ranges synchronously; only the expensive recomputation waits.
   watch([source, tabWidth, useTabs], inputChanged, { flush: "sync" })
   watch(tab, (value) => {
     clearTimeout(formatTimer)

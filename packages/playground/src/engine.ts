@@ -19,13 +19,15 @@ export function visitNodes(node: Node, visitor: Visitor): void {
   api.traverseNodes(node, visitor)
 }
 
-/** Subscribes an active playground to parser implementation changes. */
+/** Subscribes to parser hot updates and returns a callback to unsubscribe. */
 export function onParserUpdate(listener: () => void): () => void {
   listeners.add(listener)
   return () => listeners.delete(listener)
 }
 
 if (import.meta.hot) {
+  // This boundary retains the mounted app. Replace the API before notifying
+  // consumers so reparsing and visitor-key lookup use the same implementation.
   import.meta.hot.accept("@mmd-toolkit/parser", (updated) => {
     if (!updated) return
     api = updated as unknown as typeof parser

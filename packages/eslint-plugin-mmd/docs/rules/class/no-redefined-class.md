@@ -28,6 +28,7 @@ of the same class are added together; they are not compared.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-redefined-class: error
 classDiagram
   class A["First"]
   class A["Second"]
@@ -36,6 +37,7 @@ classDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-redefined-class: error
 classDiagram
   class A["First"]
   class A

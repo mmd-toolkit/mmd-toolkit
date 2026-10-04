@@ -35,12 +35,14 @@ remains.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-title: error
 flowchart LR
   accTitle: first
   accTitle: second
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-title: error
 flowchart LR
   A
   accTitle: x
@@ -48,6 +50,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-title: error
 flowchart LR
   subgraph S
     A
@@ -59,6 +62,7 @@ flowchart LR
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-title: error
 flowchart LR
   A
   accTitle: first

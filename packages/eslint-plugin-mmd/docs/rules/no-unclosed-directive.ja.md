@@ -41,6 +41,7 @@
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/no-unclosed-directive: error
 flowchart LR
   A --> B
   %%{init: {"x": 1}
@@ -48,6 +49,7 @@ C-->D
 ```
 
 ```mmd
+%% eslint mmd/no-unclosed-directive: error
 flowchart LR
   %%{init: {"theme": "dark"}}
 A-->B
@@ -56,6 +58,7 @@ A-->B
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/no-unclosed-directive: error
 %%{init: {"theme": "dark"}}%%
 flowchart LR
   A --> B

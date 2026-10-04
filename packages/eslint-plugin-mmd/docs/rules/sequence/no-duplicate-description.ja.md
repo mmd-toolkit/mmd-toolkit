@@ -34,6 +34,7 @@ mermaid.js はどの `accDescr` の文も受理し、
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-description: error
 sequenceDiagram
   A ->> B: x
   accDescr: first
@@ -41,6 +42,7 @@ sequenceDiagram
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-description: error
 sequenceDiagram
   A ->> B: x
   accDescr { first }
@@ -48,6 +50,7 @@ sequenceDiagram
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-description: error
 sequenceDiagram
   loop every minute
     A ->> B: x
@@ -59,6 +62,7 @@ sequenceDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-description: error
 sequenceDiagram
   A ->> B: x
   accDescr: first

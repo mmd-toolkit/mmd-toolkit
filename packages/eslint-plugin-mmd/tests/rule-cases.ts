@@ -72,17 +72,23 @@ export function ruleExamples(name: string): RuleExamples {
   }
 }
 
-/** The example `code` of the rule `name`, the one at `index` of its `kind`, as a test case. */
+/**
+ * The example at `index` of its `kind`, as a snapshot test case. The tester
+ * enables the rule under `rule-to-test/`, so remove only the leading authoring
+ * comment that would also enable it under `mmd/` and duplicate every report.
+ * The site and parser checks still read the complete published example.
+ */
 function exampleCase(
   name: string,
   kind: "incorrect" | "correct",
   code: string,
   index: number,
 ): RuleCase {
+  const directive = `%% eslint mmd/${name}: error\n`
   return {
     name: `docs/rules/${name}.md ${kind} ${index + 1}`,
     filename: `${name}-${kind}-${index + 1}.mmd`,
-    code,
+    code: code.startsWith(directive) ? code.slice(directive.length) : code,
   }
 }
 

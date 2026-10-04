@@ -63,6 +63,7 @@ export default [...markdown.configs.processor, mmd.configs.recommended]
   `flowchart-elk`、`swimlane`（`swimlane-beta`）。
 - シーケンス図: `sequence`（`sequenceDiagram`）。
 - クラス図: `classDiagram`（`classDiagram` と `classDiagram-v2`）。
+- 状態図: `stateDiagram`（`stateDiagram` と `stateDiagram-v2`）。
 
 ほかの図種は、対応するまで、パースのエラーとして報告されます。
 

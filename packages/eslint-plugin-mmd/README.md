@@ -59,6 +59,7 @@ The plugin reads these diagram types:
   `swimlane` (`swimlane-beta`).
 - Sequence diagrams: `sequence` (`sequenceDiagram`).
 - Class diagrams: `classDiagram` (`classDiagram` and `classDiagram-v2`).
+- State diagrams: `stateDiagram` (`stateDiagram` and `stateDiagram-v2`).
 
 Other diagram types are reported as parse errors until they are supported.
 

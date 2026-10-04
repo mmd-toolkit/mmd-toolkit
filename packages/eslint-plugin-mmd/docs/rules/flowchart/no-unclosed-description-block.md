@@ -49,12 +49,14 @@ then reports the block: the text sets the description twice.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-unclosed-description-block: error
 flowchart LR
   A
   accDescr { x
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-unclosed-description-block: error
 flowchart LR
   A --> B
   accDescr { x
@@ -64,12 +66,14 @@ flowchart LR
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-unclosed-description-block: error
 flowchart LR
   A
   accDescr { y }
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-unclosed-description-block: error
 flowchart LR
   A --> B
   accDescr { x }

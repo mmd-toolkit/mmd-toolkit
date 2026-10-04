@@ -30,6 +30,7 @@
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-redefined-class: error
 classDiagram
   class A["First"]
   class A["Second"]
@@ -38,6 +39,7 @@ classDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-redefined-class: error
 classDiagram
   class A["First"]
   class A

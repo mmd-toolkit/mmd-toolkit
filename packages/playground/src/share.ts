@@ -44,12 +44,17 @@ function decodeBytes(value: string): Uint8Array<ArrayBuffer> {
       bytes.push((buffer >> bits) & 255)
     }
   }
+  // Unpadded base64 still requires zero unused bits in the final digit.
   if ((buffer & ((1 << bits) - 1)) !== 0)
     throw new Error("Invalid shared URL encoding.")
   return new Uint8Array(bytes)
 }
 
-/** Validates every field before replacing any current editor state. */
+/**
+ * Validates the complete payload before it can replace editor state. The
+ * indentation range matches the UI choices; source is accepted as arbitrary
+ * text, including empty input and syntax the parser rejects.
+ */
 function validateState(value: unknown): SharedState {
   if (
     typeof value !== "object" ||
@@ -72,7 +77,11 @@ function validateState(value: unknown): SharedState {
   }
 }
 
-/** Packs JSON first so even lone UTF-16 surrogates survive sharing exactly. */
+/**
+ * Returns a #v1= fragment containing gzip-compressed UTF-8 JSON in base64url.
+ * JSON escapes lone UTF-16 surrogates before TextEncoder can replace them, so
+ * decoding preserves the original JavaScript string exactly.
+ */
 export async function encodeState(state: SharedState): Promise<string> {
   validateState(state)
   const bytes = new TextEncoder().encode(JSON.stringify(state))
@@ -83,7 +92,11 @@ export async function encodeState(state: SharedState): Promise<string> {
   return `#v1=${encodeBytes(compressed)}`
 }
 
-/** Unpacks a versioned fragment and validates the restored source and options. */
+/**
+ * Restores source and options from a #v1= fragment without changing UI state.
+ * Rejects unknown versions, malformed encoding and invalid payloads; callers
+ * must wait for complete validation before applying any of the returned fields.
+ */
 export async function decodeState(hash: string): Promise<SharedState> {
   if (!hash.startsWith("#v1=")) throw new Error("Unknown shared URL version.")
   const compressed = decodeBytes(hash.slice(4))

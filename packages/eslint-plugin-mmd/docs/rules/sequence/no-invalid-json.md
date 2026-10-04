@@ -34,12 +34,14 @@ it gives the participant nothing.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-invalid-json: error
 sequenceDiagram
   participant A
   links A: {"Dashboard": "https://x.example",}
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-invalid-json: error
 sequenceDiagram
   participant A
   properties A: {"class": "internal",}
@@ -48,6 +50,7 @@ sequenceDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-invalid-json: error
 sequenceDiagram
   participant A
   links A: {"Dashboard": "https://x.example"}

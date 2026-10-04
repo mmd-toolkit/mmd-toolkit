@@ -84,6 +84,7 @@ mermaid.js は、頂点 `%%` を作らず、
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-bare-comment-marker: error
 flowchart LR
   A --> B
   %% C-->D
@@ -92,6 +93,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-bare-comment-marker: error
 flowchart LR
   A[a
 %%
@@ -99,6 +101,7 @@ b]
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-bare-comment-marker: error
 flowchart LR
   A@{
     %%
@@ -109,6 +112,7 @@ flowchart LR
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-bare-comment-marker: error
 flowchart LR
   A --> B
   %% C-->D
@@ -117,6 +121,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-bare-comment-marker: error
 flowchart LR
   A@{
     shape: circle

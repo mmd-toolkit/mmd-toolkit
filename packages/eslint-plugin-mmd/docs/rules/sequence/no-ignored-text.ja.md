@@ -26,6 +26,7 @@ mermaid.js はそれを受理し、エラーなしに捨てるので、
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-ignored-text: error
 sequenceDiagram
   A ->> B: call(x
   )
@@ -35,6 +36,7 @@ sequenceDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-ignored-text: error
 sequenceDiagram
   A ->> B: call(x)
   B -->> A: done

@@ -37,18 +37,21 @@ mermaid.js gives `B` no CSS class.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-undef: error
 classDiagram
   class A
   cssClass "C" c
 ```
 
 ```mmd
+%% eslint mmd/class/no-undef: error
 classDiagram
   class A
   click C href "https://x.example"
 ```
 
 ```mmd
+%% eslint mmd/class/no-undef: error
 classDiagram
   note for Z "x"
 ```
@@ -56,12 +59,14 @@ classDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-undef: error
 classDiagram
   class A
   style A fill : #f00 , stroke-width: 2px
 ```
 
 ```mmd
+%% eslint mmd/class/no-undef: error
 classDiagram
   Class11 <|.. Class12
   note for Class11 "test"

@@ -108,12 +108,14 @@ pnpm --filter @mmd-toolkit/playground preview
 
 Previewは、本番ビルドをブラウザーで自動表示します。
 
-[playground-pages.yml](../../../.github/workflows/playground-pages.yml)で、
+[pages.yml](../../../.github/workflows_bk/pages.yml)は、
+開発中のためバックアップディレクトリーに置いています。
+`.github/workflows/`で有効にすると、
 PRを検証し、mainの変更と手動実行でビルドします。
-mainでは`lib/`を成果物の`playground/`ディレクトリーに配置し、
+ドキュメントとPlaygroundのビルドジョブは独立して実行します。
+mainではドキュメントを成果物のルートに、
+このアプリケーションの`lib/`を`playground/`にまとめて配置し、
 `github-pages`環境から公開します。
 公開前に、リポジトリのPages sourceを**GitHub Actions**に設定します。
 ワークフローはリポジトリの設定を変更しません。
 公開するのはmainだけで、公開ジョブは直列化し、実行中の公開は中断しません。
-成果物はこのアプリケーションだけを含むため、
-将来ルートにもサイトを置く場合は、同じワークフローで一緒に配置します。

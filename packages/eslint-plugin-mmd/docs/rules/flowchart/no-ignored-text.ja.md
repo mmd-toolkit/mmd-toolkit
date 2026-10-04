@@ -65,6 +65,7 @@ mermaid.js は、そのテキストを文として読み、方向を方向の文
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-ignored-text: error
 flowchart LR
   subgraph S
     A-->B; direction TB
@@ -72,11 +73,13 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-ignored-text: error
 flowchart LR
   A-->B direction TB
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-ignored-text: error
 flowchart LR
   subgraph S
     direction TB; A-->B
@@ -86,6 +89,7 @@ flowchart LR
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-ignored-text: error
 flowchart LR
   subgraph S
     A --> B
@@ -94,6 +98,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-ignored-text: error
 flowchart LR
   subgraph S
     direction TB %% vertical

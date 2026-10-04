@@ -215,14 +215,26 @@ pnpm --filter eslint-plugin-mmd run check:docs
   section, with links to the source and the test of the rule. The document of a
   skeleton has none.
 
+Every `mmd` code block in a rule document starts with
+`%% eslint mmd/<name>: error`, where `<name>` is the rule's path, such as
+`flowchart/no-undef`. Put it on its own line without indentation, before the
+diagram header and any Mermaid directives. Include it in correct examples too:
+the documentation site's `twoslash-eslint` renderer uses the comment to enable
+that rule and show actual diagnostics. Parser acceptance and site rendering
+checks include this line. The snapshot test helper removes only this comment:
+its tester enables the rule under `rule-to-test/`, so enabling it under `mmd/`
+too would duplicate every report. When comparing an example with its formatted
+corpus fixture, remove only this leading configuration comment; do not add it to
+the fixture itself.
+
 The rest of the documents is written by hand. `check:docs` writes nothing and
 fails when `src/rules/index.ts` or a generated part is out of date, when a rule
 has no document in one of the languages, when a document or notes belong to no
 rule, when the first paragraph of an English document is not
 `meta.docs.description` of its rule, when the `mmd` code blocks of a Japanese
-document are not those of the English one, in the same order, or when a rule is
-neither implemented nor a skeleton. Line breaks inside a first paragraph do not
-matter.
+document are not those of the English one, in the same order, when a code block
+does not start with its rule's enabling comment, or when a rule is neither
+implemented nor a skeleton. Line breaks inside a first paragraph do not matter.
 
 When the rules and the documents do not match in one of these ways, `update`
 writes `src/rules/index.ts` but none of the generated parts of the documents,
@@ -236,7 +248,8 @@ To add a rule:
    skeleton: its `meta` (`type`, `docs.description`, `docs.recommended`,
    `docs.url`, `schema`, `messages`), and a `create` that returns no handler.
 2. Write its documents in both languages. The first paragraph of the English
-   document is `meta.docs.description`, word for word.
+   document is `meta.docs.description`, word for word. Begin every `mmd` example
+   with the rule-enabling comment described above.
 3. Write its notes in both languages.
 4. Run `update`, then `check:docs`.
 
@@ -246,11 +259,12 @@ fixture directory of the rule. Then run `update`: it writes the Resources
 section of its documents and removes its 🚧 from the index.
 
 To rename a rule, rename its file, the argument of `ruleDocsUrl` in it, its
-documents, and its notes or its test together, and run `update`. To remove a
-rule, remove its file, its documents, and its notes or its test, and run
-`update`. To change the description of a rule, change `meta.docs.description`
-and the first paragraph of the English document to the same sentence, change the
-first paragraph of the Japanese document, and run `update`.
+documents, and its notes or its test together, update its id in every example's
+ESLint comment, and run `update`. To remove a rule, remove its file, its
+documents, and its notes or its test, and run `update`. To change the
+description of a rule, change `meta.docs.description` and the first paragraph of
+the English document to the same sentence, change the first paragraph of the
+Japanese document, and run `update`.
 
 ## Writing a rule
 

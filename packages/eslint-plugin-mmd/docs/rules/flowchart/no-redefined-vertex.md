@@ -36,6 +36,7 @@ mermaid.js uses the label written last.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-redefined-vertex: error
 flowchart LR
   A[Start] --> B
   C --> A[End]
@@ -44,12 +45,14 @@ flowchart LR
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-redefined-vertex: error
 flowchart LR
   A[Start] --> B
   A --> C
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-redefined-vertex: error
 flowchart LR
   A[Start] --> B
   C --> A[Start]

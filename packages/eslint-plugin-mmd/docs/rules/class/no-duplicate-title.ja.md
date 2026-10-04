@@ -27,6 +27,7 @@ mermaid.js はどの `accTitle` の文も受理し、
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-duplicate-title: error
 classDiagram
   accTitle: first
   accTitle: second
@@ -36,6 +37,7 @@ classDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-duplicate-title: error
 classDiagram
   accTitle: x
   accDescr: y

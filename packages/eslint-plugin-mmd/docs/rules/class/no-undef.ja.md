@@ -43,18 +43,21 @@ mermaid.js は `B` に CSS クラスを付けない。
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-undef: error
 classDiagram
   class A
   cssClass "C" c
 ```
 
 ```mmd
+%% eslint mmd/class/no-undef: error
 classDiagram
   class A
   click C href "https://x.example"
 ```
 
 ```mmd
+%% eslint mmd/class/no-undef: error
 classDiagram
   note for Z "x"
 ```
@@ -62,12 +65,14 @@ classDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-undef: error
 classDiagram
   class A
   style A fill : #f00 , stroke-width: 2px
 ```
 
 ```mmd
+%% eslint mmd/class/no-undef: error
 classDiagram
   Class11 <|.. Class12
   note for Class11 "test"

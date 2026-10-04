@@ -98,11 +98,12 @@ pnpm --filter @mmd-toolkit/playground preview
 
 Preview opens the production build in the browser automatically.
 
-[playground-pages.yml](../../../.github/workflows/playground-pages.yml)
-validates pull requests and builds on main and manual runs. Main runs stage
-`lib/` inside the artifact's `playground/` directory, then deploy through the
-`github-pages` environment. Set the repository's Pages source to **GitHub
-Actions** before deployment. The workflow does not change repository settings.
-Only main deploys; deployment jobs are serialized and an active deployment is
-not cancelled. The artifact contains this application only, so a future site at
-the artifact root must be staged in the same workflow.
+[pages.yml](../../../.github/workflows_bk/pages.yml) is kept in the backup
+directory during development. When enabled under `.github/workflows/`, it
+validates pull requests and builds on main and manual runs. Documentation and
+Playground build jobs run independently. Main runs combine the documentation at
+the artifact root and this application's `lib/` in `playground/`, then deploy
+through the `github-pages` environment. Set the repository's Pages source to
+**GitHub Actions** before deployment. The workflow does not change repository
+settings. Only main deploys; deployment jobs are serialized and an active
+deployment is not cancelled.

@@ -26,6 +26,7 @@ to `sequence`.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-create-destroy: error
 sequenceDiagram
   create destroy A
   B ->> A: x
@@ -34,6 +35,7 @@ sequenceDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-create-destroy: error
 sequenceDiagram
   create participant A
   B ->> A: x

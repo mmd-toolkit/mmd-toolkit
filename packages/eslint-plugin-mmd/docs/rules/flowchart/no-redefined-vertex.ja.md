@@ -38,6 +38,7 @@ mermaid.js は、最後に書いたラベルを使う。
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-redefined-vertex: error
 flowchart LR
   A[Start] --> B
   C --> A[End]
@@ -46,12 +47,14 @@ flowchart LR
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-redefined-vertex: error
 flowchart LR
   A[Start] --> B
   A --> C
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-redefined-vertex: error
 flowchart LR
   A[Start] --> B
   C --> A[Start]

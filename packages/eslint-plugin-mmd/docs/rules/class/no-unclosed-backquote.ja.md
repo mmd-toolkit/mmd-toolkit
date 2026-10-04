@@ -27,6 +27,7 @@ mermaid.js は、閉じていないバッククォートの名前も受理し、
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-unclosed-backquote: error
 classDiagram
   class `x
 class B
@@ -35,6 +36,7 @@ class B
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-unclosed-backquote: error
 classDiagram
   class `Animal Class!`
   class `Car Class`

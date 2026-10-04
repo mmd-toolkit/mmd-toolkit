@@ -3,8 +3,10 @@ import { getVisitorKeys, visitNodes } from "./engine.ts"
 
 /** A source selection, distinct from metadata on the immutable parsed tree. */
 export interface TreeSelection {
+  /** Dotted field path, including array indices, used to reveal tree ancestors. */
   path: string
   value: unknown
+  /** UTF-16 offsets in the current source; containers and scalars may lack a range. */
   range: Range | null
 }
 
@@ -52,7 +54,11 @@ function childPath(parent: Node, child: Node, parentPath: string): string {
   throw new Error("AST child has no declared field.")
 }
 
-/** Chooses the deepest node at an offset using half-open UTF-16 ranges. */
+/**
+ * Chooses the deepest node containing a UTF-16 source offset. Nonempty ranges
+ * exclude their end; an empty node can be selected at its single offset.
+ * Equally deep matches keep the first node encountered by the public traversal.
+ */
 export function nodeAtOffset(root: Root, offset: number): TreeSelection | null {
   let selected: TreeSelection | null = null
   let selectedDepth = -1
@@ -81,7 +87,11 @@ export function nodeAtOffset(root: Root, offset: number): TreeSelection | null {
   return selected
 }
 
-/** Selects the node or root record shown in the current view at a source offset. */
+/**
+ * Selects only a node or record represented in the current view. Offsets outside
+ * the current records return null, rather than falling back to an AST node that
+ * their tree cannot reveal.
+ */
 export function selectionAtOffset(
   root: Root,
   offset: number,

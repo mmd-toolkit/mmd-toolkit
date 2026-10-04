@@ -76,6 +76,7 @@ lines would undo it.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-bare-comment-marker: error
 flowchart LR
   A --> B
   %% C-->D
@@ -84,6 +85,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-bare-comment-marker: error
 flowchart LR
   A[a
 %%
@@ -91,6 +93,7 @@ b]
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-bare-comment-marker: error
 flowchart LR
   A@{
     %%
@@ -101,6 +104,7 @@ flowchart LR
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-bare-comment-marker: error
 flowchart LR
   A --> B
   %% C-->D
@@ -109,6 +113,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-bare-comment-marker: error
 flowchart LR
   A@{
     shape: circle

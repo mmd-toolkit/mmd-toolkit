@@ -25,6 +25,7 @@ After `accTitle: first` and `accTitle: second`, the title is `second`.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-duplicate-title: error
 classDiagram
   accTitle: first
   accTitle: second
@@ -34,6 +35,7 @@ classDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-duplicate-title: error
 classDiagram
   accTitle: x
   accDescr: y

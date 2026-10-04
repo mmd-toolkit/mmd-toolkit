@@ -34,6 +34,7 @@ the title `From statement`. The rule does not report this.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-title: error
 sequenceDiagram
   title first
   title second
@@ -41,6 +42,7 @@ sequenceDiagram
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-title: error
 sequenceDiagram
   A ->> B: x
   accTitle: first
@@ -50,6 +52,7 @@ sequenceDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-title: error
 sequenceDiagram
   title first
   accTitle: second

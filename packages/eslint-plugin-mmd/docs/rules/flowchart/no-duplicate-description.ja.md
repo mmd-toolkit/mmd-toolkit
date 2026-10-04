@@ -43,18 +43,21 @@ mermaid.js は、最後に残った説明を使う。
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-description: error
 flowchart LR
   accDescr: first
   accDescr: second
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-description: error
 flowchart LR
   accDescr { first }
   accDescr: second
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-description: error
 flowchart LR
   subgraph S
     A
@@ -66,6 +69,7 @@ flowchart LR
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-description: error
 flowchart LR
   A
   accDescr: first

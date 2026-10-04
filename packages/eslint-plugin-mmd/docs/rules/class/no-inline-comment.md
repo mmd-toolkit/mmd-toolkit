@@ -45,6 +45,7 @@ end of a line does not survive there.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-inline-comment: error
 classDiagram
   Animal <|-- Duck %% ducks
   Animal : +int age
@@ -53,6 +54,7 @@ classDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-inline-comment: error
 classDiagram
   %% Animals
   class Animal
@@ -60,6 +62,7 @@ classDiagram
 ```
 
 ```mmd
+%% eslint mmd/class/no-inline-comment: error
 classDiagram
   class Animal
   Animal <|-- Duck %% ducks

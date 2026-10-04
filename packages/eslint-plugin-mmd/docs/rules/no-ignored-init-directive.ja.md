@@ -44,6 +44,7 @@ mermaid.js は、init ディレクティブ、
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/no-ignored-init-directive: error
 %%{init: {"flowchart": {"inheritDir": true},}}%%
 flowchart LR
   subgraph S
@@ -52,6 +53,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/no-ignored-init-directive: error
 %%{INIT: {"flowchart": {"inheritDir": true}}}%%
 flowchart LR
   subgraph S
@@ -62,6 +64,7 @@ flowchart LR
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/no-ignored-init-directive: error
 %%{init: {"flowchart": {"inheritDir": true}}}%%
 flowchart LR
   subgraph S

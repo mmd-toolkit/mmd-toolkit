@@ -28,7 +28,11 @@ let editor: monaco.editor.IStandaloneCodeEditor | undefined,
 let disposed = false
 const subscriptions: monaco.IDisposable[] = []
 
-/** Converts offsets through the editor's own line model, never parser locations. */
+/**
+ * Converts shared UTF-16 offsets through Monaco's own line model. Parser line
+ * and column values follow its line-terminator rules, which need not match the
+ * editor's treatment of every separator; offsets keep highlights aligned.
+ */
 function editorRange(range: Range): monaco.Range | undefined {
   if (!model) return undefined
   const start = model.getPositionAt(range[0])
@@ -84,7 +88,11 @@ function diagnose(): void {
   )
 }
 
-/** Replaces source as one undoable edit, including its line-ending choice. */
+/**
+ * Replaces source as one undoable edit, including its line-ending choice.
+ * normalizeEol applies the formatter's LF output; other replacements retain
+ * CRLF when present. Using edits rather than setValue preserves source history.
+ */
 function replace(value: string, normalizeEol = false): void {
   if (!editor || !model) return
   editor.pushUndoStop()
@@ -105,6 +113,7 @@ defineExpose({ replace })
 onMounted(async () => {
   try {
     await initializeEditors()
+    // A result tab may have unmounted while the shared tokenizer was loading.
     if (disposed || !container.value) return
     model = monaco.editor.createModel(props.value, props.language ?? "mermaid")
     editor = monaco.editor.create(container.value, {
@@ -138,6 +147,8 @@ onMounted(async () => {
         if (model) emit("cursor", model.getOffsetAt(event.position))
       }),
     )
+    // Monaco normalizes line endings on creation. Parsing and sharing must use
+    // the actual editable buffer so their offsets agree with the editor model.
     if (!props.readonly) emit("change", model.getValue())
     decorate()
     diagnose()

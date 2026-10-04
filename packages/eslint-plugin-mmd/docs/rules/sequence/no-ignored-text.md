@@ -25,6 +25,7 @@ message cannot continue on the next line: `A ->> B: call(x`, a line break, and
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-ignored-text: error
 sequenceDiagram
   A ->> B: call(x
   )
@@ -34,6 +35,7 @@ sequenceDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-ignored-text: error
 sequenceDiagram
   A ->> B: call(x)
   B -->> A: done

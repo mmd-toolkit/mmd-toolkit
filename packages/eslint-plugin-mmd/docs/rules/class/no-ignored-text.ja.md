@@ -40,16 +40,19 @@ mermaid.js が読まないテキストを禁止する。
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-ignored-text: error
 classDiagram
   class A direction LR
 ```
 
 ```mmd
+%% eslint mmd/class/no-ignored-text: error
 classDiagram
   direction TBX
 ```
 
 ```mmd
+%% eslint mmd/class/no-ignored-text: error
 classDiagram
   A --> B : set direction LR now
 ```
@@ -57,12 +60,14 @@ classDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-ignored-text: error
 classDiagram
   direction RL
   class A
 ```
 
 ```mmd
+%% eslint mmd/class/no-ignored-text: error
 classDiagram
   direction LR %% vertical
   class A

@@ -34,18 +34,21 @@ mermaid.js もそう読む。
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-empty-description-block: error
 sequenceDiagram
   A ->> B: x
   accDescr {}
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-empty-description-block: error
 sequenceDiagram
   A ->> B: x
   accDescr { }
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-empty-description-block: error
 sequenceDiagram
   A ->> B: x
   accDescr {
@@ -55,12 +58,14 @@ sequenceDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-empty-description-block: error
 sequenceDiagram
   A ->> B: x
   accDescr { y }
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-empty-description-block: error
 sequenceDiagram
   A ->> B: x
   accDescr {

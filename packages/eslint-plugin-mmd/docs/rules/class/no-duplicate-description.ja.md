@@ -29,6 +29,7 @@ mermaid.js はどの `accDescr` の文も受理し、
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-duplicate-description: error
 classDiagram
   accDescr: first
   accDescr: second
@@ -36,6 +37,7 @@ classDiagram
 ```
 
 ```mmd
+%% eslint mmd/class/no-duplicate-description: error
 classDiagram
   accDescr {
 first
@@ -47,6 +49,7 @@ first
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-duplicate-description: error
 classDiagram
   accTitle: x
   accDescr: y

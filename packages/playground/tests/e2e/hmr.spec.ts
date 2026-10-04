@@ -11,6 +11,8 @@ import { edit } from "./helpers.ts"
 let server: ViteDevServer, directory: string, url: string
 
 test.beforeAll(async () => {
+  // The test rewrites implementations to trigger HMR. Use isolated copies so
+  // running it never changes the developer's parser or formatter checkout.
   directory = await mkdtemp(join(tmpdir(), "mmd-playground-hmr-"))
   const packages = fileURLToPath(new URL("../../../", import.meta.url))
   await cp(join(packages, "parser/src"), join(directory, "parser"), {
@@ -68,6 +70,8 @@ test("updates parser and formatter implementations without reloading or losing e
   await page.goto(url)
   await edit(page, "flowchart LR\nKept-->Input\n")
   await expect(page.locator(".type-badge")).toHaveText("flowchart-v2")
+  // A reload could restore input from the URL and look successful. This DOM-only
+  // sentinel distinguishes an actual hot update from a restored page.
   await page.evaluate(() => {
     document.documentElement.dataset.hmrSentinel = "kept"
   })

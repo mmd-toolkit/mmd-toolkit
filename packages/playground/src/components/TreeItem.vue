@@ -19,6 +19,7 @@ const row = useTemplateRef<HTMLDivElement>("row")
 const open = ref(
   props.depth === 0 || (props.depth === 1 && props.kind === "node"),
 )
+// Batch mounted rows only; Show more and source selection can reveal all entries.
 const limit = ref(100)
 const object = computed(
   () => typeof props.value === "object" && props.value !== null,
@@ -54,7 +55,7 @@ function entryKind(key: string): "node" | "record" | "value" {
   return "value"
 }
 
-/** Opens ancestors when a source cursor selects a nested node. */
+/** Opens ancestors and extends the rendered batch to include a selected child. */
 function revealSelection(): void {
   if (!props.selected?.startsWith(`${props.path}.`)) return
   open.value = true
@@ -65,6 +66,8 @@ function revealSelection(): void {
 
 watch(() => props.selected, revealSelection, { immediate: true })
 
+// Ancestors must have rendered their expanded children before a row requests
+// scrolling. Watching the ref also covers a newly mounted selected descendant.
 watch(
   [row, () => props.selected],
   ([element, selected]) => {

@@ -47,12 +47,14 @@ from `linkStyle` or from a class.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-undef: error
 flowchart LR
   A --> B
   style C fill:red
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-undef: error
 flowchart LR
   classDef foo fill:#f00
   A --> B
@@ -60,6 +62,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-undef: error
 flowchart LR
   A --> B
   click C href "https://example.com"
@@ -68,12 +71,14 @@ flowchart LR
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-undef: error
 flowchart LR
   style A fill:red
   A --> B
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-undef: error
 flowchart LR
   subgraph S
     A
@@ -82,6 +87,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-undef: error
 flowchart LR
   classDef foo fill:#f00
   A e1@--> B
@@ -89,6 +95,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-undef: error
 flowchart LR
   A --> B
   click A href "https://example.com"

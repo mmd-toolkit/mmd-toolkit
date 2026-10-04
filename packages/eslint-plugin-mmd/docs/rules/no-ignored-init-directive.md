@@ -41,6 +41,7 @@ The examples are flowcharts.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/no-ignored-init-directive: error
 %%{init: {"flowchart": {"inheritDir": true},}}%%
 flowchart LR
   subgraph S
@@ -49,6 +50,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/no-ignored-init-directive: error
 %%{INIT: {"flowchart": {"inheritDir": true}}}%%
 flowchart LR
   subgraph S
@@ -59,6 +61,7 @@ flowchart LR
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/no-ignored-init-directive: error
 %%{init: {"flowchart": {"inheritDir": true}}}%%
 flowchart LR
   subgraph S

@@ -31,6 +31,7 @@ a link whose label and URL are both empty.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-link-without-separator: error
 sequenceDiagram
   participant A
   link A: Dashboard https://x.example
@@ -39,6 +40,7 @@ sequenceDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-link-without-separator: error
 sequenceDiagram
   link A: Dash @ https://x.example
 ```

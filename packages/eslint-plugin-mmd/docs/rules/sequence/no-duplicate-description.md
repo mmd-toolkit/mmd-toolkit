@@ -33,6 +33,7 @@ A block that holds no description is not counted;
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-description: error
 sequenceDiagram
   A ->> B: x
   accDescr: first
@@ -40,6 +41,7 @@ sequenceDiagram
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-description: error
 sequenceDiagram
   A ->> B: x
   accDescr { first }
@@ -47,6 +49,7 @@ sequenceDiagram
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-description: error
 sequenceDiagram
   loop every minute
     A ->> B: x
@@ -58,6 +61,7 @@ sequenceDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-description: error
 sequenceDiagram
   A ->> B: x
   accDescr: first

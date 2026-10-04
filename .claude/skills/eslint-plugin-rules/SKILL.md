@@ -131,6 +131,11 @@ after writing it.
 - The test of a rule is one call of `testRule` (see `docs/development.md`). The
   examples of the English document are cases; the inputs of the fixture
   directory are the other cases.
+- Keep the leading `%% eslint mmd/<rule>: error` comment in every document
+  example, correct or incorrect, as the eslint-plugin skill requires. The parser
+  and site checks read it with this comment; only the snapshot test helper
+  removes it to avoid enabling the rule twice under the tester's alias and
+  `mmd/`. When renaming a rule, update the comments in both documents too.
 - When the behavior changes (the condition is widened or narrowed, a message or
   a suggestion changes), add the fixtures of the change in the same change,
   after checking each input against mermaid.js. A check in a scratch file does

@@ -26,6 +26,7 @@ the text. Every statement after the opening backquote is part of the name.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-unclosed-backquote: error
 classDiagram
   class `x
 class B
@@ -34,6 +35,7 @@ class B
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-unclosed-backquote: error
 classDiagram
   class `Animal Class!`
   class `Car Class`

@@ -38,6 +38,7 @@ mermaid.js はそのどちらを設定する文も受理し、
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-title: error
 sequenceDiagram
   title first
   title second
@@ -45,6 +46,7 @@ sequenceDiagram
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-title: error
 sequenceDiagram
   A ->> B: x
   accTitle: first
@@ -54,6 +56,7 @@ sequenceDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-duplicate-title: error
 sequenceDiagram
   title first
   accTitle: second

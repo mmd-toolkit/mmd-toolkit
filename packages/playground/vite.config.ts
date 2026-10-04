@@ -6,6 +6,8 @@ export default defineConfig({
   base: "/mmd-toolkit/playground/",
   plugins: [vue()],
   resolve: {
+    // Consume workspace sources directly so parser/plugin edits reach HMR
+    // without a separate package build.
     alias: [
       {
         find: /^@mmd-toolkit\/parser$/u,
@@ -21,6 +23,7 @@ export default defineConfig({
       },
     ],
   },
+  // Keep these modules in Vite's source graph instead of a prebundled cache.
   optimizeDeps: { exclude: ["@mmd-toolkit/parser", "prettier-plugin-mmd"] },
   build: { outDir: "lib", emptyOutDir: true },
   worker: { format: "es" },

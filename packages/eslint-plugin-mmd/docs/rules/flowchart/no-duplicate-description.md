@@ -41,18 +41,21 @@ description that remains.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-description: error
 flowchart LR
   accDescr: first
   accDescr: second
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-description: error
 flowchart LR
   accDescr { first }
   accDescr: second
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-description: error
 flowchart LR
   subgraph S
     A
@@ -64,6 +67,7 @@ flowchart LR
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-duplicate-description: error
 flowchart LR
   A
   accDescr: first

@@ -10,10 +10,15 @@ import dark from "shiki/themes/github-dark.mjs"
 
 let ready: Promise<void> | undefined
 
-/** Initializes the bundled worker, grammar, WASM engine and themes once. */
+/**
+ * Shares one asynchronous worker/tokenizer setup across every editor mount.
+ * Callers await it before creating Monaco models; concurrent mounts reuse the
+ * same promise and do not register the languages or themes repeatedly.
+ */
 export function initializeEditors(): Promise<void> {
   ready ??= (async () => {
     globalThis.MonacoEnvironment = { getWorker: () => new EditorWorker() }
+    // Import only the languages and themes used here, with locally bundled WASM.
     const highlighter = await createHighlighterCore({
       themes: [light, dark],
       langs: [mermaid, json],

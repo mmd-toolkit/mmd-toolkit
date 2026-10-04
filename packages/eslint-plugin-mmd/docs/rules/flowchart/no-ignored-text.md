@@ -62,6 +62,7 @@ rules may report what it holds, such as a second `accTitle`.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-ignored-text: error
 flowchart LR
   subgraph S
     A-->B; direction TB
@@ -69,11 +70,13 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-ignored-text: error
 flowchart LR
   A-->B direction TB
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-ignored-text: error
 flowchart LR
   subgraph S
     direction TB; A-->B
@@ -83,6 +86,7 @@ flowchart LR
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-ignored-text: error
 flowchart LR
   subgraph S
     A --> B
@@ -91,6 +95,7 @@ flowchart LR
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-ignored-text: error
 flowchart LR
   subgraph S
     direction TB %% vertical

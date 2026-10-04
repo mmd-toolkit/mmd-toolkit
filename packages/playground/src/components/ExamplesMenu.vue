@@ -11,6 +11,7 @@ const itemRefs: (HTMLButtonElement | null)[] = []
 /** Opens the actions and focuses the first or last example. */
 async function openMenu(index: number): Promise<void> {
   open.value = true
+  // v-if must mount the item refs before focus; a quick dismissal cancels it.
   await nextTick()
   if (open.value) itemRefs[index]?.focus()
 }
@@ -37,6 +38,8 @@ function triggerKey(event: KeyboardEvent): void {
 /** Moves focus between actions and lets Tab continue from the trigger. */
 function menuKey(event: KeyboardEvent): void {
   if (event.key === "Escape" || event.key === "Tab") {
+    // Tab keeps its native action after focus returns to the trigger, allowing
+    // navigation to the adjacent header control instead of trapping focus.
     if (event.key === "Escape") event.preventDefault()
     closeMenu(true)
     return

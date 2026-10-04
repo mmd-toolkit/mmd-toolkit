@@ -116,12 +116,14 @@ notes, until the rule is implemented. The English rule document:
     Examples of **incorrect** code for this rule:
 
     ```mmd
+    %% eslint mmd/<diagram>/<name>: error
     …
     ```
 
     Examples of **correct** code for this rule:
 
     ```mmd
+    %% eslint mmd/<diagram>/<name>: error
     …
     ```
 
@@ -197,7 +199,15 @@ How each part is written:
   example that needs whitespace at the end of a line is described in a sentence,
   because that whitespace does not survive in a code block. The correct examples
   are chosen to show the boundary of the condition: the correct way of writing,
-  and the nearest text that the condition does not match. Each code block is the
+  and the nearest text that the condition does not match. Every `mmd` code
+  block, including correct examples and examples outside these two groups,
+  starts with `%% eslint mmd/<diagram>/<name>: error` (or
+  `%% eslint mmd/<name>: error` for a common rule), using the rule documented on
+  that page. Write the comment without indentation, before the diagram header
+  and any Mermaid directives. It enables `twoslash-eslint` diagnostics on the
+  documentation site; do not add an `eslint-check` fence marker or rely on the
+  renderer to enable rules. `check:docs` rejects missing or different leading
+  comments in either language. After this comment, each code block is the
   formatted input of a fixture (step 4 of section 4), and the prose quotes an
   example as the code block writes it (`A --> B`, not `A-->B`, where the
   formatter prints the spaces), and refers to a line by what it holds, not by
@@ -294,21 +304,27 @@ write its output to a file.
    has changed, rebuild it with `pnpm --filter @mmd-toolkit/parser run build`
    first, or the examples are formatted by the old parser. The formatted output
    of each incorrect example is part of the result of the work (section 9).
-4. Examples and fixtures: every example comes from a fixture of
-   `packages/tests/fixtures` and is the output of formatting the `input.mmd` of
-   that fixture with prettier-plugin-mmd and its default options, without the
-   line terminator at the end, when the output ends with one (it does not when
-   the text ends inside an unclosed directive) (the skill `conventions`: a
-   Mermaid example is written as the formatter prints it; formatting does not
-   change the Db, so the fixture records how mermaid.js reads the example).
-   Choose the fixture whose input is the text to show, format its input with the
-   formatting script, and use the output as it is, also where the formatter
-   leaves a line as written. Check it by formatting the input of the fixture and
-   comparing the output with the example. An example kept as written on purpose,
-   where the presence or absence of whitespace is the point, is the only
-   exception, and the document says so. When prettier-plugin-mmd has no printer
-   for the diagram type yet, write each example by hand in the form that the
-   formatting choices decided for that diagram type give, and compare the
+4. Examples and fixtures: the diagram content of every example comes from a
+   fixture of `packages/tests/fixtures` and is the output of formatting the
+   `input.mmd` of that fixture with prettier-plugin-mmd and its default options,
+   without the line terminator at the end, when the output ends with one (it
+   does not when the text ends inside an unclosed directive) (the skill
+   `conventions`: a Mermaid example is written as the formatter prints it;
+   formatting does not change the Db, so the fixture records how mermaid.js
+   reads the example). Choose the fixture whose input is the text to show,
+   format its input with the formatting script, and use the output as it is,
+   also where the formatter leaves a line as written. Check it by formatting the
+   input of the fixture and comparing the output with the example after removing
+   only its leading ESLint configuration comment. Keep that comment when
+   checking the published example with the parser or the site's renderer. The
+   snapshot test helper removes only this comment because its tester enables the
+   same rule under `rule-to-test/`; enabling it under `mmd/` too would duplicate
+   every report. The comment belongs to the published example, not to the corpus
+   fixture. Do not change the fixture to add it. An example kept as written on
+   purpose, where the presence or absence of whitespace is the point, is the
+   only exception, and the document says so. When prettier-plugin-mmd has no
+   printer for the diagram type yet, write each example by hand in the form that
+   the formatting choices decided for that diagram type give, and compare the
    examples with the output of the printer once it exists; when no choices are
    decided yet, follow the form of the flowchart printer (the statements after
    the header one level in). Check that the `expected.json` of each fixture

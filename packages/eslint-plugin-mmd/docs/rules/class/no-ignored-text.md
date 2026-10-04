@@ -40,16 +40,19 @@ block below.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-ignored-text: error
 classDiagram
   class A direction LR
 ```
 
 ```mmd
+%% eslint mmd/class/no-ignored-text: error
 classDiagram
   direction TBX
 ```
 
 ```mmd
+%% eslint mmd/class/no-ignored-text: error
 classDiagram
   A --> B : set direction LR now
 ```
@@ -57,12 +60,14 @@ classDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-ignored-text: error
 classDiagram
   direction RL
   class A
 ```
 
 ```mmd
+%% eslint mmd/class/no-ignored-text: error
 classDiagram
   direction LR %% vertical
   class A

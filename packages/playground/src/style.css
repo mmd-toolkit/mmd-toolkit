@@ -215,6 +215,8 @@ pre {
   --snb-animation-duration: 180ms;
   flex-shrink: 0;
 }
+/* Zero minimums let panes shrink within the viewport. Editors, trees and details
+   own their scrolling instead of expanding the page to fit their content. */
 .workspace {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -354,6 +356,7 @@ h2 {
 }
 .disclosure,
 .disclosure-spacer {
+  /* Reserve the same slot for branch icons and leaves to keep labels aligned. */
   flex: 0 0 20px;
   height: 20px;
 }
@@ -376,6 +379,7 @@ h2 {
 }
 .tree-value {
   display: grid;
+  /* Keep field names and ranges intact; only the value summary can truncate. */
   grid-template-columns: max-content minmax(0, 1fr) max-content;
   align-items: center;
   gap: 8px;

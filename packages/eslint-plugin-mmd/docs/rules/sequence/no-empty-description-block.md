@@ -32,18 +32,21 @@ reads it so: the description before the block stays.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-empty-description-block: error
 sequenceDiagram
   A ->> B: x
   accDescr {}
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-empty-description-block: error
 sequenceDiagram
   A ->> B: x
   accDescr { }
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-empty-description-block: error
 sequenceDiagram
   A ->> B: x
   accDescr {
@@ -53,12 +56,14 @@ sequenceDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/sequence/no-empty-description-block: error
 sequenceDiagram
   A ->> B: x
   accDescr { y }
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-empty-description-block: error
 sequenceDiagram
   A ->> B: x
   accDescr {

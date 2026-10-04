@@ -515,8 +515,8 @@ function implementationOf(
  * without a document in each language, a document or notes without a rule,
  * an English document whose first paragraph is not the rule's
  * `meta.docs.description`, a Japanese document whose Mermaid code blocks are
- * not those of the English one, and a rule that is neither implemented nor a
- * skeleton (see `ImplementationFacts`).
+ * not those of the English one, an example without its rule-enabling comment,
+ * and a rule that is neither implemented nor a skeleton (see `ImplementationFacts`).
  */
 export function mismatches(
   docsDir: string = RULE_DOCS_DIR,
@@ -533,7 +533,22 @@ export function mismatches(
     }
     for (const language of ["en", "ja"] as const) {
       const path = ruleDocumentPath(docsDir, name, language)
-      if (!existsSync(path)) problems.push(`The rule ${name} has no ${path}`)
+      if (!existsSync(path)) {
+        problems.push(`The rule ${name} has no ${path}`)
+        continue
+      }
+      // Both correct and incorrect examples opt in to the site's diagnostics.
+      // Put the comment first so unclosed example text cannot swallow it.
+      const directive = `%% eslint ${NAMESPACE}/${name}: error\n`
+      for (const [index, block] of mmdCodeBlocks(
+        readFileSync(path, "utf8"),
+      ).entries()) {
+        if (!block.startsWith(directive)) {
+          problems.push(
+            `The mmd code block ${index + 1} of ${path} must start with ${directive.trimEnd()}`,
+          )
+        }
+      }
     }
     const englishPath = ruleDocumentPath(docsDir, name, "en")
     if (!existsSync(englishPath)) continue

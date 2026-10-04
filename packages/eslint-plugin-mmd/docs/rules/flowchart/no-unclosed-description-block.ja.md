@@ -53,12 +53,14 @@ A から B への辺ができず、
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-unclosed-description-block: error
 flowchart LR
   A
   accDescr { x
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-unclosed-description-block: error
 flowchart LR
   A --> B
   accDescr { x
@@ -68,12 +70,14 @@ flowchart LR
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-unclosed-description-block: error
 flowchart LR
   A
   accDescr { y }
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-unclosed-description-block: error
 flowchart LR
   A --> B
   accDescr { x }

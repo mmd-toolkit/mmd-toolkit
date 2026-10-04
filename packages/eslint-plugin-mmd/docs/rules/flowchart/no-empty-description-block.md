@@ -59,18 +59,21 @@ lines after it as part of the name.
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-empty-description-block: error
 flowchart LR
   A
   accDescr {}
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-empty-description-block: error
 flowchart LR
   A
   accDescr { }
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-empty-description-block: error
 flowchart LR
   A
   accDescr {
@@ -80,12 +83,14 @@ flowchart LR
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/flowchart/no-empty-description-block: error
 flowchart LR
   A
   accDescr { y }
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-empty-description-block: error
 flowchart LR
   A
   accDescr {

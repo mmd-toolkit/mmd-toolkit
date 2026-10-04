@@ -61,18 +61,21 @@ mermaid.js は後の行を名前の一部として読むことがあるからで
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-empty-description-block: error
 flowchart LR
   A
   accDescr {}
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-empty-description-block: error
 flowchart LR
   A
   accDescr { }
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-empty-description-block: error
 flowchart LR
   A
   accDescr {
@@ -82,12 +85,14 @@ flowchart LR
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/flowchart/no-empty-description-block: error
 flowchart LR
   A
   accDescr { y }
 ```
 
 ```mmd
+%% eslint mmd/flowchart/no-empty-description-block: error
 flowchart LR
   A
   accDescr {

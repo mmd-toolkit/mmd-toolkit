@@ -35,17 +35,20 @@ mermaid.js は、クラス名だけの行を受理し、何もしない。
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-bare-class-name: error
 classDiagram
   direction lr
 ```
 
 ```mmd
+%% eslint mmd/class/no-bare-class-name: error
 classDiagram
   title Animals
   class A
 ```
 
 ```mmd
+%% eslint mmd/class/no-bare-class-name: error
 classDiagram
   Foo
 ```
@@ -53,12 +56,14 @@ classDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-bare-class-name: error
 classDiagram
   direction RL
   class A
 ```
 
 ```mmd
+%% eslint mmd/class/no-bare-class-name: error
 classDiagram
   class Foo
 ```

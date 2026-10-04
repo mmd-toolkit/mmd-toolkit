@@ -32,17 +32,20 @@ between them. Such a line comes about in these ways:
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-bare-class-name: error
 classDiagram
   direction lr
 ```
 
 ```mmd
+%% eslint mmd/class/no-bare-class-name: error
 classDiagram
   title Animals
   class A
 ```
 
 ```mmd
+%% eslint mmd/class/no-bare-class-name: error
 classDiagram
   Foo
 ```
@@ -50,12 +53,14 @@ classDiagram
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-bare-class-name: error
 classDiagram
   direction RL
   class A
 ```
 
 ```mmd
+%% eslint mmd/class/no-bare-class-name: error
 classDiagram
   class Foo
 ```

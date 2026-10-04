@@ -48,6 +48,7 @@ mermaid.js は、コメント行を、その前の空白だけの行と一緒に
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-inline-comment: error
 classDiagram
   Animal <|-- Duck %% ducks
   Animal : +int age
@@ -56,6 +57,7 @@ classDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/class/no-inline-comment: error
 classDiagram
   %% Animals
   class Animal
@@ -63,6 +65,7 @@ classDiagram
 ```
 
 ```mmd
+%% eslint mmd/class/no-inline-comment: error
 classDiagram
   class Animal
   Animal <|-- Duck %% ducks

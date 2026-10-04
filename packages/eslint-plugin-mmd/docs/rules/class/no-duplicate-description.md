@@ -29,6 +29,7 @@ line and a block replace each other in either order: after `accDescr: first` and
 Examples of **incorrect** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-duplicate-description: error
 classDiagram
   accDescr: first
   accDescr: second
@@ -36,6 +37,7 @@ classDiagram
 ```
 
 ```mmd
+%% eslint mmd/class/no-duplicate-description: error
 classDiagram
   accDescr {
 first
@@ -47,6 +49,7 @@ first
 Examples of **correct** code for this rule:
 
 ```mmd
+%% eslint mmd/class/no-duplicate-description: error
 classDiagram
   accTitle: x
   accDescr: y

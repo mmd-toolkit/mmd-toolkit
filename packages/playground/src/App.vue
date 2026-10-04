@@ -78,11 +78,14 @@ watch([root, astView], synchronizeSelection)
 async function revealTreeSelection(row: HTMLDivElement): Promise<void> {
   await nextTick()
   const container = treeScroll.value
+  // Reparsing or switching views may have replaced the row during the render.
   if (!container || !container.contains(row)) return
   const viewport = container.getBoundingClientRect()
   const top = viewport.top + container.clientTop
   const bottom = top + container.clientHeight
   const bounds = row.getBoundingClientRect()
+  // scrollIntoView could move ancestor viewports; adjust only the tree and only
+  // enough to make the entire row visible, preserving editor focus.
   if (bounds.top < top) container.scrollTop += bounds.top - top
   else if (bounds.bottom > bottom) container.scrollTop += bounds.bottom - bottom
 }
@@ -118,7 +121,12 @@ function tabKey(event: KeyboardEvent): void {
 <template>
   <div class="playground">
     <header class="app-header">
-      <div class="brand">
+      <a
+        class="brand"
+        href="../"
+        aria-label="mmd-toolkit documentation"
+        title="mmd-toolkit documentation"
+      >
         <img
           class="brand-mark"
           :src="brandIcon"
@@ -130,7 +138,7 @@ function tabKey(event: KeyboardEvent): void {
           <h1>mmd-toolkit</h1>
           <span class="brand-caption">PLAYGROUND</span>
         </div>
-      </div>
+      </a>
       <div class="header-actions">
         <a
           class="github-link"

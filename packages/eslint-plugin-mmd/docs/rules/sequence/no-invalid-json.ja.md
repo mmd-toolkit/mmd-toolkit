@@ -38,12 +38,14 @@ mermaid.js は、それを書き手の意図どおりには読まないからで
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-invalid-json: error
 sequenceDiagram
   participant A
   links A: {"Dashboard": "https://x.example",}
 ```
 
 ```mmd
+%% eslint mmd/sequence/no-invalid-json: error
 sequenceDiagram
   participant A
   properties A: {"class": "internal",}
@@ -52,6 +54,7 @@ sequenceDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-invalid-json: error
 sequenceDiagram
   participant A
   links A: {"Dashboard": "https://x.example"}

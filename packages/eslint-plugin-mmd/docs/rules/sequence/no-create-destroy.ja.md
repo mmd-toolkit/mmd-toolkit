@@ -28,6 +28,7 @@
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-create-destroy: error
 sequenceDiagram
   create destroy A
   B ->> A: x
@@ -36,6 +37,7 @@ sequenceDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-create-destroy: error
 sequenceDiagram
   create participant A
   B ->> A: x

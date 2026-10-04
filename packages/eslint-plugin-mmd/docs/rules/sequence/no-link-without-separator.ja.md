@@ -33,6 +33,7 @@ URL `Dashboard https://x.example` を与える。
 この規則に**反する**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-link-without-separator: error
 sequenceDiagram
   participant A
   link A: Dashboard https://x.example
@@ -41,6 +42,7 @@ sequenceDiagram
 この規則に**従う**コードの例:
 
 ```mmd
+%% eslint mmd/sequence/no-link-without-separator: error
 sequenceDiagram
   link A: Dash @ https://x.example
 ```
