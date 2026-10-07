@@ -34,6 +34,18 @@ reads a line feed after the last character (see
 [fixture: state/header-statement-same-line] [fixture: state/header-only]
 [fixture: state/header-only-without-line-feed]
 
+A line that holds only `%%`, or `%%{ }%%`, which is no directive, before the
+header is a bare `%%` line, which detection reads and passes to find the header,
+and which is a comment of the diagram here, with the mark `%%`, as in every
+diagram type (see [Diagram detection](../common.md#diagram-detection)); the
+comment belongs to no node, and the StateDiagram starts at the header. For a
+line of `%%` alone mermaid.js reads the same; for a line that begins with `%%{`
+it rejects the input, because its state lexer reads the `%%` as ignored text and
+its grammar does not take the `{`: the known divergence
+[`bare-percent-line-before-header`](#known-divergences). [fixture:
+state/header-after-bare-percent-line] [fixture:
+state/header-after-empty-braces-line]
+
 ## Lexical structure
 
 The lexer reads the [diagram text](../common.md#reading-a-source) in
@@ -333,10 +345,15 @@ not read. The rule is tried before the id rule, so it takes the whole line:
 before the comment rules, so the text after the value may hold `%%`:
 `direction LR %% c` sets the direction `LR`, and `%% c` is a `direction-text`
 unit, not a comment. Neither does the value need to end at a word boundary:
-`direction TBX` sets `TB`, and `X` is a `direction-text` unit. The run is the
-longest one: `direction TB x direction TB` is read at its last `direction`, and
-`direction TB x` is a `direction-text` unit. [fixture:
-state/lex-direction-line-same-value-twice] [fixture:
+`direction TBX` sets `TB`, and `X` is a `direction-text` unit. The values are
+tried in the order given: if the line has `direction`, whitespace, and `TB`
+anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a value,
+the lexer takes the last `direction` of the run that the value follows. So
+`direction TB x direction TB` is read at its last `direction`, and
+`direction TB x` is a `direction-text` unit, while `direction TB x direction LR`
+sets `TB` and is read at its first `direction`, with `x direction LR` as a
+`direction-text` unit. [fixture: state/lex-direction-line-same-value-twice]
+[fixture: state/lex-direction-line-two-values] [fixture:
 state/lex-direction-line-in-description] [fixture:
 state/lex-direction-line-same-line-transition] [fixture:
 state/lex-direction-lower-case] [fixture: state/lex-direction-line-then-comment]
@@ -1402,3 +1419,15 @@ state/div-empty-description-block-after-arrow]
   state/div-empty-description-block-in-click-before-url] [fixture:
   state/div-empty-description-block-in-click-after-href] [fixture:
   state/div-empty-description-block-in-click-before-tooltip]
+- **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.md).**
+  `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` anywhere after
+  the header, as a state id, a description, or a transition label, makes
+  mermaid.js hand the text to the C4 parser, which rejects it; here the text is
+  a state diagram. [fixture: state/div-c4-keyword-as-state-id]
+- **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.md).**
+  A line `%%{ }%%`, which is no directive, before the header is a comment here,
+  while mermaid.js rejects the input: its state lexer reads the `%%` as ignored
+  text and its grammar does not take the `{` (see [Detection](#detection)). A
+  line of `%%` alone is a comment in both. [fixture:
+  state/header-after-empty-braces-line] [fixture:
+  state/header-after-bare-percent-line]

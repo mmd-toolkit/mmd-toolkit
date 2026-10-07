@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import {
   specifiedRunOf,
+  withoutBarePercentLinesBeforeHeader,
   withoutFrontmatterTagStarts,
 } from "../../../tools/src/specified-reading.ts"
 import { KNOWN_DIVERGENCES } from "../src/index.ts"
@@ -10,12 +11,19 @@ import {
   runMermaidWithEmbeddedData,
 } from "../src/mermaid.ts"
 
-/** The marks whose fixtures are read with lexer rules taken out. */
-const LEXER_MARKS = [
+/**
+ * The marks whose fixtures are read with a part of mermaid.js taken out: the
+ * detector of C4, or lexer rules.
+ */
+const REMOVAL_MARKS = [
+  "c4-keyword-anywhere",
   "comment-takes-character",
   "comment-takes-line-break",
   "name-start-reads-unit",
 ]
+
+/** The mark of the divergence about a bare `%%` line before the header. */
+const BARE_PERCENT_MARK = "bare-percent-line-before-header"
 
 /** The mark of the divergence about the HTML tag that starts in the frontmatter. */
 const HTML_TAG_MARK = "html-tag-in-frontmatter"
@@ -57,9 +65,14 @@ function classIds(run: MermaidRun | undefined): string[] {
 }
 
 describe("the marks", () => {
-  it("are the four of the lexer rules and of the frontmatter, and the marks without a reading, and no other", () => {
+  it("are those of the removals, of the frontmatter and of the bare `%%` lines, and the marks without a reading, and no other", () => {
     expect([...KNOWN_DIVERGENCES].sort()).toEqual(
-      [...LEXER_MARKS, HTML_TAG_MARK, ...MARKS_WITHOUT_READING].sort(),
+      [
+        ...REMOVAL_MARKS,
+        HTML_TAG_MARK,
+        BARE_PERCENT_MARK,
+        ...MARKS_WITHOUT_READING,
+      ].sort(),
     )
   })
 })
@@ -266,6 +279,47 @@ describe("specifiedRunOf: marks that have no other reading", () => {
     expect(
       await specifiedRunOf("sequenceDiagram\nA->>B: x\n", "other", undefined),
     ).toBeUndefined()
+  })
+})
+
+describe("specifiedRunOf: c4-keyword-anywhere", () => {
+  const SEQUENCE_WITH_KEYWORD = "sequenceDiagram\nA->>B: C4Container"
+
+  it("reads the input as the diagram of its header: the specification accepts what mermaid.js rejects", async () => {
+    expect(
+      (await runMermaidWithEmbeddedData(SEQUENCE_WITH_KEYWORD)).outcome
+        .accepted,
+    ).toBe(false)
+    const run = await specifiedRunOf(
+      SEQUENCE_WITH_KEYWORD,
+      "c4-keyword-anywhere",
+      undefined,
+    )
+    expect(run?.outcome.accepted).toBe(true)
+    expect(
+      (dbOf(run).messages as { message: string }[]).map(
+        ({ message }) => message,
+      ),
+    ).toEqual(["C4Container"])
+  })
+
+  it("gives what mermaid.js gives for a C4 diagram", async () => {
+    const input = 'C4Container\n  Container(a, "A")\n'
+    expect(
+      await specifiedRunOf(input, "c4-keyword-anywhere", undefined),
+    ).toEqual(await runMermaidWithEmbeddedData(input))
+  })
+
+  it("takes only its own removal out, not the removals of the other marks", async () => {
+    const input = "sequenceDiagram\np%% carticipant A\nA->>B: C4Container\n"
+    expect(
+      (await specifiedRunOf(input, "c4-keyword-anywhere", undefined))?.outcome
+        .accepted,
+    ).toBe(true)
+    expect(
+      (await specifiedRunOf(input, "comment-takes-character", undefined))
+        ?.outcome.accepted,
+    ).toBe(false)
   })
 })
 
@@ -536,5 +590,125 @@ describe("specifiedRunOf: html-tag-in-frontmatter", () => {
     ).rejects.toThrow(
       "the replacement of `<` in the frontmatter made its YAML invalid, so the specified reading cannot be taken from mermaid.js; decide how it is made for this fixture",
     )
+  })
+})
+
+describe("withoutBarePercentLinesBeforeHeader", () => {
+  it("drops a line of `%%` alone before the header", () => {
+    expect(
+      withoutBarePercentLinesBeforeHeader("%%\nflowchart LR\nA-->B\n"),
+    ).toBe("flowchart LR\nA-->B\n")
+  })
+
+  it("drops a line `%%{ }%%`, which is no directive", () => {
+    expect(
+      withoutBarePercentLinesBeforeHeader("%%{ }%%\nflowchart LR\nA-->B\n"),
+    ).toBe("flowchart LR\nA-->B\n")
+  })
+
+  it("drops the lines of whitespace only among the lines before the header", () => {
+    expect(
+      withoutBarePercentLinesBeforeHeader("%%\n  \nclassDiagram\nclass A\n"),
+    ).toBe("classDiagram\nclass A\n")
+    expect(
+      withoutBarePercentLinesBeforeHeader(
+        "%%{ }%%\n  \nclassDiagram\nclass A\n",
+      ),
+    ).toBe("classDiagram\nclass A\n")
+  })
+
+  it("keeps a comment line and a directive before the header, with the lines a directive spans", () => {
+    expect(
+      withoutBarePercentLinesBeforeHeader(
+        "%% c\n%%\n%%{init: {}}%%\n \nflowchart LR\n",
+      ),
+    ).toBe("%% c\n%%{init: {}}%%\nflowchart LR\n")
+    expect(
+      withoutBarePercentLinesBeforeHeader(
+        "%%{init:\n {}}%%\n%%\nflowchart LR\n",
+      ),
+    ).toBe("%%{init:\n {}}%%\nflowchart LR\n")
+  })
+
+  it("drops the whitespace around a directive on its line, which would be a line of whitespace only without it", () => {
+    expect(
+      withoutBarePercentLinesBeforeHeader(
+        "%%\n  %%{init: {}}%%\nclassDiagram\nclass A\n",
+      ),
+    ).toBe("%%{init: {}}%%\nclassDiagram\nclass A\n")
+    expect(
+      withoutBarePercentLinesBeforeHeader("  %%{init: {}}%%  \nflowchart LR\n"),
+    ).toBe("%%{init: {}}%%\nflowchart LR\n")
+  })
+
+  it("drops a line of a tab only, a line `%%{}`, and a line `%%{-x}%%`, none of which is a directive", () => {
+    expect(
+      withoutBarePercentLinesBeforeHeader("%%\n\t\nclassDiagram\nclass A\n"),
+    ).toBe("classDiagram\nclass A\n")
+    expect(withoutBarePercentLinesBeforeHeader("%%{}\nstateDiagram-v2\n")).toBe(
+      "stateDiagram-v2\n",
+    )
+    expect(
+      withoutBarePercentLinesBeforeHeader("%%{-x}%%\nflowchart LR\n"),
+    ).toBe("flowchart LR\n")
+  })
+
+  it("changes nothing after the header", () => {
+    const text = "flowchart LR\n%%\n  \nA\n%%{ }%%\n"
+    expect(withoutBarePercentLinesBeforeHeader(text)).toBe(text)
+  })
+
+  it("starts after the frontmatter, with its closing line", () => {
+    expect(
+      withoutBarePercentLinesBeforeHeader(
+        "---\ntitle: x\n---\n%%\nflowchart LR\n",
+      ),
+    ).toBe("---\ntitle: x\n---\nflowchart LR\n")
+  })
+
+  it("takes CRLF and a lone CR as the ends of the lines", () => {
+    expect(withoutBarePercentLinesBeforeHeader("%%\r\n\r\nflowchart LR")).toBe(
+      "flowchart LR",
+    )
+    expect(withoutBarePercentLinesBeforeHeader("%%\r  \rflowchart LR")).toBe(
+      "flowchart LR",
+    )
+  })
+})
+
+describe("specifiedRunOf: bare-percent-line-before-header", () => {
+  it("reads the five inputs of the divergence as accepted, with the diagram of their header, where mermaid.js rejects them", async () => {
+    const [flowchart, braces, state, classPercent, classBraces] =
+      await Promise.all(
+        [
+          "%%\nflowchart LR\nA-->B\n",
+          "%%{ }%%\nflowchart LR\nA-->B\n",
+          "%%{ }%%\nstateDiagram-v2\n[*] --> A\n",
+          "%%\n  \nclassDiagram\nclass A\n",
+          "%%{ }%%\n  \nclassDiagram\nclass A\n",
+        ].map((input) => specifiedRunOf(input, BARE_PERCENT_MARK, undefined)),
+      )
+    for (const [run, diagramType] of [
+      [flowchart, "flowchart-v2"],
+      [braces, "flowchart-v2"],
+      [state, "stateDiagram"],
+      [classPercent, "classDiagram"],
+      [classBraces, "classDiagram"],
+    ] as const) {
+      expect(run?.outcome.accepted, diagramType).toBe(true)
+      if (run === undefined || !run.outcome.accepted) continue
+      expect(run.outcome.diagramType).toBe(diagramType)
+    }
+    expect(classIds(classPercent)).toEqual(["A"])
+  })
+
+  it("gives the result of mermaid.js for an input without such a line", async () => {
+    const plain = await runMermaidWithEmbeddedData("flowchart LR\nA-->B\n", {})
+    const read = await specifiedRunOf(
+      "flowchart LR\nA-->B\n",
+      BARE_PERCENT_MARK,
+      undefined,
+    )
+    expect(read).toEqual(plain)
   })
 })

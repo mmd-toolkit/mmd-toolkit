@@ -64,8 +64,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
   [ast.md](../../spec/docs/ast.md)).
 - **Comments.** A comment line is where the scan finds it, with the mark `%%`; a
   diagram comment has a mark that its diagram has, and ends where its line ends;
-  a fragment without a mark follows a comment region (parser/docs/tokens.md,
-  Comment; [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
+  a flowchart has the mark `%%` for a line of `%%` alone before its header, as
+  every diagram type does, and for no other comment; a fragment without a mark
+  follows a comment region (parser/docs/tokens.md, Comment;
+  [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
   (ast.md, Directive; common.md, Where a directive is).

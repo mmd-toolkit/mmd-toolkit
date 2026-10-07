@@ -24,7 +24,7 @@ mermaid.js での正解の出どころ:
 [fixture: common/detect-minimal-flowchart-elk] [fixture:
 common/detect-minimal-swimlane] [fixture: common/detect-minimal-flowchart-v2]
 
-検出はテキストの先頭しか見ません。
+検出は検出点だけを見ます（[図種の検出](../common.ja.md#図種の検出) を参照）。
 その後、
 文法がヘッダーのキーワードをもう一度読み
 （[ヘッダーの文脈](#ヘッダーの文脈) を参照）、
@@ -35,11 +35,15 @@ common/detect-minimal-swimlane] [fixture: common/detect-minimal-flowchart-v2]
 [fixture: common/detect-no-boundary-graph] [fixture:
 flowchart/header-elk-suffix]
 
-判定は、ヘッダーの前の `%%` だけの行を除きます
+ヘッダーの前の `%%` だけの行や、ディレクティブではない `%%{ }%%` の行は
+`%%` だけの行で、検出はそれを読んで通り過ぎてヘッダーを探し、
+どの図種でも同じく、ここでは図のコメントです
 （[図種の検出](../common.ja.md#図種の検出) を参照）。
-しかし、字句解析器はそれを図のテキスト（id）として読み、
-文法はヘッダーから始まるので、mermaid.js と同じく入力は拒否されます。
-[fixture: flowchart/header-after-bare-percent-line]
+mermaid.js は入力を拒否します。
+flowchart の字句解析器が `%%` をヘッダーの前の id として読むからです。
+既知の差異 [`bare-percent-line-before-header`](#既知の差異) です。
+[fixture: flowchart/header-after-bare-percent-line] [fixture:
+flowchart/header-after-empty-braces-line]
 
 ## 字句構造
 
@@ -298,7 +302,7 @@ flowchart/lex-brace-callback-arguments-directive]
    クリックの文脈に入ります。
    [fixture: flowchart/gram-click-two-ids-one-click]
 10. 後に語の文字が続かない `flowchart-elk`、`swimlane-beta`、`graph`、
-    `flowchart`: `header-keyword` の単位。
+    `flowchart`（この順に試す）: `header-keyword` の単位。
     テキストで最初のヘッダーのキーワードは、ヘッダーの文脈にも入ります。
     [fixture: flowchart/header-elk-suffix]
     [fixture: flowchart/lex-header-keyword-as-vertex]
@@ -2271,3 +2275,16 @@ mermaid.js は、文法が受理する入力の一部を、Db を作る途中で
   [fixture: flowchart/gram-empty-call-before-link]
   [fixture: flowchart/gram-click-empty-call-before-callback]
   [fixture: flowchart/gram-empty-description-block-before-link]
+- **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md)。**
+  ヘッダーの後のどこかにある `C4Container`、`C4Component`、`C4Dynamic`、
+  `C4Deployment`（頂点の id、ラベル、辺のテキストなど）は、
+  mermaid.js ではテキストを C4 のパーサーに渡させ、拒否されます。
+  ここではテキストは flowchart です。
+  [fixture: flowchart/div-c4-keyword-in-label]
+- **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.ja.md)。**
+  ヘッダーの前の `%%` だけの行や `%%{ }%%` の行は、ここではコメントです。
+  mermaid.js は入力を拒否します。
+  flowchart の字句解析器が `%%` をヘッダーの前の id として読むからです
+  （[検出](#検出) を参照）。
+  [fixture: flowchart/header-after-bare-percent-line] [fixture:
+  flowchart/header-after-empty-braces-line]

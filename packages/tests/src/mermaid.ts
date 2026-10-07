@@ -29,13 +29,17 @@ import { pathToFileURL } from "node:url"
 import yaml from "js-yaml"
 import mermaid from "mermaid"
 import type {
+  DetectorProbe,
+  DetectorRemoval,
   DivergenceRemoval,
   JisonLexer,
-  LexerRewrite,
+  Rewrite,
 } from "./divergence-removals.ts"
 import {
   allRemovals,
+  findDetectorRewrite,
   findRewrites,
+  isDetectorRemoval,
   overlapOf,
   withRewrites,
 } from "./divergence-removals.ts"
@@ -107,8 +111,8 @@ export const mermaidVersion: string = (
 
 let ready: Promise<void> | undefined
 
-/** The lexer rules to replace for each divergence removal, found at setup. */
-const removalRewrites: Map<DivergenceRemoval, LexerRewrite> = new Map()
+/** What to replace for each divergence removal, found at setup. */
+const removalRewrites: Map<DivergenceRemoval, Rewrite> = new Map()
 let queue: Promise<unknown> = Promise.resolve()
 
 /**
@@ -211,29 +215,34 @@ export async function resolveEmbeddedData(
 /**
  * Returns the diagram id mermaid's detectors give `text` (`detectType()`), or
  * `undefined` when none matches. Only detection runs, not the diagram's
- * parser, so this also names the diagram type of text mermaid rejects.
+ * parser, so this also names the diagram type of text mermaid rejects. With
+ * `withoutDivergences`, the detectors are those of mermaid.js read without
+ * them.
  */
 export function detectDiagramType(
   text: string,
   options: RunMermaidOptions = {},
 ): Promise<string | undefined> {
-  return enqueue(() => {
+  return enqueue(async () => {
     checkRunMermaidOptions(options)
     initialize(options)
-    try {
-      return Promise.resolve(
-        mermaid.detectType(text, mermaid.mermaidAPI.getConfig()),
-      )
-    } catch (error) {
-      if (
-        error instanceof Error &&
-        errorName(error) === "UnknownDiagramError"
-      ) {
-        return Promise.resolve(undefined)
-      }
-      throw error
-    }
+    return withRemovals(options, () => detectedId(text))
   })
+}
+
+/**
+ * The diagram id mermaid's detectors give `text` under the configuration as it
+ * is, or `undefined` when none matches.
+ */
+function detectedId(text: string): string | undefined {
+  try {
+    return mermaid.detectType(text, mermaid.mermaidAPI.getConfig())
+  } catch (error) {
+    if (error instanceof Error && errorName(error) === "UnknownDiagramError") {
+      return undefined
+    }
+    throw error
+  }
 }
 
 /**
@@ -265,26 +274,39 @@ async function runExclusive(
   text: string,
   options: RunMermaidOptions,
 ): Promise<MermaidRun> {
+  return withRemovals(options, () => runAsIs(text, options))
+}
+
+/**
+ * Runs `call` with mermaid.js read without the divergences of
+ * `options.withoutDivergences`, each counted once, and as it is for none.
+ * Throws when two of them cannot be removed together, and when the read
+ * position of a lexer could not be told during the call.
+ */
+async function withRemovals<T>(
+  options: RunMermaidOptions,
+  call: () => T | Promise<T>,
+): Promise<T> {
   const names = [...new Set(options.withoutDivergences ?? [])]
-  if (names.length === 0) return runAsIs(text, options)
+  if (names.length === 0) return call()
   const rewrites = names.map((name) => {
     const rewrite = removalRewrites.get(name)
     if (!rewrite) {
-      throw new MermaidEnvironmentError(`no lexer rules were found for ${name}`)
+      throw new MermaidEnvironmentError(
+        `nothing to replace was found for ${name}`,
+      )
     }
     return [name, rewrite] as const
   })
   const overlap = overlapOf(rewrites)
   if (overlap !== undefined) throw new Error(overlap)
-  const { result, problem } = await withRewrites(rewrites, () =>
-    runAsIs(text, options),
-  )
+  const { result, problem } = await withRewrites(rewrites, async () => call())
   if (problem !== undefined) throw new MermaidEnvironmentError(problem)
   return result
 }
 
 /**
- * Runs one input with mermaid.js's lexers as they are at the moment.
+ * Runs one input with mermaid.js as it is at the moment.
  */
 async function runAsIs(
   text: string,
@@ -382,10 +404,11 @@ async function patchDbClasses(): Promise<void> {
 }
 
 /**
- * Finds the lexer rules of every divergence removal (see
- * `src/divergence-removals.ts`), and stops when one is missing: mermaid.js
- * then changed, and running without the divergence would silently run it as
- * it is.
+ * Finds what every divergence removal replaces (see
+ * `src/divergence-removals.ts`): the lexer rules, or the detector. It stops
+ * when a lexer rule is missing, and when the replacement of a detector does not
+ * detect what it is meant to: mermaid.js then changed, and running without the
+ * divergence would silently run it as it is.
  */
 async function findRemovalRewrites(): Promise<void> {
   for (const [name, removal] of allRemovals()) {
@@ -393,6 +416,12 @@ async function findRemovalRewrites(): Promise<void> {
       removal.sampleText,
       removal.diagramType,
     )
+    if (isDetectorRemoval(removal)) {
+      const rewrite = findDetectorRewrite(removal)
+      await checkDetectorRewrite(name, removal, rewrite)
+      removalRewrites.set(name, rewrite)
+      continue
+    }
     const { lexer } = diagram.parser as {
       lexer?: { rules?: unknown; conditions?: unknown; setInput?: unknown }
     }
@@ -411,6 +440,60 @@ async function findRemovalRewrites(): Promise<void> {
       throw new MermaidEnvironmentError(`${name}: ${rewrites}`)
     }
     removalRewrites.set(name, rewrites)
+  }
+}
+
+/**
+ * Makes the rewrite of a detector removal once, and undoes it, to check that it
+ * does what the removal means: for every probe of the removal, the detectors
+ * give the id of `asIs` before the replacement, the id of `removed` during it,
+ * and the id of `asIs` again after it, and the sample text still parses.
+ */
+async function checkDetectorRewrite(
+  name: DivergenceRemoval,
+  removal: DetectorRemoval,
+  rewrite: Rewrite,
+): Promise<void> {
+  initialize({})
+  checkProbes(name, removal, "before the replacement", (probe) => probe.asIs)
+  try {
+    await withRewrites([[name, rewrite]], () => {
+      checkProbes(
+        name,
+        removal,
+        "during the replacement",
+        (probe) => probe.removed,
+      )
+      return Promise.resolve()
+    })
+  } catch (error) {
+    if (error instanceof MermaidEnvironmentError) throw error
+    throw new MermaidEnvironmentError(
+      `${name}: the detector of ${removal.diagramType} cannot be replaced`,
+      { cause: error },
+    )
+  }
+  checkProbes(name, removal, "after the replacement", (probe) => probe.asIs)
+  await diagramOfSample(removal.sampleText, removal.diagramType)
+}
+
+/**
+ * Throws unless the detectors give each probe of `removal` the id that
+ * `expected` names for it, at `moment` of the check.
+ */
+function checkProbes(
+  name: DivergenceRemoval,
+  removal: DetectorRemoval,
+  moment: string,
+  expected: (probe: DetectorProbe) => string | undefined,
+): void {
+  for (const probe of removal.probes) {
+    const detected = detectedId(probe.text)
+    if (detected !== expected(probe)) {
+      throw new MermaidEnvironmentError(
+        `${name}: ${moment}, ${JSON.stringify(probe.text)} is detected as ${String(detected)}, not ${String(expected(probe))}`,
+      )
+    }
   }
 }
 

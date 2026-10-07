@@ -3,6 +3,7 @@
     "kind": "authored",
     "note": "flowchart.md Detection: detection leaves out the line `%%`, but the flowchart lexer reads `%%` as diagram text before the header, and the grammar rejects it, as mermaid.js does."
   },
+  "knownDivergence": "bare-percent-line-before-header",
   "accepted": false,
   "error": {
     "name": "Error",

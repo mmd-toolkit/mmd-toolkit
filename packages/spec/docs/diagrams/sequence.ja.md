@@ -21,7 +21,7 @@ mermaid.js での正解の出どころ:
 common/detect-case-sensitive-sequence]
 [fixture: sequence/docs-config-accessibility-6016a981]
 
-判定はテキストの始まりだけを見ます。
+検出は検出点だけを見ます（[図種の検出](../common.ja.md#図種の検出) を参照）。
 その後、文法はキーワード `sequenceDiagram` を、1 つの語としてもう一度読みます
 （[文の文脈](#文の文脈) を参照）。
 そのため、`sequenceDiagramX` は sequence と判定され、拒否されます。
@@ -30,31 +30,30 @@ common/detect-case-sensitive-sequence]
 [fixture: sequence/header-word-after-keyword] [fixture:
 sequence/header-statement-same-line]
 
-判定は字句解析器より多くを除きます
-（[図種の検出](../common.ja.md#図種の検出) を参照）。
 `%%` だけの行や、ディレクティブではない `%%{ }%%` は、
-キーワードの前にあってよく、
-テキストはそれでも sequence と判定されます。
-字句解析器は、そのような行を図のコメント
-（[文の文脈](#文の文脈) の規則 4）として、
-その改行を `newline` の単位として読みます。
-文法は、mermaid.js の文法と同じく、キーワードの前に `newline` の単位を許します
-（[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L136-L140)）。
-コメントはどのノードにも属さず、
-改行から読む `newline` の単位はノードを作らず、
-SequenceDiagram はキーワードから始まります。
-判定が除かない、キーワードの前のテキスト（`#` の行など）と、
-キーワードと同じ行の `%%`（判定はキーワードごと除きます）では、
-判定が失敗します。
-判定は `;` を除かないので、
-`;` から読む `newline` の単位がキーワードの前に来ることはありません。
-`;` の行では判定が失敗し、`%%{ }%%;` の `;` はコメントの一部です。
-[fixture: sequence/header-after-semicolon-line] [fixture:
-sequence/header-after-empty-braces-semicolon]
+キーワードの前にあってかまいません。
+これは `%%` だけの行で、検出はそれを読んで通り過ぎてヘッダーを探し、
+どの図種でも同じく、`%%` から行の終わりまでの、印 `%%` の図のコメントです
+（[図種の検出](../common.ja.md#図種の検出) を参照）。
+mermaid.js の字句解析器もそう読みます（[文の文脈](#文の文脈) の規則 4）。
+コメントはどのノードにも属さず、SequenceDiagram はキーワードから始まります。
+`%%{ }%%;` の `;` はコメントの一部で、
+ディレクティブの始まらない `%%{` で始まる行の残り
+（`%%{ }%% x` や `%%{-x}%%`）も同じで、その行にキーワードがあっても同じです。
+1 行の `%%{ }%% sequenceDiagram` にはヘッダーが残らず、入力は拒否されます。
+キーワードの前のそれ以外のテキスト（`#` や `;` の行、
+キーワードと同じ行の `%%`）は検出点の図のテキストで、
+どの検出器も一致せず、mermaid.js と同じく入力は拒否されます。
 [fixture: sequence/header-after-bare-percent-line] [fixture:
 sequence/header-after-empty-braces-line] [fixture:
+sequence/header-after-empty-braces-semicolon] [fixture:
+sequence/header-after-empty-braces-line-text] [fixture:
+sequence/header-after-non-word-brace-line] [fixture:
+sequence/header-after-empty-braces-then-keyword-same-line] [fixture:
+sequence/header-after-non-word-brace-then-keyword-same-line] [fixture:
 sequence/header-after-two-bare-percent-lines] [fixture:
 sequence/header-after-hash-line] [fixture:
+sequence/header-after-semicolon-line] [fixture:
 sequence/header-after-bare-percent-on-same-line]
 flowchart では、同じ `%%` の行は、mermaid.js と同じく拒否されます
 （[検出](./flowchart.ja.md#検出) を参照）。
@@ -411,20 +410,33 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 
 ### id の並び
 
-id の並びは、次のものからなる最長の文字の並びです。
+id の並びは、左から右へ、2 つの手順で読みます。
 
 1. `/`、`\`、`+`、`(`、`)`、`<`、`-`、`>`、`:`、`,`、`;`、
-   改行以外の 1 個以上の文字。
+   改行以外の文字を、できるだけ多く（1 個以上）。
    その後に、
    [fixture: sequence/lex-id-run-space]
-2. 任意の数の続き。
+2. 続きを、並びの終わりで始められる限り、次々に。
    続きは、0 個以上の `-` の後に、
    `+`、`<`、`-`、`>`、`:`、`,`、`;`、
-   改行以外の 1 個以上の文字が続いたものです。
+   改行以外の文字をできるだけ多く（1 個以上）読んだものです。
    続きは、次のどれかが続く位置からは始まりません:
    `-x`、`-)`、`-\`、`-/`、`-|\`、`-|/`、`--`、`/|-`、`\|-`、`//-`、
    `\\-`、`()`。
-   [fixture: sequence/lex-id-run-dash]
+   最初の 11 個は矢印の始まりです。
+   [fixture: sequence/lex-id-run-dash] [fixture: sequence/db-arrow-types]
+
+どちらの手順も、前の手順に文字を返しません。
+`Alice()->>John: x` では、手順 1 が `Alice` を読み、
+`()` の前では続きが始まらないので、
+並びは `Alice` で、その後に `()` が続きます。
+`Alic` と続き `e()` の方が長い並びになりますが、そうは読みません。
+`Al()ice->>B: x` は拒否されます。
+`()` の例外は、続きが始まる位置でだけ見ます。
+`A(x)()->>B: x` では、続き `(x)()` が `()` を含み、参加者は `A(x)()` です。
+[fixture: sequence/lex-id-run-empty-parentheses-ends-run] [fixture:
+sequence/lex-id-run-empty-parentheses-inside-rejected] [fixture:
+sequence/lex-id-run-empty-parentheses-in-continuation]
 
 そのため、id の並びは、空白、`#`、`=` を含められ、
 最初の文字の後なら `/`、`\`、`(`、`)` も含められます。
@@ -1063,3 +1075,9 @@ sequence/gram-create-destroy-message-to-other]
   sequence/div-comment-after-text-colon] [fixture:
   sequence/div-comment-after-two-digit-number] [fixture:
   sequence/lex-percent-comment-takes-number]
+- **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md)。**
+  ヘッダーの後のどこかにある `C4Container`、`C4Component`、`C4Dynamic`、
+  `C4Deployment`（参加者、メッセージのテキスト、ノートなど）は、
+  mermaid.js ではテキストを C4 のパーサーに渡させ、拒否されます。
+  ここではテキストは sequence 図です。
+  [fixture: common/detect-c4-anywhere]

@@ -150,7 +150,9 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
  * The marks of the diagram comments of each diagram type, as its document
  * defines them: diagrams/sequence.md, Units and contexts; diagrams/state.md,
  * Comments; diagrams/class.md, The statement context. A flowchart and the
- * `error` pseudo-diagram have only comment lines.
+ * `error` pseudo-diagram have only comment lines, besides the diagram comments
+ * that every diagram type has before its header (see
+ * {@link MARKS_BEFORE_THE_HEADER}).
  */
 const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   ErrorDiagram: [],
@@ -158,6 +160,16 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   SequenceDiagram: ["#", "%%", "%"],
   ClassDiagram: ["%%"],
   StateDiagram: ["#", "%%"],
+}
+
+/**
+ * The marks that a diagram type has for the diagram comments before its
+ * header only: a line of `%%` alone before the header is a diagram comment
+ * with the mark `%%` in every diagram type (common.md, Diagram detection),
+ * and a flowchart has no such comment after its header.
+ */
+const MARKS_BEFORE_THE_HEADER: Readonly<Record<string, readonly string[]>> = {
+  FlowchartDiagram: ["%%"],
 }
 
 /**
@@ -370,8 +382,13 @@ function checkComments(
         problems,
       )
     } else {
+      // The header is the first token of the diagram, where the body starts;
+      // the frontmatter and the directives before it have tokens of their own.
+      const beforeTheHeader = comment.range[1] <= root.body.range[0]
       problems.expect(
-        (DIAGRAM_COMMENT_MARKS[body] ?? []).includes(comment.mark),
+        (DIAGRAM_COMMENT_MARKS[body] ?? []).includes(comment.mark) ||
+          (beforeTheHeader &&
+            (MARKS_BEFORE_THE_HEADER[body] ?? []).includes(comment.mark)),
         where,
         `the mark ${comment.mark} is no mark of the comments of a ${body}`,
       )

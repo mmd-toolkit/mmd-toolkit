@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md (entry 7): anything may follow the keyword, so `C4ContainerX` is detected as c4, and the C4 grammar then decides."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nC4ContainerXContain\n^"
+  }
+}

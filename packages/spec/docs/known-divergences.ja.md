@@ -24,6 +24,8 @@ Mermaid のテキストを、固定した版の mermaid.js と同じに読みま
 | [`comment-takes-line-break`](./known-divergences/comment-takes-line-break.ja.md)                       | class                             | 行の中で単位の後にあるコメントの後の改行                                                                     | 2    |
 | [`headerless-empty-ending`](./known-divergences/headerless-empty-ending.ja.md)                         | class                             | 空の値で終わる、ヘッダーのないテキスト                                                                       | 2    |
 | [`name-start-reads-unit`](./known-divergences/name-start-reads-unit.ja.md)                             | class                             | キーワード、`"`、`<<`、`>>` で始まるバッククォートの名前とジェネリクスの型、`~` で始まるバッククォートの名前 | 2    |
+| [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.ja.md)                                 | すべて                            | 別の図種のヘッダーの後の `C4Container`、`C4Component`、`C4Dynamic`、`C4Deployment`                           | 2    |
+| [`bare-percent-line-before-header`](./known-divergences/bare-percent-line-before-header.ja.md)         | flowchart、class、state           | ヘッダーの前の `%%` だけの行と、その後の空白だけの行のうち、mermaid.js の字句解析器が拒否するもの            | 2    |
 
 理由は、[差異を認める条件](#差異を認める条件) の 3 つのどれかで、
 「なし」は反対の向きの差異を表します。

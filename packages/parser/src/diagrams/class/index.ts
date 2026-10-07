@@ -1,7 +1,11 @@
 import type { Root } from "../../ast.ts"
 import type { DiagramInput } from "../../diagram-parsing.ts"
 import type { DiagramTextReader } from "../../diagram-text.ts"
-import { finishDiagram, openDiagramText } from "../../diagram-parsing.ts"
+import {
+  commentsBeforeHeader,
+  finishDiagram,
+  openDiagramText,
+} from "../../diagram-parsing.ts"
 import { ClassDbRejections } from "./db-rejections.ts"
 import { ClassGrammar } from "./grammar.ts"
 import type { ClassLexing } from "./units.ts"
@@ -32,6 +36,7 @@ export function lexClass(input: DiagramInput): ClassUnits {
  * Db. The common part finishes the tree (see `finishDiagram`).
  */
 export function parseClassDiagram(input: DiagramInput): Root {
+  const commentsBefore = commentsBeforeHeader(input)
   const lexing = lexClass(input)
   const syntax = new ClassGrammar(lexing, input.lexer).parseDiagram()
   new ClassDbRejections(input.lexer.lines, syntax.writtenNames).check(
@@ -41,7 +46,7 @@ export function parseClassDiagram(input: DiagramInput): Root {
     input,
     {
       tokens: syntax.tokens,
-      comments: lexing.comments,
+      comments: [...commentsBefore, ...lexing.comments],
     },
     // ast/class.md, ClassDiagram: the range runs from the keyword to the
     // last token of the diagram.

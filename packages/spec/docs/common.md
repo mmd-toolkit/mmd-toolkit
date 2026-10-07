@@ -93,6 +93,20 @@ of another diagram type (see [detection.md](./detection.md)).
   `?` is optional, by `*` repeats zero or more times, and by `+` repeats one or
   more times. Parentheses group items. Unless a rule says otherwise, `*` and `+`
   take as many repetitions as possible.
+- The rules of a diagram's lexer are written in words. Where such a rule reads a
+  repetition, such as "one or more characters other than …" or "zero or more
+  whitespace", without saying how many, it reads as many characters as it can
+  while the rest of the rule still matches; a rule that reads as few as possible
+  says so. When a rule reads two or more repetitions, they are read from left to
+  right, each as many as it can while the rest of the rule still matches: what
+  an earlier repetition can read is not left to a later one. In flowchart,
+  `click A call cb(1, "x")` has the one `callback-arguments` unit `1, "x"`,
+  which the grammar takes once. In state, the text of a note over several lines
+  ends at the first line `end note` after it, because that rule reads as few
+  characters as possible: `note right of A`, `x`, `end note`, `B`,
+  `note left of B`, `y`, and `end note` on seven lines are two notes, `x` on A
+  and `y` on B. [fixture: flowchart/gram-click-call] [fixture:
+  state/lex-note-block-two-notes]
 - Every rule reads the source with the rule of
   [Line terminators](#line-terminators) applied, so each line terminator counts
   as a single line break.
@@ -130,7 +144,7 @@ each of them.
 | 3    | A leading YAML block is parsed and removed.                                  | Trivia rule: [Frontmatter](#frontmatter). The body is not parsed.                                                        |
 | 4    | Every `%%{ ... }%%` is parsed for configuration and removed, wherever it is. | Trivia rule: [Directives](#directives). The arguments are not parsed.                                                    |
 | 5    | Comment lines are removed; then leading whitespace is trimmed.               | Trivia rule: [Comment lines](#comment-lines) and [Leading whitespace](#leading-whitespace)                               |
-| 6    | The first registered detector that matches selects the diagram type.         | [Diagram detection](#diagram-detection)                                                                                  |
+| 6    | The first registered detector that matches selects the diagram type.         | [Diagram detection](#diagram-detection), at the first unit of the diagram text                                           |
 | 7    | A `;` is dropped from some `style` lines; `#name;` becomes a placeholder.    | Line rule: [`style` and `classDef` lines](#style-and-classdef-lines); lexical rule and conversion: [Entities](#entities) |
 | 8    | `\n` is appended.                                                            | Lexical rule: [End of text](#end-of-text)                                                                                |
 | 9    | Some diagrams rewrite the text again before lexing.                          | Described in each diagram document                                                                                       |
@@ -140,10 +154,11 @@ specification defines all of these steps as rules that the lexer applies while
 it reads the source once, from left to right, as described in
 [Reading a source](#reading-a-source); they give the same units and values as
 the steps, except for the known divergences. No rule produces a rewritten text
-for a later rule to read. Where a rule refers to a text other than the source,
-such as the text that the detectors look at, that text is a way of stating the
-rule, not a result that an implementation has to build. How mermaid.js derives
-its configuration in Steps 3 and 4 is described for reference in
+for a later rule to read, and no rule reads a text other than the source: where
+mermaid.js decides something on a text that it has rewritten, such as the
+diagram type, this specification states the rule on the source, and the inputs
+that then come out differently are known divergences. How mermaid.js derives its
+configuration in Steps 3 and 4 is described for reference in
 [Configuration (reference)](../../tests/docs/configuration.md#configuration-reference).
 
 Steps 1–4, 6, and 8 are the same for every diagram type. Step 5 is skipped for
@@ -214,26 +229,24 @@ form: they keep the text as the author wrote it (see [ast.md](./ast.md#nodes)).
 
 Before the first unit of the diagram's lexer, whitespace, line terminators,
 directives, and comment regions are trivia
-([Leading whitespace](#leading-whitespace)). After the last character of the
-source, the lexer reads one more `\n` ([End of text](#end-of-text)). Whatever
-else the diagram does, including the extra rewrites of Step 9 above, is in its
-document.
+([Leading whitespace](#leading-whitespace)). At the first unit, the diagram type
+is decided, which selects the diagram's lexer
+([Diagram detection](#diagram-detection)); this can reject the input. After the
+last character of the source, the lexer reads one more `\n`
+([End of text](#end-of-text)). Whatever else the diagram does, including the
+extra rewrites of Step 9 above, is in its document.
 
-Two rules need more than the characters around a position. Both are stated as
-rules of their own:
-
-- **Diagram detection.** The diagram type decides which lexer reads the source,
-  so it is found first, from the detection text built from the whole source
-  ([Diagram detection](#diagram-detection)). This can reject the input.
-- **HTML attribute quotes.** Whether a `"` is read as `'` depends on a tag that
-  can start much earlier, even on a comment line, and continue over several
-  lines. The tags are found by reading the whole text from left to right
-  ([HTML attribute quotes](#html-attribute-quotes)).
+One rule needs more than the characters around a position, and is stated as a
+rule of its own: **HTML attribute quotes.** Whether a `"` is read as `'` depends
+on a tag that can start much earlier, even on a comment line, and continue over
+several lines. The tags are found by reading the whole text from left to right
+([HTML attribute quotes](#html-attribute-quotes)).
 
 Every other rule is decided by the characters around the position: a directive
 by the characters from its `%%{`, a comment region by what follows a comment
-start up to the end of the comment's line, the line rule by its line segment,
-and an entity by `#`, a word, and `;`.
+start up to the end of the comment's line, the diagram type by the diagram text
+at its first unit, the line rule by its line segment, and an entity by `#`, a
+word, and `;`.
 
 For agentflow, item 1 does not apply to the lexer: it reads comment lines and
 leading whitespace itself, and the line rule and entities apply to them too, as
@@ -256,11 +269,10 @@ common/frontmatter-lone-cr] [fixture: common/directive-spans-lone-cr]
 
 Whether a `\r` is followed by `\n` is decided in the source, before anything is
 left out: a `\r` and a `\n` with a directive or a comment region between them
-are two line terminators, in every rule and in the detection text, as in
-mermaid.js, which reads line terminators before it removes directives and
-comment lines. So `A[a`, a lone `\r`, a directive, `\n`, and `b]` has the Db
-label `a`, two line feeds, and `b`. [fixture:
-flowchart/lex-lone-cr-directive-lf-label]
+are two line terminators, in every rule, as in mermaid.js, which reads line
+terminators before it removes directives and comment lines. So `A[a`, a lone
+`\r`, a directive, `\n`, and `b]` has the Db label `a`, two line feeds, and `b`.
+[fixture: flowchart/lex-lone-cr-directive-lf-label]
 
 Conversion: every line terminator is `\n` in the converted form of a text. The
 values of the tree keep line terminators as written.
@@ -416,39 +428,45 @@ mermaid.js reads the body is described in
 [Reading the frontmatter body](../../tests/docs/configuration.md#reading-the-frontmatter-body).
 
 When these conditions do not hold, there is no frontmatter, and the `---` block
-is text. What happens to it next depends on why:
+is text. Whatever came before it that is trivia (a line break, whitespace, a
+byte order mark, a directive, a comment line) is leading trivia, and the diagram
+text then starts with `---`, so the `---` pseudo-diagram claims the text and
+rejects it (see [Diagram detection](#diagram-detection)). This holds for a line
+break or a directive before the block, an opening delimiter that is indented
+while the closing one is not, including a byte order mark before the opening
+delimiter only, and for a block that is no frontmatter by its own shape: `----`,
+text after the closing `---`, a closing `---` at the very end of the text,
+adjacent delimiters, a missing closing delimiter, a closing delimiter that is
+indented while the opening one is not, or two different non-empty indents.
+[fixture: common/frontmatter-leading-newline] [fixture:
+common/directive-before-frontmatter] [fixture:
+common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
+common/frontmatter-indent-closing-only] [fixture:
+common/frontmatter-indent-different-depths] [fixture:
+common/frontmatter-four-dashes] [fixture:
+common/frontmatter-closing-trailing-text] [fixture:
+common/frontmatter-no-newline-after] [fixture:
+common/frontmatter-adjacent-delimiters] [fixture: common/frontmatter-unclosed]
 
-- If the block only failed because something came before it that is trivia (such
-  as a leading line break, leading whitespace, a directive, or a comment line),
-  detection finds it again at the start of the text it looks at and ignores it
-  (see [Diagram detection](#diagram-detection)). The body's own diagram type is
-  detected, and the `---` lines are passed to that diagram's grammar. The
-  flowchart grammar rejects them, while the `error` pseudo-diagram, whose parser
-  ignores the text, accepts them. [fixture: common/frontmatter-leading-newline]
-  [fixture: common/directive-before-frontmatter]
-- The same happens when only the opening delimiter is indented and the closing
-  one is not, including a byte order mark before the opening delimiter only:
-  detection sees the text without its leading whitespace, where the delimiters'
-  indents agree. [fixture: common/frontmatter-indent-mismatch] [fixture:
-  common/frontmatter-bom] [fixture: common/frontmatter-bom-error]
-- Otherwise detection does not recognize the block either, and the `---`
-  pseudo-diagram claims the text and rejects it. This is the case for `----`,
-  text after the closing `---`, a closing `---` at the very end of the text,
-  adjacent delimiters, a missing closing delimiter, and indents that removing
-  the leading whitespace cannot reconcile: a closing delimiter that is indented
-  while the opening one is not, or two different non-empty indents. [fixture:
-  common/frontmatter-indent-closing-only] [fixture:
-  common/frontmatter-indent-different-depths] [fixture:
-  common/frontmatter-four-dashes] [fixture:
-  common/frontmatter-closing-trailing-text] [fixture:
-  common/frontmatter-no-newline-after] [fixture:
-  common/frontmatter-adjacent-delimiters] [fixture: common/frontmatter-unclosed]
-
-A diagram grammar that tolerates a leading `---` block can therefore accept such
-input. In the pinned mermaid.js, several Langium-based diagrams do (pie, info,
-gitGraph, packet, radar, and architecture were observed); their documents will
-record it. In every case the block's `title` and `config` are not applied,
-because it is not frontmatter.
+mermaid.js rejects these inputs too, with one exception. Its detection removes
+the leading trivia and then looks for frontmatter once more, so a block that
+only failed because of what came before it is removed from the text that its
+detectors see, while the diagram's grammar still receives the `---` lines. The
+input is then accepted when that grammar tolerates them. The `error`
+pseudo-diagram does, and its condition in
+[Diagram detection](#diagram-detection) leaves such a block out in the same way,
+so both accept a line break, a byte order mark, or a comment line before a `---`
+block, then `error`. The flowchart grammar rejects the lines, so with a
+flowchart after the block both reject the input. Several Langium-based diagrams
+among the diagram types not yet in this specification also tolerate the lines
+(pie, info, gitGraph, packet, radar, and architecture were observed); their
+documents will say how they read them. In every case the block's `title` and
+`config` are not applied by mermaid.js, because it is not frontmatter. [fixture:
+common/frontmatter-bom-error] [fixture: common/detect-lone-cr-directive-lf]
+[fixture: common/detect-lone-cr-comment-lf] [fixture:
+common/detect-frontmatter-after-line-break-error] [fixture:
+common/detect-frontmatter-after-comment-line-error] [fixture:
+common/detect-crlf-no-directive]
 
 ## Directives
 
@@ -767,93 +785,235 @@ common/leading-trivia-before-header]
 
 ## Diagram detection
 
-Detection looks at a text built from the whole source, the **detection text**:
-the source after the frontmatter, with its directives, the comment regions, and
-the leading whitespace left out. Each line terminator of the source stays one
-line terminator in it, also where a directive or a comment region between a `\r`
-and a `\n` is left out (see [Line terminators](#line-terminators)): a line
-break, `---`, a lone `\r`, a directive, a line break, `---`, a line break, and
-`error` is the `error` pseudo-diagram, and so is the same text with a comment
-line in place of the directive, while the text with `\r\n` written together is
-rejected, as in mermaid.js. [fixture: common/detect-lone-cr-directive-lf]
-[fixture: common/detect-lone-cr-comment-lf] [fixture:
-common/detect-crlf-no-directive] It is built before the diagram's lexer starts,
-because the detected type decides which lexer reads the source. Because the
-directives are left out, `err%%{init: {}}%%or` is the `error` pseudo-diagram, as
-in mermaid.js. [fixture: common/error-split-by-directive] From the detection
-text, detection then removes three more things, as
-[`detectType()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48)
-does:
+The diagram type is decided at the first unit of the diagram text. The
+**detection point** is the first position of the text that is not leading
+trivia: not whitespace, not a line terminator, not inside a directive, and not
+inside a comment region ([Leading whitespace](#leading-whitespace)). From the
+detection point, detection reads and passes the **bare `%%` lines**, if there
+are any: a line whose diagram text, after line whitespace, begins with `%%`
+followed by a line terminator, the end of the text, or `{` where no directive
+starts, neither in the source nor in the reading once more below; the whole line
+is skipped, whatever follows on it, a header among it: `%%{ }%%` and
+`sequenceDiagram` on one line leave no header, and the text is rejected. Such a
+line is neither a comment line nor a directive (see
+[Comment lines](#comment-lines)); the whitespace, line terminators, directives,
+and comment regions between bare `%%` lines are trivia, passed with them. A bare
+`%%` line may be indented and may end with any line terminator. With the
+directives left out, `%%%%{init: {}}%%` on a line of its own is a bare `%%`
+line, while `%%%` is a comment line. A text of bare `%%` lines alone has no
+header, and no detector matches. At each position it reaches, detection first
+applies the rule of [Where a directive is](#where-a-directive-is) once more, to
+the diagram text from there, read through the directives and comment regions of
+the source as a unit is read through them: where leaving them out has brought
+`%%{`, whitespace, and a word together, a directive starts, and detection skips
+it, as far as the rule reaches, before it asks whether the line is a bare `%%`
+line: in `%%{`, a comment line, `wrap}%%sequenceDiagram`, and `A->>B: x`, the
+closed directive is skipped and detection reaches the header, where the other
+order would skip the first line as a bare `%%` line and find no header at
+`wrap}%%`. `%%{`, a comment line, and `sequenceDiagram` hold such a directive:
+it takes the keyword as its name, and `A` on the next line as its argument, so
+no header follows, and the text is rejected, as in mermaid.js, whose second scan
+for directives finds the same directive. Such a directive is not in the tree,
+and it makes the input rejected: where it is closed and a header follows, as in
+`%%{`, a line `%%{wrap}%%`, and `x}%%flowchart LR`, detection reaches the
+header, and the input is rejected in each of the four diagram types, as in
+mermaid.js, whose lexer reads `%%{` and `x}%%` as text before the header. At the
+position reached, the detectors of [detection.md](./detection.md) are tried in
+registration order against the diagram text
+([Reading a source](#reading-a-source)), that is, the characters from there on,
+directives and comment regions left out. The first detector whose condition
+holds selects the diagram type, and the diagram's lexer reads the text from the
+position reached. Nothing that detection passed is read again: each bare `%%`
+line is a comment of the diagram, with the mark `%%`, from its `%%` to the end
+of its line, in every diagram type. mermaid.js reads such a line with the lexer
+of the detected diagram, and some of its lexers reject it: flowchart reads `%%`
+as an id before the header, state does not take the `{` of a line that begins
+with `%%{`, and class reads a line of whitespace only after such a line as a
+`newline` unit that its grammar does not take before the header. These inputs
+are the known divergence
+[`bare-percent-line-before-header`](./known-divergences/bare-percent-line-before-header.md).
+No detector matching means the text is rejected with `UnknownDiagramError`; so
+is a text with no diagram text at all, such as an empty text or a text of
+comment lines only, and a text whose first unit is anything but a header, such
+as a line `#` or `;`, or `%%` on the header's own line, which is no bare `%%`
+line; and so is a text in which a directive or a comment line takes the header,
+as `%%{`, a line break, and `sequenceDiagram` do, where the directive takes the
+keyword as its name, and `%%`, U+2028, and `sequenceDiagram`, where the comment
+line holds the keyword; and so is a text whose first unit is an empty
+description block, `accDescr {}`, before the header. [fixture: common/empty]
+[fixture: common/comment-only] [fixture: common/bare-percent-line-only]
+[fixture: common/bare-percent-line-only-with-line-feed] [fixture:
+sequence/header-after-indented-bare-percent-line] [fixture:
+sequence/header-after-bare-percent-crlf] [fixture:
+sequence/header-after-bare-percent-cr] [fixture:
+sequence/header-after-bare-percent-lines-with-blank-and-comment] [fixture:
+sequence/header-after-bare-percent-lines-with-directive] [fixture:
+sequence/header-after-bare-percent-then-directive] [fixture:
+sequence/header-after-bare-percent-then-whitespace-line] [fixture:
+class/header-after-bare-percent-then-empty-line] [fixture:
+class/header-after-bare-percent-then-whitespace-line] [fixture:
+sequence/header-after-empty-braces-no-space] [fixture:
+sequence/header-after-empty-braces-then-keyword-same-line] [fixture:
+sequence/header-after-non-word-brace-then-keyword-same-line] [fixture:
+flowchart/header-after-acc-descr-block] [fixture:
+sequence/header-after-triple-percent-line] [fixture:
+sequence/header-after-percent-joined-by-directive-line] [fixture:
+sequence/header-after-empty-braces-line-text] [fixture:
+sequence/header-after-non-word-brace-line] [fixture:
+class/header-after-non-word-brace-line] [fixture:
+state/header-after-empty-braces-line] [fixture:
+flowchart/header-after-empty-braces-line] [fixture:
+sequence/header-after-unclosed-brace-line] [fixture:
+sequence/header-after-unclosed-brace-and-comment-line] [fixture:
+common/detect-directive-across-comment-line] [fixture:
+common/detect-directive-second-scan-once] [fixture:
+sequence/detect-directive-across-comment-line-closed] [fixture:
+flowchart/detect-directive-across-directive] [fixture:
+sequence/detect-directive-across-directive] [fixture:
+class/detect-directive-across-directive] [fixture:
+state/detect-directive-across-directive] [fixture:
+sequence/header-after-percent-line-separator] [fixture:
+sequence/header-after-bare-percent-line] [fixture:
+sequence/header-after-empty-braces-line] [fixture:
+sequence/header-after-empty-braces-semicolon] [fixture:
+sequence/header-after-two-bare-percent-lines] [fixture:
+class/header-after-bare-percent-line] [fixture:
+class/header-after-empty-braces-line] [fixture:
+state/header-after-bare-percent-line] [fixture:
+flowchart/header-after-bare-percent-line] [fixture:
+sequence/header-after-hash-line] [fixture: sequence/header-after-semicolon-line]
+[fixture: sequence/header-after-bare-percent-on-same-line] [fixture:
+class/header-after-hash-line] [detection.md](./detection.md) lists all 39
+detectors in order, with their conditions, and each diagram document refers to
+its entry in its Detection section.
 
-- a frontmatter block at the start, found with the conditions of
-  [Frontmatter](#frontmatter) again; [fixture:
-  common/frontmatter-leading-newline]
-- directives, found as in [Directives](#where-a-directive-is) again, in one scan
-  from left to right. This scan can find directives that the first one did not:
-  a directive may start at a `%%{` that is followed, after whitespace, by a word
-  only once comment regions and directives are left out. `%%{`, a line break, a
-  comment line, and `kanban` hold such a directive, and so do `%%{`, a line
-  break, `%%{wrap}%%`, a line break, and `error`. The scan does not start over
-  after a removal: the first `%%{` of `%%{`, `%%{`, `%%{wrap}%%`, and
-  `flowchart LR`, each on its own line, stays, because the directive the scan
-  finds starts at the second one. [fixture:
-  common/detect-directive-across-comment-line] [fixture:
-  common/detect-directive-across-directive] [fixture:
-  common/detect-directive-across-directive-closed] [fixture:
-  common/detect-directive-second-scan-once] The scan can also find a directive
-  whose `%%{` is formed by leaving out a directive: in `error %%%%{wrap}%%{x}%%`
-  at the end of the text, `%%` and `{x}%%` join into `%%{x}%%`, which this scan
-  removes, so the text is the `error` pseudo-diagram, as in mermaid.js. This
-  does not change the directives of the tree, which the first scan finds in the
-  source. [fixture: common/detect-directive-joined-by-directive]
-- `%%` runs, as
-  [`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L46-L73)
-  removes them: for each `%%` from left to right that has a line break somewhere
-  after it, the whitespace directly before the `%%` (which may reach back across
-  earlier line breaks, but not into text already removed), the `%%`, and
-  everything after it up to and including the next line break are replaced by
-  one line break. A `%%` with no line break after it is left alone, and so is
-  everything after it. A `%%` formed by leaving out a directive is removed like
-  any other: `%%%{a}%%%` followed by a line `error` is the `error`
-  pseudo-diagram, because its `%%` is no comment (nothing follows it) and this
-  removal takes it with its line break. In `error`, `%%{`, `%%%%{x}%%`, and
-  `ERROR ` on four lines, the removals leave `error` and `ERROR ` on two lines,
-  and the input is rejected, as in mermaid.js. [fixture:
+A detector reads no further than its keyword and the character after it, except
+the detector of the `error` pseudo-diagram below, whose condition is the whole
+grammar of that pseudo-diagram; whatever follows a keyword is for the diagram's
+grammar. Because the diagram text leaves out directives and comment regions, as
+every rule after the directive scan does
+([A directive is a token boundary](#a-directive-is-a-token-boundary)), a
+directive before the detection point, on the header's line, right before the
+header, or inside the keyword, and a line separator, a paragraph separator, or a
+byte order mark before the header, which are line whitespace, and a lone `\r` or
+`\r\n` before the header, which are line terminators, do not change which
+detector matches: `  %% c`, an empty line, `%%{init: {}}%%`, and
+`  flowchart LR` on four lines is a flowchart, and so are
+`flowchart %%{init: {}}%%LR` and `%%{init: {}}%%sequenceDiagram` a flowchart and
+a sequence diagram, while `flow%%{init: {}}%%chart LR` is detected as a
+flowchart and then rejected, because the directive lies inside the header
+keyword (see
+[`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.md)).
+[fixture: common/leading-trivia-before-header] [fixture:
+common/leading-whitespace-before-header] [fixture:
+common/detect-line-separator-before-header] [fixture:
+common/detect-paragraph-separator-before-header] [fixture:
+common/detect-bom-before-header] [fixture: common/detect-cr-before-header]
+[fixture: common/detect-crlf-before-header] [fixture:
+common/directive-in-header-whitespace] [fixture:
+common/detect-directive-adjacent-before-header] [fixture:
+common/directive-in-header-keyword]
+
+Two pseudo-diagrams are registered before all real diagrams:
+
+- `error`: this pseudo-diagram has no grammar; its parser ignores the text, and
+  the input is accepted and produces no Db content. Which texts are the
+  pseudo-diagram is decided by its condition alone: the diagram text from the
+  detection point, with three things left out, is the word `error`, compared
+  case-insensitively in the sense of [Notation](#notation), and nothing but
+  whitespace and line terminators follows it up to the end of the text. The
+  three things, which the detection of mermaid.js removes before it compares
+  (see below), are: a block at the detection point that satisfies the conditions
+  of [Frontmatter](#frontmatter) there, which is no frontmatter, since it is not
+  at the start of the source; a directive that the rule of
+  [Where a directive is](#where-a-directive-is) finds once more in the diagram
+  text, where leaving out the directives of the source has brought `%%{`, a
+  word, and `}%%` together; and a **comment of the pseudo-diagram**, a `%%` that
+  has a line terminator somewhere after it, with the line whitespace before it,
+  up to the end of its line, which a bare `%%` line is, and so is `%% x` after
+  other text on its line when a line terminator follows. The tree holds all of
+  it as text (see [ErrorDiagram](./ast.md#errordiagram)); in this pseudo-diagram
+  every run of characters is a text, so a directive is allowed anywhere, and
+  `err%%{init: {}}%%or` is `error`. `error x` on one line is rejected, and so is
+  `error %% x` at the very end of the text, whose `%%` has no line terminator
+  after it and so starts no comment; the same text with a line break after it is
+  accepted. A line break, a byte order mark, or a comment line before a `---`
+  block, then `error`, is accepted, while `---` directly followed by `---` is no
+  such block, and the text is rejected; so is a bare `%%` line before the block,
+  since the detection point is then at that line, which is diagram text, and the
+  block is not at the detection point. `%%{`, a line `%%{wrap}%%`, and
+  `x}%%error` is accepted, because the diagram text `%%{`, two line breaks,
+  `x}%%error` holds a directive, while with `error` in place of `x}%%error` the
+  directive takes `error` as its word argument and the text is rejected.
+  [fixture: common/error-pseudo-diagram] [fixture: common/error-uppercase]
+  [fixture: common/error-trailing-comment-line] [fixture:
+  common/error-trailing-blank-lines] [fixture: common/error-directive-adjacent]
+  [fixture: common/error-split-by-directive] [fixture:
+  common/whitespace-cut-at-comment-region] [fixture:
+  common/whitespace-cut-at-earliest-comment-start] [fixture:
+  common/error-word-after] [fixture: common/error-trailing-percent-at-end]
+  [fixture: common/error-trailing-percent] [fixture:
+  common/error-comment-inside] [fixture: common/error-directive-inside]
+  [fixture: common/error-style-semicolon-inside] [fixture:
+  common/error-style-semicolon-trailing] [fixture:
+  common/error-bare-percent-line] [fixture:
   common/detect-percent-joined-by-directive] [fixture:
-  common/error-percent-before-directive]
+  common/error-percent-before-directive] [fixture:
+  common/detect-frontmatter-after-line-break-error] [fixture:
+  common/frontmatter-bom-error] [fixture: common/detect-lone-cr-directive-lf]
+  [fixture: common/detect-lone-cr-comment-lf] [fixture:
+  common/detect-frontmatter-after-comment-line-error] [fixture:
+  common/detect-crlf-no-directive] [fixture:
+  common/error-bare-percent-line-then-frontmatter-block] [fixture:
+  common/detect-directive-across-directive-closed] [fixture:
+  common/detect-directive-joined-by-directive] [fixture:
+  common/detect-directive-across-directive]
+- `---`: the diagram text at the position reached starts with `---`, as for
+  every detector but `error`. Its parser always throws, so the input is
+  rejected. This is what becomes of a `---` block that is not frontmatter
+  ([Frontmatter](#frontmatter)), also after a bare `%%` line: in `%%`, `---`,
+  `a: b`, `---`, and `error`, the position reached is at the first `---`, while
+  the condition of `error` looks from the detection point, where the block is
+  not, and so does not leave it out; and so after a directive that detection
+  finds once more, as in `%%{`, a comment line, and `wrap}%%---`. [fixture:
+  common/frontmatter-four-dashes] [fixture: common/frontmatter-leading-newline]
+  [fixture: common/error-bare-percent-line-then-frontmatter-block] [fixture:
+  common/detect-dashes-after-directive-found-once-more]
 
-These removals only affect detection; the diagram's grammar does not see them.
+mermaid.js decides the diagram type on a text that it rewrites first. In
+[`detectType()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48),
+after the frontmatter, the directives, the comment lines, and the leading
+whitespace are removed, it removes a frontmatter block at the start again, scans
+the text for directives again, and removes every `%%` that has a line break
+somewhere after it together with the whitespace before it and the rest of its
+line
+([`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L46-L73));
+then its detectors look at what is left, and the C4 detector looks for four of
+its five keywords anywhere in it. The lexer of the detected diagram then reads
+the text without these last removals. For a diagram with a grammar, the rules
+above give the same result: a bare `%%` line is a comment in both where the
+lexer of mermaid.js reads it as one, and only where it does not do the two
+differ (the known divergence above); a directive that only the second scan finds
+is passed by detection in both and rejected by both; and the rest of what these
+removals take makes the lexer of mermaid.js reject the input, a `---` block
+before the header among it. For the `error` pseudo-diagram, whose parser ignores
+the text, the three things left out by its condition are these removals.
+[fixture: common/directive-before-frontmatter] [fixture:
+common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
+flowchart/detect-directive-across-directive] The one input that mermaid.js
+detects through these steps and this specification reads otherwise is the known
+divergence [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.md):
+a text whose header is another diagram's and whose diagram text holds
+`C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` after it is handed
+to the C4 parser by mermaid.js and read as the diagram of its header here.
+`C4Context` counts at the start only, in both. [fixture:
+common/detect-c4-anywhere] [fixture: common/detect-c4context-only-at-start]
+
 When the text has an init directive, mermaid.js also runs the detectors once
 more on a text derived differently, and that run can reject the input; this
 specification does not run it (see
 [Init directives](../../tests/docs/configuration.md#init-directives) and
 [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.md)).
-
-The detectors are then tried in registration order. The first one whose
-condition holds selects the diagram type. No detector matching means the text is
-rejected with `UnknownDiagramError`. [fixture: common/empty]
-[detection.md](./detection.md) lists all 39 detectors in order, with their
-conditions.
-
-Two pseudo-diagrams are registered before all real diagrams:
-
-- `error`: the text the detectors see, lower-cased and trimmed, equals `error`.
-  It is accepted, its parser ignores the text, and it produces no Db content.
-  The match is case-insensitive in the sense of [Notation](#notation). Because
-  the detectors see the text after the `%%` removal above, `error %% x` followed
-  by a line break is accepted, while `error %% x` at the very end of the text is
-  not. [fixture: common/error-pseudo-diagram] [fixture: common/error-uppercase]
-  [fixture: common/error-trailing-percent] [fixture:
-  common/error-trailing-percent-at-end]
-- `---`: the text the detectors see, lower-cased and with leading whitespace
-  trimmed, starts with `---`. Its parser always throws, so the input is
-  rejected. [fixture: common/frontmatter-four-dashes] Because the detectors see
-  the text after the second frontmatter attempt above, this only catches a `---`
-  block that is neither frontmatter nor recognized by that attempt (see
-  [Frontmatter](#frontmatter)).
-
-Each diagram document refers to its entry in [detection.md](./detection.md) in
-its Detection section.
 
 ## `style` and `classDef` lines
 
@@ -1035,7 +1195,22 @@ ignores:
 entity = "#" word ";"
 ```
 
-Entities do not overlap.
+Entities do not overlap. `#` is no word character, so `#a#b;` holds one entity,
+`#b;`, from the second `#`, and `##a;` holds `#a;`, with the first `#` as text.
+A line terminator is no word character either, so `#a` at the end of a line and
+`b;` or `;` on a later line, with or without a comment line between them, make
+no entity, and neither do `#a`, U+2028, and `b;`, or `#a-b;`, whose `-` is no
+word character, while `_` is one, so `#_;` is an entity. A directive right after
+the `#` or right before the `;` lies inside the entity, which is read in the
+text without its directives. [fixture:
+common/entity-hash-inside-word-second-hash-starts] [fixture:
+common/entity-double-hash] [fixture: common/entity-cut-by-line-terminator]
+[fixture: common/entity-not-across-comment-line] [fixture:
+common/entity-semicolon-after-comment-line] [fixture:
+common/entity-cut-by-line-separator] [fixture: common/entity-hyphen-not-word]
+[fixture: common/entity-underscore-word] [fixture:
+common/entity-directive-after-hash] [fixture:
+common/entity-directive-before-semicolon]
 
 Lexical rule: the lexer reads an entity as its placeholder. When the word
 consists of ASCII digits only, `#` _word_ `;` reads as `ﬂ°°` _word_ `¶ß`;
@@ -1103,4 +1278,8 @@ concern what this document defines:
 - [`ignored-semicolon-as-token-boundary`](./known-divergences/ignored-semicolon-as-token-boundary.md):
   an ignored `;` inside a name, a number, a keyword, an arrow, or a delimiter;
 - [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.md):
-  embedded data, which this specification neither parses nor checks.
+  embedded data, which this specification neither parses nor checks;
+- [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.md): a keyword
+  of C4 after the header of another diagram type;
+- [`bare-percent-line-before-header`](./known-divergences/bare-percent-line-before-header.md):
+  a bare `%%` line before the header where the lexer of mermaid.js rejects it.

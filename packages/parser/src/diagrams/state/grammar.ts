@@ -69,22 +69,17 @@ const STATE_CONTEXT_STARTS: readonly UnitName[] = [
  * diagrams/state.md, Grammar: the recursive-descent parser over the units
  * of the state lexer. Each method reads one rule of the grammar, which its
  * comment names, and makes the node that the specification gives for the
- * rule, with the tokens of ast/state.md, Tokens.
+ * rule, with the tokens of `docs/tokens/state.md`, Tokens.
  */
 export class StateGrammar extends UnitGrammar<UnitName, Unit> {
   private readonly stateIds = new Map<Identifier | StateLiteral, string>()
 
-  /** The `:` units of notes that start the note text (`StateLexing.noteColonsInText`). */
-  private readonly noteColonsInText: ReadonlySet<Unit>
-
   public constructor(
     units: readonly Unit[],
-    noteColonsInText: ReadonlySet<Unit>,
     comments: readonly DiagramComment[],
     lexer: SourceLexer,
   ) {
     super(units, lexer, EMPTY_FORM_KINDS.state, comments)
-    this.noteColonsInText = noteColonsInText
   }
 
   /** Diagram and statements: `diagram = newline* "header" line*`. */
@@ -100,7 +95,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * ast/state.md, Tokens: a run of units of a `RawText` item goes on over
+   * `docs/tokens/state.md`, Tokens: a run of units of a `RawText` item goes on over
    * the whitespace between them; a run of an item of another kind breaks
    * where characters lie between two of its units, because whitespace
    * belongs to no unit (diagrams/state.md, Units and contexts).
@@ -353,8 +348,9 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Composite states: `"state"? empty-string* state-name ( empty-string*
-   * ignored-text? "{" line* "}" )?`, whose empty strings before the name
-   * are `textBeforeId`.
+   * empty-description-block* ( ignored-state empty-string* )* ignored-text?
+   * "{" line* "}" )?`, whose empty strings before the name are
+   * `textBeforeId`.
    */
   private parseCompositeStatement(
     start: number,
@@ -383,7 +379,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Composite states and aliases: `empty-string* empty-description-block*
-   * ( ignored-state empty-string* | ignored-text )?` before the `{` of a
+   * ( ignored-state empty-string* )* ignored-text?` before the `{` of a
    * body (an alias has no empty strings before the blocks), which the
    * grammar takes there only, one StateIgnoredText from the first of them
    * to the last; null when there are none, or when no `{` follows them.
@@ -422,7 +418,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
    * ast/state.md, StateIgnoredText: the text of the empty strings, the
    * empty description blocks, the `ignored-state` unit, and the `%%` among
    * `units`, from the first to the last, each unit an item of its own, of
-   * the kind of its unit (ast/state.md, Tokens): an empty string a `String`
+   * the kind of its unit (`docs/tokens/state.md`, Tokens): an empty string a `String`
    * item, the `accDescr` of a block and an `ignored-state` unit a `Keyword`
    * item, the braces of a block `Punctuator` items, a `%%` a `RawText` item.
    */
@@ -448,8 +444,9 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Aliases: `"state"? empty-string* string empty-string* "as" alias-id?
-   * ( ":" second-description? ignored-text? )? ( ignored-text? "{" line*
-   * "}" )?`, whose empty strings before and after the string are
+   * ( ":" second-description? ignored-text? )? ( empty-description-block*
+   * ( ignored-state empty-string* )* ignored-text? "{" line* "}" )?`, whose
+   * empty strings before and after the string are
    * `textBeforeDescription` and `textAfterDescription`.
    */
   private parseAliasStatement(
@@ -576,9 +573,10 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
       this.addItem("Punctuator", [colon])
       textBeforeText = this.optionalIgnoredText(this.takeIf("ignored-text"))
       const noteText = this.takeIf("note-text")
-      text = this.noteColonsInText.has(colon)
-        ? this.noteTextFromColon(colon, noteText)
-        : this.optionalLiteral(noteText)
+      text =
+        colon.startsNoteText === true
+          ? this.noteTextFromColon(colon, noteText)
+          : this.optionalLiteral(noteText)
     } else {
       text = this.optionalLiteral(this.takeIf("note-text"))
       this.addItem("Keyword", [this.take("end")])
@@ -810,7 +808,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
   }
 }
 
-/** ast/state.md, Tokens: the kind of the unit `unit` of a StateIgnoredText. */
+/** `docs/tokens/state.md`, Tokens: the kind of the unit `unit` of a StateIgnoredText. */
 function ignoredUnitKindOf(unit: Unit): DiagramTokenKind {
   switch (unit.name) {
     case "empty-string":

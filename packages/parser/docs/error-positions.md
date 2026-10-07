@@ -15,6 +15,15 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   common/whitespace-only]
 - The `---` pseudo-diagram: `range` covers the three `-` characters that start
   the block. [fixture: common/frontmatter-adjacent-delimiters]
+- A directive found once more before the header
+  ([Diagram detection](../../spec/docs/common.md#diagram-detection)): `range`
+  covers its opening `%%{`, from its first `%` to its `{`, with the directives
+  and comment regions of the source between them; of several, the first.
+  [fixture: flowchart/detect-directive-across-directive] [fixture:
+  sequence/detect-directive-across-directive] [fixture:
+  sequence/detect-directive-across-comment-line-closed] [fixture:
+  class/detect-directive-across-directive] [fixture:
+  state/detect-directive-across-directive]
 
 ## In a flowchart
 

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): read once more with the comment line left out, `%%{`, whitespace, and `wrap}%%` form a closed directive; detection applies this reading before it asks whether the line is a bare `%%` line, skips the directive, and reaches the header; the lexer then reads `%%{` and `wrap}%%` as text, and the grammar rejects the input, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n%%{wrap}%%sequenceDiagr...\n---^\nExpecting 'SPACE', 'NEWLINE', 'SD', got 'ACTOR'"
+  }
+}

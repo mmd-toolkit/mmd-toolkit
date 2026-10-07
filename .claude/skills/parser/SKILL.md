@@ -100,21 +100,35 @@ flowchart; the steps do not depend on the diagram type.
   by the intent of the rule, with the reason
   (`eslint-comments/require-description` asks for it).
 - The tests are heavy. Under a high load (a load average of `uptime` above the
-  number of CPUs) the checks that run mermaid.js time out. When one does, run
-  that file alone before judging. Run long checks in the background, with the
-  output in a file outside the repository. When the working tree is shared with
-  other work, stop only what you started, by its task id or process id; never by
-  name (`pkill -f vitest` stops the runs of others too).
+  number of CPUs) a test file can time out. When one does, run that file alone
+  before judging. Run long checks in the background, with the output in a file
+  outside the repository. When the working tree is shared with other work, stop
+  only what you started, by its task id or process id; never by name
+  (`pkill -f vitest` stops the runs of others too).
 
 ## 3. How to check (in every piece of work)
 
 - Check every claim about the behavior of mermaid.js, your own or another's,
-  before writing it, by a fixture: the parser does not run mermaid.js. Give the
-  input, with the sentence that the claim is about, to the tests package (the
-  tests skill); it adds the fixture, which records what mermaid.js does, and the
-  fixture test then holds the parser to it. An example for a test or a comment
-  is such an input too: in the flowchart, an example written by hand for a test
-  was rejected by mermaid.js, because its line feed left the click context.
+  before writing it. The tests of the parser run neither mermaid.js nor
+  generated inputs: they hold the parser to what the fixtures record. When a
+  claim needs mermaid.js, run it in a probe outside the repository (in the
+  scratchpad), a script run with `node --conditions=source` that imports
+  `runMermaidWithEmbeddedData` and `dbFromTree` from the sources of
+  `packages/tests`: the first gives the acceptance and the Db of mermaid.js for
+  an input, the second the Db built from the parser's tree of the same input.
+  What the probe shows goes into the corpus and the sentences, and the probe is
+  not kept: an input that a sentence needs becomes a fixture, which the tests
+  package adds when given the input and the sentence (the tests skill), or which
+  you add with the fixtures CLI and report to the tests package:
+
+  ```sh
+  pnpm --filter @mmd-toolkit/tests run fixtures:add <diagram> <name> --note "<the sentence and the case>" < input.mmd
+  ```
+
+  An example for a test or a comment is such an input too: in the flowchart, an
+  example written by hand for a test was rejected by mermaid.js, because its
+  line feed left the click context.
+
 - When a sentence of the parser's documents that defines a behavior is written
   or changed, list the cases that it distinguishes and the other rules that meet
   it at the place that it names (a directive, an ignored `;`, a comment line, an
@@ -167,14 +181,14 @@ flowchart; the steps do not depend on the diagram type.
    productions of the grammar, the fields of the nodes, the token kinds.
 2. For each line of the list, check that the text of the specification and the
    fixtures decide the implementation in one way. What they do not decide, where
-   the specification and a fixture disagree, and where mermaid.js (3) disagrees
-   with the specification, is a gap in the specification. Do not fill it from
-   the source of mermaid.js; fix the specification first, with the input and the
-   result of mermaid.js (the spec skill, "When a gap in the specification is
-   found"). Examples from the flowchart: an entity in a context that reads one
-   character at a time; the token kind of a `click` in a subgraph name; the `,`
-   of the click context, which had the same unit name as the `,` of the
-   statement context.
+   the specification and a fixture disagree, and where mermaid.js (section 3)
+   disagrees with the specification, is a gap in the specification. Do not fill
+   it from the source of mermaid.js; fix the specification first, with the input
+   and the result of mermaid.js (the spec skill, "When a gap in the
+   specification is found"). Examples from the flowchart: an entity in a context
+   that reads one character at a time; the token kind of a `click` in a subgraph
+   name; the `,` of the click context, which had the same unit name as the `,`
+   of the statement context.
 3. While a gap is open, implement what it does not touch.
 4. The specification can change while you work, also on what you have built
    already (in class, two fields of a node were renamed and one was removed
@@ -287,19 +301,19 @@ Add them in this order; the flowchart files are the model.
    range of a unit's token is `significantRangeOf` of `src/diagram-units.ts`:
    the unit without its whitespace, unless the lexer reads the unit with other
    `UnitEnds`, for the units whose tokens keep whitespace that mermaid.js reads
-   as part of a value, which the Tokens section of `ast/<diagram>.md` names (in
-   sequence, the `title-text` unit of `title`, and the box text; in class, the
-   generic text, a backquoted name that is not closed, and the parts of a member
-   line, whose division gives each its exact range). Where the tokens of an item
-   break is `breaksRun()`: between units of other items; a diagram whose
-   whitespace belongs to no unit also breaks a run where characters lie between
-   two units (in state, except in a `RawText` item, whose token holds the
-   whitespace inside it; in class, the items whose tokens are the runs without
-   whitespace, a style and a name of name parts, take them from
-   `runsWithNothingBetween()`).
+   as part of a value, which the Tokens section of the parser's
+   `docs/tokens/<diagram>.md` names (in sequence, the `title-text` unit of
+   `title`, and the box text; in class, the generic text, a backquoted name that
+   is not closed, and the parts of a member line, whose division gives each its
+   exact range). Where the tokens of an item break is `breaksRun()`: between
+   units of other items; a diagram whose whitespace belongs to no unit also
+   breaks a run where characters lie between two units (in state, except in a
+   `RawText` item, whose token holds the whitespace inside it; in class, the
+   items whose tokens are the runs without whitespace, a style and a name of
+   name parts, take them from `runsWithNothingBetween()`).
 2. The grammar makes the nodes and the tokens (`PendingToken`), with the token
-   kind of each item. Take the kinds from the Tokens section of
-   `ast/<diagram>.md`.
+   kind of each item. Take the kinds from the Tokens section of the parser's
+   `docs/tokens/<diagram>.md`.
 3. The grammar reads every unit; none is skipped. Text that mermaid.js does not
    read is a node where the tree has a place for it; a unit that cannot be
    written where it stands is taken by no rule, so the input is rejected, and
@@ -325,8 +339,8 @@ Add them in this order; the flowchart files are the model.
    sequence, a walk over the statements after the grammar keeps what the Db
    would hold of the participants (`db-rejections.ts`). Where the specification
    does not say which of several waiting statements a check applies to (in
-   sequence, two `create` before one message), check with mermaid.js (3) and
-   report it as a gap.
+   sequence, two `create` before one message), check with mermaid.js (section 3)
+   and report it as a gap.
 6. For a new kind of rejection, decide the range of the `ParseError` and add a
    line to `docs/error-positions.md` and its `.ja.md`.
 

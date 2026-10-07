@@ -2,10 +2,10 @@ import type { DirectiveMatch } from "./directives.ts"
 import { nextOffset } from "./text-cursor.ts"
 
 /**
- * common.md, `style` and `classDef` lines, and Entities: a line segment as
- * those two rules read it. They read the segment without its directives, the
- * characters before and after a directive following one another, and
- * without the `;` characters that the line rule ignores.
+ * common.md, `style` and `classDef` lines: a line segment as the line rule
+ * reads it, without its directives, the characters before and after a
+ * directive following one another, and without the `;` characters that the
+ * rule has ignored so far.
  */
 export interface LineSegmentReading {
   readonly text: string

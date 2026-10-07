@@ -313,7 +313,7 @@ describe("SourceLexer.recordTokens", () => {
   })
 
   it("records an ignored `;` as an `IgnoredSemicolon` token of its own, which cuts a token that goes on after it", () => {
-    // ast.md, Tokens.
+    // `docs/tokens.md`, Tokens.
     expect(recordEachCharacter("style A fill:#f00;\nx")).toEqual([
       // With its `;` ignored, `#f00` is no entity, so each character is a
       // token.
@@ -429,7 +429,7 @@ describe("SourceLexer.recordTokens", () => {
 })
 
 describe("SourceLexer.recordTokens rejects the tokens that a diagram's parser gets wrong", () => {
-  // ast.md, Tokens and Invariants: every character that is not whitespace
+  // `docs/tokens.md`, Tokens, and `docs/positions.md`, Invariants: every character that is not whitespace
   // is in a token, and no token starts or ends with whitespace, a line
   // terminator, a comment region, or an ignored `;`, or holds a directive
   // outside a comment region. A wrong token is a bug of the diagram's

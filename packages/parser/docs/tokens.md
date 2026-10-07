@@ -257,7 +257,15 @@ such as a trailing `%%` after a statement or a line containing only `%%`, is
 lexer reads: it is part of a token, or a diagram comment where the diagram's
 document makes it one, as a line of only `%%` in class. [fixture:
 common/comment-mid-line-style] [fixture: common/comment-bare] [fixture:
-class/lex-bare-percent-line-between-statements]
+class/lex-bare-percent-line-between-statements] Before the header, such a line
+is a bare `%%` line, which detection passes and the diagram's lexer does not
+read again: in every diagram type it is a diagram comment with the mark `%%`,
+from its `%%` to the end of its line (see
+[Diagram detection](../../spec/docs/common.md#diagram-detection)). [fixture:
+sequence/header-after-bare-percent-line] [fixture:
+class/header-after-empty-braces-line] [fixture:
+state/header-after-bare-percent-line] [fixture:
+flowchart/header-after-bare-percent-line]
 
 A comment region can also lie inside a diagram comment, which runs to the end of
 its line: a comment line that follows a U+2028 or U+2029 on that line is gone

@@ -3,9 +3,14 @@
 英語版: [detection.md](./detection.md)
 
 図種を選ぶ検出器を、mermaid.js が試す順に並べます。
-検出器が見るテキストは、
+検出器がどこを見るかは、
 common.ja.md の [図種の検出](./common.ja.md#図種の検出) で定めています。
-ここではそれを**検出テキスト**と呼びます。
+ここでも同じ 2 つの言葉を使います。
+**検出点**は、先頭のトリビアでないテキストの最初の位置、
+**たどり着いた位置**は、検出点から、検出が飛ばす `%%` だけの行と
+ディレクティブの先へ進んだ位置です。
+検出器はたどり着いた位置からの図のテキストを見ます。
+ただし `error` 疑似図種の検出器の条件は、検出点から述べます。
 条件が最初に成り立った検出器が図種を選び、
 その id が木の `diagramType` にもなります
 （[ast.ja.md](./ast.ja.md#root) を参照）。
@@ -21,20 +26,22 @@ common.ja.md の [図種の検出](./common.ja.md#図種の検出) で定めて�
 
 ## 一覧の読み方
 
-各検出器は、検出テキストの中に**キーワード**を探します。
+各検出器は、たどり着いた位置に**キーワード**を探します。
 
 - **位置**は、キーワードがどこになければならないかです。
-  - **先頭**: 検出テキストが、先頭の空白の後に、キーワードで始まる。
-  - **どこでも**: キーワードが検出テキストのどこかにある。
-  - **テキスト全体**: 検出テキストを小文字にし、前後の空白を除いたものが、
-    キーワードに等しい。
+  - **先頭**: たどり着いた位置からの図のテキストが、キーワードで始まる。
+  - **テキスト全体**: [図種の検出](./common.ja.md#図種の検出) にある `error`
+    疑似図種の条件。
+    検出点からの図のテキストからその条件が除くものを除いたものが
+    キーワードであり（大文字小文字を区別しない）、テキストの終わりまで、
+    空白と行終端しか続かない。
 - **大文字小文字**は、キーワードをどう比べるかです。**区別する**か、
   [表記](./common.ja.md#表記) の意味で**区別しない**かです。
 - **キーワードの後**は、キーワードの直後に何が来てよいかです。
   - **何が続いてもよい**: 検出器は、キーワードの後の文字に条件を付けません。
     たとえば `flowchartLR` は `flowchart` で始まります。
   - **語の文字以外か、終わり**: キーワードの後の文字が語の文字でないか、
-    検出テキストがキーワードの後で終わる。
+    図のテキストがキーワードの後で終わる。
   - その他の項目は、続いてよい文字を挙げています。
 - 空白、語の文字、文字は、[表記](./common.ja.md#表記) で定めたものです。
 
@@ -42,47 +49,47 @@ common.ja.md の [図種の検出](./common.ja.md#図種の検出) で定めて�
 
 ## 検出器
 
-| #   | id              | キーワード                                                             | 位置                             | 大文字小文字 | キーワードの後            |
-| --- | --------------- | ---------------------------------------------------------------------- | -------------------------------- | ------------ | ------------------------- |
-| 1   | `error`         | `error`                                                                | テキスト全体                     | 区別しない   | 何も続かない              |
-| 2   | `---`           | `---`                                                                  | 先頭                             | 区別する     | 何が続いてもよい          |
-| 3   | `flowchart-elk` | `flowchart-elk`                                                        | 先頭                             | 区別する     | 何が続いてもよい          |
-| 4   | `mindmap`       | `mindmap`                                                              | 先頭                             | 区別する     | 何が続いてもよい          |
-| 5   | `architecture`  | `architecture`                                                         | 先頭                             | 区別する     | 何が続いてもよい          |
-| 6   | `agentflow`     | `agentflow-beta`                                                       | 先頭                             | 区別する     | 語の文字以外か、終わり    |
-| 7   | `c4`            | `C4Context`。`C4Container`、`C4Component`、`C4Dynamic`、`C4Deployment` | `C4Context` は先頭、他はどこでも | 区別する     | 何が続いてもよい          |
-| 8   | `kanban`        | `kanban`                                                               | 先頭                             | 区別する     | 何が続いてもよい          |
-| 9   | `classDiagram`  | `classDiagram`                                                         | 先頭                             | 区別する     | 何が続いてもよい          |
-| 10  | `er`            | `erDiagram`                                                            | 先頭                             | 区別する     | 何が続いてもよい          |
-| 11  | `gantt`         | `gantt`                                                                | 先頭                             | 区別する     | 何が続いてもよい          |
-| 12  | `info`          | `info`                                                                 | 先頭                             | 区別する     | 何が続いてもよい          |
-| 13  | `pie`           | `pie`                                                                  | 先頭                             | 区別する     | 何が続いてもよい          |
-| 14  | `requirement`   | `requirement`                                                          | 先頭                             | 区別する     | 何が続いてもよい          |
-| 15  | `sequence`      | `sequenceDiagram`                                                      | 先頭                             | 区別する     | 何が続いてもよい          |
-| 16  | `swimlane`      | `swimlane-beta`                                                        | 先頭                             | 区別する     | 語の文字以外か、終わり    |
-| 17  | `flowchart-v2`  | `graph`、`flowchart`                                                   | 先頭                             | 区別する     | 何が続いてもよい          |
-| 18  | `timeline`      | `timeline`                                                             | 先頭                             | 区別する     | 何が続いてもよい          |
-| 19  | `gitGraph`      | `gitGraph`                                                             | 先頭                             | 区別する     | 何が続いてもよい          |
-| 20  | `stateDiagram`  | `stateDiagram`                                                         | 先頭                             | 区別する     | 何が続いてもよい          |
-| 21  | `journey`       | `journey`                                                              | 先頭                             | 区別する     | 何が続いてもよい          |
-| 22  | `quadrantChart` | `quadrantChart`                                                        | 先頭                             | 区別する     | 何が続いてもよい          |
-| 23  | `sankey`        | `sankey`                                                               | 先頭                             | 区別する     | 何が続いてもよい          |
-| 24  | `packet`        | `packet`                                                               | 先頭                             | 区別する     | 何が続いてもよい          |
-| 25  | `xychart`       | `xychart`                                                              | 先頭                             | 区別する     | 何が続いてもよい          |
-| 26  | `block`         | `block`                                                                | 先頭                             | 区別する     | 何が続いてもよい          |
-| 27  | `eventmodeling` | `eventmodeling`                                                        | 先頭                             | 区別する     | 何が続いてもよい          |
-| 28  | `treeView`      | `treeView-beta`                                                        | 先頭                             | 区別する     | 何が続いてもよい          |
-| 29  | `radar`         | `radar-beta`                                                           | 先頭                             | 区別する     | 何が続いてもよい          |
-| 30  | `ishikawa`      | `ishikawa`                                                             | 先頭                             | 区別しない   | 語の文字以外か、終わり    |
-| 31  | `treemap`       | `treemap`                                                              | 先頭                             | 区別する     | 何が続いてもよい          |
-| 32  | `railroad`      | `railroad-beta`                                                        | 先頭                             | 区別しない   | 何が続いてもよい          |
-| 33  | `railroadEbnf`  | `railroad-ebnf-beta`                                                   | 先頭                             | 区別しない   | 何が続いてもよい          |
-| 34  | `railroadAbnf`  | `railroad-abnf-beta`                                                   | 先頭                             | 区別しない   | 何が続いてもよい          |
-| 35  | `railroadPeg`   | `railroad-peg-beta`                                                    | 先頭                             | 区別しない   | 何が続いてもよい          |
-| 36  | `venn`          | `venn-beta`                                                            | 先頭                             | 区別する     | 何が続いてもよい          |
-| 37  | `wardley`       | `wardley-beta`                                                         | 先頭                             | 区別しない   | 何が続いてもよい          |
-| 38  | `cynefin`       | `cynefin-beta`                                                         | 先頭                             | 区別する     | 空白、`:`、終わりのどれか |
-| 39  | `usecase`       | `usecase-beta`                                                         | 先頭                             | 区別する     | 空白か、終わり            |
+| #   | id              | キーワード                                                             | 位置         | 大文字小文字 | キーワードの後            |
+| --- | --------------- | ---------------------------------------------------------------------- | ------------ | ------------ | ------------------------- |
+| 1   | `error`         | `error`                                                                | テキスト全体 | 区別しない   | 何も続かない              |
+| 2   | `---`           | `---`                                                                  | 先頭         | 区別する     | 何が続いてもよい          |
+| 3   | `flowchart-elk` | `flowchart-elk`                                                        | 先頭         | 区別する     | 何が続いてもよい          |
+| 4   | `mindmap`       | `mindmap`                                                              | 先頭         | 区別する     | 何が続いてもよい          |
+| 5   | `architecture`  | `architecture`                                                         | 先頭         | 区別する     | 何が続いてもよい          |
+| 6   | `agentflow`     | `agentflow-beta`                                                       | 先頭         | 区別する     | 語の文字以外か、終わり    |
+| 7   | `c4`            | `C4Context`、`C4Container`、`C4Component`、`C4Dynamic`、`C4Deployment` | 先頭         | 区別する     | 何が続いてもよい          |
+| 8   | `kanban`        | `kanban`                                                               | 先頭         | 区別する     | 何が続いてもよい          |
+| 9   | `classDiagram`  | `classDiagram`                                                         | 先頭         | 区別する     | 何が続いてもよい          |
+| 10  | `er`            | `erDiagram`                                                            | 先頭         | 区別する     | 何が続いてもよい          |
+| 11  | `gantt`         | `gantt`                                                                | 先頭         | 区別する     | 何が続いてもよい          |
+| 12  | `info`          | `info`                                                                 | 先頭         | 区別する     | 何が続いてもよい          |
+| 13  | `pie`           | `pie`                                                                  | 先頭         | 区別する     | 何が続いてもよい          |
+| 14  | `requirement`   | `requirement`                                                          | 先頭         | 区別する     | 何が続いてもよい          |
+| 15  | `sequence`      | `sequenceDiagram`                                                      | 先頭         | 区別する     | 何が続いてもよい          |
+| 16  | `swimlane`      | `swimlane-beta`                                                        | 先頭         | 区別する     | 語の文字以外か、終わり    |
+| 17  | `flowchart-v2`  | `graph`、`flowchart`                                                   | 先頭         | 区別する     | 何が続いてもよい          |
+| 18  | `timeline`      | `timeline`                                                             | 先頭         | 区別する     | 何が続いてもよい          |
+| 19  | `gitGraph`      | `gitGraph`                                                             | 先頭         | 区別する     | 何が続いてもよい          |
+| 20  | `stateDiagram`  | `stateDiagram`                                                         | 先頭         | 区別する     | 何が続いてもよい          |
+| 21  | `journey`       | `journey`                                                              | 先頭         | 区別する     | 何が続いてもよい          |
+| 22  | `quadrantChart` | `quadrantChart`                                                        | 先頭         | 区別する     | 何が続いてもよい          |
+| 23  | `sankey`        | `sankey`                                                               | 先頭         | 区別する     | 何が続いてもよい          |
+| 24  | `packet`        | `packet`                                                               | 先頭         | 区別する     | 何が続いてもよい          |
+| 25  | `xychart`       | `xychart`                                                              | 先頭         | 区別する     | 何が続いてもよい          |
+| 26  | `block`         | `block`                                                                | 先頭         | 区別する     | 何が続いてもよい          |
+| 27  | `eventmodeling` | `eventmodeling`                                                        | 先頭         | 区別する     | 何が続いてもよい          |
+| 28  | `treeView`      | `treeView-beta`                                                        | 先頭         | 区別する     | 何が続いてもよい          |
+| 29  | `radar`         | `radar-beta`                                                           | 先頭         | 区別する     | 何が続いてもよい          |
+| 30  | `ishikawa`      | `ishikawa`                                                             | 先頭         | 区別しない   | 語の文字以外か、終わり    |
+| 31  | `treemap`       | `treemap`                                                              | 先頭         | 区別する     | 何が続いてもよい          |
+| 32  | `railroad`      | `railroad-beta`                                                        | 先頭         | 区別しない   | 何が続いてもよい          |
+| 33  | `railroadEbnf`  | `railroad-ebnf-beta`                                                   | 先頭         | 区別しない   | 何が続いてもよい          |
+| 34  | `railroadAbnf`  | `railroad-abnf-beta`                                                   | 先頭         | 区別しない   | 何が続いてもよい          |
+| 35  | `railroadPeg`   | `railroad-peg-beta`                                                    | 先頭         | 区別しない   | 何が続いてもよい          |
+| 36  | `venn`          | `venn-beta`                                                            | 先頭         | 区別する     | 何が続いてもよい          |
+| 37  | `wardley`       | `wardley-beta`                                                         | 先頭         | 区別しない   | 何が続いてもよい          |
+| 38  | `cynefin`       | `cynefin-beta`                                                         | 先頭         | 区別する     | 空白、`:`、終わりのどれか |
+| 39  | `usecase`       | `usecase-beta`                                                         | 先頭         | 区別する     | 空白か、終わり            |
 
 項目 2 を除く各項目には、
 mermaid.js がその id として受理する最小の入力があります。
@@ -112,6 +119,16 @@ common/detect-minimal-railroad-abnf] [fixture:
 common/detect-minimal-railroad-peg] [fixture: common/detect-minimal-venn]
 [fixture: common/detect-minimal-wardley] [fixture:
 common/detect-minimal-cynefin] [fixture: common/detect-minimal-usecase]
+項目 7 では、他の 4 つのキーワードも先頭にあれば `c4` を選びます。
+大文字小文字の違うキーワードは、比較が完全一致なので何も選びません。
+後に語の文字が続くキーワードは、何が続いてもよいので `c4` として検出され、
+その後 C4 の文法が拒否します。
+別の語の後のキーワードは先頭にありません。
+[fixture: common/detect-minimal-c4-container] [fixture:
+common/detect-minimal-c4-component] [fixture: common/detect-minimal-c4-dynamic]
+[fixture: common/detect-minimal-c4-deployment] [fixture: common/detect-c4-case]
+[fixture: common/detect-c4-word-after] [fixture:
+common/detect-c4-keyword-after-word]
 
 ## 注記
 
@@ -121,7 +138,7 @@ common/detect-minimal-cynefin] [fixture: common/detect-minimal-usecase]
   `error` は受理され、Db の内容を持ちません。
   `---` は必ず拒否されるので、DiagramType ではありません。
   どちらも [common.ja.md](./common.ja.md#図種の検出) を参照してください。
-  項目 1 の比較は、
+  項目 1 で mermaid.js は、
   テキスト全体を Unicode の完全な小文字化の対応で小文字にします。
   ASCII の外の文字で、小文字が ASCII の英字になるのは U+212A だけで、
   これは `k` になります。
@@ -140,17 +157,22 @@ common/detect-minimal-cynefin] [fixture: common/detect-minimal-usecase]
 - **順序が効く**: 項目 3 は項目 17 より前にあるので、
   `flowchart-elk` は `flowchart` でも始まりますが、`flowchart-elk` を選びます。
   これ以外に条件が重なる組はありません。
-  ただし項目 7 は別です。
-- **項目 7 はどこでも一致する**: mermaid.js は条件を 5
+- **mermaid.js の項目 7**: mermaid.js は項目 7 の条件を 5
   つの選択肢として書いていて、
-  テキストの先頭に固定されているのは最初の 1 つだけです。
-  そのため、`C4Container`、`C4Component`、`C4Dynamic`、
+  テキストの先頭に固定されているのは最初の `C4Context` だけです
+  （[`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10)）。
+  そこでは、`C4Container`、`C4Component`、`C4Dynamic`、
   `C4Deployment` をどこかに含むテキストは、
   ノードの ID やメッセージの本文に含む場合も、
-  項目 1〜6 が先に一致しない限り C4 図になります。
+  項目 1〜6 が先に一致しない限り C4 図になり、
   メッセージが `C4Container` の sequence 図は C4 のパーサーに渡され、
   拒否されます。
-  一方、`C4Context` は先頭にあるときだけ数えます。
+  この仕様はたどり着いた位置だけを見るので、
+  そのようなテキストをヘッダーの図として読みます。
+  既知の差異
+  [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.ja.md)
+  です。
+  `C4Context` は両者とも先頭にあるときだけ数えます。
   [fixture: common/detect-c4-anywhere] [fixture:
   common/detect-c4context-only-at-start]
 - **何が続いてもよい**: ほとんどのキーワードでは、検出器は次の文字を見ません。

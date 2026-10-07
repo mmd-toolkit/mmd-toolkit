@@ -147,6 +147,26 @@ describe("MermaidRunStore", () => {
     ).toBeUndefined()
   })
 
+  it("keys a result by the divergences that were removed, each name apart", () => {
+    const store = new MermaidRunStore(directory, "code")
+    store.write("text", { withoutDivergences: ["c4-keyword-anywhere"] }, RUN)
+    expect(store.read("text", {})).toBeUndefined()
+    expect(
+      store.read("text", { withoutDivergences: ["comment-takes-character"] }),
+    ).toBeUndefined()
+    expect(
+      store.read("text", {
+        withoutDivergences: ["c4-keyword-anywhere", "comment-takes-character"],
+      }),
+    ).toBeUndefined()
+    expect(
+      isDeepStrictEqual(
+        store.read("text", { withoutDivergences: ["c4-keyword-anywhere"] }),
+        RUN,
+      ),
+    ).toBe(true)
+  })
+
   it("treats a file it cannot read, or of another key, as none", () => {
     const store = new MermaidRunStore(directory, "code")
     store.write("text", {}, RUN)

@@ -1,7 +1,11 @@
 import type { Root } from "../../ast.ts"
 import type { DiagramInput } from "../../diagram-parsing.ts"
 import type { DiagramTextReader } from "../../diagram-text.ts"
-import { finishDiagram, openDiagramText } from "../../diagram-parsing.ts"
+import {
+  commentsBeforeHeader,
+  finishDiagram,
+  openDiagramText,
+} from "../../diagram-parsing.ts"
 import { FlowchartText } from "./flowchart-text.ts"
 import { FlowchartGrammar } from "./grammar.ts"
 import type { FlowchartLexing } from "./units.ts"
@@ -33,14 +37,17 @@ export function lexFlowchart(input: DiagramInput): FlowchartUnits {
  * `finishDiagram`).
  */
 export function parseFlowchartDiagram(input: DiagramInput): Root {
+  const commentsBefore = commentsBeforeHeader(input)
   const lexing = lexFlowchart(input)
   const syntax = new FlowchartGrammar(lexing, input.lexer).parseDiagram()
   return finishDiagram(
     input,
     {
       tokens: syntax.tokens,
-      // ast/flowchart.md: the flowchart lexer reads no diagram comments.
-      comments: [],
+      // The flowchart lexer reads no diagram comments (diagrams/flowchart.md,
+      // Lexical structure, has no rule for one); the bare `%%` lines before
+      // the header are comments (common.md, Diagram detection).
+      comments: commentsBefore,
     },
     // ast/flowchart.md, FlowchartDiagram: its tokens are all the tokens of
     // the diagram text, from the header keyword to the last token.

@@ -20,9 +20,10 @@ with `classDiagram`, after whitespace, in exactly this case. [fixture:
 common/detect-minimal-class-diagram] [fixture:
 common/detect-case-sensitive-class]
 
-Detection only looks at the start of the text. The grammar then reads the header
-keyword again, `classDiagram-v2` or `classDiagram`, not followed by a word
-character (see [The statement context](#the-statement-context)), and then a
+Detection only looks at the detection point (see
+[Diagram detection](../common.md#diagram-detection)). The grammar then reads the
+header keyword again, `classDiagram-v2` or `classDiagram`, not followed by a
+word character (see [The statement context](#the-statement-context)), and then a
 `newline` unit. So `classDiagram-v2` is a header of the same diagram, while
 `classDiagramX`, `classDiagram-v3`, and `classDiagram class A` are detected as
 class diagrams and rejected. The header alone is rejected too, because the
@@ -30,21 +31,39 @@ grammar needs at least one statement. [fixture: class/header-v2] [fixture:
 class/header-word-after-keyword] [fixture: class/header-other-suffix] [fixture:
 class/header-statement-same-line] [fixture: class/header-only]
 
-Detection leaves out more than the lexer does (see
-[Diagram detection](../common.md#diagram-detection)): a line that holds only
-`%%`, or `%%{ }%%`, which is no directive, may come before the header, and the
-text is still detected as a class diagram. Such a line is a comment-only line,
-which is not counted as a line (rule 2 of
-[The statement context](#the-statement-context)). The comment belongs to no
-node, and the ClassDiagram starts at the header. Between statements, such a line
-is accepted in the same way, while a line of only whitespace after it is a
+A line that holds only `%%`, or `%%{ }%%`, which is no directive, may come
+before the header: it is a bare `%%` line, which detection reads and passes to
+find the header, and which is a comment of the diagram, with the mark `%%`, from
+the `%%` to the end of its line, as in every diagram type (see
+[Diagram detection](../common.md#diagram-detection)); the lexer of mermaid.js
+reads it so as well, as a comment-only line that is not counted as a line (rule
+2 of [The statement context](#the-statement-context)). The comment belongs to no
+node, and the ClassDiagram starts at the header. The whitespace, line
+terminators, comment regions, and directives between such a line and the header
+are trivia here, as in every diagram type; mermaid.js rejects the input when a
+line of whitespace only, not empty, that lies in no comment region stands there,
+because its class lexer reads the line as a `newline` unit, which its grammar
+does not take before the header (as it does not between statements, below): the
+known divergence [`bare-percent-line-before-header`](#known-divergences). A line
+that is whitespace only once its directives are left out counts as one, while a
+directive on a line of its own, without whitespace before it, is trivia in both.
+[fixture: class/header-after-bare-percent-then-whitespace-line] [fixture:
+class/header-after-empty-braces-then-whitespace-line] [fixture:
+class/header-after-bare-percent-then-indented-directive-line] [fixture:
+class/header-after-bare-percent-then-directive-line] [fixture:
+class/header-after-bare-percent-then-whitespace-line-then-comment-line]
+[fixture: class/header-after-bare-percent-then-empty-line] [fixture:
+class/header-after-bare-percent-line] [fixture:
+class/header-after-empty-braces-line] [fixture:
+class/header-after-non-word-brace-line] Between statements, such a line is
+accepted in the same way, while a line of only whitespace after it is a
 `newline` unit of its own, and the input is rejected, as in mermaid.js.
 [fixture: class/lex-bare-percent-line-between-statements] [fixture:
 class/lex-bare-percent-line-then-blank-line] [fixture:
-class/lex-bare-percent-line-then-spaces-line] Detection fails for a text before
-the header that it does not leave out, such as a line `#`. [fixture:
-class/header-after-bare-percent-line] [fixture:
-class/header-after-empty-braces-line] [fixture: class/header-after-hash-line]
+class/lex-bare-percent-line-then-spaces-line] Any other text before the header,
+such as a line `#`, is diagram text at the detection point, which no detector
+matches, and the input is rejected, as in mermaid.js. [fixture:
+class/header-after-hash-line]
 
 ## Lexical structure
 
@@ -227,9 +246,10 @@ In the statement context, the lexer tries these rules in order:
 8. The keywords `classDiagram-v2` and `classDiagram`: a `header` unit. [fixture:
    common/detect-minimal-class-diagram] [fixture: class/header-v2]
 9. `[*]`: a `[*]` unit. [fixture: class/lex-edge-state-in-statement]
-10. `call` and one or more whitespace: a `call` unit; enters the callback name
-    context. [fixture: class/lex-call-prefix] [fixture:
-    class/lex-callback-name-multi-line]
+10. `call` and all the whitespace that follows it, one or more characters, line
+    terminators included: a `call` unit; enters the callback name context.
+    [fixture: class/lex-call-prefix] [fixture:
+    class/lex-callback-name-multi-line] [fixture: class/lex-call-two-spaces]
 11. `"`: a string (see
     [Strings, backquoted names, and generic types](#strings-backquoted-names-and-generic-types)).
     [fixture: class/lex-string-multi-line]
@@ -1162,3 +1182,21 @@ class diagrams, and show in them as follows.
   class/div-backquote-keyword-callback] [fixture:
   class/div-backquote-keyword-link] [fixture: class/div-backquote-keyword-click]
   [fixture: class/div-backquote-keyword-href]
+- **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.md).**
+  `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` anywhere after
+  the header, as a class name, a member, or a label, makes mermaid.js hand the
+  text to the C4 parser, which rejects it; here the text is a class diagram.
+  [fixture: class/div-c4-keyword-as-class-name]
+- **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.md).**
+  A line of whitespace only, not empty, between a bare `%%` line and the header
+  is trivia here, while mermaid.js rejects the input: its class lexer reads the
+  line as a `newline` unit that its grammar does not take before the header (see
+  [Detection](#detection)). A line of whitespace only right before a comment
+  line lies in the comment region and is trivia in both, and so is a directive
+  on a line of its own; a line that is whitespace only once its directives are
+  left out counts as a line of whitespace only. [fixture:
+  class/header-after-bare-percent-then-whitespace-line] [fixture:
+  class/header-after-empty-braces-then-whitespace-line] [fixture:
+  class/header-after-bare-percent-then-indented-directive-line] [fixture:
+  class/header-after-bare-percent-then-directive-line] [fixture:
+  class/header-after-bare-percent-then-whitespace-line-then-comment-line]

@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): whitespace and line terminators after `error` are allowed by the `error` pseudo-diagram."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

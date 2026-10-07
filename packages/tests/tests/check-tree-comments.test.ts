@@ -536,6 +536,100 @@ describe("checkTree: the text and the mark of a diagram comment", () => {
     ).toBe(true)
   })
 
+  it("accepts the mark %% of a flowchart for a line of %% alone before the header: every diagram type has that comment there", () => {
+    const flowchart = "%%\nflowchart LR\nA --> B\n"
+    const mark = "the mark %% is no mark of the comments of a FlowchartDiagram"
+    expect(
+      says(
+        checkTree(
+          flowchart,
+          treeWith(flowchart, "FlowchartDiagram", [
+            { mark: "%%", range: [0, 2] },
+          ]),
+        ),
+        mark,
+      ),
+    ).toBe(false)
+  })
+
+  it("accepts the mark %% of a flowchart for a line of %% alone before the header also after the frontmatter and after a directive, whose tokens come first", () => {
+    const mark = "the mark %% is no mark of the comments of a FlowchartDiagram"
+    const afterDirective = "%%{init: {}}%%\n%%\nflowchart LR\nA-->B\n"
+    // Each case is a text with the directives of its tree: the directive is a
+    // `Directive` token and a directive of the tree, as the parser records it.
+    const cases: readonly {
+      readonly name: string
+      readonly source: string
+      readonly directives: readonly CheckedDirective[]
+    }[] = [
+      {
+        name: "after the frontmatter",
+        source: "---\ntitle: x\n---\n%%\nflowchart LR\nA-->B\n",
+        directives: [],
+      },
+      {
+        name: "after a directive",
+        source: afterDirective,
+        directives: [directiveOf(afterDirective, { text: "%%{init: {}}%%" })],
+      },
+    ]
+    for (const { name, source, directives } of cases) {
+      const at = source.lastIndexOf("%%\nflowchart")
+      const header = source.indexOf("flowchart")
+      const tree = treeWith(
+        source,
+        "FlowchartDiagram",
+        [{ mark: "%%", range: [at, at + 2] }],
+        directives,
+      )
+      // The first token of the tree is the `---` or the directive; the body
+      // starts at the header.
+      const bodyRange: TreeRange = [header, source.length - 1]
+      expect(
+        says(
+          checkTree(source, {
+            ...tree,
+            body: {
+              ...tree.body,
+              range: bodyRange,
+              loc: locationOf(source, bodyRange),
+            },
+          }),
+          mark,
+        ),
+        name,
+      ).toBe(false)
+    }
+  })
+
+  it("fails the mark %% of a flowchart comment that does not lie before the header, and the mark # of one that does", () => {
+    // A flowchart has the diagram comment `%%` before its header only.
+    const after = "flowchart LR\n%%\nA --> B\n"
+    const afterAt = after.indexOf("%%")
+    expect(
+      says(
+        checkTree(
+          after,
+          treeWith(after, "FlowchartDiagram", [
+            { mark: "%%", range: [afterAt, afterAt + 2] },
+          ]),
+        ),
+        `Comment at ${afterAt}-${afterAt + 2}: the mark %% is no mark of the comments of a FlowchartDiagram`,
+      ),
+    ).toBe(true)
+    // Before the header, only `%%` is a mark of a flowchart comment.
+    const before = "#\nflowchart LR\nA --> B\n"
+    expect(
+      says(
+        checkTree(
+          before,
+          treeWith(before, "FlowchartDiagram", [{ mark: "#", range: [0, 1] }]),
+        ),
+        "Comment at 0-1: the mark # is no mark of the comments of a FlowchartDiagram",
+      ),
+    ).toBe(true)
+  })
+
   it("fails a fragment that starts with whitespace or has the wrong value", () => {
     const cut = "stateDiagram-v2\nA %% x\u2029%% end\nB\n"
     const x = cut.indexOf("%% x")

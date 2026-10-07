@@ -12,15 +12,21 @@ import { APOSTROPHE } from "./code-points.ts"
 import { ParseError } from "./errors.ts"
 import type { DiagramComment } from "./diagram-parsing.ts"
 import type { DirectiveMatch } from "./directives.ts"
-import type { EntityDelimiter } from "./entities.ts"
+import type { EntityText, EntityTextCharacter } from "./entities.ts"
+import { entityDelimiterAt } from "./entities.ts"
 import { frontmatterTokensOf } from "./frontmatter.ts"
 import { findAttributeQuotes } from "./html-quotes.ts"
 import type { CommentRegionEntry, LineEntry } from "./line-lookahead.ts"
-import { commentEnd, lookAheadFromCommentStart } from "./line-lookahead.ts"
+import {
+  commentEnd,
+  lookAheadFromCommentStart,
+  nextCommentStart,
+} from "./line-lookahead.ts"
 import { LineIndex } from "./positions.ts"
 import {
   lineTerminatorEnd,
   nextOffset,
+  previousOffset,
   skipBackWhile,
   skipWhile,
 } from "./text-cursor.ts"
@@ -39,7 +45,7 @@ import {
  * that was asked about. Between the two lie comment regions, which only a
  * comment start can be followed by, and after them ignored `;` characters.
  * They are still characters of the source: a token that goes on after them
- * holds them (ast.md, Tokens).
+ * holds them (`docs/tokens.md`, Tokens).
  */
 export interface ReadCharacter {
   readonly kind: "character"
@@ -118,7 +124,7 @@ export interface PendingToken {
   /**
    * Where the token is in the source, from its first to its last character
    * that is not whitespace, or with the whitespace at its ends where it is
-   * that of a value that mermaid.js reads (ast.md, Tokens).
+   * that of a value that mermaid.js reads (`docs/tokens.md`, Tokens).
    */
   readonly range: Range
 }
@@ -166,8 +172,9 @@ function rangeHolding(
  * trivia, which `parse()` decides once at the start of the source, and
  * builds no rewritten text.
  *
- * It offers three things. {@link SourceLexer.lineEntries} walks the comment
- * regions and line segments for detection. {@link SourceLexer.readAt} reads
+ * It offers three things. Detection reads the text through
+ * {@link SourceLexer.skipTrivia} and
+ * {@link SourceLexer.skipDirectivesAndComments}. {@link SourceLexer.readAt} reads
  * the text from any offset as a diagram's token rules read it, through
  * comment regions and the `;` that the line rule ignores; the diagram text
  * reader of `diagram-text.ts` builds on it. {@link SourceLexer.recordTokens}
@@ -222,6 +229,14 @@ export class SourceLexer {
   /** The comment start where the next entry begins, or the end of the source. */
   private nextEntryStart: number
 
+  /** common.md, Entities: the text that the entity rule reads. */
+  private readonly entityText: EntityText = {
+    characterFrom: (offset) => this.characterFrom(offset),
+    characterBefore: (offset) => this.characterBefore(offset),
+    isIgnoredSemicolon: (offset) =>
+      this.ruleAt(offset).rule === "ignored-semicolon",
+  }
+
   /**
    * Reads `text` from `start`. The constructor only builds the two tables
    * that reading needs before it starts: the positions of lines, and the
@@ -255,19 +270,6 @@ export class SourceLexer {
   /** ast.md, Root: every directive recorded, in source order. */
   public get directives(): readonly Directive[] {
     return this.directivesRead
-  }
-
-  /**
-   * The entries decided so far and those still to decide, in source order,
-   * as detection walks the source.
-   */
-  public *lineEntries(): Generator<LineEntry> {
-    for (let index = 0; ; index += 1) {
-      while (index >= this.entries.length) {
-        if (!this.decideEntries()) return
-      }
-      yield this.entries[index]
-    }
   }
 
   /**
@@ -311,19 +313,55 @@ export class SourceLexer {
    * of a comment region; the end of the source when there is none.
    */
   public firstTokenStart(): number {
-    let offset = this.start
-    while (offset < this.text.length) {
-      const found = this.ruleAt(offset)
+    return this.skipTrivia(this.start)
+  }
+
+  /**
+   * common.md, Leading whitespace and Diagram detection: where the first
+   * character at or after `offset` is that is not whitespace, a line
+   * terminator, part of a directive, or part of a comment region; the end of
+   * the source when there is none. `offset` is not inside a comment region
+   * or a directive.
+   */
+  public skipTrivia(offset: number): number {
+    let current = offset
+    while (current < this.text.length) {
+      const found = this.ruleAt(current)
       if (found.rule === "region") {
-        offset = found.entry.end
+        current = found.entry.end
       } else if (found.rule === "directive") {
-        offset = found.directive.range[1]
-      } else if (found.rule === "none" && this.isWhitespaceAt(offset)) {
+        current = found.directive.range[1]
+      } else if (found.rule === "none" && this.isWhitespaceAt(current)) {
         // One character at a time, so that the rules are asked again at
         // the comment start after a line terminator.
-        offset = this.characterEnd(offset)
+        current = this.characterEnd(current)
       } else {
-        return offset
+        return current
+      }
+    }
+    return this.text.length
+  }
+
+  /**
+   * Where the next character is at or after `offset` in the text without its
+   * directives and comment regions, the text that detection (common.md,
+   * Diagram detection) and the entity rule (common.md, Entities) read. A `;`
+   * that the line rule ignores is a character of it: mermaid.js decides the
+   * diagram type before it applies that rule (Reading a source, the steps),
+   * and the entity rule decides about such a `;` itself. The end of the
+   * source when no character is left. `offset` is not inside a comment
+   * region or a directive.
+   */
+  public skipDirectivesAndComments(offset: number): number {
+    let current = offset
+    while (current < this.text.length) {
+      const found = this.ruleAt(current)
+      if (found.rule === "region") {
+        current = found.entry.end
+      } else if (found.rule === "directive") {
+        current = found.directive.range[1]
+      } else {
+        return current
       }
     }
     return this.text.length
@@ -393,7 +431,7 @@ export class SourceLexer {
           placeholderEnd: null,
         }
       }
-      const entityDelimiter = this.entityDelimiterAt(current)
+      const entityDelimiter = entityDelimiterAt(this.entityText, current)
       if (entityDelimiter !== null) {
         return {
           kind: "character",
@@ -417,7 +455,7 @@ export class SourceLexer {
   }
 
   /**
-   * ast.md, Tokens and Invariants: records the tokens of a diagram, `tokens`,
+   * `docs/tokens.md`, Tokens, and `docs/positions.md`, Invariants: records the tokens of a diagram, `tokens`,
    * in source order, walking the source once from `start` to the end, after the
    * tokens of `frontmatter`, the frontmatter before `start`, when there is one
    * (see `frontmatterTokensOf`). On the way it records each comment region's
@@ -480,7 +518,7 @@ export class SourceLexer {
         continue
       }
       // A token, or one of its pieces, starts here, also with whitespace
-      // where it is that of a value (ast.md, Tokens).
+      // where it is that of a value (`docs/tokens.md`, Tokens).
       const token = tokens.at(recorded)
       if (token !== undefined && pieces === null && token.range[0] === offset) {
         const cut = this.piecesOf(token)
@@ -680,17 +718,7 @@ export class SourceLexer {
     if (start >= this.text.length) return false
     const entries = lookAheadFromCommentStart(this.text, start)
     this.entries.push(...entries)
-    const last = entries[entries.length - 1]
-    if (last.kind === "region") {
-      this.nextEntryStart = last.end
-    } else {
-      // The separator after the last segment: a line terminator, or U+2028 or
-      // U+2029.
-      this.nextEntryStart =
-        last.end >= this.text.length
-          ? this.text.length
-          : (lineTerminatorEnd(this.text, last.end) ?? last.end + 1)
-    }
+    this.nextEntryStart = nextCommentStart(this.text, entries)
     return true
   }
 
@@ -721,14 +749,50 @@ export class SourceLexer {
   }
 
   /**
-   * Entities: what the lexer reads in place of the character at `offset`
-   * when it is the `#` or the `;` of an entity: the opening or the closing
-   * of the placeholder. Returns null for every other character.
+   * Entities: the character at or after `offset` in the text without its
+   * directives and comment regions
+   * ({@link SourceLexer.skipDirectivesAndComments}); null at the end of the
+   * source.
    */
-  private entityDelimiterAt(offset: number): EntityDelimiter | null {
-    const entry = this.entryAt(offset)
-    if (entry === null || entry.kind !== "segment") return null
-    return entry.entityDelimiters.get(offset) ?? null
+  private characterFrom(offset: number): EntityTextCharacter | null {
+    const start = this.skipDirectivesAndComments(offset)
+    const codePoint = this.text.codePointAt(start)
+    if (codePoint === undefined) return null
+    return { codePoint, start, next: nextOffset(this.text, start) }
+  }
+
+  /**
+   * Entities: the character before `offset` in the text without its
+   * directives and comment regions, read backward as
+   * {@link SourceLexer.skipDirectivesAndComments} reads forward; null at
+   * `start`.
+   */
+  private characterBefore(offset: number): EntityTextCharacter | null {
+    let end = offset
+    for (;;) {
+      if (end <= this.start) return null
+      const passed = this.directiveOrRegionStartBefore(end)
+      if (passed === null) break
+      end = passed
+    }
+    const start = previousOffset(this.text, end)
+    const codePoint = this.text.codePointAt(start)
+    if (codePoint === undefined) return null
+    return { codePoint, start, next: end }
+  }
+
+  /**
+   * Where the comment region or the directive that ends at `end` starts, or
+   * null when neither ends there. A directive lies inside one entry.
+   */
+  private directiveOrRegionStartBefore(end: number): number | null {
+    const entry = this.entryAt(end - 1)
+    if (entry === null) return null
+    if (entry.kind === "region") return entry.start
+    for (const directive of entry.directives.values()) {
+      if (directive.range[1] === end) return directive.range[0]
+    }
+    return null
   }
 
   /** HTML attribute quotes: whether the `"` at `offset` is read as `'`. */

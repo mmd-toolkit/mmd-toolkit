@@ -38,6 +38,19 @@ state/header-word-after-keyword] [fixture: state/header-other-suffix]
 [fixture: state/header-statement-same-line] [fixture: state/header-only]
 [fixture: state/header-only-without-line-feed]
 
+ヘッダーの前の `%%` だけの行や、ディレクティブではない `%%{ }%%` の行は
+`%%` だけの行で、検出はそれを読んで通り過ぎてヘッダーを探し、
+どの図種でも同じく、ここでは印 `%%` の図のコメントです
+（[図種の検出](../common.ja.md#図種の検出) を参照）。
+コメントはどのノードにも属さず、StateDiagram はヘッダーから始まります。
+`%%` だけの行は mermaid.js も同じに読みます。
+`%%{` で始まる行では mermaid.js は入力を拒否します。
+state の字句解析器が `%%` を無視されるテキストとして読み、
+文法は `{` を取らないからです。
+既知の差異 [`bare-percent-line-before-header`](#既知の差異) です。
+[fixture: state/header-after-bare-percent-line] [fixture:
+state/header-after-empty-braces-line]
+
 ## 字句構造
 
 字句解析器は、[図のテキスト](../common.ja.md#ソースの読み方) を
@@ -396,10 +409,16 @@ mermaid.js は `direction-text` の単位を読みません。
 `%% c` はコメントでなく `direction-text` の単位です。
 値は語の境目で終わらなくてもかまいません。
 `direction TBX` は `TB` を決め、`X` は `direction-text` の単位です。
-並びは最も長いものです。
-`direction TB x direction TB` は最後の `direction` で読まれ、
+値は書かれた順に試します。
+行のどこかに `direction`、空白、`TB` があれば値は `TB` で、
+なければ `BT` を試し、以下同様です。
+値について、字句解析器はその値が続く並びの最後の `direction` を取ります。
+そのため `direction TB x direction TB` は最後の `direction` で読まれ、
 `direction TB x` は `direction-text` の単位です。
+一方 `direction TB x direction LR` は `TB` を決めて最初の `direction` で読まれ、
+`x direction LR` は `direction-text` の単位です。
 [fixture: state/lex-direction-line-same-value-twice]
+[fixture: state/lex-direction-line-two-values]
 [fixture: state/lex-direction-line-in-description] [fixture:
 state/lex-direction-line-same-line-transition] [fixture:
 state/lex-direction-lower-case] [fixture: state/lex-direction-line-then-comment]
@@ -1620,3 +1639,18 @@ state/div-empty-description-block-after-arrow]
   state/div-empty-description-block-in-click-before-url] [fixture:
   state/div-empty-description-block-in-click-after-href] [fixture:
   state/div-empty-description-block-in-click-before-tooltip]
+- **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md)。**
+  ヘッダーの後のどこかにある `C4Container`、`C4Component`、`C4Dynamic`、
+  `C4Deployment`（状態の id、説明、遷移のラベルなど）は、
+  mermaid.js ではテキストを C4 のパーサーに渡させ、拒否されます。
+  ここではテキストは state 図です。
+  [fixture: state/div-c4-keyword-as-state-id]
+- **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.ja.md)。**
+  ヘッダーの前の、ディレクティブではない `%%{ }%%` の行は、
+  ここではコメントです。
+  mermaid.js は入力を拒否します。
+  state の字句解析器が `%%` を無視されるテキストとして読み、
+  文法は `{` を取らないからです（[検出](#検出) を参照）。
+  `%%` だけの行はどちらでもコメントです。
+  [fixture: state/header-after-empty-braces-line] [fixture:
+  state/header-after-bare-percent-line]

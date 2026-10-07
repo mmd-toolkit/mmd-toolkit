@@ -306,6 +306,15 @@ Db が
 [fixture: common/comment-mid-line-style]
 [fixture: common/comment-bare]
 [fixture: class/lex-bare-percent-line-between-statements]
+ヘッダーの前では、そうした行は `%%` だけの行で、
+検出が読んで通り過ぎ、図の字句解析器は読み直しません。
+どの図種でも、印 `%%` の図のコメントで、
+`%%` から行の終わりまでです
+（[図種の検出](../../spec/docs/common.ja.md#図種の検出) を参照）。
+[fixture: sequence/header-after-bare-percent-line]
+[fixture: class/header-after-empty-braces-line]
+[fixture: state/header-after-bare-percent-line]
+[fixture: flowchart/header-after-bare-percent-line]
 
 コメント領域は、行の終わりまで続く図のコメントの中にあることもあります。
 その行の U+2028 か U+2029 の後のコメント行は、

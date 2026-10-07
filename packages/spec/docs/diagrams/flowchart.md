@@ -22,17 +22,23 @@ Three entries of [detection.md](../detection.md) select this grammar: entry 3
 common/detect-minimal-flowchart-elk] [fixture: common/detect-minimal-swimlane]
 [fixture: common/detect-minimal-flowchart-v2]
 
-Detection only looks at the start of the text. The grammar then reads the header
-keyword again (see [The header context](#the-header-context)), and it requires
-that no word character follows it. So `graphTD` is detected as `flowchart-v2`
-and rejected, and `flowchart-elkX` is detected as `flowchart-elk` and rejected,
-because the grammar reads `flowchart` and then cannot read `-elkX`. [fixture:
-common/detect-no-boundary-graph] [fixture: flowchart/header-elk-suffix]
+Detection only looks at the detection point (see
+[Diagram detection](../common.md#diagram-detection)). The grammar then reads the
+header keyword again (see [The header context](#the-header-context)), and it
+requires that no word character follows it. So `graphTD` is detected as
+`flowchart-v2` and rejected, and `flowchart-elkX` is detected as `flowchart-elk`
+and rejected, because the grammar reads `flowchart` and then cannot read
+`-elkX`. [fixture: common/detect-no-boundary-graph] [fixture:
+flowchart/header-elk-suffix]
 
-Detection leaves out a line that holds only `%%` before the header (see
-[Diagram detection](../common.md#diagram-detection)), but the lexer reads it as
-diagram text, an id, and the grammar starts with the header, so the input is
-rejected, as in mermaid.js. [fixture: flowchart/header-after-bare-percent-line]
+A line that holds only `%%`, or `%%{ }%%`, which is no directive, before the
+header is a bare `%%` line, which detection reads and passes to find the header,
+and which is a comment of the diagram here, as in every diagram type (see
+[Diagram detection](../common.md#diagram-detection)). mermaid.js rejects the
+input, because its flowchart lexer reads the `%%` as an id before the header:
+the known divergence [`bare-percent-line-before-header`](#known-divergences).
+[fixture: flowchart/header-after-bare-percent-line] [fixture:
+flowchart/header-after-empty-braces-line]
 
 ## Lexical structure
 
@@ -249,10 +255,11 @@ rules that matches:
    flowchart/gram-click-href]
 9. `click` and one or more whitespace: a `click` unit; enters the click context.
    [fixture: flowchart/gram-click-two-ids-one-click]
-10. `flowchart-elk`, `swimlane-beta`, `graph`, or `flowchart`, not followed by a
-    word character: a `header-keyword` unit. The first header keyword in the
-    text also enters the header context. [fixture: flowchart/header-elk-suffix]
-    [fixture: flowchart/lex-header-keyword-as-vertex]
+10. `flowchart-elk`, `swimlane-beta`, `graph`, or `flowchart`, tried in this
+    order, not followed by a word character: a `header-keyword` unit. The first
+    header keyword in the text also enters the header context. [fixture:
+    flowchart/header-elk-suffix] [fixture:
+    flowchart/lex-header-keyword-as-vertex]
 11. `subgraph`, not followed by a word character: a `subgraph` unit. [fixture:
     flowchart/gram-subgraph-title-space-before]
 12. `end`, not followed by a word character, and all whitespace after it, line
@@ -1961,3 +1968,14 @@ flowchart, and show in it as follows.
   flowchart/gram-empty-call-before-link] [fixture:
   flowchart/gram-click-empty-call-before-callback] [fixture:
   flowchart/gram-empty-description-block-before-link]
+- **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.md).**
+  `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` anywhere after
+  the header, as a vertex id, a label, or an edge text, makes mermaid.js hand
+  the text to the C4 parser, which rejects it; here the text is a flowchart.
+  [fixture: flowchart/div-c4-keyword-in-label]
+- **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.md).**
+  A line of `%%` alone, or a line `%%{ }%%`, before the header is a comment
+  here, while mermaid.js rejects the input: its flowchart lexer reads the `%%`
+  as an id before the header (see [Detection](#detection)). [fixture:
+  flowchart/header-after-bare-percent-line] [fixture:
+  flowchart/header-after-empty-braces-line]

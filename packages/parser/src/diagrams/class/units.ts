@@ -138,7 +138,7 @@ export interface MemberLine {
 }
 
 /**
- * ast/class.md, Tokens: the two parts of a `label` unit, its `:` and the
+ * `docs/tokens/class.md`, Tokens: the two parts of a `label` unit, its `:` and the
  * text after it, which are tokens of their own.
  */
 export interface LabelParts {
@@ -815,7 +815,7 @@ export class ClassUnitLexer {
       (character) => character.codePoint !== GRAVE_ACCENT,
     )
     if (closing === null) {
-      // ast/class.md, Tokens: mermaid.js reads the name to the end of the
+      // `docs/tokens/class.md`, Tokens: mermaid.js reads the name to the end of the
       // source, whitespace and line feeds included.
       this.read("backquoted", at, null, "keep-whitespace")
       return true

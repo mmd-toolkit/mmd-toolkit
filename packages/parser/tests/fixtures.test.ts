@@ -27,7 +27,9 @@
  *   `tokenless-empty-forms`, or `headerless-empty-ending` the specification
  *   rejects what mermaid.js accepts, never the reverse.
  * - With `html-tag-in-frontmatter`, `comment-takes-character`,
- *   `comment-takes-line-break`, or `name-start-reads-unit`, the acceptance
+ *   `comment-takes-line-break`, `name-start-reads-unit`,
+ *   `c4-keyword-anywhere`, or `bare-percent-line-before-header`, the
+ *   acceptance
  *   and the diagram type of the reading of the specification, which the
  *   fixture records where it differs from that of mermaid.js
  *   (`specified.json`).
@@ -64,6 +66,8 @@ import {
   commentsAfterMatchStarts,
   commentsAfterUnits,
   frontmatterChangesAttributeQuotes,
+  holdsBarePercentLineBeforeHeader,
+  holdsC4KeywordAfterHeader,
   keepsUnitsWithoutEmptyForms,
   namesStartingWithUnits,
   rejectsWithoutHeader,
@@ -645,6 +649,50 @@ describe("marked fixtures differ only by their divergence", async () => {
     for (const fixture of fixturesWithMark) {
       it(`${fixture.diagram}/${fixture.name}`, () => {
         expect(frontmatterChangesAttributeQuotes(fixture.input)).toBe(true)
+      })
+    }
+  })
+
+  // known-divergences/c4-keyword-anywhere.md: mermaid.js looks for four of
+  // the five keywords of C4 anywhere in the text, and the specification at
+  // the start only, so a text whose header is another diagram's and whose
+  // diagram text holds one of them is a C4 diagram there and the diagram of
+  // its header here. Each fixture has such a keyword after the header found
+  // by the parser's detection; the reading of the specification, its
+  // acceptance and its diagram type, is recorded in the corpus
+  // (`specified.json`) and compared above.
+  describe("c4-keyword-anywhere", () => {
+    const fixturesWithMark = marked("c4-keyword-anywhere")
+
+    it("has fixtures", () => {
+      expect(fixturesWithMark.length).toBeGreaterThan(0)
+    })
+
+    for (const fixture of fixturesWithMark) {
+      it(`${fixture.diagram}/${fixture.name}`, () => {
+        expect(holdsC4KeywordAfterHeader(fixture.input)).toBe(true)
+      })
+    }
+  })
+
+  // known-divergences/bare-percent-line-before-header.md: a bare `%%` line
+  // before the header is a comment in every diagram type here, while the
+  // lexer of the diagram that mermaid.js detects rejects it in flowchart,
+  // a line `%%{ }%%` in state, and a line of whitespace only after one in
+  // class. Each fixture has such a line, which the parser's detection
+  // passes; the reading of the specification, its acceptance and its
+  // diagram type, is recorded in the corpus (`specified.json`) and compared
+  // above.
+  describe("bare-percent-line-before-header", () => {
+    const fixturesWithMark = marked("bare-percent-line-before-header")
+
+    it("has fixtures", () => {
+      expect(fixturesWithMark.length).toBeGreaterThan(0)
+    })
+
+    for (const fixture of fixturesWithMark) {
+      it(`${fixture.diagram}/${fixture.name}`, () => {
+        expect(holdsBarePercentLineBeforeHeader(fixture.input)).toBe(true)
       })
     }
   })

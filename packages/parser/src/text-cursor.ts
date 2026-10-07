@@ -45,6 +45,15 @@ export function codePointBefore(
 }
 
 /**
+ * Returns the offset of the character that ends at `offset`, as
+ * {@link codePointBefore} reads it, or `offset` at the start of the text.
+ */
+export function previousOffset(text: string, offset: number): number {
+  const codePoint = codePointBefore(text, offset)
+  return codePoint === undefined ? offset : offset - codeUnitLength(codePoint)
+}
+
+/**
  * Line terminators: `\r\n`, a lone `\r`, and a lone `\n` are each one line
  * terminator. Returns the offset after the line terminator that starts at
  * `offset`, or null when none starts there.
@@ -198,23 +207,4 @@ export function matchCharactersIgnoringCase(
     charactersOffset += codeUnitLength(expected)
   }
   return textOffset
-}
-
-/**
- * Returns the offset of the first occurrence of `characters` (see
- * {@link matchCharacters}) at or after `from`, or null.
- */
-export function findCharacters(
-  text: string,
-  from: number,
-  characters: string,
-): number | null {
-  for (
-    let offset = from;
-    offset < text.length;
-    offset = nextOffset(text, offset)
-  ) {
-    if (matchCharacters(text, offset, characters) !== null) return offset
-  }
-  return null
 }

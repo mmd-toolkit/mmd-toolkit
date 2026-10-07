@@ -7,8 +7,6 @@ import {
 import { LEFT_CURLY_BRACKET, PERCENT_SIGN } from "./code-points.ts"
 import type { DirectiveMatch } from "./directives.ts"
 import { findDirectives, readDirective } from "./directives.ts"
-import type { EntityDelimiter } from "./entities.ts"
-import { findEntityDelimiters } from "./entities.ts"
 import { decideIgnoredSemicolons } from "./line-rule.ts"
 import { lineTerminatorEnd, nextOffset, skipBackWhile } from "./text-cursor.ts"
 
@@ -42,8 +40,6 @@ export interface LineSegmentEntry {
   readonly end: number
   /** The offsets of the `;` characters that the line rule ignores. */
   readonly ignoredSemicolons: ReadonlySet<number>
-  /** Entities: for the `#` and the `;` of every entity of the segment, keyed by offset, what the lexer reads in its place. */
-  readonly entityDelimiters: ReadonlyMap<number, EntityDelimiter>
   /** The directives inside the segment, keyed by their start offset, in source order. */
   readonly directives: ReadonlyMap<number, DirectiveMatch>
 }
@@ -165,6 +161,22 @@ export function lookAheadFromCommentStart(
 }
 
 /**
+ * The comment start where the look-ahead after `entries`, the result of one
+ * look-ahead, begins: the end of the comment region, or the position after
+ * the separator that ends the last segment (a line terminator, U+2028, or
+ * U+2029); the end of the source when the entries reach it.
+ */
+export function nextCommentStart(
+  text: string,
+  entries: readonly LineEntry[],
+): number {
+  const last = entries[entries.length - 1]
+  if (last.kind === "region") return last.end
+  if (last.end >= text.length) return text.length
+  return lineTerminatorEnd(text, last.end) ?? last.end + 1
+}
+
+/**
  * Comment lines: the region of the comment whose `%%` starts at `marker`
  * and ends before `afterMarker`. The comment extends to the next line
  * terminator that is not part of a directive; U+2028 and U+2029 do not end
@@ -266,7 +278,7 @@ function segmentsUpTo(
   return entries
 }
 
-/** One line segment, with the directives inside it, the `;` characters that the line rule ignores, and its entities. */
+/** One line segment, with the directives inside it and the `;` characters that the line rule ignores. */
 function segment(
   text: string,
   start: number,
@@ -278,19 +290,11 @@ function segment(
       (directive) => start <= directive.range[0] && directive.range[1] <= end,
     ),
   )
-  const ignoredSemicolons = decideIgnoredSemicolons(text, start, end, inside)
   return {
     kind: "segment",
     start,
     end,
-    ignoredSemicolons,
-    entityDelimiters: findEntityDelimiters({
-      text,
-      start,
-      end,
-      directives: inside,
-      ignoredSemicolons,
-    }),
+    ignoredSemicolons: decideIgnoredSemicolons(text, start, end, inside),
     directives: inside,
   }
 }

@@ -120,10 +120,10 @@ which rule makes which node.
   used. Examples of Mermaid text and fixture inputs may be shown as they are.
 - Do not introduce symbols: no single-letter names or abbreviations for things,
   and no mathematical notation such as italic single letters or subscripts. Name
-  each thing in words every time ("the detection text", "the keyword", "the
+  each thing in words every time ("the detection point", "the keyword", "the
   first content line"). When a phrase gets long, give it a name made of
-  meaningful words at the start of the section ("called the **detection text**
-  here") and use that name.
+  meaningful words at the start of the section ("the **detection point** is the
+  first position …") and use that name.
 - Refer to the source of mermaid.js with a link into the pinned commit (see
   [The pinned mermaid.js](#the-pinned-mermaidjs)), in the form
   `https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/<path>#L<first>-L<last>`.

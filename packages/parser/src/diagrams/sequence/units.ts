@@ -433,35 +433,22 @@ export class SequenceUnitLexer {
   /** The place of the next character to read; null at the end of the text. */
   private position: DiagramPosition
 
-  /** Where the source ends, where the `newline` unit of the end of the text is. */
-  private readonly sourceEnd: number
-
-  public constructor(reader: DiagramText, lines: LineIndex, sourceEnd: number) {
+  public constructor(reader: DiagramText, lines: LineIndex) {
     this.reader = reader
     this.lines = lines
-    this.sourceEnd = sourceEnd
     this.position = reader.first()
   }
 
   /**
    * Divides the diagram text into units. Throws `ParseError` where no rule
-   * matches. At the end of the text, it reads a `newline` unit of no
-   * characters (The statement context).
+   * matches. The `\n` that End of text adds is read as any line feed: a
+   * `newline` unit of no characters in the statement context, and nothing
+   * of its own in the other contexts (The statement context).
    */
   public lex(): SequenceLexing {
     while (this.position !== null) {
       this.readInContext(this.position, this.currentContext())
     }
-    this.units.push({
-      name: "newline",
-      text: "",
-      index: this.units.length,
-      start: this.sourceEnd,
-      end: this.sourceEnd,
-      significantRange: null,
-      nonWhitespaceRange: null,
-      arrow: null,
-    })
     return {
       units: this.units,
       comments: this.comments,
@@ -638,7 +625,7 @@ export class SequenceUnitLexer {
 
   /**
    * `#` and the rest of its line, a diagram comment: rule 3 of the
-   * statement context, and rule 2 of the id, alias, and line contexts.
+   * statement context, and rule 2 of the id and line contexts.
    */
   private readHashComment(at: DiagramCharacter): boolean {
     if (at.codePoint !== NUMBER_SIGN) return false
@@ -812,7 +799,7 @@ export class SequenceUnitLexer {
     const textEnd = this.skipNone(textStart, TEXT_END)
     if (textStart === null || samePosition(textStart, textEnd)) return false
     this.addUnit(colon === null ? "title" : "title:", at, textStart)
-    // ast/sequence.md, Tokens: the token of the title text is the whole
+    // `docs/tokens/sequence.md`, Tokens: the token of the title text is the whole
     // unit, whose whitespace mermaid.js keeps in the title.
     this.addUnit("title-text", textStart, textEnd, null, "keep-whitespace")
     this.position = textEnd

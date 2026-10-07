@@ -240,40 +240,47 @@ no input meets an unpatched Db. In mermaid@12.0.0:
 `runMermaid()` and the functions beside it take the option `withoutDivergences`,
 a list of identifiers of known divergences. With it, mermaid.js runs with the
 lexer rules from which those divergences arise replaced, or tried in another
-order, so that the lexer reads as the specification does, for the duration of
-the call only. The default run, the generator and `expected.json` never use it:
-they record mermaid.js as it is. An implementation uses it to check that a
-difference from mermaid.js on a marked input comes from the divergences alone,
-by comparing itself with mermaid.js read this way: it is to accept and reject
-every input as mermaid.js read this way does, and to give it the same Db. This
-is available for `comment-takes-character`, `comment-takes-line-break` and
+order, or with its detector of C4 replaced, so that it reads as the
+specification does, for the duration of the call only. The default run, the
+generator and `expected.json` never use it: they record mermaid.js as it is. An
+implementation uses it to check that a difference from mermaid.js on a marked
+input comes from the divergences alone, by comparing itself with mermaid.js read
+this way: it is to accept and reject every input as mermaid.js read this way
+does, and to give it the same Db. This is available for `c4-keyword-anywhere`,
+`comment-takes-character`, `comment-takes-line-break` and
 `name-start-reads-unit`. Where the specification differs from mermaid.js in more
 than one way for a diagram type, an input may need several of them removed at
 once to be read as the specification does. Each identifier counts once, and an
-empty list runs mermaid.js as it is. The input may be of any diagram type; only
-the lexer of the diagram type a divergence belongs to changes, so a divergence
-of another diagram type changes nothing. Two divergences whose changes touch the
-same rule, the same rule order of a start state, or the function that gives one
-lexer its text cannot be removed together: the call throws an error that names
-both, since the change made last would undo the other. Options with a key that
-is no option make the call throw a `TypeError`, so that a misspelled option
-never runs mermaid.js as it is.
+empty list runs mermaid.js as it is. The input may be of any diagram type; a
+divergence of a lexer changes only the lexer of the diagram type it belongs to,
+so a divergence of another diagram type changes nothing, and
+`c4-keyword-anywhere` changes only how the detectors treat a text that holds a
+C4 keyword after its start. Two divergences whose changes touch the same rule,
+the same rule order of a start state, the function that gives one lexer its
+text, or the detector of one diagram type cannot be removed together: the call
+throws an error that names both, since the change made last would undo the
+other. Options with a key that is no option make the call throw a `TypeError`,
+so that a misspelled option never runs mermaid.js as it is.
 
 An implementation does not have to run mermaid.js this way to know what the
 specification gives: the fixtures with the mark of a divergence that changes how
-mermaid.js reads an input (`comment-takes-character`,
-`comment-takes-line-break`, `name-start-reads-unit` and
-`html-tag-in-frontmatter`) record it in `specified.json`, where it differs from
-`expected.json`. The generator takes it from mermaid.js read without the
-divergence (for `comment-takes-line-break` and `name-start-reads-unit`, without
-both, since both change the class lexer). [fixture:
+mermaid.js reads an input (`c4-keyword-anywhere`, `comment-takes-character`,
+`comment-takes-line-break`, `name-start-reads-unit`, `html-tag-in-frontmatter`
+and `bare-percent-line-before-header`) record it in `specified.json`, where it
+differs from `expected.json`. The generator takes it from mermaid.js read
+without the divergence (for `comment-takes-line-break` and
+`name-start-reads-unit`, without both, since both change the class lexer; for
+`c4-keyword-anywhere`, with the detector of C4 replaced, so that the text is
+read as the diagram of its header). [fixture:
 class/div-comment-then-statement-with-backquote-keyword] [fixture:
-class/div-backquote-starts-with-keyword-then-comment] For
-`html-tag-in-frontmatter` it is mermaid.js reading the input whose frontmatter
-has `(` where it has `<`, so that no HTML tag starts in it. The tag may start in
-any key of the frontmatter, not only in `title`; the frontmatter is found as
-mermaid.js finds it, which includes a closing `---` line with blanks after it
-and CRLF line breaks. [fixture:
+class/div-backquote-starts-with-keyword-then-comment] [fixture:
+common/detect-c4-anywhere] [fixture: flowchart/div-c4-keyword-in-label]
+[fixture: class/div-c4-keyword-as-class-name] [fixture:
+state/div-c4-keyword-as-state-id] For `html-tag-in-frontmatter` it is mermaid.js
+reading the input whose frontmatter has `(` where it has `<`, so that no HTML
+tag starts in it. The tag may start in any key of the frontmatter, not only in
+`title`; the frontmatter is found as mermaid.js finds it, which includes a
+closing `---` line with blanks after it and CRLF line breaks. [fixture:
 flowchart/html-tag-starts-in-frontmatter-other-key] [fixture:
 flowchart/html-tag-starts-in-frontmatter-crlf] [fixture:
 flowchart/html-tag-starts-in-frontmatter-closing-line-blank] The title of the Db
@@ -292,11 +299,35 @@ flowchart/html-tag-starts-in-frontmatter-config-value-accepted] When mermaid.js
 rejects the input with `(`, the specified reading is the rejection
 (`accepted: false` and the error). If the replacement itself made the YAML of
 the frontmatter invalid, the generator stops: how that reading is made has to be
-decided for the fixture. The other marks need no such file: the specification
-rejects what mermaid.js accepts (`directive-as-token-boundary`,
-`ignored-semicolon-as-token-boundary`, `click-reserved-word`,
-`tokenless-empty-forms`, `headerless-empty-ending`), or accepts what it rejects
-(`embedded-data-opaque`).
+decided for the fixture. For `bare-percent-line-before-header` it is mermaid.js
+reading the input without the bare `%%` lines before its header and the lines of
+whitespace only among them: the specification reads them as trivia in every
+diagram type, and mermaid.js hands them to the lexer of the diagram type, which
+does not read them so in flowchart (a line `%%` alone, `%%{ }%%`, `%%{}`, or
+`%%{-x}%%`), in state (the same lines but `%%`), and in class (a line of
+whitespace only, a tab included, or a directive with whitespace around it, after
+such a line). A comment line and a directive among them stay, a directive with
+the lines it spans and without the whitespace around it on its line, which
+mermaid.js would leave as a line of whitespace only; the frontmatter is passed
+over. The title and the values in `embedded` do not depend on those lines.
+[fixture: flowchart/header-after-bare-percent-line] [fixture:
+flowchart/header-after-empty-braces-line] [fixture:
+flowchart/header-after-non-word-brace-line] [fixture:
+flowchart/header-after-empty-braces-no-space] [fixture:
+state/header-after-empty-braces-line] [fixture:
+state/header-after-non-word-brace-line] [fixture:
+state/header-after-empty-braces-no-space] [fixture:
+class/header-after-bare-percent-then-whitespace-line] [fixture:
+class/header-after-empty-braces-then-whitespace-line] [fixture:
+class/header-after-bare-percent-then-tab-line] [fixture:
+class/header-after-bare-percent-then-indented-directive-line] The other marks
+need no such file: the specification rejects what mermaid.js accepts
+(`directive-as-token-boundary`, `ignored-semicolon-as-token-boundary`,
+`click-reserved-word`, `tokenless-empty-forms`, `headerless-empty-ending`), or
+accepts what it rejects (`embedded-data-opaque`). None of them has a removal
+here, so mermaid.js is not run to read the input as the specification does, and
+what the specification gives is stated by the document of the divergence in
+[known-divergences](../../spec/docs/known-divergences.md).
 
 The rules are listed in `src/divergence-removals.ts` and found in the lexer of
 the pinned mermaid.js by their compiled pattern, not by their position. When one
@@ -322,6 +353,19 @@ with the rules that read as the specification does first; the rules themselves
 do not change. Such a rule is found among the rules that only that start state
 tries, since a rule that every start state tries can have the same pattern.
 
+The detector of a diagram type may be replaced instead, by another that looks
+for its words at the start of the text only. mermaid.js keeps its detectors in
+the order they were first registered, and registering a detector under the id of
+one it has, with `mermaid.registerExternalDiagrams()`, replaces that one in its
+place, so the order in which the detectors are tried is kept. The diagram of the
+replaced detector is loaded first, by parsing a sample text of it, so that the
+replacement needs no loader (the one it is given fails if it is ever called),
+and the original detector is registered again when the call ends. Before any
+input, `runMermaid()` makes this replacement once, and stops with
+`MermaidEnvironmentError` unless the detectors give the diagram ids that the
+removal lists for its probe texts: before the replacement, during it, and after
+it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
+
 - `comment-takes-character`, in the sequence lexer
   ([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)):
   the rule that reads a character other than `}` before `%%` together with the
@@ -340,6 +384,18 @@ tries, since a rule that every start state tries can have the same pattern.
   class/div-comment-after-name-then-statement] [fixture:
   class/div-comment-after-note-string-then-statement] [fixture:
   class/div-comment-after-click-string-then-statement]
+- `c4-keyword-anywhere`, in the detector of C4
+  ([`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10-L10)):
+  the detector looks for each of the five keywords, `C4Context`, `C4Container`,
+  `C4Component`, `C4Dynamic` and `C4Deployment`, at the start of the text, after
+  whitespace; mermaid.js looks for `C4Context` there and for the other four
+  anywhere. A text of another diagram type that holds one of the four, as a
+  label, a name, or a message, is then read as the diagram of its header, as the
+  specification reads it, and a text that starts with a keyword is read as
+  before. [fixture: common/detect-c4-anywhere] [fixture:
+  common/detect-minimal-c4] [fixture: flowchart/div-c4-keyword-in-label]
+  [fixture: class/div-c4-keyword-as-class-name] [fixture:
+  state/div-c4-keyword-as-state-id]
 - `name-start-reads-unit`, in the class lexer
   ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)):
   inside a backquoted name and a generic type, the rule that closes it and the

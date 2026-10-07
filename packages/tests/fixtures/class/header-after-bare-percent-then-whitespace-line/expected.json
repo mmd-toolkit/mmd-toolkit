@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md (Detection): a line of whitespace only, not empty, between a bare `%%` line and the header makes the input rejected, as between statements: the lexer of mermaid.js reads it as a `newline` unit that the grammar does not take before the header."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%  classDiagramclas\n--^\nExpecting 'CLASS_DIAGRAM', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NAMESPACE', 'ANNOTATION_START', 'CLASS', 'MEMBER', 'SEPARATOR', 'NOTE_FOR', 'NOTE', 'CLASSDEF', 'ALPHA', 'direction_tb', 'direction_bt', 'direction_rl', 'direction_lr', 'CALLBACK', 'LINK', 'CLICK', 'STYLE', 'CSSCLASS', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'NEWLINE'"
+  }
+}

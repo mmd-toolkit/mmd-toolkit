@@ -68,6 +68,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
   （positions.md の Invariants、[ast.md](../../spec/docs/ast.md)）。
 - **コメント。** コメント行は走査が見つけた所にあり、印は `%%` です。
   図のコメントはその図種の印を持ち、行の終わりで終わります。
+  flowchart が印 `%%` を持つのは、ヘッダーの前の `%%` だけの行のコメントで、
+  どの図種もそうです。それ以外のコメントには持ちません。
   印のない断片は、コメント領域に続きます
   （parser/docs/tokens.md の Comment、
   [common.md](../../spec/docs/common.md#comment-lines) の Comment lines）。

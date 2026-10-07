@@ -24,7 +24,7 @@ export interface DiagramUnit<Name extends string> {
   /** Where the unit ends in the source: the offset after its last character. */
   readonly end: number
   /**
-   * The source range of its token (ast.md, Tokens): from the first to the
+   * The source range of its token (`docs/tokens.md`, Tokens): from the first to the
    * last of its characters that are not whitespace, unless the diagram keeps
    * the whitespace at its ends (see {@link UnitEnds}); null for a unit that
    * has no token, as one that is all whitespace.
@@ -40,7 +40,7 @@ export interface DiagramUnit<Name extends string> {
 }
 
 /**
- * ast.md, Tokens, and each diagram's Tokens: which whitespace at the ends of
+ * `docs/tokens.md`, Tokens, and each diagram's Tokens: which whitespace at the ends of
  * a unit its token leaves out. The token of most units leaves out all of it;
  * a diagram document names the units whose tokens keep the whitespace that
  * mermaid.js reads as part of a value:
@@ -84,7 +84,7 @@ export function readUnit<Name extends string>(
     end = position.end
     // The `\n` of End of text has no source characters, so a token that
     // keeps it ends at the last source character it read, before the
-    // directives and comment regions after that (ast.md, Tokens).
+    // directives and comment regions after that (`docs/tokens.md`, Tokens).
     if (isKeptAtEnds(position.codePoint, ends) && !position.endOfText) {
       significantStart ??= position.start
       significantEnd = position.end

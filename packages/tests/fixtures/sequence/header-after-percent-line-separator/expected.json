@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): `%%`, U+2028, and `sequenceDiagram` on one line is a comment line that holds the keyword, so no header follows and the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: A->>B: x\n"
+  }
+}

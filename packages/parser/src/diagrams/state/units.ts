@@ -114,7 +114,7 @@ export const PSEUDOSTATE_MARKS = [
 export type PseudostateMark = (typeof PSEUDOSTATE_MARKS)[number]
 
 /**
- * ast/state.md, Tokens: the two parts of a `description` unit, its `:` and
+ * `docs/tokens/state.md`, Tokens: the two parts of a `description` unit, its `:` and
  * the text after it, which are tokens of their own.
  */
 export interface DescriptionParts {
@@ -126,6 +126,13 @@ export interface DescriptionParts {
 export interface Unit extends DiagramUnit<UnitName> {
   /** For a `description` unit, its parts; null for every other unit. */
   readonly description: DescriptionParts | null
+  /**
+   * The note text context, rule 1: for the `:` unit of a note on one line,
+   * whether two or more whitespace characters precede it, so that
+   * mermaid.js reads it as the first character of the note text; null for
+   * every other unit.
+   */
+  readonly startsNoteText: boolean | null
 }
 
 /** diagrams/state.md, Units and contexts: the contexts of the lexer. */
@@ -193,12 +200,6 @@ export interface StateLexing {
   readonly units: readonly Unit[]
   /** The diagram comments, in source order. */
   readonly comments: readonly DiagramComment[]
-  /**
-   * The note text context, rule 1: the `:` units of notes on one line that
-   * two or more whitespace characters precede, which mermaid.js reads as
-   * the first character of the note text.
-   */
-  readonly noteColonsInText: ReadonlySet<Unit>
 }
 
 /**
@@ -217,9 +218,6 @@ export class StateUnitLexer {
   private readonly units: Unit[] = []
 
   private readonly comments: DiagramComment[] = []
-
-  /** See {@link StateLexing.noteColonsInText}. */
-  private readonly noteColonsInText = new Set<Unit>()
 
   /** The stack of contexts; the last one is the current context. */
   private readonly contexts: Context[] = ["statement"]
@@ -260,7 +258,6 @@ export class StateUnitLexer {
     return {
       units: this.units,
       comments: this.comments,
-      noteColonsInText: this.noteColonsInText,
     }
   }
 
@@ -300,11 +297,13 @@ export class StateUnitLexer {
     from: DiagramCharacter,
     to: DiagramPosition,
     ends: UnitEnds = "trim-whitespace",
+    startsNoteText: boolean | null = null,
   ): Unit {
     if (name === "{" || name === "ignored-text") this.markIgnoredStates()
     const unit: Unit = {
       ...readUnit(this.reader, name, this.units.length, from, to, null, ends),
       description: null,
+      startsNoteText,
     }
     this.units.push(unit)
     return unit
@@ -840,14 +839,17 @@ export class StateUnitLexer {
     const colon: Unit = {
       ...readUnit(this.reader, ":", index, at, textStart, null),
       description: null,
+      startsNoteText: null,
     }
     const text: Unit = {
       ...readUnit(this.reader, "description", index, textStart, end, null),
       description: null,
+      startsNoteText: null,
     }
     this.units.push({
       ...readUnit(this.reader, "description", index, at, end, null),
       description: { colon, text },
+      startsNoteText: null,
     })
     this.position = end
     return true
@@ -1557,7 +1559,7 @@ export class StateUnitLexer {
    * the note contexts. mermaid.js reads a note text on one line without its
    * first two characters, so with two whitespace characters before the
    * `:`, the `:` is the first character of the text that it reads
-   * ({@link StateLexing.noteColonsInText}).
+   * ({@link Unit.startsNoteText}).
    */
   private readInNoteTextContext(at: DiagramCharacter): void {
     const colon = skipWhitespace(this.reader, at)
@@ -1576,8 +1578,13 @@ export class StateUnitLexer {
       }
       if (afterColon !== null && last !== null) {
         const whitespaceBefore = this.charactersBetween(at, colon)
-        const colonUnit = this.addUnit(":", colon, afterColon)
-        if (whitespaceBefore >= 2) this.noteColonsInText.add(colonUnit)
+        this.addUnit(
+          ":",
+          colon,
+          afterColon,
+          "trim-whitespace",
+          whitespaceBefore >= 2,
+        )
         let textStart: DiagramPosition = afterColon
         if (whitespaceBefore === 0 && !isWhitespace(afterColon.codePoint)) {
           textStart = this.reader.after(afterColon)

@@ -1,8 +1,12 @@
-import { describe, expect, it } from "vitest"
+import mermaid from "mermaid"
+import { beforeAll, describe, expect, it } from "vitest"
 import type { JisonLexer } from "../src/divergence-removals.ts"
-import type { LexerRewrite, NamedRewrites } from "../src/divergence-removals.ts"
+import type { NamedRewrites, Rewrite } from "../src/divergence-removals.ts"
 import {
+  allRemovals,
+  findDetectorRewrite,
   findRewrites,
+  isDetectorRemoval,
   overlapOf,
   withRewrites,
 } from "../src/divergence-removals.ts"
@@ -21,7 +25,7 @@ function fakeLexer(
 /**
  * `rewrite` as the only rewrite of a call, under a name it does not need.
  */
-function named(rewrite: LexerRewrite): NamedRewrites {
+function named(rewrite: Rewrite): NamedRewrites {
   return [["comment-takes-character", rewrite]]
 }
 
@@ -62,14 +66,17 @@ const tryFirstRemoval = {
 }
 
 describe("findRewrites", () => {
-  it("finds a rule by its source and keeps its flags", () => {
+  it("finds a rule by its source and keeps its flags", async () => {
     const lexer = fakeLexer([/^a/u, /^b/u])
     const rewrite = findRewrites(lexer, patternRemoval)
     if (typeof rewrite === "string") throw new Error(rewrite)
-    expect(rewrite.swaps).toHaveLength(1)
-    expect(rewrite.swaps[0]?.key).toBe(1)
-    const replacement = rewrite.swaps[0]?.replacement as RegExp
-    expect([replacement.source, replacement.flags]).toEqual(["^c", "u"])
+    expect(rewrite.swaps.map((swap) => swap.slot)).toEqual([
+      "lexer:example:rules[1]",
+    ])
+    const { result } = await withRewrites(named(rewrite), () =>
+      Promise.resolve(lexer.rules[1]),
+    )
+    expect([result?.source, result?.flags]).toEqual(["^c", "u"])
   })
 
   it("reports a rule that is missing or found twice", () => {
@@ -216,7 +223,7 @@ describe("several rewrites", () => {
         ["name-start-reads-unit", second],
       ]),
     ).toBe(
-      "comment-takes-character and name-start-reads-unit change the same part of the lexer (1), so they cannot be removed together",
+      "comment-takes-character and name-start-reads-unit change the same part of mermaid.js (lexer:example:rules[1]), so they cannot be removed together",
     )
   })
 
@@ -240,7 +247,7 @@ describe("several rewrites", () => {
         ["name-start-reads-unit", second],
       ]),
     ).toBe(
-      "comment-takes-line-break and name-start-reads-unit change the same part of the lexer (rules), so they cannot be removed together",
+      "comment-takes-line-break and name-start-reads-unit change the same part of mermaid.js (lexer:example:conditions.quoted.rules), so they cannot be removed together",
     )
   })
 
@@ -261,15 +268,185 @@ describe("several rewrites", () => {
     })
     if (typeof first === "string") throw new Error(first)
     if (typeof second === "string") throw new Error(second)
-    expect(first.swaps.map((swap) => swap.key)).toEqual([0, "setInput"])
-    expect(second.swaps.map((swap) => swap.key)).toEqual([1, "setInput"])
+    expect(first.swaps.map((swap) => swap.slot)).toEqual([
+      "lexer:example:rules[0]",
+      "lexer:example:setInput",
+    ])
+    expect(second.swaps.map((swap) => swap.slot)).toEqual([
+      "lexer:example:rules[1]",
+      "lexer:example:setInput",
+    ])
     expect(
       overlapOf([
         ["comment-takes-line-break", first],
         ["name-start-reads-unit", second],
       ]),
     ).toBe(
-      "comment-takes-line-break and name-start-reads-unit change the same part of the lexer (setInput), so they cannot be removed together",
+      "comment-takes-line-break and name-start-reads-unit change the same part of mermaid.js (lexer:example:setInput), so they cannot be removed together",
+    )
+  })
+})
+
+describe("lexers of different diagram types", () => {
+  it("do not overlap where a rule of the same index is replaced in each", () => {
+    const first = findRewrites(fakeLexer([/^a/u, /^b/u]), patternRemoval)
+    const second = findRewrites(fakeLexer([/^a/u, /^b/u]), {
+      ...patternRemoval,
+      diagramType: "other",
+    })
+    if (typeof first === "string") throw new Error(first)
+    if (typeof second === "string") throw new Error(second)
+    expect(
+      overlapOf([
+        ["comment-takes-character", first],
+        ["name-start-reads-unit", second],
+      ]),
+    ).toBeUndefined()
+  })
+})
+
+describe("withRewrites: a swap that fails", () => {
+  /** A rewrite of one swap that records its calls in `log`. */
+  function loggedRewrite(
+    slot: string,
+    log: string[],
+    failsToApply = false,
+  ): Rewrite {
+    return {
+      swaps: [
+        {
+          slot,
+          apply: () => {
+            if (failsToApply) throw new Error(`${slot} cannot be made`)
+            log.push(`apply ${slot}`)
+          },
+          undo: () => {
+            log.push(`undo ${slot}`)
+          },
+        },
+      ],
+      position: undefined,
+    }
+  }
+
+  it("undoes the swaps made before it, and not the swap that failed, last made first", async () => {
+    const log: string[] = []
+    await expect(
+      withRewrites(
+        [
+          ["comment-takes-character", loggedRewrite("one", log)],
+          ["comment-takes-line-break", loggedRewrite("two", log)],
+          ["name-start-reads-unit", loggedRewrite("three", log, true)],
+        ],
+        () => Promise.resolve(log.push("call")),
+      ),
+    ).rejects.toThrow("three cannot be made")
+    expect(log).toEqual(["apply one", "apply two", "undo two", "undo one"])
+  })
+
+  it("makes the swaps in order, calls, and undoes them last made first", async () => {
+    const log: string[] = []
+    await withRewrites(
+      [
+        ["comment-takes-character", loggedRewrite("one", log)],
+        ["comment-takes-line-break", loggedRewrite("two", log)],
+      ],
+      () => Promise.resolve(log.push("call")),
+    )
+    expect(log).toEqual([
+      "apply one",
+      "apply two",
+      "call",
+      "undo two",
+      "undo one",
+    ])
+  })
+})
+
+describe("the removal of c4-keyword-anywhere", () => {
+  const removal = allRemovals().find(
+    ([name]) => name === "c4-keyword-anywhere",
+  )?.[1]
+  if (removal === undefined || !isDetectorRemoval(removal)) {
+    throw new Error("c4-keyword-anywhere is no removal of a detector")
+  }
+  const rewrite = findDetectorRewrite(removal)
+
+  /** The id the detectors of mermaid.js give `text`, or `undefined`. */
+  function idOf(text: string): string | undefined {
+    try {
+      return mermaid.detectType(text, {})
+    } catch {
+      return undefined
+    }
+  }
+
+  beforeAll(async () => {
+    // Registers the detectors of mermaid.js, as its first use does.
+    await mermaid.registerExternalDiagrams([])
+  })
+
+  it("is the only removal of a detector", () => {
+    expect(
+      allRemovals()
+        .filter(([, other]) => isDetectorRemoval(other))
+        .map(([name]) => name),
+    ).toEqual(["c4-keyword-anywhere"])
+  })
+
+  it("has one swap, for the detector of c4", () => {
+    expect(rewrite.swaps.map((swap) => swap.slot)).toEqual(["detector:c4"])
+    expect(rewrite.position).toBeUndefined()
+  })
+
+  it("replaces the detector only during the call, also when it fails", async () => {
+    const text = "flowchart LR\nA[C4Container]"
+    expect(idOf(text)).toBe("c4")
+    const { result } = await withRewrites(
+      [["c4-keyword-anywhere", rewrite]],
+      () => Promise.resolve(idOf(text)),
+    )
+    expect(result).toBe("flowchart-v2")
+    expect(idOf(text)).toBe("c4")
+    await expect(
+      withRewrites([["c4-keyword-anywhere", rewrite]], () =>
+        Promise.reject(new Error("x")),
+      ),
+    ).rejects.toThrow("x")
+    expect(idOf(text)).toBe("c4")
+  })
+
+  it("claims a text that starts with one of the five keywords, after whitespace, and no other", async () => {
+    /** The id the detectors give `text` while the detector is replaced. */
+    async function claimed(text: string): Promise<string | undefined> {
+      const { result } = await withRewrites(
+        [["c4-keyword-anywhere", rewrite]],
+        () => Promise.resolve(idOf(text)),
+      )
+      return result
+    }
+
+    for (const keyword of [
+      "C4Context",
+      "C4Container",
+      "C4Component",
+      "C4Dynamic",
+      "C4Deployment",
+    ]) {
+      expect(await claimed(keyword), keyword).toBe("c4")
+      expect(await claimed(`  \n ${keyword}`), keyword).toBe("c4")
+      expect(await claimed(`x ${keyword}`), keyword).toBeUndefined()
+    }
+  })
+
+  it("reports two removals that change the same detector", () => {
+    expect(
+      overlapOf([
+        ["c4-keyword-anywhere", rewrite],
+        ["comment-takes-character", findDetectorRewrite(removal)],
+      ]),
+    ).toBe(
+      "c4-keyword-anywhere and comment-takes-character change the same part of mermaid.js (detector:c4), so they cannot be removed together",
     )
   })
 })

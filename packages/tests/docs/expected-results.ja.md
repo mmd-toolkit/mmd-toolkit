@@ -274,7 +274,8 @@ mermaid@12.0.0 では、次の 2 つです。
 `runMermaid()` とその並びの関数は、選択肢 `withoutDivergences` を取ります。
 値は既知の差異の識別子の一覧です。
 これを指定すると、それらの差異が生じる字句解析器の規則を置き換えるか、
-試す順を変えるかして、仕様と同じに読ませて、mermaid.js を動かします。
+試す順を変えるか、C4 の検出器を置き換えるかして、
+仕様と同じに読ませて、mermaid.js を動かします。
 変えるのはその呼び出しの間だけです。
 既定の実行、生成器、`expected.json` は、これを使いません。
 これらは mermaid.js をそのまま記録します。
@@ -283,17 +284,20 @@ mermaid@12.0.0 では、次の 2 つです。
 こうして読ませた mermaid.js と、自分を比べます。
 すべての入力を、こう読ませた mermaid.js と同じに受理・拒否し、
 同じ Db を返すものでなければなりません。
-これを使えるのは、`comment-takes-character`、`comment-takes-line-break`、
-`name-start-reads-unit` です。
+これを使えるのは、`c4-keyword-anywhere`、`comment-takes-character`、
+`comment-takes-line-break`、`name-start-reads-unit` です。
 ある図種で仕様と mermaid.js の差異が 2 つ以上あるとき、
 仕様と同じに読ませるには、
 1 つの入力でそのいくつかを同時に除く必要があることがあります。
 同じ識別子は 1 つと数え、空の一覧ではそのままの mermaid.js を動かします。
 入力はどの図種でもかまいません。
-変わるのはその差異が属する図種の字句解析器だけなので、
+字句解析器の差異が変えるのは、その差異が属する図種の字句解析器だけなので、
 ほかの図種の差異は何も変えません。
+`c4-keyword-anywhere` が変えるのは、
+先頭より後に C4 のキーワードを持つテキストの検出だけです。
 1 つの字句解析器の同じ規則、同じ開始状態の並び、
-またはテキストを渡す同じ関数を変える 2 つの差異は、同時には除けません。
+テキストを渡す同じ関数、または 1 つの図種の同じ検出器を変える
+2 つの差異は、同時には除けません。
 後から変えたほうが、もう一方を打ち消すためです。
 そのときは、呼び出しは両方の識別子を挙げたエラーを投げます。
 選択肢でないキーを持つ options を渡すと、呼び出しは `TypeError` を投げます。
@@ -302,14 +306,22 @@ mermaid@12.0.0 では、次の 2 つです。
 仕様が何を出すかを知るために、
 実装が mermaid.js をこのように動かす必要はありません。
 mermaid.js の入力の読み方を変える既知の差異の印
-（`comment-takes-character`、`comment-takes-line-break`、
-`name-start-reads-unit`、`html-tag-in-frontmatter`）を持つ fixture は、
+（`c4-keyword-anywhere`、`comment-takes-character`、
+`comment-takes-line-break`、`name-start-reads-unit`、
+`html-tag-in-frontmatter`、
+`bare-percent-line-before-header`）を持つ fixture は、
 それを `expected.json` と違うときに、`specified.json` に記録します。
 生成器は、その差異を外して mermaid.js に読ませた結果を取ります
 （`comment-takes-line-break` と `name-start-reads-unit` は、
-どちらも class の字句解析器を変えるので、2 つを一緒に外します）。
+どちらも class の字句解析器を変えるので、2 つを一緒に外します。
+`c4-keyword-anywhere` は、C4 の検出器を置き換えて、
+そのテキストを先頭の図の図種として読ませます）。
 [fixture: class/div-comment-then-statement-with-backquote-keyword]
 [fixture: class/div-backquote-starts-with-keyword-then-comment]
+[fixture: common/detect-c4-anywhere]
+[fixture: flowchart/div-c4-keyword-in-label]
+[fixture: class/div-c4-keyword-as-class-name]
+[fixture: state/div-c4-keyword-as-state-id]
 `html-tag-in-frontmatter` では、フロントマターの `<` を `(` にして
 HTML タグが始まらないようにした入力を mermaid.js に読ませた結果です。
 タグは `title` に限らず、フロントマターのどのキーでも始まりえます。
@@ -336,11 +348,41 @@ mermaid.js が `(` にした入力を拒否するときは、仕様どおりの�
 `specified.json` に `accepted: false` とエラーを記録します
 （`(` への置き換えが YAML を壊したときは、読みを作れないので、
 生成器が止まります。その fixture の読みの作り方を決めます）。
+`bare-percent-line-before-header` では、ヘッダーの前の `%%` だけの行と、
+その間の空白だけの行を取り除いた入力を mermaid.js に読ませた結果です。
+仕様はそれらをどの図種でもトリビアとして読み、
+mermaid.js は、flowchart（`%%` だけの行、`%%{ }%%`、`%%{}`、`%%{-x}%%`）、
+state（`%%` 以外の同じ行）、
+class（そのような行の後の、タブを含む空白だけの行や、
+空白に挟まれたディレクティブ）では、それらを読めません。
+間にあるコメント行とディレクティブは残ります。
+ディレクティブは、跨ぐ行とともに、その行にある前後の空白を除いて残ります。
+空白を残すと、mermaid.js では、ディレクティブを除いた行が
+空白だけの行になるからです。
+フロントマターは飛ばします。
+title と `embedded` の値は、それらの行に依りません。
+[fixture: flowchart/header-after-bare-percent-line]
+[fixture: flowchart/header-after-empty-braces-line]
+[fixture: flowchart/header-after-non-word-brace-line]
+[fixture: flowchart/header-after-empty-braces-no-space]
+[fixture: state/header-after-empty-braces-line]
+[fixture: state/header-after-non-word-brace-line]
+[fixture: state/header-after-empty-braces-no-space]
+[fixture: class/header-after-bare-percent-then-whitespace-line]
+[fixture: class/header-after-empty-braces-then-whitespace-line]
+[fixture: class/header-after-bare-percent-then-tab-line]
+[fixture: class/header-after-bare-percent-then-indented-directive-line]
 ほかの印には、このファイルは要りません。
 仕様が mermaid.js の受理するものを拒否する
-（`directive-as-token-boundary`、`ignored-semicolon-as-token-boundary`、
-`click-reserved-word`、`tokenless-empty-forms`、`headerless-empty-ending`）か、
+（`directive-as-token-boundary`、
+`ignored-semicolon-as-token-boundary`、`click-reserved-word`、
+`tokenless-empty-forms`、`headerless-empty-ending`）か、
 拒否するものを受理する（`embedded-data-opaque`）からです。
+これらのどれにも、ここには差異を除く手段がありません。
+入力を仕様と同じに読ませるために mermaid.js を動かすことはせず、
+仕様が何を出すかは、
+[既知の差異](../../spec/docs/known-divergences.ja.md)の、
+その差異の文書が述べています。
 
 規則は `src/divergence-removals.ts` に挙げてあり、
 pin した mermaid.js の字句解析器の中で、
@@ -373,6 +415,23 @@ frontmatter、ディレクティブ、コメント行を取り除きます。
 そうした規則は、その開始状態だけが試す規則の中から探します。
 どの開始状態でも試す規則が、同じ形を持つことがあるためです。
 
+図種の検出器を置き換えることもあります。
+置き換えた検出器は、その語をテキストの先頭だけに探します。
+mermaid.js は検出器を、最初に登録された順に持っています。
+すでにある検出器の id で
+`mermaid.registerExternalDiagrams()` に検出器を登録すると、
+その検出器が同じ位置で置き換わるので、試す順は保たれます。
+置き換える検出器の図は、先にその見本のテキストを読ませて、読み込んでおきます。
+こうして、置き換えた検出器に loader は要りません
+（渡す loader は、呼ばれたら失敗します）。
+元の検出器は、呼び出しが終わるときにもう一度登録します。
+`runMermaid()` はどの入力よりも前に、この置き換えを 1 度行い、
+検出器が、置き換える前、置き換えている間、置き換えた後に、
+その差異が挙げる確かめ用のテキストへ、挙げられた図の id を返さなければ、
+`MermaidEnvironmentError` で止まります。
+[fixture: common/detect-c4-anywhere]
+[fixture: common/detect-minimal-c4]
+
 - `comment-takes-character`、sequence の字句解析器
   （[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)）
   :
@@ -392,6 +451,21 @@ frontmatter、ディレクティブ、コメント行を取り除きます。
   [fixture: class/div-comment-after-name-then-statement]
   [fixture: class/div-comment-after-note-string-then-statement]
   [fixture: class/div-comment-after-click-string-then-statement]
+- `c4-keyword-anywhere`、C4 の検出器
+  （[`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10-L10)）
+  :
+  検出器は、5 つのキーワード `C4Context`、`C4Container`、`C4Component`、
+  `C4Dynamic`、`C4Deployment` を、空白の後のテキストの先頭だけに探す。
+  mermaid.js は、`C4Context` をそこに探し、ほかの 4 つはどこにでも探す。
+  そうすると、ほかの図種のテキストが、
+  ラベル、名前、メッセージとしてその 4 つを持っていても、
+  仕様と同じに、先頭の図として読まれる。
+  キーワードで始まるテキストは、これまでどおりに読まれる。
+  [fixture: common/detect-c4-anywhere]
+  [fixture: common/detect-minimal-c4]
+  [fixture: flowchart/div-c4-keyword-in-label]
+  [fixture: class/div-c4-keyword-as-class-name]
+  [fixture: state/div-c4-keyword-as-state-id]
 - `name-start-reads-unit`、class の字句解析器
   （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）
   :

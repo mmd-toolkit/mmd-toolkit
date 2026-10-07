@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md (bare-percent-line-before-header): `%%{-x}%%` starts no directive, so the line is a bare `%%` line, a comment here; the flowchart lexer of mermaid.js reads `%%` as an id before the header and rejects the input."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%{-x}%%flowchart L\n^\nExpecting 'NEWLINE', 'SPACE', 'GRAPH', got 'NODE_STRING'"
+  }
+}

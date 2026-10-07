@@ -7,6 +7,8 @@ import {
   runMermaid,
 } from "../src/mermaid.ts"
 import type { RunMermaidOptions } from "../src/mermaid.ts"
+import { loadFixtures } from "../src/index.ts"
+import type { DiagramType } from "../src/index.ts"
 import type { RUN_MERMAID_OPTION_KEYS } from "../src/run-mermaid-options.ts"
 import type { MermaidConfig } from "../src/types.ts"
 import { errorName, isEnvironmentFailure } from "../src/rejections.ts"
@@ -1028,6 +1030,202 @@ describe("withoutDivergences", () => {
         ],
       }),
     )
+  })
+})
+
+describe("withoutDivergences: c4-keyword-anywhere", () => {
+  const withoutC4Anywhere: RunMermaidOptions = {
+    withoutDivergences: ["c4-keyword-anywhere"],
+  }
+
+  /** The input of the fixture `diagram`/`name`. */
+  async function inputOf(diagram: DiagramType, name: string): Promise<string> {
+    const fixture = (await loadFixtures(diagram)).find(
+      (candidate) => candidate.name === name,
+    )
+    if (fixture === undefined) throw new Error(`no fixture ${diagram}/${name}`)
+    return fixture.input
+  }
+
+  /** The Db of an accepted outcome. */
+  function dbOf(outcome: Awaited<ReturnType<typeof runMermaid>>): unknown {
+    if (!outcome.accepted) throw new Error("expected an accepted outcome")
+    return outcome.db
+  }
+
+  it("reads a sequence diagram whose message is C4Container as the sequence diagram [fixture: common/detect-c4-anywhere]", async () => {
+    const input = await inputOf("common", "detect-c4-anywhere")
+    expect(await runMermaid(input)).toEqual({
+      accepted: false,
+      error: {
+        name: "Error",
+        message:
+          "Lexical error on line 1. Unrecognized text.\nsequenceDiagramA->>\n^",
+      },
+    })
+    const removed = await runMermaid(input, withoutC4Anywhere)
+    if (!removed.accepted) throw new Error("expected an accepted outcome")
+    expect(removed.diagramType).toBe("sequence")
+    expect(
+      (dbOf(removed) as { messages: { message: string }[] }).messages.map(
+        ({ message }) => message,
+      ),
+    ).toEqual(["C4Container"])
+  })
+
+  it("reads a flowchart whose label is C4Component as the flowchart [fixture: flowchart/div-c4-keyword-in-label]", async () => {
+    const input = await inputOf("flowchart", "div-c4-keyword-in-label")
+    expect(await runMermaid(input)).toEqual({
+      accepted: false,
+      error: {
+        name: "Error",
+        message:
+          "Lexical error on line 1. Unrecognized text.\nflowchart LRA[C4Com\n^",
+      },
+    })
+    const removed = await runMermaid(input, withoutC4Anywhere)
+    if (!removed.accepted) throw new Error("expected an accepted outcome")
+    expect(removed.diagramType).toBe("flowchart-v2")
+    expect(vertices(removed).map(({ id, text }) => ({ id, text }))).toEqual([
+      { id: "A", text: "C4Component" },
+    ])
+  })
+
+  it("reads a class diagram whose class is C4Dynamic as the class diagram [fixture: class/div-c4-keyword-as-class-name]", async () => {
+    const input = await inputOf("class", "div-c4-keyword-as-class-name")
+    expect(await runMermaid(input)).toEqual({
+      accepted: false,
+      error: {
+        name: "Error",
+        message:
+          "Lexical error on line 1. Unrecognized text.\nclassDiagramclass C\n^",
+      },
+    })
+    const removed = await runMermaid(input, withoutC4Anywhere)
+    if (!removed.accepted) throw new Error("expected an accepted outcome")
+    expect(removed.diagramType).toBe("classDiagram")
+    expect(
+      (dbOf(removed) as { classes: { id: string }[] }).classes.map(
+        ({ id }) => id,
+      ),
+    ).toEqual(["C4Dynamic"])
+  })
+
+  it("reads a state diagram whose state is C4Deployment as the state diagram [fixture: state/div-c4-keyword-as-state-id]", async () => {
+    const input = await inputOf("state", "div-c4-keyword-as-state-id")
+    expect(await runMermaid(input)).toEqual({
+      accepted: false,
+      error: {
+        name: "Error",
+        message:
+          "Lexical error on line 1. Unrecognized text.\nstateDiagram-v2[*] \n^",
+      },
+    })
+    const removed = await runMermaid(input, withoutC4Anywhere)
+    if (!removed.accepted) throw new Error("expected an accepted outcome")
+    expect(removed.diagramType).toBe("stateDiagram")
+    expect(
+      (dbOf(removed) as { states: { id: string }[] }).states.map(
+        ({ id }) => id,
+      ),
+    ).toEqual(["root_start", "C4Deployment"])
+  })
+
+  it("leaves a C4 diagram, which starts with its keyword, as mermaid.js reads it [fixture: common/detect-minimal-c4]", async () => {
+    const input = await inputOf("common", "detect-minimal-c4")
+    const asIs = await runMermaid(input)
+    expect(asIs).toEqual({ accepted: true, diagramType: "c4", db: null })
+    expect(await runMermaid(input, withoutC4Anywhere)).toEqual(asIs)
+  })
+
+  it("leaves each of the five keywords at the start of a C4 diagram, after whitespace and a comment line, as it is", async () => {
+    for (const keyword of [
+      "C4Context",
+      "C4Container",
+      "C4Component",
+      "C4Dynamic",
+      "C4Deployment",
+    ]) {
+      const text = `  \n%% c\n ${keyword}\ntitle T\n`
+      const asIs = await runMermaid(text)
+      expect(asIs, keyword).toEqual({
+        accepted: true,
+        diagramType: "c4",
+        db: null,
+      })
+      expect(await runMermaid(text, withoutC4Anywhere), keyword).toEqual(asIs)
+    }
+  })
+
+  it("rejects a text that holds a keyword and starts with no diagram type, as an unknown diagram", async () => {
+    const text = "not a diagram C4Container\n"
+    const asIs = await runMermaid(text)
+    if (asIs.accepted) throw new Error("expected a rejection")
+    expect(asIs.error.name).toBe("Error")
+    const removed = await runMermaid(text, withoutC4Anywhere)
+    if (removed.accepted) throw new Error("expected a rejection")
+    expect(removed.error.name).toBe("UnknownDiagramError")
+  })
+
+  it("gives a diagram without a keyword the result it has without the removal", async () => {
+    for (const text of [
+      "flowchart LR\n  A --> B\n",
+      "sequenceDiagram\n  A->>B: x\n",
+      "classDiagram\n  class A\n",
+      "stateDiagram-v2\n  [*] --> A\n",
+    ]) {
+      expect(await runMermaid(text, withoutC4Anywhere), text).toEqual(
+        await runMermaid(text),
+      )
+    }
+  })
+
+  it("puts the detector back after the call, also when calls overlap", async () => {
+    const text = "sequenceDiagram\nA->>B: C4Container"
+    const [removed, asIs] = await Promise.all([
+      runMermaid(text, withoutC4Anywhere),
+      runMermaid(text),
+    ])
+    expect(removed.accepted).toBe(true)
+    expect(asIs.accepted).toBe(false)
+    expect((await runMermaid(text)).accepted).toBe(false)
+    expect(await detectDiagramType(text)).toBe("c4")
+  })
+
+  it("reads the same with the removal first and without it after, and the other way round", async () => {
+    const text = "classDiagram\nclass C4Dynamic\n"
+    const rejected = await runMermaid(text)
+    expect(rejected.accepted).toBe(false)
+    expect((await runMermaid(text, withoutC4Anywhere)).accepted).toBe(true)
+    expect(await runMermaid(text)).toEqual(rejected)
+    expect((await runMermaid(text, withoutC4Anywhere)).accepted).toBe(true)
+  })
+
+  it("is removed together with a lexer divergence, and counts once", async () => {
+    const text = "sequenceDiagram\n  autonumber 5%% c\n  A->>B: C4Container\n"
+    const both = await runMermaid(text, {
+      withoutDivergences: [
+        "comment-takes-character",
+        "c4-keyword-anywhere",
+        "c4-keyword-anywhere",
+      ],
+    })
+    if (!both.accepted) throw new Error("expected an accepted outcome")
+    expect(
+      (dbOf(both) as { messages: { message: unknown }[] }).messages[0]?.message,
+    ).toEqual({ start: 5, step: 1, visible: true })
+  })
+
+  it("is the detection of detectDiagramType too", async () => {
+    const text = "flowchart LR\nA[C4Container]"
+    expect(await detectDiagramType(text)).toBe("c4")
+    expect(await detectDiagramType(text, withoutC4Anywhere)).toBe(
+      "flowchart-v2",
+    )
+    expect(await detectDiagramType("x C4Container", withoutC4Anywhere)).toBe(
+      undefined,
+    )
+    expect(await detectDiagramType(text)).toBe("c4")
   })
 })
 

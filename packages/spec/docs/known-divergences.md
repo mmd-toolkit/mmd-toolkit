@@ -23,6 +23,8 @@ differently and how to write them so that both read them the same.
 | [`comment-takes-line-break`](./known-divergences/comment-takes-line-break.md)                       | class                             | A line break after a comment that follows a unit on its line                                                                | 2      |
 | [`headerless-empty-ending`](./known-divergences/headerless-empty-ending.md)                         | class                             | A text without a header that ends with an empty value                                                                       | 2      |
 | [`name-start-reads-unit`](./known-divergences/name-start-reads-unit.md)                             | class                             | A backquoted name or generic type that starts with a keyword, `"`, `<<`, or `>>`, or a backquoted name that starts with `~` | 2      |
+| [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.md)                                 | all                               | `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` after the header of another diagram type                       | 2      |
+| [`bare-percent-line-before-header`](./known-divergences/bare-percent-line-before-header.md)         | flowchart, class, state           | A bare `%%` line before the header, or a line of whitespace only after one, where the lexer of mermaid.js rejects it        | 2      |
 
 The reason is one of the three under
 [When a divergence is made](#when-a-divergence-is-made); `none` marks the

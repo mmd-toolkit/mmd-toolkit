@@ -113,7 +113,7 @@ pin した mermaid.js の更新を扱う。
   理由を書く（`eslint-comments/require-description` が求める）。
 - テストは重い。
   負荷が高いと（`uptime` の load average が CPU の数を超えると）、
-  mermaid.js を動かす確かめが時間切れになる。
+  テストのファイルが時間切れになることがある。
   時間切れが出たら、そのファイルだけを単独で走らせ直してから判断する。
   時間の長い確かめは、バックグラウンドで動かし、
   出力をリポジトリの外のファイルに書く。
@@ -124,14 +124,30 @@ pin した mermaid.js の更新を扱う。
 ## 3. 確かめ方（すべての作業で）
 
 - mermaid.js の挙動についての主張は、自分のものも、ほかから来たものも、
-  書く前に fixture で確かめる。パーサーは mermaid.js を動かさない。
-  入力を、その主張が関わる文とともに tests パッケージに渡す（tests の SKILL）。
-  tests が fixture を足し、fixture は mermaid.js のしたことを記録する。
-  そのあと fixture のテストが、パーサーをそれに従わせる。
+  書く前に確かめる。
+  パーサーのテストは、mermaid.js も生成した入力も動かさず、
+  fixture が記録したものにパーサーを従わせる。
+  主張の確かめに mermaid.js が要るときは、
+  リポジトリの外（scratchpad）の probe で動かす。
+  probe は `node --conditions=source` で走らせるスクリプトで、
+  `packages/tests` のソースから
+  `runMermaidWithEmbeddedData` と `dbFromTree` を読み込む。
+  前者は入力に対する mermaid.js の受理と Db を、
+  後者は同じ入力のパーサーの木から作った Db を返す。
+  probe で分かったことは、コーパスと文に落とし、probe は残さない。
+  文が必要とする入力は fixture にする。
+  入力と文を tests パッケージに渡して足してもらうか（tests の SKILL）、
+  fixtures CLI で自分で足して tests パッケージに知らせる。
+
+  ```sh
+  pnpm --filter @mmd-toolkit/tests run fixtures:add <diagram> <name> --note "<the sentence and the case>" < input.mmd
+  ```
+
   テストやコメントに書く例も、そうした入力である。
   flowchart では、テストのために手で書いた例が、
   行終端子で click の文脈を出るために、
   mermaid.js に拒否されていた。
+
 - パーサーの文書の、挙動を定める文を書くか変えるときは、
   その文が分ける場合と、その文の名指す場所で接するほかの規則
   （ディレクティブ、無視される `;`、コメント行、空行、行区切り、
@@ -327,7 +343,7 @@ flowchart のファイルが手本になる。
    ふつうは単位から空白を除いた範囲である。
    mermaid.js が値の一部として読む空白をトークンが持つ単位は、
    字句解析器がほかの `UnitEnds` で読む。
-   そうした単位は `ast/<図種>.md` の Tokens の節が挙げる。
+   そうした単位は、パーサーの `docs/tokens/<図種>.md` の Tokens の節が挙げる。
    sequence では `title` の `title-text` の単位と、箱のテキストである。
    class では、ジェネリクスのテキスト、閉じない逆引用符の名前、
    メンバーの行の各部分で、部分の範囲はメンバーの行の分け方が決める。
@@ -340,7 +356,7 @@ flowchart のファイルが手本になる。
    つまりスタイルと名前の部分からなる名前は、
    その並びを `runsWithNothingBetween()` から取る。
 2. 文法は、ノードと、項目ごとの種類を持つトークン（`PendingToken`）を作る。
-   トークンの種類は、`ast/<図種>.md` の Tokens の節から取る。
+   トークンの種類は、パーサーの `docs/tokens/<図種>.md` の Tokens の節から取る。
 3. 文法はすべての単位を読み、読み飛ばす単位はない。
    mermaid.js が読まないテキストも、木に置き場所があればノードにする。
    その位置に書けない単位は、どの規則も取らないので、入力を拒否し、

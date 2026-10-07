@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest"
 import type { DiagramType } from "../src/ast.ts"
 import {
-  buildDetectionInput,
-  detect,
+  detectDiagram,
   detectors,
+  errorConditionText,
   removePercentRuns,
 } from "../src/detection.ts"
 import { readFrontmatterTrivia } from "../src/frontmatter.ts"
@@ -17,26 +17,27 @@ function lexerOf(text: string): SourceLexer {
   return new SourceLexer(text, frontmatterTrivia?.textStart ?? 0)
 }
 
-/** The detection text of `text`, as parse() builds it. */
-function detectionTextOf(text: string): string {
-  return buildDetectionInput(lexerOf(text)).detectionText
+/** What the condition of the `error` pseudo-diagram compares for `text`, from its detection point. */
+function errorConditionTextOf(text: string): string {
+  const lexer = lexerOf(text)
+  return errorConditionText(lexer, lexer.firstTokenStart())
 }
 
 // Expectations come from detection.md and common.md, Diagram detection.
 
 describe("the detectors", () => {
-  it("are the 39 entries of detection.md in order: every DiagramType once, and `---`", () => {
+  it("are entries 3 to 39 of detection.md in order: every DiagramType but the `error` pseudo-diagram once", () => {
     const ids = detectors.map((detector) => detector.id)
-    expect(ids).toEqual([
-      ...(Object.keys(allDiagramTypes) as DiagramType[]).slice(0, 1),
-      "---",
-      ...(Object.keys(allDiagramTypes) as DiagramType[]).slice(1),
-    ])
-    expect(new Set(ids).size).toBe(39)
+    expect(ids).toEqual(
+      (Object.keys(allDiagramTypes) as DiagramType[]).filter(
+        (id) => id !== "error",
+      ),
+    )
+    expect(new Set(ids).size).toBe(37)
   })
 })
 
-describe("detect", () => {
+describe("detectDiagram", () => {
   it.each([
     // Entry 1: the whole text, case-insensitively, trimmed.
     ["error", "error"],
@@ -65,11 +66,12 @@ describe("detect", () => {
     ["ishikawaX", null],
     ["ishikawa\u017F", "ishikawa"],
     ["ishikawa\u00E9", "ishikawa"],
-    // Entry 7: `C4Context` at the start, the others anywhere.
+    // Entry 7: each of the five keywords at the start only.
     ["C4Context", "c4"],
+    ["C4Container", "c4"],
     ["x C4Context", null],
-    ["x C4Container", "c4"],
-    ["sequenceDiagram\nA->>B: C4Component", "c4"],
+    ["x C4Container", null],
+    ["sequenceDiagram\nA->>B: C4Component", "sequence"],
     ["mindmap\n  C4Dynamic", "mindmap"],
     ["flowchart LR\nA-->C4Context", "flowchart-v2"],
     // Exact keywords.
@@ -115,12 +117,12 @@ describe("detect", () => {
     ["usecase-beta", "usecase"],
     ["usecase-beta x", "usecase"],
     ["usecase-beta:", null],
-    // Leading whitespace is skipped by every detector.
+    // Leading trivia lies before the detection point.
     ["\n\n  pie", "pie"],
     ["", null],
     ["hello", null],
   ])("%j is %s", (text, expected) => {
-    expect(detect(text)).toBe(expected)
+    expect(detectDiagram(lexerOf(text)).detected).toBe(expected)
   })
 })
 
@@ -150,15 +152,15 @@ describe("removePercentRuns", () => {
   })
 })
 
-describe("buildDetectionInput", () => {
-  it("reports the first character that is not trivia", () => {
-    expect(
-      buildDetectionInput(lexerOf("  %% c\n%%{a}%% x")).firstTokenOffset,
-    ).toBe(15)
-    expect(buildDetectionInput(lexerOf("%% c\n")).firstTokenOffset).toBe(5)
-    expect(buildDetectionInput(lexerOf("")).firstTokenOffset).toBe(0)
+describe("detectDiagram: the detection point", () => {
+  it("is the first character that is not trivia", () => {
+    expect(detectDiagram(lexerOf("  %% c\n%%{a}%% x")).detectionPoint).toBe(15)
+    expect(detectDiagram(lexerOf("%% c\n")).detectionPoint).toBe(5)
+    expect(detectDiagram(lexerOf("")).detectionPoint).toBe(0)
   })
+})
 
+describe("errorConditionText", () => {
   it.each([
     // Directives and comment regions are left out, leading whitespace is
     // removed.
@@ -169,7 +171,8 @@ describe("buildDetectionInput", () => {
     // A `%%` that is formed by leaving out a directive and is no comment is
     // removed with its line break.
     ["%%%{a}%%%\nerror", "\nerror"],
-    // The second directive scan finds a directive formed by leaving out one.
+    // The directive rule, applied once more, finds a directive formed by
+    // leaving out one.
     ["error %%%%{wrap}%%{x}%%", "error "],
     // A `---` block at the start is removed again, and then the `%%` runs.
     ["\n---\ntitle: T\n---\nerror\n", "error\n"],
@@ -191,13 +194,13 @@ describe("buildDetectionInput", () => {
     ["x\r%% c\ny", "x\ny"],
     // A comment region starts right after U+2028, indent included.
     ["error\u2028  %% c", "error\u2028"],
-    // The second directive scan finds directives that whitespace and a word
+    // The directive rule, applied once more, finds directives that whitespace and a word
     // follow only once comment regions and directives are left out.
     ["%%{\n%% comment\nkanban\n  A-->B\n", "-->B\n"],
     ["%%{\n%%{wrap}%%\nerror", ""],
     ["%%{\n%%{wrap}%%\nx}%%error", "error"],
     ["%%{\n%%{\n%%{wrap}%%\nflowchart LR\nA-->B", "\nA-->B"],
   ])("%j gives %j", (text, expected) => {
-    expect(detectionTextOf(text)).toBe(expected)
+    expect(errorConditionTextOf(text)).toBe(expected)
   })
 })

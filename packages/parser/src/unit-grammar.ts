@@ -302,7 +302,7 @@ export abstract class UnitGrammar<
   }
 
   /**
-   * ast.md, Tokens: the tokens of one item of the grammar, whose units are
+   * `docs/tokens.md`, Tokens: the tokens of one item of the grammar, whose units are
    * `units`, of kind `kind`. Every unit of the item has that kind. A token
    * is a run of the item's units (see {@link UnitGrammar.runsOf}), without
    * the whitespace at its ends unless a unit keeps it; a run that is all
@@ -313,7 +313,7 @@ export abstract class UnitGrammar<
   }
 
   /**
-   * ast.md, Tokens: the tokens of an item of kind `kind`, whose units are
+   * `docs/tokens.md`, Tokens: the tokens of an item of kind `kind`, whose units are
    * `units`, that goes on with a value that starts before it, in another
    * item, as the text after the string that a label starts with: the
    * whitespace at the start of its first token lies inside the value, which
@@ -380,7 +380,7 @@ export abstract class UnitGrammar<
   }
 
   /**
-   * ast.md, Tokens: the runs of the units `units` of one item of kind
+   * `docs/tokens.md`, Tokens: the runs of the units `units` of one item of kind
    * `kind`, the maximal runs of units that follow one another with nothing
    * between them, in source order. Where a run breaks is the diagram's to
    * say (see {@link UnitGrammar.breaksRun}).
@@ -404,7 +404,7 @@ export abstract class UnitGrammar<
   }
 
   /**
-   * ast.md, Tokens: whether a run of units of one item of kind `kind`
+   * `docs/tokens.md`, Tokens: whether a run of units of one item of kind `kind`
    * breaks between `previous` and `unit`, the next unit of the item. It
    * breaks where the units do not follow one another in the units of the
    * text, which is where a unit of another item lies between them; a

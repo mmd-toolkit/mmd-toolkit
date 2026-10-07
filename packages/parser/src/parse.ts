@@ -1,5 +1,6 @@
-import type { Frontmatter, Range, Root } from "./ast.ts"
-import { buildDetectionInput, detect } from "./detection.ts"
+import type { DiagramType, Frontmatter, Range, Root } from "./ast.ts"
+import type { Detection } from "./detection.ts"
+import { detectDiagram } from "./detection.ts"
 import type { DiagramInput } from "./diagram-parsing.ts"
 import { parseClassDiagram } from "./diagrams/class/index.ts"
 import { parseErrorDiagram } from "./diagrams/error.ts"
@@ -13,19 +14,19 @@ import { SourceLexer } from "./source-lexer.ts"
 import { lineTerminatorEnd, nextOffset } from "./text-cursor.ts"
 
 /**
- * The range a detection failure is reported at: from the first character
- * that is not trivia to the end of its line, or an empty range at the end of
- * the text when there is no such character.
+ * error-positions.md, Before the diagram: the range a detection failure is
+ * reported at: from the detection point to the end of its line, or an empty
+ * range at the end of the text when there is no diagram text.
  */
-function detectionFailureRange(text: string, firstTokenOffset: number): Range {
-  if (firstTokenOffset >= text.length) {
-    return [firstTokenOffset, firstTokenOffset]
+function detectionFailureRange(text: string, detectionPoint: number): Range {
+  if (detectionPoint >= text.length) {
+    return [detectionPoint, detectionPoint]
   }
-  let offset = firstTokenOffset
+  let offset = detectionPoint
   while (offset < text.length && lineTerminatorEnd(text, offset) === null) {
     offset = nextOffset(text, offset)
   }
-  return [firstTokenOffset, offset]
+  return [detectionPoint, offset]
 }
 
 /** The source as `parse()` opens it, before detection. */
@@ -52,16 +53,37 @@ export function openSource(text: string): OpenedSource {
 }
 
 /**
+ * The input of the parser of the diagram type `diagramType`, which
+ * `detection` found in the source `opened`: its lexer starts where
+ * detection left the text. Not public API: the tests read the source with
+ * the same input.
+ */
+export function diagramInputOf(
+  opened: OpenedSource,
+  detection: Detection,
+  diagramType: DiagramType,
+): DiagramInput {
+  return {
+    lexer: opened.lexer,
+    frontmatter: opened.frontmatter,
+    diagramType,
+    textStart: detection.positionReached,
+    passed: detection.passed,
+  }
+}
+
+/**
  * Parses Mermaid text into the tree of ast.md. Throws `ParseError` when the
  * input is rejected and `UnsupportedDiagramError` when the diagram type is
  * detected but not implemented yet.
  */
 export function parse(text: string): Root {
-  const { lines, lexer, frontmatter } = openSource(text)
-  const { detectionText, firstTokenOffset } = buildDetectionInput(lexer)
-  const detected = detect(detectionText)
+  const opened = openSource(text)
+  const { lines } = opened
+  const detection = detectDiagram(opened.lexer)
+  const { detected, detectionPoint, positionReached } = detection
   if (detected === null) {
-    const range = detectionFailureRange(text, firstTokenOffset)
+    const range = detectionFailureRange(text, detectionPoint)
     throw new ParseError(
       "No diagram type detected",
       range,
@@ -69,18 +91,14 @@ export function parse(text: string): Root {
     )
   }
   if (detected === "---") {
-    const range: Range = [firstTokenOffset, firstTokenOffset + 3]
+    const range: Range = [positionReached, positionReached + 3]
     throw new ParseError(
       "Diagrams beginning with --- are not valid: the block is not frontmatter",
       range,
       lines.location(range),
     )
   }
-  const input: DiagramInput = {
-    lexer,
-    frontmatter,
-    diagramType: detected,
-  }
+  const input = diagramInputOf(opened, detection, detected)
   switch (detected) {
     case "error":
       return parseErrorDiagram(input)

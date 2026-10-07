@@ -6,18 +6,28 @@ import type {
   Range,
   Root,
 } from "./ast.ts"
+import type { PassedPart } from "./detection.ts"
 import { DiagramTextReader } from "./diagram-text.ts"
+import { ParseError } from "./errors.ts"
 import type { PendingToken, SourceLexer } from "./source-lexer.ts"
 
 /**
  * What a diagram's parser starts from: the shared lexer, which `parse()`
- * has set up and used for detection, the frontmatter, and the detected
- * diagram type.
+ * has set up and used for detection, the frontmatter, the detected diagram
+ * type, and where detection left the text.
  */
 export interface DiagramInput {
   readonly lexer: SourceLexer
   readonly frontmatter: Frontmatter | null
   readonly diagramType: DiagramType
+  /**
+   * common.md, Diagram detection: the position that detection reached,
+   * where the diagram's lexer starts; the detection point for the `error`
+   * pseudo-diagram.
+   */
+  readonly textStart: number
+  /** What detection read and passed before `textStart`, in source order (see {@link commentsBeforeHeader}). */
+  readonly passed: readonly PassedPart[]
 }
 
 /**
@@ -66,20 +76,49 @@ export interface Place {
 }
 
 /**
- * common.md, Reading a source: the diagram text, from the first token of
- * the text on. The shared lexer has passed the leading whitespace, comment
- * regions, and directives (common.md, Leading whitespace); detection found
- * a diagram type, so the text has a token.
+ * common.md, Reading a source, and Diagram detection: the diagram text, from
+ * the position that detection reached on. Detection passed the leading
+ * trivia (common.md, Leading whitespace) and what it read before that
+ * position, which the diagram's lexer does not read again
+ * ({@link commentsBeforeHeader}); it found a diagram type there, so the text
+ * has a token.
  */
 export function openDiagramText(input: DiagramInput): DiagramTextReader {
-  const { lexer } = input
-  const start = lexer.firstTokenStart()
-  if (start >= lexer.text.length) {
+  const { lexer, textStart } = input
+  if (textStart >= lexer.text.length) {
     throw new Error(
       `mmd-toolkit parser bug: the diagram type ${input.diagramType} was detected in a text that has no token`,
     )
   }
-  return new DiagramTextReader(lexer, start)
+  return new DiagramTextReader(lexer, textStart)
+}
+
+/**
+ * common.md, Diagram detection: what detection passed before the header,
+ * which the diagram's lexer does not read again. Each bare `%%` line is a
+ * diagram comment with the mark `%%`, from its `%%` to the end of its line,
+ * at the places that detection recorded as it passed the line, in every
+ * diagram type (known-divergences/bare-percent-line-before-header.md). A
+ * directive found once more, which is not in the tree, makes the input
+ * rejected (docs/error-positions.md, Before the diagram). Returns the
+ * comments, in source order.
+ */
+export function commentsBeforeHeader(input: DiagramInput): DiagramComment[] {
+  const { lexer } = input
+  return input.passed.map((part) => {
+    if (part.kind === "directive-found-once-more") {
+      throw new ParseError(
+        "A directive formed across directives or comment lines cannot come before the header",
+        part.opening,
+        lexer.lines.location(part.opening),
+      )
+    }
+    return {
+      range: [part.start, part.end],
+      mark: "%%",
+      valueStart: part.valueStart,
+    }
+  })
 }
 
 /**
@@ -136,7 +175,7 @@ export function finishDiagram(
  * The promises of {@link DiagramAnalysis}: the tokens `tokens` are in source
  * order, do not overlap, are not empty, and lie in the source. Where a token
  * starts or ends with whitespace is the diagram's to say, and the check of
- * the tree checks it against the values (ast.md, Invariants). A broken
+ * the tree checks it against the values (`docs/positions.md`, Invariants). A broken
  * promise is a bug of the diagram's parser.
  */
 function checkAnalysis(source: string, tokens: readonly PendingToken[]): void {

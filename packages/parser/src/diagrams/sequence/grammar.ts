@@ -71,7 +71,7 @@ const PARTICIPANT_KEYWORDS: readonly UnitName[] = [
  * diagrams/sequence.md, Grammar: the recursive-descent parser over the
  * units of the sequence lexer. Each method reads one rule of the grammar,
  * which its comment names, and makes the node that the specification gives
- * for the rule, with the tokens of ast/sequence.md, Tokens.
+ * for the rule, with the tokens of `docs/tokens/sequence.md`, Tokens.
  *
  * The parser reads units only; it moves no cursor in the source. A unit
  * that no rule takes makes the input rejected, such as the units of an
@@ -589,9 +589,9 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     this.addItem("Punctuator", [this.take("{")])
     const text = this.takeIf("description-block-text")
     const value = text === null ? null : this.literalOf([text])
-    // Lexical structure: the `newline` unit of the end of the text is the
-    // last unit, so the block ends at the end of the text before it.
-    const atEndOfText = this.next === this.units.length - 1
+    // Lexical structure: in the description block context the end of the
+    // text reads no `newline` unit, so the block ends with the units.
+    const atEndOfText = this.next === this.units.length
     const closing = atEndOfText ? null : this.take("}")
     if (closing !== null) this.addItem("Punctuator", [closing])
     return {

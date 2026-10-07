@@ -191,14 +191,16 @@ describe("fixtures", () => {
   /**
    * The marks of the known divergences whose fixtures hold the reading of the
    * specification in `specified.json` where it differs from `expected.json`:
-   * three change the lexer of mermaid.js, and one the way it reads the
-   * frontmatter.
+   * one changes the detector of C4 of mermaid.js, three change its lexer, and
+   * one changes the way it reads the frontmatter.
    */
   const READING_MARKS = [
+    "c4-keyword-anywhere",
     "comment-takes-character",
     "comment-takes-line-break",
     "name-start-reads-unit",
     "html-tag-in-frontmatter",
+    "bare-percent-line-before-header",
   ]
 
   it("has a specified reading for the fixtures of each mark that changes how mermaid.js reads", () => {

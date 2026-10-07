@@ -1,6 +1,6 @@
 import type { Range, Root } from "../../src/index.ts"
 import { ParseError, traverseNodes, visitorKeys } from "../../src/index.ts"
-import { buildDetectionInput, detect } from "../../src/detection.ts"
+import { detectDiagram } from "../../src/detection.ts"
 import { findDirectives } from "../../src/directives.ts"
 import type { ClassUnits } from "../../src/diagrams/class/index.ts"
 import { lexClass } from "../../src/diagrams/class/index.ts"
@@ -19,14 +19,35 @@ import type {
   Unit,
 } from "../../src/diagrams/flowchart/units.ts"
 import { isWordCharacter } from "../../src/character-classes.ts"
-import { openSource } from "../../src/parse.ts"
+import { diagramInputOf, openSource } from "../../src/parse.ts"
 import { readFrontmatterTrivia } from "../../src/frontmatter.ts"
 import { findAttributeQuotes } from "../../src/html-quotes.ts"
+import type { LineEntry } from "../../src/line-lookahead.ts"
+import {
+  lookAheadFromCommentStart,
+  nextCommentStart,
+} from "../../src/line-lookahead.ts"
 import { LineIndex } from "../../src/positions.ts"
 
 /** Where the text after the frontmatter trivia starts. */
 export function textStartOf(text: string): number {
   return readFrontmatterTrivia(text, new LineIndex(text))?.textStart ?? 0
+}
+
+/**
+ * common.md, Reading a source, items 1 and 2: the comment regions and line
+ * segments of `text`, in source order, as the parser's look-ahead decides
+ * them from the start of the text to the end.
+ */
+function lineEntriesOf(text: string): LineEntry[] {
+  const entries: LineEntry[] = []
+  let start = textStartOf(text)
+  while (start < text.length) {
+    const found = lookAheadFromCommentStart(text, start)
+    entries.push(...found)
+    start = nextCommentStart(text, found)
+  }
+  return entries
 }
 
 /**
@@ -104,7 +125,7 @@ export function ignoredSemicolonsBySegment(
   text: string,
 ): { readonly semicolons: readonly number[]; readonly end: number }[] {
   const segments: { semicolons: number[]; end: number }[] = []
-  for (const entry of openSource(text).lexer.lineEntries()) {
+  for (const entry of lineEntriesOf(text)) {
     if (entry.kind === "segment" && entry.ignoredSemicolons.size > 0) {
       segments.push({
         semicolons: [...entry.ignoredSemicolons].sort((a, b) => a - b),
@@ -136,6 +157,47 @@ export function frontmatterChangesAttributeQuotes(text: string): boolean {
     if (!fromSourceStart.has(offset)) return true
   }
   return false
+}
+
+/**
+ * detection.md, entry 7: the four keywords that mermaid.js looks for
+ * anywhere in the text, while the specification looks for them at the start
+ * only.
+ */
+const C4_KEYWORDS_ANYWHERE: readonly string[] = [
+  "C4Container",
+  "C4Component",
+  "C4Dynamic",
+  "C4Deployment",
+]
+
+/**
+ * known-divergences/bare-percent-line-before-header.md: whether the text has
+ * the form of the divergence: the parser's detection passes a bare `%%` line
+ * before the header. The tests declare the divergence with this; the parser
+ * does not tell such an input apart.
+ */
+export function holdsBarePercentLineBeforeHeader(text: string): boolean {
+  const { lexer } = openSource(text)
+  return detectDiagram(lexer).passed.some(
+    (part) => part.kind === "bare-percent-line",
+  )
+}
+
+/**
+ * known-divergences/c4-keyword-anywhere.md: whether the text has the form of
+ * the divergence: the parser detects a diagram type other than `c4`, and the
+ * diagram text from the detection point, as the parser's lexer reads it with
+ * its directives and comment regions left out, holds one of the four keywords
+ * that mermaid.js looks for anywhere. The tests declare the divergence with
+ * this; the parser does not tell such an input apart.
+ */
+export function holdsC4KeywordAfterHeader(text: string): boolean {
+  const { lexer } = openSource(text)
+  const { detected, detectionPoint } = detectDiagram(lexer)
+  if (detected === null || detected === "c4") return false
+  const diagramText = lexer.textOfRange(detectionPoint, text.length, [])
+  return C4_KEYWORDS_ANYWHERE.some((keyword) => diagramText.includes(keyword))
 }
 
 /**
@@ -396,11 +458,12 @@ export function namesStartingWithUnits(text: string): number[] | null {
  * `header` unit (`MISSING_HEADER_MESSAGE`), which the lexer decides.
  */
 export function rejectsWithoutHeader(text: string): boolean {
-  const { lexer, frontmatter } = openSource(text)
-  const diagramType = detect(buildDetectionInput(lexer).detectionText)
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
   if (diagramType !== "classDiagram") return false
   try {
-    lexClass({ lexer, frontmatter, diagramType })
+    lexClass(diagramInputOf(opened, detection, diagramType))
   } catch (error) {
     if (error instanceof ParseError) {
       return error.message === MISSING_HEADER_MESSAGE
@@ -621,7 +684,7 @@ function withoutCommentRegionsAnd(
   removed: readonly Range[],
 ): ShortenedText {
   const ranges: Range[] = [...removed]
-  for (const entry of openSource(text).lexer.lineEntries()) {
+  for (const entry of lineEntriesOf(text)) {
     if (entry.kind === "region") ranges.push([entry.start, entry.end])
   }
   ranges.sort((left, right) => left[0] - right[0])
@@ -651,8 +714,9 @@ function withoutCommentRegionsAnd(
 
 /** The units of the flowchart `text` as the parser's lexer reads them; null when `text` is no flowchart or its lexer rejects it. */
 function flowchartLexingOf(text: string): FlowchartLexing | null {
-  const { lexer, frontmatter } = openSource(text)
-  const diagramType = detect(buildDetectionInput(lexer).detectionText)
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
   if (
     diagramType !== "flowchart-v2" &&
     diagramType !== "flowchart-elk" &&
@@ -661,7 +725,7 @@ function flowchartLexingOf(text: string): FlowchartLexing | null {
     return null
   }
   try {
-    return lexFlowchart({ lexer, frontmatter, diagramType })
+    return lexFlowchart(diagramInputOf(opened, detection, diagramType))
   } catch (error) {
     if (error instanceof ParseError) return null
     throw error
@@ -727,11 +791,12 @@ function flowchartUnits(units: readonly Unit[]): DiagramUnits {
 
 /** The units of the sequence diagram `text` as the parser's lexer reads them; null when `text` is no sequence diagram or its lexer rejects it. */
 function sequenceLexingOf(text: string): SequenceUnits | null {
-  const { lexer, frontmatter } = openSource(text)
-  const diagramType = detect(buildDetectionInput(lexer).detectionText)
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
   if (diagramType !== "sequence") return null
   try {
-    return lexSequence({ lexer, frontmatter, diagramType })
+    return lexSequence(diagramInputOf(opened, detection, diagramType))
   } catch (error) {
     if (error instanceof ParseError) return null
     throw error
@@ -740,11 +805,12 @@ function sequenceLexingOf(text: string): SequenceUnits | null {
 
 /** The units of the class diagram `text` as the parser's lexer reads them; null when `text` is no class diagram or its lexer rejects it. */
 function classLexingOf(text: string): ClassUnits | null {
-  const { lexer, frontmatter } = openSource(text)
-  const diagramType = detect(buildDetectionInput(lexer).detectionText)
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
   if (diagramType !== "classDiagram") return null
   try {
-    return lexClass({ lexer, frontmatter, diagramType })
+    return lexClass(diagramInputOf(opened, detection, diagramType))
   } catch (error) {
     if (error instanceof ParseError) return null
     throw error
@@ -753,11 +819,12 @@ function classLexingOf(text: string): ClassUnits | null {
 
 /** The units of the state diagram `text` as the parser's lexer reads them; null when `text` is no state diagram or its lexer rejects it. */
 function stateLexingOf(text: string): StateUnits | null {
-  const { lexer, frontmatter } = openSource(text)
-  const diagramType = detect(buildDetectionInput(lexer).detectionText)
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
   if (diagramType !== "stateDiagram") return null
   try {
-    return lexState({ lexer, frontmatter, diagramType })
+    return lexState(diagramInputOf(opened, detection, diagramType))
   } catch (error) {
     if (error instanceof ParseError) return null
     throw error

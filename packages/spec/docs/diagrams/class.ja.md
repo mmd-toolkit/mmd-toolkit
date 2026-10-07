@@ -21,7 +21,7 @@ mermaid.js での正解の出どころ:
 [fixture: common/detect-minimal-class-diagram] [fixture:
 common/detect-case-sensitive-class]
 
-判定はテキストの始まりだけを見ます。
+検出は検出点だけを見ます（[図種の検出](../common.ja.md#図種の検出) を参照）。
 その後、文法はヘッダーのキーワード `classDiagram-v2` か `classDiagram` を、
 後に語の文字が続かないものとしてもう一度読み
 （[文の文脈](#文の文脈) を参照）、その後に `newline` の単位を読みます。
@@ -34,23 +34,41 @@ class 図と判定され、拒否されます。
 class/header-word-after-keyword] [fixture: class/header-other-suffix] [fixture:
 class/header-statement-same-line] [fixture: class/header-only]
 
-判定は字句解析器より多くを除きます
-（[図種の検出](../common.ja.md#図種の検出) を参照）。
 `%%` だけの行や、ディレクティブではない `%%{ }%%` の行は、
-ヘッダーの前にあってよく、テキストはそれでも class 図と判定されます。
-そのような行はコメントだけの行で、行として数えません
+ヘッダーの前にあってかまいません。
+これは `%%` だけの行で、検出はそれを読んで通り過ぎてヘッダーを探し、
+どの図種でも同じく、`%%` から行の終わりまでの、印 `%%` のコメントです
+（[図種の検出](../common.ja.md#図種の検出) を参照）。
+mermaid.js の字句解析器もそう読み、コメントだけの行として行に数えません
 （[文の文脈](#文の文脈) の規則 2）。
 コメントはどのノードにも属さず、ClassDiagram はヘッダーから始まります。
+そのような行とヘッダーの間の空白、行終端、コメント領域、ディレクティブは、
+どの図種でも同じく、ここではトリビアです。
+mermaid.js は、コメント領域に入らない空白だけの行（空でない行）がそこにあると
+入力を拒否します。
+class の字句解析器がその行を `newline` の単位として読み、
+文法はヘッダーの前でそれを取らないからです（文の間と同じです。下を参照）。
+既知の差異 [`bare-percent-line-before-header`](#既知の差異) です。
+ディレクティブを除くと空白だけになる行もそう数え、
+前に空白のない、1 行だけのディレクティブはどちらでもトリビアです。
+[fixture: class/header-after-bare-percent-then-whitespace-line] [fixture:
+class/header-after-empty-braces-then-whitespace-line] [fixture:
+class/header-after-bare-percent-then-indented-directive-line] [fixture:
+class/header-after-bare-percent-then-directive-line] [fixture:
+class/header-after-bare-percent-then-whitespace-line-then-comment-line]
+[fixture: class/header-after-bare-percent-then-empty-line]
+[fixture: class/header-after-bare-percent-line] [fixture:
+class/header-after-empty-braces-line] [fixture:
+class/header-after-non-word-brace-line]
 文の間でも、そのような行は同じく受理されます。
 一方、その後の空白だけの行はそれだけで `newline` の単位になり、
 mermaid.js と同じく入力は拒否されます。
 [fixture: class/lex-bare-percent-line-between-statements] [fixture:
 class/lex-bare-percent-line-then-blank-line] [fixture:
 class/lex-bare-percent-line-then-spaces-line]
-判定が除かない、ヘッダーの前のテキスト（`#` の行など）では、
-判定が失敗します。
-[fixture: class/header-after-bare-percent-line] [fixture:
-class/header-after-empty-braces-line] [fixture: class/header-after-hash-line]
+ヘッダーの前のそれ以外のテキスト（`#` の行など）は検出点の図のテキストで、
+どの検出器も一致せず、mermaid.js と同じく入力は拒否されます。
+[fixture: class/header-after-hash-line]
 
 ## 字句構造
 
@@ -261,9 +279,11 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
    [fixture: class/header-v2]
 9. `[*]`: `[*]` の単位。
    [fixture: class/lex-edge-state-in-statement]
-10. `call` と 1 個以上の空白: `call` の単位。コールバック名の文脈に入る。
+10. `call` と、その後に続く空白のすべて（1 文字以上。行終端を含む）:
+    `call` の単位。コールバック名の文脈に入る。
     [fixture: class/lex-call-prefix]
     [fixture: class/lex-callback-name-multi-line]
+    [fixture: class/lex-call-two-spaces]
 11. `"`: 文字列
     （[文字列、バッククォートの名前、ジェネリクスの型](#文字列バッククォートの名前ジェネリクスの型)
     を参照）。
@@ -1334,3 +1354,23 @@ class 図に当てはまり、
   [fixture: class/div-backquote-keyword-link]
   [fixture: class/div-backquote-keyword-click]
   [fixture: class/div-backquote-keyword-href]
+- **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md)。**
+  ヘッダーの後のどこかにある `C4Container`、`C4Component`、`C4Dynamic`、
+  `C4Deployment`（クラス名、メンバー、ラベルなど）は、
+  mermaid.js ではテキストを C4 のパーサーに渡させ、拒否されます。
+  ここではテキストは class 図です。
+  [fixture: class/div-c4-keyword-as-class-name]
+- **[`bare-percent-line-before-header`](../known-divergences/bare-percent-line-before-header.ja.md)。**
+  `%%` だけの行とヘッダーの間の空白だけの行（空でない行）は、
+  ここではトリビアです。
+  mermaid.js は入力を拒否します。
+  class の字句解析器がその行を `newline` の単位として読み、
+  文法はヘッダーの前でそれを取らないからです（[検出](#検出) を参照）。
+  コメント行の直前の空白だけの行はコメント領域に入り、どちらでもトリビアです。
+  1 行だけのディレクティブもどちらでもトリビアです。
+  ディレクティブを除くと空白だけになる行は、空白だけの行と数えます。
+  [fixture: class/header-after-bare-percent-then-whitespace-line] [fixture:
+  class/header-after-empty-braces-then-whitespace-line] [fixture:
+  class/header-after-bare-percent-then-indented-directive-line] [fixture:
+  class/header-after-bare-percent-then-directive-line] [fixture:
+  class/header-after-bare-percent-then-whitespace-line-then-comment-line]

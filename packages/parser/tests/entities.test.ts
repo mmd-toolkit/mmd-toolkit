@@ -1,141 +1,140 @@
 import { describe, expect, it } from "vitest"
-import { findDirectives } from "../src/directives.ts"
-import { findEntityDelimiters } from "../src/entities.ts"
-
-/**
- * What the lexer reads in place of the `#` and the `;` of the entities of
- * `text`, read as one line segment with its directives found first, as
- * `[offset, text]` pairs in source order. `ignoredSemicolons` are the `;`
- * that the line rule ignores.
- */
-function delimitersOf(
-  text: string,
-  ignoredSemicolons: readonly number[] = [],
-): [number, string][] {
-  const directives = new Map(
-    findDirectives(text, 0).map((directive) => [directive.range[0], directive]),
-  )
-  const delimiters = findEntityDelimiters({
-    text,
-    start: 0,
-    end: text.length,
-    directives,
-    ignoredSemicolons: new Set(ignoredSemicolons),
-  })
-  return [...delimiters]
-    .map(([offset, delimiter]): [number, string] => [offset, delimiter.text])
-    .sort((a, b) => a[0] - b[0])
-}
+import { SourceLexer } from "../src/source-lexer.ts"
 
 const OPENING = "\uFB02\u00B0"
 const NUMERIC_OPENING = "\uFB02\u00B0\u00B0"
 const CLOSING = "\u00B6\u00DF"
+const DELIMITERS = new Set([OPENING, NUMERIC_OPENING, CLOSING])
+
+/**
+ * What the lexer reads in place of the `#` and the `;` of the entities of
+ * `text`, read from its start, as `[offset, text, placeholderEnd]` triples in
+ * source order.
+ */
+function delimitersOf(text: string): [number, string, number | null][] {
+  const lexer = new SourceLexer(text, 0)
+  const delimiters: [number, string, number | null][] = []
+  let offset = 0
+  for (;;) {
+    const element = lexer.readAt(offset)
+    if (element.kind === "character") {
+      if (element.endOfText) return delimiters
+      if (DELIMITERS.has(element.text)) {
+        delimiters.push([element.start, element.text, element.placeholderEnd])
+      }
+    }
+    offset = element.end
+  }
+}
 
 // Expectations come from common.md, Entities.
 
-describe("findEntityDelimiters", () => {
+describe("entities", () => {
   it.each([
     [
       "#amp;",
       [
-        [0, OPENING],
-        [4, CLOSING],
+        [0, OPENING, 5],
+        [4, CLOSING, null],
       ],
     ],
     [
       "#35;",
       [
-        [0, NUMERIC_OPENING],
-        [3, CLOSING],
+        [0, NUMERIC_OPENING, 4],
+        [3, CLOSING, null],
       ],
     ],
     [
       "#a1_;",
       [
-        [0, OPENING],
-        [4, CLOSING],
+        [0, OPENING, 5],
+        [4, CLOSING, null],
       ],
     ],
     [
       "a #amp; b",
       [
-        [2, OPENING],
-        [6, CLOSING],
+        [2, OPENING, 7],
+        [6, CLOSING, null],
       ],
     ],
     // Entities are found from left to right and do not overlap.
     [
       "#a;#1;",
       [
-        [0, OPENING],
-        [2, CLOSING],
-        [3, NUMERIC_OPENING],
-        [5, CLOSING],
+        [0, OPENING, 3],
+        [2, CLOSING, null],
+        [3, NUMERIC_OPENING, 6],
+        [5, CLOSING, null],
       ],
     ],
     [
       "#a#b;",
       [
-        [2, OPENING],
-        [4, CLOSING],
+        [2, OPENING, 5],
+        [4, CLOSING, null],
+      ],
+    ],
+    [
+      "##a;",
+      [
+        [1, OPENING, 4],
+        [3, CLOSING, null],
       ],
     ],
     // `+` is not a word character, and the word may not be empty.
     ["#+123;", []],
     ["#;", []],
     ["#a", []],
+    ["a;", []],
     ["#a ;", []],
+    ["# a;", []],
     ["#\u00E9;", []],
+    ["#\u{1F600}a;", []],
+    // An entity does not reach over a line terminator or a separator.
+    [
+      "#a\n;#b;",
+      [
+        [4, OPENING, 7],
+        [6, CLOSING, null],
+      ],
+    ],
+    ["#a\u2028b;", []],
   ])("%j has the delimiters %j", (text, expected) => {
     expect(delimitersOf(text)).toEqual(expected)
   })
 
   it("is no entity when the line rule ignores its `;`", () => {
-    expect(delimitersOf("#f00;", [4])).toEqual([])
-    expect(delimitersOf("#f00;x;", [6])).toEqual([
-      [0, OPENING],
-      [4, CLOSING],
+    expect(delimitersOf("style:#f00;")).toEqual([])
+    expect(delimitersOf("style:#f00;x;")).toEqual([
+      [6, OPENING, 11],
+      [10, CLOSING, null],
     ])
   })
 
-  it("reads the segment without its directives, so an entity can have a directive between two of its characters", () => {
+  it("reads the text without its directives, so an entity can have a directive between two of its characters", () => {
     expect(delimitersOf("a#qu%%{init: {}}%%ot;b")).toEqual([
-      [1, OPENING],
-      [20, CLOSING],
+      [1, OPENING, 21],
+      [20, CLOSING, null],
     ])
     expect(delimitersOf("#%%{x}%%1%%{y}%%;")).toEqual([
-      [0, NUMERIC_OPENING],
-      [16, CLOSING],
+      [0, NUMERIC_OPENING, 17],
+      [16, CLOSING, null],
+    ])
+    expect(delimitersOf("#a%%{x}%%;")).toEqual([
+      [0, OPENING, 10],
+      [9, CLOSING, null],
     ])
   })
 
-  it("gives the `#` the end of its placeholder, after the `;`, and the `;` none", () => {
-    const delimiters = findEntityDelimiters({
-      text: "a#qu%%{init: {}}%%ot;b",
-      start: 0,
-      end: 22,
-      directives: new Map(
-        findDirectives("a#qu%%{init: {}}%%ot;b", 0).map((directive) => [
-          directive.range[0],
-          directive,
-        ]),
-      ),
-      ignoredSemicolons: new Set(),
-    })
-    expect(delimiters.get(1)?.placeholderEnd).toBe(21)
-    expect(delimiters.get(20)?.placeholderEnd).toBeNull()
+  it("finds no entity in a comment region, and none that reaches into one", () => {
+    expect(delimitersOf("%% #a;\nb")).toEqual([])
+    expect(delimitersOf("#a\n%% x\n;")).toEqual([])
   })
 
-  it("reads only the segment", () => {
-    const text = "#a\n;#b;"
-    expect([
-      ...findEntityDelimiters({
-        text,
-        start: 0,
-        end: 2,
-        directives: new Map(),
-        ignoredSemicolons: new Set(),
-      }),
-    ]).toEqual([])
+  it("reads back from a `;` no further than the start of the reading", () => {
+    const element = new SourceLexer("#a;", 1).readAt(2)
+    expect(element.kind === "character" && element.text).toBe(";")
   })
 })

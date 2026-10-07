@@ -11,12 +11,13 @@ export interface RunMermaidOptions {
    */
   readonly config?: MermaidConfig
   /**
-   * Runs mermaid.js with its lexers changed so that these known divergences do
-   * not arise, for this call only (see docs/expected-results.md). Each
-   * identifier counts once, and an empty list runs mermaid.js as it is. The
-   * input may be of any diagram type; only the lexer of the diagram type a
-   * divergence belongs to changes. Divergences whose changes touch the same
-   * part of one lexer cannot be removed together, and the call throws.
+   * Runs mermaid.js with a lexer rule, or the detector of a diagram type,
+   * changed so that these known divergences do not arise, for this call only
+   * (see docs/expected-results.md). Each identifier counts once, and an empty
+   * list runs mermaid.js as it is. The input may be of any diagram type; only
+   * the lexer of the diagram type a divergence belongs to, or its detector,
+   * changes. Divergences whose changes touch the same part of mermaid.js
+   * cannot be removed together, and the call throws.
    */
   readonly withoutDivergences?: readonly DivergenceRemoval[]
 }

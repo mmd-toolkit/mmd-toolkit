@@ -186,7 +186,7 @@ interface LabelUnits {
  * diagrams/flowchart.md, Grammar: the recursive-descent parser over the
  * units of the flowchart lexer. Each method reads one rule of the grammar,
  * which its comment names, and makes the node that the specification gives
- * for the rule, with the tokens of ast/flowchart.md, Tokens.
+ * for the rule, with the tokens of `docs/tokens/flowchart.md`, Tokens.
  *
  * The parser reads units only; it moves no cursor in the source. A unit
  * that no rule takes makes the input rejected, such as the units of an
@@ -932,7 +932,10 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
       body,
       ...this.placeFrom(start),
     }
-    this.subgraphMembers.set(statement, this.subgraphMemberOf(name, title))
+    this.subgraphMembers.set(
+      statement,
+      this.subgraphMemberOf(name, nameUnits, title),
+    )
     return statement
   }
 
@@ -991,16 +994,22 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * Rejections outside the grammar, Subgraph members: the member that the subgraph with the
-   * name `name` and the title `title` gives the subgraph around it, its Db
+   * name `name`, read from `nameUnits`, and the title `title` gives the subgraph around it, its Db
    * id (see `subgraphIdOf`); null when that id is empty or all
    * whitespace. A numbered id is neither `hasOwnProperty` nor empty, so its
    * number is not needed here.
    */
   private subgraphMemberOf(
     name: FlowchartLabel,
+    nameUnits: LabelUnits,
     title: FlowchartLabel | null,
   ): SubgraphMember | null {
-    const { range, leftOut } = subgraphNameTextOf(this.lexedUnits, name)
+    const { range, leftOut } = subgraphNameTextOf(
+      this.lexedUnits,
+      name,
+      nameUnits.units[0],
+      nameUnits.delimiters,
+    )
     const nameText = this.textOf(range, leftOut)
     const numbered = isNumberedSubgraph(nameText, title !== null)
     if (!numbered && isBlank(nameText)) return null
@@ -1208,10 +1217,11 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * Click statements: `click-statement = "click" click-ids ( callback-name
-   * callback-arguments? ( space string )? | "href"? string ( space string )? (
-   * space link-target )? | name ( space string )? )` and `click-ids = (
-   * click-id | click-comma )+`. The first and the third alternative call a
+   * Click statements: `click-statement = "click" click-ids ( callback (
+   * space string )? | "href"? string ( space string )? ( space link-target
+   * )? | name ( space string )? )` and `click-ids = ( click-id | click-comma
+   * )+`, with the `callback` of {@link FlowchartGrammar.parseCallback}. The
+   * first and the third alternative call a
    * function; the second links to a URL. The click ids are a list as an
    * `id-list` is, parted at the `click-comma` units. The `click` is a `Keyword`
    * token in no field. `click` is a reserved word
@@ -1553,7 +1563,7 @@ function linkTargetOf(text: string): FlowchartLinkTarget {
 }
 
 /**
- * ast.md, Tokens: the `space` unit `unit`, whose whitespace mermaid.js reads
+ * `docs/tokens.md`, Tokens: the `space` unit `unit`, whose whitespace mermaid.js reads
  * as part of a value, with a token of all of it, as a unit whose whitespace
  * at its ends is kept (see `UnitEnds`).
  */

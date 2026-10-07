@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest"
 import {
   codePointBefore,
-  findCharacters,
   findCodePoint,
   findCodePoints,
   lineTerminatorEnd,
@@ -58,13 +57,6 @@ describe("matching and finding", () => {
     expect(matchCharacters(text, 4, "ab")).toBe(6)
     expect(matchCharacters(text, 4, "abc")).toBeNull()
     expect(matchCharacters(text, 6, "")).toBe(6)
-  })
-
-  it("finds characters from data at a character boundary", () => {
-    expect(findCharacters(text, 0, "\uD83D")).toBe(3)
-    expect(findCharacters(text, 0, "ab")).toBe(4)
-    expect(findCharacters(text, 5, "a")).toBeNull()
-    expect(findCharacters(text, 0, "\uDE00")).toBeNull()
   })
 
   it("matches and finds fixed code point sequences", () => {

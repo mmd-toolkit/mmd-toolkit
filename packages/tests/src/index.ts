@@ -180,6 +180,20 @@ export const KNOWN_DIVERGENCES: readonly string[] = [
   // is read as a unit of its own. Acceptance differs both ways, and inputs
   // both accept can differ in the Db.
   "name-start-reads-unit",
+  // The C4 detector of mermaid.js finds `C4Container`, `C4Component`,
+  // `C4Dynamic`, and `C4Deployment` anywhere in the text and hands such a text
+  // to the C4 parser, which rejects a text with another header; the spec reads
+  // the text as the diagram of its header. The spec accepts what mermaid.js
+  // rejects.
+  "c4-keyword-anywhere",
+  // A bare `%%` line before the header (`%%` alone, or `%%{` where no
+  // directive starts) is a comment of the diagram in every diagram type, and
+  // the lines between it and the header are trivia. mermaid.js strips such
+  // lines when it detects the type but hands them to the lexer of the detected
+  // diagram, which rejects them in flowchart (`%%` is an id), in state (`%%{`),
+  // and in class after a line of whitespace only (a `newline` unit). The spec
+  // accepts what mermaid.js rejects.
+  "bare-percent-line-before-header",
 ]
 
 /**

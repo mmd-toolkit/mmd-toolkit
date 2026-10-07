@@ -46,7 +46,7 @@ export interface NodeBase {
 }
 
 /**
- * ast.md, Tokens: the token kinds that a diagram's own lexer gives its
+ * `docs/tokens.md`, Tokens: the token kinds that a diagram's own lexer gives its
  * tokens. Which characters form a token, and of which of these kinds, is
  * defined by each diagram document. The tokens of the frontmatter have two
  * of them: `Punctuator` for each `---` and `RawText` for the body.
@@ -76,7 +76,7 @@ export type DiagramTokenKind =
   | "Punctuator"
 
 /**
- * ast.md, Tokens: the token kinds, shared by all diagram types: those of
+ * `docs/tokens.md`, Tokens: the token kinds, shared by all diagram types: those of
  * the diagram's own tokens and of the frontmatter (see
  * {@link DiagramTokenKind}), and three more, the same in every diagram:
  *
@@ -97,7 +97,7 @@ export type TokenKind =
   | "IgnoredSemicolon"
 
 /**
- * ast.md, Tokens: one lexical unit of the diagram, a directive that lies
+ * `docs/tokens.md`, Tokens: one lexical unit of the diagram, a directive that lies
  * outside every token and comment, or the frontmatter. Tokens are listed in
  * `Root.tokens`; they are not nodes and are not the values of node fields.
  */

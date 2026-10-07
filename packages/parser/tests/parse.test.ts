@@ -488,28 +488,19 @@ describe("parse: the flowchart diagram types", () => {
     expect(root.body.type).toBe("FlowchartDiagram")
   })
 
-  it.each([
-    // Detection removes a `---` block again after the leading whitespace,
-    // but the flowchart grammar reads it and rejects it (common.md,
-    // Frontmatter).
-    ["\n---\ntitle: T\n---\nflowchart LR\nA-->B\n"],
-    // A `%%{ }%%` is neither a directive nor a comment line: detection
-    // removes it as a `%%` run, and the flowchart grammar reads it.
-    ["%%{ }%%\nflowchart LR"],
-    // The lexer reads the text without the directive, `flowchartLR`, which
-    // is not the header keyword (common.md, A directive is a token
-    // boundary).
-    ["flowchart%%{init: {}}%%LR\nA-->B"],
-  ])("%j is detected as a flowchart and rejected by its grammar", (text) => {
-    expect(parseError(text).message).toBe("Unexpected token")
+  it("reads the text without a directive, which can join the header to the next word", () => {
+    // The lexer reads `flowchartLR`, which is not the header keyword
+    // (common.md, A directive is a token boundary).
+    expect(parseError("flowchart%%{init: {}}%%LR\nA-->B").message).toBe(
+      "Unexpected token",
+    )
   })
 })
 
 describe("parse: detected but unsupported diagram types", () => {
   it.each([
     ['pie\n"a": 1', "pie"],
-    // The c4 detector matches its other keywords anywhere.
-    ["graph TD\nA[C4Container]-->B", "c4"],
+    ['C4Container\nContainer(a, "A")', "c4"],
   ])("%j is %s", (text, diagramType) => {
     let caught: unknown
     try {
@@ -551,6 +542,9 @@ describe("parse: rejected input", () => {
   it.each([
     ["---\ntitle: x\n---", [0, 3]],
     ["---\n---\nerror", [0, 3]],
+    // A line break before the block: no frontmatter, and the diagram text
+    // starts with `---` (common.md, Frontmatter).
+    ["\n---\ntitle: T\n---\nflowchart LR\nA-->B\n", [1, 4]],
     ["%% c\n  ----\na\n----\nerror", [7, 10]],
   ])("rejects %j as the `---` pseudo-diagram at %j", (text, range) => {
     const error = parseError(text)
@@ -583,8 +577,9 @@ describe("parse: rejected input", () => {
     ])
     expect(commentRoot.directives).toMatchObject([{ range: [1, 15] }])
     expect(commentRoot.tokens.map((token) => token.value)).toEqual(["error"])
-    // Diagram detection: the second directive scan finds `%%{x}%%`, formed
-    // by leaving out `%%{wrap}%%`. The tree keeps the directives of the
+    // Diagram detection: the condition of the `error` pseudo-diagram applies
+    // the directive rule once more and finds `%%{x}%%`, formed by leaving out
+    // `%%{wrap}%%`. The tree keeps the directives of the
     // source: `%%` and `{x}%%` are tokens.
     const joined = "error %%%%{wrap}%%{x}%%"
     const joinedRoot = parse(joined)
@@ -609,10 +604,11 @@ describe("parse: rejected input", () => {
     ])
   })
 
-  it("finds a directive in the second scan of detection across a directive that is left out", () => {
-    // The first `%%{` starts no directive in the source, but in the
-    // detection text `%%{`, whitespace, `x`, and `}%%` form one, which is
-    // removed; the detectors see `error`. The tree keeps the source as is.
+  it("finds a directive once more across a directive that is left out, for the `error` pseudo-diagram", () => {
+    // The first `%%{` starts no directive in the source, but in the diagram
+    // text `%%{`, whitespace, `x`, and `}%%` form one, which the condition of
+    // the `error` pseudo-diagram leaves out; it compares `error`. The tree
+    // keeps the source as is.
     const text = "%%{\n%%{wrap}%%\nx}%%error"
     const root = parse(text)
     expect(problemsOfTree(text, root)).toEqual([])
@@ -621,9 +617,9 @@ describe("parse: rejected input", () => {
       ["Directive", "%%{wrap}%%"],
       ["RawText", "x}%%error"],
     ])
-    // With `error` as the word after the whitespace, the directive of the
-    // detection text runs to its end, and nothing is left to detect. The
-    // error is reported at the first line of the source that is not trivia.
+    // With `error` as the word after the whitespace, the directive found once
+    // more runs to the end of the text, and the condition compares nothing.
+    // The error is reported at the detection point, to the end of its line.
     expect(parseError("%%{\n%%{wrap}%%\nerror").range).toEqual([0, 3])
   })
 

@@ -19,6 +19,17 @@
   [fixture: common/whitespace-only]
 - `---` 疑似図種: `range` は、ブロックの先頭の `-` 3 文字。
   [fixture: common/frontmatter-adjacent-delimiters]
+- ヘッダーの前で、もう一度の読みで見つかるディレクティブ
+  （[図種の検出](../../spec/docs/common.ja.md#図種の検出)）:
+  `range` は、その開きの `%%{`。
+  最初の `%` から `{` までで、
+  間にあるソースのディレクティブとコメント領域を含む。
+  複数あるときは最初のもの。
+  [fixture: flowchart/detect-directive-across-directive]
+  [fixture: sequence/detect-directive-across-directive]
+  [fixture: sequence/detect-directive-across-comment-line-closed]
+  [fixture: class/detect-directive-across-directive]
+  [fixture: state/detect-directive-across-directive]
 
 ## flowchart の中
 

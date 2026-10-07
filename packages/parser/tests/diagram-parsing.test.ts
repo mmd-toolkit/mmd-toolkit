@@ -16,6 +16,8 @@ function inputOf(text: string): DiagramInput {
     lexer: new SourceLexer(text, 0),
     frontmatter: null,
     diagramType: "error",
+    textStart: 0,
+    passed: [],
   }
 }
 

@@ -1,7 +1,11 @@
 import type { Root } from "../../ast.ts"
 import type { DiagramInput } from "../../diagram-parsing.ts"
 import type { DiagramTextReader } from "../../diagram-text.ts"
-import { finishDiagram, openDiagramText } from "../../diagram-parsing.ts"
+import {
+  commentsBeforeHeader,
+  finishDiagram,
+  openDiagramText,
+} from "../../diagram-parsing.ts"
 import { StateDbRejections } from "./db-rejections.ts"
 import { StateGrammar } from "./grammar.ts"
 import type { StateLexing } from "./units.ts"
@@ -32,10 +36,10 @@ export function lexState(input: DiagramInput): StateUnits {
  * Db. The common part finishes the tree (see `finishDiagram`).
  */
 export function parseStateDiagram(input: DiagramInput): Root {
+  const commentsBefore = commentsBeforeHeader(input)
   const lexing = lexState(input)
   const syntax = new StateGrammar(
     lexing.units,
-    lexing.noteColonsInText,
     lexing.comments,
     input.lexer,
   ).parseDiagram()
@@ -49,7 +53,7 @@ export function parseStateDiagram(input: DiagramInput): Root {
     input,
     {
       tokens: syntax.tokens,
-      comments: lexing.comments,
+      comments: [...commentsBefore, ...lexing.comments],
     },
     // ast/state.md, StateDiagram: the range runs from the header keyword to
     // the last token of the diagram.

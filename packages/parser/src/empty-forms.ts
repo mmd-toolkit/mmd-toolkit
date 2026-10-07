@@ -112,24 +112,6 @@ function allEmptyFormsOf<Unit extends DiagramUnit<string>>(
 }
 
 /**
- * ast.md, Nodes: the ranges of the empty description blocks among `units`,
- * the units of a diagram text, that lie in `range`, which the text of the
- * range leaves out. In a text that the grammar accepts, each of them is a
- * statement of its own before the separator of a statement; the range of a
- * leaf node holds none, and a range that a Db normalization reads up to the
- * separator of a statement can.
- */
-export function emptyDescriptionBlocksIn(
-  units: readonly DiagramUnit<string>[],
-  range: Range,
-): Range[] {
-  return allEmptyFormsOf(units)
-    .filter((form) => form.kind === "empty-description-block")
-    .map((form) => form.range)
-    .filter((block) => range[0] <= block[0] && block[1] <= range[1])
-}
-
-/**
  * known-divergences/tokenless-empty-forms.md: the error for the empty
  * form `form`, where no rule takes it, at the whole form.
  */

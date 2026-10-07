@@ -19,7 +19,8 @@ starts with `sequenceDiagram`, after whitespace, in exactly this case. [fixture:
 common/detect-minimal-sequence] [fixture: common/detect-case-sensitive-sequence]
 [fixture: sequence/docs-config-accessibility-6016a981]
 
-Detection only looks at the start of the text. The grammar then reads the
+Detection only looks at the detection point (see
+[Diagram detection](../common.md#diagram-detection)). The grammar then reads the
 keyword `sequenceDiagram` again, as a whole word (see
 [The statement context](#the-statement-context)), so `sequenceDiagramX` is
 detected as a sequence diagram and rejected. The first statement may follow the
@@ -27,28 +28,31 @@ keyword on the same line: `sequenceDiagram A->>B: x` has a message from A to B.
 [fixture: sequence/header-word-after-keyword] [fixture:
 sequence/header-statement-same-line]
 
-Detection leaves out more than the lexer does (see
-[Diagram detection](../common.md#diagram-detection)): a line that holds only
-`%%`, or `%%{ }%%`, which is no directive, may come before the keyword, and the
-text is still detected as a sequence diagram. The lexer reads such a line as a
-diagram comment (rule 4 of [The statement context](#the-statement-context)) and
-its line feed as a `newline` unit, and the grammar allows `newline` units before
-the keyword, as the grammar of mermaid.js does
-([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L136-L140)).
-The comment belongs to no node, a `newline` unit read from a line feed makes no
-node, and the SequenceDiagram starts at the keyword. Detection fails for a text
-before the keyword that it does not leave out, such as a line `#`, and for `%%`
-on the keyword's own line, which it leaves out with the keyword. Detection never
-leaves out a `;`, so no `newline` unit read from `;` comes before the keyword: a
-line `;` makes detection fail, and in `%%{ }%%;` the `;` is part of the comment.
-[fixture: sequence/header-after-semicolon-line] [fixture:
-sequence/header-after-empty-braces-semicolon] [fixture:
-sequence/header-after-bare-percent-line] [fixture:
+A line that holds only `%%`, or `%%{ }%%`, which is no directive, may come
+before the keyword: it is a bare `%%` line, which detection reads and passes to
+find the header, and which is a comment of the diagram, with the mark `%%`, from
+the `%%` to the end of its line, as in every diagram type (see
+[Diagram detection](../common.md#diagram-detection)); the lexer of mermaid.js
+reads it so as well (rule 4 of [The statement context](#the-statement-context)).
+The comment belongs to no node, and the SequenceDiagram starts at the keyword.
+In `%%{ }%%;` the `;` is part of the comment, and so is the rest of a line that
+begins with `%%{` where no directive starts, such as `%%{ }%% x` and `%%{-x}%%`,
+a keyword on that line among it: `%%{ }%% sequenceDiagram` on one line leaves no
+header, and the input is rejected. Any other text before the keyword, such as a
+line `#` or `;`, or `%%` on the keyword's own line, is diagram text at the
+detection point, which no detector matches, and the input is rejected, as in
+mermaid.js. [fixture: sequence/header-after-bare-percent-line] [fixture:
 sequence/header-after-empty-braces-line] [fixture:
+sequence/header-after-empty-braces-semicolon] [fixture:
+sequence/header-after-empty-braces-line-text] [fixture:
+sequence/header-after-non-word-brace-line] [fixture:
+sequence/header-after-empty-braces-then-keyword-same-line] [fixture:
+sequence/header-after-non-word-brace-then-keyword-same-line] [fixture:
 sequence/header-after-two-bare-percent-lines] [fixture:
-sequence/header-after-hash-line] [fixture:
-sequence/header-after-bare-percent-on-same-line] In flowchart the same `%%` line
-is rejected, as in mermaid.js (see [Detection](./flowchart.md#detection)).
+sequence/header-after-hash-line] [fixture: sequence/header-after-semicolon-line]
+[fixture: sequence/header-after-bare-percent-on-same-line] In flowchart the same
+`%%` line is rejected, as in mermaid.js (see
+[Detection](./flowchart.md#detection)).
 
 ## Lexical structure
 
@@ -344,15 +348,28 @@ Some consequences of the order:
 
 ### Id runs
 
-An id run is the longest run of characters that is made of:
+An id run is read from left to right, in two steps:
 
-1. one or more characters other than `/`, `\`, `+`, `(`, `)`, `<`, `-`, `>`,
-   `:`, `,`, `;`, and line feed; then [fixture: sequence/lex-id-run-space]
-2. any number of continuations. A continuation is zero or more `-`, followed by
-   one or more characters other than `+`, `<`, `-`, `>`, `:`, `,`, `;`, and line
-   feed. A continuation cannot start where one of these follows: `-x`, `-)`,
-   `-\`, `-/`, `-|\`, `-|/`, `--`, `/|-`, `\|-`, `//-`, `\\-`, and `()`.
-   [fixture: sequence/lex-id-run-dash]
+1. as many characters as possible, at least one, other than `/`, `\`, `+`, `(`,
+   `)`, `<`, `-`, `>`, `:`, `,`, `;`, and line feed; then [fixture:
+   sequence/lex-id-run-space]
+2. continuations, one after another, as long as one can start where the run
+   ends. A continuation is zero or more `-`, followed by as many characters as
+   possible, at least one, other than `+`, `<`, `-`, `>`, `:`, `,`, `;`, and
+   line feed. A continuation cannot start where one of these follows: `-x`,
+   `-)`, `-\`, `-/`, `-|\`, `-|/`, `--`, `/|-`, `\|-`, `//-`, `\\-`, and `()`;
+   the first eleven are the starts of the arrows. [fixture:
+   sequence/lex-id-run-dash] [fixture: sequence/db-arrow-types]
+
+Neither step gives characters back to the one before: in `Alice()->>John: x`,
+step 1 reads `Alice`, and no continuation can start before `()`, so the run is
+`Alice`, followed by `()`, although `Alic` and a continuation `e()` would make a
+longer run; and `Al()ice->>B: x` is rejected. The exception for `()` is checked
+only where a continuation starts: in `A(x)()->>B: x`, the continuation `(x)()`
+holds the `()`, and the participant is `A(x)()`. [fixture:
+sequence/lex-id-run-empty-parentheses-ends-run] [fixture:
+sequence/lex-id-run-empty-parentheses-inside-rejected] [fixture:
+sequence/lex-id-run-empty-parentheses-in-continuation]
 
 So an id run may contain whitespace, `#`, and `=`, and, after its first
 character, `/`, `\`, `(`, and `)`; a single `-` may join its parts, while `--`
@@ -921,3 +938,8 @@ sequence, and show in it as follows.
   sequence/div-comment-after-text-colon] [fixture:
   sequence/div-comment-after-two-digit-number] [fixture:
   sequence/lex-percent-comment-takes-number]
+- **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.md).**
+  `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` anywhere after
+  the header, as a participant, in a message text, or in a note, makes
+  mermaid.js hand the text to the C4 parser, which rejects it; here the text is
+  a sequence diagram. [fixture: common/detect-c4-anywhere]

@@ -107,7 +107,7 @@ const DIRECTIONS: readonly ClassDirection[] = ["TB", "BT", "RL", "LR"]
  * diagrams/class.md, Grammar: the recursive-descent parser over the units of
  * the class lexer. Each method reads one rule of the grammar, which its
  * comment names, and makes the node that the specification gives for the
- * rule, with the tokens of ast/class.md, Tokens.
+ * rule, with the tokens of `docs/tokens/class.md`, Tokens.
  */
 export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
   private readonly lexing: ClassLexing
@@ -147,7 +147,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * ast/class.md, Tokens: whether `unit` follows `previous` with nothing of
+   * `docs/tokens/class.md`, Tokens: whether `unit` follows `previous` with nothing of
    * the diagram text between them: the next character of the diagram text
    * after `previous` is the first of `unit`. Directives and the `;` that
    * the line rule ignores may lie between them, which the diagram text
@@ -163,7 +163,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * ast/class.md, Tokens: the runs of `units` whose units follow one
+   * `docs/tokens/class.md`, Tokens: the runs of `units` whose units follow one
    * another with nothing of the diagram text between them (see
    * {@link ClassGrammar.followsWithNothingBetween}), in source order:
    * whitespace, which belongs to no unit (diagrams/class.md, Units and
@@ -941,7 +941,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
   /**
    * Other statements: one `style`, whose tokens are the runs of its units
    * with nothing between them, each one `RawText` item: mermaid.js drops
-   * the whitespace between two units of a style (ast/class.md, Tokens). Its
+   * the whitespace between two units of a style (`docs/tokens/class.md`, Tokens). Its
    * value is the written texts of its units joined in order (ast/class.md,
    * ClassLiteral): a label keeps the whitespace before the `:` of the next
    * label, also where a directive lies between them, and only the

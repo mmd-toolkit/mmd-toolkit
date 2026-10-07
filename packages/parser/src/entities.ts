@@ -1,7 +1,5 @@
 import { isAsciiDigit, isWordCharacter } from "./character-classes.ts"
 import { NUMBER_SIGN, SEMICOLON } from "./code-points.ts"
-import type { LineSegmentReading } from "./line-segment.ts"
-import { segmentCharacterAt } from "./line-segment.ts"
 
 /** Entities: the characters of the placeholders, U+FB02, U+00B0, U+00B6, and U+00DF. */
 const PLACEHOLDER_OPENING = "\uFB02\u00B0"
@@ -19,54 +17,98 @@ export interface EntityDelimiter {
   readonly placeholderEnd: number | null
 }
 
+/** One character of {@link EntityText}. */
+export interface EntityTextCharacter {
+  readonly codePoint: number
+  /** Where the character is in the source. */
+  readonly start: number
+  /** The offset after it. */
+  readonly next: number
+}
+
 /**
- * common.md, Entities: finds the entities `#` word `;` of a line segment,
- * from left to right, in the segment without its directives, so that an
- * entity can have a directive between two of its characters. The `;` is not
- * one that the line rule ignores. Entities do not overlap.
- *
- * The lexer reads an entity as its placeholder: the `#` as the opening of
- * the placeholder, which tells whether the word consists of ASCII digits
- * only, the word as itself, and the `;` as the closing. Returns, for the
- * `#` and the `;` of every entity, keyed by offset, what the lexer reads in
- * its place, and for the `#`, where the placeholder ends.
+ * common.md, Entities: the text that entities are found in, the source
+ * without its directives and comment regions, the characters before and
+ * after a directive following one another. A `;` that the line rule ignores
+ * is a character of it.
  */
-export function findEntityDelimiters(
-  reading: LineSegmentReading,
-): ReadonlyMap<number, EntityDelimiter> {
-  const delimiters = new Map<number, EntityDelimiter>()
-  let offset = reading.start
-  for (;;) {
-    const character = segmentCharacterAt(reading, offset)
-    if (character === null) return delimiters
-    if (character.codePoint !== NUMBER_SIGN) {
-      offset = character.next
-      continue
-    }
-    let wordEnd = character.next
-    let hasWord = false
-    let numeric = true
-    let following = segmentCharacterAt(reading, wordEnd)
-    while (following !== null && isWordCharacter(following.codePoint)) {
-      hasWord = true
-      if (!isAsciiDigit(following.codePoint)) numeric = false
-      wordEnd = following.next
-      following = segmentCharacterAt(reading, wordEnd)
-    }
-    if (hasWord && following !== null && following.codePoint === SEMICOLON) {
-      delimiters.set(character.start, {
-        text: numeric ? PLACEHOLDER_NUMERIC_OPENING : PLACEHOLDER_OPENING,
-        placeholderEnd: following.next,
-      })
-      delimiters.set(following.start, {
-        text: PLACEHOLDER_CLOSING,
-        placeholderEnd: null,
-      })
-      offset = following.next
-    } else {
-      // No entity starts at this `#`. The word holds no `#`, so the search
-      // goes on after it.
-      offset = wordEnd
-    }
+export interface EntityText {
+  /** The character at or after `offset`; null at the end of the source. */
+  characterFrom(offset: number): EntityTextCharacter | null
+  /** The character before `offset`; null at the start of the reading. */
+  characterBefore(offset: number): EntityTextCharacter | null
+  /** Whether the `;` at `offset` is one that the line rule ignores. */
+  isIgnoredSemicolon(offset: number): boolean
+}
+
+/**
+ * common.md, Entities: what the lexer reads in place of the character at
+ * `offset` of `text`, when it is the `#` or the `;` of an entity
+ * `#` word `;`, whose `;` is not one that the line rule ignores; null for
+ * every other character. `offset` is where a character of `text` starts.
+ *
+ * The decision reads only the entity: from a `#`, forward over the word to
+ * the `;`; from a `;`, back over the word to the `#`. A word holds neither a
+ * `#` nor a `;`, so two entities cannot overlap, and the entity that a
+ * position belongs to is the one that finding them from left to right
+ * finds.
+ */
+export function entityDelimiterAt(
+  text: EntityText,
+  offset: number,
+): EntityDelimiter | null {
+  const character = text.characterFrom(offset)
+  if (character === null) return null
+  if (character.codePoint === NUMBER_SIGN) return openingAt(text, character)
+  if (character.codePoint === SEMICOLON) return closingAt(text, character)
+  return null
+}
+
+/**
+ * The opening of the placeholder for the `#` `numberSign`, which tells
+ * whether the word consists of ASCII digits only, when an entity starts
+ * there.
+ */
+function openingAt(
+  text: EntityText,
+  numberSign: EntityTextCharacter,
+): EntityDelimiter | null {
+  let hasWord = false
+  let numeric = true
+  let following = text.characterFrom(numberSign.next)
+  while (following !== null && isWordCharacter(following.codePoint)) {
+    hasWord = true
+    if (!isAsciiDigit(following.codePoint)) numeric = false
+    following = text.characterFrom(following.next)
   }
+  if (
+    !hasWord ||
+    following === null ||
+    following.codePoint !== SEMICOLON ||
+    text.isIgnoredSemicolon(following.start)
+  ) {
+    return null
+  }
+  return {
+    text: numeric ? PLACEHOLDER_NUMERIC_OPENING : PLACEHOLDER_OPENING,
+    placeholderEnd: following.next,
+  }
+}
+
+/** The closing of the placeholder for the `;` `semicolon`, when an entity ends there. */
+function closingAt(
+  text: EntityText,
+  semicolon: EntityTextCharacter,
+): EntityDelimiter | null {
+  if (text.isIgnoredSemicolon(semicolon.start)) return null
+  let hasWord = false
+  let preceding = text.characterBefore(semicolon.start)
+  while (preceding !== null && isWordCharacter(preceding.codePoint)) {
+    hasWord = true
+    preceding = text.characterBefore(preceding.start)
+  }
+  if (!hasWord || preceding === null || preceding.codePoint !== NUMBER_SIGN) {
+    return null
+  }
+  return { text: PLACEHOLDER_CLOSING, placeholderEnd: null }
 }

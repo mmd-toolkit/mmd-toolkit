@@ -106,6 +106,22 @@ mermaid.js のソースへの参照は、
   `+` は 1 回以上の繰り返しを表します。
   丸括弧は項目をまとめます。
   規則に別の記述がなければ、`*` と `+` はできるだけ多く繰り返します。
+- 図の字句解析器の規則は、文章で書きます。
+  そのような規則が、「…以外の 1 個以上の文字」や「0 個以上の空白」のような
+  繰り返しを、いくつ読むかを書かずに読むときは、
+  規則の残りがそこで一致する範囲で、できるだけ多くの文字を読みます。
+  できるだけ少なく読む規則は、そう書きます。
+  1 つの規則が繰り返しを 2 つ以上読むときは、左から順に、
+  それぞれを、規則の残りが一致する範囲でできるだけ多く読みます。
+  前の繰り返しが読めるものを、後の繰り返しに回すことはしません。
+  flowchart の `click A call cb(1, "x")` は、
+  文法が 1 回だけ取る `callback-arguments` の単位 `1, "x"` を 1 つ持ちます。
+  state の複数行のノートのテキストは、
+  その後の最初の `end note` の行で終わります。
+  その規則は、できるだけ少なく読むからです。
+  `note right of A`、`x`、`end note`、`B`、`note left of B`、`y`、`end note`
+  の 7 行は 2 つのノートで、A の `x` と B の `y` です。
+  [fixture: flowchart/gram-click-call] [fixture: state/lex-note-block-two-notes]
 - すべての規則は、[行終端](#行終端) の規則を適用した状態でソースを読みます。
   そのため、どの行終端も 1 つの改行として数えます。
 
@@ -142,7 +158,7 @@ mermaid.js は、パターンを文字ではなく UTF-16 のコード単位に�
 | 3    | 先頭の YAML ブロックを解析し、取り除く。                                   | トリビアの規則: [フロントマター](#フロントマター)。本文は解析しない。                                                |
 | 4    | すべての `%%{ ... }%%` を、どこにあっても設定として解析し、取り除く。      | トリビアの規則: [ディレクティブ](#ディレクティブ)。引数は解析しない。                                                |
 | 5    | コメント行を取り除き、先頭の空白を削る。                                   | トリビアの規則: [コメント行](#コメント行) と [先頭の空白](#先頭の空白)                                               |
-| 6    | 登録された検出器のうち、最初に一致したものが図種を選ぶ。                   | [図種の検出](#図種の検出)                                                                                            |
+| 6    | 登録された検出器のうち、最初に一致したものが図種を選ぶ。                   | [図種の検出](#図種の検出)。図のテキストの最初の単位で決める                                                          |
 | 7    | 一部の `style` 行から `;` を 1 つ落とし、`#name;` をプレースホルダにする。 | 行単位の規則: [`style` 行と `classDef` 行](#style-行と-classdef-行)。字句の規則と変換: [エンティティ](#エンティティ) |
 | 8    | `\n` を末尾に足す。                                                        | 字句の規則: [テキストの終わり](#テキストの終わり)                                                                    |
 | 9    | 一部の図は、字句解析の前にテキストをもう一度書き換える。                   | 各図の文書で述べる                                                                                                   |
@@ -153,10 +169,11 @@ mermaid.js では、各段階が前の段階の出力を書き換えます。
 回読む間に適用する規則として定めます
 （[ソースの読み方](#ソースの読み方) を参照）。
 規則は、既知の差異を除いて、段階と同じ単位と値を与えます。
-後の規則が読むための書き換えたテキストを作る規則はありません。
-規則がソース以外のテキスト（たとえば検出器が見るテキスト）に触れるとき、
-そのテキストは規則を述べるための言い方で、
-実装が作らなければならない結果ではありません。
+後の規則が読むための書き換えたテキストを作る規則はなく、
+ソース以外のテキストを読む規則もありません。
+mermaid.js が書き換えたテキストの上で何かを決めるとき（図種がそうです）、
+この仕様はその規則をソースの上で述べ、
+それによって違って読まれる入力を既知の差異とします。
 段階 3 と 4 で mermaid.js が設定をどう求めるかは、
 参考として
 [設定（参考）](../../tests/docs/configuration.ja.md#設定参考) で述べます。
@@ -242,28 +259,27 @@ agentflow では、字句解析器がコメント行を自分で読むので、
 
 図の字句解析器の最初の単位より前の空白、行終端、ディレクティブ、
 コメント領域はトリビアです（[先頭の空白](#先頭の空白)）。
+最初の単位で図種を決め、それが図の字句解析器を選びます
+（[図種の検出](#図種の検出)）。
+これは入力を拒否することがあります。
 ソースの最後の文字の後には、
 `\n` をもう 1 つ読みます（[テキストの終わり](#テキストの終わり)）。
 上の段階 9 の追加の書き換えを含め、図がほかに何をするかは、
 その図の文書で述べます。
 
-位置の周りの文字だけでは決まらない規則が 2 つあります。
-どちらも、それ自身の規則として述べます。
-
-- **図種の検出**。
-  図種がどの字句解析器で読むかを決めるので、図種を最初に、
-  ソース全体から作る検出テキストで求めます（[図種の検出](#図種の検出)）。
-  これは入力を拒否することがあります。
-- **HTML 属性の引用符**。
-  `"` を `'` として読むかどうかは、ずっと前で、コメント行の中でも始まりえて、
-  複数行にわたりうるタグによって決まります。
-  タグは、
-  テキスト全体を左から右へ読んで見つけます
-  （[HTML 属性の引用符](#html-属性の引用符)）。
+位置の周りの文字だけでは決まらない規則が 1 つあり、
+それ自身の規則として述べます。
+**HTML 属性の引用符**です。
+`"` を `'` として読むかどうかは、ずっと前で、コメント行の中でも始まりえて、
+複数行にわたりうるタグによって決まります。
+タグは、
+テキスト全体を左から右へ読んで見つけます
+（[HTML 属性の引用符](#html-属性の引用符)）。
 
 それ以外の規則は、位置の周りの文字で決まります。
 ディレクティブはその `%%{` からの文字で、
 コメント領域はコメント開始位置からそのコメントの行の終わりまでで、
+図種はその最初の単位の図のテキストで、
 行単位の規則はその行区間で、エンティティは `#`、語、`;` で決まります。
 
 agentflow では、項目 1 は字句解析器には適用されません。
@@ -290,7 +306,7 @@ common/frontmatter-lone-cr] [fixture: common/directive-spans-lone-cr]
 
 `\r` の後に `\n` が続くかどうかは、何かを除く前に、ソースの上で決めます。
 間にディレクティブかコメント領域がある `\r` と `\n` は、どの規則でも、
-検出テキストでも、2 つの行終端です。
+2 つの行終端です。
 mermaid.js は、ディレクティブとコメント行を取り除く前に行終端を読むからです。
 そのため、`A[a`、単独の `\r`、ディレクティブ、`\n`、`b]` の Db のラベルは、`a`、
 改行 2 つ、`b` です。
@@ -472,46 +488,52 @@ mermaid.js が本文をどう読むかは、
 
 これらの条件が成り立たない場合、フロントマターはなく、
 `---` のブロックはテキストです。
-その後どうなるかは、成り立たなかった理由によります。
+その前にあったトリビア
+（改行、空白、バイトオーダーマーク、ディレクティブ、コメント行）は
+先頭のトリビアで、図のテキストは `---` で始まります。
+そのため、`---` 疑似図種がテキストを引き受けて拒否します
+（[図種の検出](#図種の検出) を参照）。
+ブロックの前の改行やディレクティブ、
+開始の区切りだけが字下げされ閉じる区切りが字下げされていない場合
+（開始の区切りの前にだけバイトオーダーマークがある場合を含む）、
+そしてブロック自体の形がフロントマターでない場合がこれに当たります。
+後者は、`----`、閉じる `---` の後の文字、
+テキストの最後にある行終端のない閉じる `---`、隣り合う区切り、
+閉じる区切りの欠落、
+開始の区切りが字下げされておらず閉じる区切りだけが字下げされている場合、
+空でない異なる字下げが 2 つある場合です。
+[fixture: common/frontmatter-leading-newline] [fixture:
+common/directive-before-frontmatter] [fixture:
+common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
+common/frontmatter-indent-closing-only] [fixture:
+common/frontmatter-indent-different-depths] [fixture:
+common/frontmatter-four-dashes] [fixture:
+common/frontmatter-closing-trailing-text] [fixture:
+common/frontmatter-no-newline-after] [fixture:
+common/frontmatter-adjacent-delimiters] [fixture: common/frontmatter-unclosed]
 
-- ブロックの前にトリビア
-  （先頭の改行、先頭の空白、ディレクティブ、コメント行など）が
-  あったことだけが理由の場合、
-  検出は自分が見るテキストの先頭でブロックを再び見つけ、
-  無視します（[図種の検出](#図種の検出) を参照）。
-  本文の図種が検出され、`---` の行はその図の文法に渡されます。
-  flowchart の文法はこれを拒否します。
-  一方、テキストを読まないパーサーを持つ `error` 疑似図種は受理します。
-  [fixture: common/frontmatter-leading-newline] [fixture:
-  common/directive-before-frontmatter]
-- 開始の区切りだけが字下げされ、閉じる区切りが字下げされていない場合も同じです。
-  開始の区切りの前にだけバイトオーダーマークがある場合を含みます。
-  検出は先頭の空白を除いたテキストを見るので、
-  そこでは区切りの字下げがそろいます。
-  [fixture: common/frontmatter-indent-mismatch] [fixture:
-  common/frontmatter-bom] [fixture: common/frontmatter-bom-error]
-- それ以外の場合は、検出もブロックを認識せず、
-  `---` 疑似図種がテキストを引き受けて拒否します。
-  `----`、閉じる `---` の後の文字、
-  テキストの最後にある行終端のない閉じる `---`、隣り合う区切り、
-  閉じる区切りの欠落、先頭の空白を除いてもそろわない字下げがこれに当たります。
-  最後のものは、
-  開始の区切りが字下げされておらず閉じる区切りだけが字下げされている場合と、
-  空でない異なる字下げが 2 つある場合です。
-  [fixture: common/frontmatter-indent-closing-only] [fixture:
-  common/frontmatter-indent-different-depths] [fixture:
-  common/frontmatter-four-dashes] [fixture:
-  common/frontmatter-closing-trailing-text] [fixture:
-  common/frontmatter-no-newline-after] [fixture:
-  common/frontmatter-adjacent-delimiters] [fixture: common/frontmatter-unclosed]
-
-そのため、先頭の `---` のブロックを許す文法を持つ図は、
-このような入力を受理しえます。
-pin した mermaid.js では、Langium で定義された図のいくつかがそうです
+mermaid.js もこれらの入力を拒否しますが、例外が 1 つあります。
+mermaid.js の検出は先頭のトリビアを除いてからフロントマターをもう一度探すので、
+前に何かがあったことだけが理由で成り立たなかったブロックは、
+検出器が見るテキストからは除かれ、図の文法には `---` の行が渡されます。
+その文法が `---` の行を許すとき、入力は受理されます。
+`error` 疑似図種は許し、[図種の検出](#図種の検出) にあるその条件も
+同じようにこのブロックを除くので、
+改行、バイトオーダーマーク、コメント行の後の `---` のブロックと `error`
+は両者が受理します。
+flowchart の文法はこの行を拒否するので、
+ブロックの後が flowchart なら両者が入力を拒否します。
+この仕様にまだない図種のうち Langium で定義された図のいくつかもこの行を許します
 （pie、info、gitGraph、packet、radar、architecture で確認）。
-それぞれの文書で記録します。
-どの場合も、ブロックの `title` と `config` は適用されません。
+それをどう読むかは、それぞれの文書で述べます。
+どの場合も、mermaid.js はブロックの `title` と `config` を適用しません。
 フロントマターではないからです。
+[fixture: common/frontmatter-bom-error] [fixture:
+common/detect-lone-cr-directive-lf] [fixture:
+common/detect-lone-cr-comment-lf] [fixture:
+common/detect-frontmatter-after-line-break-error] [fixture:
+common/detect-frontmatter-after-comment-line-error] [fixture:
+common/detect-crlf-no-directive]
 
 ## ディレクティブ
 
@@ -895,73 +917,258 @@ mermaid.js は、
 
 ## 図種の検出
 
-検出は、ソース全体から作るテキスト、**検出テキスト**を見ます。
-フロントマターの後のソースから、ディレクティブ、コメント領域、
-先頭の空白を除いたものです。
-`\r` と `\n` の間のディレクティブやコメント領域を除いても、
-ソースの各行終端はその中で 1 つの行終端のままです（[行終端](#行終端) を参照）。
-改行、`---`、単独の `\r`、ディレクティブ、改行、`---`、改行、
-`error` は `error` 疑似図種で、
-ディレクティブの代わりにコメント行があっても同じです。
-一方、`\r\n` を続けて書いたテキストは、mermaid.js と同じく拒否されます。
-[fixture: common/detect-lone-cr-directive-lf] [fixture:
-common/detect-lone-cr-comment-lf] [fixture:
-common/detect-crlf-no-directive]
-検出した図種がどの字句解析器で読むかを決めるので、
-検出テキストは図の字句解析器が読み始める前に作ります。
-ディレクティブを除くので、`err%%{init: {}}%%or` は、
-mermaid.js と同じく `error` 疑似図種です。
-[fixture: common/error-split-by-directive] 検出は、検出テキストからさらに、
-[`detectType()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48)
-と同じく、3 つを取り除きます。
+図種は、図のテキストの最初の単位で決めます。
+**検出点**は、テキストの中で先頭のトリビアでない最初の位置です。
+空白でも行終端でもなく、ディレクティブの中でも
+コメント領域の中でもない位置です（[先頭の空白](#先頭の空白)）。
+検出は、検出点から、**`%%` だけの行**があればそれを読んで通り過ぎます。
+`%%` だけの行とは、行の空白の後の図のテキストが、`%%` と、
+それに続く行終端、テキストの終わり、
+またはディレクティブの始まらない `{`（ソースでも、
+下のもう一度の読みでも始まらない）で始まる行です。
+行の残りに何があっても、ヘッダーがあっても、行全体を飛ばします。
+1 行の `%%{ }%% sequenceDiagram` にはヘッダーが残らず、テキストは拒否されます。
+この行はコメント行でもディレクティブでもありません
+（[コメント行](#コメント行) を参照）。
+`%%` だけの行の間の空白、行終端、ディレクティブ、コメント領域はトリビアで、
+一緒に通り過ぎます。
+`%%` だけの行は字下げされていてもよく、どの行終端で終わってもかまいません。
+ディレクティブを除くと、1 行の `%%%%{init: {}}%%` は `%%` だけの行で、
+`%%%` はコメント行です。
+`%%` だけの行しかないテキストにはヘッダーがなく、どの検出器も一致しません。
+検出は、たどり着いた各位置で、まず
+[ディレクティブの位置](#ディレクティブの位置) の規則をもう一度、
+そこからの図のテキストに当てます。
+単位を読むときと同じように、ソースのディレクティブとコメント領域を
+読み飛ばして当てます。
+それらを除いたことで `%%{`、空白、語が並ぶようになったところでは
+ディレクティブが始まり、検出はそれを規則の及ぶ所まで飛ばします。
+その行が `%%` だけの行かどうかを問うのは、その後です。
+`%%{`、コメント行、`wrap}%%sequenceDiagram`、`A->>B: x` では、
+閉じたディレクティブを飛ばして検出がヘッダーに届きます。
+逆の順番なら 1 行目を `%%` だけの行として飛ばし、
+`wrap}%%` にヘッダーが見つからないことになります。
+`%%{`、コメント行、`sequenceDiagram` はそのようなディレクティブを含み、
+このディレクティブはキーワードを名前として、次の行の `A` を引数として取るので、
+ヘッダーが残らず、テキストは mermaid.js と同じく拒否されます。
+mermaid.js の 2 回目のディレクティブの走査が、
+同じディレクティブを見つけるからです。
+このディレクティブは木にはなく、入力を拒否させます。
+ディレクティブが閉じていてヘッダーが続くとき
+（`%%{`、行 `%%{wrap}%%`、`x}%%flowchart LR`）、検出はヘッダーに届き、
+入力は 4 図種のどれでも拒否されます。
+mermaid.js と同じで、その字句解析器はヘッダーの前の `%%{` と `x}%%` を
+テキストとして読みます。
+たどり着いた位置で、[detection.ja.md](./detection.ja.md) の検出器を登録順に、
+図のテキスト（[ソースの読み方](#ソースの読み方)）、
+つまりそこからの文字からディレクティブとコメント領域を除いたものに対して
+試します。
+条件が最初に成り立った検出器が図種を選び、
+図の字句解析器はテキストをたどり着いた位置から読みます。
+検出が通り過ぎたものを読み直すことはありません。
+`%%` だけの行はそれぞれ、どの図種でも、`%%` から行の終わりまでの、
+印 `%%` の図のコメントです。
+mermaid.js はこの行を検出した図の字句解析器で読み、
+その一部は拒否します。
+flowchart は `%%` をヘッダーの前の id として読み、
+state は `%%{` で始まる行の `{` を取らず、
+class はそのような行の後の空白だけの行を `newline` の単位として読み、
+文法はヘッダーの前でそれを取りません。
+これらの入力は既知の差異
+[`bare-percent-line-before-header`](./known-divergences/bare-percent-line-before-header.ja.md)
+です。
+どの検出器も一致しなければ、テキストは `UnknownDiagramError` で拒否されます。
+図のテキストがまったくないテキスト（空のテキストや、コメント行だけのテキスト）
+も同じです。
+最初の単位がヘッダーでないテキスト（`#` や `;` の行、
+ヘッダーと同じ行の `%%`。これは `%%` だけの行ではありません）も同じです。
+ディレクティブやコメント行がヘッダーを取るテキストも同じです。
+`%%{`、改行、`sequenceDiagram` ではディレクティブがキーワードを名前として取り、
+`%%`、U+2028、`sequenceDiagram` ではコメント行がキーワードを含みます。
+最初の単位がヘッダーの前の空の説明ブロック `accDescr {}` であるテキストも
+同じです。
+[fixture: common/empty] [fixture: common/comment-only] [fixture:
+common/bare-percent-line-only] [fixture:
+common/bare-percent-line-only-with-line-feed] [fixture:
+sequence/header-after-indented-bare-percent-line] [fixture:
+sequence/header-after-bare-percent-crlf] [fixture:
+sequence/header-after-bare-percent-cr] [fixture:
+sequence/header-after-bare-percent-lines-with-blank-and-comment] [fixture:
+sequence/header-after-bare-percent-lines-with-directive] [fixture:
+sequence/header-after-bare-percent-then-directive] [fixture:
+sequence/header-after-bare-percent-then-whitespace-line] [fixture:
+class/header-after-bare-percent-then-empty-line] [fixture:
+class/header-after-bare-percent-then-whitespace-line] [fixture:
+sequence/header-after-empty-braces-no-space] [fixture:
+sequence/header-after-empty-braces-then-keyword-same-line] [fixture:
+sequence/header-after-non-word-brace-then-keyword-same-line] [fixture:
+flowchart/header-after-acc-descr-block] [fixture:
+sequence/header-after-triple-percent-line] [fixture:
+sequence/header-after-percent-joined-by-directive-line] [fixture:
+sequence/header-after-empty-braces-line-text] [fixture:
+sequence/header-after-non-word-brace-line] [fixture:
+class/header-after-non-word-brace-line] [fixture:
+state/header-after-empty-braces-line] [fixture:
+flowchart/header-after-empty-braces-line] [fixture:
+sequence/header-after-unclosed-brace-line] [fixture:
+sequence/header-after-unclosed-brace-and-comment-line] [fixture:
+common/detect-directive-across-comment-line] [fixture:
+common/detect-directive-second-scan-once] [fixture:
+sequence/detect-directive-across-comment-line-closed] [fixture:
+flowchart/detect-directive-across-directive] [fixture:
+sequence/detect-directive-across-directive] [fixture:
+class/detect-directive-across-directive] [fixture:
+state/detect-directive-across-directive] [fixture:
+sequence/header-after-percent-line-separator] [fixture:
+sequence/header-after-bare-percent-line] [fixture:
+sequence/header-after-empty-braces-line] [fixture:
+sequence/header-after-empty-braces-semicolon] [fixture:
+sequence/header-after-two-bare-percent-lines] [fixture:
+class/header-after-bare-percent-line] [fixture:
+class/header-after-empty-braces-line] [fixture:
+state/header-after-bare-percent-line] [fixture:
+flowchart/header-after-bare-percent-line] [fixture:
+sequence/header-after-hash-line] [fixture:
+sequence/header-after-semicolon-line] [fixture:
+sequence/header-after-bare-percent-on-same-line] [fixture:
+class/header-after-hash-line]
+39 個の検出器すべての順序と条件は [detection.ja.md](./detection.ja.md) にあり、
+各図の文書はその検出の節で該当する項目を参照します。
 
-- 先頭のフロントマターのブロック。
-  [フロントマター](#フロントマター) の条件でもう一度探します。
-  [fixture: common/frontmatter-leading-newline]
-- ディレクティブ。
-  [ディレクティブ](#ディレクティブの位置) と同じように、
-  左から右への 1 回の走査でもう一度探します。
-  この走査は、1 回目が見つけなかったディレクティブを見つけることがあります。
-  コメント領域とディレクティブを除いて初めて、
-  `%%{` の後に空白を挟んで語が続くようになる場合、
-  その `%%{` からディレクティブが始まります。
-  `%%{`、改行、コメント行、`kanban` はそのようなディレクティブを含み、`%%{`、
-  改行、`%%{wrap}%%`、改行、`error` も含みます。
-  取り除いた後に走査をやり直すことはありません。
-  それぞれ 1 行ずつの `%%{`、`%%{`、`%%{wrap}%%`、`flowchart LR` では、
-  走査が見つけるディレクティブが 2 つ目の `%%{` から始まるので、
-  最初の `%%{` は残ります。
-  [fixture: common/detect-directive-across-comment-line] [fixture:
-  common/detect-directive-across-directive] [fixture:
+検出器が読むのは、キーワードとその次の文字までです。
+下の `error` 疑似図種の検出器だけは別で、
+その条件がその疑似図種の文法のすべてです。
+キーワードの先は図の文法が読みます。
+図のテキストはディレクティブとコメント領域を除いたものなので
+（ディレクティブの走査より後のどの規則とも同じです。
+[ディレクティブはトークンの境界](#ディレクティブはトークンの境界) を参照）、
+検出点の前、ヘッダーの行、ヘッダーの直前、キーワードの中のディレクティブと、
+ヘッダーの前の行区切り、段落区切り、バイトオーダーマーク（行の空白です）と、
+ヘッダーの前の単独の `\r` や `\r\n`（行終端です）は、
+どの検出器が一致するかを変えません。
+4 行の `  %% c`、空行、`%%{init: {}}%%`、`  flowchart LR` は flowchart で、
+`flowchart %%{init: {}}%%LR` は flowchart、
+`%%{init: {}}%%sequenceDiagram` は sequence です。
+`flow%%{init: {}}%%chart LR` は flowchart として検出され、その後、
+ディレクティブがヘッダーのキーワードの中にあるために拒否されます
+（[`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md)
+を参照）。
+[fixture: common/leading-trivia-before-header] [fixture:
+common/leading-whitespace-before-header] [fixture:
+common/detect-line-separator-before-header] [fixture:
+common/detect-paragraph-separator-before-header] [fixture:
+common/detect-bom-before-header] [fixture:
+common/detect-cr-before-header] [fixture: common/detect-crlf-before-header]
+[fixture: common/directive-in-header-whitespace] [fixture:
+common/detect-directive-adjacent-before-header] [fixture:
+common/directive-in-header-keyword]
+
+すべての実際の図より前に、2 つの疑似図種が登録されています。
+
+- `error`: この疑似図種に文法はありません。
+  パーサーはテキストを読まず、入力は受理され、Db の内容は生じません。
+  どのテキストがこの疑似図種かは、その条件だけで決まります。
+  検出点からの図のテキストから次の 3 つを除いたものが語 `error`
+  （[表記](#表記) の意味で大文字小文字を区別しない）で、
+  テキストの終わりまで、その後に空白と行終端しか続かないことです。
+  3 つは、mermaid.js の検出が比べる前に取り除くもの（下を参照）です。
+  検出点で [フロントマター](#フロントマター) の条件を満たすブロック
+  （ソースの先頭にないので、フロントマターではありません）。
+  [ディレクティブの位置](#ディレクティブの位置) の規則を図のテキストに
+  もう一度当てて見つかるディレクティブ
+  （ソースのディレクティブを除いたことで `%%{`、語、`}%%` が
+  並ぶようになったもの）。
+  そして**疑似図種のコメント**、
+  つまり後ろのどこかに行終端がある `%%` から、その前の行の空白を含めて、
+  その行の終わりまで（`%%` だけの行はこれであり、
+  行の中で他のテキストの後にある `%% x` も、後に行終端があればこれです）。
+  木はすべてをテキストとして持ちます
+  （[ErrorDiagram](./ast.ja.md#errordiagram) を参照）。
+  この疑似図種ではすべての文字の並びがテキストなので、
+  ディレクティブはどこにあってもよく、`err%%{init: {}}%%or` は `error` です。
+  1 行の `error x` は拒否されます。
+  テキストの最後にある `error %% x` も、`%%` の後に行終端がなく
+  コメントが始まらないので拒否され、後に改行があれば受理されます。
+  改行、バイトオーダーマーク、コメント行の後の `---` のブロックと `error`
+  は受理され、`---` の直後の `---` はそのようなブロックではないので、
+  そのテキストは拒否されます。
+  ブロックの前に `%%` だけの行があるものも拒否されます。
+  検出点はその行（図のテキストです）にあり、ブロックは検出点にないからです。
+  `%%{`、行 `%%{wrap}%%`、`x}%%error` は受理されます。
+  図のテキスト `%%{`、改行 2 つ、`x}%%error` がディレクティブを含むからです。
+  `x}%%error` の代わりに `error` だと、ディレクティブが `error` を
+  語の引数として取り、テキストは拒否されます。
+  [fixture: common/error-pseudo-diagram] [fixture: common/error-uppercase]
+  [fixture: common/error-trailing-comment-line] [fixture:
+  common/error-trailing-blank-lines] [fixture:
+  common/error-directive-adjacent] [fixture: common/error-split-by-directive]
+  [fixture: common/whitespace-cut-at-comment-region] [fixture:
+  common/whitespace-cut-at-earliest-comment-start] [fixture:
+  common/error-word-after] [fixture: common/error-trailing-percent-at-end]
+  [fixture: common/error-trailing-percent] [fixture:
+  common/error-comment-inside] [fixture: common/error-directive-inside]
+  [fixture: common/error-style-semicolon-inside] [fixture:
+  common/error-style-semicolon-trailing] [fixture:
+  common/error-bare-percent-line] [fixture:
+  common/detect-percent-joined-by-directive] [fixture:
+  common/error-percent-before-directive] [fixture:
+  common/detect-frontmatter-after-line-break-error] [fixture:
+  common/frontmatter-bom-error] [fixture: common/detect-lone-cr-directive-lf]
+  [fixture: common/detect-lone-cr-comment-lf] [fixture:
+  common/detect-frontmatter-after-comment-line-error] [fixture:
+  common/detect-crlf-no-directive] [fixture:
+  common/error-bare-percent-line-then-frontmatter-block] [fixture:
   common/detect-directive-across-directive-closed] [fixture:
-  common/detect-directive-second-scan-once] この走査は、
-  ディレクティブを除くことで `%%{` ができるディレクティブも見つけます。
-  テキストの最後の `error %%%%{wrap}%%{x}%%` では、
-  `%%` と `{x}%%` がつながって `%%{x}%%` になり、この走査がそれを取り除くので、
-  テキストは mermaid.js と同じく `error` 疑似図種です。
-  これは木のディレクティブを変えません。
-  木のディレクティブは、1 回目の走査がソースの上で見つけます。
-  [fixture: common/detect-directive-joined-by-directive]
-- `%%` の並び。
-  [`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L46-L73)
-  と同じように取り除きます。
-  後ろのどこかに改行がある `%%` について、左から順に、
-  `%%` の直前の空白、`%%`、その後の次の改行までとその改行を、
-  1 つの改行に置き換えます。
-  直前の空白は、それより前の改行をまたいでさかのぼってよいですが、
-  すでに取り除いたテキストには入りません。
-  後に改行がない `%%` はそのまま残り、その後のテキストもすべて残ります。
-  ディレクティブを除くことでできた `%%` も、ほかと同じように取り除きます。
-  `%%%{a}%%%` の後に行 `error` が続くものは `error` 疑似図種です。
-  その `%%` はコメントではなく（後に何もない）、
-  この除去が改行と一緒に取り除くからです。
-  `error`、`%%{`、`%%%%{x}%%`、`ERROR ` の 4 行では、
-  除去の後に `error` と `ERROR ` の 2 行が残り、
-  入力は mermaid.js と同じく拒否されます。
-  [fixture: common/detect-percent-joined-by-directive] [fixture:
-  common/error-percent-before-directive]
+  common/detect-directive-joined-by-directive] [fixture:
+  common/detect-directive-across-directive]
+- `---`: `error` 以外のどの検出器とも同じく、
+  たどり着いた位置の図のテキストが `---` で始まる。
+  そのパーサーは常に例外を投げるので、入力は拒否されます。
+  フロントマターでない `---` のブロックはこうなります
+  （[フロントマター](#フロントマター) を参照）。
+  `%%` だけの行の後でも同じです。
+  `%%`、`---`、`a: b`、`---`、`error` では、
+  たどり着いた位置は最初の `---` にあり、
+  `error` の条件は検出点から見るのでブロックは検出点になく、除かれません。
+  検出がもう一度の読みで見つけるディレクティブの後でも同じです
+  （`%%{`、コメント行、`wrap}%%---`）。
+  [fixture: common/frontmatter-four-dashes] [fixture:
+  common/frontmatter-leading-newline] [fixture:
+  common/error-bare-percent-line-then-frontmatter-block] [fixture:
+  common/detect-dashes-after-directive-found-once-more]
 
-これらを取り除くのは検出のためだけで、図の文法はこれを見ません。
+mermaid.js は、先に書き換えたテキストの上で図種を決めます。
+[`detectType()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/detectType.ts#L36-L48)
+は、フロントマター、ディレクティブ、コメント行、先頭の空白を除いた後に、
+先頭のフロントマターのブロックをもう一度除き、
+ディレクティブをもう一度走査して除き、
+後ろのどこかに改行がある `%%` をその前の空白と行の残りごと除きます
+（[`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L46-L73)）。
+その後で検出器が残りを見ます。
+C4 の検出器は、5 つのキーワードのうち 4 つをその中のどこにでも探します。
+検出した図の字句解析器は、この最後の除去をしていないテキストを読みます。
+文法を持つ図では、上の規則は同じ結果を与えます。
+`%%` だけの行は、mermaid.js の字句解析器がコメントとして読むところでは
+どちらでもコメントで、そうでないところでだけ両者が分かれます（上の既知の差異）。
+2 回目の走査でだけ見つかるディレクティブは、どちらでも検出が通り過ぎ、
+どちらでも拒否されます。
+この除去が取るそれ以外のもの（ヘッダーの前の `---` のブロックなど）は、
+mermaid.js の字句解析器が入力を拒否する原因になります。
+パーサーがテキストを読まない `error` 疑似図種では、
+その条件が除く 3 つがこの除去です。
+[fixture: common/directive-before-frontmatter] [fixture:
+common/frontmatter-indent-mismatch] [fixture: common/frontmatter-bom] [fixture:
+flowchart/detect-directive-across-directive]
+mermaid.js がこの段階を通して検出し、この仕様が別に読む入力は 1 つで、
+既知の差異
+[`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.ja.md) です。
+ヘッダーが別の図のもので、その後の図のテキストに `C4Container`、
+`C4Component`、`C4Dynamic`、`C4Deployment` のどれかを持つテキストを、
+mermaid.js は C4 のパーサーに渡し、この仕様はヘッダーの図として読みます。
+`C4Context` は両者とも先頭でだけ数えます。
+[fixture: common/detect-c4-anywhere] [fixture:
+common/detect-c4context-only-at-start]
+
 テキストに init ディレクティブがあるときは、
 mermaid.js は別の作り方をしたテキストで検出器をもう一度走らせ、
 それが入力を拒否することがあります。
@@ -969,36 +1176,6 @@ mermaid.js は別の作り方をしたテキストで検出器をもう一度走
 （[init ディレクティブ](../../tests/docs/configuration.ja.md#init-ディレクティブ)
 と [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md)
 を参照）。
-
-その後、検出器を登録順に試します。
-条件が最初に成り立ったものが図種を選びます。
-どの検出器も一致しなければ、テキストは `UnknownDiagramError` で拒否されます。
-[fixture: common/empty] 39 個の検出器すべての順序と条件は、
-[detection.ja.md](./detection.ja.md) にあります。
-
-すべての実際の図より前に、2 つの疑似図種が登録されています。
-
-- `error`: 検出器が見るテキストを小文字にして前後を削ったものが `error`
-  に等しい。
-  受理され、パーサーはテキストを読まず、Db の内容は生じません。
-  一致は、[表記](#表記) の意味で大文字小文字を区別しません。
-  検出器は上の `%%` の除去の後のテキストを見るので、
-  `error %% x` の後に改行があれば受理され、
-  テキストの最後にある `error %% x` は受理されません。
-  [fixture: common/error-pseudo-diagram] [fixture: common/error-uppercase]
-  [fixture: common/error-trailing-percent] [fixture:
-  common/error-trailing-percent-at-end]
-- `---`: 検出器が見るテキストを小文字にして先頭の空白を削ったものが `---`
-  で始まる。
-  そのパーサーは常に例外を投げるので、入力は拒否されます。
-  [fixture: common/frontmatter-four-dashes]
-  検出器は上の 2 回目のフロントマターの探索の後のテキストを見るので、
-  これが引き受けるのは、フロントマターでもなく、
-  その探索でも認識されない `---`
-  のブロックだけです（[フロントマター](#フロントマター) を参照）。
-
-各図の文書は、
-その検出の節で [detection.ja.md](./detection.ja.md) の該当する項目を参照します。
 
 ## `style` 行と `classDef` 行
 
@@ -1215,6 +1392,25 @@ entity = "#" word ";"
 ```
 
 エンティティどうしは重なりません。
+`#` は語の文字ではないので、`#a#b;` が持つエンティティは
+2 つ目の `#` からの `#b;` の 1 つで、`##a;` は `#a;` を持ち、
+最初の `#` はテキストです。
+行終端も語の文字ではないので、行末の `#a` と後の行の `b;` や `;` は、
+間にコメント行があってもなくても、エンティティになりません。
+`#a`、U+2028、`b;` も、`-` が語の文字でない `#a-b;` も、
+エンティティになりません。
+一方 `_` は語の文字なので、`#_;` はエンティティです。
+`#` の直後や `;` の直前のディレクティブはエンティティの中にあり、
+エンティティはディレクティブを除いたテキストで読まれます。
+[fixture: common/entity-hash-inside-word-second-hash-starts]
+[fixture: common/entity-double-hash] [fixture:
+common/entity-cut-by-line-terminator] [fixture:
+common/entity-not-across-comment-line] [fixture:
+common/entity-semicolon-after-comment-line] [fixture:
+common/entity-cut-by-line-separator] [fixture: common/entity-hyphen-not-word]
+[fixture: common/entity-underscore-word] [fixture:
+common/entity-directive-after-hash] [fixture:
+common/entity-directive-before-semicolon]
 
 字句の規則: 字句解析器は、エンティティをそのプレースホルダとして読みます。
 語が ASCII の数字だけからなる場合、`#` _語_ `;` を `ﬂ°°` _語_ `¶ß` として読み、
@@ -1296,3 +1492,7 @@ U+00A0 や U+FEFF も含めて空白として扱います。
   名前、数、キーワード、矢印、区切り記号の中の無視される `;`。
 - [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md):
   この仕様が解析も検査もしない埋め込みデータ。
+- [`c4-keyword-anywhere`](./known-divergences/c4-keyword-anywhere.ja.md):
+  別の図種のヘッダーの後の C4 のキーワード。
+- [`bare-percent-line-before-header`](./known-divergences/bare-percent-line-before-header.ja.md):
+  ヘッダーの前の `%%` だけの行のうち、mermaid.js の字句解析器が拒否するもの。
