@@ -191,8 +191,10 @@ flowchart LR
 A line also keeps its statements together and its `;` in place when a statement
 on it ends with one of the ids `accTitle`, `accDescr`, `direction`, `click`,
 `call`, or `href`, or with an id that ends with `direction`, and a `;` separates
-it from the next statement. [fixture:
+it from the next statement, also where the id is the end of a link, as in
+`A-->call;`. [fixture:
 statements-one-per-line/semicolon-after-word-between-others-kept] [fixture:
+statements-one-per-line/semicolon-after-link-to-word-kept] [fixture:
 statements-one-per-line/semicolon-after-word-not-at-end-split] mermaid.js reads
 the whitespace after these words, line breaks included, with the word:
 `accTitle ; :` is the vertices `accTitle` and `:`, while `accTitle` and `:` on
@@ -562,9 +564,9 @@ Within a line, a run of spaces and tabs between two tokens becomes one space.
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed] Whitespace that
 is part of a value is kept: the whitespace around the `,` of a list of styles,
 which mermaid.js keeps in the style, and the whitespace inside the name of a
-subgraph, which becomes its title. A `direction` statement is the exception: the
-rest of its line is text to mermaid.js, which may hold labels and strings, so it
-is printed as written (see [Direction](#direction)). [fixture:
+subgraph, which becomes its title. The text of a `direction` statement before
+`direction` and after the value is the exception, kept as written (see
+[Direction](#direction)). [fixture:
 whitespace-between-tokens/style-values-in-class-def-and-link-style-kept]
 [fixture: whitespace-between-tokens/subgraph-quoted-name-kept] In a `style`,
 `classDef`, or `linkStyle` statement, the whitespace before the first style,
@@ -574,6 +576,11 @@ directive there: `style A %%{init: {}}%%  fill:red` and
 the first style, up to the last style, is kept as written: mermaid.js reads it
 as part of the styles. [fixture:
 whitespace-between-tokens/style-inner-whitespace-kept]
+
+U+2028 and U+2029 after the `end` of a subgraph are whitespace to mermaid.js,
+and are dropped with the whitespace at the end of the line: `end`, U+2028, and a
+line break is printed as `end`. [test: U+2028 after the `end` of a subgraph]
+[test: U+2029 and whitespace around it after the `end` of a subgraph]
 
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/collapsed-input.mmd)):
@@ -1334,14 +1341,15 @@ in a `direction` statement. [fixture: direction/header-td-kept] [fixture:
 direction/statement-td-kept-with-other-header] [fixture:
 direction/statement-values-kept] mermaid.js keeps the `TD` of a `direction`
 statement in a subgraph as written, so changing it there would change the
-diagram, and changing only the header would make the two disagree. A `direction`
-statement is printed as written as a whole: mermaid.js reads the rest of its
-line as text, so the whitespace between `direction` and the value, the text
-before `direction` and after the value, and a `;` after the value, which is part
-of that text and no separator, stay as they are. A line such as
-`A[direction TB]` is a `direction` statement too, and its vertices and links are
-not read, so it is printed as written as well, at the indentation of its level.
-[fixture: direction/statement-holds-text-kept]
+diagram, and changing only the header would make the two disagree. In a
+`direction` statement mermaid.js reads the text before `direction` and after the
+value as text, which may hold labels and strings, and a `;` after the value
+belongs to that text and is no separator. The text is kept as written; the
+whitespace between it and `direction`, and between `direction` and the value,
+becomes one space, as between any tokens. A line such as `A[direction TB]` is a
+`direction` statement too, its vertices and links are not read, and it is
+printed so, at the indentation of its level. [fixture:
+direction/statement-holds-text-kept]
 
 Input
 ([direction/kept-input.mmd](../tests/fixtures/flowchart/direction/kept-input.mmd)):

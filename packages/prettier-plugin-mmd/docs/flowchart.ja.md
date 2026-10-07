@@ -198,7 +198,9 @@ flowchart LR
 文が id `accTitle`、`accDescr`、`direction`、`click`、`call`、`href` のどれか、
 または `direction` で終わる id で終わり、次の文との間を `;` が区切るときも、
 文を行にまとめ、`;` をその位置に残します。
+id が `A-->call;` のようにリンクの末尾にあるときも同じです。
 [fixture: statements-one-per-line/semicolon-after-word-between-others-kept]
+[fixture: statements-one-per-line/semicolon-after-link-to-word-kept]
 [fixture: statements-one-per-line/semicolon-after-word-not-at-end-split]
 mermaid.js は、これらの語の後の空白を、改行も含めて語と一緒に読むからです。
 `accTitle ; :` は頂点 `accTitle` と `:` ですが、
@@ -352,7 +354,8 @@ flowchart LR
 [fixture: statements-one-per-line/percent-token-after-whitespace-kept]
 [fixture: statements-one-per-line/percent-token-after-block-and-directive-kept]
 [fixture: statements-one-per-line/percent-token-in-subgraph-kept]
-ラベルやリンクのテキストの中の `%%` は文を始めず、その行はほかと同じように整形します。
+ラベルやリンクのテキストの中の `%%` は文を始めず、
+その行はほかと同じように整形します。
 [fixture: statements-one-per-line/percent-in-label-formatted]
 
 入力
@@ -530,7 +533,8 @@ flowchart LR
 テキストの先頭と末尾、subgraph の先頭と末尾の空行は取り除きます。
 [fixture: blank-lines/after-comment-before-header]
 [fixture: blank-lines/after-frontmatter]
-行をまたいで書かれた値（ラベルなど）のテキストの中の空行は、値の一部なので残します。
+行をまたいで書かれた値（ラベルなど）のテキストの中の空行は、
+値の一部なので残します。
 [fixture: blank-lines/inside-values-kept]
 テキストはちょうど 1 つの改行で終わります。
 [fixture: blank-lines/header-only-without-line-break]
@@ -579,9 +583,8 @@ flowchart LR
 値の一部である空白は保ちます。
 スタイルの並びの `,` の前後の空白は mermaid.js がスタイルに残し、
 subgraph の名前の中の空白はそのタイトルになります。
-`direction` の文は例外です。行の残りは mermaid.js にとってテキストで、
-ラベルや文字列を含むことがあるので、書かれたまま印字します
-（[方向](#方向)を参照）。
+`direction` の文の、`direction` の前と値の後のテキストは例外で、
+書かれたまま残します（[方向](#方向)を参照）。
 [fixture: whitespace-between-tokens/style-values-in-class-def-and-link-style-kept]
 [fixture: whitespace-between-tokens/subgraph-quoted-name-kept]
 `style`・`classDef`・`linkStyle` の文では、
@@ -592,6 +595,12 @@ Db が同じです。
 最初のスタイルの始まりから最後のスタイルまでは、書かれたまま残します。
 mermaid.js はそれをスタイルの一部として読むからです。
 [fixture: whitespace-between-tokens/style-inner-whitespace-kept]
+
+subgraph の `end` の後の U+2028 と U+2029 は mermaid.js にとって空白なので、
+行末の空白と一緒に落とします。
+`end`、U+2028、改行は `end` と印字します。
+[test: U+2028 after the `end` of a subgraph]
+[test: U+2029 and whitespace around it after the `end` of a subgraph]
 
 入力
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/flowchart/whitespace-between-tokens/collapsed-input.mmd)):
@@ -1374,12 +1383,14 @@ flowchart %%{init: {}}%%LR
 mermaid.js は subgraph の中の `direction` の文の
 `TD` を書かれたとおりに保つので、そこを変えると図が変わり、
 ヘッダーだけを変えると両者が揃わなくなるからです。
-`direction` の文は全体を書かれたまま印字します。
-mermaid.js は行の残りをテキストとして読むので、
-`direction` と値の間の空白、`direction` の前と値の後のテキスト、
-値の後の `;`（このテキストの一部で、区切りではありません）は、そのまま残します。
-`A[direction TB]` のような行も `direction` の文で、頂点も接続も読まれないので、
-同じく書かれたまま、その段の字下げで印字します。
+`direction` の文では、mermaid.js は `direction` の前と値の後を、
+ラベルや文字列を含みうるテキストとして読み、
+値の後の `;` はそのテキストに属し、区切りではありません。
+そのテキストは書かれたまま残し、
+それと `direction` の間、`direction` と値の間の空白は、
+ほかのトークンの間と同じく空白 1 つにします。
+`A[direction TB]` のような行も `direction` の文で、頂点も接続も読まれず、
+そのように、その段の字下げで印字します。
 [fixture: direction/statement-holds-text-kept]
 
 入力

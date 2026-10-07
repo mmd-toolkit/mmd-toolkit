@@ -328,11 +328,13 @@ function checkRunsKeepWhitespaceNextToCuts(
 }
 
 /**
- * The ranges of the diagram comments, each from its mark to the line feed
- * that ends it (state.md, Comments): past the comment lines that cut it, since
+ * The ranges of the diagram comments, each from its mark to the line
+ * terminator that ends its line (state.md, Comments; common.md, Notation): a
+ * line feed, the CRLF as one, or a lone CR, or the end of the text where none
+ * follows. The range runs past the comment lines that cut the comment, since
  * their line terminators are part of the comment regions that the written text
- * leaves out and no line feed of the comment itself. A diagram comment is a
- * comment that does not start where the text leaves a character out, as a
+ * leaves out and no line terminator of the comment itself. A diagram comment
+ * is a comment that does not start where the text leaves a character out, as a
  * comment line does; the fragment after a comment line starts in the same
  * comment, and so has the same end. What the records leave between the
  * comments of one diagram comment, such as a U+2028 and the whitespace after a

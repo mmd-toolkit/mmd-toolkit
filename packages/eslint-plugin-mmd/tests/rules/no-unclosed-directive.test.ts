@@ -133,6 +133,11 @@ const INVALID: readonly { case: string; diagram: DiagramType; name: string }[] =
       name: "tokens-sequence-single-percent-comment-after-autonumber-open-directive-741a95e6",
     },
     {
+      case: "a word argument in the text of a message: it ends after the word, and `foo}%%` is text",
+      diagram: "sequence",
+      name: "db-unclosed-directive-in-message-text",
+    },
+    {
       case: "a sequence diagram",
       diagram: "sequence",
       name: "directive-unclosed-between-statements",
@@ -237,6 +242,16 @@ const SEPARATORS: readonly {
     case: "a directive with a U+2029 after it",
     diagram: "sequence",
     name: "tokens-ignored-semicolon-separator-unclosed-directive-paragraph-separator",
+  },
+  {
+    case: "a free-text argument that a U+2028 ends, and the statement after it is read",
+    diagram: "flowchart",
+    name: "db-unclosed-directive-at-line-separator",
+  },
+  {
+    case: "a free-text argument that a U+2029 ends, and the statement after it is read",
+    diagram: "flowchart",
+    name: "db-unclosed-directive-at-paragraph-separator",
   },
 ]
 

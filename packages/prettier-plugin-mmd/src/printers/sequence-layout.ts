@@ -246,6 +246,10 @@ export function layoutSequenceStatement(
   }
   const values = collectValueNodes(statement, sequenceValueNodeTypes)
   if (statement.type === "SequenceIgnoredStatement") values.push(statement)
+  // The directives and `;` that follow a statement whose last unit reads no
+  // whitespace are part of it, as written (see `printedEndAfterSemicolons`).
+  const tail =
+    end > statement.range[1] ? [{ start: statement.range[1], end }] : []
   if (statement.type === "SequenceAccDescrBlockStatement") {
     const closing = findAccDescrBlockClosing(source, statement)
     return {
@@ -262,7 +266,7 @@ export function layoutSequenceStatement(
     }
   }
   return {
-    atoms: collectAtoms(source, start, end, values, []),
+    atoms: collectAtoms(source, start, end, values, tail),
     rules: statementRules(source, statement),
     outdented: new Set(),
     lineBreaks: "joined",

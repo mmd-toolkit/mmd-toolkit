@@ -499,7 +499,8 @@ stateDiagram-v2
 
 ### 説明とラベル
 
-`accTitle` と `accDescr` の後の `:` は、キーワードに接し、後に空白を 1 つ置きます。
+`accTitle` と `accDescr` の後の `:` は、キーワードに接し、
+後に空白を 1 つ置きます。
 `accTitle  :  t` は `accTitle: t` になります。
 [fixture: descriptions-and-labels/acc-text-kept]
 説明と遷移のラベルの `:` の両側には、
@@ -581,14 +582,17 @@ mermaid.js は本文を id の直後から読み、最初の 2 文字を除く�
 id の前の空白は空白 1 つにします。
 `note left of%%x A` のように位置の直後にある、mermaid.js が読まないテキストは、
 位置に接したまま残します。
-複数行のノートの本文は、最初の行から最後の行まで書かれたまま残します。
-両端は mermaid.js が取り除くので、ノートの行の id の後の空白は落とし、
-最初の行の前の空白は本文の段に合わせ、
-最初の行の前と最後の行の後の空行や空白だけの行は、空行 1 つにします。
+複数行のノートの本文は、
+id の後の改行から `end note` の行まで書かれたまま残します。
+行の段は最初の行も含めて残し、両端の空行や空白だけの行も残します。
 `end note` はノートと同じ段に置きます。
-[fixture: notes/first-line-indentation-set]
-[fixture: notes/text-ends-trimmed]
+ノートの行の id の後の空白は落とします。
+その行のコメントやディレクティブの後の空白は、書かれたまま残します。
 [fixture: notes/over-lines]
+[fixture: notes/over-lines-first-line-column-kept]
+[fixture: notes/over-lines-text-ends-kept]
+[fixture: notes/over-lines-directive-on-header-line]
+[fixture: notes/over-lines-end-note-indentation-set]
 [fixture: notes/over-lines-in-composite]
 [fixture: notes/over-lines-empty-lines-kept]
 本文のない 1 行のノートは、説明と同じく、`:` の後の空白を残します。
@@ -642,7 +646,7 @@ note ""floating" as N
 stateDiagram-v2
   A
   note right of A
-    first line
+  first line
     second line
   end note
   note ""floating" as N
@@ -997,11 +1001,38 @@ stateDiagram-v2
 ### 行区切り文字
 
 U+2028 か U+2029 を含む行は、書かれたまま残します。
-composite の文の `{` の前の 2 つ目の名前の行か、閉じる `}` の行にあるときは、
-その文の行を、本体も含めて全体を書かれたまま印字し、本体の字下げは直しません。
-名前の行の `{` の前や `{` の後にあるときは、本体をほかと同じように印字します。
+それを開く行に持つ composite の文は、その文字を残し、
+本体はほかの本体と同じように印字します。
+`state a b`、U+2028、`{` は、文字を残して本体の文を字下げします。
+閉じる行にあるときも同じです。
+`state A {`、本体の行 `B`、U+2028 が後ろにある `}` では、
+`}` の後ろの空白を文字ごと書かれたまま残し、本体は字下げします。
 [test: U+2028 before the brace of a composite statement]
 [test: U+2028 on the closing line of a composite statement]
+[test: U+2029 and whitespace before it on the closing line of a composite statement]
+[test: U+2028 on the closing line of a composite statement in a body]
+[test: U+2028 after the closing brace at the end of the text]
+[test: U+2028 on the opening and on the closing line of a composite statement]
+入れ子になった composite の文も、2 つの閉じる行がどうであっても、
+同じように印字します。
+[test: U+2028 on the closing lines of a composite statement and of one in its body]
+[test: U+2028 on the closing lines of three nested composite statements]
+本体にその文字を含む行がある composite の文、
+本体が空で、閉じる行がその文字を含む composite の文
+（`state A {`、空白だけの行、`}`）、
+閉じる `}` が行頭にない composite の文
+（`B }` や、前にディレクティブがある場合）、
+閉じる行で文字の後にコメント行か、別の規則が残す `;` がある composite の文は、
+文全体を書かれたまま印字し、本体の字下げは直しません
+（[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)と
+[U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+を参照）。
+[test: U+2028 on a line of the body of a composite statement]
+[test: U+2028 on the closing line of a composite statement with an empty body]
+[test: U+2028 after a closing brace that follows a statement on its line]
+[test: U+2028 after a closing brace that follows a directive on its line]
+[test: a `;` after U+2029 on the closing line of a composite statement]
+[test: a comment line after U+2028 on the closing line of a composite statement]
 state 図では、mermaid.js が擬似状態の印、方向の行、
 `{` の前の 2 つ目の名前を探す範囲を、これらの文字が区切るからです。
 `state a`、U+2028、`b <<fork>>` は名前 `a` とフォーク `b` ですが、

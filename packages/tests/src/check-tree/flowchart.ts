@@ -182,9 +182,11 @@ function checkShape(
 /**
  * diagrams/flowchart.md, The header context, rule 2: the texts of the
  * `header-direction` units, which are the `Keyword` token after the header
- * keyword, as written.
+ * keyword, as written. `tests/check-tree-flowchart.test.ts` requires the list
+ * to be that of the rule, and its texts in lower case to be texts of
+ * `KEYWORD_TEXTS` too.
  */
-const HEADER_DIRECTIONS: readonly string[] = [
+export const HEADER_DIRECTIONS: readonly string[] = [
   "LR",
   "RL",
   "TB",

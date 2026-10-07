@@ -13,6 +13,7 @@ import type { CheckedNode, CheckedRoot } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
 import type { DiagramType } from "../src/index.ts"
 import { getFixturesRoot, loadFixtures } from "../src/index.ts"
+import { recordedTree } from "./check-tree-recorded.ts"
 import { withoutTokenWhitespace } from "./check-tree-token-edits.ts"
 import type { TokenSide } from "./check-tree-token-edits.ts"
 import { readFieldMeanings } from "./spec-field-tables.ts"
@@ -261,36 +262,66 @@ describe("whitespace taken off an end of a token", () => {
 // before a U+2028 or U+2029, the separator itself, the whitespace after the
 // region, and what is left of the line when nothing but whitespace follows.
 
-/** The recorded trees of the state fixtures of such comments. */
-async function cutCommentTrees(): Promise<Recorded[]> {
-  return (await recordedTrees()).filter(
-    (recorded) =>
-      recorded.name.startsWith("state/") &&
-      recorded.name.includes("comment-cut"),
-  )
-}
+/**
+ * The state fixtures of such comments: the classes are a U+2028 and a U+2029,
+ * for `%%` and for `#`, a space before the separator, spaces after the
+ * region, a line of spaces after it, and a fragment that ends with a space.
+ */
+const CUT_COMMENT_FIXTURES: readonly string[] = [
+  "tokens-ignored-text-comment-cut-by-comment-line",
+  "tokens-ignored-text-comment-cut-by-comment-line-paragraph-separator",
+  "tokens-ignored-text-comment-cut-fragment-trailing-space",
+  "tokens-ignored-text-comment-cut-space-before-separator",
+  "tokens-ignored-text-comment-cut-spaces-after-region",
+  "tokens-ignored-text-comment-cut-spaces-line-after-region",
+  "tokens-ignored-text-hash-comment-cut-by-comment-line",
+  "tokens-ignored-text-hash-comment-cut-by-comment-line-paragraph-separator",
+]
+
+// parser/docs/tokens.md, Comment: a diagram comment, and the fragment after a
+// comment line that cuts it, ends before the line terminator that ends its
+// line, which is a line feed, a CRLF, or a lone CR, or at the end of the text.
+// The fixtures below are the input of
+// `tokens-ignored-text-comment-cut-by-comment-line`, whose line terminator
+// after the fragment `[*]` is a line feed, with a CRLF and with a lone CR in
+// its place, and with the text ended after the fragment.
+
+/** The fixture whose line terminator after the fragment is a CRLF. */
+const CUT_COMMENT_ENDING_AT_CRLF = "tokens-ignored-text-comment-cut-end-crlf"
+
+/** The fixture whose line terminator after the fragment is a lone CR. */
+const CUT_COMMENT_ENDING_AT_CR = "tokens-ignored-text-comment-cut-end-cr"
+
+/** The fixture whose text ends after the fragment. */
+const CUT_COMMENT_ENDING_AT_END_OF_TEXT =
+  "tokens-ignored-text-comment-cut-end-of-text"
 
 describe("the value of a node of text that mermaid.js does not read, with a diagram comment that a comment line cuts", () => {
-  it("is accepted in each recorded tree of such a comment", async () => {
-    const trees = await cutCommentTrees()
-    // The classes: a U+2028 and a U+2029, for `%%` and for `#`, a space before
-    // the separator, spaces after the region, and a line of spaces after it.
-    expect(trees.length).toBeGreaterThanOrEqual(7)
-    for (const recorded of trees) {
-      const tree = JSON.parse(recorded.json) as CheckedRoot
-      expect(checkTree(recorded.input, tree), recorded.name).toEqual([])
+  it("is accepted in the recorded tree of each fixture of such a comment, with each end of its line", () => {
+    for (const fixture of [
+      ...CUT_COMMENT_FIXTURES,
+      CUT_COMMENT_ENDING_AT_CRLF,
+      CUT_COMMENT_ENDING_AT_CR,
+      CUT_COMMENT_ENDING_AT_END_OF_TEXT,
+    ]) {
+      const { input, tree } = recordedTree("state", fixture)
+      expect(checkTree(input, tree), fixture).toEqual([])
     }
   })
 
-  it("is reported when it keeps what lies between the comments of the diagram comment", async () => {
-    const trees = await cutCommentTrees()
-    let made = 0
+  it("is reported when it keeps what lies between the comments of the diagram comment", () => {
     const unreported: string[] = []
-    for (const recorded of trees) {
-      const tree = JSON.parse(recorded.json) as CheckedRoot
-      const written = new WrittenText(recorded.input, tree)
-      for (const node of nodesOf(tree)) {
-        if (!node.type.endsWith("IgnoredText")) continue
+    for (const fixture of [
+      ...CUT_COMMENT_FIXTURES,
+      CUT_COMMENT_ENDING_AT_CRLF,
+      CUT_COMMENT_ENDING_AT_CR,
+    ]) {
+      const { input, tree } = recordedTree("state", fixture)
+      const written = new WrittenText(input, tree)
+      const ignoredTexts = nodesOf(tree).filter((node) =>
+        node.type.endsWith("IgnoredText"),
+      )
+      for (const node of ignoredTexts) {
         // The value that leaves out the comments only, one by one, as the
         // comment lines and the fragments are recorded.
         const commentsOnly = written.of(
@@ -303,16 +334,42 @@ describe("the value of a node of text that mermaid.js does not read, with a diag
             )
             .map((comment) => comment.range),
         )
-        if (commentsOnly === node.value) continue
-        made++
+        // Every one of these fixtures keeps something between its comments.
+        if (commentsOnly === node.value) {
+          unreported.push(`${fixture}: the value keeps nothing between them`)
+          continue
+        }
         ;(node as Record<string, unknown>).value = commentsOnly
-        if (checkTree(recorded.input, tree).length === 0) {
-          unreported.push(`${recorded.name}: ${JSON.stringify(commentsOnly)}`)
+        if (checkTree(input, tree).length === 0) {
+          unreported.push(`${fixture}: ${JSON.stringify(commentsOnly)}`)
         }
       }
     }
-    // Every class of the fixtures keeps something between its comments.
-    expect(made).toBeGreaterThanOrEqual(6)
     expect(unreported).toEqual([])
+  })
+
+  it("is reported, with its own message, when the line terminator that ends the comment is another one in the value", () => {
+    // The line terminator that ends the diagram comment is part of the value
+    // as written: a CRLF is not a line feed, and a lone CR is not one.
+    for (const [fixture, written, other] of [
+      [CUT_COMMENT_ENDING_AT_CRLF, "\r\n", "\n"],
+      [CUT_COMMENT_ENDING_AT_CR, "\r", "\n"],
+    ] as const) {
+      const { input, tree } = recordedTree("state", fixture)
+      const ignoredText = nodesOf(tree).find(
+        (node) => node.type === "StateIgnoredText",
+      ) as (CheckedNode & { value: string }) | undefined
+      if (ignoredText === undefined) throw new Error(`${fixture}: no text`)
+      const right = ignoredText.value
+      expect(right, fixture).toContain(written)
+      const wrong = right.replace(written, other)
+      ignoredText.value = wrong
+      expect(checkTree(input, tree), fixture).toEqual([
+        {
+          where: `StateIgnoredText at ${ignoredText.range[0]}-${ignoredText.range[1]}`,
+          message: `value is not its written text: ${JSON.stringify(wrong)}, not ${JSON.stringify(right)}`,
+        },
+      ])
+    }
   })
 })

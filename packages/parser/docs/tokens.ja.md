@@ -83,6 +83,8 @@ mermaid.js がそれを値として読むところと、
 [fixture: class/db-generic-blank]
 [fixture: flowchart/tokens-directives-label-space-between]
 [fixture: sequence/tokens-title-directive-then-spaces]
+[fixture: state/tokens-alias-ignored-semicolon-then-spaces]
+[fixture: flowchart/comment-lines-after-separator-0e277222]
 図の文法が行終端に意味を与える場所、たとえば文の終わりでは、
 字句解析器はそれを読みますが、そのためのトークンもノードも作りません。
 それが区切ったものは、文の並びのような木の構造に現れます。
@@ -101,6 +103,7 @@ mermaid.js がそれを値として読むところと、
 そのため、mermaid.js が値の始まりか終わりで読む空白と行終端は、
 値のトークンの一部です。
 [fixture: class/db-generic-spaces]
+[fixture: class/tokens-callback-arguments-line-feeds-at-ends]
 mermaid.js が空白だけとして読む値は、その空白のトークンを持ち、
 その種類は、図がその位置の値に与える種類です。
 [fixture: class/db-generic-blank]
@@ -251,7 +254,8 @@ state/lex-diagram-comment-across-comment-line]
 印は、コメント行の `%%` の最初の `%` か、図のコメントの印です。
 コメントは印から始まり、印より前の文字はコメントに含まれません。
 [fixture: common/comment-after-directive]
-[fixture: sequence/lex-single-percent-comment]
+[fixture: sequence/lex-hash-ends-text]
+[fixture: sequence/lex-percent-comment-after-unit]
 例外は、コメント領域の後の図のコメントの断片です（下を参照）。
 コメント領域が覆う空白だけの行と行終端は、空白と行終端です。
 [fixture: common/comment-blank-line-before-in-string]
@@ -495,6 +499,8 @@ common/comment-directive-in-string]
 範囲のほかの部分は空白と行終端です。
 各 `---` の後の同じ行の空白、本文の前の空白だけの行、
 本文の始まりと終わりの空白がそうで、本文の最初の行の字下げも含みます。
+[fixture: common/frontmatter-blanks-after-delimiters]
+[fixture: common/frontmatter-blank-line-before-body]
 本文のほかの行の字下げは本文のトークンの中にあり、
 `value` は字下げをすべて含む本文を持ちます。
 [fixture: common/config-directive-after-frontmatter]
@@ -680,6 +686,9 @@ Identifier のトークンは 1 つの `Identifier` のトークンで、
   `class Foo%%{init: {}}%% Bar` も同じです。
   `class A%%{init: {}}%%.B` が宣言するクラスは `A.B` で、
   トークンは `A` と `.B`、その間に `Directive` のトークンがあります。
+  無視される `;` も同じように切ります。
+  `A "style:#x" --> B;C` のクラス `BC` は、トークン `B` と `C` を持ち、
+  その間に `IgnoredSemicolon` のトークンがあります。
   [fixture: class/gram-name-spaces] [fixture:
   class/lex-directive-between-name-parts] [fixture:
   class/lex-directive-in-dotted-name]
@@ -689,6 +698,9 @@ Identifier のトークンは 1 つの `Identifier` のトークンで、
   mermaid.js が名前の一部として読む、中の空白もそのトークンに入ります。
   `participant A%%{init: {}}%% c%%B` の参加者は `A c%%B` で、
   トークンは `A` と ` c%%B`、その間に `Directive` のトークンがあります。
+  無視される `;` も同じように切ります。
+  `participant Z@{ "style": "x:#y" };participant B;C` の参加者 `BC` の
+  トークンは `B` と `C` です。
   [fixture: sequence/lex-directive-in-id-before-space]
   [fixture: sequence/tokens-ignored-semicolon-in-participant-id]
 
@@ -702,7 +714,7 @@ Identifier のトークンは 1 つの `Identifier` のトークンで、
   （[文字列、バッククォートの名前、ジェネリクスの型](../../spec/docs/diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
   を参照）。
   [fixture: common/directive-in-string]
-  [fixture: class/lex-directive-between-name-parts]
+  [fixture: class/lex-directive-in-dotted-name]
   [fixture: class/lex-backquote-unclosed-directive-after-line-break]
   切ってよいのは `RawText` と `String` のトークンだけで、
   ほかの種類のトークンの内側のディレクティブは、入力を拒否させます

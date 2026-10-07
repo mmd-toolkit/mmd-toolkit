@@ -87,10 +87,10 @@ class/div-ignored-semicolon-in-relation-line]
   token each, and `class Foo Bar` has the two tokens `Foo` and `Bar`, and the
   ClassIdentifier `FooBar`. A directive or an ignored `;` cuts such a token as
   any text: `class A%%{init: {}}%%.B` has the tokens `A` and `.B` and the
-  ClassIdentifier `A.B`. [fixture: class/gram-name-spaces] [fixture:
+  ClassIdentifier `A.B`. [fixture: class/spec-class-diagram-34c1dbfe] [fixture:
+  class/gram-name-dots] [fixture: class/gram-name-spaces] [fixture:
   class/gram-name-dash-spaces] [fixture: class/lex-directive-in-dotted-name]
-  [fixture: class/gram-name-dots] [fixture:
-  class/tokens-ignored-semicolon-in-relation-name]
+  [fixture: class/tokens-ignored-semicolon-in-relation-name]
 - A label is one unit, from its `:`, and two tokens: the `:` and the text
   without the whitespace around it. In a member statement, the text is a member
   line, divided into the tokens of its parts. [fixture: class/lex-label-percent]

@@ -37,7 +37,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "text",
       "end note",
     ],
-    "stateDiagram-v2\n  state S {\n    A --> B\n  }\n  note right of A\n    text\n  end note\n",
+    "stateDiagram-v2\n  state S {\n    A --> B\n  }\n  note right of A\ntext\n  end note\n",
   ],
 ]
 

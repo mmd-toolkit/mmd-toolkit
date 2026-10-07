@@ -83,6 +83,8 @@
 [fixture: flowchart/tokens-label-string-directive-then-text]
 [fixture: flowchart/tokens-link-text-string-then-text-space]
 [fixture: flowchart/tokens-subgraph-name-string-directive-then-text]
+[fixture: flowchart/db-style-tabs-after-comma]
+[fixture: flowchart/db-subgraph-name-trailing-space]
 `click A call f (x)` のコールバックの名前は、
 その後の空白を含むトークン `f` を持ちます。
 [fixture: flowchart/tokens-callback-name-trailing-space]

@@ -1,7 +1,10 @@
 import { readFileSync } from "node:fs"
 import path from "node:path"
+import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
+import { HEADER_DIRECTIONS } from "../src/check-tree/flowchart.ts"
 import { checkTree } from "../src/check-tree/index.ts"
+import { KEYWORD_TEXTS } from "../src/check-tree/keywords.ts"
 import type {
   CheckedNode,
   CheckedRoot,
@@ -565,4 +568,40 @@ describe("checkTree on a changed flowchart tree", () => {
       ).toBe(true)
     })
   }
+})
+
+describe("the directions of the header", () => {
+  const document = readFileSync(
+    path.join(
+      path.dirname(fileURLToPath(import.meta.url)),
+      "../../spec/docs/diagrams/flowchart.md",
+    ),
+    "utf8",
+  )
+
+  /** The texts in backticks of the rule 2 of the header context before the unit that it makes: the lines of the rule, up to `header-direction`. */
+  function directionsOfRule(): string[] {
+    const lines = document.split("\n")
+    const start = lines.findIndex((line) =>
+      line.startsWith("2. Zero or more whitespace, then"),
+    )
+    if (start === -1) throw new Error("no rule 2 of the header context")
+    const rule = lines.slice(start, start + 3).join(" ")
+    const end = rule.indexOf("`header-direction`")
+    if (end === -1) throw new Error("rule 2 makes no header-direction unit")
+    return [...rule.slice(0, end).matchAll(/`([^`]+)`/gu)].map(
+      (match) => match[1] ?? "",
+    )
+  }
+
+  it("are the texts that rule 2 of the header context of the specification lists", () => {
+    expect([...HEADER_DIRECTIONS].sort()).toEqual(directionsOfRule().sort())
+  })
+
+  it("are texts of the Keyword tokens of a flowchart, in lower case", () => {
+    const texts = KEYWORD_TEXTS.FlowchartDiagram ?? []
+    expect(
+      HEADER_DIRECTIONS.filter((word) => !texts.includes(word.toLowerCase())),
+    ).toEqual([])
+  })
 })

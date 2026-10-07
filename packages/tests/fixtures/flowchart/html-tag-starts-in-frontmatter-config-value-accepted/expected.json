@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A tag opened in a frontmatter configuration value and ended in an accessible title: mermaid.js accepts the input as written and reads the accessible title as `b='c'>d`, while the specified reading keeps the `\"`. The configuration of the written input does not hold the value with the `<` (mermaid.js drops it), so `embedded` records no configuration; the input with `(` for `<` would give the value `(a`."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "b='c'>d",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

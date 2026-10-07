@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The text that the proposal splitAtSeparator of the rule flowchart/no-ignored-text makes of the input invalid/flowchart/gram-ignored-text-split-at-double-separator."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "color:#111"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

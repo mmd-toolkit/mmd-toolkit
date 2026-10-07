@@ -7,23 +7,27 @@
  * of the plugin reports more, except a rule that the test names as one whose
  * reports a suggestion may reveal: a mistake that the text already holds,
  * which the rewrite makes visible. The text that a suggestion produces is a
- * text of the implementation, not of the corpus, so each suggestion is checked
- * against what it claims by reading its output with mermaid.js (see
- * `SuggestionClaim`).
+ * corpus fixture, named in the file `recorded.json` of the fixture directory of
+ * the rule, so each suggestion is checked against what it claims on the Dbs
+ * that the corpus records for the input and for that text (see
+ * `SuggestionClaim`). No test of a rule runs mermaid.js.
  */
 import type { Linter, Rule } from "eslint"
 import { Linter as LinterClass } from "eslint"
 import { SnapshotRuleTester } from "eslint-snapshot-rule-tester"
-import { readFileSync } from "node:fs"
+import { existsSync, readFileSync } from "node:fs"
 import { isDeepStrictEqual } from "node:util"
 import { describe, expect, it } from "vitest"
 import { parse, traverseNodes } from "@mmd-toolkit/parser"
-import type { Range } from "@mmd-toolkit/parser"
+import type {
+  FlowchartAccDescrBlockStatement,
+  Range,
+} from "@mmd-toolkit/parser"
 import type { DbSummary, Fixture, JsonValue } from "@mmd-toolkit/tests"
 import { loadFixtures } from "@mmd-toolkit/tests"
-import { runMermaid } from "@mmd-toolkit/tests/mermaid"
 import type { MermaidRuleDefinition } from "../src/index.ts"
 import { rules } from "../src/rules/index.ts"
+import { lineStartsOf, linesOf } from "../src/source-code.ts"
 import { RULE_DOCS_DIR, ruleDocumentPath } from "../tools/rule-docs.ts"
 import {
   isDiagramType,
@@ -31,7 +35,7 @@ import {
   withoutByteOrderMark,
 } from "./helpers.ts"
 import type { RuleCase } from "./rule-cases.ts"
-import { ruleCases } from "./rule-cases.ts"
+import { RULE_FIXTURES_DIR, ruleCases } from "./rule-cases.ts"
 
 /**
  * The configuration that enables every implemented rule of the plugin: the
@@ -67,8 +71,8 @@ export type RevealedReports =
 
 /**
  * What a suggestion claims about the diagram, in the words of its message,
- * checked on the Db that mermaid.js gives for the text before and after, and on
- * the text of the input. A claim says all that the message says.
+ * checked on the Db that the corpus records for the text before and after, and
+ * on the text of the input. A claim says all that the message says.
  */
 export type SuggestionClaim =
   /** The diagram is read as before: the Db is the same. */
@@ -128,12 +132,18 @@ export type SuggestionClaim =
 export interface ClaimFacts {
   /** The text that the suggestion was applied to. */
   readonly input: string
-  /** The Db of the input; null where mermaid.js rejects it. */
+  /** The Db that the corpus records for the input; null where mermaid.js rejects it. */
   readonly before: DbSummary | null
   /** The text that the suggestion gives. */
   readonly output: string
-  /** The Db of that text; null where mermaid.js rejects it. */
+  /** The Db that the corpus records for that text; null where mermaid.js rejects it. */
   readonly after: DbSummary | null
+  /**
+   * For a rule that drops text (`readsDroppedTextAsStatements`): the Db that
+   * the corpus records for the dropped text read alone, and for the header
+   * alone.
+   */
+  readonly alone?: { readonly dropped: DbSummary; readonly header: DbSummary }
   /** The reports of the rule on the input. */
   readonly reports: readonly Linter.LintMessage[]
   /** The report that carries the suggestion. */
@@ -157,54 +167,90 @@ function reportCounts(
   return counts
 }
 
-/** The Db that mermaid.js gives for `text`, null where it rejects it. */
-export async function readDb(text: string): Promise<DbSummary | null> {
-  const outcome = await runMermaid(text)
-  if (outcome.accepted && outcome.db === null) {
-    throw new Error(`mermaid.js gives no Db for ${JSON.stringify(text)}`)
-  }
-  return outcome.accepted ? outcome.db : null
+/**
+ * What the corpus records for the inputs and the suggestions of a rule, in the
+ * file `recorded.json` of its fixture directory. The text of each suggestion
+ * is a corpus fixture of its own, which records what mermaid.js reads from it,
+ * so that no test of the rule runs mermaid.js.
+ */
+interface RuleRecords {
+  /** The corpus fixture of each example of the document, by case name. */
+  readonly docs: Readonly<Record<string, string>>
+  /**
+   * For each input, by case name, the corpus fixture of the text that each of
+   * its suggestions gives: by the id of the message, and `<id> 2`, `<id> 3`
+   * for another suggestion with the same message.
+   */
+  readonly results: Readonly<Record<string, Readonly<Record<string, string>>>>
+  /** For each input, the corpus fixture of the text that the rule drops, read alone. */
+  readonly alone: Readonly<Record<string, string>>
+  /** The corpus fixture of the header `flowchart LR` alone. */
+  readonly header?: string
 }
 
-/** The Db that mermaid.js gives for `text`; the test fails when it rejects. */
-export async function dbOf(text: string): Promise<DbSummary> {
-  const db = await readDb(text)
-  if (db === null) {
-    throw new Error(`mermaid.js rejects ${JSON.stringify(text)}`)
-  }
-  return db
+/** The records of the rule `name`: none, for a rule that has no suggestion. */
+function recordsOf(name: string): RuleRecords {
+  const path = `${RULE_FIXTURES_DIR}${name}/recorded.json`
+  if (!existsSync(path)) return { docs: {}, results: {}, alone: {} }
+  return JSON.parse(readFileSync(path, "utf8")) as RuleRecords
 }
+
+/** A suggestion of a report. */
+type ReportedSuggestion = NonNullable<Linter.LintMessage["suggestions"]>[number]
 
 /**
- * The Db of the input `text` of a case, null where mermaid.js rejects it. For
- * a copy of a corpus input, it is the Db that the corpus records in
- * `expected.json`, once the copy is the corpus input and the corpus reads it
- * without a configuration, as the output of a suggestion is read; for any other
- * input, it is the Db that mermaid.js gives.
+ * The suggestions of `reports`, each with its key in `RuleRecords.results`
+ * and its report. A suggestion that another report repeats is listed once.
  */
-async function inputDbOf(
-  testCase: RuleCase,
-  text: string,
-): Promise<DbSummary | null> {
-  const [, diagram, ...nameParts] = testCase.name.split("/")
-  if (diagram !== undefined && isDiagramType(diagram) && nameParts.length > 0) {
-    const fixture = (await loadFixtures(diagram)).find(
-      (candidate) => candidate.name === nameParts.join("/"),
-    )
-    expect(fixture, `the corpus fixture of ${testCase.name}`).toBeDefined()
-    if (fixture !== undefined) {
-      expect(
-        withoutByteOrderMark(fixture.input),
-        `${testCase.name} is a copy of the corpus input`,
-      ).toBe(text)
-      expect(
-        fixture.config,
-        `the corpus reads ${testCase.name} with a configuration`,
-      ).toBeUndefined()
-      return fixture.expected.accepted ? fixture.expected.db : null
+function suggestionKeys(reports: readonly Linter.LintMessage[]): {
+  suggestion: ReportedSuggestion
+  key: string
+  report: Linter.LintMessage
+}[] {
+  const counts = new Map<string, number>()
+  const seen = new Set<string>()
+  const keys: {
+    suggestion: ReportedSuggestion
+    key: string
+    report: Linter.LintMessage
+  }[] = []
+  for (const report of reports) {
+    for (const suggestion of report.suggestions ?? []) {
+      const identity = `${suggestion.messageId}${JSON.stringify(suggestion.fix)}`
+      if (seen.has(identity)) continue
+      seen.add(identity)
+      const id = suggestion.messageId ?? ""
+      const count = (counts.get(id) ?? 0) + 1
+      counts.set(id, count)
+      keys.push({ suggestion, key: count > 1 ? `${id} ${count}` : id, report })
     }
   }
-  return readDb(text)
+  return keys
+}
+
+/** The corpus fixture that `testCase` is: the copy, the example of the document, or the fixture it reads. */
+function inputFixtureName(records: RuleRecords, testCase: RuleCase): string {
+  if (testCase.name.startsWith("docs/")) {
+    const name = records.docs[testCase.name]
+    if (name === undefined) {
+      throw new Error(`recorded.json has no fixture for ${testCase.name}`)
+    }
+    return name
+  }
+  const [kind = "", diagram = "", ...rest] = testCase.name.split("/")
+  return ["valid", "invalid"].includes(kind) && rest.length > 0
+    ? `${diagram}/${rest.join("/")}`
+    : testCase.name
+}
+
+/** The Db that the corpus records for the fixture `name`; null where mermaid.js rejects it. */
+async function recordedDb(name: string): Promise<DbSummary | null> {
+  const fixture = await corpusFixture(name)
+  expect(
+    fixture.config,
+    `the corpus reads ${name} with a configuration`,
+  ).toBeUndefined()
+  return fixture.expected.accepted ? fixture.expected.db : null
 }
 
 /** `subgraph`, when it is the entry of a subgraph, without its members. */
@@ -244,6 +290,11 @@ function vertexIds(db: DbSummary): string[] {
       ? [vertex.id]
       : [],
   )
+}
+
+/** The ids of the subgraphs of `db`. */
+function subgraphIds(db: DbSummary): string[] {
+  return [...membersOf(db).keys()]
 }
 
 /**
@@ -337,43 +388,7 @@ function dataBlockAt(
  * U+2029 do not end a line).
  */
 function indexOfPosition(text: string, line: number, column: number): number {
-  const lineStarts = [
-    0,
-    ...[...text.matchAll(/\r\n|[\n\r]/gu)].map(
-      (match) => match.index + match[0].length,
-    ),
-  ]
-  return (lineStarts[line - 1] ?? 0) + column - 1
-}
-
-/**
- * The ranges of the statements of `input` that set `field`, in the order of the
- * source: every `accTitle` statement; every `accDescr:` statement and every
- * `accDescr {` block that is not closed (it sets the empty description) or
- * holds a description. A closed block without a description changes nothing.
- */
-function settingStatements(
-  input: string,
-  field: "accTitle" | "accDescr",
-): Range[] {
-  const ranges: Range[] = []
-  traverseNodes(parse(input), {
-    enterNode(node) {
-      if (
-        (field === "accTitle" && node.type === "FlowchartAccTitleStatement") ||
-        (field === "accDescr" &&
-          (node.type === "FlowchartAccDescrStatement" ||
-            (node.type === "FlowchartAccDescrBlockStatement" &&
-              (!node.closed || node.value !== null))))
-      ) {
-        ranges.push(node.range)
-      }
-    },
-    leaveNode() {
-      // Each statement is listed on entering it.
-    },
-  })
-  return ranges
+  return (lineStartsOf(text)[line - 1] ?? 0) + column - 1
 }
 
 /**
@@ -383,21 +398,44 @@ function settingStatements(
  * statement. A statement without a value (an empty block) has none.
  */
 function settingValues(text: string, field: "accTitle" | "accDescr"): string[] {
-  const values: string[] = []
+  return settingStatements(text, field).map((each) => each.value)
+}
+
+/** The statements of `text` that set `field`, with where each starts and its value. */
+function settingStatements(
+  text: string,
+  field: "accTitle" | "accDescr",
+): { start: number; value: string }[] {
+  const statements: { start: number; value: string }[] = []
   traverseNodes(parse(text), {
     enterNode(node) {
-      const sets =
+      if (
         (field === "accTitle" && node.type === "FlowchartAccTitleStatement") ||
-        (field === "accDescr" &&
-          (node.type === "FlowchartAccDescrStatement" ||
-            node.type === "FlowchartAccDescrBlockStatement"))
-      if (sets && node.value !== null) values.push(node.value.value)
+        (field === "accDescr" && node.type === "FlowchartAccDescrStatement")
+      ) {
+        // A statement without text sets the empty value.
+        statements.push({
+          start: node.range[0],
+          value: node.value?.value ?? "",
+        })
+      } else if (
+        field === "accDescr" &&
+        node.type === "FlowchartAccDescrBlockStatement" &&
+        (node.value !== null || !node.closed)
+      ) {
+        // A closed block without text sets nothing; one that is not closed
+        // sets the empty value.
+        statements.push({
+          start: node.range[0],
+          value: node.value?.value ?? "",
+        })
+      }
     },
     leaveNode() {
       // Each statement is listed on entering it.
     },
   })
-  return values
+  return statements
 }
 
 /** The ids of the members of each subgraph of `db`, in the order of `db`. */
@@ -442,6 +480,13 @@ function expectMembersAfterRemoval(
   const membersBefore = membersOfSubgraphs(before)
   const membersAfter = membersOfSubgraphs(after)
   expect(membersAfter.length).toBe(membersBefore.length)
+  // Another source of the same id keeps it a member: a vertex, a subgraph, or
+  // another statement that sets a value.
+  const otherSources = new Set<string>([
+    ...vertexIds(after),
+    ...subgraphIds(after),
+    ...remaining,
+  ])
   for (const [index, ids] of membersAfter.entries()) {
     const earlier = membersBefore[index] ?? []
     expect(
@@ -451,6 +496,13 @@ function expectMembersAfterRemoval(
     expect(
       earlier.filter((id) => !ids.includes(id) && !removed.includes(id)),
       "members that the suggestion loses, besides the values that it removed",
+    ).toEqual([])
+    expect(
+      earlier.filter(
+        (id) =>
+          removed.includes(id) && ids.includes(id) && !otherSources.has(id),
+      ),
+      "removed values that stay members although nothing else names them",
     ).toEqual([])
   }
 }
@@ -558,22 +610,82 @@ function expectReadAsStatements(
       expect([was, read], key).toContainEqual(now)
     }
   }
+  // The subgraphs keep their members, and the text adds only what it gives
+  // when it stands alone: its vertices and subgraphs, and the values of its
+  // `accTitle` and `accDescr` statements, which mermaid.js adds as ids. A `;`
+  // that became a statement of its own is none of these.
+  const given = new Set<unknown>([
+    ...vertexIds(alone),
+    ...subgraphIds(alone),
+    alone.accTitle,
+    alone.accDescr,
+  ])
   const members = membersOf(after)
-  for (const [id, nodes] of membersOf(before)) {
-    expect(members.get(id), `the members of the subgraph ${id}`).toEqual(
+  const membersBefore = membersOf(before)
+  for (const [id, nodes] of membersBefore) {
+    const now = members.get(id) ?? []
+    expect(now, `the members of the subgraph ${id}`).toEqual(
       expect.arrayContaining(nodes),
     )
+    expect(
+      now.filter((node) => !nodes.includes(node) && !given.has(node)),
+      `the members that the text adds to the subgraph ${id}`,
+    ).toEqual([])
   }
+}
+
+/** The `accDescr {` block of `text` that starts at `index`, or null. */
+function blockAt(
+  text: string,
+  index: number,
+): FlowchartAccDescrBlockStatement | null {
+  let found: FlowchartAccDescrBlockStatement | null = null
+  traverseNodes(parse(text), {
+    enterNode(node) {
+      if (
+        node.type === "FlowchartAccDescrBlockStatement" &&
+        node.range[0] === index
+      ) {
+        found = node
+      }
+    },
+    leaveNode() {
+      // Each statement is checked on entering it.
+    },
+  })
+  return found
+}
+
+/** `text` without its whitespace, which mermaid.js trims and joins in places. */
+function squashed(text: string): string {
+  return [...text].filter((character) => character.trim() !== "").join("")
+}
+
+/**
+ * Where the line that holds `index` ends in `text`: at the first line
+ * terminator that no directive of `directives` (ranges) holds.
+ */
+function lineEndAfter(
+  text: string,
+  index: number,
+  directives: readonly Range[],
+): number {
+  for (let at = index; at < text.length; at++) {
+    const directive = directives.find(([from, to]) => from <= at && at < to)
+    if (directive !== undefined) {
+      at = directive[1] - 1
+    } else if (text[at] === "\n" || text[at] === "\r") {
+      return at
+    }
+  }
+  return text.length
 }
 
 /**
  * Checks that the Db `after` of the output of a suggestion is as `claim` says
  * of the input, whose Db is `facts.before`.
  */
-export async function expectClaim(
-  claim: SuggestionClaim,
-  facts: ClaimFacts,
-): Promise<void> {
+export function expectClaim(claim: SuggestionClaim, facts: ClaimFacts): void {
   const { input, output, reports, report } = facts
   if (facts.before === null) {
     // A line of the data made mermaid.js reject the input.
@@ -588,9 +700,9 @@ export async function expectClaim(
     if (facts.after === null) {
       // Rejected still: another such line remains in the data, or no data
       // does (an empty data block is no data block that mermaid.js reads).
-      const rest = (remaining?.data ?? "")
-        .split(/\r\n|[\n\r]/u)
-        .filter((line) => line.trim() !== "" && line.trim() !== "%%")
+      const rest = linesOf(remaining?.data ?? "").filter(
+        (line) => line.trim() !== "" && line.trim() !== "%%",
+      )
       expect(bareLinesIn(remaining?.data ?? "") > 0 || rest.length === 0).toBe(
         true,
       )
@@ -618,18 +730,24 @@ export async function expectClaim(
         withoutFieldAndMembers(before, claim.field),
       )
       expectMembersAfterRemoval(facts, before, after, claim.field)
-      const removed = indexOfPosition(input, report.line, report.column)
-      const remaining = settingStatements(input, claim.field).filter(
-        (range) => range[0] !== removed,
+      // The value that mermaid.js reads is that of the last statement that
+      // remains in the text.
+      // The statement that the report marks is the one that went.
+      const reported = settingStatements(input, claim.field).find(
+        (each) =>
+          each.start === indexOfPosition(input, report.line, report.column),
       )
-      const last = remaining.at(-1)
-      expect(last, "a statement that remains").toBeDefined()
-      if (last !== undefined) {
-        const alone = await dbOf(
-          `flowchart LR\n${input.slice(last[0], last[1])}\n`,
-        )
-        expect(after[claim.field]).toEqual(alone[claim.field])
+      expect(reported, "the reported statement sets the field").toBeDefined()
+      const kept = settingValues(output, claim.field)
+      const gone = settingValues(input, claim.field)
+      for (const value of kept) {
+        const at = gone.indexOf(value)
+        if (at !== -1) gone.splice(at, 1)
       }
+      expect(gone, "the statements that went").toContain(reported?.value)
+      const last = kept.at(-1)
+      expect(last, "a statement that remains").toBeDefined()
+      expect(squashed(String(after[claim.field]))).toBe(squashed(String(last)))
       break
     }
     case "removesVertexOfLine": {
@@ -679,36 +797,57 @@ export async function expectClaim(
       } else {
         expect(before.accDescr).toBe("")
       }
-      if (claim.from === "restOfLine") {
-        // `accDescr:` is how mermaid.js is told to take the rest of the line.
-        expect(after).toEqual(
-          await dbOf(
-            `${input.slice(0, keyword)}accDescr:${input.slice(brace)}`,
-          ),
-        )
-      } else {
-        // All the text after the `{`, compared without whitespace, which
-        // mermaid.js trims in places, and without the directives, which it
-        // takes out before reading: nothing is left out, and the `}` is no
-        // part of the description.
-        const directives = parse(input).directives.map(
-          (directive) => directive.range,
-        )
-        const text = [...input.slice(brace)]
-          .filter(
-            (_character, index) =>
-              !directives.some(
-                ([start, end]) => start <= brace + index && brace + index < end,
-              ),
-          )
-          .filter((character) => character.trim() !== "")
-          .join("")
-        expect(
-          [...String(after.accDescr)]
-            .filter((character) => character.trim() !== "")
+      // The description is the text of the block that the suggestion closes,
+      // compared without whitespace, which mermaid.js trims in places.
+      const closed = blockAt(output, keyword)
+      expect(closed?.closed, "the block is closed in the output").toBe(true)
+      const squash = squashed
+      // The description is the value of the last statement that sets it: the
+      // block, unless a later statement sets it again (and
+      // `no-duplicate-description` then reports that one).
+      expect(squash(String(after.accDescr))).toBe(
+        squash(settingValues(output, "accDescr").at(-1) ?? ""),
+      )
+      // The text of the block is what the suggestion promises: the rest of
+      // the line of the `{`, or all the text after it, without the
+      // directives, which mermaid.js takes out before reading it.
+      const directives = parse(input).directives.map((each) => each.range)
+      const end =
+        claim.from === "restOfLine"
+          ? lineEndAfter(input, brace, directives)
+          : input.length
+      expect(squash(closed?.value?.value ?? "")).toBe(
+        squash(
+          [...input.slice(brace, end)]
+            .filter(
+              (_character, index) =>
+                !directives.some(
+                  ([from, to]) => from <= brace + index && brace + index < to,
+                ),
+            )
             .join(""),
-        ).toBe(text)
+        ),
+      )
+      if (claim.from === "restOfText") {
         expect(after).toEqual({ ...before, accDescr: after.accDescr })
+      } else {
+        // The lines after the line of the `{` are read as statements: each
+        // entry that the Db held stays (a later statement may write it
+        // again), and it may hold more; any other field is as it was.
+        for (const [key, was] of Object.entries(before)) {
+          if (key === "accDescr") continue
+          const now = after[key]
+          if (Array.isArray(was)) {
+            expect(
+              [...entriesById(was).keys()].filter(
+                (id) => !entriesById(now).has(id),
+              ),
+              `the entries of ${key} that are gone`,
+            ).toEqual([])
+          } else {
+            expect(now, `the field ${key}`).toEqual(was)
+          }
+        }
       }
       break
     }
@@ -727,13 +866,16 @@ export async function expectClaim(
           ),
         ),
       )
-      expectReadAsStatements(
-        before,
-        after,
-        await dbOf(`flowchart LR\n${dropped.join("\n")}\n`),
-        await dbOf("flowchart LR\n"),
-        dropped.join("\n"),
-      )
+      expect(facts.alone, "the recorded Db of the dropped text").toBeDefined()
+      if (facts.alone !== undefined) {
+        expectReadAsStatements(
+          before,
+          after,
+          facts.alone.dropped,
+          facts.alone.header,
+          dropped.join("\n"),
+        )
+      }
       break
     }
     default: {
@@ -751,15 +893,88 @@ function mayReveal(revealed: RevealedReports, otherId: string): boolean {
 }
 
 /**
+ * The facts for the claim of the suggestion `key` of the invalid case
+ * `caseName` of the rule `name`: the text, the text that the suggestion gives,
+ * and the Dbs that the corpus records for the two.
+ */
+export async function claimFactsOf(
+  name: string,
+  caseName: string,
+  key: string,
+): Promise<ClaimFacts> {
+  const linter = new LinterClass({ configType: "flat" })
+  const testCase = ruleCases(name).invalid.find(
+    (candidate) => candidate.name === caseName,
+  )
+  if (testCase === undefined) throw new Error(`${name} has no case ${caseName}`)
+  const records = recordsOf(name)
+  const text = withoutByteOrderMark(testCase.code)
+  const reports = linter
+    .verify(text, IMPLEMENTED_RULES_CONFIG, testCase.filename)
+    .filter((message) => message.ruleId === `mmd/${name}`)
+  const found = suggestionKeys(reports).find((each) => each.key === key)
+  if (found === undefined) {
+    throw new Error(`${caseName} has no suggestion ${key}`)
+  }
+  return factsOf(testCase, text, reports, found, records)
+}
+
+/** The facts for the claim of one suggestion; see `claimFactsOf`. */
+async function factsOf(
+  testCase: RuleCase,
+  text: string,
+  reports: readonly Linter.LintMessage[],
+  { suggestion, key, report }: ReturnType<typeof suggestionKeys>[number],
+  records: RuleRecords,
+): Promise<ClaimFacts> {
+  const output = applyFix(text, suggestion.fix)
+  const recorded = records.results[testCase.name]?.[key]
+  expect(
+    recorded,
+    `${testCase.name}: recorded.json names the fixture of the suggestion ${key}`,
+  ).toBeDefined()
+  if (recorded === undefined) throw new Error("unreachable")
+  expect(
+    withoutByteOrderMark((await corpusFixture(recorded)).input),
+    `${testCase.name}: ${recorded} is the text that the suggestion ${key} gives`,
+  ).toBe(output)
+  const inputName = inputFixtureName(records, testCase)
+  expect(
+    withoutByteOrderMark((await corpusFixture(inputName)).input),
+    `${testCase.name} is the input of its corpus fixture`,
+  ).toBe(text)
+  const aloneName = records.alone[testCase.name]
+  return {
+    input: text,
+    before: await recordedDb(inputName),
+    output,
+    after: await recordedDb(recorded),
+    alone:
+      aloneName === undefined || records.header === undefined
+        ? undefined
+        : {
+            dropped: (await recordedDb(aloneName)) ?? {},
+            header: (await recordedDb(records.header)) ?? {},
+          },
+    reports,
+    report,
+  }
+}
+
+/**
  * Checks each suggestion of the rule `ruleId` on an invalid case, applied to
- * its text: the parser accepts the result, the rule reports less on it, and
- * no other implemented rule reports more, except those in `revealed`.
+ * its text: the text is the corpus fixture that the records name for it, byte
+ * for byte, the parser accepts it, the rule reports less on it, no other
+ * implemented rule reports more (except those in `revealed`), and the Db that
+ * the corpus records for it is as the claim of the suggestion says of the Db
+ * that the corpus records for the input.
  */
 async function checkSuggestions(
   linter: LinterClass,
   ruleId: string,
   testCase: RuleCase,
   options: Required<Pick<TestRuleOptions, "revealed" | "claims">>,
+  records: RuleRecords,
 ): Promise<void> {
   const { revealed, claims } = options
   const text = withoutByteOrderMark(testCase.code)
@@ -770,37 +985,28 @@ async function checkSuggestions(
   )
   const before = reportCounts(messages)
   const reports = messages.filter((message) => message.ruleId === ruleId)
-  for (const report of reports) {
-    for (const suggestion of report.suggestions ?? []) {
-      const output = applyFix(text, suggestion.fix)
-      expect(() => parse(output)).not.toThrow()
-      const after = reportCounts(
-        linter.verify(output, IMPLEMENTED_RULES_CONFIG, testCase.filename),
-      )
-      expect(after.get(ruleId) ?? 0).toBeLessThan(before.get(ruleId) ?? 0)
-      const claim: SuggestionClaim | undefined =
-        claims[suggestion.messageId ?? ""]
-      expect(
-        claim,
-        `a claim for the suggestion ${suggestion.messageId}`,
-      ).toBeDefined()
-      if (claim !== undefined) {
-        await expectClaim(claim, {
-          input: text,
-          before: await inputDbOf(testCase, text),
-          output,
-          after: await readDb(output),
-          reports,
-          report,
-        })
-      }
-      for (const [otherId, count] of after) {
-        if (otherId === ruleId || mayReveal(revealed, otherId)) continue
-        expect({ ruleId: otherId, count }).toEqual({
-          ruleId: otherId,
-          count: Math.min(count, before.get(otherId) ?? 0),
-        })
-      }
+  for (const found of suggestionKeys(reports)) {
+    const { suggestion } = found
+    const facts = await factsOf(testCase, text, reports, found, records)
+    const { output } = facts
+    expect(() => parse(output)).not.toThrow()
+    const after = reportCounts(
+      linter.verify(output, IMPLEMENTED_RULES_CONFIG, testCase.filename),
+    )
+    expect(after.get(ruleId) ?? 0).toBeLessThan(before.get(ruleId) ?? 0)
+    const claim: SuggestionClaim | undefined =
+      claims[suggestion.messageId ?? ""]
+    expect(
+      claim,
+      `a claim for the suggestion ${suggestion.messageId}`,
+    ).toBeDefined()
+    if (claim !== undefined) expectClaim(claim, facts)
+    for (const [otherId, count] of after) {
+      if (otherId === ruleId || mayReveal(revealed, otherId)) continue
+      expect({ ruleId: otherId, count }).toEqual({
+        ruleId: otherId,
+        count: Math.min(count, before.get(otherId) ?? 0),
+      })
     }
   }
 }
@@ -827,6 +1033,15 @@ export interface SentenceCase {
    * matter; otherwise `suggests` is enough.
    */
   readonly offers?: readonly string[]
+  /**
+   * For inputs with several reports whose messages differ: what the message of
+   * each report, in the order of the source, contains and lacks. The inputs of
+   * the case have as many reports as there are entries.
+   */
+  readonly messages?: readonly {
+    readonly has?: string
+    readonly lacks?: string
+  }[]
   /** A text that the message of every report on these inputs contains. */
   readonly messageHas?: string
   /** A text that the message of no report on these inputs contains. */
@@ -834,36 +1049,30 @@ export interface SentenceCase {
   /** The names of the inputs (the `name` of a case of `ruleCases`). */
   readonly inputs: readonly string[]
   /**
-   * Inputs that hold a character that a fixture file may not hold (a line
-   * separator, say), written here with escapes. A fixture's snapshot would
-   * show the character, so these are not in the snapshot, and the test runs
-   * the report and the suggestion checks on them.
-   */
-  readonly written?: readonly WrittenInput[]
-  /**
-   * Corpus fixtures (`<diagram>/<name>`) that hold such a character and are
-   * inputs of this case: the test reads the input of the fixture and runs the
-   * same checks as on `written`.
+   * Corpus fixtures (`<diagram>/<name>`) that hold a character that a fixture
+   * file of a rule may not hold (a line separator, say) and are inputs of this
+   * case: the test reads the input of the fixture, not a copy, and checks the
+   * reports and the suggestions on it as on the inputs of `inputs`. The
+   * snapshot does not show them, because it would show the character.
    */
   readonly corpus?: readonly string[]
   /**
    * Corpus fixtures (`<diagram>/<name>`) that record what mermaid.js does for
    * this case: they are cited, not run through the rule; the test requires
-   * them to exist.
+   * them to exist and mermaid.js to accept them.
    */
   readonly recorded?: readonly string[]
+  /**
+   * Corpus fixtures (`<diagram>/<name>`) that record an input that mermaid.js
+   * rejects for this case; the test requires that `expected.json` says so.
+   */
+  readonly rejected?: readonly string[]
   /**
    * For an input of this case, the corpus fixture (`<diagram>/<name>`) whose
    * input is what a suggestion of the rule gives, byte for byte: the recorded
    * result of the suggestion.
    */
   readonly results?: Readonly<Record<string, string>>
-}
-
-/** An input written in the test, with a name that tells what it is for. */
-export interface WrittenInput {
-  readonly name: string
-  readonly code: string
 }
 
 /**
@@ -885,6 +1094,12 @@ export interface TestRuleOptions {
   readonly claims?: Readonly<Record<string, SuggestionClaim>>
   /** The sentences of the document, each with its cases and their inputs. */
   readonly sentences?: readonly SentenceCases[]
+  /**
+   * Passages of sentences of the section "Rule Details" that define no behavior
+   * (a background, a pointer to another document). Every other sentence of the
+   * section must be in `sentences`, in whole or in part.
+   */
+  readonly notBehavior?: readonly string[]
 }
 
 /** The corpus fixture `<diagram>/<name>`; the test fails when there is none. */
@@ -904,6 +1119,40 @@ async function corpusFixture(fixtureName: string): Promise<Fixture> {
 /** The text of `text` with each run of whitespace replaced by one space. */
 function collapsedWhitespace(text: string): string {
   return text.split(/\s+/u).join(" ")
+}
+
+/** A sentence of a document, with where it stands in the collapsed text. */
+interface DocumentSentence {
+  readonly text: string
+  readonly start: number
+  readonly end: number
+}
+
+/**
+ * The sentences of the section "Rule Details" of a document, whose whitespace
+ * is collapsed (see `collapsedWhitespace`): from its heading to the examples,
+ * or to the next heading. A sentence ends at a `. ` before a capital letter or
+ * a code span, and a list item starts a sentence.
+ */
+function ruleDetailsSentences(document: string): DocumentSentence[] {
+  const heading = "## Rule Details "
+  const from = document.indexOf(heading)
+  if (from === -1) return []
+  const bodyStart = from + heading.length
+  const ends = [" Examples of **incorrect**", " ## "]
+    .map((marker) => document.indexOf(marker, bodyStart))
+    .filter((index) => index !== -1)
+  const bodyEnd = Math.min(document.length, ...ends)
+  const sentences: DocumentSentence[] = []
+  let start = bodyStart
+  const boundary = /\. (?=[(*A-Z[`])| - (?=[A-Z])/gu
+  for (const match of document.slice(bodyStart, bodyEnd).matchAll(boundary)) {
+    const end = bodyStart + match.index + (match[0].startsWith(".") ? 1 : 0)
+    sentences.push({ text: document.slice(start, end), start, end })
+    start = bodyStart + match.index + match[0].length
+  }
+  sentences.push({ text: document.slice(start, bodyEnd), start, end: bodyEnd })
+  return sentences.filter((sentence) => sentence.text.trim() !== "")
 }
 
 /** Checks the suggestions of `reports` against the claims of `sentenceCase`. */
@@ -935,6 +1184,20 @@ function checkMessages(
   input: string,
   reports: readonly Linter.LintMessage[],
 ): void {
+  if (sentenceCase.messages !== undefined) {
+    expect(reports.length, `${sentenceCase.case}: ${input}`).toBe(
+      sentenceCase.messages.length,
+    )
+    for (const [index, report] of reports.entries()) {
+      const each = sentenceCase.messages[index]
+      const where = `${sentenceCase.case}: ${input}, report ${index + 1}`
+      if (each?.has !== undefined)
+        expect(report.message, where).toContain(each.has)
+      if (each?.lacks !== undefined) {
+        expect(report.message, where).not.toContain(each.lacks)
+      }
+    }
+  }
   for (const report of reports) {
     const where = `${sentenceCase.case}: ${input}`
     if (sentenceCase.messageHas !== undefined) {
@@ -958,6 +1221,7 @@ function testSentences(
   cases: { valid: RuleCase[]; invalid: RuleCase[] },
   sentences: readonly SentenceCases[],
   options: Required<Pick<TestRuleOptions, "revealed" | "claims">>,
+  notBehavior: readonly string[],
 ): void {
   if (sentences.length === 0) return
   const document = collapsedWhitespace(
@@ -985,6 +1249,30 @@ function testSentences(
   }
 
   describe(`${name} sentences`, () => {
+    it("cover every sentence of the section Rule Details", () => {
+      const covered = [
+        ...sentences.map((each) => each.sentence),
+        ...notBehavior,
+      ]
+        .map(collapsedWhitespace)
+        .flatMap((passage) => {
+          const start = document.indexOf(passage)
+          expect(start, `the passage is in the document: ${passage}`).not.toBe(
+            -1,
+          )
+          return [[start, start + passage.length] as const]
+        })
+      const uncovered = ruleDetailsSentences(document).filter(
+        (sentence) =>
+          !covered.some(
+            ([start, end]) => start < sentence.end && sentence.start < end,
+          ),
+      )
+      expect(
+        uncovered.map((sentence) => sentence.text),
+        "sentences with no case and not listed as no behavior",
+      ).toEqual([])
+    })
     it.each(sentences.map((each) => [each.sentence, each] as const))(
       "%s",
       async (_sentence, each) => {
@@ -992,42 +1280,57 @@ function testSentences(
         expect(each.cases.length).toBeGreaterThan(0)
         for (const sentenceCase of each.cases) {
           expect(
-            sentenceCase.inputs.length +
-              (sentenceCase.written?.length ?? 0) +
-              (sentenceCase.corpus?.length ?? 0),
+            sentenceCase.inputs.length + (sentenceCase.corpus?.length ?? 0),
           ).toBeGreaterThan(0)
-          const written = [...(sentenceCase.written ?? [])]
+          const read: { name: string; code: string }[] = []
           for (const fixtureName of sentenceCase.corpus ?? []) {
-            written.push({
+            read.push({
               name: fixtureName,
               code: (await corpusFixture(fixtureName)).input,
             })
           }
-          for (const each of written) {
+          for (const extra of read) {
             const testCase: RuleCase = {
-              name: each.name,
-              filename: `written/${each.name.replaceAll("/", "-")}.mmd`,
-              code: each.code,
+              name: extra.name,
+              filename: `corpus/${extra.name.replaceAll("/", "-")}.mmd`,
+              code: extra.code,
             }
             const reports = reportsOn(testCase)
             expect(
               reports.length > 0,
-              `${sentenceCase.case}: ${each.name}`,
+              `${sentenceCase.case}: ${extra.name}`,
             ).toBe(sentenceCase.reports)
-            checkMessages(sentenceCase, each.name, reports)
-            checkOffers(sentenceCase, each.name, reports)
+            checkMessages(sentenceCase, extra.name, reports)
+            checkOffers(sentenceCase, extra.name, reports)
             if (sentenceCase.suggests !== undefined) {
               expect(
                 suggestsOn(testCase),
-                `${sentenceCase.case}: ${each.name}`,
+                `${sentenceCase.case}: ${extra.name}`,
               ).toBe(sentenceCase.suggests)
             }
             if (rule.meta?.hasSuggestions === true) {
-              await checkSuggestions(linter, ruleId, testCase, options)
+              await checkSuggestions(
+                linter,
+                ruleId,
+                testCase,
+                options,
+                recordsOf(name),
+              )
             }
           }
           for (const fixtureName of sentenceCase.recorded ?? []) {
-            await corpusFixture(fixtureName)
+            const fixture = await corpusFixture(fixtureName)
+            expect(
+              fixture.expected.accepted,
+              `${sentenceCase.case}: mermaid.js accepts ${fixtureName}`,
+            ).toBe(true)
+          }
+          for (const fixtureName of sentenceCase.rejected ?? []) {
+            const fixture = await corpusFixture(fixtureName)
+            expect(
+              fixture.expected.accepted,
+              `${sentenceCase.case}: mermaid.js rejects ${fixtureName}`,
+            ).toBe(false)
           }
           const pool = sentenceCase.reports ? cases.invalid : cases.valid
           for (const input of sentenceCase.inputs) {
@@ -1039,6 +1342,12 @@ function testSentences(
               } input of the rule`,
             ).toBeDefined()
             if (testCase === undefined) continue
+            expect(
+              reportsOn(testCase).length > 0,
+              `${sentenceCase.case}: ${input} is ${
+                sentenceCase.reports ? "reported" : "not reported"
+              }`,
+            ).toBe(sentenceCase.reports)
             checkMessages(sentenceCase, input, reportsOn(testCase))
             checkOffers(sentenceCase, input, reportsOn(testCase))
             if (sentenceCase.suggests !== undefined) {
@@ -1082,9 +1391,14 @@ export function testRule(
   rule: MermaidRuleDefinition,
   options: TestRuleOptions = {},
 ): void {
-  const { revealed = { kind: "none" }, claims = {}, sentences = [] } = options
+  const {
+    revealed = { kind: "none" },
+    claims = {},
+    sentences = [],
+    notBehavior = [],
+  } = options
   const cases = ruleCases(name)
-  testSentences(name, rule, cases, sentences, { revealed, claims })
+  testSentences(name, rule, cases, sentences, { revealed, claims }, notBehavior)
   // The tester takes the rule types of JavaScript; ESLint runs a rule of any
   // language the same way.
   new SnapshotRuleTester(LANGUAGE_CONFIG).run(
@@ -1107,11 +1421,47 @@ export function testRule(
     it.each(cases.invalid.map((testCase) => [testCase.name, testCase]))(
       "%s",
       async (_name, testCase) => {
-        await checkSuggestions(linter, ruleId, testCase, { revealed, claims })
+        await checkSuggestions(
+          linter,
+          ruleId,
+          testCase,
+          { revealed, claims },
+          recordsOf(name),
+        )
       },
       // The first text that mermaid.js reads starts it, which takes seconds.
       60_000,
     )
+    it("have each a recorded fixture, and no other is recorded", () => {
+      const records = recordsOf(name)
+      const documentExamples = [...cases.valid, ...cases.invalid]
+        .map((testCase) => testCase.name)
+        .filter((caseName) => caseName.startsWith("docs/"))
+      expect(Object.keys(records.docs).sort()).toEqual(documentExamples.sort())
+      const withSuggestions: string[] = []
+      for (const testCase of cases.invalid) {
+        const keys = suggestionKeys(
+          linter
+            .verify(
+              withoutByteOrderMark(testCase.code),
+              IMPLEMENTED_RULES_CONFIG,
+              testCase.filename,
+            )
+            .filter((message) => message.ruleId === ruleId),
+        ).map((each) => each.key)
+        if (keys.length === 0) continue
+        withSuggestions.push(testCase.name)
+        expect(
+          Object.keys(records.results[testCase.name] ?? {}).sort(),
+          testCase.name,
+        ).toEqual(keys.sort())
+      }
+      expect(
+        Object.keys(records.results)
+          .filter((caseName) => !caseName.startsWith("flowchart/"))
+          .sort(),
+      ).toEqual(withSuggestions.sort())
+    })
     it("are offered on some invalid case", () => {
       const offered = cases.invalid.some((testCase) =>
         linter

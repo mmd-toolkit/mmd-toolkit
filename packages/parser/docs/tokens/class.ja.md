@@ -111,10 +111,12 @@
   どのテキストとも同じく、このトークンを切ります。
   `class A%%{init: {}}%%.B` は、トークン `A` と `.B` と、
   ClassIdentifier `A.B` を持ちます。
-  [fixture: class/gram-name-spaces] [fixture: class/gram-name-dash-spaces]
+  [fixture: class/spec-class-diagram-34c1dbfe]
+  [fixture: class/gram-name-dots]
+  [fixture: class/gram-name-spaces]
+  [fixture: class/gram-name-dash-spaces]
   [fixture: class/lex-directive-in-dotted-name]
   [fixture: class/tokens-ignored-semicolon-in-relation-name]
-  [fixture: class/gram-name-dots]
 - ラベルは、その `:` から始まる 1 つの単位で、2 つのトークンです。
   `:` と、周りの空白を除いたテキストです。
   メンバーの文では、そのテキストはメンバーの行で、

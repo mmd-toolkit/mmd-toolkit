@@ -70,17 +70,19 @@ export async function specifiedRunOf(
   // specification (it rejects), unless the rejection comes from the
   // replacement itself, which can make the YAML of the frontmatter invalid:
   // then there is no reading to record, and whoever adds such a fixture
-  // decides how its specified reading is made.
+  // decides how its specified reading is made. When the YAML of the written
+  // input is invalid as well, the replacement is not the cause.
+  const written = await runMermaidWithEmbeddedData(input, options)
   if (
     !reference.outcome.accepted &&
-    reference.outcome.error.name === "YAMLException"
+    reference.outcome.error.name === "YAMLException" &&
+    (written.outcome.accepted || written.outcome.error.name !== "YAMLException")
   ) {
     throw new Error(
       "the replacement of `<` in the frontmatter made its YAML invalid, so the specified reading cannot be taken from mermaid.js; decide how it is made for this fixture",
     )
   }
   if (!reference.outcome.accepted) return reference
-  const written = await runMermaidWithEmbeddedData(input, options)
   const title = extractFrontmatterTitle(input)
   const embedded = written.embedded ?? reference.embedded
   return {
@@ -117,8 +119,9 @@ function withTitle(
 
 /**
  * `text` with every `<` of its frontmatter replaced by `(`. The frontmatter
- * is what mermaid.js takes as such: the text starts with `---`, and the
- * first line that holds `---` alone closes it.
+ * is what mermaid.js takes as such: the text starts with `---`, after blanks
+ * that stand for its indentation, and the first line that holds `---` alone
+ * after the same indentation closes it.
  */
 export function withoutFrontmatterTagStarts(text: string): string {
   const length = frontmatterLength(text)
@@ -127,17 +130,28 @@ export function withoutFrontmatterTagStarts(text: string): string {
 
 /**
  * The number of characters of the frontmatter at the start of `text`, up to
- * its closing `---`, or 0: mermaid.js's rule is `---`, blanks and a line
- * break, the lines of the frontmatter, and a line break, `---`, blanks and a
- * line break.
+ * its closing `---`, or 0: mermaid.js's rule is blanks (the indentation), `---`,
+ * blanks and a line break, the lines of the frontmatter, and a line break, the
+ * same indentation, `---`, blanks and a line break.
  */
 function frontmatterLength(text: string): number {
-  if (!text.startsWith("---")) return 0
-  let opening = 3
+  let indentation = 0
+  while (indentation < text.length && isBlank(text.charAt(indentation))) {
+    indentation++
+  }
+  if (!text.startsWith("---", indentation)) return 0
+  let opening = indentation + 3
   while (opening < text.length && isBlank(text.charAt(opening))) opening++
   if (!isLineBreak(text.charAt(opening))) return 0
+  const indent = text.slice(0, indentation)
   for (let at = opening + 1; at < text.length; at++) {
-    if (isLineBreak(text.charAt(at)) && closesAt(text, at + 1)) return at + 4
+    if (!isLineBreak(text.charAt(at))) continue
+    if (
+      text.startsWith(indent, at + 1) &&
+      closesAt(text, at + 1 + indentation)
+    ) {
+      return at + 1 + indentation + 3
+    }
   }
   return 0
 }

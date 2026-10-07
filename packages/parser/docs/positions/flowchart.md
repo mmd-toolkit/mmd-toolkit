@@ -15,13 +15,8 @@ The ranges of the nodes of this diagram type, besides the rules of
 
 ### FlowchartDiagram
 
-The tokens of a FlowchartDiagram are all the tokens of the diagram text other
-than `Directive` and `IgnoredSemicolon` tokens, from the header keyword to the
-last of them, as for the node in `Root.body` of every diagram (see
-[Nodes](../../../spec/docs/ast.md#nodes)). Its range therefore also covers the
-tokens that belong to no statement, such as the separator after the last
-statement: the range of the diagram of `A;` ends after the `;`. [fixture:
-flowchart/tokens-diagram-trailing-separator]
+The range is that of the node in `Root.body` of every diagram (see
+[Node ranges](../positions.md#node-ranges)).
 
 ### FlowchartEmptyStatement
 
@@ -57,8 +52,10 @@ flowchart/div-directive-in-arrow-length]
 ### FlowchartOpeningArrow
 
 Its range is its token, as for [FlowchartArrow](#flowchartarrow). [fixture:
-flowchart/db-arrow-dash-head-length] [fixture:
-flowchart/div-ignored-semicolon-in-opening-arrow]
+flowchart/db-arrow-dash-head-length] A directive or an ignored `;` inside an
+opening arrow makes the input rejected, as inside an arrow. [fixture:
+flowchart/div-ignored-semicolon-in-opening-arrow] [fixture:
+flowchart/div-directive-in-opening-arrow]
 
 ### FlowchartLabel
 
@@ -91,10 +88,11 @@ from its first token to its last.
 Without a title, the tokens and the range of the name run over the whitespace
 after it; after a string, that whitespace is a `RawText` token of its own, as in
 `subgraph "S"` followed by a space. [fixture:
+flowchart/db-subgraph-name-space-before-empty-description-block] [fixture:
 flowchart/db-subgraph-string-name-trailing-space] Where empty description blocks
 follow the name right after it, the whitespace between them, or between the last
 of them and a `;`, belongs to no token. [fixture:
-flowchart/db-subgraph-name-space-before-empty-description-block] [fixture:
+flowchart/db-subgraph-name-space-between-empty-description-blocks] [fixture:
 flowchart/db-subgraph-name-space-after-empty-description-block-before-semicolon]
 
 ### FlowchartStyleStatement

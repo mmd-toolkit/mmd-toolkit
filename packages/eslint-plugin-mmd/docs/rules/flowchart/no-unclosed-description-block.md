@@ -42,22 +42,24 @@ stands alone on its line: the `}` that then closes the block is the first one
 after that `{`, the one of a shape or a data block written on that line, also
 where it spans lines, as `B{`, then `y}`. A `}` on the line of the `{`, as in
 `accDescr { a { b }`, and a `}` alone on its line close the block as written,
-and are not reported; a `}` alone on its line is the author's also after such a
-`{`, as in `accDescr {`, `uses { here`, and `}`, whose description is
-`uses { here`. A description that holds a `{` and ends with its own `}` on a
-later line, as `accDescr {`, then `a {b }`, is reported too: the rule does not
-tell that `}` from the `}` of a shape, and such a description is rare. For the
-same reason, a shape written over lines whose `}` stands alone on its line is
-not reported: `accDescr { x`, `B{`, `y`, `}`, and `C` give the description `x`,
-`B{`, `y`, and no vertex `B`, but its `}` looks like the author's.
+and are not reported. A `}` is alone on its line when only whitespace and
+directives stand before it there, whatever follows it, as in `};` or `} C`. A
+`}` alone on its line is the author's also after such a `{`, as in `accDescr {`,
+`uses { here`, and `}`, whose description is `uses { here`. A description that
+holds a `{` and ends with its own `}` on a later line, as `accDescr {`, then
+`a {b }`, is reported too: the rule does not tell that `}` from the `}` of a
+shape, and such a description is rare. For the same reason, a shape written over
+lines whose `}` stands alone on its line is not reported: `accDescr { x`, `B{`,
+`y`, `}`, and `C` give the description `x`, `B{`, `y`, and no vertex `B`, but
+its `}` looks like the author's.
 
 For each report, the rule suggests closing the block:
 
 - At the end of the line of the `{`, when text follows the `{` on that line and
   the lines after it are read as statements. mermaid.js then reads that text as
-  the description, and the lines after it as statements. Where a later line is
-  no statement, as `second line, more`, the result would be rejected, and this
-  suggestion is not offered.
+  the text of the block, and the lines after it as statements. Where a later
+  line is no statement, as `second line, more`, the result would be rejected,
+  and this suggestion is not offered.
 - At the end of the text, when the block is not closed and has text on a later
   line. mermaid.js then reads all the text after the `{` as the description. A
   block that a later `}` closes gets only the first suggestion.
@@ -69,9 +71,11 @@ is not closed gets no suggestion: from that directive on, the directive decides
 what mermaid.js reads, wherever the block is closed. After `accDescr { d }`, the
 lines `more %%{init: {}` and `A --> B` give no edge from A to B, and with
 `%%{wrap` in place of `%%{init: {}`, closing the block right before the
-directive is rejected. When a description is set before the block, the closed
-block replaces it, and [no-duplicate-description](./no-duplicate-description.md)
-then reports the block: the text sets the description twice.
+directive is rejected. When a description is set before the block, or by a
+statement after it, closing the block makes the text set the description twice,
+and [no-duplicate-description](./no-duplicate-description.md) then reports the
+later one: after `accDescr { x` and the line `accDescr { y }`, closed at the end
+of the line, the description is `y`.
 
 Examples of **incorrect** code for this rule:
 

@@ -10,6 +10,8 @@ import type {
   StateReference,
   StateStatement,
 } from "./state-tree.ts"
+import type { TextReplacement } from "./text-replacement.ts"
+import { textReplacementOf } from "./text-replacement.ts"
 import type { Identifier, StringLiteral, TreeRoot } from "./tree.ts"
 import { TreeError } from "./tree.ts"
 import { descriptionOf, trimmed } from "./values.ts"
@@ -24,7 +26,7 @@ import { descriptionOf, trimmed } from "./values.ts"
 interface StateEntry {
   readonly id: string
   shape: string | undefined
-  /** The descriptions; they start as the id alone. */
+  /** The descriptions; they start as the id alone, with the replacement of characters (docs/db-from-tree.md). */
   descriptions: string[]
   /** Whether a visit had a description, so that the descriptions are no longer the id alone. */
   described: boolean
@@ -88,10 +90,14 @@ class StateDbBuilder {
   /** The converted form of ranges of the source. */
   private readonly text: ConvertedText
 
+  /** The replacement of characters that the configuration gives the texts that the Db keeps. */
+  private readonly replace: TextReplacement
+
   public constructor(source: string, root: TreeRoot, embedded: EmbeddedValues) {
     this.root = root
     this.text = new ConvertedText(readConvertedCharacters(source, root))
-    this.title = embedded.title ?? ""
+    this.replace = textReplacementOf(embedded.config)
+    this.title = this.replace(embedded.title ?? "")
   }
 
   /** The summary of `diagram`. */
@@ -155,7 +161,10 @@ class StateDbBuilder {
         this.transitions.push({
           start,
           end,
-          label: statement.label === null ? "" : this.valueOf(statement.label),
+          label:
+            statement.label === null
+              ? ""
+              : this.replace(this.valueOf(statement.label)),
         })
         return
       }
@@ -429,7 +438,8 @@ class StateDbBuilder {
     // The text that mermaid.js reads, also on one line, where the tree
     // leaves out the two characters that it drops (ast/state.md,
     // StateNoteStatement).
-    const text = statement.text === null ? "" : this.valueOf(statement.text)
+    const text =
+      statement.text === null ? "" : this.replace(this.valueOf(statement.text))
     this.notes.push({ state, position, text })
   }
 
@@ -445,7 +455,7 @@ class StateDbBuilder {
       state = {
         id,
         shape: visit.firstShape ?? undefined,
-        descriptions: [id],
+        descriptions: [this.replace(id)],
         described: false,
         hasBody: false,
         region: visit.region,
@@ -456,8 +466,16 @@ class StateDbBuilder {
     }
     if (visit.parent !== null) state.parentId = visit.parent
     if (visit.descriptions.length > 0) {
-      if (state.described) state.descriptions.push(...visit.descriptions)
-      else state.descriptions = [...visit.descriptions]
+      const descriptions = visit.descriptions.map((text) => this.replace(text))
+      if (state.described) {
+        state.descriptions.push(...descriptions)
+      } else if (state.descriptions[0] === id) {
+        state.descriptions = descriptions
+      } else {
+        // The replacement changed the id, so the first description is no
+        // longer the id alone, which a description replaces: it stays.
+        state.descriptions = [state.descriptions[0] ?? "", ...descriptions]
+      }
       state.described = true
       if (state.descriptions.length > 1) state.shape = "rectWithTitle"
       else state.shape = state.hasBody ? "roundedWithTitle" : "rect"
@@ -541,20 +559,24 @@ class StateDbBuilder {
         return
       case "StateAccTitleStatement":
         this.accTitle =
-          statement.value === null ? "" : this.valueOf(statement.value)
+          statement.value === null
+            ? ""
+            : this.replace(this.valueOf(statement.value))
         return
       case "StateAccDescrStatement":
         this.accDescr =
           statement.value === null
             ? ""
-            : descriptionOf(this.valueOf(statement.value))
+            : this.replace(descriptionOf(this.valueOf(statement.value)))
         return
       case "StateAccDescrBlockStatement":
         // A block that is not closed sets the empty description; a closed
         // block without text changes nothing.
         if (!statement.closed) this.accDescr = ""
         else if (statement.value !== null) {
-          this.accDescr = descriptionOf(this.valueOf(statement.value))
+          this.accDescr = this.replace(
+            descriptionOf(this.valueOf(statement.value)),
+          )
         }
         break
       default:

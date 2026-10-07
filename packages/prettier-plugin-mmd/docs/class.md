@@ -233,6 +233,11 @@ which declares nothing, is kept at the level of the statements around it.
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed]
 
+U+2028 and U+2029 after the `}` that closes a class body or a namespace are
+whitespace to mermaid.js, and are dropped with the whitespace at the end of the
+line. [test: U+2029 after the `}` of a class body] [test: U+2028 after the `}`
+of a namespace]
+
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/class/whitespace-between-tokens/collapsed-input.mmd)):
 
@@ -713,9 +718,9 @@ classDiagram
 
 A line that dropping a `;` would change the `;` that the line rule ignores in is
 printed as written: a `;` after a directive that a word argument ends
-(`%%{wrap foo;`), an ignored `;` next to another `;`, and one before a U+2028 or
-U+2029 (see [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)).
-[fixture: directives/semicolon-after-word-argument-directive-kept] [fixture:
+(`%%{wrap foo;`) and an ignored `;` next to another `;` (see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). [fixture:
+directives/semicolon-after-word-argument-directive-kept] [fixture:
 directives/ignored-semicolon-next-to-another-kept] A directive with a free-text
 argument that is not closed runs to the end of the text, and the `;` after it is
 part of it: the lines it joins are printed as written. [fixture:

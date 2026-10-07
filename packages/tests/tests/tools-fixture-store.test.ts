@@ -13,7 +13,12 @@ import {
   readFixtures,
   writeNewFixture,
 } from "../../../tools/src/fixture-store.ts"
-import type { Expectation, ExpectedFile, FixtureHead } from "../src/index.ts"
+import type {
+  DiagramType,
+  Expectation,
+  ExpectedFile,
+  FixtureHead,
+} from "../src/index.ts"
 import { getDefaultConfig, getFixturesRoot } from "../src/index.ts"
 import { runMermaid } from "../src/mermaid.ts"
 
@@ -125,7 +130,7 @@ describe("isFixtureName", () => {
   })
 
   it("rejects a letter outside a to z, and a line break after a valid name", () => {
-    expect(isFixtureName("café")).toBe(false)
+    expect(isFixtureName("caf\u00e9")).toBe(false)
     expect(isFixtureName("a\n")).toBe(false)
   })
 })
@@ -201,6 +206,10 @@ describe("readFixtures", () => {
     expect(fixture.specified).toBeUndefined()
   })
 
+  it("lists nothing for a diagram type that has no directory", () => {
+    expect(readFixtures("missing" as DiagramType)).toEqual([])
+  })
+
   it("reads the specified reading of a fixture that has the file, where it differs from the expected file", () => {
     const name = "div-comment-after-name-then-statement"
     const fixture = fixtures.find((candidate) => candidate.name === name)
@@ -214,14 +223,17 @@ describe("readFixtures", () => {
 
 describe("writeNewFixture", () => {
   it("refuses a name that is not lowercase kebab-case, and creates nothing", () => {
-    const attempt = (): string =>
-      writeNewFixture(
+    /** Tries to write the fixture. */
+    function attempt(): string {
+      return writeNewFixture(
         "class",
         "Bad_Name",
         "classDiagram\n",
         { ...AUTHORED, ...MADE_UP_ACCEPTED },
         undefined,
       )
+    }
+
     expect(attempt).toThrow(
       "fixture name must be lowercase kebab-case ([a-z0-9-]): Bad_Name",
     )
@@ -229,27 +241,33 @@ describe("writeNewFixture", () => {
   })
 
   it("refuses a name that leaves the directory of the diagram type", () => {
-    const attempt = (): string =>
-      writeNewFixture(
+    /** Tries to write the fixture. */
+    function attempt(): string {
+      return writeNewFixture(
         "class",
         "../escaped",
         "classDiagram\n",
         { ...AUTHORED, ...MADE_UP_ACCEPTED },
         undefined,
       )
+    }
+
     expect(attempt).toThrow("fixture name must be lowercase kebab-case")
     expect(existsSync(path.join(getFixturesRoot(), "escaped"))).toBe(false)
   })
 
   it("refuses to overwrite a fixture that exists", () => {
-    const attempt = (): string =>
-      writeNewFixture(
+    /** Tries to write the fixture. */
+    function attempt(): string {
+      return writeNewFixture(
         "class",
         "config-init-trailing-comma",
         "classDiagram\n",
         { ...AUTHORED, ...MADE_UP_ACCEPTED },
         undefined,
       )
+    }
+
     expect(attempt).toThrow(
       "fixture already exists: class/config-init-trailing-comma",
     )
@@ -271,7 +289,10 @@ describe("baselineConfigOf", () => {
   })
 
   it("gives one read to an empty configuration and to none", async () => {
-    expect(baselineConfigOf({})).toBe(baselineConfigOf(undefined))
+    const empty = baselineConfigOf({})
+    const none = baselineConfigOf(undefined)
+    expect(empty).toBe(none)
+    await empty
   })
 
   it("gives one read to configurations that differ only in the order of keys", async () => {
@@ -288,9 +309,11 @@ describe("baselineConfigOf", () => {
   })
 
   it("gives different reads to different configurations", async () => {
-    expect(baselineConfigOf({ flowchart: { curve: "linear" } })).not.toBe(
-      baselineConfigOf({ flowchart: { curve: "step" } }),
-    )
+    const linear = baselineConfigOf({ flowchart: { curve: "linear" } })
+    const step = baselineConfigOf({ flowchart: { curve: "step" } })
+    expect(linear).not.toBe(step)
+    expect((await linear).flowchart).toMatchObject({ curve: "linear" })
+    expect((await step).flowchart).toMatchObject({ curve: "step" })
   })
 })
 

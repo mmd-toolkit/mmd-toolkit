@@ -44,80 +44,6 @@ Code:
 ---
 
 
-Test: flowchart/no-undef >> invalid >>> invalid/class-after-style-of-new-vertex
-Filename: tests/fixtures/rules/flowchart/no-undef/invalid/class-after-style-of-new-vertex-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A
-  3 |   style C fill:red
-    |         ^ [1]
-  4 |   class C foo
-  5 |
-
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
----
-
-
-Test: flowchart/no-undef >> invalid >>> invalid/class-before-style-of-new-vertex
-Filename: tests/fixtures/rules/flowchart/no-undef/invalid/class-before-style-of-new-vertex-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A
-  3 |   class C foo
-  4 |   style C fill:red
-    |         ^ [1]
-  5 |
-
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
----
-
-
-Test: flowchart/no-undef >> invalid >>> invalid/class-unknown-before-vertices
-Filename: tests/fixtures/rules/flowchart/no-undef/invalid/class-unknown-before-vertices-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   class C foo
-    |         ^ [1]
-  3 |   A --> B
-  4 |
-
-[1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
----
-
-
-Test: flowchart/no-undef >> invalid >>> invalid/click-after-style-of-new-vertex
-Filename: tests/fixtures/rules/flowchart/no-undef/invalid/click-after-style-of-new-vertex-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A
-  3 |   style C fill:red
-    |         ^ [1]
-  4 |   click C href "https://example.com"
-  5 |
-
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
----
-
-
-Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-class-unknown-vertex
-Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-class-unknown-vertex-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   classDef foo fill:#f00
-  3 |   A --> B
-  4 |   class C foo
-    |         ^ [1]
-  5 |
-
-[1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
----
-
-
 Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-style-unknown-vertex
 Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-style-unknown-vertex-input.mmd
 
@@ -145,6 +71,36 @@ Code:
 ---
 
 
+Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-class-after-style-of-new-vertex
+Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-class-after-style-of-new-vertex-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   style C fill:red
+    |         ^ [1]
+  4 |   class C foo
+  5 |
+
+[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+---
+
+
+Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-class-before-style-of-new-vertex
+Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-class-before-style-of-new-vertex-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   class C foo
+  4 |   style C fill:red
+    |         ^ [1]
+  5 |
+
+[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+---
+
+
 Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-class-list-with-an-unknown-id
 Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-class-list-with-an-unknown-id-input.mmd
 
@@ -157,6 +113,35 @@ Code:
   5 |
 
 [1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
+---
+
+
+Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-class-unknown-before-vertices
+Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-class-unknown-before-vertices-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   class C foo
+    |         ^ [1]
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
+---
+
+
+Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-click-after-style-of-new-vertex
+Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-click-after-style-of-new-vertex-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   style C fill:red
+    |         ^ [1]
+  4 |   click C href "https://example.com"
+  5 |
+
+[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
 ---
 
 
@@ -188,6 +173,73 @@ Code:
 ---
 
 
+Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-empty-description-block-before-style
+Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-empty-description-block-before-style-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   accDescr {}
+  4 |   style C fill:red
+    |         ^ [1]
+  5 |
+
+[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+---
+
+
+Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-header-flowchart-elk
+Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-header-flowchart-elk-input.mmd
+
+Code:
+  1 | flowchart-elk LR
+  2 |   A --> B
+  3 |   style C fill:red
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+---
+
+
+Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-header-graph
+Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-header-graph-input.mmd
+
+Code:
+  1 | graph LR
+  2 |   A --> B
+  3 |   style C fill:red
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+---
+
+
+Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-header-swimlane-beta
+Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-header-swimlane-beta-input.mmd
+
+Code:
+  1 | swimlane-beta LR
+  2 |   A --> B
+  3 |   style C fill:red
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+---
+
+
+Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-style-cr
+Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-style-cr-input.mmd
+
+Code:
+  1 | flowchart LR  A --> B  style C fill:red
+
+[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+---
+
+
 Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-style-of-an-unknown-id-after-a-comment-line
 Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-style-of-an-unknown-id-after-a-comment-line-input.mmd
 
@@ -198,6 +250,20 @@ Code:
   4 |   style C fill:red
     |         ^ [1]
   5 |
+
+[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+---
+
+
+Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-style-of-an-unknown-id-crlf
+Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-style-of-an-unknown-id-crlf-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A --> B
+  3 |   style C fill:red
+    |         ^ [1]
+  4 |
 
 [1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
 ---
@@ -225,6 +291,21 @@ Code:
   2 |   style C fill:red
     |         ^ [1]
   3 |
+
+[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
+---
+
+
+Test: flowchart/no-undef >> invalid >>> invalid/flowchart/db-undef-style-twice-of-new-vertex
+Filename: tests/fixtures/rules/flowchart/no-undef/invalid/flowchart/db-undef-style-twice-of-new-vertex-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   style C fill:red
+    |         ^ [1]
+  4 |   style C stroke:blue
+  5 |
 
 [1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
 ---
@@ -260,75 +341,4 @@ Code:
 
 [1] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
 [2] mermaid.js does nothing with `C` here: no vertex, subgraph, or link of the diagram has this id.
----
-
-
-Test: flowchart/no-undef >> invalid >>> invalid/header-flowchart-elk
-Filename: tests/fixtures/rules/flowchart/no-undef/invalid/header-flowchart-elk-input.mmd
-
-Code:
-  1 | flowchart-elk LR
-  2 |   A --> B
-  3 |   style C fill:red
-    |         ^ [1]
-  4 |
-
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
----
-
-
-Test: flowchart/no-undef >> invalid >>> invalid/header-graph
-Filename: tests/fixtures/rules/flowchart/no-undef/invalid/header-graph-input.mmd
-
-Code:
-  1 | graph LR
-  2 |   A --> B
-  3 |   style C fill:red
-    |         ^ [1]
-  4 |
-
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
----
-
-
-Test: flowchart/no-undef >> invalid >>> invalid/header-swimlane-beta
-Filename: tests/fixtures/rules/flowchart/no-undef/invalid/header-swimlane-beta-input.mmd
-
-Code:
-  1 | swimlane-beta LR
-  2 |   A --> B
-  3 |   style C fill:red
-    |         ^ [1]
-  4 |
-
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
----
-
-
-Test: flowchart/no-undef >> invalid >>> invalid/style-of-an-unknown-id-crlf
-Filename: tests/fixtures/rules/flowchart/no-undef/invalid/style-of-an-unknown-id-crlf-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A --> B
-  3 |   style C fill:red
-    |         ^ [1]
-  4 |
-
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
----
-
-
-Test: flowchart/no-undef >> invalid >>> invalid/style-twice-of-new-vertex
-Filename: tests/fixtures/rules/flowchart/no-undef/invalid/style-twice-of-new-vertex-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A
-  3 |   style C fill:red
-    |         ^ [1]
-  4 |   style C stroke:blue
-  5 |
-
-[1] mermaid.js adds a new vertex `C` for this `style`: no vertex, subgraph, or link of the diagram has this id.
 ---

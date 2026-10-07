@@ -45,6 +45,7 @@ mermaid.js はそれを受理します。
 [corpus fixture: flowchart/div-directive-inside-arrow]
 [corpus fixture: sequence/div-directive-in-number]
 [corpus fixture: sequence/div-directive-in-keyword]
+[corpus fixture: flowchart/div-directive-in-subgraph-keyword]
 [corpus fixture: class/div-directive-in-triple-colon]
 [corpus fixture: state/div-directive-in-id]
 たとえば、mermaid.js は、`sub%%{init: {}}%%graph S` を、
@@ -131,6 +132,7 @@ mermaid.js は、そうした位置の多くでそれらを受理し、ないも
 `A-->|x""|B` はラベル `x` の A から B への辺で、
 `A call ()-->B` と `A accDescr {}-->B` も受理されます。
 このプラグインは、そうした入力を構文エラーとして報告し、変えません。
+[corpus fixture: flowchart/div-edge-label-empty-quoted-pair]
 [corpus fixture: flowchart/gram-empty-call-before-link]
 [corpus fixture: flowchart/gram-empty-description-block-before-link]
 木に置く場所がある所、つまり文が始まる所と、文を終える区切りの前にある、
@@ -296,6 +298,7 @@ mermaid.js は、`accTitle`、`accDescr`、`direction`、`click`、`call`、
 次の文との間を `;` が区切るときは、文を行にまとめ、`;` をその位置に残します。
 文の中の空白は通常どおり整形します。
 [fixture: flowchart/statements-one-per-line/semicolon-after-word-kept]
+[fixture: flowchart/statements-one-per-line/semicolon-after-link-to-word-kept]
 [corpus fixture: flowchart/lex-acc-title-semicolon-before-colon]
 [corpus fixture: flowchart/lex-direction-line-semicolon-before-value]
 [corpus fixture: flowchart/lex-call-keyword-semicolon]
@@ -477,7 +480,8 @@ class 図と state 図では、その行送りの後の文は、
 
 `init` のような自由なテキストの引数を持ち、`}%%` で閉じないディレクティブは、
 テキストの終わりまで続きます
-（仕様の[ディレクティブの位置](../../spec/docs/common.ja.md#ディレクティブの位置)）。
+（仕様の
+[ディレクティブの位置](../../spec/docs/common.ja.md#ディレクティブの位置)）。
 そのため、その後のすべてが、ディレクティブの一部として書かれたまま残ります。
 `A --> B %%{init: {};` はディレクティブまでを整形し、その後の行はそのままです。
 `%%{wrap foo;` のように語を引数とするディレクティブは、その語で終わり、

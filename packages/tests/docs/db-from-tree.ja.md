@@ -41,6 +41,7 @@ dbFromTree(text, tree, embedded, isColor)
 - `embedded` は、入力の埋め込みデータから mermaid.js が導く値で、木は持ちません
   （[embedded-data.ja.md](./embedded-data.ja.md) を参照）。
   fixture からは `embeddedValuesOf()` で得ます。
+  その設定は、[文字の置き換え](#文字の置き換え)も決めます。
 - `isColor` は、sequence の `box` の色の候補が色かを答えます。
   これはブラウザの答えでテキストにはないので、
   テストは、正規化器も使う代役の、
@@ -135,8 +136,219 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
 - **flowchart の辺**: `maxEdges` の上限は、パーサーが設定を知らないので、
   木に対して `exceedsMaxEdges()` が確かめます。
   関数が読む `maxEdges` は、設定が辺の最大数として文書化する、
-  負でない数です。
-  それ以外の値のときの結果は定めません。
+  負でない整数です。
+  それ以外の値のときの結果は定めません
+  （`maxEdges` が 1.5 のとき、mermaid.js は辺 2 つを受理しますが、
+  関数は拒否します。`Infinity` では `runMermaid()` が例外を投げるので、
+  比べる結果がありません）。
+  上限 0 は最初の辺を拒否し、辺のない入力は上限 0 でも受理します。
+  [fixture: flowchart/config-max-edges-zero-exceeded]
+  [fixture: flowchart/config-max-edges-zero-no-edge]
+
+## 文字の置き換え
+
+mermaid.js は、Db が持つテキストをそれぞれ
+[`sanitizeText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L85-L97)
+に通します。
+コーパスの実行器は DOMPurify を無効にするので、残るのは
+[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L70-L83)
+です
+（[expected-results.ja.md](./expected-results.ja.md) の「残る処理」を参照）。
+これは設定だけで決まり、設定は `embedded.config` が丸ごと持ちます
+（サイト設定、フロントマター、ディレクティブ）。
+そこで `dbFromTree()` は、置き換えを 1 か所の `textReplacementOf()`
+（`src/db-from-tree/text-replacement.ts`）で作り、
+各図が下のテキストに当てます。
+
+**いつ。**
+HTML ラベルが有効で、`securityLevel` が
+`strict`、`loose`、`antiscript`、`sandbox` のどれでもないとき、置き換えます。
+
+- 4 つの値はどれも、テキストを書かれたままにします。
+  [fixture: flowchart/config-security-level-strict-label-characters]
+  [fixture: flowchart/config-security-level-loose-label-characters]
+  [fixture: flowchart/config-security-level-antiscript-label-characters]
+  [fixture: flowchart/config-security-level-sandbox-label-characters]
+- ほかの値はテキストを変えます。
+  値は書かれたままで比べるので、`Loose`、空のテキスト、数値は、
+  4 つのどれでもありません。
+  [fixture: flowchart/config-security-level-other-label-characters]
+  [fixture: flowchart/config-security-level-capitalized-label-characters]
+  [fixture: flowchart/config-security-level-empty-label-characters]
+  [fixture: flowchart/config-security-level-number-label-characters]
+- `securityLevel` を設定するのはサイト設定だけです。
+  それを設定するディレクティブやフロントマターは、値を変えません。
+  [fixture:
+  flowchart/config-security-level-other-security-level-directive-strict]
+  [fixture:
+  flowchart/config-security-level-loose-security-level-directive-other]
+  [fixture:
+  flowchart/config-security-level-loose-security-level-frontmatter-other]
+- HTML ラベルは、ルートの `htmlLabels` が設定されていれば
+  （欠けても `null` でもなければ）それで、
+  ルートのものが設定されていなければ `flowchart.htmlLabels` で決まり、
+  どちらもなければ有効です。
+  [fixture: flowchart/config-security-level-other-html-labels-false]
+  [fixture: flowchart/config-security-level-other-flowchart-html-labels-false]
+  [fixture:
+  flowchart/config-security-level-other-html-labels-true-flowchart-false]
+  [fixture:
+  flowchart/config-security-level-other-html-labels-false-flowchart-true]
+  [fixture:
+  flowchart/config-security-level-other-html-labels-null-flowchart-false]
+- 値が `false` のとき、
+  または値のテキストが、両端の空白を除いて小文字にすると
+  `false`、`null`、`0` のどれかのとき、HTML ラベルは無効です。
+  数値の 0 のテキストは `0` です。
+  [fixture: flowchart/config-security-level-other-html-labels-false-text]
+  [fixture: flowchart/config-security-level-other-html-labels-zero]
+  [fixture: flowchart/config-security-level-other-html-labels-zero-text]
+  [fixture: flowchart/config-security-level-other-html-labels-null-text]
+  [fixture:
+  flowchart/config-security-level-other-html-labels-false-spaced-upper]
+  [fixture:
+  flowchart/config-security-level-other-flowchart-html-labels-false-text]
+  [fixture: flowchart/config-security-level-other-flowchart-html-labels-zero]
+  `true`、`no`、空のテキストなど、ほかの値では有効のままです。
+  [fixture: flowchart/config-security-level-other-html-labels-true-text]
+  [fixture: flowchart/config-security-level-other-html-labels-no-text]
+  [fixture: flowchart/config-security-level-other-html-labels-empty-text]
+- 設定はそのテキストのものなので、ディレクティブやフロントマターが
+  `htmlLabels` を設定でき、ディレクティブはサイト設定に優先します。
+  [fixture: flowchart/config-security-level-other-html-labels-false-directive]
+  [fixture:
+  flowchart/config-security-level-other-html-labels-false-frontmatter]
+  [fixture:
+  flowchart/config-security-level-other-flowchart-html-labels-false-directive]
+  [fixture:
+  flowchart/config-security-level-other-html-labels-true-directive-over-site]
+- 同じ設定が、ほかの図種でも決めます。
+  そこでの `flowchart` は設定のキーで、図ではありません。
+  [fixture: class/config-security-level-other-html-labels-false]
+  [fixture: class/config-security-level-other-flowchart-html-labels-false]
+  [fixture: state/config-security-level-other-html-labels-false]
+  [fixture: sequence/config-security-level-other-html-labels-false]
+  [fixture: class/config-security-level-loose-label-and-name]
+  [fixture: state/config-security-level-loose-description-and-id]
+  [fixture: sequence/config-security-level-loose-title-and-box]
+
+**何を。**
+置き換えは、改行タグをそれぞれ `#br#` に書き、
+次に `<`、`>`、`=` をそれぞれ `&lt;`、`&gt;`、`&equals;` に書き、
+そのあとで `#br#` をそれぞれ `<br/>` に書きます。
+作者が書いた `#br#` も `<br/>` になります。
+改行タグは、`<`、省略できる `/`、大文字小文字を問わない `br`、空白、
+省略できる `/`、`>` です。
+[fixture: flowchart/config-security-level-other-line-breaks]
+[fixture: flowchart/config-security-level-other-line-breaks-spaced]
+タグは `#br#` を置き換える前に、左から重ならずに見つけます。
+[fixture: flowchart/config-security-level-other-placeholder-repeated]
+
+**どのテキストか。**
+置き換えるのは、mermaid.js が `sanitizeText` に渡すテキストだけです。
+届くテキストと届かないテキストは次のとおりです。
+
+- flowchart: 頂点のラベルとリンクのテキスト
+  （markdown 文字列のテキスト、後で引用符を除く文字列を含む）、
+  subgraph のタイトル（タイトルがなければ名前）、ツールチップ、
+  フロントマターの title、`accTitle`、`accDescr`（1 行のものとブロック）。
+  [fixture: flowchart/config-security-level-other-label-characters]
+  [fixture: flowchart/config-security-level-other-edge-label]
+  [fixture: flowchart/config-security-level-other-markdown-label]
+  [fixture: flowchart/config-security-level-other-quoted-label]
+  [fixture: flowchart/config-security-level-other-subgraph-title]
+  [fixture: flowchart/config-security-level-other-subgraph-name-line-break]
+  [fixture: flowchart/config-security-level-other-tooltip]
+  [fixture: flowchart/config-security-level-other-diagram-title]
+  [fixture: flowchart/config-security-level-other-acc-title]
+  [fixture: flowchart/config-security-level-other-acc-descr]
+  [fixture: flowchart/config-security-level-other-acc-descr-block]
+  テキストになる頂点の id、subgraph の id、データブロックが設定するラベルには
+  届きません。
+  [fixture: flowchart/config-security-level-other-id-as-text]
+  [fixture: flowchart/config-security-level-other-subgraph-name-line-break]
+  [fixture: flowchart/config-security-level-other-data-block-label]
+- class: title、`accTitle`、`accDescr`、クラスのラベル、
+  ジェネリック型とそれを持つクラスの text、クラスの id、
+  クラス本体の属性、メソッド（引数と戻り値の型を含む）、アノテーション、
+  関係の多重度とラベル、click、link、callback のツールチップ。
+  [fixture: class/config-security-level-other-diagram-title]
+  [fixture: class/config-security-level-other-acc-title]
+  [fixture: class/config-security-level-other-acc-descr]
+  [fixture: class/config-security-level-other-acc-descr-block]
+  [fixture: class/config-security-level-other-class-label]
+  [fixture: class/config-security-level-other-generic-type]
+  [fixture: class/config-security-level-other-member-attribute]
+  [fixture: class/config-security-level-other-member-method]
+  [fixture: class/config-security-level-other-member-annotation]
+  [fixture: class/config-security-level-other-relation-titles]
+  [fixture: class/config-security-level-other-tooltip]
+  note のテキストには届きません。
+  [fixture: class/config-security-level-other-note-as-written]
+  文のアノテーションとリンクの target は、置き換えが変える文字を持ちません。
+  [fixture: class/config-security-level-other-annotation-statement]
+- state: title、`accTitle`、`accDescr`、状態のラベルと説明、
+  note のテキスト、遷移のラベル。
+  click の URL とツールチップには届きません。
+  [fixture: state/config-security-level-other-diagram-title]
+  [fixture: state/config-security-level-other-acc-title]
+  [fixture: state/config-security-level-other-acc-descr]
+  [fixture: state/config-security-level-other-acc-descr-block]
+  [fixture: state/config-security-level-other-description]
+  [fixture: state/config-security-level-other-alias]
+  [fixture: state/config-security-level-other-note]
+  [fixture: state/config-security-level-other-transition-label]
+  [fixture: state/config-security-level-other-click-as-written]
+- sequence: フロントマターと `title` 文の title、`accTitle`、`accDescr`、
+  box の名前、参加者の links と properties。
+  参加者の説明、メッセージ、note、ブロックのテキストには届きません。
+  [fixture: sequence/config-security-level-other-diagram-title]
+  [fixture: sequence/config-security-level-other-title-statement]
+  [fixture: sequence/config-security-level-other-acc-title]
+  [fixture: sequence/config-security-level-other-acc-descr]
+  [fixture: sequence/config-security-level-other-acc-descr-block]
+  [fixture: sequence/config-security-level-other-box-name]
+  [fixture: sequence/config-security-level-other-links]
+  [fixture: sequence/config-security-level-other-properties]
+  [fixture: sequence/config-security-level-other-texts-as-written]
+
+**mermaid.js の順序が効く所。**
+テキストを読み進める前に置き換える所があり、作り手も同じにします。
+
+- クラスの名前: クラスの書かれた名前の id と型を置き換えます
+  （バッククォートの名前は、その文字を持てます）。
+  等しくなった名前は 1 つのクラスで、クラスを名指す文はどれも、
+  置き換えた id でクラスを探します（namespace の中でも）。
+  note の `class` と、interface の `label` と `classId` には、
+  書かれた名前が残ります。
+  [fixture: class/config-security-level-other-name-backquoted]
+  [fixture: class/config-security-level-other-name-merged]
+  [fixture: class/config-security-level-other-name-lookup]
+  [fixture: class/config-security-level-other-name-namespace]
+  [fixture:
+  class/config-security-level-other-name-note-and-interface-as-written]
+- クラスのメンバー: 置き換えは、可視性の印を読む前の行全体に対して行うので、
+  印と名前をいっしょに置き換えます。
+  `#br#` で始まる行に可視性はなく、
+  `#` の次がそれ以外なら、可視性は protected です。
+  [fixture: class/config-security-level-other-member-hash-line-break]
+- 状態の id: 状態のラベルは、説明が置き換えるまでは置き換えた id で、
+  説明が置き換えるのは、置き換えが id を変えなかったときだけです。
+  変えたときは、置き換えた id が最初の説明のまま残り、
+  ラベルは置き換えた id で、説明がそのあとに続きます。
+  [fixture: state/config-security-level-other-id-without-description]
+  [fixture: state/config-security-level-other-id-changed-with-description]
+  [fixture: state/config-security-level-other-id-unchanged-with-description]
+  [fixture: state/config-security-level-other-composite-id]
+- sequence の links: `links` のテキストは、置き換えたあと、
+  `&equals;` を `=` に戻して JSON として読みます。
+  `properties` のテキストは、置き換えて JSON として読みます。
+  `link` のテキストは、置き換えたあと、その中で `@` の位置を取り、
+  ラベルと URL は、`&equals;` を `=` に戻したテキストから、その位置で切るので、
+  `@` の前の `=` は切る位置をずらします。
+  [fixture: sequence/config-security-level-other-links]
+  [fixture: sequence/config-security-level-other-properties]
+  [fixture: sequence/config-security-level-other-link]
 
 ## 確かめ
 

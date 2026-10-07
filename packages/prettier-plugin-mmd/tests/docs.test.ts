@@ -275,19 +275,23 @@ describe("the test citations in the documents", async () => {
     "docs/compatibility.md",
   ]) {
     const text = await readFile(new URL(document, packageRoot), "utf8")
-    const flat = text.split("\n").join(" ")
-    let index = flat.indexOf("[test: ")
+    const oneLine = text.split("\n").join(" ")
+    let index = oneLine.indexOf("[test: ")
     while (index !== -1) {
-      const end = flat.indexOf("]", index)
-      citations.push(flat.slice(index + "[test: ".length, end))
-      index = flat.indexOf("[test: ", end)
+      const end = oneLine.indexOf("]", index)
+      citations.push(oneLine.slice(index + "[test: ".length, end))
+      index = oneLine.indexOf("[test: ", end)
     }
+  }
+
+  /** The title with its line breaks, which a document wraps at, as spaces. */
+  function flat(title: string): string {
+    return title.split(" ").filter(Boolean).join(" ")
   }
 
   it.each([...new Set(citations)].map((citation) => [citation] as const))(
     "cites a case that exists: %s",
     (citation) => {
-      const flat = (title: string) => title.split(" ").filter(Boolean).join(" ")
       expect(titles.map(flat)).toContain(flat(citation))
     },
   )

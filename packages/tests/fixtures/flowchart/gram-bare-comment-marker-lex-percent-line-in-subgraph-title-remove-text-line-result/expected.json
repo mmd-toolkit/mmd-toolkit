@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The text that the proposal removeTextLine of the rule flowchart/no-bare-comment-marker makes of the input invalid/flowchart/lex-percent-line-in-subgraph-title."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [],
+        "title": "a\nb",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

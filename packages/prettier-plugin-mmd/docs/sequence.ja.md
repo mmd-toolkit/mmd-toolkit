@@ -187,10 +187,13 @@ sequenceDiagram
 [fixture: statements-one-per-line/data-block-directive-kept]
 [fixture: statements-one-per-line/actor-data-block-directive-kept]
 [fixture: statements-one-per-line/autonumber-two-directives-kept]
-そのような `;` の後に同じ行で続く文は、その行に残ります。
-残す `;` は、その行をまとめて保つからです。
-`autonumber %%{wrap}%%; A->>B: x` は 1 行で印字します。
-[fixture: statements-one-per-line/autonumber-directive-semicolon-same-line-kept]
+そのような `;` の後に同じ行で続く文と、ブロックの `end` は、別の行に置きます。
+`autonumber %%{wrap}%%; A->>B: x; B->>A: y` は、
+`autonumber %%{wrap}%%;`、`A ->> B: x`、`B ->> A: y` と印字します。
+[fixture: statements-one-per-line/autonumber-directive-semicolon-then-statements-split]
+`autonumber`、改行、`5` のように複数行に書かれた文は、
+ディレクティブと `;` を、文と一緒に書かれたまま残します。
+[fixture: statements-one-per-line/directive-semicolon-after-multi-line-statement-kept]
 mermaid.js はディレクティブを取り除き、
 行末の空白が、文に必要な改行を隠すからです。
 その文の最後の単位は、後ろの空白を読みません。
@@ -558,6 +561,9 @@ sequenceDiagram
 ### タイトル
 
 `title` と `title:` の後には空白を 1 つ置き、行の残りは書かれたまま残します。
+キーワードの後のディレクティブは、間に空白が書かれているかどうかを残します。
+`title %%{init: {}}%% T` はディレクティブの前に空白を 1 つ置き、
+`title%%{init: {}}%% U` と `title:%%{init: {}}%% V` は接したまま残します。
 [fixture: title/directive-after-keyword-kept]
 mermaid.js はキーワードの後の空白 1 文字を読み、それは改行でもよく、
 その後のすべてを、先頭と末尾の空白も含めてタイトルに入れます。
@@ -737,14 +743,22 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   [test: U+2029 at the end of the text of a box]
   [test: whitespace around U+2029 at the end of the text of a box]
 - コメントと、同じ行でその後ろに続くコメント行の間。
+  文やブロックの見出しの終わりと、そのようなコメント行の間も同じです。
   図のコメントは、そのコメント行を越えて次の行まで続くため、
   文字の代わりに改行を置くと、その後の文が文として読まれます。
   [corpus fixture: sequence/lex-hash-comment-across-comment-line]
-  コメントとコメント行とその後のテキストは、
-  字下げなしで書かれたまま印字します。
-  木はそれらをコメントとして並べますが、printer は 1 つとして読みます。
+  mermaid.js はコメント行を取り除くので、その後の行は前の行の続きになります。
+  `A->>B:   x`、U+2028、`%% c`、`C->>D: y` は 1 つの行で、
+  メッセージのテキストは次の行まで続きます。
+  文や見出しとコメント行とその後のテキストは、
+  字下げなしで、間の空白も整形せずに、書かれたまま印字します。
+  木はコメントを並べますが、printer は 1 つの行として読みます。
+  [U+2028 か U+2029 の後のコメント行](./compatibility.ja.md#u2028-か-u2029-の後のコメント行)
+  を参照してください。
   [test: a `#` comment after U+2028, which joins no lines]
   [test: a `%%` comment line after U+2028, which joins the next line]
+  [test: a `%%` comment line after U+2028 at the end of a block header]
+  [test: a `%%` comment line after U+2028 at the end of a participant]
   [test: U+2029 after a comment that a comment line follows]
   [test: U+2028 after a `%%` comment that a comment line follows]
   [test: U+2029 after a `%` comment that a comment line follows]
@@ -761,6 +775,11 @@ mermaid.js の読み方のいくつかがそれに左右されるため、
   `title`、U+2028、` ;` は、`;` ごと書かれたまま残します。
   [test: U+2028 as the whitespace character after `title`, with a `;` after it]
   [test: U+2029 as the whitespace character after `title`]
+- ブロックの `end` の後（残しません）。
+  `end`、U+2028、改行は `end` と印字します。
+  mermaid.js はそこでこの文字を空白として読むからです。
+  [test: U+2028 after the `end` of a block of a sequence diagram]
+  [test: U+2029 and whitespace around it after the last `end` of a sequence diagram]
 - 文の 2 つの部分の間（すべての図種）。
   間の空白に U+2028 か U+2029 があるときは、書かれたまま残します。
   この文字は、mermaid.js のすべての規則で空白として読まれるわけではないからです

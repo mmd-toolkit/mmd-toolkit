@@ -106,16 +106,19 @@ after writing it.
   `recommended`, and whether the rule offers suggestions come from the
   rule-ideas skill; a rule has no fix.
 - A suggestion is built in a function of its own, apart from `create`. Check its
-  result with mermaid.js, on the fixtures of section 4: apply it to the input of
-  each case, and confirm that the parser accepts the text, that the Db is the
-  one that the message says (the Db of the text as the author meant it), and
-  that the rule reports less. A message states what is true after the suggestion
-  is applied, for every place where it is offered. State what each suggestion
-  claims in the option `claims` of `testRule`: the test reads the output with
-  mermaid.js and checks the claim. A claim says all that the message says (the
-  value of a description, the text read as statements, a line less in a text).
-  When the Db of the pinned mermaid.js does not show what the message says, ask
-  the tests package to record it, and do not weaken the claim.
+  result on the fixtures of section 4: apply it to the input of each case, and
+  confirm that the parser accepts the text, that the Db that the corpus records
+  for the text is the one that the message says (the Db of the text as the
+  author meant it), and that the rule reports less. A message states what is
+  true after the suggestion is applied, for every place where it is offered.
+  State what each suggestion claims in the option `claims` of `testRule`: the
+  test checks the claim on the recorded Dbs; no test of a rule runs mermaid.js.
+  The text of each suggestion is a corpus fixture, asked of the tests package
+  and named in the file `recorded.json` of the fixture directory of the rule
+  (`docs/development.md`). A claim says all that the message says (the value of
+  a description, the text read as statements, a line less in a text). When the
+  Db of the pinned mermaid.js does not show what the message says, ask the tests
+  package to record it, and do not weaken the claim.
 - Use the helpers of `src/utils/` before writing another. When a helper rests on
   an assumption that a new rule breaks, read the tree to decide it (not the
   text), and check the other rules that use the helper again.
@@ -141,8 +144,11 @@ after writing it.
   lists each sentence of the English document that defines a behavior (a passage
   of it, verbatim), the cases that the sentence distinguishes, in words, and the
   inputs of each case (`docs/development.md`). Add the sentence, its cases, and
-  their inputs in the same change as the fixtures. A sentence of the document
-  with no entry, or a case with no input, is a gap that the review looks for.
+  their inputs in the same change as the fixtures. The test fails for a sentence
+  of the section Rule Details that no entry covers, unless `notBehavior` lists
+  it as one that defines no behavior (an introduction, a reason): do not list a
+  sentence there to silence the test. A case with no input is a gap that the
+  review looks for.
 - Keep the leading `%% eslint mmd/<rule>: error` comment in every document
   example, correct or incorrect, as the eslint-plugin skill requires. The parser
   and site checks read it with this comment; only the snapshot test helper
@@ -202,13 +208,12 @@ rule.
 
 The tests take their inputs from the corpus and from the fixture directories of
 the rules, and what mermaid.js reads from the `expected.json` of the corpus
-fixture. The text that a suggestion produces is a text of the implementation
-that is in no corpus: `testRule` reads it with mermaid.js and checks it against
-what the suggestion claims (the option `claims`, and `docs/development.md`); for
-an input that is no copy of a corpus input, it reads the Db of the input with
-mermaid.js too. A claim that a fixture shows is kept by the tests; a case that
-the check of section 2 finds without a fixture gets one before the work is
-reported as done.
+fixture. The text that a suggestion produces is a corpus fixture too, named in
+`recorded.json`: `testRule` checks the claim of the suggestion (the option
+`claims`, and `docs/development.md`) on the Dbs that the corpus records for the
+input and for that text. A claim that a fixture shows is kept by the tests; a
+case that the check of section 2 finds without a fixture gets one before the
+work is reported as done.
 
 ## 5. Finish the change
 

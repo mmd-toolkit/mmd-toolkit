@@ -75,7 +75,9 @@ and [Labels](../../../spec/docs/diagrams/flowchart.md#labels)): the label of
 flowchart/tokens-label-string-then-text-space] [fixture:
 flowchart/tokens-label-string-directive-then-text] [fixture:
 flowchart/tokens-link-text-string-then-text-space] [fixture:
-flowchart/tokens-subgraph-name-string-directive-then-text] The callback name of
+flowchart/tokens-subgraph-name-string-directive-then-text] [fixture:
+flowchart/db-style-tabs-after-comma] [fixture:
+flowchart/db-subgraph-name-trailing-space] The callback name of
 `click A call f (x)` has the token `f` with the space after it. [fixture:
 flowchart/tokens-callback-name-trailing-space] The arguments of
 `click A call f( x, y )` have the token `x, y` with its spaces. [fixture:

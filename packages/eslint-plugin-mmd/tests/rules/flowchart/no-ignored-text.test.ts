@@ -1,11 +1,8 @@
 /**
- * The rule `flowchart/no-ignored-text`, on the examples of its document and on the
- * fixtures that record what mermaid.js does with text on a direction line.
+ * The rule `flowchart/no-ignored-text`, on the examples of its document and on
+ * the fixtures that record what mermaid.js does with text on a direction line.
  */
-import { Linter } from "eslint"
-import { describe, expect, it } from "vitest"
 import { noIgnoredText } from "../../../src/rules/flowchart/no-ignored-text.ts"
-import { LANGUAGE_CONFIG } from "../../helpers.ts"
 import { testRule } from "../../rule-test.ts"
 
 testRule("flowchart/no-ignored-text", noIgnoredText, {
@@ -43,7 +40,9 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
         {
           case: "text on both sides",
           reports: true,
-          inputs: ["invalid/flowchart/gram-ignored-text-split-text-on-both-sides"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-split-text-on-both-sides",
+          ],
         },
         {
           case: "a directive stands in the line, and the text is on one side of it or inside it",
@@ -64,13 +63,15 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           reports: false,
           inputs: [
             "valid/flowchart/lex-direction-line-own-line-after-link",
-            "valid/direction-then-link-on-next-line",
+            "valid/flowchart/gram-ignored-text-direction-then-link-on-next-line",
           ],
         },
         {
           case: "only `;` and whitespace before `direction`",
           reports: false,
-          inputs: ["valid/separators-and-spaces-only"],
+          inputs: [
+            "valid/flowchart/gram-ignored-text-separators-and-spaces-only",
+          ],
         },
         {
           // The document does not say this: the `end` of a subgraph and its
@@ -78,7 +79,7 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           case: "the text before `direction` is the `end` of a subgraph",
           reports: false,
           inputs: [
-            "valid/separator-after-subgraph-end",
+            "valid/flowchart/gram-ignored-text-separator-after-subgraph-end",
             "valid/flowchart/lex-direction-line-after-end-semicolon-column-zero",
           ],
         },
@@ -96,17 +97,17 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
         {
           case: "the header `graph`, a `flowchart-v2` diagram",
           reports: true,
-          inputs: ["invalid/header-graph"],
+          inputs: ["invalid/flowchart/gram-ignored-text-header-graph"],
         },
         {
           case: "the header `flowchart-elk`",
           reports: true,
-          inputs: ["invalid/header-flowchart-elk"],
+          inputs: ["invalid/flowchart/gram-ignored-text-header-flowchart-elk"],
         },
         {
           case: "the header `swimlane-beta`, a `swimlane` diagram",
           reports: true,
-          inputs: ["invalid/header-swimlane-beta"],
+          inputs: ["invalid/flowchart/gram-ignored-text-header-swimlane-beta"],
         },
       ],
     },
@@ -122,12 +123,16 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
         {
           case: "a link after the direction value, without a `;`",
           reports: true,
-          inputs: ["invalid/flowchart/gram-ignored-text-link-after-value-without-semicolon"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-link-after-value-without-semicolon",
+          ],
         },
         {
           case: "a link before the direction, with a `;`",
           reports: true,
-          inputs: ["invalid/flowchart/gram-ignored-text-top-level-link-before-with-semicolon"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-top-level-link-before-with-semicolon",
+          ],
         },
         {
           case: "a link after the direction value, with a `;`",
@@ -163,7 +168,9 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
         {
           case: "the direction, then the link, on two lines",
           reports: false,
-          inputs: ["valid/direction-then-link-on-next-line"],
+          inputs: [
+            "valid/flowchart/gram-ignored-text-direction-then-link-on-next-line",
+          ],
         },
       ],
     },
@@ -196,7 +203,11 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
         {
           case: "`direction` and a value in a label, with a link",
           reports: true,
-          inputs: ["invalid/flowchart/lex-direction-line-in-label-with-link"],
+          inputs: [
+            "invalid/flowchart/lex-direction-line-in-label-with-link",
+            "invalid/flowchart/gram-ignored-text-text-in-label-top-level",
+            "invalid/flowchart/gram-ignored-text-text-in-label-in-subgraph",
+          ],
         },
         {
           case: "`direction` and a value in a label, without a link",
@@ -211,12 +222,16 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
         {
           case: "`direction` without a value in a label",
           reports: false,
-          inputs: ["valid/word-direction-without-value-in-label"],
+          inputs: [
+            "valid/flowchart/gram-ignored-text-word-direction-without-value-in-label",
+          ],
         },
         {
           case: "a value without `direction` in a label",
           reports: false,
-          inputs: ["valid/direction-value-word-without-direction-in-label"],
+          inputs: [
+            "valid/flowchart/gram-ignored-text-direction-value-word-without-direction-in-label",
+          ],
         },
       ],
     },
@@ -232,7 +247,9 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
         {
           case: "`;` separated by whitespace",
           reports: false,
-          inputs: ["valid/flowchart/gram-ignored-text-value-then-spaced-semicolons"],
+          inputs: [
+            "valid/flowchart/gram-ignored-text-value-then-spaced-semicolons",
+          ],
         },
       ],
     },
@@ -248,12 +265,16 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
         {
           case: "a `;`, whitespace, then `%%`",
           reports: false,
-          inputs: ["valid/semicolon-comment-after-value-in-subgraph"],
+          inputs: [
+            "valid/flowchart/gram-ignored-text-semicolon-comment-after-value-in-subgraph",
+          ],
         },
         {
           case: "two `;`, then `%%`",
           reports: false,
-          inputs: ["valid/double-semicolon-comment-after-value-in-subgraph"],
+          inputs: [
+            "valid/flowchart/gram-ignored-text-double-semicolon-comment-after-value-in-subgraph",
+          ],
         },
         {
           case: "`%%` right after the value, or alone",
@@ -267,7 +288,7 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           case: "a `;` inside the comment",
           reports: false,
           inputs: [
-            "valid/semicolon-comment-with-semicolon-after-value-in-subgraph",
+            "valid/flowchart/gram-ignored-text-semicolon-comment-with-semicolon-after-value-in-subgraph",
           ],
         },
       ],
@@ -279,12 +300,16 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
         {
           case: "a word between the value and `%%`",
           reports: true,
-          inputs: ["invalid/text-before-comment-after-value-in-subgraph"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-text-before-comment-after-value-in-subgraph",
+          ],
         },
         {
           case: "text before `direction`, and a comment after the value",
           reports: true,
-          inputs: ["invalid/split-before-direction-with-comment-after-value"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-split-before-direction-with-comment-after-value",
+          ],
         },
       ],
     },
@@ -305,14 +330,16 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           case: "two statements before `direction`",
           reports: true,
           suggests: true,
-          inputs: ["invalid/flowchart/gram-ignored-text-split-two-statements-before"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-split-two-statements-before",
+          ],
         },
         {
           case: "text after the value, a `;` between",
           reports: true,
           suggests: true,
           inputs: [
-            "invalid/split-after-direction-value",
+            "invalid/flowchart/gram-ignored-text-split-after-direction-value",
             "invalid/flowchart/gram-ignored-text-top-level-link-after-with-semicolon",
           ],
         },
@@ -320,19 +347,25 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           case: "text on both sides",
           reports: true,
           suggests: true,
-          inputs: ["invalid/flowchart/gram-ignored-text-split-text-on-both-sides"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-split-text-on-both-sides",
+          ],
         },
         {
           case: "no whitespace after the `;`",
           reports: true,
           suggests: true,
-          inputs: ["invalid/split-without-space-after-separator"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-split-without-space-after-separator",
+          ],
         },
         {
           case: "a comment after the value",
           reports: true,
           suggests: true,
-          inputs: ["invalid/split-before-direction-with-comment-after-value"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-split-before-direction-with-comment-after-value",
+          ],
         },
         {
           case: "the indentation is a tab",
@@ -348,7 +381,7 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           suggests: true,
           inputs: [
             "invalid/flowchart/gram-ignored-text-split-after-style-line",
-            "invalid/split-after-description-block",
+            "invalid/flowchart/gram-ignored-text-split-after-description-block",
           ],
         },
         {
@@ -364,7 +397,7 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
       ],
     },
     {
-      // The text of each split is compared with the input in LINE_BREAKS below.
+      // The text that a split gives is the recorded result of each input.
       sentence:
         "The line break is of the kind that the text uses there: the one that ends the line, or, on a last line without one, the one that ends the line before it",
       cases: [
@@ -372,31 +405,69 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           case: "the line ends with CRLF",
           reports: true,
           suggests: true,
-          inputs: ["invalid/split-keeps-crlf"],
+          inputs: ["invalid/flowchart/gram-ignored-text-split-keeps-crlf"],
+          results: {
+            "invalid/flowchart/gram-ignored-text-split-keeps-crlf":
+              "flowchart/gram-ignored-text-split-keeps-crlf-result",
+          },
         },
         {
           case: "the line ends with CR",
           reports: true,
           suggests: true,
-          inputs: ["invalid/split-keeps-cr"],
+          inputs: ["invalid/flowchart/gram-ignored-text-split-keeps-cr"],
+          results: {
+            "invalid/flowchart/gram-ignored-text-split-keeps-cr":
+              "flowchart/gram-ignored-text-split-keeps-cr-result",
+          },
         },
         {
           case: "the line ends with LF",
           reports: true,
           suggests: true,
-          inputs: ["invalid/flowchart/gram-ignored-text-top-level-link-before-with-semicolon"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-top-level-link-before-with-semicolon",
+          ],
+          results: {
+            "invalid/flowchart/gram-ignored-text-top-level-link-before-with-semicolon":
+              "flowchart/gram-ignored-text-top-level-link-before-with-semicolon-result",
+          },
         },
         {
           case: "the last line has no line break, and the line before it ends with LF",
           reports: true,
           suggests: true,
-          inputs: ["invalid/flowchart/gram-ignored-text-split-on-last-line-without-line-break"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-split-on-last-line-without-line-break",
+          ],
+          results: {
+            "invalid/flowchart/gram-ignored-text-split-on-last-line-without-line-break":
+              "flowchart/gram-ignored-text-split-on-last-line-without-line-break-result",
+          },
         },
         {
           case: "the last line has no line break, and the line before it ends with CRLF",
           reports: true,
           suggests: true,
-          inputs: ["invalid/split-keeps-crlf-on-last-line-without-line-break"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-split-keeps-crlf-on-last-line-without-line-break",
+          ],
+          results: {
+            "invalid/flowchart/gram-ignored-text-split-keeps-crlf-on-last-line-without-line-break":
+              "flowchart/gram-ignored-text-split-keeps-crlf-on-last-line-without-line-break-result",
+          },
+        },
+        {
+          case: "the last line has no line break, and the line before it ends with CR",
+          reports: true,
+          suggests: true,
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-split-keeps-cr-on-last-line-without-line-break",
+          ],
+          results: {
+            "invalid/flowchart/gram-ignored-text-split-keeps-cr-on-last-line-without-line-break":
+              "flowchart/gram-ignored-text-split-keeps-cr-on-last-line-without-line-break-result",
+          },
         },
       ],
     },
@@ -409,7 +480,7 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           reports: true,
           suggests: true,
           inputs: [
-            "invalid/split-drops-separator-in-title",
+            "invalid/flowchart/gram-ignored-text-split-drops-separator-in-title",
             "invalid/flowchart/lex-direction-line-acc-title-indented",
           ],
         },
@@ -426,7 +497,7 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           reports: true,
           suggests: true,
           inputs: [
-            "invalid/split-after-direction-value",
+            "invalid/flowchart/gram-ignored-text-split-after-direction-value",
             "invalid/flowchart/lex-direction-line-then-semicolon-statement",
           ],
         },
@@ -435,15 +506,26 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           reports: true,
           suggests: true,
           inputs: [
-            "invalid/split-after-description-block",
-            "invalid/split-after-description-block-in-subgraph",
+            "invalid/flowchart/gram-ignored-text-split-after-description-block",
+            "invalid/flowchart/gram-ignored-text-split-after-description-block-in-subgraph",
+            "invalid/flowchart/db-subgraph-description-block-then-semicolon-direction",
+            "invalid/flowchart/gram-ignored-text-empty-description-block-then-direction",
+          ],
+          results: {
+            "invalid/flowchart/db-subgraph-description-block-then-semicolon-direction":
+              "flowchart/db-subgraph-description-block-direction",
+          },
+          recorded: [
+            "flowchart/db-subgraph-description-block-semicolon-line-direction",
           ],
         },
         {
           case: "two `;` in a row",
           reports: true,
           suggests: true,
-          inputs: ["invalid/split-at-double-separator"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-split-at-double-separator",
+          ],
         },
       ],
     },
@@ -456,7 +538,7 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           reports: true,
           suggests: false,
           inputs: [
-            "invalid/split-would-leave-bare-arrow",
+            "invalid/flowchart/gram-ignored-text-split-would-leave-bare-arrow",
             "invalid/flowchart/lex-direction-line-semicolon-link-after-value",
           ],
         },
@@ -468,6 +550,8 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
             "invalid/flowchart/lex-direction-line-in-label-with-link",
             "invalid/flowchart/lex-direction-line-in-label",
             "invalid/flowchart/lex-direction-line-in-string-label",
+            "invalid/flowchart/gram-ignored-text-text-in-label-top-level",
+            "invalid/flowchart/gram-ignored-text-text-in-label-in-subgraph",
           ],
         },
         {
@@ -492,62 +576,17 @@ testRule("flowchart/no-ignored-text", noIgnoredText, {
           case: "the text split off is a second `accTitle`",
           reports: true,
           suggests: true,
-          inputs: ["invalid/split-reveals-duplicate-title"],
+          inputs: [
+            "invalid/flowchart/gram-ignored-text-split-reveals-duplicate-title",
+          ],
         },
       ],
     },
   ],
-})
-
-/**
- * The line terminator of a split: the text that the split gives uses the kind
- * of line terminator that the text uses at the line, and, on a last line
- * without one, the kind that ends the line before it. The snapshots show line
- * breaks alike, so this test compares the output with the text.
- */
-const LINE_BREAKS: readonly { case: string; input: string; output: string }[] =
-  [
-    {
-      case: "the line ends with CRLF",
-      input: "flowchart LR\r\n  A-->B; direction TB\r\n",
-      output: "flowchart LR\r\n  A-->B;\r\n  direction TB\r\n",
-    },
-    {
-      case: "the line ends with CR",
-      input: "flowchart LR\r  A-->B; direction TB\r",
-      output: "flowchart LR\r  A-->B;\r  direction TB\r",
-    },
-    {
-      case: "the last line has none, and the line before it ends with CRLF",
-      input: "flowchart LR\r\n  A-->B; direction TB",
-      output: "flowchart LR\r\n  A-->B;\r\n  direction TB",
-    },
-    {
-      case: "the last line has none, and the line before it ends with CR",
-      input: "flowchart LR\r  A-->B; direction TB",
-      output: "flowchart LR\r  A-->B;\r  direction TB",
-    },
-  ]
-
-describe("flowchart/no-ignored-text, the line break of a split", () => {
-  it.each(LINE_BREAKS.map((each) => [each.case, each]))("%s", (_case, each) => {
-    const messages = new Linter({ configType: "flat" }).verify(
-      each.input,
-      {
-        ...LANGUAGE_CONFIG,
-        rules: { "mmd/flowchart/no-ignored-text": "error" },
-      },
-      "input.mmd",
-    )
-    const [fix] = messages.flatMap((message) =>
-      (message.suggestions ?? []).map((suggestion) => suggestion.fix),
-    )
-    expect(fix).toBeDefined()
-    if (fix === undefined) return
-    expect(
-      each.input.slice(0, fix.range[0]) +
-        fix.text +
-        each.input.slice(fix.range[1]),
-    ).toBe(each.output)
-  })
+  notBehavior: [
+    "A line becomes a direction statement also when it is not meant as one.",
+    "Two kinds of text after the direction value are not reported:",
+    "The author means the text from the `%%` to the end of the line as a comment.",
+    "mermaid.js drops both, but neither holds anything",
+  ],
 })

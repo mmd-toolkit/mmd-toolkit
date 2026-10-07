@@ -554,13 +554,15 @@ two characters, so `note left of A:hi` has the text `i`, and
 `note right of A  : two spaces` the text `: two spaces`. [fixture: notes/kept]
 The whitespace before the id becomes one space. A text that mermaid.js does not
 read right after the position, as in `note left of%%x A`, keeps touching the
-position. The text of a note over lines is kept as written from its first line
-to its last. At its two ends mermaid.js trims it, so the whitespace after the id
-on the line of the note is dropped, the whitespace before the first line is set
-to the level of the note's text, and empty or whitespace-only lines before the
-first line and after the last become one empty line; `end note` stands at the
-level of the note. [fixture: notes/first-line-indentation-set] [fixture:
-notes/text-ends-trimmed] [fixture: notes/over-lines] [fixture:
+position. The text of a note over lines is kept as written, from the line break
+after its id to the line of `end note`: the columns of its lines, the first one
+included, and the empty and whitespace-only lines at its ends. `end note` stands
+at the level of the note. The whitespace after the id on the line of the note is
+dropped; after a comment or a directive on that line it stays as written.
+[fixture: notes/over-lines] [fixture: notes/over-lines-first-line-column-kept]
+[fixture: notes/over-lines-text-ends-kept] [fixture:
+notes/over-lines-directive-on-header-line] [fixture:
+notes/over-lines-end-note-indentation-set] [fixture:
 notes/over-lines-in-composite] [fixture: notes/over-lines-empty-lines-kept] A
 note on one line with no text keeps the whitespace after its `:`, as a
 description does: `note left of A : ` is accepted, while `note left of A :` is
@@ -611,7 +613,7 @@ Output
 stateDiagram-v2
   A
   note right of A
-    first line
+  first line
     second line
   end note
   note ""floating" as N
@@ -944,26 +946,49 @@ stateDiagram-v2
 
 ### Line separators
 
-A line that holds U+2028 or U+2029 is kept as written. Where the line holds a
-second name before the `{` of a composite statement, or the closing `}` of one,
-the lines of the statement are printed as written as a whole, body included, and
-its body is not indented again; with the character on the line of the name
-before the `{` or after the `{`, the body is printed as any other. [test: U+2028
-before the brace of a composite statement] [test: U+2028 on the closing line of
-a composite statement] In a state diagram, these characters bound the text in
-which mermaid.js looks for a pseudostate mark, a direction line, and a second
-name before a `{`: `state a`, U+2028, and `b <<fork>>` is the name `a` and the
-fork `b`, while with a space in place of the U+2028, it is the fork `a b`.
-[corpus fixture: state/lex-pseudostate-mark-after-line-separator] The character
-is invisible, so the example is written as strings, in which `\u2028` is U+2028
-and `\n` is a line break: `"stateDiagram-v2\nstate a\u2028b <<fork>>\n"` is
-printed as `"stateDiagram-v2\n  state a\u2028b <<fork>>\n"`, with the character
-kept. [test: a pseudostate mark after U+2028] [test: a pseudostate mark after
-U+2029] [test: a direction line after U+2028] [test: a direction line after
-U+2029] [test: a second name before a brace that U+2028 separates from it]
-[test: a second name before a brace that U+2029 separates from it] [test: a
-pseudostate mark after U+2028 in a body] [test: a transition line with U+2028]
-The test writes the characters as escapes too (see
+A line that holds U+2028 or U+2029 is kept as written. A composite statement
+whose opening line holds one keeps it, and its body is printed as any other
+body: `state a b`, U+2028, and `{` keeps the character and indents the
+statements of the body. So does one on the closing line, as in `state A {`, a
+body line `B`, and `}` followed by U+2028: the whitespace after the `}` stays as
+written, with the character, and the body is indented. [test: U+2028 before the
+brace of a composite statement] [test: U+2028 on the closing line of a composite
+statement] [test: U+2029 and whitespace before it on the closing line of a
+composite statement] [test: U+2028 on the closing line of a composite statement
+in a body] [test: U+2028 after the closing brace at the end of the text] [test:
+U+2028 on the opening and on the closing line of a composite statement] A
+composite statement in the body of another is printed so too, whatever the
+closing lines of the two hold. [test: U+2028 on the closing lines of a composite
+statement and of one in its body] [test: U+2028 on the closing lines of three
+nested composite statements] A composite statement whose body has a line that
+holds one, whose body is empty and whose closing line holds one (`state A {`, a
+line of whitespace, and `}`: the statement has no block to indent, and the line
+stays as written), whose closing `}` does not start its line (`B }`, or a
+directive before it), or whose closing line holds, after the character, a
+comment line or a `;` that another rule keeps (see
+[A line that a `;` ends](./compatibility.md#a-line-that-a--ends) and
+[A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)),
+is printed as written as a whole, and its body is not indented again. [test:
+U+2028 on a line of the body of a composite statement] [test: U+2028 on the
+closing line of a composite statement with an empty body] [test: U+2028 after a
+closing brace that follows a statement on its line] [test: U+2028 after a
+closing brace that follows a directive on its line] [test: a `;` after U+2029 on
+the closing line of a composite statement] [test: a comment line after U+2028 on
+the closing line of a composite statement] In a state diagram, these characters
+bound the text in which mermaid.js looks for a pseudostate mark, a direction
+line, and a second name before a `{`: `state a`, U+2028, and `b <<fork>>` is the
+name `a` and the fork `b`, while with a space in place of the U+2028, it is the
+fork `a b`. [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
+The character is invisible, so the example is written as strings, in which
+`\u2028` is U+2028 and `\n` is a line break:
+`"stateDiagram-v2\nstate a\u2028b <<fork>>\n"` is printed as
+`"stateDiagram-v2\n  state a\u2028b <<fork>>\n"`, with the character kept.
+[test: a pseudostate mark after U+2028] [test: a pseudostate mark after U+2029]
+[test: a direction line after U+2028] [test: a direction line after U+2029]
+[test: a second name before a brace that U+2028 separates from it] [test: a
+second name before a brace that U+2029 separates from it] [test: a pseudostate
+mark after U+2028 in a body] [test: a transition line with U+2028] The test
+writes the characters as escapes too (see
 [tests/line-separators.test.ts](../tests/line-separators.test.ts)). A line that
 starts with U+2028 or U+2029 keeps it, with the whitespace before the first
 statement, as written: it is part of what the lexer reads, and a second

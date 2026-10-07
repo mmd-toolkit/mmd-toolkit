@@ -4,8 +4,9 @@
  * `invalid/<diagram>/`, where `<diagram>` is a directory of the conformance
  * corpus, is a copy of the input of the corpus fixture of the same name, which
  * records what mermaid.js does with it (`expected.json`): the copy stays the
- * same as the corpus, byte for byte. An input directly under `valid/` or
- * `invalid/` is written for the rule alone.
+ * same as the corpus, byte for byte. No input stands directly under `valid/` or
+ * `invalid/`: a rule checks only inputs of which the corpus records what
+ * mermaid.js does.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs"
 import { describe, expect, it } from "vitest"
@@ -56,6 +57,17 @@ const copies = fixtureRuleNames().flatMap((name) =>
   }),
 )
 
+/** The input files that are no copy of a corpus input: those with no diagram directory. */
+const direct = fixtureRuleNames().flatMap((name) =>
+  KINDS.flatMap((kind) => {
+    const directory = `${RULE_FIXTURES_DIR}${name}/${kind}/`
+    if (!existsSync(directory)) return []
+    return inputFiles(directory)
+      .filter((file) => !isDiagramType(file.split("/")[0] ?? ""))
+      .map((file) => `${name}/${kind}/${file}`)
+  }),
+)
+
 /** The corpus fixtures of each diagram type, read once for all the copies. */
 const corpus = new Map<DiagramType, Promise<Fixture[]>>()
 
@@ -73,6 +85,10 @@ describe("the fixture directories of the rules", () => {
     for (const name of fixtureRuleNames()) {
       expect(rules).toHaveProperty([name])
     }
+  })
+
+  it("hold no input that is not a copy of a corpus input", () => {
+    expect(direct).toEqual([])
   })
 
   it.each(copies.map((copy) => [copy.path, copy]))(

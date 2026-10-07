@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The text that the proposal removePrevious of the rule flowchart/no-duplicate-description makes of the input invalid/flowchart/db-duplicate-description-header-flowchart-elk."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-elk",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "second",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

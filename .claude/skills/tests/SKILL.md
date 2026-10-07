@@ -130,12 +130,20 @@ When the working tree is shared with other work:
   | `src/db-from-tree/`                                         | `db-from-tree.test.ts`, `converted-text.test.ts`             |
   | `src/source-scan.ts`                                        | `source-scan.test.ts`                                        |
   | `src/check-tree/`                                           | `check-tree-corpus.test.ts`, `check-tree*.test.ts`           |
-  | `tools/`                                                    | no test file; see below                                      |
+  | `tools/src/diagrams.ts`                                     | `tools-diagrams.test.ts`                                     |
+  | `tools/src/fixture-store.ts`                                | `tools-fixture-store.test.ts`                                |
+  | `tools/src/spec-recorder.ts`                                | `tools-spec-recorder.test.ts`                                |
+  | `tools/src/specified-reading.ts`                            | `tools-specified-reading.test.ts`                            |
+  | `tools/fixtures.ts`, `tools/collect.ts`                     | no test file; see below                                      |
 
-  The commands of `tools/` have no test file; each is checked by running it:
-  `add-many`, `set-divergence` and `set-note` with `--dry-run`, reading what
-  they would change; `generate` with `fixtures:check`; `tools/collect.ts` with
-  `--out` pointing outside the repository, reading the file it writes.
+  The functions of `tools/src` that decide what a fixture's recorded files
+  contain are tested by `tests/tools-*.test.ts`, one file for each module; the
+  recorder runs in a process of its own there, since it needs Node.js's own
+  `import()`. The command-line files (`tools/fixtures.ts`, `tools/collect.ts`)
+  have no test file; each command is checked by running it: `add-many`,
+  `set-divergence` and `set-note` with `--dry-run`, reading what they would
+  change; `generate` with `fixtures:check`; `tools/collect.ts` with `--out`
+  pointing outside the repository, reading the file it writes.
 
   Run one file with
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<file>`.

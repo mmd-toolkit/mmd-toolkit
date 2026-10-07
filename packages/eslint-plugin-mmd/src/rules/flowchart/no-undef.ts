@@ -21,11 +21,11 @@ type IdsStatement =
  * the diagram, before or after the statement. For `style`, mermaid.js then
  * adds a new vertex; for `class` and `click`, it does nothing. A vertex that a
  * `style` adds is a vertex of the diagram too: only the first `style` of such
- * an id adds it and is reported, and a `class` or `click` of the id is not. The ids of the
- * subgraphs are those of the Db of mermaid.js, which `subgraphIdsOf`
- * gives; like the other ids, they are in the form of the values of the tree,
- * so they compare as they are. The rule suggests nothing: which id the author
- * meant is not in the text.
+ * an id adds it and is reported, and a `class` or `click` of the id is not.
+ * The ids of the subgraphs are those of the Db of mermaid.js, which
+ * `subgraphIdsOf` gives; like the other ids, they are in the form of the values
+ * of the tree, so they compare as they are. The rule suggests nothing: which id
+ * the author meant is not in the text.
  */
 export const noUndef: MermaidRuleDefinition<{
   RuleOptions: []

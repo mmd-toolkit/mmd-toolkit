@@ -146,13 +146,34 @@ function closingSuggestions(
   return suggestions
 }
 
+/** The text before `token` on its line, without the directives that stand there. */
+function lineBeforeWithoutDirectives(
+  sourceCode: MermaidSourceCode,
+  token: Token,
+): string {
+  const start = token.range[0] - token.loc.start.column
+  return [...sourceCode.text.slice(start, token.range[0])]
+    .filter(
+      (_character, offset) =>
+        !sourceCode.ast.directives.some(
+          (directive) =>
+            directive.range[0] <= start + offset &&
+            start + offset < directive.range[1],
+        ),
+    )
+    .join("")
+}
+
 /**
  * Whether the closed block whose `{` is `brace` and whose text is `body` ends
- * at a `}` written for another statement: its text holds a `{` on a later line
- * than the `{` of the block, and the `}` that closes it (`closing`) does not
- * stand alone on its line. A `{` on the line of the block's `{` is a `{` of the
+ * at a `}` written for another statement: its text holds a `{` after the line
+ * of the block's `{` (a line is what `braceLineOf` gives, which a directive
+ * may carry on), and the `}` that closes it (`closing`) does not stand alone
+ * on its line: only whitespace and directives stand before it there, whatever
+ * follows it. A `{` on the line of the block's `{` is a `{` of the
  * description, and a `}` alone on its line is the author's: both close the
- * block as written.
+ * block as written. The first `}` after the `{` of a block
+ * closes it, so `closing` is the last token of the block.
  */
 function closedByBraceOfOtherStatement(
   sourceCode: MermaidSourceCode,
@@ -160,20 +181,15 @@ function closedByBraceOfOtherStatement(
   body: readonly Token[],
   closing: Token,
 ): boolean {
-  // The `}` stands alone on its line when only whitespace is around it.
-  if (sourceCode.lines[closing.loc.start.line - 1]?.trim() === "}") return false
-  const laterLinesStart =
-    brace.loc.start.line < sourceCode.lines.length
-      ? sourceCode.getIndexFromLoc({
-          line: brace.loc.start.line + 1,
-          column: 0,
-        })
-      : sourceCode.text.length
+  if (lineBeforeWithoutDirectives(sourceCode, closing).trim() === "") {
+    return false
+  }
+  const { end } = braceLineOf(sourceCode, brace, body)
   return body
     .filter((token) => token.type !== "Directive")
     .some((token) =>
       sourceCode.text
-        .slice(Math.max(token.range[0], laterLinesStart), token.range[1])
+        .slice(Math.max(token.range[0], end), token.range[1])
         .includes("{"),
     )
 }
@@ -203,7 +219,7 @@ export const noUnclosedDescriptionBlock: MermaidRuleDefinition<{
       closedByOtherBrace:
         "mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.",
       closeAtLineEnd:
-        "Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the description, and the lines after it as statements.",
+        "Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the text of the block, and the lines after it as statements.",
       closeAtTextEnd:
         "Close the block at the end of the text: mermaid.js then reads all the text after the `{` as the description.",
     },
@@ -232,9 +248,10 @@ export const noUnclosedDescriptionBlock: MermaidRuleDefinition<{
           })
           return
         }
-        // The first `}` after the `{` closes the block. When that `}` stands
-        // on a later line than the `{` and a `{` comes before it on its line,
-        // it is the `}` of that `{`, written for another statement.
+        // The first `}` after the `{` closes the block, and is its last token.
+        // When the text holds a `{` after the line of the block's `{`, and the
+        // `}` does not stand alone on its line, it is the `}` of that `{`,
+        // written for another statement.
         const closing = rest.at(-1)
         if (closing === undefined) return
         if (!closedByBraceOfOtherStatement(sourceCode, brace, rest, closing)) {

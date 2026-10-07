@@ -141,8 +141,8 @@ changing it.
     same change, and a link to the source of mermaid.js is a permalink of the
     pinned commit (`pnpm run lint:docs`).
   - Prose is wrapped at 80 columns: in English by Prettier
-    (`pnpm run format:check`), in Japanese by the author, which no check
-    enforces.
+    (`pnpm run format:check`), in Japanese by the author and checked by
+    `pnpm run lint:ja`.
   - A code block of Mermaid text has the info string `mmd` and is written as the
     formatter prints it, unless the example is there to show a way of writing.
   - Run the tests that a change can affect, and the whole suite of the package

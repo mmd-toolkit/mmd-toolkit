@@ -20,7 +20,7 @@ export const noUnclosedDirective: MermaidRuleDefinition<{
     schema: [],
     messages: {
       unclosed:
-        "This directive has no closing `}%%`, so the text after it is part of the directive.",
+        "This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.",
     },
   },
   create(context) {

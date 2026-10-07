@@ -87,7 +87,8 @@ id を挙げるどの文も同じです。
 （[HTML 属性の引用符](../../../spec/docs/common.ja.md#html-属性の引用符)
 を参照）。
 そのため `A->>B: <a href="x">y</a>` のテキストは `<a href='x'>y</a>` です。
-また、[`style` 行と `classDef` 行](../../../spec/docs/common.ja.md#style-行と-classdef-行)
+また、[`style` 行と
+`classDef` 行](../../../spec/docs/common.ja.md#style-行と-classdef-行)
 の規則が無視する `;` は、何も残しません。
 `participant Z@{ "style": "x:#y" };A->>B: x;y` のメッセージのテキストは
 `xy` です。

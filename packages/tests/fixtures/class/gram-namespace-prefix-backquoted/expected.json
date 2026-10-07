@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/class.md ClassNamespaceStatement: the name parts before a backquoted name are the prefix, as in ClassName, so the prefix of the namespace is `a.` and its name is the string `b c`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "C",
+        "type": "",
+        "label": "C",
+        "text": "C",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "a.b c"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "a",
+        "label": "a",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "a.b c"
+        ],
+        "explicit": false
+      },
+      {
+        "id": "a.b c",
+        "label": "b c",
+        "classes": [
+          "C"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "a",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

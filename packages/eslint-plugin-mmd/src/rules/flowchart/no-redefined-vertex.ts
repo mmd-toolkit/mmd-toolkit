@@ -3,9 +3,12 @@ import type { MermaidRuleDefinition } from "../../rule-types.ts"
 import { ruleDocsUrl } from "../../rule-docs-url.ts"
 
 /**
- * The text of the label of `shape` as mermaid.js keeps it: `addVertex` removes
- * the whitespace at the ends of a label, so `A["x"]` and `A["x "]` write the
- * same label. The value of the tree keeps that whitespace, as written.
+ * The text of the label of `shape` that the rule compares: the text as written
+ * without the whitespace at its ends, which mermaid.js removes (`addVertex`),
+ * so `A["x"]` and `A["x "]` write the same label. Nothing else is changed: two
+ * labels that differ only in their line breaks or in the quotes of an HTML
+ * attribute are different here, although mermaid.js keeps them the same. The
+ * value of the tree keeps the whitespace at the ends, as written.
  */
 function labelText(shape: FlowchartShape): string {
   return shape.label.value.trim()

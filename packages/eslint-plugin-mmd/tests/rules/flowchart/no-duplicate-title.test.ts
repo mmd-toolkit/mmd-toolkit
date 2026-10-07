@@ -1,6 +1,6 @@
 /**
- * The rule `flowchart/no-duplicate-title`, on the examples of its document and on the
- * fixtures that record what mermaid.js does with `accTitle` statements.
+ * The rule `flowchart/no-duplicate-title`, on the examples of its document and
+ * on the fixtures that record what mermaid.js does with `accTitle` statements.
  */
 import { noDuplicateTitle } from "../../../src/rules/flowchart/no-duplicate-title.ts"
 import { testRule } from "../../rule-test.ts"
@@ -29,7 +29,9 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
         {
           case: "a description stands between the statements",
           reports: true,
-          inputs: ["invalid/flowchart/db-duplicate-title-titles-around-a-description"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-title-titles-around-a-description",
+          ],
         },
         {
           case: "one statement",
@@ -42,7 +44,9 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
         {
           case: "a title and a description",
           reports: false,
-          inputs: ["valid/flowchart/db-duplicate-description-title-and-description"],
+          inputs: [
+            "valid/flowchart/db-duplicate-description-title-and-description",
+          ],
         },
       ],
     },
@@ -58,17 +62,17 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
         {
           case: "the header `graph`, a `flowchart-v2` diagram",
           reports: true,
-          inputs: ["invalid/header-graph"],
+          inputs: ["invalid/flowchart/db-duplicate-title-header-graph"],
         },
         {
           case: "the header `flowchart-elk`",
           reports: true,
-          inputs: ["invalid/header-flowchart-elk"],
+          inputs: ["invalid/flowchart/db-duplicate-title-header-flowchart-elk"],
         },
         {
           case: "the header `swimlane-beta`, a `swimlane` diagram",
           reports: true,
-          inputs: ["invalid/header-swimlane-beta"],
+          inputs: ["invalid/flowchart/db-duplicate-title-header-swimlane-beta"],
         },
       ],
     },
@@ -98,26 +102,33 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
         {
           case: "`accTitle:` with no text, and a line break after it, at the end of the text",
           reports: true,
-          inputs: ["invalid/empty-title-before-final-line-break"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-title-empty-title-before-final-line-break",
+          ],
         },
         {
           case: "`accTitle:` with no text, before another line: the line is the title",
           reports: true,
-          inputs: ["invalid/empty-title-takes-next-line"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-title-empty-title-takes-next-line",
+          ],
         },
         {
           case: "an empty line, a comment line, or a directive stands before the line that holds the text",
           reports: true,
           inputs: [
-            "invalid/empty-title-takes-text-past-an-empty-line",
-            "invalid/empty-title-takes-text-past-a-comment-line",
-            "invalid/empty-title-takes-text-past-a-directive",
+            "invalid/flowchart/db-duplicate-title-empty-title-takes-text-past-an-empty-line",
+            "invalid/flowchart/db-duplicate-title-empty-title-takes-text-past-a-comment-line",
+            "invalid/flowchart/db-duplicate-title-empty-title-takes-text-past-a-directive",
           ],
         },
         {
           case: "`accTitle:` with no text, before another line, and no title before it",
           reports: false,
-          inputs: ["valid/flowchart/db-duplicate-title-line-without-text-takes-next-line"],
+          inputs: [
+            "valid/flowchart/db-duplicate-title-line-without-text-takes-next-line",
+            "valid/flowchart/db-acc-title-line-empty-then-comment-and-directive-lines",
+          ],
         },
       ],
     },
@@ -141,17 +152,26 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
         {
           case: "one in each of two subgraphs",
           reports: true,
-          inputs: ["invalid/flowchart/db-duplicate-title-two-subgraphs"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-title-two-subgraphs",
+            "invalid/flowchart/db-subgraph-member-before-title",
+          ],
         },
         {
           case: "one in a nested subgraph, then one in its parent",
           reports: true,
-          inputs: ["invalid/nested-subgraphs"],
+          inputs: ["invalid/flowchart/db-duplicate-title-nested-subgraphs"],
         },
         {
           case: "one statement in a subgraph",
           reports: false,
-          inputs: ["valid/flowchart/db-duplicate-title-title-in-subgraph-alone"],
+          inputs: [
+            "valid/flowchart/db-duplicate-title-title-in-subgraph-alone",
+            "valid/flowchart/db-subgraph-without-acc-title-member",
+            "valid/flowchart/db-subgraph-acc-title-member",
+            "valid/flowchart/db-subgraph-member-acc-title-same-as-vertex",
+            "valid/flowchart/db-subgraph-member-acc-title-names-subgraph",
+          ],
         },
       ],
     },
@@ -167,7 +187,7 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
             "invalid/flowchart/db-acc-title-replaces",
             "invalid/flowchart/db-duplicate-title-three-titles",
             "invalid/flowchart/db-acc-title-empty-replaces",
-            "invalid/empty-title-before-final-line-break",
+            "invalid/flowchart/db-duplicate-title-empty-title-before-final-line-break",
           ],
         },
         {
@@ -176,16 +196,17 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
           suggests: true,
           inputs: [
             "invalid/flowchart/db-duplicate-title-comment-line-between",
-            "invalid/empty-line-between",
-            "invalid/directive-between",
-            "invalid/semicolon-statement-between",
+            "invalid/flowchart/db-duplicate-title-empty-line-between",
+            "invalid/flowchart/db-duplicate-title-directive-between",
+            "invalid/flowchart/db-duplicate-title-semicolon-statement-between",
+            "invalid/flowchart/db-duplicate-title-empty-description-block-between",
           ],
         },
         {
           case: "the lines end with CRLF",
           reports: true,
           suggests: true,
-          inputs: ["invalid/crlf"],
+          inputs: ["invalid/flowchart/db-duplicate-title-crlf"],
         },
         {
           case: "the statements stand in subgraphs",
@@ -194,7 +215,7 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
           inputs: [
             "invalid/flowchart/db-duplicate-title-inner-after-outer",
             "invalid/flowchart/db-duplicate-title-two-subgraphs",
-            "invalid/nested-subgraphs",
+            "invalid/flowchart/db-duplicate-title-nested-subgraphs",
             "invalid/flowchart/db-acc-title-outer-replaces-subgraph",
           ],
         },
@@ -212,22 +233,14 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
           reports: true,
           suggests: true,
           inputs: [],
-          written: [
-            {
-              name: "line-separator-in-title",
-              code: "flowchart LR\n  A\n  accTitle: a\u2028b\n  accTitle: c\n",
-            },
-          ],
+          corpus: ["flowchart/db-duplicate-title-line-separator-in-title"],
         },
         {
           case: "a line separator in a title: one statement",
           reports: false,
           inputs: [],
-          written: [
-            {
-              name: "line-separator-then-accTitle",
-              code: "flowchart LR\n  A\n  accTitle: a\u2028accTitle: b\n",
-            },
+          corpus: [
+            "flowchart/db-duplicate-title-line-separator-then-acc-title",
           ],
         },
       ],
@@ -236,14 +249,18 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
       sentence: "mermaid.js uses the last title that remains.",
       cases: [
         {
-          case: "a `;` after the title text is part of the title: one statement",
-          reports: false,
-          inputs: ["valid/flowchart/db-duplicate-title-semicolon-is-part-of-the-title"],
+          case: "three statements: whichever statement is removed, the last that remains is used",
+          reports: true,
+          offers: ["removePrevious", "removeThis"],
+          inputs: ["invalid/flowchart/db-duplicate-title-three-titles"],
         },
         {
-          case: "a directive inside the title text: one statement",
+          case: "a directive, or a `;`, inside the text of a statement: one statement",
           reports: false,
-          inputs: ["valid/directive-inside-title-text"],
+          inputs: [
+            "valid/flowchart/db-duplicate-title-semicolon-is-part-of-the-title",
+            "valid/flowchart/db-duplicate-title-directive-inside-title-text",
+          ],
         },
       ],
     },
@@ -258,7 +275,7 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
           inputs: [
             "invalid/flowchart/db-duplicate-title-inner-after-outer",
             "invalid/flowchart/db-duplicate-title-two-subgraphs",
-            "invalid/nested-subgraphs",
+            "invalid/flowchart/db-duplicate-title-nested-subgraphs",
             "invalid/flowchart/db-acc-title-outer-replaces-subgraph",
           ],
         },
@@ -272,13 +289,36 @@ testRule("flowchart/no-duplicate-title", noDuplicateTitle, {
           case: "a `;` on its own line between the statements stays",
           reports: true,
           suggests: true,
-          inputs: ["invalid/semicolon-statement-between"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-title-semicolon-statement-between",
+          ],
         },
         {
-          case: "a `;` that ends the text is removed with the statement",
+          case: "an ignored `;` is removed with the statement, wherever the statement stands and whatever follows",
           reports: true,
           suggests: true,
-          inputs: ["invalid/semicolon-ignored-at-end-of-text"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-title-semicolon-ignored-at-end-of-text",
+            "invalid/flowchart/db-subgraph-acc-title-style-member",
+            "invalid/flowchart/db-duplicate-title-ignored-semicolon-on-the-previous-statement",
+            "invalid/flowchart/db-duplicate-title-ignored-semicolon-crlf",
+            "invalid/flowchart/db-duplicate-title-ignored-semicolon-cr",
+            "invalid/flowchart/db-duplicate-title-ignored-semicolon-then-comment-line",
+            "invalid/flowchart/db-duplicate-title-ignored-semicolon-then-empty-line",
+            "invalid/flowchart/db-duplicate-title-ignored-semicolon-then-directive",
+            "invalid/flowchart/db-duplicate-title-ignored-semicolon-doubled",
+            "invalid/flowchart/db-duplicate-title-ignored-semicolon-spaced",
+          ],
+          recorded: ["flowchart/db-subgraph-acc-title-then-semicolon-member"],
+          corpus: [
+            "flowchart/db-duplicate-title-ignored-semicolon-then-line-separator",
+          ],
+        },
+        {
+          case: "the lines end with a lone CR",
+          reports: true,
+          suggests: true,
+          inputs: ["invalid/flowchart/db-duplicate-title-duplicate-cr"],
         },
       ],
     },

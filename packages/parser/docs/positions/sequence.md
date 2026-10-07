@@ -15,12 +15,8 @@ The ranges of the nodes of this diagram type, besides the rules of
 
 ### SequenceDiagram
 
-The range runs from the keyword to the last token of the diagram text other than
-a `Directive` or an `IgnoredSemicolon` token, the tokens that belong to no
-statement included, as for the node in `Root.body` of every diagram (see
-[Nodes](../../../spec/docs/ast.md#nodes)). [fixture:
-sequence/gram-title-then-separators] [fixture:
-sequence/tokens-comment-then-ignored-semicolon]
+The range is that of the node in `Root.body` of every diagram (see
+[Node ranges](../positions.md#node-ranges)).
 
 ### SequenceParticipantStatement
 
@@ -66,8 +62,9 @@ sequence/db-participant-empty-alias]
 ### SequenceText
 
 The range runs from the prefix, or from the text when there is no prefix, to the
-end of the text. [fixture: sequence/lex-wrap-prefix-colon] [fixture:
-sequence/db-note-over-two]
+end of the text, or to the end of the prefix when there is no text. [fixture:
+sequence/lex-wrap-prefix-colon] [fixture: sequence/db-note-over-two] [fixture:
+sequence/db-message-wrap-prefix-without-text]
 
 ### SequenceDataBlock
 

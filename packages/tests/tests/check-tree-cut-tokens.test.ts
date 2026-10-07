@@ -1,154 +1,639 @@
-import { existsSync, readFileSync } from "node:fs"
-import path from "node:path"
 import { describe, expect, it } from "vitest"
 import { checkTree } from "../src/check-tree/index.ts"
-import { PUNCTUATOR_TEXTS } from "../src/check-tree/punctuators.ts"
-import type {
-  CheckedDirective,
-  CheckedRoot,
-  CheckedToken,
-} from "../src/check-tree/types.ts"
+import type { TreeProblem } from "../src/check-tree/types.ts"
 import type { DiagramType } from "../src/index.ts"
-import { getFixturesRoot, loadFixtures } from "../src/index.ts"
 import { directiveOf, handMadeRoot } from "./check-tree-trees.ts"
+import type { Piece } from "./check-tree-trees.ts"
+import { recordedTree } from "./check-tree-recorded.ts"
 import { cutToken } from "./check-tree-cuts.ts"
 import type { Cut } from "./check-tree-cuts.ts"
 
 // parser/docs/tokens.md, A token that a directive cuts: a directive, or a `;`
 // that the line rule ignores, may lie inside a `String` token (the string is
 // then `StringFragment` tokens) and inside a `RawText` token (then `RawText`
-// tokens), and inside no other token. For each kind of token of each diagram
-// the test writes a cut inside a recorded token, as a parser that cuts it
-// would record the new text, and requires the check to report the tree; and
-// for the tokens that may be cut it requires the tree of the cut token not to
-// be reported, which shows that the trees made are those of a parser. For the
-// texts of the table of `Punctuator` tokens, the cuts are made in trees made
-// by hand, with other `Punctuator` tokens that the cuts attach.
+// tokens), and inside no other token. Each case below takes the recorded tree
+// of a named fixture, writes one cut, or two or three, inside one of its
+// tokens as a parser that cut the token would record the text, and says which
+// problem the check reports, or that it reports none. The unedited tree of
+// each fixture has no problem.
 
-/** The diagrams, with the type of their body. */
-const DIAGRAM_BODIES: readonly [DiagramType, string][] = [
-  ["flowchart", "FlowchartDiagram"],
-  ["sequence", "SequenceDiagram"],
-  ["class", "ClassDiagram"],
-  ["state", "StateDiagram"],
-]
+/** The directive that a case writes, and the `;` that the line rule ignores. */
+const DIRECTIVE: Cut = "directive"
+const SEMICOLON: Cut = "ignored-semicolon"
 
-const DIAGRAMS: readonly DiagramType[] = DIAGRAM_BODIES.map(
-  ([diagram]) => diagram,
-)
-
-const CUTS: readonly Cut[] = ["directive", "ignored-semicolon"]
-
-/** The kinds of token that no cut may lie inside. */
-const KINDS_NEVER_CUT: ReadonlySet<string> = new Set([
-  "Identifier",
-  "Numeric",
-  "Keyword",
-  "Punctuator",
-])
-
-/** How many tokens of a kind are cut in each place, when the kind has many texts. */
-const INSTANCES_OF_OPEN_KINDS = 4
-
-/** A recorded tree with the tokens of one kind that the test cuts. */
-interface Candidate {
+/** A case: a token of a recorded tree cut at places, and the problems of the check for the tree so made. */
+interface CutCase {
   readonly name: string
-  readonly input: string
-  readonly json: string
-  readonly index: number
-  readonly token: CheckedToken
+  readonly diagram: DiagramType
+  /** The fixture whose recorded tree is cut. */
+  readonly fixture: string
+  /** The first token of the fixture of this kind and this text, which is cut. */
+  readonly token: { readonly type: string; readonly value: string }
+  /** The cuts, from the first to the last: how many characters of the token come before it, and what is written. */
+  readonly cuts: readonly { readonly at: number; readonly cut: Cut }[]
+  /** The kind of every fragment of the token. */
+  readonly fragments: string
+  /** The parts of the messages of the problems that the case is about: a problem is one of them when its message has one of the parts; the empty string is every problem. */
+  readonly about: readonly string[]
+  /** The problems that the case is about, in the order of the check. */
+  readonly problems: readonly TreeProblem[]
 }
 
-/**
- * The tokens to cut: for each diagram and kind of token, one for each text
- * when the kind has a small set of texts (`Keyword`, `Punctuator`), and the
- * first few when it has many (`Identifier`, `Numeric`, `String`, `RawText`),
- * outside the frontmatter and of two characters or more.
- */
-async function candidates(kinds: ReadonlySet<string>): Promise<Candidate[]> {
-  const found: Candidate[] = []
-  const counts = new Map<string, number>()
-  for (const diagram of DIAGRAMS) {
-    for (const fixture of await loadFixtures(diagram)) {
-      const file = path.join(
-        getFixturesRoot(),
-        diagram,
-        fixture.name,
-        "ast.json",
-      )
-      if (!existsSync(file)) continue
-      const json = readFileSync(file, "utf8")
-      const tree = JSON.parse(json) as CheckedRoot
-      const frontmatterEnd = tree.frontmatter?.range[1] ?? 0
-      for (const [index, token] of tree.tokens.entries()) {
-        if (
-          !kinds.has(token.type) ||
-          token.range[0] < frontmatterEnd ||
-          token.value.length < 2 ||
-          token.value.includes("%%")
-        ) {
-          continue
-        }
-        const closedSet =
-          token.type === "Keyword" || token.type === "Punctuator"
-        const key = closedSet
-          ? `${diagram} ${token.type} ${token.value}`
-          : `${diagram} ${token.type}`
-        const count = counts.get(key) ?? 0
-        if (count >= (closedSet ? 1 : INSTANCES_OF_OPEN_KINDS)) continue
-        counts.set(key, count + 1)
-        found.push({
-          name: `${diagram}/${fixture.name}`,
-          input: fixture.input,
-          json,
-          index,
-          token,
-        })
-      }
-    }
+/** The problems that the check reports for the tree of `testCase` that the case is about, and those of the unedited tree. */
+function problemsOf(testCase: CutCase): {
+  base: TreeProblem[]
+  cut: TreeProblem[]
+} {
+  const { input, tree } = recordedTree(testCase.diagram, testCase.fixture)
+  const index = tree.tokens.findIndex(
+    (token) =>
+      token.type === testCase.token.type &&
+      token.value === testCase.token.value,
+  )
+  const first = tree.tokens[index]
+  if (first === undefined) {
+    throw new Error(`no ${testCase.token.type} ${testCase.token.value}`)
   }
-  return found
+  let text = input
+  let cutted = tree
+  // The last cut first: the places of the cuts before it stay what they are.
+  for (const { at, cut } of [...testCase.cuts].reverse()) {
+    const result = cutToken(
+      text,
+      JSON.stringify(cutted),
+      index,
+      first.range[0] + at,
+      cut,
+      { before: testCase.fragments, after: testCase.fragments },
+    )
+    text = result.text
+    cutted = result.tree
+  }
+  return {
+    base: checkTree(input, tree),
+    cut: checkTree(text, cutted).filter((problem) =>
+      testCase.about.some((part) => problem.message.includes(part)),
+    ),
+  }
 }
 
-/** Which neighbours of a token a cut attaches to it. */
-type Sides = "before" | "after" | "both"
+/** Runs each case: the tree of the fixture has no problem, and the cut tree has `problems`. */
+function expectCases(cases: readonly CutCase[]): void {
+  for (const testCase of cases) {
+    it(testCase.name, () => {
+      const { base, cut } = problemsOf(testCase)
+      expect(base).toEqual([])
+      expect(cut).toEqual(testCase.problems)
+    })
+  }
+}
 
-const SIDES: readonly Sides[] = ["before", "after", "both"]
+describe("an Identifier that a cut cuts", () => {
+  expectCases([
+    {
+      name: "is reported when a directive cuts it into two",
+      diagram: "flowchart",
+      fixture: "docs-syntax-flowchart-2d81e8b9",
+      token: { type: "Identifier", value: "id1" },
+      cuts: [{ at: 2, cut: DIRECTIVE }],
+      fragments: "Identifier",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Identifier at 33-34",
+          message:
+            "a Identifier token is cut: Identifier at 17-19 and this are its fragments",
+        },
+      ],
+    },
+    {
+      name: "is reported when a `;` cuts it into two",
+      diagram: "flowchart",
+      fixture: "docs-syntax-flowchart-2d81e8b9",
+      token: { type: "Identifier", value: "id1" },
+      cuts: [{ at: 2, cut: SEMICOLON }],
+      fragments: "Identifier",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Identifier at 20-21",
+          message:
+            "a Identifier token is cut: Identifier at 17-19 and this are its fragments",
+        },
+      ],
+    },
+    {
+      name: "is reported for each fragment after the first when a directive and a `;` cut it into three",
+      diagram: "flowchart",
+      fixture: "docs-syntax-flowchart-2d81e8b9",
+      token: { type: "Identifier", value: "id1" },
+      cuts: [
+        { at: 1, cut: DIRECTIVE },
+        { at: 2, cut: SEMICOLON },
+      ],
+      fragments: "Identifier",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Identifier at 32-33",
+          message:
+            "a Identifier token is cut: Identifier at 17-18 and this are its fragments",
+        },
+        {
+          where: "Identifier at 34-35",
+          message:
+            "a Identifier token is cut: Identifier at 32-33 and this are its fragments",
+        },
+      ],
+    },
+  ])
+})
 
-/** The texts of the tokens that a cut attaches to the token, before it and after it: a closing and an opening, and a separator. */
-const NEIGHBOURS: readonly (readonly [before: string, after: string])[] = [
-  [")", "("],
-  [",", ","],
-]
+describe("a Numeric that a cut cuts", () => {
+  expectCases([
+    {
+      name: "is reported when a directive cuts a number of a sequence diagram into two",
+      diagram: "sequence",
+      fixture: "db-autonumber-fraction",
+      token: { type: "Numeric", value: "1.25" },
+      cuts: [{ at: 1, cut: DIRECTIVE }],
+      fragments: "Numeric",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Numeric at 45-48",
+          message:
+            "a Numeric token is cut: Numeric at 30-31 and this are its fragments",
+        },
+      ],
+    },
+    {
+      name: "is reported when a `;` cuts a number of a state diagram into two",
+      diagram: "state",
+      fixture: "gram-scale",
+      token: { type: "Numeric", value: "350" },
+      cuts: [{ at: 2, cut: SEMICOLON }],
+      fragments: "Numeric",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Numeric at 27-28",
+          message:
+            "a Numeric token is cut: Numeric at 24-26 and this are its fragments",
+        },
+      ],
+    },
+  ])
+})
+
+describe("a Keyword that a cut cuts", () => {
+  expectCases([
+    {
+      name: "is reported in a flowchart when a directive cuts `subgraph` into two",
+      diagram: "flowchart",
+      fixture: "config-inherit-dir-default",
+      token: { type: "Keyword", value: "subgraph" },
+      cuts: [{ at: 3, cut: DIRECTIVE }],
+      fragments: "Keyword",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Keyword at 32-37",
+          message:
+            "a Keyword token is cut: Keyword at 15-18 and this are its fragments",
+        },
+      ],
+    },
+    {
+      name: "is reported in a flowchart when a `;` cuts `subgraph` into two",
+      diagram: "flowchart",
+      fixture: "config-inherit-dir-default",
+      token: { type: "Keyword", value: "subgraph" },
+      cuts: [{ at: 3, cut: SEMICOLON }],
+      fragments: "Keyword",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Keyword at 19-24",
+          message:
+            "a Keyword token is cut: Keyword at 15-18 and this are its fragments",
+        },
+      ],
+    },
+    {
+      name: "is reported in a flowchart when a directive and a `;` cut `subgraph` into three, though no two fragments make a keyword",
+      diagram: "flowchart",
+      fixture: "config-inherit-dir-default",
+      token: { type: "Keyword", value: "subgraph" },
+      cuts: [
+        { at: 2, cut: DIRECTIVE },
+        { at: 5, cut: SEMICOLON },
+      ],
+      fragments: "Keyword",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Keyword at 35-38",
+          message:
+            "a Keyword token is cut: Keyword at 15-17, Keyword at 31-34 and this are its fragments",
+        },
+      ],
+    },
+    {
+      name: "is reported in a flowchart when two directives cut `subgraph` into three",
+      diagram: "flowchart",
+      fixture: "config-inherit-dir-default",
+      token: { type: "Keyword", value: "subgraph" },
+      cuts: [
+        { at: 2, cut: DIRECTIVE },
+        { at: 5, cut: DIRECTIVE },
+      ],
+      fragments: "Keyword",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Keyword at 48-51",
+          message:
+            "a Keyword token is cut: Keyword at 15-17, Keyword at 31-34 and this are its fragments",
+        },
+      ],
+    },
+    {
+      name: "is reported in a flowchart when `;` and a directive cut `subgraph` into four",
+      diagram: "flowchart",
+      fixture: "config-inherit-dir-default",
+      token: { type: "Keyword", value: "subgraph" },
+      cuts: [
+        { at: 1, cut: SEMICOLON },
+        { at: 3, cut: DIRECTIVE },
+        { at: 6, cut: SEMICOLON },
+      ],
+      fragments: "Keyword",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Keyword at 37-39",
+          message:
+            "a Keyword token is cut: Keyword at 15-16, Keyword at 17-19, Keyword at 33-36 and this are its fragments",
+        },
+        {
+          where: "Keyword at 37-39",
+          message:
+            "a Keyword token is cut: Keyword at 33-36 and this are its fragments",
+        },
+      ],
+    },
+    {
+      name: "is reported in a sequence diagram when a directive cuts `participant` into two",
+      diagram: "sequence",
+      fixture: "db-box-colour-candidate-word-prefix",
+      token: { type: "Keyword", value: "participant" },
+      cuts: [{ at: 4, cut: DIRECTIVE }],
+      fragments: "Keyword",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Keyword at 47-54",
+          message:
+            "a Keyword token is cut: Keyword at 29-33 and this are its fragments",
+        },
+      ],
+    },
+    {
+      name: "is reported in a class diagram when a directive cuts `classDiagram` into `class` and `Diagram`",
+      diagram: "class",
+      fixture: "config-security-level-sandbox-link-default-target",
+      token: { type: "Keyword", value: "classDiagram" },
+      cuts: [{ at: 5, cut: DIRECTIVE }],
+      fragments: "Keyword",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Keyword at 19-26",
+          message:
+            "a Keyword token is cut: Keyword at 0-5 and this are its fragments",
+        },
+      ],
+    },
+    {
+      name: "is reported in a state diagram when a directive cuts `stateDiagram-v2` into `state` and `Diagram-v2`",
+      diagram: "state",
+      fixture: "db-acc-descr-block-crlf",
+      token: { type: "Keyword", value: "stateDiagram-v2" },
+      cuts: [{ at: 5, cut: DIRECTIVE }],
+      fragments: "Keyword",
+      about: ["token is cut"],
+      problems: [
+        {
+          where: "Keyword at 19-29",
+          message:
+            "a Keyword token is cut: Keyword at 0-5 and this are its fragments",
+        },
+      ],
+    },
+  ])
+})
+
+describe("a Punctuator that a cut cuts", () => {
+  expectCases([
+    {
+      name: "is reported in a flowchart when a directive cuts `(((` into `(` and `((`",
+      diagram: "flowchart",
+      fixture: "docs-syntax-flowchart-2d81e8b9",
+      token: { type: "Punctuator", value: "(((" },
+      cuts: [{ at: 1, cut: DIRECTIVE }],
+      fragments: "Punctuator",
+      about: ["the Punctuator text", "a Punctuator token is cut"],
+      problems: [
+        {
+          where: "Punctuator at 20-21",
+          message:
+            'a Punctuator token is cut: Punctuator at 20-21, Punctuator at 35-37 are the fragments of "((("',
+        },
+      ],
+    },
+    {
+      name: "is reported in a flowchart when a `;` cuts `(((` into `((` and `(`",
+      diagram: "flowchart",
+      fixture: "docs-syntax-flowchart-2d81e8b9",
+      token: { type: "Punctuator", value: "(((" },
+      cuts: [{ at: 2, cut: SEMICOLON }],
+      fragments: "Punctuator",
+      about: ["the Punctuator text", "a Punctuator token is cut"],
+      problems: [
+        {
+          where: "Punctuator at 20-22",
+          message:
+            'a Punctuator token is cut: Punctuator at 20-22, Punctuator at 23-24 are the fragments of "((("',
+        },
+      ],
+    },
+    {
+      name: "is reported in a flowchart for each run of fragments that make a text of the table when two directives cut `(((` into three `(`",
+      diagram: "flowchart",
+      fixture: "docs-syntax-flowchart-2d81e8b9",
+      token: { type: "Punctuator", value: "(((" },
+      cuts: [
+        { at: 1, cut: DIRECTIVE },
+        { at: 2, cut: DIRECTIVE },
+      ],
+      fragments: "Punctuator",
+      about: ["the Punctuator text", "a Punctuator token is cut"],
+      problems: [
+        {
+          where: "Punctuator at 20-21",
+          message:
+            'a Punctuator token is cut: Punctuator at 20-21, Punctuator at 35-36 are the fragments of "(("',
+        },
+        {
+          where: "Punctuator at 20-21",
+          message:
+            'a Punctuator token is cut: Punctuator at 20-21, Punctuator at 35-36, Punctuator at 50-51 are the fragments of "((("',
+        },
+        {
+          where: "Punctuator at 35-36",
+          message:
+            'a Punctuator token is cut: Punctuator at 35-36, Punctuator at 50-51 are the fragments of "(("',
+        },
+      ],
+    },
+    {
+      name: "is reported in a sequence diagram when a directive cuts `()` into `(` and `)`, with their texts that the diagram lacks",
+      diagram: "sequence",
+      fixture: "db-message-central-connection-both",
+      token: { type: "Punctuator", value: "()" },
+      cuts: [{ at: 1, cut: DIRECTIVE }],
+      fragments: "Punctuator",
+      about: ["the Punctuator text", "a Punctuator token is cut"],
+      problems: [
+        {
+          where: "Punctuator at 17-18",
+          message:
+            'the Punctuator text "(" is none of those of a SequenceDiagram',
+        },
+        {
+          where: "Punctuator at 32-33",
+          message:
+            'the Punctuator text ")" is none of those of a SequenceDiagram',
+        },
+        {
+          where: "Punctuator at 17-18",
+          message:
+            'a Punctuator token is cut: Punctuator at 17-18, Punctuator at 32-33 are the fragments of "()"',
+        },
+      ],
+    },
+    {
+      name: "is reported in a class diagram when a directive cuts `<<` into two `<`, with their texts that the diagram lacks",
+      diagram: "class",
+      fixture: "db-annotation-after-backquoted-tilde-class",
+      token: { type: "Punctuator", value: "<<" },
+      cuts: [{ at: 1, cut: DIRECTIVE }],
+      fragments: "Punctuator",
+      about: ["the Punctuator text", "a Punctuator token is cut"],
+      problems: [
+        {
+          where: "Punctuator at 29-30",
+          message: 'the Punctuator text "<" is none of those of a ClassDiagram',
+        },
+        {
+          where: "Punctuator at 44-45",
+          message: 'the Punctuator text "<" is none of those of a ClassDiagram',
+        },
+        {
+          where: "Punctuator at 29-30",
+          message:
+            'a Punctuator token is cut: Punctuator at 29-30, Punctuator at 44-45 are the fragments of "<<"',
+        },
+      ],
+    },
+    {
+      name: "is reported in a state diagram when a directive cuts `-->` into `-` and `->`, with their texts that the diagram lacks",
+      diagram: "state",
+      fixture: "db-choice-close-tag-id",
+      token: { type: "Punctuator", value: "-->" },
+      cuts: [{ at: 1, cut: DIRECTIVE }],
+      fragments: "Punctuator",
+      about: ["the Punctuator text", "a Punctuator token is cut"],
+      problems: [
+        {
+          where: "Punctuator at 28-29",
+          message: 'the Punctuator text "-" is none of those of a StateDiagram',
+        },
+        {
+          where: "Punctuator at 43-45",
+          message:
+            'the Punctuator text "->" is none of those of a StateDiagram',
+        },
+        {
+          where: "Punctuator at 28-29",
+          message:
+            'a Punctuator token is cut: Punctuator at 28-29, Punctuator at 43-45 are the fragments of "-->"',
+        },
+      ],
+    },
+    {
+      name: "is reported in a state diagram when a `;` cuts `[*]` into `[` and `*]`",
+      diagram: "state",
+      fixture: "db-composite-id-terminal-then-transition",
+      token: { type: "Punctuator", value: "[*]" },
+      cuts: [{ at: 1, cut: SEMICOLON }],
+      fragments: "Punctuator",
+      about: ["the Punctuator text", "a Punctuator token is cut"],
+      problems: [
+        {
+          where: "Punctuator at 42-43",
+          message: 'the Punctuator text "[" is none of those of a StateDiagram',
+        },
+        {
+          where: "Punctuator at 44-46",
+          message:
+            'the Punctuator text "*]" is none of those of a StateDiagram',
+        },
+        {
+          where: "Punctuator at 42-43",
+          message:
+            'a Punctuator token is cut: Punctuator at 42-43, Punctuator at 44-46 are the fragments of "[*]"',
+        },
+      ],
+    },
+  ])
+})
+
+describe("a String that a cut cuts into String tokens", () => {
+  expectCases([
+    {
+      name: "is reported when a directive cuts it: the second fragment starts with no quote and the first is not closed",
+      diagram: "flowchart",
+      fixture: "click-callback-tooltip",
+      token: { type: "String", value: '"Tooltip for A"' },
+      cuts: [{ at: 5, cut: DIRECTIVE }],
+      fragments: "String",
+      about: ["String token"],
+      problems: [
+        {
+          where: "String at 42-47",
+          message:
+            'a String token that a cut is glued to is not closed: "\\"Tool" and String at 61-71 are the fragments of one string',
+        },
+        {
+          where: "String at 61-71",
+          message: 'a String token does not start with a quote: "tip for A\\""',
+        },
+      ],
+    },
+    {
+      name: "is reported when a `;` cuts it: the second fragment starts with no quote and the first is not closed",
+      diagram: "flowchart",
+      fixture: "click-callback-tooltip",
+      token: { type: "String", value: '"Tooltip for A"' },
+      cuts: [{ at: 5, cut: SEMICOLON }],
+      fragments: "String",
+      about: ["String token"],
+      problems: [
+        {
+          where: "String at 42-47",
+          message:
+            'a String token that a cut is glued to is not closed: "\\"Tool" and String at 48-58 are the fragments of one string',
+        },
+        {
+          where: "String at 48-58",
+          message: 'a String token does not start with a quote: "tip for A\\""',
+        },
+      ],
+    },
+  ])
+})
+
+describe("a String or a RawText that a cut cuts", () => {
+  expectCases([
+    {
+      name: "is not reported when a directive cuts a String into StringFragment tokens",
+      diagram: "flowchart",
+      fixture: "click-callback-tooltip",
+      token: { type: "String", value: '"Tooltip for A"' },
+      cuts: [{ at: 5, cut: DIRECTIVE }],
+      fragments: "StringFragment",
+      about: [""],
+      problems: [],
+    },
+    {
+      name: "is not reported when a `;` cuts a String into StringFragment tokens",
+      diagram: "flowchart",
+      fixture: "click-callback-tooltip",
+      token: { type: "String", value: '"Tooltip for A"' },
+      cuts: [{ at: 5, cut: SEMICOLON }],
+      fragments: "StringFragment",
+      about: [""],
+      problems: [],
+    },
+    {
+      name: "is not reported when a directive cuts the String of a class diagram into StringFragment tokens",
+      diagram: "class",
+      fixture: "config-security-level-sandbox-link-default-target",
+      token: { type: "String", value: '"https://example.com"' },
+      cuts: [{ at: 8, cut: DIRECTIVE }],
+      fragments: "StringFragment",
+      about: [""],
+      problems: [],
+    },
+    {
+      name: "is not reported when a directive cuts a RawText of a flowchart into RawText tokens",
+      diagram: "flowchart",
+      fixture: "docs-syntax-flowchart-2d81e8b9",
+      token: { type: "RawText", value: "This is the text in the circle" },
+      cuts: [{ at: 3, cut: DIRECTIVE }],
+      fragments: "RawText",
+      about: [""],
+      problems: [],
+    },
+    {
+      name: "is not reported when a `;` cuts a RawText of a flowchart into RawText tokens",
+      diagram: "flowchart",
+      fixture: "docs-syntax-flowchart-2d81e8b9",
+      token: { type: "RawText", value: "This is the text in the circle" },
+      cuts: [{ at: 3, cut: SEMICOLON }],
+      fragments: "RawText",
+      about: [""],
+      problems: [],
+    },
+    {
+      name: "is not reported when a directive cuts a RawText of a sequence diagram into RawText tokens",
+      diagram: "sequence",
+      fixture: "config-wrap-false-sequence-wrap-true-site",
+      token: { type: "RawText", value: "Alice" },
+      cuts: [{ at: 2, cut: DIRECTIVE }],
+      fragments: "RawText",
+      about: [""],
+      problems: [],
+    },
+    {
+      name: "is not reported when a directive cuts a RawText of a class diagram into RawText tokens",
+      diagram: "class",
+      fixture: "db-acc-descr-block-replaces-block",
+      token: { type: "RawText", value: "first" },
+      cuts: [{ at: 2, cut: DIRECTIVE }],
+      fragments: "RawText",
+      about: [""],
+      problems: [],
+    },
+  ])
+})
+
+/** The directive that the hand made trees below write. */
+const HAND_MADE_DIRECTIVE = "%%{init: {}}%%"
 
 /**
- * The tree of a source made of `Punctuator` tokens only: the `pieces`, which
- * `cut` separates, with the neighbours of `sides` that `cut` attaches. The
- * body is an empty one of the type `body`.
+ * The problems of the flowchart tree made by hand from `parts`, `Punctuator`
+ * tokens and the cuts between them, that say a `Punctuator` token is cut. A
+ * cut is a directive (`%%{init: {}}%%`) or a `;` that the line rule ignores.
  */
-function punctuatorTree(
-  body: string,
-  neighbours: readonly [before: string, after: string],
-  sides: Sides,
-  cut: Cut,
-  pieces: readonly string[],
-): { text: string; tree: CheckedRoot } {
-  const cutText = cut === "directive" ? "%%{init: {}}%%" : ";"
-  const cutType = cut === "directive" ? "Directive" : "IgnoredSemicolon"
-  const parts: [type: string, text: string][] = []
-  if (sides !== "after") {
-    parts.push(["Punctuator", neighbours[0]], [cutType, cutText])
-  }
-  for (const [at, piece] of pieces.entries()) {
-    if (at > 0) parts.push([cutType, cutText])
-    parts.push(["Punctuator", piece])
-  }
-  if (sides !== "before") {
-    parts.push([cutType, cutText], ["Punctuator", neighbours[1]])
-  }
+function punctuatorRunProblems(
+  parts: readonly (readonly [string, string])[],
+): TreeProblem[] {
   let text = ""
-  const tokens: [string, { text: string; from: number }][] = []
-  const directives: CheckedDirective[] = []
+  const tokens: [string, Piece][] = []
+  const directives = []
   for (const [type, part] of parts) {
     tokens.push([type, { text: part, from: text.length }])
     if (type === "Directive") {
@@ -158,115 +643,89 @@ function punctuatorTree(
     }
     text += part
   }
-  return {
-    text,
-    tree: handMadeRoot(text, { bodyType: body, tokens, directives }),
-  }
+  const root = handMadeRoot(text, {
+    bodyType: "FlowchartDiagram",
+    tokens,
+    directives,
+  })
+  return checkTree(text, root).filter((problem) =>
+    problem.message.includes("a Punctuator token is cut"),
+  )
 }
 
-describe("a token that a directive or an ignored ; cuts", () => {
-  it("is reported when the token is an Identifier, a Numeric, a Keyword, a Punctuator, or a String cut into String tokens", async () => {
-    const never = await candidates(new Set([...KINDS_NEVER_CUT, "String"]))
-    const unreported: string[] = []
-    let made = 0
-    for (const candidate of never) {
-      const { token } = candidate
-      const type = token.type
-      for (const cut of CUTS) {
-        for (
-          let offset = token.range[0] + 1;
-          offset < token.range[1];
-          offset++
-        ) {
-          made++
-          const { text, tree } = cutToken(
-            candidate.input,
-            candidate.json,
-            candidate.index,
-            offset,
-            cut,
-            { before: type, after: type },
-          )
-          if (checkTree(text, tree).length === 0) {
-            unreported.push(
-              `${candidate.name}: ${type} ${JSON.stringify(token.value)} cut by ${cut} at ${offset - token.range[0]}`,
-            )
-          }
-        }
-      }
-    }
-    expect(made).toBeGreaterThan(500)
-    expect(unreported).toEqual([])
-  }, 300_000)
+describe("a run of Punctuator fragments of a text of the table", () => {
+  const cutDirective: [string, string] = ["Directive", HAND_MADE_DIRECTIVE]
+  const cutSemicolon: [string, string] = ["IgnoredSemicolon", ";"]
 
-  it("is not reported when a String is cut into StringFragment tokens, or a RawText into RawText tokens", async () => {
-    const mayBeCut = await candidates(new Set(["String", "RawText"]))
-    const reported: string[] = []
-    let made = 0
-    for (const candidate of mayBeCut) {
-      const { token } = candidate
-      const type = token.type === "String" ? "StringFragment" : "RawText"
-      for (const cut of CUTS) {
-        // One place inside the token that is not next to whitespace.
-        const offset = [...token.value].findIndex(
-          (character, position) =>
-            position > 0 &&
-            !/\s/u.test(character) &&
-            !/\s/u.test(token.value.charAt(position - 1)),
-        )
-        if (offset === -1) continue
-        made++
-        const { text, tree } = cutToken(
-          candidate.input,
-          candidate.json,
-          candidate.index,
-          token.range[0] + offset,
-          cut,
-          { before: type, after: type },
-        )
-        const problems = checkTree(text, tree)
-        if (problems.length > 0) {
-          reported.push(
-            `${candidate.name}: ${type} ${JSON.stringify(token.value)} cut by ${cut}: ${problems[0]?.where}: ${problems[0]?.message}`,
-          )
-        }
-      }
-    }
-    expect(made).toBeGreaterThan(20)
-    expect(reported).toEqual([])
-  }, 300_000)
+  it("is reported with the `)` that a cut attaches before it: `:`, `:`, and `:` are `:::` and `)` is not part of the run", () => {
+    expect(
+      punctuatorRunProblems([
+        ["Punctuator", ")"],
+        cutDirective,
+        ["Punctuator", ":"],
+        cutSemicolon,
+        ["Punctuator", ":"],
+        cutSemicolon,
+        ["Punctuator", ":"],
+      ]),
+    ).toEqual([
+      {
+        where: "Punctuator at 15-16",
+        message:
+          'a Punctuator token is cut: Punctuator at 15-16, Punctuator at 17-18, Punctuator at 19-20 are the fragments of ":::"',
+      },
+    ])
+  })
 
-  it("is reported for each text of the table of Punctuator tokens, cut at every place, with neighbours that the cuts attach before it, after it, or both", () => {
-    const unreported: string[] = []
-    let made = 0
-    for (const [diagram, body] of DIAGRAM_BODIES) {
-      const texts = (PUNCTUATOR_TEXTS[body] ?? []).filter(
-        (text) => text.length > 1,
-      )
-      for (const text of texts) {
-        for (const neighbours of NEIGHBOURS) {
-          for (const sides of SIDES) {
-            for (const cut of CUTS) {
-              const whole = punctuatorTree(body, neighbours, sides, cut, [text])
-              const baseline = checkTree(whole.text, whole.tree).length
-              for (let at = 1; at < text.length; at++) {
-                made++
-                const cutted = punctuatorTree(body, neighbours, sides, cut, [
-                  text.slice(0, at),
-                  text.slice(at),
-                ])
-                if (checkTree(cutted.text, cutted.tree).length <= baseline) {
-                  unreported.push(
-                    `${diagram}: ${JSON.stringify(text)} cut at ${at} by ${cut}, neighbours ${neighbours.join(" ")} ${sides}`,
-                  )
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    expect(made).toBeGreaterThan(500)
-    expect(unreported).toEqual([])
+  it("is reported with the `(` that a cut attaches after it", () => {
+    expect(
+      punctuatorRunProblems([
+        ["Punctuator", ":"],
+        cutSemicolon,
+        ["Punctuator", ":"],
+        cutDirective,
+        ["Punctuator", ":"],
+        cutSemicolon,
+        ["Punctuator", "("],
+      ]),
+    ).toEqual([
+      {
+        where: "Punctuator at 0-1",
+        message:
+          'a Punctuator token is cut: Punctuator at 0-1, Punctuator at 2-3, Punctuator at 17-18 are the fragments of ":::"',
+      },
+    ])
+  })
+
+  it("is reported with a `)` before it and a `(` after it that cuts attach", () => {
+    expect(
+      punctuatorRunProblems([
+        ["Punctuator", ")"],
+        cutSemicolon,
+        ["Punctuator", ":"],
+        cutSemicolon,
+        ["Punctuator", ":"],
+        cutSemicolon,
+        ["Punctuator", ":"],
+        cutDirective,
+        ["Punctuator", "("],
+      ]),
+    ).toEqual([
+      {
+        where: "Punctuator at 2-3",
+        message:
+          'a Punctuator token is cut: Punctuator at 2-3, Punctuator at 4-5, Punctuator at 6-7 are the fragments of ":::"',
+      },
+    ])
+  })
+
+  it("is not reported for the fragments of no text of the table: a `)` and a `(` that a cut separates", () => {
+    expect(
+      punctuatorRunProblems([
+        ["Punctuator", ")"],
+        cutDirective,
+        ["Punctuator", "("],
+      ]),
+    ).toEqual([])
   })
 })

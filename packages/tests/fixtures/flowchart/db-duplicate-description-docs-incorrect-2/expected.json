@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An example of the document of the rule flowchart/no-duplicate-description (docs/rules/flowchart/no-duplicate-description.md incorrect 2)."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "second",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

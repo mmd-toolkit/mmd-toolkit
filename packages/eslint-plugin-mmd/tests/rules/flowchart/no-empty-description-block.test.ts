@@ -51,7 +51,10 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
         {
           case: "CRLF between the braces",
           reports: true,
-          inputs: ["invalid/block-with-crlf-lines"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-block-with-crlf-lines",
+            "invalid/flowchart/gram-empty-description-block-block-cr",
+          ],
         },
         {
           case: "text between the braces",
@@ -92,17 +95,23 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
         {
           case: "the header `graph`, a `flowchart-v2` diagram",
           reports: true,
-          inputs: ["invalid/header-graph"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-header-graph",
+          ],
         },
         {
           case: "the header `flowchart-elk`",
           reports: true,
-          inputs: ["invalid/header-flowchart-elk"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-header-flowchart-elk",
+          ],
         },
         {
           case: "the header `swimlane-beta`, a `swimlane` diagram",
           reports: true,
-          inputs: ["invalid/header-swimlane-beta"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-header-swimlane-beta",
+          ],
         },
       ],
     },
@@ -115,17 +124,23 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
           reports: true,
           inputs: [
             "invalid/flowchart/gram-empty-description-block-block-with-only-a-directive",
+            "invalid/flowchart/db-empty-description-block-with-directive-inherit-dir",
           ],
+          recorded: ["flowchart/config-inherit-dir-default"],
         },
         {
           case: "a directive on a line of its own",
           reports: true,
-          inputs: ["invalid/block-with-a-directive-on-its-own-line"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-block-with-a-directive-on-its-own-line",
+          ],
         },
         {
           case: "a directive and text",
           reports: false,
-          inputs: ["valid/block-with-text-and-a-directive"],
+          inputs: [
+            "valid/flowchart/gram-empty-description-block-block-with-text-and-a-directive",
+          ],
         },
       ],
     },
@@ -181,6 +196,7 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
             "docs/rules/flowchart/no-empty-description-block.md correct 2",
             "valid/flowchart/db-acc-descr-block-comment-only-alone",
             "valid/flowchart/db-acc-descr-block-comment-only-keeps",
+            "valid/flowchart/db-empty-description-block-comment-and-directive-lines",
           ],
         },
       ],
@@ -192,15 +208,17 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
         {
           case: "after a vertex",
           reports: true,
-          inputs: ["invalid/block-after-vertex"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-after-vertex",
+          ],
         },
         {
           case: "after a `click`, a `style`, or a `linkStyle` statement",
           reports: true,
           inputs: [
-            "invalid/block-after-click-with-trailing-space",
-            "invalid/block-after-style-before-separator",
-            "invalid/block-after-link-style-before-separator",
+            "invalid/flowchart/gram-empty-description-block-block-after-click-with-trailing-space",
+            "invalid/flowchart/gram-empty-description-block-block-after-style-before-separator",
+            "invalid/flowchart/gram-empty-description-block-splits-spaces-after-interpolate",
           ],
         },
         {
@@ -213,7 +231,9 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
         {
           case: "after the header",
           reports: true,
-          inputs: ["invalid/block-after-header"],
+          inputs: [
+            "invalid/flowchart/header-empty-description-block-after-direction",
+          ],
         },
         {
           case: "before a statement on the same line",
@@ -238,24 +258,30 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
         {
           case: "two spaces between the name and the block",
           reports: true,
-          inputs: ["invalid/block-after-subgraph-name-and-two-spaces"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-two-spaces",
+          ],
         },
         {
           case: "the name holds whitespace of its own",
           reports: true,
-          inputs: ["invalid/block-after-subgraph-name-with-whitespace"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-with-whitespace",
+          ],
         },
         {
           case: "a directive stands between the name and the block",
           reports: true,
-          inputs: ["invalid/block-after-subgraph-name-and-directive"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-directive",
+          ],
         },
         {
           case: "a quoted name that ends with a space",
           reports: true,
           inputs: [
-            "invalid/block-after-quoted-name-ending-with-space",
-            "invalid/block-after-quoted-name-with-directive-and-space",
+            "invalid/flowchart/gram-empty-description-block-block-after-quoted-name-ending-with-space",
+            "invalid/flowchart/gram-empty-description-block-block-after-quoted-name-with-directive-and-space",
           ],
         },
       ],
@@ -270,24 +296,26 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
           messageHas: GENERATED_ID,
           inputs: [
             "invalid/flowchart/gram-empty-description-block-after-subgraph-name",
-            "invalid/block-after-subgraph-name-and-two-spaces",
-            "invalid/block-after-subgraph-name-and-directive",
-            "invalid/block-across-lines-after-subgraph-name",
+            "invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-two-spaces",
+            "invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-directive",
+            "invalid/flowchart/gram-empty-description-block-block-across-lines-after-subgraph-name",
           ],
         },
         {
           case: "the block is between the name and a `;`",
           reports: true,
           messageHas: GENERATED_ID,
-          inputs: ["invalid/block-before-separator-after-subgraph-name"],
+          inputs: [
+            "invalid/flowchart/db-subgraph-name-space-before-empty-description-block",
+          ],
         },
         {
           case: "the block is after the `;` that ends the name: it is no part of the name",
           reports: true,
           messageLacks: GENERATED_ID,
           inputs: [
-            "invalid/block-after-subgraph-name-and-separator",
-            "invalid/block-right-after-separator-after-subgraph-name",
+            "invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-separator",
+            "invalid/flowchart/gram-empty-description-block-block-right-after-separator-after-subgraph-name",
           ],
         },
         {
@@ -295,22 +323,24 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
           reports: true,
           messageHas: GENERATED_ID,
           inputs: [
-            "invalid/two-blocks-after-subgraph-name",
-            "invalid/blocks-after-quoted-subgraph-name",
+            "invalid/flowchart/gram-empty-description-block-two-blocks-after-subgraph-name",
+            "invalid/flowchart/db-subgraph-name-space-between-empty-description-blocks",
           ],
         },
         {
           case: "a block before the `;` that ends the name, and a block after it: only the first is part of the name",
           reports: true,
-          inputs: ["invalid/blocks-around-separator-after-subgraph-name"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-blocks-around-separator-after-subgraph-name",
+          ],
         },
         {
           case: "the block is not after the name of a subgraph",
           reports: true,
           messageLacks: GENERATED_ID,
           inputs: [
-            "invalid/block-after-vertex",
-            "invalid/block-first-in-subgraph-body",
+            "invalid/flowchart/gram-empty-description-block-after-vertex",
+            "invalid/flowchart/gram-empty-description-block-block-first-in-subgraph-body",
             "invalid/flowchart/gram-empty-description-block-block-with-only-a-tab",
           ],
         },
@@ -320,15 +350,9 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
           messageHas: GENERATED_ID,
           suggests: false,
           inputs: [],
-          written: [
-            {
-              name: "after-u2028",
-              code: "flowchart LR\nsubgraph S\u2028 accDescr {}\nA\nend\n",
-            },
-            {
-              name: "after-u2029",
-              code: "flowchart LR\nsubgraph S\u2029 accDescr {}\nA\nend\n",
-            },
+          corpus: [
+            "flowchart/gram-empty-description-block-after-u2028",
+            "flowchart/gram-empty-description-block-after-u2029",
           ],
         },
       ],
@@ -352,7 +376,9 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
           case: "the lines end with CRLF",
           reports: true,
           suggests: true,
-          inputs: ["invalid/block-with-crlf-lines"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-block-with-crlf-lines",
+          ],
         },
         {
           case: "a statement follows on the line",
@@ -367,7 +393,7 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
           reports: true,
           suggests: true,
           inputs: [
-            "invalid/block-first-in-subgraph-body",
+            "invalid/flowchart/gram-empty-description-block-block-first-in-subgraph-body",
             "invalid/flowchart/gram-empty-description-block-block-after-line-in-subgraph",
             "invalid/flowchart/db-subgraph-member-empty-acc-descr-block",
             "invalid/flowchart/db-subgraph-member-has-own-property-no-member-statements",
@@ -384,8 +410,8 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
           suggests: true,
           inputs: [
             "invalid/flowchart/gram-acc-descr-block-empty-then-semicolon",
-            "invalid/semicolon-after-block-in-subgraph",
-            "invalid/semicolon-after-block-in-nested-subgraph",
+            "invalid/flowchart/gram-empty-description-block-semicolon-after-block-in-subgraph",
+            "invalid/flowchart/gram-empty-description-block-semicolon-after-block-in-nested-subgraph",
           ],
         },
       ],
@@ -400,7 +426,8 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
           suggests: false,
           inputs: [
             "invalid/flowchart/gram-empty-description-block-block-with-only-a-directive",
-            "invalid/block-with-a-directive-on-its-own-line",
+            "invalid/flowchart/db-empty-description-block-with-directive-inherit-dir",
+            "invalid/flowchart/gram-empty-description-block-block-with-a-directive-on-its-own-line",
           ],
         },
       ],
@@ -414,11 +441,11 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
           reports: true,
           suggests: false,
           inputs: [
-            "invalid/block-after-vertex",
-            "invalid/block-after-click-with-trailing-space",
-            "invalid/block-after-style-before-separator",
-            "invalid/block-after-link-style-before-separator",
-            "invalid/block-after-header",
+            "invalid/flowchart/gram-empty-description-block-after-vertex",
+            "invalid/flowchart/gram-empty-description-block-block-after-click-with-trailing-space",
+            "invalid/flowchart/gram-empty-description-block-block-after-style-before-separator",
+            "invalid/flowchart/gram-empty-description-block-splits-spaces-after-interpolate",
+            "invalid/flowchart/header-empty-description-block-after-direction",
           ],
         },
         {
@@ -435,11 +462,11 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
           suggests: false,
           inputs: [
             "invalid/flowchart/gram-empty-description-block-after-subgraph-name",
-            "invalid/block-after-subgraph-name-and-two-spaces",
-            "invalid/block-after-subgraph-name-with-whitespace",
-            "invalid/block-after-subgraph-name-and-directive",
-            "invalid/block-after-subgraph-name-and-separator",
-            "invalid/block-after-quoted-subgraph-name-and-trailing-space",
+            "invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-two-spaces",
+            "invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-with-whitespace",
+            "invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-directive",
+            "invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-separator",
+            "invalid/flowchart/db-subgraph-name-space-after-empty-description-block",
           ],
         },
       ],
@@ -454,35 +481,77 @@ testRule("flowchart/no-empty-description-block", noEmptyDescriptionBlock, {
           suggests: false,
           messageHas: GENERATED_ID,
           inputs: [],
-          written: [
-            {
-              name: "comment-line-after-u2028",
-              code: "flowchart LR\nsubgraph S\u2028\n%% c\n accDescr {}\nA\nend\n",
-            },
-            {
-              name: "comment-line-after-u2029",
-              code: "flowchart LR\nsubgraph S\u2029\n%% c\n accDescr {}\nA\nend\n",
-            },
+          corpus: [
+            "flowchart/gram-empty-description-block-comment-line-after-u2028",
+            "flowchart/gram-empty-description-block-comment-line-after-u2029",
           ],
         },
         {
           case: "an unclosed directive after the name",
           reports: true,
           suggests: false,
-          inputs: ["invalid/block-after-unclosed-directive-in-subgraph-name"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-block-after-unclosed-directive-in-subgraph-name",
+          ],
         },
         {
           case: "nothing stands before the block: the suggestion is offered",
           reports: true,
           suggests: true,
-          inputs: ["invalid/block-first-in-subgraph-body"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-block-first-in-subgraph-body",
+          ],
         },
         {
           case: "a block on the next line after another block after the name",
           reports: true,
-          inputs: ["invalid/block-on-next-line-after-subgraph-name"],
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-block-on-next-line-after-subgraph-name",
+          ],
+        },
+      ],
+    },
+    {
+      sentence:
+        "The author who turns the lines of a description into comments means the block to do nothing, and mermaid.js reads it so: the description before the block stays.",
+      cases: [
+        {
+          case: "comment lines in the block, after a description or alone",
+          reports: false,
+          inputs: [
+            "valid/flowchart/db-acc-descr-block-comment-only-keeps",
+            "valid/flowchart/db-acc-descr-block-comment-only-alone",
+          ],
+        },
+      ],
+    },
+    {
+      sentence:
+        "A block that holds a comment line is not reported also when it holds directives besides; mermaid.js applies their settings.",
+      cases: [
+        {
+          case: "a comment line and a directive in the block",
+          reports: false,
+          inputs: [
+            "valid/flowchart/db-empty-description-block-comment-and-directive-lines",
+          ],
+        },
+      ],
+    },
+    {
+      sentence:
+        "When the name has no whitespace of its own and the subgraph gets a generated id in this way, as in `subgraph S accDescr {}`, `style S` and links to `S` no longer reach it.",
+      cases: [
+        {
+          case: "a name without whitespace, an empty block after it",
+          reports: true,
+          messageHas: "the subgraph gets a generated id",
+          inputs: [
+            "invalid/flowchart/gram-empty-description-block-after-subgraph-name",
+          ],
         },
       ],
     },
   ],
+  notBehavior: [],
 })

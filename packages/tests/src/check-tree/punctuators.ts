@@ -2,8 +2,9 @@ import { CLASS_CLASSIFIER_MARKS, CLASS_VISIBILITY_MARKS } from "./class.ts"
 import { FLOWCHART_SHAPES } from "./flowchart-shapes.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
-import type { CheckedRoot, CheckedToken } from "./types.ts"
-import { gluedByCuts } from "./tokens.ts"
+import { diagramTokensOf } from "./invariants.ts"
+import type { CheckedRoot } from "./types.ts"
+import { fragmentsOfEntries } from "./tokens.ts"
 import { nodesOf } from "./walk.ts"
 
 // parser/docs/tokens/<diagram>.md, Tokens: the `Punctuator` tokens of a
@@ -76,11 +77,11 @@ const ARROW_NODE_TYPES: ReadonlySet<string> = new Set([
 /**
  * Checks that a directive or an ignored `;` cuts no `Punctuator` token: the
  * text of each `Punctuator` token outside the arrows is one that its diagram
- * has, and two tokens that follow each other with nothing but cuts between
- * them, or a run of them, are not the fragments of an entry (`:`, `::`, and `:`
- * for `:::`, `@` and `{` for `@{`), whatever token the cut attaches to the run
- * (`)` and `:::` in `A(x)%%{init: {}}%%:::c`). A shape's opening and closing
- * are checked with the shape.
+ * has, and no run of two tokens or more that cuts glue together is the
+ * fragments of an entry (`:`, `::`, and `:` for `:::`, `@` and `{` for `@{`),
+ * whatever token the cut attaches to the run (`)` and `:::` in
+ * `A(x)%%{init: {}}%%:::c`). A shape's opening and closing are checked with
+ * the shape.
  */
 export function checkPunctuatorsAreWhole(
   root: CheckedRoot,
@@ -88,57 +89,29 @@ export function checkPunctuatorsAreWhole(
 ): void {
   const texts = PUNCTUATOR_TEXTS[root.body.type] ?? []
   const arrows = nodesOf(root).filter((node) => ARROW_NODE_TYPES.has(node.type))
-  const frontmatterEnd = root.frontmatter?.range[1] ?? 0
-  let chain: CheckedToken[] = []
-  let sawCut = false
-
-  /** Reports each run of two tokens or more of the chain whose joined text is an entry of the table. */
-  function flush(): void {
-    for (let from = 0; from < chain.length; from++) {
-      for (let to = from + 1; to < chain.length; to++) {
-        const run = chain.slice(from, to + 1)
-        const joined = run.map((token) => token.value).join("")
-        const first = run[0]
-        if (first !== undefined && texts.includes(joined)) {
-          problems.report(
-            label(first),
-            `a Punctuator token is cut: ${run.map(label).join(", ")} are the fragments of ${JSON.stringify(joined)}`,
-          )
-        }
-      }
-    }
-    chain = []
-    sawCut = false
-  }
-
-  for (const token of root.tokens) {
-    if (token.range[0] < frontmatterEnd) continue
-    if (token.type === "Directive" || token.type === "IgnoredSemicolon") {
-      sawCut = chain.length > 0
-      continue
-    }
-    const inArrow = arrows.some(
-      (arrow) =>
-        arrow.range[0] <= token.range[0] && token.range[1] <= arrow.range[1],
-    )
-    if (token.type !== "Punctuator" || inArrow) {
-      flush()
-      continue
-    }
+  const punctuators = diagramTokensOf(root).filter(
+    (token) =>
+      token.type === "Punctuator" &&
+      !arrows.some(
+        (arrow) =>
+          arrow.range[0] <= token.range[0] && token.range[1] <= arrow.range[1],
+      ),
+  )
+  for (const token of punctuators) {
     problems.expect(
       texts.includes(token.value),
       label(token),
       `the Punctuator text ${JSON.stringify(token.value)} is none of those of a ${root.body.type}`,
     )
-    const last = chain.at(-1)
-    // Glued to the one before: no character between them but the cuts.
-    if (last !== undefined && sawCut && gluedByCuts(root, last, token)) {
-      chain.push(token)
-    } else {
-      flush()
-      chain = [token]
-    }
-    sawCut = false
   }
-  flush()
+  for (const run of fragmentsOfEntries(root, punctuators, (joined) =>
+    texts.includes(joined),
+  )) {
+    const first = run[0]
+    if (first === undefined) continue
+    problems.report(
+      label(first),
+      `a Punctuator token is cut: ${run.map(label).join(", ")} are the fragments of ${JSON.stringify(run.map((token) => token.value).join(""))}`,
+    )
+  }
 }

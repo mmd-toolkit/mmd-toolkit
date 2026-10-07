@@ -2,6 +2,7 @@ import { checkClassTree } from "./class.ts"
 import { checkErrorDiagramTokens } from "./error-diagram.ts"
 import { checkFlowchartTree, stringDelimitersOf } from "./flowchart.ts"
 import { checkInvariants } from "./invariants.ts"
+import { checkNullFields } from "./null-fields.ts"
 import { checkSharedLeaves } from "./leaves.ts"
 import { Problems } from "./problems.ts"
 import { checkShape } from "./shape.ts"
@@ -26,6 +27,7 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
   if (!checkShape(root, problems)) return problems.list
   checkInvariants(text, root, problems)
   checkSharedLeaves(root, problems)
+  checkNullFields(text, root, problems)
   checkTokensAreNotCut(root, problems)
   checkStringsAreWhole(root, problems)
   checkPunctuatorsAreWhole(root, problems)

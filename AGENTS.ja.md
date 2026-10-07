@@ -153,7 +153,7 @@ flowchart、sequence、class、state が済んでいる。
     （`pnpm run lint:docs`）。
   - 文章は 80 桁で折り返す。
     英語は Prettier が折り返す（`pnpm run format:check`）。
-    日本語は書き手が折り返し、これを守らせる検査はない。
+    日本語は書き手が折り返し、`pnpm run lint:ja` が確かめる。
   - Mermaid のテキストのコードブロックの info string は `mmd` にし、
     フォーマッターが印字する形で書く。
     例外は、書き方そのものを示すための例である。

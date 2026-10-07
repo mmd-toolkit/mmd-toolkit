@@ -4,13 +4,16 @@ import type {
   FlowchartDirectionStatement,
   FlowchartIgnoredText,
   Range,
-  Root,
   Token,
 } from "@mmd-toolkit/parser"
 import { parse, traverseNodes } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../../rule-types.ts"
 import { ruleDocsUrl } from "../../rule-docs-url.ts"
 import type { MermaidSourceCode } from "../../source-code.ts"
+import {
+  isSemicolonToken,
+  isStatementOfItsOwn,
+} from "../../utils/semicolons.ts"
 
 /**
  * Where a text stands on a direction line: before `direction`, or after the
@@ -89,18 +92,6 @@ function reportedTexts(node: FlowchartDirectionStatement): ReportedText[] {
     texts.push({ text: node.textAfter, side: "after" })
   }
   return texts
-}
-
-/**
- * Whether `token` is a `;` token: a separator of statements, or a `;` that the
- * line rule of `style` and `classDef` ignores (an `IgnoredSemicolon` token).
- * Both stand in the places of a separator and are no part of a text.
- */
-function isSemicolonToken(token: Token | Comment): boolean {
-  return (
-    (token.type === "Punctuator" && token.value === ";") ||
-    token.type === "IgnoredSemicolon"
-  )
 }
 
 /**
@@ -187,37 +178,15 @@ function applySplit(
 }
 
 /**
- * Whether the `;` at `index` in the tree `root` is a statement of its own, an
- * empty statement, which ends no statement before it (as after a description
- * block) and is a member of a subgraph.
- */
-function statementOfItsOwn(root: Root, index: number): boolean {
-  let found = false
-  traverseNodes(root, {
-    enterNode(statement) {
-      if (
-        statement.type === "FlowchartEmptyStatement" &&
-        statement.range[0] <= index &&
-        index < statement.range[1]
-      ) {
-        found = true
-      }
-    },
-    leaveNode() {
-      // Each statement is checked on entering it.
-    },
-  })
-  return found
-}
-
-/**
  * Whether the text that `split` gives the direction line `node` is read as
  * the split means: the parser accepts it, as the language reads a text; each
  * `;` that the split keeps, right before a line break, is a `;` token there, a
- * separator, and not part of the text of the statement before it; and no
- * direction statement in the place of the split line holds text that the rule
- * reports. The ranges of the split lie in `node`, so the end of that place
- * moves by as much as the text grows. The split is checked by parsing the
+ * separator that is no statement of its own, and not part of the text of the
+ * statement before it; the place of the split line holds a direction statement,
+ * so that the direction is read as a direction statement of its own (and not
+ * as part of a label, say); and no direction statement there holds text that
+ * the rule reports. The ranges of the split lie in `node`, so the end of that
+ * place moves by as much as the text grows. The split is checked by parsing the
  * result, so the rule does not repeat the grammar of the statements.
  */
 function splitIsRead(
@@ -239,7 +208,7 @@ function splitIsRead(
       (index) =>
         root.tokens.some(
           (token) => token.range[0] === index - 1 && isSemicolonToken(token),
-        ) && !statementOfItsOwn(root, index - 1),
+        ) && !isStatementOfItsOwn(root, index - 1),
     )
   ) {
     return false
@@ -249,19 +218,21 @@ function splitIsRead(
     node.range[1] + text.length - sourceCode.text.length,
   ]
   let clean = true
+  let readAsDirection = false
   traverseNodes(root, {
     enterNode(statement) {
       if (statement.type !== "FlowchartDirectionStatement") return
       if (statement.range[1] <= span[0] || span[1] <= statement.range[0]) {
         return
       }
+      readAsDirection = true
       if (reportedTexts(statement).length > 0) clean = false
     },
     leaveNode() {
       // Each statement is checked on entering it.
     },
   })
-  return clean
+  return clean && readAsDirection
 }
 
 /**

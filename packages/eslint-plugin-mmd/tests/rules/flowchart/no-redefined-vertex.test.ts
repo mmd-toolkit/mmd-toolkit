@@ -1,6 +1,6 @@
 /**
- * The rule `flowchart/no-redefined-vertex`, on the examples of its document and on the
- * fixtures that record what mermaid.js does with a vertex written again.
+ * The rule `flowchart/no-redefined-vertex`, on the examples of its document and
+ * on the fixtures that record what mermaid.js does with a vertex written again.
  */
 import { noRedefinedVertex } from "../../../src/rules/flowchart/no-redefined-vertex.ts"
 import { testRule } from "../../rule-test.ts"
@@ -27,7 +27,9 @@ testRule("flowchart/no-redefined-vertex", noRedefinedVertex, {
         {
           case: "the shape and the label differ",
           reports: true,
-          inputs: ["invalid/flowchart/db-redefined-vertex-shape-and-label-differ"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-shape-and-label-differ",
+          ],
         },
         {
           case: "the properties and the label differ",
@@ -37,22 +39,29 @@ testRule("flowchart/no-redefined-vertex", noRedefinedVertex, {
         {
           case: "both writes are in one link",
           reports: true,
-          inputs: ["invalid/flowchart/db-redefined-vertex-redefined-in-one-link"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-redefined-in-one-link",
+          ],
         },
         {
           case: "a write without a shape stands between",
           reports: true,
-          inputs: ["invalid/flowchart/db-redefined-vertex-redefined-after-a-write-without-shape"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-redefined-after-a-write-without-shape",
+            "invalid/flowchart/db-redefined-vertex-empty-description-block-between",
+          ],
         },
         {
           case: "the first write is in a subgraph",
           reports: true,
-          inputs: ["invalid/flowchart/db-redefined-vertex-redefined-after-subgraph"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-redefined-after-subgraph",
+          ],
         },
         {
           case: "only the properties differ",
           reports: false,
-          inputs: ["valid/property-only-differs"],
+          inputs: ["valid/flowchart/db-redefined-vertex-property-only-differs"],
         },
       ],
     },
@@ -68,17 +77,21 @@ testRule("flowchart/no-redefined-vertex", noRedefinedVertex, {
         {
           case: "the header `graph`, a `flowchart-v2` diagram",
           reports: true,
-          inputs: ["invalid/header-graph"],
+          inputs: ["invalid/flowchart/db-redefined-vertex-header-graph"],
         },
         {
           case: "the header `flowchart-elk`",
           reports: true,
-          inputs: ["invalid/header-flowchart-elk"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-header-flowchart-elk",
+          ],
         },
         {
           case: "the header `swimlane-beta`, a `swimlane` diagram",
           reports: true,
-          inputs: ["invalid/header-swimlane-beta"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-header-swimlane-beta",
+          ],
         },
       ],
     },
@@ -116,7 +129,9 @@ testRule("flowchart/no-redefined-vertex", noRedefinedVertex, {
         {
           case: "a third write equals the second: only the second is reported",
           reports: true,
-          inputs: ["invalid/flowchart/db-redefined-vertex-third-write-equals-the-second"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-third-write-equals-the-second",
+          ],
         },
       ],
     },
@@ -136,12 +151,16 @@ testRule("flowchart/no-redefined-vertex", noRedefinedVertex, {
         {
           case: "a data block between two shapes that differ",
           reports: true,
-          inputs: ["invalid/data-block-between-two-shapes"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-data-block-between-two-shapes",
+          ],
         },
         {
           case: "a data block between two equal shapes",
           reports: false,
-          inputs: ["valid/data-block-between-equal-shapes"],
+          inputs: [
+            "valid/flowchart/db-redefined-vertex-data-block-between-equal-shapes",
+          ],
         },
       ],
     },
@@ -153,15 +172,17 @@ testRule("flowchart/no-redefined-vertex", noRedefinedVertex, {
           case: "whitespace at the end, or at the start, of a string",
           reports: false,
           inputs: [
-            "valid/label-differs-in-end-space",
-            "valid/label-differs-in-start-space",
+            "valid/flowchart/db-redefined-vertex-label-differs-in-end-space",
+            "valid/flowchart/db-redefined-vertex-label-differs-in-start-space",
             "valid/flowchart/db-vertex-label-string-trailing-space-redefined",
           ],
         },
         {
           case: "whitespace and a directive at the end",
           reports: false,
-          inputs: ["valid/flowchart/db-redefined-vertex-label-with-a-directive-part-same"],
+          inputs: [
+            "valid/flowchart/db-redefined-vertex-label-with-a-directive-part-same",
+          ],
         },
       ],
     },
@@ -172,32 +193,50 @@ testRule("flowchart/no-redefined-vertex", noRedefinedVertex, {
         {
           case: "whitespace inside the label",
           reports: true,
-          inputs: ["invalid/label-differs-inside"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-label-differs-inside",
+          ],
         },
         {
           case: "a line break and a space",
           reports: true,
-          inputs: ["invalid/flowchart/db-redefined-vertex-label-differs-by-a-line-break"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-label-differs-by-a-line-break",
+          ],
         },
         {
           case: "CRLF and LF",
           reports: true,
-          inputs: ["invalid/label-differs-by-crlf-and-lf"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-label-differs-by-crlf-and-lf",
+            "invalid/flowchart/db-vertex-label-carriage-return-redefined",
+          ],
         },
         {
           case: "CR and LF",
           reports: true,
-          inputs: ["invalid/label-differs-by-cr-and-lf"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-label-differs-by-cr-and-lf",
+            "invalid/flowchart/db-vertex-label-carriage-return-no-line-feed",
+          ],
         },
         {
           case: "the quotes of an HTML attribute",
           reports: true,
-          inputs: ["invalid/label-differs-by-html-attribute-quotes"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-label-differs-by-html-attribute-quotes",
+          ],
+          recorded: [
+            "flowchart/db-vertex-label-attribute-quote-double",
+            "flowchart/db-vertex-label-attribute-quote-single",
+          ],
         },
         {
           case: "a directive inside the label that changes it",
           reports: true,
-          inputs: ["invalid/flowchart/db-redefined-vertex-label-differs-by-a-directive-part"],
+          inputs: [
+            "invalid/flowchart/db-redefined-vertex-label-differs-by-a-directive-part",
+          ],
         },
       ],
     },
@@ -208,7 +247,10 @@ testRule("flowchart/no-redefined-vertex", noRedefinedVertex, {
         {
           case: "a text and a string, or a string and a markdown string",
           reports: false,
-          inputs: ["valid/flowchart/db-redefined-vertex-text-and-string", "valid/flowchart/db-redefined-vertex-string-and-markdown-string"],
+          inputs: [
+            "valid/flowchart/db-redefined-vertex-text-and-string",
+            "valid/flowchart/db-redefined-vertex-string-and-markdown-string",
+          ],
         },
       ],
     },

@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A composite state and a state inside it, whose ids have characters that the replacement changes under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): the label of each is its id with the characters replaced, and the ids are as written."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "a=b",
+        "shape": "roundedWithTitle",
+        "label": "a&equals;b",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "c<d",
+        "shape": "rect",
+        "label": "c&lt;d",
+        "classes": [],
+        "styles": [],
+        "parentId": "a=b"
+      },
+      {
+        "id": "e",
+        "shape": "rect",
+        "label": "e",
+        "classes": [],
+        "styles": [],
+        "parentId": "a=b"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "c<d",
+        "end": "e",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

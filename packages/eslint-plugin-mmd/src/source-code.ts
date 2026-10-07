@@ -51,6 +51,21 @@ interface MermaidSourceCodeTypes {
  */
 const LINE_TERMINATOR = /\r\n|[\n\r]/u
 
+/** The lines of `text`, ended as the language ends them (see `LINE_TERMINATOR`). */
+export function linesOf(text: string): string[] {
+  return text.split(LINE_TERMINATOR)
+}
+
+/** Where each line of `text` starts, as the language ends lines. */
+export function lineStartsOf(text: string): number[] {
+  return [
+    0,
+    ...[...text.matchAll(new RegExp(LINE_TERMINATOR, "gu"))].map(
+      (match) => match.index + match[0].length,
+    ),
+  ]
+}
+
 /** The label of an inline configuration comment, such as `%% eslint my-rule: off`. */
 const INLINE_CONFIG_LABEL = "eslint"
 

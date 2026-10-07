@@ -16,16 +16,8 @@
 
 ### FlowchartDiagram
 
-FlowchartDiagram のトークンは、
-`Directive` と `IgnoredSemicolon` のトークンを除く、
-図のテキストのすべてのトークンで、
-ヘッダーのキーワードからその最後のものまでです。
-どの図の `Root.body` のノードとも同じです
-（[ノード](../../../spec/docs/ast.ja.md#ノード) を参照）。
-そのため、その範囲は、最後の文の後の区切りのように、
-どの文にも属さないトークンも覆います。
-`A;` の図の範囲は `;` の後で終わります。
-[fixture: flowchart/tokens-diagram-trailing-separator]
+範囲は、どの図の `Root.body` のノードとも同じ定めに従います
+（[ノードの範囲](../positions.ja.md#ノードの範囲) を参照）。
 
 ### FlowchartEmptyStatement
 
@@ -64,7 +56,10 @@ FlowchartDiagram のトークンは、
 
 範囲は、[FlowchartArrow](#flowchartarrow) と同じく、そのトークンです。
 [fixture: flowchart/db-arrow-dash-head-length]
+開く矢印の中のディレクティブや無視される `;` は、矢印の中と同じく、
+入力を拒否させます。
 [fixture: flowchart/div-ignored-semicolon-in-opening-arrow]
+[fixture: flowchart/div-directive-in-opening-arrow]
 
 ### FlowchartLabel
 
@@ -105,10 +100,11 @@ FlowchartDiagram のトークンは、
 タイトルがなければ、名前のトークンと範囲は、その後の空白を覆います。
 文字列の後では、その空白はそれだけで 1 つの `RawText` のトークンです。
 空白 1 つが続く `subgraph "S"` がそうです。
+[fixture: flowchart/db-subgraph-name-space-before-empty-description-block]
 [fixture: flowchart/db-subgraph-string-name-trailing-space]
 空の説明ブロックが名前のすぐ後に続くときは、その間の空白と、
 最後のブロックと `;` の間の空白は、どのトークンにも属しません。
-[fixture: flowchart/db-subgraph-name-space-before-empty-description-block]
+[fixture: flowchart/db-subgraph-name-space-between-empty-description-blocks]
 [fixture:
 flowchart/db-subgraph-name-space-after-empty-description-block-before-semicolon]
 

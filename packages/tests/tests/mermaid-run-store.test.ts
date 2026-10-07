@@ -5,7 +5,9 @@ import {
   mkdtempSync,
   readFileSync,
   readdirSync,
+  realpathSync,
   rmSync,
+  symlinkSync,
   utimesSync,
   writeFileSync,
 } from "node:fs"
@@ -18,8 +20,17 @@ import { serialize } from "node:v8"
 import { deflateSync } from "node:zlib"
 import { build } from "tsdown"
 import ts from "typescript"
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
-import type { Fixture } from "../src/index.ts"
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+} from "vitest"
+import type { DiagramType } from "../src/index.ts"
 import { loadFixtures } from "../src/index.ts"
 import type { MermaidConfig, MermaidRun } from "../src/mermaid.ts"
 import type { RunMermaidOptions } from "../src/run-mermaid-options.ts"
@@ -594,41 +605,6 @@ describe("pruning in the background", () => {
     )
   }, 40_000)
 
-  it("prunes from the build too, whose bundled code does not export the store", async () => {
-    const buildDirectory = mkdtempSync(
-      path.join(os.tmpdir(), "mermaid-run-store-build-"),
-    )
-    const packageDirectory = path.join(import.meta.dirname, "..")
-    try {
-      await build({
-        config: path.join(packageDirectory, "tsdown.config.ts"),
-        cwd: packageDirectory,
-        outDir: buildDirectory,
-        dts: false,
-        logLevel: "silent",
-      })
-      const built = (await import(
-        pathToFileURL(path.join(buildDirectory, "mermaid-run-store.mjs")).href
-      )) as { MermaidRunStore: typeof MermaidRunStore }
-      const store = new built.MermaidRunStore(directory, "code", {
-        now: clockAt(today),
-        mostResults: 1,
-      })
-      store.write("a", {}, RUN)
-      store.write("b", {}, RUN)
-      store.pruneInBackground()
-      await vi.waitFor(
-        () => {
-          expect(existsSync(path.join(directory, ".pruned"))).toBe(true)
-        },
-        { timeout: 20_000 },
-      )
-      expect(existsSync(path.join(directory, ".full"))).toBe(true)
-    } finally {
-      rmSync(buildDirectory, { recursive: true, force: true })
-    }
-  }, 60_000)
-
   it("takes over the lock of a pruning process that stopped", () => {
     const stoppedProcess = spawnSync(process.execPath, ["--eval", ""]).pid
     writeFileSync(path.join(directory, ".pruning"), String(stoppedProcess))
@@ -636,6 +612,190 @@ describe("pruning in the background", () => {
     expect(existsSync(path.join(directory, ".full"))).toBe(true)
     expect(existsSync(path.join(directory, ".pruning"))).toBe(false)
   })
+
+  it("takes over a lock that is there before its process id is written", () => {
+    writeFileSync(path.join(directory, ".pruning"), "")
+    storeTooFull().pruneAlone()
+    expect(existsSync(path.join(directory, ".full"))).toBe(true)
+    expect(existsSync(path.join(directory, ".pruned"))).toBe(true)
+    expect(existsSync(path.join(directory, ".pruning"))).toBe(false)
+  })
+
+  it("starts a prune when the lock is there before its process id is written", async () => {
+    writeFileSync(path.join(directory, ".pruning"), "")
+    storeTooFull().pruneInBackground()
+    await vi.waitFor(
+      () => {
+        expect(existsSync(path.join(directory, ".pruned"))).toBe(true)
+      },
+      { timeout: 20_000 },
+    )
+    expect(existsSync(path.join(directory, ".full"))).toBe(true)
+    expect(existsSync(path.join(directory, ".pruning"))).toBe(false)
+  }, 30_000)
+})
+
+describe("a process that cannot be started", () => {
+  const today = new Date().toISOString().slice(0, 10)
+  const otherCode = "code-of-no-tree"
+
+  /**
+   * Runs a prune in the background and the deleting of a directory of other
+   * code while `process.execPath` is `execPath`, which is the program that
+   * both start. Neither may throw, nor leave an error that nothing handles
+   * (the run of vitest fails on one), and neither may have done anything.
+   */
+  async function startWithProgram(execPath: string): Promise<MermaidRunStore> {
+    const store = storeAt("code", today, { mostResults: 1 })
+    store.write("a", {}, RUN)
+    store.write("b", {}, RUN)
+    mkdirSync(path.join(directory, otherCode))
+    const original = process.execPath
+    process.execPath = execPath
+    try {
+      expect(() => {
+        store.pruneInBackground()
+        store.removeOtherCode()
+      }).not.toThrow()
+    } finally {
+      process.execPath = original
+    }
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1000)
+    })
+    expect(existsSync(path.join(directory, ".full"))).toBe(false)
+    expect(existsSync(path.join(directory, otherCode))).toBe(true)
+    return store
+  }
+
+  /** Waits for the prune that a store starts again to end. */
+  async function pruneAgain(store: MermaidRunStore): Promise<void> {
+    store.pruneInBackground()
+    await vi.waitFor(
+      () => {
+        expect(existsSync(path.join(directory, ".full"))).toBe(true)
+      },
+      { timeout: 20_000 },
+    )
+  }
+
+  it("is passed over when the program does not exist, and tried again later", async () => {
+    const store = await startWithProgram(path.join(directory, "no-such-node"))
+    await pruneAgain(store)
+  }, 40_000)
+
+  it("is passed over when the program is refused at once, and tried again later", async () => {
+    const store = await startWithProgram("")
+    await pruneAgain(store)
+  }, 40_000)
+})
+
+describe("run from the build", () => {
+  let tree: string
+
+  /** The build, in the tree. */
+  function libOf(): string {
+    return path.join(tree, "lib")
+  }
+
+  beforeAll(async () => {
+    // A tree of its own, which is what the build finds the store and the
+    // lockfile by: the lockfile, `node_modules` with the two modules that the
+    // build does not bundle, and the build (`lib`).
+    tree = mkdtempSync(path.join(os.tmpdir(), "mermaid-run-store-build-"))
+    writeFileSync(path.join(tree, "pnpm-lock.yaml"), "lock")
+    const packageDirectory = path.join(import.meta.dirname, "..")
+    mkdirSync(path.join(tree, "node_modules"))
+    for (const name of ["mermaid", "js-yaml"]) {
+      symlinkSync(
+        realpathSync(path.join(packageDirectory, "node_modules", name)),
+        path.join(tree, "node_modules", name),
+        "dir",
+      )
+    }
+    await build({
+      config: path.join(packageDirectory, "tsdown.config.ts"),
+      cwd: packageDirectory,
+      outDir: libOf(),
+      dts: false,
+      logLevel: "silent",
+    })
+  }, 120_000)
+
+  afterAll(() => {
+    rmSync(tree, { recursive: true, force: true })
+  })
+
+  it("prunes from the build too, whose bundled code does not export the store", async () => {
+    const built = (await import(
+      pathToFileURL(path.join(libOf(), "mermaid-run-store.mjs")).href
+    )) as { MermaidRunStore: typeof MermaidRunStore }
+    const store = new built.MermaidRunStore(directory, "code", {
+      now: clockAt(new Date().toISOString().slice(0, 10)),
+      mostResults: 1,
+    })
+    store.write("a", {}, RUN)
+    store.write("b", {}, RUN)
+    store.pruneInBackground()
+    await vi.waitFor(
+      () => {
+        expect(existsSync(path.join(directory, ".pruned"))).toBe(true)
+      },
+      { timeout: 20_000 },
+    )
+    expect(existsSync(path.join(directory, ".full"))).toBe(true)
+  }, 60_000)
+
+  it("stores the results of a run of the build under the identity of the build", async () => {
+    const text = "flowchart LR\n  A --> B\n"
+    const storeDirectory = path.join(
+      tree,
+      "node_modules",
+      ".cache",
+      "mmd-toolkit",
+      "mermaid-runs",
+    )
+    // The store is on in the process of the build, unlike in this one.
+    vi.stubEnv(MERMAID_RUN_STORE_SWITCH, "")
+    let run: ReturnType<typeof spawnSync>
+    try {
+      run = spawnSync(
+        process.execPath,
+        [
+          "--input-type=module",
+          "--eval",
+          `const [url, text] = process.argv.slice(1)
+const { runMermaidWithEmbeddedData } = await import(url)
+await runMermaidWithEmbeddedData(text)`,
+          pathToFileURL(path.join(libOf(), "mermaid.mjs")).href,
+          text,
+        ],
+        { encoding: "utf8" },
+      )
+    } finally {
+      vi.unstubAllEnvs()
+    }
+    expect(run.stderr).toBe("")
+    expect(run.status).toBe(0)
+    const identity = codeIdentityOf(libOf(), tree, mermaidVersion)
+    expect(
+      directoriesIn(storeDirectory).filter((name) => name !== ".trees"),
+    ).toEqual([identity])
+    expect(readdirSync(path.join(storeDirectory, ".trees"))).toHaveLength(1)
+    expect(
+      isDeepStrictEqual(
+        new MermaidRunStore(storeDirectory, identity).read(text, {}),
+        await runMermaidWithEmbeddedData(text),
+      ),
+    ).toBe(true)
+    // The prune that the run started ends before the tree is removed.
+    await vi.waitFor(
+      () => {
+        expect(existsSync(path.join(storeDirectory, ".pruned"))).toBe(true)
+      },
+      { timeout: 20_000 },
+    )
+  }, 60_000)
 })
 
 describe("codeIdentityOf", () => {
@@ -782,36 +942,100 @@ function runtimeImportsOf(file: string): string[] {
 }
 
 describe("stored results of mermaid.js", () => {
-  /** Every 25th fixture of each diagram type, with its options. */
-  async function sample(): Promise<Fixture[]> {
-    const fixtures = (
-      await Promise.all(
-        (["common", "flowchart", "sequence", "class", "state"] as const).map(
-          (diagram) => loadFixtures(diagram),
-        ),
-      )
-    ).flat()
-    return fixtures.filter((_, index) => index % 25 === 0)
-  }
+  /**
+   * The fixtures that give the store each shape of result to save, one for
+   * each question about the shape: what `shows` says about the result of the
+   * fixture is why it is listed.
+   */
+  const SHAPES: readonly {
+    readonly diagram: DiagramType
+    readonly name: string
+    readonly question: string
+    readonly shows: (run: MermaidRun) => boolean
+  }[] = [
+    {
+      diagram: "class",
+      name: "db-annotation-statement-undefined-class",
+      question: "a rejection, which has no embedded values",
+      shows: (run) => !run.outcome.accepted && run.embedded === undefined,
+    },
+    {
+      diagram: "common",
+      name: "comment-bare",
+      question: "a flowchart Db",
+      shows: (run) =>
+        run.outcome.accepted && run.outcome.diagramType === "flowchart-v2",
+    },
+    {
+      diagram: "sequence",
+      name: "db-acc-descr-block-after-message",
+      question: "a sequence Db",
+      shows: (run) =>
+        run.outcome.accepted && run.outcome.diagramType === "sequence",
+    },
+    {
+      diagram: "class",
+      name: "db-acc-descr-block-collapse",
+      question: "a class Db",
+      shows: (run) =>
+        run.outcome.accepted && run.outcome.diagramType === "classDiagram",
+    },
+    {
+      diagram: "state",
+      name: "db-acc-descr-block-crlf",
+      question: "a state Db",
+      shows: (run) =>
+        run.outcome.accepted && run.outcome.diagramType === "stateDiagram",
+    },
+    {
+      diagram: "common",
+      name: "directive-init-theme",
+      question: "a configuration changed by a directive of the text",
+      shows: (run) => run.embedded?.config.theme === "dark",
+    },
+    {
+      diagram: "class",
+      name: "config-security-level-loose-click",
+      question: "a configuration changed by the options of the run",
+      shows: (run) => run.embedded?.config.securityLevel === "loose",
+    },
+    {
+      diagram: "common",
+      name: "config-title-list",
+      question: "a title taken from the frontmatter",
+      shows: (run) => run.embedded?.title === "1,2",
+    },
+    {
+      diagram: "flowchart",
+      name: "db-data-block-shape-names",
+      question: "the effects of data blocks",
+      shows: (run) => run.embedded?.dataBlockEffects.length === 14,
+    },
+  ]
 
-  it("are the same as the results made again", async () => {
+  it("are the same as the results made again, for each shape of result", async () => {
     const store = new MermaidRunStore(directory, "code")
-    for (const { input, config } of await sample()) {
+    for (const { diagram, name, question, shows } of SHAPES) {
+      const fixture = (await loadFixtures(diagram)).find(
+        (candidate) => candidate.name === name,
+      )
+      if (fixture === undefined)
+        throw new Error(`no fixture ${diagram}/${name}`)
+      const { input, config } = fixture
       const options = config === undefined ? {} : { config }
-      store.write(
-        input,
-        options,
-        await runMermaidWithEmbeddedData(input, options),
-      )
+      const run = await runMermaidWithEmbeddedData(input, options)
+      expect(shows(run), `${name} shows ${question}`).toBe(true)
+      store.write(input, options, run)
       const remade = await runMermaidWithEmbeddedData(input, options)
-      expect(isDeepStrictEqual(store.read(input, options), remade), input).toBe(
-        true,
-      )
+      expect(
+        isDeepStrictEqual(store.read(input, options), remade),
+        `${name}: ${question}`,
+      ).toBe(true)
     }
   }, 60_000)
 
   it("do not include an error thrown instead of a result", async () => {
-    const text = `flowchart LR\n  A --> B${String(Date.now())}\n`
+    const text = "flowchart LR\n  A --> B\n"
     const siteError: RunMermaidOptions = {
       config: { theme: "base", themeVariables: { primaryColor: "##00ff00" } },
     }

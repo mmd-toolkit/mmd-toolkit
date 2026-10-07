@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Overlapping `#br#` and line break tags under a securityLevel that is not one of mermaid.js's values: the tags are written as `#br#` first, then each `#br#` as `<br/>`, left to right without overlap."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a<br/>br#b",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "<br/>&lt;br<br/>",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

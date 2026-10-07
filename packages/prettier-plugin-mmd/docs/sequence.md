@@ -180,10 +180,14 @@ A `;` after the directives that follow an `autonumber`, or a `participant` or an
 statements-one-per-line/autonumber-directive-kept] [fixture:
 statements-one-per-line/data-block-directive-kept] [fixture:
 statements-one-per-line/actor-data-block-directive-kept] [fixture:
-statements-one-per-line/autonumber-two-directives-kept] A statement that follows
-such a `;` on its line stays on it, because a `;` that is kept keeps its line
-together: `autonumber %%{wrap}%%; A->>B: x` is printed on one line. [fixture:
-statements-one-per-line/autonumber-directive-semicolon-same-line-kept]
+statements-one-per-line/autonumber-two-directives-kept] The statements that
+follow such a `;` on its line, and the `end` of a block, stand on lines of their
+own: `autonumber %%{wrap}%%; A->>B: x; B->>A: y` is printed as
+`autonumber %%{wrap}%%;`, `A ->> B: x`, and `B ->> A: y`. [fixture:
+statements-one-per-line/autonumber-directive-semicolon-then-statements-split] A
+statement written over several lines, such as `autonumber`, a line break, and
+`5`, keeps its directive and its `;` as written, with the statement. [fixture:
+statements-one-per-line/directive-semicolon-after-multi-line-statement-kept]
 mermaid.js removes the directive, and whitespace at the end of the line then
 hides the line break from the statement, which needs one, and whose last unit
 reads no whitespace: `autonumber`, a space, `%%{wrap}%%`, and `;` are accepted,
@@ -529,13 +533,15 @@ sequenceDiagram
 ### Title
 
 `title` and `title:` are followed by one space, and the rest of the line is kept
-as written. [fixture: title/directive-after-keyword-kept] mermaid.js reads one
-whitespace character after the keyword, which may be a line break, and keeps
-everything after it in the title, the whitespace at its start and at its end
-included. So `title`, a line break, and `A->>B: x` is printed as
-`title A->>B: x`, which shows that the next line is the title: mermaid.js reads
-it so. [fixture: title/separator] [corpus fixture:
-sequence/lex-title-line-break] [corpus fixture:
+as written. A directive after the keyword keeps whether whitespace is written
+between them: `title %%{init: {}}%% T` has one space before the directive, and
+`title%%{init: {}}%% U` and `title:%%{init: {}}%% V` keep it touching. [fixture:
+title/directive-after-keyword-kept] mermaid.js reads one whitespace character
+after the keyword, which may be a line break, and keeps everything after it in
+the title, the whitespace at its start and at its end included. So `title`, a
+line break, and `A->>B: x` is printed as `title A->>B: x`, which shows that the
+next line is the title: mermaid.js reads it so. [fixture: title/separator]
+[corpus fixture: sequence/lex-title-line-break] [corpus fixture:
 sequence/db-title-next-line-indented] [fixture: title/tab-and-colon-line-break]
 [fixture: title/line-break-indented] The whitespace at the end of a title is
 kept. [fixture: title/trailing-whitespace-kept] [fixture:
@@ -695,17 +701,24 @@ characters as escapes too (see
   at the end of the text of a box] [test: whitespace around U+2028 at the end of
   the text of a box] [test: U+2029 at the end of the text of a box] [test:
   whitespace around U+2029 at the end of the text of a box]
-- Between a comment and the comment line that follows it on the same line. A
+- Between a comment and the comment line that follows it on the same line, and
+  between the end of a statement or of a block header and such a comment line. A
   diagram comment goes on past such a comment line to the next line, so a line
   break in place of the character would turn the text after it into a statement.
-  [corpus fixture: sequence/lex-hash-comment-across-comment-line] The comment,
-  the comment line, and the text after it are printed as written, without
-  indentation: the tree lists them as comments, and the printer reads them as
-  one. [test: a `#` comment after U+2028, which joins no lines] [test: a `%%`
-  comment line after U+2028, which joins the next line] [test: U+2029 after a
-  comment that a comment line follows] [test: U+2028 after a `%%` comment that a
-  comment line follows] [test: U+2029 after a `%` comment that a comment line
-  follows]
+  [corpus fixture: sequence/lex-hash-comment-across-comment-line] mermaid.js
+  removes the comment line, so the line after it continues the line before it:
+  `A->>B:   x`, U+2028, `%% c`, and `C->>D: y` is one line, whose message text
+  goes on into the next line. The statement or the header, the comment line, and
+  the text after it are printed as written, without indentation and without
+  formatting the whitespace between them: the tree lists the comments, and the
+  printer reads them as one line (see
+  [A comment line after U+2028 or U+2029](./compatibility.md#a-comment-line-after-u2028-or-u2029)).
+  [test: a `#` comment after U+2028, which joins no lines] [test: a `%%` comment
+  line after U+2028, which joins the next line] [test: a `%%` comment line after
+  U+2028 at the end of a block header] [test: a `%%` comment line after U+2028
+  at the end of a participant] [test: U+2029 after a comment that a comment line
+  follows] [test: U+2028 after a `%%` comment that a comment line follows]
+  [test: U+2029 after a `%` comment that a comment line follows]
 - Right after a directive that is not closed. The text of such a directive stops
   before the character, which is no whitespace to it: with the character printed
   as a space or a line break, the directive would reach the rest of the text.
@@ -716,6 +729,10 @@ characters as escapes too (see
   stays as written, with the `;`. [test: U+2028 as the whitespace character
   after `title`, with a `;` after it] [test: U+2029 as the whitespace character
   after `title`]
+- After the `end` of a block, which is not kept: `end`, U+2028, and a line break
+  is printed as `end`, as mermaid.js reads the character there as whitespace.
+  [test: U+2028 after the `end` of a block of a sequence diagram] [test: U+2029
+  and whitespace around it after the last `end` of a sequence diagram]
 - Between two parts of a statement, in every diagram type: the whitespace
   between them stays as written when it holds a U+2028 or U+2029, since the
   character is not whitespace to every rule of mermaid.js (`class A`, U+2028,

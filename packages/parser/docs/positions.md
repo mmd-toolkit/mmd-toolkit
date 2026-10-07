@@ -122,7 +122,12 @@ Every tree satisfies these conditions:
   flowchart/tokens-directive-label-space-after] [fixture:
   common/comment-in-string] [fixture:
   class/tokens-style-ignored-semicolon-after-space] [fixture:
-  flowchart/gram-label-string-then-text]
+  flowchart/gram-label-string-then-text] A token of whitespace only may also end
+  with it where a token of the value that it belongs to follows it directly, as
+  the whitespace between the colour candidate and the remainder of a sequence
+  box text (see [the sequence tokens](./tokens/sequence.md#tokens)). [fixture:
+  sequence/tokens-box-text-space-between-parts] [fixture:
+  sequence/db-box-colour-then-spaces-and-line-separator]
 - A comment lies outside all tokens. [fixture: common/comment-in-string]
 - A directive lies inside no other token. It may lie inside a comment: after its
   mark, or between the two `%` of a `%%` mark. Every directive that lies outside
@@ -138,7 +143,9 @@ Every tree satisfies these conditions:
   sequence/tokens-comment-then-ignored-semicolon] [fixture:
   state/tokens-ignored-semicolon-in-comment-before-comment-line]
 - No two comments overlap, and no two directives overlap. [fixture:
-  common/comment-after-directive]
+  common/comment-after-directive] [fixture:
+  flowchart/tokens-string-two-comment-lines] [fixture:
+  flowchart/tokens-directives-label-space-between]
 - When there is frontmatter, the first tokens are the tokens in its range: the
   opening `---`, the body when it is not all whitespace, and the closing `---`
   (see [Frontmatter](../../spec/docs/ast.md#frontmatter)). They come before all
@@ -163,6 +170,13 @@ Every tree satisfies these conditions:
 - The `raw` of a node that has it, a StringLiteral or a NumericLiteral, equals
   the source text of its range. [fixture: flowchart/gram-label-space-string]
   [fixture: state/gram-scale]
+- No token, comment, or directive has an empty range: a value that mermaid.js
+  reads as empty has no token, an empty fragment is no token and no comment, and
+  a comment and a directive hold at least their marks. [fixture:
+  flowchart/gram-acc-title-empty-at-end] [fixture:
+  flowchart/tokens-rawtext-comment-line-then-closing-bracket] [fixture:
+  class/lex-bare-percent-line-between-statements] [fixture:
+  common/directive-empty-argument]
 
 The second condition is about the source text: `Token.value` and the text of
 every comment, directive, and frontmatter equal the input in their ranges. The

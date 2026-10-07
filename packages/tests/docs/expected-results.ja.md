@@ -60,13 +60,31 @@ DOMPurify を無効にしたとき、
 （[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L69-L83)
 を通して）、`securityLevel` が mermaid.js の値
 （`strict`、`loose`、`antiscript`、`sandbox`）のどれかである限り、
-また `flowchart.htmlLabels` が `false` ならどの値でも、
+また `htmlLabels` が無効ならどの値でも、
 テキストを変えません。
+[fixture: flowchart/db-vertex-label-markup-as-written]
+[fixture: flowchart/config-security-level-loose-line-breaks]
 それ以外の値で `htmlLabels` が有効なときは、
-`<`、`>`、`=` を文字参照（`&lt;`、`&gt;`、`&equals;`）にし、
-`<br>` を `<br/>` と書きます。
+`<`、`>`、`=` を文字参照（`&lt;`、`&gt;`、`&equals;`）にします。
+[fixture: flowchart/config-security-level-other-label-characters]
+また改行タグのどの書き方も `<br/>` と書きます。
+`<br>`、`<br/>`、`<br />`、`</br>`、`<BR>`、
+作者が書く `#br#` がそれです。
+[fixture: flowchart/config-security-level-other-line-breaks]
 要約はこれを前提にしており、
 それらの値の範囲では `securityLevel` に左右されません。
+
+`htmlLabels` が有効かどうかは、
+設定のルートの `htmlLabels` が設定されていればそれで決まり、
+設定されていないときにだけ `flowchart.htmlLabels` で決まります。
+どちらも設定されていなければ有効です。
+したがって `flowchart.htmlLabels: false` が無効にするのは、
+ルートの `htmlLabels` が設定されていないときだけで、
+ルートの `htmlLabels: true` は `flowchart.htmlLabels` が何でも有効にします。
+[fixture: flowchart/config-security-level-other-html-labels-false]
+[fixture: flowchart/config-security-level-other-flowchart-html-labels-false]
+[fixture: flowchart/config-security-level-other-html-labels-true-flowchart-false]
+[fixture: flowchart/config-security-level-other-html-labels-false-flowchart-true]
 
 `@braintree/sanitize-url` には、
 Db クラスがリンクを保存するときに呼ぶ
@@ -141,10 +159,16 @@ Node では DOMPurify に `sanitize` も `addHook` もないので、
 - **残る処理**: `sanitizeText()` の残り
   （[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L70-L83)）
   は動く。
-  `htmlLabels` が有効で、`securityLevel` が `strict`、`loose`、`antiscript`、
+  `htmlLabels` が有効（その決まり方は前の節）で、
+  `securityLevel` が `strict`、`loose`、`antiscript`、
   `sandbox` のどれでもないときは、
-  `<`、`>`、`=` を実体参照に、`<br>` を `<br/>` に置き換える。
+  `<`、`>`、`=` を実体参照に、
+  改行タグのどの書き方も `<br/>` に置き換える。
   そのような `securityLevel` を使う fixture は、置き換え後のテキストを記録する。
+  [fixture: flowchart/config-security-level-other-label-characters]
+  [fixture: flowchart/config-security-level-other-line-breaks]
+  置き換えが各図のどのテキストに届くかは、
+  [db-from-tree.ja.md](./db-from-tree.ja.md) の「文字の置き換え」が定める。
 - **実装が比べる相手**: parser の Db 相当 JSON は、この値、
   つまり HTML のサニタイズ前のテキストと比べる。
   DOMPurify を再現する必要はない。
@@ -303,6 +327,11 @@ mermaid.js がその入力を拒否するときは、`(` にした入力に与�
 設定の値の `<` は `(` として記録されます。
 `embedded` の title は、Db の title と同じです。
 [fixture: flowchart/html-tag-starts-in-frontmatter-config-value]
+mermaid.js が書かれたとおりの入力を受理するときは、
+書かれたとおりの入力の値になり、`(` にした入力は読みません。
+mermaid.js は `<` を持つ値を設定に入れないので、
+`embedded` にはその値がなく、`(` にした値にもなりません。
+[fixture: flowchart/html-tag-starts-in-frontmatter-config-value-accepted]
 mermaid.js が `(` にした入力を拒否するときは、仕様どおりの読みも拒否で、
 `specified.json` に `accepted: false` とエラーを記録します
 （`(` への置き換えが YAML を壊したときは、読みを作れないので、
@@ -496,10 +525,12 @@ pin した mermaid.js は、同じテキストと同じ選択肢に同じ結果�
   これは `.github/workflows_bk/` に置いてあり、
   今は有効なワークフローがありません。
   実行の手順を試すこのパッケージのテストも切りますが、
-  貯蔵庫のテストの 1 つは例外です。
-  実行の関数が貯蔵庫を使うことを確かめるため、
-  リポジトリの貯蔵庫にテキストを 1 つ通します。
-  `detectDiagramType()` は貯蔵庫を使いません。
+  `tests/mermaid-run-store.test.ts` の貯蔵庫のテストのうち、
+  貯蔵庫を入れるものは例外です。
+  実行の関数が貯蔵庫を使うこと、
+  結果の代わりに投げられた例外が貯められないこと、
+  `detectDiagramType()` が貯蔵庫を使わないことを確かめるため、
+  リポジトリの貯蔵庫にテキストを通します。
 - どのテストを回すかは、貯蔵庫があってもなくても、
   テストの実行の決まり（SKILL `conventions`）で決まります。
   貯蔵庫は実行を短くするもので、多く回す理由にはなりません。

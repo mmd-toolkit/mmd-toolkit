@@ -168,8 +168,9 @@ pnpm run fixtures:set-note notes.json --dry-run
   "Rejection versus a missing browser feature" in
   [expected-results.md](./expected-results.md)).
 
-The job `fixtures` of the workflow `NodeCI.yml` regenerates every
-`expected.json` and fails on any difference or new file, so a change in
+The workflow `NodeCI.yml`, which is kept in `.github/workflows_bk/` (no workflow
+is active at present), has a job `fixtures` that regenerates every
+`expected.json` and fails on any difference or new file, so that a change in
 mermaid.js's behavior shows up as a diff.
 
 ## Renaming and removing

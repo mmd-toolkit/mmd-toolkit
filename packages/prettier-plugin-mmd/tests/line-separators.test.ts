@@ -75,12 +75,72 @@ const examples: readonly (readonly [string, string, string])[] = [
   [
     "U+2028 before the brace of a composite statement",
     "stateDiagram-v2\nstate   a   b\u2028{\nC\n}\n",
-    "stateDiagram-v2\n  state   a   b\u2028{\nC\n}\n",
+    "stateDiagram-v2\n  state a b\u2028{\n    C\n  }\n",
   ],
   [
     "U+2028 on the closing line of a composite statement",
     "stateDiagram-v2\nstate A {\nB\n}\u2028\nC\n",
-    "stateDiagram-v2\n  state A {\nB\n}\u2028\n  C\n",
+    "stateDiagram-v2\n  state A {\n    B\n  }\u2028\n  C\n",
+  ],
+  [
+    "U+2029 and whitespace before it on the closing line of a composite statement",
+    "stateDiagram-v2\nstate A {\nB\n}  \u2029\nC\n",
+    "stateDiagram-v2\n  state A {\n    B\n  }  \u2029\n  C\n",
+  ],
+  [
+    "U+2028 on the closing line of a composite statement in a body",
+    "stateDiagram-v2\nstate A {\nB\nstate D {\nE\n}\u2028\n}\nC\n",
+    "stateDiagram-v2\n  state A {\n    B\n    state D {\n      E\n    }\u2028\n  }\n  C\n",
+  ],
+  [
+    "U+2028 after the closing brace at the end of the text",
+    "stateDiagram-v2\nstate A {\nB\n}\u2028",
+    "stateDiagram-v2\n  state A {\n    B\n  }\u2028\n",
+  ],
+  [
+    "U+2028 on the opening and on the closing line of a composite statement",
+    "stateDiagram-v2\nstate   a   b\u2028{\nC\n}\u2028\nD\n",
+    "stateDiagram-v2\n  state a b\u2028{\n    C\n  }\u2028\n  D\n",
+  ],
+  [
+    "U+2028 on a line of the body of a composite statement",
+    "stateDiagram-v2\nstate A {\nB\u2028\n}\u2028\nC\n",
+    "stateDiagram-v2\n  state A {\nB\u2028\n}\u2028\n  C\n",
+  ],
+  [
+    "U+2028 on the closing lines of a composite statement and of one in its body",
+    "stateDiagram-v2\nstate A {\nstate D {\nE\n}\u2028\nB\n}\u2028\nC\n",
+    "stateDiagram-v2\n  state A {\n    state D {\n      E\n    }\u2028\n    B\n  }\u2028\n  C\n",
+  ],
+  [
+    "U+2028 on the closing lines of three nested composite statements",
+    "stateDiagram-v2\nstate A {\nstate D {\nstate F {\nG\n}\u2028\n}\u2028\n}\u2028\nC\n",
+    "stateDiagram-v2\n  state A {\n    state D {\n      state F {\n        G\n      }\u2028\n    }\u2028\n  }\u2028\n  C\n",
+  ],
+  [
+    "U+2028 on the closing line of a composite statement with an empty body",
+    "stateDiagram-v2\nstate A {\n   }\u2028\nC\n",
+    "stateDiagram-v2\n  state A {\n   }\u2028\n  C\n",
+  ],
+  [
+    "U+2028 after a closing brace that follows a statement on its line",
+    "stateDiagram-v2\nstate A {\nB }\u2028\nC\n",
+    "stateDiagram-v2\n  state A {\nB }\u2028\n  C\n",
+  ],
+  [
+    "U+2028 after a closing brace that follows a directive on its line",
+    "stateDiagram-v2\nstate A {\nB\n%%{init: {}}%% }\u2028\nC\n",
+    "stateDiagram-v2\n  state A {\nB\n%%{init: {}}%% }\u2028\n  C\n",
+  ],
+  [
+    "a `;` after U+2029 on the closing line of a composite statement",
+    "stateDiagram-v2\nstate   A   {\nB\n}\u2029;\nC\n",
+    "stateDiagram-v2\n  state   A   {\nB\n}\u2029;\n  C\n",
+  ],
+  [
+    "a comment line after U+2028 on the closing line of a composite statement",
+    "stateDiagram-v2\nstate A {\nB\n}\u2028%% c\nC\n",
+    "stateDiagram-v2\n  state A {\nB\n}\u2028%% c\nC\n",
   ],
   [
     "a second name before a brace that U+2029 separates from it",
@@ -208,6 +268,16 @@ const sequenceExamples: readonly (readonly [string, string, string])[] = [
     "sequenceDiagram\n  A->>B:   x\u2028%% c\nC->>D: y\n",
   ],
   [
+    "a `%%` comment line after U+2028 at the end of a block header",
+    "sequenceDiagram\nalt a\u2028%% c\n b\nA->>B: x\nend\n",
+    "sequenceDiagram\n  alt a\u2028%% c\n b\n    A ->> B: x\n  end\n",
+  ],
+  [
+    "a `%%` comment line after U+2028 at the end of a participant",
+    "sequenceDiagram\nparticipant A\u2028%% c\n  B\nA->>B: x\n",
+    "sequenceDiagram\n  participant A\u2028%% c\n  B\n  A ->> B: x\n",
+  ],
+  [
     "U+2029 after a comment that a comment line follows",
     "sequenceDiagram\nA->>B: y #c\u2029%% d\nC->>D: z\n",
     "sequenceDiagram\n  A->>B: y #c\u2029%% d\nC->>D: z\n",
@@ -321,6 +391,45 @@ const flowchartExamples: readonly (readonly [string, string, string])[] = [
 ]
 
 /**
+ * Each example is a block that ends with a line separator after its closing
+ * `end` or `}`: the character is whitespace to mermaid.js there, and the
+ * formatter drops it with the whitespace at the end of the line, in every
+ * diagram type but a state diagram.
+ */
+const droppedExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "U+2028 after the `end` of a subgraph",
+    "flowchart LR\nsubgraph S\nA\nend\u2028\nB\n",
+    "flowchart LR\n  subgraph S\n    A\n  end\n  B\n",
+  ],
+  [
+    "U+2029 and whitespace around it after the `end` of a subgraph",
+    "flowchart LR\nsubgraph S\nA\nend  \u2029 \nB\n",
+    "flowchart LR\n  subgraph S\n    A\n  end\n  B\n",
+  ],
+  [
+    "U+2029 after the `}` of a class body",
+    "classDiagram\nclass A {\n+x\n}\u2029\nclass B\n",
+    "classDiagram\n  class A {\n    +x\n  }\n  class B\n",
+  ],
+  [
+    "U+2028 after the `}` of a namespace",
+    "classDiagram\nnamespace N {\nclass A\n}\u2028\nclass B\n",
+    "classDiagram\n  namespace N {\n    class A\n  }\n  class B\n",
+  ],
+  [
+    "U+2028 after the `end` of a block of a sequence diagram",
+    "sequenceDiagram\nalt a\nA->>B: x\nend\u2028\nB->>A: y\n",
+    "sequenceDiagram\n  alt a\n    A ->> B: x\n  end\n  B ->> A: y\n",
+  ],
+  [
+    "U+2029 and whitespace around it after the last `end` of a sequence diagram",
+    "sequenceDiagram\nloop a\nA->>B: x\nend  \u2029 \n",
+    "sequenceDiagram\n  loop a\n    A ->> B: x\n  end\n",
+  ],
+]
+
+/**
  * Checks that formatting an example gives its formatted form, that
  * formatting again changes nothing, and that the Db that the tree denotes is
  * the same for both texts.
@@ -356,6 +465,12 @@ describe("a sequence diagram with a line separator", () => {
 
 describe("a flowchart with a line separator", () => {
   it.each(flowchartExamples)("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
+})
+
+describe("a block that ends with a line separator after its closing word", () => {
+  it.each(droppedExamples)("drops %s", async (_name, input, output) => {
     await expectKept(input, output)
   })
 })

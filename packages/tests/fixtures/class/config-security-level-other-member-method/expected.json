@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Methods under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): the name, the parameters, and the return type of each are recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "m",
+            "parameters": "a&equals;b, c&lt;d",
+            "returnType": "e&gt;f"
+          },
+          {
+            "memberType": "method",
+            "visibility": "-",
+            "classifier": "$",
+            "id": "n",
+            "parameters": "",
+            "returnType": "<br/>"
+          },
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "*",
+            "id": "o<br/>p",
+            "parameters": "q",
+            "returnType": "r&equals;s"
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

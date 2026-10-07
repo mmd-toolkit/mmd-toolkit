@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The links of a participant, written as JSON under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): mermaid.js replaces the characters of the text, writes `&equals;` as `=` again, and reads the JSON, so a key and a URL keep their `=` and have `&lt;` and `&gt;` and `<br/>`."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {
+          "a&lt;b=c": "https://example.com?d=e&f&lt;g&gt;",
+          "h<br/>i": "u"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

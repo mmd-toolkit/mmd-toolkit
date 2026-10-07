@@ -55,8 +55,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
 ## The checks
 
 - **Positions.** Every range lies in the input, and every `loc` is the place of
-  its `range`; no token, comment, or directive is empty
-  ([positions.md](../../parser/docs/positions.md), Positions and Invariants).
+  its `range` ([positions.md](../../parser/docs/positions.md), Positions); no
+  token, comment, or directive has an empty range (positions.md, Invariants).
 - **Every character is placed.** A character outside the tokens and comments is
   whitespace (positions.md, Invariants).
 - **Texts.** The `value` of a token, and the text of a comment, a directive, and
@@ -73,8 +73,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
   ends with whitespace only where a value starts or ends, next to a cut (a
   directive, a comment region, or a `;` that the line rule ignores), or where it
   goes on with a value that the token before it starts, or where it is all
-  whitespace and a token of the same value follows it. A directive lies in no
-  other token, and a comment lies in none (positions.md, Invariants).
+  whitespace and a token that belongs to the same value follows it directly (the
+  whitespace between the colour candidate and the remainder of a sequence box
+  text). A directive lies in no other token, and a comment lies in none
+  (positions.md, Invariants).
 - **Tokens that are not cut.** A directive or a `;` that the line rule ignores
   lies in a `String` (which then is `StringFragment` tokens) or a `RawText`
   token, and in no other token (parser/docs/tokens.md, A token that a directive
@@ -82,23 +84,33 @@ const problems: TreeProblem[] = checkTree(text, tree)
   - Two tokens of the kind `Identifier` or `Numeric` with a cut and no
     whitespace between them are the fragments of a cut token and are reported,
     as is a node of one token (an arrow, a number, an `Identifier`) with more
-    than one. Two `Keyword` tokens are reported only when their texts joined are
-    the text of a keyword of the diagram (`src/check-tree/keywords.ts`, a table
-    that a test requires to hold every `Keyword` token of a recorded tree and
-    the words of the row `Keyword` of the table of Tokens): `sub`, a cut, and
-    `graph` are the fragments of `subgraph`, while a pseudostate mark and the
-    start of an empty description block, `<<choice>>`, a cut, and `accDescr`,
-    are units of their own.
+    than one.
+  - A `Keyword` token and a `Punctuator` token have a text that the table of
+    their diagram lists, and one decision, made in one place
+    (`fragmentsOfEntries()` in `src/check-tree/tokens.ts`), tells the fragments
+    of a cut one: a run of two tokens or more of that kind, which cuts glue
+    together with nothing else between them, is reported when its texts joined
+    are one text of the table. The run has any number of tokens, and a shorter
+    run inside a longer one that cuts glue together is looked at too, whatever
+    token the cut attaches to it. So `sub`, a cut, and `graph` are the fragments
+    of `subgraph`, and so are `su`, a cut, `bgr`, a cut, and `aph`, where no two
+    of them are a keyword. A pseudostate mark and the start of an empty
+    description block, `<<choice>>`, a cut, and `accDescr`, are units of their
+    own, as no text of the table is their two texts joined.
+  - The table of the `Keyword` texts (`src/check-tree/keywords.ts`) is the words
+    of the row `Keyword` of the table of Tokens of each diagram and the texts of
+    the units that the row names without their text (a header, a direction, a
+    link target, a pseudostate mark, a wrap prefix); a test requires that, and
+    requires every `Keyword` token of a recorded tree to have a text in it.
   - The text of a `Punctuator` token other than those of the arrows is one that
     its diagram has (`src/check-tree/punctuators.ts`, a copy of the row
-    `Punctuator` of the table of Tokens of each diagram), and no run of two such
-    tokens or more, which cuts separate with nothing else between them, is the
-    fragments of one text of the table (`:` and `::` for `:::`; `(` and `(` for
-    `((`), also when the run starts with a token that the cut attaches, as the
-    `)` of `A(x)%%{init: {}}%%:::c` does. The opening and the closing of a shape
-    are one token each, and so are the relation ends and the line of a class
-    arrow. Two `,` with a cut between are two units, as no text of the table is
-    `,,`.
+    `Punctuator` of the table of Tokens of each diagram), and no run of its
+    tokens is the fragments of one text of the table (`:` and `::` for `:::`;
+    `(` and `(` for `((`), also when the run starts with a token that the cut
+    attaches, as the `)` of `A(x)%%{init: {}}%%:::c` does. The opening and the
+    closing of a shape are one token each, and so are the relation ends and the
+    line of a class arrow. Two `,` with a cut between are two units, as no text
+    of the table is `,,`.
   - A `String` token starts with a quote, and one that a cut follows is closed.
 - **Frontmatter.** The first tokens are `---`, the body, and `---`; the body is
   a `RawText` token without the whitespace around it, and there is none when the
@@ -165,11 +177,13 @@ that says so:
   shows what was written, the whitespace between its units too, and the comments
   in its range are left out; that whitespace lies in no token, except in a run
   of text (`RawText`), which keeps the whitespace next to a cut. A diagram
-  comment runs from its mark to the line feed that ends it (state.md, Comments),
-  past the comment lines that cut it, so the value leaves out everything of that
-  range: the whitespace before a U+2028 or U+2029, the separator, the comment
-  lines with their line terminators, the whitespace after them, and the fragment
-  after them. The line feed that ends the comment, and a comment line of its own
+  comment runs from its mark to the line terminator that ends its line
+  (state.md, Comments; common.md, Notation): a line feed, a CRLF, or a lone CR,
+  or the end of the text where none follows. It runs past the comment lines that
+  cut it, so the value leaves out everything of that range: the whitespace
+  before a U+2028 or U+2029, the separator, the comment lines with their line
+  terminators, the whitespace after them, and the fragment after them. The line
+  terminator that ends the comment, a CRLF as one, and a comment line of its own
   with no diagram comment before it, leave nothing else out.
 - The number of a `NumericLiteral` and the name of a `FlowchartShape` follow
   from the text and are not the text; the number is checked against the written
@@ -187,8 +201,30 @@ those of its body. The checks of a diagram are the checks of its own nodes.
 Every field of every node type is checked, or listed with the reason it is not:
 `tests/check-tree-fields.test.ts` breaks each field of each type in a recorded
 tree and requires the check to report it. A field that may be null is also made
-null where the source writes the word, and a word where it writes none, and the
-problem must be one of the node that holds the field.
+null where the source writes it, and set where it writes none, and the problem
+must be the field's own: for a field of a string, one of the node that holds the
+field; for a field of a node or of a list of nodes, one inside the range that
+the field covered (its tokens lie in no node that holds them), or, for the
+fields that the next paragraph names, one of the node that holds the field, with
+a message that names the field.
+
+A field of a node or of a list of nodes that may be null is null where the node
+writes nothing for it. Where what the node writes for the field has a token of a
+value, that token lies in no node when the field is null, and the placement of
+the tokens of a value reports it. Where the field is written with the tokens of
+the node itself, as with a `{`, `src/check-tree/null-fields.ts` reads the tokens
+of the node that lie in none of its child nodes and reports a field that is null
+while one of them is its text: the member of a class member statement, which
+follows the `:`; the members of a class declaration, the body of a composite
+state, and the body of an alias state, which a `{` opens; the text of a message,
+which follows its `:`; the alias of a participant, which follows its `as`; the
+text before the body of a composite state and of an alias state, which is every
+token of the node before the `{` of the body other than its own words; and the
+text of a note on one line, which starts with the `:` that follows two or more
+whitespace characters, counted past directives and `;` that the line rule
+ignores (diagrams/state.md, The note contexts). A list that the node writes with
+a `{` is not null also when it is empty, so a list that is not null with no `{`
+is reported as well.
 
 Not checked:
 
@@ -200,26 +236,54 @@ Not checked:
 
 `tests/check-tree-corpus.test.ts` checks every recorded tree of the corpus and
 that every node type in it is classified as a value node or not.
-`tests/check-tree-fields.test.ts` is the test of the paragraph above.
-`tests/check-tree-values.test.ts` is the test of the value rule: for every node
-type with a value, it adds a character to the value at either end and drops one
-from either end, and it takes the whitespace off an end of each token in the
-nodes of the type, in the recorded trees, and requires each tree so made to be
-reported; the types that have no token with whitespace at an end are listed with
-the reason. `tests/check-tree-cut-tokens.test.ts` writes a directive, and a `;`
-that the line rule ignores, inside a recorded token of each kind of each diagram
-(every text of the `Keyword` and `Punctuator` tokens, and the first few
-`Identifier`, `Numeric`, and `String` tokens), at every place inside it, as a
-parser that cuts the token would record the text, and requires each tree so made
-to be reported; for a `String` cut into `StringFragment` tokens and a `RawText`
-cut into `RawText` tokens, it requires the tree not to be. The same file makes,
-for every text of the table of `Punctuator` tokens of two characters or more of
-every diagram, every cut of it at every place, by a directive and by a `;`, with
-a `Punctuator` token that a cut attaches before it, after it, or both, and
-requires each tree to have more problems than the tree of the whole text with
-the same neighbours. `tests/check-tree-punctuators.test.ts` requires the table
-of the texts of the `Punctuator` tokens, and the table of the shapes, to agree
-with the documents. `tests/check-tree-cut-whitespace.test.ts` takes the
+`tests/check-tree-fields.test.ts` is the test of the paragraphs above: it reads
+the recorded trees once and indexes the first tree that has each node type, and
+the first in which each field is null and is not null, and it breaks each field
+in the tree that the index gives; and it has a named case for each field of a
+string that may be null, in each direction, and for each rule of
+`null-fields.ts` (a fixture, a type, a field, and the exact message of the
+problem at the node), and, made by hand from the tree of a note with two
+whitespace characters before its `:`, the three notes with one, whose text is
+null and which the check must accept. `tests/check-tree-values.test.ts` is the
+test of the value rule: for every node type with a value, it adds a character to
+the value at either end and drops one from either end, and it takes the
+whitespace off an end of each token in the nodes of the type, in the recorded
+trees, and requires each tree so made to be reported; the types that have no
+token with whitespace at an end are listed with the reason. It also lists by
+name the fixtures of a diagram comment that a comment line cuts: eight that end
+at a line feed, and one each that ends at a CRLF, at a lone CR, and at the end
+of the text; it requires their recorded trees to be accepted, and, for the CRLF
+and the lone CR, a value with another line terminator to be reported with its
+exact message. `tests/check-tree-comments.test.ts` makes, by hand, a diagram
+comment and a comment line that end at a line feed, a CRLF, a lone CR, and the
+end of the text, and requires the range that ends after the line terminator to
+be reported. `tests/check-tree-cut-tokens.test.ts` is a list of named cases,
+each of which takes the recorded tree of a named fixture and writes a directive,
+or a `;` that the line rule ignores, once, twice, or three times, inside one of
+its tokens, as a parser that cuts the token would record the text. The cases are
+an `Identifier`, a `Numeric`, a `Keyword` (into two fragments in each diagram,
+and into three and four in a flowchart), a `Punctuator` (into two fragments in
+each diagram, where the fragments of a sequence, class, and state diagram are
+texts that the diagram lacks, and into three in a flowchart), and a `String` cut
+into `String` tokens, each cut by a directive or by a `;`. For each, the test
+requires the check to report the problems of the condition that the case names,
+with their exact places and messages, and requires the unedited tree of the
+fixture to have none. A `String` cut into `StringFragment` tokens and a
+`RawText` cut into `RawText` tokens, by a directive and by a `;` and in several
+diagrams, are required to have no problem at all. The same file makes, by hand,
+the trees of a run of `Punctuator` fragments of `:::` that cuts attach a `)` to
+before it, a `(` after it, or both, and requires the one problem for the run of
+`:::`; and a `)` and a `(` that a cut separates are required to have none.
+`tests/check-tree-keywords.test.ts` requires the table of the `Keyword` texts to
+be the words of the row of each diagram and the texts of the units that the row
+names without their text, and to hold every `Keyword` token of a recorded tree,
+and it makes, by hand, the trees of two, three, and four `Keyword` fragments.
+`tests/check-tree-punctuators.test.ts` requires the table of the texts of the
+`Punctuator` tokens, and the table of the shapes, to agree with the documents,
+and, on a tree made by hand, the check of a `Punctuator` text that its diagram
+does not have, in each diagram. `tests/check-tree-flowchart.test.ts` requires
+the directions of the flowchart header that the check knows to be those of the
+rule of the specification. `tests/check-tree-cut-whitespace.test.ts` takes the
 whitespace off the side of each token that touches a cut, in every recorded
 tree, and requires each tree so made to be reported. It also makes, from one
 recorded tree each, the two negative cases of the other exceptions: a token that

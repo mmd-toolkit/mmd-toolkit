@@ -18,6 +18,8 @@ import type {
   ClassRelationStatement,
   ClassStatement,
 } from "./class-tree.ts"
+import type { TextReplacement } from "./text-replacement.ts"
+import { textReplacementOf } from "./text-replacement.ts"
 import type { Identifier, StringLiteral, TreeRange, TreeRoot } from "./tree.ts"
 import { descriptionOf, trimmed } from "./values.ts"
 
@@ -101,12 +103,13 @@ function startsWithAsciiDigit(text: string): boolean {
 }
 
 /**
- * Names: the id and the type of the written name `writtenName`: the text
- * before its first `~` and the text between its first and its second `~`,
- * or up to its end, when it has a `~` and its first `~` is not its first
- * character; otherwise the written name and the empty type.
+ * Names: the id and the type of the written name `writtenName`, before the
+ * replacement of characters: the text before its first `~` and the text
+ * between its first and its second `~`, or up to its end, when it has a `~`
+ * and its first `~` is not its first character; otherwise the written name
+ * and the empty type.
  */
-function idAndTypeOf(writtenName: string): {
+function splitWrittenName(writtenName: string): {
   readonly id: string
   readonly type: string
 } {
@@ -149,10 +152,14 @@ class ClassDbBuilder {
   /** The converted form of ranges of the source. */
   private readonly text: ConvertedText
 
+  /** The replacement of characters that the configuration gives the texts that the Db keeps. */
+  private readonly replace: TextReplacement
+
   public constructor(source: string, root: TreeRoot, embedded: EmbeddedValues) {
     this.root = root
     this.text = new ConvertedText(readConvertedCharacters(source, root))
-    this.title = embedded.title ?? ""
+    this.replace = textReplacementOf(embedded.config)
+    this.title = this.replace(embedded.title ?? "")
   }
 
   /** The summary of `diagram`. */
@@ -219,7 +226,7 @@ class ClassDbBuilder {
       case "ClassCallbackStatement":
         this.recordClickCalls(statement)
         this.applyClick(statement.class, statement.tooltip, (name) => {
-          const entry = this.classes.get(idAndTypeOf(name).id)
+          const entry = this.classes.get(this.idAndTypeOf(name).id)
           if (entry !== undefined) entry.haveCallback = true
         })
         return
@@ -259,14 +266,18 @@ class ClassDbBuilder {
         this.direction = statement.direction
         return
       case "ClassAccTitleStatement":
-        this.accTitle = this.text.of(statement.value.range)
+        this.accTitle = this.replace(this.text.of(statement.value.range))
         return
       case "ClassAccDescrStatement":
-        this.accDescr = descriptionOf(this.text.of(statement.value.range))
+        this.accDescr = this.replace(
+          descriptionOf(this.text.of(statement.value.range)),
+        )
         return
       case "ClassAccDescrBlockStatement":
         if (statement.value !== null) {
-          this.accDescr = descriptionOf(this.text.of(statement.value.range))
+          this.accDescr = this.replace(
+            descriptionOf(this.text.of(statement.value.range)),
+          )
         }
         return
       default:
@@ -284,7 +295,7 @@ class ClassDbBuilder {
     const id = this.addClass(statement.name)
     const entry = this.classOf(id)
     if (statement.label !== null) {
-      entry.label = this.stringTextOf(statement.label)
+      entry.label = this.replace(this.stringTextOf(statement.label))
       entry.text =
         entry.type === "" ? entry.label : `${entry.label}<${entry.type}>`
     }
@@ -307,7 +318,7 @@ class ClassDbBuilder {
 
   /** Adding a class: as `addClass`, from the written name `writtenName`. */
   private addClassByWrittenName(writtenName: string): string {
-    const { id, type } = idAndTypeOf(writtenName)
+    const { id, type } = this.idAndTypeOf(writtenName)
     if (!this.classes.has(id)) {
       this.classes.set(id, {
         id,
@@ -335,29 +346,33 @@ class ClassDbBuilder {
         entry.annotations.push(
           member.name === null || member.name.type !== "ClassLiteral"
             ? ""
-            : this.literalTextOf(member.name),
+            : this.replace(this.literalTextOf(member.name)),
         )
         return
-      case "ClassMethod":
+      case "ClassMethod": {
+        const { visibility, name } = this.visibilityAndNameOf(member)
         entry.methods.push({
           memberType: "method",
-          visibility: VISIBILITY_MARKS[member.visibility],
+          visibility,
           classifier: CLASSIFIER_MARKS[member.classifier],
-          id: this.memberNameOf(member),
-          parameters: this.literalTextOf(member.parameters),
+          id: name,
+          parameters: this.replace(this.literalTextOf(member.parameters)),
           // The return type, with the whitespace before a classifier mark
           // that ends it (ast/class.md, ClassMethod).
-          returnType: this.literalTextOf(member.returnType),
+          returnType: this.replace(this.literalTextOf(member.returnType)),
         })
         return
-      case "ClassAttribute":
+      }
+      case "ClassAttribute": {
+        const { visibility, name } = this.visibilityAndNameOf(member)
         entry.members.push({
           memberType: "attribute",
-          visibility: VISIBILITY_MARKS[member.visibility],
+          visibility,
           classifier: CLASSIFIER_MARKS[member.classifier],
-          id: this.memberNameOf(member),
+          id: name,
         })
         return
+      }
       default:
         throw new Error(
           `class Db: unknown member ${JSON.stringify(member satisfies never)}`,
@@ -366,15 +381,26 @@ class ClassDbBuilder {
   }
 
   /**
-   * Member statements and member lines: the member name, the value of the
-   * name with the whitespace at its start made one space; the value starts
-   * with whitespace only when the member name text starts with a space
-   * (U+0020), in converted form, which leaves directives out.
+   * Member statements and member lines: the visibility mark and the member
+   * name. The name is the value of the name with the whitespace at its start
+   * made one space; the value starts with whitespace only when the member
+   * name text starts with a space (U+0020), in converted form, which leaves
+   * directives out. The replacement of characters is made on the visibility
+   * mark and the name together, before the visibility is read, so that a
+   * `#br#` at the start of the member line is no visibility mark.
    */
-  private memberNameOf(member: ClassMethod | ClassAttribute): string {
-    const name = this.literalTextOf(member.name)
-    const rest = name.trimStart()
-    return rest.length < name.length ? ` ${rest}` : name
+  private visibilityAndNameOf(member: ClassMethod | ClassAttribute): {
+    readonly visibility: string
+    readonly name: string
+  } {
+    const mark = VISIBILITY_MARKS[member.visibility]
+    const text = this.literalTextOf(member.name)
+    const rest = text.trimStart()
+    const name = rest.length < text.length ? ` ${rest}` : text
+    const replaced = this.replace(mark + name)
+    return replaced.startsWith(mark)
+      ? { visibility: mark, name: replaced.slice(mark.length) }
+      : { visibility: "", name: replaced }
   }
 
   /**
@@ -398,7 +424,7 @@ class ClassDbBuilder {
       relationTitle1: this.cardinalityOf(statement.fromCardinality),
       relationTitle2: this.cardinalityOf(statement.toCardinality),
       ...(this.hasLabel(statement)
-        ? { title: trimmed(this.literalTextOf(statement.label)) }
+        ? { title: this.replace(trimmed(this.literalTextOf(statement.label))) }
         : {}),
     })
   }
@@ -437,7 +463,7 @@ class ClassDbBuilder {
   /** Relations: the text of a cardinality without the whitespace at its ends, or `none` for a missing or empty string. */
   private cardinalityOf(cardinality: StringLiteral | null): string {
     if (cardinality === null || cardinality.value === "") return "none"
-    return trimmed(this.stringTextOf(cardinality))
+    return this.replace(trimmed(this.stringTextOf(cardinality)))
   }
 
   /**
@@ -543,10 +569,11 @@ class ClassDbBuilder {
     const writtenName = this.writtenNameOf(name)
     for (const each of writtenName.split(",")) step(each)
     this.giveCssClass(writtenName, "clickable")
-    const tooltipText = tooltip === null ? "" : this.stringTextOf(tooltip)
+    const tooltipText =
+      tooltip === null ? "" : this.replace(this.stringTextOf(tooltip))
     if (tooltipText === "") return
     for (const each of writtenName.split(",")) {
-      const entry = this.classes.get(idAndTypeOf(each).id)
+      const entry = this.classes.get(this.idAndTypeOf(each).id)
       if (entry !== undefined) entry.tooltip = tooltipText
     }
   }
@@ -564,7 +591,7 @@ class ClassDbBuilder {
    * (Names), after `classId-` when the name starts with an ASCII digit.
    */
   private lookupIdOf(name: string): string {
-    const { id } = idAndTypeOf(name)
+    const { id } = this.idAndTypeOf(name)
     return startsWithAsciiDigit(name) ? `classId-${id}` : id
   }
 
@@ -631,9 +658,21 @@ class ClassDbBuilder {
     return `${prefixText}${this.stringTextOf(name)}\n`
   }
 
+  /**
+   * Names: the id and the type of the written name `writtenName`, with the
+   * replacement of characters made on each.
+   */
+  private idAndTypeOf(writtenName: string): {
+    readonly id: string
+    readonly type: string
+  } {
+    const { id, type } = splitWrittenName(writtenName)
+    return { id: this.replace(id), type: this.replace(type) }
+  }
+
   /** Names: the id of the written name of `name`. */
   private idOf(name: ClassName): string {
-    return idAndTypeOf(this.writtenNameOf(name)).id
+    return this.idAndTypeOf(this.writtenNameOf(name)).id
   }
 
   /** The class with the id `id`, which exists. */

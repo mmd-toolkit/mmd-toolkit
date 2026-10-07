@@ -104,27 +104,82 @@ export function checkTokensInValueNodes(
   }
 }
 
-/** The kinds of token that a directive or an ignored `;` never cuts: only a `String` and a `RawText` token can hold one. */
-const TOKEN_KINDS_THAT_ARE_NEVER_CUT: ReadonlySet<string> = new Set([
+/** The kinds of token that a directive or an ignored `;` never cuts, and that two tokens with a cut between them are the fragments of when they have no table of texts: only a `String` and a `RawText` token can hold a cut. */
+const TOKEN_KINDS_WITHOUT_TABLE_OF_TEXTS: ReadonlySet<string> = new Set([
   "Identifier",
   "Numeric",
-  "Keyword",
 ])
+
+/**
+ * The runs of the tokens of `tokens` (in source order) in which each token is
+ * glued to the next by cuts: with a directive or an ignored `;` between them
+ * and nothing else. A token that no token of `tokens` is glued to is a run of
+ * its own.
+ */
+function runsGluedByCuts(
+  root: CheckedRoot,
+  tokens: readonly CheckedToken[],
+): CheckedToken[][] {
+  const runs: CheckedToken[][] = []
+  for (const token of tokens) {
+    const run = runs.at(-1)
+    const last = run?.at(-1)
+    if (
+      run !== undefined &&
+      last !== undefined &&
+      gluedByCuts(root, last, token)
+    ) {
+      run.push(token)
+    } else {
+      runs.push([token])
+    }
+  }
+  return runs
+}
+
+/**
+ * parser/docs/tokens.md, A token that a directive cuts: the runs of two tokens
+ * or more of `tokens` that cuts glue together and whose texts joined are one
+ * entry of a table of texts (`isEntry`) are the fragments of one token that a
+ * directive or an ignored `;` cut: `sub`, a directive, and `graph` of the
+ * `Keyword` `subgraph`, or `su`, a directive, `bgr`, an ignored `;`, and `aph`.
+ * A run is of any length, and each run of a longer run of glued tokens is
+ * looked at too, whatever tokens come before and after it. This is the one
+ * decision of the check of the `Keyword` tokens (`checkTokensAreNotCut()`) and
+ * of the `Punctuator` tokens (`checkPunctuatorsAreWhole()`).
+ */
+export function fragmentsOfEntries(
+  root: CheckedRoot,
+  tokens: readonly CheckedToken[],
+  isEntry: (joined: string) => boolean,
+): CheckedToken[][] {
+  const found: CheckedToken[][] = []
+  for (const glued of runsGluedByCuts(root, tokens)) {
+    for (let from = 0; from < glued.length; from++) {
+      for (let to = from + 1; to < glued.length; to++) {
+        const run = glued.slice(from, to + 1)
+        if (isEntry(run.map((token) => token.value).join(""))) found.push(run)
+      }
+    }
+  }
+  return found
+}
 
 /**
  * parser/docs/tokens.md, A token that a directive cuts: a directive or an
  * ignored `;` lies in a `String` or a `RawText` token, and in no `Identifier`,
  * `Numeric`, or `Keyword` token, which it would cut into fragments. Two
- * tokens of one of these kinds and one kind, with a cut and nothing else
- * between them, are the fragments of a cut token, as `A%%{init: {}}%%B` is
- * for the `Identifier` `AB`, and as `sub`, a directive, and `graph` are for the
- * `Keyword` `subgraph`: two `Keyword` tokens are fragments only when their
- * texts joined are the text of a keyword (`KEYWORD_TEXTS`); tokens that lie
- * apart, with whitespace between them, are units of their own, and so are
- * keywords that a diagram lets follow each other with nothing between
- * (`<<choice>>accDescr {}`). The `Punctuator` tokens are checked by
- * `checkPunctuatorsAreWhole()`, and the arrows and the shapes by the checks of
- * their nodes.
+ * tokens of the kind `Identifier` or `Numeric`, with a cut and nothing else
+ * between them, are the fragments of a cut token, as `A%%{init: {}}%%B` is for
+ * the `Identifier` `AB`. Tokens of the kind `Keyword` are the fragments of a
+ * cut keyword when they are a run that cuts glue together and their texts
+ * joined are the text of a keyword (`KEYWORD_TEXTS`), as `sub`, a directive,
+ * and `graph` are for `subgraph`, and `su`, `bgr`, and `aph` with a cut between
+ * each; tokens that lie apart, with whitespace between them, are units of
+ * their own, and so are keywords that a diagram lets follow each other with
+ * nothing between (`<<choice>>accDescr {}`). The `Punctuator` tokens are
+ * checked by `checkPunctuatorsAreWhole()`, and the arrows and the shapes by
+ * the checks of their nodes.
  */
 export function checkTokensAreNotCut(
   root: CheckedRoot,
@@ -136,16 +191,25 @@ export function checkTokensAreNotCut(
     if (
       previous !== undefined &&
       previous.type === token.type &&
-      TOKEN_KINDS_THAT_ARE_NEVER_CUT.has(token.type) &&
-      gluedByCuts(root, previous, token) &&
-      (token.type !== "Keyword" ||
-        isKeywordText(root, `${previous.value}${token.value}`))
+      TOKEN_KINDS_WITHOUT_TABLE_OF_TEXTS.has(token.type) &&
+      gluedByCuts(root, previous, token)
     ) {
       problems.report(
         label(token),
         `a ${token.type} token is cut: ${label(previous)} and this are its fragments`,
       )
     }
+  }
+  const keywords = tokens.filter((token) => token.type === "Keyword")
+  for (const run of fragmentsOfEntries(root, keywords, (joined) =>
+    isKeywordText(root, joined),
+  )) {
+    const last = run.at(-1)
+    if (last === undefined) continue
+    problems.report(
+      label(last),
+      `a Keyword token is cut: ${run.slice(0, -1).map(label).join(", ")} and this are its fragments`,
+    )
   }
 }
 

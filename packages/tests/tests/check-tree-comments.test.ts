@@ -243,6 +243,83 @@ describe("checkTree: where a comment ends", () => {
   })
 })
 
+// A comment ends before the line terminator that ends its line: a line feed,
+// the CRLF as one, a lone CR, or at the end of the text where none follows.
+// The comment is a diagram comment of a sequence diagram (`#c`, in the line of
+// a message) and a comment line of a flowchart (`%% c`).
+describe("checkTree: where a comment ends, by the line terminator", () => {
+  /** The ways in which a line is ended, with the name of each. */
+  const TERMINATORS: readonly (readonly [name: string, text: string])[] = [
+    ["a line feed", "\n"],
+    ["a CRLF", "\r\n"],
+    ["a lone CR", "\r"],
+    ["the end of the text", ""],
+  ]
+
+  for (const [name, terminator] of TERMINATORS) {
+    it(`passes a diagram comment that ends before ${name}, and fails one that ends after the line terminator it ends at`, () => {
+      const source = `sequenceDiagram\nA->>B: x #c${terminator}`
+      const at = source.indexOf("#c")
+
+      /** The tree whose comment ends at `end`. */
+      function withEnd(end: number): CheckedRoot {
+        return treeWith(source, "SequenceDiagram", [
+          { mark: "#", range: [at, end] },
+        ])
+      }
+
+      expect(checkTree(source, withEnd(at + 2))).toEqual([])
+      if (terminator === "") return
+      const where = `Comment at ${at}-${at + 2 + terminator.length}`
+      expect(
+        checkTree(source, withEnd(at + 2 + terminator.length)),
+      ).toContainEqual({
+        where,
+        message: "ends with a line terminator",
+      })
+    })
+
+    it(`passes a diagram comment that ends before ${name} and the whitespace before it, and fails one that ends before the whitespace`, () => {
+      const source = `sequenceDiagram\nA->>B: x #c  ${terminator}`
+      const at = source.indexOf("#c")
+
+      /** The tree whose comment ends at `end`. */
+      function comment(end: number): CheckedRoot {
+        return treeWith(source, "SequenceDiagram", [
+          { mark: "#", range: [at, end] },
+        ])
+      }
+
+      expect(checkTree(source, comment(at + 4))).toEqual([])
+      expect(checkTree(source, comment(at + 2))).toContainEqual({
+        where: `Comment at ${at}-${at + 2}`,
+        message: "does not end where its line ends",
+      })
+    })
+
+    it(`passes a comment line that ends before ${name}, and fails one that ends after the line terminator it ends at`, () => {
+      const source = `flowchart LR\n%% c${terminator}`
+      const at = source.indexOf("%%")
+
+      /** The tree whose comment ends at `end`. */
+      function comment(end: number): CheckedRoot {
+        return treeWith(source, "FlowchartDiagram", [
+          { mark: "%%", range: [at, end] },
+        ])
+      }
+
+      expect(checkTree(source, comment(at + 4))).toEqual([])
+      if (terminator === "") return
+      expect(
+        checkTree(source, comment(at + 4 + terminator.length)),
+      ).toContainEqual({
+        where: `Comment at ${at}-${at + 4 + terminator.length}`,
+        message: `the range of a comment line: ${JSON.stringify([at, at + 4 + terminator.length])}, not ${JSON.stringify([at, at + 4])}`,
+      })
+    })
+  }
+})
+
 describe("checkTree: the mark of a comment", () => {
   it("passes a comment line whose two `%` have a directive between them", () => {
     // The text without the directives goes on where the scan of a directive

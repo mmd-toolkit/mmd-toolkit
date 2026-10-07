@@ -249,6 +249,11 @@ flowchart と同じです。
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
 
+クラスの本体や namespace を閉じる `}` の後の U+2028 と U+2029 は、
+mermaid.js にとって空白なので、行末の空白と一緒に落とします。
+[test: U+2029 after the `}` of a class body]
+[test: U+2028 after the `}` of a namespace]
+
 入力
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/class/whitespace-between-tokens/collapsed-input.mmd)):
 
@@ -753,8 +758,7 @@ classDiagram
 
 `;` を落とすと、行の規則が無視する `;` が変わる行は、書かれたまま印字します。
 語の引数で終わるディレクティブの後の `;`（`%%{wrap foo;`）、
-別の `;` に接する無視される `;`、
-U+2028 か U+2029 の前の無視される `;` がある行です
+別の `;` に接する無視される `;` がある行です
 （[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照）。
 [fixture: directives/semicolon-after-word-argument-directive-kept]
 [fixture: directives/ignored-semicolon-next-to-another-kept]

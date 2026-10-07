@@ -19,10 +19,6 @@ const config: ViteUserConfig = defineConfig({
         replacement: local("../parser/src/index.ts"),
       },
       {
-        find: "@mmd-toolkit/tests/mermaid",
-        replacement: local("../tests/src/mermaid.ts"),
-      },
-      {
         find: "@mmd-toolkit/tests",
         replacement: local("../tests/src/index.ts"),
       },

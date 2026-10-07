@@ -149,6 +149,12 @@ ESTree の木をたどる道具はこれを前提にします。
   [fixture: common/comment-in-string]
   [fixture: class/tokens-style-ignored-semicolon-after-space]
   [fixture: flowchart/gram-label-string-then-text]
+  空白だけのトークンは、それが属する値に属するトークンが直後に続くところでも、
+  空白で終わりうる。
+  sequence の箱のテキストの、色の候補と残りの間の空白がそうである
+  （[sequence のトークン](./tokens/sequence.ja.md#トークン) を参照）。
+  [fixture: sequence/tokens-box-text-space-between-parts]
+  [fixture: sequence/db-box-colour-then-spaces-and-line-separator]
 - コメントは、どのトークンの外にもある。
   [fixture: common/comment-in-string]
 - ディレクティブは、ほかのどのトークンの中にもない。
@@ -168,6 +174,8 @@ ESTree の木をたどる道具はこれを前提にします。
   [fixture: state/tokens-ignored-semicolon-in-comment-before-comment-line]
 - コメントどうし、ディレクティブどうしは重ならない。
   [fixture: common/comment-after-directive]
+  [fixture: flowchart/tokens-string-two-comment-lines]
+  [fixture: flowchart/tokens-directives-label-space-between]
 - フロントマターがあるとき、最初のトークンは、その範囲の中のトークンである。
   開始の `---`、すべて空白でなければ本文、閉じる `---` がそうである
   （[Frontmatter](../../spec/docs/ast.ja.md#frontmatter) を参照）。
@@ -199,6 +207,14 @@ ESTree の木をたどる道具はこれを前提にします。
   その範囲のソースのテキストに等しい。
   [fixture: flowchart/gram-label-space-string]
   [fixture: state/gram-scale]
+- どのトークン、コメント、ディレクティブも、空の範囲を持たない。
+  mermaid.js が空として読む値はトークンを持たず、
+  空の断片はトークンにもコメントにもならず、
+  コメントとディレクティブは少なくともその印を含む。
+  [fixture: flowchart/gram-acc-title-empty-at-end]
+  [fixture: flowchart/tokens-rawtext-comment-line-then-closing-bracket]
+  [fixture: class/lex-bare-percent-line-between-statements]
+  [fixture: common/directive-empty-argument]
 
 2 つ目の条件はソースのテキストについてのものです。
 `Token.value` と、どのコメント、ディレクティブ、フロントマターのテキストも、

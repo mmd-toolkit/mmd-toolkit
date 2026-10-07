@@ -1,19 +1,20 @@
 // parser/docs/tokens/<diagram>.md, Tokens: the `Keyword` tokens of a diagram,
-// by their text. A directive or an ignored `;` between two `Keyword` tokens
-// cuts a keyword when the two texts joined are one entry of the table, as
-// `sub`, a directive, and `graph` are `subgraph`; two keywords that a diagram
-// lets one follow the other with nothing between (a pseudostate mark and the
-// start of an empty description block: `<<choice>>accDescr {}`) are units of
-// their own.
+// by their text. A directive or an ignored `;` between `Keyword` tokens cuts a
+// keyword when the texts of the run that they glue together, joined, are one
+// entry of the table, as `sub`, a directive, and `graph` are `subgraph`; two
+// keywords that a diagram lets one follow the other with nothing between (a
+// pseudostate mark and the start of an empty description block:
+// `<<choice>>accDescr {}`) are units of their own.
 
 /**
  * The texts of the `Keyword` tokens, in lower case, by the type of the body of
  * the diagram: the words of the row `Keyword` of the table of Tokens of
  * parser/docs/tokens/<diagram>.md, and the texts of the units that the row
  * names without their text (a header, a direction value, a link target, a
- * pseudostate mark, a wrap prefix). `tests/check-tree-punctuators.test.ts` is
- * the model of the test that requires the table to agree with the row, and a
- * test requires every `Keyword` token of a recorded tree to have a text here.
+ * pseudostate mark, a wrap prefix). `tests/check-tree-keywords.test.ts`
+ * requires the table to be the words of the row and the texts of those units,
+ * which it lists, and no others, and requires every `Keyword` token of a
+ * recorded tree to have a text here.
  */
 export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
   FlowchartDiagram: [

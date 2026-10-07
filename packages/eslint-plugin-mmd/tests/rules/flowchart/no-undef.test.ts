@@ -33,7 +33,7 @@ testRule("flowchart/no-undef", noUndef, {
           case: "`class` before the vertices, and `click` that calls a function",
           reports: true,
           inputs: [
-            "invalid/class-unknown-before-vertices",
+            "invalid/flowchart/db-undef-class-unknown-before-vertices",
             "invalid/flowchart/db-undef-click-call-of-an-unknown-id",
           ],
         },
@@ -52,7 +52,8 @@ testRule("flowchart/no-undef", noUndef, {
           reports: true,
           inputs: [
             "invalid/flowchart/db-undef-style-of-an-unknown-id-after-a-comment-line",
-            "invalid/style-of-an-unknown-id-crlf",
+            "invalid/flowchart/db-undef-style-of-an-unknown-id-crlf",
+            "invalid/flowchart/db-undef-style-cr",
           ],
         },
         {
@@ -79,17 +80,17 @@ testRule("flowchart/no-undef", noUndef, {
         {
           case: "the header `graph`, a `flowchart-v2` diagram",
           reports: true,
-          inputs: ["invalid/header-graph"],
+          inputs: ["invalid/flowchart/db-undef-header-graph"],
         },
         {
           case: "the header `flowchart-elk`",
           reports: true,
-          inputs: ["invalid/header-flowchart-elk"],
+          inputs: ["invalid/flowchart/db-undef-header-flowchart-elk"],
         },
         {
           case: "the header `swimlane-beta`, a `swimlane` diagram",
           reports: true,
-          inputs: ["invalid/header-swimlane-beta"],
+          inputs: ["invalid/flowchart/db-undef-header-swimlane-beta"],
         },
       ],
     },
@@ -100,12 +101,15 @@ testRule("flowchart/no-undef", noUndef, {
         {
           case: "`style C` after `A --> B`",
           reports: true,
-          inputs: ["invalid/flowchart/db-style-unknown-vertex"],
+          inputs: [
+            "invalid/flowchart/db-style-unknown-vertex",
+            "invalid/flowchart/db-undef-empty-description-block-before-style",
+          ],
         },
         {
           case: "`class C foo` after `A --> B`",
           reports: true,
-          inputs: ["invalid/flowchart/db-class-unknown-vertex"],
+          inputs: ["docs/rules/flowchart/no-undef.md incorrect 2"],
         },
         {
           case: "`click C href` after `A --> B`",
@@ -150,7 +154,9 @@ testRule("flowchart/no-undef", noUndef, {
         {
           case: "a vertex with a class shorthand",
           reports: false,
-          inputs: ["valid/flowchart/db-undef-style-of-a-vertex-with-a-class-shorthand"],
+          inputs: [
+            "valid/flowchart/db-undef-style-of-a-vertex-with-a-class-shorthand",
+          ],
         },
         {
           case: "the id of a link, also as the id of a vertex",
@@ -182,7 +188,7 @@ testRule("flowchart/no-undef", noUndef, {
           reports: false,
           inputs: [
             "valid/flowchart/db-style-before-vertex",
-            "valid/style-before-subgraph",
+            "valid/flowchart/db-undef-style-before-subgraph",
             "valid/flowchart/db-undef-style-before-a-vertex-that-a-link-ends-at",
           ],
         },
@@ -196,21 +202,27 @@ testRule("flowchart/no-undef", noUndef, {
           case: "`class` before a vertex, a subgraph, or a link id",
           reports: false,
           inputs: [
-            "valid/class-before-vertex",
+            "valid/flowchart/db-undef-class-before-vertex",
             "valid/flowchart/db-class-before-vertex",
-            "valid/class-before-subgraph",
-            "valid/class-before-link-id",
+            "valid/flowchart/db-undef-class-before-subgraph",
+            "valid/flowchart/db-undef-class-before-link-id",
           ],
         },
         {
           case: "`click` before a vertex or a link id",
           reports: false,
-          inputs: ["valid/click-before-vertex", "valid/click-before-link-id"],
+          inputs: [
+            "valid/flowchart/db-undef-click-before-vertex",
+            "valid/flowchart/db-undef-click-before-link-id",
+          ],
         },
         {
           case: "`click` with a tooltip before a vertex",
           reports: false,
-          inputs: ["valid/click-tooltip-before-vertex"],
+          inputs: [
+            "valid/flowchart/db-undef-click-tooltip-before-vertex",
+            "valid/flowchart/db-click-tooltip-before-vertex",
+          ],
         },
       ],
     },
@@ -221,7 +233,7 @@ testRule("flowchart/no-undef", noUndef, {
         {
           case: "two `style` of an id that nothing defines: the first is reported",
           reports: true,
-          inputs: ["invalid/style-twice-of-new-vertex"],
+          inputs: ["invalid/flowchart/db-undef-style-twice-of-new-vertex"],
         },
       ],
     },
@@ -233,15 +245,17 @@ testRule("flowchart/no-undef", noUndef, {
           case: "`class` or `click` after the `style` that adds the vertex: only the `style` is reported",
           reports: true,
           inputs: [
-            "invalid/class-after-style-of-new-vertex",
-            "invalid/click-after-style-of-new-vertex",
+            "invalid/flowchart/db-undef-class-after-style-of-new-vertex",
+            "invalid/flowchart/db-undef-click-after-style-of-new-vertex",
             "invalid/flowchart/db-undef-style-twice-then-class-of-a-new-vertex",
           ],
         },
         {
           case: "`class` before the `style` that adds the vertex: only the `style` is reported",
           reports: true,
-          inputs: ["invalid/class-before-style-of-new-vertex"],
+          inputs: [
+            "invalid/flowchart/db-undef-class-before-style-of-new-vertex",
+          ],
         },
       ],
     },
@@ -251,9 +265,27 @@ testRule("flowchart/no-undef", noUndef, {
         {
           case: "`style` after the link, or before it",
           reports: false,
-          inputs: ["valid/style-after-link-id", "valid/style-before-link-id"],
+          inputs: [
+            "valid/flowchart/db-style-after-edge-id",
+            "valid/flowchart/db-style-before-edge-id-vertex",
+          ],
+        },
+      ],
+    },
+    {
+      sentence:
+        "`style` applies to vertices and subgraphs: written after the link, it does nothing, and written before the link, as `style e1 stroke:red` before `A e1@--> B`, it adds a vertex `e1` with that style, as it does for any id that names nothing yet.",
+      cases: [
+        {
+          case: "`style` of a link id, after the link and before it: not reported",
+          reports: false,
+          inputs: [
+            "valid/flowchart/db-style-after-edge-id",
+            "valid/flowchart/db-style-before-edge-id-vertex",
+          ],
         },
       ],
     },
   ],
+  notBehavior: ["A link takes a style from `linkStyle` or from a class."],
 })

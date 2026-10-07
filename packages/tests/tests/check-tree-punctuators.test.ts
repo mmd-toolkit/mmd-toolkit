@@ -2,8 +2,11 @@ import { readFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
+import { checkTree } from "../src/check-tree/index.ts"
 import { FLOWCHART_SHAPES } from "../src/check-tree/flowchart-shapes.ts"
 import { PUNCTUATOR_TEXTS } from "../src/check-tree/punctuators.ts"
+import type { TreeProblem } from "../src/check-tree/types.ts"
+import { handMadeRoot } from "./check-tree-trees.ts"
 
 // The table of the texts of the `Punctuator` tokens (`src/check-tree/
 // punctuators.ts`) is a copy of the row `Punctuator` of the table of Tokens of
@@ -167,5 +170,76 @@ describe("the table of the shapes of a flowchart", () => {
         describeShape(shape, shape.closings),
       ).sort(),
     ).toEqual(rows.map((row) => describeShape(row, closingsOfRow(row))).sort())
+  })
+})
+
+/** The problems that say a `Punctuator` token has a text that its diagram does not have, for the tree of a body of the type `body` that is one `Punctuator` token of the text `text`. */
+function textProblems(body: string, text: string): TreeProblem[] {
+  const root = handMadeRoot(text, {
+    bodyType: body,
+    tokens: [["Punctuator", text]],
+  })
+  return checkTree(text, root).filter((problem) =>
+    problem.message.includes("is none of those"),
+  )
+}
+
+describe("the check of the text of a Punctuator token", () => {
+  it("reports a text that a flowchart has none of, though another diagram has it", () => {
+    // `+` is a text of a sequence diagram and of a class diagram.
+    expect(textProblems("FlowchartDiagram", "+")).toEqual([
+      {
+        where: "Punctuator at 0-1",
+        message:
+          'the Punctuator text "+" is none of those of a FlowchartDiagram',
+      },
+    ])
+  })
+
+  it("reports a text that a sequence diagram has none of, though a flowchart has it", () => {
+    // `&` is a text of a flowchart.
+    expect(textProblems("SequenceDiagram", "&")).toEqual([
+      {
+        where: "Punctuator at 0-1",
+        message:
+          'the Punctuator text "&" is none of those of a SequenceDiagram',
+      },
+    ])
+  })
+
+  it("reports a text that a class diagram has none of", () => {
+    expect(textProblems("ClassDiagram", "&")).toEqual([
+      {
+        where: "Punctuator at 0-1",
+        message: 'the Punctuator text "&" is none of those of a ClassDiagram',
+      },
+    ])
+  })
+
+  it("reports a text that a state diagram has none of", () => {
+    expect(textProblems("StateDiagram", "|")).toEqual([
+      {
+        where: "Punctuator at 0-1",
+        message: 'the Punctuator text "|" is none of those of a StateDiagram',
+      },
+    ])
+  })
+
+  it("reports a text that is the beginning of one that the diagram has", () => {
+    // `:::` is a text of a flowchart; `::` is not.
+    expect(textProblems("FlowchartDiagram", "::")).toEqual([
+      {
+        where: "Punctuator at 0-2",
+        message:
+          'the Punctuator text "::" is none of those of a FlowchartDiagram',
+      },
+    ])
+  })
+
+  it("does not report a text that the diagram has", () => {
+    expect(textProblems("FlowchartDiagram", "&")).toEqual([])
+    expect(textProblems("SequenceDiagram", "+")).toEqual([])
+    expect(textProblems("ClassDiagram", "<<")).toEqual([])
+    expect(textProblems("StateDiagram", "[*]")).toEqual([])
   })
 })

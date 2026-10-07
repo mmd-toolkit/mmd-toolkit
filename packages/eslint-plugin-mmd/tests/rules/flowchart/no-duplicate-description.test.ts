@@ -1,6 +1,7 @@
 /**
- * The rule `flowchart/no-duplicate-description`, on the examples of its document and on the
- * fixtures that record what mermaid.js does with statements that set the description.
+ * The rule `flowchart/no-duplicate-description`, on the examples of its
+ * document and on the fixtures that record what mermaid.js does with statements
+ * that set the description.
  */
 import { noDuplicateDescription } from "../../../src/rules/flowchart/no-duplicate-description.ts"
 import { testRule } from "../../rule-test.ts"
@@ -26,7 +27,9 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
         {
           case: "three statements: the second and the third are reported",
           reports: true,
-          inputs: ["invalid/flowchart/db-duplicate-description-three-descriptions"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-three-descriptions",
+          ],
         },
         {
           case: "one statement",
@@ -35,12 +38,15 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
             "docs/rules/flowchart/no-duplicate-description.md correct 1",
             "valid/flowchart/db-acc-descr-line-alone",
             "valid/flowchart/db-duplicate-description-single-block",
+            "valid/flowchart/db-subgraph-member-acc-descr-line",
           ],
         },
         {
           case: "a title and a description",
           reports: false,
-          inputs: ["valid/flowchart/db-duplicate-description-title-and-description"],
+          inputs: [
+            "valid/flowchart/db-duplicate-description-title-and-description",
+          ],
         },
       ],
     },
@@ -58,17 +64,21 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
         {
           case: "the header `graph`, a `flowchart-v2` diagram",
           reports: true,
-          inputs: ["invalid/header-graph"],
+          inputs: ["invalid/flowchart/db-duplicate-description-header-graph"],
         },
         {
           case: "the header `flowchart-elk`",
           reports: true,
-          inputs: ["invalid/header-flowchart-elk"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-header-flowchart-elk",
+          ],
         },
         {
           case: "the header `swimlane-beta`, a `swimlane` diagram",
           reports: true,
-          inputs: ["invalid/header-swimlane-beta"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-header-swimlane-beta",
+          ],
         },
       ],
     },
@@ -84,21 +94,25 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
         {
           case: "`accDescr:` without text, before another line: the line is the description",
           reports: true,
-          inputs: ["invalid/empty-description-takes-next-line"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-empty-description-takes-next-line",
+          ],
         },
         {
           case: "an empty line, a comment line, or a directive stands before the line that holds the text",
           reports: true,
           inputs: [
-            "invalid/empty-description-takes-text-past-an-empty-line",
-            "invalid/empty-description-takes-text-past-a-comment-line",
-            "invalid/empty-description-takes-text-past-a-directive",
+            "invalid/flowchart/db-duplicate-description-empty-description-takes-text-past-an-empty-line",
+            "invalid/flowchart/db-duplicate-description-empty-description-takes-text-past-a-comment-line",
+            "invalid/flowchart/db-duplicate-description-empty-description-takes-text-past-a-directive",
           ],
         },
         {
           case: "`accDescr:` without text, before another line, and no description before it",
           reports: false,
-          inputs: ["valid/flowchart/db-duplicate-description-line-without-text-takes-next-line"],
+          inputs: [
+            "valid/flowchart/db-duplicate-description-line-without-text-takes-next-line",
+          ],
         },
         {
           case: "`accDescr:` without text, at the end of the text",
@@ -123,12 +137,16 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
         {
           case: "two blocks, on several lines",
           reports: true,
-          inputs: ["invalid/flowchart/db-duplicate-description-multiline-blocks"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-multiline-blocks",
+          ],
         },
         {
           case: "two blocks on one line",
           reports: true,
-          inputs: ["invalid/flowchart/db-duplicate-description-blocks-on-one-line"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-blocks-on-one-line",
+          ],
         },
       ],
     },
@@ -158,7 +176,9 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
         {
           case: "the outer statement first, then one in a subgraph",
           reports: true,
-          inputs: ["invalid/flowchart/db-duplicate-description-inner-after-outer"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-inner-after-outer",
+          ],
         },
         {
           case: "one in a subgraph first, then the outer statement",
@@ -177,8 +197,9 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
           case: "two in a nested subgraph",
           reports: true,
           inputs: [
-            "invalid/semicolon-after-block-in-subgraph",
-            "invalid/semicolon-after-block-in-nested-subgraph",
+            "invalid/flowchart/db-duplicate-description-semicolon-after-block-in-subgraph",
+            "invalid/flowchart/db-duplicate-description-semicolon-after-block-in-nested-subgraph",
+            "invalid/flowchart/db-subgraph-member-acc-descr-block-semicolon-kept",
           ],
         },
       ],
@@ -199,15 +220,17 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
           case: "an empty block that holds an empty line, a comment line, or a directive",
           reports: false,
           inputs: [
-            "valid/empty-block-with-empty-line-after-line",
+            "valid/flowchart/db-duplicate-description-empty-block-with-empty-line-after-line",
             "valid/flowchart/db-duplicate-description-comment-only-block-after-line",
-            "valid/directive-only-block-after-line",
+            "valid/flowchart/db-duplicate-description-directive-only-block-after-line",
           ],
         },
         {
           case: "a block that is not closed",
           reports: false,
-          inputs: ["valid/flowchart/db-duplicate-description-unclosed-block-after-line"],
+          inputs: [
+            "valid/flowchart/db-duplicate-description-unclosed-block-after-line",
+          ],
         },
       ],
     },
@@ -232,9 +255,10 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
           suggests: true,
           inputs: [
             "invalid/flowchart/db-duplicate-description-comment-line-between",
-            "invalid/empty-line-between",
-            "invalid/directive-between",
-            "invalid/semicolon-statement-between",
+            "invalid/flowchart/db-duplicate-description-empty-line-between",
+            "invalid/flowchart/db-duplicate-description-directive-between",
+            "invalid/flowchart/db-duplicate-description-semicolon-statement-between",
+            "invalid/flowchart/db-duplicate-description-empty-description-block-between",
           ],
         },
         {
@@ -242,15 +266,15 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
           reports: true,
           suggests: true,
           inputs: [
-            "invalid/semicolon-ends-line-description",
-            "invalid/semicolon-after-block-in-subgraph",
+            "invalid/flowchart/db-duplicate-description-semicolon-ends-line-description",
+            "invalid/flowchart/db-duplicate-description-semicolon-after-block-in-subgraph",
           ],
         },
         {
           case: "the lines end with CRLF",
           reports: true,
           suggests: true,
-          inputs: ["invalid/crlf"],
+          inputs: ["invalid/flowchart/db-duplicate-description-crlf"],
         },
         {
           case: "the statements stand in a subgraph",
@@ -278,22 +302,16 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
           reports: true,
           suggests: true,
           inputs: [],
-          written: [
-            {
-              name: "line-separator-in-block-description",
-              code: "flowchart LR\n  A\n  accDescr { a\u2028b }\n  accDescr: c\n",
-            },
+          corpus: [
+            "flowchart/db-duplicate-description-line-separator-in-block-description",
           ],
         },
         {
           case: "a line separator in a line description: one statement",
           reports: false,
           inputs: [],
-          written: [
-            {
-              name: "line-separator-in-line-description",
-              code: "flowchart LR\n  A\n  accDescr: a\u2028accDescr: b\n",
-            },
+          corpus: [
+            "flowchart/db-duplicate-description-line-separator-in-line-description",
           ],
         },
       ],
@@ -302,9 +320,19 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
       sentence: "mermaid.js uses the last description that remains.",
       cases: [
         {
-          case: "a directive stands inside the text of the last description",
+          case: "three statements: whichever statement is removed, the last that remains is used",
+          reports: true,
+          offers: ["removePrevious", "removeThis"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-three-descriptions",
+          ],
+        },
+        {
+          case: "a directive, or a `;`, inside the text of a statement: one statement",
           reports: false,
-          inputs: ["valid/directive-inside-description-text"],
+          inputs: [
+            "valid/flowchart/db-duplicate-description-directive-inside-description-text",
+          ],
         },
       ],
     },
@@ -320,7 +348,7 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
             "invalid/flowchart/db-duplicate-description-inner-after-outer",
             "invalid/flowchart/db-duplicate-description-two-subgraphs",
             "invalid/flowchart/db-acc-descr-outer-replaces-subgraph",
-            "invalid/semicolon-after-block-in-nested-subgraph",
+            "invalid/flowchart/db-duplicate-description-semicolon-after-block-in-nested-subgraph",
           ],
         },
       ],
@@ -333,25 +361,43 @@ testRule("flowchart/no-duplicate-description", noDuplicateDescription, {
           case: "a `;` on its own line between the statements stays",
           reports: true,
           suggests: true,
-          inputs: ["invalid/semicolon-statement-between"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-semicolon-statement-between",
+          ],
         },
         {
           case: "a `;` after a block stays",
           reports: true,
           suggests: true,
-          inputs: ["invalid/semicolon-after-block-in-subgraph"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-semicolon-after-block-in-subgraph",
+          ],
         },
         {
           case: "a `;` that ends the text is removed with the statement",
           reports: true,
           suggests: true,
-          inputs: ["invalid/semicolon-ignored-at-end-of-text"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-semicolon-ignored-at-end-of-text",
+          ],
         },
         {
-          case: "a `;` after a block that ends the text is removed with the statement",
+          case: "an ignored `;` after a block, in a subgraph, or after the previous statement is removed with the statement",
           reports: true,
           suggests: true,
-          inputs: ["invalid/block-semicolon-ignored-at-end-of-text"],
+          inputs: [
+            "invalid/flowchart/db-duplicate-description-block-semicolon-ignored-at-end-of-text",
+            "invalid/flowchart/db-subgraph-member-acc-descr-block-semicolon",
+            "invalid/flowchart/db-duplicate-description-ignored-semicolon-in-subgraph",
+            "invalid/flowchart/db-duplicate-description-ignored-semicolon-after-block-then-vertex",
+            "invalid/flowchart/db-duplicate-description-ignored-semicolon-after-previous-block",
+          ],
+        },
+        {
+          case: "the lines end with a lone CR",
+          reports: true,
+          suggests: true,
+          inputs: ["invalid/flowchart/db-duplicate-description-duplicate-cr"],
         },
       ],
     },

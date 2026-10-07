@@ -1,23 +1,7 @@
 import type { SuggestedEdit } from "@eslint/core"
 import type { Node, Range, Token } from "@mmd-toolkit/parser"
 import type { MermaidSourceCode } from "../source-code.ts"
-
-/**
- * The `;` that ends the text right after `statement`, on its line, or null:
- * mermaid.js ignores that `;`, so it belongs to no other statement and goes
- * with `statement`. A `;` anywhere else stays (see `removalRange`).
- */
-function ignoredSemicolonAtEnd(
-  sourceCode: MermaidSourceCode,
-  statement: Node,
-): Token | null {
-  const semicolon = sourceCode.getTokenAfter(statement)
-  return semicolon?.type === "IgnoredSemicolon" &&
-    semicolon.loc.start.line === statement.loc.end.line &&
-    sourceCode.getTokenAfter(semicolon, { includeComments: true }) === null
-    ? semicolon
-    : null
-}
+import { ignoredSemicolonAfter } from "./semicolons.ts"
 
 /**
  * The range to remove so that `element` goes without leaving blank space. A `;`
@@ -77,12 +61,12 @@ export function oneOfTwoRemovals(
   const thisRange = removalRange(
     sourceCode,
     node,
-    ignoredSemicolonAtEnd(sourceCode, node) ?? node,
+    ignoredSemicolonAfter(sourceCode, node) ?? node,
   )
   const previousRange = removalRange(
     sourceCode,
     previous,
-    ignoredSemicolonAtEnd(sourceCode, previous) ?? previous,
+    ignoredSemicolonAfter(sourceCode, previous) ?? previous,
   )
   return [
     {

@@ -16,14 +16,8 @@
 
 ### SequenceDiagram
 
-範囲は、キーワードから、
-`Directive` と `IgnoredSemicolon` のトークンを除く図のテキストの
-最後のトークンまでで、
-どの文にも属さないトークンも含みます。
-どの図の `Root.body` のノードとも同じです
-（[ノード](../../../spec/docs/ast.ja.md#ノード) を参照）。
-[fixture: sequence/gram-title-then-separators]
-[fixture: sequence/tokens-comment-then-ignored-semicolon]
+範囲は、どの図の `Root.body` のノードとも同じ定めに従います
+（[ノードの範囲](../positions.ja.md#ノードの範囲) を参照）。
 
 ### SequenceParticipantStatement
 
@@ -77,9 +71,11 @@
 
 ### SequenceText
 
-範囲は、接頭辞（接頭辞がなければテキスト）から、テキストの終わりまでです。
+範囲は、接頭辞（接頭辞がなければテキスト）から、
+テキストの終わり（テキストがなければ接頭辞の終わり）までです。
 [fixture: sequence/lex-wrap-prefix-colon]
 [fixture: sequence/db-note-over-two]
+[fixture: sequence/db-message-wrap-prefix-without-text]
 
 ### SequenceDataBlock
 

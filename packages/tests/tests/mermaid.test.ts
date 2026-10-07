@@ -160,6 +160,75 @@ describe("runMermaid", () => {
     expect(vertices(withoutHtmlLabels)[0]?.text).toBe(written)
   })
 
+  it("decides whether htmlLabels is enabled by the root htmlLabels first, then flowchart.htmlLabels, and enables it when neither is set", async () => {
+    const text = 'flowchart TD\n  A["a<b>=c"]\n'
+    const cases: readonly {
+      readonly name: string
+      readonly config: MermaidConfig
+      readonly changed: boolean
+    }[] = [
+      { name: "neither is set", config: {}, changed: true },
+      { name: "root true", config: { htmlLabels: true }, changed: true },
+      { name: "root false", config: { htmlLabels: false }, changed: false },
+      {
+        name: "flowchart true",
+        config: { flowchart: { htmlLabels: true } },
+        changed: true,
+      },
+      {
+        name: "flowchart false",
+        config: { flowchart: { htmlLabels: false } },
+        changed: false,
+      },
+      {
+        name: "root true, flowchart true",
+        config: { htmlLabels: true, flowchart: { htmlLabels: true } },
+        changed: true,
+      },
+      {
+        name: "root true, flowchart false",
+        config: { htmlLabels: true, flowchart: { htmlLabels: false } },
+        changed: true,
+      },
+      {
+        name: "root false, flowchart true",
+        config: { htmlLabels: false, flowchart: { htmlLabels: true } },
+        changed: false,
+      },
+      {
+        name: "root false, flowchart false",
+        config: { htmlLabels: false, flowchart: { htmlLabels: false } },
+        changed: false,
+      },
+    ]
+    for (const { name, config, changed } of cases) {
+      const outcome = await runMermaid(text, {
+        config: { ...config, securityLevel: "other" },
+      })
+      expect(vertices(outcome)[0]?.text, name).toBe(
+        changed ? "a&lt;b&gt;&equals;c" : "a<b>=c",
+      )
+    }
+  })
+
+  it("writes every form of the line break tag as <br/> under a securityLevel that is not one of mermaid's values, and keeps it as written under the others", async () => {
+    const forms = ["<br>", "<br/>", "<br />", "</br>", "<BR>", "#br#"]
+    const text = `flowchart TD\n${forms
+      .map((form, index) => `  N${String(index)}["a${form}b"]\n`)
+      .join("")}`
+    const other = await runMermaid(text, { config: { securityLevel: "other" } })
+    expect(vertices(other).map((vertex) => vertex.text)).toEqual(
+      forms.map(() => "a<br/>b"),
+    )
+    for (const securityLevel of ["strict", "loose", "antiscript", "sandbox"]) {
+      const outcome = await runMermaid(text, { config: { securityLevel } })
+      expect(
+        vertices(outcome).map((vertex) => vertex.text),
+        securityLevel,
+      ).toEqual(forms.map((form) => `a${form}b`))
+    }
+  })
+
   it("lets an error of the site configuration through, not as a rejection", async () => {
     await expect(
       runMermaid("flowchart LR\nA-->B\n", {

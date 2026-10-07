@@ -185,8 +185,6 @@ function findOutdentedAtoms(
  *   first one included, and comment lines among them stay where they are.
  *   The whitespace after the `{` is read with the `{`, so the text on the
  *   line of the `{` is spaced as any other token.
- * - a direction line, whose text before and after the direction mermaid.js
- *   reads as a whole.
  * - a `;` that is a statement of its own: its `;` is its structure, not a
  *   `;` that separates statements or that the line rule ignores.
  * - a click statement written over several lines. mermaid.js accepts a line
@@ -215,7 +213,6 @@ function findKeptStretches(
       return spansLines(source, statement) ? [whole] : []
     case "FlowchartAccDescrBlockStatement":
       return findAccDescrBlockStretches(source, statement)
-    case "FlowchartDirectionStatement":
     case "FlowchartEmptyStatement":
       return [whole]
     default:

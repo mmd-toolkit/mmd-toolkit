@@ -17,6 +17,8 @@ import type {
   SequenceText,
   SequenceTitleStatement,
 } from "./sequence-tree.ts"
+import type { TextReplacement } from "./text-replacement.ts"
+import { textReplacementOf } from "./text-replacement.ts"
 import type { TreeRoot } from "./tree.ts"
 import { descriptionOf, setOwnProperty, trimmed } from "./values.ts"
 
@@ -206,6 +208,9 @@ class SequenceDbBuilder {
 
   private readonly isColor: ColorAnswer
 
+  /** The replacement of characters that the configuration gives the texts that the Db keeps. */
+  private readonly replace: TextReplacement
+
   private readonly root: TreeRoot
 
   /** The converted form of ranges of the source. */
@@ -219,7 +224,8 @@ class SequenceDbBuilder {
   ) {
     this.root = root
     this.text = new ConvertedText(readConvertedCharacters(source, root))
-    this.title = embedded.title ?? ""
+    this.replace = textReplacementOf(embedded.config)
+    this.title = this.replace(embedded.title ?? "")
     this.dataBlockEffects = [...embedded.dataBlockEffects]
     this.wrapSetting = wrapSettingOf(embedded.config)
     this.isColor = isColor
@@ -322,7 +328,7 @@ class SequenceDbBuilder {
       case "SequenceLinkStatement": {
         const id = this.idOf(statement.id)
         this.addMentioned(id)
-        const { label, url } = linkOf(this.textOf(statement.text))
+        const { label, url } = linkOf(this.replace(this.textOf(statement.text)))
         this.actorOf(id).links.assign(label, url)
         return
       }
@@ -335,11 +341,11 @@ class SequenceDbBuilder {
         this.applyTitle(statement)
         return
       case "SequenceAccTitleStatement":
-        this.accTitle = this.literalTextOf(statement.value) ?? ""
+        this.accTitle = this.replace(this.literalTextOf(statement.value) ?? "")
         return
       case "SequenceAccDescrStatement": {
         const value = this.literalTextOf(statement.value)
-        this.accDescr = value === null ? "" : descriptionOf(value)
+        this.accDescr = value === null ? "" : this.replace(descriptionOf(value))
         return
       }
       case "SequenceAccDescrBlockStatement": {
@@ -347,7 +353,9 @@ class SequenceDbBuilder {
         // its text; a closed block without text changes nothing.
         const value = this.literalTextOf(statement.value)
         if (!statement.closed) this.accDescr = ""
-        else if (value !== null) this.accDescr = descriptionOf(value)
+        else if (value !== null) {
+          this.accDescr = this.replace(descriptionOf(value))
+        }
         return
       }
       case "SequenceLoopStatement":
@@ -522,7 +530,7 @@ class SequenceDbBuilder {
       nameText = this.text.of(text.range)
     }
     const { wrap, rest } = withoutWrapPrefix(nameText)
-    const name = trimmed(rest)
+    const name = this.replace(trimmed(rest))
     return {
       ...(name === "" ? {} : { name }),
       wrap: wrap ?? this.wrapSetting,
@@ -628,7 +636,7 @@ class SequenceDbBuilder {
 
   /** Titles: `title` sets the title to the value of its SequenceTitleStatement, the text of its `title-text` unit as written, whitespace included. */
   private applyTitle(statement: SequenceTitleStatement): void {
-    this.title = this.text.of(statement.value.range)
+    this.title = this.replace(this.text.of(statement.value.range))
   }
 
   /**
@@ -643,9 +651,15 @@ class SequenceDbBuilder {
     field: "links" | "properties",
     text: string,
   ): void {
+    // The text that mermaid.js reads as JSON is the text after the
+    // replacement of characters, and, for links, with `&equals;` written as
+    // `=` again.
+    const replaced = this.replace(text)
     let value: unknown
     try {
-      value = JSON.parse(text)
+      value = JSON.parse(
+        field === "links" ? withEqualsSigns(replaced) : replaced,
+      )
     } catch {
       return
     }
@@ -699,19 +713,28 @@ function jsonKeysOf(value: unknown): [string, unknown][] {
   return []
 }
 
+/** Links and properties: `text` with each `&equals;`, which the replacement of characters writes for `=`, written as `=` again. */
+function withEqualsSigns(text: string): string {
+  return text.replaceAll("&equals;", "=")
+}
+
 /**
- * Links and properties: the label and the URL of a `link` text: the text
- * before the first `@` without the character just before the `@`, and the
+ * Links and properties: the label and the URL of a `link` text, given as the
+ * text after the replacement of characters: the position of the first `@` is
+ * taken in that text, and the label and the URL are cut, at that position,
+ * from the text with `&equals;` written as `=` again. The label is the text
+ * before the `@` without the character just before the `@`, and the URL the
  * text after that `@`, each without whitespace at its ends. When the `@` is
  * the first character, the label is the text without its last character;
  * when it is the second, the label is empty. Without an `@`, the label is
  * the text without its last two characters, and the URL the whole text.
  */
-function linkOf(text: string): {
+function linkOf(replaced: string): {
   readonly label: string
   readonly url: string
 } {
-  const at = text.indexOf("@")
+  const at = replaced.indexOf("@")
+  const text = withEqualsSigns(replaced)
   if (at === -1) {
     return { label: trimmed(text.slice(0, -2)), url: trimmed(text) }
   }

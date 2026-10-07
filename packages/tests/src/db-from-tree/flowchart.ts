@@ -40,6 +40,8 @@ import type {
   TreeRange,
   TreeRoot,
 } from "./tree.ts"
+import type { TextReplacement } from "./text-replacement.ts"
+import { textReplacementOf } from "./text-replacement.ts"
 import {
   descriptionOf,
   setOwnProperty,
@@ -369,6 +371,9 @@ class FlowchartDbBuilder {
   /** The delimiters of the strings of the tree. */
   private readonly strings: StringDelimiters
 
+  /** The replacement of characters that the configuration gives the texts that the Db keeps. */
+  private readonly replace: TextReplacement
+
   public constructor(
     source: string,
     root: TreeRoot,
@@ -380,6 +385,7 @@ class FlowchartDbBuilder {
     )
     this.text = new ConvertedText(this.characters)
     this.strings = new StringDelimiters(root, this.characters)
+    this.replace = textReplacementOf(embedded.config)
     this.direction = diagramDirectionOf(diagram.direction)
     // docs/db-from-tree/flowchart.md, Subgraphs: a subgraph inherits the direction of the
     // diagram when `flowchart.inheritDir` of the effective configuration is
@@ -415,7 +421,7 @@ class FlowchartDbBuilder {
     // lists of texts, and the fields that the data blocks set.
     return {
       direction: this.direction,
-      title,
+      title: this.replace(title),
       accTitle: this.accTitle,
       accDescr: this.accDescr,
       vertices: [...this.vertices.values()].map((vertex): JsonObject => ({
@@ -490,12 +496,12 @@ class FlowchartDbBuilder {
         return []
       case "FlowchartAccTitleStatement": {
         const value = this.literalTextOf(statement.value)
-        this.accTitle = value ?? ""
+        this.accTitle = this.replace(value ?? "")
         return value === null ? [] : [value]
       }
       case "FlowchartAccDescrStatement": {
         const value = this.literalTextOf(statement.value)
-        this.accDescr = value === null ? "" : descriptionOf(value)
+        this.accDescr = value === null ? "" : this.replace(descriptionOf(value))
         return value === null ? [] : [value]
       }
       case "FlowchartAccDescrBlockStatement": {
@@ -503,7 +509,8 @@ class FlowchartDbBuilder {
         // its text; a closed block without text changes nothing.
         const value = this.literalTextOf(statement.value)
         if (!statement.closed) this.accDescr = ""
-        else if (value !== null) this.accDescr = descriptionOf(value)
+        else if (value !== null)
+          this.accDescr = this.replace(descriptionOf(value))
         return value === null ? [] : [value]
       }
       case "FlowchartEmptyStatement":
@@ -564,7 +571,9 @@ class FlowchartDbBuilder {
       this.vertices.set(id, vertex)
     }
     if (label !== null) {
-      vertex.text = withoutEnclosingQuotes(trimmed(this.labelTextOf(label)))
+      vertex.text = withoutEnclosingQuotes(
+        this.replace(trimmed(this.labelTextOf(label))),
+      )
       vertex.labelType = label.kind
     } else {
       vertex.text ??= id
@@ -823,7 +832,9 @@ class FlowchartDbBuilder {
           text:
             link.label === null
               ? ""
-              : withoutEnclosingQuotes(trimmed(this.labelTextOf(link.label))),
+              : withoutEnclosingQuotes(
+                  this.replace(trimmed(this.labelTextOf(link.label))),
+                ),
           labelType: link.label === null ? "text" : link.label.kind,
           classes: [],
           ...this.edgeId(link, start, end, lastOfSource, firstOfTarget),
@@ -891,7 +902,9 @@ class FlowchartDbBuilder {
     const subgraph: Subgraph = {
       id,
       nodes,
-      title: trimmed(title === null ? nameText : this.labelTextOf(title)),
+      title: trimmed(
+        this.replace(title === null ? nameText : this.labelTextOf(title)),
+      ),
       classes: [],
       labelType:
         title !== null
@@ -945,7 +958,7 @@ class FlowchartDbBuilder {
     }
     this.classStep(ids, "clickable")
     if (statement.tooltip !== null) {
-      const tooltip = this.stringTextOf(statement.tooltip)
+      const tooltip = this.replace(this.stringTextOf(statement.tooltip))
       for (const id of ids) this.tooltips.set(id, tooltip)
     }
   }

@@ -138,9 +138,18 @@ pin した mermaid.js の更新を扱う。
   | `src/db-from-tree/`                                         | `db-from-tree.test.ts`、`converted-text.test.ts`               |
   | `src/source-scan.ts`                                        | `source-scan.test.ts`                                          |
   | `src/check-tree/`                                           | `check-tree-corpus.test.ts`、`check-tree*.test.ts`             |
-  | `tools/`                                                    | テストのファイルはない。下を参照                               |
+  | `tools/src/diagrams.ts`                                     | `tools-diagrams.test.ts`                                       |
+  | `tools/src/fixture-store.ts`                                | `tools-fixture-store.test.ts`                                  |
+  | `tools/src/spec-recorder.ts`                                | `tools-spec-recorder.test.ts`                                  |
+  | `tools/src/specified-reading.ts`                            | `tools-specified-reading.test.ts`                              |
+  | `tools/fixtures.ts`、`tools/collect.ts`                     | テストのファイルはない。下を参照                               |
 
-  `tools/` のコマンドにはテストのファイルがなく、それぞれ動かして確かめる。
+  `tools/src` の関数のうち、fixture の記録ファイルの中身を決めるものは、
+  モジュールごとに 1 つの `tests/tools-*.test.ts` でテストする。
+  記録器は Node.js 自身の `import()` を必要とするので、
+  そのテストでは別のプロセスで動かす。
+  コマンドラインのファイル（`tools/fixtures.ts`、`tools/collect.ts`）には
+  テストのファイルがなく、それぞれのコマンドを動かして確かめる。
   `add-many`、`set-divergence`、`set-note` は `--dry-run` を付け、
   変える予定のものを読む。
   `generate` は `fixtures:check` で確かめる。

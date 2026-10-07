@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The text that the proposal removeBlock of the rule flowchart/no-empty-description-block makes of the input invalid/flowchart/db-subgraph-member-has-own-property-no-member-statements."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "hasOwnProperty",
+        "labelType": "text",
+        "styles": [
+          "fill:red"
+        ],
+        "classes": [
+          "clickable"
+        ],
+        "text": "hasOwnProperty",
+        "props": {},
+        "link": "u"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "hasOwnProperty"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

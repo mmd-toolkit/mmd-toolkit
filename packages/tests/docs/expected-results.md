@@ -58,10 +58,26 @@ With DOMPurify disabled,
 [`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L69-L83))
 leaves text unchanged as long as `securityLevel` is one of mermaid.js's values
 (`strict`, `loose`, `antiscript`, `sandbox`), and whatever the value when
-`flowchart.htmlLabels` is `false`. For any other value, with `htmlLabels`
-enabled, it turns `<`, `>` and `=` into character references (`&lt;`, `&gt;`,
-`&equals;`) and writes `<br>` as `<br/>`. Summaries rely on that: within those
-values, they do not depend on `securityLevel`.
+`htmlLabels` is disabled. [fixture: flowchart/db-vertex-label-markup-as-written]
+[fixture: flowchart/config-security-level-loose-line-breaks] For any other
+value, with `htmlLabels` enabled, it turns `<`, `>` and `=` into character
+references (`&lt;`, `&gt;`, `&equals;`) [fixture:
+flowchart/config-security-level-other-label-characters] and writes every form of
+the line break tag as `<br/>`: `<br>`, `<br/>`, `<br />`, `</br>`, `<BR>`, and
+the `#br#` that an author writes. [fixture:
+flowchart/config-security-level-other-line-breaks] Summaries rely on that:
+within those values, they do not depend on `securityLevel`.
+
+Whether `htmlLabels` is enabled is decided by the root `htmlLabels` of the
+configuration when that is set, and by `flowchart.htmlLabels` only when it is
+not; with neither set, it is enabled. So `flowchart.htmlLabels: false` disables
+it only while the root `htmlLabels` is unset, and the root `htmlLabels: true`
+enables it whatever `flowchart.htmlLabels` is. [fixture:
+flowchart/config-security-level-other-html-labels-false] [fixture:
+flowchart/config-security-level-other-flowchart-html-labels-false] [fixture:
+flowchart/config-security-level-other-html-labels-true-flowchart-false]
+[fixture:
+flowchart/config-security-level-other-html-labels-false-flowchart-true]
 
 `@braintree/sanitize-url` is reached through
 [`utils.formatUrl()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L247-L259),
@@ -123,10 +139,15 @@ recorded Db is the Db mermaid.js builds when DOMPurify changes nothing:
   not been checked in a browser.
 - **What remains**: the rest of `sanitizeText()`
   ([`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L70-L83))
-  still runs. With `htmlLabels` enabled and a `securityLevel` other than
-  `strict`, `loose`, `antiscript` or `sandbox`, it still replaces `<`, `>` and
-  `=` with entities, and `<br>` with `<br/>`. Fixtures using such a
-  `securityLevel` record the replaced text.
+  still runs. With `htmlLabels` enabled (see above for how that is decided) and
+  a `securityLevel` other than `strict`, `loose`, `antiscript` or `sandbox`, it
+  still replaces `<`, `>` and `=` with entities, and every form of the line
+  break tag with `<br/>`. The fixtures that use such a `securityLevel` record
+  the replaced text. [fixture:
+  flowchart/config-security-level-other-label-characters] [fixture:
+  flowchart/config-security-level-other-line-breaks]
+  [db-from-tree.md](./db-from-tree.md), The replacement of characters, states
+  which texts of each diagram it reaches.
 - **What implementations compare against**: the parser's Db-equivalent JSON is
   compared with these values, i.e. with text before HTML sanitization. It does
   not need to reproduce DOMPurify.
@@ -262,8 +283,13 @@ tag. [fixture: flowchart/html-tag-starts-in-frontmatter-value] The values in
 `embedded` are those that mermaid.js gives for the input as written, and, where
 it rejects that input, those it gives for the input with `(`: a `<` in a value
 of the configuration is then recorded as `(`. The title in `embedded` is the one
-of the Db. [fixture: flowchart/html-tag-starts-in-frontmatter-config-value] When
-mermaid.js rejects the input with `(`, the specified reading is the rejection
+of the Db. [fixture: flowchart/html-tag-starts-in-frontmatter-config-value]
+Where mermaid.js accepts the input as written, they are the values of the
+written input, and the input with `(` is not read: mermaid.js leaves a value
+that holds `<` out of the configuration, so `embedded` has none, and not the
+value with `(`. [fixture:
+flowchart/html-tag-starts-in-frontmatter-config-value-accepted] When mermaid.js
+rejects the input with `(`, the specified reading is the rejection
 (`accepted: false` and the error). If the replacement itself made the YAML of
 the frontmatter invalid, the generator stops: how that reading is made has to be
 decided for the fixture. The other marks need no such file: the specification
@@ -419,9 +445,11 @@ generated-input tests) then spend their time on the implementation under test.
   `fixtures:check`, `add`, `add-many`) turns it off for itself, since the
   fixtures record mermaid.js itself; so does the workflow `NodeCI.yml`, which is
   kept in `.github/workflows_bk/` (no workflow is active at present), and so do
-  the tests of this package, which check how a run is made, but for one test of
-  the store, which runs a text through the store of the repository to check that
-  the run functions use it. `detectDiagramType()` does not use the store.
+  the tests of this package, which check how a run is made, but for the tests of
+  the store in `tests/mermaid-run-store.test.ts` that turn it on: they run a
+  text through the store of the repository to check that the run functions use
+  it, that an error thrown instead of a result is not stored, and that
+  `detectDiagramType()` does not use the store.
 - Which tests to run is decided by the rules for running tests (the skill
   `conventions`), with the store or without it: the store makes a run shorter,
   not a reason to run more.

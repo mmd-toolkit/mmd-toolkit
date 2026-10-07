@@ -48,20 +48,25 @@ export function findSequenceKeptLines(source: Source): KeptLines {
     ),
   ])
   const extendedEnds = new Map<number, number>()
+  const linesOfExtendedEnds = new Set<number>()
   for (const statement of statementsOfUnits) {
     const line = lineStartOf(source, statement.range[1])
-    if (!verbatimLines.has(line)) continue
     const end = findEndOfSemicolonsAfter(source, statement.range[1])
-    if (end > lineEndOf(source, line)) {
+    if (verbatimLines.has(line)) {
+      if (end > lineEndOf(source, line)) {
+        extendedEnds.set(statement.range[1], end)
+        verbatimLines.add(lineStartOf(source, end - 1))
+        linesOfExtendedEnds.add(lineStartOf(source, end - 1))
+      }
+    } else if (isFollowedByDirectiveAndSemicolon(source, statement.range[1])) {
       extendedEnds.set(statement.range[1], end)
-      verbatimLines.add(lineStartOf(source, end - 1))
     }
   }
   const kept: KeptLines = {
     joined: new Set([
       ...findLinesWithOwnSemicolons(source, true),
-      ...linesAfterUnits,
-      ...[...extendedEnds.values()].map((end) => lineStartOf(source, end - 1)),
+      ...linesOfExtendedEnds,
+      ...linesAfterUnits.filter((line) => verbatimLines.has(line)),
     ]),
     verbatim: verbatimLines,
     writtenIndentation: new Set(),

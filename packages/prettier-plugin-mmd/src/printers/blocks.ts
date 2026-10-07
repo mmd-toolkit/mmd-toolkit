@@ -11,6 +11,7 @@ import {
   lineStartOf,
   withJoinedLines,
 } from "./kept-lines.ts"
+import { toAsciiLowerCase } from "./layout.ts"
 import type { Line } from "./lines.ts"
 import {
   breakAfter,
@@ -23,7 +24,7 @@ import {
   withTrailing,
 } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { isWhitespace } from "./source.ts"
+import { findTokenEndingBefore, isWhitespace } from "./source.ts"
 
 const { indent } = builders
 
@@ -278,6 +279,38 @@ export function printBlock<Statement extends Node>(
   }
 
   /**
+   * Whether the only verbatim lines of a stretch are the line that opens the
+   * block that it holds and the line that closes it, with the body on the
+   * lines between: the opening line is printed as written by the layout of
+   * the block, the text after the closing `}` as written (see
+   * `printStretch`), and the body as the body of any block, which is not as
+   * written (docs/state.md, Line separators). A block whose body starts on
+   * the opening line, because a directive that is not closed joins the
+   * lines, is printed as written.
+   */
+  function isEdgeLinesOfBlock(
+    stretch: Stretch,
+    covered: readonly Statement[],
+  ): boolean {
+    const block = covered.at(-1)
+    if (block === undefined || !rules.holdsStatements(block)) return false
+    const closer = findTokenEndingBefore(source, block.range[1])
+    if (
+      closer === undefined ||
+      (closer.value !== "}" && toAsciiLowerCase(closer.value) !== "end") ||
+      findContentStart(source, closer.range[0]) !== closer.range[0]
+    ) {
+      return false
+    }
+    const openingEnd = lineEndOf(source, stretch.start)
+    const closingStart = lineStartOf(source, closer.range[0])
+    return (
+      closingStart > openingEnd &&
+      !holdsVerbatimLine(source, kept, openingEnd + 1, closingStart, true)
+    )
+  }
+
+  /**
    * Prints a stretch: as written when one of its lines is verbatim or it
    * holds a statement that holds statements, and otherwise its statements
    * as formatted, with what lies between them (see `printInlineGap`).
@@ -285,7 +318,8 @@ export function printBlock<Statement extends Node>(
   function printStretch(stretch: Stretch): Line {
     const covered = statements.slice(stretch.first, stretch.after)
     if (
-      holdsVerbatimLine(source, kept, stretch.start, stretch.end) ||
+      (holdsVerbatimLine(source, kept, stretch.start, stretch.end) &&
+        !isEdgeLinesOfBlock(stretch, covered)) ||
       holdsJoiningRegion(source, stretch.start, stretch.end)
     ) {
       return {
@@ -310,10 +344,18 @@ export function printBlock<Statement extends Node>(
       position = rules.printedEnd(statement)
     }
     const last = covered.at(-1)
-    const trailing = printInlineGap(source, position, stretch.end, {
-      atLineStart: false,
-      atLineEnd: true,
-    })
+    // A line separator is no whitespace to every rule of mermaid.js: the
+    // whitespace after the last statement stays as written where it holds
+    // one (docs/state.md, Line separators).
+    const written = source.text.slice(position, stretch.end)
+    const trailing =
+      written.trim() === "" &&
+      (written.includes("\u2028") || written.includes("\u2029"))
+        ? printAsWritten(source, position, stretch.end)
+        : printInlineGap(source, position, stretch.end, {
+            atLineStart: false,
+            atLineEnd: true,
+          })
     return {
       doc: [...parts, trailing],
       blankBefore: false,
@@ -542,19 +584,35 @@ function printInlineGap(
   ]
 }
 
-/** Whether a verbatim line lies in the range. */
+/**
+ * Whether a verbatim line lies in the range. With `exceptClosers`, a line of
+ * nothing but a `}` or an `end` does not count: it closes a block of the
+ * range, which prints its own closing line as written.
+ */
 function holdsVerbatimLine(
   source: Source,
   kept: KeptLines,
   start: number,
   end: number,
+  exceptClosers = false,
 ): boolean {
   let line = lineStartOf(source, start)
   while (line < end) {
-    if (kept.verbatim.has(line)) return true
+    if (
+      kept.verbatim.has(line) &&
+      !(exceptClosers && isCloserLine(source, line))
+    ) {
+      return true
+    }
     line = lineEndOf(source, line) + 1
   }
   return false
+}
+
+/** Whether the line that starts at `line` holds nothing but a `}` or an `end`. */
+function isCloserLine(source: Source, line: number): boolean {
+  const text = source.text.slice(line, lineEndOf(source, line)).trim()
+  return text === "}" || toAsciiLowerCase(text) === "end"
 }
 
 /** The offset of the first character that is not whitespace on the line of `offset`. */

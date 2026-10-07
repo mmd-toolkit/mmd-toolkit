@@ -11,7 +11,7 @@ import type {
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import { findWrittenWhitespaceEnd } from "./gap.ts"
-import { lineStartOf, printedEndOf } from "./kept-lines.ts"
+import { lineEndOf, lineStartOf, printedEndOf } from "./kept-lines.ts"
 import {
   collectAtoms,
   collectValueNodes,
@@ -30,6 +30,7 @@ import {
   findTokensBetween,
   findTriviaBetween,
   isStructural,
+  isWhitespace,
 } from "./source.ts"
 import { findStateSemicolonLines } from "./state-kept-lines.ts"
 
@@ -599,7 +600,12 @@ function findNoteStretches(statement: StateStatement, end: number): Atom[] {
 /**
  * The layout of a note over lines: its keyword, position, and id, its text
  * on the lines after them as written, and `end note` at the level of the
- * note (docs/state.md, Multi-line values).
+ * note (docs/state.md, Multi-line values). The text is kept from the line
+ * break after the id to the line of `end note`, with the whitespace and the
+ * empty lines at its ends; the whitespace after the id on the line of the
+ * note is dropped. A note whose `end note` does not start its line, or
+ * whose text starts on the line of the id, is printed from its id by the
+ * gap rules, with its line breaks kept.
  */
 function layoutNoteOverLines(
   source: Source,
@@ -616,18 +622,66 @@ function layoutNoteOverLines(
     findStructuralTokenEndingBefore(source, note.range[0]),
     "the `end` of an `end note`",
   )
+  const text = findNoteTextStretch(source, statement, endKeyword)
   return {
     atoms: collectAtoms(
       source,
       statement.range[0],
       end,
       collectValueNodes(statement, stateValueNodeTypes),
-      [],
+      text === null ? [] : [text],
     ),
-    rules: new Map(),
+    rules: text === null ? new Map() : new Map([[text.start, "none"]]),
     outdented: new Set([endKeyword.range[0]]),
     lineBreaks: "kept",
   }
+}
+
+/**
+ * The stretch of a note over lines that is printed as written: from the
+ * line break after its id to the line break before the line of `end note`,
+ * or null where text other than comments and directives follows the id on
+ * its line or `end note` does not start its line.
+ */
+function findNoteTextStretch(
+  source: Source,
+  statement: StateNoteStatement,
+  endKeyword: Token,
+): Atom | null {
+  if (statement.state === null) return null
+  const headerEnd = lineEndOf(source, statement.state.range[1])
+  // The whitespace after a comment or a directive stays as written, which a
+  // gap does not print before a line break.
+  const start =
+    findTriviaBetween(source, statement.state.range[1], headerEnd).at(-1)
+      ?.range[1] ?? headerEnd
+  const endLine = lineStartOf(source, endKeyword.range[0])
+  if (
+    !isOnlyTriviaOrWhitespace(source, statement.state.range[1], headerEnd) ||
+    source.text.slice(endLine, endKeyword.range[0]).trim() !== "" ||
+    endLine - 1 <= start
+  ) {
+    return null
+  }
+  return { start, end: endLine - 1 }
+}
+
+/** Whether the text from `start` to `end` is whitespace, comments, and directives. */
+function isOnlyTriviaOrWhitespace(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  const trivia = findTriviaBetween(source, start, end)
+  for (let offset = start; offset < end; offset++) {
+    if (
+      !isWhitespace(source.text[offset]) &&
+      !trivia.some(({ range }) => range[0] <= offset && offset < range[1])
+    ) {
+      return false
+    }
+  }
+  return true
 }
 
 /** The gap rules of a statement. */

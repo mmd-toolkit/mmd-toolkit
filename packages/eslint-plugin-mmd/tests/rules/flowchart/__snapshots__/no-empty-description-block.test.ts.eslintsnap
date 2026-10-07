@@ -63,366 +63,6 @@ Code:
 ---
 
 
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-across-lines-after-subgraph-name
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-across-lines-after-subgraph-name-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph S accDescr {
-    |            ^~~~~~~~~~\ [1]
-  3 | }
-    | ~ [1]
-  4 | A
-  5 | end
-  6 |
-
-[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-click-with-trailing-space
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-click-with-trailing-space-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | A
-  3 | click A href "u"accDescr {} 
-    |                 ^~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-header
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-header-input.mmd
-
-Code:
-  1 | flowchart LR accDescr {}
-    |              ^~~~~~~~~~~ [1]
-  2 | A
-  3 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-link-style-before-separator
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-link-style-before-separator-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | A-->B
-  3 | linkStyle 0 interpolate basis accDescr {} ;
-    |                               ^~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-quoted-name-ending-with-space
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-quoted-name-ending-with-space-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   subgraph "a " accDescr {}
-    |                 ^~~~~~~~~~~ [1]
-  3 |   A
-  4 |   end
-  5 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-quoted-name-with-directive-and-space
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-quoted-name-with-directive-and-space-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   subgraph "a %%{init: {}}%%" accDescr {}
-    |                               ^~~~~~~~~~~ [1]
-  3 |   A
-  4 |   end
-  5 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-quoted-subgraph-name-and-trailing-space
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-quoted-subgraph-name-and-trailing-space-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph "S"accDescr {} 
-    |             ^~~~~~~~~~~ [1]
-  3 | A
-  4 | end
-  5 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-style-before-separator
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-style-before-separator-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | A
-  3 | style A fill:red accDescr {};B
-    |                  ^~~~~~~~~~~ [1]
-  4 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-subgraph-name-and-directive
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-subgraph-name-and-directive-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph S%%{init: {}}%% accDescr {}
-    |                          ^~~~~~~~~~~ [1]
-  3 | A
-  4 | end
-  5 |
-
-[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-subgraph-name-and-separator
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-subgraph-name-and-separator-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph S; accDescr {}
-    |             ^~~~~~~~~~~ [1]
-  3 | A
-  4 | end
-  5 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-subgraph-name-and-two-spaces
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-subgraph-name-and-two-spaces-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph S  accDescr {}
-    |             ^~~~~~~~~~~ [1]
-  3 | A
-  4 | end
-  5 |
-
-[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-subgraph-name-with-whitespace
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-subgraph-name-with-whitespace-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph A B accDescr {}
-    |              ^~~~~~~~~~~ [1]
-  3 | C
-  4 | end
-  5 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-unclosed-directive-in-subgraph-name
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-unclosed-directive-in-subgraph-name-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph S %%{wrap
-  3 | X
-  4 |  accDescr {}
-    |  ^~~~~~~~~~~ [1]
-  5 | A
-  6 | end
-  7 |
-
-[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-after-vertex
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-after-vertex-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | A accDescr {}
-    |   ^~~~~~~~~~~ [1]
-  3 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-before-separator-after-subgraph-name
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-before-separator-after-subgraph-name-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph S accDescr {};A
-    |            ^~~~~~~~~~~ [1]
-  3 | end
-  4 |
-
-[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-first-in-subgraph-body
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-first-in-subgraph-body-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph S
-  3 |   accDescr {}
-    |   ^~~~~~~~~~~ [1]
-  4 |   A
-  5 | end
-  6 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
-    Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
-        Output:
-          1 | flowchart LR
-          2 | subgraph S
-          3 |   A
-          4 | end
-          5 |
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-on-next-line-after-subgraph-name
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-on-next-line-after-subgraph-name-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph S accDescr {}
-    |            ^~~~~~~~~~~ [1]
-  3 |  accDescr {}
-    |  ^~~~~~~~~~~ [2]
-  4 | A
-  5 | end
-  6 |
-
-[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
-[2] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
-    Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
-        Output:
-          1 | flowchart LR
-          2 | subgraph S accDescr {}
-          3 | A
-          4 | end
-          5 |
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-right-after-separator-after-subgraph-name
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-right-after-separator-after-subgraph-name-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph S;accDescr {}
-    |            ^~~~~~~~~~~ [1]
-  3 | A
-  4 | end
-  5 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-with-a-directive-on-its-own-line
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-with-a-directive-on-its-own-line-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A
-  3 |   accDescr {
-    |   ^~~~~~~~~~\ [1]
-  4 | %%{init: {}}%%
-    | ~~~~~~~~~~~~~~\ [1]
-  5 |   }
-    | ~~~ [1]
-  6 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/block-with-crlf-lines
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/block-with-crlf-lines-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 |   A
-  3 |   accDescr {
-    |   ^~~~~~~~~~\ [1]
-  4 |   }
-    | ~~~ [1]
-  5 |
-
-[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
-    Suggestions:
-      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/blocks-after-quoted-subgraph-name
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/blocks-after-quoted-subgraph-name-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph "S"accDescr {} accDescr {}
-    |             ^~~~~~~~~~~ ^~~~~~~~~~~
-    |             [1]         [2]
-  3 | A
-  4 | end
-  5 |
-
-[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
-[2] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
----
-
-
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/blocks-around-separator-after-subgraph-name
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/blocks-around-separator-after-subgraph-name-input.mmd
-
-Code:
-  1 | flowchart LR
-  2 | subgraph S accDescr {} ; accDescr {}
-    |            ^~~~~~~~~~~   ^~~~~~~~~~~
-    |            [1]           [2]
-  3 | A
-  4 | end
-  5 |
-
-[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
-[2] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
----
-
-
 Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/db-acc-descr-empty-block-after-block
 Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/db-acc-descr-empty-block-after-block-input.mmd
 
@@ -567,6 +207,22 @@ Code:
 ---
 
 
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/db-empty-description-block-with-directive-inherit-dir
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/db-empty-description-block-with-directive-inherit-dir-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     A
+  4 |   end
+  5 |   accDescr { %%{init: {"flowchart": {"inheritDir": true}}}%% }
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
 Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/db-subgraph-member-empty-acc-descr-block
 Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/db-subgraph-member-empty-acc-descr-block-input.mmd
 
@@ -618,6 +274,52 @@ Code:
           6 | click hasOwnProperty href "u"
           7 | end
           8 |
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/db-subgraph-name-space-after-empty-description-block
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/db-subgraph-name-space-after-empty-description-block-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph "S"accDescr {} 
+    |             ^~~~~~~~~~~ [1]
+  3 | A
+  4 | end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/db-subgraph-name-space-before-empty-description-block
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/db-subgraph-name-space-before-empty-description-block-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S accDescr {};A
+    |            ^~~~~~~~~~~ [1]
+  3 | end
+  4 |
+
+[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/db-subgraph-name-space-between-empty-description-blocks
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/db-subgraph-name-space-between-empty-description-blocks-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph "S"accDescr {} accDescr {}
+    |             ^~~~~~~~~~~ ^~~~~~~~~~~
+    |             [1]         [2]
+  3 | A
+  4 | end
+  5 |
+
+[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
+[2] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
 ---
 
 
@@ -714,6 +416,50 @@ Code:
 ---
 
 
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-after-vertex
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-after-vertex-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-across-lines-after-subgraph-name
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-across-lines-after-subgraph-name-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S accDescr {
+    |            ^~~~~~~~~~\ [1]
+  3 | }
+    | ~ [1]
+  4 | A
+  5 | end
+  6 |
+
+[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-after-click-with-trailing-space
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-after-click-with-trailing-space-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | click A href "u"accDescr {} 
+    |                 ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
 Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-after-line-in-subgraph
 Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-after-line-in-subgraph-input.mmd
 
@@ -735,6 +481,246 @@ Code:
           3 |     accDescr: x
           4 |   end
           5 |
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-after-quoted-name-ending-with-space
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-after-quoted-name-ending-with-space-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph "a " accDescr {}
+    |                 ^~~~~~~~~~~ [1]
+  3 |   A
+  4 |   end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-after-quoted-name-with-directive-and-space
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-after-quoted-name-with-directive-and-space-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph "a %%{init: {}}%%" accDescr {}
+    |                               ^~~~~~~~~~~ [1]
+  3 |   A
+  4 |   end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-after-style-before-separator
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-after-style-before-separator-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | style A fill:red accDescr {};B
+    |                  ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-directive
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-directive-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S%%{init: {}}%% accDescr {}
+    |                          ^~~~~~~~~~~ [1]
+  3 | A
+  4 | end
+  5 |
+
+[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-separator
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-separator-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S; accDescr {}
+    |             ^~~~~~~~~~~ [1]
+  3 | A
+  4 | end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-two-spaces
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-and-two-spaces-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S  accDescr {}
+    |             ^~~~~~~~~~~ [1]
+  3 | A
+  4 | end
+  5 |
+
+[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-with-whitespace
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-after-subgraph-name-with-whitespace-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph A B accDescr {}
+    |              ^~~~~~~~~~~ [1]
+  3 | C
+  4 | end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-after-unclosed-directive-in-subgraph-name
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-after-unclosed-directive-in-subgraph-name-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S %%{wrap
+  3 | X
+  4 |  accDescr {}
+    |  ^~~~~~~~~~~ [1]
+  5 | A
+  6 | end
+  7 |
+
+[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-cr
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-cr-input.mmd
+
+Code:
+  1 | flowchart LR  A  accDescr {}
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+        Output:
+          1 | flowchart LR  A
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-first-in-subgraph-body
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-first-in-subgraph-body-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S
+  3 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  4 |   A
+  5 | end
+  6 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S
+          3 |   A
+          4 | end
+          5 |
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-on-next-line-after-subgraph-name
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-on-next-line-after-subgraph-name-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S accDescr {}
+    |            ^~~~~~~~~~~ [1]
+  3 |  accDescr {}
+    |  ^~~~~~~~~~~ [2]
+  4 | A
+  5 | end
+  6 |
+
+[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
+[2] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+        Output:
+          1 | flowchart LR
+          2 | subgraph S accDescr {}
+          3 | A
+          4 | end
+          5 |
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-right-after-separator-after-subgraph-name
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-right-after-separator-after-subgraph-name-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S;accDescr {}
+    |            ^~~~~~~~~~~ [1]
+  3 | A
+  4 | end
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-with-a-directive-on-its-own-line
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-with-a-directive-on-its-own-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 | %%{init: {}}%%
+    | ~~~~~~~~~~~~~~\ [1]
+  5 |   }
+    | ~~~ [1]
+  6 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-block-with-crlf-lines
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-block-with-crlf-lines-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |   }
+    | ~~~ [1]
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+    Suggestions:
+      - Remove the empty block: the block changed nothing, so mermaid.js reads the diagram as before.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |
 ---
 
 
@@ -772,8 +758,25 @@ Code:
 ---
 
 
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/header-flowchart-elk
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/header-flowchart-elk-input.mmd
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-blocks-around-separator-after-subgraph-name
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-blocks-around-separator-after-subgraph-name-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | subgraph S accDescr {} ; accDescr {}
+    |            ^~~~~~~~~~~   ^~~~~~~~~~~
+    |            [1]           [2]
+  3 | A
+  4 | end
+  5 |
+
+[1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
+[2] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-header-flowchart-elk
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-header-flowchart-elk-input.mmd
 
 Code:
   1 | flowchart-elk LR
@@ -792,8 +795,8 @@ Code:
 ---
 
 
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/header-graph
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/header-graph-input.mmd
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-header-graph
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-header-graph-input.mmd
 
 Code:
   1 | graph LR
@@ -812,8 +815,8 @@ Code:
 ---
 
 
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/header-swimlane-beta
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/header-swimlane-beta-input.mmd
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-header-swimlane-beta
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-header-swimlane-beta-input.mmd
 
 Code:
   1 | swimlane-beta LR
@@ -832,8 +835,8 @@ Code:
 ---
 
 
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/semicolon-after-block-in-nested-subgraph
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/semicolon-after-block-in-nested-subgraph-input.mmd
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-semicolon-after-block-in-nested-subgraph
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-semicolon-after-block-in-nested-subgraph-input.mmd
 
 Code:
   1 | flowchart LR
@@ -859,8 +862,8 @@ Code:
 ---
 
 
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/semicolon-after-block-in-subgraph
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/semicolon-after-block-in-subgraph-input.mmd
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-semicolon-after-block-in-subgraph
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-semicolon-after-block-in-subgraph-input.mmd
 
 Code:
   1 | flowchart LR
@@ -882,8 +885,22 @@ Code:
 ---
 
 
-Test: flowchart/no-empty-description-block >> invalid >>> invalid/two-blocks-after-subgraph-name
-Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/two-blocks-after-subgraph-name-input.mmd
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-splits-spaces-after-interpolate
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-splits-spaces-after-interpolate-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A-->B
+  3 | linkStyle 0 interpolate basis accDescr {} ;
+    |                               ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/gram-empty-description-block-two-blocks-after-subgraph-name
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/gram-empty-description-block-two-blocks-after-subgraph-name-input.mmd
 
 Code:
   1 | flowchart LR
@@ -896,4 +913,17 @@ Code:
 
 [1] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
 [2] mermaid.js reads whitespace after the name `S` as part of the subgraph name, so the subgraph gets a generated id. This empty block sets no description.
+---
+
+
+Test: flowchart/no-empty-description-block >> invalid >>> invalid/flowchart/header-empty-description-block-after-direction
+Filename: tests/fixtures/rules/flowchart/no-empty-description-block/invalid/flowchart/header-empty-description-block-after-direction-input.mmd
+
+Code:
+  1 | flowchart LR accDescr {}
+    |              ^~~~~~~~~~~ [1]
+  2 | A
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
 ---

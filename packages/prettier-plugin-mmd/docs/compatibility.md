@@ -39,6 +39,7 @@ fixture: flowchart/div-directive-in-circle-opening] [corpus fixture:
 flowchart/div-directive-inside-arrow] [corpus fixture:
 sequence/div-directive-in-number] [corpus fixture:
 sequence/div-directive-in-keyword] [corpus fixture:
+flowchart/div-directive-in-subgraph-keyword] [corpus fixture:
 class/div-directive-in-triple-colon] [corpus fixture: state/div-directive-in-id]
 For example, mermaid.js reads `sub%%{init: {}}%%graph S` as the keyword
 `subgraph`, and `A%%{init: {}}%%B-->C` as the node `AB`. Where the input is
@@ -112,6 +113,7 @@ mermaid.js accepts them in many such places, as if they were not there:
 `A-->|x""|B` is the edge from A to B with the label `x`, and `A call ()-->B` and
 `A accDescr {}-->B` are accepted too. The plugin reports such input as a syntax
 error and leaves it unchanged. [corpus fixture:
+flowchart/div-edge-label-empty-quoted-pair] [corpus fixture:
 flowchart/gram-empty-call-before-link] [corpus fixture:
 flowchart/gram-empty-description-block-before-link] An empty description block
 is not reported where the tree has a place for it, where a statement starts or
@@ -262,8 +264,9 @@ one of these ids, or with an id that ends with `direction` (a direction line
 takes `direction` after any run of characters), and a `;` separates it from the
 next one, the statements stay on the line and the `;` stays in place; the
 whitespace within the statements is formatted as usual. [fixture:
-flowchart/statements-one-per-line/semicolon-after-word-kept] [corpus fixture:
-flowchart/lex-acc-title-semicolon-before-colon] [corpus fixture:
+flowchart/statements-one-per-line/semicolon-after-word-kept] [fixture:
+flowchart/statements-one-per-line/semicolon-after-link-to-word-kept] [corpus
+fixture: flowchart/lex-acc-title-semicolon-before-colon] [corpus fixture:
 flowchart/lex-direction-line-semicolon-before-value] [corpus fixture:
 flowchart/lex-call-keyword-semicolon] See
 [Statements one per line](./flowchart.md#statements-one-per-line).
