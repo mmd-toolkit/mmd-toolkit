@@ -4,14 +4,18 @@
 
 プラグインのテストのしかたと、整形の例を足す、更新するしかたを説明します。
 プラグインは [`@mmd-toolkit/parser`](../../parser) で図を読み、
-[`@mmd-toolkit/tests`](../../tests) の補助関数で、
-出力を mermaid.js と照らして確かめます。
+出力を mermaid.js を動かさずに確かめます。
+テキストの木が表す Db を、
+[`@mmd-toolkit/tests`](../../tests) の補助関数で作って比べます。
 
 ## テストの実行
 
 ```sh
 pnpm vitest run --project prettier-plugin-mmd
 ```
+
+これは、整形の fixture、コーパス、単体テストを回します。
+実行には約 10 秒かかります。
 
 テストは `@mmd-toolkit/parser` と `@mmd-toolkit/tests` を、
 ビルドではなくソースから読みます（`vitest.config.ts` を参照）。
@@ -23,63 +27,54 @@ plugin のソースを import して Node で動かすスクリプトは、
 
 ## テスト
 
-| ファイル                                 | 確かめること                                                                                                                                                                                                                                               |
-| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tests/plugin.test.ts`                   | プラグインが宣言する言語、パーサー、printer。                                                                                                                                                                                                              |
-| `tests/dispatch.test.ts`                 | 図の本体が、その図種の printer に渡ること。printer のない図種と、パーサーが対応しない図種を、ファイルでも Markdown でも変えずに印字すること。                                                                                                              |
-| `tests/failure.test.ts`                  | パーサーが拒否する入力を、ファイルでは構文エラーとして報告し、Markdown では Prettier に任せること。バイト順マークの制限。                                                                                                                                  |
-| `tests/markdown.test.ts`                 | どの Markdown のコードブロックがプラグインに届くか。パーサーの代わりのスタブを使います。                                                                                                                                                                   |
-| `tests/markdown-flowchart.test.ts`       | Markdown のコードブロックの中で整形した flowchart。トップレベル、リスト項目、引用の中と、行末の空白。                                                                                                                                                      |
-| `tests/markdown-sequence.test.ts`        | Markdown のコードブロックの中で整形した sequence 図。トップレベル、リスト項目の中と、タイトルの末尾の空白。                                                                                                                                                |
-| `tests/markdown-class.test.ts`           | Markdown のコードブロックの中で整形した class 図。トップレベル、リスト項目の中と、コメントの後の空白 1 つの行。                                                                                                                                            |
-| `tests/markdown-state.test.ts`           | Markdown のコードブロックの中で整形した state 図。トップレベルとリスト項目の中。                                                                                                                                                                           |
-| `tests/line-separators.test.ts`          | 書かれたまま残す U+2028 か U+2029 を含む state 図と sequence 図。文字はエスケープで書きます。                                                                                                                                                              |
-| `tests/format.test.ts`                   | 整形の fixture ごとに、入力が出力に整形されること、出力を整形しても変わらないこと、mermaid.js が両方から同じ図を読むこと（[mermaid.js の読み方](#mermaidjs-の読み方)を参照）。                                                                             |
-| `tests/corpus.test.ts`                   | `@mmd-toolkit/tests` の適合性コーパス（common、flowchart、sequence、class、state）のうち、プラグインが整形する入力すべて。もう一度整形しても変わらないこと、mermaid.js が前と後で同じ図を読むか、同じエラーで両方を拒否すること。                          |
-| `tests/docs.test.ts`                     | 規則の文書と README が fixture と一致すること（[文書と fixture](#文書と-fixture) を参照）。                                                                                                                                                                |
-| `tests/value-nodes.test.ts`              | printer のある図種ごとに、子の欄を持たない木の型（その図種の型と、共有する葉のノード）が、どれも、書かれたまま印字する値か、例外として挙げたもののどちらかであること。木に足された型が、意図して扱われるようにするためです。                               |
-| `tests/source.test.ts`                   | printer がノードの構造のトークンとみなすもの。ディレクティブ、`;`、フロントマターのトークンは含みません。フロントマターの区切りの `---` は、flowchart の矢印と同じ種類と値です。                                                                           |
-| `tests/regression.test.ts`               | 見つかって直した失敗の入力（`tests/regression/*.json`）を毎回整形します。U+2028 と U+2029 はエスケープで書きます。                                                                                                                                         |
-| `tests/boundaries-<図種>.test.ts`        | ある図種のコーパスの fixture のトークンの境目に、境目の種類（前の要素、行の中の位置、後の要素。行末では文のキーワード）ごとに、ディレクティブ、ディレクティブ 2 つ、改行、テキストの後のコメント、U+2028 か U+2029、閉じていないディレクティブを挿します。 |
-| `tests/statement-endings-<図種>.test.ts` | ある図種のすべての種類の文（パーサーの文のノードの型）を fixture から取り、最初の行の末尾に、同じ部品の並びを付けます。単独のときと、次の行が続くとき。                                                                                                    |
-| `tests/forms-<図種>.test.ts`             | さまざまな形の文。形の軸を、2 つの軸の値のすべての組が一緒になるように組みます（`tests/pairwise.ts`）。class の関係・メンバー・文、sequence のメッセージ、state の遷移・文・別名・ノート、flowchart の端が記号のラベル。                                   |
-| `tests/separators.test.ts`               | `;` が区切る・終わらせる文。すべての文の対、語で終わる文、`;` を含むテキスト、`;` を持つ行、コメントの後の `;`、語で終わる subgraph の名前、区切りの前の空の説明ブロック。                                                                                 |
-| `tests/line-shapes.test.ts`              | 行の形。値の終わり、文を切るディレクティブ、改行をまたぐ文、複数行の click 文、U+2028 か U+2029 の後の style 行、文の末尾の U+2028 か U+2029 の後のコメント行（mermaid.js が 1 行として読む行）。                                                          |
-| `tests/mutation.test.ts`                 | コーパスの fixture の変異（`mutate()`）。fixture の種類ごとに 3 件に 1 件、seed 1。                                                                                                                                                                        |
-| `tests/sequence-newline-units.test.ts`   | `newline` の単位を要する sequence の文に、ディレクティブ・空白・`;` を付けます。                                                                                                                                                                           |
-| `tests/pairwise.test.ts`                 | forms を作る pairwise の行。                                                                                                                                                                                                                               |
+| ファイル                           | 確かめること                                                                                                                                                                                                                                                                                                            |
+| ---------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tests/plugin.test.ts`             | プラグインが宣言する言語、パーサー、printer。                                                                                                                                                                                                                                                                           |
+| `tests/dispatch.test.ts`           | 図の本体が、その図種の printer に渡ること。printer のない図種と、パーサーが対応しない図種を、ファイルでも Markdown でも変えずに印字すること。                                                                                                                                                                           |
+| `tests/failure.test.ts`            | パーサーが拒否する入力を、ファイルでは構文エラーとして報告し、Markdown では Prettier に任せること。バイト順マークの制限。                                                                                                                                                                                               |
+| `tests/markdown.test.ts`           | どの Markdown のコードブロックがプラグインに届くか。パーサーの代わりのスタブを使います。                                                                                                                                                                                                                                |
+| `tests/markdown-flowchart.test.ts` | Markdown のコードブロックの中で整形した flowchart。トップレベル、リスト項目、引用の中と、行末の空白。                                                                                                                                                                                                                   |
+| `tests/markdown-sequence.test.ts`  | Markdown のコードブロックの中で整形した sequence 図。トップレベル、リスト項目の中と、タイトルの末尾の空白。                                                                                                                                                                                                             |
+| `tests/markdown-class.test.ts`     | Markdown のコードブロックの中で整形した class 図。トップレベル、リスト項目の中と、コメントの後の空白 1 つの行。                                                                                                                                                                                                         |
+| `tests/markdown-state.test.ts`     | Markdown のコードブロックの中で整形した state 図。トップレベルとリスト項目の中。                                                                                                                                                                                                                                        |
+| `tests/line-separators.test.ts`    | 書かれたまま残す U+2028 か U+2029 を含む state 図と sequence 図。文字はエスケープで書きます。                                                                                                                                                                                                                           |
+| `tests/line-terminators.test.ts`   | 行が `\r\n` か単独の `\r` で終わる図。改行のときと同じに整形し、オプションの行末で印字します。文字はエスケープで書きます。 |
+| `tests/format.test.ts`             | 整形の fixture ごとに、入力が出力に整形されること、出力を整形しても変わらないこと、木が表す Db が両方で同じこと、埋め込みデータが書かれたままであること（[テストが保つもの](#テストが保つもの)を参照）。                                                                                                                |
+| `tests/corpus.test.ts`             | `@mmd-toolkit/tests` の適合性コーパス（common、flowchart、sequence、class、state）のうち、プラグインが整形する入力すべて。もう一度整形しても変わらないこと、埋め込みデータが書かれたままであること、出力の木が表す Db が、コーパスが入力について記録した Db と同じこと（[テストが保つもの](#テストが保つもの)を参照）。parser が拒否する入力すべてが、構文エラーとして報告されること。 |
+| `tests/docs.test.ts`               | 規則の文書と README が fixture と一致すること（[文書と fixture](#文書と-fixture) を参照）。                                                                                                                                                                                                                             |
+| `tests/value-nodes.test.ts`        | printer のある図種ごとに、子の欄を持たない木の型（その図種の型と、共有する葉のノード）が、どれも、書かれたまま印字する値か、例外として挙げたもののどちらかであること。木に足された型が、意図して扱われるようにするためです。                                                                                            |
+| `tests/source.test.ts`             | printer がノードの構造のトークンとみなすもの。ディレクティブ、`;`、フロントマターのトークンは含みません。フロントマターの区切りの `---` は、flowchart の矢印と同じ種類と値です。                                                                                                                                        |
+| `tests/sequence-layout.test.ts`    | 後ろの空白が別の単位にしてしまう id のうち、sequence の printer が取るもの。数と `title` で、その隣では矢印の前後に空白を置きません。                                                                                                                                                                                   |
 
-`boundaries-`、`statement-endings-`、`forms-`、`separators`、`line-shapes`、
-`mutation`、`sequence-newline-units` のテストは入力を機械的に作り、
-`tests/generated.ts` で確かめます。
-パーサーが受理する入力のそれぞれについて、エラーなく整形されることと、
-出力を整形しても変わらないことを確かめ、mermaid.js も受理する入力では、
-mermaid.js が出力から同じ図を読むことも確かめます
-（[mermaid.js の読み方](#mermaidjs-の読み方)を参照）。
-入力は種類ごとに、毎回同じ方法で選ぶので、
-境界と文のすべての種類が、偶然ではなく必ず試されます。
-境目の種類は、
-`@mmd-toolkit/tests` の `findBoundaries` と `selectByKey` が定めます。
-`tests/regression.test.ts` は、見つけて直した失敗の入力を持ち、
-毎回確かめます。
+### テストが保つもの
 
-### mermaid.js の読み方
+整形は、冪等で、Db を変えてはいけません。
+Db は mermaid.js から読みません。
+`tests/db-reading.ts` の `dbOfText` が、テキストの木から、
+`@mmd-toolkit/tests` の `dbFromTree` で作ります。
+入力の埋め込みデータ（フロントマター、ディレクティブ、データブロック）から
+mermaid.js が導く値を使います。
+コーパスは、fixture ごとにその値（`embeddedValuesOf`）と、
+入力の Db（`expected.json`。仕様が違う読み方をするものは `specified.json`）を
+記録しているので、コーパスのテストは、整形後のテキストの Db を、
+記録された Db と比べます。
+ほかのテストには記録がないので、整形後のテキストの Db を、
+入力の Db と、既定の値で比べます。
 
-整形の前と後で mermaid.js が読むものを比べるテストは、
-`tests/mermaid-readings.ts` で、次の 2 通りに比べます。
-
-- 仕様が読むとおりに比べる。
-  mermaid.js を、受理したテキストの読み方を変える既知の差
-  `comment-takes-character`、`comment-takes-line-break`、
-  `name-start-reads-unit` を取り除いて動かし
-  （`runMermaidWithEmbeddedData` の `withoutDivergences`）、
-  Db が同じか、両方が同じエラーで拒否されることを確かめます。
-  整形が保つべき Db は仕様の Db で、
-  それが mermaid.js と違うのは、既知の差が定める箇所だけだからです。
-- mermaid.js のままで比べる。
-  mermaid.js が整形の前のテキストを受理するときは、
-  整形の後のテキストも受理し、Db が同じであることを確かめます。
-  整形が、mermaid.js の描くものを変えないようにするためです。
+埋め込みデータの値は入力のものを使うので、
+整形が埋め込みデータを書かれたまま残すことも確かめます。
+`writtenEmbeddedTexts` が、ディレクティブとデータブロックの書かれたテキストを、
+出現順に並べ、その並びが整形の前と後で同じこと
+（行終端はすべて改行として読みます）を確かめます。
+フロントマターは例外です。
+printer は、安全なら、その YAML を Prettier の YAML 整形で整形するので、
+`describeFrontmatterChange` は、書かれたままか、その整形の出力かを受理し、
+YAML の値を保つことはその整形に頼ります。テストは値を読みません。
+データブロックを持つテキストで効果が与えられていないときは、
+`dbOfText` は Db を返しません。
+データブロックが Db にすることは mermaid.js が導くもので、
+テキストだけからは分からないからです。
+そのときも、ブロックの書かれたテキストは確かめます。
 
 ## printer の作り
 
@@ -147,10 +142,14 @@ pnpm --filter prettier-plugin-mmd run test:update
 このコマンドはパーサーをビルドし、整形した入力と違う出力をすべて書き出します。
 変わった出力は、残す前に差分として読んでください。
 テストが確かめるのは、出力が安定していることと、
-mermaid.js が同じ図を読むことで、整形が意図したとおりであることではありません。
+Db を変えないことで、整形が意図したとおりであることではありません。
 
 ## 文書と fixture
 
+規則の文書の例は fixture の写しで、`tests/format.test.ts` は、
+プラグインがそれぞれの出力を印字することと、
+Db と埋め込みデータを保つことの両方を確かめます
+（[テストが保つもの](#テストが保つもの)を参照）。
 英語版の規則の文書は、[docs/flowchart.md](./flowchart.md)、
 [docs/sequence.md](./sequence.md)、[docs/class.md](./class.md)、
 [docs/state.md](./state.md) です。

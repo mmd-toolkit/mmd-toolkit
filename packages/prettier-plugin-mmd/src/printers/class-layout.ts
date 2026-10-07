@@ -32,7 +32,6 @@ import {
   findTokensBetween,
   findTriviaBetween,
   isStructural,
-  isWhitespace,
 } from "./source.ts"
 
 /**
@@ -493,7 +492,12 @@ function addRelationRules(
   rules: Map<number, GapRule>,
 ): void {
   const { fromCardinality, arrow, toCardinality, to } = statement
-  if (fromCardinality !== null) rules.set(fromCardinality.range[0], "space")
+  if (fromCardinality !== null) {
+    rules.set(
+      fromCardinality.range[0],
+      spaceAfterName(source, statement.from, fromCardinality.range[0]),
+    )
+  }
   const arrowTokens = findTokensBetween(
     source,
     arrow.range[0],
@@ -517,7 +521,8 @@ function addRelationRules(
 /**
  * The rule for the gap before a token that follows a class name: one space,
  * except that a token that touches a name ending with the word `call` stays
- * touching. `call` followed by whitespace is a keyword that the lexer reads
+ * touching, where `call` starts a unit: not inside an ASCII word, but after a
+ * `-`, a `.`, or a letter that is not ASCII. `call` followed by whitespace is a keyword that the lexer reads
  * where a unit starts (diagrams/class.md, the statement context, rule 10), so
  * `A call()--> B` with a space before the arrow would be a callback.
  */
@@ -530,8 +535,23 @@ function spaceAfterName(
   const text = source.text.slice(...name.range)
   const before = text.at(-"call".length - 1)
   const endsWithCall =
-    text.endsWith("call") && (before === undefined || isWhitespace(before))
+    text.endsWith("call") && (before === undefined || !isWordCharacter(before))
   return endsWithCall ? "none" : "space"
+}
+
+/**
+ * Whether a character is one of those that the lexer reads as a word, which
+ * `call` does not start inside of: an ASCII letter, an ASCII digit, or `_`
+ * (diagrams/class.md, The shared rules, rule 12). After any other character,
+ * a `-`, a `.`, a letter that is not ASCII, or whitespace, a unit starts.
+ */
+function isWordCharacter(character: string): boolean {
+  return (
+    (character >= "a" && character <= "z") ||
+    (character >= "A" && character <= "Z") ||
+    (character >= "0" && character <= "9") ||
+    character === "_"
+  )
 }
 
 /**

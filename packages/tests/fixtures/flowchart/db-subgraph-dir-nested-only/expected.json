@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The direction statement is in the body of I and not in that of O, so O has no direction."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "I",
+        "nodes": [
+          "A"
+        ],
+        "title": "I",
+        "classes": [],
+        "dir": "TB",
+        "labelType": "text"
+      },
+      {
+        "id": "O",
+        "nodes": [
+          "I"
+        ],
+        "title": "O",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

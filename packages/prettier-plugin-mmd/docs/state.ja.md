@@ -4,16 +4,15 @@
 
 prettier-plugin-mmd が state 図をどう整形するかを説明します。
 以下の各規則は、mermaid.js が図から読むものを保ちます。
-変えると読み方が変わる箇所は書かれたまま残し、規則にその箇所を書きます。
-flowchart と同じ規則はそう書き、理由は [flowchart.ja.md](./flowchart.ja.md) にあります。
+整形によって図の解釈が変わる箇所は、入力をそのまま残します。
+各項目でその条件を説明します。
+flowchart と同じ規則はそう書き、
+理由は [flowchart の整形規則](./flowchart.ja.md) にあります。
 
-各規則には、flowchart と同じく、
-[`tests/fixtures/state/`](../tests/fixtures/state) の下に、
-規則の見出しを名前にした例のフォルダーがあります。
-各例は入力と整形した出力のファイルの組で、
-テストは、プラグインがその出力を印字することと、
-mermaid.js が入力と出力から同じ図を読むことの両方を確かめます。
-この文書の例はそれらのファイルの写しで、テストが同じであることを確かめます。
+各規則では、整形前のテキストと、プラグインが出力するテキストを、例で示します。
+例はテストが確かめる fixture で、各例の上のリンクはそのファイルへのものです。
+fixture の置き方と確かめ方は、
+[文書と fixture](./development.ja.md#文書と-fixture)にあります。
 
 ## 規則
 
@@ -22,12 +21,17 @@ mermaid.js が入力と出力から同じ図を読むことの両方を確かめ
 ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
 複合状態の文は、それを開く行より 1 段深く置き、
 その `}` は、その行と同じ段に、行に単独で置きます。
+[fixture: indentation/composite-states]
 1 段は Prettier の `useTabs` と `tabWidth` のオプションが決め、
 既定は空白 2 つです。
+[fixture: indentation/use-tabs]
+[fixture: indentation/tab-width-4]
 入力に書かれた字下げは保ちません。
-行頭の空白は、mermaid.js にとって何でもないからです。
+文の行頭の空白は、Mermaid による図の解釈に影響しないためです。
+[fixture: indentation/written-tabs-dropped]
 
-入力 ([indentation/composite-states-input.mmd](../tests/fixtures/state/indentation/composite-states-input.mmd)):
+入力
+([indentation/composite-states-input.mmd](../tests/fixtures/state/indentation/composite-states-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -40,7 +44,8 @@ Step1 --> Step2
 }
 ```
 
-出力 ([indentation/composite-states-output.mmd](../tests/fixtures/state/indentation/composite-states-output.mmd)):
+出力
+([indentation/composite-states-output.mmd](../tests/fixtures/state/indentation/composite-states-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -57,10 +62,23 @@ stateDiagram-v2
 
 複合状態と、本体を持つ別名の定義の `{` は、空白 1 つの後に、名前の行に置きます。
 次の行に書かれた `{` は、その行に移します。
+[fixture: composite-states/split]
+[fixture: composite-states/brace-after-one-space]
+[fixture: composite-states/alias-brace-on-next-line]
+[fixture: composite-states/directive-before-body]
+[fixture: multi-line-statements/brace-after-comment-line-kept]
+[fixture: multi-line-statements/brace-after-directive-kept]
 `state A { B --> C }` のように 1 行に書かれた本体は行に分け、
 区切りの `--` は、周りの文と同じ段に、行に単独で置きます。
+[fixture: composite-states/split]
+[fixture: composite-states/split-several-statements]
+[fixture: composite-states/split-nested]
+[fixture: composite-states/split-alias-body]
+[fixture: composite-states/divider-on-own-line]
+[fixture: composite-states/split-directive-in-body]
 
-入力 ([composite-states/split-input.mmd](../tests/fixtures/state/composite-states/split-input.mmd)):
+入力
+([composite-states/split-input.mmd](../tests/fixtures/state/composite-states/split-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -72,7 +90,8 @@ E
 state F { G -- H }
 ```
 
-出力 ([composite-states/split-output.mmd](../tests/fixtures/state/composite-states/split-output.mmd)):
+出力
+([composite-states/split-output.mmd](../tests/fixtures/state/composite-states/split-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -91,8 +110,11 @@ stateDiagram-v2
 
 括弧の間に空白しかない空の本体は、どう書かれていても、
 class 図と同じく `{ }` と印字します。
+[fixture: composite-states/empty-unified]
+[fixture: composite-states/empty-unified-lines]
 
-入力 ([composite-states/empty-unified-input.mmd](../tests/fixtures/state/composite-states/empty-unified-input.mmd)):
+入力
+([composite-states/empty-unified-input.mmd](../tests/fixtures/state/composite-states/empty-unified-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -103,7 +125,8 @@ state C {
 state "d" as E {}
 ```
 
-出力 ([composite-states/empty-unified-output.mmd](../tests/fixtures/state/composite-states/empty-unified-output.mmd)):
+出力
+([composite-states/empty-unified-output.mmd](../tests/fixtures/state/composite-states/empty-unified-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -118,12 +141,20 @@ stateDiagram-v2
 mermaid.js が読まない `%%` を持つ X の本体を開きます。
 一方、1 行の `state X %%{}` は、X と、空の本体を持つ複合状態 `%%` です。
 また、`%%` の後に空白があるとコメントになります。
+[fixture: composite-states/percent-before-body-kept]
+[fixture: composite-states/percent-space-brace-comment]
 `{` の前の空の説明ブロックも、書かれたまま残します。
 `state "d" as A` の次の行の `accDescr {} {` では id は `A` ですが、
 1 行に書くと id は `A accDescr {}` になり、
 本体を mermaid.js は拒否するからです。
+[fixture: composite-states/empty-block-before-body-kept]
+ディレクティブだけの本体は、`{` の行に書かれていればその行に残します
+（`state X { %%{init: {}}%% }`）。
+コメントは単独の行に置くので、コメントだけの本体は本体として印字します。
+[fixture: composite-states/empty-body-directive-and-comment]
 
-入力 ([composite-states/percent-before-body-kept-input.mmd](../tests/fixtures/state/composite-states/percent-before-body-kept-input.mmd)):
+入力
+([composite-states/percent-before-body-kept-input.mmd](../tests/fixtures/state/composite-states/percent-before-body-kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -132,7 +163,8 @@ state X
 state Y %%{}
 ```
 
-出力 ([composite-states/percent-before-body-kept-output.mmd](../tests/fixtures/state/composite-states/percent-before-body-kept-output.mmd)):
+出力
+([composite-states/percent-before-body-kept-output.mmd](../tests/fixtures/state/composite-states/percent-before-body-kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -141,7 +173,8 @@ stateDiagram-v2
   state Y %%{}
 ```
 
-入力 ([composite-states/empty-block-before-body-kept-input.mmd](../tests/fixtures/state/composite-states/empty-block-before-body-kept-input.mmd)):
+入力
+([composite-states/empty-block-before-body-kept-input.mmd](../tests/fixtures/state/composite-states/empty-block-before-body-kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -155,7 +188,8 @@ C
 }
 ```
 
-出力 ([composite-states/empty-block-before-body-kept-output.mmd](../tests/fixtures/state/composite-states/empty-block-before-body-kept-output.mmd)):
+出力
+([composite-states/empty-block-before-body-kept-output.mmd](../tests/fixtures/state/composite-states/empty-block-before-body-kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -177,8 +211,14 @@ mermaid.js はそれを拒否するからです。
 `state B` に `{` の行が続くと受理されます。
 そのため、`{` はその名前の行に移さず、
 id を次の行に書いたノートの行も、書かれたまま残します。
+[fixture: composite-states/brace-after-state-name-kept]
+ディレクティブやコメントの中の `{` は本体ではないので、
+そのような `{` だけを含む文は、ほかと同じように整形します。
+[fixture: statements-one-per-line/directive-after-state-name-formatted]
+[fixture: statements-one-per-line/comment-brace-after-state-name-formatted]
 
-入力 ([composite-states/brace-after-state-name-kept-input.mmd](../tests/fixtures/state/composite-states/brace-after-state-name-kept-input.mmd)):
+入力
+([composite-states/brace-after-state-name-kept-input.mmd](../tests/fixtures/state/composite-states/brace-after-state-name-kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -193,7 +233,8 @@ accDescr {}
  N1
 ```
 
-出力 ([composite-states/brace-after-state-name-kept-output.mmd](../tests/fixtures/state/composite-states/brace-after-state-name-kept-output.mmd)):
+出力
+([composite-states/brace-after-state-name-kept-output.mmd](../tests/fixtures/state/composite-states/brace-after-state-name-kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -214,15 +255,26 @@ accDescr {}
 state 図には文を区切るものがなく、
 `A --> B C --> D` のように 1 行に書かれた文は、それぞれの行に移します。
 click 文の後の空の説明ブロックも同じです。
+[corpus fixture: state/gram-click-after-empty-description-block]
+[corpus fixture: state/gram-click-empty-description-block-after]
+[fixture: statements-one-per-line/split]
+[fixture: statements-one-per-line/states]
+[fixture: statements-one-per-line/split-then-comment]
+[fixture: statements-one-per-line/split-with-directive-between]
 `state` の後の名前は、`state` の行に残します。
 `state a b` は 2 つの文で、`b` を行に単独で置くと状態 b を足しますが、
 `state a b` は足さないからです。
+[corpus fixture: state/lex-state-without-body]
 `state x "" y` と `state z ""` の、mermaid.js が読まない `""` も同じです。
+[fixture: statements-one-per-line/state-names-kept]
 `;` を含む行は、flowchart と同じく、その行の文を残します
 （[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照）。
 state 図では、`;` は id の文字です。
+[fixture: statements-one-per-line/line-with-semicolon-kept]
+[fixture: statements-one-per-line/line-with-ignored-semicolon-kept]
 
-入力 ([statements-one-per-line/split-input.mmd](../tests/fixtures/state/statements-one-per-line/split-input.mmd)):
+入力
+([statements-one-per-line/split-input.mmd](../tests/fixtures/state/statements-one-per-line/split-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -232,7 +284,8 @@ A
 click A href "https://example.com" accDescr {}
 ```
 
-出力 ([statements-one-per-line/split-output.mmd](../tests/fixtures/state/statements-one-per-line/split-output.mmd)):
+出力
+([statements-one-per-line/split-output.mmd](../tests/fixtures/state/statements-one-per-line/split-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -245,7 +298,8 @@ stateDiagram-v2
   accDescr {}
 ```
 
-入力 ([statements-one-per-line/state-names-kept-input.mmd](../tests/fixtures/state/statements-one-per-line/state-names-kept-input.mmd)):
+入力
+([statements-one-per-line/state-names-kept-input.mmd](../tests/fixtures/state/statements-one-per-line/state-names-kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -254,7 +308,8 @@ state x "" y
 state z ""
 ```
 
-出力 ([statements-one-per-line/state-names-kept-output.mmd](../tests/fixtures/state/statements-one-per-line/state-names-kept-output.mmd)):
+出力
+([statements-one-per-line/state-names-kept-output.mmd](../tests/fixtures/state/statements-one-per-line/state-names-kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -267,8 +322,13 @@ stateDiagram-v2
 
 flowchart と同じです。
 空行の連続は 1 つにし、本体の先頭と末尾の空行は取り除きます。
+[fixture: blank-lines/collapsed]
+[fixture: blank-lines/end-of-text-dropped]
+[fixture: blank-lines/around-comments-and-directives]
+[fixture: blank-lines/whitespace-only-lines]
 
-入力 ([blank-lines/collapsed-input.mmd](../tests/fixtures/state/blank-lines/collapsed-input.mmd)):
+入力
+([blank-lines/collapsed-input.mmd](../tests/fixtures/state/blank-lines/collapsed-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -288,7 +348,8 @@ E
 }
 ```
 
-出力 ([blank-lines/collapsed-output.mmd](../tests/fixtures/state/blank-lines/collapsed-output.mmd)):
+出力
+([blank-lines/collapsed-output.mmd](../tests/fixtures/state/blank-lines/collapsed-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -305,16 +366,27 @@ stateDiagram-v2
 
 行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにし、
 接しているトークンは接したまま残します。
+[fixture: whitespace-between-tokens/collapsed]
+[fixture: whitespace-between-tokens/tabs-collapsed]
+[fixture: whitespace-between-tokens/touching-class-kept]
 flowchart と同じです。
 `:::`、mermaid.js が読まない `""`、
-スタイルや class 文の `,` も同じで、浮いたノートの引用符は書かれたまま残します。
+スタイルや class 文の `,` も同じです。
+状態に結び付けない独立したノート（`note "..." as ...`）の引用符は、
+書かれたまま残します。
+[fixture: whitespace-between-tokens/comma-kept]
+[fixture: whitespace-between-tokens/floating-note-quotes-kept]
 `""` の前に空白が書かれているかどうかは保ちます。
 `state x"" {` は複合状態 `x""` で、`state x "" {` は複合状態 `x` だからです。
+[fixture: whitespace-between-tokens/quotes-before-brace-kept]
 キーワードは、書かれた大文字小文字のまま残します。
 mermaid.js は大文字小文字にかかわらず読み、
 `Left Of` のようなノートの位置は、書かれたまま図に入るからです。
+[fixture: whitespace-between-tokens/keyword-case-kept]
+[fixture: whitespace-between-tokens/keyword-case-more-kept]
 
-入力 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-input.mmd)):
+入力
+([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -327,7 +399,8 @@ scale   350   width
 hide empty description
 ```
 
-出力 ([whitespace-between-tokens/collapsed-output.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-output.mmd)):
+出力
+([whitespace-between-tokens/collapsed-output.mmd](../tests/fixtures/state/whitespace-between-tokens/collapsed-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -340,7 +413,8 @@ stateDiagram-v2
   hide empty description
 ```
 
-入力 ([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+入力
+([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -351,7 +425,8 @@ Note Left Of A : x
 HIDE EMPTY DESCRIPTION
 ```
 
-出力 ([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+出力
+([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/state/whitespace-between-tokens/keyword-case-kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -366,8 +441,11 @@ stateDiagram-v2
 
 遷移の矢印の前後には、空白を 1 つずつ置きます。
 `A-->B` は `A --> B` になります。
+[fixture: arrow-spacing/spaced]
+[fixture: arrow-spacing/tabs-around-arrow]
 
-入力 ([arrow-spacing/spaced-input.mmd](../tests/fixtures/state/arrow-spacing/spaced-input.mmd)):
+入力
+([arrow-spacing/spaced-input.mmd](../tests/fixtures/state/arrow-spacing/spaced-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -376,7 +454,8 @@ A-->B
 B  -->   [*]
 ```
 
-出力 ([arrow-spacing/spaced-output.mmd](../tests/fixtures/state/arrow-spacing/spaced-output.mmd)):
+出力
+([arrow-spacing/spaced-output.mmd](../tests/fixtures/state/arrow-spacing/spaced-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -387,12 +466,17 @@ stateDiagram-v2
 
 `scale`、`classDef`、`class`、`style`、`state`、`note`、`stateDiagram` の語は、
 大文字小文字によらず、後に空白が続くときだけキーワードで、ほかでは id です。
-そう綴った id からの遷移と、`:::` の後のクラスがそう綴られた状態からの遷移は、
+これらのキーワードと同じ名前の id からの遷移と、
+`:::` の後のクラスがその名前の状態からの遷移は、
 `scale-->B` のように、矢印の両側を接したまま残します。
 `scale -->B` は scale 文の始まりになるからです。
-そうした id の後の説明も、`:` を id に接したまま残します。
+[fixture: arrow-spacing/touching-before-keyword-kept]
+[fixture: arrow-spacing/other-keyword-ids-touching-kept]
+[fixture: arrow-spacing/label-after-keyword-id-spaced]
+その id の後の説明も、`:` を id に接したまま残します。
 
-入力 ([arrow-spacing/touching-before-keyword-kept-input.mmd](../tests/fixtures/state/arrow-spacing/touching-before-keyword-kept-input.mmd)):
+入力
+([arrow-spacing/touching-before-keyword-kept-input.mmd](../tests/fixtures/state/arrow-spacing/touching-before-keyword-kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -402,7 +486,8 @@ style:waiting
 A:::state-->B
 ```
 
-出力 ([arrow-spacing/touching-before-keyword-kept-output.mmd](../tests/fixtures/state/arrow-spacing/touching-before-keyword-kept-output.mmd)):
+出力
+([arrow-spacing/touching-before-keyword-kept-output.mmd](../tests/fixtures/state/arrow-spacing/touching-before-keyword-kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -414,21 +499,37 @@ stateDiagram-v2
 
 ### 説明とラベル
 
+`accTitle` と `accDescr` の後の `:` は、キーワードに接し、後に空白を 1 つ置きます。
+`accTitle  :  t` は `accTitle: t` になります。
+[fixture: descriptions-and-labels/acc-text-kept]
 説明と遷移のラベルの `:` の両側には、
-mermaid.js のドキュメントがラベルの多くを書くとおり、空白を 1 つずつ置きます。
+mermaid.js の公式ドキュメントの主な例に合わせて、空白を 1 つずつ置きます。
 `A-->B:submit` は `A --> B : submit` になります。
+[fixture: descriptions-and-labels/spaced]
+キーワードと同じつづりのクラスの後の説明の `:` は、接したまま残します。
+`A:::style:x` は `A:::style: x` になります。
+`:` の前に空白があると、キーワードが文を始めるからです。
+[fixture: descriptions-and-labels/class-named-style-then-description-kept]
 テキストは書かれたまま残します。
+[fixture: descriptions-and-labels/text-kept]
 空白だけの説明は、`:` の後の空白を残します。
 `A : ` は説明を与えませんが、`A :` は拒否されるからです。
+[corpus fixture: state/gram-description-blank]
+[corpus fixture: state/gram-description-colon-only]
+[fixture: descriptions-and-labels/blank-kept]
 `:` で終わる説明やラベルも、その後の空白を残します。
 `A : x: ` は受理されますが、
 説明は `:` で終われないので `A : x:` は拒否されるからです。
-それらの例は `descriptions-and-labels/blank-kept` と
-`descriptions-and-labels/ending-colon-kept` で、
-空白が行末にあるので、ここには載せません
-（[フォルダー](../tests/fixtures/state/descriptions-and-labels)を参照）。
+[fixture: descriptions-and-labels/ending-colon-kept]
+空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
+`"stateDiagram-v2\nA : \n"` は `"stateDiagram-v2\n  A : \n"` と印字し、
+`"stateDiagram-v2\nA : x: \nA-->B:y:  \n"` は
+`"stateDiagram-v2\n  A : x: \n  A --> B : y:  \n"` と印字します
+（fixture は[フォルダー](../tests/fixtures/state/descriptions-and-labels)の
+`blank-kept` と `ending-colon-kept` です）。
 
-入力 ([descriptions-and-labels/spaced-input.mmd](../tests/fixtures/state/descriptions-and-labels/spaced-input.mmd)):
+入力
+([descriptions-and-labels/spaced-input.mmd](../tests/fixtures/state/descriptions-and-labels/spaced-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -437,7 +538,8 @@ A-->B:submit
 B --> C :  approved
 ```
 
-出力 ([descriptions-and-labels/spaced-output.mmd](../tests/fixtures/state/descriptions-and-labels/spaced-output.mmd)):
+出力
+([descriptions-and-labels/spaced-output.mmd](../tests/fixtures/state/descriptions-and-labels/spaced-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -450,15 +552,19 @@ stateDiagram-v2
 `:` の後に空白が書かれているかどうかを保ちます
 （[ラベル](./class.ja.md#ラベル)を参照）。
 mermaid.js の行単位の規則は、`:` の直後から `#` までのテキストを読むからです。
+[fixture: descriptions-and-labels/semicolon-line-kept]
+[fixture: descriptions-and-labels/semicolon-line-space-after-colon-kept]
 
-入力 ([descriptions-and-labels/semicolon-line-kept-input.mmd](../tests/fixtures/state/descriptions-and-labels/semicolon-line-kept-input.mmd)):
+入力
+([descriptions-and-labels/semicolon-line-kept-input.mmd](../tests/fixtures/state/descriptions-and-labels/semicolon-line-kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
 styleA :#f00;
 ```
 
-出力 ([descriptions-and-labels/semicolon-line-kept-output.mmd](../tests/fixtures/state/descriptions-and-labels/semicolon-line-kept-output.mmd)):
+出力
+([descriptions-and-labels/semicolon-line-kept-output.mmd](../tests/fixtures/state/descriptions-and-labels/semicolon-line-kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -471,16 +577,28 @@ stateDiagram-v2
 mermaid.js は本文を id の直後から読み、最初の 2 文字を除くからです。
 `note left of A:hi` の本文は `i` で、
 `note right of A  : two spaces` の本文は `: two spaces` です。
+[fixture: notes/kept]
 id の前の空白は空白 1 つにします。
 `note left of%%x A` のように位置の直後にある、mermaid.js が読まないテキストは、
 位置に接したまま残します。
-複数行のノートの本文は書かれたまま残し、`end note` はノートと同じ段に置きます。
+複数行のノートの本文は、最初の行から最後の行まで書かれたまま残します。
+両端は mermaid.js が取り除くので、ノートの行の id の後の空白は落とし、
+最初の行の前の空白は本文の段に合わせ、
+最初の行の前と最後の行の後の空行や空白だけの行は、空行 1 つにします。
+`end note` はノートと同じ段に置きます。
+[fixture: notes/first-line-indentation-set]
+[fixture: notes/text-ends-trimmed]
+[fixture: notes/over-lines]
+[fixture: notes/over-lines-in-composite]
+[fixture: notes/over-lines-empty-lines-kept]
 本文のない 1 行のノートは、説明と同じく、`:` の後の空白を残します。
 `note left of A : ` は受理され、`note left of A :` は拒否されます。
 `:` の前に空白が 2 つあり、後ろに何もないノートも同じです。
 その本文は `:` だけです。
-浮いたノートの引用符は書かれたまま残します。
+[fixture: notes/blank-text-kept]
+独立したノートの引用符は書かれたまま残します。
 `note ""floating" as N` の本文は `floating` です。
+[fixture: notes/over-lines]
 
 入力 ([notes/kept-input.mmd](../tests/fixtures/state/notes/kept-input.mmd)):
 
@@ -504,7 +622,8 @@ stateDiagram-v2
   note left of A : x
 ```
 
-入力 ([notes/over-lines-input.mmd](../tests/fixtures/state/notes/over-lines-input.mmd)):
+入力
+([notes/over-lines-input.mmd](../tests/fixtures/state/notes/over-lines-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -516,7 +635,8 @@ note right of A
 note ""floating" as N
 ```
 
-出力 ([notes/over-lines-output.mmd](../tests/fixtures/state/notes/over-lines-output.mmd)):
+出力
+([notes/over-lines-output.mmd](../tests/fixtures/state/notes/over-lines-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -532,14 +652,21 @@ stateDiagram-v2
 
 別名の定義の文字列、`as`、id の間は、接して書かれていても、空白 1 つにします。
 mermaid.js は `"d"as A` を `"d" as A` と同じに読むからです。
+[fixture: aliases/second-description-kept]
+[fixture: aliases/tabs-between-parts]
+[fixture: aliases/id-kept]
 文字列の前後の、mermaid.js が読まない `""` も、同じように離します。
 `asA` は `as` ではなく、拒否されます。
 2 つ目の説明、つまり `:` の後のテキストは、書かれたまま残します。
 mermaid.js は、それを両端の空白ごと読むので、
 `:short` と `: short` は違う説明になるからです。
+[corpus fixture: state/db-alias-colon-spaces-second]
+[fixture: aliases/second-description-kept]
+[fixture: aliases/second-description-trailing-whitespace-kept]
 `:` の前の空白は空白 1 つにします。
 
-入力 ([aliases/second-description-kept-input.mmd](../tests/fixtures/state/aliases/second-description-kept-input.mmd)):
+入力
+([aliases/second-description-kept-input.mmd](../tests/fixtures/state/aliases/second-description-kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -552,7 +679,8 @@ E
 state "d" as F
 ```
 
-出力 ([aliases/second-description-kept-output.mmd](../tests/fixtures/state/aliases/second-description-kept-output.mmd)):
+出力
+([aliases/second-description-kept-output.mmd](../tests/fixtures/state/aliases/second-description-kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -572,8 +700,13 @@ stateDiagram-v2
 その前には、名前に接して書かれていても、空白を 1 つ置きます。
 mermaid.js は名前を末尾の空白を除いて読むので、
 `state f1<<fork>>` は `state f1 <<fork>>` と同じに読まれるからです。
+[corpus fixture: state/lex-fork-spaced-id]
+[corpus fixture: state/lex-choice-square-brackets]
+[fixture: pseudostates/mark-spaced]
+[fixture: pseudostates/all-marks-spaced]
 
-入力 ([pseudostates/mark-spaced-input.mmd](../tests/fixtures/state/pseudostates/mark-spaced-input.mmd)):
+入力
+([pseudostates/mark-spaced-input.mmd](../tests/fixtures/state/pseudostates/mark-spaced-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -582,7 +715,8 @@ state   c   [[choice]]
 state f 1<<join>>
 ```
 
-出力 ([pseudostates/mark-spaced-output.mmd](../tests/fixtures/state/pseudostates/mark-spaced-output.mmd)):
+出力
+([pseudostates/mark-spaced-output.mmd](../tests/fixtures/state/pseudostates/mark-spaced-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -595,10 +729,22 @@ stateDiagram-v2
 
 行に単独のコメント（`%%` か `#`）は、周りの文と同じ段に置き、
 本文は書かれたまま残します。
+[fixture: comments/kept]
+[fixture: comments/text-kept]
+[fixture: comments/before-closing-brace]
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
+[fixture: comments/kept]
+[fixture: comments/hash-after-statement-kept]
+[fixture: comments/after-brace-kept]
+[fixture: statements-one-per-line/split-then-comment]
+[fixture: comments/after-last-statement-without-line-break]
+[fixture: comments/header-comment-without-line-break]
 説明、ラベル、ノート、スタイルの中では、`%%` と `#` はテキストの一部です。
+[fixture: comments/text-in-values-kept]
+[fixture: comments/text-in-note-lines-kept]
 
-入力 ([comments/kept-input.mmd](../tests/fixtures/state/comments/kept-input.mmd)):
+入力
+([comments/kept-input.mmd](../tests/fixtures/state/comments/kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -612,7 +758,8 @@ E
 }
 ```
 
-出力 ([comments/kept-output.mmd](../tests/fixtures/state/comments/kept-output.mmd)):
+出力
+([comments/kept-output.mmd](../tests/fixtures/state/comments/kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -630,9 +777,15 @@ stateDiagram-v2
 
 flowchart と同じです。
 行に単独のディレクティブは周りの文と同じ段に置き、
-文の行にあるディレクティブは、両側に書かれた空白を保ちます。
+文の行にあるディレクティブは、両側に空白が書かれているかどうかを保ちます。
+書かれていればそこに空白 1 つを置き、トークンに接していれば接したまま残します。
+[fixture: directives/kept]
+[fixture: directives/before-header]
+[fixture: directives/after-statement]
+[fixture: directives/whitespace-on-each-side-kept]
 
-入力 ([directives/kept-input.mmd](../tests/fixtures/state/directives/kept-input.mmd)):
+入力
+([directives/kept-input.mmd](../tests/fixtures/state/directives/kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -644,7 +797,8 @@ B
 Foo%%{init: {}}%% --> B
 ```
 
-出力 ([directives/kept-output.mmd](../tests/fixtures/state/directives/kept-output.mmd)):
+出力
+([directives/kept-output.mmd](../tests/fixtures/state/directives/kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -661,8 +815,16 @@ stateDiagram-v2
 flowchart と同じです。
 `---` の行の間の YAML は、安全なときに Prettier の YAML 整形にかけます
 （[フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)を参照）。
+[corpus fixture: state/div-frontmatter-invalid-yaml]
+[corpus fixture: state/div-html-tag-starts-in-frontmatter-description]
+[fixture: frontmatter-yaml/formatted]
+[fixture: frontmatter-yaml/html-tag-kept]
+[fixture: frontmatter-yaml/delimiter-line-kept]
+[fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
+[fixture: frontmatter-yaml/indented-delimiters-kept]
 
-入力 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/state/frontmatter-yaml/formatted-input.mmd)):
+入力
+([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/state/frontmatter-yaml/formatted-input.mmd)):
 
 ```mmd
 ---
@@ -672,7 +834,8 @@ stateDiagram-v2
 A --> B
 ```
 
-出力 ([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/state/frontmatter-yaml/formatted-output.mmd)):
+出力
+([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/state/frontmatter-yaml/formatted-output.mmd)):
 
 ```mmd
 ---
@@ -687,9 +850,15 @@ stateDiagram-v2
 flowchart と同じです。
 `accDescr { ... }` のブロックの行は書かれたまま残し、
 その `}` は文と同じ段に置きます。
-複数行に書かれた浮いたノートの本文も、書かれたまま残します。
+[fixture: multi-line-values/kept]
+[fixture: multi-line-values/accdescr-block-single-line-kept]
+[fixture: multi-line-values/accdescr-block-empty-and-comment-lines-kept]
+複数行に書かれた独立したノートの本文も、書かれたまま残します。
+[fixture: multi-line-values/kept]
+[fixture: multi-line-values/floating-note-empty-line-kept]
 
-入力 ([multi-line-values/kept-input.mmd](../tests/fixtures/state/multi-line-values/kept-input.mmd)):
+入力
+([multi-line-values/kept-input.mmd](../tests/fixtures/state/multi-line-values/kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -701,7 +870,8 @@ note "line one
   line two" as N
 ```
 
-出力 ([multi-line-values/kept-output.mmd](../tests/fixtures/state/multi-line-values/kept-output.mmd)):
+出力
+([multi-line-values/kept-output.mmd](../tests/fixtures/state/multi-line-values/kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -720,15 +890,28 @@ state 図で文が次の行に続けられるのは、
 `state` の後、`as` の後、ノートの位置の後、
 `classDef` と `style` とその名前の後、`scale` の後、`direction` の後、
 `accTitle` と `accDescr` の `:` の後です。
+[corpus fixture: state/lex-direction-value-next-line]
+[fixture: multi-line-statements/joined]
+[fixture: multi-line-statements/joined-after-as]
+[fixture: multi-line-statements/joined-style-and-classdef]
+[fixture: multi-line-statements/joined-accdescr]
+[fixture: multi-line-statements/empty-line-inside-joined]
 そのため、`classDef c` の次の行の `fill:red` は、
 `classDef c fill:red` と印字します。
 `classDef a` の後の行の `B --> C` は、遷移ではなく `a` のスタイルで、
 印字した結果からそれが分かります。
+[fixture: multi-line-statements/joined]
+[fixture: multi-line-statements/classdef-takes-next-line]
 コメントかディレクティブを含む複数行の文は、sequence 図と同じく、
 始まりから終わりまで書かれたまま残します
 （[複数行の文](./sequence.ja.md#複数行の文)を参照）。
+[fixture: multi-line-statements/comment-inside-kept]
+[fixture: multi-line-statements/directive-inside-kept]
+[fixture: multi-line-statements/brace-after-comment-line-kept]
+[fixture: multi-line-statements/brace-after-directive-kept]
 
-入力 ([multi-line-statements/joined-input.mmd](../tests/fixtures/state/multi-line-statements/joined-input.mmd)):
+入力
+([multi-line-statements/joined-input.mmd](../tests/fixtures/state/multi-line-statements/joined-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -746,7 +929,8 @@ accTitle:
 A title
 ```
 
-出力 ([multi-line-statements/joined-output.mmd](../tests/fixtures/state/multi-line-statements/joined-output.mmd)):
+出力
+([multi-line-statements/joined-output.mmd](../tests/fixtures/state/multi-line-statements/joined-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -758,7 +942,8 @@ stateDiagram-v2
   accTitle: A title
 ```
 
-入力 ([multi-line-statements/comment-inside-kept-input.mmd](../tests/fixtures/state/multi-line-statements/comment-inside-kept-input.mmd)):
+入力
+([multi-line-statements/comment-inside-kept-input.mmd](../tests/fixtures/state/multi-line-statements/comment-inside-kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -767,7 +952,8 @@ direction
 LR
 ```
 
-出力 ([multi-line-statements/comment-inside-kept-output.mmd](../tests/fixtures/state/multi-line-statements/comment-inside-kept-output.mmd)):
+出力
+([multi-line-statements/comment-inside-kept-output.mmd](../tests/fixtures/state/multi-line-statements/comment-inside-kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -777,14 +963,21 @@ LR
 ```
 
 `;` を含み、複数行に書かれた文も、書かれたまま残します。
+[corpus fixture: state/db-style-semicolons]
+[corpus fixture: state/db-classdef-semicolons]
+[fixture: multi-line-statements/semicolon-kept]
+[fixture: multi-line-statements/semicolon-in-id-kept]
 mermaid.js の行の規則
-（common.md の `style` and `classDef` lines）は、1 行のテキストを読みます。
+（仕様の
+[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)
+）は、1 行のテキストを読みます。
 `classDef`、改行、`c fill:#f00;` では、
 規則は 2 行目に当たらないので `#f00;` はエンティティですが、
 `classDef c fill:#f00;` と 1 行に書くと規則が当たり、`;` が無視されます。
 行を結ぶと、スタイルが変わるからです。
 
-入力 ([multi-line-statements/semicolon-kept-input.mmd](../tests/fixtures/state/multi-line-statements/semicolon-kept-input.mmd)):
+入力
+([multi-line-statements/semicolon-kept-input.mmd](../tests/fixtures/state/multi-line-statements/semicolon-kept-input.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -792,7 +985,8 @@ stateDiagram-v2
   c fill:#f00;
 ```
 
-出力 ([multi-line-statements/semicolon-kept-output.mmd](../tests/fixtures/state/multi-line-statements/semicolon-kept-output.mmd)):
+出力
+([multi-line-statements/semicolon-kept-output.mmd](../tests/fixtures/state/multi-line-statements/semicolon-kept-output.mmd)):
 
 ```mmd
 stateDiagram-v2
@@ -803,17 +997,48 @@ stateDiagram-v2
 ### 行区切り文字
 
 U+2028 か U+2029 を含む行は、書かれたまま残します。
+composite の文の `{` の前の 2 つ目の名前の行か、閉じる `}` の行にあるときは、
+その文の行を、本体も含めて全体を書かれたまま印字し、本体の字下げは直しません。
+名前の行の `{` の前や `{` の後にあるときは、本体をほかと同じように印字します。
+[test: U+2028 before the brace of a composite statement]
+[test: U+2028 on the closing line of a composite statement]
 state 図では、mermaid.js が擬似状態の印、方向の行、
 `{` の前の 2 つ目の名前を探す範囲を、これらの文字が区切るからです。
 `state a`、U+2028、`b <<fork>>` は名前 `a` とフォーク `b` ですが、
 U+2028 の代わりに空白を置くと、フォーク `a b` になります。
-その例は、文字が見えないので、ここには載せません。
-そのテストは、文字をエスケープで書いています
-（`tests/line-separators.test.ts` を参照）。
+[corpus fixture: state/lex-pseudostate-mark-after-line-separator]
+文字が見えないので、例は、
+`\u2028` を U+2028、`\n` を改行とする文字列で書きます。
+`"stateDiagram-v2\nstate a\u2028b <<fork>>\n"` は
+`"stateDiagram-v2\n  state a\u2028b <<fork>>\n"` と印字し、文字は残ります。
+[test: a pseudostate mark after U+2028]
+[test: a pseudostate mark after U+2029]
+[test: a direction line after U+2028]
+[test: a direction line after U+2029]
+[test: a second name before a brace that U+2028 separates from it]
+[test: a second name before a brace that U+2029 separates from it]
+[test: a pseudostate mark after U+2028 in a body]
+[test: a transition line with U+2028]
+そのテストも、文字をエスケープで書いています
+（[tests/line-separators.test.ts](../tests/line-separators.test.ts) を参照）。
 U+2028 か U+2029 で始まる行は、
 最初の文の前の空白も含めて、書かれたまま残します。
 それは字句解析が読むものの一部で、それを除いて整形し直すと、
 2 回目の整形はその行をほかの行と同じに読むからです。
+[test: a line that starts with U+2028]
+[test: a line that starts with U+2029]
+[test: a line that starts with whitespace and U+2028]
+
+`;` を落とすと、行の終わりか、行の規則が無視する `;` が変わる行は、
+書かれたまま印字します。
+閉じていないディレクティブの後の `;`、別の `;` に接する無視される `;`、
+U+2028 か U+2029 の前の無視される `;` がある行です
+（[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照）。
+[test: a semicolon after a directive that is not closed]
+[test: an ignored semicolon next to another semicolon]
+[test: an ignored semicolon and a semicolon after whitespace]
+[test: an ignored semicolon before U+2028]
+[test: an ignored semicolon before U+2029]
 
 ## 書かれたまま残すもの
 
@@ -822,6 +1047,9 @@ U+2028 か U+2029 で始まる行は、
 
 - 値のテキスト。説明、ラベル、ノート、`as` の後の id、擬似状態の名前、スタイル、
   `class` 文の CSS クラス、`accTitle` と `accDescr` のテキスト。
+  [fixture: whitespace-between-tokens/style-text-kept]
+  [fixture: descriptions-and-labels/acc-text-kept]
+  [fixture: aliases/id-kept]
 - 1 行のノートの id の後、別名の定義の 2 つ目の説明、
   空白だけの説明の `:` の後の空白。
 - `state` の後の名前と `""`。`state` の行に残す。
@@ -832,5 +1060,9 @@ U+2028 か U+2029 で始まる行は、
 - U+2028 か U+2029 を含む行。
 - コメントかディレクティブか `;` を含む複数行の文。
 - 方向の行の、`direction` の前と値の後のテキスト。
+  [corpus fixture: state/lex-direction-line-same-line-transition]
+  [fixture: whitespace-between-tokens/direction-line-text-kept]
 - キーワードの大文字小文字と、ヘッダーの綴り。
   `stateDiagram` か `stateDiagram-v2`。
+  [corpus fixture: state/header-v1]
+  [fixture: indentation/header-without-v2-kept]

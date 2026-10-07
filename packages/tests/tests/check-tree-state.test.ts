@@ -129,6 +129,32 @@ const CASES: readonly MutationCase[] = [
     mutate: setFieldOf("StateAccDescrBlockStatement", "closed", true),
     expected: "closed, which is whether it ends with }: false, not true",
   },
+  // The words of `hide empty description` are one token each, and the kind of
+  // a pseudostate is the word of its mark, written with `<<>>` or `[[]]`.
+  {
+    name: "a hide empty description statement with a word that is no Keyword",
+    fixture: "gram-hide-empty-description",
+    mutate: (root) => {
+      setField(
+        firstTokenIn(
+          root,
+          firstNode(root, "StateHideEmptyDescriptionStatement"),
+          (token) => token.value === "empty",
+        ),
+        "type",
+        "RawText",
+      )
+    },
+    expected:
+      "StateHideEmptyDescriptionStatement at 18-40: the keywords, one token for each word",
+  },
+  {
+    name: "a pseudostate written [[choice]] whose kind is fork",
+    fixture: "lex-choice-square-brackets",
+    mutate: setFieldOf("StatePseudostateDefinitionStatement", "kind", "fork"),
+    expected:
+      'StatePseudostateDefinitionStatement at 18-37: the kind "fork" is not that of the mark "[[choice]]"',
+  },
   // The `:` at the start of the text of a note is not a value token, but
   // another Punctuator in the text is.
   {

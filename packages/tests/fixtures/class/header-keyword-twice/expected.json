@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Detection: classDiagram followed by classDiagram has no header; it is detected as a class diagram and rejected by its grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...assDiagramclass A\n--------------------^\nExpecting , got 'EOF'"
+  }
+}

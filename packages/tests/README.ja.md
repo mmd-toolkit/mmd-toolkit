@@ -72,7 +72,7 @@ fixture は 1 件ごとに、
 - `expected.json`: mermaid.js がその入力をどう扱ったか。
 - `specified.json`: 仕様どおりの実装がその入力に対して出す結果。
   それが mermaid.js の結果と違うときにだけある。
-  入力の読み方を変える既知の差を外して、mermaid.js に読ませた結果である。
+  入力の読み方を変える既知の差異を外して、mermaid.js に読ませた結果である。
   印が `comment-takes-character`、`comment-takes-line-break`、
   `name-start-reads-unit`、`html-tag-in-frontmatter` の fixture だけにある。
   あるときは、これが合わせる結果で、ないときは `expected.json` が合わせる結果。
@@ -185,13 +185,6 @@ mermaid.js は読み込みません。
   `resolveEmbeddedData()` が返す値を、fixture が記録したものから作る。
   合わせる読み（`specified`、なければ `expected`）に対する値。
   拒否のときは `undefined`。
-- `findBoundaries(source)`、`findInnerPlaces(source)`、
-  `selectByKey(lists, perKey, keyOf)`: 生成テストと差分テストがテキストの中の
-  場所に何かを入れるときの、その場所の種類の部分と、
-  使う側がそれから作る鍵ごとに数か所を選ぶ関数。
-  `source` は、構文解析したテキストのトークン、コメント、ディレクティブを、
-  ただの値で表したもの。
-  [docs/boundary-kinds.ja.md](./docs/boundary-kinds.ja.md) を参照。
 - `dbFromTree(text, tree, embedded, isColor)`:
   記録した木（`ast.json`）が表す Db の要約を、パーサーなしで作る関数。
   `exceedsMaxEdges(tree, config)` と `flowchartEdgeCount(tree)` は、
@@ -201,6 +194,12 @@ mermaid.js は読み込みません。
   記録した木（`ast.json`）について、仕様が述べる条件のうち成り立たないもの。
   すべてを満たす木では空。
   [docs/check-tree.ja.md](./docs/check-tree.ja.md) を参照。
+- `cssSupportsColor(value)`:
+  ブラウザの `CSS.supports("color", value)` が答えるもの。
+  ここで mermaid.js を動かすときに与えている代役と同じ
+  （sequence の `box` の行がこれを尋ねる）。
+  この答えを外から受け取る実装のためのもの。
+  [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
 - 型: `DiagramType`、`Fixture`、`FixtureSource`、`Expectation`、`ExpectedFile`、
   `RecordedEmbedded`、`DbSummary`、`MermaidConfig`、`MermaidError`。
 
@@ -224,11 +223,11 @@ pin した mermaid.js を Node で動かします。
 - `MermaidEnvironmentError`:
   Node にないブラウザの機能を mermaid.js が必要としたときに投げる。
 - 上の 3 つの関数の options の `withoutDivergences`:
-  一覧の既知の差を除いて読ませた mermaid.js を動かす。
-  差が違いの唯一の原因であることを確かめる実装のためのもの。
+  一覧の既知の差異を除いて読ませた mermaid.js を動かす。
+  差異が違いの唯一の原因であることを確かめる実装のためのもの。
   一覧に入れられるのは `comment-takes-character`、`comment-takes-line-break`、
   `name-start-reads-unit`（型 `DivergenceRemoval`）。
-  1 つの図種の差を同時に除ける。
+  1 つの図種の差異を同時に除ける。
   [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
 - `config` と `withoutDivergences` 以外のキーを持つ options を渡すと、
   このモジュールの options を取る関数はどれも `TypeError` を投げる。
@@ -240,50 +239,8 @@ pin した mermaid.js を Node で動かします。
   環境変数 `MMD_TOOLKIT_MERMAID_CACHE=disabled` で貯蔵庫を切り、
   ディレクトリを消すと空になる。
   [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
-- `cssSupportsColor(value)`:
-  ブラウザの `CSS.supports("color", value)` が答えるもの。
-  ここで mermaid.js を動かすときに与えている代役と同じ
-  （sequence の `box` の行がこれを尋ねる）。
-  この答えを外から受け取る実装のためのもの。
-  [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
 
-### `@mmd-toolkit/tests/mutation`
-
-fixture から 1 か所だけ編集したテキスト、または任意のテキストで、
-実装を mermaid.js と比べます。
-[docs/mutation-testing.ja.md](./docs/mutation-testing.ja.md)
-を参照してください。
-
-```js
-import { loadFixtures } from "@mmd-toolkit/tests"
-import { runMutationDiff } from "@mmd-toolkit/tests/mutation"
-
-const fixtures = await loadFixtures("flowchart")
-const report = await runMutationDiff(
-  fixtures.map((f) => ({ name: f.name, text: f.input, config: f.config })),
-  (text) => ({ accepted: accepts(text) }),
-  { count: 20, seed: 1 },
-)
-console.log(report.compared, report.mismatches.length)
-```
-
-- 比較対象は `(text, config, embedded)` として呼ばれ、
-  `{ accepted, diagramType?, db?, knownDivergence? }` を返す。
-  `embedded` は、そのテキストについて `resolveEmbeddedData()` が返すもの。
-- `diagramType` と `db` は、比較対象が返したときに比べる。
-  `require: ["diagramType", "db"]` を渡すと、返さなかったことが不一致になる。
-- `compareAll(inputs, candidate)` は、テキストを変異させずに比べる。
-- `mutate(text, { seed, count })` は、1 つのテキストの変異体を、比べずに返す。
-- `generatedInputs(generator, seeds, count, prefix)` は、
-  入力の生成器のテキストに名前を付け、
-  `compareAll()` や `runMutationDiff()` に渡せる形にする。
-- コマンドライン:
-  `pnpm --filter @mmd-toolkit/tests run mutation --candidate <module>`。
-  `--count` を指定しなければ、fixture ごとに、
-  当てはまる編集の演算子ごとに 1 件変異させます
-  （[docs/mutation-testing.ja.md](./docs/mutation-testing.ja.md) を参照）。
-
-3 つの入口のほかの export は、このリポジトリの道具が使うものです。
+2 つの入口のほかの export は、このリポジトリの道具が使うものです。
 一覧は [docs/maintaining-fixtures.ja.md](./docs/maintaining-fixtures.ja.md)
 にあります。
 
@@ -320,10 +277,6 @@ console.log(report.compared, report.mismatches.length)
   埋め込まれたデータから導く値と、それと比べて確かめられること。
 - [docs/db-summaries.ja.md](./docs/db-summaries.ja.md):
   Db の要約が持つものと捨てるもの。
-- [docs/mutation-testing.ja.md](./docs/mutation-testing.ja.md):
-  テキストの変異のさせ方と比べ方、報告。
-- [docs/boundary-kinds.ja.md](./docs/boundary-kinds.ja.md):
-  テキストの中の場所の種類と、種類ごとに場所を選ぶ方法。
 - [docs/db-from-tree.ja.md](./docs/db-from-tree.ja.md):
   記録した木から Db を作ることと、その読む欄。
 - [docs/check-tree.ja.md](./docs/check-tree.ja.md):

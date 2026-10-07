@@ -471,7 +471,8 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    * vertex )*`. The `data?` is read with the vertex before it. A repetition
    * that cannot be completed is not taken; one where an empty form stands
    * in place of the vertex is rejected at the form, which lies inside the
-   * statement (known-divergences/tokenless-empty-forms.md).
+   * statement (known-divergences/tokenless-empty-forms.md), also right after
+   * the `&`, as in `A &accDescr {} B`, which mermaid.js reads as `A & B`.
    */
   private parseVertexGroup(): FlowchartVertexGroup {
     const start = this.next
@@ -481,10 +482,10 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
       if (ampersand === this.next || this.nameAt(ampersand) !== "&") break
       const vertex = this.afterSpaces(ampersand + 1)
       const unit = this.units.at(vertex)
-      if (vertex === ampersand + 1 || unit === undefined) break
+      if (unit === undefined) break
       const emptyForm = this.emptyFormErrorAt(unit)
       if (emptyForm !== null) throw emptyForm
-      if (!this.isIdPieceAt(vertex)) break
+      if (vertex === ampersand + 1 || !this.isIdPieceAt(vertex)) break
       this.addItem("Punctuator", [this.units[ampersand]])
       this.next = vertex
       vertices.push(this.parseVertex())
@@ -940,14 +941,19 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    * just read, with the whitespace that mermaid.js reads into the name of a
    * subgraph without a title kept in its tokens: the `space` units at the
    * end of the name, up to the separator or the first empty description
-   * block, which was taken out of the units. With a title, mermaid.js reads
-   * no whitespace before its `[`.
+   * block, which was taken out of the units, and the whitespace that an
+   * `end` unit at the end of the name holds, line feeds included
+   * (diagrams/flowchart.md, Statement context, rule 12). With a title,
+   * mermaid.js reads no whitespace before its `[`.
    */
   private withNameWhitespaceKept(pieces: readonly Unit[]): Unit[] {
     if (this.nameAt(this.next) === "[") return [...pieces]
     const kept = [...pieces]
     let end = kept.length
     while (end > 0 && kept[end - 1].name === "space") end -= 1
+    if (end > 0 && kept[end - 1].name === "end") {
+      kept[end - 1] = withWhitespaceKept(kept[end - 1])
+    }
     // The unit before the first space at the end: the last piece that is
     // not a space, or the unit before the pieces, a string or the `space`
     // after `subgraph`.
@@ -1481,20 +1487,24 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
 
   /**
    * The error of a known divergence for the unit `unit`, which the grammar
-   * cannot read where it stands. The unit, or the first unit after it that
-   * is not a `space` unit, can be the cause that a known divergence names:
-   * a `click` unit, which no rule but the start of a click statement reads
-   * ({@link FlowchartGrammar.reservedClick}), and a unit of an empty form,
-   * which no rule takes.
+   * cannot read where it stands. The unit, and then the first unit after it
+   * that is not a `space` unit, can be the cause that a known divergence
+   * names (docs/error-positions.md): a `click` unit, which no rule but the
+   * start of a click statement reads ({@link FlowchartGrammar.reservedClick}),
+   * and a unit of an empty form, which no rule takes. So in `A &accDescr {} B`
+   * the grammar stops at the `&`, which needs a `space` after it, and the
+   * empty description block after it is the cause.
    */
   protected knownDivergenceAt(unit: Unit): ParseError | null {
-    const index = this.units.indexOf(unit)
-    const cause = this.units
-      .slice(index)
+    const next = this.units
+      .slice(this.units.indexOf(unit) + 1)
       .find((candidate) => candidate.name !== "space")
-    if (cause === undefined) return null
-    if (cause.name === "click") return this.reservedClick(cause)
-    return this.emptyFormErrorAt(cause)
+    for (const cause of next === undefined ? [unit] : [unit, next]) {
+      if (cause.name === "click") return this.reservedClick(cause)
+      const emptyForm = this.emptyFormErrorAt(cause)
+      if (emptyForm !== null) return emptyForm
+    }
+    return null
   }
 
   /**

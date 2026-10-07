@@ -217,6 +217,23 @@ export function layoutBodyOpening(
 }
 
 /**
+ * Whether a `{` stands in the text between `start` and `end`, outside its
+ * directives and comments: the `{` that mermaid.js reads as the body of the
+ * statement before it, after a `state` that it reads no token for. It may be
+ * the `{` of an empty description block, which the tree has no token for.
+ */
+function holdsBrace(source: Source, start: number, end: number): boolean {
+  const trivia = findTriviaBetween(source, start, end)
+  for (let offset = start; offset < end; offset++) {
+    if (source.text[offset] !== "{") continue
+    if (!trivia.some(({ range }) => range[0] <= offset && offset < range[1])) {
+      return true
+    }
+  }
+  return false
+}
+
+/**
  * The layout of a statement that is printed on one line, from its start to
  * `end` (see `findStatePrintedEnd`): a statement that never has a body, and
  * a composite statement or alias definition without a body block (see
@@ -244,7 +261,7 @@ export function layoutStateStatement(
   followsStateName: boolean,
 ): AtomLayout {
   const start = statement.range[0]
-  if (followsStateName && source.text.slice(start, end).includes("{")) {
+  if (followsStateName && holdsBrace(source, start, end)) {
     return keptAsWritten(start, end)
   }
   if (statement.type === "StateAccDescrBlockStatement") {

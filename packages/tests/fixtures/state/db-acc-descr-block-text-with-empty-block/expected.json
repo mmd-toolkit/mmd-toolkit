@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The text ends at the first `}`: the description is `a accDescr {`, and `b` and `}` are states."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a accDescr {",
+    "states": [
+      {
+        "id": "b",
+        "shape": "rect",
+        "label": "b",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "}",
+        "shape": "rect",
+        "label": "}",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

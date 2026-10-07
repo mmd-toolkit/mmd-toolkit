@@ -10,11 +10,13 @@ read, and which grammar rule makes which node, is defined in
 The body of this diagram type is a [SequenceDiagram](#sequencediagram). The
 values of the fields keep what the author wrote, as [ast.md](../ast.md#nodes)
 defines the written text of a value; they are not in the converted form of
-[common.md](../common.md#reading-a-source). The whitespace that mermaid.js reads
-as part of a value is part of its written text (see [Nodes](../ast.md#nodes)):
-in this diagram type, the whitespace of a title, and a U+2028 or U+2029 in a box
-text (see [SequenceTitleStatement](#sequencetitlestatement) and
-[SequenceBoxText](#sequenceboxtext)). Other whitespace is not part of any value.
+[common.md](../common.md#reading-a-source). A value starts or ends with
+whitespace only where its units hold it as their own characters, as mermaid.js
+reads it (see [Nodes](../ast.md#nodes)): in this diagram type, the whitespace of
+a title, and a U+2028 or U+2029 in a box text (see
+[SequenceTitleStatement](#sequencetitlestatement) and
+[SequenceBoxText](#sequenceboxtext)). Elsewhere, the whitespace at the ends of a
+value is outside it.
 
 A **participant** is one of the lifelines of the diagram, named by an id.
 mermaid.js calls it an actor; this document keeps the word actor for the
@@ -140,8 +142,8 @@ sequence/db-box-no-colour-candidate]
 | `text`                  | SequenceText or null | The text after `:`; null when nothing but whitespace follows the `:`. |
 
 Child fields: `from`, `arrow`, `to`, `text`. `activation` is null when either
-central connection is true. The `:` is a token of the statement and belongs to
-no field.
+central connection is true. The `:` is a unit of the statement and belongs to no
+field.
 
 ### SequenceArrow
 

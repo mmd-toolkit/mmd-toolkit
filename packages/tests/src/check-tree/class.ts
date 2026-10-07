@@ -48,12 +48,22 @@ function checkClassArrow(
     return
   }
   problems.expectEqual(
+    tokens.map((token) => token.value),
+    parsed.parts,
+    where,
+    "the tokens, which are the relation ends and the line, one token each",
+  )
+  problems.expectEqual(
     {
       startMarker: arrow.startMarker,
       line: arrow.line,
       endMarker: arrow.endMarker,
     },
-    parsed,
+    {
+      startMarker: parsed.startMarker,
+      line: parsed.line,
+      endMarker: parsed.endMarker,
+    },
     where,
     `the fields, written ${String(arrow.value)}`,
   )
@@ -61,12 +71,15 @@ function checkClassArrow(
 
 /**
  * ast/class.md, ClassArrow: the fields that an arrow writes: an optional
- * relation end, the line `--` or `..`, and an optional relation end; null
- * when the text is no arrow.
+ * relation end, the line `--` or `..`, and an optional relation end, with
+ * the texts of those parts in order; null when the text is no arrow.
  */
-function parseClassArrow(
-  text: string,
-): { startMarker: string; line: string; endMarker: string } | null {
+function parseClassArrow(text: string): {
+  startMarker: string
+  line: string
+  endMarker: string
+  parts: string[]
+} | null {
   const ends = [...CLASS_MARKERS.keys()].sort((a, b) => b.length - a.length)
   const startEnd = ends.find((end) => text.startsWith(end)) ?? ""
   const afterStart = text.slice(startEnd.length)
@@ -78,11 +91,12 @@ function parseClassArrow(
     startMarker: startEnd === "" ? "none" : (CLASS_MARKERS.get(startEnd) ?? ""),
     line: CLASS_LINES.get(line) ?? "",
     endMarker: rest === "" ? "none" : (CLASS_MARKERS.get(rest) ?? ""),
+    parts: [startEnd, line, rest].filter((part) => part !== ""),
   }
 }
 
 /** ast/class.md, ClassMethod: the mark of each visibility. */
-const CLASS_VISIBILITY_MARKS: ReadonlyMap<string, string> = new Map([
+export const CLASS_VISIBILITY_MARKS: ReadonlyMap<string, string> = new Map([
   ["+", "public"],
   ["-", "private"],
   ["#", "protected"],
@@ -90,7 +104,7 @@ const CLASS_VISIBILITY_MARKS: ReadonlyMap<string, string> = new Map([
 ])
 
 /** ast/class.md, ClassMethod: the mark of each classifier. */
-const CLASS_CLASSIFIER_MARKS: ReadonlyMap<string, string> = new Map([
+export const CLASS_CLASSIFIER_MARKS: ReadonlyMap<string, string> = new Map([
   ["$", "static"],
   ["*", "abstract"],
 ])

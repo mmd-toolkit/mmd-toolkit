@@ -21,11 +21,13 @@ from pasting a part twice.
 This rule reports every statement that sets the description after the first one.
 It applies to `sequence`.
 
-`accDescr:` sets the description. Without text, it sets the description too: it
-makes the description empty. A closed block that holds a description sets it as
-well, and a line and a block replace each other in either order. A statement
-inside a block, such as `loop`, sets the description of the whole diagram and is
-counted too.
+`accDescr:` sets the description. Without text, it sets the description too: at
+the end of the text it makes the description empty, and before more text it
+takes the next line that holds text as the description, past empty lines,
+comment lines, and directives. A closed block that holds a description sets it
+as well. The line form and the block form may be mixed: whichever comes first,
+the description written last is used. A statement inside a block, such as
+`loop`, sets the description of the whole diagram and is counted too.
 
 A block that holds no description is not counted;
 [no-empty-description-block](./no-empty-description-block.md) reports it.

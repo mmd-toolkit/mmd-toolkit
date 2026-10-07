@@ -2,7 +2,9 @@
 
 英語版: [no-ignored-init-directive.md](./no-ignored-init-directive.md)
 
-規則 [mmd/no-ignored-init-directive](../rules/no-ignored-init-directive.ja.md) を実装するための覚え書き。
+規則
+[mmd/no-ignored-init-directive](../rules/no-ignored-init-directive.ja.md)
+を実装するための覚え書き。
 
 この規則はまだ実装していない。
 ここには、実装するときに要ることを書く。
@@ -22,7 +24,8 @@
 
 この規則は、パーサーが書かれたまま持ち、
 読まない埋め込みデータを読む（仕様の既知の差異の
-[`embedded-data-opaque`](../../../spec/docs/known-divergences/embedded-data-opaque.ja.md)）。
+[`embedded-data-opaque`](../../../spec/docs/known-divergences/embedded-data-opaque.ja.md)
+）。
 図の字句解析のやり直しではないが、パーサーが行わない 2 つの手順、
 つまりディレクティブから引数を取り出すことと、それを JSON として解析することを、
 規則の側で繰り返す。
@@ -46,3 +49,19 @@
 - `common/config-bad-json-drops-other-inits`
 - `common/directive-single-quotes`
 - `common/config-closing-marker-line`
+- `sequence/config-init-trailing-comma`
+- `sequence/docs-config-directives-a481990f`
+- `class/config-init-trailing-comma`
+- `state/config-init-trailing-comma`
+- `common/directive-init-theme`
+
+図種ごとの現れ方の項目は、次の fixture に依る。
+
+- flowchart: `flowchart/config-inherit-dir-directive`。
+- sequence: `sequence/config-init-trailing-comma` では、
+  参加者とメッセージが折り返されない。
+  カンマのない `sequence/docs-config-directives-a481990f` では、折り返される。
+- class と state: `class/config-init-trailing-comma` と
+  `state/config-init-trailing-comma` は、効いた設定がないこと
+  （`embedded` が null）を記録している。
+  効くディレクティブの theme は、`common/directive-init-theme` が記録している。

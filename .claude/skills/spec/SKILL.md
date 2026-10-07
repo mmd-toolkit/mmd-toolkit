@@ -245,8 +245,9 @@ Run no tests of the other packages: the parser, the formatter, and the linter
 run their own when they take up the change. One test of the parser reads the
 specification: `packages/parser/tests/types.test.ts` lists the documents under
 `docs/known-divergences/`, so the result of the work (3.6) says when a known
-divergence document was added or removed. Generated inputs (3.5) are run when a
-decision needs them, not as a check after each change.
+divergence document was added or removed. The cases of 3.5 are checked with
+mermaid.js once, when the sentence is written, and become fixtures, which
+`fixtures:check` runs again; no test and no command generates inputs.
 
 ### 2.5 Scripts that rewrite documents
 
@@ -345,8 +346,8 @@ Write `docs/diagrams/<diagram>.md` and its `.ja.md` with the four sections of
    apply to the diagram type, and how they show in it. A new divergence is
    defined in a document of its own, `known-divergences/<identifier>.md` and its
    `.ja.md`, with the parts that known-divergences.md lists (the syntax, the
-   difference with examples, why mermaid.js reads it so, the rule and why, what
-   it means for an author, the documentation and issues of mermaid.js where any
+   difference with examples, what it means for an author, why mermaid.js reads
+   it so, the rule and why, the documentation and issues of mermaid.js where any
    were found), and with a row in the table of known-divergences.md.
 
 The Db summary of a diagram type and how it is built from the tree are documents
@@ -407,24 +408,27 @@ Each time a claim is written:
 
 ### 3.5 Checking a rule
 
-Do not decide a rule from hand-written examples only.
+Do not decide a rule from hand-written examples of its usual form only: decide
+it from the cases that its sentences distinguish.
 
-1. Generate inputs by kind. List the kinds of boundary that the rule touches and
-   the small pieces that can lie there: spaces, tabs, line breaks, empty
-   strings, directives, comment lines, `;`, keywords, strings, and the end of
-   the text. Cover each combination of a kind of boundary and a piece with a few
-   inputs. To be more certain, add a kind that is missing, not more inputs of a
-   kind already covered.
-2. Run them through mermaid.js and through the parser's `parse()` and `dbOf()`,
-   and collect the differences in acceptance and in values. For a diagram type
-   that the parser does not read yet, compare mermaid.js's results with what the
-   rule written in the specification says, and run the comparison with the
-   parser again once it reads the diagram type.
-3. Sort the differences into kinds, and explain each kind with one rule. Write
-   mermaid.js's mechanism as one rule instead of adding exceptions (flowchart
-   example: the empty string, the empty call, and the empty description block,
-   for which mermaid.js reads no token and the tree has no place, are one known
-   divergence in every place they appear, instead of one rule for each place).
+1. List the cases of each sentence. For each sentence that defines a behavior,
+   list each case that it distinguishes, and each other rule that meets it at
+   the place it names: a directive, an ignored `;`, a comment line, an empty
+   line, a line separator (U+2028 or U+2029), an empty description block, and
+   the end of the text. Each case is one input that answers one question about
+   the sentence. Products of places and strings are not written, and no input is
+   chosen by a random source or by a number (a seed, a count).
+2. Check each case once with mermaid.js and with the parser's `parse()` and
+   `dbOf()` (2.1). For a diagram type that the parser does not read yet, compare
+   mermaid.js's result with what the sentence says. Each case then has a fixture
+   that the sentence cites (3.4): an existing one that records it, or a new one.
+   Cite at least one fixture for each case, not every fixture of the same case.
+3. Sort the cases that the sentence does not explain into kinds, and explain
+   each kind with one rule. Write mermaid.js's mechanism as one rule instead of
+   adding exceptions (flowchart example: the empty string, the empty call, and
+   the empty description block, for which mermaid.js reads no token and the tree
+   has no place, are one known divergence in every place they appear, instead of
+   one rule for each place).
 4. Decide acceptance by one criterion (Project 1 of AGENTS.md and the section
    Policies and criteria): accept and reject what mermaid.js accepts and
    rejects, and give an accepted input mermaid.js's Db. Rejecting an input that
@@ -457,11 +461,10 @@ Do not decide a rule from hand-written examples only.
       units, such as the name text of a subgraph in flowchart, which is read
       from the source where empty description blocks follow the name, and
       whether the form can lie inside such a range.
-   3. Generated inputs that cover each kind of position listed in the first item
-      with a few inputs, each with each kind of whitespace around the form
-      (none, a space, two spaces, a tab, a line break after it), compared with
-      mermaid.js for acceptance and for the Db, the values of the second item
-      included.
+   3. A fixture for each kind of position listed in the first item, with each
+      kind of whitespace around the form that the rule distinguishes (none,
+      whitespace, a line break after it), checked with mermaid.js for acceptance
+      and for the Db, the values of the second item included.
 
    When empty description blocks before a separator were first accepted, only
    the end of a line was looked at; the place after the name of a subgraph, the
@@ -638,9 +641,10 @@ them is not decided:
      `RawText` tokens, and a directive inside a `String` or `RawText` token,
      which cuts it in the same way.
 3. **The check.** With the text held so, whether acceptance and the Db agree
-   with mermaid.js, counted on generated inputs: compare mermaid.js on the input
-   with mermaid.js on the input without the text, or with another reference
-   input that mermaid.js reads as the tree would.
+   with mermaid.js, checked on a fixture for each case that the text
+   distinguishes: compare mermaid.js on the input with mermaid.js on the input
+   without the text, or with another reference input that mermaid.js reads as
+   the tree would.
 4. **What stands in the way.** Only where no node can hold it: why, in terms of
    the tree (no position where the text can lie, a value that would have to
    change), or why the rule that would agree with mermaid.js copies the order of
@@ -658,7 +662,8 @@ formatter, or the rules, or while writing the specification.
 
 1. Reproduce the inputs with mermaid.js and with the parser.
 2. Read the cause in the source of mermaid.js (3.1).
-3. Generate and list inputs of the same kind, as in 3.5.
+3. List the cases of the sentences that the input concerns, as in 3.5, and check
+   each once with mermaid.js.
 4. Write the rule. When it touches the definition of the tree, follow item 4 of
    3.3.
 5. Add fixtures (3.4), contrasting examples included.
@@ -712,7 +717,8 @@ are sorted (the tests SKILL).
 ## 7. Where flowchart went wrong
 
 - A rule decided from hand-written examples failed on boundary inputs. → Check
-  with generated inputs, as in 3.5.
+  the cases of each sentence and of the rules that meet it, and give each a
+  fixture, as in 3.5.
 - An existing fixture was taken as sufficient from the start of its input, and
   it was a rejected input. → Read its `accepted` and values.
 - Prettier wrapped citations after `[fixture:`, and a line-by-line search read

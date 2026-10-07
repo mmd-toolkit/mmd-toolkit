@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Under the site setting securityLevel loose, ClassDB binds the callbacks. The summary has haveCallback, the tooltip, the link and its target, and clickCalls as under the default."
+  },
+  "config": {
+    "securityLevel": "loose"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true,
+        "tooltip": "tip"
+      },
+      {
+        "id": "B",
+        "type": "",
+        "label": "B",
+        "text": "B",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "link": "javascript:alert(1)",
+        "linkTarget": "_self"
+      },
+      {
+        "id": "C",
+        "type": "",
+        "label": "C",
+        "text": "C",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "cb",
+        "args": "1"
+      },
+      {
+        "id": "C",
+        "name": "other",
+        "args": null
+      }
+    ]
+  }
+}

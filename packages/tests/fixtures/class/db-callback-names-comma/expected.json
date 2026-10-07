@@ -41,6 +41,18 @@
     "relations": [],
     "notes": [],
     "namespaces": [],
-    "interfaces": []
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "fn",
+        "args": null
+      },
+      {
+        "id": "B",
+        "name": "fn",
+        "args": null
+      }
+    ]
   }
 }

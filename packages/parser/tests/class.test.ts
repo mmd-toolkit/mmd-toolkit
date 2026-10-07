@@ -466,6 +466,24 @@ describe("the class tree", () => {
     ])
   })
 
+  it("keeps in a callback name the whitespace before its `(`, and in its arguments the whitespace at their ends, as mermaid.js passes them on", () => {
+    // ast/class.md, ClassCallbackStatement: the name and the arguments are
+    // the texts that mermaid.js passes to the click function as written.
+    /** The last statement of `statements`. */
+    function statement(statements: string): unknown {
+      return (bodyOf(parseStatements(statements)) as unknown[]).at(-1)
+    }
+
+    expect(statement("class A\nclick A call f (x)")).toMatchObject({
+      callback: { value: "f " },
+      arguments: { value: "x" },
+    })
+    expect(statement("class A\nclick A call f\n  ( x , y )")).toMatchObject({
+      callback: { value: "f\n  " },
+      arguments: { value: " x , y " },
+    })
+  })
+
   it("makes `note for` a keyword for each word", () => {
     expect(tokensOf('note for A "x"')).toEqual([
       ["Keyword", "note"],

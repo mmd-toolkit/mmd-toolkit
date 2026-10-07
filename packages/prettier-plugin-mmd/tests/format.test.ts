@@ -1,7 +1,8 @@
 /**
  * Checks each formatting fixture: the input formats to the output, the
- * output is already formatted, and mermaid.js reads the same diagram from
- * both. The outputs are written by
+ * output is already formatted, the Db that the tree denotes is the same for
+ * both, and the embedded data is as written in both (see `db-reading.ts`).
+ * The outputs are written by
  * `pnpm --filter prettier-plugin-mmd run test:update` and reviewed as diffs;
  * this test never writes them.
  */
@@ -10,7 +11,12 @@ import * as prettier from "prettier"
 import plugin from "../src/index.ts"
 import type { FormatFixture } from "./fixtures.ts"
 import { loadFormatFixtures } from "./fixtures.ts"
-import { describeReadingChange, readWithMermaid } from "./mermaid-readings.ts"
+import {
+  dbOfText,
+  defaultEmbedded,
+  describeFrontmatterChange,
+  writtenEmbeddedTexts,
+} from "./db-reading.ts"
 
 /** Formats a fixture text with the fixture's options. */
 function format(fixture: FormatFixture, text: string): Promise<string> {
@@ -38,12 +44,13 @@ describe("formatting fixtures", () => {
       const output = fixture.output as string
       expect(await format(fixture, fixture.input)).toBe(output)
       expect(await format(fixture, output)).toBe(output)
-      expect(
-        describeReadingChange(
-          await readWithMermaid(fixture.input),
-          await readWithMermaid(output),
-        ),
-      ).toBeNull()
+      expect(dbOfText(output, defaultEmbedded())).toEqual(
+        dbOfText(fixture.input, defaultEmbedded()),
+      )
+      expect(writtenEmbeddedTexts(output)).toEqual(
+        writtenEmbeddedTexts(fixture.input),
+      )
+      expect(await describeFrontmatterChange(fixture.input, output)).toBeNull()
     },
   )
 })

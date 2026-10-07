@@ -37,7 +37,8 @@ pin した mermaid.js がテキストをどう扱うかを得る方法と、
    mermaid.js はフロントマターの処理
    （[`cleanupText`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/preprocess.ts#L6-L17)、
    [`extractFrontMatter`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)、
-   [`frontMatterRegex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L7-L7)）を公開していないので、
+   [`frontMatterRegex`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L7-L7)）
+   を公開していないので、
    title はその処理を写したコードで取り出す。
 4. 図種 ID に登録した正規化関数で Db を要約する
    （[db-summaries.ja.md](./db-summaries.ja.md) を参照）。
@@ -59,8 +60,11 @@ DOMPurify を無効にしたとき、
 （[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L69-L83)
 を通して）、`securityLevel` が mermaid.js の値
 （`strict`、`loose`、`antiscript`、`sandbox`）のどれかである限り、
+また `flowchart.htmlLabels` が `false` ならどの値でも、
 テキストを変えません。
-それ以外の値では `<`、`>`、`=` を文字参照にします。
+それ以外の値で `htmlLabels` が有効なときは、
+`<`、`>`、`=` を文字参照（`&lt;`、`&gt;`、`&equals;`）にし、
+`<br>` を `<br/>` と書きます。
 要約はこれを前提にしており、
 それらの値の範囲では `securityLevel` に左右されません。
 
@@ -74,15 +78,20 @@ Db クラスがリンクを保存するときに呼ぶ
 どの入力を解析するよりも前に Db クラスを変え、
 URL を書かれたとおり（trim 済み）に保存させます。
 これは `securityLevel: loose` のときに `formatUrl()` が返す値です。
+[fixture: flowchart/db-click-link-trimmed]
+[fixture: class/db-click-link-trimmed]
 そのため flowchart では
 （[`FlowDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L553-L562)）、
 `javascript:alert(1)` はそのまま、
 `https://example.com` の末尾に `/` は付きません。
-class 図の Db も同じことをし
-（[`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)）、
+class 図の Db も同じことをします
+（[`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)）。
+[fixture: class/db-click-link-javascript-url-as-written]
 さらに `securityLevel: sandbox` のときはリンクの target を `_top` にします。
 そのパッチは、ほかの値のときと同じく、
 書かれた target（なければ `_blank`）を保存させます。
+[fixture: class/config-security-level-sandbox-link-target]
+[fixture: class/config-security-level-sandbox-link-default-target]
 mermaid@12.0.0 では、agentflow の Db
 （[`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014)）
 も `formatUrl()` を呼ぶので、その正規化関数を足すときに同じ差し替えが要ります。
@@ -108,11 +117,24 @@ Node では DOMPurify に `sanitize` も `addHook` もないので、
 
 - **影響を受ける欄**: `sanitizeText()` を通る値すべて。
   flowchart では頂点と辺のラベル、subgraph の題、ツールチップ、title、
-  `accTitle`、`accDescr`。
+  `accTitle`、`accDescr`（1 行のものもブロックのものも）。
+  [fixture: flowchart/db-edge-label-markup-as-written]
+  [fixture: flowchart/db-subgraph-title-markup-as-written]
+  [fixture: flowchart/db-tooltip-markup-as-written]
+  [fixture: flowchart/db-title-markup-as-written]
+  [fixture: flowchart/db-acc-title-markup-as-written]
+  [fixture: flowchart/db-acc-descr-markup-as-written]
+  [fixture: flowchart/db-acc-descr-block-markup-as-written]
+  ほかの図種でも同じで、
+  例えば sequence 図のメッセージ、class のラベル、state の説明がそうである。
+  [fixture: sequence/db-message-markup-as-written]
+  [fixture: class/db-label-markup-as-written]
+  [fixture: state/db-description-markup-as-written]
 - **影響を受ける入力**: DOMPurify が変えるテキストだけ。
   つまり HTML のマークアップか `&`、`<`、`>` を含むテキスト。
   例えば `A["a & <b onclick=x>b</b>"]` は、
   `a & <b onclick=x>b</b>` として記録する。
+  [fixture: flowchart/db-vertex-label-markup-as-written]
   mermaid.js と DOMPurify のソースから予想すると、
   ブラウザは `a &amp; <b>b</b>` を保存する。
   これはブラウザでは確かめていない。
@@ -120,7 +142,8 @@ Node では DOMPurify に `sanitize` も `addHook` もないので、
   （[`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L70-L83)）
   は動く。
   `htmlLabels` が有効で、`securityLevel` が `strict`、`loose`、`antiscript`、
-  `sandbox` のどれでもないときは、`<`、`>`、`=` を実体参照に置き換える。
+  `sandbox` のどれでもないときは、
+  `<`、`>`、`=` を実体参照に、`<br>` を `<br/>` に置き換える。
   そのような `securityLevel` を使う fixture は、置き換え後のテキストを記録する。
 - **実装が比べる相手**: parser の Db 相当 JSON は、この値、
   つまり HTML のサニタイズ前のテキストと比べる。
@@ -147,6 +170,9 @@ Node にないブラウザの機能を mermaid.js が使おうとしたことを
   （`Error`、`MermaidParseError`、`UnknownDiagramError`、`YAMLException`）
   以外のエラーにだけ当てる。
   この 4 つの message は入力を引用するため。
+  [fixture: flowchart/rejection-parse-error-quotes-browser-word]
+  [fixture: common/rejection-unknown-diagram-quotes-browser-word]
+  [fixture: common/rejection-yaml-error-quotes-browser-word]
 
 これらのとき、`runMermaid()` は `MermaidEnvironmentError` を投げます。
 その入力については何も記録せず、生成器はそれを一覧に出して失敗します。
@@ -175,7 +201,8 @@ mermaid.js 自身の処理は、そのまま動きます。
 パッチを当てていない Db が入力を読むことはありません。
 mermaid@12.0.0 では、次の 2 つです。
 
-- [`SequenceDB.parseBoxData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419) は、
+- [`SequenceDB.parseBoxData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L394-L419)
+  は、
   `box` の行の最初の語
   （またはそこにある `rgb`、`rgba`、`hsl`、`hsla` の関数）が色かを、
   `window.CSS.supports("color", 語)` で尋ねる。
@@ -183,10 +210,21 @@ mermaid@12.0.0 では、次の 2 つです。
   色でなければ、fill は `transparent` になり、行全体が名前になる。
   代役は、その値が `color` プロパティの値として正しいかを答える。
   正しいとするのは、
-  モジュールの一覧にある CSS 全体のキーワード、`currentcolor`、
-  システム色（現行のものと廃止されたもの）と、
-  置換の関数（`var()`、`env()`、`attr()`）を含む値、
-  そのほかは `@csstools/css-color-parser` が 1 つの色として読む値。
+  まず、モジュールの一覧にある CSS 全体のキーワード、`currentcolor`、
+  システム色（現行のものと廃止されたもの）。
+  [fixture: sequence/db-box-colour-css-wide-keyword]
+  [fixture: sequence/db-box-colour-currentcolor]
+  [fixture: sequence/db-box-colour-system-colour]
+  [fixture: sequence/db-box-colour-deprecated-system-colour]
+  次に、置換の関数（`var()`、`env()`、`attr()`）を含む値。
+  [fixture: sequence/db-box-colour-function-substitution]
+  そのほかは、`@csstools/css-color-parser` が 1 つの色として読む値で、
+  例えばスラッシュでアルファを続ける空白区切りの形。
+  [fixture: sequence/db-box-colour-function-space-separated-alpha]
+  引数の足りない色の関数と、
+  数とパーセントを混ぜたコンマ区切りの形は、正しくない。
+  [fixture: sequence/db-box-colour-function-too-few-arguments]
+  [fixture: sequence/db-box-colour-function-mixed-percentages]
   代役の答えは、309 個の値について、
   Chromium 152 の `CSS.supports("color", 値)` と照らし合わせ、すべて一致した。
   照らした値は、収集した入力の `box` の行の最初の語、大文字小文字を変えた色名、
@@ -197,40 +235,41 @@ mermaid@12.0.0 では、次の 2 つです。
   ブラウザによって変わりうる値は、Chromium に合わせている。
   新しいシステム色、相対色、`none`、置換の関数がそれに当たる。
   Firefox と Safari では確かめていない。
-  同じ関数を、`@mmd-toolkit/tests/mermaid` から、
+  同じ関数を、mermaid.js を動かさない `@mmd-toolkit/tests` から、
   `cssSupportsColor` として公開している。
   この答えを外から受け取る実装のためのもの。
-- [`SequenceDB.addDetails`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L526-L546) は、
+- [`SequenceDB.addDetails`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L526-L546)
+  は、
   `document.getElementById` でページの要素を読む。
   ページを読む Db のメソッドは、その要素のないページとして扱う。
   ページの中身は図のテキストの一部ではないため。
   代役は要素を見つけず、`details` の文は、その actor を足すだけになる。
 
-## 既知の差を除いて動かす
+## 既知の差異を除いて動かす
 
 `runMermaid()` とその並びの関数は、選択肢 `withoutDivergences` を取ります。
-値は既知の差の識別子の一覧です。
-これを指定すると、それらの差が生じる字句解析器の規則を置き換えるか、
+値は既知の差異の識別子の一覧です。
+これを指定すると、それらの差異が生じる字句解析器の規則を置き換えるか、
 試す順を変えるかして、仕様と同じに読ませて、mermaid.js を動かします。
 変えるのはその呼び出しの間だけです。
 既定の実行、生成器、`expected.json` は、これを使いません。
 これらは mermaid.js をそのまま記録します。
 実装はこれを使って、印の付いた入力での mermaid.js との違いが、
-それらの差だけから来ることを確かめます。
+それらの差異だけから来ることを確かめます。
 こうして読ませた mermaid.js と、自分を比べます。
 すべての入力を、こう読ませた mermaid.js と同じに受理・拒否し、
 同じ Db を返すものでなければなりません。
 これを使えるのは、`comment-takes-character`、`comment-takes-line-break`、
 `name-start-reads-unit` です。
-ある図種で仕様と mermaid.js の差が 2 つ以上あるとき、
+ある図種で仕様と mermaid.js の差異が 2 つ以上あるとき、
 仕様と同じに読ませるには、
 1 つの入力でそのいくつかを同時に除く必要があることがあります。
 同じ識別子は 1 つと数え、空の一覧ではそのままの mermaid.js を動かします。
 入力はどの図種でもかまいません。
-変わるのはその差が属する図種の字句解析器だけなので、
-ほかの図種の差は何も変えません。
+変わるのはその差異が属する図種の字句解析器だけなので、
+ほかの図種の差異は何も変えません。
 1 つの字句解析器の同じ規則、同じ開始状態の並び、
-またはテキストを渡す同じ関数を変える 2 つの差は、同時には除けません。
+またはテキストを渡す同じ関数を変える 2 つの差異は、同時には除けません。
 後から変えたほうが、もう一方を打ち消すためです。
 そのときは、呼び出しは両方の識別子を挙げたエラーを投げます。
 選択肢でないキーを持つ options を渡すと、呼び出しは `TypeError` を投げます。
@@ -238,21 +277,36 @@ mermaid@12.0.0 では、次の 2 つです。
 
 仕様が何を出すかを知るために、
 実装が mermaid.js をこのように動かす必要はありません。
-mermaid.js の入力の読み方を変える既知の差の印
+mermaid.js の入力の読み方を変える既知の差異の印
 （`comment-takes-character`、`comment-takes-line-break`、
 `name-start-reads-unit`、`html-tag-in-frontmatter`）を持つ fixture は、
 それを `expected.json` と違うときに、`specified.json` に記録します。
-生成器は、その差を外して mermaid.js に読ませた結果を取ります
+生成器は、その差異を外して mermaid.js に読ませた結果を取ります
 （`comment-takes-line-break` と `name-start-reads-unit` は、
 どちらも class の字句解析器を変えるので、2 つを一緒に外します）。
+[fixture: class/div-comment-then-statement-with-backquote-keyword]
+[fixture: class/div-backquote-starts-with-keyword-then-comment]
 `html-tag-in-frontmatter` では、フロントマターの `<` を `(` にして
 HTML タグが始まらないようにした入力を mermaid.js に読ませた結果です。
-mermaid.js がその入力を拒否するときは、仕様どおりの読みも拒否で、
+タグは `title` に限らず、フロントマターのどのキーでも始まりえます。
+フロントマターは mermaid.js が見つけるとおりに見つけます。
+空白を後ろに持つ閉じの `---` の行と、CRLF の改行も含みます。
+[fixture: flowchart/html-tag-starts-in-frontmatter-other-key]
+[fixture: flowchart/html-tag-starts-in-frontmatter-crlf]
+[fixture: flowchart/html-tag-starts-in-frontmatter-closing-line-blank]
+Db の title は、書かれたとおりの入力のフロントマターの title を、
+`extractFrontmatterTitle` が返すとおりにしたものです。
+タグの中の `=` の後の `"` は `'` になります。
+[fixture: flowchart/html-tag-starts-in-frontmatter-value]
+`embedded` の値は、書かれたとおりの入力に mermaid.js が与えるものです。
+mermaid.js がその入力を拒否するときは、`(` にした入力に与えるものになり、
+設定の値の `<` は `(` として記録されます。
+`embedded` の title は、Db の title と同じです。
+[fixture: flowchart/html-tag-starts-in-frontmatter-config-value]
+mermaid.js が `(` にした入力を拒否するときは、仕様どおりの読みも拒否で、
 `specified.json` に `accepted: false` とエラーを記録します
 （`(` への置き換えが YAML を壊したときは、読みを作れないので、
 生成器が止まります。その fixture の読みの作り方を決めます）。
-Db の title は書かれたとおりのフロントマターの title で、
-`embedded` の値は書かれたとおりの入力のものです。
 ほかの印には、このファイルは要りません。
 仕様が mermaid.js の受理するものを拒否する
 （`directive-as-token-boundary`、`ignored-semicolon-as-token-boundary`、
@@ -264,7 +318,8 @@ pin した mermaid.js の字句解析器の中で、
 位置ではなく、コンパイルされた形で探します。
 見つからないか、2 つ以上見つかると、
 `runMermaid()` はどの入力よりも前に `MermaidEnvironmentError` で止まります。
-そうしないと、差を除いたつもりで、そのままの mermaid.js を黙って動かすためです。
+そうしないと、差異を除いたつもりで、
+そのままの mermaid.js を黙って動かすためです。
 外す規則は、何にも一致しない形に置き換えます。
 字句解析器は、規則の動作を一覧の中の位置で選ぶためです。
 呼び出しは 1 つずつ動くので、
@@ -277,6 +332,8 @@ pin した mermaid.js の字句解析器の中で、
 つまり字句解析器が読むテキストの行です。
 前処理は、改行を LF にそろえ、
 frontmatter、ディレクティブ、コメント行を取り除きます。
+[fixture: class/div-comment-then-statement-crlf]
+[fixture: class/div-comment-then-statement-cr]
 字句解析器が読んだものは、渡されたテキストから残りを除いたものです。
 字句解析器が読んでいないテキストを戻して、残りがそのテキストの末尾でなくなると、
 呼び出しは、誤っているかもしれない結果を返さずに、
@@ -288,7 +345,8 @@ frontmatter、ディレクティブ、コメント行を取り除きます。
 どの開始状態でも試す規則が、同じ形を持つことがあるためです。
 
 - `comment-takes-character`、sequence の字句解析器
-  （[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)）:
+  （[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L29-L30)）
+  :
   `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
   そうすると、コメントは `%%` から始まる。
   数の規則も、空白と改行の前だけでなく、`%%` の前でも数を終える。
@@ -297,15 +355,34 @@ frontmatter、ディレクティブ、コメント行を取り除きます。
   メッセージのように、2 文字目と 3 文字目が `%%` の id の連なりを、
   どの入力も与えられないからである。
 - `comment-takes-line-break`、class の字句解析器
-  （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)）:
+  （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)）
+  :
   `%%` と行の残りとその後の改行を読む規則を、
   行の中でその前に空白しかないコメントにだけ使う。
   単位の後のコメントは行の終わりで終わり、その後の改行は改行として読まれる。
+  [fixture: class/div-comment-after-name-then-statement]
+  [fixture: class/div-comment-after-note-string-then-statement]
+  [fixture: class/div-comment-after-click-string-then-statement]
 - `name-start-reads-unit`、class の字句解析器
-  （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）:
+  （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）
+  :
   バッククォートの名前とジェネリクスの型の中で、
   それを閉じる規則と中身を読む規則を先に試す。
   そうすると、中身は何で始まっても、閉じる記号まで読まれる。
+  [fixture: class/div-backquote-starts-with-cssclass]
+  [fixture: class/div-generic-starts-with-cssclass]
+  [fixture: class/div-backquote-starts-with-callback]
+  [fixture: class/div-generic-starts-with-callback]
+  [fixture: class/div-backquote-starts-with-link]
+  [fixture: class/div-generic-starts-with-link]
+  [fixture: class/div-backquote-starts-with-click]
+  [fixture: class/div-generic-starts-with-click]
+  [fixture: class/div-backquote-starts-with-href]
+  [fixture: class/div-generic-starts-with-href]
+  [fixture: class/div-backquote-starts-with-open-annotation]
+  [fixture: class/div-generic-starts-with-open-annotation]
+  [fixture: class/div-backquote-starts-with-close-annotation]
+  [fixture: class/div-generic-starts-with-close-annotation]
 
 ## これまでの結果の貯蔵庫
 
@@ -395,7 +472,7 @@ pin した mermaid.js は、同じテキストと同じ選択肢に同じ結果�
   `pnpm-lock.yaml`、入っている mermaid.js の版、Node.js と V8 の版。
   どれかが変わると鍵が変わるので、
   貯めた結果が、それを作ったコードや mermaid.js より長く残ることはありません。
-  `src/` のほかのファイル（fixture の読み込み、変異の中核）を変えても、
+  `src/` のほかのファイル（fixture の読み込み、木の検査）を変えても、
   貯めた結果は残ります。
 - 貯めるもの: 実行の結果。
   結果の代わりに投げられた例外
@@ -415,7 +492,9 @@ pin した mermaid.js は、同じテキストと同じ選択肢に同じ結果�
   貯蔵庫が入ったままになることがないようにするためです。
   生成器（`fixtures:generate`、`fixtures:check`、`add`、`add-many`）は、
   自分でこれを切ります。fixture は mermaid.js そのものを記録するためです。
-  CI のワークフローも切ります。
+  ワークフロー `NodeCI.yml` も切ります。
+  これは `.github/workflows_bk/` に置いてあり、
+  今は有効なワークフローがありません。
   実行の手順を試すこのパッケージのテストも切りますが、
   貯蔵庫のテストの 1 つは例外です。
   実行の関数が貯蔵庫を使うことを確かめるため、
@@ -431,3 +510,4 @@ pin した mermaid.js は、同じテキストと同じ選択肢に同じ結果�
 適用するのは描画だけです
 （[`renderDiagram`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L502-L505)）。
 fixture も適用しません。
+[fixture: flowchart/config-max-text-size-not-applied]

@@ -32,29 +32,83 @@ parser が変わったら、
 
 ## テスト
 
-| ファイル                          | 確かめること                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tests/language.test.ts`          | `@mmd-toolkit/tests` の適合コーパスの、種類ごとに数件の入力（下の `tests/corpus-kinds.ts`）を ESLint に掛ける。拒否される入力は、parser のエラーの位置で報告される。受理される入力では、ESLint が `traverseNodes` の順にノードをたどり、行、列、親が木と一致する。                                                                                                                                                                                                                                                                                            |
-| `tests/snapshot.test.ts`          | コーパスのいくつかの入力で、ESLint がノード、トークン、コメントをどこに見るかのスナップショット。                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `tests/token-store.test.ts`       | parser が受理するコーパスの、種類ごとに数件の入力で、ソースコードのトークンの方法を、木の範囲だけから求めた答えと比べる。各ノードの中、前、後のトークンとコメント、2 つのトークンの間に空白があるか。                                                                                                                                                                                                                                                                                                                                                         |
-| `tests/inline-config.test.ts`     | ESLint を設定するコメント（`%% eslint-disable…`、`%% eslint <規則>: <設定>`）のスナップショット。入力は `tests/fixtures/inline-config/`。                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `tests/markdown.test.ts`          | `tests/fixtures/markdown/` の `mermaid` と `mmd` のコードブロックを、`@eslint/markdown` のプロセッサーを通して検査する。報告は Markdown のファイルの位置になる。                                                                                                                                                                                                                                                                                                                                                                                              |
-| `tests/diagram-rules.test.ts`     | 図種ごとの規則を、parser が受理するコーパスの、図種ごとに数件の入力のうち、ほかの図種のものに掛け、何も報告しないことを確かめる。                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `tests/subgraph-ids.test.ts`      | `src/utils/subgraph-ids.ts` の `subgraphIdsOf`、つまり木から求めた各 subgraph の Db の id を、subgraph についてのコーパスの fixture（Db に subgraph があるすべて）で mermaid.js が返した Db と比べる。                                                                                                                                                                                                                                                                                                                                                        |
-| `tests/rule-cases.test.ts`        | すべての規則の文書の例を、`tests/rule-cases.ts` が読むとおりに確かめる。どの文書にも incorrect と correct の例があり、parser がどの例も受理する。                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `tests/rule-fixtures.test.ts`     | 規則の fixture のディレクトリを確かめる。どれも規則に属し、コーパスの入力の写しは、コーパスとバイト単位で同じである。                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `tests/rules/<規則>.test.ts`      | 実装した規則ごとに、`tests/rule-test.ts` の `testRule(name, rule)` で検査する。eslint-snapshot-rule-tester で、`tests/rule-cases.ts` の `ruleCases` が返すケース（英語の文書の例。incorrect の例は invalid、correct の例は valid。それと、規則の fixture のディレクトリの入力）を検査する。提案を出す規則では、invalid の各ケースの提案を 1 つずつ当て、その結果を parser が受理し、その規則の報告が減り、実装したほかの規則の報告が増えず、mermaid.js が提案の主張どおりに読むことも確かめる。提案とその結果のテキストは、テスターのスナップショットに出る。 |
-| `tests/suggestion-claims.test.ts` | `testRule` の主張が、提案の誤った出力で失敗すること。Db 以上を読む主張の種類ごとに、メッセージが除く出力を与える。                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| ファイル                          | 確かめること                                |
+| --------------------------------- | ------------------------------------------- |
+| `tests/language.test.ts`          | 言語（ESLint を通す）                       |
+| `tests/snapshot.test.ts`          | ESLint がノード・トークン・コメントを見る所 |
+| `tests/token-store.test.ts`       | ソースコードのトークンの方法                |
+| `tests/inline-config.test.ts`     | ESLint を設定するコメント                   |
+| `tests/markdown.test.ts`          | Markdown のコードブロック                   |
+| `tests/diagram-rules.test.ts`     | ほかの図種の規則                            |
+| `tests/subgraph-ids.test.ts`      | 木から求める subgraph の id                 |
+| `tests/text-nodes.test.ts`        | 規則が読むテキストのノードの型              |
+| `tests/rule-cases.test.ts`        | 規則の文書の例                              |
+| `tests/rule-fixtures.test.ts`     | 規則の fixture のディレクトリ               |
+| `tests/rules/<規則>.test.ts`      | 実装した規則ごと                            |
+| `tests/suggestion-claims.test.ts` | 提案の主張                                  |
+
+- `tests/language.test.ts`: `tests/language-inputs.ts`（下を参照）の入力、
+  つまり `@mmd-toolkit/tests` の適合コーパスの fixture を ESLint に掛ける。
+  拒否される入力は、parser のエラーの位置で報告される。
+  受理される入力では、ESLint が `traverseNodes` の順にノードをたどり、行、列、
+  親が木と一致する。
+- `tests/snapshot.test.ts`: コーパスのいくつかの入力で、ESLint がノード、
+  トークン、コメントをどこに見るかのスナップショット。
+- `tests/token-store.test.ts`: `tests/language-inputs.ts` の入力のうち、
+  parser が受理するもので、ソースコードのトークンの方法を、
+  木の範囲だけから求めた答えと比べる。
+  各ノードの中、前、後のトークンとコメント、2 つのトークンの間に空白があるか。
+- `tests/inline-config.test.ts`: ESLint を設定するコメント
+  （`%% eslint-disable…`、`%% eslint <規則>: <設定>`）のスナップショット。
+  入力は `tests/fixtures/inline-config/`。
+- `tests/markdown.test.ts`: `tests/fixtures/markdown/` の `mermaid` と `mmd` の
+  コードブロックを、`@eslint/markdown` のプロセッサーを通して検査する。
+  報告は Markdown のファイルの位置になる。
+- `tests/diagram-rules.test.ts`: 図種ごとの規則を、
+  `tests/language-inputs.ts` の入力のうち parser が受理するもので、
+  ほかの図種のものに掛け、
+  何も報告しないことを確かめる。
+- `tests/subgraph-ids.test.ts`: `src/utils/subgraph-ids.ts` の `subgraphIdsOf`、
+  つまり木から求めた各 subgraph の Db の id を、
+  subgraph についてのコーパスの fixture（Db に subgraph があるすべて）で
+  mermaid.js が返した Db と比べる。
+- `tests/text-nodes.test.ts`: `src/utils/text-nodes.ts` の `TEXT_NODE_TYPES`、
+  つまり `%%` だけの行を持ちうるテキストのノードの型。
+  parser の flowchart の葉のノードの型は、どれも、一覧にあるか、矢印か、
+  テキストを持たないかのどれかで、
+  仕様は、前の 2 つにテキストを与え、最後のものには与えない。
+- `tests/rule-cases.test.ts`: すべての規則の文書の例を、
+  `tests/rule-cases.ts` が読むとおりに確かめる。
+  どの文書にも incorrect と correct の例があり、parser がどの例も受理する。
+- `tests/rule-fixtures.test.ts`: 規則の fixture のディレクトリを確かめる。
+  どれも規則に属し、コーパスの入力の写しは、コーパスとバイト単位で同じである。
+- `tests/rules/<規則>.test.ts`: 実装した規則ごとに、
+  `tests/rule-test.ts` の `testRule(name, rule)` で検査する。
+  eslint-snapshot-rule-tester で、
+  `tests/rule-cases.ts` の `ruleCases` が返すケース（英語の文書の例。
+  incorrect の例は invalid、correct の例は valid。
+  それと、規則の fixture のディレクトリの入力）を検査する。
+  提案を出す規則では、invalid の各ケースの提案を 1 つずつ当て、
+  その結果を parser が受理し、その規則の報告が減り、
+  実装したほかの規則の報告が増えず、
+  mermaid.js が提案の主張どおりに読むことも確かめる。
+  提案とその結果のテキストは、テスターのスナップショットに出る。
+- `tests/suggestion-claims.test.ts`: `testRule` の主張が、
+  提案の誤った出力で失敗すること。
+  Db 以上を読む主張の種類ごとに、メッセージが除く出力を与える。
 
 言語のテストは、コーパスの全体には掛けません。
 コーパスは、仕様の主張ごとに入力を 1 つ持ちます。
 parser とコーパスのテストが、それを 1 つずつ確かめています。
-`tests/corpus-kinds.ts` が、入力ごとに種類
-（図種、parser が受理するか、行終端子とバイト順マーク、
-木のノード、トークン、コメント、ディレクティブの種類）を求め、
-種類ごとに最も短い 3 件（ノードの型は 1 件）を選びます。
-parser が足した種類は、ここを変えなくても拾われます。
-確かさを増やすには、欠けている種類を足し、件数は増やしません。
+`tests/language-inputs.ts` が、それらが掛かる fixture を、
+言語がそれだけで扱う場合ごとに 1 つ挙げます。
+場合は、parser が読む図、拒否するテキスト、位置が数える行終端子、
+バイト順マーク、frontmatter、ノードでない部分
+（ディレクティブ、印ごとのコメント、行をまたぐトークン、
+無視される `;`、文字列の断片）です。
+テストは、各 fixture がその場合のものであることを確かめます。
+別の場合を覆うには、その場合に答える fixture を足し、
+覆われた場合の入力は増やしません。
 
 規則のテストは、eslint-snapshot-rule-tester を使います
 （[スナップショット](#スナップショット)を参照）。
@@ -205,6 +259,18 @@ id は、名前空間の後にその名前を続けたもの
 どれか 1 つで決まるのではありません。
 規則の事実が食い違うと、`check:docs` は失敗します。
 
+規則が `recommended` の設定に入るのは、
+報告がほぼいつも直すべき誤りであるときです。
+その規則が報告する所では、どこでも、
+mermaid.js がテキストを書き手のつもりと違う読み方をし、
+書き手がわざとそう書く書き方は報告されず、
+直し方ははっきりしています。
+進んでいる mermaid.js の修正で変わる振る舞いに頼る規則は、入れません。
+index は、設定が有効にする規則を、一覧の ✅ で示すだけです。
+
+共通の規則の文書は、parser が対応する図種ごとの項目を持ちます。
+項目の形と手順は、SKILL `eslint-plugin` にあります。
+
 名前空間は、`@mmd-toolkit` のようなスコープ付きの名前ではなく、`mmd` です。
 ESLint は、`@` で始まる id を、最後の `/` でプラグインと規則に分けます。
 そのため、`@mmd-toolkit/flowchart/no-ignored-text` は、
@@ -329,7 +395,9 @@ fixture 自体には、このコメントを足しません。
   `sourceCode.getLocFromIndex` で出した `loc` で報告します。
   閉じていないブロックのように、テキストの終わりまで続くものは、
   開く所を報告します。
-- 規則は、オプションと自動修正を持ちません。
+- 規則は、自動修正を持ちません。
+  規則の文書は、オプションがあるかを言い、
+  規則がオプションを持つかは、rule-ideas の SKILL が決めます。
   提案は、rule-ideas の SKILL が決めたときだけ持ち（`meta.hasSuggestions`）、
   どの提案も、適用した後に mermaid.js がテキストをどう読むかを言います。
   提案は、`create` から分けた関数で組み立て、
@@ -340,6 +408,8 @@ fixture 自体には、このコメントを足しません。
   要素の後ろの `;` は消しません。
   前の文の区切りか、それだけで空の文であり、
   subgraph の中ではメンバーだからです。
+  例外は、テキストの終わりにあって mermaid.js が無視する `;` で、
+  `oneOfTwoRemovals` は、これを前の文と一緒に消します。
 - 規則のテストは、`testRule(name, rule, options)` の 1 回の呼び出しです。
   オプション `revealed` は、提案が報告を見えるようにしうる規則を挙げます。
   テキストがすでに持っていて、書き換えが見えるようにした誤りです。
@@ -353,18 +423,33 @@ fixture 自体には、このコメントを足しません。
   頂点がなくなる、説明が行の残りになる、報告したテキストが文として読まれる、
   など）。
   テストは、提案が作ったテキストを mermaid.js で読んで、それを確かめます。
-  主張は、メッセージの言うことのうち Db が示せるものをすべて言います。
-  Db が示せないもの、たとえば `click` が呼ぶ関数の名前は、
-  主張 `notShownByDb` で名指しします。
-  `claims` のメッセージ id に付けるか、オプション `notShownByDb` で
-  invalid のケース 1 つに付けます。
-  そのときテストは、mermaid.js が出力を受理することだけを確かめます。
+  主張は、メッセージの言うことをすべて言います。
   提案が作ったテキストは、フォーマッターの出力と同じく実装のテキストなので、
   コーパスにはありません。
   入力の Db は、コーパスの入力の写しなら `expected.json` から取ります。
   テストは、その写しがコーパスの入力であることと、
   設定なしで読まれることを求めます。
   ほかの入力なら mermaid.js が返すものです。
+  オプション `sentences` は、
+  どの入力がどの場合かを、テストから分かるようにします。
+  規則の英語の文書の、振る舞いを定める文ごとに
+  （報告する条件、報告しない条件、メッセージや提案の主張）、
+  その文の一節を、文書に書いてあるとおりに挙げ、
+  その文が分ける場合を添えます（`tests/rule-test.ts` の `SentenceCases`）。
+  場合は、それが何かを言葉で言い、
+  その入力に規則が報告するか（`reports`）と、入力の名前を持ちます。
+  入力の名前は、`ruleCases` が作る場合の名前で、
+  `invalid/…`、`valid/…`、`docs/rules/… incorrect 1` などです。
+  提案についての場合は、
+  `suggests` が提案を出すかを、
+  `offers` がどの提案を出すかを（メッセージの id で）、
+  `messageHas` と `messageLacks` がメッセージの内容を言います。
+  `written` は、fixture のファイルに書けない文字（U+2028 など）を持つ入力で、
+  エスケープで書きます。
+  テストは、その入力に報告と提案の検査を行います。
+  一節が文書にないとき、入力が場合の言う種類の場合でないとき、
+  規則が場合の言うとおりにしないとき、テストは失敗します。
+  規則のすべての入力が場合に入るわけではなく、場合は文のためにあります。
 
 ## 規則の型
 

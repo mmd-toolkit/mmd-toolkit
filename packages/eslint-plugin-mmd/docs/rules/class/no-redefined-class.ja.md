@@ -18,7 +18,7 @@
 
 この規則は、ラベルを持つ class の文のうち、
 同じクラスが前に違うラベルで宣言されているものを報告する。
-`classDiagram` に当たる。
+対象の図種は `classDiagram` である。
 
 `class A["First"]` の後の `class A["Second"]` は、
 クラス `A` のラベルを `Second` にし、

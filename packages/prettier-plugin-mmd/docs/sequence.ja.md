@@ -4,16 +4,15 @@
 
 prettier-plugin-mmd が sequence 図をどう整形するかを説明します。
 以下の各規則は、mermaid.js が図から読むものを保ちます。
-変えると読み方が変わる箇所は書かれたまま残し、規則にその箇所を書きます。
-flowchart と同じ規則はそう書き、理由は [flowchart.ja.md](./flowchart.ja.md) にあります。
+整形によって図の解釈が変わる箇所は、入力をそのまま残します。
+各項目でその条件を説明します。
+flowchart と同じ規則はそう書き、
+理由は [flowchart の整形規則](./flowchart.ja.md) にあります。
 
-各規則には、flowchart と同じく、
-[`tests/fixtures/sequence/`](../tests/fixtures/sequence) の下に、
-規則の見出しを名前にした例のフォルダーがあります。
-各例は入力と整形した出力のファイルの組で、
-テストは、プラグインがその出力を印字することと、
-mermaid.js が入力と出力から同じ図を読むことの両方を確かめます。
-この文書の例はそれらのファイルの写しで、テストが同じであることを確かめます。
+各規則では、整形前のテキストと、プラグインが出力するテキストを、例で示します。
+例はテストが確かめる fixture で、各例の上のリンクはそのファイルへのものです。
+fixture の置き方と確かめ方は、
+[文書と fixture](./development.ja.md#文書と-fixture)にあります。
 
 ## 規則
 
@@ -24,12 +23,17 @@ mermaid.js が入力と出力から同じ図を読むことの両方を確かめ
 ブロックは、`loop`、`alt`、`opt`、`par`、`par_over`、`critical`、
 `break`、`rect` です。
 `else`、`and`、`option`、`end` は、その行と同じ段に置きます。
+[fixture: indentation/blocks] [fixture: indentation/sections]
+[fixture: indentation/other-blocks-kept]
 1 段は Prettier の `useTabs` と `tabWidth` のオプションが決め、
 既定は空白 2 つです。
+[fixture: indentation/tab-width-4] [fixture: indentation/use-tabs]
 入力に書かれた字下げは保ちません。
-行頭の空白は、mermaid.js にとって何でもないからです。
+文の行頭の空白は、Mermaid による図の解釈に影響しないためです。
+[fixture: indentation/sections]
 
-入力 ([indentation/blocks-input.mmd](../tests/fixtures/sequence/indentation/blocks-input.mmd)):
+入力
+([indentation/blocks-input.mmd](../tests/fixtures/sequence/indentation/blocks-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -50,7 +54,8 @@ A->>C: x
 end
 ```
 
-出力 ([indentation/blocks-output.mmd](../tests/fixtures/sequence/indentation/blocks-output.mmd)):
+出力
+([indentation/blocks-output.mmd](../tests/fixtures/sequence/indentation/blocks-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -71,7 +76,8 @@ sequenceDiagram
   end
 ```
 
-入力 ([indentation/sections-input.mmd](../tests/fixtures/sequence/indentation/sections-input.mmd)):
+入力
+([indentation/sections-input.mmd](../tests/fixtures/sequence/indentation/sections-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -87,7 +93,8 @@ A->>C: y
       end
 ```
 
-出力 ([indentation/sections-output.mmd](../tests/fixtures/sequence/indentation/sections-output.mmd)):
+出力
+([indentation/sections-output.mmd](../tests/fixtures/sequence/indentation/sections-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -108,12 +115,18 @@ sequenceDiagram
 各文は 1 行に 1 つ置きます。
 文を区切る `;` は取り除きます。
 mermaid.js は `;` を改行と同じに読むからです。
+[fixture: statements-one-per-line/semicolons-dropped]
 ヘッダーの行や、`end` の後に同じ行で書かれた文は、それぞれの行に移します。
+[fixture: statements-one-per-line/split]
 mermaid.js の行単位の規則が無視する `;` を含む行は、
 flowchart と同じく、その行の文と `;` を残します
 （[1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照）。
+[corpus fixture: sequence/tokens-ignored-semicolon-in-participant-id]
+[corpus fixture: sequence/tokens-ignored-semicolon-in-message-id]
+[fixture: statements-one-per-line/line-with-ignored-semicolon-kept]
 
-入力 ([statements-one-per-line/split-input.mmd](../tests/fixtures/sequence/statements-one-per-line/split-input.mmd)):
+入力
+([statements-one-per-line/split-input.mmd](../tests/fixtures/sequence/statements-one-per-line/split-input.mmd)):
 
 ```mmd
 sequenceDiagram A->>B: x; B->>A: y
@@ -122,7 +135,8 @@ A->>B: y
 end A->>B: z
 ```
 
-出力 ([statements-one-per-line/split-output.mmd](../tests/fixtures/sequence/statements-one-per-line/split-output.mmd)):
+出力
+([statements-one-per-line/split-output.mmd](../tests/fixtures/sequence/statements-one-per-line/split-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -138,8 +152,13 @@ sequenceDiagram
 `box` の中でも同じで、参加者の間に置けます。
 その後に同じ行で書かれた文や box の `end` は、それぞれの行に移し、
 mermaid.js は同じ box を読みます。
+[fixture: statements-one-per-line/empty-description-block-in-box]
+[fixture: statements-one-per-line/empty-description-block-moves-next-statement]
+[fixture:
+statements-one-per-line/empty-description-block-before-semicolon-and-directive]
 
-入力 ([statements-one-per-line/empty-description-block-in-box-input.mmd](../tests/fixtures/sequence/statements-one-per-line/empty-description-block-in-box-input.mmd)):
+入力
+([statements-one-per-line/empty-description-block-in-box-input.mmd](../tests/fixtures/sequence/statements-one-per-line/empty-description-block-in-box-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -149,7 +168,8 @@ participant C
 accDescr {} end
 ```
 
-出力 ([statements-one-per-line/empty-description-block-in-box-output.mmd](../tests/fixtures/sequence/statements-one-per-line/empty-description-block-in-box-output.mmd)):
+出力
+([statements-one-per-line/empty-description-block-in-box-output.mmd](../tests/fixtures/sequence/statements-one-per-line/empty-description-block-in-box-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -163,6 +183,14 @@ sequenceDiagram
 
 `autonumber` の後、または、データブロックで終わり `as` のない
 `participant` と `actor` の後の、ディレクティブに続く `;` は残します。
+[fixture: statements-one-per-line/autonumber-directive-kept]
+[fixture: statements-one-per-line/data-block-directive-kept]
+[fixture: statements-one-per-line/actor-data-block-directive-kept]
+[fixture: statements-one-per-line/autonumber-two-directives-kept]
+そのような `;` の後に同じ行で続く文は、その行に残ります。
+残す `;` は、その行をまとめて保つからです。
+`autonumber %%{wrap}%%; A->>B: x` は 1 行で印字します。
+[fixture: statements-one-per-line/autonumber-directive-semicolon-same-line-kept]
 mermaid.js はディレクティブを取り除き、
 行末の空白が、文に必要な改行を隠すからです。
 その文の最後の単位は、後ろの空白を読みません。
@@ -170,9 +198,15 @@ mermaid.js はディレクティブを取り除き、
 `;` がないと拒否されます。
 ほかの文の最後の単位、つまりテキスト、id、`as` の後の説明は、
 後ろの空白を一緒に読みます
-（sequence の仕様の文の文脈と、そこの「区切りの前の空の説明ブロック」を参照）。
+（仕様の
+[文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈)と、
+そこの
+[区切りの前の空の説明ブロック](../../spec/docs/diagrams/sequence.ja.md#区切りの前の空の説明ブロック)
+を参照）。
+[fixture: statements-one-per-line/closed-directive-semicolon-dropped]
 
-入力 ([statements-one-per-line/autonumber-directive-kept-input.mmd](../tests/fixtures/sequence/statements-one-per-line/autonumber-directive-kept-input.mmd)):
+入力
+([statements-one-per-line/autonumber-directive-kept-input.mmd](../tests/fixtures/sequence/statements-one-per-line/autonumber-directive-kept-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -180,7 +214,8 @@ autonumber %%{wrap}%%;
 A->>B: x
 ```
 
-出力 ([statements-one-per-line/autonumber-directive-kept-output.mmd](../tests/fixtures/sequence/statements-one-per-line/autonumber-directive-kept-output.mmd)):
+出力
+([statements-one-per-line/autonumber-directive-kept-output.mmd](../tests/fixtures/sequence/statements-one-per-line/autonumber-directive-kept-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -188,7 +223,8 @@ sequenceDiagram
   A ->> B: x
 ```
 
-入力 ([statements-one-per-line/data-block-directive-kept-input.mmd](../tests/fixtures/sequence/statements-one-per-line/data-block-directive-kept-input.mmd)):
+入力
+([statements-one-per-line/data-block-directive-kept-input.mmd](../tests/fixtures/sequence/statements-one-per-line/data-block-directive-kept-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -196,7 +232,8 @@ participant A@{ "type": "actor" } %%{wrap}%%;
 A->>B: x
 ```
 
-出力 ([statements-one-per-line/data-block-directive-kept-output.mmd](../tests/fixtures/sequence/statements-one-per-line/data-block-directive-kept-output.mmd)):
+出力
+([statements-one-per-line/data-block-directive-kept-output.mmd](../tests/fixtures/sequence/statements-one-per-line/data-block-directive-kept-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -208,8 +245,12 @@ sequenceDiagram
 
 flowchart と同じです。
 空行の連続は 1 つにし、ブロックの先頭と末尾の空行は取り除きます。
+[fixture: blank-lines/collapsed]
+[fixture: blank-lines/around-comments-and-directives]
+[fixture: blank-lines/block-edges-dropped]
 
-入力 ([blank-lines/collapsed-input.mmd](../tests/fixtures/sequence/blank-lines/collapsed-input.mmd)):
+入力
+([blank-lines/collapsed-input.mmd](../tests/fixtures/sequence/blank-lines/collapsed-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -227,7 +268,8 @@ A->>B: z
 end
 ```
 
-出力 ([blank-lines/collapsed-output.mmd](../tests/fixtures/sequence/blank-lines/collapsed-output.mmd)):
+出力
+([blank-lines/collapsed-output.mmd](../tests/fixtures/sequence/blank-lines/collapsed-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -244,14 +286,23 @@ sequenceDiagram
 行の中で、2 つのトークンの間の空白とタブの連続は空白 1 つにし、
 接しているトークンは接したまま残します。
 flowchart と同じです。
+[fixture: whitespace-between-tokens/collapsed]
+[fixture: whitespace-between-tokens/tabs-collapsed]
 そのため、矢印や id の隣の `+`、`-`、`()`、`note over A,B` の `,`、
 `wrap:` などの折り返しの接頭辞とその本文の間は、
 空白が書かれているかどうかを保ちます。
+[fixture: whitespace-between-tokens/collapsed]
+[fixture: arrow-spacing/plus-and-minus-kept]
+[fixture: arrow-spacing/parentheses-whitespace-kept]
+[fixture: whitespace-between-tokens/comma-whitespace-kept]
+[fixture: whitespace-between-tokens/wrap-prefix-kept]
 キーワードは、書かれた大文字小文字のまま残します。
 例えば `PARTICIPANT A`、`Note LEFT OF A` です。
 mermaid.js は大文字小文字にかかわらず読むからです。
+[fixture: whitespace-between-tokens/keyword-case-kept]
 
-入力 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/collapsed-input.mmd)):
+入力
+([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/collapsed-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -264,7 +315,8 @@ A->>B: wrap:x
 A->>B: wrap:   y
 ```
 
-出力 ([whitespace-between-tokens/collapsed-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/collapsed-output.mmd)):
+出力
+([whitespace-between-tokens/collapsed-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/collapsed-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -277,7 +329,8 @@ sequenceDiagram
   A ->> B: wrap: y
 ```
 
-入力 ([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-kept-input.mmd)):
+入力
+([whitespace-between-tokens/keyword-case-kept-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-kept-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -289,7 +342,8 @@ A->>B: y
 END
 ```
 
-出力 ([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-kept-output.mmd)):
+出力
+([whitespace-between-tokens/keyword-case-kept-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/keyword-case-kept-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -304,14 +358,24 @@ sequenceDiagram
 値の中の空白は値の一部なので、残します。
 メッセージ、ノート、ブロック、`box` のテキスト、`as` の後の説明、
 `links` と `properties` の JSON がそうです。
+[fixture: whitespace-between-tokens/values-kept]
+[fixture: whitespace-between-tokens/values-of-other-statements-kept]
 `box` のテキストは全体を残します。
 最初の語が色でないとき、mermaid.js はテキスト全体を box の名前にするからです。
+[fixture: whitespace-between-tokens/values-kept]
+[fixture: whitespace-between-tokens/box-text-kept]
 参加者のデータブロック `@{ ... }` は書かれたまま残し、id に接したままにします。
 `@{` の前に空白があると、入力が拒否されるからです。
+[fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
+[fixture: whitespace-between-tokens/actor-data-block-kept]
 行に単独の `)` のように、mermaid.js が何も読まない行は残し、
 周りの文と同じ段に置きます。
+[fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
+[corpus fixture: sequence/lex-invalid-line-parenthesis]
+[fixture: whitespace-between-tokens/ignored-line-in-block-kept]
 
-入力 ([whitespace-between-tokens/values-kept-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-kept-input.mmd)):
+入力
+([whitespace-between-tokens/values-kept-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-kept-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -325,7 +389,8 @@ A->>B: z
 end
 ```
 
-出力 ([whitespace-between-tokens/values-kept-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-kept-output.mmd)):
+出力
+([whitespace-between-tokens/values-kept-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-kept-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -339,7 +404,8 @@ sequenceDiagram
   end
 ```
 
-入力 ([whitespace-between-tokens/data-block-and-ignored-line-kept-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/data-block-and-ignored-line-kept-input.mmd)):
+入力
+([whitespace-between-tokens/data-block-and-ignored-line-kept-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/data-block-and-ignored-line-kept-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -348,7 +414,8 @@ A->>B: x
 )
 ```
 
-出力 ([whitespace-between-tokens/data-block-and-ignored-line-kept-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/data-block-and-ignored-line-kept-output.mmd)):
+出力
+([whitespace-between-tokens/data-block-and-ignored-line-kept-output.mmd](../tests/fixtures/sequence/whitespace-between-tokens/data-block-and-ignored-line-kept-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -361,11 +428,20 @@ sequenceDiagram
 
 メッセージの矢印の前後には、flowchart の辺と同じく、空白を 1 つずつ置きます。
 `Alice->>Bob: hi` は `Alice ->> Bob: hi` になります。
+[fixture: arrow-spacing/spaced]
 矢印の後の `+`、`-`、`()` と、矢印の前の `()` は、
 書かれたとおり id の隣に残します。
+[fixture: arrow-spacing/plus-and-minus-kept]
+[fixture: arrow-spacing/parentheses-whitespace-kept]
 矢印は書かれたまま印字します。
+[fixture: arrow-spacing/arrows-kept]
+ディレクティブの隣では、書かれた空白を残します
+（[ディレクティブ](#ディレクティブ)を参照）。
+`A%%{init: {}}%%->>B: v` は、矢印の前に空白を置きません。
+[fixture: arrow-spacing/directive-beside-arrow-kept]
 
-入力 ([arrow-spacing/spaced-input.mmd](../tests/fixtures/sequence/arrow-spacing/spaced-input.mmd)):
+入力
+([arrow-spacing/spaced-input.mmd](../tests/fixtures/sequence/arrow-spacing/spaced-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -378,7 +454,8 @@ Alice Smith->>Bob: v
 Bob  -)   Alice: u
 ```
 
-出力 ([arrow-spacing/spaced-output.mmd](../tests/fixtures/sequence/arrow-spacing/spaced-output.mmd)):
+出力
+([arrow-spacing/spaced-output.mmd](../tests/fixtures/sequence/arrow-spacing/spaced-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -401,8 +478,14 @@ sequenceDiagram
 そのため、`1 ->> 2: x` は拒否され、`title ->> B: x` はタイトルですが、
 `1->>2: x` と `title->>B: x` はメッセージです。
 `1a`、`1.234`、`titles` のような id には、ほかと同じく空白を置きます。
+[fixture: arrow-spacing/touching-before-read-otherwise-kept]
+[corpus fixture: sequence/lex-number-as-id]
+[corpus fixture: sequence/lex-number-before-space]
+[fixture: arrow-spacing/number-and-title-forms-kept]
+[fixture: arrow-spacing/near-misses-spaced]
 
-入力 ([arrow-spacing/touching-before-read-otherwise-kept-input.mmd](../tests/fixtures/sequence/arrow-spacing/touching-before-read-otherwise-kept-input.mmd)):
+入力
+([arrow-spacing/touching-before-read-otherwise-kept-input.mmd](../tests/fixtures/sequence/arrow-spacing/touching-before-read-otherwise-kept-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -413,7 +496,8 @@ TITLE->>+B: w
 1a->>B: v
 ```
 
-出力 ([arrow-spacing/touching-before-read-otherwise-kept-output.mmd](../tests/fixtures/sequence/arrow-spacing/touching-before-read-otherwise-kept-output.mmd)):
+出力
+([arrow-spacing/touching-before-read-otherwise-kept-output.mmd](../tests/fixtures/sequence/arrow-spacing/touching-before-read-otherwise-kept-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -429,10 +513,22 @@ sequenceDiagram
 メッセージ、ノート、`links`・`link`・`properties`・`details` の文の、
 テキストの前の `:` と、`accTitle` と `accDescr` の後の `:` は、
 前のものに接し、後に空白を 1 つ置きます。
+ディレクティブの隣では、書かれた空白を残します
+（[ディレクティブ](#ディレクティブ)を参照）。
+[fixture: colons/spaced]
+[fixture: colons/other-statements-spaced]
+[fixture: colons/directive-around-colon-kept]
 mermaid.js はテキストを両端の空白を除いて読みます。
 テキストが空のときは、`:` の後に何も置きません。
+[fixture: colons/spaced]
+[fixture: colons/empty-text]
+`accTitle` の `:` の後の改行は、mermaid.js にとって空白なので、
+次の行がそのテキストになります。
+テキストのない `accTitle:` は、ほかの文の前には書けません。
+[fixture: colons/acc-title-colon-line-break]
 
-入力 ([colons/spaced-input.mmd](../tests/fixtures/sequence/colons/spaced-input.mmd)):
+入力
+([colons/spaced-input.mmd](../tests/fixtures/sequence/colons/spaced-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -445,7 +541,8 @@ accTitle:t
 A->>B::nowrap:z
 ```
 
-出力 ([colons/spaced-output.mmd](../tests/fixtures/sequence/colons/spaced-output.mmd)):
+出力
+([colons/spaced-output.mmd](../tests/fixtures/sequence/colons/spaced-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -461,16 +558,28 @@ sequenceDiagram
 ### タイトル
 
 `title` と `title:` の後には空白を 1 つ置き、行の残りは書かれたまま残します。
+[fixture: title/directive-after-keyword-kept]
 mermaid.js はキーワードの後の空白 1 文字を読み、それは改行でもよく、
 その後のすべてを、先頭と末尾の空白も含めてタイトルに入れます。
 そのため、`title`、改行、`A->>B: x` は `title A->>B: x` と印字し、
 次の行がタイトルになることが見えます。
 mermaid.js はそのように読みます。
+[fixture: title/separator] [corpus fixture: sequence/lex-title-line-break]
+[corpus fixture: sequence/db-title-next-line-indented]
+[fixture: title/tab-and-colon-line-break] [fixture: title/line-break-indented]
 タイトルの末尾の空白は残します。
-その例は、空白が行末にあるので、ここには載せません
-（[フォルダー](../tests/fixtures/sequence/title)の `title/trailing-whitespace-kept` を参照）。
+[fixture: title/trailing-whitespace-kept]
+[fixture: title/semicolon-after-whitespace-dropped]
+空白が行末にあるので、例は、`\n` を改行とする文字列で書きます。
+`"sequenceDiagram\ntitle Kept   \nA->>B: x\n"` は
+`"sequenceDiagram\n  title Kept   \n  A ->> B: x\n"` と印字し、
+`Kept` の後の 3 つの空白は残ります
+（fixture `trailing-whitespace-kept` は
+[フォルダー](../tests/fixtures/sequence/title)
+にあります）。
 
-入力 ([title/separator-input.mmd](../tests/fixtures/sequence/title/separator-input.mmd)):
+入力
+([title/separator-input.mmd](../tests/fixtures/sequence/title/separator-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -480,7 +589,8 @@ title  Two spaces
 title:	Tab
 ```
 
-出力 ([title/separator-output.mmd](../tests/fixtures/sequence/title/separator-output.mmd)):
+出力
+([title/separator-output.mmd](../tests/fixtures/sequence/title/separator-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -496,8 +606,11 @@ sequenceDiagram
 その次の行がタイトルです。
 空白 1 つの後に印字すると、コメントがキーワードの行に乗り、
 次の行が文として読まれてしまいます。
+[fixture: title/comment-line-kept]
+[fixture: title/colon-comment-line-kept]
 
-入力 ([title/comment-line-kept-input.mmd](../tests/fixtures/sequence/title/comment-line-kept-input.mmd)):
+入力
+([title/comment-line-kept-input.mmd](../tests/fixtures/sequence/title/comment-line-kept-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -507,7 +620,8 @@ title
 A->>B: x
 ```
 
-出力 ([title/comment-line-kept-output.mmd](../tests/fixtures/sequence/title/comment-line-kept-output.mmd)):
+出力
+([title/comment-line-kept-output.mmd](../tests/fixtures/sequence/title/comment-line-kept-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -521,11 +635,21 @@ sequenceDiagram
 
 行に単独のコメント（`%%`、`#`、`%`）は、周りの文と同じ段に置き、
 本文は書かれたまま残します。
+[fixture: comments/kept]
+[corpus fixture: sequence/lex-single-percent-comment-line]
+[fixture: comments/percent-line-kept] [fixture: comments/block-edges-kept]
+[fixture: comments/text-whitespace-kept]
 文の後のコメントはその行に残し、印の前に空白が書かれているかどうかを保ちます。
 mermaid.js は `autonumber 5%% c` を数 5 なしで読み、
 `%%` の前に空白を入れると数を読むからです。
+[fixture: comments/kept]
+[corpus fixture: sequence/lex-percent-comment-takes-number]
+[fixture: comments/mark-whitespace-kept]
+[fixture: comments/after-last-statement-without-line-break]
+[fixture: comments/block-end-comment-without-line-break]
 
-入力 ([comments/kept-input.mmd](../tests/fixtures/sequence/comments/kept-input.mmd)):
+入力
+([comments/kept-input.mmd](../tests/fixtures/sequence/comments/kept-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -539,7 +663,8 @@ A->>B: y
 end
 ```
 
-出力 ([comments/kept-output.mmd](../tests/fixtures/sequence/comments/kept-output.mmd)):
+出力
+([comments/kept-output.mmd](../tests/fixtures/sequence/comments/kept-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -556,11 +681,17 @@ sequenceDiagram
 コメントの直後に同じ行で置かれた `;` は残します。
 それは mermaid.js の行の規則が無視する行の最後の `;` で、
 コメントはその手前で終わります。
+[fixture: comments/semicolon-after-comment-kept]
+[corpus fixture: sequence/tokens-comment-then-ignored-semicolon]
+[corpus fixture: sequence/tokens-loop-comment-then-ignored-semicolon]
+[fixture: comments/semicolon-after-percent-comment-kept]
 その `;` の後に空白が書かれていると、
 `;` はコメントの中にあり、コメントごと印字されます。
+[fixture: comments/semicolon-inside-comment-kept]
 片方で落とし、片方で残すと、2 回目の整形が 1 回目と違う結果になります。
 
-入力 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):
+入力
+([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -570,7 +701,8 @@ A->>B: y
 end
 ```
 
-出力 ([comments/semicolon-after-comment-kept-output.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-output.mmd)):
+出力
+([comments/semicolon-after-comment-kept-output.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -585,48 +717,98 @@ sequenceDiagram
 U+2028 と U+2029 は空白ですが、
 mermaid.js の読み方のいくつかがそれに左右されるため、
 関係する所では書かれたまま残します。
-文字が見えないので、ここに例はありません。
-テストは文字をエスケープで書きます (`tests/line-separators.test.ts` を参照)。
+文字が見えないので、例は、
+`\u2028` を U+2028、`\n` を改行とする文字列で書きます。
+`"sequenceDiagram\nbox red\u2028\nparticipant A\nend\n"` は
+`"sequenceDiagram\n  box red\u2028\n    participant A\n  end\n"` と印字し、
+文字は `box` のテキストの終わりに残ります。
+テストも、文字をエスケープで書いています
+（[tests/line-separators.test.ts](../tests/line-separators.test.ts) を参照）。
 
 - `box` のテキストの末尾で、その前に空白があっても、そこまで。
   テキストにこの文字がある box は、塗りが `transparent` で名前がなくなります。
   なければ `box aqua` の塗りは `aqua` です。
   最後の文字より後の空白は落とします。
+  `box` 以外のブロックの見出しは、mermaid.js がテキストの両端を取り除くので、
+  文字は、テキストの末尾の空白と一緒に落とします
+  （`loop x`、U+2028、` ;` など）。
+  [test: U+2028 at the end of the text of a box]
+  [test: whitespace around U+2028 at the end of the text of a box]
+  [test: U+2029 at the end of the text of a box]
+  [test: whitespace around U+2029 at the end of the text of a box]
 - コメントと、同じ行でその後ろに続くコメント行の間。
   図のコメントは、そのコメント行を越えて次の行まで続くため、
   文字の代わりに改行を置くと、その後の文が文として読まれます。
+  [corpus fixture: sequence/lex-hash-comment-across-comment-line]
   コメントとコメント行とその後のテキストは、
   字下げなしで書かれたまま印字します。
   木はそれらをコメントとして並べますが、printer は 1 つとして読みます。
+  [test: a `#` comment after U+2028, which joins no lines]
+  [test: a `%%` comment line after U+2028, which joins the next line]
+  [test: U+2029 after a comment that a comment line follows]
+  [test: U+2028 after a `%%` comment that a comment line follows]
+  [test: U+2029 after a `%` comment that a comment line follows]
 - 閉じていないディレクティブの直後。
   そのようなディレクティブのテキストはこの文字の手前で止まり、
   文字はディレクティブにとって空白ではありません。
   文字を空白や改行で印字すると、
   ディレクティブが残りのテキストに届いてしまいます。
   これはすべての図種で同じです。
+  [test: U+2028 after a directive that is not closed]
+  [test: U+2029 after a directive that is not closed]
+  [test: a `;` after U+2029 after a directive that is not closed]
 - `title` の後の 1 つの空白文字としての U+2028 か U+2029。
   `title`、U+2028、` ;` は、`;` ごと書かれたまま残します。
+  [test: U+2028 as the whitespace character after `title`, with a `;` after it]
+  [test: U+2029 as the whitespace character after `title`]
 - 文の 2 つの部分の間（すべての図種）。
   間の空白に U+2028 か U+2029 があるときは、書かれたまま残します。
   この文字は、mermaid.js のすべての規則で空白として読まれるわけではないからです
   （`class A`、U+2028、` direction LR` は 1 つの名前で、
   `class A`、改行、` direction LR` は文と方向になります）。
+  [test: U+2028 between an id and an arrow]
+  [test: U+2029 between an arrow and an id]
+  [test: U+2028 between an id and `as`]
 - 行の規則が無視する `;` と、その後に U+2028 か U+2029 がある行。
   行の規則は、文字の手前までを行として読むので、その行を書かれたまま残します。
+  ダイアグラムコメントの中の `;` はコメントの一部で、
+  コメントを書かれたまま残し、行のほかの部分は整形します。
+  [test: a `;` after an ignored `;` and U+2029, which the line rule reads as the end of its line]
+  [test: statements after an ignored `;`, with a U+2029 later on the line]
 - printer が残す U+2028 か U+2029 の後の `;`。
   `box`、タイトル、subgraph の名前のテキストの終わりにあるものがその例です。
   mermaid.js は、U+2028 か U+2029 の直後に始まるコメント行を、
   その前の改行ごと取り除くので、間にある `;` が、
   改行とその後のコメント行が次の行をつなぐのを防ぎます。
   `box red`、U+2028、`;`、行 `%% c` では、箱のテキストは `;` で終わります。
+  [corpus fixture: sequence/line-end-semicolons-2636cb4a]
+  [corpus fixture: sequence/kept-semicolon-after-separator-05ce7bd7]
+  [test: a `;` after U+2028 at the end of the text of a box]
+  [test: a `;` after U+2028 at the end of a title]
+
+`;` を落とすと、行の終わりか、行の規則が無視する `;` が変わる行は、
+書かれたまま印字します。
+閉じていないディレクティブの後の `;`、別の `;` に接する無視される `;`、
+U+2028 か U+2029 の前の無視される `;` がある行です
+（[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照）。
+[corpus fixture: sequence/ignored-semicolon-after-directive-06349fee]
+[corpus fixture: sequence/ignored-semicolon-then-separator-line-15c6520f]
+[fixture: statements-one-per-line/unclosed-directive-semicolon-kept]
+[fixture: statements-one-per-line/ignored-semicolon-next-to-semicolon-kept]
 
 ### ディレクティブ
 
 flowchart と同じです。
 行に単独のディレクティブは周りの文と同じ段に置き、
-文の行にあるディレクティブは、両側に書かれた空白を保ちます。
+文の行にあるディレクティブは、両側に空白が書かれているかどうかを保ちます。
+書かれていればそこに空白 1 つを置き、トークンに接していれば接したまま残します。
+[fixture: directives/kept]
+[fixture: directives/section-edges-kept]
+[fixture: directives/whitespace-on-each-side-kept]
+[fixture: directives/touching-kept] [fixture: directives/block-lines-kept]
 
-入力 ([directives/kept-input.mmd](../tests/fixtures/sequence/directives/kept-input.mmd)):
+入力
+([directives/kept-input.mmd](../tests/fixtures/sequence/directives/kept-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -637,7 +819,8 @@ A->>B: y %%{init: {}}%%
 end
 ```
 
-出力 ([directives/kept-output.mmd](../tests/fixtures/sequence/directives/kept-output.mmd)):
+出力
+([directives/kept-output.mmd](../tests/fixtures/sequence/directives/kept-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -653,8 +836,15 @@ sequenceDiagram
 flowchart と同じです。
 `---` の行の間の YAML は、安全なときに Prettier の YAML 整形にかけます
 （[フロントマターの YAML](./flowchart.ja.md#フロントマターの-yaml)を参照）。
+[fixture: frontmatter-yaml/formatted]
+[fixture: frontmatter-yaml/malformed-kept]
+[fixture: frontmatter-yaml/indented-delimiters-kept]
+[fixture: frontmatter-yaml/delimiter-line-kept]
+[fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]
+[fixture: frontmatter-yaml/html-tag-kept]
 
-入力 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/sequence/frontmatter-yaml/formatted-input.mmd)):
+入力
+([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/sequence/frontmatter-yaml/formatted-input.mmd)):
 
 ```mmd
 ---
@@ -664,7 +854,8 @@ sequenceDiagram
 A->>B: x
 ```
 
-出力 ([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/sequence/frontmatter-yaml/formatted-output.mmd)):
+出力
+([frontmatter-yaml/formatted-output.mmd](../tests/fixtures/sequence/frontmatter-yaml/formatted-output.mmd)):
 
 ```mmd
 ---
@@ -682,18 +873,27 @@ sequenceDiagram
 （仕様の[文の文脈](../../spec/docs/diagrams/sequence.ja.md#文の文脈)の規則 2）。
 そのため、`Alice ->>`、空白、改行、`Bob: hi` は、
 `Alice ->> Bob: hi` と印字します。
+[fixture: multi-line-statements/joined]
+[fixture: multi-line-statements/more-lines-joined]
 
 コメントかディレクティブか `;` を含む複数行の文は、
 始まりから終わりまで書かれたまま残します。
+[fixture: multi-line-statements/comment-inside-kept]
+[fixture: multi-line-statements/semicolon-inside-kept]
+[fixture: multi-line-statements/start-moves-to-own-line]
 そうした文は 1 行にまとめられません。
-また、mermaid.js がその行を 1 つの文として読むのは、
-整形が書かない行末の空白があるからにすぎません。
+mermaid.js がその行を 1 つの文として読むのは、行末の空白があるときだけで、
+整形はその空白を出力しないからです。
 キーワードと本文の間にコメント行があるタイトルも、そうした文です。
 `accDescr { ... }` のブロックの行は、そのテキストの行です
 （[複数行の値](#複数行の値)を参照）。
 
-例は、入力の行末に空白があるので、ここには載せません
-（[フォルダー](../tests/fixtures/sequence/multi-line-statements)を参照）。
+入力の行末に空白があるので、例は、`\n` を改行とする文字列で書きます。
+`"sequenceDiagram\nAlice ->> \nBob: hi\nautonumber \n  10 5\n"` は
+`"sequenceDiagram\n  Alice ->> Bob: hi\n  autonumber 10 5\n"` と印字します
+（fixture は
+[フォルダー](../tests/fixtures/sequence/multi-line-statements)
+にあります）。
 
 ### 複数行の値
 
@@ -701,11 +901,18 @@ flowchart と同じです。
 `accDescr { ... }` のブロックの行と、
 複数行に書かれたデータブロックの行は書かれたまま残し、
 `accDescr` のブロックの `}` は、その文と同じ段に置きます。
+[fixture: multi-line-values/kept]
+[fixture: multi-line-values/accdescr-block-closing-brace-after-text-kept]
+[fixture: multi-line-values/accdescr-block-blank-and-comment-lines-kept]
+[fixture: multi-line-values/data-block-in-block-kept]
 テキストがなく、コメント行だけを持つブロックは、値を持ちません。
 そのコメント行は、文の中のコメント行と同じく `accDescr` より 1 段深く置き、
 `}` は `accDescr` と同じ段に置きます。
+[fixture: multi-line-values/accdescr-block-comment-only]
+[fixture: multi-line-values/accdescr-block-without-text-kept]
 
-入力 ([multi-line-values/kept-input.mmd](../tests/fixtures/sequence/multi-line-values/kept-input.mmd)):
+入力
+([multi-line-values/kept-input.mmd](../tests/fixtures/sequence/multi-line-values/kept-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -720,7 +927,8 @@ participant A@{
 end
 ```
 
-出力 ([multi-line-values/kept-output.mmd](../tests/fixtures/sequence/multi-line-values/kept-output.mmd)):
+出力
+([multi-line-values/kept-output.mmd](../tests/fixtures/sequence/multi-line-values/kept-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -735,7 +943,8 @@ sequenceDiagram
   end
 ```
 
-入力 ([multi-line-values/accdescr-block-comment-only-input.mmd](../tests/fixtures/sequence/multi-line-values/accdescr-block-comment-only-input.mmd)):
+入力
+([multi-line-values/accdescr-block-comment-only-input.mmd](../tests/fixtures/sequence/multi-line-values/accdescr-block-comment-only-input.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -745,7 +954,8 @@ accDescr {
 A->>B: x
 ```
 
-出力 ([multi-line-values/accdescr-block-comment-only-output.mmd](../tests/fixtures/sequence/multi-line-values/accdescr-block-comment-only-output.mmd)):
+出力
+([multi-line-values/accdescr-block-comment-only-output.mmd](../tests/fixtures/sequence/multi-line-values/accdescr-block-comment-only-output.mmd)):
 
 ```mmd
 sequenceDiagram
@@ -762,7 +972,8 @@ sequenceDiagram
 
 - 値のテキストと、その中の空白。
   `box` のテキストは、それを終える最後の U+2028 か U+2029 までの全体。
-- `title` や `title:` の後の 1 文字の後の空白。
+- `title` または `title:` の直後にある区切り文字 1 文字を除き、
+  タイトルに含まれる空白。
 - 参加者のデータブロックと、それが id に接していること。
 - 数の形か `title` の綴りの送り元に、矢印が接していること。
 - コメントかディレクティブか `;` を含む複数行の文。

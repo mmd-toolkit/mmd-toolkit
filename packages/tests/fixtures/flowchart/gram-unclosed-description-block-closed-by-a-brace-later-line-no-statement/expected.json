@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A case of the rule flowchart/no-unclosed-description-block (invalid): \"the block is closed by a later `}`, and a later line is no statement\""
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "first\nsecond line, more\nA{y",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

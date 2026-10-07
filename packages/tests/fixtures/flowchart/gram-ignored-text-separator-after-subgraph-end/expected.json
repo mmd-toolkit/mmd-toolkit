@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A case of the rule flowchart/no-ignored-text (valid): \"the text before `direction` is the `end` of a subgraph\""
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "a",
+        "nodes": [
+          "A"
+        ],
+        "title": "a",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "o",
+        "nodes": [
+          "a"
+        ],
+        "title": "o",
+        "classes": [],
+        "dir": "TB",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

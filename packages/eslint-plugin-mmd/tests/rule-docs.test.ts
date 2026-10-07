@@ -11,11 +11,51 @@ import { dirname, join } from "node:path"
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
 import { rules } from "../src/rules/index.ts"
 import {
+  DIAGRAM_ORDER,
   mismatches,
   mmdCodeBlocks,
   RULE_DOCS_DIR,
   ruleDocumentPath,
 } from "../tools/rule-docs.ts"
+
+/**
+ * The order of the diagram families of the documentation site: the names in
+ * `diagramOrder` of `packages/docs/.vitepress/documents.js`, read from the
+ * file, which the site owns and this package does not import.
+ */
+function siteDiagramOrder(): string[] {
+  const source = readFileSync(
+    new URL("../../docs/.vitepress/documents.js", import.meta.url),
+    "utf8",
+  )
+  const start = source.indexOf("const diagramOrder = [")
+  const end = source.indexOf("]", start)
+  if (start === -1 || end === -1)
+    throw new Error("no diagramOrder in documents.js")
+  return source
+    .slice(start, end)
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith('"'))
+    .map((line) => line.slice(1, line.indexOf('"', 1)))
+}
+
+describe("the order of the diagrams in the list of the rules", () => {
+  it("is the order of the sidebar of the documentation site", () => {
+    const site = siteDiagramOrder()
+    expect(site.length).toBeGreaterThan(0)
+    const positions = DIAGRAM_ORDER.map((diagram) => site.indexOf(diagram))
+    expect(positions.every((position) => position >= 0)).toBe(true)
+    expect(positions).toEqual([...positions].sort((a, b) => a - b))
+  })
+
+  it("names the diagram of every rule", () => {
+    for (const name of Object.keys(rules)) {
+      const slash = name.indexOf("/")
+      if (slash !== -1) expect(DIAGRAM_ORDER).toContain(name.slice(0, slash))
+    }
+  })
+})
 
 describe("rule example directives", () => {
   let directory: string

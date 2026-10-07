@@ -12,12 +12,13 @@ implementations follow it.
 - **Structure and values.** The tree follows ESTree. A node carries the
   structure and the values of what it stands for, and holds its child nodes in
   named fields, such as `Root.body`. No node has a generic list of children.
-  Punctuation and keywords are not nodes; they appear only as tokens.
+  Punctuation and keywords are units that no node holds; the fields of a node
+  name what they say.
 
 - **Diagram-agnostic root.** The root holds the parts shared by all diagrams.
   The body node type depends on the diagram type.
 - **What a node is.** A node type names what the node stands for in the
-  language, never how its text is lexed: there is no node type per token kind
+  language, never how its text is lexed: there is no node type per kind of unit
   and no catch-all node. The role of a node is given by the field that holds it,
   such as `styles` or `arguments`, not by a node type of its own.
 - **Structure as written.** The tree shows the structure that the author wrote,
@@ -57,8 +58,8 @@ Each node type adds its own fields, and a node's child nodes are the values of
 some of those fields. Each node type states its **child fields**: the fields
 whose values are child nodes, in the order in which a tool that walks the tree
 visits them, as ESLint does with its visitor keys. A tool follows the child
-fields only. Tokens are not nodes and are never visited. Each diagram document
-that adds a node type states its child fields in the same way.
+fields only. Each diagram document that adds a node type states its child fields
+in the same way.
 
 The child nodes do not overlap. A list in a child field is in source order, and
 the child fields of a node are usually in source order too. They are not where
@@ -68,19 +69,25 @@ fields keep one order, as ESLint's visitor keys of `TemplateLiteral` keep
 document says so at each such node; a tool that needs the source order sorts the
 child nodes by their ranges.
 
-The **written text** of a value, or of a unit, is the source text from the first
-to the last character that mermaid.js reads as it, without what lies there but
-is not written as part of the value: the directives, the comment regions, the
-`;` that the line rule ignores, and the empty description blocks before the
-separator of a statement, each a statement of its own. Nothing else is left out,
-added, or rewritten: line terminators, attribute quotes, and entities stay as
-the author wrote them, not in [converted form](./common.md#reading-a-source),
-which is how the lexer reads a text. The written text starts or ends with
-whitespace or a line terminator only where mermaid.js reads it as part of the
-value; other whitespace written around a node belongs to no node. The value of a
-leaf node is its written text, or the part of it that its node type names: a
-[NumericLiteral](#numericliteral) holds the number that its written text writes,
-and an [Identifier](#identifier), a
+The **written text** of a unit is its source text without the whitespace and
+line terminators that the unit reads before or after it, such as those around an
+arrow in flowchart, whose written text is `-->` in `A --> %%{init: {}}%% B`.
+[fixture: flowchart/lex-directive-after-arrow] The written text of a value runs
+from the start of the written text of its first unit to the end of that of its
+last unit, with the whitespace and line terminators between its units. Both
+leave out what lies there but is not written as part of the value: the
+directives, the comment regions, the `;` that the line rule ignores, and the
+empty description blocks before the separator of a statement, each a statement
+of its own. Nothing else is left out, added, or rewritten: line terminators,
+attribute quotes, and entities stay as the author wrote them, not in
+[converted form](./common.md#reading-a-source), which is how the lexer reads a
+text. A written text therefore starts or ends with whitespace or a line
+terminator only where a unit has whitespace among its own characters, as a
+backquoted name of a class diagram that is not closed has at the end of the text
+(see below); other whitespace written around a node belongs to no node. The
+value of a leaf node is its written text, or the part of it that its node type
+names: a [NumericLiteral](#numericliteral) holds the number that its written
+text writes, and an [Identifier](#identifier), a
 [ClassIdentifier](./ast/class.md#classidentifier), and a style of a class
 diagram (see [ClassLiteral](./ast/class.md#classliteral)), the written texts of
 its units joined in order. Where the value is the part inside delimiters that
@@ -105,12 +112,11 @@ A node of text that mermaid.js does not read, a
 [StateIgnoredText](./ast/state.md#stateignoredtext), a
 [StateIgnoredStatement](./ast/state.md#stateignoredstatement), or a
 [SequenceIgnoredStatement](./ast/sequence.md#sequenceignoredstatement), shows
-what the author wrote there as written: its written text is the source text of
-its range without the directives, the comment regions, the comments, and the `;`
-that the line rule ignores. The whitespace and line terminators between its
-units are part of it, and a comment is not: after `state "d" as A`, the lines
-`state %% c` and `state {` with a body give A the `textBeforeBody` of `state`, a
-space, a line feed, two spaces, and `state`, and in
+what the author wrote there as written: its written text is that of a value,
+which also leaves out the comments. The whitespace and line terminators between
+its units are part of it, and a comment is not: after `state "d" as A`, the
+lines `state %% c` and `state {` with a body give A the `textBeforeBody` of
+`state`, a space, a line feed, two spaces, and `state`, and in
 `state X "" %%{init: {}}%% ""` followed by a line `{` with a body, it is the two
 empty strings with the two spaces between them. [fixture:
 state/tokens-ignored-text-comment-between-units] [fixture:
@@ -119,7 +125,25 @@ state/tokens-ignored-text-directive-between-empty-strings] [fixture:
 state/tokens-ignored-statement-directive-between-empty-strings] [fixture:
 class/tokens-ignored-text-directive-before-direction] [fixture:
 class/tokens-ignored-text-directive-after-direction] [fixture:
-flowchart/tokens-ignored-text-directive-before-direction]
+flowchart/tokens-ignored-text-directive-before-direction] A diagram comment that
+a comment region cuts (see [Comment lines](./common.md#comment-lines)) is left
+out whole, the whitespace inside it included, while the line feed that ends it
+stays: in `state X "" %% c`, U+2028, and `%% d`, followed by a line `[*]` and a
+line `accDescr {} {` with a body, the comment `%% c` goes on with the line
+`[*]`, and the `textBeforeBody` of X is `""`, a space, a line feed, two spaces,
+and `accDescr {}`; so it is with `#c` in place of `%% c`, with U+2029 in place
+of U+2028, with a space before the U+2028, with spaces before `[*]`, with a line
+of only spaces in place of `[*]`, and with `x` and a space in place of `[*]`,
+the space included in the comment. [fixture:
+state/tokens-ignored-text-comment-cut-by-comment-line] [fixture:
+state/tokens-ignored-text-hash-comment-cut-by-comment-line] [fixture:
+state/tokens-ignored-text-comment-cut-by-comment-line-paragraph-separator]
+[fixture:
+state/tokens-ignored-text-hash-comment-cut-by-comment-line-paragraph-separator]
+[fixture: state/tokens-ignored-text-comment-cut-space-before-separator]
+[fixture: state/tokens-ignored-text-comment-cut-spaces-after-region] [fixture:
+state/tokens-ignored-text-comment-cut-spaces-line-after-region] [fixture:
+state/tokens-ignored-text-comment-cut-fragment-trailing-space]
 
 A child field whose value is a list may have null elements where its node type
 says so, as in ESTree's array holes; a tool that walks the tree skips them.
@@ -140,7 +164,7 @@ them. Each record has a `type`; the fields below hold its content.
 | `value`  | string  | The text between `%%{` and `}%%`, or to the end of the directive when unclosed. |
 | `closed` | boolean | Whether the directive ends with `}%%`.                                          |
 
-The range is one match of the directive scan, which runs over the source text
+A directive is one match of the directive scan, which runs over the source text
 after the frontmatter (see [common.md](./common.md#where-a-directive-is)),
 without the whitespace at its end. An unclosed directive therefore runs to the
 end of the text, or ends after a word argument; the whitespace that the scan
@@ -207,8 +231,10 @@ is true; it is true in the default entry point of the npm package.
 
 **DiagramBody** is an `ErrorDiagram` or one of the body node types defined in
 the diagram sections below: a
-[`FlowchartDiagram`](./ast/flowchart.md#flowchartdiagram) or a
-[`SequenceDiagram`](./ast/sequence.md#sequencediagram).
+[`FlowchartDiagram`](./ast/flowchart.md#flowchartdiagram), a
+[`SequenceDiagram`](./ast/sequence.md#sequencediagram), a
+[`ClassDiagram`](./ast/class.md#classdiagram), or a
+[`StateDiagram`](./ast/state.md#statediagram).
 
 ## ErrorDiagram
 
@@ -221,10 +247,10 @@ The body of the `error` pseudo-diagram (see
 
 The names and values that an author writes are leaf nodes, each with its own
 range, so that a tool can report on one or rewrite it without searching the
-tokens. The type of each is decided by what the grammar allows to be written at
-its position, not by what a written example looks like: the `x` of `accTitle: x`
-looks like one word, but the position allows a text with whitespace, so it is a
-literal.
+source text. The type of each is decided by what the grammar allows to be
+written at its position, not by what a written example looks like: the `x` of
+`accTitle: x` looks like one word, but the position allows a text with
+whitespace, so it is a literal.
 
 - A position where the grammar reads a name without whitespace, or allows only a
   single word without quotes, such as the value of a property: an
@@ -267,9 +293,9 @@ and which units each one is made of.
 Text that the author writes but that the diagram does not read, and that has no
 effect, is a leaf node too, of a type of the diagram that says so, such as
 [FlowchartIgnoredText](./ast/flowchart.md#flowchartignoredtext), so that a tool
-can find it without searching the tokens. Making such text a node comes before
-rejecting the input: a diagram document rejects an input because of such text
-only where the tree has no place for a node of it, and then as a known
+can find it without searching the source text. Making such text a node comes
+before rejecting the input: a diagram document rejects an input because of such
+text only where the tree has no place for a node of it, and then as a known
 divergence (see [known-divergences.md](./known-divergences.md)).
 
 ### Identifier
@@ -318,13 +344,12 @@ A string is closed by its second quote. Where a diagram accepts a string that is
 not closed when the text ends, which only a backquoted name in a class diagram
 is (see
 [Strings, backquoted names, and generic types](./diagrams/class.md#strings-backquoted-names-and-generic-types)),
-its written text runs to the last character that mermaid.js reads into the name:
-the last character of the source that is not part of a directive or a comment
-region, the whitespace and line terminators at the end included, which
-mermaid.js reads into the name; line feeds inside it are part of it too. A
-directive after that last character is not part of the string: `A --> `,
-`` `b``, a space, and `%%{init: {}}%%` at the end of the text has the string
-`` `b`` and the space, with the value `b` and a space. [fixture:
+its written text runs to the last character of the source that is not part of a
+directive or a comment region, the whitespace and line terminators at the end
+included, which mermaid.js reads into the name; line feeds inside it are part of
+it too. A directive after that last character is not part of the string:
+`A --> `, `` `b``, a space, and `%%{init: {}}%%` at the end of the text has the
+string `` `b`` and the space, with the value `b` and a space. [fixture:
 class/lex-backquote-unclosed-directive-at-end] In a class diagram, `class`,
 `` `x``, a line break, and `%%{init: {}}%%` followed by a line break has the
 value `x` and two line feeds, the line feed after the directive included.
@@ -335,9 +360,9 @@ description block such as
 [FlowchartAccDescrBlockStatement](./ast/flowchart.md#flowchartaccdescrblockstatement)
 is for those that are not closed; every other StringLiteral has `closed` true. A
 tool reads whether a string is closed from this field, and need not compare the
-characters of `raw`: a backquote alone before the end of the text is a
-backquoted name that is not closed, although its `raw` starts and ends with a
-backquote. [fixture: class/lex-backquote-unclosed-alone] [fixture:
+characters of `raw`: a backquote alone on the last line is a backquoted name
+that is not closed, whose `raw` is the backquote and the line feed after it.
+[fixture: class/lex-backquote-unclosed-alone] [fixture:
 class/lex-backquote-unclosed] [fixture:
 class/tokens-backquote-unclosed-trailing-whitespace]
 

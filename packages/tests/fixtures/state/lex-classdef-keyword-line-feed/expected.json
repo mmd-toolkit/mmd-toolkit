@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The statement context, rule 14: the whitespace after classDef may hold a line feed; the class a is defined."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "a",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

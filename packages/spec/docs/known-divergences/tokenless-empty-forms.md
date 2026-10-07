@@ -10,11 +10,14 @@ mermaid.js.
 
 Some forms are written but hold nothing. In flowchart there are three:
 
-- an **empty string**, `""`, or an empty markdown string;
+- an **empty string**, `""`, or an empty markdown string; [fixture:
+  flowchart/lex-empty-string-line] [fixture:
+  flowchart/header-empty-markdown-string]
 - an **empty call**, `call` and the whitespace after it, followed by parentheses
-  with only whitespace between them, as in `click A call ()`;
+  with only whitespace between them, as in `click A call ()`; [fixture:
+  flowchart/gram-empty-call-line]
 - an **empty description block**, `accDescr {}`, with only whitespace between
-  the braces.
+  the braces. [fixture: flowchart/db-acc-descr-empty-block-alone]
 
 In sequence, whose grammar has no strings and no `call`, there is the empty
 description block only, and so in state, which has no `call` and whose lexer
@@ -32,8 +35,9 @@ input is accepted, as in mermaid.js, and is no part of this divergence.
 state/gram-state-empty-string-between-name-and-body] [fixture:
 state/gram-state-empty-strings-around-alias-string] [fixture:
 state/gram-state-empty-string-after-name] In class there are five: the three of
-flowchart, and two that are written in a class name, an **empty backquoted
-name**, two backquotes, and an **empty generic type**, two `~`.
+flowchart, of which the empty string is only `""`, as class has no markdown
+strings, and two that are written in a class name, an **empty backquoted name**,
+two backquotes, and an **empty generic type**, two `~`.
 
 An empty description block on a line of its own is the ordinary way to write
 one, and is a description block statement that changes nothing:
@@ -158,12 +162,107 @@ specification rejects the input, since the block lies inside that statement.
 [fixture: class/div-empty-description-block-between-acc-title-and-colon]
 [fixture: state/div-empty-description-block-between-acc-title-and-colon]
 
+Text that only looks like one of these forms is none of them, and both read it
+the same: in `A""-->B` the quotes are characters of the vertex `A""`,
+`accTitle: ""` has the title `""`, `A[" "]` has a string of one space, and
+`A["call ()"]` has the label `call ()`. [fixture:
+flowchart/lex-empty-quotes-in-id] [fixture: flowchart/lex-acc-title-quotes]
+[fixture: flowchart/gram-label-space-string] [fixture:
+flowchart/gram-label-string-call-text]
+
+The difference goes one way only: mermaid.js accepts and this specification
+rejects. The documents of the diagram types give examples of them in their Known
+divergences sections: [flowchart](../diagrams/flowchart.md#known-divergences),
+[sequence](../diagrams/sequence.md#known-divergences),
+[class](../diagrams/class.md#known-divergences), and
+[state](../diagrams/state.md#known-divergences).
+
+## What it means for an author
+
+Where an author writes one of these forms to mean something empty, mermaid.js
+rejects it too: `A[""]`, `A("")`, `A-->|""|B`, `A -- "" --> B`,
+`click A href ""`, `subgraph ""`, and `click A call ()` are rejected by both.
+[fixture: flowchart/gram-label-empty-string] [fixture:
+flowchart/gram-shape-round-empty-string] [fixture:
+flowchart/gram-link-text-empty-string] [fixture:
+flowchart/gram-link-text-dash-empty-string] [fixture:
+flowchart/gram-click-href-empty-string] [fixture:
+flowchart/gram-subgraph-name-empty-string-only] [fixture:
+flowchart/gram-click-empty-call-only] mermaid.js accepts them only where they
+leave nothing, next to other text, where they change nothing that is drawn. This
+toolkit rejects such a text and reports the form. Removing the form gives a text
+that both read the same way, unless the text holds another of the
+[known divergences](../known-divergences.md). mermaid.js usually reads that text
+as it read the one with the form, which it reads as if the form were not there
+(see [The difference](#the-difference)), but not where the form kept apart two
+parts of the text that it reads together once the form is gone: it then reads
+that text otherwise, or rejects it. `style A "" ""fill:red` has the style of a
+space and `fill:red`, while `style A`, two spaces, and `fill:red` has the style
+`fill:red`; `A:""::c` is the vertex `A:::c`, while `A:::c` is the vertex A with
+the class `c`; in class, `direction accDescr {} LR` keeps the direction `TB`,
+while `direction`, two spaces, and `LR` sets `LR`; and `flowchart""TD` is
+accepted, while `flowchartTD` has no header and is rejected by both. [fixture:
+flowchart/db-style-empty-strings-one-space] [fixture:
+flowchart/db-style-two-spaces-before-style] [fixture:
+flowchart/lex-empty-string-splits-triple-colon] [fixture:
+flowchart/lex-triple-colon-after-id] [fixture:
+class/div-empty-description-block-between-direction-and-value] [fixture:
+class/lex-direction-two-spaces-before-value] [fixture:
+flowchart/header-empty-string-no-space] [fixture:
+flowchart/header-keyword-direction-glued] None of the inputs collected from the
+tests, the documentation, and the demos of mermaid.js contains one of them.
+
+## Why mermaid.js reads it so
+
+The lexer of mermaid.js reads no token for any of these forms. In flowchart, it
+passes over the quotes of an empty string
+([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L82-L87)),
+over the `call` and the parentheses of an empty call
+([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L74-L79)),
+and over the `accDescr {` and the `}` of an empty description block
+([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L35-L37)).
+Sequence and state pass over an empty description block in the same way
+([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L76-L77),
+[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L93-L95)),
+and class over all five forms
+([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L34-L35),
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L53-L62),
+and
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)).
+Each of these rules enters or leaves a state of the lexer and returns nothing,
+so the grammar never sees the form.
+
+## The rule of this specification, and why
+
+In this specification, each of these forms is read as units, the same units as
+when the form is not empty: an empty string is its two quotes, an empty call its
+`call` and its parentheses, an empty description block its `accDescr`, `{`, and
+`}`. Where no rule of the grammar takes those units, the input is rejected (see
+[Strings](../diagrams/flowchart.md#strings),
+[Click and callbacks](../diagrams/flowchart.md#click-and-callbacks), and
+[Accessibility values](../diagrams/flowchart.md#accessibility-values)).
+[fixture: flowchart/tokens-empty-string-in-label] [fixture:
+flowchart/gram-empty-call-before-link] [fixture:
+flowchart/gram-empty-description-block-before-link]
+
+Such a form can lie between any two units: inside the value of a leaf node, such
+as an id, a label, or a style, as well as between the fields of a node. The tree
+has no place there for a node of its own, and leaving the form out of the tree
+would lose text that the author wrote. This is the first of the reasons for a
+known divergence (see [known-divergences.md](../known-divergences.md)). That
+mermaid.js reads no token for a text is not by itself a reason to reject it:
+where the tree has a place, the form is a node, and the input is accepted, as
+with the text that mermaid.js discards around a direction statement, which is a
+[FlowchartIgnoredText](../ast/flowchart.md#flowchartignoredtext). [fixture:
+flowchart/lex-direction-line-swallows-edge] [fixture:
+flowchart/lex-direction-line-text-after-value]
+
 This specification makes such a form a node where the tree has a place for it,
 and rejects the input elsewhere. The places are these: an empty description
 block where a statement starts, also inside a sequence box, is a description
-block statement, which another statement may follow on the same line (examples 5
-and the one above), and so is one after the last unit of a statement and before
-its separator, as in `A accDescr {}`, `note for A "x" accDescr {}` in class, and
+block statement, which another statement may follow on the same line (example
+5), and so is one after the last unit of a statement and before its separator,
+as in `A accDescr {}`, `note for A "x" accDescr {}` in class, and
 `autonumber accDescr {}` in sequence, and so is one after the header, before its
 separator, as in `flowchart LR accDescr {}` and `classDiagram accDescr {}`
 followed by a line break (see the sections on empty description blocks before a
@@ -222,15 +321,17 @@ which the rule above decides. In flowchart:
 - Between two units of a FlowchartVertexStatement, with its FlowchartVertexGroup
   and FlowchartLink: `A accDescr {}-->B`, `A-->accDescr {}B`,
   `A accDescr {}& B`, `A & accDescr {}B`, `A e1@accDescr {} --> B`,
-  `A --> accDescr {}|t| B`, and `A -->|t| accDescr {}B`. Holding it would take a
-  field in that gap (reason a). [fixture:
-  flowchart/gram-empty-description-block-before-link] [fixture:
-  flowchart/div-empty-description-block-after-arrow-glued] [fixture:
+  `A --> accDescr {}|t| B`, `A -->|t| accDescr {}B`, `A &accDescr {} B[y]`, and
+  `A@{ label: x } &accDescr {} A[y]`. Holding it would take a field in that gap
+  (reason a). [fixture: flowchart/gram-empty-description-block-before-link]
+  [fixture: flowchart/div-empty-description-block-after-arrow-glued] [fixture:
   flowchart/div-empty-description-block-before-ampersand] [fixture:
   flowchart/div-empty-description-block-after-ampersand] [fixture:
   flowchart/div-empty-description-block-after-edge-id] [fixture:
   flowchart/div-empty-description-block-before-link-label] [fixture:
-  flowchart/div-empty-description-block-after-link-label]
+  flowchart/div-empty-description-block-after-link-label] [fixture:
+  flowchart/div-ampersand-empty-block-then-vertex] [fixture:
+  flowchart/div-data-block-ampersand-empty-block-then-vertex]
 - Between two units of a FlowchartStyleStatement, a FlowchartClassDefStatement,
   a FlowchartClassStatement, or a FlowchartLinkStyleStatement:
   `style A accDescr {} fill:red`, `style A fill:red accDescr {},stroke:blue`,
@@ -380,24 +481,18 @@ In state, all between two units of a statement:
   state/div-empty-description-block-in-click-before-tooltip]
 
 After the last unit of a statement, before its separator, the block is a
-statement, as in `click A "u" "t" accDescr {}` of state. This was checked with
-inputs made from the accepted fixtures of flowchart, a third of them, class, and
-sequence that have no comment, no directive, and no frontmatter and are not
-marked with a divergence, by adding `accDescr {}`, with and without a space
-before it, at the end of each line. Of those in which the block lies after a
-statement, mermaid.js and this specification read the same 856 in flowchart, 770
-accepted and 86 rejected, 638 in class and 97 in sequence, all accepted, with
-the Db of the input with the block left out and the whitespace around it kept
-where they are accepted: that whitespace keeps its effect, so
-`subgraph S accDescr {}` has the id `subGraph0`, as `subgraph S` followed by a
-space has, while `subgraph S` has the id `S` (see
-[flowchart](../diagrams/flowchart.md#rejections-outside-the-grammar)). The 86 of
-flowchart are rejected because of the whitespace before the block (see
-[flowchart](../diagrams/flowchart.md#empty-description-blocks-before-a-separator)),
-and 59 of the 97 of sequence are accepted although the same line without the
-block, with a space at its end, is rejected (see
+statement, as in `click A "u" "t" accDescr {}` of state. An accepted input has
+the Db of the same input with the block left out and the whitespace around it
+kept: that whitespace keeps its effect, so `subgraph S accDescr {}` has the id
+`subGraph0`, as `subgraph S` followed by a space has, while `subgraph S` has the
+id `S` (see
+[flowchart](../diagrams/flowchart.md#rejections-outside-the-grammar)). Whether
+the whitespace before the block is accepted depends on the statement, as the
+diagram documents say (see
+[flowchart](../diagrams/flowchart.md#empty-description-blocks-before-a-separator)
+and
 [sequence](../diagrams/sequence.md#empty-description-blocks-before-a-separator)).
-In class, `direction accDescr {}`, a line break, and `LR` is one of them: the
+In class, `direction accDescr {}`, a line break, and `LR` is such an input: the
 block keeps the two from forming a direction line, in mermaid.js too, so they
 are two member statements without a label, and the direction stays `TB`.
 [fixture: state/gram-click-empty-description-block-after] [fixture:
@@ -405,104 +500,17 @@ flowchart/gram-empty-description-block-after-data-block-space] [fixture:
 sequence/gram-empty-description-block-after-autonumber-spaces] [fixture:
 class/gram-empty-description-block-after-direction-word]
 
-After the header, before its separator, the block is a statement too. This was
-checked with inputs made from the same kind of fixtures of each diagram type,
-each header line of its own and about a hundred more, by adding to the end of
-the header line one of eight forms: a block with and without a space before it,
-after two spaces, followed by one or two spaces, two blocks with and without a
-space between them, and a block followed by `;`. mermaid.js and this
-specification read all of them the same. In flowchart and class, those accepted
-have the Db of the input without the blocks: in flowchart, after a direction,
-392 are accepted, while the 65 with the `;` and the 63 in which the block
-follows a direction word directly are rejected, and after a header keyword
-without a direction, all 16 are rejected; in class, 670 are accepted, while the
-111 with the `;` and the 109 in which the block follows the keyword directly are
-rejected; in sequence and in state, where a statement starts after the header,
-every input with a space before the block is accepted, with the same Db in both.
-Before a `;` of a flowchart header, the blocks were checked with 1,440 more
-inputs: the two header keywords, the directions `LR`, `>`, `^`, `<`, and `v`,
-none, one, or two spaces or a tab before the blocks, one block or two with and
-without a space between them, none, a space, or a tab after them, and a `;`, a
-line feed, or the end of the text after that. mermaid.js accepts exactly those
-that the rule above accepts, with the Db of the input without the blocks.
+After the header, before its separator, the block is a statement too, and an
+accepted input has the Db of the same input without the blocks. Where it is
+accepted after the header depends on the diagram type, as the diagram documents
+say (see
+[flowchart](../diagrams/flowchart.md#empty-description-blocks-before-a-separator),
+[class](../diagrams/class.md#empty-description-blocks-before-a-separator),
+[sequence](../diagrams/sequence.md#empty-description-blocks-before-a-separator),
+and [state](../diagrams/state.md#empty-description-blocks-before-a-separator)).
 [fixture: flowchart/header-empty-description-block-after-direction] [fixture:
 flowchart/header-empty-description-block-before-semicolon] [fixture:
 flowchart/header-empty-description-block-no-direction] [fixture:
 class/header-empty-description-block] [fixture:
 sequence/header-empty-description-block] [fixture:
 state/header-empty-description-block]
-
-Text that only looks like one of these forms is none of them, and both read it
-the same: in `A""-->B` the quotes are characters of the vertex `A""`,
-`accTitle: ""` has the title `""`, `A[" "]` has a string of one space, and
-`A["call ()"]` has the label `call ()`. [fixture:
-flowchart/lex-empty-quotes-in-id] [fixture: flowchart/lex-acc-title-quotes]
-[fixture: flowchart/gram-label-space-string] [fixture:
-flowchart/gram-label-string-call-text]
-
-The difference goes one way only: mermaid.js accepts and this specification
-rejects. The documents of the diagram types give examples of them in their Known
-divergences sections: [flowchart](../diagrams/flowchart.md#known-divergences),
-[sequence](../diagrams/sequence.md#known-divergences),
-[class](../diagrams/class.md#known-divergences), and
-[state](../diagrams/state.md#known-divergences).
-
-## Why mermaid.js reads it so
-
-The lexer of mermaid.js reads no token for any of these forms. In flowchart, it
-passes over the quotes of an empty string
-([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L82-L87)),
-over the `call` and the parentheses of an empty call
-([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L74-L79)),
-and over the `accDescr {` and the `}` of an empty description block
-([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L35-L37)).
-Sequence and state pass over an empty description block in the same way
-([`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L76-L77),
-[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L93-L95)),
-and class over all five forms
-([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L34-L35),
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L53-L62),
-and
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)).
-Each of these rules enters or leaves a state of the lexer and returns nothing,
-so the grammar never sees the form.
-
-## The rule of this specification, and why
-
-In this specification, each of these forms is read as units, the same units as
-when the form is not empty: an empty string is its two quotes, an empty call its
-`call` and its parentheses, an empty description block its `accDescr`, `{`, and
-`}`. Where no rule of the grammar takes those units, the input is rejected (see
-[Strings](../diagrams/flowchart.md#strings),
-[Click and callbacks](../diagrams/flowchart.md#click-and-callbacks), and
-[Accessibility values](../diagrams/flowchart.md#accessibility-values)).
-
-Such a form can lie between any two units: inside the value of a leaf node, such
-as an id, a label, or a style, as well as between the fields of a node. The tree
-has no place there for a node of its own, and leaving the form out of the tree
-would lose text that the author wrote. This is the first of the reasons for a
-known divergence (see [known-divergences.md](../known-divergences.md)). That
-mermaid.js reads no token for a text is not by itself a reason to reject it:
-where the tree has a place, the form is a node, and the input is accepted, as
-with the text that mermaid.js discards around a direction statement, which is a
-[FlowchartIgnoredText](../ast/flowchart.md#flowchartignoredtext). [fixture:
-flowchart/lex-direction-line-swallows-edge] [fixture:
-flowchart/lex-direction-line-text-after-value]
-
-## What it means for an author
-
-Where an author writes one of these forms to mean something empty, mermaid.js
-rejects it too: `A[""]`, `A("")`, `A-->|""|B`, `A -- "" --> B`,
-`click A href ""`, `subgraph ""`, and `click A call ()` are rejected by both.
-[fixture: flowchart/gram-label-empty-string] [fixture:
-flowchart/gram-shape-round-empty-string] [fixture:
-flowchart/gram-link-text-empty-string] [fixture:
-flowchart/gram-link-text-dash-empty-string] [fixture:
-flowchart/gram-click-href-empty-string] [fixture:
-flowchart/gram-subgraph-name-empty-string-only] [fixture:
-flowchart/gram-click-empty-call-only] mermaid.js accepts them only where they
-leave nothing, next to other text, where they change nothing that is drawn. This
-toolkit rejects such a text and reports the form; removing it gives a text that
-both read the same way, in most cases (see below). None of the inputs collected
-from the tests, the documentation, and the demos of mermaid.js contains one of
-them.

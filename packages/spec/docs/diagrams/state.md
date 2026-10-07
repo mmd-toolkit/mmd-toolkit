@@ -42,7 +42,7 @@ each attribute quote as `'`, each entity as its placeholder, and through comment
 regions and the `;` that the line rule ignores as if they were not there. The
 `\n` that the lexer reads after the last character
 ([End of text](../common.md#end-of-text)) is part of the diagram text. This
-section describes the diagram's own token rules, item 4 of
+section describes the diagram's own unit rules, item 4 of
 [Reading a source](../common.md#reading-a-source).
 
 The lexer of mermaid.js for this diagram compares letters case-insensitively
@@ -76,11 +76,13 @@ css class of `class`, and in the id after `as`; where it ends right after the
 unit that enters such a context, that value is empty. The input is rejected when
 the text ends in a composite body, a string, a note, or the scale context.
 [fixture: state/lex-acc-title-at-end] [fixture:
-state/lex-acc-descr-block-unclosed] [fixture: state/lex-classdef-without-styles]
-[fixture: state/lex-style-without-styles] [fixture: state/lex-alias-as-at-end]
-[fixture: state/lex-floating-note-as-at-end] [fixture:
-state/lex-composite-unclosed] [fixture: state/lex-alias-string-unclosed]
-[fixture: state/lex-floating-note-string-unclosed] [fixture:
+state/db-acc-descr-empty-replaces] [fixture: state/lex-acc-descr-block-unclosed]
+[fixture: state/lex-classdef-without-styles] [fixture:
+state/lex-style-without-styles] [fixture: state/lex-class-css-class-at-end]
+[fixture: state/lex-alias-as-at-end] [fixture:
+state/lex-floating-note-as-at-end] [fixture: state/lex-composite-unclosed]
+[fixture: state/lex-alias-string-unclosed] [fixture:
+state/lex-floating-note-string-unclosed] [fixture:
 state/lex-note-unclosed-at-end] [fixture: state/lex-scale-at-end]
 
 **Ids.** In several contexts, the same rule reads an id: one or more characters
@@ -122,7 +124,23 @@ of a `description` unit after its `:`, an `alias-id`, `second-description`,
 `pseudostate-name`, `note-text`, `floating-note-text`, `floating-note-id`,
 `style-text`, or `css-class` unit, a `title-text`, `description-text`, or
 `description-block-text` unit, and a `direction-text` or `ignored-text` unit.
-The **string units** are the `string` and `empty-string` units.
+The **string units** are the `string` and `empty-string` units. [fixture:
+state/div-directive-in-state-name] [fixture: state/div-directive-in-class-name]
+[fixture: state/div-directive-in-note-id] [fixture:
+state/div-directive-in-class-separator] [fixture:
+state/div-directive-in-terminal] [fixture:
+state/div-directive-in-pseudostate-mark] [fixture:
+state/div-directive-in-divider] [fixture: state/lex-directive-in-alias-id]
+[fixture: state/lex-directive-in-second-description] [fixture:
+state/lex-directive-in-pseudostate-name] [fixture:
+state/lex-directive-in-floating-note-id] [fixture:
+state/lex-directive-in-style-text] [fixture: state/lex-directive-in-css-class]
+[fixture: state/lex-directive-in-acc-title-text] [fixture:
+state/lex-directive-in-acc-descr-text] [fixture:
+state/lex-directive-in-acc-descr-block-text] [fixture:
+state/lex-directive-in-direction-text] [fixture:
+state/lex-directive-in-ignored-text] [fixture:
+state/tokens-directive-note-spaces]
 
 - `A : x%%{init: {}}%%y` gives A the description `xy`, and
   `note "x%%{init: {}}%%y" as N` is a floating note with the text `xy`, as in
@@ -154,33 +172,56 @@ The **string units** are the `string` and `empty-string` units.
 
 In the statement context, the lexer tries these rules in order:
 
-1. The keyword `click`: a `click` unit.
-2. The keyword `href`: an `href` unit.
+1. The keyword `click`: a `click` unit. [fixture: state/lex-click-empty-strings]
+2. The keyword `href`: an `href` unit. [fixture: state/gram-click-terminal]
 3. `"`, zero or more characters other than `"`, line feeds included, and `"`: a
    `string` unit, which is empty when no character lies between the quotes.
-4. The keyword `default`: a `default` unit.
-5. A **direction line** (see below).
-6. One or more line feeds: a `newline` unit.
-7. One or more whitespace characters, line feeds included: nothing.
+   [fixture: state/tokens-comment-region-in-alias-string] [fixture:
+   state/gram-state-empty-string-before-name]
+4. The keyword `default`: a `default` unit. [fixture:
+   state/lex-keyword-default-as-id]
+5. A **direction line** (see below). [fixture:
+   state/lex-direction-line-then-comment]
+6. One or more line feeds: a `newline` unit. [fixture:
+   state/lex-blank-lines-between-statements]
+7. One or more whitespace characters, line feeds included: nothing. [fixture:
+   state/lex-state-name-next-line]
 8. `#` and the rest of its line, up to the line feed: a diagram comment whose
-   mark is `#` (see [Comments](#comments)).
+   mark is `#` (see [Comments](#comments)). [fixture:
+   state/lex-hash-comment-after-statement]
 9. `%%` not followed by `{`, and the rest of its line, up to the line feed: a
    diagram comment whose mark is `%%`. `%%` followed by a `{` that starts no
-   directive: an `ignored-text` unit, which mermaid.js does not read.
+   directive: an `ignored-text` unit, which mermaid.js does not read. [fixture:
+   state/lex-percent-comment-after-statement] [fixture:
+   state/lex-percent-before-brace-rejected]
 10. `scale` and one or more whitespace characters: a `scale` unit; enters the
-    scale context.
+    scale context. [fixture: state/gram-scale] [fixture:
+    state/lex-scale-number-next-line]
 11. `accTitle`, zero or more whitespace, `:`, and zero or more whitespace: an
-    `accTitle` unit and a `:` unit; enters the title context.
+    `accTitle` unit and a `:` unit; enters the title context. [fixture:
+    state/lex-acc-title-at-end] [fixture:
+    state/lex-acc-title-space-before-colon] [fixture:
+    state/lex-acc-title-line-feed-before-colon] [fixture:
+    state/lex-acc-title-no-whitespace]
 12. `accDescr`, zero or more whitespace, `:`, and zero or more whitespace: an
-    `accDescr` unit and a `:` unit; enters the description context.
+    `accDescr` unit and a `:` unit; enters the description context. [fixture:
+    state/db-acc-descr-empty-replaces] [fixture:
+    state/lex-acc-descr-space-before-colon] [fixture: state/demo-state-26627e00]
+    [fixture: state/lex-acc-descr-line-feed-before-colon]
 13. `accDescr`, zero or more whitespace, `{`, and zero or more whitespace: an
     `accDescr` unit and a `{` unit; enters the description block context.
+    [fixture: state/db-acc-descr-block-replaces] [fixture:
+    state/lex-acc-descr-block-line-feed-before-brace] [fixture:
+    state/lex-acc-descr-block-no-whitespace]
 14. `classDef` and one or more whitespace characters: a `classDef` unit; enters
-    the classDef context.
+    the classDef context. [fixture: state/lex-classdef-without-styles] [fixture:
+    state/lex-classdef-keyword-line-feed]
 15. `class` and one or more whitespace characters: a `class` unit; enters the
-    class context.
+    class context. [fixture: state/db-class-before-state] [fixture:
+    state/lex-class-keyword-line-feed]
 16. `style` and one or more whitespace characters: a `style` unit; enters the
-    style context.
+    style context. [fixture: state/db-style-without-text] [fixture:
+    state/lex-style-keyword-line-feed]
 17. `state` and one or more whitespace characters, line feeds included: a
     `state` unit; enters the state context. When the first unit after it that is
     not an `empty-string` unit is a `{` unit, an `ignored-text` unit, or another
@@ -188,11 +229,16 @@ In the statement context, the lexer tries these rules in order:
     reads no token for `state`, so that `{` starts the body of the statement
     before it (see
     [Composite states, aliases, and pseudostates](#composite-states-aliases-and-pseudostates)).
-18. `{`: a `{` unit; enters the composite body context.
+    [fixture: state/lex-state-without-body] [fixture:
+    state/gram-ignored-state-before-body-next-line]
+18. `{`: a `{` unit; enters the composite body context. [fixture:
+    state/db-parent-set-by-later-composite]
 19. `note` and one or more whitespace characters: a `note` unit; enters the note
-    context.
+    context. [fixture: state/db-note-after-state-shape] [fixture:
+    state/lex-note-keyword-line-feed]
 20. `stateDiagram` and one or more whitespace characters, or `stateDiagram-v2`
-    and one or more whitespace characters: a `header` unit.
+    and one or more whitespace characters: a `header` unit. [fixture:
+    state/header-v1] [fixture: state/header-v2]
 21. The keyword `hide empty description`, with one space between the words: a
     `hide` unit, an `empty` unit, and a `description-word` unit, the last named
     so because `description` is the unit of a description.
@@ -206,21 +252,26 @@ In the statement context, the lexer tries these rules in order:
     state/lex-directive-between-hide-and-empty] [fixture:
     state/lex-directive-between-empty-and-description] [fixture:
     state/lex-hide-directive-between-spaces]
-22. `[*]`: a `[*]` unit.
-23. An id (see [Ids](#units-and-contexts)).
+22. `[*]`: a `[*]` unit. [fixture: state/db-root-start-shared]
+23. An id (see [Ids](#units-and-contexts)). [fixture:
+    state/lex-keyword-prefix-of-id]
 24. A **description**: zero or more whitespace, `:`, and then one or more
     characters as many as possible, each of which is a character other than `:`,
     `;`, and line feed, or a `:` followed by such a character: a `description`
-    unit.
-25. `-->`: a `-->` unit.
-26. `:::`: a `:::` unit.
-27. Any other character: an `invalid` unit.
+    unit. [fixture: state/lex-colon-in-description] [fixture:
+    state/lex-description-without-space]
+25. `-->`: a `-->` unit. [fixture: state/lex-semicolon-after-transition]
+26. `:::`: a `:::` unit. [fixture: state/db-definition-css-class]
+27. Any other character: an `invalid` unit. [fixture: state/lex-dash-in-id]
 
 The words of rules 10 to 21 are compared case-insensitively, as everywhere in
 this diagram; the whitespace after them, line feeds included, belongs to no
 unit. The units `default`, `href` outside a click statement, `string` outside a
 click statement, and `invalid` are taken by no rule of the grammar, so an input
-with one of them is rejected. Some consequences of the order:
+with one of them is rejected. [fixture: state/lex-keyword-default-as-id]
+[fixture: state/lex-string-outside-click] [fixture:
+state/lex-keyword-href-as-id] [fixture: state/lex-dash-in-id] Some consequences
+of the order:
 
 - A directive starts at `%%{` only when zero or more whitespace characters and
   then a name, a word, follow it (see
@@ -270,46 +321,61 @@ with one of them is rejected. Some consequences of the order:
   state/lex-click-line-feed]
 
 **The direction line.** Compared case-insensitively: from the current position,
-a run of characters without line feeds, U+2028, or U+2029; then `direction`;
-then one or more whitespace characters; then one of `TB`, `BT`, `RL`, and `LR`,
-tried in this order; and then every character up to the next line feed. The
-characters before `direction` and after the value are `direction-text` units,
-which mermaid.js does not read. The rule is tried before the id rule, so it
-takes the whole line: `B : x direction LR` sets the direction and has no state,
-and so does `A --> B direction LR`, and `Direction lr` is a direction line. It
-is also tried before the comment rules, so the text after the value may hold
-`%%`: `direction LR %% c` sets the direction `LR`, and `%% c` is a
-`direction-text` unit, not a comment. Neither does the value need to end at a
-word boundary: `direction TBX` sets `TB`, and `X` is a `direction-text` unit.
-[fixture: state/lex-direction-line-in-description] [fixture:
+a run of characters without line feeds, U+2028, or U+2029, the longest one that
+the rest can follow; then `direction`; then one or more whitespace characters;
+then one of `TB`, `BT`, `RL`, and `LR`, tried in this order; and then every
+character up to the next line feed. The rule reads `direction` as a `direction`
+unit, the value as a `direction-value` unit, and the characters before
+`direction` and after the value as `direction-text` units, which mermaid.js does
+not read. The rule is tried before the id rule, so it takes the whole line:
+`B : x direction LR` sets the direction and has no state, and so does
+`A --> B direction LR`, and `Direction lr` is a direction line. It is also tried
+before the comment rules, so the text after the value may hold `%%`:
+`direction LR %% c` sets the direction `LR`, and `%% c` is a `direction-text`
+unit, not a comment. Neither does the value need to end at a word boundary:
+`direction TBX` sets `TB`, and `X` is a `direction-text` unit. The run is the
+longest one: `direction TB x direction TB` is read at its last `direction`, and
+`direction TB x` is a `direction-text` unit. [fixture:
+state/lex-direction-line-same-value-twice] [fixture:
+state/lex-direction-line-in-description] [fixture:
 state/lex-direction-line-same-line-transition] [fixture:
 state/lex-direction-lower-case] [fixture: state/lex-direction-line-then-comment]
-[fixture: state/lex-direction-line-value-then-text] The whitespace between
-`direction` and its value may hold a line feed: `direction`, a line break, and
-`LR` is a direction line. [fixture: state/lex-direction-value-next-line]
+[fixture: state/lex-direction-line-value-then-text] [fixture:
+state/lex-direction-line-after-line-separator] [fixture: state/lex-direction-rl]
+The whitespace between `direction` and its value may hold a line feed:
+`direction`, a line break, and `LR` is a direction line. [fixture:
+state/lex-direction-value-next-line]
 
 ### The composite body context
 
 The composite body context is entered by `{`, in the statement context or in the
 state context. It reads the statements of a composite state:
 
-1. One or more whitespace characters other than line feed: nothing.
+1. One or more whitespace characters other than line feed: nothing. [fixture:
+   state/db-nested-terminals]
 2. `#` and the rest of its line: a diagram comment, as in rule 8 of the
-   statement context.
+   statement context. [fixture: state/lex-composite-hash-comment]
 3. `%%` not followed by `{`, and the rest of its line: a diagram comment, as in
-   rule 9 of the statement context.
+   rule 9 of the statement context. [fixture:
+   state/lex-composite-percent-comment]
 4. Rules 14 to 17 of the statement context: `classDef`, `class`, `style`, and
-   `state`.
-5. A direction line.
-6. `}`: a `}` unit; leaves the composite body context.
-7. A line feed: nothing.
-8. Rule 19 of the statement context: `note`.
-9. `[*]`: a `[*]` unit.
-10. An id.
-11. A description, as in rule 24 of the statement context.
-12. `-->`: a `-->` unit.
-13. `--`: a `--` unit, a **divider**.
-14. `:::`: a `:::` unit.
+   `state`. [fixture: state/db-nested-classdef] [fixture:
+   state/db-nested-class-statement] [fixture:
+   state/gram-ignored-states-in-composite-body] [fixture:
+   state/db-nested-style-statement]
+5. A direction line. [fixture: state/lex-composite-direction-line]
+6. `}`: a `}` unit; leaves the composite body context. [fixture:
+   state/db-nested-terminals]
+7. A line feed: nothing. [fixture: state/db-nested-terminals]
+8. Rule 19 of the statement context: `note`. [fixture:
+   state/db-note-in-composite]
+9. `[*]`: a `[*]` unit. [fixture: state/db-nested-terminals]
+10. An id. [fixture: state/lex-composite-default-as-id]
+11. A description, as in rule 24 of the statement context. [fixture:
+    state/tokens-composite-description-ignored-semicolon]
+12. `-->`: a `-->` unit. [fixture: state/db-nested-terminals]
+13. `--`: a `--` unit, a **divider**. [fixture: state/lex-composite-divider]
+14. `:::`: a `:::` unit. [fixture: state/lex-composite-class-separator]
 
 The other rules of the statement context are not tried here: `click`, `href`,
 `default`, `"`, `accTitle`, `accDescr`, `scale`, `hide empty description`, and
@@ -331,32 +397,38 @@ The state context is entered by `state`. The whitespace after `state` may hold
 line feeds, so the name may be on the next line. [fixture:
 state/lex-state-name-next-line]
 
-1. One or more whitespace characters other than line feed: nothing.
+1. One or more whitespace characters other than line feed: nothing. [fixture:
+   state/lex-state-two-names]
 2. `#` and the rest of its line: a diagram comment, as in rule 8 of the
-   statement context.
+   statement context. [fixture: state/lex-state-name-hash-comment]
 3. `%%` not followed by `{`, and the rest of its line: a diagram comment, as in
-   rule 9 of the statement context.
+   rule 9 of the statement context. [fixture:
+   state/gram-ignored-state-after-comment-before-body]
 4. A **pseudostate mark**: `<<fork>>`, `<<join>>`, `<<choice>>`, `[[fork]]`,
    `[[join]]`, and `[[choice]]` are tried in this order, and for the first that
    occurs before the next line feed, U+2028, or U+2029, the rule reads every
    character from the current position up to its last occurrence there. The
    characters before the mark, without the whitespace at their ends, are a
    `pseudostate-name` unit when they are not empty, and the mark is a unit named
-   by its text; leaves the state context.
-5. `"`: enters the state string context.
+   by its text; leaves the state context. [fixture: state/lex-fork-spaced-id]
+5. `"`: enters the state string context. [fixture:
+   state/db-alias-blank-without-body]
 6. Zero or more whitespace, `as`, and one or more whitespace characters, line
-   feeds included: an `as` unit; enters the alias id context.
+   feeds included: an `as` unit; enters the alias id context. [fixture:
+   state/lex-alias-no-space-before-as] [fixture:
+   state/lex-alias-id-percent-next-line]
 7. A word, one or more whitespace characters, line feeds included, another word,
    and then zero or more characters other than line feed, U+2028, and U+2029, as
    few as possible, and `{`: rejected. mermaid.js throws the error "State name
    must be a single word". Like the other rules, it is tried wherever a unit may
    start in the state context, so it is tried again at each name after the
-   first.
+   first. [fixture: state/lex-state-two-names-body]
 8. One or more characters other than line feed, whitespace, and `{`: a
-   `state-name` unit.
-9. A line feed: leaves the state context.
+   `state-name` unit. [fixture: state/lex-state-without-body]
+9. A line feed: leaves the state context. [fixture:
+   state/lex-state-name-state-then-composite]
 10. `{`: a `{` unit; leaves the state context and enters the composite body
-    context.
+    context. [fixture: state/lex-state-brace-next-line]
 
 Some consequences:
 
@@ -447,7 +519,8 @@ context, so the state context reads on, where the `%%` starts a comment unless
 `state "d" as my id` adds the state `my id`, and the id may be empty: before a
 `{`, and before a `%%`, so that `state "d" as %% c` and `state "d" as %%A` are
 alias definitions with the empty id followed by a comment, which add no state.
-[fixture: state/lex-alias-id-spaces] [fixture: state/lex-alias-without-id]
+[fixture: state/lex-alias-id-spaces] [fixture:
+state/lex-alias-id-trailing-spaces] [fixture: state/lex-alias-without-id]
 [fixture: state/lex-alias-comment-after-id] [fixture:
 state/lex-alias-id-percent-comment] [fixture: state/lex-alias-id-percent-word]
 [fixture: state/lex-alias-id-percent-next-line] When the text starts with `%%`
@@ -465,9 +538,10 @@ may be empty or all whitespace, and the text from the second `:` is an
 `ignored-text` unit, which mermaid.js does not read
 ([`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L233-L243)).
 It has a body when a `{` follows the `alias-id`, on its line or after the line
-feed of its line and only whitespace and comment lines, with only units between
-them that the grammar takes before the `{` of a body: empty description blocks,
-an `ignored-state` unit and empty strings, or a `%%` right before the `{` (see
+feed of its line and only line whitespace and comment lines, with only units
+between them that the grammar takes before the `{` of a body: empty description
+blocks, an `ignored-state` unit and empty strings, or a `%%` right before the
+`{` (see
 [Composite states, aliases, and pseudostates](#composite-states-aliases-and-pseudostates)).
 So `state "d" as A : x` followed by a line `%%{}` or `accDescr {} %%{}` defines
 the composite state `A : x` with an empty body. [fixture:
@@ -482,8 +556,9 @@ state/lex-alias-colon-whitespace-line-before-body] [fixture:
 state/lex-alias-colon-tab-line-before-body] [fixture:
 state/lex-alias-colon-block-then-spaces-before-body] [fixture:
 state/lex-alias-second-description] [fixture: state/lex-alias-third-part]
-[fixture: state/lex-alias-colon-before-body] [fixture:
-state/lex-alias-colon-before-body-next-line] [fixture:
+[fixture: state/db-alias-colon-empty-second] [fixture:
+state/db-alias-colon-spaces-second] [fixture: state/lex-alias-colon-before-body]
+[fixture: state/lex-alias-colon-before-body-next-line] [fixture:
 state/lex-alias-colon-before-body-after-comment-line] [fixture:
 state/lex-alias-colon-blank-line-before-brace]
 
@@ -492,29 +567,34 @@ state/lex-alias-colon-blank-line-before-brace]
 `classDef` enters the **classDef context**:
 
 1. `default` and one or more whitespace characters: a `default` unit, which the
-   grammar does not take, so `classDef default …` is rejected.
+   grammar does not take, so `classDef default …` is rejected. [fixture:
+   state/lex-classdef-default]
 2. One or more word characters and one or more whitespace characters, line feeds
    included: a `class-name` unit, without the whitespace; enters the styles
-   context.
+   context. [fixture: state/lex-classdef-styles-next-line] [fixture:
+   state/lex-classdef-name-non-word]
 
 `class` enters the **class context**:
 
 1. One or more word characters, followed by zero or more of `,`, zero or more
    whitespace, and one or more word characters: an `id` unit for each run of
    word characters and an `id-comma` unit for each `,`; enters the class name
-   context.
+   context. [fixture: state/lex-class-ids-space] [fixture:
+   state/lex-class-ids-comma]
 
 `style` enters the **style context**:
 
 1. One or more word characters and `,`, and one or more whitespace characters,
    line feeds included: an `id` unit for each run of word characters and an
-   `id-comma` unit for each `,`; enters the styles context.
+   `id-comma` unit for each `,`; enters the styles context. [fixture:
+   state/lex-style-empty-id]
 
 Each of these contexts leaves when its rule has read. The **styles context**
 then reads the rest of the line, up to the line feed, and divides it at each `,`
 into `style-text` units, without the whitespace at their ends, and `,` units;
 the **class name context** reads the rest of the line as one `css-class` unit,
-without the whitespace at its ends. Either may be empty.
+without the whitespace at its ends. Either may be empty, and each leaves when it
+has read.
 
 - `classDef default fill:#f00` is rejected. [fixture:
   state/lex-classdef-default]
@@ -552,9 +632,9 @@ and one or more whitespace characters followed by the keyword `width` are a
 `width` unit, which leaves the scale context; `scale 3 widthx` is rejected.
 `scale 350 width` is accepted, and `scale 350` is rejected. [fixture:
 state/gram-scale] [fixture: state/gram-scale-without-width] [fixture:
-state/lex-scale-width-then-word] The whitespace after `scale` may hold a line
-feed: `scale`, a line break, and `3 width` is a scale statement. [fixture:
-state/lex-scale-number-next-line]
+state/lex-scale-width-then-word] [fixture: state/lex-scale-non-ascii-digit] The
+whitespace after `scale` may hold a line feed: `scale`, a line break, and
+`3 width` is a scale statement. [fixture: state/lex-scale-number-next-line]
 
 ### The note contexts
 
@@ -562,8 +642,8 @@ state/lex-scale-number-next-line]
 
 1. The keyword `left of` or `right of`, with one space between the words, the
    **position**: a `position` unit for `left` or `right` and an `of` unit;
-   enters the note id context.
-2. `"`: enters the floating note context.
+   enters the note id context. [fixture: state/db-note-after-state-shape]
+2. `"`: enters the floating note context. [fixture: state/lex-floating-note]
 
 `note left  of A : x`, with two spaces, the same with a tab, and
 `note over A : x` are rejected, and so are `note right ofx A`,
@@ -584,11 +664,14 @@ state/lex-note-position-directive-between-spaces]
 The **note id context** reads zero or more whitespace characters, line feeds
 included, and then an id of characters other than `:`, line feed, whitespace,
 and `-`: a `note-id` unit, which ends before the first `%%`, also when that is
-its first character, and is then empty; it enters the note text context, which
-has no comment rule. When `%%` follows the position directly, with no whitespace
-between, the characters from it other than `:`, line feed, whitespace, and `-`
-are an `ignored-text` unit instead, which mermaid.js does not read, and the note
-id context reads on: `note left of%%x A : t` is a note of A. [fixture:
+its first character, and is then empty. Without such a `%%`, it needs one or
+more characters: `note left of : x` is rejected. [fixture:
+state/lex-note-empty-id-before-colon] The note id context then enters the note
+text context, which has no comment rule. When `%%` follows the position
+directly, with no whitespace between, the characters from it other than `:`,
+line feed, whitespace, and `-` are an `ignored-text` unit instead, which
+mermaid.js does not read, and the note id context reads on:
+`note left of%%x A : t` is a note of A. [fixture:
 state/lex-note-id-ignored-percent-after-position] So in `note right of %% c S`,
 a line `x`, and `end note`, the note id is empty, and the note text is `%% c S`,
 a line break, and `x`, while `note right of %%S : x` is rejected, because
@@ -605,7 +688,8 @@ The **note text context**:
    unit for the character after it when the `:` follows the `note-id` directly
    and that character is not whitespace, which mermaid.js drops (below), and a
    `note-text` unit for the characters after them, without the whitespace at
-   their ends; leaves the note contexts.
+   their ends; leaves the note contexts. [fixture:
+   state/db-note-after-state-shape]
 2. Any characters, line feeds included, as few as possible, then a line feed,
    zero or more whitespace characters, and the keyword `end note`: a `note-text`
    unit for the characters before the line feed, without the whitespace at their
@@ -618,11 +702,11 @@ The **note text context**:
    state/lex-end-note-two-spaces] [fixture: state/lex-end-note-tab] [fixture:
    state/lex-directive-between-end-and-note] [fixture:
    state/lex-directive-between-space-and-note] [fixture:
-   state/lex-end-note-directive-between-spaces]
+   state/lex-end-note-directive-between-spaces] [fixture: state/lex-note-block]
 
 - mermaid.js reads the text of a note on one line from right after the
   `note-id`, without its first two characters and without the whitespace at its
-  ends. The first of them is whitespace or the `:`. With two whitespace
+  ends. The first of them is whitespace or the `:`. With two or more whitespace
   characters before the `:`, the `:` is a character of the text that mermaid.js
   reads: `note left of A  :hi` has the text `:hi`. With the `:` right after the
   `note-id`, the character after the `:`, when it is not whitespace, is dropped,
@@ -649,10 +733,11 @@ The **note text context**:
 The **floating note context**:
 
 1. Zero or more whitespace, `as`, and zero or more whitespace: an `as` unit;
-   enters the floating note id context.
-2. `"`: a `"` unit.
+   leaves the context and enters the floating note id context. [fixture:
+   state/lex-floating-note]
+2. `"`: a `"` unit. [fixture: state/lex-floating-note-extra-quote-before-text]
 3. One or more characters other than `"`, line feeds included: a
-   `floating-note-text` unit.
+   `floating-note-text` unit. [fixture: state/lex-floating-note]
 
 The `"` after `note` is a `"` unit too. The quotes do not pair: mermaid.js
 returns no token for a `"` here and a token for each run of other characters
@@ -660,8 +745,10 @@ returns no token for a `"` here and a token for each run of other characters
 and its grammar takes one text before `as`. So a floating note has one or more
 `"` units, one `floating-note-text`, and one or more `"` units before `as`:
 `note "x" as N`, `note ""x" as N`, `note "x"" as N`, and `note """x""" as N`
-have the text `x`, and `note "" x" as N` the text of a space and `x`. [fixture:
-state/lex-floating-note-extra-quote-before-text] [fixture:
+have the text `x`, and so has `note "" x" as N`: the text is the
+`floating-note-text` unit without the whitespace at its ends (see
+[StateFloatingNoteStatement](../ast/state.md#statefloatingnotestatement)).
+[fixture: state/lex-floating-note-extra-quote-before-text] [fixture:
 state/lex-floating-note-extra-quote-after-text] [fixture:
 state/lex-floating-note-extra-quotes-around-text] [fixture:
 state/lex-floating-note-text-after-quotes-and-space] The text may be all
@@ -691,8 +778,8 @@ state/lex-floating-note-text-ends-with-as] [fixture:
 state/lex-floating-note-no-space-before-as] [fixture:
 state/lex-floating-note-as-next-line] The **floating note id context** reads the
 rest of the line as an id: a `floating-note-id` unit, which may hold whitespace,
-and which ends before a `%%` after its first character. [fixture:
-state/lex-floating-note-id-spaces]
+and which ends before a `%%` after its first character; it then leaves the
+context. [fixture: state/lex-floating-note-id-spaces]
 
 ### Accessibility values
 
@@ -702,7 +789,8 @@ unit, and the context is left. `#`, `;`, and `%%` are characters of it:
 `accTitle: a;b #c %% d` has the title `a;b #c %% d`. The whitespace after `:` is
 read with the `:` unit, line feeds included (rules 11 and 12 of the statement
 context), so the text may be on the next line. [fixture:
-state/lex-acc-title-semicolon] [fixture: state/lex-acc-title-next-line]
+state/lex-acc-title-semicolon] [fixture: state/lex-acc-descr-semicolon]
+[fixture: state/lex-acc-title-next-line]
 
 In the description block context, `}` is a `}` unit and leaves the context, and
 one or more other characters are a `description-block-text` unit. The whitespace
@@ -728,6 +816,7 @@ text context has no comment rule. A comment after a statement is read so:
 and a comment. [fixture: state/lex-hash-comment-after-statement] [fixture:
 state/lex-percent-comment-after-statement] [fixture:
 state/lex-percent-comment-in-id] [fixture: state/lex-alias-comment-after-id]
+[fixture: state/lex-floating-note-id-comment]
 
 A diagram comment runs from its **mark** to the line feed, also past a comment
 line that follows a U+2028 or U+2029 on its line, whose comment region then cuts
@@ -742,7 +831,7 @@ the text without directives, as the lexer reads it, and the value is the source
 text after the mark, directives included: in `A --> B %%%{init: {}}%%% c`, the
 text without the directive is `A --> B %% c`, so the mark is the first and the
 last `%`, and the value is a space and `c`; the value of the comment
-`# x%%{init: {}}%%y` is `x%%{init: {}}%%y`. [fixture:
+`# x%%{init: {}}%%y` is a space and `x%%{init: {}}%%y`. [fixture:
 state/lex-comment-directive-between-marks] [fixture:
 state/lex-hash-comment-directive-inside]
 
@@ -754,11 +843,13 @@ class of `class`, a title, a description, a pseudostate name, and a string.
 state/lex-percent-in-description] [fixture: state/lex-hash-in-description]
 [fixture: state/lex-percent-in-label] [fixture: state/lex-percent-in-note]
 [fixture: state/lex-classdef-percent] [fixture:
-state/lex-alias-percent-in-string] Within an id, `#` is a character: `A#1` is a
-state. [fixture: state/lex-hash-in-id] An entity is read as its placeholder
-before the lexer reads the text (see [Entities](../common.md#entities)), so
-`#amp;` starts no comment: `A --> B #amp; x` adds the states `ﬂ°amp¶ß` and `x`.
-[fixture: state/lex-entity-in-id]
+state/lex-alias-percent-in-string] [fixture: state/lex-style-percent] [fixture:
+state/lex-class-css-class-percent] [fixture: state/lex-pseudostate-name-percent]
+Within an id, `#` is a character: `A#1` is a state. [fixture:
+state/lex-hash-in-id] An entity is read as its placeholder before the lexer
+reads the text (see [Entities](../common.md#entities)), so `#amp;` starts no
+comment: `A --> B #amp; x` adds the states `ﬂ°amp¶ß` and `x`. [fixture:
+state/lex-entity-in-id]
 
 The documentation of mermaid.js says, under
 [Comments](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/stateDiagram.md#L307-L320),
@@ -792,39 +883,45 @@ and accepts the same sequences of units.
 Each rule below makes a node of the tree, defined in
 [ast/state.md](../ast/state.md):
 
-| Rule                                                                                   | Node                                                                                |
-| -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `diagram`                                                                              | StateDiagram                                                                        |
-| `definition-statement`                                                                 | StateDefinitionStatement                                                            |
-| `transition-statement`                                                                 | StateTransitionStatement                                                            |
-| `state-reference`                                                                      | StateReference; its `"[*]"` a StateTerminal                                         |
-| `composite-statement`                                                                  | StateCompositeStatement                                                             |
-| `alias-statement`                                                                      | StateAliasDefinitionStatement                                                       |
-| `pseudostate-statement`                                                                | StatePseudostateDefinitionStatement                                                 |
-| `ignored-statement`                                                                    | StateIgnoredStatement                                                               |
-| `"--"`                                                                                 | StateDividerStatement                                                               |
-| `note-statement`                                                                       | StateNoteStatement                                                                  |
-| `floating-note-statement`                                                              | StateFloatingNoteStatement                                                          |
-| `click-statement`                                                                      | StateClickStatement                                                                 |
-| `empty-description-block`                                                              | StateAccDescrBlockStatement without text, a statement after the statement before it |
-| `class-def-statement`                                                                  | StateClassDefStatement                                                              |
-| `class-statement`                                                                      | StateClassStatement                                                                 |
-| `style-statement`                                                                      | StateStyleStatement                                                                 |
-| `direction-statement`                                                                  | StateDirectionStatement, with a StateIgnoredText for each `direction-text`          |
-| `accessibility-statement`                                                              | StateAccTitleStatement, StateAccDescrStatement, or StateAccDescrBlockStatement      |
-| `scale-statement`                                                                      | StateScaleStatement                                                                 |
-| `"hide" "empty" "description"`                                                         | StateHideEmptyDescriptionStatement                                                  |
-| `string` or `string-or-empty`                                                          | StringLiteral                                                                       |
-| `number`                                                                               | NumericLiteral                                                                      |
-| a name, listed below                                                                   | Identifier                                                                          |
-| a text without quotes, listed below                                                    | StateLiteral                                                                        |
-| `ignored-text`, `ignored-state`, or a run of `empty-string` units in another statement | StateIgnoredText                                                                    |
+| Rule                                                                                                            | Node                                                                                                                                        |
+| --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `diagram`                                                                                                       | StateDiagram                                                                                                                                |
+| `definition-statement`                                                                                          | StateDefinitionStatement                                                                                                                    |
+| `transition-statement`                                                                                          | StateTransitionStatement                                                                                                                    |
+| `state-reference`                                                                                               | StateReference; its `"[*]"` a StateTerminal                                                                                                 |
+| `composite-statement`                                                                                           | StateCompositeStatement                                                                                                                     |
+| `alias-statement`                                                                                               | StateAliasDefinitionStatement                                                                                                               |
+| `pseudostate-statement`                                                                                         | StatePseudostateDefinitionStatement                                                                                                         |
+| `ignored-statement`                                                                                             | StateIgnoredStatement                                                                                                                       |
+| `"--"`                                                                                                          | StateDividerStatement                                                                                                                       |
+| `note-statement`                                                                                                | StateNoteStatement                                                                                                                          |
+| `floating-note-statement`                                                                                       | StateFloatingNoteStatement                                                                                                                  |
+| `click-statement`                                                                                               | StateClickStatement                                                                                                                         |
+| `empty-description-block`                                                                                       | StateAccDescrBlockStatement without text, a statement after the statement before it; before the `{` of a body, part of the `textBeforeBody` |
+| `class-def-statement`                                                                                           | StateClassDefStatement                                                                                                                      |
+| `class-statement`                                                                                               | StateClassStatement                                                                                                                         |
+| `style-statement`                                                                                               | StateStyleStatement                                                                                                                         |
+| `direction-statement`                                                                                           | StateDirectionStatement, with a StateIgnoredText for each `direction-text`                                                                  |
+| `accessibility-statement`                                                                                       | StateAccTitleStatement, StateAccDescrStatement, or StateAccDescrBlockStatement                                                              |
+| `scale-statement`                                                                                               | StateScaleStatement                                                                                                                         |
+| `"hide" "empty" "description"`                                                                                  | StateHideEmptyDescriptionStatement                                                                                                          |
+| `string` or `string-or-empty`                                                                                   | StringLiteral                                                                                                                               |
+| `number`                                                                                                        | NumericLiteral                                                                                                                              |
+| a name, listed below                                                                                            | Identifier                                                                                                                                  |
+| a text without quotes, listed below                                                                             | StateLiteral                                                                                                                                |
+| the empty strings, empty description blocks, `ignored-state` units, and `ignored-text` before the `{` of a body | one StateIgnoredText together, the `textBeforeBody` of the statement                                                                        |
+| `ignored-text`, `ignored-state`, or a run of `empty-string` units elsewhere in another statement                | StateIgnoredText                                                                                                                            |
 
 The names are an `id`, a `state-name`, a `class-name`, and a `note-id`. The
 texts without quotes are the text of a `description` after its `:`, an
 `alias-id`, a `second-description`, a `pseudostate-name`, a `note-text`, a
 `floating-note-text`, a `floating-note-id`, a `style-text`, a `css-class`, and a
-`title-text`, `description-text`, or `description-block-text`.
+`title-text`, `description-text`, or `description-block-text`. After two or more
+whitespace characters, the `:` unit of a note on one line and the `note-text`
+unit after it are one text together: the StateLiteral of `note left of A  :hi`
+is `:hi` (see [StateNoteStatement](../ast/state.md#statenotestatement)).
+[fixture: state/lex-note-two-spaces-before-colon] [fixture:
+state/lex-note-three-spaces-before-colon]
 
 ### Diagram and statements
 
@@ -1245,11 +1342,27 @@ state/div-empty-description-block-after-arrow]
 ## Known divergences
 
 - **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.md).**
-  A directive inside a keyword, an id, or an arrow makes the input rejected in
-  this specification, while mermaid.js accepts it (see
-  [Directives inside units](#directives-inside-units)). [fixture:
-  state/div-directive-in-keyword] [fixture: state/div-directive-in-id] [fixture:
-  state/div-directive-in-arrow]
+  A directive inside a unit other than a text unit and a string unit makes the
+  input rejected in this specification, while mermaid.js accepts it (see
+  [Directives inside units](#directives-inside-units)): inside a keyword, a name
+  unit, `:::`, `[*]`, a pseudostate mark, the divider `--`, or an arrow.
+  [fixture: state/div-directive-in-keyword] [fixture: state/div-directive-in-id]
+  [fixture: state/div-directive-in-arrow] [fixture:
+  state/div-directive-in-state-name] [fixture:
+  state/div-directive-in-class-name] [fixture: state/div-directive-in-note-id]
+  [fixture: state/div-directive-in-class-separator] [fixture:
+  state/div-directive-in-terminal] [fixture:
+  state/div-directive-in-pseudostate-mark] [fixture:
+  state/div-directive-in-divider]
+- **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.md).**
+  On a line that matches the `style` rule, an ignored `;` inside a unit other
+  than a text unit and a string unit makes the input rejected here, while
+  mermaid.js accepts it: the name after `state` may hold `style`, a `:`, and a
+  `#`, so in `state style:#x;B`, with a body or without, the ignored `;` lies
+  inside the name. With a body, mermaid.js reads the composite state
+  `style:#xB`; without one, it accepts the input, which adds nothing. [fixture:
+  state/div-ignored-semicolon-in-state-name] [fixture:
+  state/div-ignored-semicolon-in-state-name-without-body]
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.md).**
   With `title: <a` in the frontmatter, `A : b="c">d` gives A the description
   `b='c'>d` in mermaid.js and `b="c">d` in this specification. [fixture:

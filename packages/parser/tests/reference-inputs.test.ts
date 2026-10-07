@@ -3,20 +3,11 @@ import {
   frontmatterChangesAttributeQuotes,
   withIgnoredSemicolonsAtSegmentEnds,
   withoutDirectives,
-  withoutFrontmatterTagStarts,
+  withoutTokenCuts,
   commentsAfterMatchStarts,
   commentsAfterUnits,
   namesStartingWithUnits,
 } from "./helpers/reference-inputs.ts"
-
-describe("the reference input for `html-tag-in-frontmatter`", () => {
-  it("replaces every `<` of the frontmatter trivia, and nothing after it", () => {
-    expect(
-      withoutFrontmatterTagStarts('---\ntitle: <a <b\n---\nA[<c d="e">f]'),
-    ).toBe('---\ntitle: (a (b\n---\nA[<c d="e">f]')
-    expect(withoutFrontmatterTagStarts("A[<a>]")).toBe("A[<a>]")
-  })
-})
 
 describe("the reference input for `directive-as-token-boundary`", () => {
   it("removes directives and joins the text around them, after the frontmatter", () => {
@@ -37,6 +28,16 @@ describe("the reference input for `ignored-semicolon-as-token-boundary`", () => 
     expect(withIgnoredSemicolonsAtSegmentEnds("flowchart LR\nA-->B;")).toBe(
       "flowchart LR\nA-->B;",
     )
+  })
+})
+
+describe("the reference input for the cuts of both divergences", () => {
+  it("leaves out the directives and then moves each ignored `;` to the end of its line segment", () => {
+    expect(
+      withoutTokenCuts(
+        "flowchart LR\nA[style:#x];cl%%{init: {}}%%ick B;b call cb()",
+      ),
+    ).toBe("flowchart LR\nA[style:#x];click Bb call cb();")
   })
 })
 

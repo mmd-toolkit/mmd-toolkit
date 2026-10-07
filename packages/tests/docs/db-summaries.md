@@ -42,6 +42,7 @@ The fields of the summary:
 | `classDefs`    | The classes defined by `classDef`, in the order in which they were defined: `id` and `styles`.                                                                                                                                                                     |
 | `subgraphs`    | The subgraphs, in the order in which they were added: `id`, `nodes`, `title`, `classes`, `labelType`, `dir`, and `metadata`, which only data blocks set.                                                                                                           |
 | `tooltips`     | The tooltips, in the order in which their ids were first given one: `id` and `text`.                                                                                                                                                                               |
+| `clickCalls`   | The calls that bind a click callback, in source order, one for each id of each click: `id`, `name`, and `args`, as the Db receives them (see below). The field is absent when there is none.                                                                       |
 
 `normalizeFlowchart()` (`src/normalizers/flowchart.ts`) summarizes the Db of
 `flowchart-v2`, `flowchart-elk` and `swimlane`, which share `FlowDB`. It keeps
@@ -56,7 +57,20 @@ reason given:
   the text of a direction line that mermaid.js does not read.
 - `vertices[].haveCallback`: set only under `securityLevel: loose`, a site
   setting; the click itself shows as the class `clickable`.
-- Click callback names and arguments: kept only inside closures.
+- Click callback names and arguments are not in the state of the Db, which keeps
+  them only inside closures, and only under `securityLevel: loose`. The summary
+  has them as `clickCalls` instead: a patch of `FlowDB.setClickFun`
+  (`src/normalizers/click-calls.ts`) records each call as it comes, also one
+  that the Db ignores (an id that is no vertex, a `securityLevel` other than
+  `loose`). `id` is the id as passed, `name` the name of the function, and
+  `args` the text between the parentheses as written, whitespace at its ends
+  too, or null when the call has no parentheses or only whitespace between them.
+  [fixture: flowchart/gram-click-call] [fixture:
+  flowchart/db-click-callback-whitespace-arguments] [fixture:
+  flowchart/lex-callback-blank-parentheses] [fixture:
+  class/lex-callback-blank-parentheses] [fixture:
+  flowchart/tokens-callback-name-trailing-space] [fixture:
+  flowchart/tokens-callback-arguments-spaces-at-ends]
 - Internal bookkeeping (`vertexCounter`, `subCount`, `posCrossRef`, ...).
 - Whitespace at the end of each style value (`vertices[].styles`,
   `classDefs[].styles`, `edges[].style`, `edgeDefaults.style`). The grammar
@@ -68,24 +82,35 @@ reason given:
   **Style statements** in
   [db-from-tree/flowchart.md](./db-from-tree/flowchart.md)). Whitespace at the
   start of a value is kept: it can change the Db (`linkStyle` adds `fill:none`
-  when no value starts with `fill`).
+  when no value starts with `fill`). [fixture:
+  flowchart/db-style-trailing-whitespace-characters] [fixture:
+  flowchart/db-linkstyle-default-trailing-whitespace]
 
 Other values of the summary:
 
 - Texts (labels, subgraph and diagram titles, `accTitle`, `accDescr`, tooltips)
   are recorded before HTML sanitization, and `vertices[].link` is the URL as
-  written (trimmed); see [expected-results.md](./expected-results.md).
+  written (trimmed); see [expected-results.md](./expected-results.md). [fixture:
+  flowchart/db-text-unsanitized-edge-label] [fixture:
+  flowchart/db-text-unsanitized-subgraph-title] [fixture:
+  flowchart/db-text-unsanitized-diagram-title] [fixture:
+  flowchart/db-text-unsanitized-acc-title] [fixture:
+  flowchart/db-text-unsanitized-acc-descr] [fixture:
+  flowchart/db-text-unsanitized-tooltip]
 - A style that is all whitespace gives the empty text: `style A fill:#f00, ` has
   the styles `fill:#f00` and the empty text. [fixture:
   flowchart/gram-style-whitespace] [fixture:
   flowchart/db-style-whitespace-only-value] [fixture:
   flowchart/db-style-trailing-comma]
 - With these choices the summary does not depend on `securityLevel`, as long as
-  it is one of `strict`, `loose`, `antiscript`, and `sandbox`.
+  it is one of `strict`, `loose`, `antiscript`, and `sandbox`. [fixture:
+  flowchart/config-security-level-loose-click-call] [fixture:
+  flowchart/config-security-level-loose-click-link-javascript]
 - `icon`, `form`, `pos`, `img`, `constraint`, `assetWidth` and `assetHeight` of
   vertices, `animate` and `animation` of edges, and `metadata` of subgraphs are
   set only by `@{ ... }` data blocks; see
-  [embedded-data.md](./embedded-data.md).
+  [embedded-data.md](./embedded-data.md). [fixture:
+  flowchart/db-data-block-asset-width]
 
 ## sequence
 
@@ -127,7 +152,10 @@ Other values of the summary:
 
 - `wrap` of actors, boxes and messages follows the `wrap:` and `nowrap:`
   prefixes, and otherwise the configuration (`wrap` or `sequence.wrap`, from the
-  site, the frontmatter or a directive).
+  site, the frontmatter or a directive). [fixture:
+  sequence/config-wrap-frontmatter] [fixture:
+  sequence/config-sequence-wrap-frontmatter] [fixture:
+  sequence/config-wrap-init-directive]
 - The title is kept as the grammar passes it, with the whitespace after the
   first space following `title` and at the end of the line. A title of only
   whitespace still counts as a title for the renderer, which reserves room for
@@ -146,17 +174,18 @@ Other values of the summary:
 
 The fields of the summary:
 
-| Field        | Content                                                      |
-| ------------ | ------------------------------------------------------------ |
-| `direction`  | The direction, `TB` unless a direction statement sets it.    |
-| `title`      | The title of the frontmatter, or the empty text.             |
-| `accTitle`   | The accessibility title, or the empty text.                  |
-| `accDescr`   | The accessibility description, or the empty text.            |
-| `classes`    | The classes, in the order in which they were first added.    |
-| `relations`  | The relations, in source order.                              |
-| `notes`      | The notes, in source order.                                  |
-| `namespaces` | The namespaces, in the order in which they were first added. |
-| `interfaces` | The interfaces that lollipop relations add, in source order. |
+| Field        | Content                                                                                                                                          |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `direction`  | The direction, `TB` unless a direction statement sets it.                                                                                        |
+| `title`      | The title of the frontmatter, or the empty text.                                                                                                 |
+| `accTitle`   | The accessibility title, or the empty text.                                                                                                      |
+| `accDescr`   | The accessibility description, or the empty text.                                                                                                |
+| `classes`    | The classes, in the order in which they were first added.                                                                                        |
+| `relations`  | The relations, in source order.                                                                                                                  |
+| `notes`      | The notes, in source order.                                                                                                                      |
+| `namespaces` | The namespaces, in the order in which they were first added.                                                                                     |
+| `interfaces` | The interfaces that lollipop relations add, in source order.                                                                                     |
+| `clickCalls` | The calls that bind a click callback, in source order, one for each name of each statement: `id`, `name`, and `args`. Absent when there is none. |
 
 A class has `id`, `type`, `label`, `text`, `shape`, which is always `classBox`,
 `cssClasses`, `methods`, `members`, `annotations`, `styles`, and, when they are
@@ -189,10 +218,16 @@ reason given:
   ([`ClassDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L40-L40));
   what they change shows in `classes[].styles`.
 - Click callbacks: the Db keeps the function name and arguments only inside
-  closures.
+  closures, and only under `securityLevel: loose`. The summary has them as
+  `clickCalls` instead, recorded as for flowchart by a patch of
+  `ClassDB.setClickFunc`, also for a name that is no class. [fixture:
+  class/db-callback-names-comma] [fixture:
+  class/tokens-callback-name-trailing-space]
 - Whitespace at the end of each style value (`classes[].styles`), as in the
   flowchart summary: the grammar keeps the whitespace written before a comma or
-  the end of the line, and nothing reads it.
+  the end of the line, and nothing reads it. [fixture:
+  class/db-style-trailing-whitespace-eol] [fixture:
+  class/db-class-def-trailing-whitespace]
 
 Other values of the summary:
 
@@ -203,9 +238,11 @@ Other values of the summary:
 - `classes[].haveCallback` is kept: unlike flowchart, `setClickEvent` sets it
   under every `securityLevel`
   ([`setClickEvent`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L434-L444)).
+  [fixture: class/config-security-level-loose-click]
 - `classes[].link` is the URL as written (trimmed), and `classes[].linkTarget`
   the target as written, or `_blank`, under every `securityLevel` (see
-  [expected-results.md](./expected-results.md)).
+  [expected-results.md](./expected-results.md)). [fixture:
+  class/config-security-level-loose-click]
 
 ## state
 
@@ -281,4 +318,6 @@ the start and end states of that region, in `parentId`, and in transitions. A
 region made by a `--` keeps its id `divider-id-<number>`, which a counter gives.
 
 Values are recorded as the Db holds them, whitespace included. The summary is
-the same under every `securityLevel`, `look` and `htmlLabels`.
+the same under every `securityLevel`, `look` and `htmlLabels`. [fixture:
+state/config-security-level-sandbox-click] [fixture:
+state/config-look-hand-drawn] [fixture: state/config-html-labels-false]

@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Where a directive is: `%%{}` is no directive; on the line after `state X`, its `%%` is the text that mermaid.js does not read before a body, and `{}` is the empty body of X, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

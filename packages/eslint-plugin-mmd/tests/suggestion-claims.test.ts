@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest"
 import { rules } from "../src/rules/index.ts"
 import { LANGUAGE_CONFIG } from "./helpers.ts"
 import type { SuggestionClaim } from "./rule-test.ts"
-import { dbOf, expectClaim } from "./rule-test.ts"
+import { dbOf, expectClaim, readDb } from "./rule-test.ts"
 
 /** The first text that mermaid.js reads starts it, which takes seconds. */
 const TIMEOUT = 60_000
@@ -35,8 +35,9 @@ async function check(
   if (report === undefined) return
   await expectClaim(claim, {
     input,
-    before: await dbOf(input),
-    after: await dbOf(output),
+    before: await readDb(input),
+    output,
+    after: await readDb(output),
     reports,
     report,
   })
@@ -198,13 +199,98 @@ describe("the claims of the suggestions", () => {
   it(
     "removesBareMarkerLine fails where the Db has no such line before",
     async () => {
-      // The arguments of a call are not in the Db: nothing shows the line.
+      // mermaid.js writes the label again after the line: the Db of the
+      // input holds no such line, so the claim has nothing to show.
       await expectFails(
         check(
           "flowchart/no-bare-comment-marker",
           { kind: "removesBareMarkerLine" },
-          "flowchart LR\n  A\n  click A call f(a\n%%\n b)\n",
-          "flowchart LR\n  A\n  click A call f(a\n b)\n",
+          'flowchart LR\n  A["a\n%%\nb"]\n  A["c"]\n',
+          'flowchart LR\n  A["a\nb"]\n  A["c"]\n',
+        ),
+      )
+    },
+    TIMEOUT,
+  )
+
+  it(
+    "removeDataLine leaves a data block with two lines rejected until both are gone",
+    async () => {
+      const name = "flowchart/no-bare-comment-marker"
+      const input = "flowchart LR\n  A@{\n%%\n%%\n    shape: circle\n  }\n"
+      const claim = { kind: "removesBareMarkerLine" } as const
+      // One line gone: mermaid.js still rejects the other, and the claim holds.
+      await check(
+        name,
+        claim,
+        input,
+        "flowchart LR\n  A@{\n%%\n    shape: circle\n  }\n",
+      )
+      // Both lines gone: mermaid.js accepts it.
+      expect(
+        await dbOf("flowchart LR\n  A@{\n    shape: circle\n  }\n"),
+      ).toBeDefined()
+    },
+    TIMEOUT,
+  )
+
+  it(
+    "removesBareMarkerLine fails where the other lines of only `%%` go too",
+    async () => {
+      await expectFails(
+        check(
+          "flowchart/no-bare-comment-marker",
+          { kind: "removesBareMarkerLine" },
+          'flowchart LR\n  A["a\n%%\n%%\nb"]\n',
+          'flowchart LR\n  A["a\nb"]\n',
+        ),
+      )
+    },
+    TIMEOUT,
+  )
+
+  it(
+    "removesVertexOfLine fails where another vertex goes instead",
+    async () => {
+      await expectFails(
+        check(
+          "flowchart/no-bare-comment-marker",
+          { kind: "removesVertexOfLine", id: "%%" },
+          "flowchart LR\n%%\nA\n",
+          "flowchart LR\n%%\n",
+        ),
+      )
+    },
+    TIMEOUT,
+  )
+
+  it(
+    "removesBareMarkerLine fails where the next line becomes the value",
+    async () => {
+      // `click A` takes the next line as the name: with the line gone, `cb`
+      // is the name, and the vertex `cb` is gone: two values change.
+      await expectFails(
+        check(
+          "flowchart/no-bare-comment-marker",
+          { kind: "removesBareMarkerLine" },
+          "flowchart LR\n  A\n  click A\n%%\ncb\n",
+          "flowchart LR\n  A\n  click A\ncb\n",
+        ),
+      )
+    },
+    TIMEOUT,
+  )
+
+  it(
+    "removesBareMarkerLine fails where a value stops being a text",
+    async () => {
+      // The label goes: the vertex has no text of its own any more.
+      await expectFails(
+        check(
+          "flowchart/no-bare-comment-marker",
+          { kind: "removesBareMarkerLine" },
+          'flowchart LR\n  A["a\n%%\nb"]\n',
+          "flowchart LR\n  A\n",
         ),
       )
     },

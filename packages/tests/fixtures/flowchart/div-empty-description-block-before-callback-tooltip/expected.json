@@ -35,6 +35,13 @@
         "id": "A",
         "text": "t"
       }
+    ],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "cb",
+        "args": null
+      }
     ]
   }
 }

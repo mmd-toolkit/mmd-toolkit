@@ -54,12 +54,21 @@ export interface ItemLine {
   readonly whitespaceLineBefore: boolean
   /** Whether the line holds nothing but directives. */
   readonly directivesOnly: boolean
+  /** The spaces and tabs before its first item, as written. */
+  readonly indentation: string
   /**
    * Whether the line holds a `%%` comment that mermaid.js does not read as a
    * comment line: a line of only `%%`, or one that starts with `%%{` without
    * being a directive (see `isCommentLine`).
    */
   readonly bareMarker: boolean
+  /**
+   * Whether the line becomes a comment line that mermaid.js removes once its
+   * directives are removed: it holds comments that are comment lines (see
+   * `isCommentLine`) and, besides them, only directives. Such a line leaves
+   * the lines around it as they are.
+   */
+  readonly commentLinesOnly: boolean
 }
 
 /**
@@ -75,6 +84,10 @@ export interface Gap {
   readonly lines: readonly ItemLine[]
   /** Items on the line of the thing after the gap; null when there are none. */
   readonly leading: ItemRun | null
+  /** Whether `leading` holds nothing but directives. */
+  readonly leadingDirectivesOnly: boolean
+  /** The spaces and tabs before the first item of `leading`, as written. */
+  readonly leadingIndentation: string
   /** Whether an empty line comes after the last line of `lines`, or, when there are none, anywhere in the gap. */
   readonly blankAfter: boolean
   /** Whether the gap breaks the line. */
@@ -131,6 +144,10 @@ interface ScannedLine {
  * (docs/flowchart.md, Semicolons), unless `keepsSeparators` is set, as on a
  * line that is kept together, where it is printed as written like an item.
  *
+ * With `endsText`, the gap ends the text: what stands after the last line
+ * terminator, when the text has none after it, is on the line of what comes
+ * before the gap, as it is when a line terminator follows it.
+ *
  * Throws when the gap holds any other text than whitespace, line
  * terminators, comments, directives, and `;` tokens: the tree places every
  * other token in a node, so such text means that the printer was given
@@ -141,10 +158,11 @@ export function readGap(
   start: number,
   end: number,
   keepsSeparators: boolean,
+  endsText = false,
 ): Gap {
   const lines = scanLines(source, start, end, keepsSeparators)
   if (lines.length === 1) {
-    return readSingleLine(source, lines[0])
+    return readSingleLine(source, lines[0], endsText)
   }
   const [first, ...rest] = lines
   const last = rest.pop() as ScannedLine
@@ -165,12 +183,21 @@ export function readGap(
       directivesOnly: line.parts.every(
         (part) => part.item.type === "Directive",
       ),
+      indentation: indentationBefore(source, line),
       bareMarker: line.parts.some(
         (part) =>
           part.item.type === "Comment" &&
           part.item.mark === "%%" &&
           !isCommentLine(source.text, source.root, part.item),
       ),
+      commentLinesOnly:
+        line.parts.some((part) => part.item.type === "Comment") &&
+        line.parts.every(
+          (part) =>
+            part.item.type === "Directive" ||
+            (part.item.type === "Comment" &&
+              isCommentLine(source.text, source.root, part.item)),
+        ),
     })
     emptyLineSeen = false
     whitespaceLineSeen = false
@@ -179,6 +206,10 @@ export function readGap(
     trailing: toRun(source, first.parts, first.spaceAfter, true),
     lines: ownLines,
     leading: toRun(source, last.parts, last.spaceAfter, false),
+    leadingDirectivesOnly:
+      last.parts.length > 0 &&
+      last.parts.every((part) => part.item.type === "Directive"),
+    leadingIndentation: indentationBefore(source, last),
     blankAfter: emptyLineSeen,
     breaksLine: true,
     trailingEndsWithComment: first.parts.at(-1)?.item.type === "Comment",
@@ -186,18 +217,39 @@ export function readGap(
   }
 }
 
+/** The spaces and tabs before the first item of a line, as written. */
+function indentationBefore(source: Source, line: ScannedLine): string {
+  if (line.parts.length === 0) return ""
+  const first = line.parts[0].item.range[0]
+  let start = first
+  while (
+    start > 0 &&
+    (source.text[start - 1] === " " || source.text[start - 1] === "\t")
+  ) {
+    start--
+  }
+  return source.text.slice(start, first)
+}
+
 /**
  * A gap within one line, such as between two statements written on the same
  * line: the items after its last `;` stand with the thing after the gap, the
  * others with the thing before it.
  */
-function readSingleLine(source: Source, line: ScannedLine): Gap {
-  const before = line.parts.slice(0, line.afterLastSeparator)
-  const after = line.parts.slice(line.afterLastSeparator)
+function readSingleLine(
+  source: Source,
+  line: ScannedLine,
+  endsText: boolean,
+): Gap {
+  const split = endsText ? line.parts.length : line.afterLastSeparator
+  const before = line.parts.slice(0, split)
+  const after = line.parts.slice(split)
   return {
     trailing: toRun(source, before, after.length > 0 || line.spaceAfter, true),
     lines: [],
     leading: toRun(source, after, line.spaceAfter, false),
+    leadingDirectivesOnly: false,
+    leadingIndentation: "",
     blankAfter: false,
     breaksLine: false,
     trailingEndsWithComment: false,

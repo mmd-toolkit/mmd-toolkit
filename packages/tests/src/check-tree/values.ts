@@ -57,7 +57,7 @@ export interface ValueRule {
   readonly withoutComments?: true
   /** Whether the value holds no whitespace (ast.md, Identifier). */
   readonly withoutWhitespace?: true
-  /** Whether the node has exactly one token, which no directive and no ignored `;` cuts (parser/docs/tokens.md, A token that a directive cuts). */
+  /** Whether the node has exactly one token, which no directive and no ignored `;` cuts (parser/docs/tokens.md, A token that a directive cuts); also for a `derived` value. */
   readonly oneToken?: true
   /** The sentence of the specification that says how the value is made. */
   readonly spec: string
@@ -94,6 +94,7 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
   NumericLiteral: {
     field: "value",
     kind: "derived",
+    oneToken: true,
     spec: "The number that its written text writes (ast.md, NumericLiteral).",
   },
   FlowchartLabel: {
@@ -327,6 +328,60 @@ function checkRunsKeepWhitespaceNextToCuts(
 }
 
 /**
+ * The ranges of the diagram comments, each from its mark to the line feed
+ * that ends it (state.md, Comments): past the comment lines that cut it, since
+ * their line terminators are part of the comment regions that the written text
+ * leaves out and no line feed of the comment itself. A diagram comment is a
+ * comment that does not start where the text leaves a character out, as a
+ * comment line does; the fragment after a comment line starts in the same
+ * comment, and so has the same end. What the records leave between the
+ * comments of one diagram comment, such as a U+2028 and the whitespace after a
+ * comment line, lies in its range.
+ */
+function diagramCommentRanges(
+  text: string,
+  root: CheckedRoot,
+  written: WrittenText,
+): TreeRange[] {
+  const ranges: TreeRange[] = []
+  for (const comment of root.comments) {
+    if (written.isLeftOut(comment.range[0])) continue
+    let end = comment.range[1]
+    while (
+      end < text.length &&
+      (written.isLeftOut(end) || (text[end] !== "\n" && text[end] !== "\r"))
+    ) {
+      end++
+    }
+    ranges.push([comment.range[0], end])
+  }
+  return ranges
+}
+
+/**
+ * parser/docs/tokens.md, A token that a directive cuts: a node of one token
+ * (an `Identifier`, a number) has exactly one, other than the `Directive` and
+ * `IgnoredSemicolon` tokens.
+ */
+function checkHasOneToken(
+  root: CheckedRoot,
+  node: CheckedNode,
+  problems: Problems,
+): void {
+  const count = root.tokens.filter(
+    (token) =>
+      token.type !== "Directive" &&
+      token.type !== "IgnoredSemicolon" &&
+      contains(node.range, token.range),
+  ).length
+  problems.expect(
+    count === 1,
+    label(node),
+    `has ${count} tokens, not the one that a node of this type has`,
+  )
+}
+
+/**
  * Checks the value of every node that has one against the rule of its type
  * ({@link VALUE_RULES}): the value is made from the written text of the
  * node's range as the rule says, and the tokens of the node agree with it
@@ -340,17 +395,19 @@ export function checkValues(
   problems: Problems,
 ): void {
   const written = new WrittenText(text, root)
+  const diagramComments = diagramCommentRanges(text, root, written)
   const nodes = nodesOf(root)
   const styles = classStylesOf(nodes)
   for (const node of nodes) {
     const rule = VALUE_RULES[node.type]
-    if (rule === undefined || rule.kind === "derived") continue
+    if (rule === undefined) continue
+    if (rule.oneToken === true) checkHasOneToken(root, node, problems)
+    if (rule.kind === "derived") continue
     const where = label(node)
     const value = node[rule.field]
-    if (typeof value !== "string") {
-      problems.report(where, `lacks the string field \`${rule.field}\``)
-      continue
-    }
+    // The field is a string in every tree of the form that `checkShape()`
+    // requires, which `checkTree()` has checked.
+    if (typeof value !== "string") continue
     const delimiters =
       rule.delimiters === undefined
         ? []
@@ -372,6 +429,11 @@ export function checkValues(
       if (rule.withoutComments === true) {
         for (const comment of root.comments) {
           if (contains(node.range, comment.range)) leftOut.push(comment.range)
+        }
+        for (const [start, end] of diagramComments) {
+          if (node.range[0] <= start && start < node.range[1]) {
+            leftOut.push([start, Math.min(end, node.range[1])])
+          }
         }
       }
       const writtenText = written.of(node.range, leftOut)
@@ -397,19 +459,6 @@ export function checkValues(
           "the texts of its tokens joined are not its written text",
         )
       }
-    }
-    if (rule.oneToken === true) {
-      const count = root.tokens.filter(
-        (token) =>
-          token.type !== "Directive" &&
-          token.type !== "IgnoredSemicolon" &&
-          contains(node.range, token.range),
-      ).length
-      problems.expect(
-        count === 1,
-        where,
-        `has ${count} tokens, not the one that a node of this type has`,
-      )
     }
     if (rule.withoutWhitespace === true) {
       problems.expect(

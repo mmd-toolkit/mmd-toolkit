@@ -4,6 +4,18 @@ import { isWhitespace } from "./characters.ts"
 // docs/db-from-tree/flowchart.md and docs/db-from-tree/sequence.md read accessibility values
 // and write the keys that the input names in the same way.
 
+/**
+ * The text `text` without the double quote at its start and the one at its end,
+ * when both are there and they are two characters (the label of a vertex and
+ * the text of a link, after the whitespace is trimmed: `A[/ "x"/]` has the
+ * text `x`, `A[/ " /]` the text `"`, and `A[/ "x /]` the text `"x`).
+ */
+export function withoutEnclosingQuotes(text: string): string {
+  return text.length >= 2 && text.startsWith('"') && text.endsWith('"')
+    ? text.slice(1, -1)
+    : text
+}
+
 /** The text `text` without the whitespace at its start and at its end (Notation). */
 export function trimmed(text: string): string {
   let start = 0

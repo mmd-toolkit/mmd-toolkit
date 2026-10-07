@@ -44,9 +44,11 @@ flowchart; the steps do not depend on the diagram type.
   agrees with mermaid.js as the marks of known divergences ask. The recorded
   trees are checked by `@mmd-toolkit/tests`: the conditions of the tree
   (`checkTree`), and the Db that it builds from them against the Db that each
-  fixture records. The tests run neither mermaid.js nor generated inputs; the
-  explorations in `tools/explore/` compare generated inputs with mermaid.js to
-  find what the corpus lacks, and what they find is closed by a fixture.
+  fixture records. The tests run neither mermaid.js nor generated inputs, and no
+  command of this package does. Each sentence of the parser's documents that
+  defines a behavior has a fixture for each case it distinguishes and for each
+  other rule that meets it at its place (AGENTS.md, Principles); a case that the
+  corpus lacks is closed by a fixture.
 
 ## 1. What to read first
 
@@ -106,26 +108,20 @@ flowchart; the steps do not depend on the diagram type.
 
 ## 3. How to check (in every piece of work)
 
-- Check every claim about behavior, your own or another's, by running mermaid.js
-  before writing it. Put the inputs, as a JSON array of strings, in a file
-  outside the repository, and run, in `packages/parser`:
-
-  ```sh
-  pnpm run compare-with-mermaid <file>
-  ```
-
-  It prints, for each input, whether `parse()` and the Db built from its tree
-  agree with mermaid.js, and whether the tree check of `@mmd-toolkit/tests`
-  finds a problem in the tree (`docs/development.md`, Tools). An input of a
-  known divergence prints `DIFF`; read it against the Known divergences of the
-  specification.
-
-- Do not check with hand-written examples alone. For a rule whose boundaries
-  matter, generate inputs that put a character or a unit at every position, and
-  compare them in an exploration (4.6, step 3). In the flowchart, an example
-  written by hand for a test was rejected by mermaid.js, because its line feed
-  left the click context; run an example for a test or a comment through the
-  command above before writing it.
+- Check every claim about the behavior of mermaid.js, your own or another's,
+  before writing it, by a fixture: the parser does not run mermaid.js. Give the
+  input, with the sentence that the claim is about, to the tests package (the
+  tests skill); it adds the fixture, which records what mermaid.js does, and the
+  fixture test then holds the parser to it. An example for a test or a comment
+  is such an input too: in the flowchart, an example written by hand for a test
+  was rejected by mermaid.js, because its line feed left the click context.
+- When a sentence of the parser's documents that defines a behavior is written
+  or changed, list the cases that it distinguishes and the other rules that meet
+  it at the place that it names (a directive, an ignored `;`, a comment line, an
+  empty line, a line separator, an empty description block), and ask for a
+  fixture of each case that the corpus lacks (AGENTS.md, Principles). More
+  assurance comes from a case that is missing, never from more inputs of a case
+  that is there.
 - In every result, show for each claim whether it was checked by running
   something, checked by reading code or documents, or not checked.
 - Run what a change can affect (the skill `conventions`, Running tests). While
@@ -149,8 +145,7 @@ flowchart; the steps do not depend on the diagram type.
   `packages/spec/docs/known-divergences/`), and the tests of the examples and
   the unions in the comments of `src/ast.ts` and `src/ast/*.ts`
   (`tests/ast-<diagram>-examples.test.ts`, `tests/union-docs.test.ts`). The
-  whole suite is run as 4.8 says. When the lexing or the grammar of a diagram
-  type changes, its explorations are run as well (4.6, step 3).
+  whole suite is run as 4.8 says.
 
 ## 4. Adding a diagram type (Jison)
 
@@ -206,10 +201,7 @@ Add them in this order; the flowchart files are the model.
    `flowchart-elk`, and `swimlane`). From then on, the diagram type is parsed
    wherever the tests met it as an unsupported type: an example of an
    unsupported type in `tests/parse.test.ts` changes to another type that is
-   still unsupported, and the mutants of the common exploration
-   (`tools/explore/common-mermaid.test.ts`) that are of this type are compared
-   as trees. A mismatch there is a difference of the diagram, read as in 4.2,
-   step 2.
+   still unsupported, and the fixtures of this type are recorded as trees (4.7).
 
 ### 4.4 The lexer
 
@@ -343,15 +335,14 @@ Add them in this order; the flowchart files are the model.
 The flowchart tests are the model. The files to add, or to add a `case` of the
 diagram to:
 
-| File                                      | What to add                            |
-| ----------------------------------------- | -------------------------------------- |
-| `tests/helpers/node-types.ts`             | the `Record` of every node type        |
-| `tests/types.test.ts`                     | the union of `Node`                    |
-| `tests/helpers/recorded-diagrams.ts`      | the diagram in `RECORDED_DIAGRAMS`     |
-| `tools/explore/<diagram>-mermaid.test.ts` | the exploration of mutants             |
-| `tests/ast-<diagram>-examples.test.ts`    | the examples in the node type comments |
-| `tests/helpers/reference-inputs.ts`       | the diagram's units for the references |
-| `tests/<diagram>.test.ts`                 | unit tests of the tree and tokens      |
+| File                                   | What to add                            |
+| -------------------------------------- | -------------------------------------- |
+| `tests/helpers/node-types.ts`          | the `Record` of every node type        |
+| `tests/types.test.ts`                  | the union of `Node`                    |
+| `tests/helpers/recorded-diagrams.ts`   | the diagram in `RECORDED_DIAGRAMS`     |
+| `tests/ast-<diagram>-examples.test.ts` | the examples in the node type comments |
+| `tests/helpers/reference-inputs.ts`    | the diagram's units for the references |
+| `tests/<diagram>.test.ts`              | unit tests of the tree and tokens      |
 
 Steps:
 
@@ -369,29 +360,13 @@ Steps:
 2. Find where text outside a node's range decides a reading. Example from the
    flowchart: the name text of a subgraph runs to its separator, and where empty
    description blocks follow the name, the whitespace between them lies outside
-   every node. Put whitespace, a directive, a comment line, and a `click` at
-   each boundary, and compare with mermaid.js (3) in an exploration (in the
-   flowchart, `tools/explore/flowchart-source-reading.test.ts`). Generate them:
-   put each of these at every place of the statement (in class,
-   `tools/explore/class-source-reading.test.ts`). A unit that is all whitespace
-   at the end of a statement lies after the range of the statement, which ends
-   at its last token; find it from the units next to a unit of the statement,
-   not inside the range.
-3. The explorations in `tools/explore/` are not tests (`docs/testing.md`,
-   Explorations against mermaid.js). They compare generated inputs with
-   mermaid.js, as `tools/explore/mermaid-comparison.ts` describes:
-   `<diagram>-mermaid.test.ts` mutants of the fixtures. Run them when the lexing
-   or the grammar of the diagram changes, with `pnpm run explore` in
-   `packages/parser`
-   (`npx vitest run --config tools/explore/vitest.config.ts <files>` for some of
-   them). A difference that one finds is closed by a fixture of the corpus (the
-   tests skill), and by a sentence of the specification where it does not state
-   the reading (the spec skill); an input kept only in a list of this package is
-   not kept.
-4. For a rule whose boundaries matter, add an exploration of generated inputs.
-   Example from the flowchart: `tools/explore/entity-units.test.ts` puts an
-   entity at every position of a link text and an ellipse label.
-5. Every input that was once read wrong becomes a fixture of the corpus: give it
+   every node. A unit that is all whitespace at the end of a statement lies
+   after the range of the statement, which ends at its last token; find it from
+   the units next to a unit of the statement, not inside the range. Each such
+   place is a case of the sentence that defines the range: ask for a fixture
+   with whitespace, a directive, a comment line, and a `click` at it (section
+   3).
+3. Every input that was once read wrong becomes a fixture of the corpus: give it
    to the tests package with a note on the failure (the tests skill).
 
 ### 4.7 Recorded parse results
@@ -489,14 +464,11 @@ pnpm run format:check
 
 Run the whole suite once, before the work is reported as done, not after each
 change. It runs no generated inputs (the skill `conventions`, Running tests).
-When the lexing or the grammar of a diagram type changed, run its explorations
-too (4.6, step 3): an exploration takes its inputs by kind and each combination
-once, and more assurance is gained by adding a kind of input that is missing,
-never by raising a count.
 
 The work is done when every fixture passes the fixture test, the recorded trees
 pass the tree check of `@mmd-toolkit/tests` and give the Db that the corpus
-records, and every difference that the explorations find is closed by a fixture.
+records, and every sentence that the work wrote or changed has a fixture for
+each of its cases (section 3).
 
 ### 4.9 Documents
 
@@ -548,12 +520,13 @@ Langium.
   unit that can come before and after it there (whitespace, a separator, a
   comment, another such form, the header), and every place that reads the text
   of a range that can now contain it (the name text of a subgraph, the text of a
-  style). Compare generated inputs over that whole list with mermaid.js, and
-  report every difference to the specification at once. When the empty
-  description blocks before a separator were accepted in this way one place at a
-  time, the place of a block after a subgraph name, the whitespace around the
-  blocks, the text of a style, the header line, a comment after a block, and a
-  run of blocks inside a statement were found one after another.
+  style). Each item of that list is a case of the sentence that accepts the
+  form: ask for a fixture of each (section 3), and report every difference to
+  the specification at once. When the empty description blocks before a
+  separator were accepted in this way one place at a time, the place of a block
+  after a subgraph name, the whitespace around the blocks, the text of a style,
+  the header line, a comment after a block, and a run of blocks inside a
+  statement were found one after another.
 - A gap in the specification is found during other work: fix the specification
   first (4.2, step 2), then do the above.
 - A known divergence is added (its document `known-divergences/<id>.md`, listed
@@ -566,20 +539,15 @@ Langium.
   ways, the reading of the specification is recorded in the corpus
   (`specified.json`, by mermaid.js with the divergence removed from its lexer),
   which the tests package makes; ask for it. Add its declaration to
-  `tests/helpers/known-divergences.ts`, and the check of the declared
-  differences to `tools/explore/mermaid-comparison.ts` and the explorations,
-  with a guard against a vacuous check. Take every lexical decision of the
+  `tests/helpers/known-divergences.ts`. Take every lexical decision of the
   reference input and of the declaration from the parser's units, not from rules
   of its own. Add it to "Known divergences" in `docs/testing.md` and to the
   differences in the README.
 - When the specification claims that its reference reading explains every
-  difference (in sequence, `comment-takes-character`), check the claim on
-  generated inputs as well as on the fixtures (4.6, step 4): put the form at
-  every position of the accepted fixtures and compare `parse()` of each input
-  with mermaid.js in the reference reading, in an exploration. The other known
-  divergences are declared and checked there as everywhere. Report every
-  remaining class to the specification with an example, the result of
-  mermaid.js, and the count.
+  difference (in sequence, `comment-takes-character`), each place where the form
+  can stand is a case of that claim: ask for a fixture of each (section 3), and
+  report a case that the reading does not explain to the specification with the
+  input and the result of mermaid.js.
 
 ## 7. Updating mermaid.js
 
@@ -590,13 +558,11 @@ skill). The parser does not change behavior before the specification does.
 1. Read the changed sections of the specification, and check each changed rule
    as in 4.2, step 2.
 2. Fix what is tied to the version. `grep -rn '12\.0\.0' packages/parser` finds
-   it: the README, `docs/development.md`, `docs/testing.md`, and the comment of
-   `tools/explore/common-inputs.ts`, each with its `.ja.md`.
+   it: the README and `docs/development.md`, each with its `.ja.md`.
 3. When diagram type ids are added or changed: following `detection.md` and the
    DiagramType of `ast.md`, fix `src/detection.ts`, `DiagramType` in
-   `src/ast.ts`, `allDiagramTypes` in `tests/types.test.ts`,
-   `tests/detection.test.ts`, and the headers in
-   `tools/explore/common-inputs.ts`.
+   `src/ast.ts`, `allDiagramTypes` in `tests/types.test.ts`, and
+   `tests/detection.test.ts`.
 4. Check that tables copied from lists of the specification (in the flowchart,
    the letter ranges of `src/unicode-letters.ts`, which flowchart and class
    share) still agree with it.

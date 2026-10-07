@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The site configuration has `wrap` true and `sequence.wrap` false. The message and the participants wrap."
+  },
+  "config": {
+    "wrap": true,
+    "sequence": {
+      "wrap": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Alice",
+        "description": "Alice",
+        "wrap": true,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Bob"
+      },
+      {
+        "name": "Bob",
+        "description": "Bob",
+        "wrap": true,
+        "prevActor": "Alice",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "Hello",
+        "wrap": true,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

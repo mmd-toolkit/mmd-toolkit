@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/flowchart.md FlowchartClickCallbackStatement: the arguments are the text between the parentheses with the whitespace at its ends, as mermaid.js passes it on (` x, y `); mermaid.js then divides it at each `,` outside quotes and trims each argument."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "f",
+        "args": " x, y "
+      }
+    ]
+  }
+}

@@ -1,10 +1,15 @@
 import { describe, expect, it } from "vitest"
+import * as entry from "../src/index.ts"
 import {
   cssSupportsColor,
   withGlobal,
 } from "../src/normalizers/browser-stand-ins.ts"
 
 describe("cssSupportsColor", () => {
+  it("is exported by the entry, which runs no mermaid.js", () => {
+    expect(entry.cssSupportsColor).toBe(cssSupportsColor)
+  })
+
   it("accepts named colors, transparent and color functions in any case", () => {
     for (const value of [
       "green",

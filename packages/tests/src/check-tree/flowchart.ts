@@ -4,6 +4,7 @@ import {
 } from "../db-from-tree/converted-text.ts"
 import { StringDelimiters } from "../db-from-tree/flowchart-strings.ts"
 import type { TreeRange } from "../db-from-tree/tree.ts"
+import { FLOWCHART_SHAPES } from "./flowchart-shapes.ts"
 import { diagramTokensOf } from "./invariants.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
@@ -24,8 +25,9 @@ import { WrittenText } from "./written-text.ts"
 // below names the sentence it implements.
 //
 // The nodes are read through the interfaces below, which hold the fields that
-// a check reads and no others. A node that lacks one of them is a problem of
-// the tree, reported where the node is checked, not an exception.
+// a check reads and no others. `checkShape()` has required every field of
+// every node (shape.ts) before a check here runs, so the functions that test
+// for these fields only tell the type system what the tree is.
 
 /** A node with a `value` field: ast/flowchart.md, the nodes whose table has a `value` of type string. */
 interface ValueNode extends CheckedNode {
@@ -102,79 +104,40 @@ function isSubgraph(node: CheckedNode): node is FlowchartSubgraphNode {
   return isNode(node.name) && (node.title === null || isNode(node.title))
 }
 
-/** Runs `check` on `node` read as the type that `isShaped` tests for; reports a node that lacks the fields. */
-function whenShaped<T extends CheckedNode>(
-  node: CheckedNode,
-  isShaped: (node: CheckedNode) => node is T,
-  problems: Problems,
-  check: (shaped: T) => void,
-): void {
-  if (isShaped(node)) {
-    check(node)
-  } else {
-    problems.report(
-      label(node),
-      "lacks a field that ast/flowchart.md gives its type",
-    )
-  }
-}
-
 /**
  * diagrams/flowchart.md, Shapes: the name that the delimiters `opening` and
  * `closing` give a shape, as its table lists them; null for delimiters that no
  * row has. `closing` is the source text of the closing unit.
  */
 function shapeNameOf(opening: string, closing: string): string | null {
-  const isBackslashEnd =
-    closing.length === 2 &&
-    closing.endsWith("]") &&
-    "\\(?=])".includes(closing.charAt(0))
-  switch (opening) {
-    case "[":
-      return closing === "]" ? "rectangle" : null
-    case "(":
-      return closing === ")" ? "rounded" : null
-    case "((":
-      return closing === "))" ? "circle" : null
-    case "(((":
-      return closing === ")))" ? "double-circle" : null
-    case "{":
-      return closing === "}" ? "diamond" : null
-    case "{{":
-      return closing === "}}" ? "hexagon" : null
-    case "([":
-      return closing === "])" ? "stadium" : null
-    case "[[":
-      return closing === "]]" ? "framed-rectangle" : null
-    case "[(":
-      return closing === ")]" ? "cylinder" : null
-    case ">":
-      return closing === "]" ? "odd" : null
-    case "(-":
-      return ["-)", "/)", "))"].includes(closing) ? "ellipse" : null
-    case "[/":
-      if (closing === "/]") return "lean-right"
-      return isBackslashEnd ? "trapezoid-bottom" : null
-    case "[\\":
-      if (closing === "/]") return "trapezoid-top"
-      return isBackslashEnd ? "lean-left" : null
-    case "[|":
-      return closing === "]" ? "rectangle" : null
-    default:
-      return null
-  }
+  const row = FLOWCHART_SHAPES.find(
+    (shape) => shape.opening === opening && shape.closings.includes(closing),
+  )
+  return row === undefined ? null : row.name
 }
 
 /**
- * The delimiters in `range`: its `Punctuator` tokens, joined (a directive can
- * cut `((` into two tokens), without a `;` that the line rule ignores and that
- * is a token of its own (ast/flowchart.md, Tokens).
+ * The delimiter in `range`: its one `Punctuator` token, whole (parser/docs/
+ * tokens/flowchart.md, Tokens: the units that open a shape, and those that
+ * close it, are one token each, which a directive or an ignored `;` does not
+ * cut). The text is empty, and a problem is reported, when `range` has none
+ * or more than one.
  */
-function delimitersIn(root: CheckedRoot, range: TreeRange): string {
-  return tokensIn(root, range)
-    .filter((token) => token.type === "Punctuator" && token.value !== ";")
-    .map((token) => token.value)
-    .join("")
+function delimiterIn(
+  root: CheckedRoot,
+  range: TreeRange,
+  where: string,
+  problems: Problems,
+): string {
+  const delimiters = tokensIn(root, range).filter(
+    (token) => token.type === "Punctuator",
+  )
+  problems.expect(
+    delimiters.length === 1,
+    where,
+    `has ${delimiters.length} delimiter tokens between ${range[0]} and ${range[1]}, not one`,
+  )
+  return delimiters.length === 1 ? (delimiters[0]?.value ?? "") : ""
 }
 
 /**
@@ -189,8 +152,18 @@ function checkShape(
 ): void {
   const where = label(shape)
   const firstInside = shape.property ?? shape.label
-  const opening = delimitersIn(root, [shape.range[0], firstInside.range[0]])
-  const closing = delimitersIn(root, [shape.label.range[1], shape.range[1]])
+  const opening = delimiterIn(
+    root,
+    [shape.range[0], firstInside.range[0]],
+    where,
+    problems,
+  )
+  const closing = delimiterIn(
+    root,
+    [shape.label.range[1], shape.range[1]],
+    where,
+    problems,
+  )
   problems.expectEqual(
     shapeNameOf(opening, closing),
     shape.name,
@@ -205,6 +178,24 @@ function checkShape(
     "has a property exactly when it is written with [|",
   )
 }
+
+/**
+ * diagrams/flowchart.md, The header context, rule 2: the texts of the
+ * `header-direction` units, which are the `Keyword` token after the header
+ * keyword, as written.
+ */
+const HEADER_DIRECTIONS: readonly string[] = [
+  "LR",
+  "RL",
+  "TB",
+  "BT",
+  "TD",
+  "BR",
+  "v",
+  "<",
+  ">",
+  "^",
+]
 
 /**
  * ast/flowchart.md, FlowchartArrow and FlowchartOpeningArrow: the markers that
@@ -238,11 +229,11 @@ const OPENING_LINES: ReadonlyMap<string, string> = new Map([
 
 /**
  * ast/flowchart.md, FlowchartLink, FlowchartArrow, and FlowchartOpeningArrow:
- * each arrow of the link is one `Punctuator` token, and its fields are what its value writes: a start marker
- * for a first character that is no line character, an end marker for such a
- * last character, the line of its line characters (`dotted` when it has a `.`),
- * and their number, the `.` only for a dotted line. The opening arrow has the
- * line of the closing arrow.
+ * each arrow of the link is one `Punctuator` token, and its fields are what its
+ * value writes: a start marker for a first character that is no line character,
+ * an end marker for such a last character, the line of its line characters
+ * (`dotted` when it has a `.`), and their number, the `.` only for a dotted
+ * line. The opening arrow has the line of the closing arrow.
  */
 function checkLink(
   root: CheckedRoot,
@@ -465,7 +456,8 @@ function checkLabelKind(
  * the opening arrow has the line of the closing one, a description block is
  * closed exactly when its last token is `}`, a style and the name of a
  * subgraph hold the whitespace that mermaid.js reads into them and no other.
- * `root` is the tree of a flowchart diagram type.
+ * `root` is the tree of a flowchart diagram type, whose body is a
+ * FlowchartDiagram.
  */
 export function checkFlowchartTree(
   text: string,
@@ -476,48 +468,40 @@ export function checkFlowchartTree(
   const diagram = root.body
   const written = new WrittenText(text, root)
   checkTokensInValueNodes(root, problems)
-  if (diagram.type !== "FlowchartDiagram") {
-    problems.report(
+  if (isDiagram(diagram)) {
+    // FlowchartDiagram: the direction of the header, as written, is the token
+    // after the header keyword when that is a direction, and null otherwise
+    // (The header context, rules 1 and 2).
+    const second = diagramTokensOf(root).at(1)
+    problems.expectEqual(
+      diagram.direction,
+      second?.type === "Keyword" && HEADER_DIRECTIONS.includes(second.value)
+        ? second.value
+        : null,
       label(diagram),
-      "the body of a flowchart is not a FlowchartDiagram",
+      "the direction of the header is not the first token of the diagram after the header keyword, or null when that is no direction",
     )
-  } else {
-    whenShaped(diagram, isDiagram, problems, ({ direction }) => {
-      if (direction === null) return
-      // FlowchartDiagram: the direction of the header, as written, after the
-      // header keyword (The header context, rule 3).
-      const second = diagramTokensOf(root).at(1)
-      problems.expect(
-        second?.type === "Keyword" && second.value === direction,
-        label(diagram),
-        "the direction of the header is not the first token of the diagram after the header keyword",
-      )
-    })
   }
   for (const node of nodesOf(root)) {
     switch (node.type) {
       case "FlowchartShape":
-        whenShaped(node, isShape, problems, (shape) =>
-          checkShape(root, shape, problems),
-        )
+        if (isShape(node)) checkShape(root, node, problems)
         break
       case "FlowchartLink":
-        whenShaped(node, isLink, problems, (link) =>
-          checkLink(root, link, problems),
-        )
+        if (isLink(node)) checkLink(root, node, problems)
         break
       case "FlowchartStyleStatement":
       case "FlowchartClassDefStatement":
       case "FlowchartLinkStyleStatement":
       case "FlowchartDefaultLinkStyleStatement":
-        whenShaped(node, isStyleList, problems, (statement) =>
-          checkStyles(text, root, written, statement, problems),
-        )
+        if (isStyleList(node)) {
+          checkStyles(text, root, written, node, problems)
+        }
         break
       case "FlowchartSubgraphStatement":
-        whenShaped(node, isSubgraph, problems, (statement) =>
-          checkSubgraphName(text, root, written, statement, problems),
-        )
+        if (isSubgraph(node)) {
+          checkSubgraphName(text, root, written, node, problems)
+        }
         break
       case "FlowchartLabel":
         checkLabelKind(written, delimitersOf, node, problems)

@@ -4,17 +4,21 @@
 
 図種: flowchart、sequence、class、state。
 これは、この仕様の mermaid.js との
-[既知の差](../known-divergences.ja.md) の 1 つです。
+[既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 構文
 
-書かれているのに何も持たない形があります。
+空の文字列や空の説明ブロックのように、書かれていても中身が空の構文があります。
 flowchart では 3 つです。
 
 - **空の文字列**。`""` か、空のマークダウンの文字列です。
+  [fixture: flowchart/lex-empty-string-line]
+  [fixture: flowchart/header-empty-markdown-string]
 - **空の呼び出し**。`click A call ()` のように、`call` とその後の空白に、
   間に空白しかない括弧が続くものです。
+  [fixture: flowchart/gram-empty-call-line]
 - **空の説明ブロック**。括弧の間に空白しかない `accDescr {}` です。
+  [fixture: flowchart/db-acc-descr-empty-block-alone]
 
 文字列も `call` も文法にない sequence では、空の説明ブロックだけです。
 `call` を持たず、クリックの文が文字列を取る文の文脈では
@@ -23,17 +27,19 @@ flowchart では 3 つです。
 `state` が入る state の文脈でも、
 mermaid.js は空の文字列にトークンを読みませんが、
 そこでそれが現れるのは単位が始まるところだけで、
-木はそのどの場所でも、それを持ちます。
+木（構文木、AST）はそのどの場所でも、それを持ちます。
 名前の前と後、本体の前、別名の文の文字列の前と後では StateIgnoredText として、
 `state` の後か行の中のほかの文の後では StateIgnoredStatement として持ちます
 （[state の文字列の文脈](../diagrams/state.ja.md#state-の文脈) を参照）。
-そのため、そのような入力は mermaid.js と同じく受理され、この差には入りません。
+そのため、そのような入力は mermaid.js と同じく受理され、この差異には入りません。
 [fixture: state/gram-state-empty-string-before-name] [fixture:
 state/gram-state-empty-string-between-name-and-body] [fixture:
 state/gram-state-empty-strings-around-alias-string] [fixture:
 state/gram-state-empty-string-after-name]
 class では 5 つです。
-flowchart の 3 つと、クラスの名前の中に書く 2 つ、
+flowchart の 3 つ
+（class にはマークダウン文字列がないので、空の文字列は `""` だけ）と、
+クラスの名前の中に書く 2 つ、
 つまり、2 つのバッククォートである**空のバッククォートの名前**と、
 2 つの `~` である**空のジェネリクスの型**です。
 
@@ -51,7 +57,7 @@ flowchart LR
 この文書は、この仕様の木にそれらの場所がないところ、
 つまり文の中や、値の中のほかのテキストの隣にある、これらの形についてのものです。
 
-## 差
+## 差異
 
 どの例も、図の全体です。
 
@@ -167,12 +173,120 @@ mermaid.js は `accTitle accDescr {}: t` を、
 [fixture: class/div-empty-description-block-between-acc-title-and-colon]
 [fixture: state/div-empty-description-block-between-acc-title-and-colon]
 
+これらの形に見えるだけのテキストは、そのどれでもなく、どちらも同じに読みます。
+`A""-->B` の引用符は頂点 `A""` の文字で、
+`accTitle: ""` はタイトル `""` を持ち、
+`A[" "]` は空白 1 つの文字列を持ち、
+`A["call ()"]` はラベル `call ()` を持ちます。
+[fixture: flowchart/lex-empty-quotes-in-id] [fixture:
+flowchart/lex-acc-title-quotes]
+[fixture: flowchart/gram-label-space-string] [fixture:
+flowchart/gram-label-string-call-text]
+
+差異は一方向だけです。
+mermaid.js が受理し、この仕様が拒否します。
+各図種の文書は、その例を既知の差異の節に挙げています。
+[flowchart](../diagrams/flowchart.ja.md#既知の差異)、
+[sequence](../diagrams/sequence.ja.md#既知の差異)、
+[class](../diagrams/class.ja.md#既知の差異)、
+[state](../diagrams/state.ja.md#既知の差異) です。
+
+## 書き手にとっての結果
+
+書き手が空のものを表すつもりでこれらの形を書くと、
+mermaid.js もそれを拒否します。
+`A[""]`、`A("")`、`A-->|""|B`、`A -- "" --> B`、
+`click A href ""`、`subgraph ""`、`click A call ()` は、どちらも拒否します。
+[fixture: flowchart/gram-label-empty-string] [fixture:
+flowchart/gram-shape-round-empty-string] [fixture:
+flowchart/gram-link-text-empty-string] [fixture:
+flowchart/gram-link-text-dash-empty-string] [fixture:
+flowchart/gram-click-href-empty-string] [fixture:
+flowchart/gram-subgraph-name-empty-string-only] [fixture:
+flowchart/gram-click-empty-call-only]
+mermaid.js がそれらを受理するのは、ほかのテキストの隣で何も残さず、
+描かれるものを何も変えないところだけです。
+mmd-toolkit のパーサーはそのようなテキストを拒否し、その形を報告します。
+形を除いたテキストは、
+ほかの [既知の差異](../known-divergences.ja.md) を持たなければ、
+どちらも同じに読みます。
+mermaid.js は形をないかのように読むので（[差異](#差異) を参照）、
+たいていはそのテキストを、形のあるテキストと同じに読みます。
+ただし、形を除くと一緒に読まれる 2 つの部分を、形が隔てていたところは別で、
+mermaid.js はそのテキストを違って読むか、拒否します。
+`style A "" ""fill:red` のスタイルは空白と `fill:red` ですが、
+`style A`、空白 2 つ、`fill:red` のスタイルは `fill:red` です。
+`A:""::c` は頂点 `A:::c` ですが、`A:::c` はクラス `c` を持つ頂点 A です。
+class では、`direction accDescr {} LR` は方向を `TB` のままにしますが、
+`direction`、空白 2 つ、`LR` は `LR` を決めます。
+`flowchart""TD` は受理されますが、
+`flowchartTD` はヘッダーがなく、どちらも拒否します。
+[fixture: flowchart/db-style-empty-strings-one-space]
+[fixture: flowchart/db-style-two-spaces-before-style]
+[fixture: flowchart/lex-empty-string-splits-triple-colon]
+[fixture: flowchart/lex-triple-colon-after-id]
+[fixture: class/div-empty-description-block-between-direction-and-value]
+[fixture: class/lex-direction-two-spaces-before-value]
+[fixture: flowchart/header-empty-string-no-space]
+[fixture: flowchart/header-keyword-direction-glued]
+mermaid.js のテスト、文書、デモから集めた入力に、
+これらの形を持つものはありません。
+
+## mermaid.js がそう読む理由
+
+mermaid.js の字句解析器は、これらの形のどれにもトークンを読みません。
+flowchart では、空の文字列の引用符
+（[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L82-L87)）、
+空の呼び出しの `call` と括弧
+（[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L74-L79)）、
+空の説明ブロックの `accDescr {` と `}`
+（[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L35-L37)）
+を読み飛ばします。
+sequence と state は空の説明ブロックを同じように読み飛ばし
+（[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L76-L77)、
+[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L93-L95)）、
+class は 5 つの形すべてを読み飛ばします
+（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L34-L35)、
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L53-L62)、
+[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）。
+これらの規則はどれも、字句解析器の状態に入るか出るだけで何も返さないので、
+文法はその形を見ません。
+
+## この仕様の規則と、その理由
+
+この仕様では、これらの形はどれも、形が空でないときと同じ単位として読まれます。
+空の文字列は 2 つの引用符、空の呼び出しは `call` と括弧、
+空の説明ブロックは `accDescr`、`{`、`}` です。
+文法のどの規則もそれらの単位を取らないところでは、入力は拒否されます
+（[文字列](../diagrams/flowchart.ja.md#文字列)、
+[クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック)、
+[アクセシビリティの値](../diagrams/flowchart.ja.md#アクセシビリティの値)
+を参照）。
+[fixture: flowchart/tokens-empty-string-in-label]
+[fixture: flowchart/gram-empty-call-before-link]
+[fixture: flowchart/gram-empty-description-block-before-link]
+
+そのような形は、どの 2 つの単位の間にも置けます。
+id、ラベル、スタイルのような葉ノードの値の中にも、
+ノードのフィールドの間にもです。
+木には、そこにそれだけのノードの場所がなく、
+形を木から除けば、書き手が書いたテキストが失われます。
+これは既知の差異の 1 つ目の理由に当たります
+（[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
+mermaid.js がテキストを読まないことは、それだけでは拒否の理由になりません。
+木に場所があるところでは、形はノードになり、入力は受理されます。
+方向の文の周りで mermaid.js が捨てるテキストが
+[FlowchartIgnoredText](../ast/flowchart.ja.md#flowchartignoredtext)
+になるのと同じです。
+[fixture: flowchart/lex-direction-line-swallows-edge] [fixture:
+flowchart/lex-direction-line-text-after-value]
+
 この仕様は、木に場所のあるところでは、そのような形をノードにし、
 それ以外のところでは入力を拒否します。
 場所は次のとおりです。
 文が始まるところの空の説明ブロックは、sequence の箱の中でも、
 説明ブロックの文で、
-同じ行にほかの文が続いてもかまいません（例 5 と上の例）。
+同じ行にほかの文が続いてもかまいません（例 5）。
 文の最後の単位の後、区切りの前の空の説明ブロックも同じで、
 `A accDescr {}`、class の `note for A "x" accDescr {}`、
 sequence の `autonumber accDescr {}` がそうです。
@@ -235,7 +349,8 @@ flowchart では:
   その FlowchartVertexGroup と FlowchartLink の 2 つの単位の間:
   `A accDescr {}-->B`、`A-->accDescr {}B`、`A accDescr {}& B`、
   `A & accDescr {}B`、`A e1@accDescr {} --> B`、`A --> accDescr {}|t| B`、
-  `A -->|t| accDescr {}B`。
+  `A -->|t| accDescr {}B`、`A &accDescr {} B[y]`、
+  `A@{ label: x } &accDescr {} A[y]`。
   持つには、その隙間に欄が要る（理由 a）。
   [fixture: flowchart/gram-empty-description-block-before-link] [fixture:
   flowchart/div-empty-description-block-after-arrow-glued] [fixture:
@@ -244,6 +359,8 @@ flowchart では:
   flowchart/div-empty-description-block-after-edge-id] [fixture:
   flowchart/div-empty-description-block-before-link-label] [fixture:
   flowchart/div-empty-description-block-after-link-label]
+  [fixture: flowchart/div-ampersand-empty-block-then-vertex]
+  [fixture: flowchart/div-data-block-ampersand-empty-block-then-vertex]
 - FlowchartStyleStatement、FlowchartClassDefStatement、FlowchartClassStatement、
   FlowchartLinkStyleStatement の 2 つの単位の間:
   `style A accDescr {} fill:red`、`style A fill:red accDescr {},stroke:blue`、
@@ -394,27 +511,17 @@ state では、どれも文の 2 つの単位の間です:
 - `click A "u" accDescr {} "t"`: StateClickStatement の、ツールチップの前の欄。
   [fixture: state/div-empty-description-block-in-click-before-tooltip]
 
-文の最後の単位の後、区切りの前では、
+文の最後の単位の後、その区切りの前では、
 state の `click A "u" "t" accDescr {}` のように、ブロックは文です。
-これを、flowchart（その 3 分の 1）、class、sequence の
-受理される fixture のうち、
-コメント、ディレクティブ、フロントマターがなく、差の印がないものから、
-各行の終わりに `accDescr {}` を空白なしと空白ありで足した入力で確かめました。
-ブロックが文の後にあるもののうち、mermaid.js とこの仕様は、
-flowchart の 856 件（受理 770、拒否 86）、class の 638 件と sequence の 97 件
-（すべて受理）を同じに読み、
-受理されるものには、ブロックを除き、まわりの空白を残した入力の Db を与えます。
+受理される入力は、ブロックを除き、まわりの空白を残した同じ入力の Db を持ちます。
 その空白は効果を保つので、`subgraph S accDescr {}` の id は、
 名前の後に空白のある `subgraph S` と同じく `subGraph0` で、
 `subgraph S` の id は `S` です
 （[flowchart](../diagrams/flowchart.ja.md#文法の外での拒否) を参照）。
-flowchart の 86 件は、ブロックの前の空白のために拒否されます
-（[flowchart](../diagrams/flowchart.ja.md#区切りの前の空の説明ブロック)
-を参照）。
-sequence の 97 件のうち 59 件は、
-ブロックのない同じ行が、終わりに空白があるときには拒否されるのに、受理されます
-（[sequence](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック) を参照）。
-class の `direction accDescr {}`、改行、`LR` もその 1 つです。
+ブロックの前の空白が受理されるかは、図の文書が述べるとおり、文によります
+（[flowchart](../diagrams/flowchart.ja.md#区切りの前の空の説明ブロック) と
+[sequence](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック) を参照）。
+class の `direction accDescr {}`、改行、`LR` もそのような入力です。
 ブロックは、mermaid.js でも、2 つが方向の行になるのを妨げるので、
 それらはラベルのない 2 つのメンバーの文で、方向は `TB` のままです。
 [fixture: state/gram-click-empty-description-block-after] [fixture:
@@ -422,118 +529,16 @@ flowchart/gram-empty-description-block-after-data-block-space] [fixture:
 sequence/gram-empty-description-block-after-autonumber-spaces] [fixture:
 class/gram-empty-description-block-after-direction-word]
 
-ヘッダーの後、その区切りの前でも、ブロックは文です。
-これを、各図種の同じ種類の fixture のうち、
-ヘッダーの行が異なるものそれぞれと、さらに約 100 件から作った入力で、
-確かめました。
-ヘッダーの行の終わりに、次の 8 つの形の 1 つを足しました。
-前に空白のあるブロックとないブロック、空白 2 つの後のブロック、
-後に空白が 1 つか 2 つ続くブロック、間に空白のある 2 つのブロックとないもの、
-`;` が続くブロックです。
-mermaid.js とこの仕様はそのすべてを同じに読みます。
-flowchart と class で受理されるものは、ブロックのない入力の Db を持ちます。
-flowchart では、方向の後で 392 件が受理され、
-`;` のある 65 件と、ブロックが方向の語にすぐ続く 63 件は拒否され、
-方向のないヘッダーのキーワードの後では 16 件すべてが拒否されます。
-class では 670 件が受理され、
-`;` のある 111 件と、ブロックがキーワードにすぐ続く 109 件は拒否されます。
-ヘッダーの後に文が始まる sequence と state では、
-ブロックの前に空白のある入力はすべて受理され、両方で Db が同じです。
-flowchart のヘッダーの `;` の前のブロックは、
-さらに 1,440 件の入力で確かめました。
-2 つのヘッダーのキーワード、方向 `LR`、`>`、`^`、`<`、`v`、
-ブロックの前のなし、空白 1 つ、空白 2 つ、タブ、
-ブロック 1 つと、間に空白のあるものとないブロック 2 つ、
-その後のなし、空白、タブ、そしてその後の `;`、改行、テキストの終わりです。
-mermaid.js は、上の規則が受理するものだけをちょうど受理し、
-ブロックのない入力の Db を与えます。
+ヘッダーの後、その区切りの前でも、ブロックは文で、
+受理される入力は、ブロックのない同じ入力の Db を持ちます。
+ヘッダーの後でどこが受理されるかは、図の文書が述べるとおり、図種によります
+（[flowchart](../diagrams/flowchart.ja.md#区切りの前の空の説明ブロック)、
+[class](../diagrams/class.ja.md#区切りの前の空の説明ブロック)、
+[sequence](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック)、
+[state](../diagrams/state.ja.md#区切りの前の空の説明ブロック) を参照）。
 [fixture: flowchart/header-empty-description-block-after-direction] [fixture:
 flowchart/header-empty-description-block-before-semicolon] [fixture:
 flowchart/header-empty-description-block-no-direction] [fixture:
 class/header-empty-description-block] [fixture:
 sequence/header-empty-description-block] [fixture:
 state/header-empty-description-block]
-
-これらの形に見えるだけのテキストは、そのどれでもなく、どちらも同じに読みます。
-`A""-->B` の引用符は頂点 `A""` の文字で、
-`accTitle: ""` はタイトル `""` を持ち、
-`A[" "]` は空白 1 つの文字列を持ち、
-`A["call ()"]` はラベル `call ()` を持ちます。
-[fixture: flowchart/lex-empty-quotes-in-id] [fixture:
-flowchart/lex-acc-title-quotes]
-[fixture: flowchart/gram-label-space-string] [fixture:
-flowchart/gram-label-string-call-text]
-
-差は一方向だけです。
-mermaid.js が受理し、この仕様が拒否します。
-各図種の文書は、その例を既知の差の節に挙げています。
-[flowchart](../diagrams/flowchart.ja.md#既知の差)、
-[sequence](../diagrams/sequence.ja.md#既知の差)、
-[class](../diagrams/class.ja.md#既知の差)、
-[state](../diagrams/state.ja.md#既知の差) です。
-
-## mermaid.js がそう読む理由
-
-mermaid.js の字句解析器は、これらの形のどれにもトークンを読みません。
-flowchart では、空の文字列の引用符
-（[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L82-L87)）、
-空の呼び出しの `call` と括弧
-（[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L74-L79)）、
-空の説明ブロックの `accDescr {` と `}`
-（[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L35-L37)）
-を読み飛ばします。
-sequence と state は空の説明ブロックを同じように読み飛ばし
-（[`sequenceDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/parser/sequenceDiagram.jison#L76-L77)、
-[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L93-L95)）、
-class は 5 つの形すべてを読み飛ばします
-（[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L34-L35)、
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L53-L62)、
-[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）。
-これらの規則はどれも、字句解析器の状態に入るか出るだけで何も返さないので、
-文法はその形を見ません。
-
-## この仕様の規則と、その理由
-
-この仕様では、これらの形はどれも、形が空でないときと同じ単位として読まれます。
-空の文字列は 2 つの引用符、空の呼び出しは `call` と括弧、
-空の説明ブロックは `accDescr`、`{`、`}` です。
-文法のどの規則もそれらの単位を取らないところでは、入力は拒否されます
-（[文字列](../diagrams/flowchart.ja.md#文字列)、
-[クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック)、
-[アクセシビリティの値](../diagrams/flowchart.ja.md#アクセシビリティの値)
-を参照）。
-
-そのような形は、どの 2 つの単位の間にも置けます。
-id、ラベル、スタイルのような葉ノードの値の中にも、
-ノードのフィールドの間にもです。
-木には、そこにそれだけのノードの場所がなく、
-形を木から除けば、書き手が書いたテキストが失われます。
-これは既知の差の 1 つ目の理由に当たります
-（[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
-mermaid.js がテキストを読まないことは、それだけでは拒否の理由になりません。
-木に場所があるところでは、形はノードになり、入力は受理されます。
-方向の文の周りで mermaid.js が捨てるテキストが
-[FlowchartIgnoredText](../ast/flowchart.ja.md#flowchartignoredtext)
-になるのと同じです。
-[fixture: flowchart/lex-direction-line-swallows-edge] [fixture:
-flowchart/lex-direction-line-text-after-value]
-
-## 書き手にとっての結果
-
-書き手が空のものを表すつもりでこれらの形を書くと、
-mermaid.js もそれを拒否します。
-`A[""]`、`A("")`、`A-->|""|B`、`A -- "" --> B`、
-`click A href ""`、`subgraph ""`、`click A call ()` は、どちらも拒否します。
-[fixture: flowchart/gram-label-empty-string] [fixture:
-flowchart/gram-shape-round-empty-string] [fixture:
-flowchart/gram-link-text-empty-string] [fixture:
-flowchart/gram-link-text-dash-empty-string] [fixture:
-flowchart/gram-click-href-empty-string] [fixture:
-flowchart/gram-subgraph-name-empty-string-only] [fixture:
-flowchart/gram-click-empty-call-only]
-mermaid.js がそれらを受理するのは、ほかのテキストの隣で何も残さず、
-描かれるものを何も変えないところだけです。
-この道具はそのようなテキストを拒否し、その形を報告します。
-それを除けば、たいていはどちらも同じに読むテキストになります（下を参照）。
-mermaid.js のテスト、文書、デモから集めた入力に、
-これらの形を持つものはありません。

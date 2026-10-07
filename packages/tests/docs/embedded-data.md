@@ -20,8 +20,14 @@ the values from the fixture.
 Every accepted result in `expected.json` (and in `specified.json`, see
 [expected-results.md](./expected-results.md)) may have a field `embedded`:
 `{ config?, title?, dataBlockEffects? }`. A field is left out where the input
-gives no such value, and `embedded` where it gives none. Of the accepted
-fixtures, about 250 have it; the rest need nothing from embedded data.
+gives no such value, and `embedded` where it gives none. An accepted fixture has
+it where its input has a data block, a frontmatter `title`, or a frontmatter or
+directive that changes the configuration; the rest need nothing from embedded
+data. A specified reading has its own `embedded`: where mermaid.js rejects the
+input, the reading may carry the configuration that a directive sets, or the
+effects of the data blocks. [fixture:
+class/div-comment-then-directive-line-sets-config] [fixture:
+sequence/div-comment-after-number-with-data-block]
 
 - `title` and `dataBlockEffects` are the values below.
 - `config` is what the input changes in mermaid.js's configuration, not the
@@ -49,8 +55,6 @@ the whole configuration:
   rejects the text, since there is then no mermaid.js Db to compare with.
 - `runMermaidWithEmbeddedData(text, { config })` returns the outcome of
   `runMermaid()` and those values from a single run.
-- The mutation differential test passes the same values to the candidate as its
-  third argument (see [mutation-testing.md](./mutation-testing.md)).
 
 The generator records the fixtures' values from them, and `fixtures:check`
 compares the recorded values with mermaid.js.

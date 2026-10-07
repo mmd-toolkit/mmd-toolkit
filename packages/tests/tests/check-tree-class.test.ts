@@ -4,9 +4,11 @@ import {
   firstNode,
   firstTokenIn,
   problemsOf,
+  replaceToken,
   says,
   setField,
 } from "./check-tree-recorded.ts"
+import { nodesOf } from "../src/check-tree/walk.ts"
 
 // The checks of a class tree (ast/class.md): each case changes one thing of a
 // recorded tree so that it breaks the sentence of the document that the check
@@ -119,6 +121,65 @@ const CASES: readonly MutationCase[] = [
     fixture: "gram-member-statement",
     mutate: setFieldOf("ClassAttribute", "classifier", "static"),
     expected: "the classifier",
+  },
+  {
+    name: "a method without the visibility that its mark writes",
+    fixture: "db-method-visibility-classifier",
+    mutate: setFieldOf("ClassMethod", "visibility", "none"),
+    expected: 'ClassMethod at 23-27: the visibility: "none", not "public"',
+  },
+  {
+    name: "a method with a classifier that no mark writes",
+    fixture: "db-method-visibility-classifier",
+    mutate: setFieldOf("ClassMethod", "classifier", "static"),
+    expected: 'ClassMethod at 23-27: the classifier: "static", not "none"',
+  },
+  {
+    name: "a method without the classifier that its mark writes",
+    fixture: "db-method-visibility-classifier",
+    mutate: (root) => {
+      setField(
+        nodesOf(root).filter((node) => node.type === "ClassMethod")[1] ?? {},
+        "classifier",
+        "none",
+      )
+    },
+    expected: 'ClassMethod at 28-33: the classifier: "none", not "static"',
+  },
+  {
+    name: "a member that holds two classifier marks",
+    fixture: "db-method-visibility-classifier",
+    mutate: (root) => {
+      // The second method, `-b()$`, runs on to the end of the third,
+      // `#c(x)*`.
+      setField(
+        nodesOf(root).filter((node) => node.type === "ClassMethod")[1] ?? {},
+        "range",
+        [28, 40],
+      )
+    },
+    expected: "ClassMethod at 28-40: has more than one classifier mark",
+  },
+  // The text of an arrow is an arrow, in the tokens that its parts are.
+  {
+    name: "an arrow whose range holds the end marker alone",
+    fixture: "lex-aggregation-end",
+    mutate: (root) => {
+      setField(firstNode(root, "ClassArrow"), "range", [17, 18])
+    },
+    expected: 'ClassArrow at 17-18: the text "o" is no arrow',
+  },
+  {
+    name: "an arrow whose line is written as two tokens",
+    fixture: "lex-aggregation-end",
+    mutate: (root) => {
+      replaceToken(root, firstTokenIn(root, firstNode(root, "ClassArrow")), [
+        ["Punctuator", 0, 1],
+        ["Punctuator", 1, 2],
+      ])
+    },
+    expected:
+      'ClassArrow at 15-18: the tokens, which are the relation ends and the line, one token each: ["-","-","o"], not ["--","o"]',
   },
   // A direction statement and a link.
   {

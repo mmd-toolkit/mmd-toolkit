@@ -53,6 +53,13 @@
     },
     "classDefs": [],
     "subgraphs": [],
-    "tooltips": []
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "callback",
+        "args": null
+      }
+    ]
   }
 }

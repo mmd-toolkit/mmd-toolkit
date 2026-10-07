@@ -66,6 +66,36 @@ export function setField(target: object, field: string, value: unknown): void {
   Object.assign(target, { [field]: value })
 }
 
+/** A part of a token: its kind, and where it starts and ends, counted from the start of the token. */
+export type TokenPart = readonly [kind: string, from: number, to: number]
+
+/**
+ * Replaces `token` of `root`, which lies on one line, by the tokens of
+ * `parts`, with the value, the range, and the `loc` that their characters have.
+ */
+export function replaceToken(
+  root: CheckedRoot,
+  token: CheckedToken,
+  parts: readonly TokenPart[],
+): void {
+  const pieces = parts.map(([kind, from, to]): CheckedToken => {
+    const { start } = token.loc
+    return {
+      type: kind,
+      value: token.value.slice(from, to),
+      range: [token.range[0] + from, token.range[0] + to],
+      loc: {
+        start: { line: start.line, column: start.column + from },
+        end: { line: start.line, column: start.column + to },
+      },
+    }
+  })
+  const tokens = root.tokens.flatMap((candidate) =>
+    candidate === token ? pieces : [candidate],
+  )
+  Object.assign(root, { tokens })
+}
+
 /** Whether one of the problems says `message`, in its place and its message together. */
 export function says(
   problems: readonly TreeProblem[],

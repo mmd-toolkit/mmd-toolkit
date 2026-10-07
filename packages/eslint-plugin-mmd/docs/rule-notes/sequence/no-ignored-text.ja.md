@@ -2,7 +2,9 @@
 
 英語版: [no-ignored-text.md](./no-ignored-text.md)
 
-規則 [mmd/sequence/no-ignored-text](../../rules/sequence/no-ignored-text.ja.md) を実装するための覚え書き。
+規則
+[mmd/sequence/no-ignored-text](../../rules/sequence/no-ignored-text.ja.md)
+を実装するための覚え書き。
 
 この規則はまだ実装していない。
 ここには、実装するときに要ることを書く。

@@ -2,7 +2,9 @@
 
 英語版: [no-duplicate-title.md](./no-duplicate-title.md)
 
-規則 [mmd/class/no-duplicate-title](../../rules/class/no-duplicate-title.ja.md) を実装するための覚え書き。
+規則
+[mmd/class/no-duplicate-title](../../rules/class/no-duplicate-title.ja.md)
+を実装するための覚え書き。
 
 この規則はまだ実装していない。
 ここには、実装するときに要ることを書く。
@@ -21,3 +23,5 @@
 
 - `class/db-acc-title-replaces`
 - `class/db-acc-title-spaces`
+- `class/db-acc-title-line-empty-takes-next-lines`
+- `class/lex-acc-title-at-end`

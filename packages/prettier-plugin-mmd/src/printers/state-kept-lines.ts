@@ -1,6 +1,10 @@
 import type { StateStatement } from "@mmd-toolkit/parser"
 import type { KeptLines } from "./kept-lines.ts"
-import { findLinesWithOwnSemicolons, lineStartOf } from "./kept-lines.ts"
+import {
+  findLinesEndedBySemicolon,
+  findLinesWithOwnSemicolons,
+  lineStartOf,
+} from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import { findStructuralToken, isWhitespace } from "./source.ts"
 
@@ -41,7 +45,10 @@ export function findStateKeptLines(source: Source): KeptLines {
       ...findStateSemicolonLines(source),
       ...findStateContextLines(source, diagramOf(source).body),
     ]),
-    verbatim: findLineSeparatorLines(source),
+    verbatim: new Set([
+      ...findLineSeparatorLines(source),
+      ...findLinesEndedBySemicolon(source),
+    ]),
     writtenIndentation: findLinesStartingWithSeparator(source),
   }
   keptLinesBySource.set(source, kept)

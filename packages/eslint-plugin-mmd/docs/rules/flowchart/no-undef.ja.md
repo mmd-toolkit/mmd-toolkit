@@ -11,7 +11,8 @@
 <!-- end auto-generated rule notice -->
 
 `style`、`class`、`click` は、当てる頂点、リンク、subgraph を id で指す。
-その id が図のどれのものでもなくても、mermaid.js は何も言わない。
+その id が図のどの頂点、リンク、subgraph のものでもなくても、
+mermaid.js はエラーを出さない。
 `style` はその id の新しい箱を描き、`class` と `click` は何もしない。
 id を書き誤ると、意図した頂点はそのままになる。
 
@@ -19,7 +20,7 @@ id を書き誤ると、意図した頂点はそのままになる。
 
 この規則は、`style`、`class`、`click` の文の id のうち、
 図のどの頂点、subgraph、リンクの id でもないものを報告する。
-`flowchart-v2`、`flowchart-elk`、`swimlane` に当たる。
+対象の図種は `flowchart-v2`、`flowchart-elk`、`swimlane` である。
 
 `A --> B` の後の `style C fill:red` は、スタイル `fill:red` の頂点 `C` を足す。
 `class C foo` は、どの頂点にもクラス `foo` を付けず、
@@ -29,19 +30,24 @@ id を書き誤ると、意図した頂点はそのままになる。
 
 図の id は、頂点と subgraph の id と、
 `A e1@--> B` の `e1` のようにリンクに付けた id で、書いた場所を問わない。
-`style` の文は、指す頂点より前に書いても、その頂点に色を付ける。
-指す頂点より前に書いた `class` や `click` の文は、mermaid.js では何もしないが、
-正しく書いた図の id を指しているので、この規則は報告しない。
+`style` の文は、指す頂点より前に書いても、その頂点にスタイルを適用する。
+指す頂点より前に書いた `class` の文は、mermaid.js では何もしない。
+そこに書いた `click` の文は頂点をクリックできるようにしないが、
+ツールチップは効く。
+こうした文は正しく書いた図の id を指しているので、この規則は報告しない。
 
 `style` の文が足す頂点も図の頂点なので、
 ほかに何も定義していない id の `style` は、最初の 1 つだけを報告する。
 `style C fill:red` の後の 2 つ目の `style C stroke:blue` は、
 頂点 `C` にスタイルを足し、
-`class C foo` と `click C href "…"` はその頂点に当たる。
+`class C foo` と `click C href "…"` はその頂点に作用する。
 どれも報告しない。
 
 リンクの id を指す `style` も報告しない。
-`style` は頂点と subgraph に当たるものなので、mermaid.js はそれに何もしない。
+`style` は頂点と subgraph に作用するものである。
+リンクの後に書くと何もせず、
+`A e1@--> B` の前の `style e1 stroke:red` のようにリンクの前に書くと、
+まだ何も指していない id のときと同じく、そのスタイルの頂点 `e1` を足す。
 リンクには、`linkStyle` かクラスでスタイルを付ける。
 
 この規則に**反する**コードの例:

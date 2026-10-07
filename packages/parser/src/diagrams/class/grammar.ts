@@ -631,6 +631,12 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
     const start = this.next
     const from = this.parseClassName()
     const next = this.nameAt(this.next)
+    if (next === "empty-string" && !this.startsRelationAt(this.next + 1)) {
+      // Known divergences, tokenless-empty-forms: an empty string is a
+      // cardinality only where a relation follows it; elsewhere after a
+      // class name, it lies where the grammar takes no string.
+      throw this.unexpected(this.peek())
+    }
     if (
       next !== null &&
       (next === "string" ||
@@ -672,6 +678,12 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
       )
     }
     return label.label
+  }
+
+  /** Relations: whether the unit at `index` starts a `relation`, a relation end or a line. */
+  private startsRelationAt(index: number): boolean {
+    const name = this.nameAt(index)
+    return name !== null && (name in RELATION_ENDS || name in LINES)
   }
 
   /**

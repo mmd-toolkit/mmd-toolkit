@@ -4,6 +4,7 @@ import {
   recordDataBlockEffect,
   recordDataBlockProblem,
 } from "./data-blocks.ts"
+import { clickCallsField, recordClickCall } from "./click-calls.ts"
 import { omit, toJsonObject } from "./json.ts"
 
 /**
@@ -30,6 +31,12 @@ interface FlowDbLike {
  * Summarizes a flowchart Db (`flowchart-v2`, `flowchart-elk`, `swimlane`).
  *
  * Kept: everything the Db exposes through its getters, in declaration order.
+ *
+ * Added: `clickCalls`, the calls that bind a click callback, as the Db
+ * received them (see `src/normalizers/click-calls.ts`): `FlowDB` keeps the
+ * function name and arguments only inside closures, and only under
+ * `securityLevel: loose`.
+ *
  * Dropped:
  *
  * - `vertices[].domId`: a DOM id built from a counter of `addVertex` calls,
@@ -40,8 +47,6 @@ interface FlowDbLike {
  * - `vertices[].haveCallback`: set when a click binds a callback, but only
  *   under `securityLevel: loose`, a site setting. The click itself already
  *   shows as the class `clickable`.
- * - Click callbacks: `FlowDB` keeps the function name and arguments only inside
- *   closures, so they are not observable.
  * - Internal bookkeeping (`vertexCounter`, `subCount`, `posCrossRef`, ...).
  * - Whitespace at the end of each style value (`vertices[].styles`,
  *   `classDefs[].styles`, `edges[].style`, `edgeDefaults.style`). The grammar
@@ -97,6 +102,7 @@ export function normalizeFlowchart(dbValue: unknown): DbSummary {
     })),
     subgraphs: db.getSubGraphs().map(subgraphSummary),
     tooltips,
+    ...clickCallsField(db),
   }
 }
 
@@ -146,6 +152,10 @@ type AddVertex = (...args: unknown[]) => void
  * constructor binds `this.setLink` and `this.addVertex` from it, so every Db
  * created afterwards uses the patched methods.
  *
+ * Each call that binds a click callback is recorded (see
+ * `src/normalizers/click-calls.ts`): the Db keeps the function name and the
+ * arguments only in a closure, and only under `securityLevel: loose`.
+ *
  * Click link URLs are kept as written. `FlowDB.setLink` stores
  * `utils.formatUrl(linkStr, config)`, which trims the URL and, unless
  * `securityLevel` is `loose`, passes it through `@braintree/sanitize-url`
@@ -164,7 +174,11 @@ type AddVertex = (...args: unknown[]) => void
  * element the block applies to and what it sets come from the comparison.
  */
 export function patchFlowDb(prototype: object): void {
-  const target = prototype as { setLink?: unknown; addVertex?: unknown }
+  const target = prototype as {
+    setLink?: unknown
+    addVertex?: unknown
+    setClickFun?: unknown
+  }
   const originalSetLink = target.setLink
   if (typeof originalSetLink !== "function") {
     throw new TypeError("patchFlowDb: FlowDB has no setLink method")
@@ -172,6 +186,26 @@ export function patchFlowDb(prototype: object): void {
   const originalAddVertex = target.addVertex
   if (typeof originalAddVertex !== "function") {
     throw new TypeError("patchFlowDb: FlowDB has no addVertex method")
+  }
+  const originalSetClickFun = target.setClickFun
+  if (typeof originalSetClickFun !== "function") {
+    throw new TypeError("patchFlowDb: FlowDB has no setClickFun method")
+  }
+  target.setClickFun = function setClickFun(
+    this: object,
+    id: unknown,
+    functionName: unknown,
+    functionArgs: unknown,
+  ): void {
+    // The Db returns before it keeps the call unless `securityLevel` is
+    // `loose`, and keeps it in a closure; record it as it comes.
+    recordClickCall(this, id, functionName, functionArgs)
+    ;(originalSetClickFun as (...args: unknown[]) => void).call(
+      this,
+      id,
+      functionName,
+      functionArgs,
+    )
   }
   target.setLink = function setLink(
     this: { vertices: Map<string, { link?: string }> },

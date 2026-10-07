@@ -8,7 +8,9 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
-💡 この規則は、[エディタの提案](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)で手で直せる。
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
 
 <!-- end auto-generated rule notice -->
 
@@ -22,15 +24,21 @@ mermaid.js はどの `accDescr` の文も受理し、
 ## 規則の詳細
 
 この規則は、説明を設定する文のうち、最初のもの以外をすべて報告する。
-`flowchart-v2`、`flowchart-elk`、`swimlane` に当たる。
+対象の図種は `flowchart-v2`、`flowchart-elk`、`swimlane` である。
 
 `accDescr:` は説明を設定する。
-テキストがなくても説明を設定し、説明を空にする。
-説明を持つ閉じたブロックも説明を設定し、
-行とブロックは、どちらが先でも互いに置き換える。
+テキストがなくても説明を設定する。
+テキストの終わりでは説明を空にする。
+後にテキストがあれば、空行、コメント行、ディレクティブを飛ばして、
+テキストを持つ次の行を説明にする。
+説明を持つ閉じたブロックも説明を設定する。
+1 行の形とブロックの形を混ぜても、どちらが先でも、
+後に書いたほうの説明が使われる。
 subgraph の中の文も、図全体の説明を設定するので、数える。
+mermaid.js は、その文の値を id としてその subgraph のメンバーにも加えるので、
+その id の頂点や subgraph は、その subgraph に属する。
 
-説明を持たないブロックと閉じていないブロックは、数えない。
+説明を持たないブロックと、説明を空にする閉じていないブロックは、数えない。
 それらは、
 [no-empty-description-block](./no-empty-description-block.ja.md) と
 [no-unclosed-description-block](./no-unclosed-description-block.ja.md)
@@ -39,6 +47,12 @@ subgraph の中の文も、図全体の説明を設定するので、数える�
 報告ごとに、規則は 2 つの文のどちらかを消す書き換えを提案する。
 報告した文か、その前で説明を設定する文である。
 mermaid.js は、最後に残った説明を使う。
+subgraph の中の文を消すと、そのメンバーも消える。
+ただし、subgraph のほかの文が同じ id をメンバーにしていれば残る。
+文の後の `;` は、文を区切るものなら残す。
+`accDescr: style:#b;` や `accDescr { style:#b };` のように、仕様の
+[`style` 行と `classDef` 行](../../../../spec/docs/common.ja.md#style-行と-classdef-行)
+の決まりで mermaid.js が無視する `;` は、文と一緒に消す。
 
 この規則に**反する**コードの例:
 

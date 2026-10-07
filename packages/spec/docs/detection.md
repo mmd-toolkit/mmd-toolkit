@@ -161,11 +161,13 @@ common/detect-minimal-cynefin] [fixture: common/detect-minimal-usecase]
   `cynefin-beta`, and entry 39 does not accept `:` after `usecase-beta`.
   [fixture: common/detect-cynefin-colon] [fixture: common/detect-usecase-colon]
 - **Case.** Entries 30, 32–35, and 37 are case-insensitive: `ISHIKAWA` and
-  `IsHiKaWa` select ishikawa. Only ASCII letters change case, so U+212A in place
-  of `K` and U+017F in place of `s` are not detected. All other detectors are
-  exact: `sequencediagram` is not detected. Whether the diagram's own grammar
-  then accepts an upper-case keyword is up to that grammar and is described in
-  its document. [fixture: common/detect-case-insensitive-ishikawa] [fixture:
+  `IsHiKaWa` select ishikawa. They compare case-insensitively as defined in
+  [Notation](./common.md#notation), where a character outside ASCII whose
+  uppercase would be an ASCII letter keeps itself, so U+212A in place of `K` and
+  U+017F in place of `s` are not detected. All other detectors are exact:
+  `sequencediagram` is not detected. Whether the diagram's own grammar then
+  accepts an upper-case keyword is up to that grammar and is described in its
+  document. [fixture: common/detect-case-insensitive-ishikawa] [fixture:
   common/detect-case-mixed-ishikawa] [fixture: common/detect-case-kelvin-sign]
   [fixture: common/detect-case-long-s] [fixture:
   common/detect-case-sensitive-sequence]

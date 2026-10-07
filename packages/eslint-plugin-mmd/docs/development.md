@@ -27,28 +27,79 @@ parser from its build in `lib/`: rebuild it with
 
 ## The tests
 
-| File                              | What it checks                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tests/language.test.ts`          | A few inputs of each kind of the conformance corpus of `@mmd-toolkit/tests` (see `tests/corpus-kinds.ts` below), run through ESLint: a rejected input is reported at the place of the parser's error; for an accepted one, ESLint visits the nodes in the order of `traverseNodes`, and its lines, columns, and parents agree with the tree.                                                                                                                                                                                                                                                                                       |
-| `tests/snapshot.test.ts`          | Snapshots of where ESLint sees the nodes, tokens, and comments of some inputs of the corpus.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `tests/token-store.test.ts`       | The token methods of the source code, on a few inputs of each kind of the corpus that the parser accepts, against answers computed from the ranges of the tree: the tokens and comments inside, before, and after each node, and whether whitespace lies between two tokens.                                                                                                                                                                                                                                                                                                                                                       |
-| `tests/inline-config.test.ts`     | Snapshots of the comments that configure ESLint (`%% eslint-disable…`, `%% eslint <rule>: <config>`), with the inputs of `tests/fixtures/inline-config/`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `tests/markdown.test.ts`          | The `mermaid` and `mmd` code blocks of `tests/fixtures/markdown/`, linted through the processor of `@eslint/markdown`: the reports are at the places of the Markdown file.                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `tests/diagram-rules.test.ts`     | The rules of each diagram type, on a few inputs of the corpus for each type of diagram, whose diagram is of another type: they report nothing.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `tests/subgraph-ids.test.ts`      | `subgraphIdsOf` of `src/utils/subgraph-ids.ts`, the Db id of each subgraph derived from the tree, against the Db that mermaid.js gave for the corpus fixtures about subgraphs (every fixture whose Db has subgraphs).                                                                                                                                                                                                                                                                                                                                                                                                              |
-| `tests/rule-cases.test.ts`        | The examples of every rule document, as `tests/rule-cases.ts` reads them: each document has incorrect and correct examples, and the parser accepts each one.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `tests/rule-fixtures.test.ts`     | The fixture directories of the rules: each belongs to a rule, and each copy of a corpus input is the same as the corpus, byte for byte.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `tests/rules/<rule>.test.ts`      | Each implemented rule, through `testRule(name, rule)` of `tests/rule-test.ts`: eslint-snapshot-rule-tester on the cases that `ruleCases` of `tests/rule-cases.ts` gives, the examples of its English document (incorrect ones are invalid, correct ones valid) and the inputs of its fixture directory. For a rule that offers suggestions, each suggestion of each invalid case is applied too: the parser accepts the text that it gives, the rule reports less, no other implemented rule reports more, and mermaid.js reads the text as the suggestion claims. The snapshot of the tester shows each suggestion and that text. |
-| `tests/suggestion-claims.test.ts` | The claims of `testRule` fail on a wrong output of a suggestion: for each kind of claim that reads more than the Db shows, outputs that the message rules out.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| File                              | What it checks                            |
+| --------------------------------- | ----------------------------------------- |
+| `tests/language.test.ts`          | Language, through ESLint                  |
+| `tests/snapshot.test.ts`          | Where ESLint sees nodes, tokens, comments |
+| `tests/token-store.test.ts`       | Token methods of the source code          |
+| `tests/inline-config.test.ts`     | Comments that configure ESLint            |
+| `tests/markdown.test.ts`          | Code blocks in Markdown                   |
+| `tests/diagram-rules.test.ts`     | Rules on other diagram types              |
+| `tests/subgraph-ids.test.ts`      | Subgraph ids from the tree                |
+| `tests/text-nodes.test.ts`        | Text node types of the rules              |
+| `tests/rule-cases.test.ts`        | Examples of the rule documents            |
+| `tests/rule-fixtures.test.ts`     | Fixture directories of the rules          |
+| `tests/rules/<rule>.test.ts`      | Each implemented rule                     |
+| `tests/suggestion-claims.test.ts` | Claims of the suggestions                 |
+
+- `tests/language.test.ts`: The inputs of `tests/language-inputs.ts` (see
+  below), fixtures of the conformance corpus of `@mmd-toolkit/tests`, run
+  through ESLint: a rejected input is reported at the place of the parser's
+  error; for an accepted one, ESLint visits the nodes in the order of
+  `traverseNodes`, and its lines, columns, and parents agree with the tree.
+- `tests/snapshot.test.ts`: Snapshots of where ESLint sees the nodes, tokens,
+  and comments of some inputs of the corpus.
+- `tests/token-store.test.ts`: The token methods of the source code, on the
+  inputs of `tests/language-inputs.ts` that the parser accepts, against answers
+  computed from the ranges of the tree: the tokens and comments inside, before,
+  and after each node, and whether whitespace lies between two tokens.
+- `tests/inline-config.test.ts`: Snapshots of the comments that configure ESLint
+  (`%% eslint-disable…`, `%% eslint <rule>: <config>`), with the inputs of
+  `tests/fixtures/inline-config/`.
+- `tests/markdown.test.ts`: The `mermaid` and `mmd` code blocks of
+  `tests/fixtures/markdown/`, linted through the processor of
+  `@eslint/markdown`: the reports are at the places of the Markdown file.
+- `tests/diagram-rules.test.ts`: The rules of each diagram type, on the inputs
+  of `tests/language-inputs.ts` that the parser accepts, whose diagram is of
+  another type: they report nothing.
+- `tests/subgraph-ids.test.ts`: `subgraphIdsOf` of `src/utils/subgraph-ids.ts`,
+  the Db id of each subgraph derived from the tree, against the Db that
+  mermaid.js gave for the corpus fixtures about subgraphs (every fixture whose
+  Db has subgraphs).
+- `tests/text-nodes.test.ts`: `TEXT_NODE_TYPES` of `src/utils/text-nodes.ts`,
+  the node types whose text can hold a line of only `%%`. Every leaf node type
+  of the flowchart in the parser is in the list, an arrow, or without a text,
+  and the specification gives a text to the first two kinds and none to the
+  last.
+- `tests/rule-cases.test.ts`: The examples of every rule document, as
+  `tests/rule-cases.ts` reads them: each document has incorrect and correct
+  examples, and the parser accepts each one.
+- `tests/rule-fixtures.test.ts`: The fixture directories of the rules: each
+  belongs to a rule, and each copy of a corpus input is the same as the corpus,
+  byte for byte.
+- `tests/rules/<rule>.test.ts`: Each implemented rule, through
+  `testRule(name, rule)` of `tests/rule-test.ts`: eslint-snapshot-rule-tester on
+  the cases that `ruleCases` of `tests/rule-cases.ts` gives, the examples of its
+  English document (incorrect ones are invalid, correct ones valid) and the
+  inputs of its fixture directory. For a rule that offers suggestions, each
+  suggestion of each invalid case is applied too: the parser accepts the text
+  that it gives, the rule reports less, no other implemented rule reports more,
+  and mermaid.js reads the text as the suggestion claims. The snapshot of the
+  tester shows each suggestion and that text.
+- `tests/suggestion-claims.test.ts`: The claims of `testRule` fail on a wrong
+  output of a suggestion: for each kind of claim that reads more than the Db
+  shows, outputs that the message rules out.
 
 The tests of the language do not run on the whole corpus, which holds one input
 for each claim of the specification and is tested one by one by the parser and
-the corpus tests. `tests/corpus-kinds.ts` gives each input its kinds (its
-diagram type, whether the parser accepts it, its line terminators and byte order
-mark, and the kinds of the nodes, tokens, comments, and directives of its tree)
-and picks the three shortest inputs of each kind, one for each kind of node. A
-kind that the parser adds is picked up without a change. To gain assurance, add
-a kind that is missing; do not raise the count.
+the corpus tests. `tests/language-inputs.ts` lists the fixtures that they run
+on, each for one case that the language treats on its own: the diagram that the
+parser reads, a text that it rejects, the line terminators that the positions
+count, a byte order mark, frontmatter, and the parts of the text that are not
+nodes (a directive, a comment of each mark, a token that spans lines, an ignored
+`;`, a fragment of a string). The test checks that each fixture is a case of its
+kind. To cover another case, add the fixture with the case that it answers; do
+not add inputs of a case that is covered.
 
 Tests of rules use eslint-snapshot-rule-tester (see [Snapshots](#snapshots)).
 The tests of the language use it where a snapshot shows the result best.
@@ -176,6 +227,16 @@ change together when the rule is implemented:
 No one of them decides alone: `check:docs` fails when the facts of a rule
 disagree.
 
+A rule is in the `recommended` configuration when its reports are nearly always
+mistakes to fix: wherever it reports, mermaid.js reads the text differently from
+what the author meant, no way of writing that an author means is reported, and
+the fix is clear. A rule that relies on behavior of mermaid.js that a fix under
+way would change is left out of it. The index says only which rules the
+configuration enables, with the ✅ of its list.
+
+The document of a common rule has an item for each diagram type that the parser
+supports; the skill `eslint-plugin` sets the form of the item and the steps.
+
 The namespace is `mmd`, not a scoped name such as `@mmd-toolkit`: ESLint splits
 an id that starts with `@` into the plugin and the rule at its last `/`, so it
 would read `@mmd-toolkit/flowchart/no-ignored-text` as the rule
@@ -284,15 +345,19 @@ These choices hold for every rule, so that the rules read alike:
   directive or a token, is reported at its `loc`; a part of the value of a
   token, at a `loc` from `sourceCode.getLocFromIndex`. Something that runs to
   the end of the text, such as an unclosed block, is reported where it opens.
-- A rule has no options and no fix. It offers suggestions only as the rule-ideas
-  skill decides (`meta.hasSuggestions`), and each suggestion says how mermaid.js
-  reads the text after it is applied. The suggestions are built in functions of
-  their own, apart from `create`, which passes what they return to
-  `context.report`. A suggestion that removes a statement or a token removes the
-  range that `removalRange` of `src/utils/removal.ts` gives: the element, and
-  the whitespace or the line around it, so that no blank space is left. A `;`
-  after the element is never removed: it is the separator of the statement
-  before it, or an empty statement of its own, which is a member in a subgraph.
+- A rule has no fix. The document of a rule says whether it has options; the
+  rule-ideas skill decides whether a rule has an option. A rule offers
+  suggestions only as the rule-ideas skill decides (`meta.hasSuggestions`), and
+  each suggestion says how mermaid.js reads the text after it is applied. The
+  suggestions are built in functions of their own, apart from `create`, which
+  passes what they return to `context.report`. A suggestion that removes a
+  statement or a token removes the range that `removalRange` of
+  `src/utils/removal.ts` gives: the element, and the whitespace or the line
+  around it, so that no blank space is left. A `;` after the element is not
+  removed: it is the separator of the statement before it, or an empty statement
+  of its own, which is a member in a subgraph. The one exception is the `;` that
+  ends the text and that mermaid.js ignores: `oneOfTwoRemovals` removes it with
+  the statement that it follows.
 - The test of a rule is one call of `testRule(name, rule, options)`. The option
   `revealed` names the rules whose reports a suggestion may reveal: mistakes
   that the text already holds, which the rewrite makes visible. It is
@@ -304,15 +369,28 @@ These choices hold for every rule, so that the rules read alike:
   the same, only one field differs, a vertex is gone, the description is the
   rest of the line, the reported text is read as statements, and so on), and the
   test checks it by reading the text that the suggestion produces with
-  mermaid.js. A claim says all that the message says and the Db can show. What
-  the Db cannot show, such as the name of the function that `click` calls, is
-  named with the claim `notShownByDb`, for a message id in `claims` or for one
-  invalid case in the option `notShownByDb`; the test then checks only that
-  mermaid.js accepts the output. The text that a suggestion produces is a text
-  of the implementation, as the output of the formatter is, so it is not in the
-  corpus. The Db of the input is that of `expected.json` for a copy of a corpus
-  input, which the test requires to be the corpus input and to be read without a
-  configuration; mermaid.js gives it for any other input.
+  mermaid.js. A claim says all that the message says. The text that a suggestion
+  produces is a text of the implementation, as the output of the formatter is,
+  so it is not in the corpus. The Db of the input is that of `expected.json` for
+  a copy of a corpus input, which the test requires to be the corpus input and
+  to be read without a configuration; mermaid.js gives it for any other input.
+  The option `sentences` makes the test show which input is which case. For each
+  sentence of the English document of the rule that defines a behavior (a
+  condition to report, a condition not to report, a claim of the message or of a
+  suggestion), it gives a passage of the sentence, as the document writes it,
+  and the cases that the sentence distinguishes (`SentenceCases` in
+  `tests/rule-test.ts`). A case says in words what it is, whether the rule
+  reports on its inputs (`reports`), and the names of the inputs: the names of
+  the cases that `ruleCases` makes, such as `invalid/…`, `valid/…`, and
+  `docs/rules/… incorrect 1`. Where the case is about a suggestion, `suggests`
+  says whether the rule offers one, and `offers` which ones, by message id;
+  `messageHas` and `messageLacks` say what the messages contain. `written` holds
+  inputs with a character that a fixture file may not hold, such as a U+2028,
+  written with escapes; the test runs the checks of the reports and of the
+  suggestions on them. The test fails when a passage is not in the document,
+  when an input is not a case of the kind that the case says, or when the rule
+  does not do what the case says. Not every input of the rule is in a case; the
+  sentences are what the cases are for.
 
 ## Types for rules
 

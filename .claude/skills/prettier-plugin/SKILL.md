@@ -5,7 +5,7 @@ description:
   printers after mermaid.js is updated. Use when the parser supports a new
   diagram type and its formatting is to be decided and implemented, or when the
   pinned mermaid.js changes. It covers deciding the formatting choices, the
-  printer, the fixtures, the generated-input tests, and the documents.
+  printer, the fixtures, and the documents.
 ---
 
 # Adding the printer of a diagram type (prettier-plugin)
@@ -87,8 +87,8 @@ the printer, make the list of choices and ask for a decision.
    recommendation with its reason. Say which choices change the Db.
 3. For each choice, run the text before and after formatting through mermaid.js,
    and check that the Db does not change. Do not stop at one or two hand-written
-   examples; use the generated inputs of section 6 as well. Attach the results,
-   marked as checked by running.
+   examples: give each case that the choice distinguishes a fixture (section 6).
+   Attach the results, marked as checked by running.
 4. Show the list, ask for a decision, and implement the choices that are made.
 5. Write each decision into the rules document `docs/<diagram>.md` (English and
    Japanese) as a rule with its reason. Write what is kept as written because it
@@ -149,9 +149,9 @@ Steps when writing:
 
 1. For each decided item, write the rule so that the tree decides it. Do not lex
    the text of tokens again. Where a lexical fact that is not in the tree is
-   needed, find it with the generated tests of section 6, and make it an
-   explicit rule with a comment that points to the section of the specification
-   (section 5).
+   needed, find it in the lexical sections of the specification, give it a
+   fixture (section 6), and make it an explicit rule with a comment that points
+   to the section of the specification (section 5).
 2. Do not build a check that parses the formatted result again at run time and
    compares it. It only hides a missing rule; it is not a rule.
 3. Keep each decision in one place (for example, where a line starts and ends,
@@ -165,14 +165,14 @@ Steps when writing:
 
 ## 5. When a rule is added or changed
 
-When a missing rule is found after the decision, by the generated tests or
-otherwise, and a rule is added or changed, add the rule, its reason, and an
-example to that rule in `docs/<diagram>.md` (and to `docs/compatibility.md` when
-needed) in the same change. Show as the result: the wording of the rule, an
-input that shows it, mermaid.js's results before and after formatting, and the
-reason in the specification. A rule that changes a decided choice needs a
-decision before it is implemented; ask for it with that evidence. An
-implementation without the document leaves the decision and the code apart.
+When a missing rule is found after the decision, and a rule is added or changed,
+add the rule, its reason, and an example to that rule in `docs/<diagram>.md`
+(and to `docs/compatibility.md` when needed) in the same change. Show as the
+result: the wording of the rule, an input that shows it, mermaid.js's results
+before and after formatting, and the reason in the specification. A rule that
+changes a decided choice needs a decision before it is implemented; ask for it
+with that evidence. An implementation without the document leaves the decision
+and the code apart.
 
 Write a narrow exception (for example, no space before the closing `?]` or `=]`
 of a slanted shape) into the document in the same way.
@@ -186,18 +186,26 @@ built is in `docs/development.md`.
   `-output.mmd`, and `-options.json` when needed): one folder per rule. Write
   the outputs with `pnpm --filter prettier-plugin-mmd run test:update`, and read
   the diff to check that the formatting is the intended one.
-  `tests/format.test.ts` checks the outputs, idempotence, and that mermaid.js
-  reads the same Db. A text with invisible characters (U+2028, U+2029) is not a
-  fixture of this package: write it with escapes in test code, as
-  `tests/line-separators.test.ts` does, and check the bytes of the file after
-  writing it. Only the corpus in `packages/tests/fixtures/` holds such text.
-- How mermaid.js's reading is compared (`tests/mermaid-readings.ts`, used by the
-  fixture, corpus, and generated-input tests): as the specification reads the
-  text, with mermaid.js run without the known divergences that change the
-  reading (`withoutDivergences`, all of them in one run), and, where mermaid.js
-  as it is accepts the text before formatting, as mermaid.js reads it too: it
-  must accept the text after formatting with the same Db. When a diagram type
-  brings such a divergence, add it there.
+  `tests/format.test.ts` checks the outputs, idempotence, that the Db that the
+  tree denotes is the same, and that the embedded data is as written. A text
+  with invisible characters (U+2028, U+2029) is not a fixture of this package:
+  write it with escapes in test code, as `tests/line-separators.test.ts` does,
+  and check the bytes of the file after writing it. Only the corpus in
+  `packages/tests/fixtures/` holds such text.
+- How the Db is kept (`tests/db-reading.ts`, used by the fixture, corpus, and
+  line-separator tests): mermaid.js is not run. `dbOfText` builds the Db from
+  the tree of the text with `dbFromTree` of `@mmd-toolkit/tests`, with the
+  values that mermaid.js derives from the embedded data of the input: a corpus
+  fixture records them (`embeddedValuesOf`) and the Db of the input, which the
+  formatted text must have; another text has the defaults and is compared with
+  its own formatted text. Because the input's values are used,
+  `writtenEmbeddedTexts` (the directives and the data blocks as written) must be
+  the same before and after, and the frontmatter is as written or as Prettier's
+  YAML formatter prints it (`describeFrontmatterChange`). A text with a data
+  block has no Db without mermaid.js's effects, so only its written text is
+  checked. The node types of the data blocks are `DATA_BLOCK_NODE_TYPES` of
+  `@mmd-toolkit/tests`, which its own test keeps the same as the AST documents
+  of the specification.
 - Unit tests: dispatch, failures, and Markdown code blocks
   (`tests/dispatch.test.ts`, `failure.test.ts`, `markdown.test.ts`,
   `markdown-flowchart.test.ts`). For a new diagram type, add an example that is
@@ -205,34 +213,21 @@ built is in `docs/development.md`.
 - The corpus: `tests/corpus.test.ts` checks idempotence and the Db on every
   fixture of the diagram type in `@mmd-toolkit/tests` that the plugin formats.
   Add the diagram type to what it loads.
-- Generated-input tests (`tests/generated.ts`, `tests/boundaries-*`,
-  `statement-endings-*`, `forms-*`, `separators`, `line-shapes`, `mutation`):
-  hand-written examples and the corpus alone miss whole families of missing
-  rules. The inputs are chosen by kind, so that no kind is tried by chance, and
-  are the same on every run; there is one size, the regular run. The kinds of
-  boundaries are defined by `findBoundaries` and `selectByKey` of
-  `@mmd-toolkit/tests` (`tests/boundary-kinds.ts` only builds the key of these
-  tests).
-  - boundaries: a boundary of a fixture has a kind, the element before it, its
-    place in the line, and the element after it (at the end of a line, also the
-    statement keyword); every kind is tried with every family of text (a
-    directive, two, a line break, a comment, a U+2028 or U+2029, a directive
-    that is not closed), and the places at the end of a line, of the text, and
-    of a comment with sequences of pieces (`pieces.ts`)
-  - statements (`statement-endings.ts`): a statement of every node type of the
-    parser, taken from the fixtures, with sequences of the same pieces at the
-    end of its first line
-  - forms (`forms-*`): the axes of a form (names, arrows, whitespace, labels)
-    combined so that every pair of values of two axes stands together
-    (`pairwise.ts`); the failures that stand in three axes or more are in the
-    sequences of pieces and in the regression collection
-  - `;` and line shapes (`separators`, `line-shapes`), mutants (`mutation`)
-  - the regression collection (`tests/regression/*.json`) holds the inputs of
-    failures that were fixed, which are formatted on every run
-  - Each test records its counts as an annotation with `describeReport`. To find
-    out whether the generation finds a failure that was fixed, put the fix back
-    in a copy of `src` (in the scratchpad), run the new tests against it, and
-    check that one of them fails.
+- The inputs of failures that were found and fixed are fixtures of the corpus,
+  which the corpus test formats on every run (formatting does not throw, is
+  idempotent, and keeps the Db and the embedded data). A failure that is fixed
+  is guarded by its fixture; the fixtures of the corpus are made in
+  `@mmd-toolkit/tests`.
+- Fixtures answer sentences. Every sentence of the rules documents
+  (`docs/<diagram>.md`, `docs/compatibility.md`) that defines a behavior has a
+  formatting fixture for each case it distinguishes, and for each other rule
+  that meets it at the place it names: a directive, an ignored `;`, a comment
+  line, an empty line, a line separator (U+2028, U+2029), an empty description
+  block, and whatever else the sentence's own words name. The fixtures are
+  written with the sentence and checked against mermaid.js once. A failure found
+  anywhere is closed by a fixture and by the sentence that was missing. No test
+  and no command generates inputs, and no input is chosen by a random source or
+  by a number (a seed, a count).
 - The document test (`tests/docs.test.ts`): the headings of each rules document
   match the fixture folders of its diagram type, and its example code blocks
   match the fixture files. Add a new rules document to `ruleDocuments` there.
@@ -251,34 +246,26 @@ Running tests; this is what belongs to this package):
     `source.ts`, `kept-lines.ts`): the tests of every diagram type, that is, the
     whole package.
   - `flowchart*.ts`: `format`, `corpus` with `-t flowchart`; and, without `-t`,
-    `boundaries-flowchart`, `statement-endings-flowchart`, `forms-flowchart`,
-    `separators`, `line-shapes`, `mutation`, `regression`, `markdown-flowchart`,
-    and `value-nodes`.
+    `markdown-flowchart` and `value-nodes`.
   - `sequence*.ts`: `format` and `corpus` with `-t sequence`; and, without `-t`,
-    `boundaries-sequence`, `statement-endings-sequence`, `forms-sequence`,
-    `sequence-newline-units`, `separators`, `line-shapes`, `mutation`,
-    `regression`, `line-separators`, `sequence-layout`, `markdown-sequence`, and
+    `line-separators`, `sequence-layout`, `markdown-sequence`, and
     `value-nodes`.
   - `class*.ts`: `format` and `corpus` with `-t class`; and, without `-t`,
-    `boundaries-class`, `statement-endings-class`, `forms-class`, `line-shapes`,
-    `mutation`, `regression`, `markdown-class`, and `value-nodes`.
+    `markdown-class` and `value-nodes`.
   - `state*.ts`: `format` and `corpus` with `-t state`; and, without `-t`,
-    `boundaries-state`, `statement-endings-state`, `forms-state`, `line-shapes`,
-    `mutation`, `regression`, `line-separators`, `markdown-state`, and
-    `value-nodes`.
+    `line-separators`, `markdown-state`, and `value-nodes`.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:
     `dispatch`, `failure`, `markdown`, `plugin`, and the files of each diagram
     type.
-  - `tests/mermaid-readings.ts`, `tests/generated.ts`, `tests/pieces.ts`,
-    `tests/pairwise.ts`, `tests/checked-groups.ts`: every test that imports
-    them.
+  - `tests/db-reading.ts`, `tests/helpers.ts`: every test that imports them.
 
 - The test that reads documents: `tests/docs.test.ts` reads the rules documents
   (`docs/<diagram>.md`, English and Japanese), the READMEs, and the fixture
   folders. Run it after a change to any of them, also a change to documents
   only. No other test reads a document.
-- The default run is `pnpm vitest run --project prettier-plugin-mmd`. It is the
-  only size. Run it once before reporting the work as done.
+- The default run is `pnpm vitest run --project prettier-plugin-mmd`: the
+  fixtures, the corpus, and the unit tests. Run it once before reporting the
+  work as done.
 
 When the working tree or the machine is shared with other work:
 
@@ -314,20 +301,19 @@ When the working tree or the machine is shared with other work:
 
 ## 8. Checks and output
 
-- The default-size run of the package passes once before the report, with
-  `npx tsc --noEmit` (at the root), `npx eslint` on this package, and the
-  document checks above.
+- The run of the package passes once before the report, with `npx tsc --noEmit`
+  (at the root), `npx eslint` on this package, and the document checks above.
 - Say what was run and what was not.
 - Show as the result, for each item of the decision or each finding: the files
   changed and how, the results on the reproducing inputs (acceptance kept, the
-  same Db, idempotence, no exceptions), and the counts of the generated tests
-  (inputs made and inputs checked). For each claim, say whether it was checked
-  by running (【実行】) or by reading (【読解】).
+  same Db, idempotence, no exceptions), and the fixtures added. For each claim,
+  say whether it was checked by running (【実行】) or by reading (【読解】).
 
 ## 9. Pitfalls (as steps)
 
-- Checking with hand-written examples misses whole families. Check with
-  generated inputs, list the kinds of inputs found, then fix the rule.
+- Checking with one or two hand-written examples misses cases. List the cases
+  that the sentence of the rule distinguishes and the rules that meet it, give
+  each a fixture, then fix the rule.
 - Whitespace outside the ranges of the tree can affect the Db. In flowchart: a
   style that is all whitespace at the end of a list of styles (it lies outside
   the range), the whitespace after a subgraph name (the id changes), the
@@ -392,6 +378,6 @@ When the working tree or the machine is shared with other work:
 ## 11. Jison diagrams and Langium diagrams
 
 - Jison diagrams (such as flowchart): as above. The lexical rules are in the
-  specification's lexical sections, and the generated tests often find lexical
-  facts that the tree does not show.
+  specification's lexical sections, which hold the lexical facts that the tree
+  does not show.
 - Langium diagrams (such as pie): to be written with pie.

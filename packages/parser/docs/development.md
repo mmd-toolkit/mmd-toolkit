@@ -52,8 +52,8 @@ The parser of each diagram follows its document,
   `src/diagrams/<diagram>/units.ts`;
 - a recursive-descent parser over the units, under
   `src/diagrams/<diagram>/grammar.ts`;
-- the tokens of the diagram's tree document, such as
-  [`ast/flowchart.md`](../../spec/docs/ast/flowchart.md), recorded from the
+- the tokens that the diagram's token document, such as
+  [`tokens/flowchart.md`](./tokens/flowchart.md), defines, recorded from the
   units.
 
 What every diagram's lexer and parser do in the same way is in one place each: a
@@ -78,8 +78,8 @@ a member statement, and rejects a method line that cannot be divided.
 
 The Db id of a flowchart subgraph is made in one place,
 `src/diagrams/flowchart/subgraph-ids.ts`, from the units: the range of its name
-text and the rule of
-[Subgraphs](../../tests/docs/db-from-tree/flowchart.md#building-the-summary-from-the-tree).
+text and the rule of the id of a subgraph in
+[Rejections outside the grammar](../../spec/docs/diagrams/flowchart.md#rejections-outside-the-grammar).
 The grammar reads it for the members of a subgraph, for the rejections that
 mermaid.js makes while it builds the Db.
 
@@ -89,7 +89,7 @@ directives and at the `;` that the line rule ignores when they are recorded
 and
 [`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)),
 and at the comment regions that the units read through
-([`ast.md`, Comment](./tokens.md#comment)), whose directives before the
+([`tokens.md`, Comment](./tokens.md#comment)), whose directives before the
 comment's `%%` are then outside every token; the pieces of a `String` token are
 `StringFragment` tokens. Only a `RawText` token and a `String` token may be cut:
 a directive or an ignored `;` inside a token of another kind makes the input
@@ -106,15 +106,6 @@ published. The scripts of `package.json` run them with
 `node --conditions=source`, so that `@mmd-toolkit/tests` is read from its
 source, as the tests read it. Run them in `packages/parser`:
 
-- `pnpm run compare-with-mermaid <file>`: `<file>` is a JSON array of input
-  strings. For each input, it prints the input and whether `parse()` and the
-  pinned mermaid.js agree: `same: accepted, same Db`, `same: rejected`, or
-  `DIFF:` with the two acceptances or the two Db summaries. It prints
-  `BUG or broken tree:` when `parse()` throws something other than a
-  `ParseError` or the tree check of `@mmd-toolkit/tests` (`checkTree`) lists a
-  condition that the tree breaks. The Db summary of the tree is built as
-  `@mmd-toolkit/tests` builds it from a recorded tree (`dbFromTree`), so an
-  input of a known divergence prints `DIFF`.
 - `pnpm run show-trees <diagram> <fixture>...`: prints the input and the tree of
   each fixture's `ast.json`, one node per line, indented under its parent. A
   line has the node's plain fields, such as a direction or the markers of an
@@ -129,7 +120,3 @@ source, as the tests read it. Run them in `packages/parser`:
   rejected now. It then prints how many fixtures have each kind of difference:
   the same field of the same node type, or of the error, with the list indexes
   left out. Each difference follows, with the value before and after.
-
-`tools/explore/` holds the explorations, which generate inputs and compare them
-with the pinned mermaid.js, apart from the tests: `pnpm run explore` runs them
-(see [`testing.md`](./testing.md#explorations-against-mermaidjs)).

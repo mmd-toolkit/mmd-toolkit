@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accDescr block that is not closed ends at the first `}`, also when it comes lines later: the description is `x`, a line feed, `B{`, a line feed, and `y`; the only vertex is C."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x\nB{\ny",
+    "vertices": [
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

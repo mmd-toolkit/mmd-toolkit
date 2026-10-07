@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The next line is part of the box text, which holds a U+2028 and so has no name and the fill `transparent`, and there is no participant A."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [
+      {
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": []
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

@@ -17,10 +17,10 @@ import {
   tokenOf,
 } from "./check-tree-trees.ts"
 
-// The comments of a tree: where each ends, and its mark (ast.md, Comment, and
-// common.md, Comment lines). The trees are made by hand: the comments are
-// given by their ranges, and every other run of characters that are not
-// whitespace is a token.
+// The comments of a tree: where each ends, and its mark (parser/docs/tokens.md,
+// Comment, and common.md, Comment lines). The trees are made by hand: the
+// comments are given by their ranges, and every other run of characters that
+// are not whitespace is a token.
 
 /**
  * The problems of the conditions of every tree (positions.md, Invariants): the
@@ -379,5 +379,158 @@ describe("checkTree: the mark of a comment", () => {
       { mark: "%%", range: [source.indexOf("%% end"), source.length - 1] },
     ])
     expect(checkTree(source, root)).toEqual([])
+  })
+})
+
+describe("checkTree: the text and the mark of a diagram comment", () => {
+  it("fails a diagram comment whose value is not the text after its mark", () => {
+    const source = "sequenceDiagram\nA->>B: x #c\n"
+    const at = source.indexOf("#c")
+    const root = treeWith(source, "SequenceDiagram", [
+      { mark: "#", range: [at, at + 2], value: "cc" },
+    ])
+    expect(
+      says(
+        checkTree(source, root),
+        `Comment at ${at}-${at + 2}: value of a diagram comment: "cc", not "c"`,
+      ),
+    ).toBe(true)
+  })
+
+  it("fails a sequence comment whose mark is not the one that the text writes", () => {
+    // `%%` written and `%` recorded, and the reverse: the mark is the first
+    // `%` or the two of `%%`.
+    const long = "sequenceDiagram\nA->>B: x %% c\n"
+    const longAt = long.indexOf("%%")
+    expect(
+      says(
+        checkTree(
+          long,
+          treeWith(long, "SequenceDiagram", [
+            { mark: "%", range: [longAt, longAt + 4] },
+          ]),
+        ),
+        `Comment at ${longAt}-${longAt + 4}: mark: "%", not "%%"`,
+      ),
+    ).toBe(true)
+    const short = "sequenceDiagram\nA->>B: x % c\n"
+    const shortAt = short.indexOf("%")
+    expect(
+      says(
+        checkTree(
+          short,
+          treeWith(short, "SequenceDiagram", [
+            { mark: "%%", range: [shortAt, shortAt + 3] },
+          ]),
+        ),
+        `Comment at ${shortAt}-${shortAt + 3}: mark: "%%", not "%"`,
+      ),
+    ).toBe(true)
+  })
+
+  it("fails a mark that a flowchart or a class diagram does not have", () => {
+    // A flowchart has comment lines only, so a `%%` after a statement is no
+    // comment of it; a class diagram has `%%` and not `#`.
+    const flowchart = "flowchart LR\nA --> B %% c\n"
+    const flowchartAt = flowchart.indexOf("%%")
+    expect(
+      says(
+        checkTree(
+          flowchart,
+          treeWith(flowchart, "FlowchartDiagram", [
+            { mark: "%%", range: [flowchartAt, flowchartAt + 4] },
+          ]),
+        ),
+        `Comment at ${flowchartAt}-${flowchartAt + 4}: the mark %% is no mark of the comments of a FlowchartDiagram`,
+      ),
+    ).toBe(true)
+    const classDiagram = "classDiagram\nclass A #c\n"
+    const classAt = classDiagram.indexOf("#c")
+    expect(
+      says(
+        checkTree(
+          classDiagram,
+          treeWith(classDiagram, "ClassDiagram", [
+            { mark: "#", range: [classAt, classAt + 2] },
+          ]),
+        ),
+        `Comment at ${classAt}-${classAt + 2}: the mark # is no mark of the comments of a ClassDiagram`,
+      ),
+    ).toBe(true)
+  })
+
+  it("fails a fragment that starts with whitespace or has the wrong value", () => {
+    const cut = "stateDiagram-v2\nA %% x\u2029%% end\nB\n"
+    const x = cut.indexOf("%% x")
+    const end = cut.indexOf("%% end")
+    const b = cut.indexOf("B\n")
+
+    /** The tree whose fragment after the comment lines is given by `fragment`. */
+    function withFragment(fragment: Partial<CommentSpec>): CheckedRoot {
+      return treeWith(cut, "StateDiagram", [
+        { mark: "%%", range: [x, x + 4] },
+        { mark: "%%", range: [end, end + 6] },
+        { mark: null, range: [b, b + 1], ...fragment },
+      ])
+    }
+
+    expect(checkTree(cut, withFragment({}))).toEqual([])
+    expect(
+      says(
+        checkTree(cut, withFragment({ range: [b - 1, b + 1] })),
+        `Comment at ${b - 1}-${b + 1}: starts with whitespace`,
+      ),
+    ).toBe(true)
+    expect(
+      says(
+        checkTree(cut, withFragment({ value: "b" })),
+        `Comment at ${b}-${b + 1}: value of a fragment: "b", not "B"`,
+      ),
+    ).toBe(true)
+  })
+})
+
+describe("checkTree: where a diagram comment ends, further", () => {
+  it("fails a comment that ends after the directive that takes the rest of the text", () => {
+    // The directive is not closed, so it takes the rest of the text, and the
+    // comment that holds it ends where it does: before the whitespace that
+    // follows.
+    const source = "sequenceDiagram\nA->>B: x #c %%{init: {} \n \n"
+    const at = source.indexOf("#c")
+    const directive = directiveOf(source, { text: "%%{init: {}" })
+
+    /** The tree whose comment ends at `end`. */
+    function withEnd(end: number): CheckedRoot {
+      return treeWith(
+        source,
+        "SequenceDiagram",
+        [{ mark: "#", range: [at, end] }],
+        [directive],
+      )
+    }
+
+    expect(checkTree(source, withEnd(directive.range[1]))).toEqual([])
+    expect(
+      says(
+        checkTree(source, withEnd(directive.range[1] + 1)),
+        `Comment at ${at}-${directive.range[1] + 1}: does not end where the directive that takes the rest of the text ends`,
+      ),
+    ).toBe(true)
+  })
+
+  it("fails a comment that ends before a `;` that the line rule ignores when no token holds the `;`", () => {
+    // The comment ends where the `;` starts, but the `;` has no
+    // `IgnoredSemicolon` token, so it is not what ends the line.
+    const source = "sequenceDiagram\nA->>B: x #style:#x;\n"
+    const at = source.indexOf("#style")
+    const root = treeWith(source, "SequenceDiagram", [
+      { mark: "#", range: [at, source.indexOf(";")] },
+    ])
+    expect(
+      says(
+        checkTree(source, root),
+        `Comment at ${at}-${source.indexOf(";")}: does not end where its line ends`,
+      ),
+    ).toBe(true)
   })
 })

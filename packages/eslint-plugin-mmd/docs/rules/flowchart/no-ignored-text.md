@@ -36,28 +36,38 @@ A line becomes a direction statement also when it is not meant as one. When
 the line is a direction statement and makes no vertex and no link. The rule
 reports that too.
 
-Text after the direction value is not reported when nothing but `;` and
-whitespace stands before its first `%%`, or in all of it when it has no `%%`, as
-in `direction TB %% vertical`, `direction TB; %% vertical`, and `direction TB;`.
-The author means the text from the `%%` on as a comment, and a `;` only ends the
-statement, so mermaid.js, which drops the text, drops nothing that the author
-meant. Other text before the `%%` is reported: in `direction TB; x %% c`, the
-`x` is dropped.
+Two kinds of text after the direction value are not reported:
+
+- Text of only `;` and whitespace, as in `direction TB;`. A `;` only ends the
+  statement.
+- Text in which only `;` and whitespace come before `%%`, as in
+  `direction TB %% vertical` and `direction TB; %% vertical`. The author means
+  the text from the `%%` to the end of the line as a comment.
+
+mermaid.js drops both, but neither holds anything that the author meant to be
+read as a statement. Other text before the `%%` is reported: in
+`direction TB; x %% c`, the `x`, meant as a statement, is dropped.
 
 When a `;` separates every reported text on the line from the direction, as in
 `A-->B; direction TB`, the rule suggests splitting the line there: the
 whitespace after each such `;` becomes a line break and the indentation of the
-line, and the `;` stays, as if the author had broken the line after it. Where
-the `;` would then be no separator but part of a text, as after
-`accTitle: What to buy`, whose text runs to the end of the line, or after the
-direction value, where the rest of the line is dropped, the `;` is removed with
-the whitespace. mermaid.js then reads that text as statements, and the direction
-as a direction statement. The rule suggests it only when the text so split is
-read as statements and nothing on the line is dropped any more. Otherwise the
-rule suggests nothing: without a `;`, it is not clear that the text was meant as
-statements, and inside a label, as in `A[Set direction LR]-->B`, a line break
-would change the label. Once split, the text is read as statements, and other
-rules may report what it holds, such as a second `accTitle`.
+line, and the `;` stays, as if the author had broken the line after it. The line
+break is of the kind that the text uses there: the one that ends the line, or,
+on a last line without one, the one that ends the line before it. Where a kept
+`;` would then not end the statement before it, the rule removes all the `;`s on
+the line with the whitespace instead: after `accTitle: What to buy`, whose text
+runs to the end of the line, the `;` would be part of the text; after the
+direction value, the rest of the line is dropped; and after a description block,
+as in `accDescr { x }; direction TB`, a `;` alone is a statement of its own,
+which inside a subgraph makes a member `;`. mermaid.js then reads that text as
+statements, and the direction as a direction statement. The rule suggests it
+only when the result is read so, the split text as statements and the direction
+as a direction statement, and the rule reports no text on the line any more.
+Otherwise the rule suggests nothing: without a `;`, it is not clear that the
+text was meant as statements, and inside a label, as in
+`A[Set direction LR]-->B`, a line break would change the label. Once split, the
+text is read as statements, and other rules may report what it holds, such as a
+second `accTitle`.
 
 Examples of **incorrect** code for this rule:
 

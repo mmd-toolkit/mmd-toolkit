@@ -4,7 +4,7 @@
 
 図種: class。
 これは、この仕様の mermaid.js との
-[既知の差](../known-divergences.ja.md) の 1 つです。
+[既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 構文
 
@@ -23,9 +23,12 @@ classDiagram
 `classDiagramX`、`classDiagram2`、`classDiagramclassDiagram`
 で始まるテキストは、
 class 図として検出されますが、ヘッダーを持ちません。
+[fixture: class/header-word-after-keyword]
+[fixture: class/header-digit-after-keyword]
+[fixture: class/header-keyword-twice]
 この文書は、そのようなテキストが空の値で終わるときについてのものです。
 
-## 差
+## 差異
 
 どの例も、テキストの全体です。
 
@@ -99,7 +102,22 @@ class/div-headerless-empty-call] [fixture: class/div-headerless-empty-string]
 正しいヘッダーの後の同じ終わりは、どちらも拒否します。
 この仕様は、ヘッダーのないテキストをすべて拒否します。
 [fixture: class/div-headerless-empty-title] [fixture:
-class/header-word-after-keyword-title] [fixture: class/lex-acc-title-at-end]
+class/header-word-after-keyword-title]
+[fixture: class/div-headerless-empty-description-block]
+[fixture: class/div-headerless-link-string-opened]
+[fixture: class/div-headerless-click-string-opened]
+[fixture: class/lex-acc-title-at-end]
+
+## 書き手にとっての結果
+
+`classDiagramX` のように、ヘッダーを打ち間違えた class 図は、
+mmd-toolkit のパーサーでは拒否され、ヘッダーがないと報告されます。
+mermaid.js もそれを拒否しますが、
+テキストが上の空の形のどれかで終わるときは別です。
+その形は、それ自体が書きかけの文で、
+そのとき mermaid.js は警告を出さずに図を描きます。
+ヘッダーを正しく書けば、どちらも同じに読みます。
+終わりに空の形があれば、そのときはどちらも拒否します。
 
 ## mermaid.js がそう読む理由
 
@@ -118,11 +136,11 @@ mermaid.js の文法には 2 つの開始があります
 （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L209-L209)）、
 2 つ目の開始がテキストの全体を取ることはありません。
 例外が 1 つあります。
-字句解析器のいくつかの規則は、空のテキストに当たれます。
+字句解析器のいくつかの規則は、空文字列にもマッチします。
 `accTitle:` と `accDescr:` の値、`accDescr {` の値、`call` の後の名前、
 文字列の中身です
 （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L30-L61)）。
-そのどれかがテキストの終わりで空のテキストに当たると、
+そのどれかがテキストの終わりで空文字列にマッチすると、
 字句解析器はすでに終わりに着いた印を付けていて、
 `EOF` のトークンの代わりに入力の終わりを知らせます。
 するとヘッダーのある開始は来ないトークンを待って、テキストを拒否し、
@@ -136,21 +154,10 @@ mermaid.js の文法には 2 つの開始があります
 （[検出](../diagrams/class.ja.md#検出) を参照）、
 それのないテキストは、どう終わっても拒否されます。
 
-mermaid.js が、最後の規則が空のテキストに当たったときだけ、
+mermaid.js が、最後の規則が空文字列にマッチしたときだけ、
 ヘッダーのないテキストを受理することは、その字句解析器の処理の順から生じます。
 `EOF` のトークンを知らせるかどうかは、
 終わりに着いた印をいつ付けるかで決まります。
 仕様が構文の規則として述べるものではありません。
-これは既知の差の 2 つ目の理由に当たります
+これは既知の差異の 2 つ目の理由に当たります
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
-
-## 書き手にとっての結果
-
-`classDiagramX` のように、ヘッダーを打ち間違えた class 図は、
-この道具では拒否され、ヘッダーがないと報告されます。
-mermaid.js もそれを拒否しますが、
-テキストが上の空の形のどれかで終わるときは別です。
-その形は、それ自体が書きかけの文で、
-そのとき mermaid.js は何も言わずに図を描きます。
-ヘッダーを正しく書けば、どちらも同じに読みます。
-終わりに空の形があれば、そのときはどちらも拒否します。

@@ -5,7 +5,9 @@
 この文書は、固定した mermaid.js が、
 フロントマターとディレクティブから設定を作る手順を述べます。
 それに依る Db の値を確かめるためのものです。
-フロントマターとディレクティブの構文は、仕様の [`common.ja.md`](../../spec/docs/common.ja.md) が定めます。
+フロントマターとディレクティブの構文は、仕様の
+[`common.ja.md`](../../spec/docs/common.ja.md)
+が定めます。
 
 ## 設定（参考）
 
@@ -13,7 +15,9 @@
 入力が受理されるかどうかや、その木がどうなるかの判定には関わりません。
 この仕様の実装は、
 フロントマターの本文とディレクティブの引数を書かれたとおりに保持し、
-解析も検査もしません（[`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.ja.md) を参照）。
+解析も検査もしません
+（[`embedded-data-opaque`](../../spec/docs/known-divergences/embedded-data-opaque.ja.md)
+を参照）。
 この節は、
 mermaid.js がフロントマターとディレクティブから設定をどう求めるかを述べます。
 一部の図の Db がその設定を読むからです。
@@ -54,7 +58,9 @@ null の要素は空文字列になります。
 ### フロントマターの本文の読み方
 
 [`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)
-は、本文から字下げを取り除き（[フロントマター](../../spec/docs/common.ja.md#フロントマター) を参照）、
+は、本文から字下げを取り除き
+（[フロントマター](../../spec/docs/common.ja.md#フロントマター)
+を参照）、
 その結果を YAML 1.2 として、
 pin した mermaid.js に同梱された js-yaml 4.3.0 がその JSON
 スキーマ（`JSON_SCHEMA`）で読むのと同じように読みます。
@@ -398,8 +404,7 @@ mermaid.js は入力を `TypeError` で拒否します。
 `url(data:` のどれかを含む文字列の値をすべて取り除きます。
 リストから取り除いた文字列は、その位置を空けたままにし、
 後の合成はその位置を飛ばします。
-[既定の `secure`
-の一覧](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/schemas/config.schema.yaml#L334-L347)
+[既定の `secure` の一覧](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/schemas/config.schema.yaml#L334-L347)
 は、`secure`、`securityLevel`、`startOnLoad`、`maxTextSize`、
 `suppressErrorRendering`、`maxEdges` です。
 `secure` 自身が含まれるので、テキストはこの一覧を変えられません。
@@ -419,7 +424,8 @@ mermaid.js は入力を `TypeError` で拒否します。
 
 **有効な設定**は、サイト設定の複製に、
 テキストの設定を**深さを限った合成**
-（[`assignWithDepth()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/assignWithDepth.ts#L30-L91)）で合成したものです。
+（[`assignWithDepth()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/assignWithDepth.ts#L30-L91)）
+で合成したものです。
 まずテキストの設定を空のマッピングに合成し、その結果を複製に合成します。
 合成元の値を合成先の値に、深さ（2 から始まります）を付けて合成するには、
 次のようにします。

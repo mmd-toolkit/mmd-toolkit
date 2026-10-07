@@ -2,7 +2,9 @@
 
 英語版: [no-duplicate-description.md](./no-duplicate-description.md)
 
-規則 [mmd/sequence/no-duplicate-description](../../rules/sequence/no-duplicate-description.ja.md) を実装するための覚え書き。
+規則
+[mmd/sequence/no-duplicate-description](../../rules/sequence/no-duplicate-description.ja.md)
+を実装するための覚え書き。
 
 この規則はまだ実装していない。
 ここには、実装するときに要ることを書く。
@@ -28,3 +30,4 @@
 - `sequence/db-acc-descr-outer-replaces-loop`
 - `sequence/db-acc-descr-line-alone`
 - `sequence/db-acc-descr-empty-block-keeps`
+- `sequence/db-acc-descr-line-empty-takes-next-lines`

@@ -32,6 +32,13 @@
     "relations": [],
     "notes": [],
     "namespaces": [],
-    "interfaces": []
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "Class1",
+        "name": "functionCall",
+        "args": null
+      }
+    ]
   }
 }

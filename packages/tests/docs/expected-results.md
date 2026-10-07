@@ -57,8 +57,10 @@ With DOMPurify disabled,
 (through
 [`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L69-L83))
 leaves text unchanged as long as `securityLevel` is one of mermaid.js's values
-(`strict`, `loose`, `antiscript`, `sandbox`); for any other value it turns `<`,
-`>` and `=` into character references. Summaries rely on that: within those
+(`strict`, `loose`, `antiscript`, `sandbox`), and whatever the value when
+`flowchart.htmlLabels` is `false`. For any other value, with `htmlLabels`
+enabled, it turns `<`, `>` and `=` into character references (`&lt;`, `&gt;`,
+`&equals;`) and writes `<br>` as `<br/>`. Summaries rely on that: within those
 values, they do not depend on `securityLevel`.
 
 `@braintree/sanitize-url` is reached through
@@ -67,14 +69,18 @@ which Db classes call when they store a link. It cannot be replaced from
 outside, so a Db patch registered for the diagram type (`getDbPatches()` in
 `src/normalizers/index.ts`) changes the Db class, before any input is parsed, to
 store the URL as written (trimmed), which is what `formatUrl()` returns under
-`securityLevel: loose`. For flowchart
+`securityLevel: loose`. [fixture: flowchart/db-click-link-trimmed] [fixture:
+class/db-click-link-trimmed] For flowchart
 ([`FlowDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L553-L562)),
 `javascript:alert(1)` therefore stays as is and `https://example.com` gets no
 trailing slash. The class Db does the same
-([`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)),
-and also sets the link target to `_top` under `securityLevel: sandbox`; its
-patch stores the target as written (or `_blank`), as the other levels give. In
-mermaid@12.0.0, `formatUrl()` is also called by the Db of agentflow
+([`ClassDB.setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L404-L425)).
+[fixture: class/db-click-link-javascript-url-as-written] It also sets the link
+target to `_top` under `securityLevel: sandbox`; its patch stores the target as
+written (or `_blank`), as the other levels give. [fixture:
+class/config-security-level-sandbox-link-target] [fixture:
+class/config-security-level-sandbox-link-default-target] In mermaid@12.0.0,
+`formatUrl()` is also called by the Db of agentflow
 ([`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014)),
 which needs the same patch when its normalizer is added.
 
@@ -96,18 +102,31 @@ recorded Db is the Db mermaid.js builds when DOMPurify changes nothing:
 
 - **Affected fields**: every value that goes through `sanitizeText()`. For
   flowchart that is the vertex and edge labels, subgraph titles, tooltips, and
-  the title, `accTitle` and `accDescr`.
+  the title, `accTitle` and `accDescr` (one line or a block). [fixture:
+  flowchart/db-edge-label-markup-as-written] [fixture:
+  flowchart/db-subgraph-title-markup-as-written] [fixture:
+  flowchart/db-tooltip-markup-as-written] [fixture:
+  flowchart/db-title-markup-as-written] [fixture:
+  flowchart/db-acc-title-markup-as-written] [fixture:
+  flowchart/db-acc-descr-markup-as-written] [fixture:
+  flowchart/db-acc-descr-block-markup-as-written] The same holds in the other
+  diagram types, for example for the message of a sequence diagram, the label of
+  a class and the description of a state. [fixture:
+  sequence/db-message-markup-as-written] [fixture:
+  class/db-label-markup-as-written] [fixture:
+  state/db-description-markup-as-written]
 - **Affected inputs**: only text that DOMPurify would alter, i.e. text
   containing HTML markup or `&`, `<`, `>`. For example,
-  `A["a & <b onclick=x>b</b>"]` is recorded as `a & <b onclick=x>b</b>`. From
-  the source of mermaid.js and DOMPurify, a browser would store
-  `a &amp; <b>b</b>`; this has not been checked in a browser.
+  `A["a & <b onclick=x>b</b>"]` is recorded as `a & <b onclick=x>b</b>`.
+  [fixture: flowchart/db-vertex-label-markup-as-written] From the source of
+  mermaid.js and DOMPurify, a browser would store `a &amp; <b>b</b>`; this has
+  not been checked in a browser.
 - **What remains**: the rest of `sanitizeText()`
   ([`sanitizeMore`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/common.ts#L70-L83))
   still runs. With `htmlLabels` enabled and a `securityLevel` other than
   `strict`, `loose`, `antiscript` or `sandbox`, it still replaces `<`, `>` and
-  `=` with entities. Fixtures using such a `securityLevel` record the replaced
-  text.
+  `=` with entities, and `<br>` with `<br/>`. Fixtures using such a
+  `securityLevel` record the replaced text.
 - **What implementations compare against**: the parser's Db-equivalent JSON is
   compared with these values, i.e. with text before HTML sanitization. It does
   not need to reproduce DOMPurify.
@@ -129,7 +148,10 @@ error count as such:
   (DOMPurify, `document`, `window`, `Option`, and other DOM names). The
   signatures are checked only for errors outside the four names mermaid.js
   throws on purpose (`Error`, `MermaidParseError`, `UnknownDiagramError`,
-  `YAMLException`), because their messages quote the input.
+  `YAMLException`), because their messages quote the input. [fixture:
+  flowchart/rejection-parse-error-quotes-browser-word] [fixture:
+  common/rejection-unknown-diagram-quotes-browser-word] [fixture:
+  common/rejection-yaml-error-quotes-browser-word]
 
 For those, `runMermaid()` throws `MermaidEnvironmentError`: nothing is recorded
 for the input, and the generator lists it and fails.
@@ -159,22 +181,33 @@ no input meets an unpatched Db. In mermaid@12.0.0:
   line (or an `rgb`, `rgba`, `hsl` or `hsla` function there) is a color. If it
   is, it becomes the box's fill and the rest of the line its name; if not, the
   fill is `transparent` and the whole line is the name. The stand-in answers
-  whether the value is a valid value of the `color` property: the CSS-wide
-  keywords, `currentcolor` and the system colors, current and deprecated, from
-  lists in the module; any value that holds a substitution function (`var()`,
-  `env()`, `attr()`); and otherwise a value that `@csstools/css-color-parser`
-  reads as one color. Its answers were compared with
-  `CSS.supports("color", value)` of Chromium 152 for 309 values: the first words
-  of the `box` lines in the collected inputs, the named colors in several cases,
-  the keywords, the current and deprecated system colors, words that are not
-  colors, and right and wrong forms of `rgb()`, `rgba()`, `hsl()` and `hsla()`
-  (commas and spaces, percentages, angles, `none`, alpha, missing or extra
-  arguments, `calc()`, substitution functions, relative colors). All of them
-  agree. Where browsers may differ (newer system colors, relative colors,
+  whether the value is a valid value of the `color` property. It is for the
+  CSS-wide keywords, `currentcolor` and the system colors, current and
+  deprecated, from lists in the module. [fixture:
+  sequence/db-box-colour-css-wide-keyword] [fixture:
+  sequence/db-box-colour-currentcolor] [fixture:
+  sequence/db-box-colour-system-colour] [fixture:
+  sequence/db-box-colour-deprecated-system-colour] It is for any value that
+  holds a substitution function (`var()`, `env()`, `attr()`). [fixture:
+  sequence/db-box-colour-function-substitution] It is for any other value that
+  `@csstools/css-color-parser` reads as one color, such as the space-separated
+  form with a slash before the alpha. [fixture:
+  sequence/db-box-colour-function-space-separated-alpha] It is not for a color
+  function with too few arguments, nor for the comma-separated form that mixes
+  numbers and percentages. [fixture:
+  sequence/db-box-colour-function-too-few-arguments] [fixture:
+  sequence/db-box-colour-function-mixed-percentages] Its answers were compared
+  with `CSS.supports("color", value)` of Chromium 152 for 309 values: the first
+  words of the `box` lines in the collected inputs, the named colors in several
+  cases, the keywords, the current and deprecated system colors, words that are
+  not colors, and right and wrong forms of `rgb()`, `rgba()`, `hsl()` and
+  `hsla()` (commas and spaces, percentages, angles, `none`, alpha, missing or
+  extra arguments, `calc()`, substitution functions, relative colors). All of
+  them agree. Where browsers may differ (newer system colors, relative colors,
   `none`, substitution functions), the stand-in follows Chromium; Firefox and
   Safari were not checked. The same function is exported as `cssSupportsColor`
-  from `@mmd-toolkit/tests/mermaid`, for an implementation that takes the answer
-  from outside.
+  from `@mmd-toolkit/tests`, which runs no mermaid.js, for an implementation
+  that takes the answer from outside.
 - [`SequenceDB.addDetails`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sequence/sequenceDb.ts#L526-L546)
   reads an element of the page with `document.getElementById`. A Db method that
   reads the page is treated as on a page without the element, since the page is
@@ -212,11 +245,25 @@ mermaid.js reads an input (`comment-takes-character`,
 `html-tag-in-frontmatter`) record it in `specified.json`, where it differs from
 `expected.json`. The generator takes it from mermaid.js read without the
 divergence (for `comment-takes-line-break` and `name-start-reads-unit`, without
-both, since both change the class lexer). For `html-tag-in-frontmatter` it is
-mermaid.js reading the input whose frontmatter has `(` where it has `<`, so that
-no HTML tag starts in it; the title of the Db is the title of the frontmatter as
-written, and the values in `embedded` are those of the input as written. When
-mermaid.js rejects that input, the specified reading is the rejection
+both, since both change the class lexer). [fixture:
+class/div-comment-then-statement-with-backquote-keyword] [fixture:
+class/div-backquote-starts-with-keyword-then-comment] For
+`html-tag-in-frontmatter` it is mermaid.js reading the input whose frontmatter
+has `(` where it has `<`, so that no HTML tag starts in it. The tag may start in
+any key of the frontmatter, not only in `title`; the frontmatter is found as
+mermaid.js finds it, which includes a closing `---` line with blanks after it
+and CRLF line breaks. [fixture:
+flowchart/html-tag-starts-in-frontmatter-other-key] [fixture:
+flowchart/html-tag-starts-in-frontmatter-crlf] [fixture:
+flowchart/html-tag-starts-in-frontmatter-closing-line-blank] The title of the Db
+is the title of the frontmatter of the input as written, as
+`extractFrontmatterTitle` gives it, which writes `'` for a `"` after an `=` in a
+tag. [fixture: flowchart/html-tag-starts-in-frontmatter-value] The values in
+`embedded` are those that mermaid.js gives for the input as written, and, where
+it rejects that input, those it gives for the input with `(`: a `<` in a value
+of the configuration is then recorded as `(`. The title in `embedded` is the one
+of the Db. [fixture: flowchart/html-tag-starts-in-frontmatter-config-value] When
+mermaid.js rejects the input with `(`, the specified reading is the rejection
 (`accepted: false` and the error). If the replacement itself made the YAML of
 the frontmatter invalid, the generator stops: how that reading is made has to be
 decided for the fixture. The other marks need no such file: the specification
@@ -238,10 +285,11 @@ A rule may also be replaced by two patterns, of which the lexer uses one when it
 has read only whitespace of the current line, and the other otherwise. A line
 here is a line of the text after mermaid's preprocessing, which the lexer reads:
 line breaks made line feeds, and the frontmatter, directives and comment lines
-taken out. What the lexer has read is the text it was given without what is left
-of it; when what is left is not an end of that text, because the lexer put back
-text that it had not read, the call stops with `MermaidEnvironmentError` instead
-of returning a result that may be wrong.
+taken out. [fixture: class/div-comment-then-statement-crlf] [fixture:
+class/div-comment-then-statement-cr] What the lexer has read is the text it was
+given without what is left of it; when what is left is not an end of that text,
+because the lexer put back text that it had not read, the call stops with
+`MermaidEnvironmentError` instead of returning a result that may be wrong.
 
 In a start state of the lexer, the rules may also be tried in another order,
 with the rules that read as the specification does first; the rules themselves
@@ -262,12 +310,29 @@ tries, since a rule that every start state tries can have the same pattern.
   the rule that reads `%%`, the rest of the line and the line feeds after it
   keeps that reading only for a comment with only whitespace before it on its
   line; a comment after a unit ends at the end of its line, and the line feed
-  after it is read as a line feed.
+  after it is read as a line feed. [fixture:
+  class/div-comment-after-name-then-statement] [fixture:
+  class/div-comment-after-note-string-then-statement] [fixture:
+  class/div-comment-after-click-string-then-statement]
 - `name-start-reads-unit`, in the class lexer
   ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)):
   inside a backquoted name and a generic type, the rule that closes it and the
   rule that reads its text are tried first, so the text is read up to the
-  closing mark whatever it starts with.
+  closing mark whatever it starts with. [fixture:
+  class/div-backquote-starts-with-cssclass] [fixture:
+  class/div-generic-starts-with-cssclass] [fixture:
+  class/div-backquote-starts-with-callback] [fixture:
+  class/div-generic-starts-with-callback] [fixture:
+  class/div-backquote-starts-with-link] [fixture:
+  class/div-generic-starts-with-link] [fixture:
+  class/div-backquote-starts-with-click] [fixture:
+  class/div-generic-starts-with-click] [fixture:
+  class/div-backquote-starts-with-href] [fixture:
+  class/div-generic-starts-with-href] [fixture:
+  class/div-backquote-starts-with-open-annotation] [fixture:
+  class/div-generic-starts-with-open-annotation] [fixture:
+  class/div-backquote-starts-with-close-annotation] [fixture:
+  class/div-generic-starts-with-close-annotation]
 
 ## The store of earlier results
 
@@ -338,7 +403,7 @@ generated-input tests) then spend their time on the implementation under test.
   `pnpm-lock.yaml`; the installed version of mermaid.js; and the versions of
   Node.js and V8. A change to any of them gives new keys, so a stored result
   never outlives the code or the mermaid.js that made it. A change to the other
-  files of `src/` (the loader of the fixtures, the mutation core) keeps the
+  files of `src/` (the loader of the fixtures, the checks of trees) keeps the
   stored results.
 - What is stored: the results of runs. An error thrown instead of a result
   (`MermaidEnvironmentError`, an error of the options) is not stored.
@@ -352,10 +417,11 @@ generated-input tests) then spend their time on the implementation under test.
   is used; any other value is an error, so that a value meant to turn it off
   (`off`, `0`) never leaves it on. The generator (`fixtures:generate`,
   `fixtures:check`, `add`, `add-many`) turns it off for itself, since the
-  fixtures record mermaid.js itself; so does the CI workflow, and so do the
-  tests of this package, which check how a run is made, but for one test of the
-  store, which runs a text through the store of the repository to check that the
-  run functions use it. `detectDiagramType()` does not use the store.
+  fixtures record mermaid.js itself; so does the workflow `NodeCI.yml`, which is
+  kept in `.github/workflows_bk/` (no workflow is active at present), and so do
+  the tests of this package, which check how a run is made, but for one test of
+  the store, which runs a text through the store of the repository to check that
+  the run functions use it. `detectDiagramType()` does not use the store.
 - Which tests to run is decided by the rules for running tests (the skill
   `conventions`), with the store or without it: the store makes a run shorter,
   not a reason to run more.
@@ -364,4 +430,5 @@ generated-input tests) then spend their time on the implementation under test.
 
 `mermaid.parse()` does not apply `maxTextSize`; only rendering does
 ([`renderDiagram`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/mermaidAPI.ts#L502-L505)).
-The fixtures do not apply it either.
+The fixtures do not apply it either. [fixture:
+flowchart/config-max-text-size-not-applied]

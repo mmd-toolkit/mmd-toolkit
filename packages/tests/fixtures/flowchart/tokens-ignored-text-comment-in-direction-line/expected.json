@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A comment line that starts after a U+2028 lies inside the text that follows the value of a direction line. The written text of that ignored text leaves the comment out, and mermaid.js reads `A` as part of the text, so the subgraph has no node."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [],
+        "title": "S",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

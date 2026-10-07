@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The class step takes the parts of the id between its commas, so the existing vertices A and B get the class c, and the vertex A,B that the statement adds gets none."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "c"
+        ],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "c"
+        ],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "A,B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A,B",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

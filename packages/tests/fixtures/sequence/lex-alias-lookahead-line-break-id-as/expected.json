@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md The alias context, rule 4: the participant `as` and then a message from `as` to B."
+    "note": "sequence.md The alias context, rule 3: the participant `as` and then a message from `as` to B."
   },
   "accepted": true,
   "diagramType": "sequence",

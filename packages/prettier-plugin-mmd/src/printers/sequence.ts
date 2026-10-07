@@ -18,7 +18,10 @@ import {
 import { expectToken } from "./layout.ts"
 import type { Line } from "./lines.ts"
 import { indentationOf } from "./lines.ts"
-import { findSequenceKeptLines } from "./sequence-kept-lines.ts"
+import {
+  findSequenceKeptLines,
+  printedEndAfterSemicolons,
+} from "./sequence-kept-lines.ts"
 import type {
   SequenceBodyBlockStatement,
   SequenceSectionBlockStatement,
@@ -272,7 +275,7 @@ function sequenceBlockRules(source: Source): BlockRules<SequenceStatement> {
       classifySequenceStatement(statement).kind !== "simple",
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
-    keepsDirectiveLinesUnindentedAfterBareMarker: false,
+    keepsDirectiveLinesUnindented: false,
   }
 }
 
@@ -285,6 +288,8 @@ function findSequencePrintedEnd(
   source: Source,
   statement: SequenceStatement,
 ): number {
+  const afterSemicolons = printedEndAfterSemicolons(source, statement)
+  if (afterSemicolons !== undefined) return afterSemicolons
   if (statement.type !== "SequenceTitleStatement") return statement.range[1]
   return findTitleText(source, statement).end
 }

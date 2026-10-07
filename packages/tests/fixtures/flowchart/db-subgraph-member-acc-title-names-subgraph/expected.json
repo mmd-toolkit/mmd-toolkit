@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accTitle line inside a body that names a subgraph makes it a member: S has the member T, and T has the member X."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "T",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "X",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "X",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "T",
+        "nodes": [
+          "X"
+        ],
+        "title": "T",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "S",
+        "nodes": [
+          "T"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

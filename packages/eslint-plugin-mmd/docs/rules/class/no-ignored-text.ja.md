@@ -18,7 +18,7 @@ mermaid.js が読まないテキストを禁止する。
 
 この規則は、方向の行で、`direction` の前か、方向の値の後にあるテキストと、
 メソッドの行のうち mermaid.js が読まない部分を報告する。
-`classDiagram` に当たる。
+対象の図種は `classDiagram` である。
 
 `class A direction LR` は方向を `LR` にし、クラスを宣言しない。
 `direction TBX` は方向を `TB` にし、`X` は捨てられる。

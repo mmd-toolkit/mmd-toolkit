@@ -6,7 +6,9 @@ import type { CheckedRoot } from "../src/check-tree/types.ts"
 import type { DiagramType } from "../src/index.ts"
 import { getFixturesRoot, loadFixtures } from "../src/index.ts"
 import { scanSource } from "../src/source-scan.ts"
+import { copyOf, recordedTree, setField } from "./check-tree-recorded.ts"
 import { withoutTokenWhitespace } from "./check-tree-token-edits.ts"
+import { locationOf } from "./check-tree-trees.ts"
 
 // parser/docs/tokens.md, A token that a directive cuts: the whitespace next to
 // a cut (a directive, a comment region, or a `;` that the line rule ignores)
@@ -92,4 +94,83 @@ describe("the whitespace next to a cut", () => {
     expect(made).toBeGreaterThan(100)
     expect(missed).toEqual([])
   }, 120_000)
+})
+
+// parser/docs/tokens.md and positions.md, Invariants: a token that goes on with
+// a value that the token right before it starts keeps the whitespace at its
+// start, and a token that is all whitespace and is followed by a token of the
+// same value keeps it at its end. Where the token right before does not touch
+// the token, or no token follows the whitespace, the whitespace is not allowed.
+// Both branches are reached by recorded trees (`goesOn` by the text after a
+// string that a label starts with, `continues` by the whitespace tokens of the
+// box text of a sequence diagram), so the negative cases are made from a
+// recorded tree by changing the range of one token.
+
+const LINE_SEPARATOR = String.fromCodePoint(0x2028)
+
+/** Sets the range of the token `index` of `root`, with its value and its location, as the source `input` has them. */
+function setTokenRange(
+  root: CheckedRoot,
+  input: string,
+  index: number,
+  range: [number, number],
+): void {
+  const token = root.tokens[index]
+  if (token === undefined) throw new Error(`no token ${index}`)
+  setField(token, "range", range)
+  setField(token, "value", input.slice(...range))
+  setField(token, "loc", locationOf(input, range))
+}
+
+describe("the whitespace at the start of a token that goes on with a value", () => {
+  it("is not allowed where the token before does not touch the token", () => {
+    // `state X ""` and `state {}`: the `state` of the second line is in the
+    // StateIgnoredText `""` + line feed + spaces + `state`, which starts at
+    // the `""`, and the whitespace before it lies in no token. A `state` token
+    // that takes one of its spaces starts with whitespace in a value that
+    // started before it, but the `""` does not end where it starts.
+    const { input, tree } = recordedTree(
+      "state",
+      "gram-ignored-state-empty-body",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const root = copyOf(tree)
+    setTokenRange(root, input, 4, [30, 36])
+    expect(checkTree(input, root)).toEqual([
+      {
+        where: "Keyword at 30-36",
+        message:
+          "starts with whitespace or a line terminator where no value starts",
+      },
+    ])
+  })
+})
+
+describe("the whitespace at the end of an all-whitespace token that continues a value", () => {
+  it("is not allowed where no token follows it", () => {
+    // `box aqua`, two spaces, and a line separator: the box text is `aqua`
+    // and the whitespace, with a RawText token of the two spaces (24-26) and one
+    // of the line separator (26-27) that touch. The first loses its last space,
+    // which then lies in no token: it is all whitespace, ends with whitespace,
+    // and is followed by no token that touches it. The box text no longer has
+    // the whitespace in its tokens, so its value is reported as well.
+    const { input, tree } = recordedTree(
+      "sequence",
+      "db-box-colour-then-spaces-and-line-separator",
+    )
+    expect(checkTree(input, tree)).toEqual([])
+    const root = copyOf(tree)
+    setTokenRange(root, input, 3, [24, 25])
+    expect(checkTree(input, root)).toEqual([
+      {
+        where: "RawText at 24-25",
+        message:
+          "ends with whitespace or a line terminator where no value ends",
+      },
+      {
+        where: "SequenceBoxText at 20-27",
+        message: `the texts of its tokens joined are not its written text: "aqua ${LINE_SEPARATOR}", not "aqua  ${LINE_SEPARATOR}"`,
+      },
+    ])
+  })
 })

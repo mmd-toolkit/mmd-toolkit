@@ -1106,7 +1106,8 @@ export class ClassUnitLexer {
    * `(`, zero or more whitespace, and `)`, a `(` and a `)` unit, which leave
    * the context; `(`, which leaves it and enters the callback arguments
    * context; and one or more characters other than `(`, line feeds
-   * included, a `callback-name` unit.
+   * included, a `callback-name` unit, whose whitespace before the `(`
+   * mermaid.js reads as part of the name.
    */
   private readInCallbackNameContext(at: DiagramCharacter): void {
     if (at.codePoint === LEFT_PARENTHESIS) {
@@ -1133,10 +1134,16 @@ export class ClassUnitLexer {
         at,
         (character) => character.codePoint !== LEFT_PARENTHESIS,
       ),
+      "keep-whitespace",
     )
   }
 
-  /** The callback contexts: in the callback arguments context, `)`, which leaves it, and one or more other characters, line feeds included, a `callback-arguments` unit. */
+  /**
+   * The callback contexts: in the callback arguments context, `)`, which
+   * leaves it, and one or more other characters, line feeds included, a
+   * `callback-arguments` unit, whose whitespace at its ends mermaid.js
+   * passes on as part of the arguments.
+   */
   private readInCallbackArgumentsContext(at: DiagramCharacter): void {
     if (at.codePoint === RIGHT_PARENTHESIS) {
       this.read(")", at, this.reader.after(at))
@@ -1151,6 +1158,7 @@ export class ClassUnitLexer {
         at,
         (character) => character.codePoint !== RIGHT_PARENTHESIS,
       ),
+      "keep-whitespace",
     )
   }
 

@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The subgraph has the empty id, because its name is all whitespace and it has a title. The class statement has two null ids, which stand for the empty text, so the subgraph gets the class twice."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "",
+        "nodes": [
+          "A"
+        ],
+        "title": "t",
+        "classes": [
+          "c",
+          "c"
+        ],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

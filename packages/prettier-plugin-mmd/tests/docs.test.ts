@@ -235,3 +235,60 @@ describe("the examples in the documents", () => {
     },
   )
 })
+
+/**
+ * The titles of the cases of the test files that hold examples as test code,
+ * which the documents cite as `[test: <title>]`: the title of an example, with
+ * `%s` for a diagram type where a test is made for each of them.
+ */
+async function readCitedTestTitles(): Promise<string[]> {
+  const titles: string[] = []
+  for (const file of ["line-separators", "line-terminators"]) {
+    const text = await readFile(
+      new URL(`tests/${file}.test.ts`, packageRoot),
+      "utf8",
+    )
+    for (const line of text.split("\n")) {
+      const trimmed = line.trim()
+      if (!trimmed.startsWith('"') || !trimmed.endsWith('",')) continue
+      const title = trimmed.slice(1, -2)
+      if (title.includes("%s")) {
+        for (const diagram of ["flowchart", "sequence", "class", "state"]) {
+          titles.push(title.replaceAll("%s", diagram))
+        }
+      } else {
+        titles.push(title)
+      }
+    }
+  }
+  return titles
+}
+
+describe("the test citations in the documents", async () => {
+  const titles = await readCitedTestTitles()
+  const citations: string[] = []
+  for (const document of [
+    "docs/flowchart.md",
+    "docs/sequence.md",
+    "docs/class.md",
+    "docs/state.md",
+    "docs/compatibility.md",
+  ]) {
+    const text = await readFile(new URL(document, packageRoot), "utf8")
+    const flat = text.split("\n").join(" ")
+    let index = flat.indexOf("[test: ")
+    while (index !== -1) {
+      const end = flat.indexOf("]", index)
+      citations.push(flat.slice(index + "[test: ".length, end))
+      index = flat.indexOf("[test: ", end)
+    }
+  }
+
+  it.each([...new Set(citations)].map((citation) => [citation] as const))(
+    "cites a case that exists: %s",
+    (citation) => {
+      const flat = (title: string) => title.split(" ").filter(Boolean).join(" ")
+      expect(titles.map(flat)).toContain(flat(citation))
+    },
+  )
+})

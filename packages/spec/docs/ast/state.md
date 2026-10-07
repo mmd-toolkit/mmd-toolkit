@@ -10,11 +10,12 @@ is read, and which grammar rule makes which node, is defined in
 The body of this diagram type is a [StateDiagram](#statediagram). The values of
 the fields keep what the author wrote, as [ast.md](../ast.md#nodes) defines the
 written text of a value; they are not in the converted form of
-[common.md](../common.md#reading-a-source). The whitespace that mermaid.js reads
-as part of a value is part of its written text (see [Nodes](../ast.md#nodes)):
-in this diagram type, the whitespace of the second description of an alias (see
-[StateAliasDefinitionStatement](#statealiasdefinitionstatement)). Other
-whitespace is not part of any value.
+[common.md](../common.md#reading-a-source). A value starts or ends with
+whitespace only where its units hold it as their own characters, as mermaid.js
+reads it (see [Nodes](../ast.md#nodes)): in this diagram type, the whitespace of
+the second description of an alias (see
+[StateAliasDefinitionStatement](#statealiasdefinitionstatement)). Elsewhere, the
+whitespace at the ends of a value is outside it.
 
 A **state** is a box of the diagram, named by its id. A transition goes from one
 state to another; `[*]` stands for the start or the end.
@@ -68,7 +69,7 @@ state/gram-description-blank-spaces]
 | `to`    | StateReference       | The state after the arrow.                                                 |
 | `label` | StateLiteral or null | The text after `:`; null when there is none, or when it is all whitespace. |
 
-Child fields: `from`, `to`, `label`. The arrow `-->` is a token and no node: a
+Child fields: `from`, `to`, `label`. The arrow `-->` is a unit and no node: a
 state diagram has this one arrow, with no marks at its ends and one kind of
 line, so a node of the arrow would have no field. [fixture:
 state/lex-percent-in-label]
@@ -231,11 +232,11 @@ state/lex-note-block-empty] [fixture: state/lex-note-id-percent-block]
 On one line, mermaid.js reads the text from right after the note id without its
 first two characters and without the whitespace at its ends (see
 [The note contexts](../diagrams/state.md#the-note-contexts)), and `text` and
-`textBeforeText` show that reading. With two whitespace characters before the
-`:`, the `:` is part of the text: `note left of A  :hi` has the text `:hi`. With
-the `:` right after the note id, the character after the `:`, when it is not
-whitespace, is `textBeforeText`: `note left of A:hi` has it as `h` and the text
-`i`, and `note left of A:h` has it as `h` and no text. [fixture:
+`textBeforeText` show that reading. With two or more whitespace characters
+before the `:`, the `:` is part of the text: `note left of A  :hi` has the text
+`:hi`. With the `:` right after the note id, the character after the `:`, when
+it is not whitespace, is `textBeforeText`: `note left of A:hi` has it as `h` and
+the text `i`, and `note left of A:h` has it as `h` and no text. [fixture:
 state/lex-note-two-spaces-before-colon] [fixture:
 state/lex-note-colon-without-space] [fixture:
 state/lex-note-colon-then-one-character]
@@ -251,8 +252,8 @@ state/lex-floating-note]
 | `id`   | StateLiteral or null | The text after `as`, up to the end of the line; null when it is empty. The Db does not read it. |
 
 Child fields: `text`, `id`. [fixture: state/lex-floating-note-id-spaces] The
-quotes are tokens of the statement and belong to no field; there may be more
-than one before and after the text (see
+quotes are units of the statement and belong to no field; there may be more than
+one before and after the text (see
 [The note contexts](../diagrams/state.md#the-note-contexts)). [fixture:
 state/lex-floating-note-extra-quote-before-text] [fixture:
 state/lex-floating-note-whitespace-text]
@@ -306,20 +307,21 @@ Child fields: `states`, `cssClass`. [fixture: state/lex-class-ids-space]
 
 `style A,B fill:#f00`.
 
-| Field    | Type                           | Meaning                                                                     |
-| -------- | ------------------------------ | --------------------------------------------------------------------------- |
-| `states` | list of (Identifier or null)   | The ids of the states, in source order; null for an empty item between `,`. |
-| `styles` | list of (StateLiteral or null) | The styles, as in StateClassDefStatement.                                   |
+| Field    | Type                           | Meaning                                                                                       |
+| -------- | ------------------------------ | --------------------------------------------------------------------------------------------- |
+| `states` | list of (Identifier or null)   | The ids of the states, in source order; null for an empty item before, between, or after `,`. |
+| `styles` | list of (StateLiteral or null) | The styles, as in StateClassDefStatement.                                                     |
 
-Child fields: `states`, `styles`. The styles are as in StateClassDefStatement,
-with null for an empty part, except that a `style` statement without text has
-one null style, as mermaid.js gives it one empty style: `style A x, ,y` has the
-styles `x`, null, and `y`, and `style A` the one style null. The ids end at the
-whitespace after them: `style A ,x` has the one state A and the styles null and
-`x`. [fixture: state/db-style-comma-after-space] [fixture:
-state/lex-style-empty-id] [fixture: state/lex-style-without-styles] [fixture:
-state/db-style-empty-items] [fixture: state/db-style-whitespace-item] [fixture:
-state/db-style-without-text]
+Child fields: `states`, `styles`. `style ,A,,B, fill:red` has the states null,
+A, null, B, and null. [fixture: state/tokens-style-empty-items] The styles are
+as in StateClassDefStatement, with null for an empty part, except that a `style`
+statement without text has one null style, as mermaid.js gives it one empty
+style: `style A x, ,y` has the styles `x`, null, and `y`, and `style A` the one
+style null. The ids end at the whitespace after them: `style A ,x` has the one
+state A and the styles null and `x`. [fixture: state/db-style-comma-after-space]
+[fixture: state/lex-style-empty-id] [fixture: state/lex-style-without-styles]
+[fixture: state/db-style-empty-items] [fixture: state/db-style-whitespace-item]
+[fixture: state/db-style-without-text]
 
 ### StateDirectionStatement
 

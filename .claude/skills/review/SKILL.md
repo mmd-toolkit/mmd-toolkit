@@ -5,9 +5,9 @@ description:
   specification document, a test helper, or a tool) so that one review finds
   everything it is going to find. Use before reviewing a change, before
   re-reviewing a fix, and when a review is repeated more than twice on the same
-  item. It names the inputs a review generates, the checks it runs on documents,
-  how a finding is classified and reported, and how a reviewer runs things on a
-  shared machine.
+  item. It names the inputs a review takes from the sentences, the checks it
+  runs on documents, how a finding is classified and reported, and how a
+  reviewer runs things on a shared machine.
 ---
 
 # Reviewing a change
@@ -39,27 +39,30 @@ inputs live outside it.
   use a shared interface it changed, the fixtures that back a rule it changed,
   the printers and rules that read a node it changed.
 - Write down, before looking, the points of view the review will cover: behavior
-  against mermaid.js, generated inputs, proper form, documents, and the specific
-  concerns the requester named. The report lists what was seen and what was not.
+  against mermaid.js, the cases of each sentence, proper form, documents, and
+  the specific concerns the requester named. The report lists what was seen and
+  what was not.
 
-## 2. Generated inputs
+## 2. Inputs
 
-Hand-written examples do not close a review of a parser, a printer, or a rule.
-The reviewer generates inputs and compares each with mermaid.js (acceptance, the
-Db, and for the formatter idempotence and the Db after formatting). The mermaid
-fact is defined independently of the implementation under review, never by
-running the implementation and reading its answer back.
+A review of a parser, a printer, or a rule is closed by inputs, each compared
+with mermaid.js (acceptance, the Db, and for the formatter idempotence and the
+Db after formatting). The mermaid fact is defined independently of the
+implementation under review, never by running the implementation and reading its
+answer back.
 
-The shapes below are the minimum. A review that leaves one out says which and
-why.
+The inputs come from the sentences. For every sentence that the change concerns
+(in the specification, the parser's documents of tokens and positions, the
+documents of `dbFromTree`, the formatting rules), the reviewer lists the cases
+the sentence distinguishes and the other rules that meet it at the place it
+names, and checks that each has a fixture; a case without a fixture is a finding
+against the fixtures, and a case the sentence does not state is a finding
+against the sentence. The reviewer builds no product of places and strings: a
+product repeats one rule as many times as it has contexts and names no question.
 
-- Boundary insertion: at every token boundary of every accepted fixture of the
-  diagram type, insert each of: a space, a tab, two spaces, a directive (closed
-  and unclosed), a comment line, an empty line, an empty description block, a
-  `;`. Take boundaries by kind (the kinds of the tokens before and after, and
-  the place in the line), a few of each kind; every kind that the change
-  concerns is taken, none left out. Running every position of every fixture
-  repeats one check thousands of times and is not a stronger review.
+The shapes below name the other rules to think of at each sentence. A review
+that leaves one out says which and why.
+
 - Line endings, after every statement form: ` ;`, `;`, `;;`, `; ;`, `: `, a
   trailing space, a trailing tab, a trailing comment, a trailing directive
   (closed and unclosed), a blank line, `\r\n`, and the end of the text without a
@@ -74,8 +77,9 @@ why.
   keyword and its value, and at the end of a line. Between a keyword and its
   value also a comment line and an empty line (`title`, a line break, `%% c`, a
   line break, `x`).
-- Mutations of each fixture (the mutation CLI of `packages/tests`), at the size
-  the change calls for.
+- Inputs chosen by a random source or by a number (a seed, a count, a sample of
+  N), in a test or in the review's own inputs: a finding (重). No sentence names
+  such an input, so a run of it answers no question.
 - The transformations a formatter actually performs, applied to the input and
   checked against mermaid.js: swap a `;` and a line break, remove the trailing
   whitespace of a line, move a line's content to the previous or the next line,
@@ -89,8 +93,8 @@ why.
   comparing the Db. One input that mixes the two attributes the suggestion's
   effect to the message.
 
-Check the parts before generating with them: each inserted string is what its
-name says. Parse it alone and read the result (a "closed directive" has
+Check the parts before building inputs with them: each inserted string is what
+its name says. Parse it alone and read the result (a "closed directive" has
 `closed: true`, a "comment line" is one `Comment`, a "line separator" is
 U+2028). A part that is not what it claims makes every result built on it a
 claim about something else, and the review does not notice.
@@ -165,8 +169,8 @@ Every review has a section on proper form, also when the behavior is right:
   its class invites a fix of one point.
 - In a re-review, each new finding names its origin: made by the fix, present
   before and missed by the earlier review, or new scope. A missed finding names
-  what the earlier review did not generate or did not read, and that gap is
-  added to the inputs of every later review.
+  which case the earlier review did not list or which place it did not read, and
+  that gap is added to the inputs of every later review.
 - When the same item reaches a third round with new findings, the review stops
   and reports the origins before anything else is fixed.
 - A finding against the parser or the specification whose input the conformance

@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accDescr block of a comment line and a directive line is empty and changes nothing; the directive applies: the description stays x, and the direction of S is LR."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "dir": "LR",
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "flowchart": {
+        "inheritDir": true
+      }
+    }
+  }
+}

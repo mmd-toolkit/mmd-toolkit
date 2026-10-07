@@ -1,6 +1,11 @@
 import type { Range } from "@mmd-toolkit/parser"
 import type { Source } from "./source.ts"
-import { findTokensBetween, findTriviaBetween } from "./source.ts"
+import {
+  findDirectiveEndingAt,
+  findTokensBetween,
+  findTriviaBetween,
+  isWhitespace,
+} from "./source.ts"
 
 /**
  * The lines of a diagram whose statements are not split into lines of
@@ -84,7 +89,7 @@ export function findLinesWithOwnSemicolons(
  * character printed as a space the line would end elsewhere, and the `;`
  * that follows it would be read otherwise.
  */
-export function findLinesWithSeparatorAfterIgnoredSemicolon(
+function findLinesWithSeparatorAfterIgnoredSemicolon(
   source: Source,
 ): ReadonlySet<number> {
   const lines = new Set<number>()
@@ -95,6 +100,90 @@ export function findLinesWithSeparatorAfterIgnoredSemicolon(
     }
   }
   return lines
+}
+
+/**
+ * The lines that a `;` decides the end of, in every diagram type: they are
+ * printed as written, with the statements on them. The `;` that the line
+ * rule ignores is removed from the text before mermaid.js reads it, but the
+ * line ends where it ends the text of the line (common.md, The `style` and
+ * `classDef` lines), and the scan of a directive takes the whitespace after
+ * its argument, line breaks included, until a `;` stops it (common.md, Where
+ * a directive is). Dropping a `;` changes where a line ends, or which `;` the
+ * line rule ignores, on a line that holds
+ *
+ * - a `;` after a directive that is not closed, with only whitespace between
+ *   them: without it, the directive takes the line break and the next line;
+ * - a `;` that the line rule ignores, with only whitespace and directives
+ *   between it and another `;`: without the last `;`, the one before it is the one that the
+ *   rule ignores;
+ * - a `;` that the line rule ignores and, after it, a U+2028 or U+2029: the
+ *   rule reads the text up to the character as the line, so the `;` that ends
+ *   it is another one when the character is printed as a space.
+ *
+ * Whether the rule applies to a line also depends on the statements on it, so
+ * the line keeps them together.
+ */
+export function findLinesEndedBySemicolon(source: Source): ReadonlySet<number> {
+  const lines = new Set(findLinesWithSeparatorAfterIgnoredSemicolon(source))
+  for (const token of source.root.tokens) {
+    if (token.value !== ";") continue
+    const offset = token.range[0]
+    if (
+      isAfterUnclosedDirective(source, offset) ||
+      (source.ignoredSemicolons.has(offset) &&
+        isNextToSemicolon(source, offset))
+    ) {
+      lines.add(lineStartOf(source, offset))
+    }
+  }
+  return lines
+}
+
+/**
+ * Whether only whitespace lies between a directive that is not closed and
+ * the `;` at `offset` on their line.
+ */
+function isAfterUnclosedDirective(source: Source, offset: number): boolean {
+  let position = offset
+  while (position > 0) {
+    const directive = findDirectiveEndingAt(source, position)
+    if (directive !== undefined) {
+      return source.root.directives.some(
+        (candidate) =>
+          candidate.range[0] === directive.range[0] && !candidate.closed,
+      )
+    }
+    const character = source.text[position - 1]
+    if (character === "\n" || character === "\r" || !isWhitespace(character)) {
+      return false
+    }
+    position--
+  }
+  return false
+}
+
+/**
+ * Whether only whitespace and directives lie between the `;` at `offset` and
+ * another `;` before it on its line. The directives are removed before the
+ * line rule reads the text, so the two `;` are next to each other for it.
+ */
+function isNextToSemicolon(source: Source, offset: number): boolean {
+  let position = offset
+  while (position > 0) {
+    const directive = findDirectiveEndingAt(source, position)
+    if (directive !== undefined) {
+      position = directive.range[0]
+      continue
+    }
+    const character = source.text[position - 1]
+    if (character === ";") return true
+    if (character === "\n" || character === "\r" || !isWhitespace(character)) {
+      return false
+    }
+    position--
+  }
+  return false
 }
 
 /**

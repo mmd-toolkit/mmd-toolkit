@@ -79,6 +79,20 @@ function keptAsWritten(start: number, end: number): AtomLayout {
 }
 
 /**
+ * Whether an atom starts inside one of the kept stretches. The name of a
+ * subgraph without a title may end with line breaks, and the line ends before
+ * the last of them (see `findSubgraphHeaderEnd`), so the token of the name
+ * reaches past the stretch that holds its text. Only this layout cuts a token
+ * of a name on purpose, and `collectAtoms` still rejects a stretch that cuts a
+ * value node.
+ */
+function startsInside(kept: readonly Atom[], atom: Atom): boolean {
+  return kept.some(
+    (stretch) => stretch.start <= atom.start && atom.start < stretch.end,
+  )
+}
+
+/**
  * The layout of the `subgraph` line. A name without a title is printed
  * with the whitespace after it, which mermaid.js reads as part of the name.
  */
@@ -97,7 +111,13 @@ export function layoutSubgraphHeader(
   const values: Node[] =
     subgraph.title === null ? [] : [subgraph.name, subgraph.title]
   return {
-    atoms: collectAtoms(source, subgraph.range[0], headerEnd, values, kept),
+    atoms: collectAtoms(
+      source,
+      subgraph.range[0],
+      headerEnd,
+      values,
+      kept,
+    ).filter((atom) => kept.includes(atom) || !startsInside(kept, atom)),
     rules: new Map(),
     outdented: new Set(),
     lineBreaks: "kept",

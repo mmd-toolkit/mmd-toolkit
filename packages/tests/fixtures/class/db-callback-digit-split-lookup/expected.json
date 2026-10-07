@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`haveCallback` and the tooltip go to the class with the id `1A`, while the CSS class `clickable` goes to the class `classId-1A`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "1A",
+        "type": "",
+        "label": "1A",
+        "text": "1A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true,
+        "tooltip": "t"
+      },
+      {
+        "id": "classId-1A",
+        "type": "",
+        "label": "classId-1A",
+        "text": "classId-1A",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "1A",
+        "name": "fn",
+        "args": null
+      }
+    ]
+  }
+}

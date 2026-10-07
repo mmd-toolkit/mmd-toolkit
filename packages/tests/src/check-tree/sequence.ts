@@ -37,9 +37,9 @@ const SEQUENCE_END_MARKERS: ReadonlyMap<string, string> = new Map([
 ])
 
 /**
- * ast/sequence.md, SequenceArrow: the arrow is one `Punctuator` token, and its fields are
- * what its value writes: an optional start marker, the line `-` (`solid`) or
- * `--` (`dotted`), and the end marker.
+ * ast/sequence.md, SequenceArrow: the arrow is one `Punctuator` token, and its
+ * fields are what its value writes: an optional start marker, the line `-`
+ * (`solid`) or `--` (`dotted`), and the end marker.
  */
 function checkSequenceArrow(
   root: CheckedRoot,
@@ -81,6 +81,42 @@ function checkSequenceArrow(
 }
 
 /**
+ * ast/sequence.md, SequenceMessageStatement: `activation` is the `+` or `-`
+ * token of the message, null when it has none, and `fromCentralConnection` and
+ * `toCentralConnection` are whether a `()` token comes before the arrow and
+ * after it, each its own.
+ */
+function checkMessageMarks(
+  root: CheckedRoot,
+  message: CheckedNode,
+  arrow: CheckedNode,
+  problems: Problems,
+): void {
+  const punctuators = tokensIn(root, message.range).filter(
+    (token) => token.type === "Punctuator",
+  )
+  const activations = punctuators.filter(
+    (token) => token.value === "+" || token.value === "-",
+  )
+  problems.expectEqual(
+    message.activation,
+    activations[0]?.value ?? null,
+    label(message),
+    "activation",
+  )
+  const connections = punctuators.filter((token) => token.value === "()")
+  problems.expectEqual(
+    [message.fromCentralConnection, message.toCentralConnection],
+    [
+      connections.some((token) => token.range[1] <= arrow.range[0]),
+      connections.some((token) => token.range[0] >= arrow.range[1]),
+    ],
+    label(message),
+    "central connections, before and after the arrow",
+  )
+}
+
+/**
  * ast/sequence.md: checks what the sequence document states about its tree
  * beyond the invariants of ast.md: the values of the leaf nodes are their
  * written texts, the tokens of values lie in value nodes, and the fixed words
@@ -96,7 +132,6 @@ export function checkSequenceTree(root: CheckedRoot, problems: Problems): void {
   for (const node of nodesOf(root)) {
     const where = label(node)
     const keywords = wordsIn(root, node.range, "Keyword")
-    const punctuators = wordsIn(root, node.range, "Punctuator")
     switch (node.type) {
       case "SequenceParticipantStatement":
       case "SequenceDestroyStatement": {
@@ -116,26 +151,13 @@ export function checkSequenceTree(root: CheckedRoot, problems: Problems): void {
       }
       case "SequenceMessageStatement":
         // ast/sequence.md, SequenceMessageStatement: `activation` is the `+`
-        // or `-` after the arrow, and each central connection is a `()`
-        // token between the arrow and an id.
+        // or `-` after the arrow, null when there is none, and each central
+        // connection is a `()` token between the source and the arrow, or
+        // between the arrow and the target.
         if (isNode(node.arrow)) {
           checkSequenceArrow(root, node.arrow, problems)
-        } else {
-          problems.report(where, "has no arrow node")
+          checkMessageMarks(root, node, node.arrow, problems)
         }
-        if (node.activation !== null) {
-          problems.expect(
-            punctuators.some((value) => value === node.activation),
-            where,
-            `activation ${JSON.stringify(node.activation)} is not a token`,
-          )
-        }
-        problems.expectEqual(
-          Number(node.fromCentralConnection) + Number(node.toCentralConnection),
-          punctuators.filter((value) => value === "()").length,
-          where,
-          "central connections",
-        )
         break
       case "SequenceNoteStatement":
         // ast/sequence.md, SequenceNoteStatement: `placement` is the words
@@ -180,13 +202,7 @@ export function checkSequenceTree(root: CheckedRoot, problems: Problems): void {
         // that whitespace. That the range of each part runs from a token to
         // a token is invariant 9.
         const { colorCandidate, remainder } = node
-        const parts = [colorCandidate, remainder].filter(
-          (part) => part !== null,
-        )
-        if (!parts.every(isNode)) {
-          problems.report(where, "has a part that is not a node")
-          break
-        }
+        const parts = [colorCandidate, remainder].filter(isNode)
         const between: TreeRange = [
           isNode(colorCandidate) ? colorCandidate.range[1] : node.range[0],
           isNode(remainder) ? remainder.range[0] : node.range[1],

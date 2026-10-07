@@ -32,8 +32,11 @@ document describes how to apply them.
     renamed, or removed with its document, as the eslint-plugin SKILL describes.
     When a document of a dropped rule exists, it is deleted with its rule file
     by the same procedure.
-  - Missing supporting fixtures are added with the generator of the tests
-    package (`packages/tests/docs/maintaining-fixtures.md`).
+  - Missing supporting fixtures are requested from the tests package, with the
+    smallest input and the claim that the fixture answers; the tests package
+    adds them and records what mermaid.js does
+    (`packages/tests/docs/maintaining-fixtures.md`), and the names are then
+    listed in the rule notes.
 - For each claim, show whether it was run (checked by running it), read (checked
   by reading), or unchecked. When a claim turns out to be wrong, withdraw it in
   those words.
@@ -268,10 +271,12 @@ for (const input of inputs) {
   - an example that is not reported (the corrected writing)
   - an intended way of writing (question 3 of section 2; for example `#9829;` or
     `R&D`)
-- A condition or a suggestion checked with generated inputs is checked kind by
-  kind: list the kinds of inputs first (which statement comes before the place,
-  where in its line the place is, what follows it), and run a few inputs of each
-  kind, as Running tests in the conventions SKILL says.
+- Each claim of a condition or a suggestion is checked with an input for each
+  case that the claim distinguishes, and for each other rule that meets it at
+  the place it names (a directive, an ignored `;`, a comment line, an empty
+  line, a line separator, an empty description block), as Running tests in the
+  conventions SKILL says. The inputs are chosen from these cases; none is
+  generated.
 - `runMermaid` gives a Db summary only for diagram types that have a normalizer
   (flowchart, for now); for other diagram types `db` is null. `parse()` also
   fails for diagram types it does not support yet, with
@@ -410,6 +415,10 @@ For each rule decided, show:
 - Whether the `recommended` configuration enables it, and why, decided by
   section 7.
 - Its suggestions, or why it has none, decided by section 8.
+- Its options, and an option considered for later with the condition under which
+  it would be added, recorded in the table below. The rule document's Options
+  section says only what the rule has now; an option considered for later is not
+  written there.
 
 Show what was decided to be dropped as well, with the name and the item of
 "Policies and criteria" in section 2 under which it was dropped.
@@ -417,6 +426,13 @@ Show what was decided to be dropped as well, with the name and the item of
 When writing a rule document shows a new candidate, a needed change of scope or
 name, or that the tree cannot show something, decide it again with the same
 criteria and show the result in the same form.
+
+Decisions about options (made on 2026-10-07):
+
+| Rule                                                                      | Options | Considered for later                                                                                                        |
+| ------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------- |
+| flowchart/no-empty-description-block, sequence/no-empty-description-block | None    | Also reporting a block that holds only comments, which the rule does not report: added only if users of the rule ask for it |
+| Every other rule                                                          | None    | None                                                                                                                        |
 
 ## 7. Whether `recommended` enables a rule
 
@@ -557,40 +573,65 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
   left open at the end of the text, with the lines `Long` and `text`, closed at
   the end of the text, has those two lines as its description (run). May make
   visible: no-duplicate-description, when a description is set before the block
-  (`accDescr: d`, then `accDescr { x` closed, gives `x`; run).
+  (`accDescr: d`, then `accDescr { x` closed, gives `x`; run). Closing at the
+  end of the line is offered only when the parser reads the result: a later line
+  that is no statement, as `second line, more`, is rejected once the block is
+  closed above it (run). A block that a later `}` closes is reported too: after
+  `accDescr { first`, the lines `B --> C`, `A{y}`, and `D` give the description
+  `first`, `B --> C`, `A{y` and only the vertex `D`, because the `}` of `A{y}`
+  closes the block (run); the condition is that the text of the block holds a
+  `{` on a later line than the `{` of the block and the closing `}` does not
+  stand alone on its line, so that the `}` that closes the block is the one of a
+  shape or data block on that line, also one that spans lines (`B{`, then `y}`;
+  run); a `}` on the line of the `{` (`accDescr { a { b }` gives `a { b`) and a
+  `}` alone on its line (`accDescr { x {`, then `}`, gives `x {`) close the
+  block as written and are not reported (run). Such a block gets only the
+  closing at the end of the line of the `{` (`accDescr { first }`, then the same
+  lines, reads the edge from B to C and the vertices A and D; run).
 - Remove: the statement, with its line when nothing else is on the line, or with
-  the whitespace up to the next statement on the same line. A `;` after it is
-  never removed: inside a subgraph, a `;` that stands alone is an empty
-  statement, which mermaid.js makes a member `;` of the subgraph, so removing it
-  changes the members (run: 40 of 148 removals of a duplicate description inside
-  a subgraph or a nested one changed the Db with the `;` removed, 0 with it
-  kept; a line of only `;` or `;;B` left behind reads as before). Removing an
-  empty block leaves the Db as it is (run). For the duplicates, mermaid.js uses
-  the last description or title that remains (run); a description inside a
-  subgraph is also a member of the subgraph in the Db, so removing it changes
-  the members as well (run). An empty block is removed only when it is the first
-  token on its line: after something on its line, removing the whitespace before
-  it changes the reading of some statements and keeping it changes others
-  (`autonumber ` in a sequence; a subgraph name that ends in a space), which the
-  tree does not tell (run: of 49,671 blocks first on their line, inserted into
-  the accepted fixtures of the four diagram types, 19 read differently after
-  removal, all in forms obscure on purpose: a keyword whose value continues on
-  the next line, a subgraph name that ends in `end`, and a statement whose
-  reading depends on its column).
+  the whitespace up to the next statement on the same line. A `;` after it that
+  separates statements is never removed: inside a subgraph, a `;` that stands
+  alone is an empty statement, which mermaid.js makes a member `;` of the
+  subgraph, so removing it changes the members (run: 40 of 148 removals of a
+  duplicate description inside a subgraph or a nested one changed the Db with
+  the `;` removed, 0 with it kept; a line of only `;` or `;;B` left behind reads
+  as before). A `;` that mermaid.js ignores at the end of the text, as in
+  `accTitle: style:#b;`, is removed with the statement: kept alone, it would
+  become a member `;` (run: the members `a`, `;` instead of `a`). Removing an
+  empty block leaves the Db as it is (run); a block that holds a directive is
+  not removed, because the directive's settings would go with it (run: a
+  subgraph loses the direction that `inheritDir` gave it). For the duplicates,
+  mermaid.js uses the last description or title that remains (run); a
+  description inside a subgraph is also a member of the subgraph in the Db, so
+  removing it changes the members as well (run). An empty block is removed only
+  when it is the first token on its line: after something on its line, removing
+  the whitespace before it changes the reading of some statements and keeping it
+  changes others (`autonumber ` in a sequence; a subgraph name that ends in a
+  space), which the tree does not tell (run: of 49,671 blocks first on their
+  line, inserted into the accepted fixtures of the four diagram types, 19 read
+  differently after removal, all in forms obscure on purpose: a keyword whose
+  value continues on the next line, a subgraph name that ends in `end`, and a
+  statement whose reading depends on its column).
 - Split at the `;`: offered only when every ignored text on the line is
   separated from the direction by a `;` (the text before it ends with `;`, the
   text after it starts with `;`); the whitespace after each such `;` becomes a
-  line break and the indentation of the line, and the `;` stays, as if the
-  author had broken the line after it (removing the `;` can change how
-  mermaid.js reads the line: `A[style:#x;];` and `A[style:#x;]` give `A`
-  different labels; run), except where the parse of the result does not read the
-  kept `;` as a separator but as part of a text, as after
-  `accTitle: What to buy`, whose text runs to the end of the line, or after the
-  direction value, where the rest of the line is dropped: there the `;` is
-  removed with the whitespace (the title is then `What to buy`, not
+  line break, of the kind that the text uses there (the one that ends the line,
+  or, on a last line without one, the one that ends the line before it), and the
+  indentation of the line, and the `;` stays, as if the author had broken the
+  line after it (removing the `;` can change how mermaid.js reads the line:
+  `A[style:#x;];` and `A[style:#x;]` give `A` different labels; run), except
+  where the parse of the result does not read the kept `;` as a separator but as
+  part of a text, as after `accTitle: What to buy`, whose text runs to the end
+  of the line, or after the direction value, where the rest of the line is
+  dropped, or where a kept `;` would stand alone as a statement, as after a
+  description block (`accDescr { x }; direction TB` in a subgraph, split with
+  the `;`, gives the members `x` and `;`; run): there all the `;`s on the line
+  are removed with the whitespace (the title is then `What to buy`, not
   `What to buy;`; run); and only when the parser reads the result with the split
-  text as statements and nothing dropped on the line, because the text before or
-  after the `;` may be no statement on its own (`direction TB; -->B`, split, is
+  text as statements, the direction as a direction statement, and nothing
+  reported on the line (inside a label, `A[x; direction LR; y]`, split, gives a
+  label of three lines and no direction; run), because the text before or after
+  the `;` may be no statement on its own (`direction TB; -->B`, split, is
   rejected; run). `A --> B; direction TB` in a subgraph, split, gives the edge
   and the direction (run). Without the `;`, whether the text was meant as
   statements is not known, and inside a label (`A[Set direction LR]-->B`) a line
@@ -599,14 +640,34 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
   (`accTitle: a`, then `accTitle: t; direction LR` in a subgraph, split, gives
   the title `t`, which no-duplicate-title reports; run).
 - Remove the `%%`: the `Identifier` token, with its line when only whitespace
-  remains; a directive on the line stays. In a text that spans lines (a label, a
+  remains; a directive on the line stays. Only where the vertex `%%` is the
+  whole statement (`%%` then `A`, `A;` then `%%`, a line in a subgraph): there
+  the result is the same diagram without the vertex (run). At the end of a link
+  no suggestion is offered (criteria 3 and 4): `A -->` then `%%`, and `%%` then
+  `  --> B`, are rejected without it, and `A -->`, `%%`, `  B` gets the link
+  from A to B instead of to `%%` (run). In a text that spans lines (a label, a
   description, a title, a string, a data block, and the name or the arguments of
   the function that a `click` statement calls), the line of only `%%` with its
   line break, except where a directive, or its start or its end, is on that
   line: the line would take the directive with it, and the rest of a directive
-  that spans lines is then not closed, which mermaid.js rejects (run). Not
-  reported: a line in a description block that is not closed (the description is
-  empty). The name and the arguments were checked by recording what mermaid.js
-  passes to `setClickEvent`: `click A call c`, `%%`, `b()` gives the name `c`,
-  `%%`, `b` on three lines, and `call f(1,`, `%%`, `2)` gives the arguments
-  `1,`, `%%`, `2` (run).
+  that spans lines is then not closed, which mermaid.js rejects (run). Each
+  suggestion removes only the line of its own report, and its message speaks of
+  that line only: where a value holds several lines of only `%%`, removing one
+  leaves the others, so the vertex `%%` stays, a label keeps the other lines,
+  and a data block that they make invalid is still rejected until every line is
+  removed (run). The line is removed only when its value (the text, the name, or
+  the data block) holds something besides lines of only `%%` and whitespace;
+  otherwise the line is all of the value, and removing it gives nothing the
+  author wrote (criteria 2 and 3): after `accTitle:`, `accDescr:`, or `click A`,
+  whose value is the next line (the only statements of a flowchart that take
+  their value from the next line; run), mermaid.js takes the line after it as
+  the value (`accTitle:`, `%%`, `A` gets the title `A` and no vertex `A`;
+  `click A`, `%%`, `cb` gets the name `cb` and no vertex `cb`; `click A`, `%%`
+  at the end of the text is rejected), and a data block of only such lines is
+  left empty, which mermaid.js rejects (run). In `click A call c`, `%%`, `b()`
+  the name holds `c` and `b` too, and the suggestion stays. Not reported: a line
+  in a description block that is not closed (the description is empty). The name
+  and the arguments were checked by recording what mermaid.js passes to
+  `setClickEvent`: `click A call c`, `%%`, `b()` gives the name `c`, `%%`, `b`
+  on three lines, and `call f(1,`, `%%`, `2)` gives the arguments `1,`, `%%`,
+  `2` (run).

@@ -16,15 +16,25 @@ existing fixtures with `fixtures:set-note` and `fixtures:set-divergence`.
 - `source`: `kind: "mermaid"` for an input taken from the mermaid.js repository
   at `ref`, file `path`, optionally `line` and test title `test`;
   `kind: "authored"` for one written here, with a `note` that says why. For
-  example,
-  `{ "kind": "mermaid", "ref": "mermaid@12.0.0", "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-edges.spec.js", "line": 71, "test": "[Edges] when parsing > should handle open ended edges" }`.
+  example:
+
+  ```json
+  {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-edges.spec.js",
+    "line": 71,
+    "test": "[Edges] when parsing > should handle open ended edges"
+  }
+  ```
+
 - `config`: only in fixtures that show behavior depending on a setting the input
   does not make itself, for example the secure key `maxEdges`, or
   `flowchart.inheritDir` set by the site. Inputs taken from mermaid.js have
   none.
 - `knownDivergence`: one of `KNOWN_DIVERGENCES`, on an input where the
-  specification deliberately departs from mermaid.js. Each identifier is a
-  heading of `docs/known-divergences.md` in `@mmd-toolkit/spec`.
+  specification deliberately departs from mermaid.js. Each identifier is a row
+  of the table in `docs/known-divergences.md` in `@mmd-toolkit/spec`.
 
 ## Names
 
@@ -91,8 +101,6 @@ tests use. They are not meant for testing an implementation.
   - `mermaidVersion`: the version of the pinned mermaid.js.
   - `extractFrontmatterTitle(text)`: the frontmatter title, extracted the way
     mermaid.js does (see [expected-results.md](./expected-results.md)).
-- `@mmd-toolkit/tests/mutation`:
-  - `compareWithMermaid(text, candidate, config, options)`: compares one text.
 
 ## Commands
 
@@ -141,10 +149,14 @@ pnpm run fixtures:set-note notes.json --dry-run
     `-`. The keys include those an author writes (data block contents, props),
     so read the list;
   - `Db values`: the same keys with other values;
+  - `embedded values`: the same Db with other `embedded` values;
   - `error name`: still rejected, with another error name;
   - `error message only`: still rejected, with the same name;
   - `file format only`: the same expectation in a file that was not written in
     the canonical form.
+- A change of the `specified.json` of a fixture is printed on a line of its own:
+  `specified.json added`, `specified.json removed`, or `specified.json:`
+  followed by one of the kinds above for how the reading changed.
 - A fixture that cannot be generated (mermaid.js reached for a browser feature
   Node lacks, `mermaid.parse()` and `getDiagramFromText()` disagree, the input
   is detected as a diagram type that does not belong in its directory, or that
@@ -156,8 +168,9 @@ pnpm run fixtures:set-note notes.json --dry-run
   "Rejection versus a missing browser feature" in
   [expected-results.md](./expected-results.md)).
 
-The CI job `fixtures` regenerates every `expected.json` and fails on any
-difference or new file, so a change in mermaid.js's behavior shows up as a diff.
+The job `fixtures` of the workflow `NodeCI.yml` regenerates every
+`expected.json` and fails on any difference or new file, so a change in
+mermaid.js's behavior shows up as a diff.
 
 ## Renaming and removing
 
@@ -214,3 +227,85 @@ inputs of one file whose hashes begin alike stop the run, to be named by hand.
 
 How to prepare the checkout and run the collection, and how to check the inputs
 mermaid.js rejects, is in [tools/README.md](../../../tools/README.md).
+
+## Choosing inputs by shape
+
+Inputs that other collections hold (the inputs on which a tool found a failure,
+which run to a thousand and more) are many, and many differ only in a name, a
+string, or a label text. One of them stands for the others.
+`shapeOf(text, source)` (`src/fixture-shapes.ts`) gives the shape that decides
+it. The source is made from a recorded tree (`ast.json`) or from the tree that
+the parser returns by `shapeSourceOf(tree)`: its tokens, and the ranges of its
+frontmatter and of its data block nodes (`DATA_BLOCK_NODE_TYPES`, the headings
+of the data blocks in the specification's AST documents), which are taken from
+the tree and not found again in the text. The shape is the list of the tokens,
+each with its type and its text, and of the characters between them:
+
+- The words and the numbers of a token that holds what the author names, an
+  `Identifier`, a `RawText`, a `String`, or a `StringFragment`, are numbered as
+  they first appear in the text: a run of letters, digits, and underscores is
+  `a1`, `a2`, … and a run of digits only `0_1`, `0_2`, …, the same spelling the
+  same number. The spelling of a name does not change the reading, but whether
+  two names are one does: `A-->B` has two vertices and `A-->A` one. The
+  fragments that a directive cuts out of one name are one name:
+  `a%%{init: {}}%%b` is `ab`. The other characters of the token stay: a `:`, a
+  `#`, a `;` inside a run of text, a quote, whitespace. The reading also depends
+  on where the token starts and ends, which the token types and the characters
+  between the tokens show: in `subgraph a end`, a line break, and `;`, the name
+  token takes the line break (`a end` and the line break), and in
+  `subgraph a pend` it does not; `classDef:#x;` has the `;` of an entity in a
+  run of text, and `style:#f00;` an `IgnoredSemicolon` of its own.
+- Every other token stays as written: a `Keyword` (`end`, `direction`, `box`,
+  `LR` and `lr`, in the case written), a `Punctuator` (the letter of an arrow,
+  `--o` and `--x`, `-x`), a `Numeric` (`linkStyle 0` and `linkStyle 5`), a
+  `Directive`, and an `IgnoredSemicolon`. Their characters are all read by their
+  value.
+- Every character between the tokens stays as written: the number of spaces, a
+  U+2028 or U+2029, a comment, the kind of each line break. The tokens in the
+  frontmatter and in a data block `@{ … }` stay as written too, as their words
+  are values (`"wrap": true` and `"wrap": false`, `shape: rect` and
+  `shape: foo`); the ranges are those of the nodes, so a `}` in a directive in a
+  data block, or a byte order mark before the frontmatter, is read as the tree
+  reads it.
+- A text with no tree (one that the parser rejects) has its words and numbers
+  numbered, and nothing else.
+
+There are three exceptions, where the reading depends on whether a word is in a
+set, which no token shows; the token stays as written. They are the places known
+so far, each found with inputs that show it, and a place of this kind is added
+with its inputs; a list of words is not the way to find the places.
+
+- The run of text right after a `box` keyword: a colour for the name of a CSS
+  colour and a name for any other word. `box red` has the fill `red`, and
+  `box team` the name `team`.
+- The runs of text of a `linkStyle` statement, up to its `;` or the end of its
+  line: mermaid.js adds `fill:none` to the style of an edge when no style of the
+  list is a `fill` one. `linkStyle 0 fill:red` gives the edge the style
+  `fill:red`, and `linkStyle 0 color:red` the styles `color:red` and
+  `fill:none`.
+- A token whose whole text is the id of a state that makes no node (`</choice>`,
+  `</join></fork>`, as `IDS_WITHOUT_NODE` of `src/db-from-tree/state.ts` and
+  [db-from-tree/state.md](./db-from-tree/state.md) say):
+  `state </join></fork> <<fork>>` has no fork state, and
+  `state </x></fork> <<fork>>` has one. It is kept in any diagram and position,
+  so it only separates shapes that would be one: where no state id is meant, the
+  shape is finer than it needs to be.
+
+An input is left out only when its shape, its diagram type, and whether
+mermaid.js accepts it are those of a fixture, or of another input of the same
+collection, of which the shortest stands for them. Acceptance is part of it
+because a number of a text with no tree is not read: `linkStyle 0` of a diagram
+with one edge is accepted, and `linkStyle 5` is rejected, as an edge that does
+not exist. Each input that is left out is listed with the fixture that stands
+for it and the shape.
+
+What a shape does not tell apart is the spelling of what the author named: the
+word in a name, the length of a number. Such a difference is a fixture of its
+own when it is found to change a reading, with the input that shows it.
+
+The inputs of the parser's first collection were chosen with a shape of the text
+alone: every run of letters and digits became one mark, and a word that the
+parser had given as a `Keyword` token, for those inputs and for the corpus, was
+kept, in lower case. That shape folded the case of the words, did not see the
+tokens, and did not keep whether two names are one. Their fixtures are kept as
+they are, and the shape above is what later collections use.

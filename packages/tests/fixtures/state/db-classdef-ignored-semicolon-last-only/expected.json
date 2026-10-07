@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The last `;` of the line, in the second part, is ignored: the first part keeps the entity `#f00;`, and the styles are `a:` with the placeholder and `b`, and `de`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "a:ﬂ°f00¶ßb",
+          "de"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

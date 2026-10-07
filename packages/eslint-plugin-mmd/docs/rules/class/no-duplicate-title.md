@@ -21,6 +21,9 @@ This rule reports every `accTitle` statement after the first one. It applies to
 `classDiagram`.
 
 After `accTitle: first` and `accTitle: second`, the title is `second`.
+`accTitle:` with no text sets the title too: it takes the next line that holds
+text as the title, past empty lines, comment lines, and directives. At the end
+of the text, mermaid.js rejects it.
 
 Examples of **incorrect** code for this rule:
 

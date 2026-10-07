@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A comment after a bare class name ends at the end of its line; mermaid.js joins the next line to it and rejects the text."
+  },
+  "knownDivergence": "comment-takes-line-break",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nclassDiagramA %% cclass Z\n------------------^\nExpecting 'NEWLINE', 'EOF', 'SQS', 'STR', 'DOT', 'GENERICTYPE', 'LABEL', 'STRUCT_START', 'STRUCT_STOP', 'STYLE_SEPARATOR', 'ANNOTATION_START', 'ANNOTATION_END', 'ALPHA', 'AGGREGATION', 'EXTENSION', 'COMPOSITION', 'DEPENDENCY', 'LOLLIPOP', 'LINE', 'DOTTED_LINE', 'CALLBACK_NAME', 'HREF', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'CLASS'"
+  }
+}

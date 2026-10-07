@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "There are two links for A, in source order."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": [
+      {
+        "state": "A",
+        "url": "\"u\"",
+        "tooltip": "\"t\""
+      },
+      {
+        "state": "A",
+        "url": "\"v\"",
+        "tooltip": ""
+      }
+    ]
+  }
+}

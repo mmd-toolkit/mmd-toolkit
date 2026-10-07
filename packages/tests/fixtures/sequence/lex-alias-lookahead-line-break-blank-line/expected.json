@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md The alias context, rule 4: the whitespace before `as` may hold several line breaks and spaces."
+    "note": "sequence.md The alias context, rule 3: the whitespace before `as` may hold several line breaks and spaces."
   },
   "accepted": true,
   "diagramType": "sequence",

@@ -5,17 +5,20 @@
 
 図種: flowchart、sequence、class。
 この仕様の mermaid.js からの
-[既知の差](../known-divergences.ja.md) の 1 つです。
+[既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 構文
 
-`style` を含み、その後に `:` と空白でない文字と `#` があり、
+`style` を含み、その後に `:` と、空白でない 0 個以上の文字と、`#` があり、
 さらにその後に `;` がある行は、`style` の規則に当たり、
 その最後の `;` は無視されます。
 mermaid.js もこの仕様も、それを読みません
-（[`style` と `classDef` の行](../common.ja.md#style-行と-classdef-行) を参照）。
-この規則は、`style A fill:#f00;` のように色を終える `;` が、
-色を実体にしないためのものです。
+（[`style` と `classDef` の行](../common.ja.md#style-行と-classdef-行)
+を参照）。
+この規則は、`style A fill:#f00;` のように色を終える `;` によって、
+色が [エンティティ](../common.ja.md#エンティティ)
+（`#name;` の形の文字参照）として
+解釈されるのを防ぐものです。
 
 規則はテキストだけを見るので、無視される `;` は行のどこにでもありえます。
 ラベルの中、2 つの語の間、
@@ -24,8 +27,10 @@ mermaid.js もこの仕様も、それを読みません
 ここでの名前は空白のない名前です。
 sequence 図の参加者の id やクラスの名前のような、空白を含みうる名前は、
 テキストとして読まれ、無視される `;` を持てます。
+[fixture: sequence/tokens-ignored-semicolon-separator-line-feed]
+[fixture: class/tokens-ignored-semicolon-in-relation-name]
 
-## 差
+## 差異
 
 どの例も、図の全体です。
 
@@ -95,17 +100,31 @@ flowchart/tokens-ignored-semicolon-label-spaces]
 名前、数、キーワード、矢印、区切り記号は、
 中に無視される `;` を持てません。
 そのような入力は拒否されます。
-差は一方向だけです。
+差異は一方向だけです。
 この仕様は、mermaid.js が拒否する入力を受理することはなく、
 どちらも受理する入力には、すべて同じ Db を与えます。
 
-state 図では、無視される `;` がこれらの中にある行は見つかりませんでした。
-`style`、`:`、`#` を持てる文は、行の残りをテキストとして読むからです。
+state 図では、無視される `;` は、
+`style`、`:`、`#` を持てる `state` の後の名前の中に置けます。
+mermaid.js は、本体の続く `state style:#x;B` を合成状態 `style:#xB` と読み、
+この仕様はそれを拒否します。
+[fixture: state/div-ignored-semicolon-in-state-name]
+[fixture: state/div-ignored-semicolon-in-state-name-without-body]
+`style`、`:`、`#` を持てるほかの文は、行の残りをテキストとして読みます。
 
-各図の文書は、これがどこに表れるかを、既知の差の節に挙げています。
-[flowchart](../diagrams/flowchart.ja.md#既知の差)、
-[sequence](../diagrams/sequence.ja.md#既知の差)、
-[class](../diagrams/class.ja.md#既知の差) です。
+各図の文書は、これがどこに表れるかを、既知の差異の節に挙げています。
+[flowchart](../diagrams/flowchart.ja.md#既知の差異)、
+[sequence](../diagrams/sequence.ja.md#既知の差異)、
+[class](../diagrams/class.ja.md#既知の差異)、
+[state](../diagrams/state.ja.md#既知の差異) です。
+
+## 書き手にとっての結果
+
+名前、数、キーワード、矢印、区切り記号の中の無視される `;` は、
+mmd-toolkit のパーサーでは拒否されます。
+mermaid.js はそれを受理し、`;` がないものとして行を読みます。
+どちらも同じに読む図を書くには、
+`style` の規則に当たる行は `;` で終えるか、語の中に `;` を書かないでください。
 
 ## mermaid.js がそう読む理由
 
@@ -113,7 +132,7 @@ mermaid.js は、図を読む前に、行のテキストから `;` を除きま�
 （[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L917)）。
 各図種の字句解析器は、その後に残ったテキストを読み、
 `;` がどこにあったかを知りません。
-名前や矢印がそのような `;` で分かれられることは、
+名前や矢印の途中にそのような `;` を挟めるのは、
 この処理の順から生じます。
 
 ## この仕様の規則と、その理由
@@ -137,16 +156,8 @@ mermaid.js は、図を読む前に、行のテキストから `;` を除きま�
 mermaid.js がその中の無視される `;` を読めるのは、
 読む前の段階として `;` を除くからで、
 仕様が構文の規則として述べるものではありません。
-これは既知の差の 2 つ目の理由に当たります
+これは既知の差異の 2 つ目の理由に当たります
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
-
-## 書き手にとっての結果
-
-名前、数、キーワード、矢印、区切り記号の中の無視される `;` は、
-この道具では拒否されます。
-mermaid.js はそれを受理し、`;` がないものとして行を読みます。
-どちらも同じに読む図を書くには、
-`style` の規則に当たる行は `;` で終えるか、語の中に `;` を書かないでください。
 
 ## mermaid.js の文書と issue
 
@@ -155,7 +166,7 @@ mermaid.js はそれを受理し、`;` がないものとして行を読みま�
   名前や矢印の中の `;` には触れていません。
 - [Issue #1666](https://github.com/mermaid-js/mermaid/issues/1666)
   「Flowchart: linkStyle issues with hex colors」は、
-  `#ff9900;` が実体として読まれて
+  `#ff9900;` がエンティティとして読まれて
   `linkStyle 0 stroke:#ff9900;` が拒否されたことを報告しています。
   2026-10-03 の時点で閉じていて、
   ラベルは `Type: Bug / Error` と `Status: Triage` です。

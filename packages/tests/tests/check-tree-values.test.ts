@@ -8,6 +8,7 @@ import {
   VALUE_NODE_TYPES,
 } from "../src/check-tree/node-types.ts"
 import { VALUE_RULES } from "../src/check-tree/values.ts"
+import { WrittenText } from "../src/check-tree/written-text.ts"
 import type { CheckedNode, CheckedRoot } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
 import type { DiagramType } from "../src/index.ts"
@@ -251,4 +252,67 @@ describe("whitespace taken off an end of a token", () => {
     }
     expect(unreported).toEqual([])
   }, 120_000)
+})
+
+// ast.md, Nodes, and parser/docs/tokens.md, Comment: a diagram comment that a
+// comment line cuts runs from its mark to the end of its line, across the
+// comment lines and the fragment after them, so that the value of a node of
+// text that mermaid.js does not read leaves out all of it: the whitespace
+// before a U+2028 or U+2029, the separator itself, the whitespace after the
+// region, and what is left of the line when nothing but whitespace follows.
+
+/** The recorded trees of the state fixtures of such comments. */
+async function cutCommentTrees(): Promise<Recorded[]> {
+  return (await recordedTrees()).filter(
+    (recorded) =>
+      recorded.name.startsWith("state/") &&
+      recorded.name.includes("comment-cut"),
+  )
+}
+
+describe("the value of a node of text that mermaid.js does not read, with a diagram comment that a comment line cuts", () => {
+  it("is accepted in each recorded tree of such a comment", async () => {
+    const trees = await cutCommentTrees()
+    // The classes: a U+2028 and a U+2029, for `%%` and for `#`, a space before
+    // the separator, spaces after the region, and a line of spaces after it.
+    expect(trees.length).toBeGreaterThanOrEqual(7)
+    for (const recorded of trees) {
+      const tree = JSON.parse(recorded.json) as CheckedRoot
+      expect(checkTree(recorded.input, tree), recorded.name).toEqual([])
+    }
+  })
+
+  it("is reported when it keeps what lies between the comments of the diagram comment", async () => {
+    const trees = await cutCommentTrees()
+    let made = 0
+    const unreported: string[] = []
+    for (const recorded of trees) {
+      const tree = JSON.parse(recorded.json) as CheckedRoot
+      const written = new WrittenText(recorded.input, tree)
+      for (const node of nodesOf(tree)) {
+        if (!node.type.endsWith("IgnoredText")) continue
+        // The value that leaves out the comments only, one by one, as the
+        // comment lines and the fragments are recorded.
+        const commentsOnly = written.of(
+          node.range,
+          tree.comments
+            .filter(
+              (comment) =>
+                node.range[0] <= comment.range[0] &&
+                comment.range[1] <= node.range[1],
+            )
+            .map((comment) => comment.range),
+        )
+        if (commentsOnly === node.value) continue
+        made++
+        ;(node as Record<string, unknown>).value = commentsOnly
+        if (checkTree(recorded.input, tree).length === 0) {
+          unreported.push(`${recorded.name}: ${JSON.stringify(commentsOnly)}`)
+        }
+      }
+    }
+    // Every class of the fixtures keeps something between its comments.
+    expect(made).toBeGreaterThanOrEqual(6)
+    expect(unreported).toEqual([])
+  })
 })

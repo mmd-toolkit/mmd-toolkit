@@ -302,7 +302,7 @@ function classBlockRules(source: Source): BlockRules<ClassStatement> {
     },
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: true,
-    keepsDirectiveLinesUnindentedAfterBareMarker: true,
+    keepsDirectiveLinesUnindented: true,
   }
 }
 
@@ -319,7 +319,7 @@ function memberBlockRules(source: Source): BlockRules<ClassMember> {
     holdsStatements: () => false,
     isDroppedAtTopLevel: () => false,
     keepsWhitespaceLineAfterComment: false,
-    keepsDirectiveLinesUnindentedAfterBareMarker: false,
+    keepsDirectiveLinesUnindented: false,
   }
 }
 

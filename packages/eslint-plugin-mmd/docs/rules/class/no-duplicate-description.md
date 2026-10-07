@@ -21,10 +21,11 @@ twice.
 This rule reports every statement that sets the description after the first one.
 It applies to `classDiagram`.
 
-`accDescr:` and a description block with text both set the description, and a
-line and a block replace each other in either order: after `accDescr: first` and
-`accDescr: second`, the description is `second`, and so it is after a block with
-`first` followed by `accDescr: second`.
+`accDescr:` and a description block with text both set the description. The line
+form and the block form may be mixed: whichever comes first, the description
+written last is used. After `accDescr: first` and `accDescr: second`, the
+description is `second`, and so it is after a block with `first` followed by
+`accDescr: second`.
 
 Examples of **incorrect** code for this rule:
 

@@ -11,16 +11,16 @@
 欄の値は、[ast.ja.md](../ast.ja.md#ノード) が定める値の書かれたテキストとして、
 書き手が書いたものを保ちます。
 [common.ja.md](../common.ja.md#ソースの読み方) の変換した形ではありません。
-mermaid.js が値の一部として読む空白は、
-その書かれたテキストの一部です
-（[ノード](../ast.ja.md#ノード) を参照）。
+値が空白で始まるか終わるのは、値の単位がそれを自身の文字として持ち、
+mermaid.js がそれを読むところだけです（[ノード](../ast.ja.md#ノード) を参照）。
 この図種では、ジェネリクスの型の空白、メンバーの行の注釈の空白、
 空白で始まるメンバーの名前の始まりの空白、
 戻り値の型を終える分類子の記号の前の空白、
-閉じていないバッククォートの名前の終わりの空白です
+閉じていないバッククォートの名前の終わりの空白、
+`call` の後のコールバックの名前の終わりとその引数の両端の空白です
 （[ClassName](#classname)、[ClassMethod](#classmethod)、
-[ClassAnnotation](#classannotation) を参照）。
-ほかの空白は、どの値にも入りません。
+[ClassAnnotation](#classannotation)、[ClassLiteral](#classliteral) を参照）。
+ほかのところでは、値の両端の空白は値の外です。
 
 **クラス**は図の箱の 1 つで、クラスの名前で名指されます。
 この語は CSS のクラスを指しません。
@@ -179,16 +179,16 @@ class/db-note-text-spaces]
 
 `callback` の文か、`call` のある `click` の文です。
 
-| 欄          | 型                                | 意味                                                                                       |
-| ----------- | --------------------------------- | ------------------------------------------------------------------------------------------ |
-| `class`     | ClassName                         | `callback` か `click` の後のクラスの名前。                                                 |
-| `callback`  | StringLiteral または ClassLiteral | 関数名。クラスの名前の後の文字列か、`call` の後の `callback-name` の単位（ClassLiteral）。 |
-| `arguments` | ClassLiteral または null          | `call` の後の `(` と `)` の間のテキスト。なければ null。                                   |
-| `tooltip`   | StringLiteral または null         | 最後の文字列。なければ null。                                                              |
+| 欄          | 型                                | 意味                                                                                                        |
+| ----------- | --------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `class`     | ClassName                         | `callback` か `click` の後のクラスの名前。                                                                  |
+| `callback`  | StringLiteral または ClassLiteral | 関数名。クラスの名前の後の文字列か、`call` の後の `callback-name` の単位（ClassLiteral）。                  |
+| `arguments` | ClassLiteral または null          | `call` の後の `(` と `)` の間のテキスト。両端のものも含めて空白と改行を保つ 1 つのテキスト。なければ null。 |
+| `tooltip`   | StringLiteral または null         | 最後の文字列。なければ null。                                                                               |
 
 子の欄: `class`、`callback`、`arguments`、`tooltip`。
 どちらのキーワード（`callback` か `click`）を書いたかは、どの欄にも現れません。
-`click A call fn()` では、`(` と `)` は文のトークンで、
+`click A call fn()` では、`(` と `)` はどの欄にもない文の単位で、
 `arguments` は null です。
 [fixture: class/spec-class-diagram-6fe56b41] [fixture:
 class/db-callback-names-comma]
@@ -316,7 +316,7 @@ class の文、関係の両端、`note for`、`click`、`callback`、`link` の�
 ``class `Odd Name` `` は値が `Odd Name` の StringLiteral を持ちます。
 バッククォートの名前の前に名前の部分があれば、それが `prefix` です。
 ``class A.`b c` `` は、prefix `A.` と StringLiteral `b c` を持ちます。
-`class A~~` は 2 つの `~` のトークンを持ち、generic は持ちません。
+`class A~~` は 2 つの `~` の単位を持ち、generic は持ちません。
 mermaid.js はジェネリクスの型を、空白と改行を含めて書かれたとおりに読むので、
 generic は `generic-text` の単位の全体です。
 `class A~ T ~` の generic は空白、`T`、空白で、
@@ -349,12 +349,14 @@ class/gram-name-prefix-backquoted] [fixture: class/gram-generic-empty-at-end]
 | `textAfter`  | ClassIgnoredText または null | mermaid.js が読む部分の後のテキスト。下を参照。なければ null。                             |
 
 子の欄: `textBefore`、`name`、`parameters`、`returnType`、`textAfter`。
-可視性と分類子の記号、`(`、`)` はトークンで、欄の語になります。
+可視性と分類子の記号、`(`、`)` はどのノードも持たない単位で、
+欄はその記号の語を持ちます。
 `+foo(a: int) List~T~$` は、可視性 `public`、名前 `foo`、引数 `a: int`、
 戻り値の型 `List~T~`、分類子 `static` を持ちます。
 [fixture: class/tokens-method-fields] [fixture: class/lex-member-classifiers]
 [fixture: class/lex-member-method-nested-parentheses]
-読まれないテキストがあるのは、行が U+2028 か U+2029 を持つときだけです
+読まれないテキストがあるのは、行が U+2028 か U+2029 を持つときだけで、
+そこが空白だけなら null です
 （[メンバーの行](../diagrams/class.ja.md#メンバーの行) を参照）。
 [fixture: class/lex-member-method-line-separator-before] [fixture:
 class/lex-member-method-line-separator-after]
@@ -446,9 +448,17 @@ class/gram-name-space-inside-word] [fixture: class/lex-directive-in-name]
 子の欄はありません。
 値が空白で始まるか終わるのは、mermaid.js がそれを読むところだけです。
 ジェネリクスの型、メンバーの行の注釈、空白で始まるメンバーの名前、
-分類子の記号の前の戻り値の型です
+分類子の記号の前の戻り値の型、`call` の後のコールバックの名前とその引数です
 （[ClassName](#classname)、[ClassAnnotation](#classannotation)、
 [ClassMethod](#classmethod) を参照）。
+コールバックの名前と引数は、mermaid.js が書かれたとおりに渡すので、
+`click A call fn ()` の名前は `fn` と空白で、
+`click A call f( x, y )` の引数は、空白、`x, y`、空白です。
+mermaid.js は、その後、引数を引用符の外の `,` ごとに分けて、
+それぞれの両端を削ります。
+[fixture: class/tokens-callback-name-trailing-space]
+[fixture: class/tokens-callback-arguments-spaces-at-ends]
+[fixture: class/tokens-callback-arguments-line-feeds-at-ends]
 そこでは、空白だけのテキストは、その空白の値です。
 `class A~ ~` と、本体の `<<  >>` がそうです。
 ほかのところでは、mermaid.js がテキストの両端を削り、

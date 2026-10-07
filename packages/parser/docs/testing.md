@@ -3,15 +3,13 @@
 Japanese version: [testing.ja.md](./testing.ja.md)
 
 The tests are in `tests/`. They check the parser against the fixtures of
-[`@mmd-toolkit/tests`](../../tests), and run no generated inputs: what the
-parser must do is stated by the specification and by the fixtures. Whether the
-recorded trees keep the conditions of the specification and give the Db of
-mermaid.js are checks of the corpus, which `@mmd-toolkit/tests` makes on the
-recorded trees; the tests of the parser check that the parser gives those trees,
-and run neither mermaid.js nor generated inputs. The explorations in
-`tools/explore/` generate inputs and compare them with the pinned mermaid.js
-(12.0.0); they are not tests (see
-[Explorations against mermaid.js](#explorations-against-mermaidjs)).
+[`@mmd-toolkit/tests`](../../tests): what the parser must do is stated by the
+specification and by the fixtures. Whether the recorded trees keep the
+conditions of the specification and give the Db of mermaid.js are checks of the
+corpus, which `@mmd-toolkit/tests` makes on the recorded trees; the tests of the
+parser check that the parser gives those trees, and run neither mermaid.js nor
+generated inputs. A case that the corpus lacks is added to it as a fixture, with
+the sentence of the specification or of the parser's documents that defines it.
 
 ## Fixtures
 
@@ -41,10 +39,15 @@ the diagram type that the parser gives are compared with it, and the corpus
 compares it with the Db built from the recorded tree.
 
 - `directive-as-token-boundary`: the parser reads the input without its
-  directives, and must give what mermaid.js gave for the input: the same
-  acceptance, diagram type, and Db. The Db is built from the parser's tree as
-  `@mmd-toolkit/tests` builds it from a recorded tree (`dbFromTree`), with the
-  embedded values that the fixture records.
+  directives and with each `;` that the line rule ignores moved to the end of
+  its line segment (see [Reference inputs](#reference-inputs)), and must give
+  what mermaid.js gave for the input: the same acceptance, diagram type, and Db.
+  The Db is built from the parser's tree as `@mmd-toolkit/tests` builds it from
+  a recorded tree (`dbFromTree`), with the embedded values that the fixture
+  records.
+- `ignored-semicolon-as-token-boundary`: the parser reads the same reference
+  input, and must give what mermaid.js gave for the input, as above. Which `;`
+  the line rule ignores is found from the parser's line rule.
 - `click-reserved-word`: the parser rejects the input, and, where the three
   conditions of its reference input hold (see
   [Reference inputs](#reference-inputs)), must give the reference input what
@@ -71,19 +74,23 @@ compares it with the Db built from the recorded tree.
   `"` mermaid.js reads as `'`, found from the parser's reading of the
   frontmatter and of the attribute quotes.
 
+A fixture marked `embedded-data-opaque` has no such check: mermaid.js rejects it
+for the content of its embedded data, which the parser does not read, and the
+parser accepts it.
+
 ### Reference inputs
 
 A reference input is an input with the form of its divergence, as the parser
 finds it, taken out or replaced, and, for some divergences, with comment regions
-or other forms taken out as well. The list above says how the reference input of
-`directive-as-token-boundary` is made and compared, and the paragraphs below say
-it for the others; where the parser and mermaid.js agree across the input and
-its reference input, the form explains the difference on the input itself. For
-`click-reserved-word` and `tokenless-empty-forms`, a removal can also change
-what lies around the removed text, so the reference input is compared only where
-the conditions below hold, and the test requires the reference input of more
-than half of the marked fixtures to be compared, so that the check does not pass
-vacuously.
+or other forms taken out as well. The list above says how the reference inputs
+of `directive-as-token-boundary` and `ignored-semicolon-as-token-boundary` are
+made and compared, and the paragraphs below say it for the others; where the
+parser and mermaid.js agree across the input and its reference input, the form
+explains the difference on the input itself. For `click-reserved-word` and
+`tokenless-empty-forms`, a removal can also change what lies around the removed
+text, so the reference input is compared only where the conditions below hold,
+and the test requires the reference input of more than half of the marked
+fixtures to be compared, so that the check does not pass vacuously.
 
 The reference input of `click-reserved-word` is the input without its comment
 regions, without its empty forms (see `tokenless-empty-forms` below), and
@@ -149,21 +156,25 @@ rejects. [fixture: flowchart/gram-style-empty-string-before-first-style]
 [fixture: flowchart/lex-empty-string-splits-triple-colon] [fixture:
 flowchart/header-empty-string-no-space]
 
+The two divergences share one reference input, so that an input with both forms,
+such as `A[style:#x];cl%%{init: {}}%%ick B;b call cb()` in a flowchart, is
+decided for each of them. The directives are left out first; then each `;` that
+the line rule ignores is moved to the end of its line segment, where it is still
+the last `;` of the segment, so the line rule still ignores it, and it lies
+after the text of the segment, inside no token. mermaid.js and the specification
+read the same diagram text in both inputs.
+
 `html-tag-in-frontmatter` goes both ways, so the fixtures need no reference
-input, but the explorations below compare with mermaid.js on one: the input with
-every `<` of its frontmatter replaced by `(`, so that no tag starts there. The
-Db of the parser's tree is then built with the values that mermaid.js derived
-from the embedded data of the reference input, so that a value from the
-frontmatter, such as the title, is the same on both sides.
+input.
 
 ## The tree check
 
 The [invariants](./positions.md#invariants) and what the documents of each
 diagram type state about the tree are checked by `@mmd-toolkit/tests`
 (`checkTree`), which lists the conditions that a tree breaks. It checks every
-recorded tree of the corpus, and the tests of the parser and the explorations
-use it on the trees of their own inputs (`tests/helpers/tree-problems.ts`),
-which expect it to list nothing.
+recorded tree of the corpus, and the tests of the parser use it on the trees of
+their own inputs (`tests/helpers/tree-problems.ts`), which expect it to list
+nothing.
 
 The order of the child fields is the parser's own: a tool that walks the child
 fields in the order of `visitorKeys` meets the child nodes in source order, but
@@ -229,55 +240,3 @@ looks for files left behind names any that remain.
   `traverseNodes`, the flowchart tree and its tokens, and the sequence tree, the
   class tree, and the state tree, their tokens, and the rejections outside their
   grammars.
-
-## Explorations against mermaid.js
-
-The explorations in `tools/explore/` look for what the fixtures lack. They are
-not part of the tests: `pnpm run explore`, in `packages/parser`, runs them
-(`tools/explore/vitest.config.ts`), when the lexing or the grammar of a diagram
-type changes, and a difference from mermaid.js that they find is closed by a
-fixture in the corpus, and by a sentence of the specification where it did not
-state the reading. They compare `parse()` with the pinned mermaid.js through
-`@mmd-toolkit/tests/mutation`: acceptance, the diagram type, and the Db summary
-built from the tree, and, for an accepted input, the tree check (see
-[The tree check](#the-tree-check)).
-
-- The rules shared by every diagram are compared on generated inputs
-  (`common-mermaid.test.ts`, `common-invariants.test.ts`).
-- Each diagram type is compared on mutants of its fixtures, each one edit away
-  from a fixture input (`<diagram>-mermaid.test.ts`). For the sequence diagram,
-  the class diagram, and the state diagram, the same files insert comments, and
-  for the state diagram lines, where a statement ends or starts.
-- The places where the Db of the flowchart, the class diagram, and the state
-  diagram reads text at the boundaries of the units are compared with
-  whitespace, directives, and comment lines put at every place of such a
-  statement (`<diagram>-source-reading.test.ts`), and the entities with an
-  entity put at every position of a link text and an ellipse label
-  (`entity-units.test.ts`).
-- The state diagram is also compared with texts put at the places of the fixture
-  inputs, chosen by the kinds of the places that `@mmd-toolkit/tests` finds
-  (`state-insertions.test.ts`, `insertions.ts`): each string of each family at
-  one place of each kind of boundary and of place inside a token, sequences and
-  the diagram's own lines at one place of each kind at the end of a line, and
-  one string at a second place of each kind, in another fixture.
-
-The parser does not tell the known divergences apart, so the explorations
-declare them, by the rules of `tests/helpers/known-divergences.ts`, which
-`tests/fixtures.test.ts` uses for the marked fixtures too. Every declared
-difference is checked:
-
-- a rejection for a directive must go away without the directives;
-- a rejection for a `click` that does not start a click statement, or for an
-  empty form, must give, where the parser accepts the reference input, what
-  mermaid.js gave for the input;
-- a difference that goes both ways must be what mermaid.js gives for the
-  reference input, for `html-tag-in-frontmatter` (see
-  [Reference inputs](#reference-inputs)), or for the input with the rules of its
-  lexer that the divergence names changed, for `comment-takes-character`,
-  `comment-takes-line-break`, and `name-start-reads-unit`;
-- a rejection of a class diagram whose first unit is not its header
-  (`headerless-empty-ending`, which goes one way and has no reference reading)
-  must be of an input that mermaid.js accepts; the parser's lexer decides it;
-- a rejection of mermaid.js for embedded data must be one of the errors that the
-  specification lists, and a difference in the Db or in the diagram type is
-  never put down to embedded data.

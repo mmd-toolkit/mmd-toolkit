@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A click statement without a target takes the next token, the bare marker line `%%`, as its target: accepted, A gets a click."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "%%",
+        "args": null
+      }
+    ]
+  }
+}

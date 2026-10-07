@@ -75,6 +75,18 @@
     "relations": [],
     "notes": [],
     "namespaces": [],
-    "interfaces": []
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "Class01",
+        "name": "callbackFunction",
+        "args": null
+      },
+      {
+        "id": "Class03",
+        "name": "callbackFunction",
+        "args": null
+      }
+    ]
   }
 }

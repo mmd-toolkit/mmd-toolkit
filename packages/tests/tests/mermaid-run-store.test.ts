@@ -23,7 +23,11 @@ import type { Fixture } from "../src/index.ts"
 import { loadFixtures } from "../src/index.ts"
 import type { MermaidConfig, MermaidRun } from "../src/mermaid.ts"
 import type { RunMermaidOptions } from "../src/run-mermaid-options.ts"
-import { mermaidVersion, runMermaidWithEmbeddedData } from "../src/mermaid.ts"
+import {
+  detectDiagramType,
+  mermaidVersion,
+  runMermaidWithEmbeddedData,
+} from "../src/mermaid.ts"
 import {
   MERMAID_RUN_STORE_DISABLED,
   MERMAID_RUN_STORE_SWITCH,
@@ -564,6 +568,32 @@ describe("pruning in the background", () => {
     expect(existsSync(path.join(directory, ".full"))).toBe(false)
   }, 30_000)
 
+  it("prunes again once the last prune ended ten minutes ago, not before", async () => {
+    const store = storeTooFull()
+    const marker = path.join(directory, ".pruned")
+    const now = clockAt(today)().getTime()
+    const tenMinutes = 10 * 60 * 1000
+    writeFileSync(marker, "")
+    utimesSync(
+      marker,
+      new Date(now - tenMinutes + 1000),
+      new Date(now - tenMinutes + 1000),
+    )
+    store.pruneInBackground()
+    await new Promise((resolve) => {
+      setTimeout(resolve, 3000)
+    })
+    expect(existsSync(path.join(directory, ".full"))).toBe(false)
+    utimesSync(marker, new Date(now - tenMinutes), new Date(now - tenMinutes))
+    store.pruneInBackground()
+    await vi.waitFor(
+      () => {
+        expect(existsSync(path.join(directory, ".full"))).toBe(true)
+      },
+      { timeout: 20_000 },
+    )
+  }, 40_000)
+
   it("prunes from the build too, whose bundled code does not export the store", async () => {
     const buildDirectory = mkdtempSync(
       path.join(os.tmpdir(), "mermaid-run-store-build-"),
@@ -634,6 +664,34 @@ describe("codeIdentityOf", () => {
     const afterLock = identity()
     expect(afterLock).not.toBe(afterAdded)
     expect(codeIdentityOf(code, directory, "1.0.1")).not.toBe(afterLock)
+  })
+
+  it("changes with the versions of Node.js and of V8", () => {
+    const code = path.join(directory, "lib")
+    mkdirSync(code, { recursive: true })
+    writeFileSync(path.join(directory, "pnpm-lock.yaml"), "lock")
+    writeFileSync(path.join(code, "a.ts"), "a")
+
+    /** The identity of the code as it is now. */
+    function identity(): string {
+      return codeIdentityOf(code, directory, "1.0.0")
+    }
+
+    const first = identity()
+    for (const name of ["node", "v8"] as const) {
+      const original = Object.getOwnPropertyDescriptor(process.versions, name)
+      if (original === undefined) throw new Error(`no version of ${name}`)
+      Object.defineProperty(process.versions, name, {
+        ...original,
+        value: `${String(original.value)}-other`,
+      })
+      try {
+        expect(identity(), name).not.toBe(first)
+      } finally {
+        Object.defineProperty(process.versions, name, original)
+      }
+      expect(identity(), name).toBe(first)
+    }
   })
 
   it("changes with the files of the source that decide a result, and only those", () => {
@@ -751,6 +809,51 @@ describe("stored results of mermaid.js", () => {
       )
     }
   }, 60_000)
+
+  it("do not include an error thrown instead of a result", async () => {
+    const text = `flowchart LR\n  A --> B${String(Date.now())}\n`
+    const siteError: RunMermaidOptions = {
+      config: { theme: "base", themeVariables: { primaryColor: "##00ff00" } },
+    }
+    const misspelled = { widthoutDivergences: [] } as RunMermaidOptions
+    vi.stubEnv(MERMAID_RUN_STORE_SWITCH, "")
+    try {
+      const store = defaultMermaidRunStore(mermaidVersion)
+      await expect(runMermaidWithEmbeddedData(text, siteError)).rejects.toThrow(
+        "Unsupported color format",
+      )
+      expect(store?.read(text, siteError)).toBeUndefined()
+      await expect(
+        runMermaidWithEmbeddedData(text, misspelled),
+      ).rejects.toThrow(TypeError)
+      expect(store?.read(text, misspelled)).toBeUndefined()
+      // What was thrown does not stay in the way of the same text without it.
+      expect(await runMermaidWithEmbeddedData(text)).toMatchObject({
+        outcome: { accepted: true },
+      })
+    } finally {
+      vi.unstubAllEnvs()
+    }
+  })
+
+  it("are neither read nor written by detectDiagramType", async () => {
+    const text = `flowchart LR\n  A --> B${String(Date.now())}\n`
+    vi.stubEnv(MERMAID_RUN_STORE_SWITCH, "")
+    const read = vi.spyOn(MermaidRunStore.prototype, "read")
+    const write = vi.spyOn(MermaidRunStore.prototype, "write")
+    try {
+      expect(await detectDiagramType(text)).toBe("flowchart-v2")
+      expect(read).not.toHaveBeenCalled()
+      expect(write).not.toHaveBeenCalled()
+      // The spies see a run function, which does use the store.
+      await runMermaidWithEmbeddedData(text)
+      expect(read).toHaveBeenCalledTimes(1)
+      expect(write).toHaveBeenCalledTimes(1)
+    } finally {
+      vi.restoreAllMocks()
+      vi.unstubAllEnvs()
+    }
+  })
 
   it("are stored and read by the run functions when the store is on", async () => {
     const text = `flowchart LR\n  A --> B${String(Date.now())}\n`

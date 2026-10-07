@@ -21,8 +21,10 @@ classDiagram
 The header is the word `classDiagram` with no word character after it (see
 [Detection](../diagrams/class.md#detection)). A text that starts with
 `classDiagramX`, `classDiagram2`, or `classDiagramclassDiagram` is detected as a
-class diagram, but has no header. This document is about such a text, when it
-ends with an empty value.
+class diagram, but has no header. [fixture: class/header-word-after-keyword]
+[fixture: class/header-digit-after-keyword] [fixture:
+class/header-keyword-twice] This document is about such a text, when it ends
+with an empty value.
 
 ## The difference
 
@@ -96,7 +98,19 @@ reads its statements, and reads the word in place of the header as a statement
 that adds nothing. The same endings after a correct header are rejected by both.
 This specification rejects every text without a header. [fixture:
 class/div-headerless-empty-title] [fixture:
-class/header-word-after-keyword-title] [fixture: class/lex-acc-title-at-end]
+class/header-word-after-keyword-title] [fixture:
+class/div-headerless-empty-description-block] [fixture:
+class/div-headerless-link-string-opened] [fixture:
+class/div-headerless-click-string-opened] [fixture: class/lex-acc-title-at-end]
+
+## What it means for an author
+
+A class diagram whose header has a typing mistake, such as `classDiagramX`, is
+rejected by this toolkit, which reports the missing header. mermaid.js rejects
+it too, except when the text ends with one of the empty forms above, which are
+themselves unfinished statements; then mermaid.js draws the diagram without a
+word. Writing the header correctly makes the text read the same by both: with an
+empty form at the end, both then reject it.
 
 ## Why mermaid.js reads it so
 
@@ -134,12 +148,3 @@ reports the `EOF` token depends on when it marks the end as reached. It is
 nothing that a specification would state as a rule of the syntax; this is the
 second of the reasons for a known divergence (see
 [known-divergences.md](../known-divergences.md)).
-
-## What it means for an author
-
-A class diagram whose header has a typing mistake, such as `classDiagramX`, is
-rejected by this toolkit, which reports the missing header. mermaid.js rejects
-it too, except when the text ends with one of the empty forms above, which are
-themselves unfinished statements; then mermaid.js draws the diagram without a
-word. Writing the header correctly makes the text read the same by both: with an
-empty form at the end, both then reject it.

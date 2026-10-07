@@ -15,10 +15,8 @@ The ranges of the nodes of this diagram type, besides the rules of
 
 ### StateDiagram
 
-The range runs from the header keyword to the last token of the diagram text
-other than a `Directive` or an `IgnoredSemicolon` token, the tokens that belong
-to no statement included, as for the node in `Root.body` of every diagram (see
-[Nodes](../../../spec/docs/ast.md#nodes)).
+The range is that of the node in `Root.body` of every diagram (see
+[Node ranges](../positions.md#node-ranges)).
 
 ### StateAliasDefinitionStatement
 
@@ -29,11 +27,15 @@ state/tokens-alias-ignored-semicolon-then-spaces]
 
 ### StateDirectionStatement
 
-The range covers the whole direction line.
+The range covers the whole direction line. [fixture:
+state/lex-direction-line-value-then-text] [fixture:
+state/lex-direction-line-in-description]
 
 ### StateIgnoredStatement
 
-Its range runs from the first `"` of the run to the last.
+Its range runs from the first `"` of the run to the last. [fixture:
+state/gram-state-empty-string-alone] [fixture:
+state/tokens-ignored-statement-directive-between-empty-strings]
 
 ### StateIgnoredText
 
@@ -43,4 +45,7 @@ Its range covers the tokens of the units it holds, each of the kind that
 token `accDescr` and the `Punctuator` tokens `{` and `}` of an empty description
 block, and the `Keyword` token of an `ignored-state` unit. The kind of a token
 is decided by its unit, not by the node that holds it. [fixture:
-state/gram-empty-description-block-before-alias-body-next-line]
+state/gram-empty-description-block-before-alias-body-next-line] [fixture:
+state/gram-state-empty-string-before-name] [fixture:
+state/gram-ignored-percent-before-body-next-line] [fixture:
+state/gram-ignored-state-before-body-next-line]

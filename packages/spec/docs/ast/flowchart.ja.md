@@ -13,16 +13,16 @@
 欄の値は、[ast.ja.md](../ast.ja.md#ノード) が定める値の書かれたテキストとして、
 書き手が書いたものを保ちます。
 [common.ja.md](../common.ja.md#ソースの読み方) の変換した形ではありません。
-mermaid.js が値の一部として読む空白は、
-その書かれたテキストの一部です
+値が空白で始まるか終わるのは、値の単位がそれを自身の文字として持つところだけです
 （[ノード](../ast.ja.md#ノード) を参照）。
-この図種では、`,` の後のスタイルの始まりの空白と、
-タイトルのない subgraph の名前の後の空白です
-（[FlowchartStyleStatement](#flowchartstylestatement) と
-[FlowchartSubgraphStatement](#flowchartsubgraphstatement) を参照）。
-ほかの空白は、どの値にも入りません。
-例外は、subgraph の名前のすぐ後の空の説明ブロックの間か後の空白で、
-mermaid.js はそれを名前に読みますが、どのノードもそれを持ちません
+この図種では、`,` の後のスタイルの始まり、タイトルのない subgraph の名前の後、
+`call` の後のコールバックの名前の終わりと、その引数の両端です
+（[FlowchartStyleStatement](#flowchartstylestatement)、
+[FlowchartSubgraphStatement](#flowchartsubgraphstatement)、
+[FlowchartClickCallbackStatement](#flowchartclickcallbackstatement) を参照）。
+ほかのところでは、値の両端の空白は値の外です。
+mermaid.js は、subgraph の名前のすぐ後の空の説明ブロックの間か後の空白も
+名前に読みますが、どのノードもそれを持ちません
 （[FlowchartSubgraphStatement](#flowchartsubgraphstatement) を参照）。
 書き手が書いた名前と値は、
 書く形で決まる [ast.ja.md](../ast.ja.md#共通の葉のノード) の葉のノードで、
@@ -194,7 +194,8 @@ flowchart/lex-arrow-head-x-before-id]
 終わりの記号も、それ自身の長さも持ちません。
 その `line` は、いつもリンクの閉じる矢印の `line` と同じです。
 同じ種類の閉じた矢印だけが、リンクテキストの文脈を出るからです
-（[リンクテキストの文脈](../diagrams/flowchart.ja.md#リンクテキストの文脈) を参照）。
+（[リンクテキストの文脈](../diagrams/flowchart.ja.md#リンクテキストの文脈)
+を参照）。
 `A<-- t -->B` では、開く矢印は始まりの記号 `arrow` を持ちます。
 `A== t x==>B` では、どちらの矢印も線 `thick` を持ち、
 閉じる矢印は始まりの記号 `cross` を持ちます。
@@ -234,8 +235,9 @@ flowchart/tokens-subgraph-title-all-whitespace]
 
 子の欄はありません。
 値は、改行を含めて内側の空白を保ちます。
-両端に空白を持つのは、
-mermaid.js がそれを読む、`,` の後のスタイルの始まりだけで、
+両端に空白を持つのは、mermaid.js がそれを読むところ、
+つまり `,` の後のスタイルの始まり、
+`call` の後のコールバックの名前の終わり、その引数の両端だけで、
 ほかのところでリテラルの周りに書かれた空白は、どのノードにも属しません。
 スタイルのようにテキストがすべて空白になるところでは、
 欄はリテラルに代えて null
@@ -253,13 +255,14 @@ mermaid.js がそれを読む、`,` の後のスタイルの始まりだけで�
 
 子の欄はありません。
 木は値を読みません
-（[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md) を参照）。
+（[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)
+を参照）。
 [fixture: flowchart/gram-data-consecutive-blocks]
 
 ### FlowchartIgnoredText
 
 書き手が書いたが、mermaid.js が読まず、図に何の効果も持たないテキストです。
-道具がトークンを探さずにそのようなテキストを見つけられるように、
+道具がソースのテキストを探さずにそのようなテキストを見つけられるように、
 それ自体の型のノードにします。
 flowchart では、方向の行の、
 `direction`
@@ -287,12 +290,12 @@ flowchart/lex-direction-line-text-after-directive-inside]
 名前は Identifier ではなくラベルです。
 文法は、名前を空白を含むテキスト、文字列、markdown 文字列、
 それらの文字列の後にテキストが続くもののどれで書くことも許し、
-どれで書いたかが subgraph のラベルの種類を決めます。
+どれで書いたかを、ラベルの `kind` が記録します。
 空白を含む名前は id になりません。
 subgraph の Db の id とタイトルは、`name`、`title`、そしてどのノードも持たない、
 名前とそのタイトルか区切りとの間のソースのテキストから求めます
 （[flowchart.ja.md](../diagrams/flowchart.ja.md#文法の外での拒否) を参照）。
-mermaid.js は名前を、その後の空白を含めて、タイトルの `[` か区切りまで読み、
+タイトルがなければ、mermaid.js は名前を、その後の空白を含めて区切りまで読み、
 名前が空白を持つタイトルのない subgraph は、作った id を持ちます。
 そのため、タイトルがなければ、名前の書かれたテキストは、
 その後の空白を、区切りか、その後の最初の空の説明ブロックまで含み、
@@ -385,15 +388,23 @@ flowchart/db-class-ids-only-comma] [fixture: flowchart/gram-class-name-comma]
 関数を呼ぶクリックの文です。
 `click A callback`、`click A call callback(arguments)`。
 
-| 欄          | 型                                 | 意味                                                                                                                                                                                                                                                                                 |
-| ----------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ids`       | (Identifier または null) の列      | クリックの id。`click-comma` の単位の間の部分。ソースの順。空の部分は null。                                                                                                                                                                                                         |
-| `callback`  | Identifier または FlowchartLiteral | 関数の名前。`call` の後では FlowchartLiteral で、`(` までの文字。空白や改行を含むことがあり、両端の空白は含まない（[クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック) を参照）。`click A callback` のように `call` がなければ、Identifier（click の id）。 |
-| `arguments` | FlowchartLiteral または null       | `call` の後の括弧の間の引数。その値は空白と改行を保つ。括弧がないか、括弧の間が空白だけなら null。木はその中を読まない。                                                                                                                                                             |
-| `tooltip`   | StringLiteral または null          | ツールチップの文字列。なければ null。                                                                                                                                                                                                                                                |
+| 欄          | 型                                 | 意味                                                                                                                                                                                                                                                                              |
+| ----------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ids`       | (Identifier または null) の列      | クリックの id。`click-comma` の単位の間の部分。ソースの順。空の部分は null。                                                                                                                                                                                                      |
+| `callback`  | Identifier または FlowchartLiteral | 関数の名前。`call` の後では FlowchartLiteral で、`callback-name` の単位、つまり空白と改行を含む `(` までの文字（[クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック) を参照）。`click A callback` のように `call` がなければ、Identifier（click の id）。 |
+| `arguments` | FlowchartLiteral または null       | `call` の後の括弧の間の引数。1 つのテキストで、その値は両端のものも含めて空白と改行を保つ。括弧がないか、括弧の間が空白だけなら null。木はその中を読まない。                                                                                                                      |
+| `tooltip`   | StringLiteral または null          | ツールチップの文字列。なければ null。                                                                                                                                                                                                                                             |
 
 子の欄: `ids`、`callback`、`arguments`、`tooltip`。
+`call` の後の名前は `(` の前の空白を保ちます。
+mermaid.js はそれを関数の名前の一部として渡し、
+`click A call f (x)` は、`f` と空白という名前の関数を呼びます。
+mermaid.js は引数を書かれたとおりに渡し、その後、引用符の外の `,` ごとに分けて、
+それぞれの両端を削ります。
+`click A call f( x, y )` の引数は、空白、`x, y`、空白で、
+`f` を `x` と `y` で呼びます。
 [fixture: flowchart/tokens-callback-name-trailing-space]
+[fixture: flowchart/tokens-callback-arguments-spaces-at-ends]
 
 ### FlowchartClickUrlStatement
 
@@ -412,7 +423,8 @@ URL にリンクするクリックの文です。
 flowchart/lex-click-id-comma]
 
 文はほかに `click` の単位を持ちません
-（[クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック) を参照）。
+（[クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック)
+を参照）。
 [fixture: flowchart/gram-click-href]
 
 ### FlowchartLinkStyleStatement

@@ -26,6 +26,13 @@
         "id": "__proto__",
         "text": "__proto__"
       }
+    ],
+    "clickCalls": [
+      {
+        "id": "__proto__",
+        "name": "callback",
+        "args": null
+      }
     ]
   }
 }

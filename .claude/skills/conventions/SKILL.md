@@ -92,6 +92,14 @@ machine. Run what a change can affect, not everything after every change.
   go with which part of the code.
 - Before reporting the work as done: run the whole suite of the package once,
   and the checks of the repository (`pnpm run lint`, `pnpm run format:check`).
+- The tests of a package run fixed inputs only: the fixtures of the corpus, the
+  fixtures of the package, and the inputs of past failures. No test generates
+  its inputs, and no command does.
+- The tests of the parser and of the formatter do not run mermaid.js. The Db of
+  a tree is built by `dbFromTree` of `packages/tests`, which the corpus checks
+  against mermaid.js; the formatter compares the Db built from the tree before
+  and after formatting (for a corpus input, with the recorded Db). mermaid.js
+  runs in the checks of the corpus only.
 - The tests of the parser run no generated inputs and do not run mermaid.js.
   What a parser must do is stated by the specification and by the conformance
   corpus (`packages/tests/fixtures/`): an input, whether mermaid.js accepts it,
@@ -99,22 +107,58 @@ machine. Run what a change can affect, not everything after every change.
   fixtures, so the tests of the parser take their inputs and their expected
   results from the corpus. A check of the corpus itself (that what a fixture
   records is what mermaid.js does) belongs to `packages/tests`.
-- For the parser, generated inputs are a tool for finding what the corpus lacks.
-  The parser runs them with its exploration command, not with its tests, when
-  the lexing or the grammar of a diagram type changes. An exploration takes
-  inputs by kind (which tokens meet at a boundary, where in a line, which
-  statement, which text is inserted) and takes each combination once; it does
-  not repeat a kind to raise a count. A failure it finds is closed by a fixture
-  in the corpus, and by a sentence of the specification too where the
-  specification did not state the reading. An input that is kept only in a list
-  inside the parser is not kept.
-- A generated test of another package (the formatter) has one size. It covers
-  the kinds of inputs (which tokens meet at a boundary, where in a line, which
-  statement), with a few inputs of each kind, and has no larger "full" run: a
-  run over every position or every mutant repeats the same check on the same
-  kind of input and finds nothing more. To gain assurance, add a kind that is
-  missing; do not raise a count.
+- The inputs that check a behavior are fixtures, and every fixture answers a
+  sentence. Every sentence that defines a behavior (in the specification, in the
+  parser's documents of tokens and positions, in the documents of `dbFromTree`,
+  in the formatting rules) has a fixture for each case it distinguishes, and for
+  each other rule that meets it at the place it names: a directive, an ignored
+  `;`, a comment line, an empty line, a line separator (U+2028, U+2029), an
+  empty description block, and whatever else the sentence's own words name. The
+  fixtures are written with the sentence, checked against mermaid.js once, and
+  cited by the sentence (`[fixture: ...]`). A failure found anywhere is closed
+  by a fixture in the corpus (or a formatting fixture) and by the sentence that
+  was missing. An input kept only in a list inside a package is not kept.
+  Products of places and strings are not written: a product repeats one rule as
+  many times as it has contexts and names no question; the cases of a sentence
+  are finite and each is named. No input of a test or a review is chosen by a
+  random source or by a number (a seed, a count, a sample). `Math.random` is
+  reported by the lint; a hand-written generator is caught in review.
 - A result that was just reported for the same state of the tree is not run
   again by someone else; a check of another kind (other inputs, another method)
   is.
 - The report says what was run and what was not.
+
+## Why the inputs are fixtures, and not generated
+
+The rule above replaced three mechanisms that this repository had built and then
+removed on 2026-10-07: tests that generated their inputs, random mutation of
+fixtures, and an exploration command that put each of a fixed set of strings at
+each place collected from the corpus. The record of that day is the reason the
+rule is written as it is.
+
+- Count is not assurance. The exploration ran about 130,000 inputs against
+  mermaid.js in more than an hour of machine time and found four implementation
+  bugs. Its places were (token kind before, token kind after, position in line)
+  collected from the corpus: 1,210 kinds for flowchart, which multiplied some
+  thirty lexical rules by the number of contexts each appears in. The two
+  findings of its first run lay next to a separator, where the rule's own
+  example would have been the host.
+- Reading the sentences finds what a product cannot. In the same afternoon,
+  listing the cases of each defining sentence and checking that each had a
+  fixture found: in the specification about 440 places where a case had no
+  fixture or no citation, 185 new fixtures and an unreachable rule copied from
+  mermaid's lexer; in the documents of `dbFromTree` 306 missing fixtures, four
+  wrong sentences and four holes in the tree check; in the formatting rules 386
+  missing fixtures, four printer bugs and about fifteen sentences that did not
+  describe the printer; in the rule documents 95 missing inputs, one suggestion
+  that mixed line terminators, three suggestions that changed the reading, one
+  that produced a rejected text, and three wrong sentences; in the parser's
+  documents of tokens, positions, and error positions about 410 missing
+  citations and 19 missing fixtures. A product of places and strings reads no
+  sentence, so it cannot see a missing citation, a wrong definition, a
+  suggestion that changes the Db, or a rule that no input reaches.
+- The mechanism stood in for a habit. Generating inputs let a change be reported
+  as done without anyone listing the cases of the sentence that defined it. The
+  rule therefore names the habit, not a tool: write the sentence, list its
+  cases, give each a fixture, cite them, and let the review read the sentence
+  again.

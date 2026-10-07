@@ -43,3 +43,17 @@ of `@mmd-toolkit/tests`:
 - `common/config-bad-json-drops-other-inits`
 - `common/directive-single-quotes`
 - `common/config-closing-marker-line`
+- `sequence/config-init-trailing-comma`
+- `sequence/docs-config-directives-a481990f`
+- `class/config-init-trailing-comma`
+- `state/config-init-trailing-comma`
+- `common/directive-init-theme`
+
+The items of In each diagram type rest on these: flowchart on
+`flowchart/config-inherit-dir-directive`; sequence on
+`sequence/config-init-trailing-comma`, where the participants and the message
+are not wrapped, while `sequence/docs-config-directives-a481990f`, without the
+comma, wraps them; class and state on `class/config-init-trailing-comma` and
+`state/config-init-trailing-comma`, which record no settings that take effect
+(`embedded` is null), while `common/directive-init-theme` records the theme of a
+directive that takes effect.

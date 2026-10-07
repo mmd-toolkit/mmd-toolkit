@@ -219,4 +219,57 @@ describe("several rewrites", () => {
       "comment-takes-character and name-start-reads-unit change the same part of the lexer (1), so they cannot be removed together",
     )
   })
+
+  it("reports two rewrites that change the rule order of the same start state", () => {
+    const lexer = fakeLexer([/^a/u, /^q/u, /^t/u], {
+      INITIAL: { rules: [0] },
+      quoted: { rules: [0, 1, 2] },
+    })
+    const first = findRewrites(lexer, tryFirstRemoval)
+    const second = findRewrites(lexer, {
+      ...tryFirstRemoval,
+      changes: [
+        { kind: "try-first", state: "quoted", sources: ["^t"] } as const,
+      ],
+    })
+    if (typeof first === "string") throw new Error(first)
+    if (typeof second === "string") throw new Error(second)
+    expect(
+      overlapOf([
+        ["comment-takes-line-break", first],
+        ["name-start-reads-unit", second],
+      ]),
+    ).toBe(
+      "comment-takes-line-break and name-start-reads-unit change the same part of the lexer (rules), so they cannot be removed together",
+    )
+  })
+
+  it("reports two rewrites that both give the lexer its text through setInput", () => {
+    // The two removals read different rules, so only `setInput` is shared.
+    const lexer = fakeLexer([/^%%[^\n]*\n?/u, /^#[^\n]*\n?/u])
+    const first = findRewrites(lexer, lineRemoval)
+    const second = findRewrites(lexer, {
+      ...lineRemoval,
+      changes: [
+        {
+          kind: "by-line-position",
+          original: "^#[^\\n]*\\n?",
+          lineStart: "^#[^\\n]*\\n?",
+          midLine: "^#[^\\n]*",
+        } as const,
+      ],
+    })
+    if (typeof first === "string") throw new Error(first)
+    if (typeof second === "string") throw new Error(second)
+    expect(first.swaps.map((swap) => swap.key)).toEqual([0, "setInput"])
+    expect(second.swaps.map((swap) => swap.key)).toEqual([1, "setInput"])
+    expect(
+      overlapOf([
+        ["comment-takes-line-break", first],
+        ["name-start-reads-unit", second],
+      ]),
+    ).toBe(
+      "comment-takes-line-break and name-start-reads-unit change the same part of the lexer (setInput), so they cannot be removed together",
+    )
+  })
 })

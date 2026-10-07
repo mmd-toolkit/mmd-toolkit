@@ -3,8 +3,7 @@
  * text. The parser does not tell a known divergence apart, so the tests
  * declare it, each by its own rule and not from where the parser rejects
  * (known-divergences/*.md): `fixtures.test.ts` checks that a fixture marked
- * with a divergence has its form, and the explorations against mermaid.js
- * declare the divergence of each input they compare.
+ * with a divergence has its form.
  */
 import type { MermaidConfig } from "@mmd-toolkit/tests"
 import type { Range, Root, TokenKind } from "../../src/index.ts"
@@ -27,8 +26,8 @@ import {
   removedEmptyFormsIn,
   reservedClicksIn,
   textStartOf,
-  withIgnoredSemicolonsAtSegmentEnds,
   withoutDirectives,
+  withoutTokenCuts,
 } from "./reference-inputs.ts"
 
 /** What `parse()` does with a text. */
@@ -65,18 +64,18 @@ export function outcomeOf(text: string, config?: MermaidConfig): Outcome {
 /**
  * known-divergences/directive-as-token-boundary.md: whether the parser rejects
  * the text at a directive that lies inside a token that may not be cut,
- * which is decided on the text without directives, apart from the parser's
- * own decision ({@link directivesInsideTokens}). The divergence goes one
- * way only: such a directive makes the specification reject what
- * mermaid.js accepts. A rejection elsewhere, or at a directive between two
- * tokens, which is always allowed, is no rejection for it.
+ * which is decided on the reference input, apart from the parser's own
+ * decision ({@link cutsInsideTokens}). The divergence goes one way only:
+ * such a directive makes the specification reject what mermaid.js accepts.
+ * A rejection elsewhere, or at a directive between two tokens, which is
+ * always allowed, is no rejection for it.
  */
 function rejectsForDirective(
   text: string,
   config: MermaidConfig | undefined,
   outcome: Exclude<Outcome, { readonly kind: "unsupported" }>,
 ): boolean {
-  return directivesInsideTokens(text, config).some((directive) =>
+  return cutsInsideTokens(text, config).directives.some((directive) =>
     rejectsAt(outcome, directive),
   )
 }
@@ -85,75 +84,88 @@ function rejectsForDirective(
  * known-divergences/ignored-semicolon-as-token-boundary.md: whether the
  * parser rejects the text at a `;` that the line rule ignores and that lies
  * inside a token that may not be cut, which is decided on the reference
- * input, apart from the parser's own decision
- * ({@link ignoredSemicolonsInsideTokens}). The divergence goes one way
- * only, as that of directives.
+ * input, apart from the parser's own decision ({@link cutsInsideTokens}).
+ * The divergence goes one way only, as that of directives.
  */
 function rejectsForIgnoredSemicolon(
   text: string,
   config: MermaidConfig | undefined,
   outcome: Exclude<Outcome, { readonly kind: "unsupported" }>,
 ): boolean {
-  return ignoredSemicolonsInsideTokens(text, config).some((semicolon) =>
+  return cutsInsideTokens(text, config).semicolons.some((semicolon) =>
     rejectsAt(outcome, semicolon),
   )
 }
 
 /**
- * The ranges of the directives of `text` that lie inside a token that may
- * not be cut ({@link isInsideTokenThatMayNotBeCut}) in the tree of the text
- * without directives; none when that text is not accepted, which then
- * cannot tell.
+ * The ranges of the directives and of the `;` that the line rule ignores
+ * of `text` that lie inside a token that may not be cut
+ * ({@link isInsideTokenThatMayNotBeCut}) in the tree of the reference input
+ * that leaves out both ({@link withoutTokenCuts}), so that an input with
+ * both forms is decided for each of them; none when the reference input is
+ * not accepted, which then cannot tell.
  */
-function directivesInsideTokens(
+function cutsInsideTokens(
   text: string,
   config: MermaidConfig | undefined,
-): Range[] {
+): { readonly directives: Range[]; readonly semicolons: Range[] } {
   const directives = findDirectives(text, textStartOf(text))
-  if (directives.length === 0) return []
-  const reference = withoutDirectives(text)
-  const referenceOutcome = outcomeOf(reference, config)
-  if (referenceOutcome.kind !== "tree") return []
-  let removed = 0
-  const inside: Range[] = []
-  for (const directive of directives) {
-    // Where the directive lies in the text without directives: its start,
-    // less the directives before it.
-    const at = directive.range[0] - removed
-    if (isInsideTokenThatMayNotBeCut(reference, referenceOutcome.root, at)) {
-      inside.push(directive.range)
-    }
-    removed += directive.range[1] - directive.range[0]
+  const segments = ignoredSemicolonsBySegment(withoutDirectives(text))
+  const inside: { directives: Range[]; semicolons: Range[] } = {
+    directives: [],
+    semicolons: [],
   }
-  return inside
-}
-
-/**
- * The ranges of the `;` of `text` that the line rule ignores and that lie
- * inside a token that may not be cut ({@link isInsideTokenThatMayNotBeCut})
- * in the tree of the reference input, in which each such `;` is moved to
- * the end of its line segment ({@link withIgnoredSemicolonsAtSegmentEnds});
- * none when the reference input is not accepted, which then cannot tell.
- */
-function ignoredSemicolonsInsideTokens(
-  text: string,
-  config: MermaidConfig | undefined,
-): Range[] {
-  const segments = ignoredSemicolonsBySegment(text)
-  if (segments.length === 0) return []
-  const reference = withIgnoredSemicolonsAtSegmentEnds(text)
+  if (directives.length === 0 && segments.length === 0) return inside
+  const reference = withoutTokenCuts(text)
   const referenceOutcome = outcomeOf(reference, config)
-  if (referenceOutcome.kind !== "tree") return []
-  const inside: Range[] = []
+  if (referenceOutcome.kind !== "tree") return inside
+  const { root } = referenceOutcome
+
+  /**
+   * Where the offset `at` of the text without directives lies in the
+   * reference input: less the ignored `;` before it in its line segment,
+   * which are moved to the end of the segment; each segment before it
+   * keeps its length.
+   */
+  function inReference(at: number): number {
+    let moved = 0
+    for (const { semicolons, end } of segments) {
+      if (at > end) continue
+      moved += semicolons.filter((semicolon) => semicolon < at).length
+    }
+    return at - moved
+  }
+
+  /** The starts of the directives in the text without directives, with their lengths, in source order. */
+  const removals = directives.map((directive, index) => ({
+    at:
+      directive.range[0] -
+      directives
+        .slice(0, index)
+        .reduce((sum, before) => sum + before.range[1] - before.range[0], 0),
+    length: directive.range[1] - directive.range[0],
+  }))
+  for (const [index, directive] of directives.entries()) {
+    const at = inReference(removals[index].at)
+    if (isInsideTokenThatMayNotBeCut(reference, root, at)) {
+      inside.directives.push(directive.range)
+    }
+  }
   for (const { semicolons } of segments) {
-    for (const [index, semicolon] of semicolons.entries()) {
-      // Where the `;` lies in the reference input: its offset, less the
-      // `;` before it in its segment, which are moved to the end of the
-      // segment; each segment before it keeps its length.
-      const at = semicolon - index
-      if (isInsideTokenThatMayNotBeCut(reference, referenceOutcome.root, at)) {
-        inside.push([semicolon, semicolon + 1])
+    for (const semicolon of semicolons) {
+      if (
+        !isInsideTokenThatMayNotBeCut(reference, root, inReference(semicolon))
+      ) {
+        continue
       }
+      // Where the `;` lies in `text`: its offset in the text without
+      // directives, more the directives before it.
+      const original =
+        semicolon +
+        removals
+          .filter((removal) => removal.at <= semicolon)
+          .reduce((sum, removal) => sum + removal.length, 0)
+      inside.semicolons.push([original, original + 1])
     }
   }
   return inside
@@ -302,10 +314,9 @@ export function oneWayDivergencesIn(
   config: MermaidConfig | undefined,
 ): string[] {
   const found: string[] = []
-  if (directivesInsideTokens(text, config).length > 0) {
-    found.push("directive-as-token-boundary")
-  }
-  if (ignoredSemicolonsInsideTokens(text, config).length > 0) {
+  const cuts = cutsInsideTokens(text, config)
+  if (cuts.directives.length > 0) found.push("directive-as-token-boundary")
+  if (cuts.semicolons.length > 0) {
     found.push("ignored-semicolon-as-token-boundary")
   }
   if ((reservedClicksIn(text)?.length ?? 0) > 0) {

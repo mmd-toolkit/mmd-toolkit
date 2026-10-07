@@ -104,8 +104,25 @@ as nothing. Most such texts are then no statement, and mermaid.js rejects them;
 where what it reads happens to fit its grammar, as in examples 4 to 6, it reads
 the statement that the text would be without the backquotes or the `~`. This
 specification reads the text between the backquotes or the `~` as the name or
-the type, whatever it starts with. In example 6, a class name followed by a
-string is no statement, so this specification rejects the text.
+the type, whatever it starts with. [fixture:
+class/div-backquote-starts-with-double-less-than] [fixture:
+class/div-backquote-starts-with-double-greater-than] [fixture:
+class/div-generic-starts-with-double-less-than] [fixture:
+class/div-generic-starts-with-double-greater-than] [fixture:
+class/div-backquote-keyword-css-class] [fixture:
+class/div-backquote-keyword-callback] [fixture:
+class/div-backquote-keyword-link] [fixture: class/div-backquote-keyword-click]
+[fixture: class/div-backquote-keyword-href] In example 6, a class name followed
+by a string is no statement, so this specification rejects the text.
+
+## What it means for an author
+
+Backquotes are the way to write a class name that a bare name cannot hold. Where
+that name starts with a keyword or with `"`, this toolkit reads the name as
+written, while mermaid.js rejects the diagram, or, as in examples 4 to 6, draws
+something else without a word. The same holds for a generic type that starts
+with a keyword, `"`, `<<`, or `>>`. To write a diagram that mermaid.js reads in
+the same way, start such a name or type with another character.
 
 ## Why mermaid.js reads it so
 
@@ -136,15 +153,6 @@ the reasons for a known divergence (see
 order for strings in 2023, so that a string can start with a keyword; the rules
 of backquoted names and generic types were left after the shared rules (see
 below).
-
-## What it means for an author
-
-Backquotes are the way to write a class name that a bare name cannot hold. Where
-that name starts with a keyword or with `"`, this toolkit reads the name as
-written, while mermaid.js rejects the diagram, or, as in examples 4 to 6, draws
-something else without a word. The same holds for a generic type that starts
-with a keyword, `"`, `<<`, or `>>`. To write a diagram that mermaid.js reads in
-the same way, start such a name or type with another character.
 
 ## The documentation of mermaid.js and its issues
 

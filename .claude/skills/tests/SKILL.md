@@ -24,9 +24,9 @@ the skill `conventions`, which section 2 points to.
 
 - Pins mermaid as a devDependency and extracts mermaid's Db in Node (no DOM).
 - Defines the fixture format; keeps the loader and the README in step with it.
-- Provides the fixture generator and the mutation-diff harness. Whatever imports
-  mermaid (Db extraction, normalizers, the mutation core) lives in subpaths of
-  `@mmd-toolkit/tests`; the CLIs live in `tools/`.
+- Provides the fixture generator. Whatever imports mermaid (Db extraction,
+  normalizers) lives in subpaths of `@mmd-toolkit/tests`; the CLIs live in
+  `tools/`.
 - Provides the CI job that regenerates fixtures and fails when mermaid's
   behavior changed.
 - For each diagram type: extracting the truth (normalizer) and collecting
@@ -126,8 +126,7 @@ When the working tree is shared with other work:
   | `src/normalizers/json.ts`                                   | `json.test.ts`, then `fixtures:check`                        |
   | `src/expected-changes.ts`                                   | `expected-changes.test.ts`                                   |
   | `src/recorded-embedded.ts`                                  | `recorded-embedded.test.ts`, then `fixtures:check`           |
-  | `src/mutation.ts`                                           | `mutation.test.ts`                                           |
-  | `src/boundary-kinds.ts`                                     | `boundary-kinds.test.ts`                                     |
+  | `src/fixture-shapes.ts`                                     | `fixture-shapes.test.ts`                                     |
   | `src/db-from-tree/`                                         | `db-from-tree.test.ts`, `converted-text.test.ts`             |
   | `src/source-scan.ts`                                        | `source-scan.test.ts`                                        |
   | `src/check-tree/`                                           | `check-tree-corpus.test.ts`, `check-tree*.test.ts`           |
@@ -136,10 +135,7 @@ When the working tree is shared with other work:
   The commands of `tools/` have no test file; each is checked by running it:
   `add-many`, `set-divergence` and `set-note` with `--dry-run`, reading what
   they would change; `generate` with `fixtures:check`; `tools/collect.ts` with
-  `--out` pointing outside the repository, reading the file it writes;
-  `tools/mutation.ts` on one fixture (`--fixture`). Without `--count`, one
-  round: one mutant for each edit operator that applies; raise it only to widen
-  the forms of an operator's mutants, not to be surer.
+  `--out` pointing outside the repository, reading the file it writes.
 
   Run one file with
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<file>`.

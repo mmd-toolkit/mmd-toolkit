@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A comment after the string of a note statement ends at the end of its line; mermaid.js joins the next line to it and rejects the text."
+  },
+  "knownDivergence": "comment-takes-line-break",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...agramnote \"x\" %% cclass Z\n---------------------^\nExpecting 'NEWLINE', 'EOF', 'STRUCT_STOP', got 'CLASS'"
+  }
+}

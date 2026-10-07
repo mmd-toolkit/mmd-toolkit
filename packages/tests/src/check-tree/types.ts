@@ -30,12 +30,12 @@ export interface CheckedNode extends Placed {
   readonly [field: string]: unknown
 }
 
-/** ast.md, Tokens: a token. */
+/** parser/docs/tokens.md, Tokens: a token. */
 export interface CheckedToken extends Placed {
   readonly value: string
 }
 
-/** ast.md, Comment. */
+/** parser/docs/tokens.md, Comment. */
 export interface CheckedComment extends Placed {
   readonly mark: string | null
   readonly value: string

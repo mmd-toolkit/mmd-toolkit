@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The data block sets the image and its width w. The vertex has assetWidth and no assetHeight."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "",
+        "props": {},
+        "img": "https://example.com/a.svg",
+        "assetWidth": 50
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "text": "",
+          "img": "https://example.com/a.svg",
+          "assetWidth": 50
+        }
+      }
+    ]
+  }
+}

@@ -15,8 +15,9 @@
 の単位から作ります。
 すべて空白ではない各単位と、`title` か `title:` の文の `title-text` の単位と、
 U+2028 か U+2029 を持つ箱の `text` の単位
-（[SequenceTitleStatement](../../../spec/docs/ast/sequence.ja.md#sequencetitlestatement) と
-[SequenceBoxText](../../../spec/docs/ast/sequence.ja.md#sequenceboxtext) を参照）は、
+（[SequenceTitleStatement](../../../spec/docs/ast/sequence.ja.md#sequencetitlestatement)
+と [SequenceBoxText](../../../spec/docs/ast/sequence.ja.md#sequenceboxtext)
+を参照）は、
 1 つのトークンで、その種類はこの表のとおりです。
 
 | 種類         | 単位                                                                                                                                                                                                                                                                                                                                                                                                  |
@@ -26,13 +27,52 @@ U+2028 か U+2029 を持つ箱の `text` の単位
 | `RawText`    | [単位の中のディレクティブ](../../../spec/docs/diagrams/sequence.ja.md#単位の中のディレクティブ) のテキストの単位                                                                                                                                                                                                                                                                                      |
 | `Punctuator` | `arrow` の単位。`+`、`-`、`()`、`,`、`:`、`{`、`}`、`@{`。`;` から読む `newline` の単位                                                                                                                                                                                                                                                                                                               |
 
+[fixture: sequence/db-participant-empty-alias]
+[fixture: sequence/db-actor-id-entity]
+[fixture: sequence/db-create-participant-before-message]
+[fixture: sequence/lex-alias-lookahead-line-break-destroy]
+[fixture: sequence/db-box-empty]
+[fixture: sequence/gram-block-empty-text]
+[fixture: sequence/db-block-rect]
+[fixture: sequence/db-block-opt]
+[fixture: sequence/db-block-alt]
+[fixture: sequence/db-block-par]
+[fixture: sequence/db-block-par-over]
+[fixture: sequence/db-block-critical]
+[fixture: sequence/db-block-break]
+[fixture: sequence/db-note-over-two]
+[fixture: sequence/db-note-left-of]
+[fixture: sequence/db-links-empty]
+[fixture: sequence/db-link-without-at]
+[fixture: sequence/db-properties-empty]
+[fixture: sequence/db-details-adds-participant]
+[fixture: sequence/db-activate-id-entity]
+[fixture: sequence/db-deactivate-after-plus]
+[fixture: sequence/db-autonumber-start]
+[fixture: sequence/db-autonumber-off]
+[fixture: sequence/db-title-spaces]
+[fixture: sequence/db-title-legacy]
+[fixture: sequence/db-acc-title-whitespace-ends]
+[fixture: sequence/db-acc-descr-line-whitespace-ends]
+[fixture: sequence/lex-wrap-prefix-colon]
+[fixture: sequence/db-message-activate-target]
+[fixture: sequence/db-message-central-connection-source]
+[fixture: sequence/db-acc-descr-empty-block-after-message]
+[fixture: sequence/gram-data-block-line-break-only]
+[fixture: sequence/gram-title-then-separators]
+[fixture: sequence/db-box-colour-then-spaces-and-line-separator]
+
 トークンは、その単位から両端の空白を除いたものです。
 ただし、mermaid.js がその空白を値の一部として読むところは除きます
 （[トークン](../tokens.ja.md#トークン) を参照）。
 `title` か `title:` の文の `title-text` の単位のトークンは単位の全体で、
 `accTitle:` のものは、mermaid.js が削る両端の空白を除いたものです。
 箱のテキストでは U+2028 と U+2029 を空白に数えません
-（[SequenceBoxText](../../../spec/docs/ast/sequence.ja.md#sequenceboxtext) を参照）。
+（[SequenceBoxText](../../../spec/docs/ast/sequence.ja.md#sequenceboxtext)
+を参照）。
+[fixture: sequence/db-title-spaces]
+[fixture: sequence/db-acc-title-whitespace-ends]
+[fixture: sequence/db-box-colour-then-spaces-and-line-separator]
 箱のテキストで、色の候補と残りの間の空白は、
 SequenceBoxText の値に入り、そのどちらの部分にも入りません。
 この空白は、SequenceBoxText が持つ、それ自体の `RawText` のトークンです。
@@ -49,6 +89,7 @@ SequenceBoxText の値に入り、そのどちらの部分にも入りません�
 [fixture: sequence/tokens-box-text-directive-between-parts-without-space]
 [fixture: sequence/tokens-box-text-directive-then-space-before-remainder]
 改行から読む `newline` の単位は空白で、トークンになりません。
+[fixture: sequence/gram-block-empty-text]
 トークンの中のディレクティブ、コメント領域、無視される `;` は、
 トークンを断片に切ります
 （[ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン)
@@ -58,7 +99,13 @@ SequenceBoxText の値に入り、そのどちらの部分にも入りません�
 [fixture: sequence/tokens-title-directive-then-spaces]
 `RawText` でないトークンの中のディレクティブと無視される `;` は、
 入力を拒否させます
-（[単位の中のディレクティブ](../../../spec/docs/diagrams/sequence.ja.md#単位の中のディレクティブ) を参照）。
+（[単位の中のディレクティブ](../../../spec/docs/diagrams/sequence.ja.md#単位の中のディレクティブ)
+を参照）。
+[fixture: sequence/div-directive-in-keyword]
+[fixture: sequence/div-directive-in-arrow]
+[fixture: sequence/div-directive-in-number]
+[fixture: sequence/div-ignored-semicolon-in-keyword]
+[fixture: sequence/div-ignored-semicolon-in-arrow]
 
 - 参加者の id は 1 つの `RawText` のトークンで、
   mermaid.js が id の一部として読む、中の空白もそのトークンに入ります。
@@ -76,10 +123,16 @@ SequenceBoxText の値に入り、そのどちらの部分にも入りません�
   [fixture: sequence/tokens-ignored-semicolon-between-left-and-of]
 - テキストの前の `:` と、`accTitle` と `accDescr` の後の `:` は、
   文の `Punctuator` のトークンで、どの欄にも属しません。
+  [fixture: sequence/db-note-over-two]
+  [fixture: sequence/db-acc-title-whitespace-ends]
+  [fixture: sequence/db-acc-descr-line-whitespace-ends]
 - テキストの折り返しの接頭辞（`wrap:` や `:nowrap:`）は、
   1 つの `Keyword` のトークンで、
   その
-  [SequenceText](../../../spec/docs/ast/sequence.ja.md#sequencetext) の最初のトークンです。
+  [SequenceText](../../../spec/docs/ast/sequence.ja.md#sequencetext)
+  の最初のトークンです。
+  [fixture: sequence/db-message-wrap-prefix-without-text]
+  [fixture: sequence/lex-wrap-prefix-colon]
 - `@{` と `}` の間のデータブロックのテキストは、
   両端の空白と改行を含む 1 つの `RawText` のトークンです。
   その空白と改行は
@@ -87,7 +140,8 @@ SequenceBoxText の値に入り、そのどちらの部分にも入りません�
   の値に入ります。
   `participant A@{`、改行、`}` は、その改行のトークンを持ちます。
   `participant A@{ type: %%{init: {}}%% actor }` は、
-  トークン `type:` と `actor` を持ち、その間にディレクティブがあります。
+  それぞれ隣の空白を含むトークン `type:` と `actor` を持ち、
+  その間にディレクティブがあります。
   コメント行の前の空行は、コメント領域に入り、値にもトークンにも入りません。
   [fixture: sequence/gram-data-block-line-break-only] [fixture:
   sequence/tokens-data-block-directive-inside] [fixture:

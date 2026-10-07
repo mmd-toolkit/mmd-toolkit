@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A `%%` followed by `{` and a string that is not a directive: a vertex `%%` of the diamond shape with the label x, then A."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "%%",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

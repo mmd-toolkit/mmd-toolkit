@@ -58,8 +58,8 @@ export function isMermaidRunStoreOn(): boolean {
 /**
  * The files of `src/` that decide a result: `mermaid.ts` and every file it
  * imports at run time, directly or not. A test checks that the list is that
- * set. The other files of `src/` (the loader of the fixtures, the mutation
- * core) do not change a result, so changing them keeps the stored results.
+ * set. The other files of `src/` (the loader of the fixtures, the checks of trees)
+ * do not change a result, so changing them keeps the stored results.
  */
 export const RESULT_FILES: readonly string[] = [
   "divergence-removals.ts",
@@ -67,6 +67,7 @@ export const RESULT_FILES: readonly string[] = [
   "mermaid.ts",
   "normalizers/browser-stand-ins.ts",
   "normalizers/class.ts",
+  "normalizers/click-calls.ts",
   "normalizers/data-blocks.ts",
   "normalizers/flowchart.ts",
   "normalizers/index.ts",

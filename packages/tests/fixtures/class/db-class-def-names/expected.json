@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The classes A and B have one of the two names and get the styles once. C has both and gets them twice."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default pq",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill:red"
+        ]
+      },
+      {
+        "id": "B",
+        "type": "",
+        "label": "B",
+        "text": "B",
+        "shape": "classBox",
+        "cssClasses": "default rs",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill:red"
+        ]
+      },
+      {
+        "id": "C",
+        "type": "",
+        "label": "C",
+        "text": "C",
+        "shape": "classBox",
+        "cssClasses": "default pq rs",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill:red",
+          "fill:red"
+        ]
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

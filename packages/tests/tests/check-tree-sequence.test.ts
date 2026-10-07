@@ -10,6 +10,7 @@ import type {
 } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
 import { getFixturesRoot } from "../src/index.ts"
+import { replaceToken } from "./check-tree-recorded.ts"
 
 // The checks of a sequence tree and of the `error` pseudo-diagram: they must
 // pass the recorded trees and fail a recorded tree in which one thing is
@@ -175,6 +176,42 @@ const BROKEN_TREES: readonly BrokenTree[] = [
     type: "NumericLiteral",
     message: "value is not the number that its written text writes: 7, not 0.5",
   },
+  // parser/docs/tokens.md, A token that a directive cuts: a number is one
+  // token, with no cut to explain a second one.
+  {
+    name: "a number written as two Numeric tokens that no cut separates",
+    fixture: "sequence/db-autonumber-fraction",
+    mutate: (root) => {
+      replaceToken(
+        root,
+        findToken(root, "Numeric", (token) => token.value === ".5"),
+        [
+          ["Numeric", 0, 1],
+          ["Numeric", 1, 2],
+        ],
+      )
+    },
+    type: "NumericLiteral",
+    message: "has 2 tokens, not the one that a node of this type has",
+  },
+  // ast.md, Nodes: whitespace inside a value lies in its tokens.
+  {
+    name: "a literal whose tokens leave out the whitespace inside its value",
+    fixture: "sequence/db-acc-descr-outer-replaces-loop",
+    mutate: (root) => {
+      replaceToken(
+        root,
+        findToken(root, "RawText", (token) => token.value === "every minute"),
+        [
+          ["RawText", 0, 5],
+          ["RawText", 6, 12],
+        ],
+      )
+    },
+    type: "SequenceLiteral",
+    message:
+      'the texts of its tokens joined are not its written text: "everyminute", not "every minute"',
+  },
   // ast/sequence.md, SequenceParticipantStatement and
   // SequenceDestroyStatement: `created` and `kind`.
   {
@@ -248,7 +285,7 @@ const BROKEN_TREES: readonly BrokenTree[] = [
       )
     },
     type: "SequenceMessageStatement",
-    message: 'activation "-" is not a token',
+    message: 'activation: "-", not "+"',
   },
   {
     name: "a message with an activation that has no token",
@@ -264,7 +301,23 @@ const BROKEN_TREES: readonly BrokenTree[] = [
       )
     },
     type: "SequenceMessageStatement",
-    message: 'activation "+" is not a token',
+    message: 'activation: "+", not null',
+  },
+  {
+    name: "a message whose activation is null where a + follows its arrow",
+    fixture: "sequence/db-message-activate-target",
+    mutate: (root) => {
+      Object.assign(
+        findNode(
+          root,
+          "SequenceMessageStatement",
+          (node) => node.activation === "+",
+        ),
+        { activation: null },
+      )
+    },
+    type: "SequenceMessageStatement",
+    message: 'activation: null, not "+"',
   },
   // ast/sequence.md, SequenceMessageStatement: a central connection is a `()` token.
   {
@@ -277,7 +330,8 @@ const BROKEN_TREES: readonly BrokenTree[] = [
       })
     },
     type: "SequenceMessageStatement",
-    message: "central connections: 1, not 0",
+    message:
+      "central connections, before and after the arrow: [true,false], not [false,false]",
   },
   {
     name: "a message whose central connection token is not counted",
@@ -288,7 +342,21 @@ const BROKEN_TREES: readonly BrokenTree[] = [
       })
     },
     type: "SequenceMessageStatement",
-    message: "central connections: 1, not 2",
+    message:
+      "central connections, before and after the arrow: [true,false], not [true,true]",
+  },
+  {
+    name: "a message whose central connections are swapped",
+    fixture: "sequence/db-message-central-connection-source",
+    mutate: (root) => {
+      Object.assign(findNode(root, "SequenceMessageStatement"), {
+        fromCentralConnection: false,
+        toCentralConnection: true,
+      })
+    },
+    type: "SequenceMessageStatement",
+    message:
+      "central connections, before and after the arrow: [false,true], not [true,false]",
   },
   // ast/sequence.md, SequenceArrow: one token, and the fields that it writes.
   {
@@ -425,7 +493,19 @@ const BROKEN_TREES: readonly BrokenTree[] = [
     type: "SequenceAutonumberStatement",
     message: "off: true, not false",
   },
-  // ast.md, Tokens: tokens of values lie in value nodes, and the others do not.
+  {
+    name: "an autonumber statement written off whose off is false",
+    fixture: "sequence/db-autonumber-off",
+    mutate: (root) => {
+      Object.assign(findNode(root, "SequenceAutonumberStatement"), {
+        off: false,
+      })
+    },
+    type: "SequenceAutonumberStatement",
+    message: "off: false, not true",
+  },
+  // parser/docs/tokens.md, Tokens: tokens of values lie in value nodes, and the
+  // others do not.
   {
     name: "a Keyword token retyped Identifier, which lies in no value node",
     fixture: WRAP_SITE,

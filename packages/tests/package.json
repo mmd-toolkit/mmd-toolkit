@@ -21,11 +21,6 @@
       "source": "./src/mermaid.ts",
       "default": "./lib/mermaid.mjs"
     },
-    "./mutation": {
-      "types": "./lib/mutation.d.mts",
-      "source": "./src/mutation.ts",
-      "default": "./lib/mutation.mjs"
-    },
     "./package.json": "./package.json"
   },
   "files": [
@@ -51,8 +46,7 @@
     "fixtures:add-many": "node ../../tools/fixtures.ts add-many",
     "fixtures:collect": "node ../../tools/collect.ts",
     "fixtures:set-divergence": "node ../../tools/fixtures.ts set-divergence",
-    "fixtures:set-note": "node ../../tools/fixtures.ts set-note",
-    "mutation": "node ../../tools/mutation.ts"
+    "fixtures:set-note": "node ../../tools/fixtures.ts set-note"
   },
   "devDependencies": {
     "@csstools/css-color-parser": "4.2.4",

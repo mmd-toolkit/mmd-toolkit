@@ -44,6 +44,17 @@ function set(target: object, field: string, value: unknown): void {
   Reflect.set(target, field, value)
 }
 
+/** A copy of the JSON `value` in which the keys of every object are in the reverse order. */
+function withReversedKeys(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(withReversedKeys)
+  if (typeof value !== "object" || value === null) return value
+  return Object.fromEntries(
+    Object.entries(value)
+      .reverse()
+      .map(([key, entry]) => [key, withReversedKeys(entry)]),
+  )
+}
+
 describe("checkTree: the form of a tree", () => {
   it("passes the recorded tree", () => {
     expect(problemsAfter(() => undefined)).toEqual([])
@@ -150,5 +161,78 @@ describe("checkTree: the form of a tree", () => {
     expect(
       checkTree(input, { type: "Foo" } as unknown as CheckedRoot).length,
     ).toBeGreaterThan(0)
+  })
+
+  it("reports a required node that is null", () => {
+    const problems = problemsAfter((tree) => {
+      set(nodeOf(tree, "SequenceMessageStatement"), "arrow", null)
+    })
+    expect(problems).toEqual([
+      "SequenceMessageStatement at 16-25: the field arrow is null, not a node",
+    ])
+  })
+
+  it("reports an entry of a list that is no node, and a null entry of a list that holds no null", () => {
+    for (const entry of [5, null]) {
+      expect(
+        problemsAfter((tree) => {
+          set(nodeOf(tree, "SequenceDiagram"), "body", [entry])
+        }),
+      ).toEqual([
+        "SequenceDiagram at 0-36.body[0]: is no node: it has no type and no range",
+      ])
+    }
+  })
+
+  it("reports a range that is no pair of offsets, and a loc that lacks its end or itself", () => {
+    /** The problems after `change` of the first message. */
+    function statement(change: (node: CheckedNode) => void): string[] {
+      return problemsAfter((tree) => {
+        change(nodeOf(tree, "SequenceMessageStatement"))
+      })
+    }
+
+    // A range of three entries is the range of no node: the object is no node.
+    expect(
+      statement((node) => {
+        set(node, "range", [16, 20, 25])
+      }),
+    ).toEqual([
+      "SequenceDiagram at 0-36.body[0]: is no node: it has no type and no range",
+    ])
+    // A fractional offset and a negative one are no offsets.
+    for (const range of [
+      [16, 25.5],
+      [-1, 25],
+    ]) {
+      expect(
+        statement((node) => {
+          set(node, "range", range)
+        }),
+      ).toEqual([
+        `SequenceMessageStatement at ${range.join("-")}: has a range that is no offset pair`,
+      ])
+    }
+    expect(
+      statement((node) => {
+        set(node, "loc", { start: { line: 2, column: 0 } })
+      }),
+    ).toEqual([
+      "SequenceMessageStatement at 16-25: has a loc that is no location",
+    ])
+    expect(
+      statement((node) => {
+        Reflect.deleteProperty(node, "loc")
+      }),
+    ).toEqual([
+      "SequenceMessageStatement at 16-25: has a loc that is no location",
+    ])
+  })
+
+  it("does not use the order of the fields of a node or the order of the keys of a loc", () => {
+    // Every object of the tree, a record and a position too, with its keys
+    // in the reverse order.
+    const { input, tree } = recorded()
+    expect(checkTree(input, withReversedKeys(tree) as CheckedRoot)).toEqual([])
   })
 })

@@ -45,3 +45,4 @@ of `@mmd-toolkit/tests`:
 - `sequence/gram-box-empty-description-block-then-participant`
 - `sequence/gram-box-empty-description-block-before-end`
 - `sequence/gram-box-empty-description-block-lines`
+- `sequence/db-empty-description-block-with-directive-wrap`

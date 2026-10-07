@@ -3,9 +3,9 @@ name: parser
 description:
   Implement a diagram type in @mmd-toolkit/parser from the specification and the
   fixtures only. This covers its node types, its hand-written lexer and
-  recursive-descent parser, the tests on the fixtures, and the recorded trees. It
-  also covers recording and checking the parse result of each fixture (its tree
-  in ast.json, or its error in parse-error.json), finding gaps in the
+  recursive-descent parser, the tests on the fixtures, and the recorded trees.
+  It also covers recording and checking the parse result of each fixture (its
+  tree in ast.json, or its error in parse-error.json), finding gaps in the
   specification, and fixing the parser when the pinned mermaid.js is updated.
   Use when a diagram type is added to the parser, when fixtures are added or a
   rule of the specification changes, or when mermaid.js is updated.
@@ -47,10 +47,12 @@ pin した mermaid.js の更新を扱う。
   記録した木は `@mmd-toolkit/tests` が確かめる。
   木の条件（`checkTree`）と、木から組んだ Db を各 fixture が記録した Db と
   比べることである。
-  テストは mermaid.js も生成した入力も動かさない。
-  `tools/explore/` の探索が、生成した入力を mermaid.js と比べて、
-  コーパスに欠けているものを探す。
-  見つかったものは fixture で閉じる。
+  テストは mermaid.js も生成した入力も動かさず、
+  このパッケージのどのコマンドも動かさない。
+  パーサーの文書の、挙動を定める各文は、
+  その文が分ける場合ごとと、その文の名指す場所で接するほかの規則ごとに、
+  fixture を持つ（AGENTS.md の Principles）。
+  コーパスに欠けている場合は、fixture で閉じる。
 
 ## 1. 最初に読むもの
 
@@ -121,28 +123,22 @@ pin した mermaid.js の更新を扱う。
 
 ## 3. 確かめ方（すべての作業で）
 
-- 挙動についての主張は、自分のものも、ほかから来たものも、
-  mermaid.js を動かして確かめてから書く。
-  入力を JSON の文字列の配列にして、リポジトリの外のファイルに置き、
-  `packages/parser` で次を実行する。
-
-  ```sh
-  pnpm run compare-with-mermaid <ファイル>
-  ```
-
-  入力ごとに、`parse()` と、その木から組んだ Db が mermaid.js と一致するか、
-  `@mmd-toolkit/tests` の木の検査が木に問題を見つけるかを出す
-  （`docs/development.md` の「道具」）。
-  既知の差異に当たる入力は `DIFF` になるので、
-  仕様の Known divergences と照らして読む。
-
-- 手で書いた例だけで確かめない。
-  境界が問題になる規則は、
-  文字や単位を全位置に置いた入力を生成して、探索で比べる（4.6 節の手順 3）。
+- mermaid.js の挙動についての主張は、自分のものも、ほかから来たものも、
+  書く前に fixture で確かめる。パーサーは mermaid.js を動かさない。
+  入力を、その主張が関わる文とともに tests パッケージに渡す（tests の SKILL）。
+  tests が fixture を足し、fixture は mermaid.js のしたことを記録する。
+  そのあと fixture のテストが、パーサーをそれに従わせる。
+  テストやコメントに書く例も、そうした入力である。
   flowchart では、テストのために手で書いた例が、
   行終端子で click の文脈を出るために、
   mermaid.js に拒否されていた。
-  テストやコメントに例を書くときも、上のコマンドに掛けてから書く。
+- パーサーの文書の、挙動を定める文を書くか変えるときは、
+  その文が分ける場合と、その文の名指す場所で接するほかの規則
+  （ディレクティブ、無視される `;`、コメント行、空行、行区切り、
+  空の説明ブロック）を挙げ、
+  コーパスに欠けている場合ごとに fixture を頼む（AGENTS.md の Principles）。
+  確かさは、欠けている場合を足すことで得て、
+  ある場合の入力を増やすことでは決して得ない。
 - 結果では、主張ごとに、実行して確かめたか、コードや文書を読んで確かめたか、
   確かめていないかを区別して示す。
 - 変更が影響しうるものだけを回す（SKILL `conventions` の「テストの実行」）。
@@ -167,7 +163,6 @@ pin した mermaid.js の更新を扱う。
   `src/ast.ts` と `src/ast/*.ts` のコメントの例と union を読むテスト
   （`tests/ast-<図種>-examples.test.ts`、`tests/union-docs.test.ts`）である。
   全体は、4.8 節のとおりに回す。
-  図種の字句か文法を変えたときは、その探索も回す（4.6 節の手順 3）。
 
 ## 4. 図種を足すとき（Jison の図）
 
@@ -226,9 +221,7 @@ flowchart のファイルが手本になる。
    これ以後、テストがその図種を未対応の図種として扱っていた所でも、
    図種が parse される。
    `tests/parse.test.ts` の未対応の図種の例は、まだ未対応の別の図種に替える。
-   共通の探索（`tools/explore/common-mermaid.test.ts`）の変異のうち、
-   その図種のものは木として比べられる。
-   そこでの不一致は図種の違いであり、4.2 の手順 2 のとおりに読む。
+   その図種の fixture は、木として記録される（4.7 節）。
 
 ### 4.4 字句解析器
 
@@ -387,15 +380,14 @@ flowchart のファイルが手本になる。
 flowchart のテストが手本になる。
 足す、または図種の `case` を足すファイル:
 
-| ファイル                               | 足すもの                          |
-| -------------------------------------- | --------------------------------- |
-| `tests/helpers/node-types.ts`          | 図種のすべてのノード型の `Record` |
-| `tests/types.test.ts`                  | `Node` の合併型                   |
-| `tests/helpers/recorded-diagrams.ts`   | `RECORDED_DIAGRAMS` への図種      |
-| `tools/explore/<図種>-mermaid.test.ts` | 変異の探索                        |
-| `tests/ast-<図種>-examples.test.ts`    | ノード型のコメントの例            |
-| `tests/helpers/reference-inputs.ts`    | 参照入力のための図種の単位        |
-| `tests/<図種>.test.ts`                 | 木とトークンの単体テスト          |
+| ファイル                             | 足すもの                          |
+| ------------------------------------ | --------------------------------- |
+| `tests/helpers/node-types.ts`        | 図種のすべてのノード型の `Record` |
+| `tests/types.test.ts`                | `Node` の合併型                   |
+| `tests/helpers/recorded-diagrams.ts` | `RECORDED_DIAGRAMS` への図種      |
+| `tests/ast-<図種>-examples.test.ts`  | ノード型のコメントの例            |
+| `tests/helpers/reference-inputs.ts`  | 参照入力のための図種の単位        |
+| `tests/<図種>.test.ts`               | 木とトークンの単体テスト          |
 
 手順:
 
@@ -416,31 +408,13 @@ flowchart のテストが手本になる。
    subgraph の名前のテキストは区切りまで続き、
    名前の後に空の説明ブロックが続く所では、
    その間の空白はどのノードにも入らない。
-   それぞれの境界に、空白、ディレクティブ、コメント行、`click` を置き、
-   探索で mermaid.js と比べる（3 節）
-   （flowchart では `tools/explore/flowchart-source-reading.test.ts`）。
-   入力は生成する。
-   それぞれを、文の各位置に置く
-   （class では `tools/explore/class-source-reading.test.ts`）。
    文の終わりにある、すべて空白の単位は、文の範囲の後にある。
    文の範囲は最後のトークンで終わるからである。
    そうした単位は、範囲の内側からでなく、文の単位の隣から探す。
-3. `tools/explore/` の探索はテストではない
-   （`docs/testing.md` の「mermaid.js と比べる探索」）。
-   探索は、生成した入力を mermaid.js と比べる。
-   比べ方は `tools/explore/mermaid-comparison.ts` にある。
-   `<図種>-mermaid.test.ts` は fixture の変異を比べる。
-   図種の字句か文法を変えたときに、
-   `packages/parser` で `pnpm run explore` として回す。
-   一部だけなら
-   `npx vitest run --config tools/explore/vitest.config.ts <ファイル>` とする。
-   探索が見つけた違いは、コーパスの fixture で閉じる（tests の SKILL）。
-   仕様がその読み方を述べていなければ、仕様の文でも閉じる（spec の SKILL）。
-   このパッケージの一覧にだけ置いた入力は、残したことにならない。
-4. 境界が問題になる規則には、生成した入力の探索を足す。
-   flowchart の例: `tools/explore/entity-units.test.ts` は、
-   実体参照を、リンクのテキストと楕円のラベルの全位置に置く。
-5. 一度誤った入力は、コーパスの fixture にする。
+   そうした場所は、それぞれ範囲を定める文の場合である。
+   そこに空白、ディレクティブ、コメント行、`click` を置いた
+   fixture を頼む（3 節）。
+3. 一度誤った入力は、コーパスの fixture にする。
    失敗の注をつけて、tests パッケージに渡す（tests の SKILL）。
 
 ### 4.7 記録したパースの結果
@@ -550,15 +524,12 @@ pnpm run format:check
 
 全体は、作業を終えたと報告する前に 1 回だけ回し、変更のたびには回さない。
 全体は、生成した入力を回さない（SKILL `conventions` の「テストの実行」）。
-図種の字句か文法を変えたときは、その探索も回す（4.6 節の手順 3）。
-探索は、入力を種類で取り、組み合わせごとに 1 回取る。
-確かさは、欠けている種類の入力を足すことで得て、
-件数を増やすことでは決して得ない。
 
 すべての fixture が fixture のテストを通り、
 記録した木が `@mmd-toolkit/tests` の木の検査を通って、
 コーパスが記録した Db を与え、
-探索が見つけた違いがすべて fixture で閉じれば、作業は終わり。
+作業で書いたか変えた文のすべてが、その場合ごとに fixture を持てば（3 節）、
+作業は終わり。
 
 ### 4.9 文書
 
@@ -609,8 +580,8 @@ Langium の文法定義に合わせて変わる見込み。
   空白、区切り、コメント、同じ種類の形、ヘッダーである。
   その形を含みうるようになる、範囲からテキストを取る所
   （subgraph の名前のテキスト、スタイルのテキストなど）も挙げる。
-  挙げたものすべてについて、生成した入力を mermaid.js と比べ、
-  食い違いは 1 回でまとめて仕様に知らせる。
+  挙げたものは、それぞれその形を受理する文の場合である。
+  それぞれの fixture を頼み（3 節）、食い違いは 1 回でまとめて仕様に知らせる。
   区切りの前の空の説明ブロックを、このようにせず 1 か所ずつ受理に変えたときは、
   subgraph の名前の後の置き場、ブロックのまわりの空白、スタイルのテキスト、
   ヘッダーの行、ブロックの後のコメント、文の中のブロックの連なりが、
@@ -628,19 +599,14 @@ Langium の文法定義に合わせて変わる見込み。
   両方向の差異では、仕様どおりの読みをコーパスに記録する
   （`specified.json`。字句解析器からその差異を除いた mermaid.js で作る）。
   それは tests パッケージが作るので、頼む。
-  申告を `tests/helpers/known-divergences.ts` に足し、
-  申告した違いの確かめを、`tools/explore/mermaid-comparison.ts` と探索に、
-  空振りを防ぐ検査とともに足す。
+  申告を `tests/helpers/known-divergences.ts` に足す。
   参照入力と申告の字句の判断は、独自の規則でなく、すべてパーサーの単位から取る。
   `docs/testing.md` の「既知の差異」と、README の違いの一覧に足す。
 - 仕様が、参照の読み方ですべての違いを説明できると主張するときは
   （sequence の `comment-takes-character`）、
-  fixture だけでなく生成した入力でもその主張を確かめる（4.6 節の手順 4）。
-  受理される fixture の各位置にその形を置き、
-  各入力の `parse()` と、参照の読み方の mermaid.js を、
-  探索で比べる。
-  ほかの既知の差異は、そこでもほかと同じく申告して確かめる。
-  残った種類は、例と mermaid.js の結果と件数を添えて、仕様に報告する。
+  その形を置ける各場所が、その主張の場合である。
+  それぞれの fixture を頼み（3 節）、読み方で説明できない場合は、
+  入力と mermaid.js の結果を添えて仕様に報告する。
 
 ## 7. mermaid.js を更新するとき
 
@@ -651,14 +617,13 @@ Langium の文法定義に合わせて変わる見込み。
 1. 仕様の変わった節を読み、変わった規則ごとに、4.2 節の手順 2 で確かめる。
 2. 版に結び付いた箇所を直す。
    `grep -rn '12\.0\.0' packages/parser` で見つかる。
-   README、`docs/development.md`、`docs/testing.md`、
-   `tools/explore/common-inputs.ts` のコメントで、
+   README と `docs/development.md` で、
    それぞれ `.ja.md` もある。
 3. 図種 ID が増えた、または変わった:
    仕様の `detection.md` と `ast.md` の DiagramType に従って、
    `src/detection.ts`、`src/ast.ts` の `DiagramType`、
-   `tests/types.test.ts` の `allDiagramTypes`、`tests/detection.test.ts`、
-   `tools/explore/common-inputs.ts` の見出しを直す。
+   `tests/types.test.ts` の `allDiagramTypes`、
+   `tests/detection.test.ts` を直す。
 4. 仕様の一覧を写した表が、仕様と一致するかを確かめる。
    flowchart と class では、
    両者が共有する `src/unicode-letters.ts` の文字の範囲である。

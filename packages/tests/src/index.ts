@@ -20,8 +20,13 @@ export type {
   MermaidError,
 } from "./types.ts"
 
+// The stand-in for the browser's `CSS.supports("color", value)` that the Db
+// patches give mermaid; it runs no mermaid.js, and an implementation that does
+// not judge colors asks it the same question (see docs/expected-results.md).
+export { cssSupportsColor } from "./normalizers/browser-stand-ins.ts"
 export type { EmbeddedValues } from "./mermaid.ts"
 export { checkTree } from "./check-tree/index.ts"
+export { DATA_BLOCK_NODE_TYPES } from "./check-tree/node-types.ts"
 export type { CheckedRoot, TreeProblem } from "./check-tree/index.ts"
 export { dbFromTree } from "./db-from-tree/index.ts"
 export {
@@ -33,22 +38,6 @@ export type {
   DbTreeRoot,
   DiagramBody,
 } from "./db-from-tree/index.ts"
-export {
-  findBoundaries,
-  findInnerPlaces,
-  selectByKey,
-} from "./boundary-kinds.ts"
-export type {
-  InnerPlace,
-  InnerPosition,
-  KindComment,
-  KindDirective,
-  KindRange,
-  KindSource,
-  KindToken,
-  LinePosition,
-  TextBoundary,
-} from "./boundary-kinds.ts"
 
 /**
  * Fixture directories: one per diagram type, and `common` for syntax shared

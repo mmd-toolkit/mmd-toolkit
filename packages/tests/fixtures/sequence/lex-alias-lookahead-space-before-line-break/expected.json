@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md The alias context, rule 4: the alias context reads the space before the line feed, then ends the statement."
+    "note": "sequence.md The alias context, rule 3: the alias context reads the space before the line feed, then ends the statement."
   },
   "accepted": true,
   "diagramType": "sequence",

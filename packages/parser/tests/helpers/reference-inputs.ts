@@ -1,4 +1,3 @@
-import type { DivergenceRemoval } from "@mmd-toolkit/tests/mermaid"
 import type { Range, Root } from "../../src/index.ts"
 import { ParseError, traverseNodes, visitorKeys } from "../../src/index.ts"
 import { buildDetectionInput, detect } from "../../src/detection.ts"
@@ -81,6 +80,21 @@ export function withIgnoredSemicolonsAtSegmentEnds(text: string): string {
 }
 
 /**
+ * `text` without its directives ({@link withoutDirectives}), and then with
+ * each `;` that the line rule ignores moved to the end of its line segment
+ * ({@link withIgnoredSemicolonsAtSegmentEnds}): the reference input of both
+ * `directive-as-token-boundary` and `ignored-semicolon-as-token-boundary`,
+ * so that an input with both forms, as
+ * `A[style:#x];cl%%{init: {}}%%ick B;b call cb()` in a flowchart, has one
+ * reference input in which neither cuts a token. Each step keeps the
+ * diagram text that mermaid.js and the specification read, so the parser
+ * must give for the result what mermaid.js gives for `text`.
+ */
+export function withoutTokenCuts(text: string): string {
+  return withIgnoredSemicolonsAtSegmentEnds(withoutDirectives(text))
+}
+
+/**
  * common.md, `style` and `classDef` lines: the `;` that the line rule
  * ignores in `text`, as the parser's line rule finds them, for each line
  * segment that has any: their offsets, in source order, and where the
@@ -99,28 +113,6 @@ export function ignoredSemicolonsBySegment(
     }
   }
   return segments
-}
-
-/**
- * `text` with every `<` of its frontmatter trivia replaced by `(`: the
- * reference input for `html-tag-in-frontmatter`. No tag starts in the
- * frontmatter of the result, so mermaid.js, which looks for HTML tags from
- * the start of the source, finds in it the tags that the specification
- * finds in the original. The replacement has the same length, so offsets
- * stay. It changes the YAML where the `<` was: a value such as the title
- * then holds `(`, a merge key `<<` or a verbatim tag `!<...>` is no longer
- * one. A comparison therefore takes the values that depend on the
- * frontmatter (title, configuration) from the run of mermaid.js on the
- * reference input, and leaves out a reference input that mermaid.js rejects
- * for its embedded data.
- */
-export function withoutFrontmatterTagStarts(text: string): string {
-  const textStart = textStartOf(text)
-  let frontmatter = ""
-  for (const character of text.slice(0, textStart)) {
-    frontmatter += character === "<" ? "(" : character
-  }
-  return frontmatter + text.slice(textStart)
 }
 
 /**
@@ -327,18 +319,6 @@ export function commentsAfterMatchStarts(text: string): number[] | null {
     )
     .sort((left, right) => left - right)
 }
-
-/**
- * known-divergences/comment-takes-line-break.md and
- * known-divergences/name-start-reads-unit.md: the divergences of the class
- * lexer that a reference reading removes from mermaid.js, together, so that
- * mermaid.js reads a class diagram as this specification does, apart from the
- * other divergences, also where one input has both.
- */
-export const CLASS_READING_REMOVALS: readonly DivergenceRemoval[] = [
-  "comment-takes-line-break",
-  "name-start-reads-unit",
-]
 
 /**
  * known-divergences/comment-takes-line-break.md: the offsets, in source

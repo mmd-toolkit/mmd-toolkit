@@ -24,8 +24,8 @@ between them. Such a line comes about in these ways:
 - `direction lr`, with the direction value in lower case, is the class name
   `directionlr`, and the direction stays `TB`.
 - `title Animals` is the class name `titleAnimals`. A class diagram has no
-  `title` statement; its title comes from the frontmatter only, and it stays
-  empty.
+  `title` statement; the title shown with the diagram is set in the frontmatter
+  only, so the title stays empty.
 - `Foo` alone declares no class `Foo`. A class is declared with `class Foo`, by
   a relation, or by a member statement such as `Foo : +int x`.
 

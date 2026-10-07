@@ -66,7 +66,7 @@ Prettierによる整形結果を確認できます。
 ここでは構文エラーです。
 click の文の外にある語 `click` も同じです。
 それぞれの定義と理由は、仕様の
-[既知の差](./packages/spec/docs/known-divergences.ja.md)にあります。
+[既知の差異](./packages/spec/docs/known-divergences.ja.md)にあります。
 
 もう 1 つの違いは、構文ではなく、パーサーに渡されるものから来ます。
 パーサーは mermaid.js のサイト設定を知らないので、

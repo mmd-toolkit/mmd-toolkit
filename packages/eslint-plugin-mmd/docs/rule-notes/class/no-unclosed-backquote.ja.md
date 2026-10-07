@@ -2,7 +2,9 @@
 
 英語版: [no-unclosed-backquote.md](./no-unclosed-backquote.md)
 
-規則 [mmd/class/no-unclosed-backquote](../../rules/class/no-unclosed-backquote.ja.md) を実装するための覚え書き。
+規則
+[mmd/class/no-unclosed-backquote](../../rules/class/no-unclosed-backquote.ja.md)
+を実装するための覚え書き。
 
 この規則はまだ実装していない。
 ここには、実装するときに要ることを書く。

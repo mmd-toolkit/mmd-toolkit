@@ -28,3 +28,4 @@ of `@mmd-toolkit/tests`:
 - `sequence/db-acc-descr-outer-replaces-loop`
 - `sequence/db-acc-descr-line-alone`
 - `sequence/db-acc-descr-empty-block-keeps`
+- `sequence/db-acc-descr-line-empty-takes-next-lines`

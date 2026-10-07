@@ -40,7 +40,12 @@ import type {
   TreeRange,
   TreeRoot,
 } from "./tree.ts"
-import { descriptionOf, setOwnProperty, trimmed } from "./values.ts"
+import {
+  descriptionOf,
+  setOwnProperty,
+  trimmed,
+  withoutEnclosingQuotes,
+} from "./values.ts"
 
 // docs/db-from-tree/flowchart.md: the summary of the Db that a
 // flowchart tree denotes, in the form of `normalizeFlowchart()` of
@@ -338,6 +343,8 @@ class FlowchartDbBuilder {
 
   private readonly tooltips = new Map<string, string>()
 
+  private readonly clickCalls: JsonObject[] = []
+
   private defaultInterpolate: string | null = null
 
   private defaultStyle: string[] | null = null
@@ -430,6 +437,7 @@ class FlowchartDbBuilder {
       })),
       subgraphs: this.subgraphs.map((subgraph) => subgraph as JsonObject),
       tooltips: [...this.tooltips].map(([id, text]) => ({ id, text })),
+      ...(this.clickCalls.length === 0 ? {} : { clickCalls: this.clickCalls }),
     }
   }
 
@@ -556,7 +564,7 @@ class FlowchartDbBuilder {
       this.vertices.set(id, vertex)
     }
     if (label !== null) {
-      vertex.text = trimmed(this.labelTextOf(label))
+      vertex.text = withoutEnclosingQuotes(trimmed(this.labelTextOf(label)))
       vertex.labelType = label.kind
     } else {
       vertex.text ??= id
@@ -813,7 +821,9 @@ class FlowchartDbBuilder {
           type: arrow.type,
           stroke: arrow.stroke,
           text:
-            link.label === null ? "" : trimmed(this.labelTextOf(link.label)),
+            link.label === null
+              ? ""
+              : withoutEnclosingQuotes(trimmed(this.labelTextOf(link.label))),
           labelType: link.label === null ? "text" : link.label.kind,
           classes: [],
           ...this.edgeId(link, start, end, lastOfSource, firstOfTarget),
@@ -904,7 +914,10 @@ class FlowchartDbBuilder {
   }
 
   /**
-   * Click statements: a callback applies the class step with `clickable`; a
+   * Click statements: a callback records a click call for each id (the name
+   * of the function and the arguments as written, the text between the
+   * parentheses, whitespace at its ends too) and applies the class step with
+   * `clickable`; a
    * URL gives each vertex with one of the ids the URL, trimmed, as `link`,
    * none when it is empty, and the target as `linkTarget`, and then applies
    * the class step. A tooltip is recorded for each id.
@@ -913,6 +926,12 @@ class FlowchartDbBuilder {
     statement: FlowchartClickCallbackStatement | FlowchartClickUrlStatement,
   ): void {
     const ids = statement.ids.map((id) => this.nameOf(id))
+    if (statement.type === "FlowchartClickCallbackStatement") {
+      // The Db is called for each id, whether or not it names a vertex.
+      const name = this.text.of(statement.callback.range)
+      const args = this.literalTextOf(statement.arguments)
+      for (const id of ids) this.clickCalls.push({ id, name, args })
+    }
     if (statement.type === "FlowchartClickUrlStatement") {
       const url = trimmed(this.stringTextOf(statement.url))
       for (const id of ids) {

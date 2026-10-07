@@ -181,8 +181,9 @@ common/detect-minimal-cynefin] [fixture: common/detect-minimal-usecase]
   [fixture: common/detect-cynefin-colon] [fixture: common/detect-usecase-colon]
 - **大文字小文字**: 項目 30、32〜35、37 は大文字小文字を区別しません。
   `ISHIKAWA` も `IsHiKaWa` も ishikawa を選びます。
-  大文字小文字が変わるのは ASCII の英字だけなので、`K` の代わりの U+212A や、
-  `s` の代わりの U+017F は検出されません。
+  比べ方は [表記](./common.ja.md#表記) の大文字小文字を区別しない比べ方で、
+  大文字が ASCII の英字になる ASCII の外の文字はそれ自身のままなので、
+  `K` の代わりの U+212A や、`s` の代わりの U+017F は検出されません。
   それ以外の検出器は完全に一致するかで比べます。
   `sequencediagram` は検出されません。
   大文字のキーワードをその図の文法が受理するかどうかは、その文法によるので、

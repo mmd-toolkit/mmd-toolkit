@@ -11,7 +11,8 @@
 フロントマターの本文、ディレクティブの引数、
 `@{ ... }`
 のデータブロックは書かれたとおりに保持します
-（[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md) を参照）。
+（[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md)
+を参照）。
 mermaid.js が設定をどう求めるかは、この仕様の範囲の外です。
 
 この文書のすべての記述は、pin した版の mermaid.js の挙動を基準にしています。
@@ -31,7 +32,8 @@ pin した版は mermaid 12.0.0 です。
 
 - [`diagrams/`](https://github.com/mermaid-js/mermaid/tree/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams)
   の下の各図のディレクトリにある文法（例:
-  [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)）とその字句状態
+  [`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison)）
+  とその字句状態
 - 各図の `Db` クラス。
   解析の一部はここで行われます（例:
   [`flowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts)
@@ -54,11 +56,12 @@ pin した版は mermaid 12.0.0 です。
 2. 受理したソースについて、[ast.ja.md](./ast.ja.md) と、
    `ast/` の下のその図種の文書で定める木を作る。
    木はソースを何も失わない。
-   どの文字も、トークン、コメント、ディレクティブ、
-   フロントマターのどれかに含まれるか、
+   どの文字も、単位、コメント、ディレクティブ、フロントマター、
+   行単位の規則が無視する `;` のどれかに含まれるか
+   （[common.ja.md](./common.ja.md) と図の文書で定めます）、
    [表記](./common.ja.md#表記) で定めた空白か、行終端である。
 
-木のトークンと位置、
+実装が記録するトークン、木の位置、
 そして木を mermaid.js の Db が持つ値と照らす確かめ方は、この仕様の範囲の外です。
 `[fixture: <区分>/<名前>]` の形で示す fixture は、
 受理と木を具体的な入力で示します。
@@ -72,9 +75,10 @@ pin した版は mermaid 12.0.0 です。
   [detection.ja.md](./detection.ja.md) の検出器が選び、
   `flowchart-v2` や `sequence` のように mermaid.js が報告する id
   で呼びます（[ast.ja.md](./ast.ja.md#root) の DiagramType）。
-- **トリビア**: ソースのうち、図のトークンでない部分。
+- **トリビア**: ソースのうち、単位の書かれたテキストに入らない部分
+  （[ノード](./ast.ja.md#ノード) を参照）。
   フロントマター、ディレクティブ、コメント、行単位の規則が無視する `;`、
-  どのトークンの外にもある空白で、
+  それらの書かれたテキストの外にある空白と行終端で、
   [common.ja.md](./common.ja.md) と
   [ast.ja.md](./ast.ja.md#ディレクティブとフロントマター) で定めます。
 - **単位**と**文脈**: 図の文書は、字句解析器を、図のテキストを単位ごとに読み、
@@ -95,11 +99,11 @@ pin した版は mermaid 12.0.0 です。
    どう単位に分けるか。
 3. **文法**（Grammar）: 図の文と、その組み立て方。
    文法が受理した後で mermaid.js が拒否する入力も述べます。
-4. **既知の差**（Known divergences）:
-   [known-divergences.ja.md](./known-divergences.ja.md) で定める差のうち、
+4. **既知の差異**（Known divergences）:
+   [known-divergences.ja.md](./known-divergences.ja.md) で定める差異のうち、
    その図種に当てはまるものと、それがその図種でどう現れるか。
-   差は、この仕様が意図して mermaid.js と異なる入力のまとまりで、
-   差の識別子で名前を付け、該当する fixture がその識別子を持ちます。
+   差異は、この仕様が意図して mermaid.js と異なる入力のまとまりで、
+   差異の識別子で名前を付け、該当する fixture がその識別子を持ちます。
    mermaid.js の挙動が意外なだけのところは、他の節で述べ、それに従います。
 
 `ast/` の下の各文書は、

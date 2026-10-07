@@ -2,7 +2,9 @@
 
 英語版: [no-bare-class-name.md](./no-bare-class-name.md)
 
-規則 [mmd/class/no-bare-class-name](../../rules/class/no-bare-class-name.ja.md) を実装するための覚え書き。
+規則
+[mmd/class/no-bare-class-name](../../rules/class/no-bare-class-name.ja.md)
+を実装するための覚え書き。
 
 この規則はまだ実装していない。
 ここには、実装するときに要ることを書く。

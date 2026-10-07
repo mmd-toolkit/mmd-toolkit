@@ -45,6 +45,18 @@
     "relations": [],
     "notes": [],
     "namespaces": [],
-    "interfaces": []
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "Shape",
+        "name": "callbackFunction",
+        "args": null
+      },
+      {
+        "id": "Shape2",
+        "name": "callbackFunction",
+        "args": null
+      }
+    ]
   }
 }

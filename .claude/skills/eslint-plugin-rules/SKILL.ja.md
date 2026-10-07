@@ -50,18 +50,24 @@ description:
   文を取り除いた Db、Db の関数が受け取る値、入力を受理するか、など。
   Db の要約が事実を隠すときは、それを受け取る Db の関数を包み、
   渡された値を記録する。
-- 生成した入力で探索し、コーパスと規則の fixture に欠けているものを見つける。
-  規則が出会う入力の種類を挙げる。
-  誤りがどの文の中にあるか、行のどこか、隣に区切り、空白、コメント、
-  ディレクティブのどれがあるか、どの文脈の中か、である。
-  組み合わせを 1 回ずつ取り、文書の例を変異させて、欠けている種類を探す。
-  規則の報告を事実と、両方向で比べる。
+- 規則の主張ごとに、その主張が分ける場合ごとの入力で確かめる。
+  主張は、報告する条件、しない条件、メッセージ、提案である。
+  規則の文書と、それを決めたメモの文ごとに、
+  その文が分ける場合
+  （誤りがどの文の中にあるか、行のどこか、隣に区切りや空白があるか、
+  どの文脈の中か）と、
+  その文が名指す場所で出会う言語の規則
+  （ディレクティブ、無視される `;`、コメントの行、空の行、行区切り、
+  空の説明ブロック）を挙げる。
+  場合ごとに、規則の fixture である入力を 1 つ与え、場合の名前を付ける。
+  各入力で mermaid.js を 1 回動かし、
+  規則の報告を、その振る舞いと両方向で比べる。
   報告されない誤りと、誤りではない報告である。
-  比べに要るすべての入力で mermaid.js を動かす。
-  件数を増やすために、同じ種類を繰り返さない。
-  見つけた失敗は fixture（4 節）で閉じ、
+  mermaid.js が拒否する場合には、fixture を付けない。
+  乱数や数で入力を選ばず、入力を生成する命令も使わない。
+  比べで見つけた失敗は、その場合の fixture（4 節）で閉じ、
   仕様がその読み方を述べていなければ、仕様の文でも閉じる。
-  報告には、探索がどの種類を覆うかを書く。
+  報告には、読んだ文と、足した入力を書く。
 - 図のどこにあってもよい定義に条件が依る規則
   （id、文が作る頂点など）には、
   定義が使う所の後にある入力と前にある入力、
@@ -106,17 +112,18 @@ description:
   規則の採否、範囲、`recommended`、提案を持つかは rule-ideas の SKILL から来る。
   規則に fix はない。
 - 提案は、`create` から分けた関数で組み立てる。
-  提案の結果を、2 節の探索で mermaid.js で確かめる。
-  探索の入力に当て、
+  提案の結果を、4 節の fixture で mermaid.js で確かめる。
+  場合ごとの入力に当て、
   parser がそのテキストを受理すること、
   Db がメッセージの言うものであること（書き手のつもりどおりのテキストの Db）、
   規則の報告が減ることを確かめる。
   メッセージは、提案を出すすべての場合に、当てた後に真であることを言う。
   提案ごとの主張は、`testRule` のオプション `claims` に書く。
   テストが出力を mermaid.js で読み、主張を確かめる。
-  主張は、メッセージの言うことのうち Db が示せるものをすべて言う
+  主張は、メッセージの言うことをすべて言う
   （説明の値、文として読まれるテキスト、テキストの中の行が 1 つ減ること）。
-  Db が示せないものは `notShownByDb` で名指しし、黙って通さない。
+  固定した mermaid.js の Db がメッセージの言うことを示さないときは、
+  主張を弱めずに、tests パッケージにそれを記録するよう頼む。
 - 別のものを書く前に、`src/utils/` の補助を使う。
   補助が持つ前提を新しい規則が破るときは、テキストではなく木から読んで決め、
   その補助を使うほかの規則も確かめ直す。
@@ -127,7 +134,7 @@ description:
   規則を整えるよう頼まれたら、短くではなく、賢くする。
   目的は、判断が 1 度だけされることで、行数ではない。
   振る舞いが変わっていないことは、スナップショットに加えて、
-  古い版と新しい版を探索の同じ入力に当て、
+  古い版と新しい版を同じ fixture に当て、
   報告と提案を比べて示す。
 - 自分のコードの欠陥は、言われるのを待たずに直す。
   自分に決められた設計への異論は、実装の前に、コードを開いて 1 度だけ述べる。
@@ -138,6 +145,14 @@ description:
 - 規則のテストは `testRule` の 1 回の呼び出しである
   （`docs/development.md`）。
   英語の文書の例がケースで、fixture のディレクトリの入力がほかのケースである。
+- 規則のテストは、どの入力がどの場合かを示す。
+  オプション `sentences` に、英語の文書の、振る舞いを定める文ごとに、
+  その一節（一字一句そのまま）、
+  その文が分ける場合（言葉で）、場合ごとの入力を並べる
+  （`docs/development.md`）。
+  文と場合と入力は、fixture と同じ変更で足す。
+  文書の文に項目がないこと、場合に入力がないことは、
+  レビューが探す欠けである。
 - eslint-plugin の SKILL に従い、従う例も反する例も、
   先頭の `%% eslint mmd/<規則>: error` コメントを残す。
   parser とサイトの検査は、このコメントを含めて読む。
@@ -149,11 +164,20 @@ description:
   その変更の中で、変更の fixture を足す。
   足す前に、入力ごとに mermaid.js で確かめる。
   スクラッチのファイルでの確かめは、リポジトリの fixture の代わりにならない。
-- mermaid.js の振る舞いを記録した入力は、コーパスの fixture の入力の写し
-  （バイト単位で同じ）である。
-  規則のためだけに書いた入力は、`valid/` か `invalid/` の直下に置く。
+- 規則の fixture の入力は、コーパスの fixture の入力の写し
+  （バイト単位で同じ）で、mermaid.js の読み方が記録されている。
+  コーパスにない入力は、コーパスを持つ tests パッケージに頼む。
+  入力と、それが答える文書の主張を渡す。
+  tests パッケージは `pnpm run fixtures:add` で足し、
+  それは mermaid.js の振る舞いを記録し
+  （`packages/tests/docs/maintaining-fixtures.md`）、
+  parser が木を記録する。
+  fixture の名前が届いたら、その `expected.json` を読み、
+  入力の写しを、規則の fixture のディレクトリの
+  `valid/<図種>/` か `invalid/<図種>/` に、その名前で置く。
+  届くまでは、報告に、足している入力として挙げる。
   fixture のファイルに、`pnpm run lint:chars` が調べる文字は入れない。
-  それが要る入力は、テストのコードか JSON の fixture に、エスケープで書く。
+  それが要る入力は、コーパスの fixture で、規則のテストが名前で読む。
 - スナップショットは `test:update`（`CI=true` なしで）で作り直す。
   新しいスナップショットを古いものと比べ、差のそれぞれを説明する。
   意図しない差は欠陥である。
@@ -165,17 +189,17 @@ SKILL `conventions` の決まり（テストの実行）に従う。
 （`packages/eslint-plugin-mmd` で `npx vitest run <ファイル>`）、
 全体は、作業の完了を報告する前に 1 回だけ回す。
 
-| 変えたもの                                              | 回すテストのファイル                                                                                                                     |
-| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| 規則のファイル `src/rules/<パス>.ts`                    | `tests/rules/<パス>.test.ts`                                                                                                             |
-| 図種の規則のハンドラー                                  | 上と同じ、それと `tests/diagram-rules.test.ts`                                                                                           |
-| `src/utils/` の補助                                     | それを import する規則のテスト（import を探す）。`subgraph-ids.ts` は `tests/subgraph-ids.test.ts`                                       |
-| 規則の fixture のディレクトリ                           | `tests/rules/<パス>.test.ts` と `tests/rule-fixtures.test.ts`                                                                            |
-| 規則の英語の文書の例                                    | `tests/rules/<パス>.test.ts` と `tests/rule-cases.test.ts`                                                                               |
-| 規則の追加、改名、削除                                  | その規則の上のテストと、`tests/rules-index.test.ts`                                                                                      |
-| `tests/rule-test.ts`、`tests/rule-cases.ts`             | `tests/rules/**/*.test.ts` のすべて、`tests/rule-cases.test.ts`、`tests/suggestion-claims.test.ts`                                       |
-| `src/language.ts`、`src/source-code.ts`、トークンストア | `tests/language.test.ts`、`tests/token-store.test.ts`、`tests/snapshot.test.ts`、`tests/inline-config.test.ts`、`tests/markdown.test.ts` |
-| parser（プラグインが読むノードが変わったとき）          | 上の言語のテスト、`tests/diagram-rules.test.ts`、そのノードを読む規則のテスト                                                            |
+| 変えたもの                                              | 回すテストのファイル                                                                                                                              |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 規則のファイル `src/rules/<パス>.ts`                    | `tests/rules/<パス>.test.ts`                                                                                                                      |
+| 図種の規則のハンドラー                                  | 上と同じ、それと `tests/diagram-rules.test.ts`                                                                                                    |
+| `src/utils/` の補助                                     | それを import する規則のテスト（import を探す）。`subgraph-ids.ts` は `tests/subgraph-ids.test.ts`、`text-nodes.ts` は `tests/text-nodes.test.ts` |
+| 規則の fixture のディレクトリ                           | `tests/rules/<パス>.test.ts` と `tests/rule-fixtures.test.ts`                                                                                     |
+| 規則の英語の文書の例                                    | `tests/rules/<パス>.test.ts` と `tests/rule-cases.test.ts`                                                                                        |
+| 規則の追加、改名、削除                                  | その規則の上のテストと、`tests/rules-index.test.ts`                                                                                               |
+| `tests/rule-test.ts`、`tests/rule-cases.ts`             | `tests/rules/**/*.test.ts` のすべて、`tests/rule-cases.test.ts`、`tests/suggestion-claims.test.ts`                                                |
+| `src/language.ts`、`src/source-code.ts`、トークンストア | `tests/language.test.ts`、`tests/token-store.test.ts`、`tests/snapshot.test.ts`、`tests/inline-config.test.ts`、`tests/markdown.test.ts`          |
+| parser（プラグインが読むノードが変わったとき）          | 上の言語のテスト、`tests/diagram-rules.test.ts`、そのノードを読む規則のテスト                                                                     |
 
 文書を読むテストは、`tests/rule-cases.test.ts` と、
 `tests/rules/**/*.test.ts` のすべて（規則の英語の文書の例を読む）、
@@ -186,7 +210,8 @@ SKILL `conventions` の決まり（テストの実行）に従う。
 言語のテストは、
 `tests/language.test.ts`、`tests/token-store.test.ts`、
 `tests/diagram-rules.test.ts` で、
-コーパスの種類ごとに数件の入力（`tests/corpus-kinds.ts`）に掛ける。
+`tests/language-inputs.ts` の fixture、
+つまり言語がそれだけで扱う場合ごとの 1 つに掛ける。
 言語、ソースコード、図種のハンドラー、parser に変更が及ぶときに回し、
 規則 1 つの変更のたびには回さない。
 
@@ -196,8 +221,9 @@ mermaid.js の読み方は、コーパスの fixture の `expected.json` から�
 `testRule` が mermaid.js で読み、提案の主張と照らす
 （オプション `claims` と `docs/development.md`）。
 コーパスの入力の写しでない入力は、入力の Db も mermaid.js で読む。
-2 節の探索は、規則の作業の途中と、完了を報告する前に 1 回回す。
-探索が見つけた失敗は fixture になり、テストがそれを保つ。
+fixture が示す主張は、テストが保つ。
+2 節の確かめが fixture のない場合を見つけたら、
+作業の完了を報告する前に fixture を足す。
 
 ## 5. 変更を仕上げる
 
@@ -226,7 +252,8 @@ mermaid.js の読み方は、コーパスの fixture の `expected.json` から�
 結果を、頼んだ人に報告する。
 主張ごとに、動かして確かめたか、読んで確かめたか、確かめていないかを言う。
 変わったもの（規則、fixture、スナップショット。差ごとに理由を付ける）、
-探索の種類と件数、何を回し何を回していないか（テストと検査）、
+読んだ文と足した入力（tests に頼んで足している入力を含む）、
+何を回し何を回していないか（テストと検査）、
 まだ開いているものと確かめていないものを出す。
 結果をレビューに掛け、指摘を直し、また報告する。
 これを、レビューが何も指摘しなくなるまで続ける（7 節）。
@@ -244,6 +271,6 @@ mermaid.js の読み方は、コーパスの fixture の `expected.json` から�
    同じ言い方がほかの文書にないか。
    指摘の 1 点だけでなく、種類ごと直す。
 3. 報告の前に、直しが新しく許すもの、変えるものを確かめる。
-   振る舞いを変える直しは、2 節の探索で mermaid.js と照らす。
+   振る舞いを変える直しは、4 節の fixture で mermaid.js と照らす。
    文書の直しは、同じ言い方がほかの場所に残っていないかを探す。
 4. 報告に、直しが影響しうる範囲と、それをどう確かめたかを書く。

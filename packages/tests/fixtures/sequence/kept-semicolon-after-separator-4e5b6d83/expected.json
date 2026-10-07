@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A ; after a U+2028 or U+2029 that is kept as written, and an autonumber with a directive and a ;"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "T  ",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Z",
+        "description": "Z",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Y"
+      },
+      {
+        "name": "Y",
+        "description": "Y",
+        "wrap": false,
+        "prevActor": "Z",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Z",
+        "to": "Y",
+        "message": "z",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A comment line inside the string of a note disappears with its line feed: the text is `a`, a line feed, and `b`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "class": "A",
+        "text": "a\nb"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

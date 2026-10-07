@@ -10,14 +10,16 @@ is read, and which grammar rule makes which node, is defined in
 The body of this diagram type is a [ClassDiagram](#classdiagram). The values of
 the fields keep what the author wrote, as [ast.md](../ast.md#nodes) defines the
 written text of a value; they are not in the converted form of
-[common.md](../common.md#reading-a-source). The whitespace that mermaid.js reads
-as part of a value is part of its written text (see [Nodes](../ast.md#nodes)):
-in this diagram type, the whitespace of a generic type, of an annotation in a
-member line, at the start of a member name that starts with a space, before a
-classifier mark that ends a return type, and at the end of a backquoted name
-that is not closed (see [ClassName](#classname), [ClassMethod](#classmethod),
-and [ClassAnnotation](#classannotation)). Other whitespace is not part of any
-value.
+[common.md](../common.md#reading-a-source). A value starts or ends with
+whitespace only where its units hold it as their own characters, as mermaid.js
+reads it (see [Nodes](../ast.md#nodes)): in this diagram type, the whitespace of
+a generic type, of an annotation in a member line, at the start of a member name
+that starts with a space, before a classifier mark that ends a return type, at
+the end of a backquoted name that is not closed, and at the end of the name of a
+callback after `call` and at the ends of its arguments (see
+[ClassName](#classname), [ClassMethod](#classmethod),
+[ClassAnnotation](#classannotation), and [ClassLiteral](#classliteral)).
+Elsewhere, the whitespace at the ends of a value is outside it.
 
 A **class** is a box of the diagram, named by a class name. The word does not
 refer to a CSS class, which is called a CSS class throughout.
@@ -164,17 +166,18 @@ Child fields: `class`, `text`. [fixture: class/db-note-for-undefined-class]
 
 A `callback` statement, or a `click` statement with `call`.
 
-| Field       | Type                          | Meaning                                                                                                       |
-| ----------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `class`     | ClassName                     | The class name after `callback` or `click`.                                                                   |
-| `callback`  | StringLiteral or ClassLiteral | The function name: the string after the class name, or the `callback-name` unit after `call`, a ClassLiteral. |
-| `arguments` | ClassLiteral or null          | The text between `(` and `)` after `call`; null when there is none.                                           |
-| `tooltip`   | StringLiteral or null         | The string at the end; null when there is none.                                                               |
+| Field       | Type                          | Meaning                                                                                                                              |
+| ----------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `class`     | ClassName                     | The class name after `callback` or `click`.                                                                                          |
+| `callback`  | StringLiteral or ClassLiteral | The function name: the string after the class name, or the `callback-name` unit after `call`, a ClassLiteral.                        |
+| `arguments` | ClassLiteral or null          | The text between `(` and `)` after `call`, as one text with its whitespace and line feeds, at its ends too; null when there is none. |
+| `tooltip`   | StringLiteral or null         | The string at the end; null when there is none.                                                                                      |
 
 Child fields: `class`, `callback`, `arguments`, `tooltip`. Which keyword was
 written, `callback` or `click`, appears in no field. In `click A call fn()`, the
-`(` and `)` are tokens of the statement, and `arguments` is null. [fixture:
-class/spec-class-diagram-6fe56b41] [fixture: class/db-callback-names-comma]
+`(` and `)` are units of the statement, held by no field, and `arguments` is
+null. [fixture: class/spec-class-diagram-6fe56b41] [fixture:
+class/db-callback-names-comma]
 
 ### ClassLinkStatement
 
@@ -290,8 +293,8 @@ the ClassIdentifier `FooBar`, and `class a.b.C` the ClassIdentifier `a.b.C`.
 ``class `Odd Name` `` has the StringLiteral with the value `Odd Name`. When name
 parts come before a backquoted name, they are the `prefix`: ``class A.`b c` ``
 has the prefix `A.` and the StringLiteral `b c`. `class A~~` has the two `~`
-tokens and no generic. mermaid.js reads a generic type as written, whitespace
-and line breaks included, so the generic is the whole `generic-text` unit:
+units and no generic. mermaid.js reads a generic type as written, whitespace and
+line breaks included, so the generic is the whole `generic-text` unit:
 `class A~ T ~` has the generic of a space, `T`, and a space, and `class A~ ~`
 the generic of one space; `note for A~ T ~` keeps it in the note's class name.
 [fixture: class/db-generic-spaces] [fixture: class/db-generic-blank] [fixture:
@@ -320,13 +323,14 @@ A member line with parentheses, as divided under
 | `textAfter`  | ClassIgnoredText or null | The text after the part that mermaid.js reads, see below; null when there is none.      |
 
 Child fields: `textBefore`, `name`, `parameters`, `returnType`, `textAfter`. The
-marks of visibility and classifier, `(`, and `)` are tokens and the words of the
-fields: `+foo(a: int) List~T~$` has the visibility `public`, the name `foo`, the
-parameters `a: int`, the return type `List~T~`, and the classifier `static`.
-[fixture: class/tokens-method-fields] [fixture: class/lex-member-classifiers]
-[fixture: class/lex-member-method-nested-parentheses] The ignored texts are
-there only when the line has U+2028 or U+2029 (see
-[Member lines](../diagrams/class.md#member-lines)). [fixture:
+marks of visibility and classifier, `(`, and `)` are units that no node holds,
+and the fields hold words for the marks: `+foo(a: int) List~T~$` has the
+visibility `public`, the name `foo`, the parameters `a: int`, the return type
+`List~T~`, and the classifier `static`. [fixture: class/tokens-method-fields]
+[fixture: class/lex-member-classifiers] [fixture:
+class/lex-member-method-nested-parentheses] The ignored texts are there only
+when the line has U+2028 or U+2029, and each is null when only whitespace is
+there (see [Member lines](../diagrams/class.md#member-lines)). [fixture:
 class/lex-member-method-line-separator-before] [fixture:
 class/lex-member-method-line-separator-after]
 
@@ -407,19 +411,27 @@ its arguments, a style, and an accessibility text.
 
 No child fields. The value starts or ends with whitespace only where mermaid.js
 reads it: a generic type, an annotation of a member line, a member name that
-starts with a space, and a return type before a classifier mark (see
+starts with a space, a return type before a classifier mark, and the name of a
+callback after `call` and its arguments, which mermaid.js passes on as they are
+written: `click A call fn ()` has the name `fn` and a space, and
+`click A call f( x, y )` the arguments of a space, `x, y`, and a space, which
+mermaid.js then divides at each `,` outside quotes, trimming each argument (see
 [ClassName](#classname), [ClassAnnotation](#classannotation), and
-[ClassMethod](#classmethod)). There, a text of only whitespace is a value of
-that whitespace, as in `class A~ ~` and `<<  >>` in a body. Elsewhere,
-mermaid.js trims the text, the whitespace around it is not part of the value,
-and a text of only whitespace makes the field null: `A --> B : ` has no label.
-mermaid.js still reads a relation label of only whitespace as an empty title,
-which no field of the tree shows. [fixture: class/tokens-relation-label-blank]
-[fixture: class/tokens-generic-blank] [fixture: class/tokens-annotation-blank]
-The value of a style is the written texts of its units joined in order, as the
-name of an [Identifier](../ast.md#identifier) is: mermaid.js drops the
-whitespace between the units of a style, so `style A fill : #f00` has the style
-`fill: #f00`, while a flowchart and a state diagram keep that space. [fixture:
+[ClassMethod](#classmethod)). [fixture:
+class/tokens-callback-name-trailing-space] [fixture:
+class/tokens-callback-arguments-spaces-at-ends] [fixture:
+class/tokens-callback-arguments-line-feeds-at-ends] There, a text of only
+whitespace is a value of that whitespace, as in `class A~ ~` and `<<  >>` in a
+body. Elsewhere, mermaid.js trims the text, the whitespace around it is not part
+of the value, and a text of only whitespace makes the field null: `A --> B : `
+has no label. mermaid.js still reads a relation label of only whitespace as an
+empty title, which no field of the tree shows. [fixture:
+class/tokens-relation-label-blank] [fixture: class/tokens-generic-blank]
+[fixture: class/tokens-annotation-blank] The value of a style is the written
+texts of its units joined in order, as the name of an
+[Identifier](../ast.md#identifier) is: mermaid.js drops the whitespace between
+the units of a style, so `style A fill : #f00` has the style `fill: #f00`, while
+a flowchart and a state diagram keep that space. [fixture:
 class/db-style-spaces] [fixture: class/tokens-style-words-joined] [fixture:
 class/tokens-style-directive-inside-label] [fixture:
 class/tokens-style-label-keeps-space-before-next-colon] [fixture:

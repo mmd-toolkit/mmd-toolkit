@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md The alias context, rule 4: `A` is followed by a line break and `as` with a space, so the id context enters the alias context; it reads no `as` before the line feed and ends the statement there, and the next line is a message from `as`."
+    "note": "sequence.md The alias context, rule 3: `A` is followed by a line break and `as` with a space, so the id context enters the alias context; it reads no `as` before the line feed and ends the statement there, and the next line is a message from `as`."
   },
   "accepted": true,
   "diagramType": "sequence",

@@ -2,7 +2,9 @@
 
 英語版: [no-empty-description-block.md](./no-empty-description-block.md)
 
-規則 [mmd/sequence/no-empty-description-block](../../rules/sequence/no-empty-description-block.ja.md) を実装するための覚え書き。
+規則
+[mmd/sequence/no-empty-description-block](../../rules/sequence/no-empty-description-block.ja.md)
+を実装するための覚え書き。
 
 この規則はまだ実装していない。
 ここには、実装するときに要ることを書く。
@@ -47,3 +49,4 @@
 - `sequence/gram-box-empty-description-block-then-participant`
 - `sequence/gram-box-empty-description-block-before-end`
 - `sequence/gram-box-empty-description-block-lines`
+- `sequence/db-empty-description-block-with-directive-wrap`

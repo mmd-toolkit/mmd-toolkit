@@ -3,7 +3,8 @@
 英語版: [state.md](./state.md)
 
 この文書は、`@mmd-toolkit/parser` が作る木の、この図種のノードの範囲を定めます。
-すべての図種に共通する決まりは [positions.ja.md](../positions.ja.md) にあります。
+すべての図種に共通する決まりは
+[positions.ja.md](../positions.ja.md) にあります。
 ノードは仕様の [`ast/state.ja.md`](../../../spec/docs/ast/state.ja.md) が、
 トークンは [tokens/state.ja.md](../tokens/state.ja.md) が定めます。
 
@@ -14,12 +15,8 @@
 
 ### StateDiagram
 
-範囲は、ヘッダーのキーワードから、
-`Directive` と `IgnoredSemicolon` のトークンを除く図のテキストの
-最後のトークンまでで、
-どの文にも属さないトークンも含みます。
-どの図の `Root.body` のノードとも同じです
-（[ノード](../../../spec/docs/ast.ja.md#ノード) を参照）。
+範囲は、どの図の `Root.body` のノードとも同じ定めに従います
+（[ノードの範囲](../positions.ja.md#ノードの範囲) を参照）。
 
 ### StateAliasDefinitionStatement
 
@@ -32,10 +29,14 @@
 ### StateDirectionStatement
 
 範囲は方向の行の全体です。
+[fixture: state/lex-direction-line-value-then-text]
+[fixture: state/lex-direction-line-in-description]
 
 ### StateIgnoredStatement
 
 範囲は、一続きの最初の `"` から最後の `"` までです。
+[fixture: state/gram-state-empty-string-alone]
+[fixture: state/tokens-ignored-statement-directive-between-empty-strings]
 
 ### StateIgnoredText
 
@@ -48,3 +49,6 @@
 `ignored-state` の単位の `Keyword` のトークンです。
 トークンの種類は単位で決まり、それを持つノードでは決まりません。
 [fixture: state/gram-empty-description-block-before-alias-body-next-line]
+[fixture: state/gram-state-empty-string-before-name]
+[fixture: state/gram-ignored-percent-before-body-next-line]
+[fixture: state/gram-ignored-state-before-body-next-line]

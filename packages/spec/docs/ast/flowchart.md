@@ -11,15 +11,17 @@ rule makes which node, is defined in
 The body of these diagram types is a [FlowchartDiagram](#flowchartdiagram). The
 values of the fields keep what the author wrote, as [ast.md](../ast.md#nodes)
 defines the written text of a value; they are not in the converted form of
-[common.md](../common.md#reading-a-source). The whitespace that mermaid.js reads
-as part of a value is part of its written text (see [Nodes](../ast.md#nodes)):
-in this diagram type, the whitespace at the start of a style after a `,`, and
-the whitespace after the name of a subgraph without a title (see
-[FlowchartStyleStatement](#flowchartstylestatement) and
-[FlowchartSubgraphStatement](#flowchartsubgraphstatement)). Other whitespace is
-not part of any value, with one exception: the whitespace between or after the
-empty description blocks right after a subgraph name, which mermaid.js reads
-into the name while no node holds it (see
+[common.md](../common.md#reading-a-source). A value starts or ends with
+whitespace only where its units hold it as their own characters (see
+[Nodes](../ast.md#nodes)): in this diagram type, at the start of a style after a
+`,`, after the name of a subgraph without a title, and at the end of the name of
+a callback after `call` and at the ends of its arguments (see
+[FlowchartStyleStatement](#flowchartstylestatement),
+[FlowchartSubgraphStatement](#flowchartsubgraphstatement), and
+[FlowchartClickCallbackStatement](#flowchartclickcallbackstatement)). Elsewhere,
+the whitespace at the ends of a value is outside it. mermaid.js also reads into
+the name of a subgraph the whitespace between or after the empty description
+blocks right after the name, which no node holds (see
 [FlowchartSubgraphStatement](#flowchartsubgraphstatement)). The names and values
 that the author writes are the leaf nodes of
 [ast.md](../ast.md#shared-leaf-nodes), chosen by the form in which they are
@@ -216,9 +218,10 @@ its position allows only one word (see
 
 No child fields. The value keeps the whitespace inside it, line feeds included;
 at its ends, it has whitespace only where mermaid.js reads it, at the start of a
-style after a `,`, and the whitespace written around a literal elsewhere belongs
-to no node. Where the text is all whitespace, as a style can be, the field holds
-null instead of a literal (see
+style after a `,`, at the end of the name of a callback after `call`, and at the
+ends of its arguments, and the whitespace written around a literal elsewhere
+belongs to no node. Where the text is all whitespace, as a style can be, the
+field holds null instead of a literal (see
 [FlowchartStyleStatement](#flowchartstylestatement)).
 
 ### FlowchartDataBlock
@@ -238,8 +241,8 @@ No child fields. The tree does not read the value (see
 
 Text that the author writes but that mermaid.js does not read, and that has no
 effect on the diagram. It is a node of its own type so that a tool can find such
-text without searching the tokens. In flowchart, it is the text of a direction
-line before `direction` and after the value (see
+text without searching the source text. In flowchart, it is the text of a
+direction line before `direction` and after the value (see
 [FlowchartDirectionStatement](#flowchartdirectionstatement)).
 
 | Field   | Type   | Meaning                                           |
@@ -260,17 +263,17 @@ flowchart/lex-direction-line-text-after-directive-inside]
 
 Child fields: `name`, `title`, `body`. The name is a label, not an Identifier:
 the grammar allows it to be a text with whitespace, a string, a markdown string,
-or one of these strings followed by text, and which of them is written gives the
-label type of the subgraph; a name with whitespace is not its id. The Db id and
+or one of these strings followed by text, and the `kind` of the label records
+which of them is written; a name with whitespace is not its id. The Db id and
 title of the subgraph are derived from `name`, `title`, and the source text that
 no node holds between the name and its title or separator (see
 [flowchart.md](../diagrams/flowchart.md#rejections-outside-the-grammar)):
-mermaid.js reads the name with the whitespace after it, up to the `[` of a title
-or the separator, and a subgraph without a title whose name holds whitespace
-gets a generated id. So, without a title, the written text of the name runs over
-the whitespace after it, up to the separator or the first empty description
-block after it, and its value holds that whitespace: `subgraph S` followed by a
-space has the name `S` and a space, and so has `subgraph S accDescr {}`; after a
+without a title, mermaid.js reads the name with the whitespace after it, up to
+the separator, and a subgraph without a title whose name holds whitespace gets a
+generated id. So, without a title, the written text of the name runs over the
+whitespace after it, up to the separator or the first empty description block
+after it, and its value holds that whitespace: `subgraph S` followed by a space
+has the name `S` and a space, and so has `subgraph S accDescr {}`; after a
 string, the whitespace is part of the name too, as in `subgraph "S"` followed by
 a space. [fixture: flowchart/db-subgraph-name-trailing-space] [fixture:
 flowchart/db-subgraph-name-space-before-empty-description-block] [fixture:
@@ -347,15 +350,21 @@ flowchart/gram-class-name-comma]
 A click statement that calls a function: `click A callback`,
 `click A call callback(arguments)`.
 
-| Field       | Type                           | Meaning                                                                                                                                                                                                                                                                                                                |
-| ----------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ids`       | list of (Identifier or null)   | The click ids: the parts between the `click-comma` units, in source order; null for a part that is empty.                                                                                                                                                                                                              |
-| `callback`  | Identifier or FlowchartLiteral | The name of the function: after `call`, a FlowchartLiteral, the characters up to `(`, which may contain whitespace and line breaks, without the whitespace at its ends (see [Click and callbacks](../diagrams/flowchart.md#click-and-callbacks)); without `call`, as in `click A callback`, an Identifier, a click id. |
-| `arguments` | FlowchartLiteral or null       | The arguments between the parentheses after a `call`, whose value keeps its whitespace and line feeds; null when there are none, or when only whitespace is between the parentheses. The tree does not read them.                                                                                                      |
-| `tooltip`   | StringLiteral or null          | The tooltip string; null when there is none.                                                                                                                                                                                                                                                                           |
+| Field       | Type                           | Meaning                                                                                                                                                                                                                                                                                             |
+| ----------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ids`       | list of (Identifier or null)   | The click ids: the parts between the `click-comma` units, in source order; null for a part that is empty.                                                                                                                                                                                           |
+| `callback`  | Identifier or FlowchartLiteral | The name of the function: after `call`, a FlowchartLiteral, the `callback-name` unit, the characters up to `(`, whitespace and line breaks included (see [Click and callbacks](../diagrams/flowchart.md#click-and-callbacks)); without `call`, as in `click A callback`, an Identifier, a click id. |
+| `arguments` | FlowchartLiteral or null       | The arguments between the parentheses after a `call`, as one text whose value keeps its whitespace and line feeds, at its ends too; null when there are none, or when only whitespace is between the parentheses. The tree does not read them.                                                      |
+| `tooltip`   | StringLiteral or null          | The tooltip string; null when there is none.                                                                                                                                                                                                                                                        |
 
-Child fields: `ids`, `callback`, `arguments`, `tooltip`. [fixture:
-flowchart/tokens-callback-name-trailing-space]
+Child fields: `ids`, `callback`, `arguments`, `tooltip`. The name after `call`
+keeps the whitespace before `(`, which mermaid.js passes on as part of the name
+of the function: `click A call f (x)` calls the function named `f` and a space.
+mermaid.js passes the arguments on as they are written, and then divides them at
+each `,` outside quotes and trims each of them: `click A call f( x, y )` has the
+arguments of a space, `x, y`, and a space, which call `f` with `x` and `y`.
+[fixture: flowchart/tokens-callback-name-trailing-space] [fixture:
+flowchart/tokens-callback-arguments-spaces-at-ends]
 
 ### FlowchartClickUrlStatement
 

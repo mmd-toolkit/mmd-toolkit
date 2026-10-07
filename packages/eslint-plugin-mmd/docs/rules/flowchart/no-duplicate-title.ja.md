@@ -8,11 +8,13 @@
 
 ✅ `recommended` の設定は、この規則を有効にする。
 
-💡 この規則は、[エディタの提案](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)で手で直せる。
+💡
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+を選んで適用できる。
 
 <!-- end auto-generated rule notice -->
 
-図のアクセシブルなタイトルは 1 つである。
+図のアクセシビリティ用のタイトル（`accTitle`）は 1 つである。
 mermaid.js はどの `accTitle` の文も受理し、
 それぞれの文は、それより前に設定したタイトルを黙って置き換える。
 2 つ目のタイトルは、たいてい、テキストを書き直した残りか、
@@ -22,16 +24,27 @@ mermaid.js はどの `accTitle` の文も受理し、
 ## 規則の詳細
 
 この規則は、`accTitle` の文のうち、最初のもの以外をすべて報告する。
-`flowchart-v2`、`flowchart-elk`、`swimlane` に当たる。
+対象の図種は `flowchart-v2`、`flowchart-elk`、`swimlane` である。
 
 `accTitle: first` と `accTitle: second` の後、タイトルは `second` になる。
 テキストのない `accTitle:` もタイトルを設定する。
-タイトルを空にするので、その前に書いたタイトルは失われる。
+テキストの終わりではタイトルを空にする。
+後にテキストがあれば、空行、コメント行、ディレクティブを飛ばして、
+テキストを持つ次の行をタイトルにする。
+どちらでも、その前に書いたタイトルは失われる。
 subgraph の中の文も、図全体のタイトルを設定するので、数える。
+mermaid.js は、その文の値を id としてその subgraph のメンバーにも加えるので、
+その id の頂点や subgraph は、その subgraph に属する。
 
 報告ごとに、規則は 2 つの文のどちらかを消す書き換えを提案する。
 報告した文か、その前の `accTitle` の文である。
 mermaid.js は、最後に残ったタイトルを使う。
+subgraph の中の文を消すと、そのメンバーも消える。
+ただし、subgraph のほかの文が同じ id をメンバーにしていれば残る。
+文の後の `;` は、文を区切るものなら残す。
+`accTitle: style:#b;` のように、仕様の
+[`style` 行と `classDef` 行](../../../../spec/docs/common.ja.md#style-行と-classdef-行)
+の決まりで mermaid.js が無視する `;` は、文と一緒に消す。
 
 この規則に**反する**コードの例:
 

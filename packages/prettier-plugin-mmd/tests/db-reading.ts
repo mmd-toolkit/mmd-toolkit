@@ -1,0 +1,139 @@
+/**
+ * What formatting must keep, checked without mermaid.js: the Db that the tree
+ * of a text denotes, and the texts of the embedded data.
+ *
+ * The Db is built from the tree by `dbFromTree` of `@mmd-toolkit/tests`, with
+ * the values that mermaid.js derives from the embedded data of the input (the
+ * frontmatter, the directives, the data blocks): a fixture of the corpus
+ * records them (`embeddedValuesOf`), and another text has the defaults. A
+ * formatted text is given the values of its input, which holds for formatting
+ * only if it keeps the embedded data as written, so that is checked as well:
+ * `writtenEmbeddedTexts` is the same before and after.
+ */
+import type { DbSummary, DbTreeRoot, EmbeddedValues } from "@mmd-toolkit/tests"
+import {
+  DATA_BLOCK_NODE_TYPES,
+  cssSupportsColor,
+  dbFromTree,
+  getDefaultConfig,
+} from "@mmd-toolkit/tests"
+import * as prettier from "prettier"
+import type { Root } from "@mmd-toolkit/parser"
+import { parse, visitorKeys } from "@mmd-toolkit/parser"
+
+/** Whether a node is a data block, whose written text is embedded data. */
+function isDataBlock(node: { type: string }): boolean {
+  return DATA_BLOCK_NODE_TYPES.has(node.type)
+}
+
+/** The values of a text whose embedded data gives mermaid.js nothing to derive. */
+export function defaultEmbedded(): EmbeddedValues {
+  return {
+    config: getDefaultConfig(),
+    title: undefined,
+    dataBlockEffects: [],
+  }
+}
+
+/**
+ * The Db summary that the tree of `text` denotes: the tree is given as its
+ * JSON, as a recorded tree is. Throws the error of the parser for a text that
+ * it rejects.
+ */
+export function dbOfText(
+  text: string,
+  embedded: EmbeddedValues,
+): DbSummary | null {
+  const root = parse(text)
+  if (
+    embedded.dataBlockEffects.length === 0 &&
+    writtenDataBlockTexts(root).length > 0
+  ) {
+    return null
+  }
+  const tree = JSON.parse(JSON.stringify(root)) as DbTreeRoot
+  return dbFromTree(text, tree, embedded, cssSupportsColor)
+}
+
+/** The data blocks of a tree, which the Db is built with the effects that mermaid.js gave. */
+function writtenDataBlockTexts(root: Root): unknown[] {
+  const blocks: unknown[] = []
+  walk(root.body, (node) => {
+    if (isDataBlock(node)) blocks.push(node)
+  })
+  return blocks
+}
+
+/** Calls `visit` for every node below `node`, in the order of the parser's `visitorKeys`. */
+function walk(node: unknown, visit: (node: { type: string }) => void): void {
+  if (Array.isArray(node)) {
+    for (const child of node) walk(child, visit)
+    return
+  }
+  if (typeof node !== "object" || node === null || !("type" in node)) return
+  const typed = node as { type: string }
+  visit(typed)
+  for (const key of visitorKeys[typed.type as keyof typeof visitorKeys] ?? []) {
+    walk((node as Record<string, unknown>)[key], visit)
+  }
+}
+
+/**
+ * The text of each piece of embedded data of a text other than the
+ * frontmatter, as written, in source order: the directives and the data
+ * blocks (the nodes of `DATA_BLOCK_NODE_TYPES`). The printers print
+ * these as written, so the list is the same before and after formatting.
+ */
+export function writtenEmbeddedTexts(
+  text: string,
+  root: Root = parse(text),
+): string[] {
+  const ranges: [number, number][] = []
+  for (const directive of root.directives) ranges.push(directive.range)
+  walk(root.body, (node) => {
+    if (isDataBlock(node)) {
+      ranges.push((node as unknown as { range: [number, number] }).range)
+    }
+  })
+  return ranges
+    .sort((a, b) => a[0] - b[0])
+    .map(([start, end]) => withLineFeeds(text.slice(start, end)))
+}
+
+/**
+ * The text with each line terminator as `\n`, as mermaid.js reads it:
+ * Prettier writes the line terminators that its option `endOfLine` says.
+ */
+function withLineFeeds(text: string): string {
+  return text.split("\r\n").join("\n").split("\r").join("\n")
+}
+
+/**
+ * How the frontmatter changed from `before` to `after`, or null when it is
+ * as written or as Prettier's YAML formatter prints its body, which is what
+ * the printer does where that is safe (docs/flowchart.md, Frontmatter YAML).
+ * Prettier keeps the value of the YAML, so the values mermaid.js derives
+ * from it stay.
+ */
+export async function describeFrontmatterChange(
+  before: string,
+  after: string,
+): Promise<string | null> {
+  const [beforeRoot, afterRoot] = [parse(before), parse(after)]
+  const written = beforeRoot.frontmatter
+  const printed = afterRoot.frontmatter
+  if (written === null || printed === null) {
+    return written === printed ? null : "the frontmatter appears or goes"
+  }
+  if (
+    withLineFeeds(before.slice(...written.range)) ===
+    withLineFeeds(after.slice(...printed.range))
+  ) {
+    return null
+  }
+  const formatted = await prettier.format(written.value, { parser: "yaml" })
+  const body = formatted.endsWith("\n") ? formatted.slice(0, -1) : formatted
+  return body === withLineFeeds(printed.value)
+    ? null
+    : "the frontmatter is neither as written nor formatted as YAML"
+}

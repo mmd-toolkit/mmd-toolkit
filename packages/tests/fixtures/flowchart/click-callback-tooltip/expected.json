@@ -55,6 +55,13 @@
         "id": "A",
         "text": "Tooltip for A"
       }
+    ],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "callback",
+        "args": null
+      }
     ]
   }
 }

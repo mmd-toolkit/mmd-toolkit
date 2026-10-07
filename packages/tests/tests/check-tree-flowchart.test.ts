@@ -2,9 +2,14 @@ import { readFileSync } from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
 import { checkTree } from "../src/check-tree/index.ts"
-import type { CheckedNode, CheckedRoot } from "../src/check-tree/types.ts"
+import type {
+  CheckedNode,
+  CheckedRoot,
+  CheckedToken,
+} from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
 import { getFixturesRoot } from "../src/index.ts"
+import { replaceToken } from "./check-tree-recorded.ts"
 
 // The checks of a flowchart tree have teeth: each case takes the recorded tree
 // of a named fixture, makes one change to the tree (or, for a string that
@@ -54,6 +59,16 @@ function stringField(node: CheckedNode, field: string): string {
   const value = node[field]
   if (typeof value !== "string") throw new Error(`${field} is no string`)
   return value
+}
+
+/** The first token of `root` for which `matches` holds; fails the case when there is none. */
+function tokenOf(
+  root: CheckedRoot,
+  matches: (token: CheckedToken) => boolean,
+): CheckedToken {
+  const token = root.tokens.find(matches)
+  if (token === undefined) throw new Error("no such token")
+  return token
 }
 
 /** Moves the end of the range of `node` by `delta`. */
@@ -175,7 +190,7 @@ const cases: readonly MutationCase[] = [
     mutateTree: (root) => {
       setField(nodeOf(root, "FlowchartShape"), "property", null)
     },
-    expected: ["the name of the shape, written [|:| and ]"],
+    expected: ["has 3 delimiter tokens between"],
   },
   // ast/flowchart.md, FlowchartArrow and FlowchartOpeningArrow: the fields are
   // what the value writes.
@@ -421,6 +436,106 @@ const cases: readonly MutationCase[] = [
       setField(nodeOf(root, "FlowchartLabel"), "kind", "string")
     },
     expected: ["FlowchartLabel at", "the kind of the label"],
+  },
+  // ast/flowchart.md, FlowchartDiagram: the direction of the header is null
+  // exactly when the token after the header keyword is no direction.
+  {
+    name: "a null direction for a header that writes one",
+    fixture: "spec-flow-singlenode-a5fa3415",
+    mutateTree: (root) => {
+      setField(root.body, "direction", null)
+    },
+    expected: [
+      "FlowchartDiagram at",
+      'or null when that is no direction: null, not "TD"',
+    ],
+  },
+  // diagrams/flowchart.md, Shapes: the opening and the closing of a shape are
+  // one token each.
+  {
+    name: "a closing delimiter written as two tokens",
+    fixture: "db-vertex-shape-replaced",
+    mutateTree: (root) => {
+      replaceToken(
+        root,
+        tokenOf(root, (token) => token.value === "))"),
+        [
+          ["Punctuator", 0, 1],
+          ["Punctuator", 1, 2],
+        ],
+      )
+    },
+    expected: [
+      "FlowchartShape at",
+      "has 2 delimiter tokens between 22 and 24, not one",
+    ],
+  },
+  // parser/docs/tokens.md, A token that a directive cuts: an Identifier is
+  // one token.
+  {
+    name: "an Identifier written as two tokens that no cut separates",
+    fixture: "click-callback-tooltip",
+    mutateTree: (root) => {
+      replaceToken(
+        root,
+        tokenOf(root, (token) => token.value === "callback"),
+        [
+          ["Identifier", 0, 4],
+          ["Identifier", 4, 8],
+        ],
+      )
+    },
+    expected: [
+      "Identifier at 33-41",
+      "has 2 tokens, not the one that a node of this type has",
+    ],
+  },
+  // parser/docs/tokens/flowchart.md, Tokens: the delimiters of a data block
+  // are the tokens of the block, and no other keyword or punctuator lies in a
+  // value node.
+  {
+    name: "the opening of a data block as a Keyword",
+    fixture: "gram-data-block-space-only",
+    mutateTree: (root) => {
+      Reflect.set(
+        tokenOf(root, (token) => token.value === "@{"),
+        "type",
+        "Keyword",
+      )
+    },
+    expected: [
+      "Keyword at 14-16",
+      "lies in the value node FlowchartDataBlock at 14-18",
+    ],
+  },
+  // ast/flowchart.md, FlowchartStyleStatement: the styles after the first
+  // follow a `,`.
+  {
+    name: "a style that follows a style with no `,` between them",
+    fixture: "db-class-def-escaped-comma",
+    mutateTree: (root) => {
+      Reflect.set(
+        tokenOf(root, (token) => token.value === ","),
+        "type",
+        "RawText",
+      )
+    },
+    expected: ["follows a style but no `,` separates them"],
+  },
+  // positions.md, Invariants: every node has a token; the label of `A[ ]` has
+  // the token of its space.
+  {
+    name: "a label that is all whitespace without its token",
+    fixture: "gram-label-space",
+    mutateTree: (root) => {
+      Object.assign(root, {
+        tokens: root.tokens.filter((token) => token.range[0] !== 15),
+      })
+    },
+    expected: [
+      "FlowchartLabel at 15-16",
+      "does not run from the start of a token to the end of a token",
+    ],
   },
 ]
 

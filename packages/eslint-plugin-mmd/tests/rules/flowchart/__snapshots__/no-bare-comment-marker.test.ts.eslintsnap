@@ -15,7 +15,7 @@ Code:
 
 [1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
     Suggestions:
-      - Remove the `%%`: mermaid.js then makes no vertex `%%`.
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
         Output:
           1 | flowchart LR
           2 |   A --> B
@@ -38,7 +38,7 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart LR
           2 |   A[a
@@ -61,13 +61,28 @@ Code:
 
 [1] mermaid.js reads this `%%` line as part of the data, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the data block then has no line `%%`.
+      - Remove the line of only `%%`: the data block then no longer holds this line.
         Output:
           1 | flowchart LR
           2 |   A@{
           3 |     shape: circle
           4 |   }
           5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/acc-descr-line-then-statement
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/acc-descr-line-then-statement-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   accDescr:
+  3 | %%
+    | ^~ [1]
+  4 | A
+  5 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
 ---
 
 
@@ -83,13 +98,47 @@ Code:
   5 |
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/acc-title-line-then-statement
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/acc-title-line-then-statement-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   accTitle:
+  3 | %%
+    | ^~ [1]
+  4 | A
+  5 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/acc-title-line-then-vertex-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/acc-title-line-then-vertex-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accTitle:
+  4 | %%
+    | ^~ [1]
+  5 | %%
+    | ^~ [2]
+  6 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+[2] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
         Output:
           1 | flowchart LR
           2 |   A
-          3 |   accDescr:
-          4 |
+          3 |   accTitle:
+          4 | %%
+          5 |
 ---
 
 
@@ -105,13 +154,57 @@ Code:
   5 |
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
-    Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
-        Output:
-          1 | flowchart LR
-          2 |   A
-          3 |   accTitle:
-          4 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/acc-title-value-after-a-comment-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/acc-title-value-after-a-comment-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accTitle:
+  4 | %% c
+  5 | %%
+    | ^~ [1]
+  6 | A
+  7 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/acc-title-value-after-a-directive
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/acc-title-value-after-a-directive-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accTitle:
+  4 | %%{init: {}}%%
+  5 | %%
+    | ^~ [1]
+  6 | A
+  7 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/acc-title-value-after-an-empty-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/acc-title-value-after-an-empty-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accTitle:
+  4 |
+  5 | %%
+    | ^~ [1]
+  6 | A
+  7 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
 ---
 
 
@@ -129,12 +222,52 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart LR
           2 |   A
           3 |   click A call f(a
           4 |  b)
+          5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/click-call-arguments-only-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/click-call-arguments-only-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   click A call f(
+  4 | %%
+    | ^~ [1]
+  5 | )
+  6 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/click-call-name-line-first
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/click-call-name-line-first-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   click A call
+  4 | %%
+    | ^~ [1]
+  5 | b()
+  6 |
+
+[1] mermaid.js reads this `%%` line into the name of the function to call, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the name of the function to call then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   click A call
+          4 | b()
           5 |
 ---
 
@@ -153,13 +286,29 @@ Code:
 
 [1] mermaid.js reads this `%%` line into the name of the function to call, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the name of the function to call then has no line `%%`.
+      - Remove the line of only `%%`: the name of the function to call then no longer holds this line.
         Output:
           1 | flowchart LR
           2 |   A
           3 |   click A call c
           4 | b()
           5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/click-call-name-only-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/click-call-name-only-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   click A call
+  4 | %%
+    | ^~ [1]
+  5 | ()
+  6 |
+
+[1] mermaid.js reads this `%%` line into the name of the function to call, not as a comment.
 ---
 
 
@@ -176,14 +325,81 @@ Code:
   6 |
 
 [1] mermaid.js reads this `%%` line into the name of the function to call, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/click-name-line-at-end
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/click-name-line-at-end-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   click A
+  4 | %%
+    | ^~ [1]
+  5 |
+
+[1] mermaid.js reads this `%%` line into the name of the function to call, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/click-name-line-then-indented-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/click-name-line-then-indented-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   click A
+  4 | %%
+    | ^~ [1]
+  5 |   cb
+  6 |
+
+[1] mermaid.js reads this `%%` line into the name of the function to call, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/click-name-line-then-statement
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/click-name-line-then-statement-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   click A
+  4 | %%
+    | ^~ [1]
+  5 | B --> C
+  6 |
+
+[1] mermaid.js reads this `%%` line into the name of the function to call, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/click-name-line-then-vertex-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/click-name-line-then-vertex-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   click A
+  4 | %%
+    | ^~ [1]
+  5 | %%
+    | ^~ [2]
+  6 | cb
+  7 |
+
+[1] mermaid.js reads this `%%` line into the name of the function to call, not as a comment.
+[2] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the name of the function to call then has no line `%%`.
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
         Output:
           1 | flowchart LR
-          2 | A
-          3 | click A
-          4 | cb
-          5 |
+          2 |   A
+          3 |   click A
+          4 | %%
+          5 | cb
+          6 |
 ---
 
 
@@ -201,7 +417,7 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart LR
           2 |   A
@@ -224,7 +440,7 @@ Code:
 
 [1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
     Suggestions:
-      - Remove the `%%`: mermaid.js then makes no vertex `%%`.
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
         Output:
           1 | flowchart LR
           2 | A-->B
@@ -244,7 +460,7 @@ Code:
 
 [1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
     Suggestions:
-      - Remove the `%%`: mermaid.js then makes no vertex `%%`.
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
         Output:
           1 | flowchart LR
           2 | A-->B
@@ -264,7 +480,7 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart LR
           2 | A[a
@@ -286,12 +502,55 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart LR
           2 | A["first
           3 | third"]
           4 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/data-block-block-text-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/data-block-block-text-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A@{
+  3 |     label: |
+  4 |       one
+  5 |       %%
+    |       ^~ [1]
+  6 |       two
+  7 |   }
+  8 |
+
+[1] mermaid.js reads this `%%` line as part of the data, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the data block then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A@{
+          3 |     label: |
+          4 |       one
+          5 |       two
+          6 |   }
+          7 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/data-block-only-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/data-block-only-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A@{
+  3 | %%
+    | ^~ [1]
+  4 |   }
+  5 |
+
+[1] mermaid.js reads this `%%` line as part of the data, not as a comment.
 ---
 
 
@@ -310,12 +569,38 @@ Code:
 
 [1] mermaid.js reads this `%%` line as part of the data, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the data block then has no line `%%`.
+      - Remove the line of only `%%`: the data block then no longer holds this line.
         Output:
           1 | flowchart LR
           2 |   A@{
           3 |     label: "This is a
           4 |     multiline string"
+          5 |   }
+          6 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/data-block-string-only-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/data-block-string-only-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A@{
+  3 |     label: "
+  4 | %%
+    | ^~ [1]
+  5 | "
+  6 |   }
+  7 |
+
+[1] mermaid.js reads this `%%` line as part of the data, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the data block then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A@{
+          3 |     label: "
+          4 | "
           5 |   }
           6 |
 ---
@@ -337,7 +622,7 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart LR
           2 |   A
@@ -346,6 +631,22 @@ Code:
           5 |     second
           6 |   }
           7 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/description-block-only-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/description-block-only-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accDescr {
+  4 | %%
+    | ^~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
 ---
 
 
@@ -361,7 +662,7 @@ Code:
 
 [1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
     Suggestions:
-      - Remove the `%%`: mermaid.js then makes no vertex `%%`.
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
         Output:
           1 | flowchart LR
           2 | %%{init: {}}%%
@@ -384,13 +685,252 @@ Code:
 
 [1] mermaid.js reads this `%%` line as part of the data, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the data block then has no line `%%`.
+      - Remove the line of only `%%`: the data block then no longer holds this line.
         Output:
           1 | flowchart LR
           2 | A@{
           3 | shape: circle
           4 | }
           5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-comment-marker-dash-link-text-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-comment-marker-dash-link-text-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A -- a
+  3 | %%
+    | ^~ [1]
+  4 | b --> B
+  5 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A -- a
+          3 | b --> B
+          4 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-comment-marker-label-blank-line-after-marker
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-comment-marker-label-blank-line-after-marker-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[a
+  3 | %%
+    | ^~ [1]
+  4 |
+  5 | b]
+  6 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A[a
+          3 |
+          4 | b]
+          5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-comment-marker-label-blank-line-before-marker
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-comment-marker-label-blank-line-before-marker-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[a
+  3 |
+  4 | %%
+    | ^~ [1]
+  5 | b]
+  6 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A[a
+          3 |
+          4 | b]
+          5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-comment-marker-label-indented-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-comment-marker-label-indented-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[a
+  3 |     %%
+    |     ^~ [1]
+  4 | b]
+  5 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A[a
+          3 | b]
+          4 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-comment-marker-label-tab-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-comment-marker-label-tab-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[a
+  3 | 	%%
+    |  ^~ [1]
+  4 | b]
+  5 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A[a
+          3 | b]
+          4 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-comment-marker-vertex-line-at-end-without-line-break
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-comment-marker-vertex-line-at-end-without-line-break-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A
+  3 | %%
+    | ^~ [1]
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+    Suggestions:
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
+        Output:
+          1 | flowchart LR
+          2 | A
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-comment-marker-vertex-line-in-subgraph
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-comment-marker-vertex-line-in-subgraph-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 | %%
+    | ^~ [1]
+  4 |   A
+  5 |   end
+  6 |
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+    Suggestions:
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
+        Output:
+          1 | flowchart LR
+          2 |   subgraph S
+          3 |   A
+          4 |   end
+          5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-comment-marker-vertex-line-indented
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-comment-marker-vertex-line-indented-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |     %%
+    |     ^~ [1]
+  3 | A
+  4 |
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+    Suggestions:
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-marker-link-end
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-marker-link-end-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A -->
+  3 | %%
+    | ^~ [1]
+  4 |
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-marker-link-end-then-vertex
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-marker-link-end-then-vertex-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A -->
+  3 | %%
+    | ^~ [1]
+  4 |   B
+  5 |
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-marker-link-start
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-marker-link-start-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | %%
+    | ^~ [1]
+  3 |   --> B
+  4 |
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/flowchart/gram-bare-marker-vertex-after-semicolon
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/flowchart/gram-bare-marker-vertex-after-semicolon-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A;
+  3 | %%
+    | ^~ [1]
+  4 |
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+    Suggestions:
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
+        Output:
+          1 | flowchart LR
+          2 |   A;
+          3 |
 ---
 
 
@@ -411,7 +951,7 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart LR
           2 | A
@@ -436,13 +976,6 @@ Code:
   5 |
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
-    Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
-        Output:
-          1 | flowchart LR
-          2 | A
-          3 | accTitle:
-          4 |
 ---
 
 
@@ -459,7 +992,7 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart LR
           2 |   A -->|a
@@ -482,7 +1015,7 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart LR
           2 |   subgraph S [a
@@ -506,7 +1039,7 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart LR
           2 | A
@@ -530,7 +1063,7 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart TD
           2 | A[a
@@ -554,7 +1087,7 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart TD
           2 | A["a
@@ -578,13 +1111,156 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart TD
           2 | A[a
           3 | %% c
           4 | b]
           5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/header-flowchart-elk
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/header-flowchart-elk-input.mmd
+
+Code:
+  1 | flowchart-elk LR
+  2 |   A --> B
+  3 |   %% C-->D
+  4 |   %%
+    |   ^~ [1]
+  5 |   %% D-->E
+  6 |
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+    Suggestions:
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
+        Output:
+          1 | flowchart-elk LR
+          2 |   A --> B
+          3 |   %% C-->D
+          4 |   %% D-->E
+          5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/header-graph
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/header-graph-input.mmd
+
+Code:
+  1 | graph LR
+  2 |   A --> B
+  3 |   %% C-->D
+  4 |   %%
+    |   ^~ [1]
+  5 |   %% D-->E
+  6 |
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+    Suggestions:
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
+        Output:
+          1 | graph LR
+          2 |   A --> B
+          3 |   %% C-->D
+          4 |   %% D-->E
+          5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/header-swimlane-beta
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/header-swimlane-beta-input.mmd
+
+Code:
+  1 | swimlane-beta LR
+  2 |   A --> B
+  3 |   %% C-->D
+  4 |   %%
+    |   ^~ [1]
+  5 |   %% D-->E
+  6 |
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+    Suggestions:
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
+        Output:
+          1 | swimlane-beta LR
+          2 |   A --> B
+          3 |   %% C-->D
+          4 |   %% D-->E
+          5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/label-cr-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/label-cr-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[a%%b]
+  3 |
+    | ^~ [1]
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A[ab]
+          3 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/label-crlf-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/label-crlf-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[a
+  3 | %%
+    | ^~ [1]
+  4 | b]
+  5 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A[a
+          3 | b]
+          4 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/label-only-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/label-only-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[
+  3 | %%
+    | ^~ [1]
+  4 | ]
+  5 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/link-text-only-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/link-text-only-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A -->|
+  3 | %%
+    | ^~ [1]
+  4 | | B
+  5 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
 ---
 
 
@@ -633,13 +1309,60 @@ Code:
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
     Suggestions:
-      - Remove the line of only `%%`: the text then has no line `%%`.
+      - Remove the line of only `%%`: the text then no longer holds this line.
         Output:
           1 | flowchart LR
           2 |   A["a
           3 | %%{init: {}}%%
           4 | b"]
           5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/string-directive-starts-on-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/string-directive-starts-on-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A["a
+  3 | %%%%{init: {
+    | ^~ [1]
+  4 | }}%%
+  5 | b"]
+  6 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/string-label-only-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/string-label-only-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A["
+  3 | %%
+    | ^~ [1]
+  4 | "]
+  5 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/subgraph-title-only-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/subgraph-title-only-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S [
+  3 | %%
+    | ^~ [1]
+  4 | ]
+  5 |   end
+  6 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
 ---
 
 
@@ -657,4 +1380,299 @@ Code:
   7 |
 
 [1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/tooltip-only-marker-line
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/tooltip-only-marker-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   click A "https://x.example" "
+  4 | %%
+    | ^~ [1]
+  5 | "
+  6 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/two-lines-in-call-arguments
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/two-lines-in-call-arguments-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   click A call f(a
+  4 | %%
+    | ^~ [1]
+  5 | %%
+    | ^~ [2]
+  6 |  b)
+  7 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   click A call f(a
+          4 | %%
+          5 |  b)
+          6 |
+[2] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   click A call f(a
+          4 | %%
+          5 |  b)
+          6 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/two-lines-in-call-name
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/two-lines-in-call-name-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   click A call c
+  4 | %%
+    | ^~ [1]
+  5 | %%
+    | ^~ [2]
+  6 | b()
+  7 |
+
+[1] mermaid.js reads this `%%` line into the name of the function to call, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the name of the function to call then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   click A call c
+          4 | %%
+          5 | b()
+          6 |
+[2] mermaid.js reads this `%%` line into the name of the function to call, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the name of the function to call then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   click A call c
+          4 | %%
+          5 | b()
+          6 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/two-lines-in-data-block
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/two-lines-in-data-block-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A@{
+  3 | %%
+    | ^~ [1]
+  4 | %%
+    | ^~ [2]
+  5 |     shape: circle
+  6 |   }
+  7 |
+
+[1] mermaid.js reads this `%%` line as part of the data, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the data block then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A@{
+          3 | %%
+          4 |     shape: circle
+          5 |   }
+          6 |
+[2] mermaid.js reads this `%%` line as part of the data, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the data block then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A@{
+          3 | %%
+          4 |     shape: circle
+          5 |   }
+          6 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/two-lines-in-data-block-string
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/two-lines-in-data-block-string-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A@{
+  3 |     label: "x
+  4 | %%
+    | ^~ [1]
+  5 | %%
+    | ^~ [2]
+  6 |  y"
+  7 |   }
+  8 |
+
+[1] mermaid.js reads this `%%` line as part of the data, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the data block then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A@{
+          3 |     label: "x
+          4 | %%
+          5 |  y"
+          6 |   }
+          7 |
+[2] mermaid.js reads this `%%` line as part of the data, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the data block then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A@{
+          3 |     label: "x
+          4 | %%
+          5 |  y"
+          6 |   }
+          7 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/two-lines-in-description-block
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/two-lines-in-description-block-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accDescr {
+  4 |     first
+  5 |     %%
+    |     ^~ [1]
+  6 |     %%
+    |     ^~ [2]
+  7 |     second
+  8 |   }
+  9 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accDescr {
+          4 |     first
+          5 |     %%
+          6 |     second
+          7 |   }
+          8 |
+[2] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accDescr {
+          4 |     first
+          5 |     %%
+          6 |     second
+          7 |   }
+          8 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/two-lines-in-label
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/two-lines-in-label-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A[a
+  3 | %%
+    | ^~ [1]
+  4 | %%
+    | ^~ [2]
+  5 | b]
+  6 |
+
+[1] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A[a
+          3 | %%
+          4 | b]
+          5 |
+[2] mermaid.js keeps this `%%` line in the text, not as a comment.
+    Suggestions:
+      - Remove the line of only `%%`: the text then no longer holds this line.
+        Output:
+          1 | flowchart LR
+          2 |   A[a
+          3 | %%
+          4 | b]
+          5 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/two-vertex-lines
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/two-vertex-lines-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | %%
+    | ^~ [1]
+  3 | A
+  4 | %%
+    | ^~ [2]
+  5 |
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+    Suggestions:
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 | %%
+          4 |
+[2] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+    Suggestions:
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
+        Output:
+          1 | flowchart LR
+          2 | %%
+          3 | A
+          4 |
+---
+
+
+Test: flowchart/no-bare-comment-marker >> invalid >>> invalid/vertex-line-crlf
+Filename: tests/fixtures/rules/flowchart/no-bare-comment-marker/invalid/vertex-line-crlf-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | %%
+    | ^~ [1]
+  3 | A
+  4 |
+
+[1] mermaid.js reads this `%%` as a vertex with the id `%%`, not as a comment.
+    Suggestions:
+      - Remove the `%%`: mermaid.js then makes no vertex from this line.
+        Output:
+          1 | flowchart LR
+          2 | A
+          3 |
 ---

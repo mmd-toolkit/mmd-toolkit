@@ -167,12 +167,6 @@ Reads the fixtures. It does not load mermaid.js.
 - `embeddedValuesOf(fixture)`: the values `resolveEmbeddedData()` gives for the
   input of a fixture, built from what the fixture records, for the reading to
   match (`specified`, else `expected`). `undefined` for a rejection.
-- `findBoundaries(source)`, `findInnerPlaces(source)` and
-  `selectByKey(lists, perKey, keyOf)`: the parts of the kinds of the places in a
-  text where a generated or differential test puts something, and the choice of
-  a few places of each key the caller makes from them. `source` is the tokens,
-  comments and directives of a parsed text as plain values. See
-  [docs/boundary-kinds.md](./docs/boundary-kinds.md).
 - `dbFromTree(text, tree, embedded, isColor)`: the Db summary that a recorded
   tree (`ast.json`) denotes, built without a parser, and
   `exceedsMaxEdges(tree, config)` / `flowchartEdgeCount(tree)` for the limit on
@@ -181,6 +175,10 @@ Reads the fixtures. It does not load mermaid.js.
 - `checkTree(text, tree)`: the conditions that the specification states for a
   recorded tree (`ast.json`) that do not hold, none for a tree that satisfies
   them all. See [docs/check-tree.md](./docs/check-tree.md).
+- `cssSupportsColor(value)`: what the browser's `CSS.supports("color", value)`
+  answers, as the stand-in that runs mermaid.js here gives it (a sequence `box`
+  line asks it). For an implementation that takes this answer from outside. See
+  [docs/expected-results.md](./docs/expected-results.md).
 - Types: `DiagramType`, `Fixture`, `FixtureSource`, `Expectation`,
   `ExpectedFile`, `RecordedEmbedded`, `DbSummary`, `MermaidConfig`,
   `MermaidError`.
@@ -218,47 +216,8 @@ Runs the pinned mermaid.js in Node.
   environment variable `MMD_TOOLKIT_MERMAID_CACHE=disabled` turns the store off,
   and removing the directory empties it. See
   [docs/expected-results.md](./docs/expected-results.md).
-- `cssSupportsColor(value)`: what the browser's `CSS.supports("color", value)`
-  answers, as the stand-in that runs mermaid.js here gives it (a sequence `box`
-  line asks it). For an implementation that takes this answer from outside. See
-  [docs/expected-results.md](./docs/expected-results.md).
 
-### `@mmd-toolkit/tests/mutation`
-
-Compares an implementation with mermaid.js on texts one edit away from the
-fixtures, or on any texts. See
-[docs/mutation-testing.md](./docs/mutation-testing.md).
-
-```js
-import { loadFixtures } from "@mmd-toolkit/tests"
-import { runMutationDiff } from "@mmd-toolkit/tests/mutation"
-
-const fixtures = await loadFixtures("flowchart")
-const report = await runMutationDiff(
-  fixtures.map((f) => ({ name: f.name, text: f.input, config: f.config })),
-  (text) => ({ accepted: accepts(text) }),
-  { count: 20, seed: 1 },
-)
-console.log(report.compared, report.mismatches.length)
-```
-
-- The candidate is called as `(text, config, embedded)` and returns
-  `{ accepted, diagramType?, db?, knownDivergence? }`. `embedded` is what
-  `resolveEmbeddedData()` returns for the text.
-- `diagramType` and `db` are compared when the candidate returns them. With
-  `require: ["diagramType", "db"]`, leaving one out is a mismatch.
-- `compareAll(inputs, candidate)` compares texts without mutating them.
-- `mutate(text, { seed, count })` returns the mutants of one text, without
-  comparing them.
-- `generatedInputs(generator, seeds, count, prefix)` names the texts of an input
-  generator, to pass to `compareAll()` or `runMutationDiff()`.
-- The command line:
-  `pnpm --filter @mmd-toolkit/tests run mutation --candidate <module>`. Each
-  fixture gets one mutant for each edit operator that applies to it unless
-  `--count` says otherwise (see
-  [docs/mutation-testing.md](./docs/mutation-testing.md)).
-
-The other exports of the three entry points are used by this repository's tools;
+The other exports of the two entry points are used by this repository's tools;
 they are listed in
 [docs/maintaining-fixtures.md](./docs/maintaining-fixtures.md).
 
@@ -293,10 +252,6 @@ they are listed in
   data, and what comparing with them checks.
 - [docs/db-summaries.md](./docs/db-summaries.md): what a Db summary keeps and
   leaves out.
-- [docs/mutation-testing.md](./docs/mutation-testing.md): how texts are mutated
-  and compared, and the report.
-- [docs/boundary-kinds.md](./docs/boundary-kinds.md): the kinds of the places in
-  a text, and choosing places by kind.
 - [docs/db-from-tree.md](./docs/db-from-tree.md): building the Db from a
   recorded tree, and what it reads.
 - [docs/check-tree.md](./docs/check-tree.md): checking a recorded tree against

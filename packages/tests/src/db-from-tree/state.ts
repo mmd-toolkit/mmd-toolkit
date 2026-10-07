@@ -49,7 +49,11 @@ interface Visit {
 }
 
 /** The walk: the ids that make no node. */
-const IDS_WITHOUT_NODE: readonly string[] = ["", "</choice>", "</join></fork>"]
+export const IDS_WITHOUT_NODE: readonly string[] = [
+  "",
+  "</choice>",
+  "</join></fork>",
+]
 
 /** The builder of the summary: the statements are walked in source order. */
 class StateDbBuilder {

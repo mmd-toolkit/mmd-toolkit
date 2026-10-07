@@ -5,6 +5,7 @@ import type {
   ClassAnnotation,
   ClassArrowMarker,
   ClassAttribute,
+  ClassCallbackStatement,
   ClassDeclaration,
   ClassDiagram,
   ClassLiteral,
@@ -141,6 +142,8 @@ class ClassDbBuilder {
 
   private readonly interfaces: JsonObject[] = []
 
+  private readonly clickCalls: JsonObject[] = []
+
   private readonly root: TreeRoot
 
   /** The converted form of ranges of the source. */
@@ -167,6 +170,7 @@ class ClassDbBuilder {
         ...namespace,
       })),
       interfaces: this.interfaces,
+      ...(this.clickCalls.length === 0 ? {} : { clickCalls: this.clickCalls }),
     }
   }
 
@@ -213,6 +217,7 @@ class ClassDbBuilder {
         return
       }
       case "ClassCallbackStatement":
+        this.recordClickCalls(statement)
         this.applyClick(statement.class, statement.tooltip, (name) => {
           const entry = this.classes.get(idAndTypeOf(name).id)
           if (entry !== undefined) entry.haveCallback = true
@@ -502,6 +507,26 @@ class ClassDbBuilder {
         note.parent = qualifiedId
         if (!namespace.notes.includes(note.id)) namespace.notes.push(note.id)
       }
+    }
+  }
+
+  /**
+   * Click statements: a callback records a click call for each name of the
+   * written name of its class (the name of the function and the arguments as
+   * written, the text between the parentheses, whitespace at its ends too),
+   * whether or not the name is a class.
+   */
+  private recordClickCalls(statement: ClassCallbackStatement): void {
+    const name =
+      statement.callback.type === "StringLiteral"
+        ? this.stringTextOf(statement.callback)
+        : this.literalTextOf(statement.callback)
+    const args =
+      statement.arguments === null
+        ? null
+        : this.literalTextOf(statement.arguments)
+    for (const id of this.writtenNameOf(statement.class).split(",")) {
+      this.clickCalls.push({ id, name, args })
     }
   }
 

@@ -4,7 +4,7 @@
 
 図種: flowchart。
 これは、この仕様の mermaid.js との
-[既知の差](../known-divergences.ja.md) の 1 つです。
+[既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 構文
 
@@ -20,7 +20,8 @@ flowchart LR
 [fixture: flowchart/gram-click-href-tooltip]
 
 単位が始まる場所の語 `click` は、その後の空白とともに `click` の単位です
-（[クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック) を参照）。
+（[クリックとコールバック](../diagrams/flowchart.ja.md#クリックとコールバック)
+を参照）。
 この文書は、クリック文が始まらない場所のそのような単位についてのものです。
 文の中、同じ行の文の後、id、スタイル、サブグラフの名前の中です。
 文字列の中や、長い id の一部の語は `click` の単位ではなく、
@@ -29,7 +30,7 @@ flowchart LR
 [fixture: flowchart/gram-label-string-click] [fixture:
 flowchart/spec-flow-singlenode-ada86e69]
 
-## 差
+## 差異
 
 どの例も、flowchart の全体です。
 
@@ -87,10 +88,22 @@ flowchart/lex-click-id-arrow-callback]
 mermaid.js と同じに読みます。
 そのクリックの id は、何であっても、クリックの文脈が読む文字の並びです
 （[クリックの文](../diagrams/flowchart.ja.md#クリックの文) を参照）。
-差は一方向だけです。
+差異は一方向だけです。
 mermaid.js が受理し、この仕様が拒否します。
 flowchart の文書は、その場所を
-[既知の差](../diagrams/flowchart.ja.md#既知の差) に挙げています。
+[既知の差異](../diagrams/flowchart.ja.md#既知の差異) に挙げています。
+
+## 書き手にとっての結果
+
+語 `click` は、サブグラフの名前や、
+引用符のないほかのテキストに書きやすい語です。
+そのとき mermaid.js は、それをクリックの始まりとして読み、その後の語を捨て、
+例 1 のように、次の行をテキストにつなぐことがあり、警告を出しません。
+mmd-toolkit のパーサーは入力を拒否し、予約語を報告します。
+語をテキストとして書くには、テキストを引用符で囲みます。
+`subgraph "Handle click events"` なら、
+どちらもそのタイトルと、サブグラフの中の頂点 A を読みます。
+[fixture: flowchart/gram-subgraph-name-string-click]
 
 ## mermaid.js がそう読む理由
 
@@ -112,20 +125,8 @@ mermaid.js の字句解析器は、空白が後に続くすべての `click` で
 
 mermaid.js の保守者は `click` を予約語として扱い、
 ほかの場所での使い方を不具合として扱っています（下を参照）。
-これは既知の差の 3 つ目の理由に当たります
+これは既知の差異の 3 つ目の理由に当たります
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
-
-## 書き手にとっての結果
-
-語 `click` は、サブグラフの名前や、
-引用符のないほかのテキストに書きやすい語です。
-そのとき mermaid.js は、それをクリックの始まりとして読み、その後の語を捨て、
-例 1 のように、次の行をテキストにつなぐことがあり、何も言いません。
-この道具は入力を拒否し、予約語を報告します。
-語をテキストとして書くには、テキストを引用符で囲みます。
-`subgraph "Handle click events"` なら、
-どちらもそのタイトルと、サブグラフの中の頂点 A を読みます。
-[fixture: flowchart/gram-subgraph-name-string-click]
 
 ## mermaid.js の文書と issue
 

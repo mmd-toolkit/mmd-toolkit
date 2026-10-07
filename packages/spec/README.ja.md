@@ -19,7 +19,7 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 の mermaid 12.0.0 に従います。
 仕様とその版が食い違う場合は mermaid.js が正しく、仕様に誤りがあります。
 ただし、
-[既知の差](./docs/known-divergences.ja.md) に挙げた意図的な違いは除きます。
+[既知の差異](./docs/known-divergences.ja.md) に挙げた意図的な違いは除きます。
 
 ## どこから読むか
 

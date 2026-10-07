@@ -43,13 +43,12 @@
 import { existsSync, readdirSync } from "node:fs"
 import path from "node:path"
 import { describe, expect, it } from "vitest"
-import type { Expectation, Fixture } from "@mmd-toolkit/tests"
+import type { EmbeddedValues, Expectation, Fixture } from "@mmd-toolkit/tests"
 import {
   embeddedValuesOf,
   getFixturesRoot,
   loadFixtures,
 } from "@mmd-toolkit/tests"
-import type { EmbeddedValues } from "@mmd-toolkit/tests/mermaid"
 import type { Location, Range, Root, Token } from "../src/index.ts"
 import { ParseError, UnsupportedDiagramError, parse } from "../src/index.ts"
 import { dbOfTree } from "./helpers/db-of-tree.ts"
@@ -70,8 +69,7 @@ import {
   rejectsWithoutHeader,
   removedEmptyFormsIn,
   reservedClicksIn,
-  withIgnoredSemicolonsAtSegmentEnds,
-  withoutDirectives,
+  withoutTokenCuts,
   withoutEmptyForms,
 } from "./helpers/reference-inputs.ts"
 import { RECORDED_DIAGRAMS } from "./helpers/recorded-diagrams.ts"
@@ -410,11 +408,12 @@ describe("marked fixtures differ only by their divergence", async () => {
   // directive and joins the text around it, and the specification reads
   // the text in the same way, but rejects a directive inside a token that
   // may not be cut, one that is not a text or a string. The reference input
-  // is the fixture input without its directives, and the parser must give
-  // for it what mermaid.js gave for the input. The reference input differs
-  // from the input only by its directives, so when the parser agrees with
-  // mermaid.js on the reference input, the directives alone explain that
-  // the parser rejects the input itself.
+  // is the fixture input without its directives and with each `;` that the
+  // line rule ignores moved to the end of its line segment
+  // (`withoutTokenCuts`), and the parser must give for it what mermaid.js
+  // gave for the input. Both steps keep the diagram text, so when the
+  // parser agrees with mermaid.js on the reference input, the cuts alone
+  // explain that the parser rejects the input itself.
   describe("directive-as-token-boundary", () => {
     const fixturesWithMark = marked("directive-as-token-boundary")
 
@@ -425,7 +424,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     for (const fixture of fixturesWithMark) {
       it(`${fixture.diagram}/${fixture.name}`, () => {
         expectSameAsMermaid(
-          outcomeOf(withoutDirectives(fixture.input)),
+          outcomeOf(withoutTokenCuts(fixture.input)),
           fixture.expected,
           embeddedValuesOf(fixture, fixture.expected),
         )
@@ -437,9 +436,9 @@ describe("marked fixtures differ only by their divergence", async () => {
   // removes the `;` that the line rule ignores from its line, and the
   // specification leaves it out of the diagram text in the same way, but
   // rejects it inside a token that may not be cut. The reference input is
-  // the fixture input with each such `;` moved to the end of its line
-  // segment, where both still ignore it and it lies in no token, and the
-  // parser must give for it what mermaid.js gave for the input.
+  // that of `directive-as-token-boundary` above: there, each such `;` lies
+  // at the end of its line segment, where both still ignore it and it lies
+  // in no token.
   describe("ignored-semicolon-as-token-boundary", () => {
     const fixturesWithMark = marked("ignored-semicolon-as-token-boundary")
 
@@ -450,7 +449,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     for (const fixture of fixturesWithMark) {
       it(`${fixture.diagram}/${fixture.name}`, () => {
         expectSameAsMermaid(
-          outcomeOf(withIgnoredSemicolonsAtSegmentEnds(fixture.input)),
+          outcomeOf(withoutTokenCuts(fixture.input)),
           fixture.expected,
           embeddedValuesOf(fixture, fixture.expected),
         )

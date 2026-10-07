@@ -2,9 +2,10 @@
 
 Japanese version: [compatibility.ja.md](./compatibility.ja.md)
 
-The plugin is checked against mermaid.js 12.0.0. Formatting keeps what
-mermaid.js reads from a diagram, and text that mermaid.js rejects is left
-unchanged. This document lists where that does not hold, and why.
+The plugin is checked against what mermaid.js 12.0.0 recorded in the conformance
+corpus. Formatting keeps what mermaid.js reads from a diagram, and text that
+mermaid.js rejects is left unchanged. This document lists where that does not
+hold, and why.
 
 ## Inputs read differently from mermaid.js
 
@@ -20,14 +21,30 @@ A directive (`%%{ ... }%%`) and a `;` that the line rule ignores (see
 they are removed, and the text on their two sides is joined. They may lie
 between any two tokens, and inside a string, a backquoted name, and a text that
 may contain whitespace: the text of a label, a class name, a participant id of a
-sequence diagram. They may not lie inside a name without whitespace (the id of a
-flowchart or state diagram), a number, a keyword, an arrow, or a delimiter such
-as `:::` or `((`, although mermaid.js accepts that. Such input is reported as a
-syntax error and left unchanged. For example, mermaid.js reads
-`sub%%{init: {}}%%graph S` as the keyword `subgraph`, and `A%%{init: {}}%%B-->C`
-as the node `AB`. Where the input is accepted, the directive is printed as
-written with the text around it: `A["a %%{init: {}}%% b"]` is a node with the
-label `a  b`.
+sequence diagram. [fixture: flowchart/directives/touching-token-kept] [fixture:
+flowchart/directives/compat-directive-in-string] [fixture:
+state/directives/compat-directive-in-string] [fixture:
+class/directives/compat-directive-in-backquoted-name] [fixture:
+flowchart/directives/compat-directive-in-label] [fixture: class/directives/kept]
+[fixture: sequence/directives/compat-directive-in-participant-id] [fixture:
+flowchart/semicolons/compat-ignored-semicolon-in-label] [fixture:
+flowchart/semicolons/compat-ignored-semicolon-in-string] [fixture:
+class/whitespace-between-tokens/compat-ignored-semicolon-in-backquoted-name]
+[fixture: state/whitespace-between-tokens/compat-ignored-semicolon-in-string]
+They may not lie inside a name without whitespace (the id of a flowchart or
+state diagram), a number, a keyword, an arrow, or a delimiter such as `:::` or
+`((`, although mermaid.js accepts that. Such input is reported as a syntax error
+and left unchanged. [corpus fixture: flowchart/div-directive-in-id] [corpus
+fixture: flowchart/div-directive-in-circle-opening] [corpus fixture:
+flowchart/div-directive-inside-arrow] [corpus fixture:
+sequence/div-directive-in-number] [corpus fixture:
+sequence/div-directive-in-keyword] [corpus fixture:
+class/div-directive-in-triple-colon] [corpus fixture: state/div-directive-in-id]
+For example, mermaid.js reads `sub%%{init: {}}%%graph S` as the keyword
+`subgraph`, and `A%%{init: {}}%%B-->C` as the node `AB`. Where the input is
+accepted, the directive is printed as written with the text around it:
+`A["a %%{init: {}}%% b"]` is a node with the label `a  b`. [fixture:
+flowchart/directives/compat-directive-in-string]
 
 This difference goes one way only: input that mermaid.js rejects is never
 accepted.
@@ -36,12 +53,24 @@ accepted.
 
 The YAML inside the frontmatter, the content of a directive, and the data blocks
 written as `@{ ... }` in the diagram are not parsed. A diagram whose embedded
-data is malformed, has the wrong shape, or names something unknown, such as a
-node shape, is rejected by mermaid.js, but is still formatted here.
+data is malformed, has the wrong shape, or names something unknown may be
+accepted or rejected by mermaid.js, and is formatted here in either case.
+mermaid.js accepts `%%{init:   {oops}}%%`, a data block of a participant that is
+not JSON, and an unknown key of the configuration, and rejects an unknown node
+shape in a data block and malformed YAML in the frontmatter. [fixture:
+flowchart/directives/compat-malformed-directive-kept] [fixture:
+flowchart/whitespace-between-tokens/compat-unknown-shape-data-block-kept]
+[fixture: sequence/whitespace-between-tokens/compat-malformed-data-block-kept]
+[fixture: flowchart/frontmatter-yaml/malformed-kept] [fixture:
+flowchart/frontmatter-yaml/compat-unknown-config-formatted] [corpus fixture:
+common/directive-bad-json] [corpus fixture: flowchart/div-data-unknown-shape]
+[corpus fixture: flowchart/frontmatter-invalid-yaml]
 
 Directives and data blocks are kept as written. The frontmatter is formatted
 with Prettier's YAML formatter when Prettier can read it as YAML, and kept as
-written otherwise (see [Frontmatter](#frontmatter)).
+written otherwise (see [Frontmatter](#frontmatter)). [fixture:
+flowchart/frontmatter-yaml/formatted] [fixture:
+flowchart/frontmatter-yaml/malformed-kept]
 
 ### HTML tags that start in the frontmatter
 
@@ -52,7 +81,8 @@ does not look for tags in the frontmatter.
 
 For example, mermaid.js accepts a flowchart whose frontmatter has `title: <a`
 and whose node is `A[b="c">d]`, with the label `b='c'>d`. The plugin reports it
-as a syntax error and leaves it unchanged.
+as a syntax error and leaves it unchanged. [corpus fixture:
+flowchart/html-tag-starts-in-frontmatter]
 
 ### `click` only starts a click statement
 
@@ -65,7 +95,8 @@ written. For example, mermaid.js reads `A-->B click ""` as the edge from A to B,
 reading past the `click` and the empty string, and gives the subgraph of
 `subgraph Handle click events`, `A`, and `end` the title `Handle eventsA` and no
 members. The plugin reports such input as a syntax error and leaves it
-unchanged.
+unchanged. [corpus fixture: flowchart/gram-click-bare-after-vertex] [corpus
+fixture: flowchart/db-subgraph-name-click-word]
 
 This difference goes one way only: input that mermaid.js rejects is never
 accepted.
@@ -73,27 +104,62 @@ accepted.
 ### Empty forms between tokens
 
 In flowchart, an empty string (`""`), an empty call (`call ()`), and an empty
-description block (`accDescr {}`) that does not start a statement hold nothing,
-and they can lie between any two tokens, where the tree has no place for them
-(the specification's
+description block (`accDescr {}`) inside a statement hold nothing, and they can
+lie between any two tokens, where the tree has no place for them (the
+specification's
 [`tokenless-empty-forms`](../../spec/docs/known-divergences/tokenless-empty-forms.md)).
 mermaid.js accepts them in many such places, as if they were not there:
 `A-->|x""|B` is the edge from A to B with the label `x`, and `A call ()-->B` and
-`A accDescr {}` are accepted too. The plugin reports such input as a syntax
-error and leaves it unchanged. An empty description block where a statement
-starts, as on a line of its own, is a description block statement, and it is
-formatted as any other: the whitespace between its tokens follows
+`A accDescr {}-->B` are accepted too. The plugin reports such input as a syntax
+error and leaves it unchanged. [corpus fixture:
+flowchart/gram-empty-call-before-link] [corpus fixture:
+flowchart/gram-empty-description-block-before-link] An empty description block
+is not reported where the tree has a place for it, where a statement starts or
+before the separator that ends a statement: as on a line of its own, or after
+another statement on its line (`A accDescr {}` is the vertex A and an empty
+description block), it is a description block statement, and it is formatted as
+any other: the whitespace between its tokens follows
 [Whitespace between tokens](./flowchart.md#whitespace-between-tokens), and a
 line break inside it is kept, with the `}` at the level of the `accDescr`.
+[fixture:
+flowchart/statements-one-per-line/compat-empty-description-block-before-statement]
+[fixture:
+flowchart/statements-one-per-line/compat-empty-description-block-after-statement]
+[fixture:
+flowchart/statements-one-per-line/compat-empty-description-block-before-separator]
+[fixture:
+flowchart/whitespace-between-tokens/compat-empty-description-block-own-line]
+[fixture:
+flowchart/multi-line-values/compat-empty-description-block-line-break-kept]
 
 In a class diagram, the same holds for an empty string where the grammar takes
 none, an empty backquoted name, an empty generic type that does not end a class
-name, an empty call, and an empty description block that does not start a
-statement: `"" A --> B`, `class A``B`, and `class A~~B` are reported as syntax
-errors. In a state diagram, an empty description block inside a statement, as in
-`A accDescr {} --> B`, is reported as a syntax error, while an empty string
-after `state`, which mermaid.js reads as nothing, is text that it does not read
-and is kept as written.
+name, an empty call, and an empty description block inside a statement:
+`"" A --> B`, `class A``B`, and `class A~~B` are reported as syntax errors.
+[corpus fixture: class/div-empty-string-statement-start] [corpus fixture:
+class/div-empty-backquoted-in-name] [corpus fixture:
+class/div-empty-generic-in-name] [corpus fixture: class/div-empty-call] [corpus
+fixture: class/div-empty-description-block-after-annotation] An empty
+description block that shares its line with another statement or with the header
+is a statement, as in mermaid.js (see
+[Empty description blocks](./class.md#empty-description-blocks)). [fixture:
+class/empty-description-blocks/kept-with-statement] [fixture:
+class/empty-description-blocks/after-statement] In a state diagram, an empty
+description block inside a statement, as in `A accDescr {} --> B`, is reported
+as a syntax error, while an empty string after `state`, which mermaid.js reads
+as nothing, is text that it does not read and is kept as written. [fixture:
+state/statements-one-per-line/state-names-kept] [corpus fixture:
+state/div-empty-description-block-in-transition] [corpus fixture:
+state/gram-state-empty-string-after-name]
+
+In a sequence diagram, which has no strings and no `call`, an empty description
+block inside a statement, as in `A->> accDescr {}+B: x` and
+`create accDescr {}participant A`, is reported as a syntax error. [corpus
+fixture: sequence/div-empty-description-block-before-activation] [corpus
+fixture: sequence/div-empty-description-block-after-create] An empty description
+block where the tree has a place for it is a statement, as in the other
+diagrams. [fixture:
+sequence/statements-one-per-line/empty-description-block-moves-next-statement]
 
 This difference goes one way only: input that mermaid.js rejects is never
 accepted.
@@ -105,11 +171,18 @@ the `%%` belongs to what comes before it (the specification's
 [`comment-takes-character`](../../spec/docs/known-divergences/comment-takes-character.md)).
 mermaid.js reads that character as part of the comment in some places: it reads
 `autonumber 5%% c` without the number 5, rejects `A->>B:%% c`, which is the
-message `%% c` here, and accepts a line `C%% c`, which is rejected here. The
-plugin keeps whether whitespace is written before the mark of a comment, so that
-mermaid.js reads `autonumber 5%% c` as before. It prints `A->>B:%% c` as
-`A ->> B: %% c`, which mermaid.js reads as this specification does. It reports
-what this specification rejects as a syntax error and leaves it unchanged.
+message `%% c` here, and accepts a line `C%% c`, which is rejected here. [corpus
+fixture: sequence/div-comment-after-number-across-directive] [corpus fixture:
+sequence/div-comment-after-text-colon] [corpus fixture:
+sequence/div-comment-after-one-character-id] The plugin keeps whether whitespace
+is written before the mark of a comment, so that mermaid.js reads
+`autonumber 5%% c` as before. [fixture:
+sequence/comments/compat-comment-touching-number-kept] [fixture:
+sequence/comments/compat-comment-after-number-spaced-kept] It prints
+`A->>B:%% c` as `A ->> B: %% c`, which mermaid.js reads as this specification
+does. [fixture: sequence/comments/compat-comment-after-colon] It reports what
+this specification rejects as a syntax error and leaves it unchanged. [corpus
+fixture: sequence/div-comment-after-one-character-id]
 
 This difference goes both ways.
 
@@ -125,7 +198,13 @@ reads `A --> B %% c` followed by a line `A : +int age` as a relation from A to
 `BA`. The plugin keeps comments where they are, and keeps a line of only
 whitespace after such a comment (see
 [A line of only whitespace after a comment](#a-line-of-only-whitespace-after-a-comment)),
-so that mermaid.js reads the formatted text as it read the input.
+so that mermaid.js reads the formatted text as it read the input. [fixture:
+class/comments/compat-comment-then-class] [fixture:
+class/comments/compat-comment-then-member] [fixture:
+class/comments/compat-comment-then-empty-lines] [fixture:
+class/comments/whitespace-line-kept] [corpus fixture:
+class/div-comment-then-statement] [corpus fixture:
+class/div-comment-splits-relation]
 
 This difference goes both ways.
 
@@ -136,7 +215,10 @@ such as `classDiagramX`, has no header and is rejected here (the specification's
 [`headerless-empty-ending`](../../spec/docs/known-divergences/headerless-empty-ending.md)).
 mermaid.js accepts it when the text ends with an empty title, description, or
 call, or a string opened at the end of a click statement. The plugin reports it
-as a syntax error and leaves it unchanged.
+as a syntax error and leaves it unchanged. [corpus fixture:
+class/div-headerless-empty-string] [corpus fixture:
+class/div-headerless-empty-title] [corpus fixture:
+class/div-headerless-empty-call]
 
 This difference goes one way only: input that mermaid.js rejects is never
 accepted.
@@ -149,7 +231,11 @@ with `"`, `~`, `<<`, `>>`, or a keyword such as `note` (the specification's
 mermaid.js reads that unit instead of the name: it rejects ``class `note` ``,
 which declares the class `note` here, and reads ``A `"1"` --> B`` with the
 cardinality `1`, where this is a relation from `A"1"`. The plugin keeps
-backquoted names and generic types as written.
+backquoted names and generic types as written. [fixture:
+class/whitespace-between-tokens/compat-backquoted-name-start-reads-unit]
+[fixture: class/generic-types/compat-start-reads-unit] [corpus fixture:
+class/div-backquote-starts-with-keyword] [corpus fixture:
+class/div-generic-starts-with-keyword]
 
 This difference goes both ways.
 
@@ -158,31 +244,42 @@ This difference goes both ways.
 The parser does not know the site configuration that a page passes to
 mermaid.js. A flowchart with more edges than the `maxEdges` setting allows, 500
 by default, is rejected by mermaid.js, but the parser accepts it, and the plugin
-formats it.
+formats it. [fixture: flowchart/chains/compat-more-edges-than-max-edges] [corpus
+fixture: flowchart/config-max-edges-exceeded]
 
 ## Words read with the line break after them
 
 After the words `accTitle`, `accDescr`, `direction`, `click`, `call`, and
 `href`, mermaid.js reads the whitespace that follows, line breaks included, with
-the word (diagrams/flowchart.md, The statement context, and Click and callbacks,
-in the specification). A `;` after such a word separates two statements, and a
-line break in its place would not: `accTitle ; :` is the vertices `accTitle` and
-`:`, while `accTitle` and `:` on two lines is an accessibility title. So when a
-statement ends with one of these ids, or with an id that ends with `direction`
-(a direction line takes `direction` after any run of characters), and a `;`
-separates it from the next one, the statements stay on the line and the `;`
-stays in place; the whitespace within the statements is formatted as usual. See
+the word (the specification's
+[The statement context](../../spec/docs/diagrams/flowchart.md#the-statement-context)
+and
+[Click and callbacks](../../spec/docs/diagrams/flowchart.md#click-and-callbacks)).
+A `;` after such a word separates two statements, and a line break in its place
+would not: `accTitle ; :` is the vertices `accTitle` and `:`, while `accTitle`
+and `:` on two lines is an accessibility title. So when a statement ends with
+one of these ids, or with an id that ends with `direction` (a direction line
+takes `direction` after any run of characters), and a `;` separates it from the
+next one, the statements stay on the line and the `;` stays in place; the
+whitespace within the statements is formatted as usual. [fixture:
+flowchart/statements-one-per-line/semicolon-after-word-kept] [corpus fixture:
+flowchart/lex-acc-title-semicolon-before-colon] [corpus fixture:
+flowchart/lex-direction-line-semicolon-before-value] [corpus fixture:
+flowchart/lex-call-keyword-semicolon] See
 [Statements one per line](./flowchart.md#statements-one-per-line).
 
 ## Whitespace at the end of a style
 
 Whitespace at the end of a `style`, `classDef`, or `linkStyle` statement is
-removed. mermaid.js keeps it at the end of the last style, so this is the one
-place where formatting changes what mermaid.js stores. The tests compare styles
-without the whitespace at their ends.
+removed. [fixture: flowchart/style-trailing-whitespace/removed] mermaid.js keeps
+it at the end of the last style, so this is the one place where formatting
+changes what mermaid.js stores. The tests compare styles without their trailing
+whitespace.
 
 The whitespace is kept where removing it would make mermaid.js reject the
-statement: after a `,` at the end of the list, as in `style A fill:#f00, `. See
+statement: after a `,` at the end of the list, as in `style A fill:#f00, `.
+[fixture: flowchart/style-trailing-whitespace/whitespace-only-value-kept]
+[corpus fixture: flowchart/db-style-whitespace-only-value] See
 [Style trailing whitespace](./flowchart.md#style-trailing-whitespace).
 
 ## Whitespace at the start of a label
@@ -191,8 +288,11 @@ mermaid.js drops whitespace at the start of a label without quotes, and so does
 formatting, except where the label would then be read differently: the
 whitespace is kept, as one space, when the label starts with `/`, `\`, `-`, or
 `"`, or when its first word contains `@`, and the label then gets one space at
-its end too. For example, `A[ /x/]` is a rectangle with the label `/x/`, while
-`A[/x/]` is a lean-right shape with the label `x`, and `A[x@]` is rejected. See
+its end too. [fixture: flowchart/label-inner-whitespace/trimmed] [fixture:
+flowchart/label-inner-whitespace/leading-whitespace-kept] [fixture:
+flowchart/label-inner-whitespace/compat-leading-backslash-kept] For example,
+`A[ /x/]` is a rectangle with the label `/x/`, while `A[/x/]` is a lean-right
+shape with the label `x`, and `A[x@]` is rejected. See
 [Label inner whitespace](./flowchart.md#label-inner-whitespace).
 
 ## Directives between tokens
@@ -200,7 +300,12 @@ its end too. For example, `A[ /x/]` is a rectangle with the label `/x/`, while
 mermaid.js removes a directive and reads the text on its two sides joined.
 Formatting therefore keeps, on each side of a directive, whether whitespace was
 written there: `flowchart %%{init: {}}%%LR` stays as it is, because
-`flowchart%%{init: {}}%%LR` would be rejected. See
+`flowchart%%{init: {}}%%LR` would be rejected. [fixture:
+flowchart/directives/whitespace-on-each-side-kept] [fixture:
+flowchart/directives/touching-token-kept] [fixture:
+sequence/directives/compat-whitespace-on-one-side-of-directive-kept] [fixture:
+class/directives/compat-whitespace-on-one-side-of-directive-kept] [fixture:
+state/directives/compat-whitespace-on-one-side-of-directive-kept] See
 [Directives](./flowchart.md#directives).
 
 ## Lines that hold a `;`
@@ -213,50 +318,186 @@ The rule reads the text of the line, so removing a `;` that separates
 statements, or moving a statement to a line of its own, can make it ignore
 another `;`, and change a label or an entity: `A[style:#x;];` has the label
 `style:` followed by the entity `#x;`, and `A[style:#x;]` the label `style:#x`.
-Both are accepted, so only the diagram shows the change. A line that holds a `;`
-other than one that separates statements or ends a statement therefore keeps its
-statements on it and its `;` where they are, whether the rule applies to it or
-not; the rule does not read the whitespace between other tokens, so that is
-formatted as usual. See
+[corpus fixture: common/entity-style-separator-ignored] [corpus fixture:
+common/entity-style-label-semicolon-ignored] Both are accepted, so only the
+diagram shows the change. A line that holds a `;` other than one that separates
+statements or ends a statement therefore keeps its statements on it and its `;`
+where they are, whether the rule applies to it or not; the rule does not read
+the whitespace between other tokens, so that is formatted as usual. [fixture:
+flowchart/statements-one-per-line/line-with-semicolon-kept] [fixture:
+flowchart/statements-one-per-line/compat-semicolon-in-label-without-style-kept]
+[fixture: sequence/comments/semicolon-after-comment-kept] [fixture:
+class/labels/semicolon-line-kept] [fixture:
+state/descriptions-and-labels/semicolon-line-kept] See
 [Statements one per line](./flowchart.md#statements-one-per-line).
+
+## A line that a `;` ends
+
+A `;` decides where a line ends and, when it is the one that the line rule
+ignores (see [Lines that hold a `;`](#lines-that-hold-a-)), which `;` that is.
+The rule removes the `;` from the text before mermaid.js reads it, and the scan
+of a directive that is not closed takes the whitespace after its argument, line
+breaks included, until a `;` stops it. A line is printed as written, with its
+statements on it, in every diagram type, when dropping a `;` on it would change
+one of those two things. That is the case on a line that holds
+
+- a `;` after a directive that is not closed, with only whitespace between them.
+  The scan of such a directive takes the whitespace after its argument, line
+  breaks included, and a `;` stops it. `%%{wrap foo;` and the next line
+  `participant D` end the directive at the `;`, while without it the line break
+  and the next line are taken with the directive. [fixture:
+  sequence/statements-one-per-line/compat-unclosed-directive-semicolon-kept]
+  [fixture:
+  flowchart/statements-one-per-line/compat-unclosed-directive-semicolon-kept]
+  [fixture:
+  state/statements-one-per-line/compat-unclosed-directive-semicolon-kept]
+  [corpus fixture: sequence/ignored-semicolon-after-directive-06349fee] [corpus
+  fixture: common/directive-word-argument-unclosed-next-line] The same holds for
+  `%%{init: {}`, U+2029, and `;`, where the argument stops before the U+2029,
+  which the directive takes as whitespace. [corpus fixture:
+  flowchart/ignored-semicolon-after-directive-530d2c05]
+- a `;` that the line rule ignores, with only whitespace and directives between
+  it and another `;`. The directives are removed first, so the two are next to
+  each other for the rule, which ignores only the last `;` of the line: dropping
+  the last one makes the one before it the ignored one, and a message text
+  `style:#x`, with `;;` after a directive, changes into `style:`. [fixture:
+  sequence/statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
+  [fixture:
+  flowchart/statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
+  [fixture:
+  state/statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
+- a `;` that the line rule ignores and, after it, a U+2028 or U+2029. The rule
+  reads the text up to the character as the line, so the character stays where
+  it is, and printed as a space it would end the line elsewhere. In a flowchart,
+  `Z[style:#x];`, U+2029, and `;` would become `Z[style:#x]; ;`, whose last `;`
+  is another one. [corpus fixture:
+  flowchart/ignored-semicolon-after-directive-5072803f]
+
+A `;` after a directive that is closed, with no other `;`, changes nothing when
+it is dropped, so it is dropped: `A-->B %%{init: {}}%% ;` is printed as
+`A --> B %%{init: {}}%%`. [fixture:
+flowchart/semicolons/closed-directive-formatted] [fixture:
+sequence/statements-one-per-line/compat-closed-directive-semicolon-dropped]
+
+In a sequence diagram, a statement that ends with a unit that reads no
+whitespace, a data block of a participant or `autonumber`, keeps a `;` that
+follows a directive after it, and its line is printed as written when it holds a
+U+2028 or U+2029: the character is no whitespace to the `}` that ends the unit,
+while a space is. [fixture:
+sequence/statements-one-per-line/data-block-directive-kept] [fixture:
+sequence/statements-one-per-line/autonumber-directive-kept]
+`participant Z@{ ... }%%{init: {}}%%`, U+2029, and `;` is accepted, and with a
+space in place of the U+2029 it is rejected. [corpus fixture:
+sequence/ignored-semicolon-after-directive-5689c99a] The same holds for a `;`
+that the line rule ignores and, after it, a U+2028 or U+2029, and the `;` that
+ends the statement may stand on a later line: the line is printed as written to
+the last of those `;`. `participant Z@{ "style": "x:#y" };`, U+2028, a line
+break, and `;` is accepted, and without the second `;` the whitespace at the end
+of the line hides the line break, and it is rejected. [corpus fixture:
+sequence/ignored-semicolon-then-separator-line-1902f8c5]
+
+See [Statements one per line](./flowchart.md#statements-one-per-line).
+
+## A line that a directive that is not closed joins
+
+The whitespace that follows the argument of a directive that is not closed is
+taken with it, line breaks included (the specification's
+[Where a directive is](../../spec/docs/common.md#where-a-directive-is)), so the
+next line goes on the line of the directive, as it does after a comment line
+(see
+[A comment line after U+2028 or U+2029](#a-comment-line-after-u2028-or-u2029)).
+The line is printed as written, with what stands on it, and no `;` is needed for
+that. [fixture: flowchart/directives/compat-unclosed-directive-joins-next-line]
+[fixture: sequence/statements-one-per-line/compat-unclosed-directive-joins-line]
+[fixture:
+state/statements-one-per-line/compat-unclosed-directive-joins-next-line]
+[fixture: class/directives/compat-unclosed-directive-joins-next-line] [corpus
+fixture: common/directive-word-argument-unclosed-next-line]
+`participant A@{ "style": "x:#y" };participant C%%{init: {}`, a line break,
+U+2029, and `;participant D` is one line for the line rule, and moving
+`participant C` to a line of its own would leave that `;` unignored. [corpus
+fixture: sequence/ignored-semicolon-after-directive-435fa018] In a class or
+state diagram, a statement after such a line break is kept as it is written,
+without the indentation of its level: `state S {%%{wrap foo`, an empty line, and
+`A` keep the empty line and the `A` where they stand. [fixture:
+state/composite-states/compat-unclosed-directive-joins-body-line] [fixture:
+class/member-bodies/compat-unclosed-directive-joins-body-line]
+
+A directive with a free-text argument, such as `init`, and no `}%%` extends to
+the end of the text (the specification's
+[Where a directive is](../../spec/docs/common.md#where-a-directive-is)), so
+everything after it is printed as written, as part of the directive:
+`A --> B %%{init: {};` is formatted up to the directive and the lines after it
+stay as they are. A directive whose argument is a word, such as `%%{wrap foo;`,
+ends after the word, and the lines after it are formatted. [fixture:
+flowchart/directives/unclosed-free-text-takes-the-rest] [fixture:
+flowchart/directives/unclosed-word-argument-stops-after-word]
+
+Whitespace that holds a U+2028 or U+2029 is printed as written, with the
+directive, wherever the directive stands. The free text of the argument stops
+before such a character, which is no whitespace to it, and the directive takes
+the whitespace after it; with the character printed as a space, the argument
+would reach past it, and take the statements that follow, up to the next `}%%`
+or the end of the text. `class A%%{init: {}`, a space, U+2028, `class D`, and
+`class B` declare the classes `AclassD` and `B`, and with a space in place of
+the U+2028, only `A`. [corpus fixture:
+class/unclosed-directive-separator-whitespace-5cfdfca6]
 
 ## Lines that hold a direction text
 
 At the first position of a line where a unit starts, mermaid.js tries the
-direction line before whitespace (diagrams/flowchart.md, The statement context,
-in the specification). An indented line that holds `direction`, whitespace, and
-a direction value anywhere is therefore a direction statement, while the same
-line at the first column may be read in another way: `accTitle: t;direction TB`
-is an accessibility title. Such a line that is not a direction statement is kept
-as written, with its indentation. See [Indentation](./flowchart.md#indentation).
+direction line before whitespace (the specification's
+[The statement context](../../spec/docs/diagrams/flowchart.md#the-statement-context)).
+An indented line that holds `direction`, whitespace, and a direction value
+anywhere is therefore a direction statement, while the same line at the first
+column may be read in another way: `accTitle: t;direction TB` is an
+accessibility title. [fixture:
+flowchart/indentation/compat-direction-text-indented] [corpus fixture:
+flowchart/lex-direction-line-acc-title-column-zero] [corpus fixture:
+flowchart/lex-direction-line-acc-title-indented] Such a line that is not a
+direction statement is kept as written, with its indentation. [fixture:
+flowchart/indentation/direction-text-kept] [fixture:
+flowchart/indentation/direction-text-with-directive-kept] See
+[Indentation](./flowchart.md#indentation).
 
 ## Sequence messages from a number or `title`
 
 A sequence message has one space on each side of its arrow, except when its
 source is an id that whitespace after it would make another unit: a number, as
 in `1->>2: x`, where `1 ->>2: x` is rejected, and `title` in any case, as in
-`title->>B: x`, where `title ->> B: x` is a title (diagrams/sequence.md, The
-statement context, in the specification). Such a message keeps its arrow
-touching on both sides. See [Arrow spacing](./sequence.md#arrow-spacing).
+`title->>B: x`, where `title ->> B: x` is a title (the specification's
+[The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context)).
+Such a message keeps its arrow touching on both sides. [fixture:
+sequence/arrow-spacing/touching-before-read-otherwise-kept] See
+[Arrow spacing](./sequence.md#arrow-spacing).
 
 ## Sequence statements over several lines
 
 In a sequence diagram, a statement continues on the next line when whitespace
-comes before the line break, and such a statement is printed on one line. One
-with a comment or a directive in it is kept as written, from its start to its
-end: it cannot stand on one line, and the whitespace at the ends of its lines,
-which the formatter does not write, is what joins its lines. So is a title with
-a comment line between `title` and its text: the comment line is removed before
-mermaid.js reads the text, so the line after it is the title. See
+comes before the line break, and such a statement is printed on one line.
+[fixture: sequence/multi-line-statements/joined] One with a comment or a
+directive in it is kept as written, from its start to its end: it cannot stand
+on one line, and the whitespace at the ends of its lines, which the formatter
+does not write, is what joins its lines. [fixture:
+sequence/multi-line-statements/comment-inside-kept] So is a title with a comment
+line between `title` and its text: the comment line is removed before mermaid.js
+reads the text, so the line after it is the title. [fixture:
+sequence/title/comment-line-kept] See
 [Multi-line statements](./sequence.md#multi-line-statements).
 
 ## A line of only whitespace after a comment
 
 In a class diagram, a line of only whitespace right after a line that ends with
 a comment after a statement is printed as a line of one space, where any other
-empty line is printed without whitespace. mermaid.js reads the line breaks after
-such a comment as part of the comment, and the next line as part of the
-commented statement, unless a line of only whitespace comes between them (see
+empty line is printed without whitespace. [fixture:
+class/comments/whitespace-line-kept] [fixture:
+class/comments/whitespace-line-after-header-comment-kept] [fixture:
+class/comments/compat-whitespace-line-after-comment-line] [fixture:
+class/comments/compat-comment-then-empty-lines] [corpus fixture:
+class/lex-comment-then-spaces-line] [corpus fixture:
+class/div-comment-then-empty-line] mermaid.js reads the line breaks after such a
+comment as part of the comment, and the next line as part of the commented
+statement, unless a line of only whitespace comes between them (see
 [A comment that takes the line breaks after it](#a-comment-that-takes-the-line-breaks-after-it)):
 `A --> B %% c`, a line of two spaces, and `A : +int age` is a relation and a
 member, and without the spaces, a relation from A to `BA`. An editor that
@@ -266,18 +507,22 @@ then reads the diagram otherwise. See [Comments](./class.md#comments).
 ## Class labels and member lines
 
 In a class diagram, a member line and a generic type are kept as written: the
-whitespace after a visibility mark and between the two `~` is part of the Db. A
-label of only whitespace keeps the whitespace after its `:`, at the end of its
-line: `A --> B : ` has an empty title and `A --> B` none. On a line that holds a
-`;`, whether whitespace follows the `:` of a label is kept as written, since the
-line rule of mermaid.js reads a `:` directly followed by text up to a `#`. See
-[Labels](./class.md#labels) and [Member lines](./class.md#member-lines).
+whitespace after a visibility mark and between the two `~` is part of the Db.
+[fixture: class/member-lines/kept] [fixture: class/generic-types/kept] A label
+of only whitespace keeps the whitespace after its `:`, at the end of its line:
+`A --> B : ` has an empty title and `A --> B` none. [fixture:
+class/labels/blank-kept] On a line that holds a `;`, whether whitespace follows
+the `:` of a label is kept as written, since the line rule of mermaid.js reads a
+`:` directly followed by text up to a `#`. [fixture:
+class/labels/semicolon-line-kept] See [Labels](./class.md#labels) and
+[Member lines](./class.md#member-lines).
 
 ## Unclosed backquoted names
 
 A backquoted name that is not closed runs to the end of the text, with the
 whitespace and line breaks at its end. It is printed as written to the end of
-the text, and no line break is added after it. See
+the text, and no line break is added after it. [fixture:
+class/unclosed-backquoted-names/kept] See
 [Unclosed backquoted names](./class.md#unclosed-backquoted-names).
 
 ## State ids spelled as keywords
@@ -286,19 +531,29 @@ In a state diagram, `scale`, `classDef`, `class`, `style`, `state`, `note`, and
 `stateDiagram`, in any case, are keywords only when whitespace follows them. A
 transition from an id spelled so keeps its arrow touching on both sides, as in
 `scale-->B`, and a description after such an id keeps its `:` touching it:
-`scale -->B` and `style :x` are rejected. See
+`scale -->B` and `style :x` are rejected. [fixture:
+state/arrow-spacing/touching-before-keyword-kept] [fixture:
+state/arrow-spacing/compat-keyword-ids-transition] [fixture:
+state/descriptions-and-labels/compat-keyword-ids-description] See
 [Arrow spacing](./state.md#arrow-spacing).
 
 ## State notes, aliases, and names
 
 In a state diagram, what follows the id of a note on one line is kept as
 written: mermaid.js reads the text of the note from right after the id, without
-its first two characters. The second description of an alias definition is kept
-as written, with the whitespace at its ends, which mermaid.js reads. The names
-and the empty strings after `state` stay on the line of `state`: on a line of
-its own, a second name would add a state. A `%%` or an empty description block
-right before a `{` is kept as written up to the `{`. See
-[Notes](./state.md#notes), [Aliases](./state.md#aliases),
+its first two characters. [fixture: state/notes/kept] The second description of
+an alias definition is kept as written, with the whitespace at its ends, which
+mermaid.js reads. [fixture: state/aliases/second-description-kept] The names and
+the empty strings after `state` stay on the line of `state`: on a line of its
+own, a second name would add a state. [fixture:
+state/statements-one-per-line/state-names-kept] A `%%` or an empty description
+block right before a `{` is kept as written up to the `{`. [fixture:
+state/composite-states/compat-comment-after-name-before-body] [fixture:
+state/composite-states/compat-comment-line-before-body] [fixture:
+state/composite-states/percent-before-body-kept] [fixture:
+state/composite-states/empty-block-before-body-kept] [corpus fixture:
+state/gram-ignored-state-comment-before-brace] See [Notes](./state.md#notes),
+[Aliases](./state.md#aliases),
 [Statements one per line](./state.md#statements-one-per-line), and
 [Composite states](./state.md#composite-states).
 
@@ -307,7 +562,8 @@ right before a `{` is kept as written up to the `{`. See
 In a state diagram, a line that holds U+2028 or U+2029 is kept as written:
 mermaid.js stops at these characters when it looks for a pseudostate mark, a
 direction line, and a second name before a `{`, while the plugin reads them as
-whitespace. See [Line separators](./state.md#line-separators).
+whitespace. [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
+See [Line separators](./state.md#line-separators).
 
 ## A comment line after U+2028 or U+2029
 
@@ -317,10 +573,12 @@ it, and with the line break that ends it (the comment region of the
 specification's [Comment lines](../../spec/docs/common.md#comment-lines)). When
 the region starts right after U+2028 or U+2029, or right where another region of
 this kind ends, the text before it and the text after it become one line: `alt`,
-U+2028, `%% e`, and a line ` a` is `alt a`. A `#` comment is no such region: the
-lexer of its diagram reads it. Nor is a `%%` with nothing after it, or a line
-that starts with `%%{` without being a directive: mermaid.js does not remove
-these as comment lines, and a class diagram reads them itself.
+U+2028, `%% e`, and a line ` a` is `alt a`. [corpus fixture:
+common/comment-after-u2028] [corpus fixture:
+flowchart/comment-lines-after-separator-006f79fb] A `#` comment is no such
+region: the lexer of its diagram reads it. Nor is a `%%` with nothing after it,
+or a line that starts with `%%{` without being a directive: mermaid.js does not
+remove these as comment lines, and a class diagram reads them itself.
 
 A line that mermaid.js reads this way runs over several lines of the source. The
 formatter prints it as written, from its first line to its end, with the
@@ -338,21 +596,30 @@ to the region and are removed with it.
 ## Frontmatter
 
 The YAML between the `---` lines is formatted with Prettier's YAML formatter.
-The `---` lines are kept as written.
+The `---` lines are kept as written. [fixture:
+flowchart/frontmatter-yaml/formatted]
 
 The YAML is kept as written when the `---` lines are indented, and when a line
 of the formatted YAML has the form of a `---` line (the specification's
 [Frontmatter](../../spec/docs/common.md#frontmatter)), which would end the
 frontmatter early. Prettier prints such lines: it prints `--- !!map` after a
-`%YAML` directive as `---` and `!!map` on two lines.
+`%YAML` directive as `---` and `!!map` on two lines. [fixture:
+flowchart/frontmatter-yaml/indented-delimiters-kept] [fixture:
+flowchart/frontmatter-yaml/delimiter-line-kept]
 
 The YAML is kept as written when it contains a `<` followed by an ASCII letter,
-a digit, or `_`, before or after formatting. Such a `<` may start an HTML tag,
-and mermaid.js rewrites `="..."` inside HTML tags before it reads the YAML.
-Changing the quotes of a value inside a tag can change what mermaid.js reads.
-For example, mermaid.js accepts `title: "<a b=\"c\">"`. Prettier would print it
-as `title: '<a b="c">'`, which mermaid.js rewrites to `title: '<a b='c'>'`,
-which is not YAML.
+a digit, or `_`. The formatted YAML is checked too, as a guard against the YAML
+printer of the installed Prettier version: no input is known whose formatted
+form has a `<` that the written one lacks. [fixture:
+flowchart/frontmatter-yaml/html-tag-kept] [fixture:
+flowchart/frontmatter-yaml/compat-tag-start-digit-kept] [fixture:
+flowchart/frontmatter-yaml/compat-tag-start-underscore-kept] [fixture:
+flowchart/frontmatter-yaml/compat-less-than-without-tag-formatted] Such a `<`
+may start an HTML tag, and mermaid.js rewrites `="..."` inside HTML tags before
+it reads the YAML. Changing the quotes of a value inside a tag can change what
+mermaid.js reads. For example, mermaid.js accepts `title: "<a b=\"c\">"`.
+Prettier would print it as `title: '<a b="c">'`, which mermaid.js rewrites to
+`title: '<a b='c'>'`, which is not YAML.
 
 ## Byte order mark
 
@@ -361,9 +628,20 @@ reads it, and adds it back afterwards. mermaid.js reads frontmatter after such a
 mark only when the closing `---` line repeats the mark. So:
 
 - When the mark stands before both `---` lines, mermaid.js accepts the text, and
-  the plugin reports a syntax error.
+  the plugin reports a syntax error. [corpus fixture:
+  common/frontmatter-bom-both-delimiters]
 - When the mark stands only before the opening line, mermaid.js rejects the
-  text, and the plugin formats it.
+  text, and the plugin formats it. [corpus fixture: common/frontmatter-bom]
+
+## Line endings
+
+mermaid.js reads `\r\n` and a lone `\r` as line breaks, as it reads `\n` (the
+specification's [Line terminators](../../spec/docs/common.md#line-terminators)).
+Prettier converts them before the plugin reads the text, and the output has the
+line ending of Prettier's `endOfLine` option, with the same lines as for a text
+with line feeds. [test: a flowchart diagram with other line endings] [test: a
+sequence diagram with other line endings] [test: a class diagram with other line
+endings] [test: a state diagram with other line endings]
 
 ## Markdown code blocks
 

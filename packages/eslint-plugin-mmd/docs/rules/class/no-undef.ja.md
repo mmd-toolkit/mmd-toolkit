@@ -21,7 +21,7 @@ mermaid.js は文を受理して何もしないか、
 
 この規則は、そうした文のクラス名のうち、
 図のどのクラスの id でもないものを報告する。
-`classDiagram` に当たる。
+対象の図種は `classDiagram` である。
 
 図のクラスは、class の文、関係、
 または `A : +int x` のようなメンバーの文が宣言するもので、
@@ -33,7 +33,9 @@ flowchart では `style` が名指しした頂点を作るのと違い、
 `note for Z "x"` はノートを残すが、
 mermaid.js は図を描くときにクラス `Z` を見つけられないので、
 クラスへの線のないノートを描く
-（[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L810-L829)）。
+（
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L810-L829)
+）。
 
 `cssClass` の一覧は、名前ごとに確かめる。
 `cssClass "A, B" c` のように `,` の後に空白があると、

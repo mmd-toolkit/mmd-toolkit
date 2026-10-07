@@ -30,15 +30,19 @@ defined in [tokens.md](./tokens.md).
 
 - Offsets count UTF-16 code units, as ESTree and Prettier do. The source text
   between the two offsets of a `range` is the text of the node, token, comment,
-  directive, or frontmatter that has it.
+  directive, or frontmatter that has it. [fixture:
+  sequence/lex-text-after-non-bmp-character]
 - A `range` is an offset pair: a 0-based start offset and an end offset that is
-  not included.
+  not included. [fixture: common/crlf]
 - A `loc` is a location: a `start` and an `end` position. Each position has a
   `line`, counted from 1, and a `column`, counted from 0 in UTF-16 code units.
+  [fixture: common/crlf] [fixture: sequence/lex-text-after-non-bmp-character]
 - `\r\n`, a lone `\r`, and `\n` each end a line, because these are the sequences
   mermaid.js normalizes to `\n` (see
   [Line terminators](../../spec/docs/common.md#line-terminators)). U+2028 and
-  U+2029 do not end a line.
+  U+2029 do not end a line. [fixture: common/crlf] [fixture:
+  common/directive-spans-lone-cr] [fixture: common/comment-after-u2028]
+  [fixture: common/comment-after-u2029]
 
 | Record   | Field    | Type     | Meaning                                      |
 | -------- | -------- | -------- | -------------------------------------------- |
@@ -52,7 +56,7 @@ The specification uses two units on purpose. The rules of
 Unicode code point (see [Notation](../../spec/docs/common.md#notation)).
 Positions count UTF-16 code units. A character outside the Basic Multilingual
 Plane is one character but two code units, so it advances `range` offsets and
-`column` by 2.
+`column` by 2. [fixture: sequence/lex-text-after-non-bmp-character]
 
 ## Node ranges
 
@@ -70,23 +74,27 @@ of the construct it stands for, never a `Directive` token or a token of the
 frontmatter, although a `Directive` token may lie inside the range of a node,
 between two of its tokens; each node type says which they are where that is not
 plain, and a token between two nodes, such as a separator, may belong to
-neither. An `IgnoredSemicolon` token, which no grammar reads, is likewise the
-token of no node, and may lie inside the range of a node, between two of its
-tokens. So the tokens of the node in `Root.body` are all the tokens of the
-diagram text other than the `Directive` and the `IgnoredSemicolon` tokens, from
-the first to the last: its range also covers the tokens that belong to no
-statement, such as a separator after the last statement, but not a directive or
-an ignored `;` after the last of its tokens. The range of the flowchart diagram
-of `A;` ends after the `;`, a separator, while that of a class diagram whose
-last line is `classDef c fill:#f00;` ends before the `;`, which the line rule
-ignores. [fixture: flowchart/tokens-diagram-trailing-separator] [fixture:
-class/tokens-class-def-ignored-semicolon] The range of a node covers the ranges
+neither. [fixture: flowchart/tokens-label-string-directive-then-text] [fixture:
+flowchart/tokens-diagram-trailing-separator] An `IgnoredSemicolon` token, which
+no grammar reads, is likewise the token of no node, and may lie inside the range
+of a node, between two of its tokens. [fixture:
+common/entity-css-in-string-label] So the tokens of the node in `Root.body` are
+all the tokens of the diagram text other than the `Directive` and the
+`IgnoredSemicolon` tokens, from the first to the last: its range also covers the
+tokens that belong to no statement, such as a separator after the last
+statement, but not a directive or an ignored `;` after the last of its tokens.
+The range of the flowchart diagram of `A;` ends after the `;`, a separator,
+while that of a class diagram whose last line is `classDef c fill:#f00;` ends
+before the `;`, which the line rule ignores. [fixture:
+flowchart/tokens-diagram-trailing-separator] [fixture:
+class/tokens-class-def-ignored-semicolon] [fixture:
+flowchart/gram-separator-before-directive] The range of a node covers the ranges
 of all its child nodes, as tools that walk an ESTree tree, such as those that
 find the node at a position or that attach comments, expect; where the tokens of
 a construct alone would not give that, the node type says how its range is
 extended.
 
-`Root.range` is `[0, input.length]`.
+`Root.range` is `[0, input.length]`. [fixture: common/crlf]
 
 ## Invariants
 
@@ -95,43 +103,66 @@ Every tree satisfies these conditions:
 - Every character of the input is in a token or a comment, or it is whitespace
   or a line terminator. Whitespace is the set defined in
   [Notation](../../spec/docs/common.md#notation), which includes U+00A0, U+FEFF,
-  U+2028, and U+2029.
+  U+2028, and U+2029. [fixture: common/whitespace-characters] [fixture:
+  common/nbsp-as-space] [fixture: common/bom-mid-text] [fixture:
+  common/comment-after-u2028] [fixture: common/comment-after-u2029]
 - The text of every token, comment, directive, and frontmatter equals the source
-  text of its range; for a token, that text is `value`.
-- `Root.tokens` is in source order, and its tokens do not overlap.
+  text of its range; for a token, that text is `value`. [fixture:
+  common/directive-spans-lone-cr]
+- `Root.tokens` is in source order, and its tokens do not overlap. [fixture:
+  flowchart/tokens-label-string-directive-then-text]
 - A token starts or ends with whitespace or a line terminator only where it is
   at the start or the end of the text that mermaid.js reads as a value, next to
   a directive, a comment region, or an ignored `;` that cuts that text, or at
   the start of a token that goes on with a value that a token before it starts,
   as the text after the string that a flowchart label starts with (see
   [Tokens](./tokens.md#tokens) and
-  [the flowchart tokens](./tokens/flowchart.md#tokens)).
-- A comment lies outside all tokens.
+  [the flowchart tokens](./tokens/flowchart.md#tokens)). [fixture:
+  class/db-generic-spaces] [fixture:
+  flowchart/tokens-directive-label-space-after] [fixture:
+  common/comment-in-string] [fixture:
+  class/tokens-style-ignored-semicolon-after-space] [fixture:
+  flowchart/gram-label-string-then-text]
+- A comment lies outside all tokens. [fixture: common/comment-in-string]
 - A directive lies inside no other token. It may lie inside a comment: after its
   mark, or between the two `%` of a `%%` mark. Every directive that lies outside
   all tokens and comments has exactly one `Directive` token, with the
   directive's range, and every `Directive` token is such a directive's.
+  [fixture: common/directive-in-comment] [fixture:
+  common/comment-percent-joined-by-directive] [fixture:
+  common/comment-after-directive]
 - Every `;` that the line rule ignores and that lies outside all comments has
   exactly one `IgnoredSemicolon` token, with the range of the `;`, and every
-  `IgnoredSemicolon` token is such a `;`.
-- No two comments overlap, and no two directives overlap.
+  `IgnoredSemicolon` token is such a `;`. [fixture:
+  common/entity-css-in-string-label] [fixture:
+  sequence/tokens-comment-then-ignored-semicolon] [fixture:
+  state/tokens-ignored-semicolon-in-comment-before-comment-line]
+- No two comments overlap, and no two directives overlap. [fixture:
+  common/comment-after-directive]
 - When there is frontmatter, the first tokens are the tokens in its range: the
   opening `---`, the body when it is not all whitespace, and the closing `---`
   (see [Frontmatter](../../spec/docs/ast.md#frontmatter)). They come before all
-  comments and directives.
+  comments and directives. [fixture: common/config-directive-after-frontmatter]
+  [fixture: common/frontmatter-empty-body]
 - The range of a node runs from the start of its first token to the end of its
   last token, and `Root.range` covers the whole input. Apart from `Root`, every
-  node defined in this document has at least one token: an `ErrorDiagram` has at
-  least the token that holds `error`, and a
-  [FlowchartLabel](../../spec/docs/ast/flowchart.md#flowchartlabel) that is all
-  whitespace the token of that whitespace (see
-  [the flowchart tokens](./tokens/flowchart.md#tokens)).
+  node defined in this document has at least one token: an `ErrorDiagram` has
+  the tokens that hold the characters of `error`, one or more (see
+  [Tokens of the error pseudo-diagram](./tokens.md#tokens-of-the-error-pseudo-diagram)),
+  and a [FlowchartLabel](../../spec/docs/ast/flowchart.md#flowchartlabel) that
+  is all whitespace the token of that whitespace (see
+  [the flowchart tokens](./tokens/flowchart.md#tokens)). [fixture:
+  common/error-split-by-directive] [fixture: flowchart/gram-label-space]
 - The range of a node covers the ranges of its child nodes. The child nodes of a
   node do not overlap, and they are in source order when taken in the order of
   the child fields, each list in its own order, except at the nodes whose
-  documents say otherwise (see [Nodes](../../spec/docs/ast.md#nodes)).
+  documents say otherwise (see [Nodes](../../spec/docs/ast.md#nodes)). [fixture:
+  flowchart/gram-data-consecutive-blocks] [fixture:
+  flowchart/gram-pipe-label-space-after] [fixture:
+  flowchart/db-arrow-dash-head-length]
 - The `raw` of a node that has it, a StringLiteral or a NumericLiteral, equals
-  the source text of its range.
+  the source text of its range. [fixture: flowchart/gram-label-space-string]
+  [fixture: state/gram-scale]
 
 The second condition is about the source text: `Token.value` and the text of
 every comment, directive, and frontmatter equal the input in their ranges. The

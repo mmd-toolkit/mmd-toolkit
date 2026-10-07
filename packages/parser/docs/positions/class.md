@@ -15,10 +15,8 @@ The ranges of the nodes of this diagram type, besides the rules of
 
 ### ClassDiagram
 
-The range runs from the header keyword to the last token of the diagram text
-other than a `Directive` or an `IgnoredSemicolon` token, the tokens that belong
-to no statement included, as for the node in `Root.body` of every diagram (see
-[Nodes](../../../spec/docs/ast.md#nodes)).
+The range is that of the node in `Root.body` of every diagram (see
+[Node ranges](../positions.md#node-ranges)).
 
 ### ClassArrow
 
@@ -27,11 +25,12 @@ runs from the first to the last. [fixture: class/gram-relation-spaces]
 
 ### ClassDirectionStatement
 
-The range covers the whole direction line.
+The range covers the whole direction line. [fixture:
+class/lex-direction-line-in-label]
 
 ### ClassAnnotation
 
-The range runs from `<<` to `>>`.
+The range runs from `<<` to `>>`. [fixture: class/db-annotation-after-relation]
 
 ### ClassLiteral
 

@@ -14,15 +14,17 @@
 import type { Linter, Rule } from "eslint"
 import { Linter as LinterClass } from "eslint"
 import { SnapshotRuleTester } from "eslint-snapshot-rule-tester"
+import { readFileSync } from "node:fs"
 import { isDeepStrictEqual } from "node:util"
 import { describe, expect, it } from "vitest"
 import { parse, traverseNodes } from "@mmd-toolkit/parser"
 import type { Range } from "@mmd-toolkit/parser"
-import type { DbSummary, JsonValue } from "@mmd-toolkit/tests"
+import type { DbSummary, Fixture, JsonValue } from "@mmd-toolkit/tests"
 import { loadFixtures } from "@mmd-toolkit/tests"
 import { runMermaid } from "@mmd-toolkit/tests/mermaid"
 import type { MermaidRuleDefinition } from "../src/index.ts"
 import { rules } from "../src/rules/index.ts"
+import { RULE_DOCS_DIR, ruleDocumentPath } from "../tools/rule-docs.ts"
 import {
   isDiagramType,
   LANGUAGE_CONFIG,
@@ -66,8 +68,7 @@ export type RevealedReports =
 /**
  * What a suggestion claims about the diagram, in the words of its message,
  * checked on the Db that mermaid.js gives for the text before and after, and on
- * the text of the input. A claim says all that the message says that the Db can
- * show; what it cannot show is named with `notShownByDb`.
+ * the text of the input. A claim says all that the message says.
  */
 export type SuggestionClaim =
   /** The diagram is read as before: the Db is the same. */
@@ -77,7 +78,10 @@ export type SuggestionClaim =
    * one that remains: the field is the same. The members of a subgraph may
    * differ, since the value of the removed statement was one of them.
    */
-  | { readonly kind: "keepsField"; readonly field: string }
+  | {
+      readonly kind: "keepsField"
+      readonly field: "accTitle" | "accDescr"
+    }
   /**
    * The other statement is removed, and the field has the value that the last
    * statement that remains gives when it stands alone (the statements that set
@@ -89,12 +93,19 @@ export type SuggestionClaim =
       readonly kind: "usesLastRemaining"
       readonly field: "accTitle" | "accDescr"
     }
-  /** The vertex `id` is gone and the other vertices are the same. */
-  | { readonly kind: "removesVertex"; readonly id: string }
   /**
-   * One line of only `%%` less in the text of the Db, which holds at least one
-   * before; where the line made mermaid.js reject the input, mermaid.js accepts
-   * the output.
+   * The line makes no vertex `id` any more: the vertex is gone unless another
+   * vertex statement of the output makes it, and the other vertices are the
+   * same.
+   */
+  | { readonly kind: "removesVertexOfLine"; readonly id: string }
+  /**
+   * The value that holds the line of only `%%` is the one value of the Db that
+   * changes, and it holds that line no more: one line of only `%%` less, the
+   * others remain. Where the lines made mermaid.js reject the input (in a data
+   * block), the data block of the output holds one such line less, and
+   * mermaid.js accepts the output unless another such line remains in it or
+   * it holds no data.
    */
   | { readonly kind: "removesBareMarkerLine" }
   /**
@@ -112,16 +123,6 @@ export type SuggestionClaim =
    * else.
    */
   | { readonly kind: "readsDroppedTextAsStatements" }
-  | NotShownByDb
-
-/**
- * The claim is about something that the Db does not show; mermaid.js accepts
- * the output. `what` names it.
- */
-export interface NotShownByDb {
-  readonly kind: "notShownByDb"
-  readonly what: string
-}
 
 /** What a claim is checked on, for one suggestion of one report. */
 export interface ClaimFacts {
@@ -129,8 +130,10 @@ export interface ClaimFacts {
   readonly input: string
   /** The Db of the input; null where mermaid.js rejects it. */
   readonly before: DbSummary | null
-  /** The Db of the text that the suggestion gives. */
-  readonly after: DbSummary
+  /** The text that the suggestion gives. */
+  readonly output: string
+  /** The Db of that text; null where mermaid.js rejects it. */
+  readonly after: DbSummary | null
   /** The reports of the rule on the input. */
   readonly reports: readonly Linter.LintMessage[]
   /** The report that carries the suggestion. */
@@ -154,17 +157,22 @@ function reportCounts(
   return counts
 }
 
+/** The Db that mermaid.js gives for `text`, null where it rejects it. */
+export async function readDb(text: string): Promise<DbSummary | null> {
+  const outcome = await runMermaid(text)
+  if (outcome.accepted && outcome.db === null) {
+    throw new Error(`mermaid.js gives no Db for ${JSON.stringify(text)}`)
+  }
+  return outcome.accepted ? outcome.db : null
+}
+
 /** The Db that mermaid.js gives for `text`; the test fails when it rejects. */
 export async function dbOf(text: string): Promise<DbSummary> {
-  const outcome = await runMermaid(text)
-  if (!outcome.accepted || outcome.db === null) {
-    throw new Error(
-      `mermaid.js gives no Db for ${JSON.stringify(text)}: ${
-        outcome.accepted ? "no normalizer" : outcome.error.message
-      }`,
-    )
+  const db = await readDb(text)
+  if (db === null) {
+    throw new Error(`mermaid.js rejects ${JSON.stringify(text)}`)
   }
-  return outcome.db
+  return db
 }
 
 /**
@@ -196,8 +204,7 @@ async function inputDbOf(
       return fixture.expected.accepted ? fixture.expected.db : null
     }
   }
-  const outcome = await runMermaid(text)
-  return outcome.accepted ? outcome.db : null
+  return readDb(text)
 }
 
 /** `subgraph`, when it is the entry of a subgraph, without its members. */
@@ -253,19 +260,86 @@ function textLines(value: unknown): string[] {
   return []
 }
 
-/** The number of lines of only `%%` in the text of `db`. */
-function bareMarkerLines(db: DbSummary): number {
-  return textLines(db).filter((line) => line.trim() === "%%").length
+/** The number of lines of only `%%` in the text `value`. */
+function bareLinesIn(value: string): number {
+  return textLines(value).filter((line) => line.trim() === "%%").length
+}
+
+/**
+ * The leaves of `db` (strings, numbers, booleans, null) by their place in it,
+ * without the members of the subgraphs, which repeat the strings of other
+ * statements.
+ */
+function leavesByPlace(
+  value: unknown,
+  place = "",
+  leaves = new Map<string, unknown>(),
+): Map<string, unknown> {
+  if (Array.isArray(value)) {
+    value.forEach((item, index) =>
+      leavesByPlace(item, `${place}[${index}]`, leaves),
+    )
+  } else if (typeof value === "object" && value !== null) {
+    for (const [key, item] of Object.entries(value)) {
+      if (key !== "nodes") leavesByPlace(item, `${place}.${key}`, leaves)
+    }
+  } else {
+    leaves.set(place, value)
+  }
+  return leaves
+}
+
+/**
+ * The leaves of the Db that differ between `before` and `after`, as their
+ * place and the two values; a leaf that one of them lacks is `undefined`.
+ */
+function changedLeaves(
+  before: DbSummary,
+  after: DbSummary,
+): { place: string; was: unknown; now: unknown }[] {
+  const was = leavesByPlace(before)
+  const now = leavesByPlace(after)
+  return [...new Set([...was.keys(), ...now.keys()])]
+    .filter((place) => was.get(place) !== now.get(place))
+    .map((place) => ({ place, was: was.get(place), now: now.get(place) }))
+}
+
+/** The data block of `text` that holds `index`, with its text, or null. */
+function dataBlockAt(
+  text: string,
+  index: number,
+): { range: Range; data: string } | null {
+  let found: { range: Range; data: string } | null = null
+  traverseNodes(parse(text), {
+    enterNode(node) {
+      if (
+        node.type === "FlowchartDataBlock" &&
+        node.range[0] <= index &&
+        index < node.range[1]
+      ) {
+        const block = text.slice(...node.range)
+        found = {
+          range: node.range,
+          data: block.slice(block.indexOf("{") + 1, block.lastIndexOf("}")),
+        }
+      }
+    },
+    leaveNode() {
+      // Each node is checked on entering it.
+    },
+  })
+  return found
 }
 
 /**
  * The index in `text` of the position `line` and `column` of a report, which
- * ESLint counts from 1, with the line terminators of the language.
+ * ESLint counts from 1, with the line terminators of the language (U+2028 and
+ * U+2029 do not end a line).
  */
 function indexOfPosition(text: string, line: number, column: number): number {
   const lineStarts = [
     0,
-    ...[...text.matchAll(/\r\n|[\n\r\u2028\u2029]/gu)].map(
+    ...[...text.matchAll(/\r\n|[\n\r]/gu)].map(
       (match) => match.index + match[0].length,
     ),
   ]
@@ -300,6 +374,85 @@ function settingStatements(
     },
   })
   return ranges
+}
+
+/**
+ * The values of the statements of `text` that set `field`, as
+ * `settingStatements` lists them: the text that a statement gives, which
+ * mermaid.js also adds to the members of the subgraph that holds the
+ * statement. A statement without a value (an empty block) has none.
+ */
+function settingValues(text: string, field: "accTitle" | "accDescr"): string[] {
+  const values: string[] = []
+  traverseNodes(parse(text), {
+    enterNode(node) {
+      const sets =
+        (field === "accTitle" && node.type === "FlowchartAccTitleStatement") ||
+        (field === "accDescr" &&
+          (node.type === "FlowchartAccDescrStatement" ||
+            node.type === "FlowchartAccDescrBlockStatement"))
+      if (sets && node.value !== null) values.push(node.value.value)
+    },
+    leaveNode() {
+      // Each statement is listed on entering it.
+    },
+  })
+  return values
+}
+
+/** The ids of the members of each subgraph of `db`, in the order of `db`. */
+function membersOfSubgraphs(db: DbSummary): string[][] {
+  const { subgraphs } = db
+  if (!Array.isArray(subgraphs)) return []
+  return subgraphs.map((subgraph) => {
+    if (
+      typeof subgraph !== "object" ||
+      subgraph === null ||
+      Array.isArray(subgraph) ||
+      !Array.isArray(subgraph.nodes)
+    ) {
+      return []
+    }
+    return subgraph.nodes.flatMap((id: JsonValue) =>
+      typeof id === "string" ? [id] : [],
+    )
+  })
+}
+
+/**
+ * Checks the members of the subgraphs after a suggestion removed statements
+ * that set `field`. mermaid.js adds the value of such a statement to the members
+ * of the subgraph that holds it, so the members after are the members before
+ * without the values of the statements that went; a value stays a member where
+ * another statement of the subgraph makes the same id a member. No other member
+ * is added or lost.
+ */
+function expectMembersAfterRemoval(
+  facts: Pick<ClaimFacts, "input" | "output">,
+  before: DbSummary,
+  after: DbSummary,
+  field: "accTitle" | "accDescr",
+): void {
+  const remaining = settingValues(facts.output, field)
+  const removed = settingValues(facts.input, field)
+  for (const value of remaining) {
+    const index = removed.indexOf(value)
+    if (index !== -1) removed.splice(index, 1)
+  }
+  const membersBefore = membersOfSubgraphs(before)
+  const membersAfter = membersOfSubgraphs(after)
+  expect(membersAfter.length).toBe(membersBefore.length)
+  for (const [index, ids] of membersAfter.entries()) {
+    const earlier = membersBefore[index] ?? []
+    expect(
+      ids.filter((id) => !earlier.includes(id)),
+      "members that the suggestion adds",
+    ).toEqual([])
+    expect(
+      earlier.filter((id) => !ids.includes(id) && !removed.includes(id)),
+      "members that the suggestion loses, besides the values that it removed",
+    ).toEqual([])
+  }
 }
 
 /** Whether `character` is a `;` or whitespace. */
@@ -421,14 +574,34 @@ export async function expectClaim(
   claim: SuggestionClaim,
   facts: ClaimFacts,
 ): Promise<void> {
-  const { input, after, reports, report } = facts
-  if (claim.kind === "notShownByDb") return
+  const { input, output, reports, report } = facts
   if (facts.before === null) {
-    // The line of the data made mermaid.js reject the input.
+    // A line of the data made mermaid.js reject the input.
     expect(claim.kind).toBe("removesBareMarkerLine")
+    const index = indexOfPosition(input, report.line, report.column)
+    const block = dataBlockAt(input, index)
+    expect(block, "the data block of the line").not.toBeNull()
+    if (block === null) return
+    // The data block of the output holds one line of only `%%` less.
+    const remaining = dataBlockAt(output, block.range[0])
+    expect(bareLinesIn(remaining?.data ?? "")).toBe(bareLinesIn(block.data) - 1)
+    if (facts.after === null) {
+      // Rejected still: another such line remains in the data, or no data
+      // does (an empty data block is no data block that mermaid.js reads).
+      const rest = (remaining?.data ?? "")
+        .split(/\r\n|[\n\r]/u)
+        .filter((line) => line.trim() !== "" && line.trim() !== "%%")
+      expect(bareLinesIn(remaining?.data ?? "") > 0 || rest.length === 0).toBe(
+        true,
+      )
+    }
     return
   }
   const { before } = facts
+  const after = facts.after
+  if (after === null) {
+    throw new Error(`mermaid.js rejects ${JSON.stringify(output)}`)
+  }
   switch (claim.kind) {
     case "keepsDb":
       expect(after).toEqual(before)
@@ -438,11 +611,13 @@ export async function expectClaim(
       expect(withoutFieldAndMembers(after, claim.field)).toEqual(
         withoutFieldAndMembers(before, claim.field),
       )
+      expectMembersAfterRemoval(facts, before, after, claim.field)
       break
     case "usesLastRemaining": {
       expect(withoutFieldAndMembers(after, claim.field)).toEqual(
         withoutFieldAndMembers(before, claim.field),
       )
+      expectMembersAfterRemoval(facts, before, after, claim.field)
       const removed = indexOfPosition(input, report.line, report.column)
       const remaining = settingStatements(input, claim.field).filter(
         (range) => range[0] !== removed,
@@ -457,16 +632,38 @@ export async function expectClaim(
       }
       break
     }
-    case "removesVertex":
+    case "removesVertexOfLine": {
+      let remains = false
+      traverseNodes(parse(output), {
+        enterNode(node) {
+          if (node.type === "FlowchartVertex" && node.id.name === claim.id) {
+            remains = true
+          }
+        },
+        leaveNode() {
+          // Each vertex is checked on entering it.
+        },
+      })
       expect(vertexIds(before)).toContain(claim.id)
-      expect(vertexIds(after)).toEqual(
+      // The vertex that another statement makes again comes after the others.
+      expect(vertexIds(after).filter((id) => id !== claim.id)).toEqual(
         vertexIds(before).filter((id) => id !== claim.id),
       )
+      expect(vertexIds(after).includes(claim.id)).toBe(remains)
       break
-    case "removesBareMarkerLine":
-      expect(bareMarkerLines(before)).toBeGreaterThan(0)
-      expect(bareMarkerLines(after)).toBe(bareMarkerLines(before) - 1)
+    }
+    case "removesBareMarkerLine": {
+      // One value changes, and it holds one line of only `%%` less.
+      const changed = changedLeaves(before, after)
+      expect(changed.map((leaf) => leaf.place)).toHaveLength(1)
+      const [leaf] = changed
+      expect(typeof leaf?.was).toBe("string")
+      expect(typeof leaf?.now).toBe("string")
+      expect(bareLinesIn(String(leaf?.was))).toBe(
+        bareLinesIn(String(leaf?.now)) + 1,
+      )
       break
+    }
     case "setsDescription": {
       // The report marks `accDescr {`: the keyword up to the `{`.
       const keyword = indexOfPosition(input, report.line, report.column)
@@ -475,7 +672,13 @@ export async function expectClaim(
         report.endLine ?? report.line,
         report.endColumn ?? report.column,
       )
-      expect(before.accDescr).toBe("")
+      if (report.messageId === "closedByOtherBrace") {
+        // A later `}` closes the block: the description is the lines up to
+        // it, more than the rest of the line.
+        expect(before.accDescr).toContain("\n")
+      } else {
+        expect(before.accDescr).toBe("")
+      }
       if (claim.from === "restOfLine") {
         // `accDescr:` is how mermaid.js is told to take the rest of the line.
         expect(after).toEqual(
@@ -556,11 +759,9 @@ async function checkSuggestions(
   linter: LinterClass,
   ruleId: string,
   testCase: RuleCase,
-  options: Required<
-    Pick<TestRuleOptions, "revealed" | "claims" | "notShownByDb">
-  >,
+  options: Required<Pick<TestRuleOptions, "revealed" | "claims">>,
 ): Promise<void> {
-  const { revealed, claims, notShownByDb } = options
+  const { revealed, claims } = options
   const text = withoutByteOrderMark(testCase.code)
   const messages = linter.verify(
     text,
@@ -577,11 +778,8 @@ async function checkSuggestions(
         linter.verify(output, IMPLEMENTED_RULES_CONFIG, testCase.filename),
       )
       expect(after.get(ruleId) ?? 0).toBeLessThan(before.get(ruleId) ?? 0)
-      const what = notShownByDb[testCase.name]
       const claim: SuggestionClaim | undefined =
-        what === undefined
-          ? claims[suggestion.messageId ?? ""]
-          : { kind: "notShownByDb", what }
+        claims[suggestion.messageId ?? ""]
       expect(
         claim,
         `a claim for the suggestion ${suggestion.messageId}`,
@@ -589,11 +787,9 @@ async function checkSuggestions(
       if (claim !== undefined) {
         await expectClaim(claim, {
           input: text,
-          before:
-            claim.kind === "notShownByDb"
-              ? null
-              : await inputDbOf(testCase, text),
-          after: await dbOf(output),
+          before: await inputDbOf(testCase, text),
+          output,
+          after: await readDb(output),
           reports,
           report,
         })
@@ -609,17 +805,271 @@ async function checkSuggestions(
   }
 }
 
+/**
+ * One case that a sentence of the document of a rule distinguishes, with the
+ * inputs of the rule that stand for it.
+ */
+export interface SentenceCase {
+  /** The case, in words. */
+  readonly case: string
+  /** Whether the rule reports on the inputs of this case. */
+  readonly reports: boolean
+  /**
+   * For a case that reports: whether the rule offers a suggestion on these
+   * inputs. A case of a sentence about suggestions says it; any other case
+   * leaves it out.
+   */
+  readonly suggests?: boolean
+  /**
+   * The ids of the messages of the suggestions that the rule offers on these
+   * inputs, over all the reports, without repeats, in the order of the rule's
+   * messages; `[]` for none. A case says this where the kinds of suggestion
+   * matter; otherwise `suggests` is enough.
+   */
+  readonly offers?: readonly string[]
+  /** A text that the message of every report on these inputs contains. */
+  readonly messageHas?: string
+  /** A text that the message of no report on these inputs contains. */
+  readonly messageLacks?: string
+  /** The names of the inputs (the `name` of a case of `ruleCases`). */
+  readonly inputs: readonly string[]
+  /**
+   * Inputs that hold a character that a fixture file may not hold (a line
+   * separator, say), written here with escapes. A fixture's snapshot would
+   * show the character, so these are not in the snapshot, and the test runs
+   * the report and the suggestion checks on them.
+   */
+  readonly written?: readonly WrittenInput[]
+  /**
+   * Corpus fixtures (`<diagram>/<name>`) that hold such a character and are
+   * inputs of this case: the test reads the input of the fixture and runs the
+   * same checks as on `written`.
+   */
+  readonly corpus?: readonly string[]
+  /**
+   * Corpus fixtures (`<diagram>/<name>`) that record what mermaid.js does for
+   * this case: they are cited, not run through the rule; the test requires
+   * them to exist.
+   */
+  readonly recorded?: readonly string[]
+  /**
+   * For an input of this case, the corpus fixture (`<diagram>/<name>`) whose
+   * input is what a suggestion of the rule gives, byte for byte: the recorded
+   * result of the suggestion.
+   */
+  readonly results?: Readonly<Record<string, string>>
+}
+
+/** An input written in the test, with a name that tells what it is for. */
+export interface WrittenInput {
+  readonly name: string
+  readonly code: string
+}
+
+/**
+ * A sentence of the English document of a rule that defines a behavior (a
+ * condition to report, a condition not to report, a claim of the message or of
+ * the suggestion), with the cases that it distinguishes. The test reads the
+ * cases and the inputs of each case from here.
+ */
+export interface SentenceCases {
+  /** A passage of the sentence, as the document writes it. */
+  readonly sentence: string
+  readonly cases: readonly SentenceCase[]
+}
+
 /** The options of `testRule`. */
 export interface TestRuleOptions {
   readonly revealed?: RevealedReports
   /** For each suggestion of the rule, by message id, what it claims. */
   readonly claims?: Readonly<Record<string, SuggestionClaim>>
-  /**
-   * The invalid cases, by name, whose suggestions claim something that the Db
-   * does not show, with what that is. It takes the place of the claim of the
-   * message id there.
-   */
-  readonly notShownByDb?: Readonly<Record<string, string>>
+  /** The sentences of the document, each with its cases and their inputs. */
+  readonly sentences?: readonly SentenceCases[]
+}
+
+/** The corpus fixture `<diagram>/<name>`; the test fails when there is none. */
+async function corpusFixture(fixtureName: string): Promise<Fixture> {
+  const [diagram = "", ...nameParts] = fixtureName.split("/")
+  const fixture = isDiagramType(diagram)
+    ? (await loadFixtures(diagram)).find(
+        (candidate) => candidate.name === nameParts.join("/"),
+      )
+    : undefined
+  if (fixture === undefined) {
+    throw new Error(`no corpus fixture ${fixtureName}`)
+  }
+  return fixture
+}
+
+/** The text of `text` with each run of whitespace replaced by one space. */
+function collapsedWhitespace(text: string): string {
+  return text.split(/\s+/u).join(" ")
+}
+
+/** Checks the suggestions of `reports` against the claims of `sentenceCase`. */
+function checkOffers(
+  sentenceCase: SentenceCase,
+  input: string,
+  reports: readonly Linter.LintMessage[],
+): void {
+  if (sentenceCase.offers === undefined) return
+  const offered = new Set(
+    reports.flatMap((report) =>
+      (report.suggestions ?? []).map((suggestion) => suggestion.messageId),
+    ),
+  )
+
+  /** Orders the ids of messages. */
+  function byName(left: unknown, right: unknown): number {
+    return String(left).localeCompare(String(right))
+  }
+
+  expect([...offered].sort(byName), `${sentenceCase.case}: ${input}`).toEqual(
+    [...sentenceCase.offers].sort(byName),
+  )
+}
+
+/** Checks the messages of `reports` against the claims of `sentenceCase`. */
+function checkMessages(
+  sentenceCase: SentenceCase,
+  input: string,
+  reports: readonly Linter.LintMessage[],
+): void {
+  for (const report of reports) {
+    const where = `${sentenceCase.case}: ${input}`
+    if (sentenceCase.messageHas !== undefined) {
+      expect(report.message, where).toContain(sentenceCase.messageHas)
+    }
+    if (sentenceCase.messageLacks !== undefined) {
+      expect(report.message, where).not.toContain(sentenceCase.messageLacks)
+    }
+  }
+}
+
+/**
+ * Checks that each passage of `sentences` is in the English document of the
+ * rule, and that, for each case, the inputs exist, are of the kind that the
+ * case says (the rule reports on them or not), and, where the case says so,
+ * get a suggestion or not.
+ */
+function testSentences(
+  name: string,
+  rule: MermaidRuleDefinition,
+  cases: { valid: RuleCase[]; invalid: RuleCase[] },
+  sentences: readonly SentenceCases[],
+  options: Required<Pick<TestRuleOptions, "revealed" | "claims">>,
+): void {
+  if (sentences.length === 0) return
+  const document = collapsedWhitespace(
+    readFileSync(ruleDocumentPath(RULE_DOCS_DIR, name, "en"), "utf8"),
+  )
+  const ruleId = `mmd/${name}`
+  const linter = new LinterClass({ configType: "flat" })
+
+  /** The reports of the rule on the input of `testCase`. */
+  function reportsOn(testCase: RuleCase): Linter.LintMessage[] {
+    return linter
+      .verify(
+        withoutByteOrderMark(testCase.code),
+        IMPLEMENTED_RULES_CONFIG,
+        testCase.filename,
+      )
+      .filter((message) => message.ruleId === ruleId)
+  }
+
+  /** Whether the rule offers a suggestion on the input of `testCase`. */
+  function suggestsOn(testCase: RuleCase): boolean {
+    return reportsOn(testCase).some(
+      (message) => (message.suggestions ?? []).length > 0,
+    )
+  }
+
+  describe(`${name} sentences`, () => {
+    it.each(sentences.map((each) => [each.sentence, each] as const))(
+      "%s",
+      async (_sentence, each) => {
+        expect(document).toContain(collapsedWhitespace(each.sentence))
+        expect(each.cases.length).toBeGreaterThan(0)
+        for (const sentenceCase of each.cases) {
+          expect(
+            sentenceCase.inputs.length +
+              (sentenceCase.written?.length ?? 0) +
+              (sentenceCase.corpus?.length ?? 0),
+          ).toBeGreaterThan(0)
+          const written = [...(sentenceCase.written ?? [])]
+          for (const fixtureName of sentenceCase.corpus ?? []) {
+            written.push({
+              name: fixtureName,
+              code: (await corpusFixture(fixtureName)).input,
+            })
+          }
+          for (const each of written) {
+            const testCase: RuleCase = {
+              name: each.name,
+              filename: `written/${each.name.replaceAll("/", "-")}.mmd`,
+              code: each.code,
+            }
+            const reports = reportsOn(testCase)
+            expect(
+              reports.length > 0,
+              `${sentenceCase.case}: ${each.name}`,
+            ).toBe(sentenceCase.reports)
+            checkMessages(sentenceCase, each.name, reports)
+            checkOffers(sentenceCase, each.name, reports)
+            if (sentenceCase.suggests !== undefined) {
+              expect(
+                suggestsOn(testCase),
+                `${sentenceCase.case}: ${each.name}`,
+              ).toBe(sentenceCase.suggests)
+            }
+            if (rule.meta?.hasSuggestions === true) {
+              await checkSuggestions(linter, ruleId, testCase, options)
+            }
+          }
+          for (const fixtureName of sentenceCase.recorded ?? []) {
+            await corpusFixture(fixtureName)
+          }
+          const pool = sentenceCase.reports ? cases.invalid : cases.valid
+          for (const input of sentenceCase.inputs) {
+            const testCase = pool.find((candidate) => candidate.name === input)
+            expect(
+              testCase,
+              `${sentenceCase.case}: ${input} is no ${
+                sentenceCase.reports ? "invalid" : "valid"
+              } input of the rule`,
+            ).toBeDefined()
+            if (testCase === undefined) continue
+            checkMessages(sentenceCase, input, reportsOn(testCase))
+            checkOffers(sentenceCase, input, reportsOn(testCase))
+            if (sentenceCase.suggests !== undefined) {
+              expect(
+                suggestsOn(testCase),
+                `${sentenceCase.case}: ${input}`,
+              ).toBe(sentenceCase.suggests)
+            }
+          }
+          for (const [input, fixtureName] of Object.entries(
+            sentenceCase.results ?? {},
+          )) {
+            const testCase = pool.find((candidate) => candidate.name === input)
+            expect(testCase, `${sentenceCase.case}: ${input}`).toBeDefined()
+            if (testCase === undefined) continue
+            const text = withoutByteOrderMark(testCase.code)
+            const outputs = reportsOn(testCase).flatMap((report) =>
+              (report.suggestions ?? []).map((suggestion) =>
+                applyFix(text, suggestion.fix),
+              ),
+            )
+            expect(
+              outputs,
+              `${sentenceCase.case}: ${input} gives ${fixtureName}`,
+            ).toContain((await corpusFixture(fixtureName)).input)
+          }
+        }
+      },
+      60_000,
+    )
+  })
 }
 
 /**
@@ -632,12 +1082,9 @@ export function testRule(
   rule: MermaidRuleDefinition,
   options: TestRuleOptions = {},
 ): void {
-  const {
-    revealed = { kind: "none" },
-    claims = {},
-    notShownByDb = {},
-  } = options
+  const { revealed = { kind: "none" }, claims = {}, sentences = [] } = options
   const cases = ruleCases(name)
+  testSentences(name, rule, cases, sentences, { revealed, claims })
   // The tester takes the rule types of JavaScript; ESLint runs a rule of any
   // language the same way.
   new SnapshotRuleTester(LANGUAGE_CONFIG).run(
@@ -660,35 +1107,11 @@ export function testRule(
     it.each(cases.invalid.map((testCase) => [testCase.name, testCase]))(
       "%s",
       async (_name, testCase) => {
-        await checkSuggestions(linter, ruleId, testCase, {
-          revealed,
-          claims,
-          notShownByDb,
-        })
+        await checkSuggestions(linter, ruleId, testCase, { revealed, claims })
       },
       // The first text that mermaid.js reads starts it, which takes seconds.
       60_000,
     )
-    it("name with notShownByDb only invalid cases that offer a suggestion", () => {
-      for (const caseName of Object.keys(notShownByDb)) {
-        const testCase = cases.invalid.find(
-          (candidate) => candidate.name === caseName,
-        )
-        expect(testCase, `the invalid case ${caseName}`).toBeDefined()
-        const offered = linter
-          .verify(
-            withoutByteOrderMark(testCase?.code ?? ""),
-            IMPLEMENTED_RULES_CONFIG,
-            testCase?.filename,
-          )
-          .some(
-            (message) =>
-              message.ruleId === ruleId &&
-              (message.suggestions ?? []).length > 0,
-          )
-        expect(offered, `${caseName} offers a suggestion`).toBe(true)
-      }
-    })
     it("are offered on some invalid case", () => {
       const offered = cases.invalid.some((testCase) =>
         linter

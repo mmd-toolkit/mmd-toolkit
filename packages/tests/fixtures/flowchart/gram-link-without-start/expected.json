@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A link with no start: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nflowchart LR  --> B\n------------^\nExpecting 'SEMI', 'NEWLINE', 'SPACE', got 'LINK'"
+  }
+}

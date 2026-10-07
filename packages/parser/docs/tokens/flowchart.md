@@ -26,17 +26,46 @@ that this table gives for the item:
 | `RawText`    | the text units of [Directives inside units](../../../spec/docs/diagrams/flowchart.md#directives-inside-units); the units of a `subgraph-name` other than its strings and markdown strings are one item for each run of them that no string separates, and a style of the tree is one item with all its units                                                                                                                                                                                                                                                                                                    |
 | `Punctuator` | the units that open a shape, together one item: the units before the label in an alternative of the rule `shape`, except in its last alternative, where it is `"[\|"` alone; the units after the label in an alternative of the rule `shape`, together one item; every other unit that is not all whitespace, each an item of its own: the `\|` around the label of a link, the `:` and the `\|` of a rectangle written with `[\|`, `&`, `:::`, `,` other than the one just named, a `click-comma` unit of a click statement, `:`, `;`, `@`, `data-start` and `}`, arrows and opening arrows, `{`, `(`, and `)` |
 
+[fixture: flowchart/tokens-diagram-trailing-separator] [fixture:
+flowchart/spec-flow-singlenode-a5fa3415] [fixture:
+flowchart/db-subgraph-member-empty-statement] [fixture:
+flowchart/gram-style-id-comma] [fixture:
+flowchart/gram-classdef-escaped-comma-one-style] [fixture:
+flowchart/db-class-ids-empty-first] [fixture:
+flowchart/db-linkstyle-interpolate-only] [fixture:
+flowchart/db-linkstyle-default-no-fill] [fixture: flowchart/gram-click-href]
+[fixture: flowchart/lex-acc-title-space-before-colon] [fixture:
+flowchart/db-acc-descr-line-alone] [fixture:
+flowchart/lex-acc-descr-block-line-feed-before-brace] [fixture:
+flowchart/tokens-callback-name-trailing-space] [fixture:
+flowchart/db-direction-statement-top-level] [fixture:
+flowchart/lex-direction-line-same-value-twice] [fixture: flowchart/gram-edge-id]
+[fixture: flowchart/gram-rect-property] [fixture:
+flowchart/gram-label-string-then-text] [fixture:
+flowchart/gram-string-markdown-then-text] [fixture:
+flowchart/db-arrow-dash-head-length] [fixture:
+flowchart/tokens-pipe-label-space] [fixture:
+flowchart/gram-subgraph-name-string-then-text] [fixture:
+flowchart/gram-data-block-space-only] [fixture:
+flowchart/tokens-circle-hexagon-delimiters] [fixture:
+flowchart/gram-group-two-vertices] [fixture:
+flowchart/lex-triple-colon-after-id] [fixture:
+flowchart/gram-click-comma-only-href]
+
 A `String` token that a comment region or a directive cuts becomes
 `StringFragment` tokens (see
 [Comment regions in tokens](../tokens.md#comment-regions-in-tokens) and
 [A token that a directive cuts](../tokens.md#a-token-that-a-directive-cuts)).
+[fixture: flowchart/tokens-string-literal-comment-line] [fixture:
+flowchart/lex-directive-in-click-href-string]
 
 A **token** is a maximal run of units of one item and one kind that follow one
 another with nothing between them but whitespace units of that item, without the
 whitespace at its ends, except the whitespace that mermaid.js reads, at the
-start of a style after a `,`, after the name of a subgraph without a title, and
-at the start of the text after the string or the markdown string that a label, a
-link text, or a subgraph name starts with (see
+start of a style after a `,`, after the name of a subgraph without a title, at
+the end of a callback name after `call`, before its `(`, at both ends of the
+arguments of a callback, and at the start of the text after the string or the
+markdown string that a label, a link text, or a subgraph name starts with (see
 [FlowchartStyleStatement](../../../spec/docs/ast/flowchart.md#flowchartstylestatement),
 [FlowchartSubgraphStatement](../../../spec/docs/ast/flowchart.md#flowchartsubgraphstatement),
 and [Labels](../../../spec/docs/diagrams/flowchart.md#labels)): the label of
@@ -46,27 +75,42 @@ and [Labels](../../../spec/docs/diagrams/flowchart.md#labels)): the label of
 flowchart/tokens-label-string-then-text-space] [fixture:
 flowchart/tokens-label-string-directive-then-text] [fixture:
 flowchart/tokens-link-text-string-then-text-space] [fixture:
-flowchart/tokens-subgraph-name-string-directive-then-text] A directive, a
-comment region, or an ignored `;` inside such a run cuts it into fragments, as
+flowchart/tokens-subgraph-name-string-directive-then-text] The callback name of
+`click A call f (x)` has the token `f` with the space after it. [fixture:
+flowchart/tokens-callback-name-trailing-space] The arguments of
+`click A call f( x, y )` have the token `x, y` with its spaces. [fixture:
+flowchart/tokens-callback-arguments-spaces-at-ends] A directive, a comment
+region, or an ignored `;` inside such a run cuts it into fragments, as
 [A token that a directive cuts](../tokens.md#a-token-that-a-directive-cuts)
 says, when the run is a `RawText` or a `String` token; inside a run of any other
 kind, a directive or an ignored `;` makes the input rejected, also between two
 of its units (see
 [Directives inside units](../../../spec/docs/diagrams/flowchart.md#directives-inside-units)).
-Each unit belongs to one item and has one kind, so this rule decides every
-token, and every character that is not whitespace is in a token or a comment.
+[fixture: flowchart/tokens-directive-label-space-after] [fixture:
+flowchart/tokens-comment-region-in-edge-text] [fixture:
+common/entity-css-in-string-label] [fixture: flowchart/div-directive-in-id]
+[fixture: flowchart/div-ignored-semicolon-in-id] [fixture:
+flowchart/div-directive-in-circle-opening] Each unit belongs to one item and has
+one kind, so this rule decides every token, and every character that is not
+whitespace is in a token or a comment.
 
 - In an `id-list`, each part between two `,` units is an `Identifier` token of
   its own, and each `,` is a `Punctuator`, and so it is with the `click-comma`
   units in the click ids of a click statement: `classDef a,,b fill:red` has the
   tokens `classDef`, `a`, `,`, `,`, `b`, and `fill:red`. [fixture:
-  flowchart/db-classdef-names-empty]
+  flowchart/db-classdef-names-empty] [fixture:
+  flowchart/gram-click-comma-only-href]
 - An id is one token even when it consists of several units: `12ab` and `A-b`
   are one `Identifier` each, and so is `日本語`, although each of its characters
   is a `letter` unit. A style such as `stroke-width: 2px` is one `RawText`
-  token, and so is a subgraph name such as `a b`.
+  token, and so is a subgraph name such as `a b`. [fixture:
+  flowchart/lex-style-value-with-whitespace] [fixture:
+  flowchart/spec-flow-singlenode-9075959f] [fixture:
+  flowchart/spec-flow-singlenode-c9da1f2e] [fixture:
+  flowchart/lex-letter-id-cjk] [fixture:
+  flowchart/db-subgraph-title-inner-spaces]
 - A string is one unit, from its opening quote to its closing quote, and so one
-  `String` token.
+  `String` token. [fixture: flowchart/gram-label-string-then-text]
 - In a click statement, the `call` tokens and the `(` and `)` tokens around the
   arguments belong to the statement and to no field. [fixture:
   flowchart/gram-click-call] [fixture:
@@ -95,9 +139,16 @@ token, and every character that is not whitespace is in a token or a comment.
   rejected at the `;`. [fixture: flowchart/tokens-label-semicolon] [fixture:
   common/entity-style-in-label] [fixture:
   flowchart/div-ignored-semicolon-in-arrow] [fixture:
-  flowchart/div-ignored-semicolon-in-id]
+  flowchart/div-ignored-semicolon-in-id] [fixture:
+  common/entity-css-in-string-label] [fixture:
+  flowchart/tokens-style-semicolon-ignored] [fixture:
+  flowchart/tokens-style-ignored-semicolon-between-values] [fixture:
+  flowchart/tokens-subgraph-name-ignored-semicolon] [fixture:
+  flowchart/tokens-subgraph-title-ignored-semicolon] [fixture:
+  flowchart/tokens-subgraph-title-string-ignored-semicolon]
 - The separator `;` of a statement is not in the range of the statement: a
-  statement's range runs from its first to its last token.
+  statement's range runs from its first to its last token. [fixture:
+  flowchart/tokens-diagram-trailing-separator]
 - A label that is all whitespace, such as the label of `A[ ]`, `A-->| |B`, or
   `subgraph S[ ]`, has one `RawText` token of that whitespace, as every value of
   whitespace only has (see [Tokens](../tokens.md#tokens)). A style that is all

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The error for an unknown diagram type quotes the text, here the browser word `window`; it is a rejection of the input, not a missing browser feature."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: window\n"
+  }
+}

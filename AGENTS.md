@@ -107,8 +107,7 @@ changing it.
 | ----------------------------------------------- | ---------- | -------------------------------------- |
 | Fixture format and loader                       | tests      | spec, parser, prettier-plugin          |
 | Function that extracts mermaid's Db             | tests      | parser, prettier-plugin                |
-| Generator and mutation-diff CLIs                | tests      | spec, parser                           |
-| Boundary kinds of generated inputs              | tests      | parser, prettier-plugin                |
+| Fixture CLIs (`tools/fixtures.ts`)              | tests      | spec, parser                           |
 | Db summaries and the checks of recorded trees   | tests      | parser                                 |
 | AST definition (`docs/ast.md`, `docs/ast/*.md`) | spec       | parser, prettier-plugin, eslint-plugin |
 | Tokens and positions (`docs/tokens.md`, …)      | parser     | tests, prettier-plugin, eslint-plugin  |
@@ -147,8 +146,16 @@ changing it.
   - A code block of Mermaid text has the info string `mmd` and is written as the
     formatter prints it, unless the example is there to show a way of writing.
   - Run the tests that a change can affect, and the whole suite of the package
-    once before reporting the work as done. The tests of the parser run no
-    generated inputs: for the parser, generated inputs find what the corpus
-    lacks, and what they find becomes a fixture. A generated test of another
-    package has one size: it covers the kinds of inputs with a few of each.
+    once before reporting the work as done. The tests of a package run fixed
+    inputs only: the fixtures of the corpus, the fixtures of the package, and
+    the inputs of past failures. No test generates its inputs, and no command
+    does. Every sentence that defines a behavior (in the specification, in the
+    parser's documents of tokens and positions, in the documents of
+    `dbFromTree`, in the formatting rules) has a fixture for each case it
+    distinguishes, and for each other rule that meets it at the place it names
+    (a directive, an ignored `;`, a comment line, an empty line, a line
+    separator, an empty description block); the fixtures are written with the
+    sentence and checked against mermaid.js once. A review checks each sentence
+    for the cases it lacks. No input is chosen by a random source or by a number
+    (a seed, a count).
 - Commit and push only when the user says so.

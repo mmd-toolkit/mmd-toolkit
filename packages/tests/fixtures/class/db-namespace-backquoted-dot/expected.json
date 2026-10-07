@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The name text is `a.b`, and the qualified id is split at each `.` of it whatever way it was written. The namespace `a` is added as its parent."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "C",
+        "type": "",
+        "label": "C",
+        "text": "C",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "a.b"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "a",
+        "label": "a",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "a.b"
+        ],
+        "explicit": false
+      },
+      {
+        "id": "a.b",
+        "label": "b",
+        "classes": [
+          "C"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "a",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

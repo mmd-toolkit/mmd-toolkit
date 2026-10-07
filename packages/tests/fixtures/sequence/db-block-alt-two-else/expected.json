@@ -1,0 +1,93 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The two `else` sections add two entries of type 13: `b` with `wrap` true, and the empty text."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": "a",
+        "wrap": false,
+        "type": 12,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "b",
+        "wrap": true,
+        "type": 13,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "B",
+        "to": "A",
+        "message": "y",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 13,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "z",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 14,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

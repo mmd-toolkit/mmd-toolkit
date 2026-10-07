@@ -123,6 +123,8 @@ export interface ClassNoteStatement extends TreeNode {
 export interface ClassCallbackStatement extends TreeNode {
   readonly type: "ClassCallbackStatement"
   readonly class: ClassName
+  readonly callback: StringLiteral | ClassLiteral
+  readonly arguments: ClassLiteral | null
   readonly tooltip: StringLiteral | null
 }
 

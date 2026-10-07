@@ -11,13 +11,12 @@
 欄の値は、[ast.ja.md](../ast.ja.md#ノード) が定める値の書かれたテキストとして、
 書き手が書いたものを保ちます。
 [common.ja.md](../common.ja.md#ソースの読み方) の変換した形ではありません。
-mermaid.js が値の一部として読む空白は、
-その書かれたテキストの一部です
-（[ノード](../ast.ja.md#ノード) を参照）。
+値が空白で始まるか終わるのは、値の単位がそれを自身の文字として持ち、
+mermaid.js がそれを読むところだけです（[ノード](../ast.ja.md#ノード) を参照）。
 この図種では、タイトルの空白と、箱のテキストの U+2028 か U+2029 です
 （[SequenceTitleStatement](#sequencetitlestatement) と
 [SequenceBoxText](#sequenceboxtext) を参照）。
-ほかの空白は、どの値にも入りません。
+ほかのところでは、値の両端の空白は値の外です。
 
 **参加者**は、図の生存線の 1 つで、id で名指されます。
 mermaid.js はそれを actor と呼びます。
@@ -152,7 +151,7 @@ sequence/db-box-no-colour-candidate]
 
 子の欄: `from`、`arrow`、`to`、`text`。
 どちらかの中央の接続が真のとき、`activation` は null です。
-`:` は文のトークンで、どの欄にも属しません。
+`:` は文の単位で、どの欄にも属しません。
 
 ### SequenceArrow
 
@@ -303,7 +302,7 @@ sequence/lex-acc-title-at-end] [fixture: sequence/lex-acc-title-hash]
 （[sequence.ja.md](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック)
 を参照）。
 ほかの場所では入力は拒否されます
-（[sequence.ja.md](../diagrams/sequence.ja.md#既知の差) を参照）。
+（[sequence.ja.md](../diagrams/sequence.ja.md#既知の差異) を参照）。
 [fixture: sequence/db-acc-descr-spaces-block-keeps] [fixture:
 sequence/gram-acc-descr-block-empty-then-statement] [fixture:
 sequence/gram-box-empty-description-block-line] [fixture:
@@ -419,4 +418,5 @@ sequence/lex-directive-in-id-before-space]
 
 子の欄はありません。
 木はその中身を読みません
-（[embedded-data-opaque](../known-divergences/embedded-data-opaque.ja.md) を参照）。
+（[embedded-data-opaque](../known-divergences/embedded-data-opaque.ja.md)
+を参照）。

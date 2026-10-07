@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "ast/flowchart.md FlowchartLiteral: the name of the callback after `call` is the text of its range, `f`, which is also its RawText token; the space written before `(` belongs to no node."
+    "note": "ast/flowchart.md FlowchartClickCallbackStatement: the name of the callback after `call` is the `callback-name` unit, which holds the whitespace before `(`; mermaid.js passes `f` and a space on as the name of the function, so the value is `f` and a space."
   },
   "accepted": true,
   "diagramType": "flowchart-v2",
@@ -29,6 +29,13 @@
     },
     "classDefs": [],
     "subgraphs": [],
-    "tooltips": []
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "f ",
+        "args": "x"
+      }
+    ]
   }
 }

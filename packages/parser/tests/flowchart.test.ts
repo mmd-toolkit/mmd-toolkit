@@ -496,11 +496,21 @@ describe("the identifiers and literals of a flowchart", () => {
       {
         type: "FlowchartClickCallbackStatement",
         ids: [{ name: "A" }, null, { name: "B" }],
-        // Click and callbacks: the whitespace at the ends of the callback
-        // name is not part of it.
-        callback: { type: "FlowchartLiteral", value: "f", range: [29, 30] },
+        // Click and callbacks: the callback name keeps the whitespace before
+        // its `(`, which mermaid.js passes on as part of the name.
+        callback: { type: "FlowchartLiteral", value: "f ", range: [29, 31] },
         arguments: { type: "FlowchartLiteral", value: "1, 2", range: [32, 36] },
         tooltip: { type: "StringLiteral", value: "tip", range: [38, 43] },
+      },
+    ])
+    // The name keeps a line break and the indent before its `(` as it keeps
+    // a space, and the arguments keep the whitespace at their ends.
+    expect(
+      bodyOf(parseStatements("click A call f\n  ( x , y )")),
+    ).toMatchObject([
+      {
+        callback: { value: "f\n  " },
+        arguments: { value: " x , y " },
       },
     ])
     expect(tokensOf('click A,,B href "u"')).toEqual([

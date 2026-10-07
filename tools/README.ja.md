@@ -3,8 +3,7 @@
 英語版: [README.md](./README.md)
 
 `@mmd-toolkit/tests` の fixture を保守する人のための、コマンドラインの道具です。
-fixture の作り直し、追加と印付け、mermaid.js からの入力の収集、
-変異差分テストを行います。
+fixture の作り直し、追加と印付け、mermaid.js からの入力の収集を行います。
 `packages/tests` のパッケージスクリプトから実行します。
 コマンドと規則は
 [maintaining-fixtures.ja.md](../packages/tests/docs/maintaining-fixtures.ja.md)
@@ -14,7 +13,6 @@ fixture の作り直し、追加と印付け、mermaid.js からの入力の収�
 | ------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `fixtures.ts` | `fixtures:generate`、`fixtures:check`、`fixtures:add`、`fixtures:add-many`、`fixtures:set-divergence`、`fixtures:set-note` |
 | `collect.ts`  | `fixtures:collect`                                                                                                         |
-| `mutation.ts` | `mutation`                                                                                                                 |
 
 ## mermaid から図種の入力を集める
 
@@ -85,7 +83,7 @@ mermaid のほかのテストファイル、例えば `mermaid.spec.ts`、`merma
 
 4. mermaid が拒否する入力を確かめます
    （`add-many` がエラーとともに一覧に出します）。
-   仕様は埋め込まれたデータを読まないので（既知の差 `embedded-data-opaque`）、
+   仕様は埋め込まれたデータを読まないので（既知の差異 `embedded-data-opaque`）、
    mermaid がそれだけを理由に拒否する入力は、仕様では受理されます。
    `@{ ... }` のデータブロックの中の未知の shape や壊れた YAML、
    壊れたフロントマターの YAML、

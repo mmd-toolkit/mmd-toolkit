@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The written name `A,B` is a list of two names. Both classes have `haveCallback`, and there is one click call for each name with the same arguments."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true
+      },
+      {
+        "id": "B",
+        "type": "",
+        "label": "B",
+        "text": "B",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "fn",
+        "args": "x"
+      },
+      {
+        "id": "B",
+        "name": "fn",
+        "args": "x"
+      }
+    ]
+  }
+}

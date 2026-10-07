@@ -7,7 +7,8 @@ import { Problems } from "./problems.ts"
 import { checkShape } from "./shape.ts"
 import { checkSequenceTree } from "./sequence.ts"
 import { checkStateTree } from "./state.ts"
-import { checkTokensAreNotCut } from "./tokens.ts"
+import { checkPunctuatorsAreWhole } from "./punctuators.ts"
+import { checkStringsAreWhole, checkTokensAreNotCut } from "./tokens.ts"
 import { checkValues, quoteDelimitersOf } from "./values.ts"
 import type { CheckedRoot, TreeProblem } from "./types.ts"
 
@@ -26,6 +27,8 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
   checkInvariants(text, root, problems)
   checkSharedLeaves(root, problems)
   checkTokensAreNotCut(root, problems)
+  checkStringsAreWhole(root, problems)
+  checkPunctuatorsAreWhole(root, problems)
   // The strings of a flowchart nest delimiters; those of the other diagrams
   // have one pair of quotes.
   const delimitersOf =

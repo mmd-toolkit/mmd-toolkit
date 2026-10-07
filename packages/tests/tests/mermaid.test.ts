@@ -1,6 +1,5 @@
 import { describe, expect, expectTypeOf, it } from "vitest"
 import {
-  cssSupportsColor,
   detectDiagramType,
   extractFrontmatterTitle,
   mermaidVersion,
@@ -9,7 +8,6 @@ import {
 } from "../src/mermaid.ts"
 import type { RunMermaidOptions } from "../src/mermaid.ts"
 import type { RUN_MERMAID_OPTION_KEYS } from "../src/run-mermaid-options.ts"
-import * as browserStandIns from "../src/normalizers/browser-stand-ins.ts"
 import type { MermaidConfig } from "../src/types.ts"
 import { errorName, isEnvironmentFailure } from "../src/rejections.ts"
 
@@ -81,6 +79,46 @@ describe("runMermaid", () => {
     expect(vertices(strict)[0]?.classes).toEqual(["clickable"])
   })
 
+  it("records the calls that bind a click callback, as the Db receives them, whatever the securityLevel", async () => {
+    const text =
+      "flowchart TD\n  A\n  click A,Z call cb( x , y )\n  click A other\n  click A call none()\n"
+    const calls = [
+      { id: "A", name: "cb", args: " x , y " },
+      { id: "Z", name: "cb", args: " x , y " },
+      { id: "A", name: "other", args: null },
+      { id: "A", name: "none", args: null },
+    ]
+    const strict: RunMermaidOptions = {}
+    const loose: RunMermaidOptions = { config: { securityLevel: "loose" } }
+    for (const options of [strict, loose]) {
+      const outcome = await runMermaid(text, options)
+      expect(outcome).toMatchObject({ accepted: true })
+      if (!outcome.accepted) throw new Error("expected accepted")
+      // One entry for each call: a Db is made for each parse, and each
+      // keeps its own calls.
+      expect(outcome.db?.clickCalls).toEqual(calls)
+    }
+  })
+
+  it("records the calls of a class click callback, also for a name that is no class", async () => {
+    const outcome = await runMermaid(
+      'classDiagram\n  class A\n  click A call cb( "a b" ,\tc )\n  click Z call other()\n',
+    )
+    expect(outcome).toMatchObject({ accepted: true })
+    if (!outcome.accepted) throw new Error("expected accepted")
+    expect(outcome.db?.clickCalls).toEqual([
+      { id: "A", name: "cb", args: ' "a b" ,\tc ' },
+      { id: "Z", name: "other", args: null },
+    ])
+  })
+
+  it("has no field of click calls when the text binds none", async () => {
+    const outcome = await runMermaid('flowchart TD\n  A\n  click A href "u"\n')
+    expect(outcome).toMatchObject({ accepted: true })
+    if (!outcome.accepted) throw new Error("expected accepted")
+    expect(outcome.db).not.toHaveProperty("clickCalls")
+  })
+
   it("is not affected by a directive that made the previous call fail", async () => {
     const failing =
       '%%{init: {"theme": "base", "themeVariables": {"primaryColor": "##00ff00"}}}%%\nflowchart LR\nA-->B\n'
@@ -103,6 +141,38 @@ describe("runMermaid", () => {
       ["B1", "B2"],
       ["C1", "C2"],
     ])
+  })
+
+  it("changes label text only under a securityLevel that is not one of mermaid's values", async () => {
+    const text = 'flowchart TD\n  A["a & <b onclick=x>b</b> = c<br>d"]\n'
+    const written = "a & <b onclick=x>b</b> = c<br>d"
+    for (const securityLevel of ["strict", "loose", "antiscript", "sandbox"]) {
+      const outcome = await runMermaid(text, { config: { securityLevel } })
+      expect(vertices(outcome)[0]?.text, securityLevel).toBe(written)
+    }
+    const other = await runMermaid(text, { config: { securityLevel: "other" } })
+    expect(vertices(other)[0]?.text).toBe(
+      "a & &lt;b onclick&equals;x&gt;b&lt;/b&gt; &equals; c<br/>d",
+    )
+    const withoutHtmlLabels = await runMermaid(text, {
+      config: { securityLevel: "other", flowchart: { htmlLabels: false } },
+    })
+    expect(vertices(withoutHtmlLabels)[0]?.text).toBe(written)
+  })
+
+  it("lets an error of the site configuration through, not as a rejection", async () => {
+    await expect(
+      runMermaid("flowchart LR\nA-->B\n", {
+        config: {
+          theme: "base",
+          themeVariables: { primaryColor: "##00ff00" },
+        },
+      }),
+    ).rejects.toThrow("Unsupported color format")
+    // The failed call leaves nothing behind for the next one.
+    expect(await runMermaid("flowchart LR\nA-->B\n")).toMatchObject({
+      accepted: true,
+    })
   })
 
   it("reports rejections with mermaid's error", async () => {
@@ -417,10 +487,6 @@ describe("sequence summary", () => {
     expect((db.actors as { box?: number }[]).map((actor) => actor.box)).toEqual(
       [0, 1],
     )
-  })
-
-  it("exports the color stand-in that it gives mermaid", () => {
-    expect(cssSupportsColor).toBe(browserStandIns.cssSupportsColor)
   })
 
   it("reads details as on a page without the element", async () => {

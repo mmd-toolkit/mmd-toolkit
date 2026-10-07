@@ -1,6 +1,6 @@
 /**
- * Runs ESLint on a few inputs of each kind of the conformance corpus
- * (`tests/corpus-kinds.ts`) that the parser accepts, and checks the token methods of `MermaidSourceCode` against answers
+ * Runs ESLint on the inputs of `tests/language-inputs.ts` that the parser
+ * accepts, and checks the token methods of `MermaidSourceCode` against answers
  * computed from the ranges of the tree alone: the tokens and comments inside a
  * node, before it, and after it, and whether whitespace lies between two
  * tokens. Every character of the source lies in a token or a comment, or is
@@ -11,8 +11,8 @@ import { describe, expect, it } from "vitest"
 import type { Comment, Node, Range, Root, Token } from "@mmd-toolkit/parser"
 import { traverseNodes } from "@mmd-toolkit/parser"
 import type { MermaidSourceCode } from "../src/index.ts"
-import { kindedInputs, pickByKind } from "./corpus-kinds.ts"
-import { loadCorpus, observe } from "./helpers.ts"
+import { observe } from "./helpers.ts"
+import { loadLanguageInputs } from "./language-inputs.ts"
 
 /** Whether `inner` lies within `outer`. */
 function isWithin(inner: Range, outer: Range): boolean {
@@ -53,64 +53,66 @@ function describeElement(element: Token | Comment | null): string {
     : `${element.type} ${element.range.join(":")}`
 }
 
-/** The inputs that the parser accepts, a few of each kind. */
-const inputs = pickByKind(
-  kindedInputs(await loadCorpus()).filter((input) => input.root !== null),
+/** The inputs of the language that the parser accepts. */
+const inputs = (await loadLanguageInputs()).filter(
+  (input) => observe(input.fixture.input).sourceCode !== null,
 )
 
 describe("the token methods of the source code", () => {
-  it.each(inputs.map((input) => [input.name, input.fixture.input]))(
-    "%s",
-    (_name, input) => {
-      const sourceCode: MermaidSourceCode | null = observe(input).sourceCode
-      expect(sourceCode).not.toBeNull()
-      if (sourceCode === null) return
-      const root = sourceCode.ast
+  it.each(
+    inputs.map((input) => [
+      `${input.diagram}/${input.name}`,
+      input.fixture.input,
+    ]),
+  )("%s", (_name, input) => {
+    const sourceCode: MermaidSourceCode | null = observe(input).sourceCode
+    expect(sourceCode).not.toBeNull()
+    if (sourceCode === null) return
+    const root = sourceCode.ast
 
-      for (const node of nodesOf(root)) {
-        const inside = root.tokens.filter((token) =>
-          isWithin(token.range, node.range),
-        )
-        const before = root.tokens.filter(
-          (token) => token.range[1] <= node.range[0],
-        )
-        const after = root.tokens.filter(
-          (token) => node.range[1] <= token.range[0],
-        )
-        expect(sourceCode.getTokens(node).map(describeElement)).toEqual(
-          inside.map(describeElement),
-        )
-        expect(describeElement(sourceCode.getFirstToken(node, 0))).toBe(
-          describeElement(inside.at(0) ?? null),
-        )
-        expect(describeElement(sourceCode.getLastToken(node, 0))).toBe(
-          describeElement(inside.at(-1) ?? null),
-        )
-        expect(describeElement(sourceCode.getTokenBefore(node))).toBe(
-          describeElement(before.at(-1) ?? null),
-        )
-        expect(describeElement(sourceCode.getTokenAfter(node))).toBe(
-          describeElement(after.at(0) ?? null),
-        )
-        expect(sourceCode.getCommentsInside(node).map(describeElement)).toEqual(
-          root.comments
-            .filter((comment) => isWithin(comment.range, node.range))
-            .map(describeElement),
-        )
-      }
-
-      expect(sourceCode.getAllComments().map(describeElement)).toEqual(
-        root.comments.map(describeElement),
+    for (const node of nodesOf(root)) {
+      const inside = root.tokens.filter((token) =>
+        isWithin(token.range, node.range),
       )
+      const before = root.tokens.filter(
+        (token) => token.range[1] <= node.range[0],
+      )
+      const after = root.tokens.filter(
+        (token) => node.range[1] <= token.range[0],
+      )
+      expect(sourceCode.getTokens(node).map(describeElement)).toEqual(
+        inside.map(describeElement),
+      )
+      expect(describeElement(sourceCode.getFirstToken(node, 0))).toBe(
+        describeElement(inside.at(0) ?? null),
+      )
+      expect(describeElement(sourceCode.getLastToken(node, 0))).toBe(
+        describeElement(inside.at(-1) ?? null),
+      )
+      expect(describeElement(sourceCode.getTokenBefore(node))).toBe(
+        describeElement(before.at(-1) ?? null),
+      )
+      expect(describeElement(sourceCode.getTokenAfter(node))).toBe(
+        describeElement(after.at(0) ?? null),
+      )
+      expect(sourceCode.getCommentsInside(node).map(describeElement)).toEqual(
+        root.comments
+          .filter((comment) => isWithin(comment.range, node.range))
+          .map(describeElement),
+      )
+    }
 
-      for (let index = 0; index + 1 < root.tokens.length; index++) {
-        const left = root.tokens[index]
-        const right = root.tokens[index + 1]
-        if (left === undefined || right === undefined) continue
-        expect(sourceCode.isSpaceBetween(left, right)).toBe(
-          hasSpaceBetween(root, left, right),
-        )
-      }
-    },
-  )
+    expect(sourceCode.getAllComments().map(describeElement)).toEqual(
+      root.comments.map(describeElement),
+    )
+
+    for (let index = 0; index + 1 < root.tokens.length; index++) {
+      const left = root.tokens[index]
+      const right = root.tokens[index + 1]
+      if (left === undefined || right === undefined) continue
+      expect(sourceCode.isSpaceBetween(left, right)).toBe(
+        hasSpaceBetween(root, left, right),
+      )
+    }
+  })
 })

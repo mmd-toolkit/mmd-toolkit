@@ -29,16 +29,18 @@ dbFromTree(text, tree, embedded, isColor)
 - `tree` is the content of `ast.json`, a `DbTreeRoot`. The types in
   `src/db-from-tree/*-tree.ts` list the fields that the Db reads, and no others;
   they are the fields that an implementation has to give. The tree is plain
-  JSON: the function does not use a parser, a lexer, or the units of either. A
-  field that is read and not there is reported with the diagram and the type of
-  the node.
+  JSON: the function does not use a parser, a lexer, or the units of either. It
+  reads the fields without checking them: a tree that lacks one is found by
+  [checkTree()](./check-tree.md), and the reading of such a tree fails with the
+  error of the missing field.
 - `embedded` holds the values that mermaid.js derives from the embedded data of
   the input, which a tree does not hold (see
   [embedded-data.md](./embedded-data.md)). A fixture gives them through
   `embeddedValuesOf()`.
 - `isColor` answers whether the colour candidate of a sequence `box` is a
   colour. That is the answer of a browser and is not in the text; the tests give
-  `cssSupportsColor()`, the stand-in that the normalizer uses too.
+  `cssSupportsColor()` of `@mmd-toolkit/tests`, the stand-in that the normalizer
+  uses too.
 
 ## The converted form
 
@@ -55,8 +57,9 @@ tree uses too, so that the rules are written once): a directive and what its
 scan takes after it, and a comment line, which is a `%%` with only whitespace
 and directives between it and a comment start, and with a character after it
 that is not `{` or a line terminator, from the earliest such comment start to
-the end of its line. Any other `%%` is diagram text. The tree gives what the
-text cannot give alone:
+the end of its line. [fixture: common/comment-bare-then-u2028] [fixture:
+common/comment-bare-then-u2029] Any other `%%` is diagram text. The tree gives
+what the text cannot give alone:
 
 - the `IgnoredSemicolon` tokens, since which `;` the line rule ignores depends
   on the line segment and on the diagram,
@@ -79,9 +82,9 @@ are read from the tree like this:
   identifier, since the whitespace that a directive in the id has on its sides
   is part of it (the rule is in
   [db-from-tree/sequence.md](./db-from-tree/sequence.md)).
-- **Class names**: the converted form of the tokens of an `Identifier`, joined,
-  without the whitespace between them (the name text, the written name, and the
-  id are defined in
+- **Class names**: the converted form of the tokens of a `ClassIdentifier`
+  (`RawText` tokens), joined, without the whitespace between them (the name
+  text, the written name, and the id are defined in
   [Rejections outside the grammar](../../spec/docs/diagrams/class.md#rejections-outside-the-grammar),
   and the type of a written name in **Names** in
   [db-from-tree/class.md](./db-from-tree/class.md)).
@@ -93,8 +96,9 @@ are read from the tree like this:
   units, so the texts of the tokens joined are the value.
 - **State alias without a second description**: whether the statement holds a
   `:` token.
-- **State note position**: the `Keyword` token `left of` or `right of` of the
-  statement, as written.
+- **State note position**: the two `Keyword` tokens of the statement after
+  `note`, `left` or `right` and `of`, as written, with the one space between
+  them that mermaid.js reads.
 - **Flowchart strings**: the delimiters of a string, or of a markdown string,
   that a node starts with are left out of its value. The tree has the tokens of
   the string and not the contexts the lexer is in, so the contexts are read
@@ -102,8 +106,10 @@ are read from the tree like this:
   [diagrams/flowchart.md, Strings](../../spec/docs/diagrams/flowchart.md): the
   opening `"` enters the markdown context when a backtick follows it, the string
   ends when the contexts are left, and the content is the one run between the
-  delimiters. A `"` that is an attribute quote is a `'` there, and a comment
-  region that cuts the tokens of a string is not there.
+  delimiters. A `"` that is an attribute quote is a `'` there. [fixture:
+  flowchart/db-markdown-string-attribute-quote] A comment region that cuts the
+  tokens of a string is not there. [fixture:
+  flowchart/lex-comment-line-in-markdown-string]
 - **Flowchart subgraph names**: the name text is the converted form from the
   start of the name to the end that the rule gives (the rule is **Subgraph
   members** in
@@ -111,9 +117,13 @@ are read from the tree like this:
   without the string delimiters and the leading empty description blocks.
   Comment regions, directives, and the `;` that the line rule ignores are not in
   the converted form, and the whitespace after a `}` is one line feed in it, so
-  none of them ends the name.
+  none of them ends the name. [fixture:
+  flowchart/lex-comment-line-in-markdown-subgraph-name]
 - **Flowchart edges**: a limit of `maxEdges` is checked on the tree by
-  `exceedsMaxEdges()`, since a parser does not know the configuration.
+  `exceedsMaxEdges()`, since a parser does not know the configuration. The
+  function reads a `maxEdges` that is a non-negative number, as the maximum
+  number of edges that the configuration documents; its result for any other
+  value is not defined.
 
 ## The check
 
@@ -122,9 +132,9 @@ and an accepted result with a Db, and requires it to be the recorded Db
 (`specified.json` where there is one, else `expected.json`), key order aside. A
 fixture that records neither a tree nor an error of the parser is reported: no
 comparison is skipped without a word. The test fails with the name of the
-fixture, and with the diagram and the node type when the tree lacks a field.
-When it fails, the tree is wrong, the builder here is wrong, or the record
-(`embedded`, `specified`) is wrong; the fixture tells which.
+fixture, and with the error of the reading when the tree lacks a field. When it
+fails, the tree is wrong, the builder here is wrong, or the record (`embedded`,
+`specified`) is wrong; the fixture tells which.
 
 ## Adding a diagram type
 

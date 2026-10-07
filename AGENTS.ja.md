@@ -115,8 +115,7 @@ flowchart、sequence、class、state が済んでいる。
 | -------------------------------------------- | ---------- | -------------------------------------- |
 | fixture の形式とローダー                     | tests      | spec、parser、prettier-plugin          |
 | mermaid の Db を取り出す関数                 | tests      | parser、prettier-plugin                |
-| 生成器と変異差分テストの CLI                 | tests      | spec、parser                           |
-| 生成入力の境目の種類                         | tests      | parser、prettier-plugin                |
+| fixture の CLI（`tools/fixtures.ts`）        | tests      | spec、parser                           |
 | Db の要約と、記録した木の確かめ              | tests      | parser                                 |
 | AST の定義（`docs/ast.md`、`docs/ast/*.md`） | spec       | parser、prettier-plugin、eslint-plugin |
 | トークンと位置（`docs/tokens.md` ほか）      | parser     | tests、prettier-plugin、eslint-plugin  |
@@ -160,9 +159,14 @@ flowchart、sequence、class、state が済んでいる。
     例外は、書き方そのものを示すための例である。
   - テストは、変更が影響しうるものを回す。
     パッケージの全体は、作業の完了を報告する前に 1 回回す。
-    parser のテストは生成した入力を回さない。
-    parser では、生成した入力はコーパスに欠けているものを見つける道具で、
-    見つけたものは fixture にする。
-    ほかのパッケージの生成入力のテストは、サイズが 1 つで、
-    入力の種類を種類ごとに数件で覆う。
+    パッケージのテストは固定の入力だけを回す。コーパスの fixture、
+    パッケージの fixture、過去の失敗の入力である。入力を生成するテストは
+    持たず、生成するコマンドも持たない。
+    振る舞いを定める文（仕様、parser のトークンと位置の文書、`dbFromTree` の
+    文書、整形の規則）は、その文が分ける場合ごとに fixture を持ち、
+    その文が名指す場所でほかの規則が接する場合（ディレクティブ、無視される
+    `;`、コメント行、空行、行区切り、空の説明ブロック）にも fixture を持つ。
+    fixture は文と一緒に書き、mermaid.js で 1 回確かめる。
+    review は文ごとに、欠けている場合がないかを見る。
+    乱数や数（seed、count）で入力を選ばない。
 - コミットと push はユーザーの指示があったときだけ行う。

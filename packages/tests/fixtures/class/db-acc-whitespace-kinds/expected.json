@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The whitespace at the ends is any whitespace. The title is `t` and the description is `d`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "t",
+    "accDescr": "d",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

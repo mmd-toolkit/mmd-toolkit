@@ -32,6 +32,13 @@
         "id": "-->",
         "text": "tip"
       }
+    ],
+    "clickCalls": [
+      {
+        "id": "-->",
+        "name": "cb",
+        "args": null
+      }
     ]
   }
 }

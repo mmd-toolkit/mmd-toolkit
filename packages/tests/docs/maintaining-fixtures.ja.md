@@ -19,16 +19,24 @@ fixture の読み方は [README](../README.ja.md) にあります。
   省略可能な `line` とテスト名 `test` を持つ。
   `kind: "authored"` は、ここで書いた入力で、`note` に理由を書く。
   例:
-  `{ "kind": "mermaid", "ref": "mermaid@12.0.0", "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-edges.spec.js", "line": 71, "test": "[Edges] when parsing > should handle open ended edges" }`。
+
+  ```json
+  {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-edges.spec.js",
+    "line": 71,
+    "test": "[Edges] when parsing > should handle open ended edges"
+  }
+  ```
+
 - `config`: 入力自身がしない設定に左右される挙動を示す fixture にだけ使う。
   例えば保護されたキー `maxEdges`、サイトが設定する `flowchart.inheritDir`。
   mermaid.js から取った入力には付けない。
 - `knownDivergence`: `KNOWN_DIVERGENCES` のいずれか。
   仕様が意図して mermaid.js と違う入力に付ける。
   識別子は、それぞれ `@mmd-toolkit/spec` の
-  `docs/known-divergences.md` の見出し。
-
-fixture の名前は小文字のケバブケースです。
+  `docs/known-divergences.md` の表の行。
 
 ## 名前
 
@@ -44,7 +52,7 @@ fixture の名前は、小文字のケバブケースで `<接頭辞>-<話題>` 
 - `db-`: Db の要約の値。何を持ち、値をどう作るか。
 - `tokens-`: 木のトークンとコメント。トークンやコメントの始まりと終わり、
   範囲が除くもの。
-- `div-`: 既知の差の印を持つ入力。
+- `div-`: 既知の差異の印を持つ入力。
 - `config-`、`frontmatter-`、`directive-`、`comment-`、`entity-`、`detect-`、
   `header-`、`html-`、`error-`: 仕様の共通の規則（`common.md`）を、
   示す規則で分けたもの。
@@ -99,9 +107,6 @@ parser のテストが走るまでどちらのファイルもありません。
   - `extractFrontmatterTitle(text)`:
     mermaid.js と同じ方法で取り出したフロントマターの title
     （[expected-results.ja.md](./expected-results.ja.md) を参照）。
-- `@mmd-toolkit/tests/mutation`:
-  - `compareWithMermaid(text, candidate, config, options)`:
-    1 つのテキストを比べる。
 
 ## コマンド
 
@@ -126,7 +131,7 @@ pnpm run fixtures:add-many common entries.json --note "..." --dry-run
 # のファイルにする（下の「mermaid から取った入力」を参照）。
 pnpm run fixtures:collect flowchart --mermaid <checkout> --out flowchart.json
 pnpm run fixtures:add-many flowchart flowchart.json
-# fixture に既知の差の印を付ける: { "<diagram>/<name>": "<識別子>" か null }。
+# fixture に既知の差異の印を付ける: { "<diagram>/<name>": "<識別子>" か null }。
 # その欄と、それに左右される specified.json だけが変わる
 # （specified の読みがある印の fixture には mermaid.js を動かす）。
 pnpm run fixtures:set-divergence divergences.json --dry-run
@@ -152,9 +157,13 @@ pnpm run fixtures:set-note notes.json --dry-run
     キーには著者が書くもの（データブロックの中身、props）も含まれるので、
     一覧を読む。
   - `Db values`: キーは同じで、値が違う。
+  - `embedded values`: Db は同じで、`embedded` の値が違う。
   - `error name`: 拒否のまま、エラーの名前が違う。
   - `error message only`: 拒否のまま、名前も同じ。
   - `file format only`: 期待は同じで、ファイルが正準形で書かれていなかった。
+- fixture の `specified.json` の変更は、それだけの 1 行で出す。
+  `specified.json added`、`specified.json removed`、
+  または `specified.json:` に続けて、読みがどう変わったかを上のどれかで示す。
 - 作れない fixture があっても、`generate` は止まらない。
   作れないのは、Node にないブラウザの機能を mermaid.js が使おうとしたとき、
   `mermaid.parse()` と `getDiagramFromText()` が食い違うとき、
@@ -169,7 +178,7 @@ pnpm run fixtures:set-note notes.json --dry-run
   （[expected-results.ja.md](./expected-results.ja.md)
   の「拒否か、ブラウザの機能の欠如か」を参照）。
 
-CI の `fixtures` ジョブは全 `expected.json` を作り直し、
+ワークフロー `NodeCI.yml` の `fixtures` ジョブは全 `expected.json` を作り直し、
 差分か新しいファイルが出れば失敗します。
 そのため、mermaid.js の挙動の変化は差分として現れます。
 
@@ -240,3 +249,90 @@ mermaid.js が変わった後に集め直しても、新しい入力だけが足
 チェックアウトの準備と収集の実行方法、
 mermaid.js が拒否する入力の確かめ方は
 [tools/README.ja.md](../../../tools/README.ja.md) にあります。
+
+## 形で入力を選ぶ
+
+ほかの集まりが持つ入力（道具が失敗を見つけた入力で、千件を超えることもある）は
+多く、その多くは名前、文字列、ラベルのテキストだけが違います。
+その中の 1 つが、ほかを代表します。
+どれが代表かは、
+`shapeOf(text, source)`（`src/fixture-shapes.ts`）の形が決めます。
+source は、記録した木（`ast.json`）か、parser が返す木から、
+`shapeSourceOf(tree)` で作ります。
+木のトークンと、フロントマターとデータブロックのノード
+（`DATA_BLOCK_NODE_TYPES`。spec の AST 文書の見出し）の範囲です。
+範囲はテキストから探し直さず、木から取ります。
+形は、トークンの列（それぞれ型とテキストを持つ）と、その間の文字の列です。
+
+- 作者が名前を付けたものを持つトークン、つまり `Identifier`、`RawText`、
+  `String`、`StringFragment` の語と数は、テキストに初めて出る順に番号を
+  付けます。
+  字、数字、下線の並びは `a1`、`a2`、…、数字だけの並びは `0_1`、`0_2`、…で、
+  同じ綴りは同じ番号です。
+  名前の綴りは読みを変えませんが、2 つの名前が同じかは変えます。
+  `A-->B` は頂点が 2 つ、`A-->A` は 1 つです。
+  ディレクティブが 1 つの名前から切り出した断片は、1 つの名前です。
+  `a%%{init: {}}%%b` は `ab` です。
+  トークンのほかの文字、つまり `:`、`#`、テキストの並びの中の `;`、引用符、
+  空白は残ります。
+  読みは、トークンがどこで始まりどこで終わるかにも左右されます。
+  それはトークンの型とトークンの間の文字に現れます。
+  `subgraph a end`、改行、`;` では、名前のトークンが改行を取り
+  （`a end` と改行）、`subgraph a pend` では取りません。
+  `classDef:#x;` は、テキストの並びの中にエンティティの `;` を持ち、
+  `style:#f00;` は独立した `IgnoredSemicolon` を持ちます。
+- ほかのトークンは書かれたまま残ります。
+  `Keyword`（`end`、`direction`、`box`、`LR` と `lr` は、書かれた大小のまま）、
+  `Punctuator`（矢印の字、`--o` と `--x`、`-x`）、
+  `Numeric`（`linkStyle 0` と `linkStyle 5`）、`Directive`、
+  `IgnoredSemicolon` です。
+  その字はすべて値で読まれます。
+- トークンの間の文字は、すべて書かれたまま残ります。
+  空白の数、U+2028 と U+2029、コメント、改行の種類です。
+  フロントマターとデータブロック `@{ … }` の中のトークンも、書かれたまま
+  残ります。そこの語は値だからです
+  （`"wrap": true` と `"wrap": false`、`shape: rect` と `shape: foo`）。
+  範囲はノードのものなので、データブロックの中のディレクティブにある `}` や、
+  フロントマターの前のバイトオーダーマークも、木の読みのとおりになります。
+- 木のないテキスト（parser が拒否するもの）は、語と数に番号を付けるだけです。
+
+例外は 3 つで、読みが語が集合に入るかで決まり、それがどのトークンにも
+現れない所です。そのトークンは、書かれたまま残ります。
+いま知られている所で、それぞれ、それを示す入力で見つかりました。
+この類の所は、その入力とともに足します。
+語の一覧は、所を見つける方法ではありません。
+
+- `box` の直後のテキストの並び。CSS の色名なら色、ほかの語なら名前になります。
+  `box red` は fill が `red`、`box team` は名前が `team` です。
+- `linkStyle` の文の中のテキストの並び（`;` か行の終わりまで）。
+  mermaid.js は、一覧のどの style も `fill` でないとき、辺の style に
+  `fill:none` を足します。
+  `linkStyle 0 fill:red` は辺の style が `fill:red`、
+  `linkStyle 0 color:red` は `color:red` と `fill:none` です。
+- テキスト全体が、ノードを作らない状態の id であるトークン
+  （`</choice>`、`</join></fork>`。`src/db-from-tree/state.ts` の
+  `IDS_WITHOUT_NODE` と、
+  [db-from-tree/state.ja.md](./db-from-tree/state.ja.md) のとおり）。
+  `state </join></fork> <<fork>>` には fork の状態がなく、
+  `state </x></fork> <<fork>>` にはあります。
+  どの図種のどの位置でも残すので、1 つになる形を分けるだけです。
+  状態の id でない所では、形が必要より細かくなります。
+
+入力を落とすのは、形と図種と mermaid.js が受理するかが、fixture のものか、
+同じ集まりのほかの入力のものと同じときだけです。
+同じ集まりの中では、いちばん短いものが代表します。
+受理を含めるのは、木のないテキストの数は読まれないからです。
+辺が 1 本の図の `linkStyle 0` は受理され、`linkStyle 5` は、
+ない辺なので拒否されます。
+落とした入力は、代わりになる fixture と形とともに一覧にします。
+
+形が区別しないのは、作者が名前を付けたものの綴りです。
+名前の中の語や、数の長さがそれに当たります。
+その違いが読みを変えると分かったときは、それを示す入力を、
+それだけの fixture にします。
+
+parser の最初の集まりの入力は、テキストだけの形で選びました。
+字と数字の並びを 1 つの印にし、その入力とコーパスについて parser が
+`Keyword` トークンとして出した語は、小文字にして残しました。
+この形は、語の大小を畳み、トークンを見ず、2 つの名前が同じかも残しませんでした。
+その fixture はそのままにし、この後の集まりは上の形を使います。

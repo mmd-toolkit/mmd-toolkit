@@ -63,11 +63,6 @@ export type {
   MermaidError,
 } from "./types.ts"
 
-// The stand-in for the browser's `CSS.supports("color", value)` that the Db
-// patches give mermaid; an implementation that does not judge colors asks it
-// the same question (see docs/expected-results.md).
-export { cssSupportsColor } from "./normalizers/browser-stand-ins.ts"
-
 export type { DivergenceRemoval } from "./divergence-removals.ts"
 
 export type { RunMermaidOptions } from "./run-mermaid-options.ts"

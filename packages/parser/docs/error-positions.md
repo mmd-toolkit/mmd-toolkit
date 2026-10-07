@@ -10,13 +10,18 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
 - No detector matches: `range` runs from the first character that is not trivia
   to the end of its line. When the text is all trivia, such as empty text,
   whitespace, or comment lines, `range` is the empty range at the end of the
-  text: `[2, 2]` for two spaces.
+  text: `[2, 2]` for two spaces. [fixture: common/detect-boundary-swimlane]
+  [fixture: common/empty] [fixture: common/comment-only] [fixture:
+  common/whitespace-only]
 - The `---` pseudo-diagram: `range` covers the three `-` characters that start
-  the block.
+  the block. [fixture: common/frontmatter-adjacent-delimiters]
 
 ## In a flowchart
 
-- Where no rule of the lexer matches, `range` is the character there.
+- Where no rule of the lexer matches, `range` is the character there: both code
+  units of a character outside the Basic Multilingual Plane. [fixture:
+  flowchart/lex-non-bmp-character-unexpected] [fixture:
+  flowchart/gram-edge-id-space-before-at]
 - When the text ends in a context that may not end there, `range` is what
   entered that context, and the message says what is not closed: the `click`
   whose click context has read nothing
@@ -25,40 +30,57 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   (`The callback after call has no ( before the end of the text`), and the `(`
   that opens the callback arguments
   (`The arguments of the callback have no ) before the end of the text`).
+  [fixture: flowchart/lex-click-at-end-of-text] [fixture:
+  flowchart/lex-callback-no-parenthesis] [fixture:
+  flowchart/lex-callback-arguments-end-of-text]
 - Where the grammar cannot read a unit, `range` is that unit without its
   whitespace. For a unit that is all whitespace, it is the empty range at the
   start of the unit. At the end of the text, it is the empty range at the end of
   the text, with the message `Unexpected end of text`; so it is where the
   grammar stops at a unit of whitespace that ends the text, as after
-  `style A fill:red,`. Elsewhere the message is `Unexpected token`.
-- For a `linkStyle` number that names no link, `range` is the number.
+  `style A fill:red,`. Elsewhere the message is `Unexpected token`. [fixture:
+  flowchart/gram-circle-gap] [fixture:
+  flowchart/gram-empty-description-block-after-class-statement] [fixture:
+  flowchart/db-style-trailing-comma]
+- For a `linkStyle` number that names no link, `range` is the number. [fixture:
+  flowchart/gram-linkstyle-before-link]
 - For a subgraph whose member `hasOwnProperty` is followed by another member,
   `range` is that other member, the first after `hasOwnProperty`. A member is a
   vertex id, the name of a nested subgraph, the value of an accessibility
-  statement, or the `;` of an empty statement.
+  statement, or the `;` of an empty statement. [fixture:
+  flowchart/gram-subgraph-member-has-own-property-then-member] [fixture:
+  flowchart/gram-subgraph-member-has-own-property-nested] [fixture:
+  flowchart/gram-subgraph-member-has-own-property-acc-title] [fixture:
+  flowchart/gram-subgraph-member-has-own-property-empty-statement]
 
 ## In a sequence diagram
 
-- Where no rule of the lexer matches, `range` is the character there.
+- Where no rule of the lexer matches, `range` is the character there. [fixture:
+  sequence/lex-id-context-line-break]
 - Where the grammar cannot read a unit, `range` is that unit without its
   whitespace, and at the end of the text the empty range at the end of the text,
-  as in a flowchart.
+  as in a flowchart. [fixture: sequence/gram-box-create-participant] [fixture:
+  sequence/lex-keyword-before-dash]
 - For a rejection outside the grammar, which mermaid.js makes while it builds
   the Db, `range` is what makes it, and the message says why:
   - deactivating a participant that is not active
     (`A participant that is not active cannot be deactivated`): the id after
-    `deactivate`, or the id before the arrow of a message with `-`;
+    `deactivate`, or the id before the arrow of a message with `-`; [fixture:
+    sequence/gram-deactivate-inactive] [fixture:
+    sequence/gram-deactivate-after-message]
   - creating a participant that exists already
     (`A participant that exists already cannot be created`): the id after
-    `create` and its keyword;
+    `create` and its keyword; [fixture: sequence/gram-create-after-message]
   - a message after `create` that does not go to the created participant
     (`The message after create must go to the created participant`), and a
     message after `destroy` that neither comes from nor goes to the destroyed
     participant
     (`The message after destroy must come from or go to the destroyed participant`):
-    the message;
+    the message; [fixture: sequence/gram-create-message-from-created] [fixture:
+    sequence/gram-create-then-destroy-message-to-other]
   - a participant statement inside a box for a participant that has another box
     already (`A participant cannot be in two boxes`): the id of the statement.
+    [fixture: sequence/gram-box-participant-in-two-boxes]
 
 ## In a class diagram
 
@@ -66,9 +88,11 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   `classDiagramX`, `range` is that unit, and the message is
   `A class diagram starts with classDiagram or classDiagram-v2`. The lexer
   reports it as soon as it reads the unit, also where the text then ends in a
-  context that may not end there.
+  context that may not end there. [fixture:
+  class/div-headerless-repeated-header] [fixture:
+  class/div-headerless-empty-title]
 - Where no rule of the lexer matches, `range` is the character there, as at the
-  `"` of a string that is not closed.
+  `"` of a string that is not closed. [fixture: class/lex-string-unclosed]
 - When the text ends in a context that may not end there, `range` is what
   entered that context, and the message says what is not closed: the `{` of a
   member body or a namespace body
@@ -79,24 +103,34 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   `accDescr` (`accTitle has no text before the end of the text`,
   `accDescr has no text before the end of the text`), and the `accDescr` of a
   description block
-  (`The description block has no } before the end of the text`).
+  (`The description block has no } before the end of the text`). [fixture:
+  class/lex-acc-descr-at-end] [fixture: class/lex-member-body-unclosed]
+  [fixture: class/lex-namespace-body-unclosed] [fixture:
+  class/lex-generic-unclosed] [fixture: class/lex-call-at-end] [fixture:
+  class/lex-callback-arguments-unclosed] [fixture: class/lex-acc-title-at-end]
+  [fixture: class/lex-acc-descr-block-unclosed]
 - For a method line that cannot be divided, `range` is the member text, the line
   without the whitespace at its ends, and the message is
   `A method line needs a ( that is not its first character and that a ) follows`.
+  [fixture: class/lex-member-method-parenthesis-first]
 - Where the grammar cannot read a unit, `range` is that unit without its
   whitespace, and at the end of the text the empty range at the end of the text,
-  as in a flowchart.
+  as in a flowchart. [fixture: class/gram-class-annotation-then-css-class]
+  [fixture: class/header-only]
 - For an annotation statement for a class that does not exist, a rejection
   outside the grammar, `range` is the class name after the annotation, and the
-  message is `An annotation statement needs a class that exists`.
+  message is `An annotation statement needs a class that exists`. [fixture:
+  class/gram-annotation-after-name-statement]
 
 ## In a state diagram
 
 - Where no rule of the lexer matches, `range` is the character there. When only
   whitespace follows, so that the text ends there, the rule for the end of the
-  text below applies.
+  text below applies. [fixture: state/lex-composite-ignored-percent-rejected]
+  [fixture: state/gram-scale-without-width]
 - For two words between `state` and `{`, `range` runs from the first word to the
   `{`, and the message is `A state name before { must be a single word`.
+  [fixture: state/lex-state-two-names-body]
 - When the text ends in a context that may not end there, `range` is what
   entered that context, and the message says what is not closed: the `{` of a
   composite body (`The composite state has no } before the end of the text`),
@@ -113,14 +147,25 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   and `style` with nothing after them
   (`classDef has no class name before the end of the text`,
   `class has no state before the end of the text`, and
-  `style has no state before the end of the text`).
+  `style has no state before the end of the text`). [fixture:
+  state/lex-note-without-position-at-end] [fixture:
+  state/lex-note-no-state-at-end] [fixture: state/lex-class-def-no-name-at-end]
+  [fixture: state/lex-class-statement-no-state-at-end] [fixture:
+  state/lex-style-statement-no-state-at-end] [fixture:
+  state/lex-composite-unclosed] [fixture: state/lex-alias-string-unclosed]
+  [fixture: state/lex-floating-note-string-unclosed] [fixture:
+  state/lex-end-note-two-spaces] [fixture: state/lex-note-unclosed-at-end]
+  [fixture: state/lex-scale-at-end]
 - Where the grammar cannot read a unit, `range` is that unit without its
   whitespace, and at the end of the text the empty range at the end of the text,
-  as in a flowchart.
+  as in a flowchart. [fixture: state/gram-click-trailing-word] [fixture:
+  state/gram-click-href-at-end]
 - For a composite state with more than one description, a rejection outside the
   grammar, `range` is the statement that first gave the state a body, which for
   a region of a divided body is the divider statement that closes it, and the
-  message is `A composite state can have only one description`.
+  message is `A composite state can have only one description`. [fixture:
+  state/gram-composite-terminal-two-descriptions] [fixture:
+  state/gram-region-two-descriptions]
 
 ## Known divergences
 
@@ -129,10 +174,12 @@ rejected, `range` is the form that causes it, and the message names the cause:
 
 - `directive-as-token-boundary`: for a directive inside a token that may not be
   cut, a name, a number, a keyword, an arrow, or another delimiter, `range` is
-  the directive, and the message is `Unexpected directive`.
+  the directive, and the message is `Unexpected directive`. [fixture:
+  flowchart/div-directive-in-arrow-length]
 - `ignored-semicolon-as-token-boundary`: for a `;` that the line rule ignores
   inside such a token, `range` is the `;`, and the message is
-  `Unexpected ; that the line rule ignores`.
+  `Unexpected ; that the line rule ignores`. [fixture:
+  flowchart/div-ignored-semicolon-in-arrow]
 - `click-reserved-word`: for a `click` that does not start a click statement,
   `range` is the word `click`, and the message is
   `click is a reserved word: it may only start a click statement`. The grammar
@@ -140,37 +187,55 @@ rejected, `range` is the form that causes it, and the message names the cause:
   after it that is not a `space` unit, is a `click` unit, and when a `click` at
   the start of a statement has no click id after it. An input that mermaid.js
   rejects as well, such as `click A href "u" click _blank`, is reported in the
-  same way.
+  same way. [fixture: flowchart/gram-click-mid-statement-tooltip] [fixture:
+  flowchart/gram-ampersand-then-click-statement] [fixture:
+  flowchart/gram-click-bare-before-vertex-statement] [fixture:
+  flowchart/gram-click-mid-statement-link-target]
 - `tokenless-empty-forms`: for an empty form that no rule takes, `range` is the
   whole form without the whitespace at its ends: the empty string, an empty call
   from its `call` to its `)`, or an empty description block from its `accDescr`
   to its `}`. The message is `An empty string cannot be written here`,
   `An empty call cannot be written here`, or
   `An empty description block can only be written where a statement starts or ends`.
-  The grammar finds it where it stops, as for a `click`: when the unit that it
-  cannot read, or the first unit after it that is not a `space` unit, belongs to
-  an empty form. An input that mermaid.js rejects as well, such as `A[""]`, is
-  reported in the same way. Between a `click` at the start of a statement and
-  its click ids, the first empty string is reported; when no click id follows
-  the empty strings, the `click` is. In a class diagram, the empty forms also
-  include an empty backquoted name, its two backquotes, and an empty generic
-  type, its two `~`, with the messages
+  [fixture: flowchart/gram-click-empty-call-only] [fixture:
+  flowchart/gram-empty-description-block-before-link] The grammar finds it where
+  it stops, as for a `click`: when the unit that it cannot read, or the first
+  unit after it that is not a `space` unit, belongs to an empty form. An input
+  that mermaid.js rejects as well, such as `A[""]`, is reported in the same way.
+  [fixture: flowchart/gram-label-empty-string] Between a `click` at the start of
+  a statement and its click ids, the first empty string is reported; when no
+  click id follows the empty strings, the `click` is. [fixture:
+  flowchart/gram-click-empty-string-before-id] [fixture:
+  flowchart/gram-click-bare-before-vertex-statement] In a class diagram, the
+  empty forms also include an empty backquoted name, its two backquotes, and an
+  empty generic type, its two `~`, with the messages
   `An empty backquoted name cannot be written here` and
   `An empty generic type can only end a class name`. An empty generic type is
-  found where the grammar cannot read the unit after it, as in `class A~~B`. In
-  a state diagram, an empty description block is also found where the grammar
-  cannot read the unit right after it: in `A accDescr {} --> B`, the block after
-  `A` is a statement, the `-->` after it starts none, and the block is reported.
-  After the last unit of a statement that needs a separator, or of the header of
-  a flowchart or a class diagram, empty description blocks before the separator
-  or the line break are statements of their own; when none follows them, the
-  first of them lies inside the statement and is reported, in every diagram
-  type: in `A accDescr {} B` and `flowchart LR accDescr {} A` of a flowchart and
-  in `click A "u" "t" accDescr {} B` of a state diagram, the block is reported.
-  A flowchart statement or header with such blocks before its separator is read
-  without them, so whitespace around them that the statement does not take is
-  reported where it would be without them: in `flowchart LR accDescr {};A`, the
-  `;` after the space is reported, as in `flowchart LR ;A`.
+  found where the grammar cannot read the unit after it, as in `class A~~B`.
+  [fixture: class/div-empty-backquoted-in-name] [fixture:
+  class/div-empty-generic-in-name] An empty string right after a class name is
+  found where the grammar reads it, unless a relation end or a line follows it,
+  which makes it the cardinality of a relation: `A ""` reports the empty string.
+  [fixture: class/div-empty-string-after-name] In a state diagram, an empty
+  description block is also found where the grammar cannot read the unit right
+  after it: in `A accDescr {} --> B`, the block after `A` is a statement, the
+  `-->` after it starts none, and the block is reported. [fixture:
+  state/div-empty-description-block-in-transition] After the last unit of a
+  statement that needs a separator, or of the header of a flowchart or a class
+  diagram, empty description blocks before the separator or the line break are
+  statements of their own; when none follows them, the first of them lies inside
+  the statement and is reported, in every diagram type: in `A accDescr {} B` and
+  `flowchart LR accDescr {} A` of a flowchart and in
+  `click A "u" "t" accDescr {} B` of a state diagram, the block is reported.
+  [fixture: flowchart/gram-empty-description-block-then-vertex] [fixture:
+  flowchart/header-empty-description-block-then-statement] [fixture:
+  state/gram-click-empty-description-block-then-statement] A flowchart statement
+  or header with such blocks before its separator is read without them, so
+  whitespace around them that the statement does not take is reported where it
+  would be without them: in `flowchart LR accDescr {};A`, the `;` after the
+  space is reported, as in `flowchart TD ;` followed by a line `A`. [fixture:
+  flowchart/header-empty-description-block-before-semicolon] [fixture:
+  flowchart/header-space-before-semicolon]
 
 `html-tag-in-frontmatter` changes which `"` characters are read as `'`. The
 parser does not tell that apart, so a rejection that follows from it is reported

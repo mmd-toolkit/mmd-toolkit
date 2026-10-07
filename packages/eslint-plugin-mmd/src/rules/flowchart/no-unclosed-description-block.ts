@@ -1,11 +1,22 @@
 import type { SuggestedEdit } from "@eslint/core"
 import type { Token } from "@mmd-toolkit/parser"
+import { parse } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../../rule-types.ts"
 import { ruleDocsUrl } from "../../rule-docs-url.ts"
 import type { MermaidSourceCode } from "../../source-code.ts"
 
 /** The ids of the messages of the suggestions. */
 type SuggestionId = "closeAtLineEnd" | "closeAtTextEnd"
+
+/** Whether the parser accepts `text`, as mermaid.js does. */
+function isAccepted(text: string): boolean {
+  try {
+    parse(text)
+    return true
+  } catch {
+    return false
+  }
+}
 
 /** The line terminator at the end of `text`, or the empty string. */
 function finalLineTerminator(text: string): string {
@@ -78,48 +89,93 @@ function textIn(tokens: readonly Token[], from: number): boolean {
 }
 
 /**
- * The suggestions for an unclosed block whose `{` is `brace` and whose text
- * is `body`, the tokens after the `{`. Where the `}` belongs is the author's
- * choice, so they are suggestions, not a fix: the end of the line of the `{`,
- * when the block has text on that line, and the end of the text, when the
- * block has text after that line. A block without text would become an empty
- * block, so it gets no suggestion. Nor does a block with a directive that is
- * not closed: from that directive on, the directive decides what mermaid.js
- * reads, wherever the block is closed.
+ * The suggestions for a block whose `{` is `brace` and whose text is `body`,
+ * the tokens after the `{`. Where the `}` belongs is the author's choice, so
+ * they are suggestions, not a fix: the end of the line of the `{`, when the
+ * block has text on that line, and the end of the text, when the block is not
+ * closed and has text after that line. A block without text would become an
+ * empty block, so it gets no suggestion. Nor does a block with a directive that
+ * is not closed: from that directive on, the directive decides what mermaid.js
+ * reads, wherever the block is closed. A suggestion is offered only when the
+ * parser accepts its result, which it does not where a later line is no
+ * statement.
  */
 function closingSuggestions(
   sourceCode: MermaidSourceCode,
   brace: Token,
   body: readonly Token[],
+  blockEnd: number,
+  closed: boolean,
 ): SuggestedEdit<SuggestionId>[] {
   if (
     sourceCode.ast.directives.some(
-      (directive) => !directive.closed && brace.range[1] <= directive.range[0],
+      (directive) =>
+        !directive.closed &&
+        brace.range[1] <= directive.range[0] &&
+        directive.range[0] < blockEnd,
     )
   ) {
     return []
   }
+  const { text } = sourceCode
   const suggestions: SuggestedEdit<SuggestionId>[] = []
   const braceLine = braceLineOf(sourceCode, brace, body)
   if (braceLine.hasText) {
     // After the text on the line, before the whitespace at its end.
     const { end } = braceLine
-    suggestions.push({
-      messageId: "closeAtLineEnd",
-      fix: (fixer) => fixer.insertTextAfterRange([end, end], " }"),
-    })
+    const closing = " }"
+    if (isAccepted(text.slice(0, end) + closing + text.slice(end))) {
+      suggestions.push({
+        messageId: "closeAtLineEnd",
+        fix: (fixer) => fixer.insertTextAfterRange([end, end], closing),
+      })
+    }
   }
-  if (!braceLine.textBeyond) return suggestions
+  // A block that a later `}` closes ends there, at the end of its text.
+  if (closed || !braceLine.textBeyond) return suggestions
   // A line with only `}` after the last line of the text.
-  const { text } = sourceCode
   const terminator = finalLineTerminator(text)
   const closing = terminator === "" ? "\n}" : `}${terminator}`
-  suggestions.push({
-    messageId: "closeAtTextEnd",
-    fix: (fixer) =>
-      fixer.insertTextAfterRange([text.length, text.length], closing),
-  })
+  if (isAccepted(text + closing)) {
+    suggestions.push({
+      messageId: "closeAtTextEnd",
+      fix: (fixer) =>
+        fixer.insertTextAfterRange([text.length, text.length], closing),
+    })
+  }
   return suggestions
+}
+
+/**
+ * Whether the closed block whose `{` is `brace` and whose text is `body` ends
+ * at a `}` written for another statement: its text holds a `{` on a later line
+ * than the `{` of the block, and the `}` that closes it (`closing`) does not
+ * stand alone on its line. A `{` on the line of the block's `{` is a `{` of the
+ * description, and a `}` alone on its line is the author's: both close the
+ * block as written.
+ */
+function closedByBraceOfOtherStatement(
+  sourceCode: MermaidSourceCode,
+  brace: Token,
+  body: readonly Token[],
+  closing: Token,
+): boolean {
+  // The `}` stands alone on its line when only whitespace is around it.
+  if (sourceCode.lines[closing.loc.start.line - 1]?.trim() === "}") return false
+  const laterLinesStart =
+    brace.loc.start.line < sourceCode.lines.length
+      ? sourceCode.getIndexFromLoc({
+          line: brace.loc.start.line + 1,
+          column: 0,
+        })
+      : sourceCode.text.length
+  return body
+    .filter((token) => token.type !== "Directive")
+    .some((token) =>
+      sourceCode.text
+        .slice(Math.max(token.range[0], laterLinesStart), token.range[1])
+        .includes("{"),
+    )
 }
 
 /**
@@ -130,7 +186,7 @@ function closingSuggestions(
  */
 export const noUnclosedDescriptionBlock: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "unclosed" | SuggestionId
+  MessageIds: "unclosed" | "closedByOtherBrace" | SuggestionId
 }> = {
   meta: {
     type: "problem",
@@ -144,6 +200,8 @@ export const noUnclosedDescriptionBlock: MermaidRuleDefinition<{
     messages: {
       unclosed:
         "mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.",
+      closedByOtherBrace:
+        "mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.",
       closeAtLineEnd:
         "Close the block at the end of the line of the `{`: mermaid.js then reads the rest of that line as the description, and the lines after it as statements.",
       closeAtTextEnd:
@@ -154,15 +212,44 @@ export const noUnclosedDescriptionBlock: MermaidRuleDefinition<{
     const { sourceCode } = context
     return {
       FlowchartAccDescrBlockStatement(node) {
-        if (node.closed) return
-        // The block runs to the end of the text; the report marks where it
-        // opens, `accDescr {`, its first two tokens.
-        const [keyword, brace, ...body] = sourceCode.getTokens(node)
+        // The report marks where the block opens, `accDescr {`, its first two
+        // tokens.
+        const [keyword, brace, ...rest] = sourceCode.getTokens(node)
         if (keyword === undefined || brace === undefined) return
+        const loc = { start: keyword.loc.start, end: brace.loc.end }
+        if (!node.closed) {
+          // The block runs to the end of the text.
+          context.report({
+            loc,
+            messageId: "unclosed",
+            suggest: closingSuggestions(
+              sourceCode,
+              brace,
+              rest,
+              sourceCode.text.length,
+              false,
+            ),
+          })
+          return
+        }
+        // The first `}` after the `{` closes the block. When that `}` stands
+        // on a later line than the `{` and a `{` comes before it on its line,
+        // it is the `}` of that `{`, written for another statement.
+        const closing = rest.at(-1)
+        if (closing === undefined) return
+        if (!closedByBraceOfOtherStatement(sourceCode, brace, rest, closing)) {
+          return
+        }
         context.report({
-          loc: { start: keyword.loc.start, end: brace.loc.end },
-          messageId: "unclosed",
-          suggest: closingSuggestions(sourceCode, brace, body),
+          loc,
+          messageId: "closedByOtherBrace",
+          suggest: closingSuggestions(
+            sourceCode,
+            brace,
+            rest.slice(0, -1),
+            node.range[1],
+            true,
+          ),
         })
       },
     }

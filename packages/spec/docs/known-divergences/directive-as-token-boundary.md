@@ -9,9 +9,10 @@ mermaid.js.
 
 ## The syntax
 
-A directive is `%%{`, a name, and `}%%`, such as `%%{init: {}}%%`; it gives
-configuration to the diagram (see [Directives](../common.md#directives)). It is
-usually written on a line of its own, before the header:
+A directive is `%%{` and a name, which an argument may follow, usually closed by
+`}%%`, such as `%%{init: {}}%%`; it gives configuration to the diagram (see
+[Directives](../common.md#directives)). It is usually written on a line of its
+own, before the header:
 
 ```mmd
 %%{init: {"theme": "dark"}}%%
@@ -26,9 +27,12 @@ wherever the directive is, and joins the text before and after it. This
 specification reads the text in the same way (see
 [A directive is a token boundary](../common.md#a-directive-is-a-token-boundary)),
 with one exception, which this document is about: a directive inside a name, a
-keyword, a delimiter such as `:::`, an arrow, or a number. A name here is one
-without whitespace; a name that may contain whitespace, such as the id of a
-participant in a sequence diagram or a class name, is read as a text.
+keyword (the wrap prefix of a sequence message, such as `wrap:`, among them), a
+delimiter such as `:::`, an arrow, or a number. A name here is one without
+whitespace; a name that may contain whitespace, such as the id of a participant
+in a sequence diagram or a class name, is read as a text. [fixture:
+sequence/div-directive-in-wrap-prefix] [fixture:
+sequence/lex-directive-in-participant-id] [fixture: class/lex-directive-in-name]
 
 ## The difference
 
@@ -122,6 +126,13 @@ Known divergences section:
 [class](../diagrams/class.md#known-divergences), and
 [state](../diagrams/state.md#known-divergences).
 
+## What it means for an author
+
+A directive inside a name, a keyword, a delimiter, an arrow, or a number is
+rejected by this toolkit. mermaid.js accepts it and reads the text as if the
+directive were not there. To write a diagram that both read the same, put each
+directive on a line of its own.
+
 ## Why mermaid.js reads it so
 
 Before it reads the diagram, mermaid.js removes every directive from the whole
@@ -141,24 +152,17 @@ keyword, a delimiter, an arrow, and a number stand for their text as a whole,
 and a directive inside one of them makes the input rejected.
 
 A string can be cut into fragments already: a comment region can lie inside it,
-and its tokens are then the fragments before and after the region. A directive
-inside a string is held in the same way, and the value of the string leaves it
-out, as it leaves out a comment region (see [Nodes](../ast.md#nodes)). A text is
-prose, and so is a name that may contain whitespace; a directive inside them is
-held in the same way. This specification does not cut the token of a name, a
+and the string is then read as the fragments before and after the region. A
+directive inside a string is held in the same way, and the value of the string
+leaves it out, as it leaves out a comment region (see [Nodes](../ast.md#nodes)).
+A text is prose, and so is a name that may contain whitespace; a directive
+inside them is held in the same way. This specification does not cut a name, a
 number, an arrow, a keyword, or a delimiter at a directive: each of them is read
 as its text as a whole. mermaid.js can read a directive inside one of them only
 because it removes the directives as a step before reading, which is nothing
 that a specification would state as a rule of the syntax; this is the second of
 the reasons for a known divergence (see
 [known-divergences.md](../known-divergences.md)).
-
-## What it means for an author
-
-A directive inside a name, a keyword, a delimiter, an arrow, or a number is
-rejected by this toolkit. mermaid.js accepts it and reads the text as if the
-directive were not there. To write a diagram that both read the same, put each
-directive on a line of its own.
 
 ## The documentation of mermaid.js and its tests
 

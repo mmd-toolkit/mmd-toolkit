@@ -11,8 +11,8 @@ The `recommended` configuration does not enable this rule.
 <!-- end auto-generated rule notice -->
 
 The documentation of mermaid.js says that comments go on a line of their own.
-Written after a statement, a comment is a comment for this toolkit, but
-mermaid.js reads the line break after it as part of the comment, so the next
+Written after a statement, a comment is a comment for the parser of mmd-toolkit,
+but mermaid.js reads the line break after it as part of the comment, so the next
 line continues the statement, or the text is rejected.
 
 ## Rule Details
@@ -25,8 +25,8 @@ one relation, from `Animal` to a class `DuckAnimal`, with the label `+int age`,
 and no member of `Animal`. When the next line cannot continue the statement, as
 `class Fish` cannot, mermaid.js rejects the text; so it does with a comment on
 the header line, as in `classDiagram %% c`. The rule reports these comments too,
-because this toolkit accepts the text and formats it, and mermaid.js cannot draw
-it. This is the known divergence
+because the parser of mmd-toolkit accepts the text and its formatter formats it,
+while mermaid.js cannot draw it. This is the known divergence
 [`comment-takes-line-break`](../../../../spec/docs/known-divergences/comment-takes-line-break.md)
 of the specification.
 

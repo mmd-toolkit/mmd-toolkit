@@ -43,6 +43,7 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
 | `classDefs`    | `classDef` で定めたクラス。定めた順。`id` と `styles`。                                                                                                                                                               |
 | `subgraphs`    | subgraph。加えた順。`id`、`nodes`、`title`、`classes`、`labelType`、`dir`、およびデータブロックだけが設定する `metadata`。                                                                                            |
 | `tooltips`     | ツールチップ。その id に最初にツールチップが与えられた順。`id` と `text`。                                                                                                                                            |
+| `clickCalls`   | click のコールバックを結ぶ呼び出し。ソースの順で、コールバックを持つ click の id ごとに 1 つ。`id`、`name`、`args`。Db が受け取ったまま（下を参照）。なければ欄がない。                                               |
 
 `normalizeFlowchart()`（`src/normalizers/flowchart.ts`）は、
 `FlowDB` を共有する `flowchart-v2`、`flowchart-elk`、
@@ -54,12 +55,28 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
 - `classDefs[].textStyles`: 描画のために `styles` から導いた値
   （`color` を含む要素の `fill` を `bgFill` に置き換えたもの）。
 - `FlowchartDirectionStatement` の `textBefore` と `textAfter`
-  （[ast/flowchart.ja.md](../../spec/docs/ast/flowchart.ja.md#flowchartdirectionstatement)）:
+  （[ast/flowchart.ja.md](../../spec/docs/ast/flowchart.ja.md#flowchartdirectionstatement)）
+  :
   mermaid.js が読まない方向の行のテキスト。
 - `vertices[].haveCallback`:
   サイト設定の `securityLevel: loose` のときだけ付く。
   click があったことは class `clickable` で分かる。
-- click のコールバックの名前と引数: 閉包の中にしかない。
+- click のコールバックの名前と引数は、Db の状態にありません。
+  Db はそれらを閉包の中にだけ、`securityLevel: loose` のときだけ持ちます。
+  要約は、代わりにそれらを `clickCalls` に持ちます。
+  `FlowDB.setClickFun` の包み（`src/normalizers/click-calls.ts`）が、
+  呼び出しを受けたとおりに記録します。
+  Db が無視する呼び出し（頂点でない id、`loose` でない `securityLevel`）も
+  記録します。
+  `id` は渡された id、`name` は関数の名前、
+  `args` は括弧の間のテキストを、両端の空白も含めて書かれたとおりにしたもの
+  （括弧がないか、括弧の間が空白だけなら null）です。
+  [fixture: flowchart/gram-click-call]
+  [fixture: flowchart/db-click-callback-whitespace-arguments]
+  [fixture: flowchart/lex-callback-blank-parentheses]
+  [fixture: class/lex-callback-blank-parentheses]
+  [fixture: flowchart/tokens-callback-name-trailing-space]
+  [fixture: flowchart/tokens-callback-arguments-spaces-at-ends]
 - 内部の管理用の値（`vertexCounter`、`subCount`、`posCrossRef` など）。
 - style の各値の末尾の空白。
   対象は、`vertices[].styles`、`classDefs[].styles`、`edges[].style`、
@@ -74,6 +91,8 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
   値の先頭の空白は残す。
   Db を変えることがあるため
   （`linkStyle` は、`fill` で始まる値がないときに `fill:none` を足す）。
+  [fixture: flowchart/db-style-trailing-whitespace-characters]
+  [fixture: flowchart/db-linkstyle-default-trailing-whitespace]
 
 要約のそのほかの値:
 
@@ -82,6 +101,12 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
   は HTML の無害化の前の値で、
   `vertices[].link` は書かれたとおりの URL（trim 済み）です。
   [expected-results.ja.md](./expected-results.ja.md) を参照してください。
+  [fixture: flowchart/db-text-unsanitized-edge-label]
+  [fixture: flowchart/db-text-unsanitized-subgraph-title]
+  [fixture: flowchart/db-text-unsanitized-diagram-title]
+  [fixture: flowchart/db-text-unsanitized-acc-title]
+  [fixture: flowchart/db-text-unsanitized-acc-descr]
+  [fixture: flowchart/db-text-unsanitized-tooltip]
 - すべて空白の style は空のテキストになる。
   `style A fill:#f00, ` の style は `fill:#f00` と空のテキスト。
   [fixture: flowchart/gram-style-whitespace] [fixture:
@@ -89,10 +114,13 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
   flowchart/db-style-trailing-comma]
 - こうすることで、`securityLevel` が `strict`、`loose`、`antiscript`、
   `sandbox` のどれかである限り、要約は `securityLevel` に依存しない。
+  [fixture: flowchart/config-security-level-loose-click-call]
+  [fixture: flowchart/config-security-level-loose-click-link-javascript]
 - 節点の `icon`、`form`、`pos`、`img`、`constraint`、`assetWidth`、
   `assetHeight`、辺の `animate` と `animation`、subgraph の `metadata` は、
   `@{ ... }` のデータブロックだけが設定します。
   [embedded-data.ja.md](./embedded-data.ja.md) を参照してください。
+  [fixture: flowchart/db-data-block-asset-width]
 
 ## sequence
 
@@ -111,6 +139,7 @@ mermaid.js の Db の要約が何を持ち、図種ごとに何を捨てるか�
 
 参加者は、`name`、`description`、`wrap`、`prevActor`、`nextActor`、
 `links`、`properties`、`type`、`box`（その箱の `boxes` の中の位置）を持ちます。
+Db が設定しない欄は、要約にありません。
 
 `normalizeSequence()`（`src/normalizers/sequence.ts`）は、
 `sequence` の Db を要約します。
@@ -137,6 +166,9 @@ actor の box は、`boxes` の中の位置で表します。
 - actor、box、メッセージの `wrap` は、`wrap:` と `nowrap:` の接頭辞に従い、
   それがなければ設定に従う。
   設定は、サイト、フロントマター、ディレクティブの `wrap` か `sequence.wrap`。
+  [fixture: sequence/config-wrap-frontmatter]
+  [fixture: sequence/config-sequence-wrap-frontmatter]
+  [fixture: sequence/config-wrap-init-directive]
 - 題は、文法が渡したとおりに保つ。
   `title` の後の最初の空白より後ろの空白と、行末の空白も含む。
   空白だけの題も、描画にとっては題であり、そのための場所を取るので、
@@ -156,17 +188,18 @@ actor の box は、`boxes` の中の位置で表します。
 
 要約の欄は次のとおりです。
 
-| 欄           | 内容                                                  |
-| ------------ | ----------------------------------------------------- |
-| `direction`  | 方向。方向の文が設定しなければ `TB`。                 |
-| `title`      | フロントマターのタイトル。なければ空のテキスト。      |
-| `accTitle`   | アクセシビリティのタイトル。なければ空のテキスト。    |
-| `accDescr`   | アクセシビリティの説明。なければ空のテキスト。        |
-| `classes`    | クラス。最初に加えられた順。                          |
-| `relations`  | 関係。ソースの順。                                    |
-| `notes`      | ノート。ソースの順。                                  |
-| `namespaces` | 名前空間。最初に加えられた順。                        |
-| `interfaces` | lollipop の関係が加えるインターフェース。ソースの順。 |
+| 欄           | 内容                                                                                                            |
+| ------------ | --------------------------------------------------------------------------------------------------------------- |
+| `direction`  | 方向。方向の文が設定しなければ `TB`。                                                                           |
+| `title`      | フロントマターのタイトル。なければ空のテキスト。                                                                |
+| `accTitle`   | アクセシビリティのタイトル。なければ空のテキスト。                                                              |
+| `accDescr`   | アクセシビリティの説明。なければ空のテキスト。                                                                  |
+| `classes`    | クラス。最初に加えられた順。                                                                                    |
+| `relations`  | 関係。ソースの順。                                                                                              |
+| `notes`      | ノート。ソースの順。                                                                                            |
+| `namespaces` | 名前空間。最初に加えられた順。                                                                                  |
+| `interfaces` | lollipop の関係が加えるインターフェース。ソースの順。                                                           |
+| `clickCalls` | click のコールバックを結ぶ呼び出し。ソースの順で、文の名前ごとに 1 つ。`id`、`name`、`args`。なければ欄がない。 |
 
 クラスは、`id`、`type`、`label`、`text`、いつも `classBox` の `shape`、
 `cssClasses`、`methods`、`members`、`annotations`、`styles` と、
@@ -200,24 +233,35 @@ lollipop の関係が作るインターフェース（描画が描く）です�
 - class の定義（`classDef`）: Db は、何も読まない private の表に持つ
   （[`ClassDB`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L40-L40)）。
   定義が変えるものは、`classes[].styles` に出る。
-- click のコールバック: Db は、関数の名前と引数を閉包の中にだけ持つ。
+- click のコールバック: Db は、関数の名前と引数を閉包の中にだけ、
+  `securityLevel: loose` のときだけ持ちます。
+  要約は、代わりにそれらを `clickCalls` に持ちます。
+  flowchart と同じく、`ClassDB.setClickFunc` の包みが記録し、
+  クラスでない名前についても記録します。
+  [fixture: class/db-callback-names-comma]
+  [fixture: class/tokens-callback-name-trailing-space]
 - style の各値の末尾の空白（`classes[].styles`）: flowchart の要約と同じ。
   文法はコンマや行末の前に書いた空白を値に残すが、何もそれを読まない。
+  [fixture: class/db-style-trailing-whitespace-eol]
+  [fixture: class/db-class-def-trailing-whitespace]
 
 要約のそのほかの値:
 
 - `classes[].text` は保つ。
   ラベルと型から作られるが、
   `addClass` は型を `&lt;T&gt;` と、ラベルの文は `<T>` と書く
-  （[`addClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L112-L137)）ので、
+  （[`addClass`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L112-L137)）
+  ので、
   ラベルと型だけからは決まらない。
 - `classes[].haveCallback` は保つ。
   flowchart と違い、`setClickEvent` はどの `securityLevel` でもこれを付ける
   （[`setClickEvent`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classDb.ts#L434-L444)）。
+  [fixture: class/config-security-level-loose-click]
 - `classes[].link` は書かれたとおりの URL（trim 済み）、
   `classes[].linkTarget` は書かれた target か `_blank` で、
   どの `securityLevel` でも同じ
   （[expected-results.ja.md](./expected-results.ja.md) を参照）。
+  [fixture: class/config-security-level-loose-click]
 
 ## state
 
@@ -248,7 +292,8 @@ lollipop の関係が作るインターフェース（描画が描く）です�
 mermaid.js は、`stateDiagram` と `stateDiagram-v2` のどちらも、
 この ID として検出します。
 要約の元は、描画が描くレイアウトのデータ
-（[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L763-L778)）で、
+（[`getData`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/stateDb.ts#L763-L778)）
+で、
 mermaid.js は構文解析の間に、文からこれを作ります。
 Db はほかに 2 つの形を持ちますが、どちらも要約しません。
 文の木は、何も変えない文を持ちます
@@ -299,3 +344,6 @@ Db はほかに 2 つの形を持ちますが、どちらも要約しません�
 
 値は、Db が持つとおりに、空白も含めて記録します。
 要約は、`securityLevel`、`look`、`htmlLabels` のどれでも同じです。
+[fixture: state/config-security-level-sandbox-click]
+[fixture: state/config-look-hand-drawn]
+[fixture: state/config-html-labels-false]

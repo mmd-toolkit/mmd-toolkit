@@ -4,12 +4,12 @@
 
 図種: class。
 これは、この仕様の mermaid.js との
-[既知の差](../known-divergences.ja.md) の 1 つです。
+[既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 構文
 
 class 図では、クラスの名前をバッククォートの間に書けます。
-こうすると、裸の名前に書けない文字を持てます。
+こうすると、バッククォートで囲まないクラス名には書けない文字を持てます。
 また、クラスの名前の後には、2 つの `~` の間のジェネリクスの型を書けます。
 
 ```mmd
@@ -35,7 +35,7 @@ mermaid.js もこの仕様も同じに読みます。
 [fixture: class/lex-backquote-keyword-later] [fixture:
 class/lex-backquote-keyword-prefix]
 
-## 差
+## 差異
 
 どの例も、class 図の全体です。
 
@@ -109,8 +109,29 @@ class/div-backquote-around-string] [fixture: class/div-generic-around-string]
 バッククォートや `~` のないテキストが表す文を読みます。
 この仕様は、バッククォートや `~` の間のテキストを、
 何で始まっても名前や型として読みます。
+[fixture: class/div-backquote-starts-with-double-less-than]
+[fixture: class/div-backquote-starts-with-double-greater-than]
+[fixture: class/div-generic-starts-with-double-less-than]
+[fixture: class/div-generic-starts-with-double-greater-than]
+[fixture: class/div-backquote-keyword-css-class]
+[fixture: class/div-backquote-keyword-callback]
+[fixture: class/div-backquote-keyword-link]
+[fixture: class/div-backquote-keyword-click]
+[fixture: class/div-backquote-keyword-href]
 例 6 では、クラスの名前に文字列が続くものは文ではないので、
 この仕様はテキストを拒否します。
+
+## 書き手にとっての結果
+
+バッククォートは、
+バッククォートで囲まないクラス名には書けない名前を書く方法です。
+その名前がキーワードや `"` で始まると、
+mmd-toolkit のパーサーは名前を書かれたとおりに読み、
+mermaid.js は図を拒否するか、例 4 から 6 のように、
+警告を出さずに別のものを描きます。
+キーワード、`"`、`<<`、`>>` で始まるジェネリクスの型も同じです。
+mermaid.js が同じに読む図を書くには、
+そのような名前や型を、ほかの文字で始めます。
 
 ## mermaid.js がそう読む理由
 
@@ -138,22 +159,12 @@ mermaid.js の字句解析器は、バッククォートの名前とジェネリ
 バッククォートの名前が、後には `note` を持てるのに `note` で始まれないことは、
 mermaid.js の字句解析器の規則の順から生じるもので、
 仕様が構文の規則として述べるものではありません。
-これは既知の差の 2 つ目の理由に当たります
+これは既知の差異の 2 つ目の理由に当たります
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
 mermaid.js は 2023 年に、文字列について同じ順を替え、
 文字列がキーワードで始まれるようにしました。
 バッククォートの名前とジェネリクスの型の規則は、
 共有の規則の後に残りました（下を参照）。
-
-## 書き手にとっての結果
-
-バッククォートは、裸の名前に書けないクラスの名前を書く方法です。
-その名前がキーワードや `"` で始まると、この道具は名前を書かれたとおりに読み、
-mermaid.js は図を拒否するか、例 4 から 6 のように、
-何も言わずに別のものを描きます。
-キーワード、`"`、`<<`、`>>` で始まるジェネリクスの型も同じです。
-mermaid.js が同じに読む図を書くには、
-そのような名前や型を、ほかの文字で始めます。
 
 ## mermaid.js の文書と issue
 

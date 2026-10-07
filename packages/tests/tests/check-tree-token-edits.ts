@@ -1,5 +1,6 @@
-import type { CheckedRoot, Position } from "../src/check-tree/types.ts"
-import { isWhitespace } from "../src/db-from-tree/characters.ts"
+import type { CheckedRoot } from "../src/check-tree/types.ts"
+import { isWhitespaceAt } from "../src/db-from-tree/characters.ts"
+import { positionOf } from "./check-tree-trees.ts"
 
 // The edit of a recorded tree that the tests of the whitespace at the ends of
 // tokens make: a token loses the whitespace at one of its ends. The token
@@ -8,28 +9,6 @@ import { isWhitespace } from "../src/db-from-tree/characters.ts"
 
 /** The side of a token that loses its whitespace. */
 export type TokenSide = "start" | "end"
-
-/** Line and column of `offset`, counting `\r\n`, `\r`, and `\n` as one line terminator each. */
-function positionOf(text: string, offset: number): Position {
-  let line = 1
-  let lineStart = 0
-  for (let index = 0; index < offset; index++) {
-    const character = text[index]
-    if (
-      character === "\n" ||
-      (character === "\r" && text[index + 1] !== "\n")
-    ) {
-      line++
-      lineStart = index + 1
-    }
-  }
-  return { line, column: offset - lineStart }
-}
-
-/** Whether the character of `text` at `offset` is whitespace. */
-function isWhitespaceAt(text: string, offset: number): boolean {
-  return isWhitespace(text.codePointAt(offset) ?? 0)
-}
 
 /**
  * The tree `json` with the token `index` without the whitespace at its

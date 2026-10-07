@@ -26,6 +26,13 @@
         "id": "constructor",
         "text": "constructor"
       }
+    ],
+    "clickCalls": [
+      {
+        "id": "constructor",
+        "name": "callback",
+        "args": null
+      }
     ]
   }
 }

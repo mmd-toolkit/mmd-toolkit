@@ -19,7 +19,7 @@
 ## 規則の詳細
 
 この規則は、前に `create` がある `destroy` の文を報告する。
-`sequence` に当たる。
+対象の図種は `sequence` である。
 
 `create destroy A` の後に `B ->> A: x` があると、
 `create participant A` と同じく、メッセージのところで `A` を作り、

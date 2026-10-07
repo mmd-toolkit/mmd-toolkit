@@ -39,9 +39,15 @@
 [common.ja.md](../../spec/docs/common.ja.md) の変換は適用しません。
 行終端を `\n` として、属性の引用符を `'` として、
 エンティティをそのプレースホルダとして読むこともしません。
+[fixture: flowchart/lex-lone-cr-directive-lf-label]
+[fixture: class/db-class-def-attribute-quote]
+[fixture: class/db-acc-title-entity]
+[fixture: class/tokens-string-crlf-in-note]
 コメント領域と、行単位の規則が無視する `;` は、どのトークンの中にもなく、
 中にあることになるトークンを切ります
 （[Comment](#comment) と下を参照）。
+[fixture: flowchart/tokens-comment-region-after-opening-quote]
+[fixture: common/entity-css-in-string-label]
 ノードの値はそれらを飛ばしますが、変換はしません
 （[ノード](../../spec/docs/ast.ja.md#ノード) を参照）。
 
@@ -68,16 +74,23 @@
 （[StringLiteral](../../spec/docs/ast.ja.md#stringliteral) を参照）。
 文字列が両方の引用符を持つかは、トークンの種類ではなく、
 その StringLiteral の `closed` の欄で分かります。
+[fixture: class/lex-backquote-unclosed-alone]
 
 空白と行終端が単独でトークンになるのは、
 mermaid.js がそれを値として読むところと、
 ディレクティブ、コメント領域、無視される `;` が値を切る 2 つの所の間か、
 そのような所と値の端の間で、値の一部として読むところだけです（下を参照）。
+[fixture: class/db-generic-blank]
+[fixture: flowchart/tokens-directives-label-space-between]
+[fixture: sequence/tokens-title-directive-then-spaces]
 図の文法が行終端に意味を与える場所、たとえば文の終わりでは、
 字句解析器はそれを読みますが、そのためのトークンもノードも作りません。
 それが区切ったものは、文の並びのような木の構造に現れます。
+[fixture: common/crlf]
 ラベルの本文や複数行の引用符付き文字列のように、
 空白や行終端がトークンの範囲の中にある場合は、そのトークンの一部です。
+[fixture: flowchart/db-subgraph-title-inner-spaces]
+[fixture: class/lex-string-multi-line]
 字句解析器が行終端をどう読むかは
 [行終端](../../spec/docs/common.ja.md#行終端) の規則で、
 トークンの問題ではありません。
@@ -87,10 +100,13 @@ mermaid.js がそれを値として読むところと、
 最後のトークンはその終わりで終わります。
 そのため、mermaid.js が値の始まりか終わりで読む空白と行終端は、
 値のトークンの一部です。
+[fixture: class/db-generic-spaces]
 mermaid.js が空白だけとして読む値は、その空白のトークンを持ち、
 その種類は、図がその位置の値に与える種類です。
+[fixture: class/db-generic-blank]
 キーワードの周りや、mermaid.js が両端を削る値の周りのもののように、
 mermaid.js が値の一部として読まない空白と行終端は、どのトークンにも属しません。
+[fixture: state/db-label-trimmed]
 ディレクティブ、コメント領域、無視される `;` が値を切るところでも同じです。
 切れ目の隣の空白と行終端のうち、mermaid.js が値の一部として読むものは、
 隣の断片に属します。
@@ -128,9 +144,15 @@ mermaid.js が値として読むテキストを位置ごとに述べるのは、
 ほかの種類のトークン、
 つまり名前、数、キーワード、矢印、ほかの区切り記号の内側では、
 `;` は入力を拒否させ
-（[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行) を参照）、
+（[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)
+を参照）、
 エラーはその `;` にあります
 （[既知の差異](./error-positions.ja.md#既知の差異) を参照）。
+[fixture: flowchart/div-ignored-semicolon-in-id]
+[fixture: sequence/div-ignored-semicolon-in-autonumber-start]
+[fixture: flowchart/div-ignored-semicolon-in-keyword]
+[fixture: flowchart/div-ignored-semicolon-in-arrow]
+[fixture: flowchart/div-ignored-semicolon-in-triple-colon]
 flowchart の `A["<span style='color:#f00;font-weight:bold;'>x</span>"]` では、
 行の規則が `bold` の後の `;` を無視し、ラベルは `StringFragment` のトークン
 `"<span style='color:#f00;font-weight:bold` と `'>x</span>"` を持ち、
@@ -173,6 +195,7 @@ common/error-style-semicolon-inside]
 そのため、
 ESLint の `SourceCode` のようにトークンとコメントを合わせてたどる道具は、
 ディレクティブやフロントマターのところに隙間を見ません。
+[fixture: common/config-directive-after-frontmatter]
 
 ## コメント
 
@@ -192,6 +215,8 @@ ESLint の `SourceCode` のようにトークンとコメントを合わせて�
 記録は中身を持ち
 （[Directive](../../spec/docs/ast.ja.md#directive) を参照）、
 トークンは、どのトークンとも同じく、範囲のソースのテキストを持ちます。
+[fixture: common/comment-after-directive]
+[fixture: common/config-directive-after-frontmatter]
 
 ### Comment
 
@@ -210,7 +235,8 @@ ESLint の `SourceCode` のようにトークンとコメントを合わせて�
 コメント行と一部の図のコメントの `%%`、図のコメントの `#` と `%` です。
 コメントがほかの印を持つ図種は、それをこれに足します。
 図種の図のコメントがどの印を持つかは、その図の文書が定めます。
-[sequence](../../spec/docs/diagrams/sequence.ja.md#単位と文脈) の `#`、`%%`、`%` がそうです。
+[sequence](../../spec/docs/diagrams/sequence.ja.md#単位と文脈)
+の `#`、`%%`、`%` がそうです。
 ツールは、コメントが印を持つかどうか、どの印を持つかを、この欄から読みます。
 [fixture: common/comment-percent-joined-by-directive] [fixture:
 sequence/lex-single-percent-comment] [fixture:
@@ -224,8 +250,11 @@ state/lex-diagram-comment-across-comment-line]
 範囲は印から始まり、行終端の手前で終わります。
 印は、コメント行の `%%` の最初の `%` か、図のコメントの印です。
 コメントは印から始まり、印より前の文字はコメントに含まれません。
+[fixture: common/comment-after-directive]
+[fixture: sequence/lex-single-percent-comment]
 例外は、コメント領域の後の図のコメントの断片です（下を参照）。
 コメント領域が覆う空白だけの行と行終端は、空白と行終端です。
+[fixture: common/comment-blank-line-before-in-string]
 コメントの中のディレクティブは、その後の行終端を取ることがあり、
 そのときコメントはその先まで続きます
 （[コメント行](../../spec/docs/common.ja.md#コメント行) を参照）。
@@ -256,7 +285,8 @@ sequence の `A->>B: x #style:#x;` の終わりでは、
 agentflow 以外の図では、
 行の規則がコメント領域を行の区間から除くので、
 コメント行がそのような `;` を持つことはありません
-（[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行) を参照）。
+（[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)
+を参照）。
 [fixture: sequence/tokens-comment-then-ignored-semicolon]
 Db が
 [`preserveCommentsWhenParsing`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L66-L76)
@@ -266,7 +296,12 @@ Db が
 文の後ろにある `%%` や `%%` だけの行のように、
 コメント行でない `%%` は
 [図のテキスト](../../spec/docs/common.ja.md#ソースの読み方) で、
-トークンの一部です。
+図の字句解析器が読みます。
+それはトークンの一部か、class の `%%` だけの行のように、
+図の文書が図のコメントとするところでは図のコメントです。
+[fixture: common/comment-mid-line-style]
+[fixture: common/comment-bare]
+[fixture: class/lex-bare-percent-line-between-statements]
 
 コメント領域は、行の終わりまで続く図のコメントの中にあることもあります。
 その行の U+2028 か U+2029 の後のコメント行は、
@@ -274,8 +309,17 @@ mermaid.js が読むときにはないので、
 行はコメント行の後に続きます。
 領域は、トークンと同じく、図のコメントを切ります
 （[トークンの中のコメント領域](#トークンの中のコメント領域) を参照）。
-それぞれの断片、つまり領域の前か後のテキストから両端の空白と行終端を除いたものが
-`Comment` で、空か空白だけの断片は `Comment` になりません。
+それぞれの断片、つまり領域の前か後のテキストから、
+領域の側の空白と行終端を除いたものが `Comment` で、
+空か空白だけの断片は `Comment` になりません。
+最後の断片は、どのコメントとも同じく、行終端の前の空白を持ちます。
+state の `state X ""` に ` %% c`、U+2028、行 `%% d`、
+`x` と空白の行が続くと、コメントは `%% c`、`%% d`、空白のついた `x` です。
+U+2028 の前の空白や、領域の後の行の初めの空白 2 つは、
+どのコメントにも入りません。
+[fixture: state/tokens-ignored-text-comment-cut-fragment-trailing-space]
+[fixture: state/tokens-ignored-text-comment-cut-space-before-separator]
+[fixture: state/tokens-ignored-text-comment-cut-spaces-after-region]
 領域の後の断片は印を持たず、その `mark` は null です。
 その範囲は最初の文字から始まり、値はその範囲のソースのテキストです。
 state の `A %% x`、U+2029、行 `%% end`、行 `B` は、
@@ -350,10 +394,13 @@ mermaid.js が値の一部として読むものを含みます
 領域は、その空白だけの行と、そのコメントを終える行終端とともに、
 どのトークンの外にもあります。
 空の断片はトークンになりません。
+[fixture: flowchart/tokens-rawtext-comment-line-then-closing-bracket]
 空白と行終端だけの断片も、mermaid.js が値の一部として読まないもの、
 たとえば mermaid.js が両端を削るラベルの始まりにあるものは、
 トークンになりません。
 1 つのトークンの中に領域がいくつもあれば、それぞれで切ります。
+[fixture: flowchart/tokens-string-two-comment-lines]
+[fixture: flowchart/tokens-rawtext-two-comment-lines]
 コメント領域を持ちうるのは、
 単位が行をまたぎうる `String` と `RawText` のトークンだけです。
 `String` のトークンの断片は `StringFragment` のトークンです。
@@ -408,10 +455,12 @@ state/tokens-comment-region-in-acc-descr-block]
 ## ディレクティブのトークン
 
 ディレクティブはトークンの境界なので
-（[common.ja.md](../../spec/docs/common.ja.md#ディレクティブはトークンの境界) を参照）、
+（[common.ja.md](../../spec/docs/common.ja.md#ディレクティブはトークンの境界)
+を参照）、
 ほかのトークンの中にはありません。
 コメントの中のディレクティブは、`Directive` のトークンを持たず、
 その文字はそのコメントに含まれます。
+[fixture: common/directive-in-comment]
 コメント領域の中で、コメントの `%%` より前にあるディレクティブは、
 領域が 1 つの単位の読む中にあるときも、
 領域がその単位のトークンを切るので
@@ -433,17 +482,22 @@ common/comment-directive-in-string]
 範囲は、開始の区切りの行の `---` から、閉じる `---` までです。
 開始の `---` の前の字下げと、閉じる区切りの後の空白と空行は、
 フロントマターの規則も覆いますが、空白と行終端です。
+[fixture: common/frontmatter-indented]
+[fixture: flowchart/demo-flowchart-4301e540]
 
 フロントマターの範囲は、次のトークンをこの順に持ちます。
 開始の `---` で、`Punctuator` のトークン。
 本文がすべて空白でなければ本文で、
 本文の空白でない最初の文字から最後の文字までの `RawText` のトークン。
 閉じる `---` で、`Punctuator` のトークン。
+[fixture: common/frontmatter-empty-body]
+[fixture: common/frontmatter-indented]
 範囲のほかの部分は空白と行終端です。
 各 `---` の後の同じ行の空白、本文の前の空白だけの行、
 本文の始まりと終わりの空白がそうで、本文の最初の行の字下げも含みます。
 本文のほかの行の字下げは本文のトークンの中にあり、
 `value` は字下げをすべて含む本文を持ちます。
+[fixture: common/config-directive-after-frontmatter]
 区切りの行は、字下げ、`---`、行の空白しか持たないので、
 ほかのトークンはその行にありません。
 `---` の後の U+2028 は行の空白です。
@@ -469,6 +523,7 @@ common/frontmatter-line-separator-inside-body]
 StringLiteral のトークンは、引用符を含む 1 つの `String` のトークンで、
 範囲はそのトークンの範囲なので、
 `raw` はそのトークンの `value` に等しくなります。
+[fixture: flowchart/gram-label-space-string]
 コメント領域、無視される `;`、ディレクティブがそれを切るときは、
 そのトークンは `StringFragment` のトークンで、
 範囲はその最初から最後までで、
@@ -483,6 +538,7 @@ URL のトークンは `StringFragment` のトークン `"u` と `v"` で、
 その間に `Directive` のトークンがあります。
 [fixture: flowchart/tokens-string-literal-comment-line]
 [fixture: flowchart/lex-directive-in-click-href-string]
+[fixture: common/entity-css-in-string-label]
 
 閉じていない文字列のトークンと範囲は、その書かれたテキストの終わりまで続きます
 （[StringLiteral](../../spec/docs/ast.ja.md#stringliteral) を参照）。
@@ -513,9 +569,13 @@ class 図で、テキストの終わりの `class`、`` `x%%{init: {}}%%y``、�
 
 NumericLiteral のトークンは、1 つの `Numeric` のトークンです。
 範囲はそのトークンの範囲なので、`raw` はそのトークンのソースのテキストです。
+[fixture: state/gram-scale]
 数の中のディレクティブと、行の規則が無視する `;` は、入力を拒否させます
 （[ディレクティブはトークンの境界](../../spec/docs/common.ja.md#ディレクティブはトークンの境界)、
-[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行) を参照）。
+[`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)
+を参照）。
+[fixture: sequence/div-directive-in-number]
+[fixture: sequence/div-ignored-semicolon-in-autonumber-start]
 
 ## error 疑似図種のトークン
 
@@ -523,27 +583,37 @@ NumericLiteral のトークンは、1 つの `Numeric` のトークンです。
 ディレクティブとコメント領域を除いたテキストの中の、
 空白でも行終端でもない文字の最長の並びから作り、
 どれも `RawText` のトークンです。
+[fixture: common/error-trailing-percent]
 並びは空白や行終端で終わり、並びの 2 つの文字の間のディレクティブは、
 どのトークンとも同じく、
 並びを切ります
-（[common.ja.md](../../spec/docs/common.ja.md#ディレクティブはトークンの境界) を参照）。
+（[common.ja.md](../../spec/docs/common.ja.md#ディレクティブはトークンの境界)
+を参照）。
+[fixture: common/error-split-by-directive]
 行単位の規則が無視する `;` は、
 どの図とも同じく `IgnoredSemicolon` のトークンです
 （[トークン](#トークン) を参照）。
 それはどの並びにも含まれず、
 中にある並びを 2 つの `RawText` のトークンに切ります。
+[fixture: common/error-style-semicolon-inside]
 ノードのトークンはその `RawText` のトークンで、
 範囲はその最初の始まりから最後の終わりまでです
 （[ノード](../../spec/docs/ast.ja.md#ノード) を参照）。
-それは必ず 1 つ以上あり、そのうち 1 つが `error` を持ちます。
+それは必ず 1 つ以上あります。
+検出が見つけた `error` の文字が、1 つのトークンにあるか、
+ディレクティブに切られて複数のトークンにあるからです（下を参照）。
+[fixture: common/error-directive-adjacent]
+[fixture: common/error-split-by-directive]
 
 並びは、[図のテキスト](../../spec/docs/common.ja.md#ソースの読み方) ではなく、
 テキストの文字からなります。
 行単位の規則が無視する `;` は図のテキストではありませんが、
 トークンです。
+[fixture: common/error-style-semicolon-trailing]
 コメントは必ずトークンの外にあります。
 コメント領域はコメント開始位置、つまりテキストの先頭か、行終端、U+2028、
 U+2029 の直後から始まり、それらはどれも並びを切るからです。
+[fixture: common/error-comment-inside]
 
 検出器は、検出の追加の除去の後でしかテキストを見ないので、
 トークンは語 `error` だけとは限りません。
@@ -590,9 +660,11 @@ Identifier のトークンは 1 つの `Identifier` のトークンで、
 その範囲はノードの範囲です。
 単位の中にも単位の間にも空白はなく、
 その内側にディレクティブか、行の規則が無視する `;` があると、入力を拒否します
-（[ディレクティブはトークンの境界](../../spec/docs/common.ja.md#ディレクティブはトークンの境界) を参照）。
+（[ディレクティブはトークンの境界](../../spec/docs/common.ja.md#ディレクティブはトークンの境界)
+を参照）。
 `A%%{init: {}}%%B-->C` は、そのディレクティブのところで拒否します。
 [fixture: flowchart/div-directive-in-id]
+[fixture: flowchart/div-ignored-semicolon-in-id]
 
 空白を含みうる名前は、代わりに図種の名前のノードです
 （[共通の葉のノード](../../spec/docs/ast.ja.md#共通の葉のノード) を参照）。
@@ -611,12 +683,14 @@ Identifier のトークンは 1 つの `Identifier` のトークンで、
   [fixture: class/gram-name-spaces] [fixture:
   class/lex-directive-between-name-parts] [fixture:
   class/lex-directive-in-dotted-name]
+  [fixture: class/tokens-ignored-semicolon-in-relation-name]
 - sequence 図では、SequenceIdentifier は、
   その単位の 1 つの `RawText` のトークンを持ち、
   mermaid.js が名前の一部として読む、中の空白もそのトークンに入ります。
   `participant A%%{init: {}}%% c%%B` の参加者は `A c%%B` で、
   トークンは `A` と ` c%%B`、その間に `Directive` のトークンがあります。
   [fixture: sequence/lex-directive-in-id-before-space]
+  [fixture: sequence/tokens-ignored-semicolon-in-participant-id]
 
 ## ディレクティブが切るトークン
 
@@ -627,6 +701,9 @@ Identifier のトークンは 1 つの `Identifier` のトークンで、
   ディレクティブを越えて値の終わりの空白まで続くトークンです
   （[文字列、バッククォートの名前、ジェネリクスの型](../../spec/docs/diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
   を参照）。
+  [fixture: common/directive-in-string]
+  [fixture: class/lex-directive-between-name-parts]
+  [fixture: class/lex-backquote-unclosed-directive-after-line-break]
   切ってよいのは `RawText` と `String` のトークンだけで、
   ほかの種類のトークンの内側のディレクティブは、入力を拒否させます
   （[ディレクティブはトークンの境界](../../spec/docs/common.ja.md#ディレクティブはトークンの境界)
@@ -634,6 +711,10 @@ Identifier のトークンは 1 つの `Identifier` のトークンで、
   `A(%%{init: {}}%%(x))` では、
   円の 2 つの `(` が 1 つの `Punctuator` のトークンなので、拒否します。
   [fixture: flowchart/div-directive-in-circle-opening]
+  [fixture: flowchart/div-directive-in-id]
+  [fixture: sequence/div-directive-in-number]
+  [fixture: flowchart/div-directive-in-keyword-href]
+  [fixture: flowchart/div-directive-in-arrow-length]
   各断片は、ディレクティブの隣の空白と行終端のうち、
   mermaid.js が値の一部として読むものを含めて、同じ種類のトークンです
   （[トークン](#トークン) を参照）。

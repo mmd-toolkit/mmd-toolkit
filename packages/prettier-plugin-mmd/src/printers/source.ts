@@ -1,11 +1,42 @@
-import type { Comment, Directive, Root, Token } from "@mmd-toolkit/parser"
+import type {
+  Comment,
+  Directive,
+  Range,
+  Root,
+  Token,
+} from "@mmd-toolkit/parser"
 
 /**
- * A comment or a `Directive` token: text that belongs to no node, which the
- * printers print as written between the things they print (ast.md, Tokens,
- * and Comments, directives, and frontmatter).
+ * A comment as the printers read it: its kind, its range, and its mark. A
+ * comment that a comment line cuts is one comment here, over the range of all
+ * its parts (see `joinCommentFragments`).
  */
-export type Trivia = Comment | Token
+export interface TriviaComment {
+  readonly type: "Comment"
+  readonly range: Range
+  readonly mark: Comment["mark"]
+}
+
+/**
+ * A directive as the printers read it: its kind and its range, which takes
+ * the whitespace after a directive that is not closed when that holds a
+ * U+2028 or U+2029 (see `extendDirective`).
+ */
+export interface TriviaDirective {
+  readonly type: "Directive"
+  readonly range: Range
+}
+
+/**
+ * A comment or a directive: text that belongs to no node, which the printers
+ * print as written between the things they print (ast.md, Tokens, and
+ * Comments, directives, and frontmatter). They are the printers' own records,
+ * not the tokens and comments of the parser: the range of a directive or of a
+ * joined comment is not the range of the parser's token or comment, so a
+ * parser's token with another range would give a `value` and a `loc` that no
+ * longer fit.
+ */
+export type Trivia = TriviaComment | TriviaDirective
 
 /**
  * What a diagram printer reads besides the tree: the source text, the root
@@ -35,10 +66,11 @@ export interface Source {
    */
   readonly joiningRegions: readonly JoiningRegion[]
   /**
-   * The offsets of the line feeds that the joining regions remove: the
-   * line feeds that mermaid.js does not read, so that the lines they end
-   * go on. A region at the end of the text, with nothing after it to join,
-   * removes none.
+   * The offsets of the line feeds that mermaid.js does not read as line
+   * ends, so that the lines they end go on: the line feeds that the joining
+   * regions remove, and the ones in the whitespace after a directive that is
+   * not closed. Whitespace at the end of the text, with nothing after it to
+   * join, removes none.
    */
   readonly removedLineFeeds: ReadonlySet<number>
 }
@@ -84,6 +116,11 @@ export function lineTerminatorLengthAt(text: string, offset: number): number {
   return text[offset] === "\r" || text[offset] === "\n" ? 1 : 0
 }
 
+/** The comment as the printers read it. */
+function toTriviaComment(comment: Comment): TriviaComment {
+  return { type: "Comment", mark: comment.mark, range: comment.range }
+}
+
 /**
  * Joins the comments of a diagram comment that a comment line cuts: a
  * diagram comment goes on past a comment line that follows U+2028 or
@@ -95,7 +132,7 @@ export function lineTerminatorLengthAt(text: string, offset: number): number {
  * diagram. The comments from the first one before a U+2028 or U+2029 up to
  * a comment with no mark become one comment, which is printed as written.
  */
-function joinCommentFragments(text: string, root: Root): Comment[] {
+function joinCommentFragments(text: string, root: Root): TriviaComment[] {
   const { comments } = root
 
   /** The text between the comment before `index` and the comment at `index`. */
@@ -109,10 +146,10 @@ function joinCommentFragments(text: string, root: Root): Comment[] {
     return gap.includes("\u2028") || gap.includes("\u2029")
   }
 
-  const joined: Comment[] = []
+  const joined: TriviaComment[] = []
   for (const [index, comment] of comments.entries()) {
     if (comment.mark !== null) {
-      joined.push(comment)
+      joined.push(toTriviaComment(comment))
       continue
     }
     // Back from the text after the comment line, over the comment lines and
@@ -125,18 +162,18 @@ function joinCommentFragments(text: string, root: Root): Comment[] {
       first--
       if (separated && !(first > 0 && hasSeparatorBefore(first))) break
     }
-    let start = comments[first]
+    let start = toTriviaComment(comments[first])
     while (
       joined.length > 0 &&
       joined[joined.length - 1].range[1] > start.range[0]
     ) {
-      const overlapped = joined.pop() as Comment
+      const overlapped = joined.pop() as TriviaComment
       if (overlapped.range[0] < start.range[0]) start = overlapped
     }
     joined.push({
-      ...start,
+      type: "Comment",
+      mark: start.mark,
       range: [start.range[0], comment.range[1]],
-      loc: { start: start.loc.start, end: comment.loc.end },
     })
   }
   return joined
@@ -162,33 +199,57 @@ function isBlank(
 }
 
 /**
- * Makes the U+2028 or U+2029 that stops a directive that is not closed part
- * of it. The text of such a directive stops before the character
- * (common.md, Directives), which is no whitespace to it: with the character
- * printed as whitespace, the text of the directive would reach past it.
+ * The whitespace that a directive that is not closed takes after its
+ * argument, or `undefined` for a directive that is closed: the scan of such
+ * a directive takes all the whitespace that follows, line breaks included
+ * (common.md, Where a directive is). The whitespace is no part of the range
+ * of the directive. `runsToEnd` says that it runs to the end of the text, and
+ * joins nothing.
  */
-function includeStoppingCharacter(
+function findTakenWhitespace(
+  text: string,
+  directive: Directive,
+): { start: number; end: number; runsToEnd: boolean } | undefined {
+  if (directive.closed) return undefined
+  const start = directive.range[1]
+  let end = start
+  while (end < text.length && isWhitespace(text[end])) end++
+  return { start, end, runsToEnd: end === text.length }
+}
+
+/**
+ * Makes the directive as the printers read it. The whitespace that a
+ * directive that is not closed takes is part of it when it holds a U+2028 or
+ * U+2029. The free text of its argument stops before such a character, which
+ * is no whitespace to it (common.md, Where a directive is): with the
+ * character printed as a space, the argument would reach past it, and take
+ * the statements that follow, up to the next `}%%` or the end of the text. So
+ * the whitespace is printed as written, with the directive. Whitespace that
+ * runs to the end of the text joins nothing, so only what reaches its last
+ * U+2028 or U+2029 matters there.
+ */
+function extendDirective(
   text: string,
   directive: Token,
   directives: readonly Directive[],
-): Token {
-  const next = text[directive.range[1]]
+): TriviaDirective {
   const record = directives.find(
     (candidate) => candidate.range[0] === directive.range[0],
   )
-  if (record?.closed !== false || (next !== "\u2028" && next !== "\u2029")) {
-    return directive
+  const taken = record && findTakenWhitespace(text, record)
+  const lastStop =
+    taken === undefined
+      ? -1
+      : Math.max(
+          text.lastIndexOf("\u2028", taken.end - 1),
+          text.lastIndexOf("\u2029", taken.end - 1),
+        )
+  if (taken === undefined || lastStop < taken.start) {
+    return { type: "Directive", range: directive.range }
   }
   return {
-    ...directive,
-    range: [directive.range[0], directive.range[1] + 1],
-    loc: {
-      start: directive.loc.start,
-      end: {
-        line: directive.loc.end.line,
-        column: directive.loc.end.column + 1,
-      },
-    },
+    type: "Directive",
+    range: [directive.range[0], taken.runsToEnd ? lastStop + 1 : taken.end],
   }
 }
 
@@ -204,7 +265,7 @@ function includeStoppingCharacter(
 export function isCommentLine(
   text: string,
   root: Root,
-  comment: Comment,
+  comment: Pick<Comment, "mark" | "range">,
 ): boolean {
   if (comment.mark !== "%%") return false
   const [start, end] = comment.range
@@ -305,15 +366,29 @@ function findJoiningRegions(
   return regions
 }
 
-/** The offsets of the line feeds that the regions remove. */
+/**
+ * The offsets of the line feeds that mermaid.js does not read as line ends:
+ * the ones that a joining region removes, and the ones in the whitespace that
+ * a directive that is not closed takes (see `findTakenWhitespace`), so that
+ * the next line goes on the line of the directive. Whitespace that runs to
+ * the end of the text joins nothing.
+ */
 function findRemovedLineFeeds(
   text: string,
+  root: Root,
   regions: readonly JoiningRegion[],
 ): ReadonlySet<number> {
   const removed = new Set<number>()
   for (const region of regions) {
     if (!region.hasTextAfter) continue
     for (let offset = region.start; offset < region.end; offset++) {
+      if (text[offset] === "\n") removed.add(offset)
+    }
+  }
+  for (const directive of root.directives) {
+    const taken = findTakenWhitespace(text, directive)
+    if (taken === undefined || taken.runsToEnd) continue
+    for (let offset = taken.start; offset < taken.end; offset++) {
       if (text[offset] === "\n") removed.add(offset)
     }
   }
@@ -336,7 +411,7 @@ export function createSource(text: string, root: Root): Source {
             token.range[1] <= comment.range[1],
         ),
     )
-    .map((token) => includeStoppingCharacter(text, token, root.directives))
+    .map((token) => extendDirective(text, token, root.directives))
   const trivia = [...comments, ...directives].sort(
     (a, b) => a.range[0] - b.range[0],
   )
@@ -350,7 +425,7 @@ export function createSource(text: string, root: Root): Source {
         .map((token) => token.range[0]),
     ),
     joiningRegions,
-    removedLineFeeds: findRemovedLineFeeds(text, joiningRegions),
+    removedLineFeeds: findRemovedLineFeeds(text, root, joiningRegions),
   }
 }
 

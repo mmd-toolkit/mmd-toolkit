@@ -54,7 +54,7 @@ each attribute quote as `'`, each entity as its placeholder, and through comment
 regions and the `;` that the line rule ignores as if they were not there. The
 `\n` that the lexer reads after the last character
 ([End of text](../common.md#end-of-text)) is part of the diagram text. This
-section describes the diagram's own token rules, item 4 of
+section describes the diagram's own unit rules, item 4 of
 [Reading a source](../common.md#reading-a-source).
 
 The lexer of mermaid.js for this diagram compares letters as they are written:
@@ -95,9 +95,10 @@ class/lex-member-body-unclosed] [fixture: class/lex-namespace-body-unclosed]
 [fixture: class/lex-generic-unclosed] [fixture:
 class/lex-callback-name-unclosed] [fixture:
 class/lex-callback-arguments-unclosed] [fixture: class/lex-acc-title-at-end]
-[fixture: class/lex-acc-descr-block-unclosed] The title context is entered after
-the whitespace that follows `accTitle:`, line feeds included, so `accTitle:`
-with only whitespace after it is rejected at the end of the text.
+[fixture: class/lex-acc-descr-at-end] [fixture:
+class/lex-acc-descr-block-unclosed] The title context is entered after the
+whitespace that follows `accTitle:`, line feeds included, so `accTitle:` with
+only whitespace after it is rejected at the end of the text.
 
 ### Directives inside units
 
@@ -116,7 +117,21 @@ its `:`, a `member-name`, `parameters`, `return-type`, or `annotation-name`
 unit, a `callback-name` or `callback-arguments` unit, the units of a style, a
 `title-text`, `description-text`, or `description-block-text` unit, a
 `direction-text` unit, and an ignored part of a method line. The **string
-units** are the `string` and `backquoted` units.
+units** are the `string` and `backquoted` units. [fixture:
+class/div-directive-in-style-id] [fixture:
+class/div-directive-in-class-def-name] [fixture:
+class/div-directive-in-css-class-name] [fixture:
+class/div-directive-in-css-class-shorthand] [fixture:
+class/div-directive-in-annotation-statement-name] [fixture:
+class/lex-directive-in-generic] [fixture: class/lex-directive-in-parameters]
+[fixture: class/lex-directive-in-return-type] [fixture:
+class/lex-directive-in-member-annotation] [fixture:
+class/lex-directive-in-callback-name] [fixture:
+class/lex-directive-in-callback-arguments] [fixture:
+class/lex-directive-in-acc-title-text] [fixture:
+class/lex-directive-in-acc-descr-text] [fixture:
+class/lex-directive-in-acc-descr-block-text] [fixture:
+class/lex-directive-in-ignored-method-part]
 
 - `class Fo%%{init: {}}%%o` declares `Foo`, `class A%%{init: {}}%%.B` the class
   `A.B`, and `namespace Fo%%{init: {}}%%o {` the namespace `Foo`,
@@ -127,7 +142,9 @@ units** are the `string` and `backquoted` units.
   class/lex-directive-in-dotted-name] [fixture:
   class/lex-directive-in-namespace-name] [fixture:
   class/lex-directive-in-member] [fixture: class/lex-directive-in-label]
-  [fixture: class/tokens-ignored-semicolon-in-relation-name]
+  [fixture: class/tokens-style-directive-inside-label] [fixture:
+  class/tokens-ignored-text-directive-after-direction] [fixture:
+  class/tokens-ignored-semicolon-in-relation-name]
 - A directive between two units is allowed whatever their kind:
   `A <|%%{init: {}}%%-- B` is an extension. [fixture:
   class/lex-directive-between-relation-end-and-line]
@@ -168,7 +185,7 @@ units** are the `string` and `backquoted` units.
 
 In the statement context, the lexer tries these rules in order:
 
-1. A **direction line** (see below).
+1. A **direction line** (see below). [fixture: class/db-direction-bt]
 2. `%%` and the rest of its line, up to the line feed: a diagram comment. Its
    mark is `%%`, and its value is the text after the mark. Most lines with only
    whitespace before `%%` are comment lines of
@@ -180,31 +197,58 @@ In the statement context, the lexer tries these rules in order:
    `newline` unit is read for their line feeds, which belong to no unit. A line
    of only whitespace after it counts as a line. A comment after a unit ends at
    the end of its line, and the line feed after it is a `newline` unit (see
-   [Known divergences](#known-divergences)).
+   [Known divergences](#known-divergences)). [fixture:
+   class/db-member-statement-percent]
 3. `accTitle`, zero or more whitespace, `:`, and zero or more whitespace: an
-   `accTitle` unit and a `:` unit; enters the title context.
+   `accTitle` unit and a `:` unit; enters the title context. [fixture:
+   class/lex-acc-title-hash-semicolon] [fixture:
+   class/lex-acc-title-space-before-colon] [fixture:
+   class/lex-acc-title-no-whitespace] [fixture:
+   class/lex-acc-title-line-feed-before-colon]
 4. `accDescr`, zero or more whitespace, `:`, and zero or more whitespace: an
-   `accDescr` unit and a `:` unit; enters the description context.
+   `accDescr` unit and a `:` unit; enters the description context. [fixture:
+   class/lex-acc-descr-hash-semicolon] [fixture:
+   class/lex-acc-descr-space-before-colon] [fixture:
+   class/lex-acc-descr-no-whitespace] [fixture:
+   class/lex-acc-descr-line-feed-before-colon]
 5. `accDescr`, zero or more whitespace, `{`, and zero or more whitespace: an
    `accDescr` unit and a `{` unit; enters the description block context.
+   [fixture: class/gram-empty-description-block-then-statement] [fixture:
+   class/gram-acc-descr-block-with-text] [fixture:
+   class/lex-acc-descr-block-no-whitespace] [fixture:
+   class/lex-acc-descr-block-line-feed-before-brace]
 6. Zero or more whitespace followed by one or more line feeds, as many as
    possible, so that the last character read is a line feed: a `newline` unit.
-   Blank lines and lines of only whitespace are part of it.
-7. One or more other whitespace characters: nothing.
-8. The keywords `classDiagram-v2` and `classDiagram`: a `header` unit.
-9. `[*]`: a `[*]` unit.
+   Blank lines and lines of only whitespace are part of it. [fixture:
+   class/gram-blank-lines] [fixture:
+   class/lex-spaces-only-line-between-statements]
+7. One or more other whitespace characters: nothing. [fixture:
+   class/gram-name-spaces]
+8. The keywords `classDiagram-v2` and `classDiagram`: a `header` unit. [fixture:
+   common/detect-minimal-class-diagram] [fixture: class/header-v2]
+9. `[*]`: a `[*]` unit. [fixture: class/lex-edge-state-in-statement]
 10. `call` and one or more whitespace: a `call` unit; enters the callback name
-    context.
+    context. [fixture: class/lex-call-prefix] [fixture:
+    class/lex-callback-name-multi-line]
 11. `"`: a string (see
     [Strings, backquoted names, and generic types](#strings-backquoted-names-and-generic-types)).
-12. The keywords `style` and `classDef`: a unit named by the keyword.
+    [fixture: class/lex-string-multi-line]
+12. The keywords `style` and `classDef`: a unit named by the keyword. [fixture:
+    class/db-style-undefined-class] [fixture: class/db-class-def-default]
 13. The keyword `namespace`: a `namespace` unit; enters the namespace context.
-14. The keyword `class`: a `class` unit; enters the class context.
+    [fixture: class/gram-namespace-empty]
+14. The keyword `class`: a `class` unit; enters the class context. [fixture:
+    class/lex-keyword-prefix-of-name]
 15. The shared rules. In the statement context, `:`, `,`, and `#` that no shared
     rule before the punctuation rule reads are a unit named by their text.
+    [fixture: class/gram-member-statement] [fixture:
+    class/lex-hash-in-statement]
 
 The units `[*]`, `=`, `+`, and `punctuation` are taken by no rule of the
-grammar, so an input that has one is rejected. Some consequences of the order:
+grammar, so an input that has one is rejected. [fixture:
+class/lex-edge-state-in-statement] [fixture: class/lex-equals-in-name] [fixture:
+class/lex-plus-in-name] [fixture: class/lex-punctuation-in-name] Some
+consequences of the order:
 
 - A keyword is a keyword wherever a unit starts. `class note`, `class link`,
   `class o`, and `class _self` are rejected, and so is a relation to `note`,
@@ -213,6 +257,7 @@ grammar, so an input that has one is rejected. Some consequences of the order:
   [fixture: class/lex-keyword-o-as-name] [fixture:
   class/lex-keyword-link-target-as-name] [fixture:
   class/lex-keyword-prefix-of-note] [fixture: class/lex-keyword-o-prefix]
+  [fixture: class/lex-keyword-note-relation-end]
 - `o` is a relation end only where no word character follows it: `A --o B` is an
   aggregation, and `A --oB` is a relation with no ends from A to the class `oB`.
   [fixture: class/lex-aggregation-end] [fixture: class/lex-o-before-word]
@@ -238,21 +283,24 @@ grammar, so an input that has one is rejected. Some consequences of the order:
   class/lex-entity-in-member]
 
 **The direction line.** From the current position: a run of characters without
-line feeds, U+2028, or U+2029; then `direction`; then one or more whitespace
-characters, line feeds included; then one of `TB`, `BT`, `RL`, and `LR`; and
-then every character up to the next line feed, which is not included. The rule
-reads the characters before `direction` as a `direction-text` unit, `direction`
-as a `direction` unit, the value as a `direction-value` unit, and the characters
-after the value as another `direction-text` unit; a `direction-text` unit that
-would be empty or all whitespace is left out. mermaid.js does not read the
-`direction-text` units. The values are tried in the order given: if the line has
-`direction` followed by `TB` anywhere, the value is `TB`; otherwise `BT` is
-tried, and so on. For a value, the lexer takes the last `direction` of the run
-that it follows, and the unit ends at the end of the line on which the value
-stands. This is the direction line of flowchart (see
-[The statement context](./flowchart.md#the-statement-context) there) without the
-value `TD`. Here it is the first rule, so it is tried at the start of every line
-in the statement context and takes the whole line:
+line feeds, U+2028, or U+2029, the longest one that the rest can follow; then
+`direction`; then one or more whitespace characters, line feeds included; then
+one of `TB`, `BT`, `RL`, and `LR`; and then every character up to the next line
+feed, which is not included. The rule reads the characters before `direction` as
+a `direction-text` unit, `direction` as a `direction` unit, the value as a
+`direction-value` unit, and the characters after the value as another
+`direction-text` unit; a `direction-text` unit that would be empty or all
+whitespace is left out. mermaid.js does not read the `direction-text` units. The
+values are tried in the order given: if the line has `direction` followed by
+`TB` anywhere, the value is `TB`; otherwise `BT` is tried, and so on. For a
+value, the lexer takes the last `direction` of the run that it follows, and the
+unit ends at the end of the line on which the value stands. So
+`direction TB x direction TB` is read at its last `direction`, and
+`direction TB x` is a `direction-text` unit. [fixture:
+class/lex-direction-line-same-value-twice] This is the direction line of
+flowchart (see [The statement context](./flowchart.md#the-statement-context)
+there) without the value `TD`. Here it is the first rule, so it is tried at the
+start of every line in the statement context and takes the whole line:
 
 - `class A direction LR` is a direction line, not a class statement, and so is
   `A --> B : set direction LR now`, not a relation statement. [fixture:
@@ -279,27 +327,49 @@ in the statement context and takes the whole line:
 
 1. The keyword `note for`, with one space between the two words: a `note` unit
    and a `for` unit. The keywords `cssClass`, `callback`, `link`, `click`, and
-   `note`: a unit named by the keyword.
-2. `<<` and `>>`: a unit named by its text.
-3. The keyword `href`: an `href` unit.
-4. `~`: a `~` unit; enters the generic context.
+   `note`: a unit named by the keyword. [fixture:
+   class/db-note-for-undefined-class] [fixture:
+   class/db-css-class-undefined-class] [fixture:
+   class/docs-syntax-class-diagram-500154a2] [fixture:
+   class/db-link-undefined-class] [fixture: class/db-click-href] [fixture:
+   class/lex-string-multi-line]
+2. `<<` and `>>`: a unit named by its text. [fixture:
+   class/spec-class-diagram-280c04be]
+3. The keyword `href`: an `href` unit. [fixture: class/db-click-href]
+4. `~`: a `~` unit; enters the generic context. [fixture:
+   class/lex-generic-multi-line]
 5. `` ` ``: a backquoted name (see
    [Strings, backquoted names, and generic types](#strings-backquoted-names-and-generic-types)).
+   [fixture: class/gram-name-word-then-backquoted]
 6. The keywords `_self`, `_blank`, `_parent`, and `_top`: a `link-target` unit.
+   [fixture: class/lex-keyword-link-target-as-name] [fixture:
+   class/spec-class-diagram-ab0cb6e2] [fixture:
+   class/spec-class-diagram-3b723e23] [fixture:
+   class/spec-class-diagram-81c8965e]
 7. A **relation end**: `<|`, `|>`, `>`, `<`, `*`, `o` not followed by a word
-   character, or `()`. A unit named by its text.
-8. A **line**: `--` or `..`. A unit named by its text.
+   character, or `()`. A unit named by its text. [fixture:
+   class/db-relation-types] [fixture: class/spec-class-diagram-e8e66ff2]
+   [fixture: class/spec-class-diagram-231ff139] [fixture:
+   class/lex-aggregation-end] [fixture: class/db-lollipop-both]
+8. A **line**: `--` or `..`. A unit named by its text. [fixture:
+   class/db-relation-types]
 9. `:` and one or more characters other than `:`, `;`, and line feed, as many as
-   possible: a `label` unit.
-10. `:::`: a `:::` unit.
-11. `-`, `.`, `+`, `%`, and `=`: a unit named by its text.
-12. One or more ASCII letters, ASCII digits, and `_`: a `word` unit.
-13. `[` and `]`: a unit named by its text.
+   possible: a `label` unit. [fixture: class/gram-member-statement] [fixture:
+   class/lex-label-percent]
+10. `:::`: a `:::` unit. [fixture: class/db-css-class-digit]
+11. `-`, `.`, `+`, `%`, and `=`: a unit named by its text. [fixture:
+    class/gram-name-dash-spaces] [fixture: class/gram-name-dots] [fixture:
+    class/gram-member-statement] [fixture: class/lex-plus-in-name] [fixture:
+    class/lex-equals-in-name] [fixture: class/lex-percent-in-name]
+12. One or more ASCII letters, ASCII digits, and `_`: a `word` unit. [fixture:
+    class/gram-name-digits]
+13. `[` and `]`: a unit named by its text. [fixture: class/db-class-label-type]
 14. One of `!`, `$`, `&`, `'`, `?`, `\`, and `/`, and, outside the statement
-    context, `,` and `#`: a `punctuation` unit.
+    context, `,` and `#`: a `punctuation` unit. [fixture:
+    class/lex-punctuation-in-name]
 15. A Unicode letter, as in flowchart (see
     [Unicode letters](./flowchart.md#unicode-letters)): a `letter` unit of one
-    character.
+    character. [fixture: class/lex-unicode-letter-name]
 
 `note for` needs exactly one space: `note  for A "x"`, with two, and the same
 with a tab, are rejected. [fixture: class/lex-note-for-two-spaces] [fixture:
@@ -315,13 +385,17 @@ class/lex-note-for-directive-between-spaces]
 
 The class context is entered by `class`. It reads the rest of the line:
 
-1. `"`: a string.
+1. `"`: a string. [fixture: class/db-class-label-type]
 2. Zero or more whitespace followed by one or more line feeds, as in rule 6 of
-   the statement context: a `newline` unit; leaves the class context.
-3. One or more other whitespace characters: nothing.
-4. `}`: a `}` unit; leaves the class context and the context below it.
-5. `{`: a `{` unit; enters the member context.
-6. The shared rules.
+   the statement context: a `newline` unit; leaves the class context. [fixture:
+   class/gram-blank-lines]
+3. One or more other whitespace characters: nothing. [fixture:
+   class/lex-member-body-one-line]
+4. `}`: a `}` unit; leaves the class context and the context below it. [fixture:
+   class/lex-class-closes-namespace]
+5. `{`: a `{` unit; enters the member context. [fixture:
+   class/lex-member-body-one-line]
+6. The shared rules. [fixture: class/lex-keyword-prefix-of-name]
 
 The statement context's own rules do not apply here: `class A %% c` and
 `class A : x` are rejected. [fixture: class/lex-class-comment] [fixture:
@@ -333,13 +407,16 @@ class/lex-class-label] `}` leaves two contexts, so in a namespace body,
 The member context is entered by `{` in the class context. It reads the body of
 a class line by line:
 
-1. `"` right after the `{` or after a line feed: a string.
-2. `}`: a `}` unit; leaves the member context.
-3. `[*]`: a `[*]` unit.
-4. `{`: a `{` unit.
-5. A line feed: nothing.
+1. `"` right after the `{` or after a line feed: a string. [fixture:
+   class/lex-member-quote-at-start]
+2. `}`: a `}` unit; leaves the member context. [fixture:
+   class/lex-member-body-close-on-member-line]
+3. `[*]`: a `[*]` unit. [fixture: class/lex-member-edge-state]
+4. `{`: a `{` unit. [fixture: class/lex-member-open-brace]
+5. A line feed: nothing. [fixture: class/lex-member-body-close-on-member-line]
 6. One or more characters other than `{`, `}`, and line feed: a **member line**,
    divided into units as described under [Member lines](#member-lines).
+   [fixture: class/lex-member-body-one-line]
 
 So a member line ends at a line feed, `{`, or `}`: `class A { +x }` has the
 member `+x`, and `class A {+x`, a line break, and `+y}` the members `+x` and
@@ -350,9 +427,13 @@ is rejected, and `+foo "bar"` is a member with the quotes in it. [fixture:
 class/lex-member-quote-at-start] [fixture: class/lex-member-quote-inside] `%%`,
 `;`, `[*]`, and `~` inside a member line are characters of it: `+x %% c` is the
 member `x %% c`. [fixture: class/lex-member-percent] [fixture:
-class/lex-member-semicolon] A member line of only `[*]` and a `{` in a body are
-rejected. [fixture: class/lex-member-edge-state] [fixture:
-class/lex-member-open-brace]
+class/lex-member-semicolon] A `[*]` right after the `{` or a line feed is a
+`[*]` unit, which the grammar does not take, so `[*]` and `[*] x` on a line of
+their own in a body are rejected, and so is a `{` in a body. The context has no
+rule for whitespace, so `  [*]`, with spaces before it, is a member line, the
+attribute `[*]`. [fixture: class/lex-member-edge-state] [fixture:
+class/lex-member-edge-state-then-text] [fixture: class/lex-member-open-brace]
+[fixture: class/lex-member-edge-state-indented]
 
 ### Member lines
 
@@ -362,22 +443,27 @@ adds the member
 [`ClassMember`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/classTypes.ts#L80-L134)).
 The division depends on the text alone, so the lexer makes it, and each part is
 a unit. The whitespace at the ends of the line belongs to no unit; a line of
-only whitespace makes a `blank-member` unit, which no token holds. The rest, the
+only whitespace makes a `blank-member` unit, which no node holds. The rest, the
 **member text**, is divided by the first of these that applies:
 
 1. The member text starts with `<<` and ends with `>>`: an **annotation line**.
    `<<` and `>>` are units named by their text, and the text between them, when
-   it is not empty, is an `annotation-name` unit, whitespace included.
+   it is not empty, is an `annotation-name` unit, whitespace included. [fixture:
+   class/spec-class-diagram-4eb71456] [fixture:
+   class/lex-member-annotation-empty]
 2. The member text has a `)`, and its first `)` is not its first character: a
    **method line**. `)x()` and `)+login()` are attribute lines, whose name is
    the whole text, and `x)y()` is a method line. [fixture:
    class/lex-member-parenthesis-first-attribute] [fixture:
    class/lex-member-parenthesis-first-visibility] [fixture:
    class/lex-member-parenthesis-later-method]
-3. Otherwise, an **attribute line**.
+3. Otherwise, an **attribute line**. [fixture: class/lex-member-classifiers]
 
 A **visibility mark** is one of `+`, `-`, `#`, and `~` at the start of a method
-or attribute line; a **classifier mark** is `$` or `*`.
+or attribute line; a **classifier mark** is `$` or `*`. [fixture:
+class/spec-class-diagram-3f4d248a] [fixture: class/lex-member-classifiers]
+[fixture: class/lex-member-attribute-star-classifier] [fixture:
+class/lex-member-attribute-dollar-classifier]
 
 The **member name text** of an attribute line is the text of its member text
 between its visibility mark, or its start, and its classifier mark, or its end;
@@ -413,13 +499,16 @@ not the first character and that has a `)` somewhere after it, and at its
 **closing parenthesis**, the last `)`. When the text has no opening parenthesis,
 it cannot be divided. The units are, in order:
 
-1. a `visibility` unit for the visibility mark that was set apart;
+1. a `visibility` unit for the visibility mark that was set apart; [fixture:
+   class/spec-class-diagram-3f4d248a]
 2. the `member-name` unit of the member name text, the text before the opening
-   parenthesis;
+   parenthesis; [fixture: class/db-member-name-space]
 3. a `(` unit, a `parameters` unit for the text between the two parentheses,
    without the whitespace at its ends, when that is not empty, and a `)` unit;
+   [fixture: class/lex-member-method-blank-parameters] [fixture:
+   class/lex-directive-in-parameters]
 4. a `classifier` unit for the character right after the closing parenthesis
-   when it is a classifier mark;
+   when it is a classifier mark; [fixture: class/lex-member-classifiers]
 5. a `return-type` unit for the rest, without the whitespace at its ends, when
    that is not empty; when it ends with a classifier mark and item 4 found none,
    that mark is a `classifier` unit, and the `return-type` unit runs from the
@@ -438,18 +527,20 @@ whitespace at its start: a visibility mark is set apart only when it is the
 first character of the segment, and a `(` after that whitespace is not the first
 character. `x`, U+2028, and `+b(c)` is the method `b` with the visibility `+`,
 while `x`, U+2028, and ` +b(c)` is the method `+b` without visibility, and `x`,
-U+2028, and ` (c)` is a method without a name. [fixture:
+U+2028, and ` (c)` is a method whose name is the space before the `(`. [fixture:
 class/lex-member-method-segment-visibility-first] [fixture:
 class/lex-member-method-segment-space-before-visibility] [fixture:
 class/lex-member-method-segment-space-only-name] The return type then runs to
 the end of that segment, or, when the closing parenthesis is the last character
 of the segment, to the end of the next segment. The text before the segment and
 the text after the return type, each without the whitespace at its ends, are
-`ignored-text` units, which mermaid.js does not read: `+a`, U+2028, and
-`b(c) int` is the method `b` without visibility, with the ignored text `+a`
-before it, and `+b(c) in`, U+2028, and `t` has the return type `in` and the
-ignored text `t` after it. [fixture:
-class/lex-member-method-line-separator-before] [fixture:
+`ignored-text` units, which mermaid.js does not read, when anything is left; a
+text of only whitespace is no unit, so `+b(c) in`, U+2028, and a space has the
+return type `in` and no text after it. [fixture:
+class/tokens-member-method-ignored-text-blank] `+a`, U+2028, and `b(c) int` is
+the method `b` without visibility, with the ignored text `+a` before it, and
+`+b(c) in`, U+2028, and `t` has the return type `in` and the ignored text `t`
+after it. [fixture: class/lex-member-method-line-separator-before] [fixture:
 class/lex-member-method-line-separator-after] [fixture:
 class/lex-member-method-line-separator-after-parenthesis] An attribute line and
 an annotation line are divided without such a pattern, so U+2028 and U+2029 are
@@ -484,29 +575,37 @@ class/lex-member-method-parenthesis-first]
 The namespace context is entered by `namespace`. It reads the name of the
 namespace up to its `{`:
 
-1. `"`: a string.
+1. `"`: a string. [fixture: class/lex-namespace-string-name]
 2. The keyword `namespace`: a `namespace` unit; enters the namespace context.
+   [fixture: class/lex-namespace-keyword-in-name]
 3. Zero or more whitespace followed by one or more line feeds: a `newline` unit;
-   leaves the namespace context.
-4. One or more other whitespace characters: nothing.
-5. `{`: a `{` unit; enters the namespace body context.
+   leaves the namespace context. [fixture: class/lex-namespace-brace-next-line]
+4. One or more other whitespace characters: nothing. [fixture:
+   class/gram-namespace-empty]
+5. `{`: a `{` unit; enters the namespace body context. [fixture:
+   class/gram-namespace-empty]
 6. `}`: leaves the namespace context without reading the `}`, which the context
-   below reads.
-7. The shared rules.
+   below reads. [fixture: class/lex-namespace-close-in-name]
+7. The shared rules. [fixture: class/lex-directive-in-namespace-name]
 
 The `{` must be on the line of the name: `namespace A`, a line break, and `{` is
 rejected. [fixture: class/lex-namespace-brace-next-line]
 
 ### The namespace body context
 
-1. `"`: a string.
+1. `"`: a string. [fixture: class/lex-namespace-body-string]
 2. The keyword `namespace`: a `namespace` unit; enters the namespace context.
-3. `}`: a `}` unit; leaves the namespace body context.
+   [fixture: class/lex-namespace-two-closing-braces]
+3. `}`: a `}` unit; leaves the namespace body context. [fixture:
+   class/gram-namespace-empty]
 4. Zero or more whitespace followed by one or more line feeds: a `newline` unit.
-5. One or more other whitespace characters: nothing.
-6. `[*]`: a `[*]` unit.
-7. The keyword `class`: a `class` unit; enters the class context.
-8. The shared rules.
+   [fixture: class/lex-namespace-two-closing-braces]
+5. One or more other whitespace characters: nothing. [fixture:
+   class/lex-namespace-two-closing-braces]
+6. `[*]`: a `[*]` unit. [fixture: class/lex-namespace-body-edge-state]
+7. The keyword `class`: a `class` unit; enters the class context. [fixture:
+   class/lex-class-closes-namespace]
+8. The shared rules. [fixture: class/gram-namespace-note]
 
 After the `}` of a body, the lexer is back in the namespace context, which the
 line feed after the `}` leaves. The statement context's own rules do not apply
@@ -524,7 +623,8 @@ up to the next `"`, line feeds included, and that `"` are a `string` unit. The
 string is **empty** when nothing is between the quotes. A string may span lines,
 and `;` and `#` are characters of it. When the text has no `"` after the first,
 the input is rejected. [fixture: class/lex-string-multi-line] [fixture:
-class/lex-string-semicolon] [fixture: class/lex-string-unclosed]
+class/lex-string-semicolon] [fixture: class/lex-string-unclosed] [fixture:
+class/db-class-label-type]
 
 A `` ` `` (shared rule 5) starts a backquoted name in the same way: the `` ` ``,
 the characters up to the next `` ` ``, line feeds included, and that `` ` `` are
@@ -532,8 +632,9 @@ a `backquoted` unit, which is **empty** when nothing is between the backquotes.
 When the text has no `` ` `` after the first, the unit takes the rest of the
 text, and the lexer stops at its end: the name is not closed. [fixture:
 class/lex-backquote-unclosed] [fixture:
-class/lex-backquote-unclosed-takes-lines] A directive in that rest after the
-last character of the name that is not whitespace, which mermaid.js removes as
+class/lex-backquote-unclosed-takes-lines] [fixture:
+class/div-empty-backquoted-in-name] A directive in that rest after the last
+character of the name that is not whitespace, which mermaid.js removes as
 everywhere, lies inside the name when whitespace or line terminators of the name
 follow it, and otherwise after the name. `class`, `` `x``, a line break,
 `%%{init: {}}%%`, and a line break declares the class `x` followed by three line
@@ -572,8 +673,16 @@ class/div-backquote-starts-with-quote] [fixture:
 class/div-backquote-starts-with-tilde] [fixture:
 class/div-backquote-starts-with-keyword] [fixture:
 class/div-generic-starts-with-quote] [fixture:
-class/div-generic-starts-with-keyword] Elsewhere in the text, and with a word
-character after the keyword, both read the same: `` class `notex` ``,
+class/div-generic-starts-with-keyword] [fixture:
+class/div-backquote-starts-with-double-less-than] [fixture:
+class/div-backquote-starts-with-double-greater-than] [fixture:
+class/div-generic-starts-with-double-less-than] [fixture:
+class/div-generic-starts-with-double-greater-than] [fixture:
+class/div-backquote-keyword-css-class] [fixture:
+class/div-backquote-keyword-callback] [fixture:
+class/div-backquote-keyword-link] [fixture: class/div-backquote-keyword-click]
+[fixture: class/div-backquote-keyword-href] Elsewhere in the text, and with a
+word character after the keyword, both read the same: `` class `notex` ``,
 `` class `x note` ``, `class A~linkx~`, and `class A~ note~` are accepted by
 both, and `` class A`~T~` `` gives A the type `T` in both. [fixture:
 class/lex-backquote-keyword-prefix] [fixture: class/lex-backquote-keyword-later]
@@ -586,11 +695,12 @@ class/lex-backquote-around-generic]
 The callback name context is entered by `call`:
 
 1. `(`, zero or more whitespace, and `)`: a `(` unit and a `)` unit; leaves the
-   context.
+   context. [fixture: class/lex-callback-blank-parentheses] [fixture:
+   class/gram-click-call-empty-parentheses]
 2. `(`: a `(` unit; leaves the context and enters the callback arguments
-   context.
+   context. [fixture: class/lex-callback-arguments-multi-line]
 3. One or more characters other than `(`, line feeds included: a `callback-name`
-   unit.
+   unit. [fixture: class/lex-callback-name-multi-line]
 
 In the callback arguments context, `)` is a `)` unit and leaves the context, and
 one or more other characters, line feeds included, are a `callback-arguments`
@@ -605,7 +715,8 @@ may be empty, is a `title-text` or `description-text` unit, and the context is
 left; `#` and `;` are characters of it. In the description block context, `}` is
 a `}` unit and leaves the context, and one or more other characters are a
 `description-block-text` unit. [fixture: class/lex-acc-title-hash-semicolon]
-[fixture: class/lex-acc-title-next-line]
+[fixture: class/lex-acc-descr-hash-semicolon] [fixture:
+class/gram-acc-descr-block-with-text] [fixture: class/lex-acc-title-next-line]
 
 ## Grammar
 
@@ -703,17 +814,24 @@ with text and any other statement may not come before the separator.
 In class, statements are separated by a line break, and the last statement may
 end at the end of the text, where the blocks come before it too:
 `empty-description-block* newline? end-of-text` in `diagram`. So the blocks may
-come after any statement: `note for A "x" accDescr {}`,
-`note for A "x" accDescr {} accDescr {}`, `A <|-- B accDescr {}`,
-`click A href "u" accDescr {}`, and `cssClass "A" c accDescr {}` are accepted,
-also at the end of the text. Whitespace before the block is no unit here.
-[fixture: class/gram-empty-description-block-after-note] [fixture:
+come after a statement, except where the statement reads them otherwise:
+`note for A "x" accDescr {}`, `note for A "x" accDescr {} accDescr {}`,
+`A <|-- B accDescr {}`, `click A href "u" accDescr {}`, and
+`cssClass "A" c accDescr {}` are accepted, also at the end of the text.
+Whitespace before the block is no unit here. [fixture:
+class/gram-empty-description-block-after-note] [fixture:
 class/gram-empty-description-blocks-after-note] [fixture:
 class/gram-empty-description-block-after-relation] [fixture:
 class/gram-empty-description-block-after-click] [fixture:
 class/gram-empty-description-block-after-css-class] [fixture:
-class/gram-empty-description-block-after-statement-at-end] Another statement
-after the block on the same line is rejected, as in mermaid.js:
+class/gram-empty-description-block-after-statement-at-end] A class statement and
+a member statement read them otherwise, as mermaid.js does: in
+`class A accDescr {}`, `accDescr` is a name part of the class name and `{}` its
+empty body, so the class is `AaccDescr`, and in `A : x accDescr {}`, the label
+takes them into the member text. [fixture:
+class/gram-description-block-words-after-class-name] [fixture:
+class/gram-description-block-words-after-member] Another statement after the
+block on the same line is rejected, as in mermaid.js:
 `A <|-- B accDescr {} class C`. [fixture:
 class/gram-empty-description-block-after-relation-then-statement] Where a
 statement starts, a block is a statement that another statement follows on the
@@ -787,7 +905,8 @@ class/gram-class-annotation-two-words] After `:::`, a member body needs at least
 one member line, and a line of only whitespace counts: `class A:::c {}` is
 rejected, and `class A:::c { }` is accepted. [fixture:
 class/gram-class-css-class-empty-body] [fixture:
-class/gram-class-css-class-blank-body]
+class/gram-class-css-class-blank-body] [fixture:
+class/spec-class-diagram-b5349b23] [fixture: class/db-member-name-space]
 
 ### Members and annotations
 
@@ -834,7 +953,9 @@ namespace-item      = class-statement | note-statement | namespace-statement
 A namespace holds class statements, notes, and namespaces, and at least one of
 them: `namespace A {` with `}` on the next line, and a relation in a namespace,
 are rejected. [fixture: class/gram-namespace-empty] [fixture:
-class/gram-namespace-relation]
+class/gram-namespace-relation] [fixture: class/gram-namespace-note] [fixture:
+class/db-namespace-redeclared-label] [fixture:
+class/lex-namespace-two-closing-braces]
 
 ### Other statements
 
@@ -859,9 +980,12 @@ The text of a note, the URL of a link, the function name of `callback`, and the
 ids of `cssClass` are strings that are not empty; the second string of a click
 statement, its tooltip, may be empty. [fixture: class/gram-note-empty] [fixture:
 class/gram-link-url-empty] [fixture: class/gram-callback-name-empty] [fixture:
-class/gram-css-class-ids-empty] [fixture: class/gram-link-tooltip-empty] `call`
-needs parentheses after the function name: `click A call fn` is rejected.
-[fixture: class/lex-callback-name-unclosed]
+class/gram-css-class-ids-empty] [fixture: class/gram-link-target] [fixture:
+class/gram-click-call-tooltip] [fixture: class/gram-class-def-names] [fixture:
+class/gram-link-tooltip-empty] [fixture: class/db-click-href] [fixture:
+class/docs-syntax-class-diagram-500154a2] [fixture:
+class/tokens-style-comma-unit] `call` needs parentheses after the function name:
+`click A call fn` is rejected. [fixture: class/lex-callback-name-unclosed]
 
 The id after `style` and the names after `classDef` are each one word:
 `style A-B fill:red` is rejected. A style is made of words, `:`, `#`, `%`, the
@@ -934,7 +1058,8 @@ this specification:
   class/gram-annotation-after-css-class] [fixture:
   class/gram-annotation-after-click]
 - A method line that cannot be divided, such as `x)` (see
-  [Member lines](#member-lines)).
+  [Member lines](#member-lines)). [fixture:
+  class/lex-member-method-without-opening]
 
 ## Known divergences
 
@@ -942,10 +1067,10 @@ These divergences of [known-divergences.md](../known-divergences.md) apply to
 class diagrams, and show in them as follows.
 
 - **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.md).**
-  A directive inside a keyword, a name without whitespace, a delimiter, or an
-  arrow makes the input rejected here, while mermaid.js accepts it:
-  `cla%%{init: {}}%%ss A`, `A -%%{init: {}}%%-> B`, and
-  `class A:%%{init: {}}%%::c` (see
+  A directive inside a unit other than a text unit and a string unit, such as a
+  keyword, a name without whitespace, a delimiter, or an arrow, makes the input
+  rejected here, while mermaid.js accepts it: `cla%%{init: {}}%%ss A`,
+  `A -%%{init: {}}%%-> B`, and `class A:%%{init: {}}%%::c` (see
   [Directives inside units](#directives-inside-units)). [fixture:
   class/div-directive-in-keyword] [fixture: class/div-directive-in-line]
   [fixture: class/div-directive-in-triple-colon]
@@ -1015,7 +1140,10 @@ class diagrams, and show in them as follows.
   or `click` statement, as in `classDiagramX` followed by a line `accTitle:`.
   [fixture: class/div-headerless-empty-title] [fixture:
   class/div-headerless-empty-call] [fixture: class/div-headerless-empty-string]
-  [fixture: class/div-headerless-repeated-header]
+  [fixture: class/div-headerless-repeated-header] [fixture:
+  class/div-headerless-empty-description-block] [fixture:
+  class/div-headerless-link-string-opened] [fixture:
+  class/div-headerless-click-string-opened]
 - **[`name-start-reads-unit`](../known-divergences/name-start-reads-unit.md).**
   A backquoted name or the text of a generic type that starts with `"`, with `~`
   (in a backquote), with `<<` or `>>`, or with one of the keywords `cssClass`,
@@ -1025,4 +1153,12 @@ class diagrams, and show in them as follows.
   ``class `note` `` declares the class `note` here and is rejected by
   mermaid.js; ``A `"1"` --> B`` has a relation from `A"1"` here and the
   cardinality `1` in mermaid.js. [fixture: class/div-backquote-keyword-escaped]
-  [fixture: class/div-backquote-around-string]
+  [fixture: class/div-backquote-around-string] [fixture:
+  class/div-backquote-starts-with-double-less-than] [fixture:
+  class/div-backquote-starts-with-double-greater-than] [fixture:
+  class/div-generic-starts-with-double-less-than] [fixture:
+  class/div-generic-starts-with-double-greater-than] [fixture:
+  class/div-backquote-keyword-css-class] [fixture:
+  class/div-backquote-keyword-callback] [fixture:
+  class/div-backquote-keyword-link] [fixture: class/div-backquote-keyword-click]
+  [fixture: class/div-backquote-keyword-href]

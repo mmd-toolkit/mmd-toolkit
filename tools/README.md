@@ -4,15 +4,14 @@ Japanese version: [README.ja.md](./README.ja.md)
 
 Command-line tools for the people who maintain the fixtures of
 `@mmd-toolkit/tests`: regenerating them, adding and marking them, collecting
-inputs from mermaid.js, and the mutation differential test. Run them through the
-package scripts of `packages/tests`; the commands and rules are in
+inputs from mermaid.js. Run them through the package scripts of
+`packages/tests`; the commands and rules are in
 [maintaining-fixtures.md](../packages/tests/docs/maintaining-fixtures.md).
 
 | File          | Script                                                                                                                     |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `fixtures.ts` | `fixtures:generate`, `fixtures:check`, `fixtures:add`, `fixtures:add-many`, `fixtures:set-divergence`, `fixtures:set-note` |
 | `collect.ts`  | `fixtures:collect`                                                                                                         |
-| `mutation.ts` | `mutation`                                                                                                                 |
 
 ## Collecting the inputs of a diagram type from mermaid
 

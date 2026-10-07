@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Subgraphs: `xend` is one id run, no `end` unit, so the name ends at the line feed: the id is `xend`, and the `;` is an empty statement of the body, the member `;`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "xend",
+        "nodes": [
+          ";",
+          "A"
+        ],
+        "title": "xend",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

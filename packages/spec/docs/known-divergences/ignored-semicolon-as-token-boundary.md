@@ -9,19 +9,23 @@ mermaid.js.
 
 ## The syntax
 
-A line that contains `style`, then a `:` followed by characters that are not
-whitespace and a `#`, and then a `;`, matches the `style` rule, and its last `;`
-is ignored: neither mermaid.js nor this specification reads it (see
+A line that contains `style`, then a `:` followed by zero or more characters
+that are not whitespace and then a `#`, and then a `;`, matches the `style`
+rule, and its last `;` is ignored: neither mermaid.js nor this specification
+reads it (see
 [`style` and `classDef` lines](../common.md#style-and-classdef-lines)). The rule
 keeps the `;` that ends a colour, as in `style A fill:#f00;`, from making the
-colour an entity.
+colour an [entity](../common.md#entities), a character reference of the form
+`#name;`.
 
 The rule looks at the text alone, so the ignored `;` can lie anywhere in the
 line: inside a label, between two words, or inside a name, a number, a keyword,
 an arrow, or a delimiter. This document is about the last of these. A name here
 is one without whitespace; a name that may contain whitespace, such as the id of
 a participant in a sequence diagram or a class name, is read as a text, and may
-hold an ignored `;`.
+hold an ignored `;`. [fixture:
+sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
+class/tokens-ignored-semicolon-in-relation-name]
 
 ## The difference
 
@@ -95,14 +99,25 @@ rejected. The difference goes one way only: this specification never accepts an
 input that mermaid.js rejects, and it gives every input that both accept the
 same Db.
 
-In a state diagram, no line was found where the ignored `;` lies inside one of
-these: a statement that can hold `style`, a `:`, and a `#` reads the rest of its
-line as a text.
+In a state diagram, the ignored `;` can lie inside the name after `state`, which
+may hold `style`, a `:`, and a `#`: mermaid.js reads `state style:#x;B` followed
+by a body as the composite state `style:#xB`, and this specification rejects it.
+[fixture: state/div-ignored-semicolon-in-state-name] [fixture:
+state/div-ignored-semicolon-in-state-name-without-body] The other statements
+that can hold `style`, a `:`, and a `#` read the rest of their line as a text.
 
 Each diagram document lists where this shows, in its Known divergences section:
 [flowchart](../diagrams/flowchart.md#known-divergences),
-[sequence](../diagrams/sequence.md#known-divergences), and
-[class](../diagrams/class.md#known-divergences).
+[sequence](../diagrams/sequence.md#known-divergences),
+[class](../diagrams/class.md#known-divergences), and
+[state](../diagrams/state.md#known-divergences).
+
+## What it means for an author
+
+An ignored `;` inside a name, a number, a keyword, an arrow, or a delimiter is
+rejected by this toolkit. mermaid.js accepts it and reads the line as if the `;`
+were not there. To write a diagram that both read the same, end a line that
+matches the `style` rule with its `;`, or write no `;` inside a word.
 
 ## Why mermaid.js reads it so
 
@@ -131,13 +146,6 @@ ignored `;` inside one of them only because it removes the `;` as a step before
 reading, which is nothing that a specification would state as a rule of the
 syntax; this is the second of the reasons for a known divergence (see
 [known-divergences.md](../known-divergences.md)).
-
-## What it means for an author
-
-An ignored `;` inside a name, a number, a keyword, an arrow, or a delimiter is
-rejected by this toolkit. mermaid.js accepts it and reads the line as if the `;`
-were not there. To write a diagram that both read the same, end a line that
-matches the `style` rule with its `;`, or write no `;` inside a word.
 
 ## The documentation of mermaid.js and its issues
 

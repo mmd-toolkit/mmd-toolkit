@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A case of the rule flowchart/no-duplicate-description (invalid): two subgraphs."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "b",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "a"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "T",
+        "nodes": [
+          "b"
+        ],
+        "title": "T",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

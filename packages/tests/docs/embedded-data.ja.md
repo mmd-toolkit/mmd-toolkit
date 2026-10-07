@@ -11,7 +11,7 @@ fixture がそれを記録する方法と、
 仕様は、埋め込まれたデータ
 （フロントマターの YAML、ディレクティブの中身、`@{ ... }` のデータブロック）
 を不透明なものとして扱います。
-パーサーはそれを解析も検査もしません（既知の差 `embedded-data-opaque`）。
+パーサーはそれを解析も検査もしません（既知の差異 `embedded-data-opaque`）。
 それでも Db の一部の値はそのデータに左右されます。
 例えば subgraph の向きは `flowchart.inheritDir` に、
 title はフロントマターの `title` に左右され、
@@ -25,8 +25,14 @@ title はフロントマターの `title` に左右され、
 欄 `embedded`（`{ config?, title?, dataBlockEffects? }`）を持つことがあります。
 入力がその値を与えないときは、その欄を置かず、
 どれも与えないときは `embedded` を置きません。
-受理する fixture のうち、持つのは 250 件ほどで、
+受理する fixture は、入力にデータブロックか、フロントマターの `title` か、
+設定を変えるフロントマターまたはディレクティブがあるとき、これを持ちます。
 残りは埋め込まれたデータから何も要りません。
+specified の読みは、自分の `embedded` を持つことがあります。
+mermaid.js が入力を拒否するとき、
+その読みが、ディレクティブの設定やデータブロックの効果を持つ場合です。
+[fixture: class/div-comment-then-directive-line-sets-config]
+[fixture: sequence/div-comment-after-number-with-data-block]
 
 - `title` と `dataBlockEffects` は、下に書く値です。
 - `config` は、設定の全体ではなく、
@@ -57,8 +63,6 @@ Db の値は、それらのキーに左右されません。
   比べる mermaid.js の Db がないので `undefined` を返す。
 - `runMermaidWithEmbeddedData(text, { config })` は、
   `runMermaid()` の結果とこれらの値を 1 回の実行で返す。
-- 変異差分テストは、同じ値を比較対象の 3 つ目の引数として渡す
-  （[mutation-testing.ja.md](./mutation-testing.ja.md) を参照）。
 
 生成器は、これらから fixture の値を記録し、
 `fixtures:check` が、記録した値を mermaid.js と比べます。
@@ -157,6 +161,6 @@ mermaid.js が計算したとおりに届きます。
   例えば `shape` から `type`、`w` から数値、
   `label` だけのときに `labelType` が `markdown` になること。
 - 中身が正しいかどうか（壊れた YAML や未知の shape）。
-  既知の差 `embedded-data-opaque` に当たる。
+  既知の差異 `embedded-data-opaque` に当たる。
 - そのときの要素の状態で変わる効果。
   `icon` や `img` が `text` を空にするのは、`text` が id と同じときだけ。

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "`actor A as X` after `participant A` records A anew with the kind `actor` and the description `X`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "X",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "actor",
+        "nextActor": "A"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

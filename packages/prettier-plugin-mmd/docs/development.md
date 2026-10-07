@@ -4,14 +4,18 @@ Japanese version: [development.ja.md](./development.ja.md)
 
 How the plugin is tested, and how to add and update formatting examples. The
 plugin reads diagrams with [`@mmd-toolkit/parser`](../../parser), and checks its
-output against mermaid.js with the helpers of
-[`@mmd-toolkit/tests`](../../tests).
+output without running mermaid.js: it builds the Db that the tree of a text
+denotes, with the helpers of [`@mmd-toolkit/tests`](../../tests), and compares
+it.
 
 ## Running the tests
 
 ```sh
 pnpm vitest run --project prettier-plugin-mmd
 ```
+
+This runs the formatting fixtures, the corpus, and the unit tests. The run takes
+about ten seconds.
 
 The tests import the sources of `@mmd-toolkit/parser` and `@mmd-toolkit/tests`,
 not their builds (see `vitest.config.ts`), so they need no build step. A script
@@ -22,60 +26,49 @@ builds in `lib/`, so rebuild them before running one:
 
 ## The tests
 
-| File                                        | What it checks                                                                                                                                                                                                                                                                                                                                                    |
-| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `tests/plugin.test.ts`                      | The language, parser, and printer that the plugin declares.                                                                                                                                                                                                                                                                                                       |
-| `tests/dispatch.test.ts`                    | Each diagram body goes to the printer of its type; diagram types without a printer, and types the parser does not support, are printed unchanged, in files and in Markdown.                                                                                                                                                                                       |
-| `tests/failure.test.ts`                     | Input that the parser rejects is reported as a syntax error in a file and left to Prettier in Markdown; the byte order mark limitation.                                                                                                                                                                                                                           |
-| `tests/markdown.test.ts`                    | Which Markdown code blocks reach the plugin, with a stand-in parser.                                                                                                                                                                                                                                                                                              |
-| `tests/markdown-flowchart.test.ts`          | Flowcharts formatted inside Markdown code blocks: at the top level, in list items, in block quotes, and the whitespace at the end of lines.                                                                                                                                                                                                                       |
-| `tests/markdown-sequence.test.ts`           | Sequence diagrams formatted inside Markdown code blocks: at the top level, in list items, and the whitespace at the end of a title.                                                                                                                                                                                                                               |
-| `tests/markdown-class.test.ts`              | Class diagrams formatted inside Markdown code blocks: at the top level, in list items, and a line of one space after a comment.                                                                                                                                                                                                                                   |
-| `tests/markdown-state.test.ts`              | State diagrams formatted inside Markdown code blocks: at the top level and in list items.                                                                                                                                                                                                                                                                         |
-| `tests/line-separators.test.ts`             | State and sequence diagrams with U+2028 or U+2029 that are kept as written. The characters are written as escapes.                                                                                                                                                                                                                                                |
-| `tests/format.test.ts`                      | Each formatting fixture: the input formats to the output, formatting the output changes nothing, and mermaid.js reads the same diagram from both (see [Readings of mermaid.js](#readings-of-mermaidjs)).                                                                                                                                                          |
-| `tests/corpus.test.ts`                      | Every input of the conformance corpus of `@mmd-toolkit/tests`, common, flowchart, sequence, class, and state, that the plugin formats: formatting again changes nothing, and mermaid.js reads the same diagram before and after, or rejects both with the same error.                                                                                             |
-| `tests/docs.test.ts`                        | The rules documents and the READMEs agree with the fixtures (see [Documents and fixtures](#documents-and-fixtures)).                                                                                                                                                                                                                                              |
-| `tests/value-nodes.test.ts`                 | For each diagram type with a printer, every node type of it without child fields, its own and the shared leaf nodes, is either a value, printed as written, or listed as an exception, so that a node type added to the tree is placed on purpose.                                                                                                                |
-| `tests/source.test.ts`                      | Which tokens the printers take for tokens of a node's structure: not the directives, the `;` tokens, or the tokens of the frontmatter, whose `---` delimiters have the kind and value of a flowchart arrow.                                                                                                                                                       |
-| `tests/regression.test.ts`                  | The inputs of failures that were found and fixed (`tests/regression/*.json`), formatted on every run. U+2028 and U+2029 are written as escapes.                                                                                                                                                                                                                   |
-| `tests/boundaries-<diagram>.test.ts`        | The fixtures of the corpus of a diagram type with text inserted at a token boundary, chosen by the kind of the boundary (the element before it, its place in the line, the element after it; the statement keyword at the end of a line): a directive, two directives, line breaks, a comment after the text, a U+2028 or U+2029, a directive that is not closed. |
-| `tests/statement-endings-<diagram>.test.ts` | A statement of every kind of a diagram type (the statement node types of the parser), taken from the fixtures, with sequences of the same pieces at the end of its first line, alone and followed by a line.                                                                                                                                                      |
-| `tests/forms-<diagram>.test.ts`             | Statements of many forms, the axes of a form combined so that every pair of values of two axes stands together (`tests/pairwise.ts`): class relations, members, and class statements; sequence messages; state transitions, statements, aliases, and notes; flowchart labels with punctuation at their ends.                                                      |
-| `tests/separators.test.ts`                  | Statements that a `;` separates or ends: every pair of statements, a statement that ends with a word, a text with a `;` written in it, lines that hold a `;` of their own, a `;` after a comment, a subgraph name that ends with a word, and empty description blocks before a separator.                                                                         |
-| `tests/line-shapes.test.ts`                 | The shapes of a line: endings of a value, a directive cutting a statement, a statement that goes on over a line break, a click statement over several lines, a style line that stands after U+2028 or U+2029, and comment lines after U+2028 or U+2029 at the end of a statement (the lines that mermaid.js reads as one).                                        |
-| `tests/mutation.test.ts`                    | Mutants of the fixtures of the corpus, made by `mutate()`: one fixture in three of each kind of fixture, seed 1.                                                                                                                                                                                                                                                  |
-| `tests/sequence-newline-units.test.ts`      | The sequence statements that need a `newline` unit, with directives, whitespace, and a `;` after them.                                                                                                                                                                                                                                                            |
-| `tests/pairwise.test.ts`                    | The pairwise rows that the forms are made of.                                                                                                                                                                                                                                                                                                                     |
+| File                               | What it checks                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tests/plugin.test.ts`             | The language, parser, and printer that the plugin declares.                                                                                                                                                                                                                                                                                                                                                                        |
+| `tests/dispatch.test.ts`           | Each diagram body goes to the printer of its type; diagram types without a printer, and types the parser does not support, are printed unchanged, in files and in Markdown.                                                                                                                                                                                                                                                        |
+| `tests/failure.test.ts`            | Input that the parser rejects is reported as a syntax error in a file and left to Prettier in Markdown; the byte order mark limitation.                                                                                                                                                                                                                                                                                            |
+| `tests/markdown.test.ts`           | Which Markdown code blocks reach the plugin, with a stand-in parser.                                                                                                                                                                                                                                                                                                                                                               |
+| `tests/markdown-flowchart.test.ts` | Flowcharts formatted inside Markdown code blocks: at the top level, in list items, in block quotes, and the whitespace at the end of lines.                                                                                                                                                                                                                                                                                        |
+| `tests/markdown-sequence.test.ts`  | Sequence diagrams formatted inside Markdown code blocks: at the top level, in list items, and the whitespace at the end of a title.                                                                                                                                                                                                                                                                                                |
+| `tests/markdown-class.test.ts`     | Class diagrams formatted inside Markdown code blocks: at the top level, in list items, and a line of one space after a comment.                                                                                                                                                                                                                                                                                                    |
+| `tests/markdown-state.test.ts`     | State diagrams formatted inside Markdown code blocks: at the top level and in list items.                                                                                                                                                                                                                                                                                                                                          |
+| `tests/line-separators.test.ts`    | State and sequence diagrams with U+2028 or U+2029 that are kept as written. The characters are written as escapes.                                                                                                                                                                                                                                                                                                                 |
+| `tests/line-terminators.test.ts`   | Diagrams whose lines end with `\r\n` or a lone `\r`: they are formatted as with line feeds, and printed with the line ending of the options. The characters are written as escapes.                                                                                                                                                                                                                                                |
+| `tests/format.test.ts`             | Each formatting fixture: the input formats to the output, formatting the output changes nothing, the Db that the tree denotes is the same for both, and the embedded data is as written (see [What the tests keep](#what-the-tests-keep)).                                                                                                                                                                                         |
+| `tests/corpus.test.ts`             | Every input of the conformance corpus of `@mmd-toolkit/tests`, common, flowchart, sequence, class, and state, that the plugin formats: formatting again changes nothing, the embedded data is as written, and the Db that the tree of the output denotes is the Db that the corpus records for the input (see [What the tests keep](#what-the-tests-keep)); and every input that the parser rejects is reported as a syntax error. |
+| `tests/docs.test.ts`               | The rules documents and the READMEs agree with the fixtures (see [Documents and fixtures](#documents-and-fixtures)).                                                                                                                                                                                                                                                                                                               |
+| `tests/value-nodes.test.ts`        | For each diagram type with a printer, every node type of it without child fields, its own and the shared leaf nodes, is either a value, printed as written, or listed as an exception, so that a node type added to the tree is placed on purpose.                                                                                                                                                                                 |
+| `tests/source.test.ts`             | Which tokens the printers take for tokens of a node's structure: not the directives, the `;` tokens, or the tokens of the frontmatter, whose `---` delimiters have the kind and value of a flowchart arrow.                                                                                                                                                                                                                        |
+| `tests/sequence-layout.test.ts`    | Which ids the sequence printer takes for ids that a following space would make another unit: the numbers and `title`, next to which no space is put around an arrow.                                                                                                                                                                                                                                                               |
 
-The `boundaries-`, `statement-endings-`, `forms-`, `separators`, `line-shapes`,
-`mutation`, and `sequence-newline-units` tests make their inputs mechanically,
-and check them with `tests/generated.ts`. For each input that the parser
-accepts, formatting must not throw, and formatting the output must change
-nothing; when mermaid.js accepts the input too, it must read the same diagram
-from the output (see [Readings of mermaid.js](#readings-of-mermaidjs)). The
-inputs are chosen by kind, and the same way on every run, so that every kind of
-boundary and of statement is tried, and none by chance; the kinds of the
-boundaries are defined by `findBoundaries` and `selectByKey` of
-`@mmd-toolkit/tests`. `tests/regression.test.ts` holds the inputs of failures
-that were found and fixed, and checks them on every run.
+### What the tests keep
 
-### Readings of mermaid.js
+Formatting must be idempotent and must not change the Db. The Db is not read
+from mermaid.js: `dbOfText` of `tests/db-reading.ts` builds it from the tree of
+a text with `dbFromTree` of `@mmd-toolkit/tests`, with the values that
+mermaid.js derives from the embedded data of the input (the frontmatter, the
+directives, the data blocks). The corpus records them for each fixture
+(`embeddedValuesOf`) and the Db of the input (`expected.json`, or
+`specified.json` where the specification reads the input differently), so the
+corpus test compares the Db of the formatted text with the recorded one. The
+other tests have no record: they compare the Db of the formatted text with that
+of the input, with the default values.
 
-The tests that compare what mermaid.js reads before and after formatting do it
-in two ways, with `tests/mermaid-readings.ts`:
-
-- as the specification reads the text: mermaid.js runs without the known
-  divergences that change how it reads an accepted text,
-  `comment-takes-character`, `comment-takes-line-break`, and
-  `name-start-reads-unit` (`withoutDivergences` of
-  `runMermaidWithEmbeddedData`), and the Db must be the same, or both texts must
-  be rejected with the same error. The Db that formatting must keep is the one
-  of the specification, which differs from mermaid.js only where a known
-  divergence says so;
-- as mermaid.js is: where it accepts the text before formatting, it must accept
-  the text after formatting with the same Db, so that formatting does not change
-  what mermaid.js draws.
+The values of the embedded data are taken from the input, so the tests check
+that formatting keeps the embedded data: `writtenEmbeddedTexts` lists the texts
+of the directives and of the data blocks as written, in source order, and the
+list is the same before and after, with each line terminator read as a line
+feed. The frontmatter is the exception: the printer formats its YAML with
+Prettier's YAML formatter where that is safe, so `describeFrontmatterChange`
+accepts the frontmatter as written or as that formatter prints it, and relies on
+that formatter to keep the value of the YAML; the tests do not read it. Where a
+text holds a data block and no effects are given, `dbOfText` gives no Db: what a
+data block does to it is what mermaid.js derives, and the text alone does not
+give it; the written text of the block is still checked.
 
 ## How the printer is built
 
@@ -136,12 +129,16 @@ pnpm --filter prettier-plugin-mmd run test:update
 
 The command builds the parser and writes every output that differs from the
 formatted input. Read the changed outputs as a diff before you keep them: the
-tests check that an output is stable and that mermaid.js reads the same diagram,
-not that the formatting is the intended one.
+tests check that an output is stable and keeps the Db, not that the formatting
+is the intended one.
 
 ## Documents and fixtures
 
-Each `###` heading of a rules document, [docs/flowchart.md](./flowchart.md),
+The examples of a rules document are copies of the fixtures, and
+`tests/format.test.ts` checks both that the plugin prints each output and that
+it keeps the Db and the embedded data (see
+[What the tests keep](#what-the-tests-keep)). Each `###` heading of a rules
+document, [docs/flowchart.md](./flowchart.md),
 [docs/sequence.md](./sequence.md), [docs/class.md](./class.md), and
 [docs/state.md](./state.md), is a rule, and its fixture folder, under the folder
 of the diagram type, is the heading in lower case with spaces replaced by `-`:

@@ -20,3 +20,5 @@ of `@mmd-toolkit/tests`:
 
 - `class/db-acc-title-replaces`
 - `class/db-acc-title-spaces`
+- `class/db-acc-title-line-empty-takes-next-lines`
+- `class/lex-acc-title-at-end`

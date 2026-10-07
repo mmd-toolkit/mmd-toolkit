@@ -796,8 +796,10 @@ export class SourceLexer {
    *
    * A comment region on its line, after U+2028 or U+2029, cuts the comment
    * as it cuts a token: each fragment, the text before a region or after
-   * it without the whitespace and line terminators at its ends, is a
-   * `Comment`, and a fragment that is empty or all whitespace is none. The
+   * it without the whitespace and line terminators next to the region, is
+   * a `Comment`, and a fragment that is empty or all whitespace is none; the
+   * last fragment keeps the whitespace before its line terminator, as any
+   * comment does. The
    * first fragment starts at the mark and has the comment's mark and the
    * value after it; a fragment after a region has no mark, and the value of
    * its range.

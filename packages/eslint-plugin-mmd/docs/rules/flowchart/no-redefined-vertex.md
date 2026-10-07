@@ -17,21 +17,23 @@ new vertex, the earlier shape or label is lost without an error.
 ## Rule Details
 
 This rule reports a vertex written with a shape whose shape or label differs
-from the last shape written for the same vertex before it, which is the one the
-vertex has at that point. It applies to `flowchart-v2`, `flowchart-elk`, and
-`swimlane`.
+from the last shape written for the same vertex before it. It applies to
+`flowchart-v2`, `flowchart-elk`, and `swimlane`.
 
 After `A[Start] --> B`, the line `C --> A[End]` gives the vertex `A` the label
 `End`, and the label `Start` is lost. Writing the vertex again without a shape,
 as in `A --> C`, keeps its shape and label and is not reported, and neither is
 writing the shape and label that the vertex already has: after `A[x]` and
 `A[y]`, a third `A[y]` changes nothing and is not reported. A shape or a label
-set by a data block, as in `A@{ shape: rect }`, is not compared. Labels are
-compared without the whitespace at their ends, which mermaid.js removes:
-`A["x"]` and then `A["x "]` is not reported. The kind of the label (text,
-string, or markdown string) is not compared: after `A["x"]`, ``A["`x`"]`` writes
-the same text for the same vertex, which is no id reused for another vertex, and
-mermaid.js uses the label written last.
+set by a data block, as in `A@{ shape: rect }`, is not compared, also where it
+stands between two shapes of the vertex. Labels are compared without the
+whitespace at their ends, which mermaid.js removes: `A["x"]` and then `A["x "]`
+is not reported. Apart from that whitespace, labels are compared as written: two
+labels that differ only in their line breaks (LF, CRLF, or CR) or in the quotes
+of an HTML attribute are reported, although mermaid.js keeps them the same. The
+kind of the label (text, string, or markdown string) is not compared: after
+`A["x"]`, ``A["`x`"]`` writes the same text for the same vertex, which is no id
+reused for another vertex, and mermaid.js uses the label written last.
 
 Examples of **incorrect** code for this rule:
 

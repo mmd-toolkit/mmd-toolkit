@@ -29,12 +29,13 @@ export function printRoot(
   const lines: Line[] = []
   let offset = 0
   if (root.frontmatter !== null) {
+    const end = findFrontmatterEnd(source, root.frontmatter)
     lines.push({
-      doc: printFrontmatter(source, root.frontmatter, yamlDoc),
+      doc: printFrontmatter(source, root.frontmatter, end, yamlDoc),
       blankBefore: false,
-      endsWithWhitespace: false,
+      endsWithWhitespace: end > root.frontmatter.range[1],
     })
-    offset = root.frontmatter.range[1]
+    offset = end
   }
   const gap = readGap(source, offset, root.body.range[0], false)
   if (gap.trailing !== null) {
@@ -71,6 +72,17 @@ export function printRoot(
 }
 
 /**
+ * Where the frontmatter ends for the printer: after the closing `---` and the
+ * spaces and tabs that follow it on its line, which are printed as written
+ * like the opening delimiter line (docs/flowchart.md, Frontmatter YAML).
+ */
+function findFrontmatterEnd(source: Source, frontmatter: Frontmatter): number {
+  let end = frontmatter.range[1]
+  while (source.text[end] === " " || source.text[end] === "\t") end++
+  return end
+}
+
+/**
  * Prints the frontmatter: its delimiter lines as written, with the indent
  * before them, since the closing line must repeat the opening line's indent
  * character for character (common.md, Frontmatter); and its body, formatted
@@ -81,9 +93,9 @@ export function printRoot(
 function printFrontmatter(
   source: Source,
   frontmatter: Frontmatter,
+  end: number,
   yamlDoc: Doc | undefined,
 ): Doc {
-  const end = frontmatter.range[1]
   const [valueStart, valueEnd] = frontmatter.valueRange
   return [
     printAsWritten(source, 0, valueStart),

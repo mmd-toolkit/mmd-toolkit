@@ -52,15 +52,16 @@ An implementation of this specification reads a source text and does two things:
    decide it.
 2. For an accepted source, it produces the tree defined in [ast.md](./ast.md)
    and in the document of its diagram type under `ast/`. The tree loses nothing
-   of the source: every character is in a token, a comment, a directive, or the
-   frontmatter, or it is whitespace, as defined in
-   [Notation](./common.md#notation), or a line terminator.
+   of the source: every character is in a unit, a comment, a directive, the
+   frontmatter, or a `;` that the line rule ignores, as defined in
+   [common.md](./common.md) and the diagram documents, or it is whitespace, as
+   defined in [Notation](./common.md#notation), or a line terminator.
 
-The tokens and the positions of the tree, and how the tree is checked against
-the values that the Db of mermaid.js holds, are outside this specification. The
-fixtures cited as `[fixture: <category>/<name>]` show the acceptance and the
-tree for concrete inputs: `expected.json` records whether mermaid.js accepts the
-input, the detected id, and the normalized Db.
+The tokens that an implementation records, the positions of the tree, and how
+the tree is checked against the values that the Db of mermaid.js holds, are
+outside this specification. The fixtures cited as `[fixture: <category>/<name>]`
+show the acceptance and the tree for concrete inputs: `expected.json` records
+whether mermaid.js accepts the input, the detected id, and the normalized Db.
 
 ## Terminology
 
@@ -69,9 +70,10 @@ input, the detected id, and the normalized Db.
   diagram. It is selected by the detectors of [detection.md](./detection.md),
   and it is named by the id that mermaid.js reports, such as `flowchart-v2` or
   `sequence` (the DiagramType of [ast.md](./ast.md#root)).
-- **trivia** — the parts of the source that are not diagram tokens: frontmatter,
-  directives, comments, the `;` that the line rule ignores, and the whitespace
-  outside every token, as defined in [common.md](./common.md) and
+- **trivia** — the parts of the source that are not in the written text of a
+  unit (see [Nodes](./ast.md#nodes)): frontmatter, directives, comments, the `;`
+  that the line rule ignores, and the whitespace and line terminators outside
+  those written texts, as defined in [common.md](./common.md) and
   [ast.md](./ast.md#directives-and-frontmatter).
 - **unit** and **context** — a diagram document describes its lexer as reading
   units of the diagram text, in contexts that the units enter and leave.

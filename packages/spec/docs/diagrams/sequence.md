@@ -17,6 +17,7 @@ defined in [ast/sequence.md](../ast/sequence.md).
 Entry 15 of [detection.md](../detection.md) selects this grammar: the text
 starts with `sequenceDiagram`, after whitespace, in exactly this case. [fixture:
 common/detect-minimal-sequence] [fixture: common/detect-case-sensitive-sequence]
+[fixture: sequence/docs-config-accessibility-6016a981]
 
 Detection only looks at the start of the text. The grammar then reads the
 keyword `sequenceDiagram` again, as a whole word (see
@@ -57,7 +58,7 @@ each attribute quote as `'`, each entity as its placeholder, and through comment
 regions and the `;` that the line rule ignores as if they were not there. The
 `\n` that the lexer reads after the last character
 ([End of text](../common.md#end-of-text)) is part of the diagram text. This
-section describes the diagram's own token rules, item 4 of
+section describes the diagram's own unit rules, item 4 of
 [Reading a source](../common.md#reading-a-source).
 
 The lexer of mermaid.js for this diagram is case-insensitive: every rule
@@ -78,20 +79,22 @@ top of the stack, or leave the current context, which returns to the one below
 it. At each position, the lexer applies the first rule of the current context
 that matches there; when none matches, the input is rejected. Whitespace that a
 rule reads belongs to the unit it produces, or to no unit when the rule produces
-none. At the end of the text, the lexer stops.
+none; when the rule produces two units, the whitespace between them belongs to
+neither. At the end of the text, the lexer stops.
 
 Besides units, the lexer reads **diagram comments**: text that runs to the end
 of its line and that mermaid.js reads as nothing. The line goes on past a
 comment line that follows a U+2028 or U+2029 on it, whose comment region cuts
 the diagram comment in two: `A->>B: y #c`, U+2029, a line `%% d`, and a line
 `C->>D: z` have one message, from A to B. [fixture:
-sequence/lex-hash-comment-across-comment-line] They are not the comment lines of
-[common.md](../common.md#comment-lines), which are removed before the lexer
-reads the text: a diagram comment can start in the middle of a line. The
-**mark** of a diagram comment is `#` when it starts with `#`, `%%` when it
-starts with `%%`, and `%` otherwise, and its value is the text after the mark:
-the value of `%% c` is a space and `c`, as for a comment line, that of `% c` is
-the same, and that of `%%% c` is `%`, a space, and `c`. [fixture:
+sequence/lex-hash-comment-across-comment-line] [fixture:
+sequence/tokens-sequence-hash-comment-alone-u2028-94dfcd06] They are not the
+comment lines of [common.md](../common.md#comment-lines), which are removed
+before the lexer reads the text: a diagram comment can start in the middle of a
+line. The **mark** of a diagram comment is `#` when it starts with `#`, `%%`
+when it starts with `%%`, and `%` otherwise, and its value is the text after the
+mark: the value of `%% c` is a space and `c`, as for a comment line, that of
+`% c` is the same, and that of `%%% c` is `%`, a space, and `c`. [fixture:
 sequence/lex-percent-comment-after-unit] [fixture:
 sequence/lex-single-percent-comment] [fixture:
 sequence/lex-percent-comment-three-percent] The mark is found in the text
@@ -128,8 +131,11 @@ contain whitespace, a `text`, `color-candidate`, `title-text`,
   the participant `Alice`, and `participant A%%{init: {}}%%B` the participant
   `AB`, as in mermaid.js. [fixture: sequence/lex-directive-in-text] [fixture:
   sequence/lex-directive-in-id-run] [fixture:
-  sequence/lex-directive-in-participant-id] Whitespace next to the directive
-  stays in the id, which is one unit (see
+  sequence/lex-directive-in-participant-id] [fixture:
+  sequence/lex-directive-in-title-text] [fixture:
+  sequence/lex-directive-in-acc-descr-text] [fixture:
+  sequence/lex-directive-in-acc-descr-block-text] Whitespace next to the
+  directive stays in the id, which is one unit (see
   [SequenceIdentifier](../ast/sequence.md#sequenceidentifier)):
   `participant A%%{init: {}}%% c%%B` has the participant `A c%%B`,
   `Al%%{init: {}}%% c%%ice->>B: x` the participant `Al c%%ice`, and
@@ -141,23 +147,28 @@ contain whitespace, a `text`, `color-candidate`, `title-text`,
   `BC`, and `B;C->>E: m` a message from `BC`. [fixture:
   sequence/tokens-ignored-semicolon-in-participant-id] [fixture:
   sequence/tokens-ignored-semicolon-in-message-id]
-- In `parti%%{init: {}}%%cipant A`, `A-%%{init: {}}%%>>B: x`, and
-  `autonumber 1%%{init: {}}%%0`, the directive lies inside a keyword, an arrow,
-  or a number, and the input is rejected, while mermaid.js accepts it (see
+- In `parti%%{init: {}}%%cipant A`, `A-%%{init: {}}%%>>B: x`,
+  `autonumber 1%%{init: {}}%%0`, and `A->>B: wr%%{init: {}}%%ap:x`, the
+  directive lies inside a keyword, an arrow, a number, or a `wrap-prefix` unit,
+  and the input is rejected, while mermaid.js accepts it (see
   [Known divergences](#known-divergences)). [fixture:
   sequence/div-directive-in-keyword] [fixture: sequence/div-directive-in-arrow]
-  [fixture: sequence/div-directive-in-number]
+  [fixture: sequence/div-directive-in-number] [fixture:
+  sequence/div-directive-in-wrap-prefix]
 
 ### The statement context
 
 In the statement context, the lexer tries these rules in order:
 
-1. One or more line feeds: a `newline` unit.
+1. One or more line feeds: a `newline` unit. [fixture:
+   sequence/lex-autonumber-line-break]
 2. One or more whitespace characters, the first of which is not a line feed:
    nothing. The run takes the line feeds that follow the whitespace too, so a
    line break after whitespace makes no `newline` unit. The other contexts and
-   the rules that read to the end of a line keep the line break.
+   the rules that read to the end of a line keep the line break. [fixture:
+   sequence/lex-trailing-space-hides-line-break]
 3. `#` and the rest of its line, up to the line feed: a diagram comment.
+   [fixture: sequence/lex-hash-comment-after-unit]
 4. `%` that is not followed by `{`, and the rest of its line: a diagram comment.
    One `%` is enough: `autonumber % c` and a line `% hello` are comments, while
    a line with `%%` at its start is a comment line of
@@ -166,15 +177,27 @@ In the statement context, the lexer tries these rules in order:
    sequence/lex-single-percent-comment-line]
 5. A **number**: one or more digits, optionally followed by `.` and one or two
    digits, or `.` followed by one or two digits; then, not read, a space, a line
-   feed, or `%%` must follow. A `number` unit.
-6. The keyword `box`: a `box` unit; enters the line context.
+   feed, or `%%` must follow. A `number` unit. [fixture:
+   sequence/db-autonumber-start] [fixture: sequence/db-autonumber-fraction]
+   [fixture: sequence/lex-number-before-space] [fixture:
+   sequence/lex-number-three-decimals] [fixture:
+   sequence/spec-sequence-diagram-0c1ce079]
+6. The keyword `box`: a `box` unit; enters the line context. [fixture:
+   sequence/db-box-empty]
 7. The keywords `participant` and `actor`: a unit named by the keyword; enters
-   the id context.
-8. The keyword `create`: a `create` unit.
-9. The keyword `destroy`: a `destroy` unit; enters the id context.
+   the id context. [fixture: sequence/lex-alias-tabs] [fixture:
+   sequence/demo-sequence-6c40b039]
+8. The keyword `create`: a `create` unit. [fixture:
+   sequence/db-create-participant-before-message]
+9. The keyword `destroy`: a `destroy` unit; enters the id context. [fixture:
+   sequence/gram-destroy-last]
 10. The keywords `loop`, `rect`, `opt`, `alt`, `else`, `par`, `par_over`, `and`,
     `critical`, `option`, and `break`: a unit named by the keyword; enters the
-    line context.
+    line context. [fixture: sequence/gram-block-empty-text] [fixture:
+    sequence/db-block-rect] [fixture: sequence/db-block-opt] [fixture:
+    sequence/db-block-alt] [fixture: sequence/db-block-par] [fixture:
+    sequence/db-block-par-over] [fixture: sequence/db-block-critical] [fixture:
+    sequence/db-block-break]
 11. The keywords `end`, `links`, `link`, `properties`, `details`, `over`, and
     `note`: a unit named by the keyword. The keyword `left of` or `right of`,
     with one space between the two words: a `left` or `right` unit and an `of`
@@ -192,37 +215,70 @@ In the statement context, the lexer tries these rules in order:
     sequence/lex-directive-between-right-and-of] [fixture:
     sequence/tokens-ignored-semicolon-between-left-and-of] [fixture:
     sequence/tokens-ignored-semicolon-between-space-and-of] [fixture:
-    sequence/lex-note-position-directive-between-spaces]
+    sequence/lex-note-position-directive-between-spaces] [fixture:
+    sequence/gram-statement-after-end] [fixture: sequence/db-links-empty]
+    [fixture: sequence/db-link-without-at] [fixture:
+    sequence/db-properties-empty] [fixture: sequence/db-details-empty] [fixture:
+    sequence/db-note-over-two] [fixture: sequence/lex-keyword-mixed-case]
 12. The keywords `activate` and `deactivate`: a unit named by the keyword;
-    enters the id context.
+    enters the id context. [fixture: sequence/lex-activate-id-space] [fixture:
+    sequence/db-deactivate-after-plus]
 13. `title`, one whitespace character, which may be a line feed, and one or more
     characters other than `#`, `;`, and line feed: a `title` unit for the word
-    and the whitespace, and a `title-text` unit for the rest.
+    and the whitespace, and a `title-text` unit for the rest. [fixture:
+    sequence/lex-title-line-break] [fixture: sequence/lex-title-rest-of-line]
 14. `title:`, one whitespace character, and one or more characters other than
     `#`, `;`, and line feed: a `title:` unit and a `title-text` unit, in the
-    same way.
+    same way. [fixture: sequence/db-title-legacy]
 15. `accTitle`, zero or more whitespace, `:`, and zero or more whitespace: an
-    `accTitle` unit and a `:` unit; enters the title context.
+    `accTitle` unit and a `:` unit; enters the title context. [fixture:
+    sequence/lex-acc-title-line-feed] [fixture:
+    sequence/lex-acc-title-directive-before-colon] [fixture:
+    sequence/lex-acc-title-no-whitespace] [fixture:
+    sequence/lex-acc-title-line-feed-before-colon]
 16. `accDescr`, zero or more whitespace, `:`, and zero or more whitespace: an
-    `accDescr` unit and a `:` unit; enters the description context.
+    `accDescr` unit and a `:` unit; enters the description context. [fixture:
+    sequence/db-acc-descr-empty-replaces] [fixture:
+    sequence/lex-acc-descr-no-whitespace] [fixture:
+    sequence/lex-acc-descr-space-before-colon] [fixture:
+    sequence/lex-acc-descr-line-feed-before-colon]
 17. `accDescr`, zero or more whitespace, `{`, and zero or more whitespace: an
     `accDescr` unit and a `{` unit; enters the description block context.
+    [fixture: sequence/db-acc-descr-empty-block-after-message] [fixture:
+    sequence/lex-acc-descr-block-no-whitespace] [fixture:
+    sequence/lex-acc-descr-block-line-feed-before-brace]
 18. The keywords `sequenceDiagram`, `autonumber`, and `off`: a unit named by the
-    keyword.
-19. `,`: a `,` unit.
-20. `;`: a `newline` unit.
+    keyword. [fixture: sequence/header-statement-same-line] [fixture:
+    sequence/lex-autonumber-line-break] [fixture: sequence/db-autonumber-off]
+19. `,`: a `,` unit. [fixture: sequence/db-note-over-two]
+20. `;`: a `newline` unit. [fixture: sequence/spec-sequence-diagram-543d2299]
 21. An **id run**: a run of characters described under [Id runs](#id-runs). An
     `id` unit, whose text is the run without the whitespace at its ends.
+    [fixture: sequence/lex-id-run-space]
 22. An arrow, the first of these that matches: `->>`, `<<->>`, `-->>`, `<<-->>`,
     `->`, `-->`, `-x`, `--x`, `-)`, `--)`, `--|\`, `--|/`, `--\\`, `--//`,
     `/|--`, `\|--`, `//--`, `\\--`, `-|\`, `-|/`, `-\\`, `-//`, `/|-`, `\|-`,
-    `//-`, and `\\-`. An `arrow` unit.
+    `//-`, and `\\-`. An `arrow` unit. [fixture: sequence/db-arrow-types]
 23. `:` and the rest of its line, up to `#`, `;`, or a line feed: a `:` unit,
     followed by the rest read as a text part (see [Text parts](#text-parts)).
-24. `+`, `-`, and `()`: a unit named by its text.
-25. Any other character: an `invalid` unit.
+    [fixture: sequence/lex-empty-text] [fixture: sequence/lex-hash-ends-text]
+    [fixture: sequence/spec-sequence-diagram-543d2299]
+24. `+`, `-`, and `()`: a unit named by its text. [fixture:
+    sequence/db-message-activate-target] [fixture:
+    sequence/db-message-central-connection-both]
+25. Any other character: an `invalid` unit. [fixture:
+    sequence/lex-invalid-line-parenthesis]
 
-At the end of the text, the lexer reads a `newline` unit.
+At the end of the text, the lexer reads a `newline` unit when it is in the
+statement context, and nothing in the other contexts: a description block that
+the text ends, as in `accDescr {` or `accDescr { x` at the end of the text, is
+followed by no `newline` unit, and its statement ends with the text (see the
+production `accessibility-statement`). [fixture:
+sequence/lex-acc-descr-block-unclosed-empty] [fixture:
+sequence/db-acc-descr-block-unclosed] [fixture: sequence/demo-sequence-6c40b039]
+[fixture: sequence/spec-sequence-diagram-f9fe3428] [fixture:
+sequence/lex-acc-title-at-end] [fixture: sequence/db-acc-descr-empty-replaces]
+[fixture: sequence/lex-alias-at-end] [fixture: sequence/lex-data-block-at-end]
 
 Some consequences of the order:
 
@@ -278,8 +334,9 @@ Some consequences of the order:
   sequence/lex-title-rest-of-line] [fixture:
   sequence/db-title-next-line-indented] [fixture:
   sequence/gram-title-then-separators]
-- A `,`, a `;`, and the characters of rule 22 to 24 end an id run, and a line of
-  an `invalid` unit is accepted (see [Grammar](#grammar)): a line with only `)`,
+- An id run ends as [Id runs](#id-runs) describes. A character where no id run
+  and no unit of rules 22 to 24 starts is an `invalid` unit, and a line of an
+  `invalid` unit is accepted (see [Grammar](#grammar)): a line with only `)`,
   `/`, `\`, `<`, or `>` is accepted. [fixture:
   sequence/lex-invalid-line-parenthesis] [fixture:
   sequence/lex-invalid-line-slash] [fixture:
@@ -290,11 +347,12 @@ Some consequences of the order:
 An id run is the longest run of characters that is made of:
 
 1. one or more characters other than `/`, `\`, `+`, `(`, `)`, `<`, `-`, `>`,
-   `:`, `,`, `;`, and line feed; then
+   `:`, `,`, `;`, and line feed; then [fixture: sequence/lex-id-run-space]
 2. any number of continuations. A continuation is zero or more `-`, followed by
    one or more characters other than `+`, `<`, `-`, `>`, `:`, `,`, `;`, and line
    feed. A continuation cannot start where one of these follows: `-x`, `-)`,
    `-\`, `-/`, `-|\`, `-|/`, `--`, `/|-`, `\|-`, `//-`, `\\-`, and `()`.
+   [fixture: sequence/lex-id-run-dash]
 
 So an id run may contain whitespace, `#`, and `=`, and, after its first
 character, `/`, `\`, `(`, and `)`; a single `-` may join its parts, while `--`
@@ -314,24 +372,32 @@ sequence/lex-id-run-spaces-around-arrow]
 The id context is entered by `participant`, `actor`, `destroy`, `activate`, and
 `deactivate`. It reads one id:
 
-1. Whitespace other than line feeds: nothing.
-2. `#` and the rest of its line: a diagram comment.
-3. `@{`: a `@{` unit; enters the data context.
+1. Whitespace other than line feeds: nothing. [fixture:
+   sequence/lex-id-context-space]
+2. `#` and the rest of its line: a diagram comment. [fixture:
+   sequence/lex-id-context-hash-comment]
+3. `@{`: a `@{` unit; enters the data context. [fixture:
+   sequence/gram-data-block-line-break-only]
 4. One or more characters other than `<`, `=`, `>`, `-`, `:`, `,`, `;`, `@`,
    whitespace, and line feed, followed directly by `@{`, which is not read: an
-   `id` unit.
+   `id` unit. [fixture: sequence/db-data-block-create-participant] [fixture:
+   sequence/lex-id-before-data-dash]
 5. One or more characters other than `<`, `>`, `:`, `,`, `;`, `@`, whitespace,
    and line feed, followed by whitespace, the keyword `as`, and one whitespace
    character, which are not read: an `id` unit; enters the alias context.
+   [fixture: sequence/lex-alias-upper-case] [fixture:
+   sequence/lex-id-context-line-separator-before-as]
 6. The longest run of one or more characters other than `<`, `>`, `:`, `,`, `;`,
    `@`, and line feed that is followed by zero or more whitespace and a line
    feed, `;`, or `#`, which are not read: an `id` unit, whose text is the run
-   without the whitespace at its ends; leaves the id context.
+   without the whitespace at its ends; leaves the id context. [fixture:
+   sequence/lex-id-context-space] [fixture:
+   sequence/lex-id-context-line-separator-in-id]
 7. Zero or more characters other than `<`, `>`, `:`, `,`, `;`, `@`, and line
    feed, then `<` and the rest of the line: an `invalid` unit; leaves the id
-   context.
+   context. [fixture: sequence/lex-id-context-hash-before-invalid]
 8. One or more characters other than line feed: an `invalid` unit; leaves the id
-   context.
+   context. [fixture: sequence/lex-id-context-colon]
 
 The run of rule 6 may contain `#`, and it is the longest one that the line
 allows: `participant A # c` adds the participant `A # c`, because a line feed
@@ -358,29 +424,30 @@ sequence/lex-id-context-colon] [fixture: sequence/lex-id-context-line-break]
 The alias context is entered after an id that `as` follows, and after a data
 block that `as` follows:
 
-1. Whitespace other than line feeds: nothing.
-2. `#` and the rest of its line: a diagram comment.
-3. The keyword `as`: an `as` unit; leaves the alias context and the id context,
-   and enters the line context.
-4. Nothing, at a line feed: a `newline` unit that reads no character; leaves the
-   alias context and the id context.
+1. Whitespace other than line feeds: nothing. [fixture: sequence/lex-alias-tabs]
+   [fixture: sequence/lex-alias-line-separator-after-as]
+2. The keyword `as`: an `as` unit; leaves the alias context and the id context,
+   and enters the line context. [fixture: sequence/lex-alias-upper-case]
+3. Nothing, at a line feed: a `newline` unit that reads no character; leaves the
+   alias context and the id context. [fixture:
+   sequence/lex-alias-lookahead-line-break-participant]
 
 The keyword is case-insensitive, and the whitespace around it may be any
 whitespace other than a line feed: `participant A AS B` and the same with tabs
 give A the description `B`. [fixture: sequence/lex-alias-upper-case] [fixture:
 sequence/lex-alias-tabs]
 
-Rule 4 applies when a line feed lies between the id or the data block and `as`.
+Rule 3 applies when a line feed lies between the id or the data block and `as`.
 The whitespace that rule 5 of the id context and rule 2 of the data context look
 for before `as` includes line feeds, so `participant A`, a line break, and
 `as ->> B: x` enter the alias context after `A`; the alias context reads no `as`
 before the line feed and ends the statement there, with a `newline` unit of no
-characters, which is no token. The line feed after it is a `newline` unit of the
-statement context, and the next line is a statement of its own, read as without
-the line before it: a message from `as` to B. This is so after every keyword
-that enters the id context, also when the id is `as`, after a data block, and
-across several line breaks; and a next line that is no statement, such as `as B`
-or `as` alone, makes the input rejected. [fixture:
+characters. The line feed after it is a `newline` unit of the statement context,
+and the next line is a statement of its own, read as without the line before it:
+a message from `as` to B. This is so after every keyword that enters the id
+context, also when the id is `as`, after a data block, and across several line
+breaks; and a next line that is no statement, such as `as B` or `as` alone,
+makes the input rejected. [fixture:
 sequence/lex-alias-lookahead-line-break-participant] [fixture:
 sequence/lex-alias-lookahead-line-break-id-as] [fixture:
 sequence/lex-alias-lookahead-line-break-activate] [fixture:
@@ -399,17 +466,20 @@ The line context is entered by `box`, `as`, and the keywords of blocks (rule 10
 of the statement context). It reads the rest of the line:
 
 1. Whitespace other than line feeds, except right after a colour candidate:
-   nothing.
-2. `#` and the rest of its line: a diagram comment.
+   nothing. [fixture: sequence/spec-sequence-diagram-01f0c47f]
+2. `#` and the rest of its line: a diagram comment. [fixture:
+   sequence/spec-sequence-diagram-01f0c47f]
 3. Only as the first unit after `box`, a **colour candidate**: `rgb`, `rgba`,
    `hsl`, or `hsla`, in lower case, zero or more whitespace, `(`, and the
    characters up to the last `)` before the next `#`, `;`, or line feed; or else
    one or more word characters (ASCII letters, digits, and `_`). A
-   `color-candidate` unit.
+   `color-candidate` unit. [fixture: sequence/db-box-colour-without-space]
+   [fixture: sequence/db-box-colour-rgba] [fixture: sequence/db-box-colour-hsl]
+   [fixture: sequence/db-box-colour-hsla]
 4. Zero or more characters other than `#`, `;`, and line feed: after `box`, a
    `text` unit unless they are all whitespace other than U+2028 and U+2029, and
    after another keyword, read as a text part (see [Text parts](#text-parts));
-   leaves the line context.
+   leaves the line context. [fixture: sequence/db-box-no-colour-candidate]
 
 So the text of `loop x # c` is `x` and a space, and `alt;B->>A: y` is an `alt`
 block with an empty text, followed by a message. [fixture:
@@ -427,11 +497,13 @@ sequence/tokens-box-text-trailing-spaces]
 
 The data context is entered by `@{` after an id:
 
-1. One or more characters other than `}`: a `data-text` unit.
+1. One or more characters other than `}`: a `data-text` unit. [fixture:
+   sequence/db-data-block-create-participant]
 2. `}` followed by whitespace, the keyword `as`, and one whitespace character,
    which are not read: a `}` unit; leaves the data context and enters the alias
-   context.
-3. `}`: a `}` unit; leaves the data context and the id context.
+   context. [fixture: sequence/db-data-block-alias-and-as]
+3. `}`: a `}` unit; leaves the data context and the id context. [fixture:
+   sequence/db-data-block-create-participant]
 
 A data block therefore ends at the first `}`, and its content cannot contain
 one. [fixture: sequence/docs-syntax-sequence-diagram-1371ae9a] [fixture:
@@ -445,6 +517,8 @@ context is left; so they read the rest of the line, `#` and `;` included. In the
 description block context, `}` is a `}` unit and leaves the context, and one or
 more other characters are a `description-block-text` unit. [fixture:
 sequence/lex-acc-title-line-feed] [fixture: sequence/lex-acc-title-hash]
+[fixture: sequence/tokens-acc-descr-ignored-semicolon] [fixture:
+sequence/tokens-acc-descr-block-ignored-semicolon]
 
 ### Text parts
 
@@ -452,15 +526,22 @@ A **text part** is the rest of a line after `:`, or after a keyword that enters
 the line context other than `box`. Its whitespace at the start belongs to no
 unit. When what follows starts with a **wrap prefix**, `wrap:` or `nowrap:`,
 optionally after one `:`, compared case-sensitively, the prefix is a
-`wrap-prefix` unit. The rest, when it is not all whitespace, is a `text` unit.
-mermaid.js reads a text part as a text and its wrap setting: the text without
-the prefix and without the whitespace at its ends, wrapped after `wrap:` and not
-wrapped after `nowrap:`. `A->>B: wrap:long` has the message `long`, wrapped, and
-`A->>B: :nowrap: x` the message `x`, not wrapped, while `A->>B: WRAP:x` has the
-message `WRAP:x`. A text part may be empty: `A->>B:` has the empty message.
-[fixture: sequence/lex-wrap-prefix] [fixture: sequence/lex-nowrap-prefix-colon]
-[fixture: sequence/lex-wrap-prefix-upper-case] [fixture:
-sequence/lex-empty-text]
+`wrap-prefix` unit. It is not a text, so a directive inside it makes the input
+rejected, while mermaid.js accepts `A->>B: wr%%{init: {}}%%ap:x` with the
+message `x`, wrapped (see [Directives inside units](#directives-inside-units)).
+[fixture: sequence/div-directive-in-wrap-prefix] The rest, when it is not all
+whitespace, is a `text` unit. mermaid.js reads a text part as a text and its
+wrap setting: the text without the prefix and without the whitespace at its
+ends, wrapped after `wrap:` and not wrapped after `nowrap:`. `A->>B: wrap:long`
+has the message `long`, wrapped, and `A->>B: :nowrap: x` the message `x`, not
+wrapped, while `A->>B: WRAP:x` has the message `WRAP:x`. A text part may be
+empty: `A->>B:` has the empty message. [fixture: sequence/lex-wrap-prefix]
+[fixture: sequence/lex-nowrap-prefix-colon] [fixture:
+sequence/lex-wrap-prefix-upper-case] [fixture:
+sequence/config-wrap-site-nowrap-prefix] [fixture: sequence/db-block-loop-wrap]
+[fixture: sequence/lex-empty-text] [fixture: sequence/lex-wrap-prefix-colon]
+[fixture: sequence/lex-text-part-whitespace-only] [fixture:
+sequence/lex-block-text-whitespace-only]
 
 After `box`, the rest of the line is divided by its form alone into a colour
 candidate and a `text` unit, either of which may be missing, as mermaid.js
@@ -541,9 +622,11 @@ the end of the text. The others need no separator: a box and a block end at
 `end`, and a title or an accessibility statement runs to the end of its line, so
 another statement may follow on the same line after `end`: `loop x`, a message,
 and `end A->>B: z` has the message after the loop. [fixture:
-sequence/gram-statement-after-end] A line of an `invalid` unit is accepted and
-is a SequenceIgnoredStatement in the tree, also after `end` on the same line.
-[fixture: sequence/lex-invalid-line-parenthesis] [fixture:
+sequence/gram-statement-after-end] [fixture:
+sequence/spec-sequence-diagram-543d2299] [fixture:
+sequence/spec-sequence-diagram-8e03af61] A line of an `invalid` unit is accepted
+and is a SequenceIgnoredStatement in the tree, also after `end` on the same
+line. [fixture: sequence/lex-invalid-line-parenthesis] [fixture:
 sequence/gram-invalid-after-end] A line `)` after a message whose text was meant
 to continue is such a line: `A->>B: call(x`, a line break, and `)` has the
 message `call(x`. [fixture: sequence/db-ignored-line-after-wrapped-message]
@@ -576,9 +659,12 @@ actor and after `autonumber`: `participant A@{ "type": "actor" } accDescr {}`,
 the same without the space, and `autonumber accDescr {}` are accepted. [fixture:
 sequence/gram-empty-description-block-after-participant-data] [fixture:
 sequence/gram-empty-description-block-after-actor-data-glued] [fixture:
-sequence/gram-empty-description-block-after-autonumber] Whitespace before the
-block is read alone, so the line break after the block is the `newline` unit of
-the statement: `autonumber`, two spaces, `accDescr {}`, and a line break is
+sequence/gram-empty-description-block-after-autonumber] [fixture:
+sequence/gram-empty-description-block-in-message-text] [fixture:
+sequence/gram-empty-description-block-in-participant-id] [fixture:
+sequence/gram-empty-description-block-in-alias-text] Whitespace before the block
+is read alone, so the line break after the block is the `newline` unit of the
+statement: `autonumber`, two spaces, `accDescr {}`, and a line break is
 accepted, while `autonumber`, two spaces, and a line break is rejected, because
 the spaces hide the line break (see
 [The statement context](#the-statement-context)). [fixture:
@@ -612,9 +698,10 @@ sequence/gram-data-block-line-break-only] `create` may come before any
 participant statement, `destroy` included: `create destroy A` is a destroy
 statement with `create` (see
 [Rejections outside the grammar](#rejections-outside-the-grammar)). [fixture:
-sequence/gram-create-destroy] A box holds only participant statements, empty
-description blocks, and empty lines, without `create` and without messages.
-[fixture: sequence/gram-box-create-participant] [fixture:
+sequence/gram-create-destroy] [fixture: sequence/spec-sequence-diagram-a7618b16]
+A box holds only participant statements, empty description blocks, and empty
+lines, without `create` and without messages. [fixture:
+sequence/gram-box-create-participant] [fixture:
 sequence/gram-box-message-inside] An empty description block in a box is a
 description block statement without text, as where any other statement starts:
 it may be on a line of its own, over several lines with only whitespace between
@@ -638,6 +725,9 @@ A message may have `+` or `-` after the arrow, or `()` after the arrow or before
 it, or both, and `+` and `-` cannot be combined with `()`. A message needs a
 text, which may be empty after its `:`: `A->>B` is rejected, and `A->>B:` is
 accepted. [fixture: sequence/gram-message-without-text] [fixture:
+sequence/db-message-central-connection-both] [fixture:
+sequence/gram-message-activation-then-central-connection] [fixture:
+sequence/gram-message-central-connection-then-activation] [fixture:
 sequence/lex-empty-text]
 
 ### Other statements
@@ -663,7 +753,15 @@ block-statement = ( "loop" | "rect" | "opt" | "break" ) text-part line* "end"
 ```
 
 A block's text may be empty: `loop`, a line break, and `end` is a loop with the
-empty text. [fixture: sequence/gram-block-empty-text]
+empty text. [fixture: sequence/gram-block-empty-text] Each keyword starts a
+block of its own kind, and `else`, `and`, and `option` start the sections of an
+`alt` block, of a `par` or `par_over` block, and of a `critical` block.
+[fixture: sequence/db-block-rect] [fixture: sequence/gram-block-loop-else]
+[fixture: sequence/gram-block-alt-option] [fixture:
+sequence/gram-block-critical-and] [fixture: sequence/db-block-opt] [fixture:
+sequence/db-block-break] [fixture: sequence/db-block-alt] [fixture:
+sequence/db-block-par] [fixture: sequence/db-block-par-over] [fixture:
+sequence/db-block-critical]
 
 ### Rejections outside the grammar
 
@@ -691,6 +789,10 @@ Each is decided from the statements in source order:
   [fixture: sequence/gram-create-existing] [fixture:
   sequence/gram-create-after-message] [fixture: sequence/gram-create-after-note]
   [fixture: sequence/gram-create-after-links] [fixture:
+  sequence/gram-create-after-link] [fixture:
+  sequence/gram-create-after-properties] [fixture:
+  sequence/gram-create-after-details] [fixture:
+  sequence/gram-create-after-create-destroy] [fixture:
   sequence/gram-create-after-message-and-destroy] [fixture:
   sequence/db-create-after-activate] [fixture:
   sequence/db-create-after-destroy-only]
@@ -762,13 +864,15 @@ These divergences of [known-divergences.md](../known-divergences.md) apply to
 sequence, and show in it as follows.
 
 - **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.md).**
-  A directive inside a keyword, a delimiter, an arrow, or a number makes the
-  input rejected here, while mermaid.js accepts it:
-  `parti%%{init: {}}%%cipant A`, `A-%%{init: {}}%%>>B: x`, and
-  `autonumber 1%%{init: {}}%%0` (see
+  A directive inside a unit other than a text unit, such as a keyword, a
+  delimiter, an arrow, or a number, makes the input rejected here, while
+  mermaid.js accepts it: `parti%%{init: {}}%%cipant A`,
+  `A-%%{init: {}}%%>>B: x`, `autonumber 1%%{init: {}}%%0`, and
+  `A->>B: wr%%{init: {}}%%ap:x` (see
   [Directives inside units](#directives-inside-units)). [fixture:
   sequence/div-directive-in-keyword] [fixture: sequence/div-directive-in-arrow]
-  [fixture: sequence/div-directive-in-number]
+  [fixture: sequence/div-directive-in-number] [fixture:
+  sequence/div-directive-in-wrap-prefix]
 - **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.md).**
   On a line that matches the `style` rule, as after
   `participant Z@{ "style": "x:#y" };`, the ignored `;` inside a number, a
@@ -804,14 +908,15 @@ sequence, and show in it as follows.
   sequence/gram-empty-description-block-after-placement] [fixture:
   sequence/gram-acc-descr-block-empty-then-statement]
 - **[`comment-takes-character`](../known-divergences/comment-takes-character.md).**
-  A `%%` right after a number, or right after a character other than whitespace
-  at which a rule of the statement context starts its match, starts a comment
-  here and keeps that character, while mermaid.js reads the character as part of
-  the comment, and reads no number before `%%`. A line `C%% c` is accepted by
-  mermaid.js and rejected here, `A->>B:%% c` and `autonumber 10%% c` are
+  A `%%` right after a character other than whitespace is read here as
+  [The statement context](#the-statement-context) says: the character before it
+  stays in what the lexer reads there, and the `%%` starts a comment after a
+  number, and is a character of the id run or the text after a character of an
+  id run or after `:`. mermaid.js reads the character before it as part of a
+  comment instead, and reads no number before `%%`. A line `C%% c` is accepted
+  by mermaid.js and rejected here, `A->>B:%% c` and `autonumber 10%% c` are
   rejected by mermaid.js and accepted here, and `autonumber 5%% c` starts at 5
-  here and has no start in mermaid.js (see
-  [The statement context](#the-statement-context)). [fixture:
+  here and has no start in mermaid.js. [fixture:
   sequence/div-comment-after-one-character-id] [fixture:
   sequence/div-comment-after-text-colon] [fixture:
   sequence/div-comment-after-two-digit-number] [fixture:

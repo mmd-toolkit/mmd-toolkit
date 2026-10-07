@@ -32,6 +32,13 @@
     "relations": [],
     "notes": [],
     "namespaces": [],
-    "interfaces": []
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "C1~T~",
+        "name": "cb",
+        "args": null
+      }
+    ]
   }
 }

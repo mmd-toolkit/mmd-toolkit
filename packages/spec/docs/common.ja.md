@@ -14,7 +14,7 @@ mermaid.js は、決まった順序の正規表現による書き換えでテキ
 書き換え後の位置から元の位置への対応表を持つ必要がありません。
 各規則は次の 4 種類のどれかです。
 
-- **トリビアの規則**: ソースのどの部分が図のトークンでないかを定めます。
+- **トリビアの規則**: ソースのどの部分が図のテキストでないかを定めます。
   フロントマター、ディレクティブ、コメント行、空白です。
 - **字句の規則**: 字句解析器が 1 文字、
   または短い文字の並びをどう読むかを定めます。
@@ -56,6 +56,8 @@ mermaid.js のソースへの参照は、
   U+2029、U+202F、U+205F、U+3000、U+FEFF のどれかです。
   バイトオーダーマークを含みます。
   mermaid.js のパターンが空白として扱う集合と同じです。
+  [fixture: common/whitespace-characters]
+  [fixture: sequence/lex-whitespace-characters-around-text]
 - **行終端**は、`\r\n`、単独の `\r`、単独の `\n` です。
   U+2028 と U+2029 は行終端ではありません。
 - **行内の空白**は、行終端の一部でない空白です。
@@ -82,12 +84,24 @@ mermaid.js のソースへの参照は、
   BMP の外の文字は他の文字と一致しません。
   mermaid.js の大文字小文字を区別しない検出器は、この方法で比べます。
   [fixture: common/detect-case-kelvin-sign] [fixture: common/detect-case-long-s]
+- **トークン**は、字句解析器がテキストから切り出して文法に渡すものの一般名です。
+  「mermaid.js は空の文字列にトークンを読まない」のように使います。
+  この仕様の規則は、トークンでなく単位を読みます
+  （[用語](./index.ja.md#用語) を参照）。
+  この語は、実装が記録するものを指しません。
 - 文法の規則は次の表記を使います。
   規則は、名前、`=`、定義の順に書きます。
   二重引用符で囲んだ文字列は、そのままの文字列です。
   二重引用符そのものは単一引用符で囲んで書きます。
   並べて書いた項目は、その順に続きます。
-  `|` は選択肢を区切ります。
+  `|` は選択肢を区切り、選択肢は順に試すものではありません。
+  入力は、文法の残りもそれを読める選択肢で読みます。
+  state 図で、`statement` の最初の選択肢 `definition-statement` は、
+  `A --> B` の `A` を読みますが、次に読む規則のない `-->` を残すので、
+  `A --> B` は `transition-statement` です。
+  [fixture: state/lex-two-transitions-one-line]
+  2 つの選択肢が同じ単位を読めるところでは、
+  どちらで読むかを図の文書が述べます。
   項目の後の `?` は省略可能、`*` は 0 回以上の繰り返し、
   `+` は 1 回以上の繰り返しを表します。
   丸括弧は項目をまとめます。
@@ -138,7 +152,7 @@ mermaid.js では、各段階が前の段階の出力を書き換えます。
 字句解析器がソースを左から右へ 1
 回読む間に適用する規則として定めます
 （[ソースの読み方](#ソースの読み方) を参照）。
-規則は、既知の差を除いて、段階と同じトークンと値を与えます。
+規則は、既知の差異を除いて、段階と同じ単位と値を与えます。
 後の規則が読むための書き換えたテキストを作る規則はありません。
 規則がソース以外のテキスト（たとえば検出器が見るテキスト）に触れるとき、
 そのテキストは規則を述べるための言い方で、
@@ -199,7 +213,7 @@ agentflow の文書で、その字句解析器がこれらをどう扱うかを�
    （[ディレクティブはトークンの境界](#ディレクティブはトークンの境界)）。
    コメント領域の中のディレクティブは、その領域の一部で（項目 1）、
    そのどちらもしません。
-4. **図のトークンの規則**。
+4. **図の単位の規則**。
    それに一致させる間、字句解析器は、行終端を `\n` として（[行終端](#行終端)）、
    属性の引用符を `'` として（[HTML 属性の引用符](#html-属性の引用符)）、
    エンティティをそのプレースホルダとして
@@ -214,7 +228,7 @@ agentflow の文書で、その字句解析器がこれらをどう扱うかを�
 図の字句解析器が読む文字、
 つまりテキストのうちディレクティブとコメント領域の外にあり、
 行単位の規則が無視する `;` でない文字を、**図のテキスト**と呼びます。
-図のテキストは、図がトークンの間のトリビアとする空白や行終端も含みます。
+図のテキストは、図が単位の間のトリビアとする空白や行終端も含みます。
 agentflow では、字句解析器がコメント行を自分で読むので、
 コメント領域の文字も図のテキストです
 （[mermaid.js とこの仕様](#mermaidjs-とこの仕様) を参照）。
@@ -306,6 +320,11 @@ attribute-part  = (any character except ">")*
 探索は次の `<` から続きます。
 タグどうしは重なりません。
 探索は直前のタグの終わりの後から続きます。
+[fixture: common/html-attribute-quotes-no-word-after-lt]
+[fixture: common/html-attribute-quotes-digit-tag-name]
+[fixture: common/html-attribute-quotes-no-closing-gt]
+[fixture: common/html-attribute-quotes-tag-over-lines]
+[fixture: common/html-attribute-quotes-two-tags]
 
 各属性部の中で、引用符付きの属性値を左から順に探します。
 
@@ -318,6 +337,8 @@ quoted-value    = "=" '"' (any character except '"')* '"'
 タグと引用符付きの値は、書かれたとおりのテキストの文字の中で探します。
 ディレクティブ、コメント行、行単位の規則が無視する `;` も含みます。
 フロントマターの中は探しません。
+[fixture: flowchart/html-tag-starts-in-frontmatter]
+[fixture: common/html-attribute-quotes-space-around-equals]
 
 変換: 同じ文字は、テキストの変換した形では `'` です。
 `A[<a href="u">t</a>]` のラベルは、Db では `<a href='u'>t</a>` で、
@@ -334,7 +355,8 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
 で行い、フロントマター、ディレクティブ、
 コメント行を取り除く前にソース全体に適用します。
 フロントマターの中を除いて
-（[`html-tag-in-frontmatter`](./known-divergences/html-tag-in-frontmatter.ja.md) を参照）、
+（[`html-tag-in-frontmatter`](./known-divergences/html-tag-in-frontmatter.ja.md)
+を参照）、
 この仕様は、その帰結も含めて意図的にそのまま従います。
 
 - タグはコメント行の中で始まりえます。
@@ -370,7 +392,8 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
 
 トリビアの規則。
 出どころは
-[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)です。
+[`extractFrontMatter()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/frontmatter.ts#L24-L69)
+です。
 次の条件がすべて成り立つとき、ソースはフロントマターを持ちます。
 
 1. **開始行**はソースの最初の行です。_字下げ_（0 個以上の行内の空白）、`---`、
@@ -431,6 +454,9 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
 その後の空白だけの行（それぞれの行終端を含む）までです。
 ソースの最後にある、行終端のない空白だけの行は含みません。
 その次の、空白だけではない行の字下げは含みません。
+[fixture: common/frontmatter-blank-lines-after-closing]
+[fixture: common/frontmatter-whitespace-line-at-end]
+[fixture: common/frontmatter-indented-line-after]
 
 この仕様は本文を解析しません。
 木は本文を書かれたとおりに保持し
@@ -438,15 +464,18 @@ mermaid.js は、文法を変えずにラベルの中の HTML の属性値に `"
 本文に何が書かれていても入力は受理されます。
 mermaid.js は本文を YAML として解析し、
 入力を拒否することがあります
-（[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md) を参照）。
+（[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md)
+を参照）。
 mermaid.js が本文をどう読むかは、
-[フロントマターの本文の読み方](../../tests/docs/configuration.ja.md#フロントマターの本文の読み方) で述べます。
+[フロントマターの本文の読み方](../../tests/docs/configuration.ja.md#フロントマターの本文の読み方)
+で述べます。
 
 これらの条件が成り立たない場合、フロントマターはなく、
 `---` のブロックはテキストです。
 その後どうなるかは、成り立たなかった理由によります。
 
-- ブロックの前にトリビア（先頭の改行やディレクティブ）が
+- ブロックの前にトリビア
+  （先頭の改行、先頭の空白、ディレクティブ、コメント行など）が
   あったことだけが理由の場合、
   検出は自分が見るテキストの先頭でブロックを再び見つけ、
   無視します（[図種の検出](#図種の検出) を参照）。
@@ -489,12 +518,14 @@ pin した mermaid.js では、Langium で定義された図のいくつかが�
 トリビアの規則。
 この仕様はディレクティブの引数を解析しません。
 mermaid.js は一部のディレクティブを設定のために読みます。
-[設定の走査](../../tests/docs/configuration.ja.md#設定の走査) を参照してください。
+[設定の走査](../../tests/docs/configuration.ja.md#設定の走査)
+を参照してください。
 
 ### ディレクティブの位置
 
 ディレクティブは、フロントマターの後のソースのあらゆる位置で、左から順に、
-[`removeDirectives()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202)と同じように探します。
+[`removeDirectives()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202)
+と同じように探します。
 ディレクティブは、`%%{` の後に 0 個以上の空白と語の文字が続くところで始まり、
 次の規則が届くところまで伸びます。
 
@@ -507,14 +538,21 @@ free-text  = (any character except U+2028 and U+2029)*
 ```
 
 - 空白は行終端を含むので、どの `whitespace*` も改行をまたげます。
+  [fixture: common/directive-whitespace-before-name]
+  [fixture: common/directive-line-feed-before-name]
 - 名前の後の `whitespace* ":"` は、
   名前とその後の空白の後に `:` が続くときに取られます。
   そうでなければ、ディレクティブはコロンを持ちません。
+  [fixture: sequence/config-wrap-directive]
+  [fixture: common/directive-whitespace-before-colon]
+  [fixture: common/directive-whitespace-before-colon-applies]
+  [fixture: common/directive-line-feed-before-colon-applies]
 - 空白の後の最初の文字が語の文字なら、引数は `word` です。
   そうでなければ `free-text` で、最初の `}%%` の手前、U+2028 か U+2029 の手前、
   テキストの終わりのうち最も早いところで止まります。
   空でもかまいません。
   [fixture: common/directive-u2028]
+  [fixture: common/directive-empty-argument]
 - 引数の後の `whitespace*` は、続く空白を改行も含めてすべて取ります。
   その後に閉じる `}%%` が続けば、それも取ります。
   そのため、自由形式の引数が U+2028 か U+2029 の手前で止まった場合、
@@ -527,6 +565,7 @@ free-text  = (any character except U+2028 and U+2029)*
 ディレクティブどうしは重なりません。
 後に 0 個以上の空白と語の文字が続かない `%%{` はディレクティブを始めず、
 探索は次の文字から続きます。
+[fixture: common/directive-non-word-start]
 [行終端](#行終端) の規則が適用されるので、
 ディレクティブは mermaid.js とまったく同じように単独の `\r` や `\r\n`
 をまたげます。
@@ -536,7 +575,7 @@ mermaid.js は、ディレクティブを取り除く前に改行を正規化す
 ある位置でディレクティブが始まるかどうかは、図の構文にも、字句解析器の文脈にも、
 コメントにも依存しません。
 ディレクティブは、コメント行の中でも、
-それがなければ 1 つのトークンになるものの途中でも始まりえます。
+それがなければ 1 つの単位になるものの途中でも始まりえます。
 mermaid.js で確かめた帰結は次のとおりです。
 
 - 閉じる `}%%` は省略できます。
@@ -564,12 +603,16 @@ mermaid.js で確かめた帰結は次のとおりです。
   コメント行でもないので（後述）、[図のテキスト](#ソースの読み方) になり、
   各図の字句解析器が読みます。
   頂点の後の行の `%%{}` を、flowchart は拒否し、
-  sequence と class は図のコメントとして読み、
-  state はその `%%` を mermaid.js が読まないテキストとして読みます。
+  sequence と class は図のコメントとして読みます。
+  state は、状態の後の行ではそれを拒否し、
+  `state X` の後の行では、その `%%` を本体の前の mermaid.js が読まないテキスト、
+  `{}` を X の空の本体として読みます。
   [fixture: common/directive-empty-braces] [fixture:
   flowchart/lex-percent-brace-line-after-vertex] [fixture:
   sequence/lex-percent-brace-line-after-message] [fixture:
   class/lex-percent-brace-line-after-class] [fixture:
+  state/lex-percent-brace-line-after-reference] [fixture:
+  state/lex-percent-brace-line-after-state] [fixture:
   common/directive-non-word-start]
 - 名前も、その大文字小文字も関係ありません。
   `%%{INIT: ...}%%` も `%%{init: ...}%%` と同じくディレクティブです。
@@ -592,7 +635,7 @@ mermaid.js はディレクティブを取り除く前にそれを探すので、
 書かれたとおりのテキストで、ディレクティブも含めて探します。
 [fixture: flowchart/html-tag-attributes-cross-directive]
 
-そのため、図の字句解析器が読む単位、トークン、値は、
+そのため、図の字句解析器が読む単位と値は、
 ディレクティブのないテキストのものです。
 行単位の規則に当てはまる並び、エンティティ、コメントの `%%` は、
 2 つの文字の間にディレクティブを持つことがあります。
@@ -605,7 +648,8 @@ mermaid.js はディレクティブを取り除く前にそれを探すので、
   つまり**文字列の単位**を挙げます
   （flowchart については
   [単位と文脈](./diagrams/flowchart.ja.md#単位と文脈) と
-  [単位の中のディレクティブ](./diagrams/flowchart.ja.md#単位の中のディレクティブ) を参照）。
+  [単位の中のディレクティブ](./diagrams/flowchart.ja.md#単位の中のディレクティブ)
+  を参照）。
   テキストの単位と文字列の単位は、
   どの 2 つの文字の間にもディレクティブを持ってかまいません。
   名前の単位、キーワード、`:::` のような区切り記号、矢印、数のような、
@@ -618,17 +662,26 @@ mermaid.js はディレクティブを取り除く前にそれを探すので、
   そのディレクティブはその名前か区切り記号の中にあり、入力は拒否されます。
   `error` 疑似図種では、文字の並びはどれもテキストなので、
   ディレクティブはどこにあってもかまいません。
+  単位がその始まりか終わりで読む空白の中のディレクティブと、
+  `space` や `newline` の単位のような空白だけの単位の中のディレクティブは、
+  単位の中にあるものとしません。
+  空白は、それがあってもなくても同じに読まれるからです。
+  矢印の単位がその前後の空白を読む `A --> %%{init: {}}%% B` と、
+  sequence の `accTitle %%{init: {}}%% : x` がそうです。
+  [fixture: flowchart/lex-directive-after-arrow] [fixture:
+  flowchart/db-subgraph-id-directive-in-statement-space] [fixture:
+  sequence/lex-acc-title-directive-before-colon]
 
 - コメント領域の中のディレクティブは、
   字句解析器が領域全体を読み進めるので（[コメント行](#コメント行) を参照）、
   領域と一緒に読み進められます。
-  1 つの単位の読む中にある領域でも同じで、領域はその単位のトークンを切ります。
+  1 つの単位の読む中にある領域でも同じです。
   コメントの `%%` の後のディレクティブはコメントの一部で、
   その前のディレクティブはコメントの一部ではありません。
   [fixture: common/comment-region-directive-in-string] [fixture:
   common/comment-directive-in-string]
 
-トークンの間や、トークンの端の空白の中にあるディレクティブは、
+2 つの単位の間や、単位がその始まりか終わりで読む空白の中にあるディレクティブは、
 mermaid.js とまったく同じに振る舞います。
 [fixture: common/directive-mid-line] [fixture: common/directive-after-link]
 [fixture: common/comment-after-directive] [fixture:
@@ -647,7 +700,7 @@ common/directive-between-header-and-direction]
 文字列の中のディレクティブの引用符は、文字列を終えません。
 [fixture: common/directive-in-string] [fixture:
 flowchart/lex-directive-in-string-with-quotes]
-2 つのトークンの間の空白の中のディレクティブは、何も変えません。
+2 つの単位の間の空白の中のディレクティブは、何も変えません。
 `flowchart %%{init: {}}%%LR` は方向 `LR` を持ち、
 `style A %%{init: {}}%%fill:red` のスタイルは `fill:red` です。
 一方、`style A%%{init: {}}%%fill:red` は、
@@ -669,8 +722,8 @@ mermaid.js は `end%%{init: {}}%%x` をキーワード `end` でなく頂点 `en
 [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md)
 を見てください。
 
-コメント行の上のディレクティブは、
-コメントの一部です（[コメント行](#コメント行) を参照）。
+コメント行の上で `%%` の後にあるディレクティブはコメントの一部で、
+`%%` の前にあるものはそうではありません（[コメント行](#コメント行) を参照）。
 各図の文書は、この規則を、その字句解析器が読むものに当てはめます。
 flowchart については
 [単位の中のディレクティブ](./diagrams/flowchart.ja.md#単位の中のディレクティブ)
@@ -680,7 +733,8 @@ flowchart については
 
 トリビアの規則。
 出どころは
-[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)です。
+[`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)
+です。
 
 **コメント開始位置**は、テキストの先頭、またはディレクティブの一部でない行終端、
 U+2028、U+2029 の直後の位置です。**コメント**は、
@@ -710,6 +764,7 @@ U+2028、U+2029 の直後の位置です。**コメント**は、
 コメントは、その `%%` の最初の `%` から行の終わり、
 つまりディレクティブの一部でない次の行終端まで伸びます。
 U+2028 と U+2029 はコメントを終えません。
+[fixture: common/comment-line-separator-inside-comment-line]
 行終端は、ディレクティブの走査が取るもの（引数の後の空白を含む）の中にあるとき、
 ディレクティブの一部です
 （[ディレクティブの位置](#ディレクティブの位置) を参照）。
@@ -721,8 +776,8 @@ mermaid.js は `A` も `B --> C` も読みません。
 [fixture: common/comment-directive-word-argument-takes-next-lines]
 ディレクティブの一部でない行終端が後に続かないとき、
 コメントはテキストの終わりまで伸びます。
-そのとき、その範囲は、終わりにあってディレクティブが取った空白を、
-ディレクティブの範囲と同じく除きます。
+そのとき、コメントは、終わりにあってディレクティブが取った空白を、
+ディレクティブと同じく含みません（[Directive](./ast.ja.md#directive) を参照）。
 コメントを含む行を**コメント行**と呼びます。
 
 コメントの**コメント領域**は、
@@ -735,11 +790,12 @@ mermaid.js は `A` も `B --> C` も読みません。
 先を見始めた位置から領域が始まります。
 コメント領域は重なりません。
 領域全体がトリビアです。
+[fixture: common/comment-blank-line-before-in-string]
 木に現れるのは、そのディレクティブだけで、`Root.directives` に並びます。
 空白と行終端は、どのノードにも属しません。
 領域はそれら以上の意味を持ちます。
-その行終端は図のトークンではなく、
-トークンの中では字句解析器が領域全体を読み進めます。
+その行終端は図のテキストではなく、
+単位の中では字句解析器が領域全体を読み進めます。
 後で述べるとおりです。
 
 - コメント行は、任意の行内の空白で字下げしてよい。
@@ -784,7 +840,7 @@ mermaid.js は `A` も `B --> C` も読みません。
   [fixture: flowchart/lex-acc-descr-block-bare-marker-line-after-comment-line]
   [fixture: flowchart/lex-tooltip-bare-marker-line] [fixture:
   flowchart/lex-acc-title-bare-marker-next-line]
-- コメント行だけからなるテキストはトークンを持たず、検出で拒否されます。
+- コメント行だけからなるテキストは図のテキストを持たず、検出で拒否されます。
   [fixture: common/comment-only]
 - ディレクティブは除かれるので、`%%{init: {}}%% %% c` の行は、
   ディレクティブとその後のコメントです。
@@ -801,6 +857,7 @@ mermaid.js は `A` も `B --> C` も読みません。
   common/directive-in-comment]
 - `%%{` で始まり、ディレクティブではない行も、コメント行ではありません。
   `%%` の後の文字が `{` だからです。
+  [fixture: common/directive-empty-braces]
 
 コメント行は、図の構文にも字句解析器の文脈にも依存せずに認識されます。
 字句解析器は、コメント領域がないかのように読み通します。
@@ -810,7 +867,7 @@ mermaid.js は `A` も `B --> C` も読みません。
 [fixture: common/comment-in-string] [fixture:
 common/comment-blank-line-before-in-string]
 
-これにより、トークンの中で特別な意味を持つ文字がコメント行に含まれていても、
+これにより、単位の中で特別な意味を持つ文字がコメント行に含まれていても、
 受理は mermaid.js と同じになります。
 例は、引用符付きラベルの中のコメント行にある `"` です。
 [fixture: common/comment-with-quote-in-string]
@@ -833,6 +890,8 @@ mermaid.js は、
 図の字句解析器の最初の単位より前の空白、行終端、ディレクティブ、
 コメント領域はトリビアで、
 図の文法からは見えません。
+[fixture: common/leading-whitespace-before-header]
+[fixture: common/leading-trivia-before-header]
 
 ## 図種の検出
 
@@ -858,6 +917,7 @@ mermaid.js と同じく `error` 疑似図種です。
 
 - 先頭のフロントマターのブロック。
   [フロントマター](#フロントマター) の条件でもう一度探します。
+  [fixture: common/frontmatter-leading-newline]
 - ディレクティブ。
   [ディレクティブ](#ディレクティブの位置) と同じように、
   左から右への 1 回の走査でもう一度探します。
@@ -883,7 +943,8 @@ mermaid.js と同じく `error` 疑似図種です。
   木のディレクティブは、1 回目の走査がソースの上で見つけます。
   [fixture: common/detect-directive-joined-by-directive]
 - `%%` の並び。
-  [`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L46-L73)と同じように取り除きます。
+  [`stripAnyComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/regexes.ts#L46-L73)
+  と同じように取り除きます。
   後ろのどこかに改行がある `%%` について、左から順に、
   `%%` の直前の空白、`%%`、その後の次の改行までとその改行を、
   1 つの改行に置き換えます。
@@ -905,8 +966,9 @@ mermaid.js と同じく `error` 疑似図種です。
 mermaid.js は別の作り方をしたテキストで検出器をもう一度走らせ、
 それが入力を拒否することがあります。
 この仕様はそれを走らせません
-（[init ディレクティブ](../../tests/docs/configuration.ja.md#init-ディレクティブ) と
-[`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md) を参照）。
+（[init ディレクティブ](../../tests/docs/configuration.ja.md#init-ディレクティブ)
+と [`embedded-data-opaque`](./known-divergences/embedded-data-opaque.ja.md)
+を参照）。
 
 その後、検出器を登録順に試します。
 条件が最初に成り立ったものが図種を選びます。
@@ -929,6 +991,7 @@ mermaid.js は別の作り方をしたテキストで検出器をもう一度走
 - `---`: 検出器が見るテキストを小文字にして先頭の空白を削ったものが `---`
   で始まる。
   そのパーサーは常に例外を投げるので、入力は拒否されます。
+  [fixture: common/frontmatter-four-dashes]
   検出器は上の 2 回目のフロントマターの探索の後のテキストを見るので、
   これが引き受けるのは、フロントマターでもなく、
   その探索でも認識されない `---`
@@ -941,13 +1004,67 @@ mermaid.js は別の作り方をしたテキストで検出器をもう一度走
 
 行単位の規則で、すべての図種に適用します。
 出どころは
-[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L917)です。
+[`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L917)
+です。
 1 つの行区間ごとに適用し、字句解析器は各行区間の先頭で、
 その終わりまで先を見て適用します。
 この規則では、行区間はディレクティブの一部でない行終端、U+2028、
 U+2029 の間にわたり、行区間はディレクティブを除いて、
 ディレクティブの前の文字と後の文字が続いているものとして読み、
 コメント領域はどの行区間にも属しません。
+ディレクティブが空白として取り込む U+2028 と U+2029 は
+（[ディレクティブの位置](#ディレクティブの位置) を参照）、
+ディレクティブの一部で、行区間を終えません。
+sequence の行 `participant A@{ "style": "x:#y" };participant C%%{init: {}`、
+U+2029、`;participant D` は 1 つの行区間で、
+U+2029 の後のその最後の `;` が無視されるので、
+この行は、mermaid.js と同じく参加者 A と `Cparticipant D` を宣言します。
+[fixture: sequence/tokens-directive-paragraph-separator-keeps-segment]
+[fixture: sequence/tokens-directive-paragraph-separator-then-semicolon]
+
+行 `participant A@{ "style": "x:#y" };participant C;participant E`、区切り、
+`;participant D`、行 `A->>B: y` では、
+どの `;` が無視されるかが参加者に表れます。
+
+- 行終端、U+2028、U+2029 は、
+  閉じたディレクティブの直後でも行区間を終え、
+  コメント行の前の改行も同じです。
+  1 行目の最後の `;`、つまり `C` と `participant E` の間のものが無視され、
+  参加者は A、`Cparticipant E`、D、B です。
+  [fixture: sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
+  sequence/tokens-ignored-semicolon-separator-carriage-return] [fixture:
+  sequence/tokens-ignored-semicolon-separator-crlf] [fixture:
+  sequence/tokens-ignored-semicolon-separator-line-separator] [fixture:
+  sequence/tokens-ignored-semicolon-separator-paragraph-separator] [fixture:
+  sequence/tokens-ignored-semicolon-separator-closed-directive-line-separator]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-closed-directive-paragraph-separator]
+  [fixture: sequence/tokens-ignored-semicolon-separator-comment-line]
+- 区切りがないとき、閉じたディレクティブのとき、
+  そして閉じていないディレクティブの引数が U+2028 か U+2029 の前で終わり、
+  ディレクティブがそれを空白として取り込むときは、
+  行区間は続き、区切りの後の `;` が無視されます。
+  参加者は A、C、`Eparticipant D`、B です。
+  [fixture: sequence/tokens-ignored-semicolon-separator-none] [fixture:
+  sequence/tokens-ignored-semicolon-separator-closed-directive] [fixture:
+  sequence/tokens-ignored-semicolon-separator-unclosed-directive-line-separator]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-unclosed-directive-paragraph-separator]
+- 自由なテキストの引数が行終端に出会う閉じていないディレクティブは、
+  テキストの残りを取ります。
+  名前か `:` の直後の U+2028 か U+2029 を空白として取り込み、
+  その後から自由なテキストの引数が始まるディレクティブも同じです。
+  `%%{wrap`、U+2028、`;participant D` では、
+  引数は `;participant D` とその後のすべてです。
+  このとき行区間の最後の `;` は `C` と `participant E` の間のもので、
+  参加者は A と `Cparticipant E` です。
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-unclosed-directive-line-feed]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-unclosed-directive-carriage-return]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-unclosed-directive-name-line-separator]
+
 agentflow ではコメント領域を除かないので
 （[mermaid.js とこの仕様](#mermaidjs-とこの仕様) を参照）、
 この規則はコメント行にも適用されます。
@@ -963,6 +1080,7 @@ agentflow ではコメント領域を除かないので
 つまり、その `;` をないかのように読み進め、文法はそれを見ません。
 その後、`style` の規則が無視した `;` を除いた行区間に対して、
 項目 1 の `style` を `classDef` に替えて同じことを行います。
+[fixture: common/entity-style-then-classdef-rule]
 mermaid.js は、
 [`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L917)
 でそのような `;` をテキストから取り除きます。
@@ -1104,7 +1222,7 @@ entity = "#" word ";"
 文字は U+FB02、U+00B0、U+00B6、U+00DF です。
 字句解析器は、
 エンティティのソース上の文字の代わりに、
-プレースホルダの文字に対してトークンの規則を照合します。
+プレースホルダの文字に対して単位の規則を照合します。
 プレースホルダは、エンティティのソースの文字の全体を表し、そのどの文字も、
 ソースの特定の 1 文字から読まれるものではありません。
 そのため、図の字句解析器の規則が 1 文字ずつ読み、
@@ -1153,6 +1271,8 @@ common/entity-numeric-in-label-text] タグの外でも同じで、
 字句の規則: mermaid.js は、解析の前にテキストの末尾に `\n` を足します。
 そのため、図の文法にとって、テキストの終わりは行終端のように振る舞います。
 最後の文の後に改行がない図も、改行があるものとして読まれます。
+[fixture: flowchart/header-only-no-line-break]
+[fixture: common/cr-only]
 足した `\n` はソースの一部ではないので、木にノードを加えません。
 
 ## 空白
@@ -1163,9 +1283,9 @@ mermaid.js のパターンから作った字句解析器は、
 U+00A0 や U+FEFF も含めて空白として扱います。
 [fixture: common/nbsp-as-space] [fixture: common/bom-mid-text]
 
-## 既知の差
+## 既知の差異
 
-[known-divergences.ja.md](./known-divergences.ja.md) で定める差のうち、
+[known-divergences.ja.md](./known-divergences.ja.md) で定める差異のうち、
 次のものがこの文書で定めることに関わります。
 
 - [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.ja.md):

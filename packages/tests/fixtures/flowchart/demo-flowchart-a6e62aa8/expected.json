@@ -150,6 +150,13 @@
         "id": "D",
         "text": "click test"
       }
+    ],
+    "clickCalls": [
+      {
+        "id": "D",
+        "name": "testClick",
+        "args": null
+      }
     ]
   }
 }

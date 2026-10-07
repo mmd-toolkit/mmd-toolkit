@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md Nodes: the written text of a StateIgnoredText leaves out a diagram comment that a comment region cuts (common.md Comment lines) whole, the whitespace inside it included, and keeps the line feed that ends it; here a space before the U+2028 is inside the comment: the comment goes on with the line `[*]`, so the textBeforeBody of X is `\"\"`, a space, a line feed, two spaces, and `accDescr {}`, and mermaid.js has no start state."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "X"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

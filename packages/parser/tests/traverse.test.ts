@@ -127,23 +127,27 @@ describe("visitorKeys", () => {
     }
   })
 
-  it("lists the child fields in source order, in every tree of the fixtures", async () => {
-    // ast.md, Nodes: a tool that walks the child fields in the order of
-    // `visitorKeys` meets the child nodes in source order, but in the node
-    // that a document names (see `inSourceOrder`).
+  // ast.md, Nodes: a tool that walks the child fields in the order of
+  // `visitorKeys` meets the child nodes in source order, but in the node that
+  // a document names (see `inSourceOrder`). One test for each tree of the
+  // fixtures.
+  describe("lists the child fields in source order, in every tree of the fixtures", async () => {
     let trees = 0
     for (const diagram of RECORDED_DIAGRAMS) {
       for (const fixture of await loadFixtures(diagram)) {
         const root = treeOf(fixture.input)
         if (root === null) continue
         trees += 1
-        expect(childrenOutOfOrder(root), `${diagram}/${fixture.name}`).toEqual(
-          [],
-        )
+        it(`${diagram}/${fixture.name}`, () => {
+          expect(childrenOutOfOrder(root)).toEqual([])
+        })
       }
     }
-    // Guards against the check passing vacuously.
-    expect(trees).toBeGreaterThan(0)
+
+    it("has trees", () => {
+      // Guards against the check passing vacuously.
+      expect(trees).toBeGreaterThan(0)
+    })
   })
 
   it("finds child nodes out of source order", () => {

@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The class A was added without a type, so the label statement `class A~T~[\"L\"]` gives `text` L without `<T>`. The type of the written name of that statement is not the type of A."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "L",
+        "text": "L",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

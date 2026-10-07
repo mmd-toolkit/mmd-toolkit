@@ -18,7 +18,9 @@ with it, so the block has no effect.
 ## Rule Details
 
 This rule reports a closed `accDescr` block that holds nothing or only
-whitespace. It applies to `sequence`.
+whitespace. It applies to `sequence`. A directive in the block is no text: a
+block that holds only directives is reported too, and mermaid.js still applies
+their settings.
 
 The description stays what it was before the block: after `accDescr: x`, the
 block `accDescr {}` leaves the description `x`, and with no description before
@@ -27,7 +29,9 @@ different: `accDescr:` sets the description to the empty text.
 
 A block that holds only comments is not reported. The author who turns the lines
 of a description into comments means the block to do nothing, and mermaid.js
-reads it so: the description before the block stays.
+reads it so: the description before the block stays. A block that holds a
+comment line is not reported also when it holds directives besides; mermaid.js
+applies their settings.
 
 Examples of **incorrect** code for this rule:
 
@@ -73,8 +77,7 @@ sequenceDiagram
 
 ## Options
 
-This rule has no options. An option to also report a block that holds only
-comments will be considered only if users of the rule ask for it.
+This rule has no options.
 
 ## Related Rules
 

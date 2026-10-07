@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md The alias context, rule 4: the statement ends at the line feed, and the line `as` is an id run without an arrow, so the input is rejected."
+    "note": "sequence.md The alias context, rule 3: the statement ends at the line feed, and the line `as` is an id run without an arrow, so the input is rejected."
   },
   "accepted": false,
   "error": {

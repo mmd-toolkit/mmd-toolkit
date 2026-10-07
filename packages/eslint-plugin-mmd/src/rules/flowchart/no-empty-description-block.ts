@@ -141,8 +141,17 @@ export const noEmptyDescriptionBlock: MermaidRuleDefinition<{
         })
         const startsLine =
           previous === null || previous.loc.end.line < node.loc.start.line
+        // Removing the block would remove a directive, whose settings
+        // mermaid.js applies.
+        const holdsDirective = sourceCode.ast.directives.some(
+          (directive) =>
+            node.range[0] <= directive.range[0] &&
+            directive.range[0] < node.range[1],
+        )
         const suggestable =
-          startsLine && !startsNameTextWithLineBreakingUnit(node)
+          startsLine &&
+          !holdsDirective &&
+          !startsNameTextWithLineBreakingUnit(node)
         const subgraph = subgraphNamedByTextAfterName(node)
         context.report({
           node,

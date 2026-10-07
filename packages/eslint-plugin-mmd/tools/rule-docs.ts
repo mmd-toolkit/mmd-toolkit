@@ -98,11 +98,11 @@ const WORDS: Record<
     rule: "規則",
     description: "説明",
     legend: "✅ は、`recommended` の設定が有効にする規則。",
-    suggestionsLegend: `💡 は、[エディタの提案](${SUGGESTIONS_URL})で手で直せる規則。`,
+    suggestionsLegend: `💡 は、\n[エディターの修正候補](${SUGGESTIONS_URL})\nがある規則。`,
     skeletonLegend: "🚧 は、まだ実装していない規則。何も報告しない。",
     enabled: "✅ `recommended` の設定は、この規則を有効にする。",
     notEnabled: "`recommended` の設定は、この規則を有効にしない。",
-    suggestions: `💡 この規則は、[エディタの提案](${SUGGESTIONS_URL})で手で直せる。`,
+    suggestions: `💡\n[エディターの修正候補](${SUGGESTIONS_URL})\nを選んで適用できる。`,
     resources: "リソース",
     ruleSource: "規則のソース",
     testsSource: "テストのソース",
@@ -229,16 +229,33 @@ function diagramOf(name: string): string | null {
   return slash === -1 ? null : name.slice(0, slash)
 }
 
-/** The rule names by group: the common rules, then each diagram, in the order of `rules`. */
+/**
+ * The diagrams that have rules, in the order that the list shows them: the
+ * order of the diagram families in the sidebar of the documentation site
+ * (`diagramOrder` in `packages/docs/.vitepress/documents.js`, which follows
+ * the order of the documentation of mermaid.js). A diagram with rules is added
+ * here at its place in that order.
+ */
+export const DIAGRAM_ORDER: readonly string[] = [
+  "flowchart",
+  "sequence",
+  "class",
+]
+
+/** The rule names by group: the common rules, then each diagram in `DIAGRAM_ORDER`, each in the order of `rules`. */
 function groupsOf(): Map<string | null, string[]> {
-  const groups = new Map<string | null, string[]>([[null, []]])
+  const groups = new Map<string | null, string[]>([
+    [null, []],
+    ...DIAGRAM_ORDER.map((diagram): [string, string[]] => [diagram, []]),
+  ])
   for (const name of Object.keys(rules)) {
-    const diagram = diagramOf(name)
-    const group = groups.get(diagram) ?? []
+    const group = groups.get(diagramOf(name))
+    if (group === undefined) {
+      throw new Error(`The diagram of ${name} is not in DIAGRAM_ORDER`)
+    }
     group.push(name)
-    groups.set(diagram, group)
   }
-  return groups
+  return new Map([...groups].filter(([, names]) => names.length > 0))
 }
 
 /** The rule, which `rules` holds for every name it lists. */

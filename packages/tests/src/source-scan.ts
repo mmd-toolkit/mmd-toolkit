@@ -28,7 +28,10 @@ export interface ScannedDirective {
 export interface ScannedCommentLine {
   /** The offset of the first `%` of the `%%` of the comment. */
   readonly commentStart: number
-  /** Where the comment ends, as the tree records it (ast.md, Comment). */
+  /**
+   * Where the comment ends, as the tree records it (parser/docs/tokens.md,
+   * Comment).
+   */
   readonly commentEnd: number
   /**
    * The comment region: from the earliest comment start to which only

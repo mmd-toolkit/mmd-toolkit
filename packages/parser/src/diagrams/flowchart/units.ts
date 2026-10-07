@@ -1268,7 +1268,8 @@ export class UnitLexer {
    * `)` are a `(` unit and a `)` unit and leave the context; `(` alone is a
    * `(` unit, leaves the context, and enters the callback arguments
    * context; one or more characters other than `(` are a `callback-name`
-   * unit.
+   * unit, whose whitespace before the `(` mermaid.js reads as part of the
+   * name.
    */
   private readInCallbackNameContext(at: DiagramCharacter): void {
     if (at.codePoint !== LEFT_PARENTHESIS) {
@@ -1277,7 +1278,7 @@ export class UnitLexer {
         at,
         (character) => character.codePoint !== LEFT_PARENTHESIS,
       )
-      this.addUnit("callback-name", at, end)
+      this.addUnit("callback-name", at, end, "keep-whitespace")
       this.position = end
       return
     }
@@ -1296,7 +1297,8 @@ export class UnitLexer {
   /**
    * Click and callbacks, the callback arguments context: `)` is a `)` unit
    * and leaves the context, and one or more other characters are a
-   * `callback-arguments` unit.
+   * `callback-arguments` unit, whose whitespace at its ends mermaid.js
+   * passes on as part of the arguments.
    */
   private readInCallbackArgumentsContext(at: DiagramCharacter): void {
     if (at.codePoint === RIGHT_PARENTHESIS) {
@@ -1310,7 +1312,7 @@ export class UnitLexer {
       at,
       (character) => character.codePoint !== RIGHT_PARENTHESIS,
     )
-    this.addUnit("callback-arguments", at, end)
+    this.addUnit("callback-arguments", at, end, "keep-whitespace")
     this.position = end
   }
 

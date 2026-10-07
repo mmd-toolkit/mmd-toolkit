@@ -1177,18 +1177,17 @@ export class SequenceUnitLexer {
 
   /**
    * diagrams/sequence.md, The alias context: whitespace other than line
-   * feeds; `#` and the rest of its line; the keyword `as`, an `as` unit,
-   * which leaves the alias context and the id context and enters the line
-   * context; and, at a line feed, a `newline` unit that reads no character,
-   * which leaves the alias context and the id context, so that the line
-   * feed is read by the statement context.
+   * feeds; the keyword `as`, an `as` unit, which leaves the alias context
+   * and the id context and enters the line context; and, at a line feed, a
+   * `newline` unit that reads no character, which leaves the alias context
+   * and the id context, so that the line feed is read by the statement
+   * context.
    */
   private readInAliasContext(at: DiagramCharacter): void {
     if (isWhitespace(at.codePoint) && at.codePoint !== LINE_FEED) {
       this.position = this.afterLineWhitespace(at)
       return
     }
-    if (this.readHashComment(at)) return
     if (at.codePoint === LINE_FEED) {
       this.addUnit("newline", at, at)
       this.leave()
@@ -1307,10 +1306,10 @@ export class SequenceUnitLexer {
   /**
    * diagrams/sequence.md, The data context: one or more characters other
    * than `}`, a `data-text` unit, whose token keeps the whitespace at its
-   * ends, which the value of the data block holds (ast.md, Nodes); or `}`, a `}` unit, which leaves the data
-   * context, and either enters the alias context, where whitespace, the
-   * keyword `as`, and one whitespace character follow, or leaves the id
-   * context.
+   * ends, which the value of the data block holds (ast.md, Nodes); or `}`,
+   * a `}` unit, which leaves the data context, and either enters the alias
+   * context, where whitespace, the keyword `as`, and one whitespace
+   * character follow, or leaves the id context.
    */
   private readInDataContext(at: DiagramCharacter): void {
     if (at.codePoint !== RIGHT_CURLY_BRACKET) {

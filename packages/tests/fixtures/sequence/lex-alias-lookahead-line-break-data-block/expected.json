@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md The alias context, rule 4: after a data block, `}` with the line break and `as` enters the alias context, which ends the statement at the line feed."
+    "note": "sequence.md The alias context, rule 3: after a data block, `}` with the line break and `as` enters the alias context, which ends the statement at the line feed."
   },
   "accepted": true,
   "diagramType": "sequence",

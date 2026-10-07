@@ -26,8 +26,8 @@ pin した mermaid.js の更新を扱う。
 - mermaid を devDependency として pin し、
   Node（DOM なし）で mermaid の Db を取り出す。
 - fixture の形式を定め、ローダーと README をそれに合わせて保つ。
-- fixture 生成器と変異差分テストの枠組みを提供する。
-  mermaid を import する部分（Db 取り出し、正規化関数、変異差分の中核）は
+- fixture 生成器を提供する。
+  mermaid を import する部分（Db 取り出し、正規化関数）は
   `@mmd-toolkit/tests` のサブパスに、CLI は `tools/` に置く。
 - fixture を再生成し、
   mermaid の挙動が変わっていたら失敗する CI ジョブを提供する。
@@ -134,8 +134,7 @@ pin した mermaid.js の更新を扱う。
   | `src/normalizers/json.ts`                                   | `json.test.ts`、その後 `fixtures:check`                        |
   | `src/expected-changes.ts`                                   | `expected-changes.test.ts`                                     |
   | `src/recorded-embedded.ts`                                  | `recorded-embedded.test.ts`、その後 `fixtures:check`           |
-  | `src/mutation.ts`                                           | `mutation.test.ts`                                             |
-  | `src/boundary-kinds.ts`                                     | `boundary-kinds.test.ts`                                       |
+  | `src/fixture-shapes.ts`                                     | `fixture-shapes.test.ts`                                       |
   | `src/db-from-tree/`                                         | `db-from-tree.test.ts`、`converted-text.test.ts`               |
   | `src/source-scan.ts`                                        | `source-scan.test.ts`                                          |
   | `src/check-tree/`                                           | `check-tree-corpus.test.ts`、`check-tree*.test.ts`             |
@@ -147,14 +146,10 @@ pin した mermaid.js の更新を扱う。
   `generate` は `fixtures:check` で確かめる。
   `tools/collect.ts` は、`--out` をリポジトリの外に向けて動かし、
   書いたファイルを読む。
-  `tools/mutation.ts` は、1 つの fixture（`--fixture`）で動かす。
-  `--count` を省くと 1 周（当てはまる編集の演算子ごとに 1 件）で、
-  増やすのは、ある演算子の変異の形を広げたいときだけにする
-  （確かさのためではない）。
 
   1 つのファイルは
   `pnpm --filter @mmd-toolkit/tests exec vitest run tests/<ファイル>` で回す。
-  `fixtures.test.ts` は 2 つの README を読む（既知の差ごとに項目がある）ので、
+  `fixtures.test.ts` は 2 つの README を読む（既知の差異ごとに項目がある）ので、
   README を変えたときにも回す。
   このパッケージには大きくする量がない。
   完了を報告する前の実行は、全体（`pnpm --filter @mmd-toolkit/tests test`）。
@@ -505,7 +500,7 @@ pie（最初の Langium の図）のときに書く。
      `getDiagramFromText()` が拒否するテキストで、
      `MermaidEnvironmentError` を投げる。
      データブロックの記録は、ブロックが想定外のことをすると例外を投げる。
-   - 既知の差を除いて動かすときの字句解析器の規則
+   - 既知の差異を除いて動かすときの字句解析器の規則
      （`src/divergence-removals.ts`、選択肢 `withoutDivergences`）:
      `runMermaid()` はコンパイルされた形で規則を探す。
      試す順を変える規則は、その開始状態だけが試す規則の中から探す。
@@ -513,7 +508,8 @@ pie（最初の Langium の図）のときに書く。
      または字句解析器が行のどこにいるかを呼び出しの中で決められないときに、
      `MermaidEnvironmentError` で止まるので、テストが失敗する。
      そのときは新しい字句解析器を読み、
-     その差がまだあるかを spec の SKILL の手順で確かめて、表か識別子を合わせる。
+     その差異がまだあるかを spec の SKILL の手順で確かめて、
+     表か識別子を合わせる。
 4. `fixtures:check` を実行する。
    何も書かず、作れない fixture があっても止まらない。
    `expected.json` が変わる fixture を、どう変わったかとともに出し、

@@ -1,7 +1,5 @@
-import type { DbSummary, DbTreeRoot } from "@mmd-toolkit/tests"
-import { dbFromTree } from "@mmd-toolkit/tests"
-import type { EmbeddedValues } from "@mmd-toolkit/tests/mermaid"
-import { cssSupportsColor } from "@mmd-toolkit/tests/mermaid"
+import type { DbSummary, DbTreeRoot, EmbeddedValues } from "@mmd-toolkit/tests"
+import { cssSupportsColor, dbFromTree } from "@mmd-toolkit/tests"
 import type { Root } from "../../src/index.ts"
 
 /**

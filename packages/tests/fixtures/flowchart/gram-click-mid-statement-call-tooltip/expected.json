@@ -35,6 +35,13 @@
         "id": "A",
         "text": "tip"
       }
+    ],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "cb",
+        "args": "1, \"x\""
+      }
     ]
   }
 }

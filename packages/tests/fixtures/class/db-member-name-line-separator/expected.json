@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The whitespace at the start of the member name text is replaced by one space only when it starts with a space. The first member starts with U+2028 and has the id `int x`, the second starts with a space and has the id of a space and `int x`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "int x"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": " int y"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

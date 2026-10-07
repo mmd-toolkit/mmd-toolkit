@@ -3,8 +3,10 @@
 英語版: [sequence.md](./sequence.md)
 
 この文書は、`@mmd-toolkit/parser` が作る木の、この図種のノードの範囲を定めます。
-すべての図種に共通する決まりは [positions.ja.md](../positions.ja.md) にあります。
-ノードは仕様の [`ast/sequence.ja.md`](../../../spec/docs/ast/sequence.ja.md) が、
+すべての図種に共通する決まりは
+[positions.ja.md](../positions.ja.md) にあります。
+ノードは仕様の
+[`ast/sequence.ja.md`](../../../spec/docs/ast/sequence.ja.md) が、
 トークンは [tokens/sequence.ja.md](../tokens/sequence.ja.md) が定めます。
 
 ## 範囲
@@ -20,14 +22,20 @@
 どの文にも属さないトークンも含みます。
 どの図の `Root.body` のノードとも同じです
 （[ノード](../../../spec/docs/ast.ja.md#ノード) を参照）。
+[fixture: sequence/gram-title-then-separators]
+[fixture: sequence/tokens-comment-then-ignored-semicolon]
 
 ### SequenceParticipantStatement
 
 `create` があるときは、範囲は `create` から始まります。
+[fixture: sequence/db-create-participant-before-message]
+[fixture: sequence/db-participant-empty-alias]
 
 ### SequenceDestroyStatement
 
 `create` があるときは、範囲は `create` から始まります。
+[fixture: sequence/gram-create-destroy]
+[fixture: sequence/db-destroy-participant]
 
 ### SequenceBoxText
 
@@ -42,6 +50,7 @@
 ### SequenceArrow
 
 範囲はそのトークンです。
+[fixture: sequence/db-message-activate-target]
 
 ### SequenceSection
 
@@ -49,6 +58,9 @@
 節を始めるキーワードは、`else`、`and`、`option`、
 最初の節ならブロックのキーワードです。
 `end` はブロックに属します。
+[fixture: sequence/db-block-alt]
+[fixture: sequence/db-block-par]
+[fixture: sequence/db-block-critical]
 
 ### SequenceIdentifier
 
@@ -60,11 +72,16 @@
 参加者の 1 つの単位がトークン `A` と ` c%%B` に切られます。
 ` c%%B` は、id が持つ空白を含みます。
 [fixture: sequence/lex-directive-in-id-before-space]
+[fixture: sequence/tokens-ignored-semicolon-in-participant-id]
+[fixture: sequence/db-participant-empty-alias]
 
 ### SequenceText
 
 範囲は、接頭辞（接頭辞がなければテキスト）から、テキストの終わりまでです。
+[fixture: sequence/lex-wrap-prefix-colon]
+[fixture: sequence/db-note-over-two]
 
 ### SequenceDataBlock
 
 範囲は `@{` から `}` までです。
+[fixture: sequence/gram-data-block-line-break-only]

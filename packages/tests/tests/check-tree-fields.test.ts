@@ -5,6 +5,7 @@ import { checkTree } from "../src/check-tree/index.ts"
 import { NODE_FIELDS } from "../src/check-tree/node-fields.ts"
 import type { CheckedRoot } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
+import type { TreeRange } from "../src/db-from-tree/tree.ts"
 import type { DiagramType } from "../src/index.ts"
 import { getFixturesRoot, loadFixtures } from "../src/index.ts"
 
@@ -82,6 +83,12 @@ function instancesOf(tree: CheckedRoot, type: string): TreeObject[] {
   }
 }
 
+/** The place of `object` as the problems name it: its `type` and its range. */
+function placeOf(object: TreeObject): string {
+  const [start, end] = object.range as TreeRange
+  return `${String(object.type)} at ${start}-${end}`
+}
+
 /** The value that breaks the value of a field: a different one of the same kind. */
 function brokenValue(value: unknown, valueType: string | undefined): unknown {
   switch (valueType) {
@@ -126,6 +133,43 @@ describe("the fields of the nodes of a recorded tree", () => {
           !Object.hasOwn(UNCHECKED_FIELDS, `${type}.${field}`)
         ) {
           unreported.push(`${type}.${field}`)
+        }
+      }
+    }
+    expect(unreported).toEqual([])
+  }, 120_000)
+
+  it("are reported at their own node when a field that may be null is null where a word is written, and a word where none is written", async () => {
+    // The first test breaks each field from a word, to another word: a check
+    // that reads the field only when it is not null passes that. Here the
+    // field is made null where the source writes the word, and a word where it
+    // writes none, and the problem is the one of the node that holds the field.
+    const trees = await recordedTrees()
+    const unreported: string[] = []
+    for (const [type, fields] of Object.entries(NODE_FIELDS)) {
+      for (const [field, spec] of Object.entries(fields)) {
+        if (spec.valueType !== "stringOrNull") continue
+        for (const [written, broken] of [
+          [true, null],
+          [false, "Z"],
+        ] as const) {
+          const case_ = `${type}.${field} ${written ? "null where a word is written" : "a word where none is written"}`
+          let outcome = `${case_}: no recorded tree has it`
+          for (const recorded of trees) {
+            const tree = JSON.parse(recorded.json) as CheckedRoot
+            const instance = instancesOf(tree, type).find(
+              (candidate) => (candidate[field] !== null) === written,
+            )
+            if (instance === undefined) continue
+            instance[field] = broken
+            const where = placeOf(instance)
+            const problems = checkTree(recorded.input, tree)
+            outcome = problems.some((problem) => problem.where === where)
+              ? ""
+              : `${case_}: no problem at ${where} in ${recorded.name}`
+            break
+          }
+          if (outcome !== "") unreported.push(outcome)
         }
       }
     }

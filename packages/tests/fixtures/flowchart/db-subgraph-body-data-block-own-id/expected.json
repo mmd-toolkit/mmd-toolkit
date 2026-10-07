@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The statements inside a subgraph are applied before the subgraph itself is added. The data block in the body of S therefore sets its label on the vertex S, which the vertex statement has just added, and the subgraph S gets nothing."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "S",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A",
+          "S"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "labelType": "markdown",
+          "text": "x"
+        }
+      }
+    ]
+  }
+}

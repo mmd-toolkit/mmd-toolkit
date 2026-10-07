@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The qualified id is `A.B.C`. The part `A.B` is added with `A` as its parent and is not explicit, while `A` stays as it is."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "D",
+        "type": "",
+        "label": "D",
+        "text": "D",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "A.B.C"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "A.B"
+        ],
+        "explicit": true
+      },
+      {
+        "id": "A.B",
+        "label": "B",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "A.B.C"
+        ],
+        "parent": "A",
+        "explicit": false
+      },
+      {
+        "id": "A.B.C",
+        "label": "C",
+        "classes": [
+          "D"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "A.B",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

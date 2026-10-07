@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md The alias context, rule 4: after `deactivate A`, the statement ends at the line feed, and the next line is a message from `as`."
+    "note": "sequence.md The alias context, rule 3: after `deactivate A`, the statement ends at the line feed, and the next line is a message from `as`."
   },
   "accepted": true,
   "diagramType": "sequence",

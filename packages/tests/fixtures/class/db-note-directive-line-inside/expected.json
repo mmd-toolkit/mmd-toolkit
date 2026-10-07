@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive is not in the converted form, but the line terminators around it are. The note text has two line feeds between `a` and `b`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "a\n\nb"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

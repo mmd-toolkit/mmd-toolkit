@@ -4,7 +4,7 @@
 
 図種: class。
 これは、この仕様の mermaid.js との
-[既知の差](../known-divergences.ja.md) の 1 つです。
+[既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 構文
 
@@ -30,7 +30,7 @@ class/lex-comment-on-last-line] [fixture:
 class/lex-comment-then-directive-at-end] [fixture:
 class/lex-directive-then-comment-line]
 
-## 差
+## 差異
 
 どの例も、class 図の全体です。
 
@@ -110,6 +110,14 @@ mermaid.js はコメントの後と `%%` の後の改行を取って改行を 1 
 関係の後のコメントがなければ、どちらも拒否します。
 [fixture: class/div-comment-then-comment-only-line]
 
+## 書き手にとっての結果
+
+mmd-toolkit のパーサーが受理する、文の後にコメントのある class 図は、
+mermaid.js では拒否されるか、次の行を文につないで描かれることがあります。
+mermaid.js が同じに読む図を書くには、コメントを独立した行に書きます。
+mermaid.js がつなぐ、コメントで 2 つの行に分かれた文は、
+この仕様では拒否されます。
+
 ## mermaid.js がそう読む理由
 
 mermaid.js の字句解析器は、コメントを 1 つの規則で読みます
@@ -149,16 +157,8 @@ class/lex-comment-then-indented-directive-line]
 書き手がすでに書いているものを拒否にする規則は、後で取り消せないからです。
 mermaid.js が次の行をつなぐのは、その字句の規則の作りから生じることで、
 仕様が構文の規則として述べるものではありません。
-これは既知の差の 2 つ目の理由に当たります
+これは既知の差異の 2 つ目の理由に当たります
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
-
-## 書き手にとっての結果
-
-この道具が受理する、文の後にコメントのある class 図は、
-mermaid.js では拒否されるか、次の行を文につないで描かれることがあります。
-mermaid.js が同じに読む図を書くには、コメントをそれぞれの行に置きます。
-mermaid.js がつなぐ、コメントで 2 つの行に分かれた文は、
-この仕様では拒否されます。
 
 ## mermaid.js の文書と issue
 

@@ -130,3 +130,60 @@ describe("comment regions that join lines", () => {
     expect(source.removedLineFeeds.size).toBe(0)
   })
 })
+
+describe("the line feeds that a directive that is not closed takes", () => {
+  it("are removed, with the whitespace after the argument", () => {
+    const text = "flowchart LR\nA%%{wrap foo\n \n;B\n"
+    expect(sourceOf(text).removedLineFeeds.size).toBe(2)
+  })
+
+  it("are kept for a directive that is closed", () => {
+    const text = "flowchart LR\nA%%{init: {}}%%\n;B\n"
+    expect(sourceOf(text).removedLineFeeds.size).toBe(0)
+  })
+
+  it("join nothing when the whitespace runs to the end of the text", () => {
+    expect(sourceOf("flowchart LR\nA%%{wrap foo\n").removedLineFeeds.size).toBe(
+      0,
+    )
+  })
+})
+
+describe("the directive that takes whitespace with a U+2028 or U+2029", () => {
+  /** The directive of a text, and the token that starts where it ends. */
+  function directiveAndNext(text: string) {
+    const source = sourceOf(text)
+    const directive = source.trivia.find((item) => item.type === "Directive")
+    const next = source.root.tokens.find(
+      (token) => token.range[0] === directive?.range[1],
+    )
+    return { directive, next }
+  }
+
+  it("reaches the next token, over the whole whitespace", () => {
+    for (const text of [
+      "classDiagram\nclass A%%{init: x \u2028class D\n",
+      "classDiagram\nclass A%%{init: {} \u2028\n  class D\n",
+      "classDiagram\nclass A%%{init: x \u2028\r  class D\n",
+      "classDiagram\nclass A%%{init: x \u2029\r\n\n class D\n",
+    ]) {
+      const { directive, next } = directiveAndNext(text)
+      expect(directive, text).toBeDefined()
+      expect(next, text).toBeDefined()
+      expect(next?.value, text).toBe("class")
+    }
+  })
+
+  it("stops at the last U+2028 or U+2029 when the whitespace runs to the end of the text", () => {
+    const text = "classDiagram\nclass A%%{init: x \u2028 \n\n"
+    const { directive } = directiveAndNext(text)
+    expect(directive?.range[1]).toBe(text.indexOf("\u2028") + 1)
+  })
+
+  it("is the directive as the parser has it, when no U+2028 or U+2029 follows", () => {
+    const text = "classDiagram\nclass A%%{init: x \n\nclass D\n"
+    const source = sourceOf(text)
+    const [directive] = source.root.directives
+    expect(source.trivia[0].range).toEqual(directive.range)
+  })
+})

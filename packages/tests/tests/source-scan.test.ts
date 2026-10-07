@@ -13,6 +13,12 @@ const DIAGRAMS: readonly DiagramType[] = [
   "state",
 ]
 
+/** U+2028 LINE SEPARATOR, which is not a line terminator of the grammar. */
+const U2028 = String.fromCharCode(0x2028)
+
+/** U+2029 PARAGRAPH SEPARATOR, which is not a line terminator of the grammar. */
+const U2029 = String.fromCharCode(0x2029)
+
 describe("scanSource: directives", () => {
   it("finds a closed directive, with the whitespace before its `}%%` in it", () => {
     const text = "%%{init: {} }%% x"
@@ -66,6 +72,30 @@ describe("scanSource: comment lines", () => {
     expect(scanSource(text, 0).commentLines).toEqual([
       { commentStart: 2, commentEnd: 6, region: [2, 7] },
     ])
+  })
+
+  it("finds a comment after a lone CR and after U+2029", () => {
+    const afterLoneCr = "A\r%% c\nB"
+    expect(scanSource(afterLoneCr, 0).commentLines).toEqual([
+      { commentStart: 2, commentEnd: 6, region: [2, 7] },
+    ])
+    const afterParagraphSeparator = `A${U2029}%% c\nB`
+    expect(scanSource(afterParagraphSeparator, 0).commentLines).toEqual([
+      { commentStart: 2, commentEnd: 6, region: [2, 7] },
+    ])
+  })
+
+  it("finds a line of `%%` and U+2028 or U+2029 only as a comment line", () => {
+    for (const separator of [U2028, U2029]) {
+      const text = `x\n%%${separator}\ny`
+      expect(scanSource(text, 0).commentLines).toEqual([
+        { commentStart: 2, commentEnd: 5, region: [2, 6] },
+      ])
+    }
+  })
+
+  it("does not find a `%%` at the end of the text as a comment line", () => {
+    expect(scanSource("x\n%%", 0).commentLines).toEqual([])
   })
 
   it("does not find a `%%` after other text, a `%%` alone, or a `%%{` line", () => {

@@ -4,9 +4,11 @@ import type {
   FlowchartSubgraphStatement,
   Range,
   Root,
+  Token,
 } from "@mmd-toolkit/parser"
 import type { KeptLines } from "./kept-lines.ts"
 import {
+  findLinesEndedBySemicolon,
   findLinesWithOwnSemicolons,
   lineEndOf,
   lineStartOf,
@@ -66,6 +68,8 @@ export function findFlowchartKeptLines(source: Source): KeptLines {
     verbatim: new Set([
       ...directionText,
       ...findStyleLinesWithLineSeparators(source, statements),
+      ...findLinesEndedBySemicolon(source),
+      ...findLinesOfPercentStatements(source, statements),
     ]),
     writtenIndentation: directionText,
   }
@@ -162,6 +166,40 @@ function textWithoutDirectives(source: Source, range: Range): string {
 }
 
 /**
+ * Where the last word of a range ends, before the whitespace, the comments,
+ * and the directives at its end: the name of a subgraph without a title runs
+ * over the whitespace after it (ast/flowchart.md, FlowchartSubgraphStatement),
+ * and mermaid.js removes comments and directives before it reads the text, so
+ * none of them is part of the word that the range ends with.
+ */
+function findWordEnd(source: Source, range: Range): number {
+  const trivia = findTriviaBetween(source, range[0], range[1])
+  let end = range[1]
+  for (;;) {
+    if (end > range[0] && isWhitespace(source.text[end - 1])) {
+      end--
+      continue
+    }
+    const covering = findItemEndingAt(trivia, end)
+    if (covering === undefined) return end
+    end = covering.range[0]
+  }
+}
+
+/** The comment or directive that ends at an offset, if any. */
+function findItemEndingAt(
+  trivia: readonly { readonly range: Range }[],
+  offset: number,
+): { readonly range: Range } | undefined {
+  return trivia.find((item) => item.range[1] === offset)
+}
+
+/** The text of a range up to the end of its last word (see `findWordEnd`). */
+function textUpToLastWord(source: Source, range: Range): string {
+  return textWithoutDirectives(source, [range[0], findWordEnd(source, range)])
+}
+
+/**
  * The lines that hold a `;` separating two statements after a statement
  * or a subgraph name that ends with one of `wordsReadWithLineBreaks`, or with
  * `direction` (see `endsWithWordReadWithLineBreaks`): the `;` is kept, and the
@@ -180,9 +218,8 @@ function findLinesAfterWords(
   const { tokens }: Root = source.root
   const lines = new Set<number>()
   for (const range of collectLineRanges(statements)) {
-    if (!endsWithWordReadWithLineBreaks(textWithoutDirectives(source, range))) {
+    if (!endsWithWordReadWithLineBreaks(textUpToLastWord(source, range)))
       continue
-    }
     const index = tokens.findIndex((token) => token.range[1] === range[1])
     const separator = tokens
       .slice(index + 1)
@@ -214,6 +251,45 @@ function collectLineRanges(statements: readonly FlowchartStatement[]): Range[] {
     }
   }
   return ranges
+}
+
+/**
+ * The `;` that follows the name of a subgraph without a title on a later line,
+ * when the name ends with one of `wordsReadWithLineBreaks`: the word reads the
+ * line break after it, so the `;` still ends the name, and without it the
+ * next line would be read as part of the name (`subgraph a end`, a line
+ * break, `;`, and `B`: the name is `a end`, while without the `;` it holds a
+ * line break and `B`). The `;` is kept where it is, with the whitespace
+ * before it as written, as part of the `subgraph` line. A `;` that is a
+ * statement of its own, as after the name `a accTitle`, is printed as one.
+ */
+export function findSemicolonOnLaterLine(
+  source: Source,
+  subgraph: FlowchartSubgraphStatement,
+): Token | undefined {
+  if (subgraph.title !== null) return undefined
+  const { range } = subgraph.name
+  const text = textUpToLastWord(source, range)
+  if (!endsWithWordReadWithLineBreaks(text)) return undefined
+  const separator = source.root.tokens.find(
+    (token) => token.range[0] >= range[1] && token.type !== "Directive",
+  )
+  if (separator?.value !== ";" || separator.range[0] >= subgraph.range[1]) {
+    return undefined
+  }
+  const isStatement = subgraph.body.some(
+    (statement) =>
+      statement.type === "FlowchartEmptyStatement" &&
+      statement.range[0] === separator.range[0],
+  )
+  if (isStatement) return undefined
+  const between = source.text.slice(
+    findWordEnd(source, range),
+    separator.range[0],
+  )
+  return between.includes("\n") || between.includes("\r")
+    ? separator
+    : undefined
 }
 
 /**
@@ -392,4 +468,33 @@ export function findHeaderBlocks(
     previousLine = lineStartOf(source, next.range[1] - 1)
   }
   return blocks
+}
+
+/**
+ * The lines of the statements that start with a token that starts with `%%`,
+ * as in `A;%%x`, `A; %%x`, and `accDescr {y}%%z`. mermaid.js reads a `%%` as
+ * a comment only at the start of a line or after whitespace that follows a
+ * unit that takes no such text, so after a `;` or the `}` of a block the token
+ * is the id of a vertex statement, `%%x`, and a statement printed on a line of
+ * its own would start with a comment. The line keeps its tokens as written.
+ */
+function findLinesOfPercentStatements(
+  source: Source,
+  statements: readonly FlowchartStatement[],
+): ReadonlySet<number> {
+  const lines = new Set<number>()
+  for (const statement of statements) {
+    if (statement.type === "FlowchartSubgraphStatement") {
+      for (const line of findLinesOfPercentStatements(source, statement.body)) {
+        lines.add(line)
+      }
+    }
+    const first = source.root.tokens.find(
+      (token) => token.range[0] === statement.range[0],
+    )
+    if (first?.type !== "Directive" && first?.value.startsWith("%%") === true) {
+      lines.add(lineStartOf(source, statement.range[0]))
+    }
+  }
+  return lines
 }

@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive inside a name unit: mermaid.js accepts it and reads the two pieces as one name; the specification rejects it."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "AB",
+        "type": "",
+        "label": "AB",
+        "text": "AB",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

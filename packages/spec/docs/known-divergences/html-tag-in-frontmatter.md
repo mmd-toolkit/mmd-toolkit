@@ -108,6 +108,16 @@ frontmatter. A tag that starts and ends inside the frontmatter makes no
 difference. The difference goes both ways, and it can change acceptance or the
 Db.
 
+## What it means for an author
+
+A frontmatter whose title has a `<` followed by a word and no `>` after it, such
+as `title: <a`, is unusual. With one, mermaid.js reads every `"` between it and
+the first `>` of the diagram as `'`, and so can accept a label that it would
+reject, reject one that it would accept, or change the text of a label, a title,
+or a message. This toolkit reads the diagram as it would without the
+frontmatter. Closing the tag in the title, or leaving out the `<`, makes both
+read the same.
+
 ## Why mermaid.js reads it so
 
 mermaid.js replaces the `"` inside every tag with `'` in
@@ -131,13 +141,3 @@ the steps of mermaid.js: the replacement runs before the frontmatter is removed.
 It is nothing that a specification would state as a rule of the syntax; this is
 the second of the reasons for a known divergence (see
 [known-divergences.md](../known-divergences.md)).
-
-## What it means for an author
-
-A frontmatter whose title has a `<` followed by a word and no `>` after it, such
-as `title: <a`, is unusual. With one, mermaid.js reads every `"` between it and
-the first `>` of the diagram as `'`, and so can accept a label that it would
-reject, reject one that it would accept, or change the text of a label, a title,
-or a message. This toolkit reads the diagram as it would without the
-frontmatter. Closing the tag in the title, or leaving out the `<`, makes both
-read the same.

@@ -51,7 +51,8 @@ npx prettier --write "**/*.{mmd,mermaid,md}"
 
 ## 例
 
-入力 ([statements-one-per-line/separated-by-semicolons-input.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
+入力
+([statements-one-per-line/separated-by-semicolons-input.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
 
 ```mmd
 flowchart LR
@@ -59,7 +60,8 @@ flowchart LR
   subgraph S; E; F; end
 ```
 
-出力 ([statements-one-per-line/separated-by-semicolons-output.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
+出力
+([statements-one-per-line/separated-by-semicolons-output.mmd](./tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-output.mmd)):
 
 ```mmd
 flowchart LR

@@ -110,6 +110,14 @@ reads one line break, while this specification reads two, and rejects the text,
 as both do without the comment after the relation. [fixture:
 class/div-comment-then-comment-only-line]
 
+## What it means for an author
+
+A class diagram with a comment after a statement, which this toolkit accepts,
+can be rejected by mermaid.js, or drawn by it with the next line joined to the
+statement. To write a diagram that mermaid.js reads in the same way, put each
+comment on a line of its own. A statement that is split across two lines by a
+comment, which mermaid.js joins, is rejected by this specification.
+
 ## Why mermaid.js reads it so
 
 The lexer of mermaid.js reads a comment with one rule
@@ -150,14 +158,6 @@ mermaid.js joins the next line comes from how its lexer rule is built, and is
 nothing that a specification would state as a rule of the syntax; this is the
 second of the reasons for a known divergence (see
 [known-divergences.md](../known-divergences.md)).
-
-## What it means for an author
-
-A class diagram with a comment after a statement, which this toolkit accepts,
-can be rejected by mermaid.js, or drawn by it with the next line joined to the
-statement. To write a diagram that mermaid.js reads in the same way, put each
-comment on a line of its own. A statement that is split across two lines by a
-comment, which mermaid.js joins, is rejected by this specification.
 
 ## The documentation of mermaid.js and its issues
 

@@ -14,7 +14,7 @@ source text directly, at the position where it matters. No rewritten text is
 built, so no implementation needs a table from rewritten offsets back to source
 offsets. Each rule is one of four kinds:
 
-- **Trivia rules** say which parts of the source are not diagram tokens:
+- **Trivia rules** say which parts of the source are not diagram text:
   frontmatter, directives, comment lines, and whitespace.
 - **Lexical rules** say how the lexer reads a character or a short run of
   characters: line breaks, HTML attribute quotes, and entities. None of them
@@ -49,6 +49,8 @@ of another diagram type (see [detection.md](./detection.md)).
 - **Whitespace** is any of U+0009–U+000D, U+0020, U+00A0, U+1680, U+2000–U+200A,
   U+2028, U+2029, U+202F, U+205F, U+3000, and U+FEFF. It includes the byte order
   mark. This is the set that the patterns in mermaid.js treat as whitespace.
+  [fixture: common/whitespace-characters] [fixture:
+  sequence/lex-whitespace-characters-around-text]
 - A **line terminator** is `\r\n`, a lone `\r`, or a lone `\n`. U+2028 and
   U+2029 are not line terminators.
 - **Line whitespace** is whitespace that is not part of a line terminator.
@@ -73,13 +75,24 @@ of another diagram type (see [detection.md](./detection.md)).
   character outside the BMP matches another character. This is how the
   case-insensitive detectors of mermaid.js compare. [fixture:
   common/detect-case-kelvin-sign] [fixture: common/detect-case-long-s]
+- A **token** is the general name for what a lexer cuts out of a text and hands
+  to its grammar, as in "mermaid.js reads no token for an empty string". The
+  rules of this specification read units instead (see
+  [Terminology](./index.md#terminology)); the word names no record of an
+  implementation.
 - Grammar rules use this notation. A rule is written as its name, `=`, and its
   definition. Text in double quotes is literal text; a double quote itself is
   written in single quotes. Items written one after another follow one another
-  in that order. `|` separates alternatives. An item followed by `?` is
-  optional, by `*` repeats zero or more times, and by `+` repeats one or more
-  times. Parentheses group items. Unless a rule says otherwise, `*` and `+` take
-  as many repetitions as possible.
+  in that order. `|` separates alternatives, which are not tried in order: an
+  input is read by the alternative with which the rest of the grammar reads it
+  too. In a state diagram, `definition-statement`, the first alternative of
+  `statement`, reads the `A` of `A --> B` but leaves the `-->`, which no rule
+  reads next, so `A --> B` is a `transition-statement`. [fixture:
+  state/lex-two-transitions-one-line] Where two alternatives could read the same
+  units, the diagram document says which reading is taken. An item followed by
+  `?` is optional, by `*` repeats zero or more times, and by `+` repeats one or
+  more times. Parentheses group items. Unless a rule says otherwise, `*` and `+`
+  take as many repetitions as possible.
 - Every rule reads the source with the rule of
   [Line terminators](#line-terminators) applied, so each line terminator counts
   as a single line break.
@@ -125,7 +138,7 @@ each of them.
 In mermaid.js each step rewrites the output of the previous one. This
 specification defines all of these steps as rules that the lexer applies while
 it reads the source once, from left to right, as described in
-[Reading a source](#reading-a-source); they give the same tokens and values as
+[Reading a source](#reading-a-source); they give the same units and values as
 the steps, except for the known divergences. No rule produces a rewritten text
 for a later rule to read. Where a rule refers to a text other than the source,
 such as the text that the detectors look at, that text is a way of stating the
@@ -176,8 +189,8 @@ lexer tries these in order:
    ([A directive is a token boundary](#a-directive-is-a-token-boundary)). A
    directive inside a comment region is part of that region (item 1) and does
    neither.
-4. **The diagram's own token rules.** While it matches them, the lexer reads
-   each line terminator as `\n` ([Line terminators](#line-terminators)), each
+4. **The diagram's own unit rules.** While it matches them, the lexer reads each
+   line terminator as `\n` ([Line terminators](#line-terminators)), each
    attribute quote as `'` ([HTML attribute quotes](#html-attribute-quotes)), and
    each entity as its placeholder ([Entities](#entities)). It reads through
    comment regions, the `;` that the line rule ignores, and directives as if
@@ -188,9 +201,9 @@ lexer tries these in order:
 The characters that the diagram's lexer reads are the **diagram text**: the
 characters of the text outside directives and comment regions, other than the
 `;` that the line rule ignores. The diagram text includes the whitespace and
-line terminators that the diagram treats as trivia between tokens. For
-agentflow, whose lexer reads comment lines itself, the characters of comment
-regions are diagram text too (see
+line terminators that the diagram treats as trivia between units. For agentflow,
+whose lexer reads comment lines itself, the characters of comment regions are
+diagram text too (see
 [mermaid.js and this specification](#mermaidjs-and-this-specification)).
 
 The **converted form** of diagram text is the text as the lexer reads it: each
@@ -269,7 +282,12 @@ attribute-part  = (any character except ">")*
 The attribute part may span lines, and it ends at the first `>`. A `<` that is
 not followed by a word character, or after which no `>` follows anywhere in the
 text, does not start a tag; the search continues with the next `<`. Tags do not
-overlap: the search continues after the end of the previous tag.
+overlap: the search continues after the end of the previous tag. [fixture:
+common/html-attribute-quotes-no-word-after-lt] [fixture:
+common/html-attribute-quotes-digit-tag-name] [fixture:
+common/html-attribute-quotes-no-closing-gt] [fixture:
+common/html-attribute-quotes-tag-over-lines] [fixture:
+common/html-attribute-quotes-two-tags]
 
 Inside each attribute part, quoted attribute values are found from left to
 right:
@@ -281,7 +299,9 @@ quoted-value    = "=" '"' (any character except '"')* '"'
 The lexer reads the two `"` of each quoted value as `'`. The replacement has the
 same length, so no other character moves. Tags and quoted values are found in
 the characters of the text as written, directives, comment lines, and the `;`
-that the line rule ignores included. The frontmatter is not searched.
+that the line rule ignores included. The frontmatter is not searched. [fixture:
+flowchart/html-tag-starts-in-frontmatter] [fixture:
+common/html-attribute-quotes-space-around-equals]
 
 Conversion: the same characters are `'` in the converted form of a text. The
 label of `A[<a href="u">t</a>]` is `<a href='u'>t</a>` in the Db, while its
@@ -383,7 +403,10 @@ The frontmatter trivia extends from the start of the source through the line
 terminator of the closing line and any whitespace-only lines after it, with
 their line terminators. A whitespace-only line at the end of the source that has
 no line terminator is not part of it. The indentation of the next line that is
-not whitespace-only is not part of it.
+not whitespace-only is not part of it. [fixture:
+common/frontmatter-blank-lines-after-closing] [fixture:
+common/frontmatter-whitespace-line-at-end] [fixture:
+common/frontmatter-indented-line-after]
 
 This specification does not parse the body. The tree keeps it as written (see
 [ast.md](./ast.md#frontmatter)), and an input is accepted whatever the body
@@ -395,10 +418,10 @@ mermaid.js reads the body is described in
 When these conditions do not hold, there is no frontmatter, and the `---` block
 is text. What happens to it next depends on why:
 
-- If the block only failed because something came before it that is trivia (a
-  leading line break or a directive), detection finds it again at the start of
-  the text it looks at and ignores it (see
-  [Diagram detection](#diagram-detection)). The body's own diagram type is
+- If the block only failed because something came before it that is trivia (such
+  as a leading line break, leading whitespace, a directive, or a comment line),
+  detection finds it again at the start of the text it looks at and ignores it
+  (see [Diagram detection](#diagram-detection)). The body's own diagram type is
   detected, and the `---` lines are passed to that diagram's grammar. The
   flowchart grammar rejects them, while the `error` pseudo-diagram, whose parser
   ignores the text, accepts them. [fixture: common/frontmatter-leading-newline]
@@ -451,13 +474,19 @@ free-text  = (any character except U+2028 and U+2029)*
 ```
 
 - Whitespace includes line terminators, so every `whitespace*` may cross line
-  breaks.
+  breaks. [fixture: common/directive-whitespace-before-name] [fixture:
+  common/directive-line-feed-before-name]
 - After the name, `whitespace* ":"` is taken when a `:` follows the name and its
-  whitespace; otherwise the directive has no colon.
+  whitespace; otherwise the directive has no colon. [fixture:
+  sequence/config-wrap-directive] [fixture:
+  common/directive-whitespace-before-colon] [fixture:
+  common/directive-whitespace-before-colon-applies] [fixture:
+  common/directive-line-feed-before-colon-applies]
 - The argument is a `word` when the first character after the whitespace is a
   word character. Otherwise it is `free-text`, which stops before the first
   `}%%`, before U+2028 or U+2029, or at the end of the text, whichever comes
-  first. It may be empty. [fixture: common/directive-u2028]
+  first. It may be empty. [fixture: common/directive-u2028] [fixture:
+  common/directive-empty-argument]
 - The `whitespace*` after the argument takes all whitespace that follows,
   including line breaks. The closing `}%%` is then taken if it follows. So when
   a free-text argument stops before U+2028 or U+2029, that character is taken as
@@ -468,14 +497,14 @@ free-text  = (any character except U+2028 and U+2029)*
 After a directive the search continues where it ends; directives do not overlap.
 A `%%{` that is not followed by zero or more whitespace characters and then a
 word character does not start a directive, and the search continues with the
-next character. The rule of [Line terminators](#line-terminators) applies, so a
-directive may span a lone `\r` or `\r\n` exactly as in mermaid.js, which
-normalizes line breaks before it removes directives. [fixture:
-common/directive-spans-lone-cr]
+next character. [fixture: common/directive-non-word-start] The rule of
+[Line terminators](#line-terminators) applies, so a directive may span a lone
+`\r` or `\r\n` exactly as in mermaid.js, which normalizes line breaks before it
+removes directives. [fixture: common/directive-spans-lone-cr]
 
 Whether a directive starts at a position does not depend on the diagram's
 syntax, on the context the lexer is in, or on comments: a directive can start
-inside a comment line and in the middle of what would otherwise be a token.
+inside a comment line and in the middle of what would otherwise be a unit.
 Consequences, each confirmed against mermaid.js:
 
 - The closing `}%%` is optional. A directive with a free-text argument and no
@@ -497,12 +526,15 @@ Consequences, each confirmed against mermaid.js:
 - `%%{` not followed by a word, such as `%%{ }%%` or `%%{-x}%%`, is not a
   directive. It is also not a comment line (see below), so it is
   [diagram text](#reading-a-source), which each diagram's lexer reads: on the
-  line after a vertex, flowchart rejects `%%{}`, sequence and class read it as a
-  diagram comment, and state reads its `%%` as text that mermaid.js does not
-  read. [fixture: common/directive-empty-braces] [fixture:
+  line after a vertex, flowchart rejects `%%{}`, and sequence and class read it
+  as a diagram comment. state rejects it after a state, and after `state X`
+  reads its `%%` as text that mermaid.js does not read before a body, and `{}`
+  as the empty body of X. [fixture: common/directive-empty-braces] [fixture:
   flowchart/lex-percent-brace-line-after-vertex] [fixture:
   sequence/lex-percent-brace-line-after-message] [fixture:
   class/lex-percent-brace-line-after-class] [fixture:
+  state/lex-percent-brace-line-after-reference] [fixture:
+  state/lex-percent-brace-line-after-state] [fixture:
   common/directive-non-word-start]
 - Neither the name nor its case matters: `%%{INIT: ...}%%` is a directive like
   `%%{init: ...}%%`. [fixture: common/directive-uppercase]
@@ -523,9 +555,9 @@ does not end a line. The one exception is
 removes directives, so they are found in the text as written, directives
 included. [fixture: flowchart/html-tag-attributes-cross-directive]
 
-So the units, the tokens, and the values that a diagram's lexer reads are those
-of the text without its directives, and a match of the line rule, an entity, or
-the `%%` of a comment can have a directive between two of its characters.
+So the units and the values that a diagram's lexer reads are those of the text
+without its directives, and a match of the line rule, an entity, or the `%%` of
+a comment can have a directive between two of its characters.
 
 - A **unit** is what one rule of the diagram's lexer reads at once. Each diagram
   document defines its units, and lists its **name units**, the units of the
@@ -542,19 +574,27 @@ the `%%` of a comment can have a directive between two of its characters.
   diagram document makes one name or one delimiter together, such as the two `(`
   that open a circle in flowchart: the directive then lies inside that name or
   delimiter, and the input is rejected. In the `error` pseudo-diagram, every run
-  of characters is a text, so a directive is allowed anywhere.
+  of characters is a text, so a directive is allowed anywhere. A directive in
+  whitespace that a unit reads at its start or its end, and a directive in a
+  unit of whitespace only, such as a `space` or a `newline` unit, is not inside
+  the unit: whitespace reads the same with or without it, as in
+  `A --> %%{init: {}}%% B`, whose arrow unit reads the whitespace around it, and
+  in `accTitle %%{init: {}}%% : x` in sequence. [fixture:
+  flowchart/lex-directive-after-arrow] [fixture:
+  flowchart/db-subgraph-id-directive-in-statement-space] [fixture:
+  sequence/lex-acc-title-directive-before-colon]
 
 - A directive inside a comment region is read through with the region, as the
   lexer reads through the whole region (see [Comment lines](#comment-lines)),
-  also inside what one unit reads, whose token the region cuts. A directive
-  after the comment's `%%` is part of the comment; one before it is not.
-  [fixture: common/comment-region-directive-in-string] [fixture:
+  also inside what one unit reads. A directive after the comment's `%%` is part
+  of the comment; one before it is not. [fixture:
+  common/comment-region-directive-in-string] [fixture:
   common/comment-directive-in-string]
 
-A directive between tokens, or in whitespace at the edge of a token, behaves
-exactly as in mermaid.js. [fixture: common/directive-mid-line] [fixture:
-common/directive-after-link] [fixture: common/comment-after-directive] [fixture:
-common/directive-joins-lines]
+A directive between two units, or in whitespace that a unit reads at its start
+or its end, behaves exactly as in mermaid.js. [fixture:
+common/directive-mid-line] [fixture: common/directive-after-link] [fixture:
+common/comment-after-directive] [fixture: common/directive-joins-lines]
 
 Because the lexer reads the text without the directive, a directive inside a
 text unit or a string unit also gives the result of mermaid.js. In flowchart,
@@ -566,7 +606,7 @@ around the directive stays: the label of `A["a %%{init: {}}%% b"]` is `a`, two
 spaces, and `b`, and the quotes of a directive inside a string do not end the
 string. [fixture: common/directive-in-string] [fixture:
 flowchart/lex-directive-in-string-with-quotes] A directive in whitespace between
-two tokens changes nothing: `flowchart %%{init: {}}%%LR` has the direction `LR`,
+two units changes nothing: `flowchart %%{init: {}}%%LR` has the direction `LR`,
 and `style A %%{init: {}}%%fill:red` the style `fill:red`, while
 `style A%%{init: {}}%%fill:red` is rejected, because the text is
 `style Afill:red`. [fixture: common/directive-in-header-whitespace] [fixture:
@@ -582,9 +622,9 @@ mermaid.js reads `end%%{init: {}}%%x` as the vertex `endx`, not the keyword
 common/directive-keyword-followed-by-text] See
 [`directive-as-token-boundary`](./known-divergences/directive-as-token-boundary.md).
 
-A directive on a comment line is part of the comment (see
-[Comment lines](#comment-lines)). Each diagram document applies this rule to
-what its lexer reads; for flowchart, see
+A directive on a comment line after its `%%` is part of the comment, and one
+before the `%%` is not (see [Comment lines](#comment-lines)). Each diagram
+document applies this rule to what its lexer reads; for flowchart, see
 [Directives inside units](./diagrams/flowchart.md#directives-inside-units).
 
 ## Comment lines
@@ -615,17 +655,19 @@ conditions:
 
 A comment extends from the first `%` of its `%%` to the end of its line, that
 is, to the next line terminator that is not part of a directive; U+2028 and
-U+2029 do not end it. A line terminator is part of a directive when it lies in
-what the directive scan takes, the whitespace after the argument included (see
-[Where a directive is](#where-a-directive-is)), so a directive in a comment can
-carry the comment over line breaks: after `X`, the lines `%% %%{wrap`, `A`, and
-`B --> C` are one comment, because the directive takes `A` and the line break
-after it, and mermaid.js reads neither `A` nor `B --> C`. [fixture:
-common/comment-directive-word-argument-takes-next-lines] When no line terminator
-follows that is not part of a directive, the comment extends to the end of the
-text; its range then leaves out the whitespace at its end that a directive took,
-as the range of the directive does. A line that contains a comment is a
-**comment line**.
+U+2029 do not end it. [fixture:
+common/comment-line-separator-inside-comment-line] A line terminator is part of
+a directive when it lies in what the directive scan takes, the whitespace after
+the argument included (see [Where a directive is](#where-a-directive-is)), so a
+directive in a comment can carry the comment over line breaks: after `X`, the
+lines `%% %%{wrap`, `A`, and `B --> C` are one comment, because the directive
+takes `A` and the line break after it, and mermaid.js reads neither `A` nor
+`B --> C`. [fixture: common/comment-directive-word-argument-takes-next-lines]
+When no line terminator follows that is not part of a directive, the comment
+extends to the end of the text; it then does not include the whitespace at its
+end that a directive took, as the directive does not (see
+[Directive](./ast.md#directive)). A line that contains a comment is a **comment
+line**.
 
 The **comment region** of a comment starts at the earliest comment start from
 which only whitespace and directives lead to the `%%`, and ends after the line
@@ -634,10 +676,11 @@ whitespace-only lines directly before the comment line. The lexer finds it at
 that comment start: from there it looks ahead over whitespace, line terminators,
 and directives, and when it reaches a comment, the region starts where the
 look-ahead started. Comment regions do not overlap. The whole region is trivia.
-In the tree, only its directives appear, in `Root.directives`; its whitespace
-and line terminators belong to no node. The region still matters beyond them:
-its line terminators are not diagram tokens, and inside a token the lexer reads
-through the whole region, as described below.
+[fixture: common/comment-blank-line-before-in-string] In the tree, only its
+directives appear, in `Root.directives`; its whitespace and line terminators
+belong to no node. The region still matters beyond them: its line terminators
+are not diagram text, and inside a unit the lexer reads through the whole
+region, as described below.
 
 - Comment lines may be indented with any line whitespace. [fixture:
   common/comment-indented]
@@ -678,8 +721,8 @@ through the whole region, as described below.
   flowchart/lex-acc-descr-block-bare-marker-line-after-comment-line] [fixture:
   flowchart/lex-tooltip-bare-marker-line] [fixture:
   flowchart/lex-acc-title-bare-marker-next-line]
-- A text that consists only of comment lines has no tokens and is rejected by
-  detection. [fixture: common/comment-only]
+- A text that consists only of comment lines has no diagram text and is rejected
+  by detection. [fixture: common/comment-only]
 - Directives are left out, so the line `%%{init: {}}%% %% c` is a directive
   followed by a comment, and `%%%{init: {}}%%% c` is a comment line whose `%%`
   is its first and its last `%`, with the directive between them, as in
@@ -691,7 +734,8 @@ through the whole region, as described below.
   flowchart/comment-percent-before-directive] [fixture:
   common/directive-in-comment]
 - A line that starts with `%%{` and is not a directive is not a comment line
-  either, because the character after `%%` is `{`.
+  either, because the character after `%%` is `{`. [fixture:
+  common/directive-empty-braces]
 
 Comment lines are recognized independently of the diagram's syntax and of the
 context the lexer is in. The lexer reads through a comment region as if it were
@@ -701,7 +745,7 @@ the region joined. [fixture: common/comment-in-string] [fixture:
 common/comment-blank-line-before-in-string]
 
 This keeps acceptance as in mermaid.js even when the comment line contains
-characters that are special inside the token, such as a `"` inside a quoted
+characters that are special inside the unit, such as a `"` inside a quoted
 label. [fixture: common/comment-with-quote-in-string]
 
 A comment region cuts a diagram comment in the same way, a comment that a
@@ -718,7 +762,8 @@ comment lines, in
 [`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8).
 Whitespace, line terminators, directives, and comment regions before the first
 unit of the diagram's lexer are trivia and are not seen by the diagram's
-grammar.
+grammar. [fixture: common/leading-whitespace-before-header] [fixture:
+common/leading-trivia-before-header]
 
 ## Diagram detection
 
@@ -741,7 +786,8 @@ text, detection then removes three more things, as
 does:
 
 - a frontmatter block at the start, found with the conditions of
-  [Frontmatter](#frontmatter) again;
+  [Frontmatter](#frontmatter) again; [fixture:
+  common/frontmatter-leading-newline]
 - directives, found as in [Directives](#where-a-directive-is) again, in one scan
   from left to right. This scan can find directives that the first one did not:
   a directive may start at a `%%{` that is followed, after whitespace, by a word
@@ -801,9 +847,10 @@ Two pseudo-diagrams are registered before all real diagrams:
   common/error-trailing-percent-at-end]
 - `---`: the text the detectors see, lower-cased and with leading whitespace
   trimmed, starts with `---`. Its parser always throws, so the input is
-  rejected. Because the detectors see the text after the second frontmatter
-  attempt above, this only catches a `---` block that is neither frontmatter nor
-  recognized by that attempt (see [Frontmatter](#frontmatter)).
+  rejected. [fixture: common/frontmatter-four-dashes] Because the detectors see
+  the text after the second frontmatter attempt above, this only catches a `---`
+  block that is neither frontmatter nor recognized by that attempt (see
+  [Frontmatter](#frontmatter)).
 
 Each diagram document refers to its entry in [detection.md](./detection.md) in
 its Detection section.
@@ -817,7 +864,55 @@ of each segment, looking ahead to the segment's end. For this rule, a line
 segment runs between line terminators, U+2028, and U+2029 that are not part of a
 directive, the segment is read without its directives, the characters before and
 after a directive following one another, and comment regions belong to no
-segment. For agentflow, comment regions are not left out (see
+segment. A U+2028 or U+2029 that a directive takes as its whitespace (see
+[Where a directive is](#where-a-directive-is)) is part of the directive and ends
+no segment: in sequence, the line
+`participant A@{ "style": "x:#y" };participant C%%{init: {}`, U+2029, and
+`;participant D` is one segment, whose last `;`, after the U+2029, is ignored,
+so the line declares the participants A and `Cparticipant D`, as in mermaid.js.
+[fixture: sequence/tokens-directive-paragraph-separator-keeps-segment] [fixture:
+sequence/tokens-directive-paragraph-separator-then-semicolon]
+
+On the line `participant A@{ "style": "x:#y" };participant C;participant E`, a
+separator, `;participant D`, and the line `A->>B: y`, the participants show
+which `;` is ignored:
+
+- A line terminator, U+2028, or U+2029, also right after a closed directive, and
+  a line feed before a comment line end the segment. The last `;` of the first
+  line, between `C` and `participant E`, is ignored, and the participants are A,
+  `Cparticipant E`, D, and B. [fixture:
+  sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
+  sequence/tokens-ignored-semicolon-separator-carriage-return] [fixture:
+  sequence/tokens-ignored-semicolon-separator-crlf] [fixture:
+  sequence/tokens-ignored-semicolon-separator-line-separator] [fixture:
+  sequence/tokens-ignored-semicolon-separator-paragraph-separator] [fixture:
+  sequence/tokens-ignored-semicolon-separator-closed-directive-line-separator]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-closed-directive-paragraph-separator]
+  [fixture: sequence/tokens-ignored-semicolon-separator-comment-line]
+- With no separator, with a closed directive, and with an unclosed directive
+  whose argument ends before a U+2028 or U+2029 that it then takes as
+  whitespace, the segment goes on, and the `;` after the separator is ignored:
+  the participants are A, C, `Eparticipant D`, and B. [fixture:
+  sequence/tokens-ignored-semicolon-separator-none] [fixture:
+  sequence/tokens-ignored-semicolon-separator-closed-directive] [fixture:
+  sequence/tokens-ignored-semicolon-separator-unclosed-directive-line-separator]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-unclosed-directive-paragraph-separator]
+- An unclosed directive whose free-text argument meets a line terminator takes
+  the rest of the text, and so does one whose free-text argument starts after
+  the separator, as when a U+2028 or U+2029 right after its name or its `:` is
+  taken as whitespace: in `%%{wrap`, U+2028, and `;participant D`, the argument
+  is `;participant D` and all that follows. The last `;` of the segment is then
+  the one between `C` and `participant E`, and the participants are A and
+  `Cparticipant E`. [fixture:
+  sequence/tokens-ignored-semicolon-separator-unclosed-directive-line-feed]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-unclosed-directive-carriage-return]
+  [fixture:
+  sequence/tokens-ignored-semicolon-separator-unclosed-directive-name-line-separator]
+
+For agentflow, comment regions are not left out (see
 [mermaid.js and this specification](#mermaidjs-and-this-specification)), so the
 rule also applies to comment lines.
 
@@ -831,8 +926,9 @@ A line segment **matches the `style` rule** when it contains, in this order:
 When a segment matches, the lexer ignores its last `;`: it reads through that
 `;` as if it were not there, and the grammar does not see it. Then the same is
 done with `classDef` in place of `style` in item 1, on the segment without the
-`;` that the `style` rule ignored. mermaid.js removes such a `;` from the text
-in
+`;` that the `style` rule ignored. [fixture:
+common/entity-style-then-classdef-rule] mermaid.js removes such a `;` from the
+text in
 [`encodeEntities()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L895-L917);
 this specification keeps it in the source and only ignores it. Like a directive,
 the ignored `;` may lie inside a text or a string, and between two units (see
@@ -944,7 +1040,7 @@ Entities do not overlap.
 Lexical rule: the lexer reads an entity as its placeholder. When the word
 consists of ASCII digits only, `#` _word_ `;` reads as `ﬂ°°` _word_ `¶ß`;
 otherwise it reads as `ﬂ°` _word_ `¶ß`. The characters are U+FB02, U+00B0,
-U+00B6, and U+00DF. The lexer matches its token rules against the placeholder
+U+00B6, and U+00DF. The lexer matches its unit rules against the placeholder
 characters in place of the entity's source characters. The placeholder stands
 for the entity's source characters as a whole: none of its characters is read
 from one source character of its own. So where a rule of the diagram's lexer
@@ -984,8 +1080,9 @@ has the placeholder of `#f00;`. [fixture: common/entity-in-label-outside-tag]
 
 Lexical rule: mermaid.js appends `\n` to the text before parsing. The end of the
 text therefore behaves as a line terminator for the diagram's grammar: a diagram
-whose last statement has no line break is read as if it had one. The appended
-`\n` is not part of the source, so it adds no node to the tree.
+whose last statement has no line break is read as if it had one. [fixture:
+flowchart/header-only-no-line-break] [fixture: common/cr-only] The appended `\n`
+is not part of the source, so it adds no node to the tree.
 
 ## Whitespace
 

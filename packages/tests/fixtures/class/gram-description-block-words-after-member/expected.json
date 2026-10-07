@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Empty description blocks before a separator: after the `:` of a member statement, the label reads the rest of the line, so `accDescr {}` is part of the member text, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "x accDescr {}"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

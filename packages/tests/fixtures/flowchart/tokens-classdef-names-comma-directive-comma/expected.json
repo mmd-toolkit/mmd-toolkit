@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A directive between two commas of the list of class names does not join the commas: they are two separators, and the empty name between them is a class of its own."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "a",
+        "styles": [
+          "fill:red"
+        ]
+      },
+      {
+        "id": "",
+        "styles": [
+          "fill:red"
+        ]
+      },
+      {
+        "id": "b",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

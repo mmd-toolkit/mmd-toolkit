@@ -8,6 +8,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import { printAtoms } from "./atoms.ts"
+import { lineEndOf } from "./kept-lines.ts"
 import type { BlockRules } from "./blocks.ts"
 import {
   openingLine,
@@ -15,8 +16,10 @@ import {
   printClosedBlock,
   printDiagramBlock,
 } from "./blocks.ts"
-import { lineEndOf } from "./kept-lines.ts"
-import { findFlowchartKeptLines } from "./flowchart-kept-lines.ts"
+import {
+  findFlowchartKeptLines,
+  findSemicolonOnLaterLine,
+} from "./flowchart-kept-lines.ts"
 import {
   layoutHeader,
   layoutStatement,
@@ -169,7 +172,7 @@ function flowchartBlockRules(source: Source): BlockRules<FlowchartStatement> {
     isDroppedAtTopLevel: (statement) =>
       statement.type === "FlowchartEmptyStatement",
     keepsWhitespaceLineAfterComment: false,
-    keepsDirectiveLinesUnindentedAfterBareMarker: false,
+    keepsDirectiveLinesUnindented: false,
   }
 }
 
@@ -238,13 +241,17 @@ function findHeaderEnd(source: Source, diagram: FlowchartDiagram): number {
  * `subgraph S ` has the id `subGraph0`. The empty description blocks after
  * the name are statements of the subgraph, and the line ends before the
  * first of them, or before the line feed that the name may reach over: after
- * a name that ends with `end`, which takes the line feed after it.
+ * a name that ends with `end`, which takes the line feed after it. A `;` that
+ * stands on a later line after such a name is part of the line (see
+ * `findSemicolonOnLaterLine`).
  */
 function findSubgraphHeaderEnd(
   source: Source,
   subgraph: FlowchartSubgraphStatement,
 ): number {
   if (subgraph.title !== null) return findTitleEnd(source, subgraph.title)
+  const semicolon = findSemicolonOnLaterLine(source, subgraph)
+  if (semicolon !== undefined) return semicolon.range[1]
   const { range } = subgraph.name
   return Math.min(range[1], lineEndOf(source, range[1] - 1))
 }

@@ -11,12 +11,11 @@
 欄の値は、[ast.ja.md](../ast.ja.md#ノード) が定める値の書かれたテキストとして、
 書き手が書いたものを保ちます。
 [common.ja.md](../common.ja.md#ソースの読み方) の変換した形ではありません。
-mermaid.js が値の一部として読む空白は、
-その書かれたテキストの一部です
-（[ノード](../ast.ja.md#ノード) を参照）。
+値が空白で始まるか終わるのは、値の単位がそれを自身の文字として持ち、
+mermaid.js がそれを読むところだけです（[ノード](../ast.ja.md#ノード) を参照）。
 この図種では、別名の 2 つ目の説明の空白です
 （[StateAliasDefinitionStatement](#statealiasdefinitionstatement) を参照）。
-ほかの空白は、どの値にも入りません。
+ほかのところでは、値の両端の空白は値の外です。
 
 **状態**は図の箱の 1 つで、その id で名指されます。
 遷移は 1 つの状態から別の状態へ向かいます。
@@ -75,7 +74,7 @@ state/gram-description-blank-spaces]
 | `label` | StateLiteral または null | `:` の後のテキスト。ないか、空白だけなら null。 |
 
 子の欄: `from`、`to`、`label`。
-矢印 `-->` はトークンで、ノードではありません。
+矢印 `-->` は単位で、ノードではありません。
 state 図の矢印はこの 1 つだけで、端の印がなく、線の種類も 1 つなので、
 矢印のノードには置く欄がありません。
 [fixture: state/lex-percent-in-label]
@@ -253,7 +252,7 @@ id は空白を持てます。`state f 1 <<fork>>` は fork `f 1` です。
 最初の 2 文字と両端の空白を除いて読みます
 （[ノートの文脈](../diagrams/state.ja.md#ノートの文脈) を参照）。
 `text` と `textBeforeText` はその読み方を示します。
-`:` の前に空白が 2 つあると、`:` はテキストの一部です。
+`:` の前に空白が 2 つ以上あると、`:` はテキストの一部です。
 `note left of A  :hi` のテキストは `:hi` です。
 `:` がノートの id のすぐ後にあるとき、`:` の後の文字は、
 空白でなければ `textBeforeText` です。
@@ -275,7 +274,7 @@ state/lex-note-colon-then-one-character]
 
 子の欄: `text`、`id`。
 [fixture: state/lex-floating-note-id-spaces]
-引用符は文のトークンで、どの欄にも属しません。
+引用符は文の単位で、どの欄にも属しません。
 テキストの前と後に、それぞれ 2 つ以上あることもあります
 （[ノートの文脈](../diagrams/state.ja.md#ノートの文脈) を参照）。
 [fixture: state/lex-floating-note-extra-quote-before-text] [fixture:
@@ -335,12 +334,14 @@ state/lex-classdef-without-styles] [fixture: state/db-classdef-empty-items]
 
 `style A,B fill:#f00`。
 
-| 欄       | 型                               | 意味                                               |
-| -------- | -------------------------------- | -------------------------------------------------- |
-| `states` | （Identifier または null）の列   | 状態の id。ソースの順。`,` の間の空の項目は null。 |
-| `styles` | （StateLiteral または null）の列 | StateClassDefStatement と同じスタイル。            |
+| 欄       | 型                               | 意味                                                       |
+| -------- | -------------------------------- | ---------------------------------------------------------- |
+| `states` | （Identifier または null）の列   | 状態の id。ソースの順。`,` の前、間、後の空の項目は null。 |
+| `styles` | （StateLiteral または null）の列 | StateClassDefStatement と同じスタイル。                    |
 
 子の欄: `states`、`styles`。
+`style ,A,,B, fill:red` の states は、null、A、null、B、null です。
+[fixture: state/tokens-style-empty-items]
 スタイルは、空の部分を null とする StateClassDefStatement と同じものですが、
 テキストのない `style` の文は、mermaid.js が空のスタイル 1 つを与えるので、
 null のスタイルを 1 つ持ちます。

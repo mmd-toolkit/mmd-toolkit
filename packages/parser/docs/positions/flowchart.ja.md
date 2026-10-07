@@ -3,8 +3,10 @@
 英語版: [flowchart.md](./flowchart.md)
 
 この文書は、`@mmd-toolkit/parser` が作る木の、この図種のノードの範囲を定めます。
-すべての図種に共通する決まりは [positions.ja.md](../positions.ja.md) にあります。
-ノードは仕様の [`ast/flowchart.ja.md`](../../../spec/docs/ast/flowchart.ja.md) が、
+すべての図種に共通する決まりは
+[positions.ja.md](../positions.ja.md) にあります。
+ノードは仕様の
+[`ast/flowchart.ja.md`](../../../spec/docs/ast/flowchart.ja.md) が、
 トークンは [tokens/flowchart.ja.md](../tokens/flowchart.ja.md) が定めます。
 
 ## 範囲
@@ -28,46 +30,57 @@ FlowchartDiagram のトークンは、
 ### FlowchartEmptyStatement
 
 範囲は、その `;` の範囲です。
+[fixture: flowchart/gram-empty-statement-top-level]
 
 ### FlowchartVertex
 
 頂点の範囲はそのデータブロックを覆います。
 範囲は id から、データブロックがあれば最後のデータブロックまでで、
 その頂点を含む頂点のグループと頂点の文の範囲も同じです。
+[fixture: flowchart/gram-data-consecutive-blocks]
 
 ### FlowchartShapeProperty
 
 範囲は、名前から値までです。
 その前後の `|` は含みません。
+[fixture: flowchart/gram-rect-property]
 
 ### FlowchartLink
 
 範囲は、リンクの最初のトークンから、その行き先の最後のトークンまでです。
+[fixture: flowchart/gram-edge-id]
 
 ### FlowchartArrow
 
 範囲はそのトークンで、単位が前後に持つ空白を除いた矢印です。
+[fixture: flowchart/lex-directive-after-arrow]
 矢印の中のディレクティブや無視される `;` は入力を拒否させるので、
 2 つ以上のトークンを持つ矢印はありません
 （[トークン](../tokens.ja.md#トークン) を参照）。
 [fixture: flowchart/div-ignored-semicolon-in-arrow]
+[fixture: flowchart/div-directive-in-arrow-length]
 
 ### FlowchartOpeningArrow
 
 範囲は、[FlowchartArrow](#flowchartarrow) と同じく、そのトークンです。
+[fixture: flowchart/db-arrow-dash-head-length]
+[fixture: flowchart/div-ignored-semicolon-in-opening-arrow]
 
 ### FlowchartLabel
 
-すべて空白のラベルはトークンを持ちません。
-トークンを持たないどのノードとも同じく、
-その範囲はその単位を覆います
-（[positions.ja.md](../positions.ja.md#ノードの範囲) を参照）。
+すべて空白のラベルは、その空白の 1 つの `RawText` のトークンを持ち
+（[flowchart のトークン](../tokens/flowchart.ja.md#トークン) を参照）、
+その範囲はそのトークンです。
+[fixture: flowchart/gram-label-space]
 
 ### FlowchartLiteral
 
 そのトークンは `RawText` のトークンです。
 1 つで、単位の間のディレクティブがテキストを切るときはそれより多くなります
-（[common.ja.md](../../../spec/docs/common.ja.md#ディレクティブはトークンの境界) を参照）。
+（[common.ja.md](../../../spec/docs/common.ja.md#ディレクティブはトークンの境界)
+を参照）。
+[fixture: flowchart/lex-acc-title-space-before-colon]
+[fixture: flowchart/lex-directive-in-title]
 
 リテラルは必ずトークンを持ちます。
 
@@ -75,6 +88,7 @@ FlowchartDiagram のトークンは、
 
 フロントマターと違い、値の範囲を別に持ちません。
 値はブロックのトークンの中にあります。
+[fixture: flowchart/gram-data-block-space-only]
 
 ### FlowchartIgnoredText
 
@@ -82,6 +96,7 @@ FlowchartDiagram のトークンは、
 1 つで、ディレクティブがテキストを切るときはそれより多くなります。
 `A-%%{init: {}}%%->B direction LR` の `direction` の前のテキストは `A-->B`
 です。
+[fixture: flowchart/lex-direction-line-after-directive-in-text]
 
 範囲は最初のトークンから最後のトークンまでです。
 
@@ -93,6 +108,9 @@ FlowchartDiagram のトークンは、
 [fixture: flowchart/db-subgraph-string-name-trailing-space]
 空の説明ブロックが名前のすぐ後に続くときは、その間の空白と、
 最後のブロックと `;` の間の空白は、どのトークンにも属しません。
+[fixture: flowchart/db-subgraph-name-space-before-empty-description-block]
+[fixture:
+flowchart/db-subgraph-name-space-after-empty-description-block-before-semicolon]
 
 ### FlowchartStyleStatement
 
@@ -106,6 +124,7 @@ FlowchartDiagram のトークンは、
 2 つ目のスタイルの最初のトークンはディレクティブの前の空白です。
 [fixture: flowchart/tokens-style-ignored-semicolon-then-spaces]
 [fixture: flowchart/tokens-style-directive-after-comma]
+[fixture: flowchart/tokens-style-ignored-semicolon-between-values]
 
 ### FlowchartClickUrlStatement
 
@@ -113,7 +132,10 @@ FlowchartDiagram のトークンは、
 そのクリックの id を読んだクリックの文脈に入った `click` の単位から始まります。
 文の文法が始まる単位です。
 その `click` は範囲の中の `Keyword` のトークンで、どの欄にも属しません。
+[fixture: flowchart/gram-click-href]
+[fixture: flowchart/gram-click-call]
 
 ### FlowchartDirectionStatement
 
 範囲は方向の行の全体なので、両方のテキストの範囲を覆います。
+[fixture: flowchart/lex-direction-line-in-label]

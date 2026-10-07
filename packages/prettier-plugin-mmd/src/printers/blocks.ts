@@ -66,14 +66,21 @@ export interface BlockRules<Statement extends Node> {
    */
   readonly keepsWhitespaceLineAfterComment: boolean
   /**
-   * Whether a line of only directives right after a line of only `%%`, or
-   * after more such lines, is printed without indentation, as written. In a
-   * class diagram, a line of only whitespace after such a `%%` line is a
-   * `newline` unit of its own, and the line of a directive, with the
-   * indentation before it, is one (diagrams/class.md, The statement
-   * context), so with the indentation the text would be rejected.
+   * Whether a line of only directives keeps the indentation it was written
+   * with, in the two places where the indentation of the block would change
+   * what mermaid.js reads. Right after a line of only `%%`, or after more such
+   * lines and comment lines, it has none: in a class diagram, a line of only
+   * whitespace after such a `%%` line is a `newline` unit of its own, and the
+   * line of a directive, with the indentation before it, is one
+   * (diagrams/class.md, The statement context), so with indentation the text
+   * would be rejected. After
+   * a comment that takes the line breaks after it (see
+   * `keepsWhitespaceLineAfterComment`), it keeps the indentation as written:
+   * the whitespace that a removed directive leaves is a line of only
+   * whitespace, which ends what the comment takes, so the line may not gain
+   * or lose its indentation.
    */
-  readonly keepsDirectiveLinesUnindentedAfterBareMarker: boolean
+  readonly keepsDirectiveLinesUnindented: boolean
 }
 
 /** Where a block of statements lies in the source, and which block it is. */
@@ -98,6 +105,11 @@ export interface PrintedBlock {
   readonly lines: readonly Line[]
   /** Items on the line that closes the block, before what closes it. */
   readonly endLeading: ItemRun | null
+  /**
+   * The indentation that `endLeading`, a line of only directives, keeps (see
+   * `BlockRules.keepsDirectiveLinesUnindented`), or undefined.
+   */
+  readonly endLeadingIndentation: string | undefined
   /** Whether the source has an empty line before `endLeading`. */
   readonly endBlank: boolean
 }
@@ -143,6 +155,25 @@ export function printBlock<Statement extends Node>(
   let continuesOpeningLine = false
   let spaceLinePending = false
   let stretchEndsWithComment = false
+  let endsAfterBareMarker = false
+  let endsAfterTakingComment = false
+
+  /**
+   * The indentation that a line of only directives keeps instead of the one
+   * of the block, or undefined (see `BlockRules.keepsDirectiveLinesUnindented`):
+   * none after a line of only `%%`, and as written after a comment that takes
+   * the line breaks after it.
+   */
+  function keptIndentation(
+    afterMarker: boolean,
+    afterTakingComment: boolean,
+    written: string,
+  ): string | undefined {
+    if (afterMarker) return ""
+    return rules.keepsDirectiveLinesUnindented && afterTakingComment
+      ? written
+      : undefined
+  }
 
   /**
    * Whether a line of the body has been added: the part of the opening line
@@ -176,18 +207,30 @@ export function printBlock<Statement extends Node>(
     let afterBareMarker = false
     for (const line of gap.lines) {
       const unindented: boolean =
-        rules.keepsDirectiveLinesUnindentedAfterBareMarker &&
+        rules.keepsDirectiveLinesUnindented &&
         afterBareMarker &&
         line.directivesOnly
-      afterBareMarker = line.bareMarker || unindented
+      const indentation = keptIndentation(
+        unindented,
+        keepsWhitespaceLines && line.directivesOnly,
+        line.indentation,
+      )
+      afterBareMarker =
+        line.bareMarker ||
+        unindented ||
+        (afterBareMarker && line.commentLinesOnly)
       pushLine({
         doc: line.run.doc,
         blankBefore: hasBodyLines() && line.blankBefore,
         endsWithWhitespace: line.run.endsWithWhitespace,
         spaceLineBefore: keepsWhitespaceLines && line.whitespaceLineBefore,
-        ...(unindented ? { writtenIndentation: "" } : {}),
+        ...(indentation === undefined
+          ? {}
+          : { writtenIndentation: indentation }),
       })
     }
+    endsAfterBareMarker = afterBareMarker
+    endsAfterTakingComment = keepsWhitespaceLines
     spaceLinePending = keepsWhitespaceLines && gap.whitespaceLineAfter
   }
 
@@ -242,7 +285,6 @@ export function printBlock<Statement extends Node>(
   function printStretch(stretch: Stretch): Line {
     const covered = statements.slice(stretch.first, stretch.after)
     if (
-      covered.some(rules.holdsStatements) ||
       holdsVerbatimLine(source, kept, stretch.start, stretch.end) ||
       holdsJoiningRegion(source, stretch.start, stretch.end)
     ) {
@@ -348,13 +390,22 @@ export function printBlock<Statement extends Node>(
     next = stretch.after
     offset = stretch.end
   }
-  const gap = readGap(source, offset, bounds.end, false)
+  // The top-level block is the body of the diagram, which ends at the end of
+  // the text.
+  const gap = readGap(source, offset, bounds.end, false, bounds.isTopLevel)
   addItemLines(gap)
   return {
     headerTrailing,
     continuesOpeningLine,
     lines,
     endLeading: gap.leading,
+    endLeadingIndentation: keptIndentation(
+      rules.keepsDirectiveLinesUnindented &&
+        endsAfterBareMarker &&
+        gap.leadingDirectivesOnly,
+      endsAfterTakingComment && gap.leadingDirectivesOnly,
+      gap.leadingIndentation,
+    ),
     endBlank: gap.blankAfter,
   }
 }
@@ -399,6 +450,9 @@ export function printDiagramBlock(
             doc: block.endLeading.doc,
             blankBefore: block.lines.length > 0 && block.endBlank,
             endsWithWhitespace: block.endLeading.endsWithWhitespace,
+            ...(block.endLeadingIndentation === undefined
+              ? {}
+              : { writtenIndentation: block.endLeadingIndentation }),
           },
         ]
   const last = lines.at(-1) ?? header

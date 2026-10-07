@@ -7,28 +7,24 @@
 Mermaid の図のテキストのための ESLint の言語プラグインで、
 規則ごとに 1 つの文書がある。
 
-`recommended` の設定は、報告がほぼいつも直すべき誤りである規則を有効にする。
-そうした規則が報告する所では、どこでも、
-mermaid.js がテキストを書き手のつもりと違う読み方をし、
-書き手がわざとそう書く書き方は報告されず、直し方ははっきりしている。
-進んでいる mermaid.js の修正で変わる振る舞いに頼る規則は、有効にしない。
+`recommended` の設定は、下の一覧で ✅ を付けた規則を有効にする。
+それらの規則の報告は、ほぼいつも直すべき誤りである。
 
 ## 規則の id
 
 規則の id は、プラグインの名前空間 `mmd` で始まる。
-規則は、すべての図種に共通の規則か、1 つの図種の規則かのどちらかである。
-
-- 共通の規則の id は `mmd/<名前>` で、文書はこのディレクトリにある。
-- 図種の規則の id は `mmd/<図種>/<名前>` で、
-  文書はディレクトリ `<図種>/` にある。
-  構文を共有する複数の図種の規則を、1 つのディレクトリに置くことがある。
-  `flowchart/` の規則は、`flowchart-v2`、`flowchart-elk`、`swimlane` に当たる。
+すべての図種に共通の規則の id は `mmd/<名前>`、
+1 つの図種の規則の id は `mmd/<図種>/<名前>` である。
+`flowchart` の規則の対象の図種は、
+`flowchart-v2`、`flowchart-elk`、`swimlane` である。
 
 <!-- begin auto-generated rules list -->
 
 ✅ は、`recommended` の設定が有効にする規則。
 
-💡 は、[エディタの提案](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)で手で直せる規則。
+💡 は、
+[エディターの修正候補](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions)
+がある規則。
 
 🚧 は、まだ実装していない規則。何も報告しない。
 
@@ -38,19 +34,6 @@ mermaid.js がテキストを書き手のつもりと違う読み方をし、
 | -------------------------------------------------------------- | ----------------------------------------------------------------------------- | --- | --- | --- |
 | [no-ignored-init-directive](./no-ignored-init-directive.ja.md) | 図を設定するつもりで書いたが、mermaid.js が無視するディレクティブを禁止する。 |     |     | 🚧  |
 | [no-unclosed-directive](./no-unclosed-directive.ja.md)         | 閉じる `}%%` のないディレクティブを禁止する。                                 |     |     |     |
-
-## class
-
-| 規則                                                               | 説明                                                             | ✅  | 💡  | 🚧  |
-| ------------------------------------------------------------------ | ---------------------------------------------------------------- | --- | --- | --- |
-| [no-bare-class-name](./class/no-bare-class-name.ja.md)             | 何も変えない、クラス名だけの行を禁止する。                       |     |     | 🚧  |
-| [no-duplicate-description](./class/no-duplicate-description.ja.md) | 説明をもう一度設定する `accDescr` の文を禁止する。               |     |     | 🚧  |
-| [no-duplicate-title](./class/no-duplicate-title.ja.md)             | タイトルをもう一度設定する `accTitle` の文を禁止する。           |     |     | 🚧  |
-| [no-ignored-text](./class/no-ignored-text.ja.md)                   | mermaid.js が読まないテキストを禁止する。                        |     |     | 🚧  |
-| [no-inline-comment](./class/no-inline-comment.ja.md)               | 同じ行のほかのテキストの後に置いたコメントを禁止する。           |     |     | 🚧  |
-| [no-redefined-class](./class/no-redefined-class.ja.md)             | クラスのラベルを、後で違うものに書き直すことを禁止する。         |     |     | 🚧  |
-| [no-unclosed-backquote](./class/no-unclosed-backquote.ja.md)       | 閉じるバッククォートのない、バッククォートのクラス名を禁止する。 |     |     | 🚧  |
-| [no-undef](./class/no-undef.ja.md)                                 | 図が定義していないクラスを指す文を禁止する。                     |     |     | 🚧  |
 
 ## flowchart
 
@@ -76,5 +59,18 @@ mermaid.js がテキストを書き手のつもりと違う読み方をし、
 | [no-ignored-text](./sequence/no-ignored-text.ja.md)                       | mermaid.js が何も読まない行を禁止する。                                       |     |     | 🚧  |
 | [no-invalid-json](./sequence/no-invalid-json.ja.md)                       | テキストが JSON のオブジェクトでない `links` か `properties` の文を禁止する。 |     |     | 🚧  |
 | [no-link-without-separator](./sequence/no-link-without-separator.ja.md)   | ラベルと URL の間に `@` がない `link` の文を禁止する。                        |     |     | 🚧  |
+
+## class
+
+| 規則                                                               | 説明                                                                           | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------ | --- | --- | --- |
+| [no-bare-class-name](./class/no-bare-class-name.ja.md)             | 何も変えない、クラス名だけの行を禁止する。                                     |     |     | 🚧  |
+| [no-duplicate-description](./class/no-duplicate-description.ja.md) | 説明をもう一度設定する `accDescr` の文を禁止する。                             |     |     | 🚧  |
+| [no-duplicate-title](./class/no-duplicate-title.ja.md)             | タイトルをもう一度設定する `accTitle` の文を禁止する。                         |     |     | 🚧  |
+| [no-ignored-text](./class/no-ignored-text.ja.md)                   | mermaid.js が読まないテキストを禁止する。                                      |     |     | 🚧  |
+| [no-inline-comment](./class/no-inline-comment.ja.md)               | 同じ行のほかのテキストの後に置いたコメントを禁止する。                         |     |     | 🚧  |
+| [no-redefined-class](./class/no-redefined-class.ja.md)             | クラスのラベルを、後で違うものに書き直すことを禁止する。                       |     |     | 🚧  |
+| [no-unclosed-backquote](./class/no-unclosed-backquote.ja.md)       | バッククォートで囲むクラス名のうち、閉じるバッククォートのないものを禁止する。 |     |     | 🚧  |
+| [no-undef](./class/no-undef.ja.md)                                 | 図が定義していないクラスを指す文を禁止する。                                   |     |     | 🚧  |
 
 <!-- end auto-generated rules list -->

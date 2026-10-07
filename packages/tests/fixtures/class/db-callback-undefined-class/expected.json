@@ -27,6 +27,13 @@
     "relations": [],
     "notes": [],
     "namespaces": [],
-    "interfaces": []
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "C",
+        "name": "f",
+        "args": null
+      }
+    ]
   }
 }

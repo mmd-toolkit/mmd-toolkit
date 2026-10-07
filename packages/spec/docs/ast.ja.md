@@ -12,14 +12,15 @@
   ノードは、それが表すものの構造と値を持ち、
   子ノードは `Root.body` のような名前の付いた欄で持つ。
   どのノードも、汎用の子の列を持たない。
-  句読点やキーワードはノードにならず、トークンとしてだけ現れる。
+  句読点やキーワードは、どのノードも持たない単位で、
+  ノードの欄がそれらの言うことを名指す。
 
 - **図種に依存しない根**: 根は、すべての図に共通する部分を持つ。
   本文のノードの型は図種によって決まる。
 - **ノードが何であるか**: ノードの型は、
   そのノードが言語の中で表すものを名前にし、
   そのテキストがどう字句解析されたかを名前にしない。
-  トークンの種類ごとのノードの型も、受け皿のノードもない。
+  単位の種類ごとのノードの型も、受け皿のノードもない。
   ノードの役割は、`styles` や `arguments` のように、それを持つ欄が表し、
   役割ごとの型は作らない。
 - **書かれた構造**: 木は、書き手が書いた構造を、言語が意味するとおりに表す。
@@ -61,7 +62,6 @@
 子の欄は、値が子ノードである欄で、ESLint の visitor keys のように、
 木をたどる道具がそれらを訪れる順に並べます。
 道具は子の欄だけをたどります。
-トークンはノードではなく、訪れられることはありません。
 ノードの型を加える各図の文書も、同じように子の欄を述べます。
 
 子のノードどうしは重なりません。
@@ -74,17 +74,24 @@ ESLint の visitor keys で、
 図の文書は、そのようなノードのところでそう述べます。
 ソースの順が要る道具は、子のノードを範囲で並べます。
 
-値か単位の**書かれたテキスト**は、mermaid.js がそれとして読む最初の文字から
-最後の文字までのソースのテキストから、
-そこにあって値として書かれたものではないもの、つまりディレクティブ、
+単位の**書かれたテキスト**は、そのソースのテキストから、
+単位がその前か後に読む空白と行終端を除いたものです。
+flowchart の矢印の前後の空白がその例で、
+`A --> %%{init: {}}%% B` の矢印の書かれたテキストは `-->` です。
+[fixture: flowchart/lex-directive-after-arrow]
+値の書かれたテキストは、その最初の単位の書かれたテキストの始まりから、
+最後の単位の書かれたテキストの終わりまでで、単位の間の空白と行終端を含みます。
+どちらも、そこにあって値として書かれたものではないもの、つまりディレクティブ、
 コメント領域、行単位の規則が無視する `;`、
-文の区切りの前にある、それぞれが独立の文である空の説明ブロックを除いたものです。
+文の区切りの前にある、それぞれが独立の文である空の説明ブロックを除きます。
 ほかには何も除かず、足さず、書き換えません。
 行終端、属性の引用符、エンティティは書き手が書いたとおりで、
 [変換した形](./common.ja.md#ソースの読み方) にはしません。
 変換した形は、字句解析器がテキストを読む形です。
-書かれたテキストが空白か行終端で始まるか終わるのは、
-mermaid.js がそれを値の一部として読むところだけです。
+そのため、書かれたテキストが空白か行終端で始まるか終わるのは、
+単位が空白を自身の文字として持つところだけです。
+閉じていない class 図のバッククォートの名前が、
+テキストの終わりに持つ空白がその例です（下を参照）。
 ノードの周りに書かれたほかの空白は、どのノードにも属しません。
 葉のノードの値は、その書かれたテキストか、そのノードの型が述べるその一部です。
 [NumericLiteral](#numericliteral) は、その書かれたテキストが書く数を持ち、
@@ -115,9 +122,7 @@ mermaid.js が読まないテキストのノード、つまり
 [StateIgnoredStatement](./ast/state.ja.md#stateignoredstatement)、
 [SequenceIgnoredStatement](./ast/sequence.ja.md#sequenceignoredstatement) は、
 書き手がそこに書いたものを、書かれたとおりに見せます。
-その書かれたテキストは、範囲のソースのテキストから、
-ディレクティブ、コメント領域、コメント、
-行の規則が無視する `;` を除いたものです。
+その書かれたテキストは値の書かれたテキストで、コメントも除きます。
 単位の間の空白と行終端はその一部で、コメントはその一部ではありません。
 `state "d" as A` の後の行 `state %% c` と、本体のある `state {` は、
 A に、`state`、空白、改行、空白 2 つ、`state` の `textBeforeBody` を与え、
@@ -130,6 +135,24 @@ A に、`state`、空白、改行、空白 2 つ、`state` の `textBeforeBody` 
 [fixture: class/tokens-ignored-text-directive-before-direction]
 [fixture: class/tokens-ignored-text-directive-after-direction]
 [fixture: flowchart/tokens-ignored-text-directive-before-direction]
+コメント領域が切る図のコメントは、中の空白を含めて全体が除かれ、
+それを終える改行は残ります
+（[コメント行](./common.ja.md#コメント行) を参照）。
+`state X "" %% c`、U+2028、`%% d` の後に、行 `[*]` と、
+本体のある行 `accDescr {} {` が続くとき、コメント `%% c` は行 `[*]` まで続き、
+X の `textBeforeBody` は、`""`、空白、改行、空白 2 つ、`accDescr {}` です。
+`%% c` の代わりに `#c` を書いても、U+2028 の代わりに U+2029 を書いても、
+U+2028 の前に空白があっても、`[*]` の前に空白があっても、
+`[*]` の代わりに空白だけの行があっても、
+`[*]` の代わりに `x` と空白があっても同じで、その空白もコメントに入ります。
+[fixture: state/tokens-ignored-text-comment-cut-by-comment-line]
+[fixture: state/tokens-ignored-text-hash-comment-cut-by-comment-line]
+[fixture: state/tokens-ignored-text-comment-cut-by-comment-line-paragraph-separator]
+[fixture: state/tokens-ignored-text-hash-comment-cut-by-comment-line-paragraph-separator]
+[fixture: state/tokens-ignored-text-comment-cut-space-before-separator]
+[fixture: state/tokens-ignored-text-comment-cut-spaces-after-region]
+[fixture: state/tokens-ignored-text-comment-cut-spaces-line-after-region]
+[fixture: state/tokens-ignored-text-comment-cut-fragment-trailing-space]
 
 値がリストである子の欄は、そのノードの型がそう述べるところでは、
 null の要素を持つことがあります。
@@ -153,7 +176,8 @@ ESTree の配列の穴と同じです。
 | `value`  | 文字列 | `%%{` と `}%%` の間のテキスト。閉じていなければ、ディレクティブの終わりまで。 |
 | `closed` | 真偽値 | ディレクティブが `}%%` で終わるかどうか。                                     |
 
-範囲は、ディレクティブの探索の 1 つの一致から、末尾の空白を除いたものです。
+ディレクティブは、ディレクティブの探索の 1 つの一致から、
+末尾の空白を除いたものです。
 探索は、
 フロントマターの後のソースのテキストに対して行います
 （[common.ja.md](./common.ja.md#ディレクティブの位置) を参照）。
@@ -228,8 +252,10 @@ mermaid.js はこれらを
 が真のときだけ登録しますが、npm パッケージの既定の入口では真です。
 
 **DiagramBody** は、`ErrorDiagram` か、以下の図の節で定める本文のノードの型、
-つまり [`FlowchartDiagram`](./ast/flowchart.ja.md#flowchartdiagram)
-か [`SequenceDiagram`](./ast/sequence.ja.md#sequencediagram) のどれかです。
+つまり [`FlowchartDiagram`](./ast/flowchart.ja.md#flowchartdiagram)、
+[`SequenceDiagram`](./ast/sequence.ja.md#sequencediagram)、
+[`ClassDiagram`](./ast/class.ja.md#classdiagram)、
+[`StateDiagram`](./ast/state.ja.md#statediagram) のどれかです。
 
 ## ErrorDiagram
 
@@ -242,7 +268,7 @@ mermaid.js はこれらを
 ## 共通の葉のノード
 
 書き手が書いた名前と値は、それぞれ自分の範囲を持つ葉のノードです。
-道具がトークンを探さずに、それについて報告したり、
+道具がソースのテキストを探さずに、それについて報告したり、
 それを書き換えたりできるようにするためです。
 その型は、書かれた実例の見た目ではなく、
 その位置で文法が何を書くことを許すかで決まります。
@@ -289,11 +315,12 @@ ESTree のノードの `kind` と同じです。
 書き手が書いたが、図が読まず、何の効果も持たないテキストも葉のノードで、
 [FlowchartIgnoredText](./ast/flowchart.ja.md#flowchartignoredtext) のように、
 それを表す図の型を持ちます。
-道具がトークンを探さずにそれを見つけられるようにするためです。
+道具がソースのテキストを探さずにそれを見つけられるようにするためです。
 そのようなテキストをノードにすることは、入力を拒否することより先です。
 図の文書がそのようなテキストのために入力を拒否するのは、
 木にそのノードを置く場所がないところだけで、
-それは既知の差になります（[known-divergences.ja.md](./known-divergences.ja.md) を参照）。
+それは既知の差異になります（[known-divergences.ja.md](./known-divergences.ja.md)
+を参照）。
 
 ### Identifier
 
@@ -345,8 +372,8 @@ flowchart/tokens-string-literal-comment-line]
 （class 図のバッククォートの名前だけです。
 [文字列、バッククォートの名前、ジェネリクスの型](./diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
 を参照）、
-その書かれたテキストは、mermaid.js が名前に読む最後の文字まで続きます。
-それは、ディレクティブにもコメント領域にも入らない、ソースの最後の文字で、
+その書かれたテキストは、ディレクティブにもコメント領域にも入らない、
+ソースの最後の文字まで続き、
 終わりの空白と行終端を含みます。
 mermaid.js がそれらを名前に読むからです。
 その中の改行もその一部です。
@@ -366,9 +393,8 @@ class 図で、`class`、`` `x``、改行、`%%{init: {}}%%`、改行は、
 ほかの StringLiteral の `closed` は、すべて真です。
 道具は、文字列が閉じているかをこの欄から読み、
 `raw` の文字を比べる必要はありません。
-テキストの終わりの前のバッククォート 1 つは、
-閉じていないバッククォートの名前で、
-`raw` はバッククォートで始まりバッククォートで終わりますが、閉じていません。
+最後の行のバッククォート 1 つは、閉じていないバッククォートの名前で、
+その `raw` は、バッククォートとその後の改行です。
 [fixture: class/lex-backquote-unclosed-alone]
 [fixture: class/lex-backquote-unclosed] [fixture:
 class/tokens-backquote-unclosed-trailing-whitespace]

@@ -135,6 +135,10 @@ notes, until the rule is implemented. The English rule document:
 
     - [<name>](./<name>.md)
 
+    ## Background                       (only when there is background)
+
+    <why mermaid.js behaves so, and the state of its issues and pull requests>
+
     ## Resources                        (generated, implemented rules only)
 
 The English rule notes, `docs/rule-notes/<diagram>/<name>.md` (the same path as
@@ -144,7 +148,8 @@ the rule document, under `docs/rule-notes/`):
 
     Japanese version: [<name>.ja.md](./<name>.ja.md)
 
-    Notes for implementing the rule [mmd/<diagram>/<name>](../../rules/<diagram>/<name>.md).
+    Notes for implementing the rule
+    [mmd/<diagram>/<name>](../../rules/<diagram>/<name>.md).
 
     The rule is not implemented yet. These notes are for implementing it.
 
@@ -185,10 +190,12 @@ How each part is written:
   The behavior of mermaid.js is stated with the input and the value that
   mermaid.js stores (the Db). A way to fix the text is written only when it has
   been checked with mermaid.js.
-- In each diagram type (common rules only, a subsection of Rule Details): it
-  starts with "What the rule finds in a diagram type is added here when that
-  diagram type is supported." and has one item for each supported diagram type,
-  with what happens there and an example.
+- In each diagram type (common rules only, a subsection of Rule Details): one
+  sentence that says what the items show ("What disappears depends on the
+  diagram type."), then one item for each diagram type that the parser supports,
+  with what happens there and an example. When a diagram type is supported, its
+  item is added (section 7); the document itself does not say that items will be
+  added.
 - Examples: "Examples of **incorrect** code for this rule:" and "Examples of
   **correct** code for this rule:", each followed by code blocks with the info
   string `mmd`, one example in each block. A common rule says before them which
@@ -224,9 +231,9 @@ How each part is written:
   document are not those of the English document, in the same order: every
   Mermaid example, in the examples and elsewhere, is in both documents,
   unchanged.
-- Options: "This rule has no options." for a rule without options. An option
-  that may come later is mentioned only with the condition under which it would
-  be added.
+- Options: "This rule has no options." for a rule without options. The section
+  says only what the rule has now. An option that may come later is recorded
+  with the decision in the rule-ideas SKILL, not in the rule document.
 - Related Rules: only when the document has related rules, as a list of links.
 - When Not To Use It: written only when there is something real to say; no
   section is written for a sentence that would fit any rule.
@@ -234,7 +241,17 @@ How each part is written:
   it. It names no node type, field, or token kind of the tree; those belong to
   the rule notes. The facts of mermaid.js, links to issues and pull requests,
   and links to the known divergences of the specification stay in the rule
-  document, because a user needs them too.
+  document, because a user needs them too. Rule Details holds what the rule
+  reports, what it does not report, and its suggestions, with every condition
+  that changes what the author gets; why mermaid.js behaves so (the part of its
+  code that does it) and the state of its issues and pull requests go to
+  Background, after the examples, and so does a link to a document that
+  describes how this repository works out a value.
+- Naming: the document names the part of mmd-toolkit that it describes: its
+  parser for what is accepted, its formatter for formatting, and mmd-toolkit for
+  the whole, not "this toolkit". It says what mermaid.js does with a mistake, as
+  "gives no error", not "says nothing". In Japanese, "この道具" and "木" are not
+  used; "AST" is used where the tree must be named.
 - Rule notes: they start with "The rule is not implemented yet. These notes are
   for implementing it." They exist only until the rule is implemented: then the
   condition lives in the code of the rule and the fixtures in its tests, so
@@ -330,12 +347,19 @@ write its output to a file.
    the header one level in). Check that the `expected.json` of each fixture
    listed says what the document claims, and use only fixtures whose `accepted`
    is true as examples, also for the correct examples. For every example and
-   claim without a fixture, add one: take the smallest input that shows it, add
-   it with the generator of `@mmd-toolkit/tests` (`pnpm run fixtures:add` in
-   `packages/tests`, as `packages/tests/docs/maintaining-fixtures.md`
-   describes), read the `expected.json` it writes, and list the new fixture in
-   the rule notes. Until it exists, the rule notes end their Fixtures section
-   with the sentence for fixtures being added.
+   claim without a fixture, request one from the tests package, which holds the
+   corpus: give the smallest input that shows it and the claim of the rule
+   document that the fixture answers. The tests package adds it with
+   `pnpm run fixtures:add`, which records what mermaid.js does
+   (`packages/tests/docs/maintaining-fixtures.md`), and the parser records its
+   tree. When the name of the fixture arrives, read its `expected.json` and list
+   it in the rule notes; for an implemented rule, which has no rule notes, it
+   goes into the tests of the rule. Until it exists, the rule notes end their
+   Fixtures section with the sentence for fixtures being added. An implemented
+   rule has no rule notes to hold that sentence: its document change is not done
+   until the fixture is in the tests of the rule, and until then the result of
+   the work (section 9) lists the fixtures being added, with their inputs and
+   the results of mermaid.js.
 
 ## 5. Checks after writing
 
@@ -394,8 +418,9 @@ skeleton that reports nothing.
   parts by hand; after a change of the first paragraph of a Japanese document,
   run `update`.
 - What is written by hand in the index: what comes before the generated list
-  (the introduction, with the sentences that say which rules `recommended`
-  enables, and the section on rule ids). Which rules are implemented is the 🚧
+  (the introduction, with the sentence that says `recommended` enables the rules
+  marked ✅, and the section on rule ids). The criteria for `recommended` are in
+  `docs/development.md`, not in the index. Which rules are implemented is the 🚧
   column of the generated list, not a sentence.
 - When a document is removed, check with `grep` that no other document refers to
   it.
@@ -406,7 +431,11 @@ skeleton that reports nothing.
 
 1. Create `docs/rules/<diagram>/`, named after
    `packages/spec/docs/ast/<diagram>.md`. The table of the diagram type in the
-   index is generated by `update` once its rules exist (section 6).
+   index is generated by `update` once its rules exist (section 6). Add the
+   diagram type to `DIAGRAM_ORDER` in `tools/rule-docs.ts`, at its place in
+   `diagramOrder` of `packages/docs/.vitepress/documents.js`, which the site
+   uses for its sidebar; `tests/rule-docs.test.ts` fails when the two orders
+   differ, and `update` fails for a rule of a diagram type that is missing.
 2. For each common rule, run an ordinary example of the new diagram type through
    mermaid.js. When it behaves as in the other diagram types, add an item to In
    each diagram type (what happens, an example, its fixture). When it behaves

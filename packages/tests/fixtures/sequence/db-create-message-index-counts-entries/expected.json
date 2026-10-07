@@ -1,0 +1,108 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Five entries come before `create`: autonumber, note, loop start, the message, and the entry that `+` adds, so `messageIndex` is 5."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "C"
+      },
+      {
+        "name": "C",
+        "description": "C",
+        "wrap": false,
+        "prevActor": "B",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [
+      {
+        "id": "C",
+        "messageIndex": 5
+      }
+    ],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "message": {
+          "visible": true
+        },
+        "wrap": false,
+        "type": 26
+      },
+      {
+        "from": "A",
+        "to": "A",
+        "message": "n",
+        "wrap": false,
+        "type": 2,
+        "placement": 2
+      },
+      {
+        "message": "x",
+        "wrap": false,
+        "type": 10,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "m",
+        "wrap": false,
+        "type": 0,
+        "activate": true,
+        "centralConnection": 0
+      },
+      {
+        "from": "B",
+        "message": "",
+        "wrap": false,
+        "type": 17,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "C",
+        "message": "y",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 11,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

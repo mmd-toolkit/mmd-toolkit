@@ -35,9 +35,13 @@ values of node fields.
 `value` is the source text of the token's range, as ESLint's tokens have it. The
 conversions of [common.md](../../spec/docs/common.md) do not apply to it:
 reading a line terminator as `\n`, an attribute quote as `'`, or an entity as
-its placeholder. A comment region and a `;` that the line rule ignores lie
-inside no token: each cuts a token that it would lie inside (see
-[Comment](#comment) and below). The values of nodes skip those, but are not
+its placeholder. [fixture: flowchart/lex-lone-cr-directive-lf-label] [fixture:
+class/db-class-def-attribute-quote] [fixture: class/db-acc-title-entity]
+[fixture: class/tokens-string-crlf-in-note] A comment region and a `;` that the
+line rule ignores lie inside no token: each cuts a token that it would lie
+inside (see [Comment](#comment) and below). [fixture:
+flowchart/tokens-comment-region-after-opening-quote] [fixture:
+common/entity-css-in-string-label] The values of nodes skip those, but are not
 converted either (see [Nodes](../../spec/docs/ast.md#nodes)).
 
 The token kinds are these, and only these. Each diagram document says which
@@ -61,18 +65,21 @@ document, except for the `Directive` tokens, the `StringFragment` tokens, the
 in every diagram. A `String` token of a string that is not closed has no closing
 quote (see [StringLiteral](../../spec/docs/ast.md#stringliteral)): whether a
 string has both quotes is told by the `closed` field of its StringLiteral, not
-by the kind of its tokens.
+by the kind of its tokens. [fixture: class/lex-backquote-unclosed-alone]
 
 Whitespace and line terminators are a token on their own only where mermaid.js
 reads them as a value, or as a part of a value between two places where a
 directive, a comment region, or an ignored `;` cuts it, or between such a place
-and an end of the value (below). Where the diagram's grammar gives a line
-terminator meaning, for example as the end of a statement, the lexer reads it,
-but no token or node is made for it; what it separates shows in the structure of
-the tree, such as the list of statements. Where whitespace or line terminators
-lie inside the range of a token, as in the text of a label or a multi-line
-quoted string, they are part of that token. How the lexer reads a line
-terminator is a rule of
+and an end of the value (below). [fixture: class/db-generic-blank] [fixture:
+flowchart/tokens-directives-label-space-between] [fixture:
+sequence/tokens-title-directive-then-spaces] Where the diagram's grammar gives a
+line terminator meaning, for example as the end of a statement, the lexer reads
+it, but no token or node is made for it; what it separates shows in the
+structure of the tree, such as the list of statements. [fixture: common/crlf]
+Where whitespace or line terminators lie inside the range of a token, as in the
+text of a label or a multi-line quoted string, they are part of that token.
+[fixture: flowchart/db-subgraph-title-inner-spaces] [fixture:
+class/lex-string-multi-line] How the lexer reads a line terminator is a rule of
 [Line terminators](../../spec/docs/common.md#line-terminators), not a matter of
 tokens.
 
@@ -81,16 +88,17 @@ first token starts where that text starts, and the last token ends where it
 ends. So whitespace and line terminators that mermaid.js reads at the start or
 the end of a value are part of the value's tokens, and a value that mermaid.js
 reads as whitespace only has tokens of that whitespace, of the kind that the
-diagram gives a value at that position. Whitespace and line terminators that
+diagram gives a value at that position. [fixture: class/db-generic-spaces]
+[fixture: class/db-generic-blank] Whitespace and line terminators that
 mermaid.js does not read as part of a value, such as those around a keyword or
-around a value whose ends mermaid.js trims, belong to no token. This holds also
-where a directive, a comment region, or an ignored `;` cuts a value: the
-whitespace and line terminators next to the cut that mermaid.js reads as part of
-the value belong to the fragment next to them, so that no character that
-mermaid.js reads as part of the value lies outside its tokens: in a class
-diagram, `style A fill:#f00,color ;:blue` has the tokens `fill:#f00,color` with
-the space after it, the `IgnoredSemicolon` token, and `:blue`, and so does
-`classDef c fill:#f00,color ;:blue`. [fixture:
+around a value whose ends mermaid.js trims, belong to no token. [fixture:
+state/db-label-trimmed] This holds also where a directive, a comment region, or
+an ignored `;` cuts a value: the whitespace and line terminators next to the cut
+that mermaid.js reads as part of the value belong to the fragment next to them,
+so that no character that mermaid.js reads as part of the value lies outside its
+tokens: in a class diagram, `style A fill:#f00,color ;:blue` has the tokens
+`fill:#f00,color` with the space after it, the `IgnoredSemicolon` token, and
+`:blue`, and so does `classDef c fill:#f00,color ;:blue`. [fixture:
 class/tokens-style-ignored-semicolon-after-space] [fixture:
 class/tokens-class-def-ignored-semicolon-after-space] This holds for the text
 that mermaid.js reads as a value. A node of text that mermaid.js does not read
@@ -117,7 +125,12 @@ number, a keyword, an arrow, or another delimiter, the `;` makes the input
 rejected (see
 [`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)),
 and the error is at the `;` (see
-[Known divergences](./error-positions.md#known-divergences)). In
+[Known divergences](./error-positions.md#known-divergences)). [fixture:
+flowchart/div-ignored-semicolon-in-id] [fixture:
+sequence/div-ignored-semicolon-in-autonumber-start] [fixture:
+flowchart/div-ignored-semicolon-in-keyword] [fixture:
+flowchart/div-ignored-semicolon-in-arrow] [fixture:
+flowchart/div-ignored-semicolon-in-triple-colon] In
 `A["<span style='color:#f00;font-weight:bold;'>x</span>"]` in flowchart, the
 line rule ignores the `;` after `bold`, and the label has the `StringFragment`
 tokens `"<span style='color:#f00;font-weight:bold` and `'>x</span>"`, with the
@@ -153,7 +166,8 @@ common/error-style-semicolon-inside]
 `comments` and `tokens` are lists, not child fields. Every character that is not
 whitespace or a line terminator is in `tokens` or `comments`, so a tool that
 goes through tokens and comments together, as ESLint's `SourceCode` does, finds
-no gap at a directive or at the frontmatter.
+no gap at a directive or at the frontmatter. [fixture:
+common/config-directive-after-frontmatter]
 
 ## Comments
 
@@ -167,7 +181,9 @@ divide its range (see [Frontmatter tokens](#frontmatter-tokens)). A directive's
 record and its token have the same name, as `Identifier` names both a node and a
 token kind, and they hold different things under `value`: the record its content
 (see [Directive](../../spec/docs/ast.md#directive)), and the token the source
-text of its range, as every token does.
+text of its range, as every token does. [fixture:
+common/comment-after-directive] [fixture:
+common/config-directive-after-frontmatter]
 
 ### Comment
 
@@ -197,10 +213,12 @@ as a `#` or a `%%` in the middle of a line in
 [sequence](../../spec/docs/diagrams/sequence.md#the-statement-context). The
 range starts at the mark, the first `%` of the `%%` of a comment line or the
 mark of a diagram comment, and ends before the line terminator; a comment starts
-at its mark, and no character before the mark is part of it. A fragment of a
-diagram comment after a comment region is the exception (see below). The
-whitespace-only lines and the line terminator that the comment region also
-covers are whitespace and line terminators. A directive in a comment can take
+at its mark, and no character before the mark is part of it. [fixture:
+common/comment-after-directive] [fixture: sequence/lex-single-percent-comment] A
+fragment of a diagram comment after a comment region is the exception (see
+below). The whitespace-only lines and the line terminator that the comment
+region also covers are whitespace and line terminators. [fixture:
+common/comment-blank-line-before-in-string] A directive in a comment can take
 the line terminators after it, so that the comment runs on past them (see
 [Comment lines](../../spec/docs/common.md#comment-lines)). Where it takes all
 that follows, to the end of the text, the comment ends where the directive ends:
@@ -231,8 +249,11 @@ sets
 (agentflow in the pinned mermaid.js) sees comment lines in its parser input; its
 document says how the tree represents them. A `%%` that is not a comment line,
 such as a trailing `%%` after a statement or a line containing only `%%`, is
-[diagram text](../../spec/docs/common.md#reading-a-source) and is part of a
-token.
+[diagram text](../../spec/docs/common.md#reading-a-source), which the diagram's
+lexer reads: it is part of a token, or a diagram comment where the diagram's
+document makes it one, as a line of only `%%` in class. [fixture:
+common/comment-mid-line-style] [fixture: common/comment-bare] [fixture:
+class/lex-bare-percent-line-between-statements]
 
 A comment region can also lie inside a diagram comment, which runs to the end of
 its line: a comment line that follows a U+2028 or U+2029 on that line is gone
@@ -240,14 +261,22 @@ when mermaid.js reads it, so the line goes on after the comment line. The region
 cuts the diagram comment as it cuts a token (see
 [Comment regions in tokens](#comment-regions-in-tokens)): each fragment, the
 text before the region or after it without the whitespace and line terminators
-at its ends, is a `Comment`, and a fragment that is empty or all whitespace is
-none. The fragment after the region has no mark, and its `mark` is null: its
-range starts at its first character, and its value is the source text of its
-range. In state, `A %% x`, U+2029, a line `%% end`, and a line `B` have the
-comments `%% x`, `%% end`, and `B`, in this order, and the only state A; with an
-empty line before `B`, the diagram comment ends at the line feed after `%% end`,
-and B is a state. Without the comment line, `A %% x`, U+2029, and `B` is one
-comment, since U+2029 does not end a diagram comment. [fixture:
+next to the region, is a `Comment`, and a fragment that is empty or all
+whitespace is none. The last fragment keeps the whitespace before its line
+terminator, as any comment does: in state, `state X ""` with ` %% c`, U+2028, a
+line `%% d`, and a line of `x` and a space has the comments `%% c`, `%% d`, and
+`x` followed by the space, while a space before the U+2028, or two spaces at the
+start of the line after the region, lie in no comment. [fixture:
+state/tokens-ignored-text-comment-cut-fragment-trailing-space] [fixture:
+state/tokens-ignored-text-comment-cut-space-before-separator] [fixture:
+state/tokens-ignored-text-comment-cut-spaces-after-region] The fragment after
+the region has no mark, and its `mark` is null: its range starts at its first
+character, and its value is the source text of its range. In state, `A %% x`,
+U+2029, a line `%% end`, and a line `B` have the comments `%% x`, `%% end`, and
+`B`, in this order, and the only state A; with an empty line before `B`, the
+diagram comment ends at the line feed after `%% end`, and B is a state. Without
+the comment line, `A %% x`, U+2029, and `B` is one comment, since U+2029 does
+not end a diagram comment. [fixture:
 state/lex-diagram-comment-across-comment-line] [fixture:
 state/lex-hash-comment-across-comment-line] [fixture:
 state/lex-diagram-comment-across-comment-line-after-line-separator] [fixture:
@@ -303,17 +332,21 @@ after it, with the whitespace and line terminators next to the region that
 mermaid.js reads as part of the value, such as the line terminator before the
 region (see [Tokens](#tokens)); the region, with its whitespace-only lines and
 the line terminator that ends its comment, is outside every token. A fragment
-that is empty is no token, and neither is one of whitespace and line terminators
-only that mermaid.js does not read as part of the value, such as one at the
-start of a label whose ends mermaid.js trims. Where several regions lie inside
-one token, it is cut at each. Only `String` and `RawText` tokens can hold a
-comment region, because only their units may span lines. The fragments of a
-`String` token are `StringFragment` tokens; the fragments of a `RawText` token
-are `RawText` tokens, as the fragments of a token that a directive cuts keep its
-kind (see [Directive](../../spec/docs/ast.md#directive)). The node of the unit,
-such as a label, a StringLiteral, or a literal, spans the fragments and the
-region, and its value is the text before and after the region joined, as before.
-In `A["one`, a line `%% two`, and a line `three"]`, the label has the
+that is empty is no token, [fixture:
+flowchart/tokens-rawtext-comment-line-then-closing-bracket] and neither is one
+of whitespace and line terminators only that mermaid.js does not read as part of
+the value, such as one at the start of a label whose ends mermaid.js trims.
+Where several regions lie inside one token, it is cut at each. [fixture:
+flowchart/tokens-string-two-comment-lines] [fixture:
+flowchart/tokens-rawtext-two-comment-lines] Only `String` and `RawText` tokens
+can hold a comment region, because only their units may span lines. The
+fragments of a `String` token are `StringFragment` tokens; the fragments of a
+`RawText` token are `RawText` tokens, as the fragments of a token that a
+directive cuts keep its kind (see
+[Directive](../../spec/docs/ast.md#directive)). The node of the unit, such as a
+label, a StringLiteral, or a literal, spans the fragments and the region, and
+its value is the text before and after the region joined, as before. In
+`A["one`, a line `%% two`, and a line `three"]`, the label has the
 `StringFragment` tokens `"one` with the line feed after it, and `three"`, with
 the comment between them, and the value `one`, a line feed, and `three`; in
 `A["`, a line `%% c`, and a line `b"]`, the fragments are `"` with a line feed,
@@ -357,10 +390,11 @@ state/tokens-comment-region-in-acc-descr-block]
 A directive is a token boundary (see
 [common.md](../../spec/docs/common.md#a-directive-is-a-token-boundary)), so it
 lies inside no other token. A directive inside a comment has no `Directive`
-token: its characters are in that comment. A directive in a comment region
-before the comment's `%%` lies outside every token and comment, also where the
-region lies inside what one unit reads, because the region cuts that unit's
-token (see [Comment](#comment)), so it is a `Directive` token. [fixture:
+token: its characters are in that comment. [fixture:
+common/directive-in-comment] A directive in a comment region before the
+comment's `%%` lies outside every token and comment, also where the region lies
+inside what one unit reads, because the region cuts that unit's token (see
+[Comment](#comment)), so it is a `Directive` token. [fixture:
 common/comment-region-directive-in-string] [fixture:
 common/comment-directive-in-string]
 
@@ -376,20 +410,23 @@ The frontmatter record has this field besides those of
 The range runs from the `---` of the opening delimiter line through the closing
 `---`. The indent before the opening `---`, and the whitespace and blank lines
 after the closing delimiter, which the frontmatter rule also covers, are
-whitespace and line terminators.
+whitespace and line terminators. [fixture: common/frontmatter-indented]
+[fixture: flowchart/demo-flowchart-4301e540]
 
 The frontmatter's range holds these tokens, in this order: the opening `---`, a
 `Punctuator` token; the body, a `RawText` token from the first character of the
 body that is not whitespace to the last one, when the body is not all
-whitespace; and the closing `---`, a `Punctuator` token. Everything else in the
-range is whitespace and line terminators: the whitespace after each `---` on its
-line, the whitespace-only lines before the body, and the whitespace at the start
-and the end of the body, the indent of its first line included. The indent of
-the other lines of the body lies inside the body's token, and `value` keeps the
-body with all its indents. A delimiter line holds nothing but its indent, `---`,
-and line whitespace, so no other token lies on it; U+2028 after a `---` is line
-whitespace. [fixture: common/frontmatter-indented] [fixture:
-flowchart/frontmatter-title-crlf] [fixture:
+whitespace; and the closing `---`, a `Punctuator` token. [fixture:
+common/frontmatter-empty-body] [fixture: common/frontmatter-indented] Everything
+else in the range is whitespace and line terminators: the whitespace after each
+`---` on its line, the whitespace-only lines before the body, and the whitespace
+at the start and the end of the body, the indent of its first line included. The
+indent of the other lines of the body lies inside the body's token, and `value`
+keeps the body with all its indents. [fixture:
+common/config-directive-after-frontmatter] A delimiter line holds nothing but
+its indent, `---`, and line whitespace, so no other token lies on it; U+2028
+after a `---` is line whitespace. [fixture: common/frontmatter-indented]
+[fixture: flowchart/frontmatter-title-crlf] [fixture:
 common/frontmatter-bom-both-delimiters] [fixture:
 common/frontmatter-blank-line-then-delimiter-only] [fixture:
 common/frontmatter-line-separator-after-opening] [fixture:
@@ -407,10 +444,11 @@ flowchart, which lies in the diagram's range.
 ## String tokens
 
 A StringLiteral's token is one `String` token, quotes included, and its range is
-that of the token, so `raw` equals the `value` of that token. Where comment
-regions, an ignored `;`, or directives cut it, its tokens are `StringFragment`
-tokens, and its range runs from the first of them to the last, the regions, the
-`IgnoredSemicolon` token, and the `Directive` tokens included (see
+that of the token, so `raw` equals the `value` of that token. [fixture:
+flowchart/gram-label-space-string] Where comment regions, an ignored `;`, or
+directives cut it, its tokens are `StringFragment` tokens, and its range runs
+from the first of them to the last, the regions, the `IgnoredSemicolon` token,
+and the `Directive` tokens included (see
 [Comment regions in tokens](#comment-regions-in-tokens), [Tokens](#tokens), and
 [A token that a directive cuts](#a-token-that-a-directive-cuts)): in
 `click A "u" "one`, a line break, `%% c`, a line break, and `two"`, the
@@ -418,7 +456,8 @@ tooltip's tokens are the `StringFragment` tokens `"one` and `two"`, and in
 `click A href "u%%{init: {}}%%v"`, the URL's tokens are the `StringFragment`
 tokens `"u` and `v"`, with the `Directive` token between them. [fixture:
 flowchart/tokens-string-literal-comment-line] [fixture:
-flowchart/lex-directive-in-click-href-string]
+flowchart/lex-directive-in-click-href-string] [fixture:
+common/entity-css-in-string-label]
 
 The token and the range of a string that is not closed run to the end of its
 written text (see [StringLiteral](../../spec/docs/ast.md#stringliteral)). A
@@ -444,33 +483,41 @@ class/lex-backquote-unclosed-directive-after-line-break]
 ## Numeric tokens
 
 A NumericLiteral's token is one `Numeric` token, and its range is that of the
-token, so `raw` is the source text of the token. A directive or a `;` that the
-line rule ignores inside a number makes the input rejected (see
+token, so `raw` is the source text of the token. [fixture: state/gram-scale] A
+directive or a `;` that the line rule ignores inside a number makes the input
+rejected (see
 [A directive is a token boundary](../../spec/docs/common.md#a-directive-is-a-token-boundary)
 and
 [`style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines)).
+[fixture: sequence/div-directive-in-number] [fixture:
+sequence/div-ignored-semicolon-in-autonumber-start]
 
 ## Tokens of the error pseudo-diagram
 
 Its tokens, besides the `Directive` tokens and the tokens of the frontmatter,
 are made from the maximal runs of characters that are not whitespace or line
 terminators in the text without its directives and comment regions; each is a
-`RawText` token. Whitespace or a line terminator ends a run, and a directive
-between two characters of a run cuts it, as it cuts every token (see
-[common.md](../../spec/docs/common.md#a-directive-is-a-token-boundary)). A `;`
-that the line rule ignores is an `IgnoredSemicolon` token, as in every diagram
-(see [Tokens](#tokens)): it is part of no run, and it cuts a run that it lies
-inside into two `RawText` tokens. The node's tokens are its `RawText` tokens,
-and its range runs from the start of the first to the end of the last (see
-[Nodes](../../spec/docs/ast.md#nodes)). There is always at least one, the one
-that holds `error`.
+`RawText` token. [fixture: common/error-trailing-percent] Whitespace or a line
+terminator ends a run, and a directive between two characters of a run cuts it,
+as it cuts every token (see
+[common.md](../../spec/docs/common.md#a-directive-is-a-token-boundary)).
+[fixture: common/error-split-by-directive] A `;` that the line rule ignores is
+an `IgnoredSemicolon` token, as in every diagram (see [Tokens](#tokens)): it is
+part of no run, and it cuts a run that it lies inside into two `RawText` tokens.
+[fixture: common/error-style-semicolon-inside] The node's tokens are its
+`RawText` tokens, and its range runs from the start of the first to the end of
+the last (see [Nodes](../../spec/docs/ast.md#nodes)). There is always at least
+one: the characters of `error`, which detection found, lie in one token or, cut
+by a directive, in several (see below). [fixture:
+common/error-directive-adjacent] [fixture: common/error-split-by-directive]
 
 The runs are made of the characters of the text, not of the
 [diagram text](../../spec/docs/common.md#reading-a-source): a `;` that the line
-rule ignores is not diagram text, but it is a token. A comment is always outside
-the tokens, because a comment region starts at a comment start, which is the
-start of the text or right after a line terminator, U+2028, or U+2029, and each
-of those ends a run.
+rule ignores is not diagram text, but it is a token. [fixture:
+common/error-style-semicolon-trailing] A comment is always outside the tokens,
+because a comment region starts at a comment start, which is the start of the
+text or right after a line terminator, U+2028, or U+2029, and each of those ends
+a run. [fixture: common/error-comment-inside]
 
 The detectors see the text only after the extra removals of detection, so the
 tokens can be more than the word `error`:
@@ -514,7 +561,7 @@ node: no whitespace lies inside or between its units, and a directive or a `;`
 that the line rule ignores inside it makes the input rejected (see
 [A directive is a token boundary](../../spec/docs/common.md#a-directive-is-a-token-boundary)).
 `A%%{init: {}}%%B-->C` is rejected at the directive. [fixture:
-flowchart/div-directive-in-id]
+flowchart/div-directive-in-id] [fixture: flowchart/div-ignored-semicolon-in-id]
 
 A name that may contain whitespace is a name node of the diagram type instead
 (see [Shared leaf nodes](../../spec/docs/ast.md#shared-leaf-nodes)), and its
@@ -529,12 +576,14 @@ text:
   `A.B` with the tokens `A` and `.B` and the `Directive` token between them.
   [fixture: class/gram-name-spaces] [fixture:
   class/lex-directive-between-name-parts] [fixture:
-  class/lex-directive-in-dotted-name]
+  class/lex-directive-in-dotted-name] [fixture:
+  class/tokens-ignored-semicolon-in-relation-name]
 - In a sequence diagram, a SequenceIdentifier has the one `RawText` token of its
   unit, the whitespace inside it included, which mermaid.js reads as part of the
   name: `participant A%%{init: {}}%% c%%B` has the participant `A c%%B` with the
   tokens `A` and ` c%%B` and the `Directive` token between them. [fixture:
-  sequence/lex-directive-in-id-before-space]
+  sequence/lex-directive-in-id-before-space] [fixture:
+  sequence/tokens-ignored-semicolon-in-participant-id]
 
 ## A token that a directive cuts
 
@@ -544,24 +593,30 @@ text:
   at the end of a value, as the backquoted name of a class that is not closed
   can (see
   [Strings, backquoted names, and generic types](../../spec/docs/diagrams/class.md#strings-backquoted-names-and-generic-types)).
-  Only a `RawText` token and a `String` token may be cut; a directive inside a
-  token of another kind makes the input rejected (see
+  [fixture: common/directive-in-string] [fixture:
+  class/lex-directive-between-name-parts] [fixture:
+  class/lex-backquote-unclosed-directive-after-line-break] Only a `RawText`
+  token and a `String` token may be cut; a directive inside a token of another
+  kind makes the input rejected (see
   [A directive is a token boundary](../../spec/docs/common.md#a-directive-is-a-token-boundary)),
   as in `A(%%{init: {}}%%(x))`, where the two `(` of a circle are one
-  `Punctuator` token. [fixture: flowchart/div-directive-in-circle-opening] Each
-  fragment, with the whitespace and line terminators next to the directive that
-  mermaid.js reads as part of the value (see [Tokens](#tokens)), is a token of
-  the same kind, except that the fragments of a `String` token are
-  `StringFragment` tokens; a fragment of whitespace and line terminators only is
-  a token too when mermaid.js reads it as part of the value, as between two
-  directives, and no token otherwise. The directive between the fragments is a
-  `Directive` token. What the token stood for, such as the value of a label or a
-  participant id, does not change: the label of `A[x%%{init: {}}%% y]` has the
-  tokens `x` and ` y`, and its value is `x`, a space, and `y`; with two
-  directives and a space between them, `A[x %%{init: {}}%% %%{init: {}}%% y]`,
-  the space between them is a token of its own; and the label of
-  `A["a %%{init: {}}%% b"]` has the `StringFragment` tokens `"a ` and ` b"`, and
-  its value is `a`, two spaces, and `b`. [fixture:
+  `Punctuator` token. [fixture: flowchart/div-directive-in-circle-opening]
+  [fixture: flowchart/div-directive-in-id] [fixture:
+  sequence/div-directive-in-number] [fixture:
+  flowchart/div-directive-in-keyword-href] [fixture:
+  flowchart/div-directive-in-arrow-length] Each fragment, with the whitespace
+  and line terminators next to the directive that mermaid.js reads as part of
+  the value (see [Tokens](#tokens)), is a token of the same kind, except that
+  the fragments of a `String` token are `StringFragment` tokens; a fragment of
+  whitespace and line terminators only is a token too when mermaid.js reads it
+  as part of the value, as between two directives, and no token otherwise. The
+  directive between the fragments is a `Directive` token. What the token stood
+  for, such as the value of a label or a participant id, does not change: the
+  label of `A[x%%{init: {}}%% y]` has the tokens `x` and ` y`, and its value is
+  `x`, a space, and `y`; with two directives and a space between them,
+  `A[x %%{init: {}}%% %%{init: {}}%% y]`, the space between them is a token of
+  its own; and the label of `A["a %%{init: {}}%% b"]` has the `StringFragment`
+  tokens `"a ` and ` b"`, and its value is `a`, two spaces, and `b`. [fixture:
   flowchart/tokens-directive-label-space-after] [fixture:
   flowchart/tokens-directives-label-space-between] [fixture:
   common/directive-in-string]

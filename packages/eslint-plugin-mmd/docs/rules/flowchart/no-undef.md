@@ -29,10 +29,11 @@ class, and `C` is reported.
 
 The ids of the diagram are those of its vertices and subgraphs, and those given
 to links, as `e1` in `A e1@--> B`, wherever they are written. A `style`
-statement before the vertex that it names still styles it. A `class` or `click`
-statement before the vertex that it names does nothing in mermaid.js, but it
-names an id of the diagram, which is written correctly, and the rule does not
-report it.
+statement before the vertex that it names still styles it. A `class` statement
+before the vertex that it names does nothing in mermaid.js, and a `click`
+statement there does not make the vertex clickable, although its tooltip still
+applies. Such a statement names an id of the diagram, which is written
+correctly, and the rule does not report it.
 
 A vertex that a `style` statement adds is a vertex of the diagram too, so the
 rule reports only the first `style` of an id that nothing else defines. After
@@ -40,9 +41,11 @@ rule reports only the first `style` of an id that nothing else defines. After
 `C`, and `class C foo` and `click C href "…"` apply to it; none of them is
 reported.
 
-`style` with the id of a link is not reported either. mermaid.js does nothing
-with it, because `style` applies to vertices and subgraphs; a link takes a style
-from `linkStyle` or from a class.
+`style` with the id of a link is not reported either. `style` applies to
+vertices and subgraphs: written after the link, it does nothing, and written
+before the link, as `style e1 stroke:red` before `A e1@--> B`, it adds a vertex
+`e1` with that style, as it does for any id that names nothing yet. A link takes
+a style from `linkStyle` or from a class.
 
 Examples of **incorrect** code for this rule:
 

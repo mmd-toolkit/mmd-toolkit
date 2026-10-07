@@ -4,12 +4,14 @@
 
 図種: すべて。
 これは、この仕様の mermaid.js との
-[既知の差](../known-divergences.ja.md) の 1 つです。
+[既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 構文
 
-ディレクティブは、`%%{init: {}}%%` のような、`%%{`、名前、`}%%` で、
-図に設定を与えます（[ディレクティブ](../common.ja.md#ディレクティブ) を参照）。
+ディレクティブは、`%%{init: {}}%%` のような、`%%{` と名前で、
+その後に引数が続くことがあり、ふつうは `}%%` で閉じます。
+それは図に設定を与えます
+（[ディレクティブ](../common.ja.md#ディレクティブ) を参照）。
 ふつうは、ヘッダーの前の、それだけの行に書きます。
 
 ```mmd
@@ -27,12 +29,17 @@ mermaid.js は、図を読む前に、
 （[ディレクティブはトークンの境界](../common.ja.md#ディレクティブはトークンの境界)
 を参照）。
 例外が 1 つあり、この文書はそれについてのものです。
-名前、キーワード、`:::` のような区切り記号、矢印、数の中のディレクティブです。
+名前、キーワード
+（sequence 図のメッセージの `wrap:` のような折り返しの接頭辞を含む）、
+`:::` のような区切り記号、矢印、数の中のディレクティブです。
 ここでの名前は空白のない名前です。
 sequence 図の参加者の id やクラスの名前のような、空白を含みうる名前は、
 テキストとして読まれます。
+[fixture: sequence/div-directive-in-wrap-prefix]
+[fixture: sequence/lex-directive-in-participant-id]
+[fixture: class/lex-directive-in-name]
 
-## 差
+## 差異
 
 どの例も、図の全体です。
 
@@ -118,15 +125,22 @@ mermaid.js では flowchart の文法が拒否し、
 同じヘッダーの後に行 `A-->B` が続けば、mermaid.js では flowchart になり、
 この仕様では拒否されます。
 [fixture: common/directive-in-header-keyword]
-差は一方向だけです。
+差異は一方向だけです。
 この仕様は、mermaid.js が拒否する入力を受理することはなく、
 どちらも受理する入力には、すべて同じ Db を与えます。
 
-各図の文書は、これに当たるその図の単位を、既知の差の節に挙げています。
-[flowchart](../diagrams/flowchart.ja.md#既知の差)、
-[sequence](../diagrams/sequence.ja.md#既知の差)、
-[class](../diagrams/class.ja.md#既知の差)、
-[state](../diagrams/state.ja.md#既知の差) です。
+各図の文書は、これに当たるその図の単位を、既知の差異の節に挙げています。
+[flowchart](../diagrams/flowchart.ja.md#既知の差異)、
+[sequence](../diagrams/sequence.ja.md#既知の差異)、
+[class](../diagrams/class.ja.md#既知の差異)、
+[state](../diagrams/state.ja.md#既知の差異) です。
+
+## 書き手にとっての結果
+
+名前、キーワード、区切り記号、矢印、数の中のディレクティブは、
+mmd-toolkit のパーサーでは拒否されます。
+mermaid.js はそれを受理し、ディレクティブがないものとしてテキストを読みます。
+どちらも同じに読む図を書くには、ディレクティブを独立した行に書きます。
 
 ## mermaid.js がそう読む理由
 
@@ -136,7 +150,7 @@ mermaid.js は、図を読む前に、1 回のテキストの置き換えで、
 [`removeDirectives`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L200-L202)）。
 各図種の字句解析器は、その後に残ったテキストを読み、
 ディレクティブがどこにあったかを知りません。
-キーワードや矢印がディレクティブで分かれられることは、
+キーワードや矢印の途中にディレクティブを挟めるのは、
 この処理の順から生じます。
 
 ## この仕様の規則と、その理由
@@ -150,27 +164,20 @@ mermaid.js は、図を読む前に、1 回のテキストの置き換えで、
 
 文字列は、もともと断片に切られることがあります。
 コメント領域が文字列の中にあることがあり、
-そのとき文字列のトークンは、領域の前と後の断片です。
+そのとき文字列は、領域の前と後の断片として読まれます。
 文字列の中のディレクティブも同じように持たれ、
 文字列の値は、コメント領域と同じく、それを除きます
 （[ノード](../ast.ja.md#ノード) を参照）。
 テキストは散文で、空白を含みうる名前も同じです。
 その中のディレクティブも同じように持たれます。
-この仕様は、名前、数、矢印、キーワード、区切り記号のトークンを、
+この仕様は、名前、数、矢印、キーワード、区切り記号を、
 ディレクティブで切りません。
 どれも、そのテキスト全体として読まれます。
 mermaid.js がその中のディレクティブを読めるのは、
 読む前の段階としてディレクティブを除くからで、
 仕様が構文の規則として述べるものではありません。
-これは既知の差の 2 つ目の理由に当たります
+これは既知の差異の 2 つ目の理由に当たります
 （[known-divergences.ja.md](../known-divergences.ja.md) を参照）。
-
-## 書き手にとっての結果
-
-名前、キーワード、区切り記号、矢印、数の中のディレクティブは、
-この道具では拒否されます。
-mermaid.js はそれを受理し、ディレクティブがないものとしてテキストを読みます。
-どちらも同じに読む図を書くには、ディレクティブをそれぞれの行に置きます。
 
 ## mermaid.js の文書とテスト
 
@@ -194,4 +201,5 @@ mermaid.js はそれを受理し、ディレクティブがないものとして
   [`radar.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/radar/radar.spec.ts)、
   [`exampleConfig.spec.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/.vitepress/theme/exampleConfig.spec.ts)
   にあります。
-  flowchart の parser のテストには、ディレクティブが 1 つもありません。
+  mermaid.js の flowchart のパーサーのテストには、
+  ディレクティブが 1 つもありません。

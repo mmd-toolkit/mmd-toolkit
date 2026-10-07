@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Directives inside units: a directive inside a note-id unit makes the input rejected here; mermaid.js accepts it with a note on AB."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "AB",
+        "label": "AB",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "AB",
+        "position": "left of",
+        "text": "x"
+      }
+    ],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

@@ -141,6 +141,14 @@ The difference goes one way only: no input is known that mermaid.js accepts and
 this specification rejects because of what embedded data contains. mermaid.js
 gives no Db for these inputs, so their fixtures record only the rejection.
 
+## What it means for an author
+
+A diagram with broken YAML in its frontmatter or in a data block, a
+configuration value of the wrong type, or a shape that mermaid.js does not know
+is accepted by this toolkit and formatted, while mermaid.js rejects it. Such a
+mistake is not reported by the parser; checking the values of embedded data is
+left to other tools.
+
 ## Why mermaid.js reads it so
 
 mermaid.js parses the frontmatter body and the data blocks as YAML, and the
@@ -161,11 +169,3 @@ This is not a rejection of an input that mermaid.js accepts, so it needs none of
 the reasons for one (see [known-divergences.md](../known-divergences.md)): it
 accepts inputs that mermaid.js rejects, and every input that both accept has the
 same Db.
-
-## What it means for an author
-
-A diagram with broken YAML in its frontmatter or in a data block, a
-configuration value of the wrong type, or a shape that mermaid.js does not know
-is accepted by this toolkit and formatted, while mermaid.js rejects it. Such a
-mistake is not reported by the parser; checking the values of embedded data is
-left to other tools.

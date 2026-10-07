@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md The alias context, rule 4: after `create participant A`, the statement ends at the line feed, and the next line is the creating message."
+    "note": "sequence.md The alias context, rule 3: after `create participant A`, the statement ends at the line feed, and the next line is the creating message."
   },
   "accepted": true,
   "diagramType": "sequence",

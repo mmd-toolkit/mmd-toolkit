@@ -48,7 +48,7 @@ state/header-word-after-keyword] [fixture: state/header-other-suffix]
 字句解析器が最後の文字の後に読む `\n`
 （[テキストの終わり](../common.ja.md#テキストの終わり)）は、
 図のテキストの一部です。
-この節は、図の独自のトークンの規則、
+この節は、図の独自の単位の規則、
 [ソースの読み方](../common.ja.md#ソースの読み方) の 4 番を述べます。
 
 この図の mermaid.js の字句解析器は、文字を大文字小文字を区別せずに比べます
@@ -88,9 +88,11 @@ state/lex-keyword-before-dash]
 そのような文脈に入る単位のすぐ後で終わるときは、その値は空です。
 テキストが、合成状態の本体、文字列、ノート、scale の文脈の中で終わると、
 入力は拒否されます。
-[fixture: state/lex-acc-title-at-end] [fixture:
+[fixture: state/lex-acc-title-at-end]
+[fixture: state/db-acc-descr-empty-replaces] [fixture:
 state/lex-acc-descr-block-unclosed] [fixture:
 state/lex-classdef-without-styles] [fixture: state/lex-style-without-styles]
+[fixture: state/lex-class-css-class-at-end]
 [fixture: state/lex-alias-as-at-end] [fixture:
 state/lex-floating-note-as-at-end] [fixture: state/lex-composite-unclosed]
 [fixture: state/lex-alias-string-unclosed] [fixture:
@@ -150,6 +152,25 @@ mermaid.js がディレクティブを除いた後のテキストを読むよう
 `title-text`、`description-text`、`description-block-text` の単位、
 `direction-text` と `ignored-text` の単位です。
 **文字列の単位**は、`string` と `empty-string` の単位です。
+[fixture: state/div-directive-in-state-name]
+[fixture: state/div-directive-in-class-name]
+[fixture: state/div-directive-in-note-id]
+[fixture: state/div-directive-in-class-separator]
+[fixture: state/div-directive-in-terminal]
+[fixture: state/div-directive-in-pseudostate-mark]
+[fixture: state/div-directive-in-divider]
+[fixture: state/lex-directive-in-alias-id]
+[fixture: state/lex-directive-in-second-description]
+[fixture: state/lex-directive-in-pseudostate-name]
+[fixture: state/lex-directive-in-floating-note-id]
+[fixture: state/lex-directive-in-style-text]
+[fixture: state/lex-directive-in-css-class]
+[fixture: state/lex-directive-in-acc-title-text]
+[fixture: state/lex-directive-in-acc-descr-text]
+[fixture: state/lex-directive-in-acc-descr-block-text]
+[fixture: state/lex-directive-in-direction-text]
+[fixture: state/lex-directive-in-ignored-text]
+[fixture: state/tokens-directive-note-spaces]
 
 - `A : x%%{init: {}}%%y` は A に説明 `xy` を与え、
   `note "x%%{init: {}}%%y" as N` はテキスト `xy` の浮いたノートです。
@@ -176,7 +197,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むよう
   `A -%%{init: {}}%%-> B` では、
   ディレクティブはキーワード、id、矢印の中にあり、入力は拒否されます。
   mermaid.js はそれを受理し、2 つ目では `Foo` からの遷移を持ちます
-  （[既知の差](#既知の差) を参照）。
+  （[既知の差異](#既知の差異) を参照）。
   [fixture: state/div-directive-in-keyword] [fixture: state/div-directive-in-id]
   [fixture: state/div-directive-in-arrow]
 
@@ -185,28 +206,58 @@ mermaid.js がディレクティブを除いた後のテキストを読むよう
 文の文脈では、字句解析器は次の規則を順に試します。
 
 1. キーワード `click`。`click` の単位。
+   [fixture: state/lex-click-empty-strings]
 2. キーワード `href`。`href` の単位。
+   [fixture: state/gram-click-terminal]
 3. `"`、改行を含む `"` 以外の 0 個以上の文字、`"`。`string` の単位。
    引用符の間に文字がなければ空です。
+   [fixture: state/tokens-comment-region-in-alias-string]
+   [fixture: state/gram-state-empty-string-before-name]
 4. キーワード `default`。`default` の単位。
+   [fixture: state/lex-keyword-default-as-id]
 5. **方向の行**（下を参照）。
+   [fixture: state/lex-direction-line-then-comment]
 6. 1 つ以上の改行。`newline` の単位。
+   [fixture: state/lex-blank-lines-between-statements]
 7. 改行を含む 1 つ以上の空白。何も作りません。
+   [fixture: state/lex-state-name-next-line]
 8. `#` と、改行までのその行の残り。印が `#` の図のコメント
    （[コメント](#コメント) を参照）。
+   [fixture: state/lex-hash-comment-after-statement]
 9. `{` が続かない `%%` と、改行までのその行の残り。印が `%%` の図のコメント。
    ディレクティブを始めない `{` が続く `%%` は、
    mermaid.js が読まない `ignored-text` の単位です。
+   [fixture: state/lex-percent-comment-after-statement]
+   [fixture: state/lex-percent-before-brace-rejected]
 10. `scale` と 1 つ以上の空白。`scale` の単位。scale の文脈に入ります。
+    [fixture: state/gram-scale]
+    [fixture: state/lex-scale-number-next-line]
 11. `accTitle`、0 個以上の空白、`:`、0 個以上の空白。
     `accTitle` の単位と `:` の単位。タイトルの文脈に入ります。
+    [fixture: state/lex-acc-title-at-end]
+    [fixture: state/lex-acc-title-space-before-colon]
+    [fixture: state/lex-acc-title-line-feed-before-colon]
+    [fixture: state/lex-acc-title-no-whitespace]
 12. `accDescr`、0 個以上の空白、`:`、0 個以上の空白。
     `accDescr` の単位と `:` の単位。説明の文脈に入ります。
+    [fixture: state/db-acc-descr-empty-replaces]
+    [fixture: state/lex-acc-descr-space-before-colon]
+    [fixture: state/demo-state-26627e00]
+    [fixture: state/lex-acc-descr-line-feed-before-colon]
 13. `accDescr`、0 個以上の空白、`{`、0 個以上の空白。
     `accDescr` の単位と `{` の単位。説明のブロックの文脈に入ります。
+    [fixture: state/db-acc-descr-block-replaces]
+    [fixture: state/lex-acc-descr-block-line-feed-before-brace]
+    [fixture: state/lex-acc-descr-block-no-whitespace]
 14. `classDef` と 1 つ以上の空白。`classDef` の単位。classDef の文脈に入ります。
+    [fixture: state/lex-classdef-without-styles]
+    [fixture: state/lex-classdef-keyword-line-feed]
 15. `class` と 1 つ以上の空白。`class` の単位。class の文脈に入ります。
+    [fixture: state/db-class-before-state]
+    [fixture: state/lex-class-keyword-line-feed]
 16. `style` と 1 つ以上の空白。`style` の単位。style の文脈に入ります。
+    [fixture: state/db-style-without-text]
+    [fixture: state/lex-style-keyword-line-feed]
 17. `state` と、改行を含む 1 つ以上の空白。`state` の単位。
     state の文脈に入ります。
     その後の、`empty-string` の単位でない最初の単位が、
@@ -216,11 +267,18 @@ mermaid.js がディレクティブを除いた後のテキストを読むよう
     mermaid.js は `state` にトークンを読まないので、
     その `{` はその前の文の本体を始めます
     （[合成状態、別名、疑似状態](#合成状態別名疑似状態) を参照）。
+    [fixture: state/lex-state-without-body]
+    [fixture: state/gram-ignored-state-before-body-next-line]
 18. `{`。`{` の単位。合成状態の本体の文脈に入ります。
+    [fixture: state/db-parent-set-by-later-composite]
 19. `note` と 1 つ以上の空白。`note` の単位。ノートの文脈に入ります。
+    [fixture: state/db-note-after-state-shape]
+    [fixture: state/lex-note-keyword-line-feed]
 20. `stateDiagram` と 1 つ以上の空白、
     または `stateDiagram-v2` と 1 つ以上の空白。
     `header` の単位。
+    [fixture: state/header-v1]
+    [fixture: state/header-v2]
 21. 語の間に空白 1 つのキーワード `hide empty description`。
     `hide` の単位、`empty` の単位、`description-word` の単位。
     最後の名前は、`description` が説明の単位の名前だからです。
@@ -237,14 +295,21 @@ mermaid.js がディレクティブを除いた後のテキストを読むよう
     state/lex-directive-between-empty-and-description] [fixture:
     state/lex-hide-directive-between-spaces]
 22. `[*]`。`[*]` の単位。
+    [fixture: state/db-root-start-shared]
 23. id（[id](#単位と文脈) を参照）。
+    [fixture: state/lex-keyword-prefix-of-id]
 24. **説明**。0 個以上の空白、`:`、そして 1 つ以上の文字をできるだけ多く。
     その各文字は、`:`、`;`、改行以外の文字か、
     そのような文字が後に続く `:` です。
     `description` の単位。
+    [fixture: state/lex-colon-in-description]
+    [fixture: state/lex-description-without-space]
 25. `-->`。`-->` の単位。
+    [fixture: state/lex-semicolon-after-transition]
 26. `:::`。`:::` の単位。
+    [fixture: state/db-definition-css-class]
 27. ほかの文字。`invalid` の単位。
+    [fixture: state/lex-dash-in-id]
 
 規則 10 から 21 の語は、この図のどこでもそうであるように、
 大文字小文字を区別せずに比べます。
@@ -252,6 +317,10 @@ mermaid.js がディレクティブを除いた後のテキストを読むよう
 `default`、click の文の外の `href`、click の文の外の `string`、
 `invalid` の単位は、
 文法のどの規則も取らないので、それを持つ入力は拒否されます。
+[fixture: state/lex-keyword-default-as-id]
+[fixture: state/lex-string-outside-click]
+[fixture: state/lex-keyword-href-as-id]
+[fixture: state/lex-dash-in-id]
 この順から生じることがいくつかあります。
 
 - ディレクティブは、`%%{` の後に 0 個以上の空白と名前（語）が続くときだけ始まり
@@ -311,11 +380,13 @@ mermaid.js がディレクティブを除いた後のテキストを読むよう
 
 **方向の行。**
 大文字小文字を区別せずに比べます。
-いまの位置から、改行、U+2028、U+2029 を持たない文字の並び、
+いまの位置から、改行、U+2028、U+2029 を持たない文字の並びで、
+後が続けられる最も長いもの、
 `direction`、1 つ以上の空白、この順に試す `TB`、`BT`、`RL`、`LR` のどれか、
 そして次の改行までのすべての文字です。
-`direction` の前と値の後の文字は `direction-text` の単位で、
-mermaid.js はそれを読みません。
+規則は、`direction` を `direction` の単位、値を `direction-value` の単位、
+`direction` の前と値の後の文字を `direction-text` の単位として読み、
+mermaid.js は `direction-text` の単位を読みません。
 この規則は id の規則より前に試されるので、行の全体を取ります。
 `B : x direction LR` は方向を決め、状態を持ちません。
 `A --> B direction LR` も同じで、`Direction lr` は方向の行です。
@@ -325,10 +396,16 @@ mermaid.js はそれを読みません。
 `%% c` はコメントでなく `direction-text` の単位です。
 値は語の境目で終わらなくてもかまいません。
 `direction TBX` は `TB` を決め、`X` は `direction-text` の単位です。
+並びは最も長いものです。
+`direction TB x direction TB` は最後の `direction` で読まれ、
+`direction TB x` は `direction-text` の単位です。
+[fixture: state/lex-direction-line-same-value-twice]
 [fixture: state/lex-direction-line-in-description] [fixture:
 state/lex-direction-line-same-line-transition] [fixture:
 state/lex-direction-lower-case] [fixture: state/lex-direction-line-then-comment]
 [fixture: state/lex-direction-line-value-then-text]
+[fixture: state/lex-direction-line-after-line-separator]
+[fixture: state/lex-direction-rl]
 `direction` と値の間の空白は改行を含められます。
 `direction`、改行、`LR` は方向の行です。
 [fixture: state/lex-direction-value-next-line]
@@ -339,19 +416,36 @@ state/lex-direction-lower-case] [fixture: state/lex-direction-line-then-comment]
 合成状態の文を読みます。
 
 1. 改行以外の 1 つ以上の空白。何も作りません。
+   [fixture: state/db-nested-terminals]
 2. `#` とその行の残り。文の文脈の規則 8 と同じ図のコメント。
+   [fixture: state/lex-composite-hash-comment]
 3. `{` が続かない `%%` とその行の残り。文の文脈の規則 9 と同じ図のコメント。
+   [fixture: state/lex-composite-percent-comment]
 4. 文の文脈の規則 14 から 17。`classDef`、`class`、`style`、`state`。
+   [fixture: state/db-nested-classdef]
+   [fixture: state/db-nested-class-statement]
+   [fixture: state/gram-ignored-states-in-composite-body]
+   [fixture: state/db-nested-style-statement]
 5. 方向の行。
+   [fixture: state/lex-composite-direction-line]
 6. `}`。`}` の単位。合成状態の本体の文脈を出ます。
+   [fixture: state/db-nested-terminals]
 7. 改行。何も作りません。
+   [fixture: state/db-nested-terminals]
 8. 文の文脈の規則 19。`note`。
+   [fixture: state/db-note-in-composite]
 9. `[*]`。`[*]` の単位。
+   [fixture: state/db-nested-terminals]
 10. id。
+    [fixture: state/lex-composite-default-as-id]
 11. 文の文脈の規則 24 と同じ説明。
+    [fixture: state/tokens-composite-description-ignored-semicolon]
 12. `-->`。`-->` の単位。
+    [fixture: state/db-nested-terminals]
 13. `--`。`--` の単位、つまり**区切り**。
+    [fixture: state/lex-composite-divider]
 14. `:::`。`:::` の単位。
+    [fixture: state/lex-composite-class-separator]
 
 文の文脈のほかの規則は、ここでは試されません。
 `click`、`href`、`default`、`"`、`accTitle`、`accDescr`、`scale`、
@@ -378,8 +472,11 @@ state の文脈には `state` で入ります。
 [fixture: state/lex-state-name-next-line]
 
 1. 改行以外の 1 つ以上の空白。何も作りません。
+   [fixture: state/lex-state-two-names]
 2. `#` とその行の残り。文の文脈の規則 8 と同じ図のコメント。
+   [fixture: state/lex-state-name-hash-comment]
 3. `{` が続かない `%%` とその行の残り。文の文脈の規則 9 と同じ図のコメント。
+   [fixture: state/gram-ignored-state-after-comment-before-body]
 4. **疑似状態の印**。
    `<<fork>>`、`<<join>>`、`<<choice>>`、`[[fork]]`、`[[join]]`、`[[choice]]` を
    この順に試し、次の改行、U+2028、U+2029 より前に最初に現れるものについて、
@@ -387,18 +484,26 @@ state の文脈には `state` で入ります。
    印の前の文字は、両端の空白を除いて、
    空でなければ `pseudostate-name` の単位で、
    印はそのテキストを名前とする単位です。state の文脈を出ます。
+   [fixture: state/lex-fork-spaced-id]
 5. `"`。state の文字列の文脈に入ります。
+   [fixture: state/db-alias-blank-without-body]
 6. 0 個以上の空白、`as`、改行を含む 1 つ以上の空白。
    `as` の単位。別名の id の文脈に入ります。
+   [fixture: state/lex-alias-no-space-before-as]
+   [fixture: state/lex-alias-id-percent-next-line]
 7. 語、改行を含む 1 つ以上の空白、もう 1 つの語、
    そして改行、U+2028、U+2029 以外の 0 個以上の文字をできるだけ少なく、`{`。
    拒否されます。mermaid.js は「State name must be a single word」の
    エラーを投げます。
    ほかの規則と同じく、state の文脈で単位が始まりうるところで試されるので、
    最初の名前の後の各名前でも、もう一度試されます。
+   [fixture: state/lex-state-two-names-body]
 8. 改行、空白、`{` 以外の 1 つ以上の文字。`state-name` の単位。
+   [fixture: state/lex-state-without-body]
 9. 改行。state の文脈を出ます。
+   [fixture: state/lex-state-name-state-then-composite]
 10. `{`。`{` の単位。state の文脈を出て、合成状態の本体の文脈に入ります。
+    [fixture: state/lex-state-brace-next-line]
 
 この順から生じることがいくつかあります。
 
@@ -505,7 +610,9 @@ state/lex-state-name-ending-in-quotes]
 id は `{` の前と `%%` の前で空でもかまいません。
 `state "d" as %% c` と `state "d" as %%A` は、
 空の id の別名の定義とその後のコメントで、状態を加えません。
-[fixture: state/lex-alias-id-spaces] [fixture: state/lex-alias-without-id]
+[fixture: state/lex-alias-id-spaces]
+[fixture: state/lex-alias-id-trailing-spaces]
+[fixture: state/lex-alias-without-id]
 [fixture: state/lex-alias-comment-after-id] [fixture:
 state/lex-alias-id-percent-comment] [fixture: state/lex-alias-id-percent-word]
 [fixture: state/lex-alias-id-percent-next-line]
@@ -527,7 +634,7 @@ state/lex-alias-id-ignored-percent-before-body]
 mermaid.js はそれを読みません
 （[`stateDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/state/parser/stateDiagram.jison#L233-L243)）。
 `alias-id` の後に、その行で、または、その行の改行と、
-空白とコメント行だけの後で `{` が続き、
+行の空白とコメント行だけの後で `{` が続き、
 その間に、文法が本体の `{` の前に取る単位、
 つまり空の説明ブロック、`ignored-state` の単位と空の文字列、
 `{` のすぐ前の `%%` だけがあるとき、別名の文は本体を持ち、
@@ -545,7 +652,10 @@ mermaid.js はそれを読みません
 [fixture: state/lex-alias-colon-tab-line-before-body]
 [fixture: state/lex-alias-colon-block-then-spaces-before-body]
 [fixture: state/lex-alias-second-description] [fixture:
-state/lex-alias-third-part] [fixture: state/lex-alias-colon-before-body]
+state/lex-alias-third-part]
+[fixture: state/db-alias-colon-empty-second]
+[fixture: state/db-alias-colon-spaces-second]
+[fixture: state/lex-alias-colon-before-body]
 [fixture: state/lex-alias-colon-before-body-next-line] [fixture:
 state/lex-alias-colon-before-body-after-comment-line] [fixture:
 state/lex-alias-colon-blank-line-before-brace]
@@ -556,8 +666,11 @@ state/lex-alias-colon-blank-line-before-brace]
 
 1. `default` と 1 つ以上の空白。`default` の単位。
    文法はそれを取らないので、`classDef default …` は拒否されます。
+   [fixture: state/lex-classdef-default]
 2. 1 つ以上の語の文字と、改行を含む 1 つ以上の空白。
    空白を除いて `class-name` の単位。スタイルの文脈に入ります。
+   [fixture: state/lex-classdef-styles-next-line]
+   [fixture: state/lex-classdef-name-non-word]
 
 `class` は **class の文脈**に入ります。
 
@@ -565,12 +678,15 @@ state/lex-alias-colon-blank-line-before-brace]
    1 つ以上の語の文字の 0 回以上の繰り返しが続くもの。
    語の文字の並びごとに `id` の単位、`,` ごとに `id-comma` の単位。
    クラス名の文脈に入ります。
+   [fixture: state/lex-class-ids-space]
+   [fixture: state/lex-class-ids-comma]
 
 `style` は **style の文脈**に入ります。
 
 1. 1 つ以上の語の文字と `,`、そして改行を含む 1 つ以上の空白。
    語の文字の並びごとに `id` の単位、`,` ごとに `id-comma` の単位。
    スタイルの文脈に入ります。
+   [fixture: state/lex-style-empty-id]
 
 これらの文脈は、その規則が読むと出ます。
 その後、**スタイルの文脈**は、改行までのその行の残りを読み、
@@ -578,7 +694,7 @@ state/lex-alias-colon-blank-line-before-brace]
 両端の空白を除いた `style-text` の単位と `,` の単位に分けます。
 **クラス名の文脈**は、その行の残りを、
 両端の空白を除いた 1 つの `css-class` の単位として読みます。
-どちらも空でもかまいません。
+どちらも空でもかまいません。どちらも、読むと出ます。
 
 - `classDef default fill:#f00` は拒否されます。
   [fixture: state/lex-classdef-default]
@@ -624,6 +740,7 @@ scale の文脈を出ます。`scale 3 widthx` は拒否されます。
 `scale 350 width` は受理され、`scale 350` は拒否されます。
 [fixture: state/gram-scale] [fixture: state/gram-scale-without-width]
 [fixture: state/lex-scale-width-then-word]
+[fixture: state/lex-scale-non-ascii-digit]
 `scale` の後の空白は改行を含められます。
 `scale`、改行、`3 width` は scale の文です。
 [fixture: state/lex-scale-number-next-line]
@@ -635,7 +752,9 @@ scale の文脈を出ます。`scale 3 widthx` は拒否されます。
 1. 語の間に空白 1 つのキーワード `left of` か `right of`、つまり**位置**。
    `left` か `right` の `position` の単位と、`of` の単位。
    ノートの id の文脈に入ります。
+   [fixture: state/db-note-after-state-shape]
 2. `"`。浮いたノートの文脈に入ります。
+   [fixture: state/lex-floating-note]
 
 空白 2 つの `note left  of A : x`、タブにしたもの、
 `note over A : x` は拒否されます。
@@ -660,6 +779,10 @@ state/lex-note-position-directive-between-spaces]
 `:`、改行、空白、`-` 以外の文字の id を読みます。
 これは `note-id` の単位で、最初の `%%` の前で、それが最初の文字でも終わり、
 そのときは空です。
+そのような `%%` がなければ 1 文字以上が要るので、
+`note left of : x` は拒否されます。
+[fixture: state/lex-note-empty-id-before-colon]
+ノートの id の文脈は、その後、
 コメントの規則のない、ノートのテキストの文脈に入ります。
 位置のすぐ後に、空白なしで `%%` が続くときは、
 そこからの `:`、改行、空白、`-` 以外の文字が、
@@ -686,6 +809,7 @@ state/lex-note-position-then-dash]
    `ignored-text` の単位（下を参照）、
    その後の文字の、両端の空白を除いた `note-text` の単位。
    ノートの文脈を出ます。
+   [fixture: state/db-note-after-state-shape]
 2. 改行を含む、できるだけ少ない任意の文字、改行、0 個以上の空白、
    キーワード `end note`。
    改行の前の文字の、両端の空白を除いた `note-text` の単位と、
@@ -700,11 +824,12 @@ state/lex-note-position-then-dash]
    [fixture: state/lex-directive-between-end-and-note] [fixture:
    state/lex-directive-between-space-and-note] [fixture:
    state/lex-end-note-directive-between-spaces]
+   [fixture: state/lex-note-block]
 
 - mermaid.js は、1 行のノートのテキストを、`note-id` のすぐ後から、
   最初の 2 文字と両端の空白を除いて読みます。
   その最初の文字は、空白か `:` です。
-  `:` の前に空白が 2 つあると、`:` は mermaid.js が読むテキストの文字です。
+  `:` の前に空白が 2 つ以上あると、`:` は mermaid.js が読むテキストの文字です。
   `note left of A  :hi` のテキストは `:hi` です。
   `:` が `note-id` のすぐ後にあるとき、`:` の後の文字は、
   空白でなければ落とされ、規則 1 の `ignored-text` の単位です。
@@ -737,9 +862,12 @@ state/lex-note-position-then-dash]
 **浮いたノートの文脈**:
 
 1. 0 個以上の空白、`as`、0 個以上の空白。
-   `as` の単位。浮いたノートの id の文脈に入ります。
+   `as` の単位。この文脈を出て、浮いたノートの id の文脈に入ります。
+   [fixture: state/lex-floating-note]
 2. `"`。`"` の単位。
+   [fixture: state/lex-floating-note-extra-quote-before-text]
 3. 改行を含む、`"` 以外の 1 つ以上の文字。`floating-note-text` の単位。
+   [fixture: state/lex-floating-note]
 
 `note` の後の `"` も `"` の単位です。
 引用符は対になりません。
@@ -751,7 +879,10 @@ mermaid.js は、ここで `"` にはトークンを返さず、
 1 つの `floating-note-text`、1 つ以上の `"` の単位を持ちます。
 `note "x" as N`、`note ""x" as N`、`note "x"" as N`、
 `note """x""" as N` のテキストは `x` で、
-`note "" x" as N` のテキストは空白と `x` です。
+`note "" x" as N` のテキストも `x` です。
+テキストは、`floating-note-text` の単位から両端の空白を除いたものです
+（[StateFloatingNoteStatement](../ast/state.ja.md#statefloatingnotestatement)
+を参照）。
 [fixture: state/lex-floating-note-extra-quote-before-text] [fixture:
 state/lex-floating-note-extra-quote-after-text] [fixture:
 state/lex-floating-note-extra-quotes-around-text] [fixture:
@@ -790,6 +921,7 @@ state/lex-floating-note-as-next-line]
 **浮いたノートの id の文脈**は、その行の残りを id として読みます。
 `floating-note-id` の単位で、空白を持て、
 最初の文字より後の `%%` の前で終わります。
+それを読むと、この文脈を出ます。
 [fixture: state/lex-floating-note-id-spaces]
 
 ### アクセシビリティの値
@@ -801,7 +933,8 @@ state/lex-floating-note-as-next-line]
 `accTitle: a;b #c %% d` のタイトルは `a;b #c %% d` です。
 `:` の後の空白は、改行も含めて `:` の単位と一緒に読まれるので
 （文の文脈の規則 11 と 12）、テキストは次の行にあってもかまいません。
-[fixture: state/lex-acc-title-semicolon] [fixture:
+[fixture: state/lex-acc-title-semicolon]
+[fixture: state/lex-acc-descr-semicolon] [fixture:
 state/lex-acc-title-next-line]
 
 説明のブロックの文脈では、`}` は `}` の単位で文脈を出て、
@@ -833,6 +966,7 @@ A から B への遷移とコメントを持ちます。
 [fixture: state/lex-hash-comment-after-statement] [fixture:
 state/lex-percent-comment-after-statement] [fixture:
 state/lex-percent-comment-in-id] [fixture: state/lex-alias-comment-after-id]
+[fixture: state/lex-floating-note-id-comment]
 
 図のコメントは、その**印**から改行までです。
 その行の U+2028 か U+2029 の後にコメント行があっても、それを越えて続き、
@@ -850,7 +984,7 @@ id の中のコメントは、id が終わる `%%` から始まります。
 `A --> B %%%{init: {}}%%% c` では、
 ディレクティブのないテキストは `A --> B %% c` なので、
 印は最初と最後の `%` で、値は空白と `c` です。
-コメント `# x%%{init: {}}%%y` の値は `x%%{init: {}}%%y` です。
+コメント `# x%%{init: {}}%%y` の値は、空白と `x%%{init: {}}%%y` です。
 [fixture: state/lex-comment-directive-between-marks] [fixture:
 state/lex-hash-comment-directive-inside]
 
@@ -864,6 +998,9 @@ state/lex-hash-comment-directive-inside]
 state/lex-hash-in-description] [fixture: state/lex-percent-in-label]
 [fixture: state/lex-percent-in-note] [fixture: state/lex-classdef-percent]
 [fixture: state/lex-alias-percent-in-string]
+[fixture: state/lex-style-percent]
+[fixture: state/lex-class-css-class-percent]
+[fixture: state/lex-pseudostate-name-percent]
 id の中では、`#` は文字です。`A#1` は状態です。
 [fixture: state/lex-hash-in-id]
 エンティティは、字句解析器がテキストを読む前に、
@@ -914,39 +1051,47 @@ issue は閉じられています。
 下の各規則は、
 [ast/state.ja.md](../ast/state.ja.md) で定める木のノードを作ります。
 
-| 規則                                                                                | ノード                                                                               |
-| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `diagram`                                                                           | StateDiagram                                                                         |
-| `definition-statement`                                                              | StateDefinitionStatement                                                             |
-| `transition-statement`                                                              | StateTransitionStatement                                                             |
-| `state-reference`                                                                   | StateReference。その `"[*]"` は StateTerminal                                        |
-| `composite-statement`                                                               | StateCompositeStatement                                                              |
-| `alias-statement`                                                                   | StateAliasDefinitionStatement                                                        |
-| `pseudostate-statement`                                                             | StatePseudostateDefinitionStatement                                                  |
-| `ignored-statement`                                                                 | StateIgnoredStatement                                                                |
-| `"--"`                                                                              | StateDividerStatement                                                                |
-| `note-statement`                                                                    | StateNoteStatement                                                                   |
-| `floating-note-statement`                                                           | StateFloatingNoteStatement                                                           |
-| `click-statement`                                                                   | StateClickStatement                                                                  |
-| `empty-description-block`                                                           | テキストのない StateAccDescrBlockStatement。その前の文の後の文                       |
-| `class-def-statement`                                                               | StateClassDefStatement                                                               |
-| `class-statement`                                                                   | StateClassStatement                                                                  |
-| `style-statement`                                                                   | StateStyleStatement                                                                  |
-| `direction-statement`                                                               | StateDirectionStatement。`direction-text` ごとに StateIgnoredText                    |
-| `accessibility-statement`                                                           | StateAccTitleStatement、StateAccDescrStatement、StateAccDescrBlockStatement のどれか |
-| `scale-statement`                                                                   | StateScaleStatement                                                                  |
-| `"hide" "empty" "description"`                                                      | StateHideEmptyDescriptionStatement                                                   |
-| `string` か `string-or-empty`                                                       | StringLiteral                                                                        |
-| `number`                                                                            | NumericLiteral                                                                       |
-| 下に挙げる名前                                                                      | Identifier                                                                           |
-| 下に挙げる引用符のないテキスト                                                      | StateLiteral                                                                         |
-| `ignored-text`、`ignored-state`、またはほかの文の中の一続きの `empty-string` の単位 | StateIgnoredText                                                                     |
+| 規則                                                                                          | ノード                                                                                                      |
+| --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `diagram`                                                                                     | StateDiagram                                                                                                |
+| `definition-statement`                                                                        | StateDefinitionStatement                                                                                    |
+| `transition-statement`                                                                        | StateTransitionStatement                                                                                    |
+| `state-reference`                                                                             | StateReference。その `"[*]"` は StateTerminal                                                               |
+| `composite-statement`                                                                         | StateCompositeStatement                                                                                     |
+| `alias-statement`                                                                             | StateAliasDefinitionStatement                                                                               |
+| `pseudostate-statement`                                                                       | StatePseudostateDefinitionStatement                                                                         |
+| `ignored-statement`                                                                           | StateIgnoredStatement                                                                                       |
+| `"--"`                                                                                        | StateDividerStatement                                                                                       |
+| `note-statement`                                                                              | StateNoteStatement                                                                                          |
+| `floating-note-statement`                                                                     | StateFloatingNoteStatement                                                                                  |
+| `click-statement`                                                                             | StateClickStatement                                                                                         |
+| `empty-description-block`                                                                     | テキストのない StateAccDescrBlockStatement。その前の文の後の文。本体の `{` の前では `textBeforeBody` の一部 |
+| `class-def-statement`                                                                         | StateClassDefStatement                                                                                      |
+| `class-statement`                                                                             | StateClassStatement                                                                                         |
+| `style-statement`                                                                             | StateStyleStatement                                                                                         |
+| `direction-statement`                                                                         | StateDirectionStatement。`direction-text` ごとに StateIgnoredText                                           |
+| `accessibility-statement`                                                                     | StateAccTitleStatement、StateAccDescrStatement、StateAccDescrBlockStatement のどれか                        |
+| `scale-statement`                                                                             | StateScaleStatement                                                                                         |
+| `"hide" "empty" "description"`                                                                | StateHideEmptyDescriptionStatement                                                                          |
+| `string` か `string-or-empty`                                                                 | StringLiteral                                                                                               |
+| `number`                                                                                      | NumericLiteral                                                                                              |
+| 下に挙げる名前                                                                                | Identifier                                                                                                  |
+| 下に挙げる引用符のないテキスト                                                                | StateLiteral                                                                                                |
+| 本体の `{` の前の、空の文字列、空の説明ブロック、`ignored-state` の単位、`ignored-text`       | 合わせて 1 つの StateIgnoredText で、その文の `textBeforeBody`                                              |
+| `ignored-text`、`ignored-state`、またはほかの文の中のそれ以外の一続きの `empty-string` の単位 | StateIgnoredText                                                                                            |
 
 名前は、`id`、`state-name`、`class-name`、`note-id` です。
 引用符のないテキストは、`description` の `:` の後のテキスト、`alias-id`、
 `second-description`、`pseudostate-name`、`note-text`、`floating-note-text`、
 `floating-note-id`、`style-text`、`css-class`、
 そして `title-text`、`description-text`、`description-block-text` です。
+空白 2 つ以上の後では、
+1 行のノートの `:` の単位とその後の `note-text` の単位は、
+合わせて 1 つのテキストです。
+`note left of A  :hi` の StateLiteral は `:hi` です
+（[StateNoteStatement](../ast/state.ja.md#statenotestatement) を参照）。
+[fixture: state/lex-note-two-spaces-before-colon] [fixture:
+state/lex-note-three-spaces-before-colon]
 
 ### 図と文
 
@@ -1277,7 +1422,7 @@ scale-statement         = "scale" number "width"
 説明のブロックの文が前か後にある文です。
 ブロックの後の単位が、その前の文を続けるところでは、
 ブロックは代わりに文の中にあり、入力は拒否されます
-（[既知の差](#既知の差) を参照）。
+（[既知の差異](#既知の差異) を参照）。
 状態の参照の後の `-->`、`:::`、説明がそうです。
 間に空白しかない、続けて書いたブロックは、
 最後のブロックの後の単位でまとめて決まります。
@@ -1404,21 +1549,40 @@ state/div-empty-description-block-after-arrow]
   字句解析器が拒否します。
   [fixture: state/lex-state-two-names-body]
 
-## 既知の差
+## 既知の差異
 
 - **[`directive-as-token-boundary`](../known-divergences/directive-as-token-boundary.ja.md)。**
-  キーワード、id、矢印の中のディレクティブは、
+  テキストの単位と文字列の単位のほかの単位の中のディレクティブは、
   この仕様では入力を拒否させ、
   mermaid.js はそれを受理します
   （[単位の中のディレクティブ](#単位の中のディレクティブ) を参照）。
+  キーワード、名前の単位、`:::`、`[*]`、疑似状態の印、仕切りの `--`、
+  矢印の中のディレクティブがそうです。
   [fixture: state/div-directive-in-keyword] [fixture: state/div-directive-in-id]
   [fixture: state/div-directive-in-arrow]
+  [fixture: state/div-directive-in-state-name]
+  [fixture: state/div-directive-in-class-name]
+  [fixture: state/div-directive-in-note-id]
+  [fixture: state/div-directive-in-class-separator]
+  [fixture: state/div-directive-in-terminal]
+  [fixture: state/div-directive-in-pseudostate-mark]
+  [fixture: state/div-directive-in-divider]
+- **[`ignored-semicolon-as-token-boundary`](../known-divergences/ignored-semicolon-as-token-boundary.ja.md)。**
+  `style` の規則に当たる行で、
+  テキストの単位と文字列の単位のほかの単位の中にある無視される `;` は、
+  ここでは入力を拒否させ、mermaid.js はそれを受理します。
+  `state` の後の名前は `style`、`:`、`#` を持てるので、
+  本体があってもなくても、
+  `state style:#x;B` の無視される `;` は名前の中にあります。
+  本体があれば、mermaid.js は合成状態 `style:#xB` を読み、
+  本体がなければ、何も足さない入力として受理します。
+  [fixture: state/div-ignored-semicolon-in-state-name]
+  [fixture: state/div-ignored-semicolon-in-state-name-without-body]
 - **[`html-tag-in-frontmatter`](../known-divergences/html-tag-in-frontmatter.ja.md)。**
   フロントマターに `title: <a` があると、`A : b="c">d` は A に、
   mermaid.js では説明 `b='c'>d` を、この仕様では `b="c">d` を与えます。
   [fixture: state/div-html-tag-starts-in-frontmatter-description]
-- **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)。
-  **
+- **[`embedded-data-opaque`](../known-divergences/embedded-data-opaque.ja.md)。**
   正しい YAML でないフロントマターは、この仕様では受理され、
   mermaid.js は拒否します。
   [fixture: state/div-frontmatter-invalid-yaml]
@@ -1432,6 +1596,9 @@ state/div-empty-description-block-after-arrow]
   文が始まるところの空の説明ブロックは、同じ行の別の文のすぐ後でも、
   テキストのない説明のブロックの文で、何も変えません。
   `A --> B accDescr {}` は受理されます。
+  名前の後の行の、本体の `{` の前のブロックは、
+  その文の `textBeforeBody` の一部で、これも受理されます
+  （[合成状態、別名、疑似状態](#合成状態別名疑似状態) を参照）。
   [fixture: state/div-empty-description-block-in-transition] [fixture:
   state/div-empty-description-block-after-arrow] [fixture:
   state/div-empty-description-block-before-description] [fixture:

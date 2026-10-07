@@ -23,8 +23,7 @@
     "paths": {
       "@mmd-toolkit/parser": ["./packages/parser/src/index.ts"],
       "@mmd-toolkit/tests": ["./packages/tests/src/index.ts"],
-      "@mmd-toolkit/tests/mermaid": ["./packages/tests/src/mermaid.ts"],
-      "@mmd-toolkit/tests/mutation": ["./packages/tests/src/mutation.ts"]
+      "@mmd-toolkit/tests/mermaid": ["./packages/tests/src/mermaid.ts"]
     }
   },
   "include": [

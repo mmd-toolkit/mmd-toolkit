@@ -60,6 +60,10 @@ class FakeFlowDb {
     // Not used here; patchFlowDb requires it.
   }
 
+  public setClickFun(): void {
+    // Not used here; patchFlowDb requires it.
+  }
+
   public addVertex(id: string, ...rest: unknown[]): void {
     if (rest[6] === undefined) {
       this.vertices.set(id, { id, text: id, styles: [] })

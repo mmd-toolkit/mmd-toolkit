@@ -23,8 +23,9 @@ sequenceDiagram
 
 This document is about a `%%` that comes right after another character on its
 line, with no whitespace between them, as in `autonumber 10%% c`. In this
-specification, the comment starts at its `%%`, and the character before it
-belongs to what the lexer reads there.
+specification, the character before it belongs to what the lexer reads there:
+after a number, the `%%` starts a comment, and after a character of an id run or
+after the `:` before a text, it is a character of the id run or of the text.
 
 ## The difference
 
@@ -131,6 +132,14 @@ without its directives, which is the text that both lexers read: in
 `autonumber 1%%{init: {}}%%%% c0`, the `%%` comes right after the number 1.
 [fixture: sequence/div-comment-after-number-across-directive]
 
+## What it means for an author
+
+A comment written right after a statement, without a space, can be read by
+mermaid.js together with the last character of the statement: the diagram is
+then rejected, or drawn without that character, without a word. This toolkit
+reads the statement as written. To write a diagram that both read the same, put
+each comment on a line of its own, or at least put a space before the `%%`.
+
 ## Why mermaid.js reads it so
 
 The lexer of mermaid.js has two rules that differ from this specification
@@ -152,14 +161,6 @@ start its match there, comes from the order of the rules of the lexer of
 mermaid.js, and is nothing that a specification would state as a rule of the
 syntax; this is the second of the reasons for a known divergence (see
 [known-divergences.md](../known-divergences.md)).
-
-## What it means for an author
-
-A comment written right after a statement, without a space, can be read by
-mermaid.js together with the last character of the statement: the diagram is
-then rejected, or drawn without that character, without a word. This toolkit
-reads the statement as written. To write a diagram that both read the same, put
-each comment on a line of its own, or at least put a space before the `%%`.
 
 ## The documentation of mermaid.js and its issues
 

@@ -720,20 +720,17 @@ function linkOf(text: string): {
   return { label: trimmed(text.slice(0, at - 1)), url }
 }
 
-/** docs/db-from-tree/sequence.md: `wrap` of the configuration, or else `sequence.wrap`, or else false. */
+/** docs/db-from-tree/sequence.md: true when `wrap` or `sequence.wrap` of the configuration is true. */
 function wrapSettingOf(config: EmbeddedValues["config"]): boolean {
   const record = config as Record<string, unknown>
-  if (typeof record.wrap === "boolean") return record.wrap
+  if (record.wrap === true) return true
   const sequence = record.sequence
-  if (
+  return (
     typeof sequence === "object" &&
     sequence !== null &&
     "wrap" in sequence &&
-    typeof sequence.wrap === "boolean"
-  ) {
-    return sequence.wrap
-  }
-  return false
+    sequence.wrap === true
+  )
 }
 
 /**

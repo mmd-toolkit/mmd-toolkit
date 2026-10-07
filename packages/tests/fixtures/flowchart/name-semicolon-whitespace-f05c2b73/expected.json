@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The whitespace between the last empty block of a subgraph header and a ; belongs to the name text"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "X",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "X",
+        "props": {}
+      },
+      {
+        "id": "Y",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Y",
+        "props": {}
+      },
+      {
+        "id": "S",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "S",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "Y",
+        "end": "S",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_Y_S_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          "X"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

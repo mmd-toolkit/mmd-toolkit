@@ -5,15 +5,14 @@ Japanese version: [sequence.ja.md](./sequence.ja.md)
 How prettier-plugin-mmd formats a sequence diagram. Each rule below keeps what
 mermaid.js reads from the diagram; where a change would alter it, the text is
 kept as written, and the rule says where. Where a rule is the same as in a
-flowchart, it says so, and the reason is in [flowchart.md](./flowchart.md).
+flowchart, it says so, and the reason is in the
+[rules for flowcharts](./flowchart.md).
 
-Each rule has a folder of examples under
-[`tests/fixtures/sequence/`](../tests/fixtures/sequence), named as the rule's
-heading, as for flowcharts: each example is a pair of files, the input and the
-formatted output, and the tests check both that the plugin prints the output and
-that mermaid.js reads the same diagram from the input and the output. The
-examples in this document are copies of those files, and a test checks that they
-are the same.
+Each rule below shows its formatting with examples: the text before formatting,
+and the text that the plugin prints. The examples are the fixtures that the
+tests check, and the link above each one is to its file. How the fixtures are
+organized and checked is described in
+[Documents and fixtures](./development.md#documents-and-fixtures).
 
 ## Rules
 
@@ -23,9 +22,12 @@ The statements after the header stand one level deeper than the header. The
 statements of a block (`loop`, `alt`, `opt`, `par`, `par_over`, `critical`,
 `break`, `rect`) and the participants of a `box` stand one level deeper than the
 line that opens it; `else`, `and`, `option`, and `end` stand at the level of
-that line. A level is what Prettier's `useTabs` and `tabWidth` options say: two
-spaces by default. The indentation written in the input is not kept: whitespace
-at the start of a line is nothing to mermaid.js.
+that line. [fixture: indentation/blocks] [fixture: indentation/sections]
+[fixture: indentation/other-blocks-kept] A level is what Prettier's `useTabs`
+and `tabWidth` options say: two spaces by default. [fixture:
+indentation/tab-width-4] [fixture: indentation/use-tabs] The indentation written
+in the input is not kept: whitespace at the start of a line is nothing to
+mermaid.js. [fixture: indentation/sections]
 
 Input
 ([indentation/blocks-input.mmd](../tests/fixtures/sequence/indentation/blocks-input.mmd)):
@@ -108,11 +110,15 @@ sequenceDiagram
 ### Statements one per line
 
 Each statement stands on a line of its own. The `;` that separate statements are
-dropped: mermaid.js reads a `;` as it reads a line break. A statement written on
-the line of the header, or after `end` on its line, moves to a line of its own.
-A line that holds a `;` that the line rule of mermaid.js ignores keeps its
-statements and its `;`, as in a flowchart (see
-[Statements one per line](./flowchart.md#statements-one-per-line)).
+dropped: mermaid.js reads a `;` as it reads a line break. [fixture:
+statements-one-per-line/semicolons-dropped] A statement written on the line of
+the header, or after `end` on its line, moves to a line of its own. [fixture:
+statements-one-per-line/split] A line that holds a `;` that the line rule of
+mermaid.js ignores keeps its statements and its `;`, as in a flowchart (see
+[Statements one per line](./flowchart.md#statements-one-per-line)). [corpus
+fixture: sequence/tokens-ignored-semicolon-in-participant-id] [corpus fixture:
+sequence/tokens-ignored-semicolon-in-message-id] [fixture:
+statements-one-per-line/line-with-ignored-semicolon-kept]
 
 Input
 ([statements-one-per-line/split-input.mmd](../tests/fixtures/sequence/statements-one-per-line/split-input.mmd)):
@@ -140,7 +146,10 @@ sequenceDiagram
 An empty description block, `accDescr {}`, is a statement of its own, also in a
 `box`, where it may stand among the participants: a statement written after it
 on its line, or the `end` of the box, moves to a line of its own, and mermaid.js
-reads the same box.
+reads the same box. [fixture:
+statements-one-per-line/empty-description-block-in-box] [fixture:
+statements-one-per-line/empty-description-block-moves-next-statement] [fixture:
+statements-one-per-line/empty-description-block-before-semicolon-and-directive]
 
 Input
 ([statements-one-per-line/empty-description-block-in-box-input.mmd](../tests/fixtures/sequence/statements-one-per-line/empty-description-block-in-box-input.mmd)):
@@ -167,14 +176,24 @@ sequenceDiagram
 ```
 
 A `;` after the directives that follow an `autonumber`, or a `participant` or an
-`actor` that ends with a data block and has no `as`, is kept. mermaid.js removes
-the directive, and whitespace at the end of the line then hides the line break
-from the statement, which needs one, and whose last unit reads no whitespace:
-`autonumber`, a space, `%%{wrap}%%`, and `;` are accepted, while the same
-without the `;` is rejected. The last unit of the other statements, a text, an
-id, or a description after `as`, reads the whitespace with it (see the statement
-context of the sequence specification, and Empty description blocks before a
-separator there).
+`actor` that ends with a data block and has no `as`, is kept. [fixture:
+statements-one-per-line/autonumber-directive-kept] [fixture:
+statements-one-per-line/data-block-directive-kept] [fixture:
+statements-one-per-line/actor-data-block-directive-kept] [fixture:
+statements-one-per-line/autonumber-two-directives-kept] A statement that follows
+such a `;` on its line stays on it, because a `;` that is kept keeps its line
+together: `autonumber %%{wrap}%%; A->>B: x` is printed on one line. [fixture:
+statements-one-per-line/autonumber-directive-semicolon-same-line-kept]
+mermaid.js removes the directive, and whitespace at the end of the line then
+hides the line break from the statement, which needs one, and whose last unit
+reads no whitespace: `autonumber`, a space, `%%{wrap}%%`, and `;` are accepted,
+while the same without the `;` is rejected. The last unit of the other
+statements, a text, an id, or a description after `as`, reads the whitespace
+with it (see the specification's
+[The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context),
+and
+[Empty description blocks before a separator](../../spec/docs/diagrams/sequence.md#empty-description-blocks-before-a-separator)
+there). [fixture: statements-one-per-line/closed-directive-semicolon-dropped]
 
 Input
 ([statements-one-per-line/autonumber-directive-kept-input.mmd](../tests/fixtures/sequence/statements-one-per-line/autonumber-directive-kept-input.mmd)):
@@ -215,7 +234,9 @@ sequenceDiagram
 ### Blank lines
 
 As in a flowchart: a run of empty lines becomes one, and empty lines at the
-start and the end of a block are dropped.
+start and the end of a block are dropped. [fixture: blank-lines/collapsed]
+[fixture: blank-lines/around-comments-and-directives] [fixture:
+blank-lines/block-edges-dropped]
 
 Input
 ([blank-lines/collapsed-input.mmd](../tests/fixtures/sequence/blank-lines/collapsed-input.mmd)):
@@ -252,11 +273,18 @@ sequenceDiagram
 ### Whitespace between tokens
 
 Within a line, a run of spaces and tabs between two tokens becomes one space,
-and tokens that touch keep touching, as in a flowchart. So `+`, `-`, and `()`
-next to an arrow or an id, the `,` of `note over A,B`, and a wrap prefix such as
-`wrap:` before its text keep whether whitespace is written next to them.
-Keywords keep the case in which they are written (`PARTICIPANT A`,
-`Note LEFT OF A`): mermaid.js reads them in any case.
+and tokens that touch keep touching, as in a flowchart. [fixture:
+whitespace-between-tokens/collapsed] [fixture:
+whitespace-between-tokens/tabs-collapsed] So `+`, `-`, and `()` next to an arrow
+or an id, the `,` of `note over A,B`, and a wrap prefix such as `wrap:` before
+its text keep whether whitespace is written next to them. [fixture:
+whitespace-between-tokens/collapsed] [fixture:
+arrow-spacing/plus-and-minus-kept] [fixture:
+arrow-spacing/parentheses-whitespace-kept] [fixture:
+whitespace-between-tokens/comma-whitespace-kept] [fixture:
+whitespace-between-tokens/wrap-prefix-kept] Keywords keep the case in which they
+are written (`PARTICIPANT A`, `Note LEFT OF A`): mermaid.js reads them in any
+case. [fixture: whitespace-between-tokens/keyword-case-kept]
 
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/collapsed-input.mmd)):
@@ -314,12 +342,20 @@ sequenceDiagram
 
 The whitespace inside a value is part of the value, and is kept: in the text of
 a message, a note, a block, a `box`, and a description after `as`, and in the
-JSON of `links` and `properties`. The text of a `box` is kept as a whole: when
-its first word is no colour, mermaid.js takes the whole text as the name of the
-box. The data block of a participant, `@{ ... }`, is kept as written and touches
-its id, since whitespace before `@{` makes the input rejected. A line that
-mermaid.js reads as nothing, such as `)` alone, is kept and stands at the level
-of the statements around it.
+JSON of `links` and `properties`. [fixture:
+whitespace-between-tokens/values-kept] [fixture:
+whitespace-between-tokens/values-of-other-statements-kept] The text of a `box`
+is kept as a whole: when its first word is no colour, mermaid.js takes the whole
+text as the name of the box. [fixture: whitespace-between-tokens/values-kept]
+[fixture: whitespace-between-tokens/box-text-kept] The data block of a
+participant, `@{ ... }`, is kept as written and touches its id, since whitespace
+before `@{` makes the input rejected. [fixture:
+whitespace-between-tokens/data-block-and-ignored-line-kept] [fixture:
+whitespace-between-tokens/actor-data-block-kept] A line that mermaid.js reads as
+nothing, such as `)` alone, is kept and stands at the level of the statements
+around it. [fixture: whitespace-between-tokens/data-block-and-ignored-line-kept]
+[corpus fixture: sequence/lex-invalid-line-parenthesis] [fixture:
+whitespace-between-tokens/ignored-line-in-block-kept]
 
 Input
 ([whitespace-between-tokens/values-kept-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/values-kept-input.mmd)):
@@ -374,9 +410,13 @@ sequenceDiagram
 ### Arrow spacing
 
 A message has one space before and after its arrow, as a flowchart link does:
-`Alice->>Bob: hi` becomes `Alice ->> Bob: hi`. The `+`, `-`, or `()` after the
-arrow, and the `()` before it, stay next to the id as written. The arrow is
-printed as written.
+`Alice->>Bob: hi` becomes `Alice ->> Bob: hi`. [fixture: arrow-spacing/spaced]
+The `+`, `-`, or `()` after the arrow, and the `()` before it, stay next to the
+id as written. [fixture: arrow-spacing/plus-and-minus-kept] [fixture:
+arrow-spacing/parentheses-whitespace-kept] The arrow is printed as written.
+[fixture: arrow-spacing/arrows-kept] Next to a directive, the whitespace written
+is kept, as under [Directives](#directives): `A%%{init: {}}%%->>B: v` has no
+space before its arrow. [fixture: arrow-spacing/directive-beside-arrow-kept]
 
 Input
 ([arrow-spacing/spaced-input.mmd](../tests/fixtures/sequence/arrow-spacing/spaced-input.mmd)):
@@ -415,6 +455,10 @@ and one or two digits, which must be followed by whitespace or `%%`; and
 `title`, in any case, followed by one whitespace character. So `1 ->> 2: x` is
 rejected, and `title ->> B: x` is a title, while `1->>2: x` and `title->>B: x`
 are messages. Ids such as `1a`, `1.234`, or `titles` are spaced as any other.
+[fixture: arrow-spacing/touching-before-read-otherwise-kept] [corpus fixture:
+sequence/lex-number-as-id] [corpus fixture: sequence/lex-number-before-space]
+[fixture: arrow-spacing/number-and-title-forms-kept] [fixture:
+arrow-spacing/near-misses-spaced]
 
 Input
 ([arrow-spacing/touching-before-read-otherwise-kept-input.mmd](../tests/fixtures/sequence/arrow-spacing/touching-before-read-otherwise-kept-input.mmd)):
@@ -444,9 +488,15 @@ sequenceDiagram
 
 The `:` before the text of a message, a note, and a `links`, `link`,
 `properties`, or `details` statement, and the `:` after `accTitle` and
-`accDescr`, touch what comes before them and have one space after them.
+`accDescr`, touch what comes before them and have one space after them, except
+next to a directive, where the whitespace written is kept (see
+[Directives](#directives)). [fixture: colons/spaced] [fixture:
+colons/other-statements-spaced] [fixture: colons/directive-around-colon-kept]
 mermaid.js reads the text without the whitespace at its ends. When the text is
-empty, nothing follows the `:`.
+empty, nothing follows the `:`. [fixture: colons/spaced] [fixture:
+colons/empty-text] A line break after the `:` of `accTitle` is whitespace for
+mermaid.js, so the next line is its text: an `accTitle:` with no text cannot
+stand before another statement. [fixture: colons/acc-title-colon-line-break]
 
 Input
 ([colons/spaced-input.mmd](../tests/fixtures/sequence/colons/spaced-input.mmd)):
@@ -479,13 +529,21 @@ sequenceDiagram
 ### Title
 
 `title` and `title:` are followed by one space, and the rest of the line is kept
-as written. mermaid.js reads one whitespace character after the keyword, which
-may be a line break, and keeps everything after it in the title, the whitespace
-at its start and at its end included. So `title`, a line break, and `A->>B: x`
-is printed as `title A->>B: x`, which shows that the next line is the title:
-mermaid.js reads it so. The whitespace at the end of a title is kept; that
-example is not shown here, because the whitespace is at the end of a line (see
-`title/trailing-whitespace-kept` in the
+as written. [fixture: title/directive-after-keyword-kept] mermaid.js reads one
+whitespace character after the keyword, which may be a line break, and keeps
+everything after it in the title, the whitespace at its start and at its end
+included. So `title`, a line break, and `A->>B: x` is printed as
+`title A->>B: x`, which shows that the next line is the title: mermaid.js reads
+it so. [fixture: title/separator] [corpus fixture:
+sequence/lex-title-line-break] [corpus fixture:
+sequence/db-title-next-line-indented] [fixture: title/tab-and-colon-line-break]
+[fixture: title/line-break-indented] The whitespace at the end of a title is
+kept. [fixture: title/trailing-whitespace-kept] [fixture:
+title/semicolon-after-whitespace-dropped] It is at the end of a line, so the
+example is written as strings, in which `\n` is a line break:
+`"sequenceDiagram\ntitle Kept   \nA->>B: x\n"` is printed as
+`"sequenceDiagram\n  title Kept   \n  A ->> B: x\n"`, with the three spaces
+after `Kept` kept (the fixture `trailing-whitespace-kept` is in the
 [folder](../tests/fixtures/sequence/title)).
 
 Input
@@ -514,7 +572,8 @@ as a statement written over several lines with a comment in it is (see
 [Multi-line statements](#multi-line-statements)). The comment line is removed
 before mermaid.js reads the text, so the line after it is the title; printed
 after the one space, the comment would stand on the line of the keyword, and the
-next line would be read as a statement.
+next line would be read as a statement. [fixture: title/comment-line-kept]
+[fixture: title/colon-comment-line-kept]
 
 Input
 ([title/comment-line-kept-input.mmd](../tests/fixtures/sequence/title/comment-line-kept-input.mmd)):
@@ -541,10 +600,17 @@ sequenceDiagram
 ### Comments
 
 A comment on a line of its own, `%%`, `#`, or `%`, stands at the level of the
-statements around it, and its text is kept as written. A comment after a
-statement stays on its line, and whether whitespace is written before its mark
-is kept: mermaid.js reads `autonumber 5%% c` without the number 5, and a space
-before `%%` would give it the number.
+statements around it, and its text is kept as written. [fixture: comments/kept]
+[corpus fixture: sequence/lex-single-percent-comment-line] [fixture:
+comments/percent-line-kept] [fixture: comments/block-edges-kept] [fixture:
+comments/text-whitespace-kept] A comment after a statement stays on its line,
+and whether whitespace is written before its mark is kept: mermaid.js reads
+`autonumber 5%% c` without the number 5, and a space before `%%` would give it
+the number. [fixture: comments/kept] [corpus fixture:
+sequence/lex-percent-comment-takes-number] [fixture:
+comments/mark-whitespace-kept] [fixture:
+comments/after-last-statement-without-line-break] [fixture:
+comments/block-end-comment-without-line-break]
 
 Input
 ([comments/kept-input.mmd](../tests/fixtures/sequence/comments/kept-input.mmd)):
@@ -578,9 +644,14 @@ sequenceDiagram
 
 A `;` that stands right after a comment on its line is kept: it is the last `;`
 of a line that the line rule of mermaid.js ignores, and the comment ends before
-it. Where whitespace follows that `;` in the source, the `;` lies inside the
-comment, and the comment is printed with it. Dropping it in one case and keeping
-it in the other would make a second formatting differ from the first.
+it. [fixture: comments/semicolon-after-comment-kept] [corpus fixture:
+sequence/tokens-comment-then-ignored-semicolon] [corpus fixture:
+sequence/tokens-loop-comment-then-ignored-semicolon] [fixture:
+comments/semicolon-after-percent-comment-kept] Where whitespace follows that `;`
+in the source, the `;` lies inside the comment, and the comment is printed with
+it. [fixture: comments/semicolon-inside-comment-kept] Dropping it in one case
+and keeping it in the other would make a second formatting differ from the
+first.
 
 Input
 ([comments/semicolon-after-comment-kept-input.mmd](../tests/fixtures/sequence/comments/semicolon-after-comment-kept-input.mmd)):
@@ -608,45 +679,85 @@ sequenceDiagram
 
 U+2028 and U+2029 are whitespace, but some readings of mermaid.js depend on
 them, so the formatter keeps them where they matter. The characters are
-invisible, so there is no example here; the tests write them as escapes (see
-`tests/line-separators.test.ts`).
+invisible, so the example is written as strings, in which `\u2028` is U+2028 and
+`\n` is a line break: `"sequenceDiagram\nbox red\u2028\nparticipant A\nend\n"`
+is printed as `"sequenceDiagram\n  box red\u2028\n    participant A\n  end\n"`,
+with the character kept at the end of the text of the `box`. The tests write the
+characters as escapes too (see
+[tests/line-separators.test.ts](../tests/line-separators.test.ts)).
 
 - At the end of the text of a `box`, after the whitespace that may stand before
   them. mermaid.js gives a box whose text holds such a character the fill
   `transparent` and no name, and without it `box aqua` has the fill `aqua`. The
-  whitespace after the last of them is dropped.
+  whitespace after the last of them is dropped. A block header other than a box,
+  `loop x`, U+2028, and ` ;` for one, is trimmed by mermaid.js, and the
+  character is dropped with the whitespace at the end of its text. [test: U+2028
+  at the end of the text of a box] [test: whitespace around U+2028 at the end of
+  the text of a box] [test: U+2029 at the end of the text of a box] [test:
+  whitespace around U+2029 at the end of the text of a box]
 - Between a comment and the comment line that follows it on the same line. A
   diagram comment goes on past such a comment line to the next line, so a line
   break in place of the character would turn the text after it into a statement.
-  The comment, the comment line, and the text after it are printed as written,
-  without indentation: the tree lists them as comments, and the printer reads
-  them as one.
+  [corpus fixture: sequence/lex-hash-comment-across-comment-line] The comment,
+  the comment line, and the text after it are printed as written, without
+  indentation: the tree lists them as comments, and the printer reads them as
+  one. [test: a `#` comment after U+2028, which joins no lines] [test: a `%%`
+  comment line after U+2028, which joins the next line] [test: U+2029 after a
+  comment that a comment line follows] [test: U+2028 after a `%%` comment that a
+  comment line follows] [test: U+2029 after a `%` comment that a comment line
+  follows]
 - Right after a directive that is not closed. The text of such a directive stops
   before the character, which is no whitespace to it: with the character printed
   as a space or a line break, the directive would reach the rest of the text.
-  This holds in every diagram type.
+  This holds in every diagram type. [test: U+2028 after a directive that is not
+  closed] [test: U+2029 after a directive that is not closed] [test: a `;` after
+  U+2029 after a directive that is not closed]
 - As the whitespace character that follows `title`: `title`, U+2028, and ` ;`
-  stays as written, with the `;`.
+  stays as written, with the `;`. [test: U+2028 as the whitespace character
+  after `title`, with a `;` after it] [test: U+2029 as the whitespace character
+  after `title`]
 - Between two parts of a statement, in every diagram type: the whitespace
   between them stays as written when it holds a U+2028 or U+2029, since the
   character is not whitespace to every rule of mermaid.js (`class A`, U+2028,
   and ` direction LR` is one name, while `class A`, a line break, and
-  ` direction LR` is a statement and a direction).
+  ` direction LR` is a statement and a direction). [test: U+2028 between an id
+  and an arrow] [test: U+2029 between an arrow and an id] [test: U+2028 between
+  an id and `as`]
 - On a line that holds a `;` that the line rule ignores and, after it, a U+2028
   or U+2029: the line rule reads the text up to the character as the line, so
-  the line is printed as written.
+  the line is printed as written. A `;` inside a diagram comment is part of the
+  comment, which is kept as written, and the rest of the line is formatted.
+  [test: a `;` after an ignored `;` and U+2029, which the line rule reads as the
+  end of its line] [test: statements after an ignored `;`, with a U+2029 later
+  on the line]
 - A `;` after a U+2028 or U+2029 that the printer keeps, such as the one at the
   end of the text of a `box`, a title, or a subgraph name. mermaid.js removes a
   comment line that starts right after U+2028 or U+2029 with the line breaks
   before it, so the `;` between them keeps the line break and a comment line
   after it from joining the next line: `box red`, U+2028, `;`, and a line `%% c`
-  end the text of the box at the `;`.
+  end the text of the box at the `;`. [corpus fixture:
+  sequence/line-end-semicolons-2636cb4a] [corpus fixture:
+  sequence/kept-semicolon-after-separator-05ce7bd7] [test: a `;` after U+2028 at
+  the end of the text of a box] [test: a `;` after U+2028 at the end of a title]
+
+A line that dropping a `;` would change the end of, or the `;` that the line
+rule ignores in, is printed as written: a `;` after a directive that is not
+closed, an ignored `;` next to another `;`, and one before a U+2028 or U+2029
+(see [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)). [corpus
+fixture: sequence/ignored-semicolon-after-directive-06349fee] [corpus fixture:
+sequence/ignored-semicolon-then-separator-line-15c6520f] [fixture:
+statements-one-per-line/unclosed-directive-semicolon-kept] [fixture:
+statements-one-per-line/ignored-semicolon-next-to-semicolon-kept]
 
 ### Directives
 
 As in a flowchart: a directive on a line of its own stands at the level of the
-statements around it, and a directive on the line of a statement keeps the
-whitespace written on each side of it.
+statements around it, and a directive on the line of a statement keeps whether
+whitespace is written on each side of it: where it is, one space stands there,
+and where the directive touches a token, it keeps touching. [fixture:
+directives/kept] [fixture: directives/section-edges-kept] [fixture:
+directives/whitespace-on-each-side-kept] [fixture: directives/touching-kept]
+[fixture: directives/block-lines-kept]
 
 Input
 ([directives/kept-input.mmd](../tests/fixtures/sequence/directives/kept-input.mmd)):
@@ -676,7 +787,12 @@ sequenceDiagram
 
 As in a flowchart: the YAML between the `---` lines is formatted with Prettier's
 YAML formatter where that is safe (see
-[Frontmatter YAML](./flowchart.md#frontmatter-yaml)).
+[Frontmatter YAML](./flowchart.md#frontmatter-yaml)). [fixture:
+frontmatter-yaml/formatted] [fixture: frontmatter-yaml/malformed-kept] [fixture:
+frontmatter-yaml/indented-delimiters-kept] [fixture:
+frontmatter-yaml/delimiter-line-kept] [fixture:
+frontmatter-yaml/closing-delimiter-whitespace-kept] [fixture:
+frontmatter-yaml/html-tag-kept]
 
 Input
 ([frontmatter-yaml/formatted-input.mmd](../tests/fixtures/sequence/frontmatter-yaml/formatted-input.mmd)):
@@ -708,28 +824,39 @@ statement, and the lexer reads the whitespace and the line breaks after it as
 whitespace (the specification's
 [The statement context](../../spec/docs/diagrams/sequence.md#the-statement-context),
 rule 2). So `Alice ->>`, a space, a line break, and `Bob: hi` is printed as
-`Alice ->> Bob: hi`.
+`Alice ->> Bob: hi`. [fixture: multi-line-statements/joined] [fixture:
+multi-line-statements/more-lines-joined]
 
 A statement written over several lines with a comment, a directive, or a `;` in
-it is kept as written, from its start to its end. It cannot stand on one line,
-and only the whitespace at the ends of its lines, which the formatter does not
+it is kept as written, from its start to its end. [fixture:
+multi-line-statements/comment-inside-kept] [fixture:
+multi-line-statements/semicolon-inside-kept] [fixture:
+multi-line-statements/start-moves-to-own-line] It cannot stand on one line, and
+only the whitespace at the ends of its lines, which the formatter does not
 write, makes mermaid.js read its lines as one statement. A title with a comment
 line between its keyword and its text is such a statement. The lines of an
 `accDescr { ... }` block are lines of its text (see
 [Multi-line values](#multi-line-values)).
 
-The examples are not shown here, because their inputs have whitespace at the
-ends of lines (see the
-[folder](../tests/fixtures/sequence/multi-line-statements)).
+The inputs have whitespace at the ends of lines, so the example is written as
+strings, in which `\n` is a line break:
+`"sequenceDiagram\nAlice ->> \nBob: hi\nautonumber \n  10 5\n"` is printed as
+`"sequenceDiagram\n  Alice ->> Bob: hi\n  autonumber 10 5\n"` (the fixtures are
+in the [folder](../tests/fixtures/sequence/multi-line-statements)).
 
 ### Multi-line values
 
 As in a flowchart: the lines of an `accDescr { ... }` block and of a data block
 written over several lines are kept as written, and the `}` of an `accDescr`
-block stands at the level of its statement. A block without text, whose lines
-are only comment lines, holds no value: its comment lines stand one level deeper
-than the `accDescr`, as comment lines inside a statement do, and its `}` at the
-level of the `accDescr`.
+block stands at the level of its statement. [fixture: multi-line-values/kept]
+[fixture: multi-line-values/accdescr-block-closing-brace-after-text-kept]
+[fixture: multi-line-values/accdescr-block-blank-and-comment-lines-kept]
+[fixture: multi-line-values/data-block-in-block-kept] A block without text,
+whose lines are only comment lines, holds no value: its comment lines stand one
+level deeper than the `accDescr`, as comment lines inside a statement do, and
+its `}` at the level of the `accDescr`. [fixture:
+multi-line-values/accdescr-block-comment-only] [fixture:
+multi-line-values/accdescr-block-without-text-kept]
 
 Input
 ([multi-line-values/kept-input.mmd](../tests/fixtures/sequence/multi-line-values/kept-input.mmd)):

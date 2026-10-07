@@ -178,6 +178,8 @@ export interface FlowchartClassStatement extends TreeNode {
 export interface FlowchartClickCallbackStatement extends TreeNode {
   readonly type: "FlowchartClickCallbackStatement"
   readonly ids: readonly (Identifier | null)[]
+  readonly callback: Identifier | FlowchartLiteral
+  readonly arguments: FlowchartLiteral | null
   readonly tooltip: StringLiteral | null
 }
 

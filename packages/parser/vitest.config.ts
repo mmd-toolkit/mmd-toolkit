@@ -13,10 +13,6 @@ const config: ViteUserConfig = defineConfig({
       // Test against the source of @mmd-toolkit/tests, as the root tsconfig
       // `paths` do, so that the tests do not depend on a stale build.
       {
-        find: /^@mmd-toolkit\/tests\/(mermaid|mutation)$/u,
-        replacement: local("../tests/src/$1.ts"),
-      },
-      {
         find: /^@mmd-toolkit\/tests$/u,
         replacement: local("../tests/src/index.ts"),
       },

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The converted form leaves out the `;` that the line rule ignores. The line has `style:#x;` and the note text is `style:#xy`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [
+      {
+        "id": "note0",
+        "text": "style:#xy"
+      }
+    ],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

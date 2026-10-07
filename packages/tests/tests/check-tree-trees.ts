@@ -16,7 +16,7 @@ import type { TreeRange } from "../src/db-from-tree/tree.ts"
 // object.
 
 /** Line and column of `offset`, counting `\r\n`, `\r`, and `\n` as one line terminator each. */
-function positionOf(source: string, offset: number): Position {
+export function positionOf(source: string, offset: number): Position {
   let line = 1
   let lineStart = 0
   for (let index = 0; index < offset; index++) {

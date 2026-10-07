@@ -88,6 +88,16 @@ goes one way only: mermaid.js accepts and this specification rejects. The
 flowchart document lists the places in its
 [Known divergences](../diagrams/flowchart.md#known-divergences).
 
+## What it means for an author
+
+The word `click` is easy to write in the name of a subgraph or in other text
+without quotes. mermaid.js then reads it as the start of a click, discards the
+word after it, and may join the next line to the text, as in example 1, without
+a word. This toolkit rejects the input and reports the reserved word. To write
+the word as text, put the text in quotes: with `subgraph "Handle click events"`,
+both read that title and the vertex A in the subgraph. [fixture:
+flowchart/gram-subgraph-name-string-click]
+
 ## Why mermaid.js reads it so
 
 The lexer of mermaid.js enters its click context at every `click` followed by
@@ -107,16 +117,6 @@ anywhere else is rejected.
 The maintainers of mermaid.js treat `click` as reserved, and treat its use
 elsewhere as a defect (see below). This is the third of the reasons for a known
 divergence (see [known-divergences.md](../known-divergences.md)).
-
-## What it means for an author
-
-The word `click` is easy to write in the name of a subgraph or in other text
-without quotes. mermaid.js then reads it as the start of a click, discards the
-word after it, and may join the next line to the text, as in example 1, without
-a word. This toolkit rejects the input and reports the reserved word. To write
-the word as text, put the text in quotes: with `subgraph "Handle click events"`,
-both read that title and the vertex A in the subgraph. [fixture:
-flowchart/gram-subgraph-name-string-click]
 
 ## The documentation of mermaid.js and its issues
 

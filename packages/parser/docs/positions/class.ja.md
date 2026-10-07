@@ -3,7 +3,8 @@
 英語版: [class.md](./class.md)
 
 この文書は、`@mmd-toolkit/parser` が作る木の、この図種のノードの範囲を定めます。
-すべての図種に共通する決まりは [positions.ja.md](../positions.ja.md) にあります。
+すべての図種に共通する決まりは
+[positions.ja.md](../positions.ja.md) にあります。
 ノードは仕様の [`ast/class.ja.md`](../../../spec/docs/ast/class.ja.md) が、
 トークンは [tokens/class.ja.md](../tokens/class.ja.md) が定めます。
 
@@ -14,12 +15,8 @@
 
 ### ClassDiagram
 
-範囲は、ヘッダーのキーワードから、
-`Directive` と `IgnoredSemicolon` のトークンを除く図のテキストの
-最後のトークンまでで、
-どの文にも属さないトークンも含みます。
-どの図の `Root.body` のノードとも同じです
-（[ノード](../../../spec/docs/ast.ja.md#ノード) を参照）。
+範囲は、どの図の `Root.body` のノードとも同じ定めに従います
+（[ノードの範囲](../positions.ja.md#ノードの範囲) を参照）。
 
 ### ClassArrow
 
@@ -30,10 +27,12 @@
 ### ClassDirectionStatement
 
 範囲は方向の行の全体です。
+[fixture: class/lex-direction-line-in-label]
 
 ### ClassAnnotation
 
 範囲は `<<` から `>>` までです。
+[fixture: class/db-annotation-after-relation]
 
 ### ClassLiteral
 

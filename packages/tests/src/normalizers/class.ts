@@ -1,4 +1,5 @@
 import type { DbSummary, JsonObject } from "../types.ts"
+import { clickCallsField, recordClickCall } from "./click-calls.ts"
 import { omit, toJsonObject } from "./json.ts"
 
 /**
@@ -26,6 +27,11 @@ interface ClassDbLike {
  * lollipop relations, which the renderer draws; in the order the Db holds
  * them. A namespace lists its classes, notes and child namespaces by id.
  *
+ * Added: `clickCalls`, the calls that bind a click callback, as the Db
+ * received them (see `src/normalizers/click-calls.ts`): `ClassDB` keeps the
+ * function name and arguments only inside closures, and only under
+ * `securityLevel: loose`.
+ *
  * Dropped:
  *
  * - `classes[].domId` and `namespaces[].domId`: DOM ids built from counters,
@@ -35,8 +41,6 @@ interface ClassDbLike {
  * - `notes[].index`: the number in the note's id.
  * - The class definitions (`classDef`): the Db keeps them in a private map
  *   that nothing reads; what they change shows in `classes[].styles`.
- * - Click callbacks: the Db keeps the function name and arguments only inside
- *   closures.
  * - Whitespace at the end of each style value (`classes[].styles`), which the
  *   grammar keeps before a comma or the end of the line and nothing reads, as
  *   in the flowchart summary.
@@ -58,6 +62,7 @@ export function normalizeClass(dbValue: unknown): DbSummary {
     ),
     namespaces: [...db.getNamespaces().values()].map(namespaceSummary),
     interfaces: db.interfaces.map((item) => toJsonObject(item)),
+    ...clickCallsField(db),
   }
 }
 
@@ -122,6 +127,10 @@ const UNSET = Symbol("link not set by this call")
  * Prepares `ClassDB` for summarizing. Applied to the prototype; the
  * constructor binds `this.setLink` from it.
  *
+ * Each call that binds a click callback is recorded (see
+ * `src/normalizers/click-calls.ts`): the Db keeps the function name and the
+ * arguments only in a closure, and only under `securityLevel: loose`.
+ *
  * Click links are kept as written. `ClassDB.setLink` stores
  * `utils.formatUrl(linkStr, config)`, which passes the URL through
  * `@braintree/sanitize-url` unless `securityLevel` is `loose`, and sets the
@@ -137,10 +146,30 @@ const UNSET = Symbol("link not set by this call")
  * their link back.
  */
 export function patchClassDb(prototype: object): void {
-  const target = prototype as { setLink?: unknown }
+  const target = prototype as { setLink?: unknown; setClickFunc?: unknown }
   const originalSetLink = target.setLink
   if (typeof originalSetLink !== "function") {
     throw new TypeError("patchClassDb: ClassDB has no setLink method")
+  }
+  const originalSetClickFunc = target.setClickFunc
+  if (typeof originalSetClickFunc !== "function") {
+    throw new TypeError("patchClassDb: ClassDB has no setClickFunc method")
+  }
+  target.setClickFunc = function setClickFunc(
+    this: object,
+    domId: unknown,
+    functionName: unknown,
+    functionArgs: unknown,
+  ): void {
+    // The Db returns before it keeps the call unless `securityLevel` is
+    // `loose`, and keeps it in a closure; record it as it comes.
+    recordClickCall(this, domId, functionName, functionArgs)
+    ;(originalSetClickFunc as (...args: unknown[]) => void).call(
+      this,
+      domId,
+      functionName,
+      functionArgs,
+    )
   }
   target.setLink = function setLink(
     this: ClassDbLike,

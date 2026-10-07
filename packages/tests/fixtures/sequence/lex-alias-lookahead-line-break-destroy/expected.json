@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "sequence.md The alias context, rule 4: after `destroy A`, the statement ends at the line feed, and the next line is the message from `as` to A that the destroy awaits."
+    "note": "sequence.md The alias context, rule 3: after `destroy A`, the statement ends at the line feed, and the next line is the message from `as` to A that the destroy awaits."
   },
   "accepted": true,
   "diagramType": "sequence",

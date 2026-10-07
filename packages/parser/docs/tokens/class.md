@@ -23,10 +23,31 @@ that this table gives for the item:
 | `RawText`    | the text units of [Directives inside units](../../../spec/docs/diagrams/class.md#directives-inside-units); a style, and the name parts and `.` units of a class name or a namespace name, are each one item with all their units            |
 | `Punctuator` | the `:` of a `label` unit and the `:` after `accTitle` and `accDescr`; `{`, `}`, `[`, `]`, `:::`, `<<`, `>>`, `~`, `(`, `)`, and `,`; each relation end and line; a `visibility` or `classifier` unit                                       |
 
+[fixture: class/gram-name-alone] [fixture: class/gram-name-dots] [fixture:
+class/db-namespace-name-parts] [fixture: class/tokens-style-words-joined]
+[fixture: class/gram-class-def-names] [fixture:
+class/db-css-class-undefined-class] [fixture: class/db-callback-undefined-class]
+[fixture: class/gram-link-target] [fixture:
+class/gram-click-call-empty-parentheses] [fixture:
+class/db-note-for-undefined-class] [fixture: class/db-click-href] [fixture:
+class/db-acc-title-entity] [fixture: class/lex-acc-descr-space-before-colon]
+[fixture: class/gram-acc-descr-block-with-text] [fixture:
+class/lex-direction-line-value-then-text] [fixture: class/db-css-class-digit]
+[fixture: class/db-annotation-after-relation] [fixture:
+class/db-backquoted-name-unclosed] [fixture: class/db-relation-label-spaces]
+[fixture: class/tokens-method-fields] [fixture:
+class/db-member-annotation-spaces] [fixture:
+class/lex-member-method-line-separator-after] [fixture: class/db-generic-spaces]
+[fixture: class/db-class-label-type] [fixture:
+class/lex-relation-without-whitespace] [fixture: class/lex-aggregation-end]
+[fixture: class/lex-member-attribute-dollar-classifier]
+
 A `String` token that a comment region or a directive cuts becomes
 `StringFragment` tokens (see
 [Comment regions in tokens](../tokens.md#comment-regions-in-tokens) and
 [A token that a directive cuts](../tokens.md#a-token-that-a-directive-cuts)).
+[fixture: class/tokens-comment-region-in-click-string] [fixture:
+class/lex-backquote-unclosed-directive-inside]
 
 A **token** is a maximal run of units of one item and one kind that follow one
 another with nothing between them, and, for the `RawText` items other than a
@@ -37,13 +58,29 @@ no whitespace at its ends, except where mermaid.js reads it as part of a value
 unit, and of a backquoted name that is not closed holds the whole unit, as
 [Member lines](../../../spec/docs/diagrams/class.md#member-lines) and
 [Strings, backquoted names, and generic types](../../../spec/docs/diagrams/class.md#strings-backquoted-names-and-generic-types)
-define it. A directive, a comment region, or an ignored `;` inside such a run
-cuts it into fragments, as
+define it, [fixture: class/db-generic-spaces] [fixture:
+class/db-member-annotation-spaces] [fixture: class/db-member-name-space]
+[fixture: class/db-method-return-type-space-before-classifier] [fixture:
+class/tokens-backquote-unclosed-trailing-whitespace] and the token of a
+`callback-name` unit holds the whitespace before the `(` after it, and that of a
+`callback-arguments` unit the whitespace and line feeds at its ends:
+`click A call fn ()` has the token `fn` with the space after it, and
+`click A call f( x, y )` the arguments `x, y` with their spaces. [fixture:
+class/tokens-callback-name-trailing-space] [fixture:
+class/tokens-callback-arguments-spaces-at-ends] [fixture:
+class/tokens-callback-arguments-line-feeds-at-ends] A directive, a comment
+region, or an ignored `;` inside such a run cuts it into fragments, as
 [A token that a directive cuts](../tokens.md#a-token-that-a-directive-cuts)
 says, when the run is a `RawText` or a `String` token; inside a run of any other
 kind, a directive or an ignored `;` makes the input rejected, also between two
 of its units (see
 [Directives inside units](../../../spec/docs/diagrams/class.md#directives-inside-units)).
+[fixture: class/lex-directive-in-dotted-name] [fixture:
+class/tokens-comment-region-in-backquoted-name] [fixture:
+class/tokens-style-ignored-semicolon-after-space] [fixture:
+class/div-directive-in-keyword] [fixture: class/div-directive-in-line] [fixture:
+class/div-directive-in-triple-colon] [fixture:
+class/div-ignored-semicolon-in-relation-line]
 
 - A class name or a namespace name of name parts is one `RawText` token for each
   run of them without whitespace between them: `Foo-Bar` and `a.b.C` are one
@@ -52,7 +89,8 @@ of its units (see
   any text: `class A%%{init: {}}%%.B` has the tokens `A` and `.B` and the
   ClassIdentifier `A.B`. [fixture: class/gram-name-spaces] [fixture:
   class/gram-name-dash-spaces] [fixture: class/lex-directive-in-dotted-name]
-  [fixture: class/tokens-ignored-semicolon-in-relation-name]
+  [fixture: class/gram-name-dots] [fixture:
+  class/tokens-ignored-semicolon-in-relation-name]
 - A label is one unit, from its `:`, and two tokens: the `:` and the text
   without the whitespace around it. In a member statement, the text is a member
   line, divided into the tokens of its parts. [fixture: class/lex-label-percent]
@@ -74,12 +112,13 @@ of its units (see
   `: #f00 , stroke-width`. [fixture: class/tokens-style-comma-unit] [fixture:
   class/db-style-spaces]
 - In a click statement with `call`, the `(` and `)` belong to the statement; the
-  `call` token and the `(` and `)` tokens are in its range.
+  `call` token and the `(` and `)` tokens are in its range. [fixture:
+  class/gram-click-call-empty-parentheses]
 - The two `~` of a generic type are `Punctuator` tokens of the ClassName, also
-  when nothing is between them.
+  when nothing is between them. [fixture: class/db-generic-blank]
 - The units of a relation end and of a line are each one `Punctuator` token,
   also when no whitespace separates them: `<|--` is the two tokens `<|` and
-  `--`.
+  `--`. [fixture: class/lex-relation-without-whitespace]
 - The keyword `note for` is two `Keyword` tokens, one for each word. A directive
   next to the space between the words lies between the two tokens:
   `note%%{init: {}}%% for A "t"` is a note for A, as in mermaid.js. [fixture:
@@ -103,8 +142,8 @@ of its units (see
   `IgnoredSemicolon` token, also with a space before it, and so is the `;` after
   the text in `accTitle: style:#x;` and in a member line `+x style:#a;`. In a
   member line `+x style:#a; b`, the `;` cuts the name into the `RawText` tokens
-  `x style:#a` and `b`, and the name is `x style:#a b`. [fixture:
-  class/tokens-style-ignored-semicolon] [fixture:
+  `x style:#a` and ` b`, with the space after the `;`, and the name is
+  `x style:#a b`. [fixture: class/tokens-style-ignored-semicolon] [fixture:
   class/tokens-style-space-ignored-semicolon] [fixture:
   class/tokens-class-def-ignored-semicolon] [fixture:
   class/tokens-acc-title-ignored-semicolon] [fixture:

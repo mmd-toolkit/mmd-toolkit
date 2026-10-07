@@ -40,6 +40,13 @@
     "relations": [],
     "notes": [],
     "namespaces": [],
-    "interfaces": []
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "Class1",
+        "name": "functionCall",
+        "args": "\"test0\", test1, test2"
+      }
+    ]
   }
 }

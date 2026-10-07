@@ -4,6 +4,7 @@ import type {
   FlowchartDirectionStatement,
   FlowchartIgnoredText,
   Range,
+  Root,
   Token,
 } from "@mmd-toolkit/parser"
 import { parse, traverseNodes } from "@mmd-toolkit/parser"
@@ -146,6 +147,24 @@ function indentationOf(sourceCode: MermaidSourceCode, line: number): string {
 }
 
 /**
+ * The line terminator that the text uses at the line `line` (counted from 1):
+ * the one that ends the line; for the last line, which has none, the one that
+ * ends the line before it; for a text of one line, `\n`. A line break that
+ * the rule adds is of that kind.
+ */
+function lineTerminatorOf(sourceCode: MermaidSourceCode, line: number): string {
+  const { text } = sourceCode
+  const start = sourceCode.getIndexFromLoc({ line, column: 0 })
+  for (let index = start; index < text.length; index++) {
+    if (text[index] === "\r") return text[index + 1] === "\n" ? "\r\n" : "\r"
+    if (text[index] === "\n") return "\n"
+  }
+  if (text[start - 1] === "\r") return "\r"
+  if (text[start - 1] === "\n") return text[start - 2] === "\r" ? "\r\n" : "\n"
+  return "\n"
+}
+
+/**
  * `source` with each of `ranges`, which are in order and do not overlap,
  * replaced with `lineBreak`; and, for each of them, where its line break
  * starts in the result.
@@ -165,6 +184,30 @@ function applySplit(
     copied = range[1]
   }
   return { text: text + source.slice(copied), breaks }
+}
+
+/**
+ * Whether the `;` at `index` in the tree `root` is a statement of its own, an
+ * empty statement, which ends no statement before it (as after a description
+ * block) and is a member of a subgraph.
+ */
+function statementOfItsOwn(root: Root, index: number): boolean {
+  let found = false
+  traverseNodes(root, {
+    enterNode(statement) {
+      if (
+        statement.type === "FlowchartEmptyStatement" &&
+        statement.range[0] <= index &&
+        index < statement.range[1]
+      ) {
+        found = true
+      }
+    },
+    leaveNode() {
+      // Each statement is checked on entering it.
+    },
+  })
+  return found
 }
 
 /**
@@ -192,10 +235,11 @@ function splitIsRead(
   }
   if (
     split.keepsSeparators &&
-    !breaks.every((index) =>
-      root.tokens.some(
-        (token) => token.range[0] === index - 1 && isSemicolonToken(token),
-      ),
+    !breaks.every(
+      (index) =>
+        root.tokens.some(
+          (token) => token.range[0] === index - 1 && isSemicolonToken(token),
+        ) && !statementOfItsOwn(root, index - 1),
     )
   ) {
     return false
@@ -243,7 +287,7 @@ function splitSuggestions(
     if (each === null) return []
     breaks.push(each)
   }
-  const lineBreak = `\n${indentationOf(sourceCode, node.loc.start.line)}`
+  const lineBreak = `${lineTerminatorOf(sourceCode, node.loc.start.line)}${indentationOf(sourceCode, node.loc.start.line)}`
   const split = [
     { ranges: breaks.map((each) => each.keep), keepsSeparators: true },
     { ranges: breaks.map((each) => each.drop), keepsSeparators: false },

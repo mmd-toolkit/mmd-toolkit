@@ -51,8 +51,8 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 
 - 図のテキストを単位に分ける字句解析器（`src/diagrams/<図種>/units.ts`）
 - 単位の上の再帰下降パーサー（`src/diagrams/<図種>/grammar.ts`）
-- 単位から記録する、図の木の文書のトークン
-  （[`ast/flowchart.md`](../../spec/docs/ast/flowchart.ja.md) など）
+- 単位から記録する、図のトークンの文書が定めるトークン
+  （[`tokens/flowchart.md`](./tokens/flowchart.ja.md) など）
 
 どの図の字句解析器とパーサーも同じように行うことは、それぞれ 1 か所にあります。
 単位とその読み方は `src/diagram-units.ts` にあります。
@@ -82,9 +82,9 @@ flowchart では `subgraph-members.ts`、
 
 flowchart の subgraph の Db の id は、1 か所で作ります。
 `src/diagrams/flowchart/subgraph-ids.ts` が、単位から、
-名前のテキストの範囲と
-[Subgraphs](../../tests/docs/db-from-tree/flowchart.ja.md#木から要約を作る)
-の規則で作ります。
+名前のテキストの範囲と、
+[文法の外での拒否](../../spec/docs/diagrams/flowchart.ja.md#文法の外での拒否)
+の subgraph の id の規則で作ります。
 文法は、mermaid.js が Db を作るときに行う拒否のために、
 subgraph の要素についてこれを読みます。
 
@@ -94,7 +94,7 @@ subgraph の要素についてこれを読みます。
 （[ディレクティブはトークンの境界](../../spec/docs/common.ja.md#ディレクティブはトークンの境界)、
 [`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)）。
 単位が読み通すコメントの領域のところでも切ります
-（[`ast.md` の Comment](./tokens.ja.md#comment)）。
+（[`tokens.md` の Comment](./tokens.ja.md#comment)）。
 そのため、領域の中のコメントの `%%` より前のディレクティブは、
 どのトークンの外にもあります。
 `String` のトークンの断片は、`StringFragment` のトークンです。
@@ -116,17 +116,6 @@ subgraph の要素についてこれを読みます。
 テストと同じく、`@mmd-toolkit/tests` をそのソースから読むためです。
 `packages/parser` で実行します。
 
-- `pnpm run compare-with-mermaid <ファイル>`:
-  `<ファイル>` は、入力の文字列の JSON の配列です。
-  入力ごとに、入力と、`parse()` と pin した mermaid.js が一致するかを出します。
-  `same: accepted, same Db`、`same: rejected`、または `DIFF:` と、
-  2 つの受理・拒否か 2 つの Db の要約です。
-  `parse()` が `ParseError` 以外を投げたとき、
-  または `@mmd-toolkit/tests` の木の検査（`checkTree`）が、
-  木の破る条件を挙げたときは、`BUG or broken tree:` を出します。
-  木の Db の要約は、`@mmd-toolkit/tests` が記録した木から作るのと同じに
-  （`dbFromTree`）作るので、
-  既知の差異に当たる入力は `DIFF` になります。
 - `pnpm run show-trees <図種> <fixture>...`:
   各 fixture の入力と、`ast.json` の木を出します。
   ノードは 1 行に 1 つで、親の下に字下げします。
@@ -145,8 +134,3 @@ subgraph の要素についてこれを読みます。
   違いの種類は、リストの位置を除いた、同じノードの型の同じ欄か、
   エラーの同じ欄です。
   その後に、違いを 1 つずつ、前と後の値とともに出します。
-
-`tools/explore/` には探索があります。
-探索は、テストとは別に、入力を生成して pin した mermaid.js と比べます。
-`pnpm run explore` が回します
-（[`testing.md`](./testing.ja.md#mermaidjs-と比べる探索)を見てください）。

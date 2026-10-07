@@ -29,12 +29,17 @@ This rule reports either of these directives. It applies to every diagram type.
 
 ### In each diagram type
 
-What the rule finds in a diagram type is added here when that diagram type is
-supported.
+What a reported directive leaves out depends on the diagram type.
 
 - flowchart: The setting `"flowchart": {"inheritDir": true}` gives a subgraph
   the direction of the diagram. In such a directive with a comma after the last
   entry, or named `INIT`, the subgraph gets no direction.
+- sequence: The setting `"sequence": {"wrap": true}` wraps the text of the
+  participants and the messages. In such a directive, the text is not wrapped.
+- class: The settings of such a directive, such as `"theme": "dark"`, are not
+  applied, and the class diagram is drawn without them.
+- state: The settings of such a directive, such as `"theme": "dark"`, are not
+  applied, and the state diagram is drawn without them.
 
 The examples are flowcharts.
 

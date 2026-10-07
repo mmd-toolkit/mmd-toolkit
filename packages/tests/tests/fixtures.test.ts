@@ -28,6 +28,15 @@ const DIAGRAMS: readonly DiagramType[] = [
 /** Every fixture, read once for all the tests of this file. */
 let allFixtures: Fixture[]
 
+/** The fixture `name` of the diagram type `diagram`. */
+function named(diagram: string, name: string): Fixture {
+  const found = allFixtures.find(
+    (fixture) => fixture.diagram === diagram && fixture.name === name,
+  )
+  if (found === undefined) throw new Error(`no fixture ${diagram}/${name}`)
+  return found
+}
+
 /** The fixtures of `diagram`. */
 function fixturesOf(diagram: DiagramType): Fixture[] {
   return allFixtures.filter((fixture) => fixture.diagram === diagram)
@@ -221,15 +230,6 @@ describe("fixtures", () => {
   })
 
   it("builds the embedded values of a fixture from the defaults, its config and what it records", () => {
-    /** The fixture `name` of the diagram type `diagram`. */
-    function named(diagram: string, name: string): Fixture {
-      const found = allFixtures.find(
-        (fixture) => fixture.diagram === diagram && fixture.name === name,
-      )
-      if (found === undefined) throw new Error(`no fixture ${diagram}/${name}`)
-      return found
-    }
-
     /** The value of `flowchart.inheritDir` in the embedded values of `fixture`. */
     function inheritDirOf(fixture: Fixture): unknown {
       const config = embeddedValuesOf(fixture)?.config as {
@@ -252,6 +252,33 @@ describe("fixtures", () => {
         named("common", "frontmatter-title-escaped-quotes-in-tag"),
       )?.title,
     ).toBeDefined()
+  })
+
+  it("takes the embedded values from the specified reading, which may be a rejection", () => {
+    // mermaid.js accepts the input and records the title `<a`; the specified
+    // reading rejects it, so there are no values to give by default.
+    const rejectedWhenSpecified = named(
+      "flowchart",
+      "html-tag-starts-in-frontmatter",
+    )
+    expect(rejectedWhenSpecified.specified?.accepted).toBe(false)
+    expect(embeddedValuesOf(rejectedWhenSpecified)).toBeUndefined()
+    expect(
+      embeddedValuesOf(rejectedWhenSpecified, rejectedWhenSpecified.expected)
+        ?.title,
+    ).toBe("<a")
+
+    // mermaid.js rejects the input; the specified reading accepts it, with
+    // the values of its own.
+    const acceptedWhenSpecified = named(
+      "flowchart",
+      "html-tag-starts-in-frontmatter-value",
+    )
+    expect(acceptedWhenSpecified.expected.accepted).toBe(false)
+    expect(embeddedValuesOf(acceptedWhenSpecified)?.title).toBe("<a z='")
+    expect(
+      embeddedValuesOf(acceptedWhenSpecified, acceptedWhenSpecified.expected),
+    ).toBeUndefined()
   })
 
   it("holds the default configuration, which the recorded configurations differ from", () => {

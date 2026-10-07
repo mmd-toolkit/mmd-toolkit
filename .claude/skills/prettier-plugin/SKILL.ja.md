@@ -5,7 +5,7 @@ description:
   printers after mermaid.js is updated. Use when the parser supports a new
   diagram type and its formatting is to be decided and implemented, or when the
   pinned mermaid.js changes. It covers deciding the formatting choices, the
-  printer, the fixtures, the generated-input tests, and the documents.
+  printer, the fixtures, and the documents.
 ---
 
 # 図種の printer を足す（prettier-plugin）
@@ -86,7 +86,8 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
    Db が変わる選択肢は、そうと書く。
 3. 選択肢ごとに、整形の前と後のテキストを mermaid.js に掛け、
    Db が変わらないことを確かめる。
-   手で書いた 1〜2 例で済ませない（6 節の生成した入力も使う）。
+   手で書いた 1〜2 例で済ませず、
+   選択肢が分ける場合ごとに fixture を置く（6 節）。
    確かめた結果を【実行】として添える。
 4. 一覧を示して決定を求め、選ばれた選択肢を実装する。
 5. 決定は、規則の文書 `docs/<図種>.md`（英日）に、規則とその理由として書く。
@@ -154,7 +155,8 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 
 1. 決まった項目ごとに、規則を木から決める形で書く。
    トークンのテキストを字句解析し直さない。
-   木にない字句の事実が要るときは、6 節の生成テストで見つけ、
+   木にない字句の事実が要るときは、仕様の字句の節で見つけ、
+   fixture を置き（6 節）、
    仕様の節を指すコメントを付けた明示の規則にする（5 節）。
 2. 実行時に整形の結果を parser で読み直して比べる仕組みは作らない。
    規則の欠けを隠すだけで、規則にならない。
@@ -169,7 +171,7 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 
 ## 5. 規則を足したり変えたりしたとき
 
-決定の後に生成テストなどで欠けが見つかり、規則を足したり変えたりするときは、
+決定の後に欠けが見つかり、規則を足したり変えたりするときは、
 同じ変更の中で、規則の文書 `docs/<図種>.md` の該当の規則に、
 規則とその理由、例を足す。
 必要なら `docs/compatibility.md` にも足す。
@@ -192,19 +194,28 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   出力は `pnpm --filter prettier-plugin-mmd run test:update` で書き出し、
   差分を読んで意図した整形かを確かめる。
   `tests/format.test.ts` が、出力の一致、冪等、
-  mermaid.js の Db の一致を確かめる。
+  木が表す Db の一致、埋め込みデータが書かれたままであることを確かめる。
   U+2028 や U+2029 のような不可視文字を含むテキストは、
   この package の fixture にしない。
   `tests/line-separators.test.ts` のように、テストのコードにエスケープで書き、
   書いた後にファイルのバイト列を確かめる。
   その文字をそのまま持つのは、`packages/tests/fixtures/` のコーパスだけ。
-- mermaid.js の読み方の比べ方: `tests/mermaid-readings.ts` にあり、
-  fixture、コーパス、生成した入力のテストが使う。
-  仕様が読むとおりに比べるため、読み方を変える既知の差を取り除いて
-  mermaid.js を動かす（`withoutDivergences`。1 回の実行ですべて取り除く）。
-  加えて、mermaid.js のままで整形の前のテキストを受理するときは、
-  その読み方でも比べ、整形の後のテキストも受理して Db が同じであることを求める。
-  図種がそうした差を持ち込むときは、そこに足す。
+- Db の保ち方（`tests/db-reading.ts`。fixture、コーパス、
+  line-separators のテストが使う）: mermaid.js は動かさない。
+  `dbOfText` が、テキストの木から、`@mmd-toolkit/tests` の `dbFromTree` で
+  Db を作る。入力の埋め込みデータから mermaid.js が導く値を使い、
+  コーパスの fixture はそれ（`embeddedValuesOf`）と入力の Db を記録していて、
+  整形後のテキストはその Db を持たなければならない。
+  ほかのテキストは既定の値で、自分の整形後のテキストと比べる。
+  入力の値を使うので、`writtenEmbeddedTexts`（ディレクティブとデータブロックの
+  書かれたテキスト）が整形の前後で同じであること、
+  フロントマターは書かれたままか Prettier の YAML 整形の出力であること
+  （`describeFrontmatterChange`）も確かめる。
+  データブロックを持つテキストは、mermaid.js の効果がないと Db が作れないので、
+  書かれたテキストだけを確かめる。
+  データブロックのノードの型は、`@mmd-toolkit/tests` の
+  `DATA_BLOCK_NODE_TYPES` で、仕様の AST の文書と同じであることは
+  そちらのテストが保つ。
 - unit 形式: dispatch、失敗の扱い、Markdown のコードブロック。
   ファイルは `tests/dispatch.test.ts`、`failure.test.ts`、
   `markdown.test.ts`、`markdown-flowchart.test.ts`。
@@ -213,31 +224,21 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   `@mmd-toolkit/tests` の図種の fixture のうち整形するものすべてで、
   冪等と Db の一致を確かめる。
   読み込む図種を足す。
-- 生成した入力のテスト（`tests/generated.ts`、`tests/boundaries-*`、
-  `statement-endings-*`、`forms-*`、`separators`、`line-shapes`、`mutation`）:
-  手で書いた例と、コーパスの例だけでは、規則の欠けの種類全体を見落とす。
-  入力は種類ごとに選び、偶然に頼る種類をなくす。
-  毎回同じ入力で、大きさは 1 つ、通常の実行だけ。
-  境目の種類は、
-  `@mmd-toolkit/tests` の `findBoundaries` と `selectByKey` が定め、
-  `tests/boundary-kinds.ts` は、このテストの鍵を組むだけ。
-  - 境界: fixture の境界は種類を持つ。
-    前の要素、行の中の位置、後の要素（行末では文のキーワードも）。
-    すべての種類に、すべての族のテキスト
-    （ディレクティブ、2 つ、改行、コメント、U+2028 か U+2029、
-    閉じていないディレクティブ）を試し、
-    行末、テキストの末尾、コメントの末尾には部品の並び（`pieces.ts`）を試す。
-  - 文（`statement-endings.ts`）: parser のすべての文の型の文を
-    fixture から取り、最初の行の末尾に、同じ部品の並びを付ける。
-  - 形（`forms-*`）: 形の軸（名前、矢印、空白、ラベル）を、
-    2 つの軸の値のすべての組が一緒になるように組む（`pairwise.ts`）。
-    3 つ以上の軸にまたがる失敗は、部品の並びと回帰の集まりで押さえる。
-  - `;` と行の形（`separators`、`line-shapes`）、変異（`mutation`）。
-  - 回帰の集まり（`tests/regression/*.json`）は、
-    直した失敗の入力を持ち、毎回整形する。
-  - 各テストは件数を `describeReport` で注記に残す。
-    直した失敗を生成が見つけるかは、`src` の写し（スクラッチ）に直しを戻し、
-    新しいテストを写しに向けて回し、どれかが落ちることで確かめる。
+- 見つけて直した失敗の入力は、コーパスの fixture にする。
+  コーパスのテストが毎回整形する（例外を出さず、冪等で、
+  Db と埋め込みデータを保つ）。
+  直した失敗は、その fixture が守る。
+  コーパスの fixture は `@mmd-toolkit/tests` で作る。
+- fixture は文に答える。
+  規則の文書（`docs/<図種>.md`、`docs/compatibility.md`）の
+  振る舞いを定める文ごとに、その文が分ける場合のそれぞれと、
+  その文が名指す場所で接するほかの規則のそれぞれ
+  （ディレクティブ、無視される `;`、コメント行、空行、行区切り
+  （U+2028、U+2029）、空の説明ブロック、その文の言葉が名指すもの）に、
+  整形の fixture を置く。
+  fixture は文と一緒に書き、mermaid.js で 1 回確かめる。
+  どこで見つかった失敗も、fixture と、欠けていた文で閉じる。
+  テストもコマンドも入力を生成せず、入力を乱数や数（seed、件数）で選ばない。
 - 文書のテスト（`tests/docs.test.ts`）: 規則の文書ごとに、その見出しと、
   図種の fixture のフォルダー、
   例のコードブロックと fixture のファイルが一致することを確かめる。
@@ -259,26 +260,19 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
     `lines.ts`、`source.ts`、`kept-lines.ts`。
     すべての図種のテスト、つまりパッケージ全体。
   - `flowchart*.ts`: `format`、`corpus` を `-t flowchart` で。
-    `-t` なしで `boundaries-flowchart`、`statement-endings-flowchart`、
-    `forms-flowchart`、`separators`、`line-shapes`、`mutation`、
-    `regression`、`markdown-flowchart`、`value-nodes`。
+    `-t` なしで `markdown-flowchart`、`value-nodes`。
   - `sequence*.ts`: `format` と `corpus` を `-t sequence` で。
-    `-t` なしで `boundaries-sequence`、`statement-endings-sequence`、
-    `forms-sequence`、`sequence-newline-units`、`separators`、`line-shapes`、
-    `mutation`、`regression`、`line-separators`、`sequence-layout`、
+    `-t` なしで `line-separators`、`sequence-layout`、
     `markdown-sequence`、`value-nodes`。
   - `class*.ts`: `format` と `corpus` を `-t class` で。
-    `-t` なしで `boundaries-class`、`statement-endings-class`、`forms-class`、
-    `line-shapes`、`mutation`、`regression`、`markdown-class`、`value-nodes`。
+    `-t` なしで `markdown-class`、`value-nodes`。
   - `state*.ts`: `format` と `corpus` を `-t state` で。
-    `-t` なしで `boundaries-state`、`statement-endings-state`、`forms-state`、
-    `line-shapes`、`mutation`、`regression`、`line-separators`、
-    `markdown-state`、`value-nodes`。
+    `-t` なしで `line-separators`、`markdown-state`、
+    `value-nodes`。
   - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:
     `dispatch`、`failure`、`markdown`、`plugin`と、
     図種ごとのファイル。
-  - `tests/mermaid-readings.ts`、`tests/generated.ts`、`tests/pieces.ts`、
-    `tests/pairwise.ts`、`tests/checked-groups.ts`:
+  - `tests/db-reading.ts`、`tests/helpers.ts`:
     それを import するすべてのテスト。
 - 文書を読むテスト: `tests/docs.test.ts` は、
   規則の文書（`docs/<図種>.md`。英語と日本語）、README、
@@ -286,7 +280,8 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   これらのどれかを変えたら、文書だけの変更でも回す。
   ほかに文書を読むテストはない。
 - 既定の実行は `pnpm vitest run --project prettier-plugin-mmd` で、
-  大きさはこれだけ。完了を報告する前に 1 回回す。
+  fixture、コーパス、単体テスト。
+  完了を報告する前に 1 回回す。
 
 作業ツリーやマシンをほかの作業と共有しているとき:
 
@@ -321,20 +316,21 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 
 ## 8. 確かめ方と出力
 
-- 既定のサイズのパッケージのテストが、報告の前に 1 回通る。
+- パッケージのテストが、報告の前に 1 回通る。
   あわせて `npx tsc --noEmit`（ルート）、自分のパッケージの `npx eslint`、
   上の文書の検査が通る。
 - 何を回し、何を回していないかを書く。
 - 結果として、項目（決定の項目、所見）ごとに次を示す: 変えたファイルと内容、
   再現例の結果（受理の維持、Db の一致、冪等、例外なし）、
-  生成テストの件数（作った件数と確かめた件数）。
+  足した fixture。
   主張ごとに、実行して確かめたか（【実行】）、
   読んで確かめたか（【読解】）を区別して示す。
 
 ## 9. つまずいた点（手順として）
 
-- 例を手で書いて確かめると、欠けの種類を見落とす。
-  生成した入力で確かめ、見つかった入力の種類を列挙してから、規則を直す。
+- 例を 1〜2 個手で書いて確かめると、場合を見落とす。
+  規則の文が分ける場合と、それに接する規則を列挙し、
+  それぞれに fixture を置いてから、規則を直す。
 - 木の範囲の外の空白が Db に効く場所がある。
   flowchart の例: スタイルの並びの最後の、空白だけのスタイル（範囲の外にある）、
   subgraph の名前の後の空白（id が変わる）、ラベルの先頭の空白（形が変わる）、
@@ -396,5 +392,5 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
 
 - Jison の図（flowchart など）: 上の手順のとおり。
   字句の規則は仕様の「字句の規則」の節にあり、
-  字句の事実で木に現れないものが生成テストで見つかることが多い。
+  木に現れない字句の事実は、その節にある。
 - Langium の図（pie など）: pie のときに書く。

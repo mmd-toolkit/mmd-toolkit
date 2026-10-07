@@ -2,8 +2,11 @@ import { describe, expect, it } from "vitest"
 import { checkTree } from "../src/check-tree/index.ts"
 import type {
   CheckedComment,
+  CheckedDirective,
+  CheckedFrontmatter,
   CheckedRoot,
   CheckedToken,
+  Location,
   TreeProblem,
 } from "../src/check-tree/types.ts"
 import type { TreeRange } from "../src/db-from-tree/tree.ts"
@@ -16,6 +19,7 @@ import {
   shifted,
   tokenOf,
 } from "./check-tree-trees.ts"
+import type { Piece } from "./check-tree-trees.ts"
 
 // The check itself: it must pass the trees of ast.md and fail every tree that
 // breaks one of the conditions of positions.md, Invariants. The trees are made
@@ -344,7 +348,9 @@ describe("checkTree: the conditions of every tree", () => {
       })
     }
 
-    for (const kind of ["Identifier", "Numeric", "Keyword"]) {
+    // A `Keyword` token is cut only when the texts of the fragments joined are
+    // a keyword of the diagram (tests/check-tree-keywords.test.ts).
+    for (const kind of ["Identifier", "Numeric"]) {
       it(`fails when a directive cuts a ${kind} token into fragments`, () => {
         const source = "ab%%{init: {}}%%cd"
         const root = treeOf(
@@ -356,7 +362,7 @@ describe("checkTree: the conditions of every tree", () => {
           ],
           "%%{init: {}}%%",
         )
-        expect(says(checkTree(source, root), "is cut by Directive")).toBe(true)
+        expect(says(checkTree(source, root), "token is cut:")).toBe(true)
       })
 
       it(`fails when an ignored ; cuts a ${kind} token into fragments`, () => {
@@ -366,9 +372,7 @@ describe("checkTree: the conditions of every tree", () => {
           ["IgnoredSemicolon", ";"],
           [kind, "cd"],
         ])
-        expect(
-          says(checkTree(source, root), "is cut by IgnoredSemicolon"),
-        ).toBe(true)
+        expect(says(checkTree(source, root), "token is cut:")).toBe(true)
       })
     }
 
@@ -388,7 +392,7 @@ describe("checkTree: the conditions of every tree", () => {
               "%%{init: {}}%%",
             ),
           ),
-          "is cut by",
+          "token is cut:",
         ),
       ).toBe(false)
       const apart = "ab %%{init: {}}%% cd"
@@ -406,7 +410,7 @@ describe("checkTree: the conditions of every tree", () => {
               "%%{init: {}}%%",
             ),
           ),
-          "is cut by",
+          "token is cut:",
         ),
       ).toBe(false)
     })
@@ -590,5 +594,424 @@ describe("checkTree: the conditions of every tree", () => {
         "the root does not cover the whole input",
       ),
     ).toBe(true)
+  })
+
+  it("fails when a range lies outside the input", () => {
+    // positions.md, Positions: every range lies in the input.
+    const source = "x y"
+    const root = handMadeRoot(source, {
+      tokens: [
+        ["RawText", "x"],
+        ["RawText", "y"],
+      ],
+    })
+    const [first, second] = root.tokens
+    if (first === undefined || second === undefined) {
+      throw new Error("unexpected tree")
+    }
+    const beyond: TreeRange = [2, 4]
+    const token: CheckedToken = {
+      ...second,
+      range: beyond,
+      loc: locationOf(source, beyond),
+    }
+    expect(
+      says(
+        checkTree(source, { ...root, tokens: [first, token] }),
+        "RawText at 2-4: lies outside the input",
+      ),
+    ).toBe(true)
+    const node = { ...root.body, range: [0, 4] as TreeRange }
+    expect(
+      says(
+        checkTree(source, {
+          ...root,
+          body: { ...node, loc: locationOf(source, node.range) },
+        }),
+        "ErrorDiagram at 0-4: lies outside the input",
+      ),
+    ).toBe(true)
+    const withComment = "x\n%% c"
+    const commentRoot = handMadeRoot(withComment, {
+      tokens: [["RawText", "x"]],
+      comments: [commentOf(withComment, "%%", "%% c")],
+    })
+    const comment = commentRoot.comments[0]
+    if (comment === undefined) throw new Error("unexpected tree")
+    const longer: TreeRange = [comment.range[0], comment.range[1] + 3]
+    expect(
+      says(
+        checkTree(withComment, {
+          ...commentRoot,
+          comments: [
+            {
+              ...comment,
+              range: longer,
+              loc: locationOf(withComment, longer),
+            },
+          ],
+        }),
+        "Comment at 2-9: lies outside the input",
+      ),
+    ).toBe(true)
+  })
+
+  it("fails when the loc of a comment, a directive, the frontmatter, or the body is not the place of its range", () => {
+    // positions.md, Positions: every `loc` is the place of its `range`.
+    const { root } = validParts()
+    const [comment] = root.comments
+    const [directive] = root.directives
+    const { frontmatter } = root
+    if (
+      comment === undefined ||
+      directive === undefined ||
+      frontmatter === null
+    ) {
+      throw new Error("unexpected tree")
+    }
+    const wrong: Location = {
+      start: { line: 1, column: 0 },
+      end: { line: 1, column: 1 },
+    }
+    const broken: [string, CheckedRoot][] = [
+      [
+        `Comment at ${comment.range[0]}-${comment.range[1]}`,
+        { ...root, comments: [{ ...comment, loc: wrong }] },
+      ],
+      [
+        `Directive at ${directive.range[0]}-${directive.range[1]}`,
+        { ...root, directives: [{ ...directive, loc: wrong }] },
+      ],
+      [
+        `Frontmatter at ${frontmatter.range[0]}-${frontmatter.range[1]}`,
+        { ...root, frontmatter: { ...frontmatter, loc: wrong } },
+      ],
+      [
+        `ErrorDiagram at ${root.body.range[0]}-${root.body.range[1]}`,
+        { ...root, body: { ...root.body, loc: wrong } },
+      ],
+    ]
+    for (const [where, tree] of broken) {
+      const locs = checkTree(text, tree).filter((problem) =>
+        problem.message.startsWith("loc:"),
+      )
+      expect(locs.map((problem) => problem.where)).toEqual([where])
+    }
+  })
+
+  it("fails when a token, a comment, or a directive is empty", () => {
+    // positions.md, Invariants: no range of a token, a comment, or a
+    // directive is empty.
+    const source = "x y"
+    const empty: TreeRange = [1, 1]
+    const token = handMadeRoot(source, {
+      tokens: [
+        ["RawText", "x"],
+        ["RawText", "y"],
+      ],
+    })
+    const emptyToken: CheckedToken = {
+      type: "RawText",
+      value: "",
+      range: empty,
+      loc: locationOf(source, empty),
+    }
+    expect(
+      says(
+        checkTree(source, {
+          ...token,
+          tokens: [token.tokens[0], emptyToken],
+        }),
+        "RawText at 1-1: is empty",
+      ),
+    ).toBe(true)
+    const withComment = "x\ny"
+    const commentRoot = handMadeRoot(withComment, {
+      tokens: [
+        ["RawText", "x"],
+        ["RawText", "y"],
+      ],
+    })
+    const emptyComment: CheckedComment = {
+      type: "Comment",
+      mark: "%%",
+      value: "",
+      range: empty,
+      loc: locationOf(withComment, empty),
+    }
+    expect(
+      says(
+        checkTree(withComment, { ...commentRoot, comments: [emptyComment] }),
+        "Comment at 1-1: is empty",
+      ),
+    ).toBe(true)
+    const emptyDirective: CheckedDirective = {
+      type: "Directive",
+      name: "",
+      value: "",
+      closed: false,
+      range: empty,
+      loc: locationOf(source, empty),
+    }
+    expect(
+      says(
+        checkTree(source, { ...token, directives: [emptyDirective] }),
+        "Directive at 1-1: is empty",
+      ),
+    ).toBe(true)
+  })
+
+  it("reports every condition that does not hold, not only the first", () => {
+    // The value of a token and the diagram type of the root are broken
+    // together; each has its own problem.
+    const { root, error } = validParts()
+    const tokens = root.tokens.map((token) =>
+      token === error ? { ...token, value: "ERROR" } : token,
+    )
+    const problems = checkTree(text, {
+      ...root,
+      diagramType: "classDiagram",
+      tokens,
+    })
+    expect(problems).toEqual([
+      {
+        where: `RawText at ${error.range[0]}-${error.range[1]}`,
+        message: 'value: "ERROR", not "error"',
+      },
+      {
+        where: "Root",
+        message:
+          "the diagram type classDiagram is not one of those of a ErrorDiagram: error",
+      },
+    ])
+  })
+})
+
+describe("checkTree: the comment lines, the directives, and the frontmatter that the text has", () => {
+  it("fails a comment line of the text that is no comment of the tree", () => {
+    // The `%% c` is covered by tokens instead of being a comment: that is the
+    // one problem.
+    const source = "error\n%% c"
+    const root = handMadeRoot(source, {
+      tokens: [
+        ["RawText", "error"],
+        ["RawText", "%%"],
+        ["RawText", "c"],
+      ],
+    })
+    expect(checkTree(source, root)).toEqual([
+      {
+        where: "comment line at 6-10",
+        message: "is no comment of the tree",
+      },
+    ])
+  })
+
+  describe("the directives of the tree", () => {
+    const source = "error %%{init: {}}%% "
+    const directive = "%%{init: {}}%%"
+
+    /** The tree of the source with the given `Directive` tokens and directives. */
+    function treeWith(
+      directives: readonly CheckedDirective[],
+      tokenCount = 1,
+    ): CheckedRoot {
+      return handMadeRoot(source, {
+        tokens: [
+          ["RawText", "error"],
+          ...Array.from(
+            { length: tokenCount },
+            () => ["Directive", directive] as const,
+          ),
+        ],
+        directives,
+      })
+    }
+
+    it("passes the directive that the scan finds", () => {
+      expect(
+        checkTree(source, treeWith([directiveOf(source, directive)])),
+      ).toEqual([])
+    })
+
+    it("fails a directive that the tree lacks, an extra one, one with another `closed`, and one with whitespace at its end", () => {
+      const reason = "the directives of the tree are not those of the source"
+      const real = directiveOf(source, directive)
+      expect(says(checkTree(source, treeWith([])), reason)).toBe(true)
+      expect(says(checkTree(source, treeWith([real, real])), reason)).toBe(true)
+      // `closed` is false and the `value` is the text to the end of the
+      // directive, so that this is the only condition that does not hold.
+      const open: CheckedDirective = {
+        ...real,
+        closed: false,
+        value: source.slice(real.range[0] + 3, real.range[1]),
+      }
+      expect(checkTree(source, treeWith([open]))).toEqual([
+        {
+          where: "the directives",
+          message: `${reason}: [[[6,20],false]], not [[[6,20],true]]`,
+        },
+      ])
+      const padded: TreeRange = [real.range[0], real.range[1] + 1]
+      expect(
+        says(
+          checkTree(source, {
+            ...treeWith([
+              { ...real, range: padded, loc: locationOf(source, padded) },
+            ]),
+          }),
+          reason,
+        ),
+      ).toBe(true)
+    })
+  })
+
+  describe("the frontmatter", () => {
+    const source = "---\na: 1\n---\nerror"
+
+    /** The tree of `source` whose frontmatter has `fields` changed. */
+    function withFrontmatter(fields: Partial<CheckedFrontmatter>): CheckedRoot {
+      const frontmatter = frontmatterOf(source, "---\na: 1\n---", [4, 8])
+      const root = handMadeRoot(source, {
+        frontmatter,
+        tokens: [
+          ["Punctuator", "---"],
+          ["RawText", "a: 1"],
+          ["Punctuator", { text: "---", from: 4 }],
+          ["RawText", "error"],
+        ],
+      })
+      return { ...root, frontmatter: { ...frontmatter, ...fields } }
+    }
+
+    it("passes the frontmatter of a text", () => {
+      expect(checkTree(source, withFrontmatter({}))).toEqual([])
+    })
+
+    it("fails a range that does not start or end with ---, and a value outside it", () => {
+      const start: TreeRange = [1, 12]
+      expect(
+        says(
+          checkTree(
+            source,
+            withFrontmatter({ range: start, loc: locationOf(source, start) }),
+          ),
+          "Frontmatter at 1-12: does not start with ---",
+        ),
+      ).toBe(true)
+      const end: TreeRange = [0, 11]
+      expect(
+        says(
+          checkTree(
+            source,
+            withFrontmatter({ range: end, loc: locationOf(source, end) }),
+          ),
+          "Frontmatter at 0-11: does not end with ---",
+        ),
+      ).toBe(true)
+      expect(
+        says(
+          checkTree(source, withFrontmatter({ valueRange: [4, 20] })),
+          "Frontmatter at 0-12: its value lies outside it",
+        ),
+      ).toBe(true)
+    })
+
+    it("fails a comment or a directive in the frontmatter", () => {
+      // The body of the frontmatter looks like a comment line or a directive:
+      // it is neither, and a comment or a directive of the tree there comes
+      // before the end of the frontmatter.
+      const asComment = "---\n%% c\n---\nerror"
+      const commentRoot = handMadeRoot(asComment, {
+        frontmatter: frontmatterOf(asComment, "---\n%% c\n---", [4, 8]),
+        tokens: [
+          ["Punctuator", "---"],
+          ["RawText", "%% c"],
+          ["Punctuator", { text: "---", from: 4 }],
+          ["RawText", "error"],
+        ],
+        comments: [commentOf(asComment, "%%", "%% c")],
+      })
+      expect(
+        says(
+          checkTree(asComment, commentRoot),
+          "Comment at 4-8: comes before the end of the frontmatter",
+        ),
+      ).toBe(true)
+      const asDirective = "---\n%%{init: {}}%%\n---\nerror"
+      const directiveRoot = handMadeRoot(asDirective, {
+        frontmatter: frontmatterOf(
+          asDirective,
+          "---\n%%{init: {}}%%\n---",
+          [4, 18],
+        ),
+        tokens: [
+          ["Punctuator", "---"],
+          ["RawText", "%%{init: {}}%%"],
+          ["Punctuator", { text: "---", from: 4 }],
+          ["RawText", "error"],
+        ],
+        directives: [directiveOf(asDirective, "%%{init: {}}%%")],
+      })
+      expect(
+        says(
+          checkTree(asDirective, directiveRoot),
+          "Directive at 4-18: comes before the end of the frontmatter",
+        ),
+      ).toBe(true)
+    })
+
+    it("has no token for a body that is whitespace, and a token of the body without the whitespace around it", () => {
+      const blank = "---\n \n---\nerror"
+      const blankFrontmatter = frontmatterOf(blank, "---\n \n---", [4, 5])
+      const reason =
+        "are not the opening delimiter, the body, and the closing delimiter"
+
+      /** The tree of `blank` whose tokens in the frontmatter are the delimiters and `body`. */
+      function blankTokens(
+        body: readonly (readonly [string, Piece | string])[],
+      ): CheckedRoot {
+        return handMadeRoot(blank, {
+          frontmatter: blankFrontmatter,
+          tokens: [
+            ["Punctuator", "---"],
+            ...body,
+            ["Punctuator", { text: "---", from: 4 }],
+            ["RawText", "error"],
+          ],
+        })
+      }
+
+      expect(checkTree(blank, blankTokens([]))).toEqual([])
+      expect(
+        says(
+          checkTree(blank, blankTokens([["RawText", { text: " ", from: 4 }]])),
+          `the tokens in the range of the frontmatter: ${reason}`,
+        ),
+      ).toBe(true)
+      const padded = "---\n a \n---\nerror"
+      const paddedFrontmatter = frontmatterOf(padded, "---\n a \n---", [4, 7])
+
+      /** The tree of `padded` whose body token is `body`. */
+      function paddedTokens(body: Piece): CheckedRoot {
+        return handMadeRoot(padded, {
+          frontmatter: paddedFrontmatter,
+          tokens: [
+            ["Punctuator", "---"],
+            ["RawText", body],
+            ["Punctuator", { text: "---", from: 4 }],
+            ["RawText", "error"],
+          ],
+        })
+      }
+
+      expect(checkTree(padded, paddedTokens({ text: "a" }))).toEqual([])
+      expect(
+        says(
+          checkTree(padded, paddedTokens({ text: " a ", from: 3 })),
+          `the tokens in the range of the frontmatter: ${reason}`,
+        ),
+      ).toBe(true)
+    })
   })
 })

@@ -117,6 +117,18 @@
         "id": "D",
         "text": "This is a tooltip for a link"
       }
+    ],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "callback",
+        "args": null
+      },
+      {
+        "id": "C",
+        "name": "callback",
+        "args": null
+      }
     ]
   }
 }

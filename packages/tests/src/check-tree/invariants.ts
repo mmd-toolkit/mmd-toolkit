@@ -21,11 +21,11 @@ import type {
 import { childNodesOf, nodesOf, walkNodes } from "./walk.ts"
 
 // packages/parser/docs/positions.md, Positions and Invariants, and
-// packages/spec/docs/ast.md, Comment, Directive, and Frontmatter: the
-// conditions that every tree satisfies, whatever its diagram. Each check
-// below names the condition it implements. The source is read for the
-// directives and comment lines by `scanSource()`, not from the tree, so that
-// a comment or a directive that the tree lacks is found.
+// packages/parser/docs/tokens.md, Comment, and packages/spec/docs/ast.md,
+// Directive and Frontmatter: the conditions that every tree satisfies, whatever
+// its diagram. Each check below names the condition it implements. The source
+// is read for the directives and comment lines by `scanSource()`, not from the
+// tree, so that a comment or a directive that the tree lacks is found.
 
 /** Line and column of `offset`, counting `\r\n`, `\r`, and `\n` as one line terminator each. */
 function positionOf(text: string, offset: number): Position {
@@ -55,10 +55,10 @@ export function contains(outer: TreeRange, inner: TreeRange): boolean {
 }
 
 /**
- * ast.md, Tokens and Nodes: the tokens of `root` that a node can own: those of
- * the diagram text, without the `Directive` tokens, the `IgnoredSemicolon`
- * tokens, which no grammar reads, and the tokens in the range of the
- * frontmatter.
+ * parser/docs/tokens.md, Tokens, and ast.md, Nodes: the tokens of `root` that a
+ * node can own: those of the diagram text, without the `Directive` tokens, the
+ * `IgnoredSemicolon` tokens, which no grammar reads, and the tokens in the
+ * range of the frontmatter.
  */
 export function diagramTokensOf(root: CheckedRoot): CheckedToken[] {
   const frontmatterEnd = root.frontmatter?.range[1] ?? 0
@@ -92,9 +92,9 @@ function checkInOrderWithoutOverlap(
 }
 
 /**
- * ast.md, Comment: whether a comment region starts at `offset`, after line
- * whitespace. A region can start with a whitespace-only line, so each offset
- * is looked at before its whitespace is passed.
+ * parser/docs/tokens.md, Comment: whether a comment region starts at `offset`,
+ * after line whitespace. A region can start with a whitespace-only line, so
+ * each offset is looked at before its whitespace is passed.
  */
 function regionFollowsOnLine(
   text: string,
@@ -113,9 +113,9 @@ function regionFollowsOnLine(
 }
 
 /**
- * ast.md, Comment: whether a comment region ends right before `offset`, with
- * only line whitespace between, as before a fragment of a diagram comment that
- * has no mark.
+ * parser/docs/tokens.md, Comment: whether a comment region ends right before
+ * `offset`, with only line whitespace between, as before a fragment of a
+ * diagram comment that has no mark.
  */
 function followsRegion(
   text: string,
@@ -179,15 +179,16 @@ function diagramCommentMarkEnd(
 }
 
 /**
- * ast.md, Comment, and common.md, Comment lines: where the diagram comment
- * `comment` ends. It ends before the line terminator that ends its line, or at
- * the end of the text, with three exceptions: where a directive in it takes
- * all that follows, it ends where that directive ends; where a comment region
- * follows it on its line, after U+2028 or U+2029, it is a fragment and ends at
- * its last character that is not whitespace; and a `;` that the line rule
- * ignores and that is the last character of its line is an `IgnoredSemicolon`
- * token after it. No comment ends with a line terminator, and it runs past a
- * line terminator only where a directive in it takes that line terminator.
+ * parser/docs/tokens.md, Comment, and common.md, Comment lines: where the
+ * diagram comment `comment` ends. It ends before the line terminator that ends
+ * its line, or at the end of the text, with three exceptions: where a directive
+ * in it takes all that follows, it ends where that directive ends; where a
+ * comment region follows it on its line, after U+2028 or U+2029, it is a
+ * fragment and ends at its last character that is not whitespace; and a `;`
+ * that the line rule ignores and that is the last character of its line is an
+ * `IgnoredSemicolon` token after it. No comment ends with a line terminator,
+ * and it runs past a line terminator only where a directive in it takes that
+ * line terminator.
  */
 function checkDiagramCommentEnd(
   text: string,
@@ -294,10 +295,10 @@ function checkEveryCharacterPlaced(
 }
 
 /**
- * positions.md, Invariants 2, and ast.md, Comment: the text of a comment
- * equals the source text of its range, and its mark and `value` are what the
- * source writes there: a comment line starts at the first `%` of its `%%`,
- * whose two `%` can have directives between them, and its `value` is the
+ * positions.md, Invariants 2, and parser/docs/tokens.md, Comment: the text of a
+ * comment equals the source text of its range, and its mark and `value` are
+ * what the source writes there: a comment line starts at the first `%` of its
+ * `%%`, whose two `%` can have directives between them, and its `value` is the
  * source after the second; a fragment of a diagram comment after a comment
  * region has no mark and starts at its first character; any other comment is a
  * diagram comment, whose range starts at its mark and whose `value` is the
@@ -334,12 +335,9 @@ function checkComments(
         where,
         "the mark of a comment line is not %%",
       )
+      // The second `%` of the `%%`, which the scan found, comes after the
+      // directives that may lie between the two.
       const secondPercent = afterDirectivesAt(scan, comment.range[0] + 1)
-      problems.expect(
-        text[secondPercent] === "%",
-        where,
-        "has no second % after the first",
-      )
       problems.expectEqual(
         comment.value,
         text.slice(secondPercent + 1, comment.range[1]),
@@ -417,9 +415,9 @@ function checkComments(
 /**
  * positions.md, Invariants 2, and ast.md, Directive: the directives of the
  * tree are those that the scan of the source finds, each with the range of
- * the match without the whitespace at its end; a directive starts with `%%{`,
- * ends with `}%%` when it is closed, and its `value` is the text between the
- * delimiters, or to the end of the directive when it is not closed.
+ * the match without the whitespace at its end, which starts with `%%{` and,
+ * when the directive is closed, ends with `}%%`; and its `value` is the text
+ * between the delimiters, or to the end of the directive when it is not closed.
  */
 function checkDirectives(
   text: string,
@@ -436,19 +434,6 @@ function checkDirectives(
   for (const directive of root.directives) {
     const where = label(directive)
     const source = text.slice(...directive.range)
-    problems.expect(source.startsWith("%%{"), where, "does not start with %%{")
-    if (directive.closed) {
-      problems.expect(
-        source.endsWith("}%%"),
-        where,
-        "is closed and does not end with }%%",
-      )
-    }
-    problems.expect(
-      !isWhitespaceAt(text, directive.range[1] - 1),
-      where,
-      "ends with whitespace",
-    )
     problems.expectEqual(
       directive.value,
       directive.closed ? source.slice(3, -3) : source.slice(3),
@@ -663,16 +648,13 @@ function checkFrontmatterTokens(
  * token to the end of its last, inside the range of its parent; the child
  * nodes of a node do not overlap and can be put in source order. The tree does
  * not say which tokens are a node's own, so what is checked is that the range
- * starts where a token of the diagram starts and ends where one ends. A node
- * without a token, which is a label that is all whitespace, covers its units
- * instead; what is checked of it is that its value is all whitespace, that its
- * range is not empty, and that it holds no character of a token and nothing
- * but whitespace, line terminators, comments, and directives.
+ * starts where a token of the diagram starts and ends where one ends: every
+ * node has at least one token, a label that is all whitespace the token of
+ * that whitespace (positions.md, Invariants).
  */
 function checkNodeRanges(
   text: string,
   root: CheckedRoot,
-  scan: SourceScan,
   problems: Problems,
 ): void {
   problems.expectEqual(
@@ -692,14 +674,8 @@ function checkNodeRanges(
       where,
       `lies outside ${label(parent)}`,
     )
-    const runsBetweenTokens =
-      tokenStarts.has(node.range[0]) && tokenEnds.has(node.range[1])
-    if (node.type === "FlowchartLabel" && !runsBetweenTokens) {
-      checkCoversUnitsWithoutToken(text, root, scan, node, problems)
-      return
-    }
     problems.expect(
-      runsBetweenTokens,
+      tokenStarts.has(node.range[0]) && tokenEnds.has(node.range[1]),
       where,
       "does not run from the start of a token to the end of a token",
     )
@@ -733,54 +709,6 @@ function checkNodeRanges(
       [first.range[0], last.range[1]],
       "Root.body",
       "does not run from its first token to its last",
-    )
-  }
-}
-
-/**
- * ast.md, Nodes: a node without a token, a label that is all whitespace,
- * covers its units. Asserts what the tree can show of that: its value is all
- * whitespace, and its range is not empty and holds no character of a token of
- * the diagram and nothing but whitespace, line terminators, comments, and
- * directives.
- */
-function checkCoversUnitsWithoutToken(
-  text: string,
-  root: CheckedRoot,
-  scan: SourceScan,
-  node: CheckedNode,
-  problems: Problems,
-): void {
-  const where = label(node)
-  const { value } = node
-  problems.expect(
-    typeof value === "string" &&
-      [...value].every((c) => isWhitespace(c.codePointAt(0) ?? 0)),
-    where,
-    "has no token, but its value is not all whitespace",
-  )
-  problems.expect(node.range[0] < node.range[1], where, "is empty")
-  for (const token of diagramTokensOf(root)) {
-    problems.expect(
-      !overlap(token.range, node.range),
-      where,
-      `has no token, but holds ${label(token)}`,
-    )
-  }
-  const trivia = [
-    ...scan.commentLines.map((line) => line.region),
-    ...scan.directives.map((directive): TreeRange => [
-      directive.range[0],
-      directive.scanEnd,
-    ]),
-    ...root.comments.map((comment) => comment.range),
-  ]
-  for (let offset = node.range[0]; offset < node.range[1]; offset++) {
-    problems.expect(
-      isWhitespaceAt(text, offset) ||
-        trivia.some(([start, end]) => start <= offset && offset < end),
-      where,
-      `has no token, but holds ${JSON.stringify(text[offset])}`,
     )
   }
 }
@@ -862,7 +790,7 @@ export function checkInvariants(
   // Invariant 8.
   checkFrontmatterTokens(text, root, problems)
   // Invariant 9 and the child nodes.
-  checkNodeRanges(text, root, scan, problems)
+  checkNodeRanges(text, root, problems)
   // Invariant 11.
   checkRaw(text, nodes, problems)
 }

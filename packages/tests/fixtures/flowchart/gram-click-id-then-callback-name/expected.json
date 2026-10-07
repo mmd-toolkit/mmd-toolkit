@@ -18,6 +18,13 @@
     },
     "classDefs": [],
     "subgraphs": [],
-    "tooltips": []
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "B",
+        "name": "C",
+        "args": null
+      }
+    ]
   }
 }

@@ -1,9 +1,12 @@
 import type { SuggestedEdit } from "@eslint/core"
 import type { FlowchartDataBlock, Range, Token } from "@mmd-toolkit/parser"
+import { traverseNodes } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../../rule-types.ts"
 import { ruleDocsUrl } from "../../rule-docs-url.ts"
 import type { MermaidSourceCode } from "../../source-code.ts"
 import { removalRange } from "../../utils/removal.ts"
+import type { TextNode } from "../../utils/text-nodes.ts"
+import { isTextNode, textOf } from "../../utils/text-nodes.ts"
 
 /** A line of the value of a token: its text, and where it starts in the value. */
 interface ValueLine {
@@ -75,6 +78,13 @@ function bareMarkers(sourceCode: MermaidSourceCode, token: Token): number[] {
         reachesLineBoundary(sourceCode, marker, "before") &&
         reachesLineBoundary(sourceCode, marker + "%%".length, "after"),
     )
+}
+
+/** Whether `value` holds a line other than a blank line or a line of only `%%`. */
+function holdsOtherText(value: string): boolean {
+  return valueLines(value).some(
+    (line) => line.text.trim() !== "" && line.text.trim() !== "%%",
+  )
 }
 
 /**
@@ -174,13 +184,14 @@ export const noBareCommentMarker: MermaidRuleDefinition<{
         "mermaid.js reads this `%%` line into the name of the function to call, not as a comment.",
       dataBlock:
         "mermaid.js reads this `%%` line as part of the data, not as a comment.",
-      removeMarker: "Remove the `%%`: mermaid.js then makes no vertex `%%`.",
+      removeMarker:
+        "Remove the `%%`: mermaid.js then makes no vertex from this line.",
       removeCallbackLine:
-        "Remove the line of only `%%`: the name of the function to call then has no line `%%`.",
+        "Remove the line of only `%%`: the name of the function to call then no longer holds this line.",
       removeTextLine:
-        "Remove the line of only `%%`: the text then has no line `%%`.",
+        "Remove the line of only `%%`: the text then no longer holds this line.",
       removeDataLine:
-        "Remove the line of only `%%`: the data block then has no line `%%`.",
+        "Remove the line of only `%%`: the data block then no longer holds this line.",
     },
   },
   create(context) {
@@ -188,6 +199,14 @@ export const noBareCommentMarker: MermaidRuleDefinition<{
     const dataBlocks: FlowchartDataBlock[] = []
     /** The names of the functions that `click A` calls. */
     const callbackNames: Range[] = []
+    /**
+     * The vertex statements that are one vertex and no link. Removing a `%%`
+     * from another statement leaves a text that mermaid.js rejects or reads
+     * with the link moved to the next statement.
+     */
+    const lonelyVertices: Range[] = []
+    /** The nodes that show a text, which hold the lines. */
+    const textNodes: TextNode[] = []
     // The description blocks that are not closed, whose lines are not
     // reported: mermaid.js drops their text whatever it holds, and
     // `no-unclosed-description-block` reports the block.
@@ -213,6 +232,25 @@ export const noBareCommentMarker: MermaidRuleDefinition<{
       return "text"
     }
 
+    /**
+     * The text of the value that holds `marker`: the text of the innermost
+     * node of the `TEXT_NODE_TYPES` that holds it, or undefined where none
+     * does.
+     */
+    function valueAt(marker: number): string | undefined {
+      const innermost = textNodes
+        .filter((each) => each.range[0] <= marker && marker < each.range[1])
+        .reduce<TextNode | undefined>(
+          (best, each) =>
+            best === undefined ||
+            each.range[1] - each.range[0] < best.range[1] - best.range[0]
+              ? each
+              : best,
+          undefined,
+        )
+      return innermost === undefined ? undefined : textOf(innermost)
+    }
+
     /** The suggestions for the line `%%` at `marker`, in `token`, at `place`. */
     function suggestionsFor(
       token: Token,
@@ -225,7 +263,16 @@ export const noBareCommentMarker: MermaidRuleDefinition<{
       | "removeDataLine"
     >[] {
       const line = sourceCode.getLocFromIndex(marker).line
-      if (place === "vertex") return [markerRemoval(sourceCode, token)]
+      if (place === "vertex") {
+        return inAny(lonelyVertices, marker)
+          ? [markerRemoval(sourceCode, token)]
+          : []
+      }
+      // The line is removed only from a value that holds more than lines of
+      // `%%`: where the line is the whole value, what is left is not what the
+      // author wrote (the next line becomes the value, or nothing is left).
+      const value = valueAt(marker)
+      if (value === undefined || !holdsOtherText(value)) return []
       if (place === "callback") {
         return lineRemoval(sourceCode, line, "removeCallbackLine")
       }
@@ -242,10 +289,23 @@ export const noBareCommentMarker: MermaidRuleDefinition<{
       FlowchartAccDescrBlockStatement(node) {
         if (!node.closed) unclosedBlocks.push(node.range)
       },
+      FlowchartVertexStatement(node) {
+        if (node.links.length === 0 && node.first.vertices.length === 1) {
+          lonelyVertices.push(node.range)
+        }
+      },
       FlowchartClickCallbackStatement(node) {
         callbackNames.push(node.callback.range)
       },
       "FlowchartDiagram:exit"(node) {
+        traverseNodes(node, {
+          enterNode(each) {
+            if (isTextNode(each)) textNodes.push(each)
+          },
+          leaveNode() {
+            // Each node is checked on entering it.
+          },
+        })
         for (const token of sourceCode.getTokens(node)) {
           if (token.type === "Directive") continue
           for (const marker of bareMarkers(sourceCode, token)) {

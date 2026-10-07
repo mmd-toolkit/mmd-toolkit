@@ -2,7 +2,9 @@
 
 英語版: [no-invalid-json.md](./no-invalid-json.md)
 
-規則 [mmd/sequence/no-invalid-json](../../rules/sequence/no-invalid-json.ja.md) を実装するための覚え書き。
+規則
+[mmd/sequence/no-invalid-json](../../rules/sequence/no-invalid-json.ja.md)
+を実装するための覚え書き。
 
 この規則はまだ実装していない。
 ここには、実装するときに要ることを書く。
@@ -19,7 +21,8 @@ JSON でないか、オブジェクトでない JSON であるもの。
 エンティティをその代わりの文字にした変換後の形でテキストを解析する
 （仕様の diagrams/sequence.md の Links and properties）。
 これは、パーサーが書かれたまま持つデータを読むことで、
-[no-ignored-init-directive](../../rules/no-ignored-init-directive.ja.md) と同じく、
+[no-ignored-init-directive](../../rules/no-ignored-init-directive.ja.md)
+と同じく、
 図の字句解析のやり直しではない。
 
 ## fixture
