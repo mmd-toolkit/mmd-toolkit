@@ -131,21 +131,26 @@ describe("checkTree: the form of a tree", () => {
   })
 
   it("reports the records of the root that are missing or of another kind, without throwing", () => {
-    for (const field of [
-      "frontmatter",
-      "directives",
-      "comments",
-      "tokens",
-      "body",
-    ]) {
-      const missing = problemsAfter((tree) => {
-        Reflect.deleteProperty(tree, field)
-      })
-      expect(missing[0]).toContain(`lacks the field ${field}`)
-      const wrong = problemsAfter((tree) => {
-        set(tree, field, "Z")
-      })
-      expect(wrong.length).toBeGreaterThan(0)
+    // The kind that each field of the root wants, as the form of a tree says.
+    for (const [field, wanted] of [
+      ["frontmatter", "a node or null"],
+      ["directives", "a list"],
+      ["comments", "a list"],
+      ["tokens", "a list"],
+      ["body", "a node"],
+    ] as const) {
+      expect(
+        problemsAfter((tree) => {
+          Reflect.deleteProperty(tree, field)
+        }),
+        `${field} missing`,
+      ).toEqual([`Root at 0-37: lacks the field ${field}`])
+      expect(
+        problemsAfter((tree) => {
+          set(tree, field, "Z")
+        }),
+        `${field} a string`,
+      ).toEqual([`Root at 0-37: the field ${field} is string, not ${wanted}`])
     }
   })
 
@@ -156,11 +161,21 @@ describe("checkTree: the form of a tree", () => {
     expect(problems[0]).toContain("the field value is number, not string")
   })
 
-  it("reports a tree that is no Root", () => {
-    const { input } = recorded()
+  it("reports a tree that is no Root, and an object that is no node", () => {
+    const { input, tree } = recorded()
+    // A node that is of a type of the specification but no Root.
     expect(
-      checkTree(input, { type: "Foo" } as unknown as CheckedRoot).length,
-    ).toBeGreaterThan(0)
+      checkTree(input, nodeOf(tree, "SequenceDiagram") as CheckedRoot),
+    ).toEqual([{ where: "the tree", message: "is no Root" }])
+    // An object with a type and no range is no node.
+    expect(checkTree(input, { type: "Foo" } as unknown as CheckedRoot)).toEqual(
+      [
+        {
+          where: "the tree",
+          message: "is no node: it has no type and no range",
+        },
+      ],
+    )
   })
 
   it("reports a required node that is null", () => {

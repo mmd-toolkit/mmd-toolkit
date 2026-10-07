@@ -28,8 +28,8 @@ features:
     link: /formatter/
   - title: Linter
     details:
-      "Find mistakes that Mermaid accepts silently, using eslint-plugin-mmd as
-      an ESLint language plugin."
+      "Find mistakes that Mermaid accepts silently, using
+      @mmd-toolkit/eslint-plugin as an ESLint language plugin."
     link: /linter/
   - title: Parser
     details:

@@ -5,7 +5,7 @@ This private package builds the
 with VitePress.
 
 ```sh
-pnpm --filter @mmd-toolkit/parser --filter eslint-plugin-mmd build
+pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin build
 pnpm --filter @mmd-toolkit/docs dev
 pnpm --filter @mmd-toolkit/docs build
 pnpm --filter @mmd-toolkit/docs preview
@@ -16,18 +16,18 @@ Build the parser and linter before running the site or its tests. Diagnostic
 markers execute the workspace linter while rendering pages; rebuild those
 packages after changing their implementation.
 
-`mmd` code fences containing `%% eslint mmd/` use `twoslash-eslint` to show
-actual ESLint diagnostics on hover. Enable the rules an example demonstrates
-with `%% eslint <rule>: <config>` comments; the renderer registers the Mermaid
-language without enabling rules by default. Other fences are left as normal
-syntax-highlighted examples.
+`mmd` code fences containing `%% eslint @mmd-toolkit/` use `twoslash-eslint` to
+show actual ESLint diagnostics on hover. Enable the rules an example
+demonstrates with `%% eslint <rule>: <config>` comments; the renderer registers
+the Mermaid language without enabling rules by default. Other fences are left as
+normal syntax-highlighted examples.
 
-In `packages/eslint-plugin-mmd/docs/rules/`, begin every `mmd` example in both
-languages with `%% eslint mmd/<rule>: error`, using the rule described by that
-page. Put the comment before the diagram header and Mermaid directives, without
-indentation, in both correct and incorrect examples. The linter package's
-`check:docs` enforces this requirement; its
-[development guide](../eslint-plugin-mmd/docs/development.md#rules-and-their-documents)
+In `packages/eslint-plugin/docs/rules/`, begin every `mmd` example in both
+languages with `%% eslint @mmd-toolkit/<rule>: error`, using the rule described
+by that page. Put the comment before the diagram header and Mermaid directives,
+without indentation, in both correct and incorrect examples. The linter
+package's `check:docs` enforces this requirement; its
+[development guide](../eslint-plugin/docs/development.md#rules-and-their-documents)
 describes how these examples are also used by tests.
 
 Edit guides in `pages/`. Edit imported references in their original packages:

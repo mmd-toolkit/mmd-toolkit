@@ -1,14 +1,14 @@
 # Linter
 
-`eslint-plugin-mmd` uses ESLint to report syntax errors and mistakes in Mermaid
-diagram text.
+`@mmd-toolkit/eslint-plugin` uses ESLint to report syntax errors and mistakes in
+Mermaid diagram text.
 
 ## Installation and setup
 
 Install ESLint 10, the plugin, and `@eslint/markdown` in your project:
 
 ```sh
-npm install --save-dev eslint@10 eslint-plugin-mmd @eslint/markdown
+npm install --save-dev eslint@10 @mmd-toolkit/eslint-plugin @eslint/markdown
 ```
 
 Create an [ESLint configuration file][eslint-config] named `eslint.config.mjs`
@@ -16,16 +16,16 @@ in the project root:
 
 ```js
 import markdown from "@eslint/markdown"
-import mmd from "eslint-plugin-mmd"
+import mmdToolkit from "@mmd-toolkit/eslint-plugin"
 
-export default [...markdown.configs.processor, mmd.configs.recommended]
+export default [...markdown.configs.processor, mmdToolkit.configs.recommended]
 ```
 
 `@eslint/markdown` extracts code blocks from Markdown files for ESLint to check.
-`mmd.configs.recommended` registers the plugin, selects the Mermaid language for
-`.mmd` and `.mermaid` files, and enables the plugin's recommended rules as
-errors. This also matches `mmd` and `mermaid` code blocks extracted by the
-Markdown processor.
+`mmdToolkit.configs.recommended` registers the plugin, selects the Mermaid
+language for `.mmd` and `.mermaid` files, and enables the plugin's recommended
+rules as errors. This also matches `mmd` and `mermaid` code blocks extracted by
+the Markdown processor.
 
 This setup checks the code blocks only. The Markdown content itself is outside
 its scope; see [Linting Markdown](./markdown.md) for the limitation on checking
@@ -34,11 +34,11 @@ both in one ESLint run.
 ## Lint your first diagram
 
 Save this diagram in a `mermaid` code block in `diagram.md`. The `%% eslint`
-comment explicitly enables [`mmd/flowchart/no-undef`][no-undef] for this
-diagram:
+comment explicitly enables [`@mmd-toolkit/flowchart-no-undef`][no-undef] for
+this diagram:
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
   style C fill:red
@@ -50,14 +50,14 @@ Run ESLint:
 npx eslint diagram.md
 ```
 
-`mmd/flowchart/no-undef` reports `C` in `style C fill:red`. Mermaid accepts this
-input and adds a new vertex named `C`; it does not apply the style to `A` or
-`B`.
+`@mmd-toolkit/flowchart-no-undef` reports `C` in `style C fill:red`. Mermaid
+accepts this input and adds a new vertex named `C`; it does not apply the style
+to `A` or `B`.
 
 To style `A`, change the id in the `style` statement:
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
   style A fill:red
@@ -86,10 +86,10 @@ and choose which one to apply in your editor. Suggestions are not applied by
 - [Markdown](./markdown.md): lint Mermaid code blocks in Markdown files.
 - [Configuration comments](./comments.md): configure rules inside a diagram with
   `%%` comments.
-- [Rules](../../../eslint-plugin-mmd/docs/rules/index.md): rule descriptions,
+- [Rules](../../../eslint-plugin/docs/rules/index.md): rule descriptions,
   applicability, and examples.
 
 [eslint-config]:
   https://eslint.org/docs/latest/use/configure/configuration-files
-[no-undef]: ../../../eslint-plugin-mmd/docs/rules/flowchart/no-undef.md
+[no-undef]: ../../../eslint-plugin/docs/rules/flowchart-no-undef.md
 [suggestions]: https://eslint.org/docs/latest/use/core-concepts#rule-suggestions

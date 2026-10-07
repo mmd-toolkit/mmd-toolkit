@@ -4,7 +4,7 @@ import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import { diagramTokensOf } from "./invariants.ts"
 import type { CheckedRoot } from "./types.ts"
-import { fragmentsOfEntries } from "./tokens.ts"
+import { reportCutEntries } from "./tokens.ts"
 import { nodesOf } from "./walk.ts"
 
 // parser/docs/tokens/<diagram>.md, Tokens: the `Punctuator` tokens of a
@@ -104,14 +104,10 @@ export function checkPunctuatorsAreWhole(
       `the Punctuator text ${JSON.stringify(token.value)} is none of those of a ${root.body.type}`,
     )
   }
-  for (const run of fragmentsOfEntries(root, punctuators, (joined) =>
-    texts.includes(joined),
-  )) {
-    const first = run[0]
-    if (first === undefined) continue
-    problems.report(
-      label(first),
-      `a Punctuator token is cut: ${run.map(label).join(", ")} are the fragments of ${JSON.stringify(run.map((token) => token.value).join(""))}`,
-    )
-  }
+  reportCutEntries(
+    root,
+    punctuators,
+    (joined) => texts.includes(joined),
+    problems,
+  )
 }

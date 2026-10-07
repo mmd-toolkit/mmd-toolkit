@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import markdownPlugin from "@eslint/markdown"
 import { ESLint } from "eslint"
-import mmd from "eslint-plugin-mmd"
+import mmdToolkit from "@mmd-toolkit/eslint-plugin"
 import { afterAll, beforeAll, describe, expect, it } from "vitest"
 import { createMarkdownRenderer, disposeMdItInstance } from "vitepress"
 import { eslintCodeTransformer } from "../.vitepress/eslint.js"
@@ -46,7 +46,7 @@ describe("ESLint diagnostic rendering", () => {
       const html = await markdown.renderAsync(guide("index", extension))
       expect(markedText(html)).toEqual(["C"])
       expect(html).toContain("mermaid.js adds a new vertex <code>C</code>")
-      expect(html).toContain("mmd/flowchart/no-undef</a>")
+      expect(html).toContain("@mmd-toolkit/flowchart-no-undef</a>")
     },
   )
 
@@ -58,14 +58,14 @@ describe("ESLint diagnostic rendering", () => {
         "C",
         "D",
         "D",
-        "%% eslint mmd/flowchart/no-undef: [",
+        "%% eslint @mmd-toolkit/flowchart-no-undef: [",
       ])
       expect(html).toContain("Failed to parse JSON")
     },
   )
 
   it.each(
-    Object.entries(mmd.rules).flatMap(([name, rule]) =>
+    Object.entries(mmdToolkit.rules).flatMap(([name, rule]) =>
       [".md", ".ja.md"].map((extension) => [
         name,
         extension,
@@ -77,7 +77,7 @@ describe("ESLint diagnostic rendering", () => {
     async (name, extension, implemented) => {
       const document = readFileSync(
         new URL(
-          `../../eslint-plugin-mmd/docs/rules/${name}${extension}`,
+          `../../eslint-plugin/docs/rules/${name}${extension}`,
           import.meta.url,
         ),
         "utf8",
@@ -125,7 +125,7 @@ describe("ESLint diagnostic rendering", () => {
   it("accepts a mermaid fence with a directive before the header", async () => {
     const html = await markdown.renderAsync(
       "```mermaid\n" +
-        "%% eslint mmd/flowchart/no-undef: error\n" +
+        "%% eslint @mmd-toolkit/flowchart-no-undef: error\n" +
         "flowchart LR\n  A --> B\n  style C fill:red\n```\n",
     )
     expect(markedText(html)).toEqual(["C"])
@@ -136,7 +136,7 @@ describe("ESLint diagnostic rendering", () => {
       "mmd eslint-check",
       'flowchart LR\n  A["{{ literal }}"] --> B\n  style C fill:red',
     ],
-    ["js", 'const text = "%% eslint mmd/flowchart/no-undef: error"'],
+    ["js", 'const text = "%% eslint @mmd-toolkit/flowchart-no-undef: error"'],
   ])("preserves v-pre for an unselected %s fence", async (info, code) => {
     const html = await markdown.renderAsync(`\`\`\`${info}\n${code}\n\`\`\`\n`)
     expect(markedText(html)).toEqual([])
@@ -156,16 +156,20 @@ describe("documented Markdown integration limits", () => {
 
   it.each([
     ["content", contentConfig, ["markdown/no-html"]],
-    ["blocks", markdownPlugin.configs.processor, ["mmd/flowchart/no-undef"]],
+    [
+      "blocks",
+      markdownPlugin.configs.processor,
+      ["@mmd-toolkit/flowchart-no-undef"],
+    ],
     [
       "both",
       [...contentConfig, ...markdownPlugin.configs.processor],
-      ["mmd/flowchart/no-undef"],
+      ["@mmd-toolkit/flowchart-no-undef"],
     ],
   ])("checks %s with the documented configuration", async (_, config, ids) => {
     const eslint = new ESLint({
       overrideConfigFile: true,
-      overrideConfig: [...config, mmd.configs.recommended],
+      overrideConfig: [...config, mmdToolkit.configs.recommended],
     })
     const [result] = await eslint.lintText(code, { filePath: "example.md" })
     expect(result.messages.map((message) => message.ruleId)).toEqual(ids)
@@ -178,26 +182,26 @@ describe("documented Markdown integration limits", () => {
         ...markdownPlugin.configs.processor,
         {
           files: ["**/*.mmd", "**/*.mermaid"],
-          plugins: { mmd },
-          language: "mmd/mermaid",
+          plugins: { "@mmd-toolkit": mmdToolkit },
+          language: "@mmd-toolkit/mermaid",
         },
       ],
     })
     const diagram = "flowchart LR\n  A --> B\n  style C fill:red\n"
     const [inside] = await eslint.lintText(
       [
-        "```mermaid\n%% eslint mmd/flowchart/no-undef: error\n",
+        "```mermaid\n%% eslint @mmd-toolkit/flowchart-no-undef: error\n",
         diagram,
         "```\n",
       ].join(""),
       { filePath: "inside.md" },
     )
     expect(inside.messages.map((message) => message.ruleId)).toEqual([
-      "mmd/flowchart/no-undef",
+      "@mmd-toolkit/flowchart-no-undef",
     ])
     const [outside] = await eslint.lintText(
       [
-        "<!-- eslint mmd/flowchart/no-undef: error -->\n\n```mermaid\n",
+        "<!-- eslint @mmd-toolkit/flowchart-no-undef: error -->\n\n```mermaid\n",
         diagram,
         "```\n",
       ].join(""),

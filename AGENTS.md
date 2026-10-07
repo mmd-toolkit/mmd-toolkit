@@ -9,13 +9,13 @@ A third-party project unrelated to mermaid-js. For the Mermaid text syntax
 (`.mmd`), covering every diagram type that mermaid.js has, it builds these five
 things.
 
-| Package                        | npm name              | Contents                             |
-| ------------------------------ | --------------------- | ------------------------------------ |
-| `packages/spec`                | `@mmd-toolkit/spec`   | Syntax specification (private)       |
-| `packages/tests`               | `@mmd-toolkit/tests`  | Conformance corpus (private)         |
-| `packages/parser`              | `@mmd-toolkit/parser` | Parser that returns an AST           |
-| `packages/prettier-plugin-mmd` | `prettier-plugin-mmd` | Formatter, as a Prettier plugin      |
-| `packages/eslint-plugin-mmd`   | `eslint-plugin-mmd`   | Linter, as an ESLint language plugin |
+| Package                        | npm name                     | Contents                             |
+| ------------------------------ | ---------------------------- | ------------------------------------ |
+| `packages/spec`                | `@mmd-toolkit/spec`          | Syntax specification (private)       |
+| `packages/tests`               | `@mmd-toolkit/tests`         | Conformance corpus (private)         |
+| `packages/parser`              | `@mmd-toolkit/parser`        | Parser that returns an AST           |
+| `packages/prettier-plugin-mmd` | `prettier-plugin-mmd`        | Formatter, as a Prettier plugin      |
+| `packages/eslint-plugin`       | `@mmd-toolkit/eslint-plugin` | Linter, as an ESLint language plugin |
 
 Correctness is defined by the pinned mermaid.js.
 
@@ -92,7 +92,7 @@ package.
 - `packages/prettier-plugin-mmd`: the formatter, with one printer for each
   diagram type, following formatting choices that are decided explicitly, item
   by item. Skill `prettier-plugin`.
-- `packages/eslint-plugin-mmd`: the linter, an ESLint language plugin. A rule
+- `packages/eslint-plugin`: the linter, an ESLint language plugin. A rule
   reports a mistake of the author that mermaid.js accepts without a word and
   reads as something other than what was meant. Which rules exist is decided
   with the skill `rule-ideas`; their documents follow the skill `eslint-plugin`,

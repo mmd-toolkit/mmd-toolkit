@@ -1,6 +1,6 @@
 # リンター
 
-`eslint-plugin-mmd`は、ESLintでMermaidの図の構文エラーと書き間違いを
+`@mmd-toolkit/eslint-plugin`は、ESLintでMermaidの図の構文エラーと書き間違いを
 検出するプラグインです。
 
 ## インストールと設定
@@ -8,7 +8,7 @@
 プロジェクトにESLint 10とプラグイン、`@eslint/markdown`をインストールします。
 
 ```sh
-npm install --save-dev eslint@10 eslint-plugin-mmd @eslint/markdown
+npm install --save-dev eslint@10 @mmd-toolkit/eslint-plugin @eslint/markdown
 ```
 
 プロジェクトのルートに、
@@ -16,14 +16,14 @@ npm install --save-dev eslint@10 eslint-plugin-mmd @eslint/markdown
 
 ```js
 import markdown from "@eslint/markdown"
-import mmd from "eslint-plugin-mmd"
+import mmdToolkit from "@mmd-toolkit/eslint-plugin"
 
-export default [...markdown.configs.processor, mmd.configs.recommended]
+export default [...markdown.configs.processor, mmdToolkit.configs.recommended]
 ```
 
 `@eslint/markdown`は、ESLintでチェックするコードブロックを
 Markdownから取り出します。
-`mmd.configs.recommended`は、プラグインを登録し、
+`mmdToolkit.configs.recommended`は、プラグインを登録し、
 `.mmd`・`.mermaid`ファイルにMermaidの言語を指定します。
 プラグインの推奨ルールも、エラーとして有効にします。
 Markdownのprocessorが取り出した`mmd`・`mermaid`コードブロックも
@@ -37,10 +37,10 @@ Markdownのprocessorが取り出した`mmd`・`mermaid`コードブロックも
 
 次の図を、`diagram.md`の`mermaid`コードブロック内に保存します。
 `%% eslint`コメントで、この図の
-[`mmd/flowchart/no-undef`][no-undef]を明示的に有効にしています。
+[`@mmd-toolkit/flowchart-no-undef`][no-undef]を明示的に有効にしています。
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
   style C fill:red
@@ -52,14 +52,14 @@ ESLintを実行します。
 npx eslint diagram.md
 ```
 
-`mmd/flowchart/no-undef`が、`style C fill:red`の`C`を報告します。
+`@mmd-toolkit/flowchart-no-undef`が、`style C fill:red`の`C`を報告します。
 Mermaidはこの入力を受理し、`C`という新しい頂点を追加します。
 `A`や`B`にスタイルを適用することにはなりません。
 
 `A`にスタイルを適用するには、`style`文のIDを変更します。
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
   style A fill:red
@@ -89,9 +89,9 @@ flowchart LR
   ほかのESLint設定との併用。
 - [Markdown](./markdown.ja.md): Markdown内のMermaidコードブロックのlint。
 - [設定コメント](./comments.ja.md): `%%`コメントによる図の中でのルール設定。
-- [ルール一覧](../../../eslint-plugin-mmd/docs/rules/index.ja.md):
+- [ルール一覧](../../../eslint-plugin/docs/rules/index.ja.md):
   各ルールの説明、対象、診断例。
 
 [eslint-config]: https://eslint.org/docs/latest/use/configure/configuration-files
-[no-undef]: ../../../eslint-plugin-mmd/docs/rules/flowchart/no-undef.ja.md
+[no-undef]: ../../../eslint-plugin/docs/rules/flowchart-no-undef.ja.md
 [suggestions]: https://eslint.org/docs/latest/use/core-concepts#rule-suggestions

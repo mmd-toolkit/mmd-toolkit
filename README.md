@@ -35,13 +35,13 @@ formatting options, and applying the formatted result.
 
 ## Packages
 
-| Package                                                 | What it is for                                                                         |
-| ------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [`prettier-plugin-mmd`](./packages/prettier-plugin-mmd) | Format `.mmd` files and `mermaid` code blocks in Markdown with Prettier.               |
-| [`eslint-plugin-mmd`](./packages/eslint-plugin-mmd)     | Lint `.mmd` files and `mermaid` code blocks in Markdown with ESLint.                   |
-| [`@mmd-toolkit/parser`](./packages/parser)              | Parse Mermaid text into a syntax tree with positions, for linters and other tools.     |
-| [`@mmd-toolkit/spec`](./packages/spec)                  | Read how Mermaid text is parsed, as a specification independent of any implementation. |
-| [`@mmd-toolkit/tests`](./packages/tests)                | Test an implementation of the syntax against what mermaid.js does.                     |
+| Package                                                  | What it is for                                                                         |
+| -------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [`prettier-plugin-mmd`](./packages/prettier-plugin-mmd)  | Format `.mmd` files and `mermaid` code blocks in Markdown with Prettier.               |
+| [`@mmd-toolkit/eslint-plugin`](./packages/eslint-plugin) | Lint `.mmd` files and `mermaid` code blocks in Markdown with ESLint.                   |
+| [`@mmd-toolkit/parser`](./packages/parser)               | Parse Mermaid text into a syntax tree with positions, for linters and other tools.     |
+| [`@mmd-toolkit/spec`](./packages/spec)                   | Read how Mermaid text is parsed, as a specification independent of any implementation. |
+| [`@mmd-toolkit/tests`](./packages/tests)                 | Test an implementation of the syntax against what mermaid.js does.                     |
 
 ## What you can rely on
 

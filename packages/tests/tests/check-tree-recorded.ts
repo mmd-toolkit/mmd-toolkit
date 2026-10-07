@@ -1,5 +1,6 @@
-import { readFileSync } from "node:fs"
+import { existsSync, readFileSync } from "node:fs"
 import path from "node:path"
+import { expect, it } from "vitest"
 import { checkTree } from "../src/check-tree/index.ts"
 import type {
   CheckedNode,
@@ -9,7 +10,9 @@ import type {
 } from "../src/check-tree/types.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
 import type { DiagramType } from "../src/index.ts"
-import { getFixturesRoot } from "../src/index.ts"
+import { getFixturesRoot, loadFixtures } from "../src/index.ts"
+import { withoutTokenWhitespace } from "./check-tree-token-edits.ts"
+import type { TokenSide } from "./check-tree-token-edits.ts"
 
 // Tests of the check of a tree that break a recorded tree: the base is the
 // `ast.json` of a named fixture, a mutation changes one thing of a copy of it,
@@ -31,6 +34,57 @@ export function recordedTree(diagram: DiagramType, name: string): RecordedTree {
       readFileSync(path.join(directory, "ast.json"), "utf8"),
     ) as CheckedRoot,
   }
+}
+
+/** A recorded tree of the corpus, with its name (`diagram/fixture`), its input, and its `ast.json` text. */
+export interface CorpusTree {
+  readonly name: string
+  readonly input: string
+  readonly json: string
+}
+
+const CORPUS_DIAGRAMS: readonly DiagramType[] = [
+  "common",
+  "flowchart",
+  "sequence",
+  "class",
+  "state",
+]
+
+let corpusTrees: Promise<readonly CorpusTree[]> | undefined
+
+/**
+ * Every recorded tree of the corpus, in the order of the diagrams and of the
+ * fixtures of each, read once for the tests of a file. A test that breaks a
+ * kind of node takes the first of them that has one: any recorded tree that
+ * has the kind will do, and the question the test asks does not depend on
+ * which. A question whose answer depends on the tree names its fixture instead.
+ */
+export function recordedTreesOfCorpus(): Promise<readonly CorpusTree[]> {
+  corpusTrees ??= readCorpusTrees()
+  return corpusTrees
+}
+
+/** Reads the `ast.json` of every fixture of the corpus that has one. */
+async function readCorpusTrees(): Promise<CorpusTree[]> {
+  const trees: CorpusTree[] = []
+  for (const diagram of CORPUS_DIAGRAMS) {
+    for (const fixture of await loadFixtures(diagram)) {
+      const file = path.join(
+        getFixturesRoot(),
+        diagram,
+        fixture.name,
+        "ast.json",
+      )
+      if (!existsSync(file)) continue
+      trees.push({
+        name: `${diagram}/${fixture.name}`,
+        input: fixture.input,
+        json: readFileSync(file, "utf8"),
+      })
+    }
+  }
+  return trees
 }
 
 /** A copy of `tree` that a mutation can change without changing the recorded one. */
@@ -125,4 +179,55 @@ export function problemsOf(
   const copy = copyOf(tree)
   mutation.mutate(copy)
   return { base: checkTree(input, tree), mutated: checkTree(input, copy) }
+}
+
+/** A case: the whitespace taken off one side of a token of a recorded tree, and the problems of the check for the tree so made. */
+export interface WhitespaceCase {
+  readonly name: string
+  readonly diagram: DiagramType
+  /** The fixture whose recorded tree is edited. */
+  readonly fixture: string
+  /** The first token of the fixture of this kind and this text, which loses the whitespace. */
+  readonly token: { readonly type: string; readonly value: string }
+  /** The side of the token that loses its whitespace: the start is next to the cut before it, the end next to the cut after it. */
+  readonly side: TokenSide
+  /** The problems of the check, in order. */
+  readonly problems: readonly TreeProblem[]
+}
+
+/** The tree of `testCase` without the whitespace, and the problems of the check for the tree before the edit. */
+function editedTreeOf(testCase: WhitespaceCase): {
+  input: string
+  base: TreeProblem[]
+  edited: CheckedRoot
+} {
+  const { input, tree } = recordedTree(testCase.diagram, testCase.fixture)
+  const index = tree.tokens.findIndex(
+    (token) =>
+      token.type === testCase.token.type &&
+      token.value === testCase.token.value,
+  )
+  const edited = withoutTokenWhitespace(
+    input,
+    JSON.stringify(tree),
+    index,
+    testCase.side,
+  )
+  if (edited === null) {
+    throw new Error(
+      `no ${testCase.token.type} ${JSON.stringify(testCase.token.value)} with whitespace at its ${testCase.side}`,
+    )
+  }
+  return { input, base: checkTree(input, tree), edited }
+}
+
+/** Runs each case: the tree of the fixture has no problem, and the edited tree has `problems`. */
+export function expectWhitespaceCases(cases: readonly WhitespaceCase[]): void {
+  for (const testCase of cases) {
+    it(testCase.name, () => {
+      const { input, base, edited } = editedTreeOf(testCase)
+      expect(base).toEqual([])
+      expect(checkTree(input, edited)).toEqual(testCase.problems)
+    })
+  }
 }

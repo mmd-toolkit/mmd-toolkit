@@ -198,9 +198,9 @@ describe("a Keyword that a cut cuts", () => {
       about: ["token is cut"],
       problems: [
         {
-          where: "Keyword at 32-37",
+          where: "Keyword at 15-18",
           message:
-            "a Keyword token is cut: Keyword at 15-18 and this are its fragments",
+            'a Keyword token is cut: Keyword at 15-18, Keyword at 32-37 are the fragments of "subgraph"',
         },
       ],
     },
@@ -214,9 +214,9 @@ describe("a Keyword that a cut cuts", () => {
       about: ["token is cut"],
       problems: [
         {
-          where: "Keyword at 19-24",
+          where: "Keyword at 15-18",
           message:
-            "a Keyword token is cut: Keyword at 15-18 and this are its fragments",
+            'a Keyword token is cut: Keyword at 15-18, Keyword at 19-24 are the fragments of "subgraph"',
         },
       ],
     },
@@ -233,9 +233,9 @@ describe("a Keyword that a cut cuts", () => {
       about: ["token is cut"],
       problems: [
         {
-          where: "Keyword at 35-38",
+          where: "Keyword at 15-17",
           message:
-            "a Keyword token is cut: Keyword at 15-17, Keyword at 31-34 and this are its fragments",
+            'a Keyword token is cut: Keyword at 15-17, Keyword at 31-34, Keyword at 35-38 are the fragments of "subgraph"',
         },
       ],
     },
@@ -252,9 +252,9 @@ describe("a Keyword that a cut cuts", () => {
       about: ["token is cut"],
       problems: [
         {
-          where: "Keyword at 48-51",
+          where: "Keyword at 15-17",
           message:
-            "a Keyword token is cut: Keyword at 15-17, Keyword at 31-34 and this are its fragments",
+            'a Keyword token is cut: Keyword at 15-17, Keyword at 31-34, Keyword at 48-51 are the fragments of "subgraph"',
         },
       ],
     },
@@ -272,14 +272,14 @@ describe("a Keyword that a cut cuts", () => {
       about: ["token is cut"],
       problems: [
         {
-          where: "Keyword at 37-39",
+          where: "Keyword at 15-16",
           message:
-            "a Keyword token is cut: Keyword at 15-16, Keyword at 17-19, Keyword at 33-36 and this are its fragments",
+            'a Keyword token is cut: Keyword at 15-16, Keyword at 17-19, Keyword at 33-36, Keyword at 37-39 are the fragments of "subgraph"',
         },
         {
-          where: "Keyword at 37-39",
+          where: "Keyword at 33-36",
           message:
-            "a Keyword token is cut: Keyword at 33-36 and this are its fragments",
+            'a Keyword token is cut: Keyword at 33-36, Keyword at 37-39 are the fragments of "graph"',
         },
       ],
     },
@@ -293,9 +293,9 @@ describe("a Keyword that a cut cuts", () => {
       about: ["token is cut"],
       problems: [
         {
-          where: "Keyword at 47-54",
+          where: "Keyword at 29-33",
           message:
-            "a Keyword token is cut: Keyword at 29-33 and this are its fragments",
+            'a Keyword token is cut: Keyword at 29-33, Keyword at 47-54 are the fragments of "participant"',
         },
       ],
     },
@@ -309,9 +309,9 @@ describe("a Keyword that a cut cuts", () => {
       about: ["token is cut"],
       problems: [
         {
-          where: "Keyword at 19-26",
+          where: "Keyword at 0-5",
           message:
-            "a Keyword token is cut: Keyword at 0-5 and this are its fragments",
+            'a Keyword token is cut: Keyword at 0-5, Keyword at 19-26 are the fragments of "classDiagram"',
         },
       ],
     },
@@ -325,9 +325,9 @@ describe("a Keyword that a cut cuts", () => {
       about: ["token is cut"],
       problems: [
         {
-          where: "Keyword at 19-29",
+          where: "Keyword at 0-5",
           message:
-            "a Keyword token is cut: Keyword at 0-5 and this are its fragments",
+            'a Keyword token is cut: Keyword at 0-5, Keyword at 19-29 are the fragments of "stateDiagram-v2"',
         },
       ],
     },

@@ -2,7 +2,7 @@
 
 [はじめに](./index.ja.md)の設定では、
 `@eslint/markdown`のprocessorでコードブロックを取り出し、
-`eslint-plugin-mmd`でMermaidの図をチェックします。
+`@mmd-toolkit/eslint-plugin`でMermaidの図をチェックします。
 このページでは、対象ブロック、報告される位置、
 Markdown本文もlintする場合の方法を説明します。
 
@@ -15,7 +15,7 @@ Markdown本文もlintする場合の方法を説明します。
 # Diagram
 
 ```mermaid
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
   style C fill:red
@@ -33,7 +33,8 @@ Markdownファイルに対してESLintを実行します。
 npx eslint diagram.md
 ```
 
-`mmd/flowchart/no-undef`が、`diagram.md`の7行目、9列目の`C`を報告します。
+`@mmd-toolkit/flowchart-no-undef`が、
+`diagram.md`の7行目、9列目の`C`を報告します。
 processorは、それぞれの図の診断を元のMarkdown上の位置に対応させます。
 シーケンス図の例には報告がありません。
 
@@ -42,7 +43,7 @@ Mermaidブロックに図のヘッダーがない場合や、対応していな�
 ルールを実行する前にパースのエラーを報告します。
 対応する構文は、[図の対応状況](../reference/support.ja.md)を参照してください。
 
-他の言語のコードブロックは、`eslint-plugin-mmd`の対象外です。
+他の言語のコードブロックは、`@mmd-toolkit/eslint-plugin`の対象外です。
 それぞれの言語に対応するESLintのルールや言語プラグインで設定します。
 
 ## 設定でコードブロックを指定する
@@ -51,7 +52,7 @@ processorは既定では、各ブロックに、
 その言語を拡張子とする仮想ファイル名を付けます。
 `mermaid`ブロックは`.md`ファイル内の`.mermaid`ファイル、
 `mmd`ブロックは`.mmd`ファイルとして扱います。
-そのため、`mmd.configs.recommended`が追加の設定なしに両方へ適用されます。
+そのため、`mmdToolkit.configs.recommended`が追加の設定なしに両方へ適用されます。
 
 Markdown内の図だけルール設定を上書きするには、次の指定を使います。
 
@@ -59,12 +60,12 @@ Markdown内の図だけルール設定を上書きするには、次の指定を
 const mermaidCodeBlocks = {
   files: ["**/*.md/*.mmd", "**/*.md/*.mermaid"],
   rules: {
-    "mmd/flowchart/no-undef": "warn",
+    "@mmd-toolkit/flowchart-no-undef": "warn",
   },
 }
 ```
 
-エクスポートする設定配列の`mmd.configs.recommended`より後に、
+エクスポートする設定配列の`mmdToolkit.configs.recommended`より後に、
 このオブジェクトを追加します。
 設定全体とルールの選択は、[設定](./configuration.ja.md)で説明しています。
 図の中の[設定コメント](./comments.ja.md)は、そのコードブロックに適用します。

@@ -243,6 +243,11 @@ HTML ラベルが有効で、`securityLevel` が
 [fixture: flowchart/config-security-level-other-line-breaks-spaced]
 タグは `#br#` を置き換える前に、左から重ならずに見つけます。
 [fixture: flowchart/config-security-level-other-placeholder-repeated]
+置き換えの前に、テキストからディレクティブを取り除きます。
+そのため、改行タグの中や、作者が書いた `#br#` の中にあるディレクティブは、
+置き換えを妨げません。
+[fixture: flowchart/config-security-level-other-line-break-directive-inside]
+[fixture: flowchart/config-security-level-other-placeholder-directive-inside]
 
 **どのテキストか。**
 置き換えるのは、mermaid.js が `sanitizeText` に渡すテキストだけです。

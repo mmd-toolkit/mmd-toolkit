@@ -11,7 +11,7 @@ import path from "node:path"
 
 const documentDirectories = [
   ["packages/spec/docs/known-divergences", "reference/divergences"],
-  ["packages/eslint-plugin-mmd/docs/rules", "linter/rules"],
+  ["packages/eslint-plugin/docs/rules", "linter/rules"],
 ]
 
 const diagramDirectories = [
@@ -69,7 +69,7 @@ const sourceDirectories = [
   "packages/docs/pages",
   "packages/spec/docs",
   "packages/prettier-plugin-mmd/docs",
-  "packages/eslint-plugin-mmd/docs/rules",
+  "packages/eslint-plugin/docs/rules",
 ]
 
 /** Lists the Markdown files under a directory, using relative POSIX paths. */
@@ -191,14 +191,16 @@ export function diagramItems(diagrams, documents, section, locale) {
 
 /**
  * Groups imported rule pages by diagram family, with common rules first.
- * Filenames supply rule names; only pages in the selected language are linked.
- * Known families follow the shared diagram order, then new families by name.
+ * A rule's filename is its id: a diagram-specific rule's id starts with the
+ * diagram's name and a hyphen, and a common rule's id does not. Only pages in
+ * the selected language are linked, and families follow the diagram order.
  */
 export function ruleItems(diagrams, documents, locale) {
   const extension = locale === "ja" ? ".ja.md" : ".md"
   const prefix = locale === "ja" ? "/ja" : ""
   const commonText = locale === "ja" ? "共通のルール" : "Common rules"
   const section = "linter/rules/"
+  const common = "."
   const groups = new Map()
   for (const page of documents.values()) {
     if (
@@ -208,31 +210,25 @@ export function ruleItems(diagrams, documents, locale) {
     )
       continue
     const name = page.slice(section.length, -extension.length)
-    if (path.posix.basename(name) === "index") continue
-    const family = path.posix.dirname(name)
+    if (name === "index" || name.includes("/")) continue
+    const family =
+      diagrams.find((diagram) => name.startsWith(`${diagram.name}-`))?.name ??
+      common
     if (!groups.has(family)) groups.set(family, [])
-    groups.get(family).push({
-      text: path.posix.basename(name),
-      link: `${prefix}/${section}${name}`,
-    })
+    groups.get(family).push({ text: name, link: `${prefix}/${section}${name}` })
   }
-  const knownFamilies = [".", ...diagrams.map(({ name }) => name)]
-  const families = [
-    ...knownFamilies.filter((name) => groups.has(name)),
-    ...[...groups.keys()]
-      .filter((name) => !knownFamilies.includes(name))
-      .sort((left, right) => left.localeCompare(right, "en")),
-  ]
-  return families.map((name) => ({
-    text:
-      name === "."
-        ? commonText
-        : (diagrams.find((diagram) => diagram.name === name)?.text[locale] ??
-          name),
-    items: groups
-      .get(name)
-      .sort((left, right) => left.text.localeCompare(right.text, "en")),
-  }))
+  const families = [common, ...diagrams.map(({ name }) => name)]
+  return families
+    .filter((name) => groups.has(name))
+    .map((name) => ({
+      text:
+        name === common
+          ? commonText
+          : diagrams.find((diagram) => diagram.name === name).text[locale],
+      items: groups
+        .get(name)
+        .sort((left, right) => left.text.localeCompare(right.text, "en")),
+    }))
 }
 
 /** Publishes a Japanese pair under /ja/ while preserving paired source names. */
@@ -498,7 +494,7 @@ export function documentSourcesPlugin(
           const navigationChanged =
             JSON.stringify(diagrams) !== JSON.stringify(updatedDiagrams) ||
             (event !== "change" &&
-              (relative.startsWith("packages/eslint-plugin-mmd/docs/rules/") ||
+              (relative.startsWith("packages/eslint-plugin/docs/rules/") ||
                 diagramDirectories.some(([directory]) =>
                   updatedDiagrams.some(
                     ({ name }) =>

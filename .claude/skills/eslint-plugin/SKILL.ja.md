@@ -1,16 +1,16 @@
 ---
 name: eslint-plugin
 description:
-  Write, change, or remove the rule documents of eslint-plugin-mmd under
-  packages/eslint-plugin-mmd/docs/rules/, and update them when a diagram type is
-  added. Use when a rule has been decided and needs its document, when a
+  Write, change, or remove the rule documents of @mmd-toolkit/eslint-plugin
+  under packages/eslint-plugin/docs/rules/, and update them when a diagram type
+  is added. Use when a rule has been decided and needs its document, when a
   document must follow a change of the tree or the fixtures, or when a diagram
   type is supported. Which rules exist is decided with the rule-ideas skill.
 ---
 
 # 規則の文書の書き方（eslint-plugin）
 
-`eslint-plugin-mmd` は、
+`@mmd-toolkit/eslint-plugin` は、
 Mermaid の図のテキストのための ESLint の言語プラグインである。
 その規則の文書を、すべての主張を mermaid.js、
 `@mmd-toolkit/parser` の木、fixture で確かめて書く手順。
@@ -20,7 +20,7 @@ Mermaid の図のテキストのための ESLint の言語プラグインであ�
 
 ## 方針と基準
 
-パッケージ `packages/eslint-plugin-mmd` について成り立つこと:
+パッケージ `packages/eslint-plugin` について成り立つこと:
 
 - 規則は、図種ごとに、その図種の木が落ち着いたら実装し、
   リリースの前にすべてを実装する。
@@ -63,9 +63,9 @@ Mermaid の図のテキストのための ESLint の言語プラグインであ�
    mermaid.js のソースへのリンクの書き方。
 3. 木の定義: `packages/spec/docs/ast.md` と `packages/spec/docs/ast/<図種>.md`。
    規則の条件は、ここにあるノードの型、欄、トークンの種類で書く。
-4. `packages/eslint-plugin-mmd/docs/rules/index.md` と、
+4. `packages/eslint-plugin/docs/rules/index.md` と、
    同じ種類の既存の文書 1 つ。
-5. `packages/eslint-plugin-mmd/docs/development.md` の
+5. `packages/eslint-plugin/docs/development.md` の
    「Rules and their documents」の節。
    規則のファイル、文書のうちそれから生成する部分、
    コマンド `update` と `check:docs` が書いてある。
@@ -82,14 +82,16 @@ Mermaid の図のテキストのための ESLint の言語プラグインであ�
 ## 2. 文書の置き場所と規則の id
 
 - 共通の規則: `docs/rules/<名前>.md` と `<名前>.ja.md`。
-  id は `mmd/<名前>`。
-- 図種の規則: `docs/rules/<図種>/<名前>.md` と `<名前>.ja.md`。
-  id は `mmd/<図種>/<名前>`。
+  id は `@mmd-toolkit/<名前>`。
+- 図種の規則: 名前は図種で始める（`<図種>-<規則>`）。
+  文書は、共通の規則と同じく `docs/rules/<名前>.md` と `<名前>.ja.md`。
+  id は `@mmd-toolkit/<名前>`。
   `<図種>` は文書 `packages/spec/docs/ast/<図種>.md` の名前で、
   図種の id ではない。
-  `flowchart/` には、`flowchart-v2`、`flowchart-elk`、`swimlane` の規則を置く。
+  名前が `flowchart-` で始まる規則が、`flowchart-v2`、`flowchart-elk`、
+  `swimlane` の規則である。
 - 2 つの図種に同じ種類の問題があっても、構文とノードが違えば、
-  それぞれのディレクトリに、同じ名前の規則を 1 つずつ置く。
+  それぞれの図種の接頭辞を付けて、同じ規則名の規則を 1 つずつ置く。
 
 ## 3. 文書の形
 
@@ -101,7 +103,7 @@ Mermaid の図のテキストのための ESLint の言語プラグインであ�
 規則を実装するまで、もう 1 つの文書である規則の覚え書きに書く。
 英語の規則の文書:
 
-    # mmd/<diagram>/<name>
+    # @mmd-toolkit/<name>
 
     Japanese version: [<name>.ja.md](./<name>.ja.md)
 
@@ -122,14 +124,14 @@ Mermaid の図のテキストのための ESLint の言語プラグインであ�
     Examples of **incorrect** code for this rule:
 
     ```mmd
-    %% eslint mmd/<diagram>/<name>: error
+    %% eslint @mmd-toolkit/<name>: error
     …
     ```
 
     Examples of **correct** code for this rule:
 
     ```mmd
-    %% eslint mmd/<diagram>/<name>: error
+    %% eslint @mmd-toolkit/<name>: error
     …
     ```
 
@@ -148,15 +150,15 @@ Mermaid の図のテキストのための ESLint の言語プラグインであ�
     ## Resources                        （生成する。実装した規則だけ）
 
 英語の規則の覚え書き。
-規則の文書と同じパスで、`docs/rule-notes/` の下に置く
-（`docs/rule-notes/<diagram>/<name>.md`）。
+規則の文書と同じ名前で、`docs/rule-notes/` の下に置く
+（`docs/rule-notes/<name>.md`）。
 
-    # mmd/<diagram>/<name>
+    # @mmd-toolkit/<name>
 
     Japanese version: [<name>.ja.md](./<name>.ja.md)
 
     Notes for implementing the rule
-    [mmd/<diagram>/<name>](../../rules/<diagram>/<name>.md).
+    [@mmd-toolkit/<name>](../rules/<name>.md).
 
     The rule is not implemented yet. These notes are for implementing it.
 
@@ -171,14 +173,15 @@ Mermaid の図のテキストのための ESLint の言語プラグインであ�
 `この規則にはオプションがない。` を持つ `## オプション`、
 `## 関連する規則` である。
 日本語の規則の覚え書きは、`英語版: [<名前>.md](./<名前>.md)`、
-`規則 [mmd/<図種>/<名前>](…) を実装するための覚え書き。`、
+`規則 [@mmd-toolkit/<名前>](…) を実装するための覚え書き。`、
 `この規則はまだ実装していない。` と `ここには、実装するときに要ることを書く。`、
 `## 木での現れ方`、`## fixture` を持つ。
 日本語の文書からほかの文書へのリンクは、その日本語版（`.ja.md`）に向ける。
+英語版へのリンクの行が 80 列を超えるときは、「英語版:」の後ろで折る。
 
 各部分の書き方:
 
-- 題は完全な規則の id（共通の規則は `# mmd/<名前>`）。
+- 題は完全な規則の id（共通の規則は `# @mmd-toolkit/<名前>`）。
   題が id を持つので、規則の id の行は置かない。
   題は生成する。
   新しい文書を書いたときも、1 行目は `update` が置き換える（6 節）。
@@ -219,8 +222,7 @@ Mermaid の図のテキストのための ESLint の言語プラグインであ�
   従う例には、条件の境界を示すものを選ぶ。
   正しい書き方と、条件が当たらない最も近いテキストである。
   従う例や、これらの例の組の外にあるものも含め、すべての `mmd` の
-  コードブロックを `%% eslint mmd/<図種>/<名前>: error` で始める。
-  共通の規則なら `%% eslint mmd/<名前>: error` である。
+  コードブロックを `%% eslint @mmd-toolkit/<名前>: error` で始める。
   そのページが説明する規則の id を使い、字下げせず、
   図のヘッダーや Mermaid のディレクティブより前に置く。
   サイトで `twoslash-eslint` の診断を有効にするためである。
@@ -273,7 +275,7 @@ Mermaid の図のテキストのための ESLint の言語プラグインであ�
   実装したら、条件は規則のコードに、fixture は規則のテストに移るので、
   規則を実装する変更の中で、覚え書きを（英日とも）消す。
   覚え書きの一覧の fixture は、規則の fixture のディレクトリ
-  `tests/fixtures/rules/<規則のパス>/` に、
+  `tests/fixtures/rules/<名前>/` に、
   `valid/<図種>/` か `invalid/<図種>/` の下の写しとして移る。
   写しの名前は fixture の名前による（`<名前>-input.mmd`）。
   テストは、写しが fixture の入力とバイト単位で同じことを確かめる。
@@ -365,7 +367,7 @@ mermaid.js の呼び出しは直列で遅いので、入力が多いときは、
    公開する例を parser やサイトの表示処理で確かめるときは、コメントも残す。
    スナップショットのテストヘルパーだけは、このコメントを除く。
    テスターが同じ規則を `rule-to-test/` の下で有効にするため、
-   `mmd/` の下でも有効にすると、すべての報告が二重になるからである。
+   `@mmd-toolkit/` の下でも有効にすると、すべての報告が二重になるからである。
    公開する例の一部であり、コーパスの fixture の一部ではない。
    このコメントを足すために fixture を変更しない。
    例外は、空白の有無そのものが要点で、わざと書いたまま残す例だけで、
@@ -397,7 +399,7 @@ mermaid.js の呼び出しは直列で遅いので、入力が多いときは、
 
 1. 書いた文書に `npx prettier --write` を 2 回かけ、
    2 回目で何も変わらないことを確かめる。
-2. `pnpm --filter eslint-plugin-mmd run update` を実行する（6 節）。
+2. `pnpm --filter @mmd-toolkit/eslint-plugin run update` を実行する（6 節）。
 3. `pnpm run lint:docs`、`pnpm run format:check`、
    `pnpm run lint:chars` が通ること。
    `lint:docs` は、日本語の対と `check:docs` を確かめる。
@@ -420,7 +422,7 @@ mermaid.js の呼び出しは直列で遅いので、入力が多いときは、
    例外は、テストが読むものを変えたときである。
    つまり、例（3 節の 2 行の後のコードブロック）か規則のファイルである。
    そのときは、`tests/rule-cases.test.ts` と規則のテスト
-   `tests/rules/<パス>.test.ts` を回し、
+   `tests/rules/<名前>.test.ts` を回し、
    最初の段落と生成する部分のために `pnpm run check:docs` を動かす。
    どの変更にどのテストが対応するかは、
    SKILL `eslint-plugin-rules` の 4 節にある。
@@ -440,7 +442,7 @@ mermaid.js の呼び出しは直列で遅いので、入力が多いときは、
 - 実装していない規則のファイルでは、`recommended` は `false` である。
   規則を実装するときに、rule-ideas の SKILL の 7 節の判定から設定する。
   そこの判定がいったんの案なら、先に決め直す。
-- `pnpm --filter eslint-plugin-mmd run update` が書くもの:
+- `pnpm --filter @mmd-toolkit/eslint-plugin run update` が書くもの:
   すべての文書の題と告知。
   実装した規則の文書の末尾の、
   `<!-- begin auto-generated rule resources -->` から
@@ -464,7 +466,7 @@ mermaid.js の呼び出しは直列で遅いので、入力が多いときは、
 
 ## 7. 図種に対応したとき
 
-1. `packages/spec/docs/ast/<図種>.md` の名前で `docs/rules/<図種>/` を作る。
+1. 規則の名前を、`packages/spec/docs/ast/<図種>.md` の名前 `<図種>-` で始める。
    index の図種の表は、その規則ができると `update` が生成する（6 節）。
    図種を `tools/rule-docs.ts` の `DIAGRAM_ORDER` に足す。
    場所は、サイトがサイドバーに使う

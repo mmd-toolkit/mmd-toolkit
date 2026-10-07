@@ -1,20 +1,20 @@
 ---
 name: rule-ideas
 description:
-  Find ideas for the rules of eslint-plugin-mmd and decide which rules to keep
-  (adoption, name, scope, whether `recommended` enables them, suggestions). Use
-  when looking for new rule candidates, reviewing proposed candidates, or
-  rechecking existing rules against the adoption criteria.
+  Find ideas for the rules of @mmd-toolkit/eslint-plugin and decide which rules
+  to keep (adoption, name, scope, whether `recommended` enables them,
+  suggestions). Use when looking for new rule candidates, reviewing proposed
+  candidates, or rechecking existing rules against the adoption criteria.
 ---
 
 # Finding rule ideas and deciding which rules to keep (rule-ideas)
 
-How to find candidate rules for `eslint-plugin-mmd` (an ESLint language plugin
-for Mermaid diagram text) and decide whether to keep each one, its name, and its
-scope. It is written so that the same decisions can be made from this document
-alone, without the conversation history or memory. The adoption criteria
-themselves are in "Policies and criteria" in section 2; the rest of this
-document describes how to apply them.
+How to find candidate rules for `@mmd-toolkit/eslint-plugin` (an ESLint language
+plugin for Mermaid diagram text) and decide whether to keep each one, its name,
+and its scope. It is written so that the same decisions can be made from this
+document alone, without the conversation history or memory. The adoption
+criteria themselves are in "Policies and criteria" in section 2; the rest of
+this document describes how to apply them.
 
 ## 1. What this procedure covers, and how to work
 
@@ -26,12 +26,12 @@ document describes how to apply them.
   and their output are kept in a working directory outside the repository.
 - The decisions are recorded in the repository by the following procedures,
   which the same person may carry out next:
-  - The rule documents (`packages/eslint-plugin-mmd/docs/rules/`) are written
-    with the procedure of the eslint-plugin SKILL. Each document belongs to a
-    rule file under `packages/eslint-plugin-mmd/src/rules/`; a rule is added,
-    renamed, or removed with its document, as the eslint-plugin SKILL describes.
-    When a document of a dropped rule exists, it is deleted with its rule file
-    by the same procedure.
+  - The rule documents (`packages/eslint-plugin/docs/rules/`) are written with
+    the procedure of the eslint-plugin SKILL. Each document belongs to a rule
+    file under `packages/eslint-plugin/src/rules/`; a rule is added, renamed, or
+    removed with its document, as the eslint-plugin SKILL describes. When a
+    document of a dropped rule exists, it is deleted with its rule file by the
+    same procedure.
   - Missing supporting fixtures are requested from the tests package, with the
     smallest input and the claim that the fixture answers; the tests package
     adds them and records what mermaid.js does
@@ -77,7 +77,8 @@ document describes how to apply them.
     something else (`A"Start"` without brackets, `;` between styles).
 - A rule is common only when one definition, over the part of the tree that
   every diagram type shares, covers every diagram type and they all behave the
-  same; otherwise it belongs to a diagram type, in `docs/rules/<diagram>/`.
+  same; otherwise it belongs to a diagram type, and its name starts with
+  `<diagram>-` (document `docs/rules/<diagram>-<name>.md`).
 
 Read them before every decision. The rest of this section shows how they are
 applied, by example.
@@ -88,18 +89,18 @@ Kept (an author's mistake that mermaid accepts silently):
 
 | Input                                                                                                | What mermaid does                                                       | Rule                                                                                                                                                        |
 | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| An empty `%%` line inside lines commented out together                                               | Makes the vertex `%%`                                                   | flowchart/no-bare-comment-marker (could also be read as a mermaid bug, but kept; a borderline case)                                                         |
+| An empty `%%` line inside lines commented out together                                               | Makes the vertex `%%`                                                   | flowchart-no-bare-comment-marker (could also be read as a mermaid bug, but kept; a borderline case)                                                         |
 | `%%{init: {...}}` (the closing `%%` forgotten)                                                       | The directive runs to the end of the text, and the diagram is empty     | no-unclosed-directive (common)                                                                                                                              |
 | `%%{init: {"flowchart": {"inheritDir": true},}}%%` (a trailing comma)                                | All init configuration is dropped                                       | no-ignored-init-directive (common)                                                                                                                          |
-| `C-->A[End]` after `A[Start]-->B`                                                                    | The label of A becomes End                                              | flowchart/no-redefined-vertex                                                                                                                               |
-| `style C fill:red` (C mistyped)                                                                      | Adds a styled vertex C                                                  | flowchart/no-undef                                                                                                                                          |
-| `class C foo` or `click C href "…"` (C mistyped)                                                     | Nothing: no vertex gets the class or the link                           | flowchart/no-undef                                                                                                                                          |
-| `style C fill:red`, then `class C foo` (C mistyped in both)                                          | `style` adds the vertex C, and the class applies to it                  | flowchart/no-undef, on the `style` only: the first `style` of an id that nothing else defines is reported, and a vertex that `style` adds counts as defined |
-| An `accDescr {` block left unclosed                                                                  | The description is empty                                                | flowchart/no-unclosed-description-block                                                                                                                     |
-| `accDescr {}` in a diagram without a description (also with only whitespace inside, or on two lines) | Nothing happens (the description stays empty)                           | flowchart/no-empty-description-block                                                                                                                        |
-| `accDescr: second` after `accDescr: first`                                                           | The description is replaced by `second` without a word                  | flowchart/no-duplicate-description                                                                                                                          |
-| `accTitle: second` after `accTitle: first`                                                           | The title is replaced by `second` without a word                        | flowchart/no-duplicate-title                                                                                                                                |
-| `A-->B; direction TB` in a subgraph (the same with or without the `;`)                               | The rest of the direction line is dropped: A, B, and the edge disappear | flowchart/no-ignored-text (a direction statement is written on a line of its own; mermaid drops the statements written on the same line without a word)     |
+| `C-->A[End]` after `A[Start]-->B`                                                                    | The label of A becomes End                                              | flowchart-no-redefined-vertex                                                                                                                               |
+| `style C fill:red` (C mistyped)                                                                      | Adds a styled vertex C                                                  | flowchart-no-undef                                                                                                                                          |
+| `class C foo` or `click C href "…"` (C mistyped)                                                     | Nothing: no vertex gets the class or the link                           | flowchart-no-undef                                                                                                                                          |
+| `style C fill:red`, then `class C foo` (C mistyped in both)                                          | `style` adds the vertex C, and the class applies to it                  | flowchart-no-undef, on the `style` only: the first `style` of an id that nothing else defines is reported, and a vertex that `style` adds counts as defined |
+| An `accDescr {` block left unclosed                                                                  | The description is empty                                                | flowchart-no-unclosed-description-block                                                                                                                     |
+| `accDescr {}` in a diagram without a description (also with only whitespace inside, or on two lines) | Nothing happens (the description stays empty)                           | flowchart-no-empty-description-block                                                                                                                        |
+| `accDescr: second` after `accDescr: first`                                                           | The description is replaced by `second` without a word                  | flowchart-no-duplicate-description                                                                                                                          |
+| `accTitle: second` after `accTitle: first`                                                           | The title is replaced by `second` without a word                        | flowchart-no-duplicate-title                                                                                                                                |
+| `A-->B; direction TB` in a subgraph (the same with or without the `;`)                               | The rest of the direction line is dropped: A, B, and the edge disappear | flowchart-no-ignored-text (a direction statement is written on a line of its own; mermaid drops the statements written on the same line without a word)     |
 
 Dropped:
 
@@ -184,8 +185,8 @@ Dropped:
 - The formatter's limits: `packages/prettier-plugin-mmd/docs/<diagram>.md` and
   `docs/compatibility.md`. They list the places where one space or one `;`
   changes the meaning.
-- Existing rules: `packages/eslint-plugin-mmd/docs/rules/`. Do not propose the
-  same rule again.
+- Existing rules: `packages/eslint-plugin/docs/rules/`. Do not propose the same
+  rule again.
 - Your own search: start from an author's mistakes (an unclosed block, a typo, a
   reused id, broken configuration JSON, leftovers of commenting out) and run
   mermaid. Starting from the unusual examples of the specification tends to give
@@ -401,8 +402,9 @@ How to check:
 
 For each rule decided, show:
 
-- The name of the rule (`<diagram>/<name>`, or `<name>` for a common rule), and
-  whether it is common or belongs to a diagram type.
+- The name of the rule (`<diagram>-<name>`, or `<name>` for a common rule; its
+  id is the name after `@mmd-toolkit/`), and whether it is common or belongs to
+  a diagram type.
 - What it reports (one sentence).
 - Why: how mermaid reads the input, why it happens in ordinary writing, and why
   the result differs from what was written.
@@ -434,7 +436,7 @@ Decisions about options (made on 2026-10-07):
 
 | Rule                                                                      | Options | Considered for later                                                                                                        |
 | ------------------------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------- |
-| flowchart/no-empty-description-block, sequence/no-empty-description-block | None    | Also reporting a block that holds only comments, which the rule does not report: added only if users of the rule ask for it |
+| flowchart-no-empty-description-block, sequence-no-empty-description-block | None    | Also reporting a block that holds only comments, which the rule does not report: added only if users of the rule ask for it |
 | Every other rule                                                          | None    | None                                                                                                                        |
 
 ## 7. Whether `recommended` enables a rule
@@ -464,7 +466,7 @@ four criteria:
 
 Behavior that looks like a defect of mermaid.js and is reported together with
 the mistake, because it lies in the same node, does not keep a rule out (the
-text `direction LR` inside a label, which flowchart/no-ignored-text reports
+text `direction LR` inside a label, which flowchart-no-ignored-text reports
 together with the text on a direction line). mermaid.js drops that text too, so
 the report is a fact (criterion 1), and the author avoids it by rewriting the
 text (criterion 4); the rule is just not kept for it.
@@ -480,21 +482,21 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 
 | Rule                                    | Enabled           | Reason when not enabled                                                                                  |
 | --------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------- |
-| flowchart/no-ignored-text               | yes               |                                                                                                          |
-| flowchart/no-bare-comment-marker        | no                | Criterion 3: [#7008](https://github.com/mermaid-js/mermaid/pull/7008) (open) reads the line as a comment |
-| flowchart/no-unclosed-description-block | yes               |                                                                                                          |
-| flowchart/no-empty-description-block    | yes               |                                                                                                          |
-| flowchart/no-duplicate-description      | yes               |                                                                                                          |
-| flowchart/no-duplicate-title            | yes               |                                                                                                          |
-| flowchart/no-redefined-vertex           | yes               |                                                                                                          |
-| flowchart/no-undef                      | yes               |                                                                                                          |
+| flowchart-no-ignored-text               | yes               |                                                                                                          |
+| flowchart-no-bare-comment-marker        | no                | Criterion 3: [#7008](https://github.com/mermaid-js/mermaid/pull/7008) (open) reads the line as a comment |
+| flowchart-no-unclosed-description-block | yes               |                                                                                                          |
+| flowchart-no-empty-description-block    | yes               |                                                                                                          |
+| flowchart-no-duplicate-description      | yes               |                                                                                                          |
+| flowchart-no-duplicate-title            | yes               |                                                                                                          |
+| flowchart-no-redefined-vertex           | yes               |                                                                                                          |
+| flowchart-no-undef                      | yes               |                                                                                                          |
 | no-unclosed-directive                   | yes (provisional) |                                                                                                          |
 | no-ignored-init-directive               | yes (provisional) |                                                                                                          |
-| sequence/* (all 7 rules)                | yes (provisional) |                                                                                                          |
-| class/no-inline-comment                 | no (provisional)  | Criteria 1 and 3, below                                                                                  |
-| class/* (the other 7 rules)             | yes (provisional) |                                                                                                          |
+| sequence-* (all 7 rules)                | yes (provisional) |                                                                                                          |
+| class-no-inline-comment                 | no (provisional)  | Criteria 1 and 3, below                                                                                  |
+| class-* (the other 7 rules)             | yes (provisional) |                                                                                                          |
 
-class/no-inline-comment: when a line of only whitespace follows the comment and
+class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
 author meant, and the rule reports the comment there too (criterion 1). Whether
 mermaid.js will change is not settled: a reply in
@@ -548,14 +550,14 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 
 | Rule                                    | Suggestions                                                    |
 | --------------------------------------- | -------------------------------------------------------------- |
-| flowchart/no-unclosed-description-block | Close at the end of this line; close at the end of the text    |
-| flowchart/no-empty-description-block    | Remove the empty block                                         |
-| flowchart/no-duplicate-description      | Remove this description; remove the description before it      |
-| flowchart/no-duplicate-title            | Remove this title; remove the title before it                  |
-| flowchart/no-ignored-text               | Split at the `;` so that the direction is on a line of its own |
-| flowchart/no-bare-comment-marker        | Remove the `%%` (in a text that spans lines, the line of `%%`) |
-| flowchart/no-redefined-vertex           | None: criterion 1 (the likely fix is a new id)                 |
-| flowchart/no-undef                      | None: criterion 1 (which id was meant is not known)            |
+| flowchart-no-unclosed-description-block | Close at the end of this line; close at the end of the text    |
+| flowchart-no-empty-description-block    | Remove the empty block                                         |
+| flowchart-no-duplicate-description      | Remove this description; remove the description before it      |
+| flowchart-no-duplicate-title            | Remove this title; remove the title before it                  |
+| flowchart-no-ignored-text               | Split at the `;` so that the direction is on a line of its own |
+| flowchart-no-bare-comment-marker        | Remove the `%%` (in a text that spans lines, the line of `%%`) |
+| flowchart-no-redefined-vertex           | None: criterion 1 (the likely fix is a new id)                 |
+| flowchart-no-undef                      | None: criterion 1 (which id was meant is not known)            |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the

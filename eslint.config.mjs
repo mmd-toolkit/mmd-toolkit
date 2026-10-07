@@ -14,8 +14,8 @@ export default [
       "**/playwright-report/",
       "packages/tests/fixtures/",
       ".claude/worktrees/",
-      // Working data whose inputs intentionally contain unusual whitespace.
-      "tmp/*.json",
+      // Working files that are deleted before the release.
+      "tmp/",
       "!.github/",
     ],
   },

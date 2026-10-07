@@ -318,6 +318,14 @@ the start and end states of that region, in `parentId`, and in transitions. A
 region made by a `--` keeps its id `divider-id-<number>`, which a counter gives.
 
 Values are recorded as the Db holds them, whitespace included. The summary is
-the same under every `securityLevel`, `look` and `htmlLabels`. [fixture:
+the same under `look`, under `securityLevel` when it is one of `strict`,
+`loose`, `antiscript` and `sandbox`, and under `htmlLabels` as long as it does
+not make mermaid.js replace characters; for another `securityLevel`, with HTML
+labels enabled, the labels and descriptions of the states, the text of a note,
+and the labels of transitions hold the replaced characters (see
+[db-from-tree.md](./db-from-tree.md), the replacement of characters). [fixture:
 state/config-security-level-sandbox-click] [fixture:
 state/config-look-hand-drawn] [fixture: state/config-html-labels-false]
+[fixture: state/config-security-level-other-description] [fixture:
+state/config-security-level-other-note] [fixture:
+state/config-security-level-other-transition-label]

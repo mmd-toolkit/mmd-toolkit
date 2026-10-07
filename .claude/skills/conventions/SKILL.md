@@ -130,6 +130,12 @@ machine. Run what a change can affect, not everything after every change.
   again by someone else; a check of another kind (other inputs, another method)
   is.
 - The report says what was run and what was not.
+- A report of a change in behavior (acceptance, the tree, the Db, formatting, a
+  rule) goes to review with a table of its cases: for each sentence the change
+  concerns, every case the sentence distinguishes, the fixture that holds it,
+  and the mermaid.js result the fixture records. The reviewer reads the sentence
+  for cases the table lacks; without the table the review enumerates the cases
+  itself and a round is spent on what the author already knew.
 
 ## Why the inputs are fixtures, and not generated
 
@@ -150,16 +156,16 @@ rule is written as it is.
   listing the cases of each defining sentence and checking that each had a
   fixture found: in the specification about 440 places where a case had no
   fixture or no citation, 185 new fixtures and an unreachable rule copied from
-  mermaid's lexer; in the documents of `dbFromTree` 306 missing fixtures, four
-  wrong sentences and four holes in the tree check; in the formatting rules 386
-  missing fixtures, four printer bugs and about fifteen sentences that did not
-  describe the printer; in the rule documents 95 missing inputs, one suggestion
-  that mixed line terminators, three suggestions that changed the reading, one
-  that produced a rejected text, and three wrong sentences; in the parser's
-  documents of tokens, positions, and error positions about 410 missing
-  citations and 19 missing fixtures. A product of places and strings reads no
-  sentence, so it cannot see a missing citation, a wrong definition, a
-  suggestion that changes the Db, or a rule that no input reaches.
+  mermaid's lexer; in the documents of `dbFromTree` 306 missing fixtures, at
+  least 23 wrong sentences and at least eight holes in the tree check; in the
+  formatting rules 386 missing fixtures, four printer bugs and about fifteen
+  sentences that did not describe the printer; in the rule documents 95 missing
+  inputs, one suggestion that mixed line terminators, three suggestions that
+  changed the reading, one that produced a rejected text, and three wrong
+  sentences; in the parser's documents of tokens, positions, and error positions
+  about 410 missing citations and 19 missing fixtures. A product of places and
+  strings reads no sentence, so it cannot see a missing citation, a wrong
+  definition, a suggestion that changes the Db, or a rule that no input reaches.
 - The mechanism stood in for a habit. Generating inputs let a change be reported
   as done without anyone listing the cases of the sentence that defined it. The
   rule therefore names the habit, not a tool: write the sentence, list its

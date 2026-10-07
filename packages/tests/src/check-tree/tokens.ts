@@ -144,11 +144,9 @@ function runsGluedByCuts(
  * directive or an ignored `;` cut: `sub`, a directive, and `graph` of the
  * `Keyword` `subgraph`, or `su`, a directive, `bgr`, an ignored `;`, and `aph`.
  * A run is of any length, and each run of a longer run of glued tokens is
- * looked at too, whatever tokens come before and after it. This is the one
- * decision of the check of the `Keyword` tokens (`checkTokensAreNotCut()`) and
- * of the `Punctuator` tokens (`checkPunctuatorsAreWhole()`).
+ * looked at too, whatever tokens come before and after it.
  */
-export function fragmentsOfEntries(
+function fragmentsOfEntries(
   root: CheckedRoot,
   tokens: readonly CheckedToken[],
   isEntry: (joined: string) => boolean,
@@ -163,6 +161,28 @@ export function fragmentsOfEntries(
     }
   }
   return found
+}
+
+/**
+ * Reports each run of fragments of `fragmentsOfEntries()` at its first
+ * fragment, with the fragments in order and the text that they make: the one
+ * report of a cut `Keyword` token (`checkTokensAreNotCut()`) and of a cut
+ * `Punctuator` token (`checkPunctuatorsAreWhole()`).
+ */
+export function reportCutEntries(
+  root: CheckedRoot,
+  tokens: readonly CheckedToken[],
+  isEntry: (joined: string) => boolean,
+  problems: Problems,
+): void {
+  for (const run of fragmentsOfEntries(root, tokens, isEntry)) {
+    const first = run[0]
+    if (first === undefined) continue
+    problems.report(
+      label(first),
+      `a ${first.type} token is cut: ${run.map(label).join(", ")} are the fragments of ${JSON.stringify(run.map((token) => token.value).join(""))}`,
+    )
+  }
 }
 
 /**
@@ -200,17 +220,12 @@ export function checkTokensAreNotCut(
       )
     }
   }
-  const keywords = tokens.filter((token) => token.type === "Keyword")
-  for (const run of fragmentsOfEntries(root, keywords, (joined) =>
-    isKeywordText(root, joined),
-  )) {
-    const last = run.at(-1)
-    if (last === undefined) continue
-    problems.report(
-      label(last),
-      `a Keyword token is cut: ${run.slice(0, -1).map(label).join(", ")} and this are its fragments`,
-    )
-  }
+  reportCutEntries(
+    root,
+    tokens.filter((token) => token.type === "Keyword"),
+    (joined) => isKeywordText(root, joined),
+    problems,
+  )
 }
 
 /** Whether `text` is the text of a `Keyword` token of the diagram of `root`, in any case. */

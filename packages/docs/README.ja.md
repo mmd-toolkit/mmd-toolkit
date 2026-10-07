@@ -5,7 +5,7 @@
 VitePressで構築します。
 
 ```sh
-pnpm --filter @mmd-toolkit/parser --filter eslint-plugin-mmd build
+pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin build
 pnpm --filter @mmd-toolkit/docs dev
 pnpm --filter @mmd-toolkit/docs build
 pnpm --filter @mmd-toolkit/docs preview
@@ -17,21 +17,21 @@ pnpm --filter @mmd-toolkit/docs test
 ワークスペースのリンターを実行します。
 これらのパッケージの実装を変更した後も、再ビルドしてください。
 
-`%% eslint mmd/`を含む`mmd`コードブロックには、
+`%% eslint @mmd-toolkit/`を含む`mmd`コードブロックには、
 `twoslash-eslint`で実際のESLintの診断を生成し、ホバーで表示します。
 `mmd`の図の例に対応しています。
 例で示すルールは、`%% eslint <rule>: <config>`コメントで有効にします。
 表示用の設定はMermaid言語を登録しますが、既定ではルールを有効にしません。
 それ以外のコードブロックには、通常の構文ハイライトだけを適用します。
 
-`packages/eslint-plugin-mmd/docs/rules/` では、英日とも、
-すべての `mmd` の例を `%% eslint mmd/<規則>: error` で始めます。
+`packages/eslint-plugin/docs/rules/` では、英日とも、
+すべての `mmd` の例を `%% eslint @mmd-toolkit/<規則>: error` で始めます。
 そのページが説明する規則を指定し、字下げせず、
 図のヘッダーや Mermaid のディレクティブより前に置きます。
 反する例だけでなく、従う例にも必要です。
 リンターパッケージの `check:docs` がこの要件を検査します。
 例をテストでも使う仕組みは、
-[開発ガイド](../eslint-plugin-mmd/docs/development.ja.md#規則と文書)
+[開発ガイド](../eslint-plugin/docs/development.ja.md#規則と文書)
 に記載しています。
 
 ガイドは `pages/` で編集します。

@@ -29,8 +29,8 @@ pnpm run format:check
 - `pnpm run format:check` checks the formatting with Prettier; `pnpm run format`
   applies it.
 - `pnpm run update` writes the files that are generated from the sources: today,
-  the list of the rules of `eslint-plugin-mmd` and the generated parts of its
-  rule documents. `pnpm run lint` fails when they are out of date.
+  the list of the rules of `@mmd-toolkit/eslint-plugin` and the generated parts
+  of its rule documents. `pnpm run lint` fails when they are out of date.
 
 ## Releases
 
@@ -49,7 +49,7 @@ pull request publishes the packages.
 | `packages/tests`               | The fixtures, and what compares an implementation with mermaid.js. |
 | `packages/parser`              | The parser.                                                        |
 | `packages/prettier-plugin-mmd` | The Prettier plugin.                                               |
-| `packages/eslint-plugin-mmd`   | The ESLint plugin.                                                 |
+| `packages/eslint-plugin`       | The ESLint plugin.                                                 |
 | `tools`                        | Command-line tools that maintain the fixtures.                     |
 | `scripts`                      | The checks that `pnpm run lint` runs.                              |
 

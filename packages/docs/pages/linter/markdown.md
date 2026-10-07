@@ -1,9 +1,9 @@
 # Linting Markdown
 
 The [getting-started configuration](./index.md) uses `@eslint/markdown`'s
-processor to extract code blocks and `eslint-plugin-mmd` to check Mermaid
-diagrams. This page explains which blocks it checks, where reports appear, and
-how to also lint the Markdown content itself.
+processor to extract code blocks and `@mmd-toolkit/eslint-plugin` to check
+Mermaid diagrams. This page explains which blocks it checks, where reports
+appear, and how to also lint the Markdown content itself.
 
 ## Code blocks and diagnostics
 
@@ -14,7 +14,7 @@ Both `mermaid` and `mmd` code blocks are checked. Save this Markdown as
 # Diagram
 
 ```mermaid
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
   style C fill:red
@@ -32,24 +32,24 @@ Run ESLint on the Markdown file:
 npx eslint diagram.md
 ```
 
-`mmd/flowchart/no-undef` reports `C` at line 7, column 9 of `diagram.md`. The
-processor maps each diagram's diagnostics back to its place in the Markdown
-file. The sequence diagram produces no reports.
+`@mmd-toolkit/flowchart-no-undef` reports `C` at line 7, column 9 of
+`diagram.md`. The processor maps each diagram's diagnostics back to its place in
+the Markdown file. The sequence diagram produces no reports.
 
 Parsing errors are also reported in the Markdown file. If a Mermaid block has no
 diagram header or contains unsupported syntax, the plugin reports a parsing
 error before running its rules. See [diagram support](../reference/support.md)
 for the supported syntax.
 
-Other code-block languages are outside `eslint-plugin-mmd`'s scope. Configure
-them with the appropriate ESLint rules or language plugins.
+Other code-block languages are outside `@mmd-toolkit/eslint-plugin`'s scope.
+Configure them with the appropriate ESLint rules or language plugins.
 
 ## Matching code blocks in configuration
 
 By default, the processor gives each block a virtual filename ending in its
 code-block language. A `mermaid` block becomes a `.mermaid` file inside its
 `.md` file; an `mmd` block becomes an `.mmd` file. This lets
-`mmd.configs.recommended` match both without additional configuration.
+`mmdToolkit.configs.recommended` match both without additional configuration.
 
 To apply a rule override only to diagrams in Markdown, use:
 
@@ -57,15 +57,15 @@ To apply a rule override only to diagrams in Markdown, use:
 const mermaidCodeBlocks = {
   files: ["**/*.md/*.mmd", "**/*.md/*.mermaid"],
   rules: {
-    "mmd/flowchart/no-undef": "warn",
+    "@mmd-toolkit/flowchart-no-undef": "warn",
   },
 }
 ```
 
-Add this object after `mmd.configs.recommended` in your exported configuration
-array. See [Configuration](./configuration.md) for a complete setup and how to
-choose rules. [Configuration comments](./comments.md) inside a diagram apply to
-that code block.
+Add this object after `mmdToolkit.configs.recommended` in your exported
+configuration array. See [Configuration](./configuration.md) for a complete
+setup and how to choose rules. [Configuration comments](./comments.md) inside a
+diagram apply to that code block.
 
 ## Linting Markdown content too
 

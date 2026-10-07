@@ -215,7 +215,12 @@ optional `/`, `br` in any case, whitespace, an optional `/`, and `>`. [fixture:
 flowchart/config-security-level-other-line-breaks] [fixture:
 flowchart/config-security-level-other-line-breaks-spaced] The tags are found
 before the `#br#` are replaced, from left to right without overlap. [fixture:
-flowchart/config-security-level-other-placeholder-repeated]
+flowchart/config-security-level-other-placeholder-repeated] The directives are
+taken out of the text before the replacement, so a directive inside a line break
+tag, or inside a `#br#` that the author wrote, does not keep it from being
+replaced. [fixture:
+flowchart/config-security-level-other-line-break-directive-inside] [fixture:
+flowchart/config-security-level-other-placeholder-directive-inside]
 
 **Which texts.** The replacement is made on the text that mermaid.js passes to
 `sanitizeText`, and on no other. The texts that it reaches, and those that it

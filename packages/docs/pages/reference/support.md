@@ -15,7 +15,7 @@ You can use the same tools for every diagram type.
 
 Each lint rule checks a particular kind of mistake. Its applicability and
 examples are explained in the
-[rule documentation](../../../eslint-plugin-mmd/docs/rules/index.md).
+[rule documentation](../../../eslint-plugin/docs/rules/index.md).
 
 ## Compatibility scope
 

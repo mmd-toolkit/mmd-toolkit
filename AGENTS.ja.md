@@ -8,13 +8,13 @@
 mermaid-js とは無関係の第三者プロジェクト。
 Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象に次の 5 つを作る。
 
-| パッケージ                     | npm 名                | 内容                                |
-| ------------------------------ | --------------------- | ----------------------------------- |
-| `packages/spec`                | `@mmd-toolkit/spec`   | 構文仕様（private）                 |
-| `packages/tests`               | `@mmd-toolkit/tests`  | 適合性コーパス（private）           |
-| `packages/parser`              | `@mmd-toolkit/parser` | AST を返すパーサー                  |
-| `packages/prettier-plugin-mmd` | `prettier-plugin-mmd` | Prettier プラグインのフォーマッター |
-| `packages/eslint-plugin-mmd`   | `eslint-plugin-mmd`   | ESLint の言語プラグインのリンター   |
+| パッケージ                     | npm 名                       | 内容                                |
+| ------------------------------ | ---------------------------- | ----------------------------------- |
+| `packages/spec`                | `@mmd-toolkit/spec`          | 構文仕様（private）                 |
+| `packages/tests`               | `@mmd-toolkit/tests`         | 適合性コーパス（private）           |
+| `packages/parser`              | `@mmd-toolkit/parser`        | AST を返すパーサー                  |
+| `packages/prettier-plugin-mmd` | `prettier-plugin-mmd`        | Prettier プラグインのフォーマッター |
+| `packages/eslint-plugin`       | `@mmd-toolkit/eslint-plugin` | ESLint の言語プラグインのリンター   |
 
 正しさの基準は pin した mermaid.js 本体。
 
@@ -99,7 +99,7 @@ flowchart、sequence、class、state が済んでいる。
 - `packages/prettier-plugin-mmd`: フォーマッター。
   図種ごとに printer を持ち、項目ごとに明示的に決めた整形方針に従う。
   SKILL は `prettier-plugin`。
-- `packages/eslint-plugin-mmd`: リンター。ESLint の言語プラグインである。
+- `packages/eslint-plugin`: リンター。ESLint の言語プラグインである。
   規則が報告するのは、書き手の誤りのうち、mermaid.js が黙って受理し、
   意図と違うものとして読むものである。
   どの規則を持つかは SKILL `rule-ideas` で決め、

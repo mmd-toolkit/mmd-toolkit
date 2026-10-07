@@ -30,7 +30,8 @@ pnpm run format:check
 - `pnpm run format:check` は、Prettier で整形を検査します。
   `pnpm run format` は整形を適用します。
 - `pnpm run update` は、ソースから生成するファイルを書きます。
-  今は、`eslint-plugin-mmd` の規則の一覧と、その規則の文書の生成する部分です。
+  今は、`@mmd-toolkit/eslint-plugin` の規則の一覧と、
+  その規則の文書の生成する部分です。
   それが最新でないと、`pnpm run lint` が失敗します。
 
 ## リリース
@@ -51,7 +52,7 @@ pnpm run format:check
 | `packages/tests`               | fixture と、実装を mermaid.js と比べる仕組み。 |
 | `packages/parser`              | パーサー。                                     |
 | `packages/prettier-plugin-mmd` | Prettier のプラグイン。                        |
-| `packages/eslint-plugin-mmd`   | ESLint のプラグイン。                          |
+| `packages/eslint-plugin`       | ESLint のプラグイン。                          |
 | `tools`                        | fixture を保守するコマンドラインの道具。       |
 | `scripts`                      | `pnpm run lint` が実行する検査。               |
 

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "parser/docs/tokens.md, A token that a directive cuts: the `;` that the line rule ignores (after `style:#x`) cuts the string of a vertex label into two StringFragment tokens, and the space before the `;` lies at the end of the first: the label is `a style:#x b`, with the space and without the `;`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "a style:#x b",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

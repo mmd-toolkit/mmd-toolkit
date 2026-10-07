@@ -12,22 +12,22 @@ Markdownでは、コメントは1つのMermaidコードブロックに適用し�
 `%% eslint`の後に、完全なルールIDを指定します。
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
   style C fill:red
 ```
 
 設定ファイルで有効になっていなくても、
-この図全体で`mmd/flowchart/no-undef`をエラーとして有効にします。
+この図全体で`@mmd-toolkit/flowchart-no-undef`をエラーとして有効にします。
 この例では`C`を報告します。
 コメントより前の部分を含め、図全体にこの設定が適用されます。
 警告にするには`warn`、無効にするには`off`を指定します。
 
-共通ルールのIDは`mmd/no-unclosed-directive`など、
-図種ごとのルールは`mmd/flowchart/no-undef`などです。
+共通ルールのIDは`@mmd-toolkit/no-unclosed-directive`など、
+図種ごとのルールは`@mmd-toolkit/flowchart-no-undef`などです。
 名前は、
-[ルール一覧](../../../eslint-plugin-mmd/docs/rules/index.ja.md)で確認できます。
+[ルール一覧](../../../eslint-plugin/docs/rules/index.ja.md)で確認できます。
 
 ## 次の行の報告を抑制する
 
@@ -35,10 +35,10 @@ flowchart LR
 `--`の後に理由を記載できます。
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  %% eslint-disable-next-line mmd/flowchart/no-undef -- C is intentionally created here.
+  %% eslint-disable-next-line @mmd-toolkit/flowchart-no-undef -- C is intentionally created here.
   style C fill:red
   style D fill:blue
 ```
@@ -55,12 +55,12 @@ flowchart LR
 範囲を`eslint-disable`と`eslint-enable`で囲みます。
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  %% eslint-disable mmd/flowchart/no-undef -- C is intentionally created here.
+  %% eslint-disable @mmd-toolkit/flowchart-no-undef -- C is intentionally created here.
   style C fill:red
-  %% eslint-enable mmd/flowchart/no-undef
+  %% eslint-enable @mmd-toolkit/flowchart-no-undef
   style D fill:blue
 ```
 
@@ -84,7 +84,7 @@ flowchart LR
 ラベル、説明、引用文字列の中のテキストは、ESLintの設定コメントではありません。
 
 Markdown内の図では、Mermaidコードブロックの中にコメントを書きます。
-ブロックの外の`<!-- eslint mmd/flowchart/no-undef: error -->`などの
+ブロックの外の`<!-- eslint @mmd-toolkit/flowchart-no-undef: error -->`などの
 HTMLコメントは、Mermaidの設定コメントとしては機能しません。
 現在のMarkdownのprocessorは、これをJavaScript形式のコメントとして渡します。
 このプラグインは、その形式をESLintディレクティブとして読み取りません。
@@ -98,7 +98,7 @@ ESLintはそのコメントで設定のエラーを報告します。
 例えば、次の設定は不完全です。
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: [
+%% eslint @mmd-toolkit/flowchart-no-undef: [
 flowchart LR
   A --> B
 ```

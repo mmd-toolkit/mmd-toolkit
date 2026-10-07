@@ -52,20 +52,20 @@ describe("the check of the cut Keyword tokens", () => {
     expect(cutProblems("StateDiagram", "<<cho", "ice>>")).toHaveLength(1)
   })
 
-  it("reports three Keyword tokens whose texts joined are a keyword of the diagram, though no two of them are one, at the last", () => {
+  it("reports three Keyword tokens whose texts joined are a keyword of the diagram, though no two of them are one, at the first", () => {
     // `su`, `bgr`, and `aph` are `subgraph`, and none of `subgr` and `bgraph`
     // is a keyword.
     expect(cutProblems("FlowchartDiagram", "su", "bgr", "aph")).toEqual([
-      "a Keyword token is cut: Keyword at 0-2, Keyword at 16-19 and this are its fragments",
+      'a Keyword token is cut: Keyword at 0-2, Keyword at 16-19, Keyword at 33-36 are the fragments of "subgraph"',
     ])
     expect(cutProblems("SequenceDiagram", "pa", "rtici", "pant")).toEqual([
-      "a Keyword token is cut: Keyword at 0-2, Keyword at 16-21 and this are its fragments",
+      'a Keyword token is cut: Keyword at 0-2, Keyword at 16-21, Keyword at 35-39 are the fragments of "participant"',
     ])
     expect(cutProblems("ClassDiagram", "class", "Dia", "gram")).toEqual([
-      "a Keyword token is cut: Keyword at 0-5, Keyword at 19-22 and this are its fragments",
+      'a Keyword token is cut: Keyword at 0-5, Keyword at 19-22, Keyword at 36-40 are the fragments of "classDiagram"',
     ])
     expect(cutProblems("StateDiagram", "<<ch", "oice", ">>")).toEqual([
-      "a Keyword token is cut: Keyword at 0-4, Keyword at 18-22 and this are its fragments",
+      'a Keyword token is cut: Keyword at 0-4, Keyword at 18-22, Keyword at 36-38 are the fragments of "<<choice>>"',
     ])
   })
 
@@ -73,8 +73,8 @@ describe("the check of the cut Keyword tokens", () => {
     // `s`, `ub`, `gra`, and `ph` are `subgraph`, and the last two are `graph`,
     // a keyword of a flowchart too.
     expect(cutProblems("FlowchartDiagram", "s", "ub", "gra", "ph")).toEqual([
-      "a Keyword token is cut: Keyword at 0-1, Keyword at 15-17, Keyword at 31-34 and this are its fragments",
-      "a Keyword token is cut: Keyword at 31-34 and this are its fragments",
+      'a Keyword token is cut: Keyword at 0-1, Keyword at 15-17, Keyword at 31-34, Keyword at 48-50 are the fragments of "subgraph"',
+      'a Keyword token is cut: Keyword at 31-34, Keyword at 48-50 are the fragments of "graph"',
     ])
   })
 

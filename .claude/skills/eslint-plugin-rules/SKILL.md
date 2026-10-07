@@ -1,23 +1,23 @@
 ---
 name: eslint-plugin-rules
 description:
-  Implement, change, or remove a rule of eslint-plugin-mmd (the rule file under
-  src/rules/, its messages and suggestions, its tests and fixtures). Use when a
-  rule has been decided with the rule-ideas skill and is to be implemented, when
-  the condition, the messages, or the suggestions of a rule change, and when the
-  tests or the fixtures of a rule are added. The documents of the rules are in
-  the eslint-plugin skill.
+  Implement, change, or remove a rule of @mmd-toolkit/eslint-plugin (the rule
+  file under src/rules/, its messages and suggestions, its tests and fixtures).
+  Use when a rule has been decided with the rule-ideas skill and is to be
+  implemented, when the condition, the messages, or the suggestions of a rule
+  change, and when the tests or the fixtures of a rule are added. The documents
+  of the rules are in the eslint-plugin skill.
 ---
 
 # Implementing the rules (eslint-plugin-rules)
 
-How to implement, change, or remove a rule of `eslint-plugin-mmd` so that what
-the rule reports is a fact about the pinned mermaid.js, and the rule reads the
-tree as a tool uses it. The layout of the package, the choices that every rule
-follows, and the tests and the fixtures are described in
-`packages/eslint-plugin-mmd/docs/development.md`; this procedure does not copy
-them. It adds the rules of the work itself: what is checked, in what order, and
-what is reported.
+How to implement, change, or remove a rule of `@mmd-toolkit/eslint-plugin` so
+that what the rule reports is a fact about the pinned mermaid.js, and the rule
+reads the tree as a tool uses it. The layout of the package, the choices that
+every rule follows, and the tests and the fixtures are described in
+`packages/eslint-plugin/docs/development.md`; this procedure does not copy them.
+It adds the rules of the work itself: what is checked, in what order, and what
+is reported.
 
 ## 1. What to read first
 
@@ -28,15 +28,15 @@ what is reported.
    cannot hold (the condition cannot be read from the tree, a suggestion cannot
    be checked), do not decide otherwise: take the evidence back to that
    decision.
-2. The rule notes (`docs/rule-notes/<path of the rule>.md`) while the rule is
-   not implemented, and the English document of the rule, which holds the
-   examples that the tests read.
+2. The rule notes (`docs/rule-notes/<name>.md`) while the rule is not
+   implemented, and the English document of the rule, which holds the examples
+   that the tests read.
 3. The section Policies and criteria of the eslint-plugin skill
    (`.claude/skills/eslint-plugin/SKILL.md`), and the skill `conventions`.
 4. The tree: `packages/spec/docs/ast.md` and
    `packages/spec/docs/ast/<diagram>.md`.
-5. `packages/eslint-plugin-mmd/docs/development.md`: Writing a rule, The
-   fixtures of the rules, Snapshots, and Rules and their documents.
+5. `packages/eslint-plugin/docs/development.md`: Writing a rule, The fixtures of
+   the rules, Snapshots, and Rules and their documents.
 
 ## 2. Check the facts independently of the rule
 
@@ -80,13 +80,13 @@ after writing it.
   sample.
 
   ```ts
-  import { Linter } from "<repo>/packages/eslint-plugin-mmd/node_modules/eslint/lib/api.js"
-  import plugin from "<repo>/packages/eslint-plugin-mmd/src/index.ts"
+  import { Linter } from "<repo>/packages/eslint-plugin/node_modules/eslint/lib/api.js"
+  import plugin from "<repo>/packages/eslint-plugin/src/index.ts"
 
   const linter = new Linter({ configType: "flat" })
   const config = {
     ...plugin.configs.recommended,
-    rules: { "mmd/flowchart/no-empty-description-block": "error" },
+    rules: { "@mmd-toolkit/flowchart-no-empty-description-block": "error" },
   }
   const text = "flowchart LR\n  A accDescr {}\n"
   for (const message of linter.verify(text, config, "probe.mmd")) {
@@ -149,11 +149,12 @@ after writing it.
   it as one that defines no behavior (an introduction, a reason): do not list a
   sentence there to silence the test. A case with no input is a gap that the
   review looks for.
-- Keep the leading `%% eslint mmd/<rule>: error` comment in every document
-  example, correct or incorrect, as the eslint-plugin skill requires. The parser
-  and site checks read it with this comment; only the snapshot test helper
-  removes it to avoid enabling the rule twice under the tester's alias and
-  `mmd/`. When renaming a rule, update the comments in both documents too.
+- Keep the leading `%% eslint @mmd-toolkit/<rule>: error` comment in every
+  document example, correct or incorrect, as the eslint-plugin skill requires.
+  The parser and site checks read it with this comment; only the snapshot test
+  helper removes it to avoid enabling the rule twice under the tester's alias
+  and `@mmd-toolkit/`. When renaming a rule, update the comments in both
+  documents too.
 - When the behavior changes (the condition is widened or narrowed, a message or
   a suggestion changes), add the fixtures of the change in the same change,
   after checking each input against mermaid.js. A check in a scratch file does
@@ -178,16 +179,16 @@ after writing it.
 
 The rule of the skill `conventions` (Running tests) applies: while working, run
 the test files that the change can affect (`npx vitest run <files>` in
-`packages/eslint-plugin-mmd`), and the whole suite once, before reporting the
-work as done.
+`packages/eslint-plugin`), and the whole suite once, before reporting the work
+as done.
 
 | What changed                                         | Test files to run                                                                                                                                                 |
 | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| A rule file `src/rules/<path>.ts`                    | `tests/rules/<path>.test.ts`                                                                                                                                      |
+| A rule file `src/rules/<name>.ts`                    | `tests/rules/<name>.test.ts`                                                                                                                                      |
 | The handlers of a rule of a diagram type             | the same, and `tests/diagram-rules.test.ts`                                                                                                                       |
 | A helper of `src/utils/`                             | the tests of the rules that import it (search for the import); `tests/subgraph-ids.test.ts` for `subgraph-ids.ts`, `tests/text-nodes.test.ts` for `text-nodes.ts` |
-| The fixture directory of a rule                      | `tests/rules/<path>.test.ts` and `tests/rule-fixtures.test.ts`                                                                                                    |
-| The examples of the English document of a rule       | `tests/rules/<path>.test.ts` and `tests/rule-cases.test.ts`                                                                                                       |
+| The fixture directory of a rule                      | `tests/rules/<name>.test.ts` and `tests/rule-fixtures.test.ts`                                                                                                    |
+| The examples of the English document of a rule       | `tests/rules/<name>.test.ts` and `tests/rule-cases.test.ts`                                                                                                       |
 | A rule added, renamed, or removed                    | the tests above for the rule, and `tests/rules-index.test.ts`                                                                                                     |
 | `tests/rule-test.ts` or `tests/rule-cases.ts`        | every `tests/rules/**/*.test.ts`, `tests/rule-cases.test.ts`, and `tests/suggestion-claims.test.ts`                                                               |
 | `src/language.ts`, `src/source-code.ts`, token store | `tests/language.test.ts`, `tests/token-store.test.ts`, `tests/snapshot.test.ts`, `tests/inline-config.test.ts`, `tests/markdown.test.ts`                          |
@@ -226,10 +227,10 @@ work is reported as done.
 - Before reporting the work as done, run these checks once, and say which
   failures are not caused by the change (while working, run only what the change
   can affect, as the table above says):
-  - in `packages/eslint-plugin-mmd`: `CI=true npx vitest run` (the whole suite)
-    and `pnpm run check:docs`;
-  - from the root of the repository: `npx eslint packages/eslint-plugin-mmd`
-    (ESLint run inside the package misses the configuration of the root),
+  - in `packages/eslint-plugin`: `CI=true npx vitest run` (the whole suite) and
+    `pnpm run check:docs`;
+  - from the root of the repository: `npx eslint packages/eslint-plugin` (ESLint
+    run inside the package misses the configuration of the root),
     `pnpm run lint:docs`, `pnpm run lint:chars`, `pnpm run format:check`, and
     `npx tsc --noEmit`.
 - Do not commit, push, or change the staging area of a shared working tree. Use

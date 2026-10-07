@@ -89,15 +89,15 @@ importers:
       '@eslint/markdown':
         specifier: ^8.0.3
         version: 8.0.3
+      '@mmd-toolkit/eslint-plugin':
+        specifier: workspace:*
+        version: link:../eslint-plugin
       '@shikijs/vitepress-twoslash':
         specifier: 4.5.0
         version: 4.5.0(typescript@6.0.3)
       eslint:
         specifier: ^10.11.0
         version: 10.11.0
-      eslint-plugin-mmd:
-        specifier: workspace:*
-        version: link:../eslint-plugin-mmd
       twoslash-eslint:
         specifier: 0.3.9
         version: 0.3.9(eslint@10.11.0)
@@ -105,7 +105,7 @@ importers:
         specifier: 2.0.0-alpha.20
         version: 2.0.0-alpha.20(@types/node@26.6.3)(postcss@8.5.28)(typescript@6.0.3)(yaml@2.9.1)
 
-  packages/eslint-plugin-mmd:
+  packages/eslint-plugin:
     dependencies:
       '@eslint/core':
         specifier: ^1.2.1

@@ -1,9 +1,0 @@
-{
-  "alone": {},
-  "docs": {
-    "docs/rules/flowchart/no-redefined-vertex.md correct 1": "flowchart/db-redefined-vertex-docs-correct-1",
-    "docs/rules/flowchart/no-redefined-vertex.md correct 2": "flowchart/db-redefined-vertex-docs-correct-2",
-    "docs/rules/flowchart/no-redefined-vertex.md incorrect 1": "flowchart/db-redefined-vertex-docs-incorrect-1"
-  },
-  "results": {}
-}

@@ -26,6 +26,6 @@ lintルールは、それぞれ特定の書き間違いを検出します。
 - [既知の差異][divergences]: 構文の受理や読み取りに関する差異。
 - [フォーマッターの互換性][formatter]: 整形の保証と例外。
 
-[rules]: ../../../eslint-plugin-mmd/docs/rules/index.ja.md
+[rules]: ../../../eslint-plugin/docs/rules/index.ja.md
 [divergences]: ../../../spec/docs/known-divergences.ja.md
 [formatter]: ../../../prettier-plugin-mmd/docs/compatibility.ja.md

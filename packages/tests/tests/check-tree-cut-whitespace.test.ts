@@ -1,99 +1,271 @@
-import { existsSync, readFileSync } from "node:fs"
-import path from "node:path"
 import { describe, expect, it } from "vitest"
 import { checkTree } from "../src/check-tree/index.ts"
 import type { CheckedRoot } from "../src/check-tree/types.ts"
-import type { DiagramType } from "../src/index.ts"
-import { getFixturesRoot, loadFixtures } from "../src/index.ts"
-import { scanSource } from "../src/source-scan.ts"
-import { copyOf, recordedTree, setField } from "./check-tree-recorded.ts"
-import { withoutTokenWhitespace } from "./check-tree-token-edits.ts"
+import {
+  copyOf,
+  expectWhitespaceCases,
+  recordedTree,
+  setField,
+} from "./check-tree-recorded.ts"
 import { locationOf } from "./check-tree-trees.ts"
 
-// parser/docs/tokens.md, A token that a directive cuts: the whitespace next to
-// a cut (a directive, a comment region, or a `;` that the line rule ignores)
-// that mermaid.js reads as part of a value is in the fragment next to the cut.
-// A tree whose fragment lacks that whitespace is reported: in every recorded
-// tree, the whitespace is taken off the side of each token that touches a cut,
-// one side at a time, and the check must report each of the trees so made.
+// parser/docs/tokens.md, A token that a directive cuts: a run of text that a
+// cut lies inside is cut into fragments, and the whitespace next to the cut
+// lies in the fragment next to it, a `RawText` token or a `StringFragment`
+// token: the whitespace before the cut at the end of the fragment before it,
+// and the whitespace after the cut at the start of the fragment after it, for
+// each kind of cut. Each case below takes the recorded
+// tree of a named fixture, takes the whitespace off one side of a token that
+// touches a cut (the token keeps the text of the source at its range, so the
+// whitespace lies in no token), and says which problem the check reports. The
+// unedited tree of each fixture has no problem. The problem is one of two:
+// where the text is a value (a label, a member) the value made of the tokens
+// lacks the whitespace, and where the text is one that mermaid.js does not
+// read (`FlowchartIgnoredText`) the whitespace between two `RawText` tokens
+// next to a cut lies in no token.
 
-const DIAGRAMS: readonly DiagramType[] = [
-  "common",
-  "flowchart",
-  "sequence",
-  "class",
-  "state",
-]
+const JOINED = "the texts of its tokens joined are not its written text"
 
-/** The ranges of the cuts of the text of a recorded tree: directives, comment regions, and ignored `;`. */
-function cutsOf(text: string, recorded: CheckedRoot): [number, number][] {
-  const scan = scanSource(text, recorded.frontmatter?.range[1] ?? 0)
-  return [
-    ...scan.directives.map((directive): [number, number] => [
-      directive.range[0],
-      directive.scanEnd,
-    ]),
-    ...scan.commentLines.map((line): [number, number] => [
-      line.region[0],
-      line.region[1],
-    ]),
-    ...recorded.tokens
-      .filter((token) => token.type === "IgnoredSemicolon")
-      .map((token): [number, number] => [token.range[0], token.range[1]]),
-  ]
-}
+describe("the whitespace before a directive", () => {
+  expectWhitespaceCases([
+    {
+      name: "is in the RawText token before it: a member text without it is reported",
+      diagram: "class",
+      fixture: "tokens-directive-member-spaces",
+      token: { type: "RawText", value: "x " },
+      side: "end",
+      problems: [
+        {
+          where: "ClassLiteral at 19-37",
+          message: `${JOINED}: "x y", not "x  y"`,
+        },
+      ],
+    },
+    {
+      name: "is in the StringFragment token before it: a label without it is reported",
+      diagram: "flowchart",
+      fixture: "lex-directive-in-string-between-spaces",
+      token: { type: "StringFragment", value: '" ' },
+      side: "end",
+      problems: [
+        {
+          where: "FlowchartLabel at 17-35",
+          message: `${JOINED}: " ", not "  "`,
+        },
+      ],
+    },
+    {
+      name: "is in the RawText token before it: an ignored text without it is reported",
+      diagram: "flowchart",
+      fixture: "tokens-ignored-text-directive-before-direction",
+      token: { type: "RawText", value: "A-->B a " },
+      side: "end",
+      problems: [
+        {
+          where: "FlowchartIgnoredText at 15-39",
+          message:
+            "the whitespace between RawText at 15-22 and RawText at 37-39, next to a cut, lies in no token",
+        },
+      ],
+    },
+  ])
+})
 
-/** The trees made from the recorded tree `json` of `text`, each with the whitespace taken off one side of one token that touches a cut, named by token and side. */
-function treesWithoutCutWhitespace(
-  text: string,
-  json: string,
-): { name: string; tree: CheckedRoot }[] {
-  const recorded = JSON.parse(json) as CheckedRoot
-  const cuts = cutsOf(text, recorded)
-  const trees: { name: string; tree: CheckedRoot }[] = []
-  recorded.tokens.forEach((token, index) => {
-    if (token.type === "Directive" || token.type === "IgnoredSemicolon") return
-    for (const side of ["start", "end"] as const) {
-      const touches = cuts.some(([start, end]) =>
-        side === "start" ? end === token.range[0] : start === token.range[1],
-      )
-      if (!touches) continue
-      const tree = withoutTokenWhitespace(text, json, index, side)
-      if (tree === null) continue
-      trees.push({ name: `token ${index} ${side}`, tree })
-    }
-  })
-  return trees
-}
+describe("the whitespace after a directive", () => {
+  expectWhitespaceCases([
+    {
+      name: "is in the RawText token after it: a member text without it is reported",
+      diagram: "class",
+      fixture: "tokens-directive-member-spaces",
+      token: { type: "RawText", value: " y" },
+      side: "start",
+      problems: [
+        {
+          where: "ClassLiteral at 19-37",
+          message: `${JOINED}: "x y", not "x  y"`,
+        },
+      ],
+    },
+    {
+      name: "is in the StringFragment token after it: a label without it is reported",
+      diagram: "flowchart",
+      fixture: "lex-directive-in-string-between-spaces",
+      token: { type: "StringFragment", value: ' "' },
+      side: "start",
+      problems: [
+        {
+          where: "FlowchartLabel at 17-35",
+          message: `${JOINED}: " ", not "  "`,
+        },
+      ],
+    },
+    {
+      name: "is in the RawText token after it: an ignored text without it is reported",
+      diagram: "flowchart",
+      fixture: "tokens-ignored-text-directive-before-direction",
+      token: { type: "RawText", value: " b" },
+      side: "start",
+      problems: [
+        {
+          where: "FlowchartIgnoredText at 15-39",
+          message:
+            "the whitespace between RawText at 15-23 and RawText at 38-39, next to a cut, lies in no token",
+        },
+      ],
+    },
+  ])
+})
 
-describe("the whitespace next to a cut", () => {
-  it("is in the fragment: a tree without it is reported", async () => {
-    let made = 0
-    const missed: string[] = []
-    for (const diagram of DIAGRAMS) {
-      for (const fixture of await loadFixtures(diagram)) {
-        const file = path.join(
-          getFixturesRoot(),
-          diagram,
-          fixture.name,
-          "ast.json",
-        )
-        if (!existsSync(file)) continue
-        const mutated = treesWithoutCutWhitespace(
-          fixture.input,
-          readFileSync(file, "utf8"),
-        )
-        made += mutated.length
-        for (const { name, tree } of mutated) {
-          if (checkTree(fixture.input, tree).length === 0) {
-            missed.push(`${diagram}/${fixture.name}: ${name}`)
-          }
-        }
-      }
-    }
-    expect(made).toBeGreaterThan(100)
-    expect(missed).toEqual([])
-  }, 120_000)
+describe("the whitespace before a `;` that the line rule ignores", () => {
+  expectWhitespaceCases([
+    {
+      name: "is in the RawText token before it: a label without it is reported",
+      diagram: "flowchart",
+      fixture: "tokens-ignored-semicolon-label-spaces",
+      token: { type: "RawText", value: "style:#x " },
+      side: "end",
+      problems: [
+        {
+          where: "FlowchartLabel at 17-29",
+          message: `${JOINED}: "style:#x y", not "style:#x  y"`,
+        },
+      ],
+    },
+    {
+      name: "is in the StringFragment token before it: a label without it is reported",
+      diagram: "flowchart",
+      fixture: "tokens-string-fragment-space-before-ignored-semicolon",
+      token: { type: "StringFragment", value: '"a style:#x ' },
+      side: "end",
+      problems: [
+        {
+          where: "FlowchartLabel at 17-32",
+          message: `${JOINED}: "a style:#xb", not "a style:#x b"`,
+        },
+      ],
+    },
+  ])
+})
+
+describe("the whitespace after a `;` that the line rule ignores", () => {
+  expectWhitespaceCases([
+    {
+      name: "is in the RawText token after it: a label without it is reported",
+      diagram: "flowchart",
+      fixture: "tokens-ignored-semicolon-label-spaces",
+      token: { type: "RawText", value: " y" },
+      side: "start",
+      problems: [
+        {
+          where: "FlowchartLabel at 17-29",
+          message: `${JOINED}: "style:#x y", not "style:#x  y"`,
+        },
+      ],
+    },
+    {
+      name: "is in the StringFragment token after it: a subgraph title without it is reported",
+      diagram: "flowchart",
+      fixture: "tokens-subgraph-title-string-ignored-semicolon",
+      token: { type: "StringFragment", value: ' b"' },
+      side: "start",
+      problems: [
+        {
+          where: "FlowchartLabel at 25-40",
+          message: `${JOINED}: "a style:#xb", not "a style:#x b"`,
+        },
+      ],
+    },
+  ])
+})
+
+describe("the whitespace before a comment region", () => {
+  expectWhitespaceCases([
+    {
+      name: "is in the RawText token before it: a label without it is reported",
+      diagram: "flowchart",
+      fixture: "tokens-comment-region-label-spaces",
+      token: { type: "RawText", value: "a \n" },
+      side: "end",
+      problems: [
+        {
+          where: "FlowchartLabel at 17-28",
+          message: `${JOINED}: "a  b", not "a \\n  b"`,
+        },
+      ],
+    },
+    {
+      name: "is in the StringFragment token before it: a label without it is reported",
+      diagram: "flowchart",
+      fixture: "tokens-comment-region-string-spaces",
+      token: { type: "StringFragment", value: '"one  \n' },
+      side: "end",
+      problems: [
+        {
+          where: "FlowchartLabel at 17-37",
+          message: `${JOINED}: "one  three", not "one  \\n  three"`,
+        },
+      ],
+    },
+    {
+      name: "is in the RawText token before it: an ignored text without it is reported, the line terminator being U+2028",
+      diagram: "flowchart",
+      fixture: "tokens-ignored-text-comment-in-direction-line",
+      token: { type: "RawText", value: "x\u2028" },
+      side: "end",
+      problems: [
+        {
+          where: "FlowchartIgnoredText at 39-49",
+          message:
+            "the whitespace between RawText at 39-40 and RawText at 46-49, next to a cut, lies in no token",
+        },
+      ],
+    },
+  ])
+})
+
+describe("the whitespace after a comment region", () => {
+  expectWhitespaceCases([
+    {
+      name: "is in the RawText token after it: a label without it is reported",
+      diagram: "flowchart",
+      fixture: "tokens-comment-region-label-spaces",
+      token: { type: "RawText", value: "  b" },
+      side: "start",
+      problems: [
+        {
+          where: "FlowchartLabel at 17-28",
+          message: `${JOINED}: "a \\nb", not "a \\n  b"`,
+        },
+      ],
+    },
+    {
+      name: "is in the StringFragment token after it: a label without it is reported",
+      diagram: "flowchart",
+      fixture: "tokens-comment-region-string-spaces",
+      token: { type: "StringFragment", value: '  three"' },
+      side: "start",
+      problems: [
+        {
+          where: "FlowchartLabel at 17-37",
+          message: `${JOINED}: "one  \\nthree", not "one  \\n  three"`,
+        },
+      ],
+    },
+    {
+      name: "is in the RawText token after it: an ignored text without it is reported",
+      diagram: "flowchart",
+      fixture: "tokens-ignored-text-comment-in-direction-line",
+      token: { type: "RawText", value: "  A" },
+      side: "start",
+      problems: [
+        {
+          where: "FlowchartIgnoredText at 39-49",
+          message:
+            "the whitespace between RawText at 39-41 and RawText at 48-49, next to a cut, lies in no token",
+        },
+      ],
+    },
+  ])
 })
 
 // parser/docs/tokens.md and positions.md, Invariants: a token that goes on with

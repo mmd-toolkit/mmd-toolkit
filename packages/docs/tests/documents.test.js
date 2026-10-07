@@ -85,10 +85,8 @@ describe("canonical documents", () => {
       "reference/divergences.ja.md",
     )
     expect(
-      documents.get(
-        "packages/eslint-plugin-mmd/docs/rules/flowchart/no-undef.md",
-      ),
-    ).toBe("linter/rules/flowchart/no-undef.md")
+      documents.get("packages/eslint-plugin/docs/rules/flowchart-no-undef.md"),
+    ).toBe("linter/rules/flowchart-no-undef.md")
     expect(documents.get("packages/docs/pages/parser/index.md")).toBe(
       "parser/index.md",
     )
@@ -284,26 +282,24 @@ describe("rule sidebar", () => {
       { name: "state", text: { root: "State", ja: "状態図" } },
     ]
     const pages = [
-      "class/no-undef.md",
-      "class/no-undef.ja.md",
-      "zzz-new/no-new.md",
-      "sequence/no-ignored-text.md",
-      "sequence/no-ignored-text.ja.md",
-      "flowchart/no-undef.md",
-      "flowchart/no-undef.ja.md",
-      "flowchart/no-duplicate-title.md",
-      "flowchart/no-untranslated.md",
-      "flowchart/no-japanese-only.ja.md",
-      "aaa-new/no-new.md",
+      "class-no-undef.md",
+      "class-no-undef.ja.md",
+      "sequence-no-ignored-text.md",
+      "sequence-no-ignored-text.ja.md",
+      "flowchart-no-undef.md",
+      "flowchart-no-undef.ja.md",
+      "flowchart-no-duplicate-title.md",
+      "flowchart-no-untranslated.md",
+      "flowchart-no-japanese-only.ja.md",
       "no-unclosed-directive.md",
       "no-unclosed-directive.ja.md",
       "index.md",
       "index.ja.md",
-      "flowchart/index.md",
+      "notes/flowchart-no-undef.md",
     ]
     const mapping = new Map(
       pages.map((page) => [
-        `packages/eslint-plugin-mmd/docs/rules/${page}`,
+        `packages/eslint-plugin/docs/rules/${page}`,
         `linter/rules/${page}`,
       ]),
     )
@@ -314,20 +310,16 @@ describe("rule sidebar", () => {
       "Flowchart",
       "Sequence",
       "Class",
-      "aaa-new",
-      "zzz-new",
     ])
     expect(
       english.flatMap(({ items }) => items.map(({ link }) => link)),
     ).toEqual([
       "/linter/rules/no-unclosed-directive",
-      "/linter/rules/flowchart/no-duplicate-title",
-      "/linter/rules/flowchart/no-undef",
-      "/linter/rules/flowchart/no-untranslated",
-      "/linter/rules/sequence/no-ignored-text",
-      "/linter/rules/class/no-undef",
-      "/linter/rules/aaa-new/no-new",
-      "/linter/rules/zzz-new/no-new",
+      "/linter/rules/flowchart-no-duplicate-title",
+      "/linter/rules/flowchart-no-undef",
+      "/linter/rules/flowchart-no-untranslated",
+      "/linter/rules/sequence-no-ignored-text",
+      "/linter/rules/class-no-undef",
     ])
     const japanese = ruleItems(diagrams, mapping, "ja")
     expect(japanese.map(({ text }) => text)).toEqual([
@@ -340,14 +332,14 @@ describe("rule sidebar", () => {
       japanese.flatMap(({ items }) => items.map(({ link }) => link)),
     ).toEqual([
       "/ja/linter/rules/no-unclosed-directive",
-      "/ja/linter/rules/flowchart/no-japanese-only",
-      "/ja/linter/rules/flowchart/no-undef",
-      "/ja/linter/rules/sequence/no-ignored-text",
-      "/ja/linter/rules/class/no-undef",
+      "/ja/linter/rules/flowchart-no-japanese-only",
+      "/ja/linter/rules/flowchart-no-undef",
+      "/ja/linter/rules/sequence-no-ignored-text",
+      "/ja/linter/rules/class-no-undef",
     ])
     expect(japanese[1].items.map(({ text }) => text)).toEqual([
-      "no-japanese-only",
-      "no-undef",
+      "flowchart-no-japanese-only",
+      "flowchart-no-undef",
     ])
   })
 
@@ -370,7 +362,7 @@ describe("rule sidebar", () => {
     documentSourcesPlugin(root, diagrams, mapping, output).configureServer(
       server,
     )
-    const source = "packages/eslint-plugin-mmd/docs/rules/flowchart/new-rule"
+    const source = "packages/eslint-plugin/docs/rules/flowchart-new-rule"
     for (const extension of [".md", ".ja.md"]) {
       const file = write(root, source + extension, "# new-rule\n")
       watcher.emit("all", "add", file)
@@ -382,8 +374,8 @@ describe("rule sidebar", () => {
       expect(
         ruleItems(diagrams, mapping, locale).flatMap(({ items }) => items),
       ).toContainEqual({
-        text: "new-rule",
-        link: `${locale === "ja" ? "/ja" : ""}/linter/rules/flowchart/new-rule`,
+        text: "flowchart-new-rule",
+        link: `${locale === "ja" ? "/ja" : ""}/linter/rules/flowchart-new-rule`,
       })
     }
     restart.mockClear()
@@ -393,7 +385,7 @@ describe("rule sidebar", () => {
     expect(restart).not.toHaveBeenCalled()
     expect(
       readFileSync(
-        path.join(output, "linter/rules/flowchart/new-rule.md"),
+        path.join(output, "linter/rules/flowchart-new-rule.md"),
         "utf8",
       ),
     ).toContain("Updated body.")
@@ -403,7 +395,7 @@ describe("rule sidebar", () => {
       watcher.emit("all", "unlink", target)
       expect(
         existsSync(
-          path.join(output, `linter/rules/flowchart/new-rule${extension}`),
+          path.join(output, `linter/rules/flowchart-new-rule${extension}`),
         ),
       ).toBe(false)
     }

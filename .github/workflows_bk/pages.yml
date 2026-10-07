@@ -23,7 +23,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       # Diagnostic markers execute the workspace linter during docs rendering.
-      - run: pnpm --filter @mmd-toolkit/parser --filter eslint-plugin-mmd run build
+      - run: pnpm --filter @mmd-toolkit/parser --filter @mmd-toolkit/eslint-plugin run build
       - run: pnpm exec eslint packages/docs
       - run: pnpm exec prettier --check packages/docs .github/workflows/pages.yml
       - run: pnpm --filter @mmd-toolkit/docs run test

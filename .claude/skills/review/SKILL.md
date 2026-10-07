@@ -57,8 +57,12 @@ documents of `dbFromTree`, the formatting rules), the reviewer lists the cases
 the sentence distinguishes and the other rules that meet it at the place it
 names, and checks that each has a fixture; a case without a fixture is a finding
 against the fixtures, and a case the sentence does not state is a finding
-against the sentence. The reviewer builds no product of places and strings: a
-product repeats one rule as many times as it has contexts and names no question.
+against the sentence. The list is written in the first round, in full, before
+the implementation is read, and the report carries it next to the author's table
+of cases (the conventions skill asks the author for one): the two lists are
+compared, and the cases in neither are the review's own contribution. The
+reviewer builds no product of places and strings: a product repeats one rule as
+many times as it has contexts and names no question.
 
 The shapes below name the other rules to think of at each sentence. A review
 that leaves one out says which and why.
@@ -170,7 +174,11 @@ Every review has a section on proper form, also when the behavior is right:
 - In a re-review, each new finding names its origin: made by the fix, present
   before and missed by the earlier review, or new scope. A missed finding names
   which case the earlier review did not list or which place it did not read, and
-  that gap is added to the inputs of every later review.
+  that gap is added to the inputs of every later review. A finding on a case
+  next to one the earlier round found (the same sentence, another value of the
+  same distinction: the other line terminator, the closed directive where the
+  unclosed one was found, the next diagram type) is a missed finding, never new
+  scope: the first round was to list every case of that sentence.
 - When the same item reaches a third round with new findings, the review stops
   and reports the origins before anything else is fixed.
 - A finding against the parser or the specification whose input the conformance

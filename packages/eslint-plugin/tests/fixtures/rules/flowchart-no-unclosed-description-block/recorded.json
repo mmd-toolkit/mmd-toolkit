@@ -1,0 +1,128 @@
+{
+  "alone": {},
+  "docs": {
+    "docs/rules/flowchart-no-unclosed-description-block.md correct 1": "flowchart/gram-empty-description-block-docs-correct-1",
+    "docs/rules/flowchart-no-unclosed-description-block.md correct 2": "flowchart/gram-unclosed-description-block-docs-correct-2",
+    "docs/rules/flowchart-no-unclosed-description-block.md incorrect 1": "flowchart/gram-unclosed-description-block-docs-incorrect-1",
+    "docs/rules/flowchart-no-unclosed-description-block.md incorrect 2": "flowchart/db-acc-descr-unclosed-takes-lines"
+  },
+  "results": {
+    "docs/rules/flowchart-no-unclosed-description-block.md incorrect 1": {
+      "closeAtLineEnd": "flowchart/db-duplicate-description-single-block"
+    },
+    "docs/rules/flowchart-no-unclosed-description-block.md incorrect 2": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-docs-correct-2",
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-docs-incorrect-2-close-at-text-end-result"
+    },
+    "flowchart/gram-unclosed-description-block-line-separator-in-text-on-brace-line": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-line-separator-in-text-on-brace-line-close-at-line-end-result",
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-line-separator-in-text-on-brace-line-close-at-text-end-result"
+    },
+    "invalid/flowchart/db-acc-descr-unclosed-keeps-title": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-db-acc-descr-unclosed-keeps-title-close-at-line-end-result"
+    },
+    "invalid/flowchart/db-acc-descr-unclosed-replaces": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-db-acc-descr-unclosed-replaces-close-at-line-end-result"
+    },
+    "invalid/flowchart/db-acc-descr-unclosed-text-next-line": {
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-db-acc-descr-unclosed-text-next-line-close-at-text-end-result"
+    },
+    "invalid/flowchart/db-unclosed-description-block-brace-after-lines": {
+      "closeAtLineEnd": "flowchart/db-closed-description-block-then-vertex-braces"
+    },
+    "invalid/flowchart/db-unclosed-description-block-takes-brace-line": {
+      "closeAtLineEnd": "flowchart/db-closed-description-block-then-statements"
+    },
+    "invalid/flowchart/db-unclosed-description-block-takes-data-block-line": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-db-unclosed-description-block-takes-data-block-line-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-after-a-statement-on-the-same-line": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-after-a-statement-on-the-same-line-close-at-line-end-result",
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-after-a-statement-on-the-same-line-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-brace-inside-the-text": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-brace-inside-the-text-close-at-line-end-result",
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-brace-inside-the-text-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-after-a-description": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-closed-by-a-brace-after-a-description-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-after-empty-and-comment-lines": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-closed-by-a-brace-after-empty-and-comment-lines-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-cr": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-closed-by-a-brace-cr-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-crlf": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-closed-by-a-brace-crlf-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-in-subgraph": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-closed-by-a-brace-in-subgraph-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-of-a-later-shape": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-closed-by-a-brace-of-a-later-shape-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-of-a-shape-spanning-lines": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-closed-by-a-brace-of-a-shape-spanning-lines-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-closed-by-a-brace-without-final-line-break": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-closed-by-a-brace-without-final-line-break-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-closed-by-a-data-block": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-closed-by-a-data-block-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-closed-twice-by-a-later-description": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-closed-twice-by-a-later-description-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-comment-mark-after-the-brace": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-comment-mark-after-the-brace-close-at-line-end-result",
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-comment-mark-after-the-brace-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-crlf-lines": {
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-crlf-lines-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-directive-spans-lines-on-brace-line": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-directive-spans-lines-on-brace-line-close-at-line-end-result",
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-directive-spans-lines-on-brace-line-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-header-flowchart-elk": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-header-flowchart-elk-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-header-graph": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-header-graph-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-header-swimlane-beta": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-header-swimlane-beta-close-at-line-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-later-line-is-no-statement": {
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-later-line-is-no-statement-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-only-directive-on-brace-line": {
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-only-directive-on-brace-line-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-several-final-line-breaks": {
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-several-final-line-breaks-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-tab-indented": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-tab-indented-close-at-line-end-result",
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-tab-indented-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-text-on-a-later-line-without-final-line-break": {
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-text-on-a-later-line-without-final-line-break-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-text-with-a-blank-line": {
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-text-with-a-blank-line-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-unclosed-after-empty-block": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-unclosed-after-empty-block-close-at-line-end-result",
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-unclosed-after-empty-block-close-at-text-end-result"
+    },
+    "invalid/flowchart/gram-unclosed-description-block-whitespace-after-the-text-on-the-brace-line": {
+      "closeAtLineEnd": "flowchart/gram-unclosed-description-block-whitespace-after-the-text-on-the-brace-line-close-at-line-end-result",
+      "closeAtTextEnd": "flowchart/gram-unclosed-description-block-whitespace-after-the-text-on-the-brace-line-close-at-text-end-result"
+    },
+    "invalid/flowchart/lex-acc-descr-block-unclosed": {
+      "closeAtLineEnd": "flowchart/db-duplicate-description-db-acc-descr-block-then-empty-line-remove-this-result"
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "alone": {},
+  "docs": {
+    "docs/rules/flowchart-no-empty-description-block.md correct 1": "flowchart/gram-empty-description-block-docs-correct-1",
+    "docs/rules/flowchart-no-empty-description-block.md correct 2": "flowchart/gram-empty-description-block-docs-correct-2",
+    "docs/rules/flowchart-no-empty-description-block.md incorrect 1": "flowchart/gram-empty-description-block-docs-incorrect-1",
+    "docs/rules/flowchart-no-empty-description-block.md incorrect 2": "flowchart/gram-empty-description-block-docs-incorrect-2",
+    "docs/rules/flowchart-no-empty-description-block.md incorrect 3": "flowchart/gram-empty-description-block-docs-incorrect-3"
+  },
+  "results": {
+    "docs/rules/flowchart-no-empty-description-block.md incorrect 1": {
+      "removeBlock": "flowchart/gram-empty-description-block-docs-incorrect-1-remove-block-result"
+    },
+    "docs/rules/flowchart-no-empty-description-block.md incorrect 2": {
+      "removeBlock": "flowchart/gram-empty-description-block-docs-incorrect-1-remove-block-result"
+    },
+    "docs/rules/flowchart-no-empty-description-block.md incorrect 3": {
+      "removeBlock": "flowchart/gram-empty-description-block-docs-incorrect-1-remove-block-result"
+    },
+    "invalid/flowchart/db-acc-descr-empty-block-after-block": {
+      "removeBlock": "flowchart/gram-empty-description-block-db-acc-descr-empty-block-after-block-remove-block-result"
+    },
+    "invalid/flowchart/db-acc-descr-empty-block-alone": {
+      "removeBlock": "flowchart/gram-bare-comment-marker-vertex-line-indented-remove-marker-result"
+    },
+    "invalid/flowchart/db-acc-descr-empty-block-keeps": {
+      "removeBlock": "flowchart/db-duplicate-description-db-acc-descr-block-replaces-remove-this-result"
+    },
+    "invalid/flowchart/db-acc-descr-empty-block-lines-alone": {
+      "removeBlock": "flowchart/gram-bare-comment-marker-vertex-line-indented-remove-marker-result"
+    },
+    "invalid/flowchart/db-acc-descr-empty-block-lines-keeps": {
+      "removeBlock": "flowchart/db-duplicate-description-db-acc-descr-block-replaces-remove-this-result"
+    },
+    "invalid/flowchart/db-acc-descr-empty-block-spaces-alone": {
+      "removeBlock": "flowchart/gram-bare-comment-marker-vertex-line-indented-remove-marker-result"
+    },
+    "invalid/flowchart/db-subgraph-member-empty-acc-descr-block": {
+      "removeBlock": "flowchart/gram-empty-description-block-db-subgraph-member-empty-acc-descr-block-remove-block-result"
+    },
+    "invalid/flowchart/db-subgraph-member-has-own-property-no-member-statements": {
+      "removeBlock": "flowchart/gram-empty-description-block-db-subgraph-member-has-own-property-no-member-statements-remove-block-result"
+    },
+    "invalid/flowchart/gram-acc-descr-block-empty": {
+      "removeBlock": "flowchart/gram-bare-comment-marker-vertex-line-indented-remove-marker-result"
+    },
+    "invalid/flowchart/gram-acc-descr-block-empty-no-space": {
+      "removeBlock": "flowchart/gram-bare-comment-marker-vertex-line-indented-remove-marker-result"
+    },
+    "invalid/flowchart/gram-acc-descr-block-empty-then-semicolon": {
+      "removeBlock": "flowchart/gram-empty-description-block-gram-acc-descr-block-empty-then-semicolon-remove-block-result"
+    },
+    "invalid/flowchart/gram-acc-descr-block-empty-then-statement": {
+      "removeBlock": "flowchart/gram-empty-description-block-gram-acc-descr-block-empty-then-statement-remove-block-result"
+    },
+    "invalid/flowchart/gram-empty-description-block-block-after-line-in-subgraph": {
+      "removeBlock": "flowchart/gram-empty-description-block-block-after-line-in-subgraph-remove-block-result"
+    },
+    "invalid/flowchart/gram-empty-description-block-block-cr": {
+      "removeBlock": "flowchart/gram-empty-description-block-block-cr-remove-block-result"
+    },
+    "invalid/flowchart/gram-empty-description-block-block-first-in-subgraph-body": {
+      "removeBlock": "flowchart/gram-empty-description-block-block-first-in-subgraph-body-remove-block-result"
+    },
+    "invalid/flowchart/gram-empty-description-block-block-on-next-line-after-subgraph-name": {
+      "removeBlock": "flowchart/gram-empty-description-block-after-subgraph-name"
+    },
+    "invalid/flowchart/gram-empty-description-block-block-with-crlf-lines": {
+      "removeBlock": "flowchart/gram-empty-description-block-block-with-crlf-lines-remove-block-result"
+    },
+    "invalid/flowchart/gram-empty-description-block-block-with-only-a-tab": {
+      "removeBlock": "flowchart/gram-empty-description-block-docs-incorrect-1-remove-block-result"
+    },
+    "invalid/flowchart/gram-empty-description-block-header-flowchart-elk": {
+      "removeBlock": "flowchart/gram-empty-description-block-header-flowchart-elk-remove-block-result"
+    },
+    "invalid/flowchart/gram-empty-description-block-header-graph": {
+      "removeBlock": "flowchart/gram-empty-description-block-header-graph-remove-block-result"
+    },
+    "invalid/flowchart/gram-empty-description-block-header-swimlane-beta": {
+      "removeBlock": "flowchart/gram-empty-description-block-header-swimlane-beta-remove-block-result"
+    },
+    "invalid/flowchart/gram-empty-description-block-semicolon-after-block-in-nested-subgraph": {
+      "removeBlock": "flowchart/gram-empty-description-block-semicolon-after-block-in-nested-subgraph-remove-block-result"
+    },
+    "invalid/flowchart/gram-empty-description-block-semicolon-after-block-in-subgraph": {
+      "removeBlock": "flowchart/gram-empty-description-block-semicolon-after-block-in-subgraph-remove-block-result"
+    }
+  }
+}

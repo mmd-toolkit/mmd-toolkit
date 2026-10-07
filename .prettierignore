@@ -8,3 +8,4 @@ CHANGELOG.md
 packages/tests/fixtures/
 packages/prettier-plugin-mmd/tests/fixtures/
 .claude/worktrees/
+tmp/

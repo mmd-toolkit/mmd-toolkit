@@ -1,7 +1,7 @@
 ---
 name: rule-ideas
 description:
-  Find ideas for the rules of eslint-plugin-mmd and decide which rules to keep
+  Find ideas for the rules of @mmd-toolkit/eslint-plugin and decide which rules to keep
   (adoption, name, scope, whether `recommended` enables them, suggestions). Use
   when looking for new rule candidates, reviewing proposed candidates, or
   rechecking existing rules against the adoption criteria.
@@ -9,7 +9,7 @@ description:
 
 # 規則のアイディアの探し方と採否の決め方（rule-ideas）
 
-`eslint-plugin-mmd`
+`@mmd-toolkit/eslint-plugin`
 （Mermaid の図のテキストのための ESLint の言語プラグイン）について、
 規則の候補を探し、持つかどうか、名前、範囲、
 `recommended` に入れるかを決める手順。
@@ -27,10 +27,10 @@ description:
   作業用のスクリプトとその結果は、リポジトリの外の作業用ディレクトリに置く。
 - 決めた結果をリポジトリに残すのは、次の手順で行う。
   同じ人が続けて行ってよい。
-  - 規則の文書（`packages/eslint-plugin-mmd/docs/rules/`）は、
+  - 規則の文書（`packages/eslint-plugin/docs/rules/`）は、
     eslint-plugin の SKILL の手順で書く。
     文書はそれぞれ、
-    `packages/eslint-plugin-mmd/src/rules/` の規則のファイルに属する。
+    `packages/eslint-plugin/src/rules/` の規則のファイルに属する。
     規則は、eslint-plugin の SKILL のとおり、
     文書と一緒に足し、名前を変え、消す。
     落とした規則の文書が既にあれば、
@@ -85,7 +85,8 @@ description:
 - 規則を共通の規則にするのは、
   木のうち全図種が共有する部分についての 1 つの定義で全図種を扱え、
   どの図種でも同じに振る舞うときだけである。
-  そうでなければ図種の規則で、`docs/rules/<図種>/` に置く。
+  そうでなければ図種の規則で、名前は `<図種>-` で始まる
+  （文書は `docs/rules/<図種>-<名前>.md`）。
 
 判断の前に毎回読む。
 この節の残りでは、その当て方を例で示す。
@@ -96,18 +97,18 @@ description:
 
 | 入力                                                               | mermaid の結果                                           | 規則                                                                                                                                    |
 | ------------------------------------------------------------------ | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| 複数行のコメントアウトの中の空の `%%` 行                           | 頂点 `%%` ができる                                       | flowchart/no-bare-comment-marker（不具合とも読めるが残した。境界の例）                                                                  |
+| 複数行のコメントアウトの中の空の `%%` 行                           | 頂点 `%%` ができる                                       | flowchart-no-bare-comment-marker（不具合とも読めるが残した。境界の例）                                                                  |
 | `%%{init: {...}}`（最後の `%%` を書き忘れ）                        | 文の終わりまでがディレクティブになり、図が空             | no-unclosed-directive（共通）                                                                                                           |
 | `%%{init: {"flowchart": {"inheritDir": true},}}%%`（末尾のカンマ） | init の設定がすべて捨てられる                            | no-ignored-init-directive（共通）                                                                                                       |
-| `A[Start]-->B` の後に `C-->A[End]`                                 | A のラベルが End に置き換わる                            | flowchart/no-redefined-vertex                                                                                                           |
-| `style C fill:red`（C の打ち間違い）                               | スタイル付きの頂点 C が増える                            | flowchart/no-undef                                                                                                                      |
-| `class C foo` か `click C href "…"`（C の打ち間違い）              | 何もしない（どの頂点にもクラスやリンクが付かない）       | flowchart/no-undef                                                                                                                      |
-| `style C fill:red` の後の `class C foo`（どちらも C の打ち間違い） | `style` が頂点 C を足し、クラスはそれに付く              | flowchart/no-undef。`style` だけを報告する。ほかに何も定義していない id の最初の `style` を報告し、`style` が足す頂点は定義として数える |
-| `accDescr {` の閉じ忘れ                                            | 説明が空になる                                           | flowchart/no-unclosed-description-block                                                                                                 |
-| 説明のない図の `accDescr {}`（空白だけや 2 行に分けた形も）        | 何も起きない（説明は空のまま）                           | flowchart/no-empty-description-block                                                                                                    |
-| `accDescr: first` の後の `accDescr: second`                        | 説明が黙って `second` に置き換わる                       | flowchart/no-duplicate-description                                                                                                      |
-| `accTitle: first` の後の `accTitle: second`                        | タイトルが黙って `second` に置き換わる                   | flowchart/no-duplicate-title                                                                                                            |
-| subgraph の中の `A-->B; direction TB`（`;` で区切っても同じ）      | 方向の文の行のほかのテキストが捨てられ、A、B、辺が消える | flowchart/no-ignored-text（方向の文は単独の行に書くもの。同じ行に書いた文を mermaid が黙って捨てる）                                    |
+| `A[Start]-->B` の後に `C-->A[End]`                                 | A のラベルが End に置き換わる                            | flowchart-no-redefined-vertex                                                                                                           |
+| `style C fill:red`（C の打ち間違い）                               | スタイル付きの頂点 C が増える                            | flowchart-no-undef                                                                                                                      |
+| `class C foo` か `click C href "…"`（C の打ち間違い）              | 何もしない（どの頂点にもクラスやリンクが付かない）       | flowchart-no-undef                                                                                                                      |
+| `style C fill:red` の後の `class C foo`（どちらも C の打ち間違い） | `style` が頂点 C を足し、クラスはそれに付く              | flowchart-no-undef。`style` だけを報告する。ほかに何も定義していない id の最初の `style` を報告し、`style` が足す頂点は定義として数える |
+| `accDescr {` の閉じ忘れ                                            | 説明が空になる                                           | flowchart-no-unclosed-description-block                                                                                                 |
+| 説明のない図の `accDescr {}`（空白だけや 2 行に分けた形も）        | 何も起きない（説明は空のまま）                           | flowchart-no-empty-description-block                                                                                                    |
+| `accDescr: first` の後の `accDescr: second`                        | 説明が黙って `second` に置き換わる                       | flowchart-no-duplicate-description                                                                                                      |
+| `accTitle: first` の後の `accTitle: second`                        | タイトルが黙って `second` に置き換わる                   | flowchart-no-duplicate-title                                                                                                            |
+| subgraph の中の `A-->B; direction TB`（`;` で区切っても同じ）      | 方向の文の行のほかのテキストが捨てられ、A、B、辺が消える | flowchart-no-ignored-text（方向の文は単独の行に書くもの。同じ行に書いた文を mermaid が黙って捨てる）                                    |
 
 落としたもの:
 
@@ -194,7 +195,7 @@ description:
 - フォーマッターの制限: `packages/prettier-plugin-mmd/docs/<図種>.md` と
   `docs/compatibility.md`。
   空白 1 つや `;` 1 つで意味が変わる箇所が並んでいる。
-- 既存の規則: `packages/eslint-plugin-mmd/docs/rules/`。
+- 既存の規則: `packages/eslint-plugin/docs/rules/`。
   同じものを出さない。
 - 自分で探す: 書き手の側の誤りから始めて、mermaid を動かす。
   閉じ忘れ、打ち間違い、id の使い回し、壊れた設定の JSON、
@@ -410,7 +411,8 @@ for (const input of inputs) {
 
 決めた規則ごとに、次を示す。
 
-- 規則の名前（`<図種>/<名前>`、共通なら `<名前>`）と、共通か図種か。
+- 規則の名前（`<図種>-<名前>`、共通なら `<名前>`。
+  id は `@mmd-toolkit/` の後に名前を付けたもの）と、共通か図種か。
 - 何を報告するか（1 文）。
 - 理由: mermaid がどう読むか、なぜ普通の書き方で起き、
   書かれたものと違う結果になるか。
@@ -442,7 +444,7 @@ for (const input of inputs) {
 
 | 規則                                                                      | オプション | 後で足すことを考えるもの                                                                                   |
 | ------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------- |
-| flowchart/no-empty-description-block、sequence/no-empty-description-block | なし       | 規則が報告しない、コメントだけを持つブロックも報告すること。この規則を使う人から要望があったときにだけ足す |
+| flowchart-no-empty-description-block、sequence-no-empty-description-block | なし       | 規則が報告しない、コメントだけを持つブロックも報告すること。この規則を使う人から要望があったときにだけ足す |
 | ほかのすべての規則                                                        | なし       | なし                                                                                                       |
 
 ## 7. `recommended` に入れるか
@@ -474,7 +476,7 @@ for (const input of inputs) {
 
 同じノードにあるために誤りと一緒に報告される、
 mermaid.js の不具合のような振る舞いは、入れるのを妨げない
-（flowchart/no-ignored-text が、方向の行の上のテキストと一緒に報告する、
+（flowchart-no-ignored-text が、方向の行の上のテキストと一緒に報告する、
 ラベルの中の `direction LR` のテキストなど）。
 mermaid.js はそのテキストも捨てるので、報告は事実であり（基準 1）、
 書き手はテキストを書き換えて避けられる（基準 4）。
@@ -490,21 +492,21 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 
 | 規則                                    | 入れるか             | 入れない理由                                                                                         |
 | --------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------- |
-| flowchart/no-ignored-text               | 入れる               |                                                                                                      |
-| flowchart/no-bare-comment-marker        | 入れない             | 基準 3: [#7008](https://github.com/mermaid-js/mermaid/pull/7008)（open）がその行をコメントとして読む |
-| flowchart/no-unclosed-description-block | 入れる               |                                                                                                      |
-| flowchart/no-empty-description-block    | 入れる               |                                                                                                      |
-| flowchart/no-duplicate-description      | 入れる               |                                                                                                      |
-| flowchart/no-duplicate-title            | 入れる               |                                                                                                      |
-| flowchart/no-redefined-vertex           | 入れる               |                                                                                                      |
-| flowchart/no-undef                      | 入れる               |                                                                                                      |
+| flowchart-no-ignored-text               | 入れる               |                                                                                                      |
+| flowchart-no-bare-comment-marker        | 入れない             | 基準 3: [#7008](https://github.com/mermaid-js/mermaid/pull/7008)（open）がその行をコメントとして読む |
+| flowchart-no-unclosed-description-block | 入れる               |                                                                                                      |
+| flowchart-no-empty-description-block    | 入れる               |                                                                                                      |
+| flowchart-no-duplicate-description      | 入れる               |                                                                                                      |
+| flowchart-no-duplicate-title            | 入れる               |                                                                                                      |
+| flowchart-no-redefined-vertex           | 入れる               |                                                                                                      |
+| flowchart-no-undef                      | 入れる               |                                                                                                      |
 | no-unclosed-directive                   | 入れる（いったん）   |                                                                                                      |
 | no-ignored-init-directive               | 入れる（いったん）   |                                                                                                      |
-| sequence/*（7 件すべて）                | 入れる（いったん）   |                                                                                                      |
-| class/no-inline-comment                 | 入れない（いったん） | 基準 1 と 3。下を参照                                                                                |
-| class/*（ほかの 7 件）                  | 入れる（いったん）   |                                                                                                      |
+| sequence-*（7 件すべて）                | 入れる（いったん）   |                                                                                                      |
+| class-no-inline-comment                 | 入れない（いったん） | 基準 1 と 3。下を参照                                                                                |
+| class-*（ほかの 7 件）                  | 入れる（いったん）   |                                                                                                      |
 
-class/no-inline-comment:
+class-no-inline-comment:
 コメントの後に空白だけの行があり、その行の後にコメント行がないとき、
 mermaid.js は次の行を書き手のつもりどおりに別に読むが、
 規則はそこでもコメントを報告する（基準 1）。
@@ -564,14 +566,14 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 
 | 規則                                    | 提案                                                          |
 | --------------------------------------- | ------------------------------------------------------------- |
-| flowchart/no-unclosed-description-block | この行の終わりで閉じる。テキストの終わりで閉じる              |
-| flowchart/no-empty-description-block    | 空のブロックを消す                                            |
-| flowchart/no-duplicate-description      | この説明を消す。前の説明を消す                                |
-| flowchart/no-duplicate-title            | このタイトルを消す。前のタイトルを消す                        |
-| flowchart/no-ignored-text               | `;` の所で分け、方向を 1 行にする                             |
-| flowchart/no-bare-comment-marker        | `%%` を消す（行をまたぐテキストの中では `%%` だけの行を消す） |
-| flowchart/no-redefined-vertex           | なし: 基準 1（ありうる直しは新しい id）                       |
-| flowchart/no-undef                      | なし: 基準 1（どの id のつもりかが分からない）                |
+| flowchart-no-unclosed-description-block | この行の終わりで閉じる。テキストの終わりで閉じる              |
+| flowchart-no-empty-description-block    | 空のブロックを消す                                            |
+| flowchart-no-duplicate-description      | この説明を消す。前の説明を消す                                |
+| flowchart-no-duplicate-title            | このタイトルを消す。前のタイトルを消す                        |
+| flowchart-no-ignored-text               | `;` の所で分け、方向を 1 行にする                             |
+| flowchart-no-bare-comment-marker        | `%%` を消す（行をまたぐテキストの中では `%%` だけの行を消す） |
+| flowchart-no-redefined-vertex           | なし: 基準 1（ありうる直しは新しい id）                       |
+| flowchart-no-undef                      | なし: 基準 1（どの id のつもりかが分からない）                |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。

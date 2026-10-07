@@ -92,11 +92,14 @@ const problems: TreeProblem[] = checkTree(text, tree)
     together with nothing else between them, is reported when its texts joined
     are one text of the table. The run has any number of tokens, and a shorter
     run inside a longer one that cuts glue together is looked at too, whatever
-    token the cut attaches to it. So `sub`, a cut, and `graph` are the fragments
-    of `subgraph`, and so are `su`, a cut, `bgr`, a cut, and `aph`, where no two
-    of them are a keyword. A pseudostate mark and the start of an empty
-    description block, `<<choice>>`, a cut, and `accDescr`, are units of their
-    own, as no text of the table is their two texts joined.
+    token the cut attaches to it. One report is made for each run, in one place
+    (`reportCutEntries()`), at the first token of the run, and it lists the
+    fragments in order with the text that they make. So `sub`, a cut, and
+    `graph` are the fragments of `subgraph`, and so are `su`, a cut, `bgr`, a
+    cut, and `aph`, where no two of them are a keyword. A pseudostate mark and
+    the start of an empty description block, `<<choice>>`, a cut, and
+    `accDescr`, are units of their own, as no text of the table is their two
+    texts joined.
   - The table of the `Keyword` texts (`src/check-tree/keywords.ts`) is the words
     of the row `Keyword` of the table of Tokens of each diagram and the texts of
     the units that the row names without their text (a header, a direction, a
@@ -198,15 +201,19 @@ The records that the diagrams share are checked once (`leaves.ts`): the `name`
 of a directive is its first word, and the `diagramType` of the root is one of
 those of its body. The checks of a diagram are the checks of its own nodes.
 
-Every field of every node type is checked, or listed with the reason it is not:
+Every field of every node type is checked by a rule of its own:
 `tests/check-tree-fields.test.ts` breaks each field of each type in a recorded
-tree and requires the check to report it. A field that may be null is also made
-null where the source writes it, and set where it writes none, and the problem
-must be the field's own: for a field of a string, one of the node that holds the
-field; for a field of a node or of a list of nodes, one inside the range that
-the field covered (its tokens lie in no node that holds them), or, for the
-fields that the next paragraph names, one of the node that holds the field, with
-a message that names the field.
+tree and requires the check to report it at the node that holds the field, with
+the message of the rule of that field. A field of a node or of a list that holds
+a string has the message of the form of a tree; a field that holds a value has
+the message that a table of the test names for it. A problem of another rule
+does not satisfy a field. A field that may be null is also made null where the
+source writes it, and set where it writes none, and the problem must be the
+field's own: for a field of a string, one of the node that holds the field; for
+a field of a node or of a list of nodes, one inside the range that the field
+covered, with the message that its tokens lie in no node that holds them, or,
+for the fields that the next paragraph names, one of the node that holds the
+field, with a message that names the field.
 
 A field of a node or of a list of nodes that may be null is null where the node
 writes nothing for it. Where what the node writes for the field has a token of a
@@ -239,33 +246,41 @@ that every node type in it is classified as a value node or not.
 `tests/check-tree-fields.test.ts` is the test of the paragraphs above: it reads
 the recorded trees once and indexes the first tree that has each node type, and
 the first in which each field is null and is not null, and it breaks each field
-in the tree that the index gives; and it has a named case for each field of a
-string that may be null, in each direction, and for each rule of
-`null-fields.ts` (a fixture, a type, a field, and the exact message of the
-problem at the node), and, made by hand from the tree of a note with two
-whitespace characters before its `:`, the three notes with one, whose text is
-null and which the check must accept. `tests/check-tree-values.test.ts` is the
-test of the value rule: for every node type with a value, it adds a character to
-the value at either end and drops one from either end, and it takes the
-whitespace off an end of each token in the nodes of the type, in the recorded
-trees, and requires each tree so made to be reported; the types that have no
-token with whitespace at an end are listed with the reason. It also lists by
-name the fixtures of a diagram comment that a comment line cuts: eight that end
-at a line feed, and one each that ends at a CRLF, at a lone CR, and at the end
-of the text; it requires their recorded trees to be accepted, and, for the CRLF
-and the lone CR, a value with another line terminator to be reported with its
-exact message. `tests/check-tree-comments.test.ts` makes, by hand, a diagram
-comment and a comment line that end at a line feed, a CRLF, a lone CR, and the
-end of the text, and requires the range that ends after the line terminator to
-be reported. `tests/check-tree-cut-tokens.test.ts` is a list of named cases,
-each of which takes the recorded tree of a named fixture and writes a directive,
-or a `;` that the line rule ignores, once, twice, or three times, inside one of
-its tokens, as a parser that cuts the token would record the text. The cases are
-an `Identifier`, a `Numeric`, a `Keyword` (into two fragments in each diagram,
-and into three and four in a flowchart), a `Punctuator` (into two fragments in
-each diagram, where the fragments of a sequence, class, and state diagram are
-texts that the diagram lacks, and into three in a flowchart), and a `String` cut
-into `String` tokens, each cut by a directive or by a `;`. For each, the test
+in the tree that the index gives; any recorded tree that has the field will do,
+since the problem that the field must cause has the same message in every tree.
+It has a named case for each field of a string that may be null, in each
+direction, for each rule of `null-fields.ts`, and for the two parts of a box
+text, whose message holds the place of a token (a fixture, a type, a field, and
+the exact message of the problem at the node), and, made by hand from the tree
+of a note with two whitespace characters before its `:`, the three notes with
+one, whose text is null and which the check must accept.
+`tests/check-tree-values.test.ts` is the test of the value rule: for every node
+type with a value, it adds a character to the value at either end and drops one
+from either end, and requires each value so made to be reported at its node,
+with the message of the rule of the type (the written text, or the tokens
+joined; the style of a class diagram has the second). For each node type with a
+value that has a token with whitespace at an end, it has a named case (a
+fixture, a token, a side, and the exact problems) that takes the whitespace off
+that end of the token in the recorded tree and requires the problems; for each
+other type, it names a fixture whose tokens in a node of the type have no
+whitespace at an end, with the reason, and it requires every type to be one or
+the other. It also lists by name the fixtures of a diagram comment that a
+comment line cuts: eight that end at a line feed, and one each that ends at a
+CRLF, at a lone CR, and at the end of the text; it requires their recorded trees
+to be accepted, and, for the CRLF and the lone CR, a value with another line
+terminator to be reported with its exact message.
+`tests/check-tree-comments.test.ts` makes, by hand, a diagram comment and a
+comment line that end at a line feed, a CRLF, a lone CR, and the end of the
+text, and requires the range that ends after the line terminator to be reported.
+`tests/check-tree-cut-tokens.test.ts` is a list of named cases, each of which
+takes the recorded tree of a named fixture and writes a directive, or a `;` that
+the line rule ignores, once, twice, or three times, inside one of its tokens, as
+a parser that cuts the token would record the text. The cases are an
+`Identifier`, a `Numeric`, a `Keyword` (into two fragments in each diagram, and
+into three and four in a flowchart), a `Punctuator` (into two fragments in each
+diagram, where the fragments of a sequence, class, and state diagram are texts
+that the diagram lacks, and into three in a flowchart), and a `String` cut into
+`String` tokens, each cut by a directive or by a `;`. For each, the test
 requires the check to report the problems of the condition that the case names,
 with their exact places and messages, and requires the unedited tree of the
 fixture to have none. A `String` cut into `StringFragment` tokens and a
@@ -283,21 +298,27 @@ and it makes, by hand, the trees of two, three, and four `Keyword` fragments.
 and, on a tree made by hand, the check of a `Punctuator` text that its diagram
 does not have, in each diagram. `tests/check-tree-flowchart.test.ts` requires
 the directions of the flowchart header that the check knows to be those of the
-rule of the specification. `tests/check-tree-cut-whitespace.test.ts` takes the
-whitespace off the side of each token that touches a cut, in every recorded
-tree, and requires each tree so made to be reported. It also makes, from one
-recorded tree each, the two negative cases of the other exceptions: a token that
-starts with whitespace in a value that began before it, where the token before
-it does not touch it, and a token of whitespace that ends with whitespace in the
-middle of a value, where no token follows it. The check must report each with
-its message. `tests/check-tree-node-types.test.ts` requires the tables of node
-types of the check to classify the node types that the tree documents of the
-specification define, and no others. `tests/check-tree.test.ts` and
-`tests/check-tree-*.test.ts` break a tree, one condition at a time, and require
-the check to report it. The conditions that every tree satisfies (positions, the
-placement of every character, the order of the tokens, the cuts, the comments,
-the directives, and the frontmatter) are broken mostly on hand-made trees
-(`check-tree.test.ts`, `check-tree-comments.test.ts`,
+rule of the specification. `tests/check-tree-cut-whitespace.test.ts` takes, from
+a named fixture each, a `RawText` or `StringFragment` token next to a cut and
+takes the whitespace off its side that touches the cut, one case for each side
+(before the cut, after it), each kind of cut (a directive, a comment region, a
+`;` that the line rule ignores), and each kind of token (`RawText`,
+`StringFragment`), and requires the check to report the tree with the message of
+its value (the texts of the tokens joined are not the written text). For an
+ignored text it has a case for a directive and one for a comment region, with
+the message that the whitespace next to a cut lies in no token. It also makes,
+from one recorded tree each, the two negative cases of the other exceptions: a
+token that starts with whitespace in a value that began before it, where the
+token before it does not touch it, and a token of whitespace that ends with
+whitespace in the middle of a value, where no token follows it. The check must
+report each with its message. `tests/check-tree-node-types.test.ts` requires the
+tables of node types of the check to classify the node types that the tree
+documents of the specification define, and no others. `tests/check-tree.test.ts`
+and `tests/check-tree-*.test.ts` break a tree, one condition at a time, and
+require the check to report it. The conditions that every tree satisfies
+(positions, the placement of every character, the order of the tokens, the cuts,
+the comments, the directives, and the frontmatter) are broken mostly on
+hand-made trees (`check-tree.test.ts`, `check-tree-comments.test.ts`,
 `check-tree-cut-units.test.ts`). The form of a tree, its fields and values, the
 whitespace at the ends of tokens, the literals, and the conditions of a diagram
 are broken on recorded trees, those of a diagram on the recorded trees of named

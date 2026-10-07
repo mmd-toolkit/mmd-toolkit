@@ -43,9 +43,9 @@ describe("checkTree: the tokens that a cut makes fragments of one token", () => 
       ),
     ).toEqual([
       {
-        where: "Keyword at 4-9",
+        where: "Keyword at 0-3",
         message:
-          "a Keyword token is cut: Keyword at 0-3 and this are its fragments",
+          'a Keyword token is cut: Keyword at 0-3, Keyword at 4-9 are the fragments of "subgraph"',
       },
     ])
     expect(
@@ -60,9 +60,8 @@ describe("checkTree: the tokens that a cut makes fragments of one token", () => 
       ),
     ).toEqual([
       {
-        where: `Keyword at ${3 + DIRECTIVE.length}-${8 + DIRECTIVE.length}`,
-        message:
-          "a Keyword token is cut: Keyword at 0-3 and this are its fragments",
+        where: "Keyword at 0-3",
+        message: `a Keyword token is cut: Keyword at 0-3, Keyword at ${3 + DIRECTIVE.length}-${8 + DIRECTIVE.length} are the fragments of "SUBGRAPH"`,
       },
     ])
   })

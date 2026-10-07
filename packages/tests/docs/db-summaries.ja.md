@@ -343,7 +343,16 @@ Db はほかに 2 つの形を持ちますが、どちらも要約しません�
 `--` が作る領域は、数え上げから付く id `divider-id-<番号>` のままです。
 
 値は、Db が持つとおりに、空白も含めて記録します。
-要約は、`securityLevel`、`look`、`htmlLabels` のどれでも同じです。
+要約は、`look` では同じです。
+`securityLevel` が `strict`、`loose`、`antiscript`、`sandbox` の
+どれかなら同じで、
+`htmlLabels` も、mermaid.js が文字を置き換えるのでなければ同じです。
+ほかの `securityLevel` で HTML ラベルが有効なときは、
+状態のラベルと説明、note のテキスト、遷移のラベルが置き換えた文字を持ちます
+（[db-from-tree.ja.md](./db-from-tree.ja.md) の文字の置き換えを参照）。
 [fixture: state/config-security-level-sandbox-click]
 [fixture: state/config-look-hand-drawn]
 [fixture: state/config-html-labels-false]
+[fixture: state/config-security-level-other-description]
+[fixture: state/config-security-level-other-note]
+[fixture: state/config-security-level-other-transition-label]

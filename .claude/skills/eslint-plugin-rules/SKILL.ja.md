@@ -1,21 +1,21 @@
 ---
 name: eslint-plugin-rules
 description:
-  Implement, change, or remove a rule of eslint-plugin-mmd (the rule file under
-  src/rules/, its messages and suggestions, its tests and fixtures). Use when a
-  rule has been decided with the rule-ideas skill and is to be implemented, when
-  the condition, the messages, or the suggestions of a rule change, and when the
-  tests or the fixtures of a rule are added. The documents of the rules are in
-  the eslint-plugin skill.
+  Implement, change, or remove a rule of @mmd-toolkit/eslint-plugin (the rule
+  file under src/rules/, its messages and suggestions, its tests and fixtures).
+  Use when a rule has been decided with the rule-ideas skill and is to be
+  implemented, when the condition, the messages, or the suggestions of a rule
+  change, and when the tests or the fixtures of a rule are added. The documents
+  of the rules are in the eslint-plugin skill.
 ---
 
 # 規則の実装（eslint-plugin-rules）
 
-`eslint-plugin-mmd` の規則を実装、変更、削除する手順。
+`@mmd-toolkit/eslint-plugin` の規則を実装、変更、削除する手順。
 規則が報告するものが、固定した mermaid.js についての事実であり、
 規則が、道具が使う形で木を読むようにする。
 パッケージの構成、どの規則も従う選択、テストと fixture は、
-`packages/eslint-plugin-mmd/docs/development.md` に書いてあり、
+`packages/eslint-plugin/docs/development.md` に書いてあり、
 この手順はそれを写さない。
 この手順が足すのは、作業そのものの決まり、
 つまり、何を、どの順で確かめ、何を報告するかである。
@@ -30,13 +30,13 @@ description:
    （条件が木から読めない、提案が確かめられない、など）、
    別の決定をせずに、その根拠を持って決定に戻る。
 2. まだ実装していない間は規則の覚え書き
-   （`docs/rule-notes/<規則のパス>.md`）。
+   （`docs/rule-notes/<名前>.md`）。
    それと、テストが読む例を持つ、規則の英語の文書。
 3. SKILL `eslint-plugin`（`.claude/skills/eslint-plugin/SKILL.md`）の
    「方針と基準」の節と、SKILL `conventions`。
 4. 木の定義: `packages/spec/docs/ast.md` と
    `packages/spec/docs/ast/<図種>.md`。
-5. `packages/eslint-plugin-mmd/docs/development.md` の
+5. `packages/eslint-plugin/docs/development.md` の
    Writing a rule、The fixtures of the rules、Snapshots、
    Rules and their documents。
 
@@ -86,13 +86,13 @@ description:
   一部ではなく、件数を読む。
 
   ```ts
-  import { Linter } from "<repo>/packages/eslint-plugin-mmd/node_modules/eslint/lib/api.js"
-  import plugin from "<repo>/packages/eslint-plugin-mmd/src/index.ts"
+  import { Linter } from "<repo>/packages/eslint-plugin/node_modules/eslint/lib/api.js"
+  import plugin from "<repo>/packages/eslint-plugin/src/index.ts"
 
   const linter = new Linter({ configType: "flat" })
   const config = {
     ...plugin.configs.recommended,
-    rules: { "mmd/flowchart/no-empty-description-block": "error" },
+    rules: { "@mmd-toolkit/flowchart-no-empty-description-block": "error" },
   }
   const text = "flowchart LR\n  A accDescr {}\n"
   for (const message of linter.verify(text, config, "probe.mmd")) {
@@ -162,9 +162,9 @@ description:
   テストを通すために文を `notBehavior` に入れない。
   場合に入力がないことは、レビューが探す欠けである。
 - eslint-plugin の SKILL に従い、従う例も反する例も、
-  先頭の `%% eslint mmd/<規則>: error` コメントを残す。
+  先頭の `%% eslint @mmd-toolkit/<規則>: error` コメントを残す。
   parser とサイトの検査は、このコメントを含めて読む。
-  スナップショットのテストヘルパーだけは、テスターの別名と `mmd/` で
+  スナップショットのテストヘルパーだけは、テスターの別名と `@mmd-toolkit/` で
   規則を二重に有効にしないよう、このコメントを除く。
   規則の名前を変えるときは、英日の文書のコメントも更新する。
 - 振る舞いが変わるとき
@@ -194,16 +194,16 @@ description:
 
 SKILL `conventions` の決まり（テストの実行）に従う。
 作業の途中は、変更が影響しうるテストのファイルだけを回し
-（`packages/eslint-plugin-mmd` で `npx vitest run <ファイル>`）、
+（`packages/eslint-plugin` で `npx vitest run <ファイル>`）、
 全体は、作業の完了を報告する前に 1 回だけ回す。
 
 | 変えたもの                                              | 回すテストのファイル                                                                                                                              |
 | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 規則のファイル `src/rules/<パス>.ts`                    | `tests/rules/<パス>.test.ts`                                                                                                                      |
+| 規則のファイル `src/rules/<名前>.ts`                    | `tests/rules/<名前>.test.ts`                                                                                                                      |
 | 図種の規則のハンドラー                                  | 上と同じ、それと `tests/diagram-rules.test.ts`                                                                                                    |
 | `src/utils/` の補助                                     | それを import する規則のテスト（import を探す）。`subgraph-ids.ts` は `tests/subgraph-ids.test.ts`、`text-nodes.ts` は `tests/text-nodes.test.ts` |
-| 規則の fixture のディレクトリ                           | `tests/rules/<パス>.test.ts` と `tests/rule-fixtures.test.ts`                                                                                     |
-| 規則の英語の文書の例                                    | `tests/rules/<パス>.test.ts` と `tests/rule-cases.test.ts`                                                                                        |
+| 規則の fixture のディレクトリ                           | `tests/rules/<名前>.test.ts` と `tests/rule-fixtures.test.ts`                                                                                     |
+| 規則の英語の文書の例                                    | `tests/rules/<名前>.test.ts` と `tests/rule-cases.test.ts`                                                                                        |
 | 規則の追加、改名、削除                                  | その規則の上のテストと、`tests/rules-index.test.ts`                                                                                               |
 | `tests/rule-test.ts`、`tests/rule-cases.ts`             | `tests/rules/**/*.test.ts` のすべて、`tests/rule-cases.test.ts`、`tests/suggestion-claims.test.ts`                                                |
 | `src/language.ts`、`src/source-code.ts`、トークンストア | `tests/language.test.ts`、`tests/token-store.test.ts`、`tests/snapshot.test.ts`、`tests/inline-config.test.ts`、`tests/markdown.test.ts`          |
@@ -245,9 +245,9 @@ fixture が示す主張は、テストが保つ。
 - 作業の完了を報告する前に、次の検査を 1 回動かし、
   変更による失敗でないものは、そう言う
   （作業の途中は、上の表のとおり、変更が影響しうるものだけを回す）。
-  - `packages/eslint-plugin-mmd` の中で、
+  - `packages/eslint-plugin` の中で、
     `CI=true npx vitest run`（テストの全体）と `pnpm run check:docs`。
-  - リポジトリのルートから、`npx eslint packages/eslint-plugin-mmd`
+  - リポジトリのルートから、`npx eslint packages/eslint-plugin`
     （パッケージの中で動かす ESLint は、ルートの設定を読まない）、
     `pnpm run lint:docs`、`pnpm run lint:chars`、`pnpm run format:check`、
     `npx tsc --noEmit`。

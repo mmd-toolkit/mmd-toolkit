@@ -12,30 +12,30 @@ the settings of other blocks in the same file.
 Use the full rule id after `%% eslint`:
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
   style C fill:red
 ```
 
-This enables `mmd/flowchart/no-undef` as an error for the whole diagram, even if
-it is not enabled in the configuration file. The rule reports `C`. The setting
-applies throughout the diagram, including text before the comment. Use `warn`
-for a warning or `off` to disable the rule.
+This enables `@mmd-toolkit/flowchart-no-undef` as an error for the whole
+diagram, even if it is not enabled in the configuration file. The rule reports
+`C`. The setting applies throughout the diagram, including text before the
+comment. Use `warn` for a warning or `off` to disable the rule.
 
-Common rules use ids such as `mmd/no-unclosed-directive`; diagram-specific rules
-use ids such as `mmd/flowchart/no-undef`. See the
-[rule list](../../../eslint-plugin-mmd/docs/rules/index.md) for their names.
+Common rules use ids such as `@mmd-toolkit/no-unclosed-directive`;
+diagram-specific rules use ids such as `@mmd-toolkit/flowchart-no-undef`. See
+the [rule list](../../../eslint-plugin/docs/rules/index.md) for their names.
 
 ## Suppressing the next line
 
 Use `eslint-disable-next-line` to suppress one statement. A reason follows `--`:
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  %% eslint-disable-next-line mmd/flowchart/no-undef -- C is intentionally created here.
+  %% eslint-disable-next-line @mmd-toolkit/flowchart-no-undef -- C is intentionally created here.
   style C fill:red
   style D fill:blue
 ```
@@ -51,12 +51,12 @@ another comment follows it, it does not reach the statement after that line.
 Use `eslint-disable` and `eslint-enable` to surround a region:
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: error
+%% eslint @mmd-toolkit/flowchart-no-undef: error
 flowchart LR
   A --> B
-  %% eslint-disable mmd/flowchart/no-undef -- C is intentionally created here.
+  %% eslint-disable @mmd-toolkit/flowchart-no-undef -- C is intentionally created here.
   style C fill:red
-  %% eslint-enable mmd/flowchart/no-undef
+  %% eslint-enable @mmd-toolkit/flowchart-no-undef
   style D fill:blue
 ```
 
@@ -78,10 +78,10 @@ They must be actual Mermaid comments. Text inside a label, description, or
 quoted string is not an ESLint configuration comment.
 
 For diagrams in Markdown, write these comments inside the Mermaid code block. An
-HTML comment such as `<!-- eslint mmd/flowchart/no-undef: error -->` outside the
-block is not a Mermaid configuration comment. The current Markdown processor
-forwards it in JavaScript comment syntax, which this plugin does not read as an
-ESLint directive.
+HTML comment such as `<!-- eslint @mmd-toolkit/flowchart-no-undef: error -->`
+outside the block is not a Mermaid configuration comment. The current Markdown
+processor forwards it in JavaScript comment syntax, which this plugin does not
+read as an ESLint directive.
 
 `%% eslint-disable-line` suppresses reports on the same physical line. When
 written on its own comment line, it does not suppress the next statement; use
@@ -91,7 +91,7 @@ If a `%% eslint` setting cannot be parsed, ESLint reports the invalid setting at
 the comment. For example, this configuration is incomplete:
 
 ```mmd
-%% eslint mmd/flowchart/no-undef: [
+%% eslint @mmd-toolkit/flowchart-no-undef: [
 flowchart LR
   A --> B
 ```

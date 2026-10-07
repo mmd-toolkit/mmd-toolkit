@@ -1,7 +1,6 @@
-import { existsSync, readFileSync } from "node:fs"
-import path from "node:path"
 import { describe, expect, it } from "vitest"
 import { checkTree } from "../src/check-tree/index.ts"
+import { isWhitespaceAt } from "../src/db-from-tree/characters.ts"
 import { NODE_FIELDS } from "../src/check-tree/node-fields.ts"
 import {
   STRUCTURE_NODE_TYPES,
@@ -10,12 +9,15 @@ import {
 import { VALUE_RULES } from "../src/check-tree/values.ts"
 import { WrittenText } from "../src/check-tree/written-text.ts"
 import type { CheckedNode, CheckedRoot } from "../src/check-tree/types.ts"
+import { label } from "../src/check-tree/problems.ts"
 import { nodesOf } from "../src/check-tree/walk.ts"
 import type { DiagramType } from "../src/index.ts"
-import { getFixturesRoot, loadFixtures } from "../src/index.ts"
-import { recordedTree } from "./check-tree-recorded.ts"
-import { withoutTokenWhitespace } from "./check-tree-token-edits.ts"
-import type { TokenSide } from "./check-tree-token-edits.ts"
+import {
+  expectWhitespaceCases,
+  recordedTree,
+  recordedTreesOfCorpus,
+} from "./check-tree-recorded.ts"
+import type { WhitespaceCase } from "./check-tree-recorded.ts"
 import { readFieldMeanings } from "./spec-field-tables.ts"
 
 // The value of a node is made from the written text of its range by one rule
@@ -24,43 +26,6 @@ import { readFieldMeanings } from "./spec-field-tables.ts"
 // of the field tables, to agree with the Meaning column of the specification
 // on which values are simply the written text, and every kind of break of a
 // value to be reported in a recorded tree.
-
-const DIAGRAMS: readonly DiagramType[] = [
-  "common",
-  "flowchart",
-  "sequence",
-  "class",
-  "state",
-]
-
-/** A recorded tree, with its input and its name. */
-interface Recorded {
-  readonly name: string
-  readonly input: string
-  readonly json: string
-}
-
-/** The recorded trees of the corpus. */
-async function recordedTrees(): Promise<Recorded[]> {
-  const trees: Recorded[] = []
-  for (const diagram of DIAGRAMS) {
-    for (const fixture of await loadFixtures(diagram)) {
-      const file = path.join(
-        getFixturesRoot(),
-        diagram,
-        fixture.name,
-        "ast.json",
-      )
-      if (!existsSync(file)) continue
-      trees.push({
-        name: `${diagram}/${fixture.name}`,
-        input: fixture.input,
-        json: readFileSync(file, "utf8"),
-      })
-    }
-  }
-  return trees
-}
 
 /** The fields `value` and `name` of the node types of the field tables that hold a string or a number: the values of the nodes. */
 function valueFieldsOfTables(): Map<string, string> {
@@ -128,17 +93,6 @@ describe("the rules of the values of the nodes", () => {
   })
 })
 
-/** The nodes of `tree` of the type `type` whose rule is not `derived`... and that have a value to break. */
-function instancesWithValue(tree: CheckedRoot, type: string): CheckedNode[] {
-  const field = VALUE_RULES[type]?.field ?? "value"
-  return nodesOf(tree).filter(
-    (node) =>
-      node.type === type &&
-      (typeof node[field] === "number" ||
-        (typeof node[field] === "string" && node[field] !== "")),
-  )
-}
-
 /** The edits of a value that the check must report. */
 const VALUE_EDITS: readonly {
   name: string
@@ -163,96 +117,468 @@ const VALUE_EDITS: readonly {
   },
 ]
 
+/** The message of a value that is not the written text of its node: the rule of the type whose value is its written text. */
+const NOT_WRITTEN_TEXT = "value is not its written text"
+
+/** The message of a value that is not the texts of the tokens of its node joined: the rule of the type whose value is its units joined. */
+const NOT_TOKENS_JOINED = "value is not the texts of its tokens joined"
+
+/** The message of a name that is not the texts of the tokens of its node joined: the rule of the type whose name is its units joined. */
+const NAME_NOT_TOKENS_JOINED = "name is not the texts of its tokens joined"
+
+/** A value that a recorded tree breaks, and the rule of its type that must report it. */
+interface BrokenValueRow {
+  /** The node type of `VALUE_RULES` whose value is broken. */
+  readonly type: string
+  /** What the row breaks, when the type has more than one rule. */
+  readonly variant?: "a style"
+  /** The fixed start of the message of the rule of the type; the problem is at the node. */
+  readonly message: string
+}
+
+/**
+ * The message that each node type of `VALUE_RULES` reports for a broken value,
+ * from the rule of its kind: a value that is the written text, one that is the
+ * units joined (and its tokens joined with the field named), and the two that
+ * follow from the text (the number, the shape name). A `ClassLiteral` is the
+ * written text, except that a style is its units joined.
+ */
+const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
+  { type: "Identifier", message: NAME_NOT_TOKENS_JOINED },
+  { type: "StringLiteral", message: NOT_WRITTEN_TEXT },
+  {
+    type: "NumericLiteral",
+    message: "value is not the number that its written text writes",
+  },
+  { type: "FlowchartLabel", message: NOT_WRITTEN_TEXT },
+  { type: "FlowchartDataBlock", message: NOT_WRITTEN_TEXT },
+  { type: "FlowchartLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "FlowchartIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "FlowchartArrow", message: NOT_WRITTEN_TEXT },
+  { type: "FlowchartOpeningArrow", message: NOT_WRITTEN_TEXT },
+  { type: "FlowchartShape", message: "the name of the shape, written " },
+  { type: "SequenceBoxText", message: NOT_WRITTEN_TEXT },
+  { type: "SequenceIgnoredStatement", message: NOT_WRITTEN_TEXT },
+  { type: "SequenceIdentifier", message: "name is not its written text" },
+  { type: "SequenceLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "SequenceArrow", message: NOT_WRITTEN_TEXT },
+  { type: "SequenceDataBlock", message: NOT_WRITTEN_TEXT },
+  { type: "ClassLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "ClassLiteral", variant: "a style", message: NOT_TOKENS_JOINED },
+  { type: "ClassIdentifier", message: NAME_NOT_TOKENS_JOINED },
+  { type: "ClassIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "ClassArrow", message: NOT_TOKENS_JOINED },
+  { type: "StateLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "StateIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "StateIgnoredStatement", message: NOT_WRITTEN_TEXT },
+]
+
+/** The name of a row, for the failures. */
+function nameOfRow(row: BrokenValueRow): string {
+  return row.variant === undefined ? row.type : `${row.type} (${row.variant})`
+}
+
+/** The `ClassLiteral` nodes of `tree` that are a style of a statement. */
+function classStylesIn(tree: CheckedRoot): Set<unknown> {
+  const styles = new Set<unknown>()
+  for (const node of nodesOf(tree)) {
+    if (
+      (node.type === "ClassStyleStatement" ||
+        node.type === "ClassClassDefStatement") &&
+      Array.isArray(node.styles)
+    ) {
+      for (const style of node.styles as unknown[]) styles.add(style)
+    }
+  }
+  return styles
+}
+
+/** The nodes of `tree` that the row breaks: of its type, of its variant, with a value that an edit changes. */
+function instancesOfRow(tree: CheckedRoot, row: BrokenValueRow): CheckedNode[] {
+  const field = VALUE_RULES[row.type]?.field ?? "value"
+  const styles = classStylesIn(tree)
+  return nodesOf(tree).filter(
+    (node) =>
+      node.type === row.type &&
+      (row.type !== "ClassLiteral" ||
+        styles.has(node) === (row.variant === "a style")) &&
+      (typeof node[field] === "number" ||
+        (typeof node[field] === "string" && node[field] !== "")),
+  )
+}
+
 describe("a broken value", () => {
-  it("is reported for every node type with a value, whatever the edit", async () => {
-    const trees = await recordedTrees()
+  it("is reported, at its node and by the rule of its type, for every node type with a value, whatever the edit", async () => {
+    // Any recorded tree that has such a node will do: the row names the
+    // message, which does not depend on the tree.
+    const trees = await recordedTreesOfCorpus()
     const unreported: string[] = []
-    for (const [type, rule] of Object.entries(VALUE_RULES)) {
-      // The shape name follows from the delimiters of the shape, which the
-      // check of a flowchart reads; its edits are those of any value.
+    for (const row of BROKEN_VALUE_ROWS) {
+      const rule = VALUE_RULES[row.type]
+      if (rule === undefined) throw new Error(`${row.type} has no value rule`)
       for (const { name, edit } of VALUE_EDITS) {
-        let reported: boolean | undefined
+        const failure = `${nameOfRow(row)}.${rule.field}: ${name}`
+        let found = false
         for (const recorded of trees) {
           const tree = JSON.parse(recorded.json) as CheckedRoot
-          const instance = instancesWithValue(tree, type)[0]
+          const instance = instancesOfRow(tree, row)[0]
           if (instance === undefined) continue
+          found = true
           const mutable = instance as Record<string, unknown>
           const before = mutable[rule.field]
-          if (typeof before !== "string" && typeof before !== "number") continue
+          if (typeof before !== "string" && typeof before !== "number") {
+            throw new Error(`${row.type} has no value to break`)
+          }
           mutable[rule.field] = edit(before)
-          reported = checkTree(recorded.input, tree).length > 0
+          const where = label(instance)
+          const atTheNode = checkTree(recorded.input, tree).filter(
+            (problem) => problem.where === where,
+          )
+          if (
+            !atTheNode.some((problem) =>
+              problem.message.startsWith(row.message),
+            )
+          ) {
+            unreported.push(
+              `${failure}: no problem at ${where} that starts with ${JSON.stringify(row.message)} in ${recorded.name}, but ${JSON.stringify(atTheNode.map((problem) => problem.message))}`,
+            )
+          }
           break
         }
-        if (reported !== true) {
-          unreported.push(`${type}.${rule.field}: ${name}`)
-        }
+        if (!found) unreported.push(`${failure}: no recorded tree has it`)
       }
     }
     expect(unreported).toEqual([])
   }, 120_000)
+
+  it("has a row for every node type of the rules of the values, and for no other", () => {
+    const types = [...new Set(BROKEN_VALUE_ROWS.map((row) => row.type))]
+    expect(types.sort()).toEqual(Object.keys(VALUE_RULES).sort())
+  })
 })
 
-/** The node types whose tokens never start or end with whitespace, so that no recorded tree has a token to take whitespace from, with the reason. */
-const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<Record<string, string>> = {
-  Identifier: "its units hold no whitespace (ast.md, Identifier)",
-  ClassIdentifier:
-    "its tokens are the runs of its units without whitespace (ast/class.md, ClassIdentifier)",
-  NumericLiteral: "its token is a number",
-  FlowchartArrow: "its token is an arrow",
-  FlowchartOpeningArrow: "its token is an arrow",
-  SequenceArrow: "its token is an arrow",
-  ClassArrow: "its tokens are the parts of an arrow",
-  StateIgnoredStatement: "its tokens are words and strings",
-  StateIgnoredText: "its tokens are words and strings",
-  SequenceIgnoredStatement: "its tokens are single characters and words",
+// ast.md, Nodes, and parser/docs/tokens.md, Tokens: the tokens of a node are
+// the units of its written text, so that the whitespace at an end of a token
+// that a node holds is a character of its value, and a tree that leaves it out
+// of the token (the token keeps the text of the source at its range, so the
+// whitespace lies in no token) is reported. Each case below takes the recorded
+// tree of a named fixture, takes the whitespace off one side of a token that a
+// node of the type holds, and says which problems the check reports; the
+// unedited tree has none. The whitespace lies at the end of a token next to a
+// cut (a directive, a comment region, or a `;` that the line rule ignores), or
+// inside the braces of a data block, where it is a part of the value. The
+// value rule of a type does not differ by the side, so a case takes one.
+
+/** A case of a node type of `VALUE_RULES` that holds a token with whitespace at an end. */
+interface ValueCase extends WhitespaceCase {
+  /** The type of the node whose value the case breaks. */
+  readonly type: string
 }
 
-describe("whitespace taken off an end of a token", () => {
-  it("is reported for every node type with a value that has a token with whitespace at an end", async () => {
-    const trees = await recordedTrees()
-    const sides: readonly TokenSide[] = ["start", "end"]
-    const unreported: string[] = []
-    for (const type of Object.keys(VALUE_RULES)) {
-      const excluded = Object.hasOwn(TYPES_WITHOUT_TOKEN_WHITESPACE, type)
-      let made = 0
-      for (const recorded of trees) {
-        const tree = JSON.parse(recorded.json) as CheckedRoot
-        const holders = nodesOf(tree).filter((node) => node.type === type)
-        for (const [index, token] of tree.tokens.entries()) {
-          const inside = holders.some(
+const JOINED = "the texts of its tokens joined are not its written text"
+
+const LINE_SEPARATOR = String.fromCodePoint(0x2028)
+
+const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "StringLiteral",
+    name: "a StringLiteral reports the whitespace taken off the end of the StringFragment token before a comment line",
+    diagram: "class",
+    fixture: "db-note-comment-line-inside-string",
+    token: { type: "StringFragment", value: '"a\n' },
+    side: "end",
+    problems: [
+      {
+        where: "StringLiteral at 32-42",
+        message: `${JOINED}: "ab", not "a\\nb"`,
+      },
+    ],
+  },
+  {
+    type: "FlowchartLabel",
+    name: "a FlowchartLabel reports the whitespace taken off the end of the RawText token before a comment line",
+    diagram: "common",
+    fixture: "comment-percent-space-line-in-label",
+    token: { type: "RawText", value: "a\n" },
+    side: "end",
+    problems: [
+      {
+        where: "FlowchartLabel at 15-22",
+        message: `${JOINED}: "ab", not "a\\nb"`,
+      },
+    ],
+  },
+  {
+    type: "FlowchartDataBlock",
+    name: "a FlowchartDataBlock reports the whitespace taken off the start of the RawText token between its braces",
+    diagram: "flowchart",
+    fixture: "db-data-after-next-vertex",
+    token: { type: "RawText", value: " label: x " },
+    side: "start",
+    problems: [
+      {
+        where: "FlowchartDataBlock at 14-27",
+        message: `${JOINED}: "label: x ", not " label: x "`,
+      },
+    ],
+  },
+  {
+    type: "FlowchartLiteral",
+    name: "a FlowchartLiteral reports the whitespace taken off the start of the RawText token after a `;` that the line rule ignores",
+    diagram: "common",
+    fixture: "entity-style-semicolon-between-statements",
+    token: { type: "RawText", value: " style B fill:#0f0" },
+    side: "start",
+    problems: [
+      {
+        where: "FlowchartLiteral at 25-53",
+        message: `${JOINED}: "fill:#f00style B fill:#0f0", not "fill:#f00 style B fill:#0f0"`,
+      },
+    ],
+  },
+  {
+    type: "FlowchartIgnoredText",
+    name: "a FlowchartIgnoredText reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "flowchart",
+    fixture: "tokens-ignored-text-directive-before-direction",
+    token: { type: "RawText", value: "A-->B a " },
+    side: "end",
+    problems: [
+      {
+        where: "FlowchartIgnoredText at 15-39",
+        message:
+          "the whitespace between RawText at 15-22 and RawText at 37-39, next to a cut, lies in no token",
+      },
+    ],
+  },
+  {
+    type: "SequenceBoxText",
+    // The box text is `aqua`, two spaces, and a line separator, which are
+    // two RawText tokens.
+    name: "a SequenceBoxText reports the whitespace taken off the start of the RawText token of two spaces that follows its colour",
+    diagram: "sequence",
+    fixture: "db-box-colour-then-spaces-and-line-separator",
+    token: { type: "RawText", value: "  " },
+    side: "start",
+    problems: [
+      {
+        where: "RawText at 25-26",
+        message:
+          "starts with whitespace or a line terminator where no value starts",
+      },
+      {
+        where: "SequenceBoxText at 20-27",
+        message: `${JOINED}: "aqua ${LINE_SEPARATOR}", not "aqua  ${LINE_SEPARATOR}"`,
+      },
+    ],
+  },
+  {
+    type: "SequenceIdentifier",
+    name: "a SequenceIdentifier reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "sequence",
+    fixture: "tokens-directive-participant-spaces",
+    token: { type: "RawText", value: "A " },
+    side: "end",
+    problems: [
+      {
+        where: "SequenceIdentifier at 30-48",
+        message: `${JOINED}: "A B", not "A  B"`,
+      },
+    ],
+  },
+  {
+    type: "SequenceLiteral",
+    name: "a SequenceLiteral reports the whitespace taken off the end of the RawText token before a directive line",
+    diagram: "sequence",
+    fixture: "db-acc-descr-block-directive-line",
+    token: { type: "RawText", value: "a\n" },
+    side: "end",
+    problems: [
+      {
+        where: "SequenceLiteral at 27-45",
+        message: `${JOINED}: "a\\nb", not "a\\n\\nb"`,
+      },
+    ],
+  },
+  {
+    type: "SequenceDataBlock",
+    name: "a SequenceDataBlock reports the whitespace taken off the start of the RawText token between its braces",
+    diagram: "sequence",
+    fixture: "db-data-block-alias-and-as",
+    token: { type: "RawText", value: ' "alias": "Q" ' },
+    side: "start",
+    problems: [
+      {
+        where: "SequenceDataBlock at 29-46",
+        message: `${JOINED}: "\\"alias\\": \\"Q\\" ", not " \\"alias\\": \\"Q\\" "`,
+      },
+    ],
+  },
+  {
+    type: "ClassLiteral",
+    name: "a ClassLiteral reports the whitespace taken off the start of the RawText token after a `;` that the line rule ignores",
+    diagram: "class",
+    fixture: "tokens-member-ignored-semicolon-inside",
+    token: { type: "RawText", value: " b" },
+    side: "start",
+    problems: [
+      {
+        where: "ClassLiteral at 24-37",
+        message: `${JOINED}: "x style:#ab", not "x style:#a b"`,
+      },
+    ],
+  },
+  {
+    type: "ClassLiteral",
+    name: "a ClassLiteral of a style, whose value is its units joined, reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "class",
+    fixture: "tokens-style-directive-inside-label",
+    token: { type: "RawText", value: "fill: " },
+    side: "end",
+    problems: [
+      {
+        where: "ClassLiteral at 29-54",
+        message:
+          'value is not the texts of its tokens joined: "fill:  #f00", not "fill: #f00"',
+      },
+    ],
+  },
+  {
+    type: "ClassIgnoredText",
+    name: "a ClassIgnoredText reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "class",
+    fixture: "tokens-ignored-text-directive-after-direction",
+    token: { type: "RawText", value: "x " },
+    side: "end",
+    problems: [
+      {
+        where: "ClassIgnoredText at 28-46",
+        message:
+          "the whitespace between RawText at 28-29 and RawText at 44-46, next to a cut, lies in no token",
+      },
+    ],
+  },
+  {
+    type: "StateLiteral",
+    name: "a StateLiteral reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "state",
+    fixture: "db-acc-title-directive-in-text",
+    token: { type: "RawText", value: "x " },
+    side: "end",
+    problems: [
+      {
+        where: "StateLiteral at 26-44",
+        message: `${JOINED}: "x y", not "x  y"`,
+      },
+    ],
+  },
+]
+
+/** A node type of `VALUE_RULES` whose tokens hold no whitespace at an end, a fixture that has such a node, and the reason. */
+interface TypeWithoutTokenWhitespace {
+  readonly diagram: DiagramType
+  readonly fixture: string
+  readonly reason: string
+}
+
+/** The node types of `VALUE_RULES` that no case above takes: their tokens never start or end with whitespace, so that there is no whitespace to take off. */
+const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
+  Record<string, TypeWithoutTokenWhitespace>
+> = {
+  Identifier: {
+    diagram: "flowchart",
+    fixture: "db-arrow-double",
+    reason: "its units hold no whitespace (ast.md, Identifier)",
+  },
+  ClassIdentifier: {
+    diagram: "class",
+    fixture: "gram-name-alone",
+    reason:
+      "its tokens are the runs of its units without whitespace (ast/class.md, ClassIdentifier)",
+  },
+  NumericLiteral: {
+    diagram: "sequence",
+    fixture: "db-autonumber-start",
+    reason: "its token is a number",
+  },
+  FlowchartArrow: {
+    diagram: "flowchart",
+    fixture: "db-arrow-double",
+    reason: "its token is an arrow",
+  },
+  FlowchartOpeningArrow: {
+    diagram: "flowchart",
+    fixture: "db-arrow-double",
+    reason: "its token is an arrow",
+  },
+  FlowchartShape: {
+    diagram: "flowchart",
+    fixture: "db-vertex-label-redefined",
+    reason:
+      "its own tokens are the punctuators of its delimiters; the text between them is the FlowchartLabel inside it",
+  },
+  SequenceArrow: {
+    diagram: "sequence",
+    fixture: "lex-id-run-cross-arrow",
+    reason: "its token is an arrow",
+  },
+  ClassArrow: {
+    diagram: "class",
+    fixture: "gram-relation-three-dashes",
+    reason: "its tokens are the parts of an arrow",
+  },
+  StateIgnoredStatement: {
+    diagram: "state",
+    fixture: "gram-state-empty-string-alone",
+    reason: "its tokens are words and strings",
+  },
+  StateIgnoredText: {
+    diagram: "state",
+    fixture: "gram-state-empty-string-before-name",
+    reason: "its tokens are words and strings",
+  },
+  SequenceIgnoredStatement: {
+    diagram: "sequence",
+    fixture: "lex-invalid-line-two-units",
+    reason: "its tokens are single characters and words",
+  },
+}
+
+describe("whitespace taken off an end of a token that a value node holds", () => {
+  expectWhitespaceCases(VALUE_CASES)
+
+  it("is a case or an exception for every node type of the rules of the values, and for no other", () => {
+    const types = [
+      ...new Set(VALUE_CASES.map((valueCase) => valueCase.type)),
+      ...Object.keys(TYPES_WITHOUT_TOKEN_WHITESPACE),
+    ]
+    expect(types.sort()).toEqual(Object.keys(VALUE_RULES).sort())
+  })
+
+  for (const [type, exception] of Object.entries(
+    TYPES_WITHOUT_TOKEN_WHITESPACE,
+  )) {
+    it(`has no token with whitespace at an end in a ${type}: ${exception.reason}`, () => {
+      const { input, tree } = recordedTree(exception.diagram, exception.fixture)
+      const holders = nodesOf(tree).filter((node) => node.type === type)
+      expect(holders.length, exception.fixture).toBeGreaterThan(0)
+      const withWhitespace = tree.tokens
+        .filter((token) =>
+          holders.some(
             (node) =>
               node.range[0] <= token.range[0] &&
               token.range[1] <= node.range[1],
-          )
-          if (!inside) continue
-          for (const side of sides) {
-            const edited = withoutTokenWhitespace(
-              recorded.input,
-              recorded.json,
-              index,
-              side,
-            )
-            if (edited === null) continue
-            made++
-            if (checkTree(recorded.input, edited).length === 0) {
-              unreported.push(
-                `${type}: ${recorded.name}, token ${index} ${side}`,
-              )
-            }
-          }
-        }
-      }
-      // The list stays true: a type in it has no such token, and a type not
-      // in it has one.
-      if (made === 0 && !excluded) {
-        unreported.push(`${type}: no recorded tree has one`)
-      }
-      if (made > 0 && excluded) {
-        unreported.push(`${type}: is listed as having none, and has one`)
-      }
-    }
-    expect(unreported).toEqual([])
-  }, 120_000)
+          ),
+        )
+        .filter(
+          (token) =>
+            isWhitespaceAt(input, token.range[0]) ||
+            isWhitespaceAt(input, token.range[1] - 1),
+        )
+        .map((token) => `${token.type} at ${token.range[0]}-${token.range[1]}`)
+      expect(withWhitespace, exception.fixture).toEqual([])
+    })
+  }
 })
 
 // ast.md, Nodes, and parser/docs/tokens.md, Comment: a diagram comment that a

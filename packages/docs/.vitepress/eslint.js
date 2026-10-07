@@ -1,11 +1,12 @@
 import { transformerTwoslash } from "@shikijs/vitepress-twoslash"
-import mmd from "eslint-plugin-mmd"
+import mmdToolkit from "@mmd-toolkit/eslint-plugin"
 import { createTwoslasher } from "twoslash-eslint"
 
 /** Selects diagram fences whose comments explicitly configure an mmd rule. */
 function isEslintExample(lang, code) {
   return (
-    (lang === "mmd" || lang === "mermaid") && code.includes("%% eslint mmd/")
+    (lang === "mmd" || lang === "mermaid") &&
+    code.includes("%% eslint @mmd-toolkit/")
   )
 }
 
@@ -16,8 +17,8 @@ const twoslash = transformerTwoslash({
     eslintConfig: [
       {
         files: ["**/*.mmd", "**/*.mermaid"],
-        plugins: { mmd },
-        language: "mmd/mermaid",
+        plugins: { "@mmd-toolkit": mmdToolkit },
+        language: "@mmd-toolkit/mermaid",
       },
     ],
   }),

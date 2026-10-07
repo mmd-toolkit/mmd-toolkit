@@ -31,7 +31,7 @@ features:
     link: /ja/formatter/
   - title: リンター
     details: >-
-      ESLintの言語プラグインeslint-plugin-mmdで、
+      ESLintの言語プラグイン@mmd-toolkit/eslint-pluginで、
       Mermaidが黙って受け入れる書き間違いを検出。
     link: /ja/linter/
   - title: パーサー
