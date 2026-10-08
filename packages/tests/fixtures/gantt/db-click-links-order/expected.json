@@ -1,0 +1,71 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A link is listed at the place of its first click and has the url of the last."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "A ",
+        "classes": [
+          "clickable"
+        ],
+        "id": "a",
+        "order": 0
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "B ",
+        "classes": [
+          "clickable",
+          "clickable"
+        ],
+        "id": "b",
+        "order": 1
+      }
+    ],
+    "links": [
+      {
+        "id": "b",
+        "url": "u3"
+      },
+      {
+        "id": "a",
+        "url": "u2"
+      }
+    ]
+  }
+}

@@ -497,6 +497,30 @@ describe("a Punctuator that a cut cuts", () => {
         },
       ],
     },
+    {
+      name: "is reported in an ER diagram when a directive cuts the cardinality `||` into two `|`, with their texts that the diagram lacks",
+      diagram: "er",
+      fixture: "gram-relationship-symbols",
+      token: { type: "Punctuator", value: "||" },
+      cuts: [{ at: 1, cut: DIRECTIVE }],
+      fragments: "Punctuator",
+      about: ["the Punctuator text", "a Punctuator token is cut"],
+      problems: [
+        {
+          where: "Punctuator at 12-13",
+          message: 'the Punctuator text "|" is none of those of a ErDiagram',
+        },
+        {
+          where: "Punctuator at 27-28",
+          message: 'the Punctuator text "|" is none of those of a ErDiagram',
+        },
+        {
+          where: "Punctuator at 12-13",
+          message:
+            'a Punctuator token is cut: Punctuator at 12-13, Punctuator at 27-28 are the fragments of "||"',
+        },
+      ],
+    },
   ])
 })
 

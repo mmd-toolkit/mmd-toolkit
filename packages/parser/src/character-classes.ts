@@ -96,6 +96,11 @@ export function isWordCharacter(codePoint: number): boolean {
   )
 }
 
+/** Notation: whether the character is outside ASCII (above U+007F). */
+export function isOutsideAscii(codePoint: number): boolean {
+  return codePoint > 0x7f
+}
+
 /** An ASCII letter, `A` to `Z` or `a` to `z`. */
 export function isAsciiLetter(codePoint: number): boolean {
   return (

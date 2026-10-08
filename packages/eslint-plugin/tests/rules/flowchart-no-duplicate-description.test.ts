@@ -87,7 +87,7 @@ testRule(
       },
       {
         sentence:
-          "`accDescr:` sets the description. Without text, it sets the description too: at the end of the text it makes the description empty, and before more text it takes the next line that holds text as the description, past empty lines, comment lines, and directives.",
+          "`accDescr:` sets the description. Without text, it sets the description too: it takes the next line that holds text as the description, past empty lines, comment lines, and directives, and when no such line follows, it makes the description empty.",
         cases: [
           {
             case: "`accDescr:` with text, twice",

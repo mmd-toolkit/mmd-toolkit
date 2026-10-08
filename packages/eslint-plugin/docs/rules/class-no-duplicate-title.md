@@ -7,7 +7,7 @@ Disallow an `accTitle` statement that sets the title again.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
 
 <!-- end auto-generated rule notice -->
 
@@ -23,8 +23,8 @@ This rule reports every `accTitle` statement after the first one. It applies to
 
 After `accTitle: first` and `accTitle: second`, the title is `second`.
 `accTitle:` with no text sets the title too: it takes the next line that holds
-text as the title, past empty lines, comment lines, and directives. At the end
-of the text, mermaid.js rejects it.
+text as the title, past empty lines, comment lines, and directives. When no such
+line follows, mermaid.js rejects it.
 
 Examples of **incorrect** code for this rule:
 
@@ -54,3 +54,12 @@ This rule has no options.
 - [class-no-duplicate-description](./class-no-duplicate-description.md)
 - [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.md)
 - [sequence-no-duplicate-title](./sequence-no-duplicate-title.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/class-no-duplicate-title.ts)
+- [Tests source](../../tests/rules/class-no-duplicate-title.test.ts)
+
+<!-- end auto-generated rule resources -->

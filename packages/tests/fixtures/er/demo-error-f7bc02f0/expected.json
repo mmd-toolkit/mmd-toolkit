@@ -1,0 +1,78 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/error.html",
+    "line": 11
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-ATLAS-ORGANIZATION-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "ATLAS-ORGANIZATION",
+        "classes": []
+      },
+      {
+        "id": "entity-ATLAS-PROJECTS-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "ATLAS-PROJECTS",
+        "classes": []
+      },
+      {
+        "id": "entity-MONGODB-CLUSTERS-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "MONGODB-CLUSTERS",
+        "classes": []
+      },
+      {
+        "id": "entity-ATLAS-TEAMS-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "ATLAS-TEAMS",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-ATLAS-ORGANIZATION-0",
+        "roleA": "has many",
+        "entityB": "entity-ATLAS-PROJECTS-1",
+        "cardA": "ONE_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-ATLAS-PROJECTS-1",
+        "roleA": "has many",
+        "entityB": "entity-MONGODB-CLUSTERS-2",
+        "cardA": "ONE_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-ATLAS-PROJECTS-1",
+        "roleA": "has many",
+        "entityB": "entity-ATLAS-TEAMS-3",
+        "cardA": "ONE_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

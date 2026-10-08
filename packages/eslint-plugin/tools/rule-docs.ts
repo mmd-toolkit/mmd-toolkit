@@ -234,6 +234,7 @@ export const DIAGRAM_ORDER: readonly string[] = [
   "flowchart",
   "sequence",
   "class",
+  "state",
 ]
 
 /** The diagram of a rule name (`flowchart-no-ignored-text`), or null for a common rule. */

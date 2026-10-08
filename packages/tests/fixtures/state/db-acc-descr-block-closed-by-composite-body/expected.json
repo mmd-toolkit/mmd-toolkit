@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed description block is closed by the closing brace of a composite state body that follows."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x\nstate B {\nC",
+    "states": [
+      {
+        "id": "D",
+        "shape": "rect",
+        "label": "D",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "E",
+        "shape": "rect",
+        "label": "E",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "D",
+        "end": "E",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

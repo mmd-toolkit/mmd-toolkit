@@ -10,7 +10,9 @@
  */
 import type { ClassDiagram, ClassNode } from "./ast/class.ts"
 import type { StateDiagram, StateNode } from "./ast/state.ts"
+import type { ErDiagram, ErNode } from "./ast/er.ts"
 import type { FlowchartDiagram, FlowchartNode } from "./ast/flowchart.ts"
+import type { GanttDiagram, GanttNode } from "./ast/gantt.ts"
 import type { SequenceDiagram, SequenceNode } from "./ast/sequence.ts"
 
 /** ast.md, Positions: a position record. */
@@ -258,6 +260,8 @@ export type DiagramBody =
   | SequenceDiagram
   | ClassDiagram
   | StateDiagram
+  | ErDiagram
+  | GanttDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -339,3 +343,5 @@ export type Node =
   | SequenceNode
   | ClassNode
   | StateNode
+  | ErNode
+  | GanttNode

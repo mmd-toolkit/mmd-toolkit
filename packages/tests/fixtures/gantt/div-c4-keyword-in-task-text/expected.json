@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Known divergences: `C4Container` as a task text makes mermaid.js hand the text to C4, which rejects it; a task here (c4-keyword-anywhere)."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nganttC4Container : \n^"
+  }
+}

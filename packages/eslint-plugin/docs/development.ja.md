@@ -274,11 +274,12 @@ index は、設定が有効にする規則を、一覧の ✅ で示すだけで
 共通の規則の文書は、parser が対応する図種ごとの項目を持ちます。
 項目の形と手順は、SKILL `eslint-plugin` にあります。
 
-名前空間は、`@mmd-toolkit` のようなスコープ付きの名前ではなく、`mmd` です。
+名前空間は、パッケージのスコープ `@mmd-toolkit` です。
 ESLint は、`@` で始まる id を、最後の `/` でプラグインと規則に分けます。
 そのため、`@mmd-toolkit/flowchart-no-ignored-text` は、
-プラグイン `@mmd-toolkit/flowchart` の規則 `no-ignored-text` と読まれます。
-`@` で始まらない id は、最初の `/` で分けます。
+プラグイン `@mmd-toolkit` の規則 `flowchart-no-ignored-text` と読まれます。
+規則の名前は `/` を持てないので、規則の図種は、id のディレクトリではなく、
+名前の接頭辞で表します。
 
 文書が挙げるものは、規則が持ちます。
 `meta.docs.description` は英語の説明で、

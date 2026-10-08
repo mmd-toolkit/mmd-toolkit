@@ -107,6 +107,18 @@ const VALUE_FIELD_REPORTS: Readonly<
     message: "the directives of the tree are not those of the source: ",
     where: "the directives",
   },
+  "ErAttribute.optional": {
+    message: "optional, which is whether a `?` follows the type: ",
+  },
+  "ErDirectionStatement.direction": {
+    message: "the keywords, the value in upper case: ",
+  },
+  "ErIdentifier.name": { message: "name is not its written text" },
+  "ErIgnoredText.value": { message: "value is not its written text" },
+  "ErLiteral.value": { message: "value is not its written text" },
+  "ErRelationship.leftCardinality": { message: "the fields, written " },
+  "ErRelationship.line": { message: "the fields, written " },
+  "ErRelationship.rightCardinality": { message: "the fields, written " },
   "FlowchartAccDescrBlockStatement.closed": {
     message: "closed is not whether the last token is `}`: ",
   },
@@ -142,6 +154,16 @@ const VALUE_FIELD_REPORTS: Readonly<
   "FlowchartShape.name": { message: "the name of the shape, written " },
   "Frontmatter.value": { message: "value: " },
   "Frontmatter.valueRange": { message: "value: " },
+  "GanttIgnoredStatement.value": {
+    message: "value is not its written text",
+  },
+  "GanttLiteral.value": { message: "value is not its written text" },
+  "GanttWeekdayStatement.day": {
+    message: "the day, which is the day token in lower case: ",
+  },
+  "GanttWeekendStatement.day": {
+    message: "the day, which is the day token in lower case: ",
+  },
   "Identifier.name": { message: "name is not the texts of its tokens joined" },
   "NumericLiteral.value": {
     message: "value is not the number that its written text writes",
@@ -832,6 +854,42 @@ const NULL_FIELD_CASES: readonly FieldCase[] = [
     set: null,
     message:
       'the field text is null, but the Punctuator ":" at 48-49 follows two or more whitespace characters and so starts the text (diagrams/state.md, The note contexts: with two or more whitespace characters before the `:`, the `:` is a character of the text)',
+  },
+  {
+    diagram: "er",
+    fixture: "gram-attribute",
+    type: "ErEntityStatement",
+    field: "attributes",
+    set: null,
+    message:
+      'the field attributes is null, but the Punctuator "{" at 12-13 opens the attribute block of the entity (ast/er.md, ErEntityStatement: the items between `{` and `}`; empty for a block without items, null when there is no block)',
+  },
+  {
+    diagram: "er",
+    fixture: "gram-alias",
+    type: "ErEntityStatement",
+    field: "attributes",
+    set: [],
+    message:
+      "the field attributes is a list, but the node has no `{` that opens the attribute block of the entity (ast/er.md, ErEntityStatement: the items between `{` and `}`; empty for a block without items, null when there is no block)",
+  },
+  {
+    diagram: "er",
+    fixture: "gram-subgraph-title",
+    type: "ErSubgraphStatement",
+    field: "title",
+    set: null,
+    message:
+      'the field title is null, but the Punctuator "[" at 21-22 opens the title of the subgraph (ast/er.md, ErSubgraphStatement: the entity names between `[` and `]`; null when there is no title)',
+  },
+  {
+    diagram: "er",
+    fixture: "gram-subgraph",
+    type: "ErSubgraphStatement",
+    field: "title",
+    set: [],
+    message:
+      "the field title is a list, but the node has no `[` that opens the title of the subgraph (ast/er.md, ErSubgraphStatement: the entity names between `[` and `]`; null when there is no title)",
   },
 ]
 

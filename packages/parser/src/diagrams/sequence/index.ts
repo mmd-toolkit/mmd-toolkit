@@ -23,7 +23,11 @@ export interface SequenceUnits extends SequenceLexing {
  */
 export function lexSequence(input: DiagramInput): SequenceUnits {
   const text = openDiagramText(input)
-  const lexing = new SequenceUnitLexer(text, input.lexer.lines).lex()
+  const lexing = new SequenceUnitLexer(
+    text,
+    input.lexer.lines,
+    input.lexer.text.length,
+  ).lex()
   return { text, ...lexing }
 }
 

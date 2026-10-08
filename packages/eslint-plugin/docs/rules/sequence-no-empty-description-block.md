@@ -7,7 +7,7 @@ Disallow an `accDescr` block that holds no description.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
 
 <!-- end auto-generated rule notice -->
 
@@ -25,13 +25,20 @@ their settings.
 The description stays what it was before the block: after `accDescr: x`, the
 block `accDescr {}` leaves the description `x`, and with no description before
 it, the description stays empty. An empty description written as a line is
-different: `accDescr:` sets the description to the empty text.
+different: `accDescr:` with no line that holds text after it sets the
+description to the empty text.
 
 A block that holds only comments is not reported. The author who turns the lines
 of a description into comments means the block to do nothing, and mermaid.js
 reads it so: the description before the block stays. A block that holds a
 comment line is not reported also when it holds directives besides; mermaid.js
 applies their settings.
+
+An empty block may also stand on the line of a statement: before it, as in
+`accDescr {} A ->> B: x`, after its last part, as in `autonumber accDescr {}`,
+or after the header, as in `sequenceDiagram accDescr {}`. It may also stand in
+the body of a box. It sets no description there either, and the rule reports it
+in the same way.
 
 Examples of **incorrect** code for this rule:
 
@@ -82,4 +89,14 @@ This rule has no options.
 ## Related Rules
 
 - [flowchart-no-empty-description-block](./flowchart-no-empty-description-block.md)
+- [sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.md)
 - [sequence-no-duplicate-description](./sequence-no-duplicate-description.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/sequence-no-empty-description-block.ts)
+- [Tests source](../../tests/rules/sequence-no-empty-description-block.test.ts)
+
+<!-- end auto-generated rule resources -->

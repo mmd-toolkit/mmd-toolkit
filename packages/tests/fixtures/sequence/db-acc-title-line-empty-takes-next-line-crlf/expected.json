@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A case of the rules documents of the diagram type: db acc title line empty takes next line crlf."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "foo",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

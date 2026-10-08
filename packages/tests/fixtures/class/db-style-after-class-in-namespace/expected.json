@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A style statement after the class is declared in a namespace applies."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill:#f00"
+        ],
+        "parent": "N"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "N",
+        "label": "N",
+        "classes": [
+          "A"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

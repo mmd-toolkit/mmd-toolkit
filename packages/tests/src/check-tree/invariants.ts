@@ -149,10 +149,10 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
 /**
  * The marks of the diagram comments of each diagram type, as its document
  * defines them: diagrams/sequence.md, Units and contexts; diagrams/state.md,
- * Comments; diagrams/class.md, The statement context. A flowchart and the
- * `error` pseudo-diagram have only comment lines, besides the diagram comments
- * that every diagram type has before its header (see
- * {@link MARKS_BEFORE_THE_HEADER}).
+ * Comments; diagrams/class.md, The statement context; diagrams/er.md,
+ * Comments; diagrams/gantt.md, Comments. A flowchart, an ER diagram, and the
+ * `error` pseudo-diagram have only comment lines, besides the diagram comments that every diagram type has
+ * before its header (see {@link MARKS_BEFORE_THE_HEADER}).
  */
 const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   ErrorDiagram: [],
@@ -160,16 +160,19 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   SequenceDiagram: ["#", "%%", "%"],
   ClassDiagram: ["%%"],
   StateDiagram: ["#", "%%"],
+  ErDiagram: [],
+  GanttDiagram: ["%%", "%"],
 }
 
 /**
  * The marks that a diagram type has for the diagram comments before its
  * header only: a line of `%%` alone before the header is a diagram comment
  * with the mark `%%` in every diagram type (common.md, Diagram detection),
- * and a flowchart has no such comment after its header.
+ * and a flowchart and an ER diagram have no such comment after their header.
  */
 const MARKS_BEFORE_THE_HEADER: Readonly<Record<string, readonly string[]>> = {
   FlowchartDiagram: ["%%"],
+  ErDiagram: ["%%"],
 }
 
 /**
@@ -660,6 +663,68 @@ function checkFrontmatterTokens(
 }
 
 /**
+ * ast/flowchart.md, FlowchartLink: moves the label in `children` of `link`
+ * before its arrow where it starts before it, which is the order of the
+ * source.
+ */
+function placeLabelBeforeArrow(
+  link: CheckedNode,
+  children: CheckedNode[],
+): void {
+  const arrowIndex = children.indexOf(link.arrow as CheckedNode)
+  const labelIndex = children.indexOf(link.label as CheckedNode)
+  const arrow = children[arrowIndex]
+  const text = children[labelIndex]
+  if (arrow === undefined || text === undefined) return
+  if (text.range[0] < arrow.range[0]) {
+    children.splice(labelIndex, 1)
+    children.splice(arrowIndex, 0, text)
+  }
+}
+
+/**
+ * ast/gantt.md, GanttClickStatement: moves the link in `children` of `click`
+ * before the call where it starts before it, which is the order of the source:
+ * the child fields keep the call before the link whichever is written first.
+ * The ids, which come first in the source whichever part follows, stay first.
+ */
+function placeHrefBeforeCall(
+  click: CheckedNode,
+  children: CheckedNode[],
+): void {
+  const callIndex = children.indexOf(click.call as CheckedNode)
+  const hrefIndex = children.indexOf(click.href as CheckedNode)
+  const call = children[callIndex]
+  const href = children[hrefIndex]
+  if (call === undefined || href === undefined) return
+  if (href.range[0] < call.range[0]) {
+    children[callIndex] = href
+    children[hrefIndex] = call
+  }
+}
+
+/**
+ * The nodes whose document says that their child fields are not in source
+ * order, each with the function that puts the children of the node in the
+ * order of the source from the order of the fields, as the document says.
+ * Every other node has its child fields in source order, and a tree that
+ * writes them in another order is reported.
+ */
+export const CHILD_FIELDS_NOT_IN_SOURCE_ORDER: ReadonlyMap<
+  string,
+  (node: CheckedNode, children: CheckedNode[]) => void
+> = new Map([
+  // ast/flowchart.md, FlowchartLink: the label written between the opening
+  // arrow and the closing one comes before the arrow in the source and after
+  // it among the child fields.
+  ["FlowchartLink", placeLabelBeforeArrow],
+  // ast/gantt.md, GanttClickStatement: the child fields are always `ids`,
+  // `call`, `href`, whichever of the call and the link is written first; the
+  // ids are written first whichever part follows.
+  ["GanttClickStatement", placeHrefBeforeCall],
+])
+
+/**
  * positions.md, Invariants 9 and the child nodes: `Root.range` covers the
  * whole input; the range of every other node runs from the start of its first
  * token to the end of its last, inside the range of its parent; the child
@@ -710,6 +775,24 @@ function checkNodeRanges(
         !overlap(previous.range, current.range),
         label(current),
         `overlaps the child node ${label(previous)} of ${label(node)}`,
+      )
+    }
+  })
+  // ast.md, Nodes: a list in a child field is in source order, and so are the
+  // child fields of a node, which the field tables list in the order of the
+  // visit, except for the nodes of `CHILD_FIELDS_NOT_IN_SOURCE_ORDER`, whose
+  // document says otherwise.
+  walkNodes(root, (node) => {
+    const children = childNodesOf(node)
+    CHILD_FIELDS_NOT_IN_SOURCE_ORDER.get(node.type)?.(node, children)
+    for (let index = 1; index < children.length; index++) {
+      const previous = children[index - 1]
+      const current = children[index]
+      if (previous === undefined || current === undefined) continue
+      problems.expect(
+        previous.range[0] <= current.range[0],
+        label(current),
+        `comes before the child node ${label(previous)} of ${label(node)}, which the child fields list before it`,
       )
     }
   })

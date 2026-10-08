@@ -6,7 +6,7 @@ Disallow text that mermaid.js does not read.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
 
 <!-- end auto-generated rule notice -->
 
@@ -82,3 +82,12 @@ This rule has no options.
 - [class-no-bare-class-name](./class-no-bare-class-name.md)
 - [flowchart-no-ignored-text](./flowchart-no-ignored-text.md)
 - [sequence-no-ignored-text](./sequence-no-ignored-text.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/class-no-ignored-text.ts)
+- [Tests source](../../tests/rules/class-no-ignored-text.test.ts)
+
+<!-- end auto-generated rule resources -->

@@ -74,7 +74,8 @@ fixture は 1 件ごとに、
   それが mermaid.js の結果と違うときにだけある。
   入力の読み方を変える既知の差異を外して、mermaid.js に読ませた結果である。
   印が `comment-takes-character`、`comment-takes-line-break`、
-  `name-start-reads-unit`、`html-tag-in-frontmatter`、`c4-keyword-anywhere`、
+  `name-start-reads-unit`、`percent-brace-after-unit`、
+  `html-tag-in-frontmatter`、`c4-keyword-anywhere`、
   `bare-percent-line-before-header` の fixture だけにある。
   あるときは、これが合わせる結果で、ないときは `expected.json` が合わせる結果。
   [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
@@ -185,6 +186,9 @@ mermaid.js は読み込みません。
   - `bare-percent-line-before-header`:
     [known-divergences/bare-percent-line-before-header.ja.md](../spec/docs/known-divergences/bare-percent-line-before-header.ja.md)
     を参照。
+  - `percent-brace-after-unit`:
+    [known-divergences/percent-brace-after-unit.ja.md](../spec/docs/known-divergences/percent-brace-after-unit.ja.md)
+    を参照。
 - `getFixturesRoot()`: `fixtures/` ディレクトリの絶対パス。
 - `getDefaultConfig()`: `embedded.config` がそれとの差になる設定
   （`fixtures/default-config.json`）。
@@ -233,7 +237,8 @@ pin した mermaid.js を Node で動かします。
   一覧の既知の差異を除いて読ませた mermaid.js を動かす。
   差異が違いの唯一の原因であることを確かめる実装のためのもの。
   一覧に入れられるのは `comment-takes-character`、`comment-takes-line-break`、
-  `name-start-reads-unit`、`c4-keyword-anywhere`（型 `DivergenceRemoval`）。
+  `name-start-reads-unit`、`percent-brace-after-unit`、`c4-keyword-anywhere`
+  （型 `DivergenceRemoval`）。
   mermaid.js の同じ部分を変える差異は、同時には除けない。
   [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
 - `config` と `withoutDivergences` 以外のキーを持つ options を渡すと、

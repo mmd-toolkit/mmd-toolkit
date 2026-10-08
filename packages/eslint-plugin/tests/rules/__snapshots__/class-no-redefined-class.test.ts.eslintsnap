@@ -1,0 +1,59 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: class-no-redefined-class >> invalid >>> docs/rules/class-no-redefined-class.md incorrect 1
+Filename: class-no-redefined-class-incorrect-1.mmd
+
+Code:
+  1 | classDiagram
+  2 |   class A["First"]
+  3 |   class A["Second"]
+    |   ^~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label `First` of the class `A`, set on line 2, with this one.
+---
+
+
+Test: class-no-redefined-class >> invalid >>> invalid/class/db-class-label-redefined-generic
+Filename: tests/fixtures/rules/class-no-redefined-class/invalid/class/db-class-label-redefined-generic-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A~T~["First"]
+  3 | class A["Second"]
+    | ^~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label `First` of the class `A`, set on line 2, with this one.
+---
+
+
+Test: class-no-redefined-class >> invalid >>> invalid/class/db-class-label-redefined-in-namespace
+Filename: tests/fixtures/rules/class-no-redefined-class/invalid/class/db-class-label-redefined-in-namespace-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | namespace N {
+  3 | class A["First"]
+  4 | }
+  5 | class A["Second"]
+    | ^~~~~~~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the label `First` of the class `A`, set on line 3, with this one.
+---
+
+
+Test: class-no-redefined-class >> invalid >>> invalid/class/db-class-label-redefined
+Filename: tests/fixtures/rules/class-no-redefined-class/invalid/class/db-class-label-redefined-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A["First"]
+  3 | class A["Second"]
+    | ^~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the label `First` of the class `A`, set on line 2, with this one.
+---

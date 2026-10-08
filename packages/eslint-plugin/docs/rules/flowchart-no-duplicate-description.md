@@ -25,12 +25,12 @@ counts.
 This rule reports every statement that sets the description after the first one.
 It applies to `flowchart-v2`, `flowchart-elk`, and `swimlane`.
 
-`accDescr:` sets the description. Without text, it sets the description too: at
-the end of the text it makes the description empty, and before more text it
+`accDescr:` sets the description. Without text, it sets the description too: it
 takes the next line that holds text as the description, past empty lines,
-comment lines, and directives. A closed block that holds a description sets it
-as well. The line form and the block form may be mixed: whichever comes first,
-the description written last is used. A statement inside a subgraph sets the
+comment lines, and directives, and when no such line follows, it makes the
+description empty. A closed block that holds a description sets it as well. The
+line form and the block form may be mixed: whichever comes first, the
+description written last is used. A statement inside a subgraph sets the
 description of the whole diagram and is counted too; mermaid.js also adds the
 value of such a statement to the members of the subgraph as an id, so that a
 vertex or a subgraph with that id belongs to the subgraph.

@@ -1,0 +1,95 @@
+# @mmd-toolkit/state-no-empty-description-block
+
+Japanese version:
+[state-no-empty-description-block.ja.md](./state-no-empty-description-block.ja.md)
+
+Disallow an `accDescr` block that holds no description.
+
+<!-- begin auto-generated rule notice -->
+
+✅ The `recommended` configuration enables this rule.
+
+<!-- end auto-generated rule notice -->
+
+A description block is written to give the diagram its description. When the
+block holds nothing, or only whitespace, mermaid.js accepts it and does nothing
+with it, so the block has no effect.
+
+## Rule Details
+
+This rule reports a closed `accDescr` block that holds nothing or only
+whitespace. It applies to `stateDiagram`. A directive in the block is no text: a
+block that holds only directives is reported too, and mermaid.js still applies
+their settings.
+
+The description stays what it was before the block: after `accDescr: x`, the
+block `accDescr {}` leaves the description `x`, and with no description before
+it, the description stays empty. An empty description written as a line is
+different: `accDescr:` with no line that holds text after it sets the
+description to the empty text.
+
+A block that holds only comments is not reported. The author who turns the lines
+of a description into comments means the block to do nothing, and mermaid.js
+reads it so: the description before the block stays. A block that holds a
+comment line is not reported also when it holds directives besides; mermaid.js
+applies their settings.
+
+An empty block may also follow a statement on its line, as in
+`A --> B accDescr {}`, or the header, as in `stateDiagram-v2 accDescr {}`. It
+sets no description there either, and the rule reports it in the same way. An
+empty block before the `{` of a body on a later line belongs to no statement;
+[state-no-ignored-text](./state-no-ignored-text.md) reports it.
+
+Examples of **incorrect** code for this rule:
+
+```mmd
+%% eslint @mmd-toolkit/state-no-empty-description-block: error
+stateDiagram-v2
+  A --> B
+  accDescr {}
+```
+
+```mmd
+%% eslint @mmd-toolkit/state-no-empty-description-block: error
+stateDiagram-v2
+  A --> B
+  accDescr {
+  }
+```
+
+Examples of **correct** code for this rule:
+
+```mmd
+%% eslint @mmd-toolkit/state-no-empty-description-block: error
+stateDiagram-v2
+  A --> B
+  accDescr { y }
+```
+
+```mmd
+%% eslint @mmd-toolkit/state-no-empty-description-block: error
+stateDiagram-v2
+  A --> B
+  accDescr {
+    %% c
+  }
+```
+
+## Options
+
+This rule has no options.
+
+## Related Rules
+
+- [flowchart-no-empty-description-block](./flowchart-no-empty-description-block.md)
+- [state-no-unclosed-description-block](./state-no-unclosed-description-block.md)
+- [state-no-duplicate-description](./state-no-duplicate-description.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/state-no-empty-description-block.ts)
+- [Tests source](../../tests/rules/state-no-empty-description-block.test.ts)
+
+<!-- end auto-generated rule resources -->

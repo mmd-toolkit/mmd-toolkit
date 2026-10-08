@@ -7,7 +7,7 @@ Disallow an `accDescr` statement that sets the description again.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
 
 <!-- end auto-generated rule notice -->
 
@@ -21,11 +21,13 @@ twice.
 This rule reports every statement that sets the description after the first one.
 It applies to `classDiagram`.
 
-`accDescr:` and a description block with text both set the description. The line
-form and the block form may be mixed: whichever comes first, the description
-written last is used. After `accDescr: first` and `accDescr: second`, the
-description is `second`, and so it is after a block with `first` followed by
-`accDescr: second`.
+`accDescr:` and a description block with text both set the description.
+`accDescr:` with no text takes the next line that holds text as the description,
+past empty lines, comment lines, and directives; when no such line follows,
+mermaid.js rejects it. The line form and the block form may be mixed: whichever
+comes first, the description written last is used. After `accDescr: first` and
+`accDescr: second`, the description is `second`, and so it is after a block with
+`first` followed by `accDescr: second`.
 
 Examples of **incorrect** code for this rule:
 
@@ -65,3 +67,12 @@ This rule has no options.
 - [class-no-duplicate-title](./class-no-duplicate-title.md)
 - [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.md)
 - [sequence-no-duplicate-description](./sequence-no-duplicate-description.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/class-no-duplicate-description.ts)
+- [Tests source](../../tests/rules/class-no-duplicate-description.test.ts)
+
+<!-- end auto-generated rule resources -->

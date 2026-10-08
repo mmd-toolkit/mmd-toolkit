@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: U+2028 separates two items; the tokens a and b."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [
+      "a",
+      "b"
+    ],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

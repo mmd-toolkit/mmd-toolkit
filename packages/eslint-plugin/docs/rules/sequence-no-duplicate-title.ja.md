@@ -6,7 +6,7 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
@@ -26,6 +26,10 @@ mermaid.js はそのどちらを設定する文も受理し、
 
 `title first` と `title second` の後、タイトルは `second` になり、
 `accTitle` でも同じである。
+テキストのない `accTitle:` も、アクセシビリティ用のタイトルを設定する。
+空行、コメント行、ディレクティブを飛ばして、
+テキストを持つ次の行をアクセシビリティ用のタイトルにし、
+そうした行が後になければ、それを空にする。
 2 つのタイトルは別の値で、`title first` と `accTitle: second` は両方を設定し、
 どちらも報告しない。
 `loop` のようなブロックの中の文も、図全体のタイトルを設定するので、数える。
@@ -71,3 +75,12 @@ sequenceDiagram
 
 - [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.ja.md)
 - [sequence-no-duplicate-description](./sequence-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/sequence-no-duplicate-title.ts)
+- [テストのソース](../../tests/rules/sequence-no-duplicate-title.test.ts)
+
+<!-- end auto-generated rule resources -->

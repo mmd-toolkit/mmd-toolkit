@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements: `class A, a`; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...DiagramAclass A, a\n---------------------^\nExpecting 'UNICODE_TEXT', 'STYLE_TEXT', 'COMMA', got 'NEWLINE'"
+  }
+}

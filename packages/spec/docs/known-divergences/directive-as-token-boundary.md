@@ -28,11 +28,17 @@ specification reads the text in the same way (see
 [A directive is a token boundary](../common.md#a-directive-is-a-token-boundary)),
 with one exception, which this document is about: a directive inside a name, a
 keyword (the wrap prefix of a sequence message, such as `wrap:`, among them), a
-delimiter such as `:::`, an arrow, or a number. A name here is one without
-whitespace; a name that may contain whitespace, such as the id of a participant
-in a sequence diagram or a class name, is read as a text. [fixture:
+delimiter such as `:::`, an arrow, or a number. A name here is what the diagram
+document counts as a name unit, whether or not it may contain whitespace: the
+name of an ER entity, which may contain U+00A0, is one, and so is a click id of
+gantt. A name that the document counts as a text unit, such as the id of a
+participant in a sequence diagram, a class name, an attribute word of ER written
+with `~`, or the description of a gantt task, is read as a text. [fixture:
 sequence/div-directive-in-wrap-prefix] [fixture:
 sequence/lex-directive-in-participant-id] [fixture: class/lex-directive-in-name]
+[fixture: er/div-directive-in-name] [fixture: er/lex-directive-in-tilde-word]
+[fixture: gantt/div-directive-in-click-id] [fixture:
+gantt/lex-directive-in-task-text]
 
 ## The difference
 

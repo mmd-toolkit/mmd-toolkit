@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity in a section name is its placeholder in the Db: the section of the Db is the text of the node in converted form."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "ﬂ°x¶ß"
+    ],
+    "tasks": [
+      {
+        "section": "ﬂ°x¶ß",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "a ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

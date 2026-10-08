@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A click statement finds the last task with the id that was read before it, so the two statements link different tasks."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "a ",
+        "classes": [
+          "clickable"
+        ],
+        "id": "x",
+        "order": 0
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-02"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "b ",
+        "classes": [
+          "clickable"
+        ],
+        "id": "x",
+        "order": 1
+      }
+    ],
+    "links": [
+      {
+        "id": "x",
+        "url": "u2"
+      }
+    ]
+  }
+}

@@ -6,21 +6,22 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
-mermaid.js は、クラス名だけの行を受理し、何もしない。
+mermaid.js は、文として 1 つだけ書いたクラス名を受理し、何もしない。
 クラスも宣言しない。
-そうした行に書き手が書いたものは、何の効果も持たない。
+そこに書き手が書いたものは、何の効果も持たない。
 
 ## 規則の詳細
 
-この規則は、クラス名だけの行を報告する。
+この規則は、`class`、関係、メンバーなしに、
+文として 1 つだけ書いたクラス名を報告する。
 対象の図種は `classDiagram` である。
 
 クラス名は 1 つ以上の語で、mermaid.js は語の間の空白を除く。
-そうした行は、次のようにして生じる。
+そうした文は、次のようにして生じる。
 
 - 方向の値を小文字で書いた `direction lr` は、クラス名 `directionlr` で、
   方向は `TB` のままである。
@@ -75,3 +76,12 @@ classDiagram
 ## 関連する規則
 
 - [class-no-ignored-text](./class-no-ignored-text.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/class-no-bare-class-name.ts)
+- [テストのソース](../../tests/rules/class-no-bare-class-name.test.ts)
+
+<!-- end auto-generated rule resources -->

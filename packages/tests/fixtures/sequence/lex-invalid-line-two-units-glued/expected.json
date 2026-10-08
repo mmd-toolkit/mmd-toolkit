@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Two invalid characters glued together on a line: both are ignored text."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

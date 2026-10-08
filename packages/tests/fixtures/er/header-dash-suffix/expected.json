@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Detection: `erDiagram-x` is the header, not followed by a word character, and the entity `-x`; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity--x-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "-x",
+        "classes": []
+      },
+      {
+        "id": "entity-A-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

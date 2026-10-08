@@ -114,6 +114,17 @@ mermaid@12.0.0 では、agentflow の Db
 （[`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014)）
 も `formatUrl()` を呼ぶので、その正規化関数を足すときに同じ差し替えが要ります。
 
+gantt の Db は、`@braintree/sanitize-url` に
+`formatUrl()` を通して届くのではありません。
+[`setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L673-L688)
+が、`securityLevel` が `loose` でなければ自分で呼びます。
+Db は、すべての gantt 図が共有する 1 つのオブジェクトなので、
+そのパッチはこのオブジェクトに掛けます。
+パッチは URL を書かれたままで保存させます。
+これは `loose` のときに `setLink` が保存するものです。
+[fixture: gantt/config-security-level-strict-click-href]
+[fixture: gantt/config-security-level-sandbox-click-href]
+
 ## ラベルは HTML のサニタイズ前の値で記録する
 
 mermaid.js は解析中にテキストをサニタイズします。
@@ -285,7 +296,8 @@ mermaid@12.0.0 では、次の 2 つです。
 すべての入力を、こう読ませた mermaid.js と同じに受理・拒否し、
 同じ Db を返すものでなければなりません。
 これを使えるのは、`c4-keyword-anywhere`、`comment-takes-character`、
-`comment-takes-line-break`、`name-start-reads-unit` です。
+`comment-takes-line-break`、`name-start-reads-unit`、
+`percent-brace-after-unit` です。
 ある図種で仕様と mermaid.js の差異が 2 つ以上あるとき、
 仕様と同じに読ませるには、
 1 つの入力でそのいくつかを同時に除く必要があることがあります。
@@ -308,12 +320,19 @@ mermaid@12.0.0 では、次の 2 つです。
 mermaid.js の入力の読み方を変える既知の差異の印
 （`c4-keyword-anywhere`、`comment-takes-character`、
 `comment-takes-line-break`、`name-start-reads-unit`、
-`html-tag-in-frontmatter`、
+`percent-brace-after-unit`、`html-tag-in-frontmatter`、
 `bare-percent-line-before-header`）を持つ fixture は、
 それを `expected.json` と違うときに、`specified.json` に記録します。
 生成器は、その差異を外して mermaid.js に読ませた結果を取ります
 （`comment-takes-line-break` と `name-start-reads-unit` は、
 どちらも class の字句解析器を変えるので、2 つを一緒に外します。
+gantt の字句解析器を変える 3 つ、`comment-takes-character`、
+`comment-takes-line-break`、`percent-brace-after-unit` は、
+3 つを一緒に外します。
+文字やコメントの改行を取るコメントを持つテキストは、
+それらを通して `%%{` の規則に届くからです。
+3 つを外して gantt のすべての fixture を読ませると、
+変わるのはその印を持つ fixture だけです。
 `c4-keyword-anywhere` は、C4 の検出器を置き換えて、
 そのテキストを先頭の図の図種として読ませます）。
 [fixture: class/div-comment-then-statement-with-backquote-keyword]
@@ -442,6 +461,18 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   その文の状態は、id の規則より先に、1 文字と `%%` をコメントに読むので、
   メッセージのように、2 文字目と 3 文字目が `%%` の id の連なりを、
   どの入力も与えられないからである。
+- `comment-takes-character`、gantt の字句解析器
+  （[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)）
+  :
+  `}` 以外の 1 文字を `%` の前から読んでコメントに含める規則を外す。
+  そうすると、コメントは単位の始まる位置の `%` から始まり、
+  ほかの `%` は、それを含む単位の文字になる。
+  [fixture: gantt/div-comment-after-task-text-start]
+  [fixture: gantt/div-comment-after-keyword-start]
+  [fixture: gantt/div-comment-after-semicolon-after-data]
+  [fixture: gantt/lex-comment-after-two-characters]
+  [fixture: gantt/lex-brace-before-percent]
+  [fixture: gantt/lex-colon-then-percent]
 - `comment-takes-line-break`、class の字句解析器
   （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)）
   :
@@ -451,6 +482,24 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: class/div-comment-after-name-then-statement]
   [fixture: class/div-comment-after-note-string-then-statement]
   [fixture: class/div-comment-after-click-string-then-statement]
+- `comment-takes-line-break`、gantt の字句解析器
+  （[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)）
+  :
+  `%` と行の残りとその後の改行を読む規則は、行の終わりで終わる。
+  そうすると、コメントの後の改行は改行として読まれる。
+  [fixture: gantt/div-percent-comment-takes-line-feed-after-href]
+  [fixture: gantt/div-percent-comment-takes-line-feeds-after-call]
+  [fixture: gantt/lex-space-percent-comment-after-call-then-href-line]
+- `percent-brace-after-unit`、gantt の字句解析器
+  （[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)）
+  :
+  `%%{` のたびに開始状態 `open_directive` に入る規則を外す。
+  そうすると、ディレクティブの始まらない `%%{` は、コメントの規則が読む。
+  ディレクティブそのものは、字句解析器が読む前にテキストから取り除かれる。
+  [fixture: gantt/div-percent-brace-glued-after-header]
+  [fixture: gantt/div-percent-brace-after-two-spaces]
+  [fixture: gantt/div-percent-brace-after-glued-percent-comment]
+  [fixture: gantt/lex-percent-brace-after-tab]
 - `c4-keyword-anywhere`、C4 の検出器
   （[`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10-L10)）
   :
@@ -497,6 +546,9 @@ pin した mermaid.js は、同じテキストと同じ選択肢に同じ結果�
 貯めた結果は新しく動かした結果と同じです。
 同じ入力を何度も読むテスト（差分テスト、生成入力のテスト）は、
 こうして時間を、試す実装のほうに使えます。
+要約が日や時間帯に依存すると、これは成り立ちません。
+gantt の Db は日付をその両方から計算するので、要約は日付を持ちません
+（[db-summaries.md](./db-summaries.md) の gantt を参照）。
 
 - 場所: リポジトリのルートの `node_modules/.cache/mmd-toolkit/mermaid-runs/`。
   git は無視します。

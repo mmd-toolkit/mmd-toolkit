@@ -136,6 +136,7 @@ Dropped:
 | In a state diagram, `A,B --> C` or `A,B:::e --> C` (states listed with `,` in a transition)                                                                                                                    | Comes from not knowing the syntax: the documentation lists states with `,` only in the `class` statement, and a transition takes one state; mermaid.js draws one state `A,B`. `A,:::e` is no form that a person drawing a diagram writes, and a stray `,` in `A, --> B` is no ordinary slip                                                                                                                                                     |
 | In a state diagram, `[*]` outside a transition (`state [*] {`, `state "Begin" as [*]`, `note right of [*] : done`)                                                                                             | `state [*] {` is not written. `state "Begin" as [*]` comes from not knowing the syntax: the documentation defines `[*]` in transitions only. `note left of [*] : start here` attaches to the start state as meant, and a note meant for the end state also attaches to the start state, which looks like a defect of mermaid.js; searching issues and pull requests (`note "[*]"`, `"start state"`, `"end state"`, `pseudostate`) found nothing |
 | In a state diagram, `state {` on the line after `state "d" as A` (the block becomes the body of A)                                                                                                             | A `state {` without a name is rejected everywhere else (at the start, after a transition, after an empty line); writing it comes from not knowing the syntax, or is a forgotten name, which is no ordinary slip                                                                                                                                                                                                                                 |
+| In a state diagram, `classDef a` without styles on the line before `B --> C` (the next line becomes its style, and the transition is lost)                                                                     | The formatter makes it visible: it prints `classDef a B --> C` on one line                                                                                                                                                                                                                                                                                                                                                                      |
 
 ### Questions for unclear cases
 
@@ -492,9 +493,10 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | flowchart-no-undef                      | yes               |                                                                                                          |
 | no-unclosed-directive                   | yes (provisional) |                                                                                                          |
 | no-ignored-init-directive               | yes (provisional) |                                                                                                          |
-| sequence-* (all 7 rules)                | yes (provisional) |                                                                                                          |
+| sequence-* (all 8 rules)                | yes (provisional) |                                                                                                          |
 | class-no-inline-comment                 | no (provisional)  | Criteria 1 and 3, below                                                                                  |
 | class-* (the other 7 rules)             | yes (provisional) |                                                                                                          |
+| state-* (all 6 rules)                   | yes (provisional) |                                                                                                          |
 
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
@@ -558,6 +560,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | flowchart-no-bare-comment-marker        | Remove the `%%` (in a text that spans lines, the line of `%%`) |
 | flowchart-no-redefined-vertex           | None: criterion 1 (the likely fix is a new id)                 |
 | flowchart-no-undef                      | None: criterion 1 (which id was meant is not known)            |
+| sequence-* (all 8 rules)                | None for now (2026-10-08; see the end of this section)         |
+| class-* (all 8 rules)                   | None for now (2026-10-08; see the end of this section)         |
+| state-* (all 6 rules)                   | None for now (2026-10-08; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -683,3 +688,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
   `setClickEvent`: `click A call c`, `%%`, `b()` gives the name `c`, `%%`, `b`
   on three lines, and `call f(1,`, `%%`, `2)` gives the arguments `1,`, `%%`,
   `2` (run).
+
+`sequence-*`, `class-*`, and `state-*` (2026-10-08): the rules are implemented
+without suggestions for now. No suggestion had been decided for them or
+described in their documents, and the one planned for the empty block of a
+sequence diagram rested on generated inputs. Whether they get suggestions is
+decided later, in the form of the flowchart rules, with a fixture for each case.

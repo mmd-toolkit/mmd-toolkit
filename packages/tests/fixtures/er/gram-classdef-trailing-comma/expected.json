@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements: a `,` with no style after it; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...classDef a fill:red,A\n-----------------------^\nExpecting 'COLON', 'STYLE_TEXT', 'NUM', 'BRKT', got 'NEWLINE'"
+  }
+}

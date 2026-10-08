@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2028 is not whitespace between the units of a statement: `A`, U+2028, and `B` are one name."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A B-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A B",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

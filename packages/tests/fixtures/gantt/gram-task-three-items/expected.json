@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Tasks: with three items, the id, the start, and the end."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "2024-01-02"
+          }
+        },
+        "task": "a ",
+        "classes": [],
+        "id": "id1",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

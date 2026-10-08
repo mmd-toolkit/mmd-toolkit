@@ -32,12 +32,19 @@ mermaid.js は、図を読む前に、
 名前、キーワード
 （sequence 図のメッセージの `wrap:` のような折り返しの接頭辞を含む）、
 `:::` のような区切り記号、矢印、数の中のディレクティブです。
-ここでの名前は空白のない名前です。
-sequence 図の参加者の id やクラスの名前のような、空白を含みうる名前は、
-テキストとして読まれます。
+ここでの名前は、空白を含みうるかどうかにかかわらず、
+図の文書が名前の単位と数えるものです。
+U+00A0 を含みうる ER の実体の名前も、gantt の click の id も、その 1 つです。
+sequence 図の参加者の id、クラスの名前、
+`~` を使って書いた ER の属性の語、gantt のタスクの説明のように、
+図の文書がテキストの単位と数える名前は、テキストとして読まれます。
 [fixture: sequence/div-directive-in-wrap-prefix]
 [fixture: sequence/lex-directive-in-participant-id]
 [fixture: class/lex-directive-in-name]
+[fixture: er/div-directive-in-name]
+[fixture: er/lex-directive-in-tilde-word]
+[fixture: gantt/div-directive-in-click-id]
+[fixture: gantt/lex-directive-in-task-text]
 
 ## 差異
 

@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accTitle with no text followed by a comment line only: the title is the empty text."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

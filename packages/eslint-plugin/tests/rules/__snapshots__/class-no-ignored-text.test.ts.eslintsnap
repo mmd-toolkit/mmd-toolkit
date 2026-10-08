@@ -1,0 +1,137 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: class-no-ignored-text >> invalid >>> docs/rules/class-no-ignored-text.md incorrect 1
+Filename: class-no-ignored-text-incorrect-1.mmd
+
+Code:
+  1 | classDiagram
+  2 |   class A direction LR
+    |   ^~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `class A`.
+---
+
+
+Test: class-no-ignored-text >> invalid >>> docs/rules/class-no-ignored-text.md incorrect 2
+Filename: class-no-ignored-text-incorrect-2.mmd
+
+Code:
+  1 | classDiagram
+  2 |   direction TBX
+    |               ^ [1]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `X`.
+---
+
+
+Test: class-no-ignored-text >> invalid >>> docs/rules/class-no-ignored-text.md incorrect 3
+Filename: class-no-ignored-text-incorrect-3.mmd
+
+Code:
+  1 | classDiagram
+  2 |   A --> B : set direction LR now
+    |   ^~~~~~~~~~~~~ [1]          ^~~ [2]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `A --> B : set`.
+[2] mermaid.js reads this whole line as a direction statement and drops `now`.
+---
+
+
+Test: class-no-ignored-text >> invalid >>> invalid/class/lex-direction-line-after-empty-description-block
+Filename: tests/fixtures/rules/class-no-ignored-text/invalid/class/lex-direction-line-after-empty-description-block-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | accDescr {} direction LR
+    | ^~~~~~~~~~~ [1]
+  3 | class A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `accDescr {}`.
+---
+
+
+Test: class-no-ignored-text >> invalid >>> invalid/class/lex-direction-line-class-statement
+Filename: tests/fixtures/rules/class-no-ignored-text/invalid/class/lex-direction-line-class-statement-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A direction LR
+    | ^~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `class A`.
+---
+
+
+Test: class-no-ignored-text >> invalid >>> invalid/class/lex-direction-line-in-label
+Filename: tests/fixtures/rules/class-no-ignored-text/invalid/class/lex-direction-line-in-label-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | A --> B : set direction LR now
+    | ^~~~~~~~~~~~~ [1]          ^~~ [2]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `A --> B : set`.
+[2] mermaid.js reads this whole line as a direction statement and drops `now`.
+---
+
+
+Test: class-no-ignored-text >> invalid >>> invalid/class/lex-direction-line-in-note
+Filename: tests/fixtures/rules/class-no-ignored-text/invalid/class/lex-direction-line-in-note-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | note "x direction TB"
+    | ^~~~~~~ [1]         ^ [2]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `note "x`.
+[2] mermaid.js reads this whole line as a direction statement and drops `"`.
+---
+
+
+Test: class-no-ignored-text >> invalid >>> invalid/class/lex-direction-line-then-empty-description-block
+Filename: tests/fixtures/rules/class-no-ignored-text/invalid/class/lex-direction-line-then-empty-description-block-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | direction LR accDescr {}
+    |              ^~~~~~~~~~~ [1]
+  3 | class A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `accDescr {}`.
+---
+
+
+Test: class-no-ignored-text >> invalid >>> invalid/class/lex-direction-line-value-then-semicolon
+Filename: tests/fixtures/rules/class-no-ignored-text/invalid/class/lex-direction-line-value-then-semicolon-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | direction LR ;
+    |              ^ [1]
+  3 | class A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `;`.
+---
+
+
+Test: class-no-ignored-text >> invalid >>> invalid/class/lex-direction-line-value-then-text
+Filename: tests/fixtures/rules/class-no-ignored-text/invalid/class/lex-direction-line-value-then-text-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | direction TBX
+    |             ^ [1]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `X`.
+---

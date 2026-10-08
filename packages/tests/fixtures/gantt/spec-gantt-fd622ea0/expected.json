@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/gantt/parser/gantt.spec.js",
+    "line": 7,
+    "test": "when parsing a gantt diagram it > should handle a task definition"
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "Adding gantt diagram functionality to mermaid",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Documentation"
+    ],
+    "tasks": [
+      {
+        "section": "Documentation",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-01-01"
+          },
+          "endTime": {
+            "data": "2014-01-04"
+          }
+        },
+        "task": ";Design jison grammar",
+        "classes": [],
+        "id": "des1",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

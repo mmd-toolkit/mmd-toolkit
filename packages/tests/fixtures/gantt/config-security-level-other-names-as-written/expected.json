@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Sections and descriptions of tasks are not replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "a<b>c"
+    ],
+    "tasks": [
+      {
+        "section": "a<b>c",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "A<x> ",
+        "classes": [],
+        "id": "a",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

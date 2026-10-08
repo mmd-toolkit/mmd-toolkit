@@ -3,7 +3,7 @@
 Japanese version:
 [comment-takes-line-break.ja.md](./comment-takes-line-break.ja.md)
 
-Diagram type: class. This is one of the
+Diagram types: class and gantt. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -110,6 +110,25 @@ reads one line break, while this specification reads two, and rejects the text,
 as both do without the comment after the relation. [fixture:
 class/div-comment-then-comment-only-line]
 
+In a Gantt chart, a comment with the mark `%` that mermaid.js reaches directly,
+as [Comments](../diagrams/gantt.md#comments) defines it, takes the line feeds
+after it in the same way. It matters only inside a click statement, whose parts
+may follow each other over a line break: `click id1 %c`, a line feed, and
+`href "u"` sets the link in mermaid.js, and so does `click id1 call f()%c`, a
+line feed, and `href "u"`, also with two line feeds; here the comment ends at
+its line, and the `newline` unit ends the statement, so the input is rejected.
+With a space before the `%` after a call part, or with `%%`, both reject the
+input, and between statements the line feeds that mermaid.js takes change
+nothing (see [Comments](../diagrams/gantt.md#comments)). The difference goes one
+way in gantt: mermaid.js accepts, and this specification rejects. [fixture:
+gantt/div-percent-comment-takes-line-feed-after-click-id] [fixture:
+gantt/div-percent-comment-takes-line-feed-after-call] [fixture:
+gantt/div-percent-comment-takes-line-feeds-after-call] [fixture:
+gantt/div-percent-comment-takes-line-feed-after-href] [fixture:
+gantt/lex-space-percent-comment-after-call-then-href-line] [fixture:
+gantt/lex-double-percent-comment-after-click-id-then-href-line] [fixture:
+gantt/lex-percent-comment-glued-after-header-blank-line]
+
 ## What it means for an author
 
 A class diagram with a comment after a statement, which this toolkit accepts,
@@ -140,7 +159,12 @@ it
 A line of spaces right before such a comment line is then gone, and stops
 nothing: `A --> B %% c`, a line of spaces, `%% x`, and `A : +int age` is one
 relation from A to `BA` with the label `+int age` in mermaid.js, as in
-example 3. [fixture: class/div-comment-then-spaces-line-then-comment-line]
+example 3. [fixture: class/div-comment-then-spaces-line-then-comment-line] The
+lexer of gantt has a rule of the same shape for a comment that starts with a
+single `%`
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)),
+which it reaches only where it stands directly at the `%`; its rule for `%%`,
+and its rule for a `%` with a character before it, take no line feed.
 
 ## The rule of this specification, and why
 

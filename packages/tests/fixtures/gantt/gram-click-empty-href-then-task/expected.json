@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Empty hrefs and empty calls: a click id, `href \"\"`, and a task; rejected in both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...dclick id1 href \"\" b : 1d\n----------------------^\nExpecting 'callbackname', 'href', got 'taskTxt'"
+  }
+}

@@ -111,12 +111,13 @@ A node of text that mermaid.js does not read, a
 [ClassIgnoredText](./ast/class.md#classignoredtext), a
 [StateIgnoredText](./ast/state.md#stateignoredtext), a
 [StateIgnoredStatement](./ast/state.md#stateignoredstatement), or a
-[SequenceIgnoredStatement](./ast/sequence.md#sequenceignoredstatement), shows
-what the author wrote there as written: its written text is that of a value,
-which also leaves out the comments. The whitespace and line terminators between
-its units are part of it, and a comment is not: after `state "d" as A`, the
-lines `state %% c` and `state {` with a body give A the `textBeforeBody` of
-`state`, a space, a line feed, two spaces, and `state`, and in
+[SequenceIgnoredStatement](./ast/sequence.md#sequenceignoredstatement), or a
+[GanttIgnoredStatement](./ast/gantt.md#ganttignoredstatement), shows what the
+author wrote there as written: its written text is that of a value, which also
+leaves out the comments. The whitespace and line terminators between its units
+are part of it, and a comment is not: after `state "d" as A`, the lines
+`state %% c` and `state {` with a body give A the `textBeforeBody` of `state`, a
+space, a line feed, two spaces, and `state`, and in
 `state X "" %%{init: {}}%% ""` followed by a line `{` with a body, it is the two
 empty strings with the two spaces between them. [fixture:
 state/tokens-ignored-text-comment-between-units] [fixture:
@@ -233,8 +234,10 @@ is true; it is true in the default entry point of the npm package.
 the diagram sections below: a
 [`FlowchartDiagram`](./ast/flowchart.md#flowchartdiagram), a
 [`SequenceDiagram`](./ast/sequence.md#sequencediagram), a
-[`ClassDiagram`](./ast/class.md#classdiagram), or a
-[`StateDiagram`](./ast/state.md#statediagram).
+[`ClassDiagram`](./ast/class.md#classdiagram), a
+[`StateDiagram`](./ast/state.md#statediagram), an
+[`ErDiagram`](./ast/er.md#erdiagram), or a
+[`GanttDiagram`](./ast/gantt.md#ganttdiagram).
 
 ## ErrorDiagram
 
@@ -323,7 +326,7 @@ units, so the name contains none.
 ### StringLiteral
 
 A string in quotes: double quotes, or, for the backquoted names of class
-diagrams, backquotes.
+diagrams and the backquoted attribute words of ER diagrams, backquotes.
 
 | Field    | Type    | Meaning                                                                                                                                                                                                                                                                                  |
 | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -392,6 +395,8 @@ in a document of their own under `ast/`:
 - [Sequence](./ast/sequence.md): the diagram type `sequence`.
 - [Class](./ast/class.md): the diagram type `classDiagram`.
 - [State](./ast/state.md): the diagram type `stateDiagram`.
+- [ER](./ast/er.md): the diagram type `er`.
+- [Gantt](./ast/gantt.md): the diagram type `gantt`.
 
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of

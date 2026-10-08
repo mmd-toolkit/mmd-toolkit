@@ -50,27 +50,39 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 
 ## sequence
 
-| 規則                                                                               | 説明                                                                          | ✅  | 💡  | 🚧  |
-| ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --- | --- | --- |
-| [sequence-no-create-destroy](./sequence-no-create-destroy.ja.md)                   | `destroy` の前の `create` を禁止する。                                        |     |     | 🚧  |
-| [sequence-no-duplicate-description](./sequence-no-duplicate-description.ja.md)     | 説明をもう一度設定する `accDescr` の文を禁止する。                            |     |     | 🚧  |
-| [sequence-no-duplicate-title](./sequence-no-duplicate-title.ja.md)                 | タイトルをもう一度設定する `title` か `accTitle` の文を禁止する。             |     |     | 🚧  |
-| [sequence-no-empty-description-block](./sequence-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。                              |     |     | 🚧  |
-| [sequence-no-ignored-text](./sequence-no-ignored-text.ja.md)                       | mermaid.js が何も読まない行を禁止する。                                       |     |     | 🚧  |
-| [sequence-no-invalid-json](./sequence-no-invalid-json.ja.md)                       | テキストが JSON のオブジェクトでない `links` か `properties` の文を禁止する。 |     |     | 🚧  |
-| [sequence-no-link-without-separator](./sequence-no-link-without-separator.ja.md)   | ラベルと URL の間に `@` がない `link` の文を禁止する。                        |     |     | 🚧  |
+| 規則                                                                                     | 説明                                                                          | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --- | --- | --- |
+| [sequence-no-create-destroy](./sequence-no-create-destroy.ja.md)                         | `destroy` の前の `create` を禁止する。                                        | ✅  |     |     |
+| [sequence-no-duplicate-description](./sequence-no-duplicate-description.ja.md)           | 説明をもう一度設定する `accDescr` の文を禁止する。                            | ✅  |     |     |
+| [sequence-no-duplicate-title](./sequence-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `title` か `accTitle` の文を禁止する。             | ✅  |     |     |
+| [sequence-no-empty-description-block](./sequence-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                              | ✅  |     |     |
+| [sequence-no-ignored-text](./sequence-no-ignored-text.ja.md)                             | mermaid.js が何も読まない行を禁止する。                                       | ✅  |     |     |
+| [sequence-no-invalid-json](./sequence-no-invalid-json.ja.md)                             | テキストが JSON のオブジェクトでない `links` か `properties` の文を禁止する。 | ✅  |     |     |
+| [sequence-no-link-without-separator](./sequence-no-link-without-separator.ja.md)         | ラベルと URL の間に `@` がない `link` の文を禁止する。                        | ✅  |     |     |
+| [sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                         | ✅  |     |     |
 
 ## class
 
 | 規則                                                                     | 説明                                                                           | ✅  | 💡  | 🚧  |
 | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | --- | --- | --- |
-| [class-no-bare-class-name](./class-no-bare-class-name.ja.md)             | 何も変えない、クラス名だけの行を禁止する。                                     |     |     | 🚧  |
-| [class-no-duplicate-description](./class-no-duplicate-description.ja.md) | 説明をもう一度設定する `accDescr` の文を禁止する。                             |     |     | 🚧  |
-| [class-no-duplicate-title](./class-no-duplicate-title.ja.md)             | タイトルをもう一度設定する `accTitle` の文を禁止する。                         |     |     | 🚧  |
-| [class-no-ignored-text](./class-no-ignored-text.ja.md)                   | mermaid.js が読まないテキストを禁止する。                                      |     |     | 🚧  |
-| [class-no-inline-comment](./class-no-inline-comment.ja.md)               | 同じ行のほかのテキストの後に置いたコメントを禁止する。                         |     |     | 🚧  |
-| [class-no-redefined-class](./class-no-redefined-class.ja.md)             | クラスのラベルを、後で違うものに書き直すことを禁止する。                       |     |     | 🚧  |
-| [class-no-unclosed-backquote](./class-no-unclosed-backquote.ja.md)       | バッククォートで囲むクラス名のうち、閉じるバッククォートのないものを禁止する。 |     |     | 🚧  |
-| [class-no-undef](./class-no-undef.ja.md)                                 | 図が定義していないクラスを指す文を禁止する。                                   |     |     | 🚧  |
+| [class-no-bare-class-name](./class-no-bare-class-name.ja.md)             | 何も変えない、クラス名だけの行を禁止する。                                     | ✅  |     |     |
+| [class-no-duplicate-description](./class-no-duplicate-description.ja.md) | 説明をもう一度設定する `accDescr` の文を禁止する。                             | ✅  |     |     |
+| [class-no-duplicate-title](./class-no-duplicate-title.ja.md)             | タイトルをもう一度設定する `accTitle` の文を禁止する。                         | ✅  |     |     |
+| [class-no-ignored-text](./class-no-ignored-text.ja.md)                   | mermaid.js が読まないテキストを禁止する。                                      | ✅  |     |     |
+| [class-no-inline-comment](./class-no-inline-comment.ja.md)               | 同じ行のほかのテキストの後に置いたコメントを禁止する。                         |     |     |     |
+| [class-no-redefined-class](./class-no-redefined-class.ja.md)             | クラスのラベルを、後で違うものに書き直すことを禁止する。                       | ✅  |     |     |
+| [class-no-unclosed-backquote](./class-no-unclosed-backquote.ja.md)       | バッククォートで囲むクラス名のうち、閉じるバッククォートのないものを禁止する。 | ✅  |     |     |
+| [class-no-undef](./class-no-undef.ja.md)                                 | 図が定義していないクラスを指す文を禁止する。                                   | ✅  |     |     |
+
+## state
+
+| 規則                                                                               | 説明                                                                    | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | --- | --- | --- |
+| [state-no-duplicate-description](./state-no-duplicate-description.ja.md)           | 説明をもう一度設定する `accDescr` の文を禁止する。                      | ✅  |     |     |
+| [state-no-duplicate-title](./state-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                  | ✅  |     |     |
+| [state-no-empty-description-block](./state-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                        | ✅  |     |     |
+| [state-no-ignored-text](./state-no-ignored-text.ja.md)                             | mermaid.js が読まないテキストを禁止する。                               | ✅  |     |     |
+| [state-no-unclosed-description-block](./state-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                   | ✅  |     |     |
+| [state-no-undef](./state-no-undef.ja.md)                                           | どの状態も名指さない `style`、`class`、`click`、`note` の文を禁止する。 | ✅  |     |     |
 
 <!-- end auto-generated rules list -->

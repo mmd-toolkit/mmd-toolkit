@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements: a `,` before the first name; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nerDiagramAstyle ,A fill:red\n----------------^\nExpecting 'UNICODE_TEXT', 'STYLE_TEXT', got 'COMMA'"
+  }
+}

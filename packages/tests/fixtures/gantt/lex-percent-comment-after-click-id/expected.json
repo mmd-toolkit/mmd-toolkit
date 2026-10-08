@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Comments: a comment after the click id ends the line, and the click statement has no part; rejected in both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...1, 1dclick id1 %% c\n----------------------^\nExpecting 'callbackname', 'href', got 'NL'"
+  }
+}

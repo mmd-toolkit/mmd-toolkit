@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The spaces at the ends of a quoted title are removed, and those inside are kept."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "x  y",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

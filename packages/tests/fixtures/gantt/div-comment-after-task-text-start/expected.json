@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Comments: `%` right after the first character of a task text is a character of the text here, the task `a% `; mermaid.js reads the whole line as a comment and has no task (comment-takes-character)."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

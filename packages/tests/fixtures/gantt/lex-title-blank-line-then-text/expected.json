@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Keywords and what follows them: after `title` and a line feed, a second line feed cannot start the title text, so `title` is a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\ngantttitleT\n----------^\nExpecting 'taskData', got 'NL'"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/er.html",
+    "line": 63
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-HOSPITAL-0",
+        "attributes": [
+          {
+            "type": "int",
+            "name": "id",
+            "keys": [
+              "PK"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "doctor_id",
+            "keys": [
+              "FK"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "address",
+            "keys": [
+              "UK"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "name",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "phone_number",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "string",
+            "name": "fax_number",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "HOSPITAL",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

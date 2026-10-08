@@ -1,0 +1,173 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md",
+    "line": 443
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A1-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A1",
+        "classes": []
+      },
+      {
+        "id": "entity-A2-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A2",
+        "classes": []
+      },
+      {
+        "id": "entity-B1-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B1",
+        "classes": []
+      },
+      {
+        "id": "entity-B2-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B2",
+        "classes": []
+      },
+      {
+        "id": "entity-C1-4",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "C1",
+        "classes": []
+      },
+      {
+        "id": "entity-C2-5",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "C2",
+        "classes": []
+      },
+      {
+        "id": "entity-title1-6",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "title1",
+        "classes": []
+      },
+      {
+        "id": "entity-title2-7",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "title2",
+        "classes": []
+      },
+      {
+        "id": "entity-title3-8",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "title3",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-A1-0",
+        "roleA": "links",
+        "entityB": "entity-A2-1",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-B1-2",
+        "roleA": "links",
+        "entityB": "entity-B2-3",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-C1-4",
+        "roleA": "links",
+        "entityB": "entity-C2-5",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "title1",
+        "roleA": "links",
+        "entityB": "title2",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "title2",
+        "roleA": "links",
+        "entityB": "title3",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "title2",
+        "roleA": "links",
+        "entityB": "entity-C2-5",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "title1",
+        "nodes": [
+          "A1",
+          "A2"
+        ],
+        "title": "title1",
+        "classes": [],
+        "cssStyles": []
+      },
+      {
+        "id": "title2",
+        "nodes": [
+          "B1",
+          "B2"
+        ],
+        "title": "title2",
+        "classes": [],
+        "cssStyles": []
+      },
+      {
+        "id": "title3",
+        "nodes": [
+          "C1",
+          "C2"
+        ],
+        "title": "title3",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

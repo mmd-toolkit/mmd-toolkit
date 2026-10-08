@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The statement context, Keywords and what follows them: `accTitle {T}` is a name and an attribute block with a type only; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...rDiagramaccTitle {T}A\n----------------------^\nExpecting 'ATTRIBUTE_WORD', '?', got 'BLOCK_STOP'"
+  }
+}

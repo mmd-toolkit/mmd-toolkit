@@ -15,16 +15,25 @@ export type EmptyFormKind =
   | "empty-description-block"
   | "empty-backquoted-name"
   | "empty-generic-type"
+  | "empty-backquotes"
+  | "empty-href"
 
 /**
  * known-divergences/tokenless-empty-forms.md: the empty forms of each
  * diagram type that has any. Flowchart has the first three; sequence,
  * whose grammar has no strings and no `call`, has the empty description
- * block only; class has all five; state has the empty description block
- * only, since its empty strings are text that the tree holds.
+ * block only; class has the first five; state has the empty description
+ * block only, since its empty strings are text that the tree holds; er has
+ * the empty description block and empty backquotes, which inside an
+ * attribute block only lie inside an attribute where the tree has no place
+ * for them; gantt has the empty description block, the empty href, and the
+ * empty call, each a statement where a statement starts.
  */
 export const EMPTY_FORM_KINDS: Readonly<
-  Record<"flowchart" | "sequence" | "class" | "state", readonly EmptyFormKind[]>
+  Record<
+    "flowchart" | "sequence" | "class" | "state" | "er" | "gantt",
+    readonly EmptyFormKind[]
+  >
 > = {
   flowchart: ["empty-string", "empty-call", "empty-description-block"],
   sequence: ["empty-description-block"],
@@ -36,6 +45,8 @@ export const EMPTY_FORM_KINDS: Readonly<
     "empty-generic-type",
   ],
   state: ["empty-description-block"],
+  er: ["empty-description-block", "empty-backquotes"],
+  gantt: ["empty-description-block", "empty-href", "empty-call"],
 }
 
 /** One empty form: its kind, its units, and its range, from its first character that is not whitespace to its last. */
@@ -56,6 +67,9 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
     "An empty description block can only be written where a statement starts or ends",
   "empty-backquoted-name": "An empty backquoted name cannot be written here",
   "empty-generic-type": "An empty generic type can only end a class name",
+  "empty-backquotes":
+    "Empty backquotes can only be written between two attributes",
+  "empty-href": "An empty href cannot be written here",
 }
 
 /**
@@ -68,9 +82,12 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
  * directly by a `}` unit, with no `description-block-text` unit (each
  * diagram's Accessibility values); and, in class, each `empty-backquoted`
  * unit and each empty generic type, a `~` unit followed directly by
- * another (class, Strings, backquoted names, and generic types). In
- * flowchart and class, a `(` after a `call` is always one of the callback
- * name context, which the `call` enters. A diagram whose lexer reads none
+ * another (class, Strings, backquoted names, and generic types); in er,
+ * each `empty-backquotes` unit (er, The attribute block context); and, in
+ * gantt, each empty href, an `href` unit followed directly by two `"`
+ * units (gantt, The href context). In flowchart, class, and gantt, a `(`
+ * after a `call` is always one of the callback name context, which the
+ * `call` enters. A diagram whose lexer reads none
  * of these units has none of these forms.
  */
 export function emptyFormsOf<Unit extends DiagramUnit<string>>(
@@ -94,6 +111,10 @@ function allEmptyFormsOf<Unit extends DiagramUnit<string>>(
       forms.push(formOf("empty-backquoted-name", [unit]))
       return
     }
+    if (unit.name === "empty-backquotes") {
+      forms.push(formOf("empty-backquotes", [unit]))
+      return
+    }
     const second = units.at(index + 1)
     if (unit.name === "~" && second?.name === "~") {
       forms.push(formOf("empty-generic-type", [unit, second]))
@@ -101,6 +122,9 @@ function allEmptyFormsOf<Unit extends DiagramUnit<string>>(
     }
     const third = units.at(index + 2)
     if (second === undefined || third === undefined) return
+    if (unit.name === "href" && second.name === '"' && third.name === '"') {
+      forms.push(formOf("empty-href", [unit, second, third]))
+    }
     if (unit.name === "call" && second.name === "(" && third.name === ")") {
       forms.push(formOf("empty-call", [unit, second, third]))
     }

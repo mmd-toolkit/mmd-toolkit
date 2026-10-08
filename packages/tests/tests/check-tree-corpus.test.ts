@@ -22,6 +22,8 @@ const DIAGRAMS: readonly DiagramType[] = [
   "sequence",
   "class",
   "state",
+  "er",
+  "gantt",
 ]
 
 /** The recorded trees of the corpus, with the input of each, by fixture name. */

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: a section text runs to the end of the line, `:` and `#` included; the section `a : b #c`."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "a : b #c"
+    ],
+    "tasks": [],
+    "links": []
+  }
+}

@@ -1,0 +1,202 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: sequence-no-duplicate-description >> invalid >>> docs/rules/sequence-no-duplicate-description.md incorrect 1
+Filename: sequence-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   A ->> B: x
+  3 |   accDescr: first
+  4 |   accDescr: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> docs/rules/sequence-no-duplicate-description.md incorrect 2
+Filename: sequence-no-duplicate-description-incorrect-2.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   A ->> B: x
+  3 |   accDescr { first }
+  4 |   accDescr: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> docs/rules/sequence-no-duplicate-description.md incorrect 3
+Filename: sequence-no-duplicate-description-incorrect-3.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   loop every minute
+  3 |     A ->> B: x
+  4 |     accDescr: inner
+  5 |   end
+  6 |   accDescr: outer
+    |   ^~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> invalid/sequence/db-acc-descr-empty-replaces
+Filename: tests/fixtures/rules/sequence-no-duplicate-description/invalid/sequence/db-acc-descr-empty-replaces-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: x
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> invalid/sequence/db-acc-descr-line-empty-takes-next-after-comment
+Filename: tests/fixtures/rules/sequence-no-duplicate-description/invalid/sequence/db-acc-descr-line-empty-takes-next-after-comment-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: d
+  3 | accDescr:
+    | ^~~~~~~~~\ [1]
+  4 | %% c
+    | ~~~~\ [1]
+  5 | A->>B: x
+    | ~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> invalid/sequence/db-acc-descr-line-empty-takes-next-after-directive
+Filename: tests/fixtures/rules/sequence-no-duplicate-description/invalid/sequence/db-acc-descr-line-empty-takes-next-after-directive-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: d
+  3 | accDescr:
+    | ^~~~~~~~~\ [1]
+  4 | %%{init: {}}%%
+    | ~~~~~~~~~~~~~~\ [1]
+  5 | A->>B: x
+    | ~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> invalid/sequence/db-acc-descr-line-empty-then-comment-only
+Filename: tests/fixtures/rules/sequence-no-duplicate-description/invalid/sequence/db-acc-descr-line-empty-then-comment-only-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: x
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | %% c
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> invalid/sequence/db-acc-descr-line-empty-then-directive-only
+Filename: tests/fixtures/rules/sequence-no-duplicate-description/invalid/sequence/db-acc-descr-line-empty-then-directive-only-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: x
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | %%{init: {}}%%
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> invalid/sequence/db-acc-descr-line-empty-then-empty-lines-only
+Filename: tests/fixtures/rules/sequence-no-duplicate-description/invalid/sequence/db-acc-descr-line-empty-then-empty-lines-only-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: x
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 |
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> invalid/sequence/db-acc-descr-line-empty-trailing-spaces-at-end
+Filename: tests/fixtures/rules/sequence-no-duplicate-description/invalid/sequence/db-acc-descr-line-empty-trailing-spaces-at-end-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | accDescr: x
+  3 | accDescr:   
+    | ^~~~~~~~~ [1]
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> invalid/sequence/db-acc-descr-line-replaces-block
+Filename: tests/fixtures/rules/sequence-no-duplicate-description/invalid/sequence/db-acc-descr-line-replaces-block-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x
+  3 | accDescr { first }
+  4 | accDescr: second
+    | ^~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> invalid/sequence/db-acc-descr-outer-replaces-loop
+Filename: tests/fixtures/rules/sequence-no-duplicate-description/invalid/sequence/db-acc-descr-outer-replaces-loop-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | loop every minute
+  3 | A->>B: x
+  4 | accDescr: inner
+  5 | end
+  6 | accDescr: outer
+    | ^~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+---
+
+
+Test: sequence-no-duplicate-description >> invalid >>> invalid/sequence/db-acc-descr-replaces
+Filename: tests/fixtures/rules/sequence-no-duplicate-description/invalid/sequence/db-acc-descr-replaces-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x
+  3 | accDescr: first
+  4 | accDescr: second
+    | ^~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---

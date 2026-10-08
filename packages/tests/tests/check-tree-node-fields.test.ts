@@ -5,7 +5,7 @@ import {
   STRUCTURE_NODE_TYPES,
   VALUE_NODE_TYPES,
 } from "../src/check-tree/node-types.ts"
-import { readFieldTables } from "./spec-field-tables.ts"
+import { readChildFields, readFieldTables } from "./spec-field-tables.ts"
 
 // The table of the fields of each node type of the check of a tree
 // (`node-fields.ts`) is a copy of the field tables of the tree documents of
@@ -15,6 +15,7 @@ import { readFieldTables } from "./spec-field-tables.ts"
 const TYPES_WITHOUT_FIELD_TABLE: ReadonlySet<string> = new Set([
   "ErrorDiagram",
   "FlowchartEmptyStatement",
+  "GanttInclusiveEndDatesStatement",
   "StateDividerStatement",
   "StateHideEmptyDescriptionStatement",
   "StateTerminal",
@@ -44,6 +45,21 @@ describe("the fields of the node types of the check of a tree", () => {
       for (const field of Object.keys(own)) {
         if (!fields.has(field))
           differing.push(`${type}.${field}: not documented`)
+      }
+    }
+    expect(differing).toEqual([])
+  })
+
+  it("list the fields that are nodes in the order of the child fields that the specification states", () => {
+    const differing: string[] = []
+    for (const [type, children] of readChildFields()) {
+      const own = Object.entries(NODE_FIELDS[type] ?? {})
+        .filter(([, spec]) => spec.shape !== "value")
+        .map(([field]) => field)
+      if (JSON.stringify(own) !== JSON.stringify(children)) {
+        differing.push(
+          `${type}: ${JSON.stringify(own)} for ${JSON.stringify(children)}`,
+        )
       }
     }
     expect(differing).toEqual([])

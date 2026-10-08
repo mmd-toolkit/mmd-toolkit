@@ -65,6 +65,9 @@ import {
   clickReferenceOf,
   commentsAfterMatchStarts,
   commentsAfterUnits,
+  percentBracesReachedDirectly,
+  percentCommentsReachedDirectly,
+  percentsAfterUnitStarts,
   frontmatterChangesAttributeQuotes,
   holdsBarePercentLineBeforeHeader,
   holdsC4KeywordAfterHeader,
@@ -399,6 +402,8 @@ describe("marked fixtures differ only by their divergence", async () => {
     ...(await loadFixtures("sequence")),
     ...(await loadFixtures("class")),
     ...(await loadFixtures("state")),
+    ...(await loadFixtures("er")),
+    ...(await loadFixtures("gantt")),
   ]
 
   /** The fixtures that carry the mark `knownDivergence`. */
@@ -556,8 +561,11 @@ describe("marked fixtures differ only by their divergence", async () => {
   // known-divergences/comment-takes-character.md: in sequence, a comment
   // starts at its `%%` here, while mermaid.js takes the character right
   // before it into the comment where a rule would start there, and reads no
-  // number before it. Each fixture has such a `%%`, found by the parser's
-  // lexer; the reading of the specification is recorded in the corpus.
+  // number before it; in gantt, a `%` right after the first character of a
+  // unit is a character of the text here, while mermaid.js reads that
+  // character and the rest of the line as one comment. Each fixture has
+  // such a `%%` or `%`, found by the parser's lexer; the reading of the
+  // specification is recorded in the corpus.
   describe("comment-takes-character", () => {
     const fixturesWithMark = marked("comment-takes-character")
 
@@ -567,8 +575,12 @@ describe("marked fixtures differ only by their divergence", async () => {
 
     for (const fixture of fixturesWithMark) {
       it(`${fixture.diagram}/${fixture.name}`, () => {
-        const places = commentsAfterMatchStarts(fixture.input)
-        if (places === null) throw new Error("the input is no sequence")
+        const places =
+          commentsAfterMatchStarts(fixture.input) ??
+          percentsAfterUnitStarts(fixture.input)
+        if (places === null) {
+          throw new Error("the input is no sequence diagram or Gantt chart")
+        }
         expect(places.length).toBeGreaterThan(0)
       })
     }
@@ -576,8 +588,9 @@ describe("marked fixtures differ only by their divergence", async () => {
 
   // known-divergences/comment-takes-line-break.md: in class diagrams, a
   // comment that follows a unit on its line ends at the end of the line
-  // here, while mermaid.js takes the line feeds after it. Each fixture has
-  // such a comment, found by the parser's lexer and units.
+  // here, while mermaid.js takes the line feeds after it; in gantt, so does
+  // a comment with the mark `%` that mermaid.js reaches directly. Each
+  // fixture has such a comment, found by the parser's lexer and units.
   describe("comment-takes-line-break", () => {
     const fixturesWithMark = marked("comment-takes-line-break")
 
@@ -587,8 +600,33 @@ describe("marked fixtures differ only by their divergence", async () => {
 
     for (const fixture of fixturesWithMark) {
       it(`${fixture.diagram}/${fixture.name}`, () => {
-        const places = commentsAfterUnits(fixture.input)
-        if (places === null) throw new Error("the input is no class diagram")
+        const places =
+          commentsAfterUnits(fixture.input) ??
+          percentCommentsReachedDirectly(fixture.input)
+        if (places === null) {
+          throw new Error("the input is no class diagram or Gantt chart")
+        }
+        expect(places.length).toBeGreaterThan(0)
+      })
+    }
+  })
+
+  // known-divergences/percent-brace-after-unit.md: in gantt, a `%%{` that
+  // starts no directive is a comment here wherever a unit starts, while
+  // mermaid.js rejects it where it reaches it directly. Each fixture has
+  // such a `%%{`, found by the parser's lexer and units; the reading of the
+  // specification is recorded in the corpus.
+  describe("percent-brace-after-unit", () => {
+    const fixturesWithMark = marked("percent-brace-after-unit")
+
+    it("has fixtures", () => {
+      expect(fixturesWithMark.length).toBeGreaterThan(0)
+    })
+
+    for (const fixture of fixturesWithMark) {
+      it(`${fixture.diagram}/${fixture.name}`, () => {
+        const places = percentBracesReachedDirectly(fixture.input)
+        if (places === null) throw new Error("the input is no Gantt chart")
         expect(places.length).toBeGreaterThan(0)
       })
     }

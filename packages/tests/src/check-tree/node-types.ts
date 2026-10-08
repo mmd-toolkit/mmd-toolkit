@@ -23,6 +23,11 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "StateIgnoredStatement",
   "StateLiteral",
   "StateIgnoredText",
+  "ErIdentifier",
+  "ErLiteral",
+  "ErIgnoredText",
+  "GanttLiteral",
+  "GanttIgnoredStatement",
 ])
 
 /**
@@ -127,6 +132,38 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "StateAccDescrBlockStatement",
   "StateScaleStatement",
   "StateHideEmptyDescriptionStatement",
+  "ErDiagram",
+  "ErEntityStatement",
+  "ErAttribute",
+  "ErRelationshipStatement",
+  "ErEntityReference",
+  "ErRelationship",
+  "ErSubgraphStatement",
+  "ErDirectionStatement",
+  "ErClassDefStatement",
+  "ErClassStatement",
+  "ErStyleStatement",
+  "ErAccTitleStatement",
+  "ErAccDescrStatement",
+  "ErAccDescrBlockStatement",
+  "GanttDiagram",
+  "GanttTaskStatement",
+  "GanttClickStatement",
+  "GanttCallback",
+  "GanttDateFormatStatement",
+  "GanttAxisFormatStatement",
+  "GanttTickIntervalStatement",
+  "GanttTodayMarkerStatement",
+  "GanttIncludesStatement",
+  "GanttExcludesStatement",
+  "GanttInclusiveEndDatesStatement",
+  "GanttWeekdayStatement",
+  "GanttWeekendStatement",
+  "GanttTitleStatement",
+  "GanttSectionStatement",
+  "GanttAccTitleStatement",
+  "GanttAccDescrStatement",
+  "GanttAccDescrBlockStatement",
 ])
 
 /** The node types of the data blocks, whose delimiters lie in their range. */
@@ -136,11 +173,13 @@ export const DATA_BLOCK_NODE_TYPES: ReadonlySet<string> = new Set([
 ])
 
 /**
- * ast/state.md, StateIgnoredText: the value node types whose range holds the
- * tokens of their units, of whatever kind the units have: the empty strings,
- * empty description blocks, `ignored-state` unit, and `%%` of a
- * StateIgnoredText.
+ * ast/state.md, StateIgnoredText, and ast/gantt.md, GanttIgnoredStatement: the
+ * value node types whose range holds the tokens of their units, of whatever
+ * kind the units have: the empty strings, empty description blocks,
+ * `ignored-state` unit, and `%%` of a StateIgnoredText, and the keyword, the
+ * quotes or the parentheses of a GanttIgnoredStatement.
  */
 export const NODE_TYPES_WITH_TOKENS_OF_ANY_KIND: ReadonlySet<string> = new Set([
   "StateIgnoredText",
+  "GanttIgnoredStatement",
 ])

@@ -112,7 +112,7 @@ export const mermaidVersion: string = (
 let ready: Promise<void> | undefined
 
 /** What to replace for each divergence removal, found at setup. */
-const removalRewrites: Map<DivergenceRemoval, Rewrite> = new Map()
+const removalRewrites: Map<DivergenceRemoval, Rewrite[]> = new Map()
 let queue: Promise<unknown> = Promise.resolve()
 
 /**
@@ -289,14 +289,14 @@ async function withRemovals<T>(
 ): Promise<T> {
   const names = [...new Set(options.withoutDivergences ?? [])]
   if (names.length === 0) return call()
-  const rewrites = names.map((name) => {
-    const rewrite = removalRewrites.get(name)
-    if (!rewrite) {
+  const rewrites = names.flatMap((name) => {
+    const found = removalRewrites.get(name)
+    if (!found || found.length === 0) {
       throw new MermaidEnvironmentError(
         `nothing to replace was found for ${name}`,
       )
     }
-    return [name, rewrite] as const
+    return found.map((rewrite) => [name, rewrite] as const)
   })
   const overlap = overlapOf(rewrites)
   if (overlap !== undefined) throw new Error(overlap)
@@ -389,17 +389,20 @@ async function diagramOfSample(
  */
 async function patchDbClasses(): Promise<void> {
   const patched = new Set<object>()
-  for (const [diagramType, { sampleText, patch }] of getDbPatches()) {
-    const diagram = await diagramOfSample(sampleText, diagramType)
-    const prototype: unknown = Object.getPrototypeOf(diagram.db)
-    if (typeof prototype !== "object" || prototype === null) {
+  for (const [diagramType, entry] of getDbPatches()) {
+    const diagram = await diagramOfSample(entry.sampleText, diagramType)
+    const target: unknown =
+      entry.appliedTo === "object"
+        ? diagram.db
+        : Object.getPrototypeOf(diagram.db)
+    if (typeof target !== "object" || target === null) {
       throw new MermaidEnvironmentError(
-        `the ${diagramType} Db has no prototype`,
+        `the ${diagramType} Db has no ${entry.appliedTo === "object" ? "object" : "prototype"}`,
       )
     }
-    if (patched.has(prototype)) continue
-    patch(prototype)
-    patched.add(prototype)
+    if (patched.has(target)) continue
+    entry.patch(target)
+    patched.add(target)
   }
 }
 
@@ -419,7 +422,7 @@ async function findRemovalRewrites(): Promise<void> {
     if (isDetectorRemoval(removal)) {
       const rewrite = findDetectorRewrite(removal)
       await checkDetectorRewrite(name, removal, rewrite)
-      removalRewrites.set(name, rewrite)
+      addRemovalRewrite(name, rewrite)
       continue
     }
     const { lexer } = diagram.parser as {
@@ -439,8 +442,13 @@ async function findRemovalRewrites(): Promise<void> {
     if (typeof rewrites === "string") {
       throw new MermaidEnvironmentError(`${name}: ${rewrites}`)
     }
-    removalRewrites.set(name, rewrites)
+    addRemovalRewrite(name, rewrites)
   }
+}
+
+/** Remembers one more rewrite of the removals of `name`, which may change the lexers of several diagram types. */
+function addRemovalRewrite(name: DivergenceRemoval, rewrite: Rewrite): void {
+  removalRewrites.set(name, [...(removalRewrites.get(name) ?? []), rewrite])
 }
 
 /**

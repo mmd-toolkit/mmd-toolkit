@@ -22,6 +22,8 @@ const DIAGRAMS: readonly DiagramType[] = [
   "sequence",
   "class",
   "state",
+  "er",
+  "gantt",
 ]
 
 /** The file in which a parser records the tree of a fixture it accepts. */
@@ -35,6 +37,15 @@ function fileOf(fixture: Fixture, file: string): string {
   return path.join(getFixturesRoot(), fixture.diagram, fixture.name, file)
 }
 
+/**
+ * The diagram types of mermaid.js whose Db is not built from a tree yet: the
+ * fixtures of `common/` that are detected as one have a summary and no tree,
+ * since the reference implementation does not read the diagram type
+ * (`UnsupportedDiagramError`). A type leaves the list when its tree document
+ * and its builder are written (tests/SKILL: adding a diagram type).
+ */
+const DIAGRAM_TYPES_WITHOUT_BUILDER: readonly string[] = ["journey"]
+
 describe("dbFromTree", () => {
   for (const diagram of DIAGRAMS) {
     it(
@@ -42,11 +53,23 @@ describe("dbFromTree", () => {
       async () => {
         const differing: string[] = []
         const withoutParse: string[] = []
+        const unsupportedWithTree: string[] = []
         let compared = 0
         for (const fixture of await loadFixtures(diagram)) {
           const result = fixture.specified ?? fixture.expected
           if (!result.accepted || result.db === null) continue
           const name = `${fixture.diagram}/${fixture.name}`
+          if (
+            result.diagramType !== undefined &&
+            DIAGRAM_TYPES_WITHOUT_BUILDER.includes(result.diagramType)
+          ) {
+            // Compared once the builder exists; a tree recorded earlier means
+            // that the list is out of date.
+            if (existsSync(fileOf(fixture, AST_FILE))) {
+              unsupportedWithTree.push(name)
+            }
+            continue
+          }
           if (!existsSync(fileOf(fixture, AST_FILE))) {
             // The parser rejects the input on purpose (a known divergence of
             // the specification) and records the error; anything else is a
@@ -80,6 +103,7 @@ describe("dbFromTree", () => {
             differing.push(`${name}: ${(error as Error).message}`)
           }
         }
+        expect(unsupportedWithTree).toEqual([])
         expect(withoutParse).toEqual([])
         expect(differing).toEqual([])
         if (diagram !== "common") expect(compared).toBeGreaterThan(0)

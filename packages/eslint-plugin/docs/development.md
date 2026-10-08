@@ -241,11 +241,11 @@ configuration enables, with the ✅ of its list.
 The document of a common rule has an item for each diagram type that the parser
 supports; the skill `eslint-plugin` sets the form of the item and the steps.
 
-The namespace is `mmd`, not a scoped name such as `@mmd-toolkit`: ESLint splits
-an id that starts with `@` into the plugin and the rule at its last `/`, so it
-would read `@mmd-toolkit/flowchart-no-ignored-text` as the rule
-`no-ignored-text` of a plugin `@mmd-toolkit/flowchart`. An id that does not
-start with `@` is split at its first `/`.
+The namespace is `@mmd-toolkit`, the scope of the package: ESLint splits an id
+that starts with `@` into the plugin and the rule at its last `/`, so
+`@mmd-toolkit/flowchart-no-ignored-text` is the rule `flowchart-no-ignored-text`
+of the plugin `@mmd-toolkit`. The name of a rule holds no `/`, which is why the
+diagram of a rule is a prefix of its name and not a directory in its id.
 
 The rules hold what the documents list: `meta.docs.description` is the English
 description, and `meta.docs.recommended` says whether the `recommended`

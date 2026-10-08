@@ -92,6 +92,8 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   sequence: true,
   class: true,
   state: true,
+  er: true,
+  gantt: true,
 }
 
 /** Whether `text` names a directory of fixtures of the conformance corpus. */

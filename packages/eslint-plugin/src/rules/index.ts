@@ -26,6 +26,13 @@ import { sequenceNoEmptyDescriptionBlock } from "./sequence-no-empty-description
 import { sequenceNoIgnoredText } from "./sequence-no-ignored-text.ts"
 import { sequenceNoInvalidJson } from "./sequence-no-invalid-json.ts"
 import { sequenceNoLinkWithoutSeparator } from "./sequence-no-link-without-separator.ts"
+import { sequenceNoUnclosedDescriptionBlock } from "./sequence-no-unclosed-description-block.ts"
+import { stateNoDuplicateDescription } from "./state-no-duplicate-description.ts"
+import { stateNoDuplicateTitle } from "./state-no-duplicate-title.ts"
+import { stateNoEmptyDescriptionBlock } from "./state-no-empty-description-block.ts"
+import { stateNoIgnoredText } from "./state-no-ignored-text.ts"
+import { stateNoUnclosedDescriptionBlock } from "./state-no-unclosed-description-block.ts"
+import { stateNoUndef } from "./state-no-undef.ts"
 
 /**
  * Every rule of the plugin, by its name in the plugin: the name of a rule of
@@ -60,4 +67,11 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "sequence-no-ignored-text": sequenceNoIgnoredText,
   "sequence-no-invalid-json": sequenceNoInvalidJson,
   "sequence-no-link-without-separator": sequenceNoLinkWithoutSeparator,
+  "sequence-no-unclosed-description-block": sequenceNoUnclosedDescriptionBlock,
+  "state-no-duplicate-description": stateNoDuplicateDescription,
+  "state-no-duplicate-title": stateNoDuplicateTitle,
+  "state-no-empty-description-block": stateNoEmptyDescriptionBlock,
+  "state-no-ignored-text": stateNoIgnoredText,
+  "state-no-unclosed-description-block": stateNoUnclosedDescriptionBlock,
+  "state-no-undef": stateNoUndef,
 }

@@ -7,6 +7,9 @@ import {
   commentsAfterMatchStarts,
   commentsAfterUnits,
   namesStartingWithUnits,
+  percentBracesReachedDirectly,
+  percentCommentsReachedDirectly,
+  percentsAfterUnitStarts,
 } from "./helpers/reference-inputs.ts"
 
 describe("the reference input for `directive-as-token-boundary`", () => {
@@ -67,6 +70,94 @@ describe("the places of `comment-takes-character`", () => {
 
   it("decides on the diagram text, across the directives before the `%%`", () => {
     expect(placesIn("autonumber 1%%{init: {}}%%%% c")).toEqual([26])
+  })
+})
+
+describe("the places of `comment-takes-character` in a Gantt chart", () => {
+  const header = "gantt\n"
+
+  /** The offsets of `percentsAfterUnitStarts` within `statements`, after the header line. */
+  function placesIn(statements: string): number[] | undefined {
+    return percentsAfterUnitStarts(header + statements)?.map(
+      (offset) => offset - header.length,
+    )
+  }
+
+  // diagrams/gantt.md, Comments and Known divergences: the examples of the
+  // sentence on a `%` right after the first character of a unit.
+  it("finds a `%` right after the first character of a unit", () => {
+    expect(placesIn("a% : 1d")).toEqual([1])
+    expect(placesIn("t%itle T")).toEqual([1])
+    expect(placesIn("a : 1d;%c")).toEqual([7])
+    expect(placesIn("a :%c")).toEqual([3])
+  })
+
+  it("finds no `%` after the second character, after `}`, or after whitespace", () => {
+    expect(placesIn("ab% : 1d")).toEqual([])
+    expect(placesIn("}%c : 1d")).toEqual([])
+    expect(placesIn("inclusiveEndDates %c")).toEqual([])
+  })
+
+  it("is null for a text that is no Gantt chart", () => {
+    expect(percentsAfterUnitStarts("sequenceDiagram\nC%% c\n")).toBeNull()
+  })
+})
+
+// diagrams/gantt.md, Comments: the examples of the sentence on where
+// mermaid.js reaches a `%` directly.
+describe("the places of `percent-brace-after-unit`", () => {
+  it("finds a `%%{` that mermaid.js reaches directly", () => {
+    expect(percentBracesReachedDirectly("gantt%%{ }%%\ntitle T")).toEqual([5])
+    expect(percentBracesReachedDirectly("gantt\ntitle T\n  %%{ }%%")).toEqual([
+      16,
+    ])
+    expect(percentBracesReachedDirectly("gantt\ntitle T\n\n%%{ }%%")).toEqual([
+      15,
+    ])
+    expect(
+      percentBracesReachedDirectly("gantt\nweekday monday \n%%{ }%%"),
+    ).toEqual([22])
+    expect(percentBracesReachedDirectly("gantt\ntitle T\n \n%%{ }%%")).toEqual([
+      16,
+    ])
+    expect(percentBracesReachedDirectly("gantt% c\n%%{ }%%")).toEqual([9])
+  })
+
+  it("finds no `%%{` after one whitespace character, or with exactly one left after the leading line feeds", () => {
+    expect(percentBracesReachedDirectly("gantt\ntitle T\n%%{ }%%")).toEqual([])
+    expect(percentBracesReachedDirectly("gantt\ntitle T\n %%{ }%%")).toEqual([])
+    expect(percentBracesReachedDirectly("gantt\ntitle T\n\t%%{ }%%")).toEqual(
+      [],
+    )
+    expect(percentBracesReachedDirectly("gantt\ntitle T\n\n %%{ }%%")).toEqual(
+      [],
+    )
+    expect(
+      percentBracesReachedDirectly("gantt\ninclusiveEndDates %%{ }%%"),
+    ).toEqual([])
+    expect(percentBracesReachedDirectly("gantt\n% c\n%%{ }%%")).toEqual([])
+  })
+})
+
+describe("the places of `comment-takes-line-break` in a Gantt chart", () => {
+  const header = "gantt\na : id1, 2024-01-01, 1d\n"
+
+  /** The offsets of `percentCommentsReachedDirectly` within `statements`, after the header and the task. */
+  function placesIn(statements: string): number[] | undefined {
+    return percentCommentsReachedDirectly(header + statements)?.map(
+      (offset) => offset - header.length,
+    )
+  }
+
+  it("finds a `%` comment that mermaid.js reaches directly, also after the one space that leaves the click context", () => {
+    expect(placesIn('click id1 %c\nhref "u"')).toEqual([10])
+    expect(placesIn('click id1 call f()%c\nhref "u"')).toEqual([18])
+  })
+
+  it("finds no `%` comment after one space, or after two spaces after a click id, and no `%%` comment", () => {
+    expect(placesIn('click id1 call f() %c\nhref "u"')).toEqual([])
+    expect(placesIn('click id1  %c\nhref "u"')).toEqual([])
+    expect(placesIn('click id1 %%c\nhref "u"')).toEqual([])
   })
 })
 

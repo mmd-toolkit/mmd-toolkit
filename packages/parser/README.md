@@ -125,6 +125,8 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - Sequence diagrams: `sequence` (`sequenceDiagram`).
 - Class diagrams: `classDiagram` (`classDiagram` and `classDiagram-v2`).
 - State diagrams: `stateDiagram` (`stateDiagram` and `stateDiagram-v2`).
+- Entity relationship diagrams: `er` (`erDiagram`).
+- Gantt charts: `gantt` (`gantt`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -151,17 +153,18 @@ Returns the `Root` of the tree:
   pieces, and so is a text or a quoted string with a directive or a `;` that the
   line rule ignores inside it (see [Tokens](./docs/tokens.md#tokens)); the
   pieces of a quoted string are `StringFragment` tokens.
-- `comments`: every comment: each `%%` comment line, and each comment that a
-  diagram's own lexer reads, such as `#` or `%` in the middle of a line in a
-  sequence diagram, `%%` after a statement in a class diagram, or `#` and `%%`
-  in a state diagram. Its `mark` is the characters of its mark: `%%` for a
-  comment line or a class comment, `#`, `%%`, or `%` for a sequence comment, and
-  `#` or `%%` for a state comment. Its `value` is the text after the mark. A
-  comment line after U+2028 or U+2029 cuts the comment of the diagram's lexer
-  that runs past it, as it cuts a token: the part after the comment line is a
-  comment of its own, whose `mark` is `null` and whose `value` is its text. In a
-  state diagram, `A %% x`, U+2029, a line `%% end`, and a line `B` have the
-  comments `%% x`, `%% end`, and `B`, and the only state A.
+- `comments`: every comment: each `%%` comment line, each line of `%%` alone, or
+  `%%{ }%%`, before the header, and each comment that a diagram's own lexer
+  reads, such as `#` or `%` in the middle of a line in a sequence diagram, `%%`
+  after a statement in a class diagram, or `#` and `%%` in a state diagram. Its
+  `mark` is the characters of its mark: `%%` for a comment line or a class
+  comment, `#`, `%%`, or `%` for a sequence comment, and `#` or `%%` for a state
+  comment. Its `value` is the text after the mark. A comment line after U+2028
+  or U+2029 cuts the comment of the diagram's lexer that runs past it, as it
+  cuts a token: the part after the comment line is a comment of its own, whose
+  `mark` is `null` and whose `value` is its text. In a state diagram, `A %% x`,
+  U+2029, a line `%% end`, and a line `B` have the comments `%% x`, `%% end`,
+  and `B`, and the only state A.
 - `directives`: every `%%{ ... }%%` directive, with its `name`, its `value` (the
   text inside), and whether it is `closed`.
 - `frontmatter`: the frontmatter, or `null`. Its `value` is the YAML text as
@@ -215,8 +218,10 @@ type ids. The names and fields are those of the specification's
 [`ast.md`](../spec/docs/ast.md),
 [`ast/flowchart.md`](../spec/docs/ast/flowchart.md),
 [`ast/sequence.md`](../spec/docs/ast/sequence.md),
-[`ast/class.md`](../spec/docs/ast/class.md), and
-[`ast/state.md`](../spec/docs/ast/state.md).
+[`ast/class.md`](../spec/docs/ast/class.md),
+[`ast/state.md`](../spec/docs/ast/state.md),
+[`ast/er.md`](../spec/docs/ast/er.md), and
+[`ast/gantt.md`](../spec/docs/ast/gantt.md).
 
 ## Walking the tree
 
@@ -296,18 +301,36 @@ these differences:
   name (` `` `) and an empty generic type (`~~`) that does not end a class name,
   as in `class A~~B`; an empty string as a cardinality or a tooltip, and `~~` at
   the end of a class name, are accepted. In a state diagram, it holds for the
-  empty description block, as in `A accDescr {} --> B`.
+  empty description block, as in `A accDescr {} --> B`. In an ER diagram, it
+  holds for the empty description block, as in `A accDescr {} ||--o{ B : x`, and
+  for empty backquotes inside an attribute, between its type and its name or
+  before its keys or its comment; between two attributes they are accepted. In a
+  Gantt chart, it holds for the empty description block, the empty href
+  (`href ""`), and the empty call inside a click statement, between its ids and
+  its first part or between its two parts, as in `click id1 href "" call f()`;
+  where a statement starts, each of them is accepted as a statement of its own.
 - In a sequence diagram, a comment starts at its `%%`, and a number may be
   followed by `%%`, while mermaid.js takes the character before the `%%` into
   the comment where a rule would start there: `autonumber 10%% c` starts at 10
   here, and mermaid.js rejects it; a line `C%% c` is rejected here, and
-  mermaid.js reads it as a comment
+  mermaid.js reads it as a comment. In a Gantt chart, a `%` right after the
+  first character of a unit is a character of the unit, while mermaid.js reads
+  that character and the rest of the line as a comment: `a% : 1d` is a task here
+  and no task in mermaid.js, and `t%itle T` is rejected here
   ([`comment-takes-character`](../spec/docs/known-divergences/comment-takes-character.md)).
 - In a class diagram, a comment after a statement ends at the end of its line,
   while mermaid.js takes the line breaks after it and reads the next line as
   part of the same statement: `A --> B %% c` followed by a line `class C` is
-  accepted here, and mermaid.js rejects it
+  accepted here, and mermaid.js rejects it. In a Gantt chart, a `%` comment in a
+  click statement ends at its line too, while mermaid.js takes the line feeds
+  after it: `click id1 %c` followed by a line `href "u"` is rejected here, and
+  mermaid.js sets the link
   ([`comment-takes-line-break`](../spec/docs/known-divergences/comment-takes-line-break.md)).
+- In a Gantt chart, `%%{` that starts no directive is a comment wherever a unit
+  starts, while mermaid.js rejects it where its lexer stands right at it, as
+  right after a unit: `gantt%%{ }%%` followed by a line `title T` is accepted
+  here
+  ([`percent-brace-after-unit`](../spec/docs/known-divergences/percent-brace-after-unit.md)).
 - In a class diagram, a backquoted name and a generic type may start with any
   character: ``class `note` `` declares the class `note`, which mermaid.js
   rejects, and in ``A `"1"` --> B`` mermaid.js reads the string `"1"` as a
@@ -319,6 +342,18 @@ these differences:
   text then ends right after `accTitle:` and a few other forms; `parse()` throws
   for it
   ([`headerless-empty-ending`](../spec/docs/known-divergences/headerless-empty-ending.md)).
+- `parse()` finds the diagram type at the start of the text only: a text whose
+  header is that of another diagram type and that holds `C4Container`,
+  `C4Component`, `C4Dynamic`, or `C4Deployment` after it is read as that
+  diagram, while mermaid.js hands it to its C4 parser
+  ([`c4-keyword-anywhere`](../spec/docs/known-divergences/c4-keyword-anywhere.md)).
+- A line of `%%` alone, or `%%{ }%%`, before the header is a comment in every
+  diagram type, while mermaid.js rejects such a line before the header of a
+  flowchart and of an ER diagram, a line `%%{ }%%` before that of a state
+  diagram, and a line of spaces after such a line before that of a class or an
+  ER diagram, and every such line, with a line of spaces after it or without,
+  before that of a Gantt chart
+  ([`bare-percent-line-before-header`](../spec/docs/known-divergences/bare-percent-line-before-header.md)).
 - `parse()` does not know the site configuration, so a flowchart with more edges
   than `maxEdges` (500 by default) is accepted.
 - A rejection for one of these differences is a `ParseError` like any other.
@@ -329,7 +364,9 @@ these differences:
   [`ast/flowchart.md`](../spec/docs/ast/flowchart.md) (the flowchart nodes),
   [`ast/sequence.md`](../spec/docs/ast/sequence.md) (the sequence nodes),
   [`ast/class.md`](../spec/docs/ast/class.md) (the class nodes),
-  [`ast/state.md`](../spec/docs/ast/state.md) (the state nodes), and
+  [`ast/state.md`](../spec/docs/ast/state.md) (the state nodes),
+  [`ast/er.md`](../spec/docs/ast/er.md) (the ER nodes),
+  [`ast/gantt.md`](../spec/docs/ast/gantt.md) (the Gantt nodes), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of

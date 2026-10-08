@@ -6,7 +6,7 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
@@ -30,7 +30,12 @@ JSON でないテキストは何も変えない。
 mermaid.js は、それを書き手の意図どおりには読まないからである。
 文字列は、その各文字を位置をキーにして与え、
 `links A: "ab"` はリンク `0` と `1` を与える。
-配列は各要素を位置をキーにして与え、数は何も与えない。
+配列は各要素を位置をキーにして与え、
+数、`true`、`false`、`null` は何も与えない。
+
+`#` は文のテキストを終わらせる。
+そのため、`links A: {"Docs": "https://x.example/#top"}` のように
+フラグメントのある URL は、JSON でないテキストを残し、その文を報告する。
 
 `links A:` や `properties A:` のようにテキストのない文も報告する。
 その文は参加者に何も与えない。
@@ -68,3 +73,12 @@ sequenceDiagram
 
 - [sequence-no-link-without-separator](./sequence-no-link-without-separator.ja.md)
 - [no-ignored-init-directive](./no-ignored-init-directive.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/sequence-no-invalid-json.ts)
+- [テストのソース](../../tests/rules/sequence-no-invalid-json.test.ts)
+
+<!-- end auto-generated rule resources -->

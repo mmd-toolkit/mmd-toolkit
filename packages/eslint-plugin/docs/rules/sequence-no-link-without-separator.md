@@ -7,7 +7,7 @@ Disallow a `link` statement without the `@` between its label and its URL.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
 
 <!-- end auto-generated rule notice -->
 
@@ -22,8 +22,10 @@ This rule reports a `link` statement whose text holds no `@`. It applies to
 `sequence`.
 
 Without the `@`, the label is the text without its last two characters, and the
-URL is the whole text: `link A: Dashboard https://x.example` gives the label
-`Dashboard https://x.examp` and the URL `Dashboard https://x.example`.
+URL is the whole text, each without the whitespace at its ends:
+`link A: Dashboard https://x.example` gives the label
+`Dashboard https://x.examp` and the URL `Dashboard https://x.example`, and
+`link A: no at` the label `no`.
 
 A `link` statement with no text is reported too: `link A:` gives the participant
 a link whose label and URL are both empty.
@@ -52,3 +54,12 @@ This rule has no options.
 ## Related Rules
 
 - [sequence-no-invalid-json](./sequence-no-invalid-json.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/sequence-no-link-without-separator.ts)
+- [Tests source](../../tests/rules/sequence-no-link-without-separator.test.ts)
+
+<!-- end auto-generated rule resources -->

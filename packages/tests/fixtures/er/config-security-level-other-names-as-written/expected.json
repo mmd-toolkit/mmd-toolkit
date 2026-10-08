@@ -1,0 +1,66 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Under a securityLevel that is not one of mermaid.js's values, the name, the alias, the type, the name, and the comment of an attribute, the role, the id of a subgraph, and its nodes are recorded as written; only the title of a subgraph is replaced, and here it is the id."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-a<b>=c<br>d-0",
+        "attributes": [
+          {
+            "type": "a<b>=c<br>d",
+            "name": "a<b>=c<br>d",
+            "keys": [
+              "PK"
+            ],
+            "comment": "a<b>=c<br>d"
+          }
+        ],
+        "alias": "a<b>=c<br>d",
+        "cssStyles": [],
+        "name": "a<b>=c<br>d",
+        "classes": []
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-a<b>=c<br>d-0",
+        "roleA": "a<b>=c<br>d",
+        "entityB": "entity-B-1",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "a<b>=c<br>d",
+        "nodes": [
+          "a<b>=c<br>d"
+        ],
+        "title": "a&lt;b&gt;&equals;c<br/>d",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

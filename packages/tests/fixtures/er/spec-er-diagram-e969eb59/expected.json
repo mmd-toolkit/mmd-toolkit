@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 1240,
+    "test": "when parsing ER diagram it... > syntax fixes for special characters and numbers > mixed scenarios > should handle attributes with numbers in names (but not starting)"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-ENTITY-0",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "name1",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "value2",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "float",
+            "name": "point3_5",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "ENTITY",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

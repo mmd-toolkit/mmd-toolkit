@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The cardinalities, numbers, and lines, rule 12: `1\"B\"` after a line is a number; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nerDiagramA ||--1\"B\" : x\n---------------^\nExpecting 'ZERO_OR_ONE', 'ZERO_OR_MORE', 'ONE_OR_MORE', 'ONLY_ONE', 'MD_PARENT', got 'ENTITY_ONE'"
+  }
+}

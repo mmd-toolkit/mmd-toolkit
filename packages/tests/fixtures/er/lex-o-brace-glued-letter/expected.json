@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The cardinalities, numbers, and lines, rules 6 and 14: `}o--o{B` with the name glued to `o{`; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-A-0",
+        "roleA": "has",
+        "entityB": "entity-B-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ZERO_OR_MORE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity in an includes item is its placeholder in the Db tokens."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [
+      "ﬂ°x¶ß"
+    ],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

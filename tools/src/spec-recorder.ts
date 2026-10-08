@@ -90,6 +90,10 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/state/parser/stateDiagram.jison": ["default", "parser"],
   "diagrams/state/stateDb.js": ["StateDB"],
   "diagrams/state/stateCommon.js": ["DEFAULT_DIAGRAM_DIRECTION"],
+  "diagrams/er/parser/erDiagram.jison": ["default"],
+  "diagrams/er/erDb.js": ["ErDB"],
+  "diagrams/gantt/parser/gantt.jison": ["parser"],
+  "diagrams/gantt/ganttDb.js": ["default"],
   "config.js": [
     "setConfig",
     "getConfig",
@@ -316,6 +320,14 @@ export async function recordSpecFile(
     },
     "diagrams/state/stateDb.js": { StateDB: anything },
     "diagrams/state/stateCommon.js": { DEFAULT_DIAGRAM_DIRECTION: anything },
+    "diagrams/er/parser/erDiagram.jison": {
+      default: { parser: { parse: record, yy: anything }, parse: record },
+    },
+    "diagrams/er/erDb.js": { ErDB: anything },
+    "diagrams/gantt/parser/gantt.jison": {
+      parser: { parse: record, yy: anything },
+    },
+    "diagrams/gantt/ganttDb.js": { default: anything },
     "config.js": Object.fromEntries(
       (STUBBED_MODULES["config.js"] ?? []).map((name) => [name, anything]),
     ),

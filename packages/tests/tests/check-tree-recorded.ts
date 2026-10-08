@@ -49,6 +49,8 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "sequence",
   "class",
   "state",
+  "er",
+  "gantt",
 ]
 
 let corpusTrees: Promise<readonly CorpusTree[]> | undefined

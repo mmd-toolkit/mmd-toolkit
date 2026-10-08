@@ -20,6 +20,7 @@ const REMOVAL_MARKS = [
   "comment-takes-character",
   "comment-takes-line-break",
   "name-start-reads-unit",
+  "percent-brace-after-unit",
 ]
 
 /** The mark of the divergence about a bare `%%` line before the header. */
@@ -397,6 +398,29 @@ describe("specifiedRunOf: marks of lexer rules", () => {
     ).toEqual(
       await specifiedRunOf(CLASS_NEEDS_BOTH, "name-start-reads-unit", {}),
     )
+  })
+
+  it("takes the three gantt rules out together, for an input that is read as the specification reads it only then", async () => {
+    // A `%` comment right after the header takes its line feed, and the `%%{`
+    // on the next line is then directly after the header.
+    const text = "gantt% c\n%%{ }%%"
+    for (const removed of [
+      ["comment-takes-character"],
+      ["comment-takes-line-break", "percent-brace-after-unit"],
+    ] as const) {
+      const partly = await runMermaidWithEmbeddedData(text, {
+        withoutDivergences: removed,
+      })
+      expect(partly.outcome.accepted, removed.join()).toBe(removed.length === 2)
+    }
+    for (const mark of [
+      "comment-takes-character",
+      "comment-takes-line-break",
+      "percent-brace-after-unit",
+    ]) {
+      const run = await specifiedRunOf(text, mark, undefined)
+      expect(run?.outcome.accepted, mark).toBe(true)
+    }
   })
 
   it("reads with the site configuration, whose values the embedded configuration has", async () => {

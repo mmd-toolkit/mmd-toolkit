@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A direction statement is no node: S has `dir` RL and no nodes."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [],
+        "title": "S",
+        "classes": [],
+        "cssStyles": [],
+        "dir": "RL"
+      }
+    ]
+  }
+}

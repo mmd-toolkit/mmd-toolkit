@@ -6,7 +6,7 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
@@ -22,6 +22,9 @@ mermaid.js はどの `accDescr` の文も受理し、
 対象の図種は `classDiagram` である。
 
 `accDescr:` も、テキストのある説明のブロックも、説明を設定する。
+テキストのない `accDescr:` は、空行、コメント行、ディレクティブを飛ばして、
+テキストを持つ次の行を説明にする。
+そうした行が後になければ、mermaid.js はそれを拒否する。
 1 行の形とブロックの形を混ぜても、どちらが先でも、
 後に書いたほうの説明が使われる。
 `accDescr: first` と `accDescr: second` の後、説明は `second` になり、
@@ -65,3 +68,12 @@ classDiagram
 - [class-no-duplicate-title](./class-no-duplicate-title.ja.md)
 - [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.ja.md)
 - [sequence-no-duplicate-description](./sequence-no-duplicate-description.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/class-no-duplicate-description.ts)
+- [テストのソース](../../tests/rules/class-no-duplicate-description.test.ts)
+
+<!-- end auto-generated rule resources -->

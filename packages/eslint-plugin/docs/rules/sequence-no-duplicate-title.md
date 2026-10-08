@@ -7,7 +7,7 @@ Disallow a `title` or `accTitle` statement that sets its title again.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
 
 <!-- end auto-generated rule notice -->
 
@@ -24,9 +24,12 @@ This rule reports every `title` statement after the first one, written as
 applies to `sequence`.
 
 After `title first` and `title second`, the title is `second`, and so for
-`accTitle`. The two titles are separate values: `title first` and
-`accTitle: second` set both, and neither is reported. A statement inside a
-block, such as `loop`, sets the title of the whole diagram and is counted too.
+`accTitle`. `accTitle:` with no text sets the accessible title too: it takes the
+next line that holds text as the accessible title, past empty lines, comment
+lines, and directives, and when no such line follows, it makes it empty. The two
+titles are separate values: `title first` and `accTitle: second` set both, and
+neither is reported. A statement inside a block, such as `loop`, sets the title
+of the whole diagram and is counted too.
 
 A `title` statement also replaces the title of the frontmatter without an error:
 with `title: From frontmatter` in the frontmatter, `title From statement` gives
@@ -68,3 +71,12 @@ This rule has no options.
 
 - [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.md)
 - [sequence-no-duplicate-description](./sequence-no-duplicate-description.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/sequence-no-duplicate-title.ts)
+- [Tests source](../../tests/rules/sequence-no-duplicate-title.test.ts)
+
+<!-- end auto-generated rule resources -->

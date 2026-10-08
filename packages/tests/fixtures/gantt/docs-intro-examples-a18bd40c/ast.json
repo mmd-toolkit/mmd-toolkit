@@ -1,0 +1,1364 @@
+{
+  "type": "Root",
+  "diagramType": "gantt",
+  "body": {
+    "type": "GanttDiagram",
+    "body": [
+      {
+        "type": "GanttDateFormatStatement",
+        "value": {
+          "type": "GanttLiteral",
+          "value": " YYYY-MM-DD",
+          "range": [
+            17,
+            28
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 11
+            },
+            "end": {
+              "line": 2,
+              "column": 22
+            }
+          }
+        },
+        "range": [
+          6,
+          28
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 0
+          },
+          "end": {
+            "line": 2,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "GanttTitleStatement",
+        "value": {
+          "type": "GanttLiteral",
+          "value": "Adding GANTT diagram to mermaid",
+          "range": [
+            35,
+            66
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 6
+            },
+            "end": {
+              "line": 3,
+              "column": 37
+            }
+          }
+        },
+        "range": [
+          29,
+          66
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 0
+          },
+          "end": {
+            "line": 3,
+            "column": 37
+          }
+        }
+      },
+      {
+        "type": "GanttExcludesStatement",
+        "items": [
+          {
+            "type": "Identifier",
+            "name": "weekdays",
+            "range": [
+              76,
+              84
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 9
+              },
+              "end": {
+                "line": 4,
+                "column": 17
+              }
+            }
+          },
+          {
+            "type": "Identifier",
+            "name": "2014-01-10",
+            "range": [
+              85,
+              95
+            ],
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 18
+              },
+              "end": {
+                "line": 4,
+                "column": 28
+              }
+            }
+          }
+        ],
+        "range": [
+          67,
+          95
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 4,
+            "column": 28
+          }
+        }
+      },
+      {
+        "type": "GanttSectionStatement",
+        "name": {
+          "type": "GanttLiteral",
+          "value": "A section",
+          "range": [
+            105,
+            114
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 8
+            },
+            "end": {
+              "line": 6,
+              "column": 17
+            }
+          }
+        },
+        "range": [
+          97,
+          114
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 0
+          },
+          "end": {
+            "line": 6,
+            "column": 17
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Completed task            ",
+          "range": [
+            115,
+            141
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 0
+            },
+            "end": {
+              "line": 7,
+              "column": 26
+            }
+          }
+        },
+        "tags": [
+          {
+            "type": "Identifier",
+            "name": "done",
+            "range": [
+              142,
+              146
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 27
+              },
+              "end": {
+                "line": 7,
+                "column": 31
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "des1",
+            "range": [
+              151,
+              155
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 36
+              },
+              "end": {
+                "line": 7,
+                "column": 40
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "2014-01-06",
+            "range": [
+              157,
+              167
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 42
+              },
+              "end": {
+                "line": 7,
+                "column": 52
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "2014-01-08",
+            "range": [
+              168,
+              178
+            ],
+            "loc": {
+              "start": {
+                "line": 7,
+                "column": 53
+              },
+              "end": {
+                "line": 7,
+                "column": 63
+              }
+            }
+          }
+        ],
+        "range": [
+          115,
+          178
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 0
+          },
+          "end": {
+            "line": 7,
+            "column": 63
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Active task               ",
+          "range": [
+            179,
+            205
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 0
+            },
+            "end": {
+              "line": 8,
+              "column": 26
+            }
+          }
+        },
+        "tags": [
+          {
+            "type": "Identifier",
+            "name": "active",
+            "range": [
+              206,
+              212
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 27
+              },
+              "end": {
+                "line": 8,
+                "column": 33
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "des2",
+            "range": [
+              215,
+              219
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 36
+              },
+              "end": {
+                "line": 8,
+                "column": 40
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "2014-01-09",
+            "range": [
+              221,
+              231
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 42
+              },
+              "end": {
+                "line": 8,
+                "column": 52
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "3d",
+            "range": [
+              233,
+              235
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 54
+              },
+              "end": {
+                "line": 8,
+                "column": 56
+              }
+            }
+          }
+        ],
+        "range": [
+          179,
+          235
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 56
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Future task               ",
+          "range": [
+            236,
+            262
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 0
+            },
+            "end": {
+              "line": 9,
+              "column": 26
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "des3",
+            "range": [
+              272,
+              276
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 36
+              },
+              "end": {
+                "line": 9,
+                "column": 40
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "after des2",
+            "range": [
+              278,
+              288
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 42
+              },
+              "end": {
+                "line": 9,
+                "column": 52
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "5d",
+            "range": [
+              290,
+              292
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 54
+              },
+              "end": {
+                "line": 9,
+                "column": 56
+              }
+            }
+          }
+        ],
+        "range": [
+          236,
+          292
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 56
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "Future task2               ",
+          "range": [
+            293,
+            320
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 0
+            },
+            "end": {
+              "line": 10,
+              "column": 27
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "des4",
+            "range": [
+              330,
+              334
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 37
+              },
+              "end": {
+                "line": 10,
+                "column": 41
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "after des3",
+            "range": [
+              336,
+              346
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 43
+              },
+              "end": {
+                "line": 10,
+                "column": 53
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "5d",
+            "range": [
+              348,
+              350
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 55
+              },
+              "end": {
+                "line": 10,
+                "column": 57
+              }
+            }
+          }
+        ],
+        "range": [
+          293,
+          350
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 0
+          },
+          "end": {
+            "line": 10,
+            "column": 57
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      350
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 10,
+        "column": 57
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "gantt",
+      "range": [
+        0,
+        5
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "dateFormat",
+      "range": [
+        6,
+        16
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " YYYY-MM-DD",
+      "range": [
+        17,
+        28
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 11
+        },
+        "end": {
+          "line": 2,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        29,
+        34
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Adding GANTT diagram to mermaid",
+      "range": [
+        35,
+        66
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "excludes",
+      "range": [
+        67,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "weekdays",
+      "range": [
+        76,
+        84
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 9
+        },
+        "end": {
+          "line": 4,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Identifier",
+      "value": "2014-01-10",
+      "range": [
+        85,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 18
+        },
+        "end": {
+          "line": 4,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        97,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "A section",
+      "range": [
+        105,
+        114
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 8
+        },
+        "end": {
+          "line": 6,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Completed task            ",
+      "range": [
+        115,
+        141
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 0
+        },
+        "end": {
+          "line": 7,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        141,
+        142
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 26
+        },
+        "end": {
+          "line": 7,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "done",
+      "range": [
+        142,
+        146
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 27
+        },
+        "end": {
+          "line": 7,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        146,
+        147
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 31
+        },
+        "end": {
+          "line": 7,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "des1",
+      "range": [
+        151,
+        155
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 36
+        },
+        "end": {
+          "line": 7,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        155,
+        156
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 40
+        },
+        "end": {
+          "line": 7,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2014-01-06",
+      "range": [
+        157,
+        167
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 42
+        },
+        "end": {
+          "line": 7,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        167,
+        168
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 52
+        },
+        "end": {
+          "line": 7,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2014-01-08",
+      "range": [
+        168,
+        178
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 53
+        },
+        "end": {
+          "line": 7,
+          "column": 63
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Active task               ",
+      "range": [
+        179,
+        205
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        205,
+        206
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 26
+        },
+        "end": {
+          "line": 8,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "active",
+      "range": [
+        206,
+        212
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 27
+        },
+        "end": {
+          "line": 8,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        212,
+        213
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 33
+        },
+        "end": {
+          "line": 8,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "des2",
+      "range": [
+        215,
+        219
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 36
+        },
+        "end": {
+          "line": 8,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        219,
+        220
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 40
+        },
+        "end": {
+          "line": 8,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2014-01-09",
+      "range": [
+        221,
+        231
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 42
+        },
+        "end": {
+          "line": 8,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        231,
+        232
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 52
+        },
+        "end": {
+          "line": 8,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "3d",
+      "range": [
+        233,
+        235
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 54
+        },
+        "end": {
+          "line": 8,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Future task               ",
+      "range": [
+        236,
+        262
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        262,
+        263
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 26
+        },
+        "end": {
+          "line": 9,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "des3",
+      "range": [
+        272,
+        276
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 36
+        },
+        "end": {
+          "line": 9,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        276,
+        277
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 40
+        },
+        "end": {
+          "line": 9,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "after des2",
+      "range": [
+        278,
+        288
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 42
+        },
+        "end": {
+          "line": 9,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        288,
+        289
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 52
+        },
+        "end": {
+          "line": 9,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "5d",
+      "range": [
+        290,
+        292
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 54
+        },
+        "end": {
+          "line": 9,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Future task2               ",
+      "range": [
+        293,
+        320
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        320,
+        321
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 27
+        },
+        "end": {
+          "line": 10,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "des4",
+      "range": [
+        330,
+        334
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 37
+        },
+        "end": {
+          "line": 10,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        334,
+        335
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 41
+        },
+        "end": {
+          "line": 10,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "after des3",
+      "range": [
+        336,
+        346
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 43
+        },
+        "end": {
+          "line": 10,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        346,
+        347
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 53
+        },
+        "end": {
+          "line": 10,
+          "column": 54
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "5d",
+      "range": [
+        348,
+        350
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 55
+        },
+        "end": {
+          "line": 10,
+          "column": 57
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    351
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 11,
+      "column": 0
+    }
+  }
+}

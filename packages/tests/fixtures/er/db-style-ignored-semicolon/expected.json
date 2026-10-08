@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The `;` of a line with `style`, `:#` and `;` is ignored by the line rule: A has `fill:#f00`, and B is another entity."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [
+          "fill:#f00"
+        ],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

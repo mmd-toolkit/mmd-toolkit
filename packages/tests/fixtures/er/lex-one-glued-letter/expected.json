@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The cardinalities, numbers, and lines, rule 13: `1B` after a line is the number `1` and a name; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nerDiagramA 1--1B : has\n--------------^\nExpecting 'ZERO_OR_ONE', 'ZERO_OR_MORE', 'ONE_OR_MORE', 'ONLY_ONE', 'MD_PARENT', got 'NUM'"
+  }
+}

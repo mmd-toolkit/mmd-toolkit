@@ -3,7 +3,7 @@
 Japanese version:
 [bare-percent-line-before-header.ja.md](./bare-percent-line-before-header.ja.md)
 
-Diagram types: flowchart, class, and state. This is one of the
+Diagram types: flowchart, class, state, er, and gantt. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -31,8 +31,9 @@ that has a line break after it together with the rest of its line, finds the
 header, and then hands the text with the bare `%%` lines still in it to the
 lexer of the detected diagram. Where that lexer reads such a line as a comment,
 as the lexers of sequence, class, and state read `%%` alone, both accept the
-input. Where it does not, mermaid.js rejects the input, and this specification
-accepts it: that is this divergence.
+input. Where it does not, as the lexer of er never does, and as the lexer of
+gantt does not before the header, mermaid.js rejects the input, and this
+specification accepts it: that is this divergence.
 
 ## The difference
 
@@ -70,6 +71,27 @@ Each example is a whole diagram.
 5. The same with a line `%%{ }%%` in place of the `%%` line: `%%{ }%%`, a line
    of two spaces, `classDiagram`, and `class A`.
 
+6. A line of `%%` alone before an ER header:
+
+   ```mmd
+   %%
+   erDiagram
+     A ||--o{ B : has
+   ```
+
+7. A line `%%{ }%%` before an ER header, and a line of whitespace only, not
+   empty, between a bare `%%` line and an ER header: `%%`, a line of two spaces,
+   `erDiagram`, and `A`.
+
+8. A line of `%%` alone, a line `%%{ }%%`, or a line of `%%` alone and a line of
+   two spaces, before a gantt header:
+
+   ```mmd
+   %%
+   gantt
+     title T
+   ```
+
 | Example | mermaid.js                                          | This specification                       |
 | ------- | --------------------------------------------------- | ---------------------------------------- |
 | 1       | rejected: the `%%` is an id before the header       | a flowchart with the edge A to B         |
@@ -77,12 +99,20 @@ Each example is a whole diagram.
 | 3       | rejected: `%%` is ignored text and `{` fits nothing | a state diagram with the transition to A |
 | 4       | rejected: the line of spaces is a `newline` unit    | a class diagram with the class A         |
 | 5       | rejected: the line of spaces is a `newline` unit    | a class diagram with the class A         |
+| 6       | rejected: the lexer has no rule for `%`             | an ER diagram with the relationship      |
+| 7       | rejected: the lexer has no rule for `%`             | an ER diagram with the entity A          |
+| 8       | rejected: the line feed is a `newline` unit         | a Gantt chart with the title T           |
 
 [fixture: flowchart/header-after-bare-percent-line] [fixture:
 flowchart/header-after-empty-braces-line] [fixture:
 state/header-after-empty-braces-line] [fixture:
 class/header-after-bare-percent-then-whitespace-line] [fixture:
-class/header-after-empty-braces-then-whitespace-line]
+class/header-after-empty-braces-then-whitespace-line] [fixture:
+er/header-after-bare-percent-line] [fixture: er/header-after-empty-braces-line]
+[fixture: er/header-after-bare-percent-line-and-whitespace-line] [fixture:
+gantt/header-after-bare-percent-line] [fixture:
+gantt/header-after-empty-braces-line] [fixture:
+gantt/header-after-bare-percent-line-and-whitespace-line]
 
 The neighbouring forms are read in the same way: in flowchart and state, a line
 `%%{-x}%%` or `%%{}`, which starts no directive, is a bare `%%` line, a comment
@@ -120,10 +150,10 @@ rejects one that mermaid.js accepts here.
 
 A line of `%%` alone, or `%%{ }%%`, before the header is read as a comment by
 this toolkit in every diagram type, and by mermaid.js only in sequence, class,
-and state (and not before a line of spaces in class). To write a diagram that
-both read the same, write comments before the header as comment lines, with at
-least one character after the `%%`, and leave no line of spaces between them and
-the header.
+and state (and not before a line of spaces in class), never in er or gantt. To
+write a diagram that both read the same, write comments before the header as
+comment lines, with at least one character after the `%%`, and leave no line of
+spaces between them and the header.
 
 ## Why mermaid.js reads it so
 
@@ -138,9 +168,12 @@ whose
 [`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)
 removes only comment lines with at least one character after the `%%`, so the
 bare `%%` lines reach the lexer. The flowchart lexer reads `%%` as an id, the
-state lexer reads `%%` as ignored text and has no rule for a `{` there, and the
+state lexer reads `%%` as ignored text and has no rule for a `{` there, the
 class lexer reads a line of whitespace only as a `newline` unit, which its
-grammar does not take before the header. The open issue
+grammar does not take before the header, the er lexer has no rule for `%` at
+all, and the gantt lexer reads the `%%` as a comment but the line feed after it
+as a `newline` unit, which its grammar does not take before the header. The open
+issue
 [mermaid-js/mermaid#8196](https://github.com/mermaid-js/mermaid/issues/8196)
 records that the two comment-stripping methods of detection and preprocessing
 disagree.

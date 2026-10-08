@@ -7,7 +7,7 @@ Disallow writing the label of a class again, differently.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
 
 <!-- end auto-generated rule notice -->
 
@@ -51,3 +51,12 @@ This rule has no options.
 ## Related Rules
 
 - [flowchart-no-redefined-vertex](./flowchart-no-redefined-vertex.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/class-no-redefined-class.ts)
+- [Tests source](../../tests/rules/class-no-redefined-class.test.ts)
+
+<!-- end auto-generated rule resources -->

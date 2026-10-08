@@ -1,6 +1,8 @@
 import type { Node } from "./ast.ts"
 import { classVisitorKeys } from "./visitor-keys/class.ts"
+import { erVisitorKeys } from "./visitor-keys/er.ts"
 import { flowchartVisitorKeys } from "./visitor-keys/flowchart.ts"
+import { ganttVisitorKeys } from "./visitor-keys/gantt.ts"
 import { sequenceVisitorKeys } from "./visitor-keys/sequence.ts"
 import { stateVisitorKeys } from "./visitor-keys/state.ts"
 
@@ -27,4 +29,6 @@ export const visitorKeys: VisitorKeys = {
   ...sequenceVisitorKeys,
   ...classVisitorKeys,
   ...stateVisitorKeys,
+  ...erVisitorKeys,
+  ...ganttVisitorKeys,
 }

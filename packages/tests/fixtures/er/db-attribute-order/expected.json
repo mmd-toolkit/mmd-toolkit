@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The attributes are in the written order, and a name written twice is kept twice."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [
+          {
+            "type": "int",
+            "name": "c",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "a",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "b",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "a",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

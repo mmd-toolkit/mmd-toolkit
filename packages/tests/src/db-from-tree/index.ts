@@ -2,8 +2,12 @@ import type { EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary } from "../types.ts"
 import { classDbOf } from "./class.ts"
 import type { ClassDiagram } from "./class-tree.ts"
+import { erDbOf } from "./er.ts"
+import type { ErDiagram } from "./er-tree.ts"
 import { flowchartDbOf } from "./flowchart.ts"
 import type { FlowchartDiagram } from "./flowchart-tree.ts"
+import { ganttDbOf } from "./gantt.ts"
+import type { GanttDiagram } from "./gantt-tree.ts"
 import type { ColorAnswer } from "./sequence.ts"
 import { sequenceDbOf } from "./sequence.ts"
 import type { SequenceDiagram } from "./sequence-tree.ts"
@@ -21,8 +25,10 @@ export interface ErrorDiagram extends TreeNode {
 /** The body of a tree, by diagram type. */
 export type DiagramBody =
   | ClassDiagram
+  | ErDiagram
   | ErrorDiagram
   | FlowchartDiagram
+  | GanttDiagram
   | SequenceDiagram
   | StateDiagram
 
@@ -59,6 +65,10 @@ export function dbFromTree(
       return classDbOf(text, root, root.body, embedded)
     case "StateDiagram":
       return stateDbOf(text, root, root.body, embedded)
+    case "ErDiagram":
+      return erDbOf(text, root, root.body, embedded)
+    case "GanttDiagram":
+      return ganttDbOf(text, root, root.body, embedded)
     default:
       throw new Error(`dbFromTree: unknown body type ${bodyType}`)
   }

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Detection: a line `%%{ }%%` before the header is a comment here; mermaid.js rejects it (bare-percent-line-before-header)."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%{ }%%erDiagramA\n^\nExpecting 'ER_DIAGRAM', got '%'"
+  }
+}

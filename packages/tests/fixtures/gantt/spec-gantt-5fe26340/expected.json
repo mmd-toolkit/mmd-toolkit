@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/gantt/parser/gantt.spec.js",
+    "line": 265,
+    "test": "when parsing a gantt diagram it > should allow for a accessibility title and multiline description (accDescr)"
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": " YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "Gantt Diagram",
+    "accDescr": "Tasks for Q4 row1\nrow2",
+    "sections": [
+      "Section"
+    ],
+    "tasks": [
+      {
+        "section": "Section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-01-01"
+          },
+          "endTime": {
+            "data": "30d"
+          }
+        },
+        "task": "A task ",
+        "classes": [],
+        "id": "a1",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

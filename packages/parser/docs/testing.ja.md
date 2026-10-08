@@ -16,7 +16,8 @@ fixture としてコーパスに足します。
 ## fixture
 
 `tests/fixtures.test.ts` は、`common/`、`flowchart/`、`sequence/`、
-`class/`、`state/` のすべての fixture を parse し、次を確かめます。
+`class/`、`state/`、`er/`、`gantt/` のすべての fixture を parse し、
+次を確かめます。
 
 - パースの結果が、fixture がパーサーのために記録したものと同じであること
   （[記録したパースの結果](#記録したパースの結果)を参照）。
@@ -73,9 +74,20 @@ fixture としてコーパスに足します。
   空白でない文字の直後にある `%%` を持つこと。
   直後かどうかは図のテキストの上で決め、
   単位も、規則が一致を始める位置も、パーサーの字句解析器から取ります。
+  Gantt チャートでは、`}` と空白以外の、単位の 1 文字目の直後に `%` があること。
+  パーサーの単位と図のテキストから見つけます。
 - `comment-takes-line-break`: 入力が、
   行の中で単位の後にある図のコメントを持つクラス図であること。
   そのコメントは、パーサーの字句解析器と単位から求めます。
+  Gantt チャートでは、
+  mermaid.js が直接たどり着く、印が `%` のコメントを持つこと。
+  直接たどり着くかどうかは
+  [コメント](../../spec/docs/diagrams/gantt.ja.md#コメント) の定めのとおりで、
+  パーサーの単位、コメント、図のテキストから求めます。
+  `newline` 単位の改行は、`%` の前の空白として数えます。
+- `percent-brace-after-unit`: 入力が、ディレクティブを始めない `%%{` で、
+  mermaid.js が直接たどり着くものを持つ Gantt チャートであること。
+  同じように求めます。
 - `name-start-reads-unit`: 入力が、テキストが `"`、
   `~`（バッククォートの名前のとき）、`<<`、`>>`、
   差異が挙げるキーワードのどれかで始まる、
@@ -84,6 +96,13 @@ fixture としてコーパスに足します。
 - `html-tag-in-frontmatter`: フロントマターで始まるタグが、
   mermaid.js が `'` として読む `"` を変えること。
   それは、パーサーのフロントマターと属性の引用符の読み方から求めます。
+- `c4-keyword-anywhere`: パーサーが C4 以外の図種を検出し、
+  検出点からの図のテキストが、
+  mermaid.js がどこでも探す 4 つのキーワードのどれかを含むこと。
+  図のテキストは、パーサーの字句解析器が、
+  ディレクティブとコメント領域を除いて読みます。
+- `bare-percent-line-before-header`: パーサーの検出が、
+  ヘッダーの前で `%%` だけの行を読んで通り過ぎること。
 
 `embedded-data-opaque` の印の付いた fixture には、この確かめはありません。
 mermaid.js は、パーサーが読まない埋め込みのデータの中身のためにそれを拒否し、
@@ -144,11 +163,31 @@ flowchart/gram-subgraph-name-click-comma]
 入力から、コメント領域と空の形を除いたものです。
 空の形とは、それぞれの空の文字列、`call` から `)` までのそれぞれの空の呼び出し、
 文でない空の説明ブロックの `accDescr` から `}` まで、
-そしてクラス図では、
-それぞれの空のバッククォートの名前と空のジェネリクスの型です。
+クラス図では、それぞれの空のバッククォートの名前と空のジェネリクスの型、
+ER 図では、それぞれの `empty-backquotes` 単位です。
+ER 図の空のバッククォートは、どこにあっても mermaid.js は何も読みません。
 空の説明ブロックが文でないのは、
 文の始まりでも、文やヘッダーの区切りの前でもない、文の中にあり、
 state の文の `textBeforeBody` が持たないときです。
+文を区切るもののない ER 図では、ブロックが文の中にあるのは、
+前の文が終わっていないときです。
+濃度、線、`:`、`:::`、`,`、`[` の後と、
+`class` の文の最初の名前の並びの中がそれです。
+ブロックの後の単位がその文を続けるときもそうです。
+濃度、`:::`、`{`、`[`、`:`、`,` がそれです。
+[fixture: er/div-empty-description-block-in-relationship]
+[fixture: er/div-empty-description-block-in-class]
+[fixture: er/gram-empty-description-block-between-names]
+Gantt チャートでは、空の href
+（`href` と、間に何もない 2 つの `"`）も空の形です。
+空の href と空の call は、空の説明ブロックと同じく、文の始まりでは文です。
+そこでは文を区切るものがなく、空の形が文の中にあるのは click の文の中だけです。
+それは、id と最初の部分の間と、2 つの部分の間で、
+空の形の後の単位が 2 つ目の部分を始めるときです。
+[fixture: gantt/div-empty-href-before-call]
+[fixture: gantt/div-empty-description-block-between-href-and-call]
+[fixture: gantt/gram-empty-href-line]
+[fixture: gantt/gram-click-href-then-empty-href]
 ブロックが文かどうかは、その前の、除く空の形を除いて決めます。
 間に空白しかない、続けて書いたブロックは、
 最後のブロックの後に続くものでまとめて決めます。
@@ -208,6 +247,9 @@ fixture には参照入力が要りません。
 `visitorKeys` の順に子の欄をたどる道具は、子のノードにソースの順で出会います。
 ただし、開く矢印とラベルを持つ FlowchartLink では、
 ラベルは矢印より前に書かれ、矢印より後にたどられます。
+call より前にリンクが書かれた GanttClickStatement でも、
+リンクは call より後にたどられます。
+[fixture: gantt/gram-click-href-then-call]
 `tests/traverse.test.ts` が、パーサーが受理するすべての fixture の木で
 これを確かめ、子のノードの順が崩れた木が通らないことも確かめます。
 

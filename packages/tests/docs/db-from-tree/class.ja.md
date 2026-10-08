@@ -108,6 +108,15 @@ class の文は、そのクラスを加え、それから次のことをしま�
   class/db-class-label-redefined] [fixture:
   class/db-class-label-kept-without-label] [fixture:
   class/db-class-label-type-of-class]
+  ラベルは、同じ id のクラスのラベルを置き換えます。
+  片方の文に型があり、もう片方にないときも、
+  片方が namespace の中にあるときも同じです（クラスは `parent` を保ちます）。
+  `class A~T~["First"]` の後の `class A["Second"]` は、
+  A の `label` を `Second`、`text` を `Second<T>` にします。
+  同じラベルを 2 度書いても、何も変わりません。
+  [fixture: class/db-class-label-same-twice]
+  [fixture: class/db-class-label-redefined-generic]
+  [fixture: class/db-class-label-redefined-in-namespace]
 - `:::` は、クラスにその名前の部分の CSS クラスを与えます
   （下の **CSS クラス** を参照）。
 - 注釈は、その名前の部分を `annotations` に加えます。
@@ -270,6 +279,9 @@ class/db-note-for-undefined-class]
 [fixture: common/comment-in-string]
 [fixture: class/tokens-comment-region-in-click-string]
 [fixture: class/db-note-comment-line-inside-string]
+後の文が宣言するクラスへの note は、書かれた名前を保ちます。
+`class A` の前の `note for A "x"` の `class` は `A` です。
+[fixture: class/db-note-for-before-class]
 
 **クリックの文。**
 これらの文では、クラスの名前の書いた名前は、`,` で区切った名前の一覧で、
@@ -322,6 +334,13 @@ class/db-link-undefined-class] [fixture: class/db-click-undefined-class]
 [fixture: class/db-callback-undefined-class]
 [fixture: class/db-callback-names-comma-one-undefined]
 [fixture: class/db-click-call-undefined-class]
+後で加わるクラスについても同じです。
+クラスを加える文より前のクリックの文は何も変えず、
+関係がクラスを宣言した後のクリックの文は、そのクラスに効きます。
+[fixture: class/db-click-before-class]
+[fixture: class/db-link-before-class]
+[fixture: class/db-callback-before-class]
+[fixture: class/db-click-after-relation]
 
 **CSS クラス。**
 `:::`、`cssClass`、クリックの文から書いた名前に CSS クラスを与えるときは、
@@ -346,6 +365,9 @@ class/db-css-class-statement-digit] [fixture: class/db-css-class-list-space]
 [fixture: class/db-css-class-ids-space-before-comma]
 クラスのない名前への CSS クラスは、何も変えません。
 [fixture: class/db-css-class-undefined-class]
+後で加わるクラスについても同じです。
+`class A` の前の `cssClass "A" c` は、何も変えません。
+[fixture: class/db-css-class-before-class]
 
 **スタイル。**
 スタイルのテキストは、その値です
@@ -361,6 +383,13 @@ class/db-css-class-statement-digit] [fixture: class/db-css-class-list-space]
 ASCII の数字で始まる語は、`classId-` を付けて探しません。
 [fixture: class/db-style-before-class] [fixture: class/db-style-twice]
 [fixture: class/db-style-digit-id]
+クラスを加える文が namespace の中にあるときも同じです。
+関係やメンバーの文が宣言したクラスは、それ以後クラスなので、
+その後の `style` や、namespace の中の `class` の文の後の `style` は効きます。
+[fixture: class/db-style-before-class-in-namespace]
+[fixture: class/db-style-after-relation]
+[fixture: class/db-style-after-member-statement]
+[fixture: class/db-style-after-class-in-namespace]
 `classDef` は、それを、その名前ごとに順に、
 `cssClasses` がその名前をどこかに含むクラスの `styles` に加えます。
 より長い CSS クラスの中に含むものも数えます。
@@ -391,6 +420,19 @@ class/db-acc-descr-line-replaces-block]
 [fixture: class/db-acc-whitespace-kinds]
 [fixture: class/db-acc-descr-block-replaces-line]
 [fixture: class/db-acc-descr-block-replaces-block]
+テキストのない `accTitle:` と `accDescr:` は、
+その行のテキストとして、テキストを持つ次の行を取ります。
+空行、コメント行、ディレクティブの行を越え、
+改行が LF でも CR LF でも、コロンの後に U+2028 があっても同じです。
+その行は文ではないので、`accDescr:` の後の `class A` は、
+説明を `class A` にし、クラスを宣言しません。
+[fixture: class/db-acc-title-line-empty-takes-next-after-comment]
+[fixture: class/db-acc-title-line-empty-takes-next-after-directive]
+[fixture: class/db-acc-descr-line-empty-takes-next-lines]
+[fixture: class/db-acc-descr-line-empty-takes-next-after-comment]
+[fixture: class/db-acc-descr-line-empty-takes-next-after-directive]
+[fixture: class/db-acc-descr-line-empty-takes-next-line-crlf]
+[fixture: class/db-acc-descr-line-separator-then-text]
 テキストのない説明ブロックの文は、
 ほかの文の区切りの前にあるものも、何も変えません。
 [fixture: class/gram-empty-description-block-after-note]

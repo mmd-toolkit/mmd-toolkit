@@ -6,7 +6,8 @@
  * - a value: `string`, `boolean`, `integer`, `string or null`, or `one of …`
  *   (a string from a list; `or null` after it when the field may be null);
  * - a node: `X`, `X or null`, `X or Y`, `X, Y, or null`;
- * - a list of nodes: `list of X`, `list of (X or null)`, `list of X, or null`.
+ * - a list of nodes: `list of X`, `list of (X or null)`, `list of X, or null`,
+ *   `list of (X or Y), or null`.
  */
 export type FieldShape =
   /** A value of a type. */
@@ -113,7 +114,14 @@ export function fieldSpecOf(typeCell: string): FieldSpec {
   if (cell.startsWith("list of ")) {
     const rest = cell.slice("list of ".length)
     if (rest.startsWith("(")) {
-      return { shape: "nodeListWithNull", ...recordOf(cell) }
+      // `list of (X or null)` has entries that may be null, and
+      // `list of (X or Y), or null` is a list that may be null.
+      return {
+        shape: rest.endsWith(", or null")
+          ? "nodeListOrNull"
+          : "nodeListWithNull",
+        ...recordOf(cell),
+      }
     }
     return {
       shape: rest.endsWith(", or null") ? "nodeListOrNull" : "nodeList",

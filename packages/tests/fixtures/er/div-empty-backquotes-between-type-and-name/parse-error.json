@@ -1,0 +1,17 @@
+{
+  "message": "Empty backquotes can only be written between two attributes",
+  "range": [
+    19,
+    21
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 5
+    },
+    "end": {
+      "line": 3,
+      "column": 7
+    }
+  }
+}

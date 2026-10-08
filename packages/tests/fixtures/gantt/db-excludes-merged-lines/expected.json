@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The tokens of several excludes statements are merged in order."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [
+      "weekends",
+      "2024-01-03",
+      "friday"
+    ],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

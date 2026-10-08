@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 406,
+    "test": "when parsing ER diagram it... > should allow an entity with attribute that is an array"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-BOOK-0",
+        "attributes": [
+          {
+            "type": "string[]",
+            "name": "readers",
+            "keys": [
+              "FK"
+            ],
+            "comment": "comment"
+          },
+          {
+            "type": "string[]",
+            "name": "authors",
+            "keys": [
+              "FK"
+            ],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "BOOK",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -19,6 +19,8 @@ export const TREE_DOCUMENT_DIAGRAMS = [
   "sequence",
   "class",
   "state",
+  "er",
+  "gantt",
 ] as const
 
 /** The fields that every node and every record has, which no table lists. */
@@ -126,4 +128,61 @@ function readColumn(column: number): FieldTables {
     column,
   )
   return tables
+}
+
+/**
+ * The child fields that the tree documents state for each node type, in the
+ * order of the visit: the fields named in the first sentence of the paragraph
+ * that starts with `Child fields:`. A type with no such paragraph is not in
+ * the result.
+ */
+export function readChildFields(): Map<string, string[]> {
+  const result = new Map<string, string[]>()
+  const files = [
+    path.join(SPEC_DOCS, "ast.md"),
+    ...TREE_DOCUMENT_DIAGRAMS.map((diagram) =>
+      path.join(SPEC_DOCS, "ast", `${diagram}.md`),
+    ),
+  ]
+  for (const file of files) {
+    let names: string[] = []
+    let paragraph = ""
+
+    /** Reads the paragraph collected so far, if it states child fields. */
+    function flush(): void {
+      const prefix = "Child fields:"
+      if (paragraph.startsWith(prefix)) {
+        // The first sentence ends at a period, or at a colon after the list:
+        // `Child fields: `a`, `b`, in source order: …`.
+        const rest = paragraph.slice(prefix.length)
+        const end = rest.search(/[.:]/u)
+        const sentence = end < 0 ? rest : rest.slice(0, end)
+        const fields = [...sentence.matchAll(/`(\w+)`/gu)].map(
+          (match) => match[1] ?? "",
+        )
+        for (const name of names) result.set(name, fields)
+      }
+      paragraph = ""
+    }
+
+    for (const line of readFileSync(file, "utf8").split("\n")) {
+      if (line.startsWith("#")) {
+        flush()
+        names = typeNamesIn(line.replace(/^#+\s*/u, ""))
+      } else if (line.trim() === "") {
+        flush()
+      } else {
+        paragraph += paragraph === "" ? line : ` ${line}`
+      }
+    }
+    flush()
+  }
+  return result
+}
+
+/** The text of each tree document of the diagrams: `ast/<diagram>.md`. */
+export function readTreeDocuments(): string[] {
+  return TREE_DOCUMENT_DIAGRAMS.map((diagram) =>
+    readFileSync(path.join(SPEC_DOCS, "ast", `${diagram}.md`), "utf8"),
+  )
 }

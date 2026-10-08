@@ -1,6 +1,8 @@
 import type {
   ClassNode,
+  ErNode,
   FlowchartNode,
+  GanttNode,
   SequenceNode,
   StateNode,
 } from "../../src/index.ts"
@@ -159,6 +161,59 @@ export const allStateNodeTypes: Record<StateNode["type"], true> = {
   StateIgnoredText: true,
 }
 
+/**
+ * Every node type of ast/er.md, in the order of that document. Being a
+ * `Record` over the type, this fails to type-check when a node type is
+ * missing here or is not in the type.
+ */
+export const allErNodeTypes: Readonly<Record<ErNode["type"], true>> = {
+  ErDiagram: true,
+  ErEntityStatement: true,
+  ErAttribute: true,
+  ErRelationshipStatement: true,
+  ErEntityReference: true,
+  ErRelationship: true,
+  ErSubgraphStatement: true,
+  ErDirectionStatement: true,
+  ErClassDefStatement: true,
+  ErClassStatement: true,
+  ErStyleStatement: true,
+  ErAccTitleStatement: true,
+  ErAccDescrStatement: true,
+  ErAccDescrBlockStatement: true,
+  ErIdentifier: true,
+  ErLiteral: true,
+  ErIgnoredText: true,
+}
+
+/**
+ * Every node type of ast/gantt.md, in the order of that document. Being a
+ * `Record` over the type, this fails to type-check when a node type is
+ * missing here or is not in the type.
+ */
+export const allGanttNodeTypes: Readonly<Record<GanttNode["type"], true>> = {
+  GanttDiagram: true,
+  GanttTaskStatement: true,
+  GanttClickStatement: true,
+  GanttCallback: true,
+  GanttDateFormatStatement: true,
+  GanttAxisFormatStatement: true,
+  GanttTickIntervalStatement: true,
+  GanttTodayMarkerStatement: true,
+  GanttIncludesStatement: true,
+  GanttExcludesStatement: true,
+  GanttInclusiveEndDatesStatement: true,
+  GanttWeekdayStatement: true,
+  GanttWeekendStatement: true,
+  GanttTitleStatement: true,
+  GanttSectionStatement: true,
+  GanttAccTitleStatement: true,
+  GanttAccDescrStatement: true,
+  GanttAccDescrBlockStatement: true,
+  GanttIgnoredStatement: true,
+  GanttLiteral: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -166,6 +221,8 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allSequenceNodeTypes),
   ...Object.keys(allClassNodeTypes),
   ...Object.keys(allStateNodeTypes),
+  ...Object.keys(allErNodeTypes),
+  ...Object.keys(allGanttNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

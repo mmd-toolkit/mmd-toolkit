@@ -257,12 +257,15 @@ written here after the tree document of the specification
      Replace it, wherever it appears, with a name numbered in a stated order,
      and check with two runs of the generator that the fixtures do not change;
    - a value that depends on the time of the run or on chance, not on the text
-     (gantt reads dates, and may read today's). The store of earlier results
+     (gantt computes dates, in the time zone of the process, and reads today's
+     for a start after an id that is no task). The store of earlier results
      (`docs/expected-results.md`) gives back a result made on another day, so
      such a value is either dropped from the summary, or the diagram type's
      results are not stored, or what they depend on goes into the key of the
-     store. Check by running every fixture again on another day, and in another
-     order, and comparing with `expected.json`.
+     store. Gantt's summary leaves the dates out, since the Db computes them
+     only when the diagram is drawn. Check by running every fixture again on
+     another day and in another time zone (`TZ=...`), and in another order, and
+     comparing with `expected.json`.
 3. Decide the table before writing. Decide it from the correctness criteria of
    AGENTS.md (for accepted inputs, the Db matches mermaid.js), from the rule
    that a summary keeps only what the syntax determines
@@ -289,7 +292,12 @@ written here after the tree document of the specification
    passes the block: in a call of its own, compare before and after that call
    (flowchart); in the call that adds the element, run that call once without
    the block, put the Db's lists back, and compare with the real call
-   (sequence).
+   (sequence). A Db that is one object shared by every diagram, with its state
+   in module variables, has no class (gantt's): register its patch with
+   `appliedTo: "object"`, so that it receives the object, and let the patch
+   reset what it records in step with the Db's `clear()`. The generated parser
+   calls the methods on a copy of the object's properties, so inside a patched
+   method `this` is not the Db.
 5. Add the diagram type to `DiagramType` in `src/index.ts` and to `diagramIds`
    in `tools/src/diagrams.ts`, and to the per-diagram loading test and the lists
    of the tests that read every fixture in `tests/fixtures.test.ts`.

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The spaces around the text of `accTitle` are removed."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "t",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

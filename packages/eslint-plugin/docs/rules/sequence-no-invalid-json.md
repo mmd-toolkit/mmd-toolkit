@@ -7,7 +7,7 @@ Disallow a `links` or `properties` statement whose text is not a JSON object.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
 
 <!-- end auto-generated rule notice -->
 
@@ -27,7 +27,11 @@ and `properties A: {"class": "internal",}` no property. JSON that is not an
 object is reported too, because mermaid.js does not read it as the author meant:
 a string gives each of its characters under its position, `links A: "ab"` gives
 the links `0` and `1`, an array gives each element under its position, and a
-number gives nothing.
+number, `true`, `false`, or `null` gives nothing.
+
+A `#` ends the text of the statement. A URL with a fragment, as in
+`links A: {"Docs": "https://x.example/#top"}`, therefore leaves a text that is
+not JSON, and the statement is reported.
 
 A statement with no text, as in `links A:` or `properties A:`, is reported too:
 it gives the participant nothing.
@@ -65,3 +69,12 @@ This rule has no options.
 
 - [sequence-no-link-without-separator](./sequence-no-link-without-separator.md)
 - [no-ignored-init-directive](./no-ignored-init-directive.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/sequence-no-invalid-json.ts)
+- [Tests source](../../tests/rules/sequence-no-invalid-json.test.ts)
+
+<!-- end auto-generated rule resources -->

@@ -7,7 +7,7 @@ Disallow `create` before `destroy`.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
 
 <!-- end auto-generated rule notice -->
 
@@ -45,3 +45,12 @@ sequenceDiagram
 ## Options
 
 This rule has no options.
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/sequence-no-create-destroy.ts)
+- [Tests source](../../tests/rules/sequence-no-create-destroy.test.ts)
+
+<!-- end auto-generated rule resources -->

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "U+2028 is part of a style word: `c` has the one style `fill:red`, U+2028, `stroke:blue`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:red stroke:blue"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

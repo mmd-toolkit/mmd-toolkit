@@ -433,21 +433,39 @@ export class SequenceUnitLexer {
   /** The place of the next character to read; null at the end of the text. */
   private position: DiagramPosition
 
-  public constructor(reader: DiagramText, lines: LineIndex) {
+  /** Where the source ends, where the `newline` unit of the end of the text is. */
+  private readonly sourceEnd: number
+
+  public constructor(reader: DiagramText, lines: LineIndex, sourceEnd: number) {
     this.reader = reader
     this.lines = lines
+    this.sourceEnd = sourceEnd
     this.position = reader.first()
   }
 
   /**
    * Divides the diagram text into units. Throws `ParseError` where no rule
-   * matches. The `\n` that End of text adds is read as any line feed: a
-   * `newline` unit of no characters in the statement context, and nothing
-   * of its own in the other contexts (The statement context).
+   * matches. At the end of the text, it reads a `newline` unit of no
+   * characters when it is in the statement context, and nothing in the
+   * other contexts (The statement context). The whitespace rule can take
+   * the `\n` that End of text adds, as after `autonumber` and two spaces,
+   * so that `\n` does not stand for this unit.
    */
   public lex(): SequenceLexing {
     while (this.position !== null) {
       this.readInContext(this.position, this.currentContext())
+    }
+    if (this.currentContext() === "statement") {
+      this.units.push({
+        name: "newline",
+        text: "",
+        index: this.units.length,
+        start: this.sourceEnd,
+        end: this.sourceEnd,
+        significantRange: null,
+        nonWhitespaceRange: null,
+        arrow: null,
+      })
     }
     return {
       units: this.units,

@@ -134,6 +134,11 @@ class/lex-callback-arguments-unclosed] [fixture: class/lex-acc-title-at-end]
 [fixture: class/lex-acc-descr-block-unclosed]
 タイトルの文脈には、`accTitle:` の後の空白を改行も含めて読んだ後で入るので、
 後に空白しかない `accTitle:` は、テキストの終わりで拒否されます。
+説明の文脈も同じで、`accDescr:` の後に空行だけ、コメント行だけ、
+ディレクティブの行だけが続いてテキストが終わると、拒否されます。
+[fixture: class/lex-acc-descr-then-empty-lines-only]
+[fixture: class/lex-acc-descr-then-comment-only]
+[fixture: class/lex-acc-descr-then-directive-only]
 
 ### 単位の中のディレクティブ
 
@@ -390,6 +395,14 @@ mermaid.js は `direction-text` の単位を読みません。
   class/lex-direction-line-value-then-text] [fixture:
   class/lex-direction-line-value-next-line] [fixture:
   class/lex-direction-lower-case]
+- `direction` の前や値の後の空の説明ブロックと、値の後の `;` は、
+  mermaid.js が読まない `direction-text` の単位です。
+  値の後の閉じたディレクティブはディレクティブで、
+  その行は値の後にテキストを持ちません。
+  [fixture: class/lex-direction-line-after-empty-description-block]
+  [fixture: class/lex-direction-line-then-empty-description-block]
+  [fixture: class/lex-direction-line-value-then-semicolon]
+  [fixture: class/lex-direction-line-then-directive]
 - ほかの文脈ではこの規則を試しません。
   名前空間の本体では `direction LR` は拒否され、
   メンバーの本体ではメンバーです。
@@ -760,6 +773,13 @@ class/lex-namespace-body-style] [fixture: class/lex-direction-in-namespace]
 [fixture: class/lex-backquote-unclosed] [fixture:
 class/lex-backquote-unclosed-takes-lines]
 [fixture: class/div-empty-backquoted-in-name]
+`class A.` の後や、`A -->` の後の閉じないバッククォートの名前も同じで、
+その名前は残りのテキストを取ります。
+名前空間には `{` が要るので、
+`namespace` の後の閉じないバッククォートの名前は拒否されます。
+[fixture: class/lex-backquote-unclosed-after-prefix]
+[fixture: class/lex-backquote-unclosed-relation-end]
+[fixture: class/lex-backquote-unclosed-namespace]
 その残りの、名前の空白でない最後の文字の後にあるディレクティブは、
 mermaid.js がどこでも除くもので、
 その後に名前の空白か行終端が続くときは名前の中にあり、
@@ -1084,6 +1104,13 @@ class 図には title の文がなく、
 [fixture: class/gram-member-statement] [fixture:
 class/db-member-statement-blank] [fixture: class/gram-name-alone] [fixture:
 class/gram-title-not-statement]
+クラスの名前だけの文は、同じ行の前後に
+ディレクティブや空の説明ブロックがあってもかまいません。
+`%%{init: {}}%% Foo`、`accDescr {} Foo`、`Foo accDescr {}` は、
+クラスを足さないクラスの名前だけの文です。
+[fixture: class/gram-directive-then-name-alone]
+[fixture: class/gram-empty-description-block-then-name-alone]
+[fixture: class/gram-name-alone-then-empty-description-block]
 方法の行は、多くとも 1 つの `classifier` の単位を持ちます。
 
 ### 関係
@@ -1309,9 +1336,18 @@ class 図に当てはまり、
   `%% x` の代わりに行 `%%` があるときや、
   `%% x` の後にもう 1 つ空白の行があるときは、
   どちらも 2 つの文を読みます。
-  [fixture: class/div-comment-then-spaces-line-then-comment-line] [fixture:
+  [fixture: class/div-comment-then-spaces-line-then-comment-line]
+  [fixture: class/div-comment-then-two-spaces-lines-then-comment-line] [fixture:
   class/lex-comment-then-spaces-line-then-bare-comment] [fixture:
   class/lex-comment-line-then-spaces-line]
+  タブだけの行、U+2028 だけの行、CRLF の改行の空白だけの行でも同じで、
+  `%% x` の代わりにディレクティブの行があるときも、
+  それはコメント行ではないので、
+  どちらも 2 つの文を読みます。
+  [fixture: class/lex-comment-then-tab-line]
+  [fixture: class/lex-comment-then-line-separator-line]
+  [fixture: class/lex-comment-then-spaces-line-crlf]
+  [fixture: class/lex-comment-then-spaces-line-then-directive-line]
   コメントだけの行は、どちらでも行として数えません
   （[文の文脈](#文の文脈) を参照）。
   [fixture: class/div-comment-on-header-line] [fixture:

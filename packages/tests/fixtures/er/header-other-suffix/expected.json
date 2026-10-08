@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Detection: `erDiagramX` is detected as an ER diagram, and the lexer reads no header keyword; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nerDiagramXA\n^\nExpecting 'ER_DIAGRAM', got 'UNICODE_TEXT'"
+  }
+}

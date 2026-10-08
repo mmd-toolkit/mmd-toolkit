@@ -3,8 +3,8 @@
 Japanese version:
 [ignored-semicolon-as-token-boundary.ja.md](./ignored-semicolon-as-token-boundary.ja.md)
 
-Diagram types: flowchart, sequence, and class. This is one of the
-[known divergences](../known-divergences.md) of this specification from
+Diagram types: flowchart, sequence, class, state, er, and gantt. This is one of
+the [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
 ## The syntax
@@ -13,19 +13,25 @@ A line that contains `style`, then a `:` followed by zero or more characters
 that are not whitespace and then a `#`, and then a `;`, matches the `style`
 rule, and its last `;` is ignored: neither mermaid.js nor this specification
 reads it (see
-[`style` and `classDef` lines](../common.md#style-and-classdef-lines)). The rule
-keeps the `;` that ends a colour, as in `style A fill:#f00;`, from making the
-colour an [entity](../common.md#entities), a character reference of the form
-`#name;`.
+[`style` and `classDef` lines](../common.md#style-and-classdef-lines)). Then the
+same is done with `classDef` in place of `style`, on the line without the `;`
+that the `style` rule ignored, so a line can have a second ignored `;`.
+[fixture: common/entity-style-then-classdef-rule] The rule keeps the `;` that
+ends a colour, as in `style A fill:#f00;`, from making the colour an
+[entity](../common.md#entities), a character reference of the form `#name;`.
 
 The rule looks at the text alone, so the ignored `;` can lie anywhere in the
 line: inside a label, between two words, or inside a name, a number, a keyword,
 an arrow, or a delimiter. This document is about the last of these. A name here
-is one without whitespace; a name that may contain whitespace, such as the id of
-a participant in a sequence diagram or a class name, is read as a text, and may
-hold an ignored `;`. [fixture:
+is what the diagram document counts as a name unit, whether or not it may
+contain whitespace: the name of an ER entity, which may contain U+00A0, is one.
+A name that the document counts as a text unit, such as the id of a participant
+in a sequence diagram, a class name, or an attribute word of ER written with
+`~`, may hold an ignored `;`. [fixture:
 sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
-class/tokens-ignored-semicolon-in-relation-name]
+class/tokens-ignored-semicolon-in-relation-name] [fixture:
+er/div-ignored-semicolon-in-name] [fixture:
+er/tokens-ignored-semicolon-in-tilde-word]
 
 ## The difference
 
@@ -105,12 +111,32 @@ by a body as the composite state `style:#xB`, and this specification rejects it.
 [fixture: state/div-ignored-semicolon-in-state-name] [fixture:
 state/div-ignored-semicolon-in-state-name-without-body] The other statements
 that can hold `style`, a `:`, and a `#` read the rest of their line as a text.
+In an ER diagram, the `style`, the `:`, and the `#` may lie anywhere on the line
+before the `;`: in an entity name such as `Bstyle`, in the `:` of a relationship
+and its role `"#"`, or in an attribute comment `"c:#"`. So the ignored `;` can
+lie inside a name, a number, a cardinality, a relationship line, a keyword,
+`:::`, or a word or a key of an attribute block: mermaid.js reads
+`A ||--o{ Bstyle :"#" C;D` as a relationship to Bstyle and the entity `CD`, and
+this specification rejects it. [fixture: er/div-ignored-semicolon-in-name]
+[fixture: er/div-ignored-semicolon-in-attribute-word] [fixture:
+er/div-ignored-semicolon-in-relationship-line] In a Gantt chart, the `style`,
+the `:`, and the `#` may lie in the URL string or the callback arguments of a
+click statement, in a description block before the statement on its line, or in
+the click ids themselves, so the ignored `;` can lie inside a click id, a
+keyword, or an item of `includes` or `excludes`: mermaid.js reads
+`click style:#y,id;1 href "u"` as a link of `id1` and
+`click id1 href "style:#x" ca;ll f()` as a call, and this specification rejects
+them. [fixture: gantt/div-ignored-semicolon-in-click-id] [fixture:
+gantt/div-ignored-semicolon-in-call-keyword] [fixture:
+gantt/div-ignored-semicolon-in-list-item]
 
 Each diagram document lists where this shows, in its Known divergences section:
 [flowchart](../diagrams/flowchart.md#known-divergences),
 [sequence](../diagrams/sequence.md#known-divergences),
-[class](../diagrams/class.md#known-divergences), and
-[state](../diagrams/state.md#known-divergences).
+[class](../diagrams/class.md#known-divergences),
+[state](../diagrams/state.md#known-divergences),
+[er](../diagrams/er.md#known-divergences), and
+[gantt](../diagrams/gantt.md#known-divergences).
 
 ## What it means for an author
 

@@ -2,6 +2,7 @@ import { describe, expect, expectTypeOf, it } from "vitest"
 import { loadFixtures } from "@mmd-toolkit/tests"
 import type {
   FlowchartLink,
+  GanttClickStatement,
   Node,
   Root,
   Visitor,
@@ -41,11 +42,23 @@ function walk(node: Node): [string, string, string | null][] {
 /**
  * ast.md, Nodes: the child nodes of `parent`, `children` in the order of
  * its child fields, put in source order. That is the order of the child
- * fields, except in the one node that a document names: ast/flowchart.md,
+ * fields, except in the nodes that a document names: ast/flowchart.md,
  * FlowchartLink, whose `label`, written between `opening` and `arrow`, is
- * visited after `arrow`.
+ * visited after `arrow`; and ast/gantt.md, GanttClickStatement, whose
+ * `href` may be written before its `call`.
  */
 function inSourceOrder(parent: Node, children: readonly Node[]): Node[] {
+  if (parent.type === "GanttClickStatement") {
+    const { call, href }: GanttClickStatement = parent
+    if (call === null || href === null || call.range[0] < href.range[0]) {
+      return [...children]
+    }
+    return children.map((child) => {
+      if (child === call) return href
+      if (child === href) return call
+      return child
+    })
+  }
   if (parent.type !== "FlowchartLink") return [...children]
   const { opening, arrow, label }: FlowchartLink = parent
   if (opening === null || label === null) return [...children]

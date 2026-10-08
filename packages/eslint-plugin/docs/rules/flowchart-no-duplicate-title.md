@@ -25,13 +25,13 @@ This rule reports every `accTitle` statement after the first one. It applies to
 `flowchart-v2`, `flowchart-elk`, and `swimlane`.
 
 After `accTitle: first` and `accTitle: second`, the title is `second`.
-`accTitle:` with no text sets the title too: at the end of the text it makes the
-title empty, and before more text it takes the next line that holds text as the
-title, past empty lines, comment lines, and directives. Either way, a title
-written before it is lost. A statement inside a subgraph sets the title of the
-whole diagram and is counted too; mermaid.js also adds the value of such a
-statement to the members of the subgraph as an id, so that a vertex or a
-subgraph with that id belongs to the subgraph.
+`accTitle:` with no text sets the title too: it takes the next line that holds
+text as the title, past empty lines, comment lines, and directives, and when no
+such line follows, it makes the title empty. Either way, a title written before
+it is lost. A statement inside a subgraph sets the title of the whole diagram
+and is counted too; mermaid.js also adds the value of such a statement to the
+members of the subgraph as an id, so that a vertex or a subgraph with that id
+belongs to the subgraph.
 
 For each report, the rule suggests removing one of two statements: the reported
 one, or the `accTitle` statement before it. mermaid.js uses the last title that

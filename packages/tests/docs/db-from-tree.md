@@ -95,6 +95,18 @@ are read from the tree like this:
   the whitespace that mermaid.js reads as part of the value next to a directive
   (tokens.md, A token that a directive cuts), and not the whitespace between its
   units, so the texts of the tokens joined are the value.
+- **ER styles**: the converted forms of the tokens inside the `ErLiteral` of a
+  style, joined, since the whitespace between the units of a style is no part of
+  its value (the rule is in [db-from-tree/er.md](./db-from-tree/er.md)).
+- **ER keyword statements in a subgraph**: the text of the first token of a
+  `class`, `classDef`, or `style` statement, as written, which a subgraph lists
+  as a node (the rule is **Subgraphs** in
+  [db-from-tree/er.md](./db-from-tree/er.md)).
+- **Gantt list tokens**: the converted form of the text from the start of the
+  first item to the end of the last item of an `includes` or `excludes`
+  statement, in lower case as a whole and split at whitespace and commas, since
+  the lower case of a Greek capital sigma depends on the characters around it
+  (the rule is in [db-from-tree/gantt.md](./db-from-tree/gantt.md)).
 - **State alias without a second description**: whether the statement holds a
   `:` token.
 - **State note position**: the two `Keyword` tokens of the statement after
@@ -206,7 +218,9 @@ and each diagram applies it to the texts below.
   sequence/config-security-level-other-html-labels-false] [fixture:
   class/config-security-level-loose-label-and-name] [fixture:
   state/config-security-level-loose-description-and-id] [fixture:
-  sequence/config-security-level-loose-title-and-box]
+  sequence/config-security-level-loose-title-and-box] [fixture:
+  er/config-security-level-other-subgraph-title-html-labels-false] [fixture:
+  gantt/config-security-level-other-html-labels-false]
 
 **What.** The replacement writes each line break tag as `#br#`, then each `<`,
 `>`, and `=` as `&lt;`, `&gt;`, and `&equals;`, and then each `#br#` as `<br/>`,
@@ -290,6 +304,29 @@ does not, are:
   sequence/config-security-level-other-links] [fixture:
   sequence/config-security-level-other-properties] [fixture:
   sequence/config-security-level-other-texts-as-written]
+- ER: the title, `accTitle`, and `accDescr`; the title of a subgraph. Names,
+  aliases, the types, names, and comments of attributes, roles, the ids of
+  subgraphs, the nodes of subgraphs, classes, and styles are not reached.
+  [fixture: er/config-security-level-other-diagram-title] [fixture:
+  er/config-security-level-other-acc-title] [fixture:
+  er/config-security-level-other-acc-descr] [fixture:
+  er/config-security-level-other-acc-descr-block] [fixture:
+  er/config-security-level-other-subgraph-title] [fixture:
+  er/config-security-level-other-names-as-written] [fixture:
+  er/config-security-level-other-subgraph-node-acc-title]
+- Gantt: the title, of the frontmatter and of a `title` statement; `accTitle`;
+  `accDescr`, of a line and of a block. The descriptions, items, and ids of
+  tasks, the section names, the values of the settings, the tokens of `includes`
+  and `excludes`, and the ids, URLs, and callbacks of click statements are not
+  reached. [fixture: gantt/config-security-level-other-title] [fixture:
+  gantt/config-security-level-other-diagram-title] [fixture:
+  gantt/config-security-level-other-acc-title] [fixture:
+  gantt/config-security-level-other-acc-descr] [fixture:
+  gantt/config-security-level-other-acc-descr-block] [fixture:
+  gantt/config-security-level-other-names-as-written] [fixture:
+  gantt/config-security-level-other-settings-as-written] [fixture:
+  gantt/config-security-level-other-task-data-as-written] [fixture:
+  gantt/config-security-level-other-click-as-written]
 
 **Where the order of mermaid.js matters.** Some texts are replaced before
 mermaid.js reads them further, and the builders do the same.

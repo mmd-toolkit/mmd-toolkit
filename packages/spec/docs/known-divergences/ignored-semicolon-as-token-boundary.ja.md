@@ -3,7 +3,7 @@
 英語版:
 [ignored-semicolon-as-token-boundary.md](./ignored-semicolon-as-token-boundary.md)
 
-図種: flowchart、sequence、class。
+図種: flowchart、sequence、class、state、er、gantt。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -15,6 +15,10 @@
 mermaid.js もこの仕様も、それを読みません
 （[`style` と `classDef` の行](../common.ja.md#style-行と-classdef-行)
 を参照）。
+その後、`style` の規則が無視した `;` を除いた行に対して、
+`style` を `classDef` に替えて同じことを行うので、
+1 つの行に無視される `;` が 2 つあることもあります。
+[fixture: common/entity-style-then-classdef-rule]
 この規則は、`style A fill:#f00;` のように色を終える `;` によって、
 色が [エンティティ](../common.ja.md#エンティティ)
 （`#name;` の形の文字参照）として
@@ -24,11 +28,16 @@ mermaid.js もこの仕様も、それを読みません
 ラベルの中、2 つの語の間、
 名前、数、キーワード、矢印、区切り記号の中です。
 この文書は、最後のものについてのものです。
-ここでの名前は空白のない名前です。
-sequence 図の参加者の id やクラスの名前のような、空白を含みうる名前は、
-テキストとして読まれ、無視される `;` を持てます。
+ここでの名前は、空白を含みうるかどうかにかかわらず、
+図の文書が名前の単位と数えるものです。
+U+00A0 を含みうる ER の実体の名前も、その 1 つです。
+sequence 図の参加者の id、クラスの名前、
+`~` を使って書いた ER の属性の語のように、
+図の文書がテキストの単位と数える名前は、無視される `;` を持てます。
 [fixture: sequence/tokens-ignored-semicolon-separator-line-feed]
 [fixture: class/tokens-ignored-semicolon-in-relation-name]
+[fixture: er/div-ignored-semicolon-in-name]
+[fixture: er/tokens-ignored-semicolon-in-tilde-word]
 
 ## 差異
 
@@ -111,12 +120,34 @@ mermaid.js は、本体の続く `state style:#x;B` を合成状態 `style:#xB` 
 [fixture: state/div-ignored-semicolon-in-state-name]
 [fixture: state/div-ignored-semicolon-in-state-name-without-body]
 `style`、`:`、`#` を持てるほかの文は、行の残りをテキストとして読みます。
+ER 図では、`style`、`:`、`#` は、`;` より前の行のどこにあってもかまいません。
+`Bstyle` のような実体の名前、関係の `:` とロール `"#"`、
+属性のコメント `"c:#"` などです。
+そのため、無視される `;` は、名前、数、濃度、関係の線、キーワード、`:::`、
+属性ブロックの語やキーの中に置けます。
+mermaid.js は `A ||--o{ Bstyle :"#" C;D` を Bstyle への関係と実体 `CD` と読み、
+この仕様はそれを拒否します。
+[fixture: er/div-ignored-semicolon-in-name]
+[fixture: er/div-ignored-semicolon-in-attribute-word]
+[fixture: er/div-ignored-semicolon-in-relationship-line]
+ガントチャートでは、`style`、`:`、`#` は、click の文の URL 文字列や
+コールバック引数、その行の文の前の説明ブロック、click の id そのものに
+置けるので、無視される `;` は click の id、キーワード、
+`includes` や `excludes` の項目の中に置けます。
+mermaid.js は `click style:#y,id;1 href "u"` を `id1` のリンクと読み、
+`click id1 href "style:#x" ca;ll f()` を call と読み、
+この仕様はそれらを拒否します。
+[fixture: gantt/div-ignored-semicolon-in-click-id]
+[fixture: gantt/div-ignored-semicolon-in-call-keyword]
+[fixture: gantt/div-ignored-semicolon-in-list-item]
 
 各図の文書は、これがどこに表れるかを、既知の差異の節に挙げています。
 [flowchart](../diagrams/flowchart.ja.md#既知の差異)、
 [sequence](../diagrams/sequence.ja.md#既知の差異)、
 [class](../diagrams/class.ja.md#既知の差異)、
-[state](../diagrams/state.ja.md#既知の差異) です。
+[state](../diagrams/state.ja.md#既知の差異)、
+[er](../diagrams/er.ja.md#既知の差異)、
+[gantt](../diagrams/gantt.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 

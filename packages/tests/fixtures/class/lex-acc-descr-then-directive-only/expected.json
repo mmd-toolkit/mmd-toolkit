@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accDescr with no text followed by a directive line only: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...escr: daccDescr:\n-------------------^\nExpecting 'EOF', got '1'"
+  }
+}

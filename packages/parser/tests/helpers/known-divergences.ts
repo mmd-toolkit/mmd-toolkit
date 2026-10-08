@@ -19,6 +19,9 @@ import { exceedsMaxEdges } from "@mmd-toolkit/tests"
 import {
   commentsAfterMatchStarts,
   commentsAfterUnits,
+  percentBracesReachedDirectly,
+  percentCommentsReachedDirectly,
+  percentsAfterUnitStarts,
   frontmatterChangesAttributeQuotes,
   ignoredSemicolonsBySegment,
   namesStartingWithUnits,
@@ -261,20 +264,35 @@ function rejectsForEmptyForm(
 /**
  * known-divergences/comment-takes-character.md: whether the sequence
  * text has a `%%` where the two rules of mermaid.js that the divergence
- * names read otherwise than this specification. The divergence goes both
+ * names read otherwise than this specification, or the Gantt text a `%`
+ * right after the first character of a unit. The divergence goes both
  * ways.
  */
 function commentTakesCharacter(text: string): boolean {
-  return (commentsAfterMatchStarts(text)?.length ?? 0) > 0
+  const places = commentsAfterMatchStarts(text) ?? percentsAfterUnitStarts(text)
+  return (places?.length ?? 0) > 0
 }
 
 /**
  * known-divergences/comment-takes-line-break.md: whether the class
  * text has a diagram comment that follows a unit on its line, whose line
- * feed mermaid.js takes. The divergence goes both ways.
+ * feed mermaid.js takes, or the Gantt text a comment with the mark `%` that
+ * mermaid.js reaches directly. The divergence goes both ways.
  */
 function commentTakesLineBreak(text: string): boolean {
-  return (commentsAfterUnits(text)?.length ?? 0) > 0
+  const places =
+    commentsAfterUnits(text) ?? percentCommentsReachedDirectly(text)
+  return (places?.length ?? 0) > 0
+}
+
+/**
+ * known-divergences/percent-brace-after-unit.md: whether the Gantt text
+ * has a `%%{` that starts no directive and that mermaid.js reaches
+ * directly, where it rejects the input. The divergence goes one way: this
+ * specification accepts what mermaid.js rejects.
+ */
+function percentBraceAfterUnit(text: string): boolean {
+  return (percentBracesReachedDirectly(text)?.length ?? 0) > 0
 }
 
 /**
@@ -344,7 +362,10 @@ export function oneWayDivergencesIn(
  * - `comment-takes-character` when a sequence text has a `%%` that
  *   mermaid.js would take the character before;
  * - `comment-takes-line-break` when a class text has a diagram comment
- *   after a unit on its line, whose line feed mermaid.js would take;
+ *   after a unit on its line, whose line feed mermaid.js would take, or a
+ *   Gantt text a `%` comment that mermaid.js reaches directly;
+ * - `percent-brace-after-unit` when a Gantt text has a `%%{` that
+ *   mermaid.js reaches directly;
  * - `name-start-reads-unit` when a class text has a backquoted name or a
  *   generic type whose text starts with a unit that mermaid.js would read
  *   instead;
@@ -375,6 +396,7 @@ export function declaredDivergence(
   }
   if (commentTakesCharacter(text)) return "comment-takes-character"
   if (commentTakesLineBreak(text)) return "comment-takes-line-break"
+  if (percentBraceAfterUnit(text)) return "percent-brace-after-unit"
   if ((namesStartingWithUnits(text)?.length ?? 0) > 0) {
     return "name-start-reads-unit"
   }

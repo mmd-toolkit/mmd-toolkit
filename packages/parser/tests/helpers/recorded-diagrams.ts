@@ -7,4 +7,6 @@ export const RECORDED_DIAGRAMS: readonly DiagramType[] = [
   "sequence",
   "class",
   "state",
+  "er",
+  "gantt",
 ]

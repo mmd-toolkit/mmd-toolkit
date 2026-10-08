@@ -1,10 +1,9 @@
 import { isWhitespaceAt } from "../db-from-tree/characters.ts"
-import { contains } from "./invariants.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
-import { nodeTokensIn } from "./tokens.ts"
+import { ownTokensOf } from "./tokens.ts"
 import type { CheckedNode, CheckedRoot, CheckedToken } from "./types.ts"
-import { childNodesOf, isNode, nodesOf } from "./walk.ts"
+import { isNode, nodesOf } from "./walk.ts"
 
 // ast.md, Nodes: a field that may be null is null where the node writes
 // nothing for it. The text of such a field lies in the tokens of its node, and
@@ -23,17 +22,6 @@ interface OwnTokens {
   readonly root: CheckedRoot
   readonly node: CheckedNode
   readonly own: readonly CheckedToken[]
-}
-
-/** The text of the tokens of `node` that no child node of it holds, `Directive` and `IgnoredSemicolon` tokens left out. */
-function ownTokensOf(
-  root: CheckedRoot,
-  node: CheckedNode,
-): readonly CheckedToken[] {
-  const children = childNodesOf(node)
-  return nodeTokensIn(root, node.range).filter(
-    (token) => !children.some((child) => contains(child.range, token.range)),
-  )
 }
 
 /** Whether `token` is a `Punctuator` with the text `value`. */
@@ -125,22 +113,31 @@ interface NullFieldRule {
   readonly field: string
   /**
    * A text field (`text`) or the body of a list (`braces`): a list that the
-   * node writes with `{` and `}` is not null, also when it is empty, so a list
-   * that is not null is checked for its `{` as well.
+   * node writes between an opening and a closing punctuator (`{` and `}`, or
+   * `[` and `]`) is not null, also when it is empty, so a list that is not
+   * null is checked for its opening punctuator as well.
    */
   readonly kind: "text" | "braces"
+  /** For a `braces` rule: the text of the opening punctuator, which the message names. */
+  readonly opening?: string
   /** The token of the node that is written for the field, outside the child nodes; none when the node writes nothing for it. */
   readonly writes: (reading: OwnTokens) => CheckedToken | null
   /** How the token belongs to the field, for the message: the sentence of the specification that says it. */
   readonly belongs: string
 }
 
-/** The rule of the field `body` or `members` that a node writes with braces. */
-function bracesRule(field: string, belongs: string): NullFieldRule {
+/** The rule of the field `body`, `members`, or `attributes` that a node writes with braces, or of the field `title` that it writes with brackets (`opening` is `[`). */
+function bracesRule(
+  field: string,
+  belongs: string,
+  opening = "{",
+): NullFieldRule {
   return {
     field,
     kind: "braces",
-    writes: ({ own }) => own.find((token) => isPunctuator(token, "{")) ?? null,
+    opening,
+    writes: ({ own }) =>
+      own.find((token) => isPunctuator(token, opening)) ?? null,
     belongs,
   }
 }
@@ -180,6 +177,19 @@ export const NULL_FIELD_RULES: Readonly<
       belongs:
         "follows the `:` of the statement (ast/class.md, ClassMemberStatement: the member after the `:`)",
     },
+  ],
+  ErEntityStatement: [
+    bracesRule(
+      "attributes",
+      "opens the attribute block of the entity (ast/er.md, ErEntityStatement: the items between `{` and `}`; empty for a block without items, null when there is no block)",
+    ),
+  ],
+  ErSubgraphStatement: [
+    bracesRule(
+      "title",
+      "opens the title of the subgraph (ast/er.md, ErSubgraphStatement: the entity names between `[` and `]`; null when there is no title)",
+      "[",
+    ),
   ],
   SequenceMessageStatement: [
     {
@@ -281,7 +291,7 @@ export function checkNullFields(
       } else if (value !== null && written === null && rule.kind === "braces") {
         problems.report(
           label(node),
-          `the field ${rule.field} is a list, but the node has no \`{\` that ${rule.belongs}`,
+          `the field ${rule.field} is a list, but the node has no \`${rule.opening ?? "{"}\` that ${rule.belongs}`,
         )
       }
     }

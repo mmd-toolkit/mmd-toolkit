@@ -10,6 +10,11 @@ import type { SequenceUnits } from "../../src/diagrams/sequence/index.ts"
 import { lexSequence } from "../../src/diagrams/sequence/index.ts"
 import type { StateUnits } from "../../src/diagrams/state/index.ts"
 import { lexState } from "../../src/diagrams/state/index.ts"
+import type { ErUnits } from "../../src/diagrams/er/index.ts"
+import { lexEr } from "../../src/diagrams/er/index.ts"
+import { RELATIONSHIP_UNITS } from "../../src/diagrams/er/units.ts"
+import type { GanttUnits } from "../../src/diagrams/gantt/index.ts"
+import { lexGantt } from "../../src/diagrams/gantt/index.ts"
 import type { DiagramUnit } from "../../src/diagram-units.ts"
 import type { EmptyForm } from "../../src/empty-forms.ts"
 import { EMPTY_FORM_KINDS, emptyFormsOf } from "../../src/empty-forms.ts"
@@ -18,7 +23,18 @@ import type {
   FlowchartLexing,
   Unit,
 } from "../../src/diagrams/flowchart/units.ts"
-import { isWordCharacter } from "../../src/character-classes.ts"
+import { isWhitespace, isWordCharacter } from "../../src/character-classes.ts"
+import {
+  LEFT_CURLY_BRACKET,
+  LINE_FEED,
+  PERCENT_SIGN,
+  RIGHT_CURLY_BRACKET,
+} from "../../src/code-points.ts"
+import type { DiagramComment } from "../../src/diagram-parsing.ts"
+import type {
+  DiagramCharacter,
+  DiagramPosition,
+} from "../../src/diagram-text.ts"
 import { diagramInputOf, openSource } from "../../src/parse.ts"
 import { readFrontmatterTrivia } from "../../src/frontmatter.ts"
 import { findAttributeQuotes } from "../../src/html-quotes.ts"
@@ -383,6 +399,187 @@ export function commentsAfterMatchStarts(text: string): number[] | null {
 }
 
 /**
+ * known-divergences/comment-takes-character.md, and diagrams/gantt.md,
+ * Known divergences: the offsets, in source order, of each `%` of the Gantt
+ * chart `text` that comes right after the first character of a unit, a
+ * character other than `}` and whitespace: the places where mermaid.js
+ * reads that character and the rest of the line as one comment, while here
+ * the `%` is a character of the unit or starts the next one. The units come
+ * from the parser's lexer, and the characters from its diagram text, which
+ * has no directives. Null when `text` is no Gantt chart or its lexer
+ * rejects it.
+ */
+export function percentsAfterUnitStarts(text: string): number[] | null {
+  const lexing = ganttLexingOf(text)
+  if (lexing === null) return null
+  const unitStarts = new Set(lexing.units.map((unit) => unit.start))
+  const places: number[] = []
+  for (
+    let character: DiagramPosition = lexing.text.first();
+    character !== null;
+    character = lexing.text.after(character)
+  ) {
+    const startsUnit =
+      unitStarts.has(character.start) && character.offsetInConvertedForm === 0
+    if (
+      !startsUnit ||
+      character.codePoint === RIGHT_CURLY_BRACKET ||
+      isWhitespace(character.codePoint)
+    ) {
+      continue
+    }
+    const next = lexing.text.after(character)
+    if (next?.codePoint === PERCENT_SIGN) places.push(next.start)
+  }
+  return places
+}
+
+/** The index of the first of `characters` that starts at `offset` or after it; the number of characters when none does. */
+function indexAt(
+  characters: readonly DiagramCharacter[],
+  offset: number,
+): number {
+  const index = characters.findIndex((character) => character.start >= offset)
+  return index === -1 ? characters.length : index
+}
+
+/** A diagram comment of a Gantt chart, and whether mermaid.js reaches its `%` directly. */
+interface ReachedComment {
+  readonly comment: DiagramComment
+  readonly direct: boolean
+}
+
+/** The diagram comments of a Gantt chart as {@link ganttCommentsReached} reads them, with the characters of its diagram text. */
+interface GanttCommentReading {
+  readonly characters: readonly DiagramCharacter[]
+  readonly comments: readonly ReachedComment[]
+}
+
+/**
+ * diagrams/gantt.md, Comments: the diagram comments of the Gantt chart
+ * `text`, in source order, each with whether mermaid.js reaches its `%`
+ * directly. Take the whitespace between the `%` and the last character
+ * that the lexer read: the end of the last unit other than a `newline`
+ * unit, whose line feeds count as whitespace here, the one whitespace
+ * character that leaves the click context, the end of the last comment, or,
+ * for a comment with the mark `%` that it reached directly, the last of the
+ * line feeds that it took. The `%` is reached directly when that
+ * whitespace is empty, or has two or more characters of which, after its
+ * leading line feeds, not exactly one remains. The units, the comments, and
+ * the characters come from the parser's lexer and its diagram text. Null
+ * when `text` is no Gantt chart or its lexer rejects it.
+ */
+function ganttCommentsReached(text: string): GanttCommentReading | null {
+  const lexing = ganttLexingOf(text)
+  if (lexing === null) return null
+  const characters: DiagramCharacter[] = []
+  for (
+    let character: DiagramPosition = lexing.text.first();
+    character !== null;
+    character = lexing.text.after(character)
+  ) {
+    characters.push(character)
+  }
+  // Where the lexer has read up to: the end of each unit but a `newline`
+  // unit, whose line feeds are whitespace before the `%`, and the end of the
+  // one whitespace character after the last unit of the ids of a click
+  // statement, which leaves the click context.
+  const readUpTo: number[] = lexing.units
+    .filter((unit) => unit.name !== "newline")
+    .map((unit) => unit.end)
+  lexing.units.forEach((unit, index) => {
+    const next = lexing.units.at(index + 1)
+    const endsIdText =
+      (unit.name === "id" || unit.name === ",") &&
+      next?.name !== "id" &&
+      next?.name !== ","
+    const leaving = characters.at(indexAt(characters, unit.end))
+    if (
+      endsIdText &&
+      leaving !== undefined &&
+      isWhitespace(leaving.codePoint)
+    ) {
+      readUpTo.push(leaving.end)
+    }
+  })
+  const comments: ReachedComment[] = []
+  for (const comment of lexing.comments) {
+    const [start, end] = comment.range
+    const anchor = Math.max(0, ...readUpTo.filter((offset) => offset <= start))
+    const between = characters.slice(
+      indexAt(characters, anchor),
+      indexAt(characters, start),
+    )
+    let leadingLineFeeds = 0
+    while (between.at(leadingLineFeeds)?.codePoint === LINE_FEED) {
+      leadingLineFeeds += 1
+    }
+    const remaining = between.length - leadingLineFeeds
+    const direct =
+      between.length === 0 || (between.length >= 2 && remaining !== 1)
+    comments.push({ comment, direct })
+    // A comment with the mark `%` reached directly takes the line feeds
+    // after it; any other comment ends before its line feed.
+    let readEnd = end
+    if (direct && comment.mark === "%") {
+      for (
+        let index = indexAt(characters, end);
+        characters.at(index)?.codePoint === LINE_FEED;
+        index += 1
+      ) {
+        readEnd = characters[index].end
+      }
+    }
+    readUpTo.push(readEnd)
+  }
+  return { characters, comments }
+}
+
+/**
+ * known-divergences/comment-takes-line-break.md, and diagrams/gantt.md,
+ * Known divergences: the offsets, in source order, of the diagram comments
+ * of the Gantt chart `text` with the mark `%` that mermaid.js reaches
+ * directly (see {@link ganttCommentsReached}), which take the line feeds
+ * after them there. Null when `text` is no Gantt chart or its lexer
+ * rejects it.
+ */
+export function percentCommentsReachedDirectly(text: string): number[] | null {
+  const reading = ganttCommentsReached(text)
+  if (reading === null) return null
+  return reading.comments
+    .filter(({ comment, direct }) => direct && comment.mark === "%")
+    .map(({ comment }) => comment.range[0])
+}
+
+/**
+ * known-divergences/percent-brace-after-unit.md, and diagrams/gantt.md,
+ * Known divergences: the offsets, in source order, of the diagram comments
+ * of the Gantt chart `text` that start with a `%%{`, which starts no
+ * directive, and that mermaid.js reaches directly (see
+ * {@link ganttCommentsReached}), where it rejects the input. The `%%{` is
+ * found in the diagram text, which has no directives. Null when `text` is
+ * no Gantt chart or its lexer rejects it.
+ */
+export function percentBracesReachedDirectly(text: string): number[] | null {
+  const reading = ganttCommentsReached(text)
+  if (reading === null) return null
+  const { characters } = reading
+  return reading.comments
+    .filter(({ comment, direct }) => {
+      const first = characters.findIndex(
+        (character) => character.start >= comment.range[0],
+      )
+      return (
+        direct &&
+        characters.at(first)?.codePoint === PERCENT_SIGN &&
+        characters.at(first + 1)?.codePoint === PERCENT_SIGN &&
+        characters.at(first + 2)?.codePoint === LEFT_CURLY_BRACKET
+      )
+    })
+    .map(({ comment }) => comment.range[0])
+}
+
+/**
  * known-divergences/comment-takes-line-break.md: the offsets, in source
  * order, of the diagram comments of the class diagram `text` that follow a
  * unit on their line: the comments whose line feed mermaid.js takes, where
@@ -478,22 +675,30 @@ type AnyUnit = DiagramUnit<string>
 
 /**
  * The units of a diagram text as the parser's lexer reads them, and how an
- * empty description block that is a statement is found among them: where
- * a statement starts, and before the separator of a statement (each
- * diagram's Empty description blocks before a separator).
+ * empty form that is a statement is found among them: where a statement
+ * starts, and before the separator of a statement (each diagram's Empty
+ * description blocks before a separator).
  */
 interface DiagramUnits {
   readonly units: readonly AnyUnit[]
   /** The kinds of empty form that the diagram has (see `EMPTY_FORM_KINDS`). */
   readonly emptyFormKinds: readonly EmptyFormKind[]
   /**
-   * Whether a statement starts at the empty description block `block`,
-   * from the units before it and the units after it, in source order,
-   * without those of the empty forms that mermaid.js does not see.
+   * The kinds of empty form that are a statement where a statement starts:
+   * the empty description block in every diagram type, and in gantt the
+   * empty href and the empty call too (diagrams/gantt.md, Empty hrefs and
+   * empty calls); a form of any other kind is never one.
+   */
+  readonly statementFormKinds: readonly EmptyFormKind[]
+  /**
+   * Whether a statement starts at the empty form `form`, one of
+   * `statementFormKinds`, from the units before it and the units after
+   * it, in source order, without those of the empty forms that mermaid.js
+   * does not see.
    */
   readonly statementStartsAt: (
     before: readonly AnyUnit[],
-    block: EmptyForm<AnyUnit>,
+    form: EmptyForm<AnyUnit>,
     after: readonly AnyUnit[],
   ) => boolean
   /** The names of the units that separate a statement that needs a separator from what follows it. */
@@ -592,19 +797,20 @@ function readsAsUnits(
 
 /**
  * The empty forms among the units of `diagram` that mermaid.js reads
- * nothing for: every empty string and every empty call, and every empty
- * description block that is no statement, neither where a statement
- * starts nor before its separator. Whether a block is one is read from the
- * units around it other than the `space` units, and, before it, other than
- * the units of the empty forms found here already, which mermaid.js does
- * not see.
+ * nothing for: every empty form of a kind that is never a statement, and
+ * every one of `statementFormKinds` that is no statement, neither where a
+ * statement starts nor before its separator. Whether a form is one is
+ * read from the units around it other than the `space` units, and, before
+ * it, other than the units of the empty forms found here already, which
+ * mermaid.js does not see.
  */
 function removedEmptyFormsOf(diagram: DiagramUnits): EmptyForm<AnyUnit>[] {
-  const { units, emptyFormKinds, statementStartsAt } = diagram
+  const { units, emptyFormKinds, statementFormKinds, statementStartsAt } =
+    diagram
   const removed: EmptyForm<AnyUnit>[] = []
   const removedUnits = new Set<AnyUnit>()
   for (const form of emptyFormsOf(units, emptyFormKinds)) {
-    if (form.kind === "empty-description-block") {
+    if (statementFormKinds.includes(form.kind)) {
       const before = units
         .slice(0, form.units[0].index)
         .filter((unit) => unit.name !== "space" && !removedUnits.has(unit))
@@ -745,6 +951,7 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
     return {
       units: sequence.units,
       emptyFormKinds: EMPTY_FORM_KINDS.sequence,
+      statementFormKinds: ["empty-description-block"],
       statementStartsAt: (before) => sequenceStatementStartsAfter(before),
       separators: ["newline"],
       endOfTextSeparates: false,
@@ -756,6 +963,7 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
     return {
       units: classLexing.units,
       emptyFormKinds: EMPTY_FORM_KINDS.class,
+      statementFormKinds: ["empty-description-block"],
       statementStartsAt: (before) => classStatementStartsAfter(before),
       separators: ["newline"],
       endOfTextSeparates: true,
@@ -767,10 +975,41 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
     return {
       units: state.units,
       emptyFormKinds: EMPTY_FORM_KINDS.state,
+      statementFormKinds: ["empty-description-block"],
       statementStartsAt: (before, block, after) =>
         stateStatementStartsAt(text, before, block, after),
       separators: ["newline"],
       endOfTextSeparates: true,
+      removedRangeOf: (form) => form.range,
+    }
+  }
+  const er = erLexingOf(text)
+  if (er !== null) {
+    return {
+      units: er.units,
+      emptyFormKinds: EMPTY_FORM_KINDS.er,
+      statementFormKinds: ["empty-description-block"],
+      statementStartsAt: (before, _block, after) =>
+        erStatementStartsAt(before, after),
+      // diagrams/er.md, Diagram and statements: nothing separates two
+      // statements, so a block is a statement only where one starts.
+      separators: [],
+      endOfTextSeparates: false,
+      removedRangeOf: (form) => form.range,
+    }
+  }
+  const gantt = ganttLexingOf(text)
+  if (gantt !== null) {
+    return {
+      units: gantt.units,
+      emptyFormKinds: EMPTY_FORM_KINDS.gantt,
+      statementFormKinds: EMPTY_FORM_KINDS.gantt,
+      statementStartsAt: (before, _form, after) =>
+        !ganttFormInsideClickStatement(before, after),
+      // diagrams/gantt.md, Diagram and statements: nothing separates two
+      // statements, so a form is a statement only where one starts.
+      separators: [],
+      endOfTextSeparates: false,
       removedRangeOf: (form) => form.range,
     }
   }
@@ -782,6 +1021,7 @@ function flowchartUnits(units: readonly Unit[]): DiagramUnits {
   return {
     units,
     emptyFormKinds: EMPTY_FORM_KINDS.flowchart,
+    statementFormKinds: ["empty-description-block"],
     statementStartsAt: (before) => flowchartStatementStartsAfter(before),
     separators: ["newline", ";"],
     endOfTextSeparates: true,
@@ -815,6 +1055,179 @@ function classLexingOf(text: string): ClassUnits | null {
     if (error instanceof ParseError) return null
     throw error
   }
+}
+
+/** The units of the ER diagram `text` as the parser's lexer reads them; null when `text` is no ER diagram or its lexer rejects it. */
+function erLexingOf(text: string): ErUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
+  if (diagramType !== "er") return null
+  try {
+    return lexEr(diagramInputOf(opened, detection, diagramType))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/**
+ * diagrams/er.md, Empty description blocks: the units after which the
+ * statement before has not ended: a cardinality or a line, the `:` before a
+ * role, `:::`, `,`, `[`, and `subgraph` and `class`, which a name must
+ * follow.
+ */
+const ER_UNFINISHED_AFTER: readonly string[] = [
+  ...RELATIONSHIP_UNITS,
+  ":",
+  ":::",
+  ",",
+  "[",
+  "subgraph",
+  "class",
+]
+
+/**
+ * diagrams/er.md, Empty description blocks: the units that continue the
+ * statement before them: a cardinality, which starts a relationship, `:::`,
+ * `{`, `[`, `]`, which closes an alias or the title of a subgraph, `:`, and
+ * `,`.
+ */
+const ER_CONTINUATIONS: readonly string[] = [
+  ...RELATIONSHIP_UNITS,
+  ":::",
+  "{",
+  "[",
+  "]",
+  ":",
+  ",",
+]
+
+/**
+ * diagrams/er.md, Empty description blocks: whether an empty description
+ * block, with `before` and `after` the units before and after it, in
+ * source order, is a statement. It lies inside a statement instead where
+ * the unit after the blocks continues the statement before it, or where
+ * that statement has not ended: after a unit of {@link ER_UNFINISHED_AFTER},
+ * inside an alias or the title of a subgraph, a `[` that no `]` has closed,
+ * and in the first list of names of a `class` statement, which a second
+ * list must follow.
+ */
+function erStatementStartsAt(
+  before: readonly AnyUnit[],
+  after: readonly AnyUnit[],
+): boolean {
+  const last = before.at(-1)
+  if (last === undefined) return true
+  const next = firstAfterEmptyDescriptionBlocks(after)?.name
+  if (next !== undefined && ER_CONTINUATIONS.includes(next)) return false
+  if (ER_UNFINISHED_AFTER.includes(last.name)) return false
+  if (isInsideOpenBracket(before)) return false
+  return !endsFirstListOfClassStatement(before)
+}
+
+/**
+ * Entities and Subgraphs: whether `before` ends inside an alias or the
+ * title of a subgraph: a `[` comes after the last `]`, and no `newline`
+ * unit lies after it, since an alias and a title are read on one line.
+ */
+function isInsideOpenBracket(before: readonly AnyUnit[]): boolean {
+  for (let index = before.length - 1; index >= 0; index -= 1) {
+    const name = before[index].name
+    if (name === "[") return true
+    if (name === "]" || name === "newline") return false
+  }
+  return false
+}
+
+/**
+ * Other statements, `class-statement`: whether `before` ends with the first
+ * list of names of a `class` statement, `"class" name ( "," name )*`, with
+ * no second list after it.
+ */
+function endsFirstListOfClassStatement(before: readonly AnyUnit[]): boolean {
+  let index = before.length - 1
+  while (before.at(index)?.name === "name") {
+    if (before.at(index - 1)?.name !== ",") break
+    index -= 2
+  }
+  return (
+    before.at(index)?.name === "name" && before.at(index - 1)?.name === "class"
+  )
+}
+
+/** The units of the Gantt chart `text` as the parser's lexer reads them; null when `text` is no Gantt chart or its lexer rejects it. */
+function ganttLexingOf(text: string): GanttUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
+  if (diagramType !== "gantt") return null
+  try {
+    return lexGantt(diagramInputOf(opened, detection, diagramType))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/**
+ * diagrams/gantt.md, Empty description blocks, and Empty hrefs and empty
+ * calls: the units of each empty form, an empty description block, an
+ * empty href, and an empty call.
+ */
+const GANTT_EMPTY_FORM_UNITS: readonly (readonly string[])[] = [
+  ["accDescr", "{", "}"],
+  ["href", '"', '"'],
+  ["call", "(", ")"],
+]
+
+/**
+ * diagrams/gantt.md, Click statements: the units of each part, a link and
+ * a call with arguments or without, each with the name of its keyword.
+ */
+const GANTT_PART_UNITS: readonly (readonly [string, readonly string[]])[] = [
+  ["href", ["href", '"', "url-text", '"']],
+  ["call", ["call", "callback-name", "(", ")"]],
+  ["call", ["call", "callback-name", "(", "callback-arguments", ")"]],
+]
+
+/**
+ * diagrams/gantt.md, Empty description blocks, and Empty hrefs and empty
+ * calls: whether an empty form, with `before` and `after` the units before
+ * and after it, in source order, lies inside a click statement, between
+ * its ids and its first part or between its two parts. It does where
+ * `before` ends with `click`, its ids, and at most one part, and the first
+ * unit of `after` after the empty forms there starts a part of the other
+ * kind, a `call` or an `href` that starts no empty form.
+ */
+function ganttFormInsideClickStatement(
+  before: readonly AnyUnit[],
+  after: readonly AnyUnit[],
+): boolean {
+  let index = 0
+  for (;;) {
+    const formNames = after.slice(index, index + 3).map((unit) => unit.name)
+    const isForm = GANTT_EMPTY_FORM_UNITS.some((form) =>
+      form.every((name, offset) => formNames[offset] === name),
+    )
+    if (!isForm) break
+    index += 3
+  }
+  const next = after.at(index)?.name
+  if (next !== "call" && next !== "href") return false
+  const namesBefore = before.map((unit) => unit.name)
+  const click = namesBefore.lastIndexOf("click")
+  if (click === -1) return false
+  const rest = namesBefore.slice(click + 1)
+  const idCount = rest.findIndex((name) => name !== "id" && name !== ",")
+  if (idCount === 0) return false
+  if (idCount === -1) return true
+  const firstPart = GANTT_PART_UNITS.find(
+    ([, partNames]) =>
+      partNames.length === rest.length - idCount &&
+      partNames.every((name, offset) => rest[idCount + offset] === name),
+  )
+  return firstPart !== undefined && firstPart[0] !== next
 }
 
 /** The units of the state diagram `text` as the parser's lexer reads them; null when `text` is no state diagram or its lexer rejects it. */

@@ -37,7 +37,7 @@
 図の本体は、今のところ `error` 疑似図種と、
 flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 シーケンス図（`sequence`）と、クラス図（`classDiagram`）と、
-状態図（`stateDiagram`）です。
+状態図（`stateDiagram`）と、ER 図（`er`）と、Gantt チャート（`gantt`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -46,7 +46,9 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 [`diagrams/flowchart.md`](../../spec/docs/diagrams/flowchart.ja.md)、
 [`diagrams/sequence.md`](../../spec/docs/diagrams/sequence.ja.md)、
 [`diagrams/class.md`](../../spec/docs/diagrams/class.ja.md)、
-[`diagrams/state.md`](../../spec/docs/diagrams/state.ja.md) のどれかに従います。
+[`diagrams/state.md`](../../spec/docs/diagrams/state.ja.md)、
+[`diagrams/er.md`](../../spec/docs/diagrams/er.ja.md)、
+[`diagrams/gantt.md`](../../spec/docs/diagrams/gantt.ja.md) のどれかに従います。
 3 つの部分からなります。
 
 - 図のテキストを単位に分ける字句解析器（`src/diagrams/<図種>/units.ts`）
@@ -60,19 +62,23 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 文法の項目のトークンは、`src/unit-grammar.ts` の `UnitGrammar` にあります。
 `tokenless-empty-forms` の空の形は `src/empty-forms.ts` にあります。
 複数の図の文書が共有する規則も 1 か所にあります。
-flowchart とクラス図と状態図の方向の行は `src/direction-line.ts` にあり、
-状態図はその語を大文字と小文字を区別せずに比べます。
+flowchart とクラス図と状態図と ER 図の方向の行は
+`src/direction-line.ts` にあり、
+状態図と ER 図はその語を大文字と小文字を区別せずに比べます。
 flowchart とクラス図の文字の規則の Unicode の文字は
 `src/unicode-letters.ts` にあります。
 シーケンス図の字句解析器が `#` と `%` を、
 クラス図の字句解析器が `%%` を、
-状態図の字句解析器が `#` と `%%` を読むように、
+状態図の字句解析器が `#` と `%%` を、
+Gantt チャートの字句解析器が `%` を読むように、
 図のコメントを読む図は、それを共通の部分に渡し、
 共通の部分が `Root.comments` に記録します。
 中にコメント領域があれば、トークンと同じく、そこで切ります。
 mermaid.js が Db を作るときに行う拒否は、パーサーが文法の後で行います。
 flowchart では `subgraph-members.ts`、
 シーケンス図とクラス図と状態図では `db-rejections.ts` です。
+Gantt チャートでは、`topAxis` の文がノードを作らないので、
+文法がその文を読んだところで 2 つの拒否を行います。
 クラス図の字句解析器は、各メンバーの行を、
 [メンバーの行](../../spec/docs/diagrams/class.ja.md#メンバーの行)
 の手順で部分に分けます。

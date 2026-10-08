@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Detection: a line of `%%` alone and a line of spaces before the header; a comment and trivia here, rejected by mermaid.js (bare-percent-line-before-header)."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%  gantttitle T\n--^\nExpecting 'gantt', got 'NL'"
+  }
+}

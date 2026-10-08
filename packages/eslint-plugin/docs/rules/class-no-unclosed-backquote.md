@@ -7,7 +7,7 @@ Disallow a backquoted class name without its closing backquote.
 
 <!-- begin auto-generated rule notice -->
 
-The `recommended` configuration does not enable this rule.
+✅ The `recommended` configuration enables this rule.
 
 <!-- end auto-generated rule notice -->
 
@@ -50,3 +50,12 @@ This rule has no options.
 ## Related Rules
 
 - [no-unclosed-directive](./no-unclosed-directive.md)
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/class-no-unclosed-backquote.ts)
+- [Tests source](../../tests/rules/class-no-unclosed-backquote.test.ts)
+
+<!-- end auto-generated rule resources -->

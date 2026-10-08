@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A section is listed for each statement, also when the name repeats; only the keyword and the one whitespace character after it are left out."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S1",
+      "S1",
+      "  S3  "
+    ],
+    "tasks": [],
+    "links": []
+  }
+}

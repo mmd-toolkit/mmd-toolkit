@@ -6,7 +6,7 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
@@ -52,3 +52,12 @@ classDiagram
 ## 関連する規則
 
 - [flowchart-no-redefined-vertex](./flowchart-no-redefined-vertex.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/class-no-redefined-class.ts)
+- [テストのソース](../../tests/rules/class-no-redefined-class.test.ts)
+
+<!-- end auto-generated rule resources -->

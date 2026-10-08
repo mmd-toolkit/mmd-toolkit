@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 300,
+    "test": "when parsing ER diagram it... > attribute name > should allow a question mark suffix on an attribute type with a key and comment"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-PERSON-0",
+        "attributes": [
+          {
+            "type": "string?",
+            "name": "alias",
+            "keys": [
+              "UK"
+            ],
+            "comment": "optional display name"
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "PERSON",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

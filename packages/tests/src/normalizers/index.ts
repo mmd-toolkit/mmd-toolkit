@@ -1,6 +1,9 @@
 import type { DbSummary } from "../types.ts"
 import { normalizeClass, patchClassDb } from "./class.ts"
+import { normalizeEr } from "./er.ts"
 import { normalizeFlowchart, patchFlowDb } from "./flowchart.ts"
+import { normalizeGantt, patchGanttDb } from "./gantt.ts"
+import { normalizeJourney } from "./journey.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
 import { normalizeState } from "./state.ts"
 
@@ -28,12 +31,16 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["classDiagram", normalizeClass],
   // `stateDiagram` and `stateDiagram-v2` are both detected as `stateDiagram`.
   ["stateDiagram", normalizeState],
+  ["er", normalizeEr],
+  ["gantt", normalizeGantt],
+  ["journey", normalizeJourney],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])
 
 /**
- * Changes a Db class for summarizing. Receives the Db's prototype. A patch
+ * Changes a Db class for summarizing. Receives the Db's prototype (or the Db,
+ * see {@link DbPatchEntry.appliedTo}). A patch
  * does what its diagram type needs of the following:
  *
  * - make a sanitizer the Db calls (`@braintree/sanitize-url` through
@@ -58,6 +65,12 @@ export type DbPatch = (prototype: object) => void
 export interface DbPatchEntry {
   readonly sampleText: string
   readonly patch: DbPatch
+  /**
+   * What the patch receives: the prototype of the Db class (the default), or
+   * the Db itself, for a diagram type whose Db is one object that every
+   * diagram shares and that has no class (gantt).
+   */
+  readonly appliedTo?: "prototype" | "object"
 }
 
 /**
@@ -75,6 +88,10 @@ const dbPatches: ReadonlyMap<string, DbPatchEntry> = new Map<
   [
     "classDiagram",
     { sampleText: "classDiagram\n  class A\n", patch: patchClassDb },
+  ],
+  [
+    "gantt",
+    { sampleText: "gantt\n", patch: patchGanttDb, appliedTo: "object" },
   ],
 ])
 

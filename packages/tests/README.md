@@ -71,9 +71,9 @@ diagram type shares (frontmatter, directives, comments, diagram detection).
   mermaid.js read without the known divergence that changes how it reads the
   input. Only fixtures with the mark `comment-takes-character`,
   `comment-takes-line-break`, `name-start-reads-unit`,
-  `html-tag-in-frontmatter`, `c4-keyword-anywhere` or
-  `bare-percent-line-before-header` have it. Where it is there, it is the result
-  to match; where it is not, the result to match is `expected.json`. See
+  `percent-brace-after-unit`, `html-tag-in-frontmatter`, `c4-keyword-anywhere`
+  or `bare-percent-line-before-header` have it. Where it is there, it is the
+  result to match; where it is not, the result to match is `expected.json`. See
   [docs/expected-results.md](./docs/expected-results.md).
 - `ast.json`: the tree that the reference implementation (`@mmd-toolkit/parser`)
   returns for the input, present only for inputs it accepts.
@@ -166,6 +166,8 @@ Reads the fixtures. It does not load mermaid.js.
     [known-divergences/c4-keyword-anywhere.md](../spec/docs/known-divergences/c4-keyword-anywhere.md).
   - `bare-percent-line-before-header`: see
     [known-divergences/bare-percent-line-before-header.md](../spec/docs/known-divergences/bare-percent-line-before-header.md).
+  - `percent-brace-after-unit`: see
+    [known-divergences/percent-brace-after-unit.md](../spec/docs/known-divergences/percent-brace-after-unit.md).
 - `getFixturesRoot()`: the absolute path of the `fixtures/` directory.
 - `getDefaultConfig()`: the configuration that `embedded.config` is a difference
   from (`fixtures/default-config.json`).
@@ -208,9 +210,10 @@ Runs the pinned mermaid.js in Node.
 - `withoutDivergences` in the options of the three functions above: runs
   mermaid.js read without the listed known divergences, for an implementation
   that checks the divergences are the only cause of a difference. The list holds
-  `comment-takes-character`, `comment-takes-line-break`, `name-start-reads-unit`
-  and `c4-keyword-anywhere` (the type `DivergenceRemoval`); divergences that
-  change the same part of mermaid.js cannot be removed together. See
+  `comment-takes-character`, `comment-takes-line-break`,
+  `name-start-reads-unit`, `percent-brace-after-unit` and `c4-keyword-anywhere`
+  (the type `DivergenceRemoval`); divergences that change the same part of
+  mermaid.js cannot be removed together. See
   [docs/expected-results.md](./docs/expected-results.md).
 - Options with a key other than `config` and `withoutDivergences` make every
   function of this module that takes options throw a `TypeError`, so that a

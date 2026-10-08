@@ -1,0 +1,94 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/gantt/parser/gantt.spec.js",
+    "line": 7,
+    "test": "when parsing a gantt diagram it > should handle a task with start/end time relative to other tasks"
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "Adding gantt diagram functionality to mermaid",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Documentation"
+    ],
+    "tasks": [
+      {
+        "section": "Documentation",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-27"
+          },
+          "endTime": {
+            "data": "2024-01-28"
+          }
+        },
+        "task": "task A",
+        "classes": [],
+        "id": "a",
+        "order": 0
+      },
+      {
+        "section": "Documentation",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after a"
+          },
+          "endTime": {
+            "data": "2024-01-30"
+          }
+        },
+        "task": "task B",
+        "classes": [],
+        "id": "b",
+        "order": 1
+      },
+      {
+        "section": "Documentation",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-20"
+          },
+          "endTime": {
+            "data": "until a"
+          }
+        },
+        "task": "task C",
+        "classes": [],
+        "id": "c",
+        "order": 2
+      },
+      {
+        "section": "Documentation",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after c"
+          },
+          "endTime": {
+            "data": "until b"
+          }
+        },
+        "task": "task D",
+        "classes": [],
+        "id": "d",
+        "order": 3
+      }
+    ],
+    "links": []
+  }
+}

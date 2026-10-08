@@ -9,7 +9,7 @@ import { KEYWORD_TEXTS } from "./keywords.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import type { CheckedNode, CheckedRoot, CheckedToken } from "./types.ts"
-import { isNode, nodesOf } from "./walk.ts"
+import { childNodesOf, isNode, nodesOf } from "./walk.ts"
 
 /** The tokens of `root` that lie in `range`. */
 export function tokensIn(root: CheckedRoot, range: TreeRange): CheckedToken[] {
@@ -23,6 +23,17 @@ export function nodeTokensIn(
 ): CheckedToken[] {
   return tokensIn(root, range).filter(
     (token) => token.type !== "Directive" && token.type !== "IgnoredSemicolon",
+  )
+}
+
+/** The tokens of `node` that no child node of it holds, `Directive` and `IgnoredSemicolon` tokens left out: the tokens that the node writes itself. */
+export function ownTokensOf(
+  root: CheckedRoot,
+  node: CheckedNode,
+): readonly CheckedToken[] {
+  const children = childNodesOf(node)
+  return nodeTokensIn(root, node.range).filter(
+    (token) => !children.some((child) => contains(child.range, token.range)),
   )
 }
 

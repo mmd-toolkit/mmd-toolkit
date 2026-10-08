@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Known divergences: `C4Component` in a title; rejected by mermaid.js, the title here (c4-keyword-anywhere)."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\ngantttitle C4Compon\n^"
+  }
+}

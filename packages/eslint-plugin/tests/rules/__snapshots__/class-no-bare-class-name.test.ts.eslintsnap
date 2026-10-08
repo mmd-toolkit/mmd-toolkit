@@ -1,0 +1,120 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: class-no-bare-class-name >> invalid >>> docs/rules/class-no-bare-class-name.md incorrect 1
+Filename: class-no-bare-class-name-incorrect-1.mmd
+
+Code:
+  1 | classDiagram
+  2 |   direction lr
+    |   ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads `direction lr` as a class name alone: it declares no class and changes nothing.
+---
+
+
+Test: class-no-bare-class-name >> invalid >>> docs/rules/class-no-bare-class-name.md incorrect 2
+Filename: class-no-bare-class-name-incorrect-2.mmd
+
+Code:
+  1 | classDiagram
+  2 |   title Animals
+    |   ^~~~~~~~~~~~~ [1]
+  3 |   class A
+  4 |
+
+[1] mermaid.js reads `title Animals` as a class name alone: it declares no class and changes nothing.
+---
+
+
+Test: class-no-bare-class-name >> invalid >>> docs/rules/class-no-bare-class-name.md incorrect 3
+Filename: class-no-bare-class-name-incorrect-3.mmd
+
+Code:
+  1 | classDiagram
+  2 |   Foo
+    |   ^~~ [1]
+  3 |
+
+[1] mermaid.js reads `Foo` as a class name alone: it declares no class and changes nothing.
+---
+
+
+Test: class-no-bare-class-name >> invalid >>> invalid/class/gram-directive-then-name-alone
+Filename: tests/fixtures/rules/class-no-bare-class-name/invalid/class/gram-directive-then-name-alone-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | %%{init: {}}%% Foo
+    |                ^~~ [1]
+  3 |
+
+[1] mermaid.js reads `Foo` as a class name alone: it declares no class and changes nothing.
+---
+
+
+Test: class-no-bare-class-name >> invalid >>> invalid/class/gram-empty-description-block-then-name-alone
+Filename: tests/fixtures/rules/class-no-bare-class-name/invalid/class/gram-empty-description-block-then-name-alone-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | accDescr {} Foo
+    |             ^~~ [1]
+  3 |
+
+[1] mermaid.js reads `Foo` as a class name alone: it declares no class and changes nothing.
+---
+
+
+Test: class-no-bare-class-name >> invalid >>> invalid/class/gram-name-alone
+Filename: tests/fixtures/rules/class-no-bare-class-name/invalid/class/gram-name-alone-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | Foo
+    | ^~~ [1]
+  3 |
+
+[1] mermaid.js reads `Foo` as a class name alone: it declares no class and changes nothing.
+---
+
+
+Test: class-no-bare-class-name >> invalid >>> invalid/class/gram-name-alone-then-empty-description-block
+Filename: tests/fixtures/rules/class-no-bare-class-name/invalid/class/gram-name-alone-then-empty-description-block-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | Foo accDescr {}
+    | ^~~ [1]
+  3 |
+
+[1] mermaid.js reads `Foo` as a class name alone: it declares no class and changes nothing.
+---
+
+
+Test: class-no-bare-class-name >> invalid >>> invalid/class/gram-title-not-statement
+Filename: tests/fixtures/rules/class-no-bare-class-name/invalid/class/gram-title-not-statement-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | title Animals
+    | ^~~~~~~~~~~~~ [1]
+  3 | class A
+  4 |
+
+[1] mermaid.js reads `title Animals` as a class name alone: it declares no class and changes nothing.
+---
+
+
+Test: class-no-bare-class-name >> invalid >>> invalid/class/lex-direction-lower-case
+Filename: tests/fixtures/rules/class-no-bare-class-name/invalid/class/lex-direction-lower-case-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | direction lr
+    | ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads `direction lr` as a class name alone: it declares no class and changes nothing.
+---

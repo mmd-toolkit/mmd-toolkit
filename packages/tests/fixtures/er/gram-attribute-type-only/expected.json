@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Attributes: a type without a name; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...DiagramA { string}\n--------------------^\nExpecting 'ATTRIBUTE_WORD', '?', got 'BLOCK_STOP'"
+  }
+}

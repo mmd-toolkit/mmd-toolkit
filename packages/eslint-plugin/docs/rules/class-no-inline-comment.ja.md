@@ -38,12 +38,16 @@ mermaid.js はそれを描けないので、
 mermaid.js も、書き手の意図どおりに読む。
 
 1 つの場合だけ、mermaid.js は次の行を別に読む。
-コメントの後に空白だけの行があり、その行の後にコメント行がないときである。
-mermaid.js は、コメント行を、その前の空白だけの行と一緒に取り除くので
+コメントと次の行の間に空白だけの行があり、
+mermaid.js がそれを取り除かないときである。
+mermaid.js は、`%%` の後にテキストのあるコメント行を、
+その直前の空白だけの行と一緒に取り除く
 （
 [`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)
-）、
-そこにコメント行があると、別に読まれなくなる。
+）。
+そのため、空白だけの行は、次の行を別に読ませる。
+ただし、空白だけの行だけを挟んで、そうしたコメント行が後に来るときは除く。
+`%%` だけの行は取り除かれないので、別に読ませることを妨げない。
 この規則は、この場合のコメントも報告する。
 次の行が別に読まれるかどうかが、見えない空白に懸かっているからである。
 行末の空白はコードブロックの中に残らないので、下の例には載せない。
@@ -77,3 +81,12 @@ classDiagram
 ## オプション
 
 この規則にはオプションがない。
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/class-no-inline-comment.ts)
+- [テストのソース](../../tests/rules/class-no-inline-comment.test.ts)
+
+<!-- end auto-generated rule resources -->

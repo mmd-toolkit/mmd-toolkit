@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed description block is closed by the first closing brace of nested composite state bodies that follow; the rest of the bodies is read as statements."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x\nstate B {\nstate C {\nD",
+    "states": [
+      {
+        "id": "}",
+        "shape": "rect",
+        "label": "}",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

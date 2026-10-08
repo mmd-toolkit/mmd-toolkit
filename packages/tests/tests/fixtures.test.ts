@@ -23,6 +23,9 @@ const DIAGRAMS: readonly DiagramType[] = [
   "sequence",
   "class",
   "state",
+  "er",
+  "gantt",
+  "journey",
 ]
 
 /** Every fixture, read once for all the tests of this file. */
@@ -91,6 +94,16 @@ describe("fixtures", () => {
     for (const fixture of fixtures) {
       if (fixture.expected.accepted) {
         expect(fixture.expected.diagramType).toBe("stateDiagram")
+      }
+    }
+  })
+
+  it("loads er fixtures", () => {
+    const fixtures = fixturesOf("er")
+    expect(fixtures.length).toBeGreaterThan(0)
+    for (const fixture of fixtures) {
+      if (fixture.expected.accepted) {
+        expect(fixture.expected.diagramType).toBe("er")
       }
     }
   })
@@ -191,14 +204,15 @@ describe("fixtures", () => {
   /**
    * The marks of the known divergences whose fixtures hold the reading of the
    * specification in `specified.json` where it differs from `expected.json`:
-   * one changes the detector of C4 of mermaid.js, three change its lexer, and
-   * one changes the way it reads the frontmatter.
+   * one changes the detector of C4 of mermaid.js, four change its lexer, and
+   * two change the text it reads (the frontmatter, the bare `%%` lines).
    */
   const READING_MARKS = [
     "c4-keyword-anywhere",
     "comment-takes-character",
     "comment-takes-line-break",
     "name-start-reads-unit",
+    "percent-brace-after-unit",
     "html-tag-in-frontmatter",
     "bare-percent-line-before-header",
   ]

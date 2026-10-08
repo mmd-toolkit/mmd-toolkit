@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements: names outside ASCII in a `class` statement; accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-é-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "é",
+        "classes": [
+          "è"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

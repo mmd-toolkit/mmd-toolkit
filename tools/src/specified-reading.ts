@@ -16,25 +16,42 @@ import {
 } from "../../packages/tests/src/mermaid.ts"
 
 /**
+ * The three divergences of the gantt lexer that act on a `%` comment: the
+ * rules of one lexer for a `%` after a character, for a `%` comment and its
+ * line break, and for `%%{`. A fixture of one is read through the rules of the
+ * others, since a text with a comment that takes a character or a line break
+ * reaches the rule for `%%{` through them (checked by running every gantt
+ * fixture with the three removed: only the fixtures with one of the marks
+ * differ).
+ */
+const GANTT_COMMENT_REMOVALS: readonly DivergenceRemoval[] = [
+  "comment-takes-character",
+  "comment-takes-line-break",
+  "percent-brace-after-unit",
+]
+
+/**
  * The known divergences whose fixtures are read by mermaid.js with a part of
  * it taken out (lexer rules, or the detector of C4), each with the removals to
  * make. The two class divergences are taken out together: both change the
  * lexer of the class diagram, and a fixture of one can be read through the
- * rules of the other.
+ * rules of the other. `comment-takes-line-break` is also one of the three of
+ * gantt, so its fixtures take out all four.
  */
 const REMOVALS_OF_MARKS: Readonly<
   Record<string, readonly DivergenceRemoval[]>
 > = {
   "c4-keyword-anywhere": ["c4-keyword-anywhere"],
-  "comment-takes-character": ["comment-takes-character"],
+  "comment-takes-character": GANTT_COMMENT_REMOVALS,
   "comment-takes-line-break": [
-    "comment-takes-line-break",
+    ...GANTT_COMMENT_REMOVALS,
     "name-start-reads-unit",
   ],
   "name-start-reads-unit": [
     "comment-takes-line-break",
     "name-start-reads-unit",
   ],
+  "percent-brace-after-unit": GANTT_COMMENT_REMOVALS,
 }
 
 /** The mark of the divergence that mermaid.js reads the frontmatter of differently. */

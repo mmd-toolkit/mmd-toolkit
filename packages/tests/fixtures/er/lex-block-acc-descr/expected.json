@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The attribute block context: `accDescr { x }` in a block is a word and a `{`; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...agramA { accDescr { x }}\n---------------------^\nExpecting 'ATTRIBUTE_WORD', '?', got '{'"
+  }
+}

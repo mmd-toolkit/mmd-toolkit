@@ -2,7 +2,7 @@
 
 英語版: [tokenless-empty-forms.md](./tokenless-empty-forms.md)
 
-図種: flowchart、sequence、class、state。
+図種: flowchart、sequence、class、state、er。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -42,6 +42,25 @@ flowchart の 3 つ
 クラスの名前の中に書く 2 つ、
 つまり、2 つのバッククォートである**空のバッククォートの名前**と、
 2 つの `~` である**空のジェネリクスの型**です。
+er では 2 つです。
+空の説明ブロックと、属性ブロックの中の、
+間に何もない 2 つのバッククォートである**空のバッククォート**で、
+mermaid.js はそれにトークンを読みません。
+2 つの属性の間では木がそれをブロックの項目として持つので、
+属性の中にあるものだけがこの差異に入ります
+（[属性](../diagrams/er.ja.md#属性) を参照）。
+gantt では 3 つです。
+空の説明ブロック、`href` と間に何もない 2 つの引用符である**空の href**、
+flowchart と同じ空の call です。
+文の始まる位置では木が空の href や空の call を GanttIgnoredStatement
+として持つので、click の文の中にあるものだけがこの差異に入ります
+（[空の href と空の call](../diagrams/gantt.ja.md#空の-href-と空の-call)
+を参照）。
+[fixture: er/div-empty-description-block-in-relationship] [fixture:
+er/div-empty-backquotes-between-type-and-name] [fixture:
+er/gram-empty-backquotes-between-attributes] [fixture:
+gantt/div-empty-href-before-call] [fixture: gantt/div-empty-call-before-href]
+[fixture: gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-line]
 
 それだけの行の空の説明ブロックは、そのふつうの書き方で、
 何も変えない説明ブロックの文です。
@@ -189,7 +208,8 @@ mermaid.js が受理し、この仕様が拒否します。
 [flowchart](../diagrams/flowchart.ja.md#既知の差異)、
 [sequence](../diagrams/sequence.ja.md#既知の差異)、
 [class](../diagrams/class.ja.md#既知の差異)、
-[state](../diagrams/state.ja.md#既知の差異) です。
+[state](../diagrams/state.ja.md#既知の差異)、
+[er](../diagrams/er.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 
@@ -249,6 +269,18 @@ class は 5 つの形すべてを読み飛ばします
 （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L34-L35)、
 [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L53-L62)、
 [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）。
+er は空の説明ブロック
+（[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L16-L18)）
+と空のバッククォート
+（[`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L38-L40)）
+を読み飛ばします。
+gantt は空の説明ブロック
+（[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L24-L25)）、
+空の href の `href`、その空白、両方の引用符
+（[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L42-L43)）、
+空の call の `call`、その空白、括弧
+（[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L54-L55)）
+を読み飛ばします。
 これらの規則はどれも、字句解析器の状態に入るか出るだけで何も返さないので、
 文法はその形を見ません。
 
@@ -511,6 +543,50 @@ state では、どれも文の 2 つの単位の間です:
 - `click A "u" accDescr {} "t"`: StateClickStatement の、ツールチップの前の欄。
   [fixture: state/div-empty-description-block-in-click-before-tooltip]
 
+er では、どれも文の 2 つの単位の間で、
+持つにはその隙間に欄が要ります（理由 a）。
+ErRelationshipStatement の `A accDescr {} ||--o{ B : x` と
+`A ||--o{ accDescr {} B : x`、
+ErEntityStatement の `A accDescr {} :::c`、`A accDescr {} [P]`、
+`A[accDescr {} P]`、
+ErSubgraphStatement の `subgraph accDescr {} S` と
+`subgraph S [accDescr {} T]`、
+ErClassStatement の `class A accDescr {} a` です。
+ErAttribute の単位の間の空のバッククォート、
+`int `` a` や `int a `` PK` も同じです（理由 a）。
+2 つの属性の間、最初の属性の前、最後の属性の後では、
+木は空のバッククォートを属性の一覧の ErIgnoredText の項目として持つので、
+入力は受理されます（[属性](../diagrams/er.ja.md#属性) を参照）。
+[fixture: er/div-empty-description-block-in-relationship] [fixture:
+er/div-empty-description-block-after-spec] [fixture:
+er/div-empty-description-block-before-class-separator] [fixture:
+er/div-empty-description-block-before-alias] [fixture:
+er/div-empty-description-block-in-alias-start] [fixture:
+er/div-empty-description-block-before-subgraph-id] [fixture:
+er/div-empty-description-block-in-subgraph-title-start] [fixture:
+er/div-empty-description-block-in-class] [fixture:
+er/div-empty-backquotes-between-type-and-name] [fixture:
+er/div-empty-backquotes-before-key] [fixture:
+er/gram-empty-backquotes-between-attributes] [fixture:
+er/gram-empty-backquotes-before-first] [fixture:
+er/gram-empty-backquotes-after-last]
+
+gantt では、GanttClickStatement の id と最初の部分の間、2 つの部分の間で、
+持つにはその隙間に欄が要ります（理由 a）。
+`click id1 accDescr {} href "u"`、`click id1 href "" call f()`、
+`click id1 href ""href "u"`、`click id1 call () href "u"` です。
+文の始まる位置では、木は空の href や空の call を GanttIgnoredStatement として、
+空の説明ブロックを文として持つので、入力は受理されます
+（[空の href と空の call](../diagrams/gantt.ja.md#空の-href-と空の-call)
+を参照）。
+[fixture: gantt/div-empty-description-block-between-click-id-and-href]
+[fixture: gantt/div-empty-description-block-between-call-and-href] [fixture:
+gantt/div-empty-href-before-call] [fixture:
+gantt/div-empty-href-glued-before-href] [fixture:
+gantt/div-empty-call-before-href] [fixture: gantt/gram-empty-href-line]
+[fixture: gantt/gram-empty-call-line] [fixture:
+gantt/gram-click-href-then-empty-href]
+
 文の最後の単位の後、その区切りの前では、
 state の `click A "u" "t" accDescr {}` のように、ブロックは文です。
 受理される入力は、ブロックを除き、まわりの空白を残した同じ入力の Db を持ちます。
@@ -535,10 +611,14 @@ class/gram-empty-description-block-after-direction-word]
 （[flowchart](../diagrams/flowchart.ja.md#区切りの前の空の説明ブロック)、
 [class](../diagrams/class.ja.md#区切りの前の空の説明ブロック)、
 [sequence](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック)、
-[state](../diagrams/state.ja.md#区切りの前の空の説明ブロック) を参照）。
+[state](../diagrams/state.ja.md#区切りの前の空の説明ブロック)、
+[er](../diagrams/er.ja.md#空の説明ブロック)、
+[gantt](../diagrams/gantt.ja.md#空の説明ブロック) を参照）。
 [fixture: flowchart/header-empty-description-block-after-direction] [fixture:
 flowchart/header-empty-description-block-before-semicolon] [fixture:
 flowchart/header-empty-description-block-no-direction] [fixture:
 class/header-empty-description-block] [fixture:
 sequence/header-empty-description-block] [fixture:
-state/header-empty-description-block]
+state/header-empty-description-block] [fixture:
+er/header-empty-description-block] [fixture:
+gantt/gram-empty-description-block-after-header]

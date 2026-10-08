@@ -1,0 +1,113 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 1222,
+    "test": "when parsing ER diagram it... > syntax fixes for special characters and numbers > mixed scenarios > should handle complex diagram with special entity names"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-CUSTOMER-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "CUSTOMER",
+        "classes": []
+      },
+      {
+        "id": "entity-1-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "1",
+        "classes": []
+      },
+      {
+        "id": "entity-u-2",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "name",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "quantity",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "u",
+        "classes": []
+      },
+      {
+        "id": "entity-2.5-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "2.5",
+        "classes": []
+      },
+      {
+        "id": "entity-ORDER-4",
+        "attributes": [
+          {
+            "type": "int",
+            "name": "id",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "date",
+            "name": "created",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "ORDER",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-CUSTOMER-0",
+        "roleA": "places",
+        "entityB": "entity-1-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-1-1",
+        "roleA": "contains",
+        "entityB": "entity-u-2",
+        "cardA": "ONE_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-2.5-3",
+        "roleA": "processes",
+        "entityB": "entity-ORDER-4",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

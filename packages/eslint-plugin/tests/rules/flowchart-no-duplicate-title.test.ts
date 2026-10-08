@@ -89,7 +89,7 @@ testRule("flowchart-no-duplicate-title", flowchartNoDuplicateTitle, {
     },
     {
       sentence:
-        "`accTitle:` with no text sets the title too: at the end of the text it makes the title empty, and before more text it takes the next line that holds text as the title, past empty lines, comment lines, and directives. Either way, a title written before it is lost.",
+        "`accTitle:` with no text sets the title too: it takes the next line that holds text as the title, past empty lines, comment lines, and directives, and when no such line follows, it makes the title empty. Either way, a title written before it is lost.",
       cases: [
         {
           case: "`accTitle:` with no text, at the end of the text",

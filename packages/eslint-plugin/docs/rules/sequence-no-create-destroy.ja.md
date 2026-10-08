@@ -6,7 +6,7 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
@@ -46,3 +46,12 @@ sequenceDiagram
 ## オプション
 
 この規則にはオプションがない。
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/sequence-no-create-destroy.ts)
+- [テストのソース](../../tests/rules/sequence-no-create-destroy.test.ts)
+
+<!-- end auto-generated rule resources -->

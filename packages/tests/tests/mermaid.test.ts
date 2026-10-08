@@ -1033,6 +1033,87 @@ describe("withoutDivergences", () => {
   })
 })
 
+describe("withoutDivergences: gantt", () => {
+  /** Whether mermaid accepts `text` as it is, and with `removed` taken out. */
+  async function acceptedAsIsAndWithout(
+    text: string,
+    removed: readonly (
+      | "comment-takes-character"
+      | "comment-takes-line-break"
+      | "percent-brace-after-unit"
+    )[],
+  ): Promise<[boolean, boolean]> {
+    const asIs = await runMermaid(text)
+    const without = await runMermaid(text, { withoutDivergences: removed })
+    return [asIs.accepted, without.accepted]
+  }
+
+  it("starts a comment at its `%` only where a unit starts", async () => {
+    const removed = ["comment-takes-character"] as const
+    // The lexer reads `t%itle T` as a comment, the first character with it;
+    // read as the specification does, it is a task text without data.
+    expect(await acceptedAsIsAndWithout("gantt\nt%itle T", removed)).toEqual([
+      true,
+      false,
+    ])
+    // `a% : 1d` is a comment for the lexer, and a task `a% ` read this way.
+
+    /** The descriptions of the tasks of `gantt\na% : 1d`, with `without` taken out. */
+    async function tasksOf(
+      without: readonly "comment-takes-character"[],
+    ): Promise<string[]> {
+      const run = await runMermaid("gantt\na% : 1d", {
+        withoutDivergences: without,
+      })
+      if (!run.accepted || !run.db) throw new Error("expected a Db")
+      return (run.db.tasks as { task: string }[]).map((task) => task.task)
+    }
+
+    expect(await tasksOf([])).toEqual([])
+    expect(await tasksOf(removed)).toEqual(["a% "])
+    // A text of two characters before the `%` is a task text in both.
+    expect(await acceptedAsIsAndWithout("gantt\nab% : 1d", removed)).toEqual([
+      true,
+      true,
+    ])
+  })
+
+  it("ends a `%` comment after a unit at the end of its line", async () => {
+    expect(
+      await acceptedAsIsAndWithout(
+        'gantt\na : id1, 2024-01-01, 1d\nclick id1 href "u"%c\ncall f()',
+        ["comment-takes-line-break"],
+      ),
+    ).toEqual([true, false])
+  })
+
+  it("reads a `%%{` that starts no directive as a comment", async () => {
+    const removed = ["percent-brace-after-unit"] as const
+    expect(await acceptedAsIsAndWithout("gantt%%{ }%%", removed)).toEqual([
+      false,
+      true,
+    ])
+    // After a character other than `}`, mermaid.js reads a comment as well.
+    expect(
+      await acceptedAsIsAndWithout("gantt\na : 1d\n%%{ }%%\nb : 2d", removed),
+    ).toEqual([true, true])
+  })
+
+  it("reads a text through the three rules together, which it needs where the comments meet", async () => {
+    const text = "gantt% c\n%%{ }%%"
+    expect(
+      await acceptedAsIsAndWithout(text, ["comment-takes-character"]),
+    ).toEqual([false, false])
+    expect(
+      await acceptedAsIsAndWithout(text, [
+        "comment-takes-character",
+        "comment-takes-line-break",
+        "percent-brace-after-unit",
+      ]),
+    ).toEqual([false, true])
+  })
+})
+
 describe("withoutDivergences: c4-keyword-anywhere", () => {
   const withoutC4Anywhere: RunMermaidOptions = {
     withoutDivergences: ["c4-keyword-anywhere"],

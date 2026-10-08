@@ -1,0 +1,72 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: state-no-undef >> invalid >>> docs/rules/state-no-undef.md incorrect 1
+Filename: state-no-undef-incorrect-1.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   style Z fill:#f00
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Z` in this `style` statement: no state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> docs/rules/state-no-undef.md incorrect 2
+Filename: state-no-undef-incorrect-2.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   note left of Z : x
+    |                ^ [1]
+  4 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/db-class-undefined-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/db-class-undefined-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   classDef c fill:#f00
+  3 |   A --> B
+  4 |   class Z c
+    |         ^ [1]
+  5 |
+
+[1] mermaid.js does nothing with `Z` in this `class` statement: no state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/db-click-undefined-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/db-click-undefined-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   click Z href "https://x.example"
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Z` in this `click` statement: no state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/db-style-list-undefined-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/db-style-list-undefined-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A --> B
+  3 | style A,Z fill:#f00
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Z` in this `style` statement: no state of the diagram has this id.
+---

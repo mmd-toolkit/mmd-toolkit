@@ -20,6 +20,8 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["sequence", "SequenceDiagram"],
   ["class", "ClassDiagram"],
   ["state", "StateDiagram"],
+  ["er", "ErDiagram"],
+  ["gantt", "GanttDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -50,6 +52,7 @@ describe("the check of the cut Keyword tokens", () => {
     expect(cutProblems("StateDiagram", "state", "diagram")).toHaveLength(1)
     expect(cutProblems("SequenceDiagram", "par", "_over")).toHaveLength(1)
     expect(cutProblems("StateDiagram", "<<cho", "ice>>")).toHaveLength(1)
+    expect(cutProblems("ErDiagram", "sub", "graph")).toHaveLength(1)
   })
 
   it("reports three Keyword tokens whose texts joined are a keyword of the diagram, though no two of them are one, at the first", () => {
@@ -66,6 +69,9 @@ describe("the check of the cut Keyword tokens", () => {
     ])
     expect(cutProblems("StateDiagram", "<<ch", "oice", ">>")).toEqual([
       'a Keyword token is cut: Keyword at 0-4, Keyword at 18-22, Keyword at 36-38 are the fragments of "<<choice>>"',
+    ])
+    expect(cutProblems("ErDiagram", "optional", "ly t", "o")).toEqual([
+      'a Keyword token is cut: Keyword at 0-8, Keyword at 22-26, Keyword at 40-41 are the fragments of "optionally to"',
     ])
   })
 
@@ -109,7 +115,19 @@ const UNIT_NAMES: ReadonlySet<string> = new Set([
   "ignored-state",
   "description-word",
   "wrap-prefix",
+  "day",
 ])
+
+/** The days that a `day` unit of a gantt diagram is, in lower case (diagrams/gantt.md, The statement context). */
+const DAYS: readonly string[] = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+]
 
 /** The values of a `direction-value` unit, of a direction statement; a flowchart's `header-direction` unit has them too. */
 const DIRECTION_VALUES: readonly string[] = ["tb", "bt", "rl", "lr"]
@@ -167,6 +185,10 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
         "[[fork]]",
         "[[join]]",
       ]
+    case "er":
+      return ["erdiagram", ...DIRECTION_VALUES]
+    case "gantt":
+      return ["gantt", ...DAYS]
     default:
       throw new Error(`no diagram ${diagram}`)
   }

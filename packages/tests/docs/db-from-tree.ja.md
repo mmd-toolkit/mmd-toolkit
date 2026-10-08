@@ -108,6 +108,18 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   （tokens.md の A token that a directive cuts）、
   単位の間の空白は持たないので、
   トークンのテキストをつないだものが値です。
+- **ER の style**: style の `ErLiteral` の中にあるトークンの変換した形を
+  つないだもの。style の単位の間の空白は値に含まれないためです
+  （規則は [db-from-tree/er.ja.md](./db-from-tree/er.ja.md)）。
+- **subgraph の中の ER のキーワード文**: `class`、`classDef`、`style` の文の
+  最初のトークンのテキストを、書かれたままで。subgraph がノードとして並べます
+  （規則は [db-from-tree/er.ja.md](./db-from-tree/er.ja.md) の
+  **Subgraphs**）。
+- **gantt のリストのトークン**: `includes` か `excludes` の文で、
+  最初の項目の始まりから最後の項目の終わりまでのテキストの変換した形を、
+  全体として小文字にし、空白とコンマで分けたもの。
+  ギリシャ文字の大文字シグマの小文字は、まわりの文字で決まるためです
+  （規則は [db-from-tree/gantt.ja.md](./db-from-tree/gantt.ja.md)）。
 - **state の、2 つ目の説明のない別名**: 文に `:` のトークンがあるか。
 - **state の note の位置**: 文で `note` の後の 2 つの `Keyword` のトークン、
   `left` か `right` と `of`。書かれたままで、mermaid.js が読む 1 つの空白で
@@ -231,6 +243,8 @@ HTML ラベルが有効で、`securityLevel` が
   [fixture: class/config-security-level-loose-label-and-name]
   [fixture: state/config-security-level-loose-description-and-id]
   [fixture: sequence/config-security-level-loose-title-and-box]
+  [fixture: er/config-security-level-other-subgraph-title-html-labels-false]
+  [fixture: gantt/config-security-level-other-html-labels-false]
 
 **何を。**
 置き換えは、改行タグをそれぞれ `#br#` に書き、
@@ -316,6 +330,30 @@ HTML ラベルが有効で、`securityLevel` が
   [fixture: sequence/config-security-level-other-links]
   [fixture: sequence/config-security-level-other-properties]
   [fixture: sequence/config-security-level-other-texts-as-written]
+- ER: title、`accTitle`、`accDescr`、subgraph の title。
+  名前、別名、属性の型と名前とコメント、ロール、subgraph の id、
+  subgraph のノード、クラス、style には届きません。
+  [fixture: er/config-security-level-other-diagram-title]
+  [fixture: er/config-security-level-other-acc-title]
+  [fixture: er/config-security-level-other-acc-descr]
+  [fixture: er/config-security-level-other-acc-descr-block]
+  [fixture: er/config-security-level-other-subgraph-title]
+  [fixture: er/config-security-level-other-names-as-written]
+  [fixture: er/config-security-level-other-subgraph-node-acc-title]
+- gantt: title（フロントマターのものと `title` の文のもの）、`accTitle`、
+  `accDescr`（行のものとブロックのもの）。
+  タスクの説明・項目・id、section の名前、設定の値、
+  `includes` と `excludes` のトークン、
+  click の文の id・URL・コールバックには届きません。
+  [fixture: gantt/config-security-level-other-title]
+  [fixture: gantt/config-security-level-other-diagram-title]
+  [fixture: gantt/config-security-level-other-acc-title]
+  [fixture: gantt/config-security-level-other-acc-descr]
+  [fixture: gantt/config-security-level-other-acc-descr-block]
+  [fixture: gantt/config-security-level-other-names-as-written]
+  [fixture: gantt/config-security-level-other-settings-as-written]
+  [fixture: gantt/config-security-level-other-task-data-as-written]
+  [fixture: gantt/config-security-level-other-click-as-written]
 
 **mermaid.js の順序が効く所。**
 テキストを読み進める前に置き換える所があり、作り手も同じにします。

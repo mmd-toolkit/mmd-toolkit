@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Click statements: text after a complete click statement on its line is a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...click id1 href \"u\" x\n-----------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

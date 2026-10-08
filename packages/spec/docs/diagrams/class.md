@@ -117,7 +117,12 @@ class/lex-callback-arguments-unclosed] [fixture: class/lex-acc-title-at-end]
 [fixture: class/lex-acc-descr-at-end] [fixture:
 class/lex-acc-descr-block-unclosed] The title context is entered after the
 whitespace that follows `accTitle:`, line feeds included, so `accTitle:` with
-only whitespace after it is rejected at the end of the text.
+only whitespace after it is rejected at the end of the text. So it is with the
+description context: `accDescr:` followed by empty lines only, a comment line
+only, or a directive line only, at the end of the text, is rejected. [fixture:
+class/lex-acc-descr-then-empty-lines-only] [fixture:
+class/lex-acc-descr-then-comment-only] [fixture:
+class/lex-acc-descr-then-directive-only]
 
 ### Directives inside units
 
@@ -338,6 +343,14 @@ start of every line in the statement context and takes the whole line:
   class/lex-direction-line-value-then-text] [fixture:
   class/lex-direction-line-value-next-line] [fixture:
   class/lex-direction-lower-case]
+- An empty description block before `direction` or after the value, and a `;`
+  after the value, are `direction-text` units, which mermaid.js does not read; a
+  closed directive after the value is a directive, and the line then has no text
+  after the value. [fixture:
+  class/lex-direction-line-after-empty-description-block] [fixture:
+  class/lex-direction-line-then-empty-description-block] [fixture:
+  class/lex-direction-line-value-then-semicolon] [fixture:
+  class/lex-direction-line-then-directive]
 - The rule is not tried in the other contexts: in a namespace body,
   `direction LR` is rejected, and in a member body it is a member. [fixture:
   class/lex-direction-in-namespace] [fixture:
@@ -653,7 +666,13 @@ When the text has no `` ` `` after the first, the unit takes the rest of the
 text, and the lexer stops at its end: the name is not closed. [fixture:
 class/lex-backquote-unclosed] [fixture:
 class/lex-backquote-unclosed-takes-lines] [fixture:
-class/div-empty-backquoted-in-name] A directive in that rest after the last
+class/div-empty-backquoted-in-name] So it is after a prefix, as in `class A.`
+followed by an unclosed backquoted name, and at the end of a relation, as in
+`A -->` followed by one, where the name takes the rest of the text; a namespace
+still needs its `{`, so `namespace` followed by an unclosed backquoted name is
+rejected. [fixture: class/lex-backquote-unclosed-after-prefix] [fixture:
+class/lex-backquote-unclosed-relation-end] [fixture:
+class/lex-backquote-unclosed-namespace] A directive in that rest after the last
 character of the name that is not whitespace, which mermaid.js removes as
 everywhere, lies inside the name when whitespace or line terminators of the name
 follow it, and otherwise after the name. `class`, `` `x``, a line break,
@@ -945,7 +964,13 @@ Without a label, a member statement is a class name alone: a line `Foo`. Class
 diagrams have no title statement, and `title Animals` is such a line, the class
 name `titleAnimals`. [fixture: class/gram-member-statement] [fixture:
 class/db-member-statement-blank] [fixture: class/gram-name-alone] [fixture:
-class/gram-title-not-statement] A method line has at most one `classifier` unit.
+class/gram-title-not-statement] A class name alone may share its line with a
+directive or an empty description block before or after it:
+`%%{init: {}}%% Foo`, `accDescr {} Foo`, and `Foo accDescr {}` are class names
+alone, which add no class. [fixture: class/gram-directive-then-name-alone]
+[fixture: class/gram-empty-description-block-then-name-alone] [fixture:
+class/gram-name-alone-then-empty-description-block] A method line has at most
+one `classifier` unit.
 
 ### Relations
 
@@ -1145,12 +1170,18 @@ class diagrams, and show in them as follows.
   line `%%` in place of `%% x`, or with another line of spaces after `%% x`,
   both read the two statements. [fixture:
   class/div-comment-then-spaces-line-then-comment-line] [fixture:
+  class/div-comment-then-two-spaces-lines-then-comment-line] [fixture:
   class/lex-comment-then-spaces-line-then-bare-comment] [fixture:
-  class/lex-comment-line-then-spaces-line] A comment-only line is not counted as
-  a line in either (see [The statement context](#the-statement-context)).
-  [fixture: class/div-comment-on-header-line] [fixture:
-  class/div-comment-joins-lines] [fixture:
-  class/div-comment-before-statement-line] [fixture:
+  class/lex-comment-line-then-spaces-line] So it is with a line of a tab or of a
+  U+2028, also with CRLF line breaks, and with a directive line in place of
+  `%% x`, which is no comment line. [fixture: class/lex-comment-then-tab-line]
+  [fixture: class/lex-comment-then-line-separator-line] [fixture:
+  class/lex-comment-then-spaces-line-crlf] [fixture:
+  class/lex-comment-then-spaces-line-then-directive-line] A comment-only line is
+  not counted as a line in either (see
+  [The statement context](#the-statement-context)). [fixture:
+  class/div-comment-on-header-line] [fixture: class/div-comment-joins-lines]
+  [fixture: class/div-comment-before-statement-line] [fixture:
   class/div-comment-in-relation] [fixture: class/lex-comment-blank-line-after]
 - **[`headerless-empty-ending`](../known-divergences/headerless-empty-ending.md).**
   A text whose first word is `classDiagram` followed by an ASCII word character,

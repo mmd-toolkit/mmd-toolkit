@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Known divergences: a directive inside an item of an exclusion list, a name unit; rejected here, mermaid.js reads `weekends` (directive-as-token-boundary)."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [
+      "weekends"
+    ],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

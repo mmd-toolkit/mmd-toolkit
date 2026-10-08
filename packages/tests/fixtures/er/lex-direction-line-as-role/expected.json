@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The direction line: `A ||--o{ B : direction TB` is a direction line; accepted, no relationship."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

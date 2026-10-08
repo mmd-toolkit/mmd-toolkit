@@ -64,9 +64,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
   [ast.md](../../spec/docs/ast.md)).
 - **Comments.** A comment line is where the scan finds it, with the mark `%%`; a
   diagram comment has a mark that its diagram has, and ends where its line ends;
-  a flowchart has the mark `%%` for a line of `%%` alone before its header, as
-  every diagram type does, and for no other comment; a fragment without a mark
-  follows a comment region (parser/docs/tokens.md, Comment;
+  a flowchart and an ER diagram have the mark `%%` for a line of `%%` alone
+  before their header, as every diagram type does, and for no other comment; a
+  gantt diagram has the marks `%%` and `%` for its diagram comments; a fragment
+  without a mark follows a comment region (parser/docs/tokens.md, Comment;
   [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
@@ -105,8 +106,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
   - The table of the `Keyword` texts (`src/check-tree/keywords.ts`) is the words
     of the row `Keyword` of the table of Tokens of each diagram and the texts of
     the units that the row names without their text (a header, a direction, a
-    link target, a pseudostate mark, a wrap prefix); a test requires that, and
-    requires every `Keyword` token of a recorded tree to have a text in it.
+    link target, a pseudostate mark, a wrap prefix, a day); a test requires
+    that, and requires every `Keyword` token of a recorded tree to have a text
+    in it. For a gantt diagram the row names the header and the days (`day`) as
+    units, which are `gantt` and the seven days of a `weekday` and a `weekend`
+    statement.
   - The text of a `Punctuator` token other than those of the arrows is one that
     its diagram has (`src/check-tree/punctuators.ts`, a copy of the row
     `Punctuator` of the table of Tokens of each diagram), and no run of its
@@ -123,8 +127,15 @@ const problems: TreeProblem[] = checkTree(text, tree)
 - **Node ranges.** A node runs from the start of a token to the end of one,
   inside its parent, so every node has a token: a flowchart label that is all
   whitespace has the one `RawText` token of that whitespace. The children of a
-  node do not overlap; the body is a diagram of the specification and covers the
-  tokens of the diagram (positions.md, Node ranges and Invariants).
+  node do not overlap, and they are in source order in the order of the child
+  fields, each list in its own order, except for the nodes of one list
+  (`CHILD_FIELDS_NOT_IN_SOURCE_ORDER` in `src/check-tree/invariants.ts`), each
+  with the sentence of its document: the label of a flowchart link written
+  between its two arrows, which comes before the arrow in the source, and the
+  link of a gantt click statement written before its call, which comes before it
+  in the source while the child fields are `ids`, `call`, `href` (the ids come
+  first whichever part follows); the body is a diagram of the specification and
+  covers the tokens of the diagram (positions.md, Node ranges and Invariants).
 - **Literals.** The `raw` of a `StringLiteral` or a `NumericLiteral` is the
   source of its range, and `closed` of a `StringLiteral` is whether its `raw`
   has more than one character and ends with the quote that it starts with
@@ -159,7 +170,43 @@ const problems: TreeProblem[] = checkTree(text, tree)
   - state: the tokens of a terminal and of a divider; the kind of a pseudostate,
     written `<<kind>>` or `[[kind]]`; the position of a note; the words of
     `hide empty description`, one token each; the direction; `closed` of a
-    description block and of a string.
+    description block and of a string;
+  - er: the cardinalities and the line of a relationship, one token each; the
+    direction, which is the value of a direction statement in upper case;
+    whether an attribute has a `?`; the attributes of an entity, which a `{`
+    opens, and the title of a subgraph, which a `[` opens;
+  - gantt: the tokens that a node writes itself, outside its child nodes, are
+    those of its rule, each of the kind that the table of Tokens gives (`:`,
+    `,`, `{`, `}`, `(`, `)` are `Punctuator` tokens and the others `Keyword`
+    tokens): the header `gantt` in exactly this case, the keyword of a
+    statement, the `:` or the braces of an accessibility statement, the `call`
+    and the parentheses of a call part, a colon and commas for the data of a
+    task, `click`, commas, and `href` for a click statement; the `day` of a
+    weekday or weekend statement, which is its token in lower case, one of the
+    seven days or of `friday` and `saturday`; the tags (one of five words, in
+    exactly this case), the items, and the ids as the stretches between the
+    separators (one more than there are commas), each filling its stretch and
+    null where only whitespace lies in it, with the first item none of the tag
+    words, `items` not empty, and no `,` in an id or an item of a list; at least
+    one of the call and the link of a click statement, and a URL that is closed
+    and not empty; the name of a callback, which runs to the `(`, and its
+    arguments, which are null where only whitespace lies between the
+    parentheses; the kinds of the tokens of the values: those of a
+    `GanttLiteral` are `RawText`, those of an id and of an item of a list
+    `Identifier`, those of a tag `RawText` (one for each fragment where a
+    directive cuts it), and those of the URL of a link, or of the quotes of an
+    empty href, one `String` token or `StringFragment` tokens where a cut lies
+    inside it; the tokens of an empty href or an empty call, which are its
+    keyword and the `String` token or the two parentheses; the range of a
+    statement and of a call part, which runs from the first of the tokens and
+    child nodes of the node to the last, so that a click statement ends at the
+    last part in the source whatever the order of its child fields, and the
+    whitespace after the last token is outside it; the link, which runs from `"`
+    to `"`; where the text of a setting, a title, or a section starts (one
+    whitespace character after the keyword) and ends (the end of its line, or
+    before `#` or `;` where the statement says so); where the value of an
+    accessibility statement starts and ends, which is without the whitespace at
+    its ends; and the written text of an empty href or an empty call.
 
 The **written text** of a range is its source without the directives, the
 comment regions, and the `;` that the line rule ignores (ast.md, Nodes).
@@ -172,8 +219,8 @@ table gives the type another way, each with the sentence of the specification
 that says so:
 
 - A value made of units joined (`Identifier`, `ClassIdentifier`, a class arrow,
-  a style of a class diagram) leaves out the whitespace between its units; the
-  joined tokens are the value. An `Identifier` is one token.
+  a style of a class diagram or an ER diagram) leaves out the whitespace between
+  its units; the joined tokens are the value. An `Identifier` is one token.
 - A string, a label that starts with a string, and a data block have delimiters
   that belong to their own text; the value is the written text without them,
   with the whitespace written inside them, and that whitespace lies in the
@@ -225,15 +272,16 @@ the node itself, as with a `{`, `src/check-tree/null-fields.ts` reads the tokens
 of the node that lie in none of its child nodes and reports a field that is null
 while one of them is its text: the member of a class member statement, which
 follows the `:`; the members of a class declaration, the body of a composite
-state, and the body of an alias state, which a `{` opens; the text of a message,
-which follows its `:`; the alias of a participant, which follows its `as`; the
-text before the body of a composite state and of an alias state, which is every
-token of the node before the `{` of the body other than its own words; and the
-text of a note on one line, which starts with the `:` that follows two or more
-whitespace characters, counted past directives and `;` that the line rule
-ignores (diagrams/state.md, The note contexts). A list that the node writes with
-a `{` is not null also when it is empty, so a list that is not null with no `{`
-is reported as well.
+state, and the body of an alias state, which a `{` opens, and the attributes of
+an entity and the title of a subgraph of an ER diagram, which a `{` and a `[`
+open; the text of a message, which follows its `:`; the alias of a participant,
+which follows its `as`; the text before the body of a composite state and of an
+alias state, which is every token of the node before the `{` of the body other
+than its own words; and the text of a note on one line, which starts with the
+`:` that follows two or more whitespace characters, counted past directives and
+`;` that the line rule ignores (diagrams/state.md, The note contexts). A list
+that the node writes with a `{` or a `[` is not null also when it is empty, so a
+list that is not null with no `{` or `[` is reported as well.
 
 Not checked:
 
@@ -244,33 +292,38 @@ Not checked:
 ## The tests
 
 `tests/check-tree-corpus.test.ts` checks every recorded tree of the corpus and
-that every node type in it is classified as a value node or not.
-`tests/check-tree-fields.test.ts` is the test of the paragraphs above: it reads
-the recorded trees once and indexes the first tree that has each node type, and
-the first in which each field is null and is not null, and it breaks each field
-in the tree that the index gives; any recorded tree that has the field will do,
-since the problem that the field must cause has the same message in every tree.
-It has a named case for each field of a string that may be null, in each
-direction, for each rule of `null-fields.ts`, and for the two parts of a box
-text, whose message holds the place of a token (a fixture, a type, a field, and
-the exact message of the problem at the node), and, made by hand from the tree
-of a note with two whitespace characters before its `:`, the three notes with
-one, whose text is null and which the check must accept.
-`tests/check-tree-values.test.ts` is the test of the value rule: for every node
-type with a value, it adds a character to the value at either end and drops one
-from either end, and requires each value so made to be reported at its node,
-with the message of the rule of the type (the written text, or the tokens
-joined; the style of a class diagram has the second). For each node type with a
-value that has a token with whitespace at an end, it has a named case (a
-fixture, a token, a side, and the exact problems) that takes the whitespace off
-that end of the token in the recorded tree and requires the problems; for each
-other type, it names a fixture whose tokens in a node of the type have no
-whitespace at an end, with the reason, and it requires every type to be one or
-the other. It also lists by name the fixtures of a diagram comment that a
-comment line cuts: eight that end at a line feed, and one each that ends at a
-CRLF, at a lone CR, and at the end of the text; it requires their recorded trees
-to be accepted, and, for the CRLF and the lone CR, a value with another line
-terminator to be reported with its exact message.
+that every node type in it is classified as a value node or not. The tests that
+require a recorded tree for every node type of the tables read the recorded
+trees of every diagram of the corpus. `check-tree-gantt.test.ts` breaks the
+recorded gantt trees for the kinds of tokens and the ranges, and makes, by hand,
+the smallest trees that hold each of those sentences, and
+`check-tree-node-ranges.test.ts` makes, by hand, the click statements for the
+order of their child fields. `tests/check-tree-fields.test.ts` is the test of
+the paragraphs above: it reads the recorded trees once and indexes the first
+tree that has each node type, and the first in which each field is null and is
+not null, and it breaks each field in the tree that the index gives; any
+recorded tree that has the field will do, since the problem that the field must
+cause has the same message in every tree. It has a named case for each field of
+a string that may be null, in each direction, for each rule of `null-fields.ts`,
+and for the two parts of a box text, whose message holds the place of a token (a
+fixture, a type, a field, and the exact message of the problem at the node),
+and, made by hand from the tree of a note with two whitespace characters before
+its `:`, the three notes with one, whose text is null and which the check must
+accept. `tests/check-tree-values.test.ts` is the test of the value rule: for
+every node type with a value, it adds a character to the value at either end and
+drops one from either end, and requires each value so made to be reported at its
+node, with the message of the rule of the type (the written text, or the tokens
+joined; the style of a class diagram or an ER diagram has the second). For each
+node type with a value that has a token with whitespace at an end, it has a
+named case (a fixture, a token, a side, and the exact problems) that takes the
+whitespace off that end of the token in the recorded tree and requires the
+problems; for each other type, it names a fixture whose tokens in a node of the
+type have no whitespace at an end, with the reason, and it requires every type
+to be one or the other. It also lists by name the fixtures of a diagram comment
+that a comment line cuts: eight that end at a line feed, and one each that ends
+at a CRLF, at a lone CR, and at the end of the text; it requires their recorded
+trees to be accepted, and, for the CRLF and the lone CR, a value with another
+line terminator to be reported with its exact message.
 `tests/check-tree-comments.test.ts` makes, by hand, a diagram comment and a
 comment line that end at a line feed, a CRLF, a lone CR, and the end of the
 text, and requires the range that ends after the line terminator to be reported.
@@ -280,9 +333,9 @@ the line rule ignores, once, twice, or three times, inside one of its tokens, as
 a parser that cuts the token would record the text. The cases are an
 `Identifier`, a `Numeric`, a `Keyword` (into two fragments in each diagram, and
 into three and four in a flowchart), a `Punctuator` (into two fragments in each
-diagram, where the fragments of a sequence, class, and state diagram are texts
-that the diagram lacks, and into three in a flowchart), and a `String` cut into
-`String` tokens, each cut by a directive or by a `;`. For each, the test
+diagram, where the fragments of a sequence, class, state, and ER diagram are
+texts that the diagram lacks, and into three in a flowchart), and a `String` cut
+into `String` tokens, each cut by a directive or by a `;`. For each, the test
 requires the check to report the problems of the condition that the case names,
 with their exact places and messages, and requires the unedited tree of the
 fixture to have none. A `String` cut into `StringFragment` tokens and a

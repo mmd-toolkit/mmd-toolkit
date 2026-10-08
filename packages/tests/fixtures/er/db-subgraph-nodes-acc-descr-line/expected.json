@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An `accDescr` line in the body adds its text as a node, and sets the description of the diagram."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "the descr",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "the descr"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

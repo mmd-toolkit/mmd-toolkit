@@ -2,7 +2,7 @@
 
 英語版: [comment-takes-line-break.md](./comment-takes-line-break.md)
 
-図種: class。
+図種: class、gantt。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -110,6 +110,26 @@ mermaid.js はコメントの後と `%%` の後の改行を取って改行を 1 
 関係の後のコメントがなければ、どちらも拒否します。
 [fixture: class/div-comment-then-comment-only-line]
 
+ガントチャートでは、mermaid.js が直接たどり着く
+（[コメント](../diagrams/gantt.ja.md#コメント) の定め）印 `%` のコメントが、
+同じようにその後の改行を取ります。
+それが効くのは click の文の中だけです。その部分は改行をまたいで続けられます。
+`click id1 %c`、改行、`href "u"` は mermaid.js ではリンクを設定し、
+`click id1 call f()%c`、改行、`href "u"` も、改行 2 つでも、同じです。
+ここではコメントはその行で終わり、`newline` の単位が文を終えるので、
+入力は拒否されます。
+call の部分の後の `%` の前に空白があるか `%%` のときはどちらも拒否し、
+文と文の間では mermaid.js が取る改行は何も変えません
+（[コメント](../diagrams/gantt.ja.md#コメント) を参照）。
+gantt では差異は一方向です。mermaid.js が受理し、この仕様が拒否します。
+[fixture: gantt/div-percent-comment-takes-line-feed-after-click-id]
+[fixture: gantt/div-percent-comment-takes-line-feed-after-call]
+[fixture: gantt/div-percent-comment-takes-line-feeds-after-call]
+[fixture: gantt/div-percent-comment-takes-line-feed-after-href]
+[fixture: gantt/lex-space-percent-comment-after-call-then-href-line]
+[fixture: gantt/lex-double-percent-comment-after-click-id-then-href-line]
+[fixture: gantt/lex-percent-comment-glued-after-header-blank-line]
+
 ## 書き手にとっての結果
 
 mmd-toolkit のパーサーが受理する、文の後にコメントのある class 図は、
@@ -143,6 +163,10 @@ class/lex-comment-then-indented-directive-line]
 例 3 と同じく、mermaid.js では、
 ラベル `+int age` を持つ A から `BA` への 1 つの関係です。
 [fixture: class/div-comment-then-spaces-line-then-comment-line]
+gantt の字句解析器は、単独の `%` で始まるコメントに同じ形の規則を持ち
+（[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)）、
+`%` に直接立つところでだけそれにたどり着きます。
+`%%` の規則と、前に文字のある `%` の規則は改行を取りません。
 
 ## この仕様の規則と、その理由
 

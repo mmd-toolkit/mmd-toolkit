@@ -18,6 +18,7 @@ export type DivergenceRemoval =
   | "comment-takes-character"
   | "comment-takes-line-break"
   | "name-start-reads-unit"
+  | "percent-brace-after-unit"
 
 /**
  * One change to a lexer. A rule is found by the `source` of the compiled rule
@@ -111,7 +112,7 @@ type Removal = LexerRemoval | DetectorRemoval
  */
 const NEVER_MATCHES = "^(?!)"
 
-const REMOVALS: Readonly<Record<DivergenceRemoval, Removal>> = {
+const REMOVALS: Readonly<Record<DivergenceRemoval, readonly Removal[]>> = {
   // The detector of C4 looks for `C4Context` at the start of the text and for
   // the other four keywords anywhere in it (`c4Detector.ts`, line 10 at the
   // pinned commit), so a text of another diagram type that holds one of them
@@ -119,82 +120,119 @@ const REMOVALS: Readonly<Record<DivergenceRemoval, Removal>> = {
   // looks for all five at the start only, after the leading whitespace. It is
   // registered again under its own id, which keeps its place among the
   // detectors.
-  "c4-keyword-anywhere": {
-    diagramType: "c4",
-    sampleText: "C4Context\ntitle T\n",
-    detector: {
-      original: String.raw`^\s*C4Context|C4Container|C4Component|C4Dynamic|C4Deployment`,
-      source: String.raw`^\s*(?:C4Context|C4Container|C4Component|C4Dynamic|C4Deployment)`,
+  "c4-keyword-anywhere": [
+    {
+      diagramType: "c4",
+      sampleText: "C4Context\ntitle T\n",
+      detector: {
+        original: String.raw`^\s*C4Context|C4Container|C4Component|C4Dynamic|C4Deployment`,
+        source: String.raw`^\s*(?:C4Context|C4Container|C4Component|C4Dynamic|C4Deployment)`,
+      },
+      probes: [
+        { text: "x C4Container", asIs: "c4", removed: undefined },
+        {
+          text: "flowchart LR\nA[C4Container]",
+          asIs: "c4",
+          removed: "flowchart-v2",
+        },
+        {
+          text: 'C4Container\n  Container(a, "A")',
+          asIs: "c4",
+          removed: "c4",
+        },
+        { text: "  \n C4Context\ntitle T", asIs: "c4", removed: "c4" },
+        {
+          text: "flowchart LR\nA-->B",
+          asIs: "flowchart-v2",
+          removed: "flowchart-v2",
+        },
+        {
+          text: "sequenceDiagram\nA->>B: x",
+          asIs: "sequence",
+          removed: "sequence",
+        },
+        {
+          text: "classDiagram\nclass A",
+          asIs: "classDiagram",
+          removed: "classDiagram",
+        },
+      ],
     },
-    probes: [
-      { text: "x C4Container", asIs: "c4", removed: undefined },
-      {
-        text: "flowchart LR\nA[C4Container]",
-        asIs: "c4",
-        removed: "flowchart-v2",
-      },
-      {
-        text: 'C4Container\n  Container(a, "A")',
-        asIs: "c4",
-        removed: "c4",
-      },
-      { text: "  \n C4Context\ntitle T", asIs: "c4", removed: "c4" },
-      {
-        text: "flowchart LR\nA-->B",
-        asIs: "flowchart-v2",
-        removed: "flowchart-v2",
-      },
-      {
-        text: "sequenceDiagram\nA->>B: x",
-        asIs: "sequence",
-        removed: "sequence",
-      },
-      {
-        text: "classDiagram\nclass A",
-        asIs: "classDiagram",
-        removed: "classDiagram",
-      },
-    ],
-  },
+  ],
   // The sequence lexer reads a character other than `}` before `%%` together
   // with the comment, and reads a number only before a space or a line feed
   // (`sequenceDiagram.jison`, lines 29 and 30 at the pinned commit). Read as
   // the specification does, a comment starts at its `%%`, which the rule for
   // `%` comments then reads, and a number also ends before `%%`.
-  "comment-takes-character": {
-    diagramType: "sequence",
-    sampleText: "sequenceDiagram\n",
-    changes: [
-      {
-        kind: "pattern",
-        original: String.raw`^(?:[^\}]%%[^\n]*)`,
-        source: NEVER_MATCHES,
-      },
-      {
-        kind: "pattern",
-        original: String.raw`^(?:([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})(?=[ \n]+))`,
-        source: String.raw`^(?:([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})(?=[ \n]+|%%))`,
-      },
-    ],
-  },
+  "comment-takes-character": [
+    {
+      diagramType: "sequence",
+      sampleText: "sequenceDiagram\n",
+      changes: [
+        {
+          kind: "pattern",
+          original: String.raw`^(?:[^\}]%%[^\n]*)`,
+          source: NEVER_MATCHES,
+        },
+        {
+          kind: "pattern",
+          original: String.raw`^(?:([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})(?=[ \n]+))`,
+          source: String.raw`^(?:([0-9]+(\.[0-9]{1,2})?|\.[0-9]{1,2})(?=[ \n]+|%%))`,
+        },
+      ],
+    },
+    // The gantt lexer reads a character other than `}` before `%` together
+    // with the comment (`gantt.jison`, line 29 at the pinned commit), so the
+    // character is lost. Read as the specification does, a comment starts at
+    // its `%` where a unit starts, and any other `%` is a character of the
+    // unit that holds it.
+    {
+      diagramType: "gantt",
+      sampleText: "gantt\n",
+      changes: [
+        {
+          kind: "pattern",
+          original: String.raw`^(?:[^\}]%%*[^\n]*)`,
+          source: NEVER_MATCHES,
+        },
+      ],
+    },
+  ],
   // The class lexer reads `%%`, the rest of the line and the line breaks after
   // it as one comment (`classDiagram.jison`, line 28 at the pinned commit), so
   // a comment after a unit joins the next line to its own. Read as the
   // specification does, such a comment ends at the end of its line, and the
   // line break is read as one; a comment with only whitespace before it on its
   // line still takes its line break, as in mermaid.js.
-  "comment-takes-line-break": {
-    diagramType: "classDiagram",
-    sampleText: "classDiagram\n  class A\n",
-    changes: [
-      {
-        kind: "by-line-position",
-        original: String.raw`^(?:%%(?!\{)*[^\n]*(\r?\n?)+)`,
-        lineStart: String.raw`^(?:%%(?!\{)*[^\n]*(\r?\n?)+)`,
-        midLine: String.raw`^(?:%%[^\n]*)`,
-      },
-    ],
-  },
+  "comment-takes-line-break": [
+    {
+      diagramType: "classDiagram",
+      sampleText: "classDiagram\n  class A\n",
+      changes: [
+        {
+          kind: "by-line-position",
+          original: String.raw`^(?:%%(?!\{)*[^\n]*(\r?\n?)+)`,
+          lineStart: String.raw`^(?:%%(?!\{)*[^\n]*(\r?\n?)+)`,
+          midLine: String.raw`^(?:%%[^\n]*)`,
+        },
+      ],
+    },
+    // The gantt lexer reads `%`, the rest of the line and the line breaks
+    // after it as one comment (`gantt.jison`, line 30 at the pinned commit),
+    // so a comment after a unit joins the next line to its own. Read as the
+    // specification does, such a comment ends at the end of its line.
+    {
+      diagramType: "gantt",
+      sampleText: "gantt\n",
+      changes: [
+        {
+          kind: "pattern",
+          original: String.raw`^(?:%%*[^\n]*[\n]*)`,
+          source: String.raw`^(?:%%*[^\n]*)`,
+        },
+      ],
+    },
+  ],
   // Inside a backquoted name and a generic type, the class lexer tries the
   // rules of every state (`"`, keywords, `<<`, `>>`, `~`) before the rules that
   // close the name or the type and read its text (`classDiagram.jison`, lines
@@ -202,29 +240,54 @@ const REMOVALS: Readonly<Record<DivergenceRemoval, Removal>> = {
   // is read as a unit of its own. Read as the specification does, the text is
   // any characters up to the closing mark: the closing rule and the text rule
   // are tried first.
-  "name-start-reads-unit": {
-    diagramType: "classDiagram",
-    sampleText: "classDiagram\n  class A\n",
-    changes: [
-      {
-        kind: "try-first",
-        state: "bqstring",
-        sources: ["^(?:[`])", "^(?:[^`]+)"],
-      },
-      {
-        kind: "try-first",
-        state: "generic",
-        sources: ["^(?:[~])", "^(?:[^~]*)"],
-      },
-    ],
-  },
+  "name-start-reads-unit": [
+    {
+      diagramType: "classDiagram",
+      sampleText: "classDiagram\n  class A\n",
+      changes: [
+        {
+          kind: "try-first",
+          state: "bqstring",
+          sources: ["^(?:[`])", "^(?:[^`]+)"],
+        },
+        {
+          kind: "try-first",
+          state: "generic",
+          sources: ["^(?:[~])", "^(?:[^~]*)"],
+        },
+      ],
+    },
+  ],
+  // The gantt lexer enters a start state `open_directive` that has no rule at
+  // every `%%{` (`gantt.jison`, line 18 at the pinned commit), and rejects the
+  // text where `%%{` stands directly after a unit or after two or more
+  // whitespace characters; the directives themselves are taken out of the text
+  // before the lexer reads it. Read as the specification does, a `%%{` is the
+  // start of a comment, which the rule for comments then reads.
+  "percent-brace-after-unit": [
+    {
+      diagramType: "gantt",
+      sampleText: "gantt\n",
+      changes: [
+        {
+          kind: "pattern",
+          original: String.raw`^(?:%%\{)`,
+          source: NEVER_MATCHES,
+        },
+      ],
+    },
+  ],
 }
 
 /**
  * Every removal, keyed by the known divergence it removes.
  */
 export function allRemovals(): readonly [DivergenceRemoval, Removal][] {
-  return Object.entries(REMOVALS) as [DivergenceRemoval, Removal][]
+  return (
+    Object.entries(REMOVALS) as [DivergenceRemoval, readonly Removal[]][]
+  ).flatMap(([name, removals]) =>
+    removals.map((removal) => [name, removal] as [DivergenceRemoval, Removal]),
+  )
 }
 
 /** Whether `removal` replaces a detector, and not lexer rules. */

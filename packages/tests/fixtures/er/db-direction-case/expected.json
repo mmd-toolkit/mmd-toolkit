@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The word and the value are matched in any case, and the value is recorded in capitals: LR."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

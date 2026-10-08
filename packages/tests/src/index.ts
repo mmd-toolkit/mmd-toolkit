@@ -44,7 +44,14 @@ export type {
  * by all diagram types (frontmatter, directives, comments, detection).
  */
 export type DiagramType =
-  "common" | "flowchart" | "sequence" | "class" | "state"
+  | "common"
+  | "flowchart"
+  | "sequence"
+  | "class"
+  | "state"
+  | "er"
+  | "gantt"
+  | "journey"
 
 /**
  * Where a fixture input came from.
@@ -152,9 +159,10 @@ export const KNOWN_DIVERGENCES: readonly string[] = [
   // description block that does not start a statement; in sequence, such an
   // empty description block; in class, these three and an empty backquoted
   // name and an empty generic type, accepted as a node where the class grammar
-  // has a field that may be empty. mermaid's lexer reads no token for them and
-  // accepts an input as if they were not there. The difference goes one way
-  // only.
+  // has a field that may be empty; in er, an empty description block that
+  // does not start a statement and an empty backquoted word of an attribute
+  // block. mermaid's lexer reads no token for them and accepts an input as if
+  // they were not there. The difference goes one way only.
   "tokenless-empty-forms",
   // In sequence, a comment starts at its `%%`. mermaid's lexer reads the
   // character right before `%%` together with the comment, so the character
@@ -191,9 +199,17 @@ export const KNOWN_DIVERGENCES: readonly string[] = [
   // the lines between it and the header are trivia. mermaid.js strips such
   // lines when it detects the type but hands them to the lexer of the detected
   // diagram, which rejects them in flowchart (`%%` is an id), in state (`%%{`),
-  // and in class after a line of whitespace only (a `newline` unit). The spec
-  // accepts what mermaid.js rejects.
+  // in class after a line of whitespace only (a `newline` unit), and in er
+  // (the forms are in known-divergences/bare-percent-line-before-header.md).
+  // The spec accepts what mermaid.js rejects.
   "bare-percent-line-before-header",
+  // In gantt, a `%%{` where no directive starts is a comment of the diagram
+  // wherever a unit starts. mermaid's lexer enters the state `open_directive`
+  // at every `%%{`, which has no rule, so it rejects the input when `%%{`
+  // stands directly after a unit or after two or more whitespace characters
+  // (it reads a comment instead after one character other than `}`). The
+  // difference goes one way only: the spec accepts what mermaid.js rejects.
+  "percent-brace-after-unit",
 ]
 
 /**

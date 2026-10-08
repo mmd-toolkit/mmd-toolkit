@@ -100,6 +100,14 @@ class/config-security-level-sandbox-link-default-target] In mermaid@12.0.0,
 ([`agentflowDb.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/agentflow/agentflowDb.ts#L1014-L1014)),
 which needs the same patch when its normalizer is added.
 
+The gantt Db does not reach `@braintree/sanitize-url` through `formatUrl()`:
+[`setLink`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L673-L688)
+calls it itself unless `securityLevel` is `loose`. The Db is one object that all
+gantt diagrams share, so its patch is applied to the object, and it stores the
+URL as written, which is what `setLink` stores under `loose`. [fixture:
+gantt/config-security-level-strict-click-href] [fixture:
+gantt/config-security-level-sandbox-click-href]
+
 ## Label text is recorded before HTML sanitization
 
 mermaid.js sanitizes text while it parses. For example,
@@ -247,13 +255,13 @@ implementation uses it to check that a difference from mermaid.js on a marked
 input comes from the divergences alone, by comparing itself with mermaid.js read
 this way: it is to accept and reject every input as mermaid.js read this way
 does, and to give it the same Db. This is available for `c4-keyword-anywhere`,
-`comment-takes-character`, `comment-takes-line-break` and
-`name-start-reads-unit`. Where the specification differs from mermaid.js in more
-than one way for a diagram type, an input may need several of them removed at
-once to be read as the specification does. Each identifier counts once, and an
-empty list runs mermaid.js as it is. The input may be of any diagram type; a
-divergence of a lexer changes only the lexer of the diagram type it belongs to,
-so a divergence of another diagram type changes nothing, and
+`comment-takes-character`, `comment-takes-line-break`, `name-start-reads-unit`
+and `percent-brace-after-unit`. Where the specification differs from mermaid.js
+in more than one way for a diagram type, an input may need several of them
+removed at once to be read as the specification does. Each identifier counts
+once, and an empty list runs mermaid.js as it is. The input may be of any
+diagram type; a divergence of a lexer changes only the lexer of the diagram type
+it belongs to, so a divergence of another diagram type changes nothing, and
 `c4-keyword-anywhere` changes only how the detectors treat a text that holds a
 C4 keyword after its start. Two divergences whose changes touch the same rule,
 the same rule order of a start state, the function that gives one lexer its
@@ -265,11 +273,16 @@ so that a misspelled option never runs mermaid.js as it is.
 An implementation does not have to run mermaid.js this way to know what the
 specification gives: the fixtures with the mark of a divergence that changes how
 mermaid.js reads an input (`c4-keyword-anywhere`, `comment-takes-character`,
-`comment-takes-line-break`, `name-start-reads-unit`, `html-tag-in-frontmatter`
-and `bare-percent-line-before-header`) record it in `specified.json`, where it
-differs from `expected.json`. The generator takes it from mermaid.js read
-without the divergence (for `comment-takes-line-break` and
+`comment-takes-line-break`, `name-start-reads-unit`, `percent-brace-after-unit`,
+`html-tag-in-frontmatter` and `bare-percent-line-before-header`) record it in
+`specified.json`, where it differs from `expected.json`. The generator takes it
+from mermaid.js read without the divergence (for `comment-takes-line-break` and
 `name-start-reads-unit`, without both, since both change the class lexer; for
+the three that change the gantt lexer, `comment-takes-character`,
+`comment-takes-line-break` and `percent-brace-after-unit`, without all three,
+since a text whose comment takes a character or a line break reaches the rule
+for `%%{` through them, and running every gantt fixture without the three
+changes only the fixtures that carry one of the marks; for
 `c4-keyword-anywhere`, with the detector of C4 replaced, so that the text is
 read as the diagram of its header). [fixture:
 class/div-comment-then-statement-with-backquote-keyword] [fixture:
@@ -375,6 +388,16 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   one: its statement state reads a character followed by `%%` as a comment
   before any rule for ids, so no input gives it an id run, as in a message,
   whose second and third characters are `%%`.
+- `comment-takes-character`, in the gantt lexer
+  ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)):
+  the rule that reads a character other than `}` before `%` together with the
+  comment is taken out, so a comment starts at a `%` where a unit starts, and
+  any other `%` is a character of the unit that holds it. [fixture:
+  gantt/div-comment-after-task-text-start] [fixture:
+  gantt/div-comment-after-keyword-start] [fixture:
+  gantt/div-comment-after-semicolon-after-data] [fixture:
+  gantt/lex-comment-after-two-characters] [fixture:
+  gantt/lex-brace-before-percent] [fixture: gantt/lex-colon-then-percent]
 - `comment-takes-line-break`, in the class lexer
   ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
   the rule that reads `%%`, the rest of the line and the line feeds after it
@@ -384,6 +407,22 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   class/div-comment-after-name-then-statement] [fixture:
   class/div-comment-after-note-string-then-statement] [fixture:
   class/div-comment-after-click-string-then-statement]
+- `comment-takes-line-break`, in the gantt lexer
+  ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L30-L30)):
+  the rule that reads `%`, the rest of the line and the line feeds after it ends
+  at the end of the line, so the line feed after a comment is read as a line
+  feed. [fixture: gantt/div-percent-comment-takes-line-feed-after-href]
+  [fixture: gantt/div-percent-comment-takes-line-feeds-after-call] [fixture:
+  gantt/lex-space-percent-comment-after-call-then-href-line]
+- `percent-brace-after-unit`, in the gantt lexer
+  ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L18-L18)):
+  the rule that enters the start state `open_directive` at every `%%{` is taken
+  out, so a `%%{` that starts no directive is read by the rule for comments; the
+  directives themselves are taken out of the text before the lexer reads it.
+  [fixture: gantt/div-percent-brace-glued-after-header] [fixture:
+  gantt/div-percent-brace-after-two-spaces] [fixture:
+  gantt/div-percent-brace-after-glued-percent-comment] [fixture:
+  gantt/lex-percent-brace-after-tab]
 - `c4-keyword-anywhere`, in the detector of C4
   ([`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10-L10)):
   the detector looks for each of the five keywords, `C4Context`, `C4Container`,
@@ -423,7 +462,10 @@ disk, and give a stored result back for the same text, options and code without
 running mermaid.js again. The pinned mermaid.js gives the same text with the
 same options the same result, so a stored result is the result of a new run; the
 tests that read the same inputs again and again (the differential tests, the
-generated-input tests) then spend their time on the implementation under test.
+generated-input tests) then spend their time on the implementation under test. A
+summary that depended on the day or on the time zone would break this; the gantt
+Db computes its dates from both, so its summary leaves the dates out (see
+[db-summaries.md](./db-summaries.md), gantt).
 
 - Where: `node_modules/.cache/mmd-toolkit/mermaid-runs/` at the root of the
   repository, which git ignores: a directory for each identity of the code

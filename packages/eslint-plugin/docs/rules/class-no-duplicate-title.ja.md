@@ -6,7 +6,7 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
@@ -26,7 +26,7 @@ mermaid.js はどの `accTitle` の文も受理し、
 テキストのない `accTitle:` もタイトルを設定する。
 空行、コメント行、ディレクティブを飛ばして、
 テキストを持つ次の行をタイトルにする。
-テキストの終わりでは、mermaid.js はそれを拒否する。
+そうした行が後になければ、mermaid.js はそれを拒否する。
 
 この規則に**反する**コードの例:
 
@@ -56,3 +56,12 @@ classDiagram
 - [class-no-duplicate-description](./class-no-duplicate-description.ja.md)
 - [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.ja.md)
 - [sequence-no-duplicate-title](./sequence-no-duplicate-title.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/class-no-duplicate-title.ts)
+- [テストのソース](../../tests/rules/class-no-duplicate-title.test.ts)
+
+<!-- end auto-generated rule resources -->

@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A block that is not closed on its line ends at the `}` of a message text: the description holds `first` and `A->>B: f{x`, and only the next message is read."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "first\nA->>B: f{x",
+    "actors": [
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "A"
+      },
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "prevActor": "B",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "B",
+        "to": "A",
+        "message": "y",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

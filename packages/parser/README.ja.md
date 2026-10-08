@@ -126,6 +126,8 @@ const tokenCount = root.tokens.length // 8
 - シーケンス図: `sequence`（`sequenceDiagram`）。
 - クラス図: `classDiagram`（`classDiagram` と `classDiagram-v2`）。
 - 状態図: `stateDiagram`（`stateDiagram` と `stateDiagram-v2`）。
+- ER 図: `er`（`erDiagram`）。
+- Gantt チャート: `gantt`（`gantt`）。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -160,7 +162,8 @@ const tokenCount = root.tokens.length // 8
   （[トークン](./docs/tokens.ja.md#トークン) を参照）。
   引用符つきの文字列の断片は `StringFragment` のトークンです。
 - `comments`: すべてのコメント。
-  `%%` のコメント行と、図種の字句解析器がコメントとして読むものです。
+  `%%` のコメント行、ヘッダーの前の `%%` だけの行や `%%{ }%%` の行、
+  図種の字句解析器がコメントとして読むものです。
   後者は、シーケンス図の行の途中の `#` や `%`、クラス図の文の後の `%%`、
   状態図の `#` と `%%` などです。
   `mark` は印の文字です。
@@ -231,7 +234,9 @@ try {
 [`ast/flowchart.md`](../spec/docs/ast/flowchart.ja.md)、
 [`ast/sequence.md`](../spec/docs/ast/sequence.ja.md)、
 [`ast/class.md`](../spec/docs/ast/class.ja.md)、
-[`ast/state.md`](../spec/docs/ast/state.ja.md) のものです。
+[`ast/state.md`](../spec/docs/ast/state.ja.md)、
+[`ast/er.md`](../spec/docs/ast/er.ja.md)、
+[`ast/gantt.md`](../spec/docs/ast/gantt.ja.md) のものです。
 
 ## 木を辿る
 
@@ -321,19 +326,43 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   クラスの名前の終わりの `~~` は受理します。
   状態図では、空の説明のブロックについて同じです
   （`A accDescr {} --> B` など）。
+  ER 図では、空の説明のブロック（`A accDescr {} ||--o{ B : x` など）と、
+  属性の中の空のバッククォートについて同じです。
+  属性の中とは、型と名前の間、キーやコメントの前です。
+  2 つの属性の間の空のバッククォートは受理します。
+  Gantt チャートでは、click の文の中の、空の説明のブロック、
+  空の href（`href ""`）、空の call について同じです。
+  click の文の中とは、id と最初の部分の間、2 つの部分の間です
+  （`click id1 href "" call f()` など）。
+  文の始まりでは、どれもそれだけで 1 つの文として受理します。
 - シーケンス図では、コメントは `%%` から始まり、
   数の後に `%%` が続いてもかまいません。
   mermaid.js は、そこで規則が始まるときには、
   `%%` の前の文字をコメントに含めます。
   `autonumber 10%% c` は、ここでは 10 から始まり、mermaid.js は拒否します。
-  `C%% c` だけの行は、ここでは拒否し、mermaid.js はコメントとして読みます
+  `C%% c` だけの行は、ここでは拒否し、mermaid.js はコメントとして読みます。
+  Gantt チャートでは、単位の 1 文字目の直後の `%` は、その単位の文字です。
+  mermaid.js は、その文字と行の残りをコメントとして読みます。
+  `a% : 1d` は、ここではタスクで、mermaid.js ではタスクがありません。
+  `t%itle T` は、ここでは拒否します
   （[`comment-takes-character`](../spec/docs/known-divergences/comment-takes-character.ja.md)）。
 - クラス図では、文の後のコメントは、その行の終わりで終わります。
   mermaid.js は、その後の改行も取り込み、
   次の行を同じ文の続きとして読みます。
   `A --> B %% c` の次に `class C` の行が続く入力は、
-  ここでは受理し、mermaid.js は拒否します
+  ここでは受理し、mermaid.js は拒否します。
+  Gantt チャートでも、click の文の中の `%` のコメントは、
+  その行の終わりで終わります。
+  mermaid.js は、その後の改行を取り込みます。
+  `click id1 %c` の次に `href "u"` の行が続く入力は、
+  ここでは拒否し、mermaid.js はリンクを設定します
   （[`comment-takes-line-break`](../spec/docs/known-divergences/comment-takes-line-break.ja.md)）。
+- Gantt チャートでは、ディレクティブを始めない `%%{` は、
+  単位が始まるところならどこでもコメントです。
+  mermaid.js は、単位の直後のように、字句解析器がその位置に直接いるところでは、
+  これを拒否します。
+  `gantt%%{ }%%` の次に `title T` の行が続く入力は、ここでは受理します
+  （[`percent-brace-after-unit`](../spec/docs/known-divergences/percent-brace-after-unit.ja.md)）。
 - クラス図では、バッククォートの名前とジェネリクスの型は、
   どの文字で始まってもかまいません。
   ``class `note` `` はクラス `note` を宣言し、mermaid.js はこれを拒否します。
@@ -347,6 +376,18 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   `accTitle:` などのすぐ後でテキストが終わるときは受理します。
   `parse()` は例外を投げます
   （[`headerless-empty-ending`](../spec/docs/known-divergences/headerless-empty-ending.ja.md)）。
+- `parse()` は、図種をテキストの始まりでだけ見つけます。
+  ほかの図種のヘッダーを持ち、その後に `C4Container`、`C4Component`、
+  `C4Dynamic`、`C4Deployment` のどれかを含むテキストは、その図種として読みます。
+  mermaid.js は、そのテキストを C4 の構文解析器に渡します
+  （[`c4-keyword-anywhere`](../spec/docs/known-divergences/c4-keyword-anywhere.ja.md)）。
+- ヘッダーの前の `%%` だけの行や `%%{ }%%` の行は、どの図種でもコメントです。
+  mermaid.js は、flowchart と ER 図のヘッダーの前のそうした行、
+  状態図のヘッダーの前の `%%{ }%%` の行、
+  クラス図と ER 図のヘッダーの前でそうした行の後にある空白だけの行、
+  Gantt チャートのヘッダーの前のそうした行を、
+  後に空白だけの行があってもなくても、拒否します
+  （[`bare-percent-line-before-header`](../spec/docs/known-divergences/bare-percent-line-before-header.ja.md)）。
 - `parse()` はサイトの設定を知らないので、
   辺の数が `maxEdges`（既定 500）を超える flowchart も受理します。
 - これらの違いによる拒否も、ほかと同じ `ParseError` です。
@@ -358,6 +399,8 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   [`ast/sequence.md`](../spec/docs/ast/sequence.ja.md)（シーケンス図のノード）、
   [`ast/class.md`](../spec/docs/ast/class.ja.md)（クラス図のノード）、
   [`ast/state.md`](../spec/docs/ast/state.ja.md)（状態図のノード）、
+  [`ast/er.md`](../spec/docs/ast/er.ja.md)（ER 図のノード）、
+  [`ast/gantt.md`](../spec/docs/ast/gantt.ja.md)（Gantt チャートのノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
   [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、

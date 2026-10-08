@@ -2,7 +2,7 @@
 
 Japanese version: [tokenless-empty-forms.ja.md](./tokenless-empty-forms.ja.md)
 
-Diagram types: flowchart, sequence, class, state. This is one of the
+Diagram types: flowchart, sequence, class, state, er. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -37,7 +37,22 @@ state/gram-state-empty-strings-around-alias-string] [fixture:
 state/gram-state-empty-string-after-name] In class there are five: the three of
 flowchart, of which the empty string is only `""`, as class has no markdown
 strings, and two that are written in a class name, an **empty backquoted name**,
-two backquotes, and an **empty generic type**, two `~`.
+two backquotes, and an **empty generic type**, two `~`. In er there are two: the
+empty description block, and **empty backquotes**, two backquotes with nothing
+between them, inside an attribute block, where mermaid.js reads no token for
+them; between two attributes the tree holds them as an item of the block, so
+only those inside an attribute are part of this divergence (see
+[Attributes](../diagrams/er.md#attributes)). In gantt there are three: the empty
+description block, an **empty href**, `href` and two quotes with nothing between
+them, and the empty call, as in flowchart; where a statement starts, the tree
+holds an empty href or an empty call as a GanttIgnoredStatement, so only those
+inside a click statement are part of this divergence (see
+[Empty hrefs and empty calls](../diagrams/gantt.md#empty-hrefs-and-empty-calls)).
+[fixture: er/div-empty-description-block-in-relationship] [fixture:
+er/div-empty-backquotes-between-type-and-name] [fixture:
+er/gram-empty-backquotes-between-attributes] [fixture:
+gantt/div-empty-href-before-call] [fixture: gantt/div-empty-call-before-href]
+[fixture: gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-line]
 
 An empty description block on a line of its own is the ordinary way to write
 one, and is a description block statement that changes nothing:
@@ -174,8 +189,9 @@ The difference goes one way only: mermaid.js accepts and this specification
 rejects. The documents of the diagram types give examples of them in their Known
 divergences sections: [flowchart](../diagrams/flowchart.md#known-divergences),
 [sequence](../diagrams/sequence.md#known-divergences),
-[class](../diagrams/class.md#known-divergences), and
-[state](../diagrams/state.md#known-divergences).
+[class](../diagrams/class.md#known-divergences),
+[state](../diagrams/state.md#known-divergences), and
+[er](../diagrams/er.md#known-divergences).
 
 ## What it means for an author
 
@@ -229,6 +245,16 @@ and class over all five forms
 [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L53-L62),
 and
 [`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)).
+Er passes over an empty description block
+([`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L16-L18))
+and over empty backquotes
+([`erDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/er/parser/erDiagram.jison#L38-L40)).
+Gantt passes over an empty description block
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L24-L25)),
+over `href`, its whitespace, and both quotes of an empty href
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L42-L43)),
+and over `call`, its whitespace, and the parentheses of an empty call
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L54-L55)).
 Each of these rules enters or leaves a state of the lexer and returns nothing,
 so the grammar never sees the form.
 
@@ -480,6 +506,47 @@ In state, all between two units of a statement:
   StateClickStatement. [fixture:
   state/div-empty-description-block-in-click-before-tooltip]
 
+In er, all between two units of a statement, where holding the block would take
+a field for that gap (reason a): `A accDescr {} ||--o{ B : x` and
+`A ||--o{ accDescr {} B : x` in an ErRelationshipStatement,
+`A accDescr {} :::c`, `A accDescr {} [P]`, and `A[accDescr {} P]` in an
+ErEntityStatement, `subgraph accDescr {} S` and `subgraph S [accDescr {} T]` in
+an ErSubgraphStatement, and `class A accDescr {} a` in an ErClassStatement; and
+empty backquotes between the units of an ErAttribute, as in `int `` a` and
+`int a `` PK` (reason a). Between two attributes, before the first, and after
+the last, the tree holds empty backquotes as an ErIgnoredText item of the
+attribute list, so the input is accepted (see
+[Attributes](../diagrams/er.md#attributes)). [fixture:
+er/div-empty-description-block-in-relationship] [fixture:
+er/div-empty-description-block-after-spec] [fixture:
+er/div-empty-description-block-before-class-separator] [fixture:
+er/div-empty-description-block-before-alias] [fixture:
+er/div-empty-description-block-in-alias-start] [fixture:
+er/div-empty-description-block-before-subgraph-id] [fixture:
+er/div-empty-description-block-in-subgraph-title-start] [fixture:
+er/div-empty-description-block-in-class] [fixture:
+er/div-empty-backquotes-between-type-and-name] [fixture:
+er/div-empty-backquotes-before-key] [fixture:
+er/gram-empty-backquotes-between-attributes] [fixture:
+er/gram-empty-backquotes-before-first] [fixture:
+er/gram-empty-backquotes-after-last]
+
+In gantt, between the ids of a GanttClickStatement and its first part, and
+between its two parts, where holding the form would take a field for that gap
+(reason a): `click id1 accDescr {} href "u"`, `click id1 href "" call f()`,
+`click id1 href ""href "u"`, and `click id1 call () href "u"`. Where a statement
+starts, the tree holds an empty href or an empty call as a
+GanttIgnoredStatement, and an empty description block as a statement, so the
+input is accepted (see
+[Empty hrefs and empty calls](../diagrams/gantt.md#empty-hrefs-and-empty-calls)).
+[fixture: gantt/div-empty-description-block-between-click-id-and-href] [fixture:
+gantt/div-empty-description-block-between-call-and-href] [fixture:
+gantt/div-empty-href-before-call] [fixture:
+gantt/div-empty-href-glued-before-href] [fixture:
+gantt/div-empty-call-before-href] [fixture: gantt/gram-empty-href-line]
+[fixture: gantt/gram-empty-call-line] [fixture:
+gantt/gram-click-href-then-empty-href]
+
 After the last unit of a statement, before its separator, the block is a
 statement, as in `click A "u" "t" accDescr {}` of state. An accepted input has
 the Db of the same input with the block left out and the whitespace around it
@@ -507,10 +574,14 @@ say (see
 [flowchart](../diagrams/flowchart.md#empty-description-blocks-before-a-separator),
 [class](../diagrams/class.md#empty-description-blocks-before-a-separator),
 [sequence](../diagrams/sequence.md#empty-description-blocks-before-a-separator),
-and [state](../diagrams/state.md#empty-description-blocks-before-a-separator)).
-[fixture: flowchart/header-empty-description-block-after-direction] [fixture:
+[state](../diagrams/state.md#empty-description-blocks-before-a-separator),
+[er](../diagrams/er.md#empty-description-blocks), and
+[gantt](../diagrams/gantt.md#empty-description-blocks)). [fixture:
+flowchart/header-empty-description-block-after-direction] [fixture:
 flowchart/header-empty-description-block-before-semicolon] [fixture:
 flowchart/header-empty-description-block-no-direction] [fixture:
 class/header-empty-description-block] [fixture:
 sequence/header-empty-description-block] [fixture:
-state/header-empty-description-block]
+state/header-empty-description-block] [fixture:
+er/header-empty-description-block] [fixture:
+gantt/gram-empty-description-block-after-header]

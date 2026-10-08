@@ -35,13 +35,16 @@ A comment on the last line of the text is not reported: mermaid.js reads it as
 the author meant.
 
 In one case mermaid.js keeps the next line apart: when a line of only whitespace
-follows the comment, and no comment line comes after that line. mermaid.js
-removes a comment line together with the lines of only whitespace before it
-([`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)),
-so a comment line there undoes it. The rule reports the comment in this case
-too: whether the next line is read apart then hangs on whitespace that cannot be
-seen. Such a line is not shown as a code block below, because whitespace at the
-end of a line does not survive there.
+stands between the comment and the next line, and mermaid.js does not remove it.
+mermaid.js removes each comment line that holds text after its `%%`, together
+with the lines of only whitespace right before it
+([`cleanupComments()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagram-api/comments.ts#L6-L8)).
+So a line of only whitespace keeps the next line apart, except when such a
+comment line comes after it with only lines of only whitespace between them. A
+line of only `%%` is not removed, and does not undo it. The rule reports the
+comment in this case too: whether the next line is read apart then hangs on
+whitespace that cannot be seen. Such a line is not shown as a code block below,
+because whitespace at the end of a line does not survive there.
 
 Examples of **incorrect** code for this rule:
 
@@ -72,3 +75,12 @@ classDiagram
 ## Options
 
 This rule has no options.
+
+<!-- begin auto-generated rule resources -->
+
+## Resources
+
+- [Rule source](../../src/rules/class-no-inline-comment.ts)
+- [Tests source](../../tests/rules/class-no-inline-comment.test.ts)
+
+<!-- end auto-generated rule resources -->

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Detection: `gantt2` is detected as a gantt diagram, and the lexer reads no header keyword, because a word character follows; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\ngantt2title T\n^\nExpecting 'gantt', got 'taskTxt'"
+  }
+}

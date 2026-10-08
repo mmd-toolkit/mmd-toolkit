@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements: the classes on the next line; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nerDiagramclass AB\n----------------^\nExpecting 'UNICODE_TEXT', 'STYLE_TEXT', 'COMMA', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A class in a namespace and the same class outside it: one class, and the later label replaces the earlier."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "Second",
+        "text": "Second",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "N"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "N",
+        "label": "N",
+        "classes": [
+          "A"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

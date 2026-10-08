@@ -2,7 +2,7 @@
 
 英語版: [comment-takes-character.md](./comment-takes-character.md)
 
-図種: sequence。
+図種: sequence、gantt。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -26,6 +26,9 @@ sequenceDiagram
 数の後では `%%` はコメントを始め、
 id の並びの文字の後とテキストの前の `:` の後では、
 id の並びかテキストの文字です。
+単独の `%` がコメントを始めるガントチャートでは、
+`a% : 1d` のように、単位の最初の文字（`}` と空白以外の文字）の直後の `%`
+についてのものです。
 
 ## 差異
 
@@ -140,6 +143,30 @@ sequence/lex-space-before-comment-in-id-run]
 `autonumber 1%%{init: {}}%%%% c0` では、`%%` は数 1 のすぐ後に来ます。
 [fixture: sequence/div-comment-after-number-across-directive]
 
+ガントチャートでは、mermaid.js の字句解析器は単独の `%` に同じ規則を持ちます。
+単位の始まる位置の `%` のすぐ前に `}` 以外の文字があるところでは、
+その文字、`%`、行の残りを 1 つのコメントとして読みます。
+`a% : 1d` はコメントでタスクはなく、`t%itle T` はコメントでタイトルはなく、
+`a : 1d;%c` と `dateFormat X;%c` はタスクと設定の後に `;` からのコメントです。
+この仕様ではコメントは単位の始まる位置でだけ始まり、
+`%` はそれを含む単位の文字です。
+`a% : 1d` はタスク `a% `、`t%itle T` はデータのないタスクのテキストで、
+タスクのデータや設定のテキストの後の `;%c`、タスクのデータの後の `#%c`、
+URL 文字列の後の `"%c` も同じなので、これらの入力は拒否されます。
+一方 `a :%c` は終わり `%c` を持つタスク `a ` で、mermaid.js は拒否します。
+gantt では差異は両方向です。
+`ab% : 1d` と `}%c : 1d` はどちらでもタスクで、
+`%` の前の空白はどちらでもコメントにします
+（[コメント](../diagrams/gantt.ja.md#コメント) を参照）。
+[fixture: gantt/lex-colon-then-percent]
+[fixture: gantt/div-comment-after-task-text-start]
+[fixture: gantt/div-comment-after-keyword-start]
+[fixture: gantt/div-comment-after-semicolon-after-data]
+[fixture: gantt/div-comment-after-semicolon-after-setting]
+[fixture: gantt/lex-comment-after-two-characters]
+[fixture: gantt/lex-brace-before-percent]
+[fixture: gantt/lex-space-then-percent-after-unit]
+
 ## 書き手にとっての結果
 
 文のすぐ後に空白なしで書いたコメントは、
@@ -159,11 +186,15 @@ mermaid.js の字句解析器には、この仕様と違う 2 つの規則があ
 また、数は、空白か改行が後に続くところでだけ読みます。
 ある規則が `%%` のすぐ前の文字で一致を始めるはずの場所では、
 コメントの規則が先に当たり、`%%` のすぐ前の数は数として読まれません。
+gantt の字句解析器は単独の `%` で同じコメントの規則を持ち
+（[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)）、
+タスクのテキストとタスクのデータのコロンの規則より前に試します。
 
 ## この仕様の規則と、その理由
 
 この仕様では、コメントはその印で始まり、数の後には `%%` が続いてもかまいません
-（[文の文脈](../diagrams/sequence.ja.md#文の文脈) を参照）。
+（[文の文脈](../diagrams/sequence.ja.md#文の文脈) と
+[コメント](../diagrams/gantt.ja.md#コメント) を参照）。
 
 コメントがその前の文字を取ること、
 しかもほかの規則がそこで一致を始める場所でだけ取ることは、

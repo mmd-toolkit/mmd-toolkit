@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Comments: `%%` inside a section text is text; the section `a %% b`."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "a %% b"
+    ],
+    "tasks": [],
+    "links": []
+  }
+}

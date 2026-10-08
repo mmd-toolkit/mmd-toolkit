@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A click statement before the transition that declares the state still sets the link of the state."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": [
+      {
+        "state": "A",
+        "url": "\"u\"",
+        "tooltip": ""
+      }
+    ]
+  }
+}

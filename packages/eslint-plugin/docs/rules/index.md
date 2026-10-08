@@ -46,27 +46,39 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 
 ## sequence
 
-| Rule                                                                            | Description                                                                   | ✅  | 💡  | 🚧  |
-| ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --- | --- | --- |
-| [sequence-no-create-destroy](./sequence-no-create-destroy.md)                   | Disallow `create` before `destroy`.                                           |     |     | 🚧  |
-| [sequence-no-duplicate-description](./sequence-no-duplicate-description.md)     | Disallow an `accDescr` statement that sets the description again.             |     |     | 🚧  |
-| [sequence-no-duplicate-title](./sequence-no-duplicate-title.md)                 | Disallow a `title` or `accTitle` statement that sets its title again.         |     |     | 🚧  |
-| [sequence-no-empty-description-block](./sequence-no-empty-description-block.md) | Disallow an `accDescr` block that holds no description.                       |     |     | 🚧  |
-| [sequence-no-ignored-text](./sequence-no-ignored-text.md)                       | Disallow a line that mermaid.js reads as nothing.                             |     |     | 🚧  |
-| [sequence-no-invalid-json](./sequence-no-invalid-json.md)                       | Disallow a `links` or `properties` statement whose text is not a JSON object. |     |     | 🚧  |
-| [sequence-no-link-without-separator](./sequence-no-link-without-separator.md)   | Disallow a `link` statement without the `@` between its label and its URL.    |     |     | 🚧  |
+| Rule                                                                                  | Description                                                                   | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --- | --- | --- |
+| [sequence-no-create-destroy](./sequence-no-create-destroy.md)                         | Disallow `create` before `destroy`.                                           | ✅  |     |     |
+| [sequence-no-duplicate-description](./sequence-no-duplicate-description.md)           | Disallow an `accDescr` statement that sets the description again.             | ✅  |     |     |
+| [sequence-no-duplicate-title](./sequence-no-duplicate-title.md)                       | Disallow a `title` or `accTitle` statement that sets its title again.         | ✅  |     |     |
+| [sequence-no-empty-description-block](./sequence-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                       | ✅  |     |     |
+| [sequence-no-ignored-text](./sequence-no-ignored-text.md)                             | Disallow a line that mermaid.js reads as nothing.                             | ✅  |     |     |
+| [sequence-no-invalid-json](./sequence-no-invalid-json.md)                             | Disallow a `links` or `properties` statement whose text is not a JSON object. | ✅  |     |     |
+| [sequence-no-link-without-separator](./sequence-no-link-without-separator.md)         | Disallow a `link` statement without the `@` between its label and its URL.    | ✅  |     |     |
+| [sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.md) | Disallow an `accDescr {` block without its closing `}`.                       | ✅  |     |     |
 
 ## class
 
 | Rule                                                                  | Description                                                                   | ✅  | 💡  | 🚧  |
 | --------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --- | --- | --- |
-| [class-no-bare-class-name](./class-no-bare-class-name.md)             | Disallow a class name alone on its line, which changes nothing.               |     |     | 🚧  |
-| [class-no-duplicate-description](./class-no-duplicate-description.md) | Disallow an `accDescr` statement that sets the description again.             |     |     | 🚧  |
-| [class-no-duplicate-title](./class-no-duplicate-title.md)             | Disallow an `accTitle` statement that sets the title again.                   |     |     | 🚧  |
-| [class-no-ignored-text](./class-no-ignored-text.md)                   | Disallow text that mermaid.js does not read.                                  |     |     | 🚧  |
-| [class-no-inline-comment](./class-no-inline-comment.md)               | Disallow a comment after other text on its line.                              |     |     | 🚧  |
-| [class-no-redefined-class](./class-no-redefined-class.md)             | Disallow writing the label of a class again, differently.                     |     |     | 🚧  |
-| [class-no-unclosed-backquote](./class-no-unclosed-backquote.md)       | Disallow a backquoted class name without its closing backquote.               |     |     | 🚧  |
-| [class-no-undef](./class-no-undef.md)                                 | Disallow a statement that refers to a class that the diagram does not define. |     |     | 🚧  |
+| [class-no-bare-class-name](./class-no-bare-class-name.md)             | Disallow a class name alone on its line, which changes nothing.               | ✅  |     |     |
+| [class-no-duplicate-description](./class-no-duplicate-description.md) | Disallow an `accDescr` statement that sets the description again.             | ✅  |     |     |
+| [class-no-duplicate-title](./class-no-duplicate-title.md)             | Disallow an `accTitle` statement that sets the title again.                   | ✅  |     |     |
+| [class-no-ignored-text](./class-no-ignored-text.md)                   | Disallow text that mermaid.js does not read.                                  | ✅  |     |     |
+| [class-no-inline-comment](./class-no-inline-comment.md)               | Disallow a comment after other text on its line.                              |     |     |     |
+| [class-no-redefined-class](./class-no-redefined-class.md)             | Disallow writing the label of a class again, differently.                     | ✅  |     |     |
+| [class-no-unclosed-backquote](./class-no-unclosed-backquote.md)       | Disallow a backquoted class name without its closing backquote.               | ✅  |     |     |
+| [class-no-undef](./class-no-undef.md)                                 | Disallow a statement that refers to a class that the diagram does not define. | ✅  |     |     |
+
+## state
+
+| Rule                                                                            | Description                                                                    | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | --- | --- | --- |
+| [state-no-duplicate-description](./state-no-duplicate-description.md)           | Disallow an `accDescr` statement that sets the description again.              | ✅  |     |     |
+| [state-no-duplicate-title](./state-no-duplicate-title.md)                       | Disallow an `accTitle` statement that sets the title again.                    | ✅  |     |     |
+| [state-no-empty-description-block](./state-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                        | ✅  |     |     |
+| [state-no-ignored-text](./state-no-ignored-text.md)                             | Disallow text that mermaid.js does not read.                                   | ✅  |     |     |
+| [state-no-unclosed-description-block](./state-no-unclosed-description-block.md) | Disallow an `accDescr {` block without its closing `}`.                        | ✅  |     |     |
+| [state-no-undef](./state-no-undef.md)                                           | Disallow a `style`, `class`, `click`, or `note` statement that names no state. | ✅  |     |     |
 
 <!-- end auto-generated rules list -->

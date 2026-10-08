@@ -65,6 +65,31 @@ export interface ValueRule {
 
 const WRITTEN_TEXT = "Its written text (ast.md, Nodes)."
 
+/**
+ * The rule of a tag of a task of a gantt diagram. The tag is an `Identifier`
+ * made of one `data-item` unit, a unit of text that a directive may cut, so its
+ * tokens are `RawText` tokens (parser/docs/tokens/gantt.md, Tokens), more than
+ * one where a directive cuts it, and its name is its written text, as for the
+ * tilde word of an ER diagram (`ErIdentifier`): `do%%{x}%%ne` is the tag
+ * `done` (ast/gantt.md, GanttTaskStatement).
+ */
+const GANTT_TAG_RULE: ValueRule = {
+  field: "name",
+  kind: "written-text",
+  spec: "Its written text, of one unit that a directive may cut (ast/gantt.md, GanttTaskStatement).",
+}
+
+/** The tags of the tasks of a gantt diagram among `nodes`. */
+function ganttTagsOf(nodes: readonly CheckedNode[]): ReadonlySet<CheckedNode> {
+  return new Set(
+    nodes.flatMap((node) =>
+      node.type === "GanttTaskStatement" && Array.isArray(node.tags)
+        ? (node.tags as CheckedNode[])
+        : [],
+    ),
+  )
+}
+
 const IGNORED_TEXT =
   "Its written text is the source text of its range without the directives, the comment regions, the comments, and the ignored `;`; the whitespace and line terminators between its units are part of it (ast.md, Nodes)."
 
@@ -195,6 +220,27 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     withoutComments: true,
     spec: IGNORED_TEXT,
   },
+  ErIdentifier: { field: "name", kind: "written-text", spec: WRITTEN_TEXT },
+  ErLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its written text; for a style, the written texts of its units joined in order (ast/er.md, ErLiteral).",
+  },
+  ErIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    gaps: true,
+    withoutComments: true,
+    spec: IGNORED_TEXT,
+  },
+  GanttLiteral: { field: "value", kind: "written-text", spec: WRITTEN_TEXT },
+  GanttIgnoredStatement: {
+    field: "value",
+    kind: "written-text",
+    gaps: true,
+    withoutComments: true,
+    spec: IGNORED_TEXT,
+  },
 }
 
 /** The delimiters around the content of the string that `node` starts with; none if it starts with none. */
@@ -214,13 +260,15 @@ export function quoteDelimitersOf(node: CheckedNode): TreeRange[] {
   return node.closed === true ? [opening, [end - 1, end]] : [opening]
 }
 
-/** The nodes of the `styles` of the statements of a class diagram: their ClassLiteral values are units joined. */
-function classStylesOf(nodes: readonly CheckedNode[]): Set<unknown> {
+/** The nodes of the `styles` of the statements of a class diagram or an ER diagram: their ClassLiteral and ErLiteral values are units joined. */
+function stylesOf(nodes: readonly CheckedNode[]): Set<unknown> {
   const styles = new Set<unknown>()
   for (const node of nodes) {
     if (
       (node.type === "ClassStyleStatement" ||
-        node.type === "ClassClassDefStatement") &&
+        node.type === "ClassClassDefStatement" ||
+        node.type === "ErStyleStatement" ||
+        node.type === "ErClassDefStatement") &&
       Array.isArray(node.styles)
     ) {
       for (const style of node.styles as unknown[]) styles.add(style)
@@ -399,9 +447,10 @@ export function checkValues(
   const written = new WrittenText(text, root)
   const diagramComments = diagramCommentRanges(text, root, written)
   const nodes = nodesOf(root)
-  const styles = classStylesOf(nodes)
+  const styles = stylesOf(nodes)
+  const ganttTags = ganttTagsOf(nodes)
   for (const node of nodes) {
-    const rule = VALUE_RULES[node.type]
+    const rule = ganttTags.has(node) ? GANTT_TAG_RULE : VALUE_RULES[node.type]
     if (rule === undefined) continue
     if (rule.oneToken === true) checkHasOneToken(root, node, problems)
     if (rule.kind === "derived") continue
@@ -415,10 +464,7 @@ export function checkValues(
         ? []
         : delimitersOf(node, rule.delimiters, delimitersOfStrings, problems)
     const joined = joinedTokenTextOf(text, root, node.range, delimiters)
-    const kind =
-      node.type === "ClassLiteral" && styles.has(node)
-        ? "units-joined"
-        : rule.kind
+    const kind = styles.has(node) ? "units-joined" : rule.kind
     if (kind === "units-joined") {
       problems.expectEqual(
         value,

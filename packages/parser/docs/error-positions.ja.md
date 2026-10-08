@@ -204,6 +204,82 @@
   [fixture: state/gram-composite-terminal-two-descriptions]
   [fixture: state/gram-region-two-descriptions]
 
+## ER 図の中
+
+- 字句解析器のどの規則も一致しない位置では、`range` はその 1 文字。
+  これが起きるのは style の文脈だけで、
+  `classDef` の文の `font-size:1.5em` の `.` がその例。
+  [fixture: er/lex-classdef-dot]
+- 終わってはいけない文脈でテキストが終わるときは、
+  `range` はその文脈に入ったもので、メッセージは何が閉じていないかを示す。
+  - 属性ブロックの `{`。
+    メッセージは `The attribute block has no } before the end of the text`。
+    [fixture: er/lex-block-unclosed]
+    [fixture: er/lex-block-unclosed-empty]
+  - テキストの終わりの空白が、最後の文字の後の行送りを取った、
+    `classDef` と `style`。メッセージは
+    `The classDef or style statement has no line feed before the end of the text`。
+    [fixture: er/lex-classdef-trailing-space-at-end]
+    [fixture: er/lex-style-trailing-tab-at-end]
+  - `accTitle` と `accDescr`。
+    メッセージは `accTitle has no text before the end of the text` と
+    `accDescr has no text before the end of the text`。
+    [fixture: er/lex-acc-title-at-end]
+    [fixture: er/lex-acc-descr-at-end]
+  - 説明ブロックの `accDescr`。
+    メッセージは `The description block has no } before the end of the text`。
+    [fixture: er/lex-acc-descr-block-unclosed]
+  - テキストがその中で終わるバッククォートの語では、
+    `range` はその開きのバッククォートで、メッセージは
+    ``The backquoted word has no closing ` before the end of the text``。
+    [fixture: er/lex-backquote-unclosed]
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲。
+  テキストの終わりでは、flowchart と同じく、テキストの終わりの空の範囲。
+  [fixture: er/lex-hash-after-name]
+  [fixture: er/gram-subgraph-unclosed]
+
+## Gantt チャートの中
+
+- どの文脈でも、どの文字もいずれかの規則で単位を始めるので、
+  字句解析器が入力を拒否するのはテキストの終わりだけ。
+- 終わってはいけない文脈でテキストが終わるときは、
+  `range` はその文脈に入ったもので、メッセージは何が閉じていないかを示す。
+  - `click`。
+    メッセージは `click has no click id before the end of the text`。
+    [fixture: gantt/lex-click-whitespace-at-end]
+  - リンクの文字列の開きの `"`。
+    メッセージは `The string has no closing " before the end of the text`。
+    [fixture: gantt/lex-href-unclosed]
+    [fixture: gantt/lex-href-unclosed-lines]
+  - flowchart と同じく、コールバックの `call` と `(`。
+    [fixture: gantt/lex-callback-name-at-end]
+    [fixture: gantt/lex-callback-arguments-unclosed]
+  - `accTitle` と `accDescr`。
+    メッセージは `accTitle has no text before the end of the text` と
+    `accDescr has no text before the end of the text`。
+    [fixture: gantt/lex-acc-title-at-end]
+    [fixture: gantt/lex-acc-descr-at-end]
+  - 説明ブロックの `accDescr`。
+    メッセージは `The description block has no } before the end of the text`。
+    [fixture: gantt/lex-acc-descr-block-unclosed]
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲。
+  テキストの終わりでは、flowchart と同じく、テキストの終わりの空の範囲。
+  日付で始まる行は、その日付で報告する。
+  データのないタスクのテキスト `a` がテキストの終わりにあれば、
+  終わりで報告する。
+  [fixture: gantt/lex-date-line]
+  [fixture: gantt/lex-task-text-only]
+  [fixture: gantt/lex-click-id-at-end]
+- 文法の外の 2 つの拒否は、文法がその文を読んだところで行う。
+  `range` は、`topAxis` のキーワードで、メッセージは
+  `A topAxis statement cannot be written in a Gantt chart`。
+  データがタグだけのタスクでは、最初から最後までのタグで、メッセージは
+  `The data of a task needs an item after its tags`。
+  [fixture: gantt/db-top-axis-statement]
+  [fixture: gantt/lex-topaxis-then-title]
+  [fixture: gantt/gram-task-tags-only]
+  [fixture: gantt/gram-task-tags-only-two]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、
@@ -287,6 +363,45 @@
   空白の後の `;` を報告します。
   [fixture: flowchart/header-empty-description-block-before-semicolon]
   [fixture: flowchart/header-space-before-semicolon]
+  ER 図では、空の形に、空のバッククォート
+  （属性ブロックの中で、間に何もない 2 つのバッククォート）も入ります。
+  メッセージは
+  `Empty backquotes can only be written between two attributes` です。
+  続けて書かれた空の説明ブロックや空のバッククォートは、
+  その最後のものの後の単位で決めます。
+  その単位が前の文や属性を続けるときは、最初のものを報告します。
+  `A accDescr {} ||--o{ B : x` や、属性の `int a`、2 つのバッククォート、
+  `PK` がその例です。
+  [fixture: er/div-empty-description-block-in-relationship]
+  [fixture: er/div-empty-backquotes-before-key]
+  [fixture: er/div-empty-description-blocks-in-relationship]
+  [fixture: er/div-empty-description-blocks-before-role]
+  [fixture: er/div-empty-description-blocks-after-class-keyword]
+  [fixture: er/div-empty-backquotes-twice-between-type-and-name]
+  [fixture: er/div-empty-backquotes-twice-before-key-comma]
+  Gantt チャートでは、空の形に、空の href
+  （`href` と、間に何もない 2 つの `"`）も入ります。
+  メッセージは `An empty href cannot be written here` です。
+  click の文の中では、最初の部分の前の空の形は、
+  文法が止まったところで見つけます。
+  id の後に空の形しかないときも同じで、mermaid.js もこれを拒否します。
+  `click id1 href ""` では、空の href を報告します。
+  引用符の間にディレクティブのある空の href も空の href で、
+  ディレクティブを越えて、`href` から閉じの引用符までを報告します。
+  最初の部分の後に続けて書かれた空の形は、その最後のものの後の単位で決めます。
+  その単位が 2 つ目の部分を始めるときは、最初のものを報告します。
+  `click id1 href "u" accDescr {} call f()` がその例です。
+  [fixture: gantt/div-empty-href-before-call]
+  [fixture: gantt/div-empty-call-before-href]
+  [fixture: gantt/div-empty-href-and-empty-call-before-href]
+  [fixture: gantt/gram-click-empty-href-only]
+  [fixture: gantt/div-empty-href-directive-between-quotes-before-call]
+  [fixture: gantt/div-empty-description-block-between-href-and-call]
+  [fixture: gantt/div-empty-href-between-call-and-href]
+  [fixture: gantt/div-empty-call-between-href-and-call]
+  [fixture: gantt/div-empty-href-between-href-and-call]
+  [fixture: gantt/div-empty-href-and-empty-call-between-parts]
+  [fixture: gantt/div-empty-description-block-and-empty-href-between-parts]
 
 `html-tag-in-frontmatter` は、どの `"` を `'` として読むかを変えます。
 パーサーはそれを区別しないので、そこから起きる拒否は、上の規則で報告します。

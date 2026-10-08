@@ -14,7 +14,7 @@ the sentence of the specification or of the parser's documents that defines it.
 ## Fixtures
 
 `tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
-`sequence/`, `class/`, and `state/`, and checks:
+`sequence/`, `class/`, `state/`, `er/`, and `gantt/`, and checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));
@@ -63,9 +63,17 @@ compares it with the Db built from the recorded tree.
 - `comment-takes-character`: the input has a `%%`, outside directives, right
   after a `number` unit or right after a character other than whitespace at
   which the sequence lexer, in the statement context, starts the match of a
-  rule, decided on the diagram text; both come from the parser's lexer.
+  rule, decided on the diagram text; both come from the parser's lexer. A Gantt
+  chart has a `%` right after the first character of a unit, a character other
+  than `}` and whitespace, found from the parser's units and diagram text.
 - `comment-takes-line-break`: the class diagram has a diagram comment that
-  follows a unit on its line, found from the parser's lexer and units.
+  follows a unit on its line, found from the parser's lexer and units. The Gantt
+  chart has a comment with the mark `%` that mermaid.js reaches directly, as
+  [Comments](../../spec/docs/diagrams/gantt.md#comments) defines it, found from
+  the parser's units, comments, and diagram text, with the line feeds of a
+  `newline` unit counted as whitespace before the `%`.
+- `percent-brace-after-unit`: the Gantt chart has a `%%{` that starts no
+  directive and that mermaid.js reaches directly, found in the same way.
 - `name-start-reads-unit`: the class diagram has a backquoted name or a generic
   type whose text starts with `"`, `~` (in a backquoted name), `<<`, `>>`, or
   one of the keywords that the divergence names, found from the parser's
@@ -73,6 +81,12 @@ compares it with the Db built from the recorded tree.
 - `html-tag-in-frontmatter`: a tag that starts in the frontmatter changes which
   `"` mermaid.js reads as `'`, found from the parser's reading of the
   frontmatter and of the attribute quotes.
+- `c4-keyword-anywhere`: the parser detects a diagram type other than C4, and
+  the diagram text from the detection point, read by the parser's lexer without
+  its directives and comment regions, holds one of the four keywords that
+  mermaid.js looks for anywhere.
+- `bare-percent-line-before-header`: the parser's detection passes a bare `%%`
+  line before the header.
 
 A fixture marked `embedded-data-opaque` has no such check: mermaid.js rejects it
 for the content of its embedded data, which the parser does not read, and the
@@ -122,16 +136,32 @@ flowchart/gram-subgraph-name-click-comma]
 The reference input of `tokenless-empty-forms` is the input without its comment
 regions and without its empty forms: each empty string, each empty call from its
 `call` to its `)`, each empty description block that is not a statement, from
-its `accDescr` to its `}`, and, in a class diagram, each empty backquoted name
-and each empty generic type. An empty description block is not a statement where
-it lies inside a statement, neither where a statement starts nor before the
-separator of a statement or of the header, and is not held by the
-`textBeforeBody` of a state statement. Whether a block is a statement is decided
-without the empty forms before it that are left out, and blocks written one
-after another, with only whitespace between them, are decided together, by what
-follows the last of them: in `""accDescr {}` followed by a line break and `A`,
-the block starts a statement once the empty string is left out, so it stays in
-the reference input. [fixture:
+its `accDescr` to its `}`, in a class diagram, each empty backquoted name and
+each empty generic type, and in an ER diagram, each `empty-backquotes` unit,
+which mermaid.js reads nothing for wherever it lies. An empty description block
+is not a statement where it lies inside a statement, neither where a statement
+starts nor before the separator of a statement or of the header, and is not held
+by the `textBeforeBody` of a state statement. In an ER diagram, where nothing
+separates two statements, a block lies inside a statement where the statement
+before it has not ended, after a cardinality, a line, `:`, `:::`, `,`, or `[`,
+or in the first list of names of a `class` statement, and where the unit after
+the blocks continues that statement: a cardinality, `:::`, `{`, `[`, `:`, or
+`,`. [fixture: er/div-empty-description-block-in-relationship] [fixture:
+er/div-empty-description-block-in-class] [fixture:
+er/gram-empty-description-block-between-names] In a Gantt chart, the empty href,
+`href` and two `"` with nothing between them, is an empty form too, and an empty
+href and an empty call are statements where a statement starts, as an empty
+description block is. Nothing separates two statements there, and an empty form
+lies inside a statement only inside a click statement: between its ids and its
+first part, and between its two parts, where the unit after the forms starts the
+second part. [fixture: gantt/div-empty-href-before-call] [fixture:
+gantt/div-empty-description-block-between-href-and-call] [fixture:
+gantt/gram-empty-href-line] [fixture: gantt/gram-click-href-then-empty-href]
+Whether a block is a statement is decided without the empty forms before it that
+are left out, and blocks written one after another, with only whitespace between
+them, are decided together, by what follows the last of them: in `""accDescr {}`
+followed by a line break and `A`, the block starts a statement once the empty
+string is left out, so it stays in the reference input. [fixture:
 flowchart/lex-empty-string-before-empty-description-block] For one or more
 blocks between `direction` and its value on one line in a class diagram, the
 reference input also leaves out the whitespace around the blocks, so that
@@ -179,9 +209,11 @@ nothing.
 The order of the child fields is the parser's own: a tool that walks the child
 fields in the order of `visitorKeys` meets the child nodes in source order, but
 in a FlowchartLink with an opening arrow and a label, whose label is written
-before its arrow and visited after it. `tests/traverse.test.ts` checks this on
-the tree of every fixture that the parser accepts, and that a tree whose child
-nodes are out of order fails.
+before its arrow and visited after it, and in a GanttClickStatement whose link
+is written before its call and visited after it. [fixture:
+gantt/gram-click-href-then-call] `tests/traverse.test.ts` checks this on the
+tree of every fixture that the parser accepts, and that a tree whose child nodes
+are out of order fails.
 
 ## Recorded parse results
 

@@ -112,6 +112,48 @@ const SPEC_FILES: Readonly<
     "diagrams/state/parser/state-parser.spec.js",
     "diagrams/state/parser/state-style.spec.js",
   ],
+  // The other test files of the directory pass no text: `erDb.spec.js` calls
+  // the Db's methods with values built in code, and `erRenderer.spec.ts` tests
+  // the function that makes an id.
+  er: () => [
+    "diagrams/er/parser/erDiagram.spec.js",
+    "diagrams/er/parser/subgraph.spec.js",
+  ],
+  // The other test file of the directory, `ganttDb.spec.ts`, calls the Db's
+  // methods with values built in code and passes no text.
+  gantt: () => ["diagrams/gantt/parser/gantt.spec.js"],
+}
+
+/**
+ * The tests of the spec files that end with an error after the parse call
+ * whose text they are for, with the reason. Such a test is no loss of inputs:
+ * the text was recorded before the error. A test of the list that does not end
+ * with that error stops the collection, so that the list stays true.
+ */
+const ERRORS_AFTER_THEIR_INPUT: Readonly<
+  Record<
+    string,
+    readonly {
+      readonly test: string
+      readonly error: string
+      readonly reason: string
+    }[]
+  >
+> = {
+  "diagrams/er/parser/erDiagram.spec.js": [
+    {
+      test: "when parsing ER diagram it... > entity name > cannot contain % because it interferes with parsing comments",
+      error: "name is not defined",
+      reason:
+        "the body reads a variable that the file never defines, after a parse call that throws in mermaid.js; the stub of the parser does not throw",
+    },
+    {
+      test: "when parsing ER diagram it... > entity name > cannot contain \\ because it could start and escape code",
+      error: "name is not defined",
+      reason:
+        "the same: the parse call comes first, and the body then reads an undefined variable",
+    },
+  ],
 }
 
 /** The fence lines that open a mermaid block in the documentation. */
@@ -235,8 +277,27 @@ async function specCandidates(
         `${relative}: ${recording.tests} tests, ${recording.inputs.length} inputs, ` +
           `${recording.failures.length} tests ended with an error`,
       )
+      const allowed = (
+        ERRORS_AFTER_THEIR_INPUT[path.relative(mermaidSource, file)] ?? []
+      ).map((entry) => ({ ...entry, used: false }))
       for (const failure of recording.failures) {
+        const entry = allowed.find(
+          (candidate) =>
+            candidate.test === failure.test &&
+            candidate.error === failure.error,
+        )
+        if (entry !== undefined) {
+          entry.used = true
+          continue
+        }
         failures.push(`${relative}: ${failure.test}: ${failure.error}`)
+      }
+      for (const entry of allowed) {
+        if (!entry.used) {
+          failures.push(
+            `${relative}: ${entry.test}: expected to end with "${entry.error}" (${entry.reason}), and did not`,
+          )
+        }
       }
       for (const recorded of recording.inputs) {
         const id = await detectDiagramType(recorded.text)

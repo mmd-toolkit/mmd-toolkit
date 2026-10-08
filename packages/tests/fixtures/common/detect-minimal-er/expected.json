@@ -5,5 +5,14 @@
   },
   "accepted": true,
   "diagramType": "er",
-  "db": null
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
 }

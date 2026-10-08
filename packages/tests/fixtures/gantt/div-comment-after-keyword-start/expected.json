@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Comments: `%` right after the first character of a keyword; here `t%itle T` is a task text without data, rejected; a comment in mermaid.js (comment-takes-character)."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

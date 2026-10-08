@@ -3,7 +3,7 @@
 Japanese version:
 [comment-takes-character.ja.md](./comment-takes-character.ja.md)
 
-Diagram type: sequence. This is one of the
+Diagram types: sequence and gantt. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -25,7 +25,10 @@ This document is about a `%%` that comes right after another character on its
 line, with no whitespace between them, as in `autonumber 10%% c`. In this
 specification, the character before it belongs to what the lexer reads there:
 after a number, the `%%` starts a comment, and after a character of an id run or
-after the `:` before a text, it is a character of the id run or of the text.
+after the `:` before a text, it is a character of the id run or of the text. In
+a Gantt chart, where a single `%` starts a comment, it is about a `%` right
+after the first character of a unit, a character other than `}` and whitespace,
+as in `a% : 1d`.
 
 ## The difference
 
@@ -132,6 +135,27 @@ without its directives, which is the text that both lexers read: in
 `autonumber 1%%{init: {}}%%%% c0`, the `%%` comes right after the number 1.
 [fixture: sequence/div-comment-after-number-across-directive]
 
+In a Gantt chart, the lexer of mermaid.js has the same rule for a single `%`:
+where a character other than `}` stands right before a `%` at the start of a
+unit, it reads the character, the `%`, and the rest of the line as one comment.
+`a% : 1d` is a comment and no task, `t%itle T` a comment and no title, and
+`a : 1d;%c` and `dateFormat X;%c` are the task and the setting followed by a
+comment from the `;`. In this specification a comment starts only where a unit
+starts, and the `%` is a character of the unit that holds it: `a% : 1d` is the
+task `a% `, `t%itle T` is a task text without data, and so are `;%c` after task
+data or a setting text, `#%c` after task data, and `"%c` after a URL string, so
+these inputs are rejected, while `a :%c` is the task `a ` with the end `%c`,
+which mermaid.js rejects. The difference goes both ways in gantt. `ab% : 1d` and
+`}%c : 1d` are tasks in both, and a space before the `%` makes both read a
+comment (see [Comments](../diagrams/gantt.md#comments)). [fixture:
+gantt/lex-colon-then-percent] [fixture: gantt/div-comment-after-task-text-start]
+[fixture: gantt/div-comment-after-keyword-start] [fixture:
+gantt/div-comment-after-semicolon-after-data] [fixture:
+gantt/div-comment-after-semicolon-after-setting] [fixture:
+gantt/lex-comment-after-two-characters] [fixture:
+gantt/lex-brace-before-percent] [fixture:
+gantt/lex-space-then-percent-after-unit]
+
 ## What it means for an author
 
 A comment written right after a statement, without a space, can be read by
@@ -149,12 +173,16 @@ that reads a character other than `}` followed by `%%` and the rest of the line
 as one comment; and it reads a number only where a space or a line feed follows
 it. Where a rule would start its match at the character right before `%%`, the
 comment rule matches first, and a number right before `%%` is not read as one.
+The lexer of gantt has the same comment rule with a single `%`
+([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)),
+tried before its rules for task texts and the colon of task data.
 
 ## The rule of this specification, and why
 
 In this specification, a comment starts at its mark, and a number may be
 followed by `%%` (see
-[The statement context](../diagrams/sequence.md#the-statement-context)).
+[The statement context](../diagrams/sequence.md#the-statement-context) and
+[Comments](../diagrams/gantt.md#comments)).
 
 That a comment takes the character before it, and only where another rule would
 start its match there, comes from the order of the rules of the lexer of

@@ -37,16 +37,19 @@ read from the source text directly:
 
 The diagram bodies implemented so far are the `error` pseudo-diagram, the
 flowchart (`flowchart-v2`, `flowchart-elk`, and `swimlane`), the sequence
-diagram (`sequence`), the class diagram (`classDiagram`), and the state diagram
-(`stateDiagram`). Every other detected type throws `UnsupportedDiagramError`.
+diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
+(`stateDiagram`), the entity relationship diagram (`er`), and the Gantt chart
+(`gantt`). Every other detected type throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
 The parser of each diagram follows its document,
 [`diagrams/flowchart.md`](../../spec/docs/diagrams/flowchart.md),
 [`diagrams/sequence.md`](../../spec/docs/diagrams/sequence.md),
-[`diagrams/class.md`](../../spec/docs/diagrams/class.md), or
-[`diagrams/state.md`](../../spec/docs/diagrams/state.md). It has three parts:
+[`diagrams/class.md`](../../spec/docs/diagrams/class.md),
+[`diagrams/state.md`](../../spec/docs/diagrams/state.md),
+[`diagrams/er.md`](../../spec/docs/diagrams/er.md), or
+[`diagrams/gantt.md`](../../spec/docs/diagrams/gantt.md). It has three parts:
 
 - a lexer that divides the diagram text into units, under
   `src/diagrams/<diagram>/units.ts`;
@@ -61,17 +64,19 @@ unit and how it is read (`src/diagram-units.ts`), reading the units, the place
 of a node, the written text of a value, the shared leaf nodes, and the tokens of
 an item of the grammar (`UnitGrammar` in `src/unit-grammar.ts`), and the empty
 forms of `tokenless-empty-forms` (`src/empty-forms.ts`). A rule that two diagram
-documents share is in one place too: the direction line of flowchart, class, and
-state (`src/direction-line.ts`), whose words state compares case-insensitively,
-and the Unicode letters of the letter rules of flowchart and class
-(`src/unicode-letters.ts`). A diagram whose lexer reads diagram comments, as the
-sequence lexer reads `#` and `%`, the class lexer `%%`, and the state lexer `#`
-and `%%`, hands them to the common part, which records them in `Root.comments`,
-cut at the comment regions that lie inside them, as tokens are. The rejections
-that mermaid.js makes while it builds the Db are made by the parser after the
-grammar: `subgraph-members.ts` for the flowchart, and `db-rejections.ts` for the
-sequence diagram, the class diagram, and the state diagram. The class lexer
-divides each member line into its parts with the steps of
+documents share is in one place too: the direction line of flowchart, class,
+state, and ER (`src/direction-line.ts`), whose words state and ER compare
+case-insensitively, and the Unicode letters of the letter rules of flowchart and
+class (`src/unicode-letters.ts`). A diagram whose lexer reads diagram comments,
+as the sequence lexer reads `#` and `%`, the class lexer `%%`, the state lexer
+`#` and `%%`, and the Gantt lexer `%`, hands them to the common part, which
+records them in `Root.comments`, cut at the comment regions that lie inside
+them, as tokens are. The rejections that mermaid.js makes while it builds the Db
+are made by the parser after the grammar: `subgraph-members.ts` for the
+flowchart, and `db-rejections.ts` for the sequence diagram, the class diagram,
+and the state diagram; the Gantt grammar makes its two where it reads the
+statement, since a `topAxis` statement makes no node. The class lexer divides
+each member line into its parts with the steps of
 [Member lines](../../spec/docs/diagrams/class.md#member-lines)
 (`src/diagrams/class/member-lines.ts`), both in a class body and in the label of
 a member statement, and rejects a method line that cannot be divided.

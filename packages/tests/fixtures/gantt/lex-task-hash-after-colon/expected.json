@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Tasks: a `#` right after the colon leaves no data, so the colon is a `:` unit; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\ngantta :#x\n-------^\nExpecting 'taskData', got ':'"
+  }
+}

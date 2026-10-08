@@ -1,0 +1,42 @@
+{
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-b=-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "b=",
+        "classes": []
+      },
+      {
+        "id": "entity-c-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "c",
+        "classes": []
+      },
+      {
+        "id": "entity->d-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": ">d",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

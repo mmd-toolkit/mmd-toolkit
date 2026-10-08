@@ -7,14 +7,16 @@ import type { JsonObject } from "../types.ts"
  * a closure, and only under `securityLevel: loose`, so a Db patch (see
  * `DbPatch`) records each call before the Db acts on it; the normalizer reads
  * them once the Db is built. A Db is made for each parse, so each Db has its
- * own calls.
+ * own calls; the gantt Db is one object for every parse, and its patch forgets
+ * the calls when the Db is cleared ({@link forgetClickCalls}).
  */
 const calls: WeakMap<object, JsonObject[]> = new WeakMap()
 
 /**
  * Records the call `setClickFun(id, functionName, functionArgs)` of the flowchart
- * Db `db`, or `setClickFunc(id, functionName, functionArgs)` of the class Db: the
- * values are the ones passed, `functionArgs` being the text between the
+ * Db `db`, `setClickFunc(id, functionName, functionArgs)` of the class Db, or
+ * `setClickEvent(ids, functionName, functionArgs)` of the gantt Db (`id` is
+ * then the comma-separated list of ids): the values are the ones passed, `functionArgs` being the text between the
  * parentheses of the call as written (`null` when there is none).
  */
 export function recordClickCall(
@@ -41,4 +43,12 @@ export function recordClickCall(
 export function clickCallsField(db: object): { clickCalls?: JsonObject[] } {
   const list = calls.get(db)
   return list === undefined ? {} : { clickCalls: list }
+}
+
+/**
+ * Forgets the calls recorded for `db`. A Db that every diagram shares (gantt's)
+ * is reset before each parse, and its calls with it.
+ */
+export function forgetClickCalls(db: object): void {
+  calls.delete(db)
 }

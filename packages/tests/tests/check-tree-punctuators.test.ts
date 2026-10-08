@@ -59,6 +59,8 @@ const DIAGRAMS: readonly [string, string][] = [
   ["sequence", "SequenceDiagram"],
   ["class", "ClassDiagram"],
   ["state", "StateDiagram"],
+  ["er", "ErDiagram"],
+  ["gantt", "GanttDiagram"],
 ]
 
 /**
@@ -85,6 +87,10 @@ function textsBesidesTheRow(diagram: string): string[] {
     // ast/class.md, ClassMethod and ClassAttribute.
     case "class":
       return ["+", "-", "#", "~", "$", "*"]
+    // The row gives the symbols of the cardinalities with a letter (`|o`,
+    // `}o`, `o|`, `o{`) among the names of units, which have letters too.
+    case "er":
+      return ["|o", "}o", "o|", "o{"]
     default:
       return []
   }
@@ -207,6 +213,17 @@ describe("the check of the text of a Punctuator token", () => {
     ])
   })
 
+  it("reports a text that a gantt diagram has none of, though a state diagram has it", () => {
+    // `"` is no `Punctuator` text of a gantt diagram: the quotes of a link
+    // are in a `String` token.
+    expect(textProblems("GanttDiagram", '"')).toEqual([
+      {
+        where: "Punctuator at 0-1",
+        message: 'the Punctuator text "\\"" is none of those of a GanttDiagram',
+      },
+    ])
+  })
+
   it("reports a text that a class diagram has none of", () => {
     expect(textProblems("ClassDiagram", "&")).toEqual([
       {
@@ -221,6 +238,15 @@ describe("the check of the text of a Punctuator token", () => {
       {
         where: "Punctuator at 0-1",
         message: 'the Punctuator text "|" is none of those of a StateDiagram',
+      },
+    ])
+  })
+
+  it("reports a text that an ER diagram has none of", () => {
+    expect(textProblems("ErDiagram", "&")).toEqual([
+      {
+        where: "Punctuator at 0-1",
+        message: 'the Punctuator text "&" is none of those of a ErDiagram',
       },
     ])
   })
@@ -241,5 +267,8 @@ describe("the check of the text of a Punctuator token", () => {
     expect(textProblems("SequenceDiagram", "+")).toEqual([])
     expect(textProblems("ClassDiagram", "<<")).toEqual([])
     expect(textProblems("StateDiagram", "[*]")).toEqual([])
+    expect(textProblems("ErDiagram", "|o")).toEqual([])
+    expect(textProblems("GanttDiagram", ":")).toEqual([])
+    expect(textProblems("GanttDiagram", "(")).toEqual([])
   })
 })

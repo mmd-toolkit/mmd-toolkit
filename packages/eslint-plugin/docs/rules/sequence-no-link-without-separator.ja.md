@@ -7,7 +7,7 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
@@ -23,10 +23,11 @@
 対象の図種は `sequence` である。
 
 `@` がないと、ラベルはテキストから最後の 2 文字を除いたもの、
-URL はテキスト全体になる。
+URL はテキスト全体になり、どちらも両端の空白を除く。
 `link A: Dashboard https://x.example` は、
 ラベル `Dashboard https://x.examp` と、
-URL `Dashboard https://x.example` を与える。
+URL `Dashboard https://x.example` を与え、
+`link A: no at` はラベル `no` を与える。
 
 テキストのない `link` の文も報告する。
 `link A:` は、ラベルも URL も空のリンクを参加者に与える。
@@ -55,3 +56,12 @@ sequenceDiagram
 ## 関連する規則
 
 - [sequence-no-invalid-json](./sequence-no-invalid-json.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/sequence-no-link-without-separator.ts)
+- [テストのソース](../../tests/rules/sequence-no-link-without-separator.test.ts)
+
+<!-- end auto-generated rule resources -->

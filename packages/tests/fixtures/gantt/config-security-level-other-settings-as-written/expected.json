@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The texts of the settings are not replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "a<b>c",
+    "axisFormat": "d<e>f",
+    "tickInterval": "g<h>i",
+    "todayMarker": "j<k>l",
+    "includes": [
+      "m<n>o"
+    ],
+    "excludes": [
+      "p<q>r"
+    ],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

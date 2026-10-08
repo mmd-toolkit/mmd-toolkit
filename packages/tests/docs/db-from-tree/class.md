@@ -86,7 +86,14 @@ class/db-class-statement-line-separator]
   the statement: `class A` followed by `class A~T~["L"]` gives A the `text` `L`.
   [fixture: class/db-class-label-type] [fixture: class/db-class-label-redefined]
   [fixture: class/db-class-label-kept-without-label] [fixture:
-  class/db-class-label-type-of-class]
+  class/db-class-label-type-of-class] A label replaces the label of the class
+  with the same id, also when one statement has a type and the other has none:
+  `class A~T~["First"]` followed by `class A["Second"]` gives A the `label`
+  `Second` and the `text` `Second<T>`; also when one of them lies in a
+  namespace, where the class keeps its `parent`. The same label written twice
+  changes nothing. [fixture: class/db-class-label-same-twice] [fixture:
+  class/db-class-label-redefined-generic] [fixture:
+  class/db-class-label-redefined-in-namespace]
 - `:::` gives the class the CSS class of its name part (see **CSS classes**
   below).
 - An annotation adds its name part to `annotations`, also when the class has it
@@ -212,7 +219,9 @@ and `b`. A comment line is left out with its line feed. [fixture:
 class/db-note-text-spaces] [fixture: class/db-note-for-undefined-class]
 [fixture: class/db-note-directive-line-inside] [fixture:
 common/comment-in-string] [fixture: class/tokens-comment-region-in-click-string]
-[fixture: class/db-note-comment-line-inside-string]
+[fixture: class/db-note-comment-line-inside-string] A note for a class that a
+later statement declares keeps the written name: `note for A "x"` before
+`class A` has the `class` `A`. [fixture: class/db-note-for-before-class]
 
 **Click statements.** In these statements, the written name of the class name is
 a list of names separated by `,`, and each step applies to each name in turn.
@@ -253,7 +262,11 @@ class/db-callback-names-comma] [fixture: class/db-link-url-spaces] [fixture:
 class/db-link-undefined-class] [fixture: class/db-click-undefined-class]
 [fixture: class/db-callback-undefined-class] [fixture:
 class/db-callback-names-comma-one-undefined] [fixture:
-class/db-click-call-undefined-class]
+class/db-click-call-undefined-class] That holds for a class that is added later:
+a click statement before the statement that adds the class changes nothing, and
+one after a relation that declares the class applies to it. [fixture:
+class/db-click-before-class] [fixture: class/db-link-before-class] [fixture:
+class/db-callback-before-class] [fixture: class/db-click-after-relation]
 
 **CSS classes.** Giving a CSS class to a written name, from `:::`, `cssClass`,
 and the click statements, splits the written name at each `,`. For each name, a
@@ -270,7 +283,9 @@ class/db-css-class-statement-digit] [fixture: class/db-css-class-list-space]
 class/db-css-class-colon-digit-prefixed-class] [fixture:
 class/db-css-class-colon-names-comma] [fixture: class/db-css-class-added-twice]
 [fixture: class/db-css-class-ids-space-before-comma] A CSS class for a name with
-no class changes nothing. [fixture: class/db-css-class-undefined-class]
+no class changes nothing. [fixture: class/db-css-class-undefined-class] That
+holds for a class that is added later: `cssClass "A" c` before `class A` changes
+nothing. [fixture: class/db-css-class-before-class]
 
 **Styles.** The text of a style is its value (see
 [ClassLiteral](../../../spec/docs/ast/class.md#classliteral)). The **style
@@ -282,13 +297,19 @@ whose id is the word, when it exists, after the styles that the class has, so a
 `style` statement before the statement that adds the class changes nothing. A
 word that starts with an ASCII digit is not looked up with `classId-`. [fixture:
 class/db-style-before-class] [fixture: class/db-style-twice] [fixture:
-class/db-style-digit-id] `classDef` appends them, for each of its names in
-order, to the `styles` of each class whose `cssClasses` contain that name
-anywhere, also inside a longer CSS class: `classDef fo fill:red` applies to a
-class with the CSS class `foo`, and `classDef default fill:red` to every class.
-A class that has two of the names gets the values twice. It applies only to the
-classes that have the CSS class at that point: a class that gets it later gets
-no styles. [fixture: class/db-style-spaces] [fixture:
+class/db-style-digit-id] That holds when the statement that adds the class lies
+in a namespace; a class that a relation or a member statement declares is a
+class from then on, and a `style` after it, or after a `class` statement in a
+namespace, applies. [fixture: class/db-style-before-class-in-namespace]
+[fixture: class/db-style-after-relation] [fixture:
+class/db-style-after-member-statement] [fixture:
+class/db-style-after-class-in-namespace] `classDef` appends them, for each of
+its names in order, to the `styles` of each class whose `cssClasses` contain
+that name anywhere, also inside a longer CSS class: `classDef fo fill:red`
+applies to a class with the CSS class `foo`, and `classDef default fill:red` to
+every class. A class that has two of the names gets the values twice. It applies
+only to the classes that have the CSS class at that point: a class that gets it
+later gets no styles. [fixture: class/db-style-spaces] [fixture:
 class/db-style-undefined-class] [fixture: class/db-class-def-substring]
 [fixture: class/db-class-def-default] [fixture: class/db-class-def-order]
 [fixture: class/db-class-def-names]
@@ -306,8 +327,19 @@ class/spec-class-diagram-0926d7aa] [fixture: class/db-acc-title-replaces]
 class/db-acc-descr-line-replaces-block] [fixture:
 class/db-acc-descr-block-collapse] [fixture: class/db-acc-whitespace-kinds]
 [fixture: class/db-acc-descr-block-replaces-line] [fixture:
-class/db-acc-descr-block-replaces-block] A description block statement without
-text changes nothing, also where it lies before the separator of another
+class/db-acc-descr-block-replaces-block] An `accTitle:` or an `accDescr:` with
+no text on its line takes the next line that holds text as its text, past empty
+lines, comment lines, and directive lines, whether the line break is a line feed
+or CR LF, and also when U+2028 follows the colon; that line is no statement, so
+`accDescr:` followed by `class A` gives the description `class A` and declares
+no class. [fixture: class/db-acc-title-line-empty-takes-next-after-comment]
+[fixture: class/db-acc-title-line-empty-takes-next-after-directive] [fixture:
+class/db-acc-descr-line-empty-takes-next-lines] [fixture:
+class/db-acc-descr-line-empty-takes-next-after-comment] [fixture:
+class/db-acc-descr-line-empty-takes-next-after-directive] [fixture:
+class/db-acc-descr-line-empty-takes-next-line-crlf] [fixture:
+class/db-acc-descr-line-separator-then-text] A description block statement
+without text changes nothing, also where it lies before the separator of another
 statement. [fixture: class/gram-empty-description-block-after-note] [fixture:
 class/db-acc-descr-empty-block-keeps-line] [fixture:
 class/db-acc-descr-empty-block-before-separator-keeps-block] A class name alone,

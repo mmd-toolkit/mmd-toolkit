@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accDescr line inside a composite state is a state, and the accDescr line after it sets the description."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "outer",
+    "states": [
+      {
+        "id": "A",
+        "shape": "roundedWithTitle",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "accDescr",
+        "shape": "rect",
+        "label": "inner",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "A"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

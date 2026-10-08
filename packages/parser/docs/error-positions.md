@@ -176,6 +176,67 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   state/gram-composite-terminal-two-descriptions] [fixture:
   state/gram-region-two-descriptions]
 
+## In an ER diagram
+
+- Where no rule of the lexer matches, which only happens in the style context,
+  `range` is the character there, as at the `.` of `font-size:1.5em` in a
+  `classDef` statement. [fixture: er/lex-classdef-dot]
+- When the text ends in a context that may not end there, `range` is what
+  entered that context, and the message says what is not closed: the `{` of an
+  attribute block (`The attribute block has no } before the end of the text`),
+  `classDef` and `style`, where whitespace at the end of the text has taken the
+  line feed after the last character
+  (`The classDef or style statement has no line feed before the end of the text`),
+  `accTitle` and `accDescr` (`accTitle has no text before the end of the text`,
+  `accDescr has no text before the end of the text`), and the `accDescr` of a
+  description block
+  (`The description block has no } before the end of the text`). For a
+  backquoted word that the text ends in, `range` is its opening backquote, and
+  the message is
+  ``The backquoted word has no closing ` before the end of the text``. [fixture:
+  er/lex-block-unclosed] [fixture: er/lex-block-unclosed-empty] [fixture:
+  er/lex-classdef-trailing-space-at-end] [fixture:
+  er/lex-style-trailing-tab-at-end] [fixture: er/lex-acc-title-at-end] [fixture:
+  er/lex-acc-descr-at-end] [fixture: er/lex-acc-descr-block-unclosed] [fixture:
+  er/lex-backquote-unclosed]
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace, and at the end of the text the empty range at the end of the text,
+  as in a flowchart. [fixture: er/lex-hash-after-name] [fixture:
+  er/gram-subgraph-unclosed]
+
+## In a Gantt chart
+
+- Every character starts a unit in some rule of every context, so the lexer
+  rejects an input only at the end of the text.
+- When the text ends in a context that may not end there, `range` is what
+  entered that context, and the message says what is not closed: `click`
+  (`click has no click id before the end of the text`), the opening `"` of the
+  string of a link (`The string has no closing " before the end of the text`),
+  the `call` and the `(` of a callback, as in a flowchart, `accTitle` and
+  `accDescr` (`accTitle has no text before the end of the text`,
+  `accDescr has no text before the end of the text`), and the `accDescr` of a
+  description block
+  (`The description block has no } before the end of the text`). [fixture:
+  gantt/lex-click-whitespace-at-end] [fixture: gantt/lex-href-unclosed]
+  [fixture: gantt/lex-href-unclosed-lines] [fixture:
+  gantt/lex-callback-name-at-end] [fixture:
+  gantt/lex-callback-arguments-unclosed] [fixture: gantt/lex-acc-title-at-end]
+  [fixture: gantt/lex-acc-descr-at-end] [fixture:
+  gantt/lex-acc-descr-block-unclosed]
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace, and at the end of the text the empty range at the end of the text,
+  as in a flowchart: a line that starts with a date is reported at the date, and
+  the task text `a` without data at the end of the text at the end. [fixture:
+  gantt/lex-date-line] [fixture: gantt/lex-task-text-only] [fixture:
+  gantt/lex-click-id-at-end]
+- For the two rejections outside the grammar, which the grammar makes where it
+  reads the statement, `range` is the `topAxis` keyword, with the message
+  `A topAxis statement cannot be written in a Gantt chart`, and the tags of a
+  task whose data holds tags only, from the first to the last, with the message
+  `The data of a task needs an item after its tags`. [fixture:
+  gantt/db-top-axis-statement] [fixture: gantt/lex-topaxis-then-title] [fixture:
+  gantt/gram-task-tags-only] [fixture: gantt/gram-task-tags-only-two]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input
@@ -244,7 +305,41 @@ rejected, `range` is the form that causes it, and the message names the cause:
   would be without them: in `flowchart LR accDescr {};A`, the `;` after the
   space is reported, as in `flowchart TD ;` followed by a line `A`. [fixture:
   flowchart/header-empty-description-block-before-semicolon] [fixture:
-  flowchart/header-space-before-semicolon]
+  flowchart/header-space-before-semicolon] In an ER diagram, the empty forms
+  also include empty backquotes, two backquotes with nothing between them in an
+  attribute block, with the message
+  `Empty backquotes can only be written between two attributes`. Empty
+  description blocks, and empty backquotes, written one after another are
+  decided by the unit after the last of them: where that unit goes on with the
+  statement or the attribute before them, the first of them is reported, as in
+  `A accDescr {} ||--o{ B : x` and in an attribute `int a`, two backquotes, and
+  `PK`. [fixture: er/div-empty-description-block-in-relationship] [fixture:
+  er/div-empty-backquotes-before-key] [fixture:
+  er/div-empty-description-blocks-in-relationship] [fixture:
+  er/div-empty-description-blocks-before-role] [fixture:
+  er/div-empty-description-blocks-after-class-keyword] [fixture:
+  er/div-empty-backquotes-twice-between-type-and-name] [fixture:
+  er/div-empty-backquotes-twice-before-key-comma] In a Gantt chart, the empty
+  forms also include an empty href, `href` and two `"` with nothing between
+  them, with the message `An empty href cannot be written here`. Inside a click
+  statement, an empty form before its first part is found where the grammar
+  stops, and so is one where only an empty form follows the ids, which
+  mermaid.js rejects as well: `click id1 href ""` reports the empty href. An
+  empty href with a directive between its quotes is an empty href too, reported
+  from `href` to its closing quote, over the directive. Empty forms written one
+  after another after the first part are decided by the unit after the last of
+  them: where that unit starts the second part, the first of them is reported,
+  as in `click id1 href "u" accDescr {} call f()`. [fixture:
+  gantt/div-empty-href-before-call] [fixture: gantt/div-empty-call-before-href]
+  [fixture: gantt/div-empty-href-and-empty-call-before-href] [fixture:
+  gantt/gram-click-empty-href-only] [fixture:
+  gantt/div-empty-href-directive-between-quotes-before-call] [fixture:
+  gantt/div-empty-description-block-between-href-and-call] [fixture:
+  gantt/div-empty-href-between-call-and-href] [fixture:
+  gantt/div-empty-call-between-href-and-call] [fixture:
+  gantt/div-empty-href-between-href-and-call] [fixture:
+  gantt/div-empty-href-and-empty-call-between-parts] [fixture:
+  gantt/div-empty-description-block-and-empty-href-between-parts]
 
 `html-tag-in-frontmatter` changes which `"` characters are read as `'`. The
 parser does not tell that apart, so a rejection that follows from it is reported

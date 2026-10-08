@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An attribute without keys has the empty list, and one without a comment has the empty text."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [
+          {
+            "type": "int",
+            "name": "a",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "b",
+            "keys": [
+              "PK"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "c",
+            "keys": [],
+            "comment": "note"
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

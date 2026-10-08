@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Entity names are case-sensitive: `Cust` and `cust` are two entities."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-Cust-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "Cust",
+        "classes": []
+      },
+      {
+        "id": "entity-cust-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "cust",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

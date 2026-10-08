@@ -140,8 +140,8 @@ interface BrokenValueRow {
  * The message that each node type of `VALUE_RULES` reports for a broken value,
  * from the rule of its kind: a value that is the written text, one that is the
  * units joined (and its tokens joined with the field named), and the two that
- * follow from the text (the number, the shape name). A `ClassLiteral` is the
- * written text, except that a style is its units joined.
+ * follow from the text (the number, the shape name). A `ClassLiteral` and an
+ * `ErLiteral` are the written text, except that a style is its units joined.
  */
 const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "Identifier", message: NAME_NOT_TOKENS_JOINED },
@@ -171,6 +171,12 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "StateLiteral", message: NOT_WRITTEN_TEXT },
   { type: "StateIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "StateIgnoredStatement", message: NOT_WRITTEN_TEXT },
+  { type: "ErIdentifier", message: "name is not its written text" },
+  { type: "ErLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "ErLiteral", variant: "a style", message: NOT_TOKENS_JOINED },
+  { type: "ErIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "GanttLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "GanttIgnoredStatement", message: NOT_WRITTEN_TEXT },
 ]
 
 /** The name of a row, for the failures. */
@@ -178,13 +184,15 @@ function nameOfRow(row: BrokenValueRow): string {
   return row.variant === undefined ? row.type : `${row.type} (${row.variant})`
 }
 
-/** The `ClassLiteral` nodes of `tree` that are a style of a statement. */
-function classStylesIn(tree: CheckedRoot): Set<unknown> {
+/** The `ClassLiteral` and `ErLiteral` nodes of `tree` that are a style of a statement. */
+function stylesIn(tree: CheckedRoot): Set<unknown> {
   const styles = new Set<unknown>()
   for (const node of nodesOf(tree)) {
     if (
       (node.type === "ClassStyleStatement" ||
-        node.type === "ClassClassDefStatement") &&
+        node.type === "ClassClassDefStatement" ||
+        node.type === "ErStyleStatement" ||
+        node.type === "ErClassDefStatement") &&
       Array.isArray(node.styles)
     ) {
       for (const style of node.styles as unknown[]) styles.add(style)
@@ -196,11 +204,11 @@ function classStylesIn(tree: CheckedRoot): Set<unknown> {
 /** The nodes of `tree` that the row breaks: of its type, of its variant, with a value that an edit changes. */
 function instancesOfRow(tree: CheckedRoot, row: BrokenValueRow): CheckedNode[] {
   const field = VALUE_RULES[row.type]?.field ?? "value"
-  const styles = classStylesIn(tree)
+  const styles = stylesIn(tree)
   return nodesOf(tree).filter(
     (node) =>
       node.type === row.type &&
-      (row.type !== "ClassLiteral" ||
+      (!(row.type === "ClassLiteral" || row.type === "ErLiteral") ||
         styles.has(node) === (row.variant === "a style")) &&
       (typeof node[field] === "number" ||
         (typeof node[field] === "string" && node[field] !== "")),
@@ -472,6 +480,82 @@ const VALUE_CASES: readonly ValueCase[] = [
       },
     ],
   },
+  {
+    type: "ErIdentifier",
+    name: "an ErIdentifier reports the whitespace taken off the end of the Identifier token that ends with a U+00A0",
+    diagram: "er",
+    fixture: "lex-name-trailing-nbsp",
+    token: { type: "Identifier", value: "A\u00a0" },
+    side: "end",
+    problems: [
+      {
+        where: "ErDiagram at 0-12",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "ErEntityStatement at 10-12",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "ErIdentifier at 10-12",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "Root.body",
+        message:
+          "does not run from its first token to its last: [0,12], not [0,11]",
+      },
+      {
+        where: "ErIdentifier at 10-12",
+        message: `${JOINED}: "A", not "A\u00a0"`,
+      },
+    ],
+  },
+  {
+    type: "ErLiteral",
+    name: "an ErLiteral reports the whitespace taken off the end of the RawText token before a directive line",
+    diagram: "er",
+    fixture: "db-acc-descr-block-directive-line",
+    token: { type: "RawText", value: "a\n    " },
+    side: "end",
+    problems: [
+      {
+        where: "ErLiteral at 27-68",
+        message: `${JOINED}: "a\\n    b", not "a\\n    \\n    b"`,
+      },
+    ],
+  },
+  {
+    type: "GanttLiteral",
+    name: "a GanttLiteral reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "gantt",
+    fixture: "tokens-unclosed-directive-in-title",
+    token: { type: "RawText", value: "T " },
+    side: "end",
+    problems: [
+      {
+        where: "GanttDiagram at 0-14",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "GanttTitleStatement at 6-14",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "GanttLiteral at 12-14",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "Root.body",
+        message:
+          "does not run from its first token to its last: [0,14], not [0,13]",
+      },
+      {
+        where: "GanttLiteral at 12-14",
+        message: `${JOINED}: "T", not "T "`,
+      },
+    ],
+  },
 ]
 
 /** A node type of `VALUE_RULES` whose tokens hold no whitespace at an end, a fixture that has such a node, and the reason. */
@@ -541,6 +625,16 @@ const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
     diagram: "sequence",
     fixture: "lex-invalid-line-two-units",
     reason: "its tokens are single characters and words",
+  },
+  ErIgnoredText: {
+    diagram: "er",
+    fixture: "lex-direction-line-text-before",
+    reason: "its tokens are words and empty backquotes",
+  },
+  GanttIgnoredStatement: {
+    diagram: "gantt",
+    fixture: "gram-empty-href-line",
+    reason: "its tokens are a keyword, quotes, and parentheses",
   },
 }
 

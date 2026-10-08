@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The end until an id that is no task is accepted; the summary has no date."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "until nowhere"
+          }
+        },
+        "task": "A ",
+        "classes": [],
+        "id": "a",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

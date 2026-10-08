@@ -6,7 +6,7 @@ mermaid.js が読まないテキストを禁止する。
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
@@ -82,3 +82,12 @@ classDiagram
 - [class-no-bare-class-name](./class-no-bare-class-name.ja.md)
 - [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md)
 - [sequence-no-ignored-text](./sequence-no-ignored-text.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/class-no-ignored-text.ts)
+- [テストのソース](../../tests/rules/class-no-ignored-text.test.ts)
+
+<!-- end auto-generated rule resources -->

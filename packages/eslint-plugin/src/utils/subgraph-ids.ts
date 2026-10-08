@@ -111,7 +111,7 @@ export function nameOwnText(
  * The text of the source in `range`, without the directives and the comments
  * in it, which belong to no text.
  */
-function textWithoutDirectives(
+function textWithoutDirectivesAndComments(
   sourceCode: MermaidSourceCode,
   range: Range,
 ): string {
@@ -150,7 +150,10 @@ function nameTextHoldsWhitespace(
     const next = blocks[index + 1]
     if (next !== undefined) {
       return holdsWhitespace(
-        textWithoutDirectives(sourceCode, [block.range[1], next.range[0]]),
+        textWithoutDirectivesAndComments(sourceCode, [
+          block.range[1],
+          next.range[0],
+        ]),
       )
     }
     const after = sourceCode.getTokenAfter(block, {
@@ -158,7 +161,10 @@ function nameTextHoldsWhitespace(
     })
     if (after?.type !== "Punctuator" || after.value !== ";") return false
     return holdsWhitespace(
-      textWithoutDirectives(sourceCode, [block.range[1], after.range[0]]),
+      textWithoutDirectivesAndComments(sourceCode, [
+        block.range[1],
+        after.range[0],
+      ]),
     )
   })
 }

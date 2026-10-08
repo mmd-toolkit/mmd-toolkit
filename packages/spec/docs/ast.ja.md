@@ -120,7 +120,8 @@ mermaid.js が読まないテキストのノード、つまり
 [ClassIgnoredText](./ast/class.ja.md#classignoredtext)、
 [StateIgnoredText](./ast/state.ja.md#stateignoredtext)、
 [StateIgnoredStatement](./ast/state.ja.md#stateignoredstatement)、
-[SequenceIgnoredStatement](./ast/sequence.ja.md#sequenceignoredstatement) は、
+[SequenceIgnoredStatement](./ast/sequence.ja.md#sequenceignoredstatement)、
+[GanttIgnoredStatement](./ast/gantt.ja.md#ganttignoredstatement) は、
 書き手がそこに書いたものを、書かれたとおりに見せます。
 その書かれたテキストは値の書かれたテキストで、コメントも除きます。
 単位の間の空白と行終端はその一部で、コメントはその一部ではありません。
@@ -255,7 +256,9 @@ mermaid.js はこれらを
 つまり [`FlowchartDiagram`](./ast/flowchart.ja.md#flowchartdiagram)、
 [`SequenceDiagram`](./ast/sequence.ja.md#sequencediagram)、
 [`ClassDiagram`](./ast/class.ja.md#classdiagram)、
-[`StateDiagram`](./ast/state.ja.md#statediagram) のどれかです。
+[`StateDiagram`](./ast/state.ja.md#statediagram)、
+[`ErDiagram`](./ast/er.ja.md#erdiagram)、
+[`GanttDiagram`](./ast/gantt.ja.md#ganttdiagram) のどれかです。
 
 ## ErrorDiagram
 
@@ -349,7 +352,8 @@ ESTree と同じく、識別子かどうかは構文上の形で決まり、
 ### StringLiteral
 
 引用符で囲んだ文字列です。
-引用符は二重引用符で、class 図のバッククォートの名前ではバッククォートです。
+引用符は二重引用符で、class 図のバッククォートの名前と
+ER 図のバッククォートの属性の語ではバッククォートです。
 
 | 欄       | 型     | 意味                                                                                                                                                                                                                                                                   |
 | -------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -428,6 +432,8 @@ sequence/db-autonumber-leading-zero]
 - [Sequence](./ast/sequence.ja.md): 図種 `sequence`。
 - [Class](./ast/class.ja.md): 図種 `classDiagram`。
 - [State](./ast/state.ja.md): 図種 `stateDiagram`。
+- [ER](./ast/er.ja.md): 図種 `er`。
+- [Gantt](./ast/gantt.ja.md): 図種 `gantt`。
 
 図種のノードの型の名前は、`FlowchartVertex` のように、
 どれもその図種の名前で始めます。

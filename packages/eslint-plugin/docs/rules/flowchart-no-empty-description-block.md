@@ -28,7 +28,8 @@ reported too, and mermaid.js still applies their settings.
 The description stays what it was before the block: after `accDescr: x`, the
 block `accDescr { }` leaves the description `x`, and with no description before
 it, the description stays empty. An empty description written as a line is
-different: `accDescr:` sets the description to the empty text.
+different: `accDescr:` with no line that holds text after it sets the
+description to the empty text.
 
 A block that holds only comments is not reported. The author who turns the lines
 of a description into comments means the block to do nothing, and mermaid.js

@@ -7,10 +7,13 @@ import type { FieldSpec } from "./field-spec.ts"
  * frontmatter tokens). The specification defines the form of a tree; this
  * table is its copy for the check of a tree, and
  * `tests/check-tree-node-fields.test.ts` requires it to agree with the tables.
- * The fields `type`, `range`, and `loc`, which every node and record has, are
- * not listed. A type that its document describes with no field table has none
- * (`ErrorDiagram`, `FlowchartEmptyStatement`, `StateDividerStatement`,
- * `StateHideEmptyDescriptionStatement`, `StateTerminal`).
+ * The fields that are nodes are in the order of the child fields that the
+ * document states for the type (the order of the visit), which the test
+ * requires as well. The fields `type`, `range`, and `loc`, which every node and
+ * record has, are not listed. A type that its document describes with no field table has none
+ * (`ErrorDiagram`, `FlowchartEmptyStatement`, `GanttInclusiveEndDatesStatement`,
+ * `StateDividerStatement`, `StateHideEmptyDescriptionStatement`,
+ * `StateTerminal`).
  */
 export const NODE_FIELDS: Readonly<
   Record<string, Readonly<Record<string, FieldSpec>>>
@@ -92,11 +95,11 @@ export const NODE_FIELDS: Readonly<
   },
   ClassMethod: {
     visibility: { shape: "value", valueType: "string" },
+    textBefore: { shape: "nodeOrNull" },
     name: { shape: "nodeOrNull" },
     parameters: { shape: "nodeOrNull" },
     returnType: { shape: "nodeOrNull" },
     classifier: { shape: "value", valueType: "string" },
-    textBefore: { shape: "nodeOrNull" },
     textAfter: { shape: "nodeOrNull" },
   },
   ClassName: {
@@ -128,6 +131,77 @@ export const NODE_FIELDS: Readonly<
   ClassStyleStatement: {
     id: { shape: "node" },
     styles: { shape: "nodeList" },
+  },
+  ErAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  ErAccDescrStatement: {
+    value: { shape: "node" },
+  },
+  ErAccTitleStatement: {
+    value: { shape: "node" },
+  },
+  ErAttribute: {
+    dataType: { shape: "node" },
+    optional: { shape: "value", valueType: "boolean" },
+    name: { shape: "node" },
+    keys: { shape: "nodeList" },
+    comment: { shape: "nodeOrNull" },
+  },
+  ErClassDefStatement: {
+    cssClasses: { shape: "nodeList" },
+    styles: { shape: "nodeList" },
+  },
+  ErClassStatement: {
+    entities: { shape: "nodeList" },
+    cssClasses: { shape: "nodeList" },
+  },
+  ErDiagram: {
+    body: { shape: "nodeList" },
+  },
+  ErDirectionStatement: {
+    textBefore: { shape: "nodeOrNull" },
+    direction: { shape: "value", valueType: "string" },
+    textAfter: { shape: "nodeOrNull" },
+  },
+  ErEntityReference: {
+    name: { shape: "node" },
+    cssClasses: { shape: "nodeList" },
+  },
+  ErEntityStatement: {
+    name: { shape: "node" },
+    alias: { shape: "nodeOrNull" },
+    cssClasses: { shape: "nodeList" },
+    attributes: { shape: "nodeListOrNull" },
+  },
+  ErIdentifier: {
+    name: { shape: "value", valueType: "string" },
+  },
+  ErIgnoredText: {
+    value: { shape: "value", valueType: "string" },
+  },
+  ErLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  ErRelationship: {
+    leftCardinality: { shape: "value", valueType: "string" },
+    line: { shape: "value", valueType: "string" },
+    rightCardinality: { shape: "value", valueType: "string" },
+  },
+  ErRelationshipStatement: {
+    left: { shape: "node" },
+    relationship: { shape: "node" },
+    right: { shape: "node" },
+    role: { shape: "node" },
+  },
+  ErStyleStatement: {
+    entities: { shape: "nodeList" },
+    styles: { shape: "nodeList" },
+  },
+  ErSubgraphStatement: {
+    id: { shape: "node" },
+    title: { shape: "nodeListOrNull" },
+    body: { shape: "nodeList" },
   },
   ErrorDiagram: {},
   FlowchartEmptyStatement: {},
@@ -257,6 +331,69 @@ export const NODE_FIELDS: Readonly<
   Frontmatter: {
     value: { shape: "value", valueType: "string" },
     valueRange: { shape: "value", valueType: "range" },
+  },
+  GanttAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  GanttAccDescrStatement: {
+    value: { shape: "node" },
+  },
+  GanttAccTitleStatement: {
+    value: { shape: "node" },
+  },
+  GanttAxisFormatStatement: {
+    value: { shape: "node" },
+  },
+  GanttCallback: {
+    name: { shape: "node" },
+    args: { shape: "nodeOrNull" },
+  },
+  GanttClickStatement: {
+    ids: { shape: "nodeListWithNull" },
+    call: { shape: "nodeOrNull" },
+    href: { shape: "nodeOrNull" },
+  },
+  GanttDateFormatStatement: {
+    value: { shape: "node" },
+  },
+  GanttDiagram: {
+    body: { shape: "nodeList" },
+  },
+  GanttExcludesStatement: {
+    items: { shape: "nodeList" },
+  },
+  GanttIgnoredStatement: {
+    value: { shape: "value", valueType: "string" },
+  },
+  GanttIncludesStatement: {
+    items: { shape: "nodeList" },
+  },
+  GanttInclusiveEndDatesStatement: {},
+  GanttLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  GanttSectionStatement: {
+    name: { shape: "node" },
+  },
+  GanttTaskStatement: {
+    description: { shape: "node" },
+    tags: { shape: "nodeList" },
+    items: { shape: "nodeListWithNull" },
+  },
+  GanttTickIntervalStatement: {
+    value: { shape: "node" },
+  },
+  GanttTitleStatement: {
+    value: { shape: "node" },
+  },
+  GanttTodayMarkerStatement: {
+    value: { shape: "node" },
+  },
+  GanttWeekdayStatement: {
+    day: { shape: "value", valueType: "string" },
+  },
+  GanttWeekendStatement: {
+    day: { shape: "value", valueType: "string" },
   },
   Identifier: {
     name: { shape: "value", valueType: "string" },

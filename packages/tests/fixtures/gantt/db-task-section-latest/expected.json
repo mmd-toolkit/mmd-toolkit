@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A task belongs to the last section statement before it, also when a section name repeats."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "A",
+      "B",
+      "A"
+    ],
+    "tasks": [
+      {
+        "section": "A",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "a ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      },
+      {
+        "section": "B",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task1"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "b ",
+        "classes": [],
+        "id": "task2",
+        "order": 1
+      },
+      {
+        "section": "A",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task2"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "c ",
+        "classes": [],
+        "id": "task3",
+        "order": 2
+      }
+    ],
+    "links": []
+  }
+}

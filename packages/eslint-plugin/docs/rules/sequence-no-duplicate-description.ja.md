@@ -7,7 +7,7 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
@@ -24,9 +24,9 @@ mermaid.js はどの `accDescr` の文も受理し、
 
 `accDescr:` は説明を設定する。
 テキストがなくても説明を設定する。
-テキストの終わりでは説明を空にする。
-後にテキストがあれば、空行、コメント行、ディレクティブを飛ばして、
-テキストを持つ次の行を説明にする。
+空行、コメント行、ディレクティブを飛ばして、
+テキストを持つ次の行を説明にし、
+そうした行が後になければ、説明を空にする。
 説明を持つ閉じたブロックも説明を設定する。
 1 行の形とブロックの形を混ぜても、どちらが先でも、
 後に書いたほうの説明が使われる。
@@ -35,6 +35,11 @@ mermaid.js はどの `accDescr` の文も受理し、
 説明を持たないブロックは、数えない。
 それは、
 [sequence-no-empty-description-block](./sequence-no-empty-description-block.ja.md)
+が報告する。
+閉じていないブロックも数えない。
+そのブロックはテキストの終わりまで続き、説明を空にする。
+それは、
+[sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.ja.md)
 が報告する。
 
 この規則に**反する**コードの例:
@@ -83,3 +88,13 @@ sequenceDiagram
 - [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.ja.md)
 - [sequence-no-duplicate-title](./sequence-no-duplicate-title.ja.md)
 - [sequence-no-empty-description-block](./sequence-no-empty-description-block.ja.md)
+- [sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/sequence-no-duplicate-description.ts)
+- [テストのソース](../../tests/rules/sequence-no-duplicate-description.test.ts)
+
+<!-- end auto-generated rule resources -->

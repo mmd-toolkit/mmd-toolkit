@@ -1,0 +1,168 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/entityRelationshipDiagram.md",
+    "line": 466
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-I1-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "I1",
+        "classes": []
+      },
+      {
+        "id": "entity-F1-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "F1",
+        "classes": []
+      },
+      {
+        "id": "entity-I2-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "I2",
+        "classes": []
+      },
+      {
+        "id": "entity-F2-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "F2",
+        "classes": []
+      },
+      {
+        "id": "entity-A-4",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-TOP-5",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "TOP",
+        "classes": []
+      },
+      {
+        "id": "entity-B-6",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      },
+      {
+        "id": "entity-B1-7",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B1",
+        "classes": []
+      },
+      {
+        "id": "entity-B2-8",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B2",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-I1-0",
+        "roleA": "links",
+        "entityB": "entity-F1-1",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-I2-2",
+        "roleA": "links",
+        "entityB": "entity-F2-3",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-A-4",
+        "roleA": "links",
+        "entityB": "TOP",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "TOP",
+        "roleA": "links",
+        "entityB": "entity-B-6",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "B1",
+        "roleA": "links",
+        "entityB": "B2",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "B1",
+        "nodes": [
+          "I1",
+          "F1"
+        ],
+        "title": "B1",
+        "classes": [],
+        "cssStyles": [],
+        "dir": "RL"
+      },
+      {
+        "id": "B2",
+        "nodes": [
+          "I2",
+          "F2"
+        ],
+        "title": "B2",
+        "classes": [],
+        "cssStyles": [],
+        "dir": "BT"
+      },
+      {
+        "id": "TOP",
+        "nodes": [
+          "B1",
+          "B2"
+        ],
+        "title": "TOP",
+        "classes": [],
+        "cssStyles": [],
+        "dir": "TB"
+      }
+    ]
+  }
+}

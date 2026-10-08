@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: a setting text ends before `#`, and `#c` is a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...anttdateFormat X #c\n----------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

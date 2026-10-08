@@ -6,7 +6,7 @@
 
 <!-- begin auto-generated rule notice -->
 
-`recommended` の設定は、この規則を有効にしない。
+✅ `recommended` の設定は、この規則を有効にする。
 
 <!-- end auto-generated rule notice -->
 
@@ -51,3 +51,12 @@ classDiagram
 ## 関連する規則
 
 - [no-unclosed-directive](./no-unclosed-directive.ja.md)
+
+<!-- begin auto-generated rule resources -->
+
+## リソース
+
+- [規則のソース](../../src/rules/class-no-unclosed-backquote.ts)
+- [テストのソース](../../tests/rules/class-no-unclosed-backquote.test.ts)
+
+<!-- end auto-generated rule resources -->

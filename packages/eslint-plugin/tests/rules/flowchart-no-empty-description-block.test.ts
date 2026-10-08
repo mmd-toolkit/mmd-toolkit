@@ -180,10 +180,10 @@ testRule(
       },
       {
         sentence:
-          "An empty description written as a line is different: `accDescr:` sets the description to the empty text.",
+          "An empty description written as a line is different: `accDescr:` with no line that holds text after it sets the description to the empty text.",
         cases: [
           {
-            case: "`accDescr:` without text, after a description",
+            case: "`accDescr:` without text, at the end of the text, after a description",
             reports: false,
             inputs: ["valid/flowchart/db-acc-descr-empty-replaces"],
           },
