@@ -161,3 +161,95 @@ function selectRow(): void {
     </div>
   </div>
 </template>
+
+<style scoped src="../controls.css"></style>
+
+<style scoped>
+.tree-row {
+  display: flex;
+  min-height: 28px;
+  align-items: center;
+  padding-right: 12px;
+  font:
+    12px "SFMono-Regular",
+    Consolas,
+    monospace;
+}
+.tree-row:hover {
+  background: var(--subtle);
+}
+.tree-row.selected {
+  background: var(--accent-soft);
+}
+.disclosure,
+.disclosure-spacer {
+  /* Reserve the same slot for branch icons and leaves to keep labels aligned. */
+  flex: 0 0 20px;
+  height: 20px;
+}
+.disclosure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--muted);
+}
+.disclosure svg {
+  display: block;
+  width: 12px;
+  height: 12px;
+}
+.disclosure[aria-expanded="true"] svg {
+  transform: rotate(90deg);
+}
+.tree-value {
+  display: grid;
+  /* Keep field names and ranges intact; only the value summary can truncate. */
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  padding: 4px 0;
+  border: 0;
+  border-radius: 0;
+  min-width: 0;
+  flex: 1;
+  text-align: left;
+  font: inherit;
+}
+.tree-value:hover:not(:disabled),
+.disclosure:hover:not(:disabled) {
+  background: transparent;
+}
+.tree-key {
+  color: var(--muted);
+  white-space: nowrap;
+}
+.tree-summary {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.node-name {
+  color: var(--accent);
+}
+.record-name {
+  color: var(--record);
+}
+.tree-range {
+  color: var(--muted);
+  font-size: 10px;
+  white-space: nowrap;
+}
+.more-entries {
+  font-size: 10px;
+  margin: 6px 0;
+}
+.empty-tree {
+  font-size: 10px;
+  color: var(--muted);
+}
+</style>

@@ -1,28 +1,57 @@
-/** Small editable examples, independent of the Node-only fixture loader. */
-export const examples: { name: string; source: string }[] = [
-  {
-    name: "Flowchart",
-    source:
-      "flowchart LR\n  A[Write Mermaid] --> B{Explore}\n  B --> C[Inspect the AST]\n  B --> D[Format the source]\n",
-  },
-  {
-    name: "Sequence",
-    source:
-      "sequenceDiagram\n  participant A as Author\n  participant P as Playground\n  A->>P: Edit the source\n  P-->>A: Inspect and format\n",
-  },
-  {
-    name: "Class",
-    source:
-      "classDiagram\n  class Diagram {\n    +String source\n    +parse() Root\n  }\n  Diagram --> Root\n",
-  },
-  {
-    name: "State",
-    source:
-      "stateDiagram-v2\n  [*] --> Editing\n  Editing --> Inspecting: parse\n  Inspecting --> Editing: change\n  Inspecting --> [*]\n",
-  },
-  {
-    name: "Frontmatter & comments",
-    source:
-      "---\ntitle: A small journey\n---\n%% Every character has a place\nflowchart TD\n  A[Source] --> B[Tree]\n",
-  },
+import { diagramData } from "@mermaid-js/examples"
+
+/** One source-loading action in the examples menu. */
+export interface Example {
+  name: string
+  source: string
+}
+
+/** A diagram family and all of its selectable examples. */
+export interface ExampleGroup {
+  name: string
+  examples: Example[]
+}
+
+// Match the Live Editor's primary diagram buttons, then sort the other families.
+const mainDiagrams = [
+  "Flowchart",
+  "Class",
+  "Sequence",
+  "Entity Relationship",
+  "State",
+  "Mindmap",
 ]
+
+/**
+ * Use the Live Editor's official data so every example within a family is
+ * available, including types the toolkit does not implement yet. The upstream
+ * MIT notice is distributed in public/licenses/mermaid-examples.txt.
+ */
+export const exampleGroups: ExampleGroup[] = diagramData
+  .map((diagram) => ({
+    name: diagram.name
+      .replace(" Diagram", "")
+      .replace(" Chart", "")
+      .replace(" Graph", ""),
+    examples: [...diagram.examples]
+      .sort(
+        (left, right) =>
+          Number(Boolean(right.isDefault)) - Number(Boolean(left.isDefault)),
+      )
+      .map((example) => ({
+        name: example.title,
+        source: example.code.endsWith("\n")
+          ? example.code
+          : `${example.code}\n`,
+      })),
+  }))
+  .sort((left, right) => {
+    const leftIndex = mainDiagrams.indexOf(left.name)
+    const rightIndex = mainDiagrams.indexOf(right.name)
+    const leftOrder = leftIndex < 0 ? mainDiagrams.length : leftIndex
+    const rightOrder = rightIndex < 0 ? mainDiagrams.length : rightIndex
+    return leftOrder - rightOrder || left.name.localeCompare(right.name, "en")
+  })
+
+/** Start with the official default Flowchart sample when no source is shared. */
+export const defaultSource: string = exampleGroups[0].examples[0].source

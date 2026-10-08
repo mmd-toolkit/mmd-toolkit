@@ -8,12 +8,15 @@ Prettier formatting in your browser.
 Planned public URL:
 [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/).
 
-Flowchart, sequence, class and state diagrams are supported. The interface is in
-English and is intended for desktop browsers.
+The interface is in English and is intended for desktop browsers.
 
 ## Get started
 
-Choose a sample from **Examples**, or paste your Mermaid text into **Source**.
+Open **Examples**, open a diagram type's submenu, then choose a sample, or paste
+your Mermaid text into **Source**. Samples come from the same collection as the
+[Mermaid Live Editor](https://mermaid.ai/live/edit), including diagram types the
+parser does not yet support.
+
 The parser updates the result as you edit. Source stays editable alongside the
 **AST** and **Formatted** tabs.
 

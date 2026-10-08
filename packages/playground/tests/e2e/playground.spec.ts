@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test"
 import { encodeState } from "../../src/share.ts"
-import { examples } from "../../src/examples.ts"
+import { defaultSource, exampleGroups } from "../../src/examples.ts"
 import { edit, savedSource, shortcut } from "./helpers.ts"
 
 test.beforeEach(async ({ page }) => {
@@ -243,24 +243,43 @@ test("shares with a separate copy gesture and keyboard tabs work", async ({
   ).toHaveAttribute("aria-selected", "true")
 })
 
-test("loads examples from a dismissible menu with keyboard navigation and Undo", async ({
+test("loads examples from a cascading menu with keyboard navigation and Undo", async ({
   page,
 }) => {
   const trigger = page.getByRole("button", { name: "Examples", exact: true })
   const menu = page.getByRole("menu", { name: "Examples", exact: true })
+  const sequence = exampleGroups.find((group) => group.name === "Sequence")!
+  const flowchart = exampleGroups.find((group) => group.name === "Flowchart")!
+  const lastGroup = exampleGroups.at(-1)!
 
-  /** Finds a sample action by its accessible menu label. */
-  function item(name: string) {
-    return page.getByRole("menuitem", { name, exact: true })
+  /** Finds a diagram family without matching an item in its child menu. */
+  function groupItem(name: string) {
+    return menu.getByRole("menuitem", { name, exact: true })
+  }
+
+  /** Finds the separate child menu for one diagram family. */
+  function childMenu(name: string) {
+    return page.getByRole("menu", { name: `${name} examples`, exact: true })
   }
 
   await expect(menu).toBeHidden()
   await trigger.click()
   await expect(trigger).toHaveAttribute("aria-expanded", "true")
-  await item("Sequence").click()
+  await groupItem("Sequence").click()
+  const sequenceMenu = childMenu("Sequence")
+  await expect(menu).toBeVisible()
+  await expect(sequenceMenu).toBeVisible()
+  await expect(groupItem("Sequence")).toHaveAttribute("aria-expanded", "true")
+  const sequenceItem = sequenceMenu.getByRole("menuitem", {
+    name: sequence.examples[0].name,
+    exact: true,
+  })
+  await expect(sequenceItem).toBeFocused()
+  await sequenceItem.click()
   await expect(menu).toBeHidden()
+  await expect(sequenceMenu).toBeHidden()
   await expect(trigger).toBeFocused()
-  await expect.poll(() => savedSource(page)).toBe(examples[1].source)
+  await expect.poll(() => savedSource(page)).toBe(sequence.examples[0].source)
   await expect(page.locator(".type-badge")).toHaveText("sequence")
   await page
     .getByRole("textbox", {
@@ -270,7 +289,7 @@ test("loads examples from a dismissible menu with keyboard navigation and Undo",
     })
     .focus()
   await shortcut(page, "Z")
-  await expect.poll(() => savedSource(page)).toBe(examples[0].source)
+  await expect.poll(() => savedSource(page)).toBe(defaultSource)
 
   await trigger.click()
   await trigger.click()
@@ -280,25 +299,59 @@ test("loads examples from a dismissible menu with keyboard navigation and Undo",
   await expect(menu).toBeHidden()
 
   await trigger.press("ArrowUp")
-  await expect(item("Frontmatter & comments")).toBeFocused()
+  await expect(groupItem(lastGroup.name)).toBeFocused()
   await page.keyboard.press("ArrowDown")
-  await expect(item("Flowchart")).toBeFocused()
+  await expect(groupItem("Flowchart")).toBeFocused()
   await page.keyboard.press("ArrowUp")
-  await expect(item("Frontmatter & comments")).toBeFocused()
+  await expect(groupItem(lastGroup.name)).toBeFocused()
   await page.keyboard.press("Home")
-  await expect(item("Flowchart")).toBeFocused()
+  await expect(groupItem("Flowchart")).toBeFocused()
   await page.keyboard.press("End")
-  await expect(item("Frontmatter & comments")).toBeFocused()
+  await expect(groupItem(lastGroup.name)).toBeFocused()
+  await page.keyboard.press("ArrowRight")
+  const lastMenu = childMenu(lastGroup.name)
+  await expect(menu).toBeVisible()
+  await expect(lastMenu).toBeVisible()
+  await expect(lastMenu.getByRole("menuitem").first()).toBeFocused()
+  await page.keyboard.press("ArrowLeft")
+  await expect(lastMenu).toBeHidden()
+  await expect(groupItem(lastGroup.name)).toBeFocused()
+  await expect(groupItem(lastGroup.name)).toHaveAttribute(
+    "aria-expanded",
+    "false",
+  )
+  await page.keyboard.press("ArrowRight")
+  await page.keyboard.press("Escape")
+  await expect(lastMenu).toBeHidden()
+  await expect(menu).toBeVisible()
+  await expect(groupItem(lastGroup.name)).toBeFocused()
   await page.keyboard.press("Escape")
   await expect(menu).toBeHidden()
   await expect(trigger).toBeFocused()
 
   await trigger.press("ArrowDown")
-  await expect(item("Flowchart")).toBeFocused()
+  await expect(groupItem("Flowchart")).toBeFocused()
+  await groupItem("Flowchart").hover()
+  const flowchartMenu = childMenu("Flowchart")
+  await expect(flowchartMenu).toBeVisible()
+  await expect(groupItem("Flowchart")).toBeFocused()
+  await page.keyboard.press("ArrowDown")
+  await expect(flowchartMenu).toBeHidden()
+  await expect(groupItem(exampleGroups[1].name)).toBeFocused()
+  await page.keyboard.press("Home")
+  await page.keyboard.press("Enter")
+  await expect(flowchartMenu.getByRole("menuitem").first()).toBeFocused()
+  await page.keyboard.press("End")
+  await expect(flowchartMenu.getByRole("menuitem").last()).toBeFocused()
+  await page.keyboard.press("ArrowDown")
+  await expect(flowchartMenu.getByRole("menuitem").first()).toBeFocused()
+  await page.keyboard.press("ArrowUp")
+  await expect(flowchartMenu.getByRole("menuitem").last()).toBeFocused()
+  await page.keyboard.press("Home")
   await page.keyboard.press("ArrowDown")
   await page.keyboard.press("Enter")
   await expect(menu).toBeHidden()
-  await expect.poll(() => savedSource(page)).toBe(examples[1].source)
+  await expect.poll(() => savedSource(page)).toBe(flowchart.examples[1].source)
   await trigger.press("Space")
   await expect(menu).toBeVisible()
   await page.keyboard.press("Tab")
@@ -307,9 +360,126 @@ test("loads examples from a dismissible menu with keyboard navigation and Undo",
     page.getByRole("button", { name: "Share", exact: true }),
   ).toBeFocused()
   await trigger.press("Enter")
+  await page.keyboard.press("ArrowRight")
+  await expect(flowchartMenu.getByRole("menuitem").first()).toBeFocused()
+  await page.keyboard.press("Tab")
+  await expect(menu).toBeHidden()
+  await expect(flowchartMenu).toBeHidden()
+  await expect(
+    page.getByRole("button", { name: "Share", exact: true }),
+  ).toBeFocused()
+  await trigger.press("Enter")
   await page.keyboard.press("Shift+Tab")
   await expect(menu).toBeHidden()
   await expect(trigger).not.toBeFocused()
+})
+
+test("opens official examples beside their diagram families without scrolling the page", async ({
+  page,
+}) => {
+  const trigger = page.getByRole("button", { name: "Examples", exact: true })
+  await trigger.click()
+  const menu = page.getByRole("menu", { name: "Examples", exact: true })
+  await expect(menu.getByRole("menuitem")).toHaveText(
+    exampleGroups.map((group) => `${group.name} ›`),
+  )
+  await expect(
+    menu.getByRole("menuitem", { name: "Playground", exact: true }),
+  ).toHaveCount(0)
+  const flowchartGroup = menu.getByRole("menuitem", {
+    name: "Flowchart",
+    exact: true,
+  })
+  await expect(flowchartGroup).toHaveAttribute("aria-haspopup", "menu")
+  await flowchartGroup.hover()
+  const flowchartMenu = page.getByRole("menu", {
+    name: "Flowchart examples",
+    exact: true,
+  })
+  const flowcharts = exampleGroups.find((group) => group.name === "Flowchart")!
+  await expect(menu).toBeVisible()
+  await expect(flowchartMenu).toBeVisible()
+  await expect(flowchartMenu.getByRole("menuitem")).toHaveText(
+    flowcharts.examples.map((example) => example.name),
+  )
+  const pipeline = flowchartMenu.getByRole("menuitem", {
+    name: "CI/CD Pipeline with Subgraphs",
+    exact: true,
+  })
+  const pipelineBounds = await pipeline.boundingBox()
+  expect(pipelineBounds).not.toBeNull()
+  await page.mouse.move(
+    pipelineBounds!.x + pipelineBounds!.width / 2,
+    pipelineBounds!.y + pipelineBounds!.height / 2,
+    { steps: 12 },
+  )
+  await expect(menu).toBeVisible()
+  await expect(flowchartMenu).toBeVisible()
+  await pipeline.click()
+  await expect
+    .poll(() => savedSource(page))
+    .toBe(
+      flowcharts.examples.find(
+        (example) => example.name === "CI/CD Pipeline with Subgraphs",
+      )!.source,
+    )
+  await expect(page.locator(".type-badge")).toHaveText("flowchart-v2")
+
+  await trigger.click()
+  await page.keyboard.press("End")
+  const lastGroup = exampleGroups.at(-1)!
+  const lastItem = menu.getByRole("menuitem", {
+    name: lastGroup.name,
+    exact: true,
+  })
+  await expect(lastItem).toBeFocused()
+  await expect(lastItem).toBeInViewport()
+  await lastItem.hover()
+  const lastMenu = page.getByRole("menu", {
+    name: `${lastGroup.name} examples`,
+    exact: true,
+  })
+  await expect(menu).toBeVisible()
+  await expect(lastMenu).toBeVisible()
+  await expect
+    .poll(() =>
+      lastMenu.evaluate((element) => {
+        const bounds = element.getBoundingClientRect()
+        return (
+          bounds.top >= 0 &&
+          bounds.left >= 0 &&
+          bounds.right <= innerWidth &&
+          bounds.bottom <= innerHeight
+        )
+      }),
+    )
+    .toBe(true)
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollHeight <= innerHeight,
+    ),
+  ).toBe(true)
+  await menu.getByRole("menuitem", { name: "Pie", exact: true }).hover()
+  const pieMenu = page.getByRole("menu", { name: "Pie examples", exact: true })
+  await expect(lastMenu).toBeHidden()
+  await expect(menu).toBeVisible()
+  await expect(pieMenu).toBeVisible()
+  await pieMenu
+    .getByRole("menuitem", { name: "Basic Pie Chart", exact: true })
+    .click()
+  await expect(
+    page.getByRole("heading", { name: "Not supported yet" }),
+  ).toBeVisible()
+  const pieSource = exampleGroups.find((group) => group.name === "Pie")!
+    .examples[0].source
+  await expect.poll(() => savedSource(page)).toBe(pieSource)
+  const sharedUrl = page.url()
+  await page.reload()
+  await expect(
+    page.getByRole("heading", { name: "Not supported yet" }),
+  ).toBeVisible()
+  await expect.poll(() => savedSource(page)).toBe(pieSource)
+  expect(page.url()).toBe(sharedUrl)
 })
 
 test("loads only local browser assets at the Pages path", async ({ page }) => {
@@ -742,7 +912,7 @@ test("keeps the workspace and tree details inside the viewport", async ({
             document.documentElement.scrollWidth <= innerWidth &&
             document.documentElement.scrollHeight <= innerHeight
           const elements = document.querySelectorAll(
-            ".app-header,.header-actions,.github-link,#examples,.examples-menu,.example-action,.share-button,.snb-shine-and-bright-switch,.pane,.pane-footer,.tree-scroll,.selection-details,.details-header,.details-body,.share-panel",
+            ".app-header,.header-actions,.github-link,#examples,.examples-menu,.share-button,.snb-shine-and-bright-switch,.pane,.pane-footer,.tree-scroll,.selection-details,.details-header,.details-body,.share-panel",
           )
           const regionsFit = [...elements].every((element) => {
             const box = element.getBoundingClientRect()
@@ -770,6 +940,7 @@ test("keeps the workspace and tree details inside the viewport", async ({
     await expect(text).toHaveText("FlowchartVertexStatement")
     await expect(text).toHaveAttribute("title", "FlowchartVertexStatement")
   }
+  await page.getByRole("button", { name: "Examples", exact: true }).click()
   await page.getByRole("tab", { name: "Formatted", exact: true }).click()
   await expect(page.locator("#panel-formatted .monaco-editor")).toBeVisible()
   await expect(

@@ -144,6 +144,9 @@ importers:
 
   packages/playground:
     dependencies:
+      '@mermaid-js/examples':
+        specifier: ^2.0.0
+        version: 2.0.0
       '@mmd-toolkit/parser':
         specifier: workspace:*
         version: link:../parser
@@ -504,6 +507,10 @@ packages:
   '@manypkg/tools@2.1.2':
     resolution: {integrity: sha512-6QEf6yqFbETdwGITKq57aYoPfX/3K8XFNwsAlx0C1M7o8cb79sv1M3w+tWuWvIcSbNqrLF7OD7YpZMVVz335hQ==}
     engines: {node: '>=20.0.0'}
+
+  '@mermaid-js/examples@2.0.0':
+    resolution: {integrity: sha512-5qXKOb+UiAfYz6SnXSrfEwjLRom0fB4ACN55npjNhuXcM/MEKWJYTmDDd7hKfsRt+pLlPrdhB8m5NEglzDoRVw==}
+    engines: {node: '>=22.12.0'}
 
   '@mermaid-js/parser@2.0.0':
     resolution: {integrity: sha512-K8BeapFUfrfxbRAUQAG5oBOCwo1+bNWzaVnPxTCutkfrTBn6T/j91FIhqxWJ32SUeQ9T3iy1zcmPZ5ROZEvDrg==}
@@ -3334,6 +3341,8 @@ snapshots:
       jju: 1.4.0
       tinyglobby: 0.2.17
       yaml: 2.9.1
+
+  '@mermaid-js/examples@2.0.0': {}
 
   '@mermaid-js/parser@2.0.0':
     dependencies:

@@ -293,7 +293,7 @@ function tabKey(event: KeyboardEvent): void {
             </h3>
             <pre v-if="parseMessage">{{ parseMessage }}</pre>
             <p v-if="parseStatus === 'unsupported'">
-              Flowchart, sequence, class and state diagrams are supported.
+              You can still edit and share this source.
             </p>
           </div>
           <template v-else>
@@ -425,3 +425,438 @@ function tabKey(event: KeyboardEvent): void {
     </main>
   </div>
 </template>
+
+<style scoped src="./controls.css"></style>
+
+<style scoped>
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  color: var(--accent);
+}
+pre {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 0;
+}
+.playground {
+  max-width: 1800px;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: auto;
+  padding: 0 24px 16px;
+}
+.app-header {
+  flex: 0 0 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.brand-mark {
+  display: block;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+}
+.brand h1 {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.4px;
+  margin: 0;
+}
+.brand-caption {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.github-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 8px;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+.github-link svg {
+  width: 18px;
+  height: 18px;
+}
+.share-button {
+  color: var(--accent);
+  font-weight: 600;
+}
+.share-button span {
+  margin-left: 10px;
+}
+.toolbar-divider {
+  height: 20px;
+  width: 1px;
+  background: var(--border);
+  margin: 0 7px;
+}
+.snb-shine-and-bright-switch {
+  --snb-switch-border-color: var(--border);
+  --snb-shine-color: #b2beff;
+  --snb-animation-duration: 180ms;
+  flex-shrink: 0;
+}
+/* Zero minimums let panes shrink within the viewport. Editors, trees and details
+   own their scrolling instead of expanding the page to fit their content. */
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  flex: 1;
+  min-height: 0;
+}
+.pane {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 9px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px #00000003;
+}
+.pane-header {
+  flex: 0 0 43px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border);
+}
+.pane-header > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+h2 {
+  font-size: 12px;
+  font-weight: 650;
+  margin: 0;
+}
+.file-badge {
+  color: var(--muted);
+  font:
+    10px "SFMono-Regular",
+    Consolas,
+    monospace;
+  background: var(--subtle);
+  border-radius: 4px;
+  padding: 4px 7px;
+}
+.pane-footer {
+  display: flex;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  padding: 7px 14px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 10px;
+  min-height: 28px;
+}
+.result-header [role="tablist"] {
+  height: 100%;
+  gap: 21px;
+}
+[role="tab"] {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  padding: 0 1px;
+  color: var(--muted);
+  position: relative;
+  font-weight: 600;
+}
+[role="tab"][aria-selected="true"] {
+  color: var(--text);
+}
+[role="tab"][aria-selected="true"]::after {
+  position: absolute;
+  content: "";
+  height: 2px;
+  background: var(--accent);
+  bottom: -1px;
+  left: 0;
+  right: 0;
+}
+.result-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.sub-toolbar {
+  flex: 0 0 auto;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--subtle);
+  font-size: 11px;
+}
+.sub-toolbar select {
+  font-size: 11px;
+  padding: 4px 7px;
+}
+.type-badge {
+  margin-left: auto;
+  font:
+    10px "SFMono-Regular",
+    Consolas,
+    monospace;
+  color: var(--accent);
+}
+.tree-scroll {
+  overflow: auto;
+  flex: 1;
+  min-height: 0;
+  padding: 8px 0;
+}
+.selection-details {
+  flex: 0 1 38%;
+  max-height: 38%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  background: var(--subtle);
+}
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 0 0 32px;
+  gap: 8px;
+  padding: 0 14px;
+  color: var(--accent);
+  font:
+    11px "SFMono-Regular",
+    Consolas,
+    monospace;
+}
+.details-header span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.details-header button {
+  flex-shrink: 0;
+}
+.details-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0 14px 14px;
+}
+.details-body pre {
+  font-size: 11px;
+}
+.source-excerpt {
+  background: var(--accent-soft);
+  border-radius: 4px;
+  padding: 7px 9px;
+  margin-bottom: 9px;
+}
+.empty-state {
+  flex: 1;
+  min-height: 0;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: auto;
+  color: var(--muted);
+}
+.empty-state h3 {
+  font-size: 14px;
+  font-weight: 550;
+  color: var(--text);
+  margin: 14px 0;
+}
+.empty-state p {
+  font-size: 12px;
+  line-height: 1.7;
+}
+.empty-state pre {
+  font-size: 11px;
+  text-align: left;
+  max-width: 100%;
+}
+.empty-symbol {
+  height: 32px;
+  width: 32px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  font:
+    20px Georgia,
+    serif;
+}
+.error {
+  color: var(--error);
+}
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.checkbox-label input {
+  accent-color: var(--accent);
+}
+.apply-button {
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--accent);
+  padding: 5px 8px;
+}
+.share-panel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 7px;
+}
+.share-panel label {
+  font-size: 11px;
+  white-space: nowrap;
+}
+.share-panel input {
+  min-width: 0;
+  color: var(--muted);
+  background: var(--subtle);
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 11px;
+}
+.icon-button {
+  background: transparent;
+  border: 0;
+  padding: 4px 7px;
+  color: var(--muted);
+}
+.notice {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: 12px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+@media (max-width: 900px) {
+  .playground {
+    padding: 0 16px 12px;
+  }
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 2fr) minmax(0, 3fr);
+  }
+  .github-label {
+    display: none;
+  }
+}
+@media (max-width: 600px) {
+  .share-panel {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+  .share-panel label {
+    grid-column: 1 / 3;
+  }
+  .share-panel input {
+    grid-column: 1 / 3;
+    grid-row: 2;
+  }
+  .share-panel > .icon-button {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+@media (max-width: 500px) {
+  .playground {
+    padding: 0 12px 12px;
+    gap: 8px;
+  }
+  .app-header {
+    flex-basis: 56px;
+  }
+  .brand-mark,
+  .toolbar-divider {
+    display: none;
+  }
+  .header-actions {
+    gap: 4px;
+  }
+  .github-link {
+    padding-inline: 3px;
+  }
+  .share-button {
+    padding-inline: 8px;
+  }
+  .share-button span {
+    display: none;
+  }
+  .file-badge {
+    display: none;
+  }
+  .format-toolbar {
+    gap: 5px;
+    padding: 7px 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .snb-shine-and-bright-switch {
+    --snb-animation-duration: 0ms;
+  }
+}
+</style>

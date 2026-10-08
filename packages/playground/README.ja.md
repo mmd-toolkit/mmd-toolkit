@@ -8,12 +8,15 @@ mmd-toolkitが生成する構文木と、Prettierによる整形結果を確認�
 公開予定URL:
 [Playground](https://mmd-toolkit.github.io/mmd-toolkit/playground/)。
 
-Flowchart、sequence、class、stateの図に対応しています。
 画面は英語で、デスクトップブラウザーを対象にしています。
 
 ## 使い始める
 
-**Examples**でサンプルを選ぶか、**Source**にMermaidのテキストを貼り付けます。
+**Examples**で図種のサブメニューを開いてサンプルを選ぶか、
+**Source**にMermaidのテキストを貼り付けます。
+サンプルは[Mermaid Live Editor](https://mermaid.ai/live/edit)と同じデータから
+読み込み、パーサーが未対応の図種も含みます。
+
 編集すると、パーサーの結果が自動で更新されます。
 **AST**と**Formatted**のタブを切り替えても、Sourceは編集できます。
 

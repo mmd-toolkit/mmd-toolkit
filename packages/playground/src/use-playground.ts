@@ -10,7 +10,7 @@ import type { Ref, ShallowRef, ComputedRef } from "vue"
 import type * as Formatter from "./formatter.ts"
 import type { Range, Root } from "@mmd-toolkit/parser"
 import { onParserUpdate, parseSource, visitNodes } from "./engine.ts"
-import { examples } from "./examples.ts"
+import { defaultSource } from "./examples.ts"
 import { decodeState, encodeState } from "./share.ts"
 import type { TreeSelection } from "./ast.ts"
 import type { SharedState } from "./share.ts"
@@ -63,7 +63,7 @@ interface Playground {
  * the input or remounting its editor.
  */
 export function usePlayground(): Playground {
-  const source = ref(examples[0].source)
+  const source = ref(defaultSource)
   const tabWidth = ref(2)
   const useTabs = ref(false)
   const tab = ref<"ast" | "formatted">("ast")
@@ -290,7 +290,7 @@ export function usePlayground(): Playground {
     try {
       const state = window.location.hash
         ? await decodeState(window.location.hash)
-        : { source: examples[0].source, tabWidth: 2, useTabs: false }
+        : { source: defaultSource, tabWidth: 2, useTabs: false }
       if (
         disposed ||
         request !== navigation ||

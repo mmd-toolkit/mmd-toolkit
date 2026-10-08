@@ -194,3 +194,16 @@ onBeforeUnmount(() => {
 <template>
   <div ref="container" class="code-editor"></div>
 </template>
+
+<style scoped>
+.code-editor {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+/* Monaco creates decoration elements outside Vue's template, so they do not
+   carry the scope attribute. Keep the deep selector inside this editor. */
+:where(.code-editor) :deep(.source-selection) {
+  background: #8899ee33;
+}
+</style>
