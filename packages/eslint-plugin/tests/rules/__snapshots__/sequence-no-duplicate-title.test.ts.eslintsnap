@@ -263,6 +263,21 @@ Code:
 ---
 
 
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/legacy-title-then-title-with-colon
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/legacy-title-then-title-with-colon-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | title first
+  3 | title: second
+    | ^~~~~~~~~~~~~ [1]
+  4 | A->>B: x
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
 Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/lex-acc-title-at-end
 Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/lex-acc-title-at-end-input.mmd
 
@@ -273,4 +288,21 @@ Code:
     | ^~~~~~~~~ [1]
 
 [1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/outer-accessibility-title-after-loop-title
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/outer-accessibility-title-after-loop-title-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | loop x
+  3 | A->>B: y
+  4 | accTitle: inner
+  5 | end
+  6 | accTitle: outer
+    | ^~~~~~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the accessible title set on line 4 with the one of this `accTitle`.
 ---

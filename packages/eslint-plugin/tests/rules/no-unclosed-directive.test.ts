@@ -3,8 +3,7 @@
  * document cites.
  */
 import type { Rule } from "eslint"
-import { Linter } from "eslint"
-import { describe, expect, it } from "vitest"
+import { RuleTester } from "eslint"
 import { SnapshotRuleTester } from "eslint-snapshot-rule-tester"
 import type { DiagramType } from "@mmd-toolkit/tests"
 import { loadFixtures } from "@mmd-toolkit/tests"
@@ -192,11 +191,6 @@ const VALID: readonly { case: string; diagram: DiagramType; name: string }[] = [
     name: "directive-spans-lone-cr",
   },
   {
-    case: "a closed directive with a U+2028 in it",
-    diagram: "common",
-    name: "directive-u2028-before-closing",
-  },
-  {
     case: "a closed directive of a sequence diagram",
     diagram: "sequence",
     name: "config-init-trailing-comma",
@@ -224,48 +218,95 @@ tester.run(
   },
 )
 
-/**
- * The inputs with a U+2028 or a U+2029 after the directive: a snapshot would
- * hold the character, so the test counts the reports instead.
- */
-const SEPARATORS: readonly {
-  case: string
-  diagram: DiagramType
-  name: string
-}[] = [
+new RuleTester(LANGUAGE_CONFIG).run(
+  "no-unclosed-directive",
+  noUnclosedDirective,
   {
-    case: "a directive with a U+2028 after it",
-    diagram: "sequence",
-    name: "tokens-ignored-semicolon-separator-unclosed-directive-line-separator",
-  },
-  {
-    case: "a directive with a U+2029 after it",
-    diagram: "sequence",
-    name: "tokens-ignored-semicolon-separator-unclosed-directive-paragraph-separator",
-  },
-  {
-    case: "a free-text argument that a U+2028 ends, and the statement after it is read",
-    diagram: "flowchart",
-    name: "db-unclosed-directive-at-line-separator",
-  },
-  {
-    case: "a free-text argument that a U+2029 ends, and the statement after it is read",
-    diagram: "flowchart",
-    name: "db-unclosed-directive-at-paragraph-separator",
-  },
-]
-
-describe("no-unclosed-directive, with a line separator after the directive", () => {
-  it.each(SEPARATORS.map((each) => [each.case, each]))("%s", (_case, each) => {
-    const { code } = fixtureCase(each.name, each.diagram)
-    const messages = new Linter({ configType: "flat" }).verify(
-      code,
+    valid: [
       {
-        ...LANGUAGE_CONFIG,
-        rules: { "@mmd-toolkit/no-unclosed-directive": "error" },
-      } as never,
-      "input.mmd",
-    )
-    expect(messages.map((message) => message.messageId)).toHaveLength(1)
-  })
-})
+        name: "a line separator before a directive closes",
+        filename: "input.mmd",
+        code: `%%{init: {'theme':'dark'}\u2028}%%
+flowchart LR
+A-->B
+`,
+      },
+    ],
+    invalid: [
+      {
+        name: "a line separator after an unclosed sequence directive",
+        filename: "input.mmd",
+        code: `sequenceDiagram
+participant A@{ "style": "x:#y" };participant C;participant E%%{init: {}\u2028;participant D
+A->>B: y`,
+        errors: [
+          {
+            message:
+              "This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.",
+            line: 2,
+            column: 62,
+            endLine: 2,
+            endColumn: 73,
+            suggestions: [],
+          },
+        ],
+      },
+      {
+        name: "a paragraph separator after an unclosed sequence directive",
+        filename: "input.mmd",
+        code: `sequenceDiagram
+participant A@{ "style": "x:#y" };participant C;participant E%%{init: {}\u2029;participant D
+A->>B: y`,
+        errors: [
+          {
+            message:
+              "This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.",
+            line: 2,
+            column: 62,
+            endLine: 2,
+            endColumn: 73,
+            suggestions: [],
+          },
+        ],
+      },
+      {
+        name: "a line separator after an unclosed flowchart directive",
+        filename: "input.mmd",
+        code: `flowchart LR
+  A --> B
+  %%{init: {"theme": "dark"}\u2028  C --> D
+`,
+        errors: [
+          {
+            message:
+              "This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.",
+            line: 3,
+            column: 3,
+            endLine: 3,
+            endColumn: 29,
+            suggestions: [],
+          },
+        ],
+      },
+      {
+        name: "a paragraph separator after an unclosed flowchart directive",
+        filename: "input.mmd",
+        code: `flowchart LR
+  A --> B
+  %%{init: {"theme": "dark"}\u2029  C --> D
+`,
+        errors: [
+          {
+            message:
+              "This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.",
+            line: 3,
+            column: 3,
+            endLine: 3,
+            endColumn: 29,
+            suggestions: [],
+          },
+        ],
+      },
+    ],
+  },
+)

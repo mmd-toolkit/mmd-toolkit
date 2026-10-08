@@ -94,11 +94,7 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   state: true,
   er: true,
   gantt: true,
-}
-
-/** Whether `text` names a directory of fixtures of the conformance corpus. */
-export function isDiagramType(text: string): text is DiagramType {
-  return Object.hasOwn(CORPUS_DIAGRAMS, text)
+  journey: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

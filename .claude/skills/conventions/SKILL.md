@@ -95,14 +95,16 @@ machine. Run what a change can affect, not everything after every change.
 - The tests of a package run fixed inputs only: the fixtures of the corpus, the
   fixtures of the package, and the inputs of past failures. No test generates
   its inputs, and no command does.
-- The tests of the parser, of the formatter, and of the linter do not run
-  mermaid.js, and a claim about what mermaid.js reads is checked against the Db
-  that the corpus records for the fixture (a suggestion's result is checked
-  against the corpus fixture whose input equals that result). The Db of a tree
-  is built by `dbFromTree` of `packages/tests`, which the corpus checks against
-  mermaid.js; the formatter compares the Db built from the tree before and after
-  formatting (for a corpus input, with the recorded Db). mermaid.js runs in the
-  checks of the corpus only.
+- The tests of the parser and of the formatter do not run mermaid.js. A claim
+  about what mermaid.js reads is checked against the Db that the corpus records
+  for the fixture. The Db of a tree is built by `dbFromTree` of
+  `packages/tests`, which the corpus checks against mermaid.js; the formatter
+  compares the Db built from the tree before and after formatting (for a corpus
+  input, with the recorded Db). mermaid.js runs in the corpus checks only.
+- The linter tests do not run mermaid.js. They check the reports and suggestion
+  outputs on rule fixtures and document examples. Inputs that need invisible
+  characters use ESLint's `RuleTester`, with template literals and escapes for
+  the input and expected output in the test source.
 - The tests of the parser run no generated inputs and do not run mermaid.js.
   What a parser must do is stated by the specification and by the conformance
   corpus (`packages/tests/fixtures/`): an input, whether mermaid.js accepts it,

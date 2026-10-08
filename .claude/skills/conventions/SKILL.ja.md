@@ -109,13 +109,19 @@ AGENTS.md は、それぞれを 1 行で述べ、守らせる検査の名前を�
 - パッケージのテストは固定の入力だけを回す。コーパスの fixture、
   パッケージの fixture、過去の失敗の入力である。
   入力を生成するテストは持たず、生成するコマンドも持たない。
-- parser、フォーマッター、リンターのテストは、mermaid.js を動かさない。
-  mermaid.js が何を読むかの主張は、コーパスがその fixture に記録した Db と
-  照らす（提案の結果は、その結果と同じ入力のコーパスの fixture と照らす）。
-  木の Db は `packages/tests` の `dbFromTree` が作る（コーパスの確かめが
-  mermaid.js と照らしている）。フォーマッターは、整形前後の木から作った
-  Db を比べる（コーパスの入力は、記録された Db と比べる）。
+- parser とフォーマッターのテストは、mermaid.js を動かさない。
+  mermaid.js が何を読むかの主張は、
+  コーパスがその fixture に記録した Db と照らす。
+  木の Db は `packages/tests` の `dbFromTree` が作る。
+  コーパスの確かめが、それを mermaid.js と照らす。
+  フォーマッターは、整形前後の木から作った Db を比べる。
+  コーパスの入力では、記録された Db と比べる。
   mermaid.js を動かすのは、コーパスの確かめだけである。
+- リンターのテストは mermaid.js を動かさず、規則の fixture と文書の例で、
+  報告と提案の出力を確かめる。
+  不可視文字が必要な入力は、ESLint の `RuleTester` を使う。
+  入力と期待する出力は、テストのソースに、
+  エスケープを使うテンプレートリテラルで書く。
 - parser のテストは、生成した入力を回さず、mermaid.js も動かさない。
   parser が何をすべきかは、仕様と適合コーパス（`packages/tests/fixtures/`）が
   述べる。入力、mermaid.js が受理するか、mermaid.js が何を読むか、である。

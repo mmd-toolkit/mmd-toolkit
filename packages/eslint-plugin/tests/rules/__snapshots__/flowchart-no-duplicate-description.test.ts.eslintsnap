@@ -1170,3 +1170,87 @@ Code:
           4 |   end
           5 |
 ---
+
+
+Test: flowchart-no-duplicate-description >> invalid >>> invalid/flowchart/empty-description-before-final-comment
+Filename: tests/fixtures/rules/flowchart-no-duplicate-description/invalid/flowchart/empty-description-before-final-comment-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accDescr: x
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | %% c
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accDescr: x
+          3 | %% c
+          4 |
+      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accDescr:
+          3 | %% c
+          4 |
+---
+
+
+Test: flowchart-no-duplicate-description >> invalid >>> invalid/flowchart/empty-description-before-final-directive
+Filename: tests/fixtures/rules/flowchart-no-duplicate-description/invalid/flowchart/empty-description-before-final-directive-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accDescr: x
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 | %%{init: {}}%%
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accDescr: x
+          3 | %%{init: {}}%%
+          4 |
+      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accDescr:
+          3 | %%{init: {}}%%
+          4 |
+---
+
+
+Test: flowchart-no-duplicate-description >> invalid >>> invalid/flowchart/empty-description-before-final-empty-line
+Filename: tests/fixtures/rules/flowchart-no-duplicate-description/invalid/flowchart/empty-description-before-final-empty-line-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 | accDescr: x
+  3 | accDescr:
+    | ^~~~~~~~~ [1]
+  4 |
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accDescr: x
+          3 |
+          4 |
+      - Remove the statement on line 2 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 | accDescr:
+          3 |
+          4 |
+---

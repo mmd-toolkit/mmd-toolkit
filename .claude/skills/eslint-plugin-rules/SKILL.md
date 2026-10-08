@@ -48,23 +48,22 @@ after writing it.
   removed, the values that a function of the Db receives, whether the input is
   accepted. When the summary of the Db hides the fact, wrap the function of the
   Db that receives it and record what it is given.
-- Check each claim of the rule with an input for each case that it
-  distinguishes. A claim is a condition under which the rule reports, a
-  condition under which it does not, the message, or a suggestion. For each
-  sentence of the document of the rule, and of the notes that decided it, list
-  the cases that the sentence distinguishes (which statement the mistake stands
-  in, where in a line, which separator or whitespace stands next to it, which
-  context it is in) and the rules of the language that meet it at the place it
-  names (a directive, an ignored `;`, a comment line, an empty line, a line
-  separator, an empty description block). Give each case an input, a fixture of
-  the rule, named after the case. Run mermaid.js once on each input, and compare
-  the report of the rule with what it does, in both directions: a mistake that
-  is not reported, and a report that is not a mistake. A case that mermaid.js
+- Check each condition for reporting or not reporting, each message, and each
+  suggestion with an input for every case it distinguishes. For each sentence of
+  the document of the rule, and of the notes that decided it, list the cases
+  that the sentence distinguishes (which statement the mistake stands in, where
+  in a line, which separator or whitespace stands next to it, which context it
+  is in) and the rules of the language that meet it at the place it names (a
+  directive, an ignored `;`, a comment line, an empty line, a line separator, an
+  empty description block). Give each case an input, a fixture of the rule,
+  named after the case. Run mermaid.js once on each input, and compare the
+  report of the rule with what it does, in both directions: a mistake that is
+  not reported, and a report that is not a mistake. A case that mermaid.js
   rejects gets no fixture. No input is chosen by a random source or by a number,
   and no command generates inputs. A failure that the comparison finds is closed
   by the fixture of its case (section 4), and by a sentence of the specification
   where the specification did not state the reading. Say in the report which
-  sentences were read and which inputs were added.
+  document passages were read and which inputs were added.
 - A rule whose condition depends on something defined anywhere in the diagram
   (ids, vertices that a statement creates) needs inputs where the definition
   comes after the use and where it comes before it, and a statement that creates
@@ -106,19 +105,12 @@ after writing it.
   `recommended`, and whether the rule offers suggestions come from the
   rule-ideas skill; a rule has no fix.
 - A suggestion is built in a function of its own, apart from `create`. Check its
-  result on the fixtures of section 4: apply it to the input of each case, and
-  confirm that the parser accepts the text, that the Db that the corpus records
-  for the text is the one that the message says (the Db of the text as the
-  author meant it), and that the rule reports less. A message states what is
-  true after the suggestion is applied, for every place where it is offered.
-  State what each suggestion claims in the option `claims` of `testRule`: the
-  test checks the claim on the recorded Dbs; no test of a rule runs mermaid.js.
-  The text of each suggestion is a corpus fixture, asked of the tests package
-  and named in the file `recorded.json` of the fixture directory of the rule
-  (`docs/development.md`). A claim says all that the message says (the value of
-  a description, the text read as statements, a line less in a text). When the
-  Db of the pinned mermaid.js does not show what the message says, ask the tests
-  package to record it, and do not weaken the claim.
+  resulting text against what its message promises on the fixtures of section 4.
+  The snapshot records each suggestion and its complete output; for a
+  `RuleTester` case, put that output in the suggestion's `output` field. A
+  message states what is true after the suggestion is applied, for every place
+  where it is offered. Check that reading independently of the rule as in
+  section 2; a rule test does not run mermaid.js.
 - Use the helpers of `src/utils/` before writing another. When a helper rests on
   an assumption that a new rule breaks, read the tree to decide it (not the
   text), and check the other rules that use the helper again.
@@ -137,43 +129,33 @@ after writing it.
 
 ## 4. Tests and fixtures
 
-- The test of a rule is one call of `testRule` (see `docs/development.md`). The
-  examples of the English document are cases; the inputs of the fixture
-  directory are the other cases.
-- The test of a rule shows which input is which case: its option `sentences`
-  lists each sentence of the English document that defines a behavior (a passage
-  of it, verbatim), the cases that the sentence distinguishes, in words, and the
-  inputs of each case (`docs/development.md`). Add the sentence, its cases, and
-  their inputs in the same change as the fixtures. The test fails for a sentence
-  of the section Rule Details that no entry covers, unless `notBehavior` lists
-  it as one that defines no behavior (an introduction, a reason): do not list a
-  sentence there to silence the test. A case with no input is a gap that the
-  review looks for.
+- The snapshot test of a rule is one call of `testRule(name, rule)` (see
+  `docs/development.md`). The English document's examples and the input files of
+  the rule's fixture directory are its cases. They check whether the rule
+  reports and the text that each suggestion produces.
+- Name each input after the case that it checks, and keep an input for each case
+  that a sentence of the rule document distinguishes. Review the cases against
+  the sentence; the tests do not hold a separate document-to-input map.
 - Keep the leading `%% eslint @mmd-toolkit/<rule>: error` comment in every
   document example, correct or incorrect, as the eslint-plugin skill requires.
   The parser and site checks read it with this comment; only the snapshot test
   helper removes it to avoid enabling the rule twice under the tester's alias
-  and `@mmd-toolkit/`. When renaming a rule, update the comments in both
-  documents too.
-- When the behavior changes (the condition is widened or narrowed, a message or
-  a suggestion changes), add the fixtures of the change in the same change,
-  after checking each input against mermaid.js. A check in a scratch file does
-  not replace a fixture of the repository.
-- An input of a fixture of a rule is a copy of the input of a corpus fixture
-  (byte for byte), so that what mermaid.js reads from it is recorded. An input
-  that the corpus lacks is requested from the tests package, which holds the
-  corpus: give the input and the claim of the document that it answers. The
-  tests package adds it with `pnpm run fixtures:add`, which records what
-  mermaid.js does (`packages/tests/docs/maintaining-fixtures.md`), and the
-  parser records its tree. When the name of the fixture arrives, read its
-  `expected.json`, and put a copy of its input into the fixture directory of the
-  rule, under `valid/<diagram>/` or `invalid/<diagram>/`, named after it. Until
-  it arrives, the report lists the input as being added. A fixture file holds no
-  character that `pnpm run lint:chars` checks for: an input that needs one is a
-  fixture of the corpus, which the test of the rule reads by its name.
-- The snapshots are regenerated with `test:update` (without `CI=true`). Compare
-  the new snapshot with the old one and account for each difference; a
-  difference that you did not mean is a defect.
+  and `@mmd-toolkit/`. When renaming a rule, update both documents' comments.
+- When the behavior changes (the condition, a message, or a suggestion), add the
+  fixtures of the change in the same change, after checking each input against
+  mermaid.js. A scratch check does not replace a test input.
+- Rule fixture files belong to the rule tests and need no matching corpus
+  fixture. Put them under `valid/` or `invalid/`, optionally in a subdirectory,
+  and do not duplicate a document example or another input of the same rule. The
+  common directive rule keeps its existing named corpus input tables.
+- A fixture file holds no character that `pnpm run lint:chars` checks for. Use
+  ESLint's `RuleTester` for U+2028, U+2029, or a lone carriage return. Write
+  `code` and each suggestion's expected `output` as template literals, with
+  `\u2028`, `\u2029`, or `\r`. State the expected reports in `errors`, and the
+  full output text of each suggestion. These cases do not read the corpus.
+- Regenerate snapshots with `test:update` (without `CI=true`) when an output
+  intentionally changes. Read the differences and account for each one. When
+  adding a case, keep existing snapshots and add only its missing snapshot.
 
 ### Which tests to run
 
@@ -187,10 +169,10 @@ as done.
 | A rule file `src/rules/<name>.ts`                    | `tests/rules/<name>.test.ts`                                                                                                                                      |
 | The handlers of a rule of a diagram type             | the same, and `tests/diagram-rules.test.ts`                                                                                                                       |
 | A helper of `src/utils/`                             | the tests of the rules that import it (search for the import); `tests/subgraph-ids.test.ts` for `subgraph-ids.ts`, `tests/text-nodes.test.ts` for `text-nodes.ts` |
-| The fixture directory of a rule                      | `tests/rules/<name>.test.ts` and `tests/rule-fixtures.test.ts`                                                                                                    |
+| The fixture directory of a rule                      | `tests/rules/<name>.test.ts`                                                                                                                                      |
 | The examples of the English document of a rule       | `tests/rules/<name>.test.ts` and `tests/rule-cases.test.ts`                                                                                                       |
 | A rule added, renamed, or removed                    | the tests above for the rule, and `tests/rules-index.test.ts`                                                                                                     |
-| `tests/rule-test.ts` or `tests/rule-cases.ts`        | every `tests/rules/**/*.test.ts`, `tests/rule-cases.test.ts`, and `tests/suggestion-claims.test.ts`                                                               |
+| `tests/rule-test.ts` or `tests/rule-cases.ts`        | every `tests/rules/**/*.test.ts`, `tests/rule-cases.test.ts`                                                                                                      |
 | `src/language.ts`, `src/source-code.ts`, token store | `tests/language.test.ts`, `tests/token-store.test.ts`, `tests/snapshot.test.ts`, `tests/inline-config.test.ts`, `tests/markdown.test.ts`                          |
 | The parser, when the plugin reads the changed nodes  | the language tests above, `tests/diagram-rules.test.ts`, and the tests of the rules that read those nodes                                                         |
 
@@ -207,14 +189,11 @@ treats on its own. Run them when the change reaches the language, the source
 code, a handler of a diagram type, or the parser, and not after a change to one
 rule.
 
-The tests take their inputs from the corpus and from the fixture directories of
-the rules, and what mermaid.js reads from the `expected.json` of the corpus
-fixture. The text that a suggestion produces is a corpus fixture too, named in
-`recorded.json`: `testRule` checks the claim of the suggestion (the option
-`claims`, and `docs/development.md`) on the Dbs that the corpus records for the
-input and for that text. A claim that a fixture shows is kept by the tests; a
-case that the check of section 2 finds without a fixture gets one before the
-work is reported as done.
+The rule tests take their inputs from the rule fixture directories and the
+English documents. Their snapshots record the reports and suggestion outputs;
+the exceptional `RuleTester` cases keep escaped inputs and expected outputs in
+the test source. A case found by section 2 gets a test input before the work is
+reported as done.
 
 ## 5. Finish the change
 
@@ -238,14 +217,13 @@ work is reported as done.
 
 ## 6. Report
 
-Report the result to the one who asked for it. Say for each claim whether it was
-checked by running something, checked by reading, or not checked. Give what
-changed (the rule, the fixtures, the snapshots with the reason for each
-difference), the sentences that were read and the inputs that were added (and
-the inputs being added by the tests package), what was run and what was not (the
-tests, the checks), and what is still open or unverified. Have the result
-reviewed, fix what the review finds (section 7), and report again, until the
-review finds nothing.
+Report the result to the one who asked for it. For each behavior, say whether it
+was checked by running something, checked by reading, or not checked. Give what
+changed in the rule, its inputs and snapshots, with a reason for each snapshot
+difference; the document passages that were read and the inputs that were added;
+what was run and what was not; and what remains open or unverified. Have the
+result reviewed, fix what the review finds (section 7), and report again until
+the review finds nothing.
 
 ## 7. Fix what the review finds
 

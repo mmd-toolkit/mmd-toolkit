@@ -5,5 +5,11 @@
   },
   "accepted": true,
   "diagramType": "journey",
-  "db": null
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
 }

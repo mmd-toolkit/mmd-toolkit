@@ -31,6 +31,20 @@ Code:
 ---
 
 
+Test: sequence-no-create-destroy >> invalid >>> invalid/sequence/directive-between-create-and-destroy
+Filename: tests/fixtures/rules/sequence-no-create-destroy/invalid/sequence/directive-between-create-and-destroy-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | create %%{init: {}}%% destroy A
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 | B->>A: x
+  4 |
+
+[1] mermaid.js reads `create destroy A` as `create participant A`: it creates the participant and destroys nothing.
+---
+
+
 Test: sequence-no-create-destroy >> invalid >>> invalid/sequence/gram-create-destroy
 Filename: tests/fixtures/rules/sequence-no-create-destroy/invalid/sequence/gram-create-destroy-input.mmd
 

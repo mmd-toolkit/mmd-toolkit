@@ -42,6 +42,35 @@ Code:
 ---
 
 
+Test: class-no-undef >> invalid >>> invalid/class/click-decoded-name-differs-from-definition
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/click-decoded-name-differs-from-definition-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class `A#B`
+  3 | click `A#35;B` href "u"
+    |       ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js does nothing with `A#35;B` in this `click` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/click-space-after-comma
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/click-space-after-comma-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A
+  3 | class B
+  4 | click `A, B` href "u"
+    |       ^~~~~~ [1]
+  5 |
+
+[1] mermaid.js does nothing with ` B` in this `click` statement: no class of the diagram has this id.
+---
+
+
 Test: class-no-undef >> invalid >>> invalid/class/db-callback-names-comma-one-undefined
 Filename: tests/fixtures/rules/class-no-undef/invalid/class/db-callback-names-comma-one-undefined-input.mmd
 
@@ -162,4 +191,33 @@ Code:
   3 |
 
 [1] mermaid.js does nothing with `Z` in this `style` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/note-name-containing-comma
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/note-name-containing-comma-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A
+  3 | class B
+  4 | note for `A,B` "n"
+    |          ^~~~~ [1]
+  5 |
+
+[1] mermaid.js keeps this note and draws it without a line to a class: no class of the diagram has the id `A,B`.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/style-lollipop-interface-name
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/style-lollipop-interface-name-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | bar ()-- foo
+  3 | style bar fill:#f00
+    |       ^~~ [1]
+  4 |
+
+[1] mermaid.js does nothing with `bar` in this `style` statement: no class of the diagram has this id.
 ---
