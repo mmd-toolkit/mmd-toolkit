@@ -493,6 +493,7 @@ describe("additional diagram types", () => {
       "class",
       "state",
       "er",
+      "gantt",
     ])
     expect(diagrams.find(({ name }) => name === "er")).toEqual({
       name: "er",
@@ -567,6 +568,8 @@ describe("additional diagram types", () => {
       "sequence",
       "class",
       "state",
+      "er",
+      "gantt",
       "pie",
       "quadrantChart",
       "gitGraph",
