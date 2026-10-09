@@ -40,6 +40,8 @@ specification has a bug, except for the deliberate differences listed under
 | flowchart    | [`docs/diagrams/flowchart.md`](./docs/diagrams/flowchart.md) | [`docs/ast/flowchart.md`](./docs/ast/flowchart.md) |
 | sequence     | [`docs/diagrams/sequence.md`](./docs/diagrams/sequence.md)   | [`docs/ast/sequence.md`](./docs/ast/sequence.md)   |
 | class        | [`docs/diagrams/class.md`](./docs/diagrams/class.md)         | [`docs/ast/class.md`](./docs/ast/class.md)         |
+| state        | [`docs/diagrams/state.md`](./docs/diagrams/state.md)         | [`docs/ast/state.md`](./docs/ast/state.md)         |
+| er           | [`docs/diagrams/er.md`](./docs/diagrams/er.md)               | [`docs/ast/er.md`](./docs/ast/er.md)               |
 
 The other diagram types of mermaid.js are not specified yet.
 

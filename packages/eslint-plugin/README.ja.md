@@ -64,7 +64,10 @@ export default [...markdown.configs.processor, mmd.configs.recommended]
 - シーケンス図: `sequence`（`sequenceDiagram`）。
 - クラス図: `classDiagram`（`classDiagram` と `classDiagram-v2`）。
 - 状態図: `stateDiagram`（`stateDiagram` と `stateDiagram-v2`）。
+- ER 図: `er`（`erDiagram`）。
+- Gantt チャート: `gantt`（`gantt`）。
 
+ER 図と Gantt チャートには、まだ図種ごとの規則がありません。
 ほかの図種は、対応するまで、パースのエラーとして報告されます。
 
 ## 設定のコメント

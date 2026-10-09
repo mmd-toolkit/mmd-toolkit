@@ -71,8 +71,8 @@ flowchart LR
 ## What is formatted
 
 - Files ending in `.mmd` or `.mermaid`.
-- Markdown code blocks whose info string starts with `mermaid` or `mmd`. The
-  match is case-sensitive: `Mermaid` is not formatted.
+- Markdown code blocks whose info string has `mermaid` or `mmd` as its first
+  word. The match is case-sensitive: `Mermaid` and `mermaidx` are not formatted.
 - Flowcharts: diagrams that start with `flowchart`, `graph`, `flowchart-elk`, or
   `swimlane-beta`. The formatting rules, with examples, are in
   [docs/flowchart.md](./docs/flowchart.md).

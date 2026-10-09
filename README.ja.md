@@ -13,10 +13,10 @@ mermaid-js とは無関係です。
 同じ略称を使う MultiMarkdown や MikuMikuDance とは関係ありません。
 
 いま対応している図種は flowchart、sequence、class、state で、
+パーサーは ER 図と Gantt チャートも読みます。
 ほかの図種は順に対応します。
 フォーマッター、リンター、パーサーは、まだ npm に公開していません。
 mermaid.js のすべての図種に対応してから公開します。
-リンターの規則は、いまは flowchart の分を実装しています。
 仕様とテストは、このリポジトリの中で使うもので、公開しません。
 
 ## Playground

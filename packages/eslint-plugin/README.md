@@ -60,8 +60,11 @@ The plugin reads these diagram types:
 - Sequence diagrams: `sequence` (`sequenceDiagram`).
 - Class diagrams: `classDiagram` (`classDiagram` and `classDiagram-v2`).
 - State diagrams: `stateDiagram` (`stateDiagram` and `stateDiagram-v2`).
+- Entity relationship diagrams: `er` (`erDiagram`).
+- Gantt charts: `gantt` (`gantt`).
 
-Other diagram types are reported as parse errors until they are supported.
+ER diagrams and Gantt charts have no rules of their own yet. Other diagram types
+are reported as parse errors until they are supported.
 
 ## Configuration comments
 

@@ -43,6 +43,8 @@ mermaid-js とは関係のない、第三者のプロジェクトです。
 | flowchart | [`docs/diagrams/flowchart.ja.md`](./docs/diagrams/flowchart.ja.md) | [`docs/ast/flowchart.ja.md`](./docs/ast/flowchart.ja.md) |
 | sequence  | [`docs/diagrams/sequence.ja.md`](./docs/diagrams/sequence.ja.md)   | [`docs/ast/sequence.ja.md`](./docs/ast/sequence.ja.md)   |
 | class     | [`docs/diagrams/class.ja.md`](./docs/diagrams/class.ja.md)         | [`docs/ast/class.ja.md`](./docs/ast/class.ja.md)         |
+| state     | [`docs/diagrams/state.ja.md`](./docs/diagrams/state.ja.md)         | [`docs/ast/state.ja.md`](./docs/ast/state.ja.md)         |
+| er        | [`docs/diagrams/er.ja.md`](./docs/diagrams/er.ja.md)               | [`docs/ast/er.ja.md`](./docs/ast/er.ja.md)               |
 
 mermaid.js のほかの図種は、まだ定めていません。
 

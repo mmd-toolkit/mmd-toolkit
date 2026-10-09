@@ -77,8 +77,9 @@ flowchart LR
 ## 整形するもの
 
 - 名前が `.mmd` か `.mermaid` で終わるファイル。
-- Markdown の、情報文字列が `mermaid` か `mmd` で始まるコードブロック。
+- Markdown の、情報文字列の最初の語が `mermaid` か `mmd` のコードブロック。
   大文字と小文字を区別するので、`Mermaid` は整形しません。
+  `mermaidx` も整形しません。
 - flowchart。
   `flowchart`、`graph`、`flowchart-elk`、`swimlane-beta` で始まる図です。
   整形の規則は、
