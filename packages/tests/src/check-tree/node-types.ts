@@ -29,6 +29,9 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "GanttLiteral",
   "JourneyLiteral",
   "JourneyIgnoredText",
+  "RequirementIdentifier",
+  "RequirementLiteral",
+  "RequirementIgnoredText",
 ])
 
 /**
@@ -172,6 +175,22 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "JourneyAccTitleStatement",
   "JourneyAccDescrStatement",
   "JourneyAccDescrBlockStatement",
+  "RequirementDiagram",
+  "RequirementRequirementStatement",
+  "RequirementValueField",
+  "RequirementRiskField",
+  "RequirementVerifyMethodField",
+  "RequirementElementStatement",
+  "RequirementElementField",
+  "RequirementRelationshipStatement",
+  "RequirementDirectionStatement",
+  "RequirementStyleStatement",
+  "RequirementClassDefStatement",
+  "RequirementClassStatement",
+  "RequirementClassShorthandStatement",
+  "RequirementAccTitleStatement",
+  "RequirementAccDescrStatement",
+  "RequirementAccDescrBlockStatement",
 ])
 
 /** The node types of the data blocks, whose delimiters lie in their range. */
@@ -184,8 +203,13 @@ export const DATA_BLOCK_NODE_TYPES: ReadonlySet<string> = new Set([
  * ast/state.md, StateIgnoredText: the value node types whose range holds the
  * tokens of their units, of whatever kind the units have: the empty strings,
  * empty description blocks, `ignored-state` unit, and `%%` of a
- * StateIgnoredText.
+ * StateIgnoredText. ast/requirement.md, RequirementIgnoredText: the same for
+ * the empty description blocks in a body, whose units are a keyword and
+ * punctuation, next to the text of a direction line. There is no table of
+ * Tokens of the requirement diagram yet, so the kinds of those units are not
+ * held to a document of the parser.
  */
 export const NODE_TYPES_WITH_TOKENS_OF_ANY_KIND: ReadonlySet<string> = new Set([
   "StateIgnoredText",
+  "RequirementIgnoredText",
 ])

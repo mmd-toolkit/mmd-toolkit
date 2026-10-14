@@ -138,7 +138,7 @@ function nextWrittenCharacter(
 }
 
 /** Whether only whitespace lies in the written text from `offset` to the end of its line. */
-function restOfLineIsBlank(reading: Reading, offset: number): boolean {
+export function restOfLineIsBlank(reading: Reading, offset: number): boolean {
   for (let at = offset; at < reading.text.length; at++) {
     if (reading.written.isLeftOut(at)) continue
     const code = reading.text.charCodeAt(at)

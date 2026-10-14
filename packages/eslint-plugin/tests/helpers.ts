@@ -95,6 +95,7 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   er: true,
   gantt: true,
   journey: true,
+  requirement: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

@@ -20,6 +20,14 @@ whitespace at the ends of a value is outside it.
 A **state** is a box of the diagram, named by its id. A transition goes from one
 state to another; `[*]` stands for the start or the end.
 
+A StringLiteral of this diagram type is always closed. It is empty only as the
+URL or the tooltip of a click statement, as in `click A "" ""`; an empty
+description makes the input rejected, as in `state "" as A`, and an empty string
+in the state context is no StringLiteral but text that mermaid.js does not read
+(see [The state context](../diagrams/state.md#the-state-context)). [fixture:
+state/lex-click-empty-strings] [fixture: state/lex-alias-empty-string] [fixture:
+state/gram-state-empty-string-alone]
+
 ## Nodes
 
 ### StateDiagram

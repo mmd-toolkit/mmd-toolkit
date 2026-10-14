@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, a class definition: its id and its styles; a definition of an id again adds to the styles; one statement may define several ids."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "a",
+        "styles": [
+          "fill:#f00",
+          "color:#fff",
+          "stroke-width:2px"
+        ]
+      },
+      {
+        "id": "b",
+        "styles": [
+          "stroke:#00f"
+        ]
+      },
+      {
+        "id": "c",
+        "styles": [
+          "stroke:#00f"
+        ]
+      }
+    ]
+  }
+}

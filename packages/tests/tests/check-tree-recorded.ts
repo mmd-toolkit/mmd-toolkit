@@ -52,7 +52,23 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "er",
   "gantt",
   "journey",
+  "requirement",
 ]
+
+/**
+ * The prefixes of the node types of the diagram types that are new and whose
+ * trees are not recorded yet: a test that needs a recorded tree of every node
+ * type leaves these types out. Remove a prefix once the trees of its diagram
+ * type are recorded; the list stays empty between two diagram types.
+ */
+export const NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES: readonly string[] = []
+
+/** Whether a recorded tree may have a node of the type `type`: false for the types of a diagram type whose trees are not recorded yet. */
+export function mayHaveRecordedTrees(type: string): boolean {
+  return !NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES.some((prefix) =>
+    type.startsWith(prefix),
+  )
+}
 
 let corpusTrees: Promise<readonly CorpusTree[]> | undefined
 

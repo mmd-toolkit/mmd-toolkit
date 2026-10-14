@@ -114,14 +114,17 @@ export function fieldSpecOf(typeCell: string): FieldSpec {
   if (cell.startsWith("list of ")) {
     const rest = cell.slice("list of ".length)
     if (rest.startsWith("(")) {
-      // `list of (X or null)` has entries that may be null, and
-      // `list of (X or Y), or null` is a list that may be null.
-      return {
-        shape: rest.endsWith(", or null")
-          ? "nodeListOrNull"
-          : "nodeListWithNull",
-        ...recordOf(cell),
-      }
+      // `list of (X or null)` has entries that may be null,
+      // `list of (X or Y), or null` is a list that may be null, and
+      // `list of (X or Y)` and `list of (X, Y, or Z)` are lists of nodes of
+      // several types.
+      const entries = rest.slice(0, rest.indexOf(")"))
+      const shape = rest.endsWith(", or null")
+        ? "nodeListOrNull"
+        : wordsOf(entries).includes("null")
+          ? "nodeListWithNull"
+          : "nodeList"
+      return { shape, ...recordOf(cell) }
     }
     return {
       shape: rest.endsWith(", or null") ? "nodeListOrNull" : "nodeList",

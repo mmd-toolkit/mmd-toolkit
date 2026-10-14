@@ -260,6 +260,10 @@ Running tests; this is what belongs to this package):
     `line-separators`, `markdown-gantt`, and `value-nodes`.
   - `journey*.ts`: `format` and `corpus` with `-t journey`; and, without `-t`,
     `line-separators`, `markdown-journey`, and `value-nodes`.
+  - `requirement*.ts`: `format` and `corpus` with `-t requirement`; and, without
+    `-t`, `line-separators`, `markdown-requirement`, and `value-nodes`.
+  - `statement-rules.ts`, `accessibility-lines.ts`: the tests of the diagram
+    types that use them, ER and requirement.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:
     `dispatch`, `failure`, `markdown`, `plugin`, and the files of each diagram
     type.

@@ -59,6 +59,18 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
     "journey\n  title T\n  section S\n    A: 5: Me\n    %%{init: {}}%%\n",
   ],
   [
+    "requirement",
+    [
+      "requirementDiagram",
+      "requirement r {",
+      "id: 1",
+      "}",
+      "r   -   satisfies   ->   e",
+      "%%{init: {}}%%",
+    ],
+    "requirementDiagram\n  requirement r {\n    id: 1\n  }\n  r - satisfies -> e\n  %%{init: {}}%%\n",
+  ],
+  [
     "gantt",
     [
       "gantt",

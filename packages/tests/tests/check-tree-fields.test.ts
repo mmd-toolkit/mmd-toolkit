@@ -7,7 +7,11 @@ import { nodesOf } from "../src/check-tree/walk.ts"
 import type { TreeRange } from "../src/db-from-tree/tree.ts"
 import type { DiagramType } from "../src/index.ts"
 import type { CorpusTree } from "./check-tree-recorded.ts"
-import { recordedTree, recordedTreesOfCorpus } from "./check-tree-recorded.ts"
+import {
+  mayHaveRecordedTrees,
+  recordedTree,
+  recordedTreesOfCorpus,
+} from "./check-tree-recorded.ts"
 import type { RecordedTree } from "./check-tree-recorded.ts"
 import { locationOf } from "./check-tree-trees.ts"
 
@@ -77,6 +81,10 @@ function failureOf(
  * start of its message, and where it is when it is not at the node that holds
  * the field.
  */
+/** What the check of a requirement tree reports for a value that disagrees with the keyword that was written. */
+const REQUIREMENT_PARTS =
+  "the tokens that the node writes itself and its child nodes, in source order"
+
 const VALUE_FIELD_REPORTS: Readonly<
   Record<string, { readonly message: string; readonly where?: string }>
 > = {
@@ -168,6 +176,25 @@ const VALUE_FIELD_REPORTS: Readonly<
     message: "value is not the number that its written text writes",
   },
   "NumericLiteral.raw": { message: "raw: " },
+  "RequirementDirectionStatement.direction": {
+    message: REQUIREMENT_PARTS,
+  },
+  "RequirementElementField.field": { message: REQUIREMENT_PARTS },
+  "RequirementIdentifier.name": { message: "name is not its written text" },
+  "RequirementIgnoredText.value": { message: "value is not its written text" },
+  "RequirementLiteral.value": { message: "value is not its written text" },
+  "RequirementRelationshipStatement.arrow": {
+    message: "the field arrow is ",
+  },
+  "RequirementRelationshipStatement.relationship": {
+    message: REQUIREMENT_PARTS,
+  },
+  "RequirementRequirementStatement.requirementType": {
+    message: REQUIREMENT_PARTS,
+  },
+  "RequirementRiskField.risk": { message: REQUIREMENT_PARTS },
+  "RequirementValueField.field": { message: REQUIREMENT_PARTS },
+  "RequirementVerifyMethodField.verifyMethod": { message: REQUIREMENT_PARTS },
   "Root.diagramType": { message: "the diagram type ", where: "Root" },
   "SequenceAccDescrBlockStatement.closed": {
     message: "closed, by whether its last token is `}`: ",
@@ -430,6 +457,7 @@ describe("the fields of the nodes of a recorded tree", () => {
       const first = await firstRecordedTrees()
       const unreported: string[] = []
       for (const [type, fields] of Object.entries(NODE_FIELDS)) {
+        if (!mayHaveRecordedTrees(type)) continue
         const recorded = first.ofType.get(type)
         for (const [field, spec] of Object.entries(fields)) {
           const row = `${type}.${field}`
@@ -469,11 +497,13 @@ describe("the fields of the nodes of a recorded tree", () => {
   )
 
   it("have a row of the rules of the values for every field that holds a value, and for no other", () => {
-    const valueFields = Object.entries(NODE_FIELDS).flatMap(([type, fields]) =>
-      Object.entries(fields)
-        .filter(([, spec]) => spec.shape === "value")
-        .map(([field]) => `${type}.${field}`),
-    )
+    const valueFields = Object.entries(NODE_FIELDS)
+      .filter(([type]) => mayHaveRecordedTrees(type))
+      .flatMap(([type, fields]) =>
+        Object.entries(fields)
+          .filter(([, spec]) => spec.shape === "value")
+          .map(([field]) => `${type}.${field}`),
+      )
     expect(Object.keys(VALUE_FIELD_REPORTS).sort()).toEqual(valueFields.sort())
   })
 
@@ -512,6 +542,7 @@ describe("the fields of the nodes of a recorded tree", () => {
       ])
       const unreported: string[] = []
       for (const [type, fields] of Object.entries(NODE_FIELDS)) {
+        if (!mayHaveRecordedTrees(type)) continue
         for (const [field, spec] of Object.entries(fields)) {
           if (!NULLABLE_NODE_SHAPES.has(spec.shape)) continue
           const key = `${type}.${field}`

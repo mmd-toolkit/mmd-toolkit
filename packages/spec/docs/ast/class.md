@@ -24,6 +24,18 @@ Elsewhere, the whitespace at the ends of a value is outside it.
 A **class** is a box of the diagram, named by a class name. The word does not
 refer to a CSS class, which is called a CSS class throughout.
 
+A StringLiteral of this diagram type is closed, except a backquoted name that
+the text ends inside (see [StringLiteral](../ast.md#stringliteral)). It is empty
+only as the cardinality of a relation or as a tooltip; an empty string
+elsewhere, and an empty backquoted name, make the input rejected (see
+[Known divergences](../diagrams/class.md#known-divergences)). [fixture:
+class/lex-backquote-unclosed] [fixture: class/gram-cardinality-empty] [fixture:
+class/gram-link-tooltip-empty] [fixture: class/gram-callback-tooltip-empty]
+[fixture: class/gram-click-call-tooltip-empty] [fixture:
+class/gram-click-href-tooltip-empty] [fixture:
+class/div-empty-string-statement-start] [fixture:
+class/div-empty-backquoted-in-name]
+
 ## Nodes
 
 ### ClassDiagram

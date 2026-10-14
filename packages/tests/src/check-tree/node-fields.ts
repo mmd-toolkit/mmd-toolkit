@@ -111,7 +111,7 @@ export const NODE_FIELDS: Readonly<
     prefix: { shape: "nodeOrNull" },
     name: { shape: "node" },
     label: { shape: "nodeOrNull" },
-    body: { shape: "nodeListWithNull" },
+    body: { shape: "nodeList" },
   },
   ClassNameStatement: {
     name: { shape: "node" },
@@ -428,6 +428,79 @@ export const NODE_FIELDS: Readonly<
   NumericLiteral: {
     value: { shape: "value", valueType: "number" },
     raw: { shape: "value", valueType: "string" },
+  },
+  RequirementAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  RequirementAccDescrStatement: {
+    value: { shape: "node" },
+  },
+  RequirementAccTitleStatement: {
+    value: { shape: "node" },
+  },
+  RequirementClassDefStatement: {
+    cssClasses: { shape: "nodeList" },
+    styles: { shape: "nodeList" },
+  },
+  RequirementClassShorthandStatement: {
+    name: { shape: "node" },
+    cssClasses: { shape: "nodeList" },
+  },
+  RequirementClassStatement: {
+    names: { shape: "nodeList" },
+    cssClasses: { shape: "nodeList" },
+  },
+  RequirementDiagram: {
+    body: { shape: "nodeList" },
+  },
+  RequirementDirectionStatement: {
+    textBefore: { shape: "nodeOrNull" },
+    direction: { shape: "value", valueType: "string" },
+    textAfter: { shape: "nodeOrNull" },
+  },
+  RequirementElementField: {
+    field: { shape: "value", valueType: "string" },
+    value: { shape: "node" },
+  },
+  RequirementElementStatement: {
+    name: { shape: "node" },
+    cssClasses: { shape: "nodeList" },
+    body: { shape: "nodeList" },
+  },
+  RequirementValueField: {
+    field: { shape: "value", valueType: "string" },
+    value: { shape: "node" },
+  },
+  RequirementIdentifier: {
+    name: { shape: "value", valueType: "string" },
+  },
+  RequirementIgnoredText: {
+    value: { shape: "value", valueType: "string" },
+  },
+  RequirementLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  RequirementRelationshipStatement: {
+    left: { shape: "node" },
+    relationship: { shape: "value", valueType: "string" },
+    arrow: { shape: "value", valueType: "string" },
+    right: { shape: "node" },
+  },
+  RequirementRequirementStatement: {
+    requirementType: { shape: "value", valueType: "string" },
+    name: { shape: "node" },
+    cssClasses: { shape: "nodeList" },
+    body: { shape: "nodeList" },
+  },
+  RequirementRiskField: {
+    risk: { shape: "value", valueType: "string" },
+  },
+  RequirementStyleStatement: {
+    names: { shape: "nodeList" },
+    styles: { shape: "nodeList" },
+  },
+  RequirementVerifyMethodField: {
+    verifyMethod: { shape: "value", valueType: "string" },
   },
   Root: {
     diagramType: { shape: "value", valueType: "string" },

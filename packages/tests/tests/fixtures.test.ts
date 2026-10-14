@@ -26,6 +26,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "er",
   "gantt",
   "journey",
+  "requirement",
 ]
 
 /** Every fixture, read once for all the tests of this file. */

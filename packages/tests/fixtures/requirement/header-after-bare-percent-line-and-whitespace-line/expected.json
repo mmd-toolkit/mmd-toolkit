@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Detection: a bare `%%` line and a line of spaces before the header; mermaid.js rejects the input."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%  requirementDiagr\n--^\nExpecting 'RD', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', got 'NEWLINE'"
+  }
+}

@@ -17,6 +17,7 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  keptAsWritten,
   walk,
 } from "./layout.ts"
 import { holdsJoiningRegion } from "./kept-lines.ts"
@@ -57,21 +58,6 @@ export function layoutHeader(
   }
   return {
     atoms: collectAtoms(source, diagram.range[0], headerEnd, [], []),
-    rules: new Map(),
-    outdented: new Set(),
-    lineBreaks: "kept",
-  }
-}
-
-/**
- * A layout of one atom, the text from `start` to `end` as written: a comment
- * line cuts in, after a U+2028 or U+2029, and the line goes on after it, so
- * the text cannot be printed with its parts on lines of their own
- * (docs/compatibility.md, A comment line after U+2028 or U+2029).
- */
-function keptAsWritten(start: number, end: number): AtomLayout {
-  return {
-    atoms: [{ start, end }],
     rules: new Map(),
     outdented: new Set(),
     lineBreaks: "kept",

@@ -60,7 +60,7 @@ export function findFlowchartKeptLines(source: Source): KeptLines {
   const directionText = findDirectionTextLines(source, statements)
   const kept: KeptLines = {
     joined: new Set([
-      ...findLinesWithOwnSemicolons(source, true),
+      ...findLinesWithOwnSemicolons(source),
       ...findLinesAfterWords(source, statements),
       ...findLinesAfterEmptyStyle(source, statements),
       ...findLinesOfSubgraphBlocks(source, statements),

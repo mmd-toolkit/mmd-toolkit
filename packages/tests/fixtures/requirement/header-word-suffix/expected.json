@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Detection: `requirementDiagramX` is detected and is a name, not the header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nrequirementDiagramX\n^\nExpecting 'RD', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', got 'unqString'"
+  }
+}

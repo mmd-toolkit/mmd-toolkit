@@ -40,6 +40,16 @@ mermaid.js の Db
 2 つの矢印の間にテキストを持つ [FlowchartLink](#flowchartlink) だけが例外です
 （[ノード](../ast.ja.md#ノード) を参照）。
 
+この図種の StringLiteral（click の文の URL と tooltip）は、
+常に閉じていて空ではありません。
+空の文字列 `""` は `empty-string` の単位で、文法のどの規則も取りません
+（[文字列](../diagrams/flowchart.ja.md#文字列) を参照）。
+[fixture: flowchart/lex-empty-string-line] [fixture:
+flowchart/gram-click-href-empty-string]
+[fixture: flowchart/gram-click-href-tooltip-empty-string] [fixture:
+flowchart/gram-click-call-tooltip-empty-string] [fixture:
+flowchart/gram-click-callback-tooltip-empty-string]
+
 ## ノード
 
 ### FlowchartDiagram

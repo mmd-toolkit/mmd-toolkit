@@ -20,6 +20,14 @@ Elsewhere, the whitespace at the ends of a value is outside it.
 An **entity** is a box of the diagram, named by its name; a relationship joins
 two entities, with a cardinality at each end and a role.
 
+A StringLiteral of this diagram type is always closed. It is empty only as a
+role or as the comment of an attribute, as in `A ||--o{ B : ""`; an empty string
+as an entity name makes the input rejected, and empty backquotes are no
+StringLiteral (see [Attributes](../diagrams/er.md#attributes)). [fixture:
+er/gram-role-string-empty] [fixture: er/gram-comment-empty] [fixture:
+er/spec-er-diagram-f4c59d78] [fixture:
+er/gram-empty-backquotes-between-attributes]
+
 ## Nodes
 
 ### ErDiagram

@@ -4,6 +4,7 @@ import type {
   FlowchartNode,
   GanttNode,
   JourneyNode,
+  RequirementNode,
   SequenceNode,
   StateNode,
 } from "../../src/index.ts"
@@ -232,6 +233,35 @@ export const allJourneyNodeTypes: Readonly<Record<JourneyNode["type"], true>> =
     JourneyIgnoredText: true,
   }
 
+/**
+ * Every node type of ast/requirement.md, in the order of that document.
+ * Being a `Record` over the type, this fails to type-check when a node type
+ * is missing here or is not in the type.
+ */
+export const allRequirementNodeTypes: Readonly<
+  Record<RequirementNode["type"], true>
+> = {
+  RequirementDiagram: true,
+  RequirementRequirementStatement: true,
+  RequirementValueField: true,
+  RequirementRiskField: true,
+  RequirementVerifyMethodField: true,
+  RequirementElementStatement: true,
+  RequirementElementField: true,
+  RequirementRelationshipStatement: true,
+  RequirementDirectionStatement: true,
+  RequirementStyleStatement: true,
+  RequirementClassDefStatement: true,
+  RequirementClassStatement: true,
+  RequirementClassShorthandStatement: true,
+  RequirementAccTitleStatement: true,
+  RequirementAccDescrStatement: true,
+  RequirementAccDescrBlockStatement: true,
+  RequirementIdentifier: true,
+  RequirementLiteral: true,
+  RequirementIgnoredText: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -242,6 +272,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allErNodeTypes),
   ...Object.keys(allGanttNodeTypes),
   ...Object.keys(allJourneyNodeTypes),
+  ...Object.keys(allRequirementNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

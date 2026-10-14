@@ -23,6 +23,15 @@ mermaid.js が読むとおりに、その単位が空白を自分の文字とし
 **実体**は図の箱で、名前で名付けられます。
 関係は 2 つの実体を結び、両端に濃度を、ロールを持ちます。
 
+この図種の StringLiteral は常に閉じています。
+空になるのは、`A ||--o{ B : ""` のようなロールと、属性のコメントのときだけです。
+実体の名前としての空の文字列は入力を拒否させ、
+空のバッククォートは StringLiteral ではありません
+（[属性](../diagrams/er.ja.md#属性) を参照）。
+[fixture: er/gram-role-string-empty] [fixture: er/gram-comment-empty] [fixture:
+er/spec-er-diagram-f4c59d78] [fixture:
+er/gram-empty-backquotes-between-attributes]
+
 ## ノード
 
 ### ErDiagram

@@ -93,6 +93,17 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [er-no-unclosed-description-block](./er-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for something else closes.  | ✅  |     |     |
 | [er-no-undef](./er-no-undef.md)                                           | Disallow a `style` or `class` statement that names no entity and no subgraph. | ✅  |     |     |
 
+## journey
+
+| Rule                                                                          | Description                                                           | ✅  | 💡  | 🚧  |
+| ----------------------------------------------------------------------------- | --------------------------------------------------------------------- | --- | --- | --- |
+| [journey-no-duplicate-description](./journey-no-duplicate-description.md)     | Disallow an `accDescr` statement that sets the description again.     | ✅  |     |     |
+| [journey-no-duplicate-title](./journey-no-duplicate-title.md)                 | Disallow a `title` or `accTitle` statement that sets its title again. | ✅  |     |     |
+| [journey-no-empty-description-block](./journey-no-empty-description-block.md) | Disallow an `accDescr` block that holds no description.               | ✅  |     |     |
+| [journey-no-empty-person](./journey-no-empty-person.md)                       | Disallow a person of a task that has no name.                         | ✅  |     |     |
+| [journey-no-ignored-text](./journey-no-ignored-text.md)                       | Disallow text in the data of a task that mermaid.js does not read.    | ✅  |     |     |
+| [journey-no-invalid-score](./journey-no-invalid-score.md)                     | Disallow a task score that is not a number from 1 to 5.               | ✅  |     |     |
+
 ## gantt
 
 | Rule                                                                      | Description                                                                     | ✅  | 💡  | 🚧  |

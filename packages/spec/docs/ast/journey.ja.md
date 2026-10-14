@@ -23,6 +23,10 @@ mermaid.js が読むとおりに、その単位が空白を自分の文字とし
 それに加わる人を持ちます。
 **section** はその後のタスクをまとめます。
 
+この図種には引用符の文字列がないので、StringLiteral のノードはありません。
+タスクのテキストの中の `"` は、テキストの文字です。
+[fixture: journey/lex-quotes-in-task-text]
+
 ## ノード
 
 ### JourneyDiagram

@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Known divergences: mermaid.js reads the quotes of the string as `'` from a tag opened in the frontmatter; here the string ends at its second quote."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "b='c'>d",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

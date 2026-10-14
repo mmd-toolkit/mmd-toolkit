@@ -52,6 +52,7 @@ export type DiagramType =
   | "er"
   | "gantt"
   | "journey"
+  | "requirement"
 
 /**
  * Where a fixture input came from.

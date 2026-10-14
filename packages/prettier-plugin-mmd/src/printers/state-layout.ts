@@ -19,6 +19,7 @@ import {
   expectValue,
   findAccDescrBlockClosing,
   findAccDescrBlockStretches,
+  keptAsWritten,
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
@@ -366,16 +367,6 @@ export function isStateNameStatement(node: MermaidAst | null): boolean {
     node.id !== null &&
     node.body === null
   )
-}
-
-/** A layout of one atom, the text from `start` to `end` as written. */
-function keptAsWritten(start: number, end: number): AtomLayout {
-  return {
-    atoms: [{ start, end }],
-    rules: new Map(),
-    outdented: new Set(),
-    lineBreaks: "kept",
-  }
 }
 
 /**

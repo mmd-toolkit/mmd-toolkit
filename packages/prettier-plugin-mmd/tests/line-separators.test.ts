@@ -717,6 +717,149 @@ const journeyWhitespaceExamples: readonly (readonly [
 ]
 
 /**
+ * Each example is a requirement diagram with U+2028 or U+2029: they are
+ * whitespace between the units, so a gap between statements that holds one
+ * is printed as a line break, while a gap inside a statement that holds one
+ * is printed as written, and in a name, a value, and a string they are
+ * characters of the text (docs/requirement.md, Line separators).
+ */
+const requirementLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+2028 after the closing brace of a body",
+    "requirementDiagram\nrequirement r {\n}\u2028element e {\n}\n",
+    "requirementDiagram\n  requirement r {\n  }\n  element e {\n  }\n",
+  ],
+  [
+    "U+2028 inside a name",
+    "requirementDiagram\nrequirement a\u2028b {\n}\n",
+    "requirementDiagram\n  requirement a\u2028b {\n  }\n",
+  ],
+  [
+    "U+2028 inside a class",
+    "requirementDiagram\nrequirement r:::a\u2028b {\n}\n",
+    "requirementDiagram\n  requirement r:::a\u2028b {\n  }\n",
+  ],
+  [
+    "U+2028 after the keyword of a requirement",
+    "requirementDiagram\nrequirement\u2028r {\n}\n",
+    "requirementDiagram\n  requirement\u2028r {\n  }\n",
+  ],
+  [
+    "U+2028 inside a value",
+    "requirementDiagram\nrequirement r {\nid: a\u2028b\n}\n",
+    "requirementDiagram\n  requirement r {\n    id: a\u2028b\n  }\n",
+  ],
+  [
+    "U+2029 inside a string",
+    'requirementDiagram\nrequirement r {\ntext: "a\u2029b"\n}\n',
+    'requirementDiagram\n  requirement r {\n    text: "a\u2029b"\n  }\n',
+  ],
+  [
+    "U+2028 before the colon of a field",
+    "requirementDiagram\nrequirement r {\nid\u2028: 1\n}\n",
+    "requirementDiagram\n  requirement r {\n    id\u2028: 1\n  }\n",
+  ],
+  [
+    "U+2028 before the arrow of a relationship",
+    "requirementDiagram\na - satisfies\u2028-> b\n",
+    "requirementDiagram\n  a - satisfies\u2028-> b\n",
+  ],
+  [
+    "U+2028 after the name of a relationship",
+    "requirementDiagram\na\u2028- satisfies -> b\n",
+    "requirementDiagram\n  a\u2028- satisfies -> b\n",
+  ],
+  [
+    "U+2028 between direction and its value",
+    "requirementDiagram\ndirection\u2028LR\n",
+    "requirementDiagram\n  direction\u2028LR\n",
+  ],
+  [
+    "U+2028 after the colon of accTitle",
+    "requirementDiagram\naccTitle:\u2028T\n",
+    "requirementDiagram\n  accTitle:\u2028T\n",
+  ],
+  [
+    "U+2028 inside an accessibility text",
+    "requirementDiagram\naccTitle: a\u2028b\n",
+    "requirementDiagram\n  accTitle: a\u2028b\n",
+  ],
+]
+
+/**
+ * Each example is a requirement diagram with a whitespace character other
+ * than a space and a tab, which no file of this package may hold: U+00A0 and
+ * U+FEFF. Where the lexer reads whitespace between units, a space stands for
+ * it; in a name or a value they are characters of the text, and stay
+ * (docs/requirement.md, Whitespace characters).
+ */
+const requirementWhitespaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+00A0 around the name of a requirement",
+    "requirementDiagram\nrequirement\u00a0r\u00a0{\n}\n",
+    "requirementDiagram\n  requirement r {\n  }\n",
+  ],
+  [
+    "U+00A0 around the value of a field",
+    "requirementDiagram\nrequirement r {\nid:\u00a01\u00a0\n}\n",
+    "requirementDiagram\n  requirement r {\n    id: 1\n  }\n",
+  ],
+  [
+    "U+00A0 around the colon of a field",
+    "requirementDiagram\nrequirement r {\nid\u00a0:\u00a01\n}\n",
+    "requirementDiagram\n  requirement r {\n    id: 1\n  }\n",
+  ],
+  [
+    "U+00A0 around the units of a relationship",
+    "requirementDiagram\na\u00a0-\u00a0satisfies\u00a0->\u00a0b\n",
+    "requirementDiagram\n  a - satisfies -> b\n",
+  ],
+  [
+    "U+00A0 around the comma of a list of classes",
+    "requirementDiagram\nrequirement r:::a\u00a0,\u00a0b {\n}\n",
+    "requirementDiagram\n  requirement r:::a,b {\n  }\n",
+  ],
+  [
+    "U+00A0 inside a name",
+    "requirementDiagram\nrequirement a\u00a0b {\n}\n",
+    "requirementDiagram\n  requirement a\u00a0b {\n  }\n",
+  ],
+  [
+    "U+00A0 inside a value",
+    "requirementDiagram\nrequirement r {\nid: a\u00a0b\n}\n",
+    "requirementDiagram\n  requirement r {\n    id: a\u00a0b\n  }\n",
+  ],
+  [
+    "U+00A0 between direction and its value",
+    "requirementDiagram\ndirection\u00a0LR\n",
+    "requirementDiagram\n  direction LR\n",
+  ],
+  [
+    "U+00A0 after the closing brace of a body",
+    "requirementDiagram\nrequirement r {\n}\u00a0element e {\n}\n",
+    "requirementDiagram\n  requirement r {\n  }\n  element e {\n  }\n",
+  ],
+  [
+    "U+FEFF before the opening brace",
+    "requirementDiagram\nrequirement r\ufeff{\n}\n",
+    "requirementDiagram\n  requirement r {\n  }\n",
+  ],
+  [
+    "U+FEFF before a statement",
+    "requirementDiagram\nrequirement r {\n}\n\ufeffelement e {\n}\n",
+    "requirementDiagram\n  requirement r {\n  }\n  element e {\n  }\n",
+  ],
+]
+
+/**
  * Checks that formatting an example gives its formatted form, that
  * formatting again changes nothing, and that the Db that the tree denotes is
  * the same for both texts.
@@ -794,6 +937,24 @@ describe("a user journey with a line separator", () => {
 
 describe("a user journey with a whitespace character that no fixture file holds", () => {
   it.each(journeyWhitespaceExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a requirement diagram with a line separator", () => {
+  it.each(requirementLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a requirement diagram with a whitespace character that no fixture file holds", () => {
+  it.each(requirementWhitespaceExamples)(
     "keeps %s",
     async (_name, input, output) => {
       await expectKept(input, output)

@@ -3,9 +3,9 @@
 Japanese version:
 [bare-percent-line-before-header.ja.md](./bare-percent-line-before-header.ja.md)
 
-Diagram types: flowchart, class, state, er, gantt, and journey. This is one of
-the [known divergences](../known-divergences.md) of this specification from
-mermaid.js.
+Diagram types: flowchart, class, state, er, gantt, journey, and requirement.
+This is one of the [known divergences](../known-divergences.md) of this
+specification from mermaid.js.
 
 ## The syntax
 
@@ -32,8 +32,8 @@ header, and then hands the text with the bare `%%` lines still in it to the
 lexer of the detected diagram. Where that lexer reads such a line as a comment,
 as the lexers of sequence, class, and state read `%%` alone, both accept the
 input. Where it does not, as the lexer of er never does, and as the lexers of
-gantt and journey do not before the header, mermaid.js rejects the input, and
-this specification accepts it: that is this divergence.
+gantt, journey, and requirement do not before the header, mermaid.js rejects the
+input, and this specification accepts it: that is this divergence.
 
 ## The difference
 
@@ -98,20 +98,31 @@ Each example is a whole diagram.
    ```mmd
    %%
    journey
-     A: 1
+   A: 1
    ```
 
-| Example | mermaid.js                                          | This specification                       |
-| ------- | --------------------------------------------------- | ---------------------------------------- |
-| 1       | rejected: the `%%` is an id before the header       | a flowchart with the edge A to B         |
-| 2       | rejected: the `%%` is an id before the header       | a flowchart with the edge A to B         |
-| 3       | rejected: `%%` is ignored text and `{` fits nothing | a state diagram with the transition to A |
-| 4       | rejected: the line of spaces is a `newline` unit    | a class diagram with the class A         |
-| 5       | rejected: the line of spaces is a `newline` unit    | a class diagram with the class A         |
-| 6       | rejected: the lexer has no rule for `%`             | an ER diagram with the relationship      |
-| 7       | rejected: the lexer has no rule for `%`             | an ER diagram with the entity A          |
-| 8       | rejected: the line feed is a `newline` unit         | a Gantt chart with the title T           |
-| 9       | rejected: the line feed is a `newline` unit         | a user journey with the task A           |
+10. A line of `%%` alone, a line `%%{ }%%`, or a line of `%%` alone and a line
+    of two spaces, before a requirement header:
+
+    ```mmd
+    %%
+    requirementDiagram
+    requirement r {
+    }
+    ```
+
+| Example | mermaid.js                                          | This specification                           |
+| ------- | --------------------------------------------------- | -------------------------------------------- |
+| 1       | rejected: the `%%` is an id before the header       | a flowchart with the edge A to B             |
+| 2       | rejected: the `%%` is an id before the header       | a flowchart with the edge A to B             |
+| 3       | rejected: `%%` is ignored text and `{` fits nothing | a state diagram with the transition to A     |
+| 4       | rejected: the line of spaces is a `newline` unit    | a class diagram with the class A             |
+| 5       | rejected: the line of spaces is a `newline` unit    | a class diagram with the class A             |
+| 6       | rejected: the lexer has no rule for `%`             | an ER diagram with the relationship          |
+| 7       | rejected: the lexer has no rule for `%`             | an ER diagram with the entity A              |
+| 8       | rejected: the line feed is a `newline` unit         | a Gantt chart with the title T               |
+| 9       | rejected: the line feed is a `newline` unit         | a user journey with the task A               |
+| 10      | rejected: the line feed is a `newline` unit         | a requirement diagram with the requirement r |
 
 [fixture: flowchart/header-after-bare-percent-line] [fixture:
 flowchart/header-after-empty-braces-line] [fixture:
@@ -125,7 +136,10 @@ gantt/header-after-empty-braces-line] [fixture:
 gantt/header-after-bare-percent-line-and-whitespace-line] [fixture:
 journey/header-after-bare-percent-line] [fixture:
 journey/header-after-empty-braces-line] [fixture:
-journey/header-after-bare-percent-line-and-whitespace-line]
+journey/header-after-bare-percent-line-and-whitespace-line] [fixture:
+requirement/header-after-bare-percent-line] [fixture:
+requirement/header-after-empty-braces-line] [fixture:
+requirement/header-after-bare-percent-line-and-whitespace-line]
 
 The neighbouring forms are read in the same way: in flowchart and state, a line
 `%%{-x}%%` or `%%{}`, which starts no directive, is a bare `%%` line, a comment
@@ -163,10 +177,10 @@ rejects one that mermaid.js accepts here.
 
 A line of `%%` alone, or `%%{ }%%`, before the header is read as a comment by
 this toolkit in every diagram type, and by mermaid.js only in sequence, class,
-and state (and not before a line of spaces in class), never in er, gantt, or
-journey. To write a diagram that both read the same, write comments before the
-header as comment lines, with at least one character after the `%%`, and leave
-no line of spaces between them and the header.
+and state (and not before a line of spaces in class), never in er, gantt,
+journey, or requirement. To write a diagram that both read the same, write
+comments before the header as comment lines, with at least one character after
+the `%%`, and leave no line of spaces between them and the header.
 
 ## Why mermaid.js reads it so
 
@@ -184,9 +198,9 @@ bare `%%` lines reach the lexer. The flowchart lexer reads `%%` as an id, the
 state lexer reads `%%` as ignored text and has no rule for a `{` there, the
 class lexer reads a line of whitespace only as a `newline` unit, which its
 grammar does not take before the header, the er lexer has no rule for `%` at
-all, and the gantt and journey lexers read the `%%` as a comment but the line
-feed after it as a `newline` unit, which their grammars do not take before the
-header. The open issue
+all, and the gantt, journey, and requirement lexers read the `%%` as a comment
+but the line feed after it as a `newline` unit, which their grammars do not take
+before the header. The open issue
 [mermaid-js/mermaid#8196](https://github.com/mermaid-js/mermaid/issues/8196)
 records that the two comment-stripping methods of detection and preprocessing
 disagree.

@@ -14,7 +14,8 @@ the sentence of the specification or of the parser's documents that defines it.
 ## Fixtures
 
 `tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
-`sequence/`, `class/`, `state/`, `er/`, `gantt/`, and `journey/`, and checks:
+`sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, and
+`requirement/`, and checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));
@@ -157,12 +158,36 @@ statement only inside a click statement: between its ids and its first part, and
 between its two parts, where the unit after the forms starts the second part.
 [fixture: gantt/div-empty-href-before-call] [fixture:
 gantt/div-empty-description-block-between-href-and-call] [fixture:
-gantt/gram-empty-href-line] [fixture: gantt/gram-click-href-then-empty-href]
-Whether a block is a statement is decided without the empty forms before it that
-are left out, and blocks written one after another, with only whitespace between
-them, are decided together, by what follows the last of them: in `""accDescr {}`
-followed by a line break and `A`, the block starts a statement once the empty
-string is left out, so it stays in the reference input. [fixture:
+gantt/gram-empty-href-line] [fixture: gantt/gram-click-href-then-empty-href] In
+a requirement diagram, an empty string is an empty form wherever it lies, as in
+a flowchart. Nothing separates two statements there, and an empty description
+block lies inside a statement where a unit of the statement before it follows
+it: where that statement has not ended, after a unit that more of it must
+follow, a kind of requirement, `element`, `:::`, `,`, the keyword of a field,
+`:`, an arrow, or a relation, or after a name that more of its statement must
+follow, the name of a requirement or an element and the classes after its `:::`,
+a name that starts a relationship or a class shorthand statement, a name of the
+first list of a `class` statement, and a name after `style` or `classDef`; and
+where the unit after the blocks is a `,` after a class of a class shorthand
+statement or of the second list of a `class` statement. A style ends at the line
+feed that leaves the style context, so a block after it is a statement. On a
+line of the body of a requirement or an element, a block is an item of the body.
+[fixture: requirement/div-empty-string-line] [fixture:
+requirement/div-empty-description-block-in-relationship] [fixture:
+requirement/div-empty-description-block-after-string-class] [fixture:
+requirement/div-empty-description-block-before-shorthand-separator] [fixture:
+requirement/div-empty-description-block-before-class-next-line] [fixture:
+requirement/div-empty-description-block-before-shorthand-class-comma] [fixture:
+requirement/div-empty-description-block-before-class-comma-next-line] [fixture:
+requirement/gram-empty-description-block-after-shorthand-string-class] [fixture:
+requirement/gram-empty-description-block-after-class-string-next-line] [fixture:
+requirement/gram-empty-description-block-after-style-line] [fixture:
+requirement/gram-empty-description-block-in-body] Whether a block is a statement
+is decided without the empty forms before it that are left out, and blocks
+written one after another, with only whitespace between them, are decided
+together, by what follows the last of them: in `""accDescr {}` followed by a
+line break and `A`, the block starts a statement once the empty string is left
+out, so it stays in the reference input. [fixture:
 flowchart/lex-empty-string-before-empty-description-block] For one or more
 blocks between `direction` and its value on one line in a class diagram, the
 reference input also leaves out the whitespace around the blocks, so that

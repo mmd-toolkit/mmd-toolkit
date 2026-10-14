@@ -1223,3 +1223,209 @@ Db は、すべての journey 図が共有する 1 つのオブジェクトで�
   [fixture: journey/db-task-data-ends-at-hash]
 
 値は、空白を含めて Db が持つままで記録します。
+
+## requirement
+
+要約の欄です。
+
+| 欄              | 内容                                                  |
+| --------------- | ----------------------------------------------------- |
+| `direction`     | `TB`。direction の文があれば、最後の文の方向。        |
+| `title`         | フロントマターのタイトル。なければ空のテキスト。      |
+| `accTitle`      | アクセシビリティのタイトル。なければ空のテキスト。    |
+| `accDescr`      | アクセシビリティの説明。なければ空のテキスト。        |
+| `requirements`  | requirement。最初に定義された順。                     |
+| `elements`      | element。最初に定義された順。                         |
+| `relationships` | 関係。ソースの順。                                    |
+| `classes`       | クラスの定義（`classDef`）。id が最初に定義された順。 |
+
+requirement は `name`、`type`、`requirementId`、`text`、`risk`、`verifyMethod`、
+`cssStyles`、`classes` を持ちます。
+element は `name`、`type`、`docRef`、`cssStyles`、`classes` を持ちます。
+関係は `type`、`src`、`dst` を持ちます。
+クラスの定義は `id` と `styles` を持ちます。
+
+`normalizeRequirement()`（`src/normalizers/requirement.ts`）が、
+`requirement` の Db を要約します。
+Db はブラウザの機能も、時刻も、乱数も読まず、構文にリンクもないので、
+要約に Db のパッチは要りません。
+読むのは Db 自身の一覧（`getRequirements()`、`getElements()`、
+`getRelationships()`、`getClasses()`）で、
+描画用のデータ
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L292-L342)
+ではありません。
+`getData()` は、保存された requirement と element のオブジェクトに欄を足し、
+辺を作りますが、どれも一覧から作れるものです。
+次を、それぞれの理由で除きます。
+
+- requirement と element の `classes` の最初の名前 `default`。
+  どれも、文が何であれ、これで始まります。
+  文が与える名前はその後に続き、文が `default` を与えたときは、それが残ります。
+- `classes[].textStyles`。
+  色に触れるクラスのスタイルで、`styles` だけから作られます。
+- `getData()` が Db から作るもの。
+  ノードの `id`、`shape`、`look`、`cssClasses`、`colorIndex` と、
+  辺の id、ラベル、矢印の種類、線の模様です。
+  `look` はサイトの設定です。
+- 読んでいる途中の requirement と element。
+  定義が終わるごとに初期化されます。
+
+欄ごとの値です。
+
+- `direction` は、direction の文がなければ `TB` です。
+  最後の direction の文が決め、大文字小文字を問わず書け、記録は大文字です。
+  [fixture: requirement/db-direction-last-wins]
+  [fixture: requirement/db-direction-lower-case]
+  [fixture: requirement/spec-requirement-diagram-7522200d]
+  [fixture: requirement/spec-requirement-diagram-08cfba06]
+  [fixture: requirement/spec-requirement-diagram-34fcfcee]
+  [fixture: requirement/spec-requirement-diagram-6d165a76]
+- `title` はフロントマターのタイトルです。図にはそのための文がありません。
+  `accTitle` と `accDescr` は、
+  その種類の最後の文のテキストを trim したものです。
+  ブロックの説明のテキストは改行を持ち、各改行の後ろの空白は除かれます。
+  [fixture: requirement/db-frontmatter-title]
+  [fixture: requirement/db-acc-title-descr]
+  [fixture: requirement/db-acc-descr-block]
+  [fixture: requirement/spec-requirement-diagram-e5ae8f38]
+  [fixture: requirement/spec-requirement-diagram-27be7222]
+- タイトルとアクセシビリティのテキストは `sanitizeText` を通ります。
+  `securityLevel` が mermaid.js の値のどれでもなく、HTML のラベルが有効なら、
+  文字を置き換えたものを持ちます
+  （[db-from-tree.md](./db-from-tree.md) の文字の置き換えを参照）。
+  requirement と element の名前、id、テキスト、type、参照、
+  関係の名前、クラスは変わりません。
+  [fixture: requirement/config-security-level-other-title]
+  [fixture: requirement/config-security-level-other-acc-title]
+  [fixture: requirement/config-security-level-other-acc-descr]
+  [fixture: requirement/config-security-level-other-acc-descr-block]
+  [fixture: requirement/config-security-level-other-html-labels-false]
+  [fixture: requirement/config-security-level-other-names-as-written]
+- どの値も[変換した形](../../spec/docs/common.ja.md#ソースの読み方)で読むので、
+  エンティティは、名前、id、テキスト、type、参照、関係の名前、
+  アクセシビリティのテキストのどれでも、プレースホルダです。
+  [fixture: requirement/entity-placeholder-in-requirement-fields]
+  [fixture: requirement/entity-placeholder-in-element-fields]
+  [fixture: requirement/entity-placeholder-in-relationship]
+  [fixture: requirement/entity-placeholder-in-acc-title]
+  [fixture: requirement/entity-placeholder-in-acc-descr]
+  [fixture: requirement/entity-placeholder-in-acc-descr-block]
+- `requirements` は、名前ごとに 1 つの requirement を、
+  最初の定義の順に持ちます。
+  本体が設定しない欄は、空のテキストです。
+  [fixture: requirement/db-requirement-defaults]
+  [fixture: requirement/db-requirement-all-fields]
+  [fixture: requirement/db-requirement-order]
+- requirement の `type` は、定義を始める語に対応する名前です。
+  `Requirement`、`Functional Requirement`、`Interface Requirement`、
+  `Performance Requirement`、`Physical Requirement`、
+  `Design Constraint` のどれかです。
+  `risk` は `Low`、`Medium`、`High`、
+  `verifyMethod` は `Analysis`、`Demonstration`、`Inspection`、`Test` です。
+  構文の語は大文字小文字を問わず読み、Db はここに挙げた名前で持ちます。
+  [fixture: requirement/db-keywords-upper-case]
+  [fixture: requirement/spec-requirement-diagram-54ea0a9d]
+  [fixture: requirement/spec-requirement-diagram-d1dc0373]
+  [fixture: requirement/spec-requirement-diagram-17e0a905]
+  [fixture: requirement/spec-requirement-diagram-f221edee]
+  [fixture: requirement/spec-requirement-diagram-0e21244e]
+  [fixture: requirement/spec-requirement-diagram-06f108a7]
+  [fixture: requirement/spec-requirement-diagram-4a3ca536]
+  [fixture: requirement/spec-requirement-diagram-f64fbd88]
+  [fixture: requirement/spec-requirement-diagram-1a2f68fa]
+  [fixture: requirement/spec-requirement-diagram-1e009b06]
+- 引用符のない名前や値は、両端の空白を失い、中に空白を含められます。
+  引用符のあるものは、引用符の間の文字を、引用符のないものが持てない文字も
+  空白も、そのまま保ちます。
+  [fixture: requirement/db-requirement-value-spaces]
+  [fixture: requirement/db-requirement-name-spaces]
+  [fixture: requirement/db-requirement-quoted-values]
+- 欄を複数回設定したときは、最初の値が残ります。
+  Db は本体の欄を、最後から最初の順に適用するためです。
+  [fixture: requirement/db-requirement-fields-repeated]
+  [fixture: requirement/db-element-fields-repeated]
+- 同じ名前をもう一度、どの type の requirement としても、element としても
+  定義すると、最初の定義の欄がそのまま残り、2 回目の本体も含めて無視されます。
+  ただし 2 回目の定義の頭の `:::` の後のクラスは与えられます。
+  与える先は、その名前の requirement で、requirement がなければその名前の
+  element です。2 回目がどちらであっても同じです。
+  requirement と element は同じ名前を持て、
+  その名前を指す文は requirement にだけ働きます。
+  名前はどんな名前でもよく、`__proto__` や `constructor` も名前です。
+  [fixture: requirement/db-requirement-definition-again-with-class]
+  [fixture: requirement/db-element-definition-with-class-of-requirement]
+  [fixture: requirement/db-element-definition-again-with-class]
+  [fixture: requirement/db-requirement-name-repeated]
+  [fixture: requirement/db-element-name-repeated]
+  [fixture: requirement/db-requirement-and-element-same-name]
+  [fixture: requirement/spec-requirement-diagram-7e4de658]
+  [fixture: requirement/spec-requirement-diagram-dec8a0d9]
+  [fixture: requirement/spec-requirement-diagram-29c59902]
+  [fixture: requirement/spec-requirement-diagram-20d637a1]
+- `elements` は、名前ごとに 1 つの element を持ちます。
+  `type` と `docRef` は任意のテキストで、本体が設定しなければ空のテキストです。
+  [fixture: requirement/db-element-defaults]
+  [fixture: requirement/db-element-fields]
+  [fixture: requirement/spec-requirement-diagram-aa701d4f]
+- `relationships` は、関係の文ごとに 1 つを持ち、同じ文をもう一度書いても
+  もう 1 つできます。
+  `type` は `contains`、`copies`、`derives`、`satisfies`、`verifies`、
+  `refines`、`traces` のどれかです。
+  `src` は線の側の名前、`dst` は矢じりの側の名前で、
+  語のどちら側に書かれていても同じです。
+  名前は requirement や element のものでなくてもよく、引用符で囲めます。
+  [fixture: requirement/db-relationship-arrows]
+  [fixture: requirement/db-relationship-quoted-names]
+  [fixture: requirement/db-relationship-undefined-names]
+  [fixture: requirement/db-relationships-repeated]
+  [fixture: requirement/spec-requirement-diagram-ef787489]
+  [fixture: requirement/spec-requirement-diagram-50b3d65a]
+  [fixture: requirement/spec-requirement-diagram-7dfbfd0b]
+  [fixture: requirement/spec-requirement-diagram-bbf167e5]
+  [fixture: requirement/spec-requirement-diagram-d742a321]
+  [fixture: requirement/spec-requirement-diagram-3adb8f93]
+  [fixture: requirement/spec-requirement-diagram-3b9d9ff5]
+- `cssStyles` は、文が requirement や element に与えたスタイルを、
+  与えた順に持ちます。
+  `style` の文は、挙げた名前のそれぞれに、
+  スタイルをコンマごとに 1 つずつ足します。
+  requirement でも element でもない名前に当たると、そこで止まり、
+  その後ろの名前は何も得ません。
+  [fixture: requirement/db-style-statement]
+  [fixture: requirement/db-style-unknown-name]
+  [fixture: requirement/db-class-statement-unknown-name-first]
+  [fixture: requirement/spec-requirement-diagram-5305b791]
+  [fixture: requirement/spec-requirement-diagram-e39bdc99]
+  [fixture: requirement/spec-requirement-diagram-5ee6d26d]
+- requirement や element の `classes` は、文が与えたクラス名を順に持ちます。
+  `class` の文、名前の後ろの `:::`、定義の頭の `:::` が与えます。
+  `class` の文の名前が requirement でも element でもなければ、飛ばされ、
+  その後ろの名前にはクラスが付きます。
+  [fixture: requirement/db-class-statement]
+  [fixture: requirement/db-class-statement-unknown-name-first]
+  [fixture: requirement/db-class-colon-form]
+  [fixture: requirement/db-class-in-definition]
+  [fixture: requirement/db-class-default-name]
+  [fixture: requirement/spec-requirement-diagram-6bb10181]
+  [fixture: requirement/spec-requirement-diagram-5128588b]
+  [fixture: requirement/spec-requirement-diagram-a55d1b35]
+  [fixture: requirement/spec-requirement-diagram-a8854583]
+  [fixture: requirement/spec-requirement-diagram-0799fd14]
+- クラスは、2 つの場合にスタイルを requirement や element に与えます。
+  メンバーがクラスに加わるとき（そのときまでにクラスが定義されていれば）と、
+  クラスが定義されるとき（そのときのメンバーに）です。
+  requirement と element はすべて、最初から `default` のメンバーなので、
+  `default` の定義は、それより前に定義されたすべてにスタイルを足します。
+  [fixture: requirement/db-class-styles-order]
+  [fixture: requirement/db-class-styles-order-defined-first]
+  [fixture: requirement/db-class-statement-before-def]
+  [fixture: requirement/db-class-def-default-all]
+- 要約の `classes` は、id ごとに 1 つのクラスの定義を、最初の定義の順に持ち、
+  `styles` は与えた順です。
+  同じ id をもう一度定義するとスタイルが足され、
+  1 つの文で複数の id を定義することもできます。
+  [fixture: requirement/db-class-def]
+  [fixture: requirement/spec-requirement-diagram-7ee9ffc8]
+  [fixture: requirement/spec-requirement-diagram-f9464f3d]
+
+値は、空白を含めて Db が持つままで記録します。

@@ -226,6 +226,35 @@ export type {
   JourneyTaskStatement,
   JourneyTitleStatement,
 } from "./ast/journey.ts"
+export type {
+  RequirementAccDescrBlockStatement,
+  RequirementAccDescrStatement,
+  RequirementAccTitleStatement,
+  RequirementClassDefStatement,
+  RequirementClassShorthandStatement,
+  RequirementClassStatement,
+  RequirementDiagram,
+  RequirementDirection,
+  RequirementDirectionStatement,
+  RequirementElementField,
+  RequirementElementStatement,
+  RequirementIdentifier,
+  RequirementIgnoredText,
+  RequirementKind,
+  RequirementLiteral,
+  RequirementName,
+  RequirementNode,
+  RequirementRelationship,
+  RequirementRelationshipStatement,
+  RequirementRequirementStatement,
+  RequirementRisk,
+  RequirementRiskField,
+  RequirementStatement,
+  RequirementStyleStatement,
+  RequirementValueField,
+  RequirementVerifyMethod,
+  RequirementVerifyMethodField,
+} from "./ast/requirement.ts"
 export { ParseError, UnsupportedDiagramError } from "./errors.ts"
 export { parse } from "./parse.ts"
 export type { Visitor } from "./traverse.ts"

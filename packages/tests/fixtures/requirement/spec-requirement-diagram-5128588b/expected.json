@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.spec.js",
+    "line": 805,
+    "test": "when parsing requirement diagram it... > will accept assigning multiple classes via the shorthand syntax"
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "myReq",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:#f9f",
+          "stroke:#333",
+          "stroke-width:4px",
+          "color:blue"
+        ],
+        "classes": [
+          "class1",
+          "class2"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "class1",
+        "styles": [
+          "fill:#f9f",
+          "stroke:#333",
+          "stroke-width:4px"
+        ]
+      },
+      {
+        "id": "class2",
+        "styles": [
+          "color:blue"
+        ]
+      }
+    ]
+  }
+}

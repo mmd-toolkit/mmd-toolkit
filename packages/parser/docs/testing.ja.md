@@ -16,7 +16,8 @@ fixture としてコーパスに足します。
 ## fixture
 
 `tests/fixtures.test.ts` は、`common/`、`flowchart/`、`sequence/`、
-`class/`、`state/`、`er/`、`gantt/`、`journey/` のすべての fixture を parse し、
+`class/`、`state/`、`er/`、`gantt/`、`journey/`、`requirement/` の、
+すべての fixture を parse し、
 次を確かめます。
 
 - パースの結果が、fixture がパーサーのために記録したものと同じであること
@@ -190,6 +191,32 @@ Gantt チャートでは、空の href
 [fixture: gantt/div-empty-description-block-between-href-and-call]
 [fixture: gantt/gram-empty-href-line]
 [fixture: gantt/gram-click-href-then-empty-href]
+要求図では、flowchart と同じく、空の文字列はどこにあっても空の形です。
+そこでは文を区切るものがありません。
+空の説明ブロックが文の中にあるのは、前の文の単位がその後に続くところです。
+1 つは、その文がまだ終わっていないところです。
+まだ続きが要る単位、つまり要求の種類、`element`、`:::`、`,`、欄のキーワード、
+`:`、矢印、関係の後と、
+文にまだ続きが要る名前の後です。
+その名前は、要求や要素の名前と、その `:::` の後のクラス、
+関係やクラスの略記の文を始める名前、`class` の文の最初の並びの名前、
+`style` や `classDef` の後の名前です。
+もう 1 つは、クラスの略記の文のクラスや、
+`class` の文の 2 つ目の並びのクラスの後で、
+ブロックの後の単位が `,` のところです。
+スタイルは style の文脈を出る改行で終わるので、その後のブロックは文です。
+要求や要素の本文の行では、ブロックは本文の項目です。
+[fixture: requirement/div-empty-string-line]
+[fixture: requirement/div-empty-description-block-in-relationship]
+[fixture: requirement/div-empty-description-block-after-string-class]
+[fixture: requirement/div-empty-description-block-before-shorthand-separator]
+[fixture: requirement/div-empty-description-block-before-class-next-line]
+[fixture: requirement/div-empty-description-block-before-shorthand-class-comma]
+[fixture: requirement/div-empty-description-block-before-class-comma-next-line]
+[fixture: requirement/gram-empty-description-block-after-shorthand-string-class]
+[fixture: requirement/gram-empty-description-block-after-class-string-next-line]
+[fixture: requirement/gram-empty-description-block-after-style-line]
+[fixture: requirement/gram-empty-description-block-in-body]
 ブロックが文かどうかは、その前の、除く空の形を除いて決めます。
 間に空白しかない、続けて書いたブロックは、
 最後のブロックの後に続くものでまとめて決めます。

@@ -28,11 +28,19 @@ export type EmptyFormKind =
  * attribute block only lie inside an attribute where the tree has no place
  * for them; gantt has the empty description block, the empty href, and the
  * empty call, of which only the empty description block is a statement
- * where a statement starts.
+ * where a statement starts; requirement has the empty string and the empty
+ * description block, which is a statement where a statement starts and an
+ * item of a body on a line of the body.
  */
 export const EMPTY_FORM_KINDS: Readonly<
   Record<
-    "flowchart" | "sequence" | "class" | "state" | "er" | "gantt",
+    | "flowchart"
+    | "sequence"
+    | "class"
+    | "state"
+    | "er"
+    | "gantt"
+    | "requirement",
     readonly EmptyFormKind[]
   >
 > = {
@@ -48,6 +56,7 @@ export const EMPTY_FORM_KINDS: Readonly<
   state: ["empty-description-block"],
   er: ["empty-description-block", "empty-backquotes"],
   gantt: ["empty-description-block", "empty-href", "empty-call"],
+  requirement: ["empty-string", "empty-description-block"],
 }
 
 /** One empty form: its kind, its units, and its range, from its first character that is not whitespace to its last. */
@@ -76,7 +85,7 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
 /**
  * The empty forms of the kinds `kinds` among `units`, the units of a
  * diagram text, in source order, wherever they lie: each `empty-string`
- * unit (flowchart, Strings);
+ * unit (flowchart and requirement, Strings);
  * each empty call, a `call` unit followed directly by a `(` and a `)` unit,
  * with only whitespace between them (flowchart, Click and callbacks); and
  * each empty description block, an `accDescr` and a `{` unit followed

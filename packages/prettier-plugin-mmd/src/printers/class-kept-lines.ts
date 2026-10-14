@@ -23,7 +23,7 @@ const keptLinesBySource = new WeakMap<Source, KeptLines>()
 export function findClassSemicolonLines(source: Source): ReadonlySet<number> {
   const cached = semicolonLinesBySource.get(source)
   if (cached !== undefined) return cached
-  const lines = findLinesWithOwnSemicolons(source, false)
+  const lines = findLinesWithOwnSemicolons(source)
   semicolonLinesBySource.set(source, lines)
   return lines
 }

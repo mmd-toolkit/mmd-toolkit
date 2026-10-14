@@ -24,7 +24,7 @@ export function findGanttKeptLines(source: Source): KeptLines {
   const cached = keptLinesBySource.get(source)
   if (cached !== undefined) return cached
   const kept: KeptLines = {
-    joined: findLinesWithOwnSemicolons(source, false),
+    joined: findLinesWithOwnSemicolons(source),
     verbatim: new Set([
       ...findLinesEndedBySemicolon(source),
       ...findLinesReadByTheirWhitespace(source),

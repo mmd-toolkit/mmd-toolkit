@@ -10,6 +10,8 @@ import { ganttDbOf } from "./gantt.ts"
 import type { GanttDiagram } from "./gantt-tree.ts"
 import { journeyDbOf } from "./journey.ts"
 import type { JourneyDiagram } from "./journey-tree.ts"
+import { requirementDbOf } from "./requirement.ts"
+import type { RequirementDiagram } from "./requirement-tree.ts"
 import type { ColorAnswer } from "./sequence.ts"
 import { sequenceDbOf } from "./sequence.ts"
 import type { SequenceDiagram } from "./sequence-tree.ts"
@@ -32,6 +34,7 @@ export type DiagramBody =
   | FlowchartDiagram
   | GanttDiagram
   | JourneyDiagram
+  | RequirementDiagram
   | SequenceDiagram
   | StateDiagram
 
@@ -74,6 +77,8 @@ export function dbFromTree(
       return ganttDbOf(text, root, root.body, embedded)
     case "JourneyDiagram":
       return journeyDbOf(text, root, root.body, embedded)
+    case "RequirementDiagram":
+      return requirementDbOf(text, root, root.body, embedded)
     default:
       throw new Error(`dbFromTree: unknown body type ${bodyType}`)
   }

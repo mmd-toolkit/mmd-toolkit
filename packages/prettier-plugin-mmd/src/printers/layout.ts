@@ -1,6 +1,7 @@
 import type { Node, Range, Token } from "@mmd-toolkit/parser"
 import { visitorKeys } from "@mmd-toolkit/parser"
-import type { Atom } from "./atoms.ts"
+import type { Atom, AtomLayout } from "./atoms.ts"
+import { findSemicolonLines, lineStartOf } from "./kept-lines.ts"
 import type { Source } from "./source.ts"
 import {
   findStructuralToken,
@@ -104,15 +105,21 @@ function toAtom(token: Token): Atom {
 /**
  * Whether the text of a statement from `start` to `end` lies on several
  * lines and cannot be joined into one: it holds a comment or a directive, or
- * a `;`. Where the lexer reads the line breaks inside a statement as
- * whitespace, a printer joins the lines of the statement; a comment would
- * then take the rest of the line, and a `;` could come to a line that
- * matches the line rule (common.md, `style` and `classDef` lines) while it
- * did not on its own line, so the rule would ignore it and the text would
- * change: `classDef`, a line break, and `c fill:#f00;` has the entity `#f00;`
- * in its style, and `classDef c fill:#f00;` has the style `fill:#f00`. Such a
- * statement is kept as written (docs/sequence.md and docs/class.md,
- * Multi-line statements).
+ * a `;`, or its last line is one that holds a `;` (see `findSemicolonLines`).
+ * Where the lexer reads the line breaks inside a statement as whitespace, a
+ * printer joins the lines of the statement; a comment would then take the
+ * rest of the line, and a `;` could come to a line that matches the line rule
+ * (common.md, `style` and `classDef` lines) while it did not on its own line,
+ * so the rule would ignore it and the text would change: `classDef`, a line
+ * break, and `c fill:#f00;` has the entity `#f00;` in its style, and
+ * `classDef c fill:#f00;` has the style `fill:#f00`. The same holds when the
+ * `;` is in another statement on the last line of the statement: the joined
+ * line takes the text before the `;` from the first line, and the rule reads
+ * the text of the whole line. `"style:#q" - satisfies`, a line break, and
+ * `-> "b" e - satisfies -> f;g` has the target `f;g`, and the joined line has
+ * the target `fg`. Such a statement is kept as written (docs/sequence.md and
+ * docs/class.md, Multi-line statements). This is the one decision about
+ * joining lines that every layout takes.
  */
 export function spansLinesThatCannotJoin(
   source: Source,
@@ -120,10 +127,90 @@ export function spansLinesThatCannotJoin(
   end: number,
 ): boolean {
   const text = source.text.slice(start, end)
-  return (
-    text.includes("\n") &&
-    (text.includes(";") || findTriviaBetween(source, start, end).length > 0)
-  )
+  if (!text.includes("\n")) return false
+  if (text.includes(";") || findTriviaBetween(source, start, end).length > 0) {
+    return true
+  }
+  return findSemicolonLines(source).has(lineStartOf(source, end - 1))
+}
+
+/** A layout of one atom, the text from `start` to `end` as written. */
+export function keptAsWritten(start: number, end: number): AtomLayout {
+  return {
+    atoms: [{ start, end }],
+    rules: new Map(),
+    outdented: new Set(),
+    lineBreaks: "kept",
+  }
+}
+
+/** The layout of the line of a header that is a keyword alone. */
+export function layoutKeywordHeader(
+  source: Source,
+  keyword: Token,
+): AtomLayout {
+  return {
+    atoms: collectAtoms(source, keyword.range[0], keyword.range[1], [], []),
+    rules: new Map(),
+    outdented: new Set(),
+    lineBreaks: "kept",
+  }
+}
+
+/**
+ * The layout of an `accDescr {}` block without text, which changes nothing: a
+ * statement of its own, or an item of the body of a block. It is printed on
+ * one line, as any statement is, unless it holds a comment or a directive
+ * over several lines (see `spansLinesThatCannotJoin`).
+ */
+export function layoutEmptyDescriptionBlock(
+  source: Source,
+  start: number,
+  end: number,
+): AtomLayout {
+  if (spansLinesThatCannotJoin(source, start, end)) {
+    return keptAsWritten(start, end)
+  }
+  return {
+    atoms: collectAtoms(source, start, end, [], []),
+    rules: new Map(),
+    outdented: new Set(),
+    lineBreaks: "joined",
+  }
+}
+
+/**
+ * The layout of an `accDescr { ... }` statement of a diagram type whose
+ * description blocks are always closed: the lines of its text are kept as
+ * written and its `}` stands at the level of the statement (the rules document
+ * of the diagram type, Accessibility statements). A block without text is
+ * laid out as `layoutEmptyDescriptionBlock` says. The text is a value of
+ * `valueTypes`.
+ */
+export function layoutDescriptionBlock(
+  source: Source,
+  statement: Node & { readonly value: Node | null },
+  end: number,
+  valueTypes: ReadonlySet<Node["type"]>,
+): AtomLayout {
+  const start = statement.range[0]
+  if (statement.value === null) {
+    return layoutEmptyDescriptionBlock(source, start, end)
+  }
+  const block = { range: statement.range, value: statement.value, closed: true }
+  const closing = findAccDescrBlockClosing(source, block)
+  return {
+    atoms: collectAtoms(
+      source,
+      start,
+      end,
+      collectValueNodes(statement, valueTypes),
+      findAccDescrBlockStretches(source, block),
+    ),
+    rules: new Map(),
+    outdented: closing === null ? new Set() : new Set([closing]),
+    lineBreaks: "kept",
+  }
 }
 
 /** Fails when a token that the tree implies is missing. */

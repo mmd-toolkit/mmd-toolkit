@@ -773,6 +773,57 @@ mermaid.js は、journey の一部の値の空白を持ち、
   mermaid.js の行の規則は行のテキストを読むので、その行の文を行に残します。
   [fixture: journey/statements-one-per-line/ignored-semicolon-line-kept]
 
+## 場所や空白で決まる requirement の行
+
+mermaid.js は、requirement 図の名前や値の一部の空白を持ち、
+一部の行を、その行の置かれた場所で読みを決めます。
+そのため、整形は書かれたまま残します。
+[名前](./requirement.ja.md#名前)、
+[フィールド](./requirement.ja.md#フィールド)、
+[スタイルとクラス](./requirement.ja.md#スタイルとクラス)、
+[1 行に 1 文](./requirement.ja.md#1-行に-1-文)を参照してください。
+
+- 引用符のない名前、値、クラスの中の空白と、文字列の引用符の間のすべて。
+  Db が持つので、空白 2 つの `requirement spaced  name` や `id: a  b` は、
+  空白 1 つの形とは別のものです。
+  両端の空白は Db に入らないので落とします。
+  [fixture: requirement/names/inner-whitespace-kept]
+  [fixture: requirement/fields/value-inner-whitespace-kept]
+  [fixture: requirement/class-lists/classes-with-spaces]
+- 引用符のない名前や値の後ろの `#` と `%`。
+  テキストの文字なので、`id: 1 #c` の値は `1 #c` で、
+  コメントとして動かしません。
+  [fixture: requirement/comments/in-unquoted-text-is-text]
+- `style`・`classDef`・`class` 文の行末の文字列が始める文。
+  字句解析器はそこでまだ style の文脈にあり、
+  文字列の後の改行が文を続けるので、
+  `style r fill:red "r"` と次の行の `:::c` は r にクラス c を与えますが、
+  `"r"` と `:::c` を別々の行に置くと拒否されます。
+  文は、各部を 1 行にして自分の行に置きます。
+  コメント行かディレクティブを含むとき、`;` を含む行にあるときは、
+  前の文の行に残し、その行を書かれたまま印字します。
+  [fixture: requirement/statements-one-per-line/string-continued-after-styles]
+  [fixture: requirement/statements-one-per-line/continued-with-comment-line-kept]
+  [fixture: requirement/statements-one-per-line/continued-on-semicolon-line-kept]
+- 改行の後の `class` 文の名前。
+  文の文脈で読まれ、そこでは引用符のない名前が空白やほかの文字を含められます。
+  1 行にすると style の文脈で読まれ、
+  そこでは引用符のない名前が `style-word` なので、文が拒否されます。
+  [fixture: requirement/styles-and-classes/class-over-lines-kept]
+- 印字する最初の行に `direction` と方向を含む
+  `accTitle`、`accDescr:`、`accDescr {` の文は、
+  ER 図と同じく 1 桁目を保ちます。
+  [fixture: requirement/accessibility-statements/first-column-kept]
+- `;` を含む行。
+  mermaid.js の行の規則は行のテキストを読むので、その行の文を行に残します。
+  複数行に書かれた文の最後の行に、後ろの文の `;` があるときも、
+  1 行にした行が全体として読まれるので、書かれたまま残します。
+  [fixture: requirement/statements-one-per-line/ignored-semicolon-line-kept]
+  [fixture: requirement/multi-line-statements/relationship-last-line-semicolon-kept]
+- フィールドのない本体。
+  mermaid.js は `{` の後に改行を要するので、`{` と `}` を 2 行に置きます。
+  [fixture: requirement/bodies/empty-body-on-two-lines]
+
 ## U+2028 か U+2029 の後のコメント行
 
 mermaid.js は、本文を読む前に、コメント行を取り除きます。

@@ -278,6 +278,11 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   - `journey*.ts`: `format` と `corpus` を `-t journey` で。
     `-t` なしで `line-separators`、`markdown-journey`、
     `value-nodes`。
+  - `requirement*.ts`: `format` と `corpus` を `-t requirement` で。
+    `-t` なしで `line-separators`、`markdown-requirement`、
+    `value-nodes`。
+  - `statement-rules.ts`、`accessibility-lines.ts`:
+    それを使う図種、ER と requirement のテスト。
   - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:
     `dispatch`、`failure`、`markdown`、`plugin`と、
     図種ごとのファイル。

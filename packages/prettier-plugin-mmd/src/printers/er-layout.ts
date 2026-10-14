@@ -1,9 +1,5 @@
 import type {
-  ErAccDescrStatement,
-  ErAccTitleStatement,
   ErAttribute,
-  ErClassStatement,
-  ErDirectionStatement,
   ErEntityReference,
   ErEntityStatement,
   ErRelationshipStatement,
@@ -20,12 +16,19 @@ import {
   collectValueNodes,
   expectToken,
   expectValue,
-  findAccDescrBlockClosing,
-  findAccDescrBlockStretches,
+  keptAsWritten,
+  layoutDescriptionBlock,
   spansLinesThatCannotJoin,
   toAsciiLowerCase,
 } from "./layout.ts"
 import type { Source } from "./source.ts"
+import {
+  accessibilityRules,
+  addClassListRules,
+  classStatementRules,
+  directionRules,
+  styleStatementRules,
+} from "./statement-rules.ts"
 import {
   findStructuralToken,
   findTokenEndingBefore,
@@ -153,26 +156,6 @@ export function findAttributeBraces(
     "the `{` of an attribute block",
   )
   return { opening, closing }
-}
-
-/** The layout of the header line: the keyword `erDiagram`. */
-export function layoutErHeader(source: Source, keyword: Token): AtomLayout {
-  return {
-    atoms: collectAtoms(source, keyword.range[0], keyword.range[1], [], []),
-    rules: new Map(),
-    outdented: new Set(),
-    lineBreaks: "kept",
-  }
-}
-
-/** A layout of one atom, the text from `start` to `end` as written. */
-function keptAsWritten(start: number, end: number): AtomLayout {
-  return {
-    atoms: [{ start, end }],
-    rules: new Map(),
-    outdented: new Set(),
-    lineBreaks: "kept",
-  }
 }
 
 /**
@@ -305,7 +288,7 @@ export function layoutErStatement(
 ): AtomLayout {
   const start = statement.range[0]
   if (statement.type === "ErAccDescrBlockStatement") {
-    return layoutDescriptionBlock(source, statement, end)
+    return layoutDescriptionBlock(source, statement, end, erValueNodeTypes)
   }
   if (spansLinesThatCannotJoin(source, start, end)) {
     return keptAsWritten(start, end)
@@ -366,47 +349,6 @@ function findEndingSemicolonStretches(
       end: statement.range[1],
     },
   ]
-}
-
-/**
- * The layout of an `accDescr { ... }` block: the lines of its text are kept
- * as written and its `}` stands at the level of the statement
- * (docs/er.md, Accessibility statements). A block without text is printed on
- * one line, as any statement is.
- */
-function layoutDescriptionBlock(
-  source: Source,
-  statement: Extract<ErSimpleStatement, { type: "ErAccDescrBlockStatement" }>,
-  end: number,
-): AtomLayout {
-  const start = statement.range[0]
-  if (statement.value === null) {
-    if (spansLinesThatCannotJoin(source, start, end)) {
-      return keptAsWritten(start, end)
-    }
-    return {
-      atoms: collectAtoms(source, start, end, [], []),
-      rules: new Map(),
-      outdented: new Set(),
-      lineBreaks: "joined",
-    }
-  }
-  // A description block of an ER diagram is always closed: one that is not
-  // is rejected (diagrams/er.md, Units and contexts).
-  const block = { range: statement.range, value: statement.value, closed: true }
-  const closing = findAccDescrBlockClosing(source, block)
-  return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, erValueNodeTypes),
-      findAccDescrBlockStretches(source, block),
-    ),
-    rules: new Map(),
-    outdented: closing === null ? new Set() : new Set([closing]),
-    lineBreaks: "kept",
-  }
 }
 
 /**
@@ -492,7 +434,11 @@ function statementRules(
     case "ErStyleStatement":
       return styleStatementRules(source, statement.entities, statement.styles)
     case "ErClassStatement":
-      return classStatementRules(source, statement)
+      return classStatementRules(
+        source,
+        statement.entities,
+        statement.cssClasses,
+      )
     case "ErAccTitleStatement":
     case "ErAccDescrStatement":
       return accessibilityRules(source, statement)
@@ -538,29 +484,6 @@ function entityHeaderRules(
     rules,
   )
   return rules
-}
-
-/**
- * Adds the rules of a list of classes after `:::`: the `:::`, the `,`, and
- * the names touch what is before them. The list lies after `start`.
- */
-function addClassListRules(
-  source: Source,
-  classes: readonly Node[],
-  start: number,
-  rules: Map<number, GapRule>,
-): void {
-  const last = classes.at(-1)
-  if (last === undefined) return
-  for (const name of classes) rules.set(name.range[0], "none")
-  for (const token of findTokensBetween(source, start, last.range[1])) {
-    if (
-      isStructural(source, token) &&
-      (token.value === ":::" || token.value === ",")
-    ) {
-      rules.set(token.range[0], "none")
-    }
-  }
 }
 
 /**
@@ -720,109 +643,4 @@ function addReferenceRules(
     reference.name.range[1],
     rules,
   )
-}
-
-/**
- * The rules of a direction line: the text before and after, kept as written,
- * is separated from `direction` by one space where it was written apart, and
- * the value stands after one space (docs/er.md, Direction).
- */
-function directionRules(
-  source: Source,
-  statement: ErDirectionStatement,
-): Map<number, GapRule> {
-  const keyword = expectToken(
-    findStructuralToken(
-      source,
-      statement.textBefore?.range[1] ?? statement.range[0],
-    ),
-    "`direction`",
-  )
-  const value = expectToken(
-    findStructuralToken(source, keyword.range[1]),
-    "the value of a direction line",
-  )
-  return new Map<number, GapRule>([[value.range[0], "space"]])
-}
-
-/**
- * The rules of a `classDef` or `style` statement: its names are separated by
- * `,` without whitespace, and the first style stands after one space. The
- * styles are printed as written, and the whitespace between them and the `,`
- * is as in the source (docs/er.md, Styles and classes).
- */
-function styleStatementRules(
-  source: Source,
-  names: readonly Node[],
-  styles: readonly Node[],
-): Map<number, GapRule> {
-  const rules = new Map<number, GapRule>()
-  addNameListRules(source, names, rules)
-  rules.set(styles[0].range[0], "space")
-  return rules
-}
-
-/**
- * Adds the rules of a list of names separated by `,`: the first name stands
- * after one space, and the others touch the `,` before them, which touches
- * the name before it.
- */
-function addNameListRules(
-  source: Source,
-  names: readonly Node[],
-  rules: Map<number, GapRule>,
-): void {
-  const first = names.at(0)
-  const last = names.at(-1)
-  if (first === undefined || last === undefined) return
-  rules.set(first.range[0], "space")
-  for (const name of names.slice(1)) rules.set(name.range[0], "none")
-  for (const token of findTokensBetween(
-    source,
-    first.range[1],
-    last.range[0],
-  )) {
-    if (isStructural(source, token) && token.value === ",") {
-      rules.set(token.range[0], "none")
-    }
-  }
-}
-
-/**
- * The rules of a `class` statement: the names of the entities and the
- * classes are lists separated by `,` without whitespace, and the first class
- * stands after one space.
- */
-function classStatementRules(
-  source: Source,
-  statement: ErClassStatement,
-): Map<number, GapRule> {
-  const rules = new Map<number, GapRule>()
-  addNameListRules(source, statement.entities, rules)
-  addNameListRules(source, statement.cssClasses, rules)
-  return rules
-}
-
-/**
- * The rules of an `accTitle` or `accDescr` line: the `:` touches the keyword
- * and the text stands after one space (docs/er.md, Accessibility
- * statements).
- */
-function accessibilityRules(
-  source: Source,
-  statement: ErAccTitleStatement | ErAccDescrStatement,
-): Map<number, GapRule> {
-  const keyword = expectToken(
-    findStructuralToken(source, statement.range[0]),
-    "`accTitle` or `accDescr`",
-  )
-  const colon = expectToken(
-    findStructuralToken(source, keyword.range[1]),
-    "the `:` after `accTitle` or `accDescr`",
-  )
-  expectValue(colon, ":")
-  return new Map<number, GapRule>([
-    [colon.range[0], "none"],
-    [statement.value.range[0], "space"],
-  ])
 }

@@ -106,17 +106,16 @@ literal from its first to its last character, with nothing left out, so it keeps
 what the written text leaves out, such as the quotes of a string and a directive
 or a comment region inside the string.
 
-A node of text that mermaid.js does not read, a
-[FlowchartIgnoredText](./ast/flowchart.md#flowchartignoredtext), a
-[ClassIgnoredText](./ast/class.md#classignoredtext), a
-[StateIgnoredText](./ast/state.md#stateignoredtext), a
-[StateIgnoredStatement](./ast/state.md#stateignoredstatement), or a
-[SequenceIgnoredStatement](./ast/sequence.md#sequenceignoredstatement), shows
-what the author wrote there as written: its written text is that of a value,
-which also leaves out the comments. The whitespace and line terminators between
-its units are part of it, and a comment is not: after `state "d" as A`, the
-lines `state %% c` and `state {` with a body give A the `textBeforeBody` of
-`state`, a space, a line feed, two spaces, and `state`, and in
+A node of text that mermaid.js does not read, a node type named
+`<Diagram>IgnoredText` or `<Diagram>IgnoredStatement` (see
+[Diagram nodes](#diagram-nodes)), such as
+[FlowchartIgnoredText](./ast/flowchart.md#flowchartignoredtext) and
+[StateIgnoredStatement](./ast/state.md#stateignoredstatement), shows what the
+author wrote there as written: its written text is that of a value, which also
+leaves out the comments. The whitespace and line terminators between its units
+are part of it, and a comment is not: after `state "d" as A`, the lines
+`state %% c` and `state {` with a body give A the `textBeforeBody` of `state`, a
+space, a line feed, two spaces, and `state`, and in
 `state X "" %%{init: {}}%% ""` followed by a line `{` with a body, it is the two
 empty strings with the two spaces between them. [fixture:
 state/tokens-ignored-text-comment-between-units] [fixture:
@@ -236,8 +235,9 @@ the diagram sections below: a
 [`ClassDiagram`](./ast/class.md#classdiagram), a
 [`StateDiagram`](./ast/state.md#statediagram), an
 [`ErDiagram`](./ast/er.md#erdiagram), a
-[`GanttDiagram`](./ast/gantt.md#ganttdiagram), or a
-[`JourneyDiagram`](./ast/journey.md#journeydiagram).
+[`GanttDiagram`](./ast/gantt.md#ganttdiagram), a
+[`JourneyDiagram`](./ast/journey.md#journeydiagram), or a
+[`RequirementDiagram`](./ast/requirement.md#requirementdiagram).
 
 ## ErrorDiagram
 
@@ -398,8 +398,13 @@ in a document of their own under `ast/`:
 - [ER](./ast/er.md): the diagram type `er`.
 - [Gantt](./ast/gantt.md): the diagram type `gantt`.
 - [Journey](./ast/journey.md): the diagram type `journey`.
+- [Requirement](./ast/requirement.md): the diagram type `requirement`.
 
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of
 names across all diagram types. The [shared leaf nodes](#shared-leaf-nodes) are
-shared by all diagram types and have no prefix.
+shared by all diagram types and have no prefix. A node type of text that
+mermaid.js does not read is named `<Diagram>IgnoredText`, or
+`<Diagram>IgnoredStatement` where it stands as a statement, such as
+`FlowchartIgnoredText` and `StateIgnoredStatement`, and no other node type has a
+name that ends so.

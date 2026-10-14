@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, a style statement adds its styles, one for each comma, to each requirement or element named, in order."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:#f9f",
+          "stroke:#333",
+          "stroke-width:4px"
+        ],
+        "classes": []
+      }
+    ],
+    "elements": [
+      {
+        "name": "e",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [
+          "fill:#f9f",
+          "stroke:#333"
+        ],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

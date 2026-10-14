@@ -129,6 +129,7 @@ const tokenCount = root.tokens.length // 8
 - ER 図: `er`（`erDiagram`）。
 - Gantt チャート: `gantt`（`gantt`）。
 - journey 図: `journey`（`journey`）。
+- 要求図: `requirement`（`requirementDiagram`）。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -238,7 +239,8 @@ try {
 [`ast/state.md`](../spec/docs/ast/state.ja.md)、
 [`ast/er.md`](../spec/docs/ast/er.ja.md)、
 [`ast/gantt.md`](../spec/docs/ast/gantt.ja.md)、
-[`ast/journey.md`](../spec/docs/ast/journey.ja.md) のものです。
+[`ast/journey.md`](../spec/docs/ast/journey.ja.md)、
+[`ast/requirement.md`](../spec/docs/ast/requirement.ja.md) のものです。
 
 ## 木を辿る
 
@@ -337,6 +339,12 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   空の説明のブロックについては、click の文の中で同じです。
   click の文の中とは、id と最初の部分の間、2 つの部分の間です。
   文の始まりでは、空の説明のブロックはそれだけで 1 つの文として受理します。
+  要求図では、空の文字列について、どこにあっても同じです
+  （`""` の行や `id: "" 1` など）。
+  空の説明のブロックについては、文の中で同じです
+  （`a - accDescr {} satisfies -> b` など）。
+  文の始まりでは、空の説明のブロックは文で、
+  要求や要素の本文の行では、本文の項目です。
 - シーケンス図では、コメントは `%%` から始まり、
   数の後に `%%` が続いてもかまいません。
   mermaid.js は、そこで規則が始まるときには、
@@ -390,7 +398,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   mermaid.js は、flowchart と ER 図のヘッダーの前のそうした行、
   状態図のヘッダーの前の `%%{ }%%` の行、
   クラス図と ER 図のヘッダーの前でそうした行の後にある空白だけの行、
-  Gantt チャートと journey 図のヘッダーの前のそうした行を、
+  Gantt チャートと journey 図と要求図のヘッダーの前のそうした行を、
   後に空白だけの行があってもなくても、拒否します
   （[`bare-percent-line-before-header`](../spec/docs/known-divergences/bare-percent-line-before-header.ja.md)）。
 - `parse()` はサイトの設定を知らないので、
@@ -407,6 +415,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   [`ast/er.md`](../spec/docs/ast/er.ja.md)（ER 図のノード）、
   [`ast/gantt.md`](../spec/docs/ast/gantt.ja.md)（Gantt チャートのノード）、
   [`ast/journey.md`](../spec/docs/ast/journey.ja.md)（journey 図のノード）、
+  [`ast/requirement.md`](../spec/docs/ast/requirement.ja.md)（要求図のノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
   [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、

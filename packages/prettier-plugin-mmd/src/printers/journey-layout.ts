@@ -3,21 +3,18 @@ import type {
   JourneyStatement,
   JourneyTaskStatement,
   Node,
-  Token,
 } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import {
   collectAtoms,
   collectValueNodes,
-  expectToken,
-  expectValue,
-  findAccDescrBlockClosing,
-  findAccDescrBlockStretches,
+  keptAsWritten,
+  layoutDescriptionBlock,
   spansLinesThatCannotJoin,
 } from "./layout.ts"
+import { accessibilityRules } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import { findStructuralToken } from "./source.ts"
 
 /**
  * The node types of a user journey whose text is a value, printed as written:
@@ -44,29 +41,6 @@ export function isJourneyStatement(node: MermaidAst): node is JourneyStatement {
     default:
       node satisfies Exclude<MermaidAst, JourneyStatement>
       return false
-  }
-}
-
-/** The layout of the header line: the keyword `journey`. */
-export function layoutJourneyHeader(
-  source: Source,
-  keyword: Token,
-): AtomLayout {
-  return {
-    atoms: collectAtoms(source, keyword.range[0], keyword.range[1], [], []),
-    rules: new Map(),
-    outdented: new Set(),
-    lineBreaks: "kept",
-  }
-}
-
-/** A layout of one atom, the text from `start` to `end` as written. */
-function keptAsWritten(start: number, end: number): AtomLayout {
-  return {
-    atoms: [{ start, end }],
-    rules: new Map(),
-    outdented: new Set(),
-    lineBreaks: "kept",
   }
 }
 
@@ -146,7 +120,7 @@ export function layoutJourneyStatement(
 ): AtomLayout {
   const start = statement.range[0]
   if (statement.type === "JourneyAccDescrBlockStatement") {
-    return layoutDescriptionBlock(source, statement, end)
+    return layoutDescriptionBlock(source, statement, end, journeyValueNodeTypes)
   }
   if (spansLinesThatCannotJoin(source, start, end)) {
     return keptAsWritten(start, end)
@@ -165,47 +139,6 @@ export function layoutJourneyStatement(
     rules: statementRules(source, statement, atoms, remainder),
     outdented: new Set(),
     lineBreaks: "joined",
-  }
-}
-
-/**
- * The layout of an `accDescr { ... }` block: the lines of its text are kept
- * as written and its `}` stands at the level of the statement
- * (docs/journey.md, Accessibility statements). A block without text is
- * printed on one line, as any statement is.
- */
-function layoutDescriptionBlock(
-  source: Source,
-  statement: JourneyAccDescrBlockStatement,
-  end: number,
-): AtomLayout {
-  const start = statement.range[0]
-  if (statement.value === null) {
-    if (spansLinesThatCannotJoin(source, start, end)) {
-      return keptAsWritten(start, end)
-    }
-    return {
-      atoms: collectAtoms(source, start, end, [], []),
-      rules: new Map(),
-      outdented: new Set(),
-      lineBreaks: "joined",
-    }
-  }
-  // A description block of a user journey is always closed: one that is not
-  // is rejected (diagrams/journey.md, Units and contexts).
-  const block = { range: statement.range, value: statement.value, closed: true }
-  const closing = findAccDescrBlockClosing(source, block)
-  return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, journeyValueNodeTypes),
-      findAccDescrBlockStretches(source, block),
-    ),
-    rules: new Map(),
-    outdented: closing === null ? new Set() : new Set([closing]),
-    lineBreaks: "kept",
   }
 }
 
@@ -267,31 +200,4 @@ function taskRules(
     }
   }
   return rules
-}
-
-/**
- * The rules of an `accTitle` or `accDescr` line: the `:` touches the keyword
- * and the text stands after one space (docs/journey.md, Accessibility
- * statements).
- */
-function accessibilityRules(
-  source: Source,
-  statement: Extract<
-    JourneyStatement,
-    { type: "JourneyAccTitleStatement" | "JourneyAccDescrStatement" }
-  >,
-): Map<number, GapRule> {
-  const keyword = expectToken(
-    findStructuralToken(source, statement.range[0]),
-    "`accTitle` or `accDescr`",
-  )
-  const colon = expectToken(
-    findStructuralToken(source, keyword.range[1]),
-    "the `:` after `accTitle` or `accDescr`",
-  )
-  expectValue(colon, ":")
-  return new Map<number, GapRule>([
-    [colon.range[0], "none"],
-    [statement.value.range[0], "space"],
-  ])
 }

@@ -22,6 +22,10 @@ A **participant** is one of the lifelines of the diagram, named by an id.
 mermaid.js calls it an actor; this document keeps the word actor for the
 participants that the keyword `actor` declares.
 
+This diagram type has no strings in quotes, so no node of it is a StringLiteral:
+a `"` in the text of a message is a character of the text. [fixture:
+sequence/db-message-text-attribute-quote]
+
 ## Nodes
 
 ### SequenceDiagram

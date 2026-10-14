@@ -6,7 +6,6 @@ import type {
   GanttStatement,
   GanttTaskStatement,
   Node,
-  Token,
 } from "@mmd-toolkit/parser"
 import type { Atom, AtomLayout, GapRule } from "./atoms.ts"
 import type { MermaidAst } from "../parser.ts"
@@ -15,16 +14,13 @@ import {
   collectValueNodes,
   expectToken,
   expectValue,
-  findAccDescrBlockClosing,
-  findAccDescrBlockStretches,
+  keptAsWritten,
+  layoutDescriptionBlock,
   spansLinesThatCannotJoin,
 } from "./layout.ts"
+import { accessibilityRules } from "./statement-rules.ts"
 import type { Source } from "./source.ts"
-import {
-  findStructuralToken,
-  findTokenEndingBefore,
-  findTokensBetween,
-} from "./source.ts"
+import { findTokenEndingBefore, findTokensBetween } from "./source.ts"
 
 /**
  * The node types of a Gantt chart whose text is a value, printed as written:
@@ -70,26 +66,6 @@ export function isGanttStatement(node: MermaidAst): node is GanttStatement {
     default:
       node satisfies Exclude<MermaidAst, GanttStatement>
       return false
-  }
-}
-
-/** The layout of the header line: the keyword `gantt`. */
-export function layoutGanttHeader(source: Source, keyword: Token): AtomLayout {
-  return {
-    atoms: collectAtoms(source, keyword.range[0], keyword.range[1], [], []),
-    rules: new Map(),
-    outdented: new Set(),
-    lineBreaks: "kept",
-  }
-}
-
-/** A layout of one atom, the text from `start` to `end` as written. */
-function keptAsWritten(start: number, end: number): AtomLayout {
-  return {
-    atoms: [{ start, end }],
-    rules: new Map(),
-    outdented: new Set(),
-    lineBreaks: "kept",
   }
 }
 
@@ -198,7 +174,7 @@ export function layoutGanttStatement(
 ): AtomLayout {
   const start = statement.range[0]
   if (statement.type === "GanttAccDescrBlockStatement") {
-    return layoutDescriptionBlock(source, statement, end)
+    return layoutDescriptionBlock(source, statement, end, ganttValueNodeTypes)
   }
   if (
     spansLinesThatCannotJoin(source, start, end) ||
@@ -246,47 +222,6 @@ function holdsCaseIgnoredSeparator(
   const first = statement.items.at(0)
   if (first === undefined) return false
   return source.text.slice(first.range[0], end).includes("\uFEFF")
-}
-
-/**
- * The layout of an `accDescr { ... }` block: the lines of its text are kept
- * as written and its `}` stands at the level of the statement
- * (docs/gantt.md, Accessibility statements). A block without text is printed
- * on one line, as any statement is.
- */
-function layoutDescriptionBlock(
-  source: Source,
-  statement: GanttAccDescrBlockStatement,
-  end: number,
-): AtomLayout {
-  const start = statement.range[0]
-  if (statement.value === null) {
-    if (spansLinesThatCannotJoin(source, start, end)) {
-      return keptAsWritten(start, end)
-    }
-    return {
-      atoms: collectAtoms(source, start, end, [], []),
-      rules: new Map(),
-      outdented: new Set(),
-      lineBreaks: "joined",
-    }
-  }
-  // A description block of a Gantt chart is always closed: one that is not is
-  // rejected (diagrams/gantt.md, Units and contexts).
-  const block = { range: statement.range, value: statement.value, closed: true }
-  const closing = findAccDescrBlockClosing(source, block)
-  return {
-    atoms: collectAtoms(
-      source,
-      start,
-      end,
-      collectValueNodes(statement, ganttValueNodeTypes),
-      findAccDescrBlockStretches(source, block),
-    ),
-    rules: new Map(),
-    outdented: closing === null ? new Set() : new Set([closing]),
-    lineBreaks: "kept",
-  }
 }
 
 /** The gap rules of a statement, by the start of the atom after the gap. */
@@ -451,31 +386,4 @@ function clickRules(
     previousIsComma = isPunctuator && token.value === ","
   }
   return rules
-}
-
-/**
- * The rules of an `accTitle` or `accDescr` line: the `:` touches the keyword
- * and the text stands after one space (docs/gantt.md, Accessibility
- * statements).
- */
-function accessibilityRules(
-  source: Source,
-  statement: Extract<
-    GanttStatement,
-    { type: "GanttAccTitleStatement" | "GanttAccDescrStatement" }
-  >,
-): Map<number, GapRule> {
-  const keyword = expectToken(
-    findStructuralToken(source, statement.range[0]),
-    "`accTitle` or `accDescr`",
-  )
-  const colon = expectToken(
-    findStructuralToken(source, keyword.range[1]),
-    "the `:` after `accTitle` or `accDescr`",
-  )
-  expectValue(colon, ":")
-  return new Map<number, GapRule>([
-    [colon.range[0], "none"],
-    [statement.value.range[0], "space"],
-  ])
 }

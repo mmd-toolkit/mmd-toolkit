@@ -236,6 +236,7 @@ export const DIAGRAM_ORDER: readonly string[] = [
   "class",
   "state",
   "er",
+  "journey",
   "gantt",
 ]
 

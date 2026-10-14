@@ -1,11 +1,8 @@
 import type { AstPath, Doc, ParserOptions } from "prettier"
 import type { MermaidAst } from "../parser.ts"
 import { findGanttKeptLines } from "./gantt-kept-lines.ts"
-import {
-  findGanttPrintedEnd,
-  layoutGanttHeader,
-  layoutGanttStatement,
-} from "./gantt-layout.ts"
+import { findGanttPrintedEnd, layoutGanttStatement } from "./gantt-layout.ts"
+import { layoutKeywordHeader } from "./layout.ts"
 import type { SectionedDiagram } from "./sectioned.ts"
 import { printSectionedDiagram } from "./sectioned.ts"
 import type { Source } from "./source.ts"
@@ -22,7 +19,7 @@ const ganttDiagram: SectionedDiagram<GanttStatement> = {
   isSection: (statement) => statement.type === "GanttSectionStatement",
   keptLines: findGanttKeptLines,
   printedEnd: findGanttPrintedEnd,
-  layoutHeader: layoutGanttHeader,
+  layoutHeader: layoutKeywordHeader,
   layoutStatement: layoutGanttStatement,
   readsCommentsByWhitespaceBefore: true,
 }

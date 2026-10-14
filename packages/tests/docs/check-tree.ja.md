@@ -72,7 +72,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   ヘッダーの前の `%%` だけの行のコメントで、どの図種もそうです。
   それ以外のコメントには持ちません。
   gantt 図の図のコメントは、印 `%%` と `%` を持ち、
-  journey 図の図のコメントは、印 `#`、`%%`、`%` を持ちます。
+  journey 図と requirement 図の図のコメントは、印 `#`、`%%`、`%` を持ちます。
   印のない断片は、コメント領域に続きます
   （parser/docs/tokens.md の Comment、
   [common.md](../../spec/docs/common.md#comment-lines) の Comment lines）。
@@ -262,6 +262,59 @@ const problems: TreeProblem[] = checkTree(text, tree)
     section の名前に `:` はありません。
     title と section のテキストは、キーワードの後ろの空白 1 字の次から始まり、
     行の終わりか `#` の前で終わります。
+  - requirement: ノードが自分で書くトークン（子ノードの外）と子ノードは、
+    ソースの順に、その文のものと一致します。
+    トークンはテキストを小文字にしたもの、子ノードは欄の名前を、
+    ラベルとして 1 つの並びにします。
+    requirement と element は、キーワード、名前、
+    `:::` とクラス（クラスの間は `,`。クラスがなければ両方ありません）、
+    `{`、項目、`}` です。
+    関係は、左の名前、`-`、関係、`->`、右の名前です。
+    `backward` なら `<-`、関係、`-` です。
+    direction は、前のテキスト、`direction`、値、後ろのテキストで、
+    テキストは null でないときだけあります。
+    style、classDef、class と略記は、キーワード（略記は名前と `:::`）と
+    リストで、リストの 2 つの要素の間に `,` があります。
+    アクセシビリティ文は、キーワード、`:` か波括弧、値です
+    （空のブロックには値がありません）。
+    欄の語は、書かれたキーワードのとおりです。
+    requirement の種類は、文を始めるキーワードを種類の名前の形にしたもの
+    （`functionalRequirement`）です。
+    field、risk、検証方法、関係はキーワードを小文字にしたもの、
+    direction は値を大文字にしたもので、どれも文書の語の 1 つです。
+    names、classes、styles のリストは空ではありません。
+    ヘッダーは `requirementDiagram` で、
+    `requirement` は大文字小文字までこのとおり、残りはどの大文字小文字でもよい
+    （diagrams/requirement.md の Detection）。
+    欄の子ノードの型は、その表の型です
+    （`REQUIREMENT_CHILD_TYPES`。
+    ast/requirement.md の Type の列と合うことをテストが確かめます）。
+    引用符のない名前とテキストは、空でなく、空白で始まらず終わらず、
+    名前とフィールドの値は ASCII の単語文字で始まり、
+    `:`、`,`、`{`、`<`、`>`、`-`、`=` と改行を含みません。
+    スタイルは `,` を含みません
+    （diagrams/requirement.md の Names and values、The style context）。
+    文字列は閉じていて、空ではありません。
+    `direction` の前のテキストは改行と U+2028、U+2029 を含まず、
+    値の後ろのテキストは改行を含みません。
+    `direction` と値の間の空白は空ではなく、
+    行は最後の部分で終わります（The direction line）。
+    本体の項目のテキストは、空白を除くと `accDescr{}` です
+    （大文字小文字は問いません）。
+    アクセシビリティ文の値は gantt 図と同じに読み、
+    説明ブロックのテキストは `}` を含みません。
+    トークンの種類は parser の `docs/tokens/requirement.md` のとおりです。
+    ノードが自分で書くトークンは、`:`、`,`、`{`、`}`、`:::`、`-`、`->`、`<-` が
+    `Punctuator`、ほかは `Keyword` です。
+    テキストのトークンは `RawText`、文字列のトークンは
+    `String` か `StringFragment`、direction の行のテキストは `RawText`、
+    本体の空の description ブロックは `Keyword` と `Punctuator` です。
+    名前は、`style` と `classDef` の後と `class` の文の names では
+    `Identifier`、
+    requirement、element、関係、省略形では `RawText`、
+    `class` の文のクラスでは `Identifier` か `RawText` です。
+    文の範囲は、トークンと子ノードの最初から最後までです
+    （`parser/docs/positions/requirement.md`）。
 
 範囲の**書かれたテキスト**は、ディレクティブ、コメント領域、
 行の規則が無視する `;` を除いたソースです（ast.md の Nodes）。
@@ -274,7 +327,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
 表がほかの作り方を与える型は、その仕様の文とともに挙げます。
 
 - 単位をつないだ値（`Identifier`、`ClassIdentifier`、class の矢印、
-  class 図と ER 図のスタイル）は、
+  class 図、ER 図、requirement 図のスタイル）は、
   単位の間の空白を除きます。
   つないだトークンが値です。`Identifier` は 1 つのトークンです。
 - 文字列、文字列で始まるラベル、データブロックには、
@@ -374,6 +427,14 @@ null になりうる欄は、ソースがそれを書く所で null にし、
 journey のファイルは 14 本作ります）。
 `check-tree-node-ranges.test.ts` は、click 文の子の欄の順を
 手作りの木で調べます。
+`check-tree-requirement.test.ts` は、上の文を 1 つずつ含む最小の木を手作りし、
+その文が区別する壊し方のそれぞれで、検査が報告すべき問題を確かめ、
+名前を挙げた fixture の記録した木も壊します。
+ノードの型や欄ごとに記録した木を求めるテストは、
+`NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
+（`tests/check-tree-recorded.ts`）の接頭辞で始まる名前のノードの型を除きます。
+これは、木がまだ記録されていない新しい図種の一覧で、
+木が記録されたら接頭辞を外し、図種の間は空のままにします。
 `tests/check-tree-fields.test.ts` は、上の段落のテストです。
 記録した木を 1 度だけ読み、
 各ノードの型を持つ最初の木と、

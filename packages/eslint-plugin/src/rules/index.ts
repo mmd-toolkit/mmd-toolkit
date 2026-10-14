@@ -32,6 +32,12 @@ import { ganttNoEmptyDescriptionBlock } from "./gantt-no-empty-description-block
 import { ganttNoUndef } from "./gantt-no-undef.ts"
 import { ganttNoUnknownExclude } from "./gantt-no-unknown-exclude.ts"
 import { ganttNoUnreadTag } from "./gantt-no-unread-tag.ts"
+import { journeyNoDuplicateDescription } from "./journey-no-duplicate-description.ts"
+import { journeyNoDuplicateTitle } from "./journey-no-duplicate-title.ts"
+import { journeyNoEmptyDescriptionBlock } from "./journey-no-empty-description-block.ts"
+import { journeyNoEmptyPerson } from "./journey-no-empty-person.ts"
+import { journeyNoIgnoredText } from "./journey-no-ignored-text.ts"
+import { journeyNoInvalidScore } from "./journey-no-invalid-score.ts"
 import { noIgnoredInitDirective } from "./no-ignored-init-directive.ts"
 import { noUnclosedDirective } from "./no-unclosed-directive.ts"
 import { sequenceNoCreateDestroy } from "./sequence-no-create-destroy.ts"
@@ -88,6 +94,12 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "gantt-no-undef": ganttNoUndef,
   "gantt-no-unknown-exclude": ganttNoUnknownExclude,
   "gantt-no-unread-tag": ganttNoUnreadTag,
+  "journey-no-duplicate-description": journeyNoDuplicateDescription,
+  "journey-no-duplicate-title": journeyNoDuplicateTitle,
+  "journey-no-empty-description-block": journeyNoEmptyDescriptionBlock,
+  "journey-no-empty-person": journeyNoEmptyPerson,
+  "journey-no-ignored-text": journeyNoIgnoredText,
+  "journey-no-invalid-score": journeyNoInvalidScore,
   "no-ignored-init-directive": noIgnoredInitDirective,
   "no-unclosed-directive": noUnclosedDirective,
   "sequence-no-create-destroy": sequenceNoCreateDestroy,

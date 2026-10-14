@@ -337,6 +337,18 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
    変わるのは、`common/` の fixture のうち、
    その図種を載せたもの（`db: null` が要約になる）だけのはず。
    それ以外が変われば、理由を調べる。
+   それらの fixture は要約を持ち、木を持たない。
+   `tests/db-from-tree.test.ts` の `DIAGRAM_TYPES_WITHOUT_RECORDED_TREES` に
+   その図種を足し、parser が木を記録したら外して、
+   builder を記録した木で走らせるよう、同じファイルの `DIAGRAMS` に足す。
+   その図種のノードの型の接頭辞（`Requirement`）も
+   `tests/check-tree-recorded.ts` の
+   `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES` に足す。
+   ノードの型ごとに記録した木を求めるテストはこの接頭辞の型を除く。
+   これも同じときに外す。
+   外すときは、その図種の値の欄の行（`VALUE_FIELD_REPORTS` ほか、
+   欄と値のテストの表）を書いておく。
+   この一覧は図種の間は空のままにする。
 8. `docs/db-summaries.md` と `.ja.md` に、
    その図種の節（何を落とし、なぜか）を書く。
 9. 結果として、要約の欄の一覧と、落とした欄とその理由を示す。

@@ -20,6 +20,10 @@ at the ends of a value is outside it.
 A **task** is a step of the journey, with a description, a score, and the people
 who take part in it; a **section** groups the tasks after it.
 
+This diagram type has no strings in quotes, so no node of it is a StringLiteral:
+a `"` in a task text is a character of the text. [fixture:
+journey/lex-quotes-in-task-text]
+
 ## Nodes
 
 ### JourneyDiagram

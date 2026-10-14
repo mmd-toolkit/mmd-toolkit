@@ -4,6 +4,7 @@ import { normalizeEr } from "./er.ts"
 import { normalizeFlowchart, patchFlowDb } from "./flowchart.ts"
 import { normalizeGantt, patchGanttDb } from "./gantt.ts"
 import { normalizeJourney } from "./journey.ts"
+import { normalizeRequirement } from "./requirement.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
 import { normalizeState } from "./state.ts"
 
@@ -34,6 +35,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["er", normalizeEr],
   ["gantt", normalizeGantt],
   ["journey", normalizeJourney],
+  ["requirement", normalizeRequirement],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])

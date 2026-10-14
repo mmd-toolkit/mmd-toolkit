@@ -36,7 +36,8 @@ mermaid.js は、図を読む前に、
 図の文書が名前の単位と数えるものです。
 U+00A0 を含みうる ER の実体の名前も、gantt の click の id も、その 1 つです。
 sequence 図の参加者の id、クラスの名前、
-`~` を使って書いた ER の属性の語、gantt のタスクの説明のように、
+`~` を使って書いた ER の属性の語、gantt のタスクの説明、
+要求図の引用符なしの名前のように、
 図の文書がテキストの単位と数える名前は、テキストとして読まれます。
 [fixture: sequence/div-directive-in-wrap-prefix]
 [fixture: sequence/lex-directive-in-participant-id]
@@ -45,6 +46,7 @@ sequence 図の参加者の id、クラスの名前、
 [fixture: er/lex-directive-in-tilde-word]
 [fixture: gantt/div-directive-in-click-id]
 [fixture: gantt/lex-directive-in-task-text]
+[fixture: requirement/lex-directive-in-name]
 
 ## 差異
 

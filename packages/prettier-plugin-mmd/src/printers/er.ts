@@ -26,11 +26,10 @@ import {
   hasAttributeBlock,
   layoutAttribute,
   layoutBlockOpening,
-  layoutErHeader,
   layoutErStatement,
   layoutSubgraphOpening,
 } from "./er-layout.ts"
-import { expectToken, toAsciiLowerCase } from "./layout.ts"
+import { expectToken, layoutKeywordHeader, toAsciiLowerCase } from "./layout.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenEndingBefore, findTokenStartingAt } from "./source.ts"
@@ -163,7 +162,7 @@ function printDiagram(
     statementBlockRules(source),
   )
   const header = openingLine(
-    printLine(source, options, layoutErHeader(source, keyword), 0),
+    printLine(source, options, layoutKeywordHeader(source, keyword), 0),
     block,
     false,
   )

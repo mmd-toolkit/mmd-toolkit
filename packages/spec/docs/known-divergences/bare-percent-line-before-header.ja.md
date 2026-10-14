@@ -3,7 +3,7 @@
 英語版:
 [bare-percent-line-before-header.md](./bare-percent-line-before-header.md)
 
-図種: flowchart、class、state、er、gantt、journey。
+図種: flowchart、class、state、er、gantt、journey、requirement。
 この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 対象の構文
@@ -34,7 +34,7 @@ mermaid.js は同じ入力を違って読みます。
 （sequence・class・state の字句解析器は `%%` だけの行をそう読みます）では、
 両者が入力を受理します。
 そうでないところ（er の字句解析器はどの行もそう読まず、
-gantt と journey の字句解析器はヘッダーの前ではそう読みません）では
+gantt、journey、requirement の字句解析器はヘッダーの前ではそう読みません）では
 mermaid.js が入力を拒否し、この仕様は受理します。
 それがこの差異です。
 
@@ -100,8 +100,18 @@ mermaid.js が入力を拒否し、この仕様は受理します。
    ```mmd
    %%
    journey
-     A: 1
+   A: 1
    ```
+
+10. requirement のヘッダーの前の、`%%` だけの行、`%%{ }%%` の行、
+    `%%` だけの行と空白 2 つの行:
+
+    ```mmd
+    %%
+    requirementDiagram
+    requirement r {
+    }
+    ```
 
 | 例  | mermaid.js                                              | この仕様                            |
 | --- | ------------------------------------------------------- | ----------------------------------- |
@@ -114,6 +124,7 @@ mermaid.js が入力を拒否し、この仕様は受理します。
 | 7   | 拒否。字句解析器に `%` の規則がない                     | 実体 A を持つ ER 図                 |
 | 8   | 拒否。改行は `newline` の単位                           | タイトル T を持つガントチャート     |
 | 9   | 拒否。改行は `newline` の単位                           | タスク A を持つユーザージャーニー図 |
+| 10  | 拒否。改行は `newline` の単位                           | 要求 r を持つ要求図                 |
 
 [fixture: flowchart/header-after-bare-percent-line] [fixture:
 flowchart/header-after-empty-braces-line] [fixture:
@@ -128,7 +139,10 @@ gantt/header-after-empty-braces-line] [fixture:
 gantt/header-after-bare-percent-line-and-whitespace-line] [fixture:
 journey/header-after-bare-percent-line] [fixture:
 journey/header-after-empty-braces-line] [fixture:
-journey/header-after-bare-percent-line-and-whitespace-line]
+journey/header-after-bare-percent-line-and-whitespace-line] [fixture:
+requirement/header-after-bare-percent-line] [fixture:
+requirement/header-after-empty-braces-line] [fixture:
+requirement/header-after-bare-percent-line-and-whitespace-line]
 
 隣の形も同じに読まれます。
 flowchart と state では、ディレクティブの始まらない `%%{-x}%%` や `%%{}` の行は
@@ -170,7 +184,7 @@ mermaid.js がここで受理する入力を拒否することはありません
 このツールキットはどの図種でもコメントとして読み、
 mermaid.js は sequence・class・state でだけそう読み
 （class では、その後に空白の行があると読みません）、
-er、gantt、journey では読みません。
+er、gantt、journey、requirement では読みません。
 両者が同じに読む図を書くには、ヘッダーの前のコメントは `%%` の後に 1 文字以上
 置いたコメント行にし、ヘッダーとの間に空白だけの行を置かないことです。
 
@@ -192,7 +206,7 @@ state の字句解析器は `%%` を無視されるテキストとして読ん�
 class の字句解析器は空白だけの行を `newline` の単位として読み、
 文法はヘッダーの前でそれを取りません。
 er の字句解析器には `%` の規則がまったくありません。
-gantt と journey の字句解析器は `%%` をコメントとして読みますが、
+gantt、journey、requirement の字句解析器は `%%` をコメントとして読みますが、
 その後の改行を `newline` の単位として読み、
 文法はヘッダーの前でそれを取りません。
 open の issue

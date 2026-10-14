@@ -23,6 +23,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["er", "ErDiagram"],
   ["gantt", "GanttDiagram"],
   ["journey", "JourneyDiagram"],
+  ["requirement", "RequirementDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -112,6 +113,7 @@ const UNIT_NAMES: ReadonlySet<string> = new Set([
   "header-keyword",
   "header-direction",
   "direction-value",
+  "direction-value",
   "link-target",
   "ignored-state",
   "description-word",
@@ -192,6 +194,41 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
       return ["gantt", ...DAYS]
     case "journey":
       return ["journey"]
+    // The header, and the units that the row names by their kind: the kinds
+    // of requirement, the names of the fields, the risks, the methods, the
+    // relationships (rule 15 of The statement context), and the values of
+    // `direction`.
+    case "requirement":
+      return [
+        "requirementdiagram",
+        "requirement",
+        "functionalrequirement",
+        "interfacerequirement",
+        "performancerequirement",
+        "physicalrequirement",
+        "designconstraint",
+        "id",
+        "text",
+        "risk",
+        "verifymethod",
+        "type",
+        "docref",
+        "low",
+        "medium",
+        "high",
+        "analysis",
+        "demonstration",
+        "inspection",
+        "test",
+        "contains",
+        "copies",
+        "derives",
+        "satisfies",
+        "verifies",
+        "refines",
+        "traces",
+        ...DIRECTION_VALUES,
+      ]
     default:
       throw new Error(`no diagram ${diagram}`)
   }

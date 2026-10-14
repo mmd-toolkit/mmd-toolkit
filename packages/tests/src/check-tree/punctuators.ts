@@ -91,6 +91,8 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   ],
   GanttDiagram: [":", ",", "{", "}", "(", ")"],
   JourneyDiagram: [":", ",", "{", "}"],
+  // The row `Punctuator` of parser/docs/tokens/requirement.md.
+  RequirementDiagram: [":", ",", "{", "}", ":::", "-", "->", "<-"],
   ErrorDiagram: [],
 }
 

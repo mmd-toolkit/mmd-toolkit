@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, the converted form: an entity is its placeholder in the names of a relationship."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "traces",
+        "src": "aﬂ°amp¶ß b",
+        "dst": "cﬂ°°35¶ß d"
+      }
+    ],
+    "classes": []
+  }
+}

@@ -244,6 +244,22 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     kind: "written-text",
     spec: "Its written text, from the third colon of the data to its end, without the whitespace at its end (ast/journey.md, JourneyIgnoredText).",
   },
+  RequirementIdentifier: {
+    field: "name",
+    kind: "written-text",
+    spec: "Its written text, whitespace included, without the whitespace after the name (ast/requirement.md, RequirementIdentifier).",
+  },
+  RequirementLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its written text; for a style, the written texts of its units joined in order (ast/requirement.md, RequirementLiteral).",
+  },
+  RequirementIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    gaps: true,
+    spec: "Its written text is the source text of its range without the directives, the comment regions, and the ignored `;`; the whitespace between its units is part of it, and no diagram comment lies inside it (ast/requirement.md, RequirementIgnoredText).",
+  },
 }
 
 /** The delimiters around the content of the string that `node` starts with; none if it starts with none. */
@@ -263,7 +279,7 @@ export function quoteDelimitersOf(node: CheckedNode): TreeRange[] {
   return node.closed === true ? [opening, [end - 1, end]] : [opening]
 }
 
-/** The nodes of the `styles` of the statements of a class diagram or an ER diagram: their ClassLiteral and ErLiteral values are units joined. */
+/** The nodes of the `styles` of the statements of a class diagram, an ER diagram, or a requirement diagram: their ClassLiteral, ErLiteral, and RequirementLiteral values are units joined. */
 function stylesOf(nodes: readonly CheckedNode[]): Set<unknown> {
   const styles = new Set<unknown>()
   for (const node of nodes) {
@@ -271,7 +287,9 @@ function stylesOf(nodes: readonly CheckedNode[]): Set<unknown> {
       (node.type === "ClassStyleStatement" ||
         node.type === "ClassClassDefStatement" ||
         node.type === "ErStyleStatement" ||
-        node.type === "ErClassDefStatement") &&
+        node.type === "ErClassDefStatement" ||
+        node.type === "RequirementStyleStatement" ||
+        node.type === "RequirementClassDefStatement") &&
       Array.isArray(node.styles)
     ) {
       for (const style of node.styles as unknown[]) styles.add(style)

@@ -115,12 +115,11 @@ ESTree の `Literal` と同じく、欄 `raw` も持ちます。
 文字列の引用符やその中のディレクティブとコメント領域のように、
 書かれたテキストが除くものも保ちます。
 
-mermaid.js が読まないテキストのノード、つまり
-[FlowchartIgnoredText](./ast/flowchart.ja.md#flowchartignoredtext)、
-[ClassIgnoredText](./ast/class.ja.md#classignoredtext)、
-[StateIgnoredText](./ast/state.ja.md#stateignoredtext)、
-[StateIgnoredStatement](./ast/state.ja.md#stateignoredstatement)、
-[SequenceIgnoredStatement](./ast/sequence.ja.md#sequenceignoredstatement) は、
+mermaid.js が読まないテキストのノード、つまり `<図種>IgnoredText` か
+`<図種>IgnoredStatement` と名づけたノードの型
+（[図ごとのノード](#図ごとのノード) を参照）
+（[FlowchartIgnoredText](./ast/flowchart.ja.md#flowchartignoredtext) や
+[StateIgnoredStatement](./ast/state.ja.md#stateignoredstatement) など）は、
 書き手がそこに書いたものを、書かれたとおりに見せます。
 その書かれたテキストは値の書かれたテキストで、コメントも除きます。
 単位の間の空白と行終端はその一部で、コメントはその一部ではありません。
@@ -258,7 +257,9 @@ mermaid.js はこれらを
 [`StateDiagram`](./ast/state.ja.md#statediagram)、
 [`ErDiagram`](./ast/er.ja.md#erdiagram)、
 [`GanttDiagram`](./ast/gantt.ja.md#ganttdiagram)、
-[`JourneyDiagram`](./ast/journey.ja.md#journeydiagram) のどれかです。
+[`JourneyDiagram`](./ast/journey.ja.md#journeydiagram)、
+[`RequirementDiagram`](./ast/requirement.ja.md#requirementdiagram)
+のどれかです。
 
 ## ErrorDiagram
 
@@ -435,9 +436,14 @@ sequence/db-autonumber-leading-zero]
 - [ER](./ast/er.ja.md): 図種 `er`。
 - [Gantt](./ast/gantt.ja.md): 図種 `gantt`。
 - [Journey](./ast/journey.ja.md): 図種 `journey`。
+- [Requirement](./ast/requirement.ja.md): 図種 `requirement`。
 
 図種のノードの型の名前は、`FlowchartVertex` のように、
 どれもその図種の名前で始めます。
 ノードの型の名前は、すべての図種で 1 つの集まりを共有するからです。
 [共通の葉のノード](#共通の葉のノード) は、
 すべての図種で共有し、接頭辞を付けません。
+mermaid.js が読まないテキストのノードの型は `<図種>IgnoredText`、
+文として立つものは `<図種>IgnoredStatement` と名づけ、
+`FlowchartIgnoredText` や `StateIgnoredStatement` がそうです。
+ほかのノードの型の名前は、そのように終わりません。

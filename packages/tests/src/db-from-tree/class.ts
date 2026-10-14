@@ -610,22 +610,11 @@ class ClassDbBuilder {
   }
 
   /**
-   * The converted form of the texts of the tokens in `range`, joined, without
-   * the `Directive` and `IgnoredSemicolon` tokens: the value of a node whose
-   * value is the texts of its tokens (ast/class.md, ClassLiteral and
-   * Identifier).
+   * The converted form of the texts of the tokens in `range`, joined (ast/class.md,
+   * ClassLiteral and Identifier).
    */
   private convertedTokensOf(range: TreeRange): string {
-    return this.root.tokens
-      .filter(
-        (token) =>
-          token.type !== "Directive" &&
-          token.type !== "IgnoredSemicolon" &&
-          range[0] <= token.range[0] &&
-          token.range[1] <= range[1],
-      )
-      .map((token) => this.text.of(token.range))
-      .join("")
+    return this.text.ofTokensIn(range, this.root.tokens)
   }
 
   /**

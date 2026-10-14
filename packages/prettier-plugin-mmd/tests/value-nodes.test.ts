@@ -10,6 +10,7 @@ import { classValueNodeTypes } from "../src/printers/class-layout.ts"
 import { erValueNodeTypes } from "../src/printers/er-layout.ts"
 import { ganttValueNodeTypes } from "../src/printers/gantt-layout.ts"
 import { journeyValueNodeTypes } from "../src/printers/journey-layout.ts"
+import { requirementValueNodeTypes } from "../src/printers/requirement-layout.ts"
 import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
 import { stateValueNodeTypes } from "../src/printers/state-layout.ts"
 
@@ -110,6 +111,20 @@ const diagrams: readonly DiagramValues[] = [
       // and numbers are the text of a score or a person.
       "Identifier",
       "StringLiteral",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Requirement",
+    values: requirementValueNodeTypes,
+    notValues: new Set([
+      // A risk and a verification method, which are keywords: printed as
+      // their tokens.
+      "RequirementRiskField",
+      "RequirementVerifyMethodField",
+      // The shared leaf nodes that are no nodes of a requirement diagram:
+      // its ids and numbers are the text of a name or a value.
+      "Identifier",
       "NumericLiteral",
     ]),
   },

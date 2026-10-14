@@ -67,9 +67,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
   a flowchart and an ER diagram have the mark `%%` for a line of `%%` alone
   before their header, as every diagram type does, and for no other comment; a
   gantt diagram has the marks `%%` and `%` for its diagram comments, and a
-  journey diagram the marks `#`, `%%`, and `%`; a fragment without a mark
-  follows a comment region (parser/docs/tokens.md, Comment;
-  [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
+  journey diagram and a requirement diagram the marks `#`, `%%`, and `%`; a
+  fragment without a mark follows a comment region (parser/docs/tokens.md,
+  Comment; [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
   (ast.md, Directive; common.md, Where a directive is).
@@ -225,7 +225,51 @@ const problems: TreeProblem[] = checkTree(text, tree)
     a task runs to the colon, the whitespace before the colon included, and
     neither starts with whitespace nor holds a `:`; the name of a section holds
     no `:`; the text of a title or a section starts one whitespace character
-    after the keyword and ends at the end of its line or before a `#`.
+    after the keyword and ends at the end of its line or before a `#`;
+  - requirement: the tokens that a node writes itself, outside its child nodes,
+    and its child nodes, in source order, are those of its statement, as one
+    list of labels (a token by its text in lower case, a child node by its
+    field): a requirement or an element is its keyword, the name, the `:::` and
+    the classes with a `,` between two of them (none without classes), `{`, the
+    items, and `}`; a relationship is the left name, `-`, the relationship,
+    `->`, and the right name, or, for `backward`, `<-`, the relationship, and
+    `-`; a direction is the text before, `direction`, the value, and the text
+    after, each of the texts only where it is not null; a style, a class
+    definition, a class statement, and a shorthand are their keyword (a
+    shorthand its name and `:::`) and their lists, with a `,` between two
+    entries of a list; an accessibility statement is its keyword, the `:` or the
+    braces, and the value (none for an empty block). The words of the fields are
+    those of the keywords that were written: the kind of requirement is the
+    keyword that starts the statement in the form of the names of the kinds
+    (`functionalRequirement`), the field, the risk, the verification method, and
+    the relationship are the keyword in lower case, and the direction is the
+    value in upper case; each is one of the words of the document, and the lists
+    of styles, names, and classes are not empty. The header is
+    `requirementDiagram` with `requirement` in exactly this case and the rest in
+    any case (diagrams/requirement.md, Detection). The child nodes of a field
+    are of the types of its table (`REQUIREMENT_CHILD_TYPES`, which a test holds
+    to the Type column of ast/requirement.md). A name or a text without quotes
+    is not empty, does not start or end with whitespace, a name or the value of
+    a field starts with an ASCII word character and holds none of `:`, `,`, `{`,
+    `<`, `>`, `-`, `=`, and the line terminators, and a style holds no `,`
+    (diagrams/requirement.md, Names and values, The style context). A string is
+    closed and is not empty. The text before `direction` holds no line
+    terminator and no U+2028 or U+2029, the text after the value no line
+    terminator, the whitespace between `direction` and the value is not empty,
+    and the line ends with the last part (The direction line). The text of an
+    item of a body, without its whitespace, is `accDescr{}`, in any case. The
+    value of an accessibility statement is read as in a gantt diagram, and the
+    text of a description block holds no `}`. The kinds of the tokens are those
+    of `parser/docs/tokens/requirement.md`: a token that a node writes itself is
+    `Punctuator` for `:`, `,`, `{`, `}`, `:::`, `-`, `->`, and `<-`, and
+    `Keyword` for the rest; the tokens of a text are `RawText`, those of a
+    string `String` or `StringFragment`, those of the text of a direction line
+    `RawText`, and those of an empty description block of a body `Keyword` and
+    `Punctuator`; a name is `Identifier` after `style` and `classDef` and in the
+    names of a `class` statement, `RawText` for a requirement, an element, a
+    relationship, and a shorthand, and `Identifier` or `RawText` for a class of
+    a `class` statement. The range of a statement is the hull of its tokens and
+    child nodes (`parser/docs/positions/requirement.md`).
 
 The **written text** of a range is its source without the directives, the
 comment regions, and the `;` that the line rule ignores (ast.md, Nodes).
@@ -238,8 +282,9 @@ table gives the type another way, each with the sentence of the specification
 that says so:
 
 - A value made of units joined (`Identifier`, `ClassIdentifier`, a class arrow,
-  a style of a class diagram or an ER diagram) leaves out the whitespace between
-  its units; the joined tokens are the value. An `Identifier` is one token.
+  a style of a class diagram, an ER diagram, or a requirement diagram) leaves
+  out the whitespace between its units; the joined tokens are the value. An
+  `Identifier` is one token.
 - A string, a label that starts with a string, and a data block have delimiters
   that belong to their own text; the value is the written text without them,
   with the whitespace written inside them, and that whitespace lies in the
@@ -319,10 +364,18 @@ and the ranges, and make, by hand, the smallest trees that hold each of the
 sentences of the diagram (the hand-made trees and their breaking cases are built
 by `tests/check-tree-built.ts`; the journey file makes fourteen of them); and
 `check-tree-node-ranges.test.ts` makes, by hand, the click statements for the
-order of their child fields. `tests/check-tree-fields.test.ts` is the test of
-the paragraphs above: it reads the recorded trees once and indexes the first
-tree that has each node type, and the first in which each field is null and is
-not null, and it breaks each field in the tree that the index gives; any
+order of their child fields. `check-tree-requirement.test.ts` makes, by hand,
+the smallest trees that hold each sentence above, breaks each in every way that
+the sentence distinguishes, with the problem that the check must report for it,
+and breaks the recorded trees of named fixtures. The tests that require a
+recorded tree for every node type or every field leave out the node types whose
+names start with a prefix of `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
+(`tests/check-tree-recorded.ts`), the new diagram types whose trees are not
+recorded yet; the prefix is removed when the trees are recorded, and the list
+stays empty between two diagram types. `tests/check-tree-fields.test.ts` is the
+test of the paragraphs above: it reads the recorded trees once and indexes the
+first tree that has each node type, and the first in which each field is null
+and is not null, and it breaks each field in the tree that the index gives; any
 recorded tree that has the field will do, since the problem that the field must
 cause has the same message in every tree. It has a named case for each field of
 a string that may be null, in each direction, for each rule of `null-fields.ts`,

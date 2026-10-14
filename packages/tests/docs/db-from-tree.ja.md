@@ -111,6 +111,13 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
 - **ER の style**: style の `ErLiteral` の中にあるトークンの変換した形を
   つないだもの。style の単位の間の空白は値に含まれないためです
   （規則は [db-from-tree/er.ja.md](./db-from-tree/er.ja.md)）。
+- **requirement の style**: style の `RequirementLiteral` の中にある
+  トークンの変換した形をつないだもの。
+  style の単位の間の空白は値に含まれないためです
+  （規則は
+  [db-from-tree/requirement.ja.md](./db-from-tree/requirement.ja.md)）。
+  [fixture: requirement/lex-style-spaces]
+  [fixture: requirement/lex-style-no-comma]
 - **subgraph の中の ER のキーワード文**: `class`、`classDef`、`style` の文の
   最初のトークンのテキストを、書かれたままで。subgraph がノードとして並べます
   （規則は [db-from-tree/er.ja.md](./db-from-tree/er.ja.md) の
@@ -246,6 +253,7 @@ HTML ラベルが有効で、`securityLevel` が
   [fixture: er/config-security-level-other-subgraph-title-html-labels-false]
   [fixture: gantt/config-security-level-other-html-labels-false]
   [fixture: journey/config-security-level-other-html-labels-false]
+  [fixture: requirement/config-security-level-other-html-labels-false]
 
 **何を。**
 置き換えは、改行タグをそれぞれ `#br#` に書き、
@@ -364,6 +372,17 @@ HTML ラベルが有効で、`securityLevel` が
   [fixture: journey/config-security-level-other-acc-descr]
   [fixture: journey/config-security-level-other-acc-descr-block]
   [fixture: journey/config-security-level-other-names-as-written]
+- requirement: フロントマターの title、`accTitle`、
+  `accDescr`（行のものとブロックのもの）。
+  この図に `title` の文はありません。
+  名前、id、text、type、参照、リレーションシップの名前、クラス、style には
+  届きません。
+  [fixture: requirement/lex-title-statement]
+  [fixture: requirement/config-security-level-other-title]
+  [fixture: requirement/config-security-level-other-acc-title]
+  [fixture: requirement/config-security-level-other-acc-descr]
+  [fixture: requirement/config-security-level-other-acc-descr-block]
+  [fixture: requirement/config-security-level-other-names-as-written]
 
 **mermaid.js の順序が効く所。**
 テキストを読み進める前に置き換える所があり、作り手も同じにします。

@@ -97,6 +97,17 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [er-no-unclosed-description-block](./er-no-unclosed-description-block.ja.md) | ほかのもののために書いた `}` が閉じる `accDescr {` のブロックを禁止する。 | ✅  |     |     |
 | [er-no-undef](./er-no-undef.ja.md)                                           | どの実体も subgraph も名指さない `style` と `class` の文を禁止する。      | ✅  |     |     |
 
+## journey
+
+| 規則                                                                             | 説明                                                              | ✅  | 💡  | 🚧  |
+| -------------------------------------------------------------------------------- | ----------------------------------------------------------------- | --- | --- | --- |
+| [journey-no-duplicate-description](./journey-no-duplicate-description.ja.md)     | 説明をもう一度設定する `accDescr` の文を禁止する。                | ✅  |     |     |
+| [journey-no-duplicate-title](./journey-no-duplicate-title.ja.md)                 | タイトルをもう一度設定する `title` か `accTitle` の文を禁止する。 | ✅  |     |     |
+| [journey-no-empty-description-block](./journey-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。                  | ✅  |     |     |
+| [journey-no-empty-person](./journey-no-empty-person.ja.md)                       | 名前のないタスクの人を禁止する。                                  | ✅  |     |     |
+| [journey-no-ignored-text](./journey-no-ignored-text.ja.md)                       | mermaid.js が読まない、タスクのデータの中のテキストを禁止する。   | ✅  |     |     |
+| [journey-no-invalid-score](./journey-no-invalid-score.ja.md)                     | 1 から 5 の数でないタスクの score を禁止する。                    | ✅  |     |     |
+
 ## gantt
 
 | 規則                                                                         | 説明                                                                      | ✅  | 💡  | 🚧  |

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: `test` is a keyword wherever a unit starts, so it is no value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...quirement r {text: test}\n----------------------^\nExpecting 'unqString', 'qString', got 'VERIFY_TEST'"
+  }
+}

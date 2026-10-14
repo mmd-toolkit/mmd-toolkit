@@ -17,6 +17,9 @@ import type { GanttUnits } from "../../src/diagrams/gantt/index.ts"
 import { lexGantt } from "../../src/diagrams/gantt/index.ts"
 import type { JourneyUnits } from "../../src/diagrams/journey/index.ts"
 import { lexJourney } from "../../src/diagrams/journey/index.ts"
+import type { RequirementUnits } from "../../src/diagrams/requirement/index.ts"
+import { lexRequirement } from "../../src/diagrams/requirement/index.ts"
+import type { UnitName as RequirementUnitName } from "../../src/diagrams/requirement/units.ts"
 import type { DiagramUnit } from "../../src/diagram-units.ts"
 import type { EmptyForm } from "../../src/empty-forms.ts"
 import { EMPTY_FORM_KINDS, emptyFormsOf } from "../../src/empty-forms.ts"
@@ -1036,6 +1039,20 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
       removedRangeOf: (form) => form.range,
     }
   }
+  const requirement = requirementLexingOf(text)
+  if (requirement !== null) {
+    return {
+      units: requirement.units,
+      emptyFormKinds: EMPTY_FORM_KINDS.requirement,
+      statementStartsAt: (before, _block, after) =>
+        requirementBlockStandsAlone(before, after),
+      // diagrams/requirement.md, Diagram and statements: nothing separates
+      // two statements, so a block is a statement only where one starts.
+      separators: [],
+      endOfTextSeparates: false,
+      removedRangeOf: (form) => form.range,
+    }
+  }
   return null
 }
 
@@ -1190,6 +1207,181 @@ function journeyLexingOf(text: string): JourneyUnits | null {
     if (error instanceof ParseError) return null
     throw error
   }
+}
+
+/** The units of the requirement diagram `text` as the parser's lexer reads them; null when `text` is no requirement diagram or its lexer rejects it. */
+function requirementLexingOf(text: string): RequirementUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
+  if (diagramType !== "requirement") return null
+  try {
+    return lexRequirement(diagramInputOf(opened, detection, diagramType))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/** diagrams/requirement.md, Requirements and Elements: the units that start a requirement or an element, whose body follows its name and classes. */
+const REQUIREMENT_DEFINITION_KEYWORDS: readonly RequirementUnitName[] = [
+  "requirement",
+  "functionalRequirement",
+  "interfaceRequirement",
+  "performanceRequirement",
+  "physicalRequirement",
+  "designConstraint",
+  "element",
+]
+
+/**
+ * diagrams/requirement.md, Empty description blocks: the units after which
+ * the statement before has not ended: the units that start a requirement
+ * or an element, which a name follows; `:::` and `,`, which a name
+ * follows; the keyword of a field and its `:`, which a value follows; and
+ * the arrows and the relations of a relationship, which more of it
+ * follows.
+ */
+const REQUIREMENT_UNFINISHED_AFTER: readonly RequirementUnitName[] = [
+  ...REQUIREMENT_DEFINITION_KEYWORDS,
+  ":::",
+  ",",
+  "id",
+  "text",
+  "risk",
+  "verifyMethod",
+  "type",
+  "docref",
+  ":",
+  "-",
+  "<-",
+  "->",
+  "contains",
+  "copies",
+  "derives",
+  "satisfies",
+  "verifies",
+  "refines",
+  "traces",
+]
+
+/** diagrams/requirement.md, Grammar: the units of a name, a class, or a name after `style`, `classDef`, or `class`. */
+const REQUIREMENT_NAME_UNITS: readonly RequirementUnitName[] = [
+  "unquoted-text",
+  "string",
+  "style-word",
+]
+
+/** diagrams/requirement.md, The style context: the units of a style other than a `style-word`. */
+const REQUIREMENT_STYLE_MARKS: readonly RequirementUnitName[] = [
+  "style-colon",
+  "style-semicolon",
+  "style-dash",
+  "style-hash",
+]
+
+/**
+ * diagrams/requirement.md, Empty description blocks: whether an empty
+ * description block, with `before` the units before it, in source order,
+ * stands where a statement starts or on a line of a body, rather than
+ * inside a statement. It stands inside a statement after a unit of
+ * {@link REQUIREMENT_UNFINISHED_AFTER}, and after a name that a statement
+ * needs more after ({@link requirementNameEndsStatement}); everywhere else
+ * the statement before has ended, or a body is open: after the header, a
+ * `newline` unit, `{`, `}`, the risk or the method of a field, and a style.
+ * `after` holds the units after the block, in source order, which decide
+ * for a list of classes (see {@link requirementNameEndsStatement}).
+ */
+function requirementBlockStandsAlone(
+  before: readonly AnyUnit[],
+  after: readonly AnyUnit[],
+): boolean {
+  const last = requirementNameAt(before, before.length - 1)
+  if (last === undefined) return true
+  if (isRequirementUnitIn(REQUIREMENT_UNFINISHED_AFTER, last)) return false
+  if (isRequirementUnitIn(REQUIREMENT_NAME_UNITS, last)) {
+    const next = firstAfterEmptyDescriptionBlocks(after)?.name
+    return requirementNameEndsStatement(before, next === ",")
+  }
+  return true
+}
+
+/** The name of the unit at `position` of `units`; undefined where there is none, before the first unit as after the last. */
+function requirementNameAt(
+  units: readonly AnyUnit[],
+  position: number,
+): string | undefined {
+  return position < 0 ? undefined : units.at(position)?.name
+}
+
+/** Whether `name`, the name of a unit or undefined for none, is one of `names`. */
+function isRequirementUnitIn(
+  names: readonly RequirementUnitName[],
+  name: string | undefined,
+): boolean {
+  return names.some((candidate) => candidate === name)
+}
+
+/**
+ * The position in `units` of the unit before the list `name ( "," name )*`
+ * whose last name is at `last`; -1 when the list starts the units.
+ */
+function beforeRequirementNameList(
+  units: readonly AnyUnit[],
+  last: number,
+): number {
+  let first = last
+  while (
+    requirementNameAt(units, first - 1) === "," &&
+    isRequirementUnitIn(
+      REQUIREMENT_NAME_UNITS,
+      requirementNameAt(units, first - 2),
+    )
+  ) {
+    first -= 2
+  }
+  return first - 1
+}
+
+/**
+ * diagrams/requirement.md, Grammar: whether the name that `before` ends
+ * with ends the statement it belongs to: the target of a relationship, the
+ * value of a field, a class of a class shorthand statement, a class of a
+ * `class` statement, and a style of a `style` or a `classDef` statement.
+ * The name of a requirement or an element, which its body follows, a name
+ * that starts a relationship or a class shorthand statement, a name of the
+ * first list of a `class` statement, and a name after `style` or
+ * `classDef`, which styles follow, do not. A list of classes goes on when
+ * `commaFollows`, a `,` coming after the empty description blocks that
+ * follow the name; a list of styles ends at the line feed that leaves the
+ * style context, which comes before any block.
+ */
+function requirementNameEndsStatement(
+  before: readonly AnyUnit[],
+  commaFollows: boolean,
+): boolean {
+  const last = before.length - 1
+  const previous = requirementNameAt(before, last - 1)
+  if (previous === "->" || previous === "-" || previous === ":") return true
+  if (isRequirementUnitIn(REQUIREMENT_STYLE_MARKS, previous)) return true
+  const head = beforeRequirementNameList(before, last)
+  const headName = requirementNameAt(before, head)
+  if (headName === ":::") {
+    const owner = requirementNameAt(before, head - 2)
+    return (
+      !commaFollows &&
+      !isRequirementUnitIn(REQUIREMENT_DEFINITION_KEYWORDS, owner)
+    )
+  }
+  if (isRequirementUnitIn(REQUIREMENT_NAME_UNITS, headName)) {
+    const keyword = requirementNameAt(
+      before,
+      beforeRequirementNameList(before, head),
+    )
+    if (keyword === "class") return !commaFollows
+    return keyword === "style" || keyword === "classDef"
+  }
+  return false
 }
 
 /** The units of the Gantt chart `text` as the parser's lexer reads them; null when `text` is no Gantt chart or its lexer rejects it. */

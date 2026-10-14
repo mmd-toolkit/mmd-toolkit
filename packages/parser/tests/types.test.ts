@@ -21,6 +21,10 @@ import type { StateDiagram, StateNode } from "../src/ast/state.ts"
 import type { ErDiagram, ErNode } from "../src/ast/er.ts"
 import type { GanttDiagram, GanttNode } from "../src/ast/gantt.ts"
 import type { JourneyDiagram, JourneyNode } from "../src/ast/journey.ts"
+import type {
+  RequirementDiagram,
+  RequirementNode,
+} from "../src/ast/requirement.ts"
 import { ParseError } from "../src/errors.ts"
 
 // The checks on types run in the type checker (`tsc` covers tests/); the
@@ -41,6 +45,7 @@ describe("the types of ast.md", () => {
       | ErNode["type"]
       | GanttNode["type"]
       | JourneyNode["type"]
+      | RequirementNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -51,6 +56,7 @@ describe("the types of ast.md", () => {
       | ErDiagram
       | GanttDiagram
       | JourneyDiagram
+      | RequirementDiagram
     >()
   })
 

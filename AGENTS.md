@@ -40,11 +40,12 @@ Correctness is defined by the pinned mermaid.js.
       one exception is a form written with a meaning of its own, as a string, a
       link, or a call, that mermaid.js discards whole: an empty string or an
       empty call where a statement starts in flowchart, an empty string where a
-      statement starts in class, and an empty href or an empty call in gantt,
-      wherever it stands. Such a form is not held as a statement that changes
-      nothing; the input is rejected as the divergence `tokenless-empty-forms`.
-      A fragment that mermaid.js does not read after a statement it reads,
-      `state ""` in state, is no such form and stays a node.
+      statement starts in class, an empty href or an empty call in gantt,
+      wherever it stands, and an empty string in requirement, wherever it
+      stands. Such a form is not held as a statement that changes nothing; the
+      input is rejected as the divergence `tokenless-empty-forms`. A fragment
+      that mermaid.js does not read after a statement it reads, `state ""` in
+      state, is no such form and stays a node.
    2. Only where no node can hold it: an input that mermaid.js accepts is
       rejected, or read differently, as a divergence, and only for one of these
       reasons:

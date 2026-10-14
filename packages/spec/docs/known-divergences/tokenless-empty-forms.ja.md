@@ -2,7 +2,7 @@
 
 英語版: [tokenless-empty-forms.md](./tokenless-empty-forms.md)
 
-図種: flowchart、sequence、class、state、er。
+図種: flowchart、sequence、class、state、er、gantt、requirement。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -55,11 +55,17 @@ flowchart と同じ空の call です。
 空の href と空の call は、どこにあってもこの差異に入ります
 （[空の href と空の call](../diagrams/gantt.ja.md#空の-href-と空の-call)
 を参照）。
+requirement では 2 つです。
+空の説明ブロックと、空の文字列 `""` で、
+空の文字列はどこにあってもこの差異に入ります
+（[単位と文脈](../diagrams/requirement.ja.md#単位と文脈) を参照）。
 [fixture: er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-backquotes-between-type-and-name] [fixture:
 er/gram-empty-backquotes-between-attributes] [fixture:
 gantt/div-empty-href-before-call] [fixture: gantt/div-empty-call-before-href]
 [fixture: gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-line]
+[fixture: requirement/div-empty-string-line] [fixture:
+requirement/div-empty-description-block-in-relationship]
 
 それだけの行の空の説明ブロックは、そのふつうの書き方で、
 何も変えない説明ブロックの文です。
@@ -208,7 +214,9 @@ mermaid.js が受理し、この仕様が拒否します。
 [sequence](../diagrams/sequence.ja.md#既知の差異)、
 [class](../diagrams/class.ja.md#既知の差異)、
 [state](../diagrams/state.ja.md#既知の差異)、
-[er](../diagrams/er.ja.md#既知の差異) です。
+[er](../diagrams/er.ja.md#既知の差異)、
+[gantt](../diagrams/gantt.ja.md#既知の差異)、
+[requirement](../diagrams/requirement.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 
@@ -279,6 +287,11 @@ gantt は空の説明ブロック
 （[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L42-L43)）、
 空の call の `call`、その空白、括弧
 （[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L54-L55)）
+を読み飛ばします。
+requirement は空の説明ブロック
+（[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L23-L24)）と、
+文の文脈と style の文脈の空の文字列の引用符
+（[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L85-L96)）
 を読み飛ばします。
 これらの規則はどれも、字句解析器の状態に入るか出るだけで何も返さないので、
 文法はその形を見ません。
@@ -588,6 +601,54 @@ gantt/div-empty-call-before-href] [fixture: gantt/gram-empty-href-line]
 [fixture: gantt/gram-empty-call-line] [fixture:
 gantt/gram-click-href-then-empty-href]
 
+requirement では、文の 2 つの単位の間の空の説明ブロックは、
+持つにはその隙間に欄が要ります（理由 a）。
+RequirementRequirementStatement の `requirement accDescr {} r {`、
+`requirement r:::accDescr {} c {`、`requirement "r" accDescr {} {`、
+フィールドの `id accDescr {}: 1`、`id: accDescr {} 1`、
+`risk: accDescr {} high`、
+RequirementElementField の `type: accDescr {} t`、
+RequirementRelationshipStatement の `a - accDescr {} satisfies -> b`、
+`a - satisfies accDescr {} -> b`、`a - satisfies -> accDescr {} b`、
+`a <- accDescr {} satisfies - b`、`"a" accDescr {} - satisfies -> b`、
+RequirementClassShorthandStatement の `r:::accDescr {} c`、
+`"r" accDescr {}:::c` です。
+空の文字列は、文の文脈か style の文脈がそれを読むところでは、
+それだけの行、文の前、ヘッダーの後、`}` の後、本体の行、
+フィールドの値の前と後、文の 2 つの単位の間、style の文脈を含めて、
+どこにあってもこの差異に入ります。
+mermaid.js が丸ごと捨てる文字列を、木は文として持たないからです
+（flowchart と class と同じ）。
+文の始まる位置では、空の説明ブロックは文で、
+要求か要素の本体の行では本体の RequirementIgnoredText の項目なので、
+入力は受理されます
+（[空の説明ブロック](../diagrams/requirement.ja.md#空の説明ブロック) を参照）。
+[fixture: requirement/div-empty-description-block-between-keyword-and-name]
+[fixture: requirement/div-empty-description-block-after-class-separator]
+[fixture: requirement/div-empty-description-block-before-brace] [fixture:
+requirement/div-empty-description-block-before-field-colon] [fixture:
+requirement/div-empty-description-block-after-field-colon] [fixture:
+requirement/div-empty-description-block-before-risk] [fixture:
+requirement/div-empty-description-block-before-element-value] [fixture:
+requirement/div-empty-description-block-in-relationship] [fixture:
+requirement/div-empty-description-block-before-arrow] [fixture:
+requirement/div-empty-description-block-after-arrow] [fixture:
+requirement/div-empty-description-block-in-backward-relationship] [fixture:
+requirement/div-empty-description-block-after-string-source]
+[fixture: requirement/div-empty-description-block-before-shorthand-separator]
+[fixture:
+requirement/div-empty-description-block-after-shorthand-separator] [fixture:
+requirement/div-empty-string-line] [fixture:
+requirement/div-empty-string-before-statement] [fixture:
+requirement/div-empty-string-after-header] [fixture:
+requirement/div-empty-string-after-close-brace] [fixture:
+requirement/div-empty-string-body-line] [fixture:
+requirement/div-empty-string-before-value] [fixture:
+requirement/div-empty-string-in-relationship] [fixture:
+requirement/div-empty-string-before-style] [fixture:
+requirement/gram-empty-description-block-in-body] [fixture:
+requirement/gram-empty-description-block-after-string-value]
+
 文の最後の単位の後、その区切りの前では、
 state の `click A "u" "t" accDescr {}` のように、ブロックは文です。
 受理される入力は、ブロックを除き、まわりの空白を残した同じ入力の Db を持ちます。
@@ -614,7 +675,8 @@ class/gram-empty-description-block-after-direction-word]
 [sequence](../diagrams/sequence.ja.md#区切りの前の空の説明ブロック)、
 [state](../diagrams/state.ja.md#区切りの前の空の説明ブロック)、
 [er](../diagrams/er.ja.md#空の説明ブロック)、
-[gantt](../diagrams/gantt.ja.md#空の説明ブロック) を参照）。
+[gantt](../diagrams/gantt.ja.md#空の説明ブロック)、
+[requirement](../diagrams/requirement.ja.md#空の説明ブロック) を参照）。
 [fixture: flowchart/header-empty-description-block-after-direction] [fixture:
 flowchart/header-empty-description-block-before-semicolon] [fixture:
 flowchart/header-empty-description-block-no-direction] [fixture:
@@ -622,4 +684,5 @@ class/header-empty-description-block] [fixture:
 sequence/header-empty-description-block] [fixture:
 state/header-empty-description-block] [fixture:
 er/header-empty-description-block] [fixture:
-gantt/gram-empty-description-block-after-header]
+gantt/gram-empty-description-block-after-header] [fixture:
+requirement/header-empty-description-block]

@@ -262,6 +262,38 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   journey/lex-task-colon-at-end] [fixture: journey/lex-semicolon-line] [fixture:
   journey/header-digit-suffix] [fixture: journey/lex-title-at-end]
 
+## In a requirement diagram
+
+- Where no rule of the lexer matches, `range` is the character there: a `;` or a
+  `<` where a unit starts in the statement context, a letter outside ASCII after
+  a keyword, and a tab or a `.` in the style context. [fixture:
+  requirement/lex-semicolon-line] [fixture: requirement/lex-less-than-alone]
+  [fixture: requirement/lex-keyword-then-e-acute] [fixture:
+  requirement/lex-style-tab] [fixture: requirement/lex-style-dot]
+- For a string that the text ends in, `range` is its opening quote, and the
+  message is `The string has no closing " before the end of the text`. [fixture:
+  requirement/lex-string-unclosed]
+- When the text ends in a context that may not end there, `range` is what
+  entered that context, and the message says what is not closed: `accTitle` and
+  `accDescr` (`accTitle has no text before the end of the text`,
+  `accDescr has no text before the end of the text`), and the `accDescr` of a
+  description block
+  (`The description block has no } before the end of the text`). [fixture:
+  requirement/lex-acc-title-at-end] [fixture:
+  requirement/lex-acc-title-line-feed-at-end] [fixture:
+  requirement/lex-acc-descr-at-end] [fixture:
+  requirement/lex-acc-descr-block-unclosed]
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace, the empty range at the start of a `newline` unit, and at the end
+  of the text the empty range at the end of the text, as in a flowchart: a
+  `title` line is reported at its `title` unit, from `title` to the end of its
+  text, a `%` in a style at itself, a field without a value at the line feed
+  after its `:`, and a `class` statement with one list at the end of the text at
+  the end. [fixture: requirement/lex-title-statement] [fixture:
+  requirement/lex-style-percent] [fixture:
+  requirement/gram-requirement-value-empty] [fixture:
+  requirement/lex-class-one-list]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

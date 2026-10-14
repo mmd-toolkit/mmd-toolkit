@@ -311,6 +311,42 @@
   [fixture: journey/header-digit-suffix]
   [fixture: journey/lex-title-at-end]
 
+## Requirement 図の中
+
+- 字句解析器のどの規則も一致しない位置では、`range` はその 1 文字。
+  文の文脈で単位が始まる位置の `;` や `<`、キーワードの後の ASCII の外の文字、
+  style の文脈のタブや `.` がその例。
+  [fixture: requirement/lex-semicolon-line]
+  [fixture: requirement/lex-less-than-alone]
+  [fixture: requirement/lex-keyword-then-e-acute]
+  [fixture: requirement/lex-style-tab]
+  [fixture: requirement/lex-style-dot]
+- テキストがその中で終わる文字列では、`range` はその開きの引用符で、
+  メッセージは `The string has no closing " before the end of the text`。
+  [fixture: requirement/lex-string-unclosed]
+- 終わってはいけない文脈でテキストが終わるときは、
+  `range` はその文脈に入ったもので、メッセージは何が閉じていないかを示す。
+  - `accTitle` と `accDescr`。
+    メッセージは `accTitle has no text before the end of the text` と
+    `accDescr has no text before the end of the text`。
+    [fixture: requirement/lex-acc-title-at-end]
+    [fixture: requirement/lex-acc-title-line-feed-at-end]
+    [fixture: requirement/lex-acc-descr-at-end]
+  - 説明ブロックの `accDescr`。
+    メッセージは `The description block has no } before the end of the text`。
+    [fixture: requirement/lex-acc-descr-block-unclosed]
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲。
+  `newline` 単位では、その始まりの空の範囲。
+  テキストの終わりでは、flowchart と同じく、テキストの終わりの空の範囲。
+  `title` の行は、`title` からテキストの終わりまでの `title` 単位で報告する。
+  スタイルの中の `%` は、それ自身で報告する。
+  値のない欄は、その `:` の後の改行で報告する。
+  並びが 1 つだけの `class` の文がテキストの終わりにあれば、終わりで報告する。
+  [fixture: requirement/lex-title-statement]
+  [fixture: requirement/lex-style-percent]
+  [fixture: requirement/gram-requirement-value-empty]
+  [fixture: requirement/lex-class-one-list]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、

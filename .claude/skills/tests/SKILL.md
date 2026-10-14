@@ -305,7 +305,18 @@ written here after the tree document of the specification
    the summary, data block effects).
 7. Run `pnpm --filter @mmd-toolkit/tests run fixtures:generate`. Only the
    fixtures of `common/` that carry the diagram type should change (`db: null`
-   becomes a summary). If anything else changes, find out why.
+   becomes a summary). If anything else changes, find out why. Those fixtures
+   then have a summary and no tree: add the diagram type to
+   `DIAGRAM_TYPES_WITHOUT_RECORDED_TREES` in `tests/db-from-tree.test.ts`, and
+   remove it when the parser has recorded the trees, and add the diagram type to
+   `DIAGRAMS` of the same file then, so that the builder runs on the recorded
+   trees. Add also the prefix of the node types of the diagram type
+   (`Requirement`) to `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES` in
+   `tests/check-tree-recorded.ts`, which the tests that need a recorded tree of
+   every node type leave out, and remove it at the same time, when the rows of
+   the value fields of the diagram type (`VALUE_FIELD_REPORTS` and the other
+   tables of the tests of fields and values) are written. The list stays empty
+   between two diagram types.
 8. Write the section of the diagram type in `docs/db-summaries.md` and `.ja.md`
    (what is dropped, and why).
 9. Show as the result the summary fields, and the dropped fields with their

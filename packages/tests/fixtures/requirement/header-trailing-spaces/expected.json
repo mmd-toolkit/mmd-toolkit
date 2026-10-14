@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Detection: the spaces after the header take the line feed, so no newline unit follows the header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...equirementDiagram  requirement r {}\n----------------------^\nExpecting 'NEWLINE', got 'REQUIREMENT'"
+  }
+}

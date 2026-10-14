@@ -128,6 +128,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - Entity relationship diagrams: `er` (`erDiagram`).
 - Gantt charts: `gantt` (`gantt`).
 - User journey diagrams: `journey` (`journey`).
+- Requirement diagrams: `requirement` (`requirementDiagram`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -222,8 +223,9 @@ type ids. The names and fields are those of the specification's
 [`ast/class.md`](../spec/docs/ast/class.md),
 [`ast/state.md`](../spec/docs/ast/state.md),
 [`ast/er.md`](../spec/docs/ast/er.md),
-[`ast/gantt.md`](../spec/docs/ast/gantt.md), and
-[`ast/journey.md`](../spec/docs/ast/journey.md).
+[`ast/gantt.md`](../spec/docs/ast/gantt.md),
+[`ast/journey.md`](../spec/docs/ast/journey.md), and
+[`ast/requirement.md`](../spec/docs/ast/requirement.md).
 
 ## Walking the tree
 
@@ -311,7 +313,12 @@ these differences:
   wherever they stand, as in a line `href ""` or `click id1 href "" call f()`,
   and for the empty description block inside a click statement, between its ids
   and its first part or between its two parts; where a statement starts, an
-  empty description block is accepted as a statement of its own.
+  empty description block is accepted as a statement of its own. In a
+  requirement diagram, it holds for the empty string wherever it stands, as in a
+  line `""` or `id: "" 1`, and for the empty description block inside a
+  statement, as in `a - accDescr {} satisfies -> b`; where a statement starts,
+  an empty description block is a statement, and on a line of the body of a
+  requirement or an element, an item of the body.
 - In a sequence diagram, a comment starts at its `%%`, and a number may be
   followed by `%%`, while mermaid.js takes the character before the `%%` into
   the comment where a rule would start there: `autonumber 10%% c` starts at 10
@@ -358,7 +365,7 @@ these differences:
   flowchart and of an ER diagram, a line `%%{ }%%` before that of a state
   diagram, and a line of spaces after such a line before that of a class or an
   ER diagram, and every such line, with a line of spaces after it or without,
-  before that of a Gantt chart and of a journey diagram
+  before that of a Gantt chart, a journey diagram, and a requirement diagram
   ([`bare-percent-line-before-header`](../spec/docs/known-divergences/bare-percent-line-before-header.md)).
 - `parse()` does not know the site configuration, so a flowchart with more edges
   than `maxEdges` (500 by default) is accepted.
@@ -373,8 +380,10 @@ these differences:
   [`ast/state.md`](../spec/docs/ast/state.md) (the state nodes),
   [`ast/er.md`](../spec/docs/ast/er.md) (the ER nodes),
   [`ast/gantt.md`](../spec/docs/ast/gantt.md) (the Gantt nodes),
-  [`ast/journey.md`](../spec/docs/ast/journey.md) (the journey nodes), and
-  [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
+  [`ast/journey.md`](../spec/docs/ast/journey.md) (the journey nodes),
+  [`ast/requirement.md`](../spec/docs/ast/requirement.md) (the requirement
+  nodes), and [`common.md`](../spec/docs/common.md) (the rules shared by every
+  diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of
   nodes, and the invariants of the tree.

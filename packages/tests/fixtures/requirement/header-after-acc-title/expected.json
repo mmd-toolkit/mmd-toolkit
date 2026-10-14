@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Detection: an accessibility title before the header is the first unit of the text, so no detector matches."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: accTitle: T\nrequirementDiagram\n"
+  }
+}

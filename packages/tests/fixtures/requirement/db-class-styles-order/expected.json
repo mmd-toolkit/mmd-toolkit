@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, the styles of a requirement are in the order the statements gave them: a class that is not defined yet gives nothing when the member joins it, and gives its styles to the members when it is defined."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:red",
+          "fill:blue",
+          "stroke:green"
+        ],
+        "classes": [
+          "c",
+          "d"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:blue"
+        ]
+      },
+      {
+        "id": "d",
+        "styles": [
+          "stroke:green"
+        ]
+      }
+    ]
+  }
+}

@@ -336,18 +336,9 @@ class ErDbBuilder {
     return names.map((name) => this.textOf(name))
   }
 
-  /**
-   * The value of a style: the converted forms of the tokens inside the
-   * literal, joined; the whitespace between the units of a style is no value.
-   */
+  /** The value of a style: the converted forms of the tokens inside the literal, joined. */
   private styleOf(style: ErLiteral): string {
-    return this.root.tokens
-      .filter(
-        (token) =>
-          style.range[0] <= token.range[0] && token.range[1] <= style.range[1],
-      )
-      .map((token) => this.text.of(token.range))
-      .join("")
+    return this.text.ofTokensIn(style.range, this.root.tokens)
   }
 
   /** The keyword at the start of a `class`, `classDef`, or `style` statement, as written. */

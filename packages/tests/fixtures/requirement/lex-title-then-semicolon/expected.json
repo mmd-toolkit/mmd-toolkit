@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: `title` followed by a space and `;` is no `title` unit, so `title ;x` is a name."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "satisfies",
+        "src": "title ;x",
+        "dst": "b"
+      }
+    ],
+    "classes": []
+  }
+}

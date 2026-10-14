@@ -14,6 +14,7 @@ import { nodesOf } from "../src/check-tree/walk.ts"
 import type { DiagramType } from "../src/index.ts"
 import {
   expectWhitespaceCases,
+  mayHaveRecordedTrees,
   recordedTree,
   recordedTreesOfCorpus,
 } from "./check-tree-recorded.ts"
@@ -178,6 +179,9 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "GanttLiteral", message: NOT_WRITTEN_TEXT },
   { type: "JourneyLiteral", message: NOT_WRITTEN_TEXT },
   { type: "JourneyIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "RequirementIdentifier", message: "name is not its written text" },
+  { type: "RequirementLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "RequirementIgnoredText", message: NOT_WRITTEN_TEXT },
 ]
 
 /** The name of a row, for the failures. */
@@ -262,7 +266,9 @@ describe("a broken value", () => {
 
   it("has a row for every node type of the rules of the values, and for no other", () => {
     const types = [...new Set(BROKEN_VALUE_ROWS.map((row) => row.type))]
-    expect(types.sort()).toEqual(Object.keys(VALUE_RULES).sort())
+    expect(types.sort()).toEqual(
+      Object.keys(VALUE_RULES).filter(mayHaveRecordedTrees).sort(),
+    )
   })
 })
 
@@ -602,6 +608,49 @@ const VALUE_CASES: readonly ValueCase[] = [
       },
     ],
   },
+  {
+    type: "RequirementLiteral",
+    name: "a RequirementLiteral reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "requirement",
+    fixture: "lex-directive-after-space-in-value",
+    token: { type: "RawText", value: "a " },
+    side: "end",
+    problems: [
+      {
+        where: "RequirementLiteral at 41-58",
+        message: `${JOINED}: "ab", not "a b"`,
+      },
+    ],
+  },
+  {
+    type: "RequirementIdentifier",
+    name: "a RequirementIdentifier reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "requirement",
+    fixture: "lex-directive-after-space-in-name",
+    token: { type: "RawText", value: "a " },
+    side: "end",
+    problems: [
+      {
+        where: "RequirementIdentifier at 31-48",
+        message: `${JOINED}: "ab", not "a b"`,
+      },
+    ],
+  },
+  {
+    type: "RequirementIgnoredText",
+    name: "a RequirementIgnoredText reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "requirement",
+    fixture: "lex-directive-after-space-in-direction-text",
+    token: { type: "RawText", value: "foo " },
+    side: "end",
+    problems: [
+      {
+        where: "RequirementIgnoredText at 19-40",
+        message:
+          "the whitespace between RawText at 19-22 and RawText at 37-40, next to a cut, lies in no token",
+      },
+    ],
+  },
 ]
 
 /** A node type of `VALUE_RULES` whose tokens hold no whitespace at an end, a fixture that has such a node, and the reason. */
@@ -687,7 +736,9 @@ describe("whitespace taken off an end of a token that a value node holds", () =>
       ...new Set(VALUE_CASES.map((valueCase) => valueCase.type)),
       ...Object.keys(TYPES_WITHOUT_TOKEN_WHITESPACE),
     ]
-    expect(types.sort()).toEqual(Object.keys(VALUE_RULES).sort())
+    expect(types.sort()).toEqual(
+      Object.keys(VALUE_RULES).filter(mayHaveRecordedTrees).sort(),
+    )
   })
 
   for (const [type, exception] of Object.entries(

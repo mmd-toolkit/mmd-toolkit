@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Empty description blocks: an empty description block between `->` and the target lies inside a statement and makes the input rejected here; mermaid.js reads no token for it."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "satisfies",
+        "src": "a",
+        "dst": "b"
+      }
+    ],
+    "classes": []
+  }
+}

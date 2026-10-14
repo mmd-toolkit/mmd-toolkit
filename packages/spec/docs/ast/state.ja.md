@@ -21,6 +21,16 @@ mermaid.js がそれを読むところだけです（[ノード](../ast.ja.md#�
 遷移は 1 つの状態から別の状態へ向かいます。
 `[*]` は始まりか終わりを表します。
 
+この図種の StringLiteral は常に閉じています。
+空になるのは、`click A "" ""` のような
+click の文の URL と tooltip のときだけです。
+`state "" as A` のような空の説明は入力を拒否させ、
+state の文脈の空の文字列は StringLiteral ではなく、
+mermaid.js が読まないテキストです
+（[state の文脈](../diagrams/state.ja.md#state-の文脈) を参照）。
+[fixture: state/lex-click-empty-strings] [fixture: state/lex-alias-empty-string]
+[fixture: state/gram-state-empty-string-alone]
+
 ## ノード
 
 ### StateDiagram

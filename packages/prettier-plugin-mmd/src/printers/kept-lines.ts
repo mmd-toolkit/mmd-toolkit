@@ -31,10 +31,10 @@ export interface KeptLines {
  * is a statement of its own. Such a `;` is in a token, as in `A[x;]`,
  * `accTitle: a;b`, or a directive, or in a comment, or it is a `;` that the
  * line rule ignores (`ignoredSemicolons`), also one that stands after a
- * statement. `separatesStatements` says whether a `;` token may separate
- * statements, as in a flowchart and a sequence diagram: then only the `;`
- * tokens that the rule ignores and that do not end their line count. In a class diagram and a state
- * diagram no `;` separates statements (diagrams/class.md, Diagram and
+ * statement. In a flowchart and a sequence diagram a `;` token may separate
+ * statements (see `semicolonsSeparateStatements`): then only the `;` tokens
+ * that the rule ignores and that do not end their line count. In the other
+ * diagram types no `;` separates statements (diagrams/class.md, Diagram and
  * statements), so every `;` token counts.
  *
  * The line rule (common.md, `style` and `classDef` lines) ignores the last
@@ -49,9 +49,9 @@ export interface KeptLines {
  */
 export function findLinesWithOwnSemicolons(
   source: Source,
-  separatesStatements: boolean,
 ): ReadonlySet<number> {
   const { root, text } = source
+  const separatesStatements = semicolonsSeparateStatements(source)
   const lines = new Set<number>()
 
   /** Adds the lines of the `;` characters in a range. */
@@ -78,6 +78,46 @@ export function findLinesWithOwnSemicolons(
   for (const offset of source.ignoredSemicolons) {
     if (!isLastOnItsLine(source, offset)) lines.add(lineStartOf(source, offset))
   }
+  return lines
+}
+
+/**
+ * Whether a `;` token may separate statements in the diagram of the source:
+ * in a flowchart and in a sequence diagram. The other diagram types have no
+ * such `;`, so every `;` in them is a character of a token or a `;` that the
+ * line rule ignores.
+ */
+function semicolonsSeparateStatements(source: Source): boolean {
+  const { type } = source.root.body
+  return type === "FlowchartDiagram" || type === "SequenceDiagram"
+}
+
+/**
+ * The lines that a `;` keeps together, of each source. They are found once per
+ * source and remembered because `spansLinesThatCannotJoin` asks for them for
+ * every statement that lies on several lines, and each time the whole source
+ * would otherwise be read again.
+ */
+const semicolonLinesBySource = new WeakMap<Source, ReadonlySet<number>>()
+
+/**
+ * The lines whose statements the formatter does not move to other lines:
+ * the lines that hold a `;` (see `findLinesWithOwnSemicolons`) and the lines
+ * that a `;` decides the end of (see `findLinesEndedBySemicolon`). The line
+ * rule of mermaid.js reads the text of a line, so a statement that is joined
+ * with the lines before or after it, or split from them, can make the rule
+ * ignore another `;` or stop it from ignoring this one. The one decision
+ * about whether a statement may be joined into one line takes these lines
+ * into account (see `spansLinesThatCannotJoin`).
+ */
+export function findSemicolonLines(source: Source): ReadonlySet<number> {
+  const cached = semicolonLinesBySource.get(source)
+  if (cached !== undefined) return cached
+  const lines = new Set([
+    ...findLinesWithOwnSemicolons(source),
+    ...findLinesEndedBySemicolon(source),
+  ])
+  semicolonLinesBySource.set(source, lines)
   return lines
 }
 

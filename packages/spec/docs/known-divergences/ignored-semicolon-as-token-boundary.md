@@ -3,9 +3,9 @@
 Japanese version:
 [ignored-semicolon-as-token-boundary.ja.md](./ignored-semicolon-as-token-boundary.ja.md)
 
-Diagram types: flowchart, sequence, class, state, er, gantt, and journey. This
-is one of the [known divergences](../known-divergences.md) of this specification
-from mermaid.js.
+Diagram types: flowchart, sequence, class, state, er, gantt, journey, and
+requirement. This is one of the [known divergences](../known-divergences.md) of
+this specification from mermaid.js.
 
 ## The syntax
 
@@ -27,11 +27,12 @@ is what the diagram document counts as a name unit, whether or not it may
 contain whitespace: the name of an ER entity, which may contain U+00A0, is one.
 A name that the document counts as a text unit, such as the id of a participant
 in a sequence diagram, a class name, or an attribute word of ER written with
-`~`, may hold an ignored `;`. [fixture:
-sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
+`~`, or an unquoted name of a requirement diagram, may hold an ignored `;`.
+[fixture: sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
 class/tokens-ignored-semicolon-in-relation-name] [fixture:
 er/div-ignored-semicolon-in-name] [fixture:
-er/tokens-ignored-semicolon-in-tilde-word]
+er/tokens-ignored-semicolon-in-tilde-word] [fixture:
+requirement/tokens-ignored-semicolon-in-name]
 
 ## The difference
 
@@ -135,7 +136,12 @@ statement on its line, and the ignored `;` can lie inside a keyword: mermaid.js
 reads `accDescr { style:#x } ti;tle T` as the title `T` and
 `accDescr { style:#x } sec;tion S` as the section `S`, and this specification
 rejects them. [fixture: journey/div-ignored-semicolon-in-title-keyword]
-[fixture: journey/div-ignored-semicolon-in-section-keyword]
+[fixture: journey/div-ignored-semicolon-in-section-keyword] In a requirement
+diagram, the `style`, the `:`, and the `#` may lie in a string name before the
+`;`, such as `"style:#x"`, so the ignored `;` can lie inside a keyword:
+mermaid.js reads `"style:#x" - sati;sfies -> b` as a relationship with the
+relation `satisfies`, and this specification rejects it. [fixture:
+requirement/div-ignored-semicolon-in-relationship-keyword]
 
 Each diagram document lists where this shows, in its Known divergences section:
 [flowchart](../diagrams/flowchart.md#known-divergences),
@@ -143,8 +149,9 @@ Each diagram document lists where this shows, in its Known divergences section:
 [class](../diagrams/class.md#known-divergences),
 [state](../diagrams/state.md#known-divergences),
 [er](../diagrams/er.md#known-divergences),
-[gantt](../diagrams/gantt.md#known-divergences), and
-[journey](../diagrams/journey.md#known-divergences).
+[gantt](../diagrams/gantt.md#known-divergences),
+[journey](../diagrams/journey.md#known-divergences), and
+[requirement](../diagrams/requirement.md#known-divergences).
 
 ## What it means for an author
 

@@ -96,6 +96,8 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/gantt/ganttDb.js": ["default"],
   "diagrams/user-journey/parser/journey.jison": ["parser"],
   "diagrams/user-journey/journeyDb.js": ["default"],
+  "diagrams/requirement/parser/requirementDiagram.jison": ["default"],
+  "diagrams/requirement/requirementDb.js": ["RequirementDB"],
   "config.js": [
     "setConfig",
     "getConfig",
@@ -167,6 +169,42 @@ interface RegisteredTest {
   readonly suites: readonly Suite[]
   readonly body: (...args: unknown[]) => unknown
   readonly args: readonly unknown[]
+}
+
+/**
+ * The tables of words that the Db of the requirement diagram holds as its own
+ * properties (`requirementDb.ts`). The requirement spec builds its inputs from
+ * them (`requirementDb.RiskLevel.HIGH_RISK` for `High`), so the stub of the Db
+ * gives them and the stub for every other member. A test compares them with
+ * the tables of the Db that mermaid.js builds.
+ */
+export const REQUIREMENT_DB_TABLES: Readonly<
+  Record<string, Readonly<Record<string, string>>>
+> = {
+  RequirementType: {
+    REQUIREMENT: "Requirement",
+    FUNCTIONAL_REQUIREMENT: "Functional Requirement",
+    INTERFACE_REQUIREMENT: "Interface Requirement",
+    PERFORMANCE_REQUIREMENT: "Performance Requirement",
+    PHYSICAL_REQUIREMENT: "Physical Requirement",
+    DESIGN_CONSTRAINT: "Design Constraint",
+  },
+  RiskLevel: { LOW_RISK: "Low", MED_RISK: "Medium", HIGH_RISK: "High" },
+  VerifyType: {
+    VERIFY_ANALYSIS: "Analysis",
+    VERIFY_DEMONSTRATION: "Demonstration",
+    VERIFY_INSPECTION: "Inspection",
+    VERIFY_TEST: "Test",
+  },
+  Relationships: {
+    CONTAINS: "contains",
+    COPIES: "copies",
+    DERIVES: "derives",
+    SATISFIES: "satisfies",
+    VERIFIES: "verifies",
+    REFINES: "refines",
+    TRACES: "traces",
+  },
 }
 
 /**
@@ -305,6 +343,7 @@ export async function recordSpecFile(
   const mermaidAPI = withRecorders({
     parse: (text: unknown) => Promise.resolve(record(text)),
   })
+  const requirementDb = withRecorders({ ...REQUIREMENT_DB_TABLES })
   const stubs: Record<string, Record<string, unknown>> = {
     vitest,
     "diagrams/flowchart/parser/flowParser.ts": {
@@ -334,6 +373,14 @@ export async function recordSpecFile(
       parser: { parse: record, yy: anything },
     },
     "diagrams/user-journey/journeyDb.js": { default: anything },
+    "diagrams/requirement/parser/requirementDiagram.jison": {
+      default: { parser: { parse: record, yy: anything }, parse: record },
+    },
+    "diagrams/requirement/requirementDb.js": {
+      RequirementDB: new Proxy(anything as object, {
+        construct: () => requirementDb as object,
+      }),
+    },
     "config.js": Object.fromEntries(
       (STUBBED_MODULES["config.js"] ?? []).map((name) => [name, anything]),
     ),

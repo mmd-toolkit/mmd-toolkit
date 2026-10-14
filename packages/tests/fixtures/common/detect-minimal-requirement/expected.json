@@ -5,5 +5,14 @@
   },
   "accepted": true,
   "diagramType": "requirement",
-  "db": null
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
 }

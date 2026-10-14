@@ -3,9 +3,9 @@ import type { MermaidAst } from "../parser.ts"
 import { findJourneyKeptLines } from "./journey-kept-lines.ts"
 import {
   findJourneyPrintedEnd,
-  layoutJourneyHeader,
   layoutJourneyStatement,
 } from "./journey-layout.ts"
+import { layoutKeywordHeader } from "./layout.ts"
 import type { SectionedDiagram } from "./sectioned.ts"
 import { printSectionedDiagram } from "./sectioned.ts"
 import type { Source } from "./source.ts"
@@ -18,7 +18,7 @@ const journeyDiagram: SectionedDiagram<JourneyStatement> = {
   isSection: (statement) => statement.type === "JourneySectionStatement",
   keptLines: findJourneyKeptLines,
   printedEnd: findJourneyPrintedEnd,
-  layoutHeader: layoutJourneyHeader,
+  layoutHeader: layoutKeywordHeader,
   layoutStatement: layoutJourneyStatement,
   readsCommentsByWhitespaceBefore: false,
 }

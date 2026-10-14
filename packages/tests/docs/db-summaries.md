@@ -1025,3 +1025,195 @@ Values of the summary, by field:
   `x`. [fixture: journey/db-task-data-ends-at-hash]
 
 Values are recorded as the Db holds them, whitespace included.
+
+## requirement
+
+The fields of the summary:
+
+| Field           | Content                                                                            |
+| --------------- | ---------------------------------------------------------------------------------- |
+| `direction`     | `TB`, or the direction of the last direction statement.                            |
+| `title`         | The title of the frontmatter, or the empty text.                                   |
+| `accTitle`      | The accessibility title, or the empty text.                                        |
+| `accDescr`      | The accessibility description, or the empty text.                                  |
+| `requirements`  | The requirements, in the order of their first definitions.                         |
+| `elements`      | The elements, in the order of their first definitions.                             |
+| `relationships` | The relationships, in source order.                                                |
+| `classes`       | The class definitions (`classDef`), in the order of the first definition of an id. |
+
+A requirement has `name`, `type`, `requirementId`, `text`, `risk`,
+`verifyMethod`, `cssStyles` and `classes`. An element has `name`, `type`,
+`docRef`, `cssStyles` and `classes`. A relationship has `type`, `src` and `dst`.
+A class definition has `id` and `styles`.
+
+`normalizeRequirement()` (`src/normalizers/requirement.ts`) summarizes the Db of
+`requirement`. The Db reads no browser feature, no time and no random value, and
+the syntax has no links, so the summary needs no patch of the Db. It reads the
+Db's own lists (`getRequirements()`, `getElements()`, `getRelationships()`,
+`getClasses()`), not the layout data of
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/requirementDb.ts#L292-L342):
+that function sets more fields on the stored objects of the requirements and
+elements, and makes the edges, all from the lists. It drops the following, each
+for the reason given:
+
+- The first name of `classes` of a requirement or an element, `default`: every
+  one starts with it, whatever the statements say. The names that statements
+  give follow it, and a statement may give `default` too, which stays.
+- `classes[].textStyles`: the styles of the class that mention a color, made
+  from `styles` alone.
+- What `getData()` makes of the Db: the `id`, `shape`, `look`, `cssClasses` and
+  `colorIndex` of a node, and the ids, labels, arrow types and line pattern of
+  the edges. `look` is a site setting.
+- The requirement and the element being read: each is reset when its definition
+  ends.
+
+Values of the summary, by field:
+
+- `direction` is `TB` without a direction statement. The last direction
+  statement gives it, written in any case and recorded in upper case. [fixture:
+  requirement/db-direction-last-wins] [fixture:
+  requirement/db-direction-lower-case] [fixture:
+  requirement/spec-requirement-diagram-7522200d] [fixture:
+  requirement/spec-requirement-diagram-08cfba06] [fixture:
+  requirement/spec-requirement-diagram-34fcfcee] [fixture:
+  requirement/spec-requirement-diagram-6d165a76]
+- `title` is the title of the frontmatter; the diagram has no statement for it.
+  `accTitle` and `accDescr` are the text of the last statement of their kind,
+  trimmed. The text of a description in a block has its line breaks, and the
+  whitespace after each of them is left out. [fixture:
+  requirement/db-frontmatter-title] [fixture: requirement/db-acc-title-descr]
+  [fixture: requirement/db-acc-descr-block] [fixture:
+  requirement/spec-requirement-diagram-e5ae8f38] [fixture:
+  requirement/spec-requirement-diagram-27be7222]
+- The title and the accessibility texts pass through `sanitizeText` and, under a
+  `securityLevel` that is not one of mermaid.js's values with HTML labels
+  enabled, hold the replaced characters (see
+  [db-from-tree.md](./db-from-tree.md), the replacement of characters). The
+  names, ids, texts, types and references of requirements and elements, the
+  names of relationships and the classes are not changed. [fixture:
+  requirement/config-security-level-other-title] [fixture:
+  requirement/config-security-level-other-acc-title] [fixture:
+  requirement/config-security-level-other-acc-descr] [fixture:
+  requirement/config-security-level-other-acc-descr-block] [fixture:
+  requirement/config-security-level-other-html-labels-false] [fixture:
+  requirement/config-security-level-other-names-as-written]
+- Each value is read in
+  [converted form](../../spec/docs/common.md#reading-a-source), so an entity is
+  its placeholder in a name, an id, a text, a type, a reference, the name of a
+  relationship and the accessibility texts. [fixture:
+  requirement/entity-placeholder-in-requirement-fields] [fixture:
+  requirement/entity-placeholder-in-element-fields] [fixture:
+  requirement/entity-placeholder-in-relationship] [fixture:
+  requirement/entity-placeholder-in-acc-title] [fixture:
+  requirement/entity-placeholder-in-acc-descr] [fixture:
+  requirement/entity-placeholder-in-acc-descr-block]
+- `requirements` has a requirement for each name, in the order of the first
+  definitions. A field that the body does not set is the empty text. [fixture:
+  requirement/db-requirement-defaults] [fixture:
+  requirement/db-requirement-all-fields] [fixture:
+  requirement/db-requirement-order]
+- The `type` of a requirement is the name of the word that starts the
+  definition: `Requirement`, `Functional Requirement`, `Interface Requirement`,
+  `Performance Requirement`, `Physical Requirement` or `Design Constraint`. The
+  `risk` is `Low`, `Medium` or `High`, and the `verifyMethod` is `Analysis`,
+  `Demonstration`, `Inspection` or `Test`. The words of the syntax are read
+  without regard to case, and the Db names them as given here. [fixture:
+  requirement/spec-requirement-diagram-54ea0a9d] [fixture:
+  requirement/spec-requirement-diagram-d1dc0373] [fixture:
+  requirement/spec-requirement-diagram-17e0a905] [fixture:
+  requirement/spec-requirement-diagram-f221edee] [fixture:
+  requirement/spec-requirement-diagram-0e21244e] [fixture:
+  requirement/spec-requirement-diagram-06f108a7] [fixture:
+  requirement/spec-requirement-diagram-4a3ca536] [fixture:
+  requirement/spec-requirement-diagram-f64fbd88] [fixture:
+  requirement/spec-requirement-diagram-1a2f68fa] [fixture:
+  requirement/spec-requirement-diagram-1e009b06] [fixture:
+  requirement/db-keywords-upper-case]
+- An unquoted name or value loses the whitespace at its ends and may hold spaces
+  inside. A quoted one keeps every character between the quotes, also those an
+  unquoted one cannot hold, and the whitespace. [fixture:
+  requirement/db-requirement-value-spaces] [fixture:
+  requirement/db-requirement-name-spaces] [fixture:
+  requirement/db-requirement-quoted-values]
+- A field set more than once keeps the first value, since the Db applies the
+  fields of a body from the last to the first. [fixture:
+  requirement/db-requirement-fields-repeated] [fixture:
+  requirement/db-element-fields-repeated]
+- A name defined again, as a requirement of any type or as an element, leaves
+  the fields of the first definition as they were, the second body included, but
+  the classes after `:::` in the head of the second definition are given: to the
+  requirement of that name, or to the element of that name when there is no
+  requirement of it, whichever the second definition is. A requirement and an
+  element may have the same name, and a statement that names it applies to the
+  requirement only. [fixture:
+  requirement/db-requirement-definition-again-with-class] [fixture:
+  requirement/db-element-definition-with-class-of-requirement] [fixture:
+  requirement/db-element-definition-again-with-class] [fixture:
+  requirement/db-requirement-name-repeated] [fixture:
+  requirement/db-element-name-repeated] [fixture:
+  requirement/db-requirement-and-element-same-name] A name is any name,
+  `__proto__` and `constructor` too. [fixture:
+  requirement/spec-requirement-diagram-7e4de658] [fixture:
+  requirement/spec-requirement-diagram-dec8a0d9] [fixture:
+  requirement/spec-requirement-diagram-29c59902] [fixture:
+  requirement/spec-requirement-diagram-20d637a1]
+- `elements` has an element for each name. Its `type` and `docRef` are any text,
+  and the empty text where the body does not set them. [fixture:
+  requirement/db-element-defaults] [fixture: requirement/db-element-fields]
+  [fixture: requirement/spec-requirement-diagram-aa701d4f]
+- `relationships` has one relationship for each relationship statement, also for
+  one written again. `type` is `contains`, `copies`, `derives`, `satisfies`,
+  `verifies`, `refines` or `traces`. `src` is the name at the line and `dst` the
+  name at the arrowhead, whichever side of the word it is written on. The names
+  need not be those of a requirement or an element, and may be quoted. [fixture:
+  requirement/spec-requirement-diagram-ef787489] [fixture:
+  requirement/spec-requirement-diagram-50b3d65a] [fixture:
+  requirement/spec-requirement-diagram-7dfbfd0b] [fixture:
+  requirement/spec-requirement-diagram-bbf167e5] [fixture:
+  requirement/spec-requirement-diagram-d742a321] [fixture:
+  requirement/spec-requirement-diagram-3adb8f93] [fixture:
+  requirement/spec-requirement-diagram-3b9d9ff5] [fixture:
+  requirement/db-relationship-arrows] [fixture:
+  requirement/db-relationship-quoted-names] [fixture:
+  requirement/db-relationship-undefined-names] [fixture:
+  requirement/db-relationships-repeated]
+- `cssStyles` is the styles that statements gave the requirement or element, in
+  the order they were given. A `style` statement adds each of its styles, one
+  for each comma, to each name it lists; at the first name that is no
+  requirement or element it stops, so that the names after it get nothing.
+  [fixture: requirement/db-style-statement] [fixture:
+  requirement/db-style-unknown-name] [fixture:
+  requirement/db-class-statement-unknown-name-first] [fixture:
+  requirement/spec-requirement-diagram-5305b791] [fixture:
+  requirement/spec-requirement-diagram-e39bdc99] [fixture:
+  requirement/spec-requirement-diagram-5ee6d26d]
+- `classes` of a requirement or an element is the class names that statements
+  gave it, in order: a `class` statement, `:::` after a name, and `:::` in the
+  head of a definition. A name in a `class` statement that is no requirement or
+  element is skipped, and the names after it still get the classes. [fixture:
+  requirement/db-class-statement] [fixture:
+  requirement/db-class-statement-unknown-name-first] [fixture:
+  requirement/db-class-colon-form] [fixture: requirement/db-class-in-definition]
+  [fixture: requirement/db-class-default-name] [fixture:
+  requirement/spec-requirement-diagram-6bb10181] [fixture:
+  requirement/spec-requirement-diagram-5128588b] [fixture:
+  requirement/spec-requirement-diagram-a55d1b35] [fixture:
+  requirement/spec-requirement-diagram-a8854583] [fixture:
+  requirement/spec-requirement-diagram-0799fd14]
+- A class gives its styles to a requirement or an element in two ways: when the
+  member joins the class, if the class is defined by then, and when the class is
+  defined, to the members it has at that time. Every requirement and element is
+  a member of `default` from the start, so a definition of `default` adds its
+  styles to all those defined before it. [fixture:
+  requirement/db-class-styles-order] [fixture:
+  requirement/db-class-styles-order-defined-first] [fixture:
+  requirement/db-class-statement-before-def] [fixture:
+  requirement/db-class-def-default-all]
+- `classes` of the summary has a class definition for each id, in the order of
+  the first definition, with `styles` in the order given. A definition of an id
+  again adds its styles; one statement may define several ids. [fixture:
+  requirement/db-class-def] [fixture:
+  requirement/spec-requirement-diagram-7ee9ffc8] [fixture:
+  requirement/spec-requirement-diagram-f9464f3d]
+
+Values are recorded as the Db holds them, whitespace included.

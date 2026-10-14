@@ -98,6 +98,11 @@ are read from the tree like this:
 - **ER styles**: the converted forms of the tokens inside the `ErLiteral` of a
   style, joined, since the whitespace between the units of a style is no part of
   its value (the rule is in [db-from-tree/er.md](./db-from-tree/er.md)).
+- **Requirement styles**: the converted forms of the tokens inside the
+  `RequirementLiteral` of a style, joined, since the whitespace between the
+  units of a style is no part of its value (the rule is in
+  [db-from-tree/requirement.md](./db-from-tree/requirement.md)). [fixture:
+  requirement/lex-style-spaces] [fixture: requirement/lex-style-no-comma]
 - **ER keyword statements in a subgraph**: the text of the first token of a
   `class`, `classDef`, or `style` statement, as written, which a subgraph lists
   as a node (the rule is **Subgraphs** in
@@ -221,7 +226,8 @@ and each diagram applies it to the texts below.
   sequence/config-security-level-loose-title-and-box] [fixture:
   er/config-security-level-other-subgraph-title-html-labels-false] [fixture:
   gantt/config-security-level-other-html-labels-false] [fixture:
-  journey/config-security-level-other-html-labels-false]
+  journey/config-security-level-other-html-labels-false] [fixture:
+  requirement/config-security-level-other-html-labels-false]
 
 **What.** The replacement writes each line break tag as `#br#`, then each `<`,
 `>`, and `=` as `&lt;`, `&gt;`, and `&equals;`, and then each `#br#` as `<br/>`,
@@ -337,6 +343,15 @@ does not, are:
   journey/config-security-level-other-acc-descr] [fixture:
   journey/config-security-level-other-acc-descr-block] [fixture:
   journey/config-security-level-other-names-as-written]
+- Requirement: the title of the frontmatter; `accTitle`; `accDescr`, of a line
+  and of a block. The diagram has no `title` statement. Names, ids, texts,
+  types, references, the names of relationships, classes, and styles are not
+  reached. [fixture: requirement/lex-title-statement] [fixture:
+  requirement/config-security-level-other-title] [fixture:
+  requirement/config-security-level-other-acc-title] [fixture:
+  requirement/config-security-level-other-acc-descr] [fixture:
+  requirement/config-security-level-other-acc-descr-block] [fixture:
+  requirement/config-security-level-other-names-as-written]
 
 **Where the order of mermaid.js matters.** Some texts are replaced before
 mermaid.js reads them further, and the builders do the same.

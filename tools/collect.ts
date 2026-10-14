@@ -125,6 +125,9 @@ const SPEC_FILES: Readonly<
   // The other test file of the directory, `journeyDb.spec.js`, calls the Db's
   // methods with values built in code and passes no text.
   journey: () => ["diagrams/user-journey/parser/journey.spec.js"],
+  // The other test file of the directory, `requirementDb.spec.ts`, calls the
+  // Db's methods with values built in code and passes no text.
+  requirement: () => ["diagrams/requirement/parser/requirementDiagram.spec.js"],
 }
 
 /**

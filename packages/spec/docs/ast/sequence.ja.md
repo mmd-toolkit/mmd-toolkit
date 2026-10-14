@@ -23,6 +23,10 @@ mermaid.js はそれを actor と呼びます。
 この文書では、actor という語を、
 キーワード `actor` が宣言する参加者に取っておきます。
 
+この図種には引用符の文字列がないので、StringLiteral のノードはありません。
+メッセージのテキストの中の `"` は、テキストの文字です。
+[fixture: sequence/db-message-text-attribute-quote]
+
 ## ノード
 
 ### SequenceDiagram

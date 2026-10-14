@@ -22,6 +22,7 @@ export const TREE_DOCUMENT_DIAGRAMS = [
   "er",
   "gantt",
   "journey",
+  "requirement",
 ] as const
 
 /** The fields that every node and every record has, which no table lists. */

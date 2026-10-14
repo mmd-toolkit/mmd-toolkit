@@ -1,6 +1,6 @@
 import { scanSource } from "../source-scan.ts"
 import { isDigit, isWhitespace, isWordCharacter } from "./characters.ts"
-import type { TreeRange, TreeRoot } from "./tree.ts"
+import type { TreeRange, TreeRoot, TreeToken } from "./tree.ts"
 
 /** A character of the converted form, with the offset of the source character it was read from. */
 export interface ConvertedCharacter {
@@ -227,5 +227,20 @@ export class ConvertedText {
       text += String.fromCodePoint(codePoint)
     }
     return text
+  }
+
+  /**
+   * The converted forms of the tokens of `tokens` inside `range`, joined: the
+   * value of a node whose value is the texts of its tokens. The whitespace
+   * between two tokens lies in no token, so it is no part of the value, and a
+   * directive or an ignored `;` has no converted form.
+   */
+  public ofTokensIn(range: TreeRange, tokens: readonly TreeToken[]): string {
+    return tokens
+      .filter(
+        (token) => range[0] <= token.range[0] && token.range[1] <= range[1],
+      )
+      .map((token) => this.of(token.range))
+      .join("")
   }
 }

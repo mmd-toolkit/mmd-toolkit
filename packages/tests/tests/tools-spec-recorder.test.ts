@@ -11,8 +11,10 @@ import { tmpdir } from "node:os"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { promisify } from "node:util"
+import mermaid from "mermaid"
 import { afterAll, describe, expect, it } from "vitest"
 import type { SpecFileRecording } from "../../../tools/src/spec-recorder.ts"
+import { REQUIREMENT_DB_TABLES } from "../../../tools/src/spec-recorder.ts"
 
 /**
  * The recorder runs in a process of its own (see the driver), since it finds
@@ -258,6 +260,31 @@ describe("recordSpecFile: the functions that take a text", () => {
     expect(textsOf(recording)).toEqual(["one", "two", "three"])
   })
 
+  it("records the text of the parser of the requirement diagram's jison module, with the words that the spec takes from the stubbed Db's tables", async () => {
+    const recording = await recordSource(
+      [
+        `import { RequirementDB } from "../requirementDb.js"`,
+        `import reqDiagram from "./requirementDiagram.jison"`,
+        `it("t", () => {`,
+        `  const db = new RequirementDB()`,
+        `  reqDiagram.parser.yy = db`,
+        `  reqDiagram.parser.parse(\`risk: \${db.RiskLevel.HIGH_RISK}\`)`,
+        `  reqDiagram.parser.parse(\`type: \${db.RequirementType.DESIGN_CONSTRAINT}\`)`,
+        `  reqDiagram.parser.parse(\`verify: \${db.VerifyType.VERIFY_TEST}\`)`,
+        `  reqDiagram.parser.parse(\`link: \${db.Relationships.CONTAINS}\`)`,
+        `})`,
+        ``,
+      ].join("\n"),
+      "diagrams/requirement/parser/requirementDiagram.spec.js",
+    )
+    expect(textsOf(recording)).toEqual([
+      "risk: High",
+      "type: Design Constraint",
+      "verify: Test",
+      "link: contains",
+    ])
+  })
+
   it("records the text of mermaidAPI.parse, whether it is the default or the named export", async () => {
     const recording = await recordSource(
       [
@@ -314,6 +341,21 @@ describe("recordSpecFile: the functions that take a text", () => {
       ].join("\n"),
     )
     expect(recording).toEqual({ inputs: [], tests: 1, failures: [] })
+  })
+})
+
+describe("the stub of the requirement diagram's Db", () => {
+  it("has the tables of words that the Db mermaid.js builds has", async () => {
+    // The Db keeps the tables as properties of its own that the spec reads.
+    const text = "requirementDiagram\n"
+    // The first parse registers the diagram type; without it,
+    // getDiagramFromText() throws UnknownDiagramError.
+    await mermaid.parse(text)
+    const diagram = await mermaid.mermaidAPI.getDiagramFromText(text)
+    const db = diagram.db as unknown as Record<string, unknown>
+    for (const [name, table] of Object.entries(REQUIREMENT_DB_TABLES)) {
+      expect(db[name], name).toEqual(table)
+    }
   })
 })
 

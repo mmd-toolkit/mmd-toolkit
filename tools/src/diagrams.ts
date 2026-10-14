@@ -22,6 +22,7 @@ export const diagramIds: Readonly<
   er: ["er"],
   gantt: ["gantt"],
   journey: ["journey"],
+  requirement: ["requirement"],
 }
 
 /**

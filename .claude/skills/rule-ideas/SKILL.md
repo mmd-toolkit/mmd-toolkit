@@ -142,6 +142,8 @@ Dropped:
 | In a Gantt chart, `a : 2024-01-01, 1d %% note` (the end of the task becomes `1d %% note`, and the bar has no length)                                                                                           | Comes from not knowing the syntax: the documentation of mermaid.js says that comments go on a line of their own, as for `subgraph S %% group` in a flowchart. Fact: authors do write comments at the end of a line ([#5934](https://github.com/mermaid-js/mermaid/issues/5934), open)                                                                                                                                                           |
 | In a Gantt chart, two tasks on one line, `a : 2024-01-01, 1d b : 2d` (the end of `a` becomes `1d b : 2d`, and there is no task `b`)                                                                            | Not something a person drawing a chart writes: it comes from deleting a line break. A condition on a `:` in the data would also match a time of day, as in `2024-01-01 10:00`                                                                                                                                                                                                                                                                   |
 | In a Gantt chart, an `accDescr {` block that a `}` written later in a text closes (after `accDescr { first`, the line `title Plan {v2}` gives the description `first` and `title Plan {v2`, and no title)      | No ordinary writing: a gantt statement holds a `}` only in a text, which is rare, and without a later `}` mermaid.js rejects the unclosed block                                                                                                                                                                                                                                                                                                 |
+| In a user journey, the task `Title page: 5: Me` (the title becomes `page: 5: Me`, and there is no task)                                                                                                        | Looks like a mermaid bug: the author writes a correct task, and the keyword `title`, read in any case, takes its line. Searched the issue titles with `journey` and with "journey title", "journey task", "journey keyword": nothing found. After an earlier title, journey-no-duplicate-title reports the line                                                                                                                                 |
+| In a user journey, `title` with no text before the line `Make tea: 5: Me` (the title becomes that line, and there is no task)                                                                                  | The formatter makes it visible: it prints `title   Make tea: 5: Me` on one line                                                                                                                                                                                                                                                                                                                                                                 |
 
 ### Questions for unclear cases
 
@@ -287,6 +289,28 @@ for (const input of inputs) {
   line, a line separator, an empty description block), as Running tests in the
   conventions SKILL says. The inputs are chosen from these cases; none is
   generated.
+- Before the table of the cases of a rule is shown, check it against the kinds
+  of case that reviews of earlier tables found missing. Add a row for each kind
+  that a sentence of the document touches, and run it through mermaid.js before
+  the sentence states it:
+  - a statement that takes its value from a later line, with an empty line, a
+    comment line, or a directive between them (a second `accTitle:` that takes
+    the line after `%% c` or after `%%{init: {}}%%`);
+  - a word that a sentence says is read in any case, written in another case
+    (`TITLE`, `Until`), and written without the whitespace after it (`untilb1`);
+  - a third occurrence, where a rule reports from the second one on (two
+    reports);
+  - each kind of value that a rule does not count (an empty block, a block of
+    only a comment line, a block of only directives);
+  - an input where the rule meets a neighbouring rule (`A: 5:: x` in a user
+    journey, an empty person and ignored text);
+  - empty items in a row and a list of separators only (`a,,b`, `,`);
+  - the counterpart of each form (`until` beside `after`, the end beside the
+    start);
+  - a character that ends a value that mermaid.js reads (`.`, a tab, a letter
+    outside ASCII), and line ends written as CRLF;
+  - data that mermaid.js does not read at all (four items of gantt data), where
+    no rule reports.
 - `runMermaid` gives a Db summary only for diagram types that have a normalizer
   (flowchart, for now); for other diagram types `db` is null. `parse()` also
   fails for diagram types it does not support yet, with
@@ -504,6 +528,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | state-* (all 6 rules)                   | yes (provisional) |                                                                                                          |
 | er-* (all 7 rules)                      | yes (provisional) |                                                                                                          |
 | gantt-* (all 8 rules)                   | yes (provisional) |                                                                                                          |
+| journey-* (all 6 rules)                 | yes (provisional) |                                                                                                          |
 
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
@@ -572,6 +597,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | state-* (all 6 rules)                   | None for now (2026-10-08; see the end of this section)         |
 | er-* (all 7 rules)                      | None for now (2026-10-14; see the end of this section)         |
 | gantt-* (all 8 rules)                   | None for now (2026-10-14; see the end of this section)         |
+| journey-* (all 6 rules)                 | None for now (2026-10-14; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -698,9 +724,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
   on three lines, and `call f(1,`, `%%`, `2)` gives the arguments `1,`, `%%`,
   `2` (run).
 
-`sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*` and `gantt-*`
-(2026-10-14): the rules are implemented without suggestions for now. No
-suggestion had been decided for them or described in their documents, and the
+`sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and
+`journey-*` (2026-10-14): the rules are implemented without suggestions for now.
+No suggestion had been decided for them or described in their documents, and the
 one planned for the empty block of a sequence diagram rested on generated
 inputs. Whether they get suggestions is decided later, in the form of the
 flowchart rules, with a fixture for each case.

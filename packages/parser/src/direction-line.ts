@@ -18,7 +18,7 @@ import {
 } from "./scanning.ts"
 import { isWhitespace } from "./character-classes.ts"
 
-/** The units of a direction line, as flowchart.md and class.md name them. */
+/** The units of a direction line, as the diagram documents name them. */
 export type DirectionLineUnitName =
   "direction-text" | "direction" | "direction-value"
 
@@ -39,7 +39,7 @@ export interface DirectionLineMatch {
  * How the rule compares a word with the text: `matchWord` of `scanning.ts`
  * where the diagram compares letters as written (flowchart and class), and
  * `matchWordIgnoringCase` where it compares them case-insensitively
- * (state).
+ * (state, ER, and requirement).
  */
 export type WordMatcher = (
   reader: DiagramText,
@@ -56,10 +56,11 @@ interface Occurrence {
 }
 
 /**
- * diagrams/flowchart.md, diagrams/class.md, and diagrams/state.md, The
- * direction line, which the diagram types share with their own lists of values
- * (flowchart has `TD` as well) and their own way of comparing words (state
- * compares them case-insensitively). From a place: a run of characters without
+ * diagrams/flowchart.md, diagrams/class.md, diagrams/state.md,
+ * diagrams/er.md, and diagrams/requirement.md, The direction line, which the
+ * diagram types share with their own lists of values (flowchart has `TD` as
+ * well) and their own way of comparing words (state, ER, and requirement
+ * compare them case-insensitively). From a place: a run of characters without
  * line feeds, U+2028, or U+2029; `direction`; one or more whitespace, line
  * feeds included; one of the values; and every character up to the next line
  * feed. The values are tried in their order, and for a value the last

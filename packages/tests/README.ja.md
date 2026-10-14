@@ -63,7 +63,8 @@ fixture は 1 件ごとに、
 このパッケージのディレクトリ `fixtures/<diagram>/<name>/` です
 （絶対パスは `getFixturesRoot()` で得られます）。
 `<diagram>` は、
-図種（`flowchart`、`sequence`、`class`、`state`、`er`、`gantt`）か、
+図種（`flowchart`、`sequence`、`class`、`state`、`er`、`gantt`、`journey`、
+`requirement`）か、
 `common` です。
 `common` は、全図種に共通する構文
 （フロントマター、ディレクティブ、コメント、図種の検出）のためのものです。
@@ -141,7 +142,8 @@ mermaid.js は読み込みません。
 
 - `loadFixtures(diagram)`:
   `"common"`、`"flowchart"`、`"sequence"`、`"class"`、`"state"`、
-  `"er"`、`"gantt"` のどれかの fixture を、名前順に返す。
+  `"er"`、`"gantt"`、`"journey"`、`"requirement"` のどれかの fixture を、
+  名前順に返す。
   それぞれは `diagram`、`name`、`input`（`input.mmd` のテキスト）、`source`、
   `config` と `knownDivergence`（あるとき）、`expected` を持つ。
   `expected` は `{ accepted: true, diagramType, db }` か

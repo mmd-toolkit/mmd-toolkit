@@ -38,6 +38,16 @@ The child fields of every node below are in source order, except those of a
 [FlowchartLink](#flowchartlink) with text between two arrows (see
 [Nodes](../ast.md#nodes)).
 
+A StringLiteral of this diagram type, the URL or the tooltip of a click
+statement, is always closed and never empty: an empty string `""` is an
+`empty-string` unit, which no rule of the grammar takes (see
+[Strings](../diagrams/flowchart.md#strings)). [fixture:
+flowchart/lex-empty-string-line] [fixture:
+flowchart/gram-click-href-empty-string] [fixture:
+flowchart/gram-click-href-tooltip-empty-string] [fixture:
+flowchart/gram-click-call-tooltip-empty-string] [fixture:
+flowchart/gram-click-callback-tooltip-empty-string]
+
 ## Nodes
 
 ### FlowchartDiagram

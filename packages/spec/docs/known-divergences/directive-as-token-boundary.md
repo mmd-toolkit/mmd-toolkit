@@ -33,12 +33,13 @@ document counts as a name unit, whether or not it may contain whitespace: the
 name of an ER entity, which may contain U+00A0, is one, and so is a click id of
 gantt. A name that the document counts as a text unit, such as the id of a
 participant in a sequence diagram, a class name, an attribute word of ER written
-with `~`, or the description of a gantt task, is read as a text. [fixture:
-sequence/div-directive-in-wrap-prefix] [fixture:
-sequence/lex-directive-in-participant-id] [fixture: class/lex-directive-in-name]
-[fixture: er/div-directive-in-name] [fixture: er/lex-directive-in-tilde-word]
-[fixture: gantt/div-directive-in-click-id] [fixture:
-gantt/lex-directive-in-task-text]
+with `~`, the description of a gantt task, or an unquoted name of a requirement
+diagram, is read as a text. [fixture: sequence/div-directive-in-wrap-prefix]
+[fixture: sequence/lex-directive-in-participant-id] [fixture:
+class/lex-directive-in-name] [fixture: er/div-directive-in-name] [fixture:
+er/lex-directive-in-tilde-word] [fixture: gantt/div-directive-in-click-id]
+[fixture: gantt/lex-directive-in-task-text] [fixture:
+requirement/lex-directive-in-name]
 
 ## The difference
 

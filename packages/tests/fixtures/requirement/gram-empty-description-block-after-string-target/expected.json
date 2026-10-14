@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Empty description blocks: after a relationship that ends with a string a statement starts, so the block is a statement."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "satisfies",
+        "src": "a",
+        "dst": "b"
+      }
+    ],
+    "classes": []
+  }
+}

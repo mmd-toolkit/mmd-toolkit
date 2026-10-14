@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Requirements: `type` is no field of a requirement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ramrequirement r {type: t}\n---------------------^\nExpecting 'NEWLINE', 'ID', 'TEXT', 'RISK', 'VERIFYMTHD', 'STRUCT_STOP', got 'TYPE'"
+  }
+}

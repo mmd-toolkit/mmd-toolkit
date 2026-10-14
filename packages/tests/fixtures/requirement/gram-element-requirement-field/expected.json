@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Elements: `id` is no field of an element."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...Diagramelement e {id: 1}\n---------------------^\nExpecting 'NEWLINE', 'STRUCT_STOP', 'TYPE', 'DOCREF', got 'ID'"
+  }
+}

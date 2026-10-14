@@ -38,7 +38,7 @@
 flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 シーケンス図（`sequence`）と、クラス図（`classDiagram`）と、
 状態図（`stateDiagram`）と、ER 図（`er`）と、Gantt チャート（`gantt`）と、
-journey 図（`journey`）です。
+journey 図（`journey`）と、要求図（`requirement`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -50,7 +50,8 @@ journey 図（`journey`）です。
 [`diagrams/state.md`](../../spec/docs/diagrams/state.ja.md)、
 [`diagrams/er.md`](../../spec/docs/diagrams/er.ja.md)、
 [`diagrams/gantt.md`](../../spec/docs/diagrams/gantt.ja.md)、
-[`diagrams/journey.md`](../../spec/docs/diagrams/journey.ja.md)
+[`diagrams/journey.md`](../../spec/docs/diagrams/journey.ja.md)、
+[`diagrams/requirement.md`](../../spec/docs/diagrams/requirement.ja.md)
 のどれかに従います。
 3 つの部分からなります。
 
@@ -65,16 +66,16 @@ journey 図（`journey`）です。
 文法の項目のトークンは、`src/unit-grammar.ts` の `UnitGrammar` にあります。
 `tokenless-empty-forms` の空の形は `src/empty-forms.ts` にあります。
 複数の図の文書が共有する規則も 1 か所にあります。
-flowchart とクラス図と状態図と ER 図の方向の行は
+flowchart とクラス図と状態図と ER 図と要求図の方向の行は
 `src/direction-line.ts` にあり、
-状態図と ER 図はその語を大文字と小文字を区別せずに比べます。
+状態図と ER 図と要求図はその語を大文字と小文字を区別せずに比べます。
 flowchart とクラス図の文字の規則の Unicode の文字は
 `src/unicode-letters.ts` にあります。
 シーケンス図の字句解析器が `#` と `%` を、
 クラス図の字句解析器が `%%` を、
 状態図の字句解析器が `#` と `%%` を、
 Gantt チャートの字句解析器が `%` を、
-journey 図の字句解析器が `#` と `%` を読むように、
+journey 図と要求図の字句解析器が `#` と `%` を読むように、
 図のコメントを読む図は、それを共通の部分に渡し、
 共通の部分が `Root.comments` に記録します。
 中にコメント領域があれば、トークンと同じく、そこで切ります。

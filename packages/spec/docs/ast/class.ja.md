@@ -26,6 +26,20 @@ mermaid.js がそれを読むところだけです（[ノード](../ast.ja.md#�
 この語は CSS のクラスを指しません。
 それは全体を通して CSS クラスと呼びます。
 
+この図種の StringLiteral は、
+テキストがその中で終わるバッククォートの名前を除いて、
+閉じています（[StringLiteral](../ast.ja.md#stringliteral) を参照）。
+空になるのは、関係の多重度と tooltip のときだけです。
+それ以外の空の文字列と、空のバッククォートの名前は、入力を拒否させます
+（[既知の差異](../diagrams/class.ja.md#既知の差異) を参照）。
+[fixture: class/lex-backquote-unclosed] [fixture: class/gram-cardinality-empty]
+[fixture: class/gram-link-tooltip-empty]
+[fixture: class/gram-callback-tooltip-empty] [fixture:
+class/gram-click-call-tooltip-empty] [fixture:
+class/gram-click-href-tooltip-empty] [fixture:
+class/div-empty-string-statement-start] [fixture:
+class/div-empty-backquoted-in-name]
+
 ## ノード
 
 ### ClassDiagram

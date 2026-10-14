@@ -406,6 +406,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     ...(await loadFixtures("er")),
     ...(await loadFixtures("gantt")),
     ...(await loadFixtures("journey")),
+    ...(await loadFixtures("requirement")),
   ]
 
   /** The fixtures that carry the mark `knownDivergence`. */

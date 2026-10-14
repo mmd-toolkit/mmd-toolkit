@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Trivia between units: the ignored `;` inside `satisfies` makes the input rejected here; mermaid.js reads the relationship."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "satisfies",
+        "src": "style:#x",
+        "dst": "b"
+      }
+    ],
+    "classes": []
+  }
+}

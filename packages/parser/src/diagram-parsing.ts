@@ -45,8 +45,8 @@ export interface DiagramComment {
   readonly range: Range
   /**
    * The characters of the mark, as the diagram's document defines it: `#`,
-   * `%%`, or `%` in sequence and journey, `#` or `%%` in state, `%%` in
-   * class, and `%%` or `%` in gantt.
+   * `%%`, or `%` in sequence, journey, and requirement, `#` or `%%` in
+   * state, `%%` in class, and `%%` or `%` in gantt.
    */
   readonly mark: "%%" | "#" | "%"
   readonly valueStart: number

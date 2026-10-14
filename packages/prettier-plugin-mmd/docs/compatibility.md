@@ -699,6 +699,55 @@ See [Task data](./journey.md#task-data) and
   mermaid.js reads the text of the line. [fixture:
   journey/statements-one-per-line/ignored-semicolon-line-kept]
 
+## Requirement lines that the place or the whitespace decides
+
+mermaid.js keeps the whitespace in some names and values of a requirement
+diagram and reads some lines by the place they stand in, so formatting keeps
+them as they are written. See [Names](./requirement.md#names),
+[Fields](./requirement.md#fields),
+[Styles and classes](./requirement.md#styles-and-classes), and
+[Statements one per line](./requirement.md#statements-one-per-line).
+
+- The whitespace inside an unquoted name, value, or class, and everything
+  between the quotes of a string. The Db keeps it, so `requirement spaced  name`
+  with two spaces and `id: a  b` are not the same as their forms with one space.
+  The whitespace at their ends is not in the Db, and is dropped. [fixture:
+  requirement/names/inner-whitespace-kept] [fixture:
+  requirement/fields/value-inner-whitespace-kept] [fixture:
+  requirement/class-lists/classes-with-spaces]
+- A `#` or a `%` after an unquoted name or value. It is a character of the text,
+  so `id: 1 #c` has the value `1 #c`, and the comment is not moved or touched.
+  [fixture: requirement/comments/in-unquoted-text-is-text]
+- A statement that a string at the end of a `style`, `classDef`, or `class`
+  statement starts. The lexer is still in the style context there, and the line
+  feed after the string lets the statement go on, so `style r fill:red "r"` and
+  a line `:::c` give r the class c, while `"r"` and `:::c` on lines of their own
+  are rejected. The statement is printed on a line of its own with its parts on
+  one line, and, when a comment line or a directive stands in it, or it stands
+  on a line that holds a `;`, it stays on the line of the statement before it,
+  which is printed as written. [fixture:
+  requirement/statements-one-per-line/string-continued-after-styles] [fixture:
+  requirement/statements-one-per-line/continued-with-comment-line-kept]
+  [fixture:
+  requirement/statements-one-per-line/continued-on-semicolon-line-kept]
+- The names of a `class` statement after a line break, which are read in the
+  statement context, where an unquoted name may hold whitespace and other
+  characters. On one line, they would be read in the style context, where an
+  unquoted name is a `style-word`, and the statement would be rejected.
+  [fixture: requirement/styles-and-classes/class-over-lines-kept]
+- An `accTitle`, `accDescr:`, or `accDescr {` statement that holds `direction`
+  and a direction on its first printed line keeps the first column, as in an ER
+  diagram. [fixture: requirement/accessibility-statements/first-column-kept]
+- A line that holds a `;`: its statements stay on it, since the line rule of
+  mermaid.js reads the text of the line. A statement written over lines whose
+  last line holds a `;` of the statement after it stays as written too, since
+  the joined line would be read as a whole. [fixture:
+  requirement/statements-one-per-line/ignored-semicolon-line-kept] [fixture:
+  requirement/multi-line-statements/relationship-last-line-semicolon-kept]
+- A body with no field: the `{` and the `}` on two lines, since mermaid.js needs
+  a line break after the `{`. [fixture:
+  requirement/bodies/empty-body-on-two-lines]
+
 ## A comment line after U+2028 or U+2029
 
 mermaid.js removes the comment lines from the text before it reads it. A comment

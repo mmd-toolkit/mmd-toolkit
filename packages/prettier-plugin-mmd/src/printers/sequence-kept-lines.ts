@@ -64,7 +64,7 @@ export function findSequenceKeptLines(source: Source): KeptLines {
   }
   const kept: KeptLines = {
     joined: new Set([
-      ...findLinesWithOwnSemicolons(source, true),
+      ...findLinesWithOwnSemicolons(source),
       ...linesOfExtendedEnds,
       ...linesAfterUnits.filter((line) => verbatimLines.has(line)),
     ]),

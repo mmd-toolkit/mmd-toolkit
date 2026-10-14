@@ -2,9 +2,9 @@
 
 Japanese version: [tokenless-empty-forms.ja.md](./tokenless-empty-forms.ja.md)
 
-Diagram types: flowchart, sequence, class, state, er. This is one of the
-[known divergences](../known-divergences.md) of this specification from
-mermaid.js.
+Diagram types: flowchart, sequence, class, state, er, gantt, and requirement.
+This is one of the [known divergences](../known-divergences.md) of this
+specification from mermaid.js.
 
 ## The syntax
 
@@ -47,11 +47,16 @@ description block, an **empty href**, `href` and two quotes with nothing between
 them, and the empty call, as in flowchart; an empty href and an empty call are
 part of this divergence wherever they stand (see
 [Empty hrefs and empty calls](../diagrams/gantt.md#empty-hrefs-and-empty-calls)).
-[fixture: er/div-empty-description-block-in-relationship] [fixture:
+In requirement there are two: the empty description block, and the empty string,
+`""`, which is part of this divergence wherever it stands (see
+[Units and contexts](../diagrams/requirement.md#units-and-contexts)). [fixture:
+er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-backquotes-between-type-and-name] [fixture:
 er/gram-empty-backquotes-between-attributes] [fixture:
 gantt/div-empty-href-before-call] [fixture: gantt/div-empty-call-before-href]
 [fixture: gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-line]
+[fixture: requirement/div-empty-string-line] [fixture:
+requirement/div-empty-description-block-in-relationship]
 
 An empty description block on a line of its own is the ordinary way to write
 one, and is a description block statement that changes nothing:
@@ -189,8 +194,10 @@ rejects. The documents of the diagram types give examples of them in their Known
 divergences sections: [flowchart](../diagrams/flowchart.md#known-divergences),
 [sequence](../diagrams/sequence.md#known-divergences),
 [class](../diagrams/class.md#known-divergences),
-[state](../diagrams/state.md#known-divergences), and
-[er](../diagrams/er.md#known-divergences).
+[state](../diagrams/state.md#known-divergences),
+[er](../diagrams/er.md#known-divergences),
+[gantt](../diagrams/gantt.md#known-divergences), and
+[requirement](../diagrams/requirement.md#known-divergences).
 
 ## What it means for an author
 
@@ -254,6 +261,11 @@ over `href`, its whitespace, and both quotes of an empty href
 ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L42-L43)),
 and over `call`, its whitespace, and the parentheses of an empty call
 ([`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L54-L55)).
+Requirement passes over an empty description block
+([`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L23-L24))
+and over the quotes of an empty string, in the statement context and in the
+style context
+([`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L85-L96)).
 Each of these rules enters or leaves a state of the lexer and returns nothing,
 so the grammar never sees the form.
 
@@ -546,6 +558,50 @@ gantt/div-empty-call-before-href] [fixture: gantt/gram-empty-href-line]
 [fixture: gantt/gram-empty-call-line] [fixture:
 gantt/gram-click-href-then-empty-href]
 
+In requirement, an empty description block between two units of a statement,
+where holding the block would take a field for that gap (reason a):
+`requirement accDescr {} r {`, `requirement r:::accDescr {} c {`, and
+`requirement "r" accDescr {} {` in a RequirementRequirementStatement,
+`id accDescr {}: 1`, `id: accDescr {} 1`, and `risk: accDescr {} high` in a
+field, `type: accDescr {} t` in a RequirementElementField,
+`a - accDescr {} satisfies -> b`, `a - satisfies accDescr {} -> b`,
+`a - satisfies -> accDescr {} b`, `a <- accDescr {} satisfies - b`, and
+`"a" accDescr {} - satisfies -> b` in a RequirementRelationshipStatement, and
+`r:::accDescr {} c` and `"r" accDescr {}:::c` in a
+RequirementClassShorthandStatement; and an empty string wherever the statement
+context or the style context reads one, on a line of its own, before a
+statement, after the header, after `}`, on a line of a body, before or after the
+value of a field, between two units of a statement, and in the style context,
+because the tree holds no statement for a string that mermaid.js discards whole,
+as in flowchart and class. Where a statement starts, an empty description block
+is a statement, and on a line of the body of a requirement or an element it is a
+RequirementIgnoredText item of the body, so the input is accepted (see
+[Empty description blocks](../diagrams/requirement.md#empty-description-blocks)).
+[fixture: requirement/div-empty-description-block-between-keyword-and-name]
+[fixture: requirement/div-empty-description-block-after-class-separator]
+[fixture: requirement/div-empty-description-block-before-brace] [fixture:
+requirement/div-empty-description-block-before-field-colon] [fixture:
+requirement/div-empty-description-block-after-field-colon] [fixture:
+requirement/div-empty-description-block-before-risk] [fixture:
+requirement/div-empty-description-block-before-element-value] [fixture:
+requirement/div-empty-description-block-in-relationship] [fixture:
+requirement/div-empty-description-block-before-arrow] [fixture:
+requirement/div-empty-description-block-after-arrow] [fixture:
+requirement/div-empty-description-block-in-backward-relationship] [fixture:
+requirement/div-empty-description-block-after-string-source] [fixture:
+requirement/div-empty-description-block-after-shorthand-separator] [fixture:
+requirement/div-empty-description-block-before-shorthand-separator] [fixture:
+requirement/div-empty-string-line] [fixture:
+requirement/div-empty-string-before-statement] [fixture:
+requirement/div-empty-string-after-header] [fixture:
+requirement/div-empty-string-after-close-brace] [fixture:
+requirement/div-empty-string-body-line] [fixture:
+requirement/div-empty-string-before-value] [fixture:
+requirement/div-empty-string-in-relationship] [fixture:
+requirement/div-empty-string-before-style] [fixture:
+requirement/gram-empty-description-block-in-body] [fixture:
+requirement/gram-empty-description-block-after-string-value]
+
 After the last unit of a statement, before its separator, the block is a
 statement, as in `click A "u" "t" accDescr {}` of state. An accepted input has
 the Db of the same input with the block left out and the whitespace around it
@@ -574,8 +630,9 @@ say (see
 [class](../diagrams/class.md#empty-description-blocks-before-a-separator),
 [sequence](../diagrams/sequence.md#empty-description-blocks-before-a-separator),
 [state](../diagrams/state.md#empty-description-blocks-before-a-separator),
-[er](../diagrams/er.md#empty-description-blocks), and
-[gantt](../diagrams/gantt.md#empty-description-blocks)). [fixture:
+[er](../diagrams/er.md#empty-description-blocks),
+[gantt](../diagrams/gantt.md#empty-description-blocks), and
+[requirement](../diagrams/requirement.md#empty-description-blocks)). [fixture:
 flowchart/header-empty-description-block-after-direction] [fixture:
 flowchart/header-empty-description-block-before-semicolon] [fixture:
 flowchart/header-empty-description-block-no-direction] [fixture:
@@ -583,4 +640,5 @@ class/header-empty-description-block] [fixture:
 sequence/header-empty-description-block] [fixture:
 state/header-empty-description-block] [fixture:
 er/header-empty-description-block] [fixture:
-gantt/gram-empty-description-block-after-header]
+gantt/gram-empty-description-block-after-header] [fixture:
+requirement/header-empty-description-block]
