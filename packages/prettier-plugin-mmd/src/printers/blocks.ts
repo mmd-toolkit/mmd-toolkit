@@ -88,6 +88,30 @@ export interface BlockRules<Statement extends Node> {
    * or lose its indentation.
    */
   readonly keepsDirectiveLinesUnindented: boolean
+  /**
+   * The indentation that a statement stands deeper than the block, for a
+   * diagram type whose tree keeps statements of different levels in one flat
+   * list, as the tasks after a `section` in a Gantt chart and a user journey.
+   * The lines of the comments and directives before a statement, and a line
+   * of the statement, start with it; the comments and directives at the end
+   * of the block start with that of its last statement. Without it, every
+   * statement stands at the level of the block.
+   */
+  readonly extraIndentationOf?: (statement: Statement) => string
+  /**
+   * The indentation of a line of only a comment that starts with `%%{`
+   * without being a directive, and of a line of a comment with the mark `%`
+   * that such a line follows, in a Gantt chart: one whitespace character,
+   * after the line break, whatever the level of the block. mermaid.js reads a
+   * `%%{` only when its whitespace is one character, or one character after
+   * the line feeds, and rejects the text otherwise; and a `%` comment that it
+   * reaches directly, which it does when the whitespace before it is of
+   * another kind, takes the line feeds after it, so that the `%%{` after it
+   * is reached directly too (diagrams/gantt.md, Comments; known divergences
+   * `percent-brace-after-unit` and `comment-takes-line-break`). A deeper
+   * indentation, or none after a blank line, would change what it reads.
+   */
+  readonly oneCharacterIndentation?: string
 }
 
 /** Where a block of statements lies in the source, and which block it is. */
@@ -128,6 +152,12 @@ export interface PrintedBlock {
    * statement that follows. Null when the closing stands on a line of its own.
    */
   readonly closingJoin: string | null
+  /**
+   * The indentation beyond the block's of its last statement (see
+   * `BlockRules.extraIndentationOf`), for `endLeading`, which stands on the
+   * line after it; empty without one.
+   */
+  readonly endExtraIndentation: string
 }
 
 /** Statements that stay on one line, with what lies between them. */
@@ -140,6 +170,16 @@ interface Stretch {
   readonly first: number
   /** The position after its last statement in the block. */
   readonly after: number
+}
+
+/**
+ * The indentation of a line with a comment that starts with `%%{`, which has
+ * `gaps` gaps of whitespace before the comment after its first item (see
+ * `ItemLine.percentBraceGaps`): the whitespace before the comment is one
+ * character in all, the one of a gap or the indentation.
+ */
+function percentBraceIndentation(gaps: number, one: string): string {
+  return gaps === 0 ? one : ""
 }
 
 /**
@@ -173,6 +213,11 @@ export function printBlock<Statement extends Node>(
   let stretchEndsWithComment = false
   let endsAfterBareMarker = false
   let endsAfterTakingComment = false
+  /**
+   * The indentation beyond the block's for the lines being added (see
+   * `BlockRules.extraIndentationOf`).
+   */
+  let extra = ""
 
   /**
    * The indentation that a line of only directives keeps instead of the one
@@ -205,8 +250,56 @@ export function printBlock<Statement extends Node>(
    * one (see `BlockRules.keepsWhitespaceLineAfterComment`).
    */
   function pushLine(line: Line): void {
-    lines.push(spaceLinePending ? { ...line, spaceLineBefore: true } : line)
+    const placed =
+      extra === "" || line.writtenIndentation !== undefined
+        ? line
+        : { ...line, extraIndentation: extra }
+    lines.push(spaceLinePending ? { ...placed, spaceLineBefore: true } : placed)
     spaceLinePending = false
+  }
+
+  /**
+   * The indentation of the line `index` of a gap that a diagram whose comments
+   * are read by the whitespace before them decides (see
+   * `BlockRules.oneCharacterIndentation`), or undefined for any other line:
+   *
+   * - A line with a comment that starts with `%%{` stands after one character
+   *   in all, the spaces between its items counted.
+   * - A line of only directives before such a line stands at the first
+   *   column: mermaid.js removes the directives before it reads the text, so
+   *   the whitespace of the line counts as whitespace before the comment.
+   * - A line with a comment with the mark `%` before such a line stands after
+   *   one character.
+   */
+  function percentCommentIndentation(
+    gap: Gap,
+    index: number,
+  ): string | undefined {
+    const one = rules.oneCharacterIndentation
+    if (one === undefined) return undefined
+    const line = gap.lines[index]
+    if (line.percentBraceGaps !== null) {
+      return percentBraceIndentation(line.percentBraceGaps, one)
+    }
+    const nextSpaces =
+      index + 1 < gap.lines.length
+        ? gap.lines[index + 1].percentBraceGaps
+        : gap.leadingPercentBraceGaps
+    if (line.singlePercent && nextSpaces !== null) return one
+    if (line.directivesOnly && isFollowedByPercentBrace(gap, index)) return ""
+    return undefined
+  }
+
+  /**
+   * Whether only lines of directives lie between the line `index` of a gap
+   * and a line with a comment that starts with `%%{`.
+   */
+  function isFollowedByPercentBrace(gap: Gap, index: number): boolean {
+    for (const following of gap.lines.slice(index + 1)) {
+      if (following.percentBraceGaps !== null) return true
+      if (!following.directivesOnly) return false
+    }
+    return gap.leadingPercentBraceGaps !== null
   }
 
   /**
@@ -221,16 +314,18 @@ export function printBlock<Statement extends Node>(
       (gap.trailingEndsWithComment || stretchEndsWithComment)
     stretchEndsWithComment = false
     let afterBareMarker = false
-    for (const line of gap.lines) {
+    for (const [index, line] of gap.lines.entries()) {
       const unindented: boolean =
         rules.keepsDirectiveLinesUnindented &&
         afterBareMarker &&
         line.directivesOnly
-      const indentation = keptIndentation(
-        unindented,
-        keepsWhitespaceLines && line.directivesOnly,
-        line.indentation,
-      )
+      const indentation =
+        percentCommentIndentation(gap, index) ??
+        keptIndentation(
+          unindented,
+          keepsWhitespaceLines && line.directivesOnly,
+          line.indentation,
+        )
       afterBareMarker =
         line.bareMarker ||
         unindented ||
@@ -432,6 +527,7 @@ export function printBlock<Statement extends Node>(
       next++
       continue
     }
+    extra = rules.extraIndentationOf?.(statement) ?? ""
     // A kept line starts where its content starts, so that a `;` or a
     // directive before its first statement stays on it.
     const start =
@@ -475,6 +571,11 @@ export function printBlock<Statement extends Node>(
   }
   // The top-level block is the body of the diagram, which ends at the end of
   // the text.
+  const lastStatement = statements.at(-1)
+  extra =
+    lastStatement === undefined
+      ? ""
+      : (rules.extraIndentationOf?.(lastStatement) ?? "")
   const gap = readGap(source, offset, bounds.end, false, bounds.isTopLevel)
   addItemLines(gap)
   const closingJoin = findClosingJoin()
@@ -483,15 +584,23 @@ export function printBlock<Statement extends Node>(
     continuesOpeningLine,
     lines,
     endLeading: gap.leading,
-    endLeadingIndentation: keptIndentation(
-      rules.keepsDirectiveLinesUnindented &&
-        endsAfterBareMarker &&
-        gap.leadingDirectivesOnly,
-      endsAfterTakingComment && gap.leadingDirectivesOnly,
-      gap.leadingIndentation,
-    ),
+    endLeadingIndentation:
+      rules.oneCharacterIndentation !== undefined &&
+      gap.leadingPercentBraceGaps !== null
+        ? percentBraceIndentation(
+            gap.leadingPercentBraceGaps,
+            rules.oneCharacterIndentation,
+          )
+        : keptIndentation(
+            rules.keepsDirectiveLinesUnindented &&
+              endsAfterBareMarker &&
+              gap.leadingDirectivesOnly,
+            endsAfterTakingComment && gap.leadingDirectivesOnly,
+            gap.leadingIndentation,
+          ),
     endBlank: gap.blankAfter,
     closingJoin,
+    endExtraIndentation: extra,
   }
 }
 
@@ -536,7 +645,9 @@ export function printDiagramBlock(
             blankBefore: block.lines.length > 0 && block.endBlank,
             endsWithWhitespace: block.endLeading.endsWithWhitespace,
             ...(block.endLeadingIndentation === undefined
-              ? {}
+              ? block.endExtraIndentation === ""
+                ? {}
+                : { extraIndentation: block.endExtraIndentation }
               : { writtenIndentation: block.endLeadingIndentation }),
           },
         ]

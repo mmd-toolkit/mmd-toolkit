@@ -473,6 +473,15 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: gantt/lex-comment-after-two-characters]
   [fixture: gantt/lex-brace-before-percent]
   [fixture: gantt/lex-colon-then-percent]
+- `comment-takes-character`、journey の字句解析器
+  （[`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)）
+  :
+  `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
+  そうすると、コメントは単位の始まる位置の `%` から始まり、
+  ほかの `%%` は、それを含む単位の一部になる。
+  [fixture: journey/div-comment-after-task-text-start]
+  [fixture: journey/div-comment-after-colon-after-section]
+  [fixture: journey/div-comment-after-task-colon]
 - `comment-takes-line-break`、class の字句解析器
   （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)）
   :

@@ -398,6 +398,14 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   gantt/div-comment-after-semicolon-after-data] [fixture:
   gantt/lex-comment-after-two-characters] [fixture:
   gantt/lex-brace-before-percent] [fixture: gantt/lex-colon-then-percent]
+- `comment-takes-character`, in the journey lexer
+  ([`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)):
+  the rule that reads a character other than `}` before `%%` together with the
+  comment is taken out, so a comment starts at a `%` where a unit starts, and
+  any other `%%` is part of the unit that holds it. [fixture:
+  journey/div-comment-after-task-text-start] [fixture:
+  journey/div-comment-after-colon-after-section] [fixture:
+  journey/div-comment-after-task-colon]
 - `comment-takes-line-break`, in the class lexer
   ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
   the rule that reads `%%`, the rest of the line and the line feeds after it

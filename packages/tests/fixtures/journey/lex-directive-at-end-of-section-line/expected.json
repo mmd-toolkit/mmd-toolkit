@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Trivia between units: a closed directive at the end of a section line ends nothing; the section keeps the space before it: `S `."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S "
+    ],
+    "tasks": [
+      {
+        "section": "S ",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

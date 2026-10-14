@@ -176,6 +176,8 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "ErLiteral", variant: "a style", message: NOT_TOKENS_JOINED },
   { type: "ErIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "GanttLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "JourneyLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "JourneyIgnoredText", message: NOT_WRITTEN_TEXT },
 ]
 
 /** The name of a row, for the failures. */
@@ -552,6 +554,51 @@ const VALUE_CASES: readonly ValueCase[] = [
       {
         where: "GanttLiteral at 12-14",
         message: `${JOINED}: "T", not "T "`,
+      },
+    ],
+  },
+  {
+    type: "JourneyLiteral",
+    name: "a JourneyLiteral reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "journey",
+    fixture: "tokens-unclosed-directive-in-title",
+    token: { type: "RawText", value: "T " },
+    side: "end",
+    problems: [
+      {
+        where: "JourneyDiagram at 0-18",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "JourneyTitleStatement at 10-18",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "JourneyLiteral at 16-18",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "Root.body",
+        message:
+          "does not run from its first token to its last: [0,18], not [0,17]",
+      },
+      {
+        where: "JourneyLiteral at 16-18",
+        message: `${JOINED}: "T", not "T "`,
+      },
+    ],
+  },
+  {
+    type: "JourneyIgnoredText",
+    name: "a JourneyIgnoredText reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "journey",
+    fixture: "lex-directive-after-space-in-ignored-data",
+    token: { type: "RawText", value: ": a " },
+    side: "end",
+    problems: [
+      {
+        where: "JourneyIgnoredText at 18-37",
+        message: `${JOINED}: ": ab", not ": a b"`,
       },
     ],
   },

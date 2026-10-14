@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: inside an accessibility description, `%%` is a character: the description `d %% c`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "d %% c",
+    "sections": [],
+    "tasks": []
+  }
+}

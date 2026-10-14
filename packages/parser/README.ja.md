@@ -128,6 +128,7 @@ const tokenCount = root.tokens.length // 8
 - 状態図: `stateDiagram`（`stateDiagram` と `stateDiagram-v2`）。
 - ER 図: `er`（`erDiagram`）。
 - Gantt チャート: `gantt`（`gantt`）。
+- journey 図: `journey`（`journey`）。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -236,7 +237,8 @@ try {
 [`ast/class.md`](../spec/docs/ast/class.ja.md)、
 [`ast/state.md`](../spec/docs/ast/state.ja.md)、
 [`ast/er.md`](../spec/docs/ast/er.ja.md)、
-[`ast/gantt.md`](../spec/docs/ast/gantt.ja.md) のものです。
+[`ast/gantt.md`](../spec/docs/ast/gantt.ja.md)、
+[`ast/journey.md`](../spec/docs/ast/journey.ja.md) のものです。
 
 ## 木を辿る
 
@@ -344,7 +346,10 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   Gantt チャートでは、単位の 1 文字目の直後の `%` は、その単位の文字です。
   mermaid.js は、その文字と行の残りをコメントとして読みます。
   `a% : 1d` は、ここではタスクで、mermaid.js ではタスクがありません。
-  `t%itle T` は、ここでは拒否します
+  `t%itle T` は、ここでは拒否します。
+  journey 図では、単位の 1 文字目の直後の `%%` について、同じことが言えます。
+  `A%%B: 5` は、ここではタスクで、mermaid.js ではタスクがありません。
+  `A: 5;%% c` は、ここでは拒否します
   （[`comment-takes-character`](../spec/docs/known-divergences/comment-takes-character.ja.md)）。
 - クラス図では、文の後のコメントは、その行の終わりで終わります。
   mermaid.js は、その後の改行も取り込み、
@@ -385,7 +390,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   mermaid.js は、flowchart と ER 図のヘッダーの前のそうした行、
   状態図のヘッダーの前の `%%{ }%%` の行、
   クラス図と ER 図のヘッダーの前でそうした行の後にある空白だけの行、
-  Gantt チャートのヘッダーの前のそうした行を、
+  Gantt チャートと journey 図のヘッダーの前のそうした行を、
   後に空白だけの行があってもなくても、拒否します
   （[`bare-percent-line-before-header`](../spec/docs/known-divergences/bare-percent-line-before-header.ja.md)）。
 - `parse()` はサイトの設定を知らないので、
@@ -401,6 +406,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   [`ast/state.md`](../spec/docs/ast/state.ja.md)（状態図のノード）、
   [`ast/er.md`](../spec/docs/ast/er.ja.md)（ER 図のノード）、
   [`ast/gantt.md`](../spec/docs/ast/gantt.ja.md)（Gantt チャートのノード）、
+  [`ast/journey.md`](../spec/docs/ast/journey.ja.md)（journey 図のノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
   [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、

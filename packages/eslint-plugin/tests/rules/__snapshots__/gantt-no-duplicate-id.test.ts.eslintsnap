@@ -1,0 +1,112 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: gantt-no-duplicate-id >> invalid >>> docs/rules/gantt-no-duplicate-id.md incorrect 1
+Filename: gantt-no-duplicate-id-incorrect-1.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   Design :des1, 2024-01-06, 3d
+  4 |   Build :des1, 2024-01-09, 5d
+    |          ^~~~ [1]
+  5 |   Test :after des1, 2d
+  6 |
+
+[1] mermaid.js finds only this task for the id `des1`, not the task on line 3 that has it too.
+---
+
+
+Test: gantt-no-duplicate-id >> invalid >>> invalid/gantt/db-click-between-duplicate-ids
+Filename: tests/fixtures/rules/gantt-no-duplicate-id/invalid/gantt/db-click-between-duplicate-ids-input.mmd
+
+Code:
+  1 | gantt
+  2 | a : x, 2024-01-01, 1d
+  3 | click x href "u1"
+  4 | b : x, 2024-01-02, 1d
+    |     ^ [1]
+  5 | click x href "u2"
+
+[1] mermaid.js finds only this task for the id `x`, not the task on line 2 that has it too.
+---
+
+
+Test: gantt-no-duplicate-id >> invalid >>> invalid/gantt/db-task-duplicate-id
+Filename: tests/fixtures/rules/gantt-no-duplicate-id/invalid/gantt/db-task-duplicate-id-input.mmd
+
+Code:
+  1 | gantt
+  2 |   A :a, 2024-01-01, 1d
+  3 |   B :a, 2024-01-02, 1d
+    |      ^ [1]
+  4 |   click a href "u"
+  5 |
+
+[1] mermaid.js finds only this task for the id `a`, not the task on line 2 that has it too.
+---
+
+
+Test: gantt-no-duplicate-id >> invalid >>> invalid/gantt/duplicate-id-after
+Filename: tests/fixtures/rules/gantt-no-duplicate-id/invalid/gantt/duplicate-id-after-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | a : x, 2024-01-01, 1d
+  4 | c : x, 2024-03-01, 1d
+    |     ^ [1]
+  5 | b : after x, 1d
+  6 |
+
+[1] mermaid.js finds only this task for the id `x`, not the task on line 3 that has it too.
+---
+
+
+Test: gantt-no-duplicate-id >> invalid >>> invalid/gantt/duplicate-id-previous-task
+Filename: tests/fixtures/rules/gantt-no-duplicate-id/invalid/gantt/duplicate-id-previous-task-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | a : x, 2024-01-01, 1d
+  4 | b : 1d
+  5 | c : x, 2024-03-01, 1d
+    |     ^ [1]
+  6 |
+
+[1] mermaid.js finds only this task for the id `x`, not the task on line 3 that has it too.
+---
+
+
+Test: gantt-no-duplicate-id >> invalid >>> invalid/gantt/duplicate-id-three-times
+Filename: tests/fixtures/rules/gantt-no-duplicate-id/invalid/gantt/duplicate-id-three-times-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | a : x, 2024-01-01, 1d
+  4 | b : x, 2024-02-01, 1d
+    |     ^ [1]
+  5 | c : x, 2024-03-01, 1d
+    |     ^ [2]
+  6 | d : after x, 1d
+  7 |
+
+[1] mermaid.js finds only this task for the id `x`, not the task on line 3 that has it too.
+[2] mermaid.js finds only this task for the id `x`, not the task on line 3 that has it too.
+---
+
+
+Test: gantt-no-duplicate-id >> invalid >>> invalid/gantt/gram-task-duplicate-id-click
+Filename: tests/fixtures/rules/gantt-no-duplicate-id/invalid/gantt/gram-task-duplicate-id-click-input.mmd
+
+Code:
+  1 | gantt
+  2 | a : x, 2024-01-01, 1d
+  3 | b : x, 2024-01-02, 1d
+    |     ^ [1]
+  4 | click x href "u"
+
+[1] mermaid.js finds only this task for the id `x`, not the task on line 2 that has it too.
+---

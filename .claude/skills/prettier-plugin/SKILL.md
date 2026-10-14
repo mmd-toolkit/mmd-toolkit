@@ -258,6 +258,8 @@ Running tests; this is what belongs to this package):
     `line-separators`, `markdown-er`, and `value-nodes`.
   - `gantt*.ts`: `format` and `corpus` with `-t gantt`; and, without `-t`,
     `line-separators`, `markdown-gantt`, and `value-nodes`.
+  - `journey*.ts`: `format` and `corpus` with `-t journey`; and, without `-t`,
+    `line-separators`, `markdown-journey`, and `value-nodes`.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:
     `dispatch`, `failure`, `markdown`, `plugin`, and the files of each diagram
     type.

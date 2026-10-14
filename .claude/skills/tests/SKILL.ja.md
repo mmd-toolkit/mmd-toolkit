@@ -225,7 +225,7 @@ printer（prettier-plugin の SKILL）の順に終えてから次の図種に進
   どちらも `classDiagram` として検出される。
   図種の fixture は、図種 ID がいくつあっても 1 つのディレクトリに置く。
 - pin した版のタグの mermaid.js の clone。
-  リポジトリの外に置く。
+  `.gitignore` に入っている `.work/mermaid` に置く。
   作り方は `tools/README.md` にある。
 
 ### 5.2 正規化関数

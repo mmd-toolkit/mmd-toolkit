@@ -280,6 +280,37 @@
   [fixture: gantt/gram-task-tags-only]
   [fixture: gantt/gram-task-tags-only-two]
 
+## Journey 図の中
+
+- どの文脈でも、どの文字もいずれかの規則で単位を始めるので、
+  字句解析器が入力を拒否するのはテキストの終わりだけ。
+- 終わってはいけない文脈でテキストが終わるときは、
+  `range` はその文脈に入ったもので、メッセージは何が閉じていないかを示す。
+  - `accTitle` と `accDescr`。
+    メッセージは `accTitle has no text before the end of the text` と
+    `accDescr has no text before the end of the text`。
+    [fixture: journey/lex-acc-title-at-end]
+    [fixture: journey/lex-acc-title-space-at-end]
+    [fixture: journey/lex-acc-title-line-feed-at-end]
+    [fixture: journey/lex-acc-descr-at-end]
+  - 説明ブロックの `accDescr`。
+    メッセージは `The description block has no } before the end of the text`。
+    [fixture: journey/lex-acc-descr-block-unclosed]
+    [fixture: journey/lex-acc-descr-block-unclosed-empty]
+    [fixture: journey/lex-acc-descr-block-unclosed-lines]
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲。
+  `newline` 単位では、その始まりの空の範囲。
+  テキストの終わりでは、flowchart と同じく、テキストの終わりの空の範囲。
+  データのないタスクのテキスト `a` の後に改行があれば、その改行で報告する。
+  後に何もない行末のコロンと `;` は、それ自身で報告する。
+  `journey2` はタスクのテキストで報告する。
+  タスクのテキスト `title` がテキストの終わりにあれば、終わりで報告する。
+  [fixture: journey/lex-task-text-only]
+  [fixture: journey/lex-task-colon-at-end]
+  [fixture: journey/lex-semicolon-line]
+  [fixture: journey/header-digit-suffix]
+  [fixture: journey/lex-title-at-end]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、

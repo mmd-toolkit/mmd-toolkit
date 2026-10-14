@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Units and contexts (Whitespace): runs of line feeds are `newline` units."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [],
+        "score": 5
+      },
+      {
+        "section": "",
+        "task": "B",
+        "people": [],
+        "score": 3
+      }
+    ]
+  }
+}

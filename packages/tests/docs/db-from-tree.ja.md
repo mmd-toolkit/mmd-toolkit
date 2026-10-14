@@ -245,6 +245,7 @@ HTML ラベルが有効で、`securityLevel` が
   [fixture: sequence/config-security-level-loose-title-and-box]
   [fixture: er/config-security-level-other-subgraph-title-html-labels-false]
   [fixture: gantt/config-security-level-other-html-labels-false]
+  [fixture: journey/config-security-level-other-html-labels-false]
 
 **何を。**
 置き換えは、改行タグをそれぞれ `#br#` に書き、
@@ -354,6 +355,15 @@ HTML ラベルが有効で、`securityLevel` が
   [fixture: gantt/config-security-level-other-settings-as-written]
   [fixture: gantt/config-security-level-other-task-data-as-written]
   [fixture: gantt/config-security-level-other-click-as-written]
+- journey: title（フロントマターのものと `title` の文のもの）、`accTitle`、
+  `accDescr`（行のものとブロックのもの）。
+  タスクの説明、スコア、人、section の名前には届きません。
+  [fixture: journey/config-security-level-other-title]
+  [fixture: journey/config-security-level-other-diagram-title]
+  [fixture: journey/config-security-level-other-acc-title]
+  [fixture: journey/config-security-level-other-acc-descr]
+  [fixture: journey/config-security-level-other-acc-descr-block]
+  [fixture: journey/config-security-level-other-names-as-written]
 
 **mermaid.js の順序が効く所。**
 テキストを読み進める前に置き換える所があり、作り手も同じにします。

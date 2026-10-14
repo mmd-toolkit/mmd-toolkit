@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Directives inside units: a directive between a task text and its colon: the task `A `, whose space is a character of the text."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A ",
+        "people": [],
+        "score": 5
+      }
+    ]
+  }
+}

@@ -275,6 +275,9 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   - `gantt*.ts`: `format` と `corpus` を `-t gantt` で。
     `-t` なしで `line-separators`、`markdown-gantt`、
     `value-nodes`。
+  - `journey*.ts`: `format` と `corpus` を `-t journey` で。
+    `-t` なしで `line-separators`、`markdown-journey`、
+    `value-nodes`。
   - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:
     `dispatch`、`failure`、`markdown`、`plugin`と、
     図種ごとのファイル。

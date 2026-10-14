@@ -4,6 +4,7 @@ import { printClass } from "./class.ts"
 import { printEr } from "./er.ts"
 import { printFlowchart } from "./flowchart.ts"
 import { printGantt } from "./gantt.ts"
+import { printJourney } from "./journey.ts"
 import { printSequence } from "./sequence.ts"
 import { printState } from "./state.ts"
 import type { Source } from "./source.ts"
@@ -39,4 +40,5 @@ export const diagramPrinters: Readonly<
   StateDiagram: printState,
   ErDiagram: printEr,
   GanttDiagram: printGantt,
+  JourneyDiagram: printJourney,
 }

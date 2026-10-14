@@ -1,0 +1,145 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: gantt-no-duplicate-setting >> invalid >>> docs/rules/gantt-no-duplicate-setting.md incorrect 1
+Filename: gantt-no-duplicate-setting-incorrect-1.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat DD-MM-YYYY
+  3 |   Design :01-02-2024, 3d
+  4 |   dateFormat YYYY-MM-DD
+    |   ^~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |   Build :2024-02-05, 5d
+  6 |
+
+[1] mermaid.js replaces the `dateFormat` set on line 2 with the one of this statement.
+---
+
+
+Test: gantt-no-duplicate-setting >> invalid >>> docs/rules/gantt-no-duplicate-setting.md incorrect 2
+Filename: gantt-no-duplicate-setting-incorrect-2.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   axisFormat %m-%d
+  4 |   axisFormat %d
+    |   ^~~~~~~~~~~~~ [1]
+  5 |   Design :2024-01-06, 3d
+  6 |
+
+[1] mermaid.js replaces the `axisFormat` set on line 3 with the one of this statement.
+---
+
+
+Test: gantt-no-duplicate-setting >> invalid >>> invalid/gantt/date-format-twice-same-value
+Filename: tests/fixtures/rules/gantt-no-duplicate-setting/invalid/gantt/date-format-twice-same-value-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | dateFormat YYYY-MM-DD
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | a : 2024-01-01, 1d
+  5 |
+
+[1] mermaid.js replaces the `dateFormat` set on line 2 with the one of this statement.
+---
+
+
+Test: gantt-no-duplicate-setting >> invalid >>> invalid/gantt/date-format-twice-with-tasks
+Filename: tests/fixtures/rules/gantt-no-duplicate-setting/invalid/gantt/date-format-twice-with-tasks-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat DD-MM-YYYY
+  3 | a : 01-02-2024, 1d
+  4 | dateFormat YYYY-MM-DD
+    | ^~~~~~~~~~~~~~~~~~~~~ [1]
+  5 | b : 2024-02-05, 1d
+  6 |
+
+[1] mermaid.js replaces the `dateFormat` set on line 2 with the one of this statement.
+---
+
+
+Test: gantt-no-duplicate-setting >> invalid >>> invalid/gantt/db-axis-format-last-wins
+Filename: tests/fixtures/rules/gantt-no-duplicate-setting/invalid/gantt/db-axis-format-last-wins-input.mmd
+
+Code:
+  1 | gantt
+  2 | axisFormat %m
+  3 | axisFormat %d
+    | ^~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the `axisFormat` set on line 2 with the one of this statement.
+---
+
+
+Test: gantt-no-duplicate-setting >> invalid >>> invalid/gantt/db-date-format-last-wins
+Filename: tests/fixtures/rules/gantt-no-duplicate-setting/invalid/gantt/db-date-format-last-wins-input.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   dateFormat DD/MM/YYYY
+    |   ^~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `dateFormat` set on line 2 with the one of this statement.
+---
+
+
+Test: gantt-no-duplicate-setting >> invalid >>> invalid/gantt/db-tick-interval-last-wins
+Filename: tests/fixtures/rules/gantt-no-duplicate-setting/invalid/gantt/db-tick-interval-last-wins-input.mmd
+
+Code:
+  1 | gantt
+  2 | tickInterval 1week
+  3 | tickInterval 2day
+    | ^~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the `tickInterval` set on line 2 with the one of this statement.
+---
+
+
+Test: gantt-no-duplicate-setting >> invalid >>> invalid/gantt/db-today-marker-last-wins
+Filename: tests/fixtures/rules/gantt-no-duplicate-setting/invalid/gantt/db-today-marker-last-wins-input.mmd
+
+Code:
+  1 | gantt
+  2 | todayMarker off
+  3 | todayMarker stroke:red
+    | ^~~~~~~~~~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the `todayMarker` set on line 2 with the one of this statement.
+---
+
+
+Test: gantt-no-duplicate-setting >> invalid >>> invalid/gantt/db-weekday-last-wins
+Filename: tests/fixtures/rules/gantt-no-duplicate-setting/invalid/gantt/db-weekday-last-wins-input.mmd
+
+Code:
+  1 | gantt
+  2 |   weekday monday
+  3 |   weekday Friday
+    |   ^~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `weekday` set on line 2 with the one of this statement.
+---
+
+
+Test: gantt-no-duplicate-setting >> invalid >>> invalid/gantt/db-weekend-saturday
+Filename: tests/fixtures/rules/gantt-no-duplicate-setting/invalid/gantt/db-weekend-saturday-input.mmd
+
+Code:
+  1 | gantt
+  2 |   weekend friday
+  3 |   weekend saturday
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the `weekend` set on line 2 with the one of this statement.
+---

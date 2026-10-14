@@ -213,6 +213,19 @@ export type {
   GanttWeekendDay,
   GanttWeekendStatement,
 } from "./ast/gantt.ts"
+export type {
+  JourneyAccDescrBlockStatement,
+  JourneyAccDescrStatement,
+  JourneyAccTitleStatement,
+  JourneyDiagram,
+  JourneyIgnoredText,
+  JourneyLiteral,
+  JourneyNode,
+  JourneySectionStatement,
+  JourneyStatement,
+  JourneyTaskStatement,
+  JourneyTitleStatement,
+} from "./ast/journey.ts"
 export { ParseError, UnsupportedDiagramError } from "./errors.ts"
 export { parse } from "./parse.ts"
 export type { Visitor } from "./traverse.ts"

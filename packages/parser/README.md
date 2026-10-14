@@ -127,6 +127,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - State diagrams: `stateDiagram` (`stateDiagram` and `stateDiagram-v2`).
 - Entity relationship diagrams: `er` (`erDiagram`).
 - Gantt charts: `gantt` (`gantt`).
+- User journey diagrams: `journey` (`journey`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -220,8 +221,9 @@ type ids. The names and fields are those of the specification's
 [`ast/sequence.md`](../spec/docs/ast/sequence.md),
 [`ast/class.md`](../spec/docs/ast/class.md),
 [`ast/state.md`](../spec/docs/ast/state.md),
-[`ast/er.md`](../spec/docs/ast/er.md), and
-[`ast/gantt.md`](../spec/docs/ast/gantt.md).
+[`ast/er.md`](../spec/docs/ast/er.md),
+[`ast/gantt.md`](../spec/docs/ast/gantt.md), and
+[`ast/journey.md`](../spec/docs/ast/journey.md).
 
 ## Walking the tree
 
@@ -317,7 +319,10 @@ these differences:
   mermaid.js reads it as a comment. In a Gantt chart, a `%` right after the
   first character of a unit is a character of the unit, while mermaid.js reads
   that character and the rest of the line as a comment: `a% : 1d` is a task here
-  and no task in mermaid.js, and `t%itle T` is rejected here
+  and no task in mermaid.js, and `t%itle T` is rejected here. In a journey
+  diagram, the same holds for a `%%` right after the first character of a unit:
+  `A%%B: 5` is a task here and no task in mermaid.js, and `A: 5;%% c` is
+  rejected here
   ([`comment-takes-character`](../spec/docs/known-divergences/comment-takes-character.md)).
 - In a class diagram, a comment after a statement ends at the end of its line,
   while mermaid.js takes the line breaks after it and reads the next line as
@@ -353,7 +358,7 @@ these differences:
   flowchart and of an ER diagram, a line `%%{ }%%` before that of a state
   diagram, and a line of spaces after such a line before that of a class or an
   ER diagram, and every such line, with a line of spaces after it or without,
-  before that of a Gantt chart
+  before that of a Gantt chart and of a journey diagram
   ([`bare-percent-line-before-header`](../spec/docs/known-divergences/bare-percent-line-before-header.md)).
 - `parse()` does not know the site configuration, so a flowchart with more edges
   than `maxEdges` (500 by default) is accepted.
@@ -367,7 +372,8 @@ these differences:
   [`ast/class.md`](../spec/docs/ast/class.md) (the class nodes),
   [`ast/state.md`](../spec/docs/ast/state.md) (the state nodes),
   [`ast/er.md`](../spec/docs/ast/er.md) (the ER nodes),
-  [`ast/gantt.md`](../spec/docs/ast/gantt.md) (the Gantt nodes), and
+  [`ast/gantt.md`](../spec/docs/ast/gantt.md) (the Gantt nodes),
+  [`ast/journey.md`](../spec/docs/ast/journey.md) (the journey nodes), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of

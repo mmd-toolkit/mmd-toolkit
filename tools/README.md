@@ -29,12 +29,12 @@ each file left out. Texts in other test files of mermaid, such as
 `rendering-util` and the end-to-end tests, are not collected: the inputs come
 from the diagram's own test files, its documentation and the demos.
 
-1. Clone mermaid outside this repository, at the tag of the pinned version
-   (`mermaid@` followed by the version of the `mermaid` devDependency in
-   `packages/tests/package.json`):
+1. Clone mermaid into `.work/mermaid`, which `.gitignore` lists, at the tag of
+   the pinned version (`mermaid@` followed by the version of the `mermaid`
+   devDependency in `packages/tests/package.json`):
 
    ```sh
-   git clone --depth 1 --branch mermaid@12.0.0 https://github.com/mermaid-js/mermaid.git /path/outside/the/repository/mermaid
+   git clone --depth 1 --branch mermaid@12.0.0 https://github.com/mermaid-js/mermaid.git .work/mermaid
    ```
 
    The collector checks that the checkout is at that tag. Nothing needs to be
@@ -45,7 +45,7 @@ from the diagram's own test files, its documentation and the demos.
 2. Collect, writing the result outside the repository (here for `sequence`):
 
    ```sh
-   pnpm --filter @mmd-toolkit/tests run fixtures:collect sequence --mermaid /path/outside/the/repository/mermaid --out /tmp/sequence.json
+   pnpm --filter @mmd-toolkit/tests run fixtures:collect sequence --mermaid .work/mermaid --out /tmp/sequence.json
    ```
 
    For each test file it reports the number of tests run, the inputs recorded

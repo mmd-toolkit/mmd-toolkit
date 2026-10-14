@@ -162,6 +162,8 @@ const VALUE_FIELD_REPORTS: Readonly<
     message: "the day, which is the day token in lower case: ",
   },
   "Identifier.name": { message: "name is not the texts of its tokens joined" },
+  "JourneyIgnoredText.value": { message: "value is not its written text" },
+  "JourneyLiteral.value": { message: "value is not its written text" },
   "NumericLiteral.value": {
     message: "value is not the number that its written text writes",
   },

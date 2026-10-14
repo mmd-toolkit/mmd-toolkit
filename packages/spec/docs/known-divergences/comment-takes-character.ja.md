@@ -2,7 +2,7 @@
 
 英語版: [comment-takes-character.md](./comment-takes-character.md)
 
-図種: sequence、gantt。
+図種: sequence、gantt、journey。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -29,6 +29,8 @@ id の並びかテキストの文字です。
 単独の `%` がコメントを始めるガントチャートでは、
 `a% : 1d` のように、単位の最初の文字（`}` と空白以外の文字）の直後の `%`
 についてのものです。
+ユーザージャーニー図では、`A%%B: 5` のように、
+同じ位置の `%%` についてのものです。
 
 ## 差異
 
@@ -167,6 +169,31 @@ gantt では差異は両方向です。
 [fixture: gantt/lex-brace-before-percent]
 [fixture: gantt/lex-space-then-percent-after-unit]
 
+ユーザージャーニー図では、mermaid.js の字句解析器は `%%` に同じ規則を持ちます。
+単位の始まる位置の `%%` のすぐ前に `}` でも空白でもない文字があるところでは、
+その文字、`%%`、行の残りを 1 つのコメントとして読みます。
+`A%%B: 5` はコメントでタスクはなく、
+`A: 5;%% c` と `title x;%% c` はタスクとタイトルの後に `;` からのコメントで、
+`section a:%% c` は section `a` の後に `:` からのコメントです。
+この仕様ではコメントは単位の始まる位置でだけ始まります。
+`A%%B: 5` はタスク `A%%B` で、
+タスクのデータやタイトルの後の `;` は文法の取らない `;` の単位、
+section の後の `:%% c` はタスクのないデータなので、これらの入力は拒否されます。
+一方 `A:%% c` はスコアの部分が `%% c` のタスク `A` で、mermaid.js は拒否します。
+journey では差異は両方向です。
+`a%: 5` のように文字の後の単独の `%` は、どちらでもタスクのテキストの文字で、
+`}%% c` はどちらでもデータのないタスクのテキストで、
+`%%` の前の `#` はどちらにもコメントを読ませます
+（[コメント](../diagrams/journey.ja.md#コメント) を参照）。
+[fixture: journey/div-comment-after-task-text-start]
+[fixture: journey/div-comment-after-semicolon-after-data]
+[fixture: journey/div-comment-after-semicolon-after-title]
+[fixture: journey/div-comment-after-colon-after-section]
+[fixture: journey/div-comment-after-task-colon]
+[fixture: journey/lex-single-percent-after-character]
+[fixture: journey/lex-brace-before-percent]
+[fixture: journey/lex-hash-before-percent]
+
 ## 書き手にとっての結果
 
 文のすぐ後に空白なしで書いたコメントは、
@@ -189,12 +216,16 @@ mermaid.js の字句解析器には、この仕様と違う 2 つの規則があ
 gantt の字句解析器は単独の `%` で同じコメントの規則を持ち
 （[`gantt.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/parser/gantt.jison#L29-L29)）、
 タスクのテキストとタスクのデータのコロンの規則より前に試します。
+journey の字句解析器は `%%` で同じコメントの規則を持ち
+（[`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)）、
+改行、空白、タスクのテキスト、タスクのデータの規則より前に試します。
 
 ## この仕様の規則と、その理由
 
 この仕様では、コメントはその印で始まり、数の後には `%%` が続いてもかまいません
-（[文の文脈](../diagrams/sequence.ja.md#文の文脈) と
-[コメント](../diagrams/gantt.ja.md#コメント) を参照）。
+（[文の文脈](../diagrams/sequence.ja.md#文の文脈)、
+gantt の [コメント](../diagrams/gantt.ja.md#コメント)、
+journey の [コメント](../diagrams/journey.ja.md#コメント) を参照）。
 
 コメントがその前の文字を取ること、
 しかもほかの規則がそこで一致を始める場所でだけ取ることは、

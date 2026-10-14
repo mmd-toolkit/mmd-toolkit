@@ -66,8 +66,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
   diagram comment has a mark that its diagram has, and ends where its line ends;
   a flowchart and an ER diagram have the mark `%%` for a line of `%%` alone
   before their header, as every diagram type does, and for no other comment; a
-  gantt diagram has the marks `%%` and `%` for its diagram comments; a fragment
-  without a mark follows a comment region (parser/docs/tokens.md, Comment;
+  gantt diagram has the marks `%%` and `%` for its diagram comments, and a
+  journey diagram the marks `#`, `%%`, and `%`; a fragment without a mark
+  follows a comment region (parser/docs/tokens.md, Comment;
   [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
@@ -110,7 +111,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
     that, and requires every `Keyword` token of a recorded tree to have a text
     in it. For a gantt diagram the row names the header and the days (`day`) as
     units, which are `gantt` and the seven days of a `weekday` and a `weekend`
-    statement.
+    statement. For a journey diagram the row names the header, which is
+    `journey`, and the words that start a statement (`title`, `section`,
+    `accTitle`, `accDescr`).
   - The text of a `Punctuator` token other than those of the arrows is one that
     its diagram has (`src/check-tree/punctuators.ts`, a copy of the row
     `Punctuator` of the table of Tokens of each diagram), and no run of its
@@ -203,7 +206,26 @@ const problems: TreeProblem[] = checkTree(text, tree)
     the text of a setting, a title, or a section starts (one whitespace
     character after the keyword) and ends (the end of its line, or before `#` or
     `;` where the statement says so); where the value of an accessibility
-    statement starts and ends, which is without the whitespace at its ends.
+    statement starts and ends, which is without the whitespace at its ends;
+  - journey: the checks of the tokens that a node writes itself, of their kinds,
+    of the range of a statement, of the text of a title and a section, and of
+    the value of an accessibility statement are those of a gantt diagram (one
+    code, `src/check-tree/statement-checks.ts`), with the kinds of the tokens of
+    parser/docs/tokens/journey.md (`:`, `,`, `{`, `}` are `Punctuator` tokens,
+    the header and the keywords `Keyword` tokens, every value a `RawText`
+    token); a task writes a colon, and with people a second colon and the commas
+    between them; the score and the people are the stretches between the colons
+    and the commas (the score part runs from the first colon to the second colon
+    or the end of the data, the people part from the second colon to the third
+    colon or the end), one person more than there are commas, each filling its
+    stretch and null where only whitespace lies in it, and read without the
+    whitespace at their ends, with no `:` in a score and no `,` or `:` in a
+    person; `textAfter` starts with the third colon, does not end with
+    whitespace, and exists only where the second colon does; the description of
+    a task runs to the colon, the whitespace before the colon included, and
+    neither starts with whitespace nor holds a `:`; the name of a section holds
+    no `:`; the text of a title or a section starts one whitespace character
+    after the keyword and ends at the end of its line or before a `#`.
 
 The **written text** of a range is its source without the directives, the
 comment regions, and the `;` that the line rule ignores (ast.md, Nodes).
@@ -291,9 +313,11 @@ Not checked:
 `tests/check-tree-corpus.test.ts` checks every recorded tree of the corpus and
 that every node type in it is classified as a value node or not. The tests that
 require a recorded tree for every node type of the tables read the recorded
-trees of every diagram of the corpus. `check-tree-gantt.test.ts` breaks the
-recorded gantt trees for the kinds of tokens and the ranges, and makes, by hand,
-the smallest trees that hold each of those sentences, and
+trees of every diagram of the corpus. `check-tree-gantt.test.ts` and
+`check-tree-journey.test.ts` break the recorded trees for the kinds of tokens
+and the ranges, and make, by hand, the smallest trees that hold each of the
+sentences of the diagram (the hand-made trees and their breaking cases are built
+by `tests/check-tree-built.ts`; the journey file makes fourteen of them); and
 `check-tree-node-ranges.test.ts` makes, by hand, the click statements for the
 order of their child fields. `tests/check-tree-fields.test.ts` is the test of
 the paragraphs above: it reads the recorded trees once and indexes the first

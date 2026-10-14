@@ -220,7 +220,8 @@ and each diagram applies it to the texts below.
   state/config-security-level-loose-description-and-id] [fixture:
   sequence/config-security-level-loose-title-and-box] [fixture:
   er/config-security-level-other-subgraph-title-html-labels-false] [fixture:
-  gantt/config-security-level-other-html-labels-false]
+  gantt/config-security-level-other-html-labels-false] [fixture:
+  journey/config-security-level-other-html-labels-false]
 
 **What.** The replacement writes each line break tag as `#br#`, then each `<`,
 `>`, and `=` as `&lt;`, `&gt;`, and `&equals;`, and then each `#br#` as `<br/>`,
@@ -327,6 +328,15 @@ does not, are:
   gantt/config-security-level-other-settings-as-written] [fixture:
   gantt/config-security-level-other-task-data-as-written] [fixture:
   gantt/config-security-level-other-click-as-written]
+- Journey: the title, of the frontmatter and of a `title` statement; `accTitle`;
+  `accDescr`, of a line and of a block. The descriptions and the scores and
+  people of tasks and the section names are not reached. [fixture:
+  journey/config-security-level-other-title] [fixture:
+  journey/config-security-level-other-diagram-title] [fixture:
+  journey/config-security-level-other-acc-title] [fixture:
+  journey/config-security-level-other-acc-descr] [fixture:
+  journey/config-security-level-other-acc-descr-block] [fixture:
+  journey/config-security-level-other-names-as-written]
 
 **Where the order of mermaid.js matters.** Some texts are replaced before
 mermaid.js reads them further, and the builders do the same.

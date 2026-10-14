@@ -3,6 +3,7 @@ import type {
   ErNode,
   FlowchartNode,
   GanttNode,
+  JourneyNode,
   SequenceNode,
   StateNode,
 } from "../../src/index.ts"
@@ -213,6 +214,24 @@ export const allGanttNodeTypes: Readonly<Record<GanttNode["type"], true>> = {
   GanttLiteral: true,
 }
 
+/**
+ * Every node type of ast/journey.md, in the order of that document. Being a
+ * `Record` over the type, this fails to type-check when a node type is
+ * missing here or is not in the type.
+ */
+export const allJourneyNodeTypes: Readonly<Record<JourneyNode["type"], true>> =
+  {
+    JourneyDiagram: true,
+    JourneyTaskStatement: true,
+    JourneyTitleStatement: true,
+    JourneySectionStatement: true,
+    JourneyAccTitleStatement: true,
+    JourneyAccDescrStatement: true,
+    JourneyAccDescrBlockStatement: true,
+    JourneyLiteral: true,
+    JourneyIgnoredText: true,
+  }
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -222,6 +241,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allStateNodeTypes),
   ...Object.keys(allErNodeTypes),
   ...Object.keys(allGanttNodeTypes),
+  ...Object.keys(allJourneyNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

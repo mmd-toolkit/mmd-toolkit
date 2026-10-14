@@ -1033,6 +1033,26 @@ describe("withoutDivergences", () => {
   })
 })
 
+describe("withoutDivergences: journey", () => {
+  /** The descriptions of the tasks of `journey\n  A%%B: 5`, with `without` taken out. */
+  async function tasksOf(
+    without: readonly "comment-takes-character"[],
+  ): Promise<string[]> {
+    const run = await runMermaid("journey\n  A%%B: 5\n", {
+      withoutDivergences: without,
+    })
+    if (!run.accepted || !run.db) throw new Error("expected a Db")
+    return (run.db.tasks as { task: string }[]).map((task) => task.task)
+  }
+
+  it("starts a comment at its `%%` only where a unit starts", async () => {
+    // The lexer reads `A%%B: 5` as a comment; read as the specification does,
+    // it is the task `A%%B`.
+    expect(await tasksOf([])).toEqual([])
+    expect(await tasksOf(["comment-takes-character"])).toEqual(["A%%B"])
+  })
+})
+
 describe("withoutDivergences: gantt", () => {
   /** Whether mermaid accepts `text` as it is, and with `removed` taken out. */
   async function acceptedAsIsAndWithout(

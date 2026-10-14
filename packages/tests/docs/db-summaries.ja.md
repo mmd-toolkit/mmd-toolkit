@@ -1135,10 +1135,17 @@ Db は、すべての journey 図が共有する 1 つのオブジェクトで�
 
 値を、欄ごとに述べます。
 
-- `title` は、`title` と空白の後ろのテキストで、`#` か行末までです。
+- `title` は、`title` と空白 1 文字の後ろのテキストで、`#` か行末までです。
+  両端の空白は残ります。
+  空白 2 つの `title  T` のタイトルは ` T` です。
+  テキストの後ろの `;` は、入力を拒否させます。
+  `;` がテキストを終わらせ、その後ろを受け取る規則がないからです。
   `title` の文は、フロントマターのタイトルを置き換えます。
   [fixture: journey/db-title-statement]
+  [fixture: journey/lex-title-two-spaces]
+  [fixture: journey/lex-title-trailing-spaces]
   [fixture: journey/db-title-ends-at-hash]
+  [fixture: journey/lex-title-semicolon]
   [fixture: journey/db-title-frontmatter]
   [fixture: journey/db-title-statement-after-frontmatter]
 - `accTitle` と `accDescr` は、文のテキストを trim したものです。
@@ -1152,30 +1159,42 @@ Db は、すべての journey 図が共有する 1 つのオブジェクトで�
   （[db-from-tree.md](./db-from-tree.md) の文字の置き換えを参照）。
   section の名前、タスクの説明、人は変わりません。
   [fixture: journey/config-security-level-other-title]
+  [fixture: journey/config-security-level-other-diagram-title]
   [fixture: journey/config-security-level-other-acc-title]
   [fixture: journey/config-security-level-other-acc-descr]
+  [fixture: journey/config-security-level-other-acc-descr-block]
   [fixture: journey/config-security-level-other-names-as-written]
 - `sections` は、各 `section` の文の、キーワードとすぐ後ろの空白 1 文字を除いた
   テキストを持ちます。名前が繰り返されても、文ごとに 1 つです。
   最初の section の前のタスクは、空の `section` を持ちます。
   名前は `#` の手前で終わり、`#` から行末まではコメントです。
-  `#` の前の空白は残ります。
+  `#` の前の空白は残り、名前の先頭の空白も残ります。
+  空白だけの名前も名前です。
+  名前の後ろの `;` と `:` は、入力を拒否させます。
+  これらがテキストを終わらせ、その後ろを受け取る規則がないからです。
   [fixture: journey/db-sections]
   [fixture: journey/db-task-before-section]
   [fixture: journey/db-section-ends-at-hash]
-- `task` は、コロンの前のテキストで、コロンの前の空白を含みます。
+  [fixture: journey/lex-section-two-spaces]
+  [fixture: journey/lex-section-whitespace-only]
+  [fixture: journey/lex-section-semicolon]
+  [fixture: journey/lex-section-colon]
+- `task` は、最初のコロンの前のテキストで、コロンの前の空白を含みます。
+  テキストの前の空白は含みません。
   [fixture: journey/db-task-description-spaces]
+  [fixture: journey/lex-whitespace-ideographic-space-around-task]
 - [`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
   は、最初のコロンの後ろのテキストを、各コロンで分けます。
   `score` は、最初の部分から JavaScript が作る数です。
   そのため、小数、16 進数、指数、負の数は数で、
-  数の前後の空白は数に含まれず、空の部分は 0 です。
+  数の前後の空白は数に含まれず、空の部分と空白だけの部分は 0 です。
   [fixture: journey/db-task-score-decimal]
   [fixture: journey/db-task-score-hexadecimal]
   [fixture: journey/db-task-score-exponent]
   [fixture: journey/db-task-score-negative]
   [fixture: journey/db-task-score-spaces]
   [fixture: journey/db-task-score-empty]
+  [fixture: journey/gram-task-data-whitespace-only]
   有限の数でない score は、JSON にそのような数がないので、
   数のテキストで記録します。
   数でない部分は `NaN` です。
@@ -1187,13 +1206,16 @@ Db は、すべての journey 図が共有する 1 つのオブジェクトで�
   [fixture: journey/db-task-score-negative-infinity]
   [fixture: journey/db-task-score-overflow]
 - `people` は、2 番目の部分を各コンマで分けて trim したもので、
-  コンマごとに名前が 1 つです。
+  名前の数はコンマの数より 1 つ多くなります。
   そのため空の項目は空の名前で、空白だけの部分は空の名前 1 つです。
-  2 番目の部分がなければ、人はいません。
-  2 番目より後ろの部分は除かれます。
+  2 つ目のコロンがなければ、人はいません。
+  2 つ目のコロンがあってその後ろが空なら、空の名前が 1 つです。
+  3 つ目のコロンから後のテキストは除かれます。
   [fixture: journey/db-task-people]
   [fixture: journey/db-task-people-empty-item]
   [fixture: journey/db-task-people-blank]
+  [fixture: journey/gram-task-people-trailing-comma]
+  [fixture: journey/gram-task-second-colon-at-end]
   [fixture: journey/db-task-score-only]
   [fixture: journey/db-task-extra-colon]
   タスクのデータも `#` の手前で終わり、行の残りはコメントです。

@@ -65,6 +65,7 @@ import {
   clickReferenceOf,
   commentsAfterMatchStarts,
   commentsAfterUnits,
+  doublePercentsAfterUnitStarts,
   percentBracesReachedDirectly,
   percentCommentsReachedDirectly,
   percentsAfterUnitStarts,
@@ -404,6 +405,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     ...(await loadFixtures("state")),
     ...(await loadFixtures("er")),
     ...(await loadFixtures("gantt")),
+    ...(await loadFixtures("journey")),
   ]
 
   /** The fixtures that carry the mark `knownDivergence`. */
@@ -562,9 +564,10 @@ describe("marked fixtures differ only by their divergence", async () => {
   // starts at its `%%` here, while mermaid.js takes the character right
   // before it into the comment where a rule would start there, and reads no
   // number before it; in gantt, a `%` right after the first character of a
-  // unit is a character of the text here, while mermaid.js reads that
-  // character and the rest of the line as one comment. Each fixture has
-  // such a `%%` or `%`, found by the parser's lexer; the reading of the
+  // unit, and in journey, a `%%` there, is a character of the text here or
+  // follows a unit that the grammar does not take, while mermaid.js reads
+  // that character and the rest of the line as one comment. Each fixture
+  // has such a `%%` or `%`, found by the parser's lexer; the reading of the
   // specification is recorded in the corpus.
   describe("comment-takes-character", () => {
     const fixturesWithMark = marked("comment-takes-character")
@@ -577,9 +580,12 @@ describe("marked fixtures differ only by their divergence", async () => {
       it(`${fixture.diagram}/${fixture.name}`, () => {
         const places =
           commentsAfterMatchStarts(fixture.input) ??
-          percentsAfterUnitStarts(fixture.input)
+          percentsAfterUnitStarts(fixture.input) ??
+          doublePercentsAfterUnitStarts(fixture.input)
         if (places === null) {
-          throw new Error("the input is no sequence diagram or Gantt chart")
+          throw new Error(
+            "the input is no sequence diagram, Gantt chart, or journey diagram",
+          )
         }
         expect(places.length).toBeGreaterThan(0)
       })

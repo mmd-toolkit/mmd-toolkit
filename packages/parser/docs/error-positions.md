@@ -237,6 +237,31 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   gantt/db-top-axis-statement] [fixture: gantt/lex-topaxis-then-title] [fixture:
   gantt/gram-task-tags-only] [fixture: gantt/gram-task-tags-only-two]
 
+## In a journey diagram
+
+- Every character starts a unit in some rule of every context, so the lexer
+  rejects an input only at the end of the text.
+- When the text ends in a context that may not end there, `range` is what
+  entered that context, and the message says what is not closed: `accTitle` and
+  `accDescr` (`accTitle has no text before the end of the text`,
+  `accDescr has no text before the end of the text`), and the `accDescr` of a
+  description block
+  (`The description block has no } before the end of the text`). [fixture:
+  journey/lex-acc-title-at-end] [fixture: journey/lex-acc-title-space-at-end]
+  [fixture: journey/lex-acc-title-line-feed-at-end] [fixture:
+  journey/lex-acc-descr-at-end] [fixture: journey/lex-acc-descr-block-unclosed]
+  [fixture: journey/lex-acc-descr-block-unclosed-empty] [fixture:
+  journey/lex-acc-descr-block-unclosed-lines]
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace, the empty range at the start of a `newline` unit, and at the end
+  of the text the empty range at the end of the text, as in a flowchart: the
+  task text `a` without data followed by a line feed is reported at that line
+  feed, a colon with nothing after it on its line and a `;` at themselves,
+  `journey2` at the task text, and the task text `title` at the end of the text
+  at the end. [fixture: journey/lex-task-text-only] [fixture:
+  journey/lex-task-colon-at-end] [fixture: journey/lex-semicolon-line] [fixture:
+  journey/header-digit-suffix] [fixture: journey/lex-title-at-end]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

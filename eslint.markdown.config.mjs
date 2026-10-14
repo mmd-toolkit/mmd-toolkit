@@ -15,6 +15,7 @@ export default [
       "packages/tests/fixtures/",
       "tmp/",
       ".claude/worktrees/",
+      ".work/",
     ],
   },
   {

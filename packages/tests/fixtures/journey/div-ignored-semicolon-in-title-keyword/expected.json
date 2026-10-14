@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Known divergences: ignored-semicolon-as-token-boundary: the ignored `;` inside `title` makes the input rejected here; mermaid.js reads the title `T`."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "style:#x",
+    "sections": [],
+    "tasks": []
+  }
+}

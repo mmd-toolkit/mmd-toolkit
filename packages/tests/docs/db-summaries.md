@@ -956,10 +956,14 @@ following, each for the reason given:
 
 Values of the summary, by field:
 
-- `title` is the text after `title` and its whitespace, up to a `#` or the end
-  of the line. A `title` statement replaces the title of the frontmatter.
-  [fixture: journey/db-title-statement] [fixture: journey/db-title-ends-at-hash]
-  [fixture: journey/db-title-frontmatter] [fixture:
+- `title` is the text after `title` and one whitespace character, up to a `#` or
+  the end of the line. The whitespace at its ends stays: `title  T`, with two
+  spaces, has the title ` T`. A `;` after the text makes the input rejected,
+  because it ends the text and no rule takes it. A `title` statement replaces
+  the title of the frontmatter. [fixture: journey/db-title-statement] [fixture:
+  journey/lex-title-two-spaces] [fixture: journey/lex-title-trailing-spaces]
+  [fixture: journey/db-title-ends-at-hash] [fixture:
+  journey/lex-title-semicolon] [fixture: journey/db-title-frontmatter] [fixture:
   journey/db-title-statement-after-frontmatter]
 - `accTitle` and `accDescr` are the text of the statement, trimmed. The text of
   a description in a block has its line breaks, and the whitespace after each of
@@ -971,26 +975,36 @@ Values of the summary, by field:
   [db-from-tree.md](./db-from-tree.md), the replacement of characters). The
   names of sections, the descriptions of tasks, and the people are not changed.
   [fixture: journey/config-security-level-other-title] [fixture:
+  journey/config-security-level-other-diagram-title] [fixture:
   journey/config-security-level-other-acc-title] [fixture:
   journey/config-security-level-other-acc-descr] [fixture:
+  journey/config-security-level-other-acc-descr-block] [fixture:
   journey/config-security-level-other-names-as-written]
 - `sections` has the text of each `section` statement without the keyword and
   the one whitespace character after it, also when a name repeats. A task before
   the first section has the empty `section`. The name ends before a `#`, which
-  starts a comment to the end of the line; the space before it stays. [fixture:
-  journey/db-sections] [fixture: journey/db-task-before-section] [fixture:
-  journey/db-section-ends-at-hash]
-- `task` is the text before the colon, with the spaces before it. [fixture:
-  journey/db-task-description-spaces]
+  starts a comment to the end of the line; the space before it stays, and so
+  does the whitespace at its start, a name of whitespace only included. A `;`
+  after the name and a `:` after it make the input rejected, because they end
+  the text and no rule takes what follows. [fixture: journey/db-sections]
+  [fixture: journey/db-task-before-section] [fixture:
+  journey/db-section-ends-at-hash] [fixture: journey/lex-section-two-spaces]
+  [fixture: journey/lex-section-whitespace-only] [fixture:
+  journey/lex-section-semicolon] [fixture: journey/lex-section-colon]
+- `task` is the text before the first colon, with the whitespace that stands
+  before the colon; the whitespace before the text is not part of it. [fixture:
+  journey/db-task-description-spaces] [fixture:
+  journey/lex-whitespace-ideographic-space-around-task]
 - [`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
   splits the text after the first colon at each colon. `score` is the number
   that JavaScript makes of the first piece, so a decimal, a hexadecimal number,
   an exponent, and a negative number are numbers, the spaces around the number
-  are not part of it, and an empty piece is 0. [fixture:
-  journey/db-task-score-decimal] [fixture: journey/db-task-score-hexadecimal]
-  [fixture: journey/db-task-score-exponent] [fixture:
-  journey/db-task-score-negative] [fixture: journey/db-task-score-spaces]
-  [fixture: journey/db-task-score-empty] A score that is no finite number is
+  are not part of it, and an empty piece and a piece of whitespace only are 0.
+  [fixture: journey/db-task-score-decimal] [fixture:
+  journey/db-task-score-hexadecimal] [fixture: journey/db-task-score-exponent]
+  [fixture: journey/db-task-score-negative] [fixture:
+  journey/db-task-score-spaces] [fixture: journey/db-task-score-empty] [fixture:
+  journey/gram-task-data-whitespace-only] A score that is no finite number is
   recorded as the text of the number, since JSON has no such number: `NaN` for a
   piece that is no number, and `Infinity` or `-Infinity` for the pieces
   `Infinity` and `-Infinity` and for a number too large for a double, such as
@@ -998,14 +1012,16 @@ Values of the summary, by field:
   journey/db-task-score-infinity] [fixture:
   journey/db-task-score-negative-infinity] [fixture:
   journey/db-task-score-overflow]
-- `people` is the second piece split at each comma and trimmed, one name for
-  each comma, so an empty item is an empty name and a blank piece is one empty
-  name. Without a second piece there are no people. The pieces after the second
-  are left out. [fixture: journey/db-task-people] [fixture:
+- `people` is the second piece split at each comma and trimmed, one name more
+  than there are commas, so an empty item is an empty name and a blank piece is
+  one empty name. Without a second colon there are no people, while a second
+  colon with nothing after it gives one empty name. The text from the third
+  colon is left out. [fixture: journey/db-task-people] [fixture:
   journey/db-task-people-empty-item] [fixture: journey/db-task-people-blank]
-  [fixture: journey/db-task-score-only] [fixture: journey/db-task-extra-colon]
-  The data of a task ends before a `#` as well, and the rest of the line is a
-  comment: `A: 1: x #y, z` has the people `x`. [fixture:
-  journey/db-task-data-ends-at-hash]
+  [fixture: journey/gram-task-people-trailing-comma] [fixture:
+  journey/gram-task-second-colon-at-end] [fixture: journey/db-task-score-only]
+  [fixture: journey/db-task-extra-colon] The data of a task ends before a `#` as
+  well, and the rest of the line is a comment: `A: 1: x #y, z` has the people
+  `x`. [fixture: journey/db-task-data-ends-at-hash]
 
 Values are recorded as the Db holds them, whitespace included.

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Known divergences: c4-keyword-anywhere: `C4Deployment` in task data."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\njourney  A: 5: C4De\n^"
+  }
+}

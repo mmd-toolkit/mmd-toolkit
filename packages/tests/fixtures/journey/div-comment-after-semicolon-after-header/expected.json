@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: rejected here; mermaid.js reads `;%% c` after the header as a comment."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

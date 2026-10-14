@@ -90,6 +90,7 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
     "-.",
   ],
   GanttDiagram: [":", ",", "{", "}", "(", ")"],
+  JourneyDiagram: [":", ",", "{", "}"],
   ErrorDiagram: [],
 }
 

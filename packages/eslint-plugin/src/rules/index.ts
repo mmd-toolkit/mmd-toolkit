@@ -9,6 +9,13 @@ import { classNoInlineComment } from "./class-no-inline-comment.ts"
 import { classNoRedefinedClass } from "./class-no-redefined-class.ts"
 import { classNoUnclosedBackquote } from "./class-no-unclosed-backquote.ts"
 import { classNoUndef } from "./class-no-undef.ts"
+import { erNoDuplicateDescription } from "./er-no-duplicate-description.ts"
+import { erNoDuplicateTitle } from "./er-no-duplicate-title.ts"
+import { erNoEmptyDescriptionBlock } from "./er-no-empty-description-block.ts"
+import { erNoIgnoredText } from "./er-no-ignored-text.ts"
+import { erNoRedefinedEntity } from "./er-no-redefined-entity.ts"
+import { erNoUnclosedDescriptionBlock } from "./er-no-unclosed-description-block.ts"
+import { erNoUndef } from "./er-no-undef.ts"
 import { flowchartNoBareCommentMarker } from "./flowchart-no-bare-comment-marker.ts"
 import { flowchartNoDuplicateDescription } from "./flowchart-no-duplicate-description.ts"
 import { flowchartNoDuplicateTitle } from "./flowchart-no-duplicate-title.ts"
@@ -17,6 +24,14 @@ import { flowchartNoIgnoredText } from "./flowchart-no-ignored-text.ts"
 import { flowchartNoRedefinedVertex } from "./flowchart-no-redefined-vertex.ts"
 import { flowchartNoUnclosedDescriptionBlock } from "./flowchart-no-unclosed-description-block.ts"
 import { flowchartNoUndef } from "./flowchart-no-undef.ts"
+import { ganttNoDuplicateDescription } from "./gantt-no-duplicate-description.ts"
+import { ganttNoDuplicateId } from "./gantt-no-duplicate-id.ts"
+import { ganttNoDuplicateSetting } from "./gantt-no-duplicate-setting.ts"
+import { ganttNoDuplicateTitle } from "./gantt-no-duplicate-title.ts"
+import { ganttNoEmptyDescriptionBlock } from "./gantt-no-empty-description-block.ts"
+import { ganttNoUndef } from "./gantt-no-undef.ts"
+import { ganttNoUnknownExclude } from "./gantt-no-unknown-exclude.ts"
+import { ganttNoUnreadTag } from "./gantt-no-unread-tag.ts"
 import { noIgnoredInitDirective } from "./no-ignored-init-directive.ts"
 import { noUnclosedDirective } from "./no-unclosed-directive.ts"
 import { sequenceNoCreateDestroy } from "./sequence-no-create-destroy.ts"
@@ -49,6 +64,13 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "class-no-redefined-class": classNoRedefinedClass,
   "class-no-unclosed-backquote": classNoUnclosedBackquote,
   "class-no-undef": classNoUndef,
+  "er-no-duplicate-description": erNoDuplicateDescription,
+  "er-no-duplicate-title": erNoDuplicateTitle,
+  "er-no-empty-description-block": erNoEmptyDescriptionBlock,
+  "er-no-ignored-text": erNoIgnoredText,
+  "er-no-redefined-entity": erNoRedefinedEntity,
+  "er-no-unclosed-description-block": erNoUnclosedDescriptionBlock,
+  "er-no-undef": erNoUndef,
   "flowchart-no-bare-comment-marker": flowchartNoBareCommentMarker,
   "flowchart-no-duplicate-description": flowchartNoDuplicateDescription,
   "flowchart-no-duplicate-title": flowchartNoDuplicateTitle,
@@ -58,6 +80,14 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "flowchart-no-unclosed-description-block":
     flowchartNoUnclosedDescriptionBlock,
   "flowchart-no-undef": flowchartNoUndef,
+  "gantt-no-duplicate-description": ganttNoDuplicateDescription,
+  "gantt-no-duplicate-id": ganttNoDuplicateId,
+  "gantt-no-duplicate-setting": ganttNoDuplicateSetting,
+  "gantt-no-duplicate-title": ganttNoDuplicateTitle,
+  "gantt-no-empty-description-block": ganttNoEmptyDescriptionBlock,
+  "gantt-no-undef": ganttNoUndef,
+  "gantt-no-unknown-exclude": ganttNoUnknownExclude,
+  "gantt-no-unread-tag": ganttNoUnreadTag,
   "no-ignored-init-directive": noIgnoredInitDirective,
   "no-unclosed-directive": noUnclosedDirective,
   "sequence-no-create-destroy": sequenceNoCreateDestroy,

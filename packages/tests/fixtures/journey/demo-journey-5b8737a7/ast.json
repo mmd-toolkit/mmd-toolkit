@@ -1,0 +1,1329 @@
+{
+  "type": "Root",
+  "diagramType": "journey",
+  "body": {
+    "type": "JourneyDiagram",
+    "body": [
+      {
+        "type": "JourneyAccTitleStatement",
+        "value": {
+          "type": "JourneyLiteral",
+          "value": "Very simple journey demo",
+          "range": [
+            51,
+            75
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 12
+            },
+            "end": {
+              "line": 5,
+              "column": 36
+            }
+          }
+        },
+        "range": [
+          41,
+          75
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 2
+          },
+          "end": {
+            "line": 5,
+            "column": 36
+          }
+        }
+      },
+      {
+        "type": "JourneyAccDescrStatement",
+        "value": {
+          "type": "JourneyLiteral",
+          "value": "2 main sections: work and home, each with just a few tasks",
+          "range": [
+            88,
+            146
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 12
+            },
+            "end": {
+              "line": 6,
+              "column": 70
+            }
+          }
+        },
+        "range": [
+          78,
+          146
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 2
+          },
+          "end": {
+            "line": 6,
+            "column": 70
+          }
+        }
+      },
+      {
+        "type": "JourneySectionStatement",
+        "name": {
+          "type": "JourneyLiteral",
+          "value": "Go to work",
+          "range": [
+            156,
+            166
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 8
+            },
+            "end": {
+              "line": 8,
+              "column": 18
+            }
+          }
+        },
+        "range": [
+          148,
+          166
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 0
+          },
+          "end": {
+            "line": 8,
+            "column": 18
+          }
+        }
+      },
+      {
+        "type": "JourneyTaskStatement",
+        "description": {
+          "type": "JourneyLiteral",
+          "value": "Make tea",
+          "range": [
+            169,
+            177
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 2
+            },
+            "end": {
+              "line": 9,
+              "column": 10
+            }
+          }
+        },
+        "score": {
+          "type": "JourneyLiteral",
+          "value": "5",
+          "range": [
+            179,
+            180
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 12
+            },
+            "end": {
+              "line": 9,
+              "column": 13
+            }
+          }
+        },
+        "people": [
+          {
+            "type": "JourneyLiteral",
+            "value": "Me",
+            "range": [
+              182,
+              184
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 15
+              },
+              "end": {
+                "line": 9,
+                "column": 17
+              }
+            }
+          }
+        ],
+        "textAfter": null,
+        "range": [
+          169,
+          184
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 2
+          },
+          "end": {
+            "line": 9,
+            "column": 17
+          }
+        }
+      },
+      {
+        "type": "JourneyTaskStatement",
+        "description": {
+          "type": "JourneyLiteral",
+          "value": "Go upstairs",
+          "range": [
+            187,
+            198
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 2
+            },
+            "end": {
+              "line": 10,
+              "column": 13
+            }
+          }
+        },
+        "score": {
+          "type": "JourneyLiteral",
+          "value": "3",
+          "range": [
+            200,
+            201
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 15
+            },
+            "end": {
+              "line": 10,
+              "column": 16
+            }
+          }
+        },
+        "people": [
+          {
+            "type": "JourneyLiteral",
+            "value": "Me",
+            "range": [
+              203,
+              205
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 18
+              },
+              "end": {
+                "line": 10,
+                "column": 20
+              }
+            }
+          }
+        ],
+        "textAfter": null,
+        "range": [
+          187,
+          205
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 2
+          },
+          "end": {
+            "line": 10,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "JourneyTaskStatement",
+        "description": {
+          "type": "JourneyLiteral",
+          "value": "Do work",
+          "range": [
+            208,
+            215
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 2
+            },
+            "end": {
+              "line": 11,
+              "column": 9
+            }
+          }
+        },
+        "score": {
+          "type": "JourneyLiteral",
+          "value": "1",
+          "range": [
+            217,
+            218
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 11
+            },
+            "end": {
+              "line": 11,
+              "column": 12
+            }
+          }
+        },
+        "people": [
+          {
+            "type": "JourneyLiteral",
+            "value": "Me",
+            "range": [
+              220,
+              222
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 14
+              },
+              "end": {
+                "line": 11,
+                "column": 16
+              }
+            }
+          },
+          {
+            "type": "JourneyLiteral",
+            "value": "Cat",
+            "range": [
+              224,
+              227
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 18
+              },
+              "end": {
+                "line": 11,
+                "column": 21
+              }
+            }
+          }
+        ],
+        "textAfter": null,
+        "range": [
+          208,
+          227
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 2
+          },
+          "end": {
+            "line": 11,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "JourneySectionStatement",
+        "name": {
+          "type": "JourneyLiteral",
+          "value": "Go home",
+          "range": [
+            236,
+            243
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 8
+            },
+            "end": {
+              "line": 12,
+              "column": 15
+            }
+          }
+        },
+        "range": [
+          228,
+          243
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 0
+          },
+          "end": {
+            "line": 12,
+            "column": 15
+          }
+        }
+      },
+      {
+        "type": "JourneyTaskStatement",
+        "description": {
+          "type": "JourneyLiteral",
+          "value": "Go downstairs",
+          "range": [
+            246,
+            259
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 2
+            },
+            "end": {
+              "line": 13,
+              "column": 15
+            }
+          }
+        },
+        "score": {
+          "type": "JourneyLiteral",
+          "value": "5",
+          "range": [
+            261,
+            262
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 17
+            },
+            "end": {
+              "line": 13,
+              "column": 18
+            }
+          }
+        },
+        "people": [
+          {
+            "type": "JourneyLiteral",
+            "value": "Me",
+            "range": [
+              264,
+              266
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 20
+              },
+              "end": {
+                "line": 13,
+                "column": 22
+              }
+            }
+          }
+        ],
+        "textAfter": null,
+        "range": [
+          246,
+          266
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 2
+          },
+          "end": {
+            "line": 13,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "JourneyTaskStatement",
+        "description": {
+          "type": "JourneyLiteral",
+          "value": "Sit down",
+          "range": [
+            269,
+            277
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 2
+            },
+            "end": {
+              "line": 14,
+              "column": 10
+            }
+          }
+        },
+        "score": {
+          "type": "JourneyLiteral",
+          "value": "3",
+          "range": [
+            279,
+            280
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 12
+            },
+            "end": {
+              "line": 14,
+              "column": 13
+            }
+          }
+        },
+        "people": [
+          {
+            "type": "JourneyLiteral",
+            "value": "Me",
+            "range": [
+              282,
+              284
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 15
+              },
+              "end": {
+                "line": 14,
+                "column": 17
+              }
+            }
+          }
+        ],
+        "textAfter": null,
+        "range": [
+          269,
+          284
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 2
+          },
+          "end": {
+            "line": 14,
+            "column": 17
+          }
+        }
+      }
+    ],
+    "range": [
+      31,
+      284
+    ],
+    "loc": {
+      "start": {
+        "line": 4,
+        "column": 1
+      },
+      "end": {
+        "line": 14,
+        "column": 17
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "title: My working day",
+    "valueRange": [
+      4,
+      25
+    ],
+    "range": [
+      0,
+      29
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 3,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "title: My working day",
+      "range": [
+        4,
+        25
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        26,
+        29
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "journey",
+      "range": [
+        31,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 1
+        },
+        "end": {
+          "line": 4,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accTitle",
+      "range": [
+        41,
+        49
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 2
+        },
+        "end": {
+          "line": 5,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        49,
+        50
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 10
+        },
+        "end": {
+          "line": 5,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Very simple journey demo",
+      "range": [
+        51,
+        75
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 12
+        },
+        "end": {
+          "line": 5,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "accDescr",
+      "range": [
+        78,
+        86
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 2
+        },
+        "end": {
+          "line": 6,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        86,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 10
+        },
+        "end": {
+          "line": 6,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "2 main sections: work and home, each with just a few tasks",
+      "range": [
+        88,
+        146
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 12
+        },
+        "end": {
+          "line": 6,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        148,
+        155
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 0
+        },
+        "end": {
+          "line": 8,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Go to work",
+      "range": [
+        156,
+        166
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 8
+        },
+        "end": {
+          "line": 8,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Make tea",
+      "range": [
+        169,
+        177
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 2
+        },
+        "end": {
+          "line": 9,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        177,
+        178
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 10
+        },
+        "end": {
+          "line": 9,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "5",
+      "range": [
+        179,
+        180
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 12
+        },
+        "end": {
+          "line": 9,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        180,
+        181
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 13
+        },
+        "end": {
+          "line": 9,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Me",
+      "range": [
+        182,
+        184
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 15
+        },
+        "end": {
+          "line": 9,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Go upstairs",
+      "range": [
+        187,
+        198
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        198,
+        199
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 13
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "3",
+      "range": [
+        200,
+        201
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 15
+        },
+        "end": {
+          "line": 10,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        201,
+        202
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 16
+        },
+        "end": {
+          "line": 10,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Me",
+      "range": [
+        203,
+        205
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 18
+        },
+        "end": {
+          "line": 10,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Do work",
+      "range": [
+        208,
+        215
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 2
+        },
+        "end": {
+          "line": 11,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        215,
+        216
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 9
+        },
+        "end": {
+          "line": 11,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1",
+      "range": [
+        217,
+        218
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 11
+        },
+        "end": {
+          "line": 11,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        218,
+        219
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 12
+        },
+        "end": {
+          "line": 11,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Me",
+      "range": [
+        220,
+        222
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 14
+        },
+        "end": {
+          "line": 11,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        222,
+        223
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 16
+        },
+        "end": {
+          "line": 11,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Cat",
+      "range": [
+        224,
+        227
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 18
+        },
+        "end": {
+          "line": 11,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        228,
+        235
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Go home",
+      "range": [
+        236,
+        243
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 8
+        },
+        "end": {
+          "line": 12,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Go downstairs",
+      "range": [
+        246,
+        259
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 2
+        },
+        "end": {
+          "line": 13,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        259,
+        260
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 15
+        },
+        "end": {
+          "line": 13,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "5",
+      "range": [
+        261,
+        262
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 17
+        },
+        "end": {
+          "line": 13,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        262,
+        263
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 18
+        },
+        "end": {
+          "line": 13,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Me",
+      "range": [
+        264,
+        266
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 20
+        },
+        "end": {
+          "line": 13,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Sit down",
+      "range": [
+        269,
+        277
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 2
+        },
+        "end": {
+          "line": 14,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        277,
+        278
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 10
+        },
+        "end": {
+          "line": 14,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "3",
+      "range": [
+        279,
+        280
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 12
+        },
+        "end": {
+          "line": 14,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        280,
+        281
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 13
+        },
+        "end": {
+          "line": 14,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Me",
+      "range": [
+        282,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 15
+        },
+        "end": {
+          "line": 14,
+          "column": 17
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    284
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 14,
+      "column": 17
+    }
+  }
+}

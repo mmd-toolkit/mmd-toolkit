@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: `A%%B: 5` is the task `A%%B` here; mermaid.js reads `A` and the rest of the line as a comment."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "C",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

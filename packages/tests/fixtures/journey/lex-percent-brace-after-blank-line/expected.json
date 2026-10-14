@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: `%%{ }%%` after an empty line is a comment in both."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [],
+        "score": 1
+      },
+      {
+        "section": "",
+        "task": "B",
+        "people": [],
+        "score": 2
+      }
+    ]
+  }
+}

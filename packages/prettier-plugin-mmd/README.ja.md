@@ -104,6 +104,10 @@ flowchart LR
   `gantt` で始まる図です。
   整形の規則は、
   例とともに [docs/gantt.ja.md](./docs/gantt.ja.md) にあります。
+- journey 図。
+  `journey` で始まる図です。
+  整形の規則は、
+  例とともに [docs/journey.ja.md](./docs/journey.ja.md) にあります。
 - これらの図の YAML のフロントマター。
   Prettier の YAML 整形で整形します。
 
@@ -131,7 +135,7 @@ flowchart LR
   flowchart では、`click` は予約語です。
   `A-->|x""|B` のように、トークンの間に空の文字列がある場合もそうです。
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
-- flowchart、sequence、class、state、ER、Gantt 以外の図種は変えません。
+- flowchart、sequence、class、state、ER、Gantt、journey 以外の図種は変えません。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
 
@@ -170,6 +174,7 @@ flowchart LR
 - [docs/state.ja.md](./docs/state.ja.md): state 図の整形の規則。
 - [docs/er.ja.md](./docs/er.ja.md): ER 図の整形の規則。
 - [docs/gantt.ja.md](./docs/gantt.ja.md): Gantt 図の整形の規則。
+- [docs/journey.ja.md](./docs/journey.ja.md): journey 図の整形の規則。
 - [docs/compatibility.ja.md](./docs/compatibility.ja.md):
   mermaid.js と違う箇所と、その理由。
 - [docs/development.ja.md](./docs/development.ja.md): テストと fixture。

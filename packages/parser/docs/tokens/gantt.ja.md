@@ -80,6 +80,20 @@ mermaid.js が値をトリムするアクセシビリティのテキストと、
 [fixture: gantt/gram-acc-title-trailing-spaces]
 [fixture: gantt/lex-task-items-nbsp-trimmed]
 
+タイトルのテキストやセクションのテキストの終わりでは、
+閉じたディレクティブは何も終わらせず、その前の空白はトークンに残ります。
+CR や CRLF は、改行と同じくテキストを終わらせます。
+`title T %%{init: {}}%%` は `T` と空白 1 つのトークンを持ち、
+`title T%%{init: {}}%%` はトークン `T` を持ち、
+`title T` と CRLF はトークン `T` を持ちます。
+[fixture: gantt/lex-directive-at-end-of-title-line]
+[fixture: gantt/lex-directive-glued-at-end-of-title]
+[fixture: gantt/lex-directive-at-end-of-section-line]
+[fixture: gantt/lex-directive-glued-at-end-of-section]
+[fixture: gantt/lex-title-crlf-value]
+[fixture: gantt/lex-section-crlf-value]
+[fixture: gantt/lex-section-cr-value]
+
 `RawText` か `String` のトークンの中のディレクティブ、コメント領域、
 行の規則が無視する `;` は、
 [ディレクティブが切るトークン](../tokens.ja.md#ディレクティブが切るトークン)

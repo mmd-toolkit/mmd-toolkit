@@ -16,7 +16,7 @@ fixture としてコーパスに足します。
 ## fixture
 
 `tests/fixtures.test.ts` は、`common/`、`flowchart/`、`sequence/`、
-`class/`、`state/`、`er/`、`gantt/` のすべての fixture を parse し、
+`class/`、`state/`、`er/`、`gantt/`、`journey/` のすべての fixture を parse し、
 次を確かめます。
 
 - パースの結果が、fixture がパーサーのために記録したものと同じであること
@@ -75,6 +75,7 @@ fixture としてコーパスに足します。
   直後かどうかは図のテキストの上で決め、
   単位も、規則が一致を始める位置も、パーサーの字句解析器から取ります。
   Gantt チャートでは、`}` と空白以外の、単位の 1 文字目の直後に `%` があること。
+  journey 図では、そこに `%%` があること。
   パーサーの単位と図のテキストから見つけます。
 - `comment-takes-line-break`: 入力が、
   行の中で単位の後にある図のコメントを持つクラス図であること。

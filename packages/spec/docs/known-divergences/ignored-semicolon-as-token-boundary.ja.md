@@ -3,7 +3,7 @@
 英語版:
 [ignored-semicolon-as-token-boundary.md](./ignored-semicolon-as-token-boundary.md)
 
-図種: flowchart、sequence、class、state、er、gantt。
+図種: flowchart、sequence、class、state、er、gantt、journey。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -140,6 +140,15 @@ mermaid.js は `click style:#y,id;1 href "u"` を `id1` のリンクと読み、
 [fixture: gantt/div-ignored-semicolon-in-click-id]
 [fixture: gantt/div-ignored-semicolon-in-call-keyword]
 [fixture: gantt/div-ignored-semicolon-in-list-item]
+ユーザージャーニー図では、`#` はタイトルのテキスト、section のテキスト、
+タスクのテキスト、タスクのデータを終えてコメントを始めるので、
+`style`、`:`、`#` はその行の文の前の説明ブロックにあり、
+無視される `;` はキーワードの中に置けます。
+mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
+`accDescr { style:#x } sec;tion S` を section `S` と読み、
+この仕様はそれらを拒否します。
+[fixture: journey/div-ignored-semicolon-in-title-keyword]
+[fixture: journey/div-ignored-semicolon-in-section-keyword]
 
 各図の文書は、これがどこに表れるかを、既知の差異の節に挙げています。
 [flowchart](../diagrams/flowchart.ja.md#既知の差異)、
@@ -147,7 +156,8 @@ mermaid.js は `click style:#y,id;1 href "u"` を `id1` のリンクと読み、
 [class](../diagrams/class.ja.md#既知の差異)、
 [state](../diagrams/state.ja.md#既知の差異)、
 [er](../diagrams/er.ja.md#既知の差異)、
-[gantt](../diagrams/gantt.ja.md#既知の差異) です。
+[gantt](../diagrams/gantt.ja.md#既知の差異)、
+[journey](../diagrams/journey.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 

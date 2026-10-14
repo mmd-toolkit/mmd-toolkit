@@ -360,9 +360,12 @@ of `@mmd-toolkit/tests` (`docs/db-summaries.md` and
 
 1. For each node type: the table of fields (types in language-neutral words;
    short cells, long explanations below the table), the child fields (in the
-   order a tool visits them), the range, and the tokens.
-2. In the table of tokens, give every unit of the grammar a token kind and an
-   item.
+   order a tool visits them), and the range.
+2. The token kind of each unit is defined by the parser, in
+   `packages/parser/docs/tokens/<diagram>.md`, and the documents of the
+   specification do not refer to it; the specification lists the units of the
+   lexical structure and of the grammar, from which the parser gives each unit
+   its kind (3.7, item 1).
 3. Decide the type of a leaf node by what the grammar allows at its position
    (the section Policies and criteria, Shared leaf nodes in ast.md).
 4. Decide the shape of the nodes before writing them, once for the whole diagram
@@ -509,12 +512,13 @@ each check in the output (3.6).
    whitespace belongs to a unit, a comment, or a stated rejection: separators
    such as the `:` of a one-line note or of an alias, the `;` that the line rule
    ignores, and text that a rule of mermaid.js reads and returns no token for
-   (an id that `processId` drops, an empty description block). Each unit has a
-   token kind in the table of tokens of `ast/<diagram>.md`, and the ignored `;`
-   has a kind for each context.
-3. **The grammar takes every unit.** Every unit that the table of tokens lists,
-   punctuation included, appears in a rule of the grammar, and every unit of a
-   rule comes from a rule of the lexical structure.
+   (an id that `processId` drops, an empty description block). The parser gives
+   each unit a token kind, and the ignored `;` a kind for each context, in
+   `packages/parser/docs/tokens/<diagram>.md`; the specification names each unit
+   so that it can.
+3. **The grammar takes every unit.** Every unit that the lexical structure
+   lists, punctuation included, appears in a rule of the grammar, and every unit
+   of a rule comes from a rule of the lexical structure.
 4. **Comments.** Each diagram comment has its mark (`#`, `%%`) and its value,
    with examples: a comment in an id, a comment after a statement, and a
    directive between the characters of the mark or inside the value.

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Directives inside units: a directive inside `accDescr` makes the input rejected here; mermaid.js reads the description `d`."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "d",
+    "sections": [],
+    "tasks": []
+  }
+}

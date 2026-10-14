@@ -1,14 +1,31 @@
-import {
-  isLineTerminatorCode,
-  isWhitespace,
-} from "../db-from-tree/characters.ts"
 import type { TreeRange } from "../db-from-tree/tree.ts"
 import type { Problems } from "./problems.ts"
 import { label } from "./problems.ts"
-import { checkTokensInValueNodes, nodeTokensIn, ownTokensOf } from "./tokens.ts"
+import {
+  between,
+  checkAccessibilityBlock,
+  checkAccessibilityLine,
+  checkJoinedOwnText,
+  checkOwnKinds,
+  checkRangeIsHull,
+  checkStretches,
+  checkTextAfter,
+  checkTokenKinds,
+  checkTrimmedValue,
+  childOf,
+  endsWithWhitespace,
+  entriesOf,
+  isBlank,
+  offsetsOf,
+  ownOf,
+  readingOf,
+  startsWithWhitespace,
+  textOf,
+} from "./statement-checks.ts"
+import type { Own, Reading, TextAfterKeyword } from "./statement-checks.ts"
+import { checkTokensInValueNodes, nodeTokensIn } from "./tokens.ts"
 import type { CheckedNode, CheckedRoot, CheckedToken } from "./types.ts"
-import { childNodesOf, isNode, nodesOf } from "./walk.ts"
-import { WrittenText } from "./written-text.ts"
+import { nodesOf } from "./walk.ts"
 
 // ast/gantt.md, diagrams/gantt.md, parser/docs/tokens/gantt.md, and
 // parser/docs/positions/gantt.md: what the gantt documents state about the
@@ -73,12 +90,6 @@ const OWN_TEXTS: Readonly<Record<string, string>> = {
   GanttAccDescrBlockStatement: "accdescr{}",
 }
 
-/** How the text of a statement that is a keyword, one whitespace character, and a text ends: the field that holds the text, and the characters that end it besides a line terminator (diagrams/gantt.md, The statement context, rules 11, 14, 15, 18, 22, and 24). */
-interface TextAfterKeyword {
-  readonly field: "value" | "name"
-  readonly endsBefore: readonly string[]
-}
-
 const SETTING_TEXT: TextAfterKeyword = {
   field: "value",
   endsBefore: ["#", ";"],
@@ -91,188 +102,6 @@ const TEXT_AFTER_KEYWORD: Readonly<Record<string, TextAfterKeyword>> = {
   GanttTodayMarkerStatement: { field: "value", endsBefore: [";"] },
   GanttTitleStatement: { field: "value", endsBefore: [] },
   GanttSectionStatement: { field: "name", endsBefore: [] },
-}
-
-/** What a check reads besides the node: the tree, the source, its written text, and where to report. */
-interface Reading {
-  readonly root: CheckedRoot
-  readonly text: string
-  readonly written: WrittenText
-  readonly problems: Problems
-}
-
-/** A character of a token that a node writes itself, with its offset. */
-interface OwnCharacter {
-  readonly character: string
-  readonly offset: number
-}
-
-/** The tokens that a node writes itself (see {@link ownTokensOf}), their texts joined, and their characters. */
-interface Own {
-  readonly tokens: readonly CheckedToken[]
-  readonly text: string
-  readonly characters: readonly OwnCharacter[]
-}
-
-/** The tokens that `node` writes itself. */
-function ownOf(root: CheckedRoot, node: CheckedNode): Own {
-  const tokens = ownTokensOf(root, node)
-  const characters: OwnCharacter[] = []
-  for (const token of tokens) {
-    for (let index = 0; index < token.value.length; index++) {
-      characters.push({
-        character: token.value.charAt(index),
-        offset: token.range[0] + index,
-      })
-    }
-  }
-  return {
-    tokens,
-    text: tokens.map((token) => token.value).join(""),
-    characters,
-  }
-}
-
-/** The offsets of the characters `character` among the characters that the node writes itself. */
-function offsetsOf(own: Own, character: string): number[] {
-  return own.characters
-    .filter((candidate) => candidate.character === character)
-    .map((candidate) => candidate.offset)
-}
-
-/** The child of `node` in the field `field`, or null where the field is null. */
-function childOf(node: CheckedNode, field: string): CheckedNode | null {
-  const value = node[field]
-  return isNode(value) ? value : null
-}
-
-/** The entries of the list in the field `field` of `node`, with null where an entry is null. */
-function entriesOf(node: CheckedNode, field: string): (CheckedNode | null)[] {
-  const value = node[field]
-  return Array.isArray(value)
-    ? (value as unknown[]).map((entry) => (isNode(entry) ? entry : null))
-    : []
-}
-
-/** The string value of the field `field` of `node`, or an empty string where the field holds no string. */
-function textOf(node: CheckedNode | null, field = "value"): string {
-  const value = node?.[field]
-  return typeof value === "string" ? value : ""
-}
-
-/** Whether `text` is empty or whitespace only. */
-function isBlank(text: string): boolean {
-  return [...text].every((character) =>
-    isWhitespace(character.codePointAt(0) ?? 0),
-  )
-}
-
-/** Whether the first character of `text` is whitespace. */
-function startsWithWhitespace(text: string): boolean {
-  return text !== "" && isWhitespace(text.charCodeAt(0))
-}
-
-/** Whether the last character of `text` is whitespace. */
-function endsWithWhitespace(text: string): boolean {
-  return text !== "" && isWhitespace(text.charCodeAt(text.length - 1))
-}
-
-/** Whether `text` is one whitespace character, a CRLF as one (common.md, Line terminators). */
-function isOneWhitespaceCharacter(text: string): boolean {
-  return (
-    text === "\r\n" || (text.length === 1 && isWhitespace(text.charCodeAt(0)))
-  )
-}
-
-/** The written text between `from` and `to`, where a directive, a comment region, and an ignored `;` are left out. */
-function between(reading: Reading, from: number, to: number): string {
-  return reading.written.of([from, to])
-}
-
-/** The first character at or after `offset` that the written text holds, none at the end of the text. */
-function nextWrittenCharacter(
-  reading: Reading,
-  offset: number,
-): string | undefined {
-  for (let at = offset; at < reading.text.length; at++) {
-    if (!reading.written.isLeftOut(at)) return reading.text.charAt(at)
-  }
-  return undefined
-}
-
-/** Whether only whitespace lies in the written text from `offset` to the end of its line. */
-function restOfLineIsBlank(reading: Reading, offset: number): boolean {
-  for (let at = offset; at < reading.text.length; at++) {
-    if (reading.written.isLeftOut(at)) continue
-    const code = reading.text.charCodeAt(at)
-    if (isLineTerminatorCode(code)) return true
-    if (!isWhitespace(code)) return false
-  }
-  return true
-}
-
-/**
- * parser/docs/tokens/gantt.md, Tokens: the tokens that a node writes itself
- * are `Punctuator` tokens for `:`, `,`, `{`, `}`, `(`, and `)`, and `Keyword`
- * tokens for the others (the header, the keywords, and the day).
- */
-function checkOwnKinds(reading: Reading, node: CheckedNode, own: Own): void {
-  for (const token of own.tokens) {
-    reading.problems.expectEqual(
-      token.type,
-      OWN_PUNCTUATORS.includes(token.value) ? "Punctuator" : "Keyword",
-      `${label(token)} of ${JSON.stringify(token.value)} in ${label(node)}`,
-      "the kind of a token that the node writes itself",
-    )
-  }
-}
-
-/**
- * parser/docs/positions/gantt.md, Ranges: the range of a statement runs from the
- * first of its tokens and child nodes to the last in source order. So a task
- * ends at the last item, or at the last `,` when the item after it is null, or
- * at the `:` when its data is whitespace only; a click statement ends at the
- * closing `"` of its link or the `)` of its call, whichever comes last in the
- * source, whatever the order of its child fields; a call part runs from `call`
- * to `)`; a list statement ends at its last item or `,`, and covers its keyword
- * alone when its list text is whitespace only; and an accessibility statement
- * ends at the last character of its text that is not whitespace.
- */
-function checkRangeIsHull(reading: Reading, node: CheckedNode, own: Own): void {
-  const parts = [
-    ...own.tokens.map((token) => token.range),
-    ...childNodesOf(node).map((child) => child.range),
-  ]
-  if (parts.length === 0) return
-  reading.problems.expectEqual(
-    node.range,
-    [
-      Math.min(...parts.map((range) => range[0])),
-      Math.max(...parts.map((range) => range[1])),
-    ],
-    label(node),
-    "the range, which runs from the first of its tokens and child nodes to the last",
-  )
-}
-
-/**
- * parser/docs/tokens/gantt.md, Tokens: the tokens of `node` are all of one of
- * the kinds `kinds`, and there is at least one: `RawText` tokens for a text
- * unit, which a directive may cut into several, and `Identifier` tokens for a
- * name unit.
- */
-function checkTokenKinds(
-  reading: Reading,
-  node: CheckedNode,
-  kinds: readonly string[],
-  what: string,
-): void {
-  const tokens = nodeTokensIn(reading.root, node.range)
-  reading.problems.expect(
-    tokens.length > 0 && tokens.every((token) => kinds.includes(token.type)),
-    label(node),
-    `the tokens of ${what} are not all of the kind ${kinds.join(" or ")}: ${tokens.map((token) => token.type).join(", ")}`,
-  )
 }
 
 /**
@@ -299,29 +128,19 @@ function checkStringTokens(
 /**
  * ast/gantt.md, GanttDiagram and the nodes below, and diagrams/gantt.md,
  * Grammar: the tokens that a node writes itself, outside its child nodes, are
- * the ones that its grammar rule names: the header of the diagram, the
- * keyword of a statement and the `:` or the braces of an accessibility
- * statement, the `call` and the parentheses of a call part.
+ * the ones that its grammar rule names (the table {@link OWN_TEXTS}). The
+ * header of the diagram is `gantt` in exactly this case (Detection).
  */
 function checkOwnText(reading: Reading, node: CheckedNode, own: Own): void {
   const expected = OWN_TEXTS[node.type]
   if (expected === undefined) return
-  const actual =
-    node.type === "GanttDiagram" ? own.text : own.text.toLowerCase()
-  reading.problems.expectEqual(
-    actual,
-    expected,
-    label(node),
-    "the tokens of the node outside its child nodes, joined",
-  )
+  checkJoinedOwnText(reading, node, own, expected, node.type !== "GanttDiagram")
 }
 
 /**
  * ast/gantt.md, GanttDateFormatStatement and the statements of its kind, and
- * diagrams/gantt.md, The statement context: the text is what follows the
- * keyword and one whitespace character, to the end of the line, or to the
- * first of the characters that end it; the node keeps the whitespace at its
- * ends.
+ * diagrams/gantt.md, The statement context: the text follows the keyword (see
+ * {@link TEXT_AFTER_KEYWORD}).
  */
 function checkTextAfterKeyword(
   reading: Reading,
@@ -329,106 +148,7 @@ function checkTextAfterKeyword(
   own: Own,
 ): void {
   const rule = TEXT_AFTER_KEYWORD[node.type]
-  if (rule === undefined) return
-  const keyword = own.tokens[0]
-  const text = childOf(node, rule.field)
-  if (keyword === undefined || text === null) return
-  const where = label(node)
-  const gap = between(reading, keyword.range[1], text.range[0])
-  reading.problems.expect(
-    isOneWhitespaceCharacter(gap),
-    where,
-    `the written text between the keyword and the ${rule.field} is ${JSON.stringify(gap)}, not one whitespace character`,
-  )
-  const next = nextWrittenCharacter(reading, text.range[1])
-  reading.problems.expect(
-    next === undefined ||
-      isLineTerminatorCode(next.charCodeAt(0)) ||
-      rule.endsBefore.includes(next),
-    where,
-    `the ${rule.field} ends before ${JSON.stringify(next)}, which does not end the text of the statement`,
-  )
-}
-
-/**
- * ast/gantt.md, GanttAccTitleStatement and GanttAccDescrStatement: the text
- * follows the `:` and the whitespace after it, line feeds included, and runs
- * to the end of its line; the value is the text without the whitespace at its
- * ends.
- */
-function checkAccessibilityLine(
-  reading: Reading,
-  node: CheckedNode,
-  own: Own,
-): void {
-  const text = childOf(node, "value")
-  const colon = offsetsOf(own, ":").at(-1)
-  if (text === null || colon === undefined) return
-  const where = label(node)
-  const gap = between(reading, colon + 1, text.range[0])
-  reading.problems.expect(
-    isBlank(gap),
-    where,
-    `the written text between the \`:\` and the value is ${JSON.stringify(gap)}, not whitespace only`,
-  )
-  reading.problems.expect(
-    restOfLineIsBlank(reading, text.range[1]),
-    where,
-    "the value ends before the end of its line and not only whitespace follows it",
-  )
-}
-
-/**
- * ast/gantt.md, GanttAccDescrBlockStatement: the text is what lies between
- * `{` and `}` without the whitespace at its ends, and the value is null when
- * only whitespace lies between them.
- */
-function checkAccessibilityBlock(
-  reading: Reading,
-  node: CheckedNode,
-  own: Own,
-): void {
-  const open = offsetsOf(own, "{")[0]
-  const close = offsetsOf(own, "}").at(-1)
-  if (open === undefined || close === undefined) return
-  const where = label(node)
-  const text = childOf(node, "value")
-  if (text === null) {
-    const inside = between(reading, open + 1, close)
-    reading.problems.expect(
-      isBlank(inside),
-      where,
-      `the value is null, but the braces hold ${JSON.stringify(inside)}`,
-    )
-    return
-  }
-  const before = between(reading, open + 1, text.range[0])
-  const after = between(reading, text.range[1], close)
-  reading.problems.expect(
-    isBlank(before) && isBlank(after),
-    where,
-    `the text between the braces has ${JSON.stringify(before)} before the value and ${JSON.stringify(after)} after it, not whitespace only`,
-  )
-}
-
-/**
- * ast/gantt.md, GanttAccTitleStatement, GanttAccDescrStatement, and
- * GanttAccDescrBlockStatement: the value is read without the whitespace at its
- * ends, which mermaid.js trims.
- */
-function checkTrimmedValue(
-  reading: Reading,
-  node: CheckedNode,
-  text: CheckedNode | null,
-  what: string,
-): void {
-  if (text === null) return
-  const value = textOf(text)
-  reading.problems.expect(
-    !startsWithWhitespace(value) && !endsWithWhitespace(value),
-    label(node),
-    `${what} starts or ends with whitespace: ${JSON.stringify(value)}`,
-  )
+  if (rule !== undefined) checkTextAfter(reading, node, own, rule)
 }
 
 /**
@@ -484,54 +204,6 @@ function checkList(reading: Reading, node: CheckedNode, own: Own): void {
       !textOf(item, "name").includes(","),
       where,
       `the item ${JSON.stringify(textOf(item, "name"))} holds a \`,\`, which separates items`,
-    )
-  }
-}
-
-/**
- * The stretches between `lowers` and `uppers` (the end of a separator and the
- * start of the next one, or of the end of the list) hold the entries of
- * `list`, one for each, in order: an entry is null where only whitespace lies
- * in its stretch, and otherwise it runs from the first character of the
- * stretch that is not whitespace to the last (ast/gantt.md, GanttTaskStatement
- * and GanttClickStatement).
- */
-function checkStretches(
-  reading: Reading,
-  node: CheckedNode,
-  list: readonly (CheckedNode | null)[],
-  stretches: readonly TreeRange[],
-  what: string,
-): void {
-  const where = label(node)
-  reading.problems.expectEqual(
-    list.length,
-    stretches.length,
-    where,
-    `the number of ${what}, which is one more than the separators`,
-  )
-  for (const [index, stretch] of stretches.entries()) {
-    const entry = list[index]
-    if (entry === undefined) continue
-    const [from, to] = stretch
-    if (entry === null) {
-      const text = between(reading, from, to)
-      reading.problems.expect(
-        isBlank(text),
-        where,
-        `${what} ${index} is null, but ${JSON.stringify(text)} lies in its stretch`,
-      )
-      continue
-    }
-    const before = between(reading, from, entry.range[0])
-    const after = between(reading, entry.range[1], to)
-    reading.problems.expect(
-      from <= entry.range[0] &&
-        entry.range[1] <= to &&
-        isBlank(before) &&
-        isBlank(after),
-      where,
-      `${what} ${index} does not fill its stretch ${from}-${to}: ${JSON.stringify(before)} before it, ${JSON.stringify(after)} after it`,
     )
   }
 }
@@ -776,12 +448,7 @@ export function checkGanttTree(
   problems: Problems,
 ): void {
   checkTokensInValueNodes(root, problems)
-  const reading: Reading = {
-    root,
-    text,
-    written: new WrittenText(text, root),
-    problems,
-  }
+  const reading = readingOf(text, root, problems)
   for (const node of nodesOf(root)) {
     if (!node.type.startsWith("Gantt")) continue
     if (node.type === "GanttLiteral") {
@@ -795,7 +462,7 @@ export function checkGanttTree(
       continue
     }
     const own = ownOf(root, node)
-    checkOwnKinds(reading, node, own)
+    checkOwnKinds(reading, node, own, OWN_PUNCTUATORS)
     checkOwnText(reading, node, own)
     if (node.type !== "GanttDiagram") checkRangeIsHull(reading, node, own)
     switch (node.type) {

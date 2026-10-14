@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Lexical structure: `accTitle` and `accDescr` are compared case-insensitively."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "T",
+    "accDescr": "D",
+    "sections": [],
+    "tasks": []
+  }
+}

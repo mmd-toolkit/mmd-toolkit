@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Keywords and what follows them: at a `#` the title text cannot start: `title` is a task text without data, and `#x` a comment."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\njourney  title#x\n----------------^\nExpecting 'taskData', got 'NEWLINE'"
+  }
+}

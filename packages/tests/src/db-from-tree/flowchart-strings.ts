@@ -77,7 +77,7 @@ function readStringUnit(
     }
     const here = at(index)
     const next = at(index + 1)
-    if (contexts[contexts.length - 1] === "string") {
+    if (contexts.at(-1) === "string") {
       if (here === QUOTE && next === BACKTICK) {
         contexts.push("markdown")
         index += 2

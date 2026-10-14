@@ -1,0 +1,75 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: gantt-no-duplicate-description >> invalid >>> docs/rules/gantt-no-duplicate-description.md incorrect 1
+Filename: gantt-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | gantt
+  2 |   accDescr: first
+  3 |   accDescr { second }
+    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |   dateFormat YYYY-MM-DD
+  5 |   Design :2024-01-06, 3d
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gantt-no-duplicate-description >> invalid >>> invalid/gantt/acc-descr-second-takes-next-line
+Filename: tests/fixtures/rules/gantt-no-duplicate-description/invalid/gantt/acc-descr-second-takes-next-line-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | accDescr: a
+  4 | accDescr:
+    | ^~~~~~~~~\ [1]
+  5 | b
+    | ~ [1]
+  6 |
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: gantt-no-duplicate-description >> invalid >>> invalid/gantt/acc-descr-twice-lines
+Filename: tests/fixtures/rules/gantt-no-duplicate-description/invalid/gantt/acc-descr-twice-lines-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | accDescr: a
+  4 | accDescr: b
+    | ^~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: gantt-no-duplicate-description >> invalid >>> invalid/gantt/db-acc-descr-block-then-line
+Filename: tests/fixtures/rules/gantt-no-duplicate-description/invalid/gantt/db-acc-descr-block-then-line-input.mmd
+
+Code:
+  1 | gantt
+  2 | accDescr { a }
+  3 | accDescr: b
+    | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: gantt-no-duplicate-description >> invalid >>> invalid/gantt/gram-acc-descr-twice
+Filename: tests/fixtures/rules/gantt-no-duplicate-description/invalid/gantt/gram-acc-descr-twice-input.mmd
+
+Code:
+  1 | gantt
+  2 | accDescr: a
+  3 | accDescr { b }
+    | ^~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---

@@ -22,6 +22,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["state", "StateDiagram"],
   ["er", "ErDiagram"],
   ["gantt", "GanttDiagram"],
+  ["journey", "JourneyDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -189,6 +190,8 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
       return ["erdiagram", ...DIRECTION_VALUES]
     case "gantt":
       return ["gantt", ...DAYS]
+    case "journey":
+      return ["journey"]
     default:
       throw new Error(`no diagram ${diagram}`)
   }

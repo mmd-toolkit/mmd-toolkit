@@ -1,0 +1,138 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: gantt-no-empty-description-block >> invalid >>> docs/rules/gantt-no-empty-description-block.md incorrect 1
+Filename: gantt-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | gantt
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   dateFormat YYYY-MM-DD
+  4 |   Design :2024-01-06, 3d
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: gantt-no-empty-description-block >> invalid >>> docs/rules/gantt-no-empty-description-block.md incorrect 2
+Filename: gantt-no-empty-description-block-incorrect-2.mmd
+
+Code:
+  1 | gantt
+  2 |   accDescr { }
+    |   ^~~~~~~~~~~~ [1]
+  3 |   dateFormat YYYY-MM-DD
+  4 |   Design :2024-01-06, 3d
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: gantt-no-empty-description-block >> invalid >>> invalid/gantt/acc-descr-block-directive-only
+Filename: tests/fixtures/rules/gantt-no-empty-description-block/invalid/gantt/acc-descr-block-directive-only-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | accDescr { %%{init: {}}%% }
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | title T
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: gantt-no-empty-description-block >> invalid >>> invalid/gantt/db-acc-descr-then-empty-block
+Filename: tests/fixtures/rules/gantt-no-empty-description-block/invalid/gantt/db-acc-descr-then-empty-block-input.mmd
+
+Code:
+  1 | gantt
+  2 | accDescr: a
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: gantt-no-empty-description-block >> invalid >>> invalid/gantt/gram-acc-descr-block-empty
+Filename: tests/fixtures/rules/gantt-no-empty-description-block/invalid/gantt/gram-acc-descr-block-empty-input.mmd
+
+Code:
+  1 | gantt
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: gantt-no-empty-description-block >> invalid >>> invalid/gantt/gram-acc-descr-block-whitespace-only
+Filename: tests/fixtures/rules/gantt-no-empty-description-block/invalid/gantt/gram-acc-descr-block-whitespace-only-input.mmd
+
+Code:
+  1 | gantt
+  2 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  3 |
+    | ~\ [1]
+  4 | }
+    | ~ [1]
+  5 | title T
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: gantt-no-empty-description-block >> invalid >>> invalid/gantt/gram-empty-description-block-after-click-statement
+Filename: tests/fixtures/rules/gantt-no-empty-description-block/invalid/gantt/gram-empty-description-block-after-click-statement-input.mmd
+
+Code:
+  1 | gantt
+  2 | a : id1, 2024-01-01, 1d
+  3 | click id1 href "u" accDescr {}
+    |                    ^~~~~~~~~~~ [1]
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: gantt-no-empty-description-block >> invalid >>> invalid/gantt/gram-empty-description-block-after-header
+Filename: tests/fixtures/rules/gantt-no-empty-description-block/invalid/gantt/gram-empty-description-block-after-header-input.mmd
+
+Code:
+  1 | gantt accDescr {} title T
+    |       ^~~~~~~~~~~ [1]
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: gantt-no-empty-description-block >> invalid >>> invalid/gantt/gram-empty-description-block-before-task-same-line
+Filename: tests/fixtures/rules/gantt-no-empty-description-block/invalid/gantt/gram-empty-description-block-before-task-same-line-input.mmd
+
+Code:
+  1 | gantt
+  2 | accDescr {} a : 1d
+    | ^~~~~~~~~~~ [1]
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: gantt-no-empty-description-block >> invalid >>> invalid/gantt/gram-empty-description-blocks-adjacent
+Filename: tests/fixtures/rules/gantt-no-empty-description-block/invalid/gantt/gram-empty-description-blocks-adjacent-input.mmd
+
+Code:
+  1 | gantt
+  2 | accDescr {} accDescr {} title T
+    | ^~~~~~~~~~~ ^~~~~~~~~~~
+    | [1]         [2]
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+[2] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---

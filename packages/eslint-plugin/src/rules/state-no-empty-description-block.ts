@@ -1,5 +1,6 @@
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { blockHoldsComment } from "../utils/description-block.ts"
 
 /**
  * The rule `state-no-empty-description-block`, described in
@@ -32,13 +33,7 @@ export const stateNoEmptyDescriptionBlock: MermaidRuleDefinition<{
     return {
       StateAccDescrBlockStatement(node) {
         if (!node.closed || node.value !== null) return
-        // The comments that count are those between the `{` and the `}`.
-        const opening = sourceCode.getFirstToken(node, {
-          filter: (token) => token.type === "Punctuator" && token.value === "{",
-        })
-        const closing = sourceCode.getLastToken(node)
-        if (closing === null || opening === null) return
-        if (sourceCode.commentsExistBetween(opening, closing)) return
+        if (blockHoldsComment(sourceCode, node)) return
         context.report({ node, messageId: "empty" })
       },
     }

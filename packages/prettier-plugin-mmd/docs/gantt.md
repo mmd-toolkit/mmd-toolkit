@@ -18,21 +18,29 @@ organized and checked is described in
 
 ### Indentation
 
-The statements after the header stand one level deeper than the header. A Gantt
-chart has no block of statements, so `section`, and the tasks, click statements,
-and settings after it, stand at that level too. [fixture:
-indentation/sections-and-tasks-flat] A level is what Prettier's `useTabs` and
-`tabWidth` options say: two spaces by default. [fixture:
-indentation/tab-width-4] [fixture: indentation/use-tabs] The indentation written
-in the input is not kept: whitespace at the start of a line is nothing to
-mermaid.js. [fixture: indentation/written-indentation-dropped] The header stands
-at the first column, also where whitespace was written before it. [fixture:
-indentation/header-leading-whitespace] The lines of a text that is kept as
-written, such as the lines of an `accDescr` block, keep their columns (see
-[Multi-line values](#multi-line-values)).
+The statements after the header stand one level deeper than the header, and the
+statements after a `section`, up to the next `section`, one level deeper still:
+the tasks, click statements, settings, and every other statement. The `section`
+itself stands at the first level. The tree of a Gantt chart is flat, with no
+block of statements, so the level of a statement is decided by its place among
+the others. [fixture: indentation/sections-and-tasks-nested] [fixture:
+indentation/statements-before-the-first-section] [fixture:
+indentation/every-statement-under-a-section] [fixture:
+indentation/consecutive-sections] [fixture:
+indentation/click-statement-over-lines-under-a-section] A level is what
+Prettier's `useTabs` and `tabWidth` options say: two spaces by default.
+[fixture: indentation/tab-width-4] [fixture: indentation/use-tabs] The
+indentation written in the input is not kept: whitespace at the start of a line
+is nothing to mermaid.js. [fixture: indentation/written-indentation-dropped] The
+header stands at the first column, also where whitespace was written before it.
+[fixture: indentation/header-leading-whitespace] The lines of a text that is
+kept as written, such as the lines of an `accDescr` block, keep their columns,
+and the `}` that closes a block stands at the level of its statement (see
+[Multi-line values](#multi-line-values)). [fixture:
+indentation/description-block-under-a-section]
 
 Input
-([indentation/sections-and-tasks-flat-input.mmd](../tests/fixtures/gantt/indentation/sections-and-tasks-flat-input.mmd)):
+([indentation/sections-and-tasks-nested-input.mmd](../tests/fixtures/gantt/indentation/sections-and-tasks-nested-input.mmd)):
 
 ```mmd
 gantt
@@ -45,16 +53,16 @@ section Two
 ```
 
 Output
-([indentation/sections-and-tasks-flat-output.mmd](../tests/fixtures/gantt/indentation/sections-and-tasks-flat-output.mmd)):
+([indentation/sections-and-tasks-nested-output.mmd](../tests/fixtures/gantt/indentation/sections-and-tasks-nested-output.mmd)):
 
 ```mmd
 gantt
   title T
   section One
-  a :a1, 2024-01-01, 2d
-  click a1 href "u"
+    a :a1, 2024-01-01, 2d
+    click a1 href "u"
   section Two
-  b :2d
+    b :2d
 ```
 
 Input
@@ -74,7 +82,7 @@ Output
 gantt
     title T
     section S
-    a :1d
+        a :1d
 ```
 
 ### Statements one per line
@@ -217,7 +225,9 @@ end of the body are dropped. [fixture: blank-lines/collapsed] [fixture:
 blank-lines/body-edges-dropped] An empty line between statements is kept, as
 one. [fixture: blank-lines/between-statements-kept-as-one] The empty lines
 around comment lines are handled in the same way. [fixture:
-blank-lines/around-comment-lines]
+blank-lines/around-comment-lines] Empty lines around a `section` are kept, as
+one, at the level of the lines next to them. [fixture:
+blank-lines/around-sections]
 
 Input
 ([blank-lines/collapsed-input.mmd](../tests/fixtures/gantt/blank-lines/collapsed-input.mmd)):
@@ -243,7 +253,7 @@ gantt
 
   section S
 
-  a :1d
+    a :1d
 ```
 
 Input
@@ -645,14 +655,14 @@ gantt
   TodayMarker off
   TITLE T
   Section S
-  EXCLUDES weekends
-  Includes monday
-  INCLUSIVEENDDATES
-  WEEKDAY Monday
-  WEEKEND FRIDAY
-  ACCTITLE: T
-  AccDescr: d
-  ACCDESCR { d }
+    EXCLUDES weekends
+    Includes monday
+    INCLUSIVEENDDATES
+    WEEKDAY Monday
+    WEEKEND FRIDAY
+    ACCTITLE: T
+    AccDescr: d
+    ACCDESCR { d }
 ```
 
 ### Click statements
@@ -913,9 +923,9 @@ Output
 gantt
   title T
   section S
-  dateFormat YYYY
-  weekday monday
-  excludes weekends
+    dateFormat YYYY
+    weekday monday
+    excludes weekends
 ```
 
 Input
@@ -1035,9 +1045,47 @@ the line. A comment on a line of its own stands at the level of the statements
 around it, and its text and its mark are kept as written. [fixture:
 comments/lines-at-statement-level] [fixture: comments/text-kept] [fixture:
 comments/single-percent-kept] [fixture: comments/bare-percent-lines] A comment
-line before the header stands at the first column, and one at the end of the
-text stays on a line of its own, with the line break added. [fixture:
-comments/before-header] [fixture: comments/last-in-body]
+line stands at the level of the statement after it, so a comment before a
+`section` stands at its level, and one before a task stands at the level of the
+task; at the end of the text it stands at the level of the last statement.
+[fixture: comments/levels-around-sections] [fixture:
+directives/levels-around-sections] A comment line before the header stands at
+the first column, and one at the end of the text stays on a line of its own,
+with the line break added. [fixture: comments/before-header] [fixture:
+comments/last-in-body]
+
+A comment line that starts with `%%{` without being a directive stands after one
+whitespace character, a space, or a tab with `useTabs`, at every level, and so
+does a comment line with the mark `%` right before such a line. mermaid.js reads
+that `%%{` only when the whitespace before it is one character, or one character
+after the line feeds, and rejects the text with more of it, or with none after
+an empty line (known divergence `percent-brace-after-unit`); it removes the
+directives before it reads the text, so the whitespace of a line of only a
+directive counts as whitespace before the `%%{`, and the lines of only a
+directive before it, with empty lines between them or not, stand at the first
+column; on the line of the `%%{` itself, the directives before it count too,
+with the spaces between them, so that the whitespace before the comment is one
+character in all: a space between two items is that character, and where nothing
+is written between them, one space, or one tab with `useTabs`, stands at the
+start of the line; and a comment with the mark `%` that it reaches directly
+takes the line feeds after it, so that the `%%{` after it is reached directly
+too (known divergence `comment-takes-line-break`). [fixture:
+comments/percent-brace-line-after-one-whitespace] [fixture:
+comments/percent-brace-line-after-blank-line] [fixture:
+comments/percent-brace-line-under-a-section] [fixture:
+comments/percent-brace-line-with-tabs] [fixture:
+comments/percent-brace-line-at-the-end] [fixture:
+comments/percent-comment-then-percent-brace-line] [fixture:
+comments/percent-comment-line-not-before-percent-brace] [fixture:
+comments/percent-brace-line-after-directive-line] [fixture:
+comments/percent-brace-line-after-directive-line-at-the-start] [fixture:
+comments/percent-brace-line-after-two-directive-lines-under-a-section] [fixture:
+comments/percent-brace-line-after-directive-over-lines] [fixture:
+comments/percent-brace-line-after-directive-and-blank-lines] [fixture:
+comments/percent-brace-line-after-comment-and-directive-lines] [fixture:
+comments/percent-brace-line-after-directive-on-its-line] [fixture:
+comments/percent-brace-line-after-directive-touching] [fixture:
+comments/percent-brace-line-after-directive-with-tabs]
 
 A comment after a statement, or after the header, stays on the line, as written:
 one space stands before it where whitespace was written, and none where it
@@ -1047,6 +1095,7 @@ comments/after-header-glued] [fixture: comments/after-keyword-statement]
 [fixture: comments/after-keyword-statement-glued] [fixture: comments/after-day]
 [fixture: comments/after-description-block] [fixture: comments/after-click]
 [fixture: comments/after-directive-kept] [fixture:
+comments/after-statement-under-a-section] [fixture:
 comments/then-statement-on-next-line] The statement after such a statement
 stands on the next line.
 

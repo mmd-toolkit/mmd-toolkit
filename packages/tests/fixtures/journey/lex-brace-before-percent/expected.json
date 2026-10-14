@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: `}%% c` is a task text without data in both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\njourney  }%% c\n--------------^\nExpecting 'taskData', got 'NEWLINE'"
+  }
+}

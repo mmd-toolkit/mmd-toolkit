@@ -38,8 +38,9 @@ read from the source text directly:
 The diagram bodies implemented so far are the `error` pseudo-diagram, the
 flowchart (`flowchart-v2`, `flowchart-elk`, and `swimlane`), the sequence
 diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
-(`stateDiagram`), the entity relationship diagram (`er`), and the Gantt chart
-(`gantt`). Every other detected type throws `UnsupportedDiagramError`.
+(`stateDiagram`), the entity relationship diagram (`er`), the Gantt chart
+(`gantt`), and the user journey diagram (`journey`). Every other detected type
+throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -48,8 +49,10 @@ The parser of each diagram follows its document,
 [`diagrams/sequence.md`](../../spec/docs/diagrams/sequence.md),
 [`diagrams/class.md`](../../spec/docs/diagrams/class.md),
 [`diagrams/state.md`](../../spec/docs/diagrams/state.md),
-[`diagrams/er.md`](../../spec/docs/diagrams/er.md), or
-[`diagrams/gantt.md`](../../spec/docs/diagrams/gantt.md). It has three parts:
+[`diagrams/er.md`](../../spec/docs/diagrams/er.md),
+[`diagrams/gantt.md`](../../spec/docs/diagrams/gantt.md), or
+[`diagrams/journey.md`](../../spec/docs/diagrams/journey.md). It has three
+parts:
 
 - a lexer that divides the diagram text into units, under
   `src/diagrams/<diagram>/units.ts`;
@@ -69,14 +72,14 @@ state, and ER (`src/direction-line.ts`), whose words state and ER compare
 case-insensitively, and the Unicode letters of the letter rules of flowchart and
 class (`src/unicode-letters.ts`). A diagram whose lexer reads diagram comments,
 as the sequence lexer reads `#` and `%`, the class lexer `%%`, the state lexer
-`#` and `%%`, and the Gantt lexer `%`, hands them to the common part, which
-records them in `Root.comments`, cut at the comment regions that lie inside
-them, as tokens are. The rejections that mermaid.js makes while it builds the Db
-are made by the parser after the grammar: `subgraph-members.ts` for the
-flowchart, and `db-rejections.ts` for the sequence diagram, the class diagram,
-and the state diagram; the Gantt grammar makes its two where it reads the
-statement, since a `topAxis` statement makes no node. The class lexer divides
-each member line into its parts with the steps of
+`#` and `%%`, the Gantt lexer `%`, and the journey lexer `#` and `%`, hands them
+to the common part, which records them in `Root.comments`, cut at the comment
+regions that lie inside them, as tokens are. The rejections that mermaid.js
+makes while it builds the Db are made by the parser after the grammar:
+`subgraph-members.ts` for the flowchart, and `db-rejections.ts` for the sequence
+diagram, the class diagram, and the state diagram; the Gantt grammar makes its
+two where it reads the statement, since a `topAxis` statement makes no node. The
+class lexer divides each member line into its parts with the steps of
 [Member lines](../../spec/docs/diagrams/class.md#member-lines)
 (`src/diagrams/class/member-lines.ts`), both in a class body and in the label of
 a member statement, and rejects a method line that cannot be divided.

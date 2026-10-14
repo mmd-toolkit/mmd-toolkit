@@ -395,6 +395,36 @@ export const NODE_FIELDS: Readonly<
   Identifier: {
     name: { shape: "value", valueType: "string" },
   },
+  JourneyAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  JourneyAccDescrStatement: {
+    value: { shape: "node" },
+  },
+  JourneyAccTitleStatement: {
+    value: { shape: "node" },
+  },
+  JourneyDiagram: {
+    body: { shape: "nodeList" },
+  },
+  JourneyIgnoredText: {
+    value: { shape: "value", valueType: "string" },
+  },
+  JourneyLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  JourneySectionStatement: {
+    name: { shape: "node" },
+  },
+  JourneyTaskStatement: {
+    description: { shape: "node" },
+    score: { shape: "nodeOrNull" },
+    people: { shape: "nodeListWithNull" },
+    textAfter: { shape: "nodeOrNull" },
+  },
+  JourneyTitleStatement: {
+    value: { shape: "node" },
+  },
   NumericLiteral: {
     value: { shape: "value", valueType: "number" },
     raw: { shape: "value", valueType: "string" },

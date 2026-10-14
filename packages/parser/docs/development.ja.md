@@ -37,7 +37,8 @@
 図の本体は、今のところ `error` 疑似図種と、
 flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 シーケンス図（`sequence`）と、クラス図（`classDiagram`）と、
-状態図（`stateDiagram`）と、ER 図（`er`）と、Gantt チャート（`gantt`）です。
+状態図（`stateDiagram`）と、ER 図（`er`）と、Gantt チャート（`gantt`）と、
+journey 図（`journey`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -48,7 +49,9 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 [`diagrams/class.md`](../../spec/docs/diagrams/class.ja.md)、
 [`diagrams/state.md`](../../spec/docs/diagrams/state.ja.md)、
 [`diagrams/er.md`](../../spec/docs/diagrams/er.ja.md)、
-[`diagrams/gantt.md`](../../spec/docs/diagrams/gantt.ja.md) のどれかに従います。
+[`diagrams/gantt.md`](../../spec/docs/diagrams/gantt.ja.md)、
+[`diagrams/journey.md`](../../spec/docs/diagrams/journey.ja.md)
+のどれかに従います。
 3 つの部分からなります。
 
 - 図のテキストを単位に分ける字句解析器（`src/diagrams/<図種>/units.ts`）
@@ -70,7 +73,8 @@ flowchart とクラス図の文字の規則の Unicode の文字は
 シーケンス図の字句解析器が `#` と `%` を、
 クラス図の字句解析器が `%%` を、
 状態図の字句解析器が `#` と `%%` を、
-Gantt チャートの字句解析器が `%` を読むように、
+Gantt チャートの字句解析器が `%` を、
+journey 図の字句解析器が `#` と `%` を読むように、
 図のコメントを読む図は、それを共通の部分に渡し、
 共通の部分が `Root.comments` に記録します。
 中にコメント領域があれば、トークンと同じく、そこで切ります。

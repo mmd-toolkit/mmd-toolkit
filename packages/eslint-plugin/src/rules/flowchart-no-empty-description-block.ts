@@ -6,6 +6,7 @@ import type {
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
 import type { MermaidSourceCode } from "../source-code.ts"
+import { blockHoldsComment } from "../utils/description-block.ts"
 import { removalRange } from "../utils/removal.ts"
 import {
   blocksInNameText,
@@ -129,13 +130,7 @@ export const flowchartNoEmptyDescriptionBlock: MermaidRuleDefinition<{
     return {
       FlowchartAccDescrBlockStatement(node) {
         if (!node.closed || node.value !== null) return
-        // The comments that count are those between the `{` and the `}`.
-        const opening = sourceCode.getFirstToken(node, {
-          filter: (token) => token.type === "Punctuator" && token.value === "{",
-        })
-        const closing = sourceCode.getLastToken(node)
-        if (closing === null || opening === null) return
-        if (sourceCode.commentsExistBetween(opening, closing)) return
+        if (blockHoldsComment(sourceCode, node)) return
         const previous = sourceCode.getTokenBefore(node, {
           includeComments: true,
         })

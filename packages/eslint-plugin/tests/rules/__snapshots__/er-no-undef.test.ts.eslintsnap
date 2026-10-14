@@ -1,0 +1,101 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: er-no-undef >> invalid >>> docs/rules/er-no-undef.md incorrect 1
+Filename: er-no-undef-incorrect-1.mmd
+
+Code:
+  1 | erDiagram
+  2 |   A
+  3 |   style Z fill:red
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Z` in this `style` statement: no entity and no subgraph of the diagram has this name.
+---
+
+
+Test: er-no-undef >> invalid >>> docs/rules/er-no-undef.md incorrect 2
+Filename: er-no-undef-incorrect-2.mmd
+
+Code:
+  1 | erDiagram
+  2 |   p[Person]
+  3 |   style Person fill:red
+    |         ^~~~~~ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Person` in this `style` statement: no entity and no subgraph of the diagram has this name.
+---
+
+
+Test: er-no-undef >> invalid >>> invalid/er/db-class-undefined-entity
+Filename: tests/fixtures/rules/er-no-undef/invalid/er/db-class-undefined-entity-input.mmd
+
+Code:
+  1 | erDiagram
+  2 |   A
+  3 |   class A,Z c
+    |           ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Z` in this `class` statement: no entity and no subgraph of the diagram has this name.
+---
+
+
+Test: er-no-undef >> invalid >>> invalid/er/db-style-undefined-entity
+Filename: tests/fixtures/rules/er-no-undef/invalid/er/db-style-undefined-entity-input.mmd
+
+Code:
+  1 | erDiagram
+  2 |   A
+  3 |   style Z,A fill:red
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Z` in this `style` statement: no entity and no subgraph of the diagram has this name.
+---
+
+
+Test: er-no-undef >> invalid >>> invalid/er/style-name-differs-in-case
+Filename: tests/fixtures/rules/er-no-undef/invalid/er/style-name-differs-in-case-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | a
+  3 | style A fill:red
+    |       ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `A` in this `style` statement: no entity and no subgraph of the diagram has this name.
+---
+
+
+Test: er-no-undef >> invalid >>> invalid/er/style-of-alias
+Filename: tests/fixtures/rules/er-no-undef/invalid/er/style-of-alias-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | p[Person]
+  3 | style Person fill:red
+    |       ^~~~~~ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Person` in this `style` statement: no entity and no subgraph of the diagram has this name.
+---
+
+
+Test: er-no-undef >> invalid >>> invalid/er/style-of-subgraph-title-word
+Filename: tests/fixtures/rules/er-no-undef/invalid/er/style-of-subgraph-title-word-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | subgraph S [Title words]
+  3 | A
+  4 | end
+  5 | style Title fill:red
+    |       ^~~~~ [1]
+  6 |
+
+[1] mermaid.js does nothing with `Title` in this `style` statement: no entity and no subgraph of the diagram has this name.
+---

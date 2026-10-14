@@ -243,21 +243,31 @@ a `task-text`, a `data-item`, a `callback-name`, a `callback-arguments`, an
 
 **Trivia between units.** The trivia of [common.md](../common.md) meet the units
 of this diagram as follows. A lone CR is a line terminator, read as a line feed
-(see [Line terminators](../common.md#line-terminators)): the header, a title,
-and a task are read between lone CRs as between line feeds, and a lone CR after
-a click id leaves the click context as a line feed does. [fixture:
-gantt/header-cr-only] [fixture: gantt/lex-title-cr-value] [fixture:
-gantt/tokens-cr-only-click-parts] A closed directive between two units is read
-as nothing, and the whitespace around it by the rule of the context: a closed
-directive at the end of a task line, after the data or glued to it, ends
-nothing, and the next line is read as usual. [fixture:
-gantt/lex-directive-at-end-of-data-line] [fixture:
-gantt/lex-directive-glued-at-end-of-data] An unclosed directive takes the rest
-of the text (see [Where a directive is](../common.md#where-a-directive-is)):
-`a : 1d %%{init: {}` followed by a line `b : 2d` has the one task `a ` with the
-end `1d`, `gantt`, a line `%%{init: {}`, and a line `a : 1d` has no task, and
-`title T %%{init: {}` followed by a task line has the title `T ` and no task.
-[fixture: gantt/tokens-unclosed-directive-in-data-line] [fixture:
+(see [Line terminators](../common.md#line-terminators)): the header, a title, a
+section, and a task are read between lone CRs, and between CRLF line breaks, as
+between line feeds, and a lone CR after a click id leaves the click context as a
+line feed does. [fixture: gantt/header-cr-only] [fixture:
+gantt/lex-title-cr-value] [fixture: gantt/lex-section-cr-value] [fixture:
+gantt/header-crlf] [fixture: gantt/lex-title-crlf-value] [fixture:
+gantt/lex-section-crlf-value] [fixture: gantt/tokens-cr-only-click-parts] A
+closed directive between two units is read as nothing, and the whitespace around
+it by the rule of the context: a closed directive at the end of a task, title,
+or section line, after the text or glued to it, ends nothing, and the next line
+is read as usual; the whitespace before it is a character of a title text or a
+section text, so `title T %%{init: {}}%%` has the title `T ` and
+`section S %%{init: {}}%%` the section `S `, while glued to the text they have
+`T` and `S`. [fixture: gantt/lex-directive-at-end-of-data-line] [fixture:
+gantt/lex-directive-glued-at-end-of-data] [fixture:
+gantt/lex-directive-at-end-of-title-line] [fixture:
+gantt/lex-directive-glued-at-end-of-title] [fixture:
+gantt/lex-directive-at-end-of-section-line] [fixture:
+gantt/lex-directive-glued-at-end-of-section] An unclosed directive takes the
+rest of the text (see
+[Where a directive is](../common.md#where-a-directive-is)): `a : 1d %%{init: {}`
+followed by a line `b : 2d` has the one task `a ` with the end `1d`, `gantt`, a
+line `%%{init: {}`, and a line `a : 1d` has no task, and `title T %%{init: {}`
+followed by a task line has the title `T ` and no task. [fixture:
+gantt/tokens-unclosed-directive-in-data-line] [fixture:
 gantt/tokens-unclosed-directive-after-header] [fixture:
 gantt/tokens-unclosed-directive-in-title] A comment line is removed before the
 lexer reads the text, also inside a description block, inside callback arguments
@@ -782,21 +792,43 @@ whitespace character that leaves the click context; the `%` is reached directly
 when that whitespace is empty, or has two or more characters of which, after its
 leading line feeds, not exactly one remains; it is not reached directly when
 that whitespace is one character, or when exactly one character remains after
-its leading line feeds. So `gantt%%{ }%%`, `inclusiveEndDates%%{ }%%`,
-`href "u"%%{ }%%`, `accDescr { d }%%{ }%%`, `accDescr {}%%{ }%%`, `gantt%%{}`,
-`gantt%%{`, `%%{ }%%` after a line feed and two spaces, after two line feeds,
-after a space and a line feed, after a line feed, a space, and a line feed, or
-on the line after a `%` comment that directly follows the header or an empty
-line are comments here and rejected by mermaid.js, while `%%{ }%%` after one
-line feed, after a line feed and one space or a tab, after two line feeds and
-one space, or after a unit and one space is a comment in both. After a comment
-that mermaid.js did not reach directly, the same holds: `inclusiveEndDates %c`,
-a line feed, and `%%{ }%%` is a comment in both, while with an empty line
-between them, or with `%%c` and a line feed and two spaces, mermaid.js rejects
-it. [fixture: gantt/lex-percent-brace-after-space-percent-comment-line]
-[fixture: gantt/div-percent-brace-after-space-percent-comment-blank-line]
-[fixture: gantt/div-percent-brace-after-double-percent-comment-two-spaces]
-[fixture: gantt/lex-percent-brace-after-two-line-feeds-and-space] [fixture:
+its leading line feeds. The whitespace is that of the text without its
+directives, which the lexer reads, so a line that holds only a directive leaves
+its line feed: after `title T`, a line with a directive, and a line `%%{ }%%`,
+two line feeds stand before the `%`, as after an empty line, and mermaid.js
+rejects the input, while with one space before the `%%{ }%%` it is a comment in
+both, and so with two directive lines or a directive line and an empty line,
+which leave three line feeds; with a space or two before the directive, or two
+spaces before the `%%{ }%%`, mermaid.js rejects it, and a directive on the line
+of the `%%{ }%%`, or glued to the end of the line before it, leaves one line
+feed, a comment in both. [fixture: gantt/div-percent-brace-after-directive-line]
+[fixture: gantt/lex-percent-brace-after-directive-line-space] [fixture:
+gantt/div-percent-brace-after-directive-line-two-spaces] [fixture:
+gantt/div-percent-brace-after-indented-directive-line] [fixture:
+gantt/div-percent-brace-after-directive-line-indented-two] [fixture:
+gantt/div-percent-brace-after-indented-directive-line-space] [fixture:
+gantt/div-percent-brace-after-two-directive-lines] [fixture:
+gantt/lex-percent-brace-after-two-directive-lines-space] [fixture:
+gantt/div-percent-brace-after-directive-line-blank-line] [fixture:
+gantt/lex-percent-brace-after-directive-line-blank-line-space] [fixture:
+gantt/lex-percent-brace-after-directive-same-line] [fixture:
+gantt/lex-percent-brace-after-unit-glued-directive] So `gantt%%{ }%%`,
+`inclusiveEndDates%%{ }%%`, `href "u"%%{ }%%`, `accDescr { d }%%{ }%%`,
+`accDescr {}%%{ }%%`, `gantt%%{}`, `gantt%%{`, `%%{ }%%` after a line feed and
+two spaces or two tabs, after a unit and two spaces or two tabs on its line,
+after two line feeds, after a space and a line feed, after a line feed, a space,
+and a line feed, or on the line after a `%` comment that directly follows the
+header or an empty line are comments here and rejected by mermaid.js, while
+`%%{ }%%` after one line feed, after a line feed and one space or a tab, after
+two line feeds and one space, or after a unit and one space or one tab is a
+comment in both. After a comment that mermaid.js did not reach directly, the
+same holds: `inclusiveEndDates %c`, a line feed, and `%%{ }%%` is a comment in
+both, while with an empty line between them, or with `%%c` and a line feed and
+two spaces, mermaid.js rejects it. [fixture:
+gantt/lex-percent-brace-after-space-percent-comment-line] [fixture:
+gantt/div-percent-brace-after-space-percent-comment-blank-line] [fixture:
+gantt/div-percent-brace-after-double-percent-comment-two-spaces] [fixture:
+gantt/lex-percent-brace-after-two-line-feeds-and-space] [fixture:
 gantt/div-percent-brace-after-line-feed-space-line-feed] [fixture:
 gantt/div-percent-brace-glued-after-header] [fixture:
 gantt/div-percent-brace-glued-after-keyword] [fixture:
@@ -809,6 +841,14 @@ gantt/div-percent-brace-open-glued-after-header] [fixture:
 gantt/div-percent-brace-after-two-spaces] [fixture:
 gantt/div-percent-brace-after-blank-line] [fixture:
 gantt/div-percent-brace-after-space-line-feed] [fixture:
+gantt/div-percent-brace-after-line-feed-two-tabs] [fixture:
+gantt/div-percent-brace-after-unit-two-spaces] [fixture:
+gantt/div-percent-brace-after-unit-two-tabs] [fixture:
+gantt/lex-percent-brace-line-after-task] [fixture:
+gantt/lex-percent-brace-after-line-feed-space] [fixture:
+gantt/lex-percent-brace-after-tab] [fixture:
+gantt/lex-percent-brace-after-unit-space] [fixture:
+gantt/lex-percent-brace-after-unit-tab] [fixture:
 gantt/div-percent-brace-after-glued-percent-comment] [fixture:
 gantt/div-percent-brace-after-percent-comment-blank-line] A `%` that does not
 stand where a unit starts is a character of the unit that holds it, as rule 25
@@ -1453,7 +1493,8 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
   gantt/div-percent-brace-glued-after-string] [fixture:
   gantt/div-percent-brace-after-two-spaces] [fixture:
   gantt/div-percent-brace-after-blank-line] [fixture:
-  gantt/div-percent-brace-after-glued-percent-comment]
+  gantt/div-percent-brace-after-glued-percent-comment] [fixture:
+  gantt/div-percent-brace-after-unit-two-spaces]
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.md).**
   `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment` anywhere after
   the header, in a task text, a title, a section, or task data, makes mermaid.js

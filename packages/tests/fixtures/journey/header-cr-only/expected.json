@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Trivia between units: a lone CR is a line terminator, so the header, the title, and the task are read between lone CRs as between line feeds."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

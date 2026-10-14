@@ -14,6 +14,7 @@ export default [
       "**/playwright-report/",
       "packages/tests/fixtures/",
       ".claude/worktrees/",
+      ".work/",
       // Working files that are deleted before the release.
       "tmp/",
       "!.github/",

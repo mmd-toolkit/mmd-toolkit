@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Known divergences: ignored-semicolon-as-token-boundary: inside `accTitle`; mermaid.js reads the accessibility title `T`."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "T",
+    "accDescr": "style:#x",
+    "sections": [],
+    "tasks": []
+  }
+}

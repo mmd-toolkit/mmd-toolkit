@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Titles and sections: a later title statement replaces an earlier one."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "B",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

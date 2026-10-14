@@ -9,6 +9,7 @@ import { valueNodeTypes } from "../src/printers/flowchart-layout.ts"
 import { classValueNodeTypes } from "../src/printers/class-layout.ts"
 import { erValueNodeTypes } from "../src/printers/er-layout.ts"
 import { ganttValueNodeTypes } from "../src/printers/gantt-layout.ts"
+import { journeyValueNodeTypes } from "../src/printers/journey-layout.ts"
 import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
 import { stateValueNodeTypes } from "../src/printers/state-layout.ts"
 
@@ -98,6 +99,17 @@ const diagrams: readonly DiagramValues[] = [
       "GanttWeekendStatement",
       // A number is no node of a Gantt chart: its numbers are the text of
       // an item.
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Journey",
+    values: journeyValueNodeTypes,
+    notValues: new Set([
+      // The shared leaf nodes are no nodes of a user journey: its ids, names,
+      // and numbers are the text of a score or a person.
+      "Identifier",
+      "StringLiteral",
       "NumericLiteral",
     ]),
   },

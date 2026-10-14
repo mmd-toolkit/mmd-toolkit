@@ -209,7 +209,7 @@ class GanttDbBuilder {
    */
   private addTokens(list: string[], items: readonly Identifier[]): void {
     const first = items[0]
-    const last = items[items.length - 1]
+    const last = items.at(-1)
     if (first === undefined || last === undefined) return
     const listText = this.text.of([first.range[0], last.range[1]])
     for (const token of tokensOf(listText.toLowerCase())) {
@@ -224,7 +224,7 @@ class GanttDbBuilder {
       item === null ? "" : trimmed(this.textOf(item)),
     )
     const [first = "", second = "", third = ""] = items
-    const previousId = this.tasks[this.tasks.length - 1]?.id
+    const previousId = this.tasks.at(-1)?.id
     let id: string | undefined
     let startTime: JsonObject | null = null
     let endTime: JsonObject | null = null
@@ -254,7 +254,7 @@ class GanttDbBuilder {
         break
     }
     this.tasks.push({
-      section: this.sections[this.sections.length - 1] ?? "",
+      section: this.sections.at(-1) ?? "",
       description: this.textOf(statement.description),
       id,
       tags,

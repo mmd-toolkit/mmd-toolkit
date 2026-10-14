@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Trivia between units: the ignored `;` lies in the comment that `#x` starts: the title `style:`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "style:",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

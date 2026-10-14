@@ -721,6 +721,57 @@ mermaid.js は、Gantt 図の一部の値の空白を持ち、
 - `;` を含む行。
   mermaid.js の行の規則は行のテキストを読むので、その行の文を行に残します。
   [fixture: gantt/statements-one-per-line/ignored-semicolon-line-kept]
+- `%%{` で始まりディレクティブでないコメント行と、
+  その直前の印が `%` のコメント行。
+  空白 1 文字の後に置きます。
+  mermaid.js は、その `%%{` を、前の空白が 1 文字か、
+  改行の後に 1 文字のときだけ読み、それより多いときや、
+  空行の後で空白がないときは拒否します
+  （既知の差異
+  [`percent-brace-after-unit`](../../spec/docs/known-divergences/percent-brace-after-unit.ja.md)）。
+  直接に読まれる印が `%` のコメントは後ろの改行を取ります
+  （既知の差異
+  [`comment-takes-line-break`](../../spec/docs/known-divergences/comment-takes-line-break.ja.md)）。
+  ディレクティブはテキストを読む前に取り除かれるので、
+  その前のディレクティブだけの行は、間に空行があってもなくても、1 桁目に置き、
+  同じ行のディレクティブの間の空白も `%%{` の前の空白に数えます。
+  mermaid.js と仕様が同じに読む入力
+  （`%%{` の行が 1 桁目か、空白 1 つかタブ 1 つの後にあるもの）は、
+  整形も、両者が同じに読む形に印字し、これらの差異の形には印字しません。
+  [fixture: gantt/comments/percent-brace-line-after-blank-line]
+  [fixture: gantt/comments/percent-comment-then-percent-brace-line]
+
+## 空白で決まる journey の行
+
+mermaid.js は、journey の一部の値の空白を持ち、
+一部の行を、その行の空白で読みを決めます。
+そのため、整形は書かれたまま残します。
+[タスクのデータ](./journey.ja.md#タスクのデータ)と
+[タイトルとセクション](./journey.ja.md#タイトルとセクション)を参照してください。
+
+- `title` と `section` の値の両端の空白と、
+  タスクの説明のテキストとコロンの間の空白。
+  Db が持つので、空白 2 つの `title  T` や、
+  桁をそろえた `Make tea  : 5` は、空白を落とした形とは別のものです。
+  コロンをそろえる空白も残ります。
+  [fixture: journey/titles-and-sections/value-whitespace-kept]
+  [fixture: journey/task-data/description-padding-kept]
+- `title` と `section` の後の `#` の前の空白。
+  値の一部ですが、タスクのデータの後では値に入りません。
+  [fixture: journey/titles-and-sections/whitespace-before-hash-is-the-value]
+  [fixture: journey/task-data/hash-ends-the-data]
+- 人の中の空白と、人の数。
+  `Me  Two` は書かれたままの 1 人で、
+  `a,` は `a` にない空の人を持ちます。
+  [fixture: journey/task-data/people-inner-whitespace-kept]
+  [fixture: journey/task-data/empty-people]
+- 空白だけのデータを持つタスクの `:` の後の空白。
+  mermaid.js はコロンの後にデータの 1 文字を要求するので、
+  `A:` は拒否され、`A: ` はタスクであり、空白 1 文字を残します。
+  [fixture: journey/task-data/whitespace-only-data]
+- `;` を含む行。
+  mermaid.js の行の規則は行のテキストを読むので、その行の文を行に残します。
+  [fixture: journey/statements-one-per-line/ignored-semicolon-line-kept]
 
 ## U+2028 か U+2029 の後のコメント行
 

@@ -63,6 +63,20 @@ export interface ItemLine {
    */
   readonly bareMarker: boolean
   /**
+   * For a line that holds a comment that starts with `%%{` without being a
+   * directive, which is an item of its own: the number of its gaps that hold
+   * whitespace, between its items up to the comment, the first gap being the
+   * one after its first item. A text that mermaid.js reads has 0 or 1, since
+   * it rejects the whitespace of more; null for any other line (see
+   * `BlockRules.oneCharacterIndentation`).
+   */
+  readonly percentBraceGaps: number | null
+  /**
+   * Whether the line holds a comment with the mark `%` (see
+   * `BlockRules.oneCharacterIndentation`).
+   */
+  readonly singlePercent: boolean
+  /**
    * Whether the line becomes a comment line that mermaid.js removes once its
    * directives are removed: it holds comments that are comment lines (see
    * `isCommentLine`) and, besides them, only directives. Such a line leaves
@@ -86,6 +100,8 @@ export interface Gap {
   readonly leading: ItemRun | null
   /** Whether `leading` holds nothing but directives. */
   readonly leadingDirectivesOnly: boolean
+  /** The `percentBraceGaps` of the line of `leading`. */
+  readonly leadingPercentBraceGaps: number | null
   /** The spaces and tabs before the first item of `leading`, as written. */
   readonly leadingIndentation: string
   /** Whether an empty line comes after the last line of `lines`, or, when there are none, anywhere in the gap. */
@@ -190,6 +206,10 @@ export function readGap(
           part.item.mark === "%%" &&
           !isCommentLine(source.text, source.root, part.item),
       ),
+      percentBraceGaps: countGapsBeforePercentBrace(source, line.parts),
+      singlePercent: line.parts.some(
+        (part) => part.item.type === "Comment" && part.item.mark === "%",
+      ),
       commentLinesOnly:
         line.parts.some((part) => part.item.type === "Comment") &&
         line.parts.every(
@@ -210,11 +230,32 @@ export function readGap(
       last.parts.length > 0 &&
       last.parts.every((part) => part.item.type === "Directive"),
     leadingIndentation: indentationBefore(source, last),
+    leadingPercentBraceGaps: countGapsBeforePercentBrace(source, last.parts),
     blankAfter: emptyLineSeen,
     breaksLine: true,
     trailingEndsWithComment: first.parts.at(-1)?.item.type === "Comment",
     whitespaceLineAfter: whitespaceLineSeen,
   }
+}
+
+/**
+ * For a line that holds a comment with the mark `%%` that starts with `%%{`,
+ * which is no directive, since the directives are items of their own: the
+ * number of its items, from the second to the comment, that have whitespace
+ * before them (see `ItemLine.percentBraceGaps`). Null for any other line.
+ */
+function countGapsBeforePercentBrace(
+  source: Source,
+  parts: readonly Part[],
+): number | null {
+  const index = parts.findIndex(
+    (part) =>
+      part.item.type === "Comment" &&
+      part.item.mark === "%%" &&
+      source.text[part.item.range[0] + 2] === "{",
+  )
+  if (index === -1) return null
+  return parts.slice(1, index + 1).filter((part) => part.spaceBefore).length
 }
 
 /** The spaces and tabs before the first item of a line, as written. */
@@ -249,6 +290,7 @@ function readSingleLine(
     lines: [],
     leading: toRun(source, after, line.spaceAfter, false),
     leadingDirectivesOnly: false,
+    leadingPercentBraceGaps: null,
     leadingIndentation: "",
     blankAfter: false,
     breaksLine: false,

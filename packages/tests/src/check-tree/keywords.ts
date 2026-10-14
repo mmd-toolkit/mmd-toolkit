@@ -220,5 +220,8 @@ export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
     "saturday",
     "sunday",
   ],
+  // The row `Keyword` of parser/docs/tokens/journey.md names the header unit,
+  // which is `journey`, and the words that start a statement.
+  JourneyDiagram: ["journey", "title", "section", "acctitle", "accdescr"],
   ErrorDiagram: [],
 }

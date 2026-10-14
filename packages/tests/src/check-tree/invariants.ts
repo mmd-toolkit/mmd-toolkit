@@ -150,7 +150,7 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
  * The marks of the diagram comments of each diagram type, as its document
  * defines them: diagrams/sequence.md, Units and contexts; diagrams/state.md,
  * Comments; diagrams/class.md, The statement context; diagrams/er.md,
- * Comments; diagrams/gantt.md, Comments. A flowchart, an ER diagram, and the
+ * Comments; diagrams/gantt.md, Comments; diagrams/journey.md, Comments. A flowchart, an ER diagram, and the
  * `error` pseudo-diagram have only comment lines, besides the diagram comments that every diagram type has
  * before its header (see {@link MARKS_BEFORE_THE_HEADER}).
  */
@@ -162,6 +162,7 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   StateDiagram: ["#", "%%"],
   ErDiagram: [],
   GanttDiagram: ["%%", "%"],
+  JourneyDiagram: ["#", "%%", "%"],
 }
 
 /**

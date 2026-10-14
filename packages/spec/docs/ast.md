@@ -235,8 +235,9 @@ the diagram sections below: a
 [`SequenceDiagram`](./ast/sequence.md#sequencediagram), a
 [`ClassDiagram`](./ast/class.md#classdiagram), a
 [`StateDiagram`](./ast/state.md#statediagram), an
-[`ErDiagram`](./ast/er.md#erdiagram), or a
-[`GanttDiagram`](./ast/gantt.md#ganttdiagram).
+[`ErDiagram`](./ast/er.md#erdiagram), a
+[`GanttDiagram`](./ast/gantt.md#ganttdiagram), or a
+[`JourneyDiagram`](./ast/journey.md#journeydiagram).
 
 ## ErrorDiagram
 
@@ -396,6 +397,7 @@ in a document of their own under `ast/`:
 - [State](./ast/state.md): the diagram type `stateDiagram`.
 - [ER](./ast/er.md): the diagram type `er`.
 - [Gantt](./ast/gantt.md): the diagram type `gantt`.
+- [Journey](./ast/journey.md): the diagram type `journey`.
 
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of

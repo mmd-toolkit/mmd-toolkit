@@ -51,6 +51,7 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "state",
   "er",
   "gantt",
+  "journey",
 ]
 
 let corpusTrees: Promise<readonly CorpusTree[]> | undefined
@@ -160,6 +161,39 @@ export function says(
   return problems.some((problem) =>
     `${problem.where}: ${problem.message}`.includes(message),
   )
+}
+
+/** Sets the kind of the first token inside the first node of the type `type` that is of the kind `from` (any kind where `from` is null) and has the text `value` (any text where it is null) to `to`. */
+export function retypeIn(
+  type: string,
+  from: string | null,
+  value: string | null,
+  to: string,
+): MutationCase["mutate"] {
+  return (root) => {
+    setField(
+      firstTokenIn(
+        root,
+        firstNode(root, type),
+        (token) =>
+          (from === null || token.type === from) &&
+          (value === null || token.value === value),
+      ),
+      "type",
+      to,
+    )
+  }
+}
+
+/** Sets the end of the range of the first node of the type `type` to `end(root)`. */
+export function setEnd(
+  type: string,
+  end: (root: CheckedRoot) => number,
+): MutationCase["mutate"] {
+  return (root) => {
+    const node = firstNode(root, type)
+    setField(node, "range", [node.range[0], end(root)])
+  }
 }
 
 /** One case: a mutation of the recorded tree of a fixture and the problem that the check must report for it. */

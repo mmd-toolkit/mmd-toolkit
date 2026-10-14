@@ -15,6 +15,7 @@ const root = process.cwd()
 const skipDirs = new Set([
   "node_modules",
   ".git",
+  ".work",
   "lib",
   "coverage",
   "worktrees",

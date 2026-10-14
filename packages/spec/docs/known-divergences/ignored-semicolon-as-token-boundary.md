@@ -3,9 +3,9 @@
 Japanese version:
 [ignored-semicolon-as-token-boundary.ja.md](./ignored-semicolon-as-token-boundary.ja.md)
 
-Diagram types: flowchart, sequence, class, state, er, and gantt. This is one of
-the [known divergences](../known-divergences.md) of this specification from
-mermaid.js.
+Diagram types: flowchart, sequence, class, state, er, gantt, and journey. This
+is one of the [known divergences](../known-divergences.md) of this specification
+from mermaid.js.
 
 ## The syntax
 
@@ -128,15 +128,23 @@ keyword, or an item of `includes` or `excludes`: mermaid.js reads
 `click id1 href "style:#x" ca;ll f()` as a call, and this specification rejects
 them. [fixture: gantt/div-ignored-semicolon-in-click-id] [fixture:
 gantt/div-ignored-semicolon-in-call-keyword] [fixture:
-gantt/div-ignored-semicolon-in-list-item]
+gantt/div-ignored-semicolon-in-list-item] In a user journey diagram, a `#` ends
+a title text, a section text, a task text, and task data, and starts a comment,
+so the `style`, the `:`, and the `#` lie in a description block before the
+statement on its line, and the ignored `;` can lie inside a keyword: mermaid.js
+reads `accDescr { style:#x } ti;tle T` as the title `T` and
+`accDescr { style:#x } sec;tion S` as the section `S`, and this specification
+rejects them. [fixture: journey/div-ignored-semicolon-in-title-keyword]
+[fixture: journey/div-ignored-semicolon-in-section-keyword]
 
 Each diagram document lists where this shows, in its Known divergences section:
 [flowchart](../diagrams/flowchart.md#known-divergences),
 [sequence](../diagrams/sequence.md#known-divergences),
 [class](../diagrams/class.md#known-divergences),
 [state](../diagrams/state.md#known-divergences),
-[er](../diagrams/er.md#known-divergences), and
-[gantt](../diagrams/gantt.md#known-divergences).
+[er](../diagrams/er.md#known-divergences),
+[gantt](../diagrams/gantt.md#known-divergences), and
+[journey](../diagrams/journey.md#known-divergences).
 
 ## What it means for an author
 

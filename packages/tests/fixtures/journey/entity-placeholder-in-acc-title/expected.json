@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity in the accessibility title is its placeholder in the Db."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "a ﬂ°amp¶ß b",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

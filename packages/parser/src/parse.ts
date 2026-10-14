@@ -9,6 +9,7 @@ import { parseSequenceDiagram } from "./diagrams/sequence/index.ts"
 import { parseStateDiagram } from "./diagrams/state/index.ts"
 import { parseFlowchartDiagram } from "./diagrams/flowchart/index.ts"
 import { parseGanttDiagram } from "./diagrams/gantt/index.ts"
+import { parseJourneyDiagram } from "./diagrams/journey/index.ts"
 import { ParseError, UnsupportedDiagramError } from "./errors.ts"
 import { readFrontmatterTrivia } from "./frontmatter.ts"
 import { LineIndex } from "./positions.ts"
@@ -118,6 +119,8 @@ export function parse(text: string): Root {
       return parseErDiagram(input)
     case "gantt":
       return parseGanttDiagram(input)
+    case "journey":
+      return parseJourneyDiagram(input)
     default:
       throw new UnsupportedDiagramError(detected)
   }

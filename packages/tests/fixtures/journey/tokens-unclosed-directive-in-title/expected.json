@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Trivia between units: an unclosed directive in a title line: the title `T ` and no task."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "T ",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

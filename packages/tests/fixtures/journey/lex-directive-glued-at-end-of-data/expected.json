@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Trivia between units: a closed directive glued to the data ends nothing."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [],
+        "score": 5
+      },
+      {
+        "section": "",
+        "task": "B",
+        "people": [],
+        "score": 3
+      }
+    ]
+  }
+}

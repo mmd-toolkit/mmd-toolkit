@@ -1,4 +1,4 @@
-import type { Token } from "@mmd-toolkit/parser"
+import type { Node, Token } from "@mmd-toolkit/parser"
 import type { MermaidSourceCode } from "../source-code.ts"
 import { textWithoutDirectives } from "./directive-free-text.ts"
 
@@ -118,4 +118,23 @@ export function closedByBraceOfOtherStatement(
     return false
   }
   return holdsBraceAfterBraceLine(sourceCode, brace, body)
+}
+
+/**
+ * Whether a comment lies in the description block `block`, between its `{` and
+ * its `}`. A comment before the `{` or after the `}` is no part of the block.
+ */
+export function blockHoldsComment(
+  sourceCode: MermaidSourceCode,
+  block: Node,
+): boolean {
+  const opening = sourceCode.getFirstToken(block, {
+    filter: (token) => token.type === "Punctuator" && token.value === "{",
+  })
+  const closing = sourceCode.getLastToken(block)
+  return (
+    opening !== null &&
+    closing !== null &&
+    sourceCode.commentsExistBetween(opening, closing)
+  )
 }

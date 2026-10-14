@@ -15,6 +15,8 @@ import { lexEr } from "../../src/diagrams/er/index.ts"
 import { RELATIONSHIP_UNITS } from "../../src/diagrams/er/units.ts"
 import type { GanttUnits } from "../../src/diagrams/gantt/index.ts"
 import { lexGantt } from "../../src/diagrams/gantt/index.ts"
+import type { JourneyUnits } from "../../src/diagrams/journey/index.ts"
+import { lexJourney } from "../../src/diagrams/journey/index.ts"
 import type { DiagramUnit } from "../../src/diagram-units.ts"
 import type { EmptyForm } from "../../src/empty-forms.ts"
 import { EMPTY_FORM_KINDS, emptyFormsOf } from "../../src/empty-forms.ts"
@@ -411,7 +413,36 @@ export function commentsAfterMatchStarts(text: string): number[] | null {
  */
 export function percentsAfterUnitStarts(text: string): number[] | null {
   const lexing = ganttLexingOf(text)
-  if (lexing === null) return null
+  return lexing === null ? null : marksAfterUnitStarts(lexing, "%")
+}
+
+/**
+ * known-divergences/comment-takes-character.md, and diagrams/journey.md,
+ * Known divergences: the offsets, in source order, of each `%%` of the
+ * journey diagram `text` that comes right after the first character of a
+ * unit, a character other than `}` and whitespace: the places where
+ * mermaid.js reads that character and the rest of the line as one comment,
+ * while here the `%%` is part of the unit or the character before it is a
+ * unit that the grammar does not take. Null when `text` is no journey
+ * diagram or its lexer rejects it.
+ */
+export function doublePercentsAfterUnitStarts(text: string): number[] | null {
+  const lexing = journeyLexingOf(text)
+  return lexing === null ? null : marksAfterUnitStarts(lexing, "%%")
+}
+
+/**
+ * The offsets, in source order, of each `mark` that comes right after the
+ * first character of a unit of `lexing`, a character other than `}` and
+ * whitespace (see {@link percentsAfterUnitStarts} and
+ * {@link doublePercentsAfterUnitStarts}). The units come from the parser's
+ * lexer, and the characters from its diagram text, which has no
+ * directives.
+ */
+function marksAfterUnitStarts(
+  lexing: GanttUnits | JourneyUnits,
+  mark: "%" | "%%",
+): number[] {
   const unitStarts = new Set(lexing.units.map((unit) => unit.start))
   const places: number[] = []
   for (
@@ -428,8 +459,12 @@ export function percentsAfterUnitStarts(text: string): number[] | null {
     ) {
       continue
     }
-    const next = lexing.text.after(character)
-    if (next?.codePoint === PERCENT_SIGN) places.push(next.start)
+    const first = lexing.text.after(character)
+    const second = first === null ? null : lexing.text.after(first)
+    const marked =
+      first?.codePoint === PERCENT_SIGN &&
+      (mark === "%" || second?.codePoint === PERCENT_SIGN)
+    if (marked) places.push(first.start)
   }
   return places
 }
@@ -466,8 +501,10 @@ interface GanttCommentReading {
  * line feeds that it took. The `%` is reached directly when that
  * whitespace is empty, or has two or more characters of which, after its
  * leading line feeds, not exactly one remains. The units, the comments, and
- * the characters come from the parser's lexer and its diagram text. Null
- * when `text` is no Gantt chart or its lexer rejects it.
+ * the characters come from the parser's lexer and its diagram text, which
+ * has no directives, so a line that holds only a directive leaves its line
+ * feed in that whitespace. Null when `text` is no Gantt chart or its lexer
+ * rejects it.
  */
 function ganttCommentsReached(text: string): GanttCommentReading | null {
   const lexing = ganttLexingOf(text)
@@ -1139,6 +1176,20 @@ function endsFirstListOfClassStatement(before: readonly AnyUnit[]): boolean {
   return (
     before.at(index)?.name === "name" && before.at(index - 1)?.name === "class"
   )
+}
+
+/** The units of the journey diagram `text` as the parser's lexer reads them; null when `text` is no journey diagram or its lexer rejects it. */
+function journeyLexingOf(text: string): JourneyUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
+  if (diagramType !== "journey") return null
+  try {
+    return lexJourney(diagramInputOf(opened, detection, diagramType))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
 }
 
 /** The units of the Gantt chart `text` as the parser's lexer reads them; null when `text` is no Gantt chart or its lexer rejects it. */

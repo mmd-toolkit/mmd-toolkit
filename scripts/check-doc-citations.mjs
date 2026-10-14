@@ -22,7 +22,7 @@ const fixturesRoot = path.resolve("packages/tests/fixtures")
 function markdownFiles(directory) {
   const found = []
   for (const entry of readdirSync(directory, { withFileTypes: true })) {
-    if (entry.name === "node_modules") continue
+    if (entry.name === "node_modules" || entry.name === ".work") continue
     const full = path.join(directory, entry.name)
     if (entry.isDirectory()) found.push(...markdownFiles(full))
     else if (full.endsWith(".md")) found.push(full)

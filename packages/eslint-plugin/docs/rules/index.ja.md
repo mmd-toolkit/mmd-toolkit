@@ -85,4 +85,29 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [state-no-unclosed-description-block](./state-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                   | ✅  |     |     |
 | [state-no-undef](./state-no-undef.ja.md)                                           | どの状態も名指さない `style`、`class`、`click`、`note` の文を禁止する。 | ✅  |     |     |
 
+## er
+
+| 規則                                                                         | 説明                                                                      | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------- | --- | --- | --- |
+| [er-no-duplicate-description](./er-no-duplicate-description.ja.md)           | 説明をもう一度設定する `accDescr` の文を禁止する。                        | ✅  |     |     |
+| [er-no-duplicate-title](./er-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                    | ✅  |     |     |
+| [er-no-empty-description-block](./er-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                          | ✅  |     |     |
+| [er-no-ignored-text](./er-no-ignored-text.ja.md)                             | mermaid.js が読まないテキストを禁止する。                                 | ✅  |     |     |
+| [er-no-redefined-entity](./er-no-redefined-entity.ja.md)                     | 実体に 2 つ目の別名を与える実体の文を禁止する。                           | ✅  |     |     |
+| [er-no-unclosed-description-block](./er-no-unclosed-description-block.ja.md) | ほかのもののために書いた `}` が閉じる `accDescr {` のブロックを禁止する。 | ✅  |     |     |
+| [er-no-undef](./er-no-undef.ja.md)                                           | どの実体も subgraph も名指さない `style` と `class` の文を禁止する。      | ✅  |     |     |
+
+## gantt
+
+| 規則                                                                         | 説明                                                                      | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------- | ------------------------------------------------------------------------- | --- | --- | --- |
+| [gantt-no-duplicate-description](./gantt-no-duplicate-description.ja.md)     | 説明をもう一度設定する `accDescr` の文を禁止する。                        | ✅  |     |     |
+| [gantt-no-duplicate-id](./gantt-no-duplicate-id.ja.md)                       | 前のタスクがすでに持つタスクの id を禁止する。                            | ✅  |     |     |
+| [gantt-no-duplicate-setting](./gantt-no-duplicate-setting.ja.md)             | 設定をもう一度設定する設定の文を禁止する。                                | ✅  |     |     |
+| [gantt-no-duplicate-title](./gantt-no-duplicate-title.ja.md)                 | タイトルをもう一度設定する `title` か `accTitle` の文を禁止する。         | ✅  |     |     |
+| [gantt-no-empty-description-block](./gantt-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。                          | ✅  |     |     |
+| [gantt-no-undef](./gantt-no-undef.ja.md)                                     | どのタスクの id でもない id を指す `click`、`after`、`until` を禁止する。 | ✅  |     |     |
+| [gantt-no-unknown-exclude](./gantt-no-unknown-exclude.ja.md)                 | `weekends` でも曜日の名前でもない `excludes` の語を禁止する。             | ✅  |     |     |
+| [gantt-no-unread-tag](./gantt-no-unread-tag.ja.md)                           | タスクのデータの中で、mermaid.js がタグとして読まないタグを禁止する。     | ✅  |     |     |
+
 <!-- end auto-generated rules list -->

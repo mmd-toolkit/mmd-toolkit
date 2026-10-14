@@ -19,7 +19,7 @@ describe("a Gantt chart in a Markdown code block", () => {
         "# Title\n\n```mermaid\ngantt\ntitle   T\nsection S\nA task   :a1,2014-01-01,30d\n```\n",
       ),
     ).toBe(
-      "# Title\n\n```mermaid\ngantt\n  title   T\n  section S\n  A task   :a1, 2014-01-01, 30d\n```\n",
+      "# Title\n\n```mermaid\ngantt\n  title   T\n  section S\n    A task   :a1, 2014-01-01, 30d\n```\n",
     )
   })
 
@@ -28,7 +28,9 @@ describe("a Gantt chart in a Markdown code block", () => {
       await formatTwice(
         "- item\n\n  ```mermaid\n  gantt\n  section S\n  a : 1d\n  ```\n",
       ),
-    ).toBe("- item\n\n  ```mermaid\n  gantt\n    section S\n    a :1d\n  ```\n")
+    ).toBe(
+      "- item\n\n  ```mermaid\n  gantt\n    section S\n      a :1d\n  ```\n",
+    )
   })
 
   it("keeps a task whose data is whitespace only", async () => {

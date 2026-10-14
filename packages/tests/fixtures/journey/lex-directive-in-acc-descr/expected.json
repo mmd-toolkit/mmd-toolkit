@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Directives inside units: a directive inside an accessibility description: `ab`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "ab",
+    "sections": [],
+    "tasks": []
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Trivia between units: a lone CR ends the section as a line feed does: the section `S`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S"
+    ],
+    "tasks": [
+      {
+        "section": "S",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

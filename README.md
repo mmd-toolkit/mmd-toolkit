@@ -11,11 +11,11 @@ mermaid-js.
 `mmd` refers to the `.mmd` file extension used for Mermaid diagram text. It is
 unrelated to MultiMarkdown and MikuMikuDance, which also use the abbreviation.
 
-Flowchart, sequence, class, state, ER, and Gantt diagrams are supported so far;
-the other diagram types follow. The formatter, the linter, and the parser are
-not published to npm yet: they will be released once every diagram type of
-mermaid.js is supported. The specification and the tests are used from this
-repository and are not published.
+Flowchart, sequence, class, state, ER, Gantt, and user journey diagrams are
+supported so far; the other diagram types follow. The formatter, the linter, and
+the parser are not published to npm yet: they will be released once every
+diagram type of mermaid.js is supported. The specification and the tests are
+used from this repository and are not published.
 
 ## Playground
 

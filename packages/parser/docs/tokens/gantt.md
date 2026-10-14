@@ -61,6 +61,17 @@ at its ends, leave it out: `accTitle: T` and two spaces has the token `T`.
 [fixture: gantt/gram-acc-title-trailing-spaces] [fixture:
 gantt/lex-task-items-nbsp-trimmed]
 
+At the end of a title text or a section text, a closed directive ends nothing
+and the whitespace before it stays in the token, and a CR or a CRLF ends the
+text as a line feed does: `title T %%{init: {}}%%` has the token `T` and a
+space, `title T%%{init: {}}%%` the token `T`, and `title T` followed by a CRLF
+the token `T`. [fixture: gantt/lex-directive-at-end-of-title-line] [fixture:
+gantt/lex-directive-glued-at-end-of-title] [fixture:
+gantt/lex-directive-at-end-of-section-line] [fixture:
+gantt/lex-directive-glued-at-end-of-section] [fixture:
+gantt/lex-title-crlf-value] [fixture: gantt/lex-section-crlf-value] [fixture:
+gantt/lex-section-cr-value]
+
 A directive, a comment region, or a `;` that the line rule ignores inside a
 `RawText` or a `String` token cuts it into fragments, as
 [A token that a directive cuts](../tokens.md#a-token-that-a-directive-cuts)

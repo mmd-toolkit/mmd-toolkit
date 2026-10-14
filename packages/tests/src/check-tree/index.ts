@@ -4,6 +4,7 @@ import { checkErrorDiagramTokens } from "./error-diagram.ts"
 import { checkFlowchartTree, stringDelimitersOf } from "./flowchart.ts"
 import { checkGanttTree } from "./gantt.ts"
 import { checkInvariants } from "./invariants.ts"
+import { checkJourneyTree } from "./journey.ts"
 import { checkNullFields } from "./null-fields.ts"
 import { checkSharedLeaves } from "./leaves.ts"
 import { Problems } from "./problems.ts"
@@ -61,6 +62,9 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
       break
     case "GanttDiagram":
       checkGanttTree(text, root, problems)
+      break
+    case "JourneyDiagram":
+      checkJourneyTree(text, root, problems)
       break
     default:
       problems.report(

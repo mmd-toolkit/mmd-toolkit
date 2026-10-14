@@ -599,6 +599,124 @@ const ganttWhitespaceExamples: readonly (readonly [string, string, string])[] =
   ]
 
 /**
+ * Each example is a user journey with U+2028 or U+2029: they are whitespace
+ * between the units, so a gap between statements that holds one is printed as
+ * a line break, while a gap inside a statement that holds one is printed as
+ * written, and in a text they are characters of the text (docs/journey.md,
+ * Line separators).
+ */
+const journeyLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+2028 between the header and a statement",
+    "journey\u2028title T\n",
+    "journey\n  title T\n",
+  ],
+  [
+    "U+2028 between a description block and a task",
+    "journey\naccDescr { d }\u2028A: 5\n",
+    "journey\n  accDescr { d }\n  A: 5\n",
+  ],
+  [
+    "U+2028 inside a task description",
+    "journey\nA\u2028b: 5\n",
+    "journey\n  A\u2028b: 5\n",
+  ],
+  [
+    "U+2028 before the colon of a task",
+    "journey\nA\u2028: 5\n",
+    "journey\n  A\u2028: 5\n",
+  ],
+  [
+    "U+2028 before the second colon of a task",
+    "journey\nA: 5\u2028: Me\n",
+    "journey\n  A: 5\u2028: Me\n",
+  ],
+  [
+    "U+2028 between the people of a task",
+    "journey\nA: 3: Me,\u2028You\n",
+    "journey\n  A: 3: Me,\u2028You\n",
+  ],
+  [
+    "U+2028 in the ignored data of a task",
+    "journey\nA: 5: Me: x\u2028y\n",
+    "journey\n  A: 5: Me: x\u2028y\n",
+  ],
+  [
+    "U+2028 after a title keyword",
+    "journey\ntitle\u2028T\n",
+    "journey\n  title\u2028T\n",
+  ],
+  [
+    "U+2029 inside a title",
+    "journey\ntitle a\u2029b\n",
+    "journey\n  title a\u2029b\n",
+  ],
+  [
+    "U+2028 at the end of a section",
+    "journey\nsection S\u2028\nA: 5\n",
+    "journey\n  section S\u2028\n    A: 5\n",
+  ],
+  [
+    "U+2028 after the colon of accTitle",
+    "journey\naccTitle:\u2028T\n",
+    "journey\n  accTitle:\u2028T\n",
+  ],
+]
+
+/**
+ * Each example is a user journey with a whitespace character other than a
+ * space and a tab, which no file of this package may hold: U+00A0 and U+FEFF.
+ * Where the lexer reads one whitespace character, a space stands for it; a
+ * description keeps it before its colon (docs/journey.md, Whitespace
+ * characters).
+ */
+const journeyWhitespaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+00A0 after a title keyword",
+    "journey\ntitle\u00a0T\n",
+    "journey\n  title T\n",
+  ],
+  [
+    "U+00A0 around the score of a task",
+    "journey\nA:\u00a05\u00a0\n",
+    "journey\n  A: 5\n",
+  ],
+  [
+    "U+00A0 around the people of a task",
+    "journey\nA: 3:\u00a0Me\u00a0,\u00a0You\n",
+    "journey\n  A: 3: Me, You\n",
+  ],
+  [
+    "U+00A0 before the second colon of a task",
+    "journey\nA: 5\u00a0\u00a0: Me\n",
+    "journey\n  A: 5: Me\n",
+  ],
+  [
+    "U+00A0 before the colon of a task",
+    "journey\nA\u00a0: 5\n",
+    "journey\n  A\u00a0: 5\n",
+  ],
+  [
+    "U+00A0 between a description block and a task",
+    "journey\naccDescr { d }\u00a0A: 5\n",
+    "journey\n  accDescr { d }\n  A: 5\n",
+  ],
+  [
+    "U+FEFF before a task",
+    "journey\ntitle T\n\ufeffA: 5\n",
+    "journey\n  title T\n  A: 5\n",
+  ],
+]
+
+/**
  * Checks that formatting an example gives its formatted form, that
  * formatting again changes nothing, and that the Db that the tree denotes is
  * the same for both texts.
@@ -663,4 +781,22 @@ describe("a Gantt chart with a whitespace character that no fixture file holds",
   it.each(ganttWhitespaceExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)
   })
+})
+
+describe("a user journey with a line separator", () => {
+  it.each(journeyLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a user journey with a whitespace character that no fixture file holds", () => {
+  it.each(journeyWhitespaceExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
 })

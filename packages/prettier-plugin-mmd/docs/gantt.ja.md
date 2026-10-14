@@ -18,10 +18,17 @@ fixture の置き方と確かめ方は、
 
 ### インデント
 
-ヘッダーの後の文は、ヘッダーより 1 段深く置きます。
-Gantt 図には文のブロックがないので、
-`section` と、その後のタスク、click 文、設定も、同じ段に置きます。
-[fixture: indentation/sections-and-tasks-flat]
+ヘッダーの後の文は、ヘッダーより 1 段深く置き、
+`section` の後の文は、次の `section` まで、さらに 1 段深く置きます。
+タスク、click 文、設定など、どの文も同じです。
+`section` 自体は最初の段です。
+Gantt 図の木は平らで、文のブロックがないので、
+文の段は、ほかの文の中での位置で決まります。
+[fixture: indentation/sections-and-tasks-nested]
+[fixture: indentation/statements-before-the-first-section]
+[fixture: indentation/every-statement-under-a-section]
+[fixture: indentation/consecutive-sections]
+[fixture: indentation/click-statement-over-lines-under-a-section]
 1 段は Prettier の `useTabs` と `tabWidth` の指定どおりで、既定は空白 2 つです。
 [fixture: indentation/tab-width-4]
 [fixture: indentation/use-tabs]
@@ -31,10 +38,12 @@ Gantt 図には文のブロックがないので、
 ヘッダーは、前に空白が書かれていても 1 桁目に置きます。
 [fixture: indentation/header-leading-whitespace]
 書かれたまま残すテキスト（`accDescr` ブロックの行など）は、
-行ごとの桁を保ちます（[複数行の値](#複数行の値)を参照）。
+行ごとの桁を保ち、ブロックを閉じる `}` は文と同じ段に置きます
+（[複数行の値](#複数行の値)を参照）。
+[fixture: indentation/description-block-under-a-section]
 
 入力
-([indentation/sections-and-tasks-flat-input.mmd](../tests/fixtures/gantt/indentation/sections-and-tasks-flat-input.mmd)):
+([indentation/sections-and-tasks-nested-input.mmd](../tests/fixtures/gantt/indentation/sections-and-tasks-nested-input.mmd)):
 
 ```mmd
 gantt
@@ -47,16 +56,16 @@ section Two
 ```
 
 出力
-([indentation/sections-and-tasks-flat-output.mmd](../tests/fixtures/gantt/indentation/sections-and-tasks-flat-output.mmd)):
+([indentation/sections-and-tasks-nested-output.mmd](../tests/fixtures/gantt/indentation/sections-and-tasks-nested-output.mmd)):
 
 ```mmd
 gantt
   title T
   section One
-  a :a1, 2024-01-01, 2d
-  click a1 href "u"
+    a :a1, 2024-01-01, 2d
+    click a1 href "u"
   section Two
-  b :2d
+    b :2d
 ```
 
 入力
@@ -76,7 +85,7 @@ a : 1d
 gantt
     title T
     section S
-    a :1d
+        a :1d
 ```
 
 ### 1 行に 1 文
@@ -227,6 +236,8 @@ gantt
 [fixture: blank-lines/between-statements-kept-as-one]
 コメント行の周りの空行も同じに扱います。
 [fixture: blank-lines/around-comment-lines]
+`section` の周りの空行は、1 つにして、隣の行と同じ段で残します。
+[fixture: blank-lines/around-sections]
 
 入力
 ([blank-lines/collapsed-input.mmd](../tests/fixtures/gantt/blank-lines/collapsed-input.mmd)):
@@ -252,7 +263,7 @@ gantt
 
   section S
 
-  a :1d
+    a :1d
 ```
 
 入力
@@ -676,14 +687,14 @@ gantt
   TodayMarker off
   TITLE T
   Section S
-  EXCLUDES weekends
-  Includes monday
-  INCLUSIVEENDDATES
-  WEEKDAY Monday
-  WEEKEND FRIDAY
-  ACCTITLE: T
-  AccDescr: d
-  ACCDESCR { d }
+    EXCLUDES weekends
+    Includes monday
+    INCLUSIVEENDDATES
+    WEEKDAY Monday
+    WEEKEND FRIDAY
+    ACCTITLE: T
+    AccDescr: d
+    ACCDESCR { d }
 ```
 
 ### click 文
@@ -949,9 +960,9 @@ weekends
 gantt
   title T
   section S
-  dateFormat YYYY
-  weekday monday
-  excludes weekends
+    dateFormat YYYY
+    weekday monday
+    excludes weekends
 ```
 
 入力
@@ -1072,10 +1083,49 @@ gantt
 [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept]
 [fixture: comments/bare-percent-lines]
+コメント行は、その次の文と同じ段に置きます。
+`section` の前のコメントは `section` の段、
+タスクの前のコメントはタスクの段、
+テキストの末尾のコメントは最後の文の段です。
+[fixture: comments/levels-around-sections]
+[fixture: directives/levels-around-sections]
 ヘッダーより前のコメント行は 1 桁目に置き、
 テキストの末尾のコメント行は、改行を足して自分の行に残します。
 [fixture: comments/before-header]
 [fixture: comments/last-in-body]
+
+`%%{` で始まりディレクティブでないコメント行は、段によらず、
+空白 1 文字（`useTabs` ならタブ 1 つ）の後に置きます。
+そのような行の直前にある、印が `%` のコメント行も同じです。
+mermaid.js は、その `%%{` を、前の空白が 1 文字か、
+改行の後に 1 文字のときだけ読み、
+それより多いときや、空行の後で空白がないときは拒否します
+（既知の差異 `percent-brace-after-unit`）。
+また、テキストを読む前にディレクティブを取り除くので、
+ディレクティブだけの行の空白も `%%{` の前の空白に数えます。
+そのため、その前のディレクティブだけの行は、間に空行があってもなくても、
+1 桁目に置き、
+`%%{` 自体の行では、その前のディレクティブと、その間の空白も数えて、
+コメントの前の空白が全体で 1 文字になるようにします。
+間に空白がなければ、行頭に空白 1 つ（`useTabs` ならタブ 1 つ）を置きます。
+また、印が `%` のコメントが直接に読まれると、後ろの改行を取るので、
+その後ろの `%%{` も直接に読まれます（既知の差異 `comment-takes-line-break`）。
+[fixture: comments/percent-brace-line-after-one-whitespace]
+[fixture: comments/percent-brace-line-after-blank-line]
+[fixture: comments/percent-brace-line-under-a-section]
+[fixture: comments/percent-brace-line-with-tabs]
+[fixture: comments/percent-brace-line-at-the-end]
+[fixture: comments/percent-comment-then-percent-brace-line]
+[fixture: comments/percent-comment-line-not-before-percent-brace]
+[fixture: comments/percent-brace-line-after-directive-line]
+[fixture: comments/percent-brace-line-after-directive-line-at-the-start]
+[fixture: comments/percent-brace-line-after-two-directive-lines-under-a-section]
+[fixture: comments/percent-brace-line-after-directive-over-lines]
+[fixture: comments/percent-brace-line-after-directive-and-blank-lines]
+[fixture: comments/percent-brace-line-after-comment-and-directive-lines]
+[fixture: comments/percent-brace-line-after-directive-on-its-line]
+[fixture: comments/percent-brace-line-after-directive-touching]
+[fixture: comments/percent-brace-line-after-directive-with-tabs]
 
 文やヘッダーの後ろのコメントは、書かれたとおり行に残します。
 空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
@@ -1088,6 +1138,7 @@ gantt
 [fixture: comments/after-description-block]
 [fixture: comments/after-click]
 [fixture: comments/after-directive-kept]
+[fixture: comments/after-statement-under-a-section]
 [fixture: comments/then-statement-on-next-line]
 そのような文の次の文は、次の行に置きます。
 

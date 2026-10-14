@@ -30,6 +30,13 @@ export interface Line {
    * comes before it also where `blankBefore` is false.
    */
   readonly spaceLineBefore?: boolean
+  /**
+   * Indentation added to the line after the one of its block, for a line of
+   * a statement that stands deeper than the others of the flat body that it
+   * belongs to (see `BlockRules.extraIndentationOf`). A line that keeps its
+   * written indentation has none.
+   */
+  readonly extraIndentation?: string
 }
 
 /**
@@ -57,9 +64,16 @@ export function joinLines(lines: readonly Line[], indentation: string): Doc {
  */
 export function lineBreakBetween(
   previous: Line,
-  next: Pick<Line, "blankBefore" | "writtenIndentation" | "spaceLineBefore">,
+  next: Pick<
+    Line,
+    | "blankBefore"
+    | "writtenIndentation"
+    | "spaceLineBefore"
+    | "extraIndentation"
+  >,
   indentation: string,
 ): Doc {
+  const deeper = next.extraIndentation ?? ""
   if (next.spaceLineBefore === true) {
     // Literal lines keep the end of the previous line and the space of the
     // line between, and start the next line at the first column.
@@ -67,7 +81,7 @@ export function lineBreakBetween(
       literalline,
       " ",
       literalline,
-      next.writtenIndentation ?? indentation,
+      next.writtenIndentation ?? indentation + deeper,
     ]
   }
   if (next.writtenIndentation !== undefined) {
@@ -79,9 +93,11 @@ export function lineBreakBetween(
     return [lineBreak, next.writtenIndentation]
   }
   if (!previous.endsWithWhitespace) {
-    return next.blankBefore ? [hardline, hardline] : hardline
+    return next.blankBefore ? [hardline, hardline, deeper] : [hardline, deeper]
   }
-  return next.blankBefore ? [literalline, hardline] : [literalline, indentation]
+  return next.blankBefore
+    ? [literalline, hardline, deeper]
+    : [literalline, indentation + deeper]
 }
 
 /**

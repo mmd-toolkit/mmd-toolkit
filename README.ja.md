@@ -12,7 +12,8 @@ mermaid-js とは無関係です。
 `mmd` は Mermaid の図のテキストに使われる拡張子 `.mmd` を指します。
 同じ略称を使う MultiMarkdown や MikuMikuDance とは関係ありません。
 
-いま対応している図種は flowchart、sequence、class、state、ER、Gantt で、
+いま対応している図種は
+flowchart、sequence、class、state、ER、Gantt、journey で、
 ほかの図種は順に対応します。
 フォーマッター、リンター、パーサーは、まだ npm に公開していません。
 mermaid.js のすべての図種に対応してから公開します。

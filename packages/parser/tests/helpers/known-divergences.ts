@@ -19,6 +19,7 @@ import { exceedsMaxEdges } from "@mmd-toolkit/tests"
 import {
   commentsAfterMatchStarts,
   commentsAfterUnits,
+  doublePercentsAfterUnitStarts,
   percentBracesReachedDirectly,
   percentCommentsReachedDirectly,
   percentsAfterUnitStarts,
@@ -264,12 +265,15 @@ function rejectsForEmptyForm(
 /**
  * known-divergences/comment-takes-character.md: whether the sequence
  * text has a `%%` where the two rules of mermaid.js that the divergence
- * names read otherwise than this specification, or the Gantt text a `%`
- * right after the first character of a unit. The divergence goes both
- * ways.
+ * names read otherwise than this specification, the Gantt text a `%`
+ * right after the first character of a unit, or the journey text a `%%`
+ * there. The divergence goes both ways.
  */
 function commentTakesCharacter(text: string): boolean {
-  const places = commentsAfterMatchStarts(text) ?? percentsAfterUnitStarts(text)
+  const places =
+    commentsAfterMatchStarts(text) ??
+    percentsAfterUnitStarts(text) ??
+    doublePercentsAfterUnitStarts(text)
   return (places?.length ?? 0) > 0
 }
 
@@ -360,7 +364,8 @@ export function oneWayDivergencesIn(
  * - `tokenless-empty-forms` when the parser rejects the text and the text
  *   has an empty form that mermaid.js reads nothing for;
  * - `comment-takes-character` when a sequence text has a `%%` that
- *   mermaid.js would take the character before;
+ *   mermaid.js would take the character before, a Gantt text such a `%`,
+ *   or a journey text such a `%%`;
  * - `comment-takes-line-break` when a class text has a diagram comment
  *   after a unit on its line, whose line feed mermaid.js would take, or a
  *   Gantt text a `%` comment that mermaid.js reaches directly;

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: inside task data, `%%` is a character: the score part `5 %% c`, which is no number."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a",
+        "people": [],
+        "score": "NaN"
+      }
+    ]
+  }
+}

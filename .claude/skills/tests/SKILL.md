@@ -208,8 +208,8 @@ written here after the tree document of the specification
   definition). One detector can stand for several keywords: `classDiagram` and
   `classDiagram-v2` are both detected as `classDiagram`. The diagram type's
   fixtures go in one directory, whatever ids it has.
-- A clone of mermaid.js at the tag of the pinned version (outside the
-  repository; how to make it is in `tools/README.md`).
+- A clone of mermaid.js at the tag of the pinned version (in `.work/mermaid`,
+  which `.gitignore` lists; how to make it is in `tools/README.md`).
 
 ### 5.2 The normalizer
 

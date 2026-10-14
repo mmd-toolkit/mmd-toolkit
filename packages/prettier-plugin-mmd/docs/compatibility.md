@@ -651,6 +651,53 @@ See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
 - A line that holds a `;`: its statements stay on it, since the line rule of
   mermaid.js reads the text of the line. [fixture:
   gantt/statements-one-per-line/ignored-semicolon-line-kept]
+- A comment line that starts with `%%{` without being a directive, and a comment
+  line with the mark `%` right before it, stand after one whitespace character.
+  mermaid.js reads that `%%{` only after one whitespace character, or one after
+  the line feeds, and rejects the text with more, or with none after an empty
+  line (known divergence
+  [`percent-brace-after-unit`](../../spec/docs/known-divergences/percent-brace-after-unit.md)),
+  and a `%` comment that it reaches directly takes the line feeds after it
+  (known divergence
+  [`comment-takes-line-break`](../../spec/docs/known-divergences/comment-takes-line-break.md)).
+  mermaid.js removes the directives before it reads the text, so the lines of
+  only a directive before such a `%%{`, with empty lines between them or not,
+  stand at the first column, and the spaces between the directives on the line
+  of the `%%{` count as its whitespace. Where an input is read in the same way
+  by mermaid.js and by the specification, as a `%%{` line at the first column or
+  after one space or one tab, the formatter prints a form that both read in the
+  same way, and not one that falls under these divergences. [fixture:
+  gantt/comments/percent-brace-line-after-blank-line] [fixture:
+  gantt/comments/percent-comment-then-percent-brace-line]
+
+## User journey lines that the whitespace decides
+
+mermaid.js keeps the whitespace in some values of a user journey and reads some
+lines by the whitespace on them, so formatting keeps them as they are written.
+See [Task data](./journey.md#task-data) and
+[Titles and sections](./journey.md#titles-and-sections).
+
+- The whitespace at the ends of the value of `title` and `section`, and between
+  the text of a task description and its colon. The Db keeps it, so `title  T`
+  with two spaces and `Make tea  : 5` with padding are not the same as their
+  trimmed forms, and the padding that aligns the colons stays. [fixture:
+  journey/titles-and-sections/value-whitespace-kept] [fixture:
+  journey/task-data/description-padding-kept]
+- The whitespace before a `#` after a `title` or a `section`: it is part of the
+  value, while after the data of a task it is not. [fixture:
+  journey/titles-and-sections/whitespace-before-hash-is-the-value] [fixture:
+  journey/task-data/hash-ends-the-data]
+- The whitespace inside a person, and the number of the people: `Me  Two` is one
+  person as written, and `a,` has an empty person that `a` does not. [fixture:
+  journey/task-data/people-inner-whitespace-kept] [fixture:
+  journey/task-data/empty-people]
+- The whitespace after the colon of a task whose data is whitespace only.
+  mermaid.js needs a character of the data after the colon, so `A:` is rejected
+  and `A: ` is a task, and one whitespace character stays. [fixture:
+  journey/task-data/whitespace-only-data]
+- A line that holds a `;`: its statements stay on it, since the line rule of
+  mermaid.js reads the text of the line. [fixture:
+  journey/statements-one-per-line/ignored-semicolon-line-kept]
 
 ## A comment line after U+2028 or U+2029
 

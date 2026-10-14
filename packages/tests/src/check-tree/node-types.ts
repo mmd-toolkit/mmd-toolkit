@@ -27,6 +27,8 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "ErLiteral",
   "ErIgnoredText",
   "GanttLiteral",
+  "JourneyLiteral",
+  "JourneyIgnoredText",
 ])
 
 /**
@@ -163,6 +165,13 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "GanttAccTitleStatement",
   "GanttAccDescrStatement",
   "GanttAccDescrBlockStatement",
+  "JourneyDiagram",
+  "JourneyTaskStatement",
+  "JourneyTitleStatement",
+  "JourneySectionStatement",
+  "JourneyAccTitleStatement",
+  "JourneyAccDescrStatement",
+  "JourneyAccDescrBlockStatement",
 ])
 
 /** The node types of the data blocks, whose delimiters lie in their range. */

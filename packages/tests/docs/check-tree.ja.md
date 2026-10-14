@@ -71,7 +71,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
   flowchart と ER 図が印 `%%` を持つのは、
   ヘッダーの前の `%%` だけの行のコメントで、どの図種もそうです。
   それ以外のコメントには持ちません。
-  gantt 図の図のコメントは、印 `%%` と `%` を持ちます。
+  gantt 図の図のコメントは、印 `%%` と `%` を持ち、
+  journey 図の図のコメントは、印 `#`、`%%`、`%` を持ちます。
   印のない断片は、コメント領域に続きます
   （parser/docs/tokens.md の Comment、
   [common.md](../../spec/docs/common.md#comment-lines) の Comment lines）。
@@ -122,6 +123,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     表にテキストを持つことも求めます。
     gantt 図では、行がヘッダーと `day` を単位として示し、
     それは `gantt` と、weekday 文と weekend 文の 7 つの曜日です。
+    journey 図では、行がヘッダー（`journey`）と、
+    文を始める語（`title`、`section`、`accTitle`、`accDescr`）を示します。
   - 矢印のトークン以外の `Punctuator` のテキストは、その図種が持つものです
     （`src/check-tree/punctuators.ts`。各図種の Tokens の表の
     `Punctuator` の行の写しです）。
@@ -238,6 +241,27 @@ const problems: TreeProblem[] = checkTree(text, tree)
     （行の終わり。文が述べる所では `#` か `;` の前）。
     アクセシビリティ文の値の始まりと終わり
     （両端の空白を含みません）。
+  - journey: ノードが自分で書くトークン、その種類、文の範囲、
+    title と section のテキスト、アクセシビリティ文の値の検査は、
+    gantt 図と同じコードです（`src/check-tree/statement-checks.ts`）。
+    トークンの種類は parser/docs/tokens/journey.md のとおりです。
+    `:`、`,`、`{`、`}` が `Punctuator`、ヘッダーとキーワードが `Keyword`、
+    すべての値が `RawText` です。
+    タスクが書くのは、コロンと、
+    人がいるなら 2 つ目のコロンとその間のコンマです。
+    スコアと人は、コロンとコンマの間の区間です
+    （スコア部分は最初のコロンから 2 つ目のコロンまたはデータの終わりまで、
+    人の部分は 2 つ目のコロンから 3 つ目のコロンまたは終わりまで）。
+    人はコンマの数より 1 人多く、それぞれ区間を満たし、
+    空白だけの区間では null で、両端の空白を含みません。
+    スコアに `:` はなく、人に `,` と `:` はありません。
+    `textAfter` は 3 つ目のコロンで始まり、空白で終わらず、
+    2 つ目のコロンがあるときだけあります。
+    タスクの description はコロンまで続き（コロンの前の空白を含みます）、
+    空白で始まらず `:` を含みません。
+    section の名前に `:` はありません。
+    title と section のテキストは、キーワードの後ろの空白 1 字の次から始まり、
+    行の終わりか `#` の前で終わります。
 
 範囲の**書かれたテキスト**は、ディレクティブ、コメント領域、
 行の規則が無視する `;` を除いたソースです（ast.md の Nodes）。
@@ -343,8 +367,11 @@ null になりうる欄は、ソースがそれを書く所で null にし、
 その中のすべてのノードの型が、値のノードか否かに分けられていることを確かめます。
 表のすべてのノードの型に記録した木を求めるテストは、
 コーパスのすべての図種の記録した木を読みます。
-`check-tree-gantt.test.ts` は、記録した gantt の木を壊してトークンの種類と
-範囲を調べ、それらの文を 1 つずつ含む最小の木を手作りします。
+`check-tree-gantt.test.ts` と `check-tree-journey.test.ts` は、
+記録した木を壊してトークンの種類と範囲を調べ、
+その図種の文を 1 つずつ含む最小の木を手作りします
+（手作りの木とその壊し方は `tests/check-tree-built.ts` が作ります。
+journey のファイルは 14 本作ります）。
 `check-tree-node-ranges.test.ts` は、click 文の子の欄の順を
 手作りの木で調べます。
 `tests/check-tree-fields.test.ts` は、上の段落のテストです。

@@ -1,0 +1,21 @@
+{
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A b=\"c\">d",
+        "people": [],
+        "score": 5
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

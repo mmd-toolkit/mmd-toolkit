@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Tasks: each person is read without the whitespace at its ends, U+00A0 and U+2028 included."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [
+          "Me",
+          "You"
+        ],
+        "score": 5
+      }
+    ]
+  }
+}

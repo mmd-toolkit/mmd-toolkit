@@ -279,16 +279,28 @@ mermaid.js がディレクティブを除いた後のテキストを読むのと
 この図の単位と次のように出会います。
 単独の CR は行終端で、改行として読まれます
 （[行終端](../common.ja.md#行終端) を参照）。
-ヘッダー、タイトル、タスクは単独の CR の間でも改行の間と同じに読まれ、
+ヘッダー、タイトル、section、タスクは、
+単独の CR の間でも CRLF の改行の間でも、改行の間と同じに読まれ、
 click の id の後の単独の CR は、改行と同じく click の文脈を出ます。
 [fixture: gantt/header-cr-only] [fixture: gantt/lex-title-cr-value] [fixture:
+gantt/lex-section-cr-value] [fixture: gantt/header-crlf] [fixture:
+gantt/lex-title-crlf-value] [fixture: gantt/lex-section-crlf-value] [fixture:
 gantt/tokens-cr-only-click-parts]
 2 つの単位の間の閉じたディレクティブは何もないものとして読まれ、
 その周りの空白は文脈の規則で読まれます。
-タスクの行の終わりの閉じたディレクティブは、データの後にあっても
-データにくっついていても何も終えず、次の行はいつもどおり読まれます。
+タスク、タイトル、section の行の終わりの閉じたディレクティブは、
+テキストの後にあってもテキストにくっついていても何も終えず、
+次の行はいつもどおり読まれます。
+その前の空白はタイトルのテキストや section のテキストの文字なので、
+`title T %%{init: {}}%%` はタイトル `T `、
+`section S %%{init: {}}%%` は section `S ` を持ち、
+テキストにくっつけると `T` と `S` を持ちます。
 [fixture: gantt/lex-directive-at-end-of-data-line] [fixture:
-gantt/lex-directive-glued-at-end-of-data]
+gantt/lex-directive-glued-at-end-of-data] [fixture:
+gantt/lex-directive-at-end-of-title-line] [fixture:
+gantt/lex-directive-glued-at-end-of-title] [fixture:
+gantt/lex-directive-at-end-of-section-line] [fixture:
+gantt/lex-directive-glued-at-end-of-section]
 閉じていないディレクティブはテキストの残りを取ります
 （[ディレクティブの位置](../common.ja.md#ディレクティブの位置)
 を参照）。
@@ -869,13 +881,37 @@ click の文脈を出る 1 つの空白文字との間の空白を取ります�
 ちょうど 1 文字ではないとき、`%` には直接たどり着きます。
 その空白が 1 文字のとき、または先頭の改行を除いてちょうど 1 文字が残るときは、
 直接たどり着きません。
+その空白は、字句解析器が読む、ディレクティブを除いたテキストの空白なので、
+ディレクティブだけの行はその改行を残します。
+`title T`、ディレクティブの行、`%%{ }%%` の行では、
+空行の後と同じく `%` の前に改行が 2 つあり、mermaid.js は入力を拒否します。
+`%%{ }%%` の前に空白が 1 つあればどちらでもコメントで、
+改行を 3 つ残すディレクティブの 2 行や、ディレクティブの行と空行の後も同じです。
+ディレクティブの前に空白が 1 つか 2 つあるとき、
+または `%%{ }%%` の前に空白が 2 つあるときは、mermaid.js は拒否します。
+`%%{ }%%` と同じ行のディレクティブや、
+前の行の終わりにくっついたディレクティブは改行を 1 つ残し、
+どちらでもコメントです。
+[fixture: gantt/div-percent-brace-after-directive-line]
+[fixture: gantt/lex-percent-brace-after-directive-line-space]
+[fixture: gantt/div-percent-brace-after-directive-line-two-spaces]
+[fixture: gantt/div-percent-brace-after-indented-directive-line]
+[fixture: gantt/div-percent-brace-after-directive-line-indented-two]
+[fixture: gantt/div-percent-brace-after-indented-directive-line-space]
+[fixture: gantt/div-percent-brace-after-two-directive-lines]
+[fixture: gantt/lex-percent-brace-after-two-directive-lines-space]
+[fixture: gantt/div-percent-brace-after-directive-line-blank-line]
+[fixture: gantt/lex-percent-brace-after-directive-line-blank-line-space]
+[fixture: gantt/lex-percent-brace-after-directive-same-line]
+[fixture: gantt/lex-percent-brace-after-unit-glued-directive]
 そのため `gantt%%{ }%%`、`inclusiveEndDates%%{ }%%`、`href "u"%%{ }%%`、
 `accDescr { d }%%{ }%%`、`accDescr {}%%{ }%%`、`gantt%%{}`、`gantt%%{`、
-改行と空白 2 つの後、改行 2 つの後、空白と改行の後、改行と空白と改行の後の
+改行と空白 2 つかタブ 2 つの後、同じ行の単位と空白 2 つかタブ 2 つの後、
+改行 2 つの後、空白と改行の後、改行と空白と改行の後の
 `%%{ }%%`、ヘッダーや空行の直後の `%` のコメントの次の行の `%%{ }%%` は、
 ここではコメントで、mermaid.js は拒否します。
 一方、改行 1 つの後、改行と空白 1 つかタブの後、改行 2 つと空白 1 つの後、
-単位と空白 1 つの後の `%%{ }%%` はどちらでもコメントです。
+単位と空白 1 つかタブ 1 つの後の `%%{ }%%` はどちらでもコメントです。
 mermaid.js が直接たどり着かなかったコメントの後も同じです。
 `inclusiveEndDates %c`、改行、`%%{ }%%` はどちらでもコメントで、
 間に空行があるとき、または `%%c` と改行と空白 2 つのときは、
@@ -895,7 +931,15 @@ gantt/div-percent-brace-glued-empty-after-header] [fixture:
 gantt/div-percent-brace-open-glued-after-header] [fixture:
 gantt/div-percent-brace-after-two-spaces] [fixture:
 gantt/div-percent-brace-after-blank-line] [fixture:
-gantt/div-percent-brace-after-space-line-feed] [fixture:
+gantt/div-percent-brace-after-space-line-feed]
+[fixture: gantt/div-percent-brace-after-line-feed-two-tabs]
+[fixture: gantt/div-percent-brace-after-unit-two-spaces]
+[fixture: gantt/div-percent-brace-after-unit-two-tabs]
+[fixture: gantt/lex-percent-brace-line-after-task]
+[fixture: gantt/lex-percent-brace-after-line-feed-space]
+[fixture: gantt/lex-percent-brace-after-tab]
+[fixture: gantt/lex-percent-brace-after-unit-space]
+[fixture: gantt/lex-percent-brace-after-unit-tab] [fixture:
 gantt/div-percent-brace-after-glued-percent-comment] [fixture:
 gantt/div-percent-brace-after-percent-comment-blank-line]
 単位の始まる位置にない `%` は、規則 25 と規則 26 の言うとおり、
@@ -1587,7 +1631,8 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
   gantt/div-percent-brace-glued-after-string] [fixture:
   gantt/div-percent-brace-after-two-spaces] [fixture:
   gantt/div-percent-brace-after-blank-line] [fixture:
-  gantt/div-percent-brace-after-glued-percent-comment]
+  gantt/div-percent-brace-after-glued-percent-comment] [fixture:
+  gantt/div-percent-brace-after-unit-two-spaces]
 - **[`c4-keyword-anywhere`](../known-divergences/c4-keyword-anywhere.ja.md)。**
   ヘッダーの後のどこか、タスクのテキスト、タイトル、section、タスクのデータの
   `C4Container`、`C4Component`、`C4Dynamic`、`C4Deployment` は、

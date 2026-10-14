@@ -81,4 +81,29 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [state-no-unclosed-description-block](./state-no-unclosed-description-block.md) | Disallow an `accDescr {` block without its closing `}`.                        | ✅  |     |     |
 | [state-no-undef](./state-no-undef.md)                                           | Disallow a `style`, `class`, `click`, or `note` statement that names no state. | ✅  |     |     |
 
+## er
+
+| Rule                                                                      | Description                                                                   | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | --- | --- | --- |
+| [er-no-duplicate-description](./er-no-duplicate-description.md)           | Disallow an `accDescr` statement that sets the description again.             | ✅  |     |     |
+| [er-no-duplicate-title](./er-no-duplicate-title.md)                       | Disallow an `accTitle` statement that sets the title again.                   | ✅  |     |     |
+| [er-no-empty-description-block](./er-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                       | ✅  |     |     |
+| [er-no-ignored-text](./er-no-ignored-text.md)                             | Disallow text that mermaid.js does not read.                                  | ✅  |     |     |
+| [er-no-redefined-entity](./er-no-redefined-entity.md)                     | Disallow an entity statement that gives an entity a second alias.             | ✅  |     |     |
+| [er-no-unclosed-description-block](./er-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for something else closes.  | ✅  |     |     |
+| [er-no-undef](./er-no-undef.md)                                           | Disallow a `style` or `class` statement that names no entity and no subgraph. | ✅  |     |     |
+
+## gantt
+
+| Rule                                                                      | Description                                                                     | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | --- | --- | --- |
+| [gantt-no-duplicate-description](./gantt-no-duplicate-description.md)     | Disallow an `accDescr` statement that sets the description again.               | ✅  |     |     |
+| [gantt-no-duplicate-id](./gantt-no-duplicate-id.md)                       | Disallow a task id that an earlier task already has.                            | ✅  |     |     |
+| [gantt-no-duplicate-setting](./gantt-no-duplicate-setting.md)             | Disallow a setting statement that sets its setting again.                       | ✅  |     |     |
+| [gantt-no-duplicate-title](./gantt-no-duplicate-title.md)                 | Disallow a `title` or `accTitle` statement that sets its title again.           | ✅  |     |     |
+| [gantt-no-empty-description-block](./gantt-no-empty-description-block.md) | Disallow an `accDescr` block that holds no description.                         | ✅  |     |     |
+| [gantt-no-undef](./gantt-no-undef.md)                                     | Disallow a task id in `click`, `after`, or `until` that is the id of no task.   | ✅  |     |     |
+| [gantt-no-unknown-exclude](./gantt-no-unknown-exclude.md)                 | Disallow a word in `excludes` that is neither `weekends` nor the name of a day. | ✅  |     |     |
+| [gantt-no-unread-tag](./gantt-no-unread-tag.md)                           | Disallow a tag in the data of a task that mermaid.js does not read as a tag.    | ✅  |     |     |
+
 <!-- end auto-generated rules list -->

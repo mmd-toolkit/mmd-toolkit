@@ -54,6 +54,11 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
     "erDiagram\n  A ||--o{ B : x\n  subgraph S\n    C {\n      int c\n    }\n  end\n  %%{init: {}}%%\n",
   ],
   [
+    "journey",
+    ["journey", "title T", "section S", "A: 5: Me", "%%{init: {}}%%"],
+    "journey\n  title T\n  section S\n    A: 5: Me\n    %%{init: {}}%%\n",
+  ],
+  [
     "gantt",
     [
       "gantt",
@@ -62,7 +67,7 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
       "a : a1, 2024-01-01, 1d",
       "%%{init: {}}%%",
     ],
-    "gantt\n  title T\n  section S\n  a :a1, 2024-01-01, 1d\n  %%{init: {}}%%\n",
+    "gantt\n  title T\n  section S\n    a :a1, 2024-01-01, 1d\n    %%{init: {}}%%\n",
   ],
 ]
 

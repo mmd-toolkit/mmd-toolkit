@@ -234,6 +234,16 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     spec: IGNORED_TEXT,
   },
   GanttLiteral: { field: "value", kind: "written-text", spec: WRITTEN_TEXT },
+  JourneyLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its written text (ast/journey.md, JourneyLiteral).",
+  },
+  JourneyIgnoredText: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its written text, from the third colon of the data to its end, without the whitespace at its end (ast/journey.md, JourneyIgnoredText).",
+  },
 }
 
 /** The delimiters around the content of the string that `node` starts with; none if it starts with none. */

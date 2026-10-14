@@ -916,7 +916,7 @@ class FlowchartDbBuilder {
     const directions = statement.body.filter(
       (inner) => inner.type === "FlowchartDirectionStatement",
     )
-    const lastDirection = directions[directions.length - 1]
+    const lastDirection = directions.at(-1)
     if (lastDirection !== undefined) {
       subgraph.dir = lastDirection.direction
     } else if (this.inheritDir) {

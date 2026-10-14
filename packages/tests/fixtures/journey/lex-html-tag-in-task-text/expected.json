@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Known divergences: a tag that starts in the text is read in the same way by both: the task `A <a b='c'>d`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A <a b='c'>d",
+        "people": [],
+        "score": 5
+      }
+    ]
+  }
+}
