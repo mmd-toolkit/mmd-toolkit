@@ -254,6 +254,10 @@ Running tests; this is what belongs to this package):
     `markdown-class` and `value-nodes`.
   - `state*.ts`: `format` and `corpus` with `-t state`; and, without `-t`,
     `line-separators`, `markdown-state`, and `value-nodes`.
+  - `er*.ts`: `format` and `corpus` with `-t er`; and, without `-t`,
+    `line-separators`, `markdown-er`, and `value-nodes`.
+  - `gantt*.ts`: `format` and `corpus` with `-t gantt`; and, without `-t`,
+    `line-separators`, `markdown-gantt`, and `value-nodes`.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:
     `dispatch`, `failure`, `markdown`, `plugin`, and the files of each diagram
     type.

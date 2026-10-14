@@ -120,8 +120,7 @@ mermaid.js が読まないテキストのノード、つまり
 [ClassIgnoredText](./ast/class.ja.md#classignoredtext)、
 [StateIgnoredText](./ast/state.ja.md#stateignoredtext)、
 [StateIgnoredStatement](./ast/state.ja.md#stateignoredstatement)、
-[SequenceIgnoredStatement](./ast/sequence.ja.md#sequenceignoredstatement)、
-[GanttIgnoredStatement](./ast/gantt.ja.md#ganttignoredstatement) は、
+[SequenceIgnoredStatement](./ast/sequence.ja.md#sequenceignoredstatement) は、
 書き手がそこに書いたものを、書かれたとおりに見せます。
 その書かれたテキストは値の書かれたテキストで、コメントも除きます。
 単位の間の空白と行終端はその一部で、コメントはその一部ではありません。

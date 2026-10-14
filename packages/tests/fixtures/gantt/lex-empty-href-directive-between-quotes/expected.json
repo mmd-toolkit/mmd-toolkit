@@ -1,8 +1,9 @@
 {
   "source": {
     "kind": "authored",
-    "note": "gantt.md Empty hrefs and empty calls: a directive between the two quotes of an empty href lies between units, so the form is an empty href, a GanttIgnoredStatement here; mermaid.js removes the directive and reads no token; the title T."
+    "note": "gantt.md Empty hrefs and empty calls: an empty href with a directive between its quotes; rejected here, because no rule of the grammar takes an empty href or an empty call wherever it stands; mermaid.js reads no token for it and accepts the input (tokenless-empty-forms)."
   },
+  "knownDivergence": "tokenless-empty-forms",
   "accepted": true,
   "diagramType": "gantt",
   "db": {

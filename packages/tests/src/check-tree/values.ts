@@ -234,13 +234,6 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     spec: IGNORED_TEXT,
   },
   GanttLiteral: { field: "value", kind: "written-text", spec: WRITTEN_TEXT },
-  GanttIgnoredStatement: {
-    field: "value",
-    kind: "written-text",
-    gaps: true,
-    withoutComments: true,
-    spec: IGNORED_TEXT,
-  },
 }
 
 /** The delimiters around the content of the string that `node` starts with; none if it starts with none. */

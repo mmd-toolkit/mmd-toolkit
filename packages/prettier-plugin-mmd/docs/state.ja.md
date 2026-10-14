@@ -272,6 +272,10 @@ click 文の後の空の説明ブロックも同じです。
 state 図では、`;` は id の文字です。
 [fixture: statements-one-per-line/line-with-semicolon-kept]
 [fixture: statements-one-per-line/line-with-ignored-semicolon-kept]
+そのような行にある複合状態の `}` が、行の上で後ろに文を従えているときは、
+`}` を行に残します。
+単独の行に移すと、文が `;` のない行に残ってしまうからです。
+[fixture: statements-one-per-line/line-with-semicolon-closing-brace-kept]
 
 入力
 ([statements-one-per-line/split-input.mmd](../tests/fixtures/state/statements-one-per-line/split-input.mmd)):

@@ -762,83 +762,6 @@ function checkCallback(reading: Reading, node: CheckedNode, own: Own): void {
 }
 
 /**
- * Whether `value` is the written text of a GanttIgnoredStatement: `href`,
- * whitespace, and two quotes; or `call`, whitespace, `(`, whitespace only, and
- * `)`, with the keyword in any case (diagrams/gantt.md, Empty hrefs and empty
- * calls).
- */
-function isIgnoredStatementText(value: string): boolean {
-  const keyword = value.slice(0, 4).toLowerCase()
-  if (keyword !== "href" && keyword !== "call") return false
-  let at = 4
-  while (at < value.length && isWhitespace(value.charCodeAt(at))) at++
-  if (at === 4) return false
-  const rest = value.slice(at)
-  if (keyword === "href") return rest === '""'
-  return (
-    rest.startsWith("(") && rest.endsWith(")") && isBlank(rest.slice(1, -1))
-  )
-}
-
-/** Whether two lists of token types and values are the same. */
-function isEqual(
-  actual: readonly (readonly string[])[],
-  expected: readonly (readonly string[])[],
-): boolean {
-  return JSON.stringify(actual) === JSON.stringify(expected)
-}
-
-/**
- * ast/gantt.md, GanttIgnoredStatement: its value runs from the keyword to the
- * closing quote or parenthesis, an empty href or an empty call. Its tokens
- * (parser/docs/tokens/gantt.md, Tokens): the `Keyword` token of its keyword
- * and, for an empty href, the `String` token `""` (the two `StringFragment`
- * tokens `"` and `"` where a directive cuts it), or, for an empty call, the `Punctuator` tokens
- * `(` and `)`.
- */
-function checkIgnoredStatement(reading: Reading, node: CheckedNode): void {
-  const value = textOf(node)
-  const where = label(node)
-  reading.problems.expect(
-    isIgnoredStatementText(value),
-    where,
-    `the value ${JSON.stringify(value)} is no \`href\` and an empty string, or \`call\` and empty parentheses`,
-  )
-  const [keyword, ...rest] = nodeTokensIn(reading.root, node.range)
-  reading.problems.expectEqual(
-    [keyword?.type, keyword?.value.toLowerCase()],
-    ["Keyword", value.slice(0, 4).toLowerCase()],
-    where,
-    "the first token, the keyword",
-  )
-  if (value.slice(0, 4).toLowerCase() === "href") {
-    // The string `""` is one `String` token, or the two `StringFragment`
-    // tokens `"` and `"` where a directive or an ignored `;` lies between the
-    // quotes.
-    const written = rest.map((token) => [token.type, token.value])
-    reading.problems.expect(
-      isEqual(written, [["String", '""']]) ||
-        isEqual(written, [
-          ["StringFragment", '"'],
-          ["StringFragment", '"'],
-        ]),
-      where,
-      `the tokens after the keyword are not the String \`""\` or the two StringFragments \`"\`: ${JSON.stringify(written)}`,
-    )
-  } else {
-    reading.problems.expectEqual(
-      rest.map((token) => [token.type, token.value]),
-      [
-        ["Punctuator", "("],
-        ["Punctuator", ")"],
-      ],
-      where,
-      "the tokens after the keyword",
-    )
-  }
-}
-
-/**
  * Checks what the gantt documents state about a gantt tree beyond the
  * conditions of every tree (ast.md): the tokens of values lie in value nodes,
  * the tokens that a node writes itself are those of its grammar rule, and the
@@ -869,10 +792,6 @@ export function checkGanttTree(
       )
       // A text unit, which a directive may cut into several tokens.
       checkTokenKinds(reading, node, ["RawText"], "a GanttLiteral")
-      continue
-    }
-    if (node.type === "GanttIgnoredStatement") {
-      checkIgnoredStatement(reading, node)
       continue
     }
     const own = ownOf(root, node)

@@ -269,6 +269,12 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   - `state*.ts`: `format` と `corpus` を `-t state` で。
     `-t` なしで `line-separators`、`markdown-state`、
     `value-nodes`。
+  - `er*.ts`: `format` と `corpus` を `-t er` で。
+    `-t` なしで `line-separators`、`markdown-er`、
+    `value-nodes`。
+  - `gantt*.ts`: `format` と `corpus` を `-t gantt` で。
+    `-t` なしで `line-separators`、`markdown-gantt`、
+    `value-nodes`。
   - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:
     `dispatch`、`failure`、`markdown`、`plugin`と、
     図種ごとのファイル。

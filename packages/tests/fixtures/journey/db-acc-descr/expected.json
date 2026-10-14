@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The accessibility description in one line."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "The description",
+    "sections": [],
+    "tasks": []
+  }
+}

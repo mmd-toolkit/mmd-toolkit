@@ -94,6 +94,8 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/er/erDb.js": ["ErDB"],
   "diagrams/gantt/parser/gantt.jison": ["parser"],
   "diagrams/gantt/ganttDb.js": ["default"],
+  "diagrams/user-journey/parser/journey.jison": ["parser"],
+  "diagrams/user-journey/journeyDb.js": ["default"],
   "config.js": [
     "setConfig",
     "getConfig",
@@ -328,6 +330,10 @@ export async function recordSpecFile(
       parser: { parse: record, yy: anything },
     },
     "diagrams/gantt/ganttDb.js": { default: anything },
+    "diagrams/user-journey/parser/journey.jison": {
+      parser: { parse: record, yy: anything },
+    },
+    "diagrams/user-journey/journeyDb.js": { default: anything },
     "config.js": Object.fromEntries(
       (STUBBED_MODULES["config.js"] ?? []).map((name) => [name, anything]),
     ),
@@ -369,7 +375,7 @@ export async function recordSpecFile(
       const steps = [
         ...test.suites.flatMap((suite) => suite.beforeEach),
         () => test.body(...test.args),
-        ...[...test.suites].reverse().flatMap((suite) => suite.afterEach),
+        ...test.suites.toReversed().flatMap((suite) => suite.afterEach),
         () => Promise.all(handedToExpect),
       ]
       for (const step of steps) {

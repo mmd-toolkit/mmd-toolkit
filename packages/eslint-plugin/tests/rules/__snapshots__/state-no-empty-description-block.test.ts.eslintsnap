@@ -59,6 +59,21 @@ Code:
 ---
 
 
+Test: state-no-empty-description-block >> invalid >>> invalid/state/directive-only-block-keeps-description
+Filename: tests/fixtures/rules/state-no-empty-description-block/invalid/state/directive-only-block-keeps-description-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | accDescr: x
+  3 | accDescr { %%{init: {"state": {"padding": 20}}}%% }
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 | A
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
 Test: state-no-empty-description-block >> invalid >>> invalid/state/gram-click-empty-description-block-after
 Filename: tests/fixtures/rules/state-no-empty-description-block/invalid/state/gram-click-empty-description-block-after-input.mmd
 

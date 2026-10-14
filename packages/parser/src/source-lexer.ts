@@ -22,6 +22,7 @@ import {
   lookAheadFromCommentStart,
   nextCommentStart,
 } from "./line-lookahead.ts"
+import { firstIndexWhere } from "./ordered-search.ts"
 import { LineIndex } from "./positions.ts"
 import {
   lineTerminatorEnd,
@@ -158,14 +159,6 @@ type RuleAtPosition =
   | { readonly rule: "directive"; readonly directive: DirectiveMatch }
   | { readonly rule: "none" }
 
-/** The range of `ranges` that holds `offset`, if one does. */
-function rangeHolding(
-  ranges: readonly Range[],
-  offset: number,
-): Range | undefined {
-  return ranges.find((range) => range[0] <= offset && offset < range[1])
-}
-
 /**
  * common.md, Reading a source: the lexer of the rules every diagram shares.
  * It reads the source from `start`, the position after the frontmatter
@@ -287,10 +280,24 @@ export class SourceLexer {
   ): string {
     let text = ""
     let offset = start
+    // The ranges of `leftOut` come in source order and the reading goes only
+    // forward, so those that end at the offset or before it are passed over
+    // once, from the front. The first not passed is the one to look at: when
+    // it does not hold the offset, no later one does, since they start at
+    // its start or after it. Looking through all of them at every offset
+    // would take time in the product of their number and the length of the
+    // text.
+    let firstNotPassed = 0
     while (offset < end) {
       const found = this.ruleAt(offset)
-      const leftOutRange = rangeHolding(leftOut, offset)
-      if (leftOutRange !== undefined) {
+      while (
+        firstNotPassed < leftOut.length &&
+        leftOut[firstNotPassed][1] <= offset
+      ) {
+        firstNotPassed += 1
+      }
+      const leftOutRange = leftOut.at(firstNotPassed)
+      if (leftOutRange !== undefined && leftOutRange[0] <= offset) {
         offset = leftOutRange[1]
       } else if (found.rule === "region") {
         offset = found.entry.end
@@ -702,7 +709,7 @@ export class SourceLexer {
     if (entry.ignoredSemicolons.has(offset)) {
       return { rule: "ignored-semicolon" }
     }
-    const directive = entry.directives.get(offset)
+    const directive = entry.directives.startingAt(offset)
     if (directive !== undefined) return { rule: "directive", directive }
     return { rule: "none" }
   }
@@ -731,21 +738,13 @@ export class SourceLexer {
     while (this.nextEntryStart <= offset && this.decideEntries()) {
       // Decide until an entry reaches past the offset.
     }
-    // Binary search for the last entry that starts at or before the offset.
-    let low = 0
-    let high = this.entries.length - 1
-    while (low < high) {
-      const middle = Math.ceil((low + high) / 2)
-      if (this.entries[middle].start <= offset) {
-        low = middle
-      } else {
-        high = middle - 1
-      }
-    }
-    const entry = this.entries[low]
-    return entry !== undefined && entry.start <= offset && offset < entry.end
-      ? entry
-      : null
+    // The last entry that starts at the offset or before it; none when no
+    // entry does.
+    const index =
+      firstIndexWhere(this.entries, (candidate) => candidate.start > offset) - 1
+    if (index < 0) return null
+    const entry = this.entries[index]
+    return offset < entry.end ? entry : null
   }
 
   /**
@@ -763,36 +762,25 @@ export class SourceLexer {
 
   /**
    * Entities: the character before `offset` in the text without its
-   * directives and comment regions, read backward as
-   * {@link SourceLexer.skipDirectivesAndComments} reads forward; null at
-   * `start`.
+   * directives; null at `start`. A comment region is not left out, as no
+   * entity runs across one: what comes before a region, in the text without
+   * directives and regions, is always a line terminator, U+2028, U+2029, or
+   * the start of the text, and read backward from after a region, the
+   * character is its own line terminator, which is no word character either.
    */
   private characterBefore(offset: number): EntityTextCharacter | null {
     let end = offset
     for (;;) {
       if (end <= this.start) return null
-      const passed = this.directiveOrRegionStartBefore(end)
-      if (passed === null) break
-      end = passed
+      // A directive lies inside one entry.
+      const directive = this.entryAt(end - 1)?.directives.endingAt(end)
+      if (directive === undefined) break
+      end = directive.range[0]
     }
     const start = previousOffset(this.text, end)
     const codePoint = this.text.codePointAt(start)
     if (codePoint === undefined) return null
     return { codePoint, start, next: end }
-  }
-
-  /**
-   * Where the comment region or the directive that ends at `end` starts, or
-   * null when neither ends there. A directive lies inside one entry.
-   */
-  private directiveOrRegionStartBefore(end: number): number | null {
-    const entry = this.entryAt(end - 1)
-    if (entry === null) return null
-    if (entry.kind === "region") return entry.start
-    for (const directive of entry.directives.values()) {
-      if (directive.range[1] === end) return directive.range[0]
-    }
-    return null
   }
 
   /** HTML attribute quotes: whether the `"` at `offset` is read as `'`. */
@@ -838,7 +826,7 @@ export class SourceLexer {
    * whitespace and line terminators of the region are in no list.
    */
   private recordCommentRegion(region: CommentRegionEntry): void {
-    for (const directive of region.directives.values()) {
+    for (const directive of region.directives.inSourceOrder) {
       const beforeComment = directive.range[0] < region.comment[0]
       this.recordDirective(directive, beforeComment ? "token" : "no-token")
     }

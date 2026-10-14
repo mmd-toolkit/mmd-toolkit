@@ -35,7 +35,7 @@ export interface EntityTextCharacter {
 export interface EntityText {
   /** The character at or after `offset`; null at the end of the source. */
   characterFrom(offset: number): EntityTextCharacter | null
-  /** The character before `offset`; null at the start of the reading. */
+  /** The character before `offset`, in the text without its directives; null at the start of the reading. A comment region is not left out, which reads the same: no entity runs across one. */
   characterBefore(offset: number): EntityTextCharacter | null
   /** Whether the `;` at `offset` is one that the line rule ignores. */
   isIgnoredSemicolon(offset: number): boolean

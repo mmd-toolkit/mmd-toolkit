@@ -87,8 +87,10 @@ flowchart; the steps do not depend on the diagram type.
   it.
 - The Write tool and shell here-documents can turn an escape such as `\u00a0`
   into the real character. The sources and tests of `packages/parser` are ASCII
-  only (every other character is written as an escape), so after writing, check
-  with these two commands, at the root; neither may print anything:
+  only (every other character is written as an escape), except a readable
+  character in a comment of `src/code-points.ts` that shows which character a
+  constant is (`// À`). So after writing, check with these two commands, at the
+  root; the first may print only those comments, and the second nothing:
 
   ```sh
   grep -rnP '[^\x00-\x7e]' packages/parser/src packages/parser/tests packages/parser/tools
@@ -138,6 +140,11 @@ flowchart; the steps do not depend on the diagram type.
   that is there.
 - In every result, show for each claim whether it was checked by running
   something, checked by reading code or documents, or not checked.
+- For a requested performance review of a newly supported diagram or an existing
+  parser, use
+  [parser-performance-review](../parser-performance-review/SKILL.md). Its
+  standalone measured reproductions are review reports, separate from the
+  fixture-based conformance tests described here.
 - Run what a change can affect (the skill `conventions`, Running tests). While
   working, run the test files that go with the changed part of the code, in
   `packages/parser` (`npx vitest run <files>`; a diagram's part of

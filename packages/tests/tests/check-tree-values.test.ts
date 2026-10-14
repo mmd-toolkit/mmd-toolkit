@@ -176,7 +176,6 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "ErLiteral", variant: "a style", message: NOT_TOKENS_JOINED },
   { type: "ErIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "GanttLiteral", message: NOT_WRITTEN_TEXT },
-  { type: "GanttIgnoredStatement", message: NOT_WRITTEN_TEXT },
 ]
 
 /** The name of a row, for the failures. */
@@ -630,11 +629,6 @@ const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
     diagram: "er",
     fixture: "lex-direction-line-text-before",
     reason: "its tokens are words and empty backquotes",
-  },
-  GanttIgnoredStatement: {
-    diagram: "gantt",
-    fixture: "gram-empty-href-line",
-    reason: "its tokens are a keyword, quotes, and parentheses",
   },
 }
 

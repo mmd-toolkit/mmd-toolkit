@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The people are split at commas and trimmed."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [
+          "Me",
+          "You",
+          "Them"
+        ],
+        "score": 3
+      }
+    ]
+  }
+}

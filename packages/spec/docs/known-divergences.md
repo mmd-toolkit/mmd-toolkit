@@ -58,7 +58,16 @@ three reasons, and only as a divergence listed here:
    description block that starts a statement, and such an input is accepted;
    that mermaid.js does not read a text is not by itself a reason to reject it.
    The same holds for text that mermaid.js reads as something other than what is
-   written: it is accepted and shown in the tree as written.
+   written: it is accepted and shown in the tree as written. The exception is a
+   form written with a meaning of its own, as a string, a link, or a call, that
+   mermaid.js discards whole: an empty string where a statement starts in
+   flowchart and class, an empty call where a statement starts in flowchart, and
+   an empty href or an empty call in gantt, wherever it stands. The tree holds
+   no statement that changes nothing for such a form, and the input is rejected
+   as [tokenless-empty-forms](./known-divergences/tokenless-empty-forms.md). An
+   empty string after `state` or after a statement in the state context of state
+   is no such form: mermaid.js reads the statement before it, and the empty
+   string is a [StateIgnoredStatement](./ast/state.md#stateignoredstatement).
 2. This specification states a direct rule where the behavior of mermaid.js
    comes from the order of the steps of its pipeline or of the rules of its
    lexer, and is nothing that a specification would state. The inputs that are

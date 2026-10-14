@@ -210,7 +210,6 @@ export const allGanttNodeTypes: Readonly<Record<GanttNode["type"], true>> = {
   GanttAccTitleStatement: true,
   GanttAccDescrStatement: true,
   GanttAccDescrBlockStatement: true,
-  GanttIgnoredStatement: true,
   GanttLiteral: true,
 }
 

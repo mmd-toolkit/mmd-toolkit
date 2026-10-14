@@ -10,14 +10,14 @@ function entriesAt(text: string, start: number): unknown[] {
           region: text.slice(entry.start, entry.end),
           comment: text.slice(...entry.comment),
           value: text.slice(entry.afterMarker, entry.comment[1]),
-          directives: [...entry.directives.values()].map((d) =>
+          directives: entry.directives.inSourceOrder.map((d) =>
             text.slice(...d.range),
           ),
         }
       : {
           segment: text.slice(entry.start, entry.end),
           ignored: [...entry.ignoredSemicolons].sort((a, b) => a - b),
-          directives: [...entry.directives.values()].map((d) =>
+          directives: entry.directives.inSourceOrder.map((d) =>
             text.slice(...d.range),
           ),
         },

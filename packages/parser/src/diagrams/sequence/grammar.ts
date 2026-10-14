@@ -247,7 +247,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     if (keyword === null || !PARTICIPANT_KEYWORDS.includes(keyword.name)) {
       throw this.unexpected(keyword)
     }
-    this.next += 1
+    this.advance()
     this.addItem("Keyword", [keyword])
     const id = this.sequenceIdentifierOf(this.take("id"))
     if (keyword.name === "destroy") {
@@ -491,7 +491,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     } else {
       throw this.unexpected(placementUnit)
     }
-    this.next += 1
+    this.advance()
     this.addItem("Keyword", [placementUnit])
     if (placement !== "over") this.addItem("Keyword", [this.take("of")])
     const ids = [this.sequenceIdentifierOf(this.take("id"))]
@@ -591,7 +591,7 @@ export class SequenceGrammar extends UnitGrammar<UnitName, Unit> {
     const value = text === null ? null : this.literalOf([text])
     // Lexical structure: in the description block context the end of the
     // text reads no `newline` unit, so the block ends with the units.
-    const atEndOfText = this.next === this.units.length
+    const atEndOfText = this.peek() === null
     const closing = atEndOfText ? null : this.take("}")
     if (closing !== null) this.addItem("Punctuator", [closing])
     return {

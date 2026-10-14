@@ -121,17 +121,14 @@ export function matchCodePoints(
   return current
 }
 
-/** Returns the offset of the first character `codePoint` at or after `from`, or null. */
+/** Returns the offset of the first character `codePoint` at or after `from` and before `end`, or null. */
 export function findCodePoint(
   text: string,
   from: number,
+  end: number,
   codePoint: number,
 ): number | null {
-  for (
-    let offset = from;
-    offset < text.length;
-    offset = nextOffset(text, offset)
-  ) {
+  for (let offset = from; offset < end; offset = nextOffset(text, offset)) {
     if (text.codePointAt(offset) === codePoint) return offset
   }
   return null
@@ -139,20 +136,18 @@ export function findCodePoint(
 
 /**
  * Returns the offset of the first occurrence of the fixed sequence
- * `codePoints` at or after `from`, looking at each character boundary in
- * turn, or null.
+ * `codePoints` at or after `from` that ends at `end` or before it, looking
+ * at each character boundary in turn, or null.
  */
 export function findCodePoints(
   text: string,
   from: number,
+  end: number,
   codePoints: readonly number[],
 ): number | null {
-  for (
-    let offset = from;
-    offset < text.length;
-    offset = nextOffset(text, offset)
-  ) {
-    if (matchCodePoints(text, offset, codePoints) !== null) return offset
+  for (let offset = from; offset < end; offset = nextOffset(text, offset)) {
+    const after = matchCodePoints(text, offset, codePoints)
+    if (after !== null && after <= end) return offset
   }
   return null
 }

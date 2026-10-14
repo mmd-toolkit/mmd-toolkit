@@ -67,7 +67,7 @@ function classIds(run: MermaidRun | undefined): string[] {
 
 describe("the marks", () => {
   it("are those of the removals, of the frontmatter and of the bare `%%` lines, and the marks without a reading, and no other", () => {
-    expect([...KNOWN_DIVERGENCES].sort()).toEqual(
+    expect(KNOWN_DIVERGENCES.toSorted()).toEqual(
       [
         ...REMOVAL_MARKS,
         HTML_TAG_MARK,

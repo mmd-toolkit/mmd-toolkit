@@ -21,7 +21,7 @@
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `Keyword`    | `header` 単位。`accTitle`、`accDescr`、`href`、`call`、`click`、`dateFormat`、`axisFormat`、`tickInterval`、`todayMarker`、`includes`、`excludes`、`inclusiveEndDates`、`weekday`、`weekend`、`title`、`section` の単位。`day` 単位                                                                                            |
 | `Identifier` | [単位の中のディレクティブ](../../../spec/docs/diagrams/gantt.ja.md#単位の中のディレクティブ) の名前の単位: `id`、`list-item`                                                                                                                                                                                                   |
-| `String`     | [単位の中のディレクティブ](../../../spec/docs/diagrams/gantt.ja.md#単位の中のディレクティブ) の文字列の単位 `url-text` と、その両側の 2 つの `"` 単位。空の href の 2 つの `"` 単位                                                                                                                                            |
+| `String`     | [単位の中のディレクティブ](../../../spec/docs/diagrams/gantt.ja.md#単位の中のディレクティブ) の文字列の単位 `url-text` と、その両側の 2 つの `"` 単位                                                                                                                                                                          |
 | `RawText`    | [単位の中のディレクティブ](../../../spec/docs/diagrams/gantt.ja.md#単位の中のディレクティブ) のテキストの単位: `setting-text`、`marker-text`、`title-text`、`section-text`、`task-text`、タグを含む `data-item`、`callback-name`、`callback-arguments`、`acc-title-text`、`acc-description-text`、`acc-description-block-text` |
 | `Punctuator` | `:`、`,`、`{`、`}`、`(`、`)`                                                                                                                                                                                                                                                                                                   |
 
@@ -52,9 +52,7 @@
 リンクの部分の文字列、つまり `"` 単位とその間の `url-text` は、
 開きの引用符から閉じの引用符までの 1 つの `String` トークンです。
 `href "u"` は、`Keyword` トークン `href` と `String` トークン `"u"` を持ちます。
-同じく、空の href の 2 つの `"` 単位は、1 つの `String` トークン `""` です。
 [fixture: gantt/gram-click-href]
-[fixture: gantt/gram-empty-href-line]
 ほかの項目はどれも 1 つの単位で、したがって 1 つのトークンです。
 
 トークンは両端に空白を持ちません。
@@ -114,21 +112,6 @@ mermaid.js が値をトリムするアクセシビリティのテキストと、
 - 文である空の説明ブロックは、`Keyword` トークン `accDescr` と、
   `Punctuator` トークン `{` と `}` を持ちます。
   [fixture: gantt/gram-acc-descr-block-empty]
-- GanttIgnoredStatement は、キーワードの `Keyword` トークンと、
-  空の href なら `String` トークン `""`、
-  空の call なら `Punctuator` トークン `(` と `)` を持ちます。
-  `call ( )` は、トークン `call`、`(`、`)` を持ちます。
-  [fixture: gantt/gram-empty-href-line]
-  [fixture: gantt/gram-empty-call-line]
-  [fixture: gantt/gram-empty-call-space-inside]
-  空の href の 2 つの引用符の間のディレクティブは、
-  上と同じく `String` トークンを切ります。
-  `href "%%{init: {}}%%"` は、`StringFragment` トークン `"` と `"` と、
-  その間の `Directive` トークンを持ちます。
-  空の call の括弧の間のディレクティブは、
-  2 つの `Punctuator` トークンの間にあります。
-  [fixture: gantt/lex-empty-href-directive-between-quotes]
-  [fixture: gantt/lex-empty-call-directive-between-parentheses]
 - 行の規則が無視する `;` は `IgnoredSemicolon` トークンです。
   `title a;b style:#x;` では、最初の `;` はその行の最後ではないので、
   `RawText` トークン `a;b style:#x` の文字です。

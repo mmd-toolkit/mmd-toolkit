@@ -6,7 +6,7 @@ import {
 } from "./character-classes.ts"
 import { LEFT_CURLY_BRACKET, PERCENT_SIGN } from "./code-points.ts"
 import type { DirectiveMatch } from "./directives.ts"
-import { findDirectives, readDirective } from "./directives.ts"
+import { DirectiveIndex, findDirectives, readDirective } from "./directives.ts"
 import { decideIgnoredSemicolons } from "./line-rule.ts"
 import { lineTerminatorEnd, nextOffset, skipBackWhile } from "./text-cursor.ts"
 
@@ -24,8 +24,8 @@ export interface CommentRegionEntry {
   readonly comment: Range
   /** The offset after the second `%` of the comment's `%%`. Directives can lie between the two `%`. */
   readonly afterMarker: number
-  /** The directives inside the region, keyed by their start offset, in source order: those before the comment's `%%` and those inside the comment. */
-  readonly directives: ReadonlyMap<number, DirectiveMatch>
+  /** The directives inside the region: those before the comment's `%%` and those inside the comment. */
+  readonly directives: DirectiveIndex
 }
 
 /**
@@ -40,19 +40,12 @@ export interface LineSegmentEntry {
   readonly end: number
   /** The offsets of the `;` characters that the line rule ignores. */
   readonly ignoredSemicolons: ReadonlySet<number>
-  /** The directives inside the segment, keyed by their start offset, in source order. */
-  readonly directives: ReadonlyMap<number, DirectiveMatch>
+  /** The directives inside the segment. */
+  readonly directives: DirectiveIndex
 }
 
 /** What one look-ahead from a comment start decides: a comment region, or line segments. */
 export type LineEntry = CommentRegionEntry | LineSegmentEntry
-
-/** The directives found so far by one look-ahead, keyed by their start offset, in source order. */
-function directivesByStart(
-  directives: readonly DirectiveMatch[],
-): Map<number, DirectiveMatch> {
-  return new Map(directives.map((directive) => [directive.range[0], directive]))
-}
 
 /** A separator the look-ahead passed while it read over whitespace and directives. */
 interface PassedSeparator {
@@ -209,7 +202,7 @@ function commentRegion(
     end: lineTerminatorEnd(text, offset) ?? offset,
     comment: [marker, commentEnd(text, marker, offset)],
     afterMarker,
-    directives: directivesByStart(directives),
+    directives: new DirectiveIndex(directives),
   }
 }
 
@@ -268,28 +261,43 @@ function segmentsUpTo(
     }
     offset = nextOffset(text, offset)
   }
-  const entries: LineSegmentEntry[] = []
-  let segmentStart = start
+  const segmentRanges: Range[] = []
+  let nextSegmentStart = start
   for (const separator of separators) {
-    entries.push(segment(text, segmentStart, separator.offset, directives))
-    segmentStart = separator.end
+    segmentRanges.push([nextSegmentStart, separator.offset])
+    nextSegmentStart = separator.end
   }
-  entries.push(segment(text, segmentStart, offset, directives))
+  segmentRanges.push([nextSegmentStart, offset])
+  // The directives come in source order, and each lies inside one segment,
+  // since the look-ahead passes over a directive as a whole, the separators
+  // in it included. So each segment takes, from the first directive that no
+  // segment has taken, those that end in it: looking through all of them
+  // for every segment would take time in the square of their number.
+  const entries: LineSegmentEntry[] = []
+  let firstUntaken = 0
+  for (const [segmentStart, segmentEnd] of segmentRanges) {
+    let afterTaken = firstUntaken
+    while (
+      afterTaken < directives.length &&
+      directives[afterTaken].range[1] <= segmentEnd
+    ) {
+      afterTaken += 1
+    }
+    const inside = directives.slice(firstUntaken, afterTaken)
+    entries.push(segment(text, segmentStart, segmentEnd, inside))
+    firstUntaken = afterTaken
+  }
   return entries
 }
 
-/** One line segment, with the directives inside it and the `;` characters that the line rule ignores. */
+/** One line segment, with `directives`, the directives inside it, and the `;` characters that the line rule ignores. */
 function segment(
   text: string,
   start: number,
   end: number,
   directives: readonly DirectiveMatch[],
 ): LineSegmentEntry {
-  const inside = directivesByStart(
-    directives.filter(
-      (directive) => start <= directive.range[0] && directive.range[1] <= end,
-    ),
-  )
+  const inside = new DirectiveIndex(directives)
   return {
     kind: "segment",
     start,

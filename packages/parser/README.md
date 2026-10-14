@@ -305,10 +305,11 @@ these differences:
   holds for the empty description block, as in `A accDescr {} ||--o{ B : x`, and
   for empty backquotes inside an attribute, between its type and its name or
   before its keys or its comment; between two attributes they are accepted. In a
-  Gantt chart, it holds for the empty description block, the empty href
-  (`href ""`), and the empty call inside a click statement, between its ids and
-  its first part or between its two parts, as in `click id1 href "" call f()`;
-  where a statement starts, each of them is accepted as a statement of its own.
+  Gantt chart, it holds for the empty href (`href ""`) and the empty call
+  wherever they stand, as in a line `href ""` or `click id1 href "" call f()`,
+  and for the empty description block inside a click statement, between its ids
+  and its first part or between its two parts; where a statement starts, an
+  empty description block is accepted as a statement of its own.
 - In a sequence diagram, a comment starts at its `%%`, and a number may be
   followed by `%%`, while mermaid.js takes the character before the `%%` into
   the comment where a rule would start there: `autonumber 10%% c` starts at 10

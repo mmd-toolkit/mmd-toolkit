@@ -789,6 +789,7 @@ flowchart/lex-link-text-entity-then-double-dash]
   木にはそこにそれ自体のノードを置く場所がありません。
   そのため、文法のどの規則もこれを取らず、空の文字列のある入力は拒否されます。
   1 行だけの `""`、`""A`、`A[""x]`、`A["a"""]`、`A[x]""` がそうです。
+  `accDescr {}` だけなら文になりますが、`""accDescr {}` も拒否されます。
   mermaid.js は空の文字列にトークンを読まず、
   これらをそれがないものとして受理します。
   これらは既知の差異
@@ -799,6 +800,7 @@ flowchart/lex-link-text-entity-then-double-dash]
   リンクのテキストの中では、`""` が開く `--` を終えないからです。
   [fixture: flowchart/lex-empty-string-line] [fixture:
   flowchart/lex-empty-string-before-id] [fixture:
+  flowchart/lex-empty-string-before-empty-description-block] [fixture:
   flowchart/tokens-empty-string-in-label] [fixture:
   flowchart/lex-empty-string-after-string] [fixture:
   flowchart/lex-empty-string-after-shape] [fixture:
@@ -1038,6 +1040,7 @@ mermaid.js はそのどれにもトークンを読まず、
 1 行だけの `call ()`、`A call ()`、`call () B`、`A call ()-->B`、
 `A-->call ()B`（`(` と `)` の間に改行があっても同じ）、
 頂点 `A,` としての `A,call ()`、
+頂点 `,` としての `,call ()`、
 クリックの文の中では、`click A cb` と同じものとしての `click A call ()cb`、
 `click A call ()href "u"` がそうです。
 これらは既知の差異
@@ -1052,6 +1055,7 @@ mermaid.js は空の呼び出しの後の空白を、行き先の前の空白と
 [fixture: flowchart/gram-empty-call-after-arrow]
 [fixture: flowchart/gram-empty-call-line-feed]
 [fixture: flowchart/gram-empty-call-after-comma]
+[fixture: flowchart/gram-empty-call-comma-vertex]
 [fixture: flowchart/gram-click-empty-call-before-callback]
 [fixture: flowchart/gram-click-empty-call-before-href]
 [fixture: flowchart/gram-empty-call-after-arrow-space]
@@ -1348,9 +1352,11 @@ description-block-statement = "accDescr" "{" description-block-text? ( "}" | end
 `class A c""` では引用符が id の並びの文字で、クラスは `c""` です。
 一方、`class A c;""` では、それは区切りの後の空の文字列で、
 入力は拒否されます（[文字列](#文字列) を参照）。
+`;` の前の `click` が頂点になる `click;"" A` も、同じく拒否されます。
 [fixture: flowchart/gram-separator-before-directive] [fixture:
 flowchart/gram-no-separator-before-directive] [fixture:
 flowchart/gram-separator-before-empty-string] [fixture:
+flowchart/lex-click-keyword-semicolon-statement] [fixture:
 flowchart/lex-quotes-after-class-name]
 区切りはどの文にも属しません。
 文法が読むそれ以外の `;` は、どれも空の文です。

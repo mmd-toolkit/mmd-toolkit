@@ -568,6 +568,90 @@ direction line, and a second name before a `{`, while the plugin reads them as
 whitespace. [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 See [Line separators](./state.md#line-separators).
 
+## ER lines that the place or the whitespace decides
+
+mermaid.js reads some ER lines as the place they stand in or the whitespace
+around them decide, so formatting keeps them as they are written. See
+[Accessibility statements](./er.md#accessibility-statements),
+[Statements one per line](./er.md#statements-one-per-line), and
+[Relationship spacing](./er.md#relationship-spacing).
+
+- An `accTitle`, `accDescr:`, or `accDescr {` statement that holds `direction`
+  and a direction on its first printed line, where a text written on a later
+  line is brought to the `:`. The line is judged as the lexer reads it, without
+  the directives. The lexer tries the rule of a direction line after the rules
+  of these statements, so at the first column the line is a title or a
+  description, and after an indentation it is a direction line with the text
+  `accTitle:` before `direction`: the title is lost. The statement keeps the
+  first column. The direction may stand on a later line, after empty lines,
+  comment lines, and directives, which the lexer does not read. [fixture:
+  er/accessibility-statements/first-column-for-direction-text] [fixture:
+  er/accessibility-statements/first-column-value-after-directive-line] [corpus
+  fixture: er/lex-acc-title-direction] [corpus fixture:
+  er/lex-acc-descr-block-direction]
+- The entity `1`, right before another statement, the `end` of its subgraph, or
+  a unit of a relationship that starts with a letter, a digit, or `_`, also
+  after directives between them. `1` followed by whitespace, line breaks
+  included, and such a character is the cardinality `only-one` (diagrams/er.md,
+  the cardinalities, rule 11), so `1a` stays on its line, and
+  `1one to one B : x` stays touching. [fixture:
+  er/statements-one-per-line/number-name-then-name-kept] [fixture:
+  er/relationship-spacing/number-name-before-unit-kept] [corpus fixture:
+  er/lex-name-number-then-letter]
+- The entity `only` before a cardinality that starts with `one`. `only one` with
+  exactly one space is the cardinality `only one`, while two spaces or a tab
+  make `only` an entity, so the whitespace stays as written. [fixture:
+  er/relationship-spacing/entity-only-before-one-kept] [corpus fixture:
+  er/lex-only-one-two-spaces]
+- The right cardinality `u`, which is `md-parent` only right before the name of
+  the right entity, so a space after it is rejected. [fixture:
+  er/relationship-spacing/md-parent] [corpus fixture:
+  er/lex-md-parent-right-glued-name]
+- The whitespace at the end of a `classDef` or `style` statement, which takes
+  the line feed after it, so the next line goes on in the style. [fixture:
+  er/styles-and-classes/trailing-whitespace-takes-next-line] [corpus fixture:
+  er/lex-classdef-space-before-line-feed]
+
+## Gantt lines that the whitespace decides
+
+mermaid.js keeps the whitespace in some values of a Gantt chart and reads some
+lines by the whitespace on them, so formatting keeps them as they are written.
+See [Task data](./gantt.md#task-data), [Settings](./gantt.md#settings),
+[Titles and sections](./gantt.md#titles-and-sections), and
+[Lists](./gantt.md#lists).
+
+- The whitespace at the ends of the value of `dateFormat`, `axisFormat`,
+  `tickInterval`, `todayMarker`, `title`, and `section`, and between the text of
+  a task description and its colon. The Db keeps it, so `dateFormat  YYYY-MM-DD`
+  with two spaces and `A task           :a1` with padding are not the same as
+  their trimmed forms, and the padding that aligns the colons stays. [fixture:
+  gantt/settings/value-whitespace-kept] [fixture:
+  gantt/titles-and-sections/value-whitespace-kept] [fixture:
+  gantt/task-data/description-padding-kept]
+- The whitespace inside an item of task data, the number of its items, and the
+  case of its tags: `after   a1` is one item as written, `a : 1d,` has an empty
+  item that `a : 1d` does not, and `Done` is no tag. [fixture:
+  gantt/task-data/inner-whitespace-kept] [fixture: gantt/task-data/empty-items]
+  [fixture: gantt/keyword-case/tags-case-kept]
+- The whitespace after the `:` of a task whose data is whitespace only, and
+  after the keyword of an `includes` or `excludes` statement whose list is
+  whitespace only. mermaid.js needs a character of the data after the colon and
+  of the list text after the whitespace that follows the keyword, so `a :` and
+  `includes ` are rejected, and one whitespace character, or two, stay.
+  [fixture: gantt/task-data/whitespace-only-data] [fixture:
+  gantt/lists/whitespace-only]
+- A U+FEFF between the items of a list of `includes` or `excludes`. mermaid.js
+  lowers the case of the whole list text before it splits it, and the conversion
+  ignores U+FEFF, so a capital sigma after it, at the end of a word, is `ς`,
+  while after a space, or any other whitespace, it is `σ`. [test: U+FEFF between
+  the items of a list]
+- The name and the arguments of a call, with their whitespace: `f ()`,
+  `f( 1, 2 )`, and `f(1,2)` are three calls. [fixture:
+  gantt/click-statements/call-name-and-arguments-kept]
+- A line that holds a `;`: its statements stay on it, since the line rule of
+  mermaid.js reads the text of the line. [fixture:
+  gantt/statements-one-per-line/ignored-semicolon-line-kept]
+
 ## A comment line after U+2028 or U+2029
 
 mermaid.js removes the comment lines from the text before it reads it. A comment

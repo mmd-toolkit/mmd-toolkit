@@ -1,12 +1,10 @@
 import { describe, expect, it } from "vitest"
-import { findDirectives } from "../src/directives.ts"
+import { DirectiveIndex, findDirectives } from "../src/directives.ts"
 import { decideIgnoredSemicolons } from "../src/line-rule.ts"
 
 /** The `;` characters that the rule ignores in the whole text as one segment, with its directives found first. */
 function ignoredOf(text: string): number[] {
-  const directives = new Map(
-    findDirectives(text, 0).map((directive) => [directive.range[0], directive]),
-  )
+  const directives = new DirectiveIndex(findDirectives(text, 0))
   return [...decideIgnoredSemicolons(text, 0, text.length, directives)].sort(
     (a, b) => a - b,
   )
@@ -53,10 +51,20 @@ describe("decideIgnoredSemicolons", () => {
 
   it("reads only the given bounds", () => {
     expect([
-      ...decideIgnoredSemicolons("x\nstyle A fill:#f00;", 2, 20, new Map()),
+      ...decideIgnoredSemicolons(
+        "x\nstyle A fill:#f00;",
+        2,
+        20,
+        new DirectiveIndex([]),
+      ),
     ]).toEqual([19])
     expect([
-      ...decideIgnoredSemicolons("style A fill:#f00;", 0, 17, new Map()),
+      ...decideIgnoredSemicolons(
+        "style A fill:#f00;",
+        0,
+        17,
+        new DirectiveIndex([]),
+      ),
     ]).toEqual([])
   })
 })

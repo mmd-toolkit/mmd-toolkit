@@ -149,12 +149,12 @@ the blocks continues that statement: a cardinality, `:::`, `{`, `[`, `:`, or
 `,`. [fixture: er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-description-block-in-class] [fixture:
 er/gram-empty-description-block-between-names] In a Gantt chart, the empty href,
-`href` and two `"` with nothing between them, is an empty form too, and an empty
-href and an empty call are statements where a statement starts, as an empty
-description block is. Nothing separates two statements there, and an empty form
-lies inside a statement only inside a click statement: between its ids and its
-first part, and between its two parts, where the unit after the forms starts the
-second part. [fixture: gantt/div-empty-href-before-call] [fixture:
+`href` and two `"` with nothing between them, is an empty form too, which
+mermaid.js reads nothing for wherever it lies, as an empty call. Nothing
+separates two statements there, and an empty description block lies inside a
+statement only inside a click statement: between its ids and its first part, and
+between its two parts, where the unit after the forms starts the second part.
+[fixture: gantt/div-empty-href-before-call] [fixture:
 gantt/div-empty-description-block-between-href-and-call] [fixture:
 gantt/gram-empty-href-line] [fixture: gantt/gram-click-href-then-empty-href]
 Whether a block is a statement is decided without the empty forms before it that

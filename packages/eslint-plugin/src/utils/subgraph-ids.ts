@@ -97,7 +97,7 @@ export function nameOwnText(
   const { value } = subgraph.name
   const tokens = sourceCode.getTokens(subgraph.name)
   let trailing = 0
-  for (const token of [...tokens].reverse()) {
+  for (const token of tokens.toReversed()) {
     if (token.type === "Directive") continue
     if (token.type !== "RawText") break
     const content = token.value.trimEnd()

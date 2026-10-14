@@ -1,8 +1,9 @@
 {
   "source": {
     "kind": "authored",
-    "note": "gantt.md Empty hrefs and empty calls: two empty forms on one line where statements start are two GanttIgnoredStatements; the title T."
+    "note": "gantt.md Empty hrefs and empty calls: an empty href and an empty call on one line; rejected here, because no rule of the grammar takes an empty href or an empty call wherever it stands; mermaid.js reads no token for it and accepts the input (tokenless-empty-forms)."
   },
+  "knownDivergence": "tokenless-empty-forms",
   "accepted": true,
   "diagramType": "gantt",
   "db": {

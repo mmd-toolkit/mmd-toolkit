@@ -362,9 +362,6 @@ export const NODE_FIELDS: Readonly<
   GanttExcludesStatement: {
     items: { shape: "nodeList" },
   },
-  GanttIgnoredStatement: {
-    value: { shape: "value", valueType: "string" },
-  },
   GanttIncludesStatement: {
     items: { shape: "nodeList" },
   },

@@ -1,4 +1,5 @@
 import type { Location, Position, Range } from "./ast.ts"
+import { firstIndexWhere } from "./ordered-search.ts"
 import { lineTerminatorEnd, nextOffset } from "./text-cursor.ts"
 
 /**
@@ -27,18 +28,11 @@ export class LineIndex {
 
   /** The position of `offset`. */
   public position(offset: number): Position {
-    // Binary search for the last line start that is at or before the offset.
-    let low = 0
-    let high = this.lineStarts.length - 1
-    while (low < high) {
-      const middle = Math.ceil((low + high) / 2)
-      if (this.lineStarts[middle] <= offset) {
-        low = middle
-      } else {
-        high = middle - 1
-      }
-    }
-    return { line: low + 1, column: offset - this.lineStarts[low] }
+    // The last line that starts at the offset or before it; the first line
+    // starts at 0.
+    const index =
+      firstIndexWhere(this.lineStarts, (start) => start > offset) - 1
+    return { line: index + 1, column: offset - this.lineStarts[index] }
   }
 
   /** The location of `range`. */

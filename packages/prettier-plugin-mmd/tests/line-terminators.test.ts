@@ -39,6 +39,31 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
     ],
     "stateDiagram-v2\n  state S {\n    A --> B\n  }\n  note right of A\ntext\n  end note\n",
   ],
+  [
+    "er",
+    [
+      "erDiagram",
+      "A||--o{B:x",
+      "subgraph S",
+      "C {",
+      "int c",
+      "}",
+      "end",
+      "%%{init: {}}%%",
+    ],
+    "erDiagram\n  A ||--o{ B : x\n  subgraph S\n    C {\n      int c\n    }\n  end\n  %%{init: {}}%%\n",
+  ],
+  [
+    "gantt",
+    [
+      "gantt",
+      "title T",
+      "section S",
+      "a : a1, 2024-01-01, 1d",
+      "%%{init: {}}%%",
+    ],
+    "gantt\n  title T\n  section S\n  a :a1, 2024-01-01, 1d\n  %%{init: {}}%%\n",
+  ],
 ]
 
 describe.each(diagrams)(

@@ -275,7 +275,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
         return statements
       }
       if (unit.name === "newline" || unit.name === "space") {
-        this.next += 1
+        this.advance()
       } else if (unit.name === ";") {
         statements.push(this.parseEmptyStatement())
       } else {
@@ -362,31 +362,37 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    */
   private takeOutStatementEnd(): (readonly Unit[])[] {
     let separator = this.next
-    while (
-      separator < this.units.length &&
-      !SEPARATORS.includes(this.units[separator].name)
+    for (
+      let name = this.nameAt(separator);
+      name !== null && !SEPARATORS.includes(name);
+      name = this.nameAt(separator)
     ) {
-      separator += 1
+      separator = this.positionAfter(separator)
     }
     const blocks: (readonly Unit[])[] = []
-    let index = separator - 1
-    while (index >= this.next) {
-      const unit = this.units[index]
+    let unit = this.unreadUnitBefore(separator)
+    while (unit !== null) {
       const form = this.emptyFormOf(unit)
       if (unit.name === "space") {
-        index -= 1
+        unit = this.unreadUnitBefore(unit.index)
       } else if (
         form?.kind === "empty-description-block" &&
         form.units.at(-1) === unit
       ) {
         blocks.unshift(form.units)
-        index -= form.units.length
+        unit = this.unreadUnitBefore(form.units[0].index)
       } else {
         this.takeOut(blocks.flat())
         return blocks
       }
     }
     return []
+  }
+
+  /** The unit before the position `position` that is not read yet; null when the next unit is at `position` or after it. */
+  private unreadUnitBefore(position: number): Unit | null {
+    const before = this.positionBefore(position)
+    return before < this.next ? null : this.unitAt(before)
   }
 
   /**
@@ -404,7 +410,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
       if (!SEPARATORS.includes(separator.name)) {
         throw this.unexpected(separator)
       }
-      this.next += 1
+      this.advance()
       if (separator.name === ";") this.addItem("Punctuator", [separator])
     }
     return blocks.map((units) => this.emptyDescriptionBlockStatementOf(units))
@@ -479,15 +485,17 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     const vertices = [this.parseVertex()]
     for (;;) {
       const ampersand = this.afterSpaces(this.next)
-      if (ampersand === this.next || this.nameAt(ampersand) !== "&") break
-      const vertex = this.afterSpaces(ampersand + 1)
-      const unit = this.units.at(vertex)
-      if (unit === undefined) break
+      const ampersandUnit = this.unitAt(ampersand)
+      if (ampersand === this.next || ampersandUnit?.name !== "&") break
+      const afterAmpersand = this.positionAfter(ampersand)
+      const vertex = this.afterSpaces(afterAmpersand)
+      const unit = this.unitAt(vertex)
+      if (unit === null) break
       const emptyForm = this.emptyFormErrorAt(unit)
       if (emptyForm !== null) throw emptyForm
-      if (vertex === ampersand + 1 || !this.isIdPieceAt(vertex)) break
-      this.addItem("Punctuator", [this.units[ampersand]])
-      this.next = vertex
+      if (vertex === afterAmpersand || !this.isIdPieceAt(vertex)) break
+      this.addItem("Punctuator", [ampersandUnit])
+      this.moveTo(vertex)
       vertices.push(this.parseVertex())
     }
     return {
@@ -558,12 +566,12 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
       const unit = this.peek()
       if (unit === null) break
       if (unit.name === comma) {
-        this.next += 1
+        this.advance()
         parts.push(pieces.length === 0 ? null : this.identifierOf(pieces))
         this.addItem("Punctuator", [unit])
         pieces = []
       } else if (partPieces.includes(unit.name)) {
-        this.next += 1
+        this.advance()
         pieces.push(unit)
       } else {
         break
@@ -614,7 +622,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
       case "[":
         return this.parseDelimitedShape(start, ["["], () => ["]", "rectangle"])
       case "(":
-        return this.nameAt(this.next + 1) === "("
+        return this.nameAt(this.positionAfter(this.next)) === "("
           ? this.parseDelimitedShape(start, ["(", "("], () => [
               [")", ")"],
               "circle",
@@ -626,7 +634,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
           "double-circle",
         ])
       case "{":
-        return this.nameAt(this.next + 1) === "{"
+        return this.nameAt(this.positionAfter(this.next)) === "{"
           ? this.parseDelimitedShape(start, ["{", "{"], () => [
               ["}", "}"],
               "hexagon",
@@ -744,7 +752,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     const units: Unit[] = []
     if (first.name === "string" || first.name === "markdown-string") {
       kind = first.name === "string" ? "string" : "markdown"
-      this.next += 1
+      this.advance()
       this.addItem("String", [first])
       units.push(first)
       // Labels and Strings: every delimiter of the string contexts, however
@@ -912,7 +920,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     // Subgraphs: `subgraph-name = ( string | markdown-string | name-piece )
     // name-piece*`; the name is a label of its own.
     const nameUnits = this.parseStartingWithString(() =>
-      this.withNameWhitespaceKept(this.takeWhile(NAME_PIECES)),
+      this.withNameWhitespaceKept(this.takeWhile(NAME_PIECES), blocks),
     )
     const name = this.labelOf(nameUnits)
     let title: FlowchartLabel | null = null
@@ -943,13 +951,17 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    * ast/flowchart.md, FlowchartSubgraphStatement: the name pieces `pieces`,
    * just read, with the whitespace that mermaid.js reads into the name of a
    * subgraph without a title kept in its tokens: the `space` units at the
-   * end of the name, up to the separator or the first empty description
-   * block, which was taken out of the units, and the whitespace that an
-   * `end` unit at the end of the name holds, line feeds included
-   * (diagrams/flowchart.md, Statement context, rule 12). With a title,
-   * mermaid.js reads no whitespace before its `[`.
+   * end of the name, up to the separator or the first of the empty
+   * description blocks `blocks`, which were taken out of the units before
+   * the separator ({@link FlowchartGrammar.takeOutStatementEnd}), and the
+   * whitespace that an `end` unit at the end of the name holds, line feeds
+   * included (diagrams/flowchart.md, Statement context, rule 12). With a
+   * title, mermaid.js reads no whitespace before its `[`.
    */
-  private withNameWhitespaceKept(pieces: readonly Unit[]): Unit[] {
+  private withNameWhitespaceKept(
+    pieces: readonly Unit[],
+    blocks: readonly (readonly Unit[])[],
+  ): Unit[] {
     if (this.nameAt(this.next) === "[") return [...pieces]
     const kept = [...pieces]
     let end = kept.length
@@ -957,17 +969,11 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     if (end > 0 && kept[end - 1].name === "end") {
       kept[end - 1] = withWhitespaceKept(kept[end - 1])
     }
-    // The unit before the first space at the end: the last piece that is
-    // not a space, or the unit before the pieces, a string or the `space`
-    // after `subgraph`.
-    let previous =
-      end > 0 ? kept[end - 1] : this.units[this.next - kept.length - 1]
+    const firstBlock = blocks.at(0)?.at(0)
     for (let index = end; index < kept.length; index += 1) {
       const space = kept[index]
-      // An empty description block lies between them.
-      if (space.index !== previous.index + 1) break
+      if (firstBlock !== undefined && space.index > firstBlock.index) break
       kept[index] = withWhitespaceKept(space)
-      previous = space
     }
     return kept
   }
@@ -1255,12 +1261,12 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
       const url = this.stringLiteralOf(this.take("string"))
       const tooltip = this.takeSpaceAndString()
       let target: FlowchartLinkTarget | null = null
-      const targetUnit = this.units[this.next + 1]
       if (
         this.nameAt(this.next) === "space" &&
-        this.nameAt(this.next + 1) === "link-target"
+        this.nameAt(this.positionAfter(this.next)) === "link-target"
       ) {
-        this.next += 2
+        this.advance()
+        const targetUnit = this.take("link-target")
         this.addItem("Keyword", [targetUnit])
         target = linkTargetOf(targetUnit.text)
       }
@@ -1292,8 +1298,7 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    * (known-divergences/tokenless-empty-forms.md).
    */
   private checkClickIdsFollow(click: Unit): void {
-    let after = this.next
-    while (this.nameAt(after) === "empty-string") after += 1
+    const after = this.afterUnitsNamed(this.next, ["empty-string"])
     const idsFollow =
       this.nameAt(after) === "click-id" || this.nameAt(after) === "click-comma"
     if (!idsFollow) throw this.reservedClick(click)
@@ -1333,13 +1338,12 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
   private takeSpaceAndString(): StringLiteral | null {
     if (
       this.nameAt(this.next) !== "space" ||
-      this.nameAt(this.next + 1) !== "string"
+      this.nameAt(this.positionAfter(this.next)) !== "string"
     ) {
       return null
     }
-    const string = this.units[this.next + 1]
-    this.next += 2
-    return this.stringLiteralOf(string)
+    this.advance()
+    return this.stringLiteralOf(this.take("string"))
   }
 
   /**
@@ -1399,7 +1403,9 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    */
   private parseDescriptionStatement():
     FlowchartAccDescrStatement | FlowchartAccDescrBlockStatement {
-    if (this.nameAt(this.next + 1) !== ":") return this.parseDescriptionBlock()
+    if (this.nameAt(this.positionAfter(this.next)) !== ":") {
+      return this.parseDescriptionBlock()
+    }
     const start = this.next
     this.addItem("Keyword", [this.take("accDescr")])
     this.addItem("Punctuator", [this.take(":")])
@@ -1432,17 +1438,15 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
     }
   }
 
-  /** Whether the unit at `index` is one that an id can start with. */
-  private isIdPieceAt(index: number): boolean {
-    const name = this.nameAt(index)
+  /** Whether the unit at the position `position` is one that an id can start with. */
+  private isIdPieceAt(position: number): boolean {
+    const name = this.nameAt(position)
     return name !== null && ID_PIECES.includes(name)
   }
 
-  /** The index after the `space` units from `index`. */
-  private afterSpaces(index: number): number {
-    let after = index
-    while (this.nameAt(after) === "space") after += 1
-    return after
+  /** The position after the `space` units from the position `position`. */
+  private afterSpaces(position: number): number {
+    return this.afterUnitsNamed(position, ["space"])
   }
 
   /**
@@ -1506,10 +1510,8 @@ export class FlowchartGrammar extends UnitGrammar<UnitName, Unit> {
    * empty description block after it is the cause.
    */
   protected knownDivergenceAt(unit: Unit): ParseError | null {
-    const next = this.units
-      .slice(this.units.indexOf(unit) + 1)
-      .find((candidate) => candidate.name !== "space")
-    for (const cause of next === undefined ? [unit] : [unit, next]) {
+    const next = this.unitAt(this.afterSpaces(this.positionAfter(unit.index)))
+    for (const cause of next === null ? [unit] : [unit, next]) {
       if (cause.name === "click") return this.reservedClick(cause)
       const emptyForm = this.emptyFormErrorAt(cause)
       if (emptyForm !== null) return emptyForm

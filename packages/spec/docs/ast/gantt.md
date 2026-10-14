@@ -37,7 +37,7 @@ GanttDateFormatStatement, GanttAxisFormatStatement, GanttTickIntervalStatement,
 GanttTodayMarkerStatement, GanttIncludesStatement, GanttExcludesStatement,
 GanttInclusiveEndDatesStatement, GanttWeekdayStatement, GanttWeekendStatement,
 GanttTitleStatement, GanttSectionStatement, GanttAccTitleStatement,
-GanttAccDescrStatement, GanttAccDescrBlockStatement, or GanttIgnoredStatement.
+GanttAccDescrStatement, or GanttAccDescrBlockStatement.
 
 A line break belongs to no statement, and an empty line makes no node. The child
 fields of every node below are in source order, except those of
@@ -309,23 +309,6 @@ gantt/gram-acc-descr-block-empty] [fixture:
 gantt/gram-acc-descr-block-whitespace-only] [fixture:
 gantt/div-empty-description-block-between-click-id-and-href] [fixture:
 gantt/lex-acc-descr-block-unclosed]
-
-### GanttIgnoredStatement
-
-An empty href, `href ""`, or an empty call, `call ()`, where a statement starts:
-text that mermaid.js reads no token for and that changes nothing (see
-[Empty hrefs and empty calls](../diagrams/gantt.md#empty-hrefs-and-empty-calls)).
-
-| Field   | Type   | Meaning                                                                                                 |
-| ------- | ------ | ------------------------------------------------------------------------------------------------------- |
-| `value` | string | Its written text (see [ast.md](../ast.md#nodes)): from the keyword to the closing quote or parenthesis. |
-
-No child fields. The whitespace between its units is part of the value:
-`call ( )` has the value `call ( )`, and `call (`, a line feed, and `)` the
-value with the line feed. [fixture: gantt/gram-empty-href-line] [fixture:
-gantt/gram-empty-call-line] [fixture: gantt/gram-empty-call-space-inside]
-[fixture: gantt/gram-empty-call-line-feed-inside] [fixture:
-gantt/gram-click-href-then-empty-href]
 
 ### GanttLiteral
 

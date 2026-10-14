@@ -911,22 +911,26 @@ export class ErUnitLexer {
    * whitespace.
    */
   private readTildeWord(at: DiagramCharacter): boolean {
-    let firstRunHasTilde = false
-    let inFirstRun = true
-    let tildes = 0
+    // The run from `at` must hold a `~`; it ends at whitespace, which also
+    // ends a line segment. When it ends without one, the rest of the line
+    // segment is not read: reading it for each word of a long line would
+    // take time in the square of the length of the line.
+    const firstTilde = skipWhile(
+      this.reader,
+      at,
+      (character) =>
+        character.codePoint !== TILDE && !isWhitespace(character.codePoint),
+    )
+    if (!isCodePointAt(firstTilde, TILDE)) return false
     let lastTilde: DiagramCharacter | null = null
     for (
-      let position: DiagramPosition = at;
+      let position = this.reader.after(firstTilde);
       position !== null && !endsLineSegment(position);
       position = this.reader.after(position)
     ) {
-      if (isWhitespace(position.codePoint)) inFirstRun = false
-      if (position.codePoint !== TILDE) continue
-      if (inFirstRun) firstRunHasTilde = true
-      if (firstRunHasTilde) tildes += 1
-      lastTilde = position
+      if (position.codePoint === TILDE) lastTilde = position
     }
-    if (!firstRunHasTilde || tildes < 2 || lastTilde === null) return false
+    if (lastTilde === null) return false
     const end = skipWhile(
       this.reader,
       this.reader.after(lastTilde),

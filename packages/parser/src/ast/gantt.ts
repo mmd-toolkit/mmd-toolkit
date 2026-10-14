@@ -56,7 +56,6 @@ export type GanttStatement =
   | GanttAccTitleStatement
   | GanttAccDescrStatement
   | GanttAccDescrBlockStatement
-  | GanttIgnoredStatement
 
 /**
  * ast/gantt.md, GanttTaskStatement: a task, a description, a colon, and
@@ -342,25 +341,6 @@ export interface GanttAccDescrBlockStatement extends NodeBase {
   readonly type: "GanttAccDescrBlockStatement"
   /** The text between `accDescr {` and `}`, without the whitespace at its ends; null when only whitespace lies between them. */
   readonly value: GanttLiteral | null
-}
-
-/**
- * ast/gantt.md, GanttIgnoredStatement: an empty href, `href ""`, or an
- * empty call, `call ()`, where a statement starts: text that mermaid.js
- * reads no token for and that changes nothing. It has no child fields.
- *
- * ```text
- * href ""
- * ^^^^^^^
- *
- * call ( )
- * ^^^^^^^^
- * ```
- */
-export interface GanttIgnoredStatement extends NodeBase {
-  readonly type: "GanttIgnoredStatement"
-  /** Its written text (ast.md, Nodes): from the keyword to the closing quote or parenthesis. */
-  readonly value: string
 }
 
 /**

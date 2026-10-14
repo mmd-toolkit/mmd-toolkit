@@ -256,23 +256,6 @@ function clickWithCutLink(): Built {
   })
 }
 
-/** The empty href `href ""` or the empty call `call ( )`, where a statement starts. */
-function ignored(kind: "href" | "call"): Built {
-  const text = kind === "href" ? 'href ""' : "call ( )"
-  return build(`gantt\n${text}`, (kit) => {
-    const keyword = kit.token("Keyword", kind)
-    const last =
-      kind === "href"
-        ? kit.token("String", '""')
-        : (kit.token("Punctuator", "("), kit.token("Punctuator", ")"))
-    return [
-      kit.node("GanttIgnoredStatement", [keyword.range[0], last.range[1]], {
-        value: text,
-      }),
-    ]
-  })
-}
-
 /** `includes a, b` followed by three spaces: a list of two items. */
 function includes(): Built {
   return build("gantt\nincludes a, b   ", (kit) => {
@@ -349,8 +332,6 @@ const VALID: Readonly<Record<string, () => Built>> = {
   "a click statement with a link before its call": () =>
     click("href-then-call"),
   "a click statement with a link that a directive cuts": clickWithCutLink,
-  "an empty href": () => ignored("href"),
-  "an empty call": () => ignored("call"),
   "an includes statement": includes,
   "an excludes statement with whitespace only": excludesWithBlankList,
   "a weekday statement": weekday,
@@ -563,27 +544,6 @@ const BROKEN: readonly BrokenCase[] = [
     mutate: retype('"u', "String"),
     expected:
       "StringLiteral at #: the tokens of the string are not one String token or StringFragment tokens: String, StringFragment",
-  },
-  {
-    name: "the quotes of an empty href as a Punctuator token",
-    built: () => ignored("href"),
-    mutate: retype('""', "Punctuator"),
-    expected:
-      'GanttIgnoredStatement at #: the tokens after the keyword are not the String `""` or the two StringFragments `"`: [["Punctuator","\\"\\""]]',
-  },
-  {
-    name: "the keyword of an empty call as a RawText token",
-    built: () => ignored("call"),
-    mutate: retype("call", "RawText"),
-    expected:
-      'GanttIgnoredStatement at #: the first token, the keyword: ["RawText","call"], not ["Keyword","call"]',
-  },
-  {
-    name: "the parentheses of an empty call as a Keyword token",
-    built: () => ignored("call"),
-    mutate: retype(")", "Keyword"),
-    expected:
-      'GanttIgnoredStatement at #: the tokens after the keyword: [["Punctuator","("],["Keyword",")"]], not [["Punctuator","("],["Punctuator",")"]]',
   },
   // Positions: the range runs from the first of the tokens and child nodes of
   // a node to the last, so it does not cover the whitespace after them.
@@ -812,25 +772,6 @@ const RECORDED_CASES: readonly MutationCase[] = [
     expected:
       "the tokens of the string are not one String token or StringFragment tokens",
   },
-  {
-    name: "the quotes of an empty href as a RawText token",
-    fixture: "gram-empty-href-line",
-    mutate: retypeIn("GanttIgnoredStatement", "String", '""', "RawText"),
-    expected:
-      'the tokens after the keyword are not the String `""` or the two StringFragments `"`',
-  },
-  {
-    name: "the keyword of an empty call as a RawText token",
-    fixture: "gram-empty-call-space-inside",
-    mutate: retypeIn("GanttIgnoredStatement", "Keyword", "call", "RawText"),
-    expected: "the first token, the keyword",
-  },
-  {
-    name: "the parenthesis of an empty call as a Keyword token",
-    fixture: "gram-empty-call-line-feed-inside",
-    mutate: retypeIn("GanttIgnoredStatement", "Punctuator", ")", "Keyword"),
-    expected: "the tokens after the keyword",
-  },
   // The ranges.
   {
     name: "a task whose range covers the whitespace after its colon",
@@ -875,16 +816,6 @@ const RECORDED_CASES: readonly MutationCase[] = [
     mutate: setEnd("GanttAccTitleStatement", (root) => root.range[1]),
     expected:
       "the range, which runs from the first of its tokens and child nodes to the last",
-  },
-  {
-    name: "an empty call that ends before its closing parenthesis",
-    fixture: "gram-empty-call-space-inside",
-    mutate: (root) => {
-      const node = firstNode(root, "GanttIgnoredStatement")
-      const open = firstTokenIn(root, node, (token) => token.value === "(")
-      setField(node, "range", [node.range[0], open.range[1]])
-    },
-    expected: 'the tokens after the keyword: [["Punctuator","("]]',
   },
   {
     name: "a link that does not run from a quote to a quote",

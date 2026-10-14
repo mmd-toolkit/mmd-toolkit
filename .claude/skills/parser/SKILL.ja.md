@@ -98,8 +98,10 @@ pin した mermaid.js の更新を扱う。
   実際の文字に変えることがある。
   `packages/parser` のソースとテストは ASCII だけで書かれている
   （それ以外の文字は、すべてエスケープで書く）。
+  例外は、`src/code-points.ts` のコメントで、定数がどの文字かを示す
+  読める文字（`// À`）。
   書いたら、リポジトリのルートで次の 2 つを実行して確かめる。
-  どちらも何も出さなければよい。
+  1 つ目はそのコメントだけを出し、2 つ目は何も出さなければよい。
 
   ```sh
   grep -rnP '[^\x00-\x7e]' packages/parser/src packages/parser/tests packages/parser/tools
@@ -157,6 +159,10 @@ pin した mermaid.js の更新を扱う。
   ある場合の入力を増やすことでは決して得ない。
 - 結果では、主張ごとに、実行して確かめたか、コードや文書を読んで確かめたか、
   確かめていないかを区別して示す。
+- 新しく対応した図や既存のパーサーの性能レビューを依頼されたら、
+  [parser-performance-review](../parser-performance-review/SKILL.md) を使う。
+  単独で実測する再現はレビューの報告であり、
+  ここで述べる fixture に基づく適合性テストとは分ける。
 - 変更が影響しうるものだけを回す（SKILL `conventions` の「テストの実行」）。
   作業の途中では、変えたコードの部分に対応するテストのファイルを、
   `packages/parser` で `npx vitest run <ファイル>` として回す。

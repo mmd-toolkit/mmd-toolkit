@@ -10,6 +10,7 @@ import type {
 } from "./diagram-text.ts"
 import type { Match } from "./scanning.ts"
 import {
+  isBefore,
   isWhitespaceAt,
   samePosition,
   skipWhile,
@@ -76,12 +77,15 @@ export class DirectionLineRule {
   private readonly matchWord: WordMatcher
 
   /**
-   * No direction line starts at a source offset before this one and at or
-   * after the place where the rule last found none. The rule looks at the
-   * rest of a line, and what it does not find from one place it does not
-   * find from a later place of the same line.
+   * The end of the line from the place where the rule last found none: no
+   * direction line starts at a character from that place up to this one,
+   * since the rule looks at the rest of a line, and what it does not find
+   * from one place it does not find from a later place of the same line.
+   * The lexers look for a direction line only at the place they read next,
+   * which moves only forward, so a place before this one is one of those,
+   * and nothing undoes it.
    */
-  private noDirectionLineBefore = 0
+  private noDirectionLineBefore: DiagramPosition
 
   public constructor(
     reader: DiagramText,
@@ -91,11 +95,12 @@ export class DirectionLineRule {
     this.reader = reader
     this.values = values
     this.matchWord = matchWord
+    this.noDirectionLineBefore = reader.first()
   }
 
   /** The direction line that starts at `at`; null when none does. */
   public match(at: DiagramCharacter): DirectionLineMatch | null {
-    if (at.start < this.noDirectionLineBefore) return null
+    if (isBefore(at, this.noDirectionLineBefore)) return null
     const lastByValue = new Map<string, Occurrence>()
     let runEnd: DiagramPosition = at
     while (
@@ -125,7 +130,7 @@ export class DirectionLineRule {
       .map((value) => lastByValue.get(value))
       .find((occurrence) => occurrence !== undefined)
     if (found === undefined) {
-      this.noDirectionLineBefore = runEnd === null ? Infinity : runEnd.start
+      this.noDirectionLineBefore = runEnd
       return null
     }
     const lineEnd = skipWhile(

@@ -595,7 +595,7 @@ describe("the directions of the header", () => {
   }
 
   it("are the texts that rule 2 of the header context of the specification lists", () => {
-    expect([...HEADER_DIRECTIONS].sort()).toEqual(directionsOfRule().sort())
+    expect(HEADER_DIRECTIONS.toSorted()).toEqual(directionsOfRule().sort())
   })
 
   it("are texts of the Keyword tokens of a flowchart, in lower case", () => {

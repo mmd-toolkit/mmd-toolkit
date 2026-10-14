@@ -144,15 +144,9 @@ URL の文字列は、属性の引用符である引用符では終わりませ�
 本体の文は出現順に実行し、文は、それがある時点で Db を変えます。
 タスクを参照する文、つまり click の文は、それより前に読んだタスクを参照します
 （**click の文**を参照）。
-GanttIgnoredStatement、つまり文が始まるところの `href ""` と `call ()` と、
 空の description ブロック、つまりテキストのない GanttAccDescrBlockStatement は、
 何も変えません。
-それらのまわりの文は、それらがないものとして実行されます。
-[fixture: gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-line]
-[fixture: gantt/gram-empty-call-space-inside]
-[fixture: gantt/gram-empty-call-line-feed-inside]
-[fixture: gantt/gram-click-href-then-empty-href]
-[fixture: gantt/gram-click-call-then-empty-href]
+そのまわりの文は、それがないものとして実行されます。
 [fixture: gantt/gram-acc-descr-block-empty-then-title]
 [fixture: gantt/gram-acc-descr-block-whitespace-only]
 [fixture: gantt/gram-empty-description-block-after-click-statement]

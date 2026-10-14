@@ -44,9 +44,8 @@ them; between two attributes the tree holds them as an item of the block, so
 only those inside an attribute are part of this divergence (see
 [Attributes](../diagrams/er.md#attributes)). In gantt there are three: the empty
 description block, an **empty href**, `href` and two quotes with nothing between
-them, and the empty call, as in flowchart; where a statement starts, the tree
-holds an empty href or an empty call as a GanttIgnoredStatement, so only those
-inside a click statement are part of this divergence (see
+them, and the empty call, as in flowchart; an empty href and an empty call are
+part of this divergence wherever they stand (see
 [Empty hrefs and empty calls](../diagrams/gantt.md#empty-hrefs-and-empty-calls)).
 [fixture: er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-backquotes-between-type-and-name] [fixture:
@@ -531,13 +530,13 @@ er/gram-empty-backquotes-between-attributes] [fixture:
 er/gram-empty-backquotes-before-first] [fixture:
 er/gram-empty-backquotes-after-last]
 
-In gantt, between the ids of a GanttClickStatement and its first part, and
-between its two parts, where holding the form would take a field for that gap
-(reason a): `click id1 accDescr {} href "u"`, `click id1 href "" call f()`,
-`click id1 href ""href "u"`, and `click id1 call () href "u"`. Where a statement
-starts, the tree holds an empty href or an empty call as a
-GanttIgnoredStatement, and an empty description block as a statement, so the
-input is accepted (see
+In gantt, an empty description block between the ids of a GanttClickStatement
+and its first part, and between its two parts, where holding the form would take
+a field for that gap (reason a): `click id1 accDescr {} href "u"`; and an empty
+href or an empty call wherever it stands, `href ""` on a line of its own and
+`call ()x : 1d` included, because the tree holds no statement for a link or a
+call that mermaid.js discards whole, as in flowchart; where a statement starts,
+an empty description block is a statement, and the input is accepted (see
 [Empty hrefs and empty calls](../diagrams/gantt.md#empty-hrefs-and-empty-calls)).
 [fixture: gantt/div-empty-description-block-between-click-id-and-href] [fixture:
 gantt/div-empty-description-block-between-call-and-href] [fixture:

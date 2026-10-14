@@ -631,7 +631,10 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
     const start = this.next
     const from = this.parseClassName()
     const next = this.nameAt(this.next)
-    if (next === "empty-string" && !this.startsRelationAt(this.next + 1)) {
+    if (
+      next === "empty-string" &&
+      !this.startsRelationAt(this.positionAfter(this.next))
+    ) {
       // Known divergences, tokenless-empty-forms: an empty string is a
       // cardinality only where a relation follows it; elsewhere after a
       // class name, it lies where the grammar takes no string.
@@ -680,9 +683,9 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
     return label.label
   }
 
-  /** Relations: whether the unit at `index` starts a `relation`, a relation end or a line. */
-  private startsRelationAt(index: number): boolean {
-    const name = this.nameAt(index)
+  /** Relations: whether the unit at the position `position` starts a `relation`, a relation end or a line. */
+  private startsRelationAt(position: number): boolean {
+    const name = this.nameAt(position)
     return name !== null && (name in RELATION_ENDS || name in LINES)
   }
 
@@ -1017,7 +1020,8 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
       })
       return
     }
-    if (this.nameAt(this.next + 1) === ":") {
+    const afterKeyword = this.positionAfter(this.next)
+    if (this.nameAt(afterKeyword) === ":") {
       this.addItem("Keyword", [this.take("accDescr")])
       this.addItem("Punctuator", [this.take(":")])
       const value = this.literalOf([this.take("description-text")])
@@ -1028,7 +1032,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
       })
       return
     }
-    const empty = this.nameAt(this.next + 2) === "}"
+    const empty = this.nameAt(this.positionAfter(afterKeyword)) === "}"
     body.push(this.parseDescriptionBlock())
     // Empty description blocks: another statement follows on the same line.
     if (empty) this.parseStatement(body)
@@ -1064,7 +1068,7 @@ export class ClassGrammar extends UnitGrammar<UnitName, Unit> {
   protected knownDivergenceAt(unit: Unit): ParseError | null {
     const own = this.emptyFormErrorAt(unit)
     if (own !== null) return own
-    const previous = this.units[this.units.indexOf(unit) - 1]
+    const previous = this.unitAt(this.positionBefore(unit.index))
     return previous?.name === "~" ? this.emptyFormErrorAt(previous) : null
   }
 }

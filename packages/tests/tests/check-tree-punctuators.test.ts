@@ -146,7 +146,7 @@ function describeShape(
   shape: { name: string; opening: string },
   closings: readonly string[],
 ): string {
-  return `${shape.name} ${shape.opening}: ${[...closings].sort().join(" ")}`
+  return `${shape.name} ${shape.opening}: ${closings.toSorted().join(" ")}`
 }
 
 /** The closings that a row of the table of the document gives: its closing, or those of the unit that it names. */

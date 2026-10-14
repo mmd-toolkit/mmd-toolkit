@@ -675,30 +675,22 @@ type AnyUnit = DiagramUnit<string>
 
 /**
  * The units of a diagram text as the parser's lexer reads them, and how an
- * empty form that is a statement is found among them: where a statement
- * starts, and before the separator of a statement (each diagram's Empty
- * description blocks before a separator).
+ * empty description block that is a statement is found among them: where
+ * a statement starts, and before the separator of a statement (each
+ * diagram's Empty description blocks before a separator).
  */
 interface DiagramUnits {
   readonly units: readonly AnyUnit[]
   /** The kinds of empty form that the diagram has (see `EMPTY_FORM_KINDS`). */
   readonly emptyFormKinds: readonly EmptyFormKind[]
   /**
-   * The kinds of empty form that are a statement where a statement starts:
-   * the empty description block in every diagram type, and in gantt the
-   * empty href and the empty call too (diagrams/gantt.md, Empty hrefs and
-   * empty calls); a form of any other kind is never one.
-   */
-  readonly statementFormKinds: readonly EmptyFormKind[]
-  /**
-   * Whether a statement starts at the empty form `form`, one of
-   * `statementFormKinds`, from the units before it and the units after
-   * it, in source order, without those of the empty forms that mermaid.js
-   * does not see.
+   * Whether a statement starts at the empty description block `block`,
+   * from the units before it and the units after it, in source order,
+   * without those of the empty forms that mermaid.js does not see.
    */
   readonly statementStartsAt: (
     before: readonly AnyUnit[],
-    form: EmptyForm<AnyUnit>,
+    block: EmptyForm<AnyUnit>,
     after: readonly AnyUnit[],
   ) => boolean
   /** The names of the units that separate a statement that needs a separator from what follows it. */
@@ -797,20 +789,19 @@ function readsAsUnits(
 
 /**
  * The empty forms among the units of `diagram` that mermaid.js reads
- * nothing for: every empty form of a kind that is never a statement, and
- * every one of `statementFormKinds` that is no statement, neither where a
- * statement starts nor before its separator. Whether a form is one is
- * read from the units around it other than the `space` units, and, before
- * it, other than the units of the empty forms found here already, which
- * mermaid.js does not see.
+ * nothing for: every empty form of another kind, such as an empty string
+ * or an empty call, and every empty description block that is no
+ * statement, neither where a statement starts nor before its separator.
+ * Whether a block is one is read from the units around it other than the
+ * `space` units, and, before it, other than the units of the empty forms
+ * found here already, which mermaid.js does not see.
  */
 function removedEmptyFormsOf(diagram: DiagramUnits): EmptyForm<AnyUnit>[] {
-  const { units, emptyFormKinds, statementFormKinds, statementStartsAt } =
-    diagram
+  const { units, emptyFormKinds, statementStartsAt } = diagram
   const removed: EmptyForm<AnyUnit>[] = []
   const removedUnits = new Set<AnyUnit>()
   for (const form of emptyFormsOf(units, emptyFormKinds)) {
-    if (statementFormKinds.includes(form.kind)) {
+    if (form.kind === "empty-description-block") {
       const before = units
         .slice(0, form.units[0].index)
         .filter((unit) => unit.name !== "space" && !removedUnits.has(unit))
@@ -951,7 +942,6 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
     return {
       units: sequence.units,
       emptyFormKinds: EMPTY_FORM_KINDS.sequence,
-      statementFormKinds: ["empty-description-block"],
       statementStartsAt: (before) => sequenceStatementStartsAfter(before),
       separators: ["newline"],
       endOfTextSeparates: false,
@@ -963,7 +953,6 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
     return {
       units: classLexing.units,
       emptyFormKinds: EMPTY_FORM_KINDS.class,
-      statementFormKinds: ["empty-description-block"],
       statementStartsAt: (before) => classStatementStartsAfter(before),
       separators: ["newline"],
       endOfTextSeparates: true,
@@ -975,7 +964,6 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
     return {
       units: state.units,
       emptyFormKinds: EMPTY_FORM_KINDS.state,
-      statementFormKinds: ["empty-description-block"],
       statementStartsAt: (before, block, after) =>
         stateStatementStartsAt(text, before, block, after),
       separators: ["newline"],
@@ -988,7 +976,6 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
     return {
       units: er.units,
       emptyFormKinds: EMPTY_FORM_KINDS.er,
-      statementFormKinds: ["empty-description-block"],
       statementStartsAt: (before, _block, after) =>
         erStatementStartsAt(before, after),
       // diagrams/er.md, Diagram and statements: nothing separates two
@@ -1003,11 +990,10 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
     return {
       units: gantt.units,
       emptyFormKinds: EMPTY_FORM_KINDS.gantt,
-      statementFormKinds: EMPTY_FORM_KINDS.gantt,
-      statementStartsAt: (before, _form, after) =>
-        !ganttFormInsideClickStatement(before, after),
+      statementStartsAt: (before, _block, after) =>
+        !ganttBlockInsideClickStatement(before, after),
       // diagrams/gantt.md, Diagram and statements: nothing separates two
-      // statements, so a form is a statement only where one starts.
+      // statements, so a block is a statement only where one starts.
       separators: [],
       endOfTextSeparates: false,
       removedRangeOf: (form) => form.range,
@@ -1021,7 +1007,6 @@ function flowchartUnits(units: readonly Unit[]): DiagramUnits {
   return {
     units,
     emptyFormKinds: EMPTY_FORM_KINDS.flowchart,
-    statementFormKinds: ["empty-description-block"],
     statementStartsAt: (before) => flowchartStatementStartsAfter(before),
     separators: ["newline", ";"],
     endOfTextSeparates: true,
@@ -1192,15 +1177,15 @@ const GANTT_PART_UNITS: readonly (readonly [string, readonly string[]])[] = [
 ]
 
 /**
- * diagrams/gantt.md, Empty description blocks, and Empty hrefs and empty
- * calls: whether an empty form, with `before` and `after` the units before
- * and after it, in source order, lies inside a click statement, between
- * its ids and its first part or between its two parts. It does where
- * `before` ends with `click`, its ids, and at most one part, and the first
- * unit of `after` after the empty forms there starts a part of the other
- * kind, a `call` or an `href` that starts no empty form.
+ * diagrams/gantt.md, Empty description blocks: whether an empty
+ * description block, with `before` and `after` the units before and after
+ * it, in source order, lies inside a click statement, between its ids and
+ * its first part or between its two parts. It does where `before` ends
+ * with `click`, its ids, and at most one part, and the first unit of
+ * `after` after the empty forms there, of any kind, starts a part of the
+ * other kind, a `call` or an `href` that starts no empty form.
  */
-function ganttFormInsideClickStatement(
+function ganttBlockInsideClickStatement(
   before: readonly AnyUnit[],
   after: readonly AnyUnit[],
 ): boolean {

@@ -161,7 +161,8 @@ export const KNOWN_DIVERGENCES: readonly string[] = [
   // name and an empty generic type, accepted as a node where the class grammar
   // has a field that may be empty; in er, an empty description block that
   // does not start a statement and an empty backquoted word of an attribute
-  // block. mermaid's lexer reads no token for them and accepts an input as if
+  // block; in gantt, an empty `href` and an empty `call` wherever they stand.
+  // mermaid's lexer reads no token for them and accepts an input as if
   // they were not there. The difference goes one way only.
   "tokenless-empty-forms",
   // In sequence, a comment starts at its `%%`. mermaid's lexer reads the

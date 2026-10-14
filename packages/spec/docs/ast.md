@@ -111,13 +111,12 @@ A node of text that mermaid.js does not read, a
 [ClassIgnoredText](./ast/class.md#classignoredtext), a
 [StateIgnoredText](./ast/state.md#stateignoredtext), a
 [StateIgnoredStatement](./ast/state.md#stateignoredstatement), or a
-[SequenceIgnoredStatement](./ast/sequence.md#sequenceignoredstatement), or a
-[GanttIgnoredStatement](./ast/gantt.md#ganttignoredstatement), shows what the
-author wrote there as written: its written text is that of a value, which also
-leaves out the comments. The whitespace and line terminators between its units
-are part of it, and a comment is not: after `state "d" as A`, the lines
-`state %% c` and `state {` with a body give A the `textBeforeBody` of `state`, a
-space, a line feed, two spaces, and `state`, and in
+[SequenceIgnoredStatement](./ast/sequence.md#sequenceignoredstatement), shows
+what the author wrote there as written: its written text is that of a value,
+which also leaves out the comments. The whitespace and line terminators between
+its units are part of it, and a comment is not: after `state "d" as A`, the
+lines `state %% c` and `state {` with a body give A the `textBeforeBody` of
+`state`, a space, a line feed, two spaces, and `state`, and in
 `state X "" %%{init: {}}%% ""` followed by a line `{` with a body, it is the two
 empty strings with the two spaces between them. [fixture:
 state/tokens-ignored-text-comment-between-units] [fixture:

@@ -923,3 +923,89 @@ Values of the summary, by field:
   gantt/db-click-call-args] [fixture: gantt/db-click-ids-list]
 
 Values are recorded as the Db holds them, whitespace included.
+
+## journey
+
+The fields of the summary:
+
+| Field      | Content                                                                       |
+| ---------- | ----------------------------------------------------------------------------- |
+| `title`    | The title of the last `title` statement, else of the frontmatter, else empty. |
+| `accTitle` | The accessibility title, or the empty text.                                   |
+| `accDescr` | The accessibility description, or the empty text.                             |
+| `sections` | The names of the sections, one for each `section` statement, in source order. |
+| `tasks`    | The tasks, in source order.                                                   |
+
+A task has `section`, `task`, `people`, and `score`.
+
+`normalizeJourney()` (`src/normalizers/journey.ts`) summarizes the Db of
+`journey`. The Db reads no browser feature, no time and no random value, and the
+syntax has no links, so the summary needs no patch of the Db. It is one object
+that every journey diagram shares, whose state `clear()` resets before each
+parse.
+[`getTasks()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L35-L47)
+appends the tasks to its list every time it is called, so the summary reads the
+list once and empties it again, which leaves the Db as it was. It drops the
+following, each for the reason given:
+
+- `tasks[].type`: the section again.
+- `getActors()`
+  ([`updateActors`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L49-L59)):
+  the people of the tasks, without repeats and sorted, made from the tasks
+  alone.
+
+Values of the summary, by field:
+
+- `title` is the text after `title` and its whitespace, up to a `#` or the end
+  of the line. A `title` statement replaces the title of the frontmatter.
+  [fixture: journey/db-title-statement] [fixture: journey/db-title-ends-at-hash]
+  [fixture: journey/db-title-frontmatter] [fixture:
+  journey/db-title-statement-after-frontmatter]
+- `accTitle` and `accDescr` are the text of the statement, trimmed. The text of
+  a description in a block has its line breaks, and the whitespace after each of
+  them is left out. [fixture: journey/db-acc-title] [fixture:
+  journey/db-acc-descr] [fixture: journey/db-acc-descr-block]
+- The title and the accessibility texts pass through `sanitizeText` and, under a
+  `securityLevel` that is not one of mermaid.js's values with HTML labels
+  enabled, hold the replaced characters (see
+  [db-from-tree.md](./db-from-tree.md), the replacement of characters). The
+  names of sections, the descriptions of tasks, and the people are not changed.
+  [fixture: journey/config-security-level-other-title] [fixture:
+  journey/config-security-level-other-acc-title] [fixture:
+  journey/config-security-level-other-acc-descr] [fixture:
+  journey/config-security-level-other-names-as-written]
+- `sections` has the text of each `section` statement without the keyword and
+  the one whitespace character after it, also when a name repeats. A task before
+  the first section has the empty `section`. The name ends before a `#`, which
+  starts a comment to the end of the line; the space before it stays. [fixture:
+  journey/db-sections] [fixture: journey/db-task-before-section] [fixture:
+  journey/db-section-ends-at-hash]
+- `task` is the text before the colon, with the spaces before it. [fixture:
+  journey/db-task-description-spaces]
+- [`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
+  splits the text after the first colon at each colon. `score` is the number
+  that JavaScript makes of the first piece, so a decimal, a hexadecimal number,
+  an exponent, and a negative number are numbers, the spaces around the number
+  are not part of it, and an empty piece is 0. [fixture:
+  journey/db-task-score-decimal] [fixture: journey/db-task-score-hexadecimal]
+  [fixture: journey/db-task-score-exponent] [fixture:
+  journey/db-task-score-negative] [fixture: journey/db-task-score-spaces]
+  [fixture: journey/db-task-score-empty] A score that is no finite number is
+  recorded as the text of the number, since JSON has no such number: `NaN` for a
+  piece that is no number, and `Infinity` or `-Infinity` for the pieces
+  `Infinity` and `-Infinity` and for a number too large for a double, such as
+  `1e400`. [fixture: journey/db-task-score-not-a-number] [fixture:
+  journey/db-task-score-infinity] [fixture:
+  journey/db-task-score-negative-infinity] [fixture:
+  journey/db-task-score-overflow]
+- `people` is the second piece split at each comma and trimmed, one name for
+  each comma, so an empty item is an empty name and a blank piece is one empty
+  name. Without a second piece there are no people. The pieces after the second
+  are left out. [fixture: journey/db-task-people] [fixture:
+  journey/db-task-people-empty-item] [fixture: journey/db-task-people-blank]
+  [fixture: journey/db-task-score-only] [fixture: journey/db-task-extra-colon]
+  The data of a task ends before a `#` as well, and the rest of the line is a
+  comment: `A: 1: x #y, z` has the people `x`. [fixture:
+  journey/db-task-data-ends-at-hash]
+
+Values are recorded as the Db holds them, whitespace included.

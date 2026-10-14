@@ -41,8 +41,8 @@ GanttTickIntervalStatement、GanttTodayMarkerStatement、
 GanttIncludesStatement、GanttExcludesStatement、
 GanttInclusiveEndDatesStatement、GanttWeekdayStatement、
 GanttWeekendStatement、GanttTitleStatement、GanttSectionStatement、
-GanttAccTitleStatement、GanttAccDescrStatement、GanttAccDescrBlockStatement、
-GanttIgnoredStatement のいずれかです。
+GanttAccTitleStatement、GanttAccDescrStatement、GanttAccDescrBlockStatement
+のいずれかです。
 
 改行はどの文にも属さず、空行はノードを作りません。
 以下のどのノードの子の欄もソースの順です。
@@ -327,25 +327,6 @@ gantt/gram-acc-descr-block-empty] [fixture:
 gantt/gram-acc-descr-block-whitespace-only] [fixture:
 gantt/div-empty-description-block-between-click-id-and-href] [fixture:
 gantt/lex-acc-descr-block-unclosed]
-
-### GanttIgnoredStatement
-
-文の始まる位置の、空の href `href ""` か空の call `call ()`。
-mermaid.js がトークンを読まず、何も変えないテキストです
-（[空の href と空の call](../diagrams/gantt.ja.md#空の-href-と空の-call)
-を参照）。
-
-| 欄      | 型     | 意味                                                                                                    |
-| ------- | ------ | ------------------------------------------------------------------------------------------------------- |
-| `value` | string | 書かれたテキスト（[ast.ja.md](../ast.ja.md#ノード) を参照）。キーワードから閉じる引用符か括弧までです。 |
-
-子の欄はありません。単位の間の空白は値の一部です。
-`call ( )` は値 `call ( )` を持ち、
-`call (`、改行、`)` は改行を含む値を持ちます。
-[fixture: gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-line]
-[fixture: gantt/gram-empty-call-space-inside] [fixture:
-gantt/gram-empty-call-line-feed-inside] [fixture:
-gantt/gram-click-href-then-empty-href]
 
 ### GanttLiteral
 

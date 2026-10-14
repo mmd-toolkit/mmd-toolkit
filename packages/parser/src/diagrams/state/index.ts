@@ -46,8 +46,7 @@ export function parseStateDiagram(input: DiagramInput): Root {
   new StateDbRejections(
     input.lexer.lines,
     syntax.stateIds,
-    syntax.tokens,
-    input.lexer.text,
+    syntax.aliasesWithColon,
   ).check(syntax.body)
   return finishDiagram(
     input,

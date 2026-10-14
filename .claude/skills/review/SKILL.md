@@ -161,6 +161,14 @@ Every review has a section on proper form, also when the behavior is right:
   states a direct rule?
 - Readability: types inferred from values, generalizations with one user,
   indirection without a reader, empty JSDoc, autofix stubs, commented-out code.
+- The plainest form: before reading, know the environment the project targets
+  (the `engines` of package.json, the `target` and `lib` of tsconfig.json, the
+  versions of the dependencies), and read each changed line asking whether a
+  more standard or shorter way exists there. A setting that lags the runtime (a
+  `lib` older than what the `engines` run) is itself a finding. This is a way of
+  reading, not a list of patterns: a review that passed `[...runs].reverse()`
+  where `runs.toReversed()` was available had checked correctness and the items
+  above, and not asked the question.
 
 ## 5. Findings and the report
 

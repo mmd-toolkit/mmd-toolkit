@@ -82,6 +82,10 @@ flowchart LR
   The formatting rules, with examples, are in [docs/class.md](./docs/class.md).
 - State diagrams: diagrams that start with `stateDiagram` or `stateDiagram-v2`.
   The formatting rules, with examples, are in [docs/state.md](./docs/state.md).
+- ER diagrams: diagrams that start with `erDiagram`. The formatting rules, with
+  examples, are in [docs/er.md](./docs/er.md).
+- Gantt charts: diagrams that start with `gantt`. The formatting rules, with
+  examples, are in [docs/gantt.md](./docs/gantt.md).
 - The YAML frontmatter of these diagrams, with Prettier's YAML formatter.
 
 Other diagram types are not formatted yet (see below).
@@ -103,9 +107,9 @@ Other diagram types are not formatted yet (see below).
   `subgraph Handle click events`: in flowchart, `click` is a reserved word. An
   empty string between tokens, as in `A-->|x""|B`, is reported too. The full
   list is in [docs/compatibility.md](./docs/compatibility.md).
-- A diagram type other than flowchart, sequence, class, and state is not
-  changed, except that line endings follow `endOfLine`. In Markdown, it is left
-  to Prettier.
+- A diagram type other than flowchart, sequence, class, state, ER, and Gantt is
+  not changed, except that line endings follow `endOfLine`. In Markdown, it is
+  left to Prettier.
 
 ## Guarantees and limitations
 
@@ -138,6 +142,8 @@ The reasons and the details are in
   diagrams.
 - [docs/class.md](./docs/class.md): the formatting rules for class diagrams.
 - [docs/state.md](./docs/state.md): the formatting rules for state diagrams.
+- [docs/er.md](./docs/er.md): the formatting rules for ER diagrams.
+- [docs/gantt.md](./docs/gantt.md): the formatting rules for Gantt charts.
 - [docs/compatibility.md](./docs/compatibility.md): where the plugin differs
   from mermaid.js, and why.
 - [docs/development.md](./docs/development.md): the tests and the fixtures, for

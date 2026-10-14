@@ -19,7 +19,6 @@ import type {
   StateStyleStatement,
 } from "../../ast/state.ts"
 import type { DiagramComment } from "../../diagram-parsing.ts"
-import type { EmptyForm } from "../../empty-forms.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import type { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
@@ -39,6 +38,15 @@ export interface StateSyntax {
    * which the rejections outside the grammar read.
    */
   readonly stateIds: ReadonlyMap<Identifier | StateLiteral, string>
+  /**
+   * Rejections outside the grammar: the alias definitions with a `:`, also
+   * when the second description after it is empty and has no node. The
+   * grammar records each where it reads the `:`, so that the rejections
+   * outside the grammar need not look for it again among the tokens of the
+   * whole diagram, for every alias, which takes time in the square of their
+   * number.
+   */
+  readonly aliasesWithColon: ReadonlySet<StateAliasDefinitionStatement>
 }
 
 /** The state context, rule 4: the kind of each pseudostate mark. */
@@ -74,6 +82,8 @@ const STATE_CONTEXT_STARTS: readonly UnitName[] = [
 export class StateGrammar extends UnitGrammar<UnitName, Unit> {
   private readonly stateIds = new Map<Identifier | StateLiteral, string>()
 
+  private readonly aliasesWithColon = new Set<StateAliasDefinitionStatement>()
+
   public constructor(
     units: readonly Unit[],
     comments: readonly DiagramComment[],
@@ -91,6 +101,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
       body,
       tokens: this.tokensInOrder(),
       stateIds: this.stateIds,
+      aliasesWithColon: this.aliasesWithColon,
     }
   }
 
@@ -324,9 +335,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
    * whether a name or the string of an alias follows it.
    */
   private emptyStringsBelongToStatement(): boolean {
-    let end = this.next
-    while (this.nameAt(end) === "empty-string") end += 1
-    const after = this.nameAt(end)
+    const after = this.nameAt(this.afterUnitsNamed(this.next, ["empty-string"]))
     return after === "state-name" || after === "string"
   }
 
@@ -385,33 +394,16 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
    * to the last; null when there are none, or when no `{` follows them.
    */
   private parseTextBeforeBody(): StateIgnoredText | null {
-    let end = this.next
-    while (this.nameAt(end) === "empty-string") end += 1
-    for (
-      let block = this.emptyDescriptionBlockAt(end);
-      block !== null;
-      block = this.emptyDescriptionBlockAt(end)
-    ) {
-      end += block.units.length
-    }
+    let end = this.afterUnitsNamed(this.next, ["empty-string"])
+    end = this.afterEmptyForms(end, ["empty-description-block"])
     while (this.nameAt(end) === "ignored-state") {
-      end += 1
-      while (this.nameAt(end) === "empty-string") end += 1
+      end = this.afterUnitsNamed(this.positionAfter(end), ["empty-string"])
     }
-    if (this.nameAt(end) === "ignored-text") end += 1
+    if (this.nameAt(end) === "ignored-text") end = this.positionAfter(end)
     if (end === this.next || this.nameAt(end) !== "{") return null
     const units: Unit[] = []
     while (this.next < end) units.push(this.take(this.nameAt(this.next) ?? "{"))
     return this.ignoredTextOfUnits(units)
-  }
-
-  /** The empty description block that starts at the unit at `index`; null when none starts there. */
-  private emptyDescriptionBlockAt(index: number): EmptyForm<Unit> | null {
-    const unit = this.units.at(index)
-    const form = unit === undefined ? null : this.emptyFormOf(unit)
-    return form?.kind === "empty-description-block" && form.units[0] === unit
-      ? form
-      : null
   }
 
   /**
@@ -468,7 +460,7 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
       colon === null
         ? null
         : this.optionalIgnoredText(this.takeIf("ignored-text"))
-    return {
+    const statement: StateAliasDefinitionStatement = {
       type: "StateAliasDefinitionStatement",
       textBeforeDescription,
       description,
@@ -480,6 +472,8 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
       body: this.parseBody(),
       ...this.placeFrom(start),
     }
+    if (colon !== null) this.aliasesWithColon.add(statement)
+    return statement
   }
 
   /** Notes: `'"'+`, the quotes of a floating note, each a `Punctuator` token. */
@@ -803,8 +797,8 @@ export class StateGrammar extends UnitGrammar<UnitName, Unit> {
   protected knownDivergenceAt(unit: Unit): ParseError | null {
     const own = this.emptyFormErrorAt(unit)
     if (own !== null) return own
-    const previous = this.units[this.units.indexOf(unit) - 1]
-    return previous === undefined ? null : this.emptyFormErrorAt(previous)
+    const previous = this.unitAt(this.positionBefore(unit.index))
+    return previous === null ? null : this.emptyFormErrorAt(previous)
   }
 }
 

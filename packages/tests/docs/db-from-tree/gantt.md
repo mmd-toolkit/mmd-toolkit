@@ -126,15 +126,9 @@ gantt/db-click-call-arguments-attribute-quote]
 **The walk.** The statements of the body are executed in source order, and a
 statement changes the Db at the point where it stands. A statement that refers
 to tasks, a click statement, refers to those read before it (see **Click
-statements**). A GanttIgnoredStatement, `href ""` or `call ()` where a statement
-starts, and an empty description block, a GanttAccDescrBlockStatement without
-text, change nothing; the statements around them are executed as if they were
-not there. [fixture: gantt/gram-empty-href-line] [fixture:
-gantt/gram-empty-call-line] [fixture: gantt/gram-empty-call-space-inside]
-[fixture: gantt/gram-empty-call-line-feed-inside] [fixture:
-gantt/gram-click-href-then-empty-href] [fixture:
-gantt/gram-click-call-then-empty-href] [fixture:
-gantt/gram-acc-descr-block-empty-then-title] [fixture:
+statements**). An empty description block, a GanttAccDescrBlockStatement without
+text, changes nothing; the statements around it are executed as if it were not
+there. [fixture: gantt/gram-acc-descr-block-empty-then-title] [fixture:
 gantt/gram-acc-descr-block-whitespace-only] [fixture:
 gantt/gram-empty-description-block-after-click-statement] [fixture:
 gantt/db-acc-descr-then-empty-block]

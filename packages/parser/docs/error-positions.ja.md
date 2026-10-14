@@ -382,26 +382,43 @@
   Gantt チャートでは、空の形に、空の href
   （`href` と、間に何もない 2 つの `"`）も入ります。
   メッセージは `An empty href cannot be written here` です。
-  click の文の中では、最初の部分の前の空の形は、
+  空の href と空の call は、どこにあってもどの規則も取らないので、
+  文の始まりでも click の文の中でも、文法はそこで止まります。
+  `href ""` の行の次に `title T` の行が続く入力、`call ()x : 1d`、
+  `click id1 href ""`、`click id1 href "u" href ""` では、その空の形を報告し、
+  `href "" call ()` と `href "" accDescr {}` では 2 つのうち最初を報告します。
+  [fixture: gantt/gram-empty-href-line]
+  [fixture: gantt/gram-empty-call-glued-task]
+  [fixture: gantt/gram-click-empty-href-only]
+  [fixture: gantt/gram-click-href-then-empty-href]
+  [fixture: gantt/gram-empty-href-and-empty-call-line]
+  [fixture: gantt/gram-empty-href-then-empty-description-block-same-line]
+  文の始まりで、その前にある空の説明ブロックは文なので、
+  その後の空の href か空の call を報告します。
+  `accDescr {} href ""` では、空の href を報告します。
+  [fixture: gantt/gram-empty-description-block-then-empty-href-same-line]
+  [fixture: gantt/gram-empty-description-block-then-empty-call-same-line]
+  引用符の間にディレクティブのある空の href と、
+  括弧の間にディレクティブのある空の call は、
+  ディレクティブを越えて、キーワードから閉じの引用符か括弧までを報告します。
+  [fixture: gantt/lex-empty-href-directive-between-quotes]
+  [fixture: gantt/lex-empty-call-directive-between-parentheses]
+  [fixture: gantt/div-empty-href-directive-between-quotes-before-call]
+  click の文の中では、最初の部分の前の空の説明ブロックも、
   文法が止まったところで見つけます。
-  id の後に空の形しかないときも同じで、mermaid.js もこれを拒否します。
-  `click id1 href ""` では、空の href を報告します。
-  引用符の間にディレクティブのある空の href も空の href で、
-  ディレクティブを越えて、`href` から閉じの引用符までを報告します。
   最初の部分の後に続けて書かれた空の形は、その最後のものの後の単位で決めます。
   その単位が 2 つ目の部分を始めるときは、最初のものを報告します。
   `click id1 href "u" accDescr {} call f()` がその例です。
   [fixture: gantt/div-empty-href-before-call]
   [fixture: gantt/div-empty-call-before-href]
   [fixture: gantt/div-empty-href-and-empty-call-before-href]
-  [fixture: gantt/gram-click-empty-href-only]
-  [fixture: gantt/div-empty-href-directive-between-quotes-before-call]
   [fixture: gantt/div-empty-description-block-between-href-and-call]
   [fixture: gantt/div-empty-href-between-call-and-href]
   [fixture: gantt/div-empty-call-between-href-and-call]
   [fixture: gantt/div-empty-href-between-href-and-call]
   [fixture: gantt/div-empty-href-and-empty-call-between-parts]
   [fixture: gantt/div-empty-description-block-and-empty-href-between-parts]
+  [fixture: gantt/div-empty-call-and-empty-description-block-between-parts]
 
 `html-tag-in-frontmatter` は、どの `"` を `'` として読むかを変えます。
 パーサーはそれを区別しないので、そこから起きる拒否は、上の規則で報告します。

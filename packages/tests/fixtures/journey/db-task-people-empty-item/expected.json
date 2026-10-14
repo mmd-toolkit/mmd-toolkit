@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty item between commas is an empty name."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A",
+        "people": [
+          "a",
+          "",
+          "b"
+        ],
+        "score": 3
+      }
+    ]
+  }
+}

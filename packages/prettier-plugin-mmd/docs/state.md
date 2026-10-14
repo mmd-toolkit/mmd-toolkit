@@ -259,7 +259,11 @@ statements, as in a flowchart (see
 [Statements one per line](./flowchart.md#statements-one-per-line)); in a state
 diagram, a `;` is a character of an id. [fixture:
 statements-one-per-line/line-with-semicolon-kept] [fixture:
-statements-one-per-line/line-with-ignored-semicolon-kept]
+statements-one-per-line/line-with-ignored-semicolon-kept] The `}` of a composite
+state on such a line, with a statement after it on the line, stays on the line:
+it would otherwise go to a line of its own and leave the statement on a line
+without the `;`. [fixture:
+statements-one-per-line/line-with-semicolon-closing-brace-kept]
 
 Input
 ([statements-one-per-line/split-input.mmd](../tests/fixtures/state/statements-one-per-line/split-input.mmd)):

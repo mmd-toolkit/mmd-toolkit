@@ -51,12 +51,6 @@ The range runs from the keyword to the last character of the text that is not
 whitespace: the whitespace at the end of the line, which the value leaves out,
 is outside it. [fixture: gantt/gram-acc-title-trailing-spaces]
 
-### GanttIgnoredStatement
-
-The range runs from the keyword to the closing quote or parenthesis, over the
-whitespace between its units, which its value holds: `call (`, a line feed, and
-`)` covers both lines. [fixture: gantt/gram-empty-call-line-feed-inside]
-
 ### GanttLiteral
 
 The range is that of its token, with the whitespace at its ends where the token

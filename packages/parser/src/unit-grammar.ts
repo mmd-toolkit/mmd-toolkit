@@ -12,6 +12,7 @@ import type { EmptyForm } from "./empty-forms.ts"
 import { emptyFormError, emptyFormsOf } from "./empty-forms.ts"
 import type { EmptyFormKind } from "./empty-forms.ts"
 import { ParseError } from "./errors.ts"
+import { firstIndexWhere } from "./ordered-search.ts"
 import type { LineIndex } from "./positions.ts"
 import type { PendingToken, SourceLexer } from "./source-lexer.ts"
 
@@ -34,18 +35,29 @@ export abstract class UnitGrammar<
   Unit extends DiagramUnit<Name>,
 > {
   /**
-   * The units of the diagram text that the grammar reads, in source order:
-   * those of the lexer, without the units taken out
-   * ({@link UnitGrammar.takeOut}).
+   * The units of the diagram text, those of the lexer, in source order. The
+   * position of a unit is its index here, which is its own `index`.
    */
-  protected units: readonly Unit[]
+  private readonly allUnits: readonly Unit[]
+
+  /**
+   * The units taken out ({@link UnitGrammar.takeOut}), which the grammar
+   * reads as if they were not there. They stay in the list of units, marked
+   * here: cutting them out of the list would move every unit after them, the
+   * rest of the text, once for each statement whose units are taken out,
+   * which takes time in the square of the number of statements. Marked, every
+   * unit keeps its position, and taking units out costs only their number.
+   * {@link UnitGrammar.positionAfter} and {@link UnitGrammar.positionBefore},
+   * the ways along the units, pass over them.
+   */
+  private readonly removed = new Set<Unit>()
 
   protected readonly lexer: SourceLexer
 
   protected readonly lines: LineIndex
 
-  /** Which unit is read next. */
-  protected next = 0
+  /** The position of the unit read next (see {@link UnitGrammar.next}). */
+  private nextPosition = 0
 
   /**
    * The empty form that each unit belongs to, for the units of the empty
@@ -65,7 +77,14 @@ export abstract class UnitGrammar<
     emptyFormKinds: readonly EmptyFormKind[],
     diagramComments: readonly DiagramComment[],
   ) {
-    this.units = units
+    units.forEach((unit, position) => {
+      if (unit.index !== position) {
+        throw new Error(
+          `mmd-toolkit parser bug: the unit at position ${position} has the index ${unit.index}`,
+        )
+      }
+    })
+    this.allUnits = units
     this.lexer = lexer
     this.diagramComments = diagramComments
     this.lines = lexer.lines
@@ -127,11 +146,11 @@ export abstract class UnitGrammar<
   /**
    * Each diagram's Empty description blocks before a separator:
    * `statement-end = empty-description-block* separator`, after the last
-   * unit of a statement. The index of its separator, the unit after the
+   * unit of a statement. The position of its separator, the unit after the
    * `empty-description-block`s that start at the next unit, which the
    * caller reads as statements of their own; the separator is a unit named
    * in `separators`, or, when `endOfText` holds, the end of the text, where
-   * the index is that of no unit. When no separator follows, the error is
+   * the position is that of no unit. When no separator follows, the error is
    * that of the first block, which then lies inside a statement, or of the
    * unit, when no block comes before it.
    */
@@ -139,58 +158,155 @@ export abstract class UnitGrammar<
     separators: readonly Name[],
     endOfText: boolean,
   ): number {
-    let end = this.next
-    for (;;) {
-      const unit = this.units.at(end)
-      const form = unit === undefined ? null : this.emptyFormOf(unit)
-      if (form?.kind !== "empty-description-block" || form.units[0] !== unit) {
-        break
-      }
-      end += form.units.length
-    }
-    const separator = this.units.at(end)
+    const end = this.afterEmptyForms(this.next, ["empty-description-block"])
+    const separator = this.unitAt(end)
     const separates =
-      separator === undefined ? endOfText : separators.includes(separator.name)
+      separator === null ? endOfText : separators.includes(separator.name)
     if (!separates) throw this.unexpected(this.peek())
     return end
   }
 
   /**
+   * The position of the unit read next; that of no unit at the end of the
+   * text. It is never that of a unit taken out: it moves only through
+   * {@link UnitGrammar.advance} and {@link UnitGrammar.moveTo}.
+   */
+  protected get next(): number {
+    return this.nextPosition
+  }
+
+  /**
    * Takes `units`, which all lie after the next unit, out of the units that
-   * the grammar reads; the units before the next one keep their indices.
+   * the grammar reads: it reads on as if they were not there (see
+   * {@link UnitGrammar.removed}).
    */
   protected takeOut(units: readonly Unit[]): void {
-    const taken = new Set(units)
     for (const unit of units) {
-      if (this.units.indexOf(unit) < this.next) {
+      if (unit.index <= this.next) {
         throw new Error(
           `mmd-toolkit parser bug: the unit at ${unit.start} is read already`,
         )
       }
+      this.removed.add(unit)
     }
-    this.units = this.units.filter((unit) => !taken.has(unit))
+  }
+
+  /**
+   * The position of the first unit after the position `position` that is
+   * not taken out; that of no unit after the last. This method and
+   * {@link UnitGrammar.positionBefore} are the only places that pass over
+   * the units taken out; every move along the units goes through them.
+   */
+  protected positionAfter(position: number): number {
+    let after = position + 1
+    while (after < this.allUnits.length && this.isRemovedAt(after)) after += 1
+    return after
+  }
+
+  /**
+   * The position of the last unit before the position `position` that is
+   * not taken out; -1 before the first. Like
+   * {@link UnitGrammar.positionAfter}, it never stops at a unit taken out,
+   * so that no position that the grammar reaches is one.
+   */
+  protected positionBefore(position: number): number {
+    let before = position - 1
+    while (before >= 0 && this.isRemovedAt(before)) before -= 1
+    return before
+  }
+
+  /** Whether the unit at the position `position` is taken out. */
+  private isRemovedAt(position: number): boolean {
+    const unit = this.allUnits[position]
+    return unit !== undefined && this.removed.has(unit)
+  }
+
+  /**
+   * The unit at the position `position`; null where there is none. A
+   * position reached through {@link UnitGrammar.positionAfter} or
+   * {@link UnitGrammar.positionBefore} is never that of a unit taken out.
+   */
+  protected unitAt(position: number): Unit | null {
+    return this.allUnits[position] ?? null
+  }
+
+  /** Reads the next unit, whatever it is, and goes on to the one after it. */
+  protected advance(): void {
+    this.nextPosition = this.positionAfter(this.nextPosition)
+  }
+
+  /**
+   * Goes on at the position `position`, which lies after the next unit:
+   * the units before it are read. It is a position reached through
+   * {@link UnitGrammar.positionAfter}, never that of a unit taken out.
+   */
+  protected moveTo(position: number): void {
+    if (position < this.nextPosition || this.isRemovedAt(position)) {
+      throw new Error(
+        `mmd-toolkit parser bug: cannot go on at the position ${position}`,
+      )
+    }
+    this.nextPosition = position
+  }
+
+  /**
+   * The position after the empty forms of the kinds `kinds` that come one
+   * after another from the position `position`; `position` itself when
+   * none starts there.
+   */
+  protected afterEmptyForms(
+    position: number,
+    kinds: readonly EmptyFormKind[],
+  ): number {
+    let after = position
+    for (;;) {
+      const unit = this.unitAt(after)
+      const form = unit === null ? null : this.emptyFormOf(unit)
+      if (
+        form === null ||
+        !kinds.includes(form.kind) ||
+        form.units[0] !== unit
+      ) {
+        return after
+      }
+      const last = form.units[form.units.length - 1]
+      after = this.positionAfter(last.index)
+    }
+  }
+
+  /** The position of the first unit from the position `position` on that is named in none of `names`. */
+  protected afterUnitsNamed(position: number, names: readonly Name[]): number {
+    let after = position
+    for (
+      let name = this.nameAt(after);
+      name !== null && names.includes(name);
+      name = this.nameAt(after)
+    ) {
+      after = this.positionAfter(after)
+    }
+    return after
   }
 
   /** The tokens of the items read so far, in source order. */
   protected tokensInOrder(): PendingToken[] {
-    return [...this.tokens].sort((a, b) => a.range[0] - b.range[0])
+    return this.tokens.toSorted((a, b) => a.range[0] - b.range[0])
   }
 
   /** The next unit, or null at the end of the text. */
   protected peek(): Unit | null {
-    return this.units[this.next] ?? null
+    return this.unitAt(this.next)
   }
 
-  /** The name of the unit at `index`, or null after the last unit. */
-  protected nameAt(index: number): Name | null {
-    return this.units[index]?.name ?? null
+  /** The name of the unit at the position `position`, or null where there is none. */
+  protected nameAt(position: number): Name | null {
+    return this.unitAt(position)?.name ?? null
   }
 
   /** Reads the next unit, which must be named `name`. */
   protected take(name: Name): Unit {
     const unit = this.peek()
     if (unit === null || unit.name !== name) throw this.unexpected(unit)
-    this.next += 1
+    this.advance()
     return unit
   }
 
@@ -198,7 +314,7 @@ export abstract class UnitGrammar<
   protected takeIf(name: Name): Unit | null {
     const unit = this.peek()
     if (unit === null || unit.name !== name) return null
-    this.next += 1
+    this.advance()
     return unit
   }
 
@@ -211,7 +327,7 @@ export abstract class UnitGrammar<
       unit = this.peek()
     ) {
       units.push(unit)
-      this.next += 1
+      this.advance()
     }
     return units
   }
@@ -221,9 +337,35 @@ export abstract class UnitGrammar<
     this.takeWhile([name])
   }
 
-  /** The place of the node whose units are those from index `start` up to the next unit (see {@link UnitGrammar.placeOf}). */
+  /** The place of the node whose units are those from the position `start` up to the next unit (see {@link UnitGrammar.placeOf}). */
   protected placeFrom(start: number): NodePlace {
-    return this.placeOf(this.units.slice(start, this.next))
+    const last = this.positionBefore(this.next)
+    if (last < start) {
+      throw new Error("mmd-toolkit parser bug: a node has no unit")
+    }
+    // The place needs only the first and the last unit with a token, or the
+    // first and the last unit when none has one, so they are looked for
+    // from the two ends: the units of a node hold those of the nodes inside
+    // it, and collecting all of them for every node of a nest would take
+    // time in the square of its depth.
+    let firstWithToken = start
+    while (
+      firstWithToken <= last &&
+      this.allUnits[firstWithToken].significantRange === null
+    ) {
+      firstWithToken = this.positionAfter(firstWithToken)
+    }
+    if (firstWithToken > last) {
+      return this.placeOf([this.allUnits[start], this.allUnits[last]])
+    }
+    let lastWithToken = last
+    while (this.allUnits[lastWithToken].significantRange === null) {
+      lastWithToken = this.positionBefore(lastWithToken)
+    }
+    return this.placeOf([
+      this.allUnits[firstWithToken],
+      this.allUnits[lastWithToken],
+    ])
   }
 
   /**
@@ -248,7 +390,7 @@ export abstract class UnitGrammar<
 
   /** ast.md, Nodes: the written text over the range `range`, without `delimiters`. */
   protected textOf(range: Range, delimiters: readonly Range[] = []): string {
-    const leftOut = [...delimiters].sort((a, b) => a[0] - b[0])
+    const leftOut = delimiters.toSorted((a, b) => a[0] - b[0])
     return this.lexer.textOfRange(range[0], range[1], leftOut)
   }
 
@@ -259,10 +401,31 @@ export abstract class UnitGrammar<
    * comment regions.
    */
   protected unreadTextOf(range: Range): string {
-    const comments = this.diagramComments
-      .map((comment) => comment.range)
-      .filter(([start, end]) => range[0] <= start && end <= range[1])
-    return this.textOf(range, comments)
+    return this.textOf(range, this.diagramCommentsInside(range))
+  }
+
+  /**
+   * The ranges of the diagram comments inside `range`. The comments are in
+   * source order and do not overlap, so those inside `range` are the ones
+   * from the first that starts at its start or after it, as long as they
+   * end by its end. The first is looked up by its position: looking
+   * through all the comments for every node of unread text would take time
+   * in the square of their number.
+   */
+  private diagramCommentsInside(range: Range): Range[] {
+    const inside: Range[] = []
+    for (
+      let index = firstIndexWhere(
+        this.diagramComments,
+        (comment) => comment.range[0] >= range[0],
+      );
+      index < this.diagramComments.length &&
+      this.diagramComments[index].range[1] <= range[1];
+      index += 1
+    ) {
+      inside.push(this.diagramComments[index].range)
+    }
+    return inside
   }
 
   /** The written text of `unit` without the whitespace at its ends, for the words and arrows that are strings in the tree. */

@@ -57,13 +57,6 @@
 値が除く行末の空白は、範囲の外にあります。
 [fixture: gantt/gram-acc-title-trailing-spaces]
 
-### GanttIgnoredStatement
-
-範囲は、キーワードから閉じの引用符か括弧までです。
-値が含む、単位の間の空白も越えます。
-`call (` と改行と `)` は、その 2 行を覆います。
-[fixture: gantt/gram-empty-call-line-feed-inside]
-
 ### GanttLiteral
 
 範囲はそのトークンの範囲で、トークンが両端の空白を保つところでは、それを含みます

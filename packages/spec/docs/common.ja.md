@@ -1402,6 +1402,16 @@ entity = "#" word ";"
 一方 `_` は語の文字なので、`#_;` はエンティティです。
 `#` の直後や `;` の直前のディレクティブはエンティティの中にあり、
 エンティティはディレクティブを除いたテキストで読まれます。
+`;` の直前に 2 つのディレクティブがあっても同じです。
+このようなエンティティの `;` は、`;` が文を終える場所でも区切りになりません。
+sequence では、`A->>B: x #a`、ディレクティブ、`;B->>A: y` は
+1 つのメッセージで、`x`、`#a;` のプレースホルダ、`B->>A: y` からなります。
+`#` の直後や、語の 2 つの文字の間にディレクティブがあっても同じです。
+一方、`#a`、コメント行、`;B->>A: y` はエンティティにならず、
+メッセージは `x` と `y` です。
+sequence では、メッセージのテキストは `#` の手前で終わり、
+`#` からは行の残りを取る図のコメントになるからです
+（[文の文脈](./diagrams/sequence.ja.md#文の文脈) を参照）。
 [fixture: common/entity-hash-inside-word-second-hash-starts]
 [fixture: common/entity-double-hash] [fixture:
 common/entity-cut-by-line-terminator] [fixture:
@@ -1410,7 +1420,12 @@ common/entity-semicolon-after-comment-line] [fixture:
 common/entity-cut-by-line-separator] [fixture: common/entity-hyphen-not-word]
 [fixture: common/entity-underscore-word] [fixture:
 common/entity-directive-after-hash] [fixture:
-common/entity-directive-before-semicolon]
+common/entity-directive-before-semicolon] [fixture:
+common/entity-directive-in-word-in-message] [fixture:
+common/entity-directive-after-hash-in-message] [fixture:
+common/entity-directive-before-semicolon-in-message] [fixture:
+common/entity-two-directives-before-semicolon-in-message] [fixture:
+common/entity-not-across-comment-line-in-message]
 
 字句の規則: 字句解析器は、エンティティをそのプレースホルダとして読みます。
 語が ASCII の数字だけからなる場合、`#` _語_ `;` を `ﬂ°°` _語_ `¶ß` として読み、

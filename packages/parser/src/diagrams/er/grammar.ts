@@ -142,7 +142,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
       }
       if (inSubgraph && unit.name === "end") return body
       if (unit.name === "newline") {
-        this.next += 1
+        this.advance()
         continue
       }
       body.push(this.parseStatement())
@@ -171,7 +171,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
       case "accTitle":
         return this.parseAccTitleStatement()
       case "accDescr":
-        return this.nameAt(this.next + 1) === ":"
+        return this.nameAt(this.positionAfter(this.next)) === ":"
           ? this.parseAccDescrStatement()
           : this.parseAccDescrBlockStatement()
       default:
@@ -207,16 +207,10 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
    * input is rejected at the first of them.
    */
   private goesOn(names: readonly UnitName[], kind: EmptyFormKind): boolean {
-    let index = this.next
-    for (;;) {
-      const unit = this.units.at(index)
-      const form = unit === undefined ? null : this.emptyFormOf(unit)
-      if (form?.kind !== kind || form.units[0] !== unit) break
-      index += form.units.length
-    }
-    const name = this.nameAt(index)
+    const after = this.afterEmptyForms(this.next, [kind])
+    const name = this.nameAt(after)
     if (name === null || !names.includes(name)) return false
-    if (index !== this.next) throw this.unexpected(this.peek())
+    if (after !== this.next) throw this.unexpected(this.peek())
     return true
   }
 
@@ -283,7 +277,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
     if (unit === null || !ENTITY_NAMES.includes(unit.name)) {
       throw this.unexpected(unit)
     }
-    this.next += 1
+    this.advance()
     return unit.name === "quoted-name"
       ? this.stringLiteralOf(unit)
       : this.erIdentifierOf(unit)
@@ -379,7 +373,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
     if (unit === null || !ATTRIBUTE_WORDS.includes(unit.name)) {
       throw this.unexpected(unit)
     }
-    this.next += 1
+    this.advance()
     return unit.name === "backquoted-word"
       ? this.stringLiteralOf(unit)
       : this.erIdentifierOf(unit)
@@ -443,7 +437,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
     const unit = this.peek()
     const cardinality = unit === null ? null : cardinalityOf(unit.name)
     if (unit === null || cardinality === null) throw this.unexpected(unit)
-    this.next += 1
+    this.advance()
     this.addRelationshipItem(unit)
     return cardinality
   }
@@ -453,7 +447,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
     const unit = this.peek()
     const line = unit === null ? null : lineOf(unit.name)
     if (unit === null || line === null) throw this.unexpected(unit)
-    this.next += 1
+    this.advance()
     this.addRelationshipItem(unit)
     return line
   }
@@ -475,7 +469,7 @@ export class ErGrammar extends UnitGrammar<UnitName, Unit> {
   private parseRole(): StringLiteral | ErIdentifier {
     const unit = this.peek()
     if (unit?.name === "string" || unit?.name === "quoted-name") {
-      this.next += 1
+      this.advance()
       return this.stringLiteralOf(unit)
     }
     return this.erIdentifierOf(this.take("name"))

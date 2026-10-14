@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The title under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): it is recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "a&lt;b&gt;c & d",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

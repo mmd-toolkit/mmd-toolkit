@@ -24,7 +24,13 @@ import {
   withTrailing,
 } from "./lines.ts"
 import type { Source } from "./source.ts"
-import { findTokenEndingBefore, isWhitespace } from "./source.ts"
+import {
+  findTokenEndingBefore,
+  findTokenStartingAt,
+  findTokensBetween,
+  isStructural,
+  isWhitespace,
+} from "./source.ts"
 
 const { indent } = builders
 
@@ -113,6 +119,15 @@ export interface PrintedBlock {
   readonly endLeadingIndentation: string | undefined
   /** Whether the source has an empty line before `endLeading`. */
   readonly endBlank: boolean
+  /**
+   * What stands between the last line of the block and what closes it, when
+   * the closing `}` or `end` stays on that line: a line of the block that is
+   * kept together with a statement after the block, or printed as written
+   * (see `KeptLines`), cannot be broken before the closing, or the line would
+   * not be the line that the source has, and formatting again would move the
+   * statement that follows. Null when the closing stands on a line of its own.
+   */
+  readonly closingJoin: string | null
 }
 
 /** Statements that stay on one line, with what lies between them. */
@@ -366,6 +381,32 @@ export function printBlock<Statement extends Node>(
     }
   }
 
+  /**
+   * What stands before the closing of the block on its line, or null (see
+   * `PrintedBlock.closingJoin`): the closing stays on the line of the last
+   * line of the block when that line is kept, as written, or together with a
+   * statement that follows the closing on it.
+   */
+  function findClosingJoin(): string | null {
+    if (bounds.isTopLevel || lines.length === 0) return null
+    const closingLine = lineStartOf(source, bounds.end)
+    if (
+      !isKept(bounds.end) ||
+      lineStartOf(source, offset - 1) !== closingLine
+    ) {
+      return null
+    }
+    if (kept.verbatim.has(closingLine)) return ""
+    const closing = findTokenStartingAt(source, bounds.end)
+    if (closing === undefined) return null
+    const followed = findTokensBetween(
+      source,
+      closing.range[1],
+      lineEndOf(source, bounds.end),
+    ).some((token) => isStructural(source, token))
+    return followed ? " " : null
+  }
+
   if (isKept(bounds.start - 1)) {
     const stretch = findStretch(bounds.start, 0, 0, bounds.start)
     if (stretch.end > bounds.start) {
@@ -436,6 +477,7 @@ export function printBlock<Statement extends Node>(
   // the text.
   const gap = readGap(source, offset, bounds.end, false, bounds.isTopLevel)
   addItemLines(gap)
+  const closingJoin = findClosingJoin()
   return {
     headerTrailing,
     continuesOpeningLine,
@@ -449,6 +491,7 @@ export function printBlock<Statement extends Node>(
       gap.leadingIndentation,
     ),
     endBlank: gap.blankAfter,
+    closingJoin,
   }
 }
 
@@ -538,7 +581,7 @@ export function printClosedBlock(
   return [
     header.doc,
     body,
-    breakAfter(last, indentationOf(options, depth)),
+    block.closingJoin ?? breakAfter(last, indentationOf(options, depth)),
     withLeading(block.endLeading, closing),
   ]
 }

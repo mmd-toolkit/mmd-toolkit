@@ -23,7 +23,7 @@ export function findAttributeQuotes(
   const quotes = new Set<number>()
   let offset = start
   while (offset < text.length) {
-    const tagStart = findCodePoint(text, offset, LESS_THAN_SIGN)
+    const tagStart = findCodePoint(text, offset, text.length, LESS_THAN_SIGN)
     if (tagStart === null) break
     const nameStart = tagStart + 1
     const nameEnd = skipWhile(text, nameStart, isWordCharacter)
@@ -33,19 +33,29 @@ export function findAttributeQuotes(
     }
     // The attribute part ends at the first `>`. When no `>` follows anywhere
     // in the source, no later `<` can start a tag either.
-    const tagEnd = findCodePoint(text, nameEnd, GREATER_THAN_SIGN)
+    const tagEnd = findCodePoint(text, nameEnd, text.length, GREATER_THAN_SIGN)
     if (tagEnd === null) break
+    // A quoted value lies inside the attribute part, so its quotes are
+    // looked for up to the `>` only: looked for in the rest of the source,
+    // a search that finds none would read it all for every tag, which takes
+    // time in the square of the number of tags.
     let attributeOffset = nameEnd
     while (attributeOffset < tagEnd) {
       const valueOpening = findCodePoints(
         text,
         attributeOffset,
+        tagEnd,
         QUOTED_VALUE_OPENING,
       )
-      if (valueOpening === null || valueOpening + 1 >= tagEnd) break
+      if (valueOpening === null) break
       const openingQuote = valueOpening + 1
-      const closingQuote = findCodePoint(text, openingQuote + 1, QUOTATION_MARK)
-      if (closingQuote === null || closingQuote >= tagEnd) break
+      const closingQuote = findCodePoint(
+        text,
+        openingQuote + 1,
+        tagEnd,
+        QUOTATION_MARK,
+      )
+      if (closingQuote === null) break
       quotes.add(openingQuote)
       quotes.add(closingQuote)
       attributeOffset = closingQuote + 1

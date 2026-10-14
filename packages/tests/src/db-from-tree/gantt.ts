@@ -193,9 +193,6 @@ class GanttDbBuilder {
           )
         }
         break
-      // Text that mermaid.js reads no token for changes nothing.
-      case "GanttIgnoredStatement":
-        break
       default:
         throw new Error(
           `gantt Db: unknown statement ${JSON.stringify(statement satisfies never)}`,

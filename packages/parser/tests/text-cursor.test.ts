@@ -65,16 +65,19 @@ describe("matching and finding", () => {
     expect(matchCodePoints(text, 1, [0x1f600])).toBe(3)
     expect(matchCodePoints(text, 1, [0xd83d])).toBeNull()
     expect(matchCodePoints(text, 6, [])).toBe(6)
-    expect(findCodePoints(text, 0, [0x61, 0x62])).toBe(4)
-    expect(findCodePoints(text, 0, [0xd83d])).toBe(3)
-    expect(findCodePoints(text, 0, [0xde00])).toBeNull()
+    expect(findCodePoints(text, 0, text.length, [0x61, 0x62])).toBe(4)
+    expect(findCodePoints(text, 0, text.length, [0xd83d])).toBe(3)
+    expect(findCodePoints(text, 0, text.length, [0xde00])).toBeNull()
+    expect(findCodePoints(text, 0, 5, [0x61, 0x62])).toBeNull()
   })
 
   it("finds one character at a character boundary", () => {
-    expect(findCodePoint(text, 1, 0x61)).toBe(4)
-    expect(findCodePoint(text, 0, 0x1f600)).toBe(1)
-    expect(findCodePoint(text, 0, 0xde00)).toBeNull()
-    expect(findCodePoint(text, 5, 0x61)).toBeNull()
+    expect(findCodePoint(text, 1, text.length, 0x61)).toBe(4)
+    expect(findCodePoint(text, 0, text.length, 0x1f600)).toBe(1)
+    expect(findCodePoint(text, 0, text.length, 0xde00)).toBeNull()
+    expect(findCodePoint(text, 5, text.length, 0x61)).toBeNull()
+    expect(findCodePoint(text, 1, 4, 0x61)).toBeNull()
+    expect(findCodePoint(text, 1, 5, 0x61)).toBe(4)
   })
 
   it("reads the character before an offset", () => {

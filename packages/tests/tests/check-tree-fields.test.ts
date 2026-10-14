@@ -154,9 +154,6 @@ const VALUE_FIELD_REPORTS: Readonly<
   "FlowchartShape.name": { message: "the name of the shape, written " },
   "Frontmatter.value": { message: "value: " },
   "Frontmatter.valueRange": { message: "value: " },
-  "GanttIgnoredStatement.value": {
-    message: "value is not its written text",
-  },
   "GanttLiteral.value": { message: "value is not its written text" },
   "GanttWeekdayStatement.day": {
     message: "the day, which is the day token in lower case: ",

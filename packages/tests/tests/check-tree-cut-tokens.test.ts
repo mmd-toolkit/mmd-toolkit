@@ -57,7 +57,7 @@ function problemsOf(testCase: CutCase): {
   let text = input
   let cutted = tree
   // The last cut first: the places of the cuts before it stay what they are.
-  for (const { at, cut } of [...testCase.cuts].reverse()) {
+  for (const { at, cut } of testCase.cuts.toReversed()) {
     const result = cutToken(
       text,
       JSON.stringify(cutted),

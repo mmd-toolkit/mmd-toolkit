@@ -52,8 +52,7 @@ mermaid.js はそれにトークンを読みません。
 gantt では 3 つです。
 空の説明ブロック、`href` と間に何もない 2 つの引用符である**空の href**、
 flowchart と同じ空の call です。
-文の始まる位置では木が空の href や空の call を GanttIgnoredStatement
-として持つので、click の文の中にあるものだけがこの差異に入ります
+空の href と空の call は、どこにあってもこの差異に入ります
 （[空の href と空の call](../diagrams/gantt.ja.md#空の-href-と空の-call)
 を参照）。
 [fixture: er/div-empty-description-block-in-relationship] [fixture:
@@ -571,12 +570,14 @@ er/gram-empty-backquotes-between-attributes] [fixture:
 er/gram-empty-backquotes-before-first] [fixture:
 er/gram-empty-backquotes-after-last]
 
-gantt では、GanttClickStatement の id と最初の部分の間、2 つの部分の間で、
-持つにはその隙間に欄が要ります（理由 a）。
-`click id1 accDescr {} href "u"`、`click id1 href "" call f()`、
-`click id1 href ""href "u"`、`click id1 call () href "u"` です。
-文の始まる位置では、木は空の href や空の call を GanttIgnoredStatement として、
-空の説明ブロックを文として持つので、入力は受理されます
+gantt では、GanttClickStatement の id と最初の部分の間、2 つの部分の間の
+空の説明ブロックは、持つにはその隙間に欄が要ります（理由 a）。
+`click id1 accDescr {} href "u"` です。
+空の href と空の call は、独立した行の `href ""` や `call ()x : 1d` を含めて、
+どこにあってもこの差異に入ります。
+mermaid.js が丸ごと捨てるリンクや call を、木は文として持たないからです
+（flowchart と同じ）。
+文の始まる位置では、空の説明ブロックは文で、入力は受理されます
 （[空の href と空の call](../diagrams/gantt.ja.md#空の-href-と空の-call)
 を参照）。
 [fixture: gantt/div-empty-description-block-between-click-id-and-href]

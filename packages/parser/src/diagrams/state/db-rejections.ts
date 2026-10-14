@@ -7,7 +7,6 @@ import type {
   StateTerminal,
 } from "../../ast/state.ts"
 import { isWhitespace } from "../../character-classes.ts"
-import type { PendingToken } from "../../source-lexer.ts"
 import { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"
 
@@ -71,11 +70,8 @@ export class StateDbRejections {
   /** Rejections outside the grammar: the id of each state in converted form. */
   private readonly stateIds: ReadonlyMap<Identifier | StateLiteral, string>
 
-  /** The tokens of the diagram, for the `:` of an alias definition. */
-  private readonly tokens: readonly PendingToken[]
-
-  /** The source text, which the tokens are ranges of. */
-  private readonly text: string
+  /** Rejections outside the grammar: the alias definitions with a `:` (see `StateSyntax`). */
+  private readonly aliasesWithColon: ReadonlySet<StateAliasDefinitionStatement>
 
   /** The states seen so far, by id. */
   private readonly states = new Map<StateId, StateRecord>()
@@ -86,13 +82,11 @@ export class StateDbRejections {
   public constructor(
     lines: LineIndex,
     stateIds: ReadonlyMap<Identifier | StateLiteral, string>,
-    tokens: readonly PendingToken[],
-    text: string,
+    aliasesWithColon: ReadonlySet<StateAliasDefinitionStatement>,
   ) {
     this.lines = lines
     this.stateIds = stateIds
-    this.tokens = tokens
-    this.text = text
+    this.aliasesWithColon = aliasesWithColon
   }
 
   /** Walks `statements`, the body of the diagram; throws `ParseError` when a state with a body has more than one description. */
@@ -229,23 +223,14 @@ export class StateDbRejections {
   /**
    * The walk: how many descriptions the alias definition `statement` gives:
    * with a body, its string; without one, its string and, after a `:`, the
-   * second description, also when that is empty and has no node, which
-   * the `:` token in the range of the statement shows; and none for a
-   * string that is empty or all whitespace without a `:`.
+   * second description, also when that is empty and has no node; and none
+   * for a string that is empty or all whitespace without a `:`.
    */
   private descriptionsOfAlias(
     statement: StateAliasDefinitionStatement,
   ): number {
     if (statement.body !== null) return 1
-    const [start, end] = statement.range
-    const hasColon = this.tokens.some(
-      (token) =>
-        token.kind === "Punctuator" &&
-        start <= token.range[0] &&
-        token.range[1] <= end &&
-        this.text.slice(token.range[0], token.range[1]) === ":",
-    )
-    if (hasColon) return 2
+    if (this.aliasesWithColon.has(statement)) return 2
     const blank = [...statement.description.value].every((character) =>
       isWhitespace(character.codePointAt(0) ?? 0),
     )

@@ -1,6 +1,6 @@
 import { isWhitespace } from "./character-classes.ts"
 import { COLON, NUMBER_SIGN, SEMICOLON } from "./code-points.ts"
-import type { DirectiveMatch } from "./directives.ts"
+import type { DirectiveIndex } from "./directives.ts"
 import type { LineSegmentReading } from "./line-segment.ts"
 import { segmentCharacterAt } from "./line-segment.ts"
 
@@ -48,17 +48,26 @@ function matchesLineRule(
     const character = segmentCharacterAt(reading, offset)
     if (character === null) return false
     if (character.codePoint === COLON) {
-      let hashCharacter = segmentCharacterAt(reading, character.next)
+      // The first `#` or whitespace after the `:`.
+      let stop = segmentCharacterAt(reading, character.next)
       while (
-        hashCharacter !== null &&
-        hashCharacter.codePoint !== NUMBER_SIGN &&
-        !isWhitespace(hashCharacter.codePoint)
+        stop !== null &&
+        stop.codePoint !== NUMBER_SIGN &&
+        !isWhitespace(stop.codePoint)
       ) {
-        hashCharacter = segmentCharacterAt(reading, hashCharacter.next)
+        stop = segmentCharacterAt(reading, stop.next)
       }
-      if (hashCharacter !== null && hashCharacter.codePoint === NUMBER_SIGN) {
-        return lastSemicolon(reading, hashCharacter.next) !== null
+      if (stop === null) return false
+      if (stop.codePoint === NUMBER_SIGN) {
+        return lastSemicolon(reading, stop.next) !== null
       }
+      // The characters from the `:` to the whitespace hold no `#` and no
+      // whitespace, so a later `:` among them stops at the same whitespace
+      // without a `#` too: the search goes on at the whitespace, not again
+      // from each of them, which would take time in the square of their
+      // number.
+      offset = stop.start
+      continue
     }
     offset = character.next
   }
@@ -93,7 +102,7 @@ export function decideIgnoredSemicolons(
   text: string,
   start: number,
   end: number,
-  directives: ReadonlyMap<number, DirectiveMatch>,
+  directives: DirectiveIndex,
 ): ReadonlySet<number> {
   const ignoredSemicolons = new Set<number>()
   for (const keyword of ["style", "classDef"]) {

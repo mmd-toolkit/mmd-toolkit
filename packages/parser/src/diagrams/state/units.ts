@@ -1598,21 +1598,29 @@ export class StateUnitLexer {
         return
       }
     }
-    for (
-      let position: DiagramPosition = at;
-      position !== null;
-      position = this.reader.after(position)
-    ) {
-      if (position.codePoint !== LINE_FEED) continue
+    let position: DiagramPosition = at
+    while (position !== null) {
+      if (position.codePoint !== LINE_FEED) {
+        position = this.reader.after(position)
+        continue
+      }
+      // Every line feed of a run of whitespace reaches the same word after
+      // the run, so the first of them, the earliest place where the note
+      // can end, decides for all of them, and the search goes on at that
+      // word: walking the rest of the run again from each line feed would
+      // take time in the square of its length.
       const word = skipWhitespace(this.reader, this.reader.after(position))
-      if (word === null) continue
+      if (word === null) break
       const endNote = matchSpacedWords(
         this.reader,
         word,
         ["end", "note"],
         matchWordIgnoringCase,
       )
-      if (endNote === null) continue
+      if (endNote === null) {
+        position = word
+        continue
+      }
       if (!samePosition(position, at)) {
         this.addUnit("note-text", at, position)
       }

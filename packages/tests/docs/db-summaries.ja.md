@@ -1101,3 +1101,103 @@ Db は、すべての gantt 図が共有する
   [fixture: gantt/db-click-ids-list]
 
 値は、空白を含めて Db が持つままで記録します。
+
+## journey
+
+要約の欄は次のとおりです。
+
+| 欄         | 内容                                                                          |
+| ---------- | ----------------------------------------------------------------------------- |
+| `title`    | 最後の `title` の文のタイトル。なければフロントマターのタイトル、なければ空。 |
+| `accTitle` | アクセシビリティのタイトル。なければ空のテキスト。                            |
+| `accDescr` | アクセシビリティの説明。なければ空のテキスト。                                |
+| `sections` | section の名前。`section` の文ごとに 1 つで、ソースの順。                     |
+| `tasks`    | タスク。ソースの順。                                                          |
+
+タスクは、`section`、`task`、`people`、`score` を持ちます。
+
+`normalizeJourney()`（`src/normalizers/journey.ts`）は、`journey` の Db を
+要約します。
+Db は、ブラウザーの機能も、時刻も、乱数も読まず、構文にリンクもありません。
+このため、要約に Db のパッチはいりません。
+Db は、すべての journey 図が共有する 1 つのオブジェクトで、
+`clear()` が、構文解析のたびにその状態を初期化します。
+[`getTasks()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L35-L47)
+は、呼ぶたびに、タスクを自分の一覧に加えます。
+そのため要約は、一覧を 1 度だけ読み、空に戻します。
+こうして Db は、読む前のままになります。
+次のものを、それぞれに書いた理由で捨てます。
+
+- `tasks[].type`: section の繰り返し。
+- `getActors()`
+  （[`updateActors`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L49-L59)）:
+  タスクの人たちから、重複を除いて並べ替えたもので、タスクだけから作る。
+
+値を、欄ごとに述べます。
+
+- `title` は、`title` と空白の後ろのテキストで、`#` か行末までです。
+  `title` の文は、フロントマターのタイトルを置き換えます。
+  [fixture: journey/db-title-statement]
+  [fixture: journey/db-title-ends-at-hash]
+  [fixture: journey/db-title-frontmatter]
+  [fixture: journey/db-title-statement-after-frontmatter]
+- `accTitle` と `accDescr` は、文のテキストを trim したものです。
+  ブロックの説明のテキストは改行を持ち、各改行の後ろの空白は除かれます。
+  [fixture: journey/db-acc-title]
+  [fixture: journey/db-acc-descr]
+  [fixture: journey/db-acc-descr-block]
+- タイトルとアクセシビリティのテキストは `sanitizeText` を通ります。
+  `securityLevel` が mermaid.js の値のどれでもなく、HTML のラベルが有効なら、
+  文字を置き換えたものを持ちます
+  （[db-from-tree.md](./db-from-tree.md) の文字の置き換えを参照）。
+  section の名前、タスクの説明、人は変わりません。
+  [fixture: journey/config-security-level-other-title]
+  [fixture: journey/config-security-level-other-acc-title]
+  [fixture: journey/config-security-level-other-acc-descr]
+  [fixture: journey/config-security-level-other-names-as-written]
+- `sections` は、各 `section` の文の、キーワードとすぐ後ろの空白 1 文字を除いた
+  テキストを持ちます。名前が繰り返されても、文ごとに 1 つです。
+  最初の section の前のタスクは、空の `section` を持ちます。
+  名前は `#` の手前で終わり、`#` から行末まではコメントです。
+  `#` の前の空白は残ります。
+  [fixture: journey/db-sections]
+  [fixture: journey/db-task-before-section]
+  [fixture: journey/db-section-ends-at-hash]
+- `task` は、コロンの前のテキストで、コロンの前の空白を含みます。
+  [fixture: journey/db-task-description-spaces]
+- [`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/journeyDb.js#L61-L84)
+  は、最初のコロンの後ろのテキストを、各コロンで分けます。
+  `score` は、最初の部分から JavaScript が作る数です。
+  そのため、小数、16 進数、指数、負の数は数で、
+  数の前後の空白は数に含まれず、空の部分は 0 です。
+  [fixture: journey/db-task-score-decimal]
+  [fixture: journey/db-task-score-hexadecimal]
+  [fixture: journey/db-task-score-exponent]
+  [fixture: journey/db-task-score-negative]
+  [fixture: journey/db-task-score-spaces]
+  [fixture: journey/db-task-score-empty]
+  有限の数でない score は、JSON にそのような数がないので、
+  数のテキストで記録します。
+  数でない部分は `NaN` です。
+  部分 `Infinity` と `-Infinity`、
+  `1e400` のように倍精度に収まらない大きな数は、
+  `Infinity` か `-Infinity` です。
+  [fixture: journey/db-task-score-not-a-number]
+  [fixture: journey/db-task-score-infinity]
+  [fixture: journey/db-task-score-negative-infinity]
+  [fixture: journey/db-task-score-overflow]
+- `people` は、2 番目の部分を各コンマで分けて trim したもので、
+  コンマごとに名前が 1 つです。
+  そのため空の項目は空の名前で、空白だけの部分は空の名前 1 つです。
+  2 番目の部分がなければ、人はいません。
+  2 番目より後ろの部分は除かれます。
+  [fixture: journey/db-task-people]
+  [fixture: journey/db-task-people-empty-item]
+  [fixture: journey/db-task-people-blank]
+  [fixture: journey/db-task-score-only]
+  [fixture: journey/db-task-extra-colon]
+  タスクのデータも `#` の手前で終わり、行の残りはコメントです。
+  `A: 1: x #y, z` の人は `x` です。
+  [fixture: journey/db-task-data-ends-at-hash]
+
+値は、空白を含めて Db が持つままで記録します。

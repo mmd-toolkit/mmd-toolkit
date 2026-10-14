@@ -199,7 +199,6 @@ export type {
   GanttDay,
   GanttDiagram,
   GanttExcludesStatement,
-  GanttIgnoredStatement,
   GanttIncludesStatement,
   GanttInclusiveEndDatesStatement,
   GanttLiteral,

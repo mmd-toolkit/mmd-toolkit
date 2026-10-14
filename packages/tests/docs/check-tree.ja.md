@@ -226,10 +226,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     `GanttLiteral` のトークンは `RawText`、
     id とリストの項目は `Identifier`、
     タグは `RawText`（ディレクティブが切れば断片ごとに 1 つ）、
-    リンクの URL と空の href の引用符は、1 つの `String` トークンか、
+    リンクの URL は、1 つの `String` トークンか、
     切れ目があれば `StringFragment` トークンです。
-    空の href と空の call のトークンは、そのキーワードと、
-    `String` トークンか 2 つの括弧です。
     文と call 部分の範囲。
     ノードのトークンと子ノードの最初から最後までで、
     click 文は子の欄の順にかかわらずソース上で最後の部分で終わり、
@@ -240,7 +238,6 @@ const problems: TreeProblem[] = checkTree(text, tree)
     （行の終わり。文が述べる所では `#` か `;` の前）。
     アクセシビリティ文の値の始まりと終わり
     （両端の空白を含みません）。
-    空の href と空の call の書かれたテキスト。
 
 範囲の**書かれたテキスト**は、ディレクティブ、コメント領域、
 行の規則が無視する `;` を除いたソースです（ast.md の Nodes）。

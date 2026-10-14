@@ -233,7 +233,7 @@ export function removePercentRuns(text: string): string {
   let keptStart = 0
   let offset = 0
   while (offset < text.length) {
-    const marker = findCodePoints(text, offset, COMMENT_MARKER)
+    const marker = findCodePoints(text, offset, text.length, COMMENT_MARKER)
     if (marker === null) break
     const lineBreakEnd = findLineBreakEnd(text, marker + 2)
     if (lineBreakEnd === null) break

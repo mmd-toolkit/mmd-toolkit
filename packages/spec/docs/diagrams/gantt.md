@@ -624,8 +624,7 @@ statement context). The lexer tries these rules in order:
    gantt/lex-percent-in-href-string] [fixture: gantt/lex-href-line-feed-url]
 
 A `url-text` is never empty: `href ""` has an `href` unit and two `"` units with
-nothing between them, an **empty href**, which no rule of the grammar takes
-inside a click statement (see
+nothing between them, an **empty href**, which no rule of the grammar takes (see
 [Empty hrefs and empty calls](#empty-hrefs-and-empty-calls)); `href "`, a line
 feed, and `"` has the URL of one line feed. The text may not end in the href
 context. [fixture: gantt/gram-click-empty-href-only] [fixture:
@@ -666,10 +665,9 @@ included: `call f ()` has the name `f` and a space, and `call f`, a line feed,
 and `()` the name `f` and a line feed. A `(` right after the whitespace of
 `call` leaves no name: `call (1)` is rejected, and `call ()`, with only
 whitespace between the parentheses, is an **empty call**, which no rule of the
-grammar takes inside a click statement (see
-[Empty hrefs and empty calls](#empty-hrefs-and-empty-calls)). The arguments end
-at the first `)`, also inside quotes: `call f("a)b")` is rejected. The text may
-not end in either context. [fixture:
+grammar takes (see [Empty hrefs and empty calls](#empty-hrefs-and-empty-calls)).
+The arguments end at the first `)`, also inside quotes: `call f("a)b")` is
+rejected. The text may not end in either context. [fixture:
 gantt/gram-click-call-name-space-before-parenthesis] [fixture:
 gantt/gram-click-call-name-line-feed-before-parenthesis] [fixture:
 gantt/gram-click-call-no-name] [fixture: gantt/gram-click-empty-call-only]
@@ -917,7 +915,6 @@ Each rule below makes a node of the tree, defined in
 | `section-statement`                                                                                                                                                                                                   | GanttSectionStatement                                                          |
 | `accessibility-statement`                                                                                                                                                                                             | GanttAccTitleStatement, GanttAccDescrStatement, or GanttAccDescrBlockStatement |
 | `empty-description-block`                                                                                                                                                                                             | GanttAccDescrBlockStatement without text, a statement of its own               |
-| `ignored-statement`                                                                                                                                                                                                   | GanttIgnoredStatement                                                          |
 | `url-text` with its `"` units                                                                                                                                                                                         | StringLiteral                                                                  |
 | `id`, `list-item`, or a `data-item` that is a tag                                                                                                                                                                     | Identifier                                                                     |
 | `setting-text`, `marker-text`, `title-text`, `section-text`, `task-text`, a `data-item` that is no tag, `callback-name`, `callback-arguments`, `acc-title-text`, `acc-description-text`, `acc-description-block-text` | GanttLiteral                                                                   |
@@ -944,7 +941,6 @@ statement = task-statement
           | section-statement
           | accessibility-statement
           | empty-description-block
-          | ignored-statement
 ```
 
 The diagram is the header and any number of lines, each a statement or a
@@ -1247,76 +1243,45 @@ gantt/div-empty-description-block-between-href-and-call]
 
 ### Empty hrefs and empty calls
 
-```text
-ignored-statement = "href" '"' '"'
-                  | "call" "(" ")"
-```
-
 An **empty href** is an `href` unit and two `"` units with nothing between them,
 and an **empty call** is a `call` unit, a `(` unit, and a `)` unit with only
 whitespace between the parentheses, a line feed included (see
 [The href context](#the-href-context) and
 [The callback contexts](#the-callback-contexts)). mermaid.js reads no token for
 either, and accepts an input as if it were not there (see
-[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.md)). Where a
-statement starts, it is an `ignored-statement`, a GanttIgnoredStatement that
-holds what was written and changes nothing: on a line of its own, at the end of
-the text, right after the header, after another statement on its line, a
-complete click statement included, and before a statement on its line, glued to
-it or not. `call()` and `href""` without whitespace after the keyword are task
-texts, and `href "`, a line feed, and `"` is no empty href. A directive between
-the two quotes of an empty href, or between the parentheses of an empty call,
-lies between units, so `href "%%{init: {}}%%"` and `call (%%{init: {}}%%)` are
-an empty href and an empty call, as mermaid.js reads them once it has removed
-the directive, and inside a click statement they are rejected in the same way.
-[fixture: gantt/lex-empty-href-directive-between-quotes] [fixture:
-gantt/lex-empty-call-directive-between-parentheses] [fixture:
-gantt/div-empty-href-directive-between-quotes-before-call] [fixture:
-gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-line] [fixture:
-gantt/gram-empty-call-space-inside] [fixture:
-gantt/gram-empty-call-line-feed-inside] [fixture: gantt/gram-empty-href-at-end]
-[fixture: gantt/gram-empty-call-at-end] [fixture:
+[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.md)). No rule
+of the grammar takes them, wherever they stand, so an input with an empty href
+or an empty call is rejected here, as the known divergence
+[`tokenless-empty-forms`](#known-divergences): on a line of its own, at the end
+of the text, right after the header, after another statement on its line, a
+complete click statement included, before a statement on its line, glued to it
+or not, and inside a click statement, between the ids and the first part or
+between the parts. mermaid.js accepts each of these as without the form:
+`href ""` on a line before `title T` has the title, `call ()x : 1d` is the task
+`x `, `click id1 href "" call f()` sets the call, and
+`click id1 call () href "u"` the link. `click id1` followed only by `href ""` or
+`call ()`, and `click id1 href "" b : 1d`, are rejected in both, because the
+click statement has no part. Two empty hrefs or empty calls in a row are
+rejected at the first of them, `href "" call ()` at the href. An empty
+description block before them where a statement starts is a statement, and the
+empty href or empty call after it is what is rejected, `accDescr {} href ""` at
+the href; inside a click statement, where the block is no statement, the first
+of the forms is rejected. [fixture: gantt/gram-empty-href-line] [fixture:
+gantt/gram-empty-call-line] [fixture: gantt/gram-empty-call-space-inside]
+[fixture: gantt/gram-empty-call-line-feed-inside] [fixture:
+gantt/gram-empty-href-at-end] [fixture: gantt/gram-empty-call-at-end] [fixture:
 gantt/gram-empty-href-after-header-same-line] [fixture:
 gantt/gram-empty-href-after-keyword-same-line] [fixture:
 gantt/gram-click-href-then-empty-href] [fixture:
 gantt/gram-click-call-then-empty-href] [fixture:
+gantt/gram-click-call-then-empty-call] [fixture:
 gantt/gram-empty-href-then-title-same-line] [fixture:
 gantt/gram-empty-call-then-title-same-line] [fixture:
 gantt/gram-empty-href-glued-task] [fixture: gantt/gram-empty-call-glued-task]
 [fixture: gantt/gram-empty-call-tab] [fixture: gantt/gram-empty-href-two-spaces]
-[fixture: gantt/lex-call-no-space-before-parenthesis] [fixture:
-gantt/lex-href-no-space-before-quotes] [fixture: gantt/lex-href-line-feed-url]
-
-Inside a click statement, between the ids and the first part or between the
-parts, an empty href or an empty call is taken by no rule, and the input is
-rejected: `click id1 href "" call f()`, `click id1 href ""href "u"`, and
-`click id1 call () href "u"`, which mermaid.js accepts as without the form: the
-known divergence [`tokenless-empty-forms`](#known-divergences). `click id1`
-followed only by `href ""` or `call ()`, and `click id1 href "" b : 1d`, are
-rejected in both, because the click statement has no part. [fixture:
-gantt/div-empty-href-before-call] [fixture:
+[fixture: gantt/div-empty-href-before-call] [fixture:
 gantt/div-empty-href-glued-before-href] [fixture:
-gantt/div-empty-call-before-href] [fixture: gantt/gram-click-empty-href-only]
-[fixture: gantt/gram-click-empty-call-only] [fixture:
-gantt/gram-click-empty-href-then-task]
-
-Which of the two readings applies is decided, as in the other diagram types, at
-the unit after the empty forms that stand together: where that unit continues
-the click statement before them, as the second part of a click statement that
-has one part so far, the empty forms lie inside the click statement, and the
-input is rejected, as the known divergence; otherwise each empty form is an
-`ignored-statement`. So `click id1 call f() href "" href "u"`,
-`click id1 href "u" call () call f()`, and `click id1 href "u" href "" call f()`
-are rejected here, because the `href "u"` or the `call f()` after the empty form
-continues the click statement, while mermaid.js reads the part into the click
-statement and accepts the input: the same divergence.
-`click id1 href "" call ()` `href "u"` is rejected in the same way, because the
-two empty forms stand between the ids and the first part, and so are
-`click id1 href "u" href "" call () call f()` and
-`click id1 call f() accDescr {} href "" href "u"`, whose two empty forms stand
-between the parts. `href "" call ()` on a line of its own is two ignored
-statements, and `click id1 call f() call ()` is a click statement and an ignored
-statement, because nothing follows the empty call. [fixture:
+gantt/div-empty-call-before-href] [fixture:
 gantt/div-empty-href-between-call-and-href] [fixture:
 gantt/div-empty-call-between-href-and-call] [fixture:
 gantt/div-empty-href-between-href-and-call] [fixture:
@@ -1324,7 +1289,30 @@ gantt/div-empty-href-and-empty-call-before-href] [fixture:
 gantt/div-empty-href-and-empty-call-between-parts] [fixture:
 gantt/div-empty-description-block-and-empty-href-between-parts] [fixture:
 gantt/gram-empty-href-and-empty-call-line] [fixture:
-gantt/gram-click-call-then-empty-call]
+gantt/gram-empty-description-block-then-empty-href-same-line] [fixture:
+gantt/gram-empty-description-block-then-empty-call-same-line] [fixture:
+gantt/gram-empty-href-then-empty-description-block-same-line] [fixture:
+gantt/div-empty-call-and-empty-description-block-between-parts] [fixture:
+gantt/gram-click-empty-href-only] [fixture: gantt/gram-click-empty-call-only]
+[fixture: gantt/gram-click-empty-href-then-task]
+
+The empty forms are rejected, unlike an empty description block where a
+statement starts (see [Empty description blocks](#empty-description-blocks)),
+because they are written as a link and a call that mermaid.js discards whole,
+and a tree that held them as statements that change nothing would show them as
+read; the other diagram types reject the same forms (see
+[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.md)).
+`call()` and `href""` without whitespace after the keyword are task texts, and
+`href "`, a line feed, and `"` is no empty href. A directive between the two
+quotes of an empty href, or between the parentheses of an empty call, lies
+between units, so `href "%%{init: {}}%%"` and `call (%%{init: {}}%%)` are an
+empty href and an empty call, as mermaid.js reads them once it has removed the
+directive, and are rejected in the same way. [fixture:
+gantt/lex-call-no-space-before-parenthesis] [fixture:
+gantt/lex-href-no-space-before-quotes] [fixture: gantt/lex-href-line-feed-url]
+[fixture: gantt/lex-empty-href-directive-between-quotes] [fixture:
+gantt/lex-empty-call-directive-between-parentheses] [fixture:
+gantt/div-empty-href-directive-between-quotes-before-call]
 
 ### Rejections outside the grammar
 
@@ -1404,16 +1392,16 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
   frontmatter that is no valid YAML is accepted in this specification, while
   mermaid.js rejects it. [fixture: gantt/div-frontmatter-invalid-yaml]
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md).**
-  An empty description block, an empty href, and an empty call inside a click
-  statement, between its ids and its first part or between its parts, make the
-  input rejected in this specification, while mermaid.js reads no token for them
-  and accepts the input (see
+  An empty description block inside a click statement, between its ids and its
+  first part or between its parts, and an empty href or an empty call wherever
+  it stands, make the input rejected in this specification, while mermaid.js
+  reads no token for them and accepts the input (see
   [Empty description blocks](#empty-description-blocks) and
   [Empty hrefs and empty calls](#empty-hrefs-and-empty-calls)). Where a
-  statement starts, an empty description block is a statement, and an empty href
-  or an empty call is a GanttIgnoredStatement, and the input is accepted.
-  [fixture: gantt/div-empty-description-block-between-click-id-and-href]
-  [fixture: gantt/div-empty-description-block-between-call-and-href] [fixture:
+  statement starts, an empty description block is a statement, and the input is
+  accepted. [fixture:
+  gantt/div-empty-description-block-between-click-id-and-href] [fixture:
+  gantt/div-empty-description-block-between-call-and-href] [fixture:
   gantt/div-empty-description-block-between-href-and-call] [fixture:
   gantt/div-empty-description-block-glued-after-click-id] [fixture:
   gantt/div-empty-href-before-call] [fixture:

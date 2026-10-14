@@ -21,6 +21,44 @@ export interface DirectiveMatch {
 }
 
 /**
+ * The directives of one stretch of the source, a line segment or a comment
+ * region, in source order, found by the offset where one starts and by the
+ * offset where one ends. Both are made from the one list, and no two
+ * directives overlap, so each offset finds at most one. Reading backward,
+ * the entity rule asks for the directive that ends before each character;
+ * looking through all the directives for every character would take time
+ * in the square of their number.
+ */
+export class DirectiveIndex {
+  /** The directives, in source order. */
+  public readonly inSourceOrder: readonly DirectiveMatch[]
+
+  private readonly byStart: ReadonlyMap<number, DirectiveMatch>
+
+  private readonly byEnd: ReadonlyMap<number, DirectiveMatch>
+
+  public constructor(directives: readonly DirectiveMatch[]) {
+    this.inSourceOrder = directives
+    this.byStart = new Map(
+      directives.map((directive) => [directive.range[0], directive]),
+    )
+    this.byEnd = new Map(
+      directives.map((directive) => [directive.range[1], directive]),
+    )
+  }
+
+  /** The directive that starts at `offset`; undefined when none does. */
+  public startingAt(offset: number): DirectiveMatch | undefined {
+    return this.byStart.get(offset)
+  }
+
+  /** The directive that ends at `offset`; undefined when none does. */
+  public endingAt(offset: number): DirectiveMatch | undefined {
+    return this.byEnd.get(offset)
+  }
+}
+
+/**
  * A text that the rule of Where a directive is reads one character at a
  * time: a string, or the diagram text that detection reads through the
  * directives and comment regions of the source (common.md, Diagram
@@ -167,7 +205,7 @@ export function findDirectives(text: string, from: number): DirectiveMatch[] {
   const directives: DirectiveMatch[] = []
   let offset = from
   while (offset < text.length) {
-    const start = findCodePoints(text, offset, DIRECTIVE_OPENING)
+    const start = findCodePoints(text, offset, text.length, DIRECTIVE_OPENING)
     if (start === null) break
     const directive = readDirective(text, start)
     if (directive === null) {

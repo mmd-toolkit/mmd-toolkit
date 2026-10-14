@@ -194,19 +194,16 @@ const problems: TreeProblem[] = checkTree(text, tree)
     parentheses; the kinds of the tokens of the values: those of a
     `GanttLiteral` are `RawText`, those of an id and of an item of a list
     `Identifier`, those of a tag `RawText` (one for each fragment where a
-    directive cuts it), and those of the URL of a link, or of the quotes of an
-    empty href, one `String` token or `StringFragment` tokens where a cut lies
-    inside it; the tokens of an empty href or an empty call, which are its
-    keyword and the `String` token or the two parentheses; the range of a
-    statement and of a call part, which runs from the first of the tokens and
-    child nodes of the node to the last, so that a click statement ends at the
-    last part in the source whatever the order of its child fields, and the
-    whitespace after the last token is outside it; the link, which runs from `"`
-    to `"`; where the text of a setting, a title, or a section starts (one
-    whitespace character after the keyword) and ends (the end of its line, or
-    before `#` or `;` where the statement says so); where the value of an
-    accessibility statement starts and ends, which is without the whitespace at
-    its ends; and the written text of an empty href or an empty call.
+    directive cuts it), and those of the URL of a link, one `String` token or
+    `StringFragment` tokens where a cut lies inside it; the range of a statement
+    and of a call part, which runs from the first of the tokens and child nodes
+    of the node to the last, so that a click statement ends at the last part in
+    the source whatever the order of its child fields, and the whitespace after
+    the last token is outside it; the link, which runs from `"` to `"`; where
+    the text of a setting, a title, or a section starts (one whitespace
+    character after the keyword) and ends (the end of its line, or before `#` or
+    `;` where the statement says so); where the value of an accessibility
+    statement starts and ends, which is without the whitespace at its ends.
 
 The **written text** of a range is its source without the directives, the
 comment regions, and the `;` that the line rule ignores (ast.md, Nodes).

@@ -430,6 +430,175 @@ const droppedExamples: readonly (readonly [string, string, string])[] = [
 ]
 
 /**
+ * Each example is an ER diagram with U+2028 or U+2029: in the statement context
+ * these are characters of a name, so the name keeps them, and a gap that holds
+ * one is printed as written (docs/er.md, Line separators).
+ */
+const erExamples: readonly (readonly [string, string, string])[] = [
+  [
+    "U+2028 inside an entity name",
+    "erDiagram\nA\u2028B   ||--o{   C : x\n",
+    "erDiagram\n  A\u2028B ||--o{ C : x\n",
+  ],
+  [
+    "U+2029 inside a role name",
+    "erDiagram\nA ||--o{ B :   x\u2029y\n",
+    "erDiagram\n  A ||--o{ B : x\u2029y\n",
+  ],
+  [
+    "U+2028 before the colon of a role",
+    "erDiagram\nA ||--o{ B\u2028: x\n",
+    "erDiagram\n  A ||--o{ B\u2028 : x\n",
+  ],
+  [
+    "U+2028 between direction and its value",
+    "erDiagram\n   direction  \u2028 LR\n",
+    "erDiagram\n  direction  \u2028 LR\n",
+  ],
+  [
+    "U+2028 in the text after a direction",
+    "erDiagram\ndirection LR a\u2028b\n",
+    "erDiagram\n  direction LR a\u2028b\n",
+  ],
+  [
+    "U+2028 inside an attribute name",
+    "erDiagram\nA {\n int a\u2028b\n}\n",
+    "erDiagram\n  A {\n    int a\u2028b\n  }\n",
+  ],
+]
+
+/**
+ * Each example is a Gantt chart with U+2028 or U+2029: they are whitespace
+ * between the units, so a gap that holds one between statements is printed as
+ * a line break, while a gap inside a statement that holds one is printed as
+ * written, and in a text they are characters of the text (docs/gantt.md, Line
+ * separators).
+ */
+const ganttLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+2028 between the header and a statement",
+    "gantt\u2028title T\n",
+    "gantt\n  title T\n",
+  ],
+  [
+    "U+2028 between two statements",
+    "gantt\ninclusiveEndDates\u2028title T\n",
+    "gantt\n  inclusiveEndDates\n  title T\n",
+  ],
+  [
+    "U+2028 and whitespace at the end of a statement",
+    "gantt\ninclusiveEndDates \u2028 \n",
+    "gantt\n  inclusiveEndDates\n",
+  ],
+  [
+    "U+2028 inside a task description",
+    "gantt\na\u2028b : 1d\n",
+    "gantt\n  a\u2028b :1d\n",
+  ],
+  [
+    "U+2028 before the colon of a task",
+    "gantt\na\u2028: 1d\n",
+    "gantt\n  a\u2028:1d\n",
+  ],
+  [
+    "U+2028 between the items of task data",
+    "gantt\na : 1d,\u20282d\n",
+    "gantt\n  a :1d,\u20282d\n",
+  ],
+  [
+    "U+2028 after a title keyword",
+    "gantt\ntitle\u2028T\n",
+    "gantt\n  title\u2028T\n",
+  ],
+  [
+    "U+2029 inside a title",
+    "gantt\ntitle a\u2029b\n",
+    "gantt\n  title a\u2029b\n",
+  ],
+  [
+    "U+2028 between the items of a list",
+    "gantt\nexcludes a\u2028b\n",
+    "gantt\n  excludes a\u2028b\n",
+  ],
+  [
+    "U+2028 between weekday and its day",
+    "gantt\nweekday\u2028monday\n",
+    "gantt\n  weekday\u2028monday\n",
+  ],
+  [
+    "U+2028 after the colon of accTitle",
+    "gantt\naccTitle:\u2028T\n",
+    "gantt\n  accTitle:\u2028T\n",
+  ],
+  [
+    "U+2028 between a click id and its part",
+    'gantt\na : id1, 1d\nclick id1\u2028href "u"\n',
+    'gantt\n  a :id1, 1d\n  click id1\u2028href "u"\n',
+  ],
+]
+
+/**
+ * Each example is a Gantt chart with a whitespace character other than a space
+ * and a tab, which no file of this package may hold: U+00A0 and U+FEFF. Where
+ * the lexer reads one whitespace character, a space stands for it; a
+ * description keeps it before its colon; and a list keeps a U+FEFF between its
+ * items, which the conversion to lower case ignores (docs/gantt.md, Lists and
+ * Whitespace characters).
+ */
+const ganttWhitespaceExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "U+00A0 after a title keyword",
+      "gantt\ntitle\u00a0T\n",
+      "gantt\n  title T\n",
+    ],
+    [
+      "U+00A0 between weekday and its day",
+      "gantt\nweekday\u00a0monday\n",
+      "gantt\n  weekday monday\n",
+    ],
+    [
+      "U+00A0 between two statements",
+      "gantt\ninclusiveEndDates\u00a0title T\n",
+      "gantt\n  inclusiveEndDates\n  title T\n",
+    ],
+    [
+      "U+00A0 around an item of task data",
+      "gantt\na :\u00a01d\u00a0\n",
+      "gantt\n  a :1d\n",
+    ],
+    [
+      "U+00A0 between the items of task data",
+      "gantt\na : id1,\u00a0\u00a01d\n",
+      "gantt\n  a :id1, 1d\n",
+    ],
+    [
+      "U+00A0 before the colon of a task",
+      "gantt\na\u00a0: 1d\n",
+      "gantt\n  a\u00a0:1d\n",
+    ],
+    [
+      "U+FEFF before a task",
+      "gantt\ntitle T\n\ufeffa : 1d\n",
+      "gantt\n  title T\n  a :1d\n",
+    ],
+    [
+      "U+FEFF between the items of a list",
+      "gantt\nincludes \u0391\u0392\ufeff\u03a3\n",
+      "gantt\n  includes \u0391\u0392\ufeff\u03a3\n",
+    ],
+    [
+      "U+00A0 between the items of a list",
+      "gantt\nincludes \u0391\u0392\u00a0\u03a3\n",
+      "gantt\n  includes \u0391\u0392 \u03a3\n",
+    ],
+  ]
+
+/**
  * Checks that formatting an example gives its formatted form, that
  * formatting again changes nothing, and that the Db that the tree denotes is
  * the same for both texts.
@@ -471,6 +640,27 @@ describe("a flowchart with a line separator", () => {
 
 describe("a block that ends with a line separator after its closing word", () => {
   it.each(droppedExamples)("drops %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
+})
+
+describe("an ER diagram with a line separator", () => {
+  it.each(erExamples)("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
+})
+
+describe("a Gantt chart with a line separator", () => {
+  it.each(ganttLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a Gantt chart with a whitespace character that no fixture file holds", () => {
+  it.each(ganttWhitespaceExamples)("keeps %s", async (_name, input, output) => {
     await expectKept(input, output)
   })
 })

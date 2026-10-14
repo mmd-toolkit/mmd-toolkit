@@ -1,4 +1,4 @@
-import type { DirectiveMatch } from "./directives.ts"
+import type { DirectiveIndex } from "./directives.ts"
 import { nextOffset } from "./text-cursor.ts"
 
 /**
@@ -13,8 +13,8 @@ export interface LineSegmentReading {
   readonly start: number
   /** Where the separator that ends the segment is, or the end of the source. */
   readonly end: number
-  /** The directives inside the segment, keyed by their start offset. */
-  readonly directives: ReadonlyMap<number, DirectiveMatch>
+  /** The directives inside the segment. */
+  readonly directives: DirectiveIndex
   /** The offsets of the `;` characters that the line rule ignores. */
   readonly ignoredSemicolons: ReadonlySet<number>
 }
@@ -39,7 +39,7 @@ export function segmentCharacterAt(
 ): SegmentCharacter | null {
   let current = offset
   for (;;) {
-    const directive = reading.directives.get(current)
+    const directive = reading.directives.startingAt(current)
     if (directive !== undefined) {
       current = directive.range[1]
     } else if (reading.ignoredSemicolons.has(current)) {

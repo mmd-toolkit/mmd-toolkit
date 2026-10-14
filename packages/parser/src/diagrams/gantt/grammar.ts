@@ -6,14 +6,12 @@ import type {
   GanttCallback,
   GanttClickStatement,
   GanttDay,
-  GanttIgnoredStatement,
   GanttLiteral,
   GanttStatement,
   GanttTaskStatement,
   GanttWeekendDay,
 } from "../../ast/gantt.ts"
 import { matchesIgnoringCase } from "../../character-classes.ts"
-import type { EmptyForm } from "../../empty-forms.ts"
 import { EMPTY_FORM_KINDS } from "../../empty-forms.ts"
 import { ParseError } from "../../errors.ts"
 import type { PendingToken, SourceLexer } from "../../source-lexer.ts"
@@ -81,7 +79,7 @@ export class GanttGrammar extends UnitGrammar<UnitName, Unit> {
     const body: GanttStatement[] = []
     for (let unit = this.peek(); unit !== null; unit = this.peek()) {
       if (unit.name === "newline") {
-        this.next += 1
+        this.advance()
         continue
       }
       body.push(this.parseStatement(unit))
@@ -90,9 +88,11 @@ export class GanttGrammar extends UnitGrammar<UnitName, Unit> {
   }
 
   /**
-   * known-divergences/tokenless-empty-forms.md: an empty description
-   * block, an empty href, or an empty call where the grammar cannot take
-   * it, inside a click statement.
+   * known-divergences/tokenless-empty-forms.md: an empty href or an empty
+   * call, which no rule of the grammar takes wherever it stands, and an
+   * empty description block where the grammar cannot take it, inside a
+   * click statement (Empty description blocks, Empty hrefs and empty
+   * calls).
    */
   protected knownDivergenceAt(unit: Unit): ParseError | null {
     return this.emptyFormErrorAt(unit)
@@ -165,15 +165,9 @@ export class GanttGrammar extends UnitGrammar<UnitName, Unit> {
       case "accTitle":
         return this.parseAccTitleStatement()
       case "accDescr":
-        return this.nameAt(this.next + 1) === ":"
+        return this.nameAt(this.positionAfter(this.next)) === ":"
           ? this.parseAccDescrStatement()
           : this.parseAccDescrBlockStatement()
-      case "href":
-      case "call": {
-        const form = this.emptyFormOf(unit)
-        if (form === null || form.units[0] !== unit) throw this.unexpected(unit)
-        return this.parseIgnoredStatement(form)
-      }
       default:
         throw this.unexpected(unit)
     }
@@ -192,7 +186,7 @@ export class GanttGrammar extends UnitGrammar<UnitName, Unit> {
     if (colon?.name !== ":" || colon.startsData !== true) {
       throw this.unexpected(colon)
     }
-    this.next += 1
+    this.advance()
     this.addItem("Punctuator", [colon])
     const data: (Unit | null)[] = [this.takeIf("data-item")]
     while (this.nameAt(this.next) === ",") {
@@ -291,19 +285,15 @@ export class GanttGrammar extends UnitGrammar<UnitName, Unit> {
    * forms that come next, starts it. Forms written there are decided
    * together, by the unit after the last of them; when it starts the
    * second part, they lie inside the statement, and the input is rejected
-   * at the first of them; otherwise they are statements of their own.
+   * at the first of them; otherwise the statement ends before them, where
+   * an empty description block is a statement and an empty href or an
+   * empty call is rejected.
    */
   private clickGoesOn(name: "call" | "href"): boolean {
-    let index = this.next
-    for (;;) {
-      const unit = this.units.at(index)
-      const form = unit === undefined ? null : this.emptyFormOf(unit)
-      if (form === null || form.units[0] !== unit) break
-      index += form.units.length
-    }
-    const unit = this.units.at(index)
+    const after = this.afterEmptyForms(this.next, EMPTY_FORM_KINDS.gantt)
+    const unit = this.unitAt(after)
     if (unit?.name !== name || this.emptyFormOf(unit) !== null) return false
-    if (index !== this.next) throw this.unexpected(this.peek())
+    if (after !== this.next) throw this.unexpected(this.peek())
     return true
   }
 
@@ -442,30 +432,6 @@ export class GanttGrammar extends UnitGrammar<UnitName, Unit> {
       type: "GanttAccDescrBlockStatement",
       value: text === null ? null : this.literalOf(text),
       ...this.placeFrom(start),
-    }
-  }
-
-  /**
-   * Empty hrefs and empty calls: `ignored-statement = "href" '"' '"' |
-   * "call" "(" ")"`, the empty form `form` where a statement starts: its
-   * keyword, one `Keyword` item, and its quotes, one `String` item, or its
-   * parentheses, a `Punctuator` item each.
-   */
-  private parseIgnoredStatement(form: EmptyForm<Unit>): GanttIgnoredStatement {
-    const [keyword, opening, closing] = form.units
-    this.next += form.units.length
-    this.addItem("Keyword", [keyword])
-    if (form.kind === "empty-href") {
-      this.addItem("String", [opening, closing])
-    } else {
-      this.addItem("Punctuator", [opening])
-      this.addItem("Punctuator", [closing])
-    }
-    const place = this.placeOf(form.units)
-    return {
-      type: "GanttIgnoredStatement",
-      value: this.unreadTextOf(place.range),
-      ...place,
     }
   }
 

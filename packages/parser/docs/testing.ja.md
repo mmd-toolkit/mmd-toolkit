@@ -180,8 +180,9 @@ state の文の `textBeforeBody` が持たないときです。
 [fixture: er/gram-empty-description-block-between-names]
 Gantt チャートでは、空の href
 （`href` と、間に何もない 2 つの `"`）も空の形です。
-空の href と空の call は、空の説明ブロックと同じく、文の始まりでは文です。
-そこでは文を区切るものがなく、空の形が文の中にあるのは click の文の中だけです。
+空の call と同じく、どこにあっても mermaid.js は何も読みません。
+そこでは文を区切るものがなく、
+空の説明ブロックが文の中にあるのは click の文の中だけです。
 それは、id と最初の部分の間と、2 つの部分の間で、
 空の形の後の単位が 2 つ目の部分を始めるときです。
 [fixture: gantt/div-empty-href-before-call]

@@ -27,7 +27,8 @@ export type EmptyFormKind =
  * the empty description block and empty backquotes, which inside an
  * attribute block only lie inside an attribute where the tree has no place
  * for them; gantt has the empty description block, the empty href, and the
- * empty call, each a statement where a statement starts.
+ * empty call, of which only the empty description block is a statement
+ * where a statement starts.
  */
 export const EMPTY_FORM_KINDS: Readonly<
   Record<

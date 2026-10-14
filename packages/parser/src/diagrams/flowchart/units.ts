@@ -42,6 +42,7 @@ import {
 import { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"
 import type {
+  ArrowMatch,
   ClosedArrowParts,
   LinkTextKind,
   OpeningArrowParts,
@@ -54,6 +55,7 @@ import type {
 } from "../../diagram-text.ts"
 import type { Match } from "../../scanning.ts"
 import {
+  isBefore,
   isCodePointAt,
   isWhitespaceAt,
   isWordCharacterAt,
@@ -345,10 +347,20 @@ export class UnitLexer {
   /** Statement context, rule 14: the direction line, with the values of the flowchart. */
   private readonly directionLine: DirectionLineRule
 
+  /**
+   * Statement context, rule 15: the end of the run from the start where
+   * the rule last failed: no edge id starts at a character from that start
+   * up to this place (see {@link UnitLexer.readEdgeId}). The lexer reads on
+   * only forward, so a start before this place is one of those, and nothing
+   * undoes it: a start where an edge id is read is not before it.
+   */
+  private noEdgeIdBefore: DiagramPosition
+
   public constructor(reader: DiagramText, lines: LineIndex) {
     this.reader = reader
     this.lines = lines
     this.position = reader.first()
+    this.noEdgeIdBefore = reader.first()
     this.directionLine = new DirectionLineRule(
       reader,
       DIRECTION_LINE_VALUES,
@@ -536,10 +548,38 @@ export class UnitLexer {
 
   /**
    * diagrams/flowchart.md, The statement context: applies the first of the
-   * 26 rules that matches at `at`.
+   * 26 rules that matches at `at`. At whitespace, where of rules 18 to 26
+   * only rule 18, with the whitespace before an arrow, and rules 25 and 26
+   * match, the three are read together over the whitespace run (see
+   * {@link UnitLexer.readWhitespaceRun}).
    */
   private readInStatementContext(at: DiagramCharacter): void {
+    if (this.readRulesBeforeArrow(at)) return
+    // Rules 25 and 26 cut a whitespace run into units, one for each run of
+    // line feeds and one for each run of other whitespace, and the lookahead
+    // of rule 18 for an arrow walks the whole rest of the run. Tried at the
+    // start of every unit, as the order of the rules has it, that lookahead
+    // walks the run again for each unit, so lines of a space and a line feed
+    // take time in the square of their number; read together, the lookahead
+    // is made once for the run.
+    if (isWhitespace(at.codePoint)) {
+      this.readWhitespaceRun(at)
+      return
+    }
     const applied =
+      this.readArrow(at) ||
+      this.readShapeOpener(at) ||
+      this.readLetterV(at) ||
+      this.readIdRun(at) ||
+      this.readMinus(at) ||
+      this.readLetter(at) ||
+      this.readLabelOpener(at)
+    if (!applied) throw this.noRuleMatches(at)
+  }
+
+  /** The statement context, rules 1 to 17, in order: the first that matches at `at`; false when none does. */
+  private readRulesBeforeArrow(at: DiagramCharacter): boolean {
+    return (
       this.readAccessibilityMarker(at) ||
       this.readDataStart(at) ||
       this.readCallKeyword(at) ||
@@ -554,17 +594,8 @@ export class UnitLexer {
       this.readDirectionLine(at) ||
       this.readEdgeId(at) ||
       this.readNumber(at) ||
-      this.readStatementPunctuation(at) ||
-      this.readArrow(at) ||
-      this.readShapeOpener(at) ||
-      this.readLetterV(at) ||
-      this.readIdRun(at) ||
-      this.readMinus(at) ||
-      this.readLetter(at) ||
-      this.readLabelOpener(at) ||
-      this.readNewline(at) ||
-      this.readSpace(at)
-    if (!applied) throw this.noRuleMatches(at)
+      this.readStatementPunctuation(at)
+    )
   }
 
   /**
@@ -767,27 +798,36 @@ export class UnitLexer {
    * an `edge-id` unit, and the `@` is an `@` unit.
    */
   private readEdgeId(at: DiagramCharacter): boolean {
+    if (isBefore(at, this.noEdgeIdBefore)) return false
     let lastAt: DiagramCharacter | null = null
-    for (
-      let position: DiagramPosition = at;
+    let position: DiagramPosition = at
+    while (
       position !== null &&
       !isWhitespace(position.codePoint) &&
-      position.codePoint !== QUOTATION_MARK;
-      position = this.reader.after(position)
+      position.codePoint !== QUOTATION_MARK
     ) {
-      if (position.codePoint !== COMMERCIAL_AT || samePosition(position, at)) {
-        continue
+      if (position.codePoint === COMMERCIAL_AT && !samePosition(position, at)) {
+        const following = this.reader.after(position)
+        if (
+          following !== null &&
+          following.codePoint !== LEFT_CURLY_BRACKET &&
+          following.codePoint !== QUOTATION_MARK
+        ) {
+          lastAt = position
+        }
       }
-      const following = this.reader.after(position)
-      if (
-        following !== null &&
-        following.codePoint !== LEFT_CURLY_BRACKET &&
-        following.codePoint !== QUOTATION_MARK
-      ) {
-        lastAt = position
-      }
+      position = this.reader.after(position)
     }
-    if (lastAt === null) return false
+    if (lastAt === null) {
+      // When the rule fails at a start, it fails at every start up to the
+      // end of the run, `position`: whether an `@` is one that the rule
+      // takes does not depend on the start, and the run from a later start
+      // lies inside the run from this one. So the end is kept, and a start
+      // before it fails without walking the run, which, walked again from
+      // every start, would take time in the square of its length.
+      this.noEdgeIdBefore = position
+      return false
+    }
     this.addUnit("edge-id", at, lastAt)
     this.addUnit("@", lastAt, this.reader.after(lastAt))
     this.position = this.reader.after(lastAt)
@@ -819,21 +859,67 @@ export class UnitLexer {
   }
 
   /**
-   * Statement context, rule 18, and Arrows: zero or more whitespace, the
-   * arrow itself, and zero or more whitespace, as one unit. A closed arrow
-   * is an `arrow` unit; an opening arrow is an `opening-arrow` unit and
-   * enters the link text context of its kind.
+   * Statement context, rule 18, at a character `at` that is not
+   * whitespace: the arrow itself at `at` (see
+   * {@link UnitLexer.readArrowFrom}). The whitespace before an
+   * arrow is read by {@link UnitLexer.readWhitespaceRun}.
    */
   private readArrow(at: DiagramCharacter): boolean {
-    const arrow = matchArrow(this.reader, this.afterWhitespace(at))
+    const arrow = matchArrow(this.reader, at)
     if (arrow === null) return false
+    this.readArrowFrom(at, arrow)
+    return true
+  }
+
+  /**
+   * Statement context, rule 18, and Arrows: from `start`, zero or more
+   * whitespace, the arrow `arrow`, and zero or more whitespace, as one unit.
+   * A closed arrow is an `arrow` unit; an opening arrow is an
+   * `opening-arrow` unit and enters the link text context of its kind.
+   */
+  private readArrowFrom(start: DiagramCharacter, arrow: ArrowMatch): void {
     const end = this.afterWhitespace(arrow.end)
-    this.addArrowUnit(at, end, arrow.parts)
+    this.addArrowUnit(start, end, arrow.parts)
     this.position = end
     if (arrow.parts.form === "opening") {
       this.enter(LINK_TEXT_CONTEXTS[arrow.parts.opens])
     }
-    return true
+  }
+
+  /**
+   * Statement context, rules 18, 25, and 26, at a whitespace character
+   * `at`, where rules 1 to 17 match nothing and rules 19 to 24 match no
+   * whitespace. Where an arrow follows the whitespace run from `at`, line
+   * feeds included, rule 18 reads the run, the arrow, and the whitespace
+   * after it as one unit. Otherwise the run is the units of rules 25 and
+   * 26 in order, a `newline` unit for each maximal run of line feeds and a
+   * `space` unit for each maximal run of other whitespace. Every place of
+   * the run is followed by the same end of the run, where no arrow is, so
+   * rule 18 is not tried again at the start of the next unit; rules 1 to 17
+   * are, as at the start of any unit, and the first that matches there
+   * reads on from it.
+   */
+  private readWhitespaceRun(at: DiagramCharacter): void {
+    const arrow = matchArrow(this.reader, this.afterWhitespace(at))
+    if (arrow !== null) {
+      this.readArrowFrom(at, arrow)
+      return
+    }
+    let start: DiagramCharacter = at
+    for (;;) {
+      const lineFeeds = start.codePoint === LINE_FEED
+      const end = skipWhile(
+        this.reader,
+        start,
+        (character) =>
+          isWhitespace(character.codePoint) &&
+          (character.codePoint === LINE_FEED) === lineFeeds,
+      )
+      this.addUnit(lineFeeds ? "newline" : "space", start, end)
+      this.position = end
+      if (!isWhitespaceAt(end) || this.readRulesBeforeArrow(end)) return
+      start = end
+    }
   }
 
   /**
@@ -915,33 +1001,6 @@ export class UnitLexer {
       }
     }
     return false
-  }
-
-  /** Statement context, rule 25: one or more line feeds are a `newline` unit. */
-  private readNewline(at: DiagramCharacter): boolean {
-    const end = skipWhile(
-      this.reader,
-      at,
-      (character) => character.codePoint === LINE_FEED,
-    )
-    if (samePosition(end, at)) return false
-    this.addUnit("newline", at, end)
-    this.position = end
-    return true
-  }
-
-  /** Statement context, rule 26: one or more whitespace characters other than line feeds are a `space` unit. */
-  private readSpace(at: DiagramCharacter): boolean {
-    const end = skipWhile(
-      this.reader,
-      at,
-      (character) =>
-        isWhitespace(character.codePoint) && character.codePoint !== LINE_FEED,
-    )
-    if (samePosition(end, at)) return false
-    this.addUnit("space", at, end)
-    this.position = end
-    return true
   }
 
   /**
@@ -1451,6 +1510,15 @@ export class UnitLexer {
   private readInEllipseContext(at: DiagramCharacter): void {
     if (this.readString(at)) return
     this.rejectTildesAt(at)
+    if (isWhitespace(at.codePoint)) {
+      // Every character of a run of whitespace reaches the same place after
+      // the run, so the `~` there, which are not three or more, reject none
+      // of them, and no other rule reads whitespace: each is a `text-run`
+      // unit. Read together, the run is walked once, not again from each of
+      // its characters, which would take time in the square of its length.
+      this.readEachWhitespaceCharacter(at, "text-run")
+      return
+    }
     const following = this.reader.after(at)
     if (
       isOneOf(at, [HYPHEN_MINUS, SOLIDUS, RIGHT_PARENTHESIS]) &&
@@ -1498,6 +1566,16 @@ export class UnitLexer {
       this.leave()
       return
     }
+    if (isWhitespace(at.codePoint)) {
+      // Every character of a run of whitespace reaches the same place after
+      // the run, where no closed arrow starts, so none of them starts one,
+      // and whitespace is not the kind's character: each is a
+      // `link-text-char` unit. Read together, the run is walked once, not
+      // again from each of its characters, which would take time in the
+      // square of its length.
+      this.readEachWhitespaceCharacter(at, "link-text-char")
+      return
+    }
     const following = this.reader.after(at)
     if (at.codePoint === LINK_TEXT_FORBIDDEN[kind]) {
       const isLoneDash =
@@ -1507,6 +1585,24 @@ export class UnitLexer {
     const end = this.afterOneCharacter(at)
     this.addUnit("link-text-char", at, end)
     this.position = end
+  }
+
+  /**
+   * The ellipse and link text contexts: the run of whitespace from `at`,
+   * line feeds included, each character a unit named `name` of its own;
+   * reads on after the run.
+   */
+  private readEachWhitespaceCharacter(
+    at: DiagramCharacter,
+    name: "text-run" | "link-text-char",
+  ): void {
+    let position: DiagramPosition = at
+    while (position !== null && isWhitespace(position.codePoint)) {
+      const after = this.reader.after(position)
+      this.addUnit(name, position, after)
+      position = after
+    }
+    this.position = position
   }
 
   /**

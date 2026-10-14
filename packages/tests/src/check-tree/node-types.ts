@@ -27,7 +27,6 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "ErLiteral",
   "ErIgnoredText",
   "GanttLiteral",
-  "GanttIgnoredStatement",
 ])
 
 /**
@@ -173,13 +172,11 @@ export const DATA_BLOCK_NODE_TYPES: ReadonlySet<string> = new Set([
 ])
 
 /**
- * ast/state.md, StateIgnoredText, and ast/gantt.md, GanttIgnoredStatement: the
- * value node types whose range holds the tokens of their units, of whatever
- * kind the units have: the empty strings, empty description blocks,
- * `ignored-state` unit, and `%%` of a StateIgnoredText, and the keyword, the
- * quotes or the parentheses of a GanttIgnoredStatement.
+ * ast/state.md, StateIgnoredText: the value node types whose range holds the
+ * tokens of their units, of whatever kind the units have: the empty strings,
+ * empty description blocks, `ignored-state` unit, and `%%` of a
+ * StateIgnoredText.
  */
 export const NODE_TYPES_WITH_TOKENS_OF_ANY_KIND: ReadonlySet<string> = new Set([
   "StateIgnoredText",
-  "GanttIgnoredStatement",
 ])

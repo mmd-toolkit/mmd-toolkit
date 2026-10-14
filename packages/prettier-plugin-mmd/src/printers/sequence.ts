@@ -209,7 +209,7 @@ function printSectionBlock(
     "sections" as never,
   )
   let closing: Doc = endKeyword.value
-  for (const { header, block } of [...opened].reverse()) {
+  for (const { header, block } of opened.toReversed()) {
     closing = printClosedBlock(header, block, closing, depth, options)
   }
   return closing

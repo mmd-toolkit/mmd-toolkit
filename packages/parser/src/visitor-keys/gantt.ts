@@ -26,6 +26,5 @@ export const ganttVisitorKeys: Readonly<
   GanttAccTitleStatement: ["value"],
   GanttAccDescrStatement: ["value"],
   GanttAccDescrBlockStatement: ["value"],
-  GanttIgnoredStatement: [],
   GanttLiteral: [],
 }

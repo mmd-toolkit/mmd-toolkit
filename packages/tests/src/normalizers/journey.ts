@@ -48,7 +48,8 @@ export function normalizeJourney(dbValue: unknown): DbSummary {
     title: db.getDiagramTitle(),
     accTitle: db.getAccTitle(),
     accDescr: db.getAccDescription(),
-    sections: db.getSections(),
+    // A copy: the Db empties its own list when it is cleared for the next text.
+    sections: [...db.getSections()],
     tasks,
   }
 }

@@ -50,6 +50,16 @@ const ruleDocuments: readonly {
     rulesWithoutExamples: ["line-separators"],
     rulesInTestCode: ["line-separators"],
   },
+  {
+    diagram: "er",
+    rulesWithoutExamples: ["line-separators"],
+    rulesInTestCode: ["line-separators"],
+  },
+  {
+    diagram: "gantt",
+    rulesWithoutExamples: ["line-separators", "whitespace-characters"],
+    rulesInTestCode: ["line-separators", "whitespace-characters"],
+  },
 ]
 const EXAMPLE_OPENING = "```mmd"
 const EXAMPLE_CLOSING = "```"
@@ -272,6 +282,8 @@ describe("the test citations in the documents", async () => {
     "docs/sequence.md",
     "docs/class.md",
     "docs/state.md",
+    "docs/er.md",
+    "docs/gantt.md",
     "docs/compatibility.md",
   ]) {
     const text = await readFile(new URL(document, packageRoot), "utf8")

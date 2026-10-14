@@ -1202,15 +1202,28 @@ A line terminator is no word character either, so `#a` at the end of a line and
 no entity, and neither do `#a`, U+2028, and `b;`, or `#a-b;`, whose `-` is no
 word character, while `_` is one, so `#_;` is an entity. A directive right after
 the `#` or right before the `;` lies inside the entity, which is read in the
-text without its directives. [fixture:
-common/entity-hash-inside-word-second-hash-starts] [fixture:
+text without its directives, and so do two directives right before the `;`. The
+`;` of such an entity is no separator where a `;` ends a statement: in sequence,
+`A->>B: x #a`, a directive, and `;B->>A: y` is one message, `x`, the placeholder
+of `#a;`, and `B->>A: y`, and so it is with a directive right after the `#` or
+between two characters of the word, while `#a`, a comment line, and `;B->>A: y`
+make no entity, and the messages are `x` and `y`: in sequence, the text of a
+message ends at `#`, which starts a diagram comment that takes the rest of its
+line (see
+[The statement context](./diagrams/sequence.md#the-statement-context)).
+[fixture: common/entity-hash-inside-word-second-hash-starts] [fixture:
 common/entity-double-hash] [fixture: common/entity-cut-by-line-terminator]
 [fixture: common/entity-not-across-comment-line] [fixture:
 common/entity-semicolon-after-comment-line] [fixture:
 common/entity-cut-by-line-separator] [fixture: common/entity-hyphen-not-word]
 [fixture: common/entity-underscore-word] [fixture:
 common/entity-directive-after-hash] [fixture:
-common/entity-directive-before-semicolon]
+common/entity-directive-before-semicolon] [fixture:
+common/entity-directive-in-word-in-message] [fixture:
+common/entity-directive-after-hash-in-message] [fixture:
+common/entity-directive-before-semicolon-in-message] [fixture:
+common/entity-two-directives-before-semicolon-in-message] [fixture:
+common/entity-not-across-comment-line-in-message]
 
 Lexical rule: the lexer reads an entity as its placeholder. When the word
 consists of ASCII digits only, `#` _word_ `;` reads as `ﬂ°°` _word_ `¶ß`;

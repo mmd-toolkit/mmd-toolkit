@@ -7,6 +7,8 @@ import { visitorKeys } from "@mmd-toolkit/parser"
 import { describe, expect, it } from "vitest"
 import { valueNodeTypes } from "../src/printers/flowchart-layout.ts"
 import { classValueNodeTypes } from "../src/printers/class-layout.ts"
+import { erValueNodeTypes } from "../src/printers/er-layout.ts"
+import { ganttValueNodeTypes } from "../src/printers/gantt-layout.ts"
 import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
 import { stateValueNodeTypes } from "../src/printers/state-layout.ts"
 
@@ -71,6 +73,32 @@ const diagrams: readonly DiagramValues[] = [
       "StateTerminal",
       "StateDividerStatement",
       "StateHideEmptyDescriptionStatement",
+    ]),
+  },
+  {
+    prefix: "Er",
+    values: erValueNodeTypes,
+    notValues: new Set([
+      // The three units of a relationship, printed as their tokens.
+      "ErRelationship",
+      // The node of the diagram type that fails to parse, which has no
+      // statement and is no node of an ER diagram, though its name starts
+      // with `Er`.
+      "ErrorDiagram",
+    ]),
+  },
+  {
+    prefix: "Gantt",
+    values: ganttValueNodeTypes,
+    notValues: new Set([
+      // Statements whose tokens are all the statement has, printed as the
+      // tokens: the keyword, and the keyword and the day.
+      "GanttInclusiveEndDatesStatement",
+      "GanttWeekdayStatement",
+      "GanttWeekendStatement",
+      // A number is no node of a Gantt chart: its numbers are the text of
+      // an item.
+      "NumericLiteral",
     ]),
   },
 ]

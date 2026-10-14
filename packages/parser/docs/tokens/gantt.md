@@ -19,7 +19,7 @@ that this table gives for the item:
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `Keyword`    | a `header` unit; the `accTitle`, `accDescr`, `href`, `call`, `click`, `dateFormat`, `axisFormat`, `tickInterval`, `todayMarker`, `includes`, `excludes`, `inclusiveEndDates`, `weekday`, `weekend`, `title`, and `section` units; a `day` unit                                                                                                               |
 | `Identifier` | the name units of [Directives inside units](../../../spec/docs/diagrams/gantt.md#directives-inside-units): an `id` and a `list-item`                                                                                                                                                                                                                         |
-| `String`     | the string unit of [Directives inside units](../../../spec/docs/diagrams/gantt.md#directives-inside-units), a `url-text`, with the two `"` units around it; the two `"` units of an empty href                                                                                                                                                               |
+| `String`     | the string unit of [Directives inside units](../../../spec/docs/diagrams/gantt.md#directives-inside-units), a `url-text`, with the two `"` units around it                                                                                                                                                                                                   |
 | `RawText`    | the text units of [Directives inside units](../../../spec/docs/diagrams/gantt.md#directives-inside-units): a `setting-text`, a `marker-text`, a `title-text`, a `section-text`, a `task-text`, a `data-item`, a tag included, a `callback-name`, a `callback-arguments`, an `acc-title-text`, an `acc-description-text`, and an `acc-description-block-text` |
 | `Punctuator` | `:`, `,`, `{`, `}`, `(`, and `)`                                                                                                                                                                                                                                                                                                                             |
 
@@ -39,9 +39,8 @@ A **token** is a run of units of one item that follow one another, without the
 whitespace at its ends unless the unit keeps it. The string of a link part, its
 `"` units and the `url-text` between them, is one `String` token from its
 opening to its closing quote: `href "u"` has the `Keyword` token `href` and the
-`String` token `"u"`, and so the two `"` units of an empty href are the one
-`String` token `""`. [fixture: gantt/gram-click-href] [fixture:
-gantt/gram-empty-href-line] Every other item is one unit, and so one token.
+`String` token `"u"`. [fixture: gantt/gram-click-href] Every other item is one
+unit, and so one token.
 
 A token holds no whitespace at its ends, except where mermaid.js reads it as
 part of a value (see [Tokens](../tokens.md#tokens)). The units whose values keep
@@ -86,16 +85,6 @@ gantt/div-ignored-semicolon-in-click-id]
 - An empty description block that is a statement has the `Keyword` token
   `accDescr` and the `Punctuator` tokens `{` and `}`. [fixture:
   gantt/gram-acc-descr-block-empty]
-- A GanttIgnoredStatement has the `Keyword` token of its keyword and, for an
-  empty href, the `String` token `""`, or, for an empty call, the `Punctuator`
-  tokens `(` and `)`: `call ( )` has the tokens `call`, `(`, and `)`. [fixture:
-  gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-line] [fixture:
-  gantt/gram-empty-call-space-inside] A directive between the two quotes of an
-  empty href cuts its `String` token, as above: `href "%%{init: {}}%%"` has the
-  `StringFragment` tokens `"` and `"` with the `Directive` token between them. A
-  directive between the parentheses of an empty call lies between its two
-  `Punctuator` tokens. [fixture: gantt/lex-empty-href-directive-between-quotes]
-  [fixture: gantt/lex-empty-call-directive-between-parentheses]
 - A `;` that the line rule ignores is an `IgnoredSemicolon` token: in
   `title a;b style:#x;`, the first `;` is not the last of its line and is a
   character of the `RawText` token `a;b style:#x`, and the last `;` is an

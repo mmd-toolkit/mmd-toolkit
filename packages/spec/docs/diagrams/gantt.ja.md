@@ -700,7 +700,7 @@ href の文脈には、`href`、その空白、`"` の後に入ります（文�
 
 `url-text` は空になりません。
 `href ""` は `href` の単位と、間に何もない 2 つの `"` の単位、
-つまり**空の href** で、click の文の中では文法のどの規則も取りません
+つまり**空の href** で、文法のどの規則も取りません
 （[空の href と空の call](#空の-href-と空の-call) を参照）。
 `href "`、改行、`"` は改行 1 つの URL を持ちます。
 テキストは href の文脈では終われません。
@@ -744,7 +744,7 @@ gantt/lex-href-line-feed-url] [fixture: gantt/lex-href-unclosed]
 持ちます。
 `call` の空白の直後の `(` は名前を残しません。
 `call (1)` は拒否され、括弧の間が空白だけの `call ()` は**空の call** で、
-click の文の中では文法のどの規則も取りません
+文法のどの規則も取りません
 （[空の href と空の call](#空の-href-と空の-call) を参照）。
 引数は最初の `)` で終わり、引用符の中でも同じです。
 `call f("a)b")` は拒否されます。
@@ -1010,7 +1010,6 @@ mermaid.js の文書は
 | `section-statement`                                                                                                                                                                                             | GanttSectionStatement                                                                  |
 | `accessibility-statement`                                                                                                                                                                                       | GanttAccTitleStatement、GanttAccDescrStatement、GanttAccDescrBlockStatement のいずれか |
 | `empty-description-block`                                                                                                                                                                                       | テキストのない GanttAccDescrBlockStatement。それだけで 1 つの文                        |
-| `ignored-statement`                                                                                                                                                                                             | GanttIgnoredStatement                                                                  |
 | `url-text` とその `"` の単位                                                                                                                                                                                    | StringLiteral                                                                          |
 | `id`、`list-item`、タグである `data-item`                                                                                                                                                                       | Identifier                                                                             |
 | `setting-text`、`marker-text`、`title-text`、`section-text`、`task-text`、タグでない `data-item`、`callback-name`、`callback-arguments`、`acc-title-text`、`acc-description-text`、`acc-description-block-text` | GanttLiteral                                                                           |
@@ -1037,7 +1036,6 @@ statement = task-statement
           | section-statement
           | accessibility-statement
           | empty-description-block
-          | ignored-statement
 ```
 
 図は、ヘッダーと任意の数の行で、各行は文か `newline` の単位です。
@@ -1369,11 +1367,6 @@ gantt/div-empty-description-block-between-href-and-call]
 
 ### 空の href と空の call
 
-```text
-ignored-statement = "href" '"' '"'
-                  | "call" "(" ")"
-```
-
 **空の href** は `href` の単位と間に何もない 2 つの `"` の単位、
 **空の call** は `call` の単位、`(` の単位、`)` の単位で
 括弧の間が空白（改行を含む）だけのものです
@@ -1382,77 +1375,75 @@ ignored-statement = "href" '"' '"'
 mermaid.js はどちらにもトークンを読まず、ないものとして入力を受理します
 （[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md)
 を参照）。
-文の始まる位置では、それは `ignored-statement`、
-つまり書かれたものを持ち何も変えない GanttIgnoredStatement です。
+文法のどの規則も、どこにあってもこれらを取らないので、
+空の href や空の call を含む入力はここでは拒否されます。
+既知の差異 [`tokenless-empty-forms`](#既知の差異) です。
 独立した行、テキストの終わり、ヘッダーの直後、同じ行の別の文の後
-（完結した click の文を含む）、
-同じ行の文の前（くっついていてもいなくても）です。
-キーワードの後に空白のない `call()` と `href""` はタスクのテキストで、
-`href "`、改行、`"` は空の href ではありません。
-空の href の 2 つの引用符の間や、空の call の括弧の間のディレクティブは
-単位の間にあるので、`href "%%{init: {}}%%"` と `call (%%{init: {}}%%)` は、
-mermaid.js がディレクティブを除いて読むのと同じく、空の href と空の call で、
-click の文の中では同じように拒否されます。
-[fixture: gantt/lex-empty-href-directive-between-quotes] [fixture:
-gantt/lex-empty-call-directive-between-parentheses] [fixture:
-gantt/div-empty-href-directive-between-quotes-before-call]
+（完結した click の文を含む）、同じ行の文の前（くっついていてもいなくても）、
+click の文の中（id と最初の部分の間、部分の間）のどれでもです。
+mermaid.js はどれも、その形がないものとして受理します。
+`title T` の前の行の `href ""` はタイトルを持ち、
+`call ()x : 1d` はタスク `x `、
+`click id1 href "" call f()` は call を、`click id1 call () href "u"` は
+リンクを設定します。
+`href ""` か `call ()` だけが続く `click id1` と、
+`click id1 href "" b : 1d` は、
+click の文に部分がないので、どちらでも拒否されます。
+並んだ 2 つの空の href・空の call は、最初のもので拒否されます。
+`href "" call ()` は href です。
+文の始まるところでその前に置かれた空の説明ブロックは文で、
+拒否されるのはその後の空の href か空の call です。
+`accDescr {} href ""` は href です。
+click の文の中では、ブロックは文ではないので、
+並んだ形の最初のもので拒否されます。
 [fixture: gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-line]
 [fixture: gantt/gram-empty-call-space-inside] [fixture:
-gantt/gram-empty-call-line-feed-inside] [fixture:
-gantt/gram-empty-href-at-end] [fixture: gantt/gram-empty-call-at-end]
-[fixture: gantt/gram-empty-href-after-header-same-line] [fixture:
+gantt/gram-empty-call-line-feed-inside] [fixture: gantt/gram-empty-href-at-end]
+[fixture: gantt/gram-empty-call-at-end] [fixture:
+gantt/gram-empty-href-after-header-same-line] [fixture:
 gantt/gram-empty-href-after-keyword-same-line] [fixture:
 gantt/gram-click-href-then-empty-href] [fixture:
 gantt/gram-click-call-then-empty-href] [fixture:
+gantt/gram-click-call-then-empty-call] [fixture:
 gantt/gram-empty-href-then-title-same-line] [fixture:
 gantt/gram-empty-call-then-title-same-line] [fixture:
 gantt/gram-empty-href-glued-task] [fixture: gantt/gram-empty-call-glued-task]
-[fixture: gantt/gram-empty-call-tab] [fixture:
-gantt/gram-empty-href-two-spaces] [fixture:
-gantt/lex-call-no-space-before-parenthesis] [fixture:
-gantt/lex-href-no-space-before-quotes] [fixture: gantt/lex-href-line-feed-url]
-
-click の文の中、id と最初の部分の間や部分の間では、
-空の href と空の call はどの規則も取らず、入力は拒否されます。
-`click id1 href "" call f()`、`click id1 href ""href "u"`、
-`click id1 call () href "u"` で、mermaid.js はその形がないものとして受理します。
-既知の差異 [`tokenless-empty-forms`](#既知の差異) です。
-`href ""` か `call ()` だけが続く `click id1` と、
-`click id1 href "" b : 1d` は、click の文に部分がないので、
-どちらでも拒否されます。
+[fixture: gantt/gram-empty-call-tab] [fixture: gantt/gram-empty-href-two-spaces]
 [fixture: gantt/div-empty-href-before-call] [fixture:
 gantt/div-empty-href-glued-before-href] [fixture:
 gantt/div-empty-call-before-href] [fixture:
-gantt/gram-click-empty-href-only] [fixture: gantt/gram-click-empty-call-only]
-[fixture: gantt/gram-click-empty-href-then-task]
-
-2 つの読みのどちらが当たるかは、ほかの図種と同じく、
-並んだ空の形の次の単位で決まります。
-その単位が、部分を 1 つ持つ click の文の 2 つ目の部分として
-前の click の文を続けるなら、空の形は click の文の中にあり、
-入力は既知の差異として拒否されます。
-そうでなければ、空の形はそれぞれ `ignored-statement` です。
-そのため `click id1 call f() href "" href "u"`、
-`click id1 href "u" call () call f()`、`click id1 href "u" href "" call f()` は
-ここでは拒否されます。
-空の形の後の `href "u"` や `call f()` が click の文を続けるからです。
-mermaid.js はその部分を click の文に読み込んで受理します。同じ差異です。
-`click id1 href "" call ()` `href "u"` も同じように拒否されます。
-2 つの空の形が id と最初の部分の間にあるからです。
-`click id1 href "u" href "" call () call f()` と
-`click id1 call f() accDescr {} href "" href "u"` も同じで、
-2 つの空の形は部分の間にあります。
-独立した行の `href "" call ()` は 2 つの無視される文で、
-`click id1 call f() call ()` は click の文と無視される文です。
-空の call の後に何も続かないからです。
-[fixture: gantt/div-empty-href-between-call-and-href] [fixture:
+gantt/div-empty-href-between-call-and-href] [fixture:
 gantt/div-empty-call-between-href-and-call] [fixture:
 gantt/div-empty-href-between-href-and-call] [fixture:
 gantt/div-empty-href-and-empty-call-before-href] [fixture:
 gantt/div-empty-href-and-empty-call-between-parts] [fixture:
 gantt/div-empty-description-block-and-empty-href-between-parts] [fixture:
 gantt/gram-empty-href-and-empty-call-line] [fixture:
-gantt/gram-click-call-then-empty-call]
+gantt/gram-empty-description-block-then-empty-href-same-line] [fixture:
+gantt/gram-empty-description-block-then-empty-call-same-line] [fixture:
+gantt/gram-empty-href-then-empty-description-block-same-line] [fixture:
+gantt/div-empty-call-and-empty-description-block-between-parts] [fixture:
+gantt/gram-click-empty-href-only] [fixture: gantt/gram-click-empty-call-only]
+[fixture: gantt/gram-click-empty-href-then-task]
+
+文の始まる位置の空の説明ブロック（[空の説明ブロック](#空の説明ブロック)
+を参照）と違って空の形を拒否するのは、
+それがリンクや call として書かれていて mermaid.js が丸ごと捨てるもので、
+何も変えない文として木に持つと読まれたように見えるからです。
+ほかの図種も同じ形を拒否します
+（[tokenless-empty-forms](../known-divergences/tokenless-empty-forms.ja.md)
+を参照）。
+キーワードの後に空白のない `call()` と `href""` はタスクのテキストで、
+`href "`、改行、`"` は空の href ではありません。
+空の href の 2 つの引用符の間や、空の call の括弧の間のディレクティブは
+単位の間にあるので、`href "%%{init: {}}%%"` と `call (%%{init: {}}%%)` は、
+mermaid.js がディレクティブを除いて読むのと同じく、空の href と空の call で、
+同じように拒否されます。
+[fixture: gantt/lex-call-no-space-before-parenthesis] [fixture:
+gantt/lex-href-no-space-before-quotes] [fixture: gantt/lex-href-line-feed-url]
+[fixture: gantt/lex-empty-href-directive-between-quotes] [fixture:
+gantt/lex-empty-call-directive-between-parentheses] [fixture:
+gantt/div-empty-href-directive-between-quotes-before-call]
 
 ### 文法の外の拒否
 
@@ -1537,13 +1528,12 @@ gantt/db-task-start-after-unknown] [fixture: gantt/db-task-end-until-unknown]
   mermaid.js は拒否します。
   [fixture: gantt/div-frontmatter-invalid-yaml]
 - **[`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.ja.md)。**
-  click の文の中、その id と最初の部分の間や部分の間の空の説明ブロック、
-  空の href、空の call は、この仕様では入力を拒否させ、
+  click の文の中（id と最初の部分の間、部分の間）の空の説明ブロックと、
+  どこにあっても空の href と空の call は、この仕様では入力を拒否させ、
   mermaid.js はそれにトークンを読まずに入力を受理します
   （[空の説明ブロック](#空の説明ブロック) と
   [空の href と空の call](#空の-href-と空の-call) を参照）。
-  文の始まる位置では、空の説明ブロックは文、
-  空の href と空の call は GanttIgnoredStatement で、入力は受理されます。
+  文の始まる位置では、空の説明ブロックは文で、入力は受理されます。
   [fixture: gantt/div-empty-description-block-between-click-id-and-href]
   [fixture: gantt/div-empty-description-block-between-call-and-href] [fixture:
   gantt/div-empty-description-block-between-href-and-call] [fixture:

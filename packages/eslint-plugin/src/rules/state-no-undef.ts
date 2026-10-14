@@ -21,8 +21,8 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  * pseudostate is the value of its text. Inside a composite state, `style` and
  * `class` change nothing, whatever they name; the rule checks the name only.
  * The state that a note makes is a state for `style`, `class`, and `click`,
- * wherever they stand, so only the note is reported; notes do not define a state
- * for each other.
+ * wherever they stand, so only the first note that names such a state is
+ * reported.
  */
 export const stateNoUndef: MermaidRuleDefinition<{
   RuleOptions: []
@@ -123,8 +123,13 @@ export const stateNoUndef: MermaidRuleDefinition<{
             check(click.reference.state, click)
           }
         }
+        // The first note that names a state that nothing defines makes it, and
+        // the later notes point at the state that it made.
+        const reported = new Set<string>()
         for (const note of notes) {
-          if (note.state !== null) check(note.state, note)
+          if (note.state === null || reported.has(note.state.name)) continue
+          check(note.state, note)
+          reported.add(note.state.name)
         }
       },
     }

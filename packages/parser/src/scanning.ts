@@ -26,6 +26,15 @@ export function samePosition(a: DiagramPosition, b: DiagramPosition): boolean {
   )
 }
 
+/** Whether the character `a` comes before the place `b` in the diagram text; every character comes before the end of the text. */
+export function isBefore(a: DiagramCharacter, b: DiagramPosition): boolean {
+  if (b === null) return true
+  return (
+    a.start < b.start ||
+    (a.start === b.start && a.offsetInConvertedForm < b.offsetInConvertedForm)
+  )
+}
+
 /** Whether the character at `position` is `codePoint`; false at the end of the text. */
 export function isCodePointAt(
   position: DiagramPosition,

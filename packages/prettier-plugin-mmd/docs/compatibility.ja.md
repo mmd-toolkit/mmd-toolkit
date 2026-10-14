@@ -631,6 +631,97 @@ mermaid.js は擬似状態の印、方向の行、`{` の前の 2 つ目の名�
 [corpus fixture: state/lex-pseudostate-mark-after-line-separator]
 [行区切り文字](./state.ja.md#行区切り文字)を参照してください。
 
+## 置かれた場所や空白で読みが決まる ER の行
+
+mermaid.js は、一部の ER の行を、置かれた場所や周りの空白で読みを決めます。
+そのため、整形は書かれたまま残します。
+[アクセシビリティの文](./er.ja.md#アクセシビリティの文)、
+[1 行に 1 文](./er.ja.md#1-行に-1-文)、
+[関係の空白](./er.ja.md#関係の空白)を参照してください。
+
+- 最初に印字される行に `direction` と方向を含む
+  `accTitle`、`accDescr:`、`accDescr {` の文。
+  後の行に書かれたテキストは `:` の行に寄せます。
+  行は、字句解析器が読む形、つまりディレクティブなしの形で判定します。
+  字句解析器は、これらの文の規則より後に方向の行の規則を試すので、
+  1 桁目ではタイトルか説明で、字下げの後では
+  `direction` の前に `accTitle:` というテキストがある方向の行になり、
+  タイトルが失われます。
+  文は 1 桁目を保ちます。
+  方向は、空行、コメント行、ディレクティブの後の行にあってもよく、
+  字句解析器はそれらを読みません。
+  [fixture: er/accessibility-statements/first-column-for-direction-text]
+  [fixture: er/accessibility-statements/first-column-value-after-directive-line]
+  [corpus fixture: er/lex-acc-title-direction]
+  [corpus fixture: er/lex-acc-descr-block-direction]
+- 実体 `1` の直後に、文字、数字、`_` で始まる別の文、subgraph の `end`、
+  関係の単位が続く場合。間にディレクティブがあっても同じです。
+  `1` の後に空白（改行を含む）とそのような文字が続くと、
+  カーディナリティ `only-one` になる
+  （diagrams/er.md、カーディナリティ、規則 11）ので、
+  `1a` は行に残し、`1one to one B : x` は接したままにします。
+  [fixture: er/statements-one-per-line/number-name-then-name-kept]
+  [fixture: er/relationship-spacing/number-name-before-unit-kept]
+  [corpus fixture: er/lex-name-number-then-letter]
+- `one` で始まるカーディナリティの前の実体 `only`。
+  空白がちょうど 1 つの `only one` はカーディナリティ `only one` で、
+  空白 2 つやタブなら `only` は実体なので、空白を書かれたまま残します。
+  [fixture: er/relationship-spacing/entity-only-before-one-kept]
+  [corpus fixture: er/lex-only-one-two-spaces]
+- 右のカーディナリティ `u`。
+  右の実体の名前の直前でだけ `md-parent` なので、
+  後ろに空白を置くと拒否されます。
+  [fixture: er/relationship-spacing/md-parent]
+  [corpus fixture: er/lex-md-parent-right-glued-name]
+- `classDef` や `style` の文の末尾の空白。
+  その後の改行を取り込み、次の行がスタイルの続きになります。
+  [fixture: er/styles-and-classes/trailing-whitespace-takes-next-line]
+  [corpus fixture: er/lex-classdef-space-before-line-feed]
+
+## 空白で決まる Gantt 図の行
+
+mermaid.js は、Gantt 図の一部の値の空白を持ち、
+一部の行を、その行の空白で読みを決めます。
+そのため、整形は書かれたまま残します。
+[タスクのデータ](./gantt.ja.md#タスクのデータ)、
+[設定](./gantt.ja.md#設定)、
+[タイトルとセクション](./gantt.ja.md#タイトルとセクション)、
+[リスト](./gantt.ja.md#リスト)を参照してください。
+
+- `dateFormat`、`axisFormat`、`tickInterval`、`todayMarker`、`title`、
+  `section` の値の両端の空白と、タスクの説明のテキストとコロンの間の空白。
+  Db が持つので、空白 2 つの `dateFormat  YYYY-MM-DD` や、
+  桁をそろえた `A task           :a1` は、空白を落とした形とは別のものです。
+  コロンをそろえる空白も残ります。
+  [fixture: gantt/settings/value-whitespace-kept]
+  [fixture: gantt/titles-and-sections/value-whitespace-kept]
+  [fixture: gantt/task-data/description-padding-kept]
+- タスクのデータの項目の中の空白、項目の数、タグの大文字小文字。
+  `after   a1` は書かれたままの 1 つの項目で、
+  `a : 1d,` は `a : 1d` にない空の項目を持ち、`Done` はタグではありません。
+  [fixture: gantt/task-data/inner-whitespace-kept]
+  [fixture: gantt/task-data/empty-items]
+  [fixture: gantt/keyword-case/tags-case-kept]
+- 空白だけのデータを持つタスクの `:` の後の空白と、
+  空白だけのリストを持つ `includes` と `excludes` のキーワードの後の空白。
+  mermaid.js は、コロンの後にデータの 1 文字を、
+  キーワードに続く空白の後にリストのテキストの 1 文字を要求するので、
+  `a :` と `includes ` は拒否され、空白 1 文字か 2 文字を残します。
+  [fixture: gantt/task-data/whitespace-only-data]
+  [fixture: gantt/lists/whitespace-only]
+- `includes` と `excludes` のリストの項目の間の U+FEFF。
+  mermaid.js はリストのテキスト全体を、分ける前に小文字にし、
+  この変換は U+FEFF を無視するので、
+  その後ろの語末の大文字のシグマは `ς` になります。
+  空白など、ほかの空白の後ろなら `σ` です。
+  [test: U+FEFF between the items of a list]
+- 呼び出しの名前と引数の、中の空白。
+  `f ()`、`f( 1, 2 )`、`f(1,2)` は 3 つの別の呼び出しです。
+  [fixture: gantt/click-statements/call-name-and-arguments-kept]
+- `;` を含む行。
+  mermaid.js の行の規則は行のテキストを読むので、その行の文を行に残します。
+  [fixture: gantt/statements-one-per-line/ignored-semicolon-line-kept]
+
 ## U+2028 か U+2029 の後のコメント行
 
 mermaid.js は、本文を読む前に、コメント行を取り除きます。

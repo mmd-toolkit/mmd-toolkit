@@ -28,7 +28,6 @@ export type GanttStatement =
   | GanttAccTitleStatement
   | GanttAccDescrStatement
   | GanttAccDescrBlockStatement
-  | GanttIgnoredStatement
 
 /** ast/gantt.md: GanttLiteral. */
 export interface GanttLiteral extends TreeNode {
@@ -152,9 +151,4 @@ export interface GanttAccDescrStatement extends TreeNode {
 export interface GanttAccDescrBlockStatement extends TreeNode {
   readonly type: "GanttAccDescrBlockStatement"
   readonly value: GanttLiteral | null
-}
-
-/** ast/gantt.md: GanttIgnoredStatement. */
-export interface GanttIgnoredStatement extends TreeNode {
-  readonly type: "GanttIgnoredStatement"
 }

@@ -662,13 +662,15 @@ of characters that the string contexts read inside it are its **content**:
   inside the value of an id, a label, or a style, where the tree has no place
   for a node of its own, so no rule of the grammar takes it, and an input with
   an empty string is rejected: `""` alone on a line, `""A`, `A[""x]`,
-  `A["a"""]`, and `A[x]""`. mermaid.js reads no token for an empty string and
-  accepts these as if it were not there; they are the known divergence
+  `A["a"""]`, `A[x]""`, and `""accDescr {}`, although `accDescr {}` alone starts
+  a statement. mermaid.js reads no token for an empty string and accepts these
+  as if it were not there; they are the known divergence
   [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md) (see
   [Known divergences](#known-divergences)). Both reject `A --""> B`, because
   inside the text of a link the `""` does not end the opening `--`; [fixture:
   flowchart/lex-empty-string-line] [fixture:
   flowchart/lex-empty-string-before-id] [fixture:
+  flowchart/lex-empty-string-before-empty-description-block] [fixture:
   flowchart/tokens-empty-string-in-label] [fixture:
   flowchart/lex-empty-string-after-string] [fixture:
   flowchart/lex-empty-string-after-shape] [fixture:
@@ -870,9 +872,9 @@ where the tree has no place for it; so no rule of the grammar takes it, and an
 input with an empty call is rejected. mermaid.js reads no token for any of it
 and accepts it, as if it were not there, in places such as these: `call ()`
 alone on a line, `A call ()`, `call () B`, `A call ()-->B`, and `A-->call ()B`,
-also with a line feed between `(` and `)`; `A,call ()`, as the vertex `A,`; and,
-in a click statement, `click A call ()cb`, as `click A cb`, and
-`click A call ()href "u"`. They are the known divergence
+also with a line feed between `(` and `)`; `A,call ()` and `,call ()`, as the
+vertices `A,` and `,`; and, in a click statement, `click A call ()cb`, as
+`click A cb`, and `click A call ()href "u"`. They are the known divergence
 [`tokenless-empty-forms`](../known-divergences/tokenless-empty-forms.md). Both
 reject `A-->call () B`, because mermaid.js reads the whitespace after the empty
 call as a space before the target. [fixture: flowchart/gram-empty-call-line]
@@ -882,6 +884,7 @@ flowchart/gram-empty-call-before-link] [fixture:
 flowchart/gram-empty-call-after-arrow] [fixture:
 flowchart/gram-empty-call-line-feed] [fixture:
 flowchart/gram-empty-call-after-comma] [fixture:
+flowchart/gram-empty-call-comma-vertex] [fixture:
 flowchart/gram-click-empty-call-before-callback] [fixture:
 flowchart/gram-click-empty-call-before-href] [fixture:
 flowchart/gram-empty-call-after-arrow-space] `call` is a keyword only with
@@ -1152,10 +1155,12 @@ So `class A c; %%{init: {}}%%` is accepted, while without the `;` the space
 before the directive is a `space` unit after the class name, and the input is
 rejected; In `class A c""` the quotes are characters of the id run, and the
 class is `c""`, while in `class A c;""` they are an empty string after the
-separator, and the input is rejected (see [Strings](#strings)). [fixture:
+separator, and the input is rejected, as is `click;"" A`, whose `click` before
+the `;` is a vertex (see [Strings](#strings)). [fixture:
 flowchart/gram-separator-before-directive] [fixture:
 flowchart/gram-no-separator-before-directive] [fixture:
 flowchart/gram-separator-before-empty-string] [fixture:
+flowchart/lex-click-keyword-semicolon-statement] [fixture:
 flowchart/lex-quotes-after-class-name] The separator belongs to no statement.
 Every other `;` that the grammar reads is an empty statement: a second `;` after
 a separator, a `;` on a line of its own, and a `;` right after a statement that

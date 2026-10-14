@@ -321,25 +321,42 @@ rejected, `range` is the form that causes it, and the message names the cause:
   er/div-empty-backquotes-twice-between-type-and-name] [fixture:
   er/div-empty-backquotes-twice-before-key-comma] In a Gantt chart, the empty
   forms also include an empty href, `href` and two `"` with nothing between
-  them, with the message `An empty href cannot be written here`. Inside a click
-  statement, an empty form before its first part is found where the grammar
-  stops, and so is one where only an empty form follows the ids, which
-  mermaid.js rejects as well: `click id1 href ""` reports the empty href. An
-  empty href with a directive between its quotes is an empty href too, reported
-  from `href` to its closing quote, over the directive. Empty forms written one
-  after another after the first part are decided by the unit after the last of
-  them: where that unit starts the second part, the first of them is reported,
-  as in `click id1 href "u" accDescr {} call f()`. [fixture:
+  them, with the message `An empty href cannot be written here`. No rule takes
+  an empty href or an empty call wherever it stands, so the grammar stops at it,
+  where a statement starts as well as inside a click statement: a line `href ""`
+  followed by a line `title T`, `call ()x : 1d`, `click id1 href ""`, and
+  `click id1 href "u" href ""` report the empty form, and `href "" call ()` and
+  `href "" accDescr {}` the first of the two. [fixture:
+  gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-glued-task]
+  [fixture: gantt/gram-click-empty-href-only] [fixture:
+  gantt/gram-click-href-then-empty-href] [fixture:
+  gantt/gram-empty-href-and-empty-call-line] [fixture:
+  gantt/gram-empty-href-then-empty-description-block-same-line] An empty
+  description block before them where a statement starts is a statement, so the
+  empty href or the empty call after it is reported: `accDescr {} href ""`
+  reports the empty href. [fixture:
+  gantt/gram-empty-description-block-then-empty-href-same-line] [fixture:
+  gantt/gram-empty-description-block-then-empty-call-same-line] An empty href
+  with a directive between its quotes, and an empty call with one between its
+  parentheses, are reported from the keyword to the closing quote or
+  parenthesis, over the directive. [fixture:
+  gantt/lex-empty-href-directive-between-quotes] [fixture:
+  gantt/lex-empty-call-directive-between-parentheses] [fixture:
+  gantt/div-empty-href-directive-between-quotes-before-call] Inside a click
+  statement, an empty description block before its first part is found where the
+  grammar stops too, and empty forms written one after another after the first
+  part are decided by the unit after the last of them: where that unit starts
+  the second part, the first of them is reported, as in
+  `click id1 href "u" accDescr {} call f()`. [fixture:
   gantt/div-empty-href-before-call] [fixture: gantt/div-empty-call-before-href]
   [fixture: gantt/div-empty-href-and-empty-call-before-href] [fixture:
-  gantt/gram-click-empty-href-only] [fixture:
-  gantt/div-empty-href-directive-between-quotes-before-call] [fixture:
   gantt/div-empty-description-block-between-href-and-call] [fixture:
   gantt/div-empty-href-between-call-and-href] [fixture:
   gantt/div-empty-call-between-href-and-call] [fixture:
   gantt/div-empty-href-between-href-and-call] [fixture:
   gantt/div-empty-href-and-empty-call-between-parts] [fixture:
-  gantt/div-empty-description-block-and-empty-href-between-parts]
+  gantt/div-empty-description-block-and-empty-href-between-parts] [fixture:
+  gantt/div-empty-call-and-empty-description-block-between-parts]
 
 `html-tag-in-frontmatter` changes which `"` characters are read as `'`. The
 parser does not tell that apart, so a rejection that follows from it is reported
