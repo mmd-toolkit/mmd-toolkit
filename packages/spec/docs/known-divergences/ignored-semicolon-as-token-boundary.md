@@ -3,9 +3,10 @@
 Japanese version:
 [ignored-semicolon-as-token-boundary.ja.md](./ignored-semicolon-as-token-boundary.ja.md)
 
-Diagram types: flowchart, sequence, class, state, er, gantt, journey, and
-requirement. This is one of the [known divergences](../known-divergences.md) of
-this specification from mermaid.js.
+Diagram types: flowchart, sequence, class, state, er, gantt, journey,
+requirement, and mindmap. This is one of the
+[known divergences](../known-divergences.md) of this specification from
+mermaid.js.
 
 ## The syntax
 
@@ -27,12 +28,14 @@ is what the diagram document counts as a name unit, whether or not it may
 contain whitespace: the name of an ER entity, which may contain U+00A0, is one.
 A name that the document counts as a text unit, such as the id of a participant
 in a sequence diagram, a class name, or an attribute word of ER written with
-`~`, or an unquoted name of a requirement diagram, may hold an ignored `;`.
-[fixture: sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
+`~`, an unquoted name of a requirement diagram, or a node text of a mindmap, may
+hold an ignored `;`. [fixture:
+sequence/tokens-ignored-semicolon-separator-line-feed] [fixture:
 class/tokens-ignored-semicolon-in-relation-name] [fixture:
 er/div-ignored-semicolon-in-name] [fixture:
 er/tokens-ignored-semicolon-in-tilde-word] [fixture:
-requirement/tokens-ignored-semicolon-in-name]
+requirement/tokens-ignored-semicolon-in-name] [fixture:
+mindmap/tokens-ignored-semicolon-in-node-text]
 
 ## The difference
 
@@ -141,7 +144,11 @@ diagram, the `style`, the `:`, and the `#` may lie in a string name before the
 `;`, such as `"style:#x"`, so the ignored `;` can lie inside a keyword:
 mermaid.js reads `"style:#x" - sati;sfies -> b` as a relationship with the
 relation `satisfies`, and this specification rejects it. [fixture:
-requirement/div-ignored-semicolon-in-relationship-keyword]
+requirement/div-ignored-semicolon-in-relationship-keyword] In a mindmap, the
+`style`, the `:`, and the `#` may lie in a node text before the `;`, so the
+ignored `;` can lie inside an opener or a closer: mermaid.js reads
+`style:#x{;{b}}` as a node with the hexagon shape and the text `b`, and this
+specification rejects it. [fixture: mindmap/div-ignored-semicolon-in-opener]
 
 Each diagram document lists where this shows, in its Known divergences section:
 [flowchart](../diagrams/flowchart.md#known-divergences),
@@ -150,8 +157,9 @@ Each diagram document lists where this shows, in its Known divergences section:
 [state](../diagrams/state.md#known-divergences),
 [er](../diagrams/er.md#known-divergences),
 [gantt](../diagrams/gantt.md#known-divergences),
-[journey](../diagrams/journey.md#known-divergences), and
-[requirement](../diagrams/requirement.md#known-divergences).
+[journey](../diagrams/journey.md#known-divergences),
+[requirement](../diagrams/requirement.md#known-divergences), and
+[mindmap](../diagrams/mindmap.md#known-divergences).
 
 ## What it means for an author
 

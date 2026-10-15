@@ -11,4 +11,5 @@ export const RECORDED_DIAGRAMS: readonly DiagramType[] = [
   "gantt",
   "journey",
   "requirement",
+  "mindmap",
 ]

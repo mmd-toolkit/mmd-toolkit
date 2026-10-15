@@ -117,4 +117,17 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [gantt-no-unknown-exclude](./gantt-no-unknown-exclude.md)                 | Disallow a word in `excludes` that is neither `weekends` nor the name of a day. | ✅  |     |     |
 | [gantt-no-unread-tag](./gantt-no-unread-tag.md)                           | Disallow a tag in the data of a task that mermaid.js does not read as a tag.    | ✅  |     |     |
 
+## requirement
+
+| Rule                                                                                        | Description                                                                                             | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | --- | --- | --- |
+| [requirement-no-duplicate-description](./requirement-no-duplicate-description.md)           | Disallow an `accDescr` statement that sets the description again.                                       | ✅  |     |     |
+| [requirement-no-duplicate-field](./requirement-no-duplicate-field.md)                       | Disallow a field that the body of a requirement or an element already has.                              | ✅  |     |     |
+| [requirement-no-duplicate-name](./requirement-no-duplicate-name.md)                         | Disallow a requirement or an element that reuses the name of an earlier one.                            | ✅  |     |     |
+| [requirement-no-duplicate-title](./requirement-no-duplicate-title.md)                       | Disallow an `accTitle` statement that sets the title again.                                             | ✅  |     |     |
+| [requirement-no-empty-description-block](./requirement-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                                                 | ✅  |     |     |
+| [requirement-no-ignored-text](./requirement-no-ignored-text.md)                             | Disallow text that mermaid.js does not read.                                                            | ✅  |     |     |
+| [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for something else closes.                            | ✅  |     |     |
+| [requirement-no-undef](./requirement-no-undef.md)                                           | Disallow a name in `style`, `class`, `:::`, or a relationship that names no requirement and no element. | ✅  |     |     |
+
 <!-- end auto-generated rules list -->

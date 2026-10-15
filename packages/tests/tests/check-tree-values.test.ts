@@ -179,6 +179,8 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "GanttLiteral", message: NOT_WRITTEN_TEXT },
   { type: "JourneyLiteral", message: NOT_WRITTEN_TEXT },
   { type: "JourneyIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "MindmapLabel", message: NOT_WRITTEN_TEXT },
+  { type: "MindmapLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RequirementIdentifier", message: "name is not its written text" },
   { type: "RequirementLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RequirementIgnoredText", message: NOT_WRITTEN_TEXT },
@@ -605,6 +607,38 @@ const VALUE_CASES: readonly ValueCase[] = [
       {
         where: "JourneyIgnoredText at 18-37",
         message: `${JOINED}: ": ab", not ": a b"`,
+      },
+    ],
+  },
+  {
+    type: "MindmapLiteral",
+    name: "a MindmapLiteral reports the whitespace taken off the end of the RawText token of a node text",
+    diagram: "mindmap",
+    fixture: "db-node-trailing-whitespace",
+    token: { type: "RawText", value: "root   " },
+    side: "end",
+    problems: [
+      {
+        where: "MindmapLiteral at 10-17",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "MindmapLiteral at 10-17",
+        message: `${JOINED}: "root", not "root   "`,
+      },
+    ],
+  },
+  {
+    type: "MindmapLabel",
+    name: "a MindmapLabel reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "mindmap",
+    fixture: "lex-directive-in-shape-text-with-spaces",
+    token: { type: "RawText", value: " x " },
+    side: "end",
+    problems: [
+      {
+        where: "MindmapLabel at 12-45",
+        message: `${JOINED}: "  x ", not "  x  "`,
       },
     ],
   },

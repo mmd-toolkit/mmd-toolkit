@@ -53,6 +53,7 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "gantt",
   "journey",
   "requirement",
+  "mindmap",
 ]
 
 /**

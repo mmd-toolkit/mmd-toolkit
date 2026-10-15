@@ -1,5 +1,6 @@
 import { CLASS_CLASSIFIER_MARKS, CLASS_VISIBILITY_MARKS } from "./class.ts"
 import { FLOWCHART_SHAPES } from "./flowchart-shapes.ts"
+import { MINDMAP_PUNCTUATORS } from "./mindmap.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import { diagramTokensOf } from "./invariants.ts"
@@ -93,6 +94,8 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   JourneyDiagram: [":", ",", "{", "}"],
   // The row `Punctuator` of parser/docs/tokens/requirement.md.
   RequirementDiagram: [":", ",", "{", "}", ":::", "-", "->", "<-"],
+  // The row `Punctuator` of parser/docs/tokens/mindmap.md.
+  MindmapDiagram: MINDMAP_PUNCTUATORS,
   ErrorDiagram: [],
 }
 

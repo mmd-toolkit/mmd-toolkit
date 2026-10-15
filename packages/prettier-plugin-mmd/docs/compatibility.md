@@ -748,6 +748,34 @@ them as they are written. See [Names](./requirement.md#names),
   a line break after the `{`. [fixture:
   requirement/bodies/empty-body-on-two-lines]
 
+## Mindmap lines that the indentation or the empty lines decide
+
+The Db of a mindmap reads the indentation of a node as its level, and mermaid.js
+rejects some empty lines that this specification accepts, so formatting keeps
+what the Db reads and does not repair what mermaid.js rejects. See
+[Indentation](./mindmap.md#indentation) and
+[Blank lines](./mindmap.md#blank-lines).
+
+- The width of the step between a node and its children, in characters: the Db
+  reads the level of a node as its indentation minus that of the root, so `root`
+  with a child at 4 characters and one at 2 are different diagrams, and the
+  widths in one diagram can differ. Only the indentation of the root, and the
+  characters of the indentation, change. [fixture:
+  mindmap/indentation/step-widths-kept] [fixture:
+  mindmap/indentation/root-shifted-to-one-level]
+- The whitespace after a directive at the start of a line, which counts as
+  indentation of the node: the line is printed as written from the directive.
+  [fixture: mindmap/directives/before-a-node-on-its-line]
+- A diagram comment that a U+2028 or a U+2029 ends: the text after it is a new
+  line, so a line break is written there. [test: U+2028 after a comment after a
+  shape]
+- The empty lines that mermaid.js rejects (known divergence
+  [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.md)):
+  the ones after the header are dropped, which makes the output accepted, and
+  the ones after a diagram comment between nodes stay, as one, as in the input.
+  [fixture: mindmap/blank-lines/after-the-header-dropped] [fixture:
+  mindmap/blank-lines/after-a-comment-between-nodes-kept]
+
 ## A comment line after U+2028 or U+2029
 
 mermaid.js removes the comment lines from the text before it reads it. A comment

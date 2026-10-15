@@ -3,7 +3,8 @@
 英語版:
 [ignored-semicolon-as-token-boundary.md](./ignored-semicolon-as-token-boundary.md)
 
-図種: flowchart、sequence、class、state、er、gantt、journey、requirement。
+図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
+mindmap。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -32,13 +33,15 @@ mermaid.js もこの仕様も、それを読みません
 図の文書が名前の単位と数えるものです。
 U+00A0 を含みうる ER の実体の名前も、その 1 つです。
 sequence 図の参加者の id、クラスの名前、
-`~` を使って書いた ER の属性の語、要求図の引用符なしの名前のように、
+`~` を使って書いた ER の属性の語、要求図の引用符なしの名前、
+マインドマップのノードのテキストのように、
 図の文書がテキストの単位と数える名前は、無視される `;` を持てます。
 [fixture: sequence/tokens-ignored-semicolon-separator-line-feed]
 [fixture: class/tokens-ignored-semicolon-in-relation-name]
 [fixture: er/div-ignored-semicolon-in-name]
 [fixture: er/tokens-ignored-semicolon-in-tilde-word]
 [fixture: requirement/tokens-ignored-semicolon-in-name]
+[fixture: mindmap/tokens-ignored-semicolon-in-node-text]
 
 ## 差異
 
@@ -156,6 +159,12 @@ mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
 mermaid.js は `"style:#x" - sati;sfies -> b` を関係 `satisfies` の関係と読み、
 この仕様はそれを拒否します。
 [fixture: requirement/div-ignored-semicolon-in-relationship-keyword]
+マインドマップでは、`style`、`:`、`#` は `;` の前の
+ノードのテキストに置けるので、
+無視される `;` は開きか閉じの中に置けます。
+mermaid.js は `style:#x{;{b}}` を六角形の形でテキスト `b` のノードと読み、
+この仕様はそれを拒否します。
+[fixture: mindmap/div-ignored-semicolon-in-opener]
 
 各図の文書は、これがどこに表れるかを、既知の差異の節に挙げています。
 [flowchart](../diagrams/flowchart.ja.md#既知の差異)、
@@ -165,7 +174,8 @@ mermaid.js は `"style:#x" - sati;sfies -> b` を関係 `satisfies` の関係と
 [er](../diagrams/er.ja.md#既知の差異)、
 [gantt](../diagrams/gantt.ja.md#既知の差異)、
 [journey](../diagrams/journey.ja.md#既知の差異)、
-[requirement](../diagrams/requirement.ja.md#既知の差異) です。
+[requirement](../diagrams/requirement.ja.md#既知の差異)、
+[mindmap](../diagrams/mindmap.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 

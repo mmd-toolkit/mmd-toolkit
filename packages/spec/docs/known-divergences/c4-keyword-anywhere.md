@@ -2,7 +2,7 @@
 
 Japanese version: [c4-keyword-anywhere.ja.md](./c4-keyword-anywhere.ja.md)
 
-Diagram types: all. This is one of the
+Diagram types: all that mermaid.js detects after C4. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -24,7 +24,9 @@ and for the other four keywords anywhere in it. This specification decides the
 diagram type at the first unit of the diagram text (see
 [Diagram detection](../common.md#diagram-detection)), so it looks for all five
 at the start only. The divergence is the texts whose header is another diagram's
-and that hold one of the four keywords after it.
+and that hold one of the four keywords after it. mermaid.js tries the detector
+of mindmap before that of C4, so a mindmap has no such texts: `C4Container` is a
+node text in both. [fixture: mindmap/lex-c4-keyword-as-node-text]
 
 ## The difference
 

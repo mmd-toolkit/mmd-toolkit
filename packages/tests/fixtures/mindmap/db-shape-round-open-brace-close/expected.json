@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/mindmap.md, type: `(` with `}}` is a cloud."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "r",
+      "level": 0,
+      "descr": "text",
+      "type": 4,
+      "children": []
+    }
+  }
+}

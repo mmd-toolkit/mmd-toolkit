@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, converted form: an attribute quote in the text of a shape is a single quote."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "r",
+      "level": 0,
+      "descr": "<b a='x'>t</b>",
+      "type": 2,
+      "children": []
+    }
+  }
+}

@@ -25,6 +25,7 @@ import type {
   RequirementDiagram,
   RequirementNode,
 } from "../src/ast/requirement.ts"
+import type { MindmapDiagram, MindmapTreeNode } from "../src/ast/mindmap.ts"
 import { ParseError } from "../src/errors.ts"
 
 // The checks on types run in the type checker (`tsc` covers tests/); the
@@ -46,6 +47,7 @@ describe("the types of ast.md", () => {
       | GanttNode["type"]
       | JourneyNode["type"]
       | RequirementNode["type"]
+      | MindmapTreeNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -57,6 +59,7 @@ describe("the types of ast.md", () => {
       | GanttDiagram
       | JourneyDiagram
       | RequirementDiagram
+      | MindmapDiagram
     >()
   })
 

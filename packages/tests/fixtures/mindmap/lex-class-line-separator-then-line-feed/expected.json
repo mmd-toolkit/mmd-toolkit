@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Icons and classes: a class ends at U+2028, which is whitespace before the line feed."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "class": "a",
+      "children": [
+        {
+          "nodeId": "b",
+          "level": 2,
+          "descr": "b",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,230 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: requirement-no-duplicate-name >> invalid >>> docs/rules/requirement-no-duplicate-name.md incorrect 1
+Filename: requirement-no-duplicate-name-incorrect-1.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   requirement r {
+  3 |     id: 1
+  4 |   }
+  5 |   requirement r {
+    |               ^ [1]
+  6 |     text: second
+  7 |   }
+  8 |
+
+[1] mermaid.js keeps the box `r` of line 2 as it is: this statement adds only its classes.
+---
+
+
+Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/db-requirement-and-element-same-name
+Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/db-requirement-and-element-same-name-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement x {
+  3 |   id: 1
+  4 | }
+  5 | element x {
+    |         ^ [1]
+  6 |   type: t
+  7 | }
+  8 | style x fill:red
+  9 | class x c
+ 10 | classDef c fill:blue
+ 11 |
+
+[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
+---
+
+
+Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/element-again-with-fields
+Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/element-again-with-fields-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | element e {
+  3 |   type: a
+  4 | }
+  5 | element e {
+    |         ^ [1]
+  6 |   type: b
+  7 | }
+  8 |
+
+[1] mermaid.js keeps the box `e` of line 2 as it is: this statement adds only its classes.
+---
+
+
+Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/element-requirement-requirement
+Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/element-requirement-requirement-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | element x {
+  3 | }
+  4 | requirement x {
+    |             ^ [1]
+  5 | }
+  6 | requirement x {
+  7 | }
+  8 |
+
+[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
+---
+
+
+Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/element-requirement-requirement-with-field
+Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/element-requirement-requirement-with-field-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | element x {
+  3 | }
+  4 | requirement x {
+    |             ^ [1]
+  5 | }
+  6 | requirement x {
+    |             ^ [2]
+  7 |   id: 2
+  8 | }
+  9 |
+
+[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
+[2] mermaid.js keeps the box `x` of line 4 as it is: this statement adds only its classes.
+---
+
+
+Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/element-then-requirement-same-name
+Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/element-then-requirement-same-name-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | element x {
+  3 | }
+  4 | requirement x {
+    |             ^ [1]
+  5 | }
+  6 | style x fill:red
+  7 |
+
+[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
+---
+
+
+Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/requirement-again-other-kind
+Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/requirement-again-other-kind-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | }
+  4 | functionalRequirement r {
+    |                       ^ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the box `r` of line 2 as it is: this statement adds only its classes.
+---
+
+
+Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/requirement-again-quoted
+Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/requirement-again-quoted-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 | }
+  5 | requirement "r" {
+    |             ^~~ [1]
+  6 |   id: 2
+  7 | }
+  8 |
+
+[1] mermaid.js keeps the box `r` of line 2 as it is: this statement adds only its classes.
+---
+
+
+Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/requirement-again-with-fields
+Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/requirement-again-with-fields-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 | }
+  5 | requirement r {
+    |             ^ [1]
+  6 |   id: 2
+  7 |   text: second
+  8 | }
+  9 |
+
+[1] mermaid.js keeps the box `r` of line 2 as it is: this statement adds only its classes.
+---
+
+
+Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/requirement-element-element-with-class
+Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/requirement-element-element-with-class-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement x {
+  3 | }
+  4 | element x {
+    |         ^ [1]
+  5 | }
+  6 | element x:::c {
+  7 | }
+  8 |
+
+[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
+---
+
+
+Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/requirement-element-element-with-field
+Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/requirement-element-element-with-field-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement x {
+  3 | }
+  4 | element x {
+    |         ^ [1]
+  5 |   type: a
+  6 | }
+  7 | element x {
+    |         ^ [2]
+  8 |   type: b
+  9 | }
+ 10 |
+
+[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
+[2] mermaid.js keeps the box `x` of line 4 as it is: this statement adds only its classes.
+---
+
+
+Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/requirement-three-times
+Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/requirement-three-times-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 | }
+  5 | requirement r {
+    |             ^ [1]
+  6 |   id: 2
+  7 | }
+  8 | requirement r {
+    |             ^ [2]
+  9 |   id: 3
+ 10 | }
+ 11 |
+
+[1] mermaid.js keeps the box `r` of line 2 as it is: this statement adds only its classes.
+[2] mermaid.js keeps the box `r` of line 2 as it is: this statement adds only its classes.
+---

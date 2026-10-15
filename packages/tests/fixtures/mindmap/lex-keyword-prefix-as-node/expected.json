@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Lexical structure: `mindmapx` is a node text."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "mindmapx",
+          "level": 2,
+          "descr": "mindmapx",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

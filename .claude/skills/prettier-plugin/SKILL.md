@@ -262,6 +262,8 @@ Running tests; this is what belongs to this package):
     `line-separators`, `markdown-journey`, and `value-nodes`.
   - `requirement*.ts`: `format` and `corpus` with `-t requirement`; and, without
     `-t`, `line-separators`, `markdown-requirement`, and `value-nodes`.
+  - `mindmap*.ts`: `format` and `corpus` with `-t mindmap`; and, without `-t`,
+    `line-separators`, `markdown-mindmap`, and `value-nodes`.
   - `statement-rules.ts`, `accessibility-lines.ts`: the tests of the diagram
     types that use them, ER and requirement.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:

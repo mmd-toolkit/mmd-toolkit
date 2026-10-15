@@ -1,0 +1,185 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: requirement-no-duplicate-field >> invalid >>> docs/rules/requirement-no-duplicate-field.md incorrect 1
+Filename: requirement-no-duplicate-field-incorrect-1.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   requirement r {
+  3 |     id: 1
+  4 |     id: 2
+    |     ^~~~~ [1]
+  5 |   }
+  6 |
+
+[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-docref-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-docref-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | element e {
+  3 |   docRef: a
+  4 |   docRef: b
+    |   ^~~~~~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the `docref` of line 3: this later one changes nothing.
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-id-mixed-with-other-fields
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-id-mixed-with-other-fields-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 |   text: t
+  5 |   ID: 2
+    |   ^~~~~ [1]
+  6 |   id: 3
+    |   ^~~~~ [2]
+  7 | }
+  8 |
+
+[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+[2] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-id-other-case
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-id-other-case-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 |   ID: 2
+    |   ^~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-id-three-times
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-id-three-times-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 |   id: 2
+    |   ^~~~~ [1]
+  5 |   id: 3
+    |   ^~~~~ [2]
+  6 | }
+  7 |
+
+[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+[2] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-id-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-id-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 |   id: 2
+    |   ^~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-risk-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-risk-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   risk: low
+  4 |   risk: high
+    |   ^~~~~~~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the `risk` of line 3: this later one changes nothing.
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-text-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-text-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   text: a
+  4 |   text: b
+    |   ^~~~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the `text` of line 3: this later one changes nothing.
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-twice-around-empty-block
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-twice-around-empty-block-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 |   accDescr {}
+  5 |   id: 2
+    |   ^~~~~ [1]
+  6 | }
+  7 |
+
+[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-type-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-type-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | element e {
+  3 |   type: a
+  4 |   type: b
+    |   ^~~~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the `type` of line 3: this later one changes nothing.
+---
+
+
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-verify-method-twice
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-verify-method-twice-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   verifyMethod: test
+  4 |   verifyMethod: analysis
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 | }
+  6 |
+
+[1] mermaid.js keeps the `verifymethod` of line 3: this later one changes nothing.
+---

@@ -1217,3 +1217,173 @@ Values of the summary, by field:
   requirement/spec-requirement-diagram-f9464f3d]
 
 Values are recorded as the Db holds them, whitespace included.
+
+## mindmap
+
+The summary has one field:
+
+| Field  | Content                                             |
+| ------ | --------------------------------------------------- |
+| `root` | The first node, with the nodes below it, or `null`. |
+
+A node has `nodeId`, `level`, `descr`, `type`, and `children`, and `icon` and
+`class` where a statement gave them. `children` are the nodes whose parent it
+is, in source order.
+
+`normalizeMindmap()` (`src/normalizers/mindmap.ts`) summarizes the Db of
+`mindmap`. The Db reads no browser feature, no time and no random value (the
+random id belongs to
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L345-L408)),
+and the syntax has no links, so the summary needs no patch of the Db. It reads
+the tree that
+[`getMindmap()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L71-L73)
+returns, which holds every node once with its children, and not the layout data
+of `getData()`, which numbers the sections of the nodes and makes new nodes from
+them. It drops the following, each for the reason given:
+
+- `id`: the number of the node in the order it was added, which is the order of
+  the tree walked from the root, children after their parent.
+- `isRoot`: true for the root and for no other node.
+- `width` and `padding`: values of the site configuration
+  (`mindmap.maxNodeWidth` and `mindmap.padding`, the padding doubled for some
+  shapes). [fixture: mindmap/config-mindmap-padding-and-width]
+
+The layout and `getData()` put more fields on a node (`section`, `height`, `x`,
+and `y`); the Db that is read has none of them.
+
+Values of the summary, by field:
+
+- `root` is `null` for a header with nothing after it, also when whitespace or a
+  comment line follows. The first node is the root. A header that has no line
+  feed after it is rejected. [fixture: mindmap/db-header-only] [fixture:
+  mindmap/db-header-only-trailing-spaces] [fixture:
+  mindmap/db-header-then-comment-line-only] [fixture:
+  mindmap/db-header-without-line-feed]
+- The root is the first node whatever its indentation, and the whitespace before
+  the header does not change the levels: a node after the header on its line is
+  the root, with the whole run of whitespace after the header as its
+  indentation, so that a child must be indented by more characters than that run
+  has. [fixture: mindmap/db-first-node-unindented] [fixture:
+  mindmap/db-header-indented] [fixture: mindmap/db-first-node-on-header-line]
+  [fixture: mindmap/db-first-node-on-header-line-wide-gap] [fixture:
+  mindmap/db-first-node-on-header-line-child-too-shallow] [fixture:
+  mindmap/db-first-node-after-header-tab] [fixture:
+  mindmap/spec-mindmap-903e1973] [fixture: mindmap/spec-mindmap-54e233b2]
+- `level` is the number of characters of the indentation of the node minus that
+  of the root. Every whitespace character is one character: a space, a tab
+  (which is not expanded to a tab stop), a fullwidth space, and a no-break
+  space. [fixture: mindmap/db-indent-tab-levels] [fixture:
+  mindmap/db-indent-tab-counts-as-one-char] [fixture:
+  mindmap/db-indent-fullwidth-space] [fixture: mindmap/db-indent-no-break-space]
+  [fixture: mindmap/db-indent-mixed-whitespace-kinds] [fixture:
+  mindmap/db-indent-root-offset] [fixture: mindmap/db-indent-skips-levels]
+- The parent of a node is the nearest node before it whose level is less than
+  its own, so a node as indented as an earlier one is its sibling, after the
+  nodes below that one. A node that is not the first and has no such node is
+  rejected: one as indented as the root, or less. [fixture:
+  mindmap/db-indent-parent-is-nearest-shallower] [fixture:
+  mindmap/db-indent-sibling-after-deeper] [fixture:
+  mindmap/db-indent-less-than-root] [fixture: mindmap/db-indent-same-as-root]
+  [fixture: mindmap/db-indent-tab-not-expanded-below-root] [fixture:
+  mindmap/docs-syntax-mindmap-5106c1aa] [fixture:
+  mindmap/docs-syntax-mindmap-50120b03] [fixture: mindmap/spec-mindmap-53c49526]
+  [fixture: mindmap/spec-mindmap-bc95ec97]
+- An empty line, a line of whitespace, and a line break that is a CRLF or a lone
+  CR between nodes change nothing, and an empty line or a line of whitespace
+  between the header and the first node is rejected. Whitespace after the last
+  node changes nothing. [fixture: mindmap/db-blank-line-between-nodes] [fixture:
+  mindmap/db-whitespace-only-line-between-nodes] [fixture:
+  mindmap/db-tab-only-line-between-nodes] [fixture:
+  mindmap/db-blank-line-after-header] [fixture:
+  mindmap/db-whitespace-line-after-header] [fixture:
+  mindmap/db-whitespace-after-last-node] [fixture: mindmap/db-crlf-line-ends]
+  [fixture: mindmap/db-lone-cr-line-ends] [fixture:
+  mindmap/spec-mindmap-c6c76671] [fixture: mindmap/spec-mindmap-931bf91d]
+- A comment line, `%%` with the whitespace before it, changes nothing wherever
+  it stands, also between the header and the first node and before the header,
+  and its indentation changes no level. `%%` after the text of a node is part of
+  the text. A directive line is removed like a comment line, so one between the
+  header and the first node leaves an empty line there and is rejected, while
+  one between nodes changes nothing; a directive after the text of a node is not
+  part of it. The frontmatter changes nothing, and the diagram keeps no title.
+  [fixture: mindmap/db-comment-line-between-nodes] [fixture:
+  mindmap/db-comment-line-indented-deeper] [fixture:
+  mindmap/db-comment-line-after-header] [fixture:
+  mindmap/db-comment-before-header] [fixture:
+  mindmap/db-comment-after-node-text] [fixture:
+  mindmap/db-directive-line-between-nodes] [fixture:
+  mindmap/db-directive-line-indented] [fixture:
+  mindmap/db-directive-between-header-and-first-node] [fixture:
+  mindmap/db-directive-after-node-text] [fixture:
+  mindmap/db-frontmatter-before-header] [fixture: mindmap/spec-mindmap-32c71b33]
+  [fixture: mindmap/spec-mindmap-f8ad2bf0]
+- A node without a shape has the whole line after its indentation as `nodeId`
+  and as `descr`, the whitespace at its end included, and a colon, a hash, a
+  quote, and spaces are characters of it. Two nodes may have the same text.
+  [fixture: mindmap/db-node-trailing-whitespace] [fixture:
+  mindmap/db-text-with-colon-and-hash] [fixture: mindmap/db-text-with-quote]
+  [fixture: mindmap/db-same-text-twice] [fixture:
+  mindmap/docs-syntax-mindmap-85604c12]
+- A shape is a delimiter pair after the id (or without an id, then the text is
+  the id) and gives `type`: 0 for no shape, 1 for `( )`, 2 for `[ ]`, 3 for
+  `(( ))`, 4 for `) (`, 5 for `)) ((`, and 6 for `{{ }}`. `descr` is the text
+  between the delimiters. The closing delimiter of a rectangle need not match
+  the opening one, the forms `(-text-)` and `-)text(-` follow the lexer and not
+  the pairs, and a string between the delimiters holds delimiter characters; a
+  markdown string is the text without its backquotes. A shape with no text, and
+  text after the closing delimiter, are rejected. [fixture:
+  mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded] [fixture:
+  mindmap/db-shape-circle] [fixture: mindmap/db-shape-cloud] [fixture:
+  mindmap/db-shape-bang] [fixture: mindmap/db-shape-hexagon] [fixture:
+  mindmap/db-shape-cloud-dash-form] [fixture:
+  mindmap/db-shape-explode-dash-form] [fixture: mindmap/db-shape-without-id]
+  [fixture: mindmap/db-shape-without-id-circle] [fixture:
+  mindmap/db-shape-mismatched-end] [fixture: mindmap/db-shape-string] [fixture:
+  mindmap/db-shape-markdown-string] [fixture:
+  mindmap/db-shape-empty-description] [fixture: mindmap/db-shape-text-after-end]
+  [fixture: mindmap/db-shape-id-with-parentheses] [fixture:
+  mindmap/spec-mindmap-2ab5d128] [fixture: mindmap/spec-mindmap-3b2342ba]
+  [fixture: mindmap/spec-mindmap-5ccc3578] [fixture:
+  mindmap/spec-mindmap-20bffa18] [fixture: mindmap/spec-mindmap-042bfdb5]
+  [fixture: mindmap/spec-mindmap-3a9de64e]
+- A line `::icon(text)` gives `icon` to the last node added, and a line
+  `:::text` gives `class`, whatever their indentation; a second line replaces
+  the first. An icon on the line of a node is no icon, and a class there is part
+  of the text of the node. The word `icon` is read without regard to case, an
+  icon with nothing in the parentheses gives none, and the whitespace inside the
+  parentheses of an icon and at both ends of a class stays. An icon line or a
+  class line before the first node is rejected. [fixture: mindmap/db-icon-line]
+  [fixture: mindmap/db-icon-same-line] [fixture: mindmap/db-icon-twice]
+  [fixture: mindmap/db-icon-and-class-on-child] [fixture:
+  mindmap/db-icon-indent-ignored] [fixture: mindmap/db-icon-before-node]
+  [fixture: mindmap/db-icon-case-insensitive] [fixture: mindmap/db-icon-empty]
+  [fixture: mindmap/db-class-line] [fixture: mindmap/db-class-twice] [fixture:
+  mindmap/db-class-same-line-as-node] [fixture: mindmap/db-class-before-node]
+  [fixture: mindmap/db-class-trailing-space] [fixture:
+  mindmap/db-class-leading-whitespace] [fixture:
+  mindmap/db-icon-surrounding-whitespace] [fixture: mindmap/db-class-empty]
+  [fixture: mindmap/spec-mindmap-2b7307a0] [fixture:
+  mindmap/spec-mindmap-4755cd73] [fixture: mindmap/spec-mindmap-c9bb7eac]
+  [fixture: mindmap/spec-mindmap-da41aead]
+- Each value is read in
+  [converted form](../../spec/docs/common.md#reading-a-source), so an entity is
+  its placeholder in the text of a node and of a shape, in an icon, and in a
+  class. A line feed inside a string stays in the text, a CRLF there is a line
+  feed, and an attribute quote in the text of a shape is a single quote.
+  [fixture: mindmap/entity-placeholder-in-node-text] [fixture:
+  mindmap/entity-placeholder-numeric] [fixture:
+  mindmap/entity-placeholder-in-description] [fixture:
+  mindmap/entity-placeholder-in-icon] [fixture:
+  mindmap/entity-placeholder-in-class] [fixture:
+  mindmap/lex-html-attribute-quote-in-description] [fixture:
+  mindmap/lex-string-line-feed] [fixture: mindmap/lex-string-crlf] [fixture:
+  mindmap/lex-markdown-string-line-feed] [fixture:
+  mindmap/docs-syntax-mindmap-d3468819]
+- `nodeId`, `descr`, `icon`, and `class` pass through `sanitizeText` and, under
+  a `securityLevel` that is not one of mermaid.js's values with HTML labels
+  enabled, hold the replaced characters (see
+  [db-from-tree.md](./db-from-tree.md), the replacement of characters).
+  [fixture: mindmap/config-security-level-other-texts] [fixture:
+  mindmap/config-security-level-other-html-labels-false]
+
+Values are recorded as the Db holds them, whitespace included.

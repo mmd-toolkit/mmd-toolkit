@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/mindmap/mindmap.spec.ts",
+    "line": 75,
+    "test": "when parsing a mindmap  > hierarchy > MMP-6 real root in wrong place"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "There can be only one root. No parent could be found for (\"fakeRoot\")"
+  }
+}

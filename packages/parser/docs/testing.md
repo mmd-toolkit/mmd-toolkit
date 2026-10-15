@@ -14,8 +14,8 @@ the sentence of the specification or of the parser's documents that defines it.
 ## Fixtures
 
 `tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
-`sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, and
-`requirement/`, and checks:
+`sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, `requirement/`,
+and `mindmap/`, and checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));
@@ -76,6 +76,12 @@ compares it with the Db built from the recorded tree.
   `newline` unit counted as whitespace before the `%`.
 - `percent-brace-after-unit`: the Gantt chart has a `%%{` that starts no
   directive and that mermaid.js reaches directly, found in the same way.
+- `blank-line-after-header-or-comments`: the mindmap has, after the header or
+  between two statements, blank lines and diagram comments in one of the four
+  cases of the divergence, found from the lines of the parser's units and
+  diagram comments: a `newline` unit ends a line, one of n line feeds ends n
+  lines, and one with no characters ends the line of a diagram comment at a
+  U+2028 or a U+2029.
 - `name-start-reads-unit`: the class diagram has a backquoted name or a generic
   type whose text starts with `"`, `~` (in a backquoted name), `<<`, `>>`, or
   one of the keywords that the divergence names, found from the parser's
@@ -182,12 +188,19 @@ requirement/div-empty-description-block-before-class-comma-next-line] [fixture:
 requirement/gram-empty-description-block-after-shorthand-string-class] [fixture:
 requirement/gram-empty-description-block-after-class-string-next-line] [fixture:
 requirement/gram-empty-description-block-after-style-line] [fixture:
-requirement/gram-empty-description-block-in-body] Whether a block is a statement
-is decided without the empty forms before it that are left out, and blocks
-written one after another, with only whitespace between them, are decided
-together, by what follows the last of them: in `""accDescr {}` followed by a
-line break and `A`, the block starts a statement once the empty string is left
-out, so it stays in the reference input. [fixture:
+requirement/gram-empty-description-block-in-body] In a mindmap, the empty
+string, the empty markdown string, the empty icon, an `::icon(` unit followed
+directly by a `)` unit, and the empty class line, a `:::` unit that no
+`class-text` unit follows, are empty forms wherever they lie; the diagram has no
+empty description block. [fixture: mindmap/div-empty-string-in-shape] [fixture:
+mindmap/div-empty-markdown-string-in-shape] [fixture:
+mindmap/div-empty-icon-before-root] [fixture:
+mindmap/div-empty-class-before-root] Whether a block is a statement is decided
+without the empty forms before it that are left out, and blocks written one
+after another, with only whitespace between them, are decided together, by what
+follows the last of them: in `""accDescr {}` followed by a line break and `A`,
+the block starts a statement once the empty string is left out, so it stays in
+the reference input. [fixture:
 flowchart/lex-empty-string-before-empty-description-block] For one or more
 blocks between `direction` and its value on one line in a class diagram, the
 reference input also leaves out the whitespace around the blocks, so that

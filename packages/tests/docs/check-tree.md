@@ -63,13 +63,15 @@ const problems: TreeProblem[] = checkTree(text, tree)
   the frontmatter, equal the source of their ranges (positions.md, Invariants;
   [ast.md](../../spec/docs/ast.md)).
 - **Comments.** A comment line is where the scan finds it, with the mark `%%`; a
-  diagram comment has a mark that its diagram has, and ends where its line ends;
-  a flowchart and an ER diagram have the mark `%%` for a line of `%%` alone
-  before their header, as every diagram type does, and for no other comment; a
-  gantt diagram has the marks `%%` and `%` for its diagram comments, and a
-  journey diagram and a requirement diagram the marks `#`, `%%`, and `%`; a
-  fragment without a mark follows a comment region (parser/docs/tokens.md,
-  Comment; [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
+  diagram comment has a mark that its diagram has, and ends where its line ends
+  (before a U+2028 or a U+2029 too in a mindmap diagram, whose comments run to
+  the end of their line segment); a flowchart and an ER diagram have the mark
+  `%%` for a line of `%%` alone before their header, as every diagram type does,
+  and for no other comment; a gantt diagram has the marks `%%` and `%` for its
+  diagram comments, and a journey diagram and a requirement diagram the marks
+  `#`, `%%`, and `%`, and a mindmap diagram the mark `%%`; a fragment without a
+  mark follows a comment region (parser/docs/tokens.md, Comment;
+  [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
   (ast.md, Directive; common.md, Where a directive is).
@@ -270,6 +272,54 @@ const problems: TreeProblem[] = checkTree(text, tree)
     relationship, and a shorthand, and `Identifier` or `RawText` for a class of
     a `class` statement. The range of a statement is the hull of its tokens and
     child nodes (`parser/docs/positions/requirement.md`).
+  - mindmap: the checks read the tree and the text of the source. The child
+    nodes of a field are of the types of its table (`MINDMAP_CHILD_TYPES`, which
+    a test holds to the Type column of ast/mindmap.md), and the opener, the
+    closer, and the kind of a label are words of the lists that the Meaning
+    column gives, which the test holds as well. A node has a node text, a shape,
+    or both. Its `indent` is the number of whitespace characters before it on
+    its line in the written text, each counted as one (a tab, a U+3000, a
+    U+2028), back to the previous line terminator or character that is not
+    whitespace, so that the whitespace after the header is the `indent` of a
+    root on the line of the header (diagrams/mindmap.md, Units and contexts).
+    The parent of a node is the nearest node before it with a smaller `indent`,
+    and the children of a node are those nodes in source order; a node that is
+    not the first and has no such node would be a second root (Indentation and
+    parents). The decorations of a node start after its text and end before the
+    next node in the source, whichever node that is (ast/mindmap.md,
+    MindmapNode). A node text keeps the whitespace at its end: the shape starts
+    where it ends, and without a shape the line ends right after it. It starts
+    with no whitespace, holds none of `(`, `[`, `)`, `{`, `}` and the line
+    terminators, and starts with none of `%%`, `::icon(` (in any case), `:::`,
+    and the keyword `mindmap`, which rules before the rule of the node text read
+    (The statement context). An icon lies between `::icon(` and `)`, whatever
+    whitespace is next to them, and holds no `)`; a class follows `:::` and runs
+    to a line feed, a U+2028, a U+2029, or the end of the text, and holds none
+    of them (The icon and class contexts). A shape is written as its opener, its
+    label, and its closer, and nothing else; the opener `-)` is the opener of a
+    shape that starts a unit, so no node text lies before it, and the closer
+    `-)` follows only a string or a markdown string (The shape context). A label
+    is not empty. A string and a markdown string are written with their
+    delimiters, which the value leaves out and which are the first and the last
+    characters of the written text of the label, so that a directive between the
+    two characters of a delimiter is no part of the value; a text does not start
+    with `"`, since the rule of a string comes before the rule of a text (The
+    shape context); a text holds none of `)`, `]`, `(`, `}`, a string no `"`,
+    and a markdown string no backquote and no `"`. The kinds of the tokens are
+    those of `parser/docs/tokens/mindmap.md`: a token that a node writes itself
+    is `Punctuator` for `:::`, the `)` of an icon line, and the openers and the
+    closers of a shape, and `Keyword` for the header and `::icon(`; the tokens
+    of a node text, a shape text, an icon, and a class are `RawText`, and those
+    of a string and a markdown string `String` or `StringFragment`. The child
+    fields `id`, `shape`, `decorations`, and `children` are in source order, and
+    so is a list (ast.md, Nodes; ast/mindmap.md states no exception). The tokens
+    that a node writes itself, joined, are `mindmap` in lower case for the
+    diagram (diagrams/mindmap.md, Detection), `::icon(` (in any case) and `)`
+    for an icon line, `:::` for a class line, the opener and the closer for a
+    shape, and none for a node. The range of a node and of a statement is the
+    hull of its tokens and child nodes (`parser/docs/positions/mindmap.md`); the
+    range of a literal and of a label runs from the start of a token to the end
+    of a token, which the checks of every tree read.
 
 The **written text** of a range is its source without the directives, the
 comment regions, and the `;` that the line rule ignores (ast.md, Nodes).
@@ -285,10 +335,10 @@ that says so:
   a style of a class diagram, an ER diagram, or a requirement diagram) leaves
   out the whitespace between its units; the joined tokens are the value. An
   `Identifier` is one token.
-- A string, a label that starts with a string, and a data block have delimiters
-  that belong to their own text; the value is the written text without them,
-  with the whitespace written inside them, and that whitespace lies in the
-  tokens.
+- A string, a label that starts with a string, a label of a mindmap diagram that
+  is a string or a markdown string, and a data block have delimiters that belong
+  to their own text; the value is the written text without them, with the
+  whitespace written inside them, and that whitespace lies in the tokens.
 - A node of text that mermaid.js does not read (an ignored text or statement)
   shows what was written, the whitespace between its units too, and the comments
   in its range are left out; that whitespace lies in no token, except in a run
@@ -367,7 +417,11 @@ by `tests/check-tree-built.ts`; the journey file makes fourteen of them); and
 order of their child fields. `check-tree-requirement.test.ts` makes, by hand,
 the smallest trees that hold each sentence above, breaks each in every way that
 the sentence distinguishes, with the problem that the check must report for it,
-and breaks the recorded trees of named fixtures. The tests that require a
+and breaks the recorded trees of named fixtures. `check-tree-mindmap.test.ts`
+does the same for the sentences of the mindmap diagram, on hand-made trees and
+on the recorded trees of named fixtures; it breaks the recorded trees for the
+kinds of tokens and the ranges, and requires the tables of the check to be the
+Type and the Meaning columns of ast/mindmap.md. The tests that require a
 recorded tree for every node type or every field leave out the node types whose
 names start with a prefix of `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
 (`tests/check-tree-recorded.ts`), the new diagram types whose trees are not

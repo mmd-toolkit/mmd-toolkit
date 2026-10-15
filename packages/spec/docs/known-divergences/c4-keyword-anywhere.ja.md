@@ -2,7 +2,7 @@
 
 英語版: [c4-keyword-anywhere.md](./c4-keyword-anywhere.md)
 
-図種: すべて。
+図種: C4 より後に検出されるすべて。
 この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 対象の構文
@@ -26,6 +26,10 @@ mermaid.js の C4 の検出器は、`C4Context` をテキストの先頭に、
 5 つとも先頭にだけ探します。
 差異は、ヘッダーが別の図のもので、その後に 4 つのキーワードのどれかを持つ
 テキストです。
+mermaid.js は mindmap の検出器を C4 のものより先に試すので、
+マインドマップにはそうしたテキストはありません。
+`C4Container` は、どちらでもノードのテキストです。
+[fixture: mindmap/lex-c4-keyword-as-node-text]
 
 ## 差異
 

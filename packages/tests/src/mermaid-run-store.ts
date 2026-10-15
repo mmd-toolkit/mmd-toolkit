@@ -75,6 +75,7 @@ export const RESULT_FILES: readonly string[] = [
   "normalizers/index.ts",
   "normalizers/journey.ts",
   "normalizers/json.ts",
+  "normalizers/mindmap.ts",
   "normalizers/requirement.ts",
   "normalizers/sequence.ts",
   "normalizers/state.ts",

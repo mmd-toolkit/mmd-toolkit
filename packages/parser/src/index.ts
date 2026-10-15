@@ -227,6 +227,18 @@ export type {
   JourneyTitleStatement,
 } from "./ast/journey.ts"
 export type {
+  MindmapClassStatement,
+  MindmapCloser,
+  MindmapDiagram,
+  MindmapIconStatement,
+  MindmapLabel,
+  MindmapLiteral,
+  MindmapNode,
+  MindmapOpener,
+  MindmapShape,
+  MindmapTreeNode,
+} from "./ast/mindmap.ts"
+export type {
   RequirementAccDescrBlockStatement,
   RequirementAccDescrStatement,
   RequirementAccTitleStatement,

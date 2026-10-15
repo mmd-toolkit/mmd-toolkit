@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Empty forms: an empty icon makes the input rejected here; mermaid.js reads no token for it."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": []
+    }
+  }
+}

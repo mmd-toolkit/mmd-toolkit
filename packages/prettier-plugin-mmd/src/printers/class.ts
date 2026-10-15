@@ -28,6 +28,7 @@ import {
   layoutClassStatement,
 } from "./class-layout.ts"
 import { expectToken, expectValue } from "./layout.ts"
+import { narrowPath } from "./paths.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
@@ -154,9 +155,7 @@ function printDiagram(
     "the header keyword",
   )
   const block = printBlock(
-    // AstPath<MermaidAst> takes only field names that every node type of the
-    // union has; the node here is the diagram, which has `body`.
-    path.map(print, "body" as never),
+    narrowPath(path, diagram.type).map(print, "body"),
     source,
     {
       statements: diagram.body,
@@ -189,7 +188,7 @@ function printNamespace(
   const opening = findNamespaceOpening(source, statement)
   const closing = findClosingBrace(source, statement)
   const block = printBlock<ClassStatement>(
-    path.map(print, "body" as never),
+    narrowPath(path, statement.type).map(print, "body"),
     source,
     {
       statements: statement.body,
@@ -227,7 +226,7 @@ function printMemberBlock(
 ): Doc {
   const { opening, closing } = findMemberBraces(source, statement)
   const block = printBlock<ClassMember>(
-    path.map(print, "members" as never),
+    narrowPath(path, statement.type).map(print, "members"),
     source,
     {
       statements: statement.members ?? [],

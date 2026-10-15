@@ -128,6 +128,10 @@ const SPEC_FILES: Readonly<
   // The other test file of the directory, `requirementDb.spec.ts`, calls the
   // Db's methods with values built in code and passes no text.
   requirement: () => ["diagrams/requirement/parser/requirementDiagram.spec.js"],
+  // The other test files of the directory, `mindmapDb.getData.test.ts` and
+  // `mindmapLayout.spec.ts`, build their nodes with the Db's methods in code
+  // and pass no text.
+  mindmap: () => ["diagrams/mindmap/mindmap.spec.ts"],
 }
 
 /**

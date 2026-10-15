@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Directives inside units: a directive inside a node text: `ab`."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "ab",
+          "level": 2,
+          "descr": "ab",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

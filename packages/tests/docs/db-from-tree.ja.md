@@ -118,6 +118,13 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   [db-from-tree/requirement.ja.md](./db-from-tree/requirement.ja.md)）。
   [fixture: requirement/lex-style-spaces]
   [fixture: requirement/lex-style-no-comma]
+- **mindmap のラベル**: `MindmapLabel` の範囲の変換した形から、
+  文字列か markdown 文字列の区切りを除いたもの。
+  区切りは変換した形から切り落とし、
+  文字列は両端に 1 文字ずつ、markdown 文字列は 2 文字ずつです
+  （規則は [db-from-tree/mindmap.ja.md](./db-from-tree/mindmap.ja.md)）。
+  [fixture: mindmap/db-shape-string]
+  [fixture: mindmap/db-shape-markdown-string]
 - **subgraph の中の ER のキーワード文**: `class`、`classDef`、`style` の文の
   最初のトークンのテキストを、書かれたままで。subgraph がノードとして並べます
   （規則は [db-from-tree/er.ja.md](./db-from-tree/er.ja.md) の
@@ -254,6 +261,7 @@ HTML ラベルが有効で、`securityLevel` が
   [fixture: gantt/config-security-level-other-html-labels-false]
   [fixture: journey/config-security-level-other-html-labels-false]
   [fixture: requirement/config-security-level-other-html-labels-false]
+  [fixture: mindmap/config-security-level-other-html-labels-false]
 
 **何を。**
 置き換えは、改行タグをそれぞれ `#br#` に書き、
@@ -383,6 +391,9 @@ HTML ラベルが有効で、`securityLevel` が
   [fixture: requirement/config-security-level-other-acc-descr]
   [fixture: requirement/config-security-level-other-acc-descr-block]
   [fixture: requirement/config-security-level-other-names-as-written]
+- mindmap: ノードの id、説明、icon、class。
+  要約のテキストは、これですべてです。
+  [fixture: mindmap/config-security-level-other-texts]
 
 **mermaid.js の順序が効く所。**
 テキストを読み進める前に置き換える所があり、作り手も同じにします。

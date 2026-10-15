@@ -425,6 +425,34 @@ export const NODE_FIELDS: Readonly<
   JourneyTitleStatement: {
     value: { shape: "node" },
   },
+  MindmapClassStatement: {
+    cssClass: { shape: "node" },
+  },
+  MindmapDiagram: {
+    root: { shape: "nodeOrNull" },
+  },
+  MindmapIconStatement: {
+    icon: { shape: "node" },
+  },
+  MindmapLabel: {
+    kind: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+  },
+  MindmapLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  MindmapNode: {
+    indent: { shape: "value", valueType: "number" },
+    id: { shape: "nodeOrNull" },
+    shape: { shape: "nodeOrNull" },
+    decorations: { shape: "nodeList" },
+    children: { shape: "nodeList" },
+  },
+  MindmapShape: {
+    opener: { shape: "value", valueType: "string" },
+    closer: { shape: "value", valueType: "string" },
+    label: { shape: "node" },
+  },
   NumericLiteral: {
     value: { shape: "value", valueType: "number" },
     raw: { shape: "value", valueType: "string" },

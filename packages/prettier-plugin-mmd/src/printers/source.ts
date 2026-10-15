@@ -73,6 +73,14 @@ export interface Source {
    * join, removes none.
    */
   readonly removedLineFeeds: ReadonlySet<number>
+  /**
+   * Whether a diagram comment ends at a U+2028 or a U+2029, so that the text
+   * after it is a new line: the lexer of a mindmap ends it at the end of its
+   * line segment (diagrams/mindmap.md, Comments). The comment of the other
+   * diagram types runs to the line feed, and a U+2028 or U+2029 after it is
+   * whitespace to be printed as such.
+   */
+  readonly commentsEndAtLineSeparators: boolean
 }
 
 /**
@@ -426,6 +434,7 @@ export function createSource(text: string, root: Root): Source {
     ),
     joiningRegions,
     removedLineFeeds: findRemovedLineFeeds(text, root, joiningRegions),
+    commentsEndAtLineSeparators: root.body.type === "MindmapDiagram",
   }
 }
 
@@ -543,6 +552,16 @@ export function findTriviaBetween(
     (item) => item.range[0] >= end,
   )
   return source.trivia.slice(first, afterLast)
+}
+
+/** The comment that ends at `offset`, if there is one. */
+export function findCommentEndingAt(
+  source: Source,
+  offset: number,
+): Trivia | undefined {
+  return source.trivia.find(
+    (item) => item.type === "Comment" && item.range[1] === offset,
+  )
 }
 
 /** The directive that ends at `offset`, if there is one. */

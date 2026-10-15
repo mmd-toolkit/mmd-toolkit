@@ -103,6 +103,12 @@ are read from the tree like this:
   units of a style is no part of its value (the rule is in
   [db-from-tree/requirement.md](./db-from-tree/requirement.md)). [fixture:
   requirement/lex-style-spaces] [fixture: requirement/lex-style-no-comma]
+- **Mindmap labels**: the converted form of the range of a `MindmapLabel`,
+  without the delimiters of a string or a markdown string, which are cut from
+  the converted form, one character at each end for a string and two for a
+  markdown string (the rule is in
+  [db-from-tree/mindmap.md](./db-from-tree/mindmap.md)). [fixture:
+  mindmap/db-shape-string] [fixture: mindmap/db-shape-markdown-string]
 - **ER keyword statements in a subgraph**: the text of the first token of a
   `class`, `classDef`, or `style` statement, as written, which a subgraph lists
   as a node (the rule is **Subgraphs** in
@@ -227,7 +233,8 @@ and each diagram applies it to the texts below.
   er/config-security-level-other-subgraph-title-html-labels-false] [fixture:
   gantt/config-security-level-other-html-labels-false] [fixture:
   journey/config-security-level-other-html-labels-false] [fixture:
-  requirement/config-security-level-other-html-labels-false]
+  requirement/config-security-level-other-html-labels-false] [fixture:
+  mindmap/config-security-level-other-html-labels-false]
 
 **What.** The replacement writes each line break tag as `#br#`, then each `<`,
 `>`, and `=` as `&lt;`, `&gt;`, and `&equals;`, and then each `#br#` as `<br/>`,
@@ -352,6 +359,9 @@ does not, are:
   requirement/config-security-level-other-acc-descr] [fixture:
   requirement/config-security-level-other-acc-descr-block] [fixture:
   requirement/config-security-level-other-names-as-written]
+- Mindmap: the id, the description, the icon, and the class of a node, which are
+  all the texts of the summary. [fixture:
+  mindmap/config-security-level-other-texts]
 
 **Where the order of mermaid.js matters.** Some texts are replaced before
 mermaid.js reads them further, and the builders do the same.

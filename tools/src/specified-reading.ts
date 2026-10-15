@@ -60,6 +60,9 @@ const HTML_TAG_MARK = "html-tag-in-frontmatter"
 /** The mark of the divergence about a bare `%%` line before the header. */
 const BARE_PERCENT_MARK = "bare-percent-line-before-header"
 
+/** The mark of the divergence about a blank line after the header or after a comment line in a mindmap. */
+const BLANK_LINES_MARK = "blank-line-after-header-or-comments"
+
 /**
  * What mermaid.js gives for `input` read as the specification reads it, for a
  * fixture with the mark `knownDivergence`; `undefined` where the mark has no
@@ -71,6 +74,13 @@ const BARE_PERCENT_MARK = "bare-percent-line-before-header"
  * specification reads them as trivia in every diagram type, and mermaid.js
  * hands them to the lexer of a diagram type that does not read them so. The
  * title and the configuration do not depend on them.
+ *
+ * For `blank-line-after-header-or-comments` the input is read once more
+ * without the empty lines and the lines of whitespace only after its header,
+ * and without the whitespace that ends the header line (see
+ * {@link withoutBlankLinesAfterHeader}): the specification reads them as
+ * trivia, and mermaid.js hands them to a lexer whose grammar takes them only
+ * in some places.
  *
  * For `html-tag-in-frontmatter` the input is read once more with every `<` of
  * its frontmatter replaced by `(`: mermaid.js finds HTML tags from the start
@@ -96,6 +106,12 @@ export async function specifiedRunOf(
   if (knownDivergence === BARE_PERCENT_MARK) {
     return runMermaidWithEmbeddedData(
       withoutBarePercentLinesBeforeHeader(input),
+      options,
+    )
+  }
+  if (knownDivergence === BLANK_LINES_MARK) {
+    return runMermaidWithEmbeddedData(
+      withoutBlankLinesAfterHeader(input),
       options,
     )
   }
@@ -212,6 +228,154 @@ export function withoutBarePercentLinesBeforeHeader(text: string): string {
     at = end.next
   }
   return text.slice(0, start) + kept
+}
+
+/**
+ * `text` without the empty lines and the lines of whitespace only after its
+ * header, and without the whitespace that ends the header line (the mindmap
+ * divergence `blank-line-after-header-or-comments`). A line is of whitespace
+ * only when nothing but whitespace is left of it once the directives are
+ * taken out: mermaid.js removes a directive before it reads the text, so the
+ * line of a directive alone is such a line. Every directive after the header
+ * moves to a line of its own before it, so that the title and the
+ * configuration do not change and no line is left with only a directive. A
+ * line feed goes before a U+2028 or a U+2029 that ends a diagram comment when a
+ * statement follows it on its line ({@link lineBreakAfterCommentSeparators}).
+ * The lines before the header (blank lines, comment lines, directives) and the
+ * comment lines and node lines after it stay as they are.
+ *
+ * The header is the first line after the frontmatter that is neither a line of
+ * whitespace only nor a comment line. Throws where a line to take out stands
+ * inside text that a node holds across lines (a shape or an icon that is not
+ * closed yet), where a blank line is a character of the text and the
+ * specified reading cannot be made by taking lines out.
+ */
+export function withoutBlankLinesAfterHeader(text: string): string {
+  const frontmatter = frontmatterLength(text)
+  const start = frontmatter === 0 ? 0 : lineEnd(text, frontmatter).next
+  const directives = scanSource(text, start).directives
+  const inDirective = new Uint8Array(text.length)
+  for (const directive of directives) {
+    inDirective.fill(1, directive.range[0], directive.scanEnd)
+  }
+
+  /** The text of the line from `at` to `end` without its directives. */
+  function visibleOf(at: number, end: number): string {
+    let visible = ""
+    for (let index = at; index < end; index++) {
+      if (inDirective[index] !== 1) visible += text.charAt(index)
+    }
+    return visible
+  }
+
+  /** The directives that start on the line from `at` to `end`, as written. */
+  function directivesOf(at: number, end: number): string[] {
+    return directives
+      .filter(
+        (directive) => at <= directive.range[0] && directive.range[0] < end,
+      )
+      .map((directive) => text.slice(directive.range[0], directive.scanEnd))
+  }
+
+  let at = start
+  while (at < text.length) {
+    const end = lineEnd(text, at)
+    const visible = visibleOf(at, end.content).trim()
+    if (visible !== "" && !visible.startsWith("%%")) break
+    at = end.next
+  }
+  if (at >= text.length) return text
+  const header = lineEnd(text, at)
+  const moved = directivesOf(at, header.content)
+  let kept =
+    lineBreakAfterCommentSeparators(visibleOf(at, header.content).trimEnd()) +
+    text.slice(header.content, header.next)
+  let open = 0
+  let cursor = header.next
+  while (cursor < text.length) {
+    const end = lineEnd(text, cursor)
+    const visible = visibleOf(cursor, end.content)
+    open = Math.max(0, open + openersIn(visible))
+    if (visible.trim() === "") {
+      if (open > 0) {
+        throw new Error(
+          "a line to take out stands inside the text of a node that is not closed yet; the specified reading cannot be made by taking lines out",
+        )
+      }
+      moved.push(...directivesOf(cursor, end.content))
+    } else {
+      moved.push(...directivesOf(cursor, end.content))
+      kept +=
+        lineBreakAfterCommentSeparators(visible) +
+        text.slice(end.content, end.next)
+    }
+    cursor = end.next
+  }
+  return (
+    text.slice(0, at) +
+    moved.map((directive) => `${directive}\n`).join("") +
+    kept
+  )
+}
+
+/**
+ * `line` with a line feed before each U+2028 or U+2029 that ends a diagram
+ * comment when a statement follows it on the line: the comment of mermaid.js
+ * ends there, as a line feed ends it, but its grammar needs a line feed between
+ * the comment and the statement, and the specification reads the separator as
+ * whitespace, so that the indentation of the statement stays. A separator that
+ * ends a comment with only whitespace after it on the line is left out with
+ * that whitespace. A `%%` starts a
+ * comment when only whitespace, the header, or the end of a shape or of an icon
+ * (`)`, `]`, `}`, `(`) stands before it on the line, as the lexer reads it; a
+ * `%%` in the text of a node is no comment.
+ */
+function lineBreakAfterCommentSeparators(line: string): string {
+  let result = ""
+  let before = ""
+  let index = 0
+  while (index < line.length) {
+    if (!line.startsWith("%%", index) || !startsComment(before)) {
+      result += line.charAt(index)
+      before += line.charAt(index)
+      index++
+      continue
+    }
+    let end = index
+    while (end < line.length && !"\u2028\u2029".includes(line.charAt(end))) {
+      end++
+    }
+    result += line.slice(index, end)
+    if (end === line.length) break
+    // The separator ends the comment. With a statement after it on the line, a
+    // line feed goes before it; with only whitespace after it, the separator
+    // and the whitespace are the end of a line of whitespace and go.
+    if (line.slice(end + 1).trim() === "") break
+    result += `\n${line.charAt(end)}`
+    before = ""
+    index = end + 1
+  }
+  return result
+}
+
+/** Whether a `%%` after `before` on its line starts a comment (see {@link lineBreakAfterCommentSeparators}). */
+function startsComment(before: string): boolean {
+  const trimmed = before.trim()
+  return (
+    trimmed === "" ||
+    trimmed === "mindmap" ||
+    ")]}(".includes(trimmed.charAt(trimmed.length - 1))
+  )
+}
+
+/** How many more brackets of a node text `line` opens than it closes (negative where it closes more). */
+function openersIn(line: string): number {
+  let count = 0
+  for (const character of line) {
+    if (character === "(" || character === "[" || character === "{") count++
+    if (character === ")" || character === "]" || character === "}") count--
+  }
+  return count
 }
 
 /**

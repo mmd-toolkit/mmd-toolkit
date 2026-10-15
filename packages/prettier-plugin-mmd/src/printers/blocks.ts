@@ -112,6 +112,17 @@ export interface BlockRules<Statement extends Node> {
    * indentation, or none after a blank line, would change what it reads.
    */
   readonly oneCharacterIndentation?: string
+  /**
+   * The indentation that a kept line starts with, where it keeps its
+   * indentation (see `KeptLines.writtenIndentation`), when that is not the
+   * whitespace written before the line. In a mindmap the whitespace that
+   * counts as the indentation of a node is all the whitespace before its
+   * text, the whitespace after a directive on its line included, and the
+   * lines' levels come from how many characters it holds (diagrams/mindmap.md,
+   * Indentation and parents), so the printer decides the whitespace before the
+   * directive.
+   */
+  readonly keptIndentationOf?: (statement: Statement) => string
 }
 
 /** Where a block of statements lies in the source, and which block it is. */
@@ -562,7 +573,11 @@ export function printBlock<Statement extends Node>(
       doc: withLeading(gap.leading, line.doc),
       blankBefore: hasBodyLines() && gap.blankAfter,
       ...(keepsIndentation
-        ? { writtenIndentation: source.text.slice(lineStart, start) }
+        ? {
+            writtenIndentation:
+              rules.keptIndentationOf?.(statement) ??
+              source.text.slice(lineStart, start),
+          }
         : {}),
     })
     stretchEndsWithComment = endsWithComment(stretch.end)

@@ -14,6 +14,7 @@ import {
   printDiagramBlock,
 } from "./blocks.ts"
 import { expectToken, layoutKeywordHeader } from "./layout.ts"
+import { narrowPath } from "./paths.ts"
 import { indentationOf } from "./lines.ts"
 import { findRequirementKeptLines } from "./requirement-kept-lines.ts"
 import type {
@@ -125,9 +126,7 @@ function printDiagram(
     "the header keyword",
   )
   const block = printBlock<RequirementStatement>(
-    // AstPath<MermaidAst> takes only field names that every node type of the
-    // union has; the node here is the diagram, which has `body`.
-    path.map(print, "body" as never),
+    narrowPath(path, diagram.type).map(print, "body"),
     source,
     {
       statements: diagram.body,
@@ -160,7 +159,7 @@ function printBody(
 ): Doc {
   const { opening, closing } = findBlockBraces(source, statement)
   const block = printBlock<RequirementBodyItem>(
-    path.map(print, "body" as never),
+    narrowPath(path, statement.type).map(print, "body"),
     source,
     {
       statements: statement.body,

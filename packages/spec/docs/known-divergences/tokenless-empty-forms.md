@@ -2,8 +2,8 @@
 
 Japanese version: [tokenless-empty-forms.ja.md](./tokenless-empty-forms.ja.md)
 
-Diagram types: flowchart, sequence, class, state, er, gantt, and requirement.
-This is one of the [known divergences](../known-divergences.md) of this
+Diagram types: flowchart, sequence, class, state, er, gantt, requirement, and
+mindmap. This is one of the [known divergences](../known-divergences.md) of this
 specification from mermaid.js.
 
 ## The syntax
@@ -49,14 +49,22 @@ part of this divergence wherever they stand (see
 [Empty hrefs and empty calls](../diagrams/gantt.md#empty-hrefs-and-empty-calls)).
 In requirement there are two: the empty description block, and the empty string,
 `""`, which is part of this divergence wherever it stands (see
-[Units and contexts](../diagrams/requirement.md#units-and-contexts)). [fixture:
+[Units and contexts](../diagrams/requirement.md#units-and-contexts)). In mindmap
+there are three: an **empty icon**, `::icon()`, an **empty class line**, `:::`
+with nothing after it on its line, and an empty string, `""`, or an empty
+markdown string inside a shape; all three are part of this divergence wherever
+they stand (see [Empty forms](../diagrams/mindmap.md#empty-forms)). [fixture:
 er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-backquotes-between-type-and-name] [fixture:
 er/gram-empty-backquotes-between-attributes] [fixture:
 gantt/div-empty-href-before-call] [fixture: gantt/div-empty-call-before-href]
 [fixture: gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-line]
 [fixture: requirement/div-empty-string-line] [fixture:
-requirement/div-empty-description-block-in-relationship]
+requirement/div-empty-description-block-in-relationship] [fixture:
+mindmap/div-empty-icon-before-root] [fixture:
+mindmap/div-empty-class-before-root] [fixture:
+mindmap/div-empty-string-in-shape] [fixture:
+mindmap/div-empty-markdown-string-in-shape]
 
 An empty description block on a line of its own is the ordinary way to write
 one, and is a description block statement that changes nothing:
@@ -196,8 +204,9 @@ divergences sections: [flowchart](../diagrams/flowchart.md#known-divergences),
 [class](../diagrams/class.md#known-divergences),
 [state](../diagrams/state.md#known-divergences),
 [er](../diagrams/er.md#known-divergences),
-[gantt](../diagrams/gantt.md#known-divergences), and
-[requirement](../diagrams/requirement.md#known-divergences).
+[gantt](../diagrams/gantt.md#known-divergences),
+[requirement](../diagrams/requirement.md#known-divergences), and
+[mindmap](../diagrams/mindmap.md#known-divergences).
 
 ## What it means for an author
 
@@ -266,6 +275,12 @@ Requirement passes over an empty description block
 and over the quotes of an empty string, in the statement context and in the
 style context
 ([`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L85-L96)).
+Mindmap passes over `:::` with nothing after it on its line and over `::icon(`
+and `)` with nothing between them
+([`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L24-L32)),
+and over the quotes of an empty string and the delimiters of an empty markdown
+string
+([`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L45-L50)).
 Each of these rules enters or leaves a state of the lexer and returns nothing,
 so the grammar never sees the form.
 
@@ -601,6 +616,17 @@ requirement/div-empty-string-in-relationship] [fixture:
 requirement/div-empty-string-before-style] [fixture:
 requirement/gram-empty-description-block-in-body] [fixture:
 requirement/gram-empty-description-block-after-string-value]
+
+In mindmap, an empty icon, an empty class line, or an empty string inside a
+shape, wherever it stands: an icon or a class line after a node or before the
+root, and an empty string or an empty markdown string before the text of a
+shape, because the tree holds no statement for an icon or a class line that
+mermaid.js discards whole, and no label for a string that it discards whole, as
+in flowchart and class (see [Empty forms](../diagrams/mindmap.md#empty-forms)).
+[fixture: mindmap/db-icon-empty] [fixture: mindmap/div-empty-icon-before-root]
+[fixture: mindmap/db-class-empty] [fixture: mindmap/div-empty-class-before-root]
+[fixture: mindmap/div-empty-string-in-shape] [fixture:
+mindmap/div-empty-markdown-string-in-shape]
 
 After the last unit of a statement, before its separator, the block is a
 statement, as in `click A "u" "t" accDescr {}` of state. An accepted input has

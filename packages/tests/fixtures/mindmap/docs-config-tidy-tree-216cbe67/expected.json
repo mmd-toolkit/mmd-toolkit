@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/config/tidy-tree.md",
+    "line": 14
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "mindmap is a long thing",
+      "type": 3,
+      "children": [
+        {
+          "nodeId": "A",
+          "level": 2,
+          "descr": "A",
+          "type": 0,
+          "children": []
+        },
+        {
+          "nodeId": "B",
+          "level": 2,
+          "descr": "B",
+          "type": 0,
+          "children": []
+        },
+        {
+          "nodeId": "C",
+          "level": 2,
+          "descr": "C",
+          "type": 0,
+          "children": []
+        },
+        {
+          "nodeId": "D",
+          "level": 2,
+          "descr": "D",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  },
+  "embedded": {
+    "config": {
+      "layout": "tidy-tree"
+    }
+  }
+}

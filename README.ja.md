@@ -13,7 +13,7 @@ mermaid-js とは無関係です。
 同じ略称を使う MultiMarkdown や MikuMikuDance とは関係ありません。
 
 いま対応している図種は
-flowchart、sequence、class、state、ER、Gantt、journey、requirement で、
+flowchart、sequence、class、state、ER、Gantt、journey、requirement、mindmap で、
 ほかの図種は順に対応します。
 フォーマッター、リンター、パーサーは、まだ npm に公開していません。
 mermaid.js のすべての図種に対応してから公開します。

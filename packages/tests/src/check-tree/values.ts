@@ -260,6 +260,17 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     gaps: true,
     spec: "Its written text is the source text of its range without the directives, the comment regions, and the ignored `;`; the whitespace between its units is part of it, and no diagram comment lies inside it (ast/requirement.md, RequirementIgnoredText).",
   },
+  MindmapLabel: {
+    field: "value",
+    kind: "written-text",
+    delimiters: "string",
+    spec: "For a text, its written text; for a string or a markdown string, its written text between its delimiters (ast/mindmap.md, MindmapLabel).",
+  },
+  MindmapLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its written text (ast/mindmap.md, MindmapLiteral).",
+  },
 }
 
 /** The delimiters around the content of the string that `node` starts with; none if it starts with none. */

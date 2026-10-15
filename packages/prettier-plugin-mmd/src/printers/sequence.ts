@@ -2,7 +2,6 @@ import type { AstPath, Doc, ParserOptions } from "prettier"
 import type {
   Node,
   SequenceDiagram,
-  SequenceSection,
   SequenceStatement,
   Token,
 } from "@mmd-toolkit/parser"
@@ -16,6 +15,7 @@ import {
   printDiagramBlock,
 } from "./blocks.ts"
 import { expectToken } from "./layout.ts"
+import { narrowPath } from "./paths.ts"
 import type { Line } from "./lines.ts"
 import { indentationOf } from "./lines.ts"
 import {
@@ -115,9 +115,7 @@ function printDiagram(
   )
   const headerEnd = keyword.range[1]
   const block = printBlock(
-    // AstPath<MermaidAst> takes only field names that every node type of the
-    // union has; the node here is the diagram, which has `body`.
-    path.map(print, "body" as never),
+    narrowPath(path, diagram.type).map(print, "body"),
     source,
     {
       statements: diagram.body,
@@ -158,7 +156,7 @@ function printBodyBlock(
   const opened = openBlock(
     source,
     options,
-    path.map(print, "body" as never),
+    narrowPath(path, statement.type).map(print, "body"),
     statement.body,
     { start: statement.range[0], text, end: endKeyword.range[0] },
     depth,
@@ -188,26 +186,22 @@ function printSectionBlock(
   const depth = depthOf(path)
   const endKeyword = findEndKeyword(source, statement)
   const { sections } = statement
-  const opened = path.map(
-    (sectionPath, index) => {
-      const section = sectionPath.node as SequenceSection
-      return openBlock(
-        source,
-        options,
-        sectionPath.map(print, "body" as never),
-        section.body,
-        {
-          start: section.range[0],
-          text: section.text,
-          end: sections[index + 1]?.range[0] ?? endKeyword.range[0],
-        },
-        depth,
-      )
-    },
-    // AstPath<MermaidAst> takes only field names that every node type of
-    // the union has; the node here is a block of sections.
-    "sections" as never,
-  )
+  const opened = narrowPath(path, statement.type).map((anyPath, index) => {
+    const sectionPath = narrowPath(anyPath, "SequenceSection")
+    const section = sectionPath.node
+    return openBlock(
+      source,
+      options,
+      sectionPath.map(print, "body"),
+      section.body,
+      {
+        start: section.range[0],
+        text: section.text,
+        end: sections[index + 1]?.range[0] ?? endKeyword.range[0],
+      },
+      depth,
+    )
+  }, "sections")
   let closing: Doc = endKeyword.value
   for (const { header, block } of opened.toReversed()) {
     closing = printClosedBlock(header, block, closing, depth, options)

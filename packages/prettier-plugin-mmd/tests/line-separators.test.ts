@@ -860,6 +860,115 @@ const requirementWhitespaceExamples: readonly (readonly [
 ]
 
 /**
+ * Each example is a mindmap with U+2028 or U+2029: a diagram comment ends at
+ * one, and the text after it is a new line, with the character as the first
+ * one of its indentation, so the lines go to lines of their own, while in a
+ * node text, a shape text, and an icon they are characters of the text and
+ * stay (docs/mindmap.md, Line separators).
+ */
+const mindmapLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+2028 after a comment on the header line",
+    "mindmap %% c\u2028root\n",
+    "mindmap %% c\n  root\n",
+  ],
+  [
+    "U+2028 after a comment after a shape",
+    "mindmap\nroot\n  a[x] %% c\u2028y\n",
+    "mindmap\n  root\n    a[x] %% c\n   y\n",
+  ],
+  [
+    "U+2028 after a comment after an icon",
+    "mindmap\n  root\n    a\n    ::icon(x) %% c\u2028    b\n",
+    "mindmap\n  root\n    a\n    ::icon(x) %% c\n     b\n",
+  ],
+  [
+    "U+2028 after a bare comment between nodes",
+    "mindmap\nroot\n  a[x] %% c\n%%{ }%%\u2028  b\n",
+    "mindmap\n  root\n    a[x] %% c\n     %%{ }%%\n     b\n",
+  ],
+  [
+    "U+2028 inside a node text",
+    "mindmap\n  root\n    a\u2028b\n",
+    "mindmap\n  root\n    a\u2028b\n",
+  ],
+  [
+    "U+2029 inside a shape text",
+    "mindmap\n  root\n    a[x\u2029y]\n",
+    "mindmap\n  root\n    a[x\u2029y]\n",
+  ],
+  [
+    "U+2028 inside an icon",
+    "mindmap\n  root\n    a\n    ::icon(x\u2028y)\n",
+    "mindmap\n  root\n    a\n    ::icon(x\u2028y)\n",
+  ],
+  [
+    "U+2028 after the header",
+    "mindmap\u2028root\n  a\n  b\n  c\n",
+    "mindmap\n  root\n   a\n   b\n   c\n",
+  ],
+]
+
+/**
+ * Each example is a mindmap with a whitespace character other than a space
+ * and a tab, which no file of this package may hold. Every whitespace
+ * character before a node is one character of its indentation, whatever it
+ * is, so the printer writes the characters of the options and keeps their
+ * number; in a node text and a shape text they are characters of the text
+ * (docs/mindmap.md, Whitespace characters).
+ */
+const mindmapWhitespaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+00A0 in the indentation",
+    "mindmap\n\u00a0\u00a0root\n\u00a0\u00a0\u00a0\u00a0a\n",
+    "mindmap\n  root\n    a\n",
+  ],
+  [
+    "U+3000 in the indentation",
+    "mindmap\n\u3000root\n\u3000\u3000a\n",
+    "mindmap\n  root\n   a\n",
+  ],
+  [
+    "U+FEFF in the indentation",
+    "mindmap\n\ufeffroot\n\ufeff\ufeffa\n",
+    "mindmap\n  root\n   a\n",
+  ],
+  [
+    "U+00A0 after the header",
+    "mindmap\u00a0root\n  a\n",
+    "mindmap\n  root\n   a\n",
+  ],
+  [
+    "U+00A0 inside a node text",
+    "mindmap\n  root\n    a\u00a0b\n",
+    "mindmap\n  root\n    a\u00a0b\n",
+  ],
+  [
+    "U+00A0 inside a shape text",
+    "mindmap\n  root\n    c[x\u00a0y]\n",
+    "mindmap\n  root\n    c[x\u00a0y]\n",
+  ],
+  [
+    "U+00A0 and U+3000 after a shape",
+    "mindmap\n  root\n    a[x]\u00a0\u3000\n",
+    "mindmap\n  root\n    a[x]\n",
+  ],
+  [
+    "U+00A0 before a comment after a shape",
+    "mindmap\n  root\n    a[x]\u00a0%% c\n",
+    "mindmap\n  root\n    a[x] %% c\n",
+  ],
+]
+
+/**
  * Checks that formatting an example gives its formatted form, that
  * formatting again changes nothing, and that the Db that the tree denotes is
  * the same for both texts.
@@ -955,6 +1064,24 @@ describe("a requirement diagram with a line separator", () => {
 
 describe("a requirement diagram with a whitespace character that no fixture file holds", () => {
   it.each(requirementWhitespaceExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a mindmap with a line separator", () => {
+  it.each(mindmapLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a mindmap with a whitespace character that no fixture file holds", () => {
+  it.each(mindmapWhitespaceExamples)(
     "keeps %s",
     async (_name, input, output) => {
       await expectKept(input, output)

@@ -140,6 +140,41 @@ describe("checkTree: where a comment ends", () => {
     ).toBe(true)
   })
 
+  it("ends a diagram comment of a mindmap diagram at a U+2028 or a U+2029, and no other diagram's", () => {
+    // diagrams/mindmap.md, Comments: a mindmap comment runs to the end of its
+    // line segment; the comments of the other diagram types end at a line
+    // terminator only.
+    for (const separator of ["\u2028", "\u2029"]) {
+      const end = "mindmap\nr\n  a %% c".length
+      const mindmapSource = `mindmap\nr\n  a %% c${separator}b`
+      const classSource = `classDiagram\nA %% c${separator}B`
+      const classAt = classSource.indexOf("%%")
+      const message = "does not end where its line ends"
+      expect(
+        says(
+          checkTree(
+            mindmapSource,
+            treeWith(mindmapSource, "MindmapDiagram", [
+              { mark: "%%", range: [end - 4, end] },
+            ]),
+          ),
+          message,
+        ),
+      ).toBe(false)
+      expect(
+        says(
+          checkTree(
+            classSource,
+            treeWith(classSource, "ClassDiagram", [
+              { mark: "%%", range: [classAt, classAt + 4] },
+            ]),
+          ),
+          message,
+        ),
+      ).toBe(true)
+    }
+  })
+
   it("fails a comment line that runs on past its line", () => {
     const source = "flowchart LR\n%% c\n  \nA\n"
     const at = source.indexOf("%%")

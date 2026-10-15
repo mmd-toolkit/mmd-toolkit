@@ -347,6 +347,49 @@
   [fixture: requirement/gram-requirement-value-empty]
   [fixture: requirement/lex-class-one-list]
 
+## Mindmap の中
+
+- 字句解析器のどの規則も一致しない位置では、`range` はその 1 文字。
+  ノードのテキストの後の単独の `{` や `}`、
+  形の中の `}}` を始めない `}` がその例。
+  [fixture: mindmap/lex-node-text-open-brace]
+  [fixture: mindmap/lex-node-text-close-brace]
+  [fixture: mindmap/gram-shape-text-close-brace]
+- テキストがその中で終わる文字列では、`range` はその開きの引用符で、
+  メッセージは `The string has no closing " before the end of the text`。
+  markdown 文字列では、その開きの引用符で、メッセージは
+  ``The markdown string has no closing `" before the end of the text``。
+  最初の `` ` `` や `"` が `` `" `` にならずに終わらせる markdown 文字列も、
+  その開きの引用符で報告し、メッセージは
+  ``The markdown string is not closed by `" at its first ` or "``。
+  [fixture: mindmap/lex-string-unclosed]
+  [fixture: mindmap/lex-markdown-string-unclosed]
+  [fixture: mindmap/lex-markdown-string-quote]
+  [fixture: mindmap/lex-markdown-string-then-text]
+- 終わってはいけない文脈でテキストが終わるときは、
+  `range` はその文脈に入ったもので、メッセージは何が閉じていないかを示す。
+  形の opener（`The shape has no closer before the end of the text`）と、
+  `::icon(`（`The icon has no ) before the end of the text`）。
+  [fixture: mindmap/lex-shape-unclosed]
+  [fixture: mindmap/lex-icon-unclosed]
+- ヘッダーでテキストが終わるときは、`range` はヘッダーで、
+  メッセージは `The header cannot end the text`。
+  [fixture: mindmap/db-header-without-line-feed]
+  [fixture: mindmap/header-directive-at-end]
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲。
+  テキストの終わりでは、flowchart と同じく、テキストの終わりの空の範囲。
+  `r[]` は `]` で、`r[text] tail` は `tail` で報告する。
+  [fixture: mindmap/db-shape-empty-description]
+  [fixture: mindmap/db-shape-text-after-end]
+- 文法の外の 2 つの拒否は、文法がその行を読むところで行う。
+  `range` は、根と同じかより浅く字下げしたノードで、
+  メッセージは `A node cannot be as indented as the root or less`。
+  最初のノードより前の icon や class の行では、その行で、
+  メッセージは `An icon or a class line needs a node before it`。
+  [fixture: mindmap/db-indent-same-as-root]
+  [fixture: mindmap/db-icon-before-node]
+  [fixture: mindmap/db-class-before-node]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、

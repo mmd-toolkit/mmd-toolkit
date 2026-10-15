@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Icons and classes: two icons on a line are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...oot::icon(x)::icon(y)\n----------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'ICON'"
+  }
+}

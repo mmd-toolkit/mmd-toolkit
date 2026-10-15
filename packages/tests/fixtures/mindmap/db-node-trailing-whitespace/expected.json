@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, text: the whitespace after the text of a node stays in the text."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root   ",
+      "level": 0,
+      "descr": "root   ",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "child\t",
+          "level": 2,
+          "descr": "child\t",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

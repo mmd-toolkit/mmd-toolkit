@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, icon: an icon line and a class line give the icon and the class to the node before them."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "child",
+          "level": 2,
+          "descr": "child",
+          "type": 0,
+          "icon": "x",
+          "class": "y",
+          "children": []
+        }
+      ]
+    }
+  }
+}

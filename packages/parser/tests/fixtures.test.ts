@@ -67,6 +67,7 @@ import {
   commentsAfterUnits,
   doublePercentsAfterUnitStarts,
   percentBracesReachedDirectly,
+  mindmapBlankLinesRejectedByMermaid,
   percentCommentsReachedDirectly,
   percentsAfterUnitStarts,
   frontmatterChangesAttributeQuotes,
@@ -407,6 +408,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     ...(await loadFixtures("gantt")),
     ...(await loadFixtures("journey")),
     ...(await loadFixtures("requirement")),
+    ...(await loadFixtures("mindmap")),
   ]
 
   /** The fixtures that carry the mark `knownDivergence`. */
@@ -634,6 +636,28 @@ describe("marked fixtures differ only by their divergence", async () => {
       it(`${fixture.diagram}/${fixture.name}`, () => {
         const places = percentBracesReachedDirectly(fixture.input)
         if (places === null) throw new Error("the input is no Gantt chart")
+        expect(places.length).toBeGreaterThan(0)
+      })
+    }
+  })
+
+  // known-divergences/blank-line-after-header-or-comments.md: in mindmap,
+  // blank lines and diagram comments change nothing here wherever they
+  // stand after the header, while mermaid.js rejects them in the four
+  // cases of the divergence. Each fixture has such a place, found from the
+  // parser's units and diagram comments; the reading of the specification
+  // is recorded in the corpus.
+  describe("blank-line-after-header-or-comments", () => {
+    const fixturesWithMark = marked("blank-line-after-header-or-comments")
+
+    it("has fixtures", () => {
+      expect(fixturesWithMark.length).toBeGreaterThan(0)
+    })
+
+    for (const fixture of fixturesWithMark) {
+      it(`${fixture.diagram}/${fixture.name}`, () => {
+        const places = mindmapBlankLinesRejectedByMermaid(fixture.input)
+        if (places === null) throw new Error("the input is no mindmap")
         expect(places.length).toBeGreaterThan(0)
       })
     }

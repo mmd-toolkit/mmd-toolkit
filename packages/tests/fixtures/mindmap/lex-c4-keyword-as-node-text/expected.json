@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Known divergences: mindmap is detected before C4, so `C4Container` is a node text."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "C4Container",
+          "level": 2,
+          "descr": "C4Container",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

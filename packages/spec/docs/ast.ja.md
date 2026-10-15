@@ -258,8 +258,8 @@ mermaid.js はこれらを
 [`ErDiagram`](./ast/er.ja.md#erdiagram)、
 [`GanttDiagram`](./ast/gantt.ja.md#ganttdiagram)、
 [`JourneyDiagram`](./ast/journey.ja.md#journeydiagram)、
-[`RequirementDiagram`](./ast/requirement.ja.md#requirementdiagram)
-のどれかです。
+[`RequirementDiagram`](./ast/requirement.ja.md#requirementdiagram)、
+[`MindmapDiagram`](./ast/mindmap.ja.md#mindmapdiagram) のどれかです。
 
 ## ErrorDiagram
 
@@ -437,6 +437,7 @@ sequence/db-autonumber-leading-zero]
 - [Gantt](./ast/gantt.ja.md): 図種 `gantt`。
 - [Journey](./ast/journey.ja.md): 図種 `journey`。
 - [Requirement](./ast/requirement.ja.md): 図種 `requirement`。
+- [Mindmap](./ast/mindmap.ja.md): 図種 `mindmap`。
 
 図種のノードの型の名前は、`FlowchartVertex` のように、
 どれもその図種の名前で始めます。

@@ -53,6 +53,7 @@ export type DiagramType =
   | "gantt"
   | "journey"
   | "requirement"
+  | "mindmap"
 
 /**
  * Where a fixture input came from.
@@ -212,6 +213,15 @@ export const KNOWN_DIVERGENCES: readonly string[] = [
   // (it reads a comment instead after one character other than `}`). The
   // difference goes one way only: the spec accepts what mermaid.js rejects.
   "percent-brace-after-unit",
+  // In mindmap, an empty line, a line of whitespace only, and a comment line
+  // change nothing wherever they stand, and whitespace at the end of the
+  // header line is trivia. mermaid's lexer reads a line break with the
+  // whitespace lines around it as one token, and the grammar takes that token
+  // only at the end of a line of its own, so it rejects such a line after the
+  // header, after a comment line, and before a node, and the whitespace that
+  // ends the header line before a node. The difference goes one way only: the
+  // spec accepts what mermaid.js rejects.
+  "blank-line-after-header-or-comments",
 ]
 
 /**

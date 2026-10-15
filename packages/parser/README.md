@@ -129,6 +129,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - Gantt charts: `gantt` (`gantt`).
 - User journey diagrams: `journey` (`journey`).
 - Requirement diagrams: `requirement` (`requirementDiagram`).
+- Mindmaps: `mindmap` (`mindmap`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -224,8 +225,9 @@ type ids. The names and fields are those of the specification's
 [`ast/state.md`](../spec/docs/ast/state.md),
 [`ast/er.md`](../spec/docs/ast/er.md),
 [`ast/gantt.md`](../spec/docs/ast/gantt.md),
-[`ast/journey.md`](../spec/docs/ast/journey.md), and
-[`ast/requirement.md`](../spec/docs/ast/requirement.md).
+[`ast/journey.md`](../spec/docs/ast/journey.md),
+[`ast/requirement.md`](../spec/docs/ast/requirement.md), and
+[`ast/mindmap.md`](../spec/docs/ast/mindmap.md).
 
 ## Walking the tree
 
@@ -318,7 +320,15 @@ these differences:
   line `""` or `id: "" 1`, and for the empty description block inside a
   statement, as in `a - accDescr {} satisfies -> b`; where a statement starts,
   an empty description block is a statement, and on a line of the body of a
-  requirement or an element, an item of the body.
+  requirement or an element, an item of the body. In a mindmap, it holds for an
+  empty icon (`::icon()`), an empty class line (`:::` with nothing after it on
+  its line), and an empty string or empty markdown string in a shape, wherever
+  they stand, as in `a[""x]`.
+- In a mindmap, empty lines, lines of whitespace, and comments change nothing
+  wherever they stand after the header, while mermaid.js rejects some of them,
+  as an empty line between the header and the first node, or a line `%%` alone
+  followed by an empty line between two nodes
+  ([`blank-line-after-header-or-comments`](../spec/docs/known-divergences/blank-line-after-header-or-comments.md)).
 - In a sequence diagram, a comment starts at its `%%`, and a number may be
   followed by `%%`, while mermaid.js takes the character before the `%%` into
   the comment where a rule would start there: `autonumber 10%% c` starts at 10
@@ -382,8 +392,8 @@ these differences:
   [`ast/gantt.md`](../spec/docs/ast/gantt.md) (the Gantt nodes),
   [`ast/journey.md`](../spec/docs/ast/journey.md) (the journey nodes),
   [`ast/requirement.md`](../spec/docs/ast/requirement.md) (the requirement
-  nodes), and [`common.md`](../spec/docs/common.md) (the rules shared by every
-  diagram).
+  nodes), [`ast/mindmap.md`](../spec/docs/ast/mindmap.md) (the mindmap nodes),
+  and [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of
   nodes, and the invariants of the tree.

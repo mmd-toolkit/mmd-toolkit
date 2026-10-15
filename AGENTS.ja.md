@@ -45,7 +45,8 @@ Mermaid 記法（`.mmd`）について、mermaid.js が持つ全図種を対象�
       flowchart で文の始まるところにある空の文字列と空の call、
       class で文の始まるところにある空の文字列、
       どこにあっても、gantt の空の href と空の call、
-      そして、どこにあっても、requirement の空の文字列。
+      どこにあっても、requirement の空の文字列、
+      そして、mindmap の空の icon、空の class の行、形の中の空の文字列。
       こうした形は何も変えない文としては持たず、
       入力は差 `tokenless-empty-forms` として拒否する。
       mermaid.js が読む文の後ろにある、読まない断片（state の `state ""`）は

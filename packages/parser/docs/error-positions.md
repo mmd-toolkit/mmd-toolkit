@@ -294,6 +294,45 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   requirement/gram-requirement-value-empty] [fixture:
   requirement/lex-class-one-list]
 
+## In a mindmap
+
+- Where no rule of the lexer matches, `range` is the character there: a single
+  `{` or a `}` after a node text, and a `}` that does not start `}}` in a shape.
+  [fixture: mindmap/lex-node-text-open-brace] [fixture:
+  mindmap/lex-node-text-close-brace] [fixture:
+  mindmap/gram-shape-text-close-brace]
+- For a string that the text ends in, `range` is its opening quote, and the
+  message is `The string has no closing " before the end of the text`; for a
+  markdown string so, its opening quote, with the message
+  ``The markdown string has no closing `" before the end of the text``. A
+  markdown string that its first `` ` `` or `"` ends without `` `" `` is
+  reported at its opening quote too, with the message
+  ``The markdown string is not closed by `" at its first ` or "``. [fixture:
+  mindmap/lex-string-unclosed] [fixture: mindmap/lex-markdown-string-unclosed]
+  [fixture: mindmap/lex-markdown-string-quote] [fixture:
+  mindmap/lex-markdown-string-then-text]
+- When the text ends in a context that may not end there, `range` is what
+  entered that context, and the message says what is not closed: the opener of a
+  shape (`The shape has no closer before the end of the text`) and `::icon(`
+  (`The icon has no ) before the end of the text`). [fixture:
+  mindmap/lex-shape-unclosed] [fixture: mindmap/lex-icon-unclosed]
+- When the header ends the text, `range` is the header, and the message is
+  `The header cannot end the text`. [fixture:
+  mindmap/db-header-without-line-feed] [fixture:
+  mindmap/header-directive-at-end]
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace, and at the end of the text the empty range at the end of the text,
+  as in a flowchart: `r[]` is reported at its `]`, and `r[text] tail` at `tail`.
+  [fixture: mindmap/db-shape-empty-description] [fixture:
+  mindmap/db-shape-text-after-end]
+- For the two rejections outside the grammar, which the grammar makes where it
+  reads the line, `range` is the node that is as indented as the root or less,
+  with the message `A node cannot be as indented as the root or less`, and the
+  icon or class line before the first node, with the message
+  `An icon or a class line needs a node before it`. [fixture:
+  mindmap/db-indent-same-as-root] [fixture: mindmap/db-icon-before-node]
+  [fixture: mindmap/db-class-before-node]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

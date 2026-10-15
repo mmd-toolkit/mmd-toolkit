@@ -121,4 +121,17 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [gantt-no-unknown-exclude](./gantt-no-unknown-exclude.ja.md)                 | `weekends` でも曜日の名前でもない `excludes` の語を禁止する。             | ✅  |     |     |
 | [gantt-no-unread-tag](./gantt-no-unread-tag.ja.md)                           | タスクのデータの中で、mermaid.js がタグとして読まないタグを禁止する。     | ✅  |     |     |
 
+## requirement
+
+| 規則                                                                                           | 説明                                                                                      | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | --- | --- | --- |
+| [requirement-no-duplicate-description](./requirement-no-duplicate-description.ja.md)           | 説明をもう一度設定する `accDescr` の文を禁止する。                                        | ✅  |     |     |
+| [requirement-no-duplicate-field](./requirement-no-duplicate-field.ja.md)                       | requirement や element の本体がすでに持つフィールドを禁止する。                           | ✅  |     |     |
+| [requirement-no-duplicate-name](./requirement-no-duplicate-name.ja.md)                         | 前のものの名前を使い回す requirement や element を禁止する。                              | ✅  |     |     |
+| [requirement-no-duplicate-title](./requirement-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                                    | ✅  |     |     |
+| [requirement-no-empty-description-block](./requirement-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                                          | ✅  |     |     |
+| [requirement-no-ignored-text](./requirement-no-ignored-text.ja.md)                             | mermaid.js が読まないテキストを禁止する。                                                 | ✅  |     |     |
+| [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.ja.md) | ほかのもののために書いた `}` が閉じる `accDescr {` のブロックを禁止する。                 | ✅  |     |     |
+| [requirement-no-undef](./requirement-no-undef.ja.md)                                           | どの requirement も element も名指さない、`style`、`class`、`:::`、関係の名前を禁止する。 | ✅  |     |     |
+
 <!-- end auto-generated rules list -->

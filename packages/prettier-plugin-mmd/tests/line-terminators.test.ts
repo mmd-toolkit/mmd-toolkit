@@ -71,6 +71,18 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
     "requirementDiagram\n  requirement r {\n    id: 1\n  }\n  r - satisfies -> e\n  %%{init: {}}%%\n",
   ],
   [
+    "mindmap",
+    [
+      "mindmap",
+      "root",
+      "  a[x]   %% c",
+      "    b",
+      "  ::icon(fa)",
+      "%%{init: {}}%%",
+    ],
+    "mindmap\n  root\n    a[x] %% c\n      b\n      ::icon(fa)\n      %%{init: {}}%%\n",
+  ],
+  [
     "gantt",
     [
       "gantt",

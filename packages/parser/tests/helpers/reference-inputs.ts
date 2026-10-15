@@ -19,6 +19,9 @@ import type { JourneyUnits } from "../../src/diagrams/journey/index.ts"
 import { lexJourney } from "../../src/diagrams/journey/index.ts"
 import type { RequirementUnits } from "../../src/diagrams/requirement/index.ts"
 import { lexRequirement } from "../../src/diagrams/requirement/index.ts"
+import type { MindmapUnits } from "../../src/diagrams/mindmap/index.ts"
+import { lexMindmap } from "../../src/diagrams/mindmap/index.ts"
+import type { Unit as MindmapUnit } from "../../src/diagrams/mindmap/units.ts"
 import type { UnitName as RequirementUnitName } from "../../src/diagrams/requirement/units.ts"
 import type { DiagramUnit } from "../../src/diagram-units.ts"
 import type { EmptyForm } from "../../src/empty-forms.ts"
@@ -1053,6 +1056,20 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
       removedRangeOf: (form) => form.range,
     }
   }
+  const mindmap = mindmapLexingOf(text)
+  if (mindmap !== null) {
+    return {
+      units: mindmap.units,
+      emptyFormKinds: EMPTY_FORM_KINDS.mindmap,
+      // diagrams/mindmap.md, Empty forms: the diagram has no empty
+      // description block, and each of its empty forms is left out
+      // wherever it stands.
+      statementStartsAt: () => false,
+      separators: [],
+      endOfTextSeparates: false,
+      removedRangeOf: (form) => form.range,
+    }
+  }
   return null
 }
 
@@ -1382,6 +1399,155 @@ function requirementNameEndsStatement(
     return keyword === "style" || keyword === "classDef"
   }
   return false
+}
+
+/** The units of the mindmap `text` as the parser's lexer reads them, with its diagram comments; null when `text` is no mindmap or its lexer rejects it. */
+function mindmapLexingOf(text: string): MindmapUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
+  if (diagramType !== "mindmap") return null
+  try {
+    return lexMindmap(diagramInputOf(opened, detection, diagramType))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/**
+ * known-divergences/blank-line-after-header-or-comments.md: one line of a
+ * mindmap, between two line breaks of its diagram text, as the parser's
+ * lexer reads it: a line feed, or the end of a diagram comment that a
+ * U+2028 or a U+2029 ends, is a line break (diagrams/mindmap.md, Whitespace
+ * and lines).
+ */
+interface MindmapLine {
+  /** The units on the line, the `newline` units left out. */
+  readonly units: readonly MindmapUnit[]
+  /** The number of diagram comments on the line: one at most, as a comment runs to the end of its line. */
+  readonly comments: number
+  /** Whether the line starts at the U+2028 or the U+2029 that ended a diagram comment. */
+  readonly afterSeparator: boolean
+  /** Whether whitespace stands at the end of the line, before its line break, after a unit. */
+  readonly endsWithWhitespace: boolean
+}
+
+/** The lines of the mindmap `lexing`, in source order (see {@link MindmapLine}). */
+function mindmapLinesOf(lexing: MindmapUnits): MindmapLine[] {
+  const lines: MindmapLine[] = []
+  let units: MindmapUnit[] = []
+  let afterSeparator = false
+  // The comments are in source order; those before a line break are on the
+  // line it ends.
+  let nextComment = 0
+  for (const unit of lexing.units) {
+    if (unit.name !== "newline") {
+      units.push(unit)
+      continue
+    }
+    const zeroWidth = unit.start === unit.end
+    // A `newline` unit of n line feeds ends n lines, the last n - 1 of
+    // which are empty; one with no characters ends the line of a comment
+    // at a U+2028 or a U+2029.
+    const breaks = zeroWidth ? 1 : [...unit.text].length
+    let comments = 0
+    while (
+      nextComment < lexing.comments.length &&
+      lexing.comments[nextComment].range[0] < unit.start
+    ) {
+      comments += 1
+      nextComment += 1
+    }
+    lines.push({
+      units,
+      comments,
+      afterSeparator,
+      endsWithWhitespace: units.length > 0 && unit.whitespaceBefore > 0,
+    })
+    for (let empty = 1; empty < breaks; empty += 1) {
+      lines.push({
+        units: [],
+        comments: 0,
+        afterSeparator: false,
+        endsWithWhitespace: false,
+      })
+    }
+    units = []
+    afterSeparator = zeroWidth
+  }
+  return lines
+}
+
+/**
+ * known-divergences/blank-line-after-header-or-comments.md: the offsets, in
+ * source order, of the statements of the mindmap `text` before which
+ * mermaid.js rejects the blank lines and the diagram comments that stand
+ * there, in the four cases of the divergence, and of the first node in
+ * case 1 and 2. A statement is a node line, an icon line, or a class line;
+ * the header line with a node on it is a statement line. The lines come
+ * from the parser's lexer (see {@link MindmapLine}); a line with no unit
+ * and no comment is a blank line. Null when `text` is no mindmap or its
+ * lexer rejects it.
+ */
+export function mindmapBlankLinesRejectedByMermaid(
+  text: string,
+): number[] | null {
+  const lexing = mindmapLexingOf(text)
+  if (lexing === null) return null
+  const lines = mindmapLinesOf(lexing)
+  const offsets: number[] = []
+  let anchor: MindmapLine | null = null
+  let gap: MindmapLine[] = []
+  for (const line of lines) {
+    if (line.units.length === 0) {
+      if (anchor !== null) gap.push(line)
+      continue
+    }
+    const next = line.units[0].name === "header" ? line.units[1] : line.units[0]
+    if (anchor !== null && next !== undefined) {
+      if (mindmapGapRejected(anchor, gap, line)) offsets.push(next.start)
+    }
+    anchor = line
+    gap = []
+  }
+  return offsets
+}
+
+/**
+ * known-divergences/blank-line-after-header-or-comments.md: whether
+ * mermaid.js rejects the lines `gap` between the line `anchor`, the header
+ * line or a statement line, and the statement line `next`. The count of
+ * comments takes in the one on the line of `anchor`. Cases 1 and 2 hold
+ * after a header line without a node, cases 3 and 4 after a statement.
+ */
+function mindmapGapRejected(
+  anchor: MindmapLine,
+  gap: readonly MindmapLine[],
+  next: MindmapLine,
+): boolean {
+  const count =
+    anchor.comments + gap.reduce((sum, line) => sum + line.comments, 0)
+  const lastComment = gap.findLastIndex((line) => line.comments > 0)
+  // The lines after the last comment, or the whole gap when the comment is
+  // on the line of the anchor or there is none: lines without a unit or a
+  // comment, the blank lines.
+  const afterLastComment = gap.slice(lastComment + 1)
+  const blankAfterLastComment = afterLastComment.length > 0
+  // The next statement follows the last comment on its line, after the
+  // U+2028 or the U+2029 that ended it.
+  const followsComment =
+    next.afterSeparator && afterLastComment.length === 0 && count > 0
+  const afterHeader =
+    anchor.units.length === 1 && anchor.units[0].name === "header"
+  if (afterHeader) {
+    if (count % 2 === 0) {
+      return blankAfterLastComment || (count === 0 && anchor.endsWithWhitespace)
+    }
+    return followsComment
+  }
+  if (count % 2 === 1) return blankAfterLastComment
+  return count > 0 && followsComment
 }
 
 /** The units of the Gantt chart `text` as the parser's lexer reads them; null when `text` is no Gantt chart or its lexer rejects it. */

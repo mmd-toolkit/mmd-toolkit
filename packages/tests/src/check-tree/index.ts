@@ -5,6 +5,7 @@ import { checkFlowchartTree, stringDelimitersOf } from "./flowchart.ts"
 import { checkGanttTree } from "./gantt.ts"
 import { checkInvariants } from "./invariants.ts"
 import { checkJourneyTree } from "./journey.ts"
+import { checkMindmapTree, mindmapLabelDelimitersFor } from "./mindmap.ts"
 import { checkNullFields } from "./null-fields.ts"
 import { checkRequirementTree } from "./requirement.ts"
 import { checkSharedLeaves } from "./leaves.ts"
@@ -15,9 +16,25 @@ import { checkStateTree } from "./state.ts"
 import { checkPunctuatorsAreWhole } from "./punctuators.ts"
 import { checkStringsAreWhole, checkTokensAreNotCut } from "./tokens.ts"
 import { checkValues, quoteDelimitersOf } from "./values.ts"
+import type { StringDelimitersOf } from "./values.ts"
 import type { CheckedRoot, TreeProblem } from "./types.ts"
 
 export type { CheckedRoot, TreeProblem } from "./types.ts"
+
+/** The delimiters of the strings of the diagram of `root`. */
+function stringDelimitersFor(
+  text: string,
+  root: CheckedRoot,
+): StringDelimitersOf {
+  switch (root.body.type) {
+    case "FlowchartDiagram":
+      return stringDelimitersOf(text, root)
+    case "MindmapDiagram":
+      return mindmapLabelDelimitersFor(text, root)
+    default:
+      return quoteDelimitersOf
+  }
+}
 
 /**
  * Checks everything that the specification states about the tree `root` of the
@@ -35,12 +52,10 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
   checkTokensAreNotCut(root, problems)
   checkStringsAreWhole(root, problems)
   checkPunctuatorsAreWhole(root, problems)
-  // The strings of a flowchart nest delimiters; those of the other diagrams
-  // have one pair of quotes.
-  const delimitersOf =
-    root.body.type === "FlowchartDiagram"
-      ? stringDelimitersOf(text, root)
-      : quoteDelimitersOf
+  // The strings of a flowchart nest delimiters; the strings of a mindmap are
+  // the labels of its shapes, with `"` or with `"``; those of the other
+  // diagrams have one pair of quotes.
+  const delimitersOf = stringDelimitersFor(text, root)
   checkValues(text, root, delimitersOf, problems)
   switch (root.body.type) {
     case "ErrorDiagram":
@@ -69,6 +84,9 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
       break
     case "RequirementDiagram":
       checkRequirementTree(text, root, problems)
+      break
+    case "MindmapDiagram":
+      checkMindmapTree(text, root, problems)
       break
     default:
       problems.report(

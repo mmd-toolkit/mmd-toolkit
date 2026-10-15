@@ -1429,3 +1429,220 @@ Db はブラウザの機能も、時刻も、乱数も読まず、構文にリ�
   [fixture: requirement/spec-requirement-diagram-f9464f3d]
 
 値は、空白を含めて Db が持つままで記録します。
+
+## mindmap
+
+要約の欄は 1 つです。
+
+| 欄     | 内容                                                      |
+| ------ | --------------------------------------------------------- |
+| `root` | 最初のノードと、その下のノード。ノードがなければ `null`。 |
+
+ノードは `nodeId`、`level`、`descr`、`type`、`children` を持ち、
+文が与えたときは `icon` と `class` も持ちます。
+`children` は、そのノードを親とするノードで、ソースの順です。
+
+`normalizeMindmap()`（`src/normalizers/mindmap.ts`）が、
+`mindmap` の Db を要約します。
+Db はブラウザの機能も、時刻も、乱数も読まず
+（乱数の id は
+[`getData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L345-L408)
+にあります）、構文にリンクもないので、
+要約に Db のパッチは要りません。
+読むのは
+[`getMindmap()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/mindmapDb.ts#L71-L73)
+が返す木で、これはすべてのノードを子とともに 1 回ずつ持っています。
+`getData()` の描画用のデータは読みません。
+そちらはノードの section を数え、ノードから新しいノードを作ります。
+次を、それぞれの理由で除きます。
+
+- `id`。
+  ノードが加えられた順の番号で、
+  根から木をたどった順（子は親の後）と同じです。
+- `isRoot`。
+  根だけが true です。
+- `width` と `padding`。
+  サイトの設定の値です
+  （`mindmap.maxNodeWidth` と `mindmap.padding`。
+  padding は形によって 2 倍になります）。
+  [fixture: mindmap/config-mindmap-padding-and-width]
+
+描画と `getData()` は、ノードにさらに欄を置きます
+（`section`、`height`、`x`、`y`）。
+読む Db には、そのどれもありません。
+
+欄ごとの値です。
+
+- `root` は、ヘッダーの後に何もなければ `null` で、
+  空白やコメント行が続くときも同じです。
+  最初のノードが根です。
+  ヘッダーの後に改行がないものは拒否されます。
+  [fixture: mindmap/db-header-only]
+  [fixture: mindmap/db-header-only-trailing-spaces]
+  [fixture: mindmap/db-header-then-comment-line-only]
+  [fixture: mindmap/db-header-without-line-feed]
+- 根は、字下げが何であっても最初のノードです。
+  ヘッダーの前の空白は、ノードの level を変えません。
+  ヘッダーと同じ行の後ろにあるノードは根で、
+  ヘッダーの後ろの空白の並び全体がその字下げなので、
+  子はその文字数より多く字下げしなければなりません。
+  [fixture: mindmap/db-first-node-unindented]
+  [fixture: mindmap/db-header-indented]
+  [fixture: mindmap/db-first-node-on-header-line]
+  [fixture: mindmap/db-first-node-on-header-line-wide-gap]
+  [fixture: mindmap/db-first-node-on-header-line-child-too-shallow]
+  [fixture: mindmap/db-first-node-after-header-tab]
+  [fixture: mindmap/spec-mindmap-903e1973]
+  [fixture: mindmap/spec-mindmap-54e233b2]
+- `level` は、ノードの字下げの文字数から、根の字下げの文字数を引いたものです。
+  空白文字は、どれも 1 文字です。
+  空白、タブ（タブ幅に展開しません）、全角空白、ノーブレークスペースです。
+  [fixture: mindmap/db-indent-tab-levels]
+  [fixture: mindmap/db-indent-tab-counts-as-one-char]
+  [fixture: mindmap/db-indent-fullwidth-space]
+  [fixture: mindmap/db-indent-no-break-space]
+  [fixture: mindmap/db-indent-mixed-whitespace-kinds]
+  [fixture: mindmap/db-indent-root-offset]
+  [fixture: mindmap/db-indent-skips-levels]
+- ノードの親は、そのノードより前の、level が自分より小さい最も近いノードです。
+  そのため、前のノードと同じ字下げのノードは、その兄弟で、
+  前のノードの下のノードの後に来ます。
+  最初でなく、親になるノードがないものは拒否されます。
+  根と同じ字下げか、それより浅いものです。
+  [fixture: mindmap/db-indent-parent-is-nearest-shallower]
+  [fixture: mindmap/db-indent-sibling-after-deeper]
+  [fixture: mindmap/db-indent-less-than-root]
+  [fixture: mindmap/db-indent-same-as-root]
+  [fixture: mindmap/db-indent-tab-not-expanded-below-root]
+  [fixture: mindmap/docs-syntax-mindmap-5106c1aa]
+  [fixture: mindmap/docs-syntax-mindmap-50120b03]
+  [fixture: mindmap/spec-mindmap-53c49526]
+  [fixture: mindmap/spec-mindmap-bc95ec97]
+- ノードの間の空行、空白だけの行、CRLF や単独の CR の改行は何も変えません。
+  ヘッダーと最初のノードの間の空行と空白だけの行は拒否されます。
+  最後のノードの後の空白は何も変えません。
+  [fixture: mindmap/db-blank-line-between-nodes]
+  [fixture: mindmap/db-whitespace-only-line-between-nodes]
+  [fixture: mindmap/db-tab-only-line-between-nodes]
+  [fixture: mindmap/db-blank-line-after-header]
+  [fixture: mindmap/db-whitespace-line-after-header]
+  [fixture: mindmap/db-whitespace-after-last-node]
+  [fixture: mindmap/db-crlf-line-ends]
+  [fixture: mindmap/db-lone-cr-line-ends]
+  [fixture: mindmap/spec-mindmap-c6c76671]
+  [fixture: mindmap/spec-mindmap-931bf91d]
+- コメント行（前の空白を含む `%%` の行）は、どこにあっても何も変えません。
+  ヘッダーと最初のノードの間やヘッダーの前でも同じで、
+  その字下げはまわりの level を変えません。
+  ノードのテキストの後ろの `%%` は、テキストの一部です。
+  ディレクティブの行はコメント行と同じように除かれます。
+  そのため、ヘッダーと最初のノードの間のものはそこに空行を残して拒否され、
+  ノードの間のものは何も変えません。
+  ノードのテキストの後ろのディレクティブは、テキストの一部ではありません。
+  フロントマターは何も変えず、図はタイトルを持ちません。
+  [fixture: mindmap/db-comment-line-between-nodes]
+  [fixture: mindmap/db-comment-line-indented-deeper]
+  [fixture: mindmap/db-comment-line-after-header]
+  [fixture: mindmap/db-comment-before-header]
+  [fixture: mindmap/db-comment-after-node-text]
+  [fixture: mindmap/db-directive-line-between-nodes]
+  [fixture: mindmap/db-directive-line-indented]
+  [fixture: mindmap/db-directive-between-header-and-first-node]
+  [fixture: mindmap/db-directive-after-node-text]
+  [fixture: mindmap/db-frontmatter-before-header]
+  [fixture: mindmap/spec-mindmap-32c71b33]
+  [fixture: mindmap/spec-mindmap-f8ad2bf0]
+- 形のないノードの `nodeId` と `descr` は、字下げの後の行全体で、
+  行末の空白も含みます。
+  コロン、ハッシュ、引用符、空白はテキストの文字です。
+  同じテキストのノードが 2 つあってもかまいません。
+  [fixture: mindmap/db-node-trailing-whitespace]
+  [fixture: mindmap/db-text-with-colon-and-hash]
+  [fixture: mindmap/db-text-with-quote]
+  [fixture: mindmap/db-same-text-twice]
+  [fixture: mindmap/docs-syntax-mindmap-85604c12]
+- 形は id の後ろの区切りの対で、`type` を決めます
+  （id がなければ、テキストが id です）。
+  形がなければ 0、`( )` は 1、`[ ]` は 2、`(( ))` は 3、`) (` は 4、
+  `)) ((` は 5、`{ }` は 6 です。
+  `descr` は区切りの間のテキストです。
+  長方形の閉じる区切りは、開く区切りと対でなくてもかまいません。
+  `(-text-)` と `-)text(-` の形は、対ではなく字句の規則に従います。
+  区切りの間の文字列は、区切りの文字を持てます。
+  Markdown の文字列は、バッククォートを除いたテキストです。
+  テキストのない形と、閉じる区切りの後ろのテキストは拒否されます。
+  [fixture: mindmap/db-shape-rect]
+  [fixture: mindmap/db-shape-rounded]
+  [fixture: mindmap/db-shape-circle]
+  [fixture: mindmap/db-shape-cloud]
+  [fixture: mindmap/db-shape-bang]
+  [fixture: mindmap/db-shape-hexagon]
+  [fixture: mindmap/db-shape-cloud-dash-form]
+  [fixture: mindmap/db-shape-explode-dash-form]
+  [fixture: mindmap/db-shape-without-id]
+  [fixture: mindmap/db-shape-without-id-circle]
+  [fixture: mindmap/db-shape-mismatched-end]
+  [fixture: mindmap/db-shape-string]
+  [fixture: mindmap/db-shape-markdown-string]
+  [fixture: mindmap/db-shape-empty-description]
+  [fixture: mindmap/db-shape-text-after-end]
+  [fixture: mindmap/db-shape-id-with-parentheses]
+  [fixture: mindmap/spec-mindmap-2ab5d128]
+  [fixture: mindmap/spec-mindmap-3b2342ba]
+  [fixture: mindmap/spec-mindmap-5ccc3578]
+  [fixture: mindmap/spec-mindmap-20bffa18]
+  [fixture: mindmap/spec-mindmap-042bfdb5]
+  [fixture: mindmap/spec-mindmap-3a9de64e]
+- `::icon(text)` の行は、最後に加えたノードに `icon` を、
+  `:::text` の行は `class` を与えます。
+  字下げは関係ありません。
+  同じ行がもう一度あれば、前のものを置き換えます。
+  ノードと同じ行の icon は icon ではなく、
+  同じ行の class はそのノードのテキストの一部です。
+  `icon` の語は大文字小文字を問わず読み、
+  括弧の中が空の icon は何も与えず、
+  icon の括弧の中の空白と class の両端の空白は残ります。
+  最初のノードより前の icon の行と class の行は拒否されます。
+  [fixture: mindmap/db-icon-line]
+  [fixture: mindmap/db-icon-same-line]
+  [fixture: mindmap/db-icon-twice]
+  [fixture: mindmap/db-icon-and-class-on-child]
+  [fixture: mindmap/db-icon-indent-ignored]
+  [fixture: mindmap/db-icon-before-node]
+  [fixture: mindmap/db-icon-case-insensitive]
+  [fixture: mindmap/db-icon-empty]
+  [fixture: mindmap/db-class-line]
+  [fixture: mindmap/db-class-twice]
+  [fixture: mindmap/db-class-same-line-as-node]
+  [fixture: mindmap/db-class-before-node]
+  [fixture: mindmap/db-class-trailing-space]
+  [fixture: mindmap/db-class-leading-whitespace]
+  [fixture: mindmap/db-icon-surrounding-whitespace]
+  [fixture: mindmap/db-class-empty]
+  [fixture: mindmap/spec-mindmap-2b7307a0]
+  [fixture: mindmap/spec-mindmap-4755cd73]
+  [fixture: mindmap/spec-mindmap-c9bb7eac]
+  [fixture: mindmap/spec-mindmap-da41aead]
+- どの値も[変換した形](../../spec/docs/common.ja.md#ソースの読み方)で読むので、
+  エンティティは、ノードのテキスト、形のテキスト、icon、class で
+  プレースホルダです。
+  文字列の中の改行はテキストに残り、そこの CRLF は改行で、
+  形のテキストの属性の引用符は一重引用符です。
+  [fixture: mindmap/entity-placeholder-in-node-text]
+  [fixture: mindmap/entity-placeholder-numeric]
+  [fixture: mindmap/entity-placeholder-in-description]
+  [fixture: mindmap/entity-placeholder-in-icon]
+  [fixture: mindmap/entity-placeholder-in-class]
+  [fixture: mindmap/lex-html-attribute-quote-in-description]
+  [fixture: mindmap/lex-string-line-feed]
+  [fixture: mindmap/lex-string-crlf]
+  [fixture: mindmap/lex-markdown-string-line-feed]
+  [fixture: mindmap/docs-syntax-mindmap-d3468819]
+- `nodeId`、`descr`、`icon`、`class` は `sanitizeText` を通ります。
+  `securityLevel` が mermaid.js の値のどれでもなく、HTML のラベルが有効なら、
+  文字を置き換えたものを持ちます
+  （[db-from-tree.md](./db-from-tree.md) の文字の置き換えを参照）。
+  [fixture: mindmap/config-security-level-other-texts]
+  [fixture: mindmap/config-security-level-other-html-labels-false]
+
+値は、空白を含めて Db が持つままで記録します。

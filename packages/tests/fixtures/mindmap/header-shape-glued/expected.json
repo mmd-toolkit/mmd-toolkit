@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Detection: a shape right after the header is the root on its line."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "x",
+      "level": 0,
+      "descr": "x",
+      "type": 1,
+      "children": []
+    }
+  }
+}

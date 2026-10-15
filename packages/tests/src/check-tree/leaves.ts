@@ -22,6 +22,7 @@ const DIAGRAM_TYPES_OF_BODY: Readonly<Record<string, readonly string[]>> = {
   GanttDiagram: ["gantt"],
   JourneyDiagram: ["journey"],
   RequirementDiagram: ["requirement"],
+  MindmapDiagram: ["mindmap"],
 }
 
 /** The name of a directive whose text between the delimiters is `value`: its first word, after the whitespace that may precede it. */

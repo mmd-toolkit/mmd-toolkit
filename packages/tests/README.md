@@ -62,7 +62,7 @@ console.log(rejected.accepted, rejected.error.name)
 Each fixture is a directory `fixtures/<diagram>/<name>/` in this package
 (`getFixturesRoot()` gives its absolute path). `<diagram>` is a diagram type
 (`flowchart`, `sequence`, `class`, `state`, `er`, `gantt`, `journey`,
-`requirement`) or `common`, for syntax that every diagram type shares
+`requirement`, `mindmap`) or `common`, for syntax that every diagram type shares
 (frontmatter, directives, comments, diagram detection).
 
 - `input.mmd`: the text under test, byte for byte.
@@ -72,9 +72,10 @@ Each fixture is a directory `fixtures/<diagram>/<name>/` in this package
   mermaid.js read without the known divergence that changes how it reads the
   input. Only fixtures with the mark `comment-takes-character`,
   `comment-takes-line-break`, `name-start-reads-unit`,
-  `percent-brace-after-unit`, `html-tag-in-frontmatter`, `c4-keyword-anywhere`
-  or `bare-percent-line-before-header` have it. Where it is there, it is the
-  result to match; where it is not, the result to match is `expected.json`. See
+  `percent-brace-after-unit`, `html-tag-in-frontmatter`, `c4-keyword-anywhere`,
+  `bare-percent-line-before-header` or `blank-line-after-header-or-comments`
+  have it. Where it is there, it is the result to match; where it is not, the
+  result to match is `expected.json`. See
   [docs/expected-results.md](./docs/expected-results.md).
 - `ast.json`: the tree that the reference implementation (`@mmd-toolkit/parser`)
   returns for the input, present only for inputs it accepts.
@@ -135,10 +136,10 @@ is what the input changes in it.
 Reads the fixtures. It does not load mermaid.js.
 
 - `loadFixtures(diagram)`: the fixtures of `"common"`, `"flowchart"`,
-  `"sequence"`, `"class"`, `"state"`, `"er"`, `"gantt"`, `"journey"` or
-  `"requirement"`, sorted by name. Each has `diagram`, `name`, `input` (the text
-  of `input.mmd`), `source`, `config` and `knownDivergence` (when set), and
-  `expected`: either `{ accepted: true, diagramType, db }` or
+  `"sequence"`, `"class"`, `"state"`, `"er"`, `"gantt"`, `"journey"`,
+  `"requirement"` or `"mindmap"`, sorted by name. Each has `diagram`, `name`,
+  `input` (the text of `input.mmd`), `source`, `config` and `knownDivergence`
+  (when set), and `expected`: either `{ accepted: true, diagramType, db }` or
   `{ accepted: false, error }`. It reads the files one at a time, so that test
   files loading the fixtures in parallel workers stay within the system's limit
   of open files.
@@ -170,6 +171,8 @@ Reads the fixtures. It does not load mermaid.js.
     [known-divergences/bare-percent-line-before-header.md](../spec/docs/known-divergences/bare-percent-line-before-header.md).
   - `percent-brace-after-unit`: see
     [known-divergences/percent-brace-after-unit.md](../spec/docs/known-divergences/percent-brace-after-unit.md).
+  - `blank-line-after-header-or-comments`: see
+    [known-divergences/blank-line-after-header-or-comments.md](../spec/docs/known-divergences/blank-line-after-header-or-comments.md).
 - `getFixturesRoot()`: the absolute path of the `fixtures/` directory.
 - `getDefaultConfig()`: the configuration that `embedded.config` is a difference
   from (`fixtures/default-config.json`).

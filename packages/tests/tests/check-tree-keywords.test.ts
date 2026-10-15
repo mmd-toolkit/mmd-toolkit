@@ -24,6 +24,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["gantt", "GanttDiagram"],
   ["journey", "JourneyDiagram"],
   ["requirement", "RequirementDiagram"],
+  ["mindmap", "MindmapDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -198,6 +199,8 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
     // of requirement, the names of the fields, the risks, the methods, the
     // relationships (rule 15 of The statement context), and the values of
     // `direction`.
+    case "mindmap":
+      return ["mindmap"]
     case "requirement":
       return [
         "requirementdiagram",

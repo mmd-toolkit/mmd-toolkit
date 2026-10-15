@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, the root: a header with nothing after it gives no root."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": null
+  }
+}

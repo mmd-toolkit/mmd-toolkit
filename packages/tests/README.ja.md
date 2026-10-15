@@ -64,7 +64,7 @@ fixture は 1 件ごとに、
 （絶対パスは `getFixturesRoot()` で得られます）。
 `<diagram>` は、
 図種（`flowchart`、`sequence`、`class`、`state`、`er`、`gantt`、`journey`、
-`requirement`）か、
+`requirement`、`mindmap`）か、
 `common` です。
 `common` は、全図種に共通する構文
 （フロントマター、ディレクティブ、コメント、図種の検出）のためのものです。
@@ -78,7 +78,8 @@ fixture は 1 件ごとに、
   印が `comment-takes-character`、`comment-takes-line-break`、
   `name-start-reads-unit`、`percent-brace-after-unit`、
   `html-tag-in-frontmatter`、`c4-keyword-anywhere`、
-  `bare-percent-line-before-header` の fixture だけにある。
+  `bare-percent-line-before-header`、`blank-line-after-header-or-comments` の
+  fixture だけにある。
   あるときは、これが合わせる結果で、ないときは `expected.json` が合わせる結果。
   [docs/expected-results.ja.md](./docs/expected-results.ja.md) を参照。
 - `ast.json`: 参照実装（`@mmd-toolkit/parser`）がその入力に対して返す木。
@@ -142,8 +143,8 @@ mermaid.js は読み込みません。
 
 - `loadFixtures(diagram)`:
   `"common"`、`"flowchart"`、`"sequence"`、`"class"`、`"state"`、
-  `"er"`、`"gantt"`、`"journey"`、`"requirement"` のどれかの fixture を、
-  名前順に返す。
+  `"er"`、`"gantt"`、`"journey"`、`"requirement"`、`"mindmap"` の
+  どれかの fixture を、名前順に返す。
   それぞれは `diagram`、`name`、`input`（`input.mmd` のテキスト）、`source`、
   `config` と `knownDivergence`（あるとき）、`expected` を持つ。
   `expected` は `{ accepted: true, diagramType, db }` か
@@ -191,6 +192,9 @@ mermaid.js は読み込みません。
     を参照。
   - `percent-brace-after-unit`:
     [known-divergences/percent-brace-after-unit.ja.md](../spec/docs/known-divergences/percent-brace-after-unit.ja.md)
+    を参照。
+  - `blank-line-after-header-or-comments`:
+    [known-divergences/blank-line-after-header-or-comments.ja.md](../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)
     を参照。
 - `getFixturesRoot()`: `fixtures/` ディレクトリの絶対パス。
 - `getDefaultConfig()`: `embedded.config` がそれとの差になる設定

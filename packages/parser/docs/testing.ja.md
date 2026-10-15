@@ -16,7 +16,7 @@ fixture としてコーパスに足します。
 ## fixture
 
 `tests/fixtures.test.ts` は、`common/`、`flowchart/`、`sequence/`、
-`class/`、`state/`、`er/`、`gantt/`、`journey/`、`requirement/` の、
+`class/`、`state/`、`er/`、`gantt/`、`journey/`、`requirement/`、`mindmap/` の、
 すべての fixture を parse し、
 次を確かめます。
 
@@ -90,6 +90,11 @@ fixture としてコーパスに足します。
 - `percent-brace-after-unit`: 入力が、ディレクティブを始めない `%%{` で、
   mermaid.js が直接たどり着くものを持つ Gantt チャートであること。
   同じように求めます。
+- `blank-line-after-header-or-comments`: 入力が、ヘッダーの後か 2 つの文の間に、
+  差異の 4 つの場合のどれかの空行と図のコメントを持つ mindmap であること。
+  パーサーの単位と図のコメントの行から求めます。
+  `newline` 単位は行を終え、n 個の改行の単位は n 行を終えます。
+  文字のない単位は、U+2028 や U+2029 で終わる図のコメントの行を終えます。
 - `name-start-reads-unit`: 入力が、テキストが `"`、
   `~`（バッククォートの名前のとき）、`<<`、`>>`、
   差異が挙げるキーワードのどれかで始まる、
@@ -217,6 +222,15 @@ Gantt チャートでは、空の href
 [fixture: requirement/gram-empty-description-block-after-class-string-next-line]
 [fixture: requirement/gram-empty-description-block-after-style-line]
 [fixture: requirement/gram-empty-description-block-in-body]
+mindmap では、空の文字列、空の markdown 文字列、
+空の icon（`::icon(` 単位のすぐ後に `)` 単位が続くもの）、
+空の class の行（後に `class-text` 単位が続かない `:::` 単位）が、
+どこにあっても空の形です。
+この図種には空の説明ブロックはありません。
+[fixture: mindmap/div-empty-string-in-shape]
+[fixture: mindmap/div-empty-markdown-string-in-shape]
+[fixture: mindmap/div-empty-icon-before-root]
+[fixture: mindmap/div-empty-class-before-root]
 ブロックが文かどうかは、その前の、除く空の形を除いて決めます。
 間に空白しかない、続けて書いたブロックは、
 最後のブロックの後に続くものでまとめて決めます。

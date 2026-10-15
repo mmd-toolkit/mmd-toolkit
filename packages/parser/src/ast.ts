@@ -14,6 +14,7 @@ import type { ErDiagram, ErNode } from "./ast/er.ts"
 import type { FlowchartDiagram, FlowchartNode } from "./ast/flowchart.ts"
 import type { GanttDiagram, GanttNode } from "./ast/gantt.ts"
 import type { JourneyDiagram, JourneyNode } from "./ast/journey.ts"
+import type { MindmapDiagram, MindmapTreeNode } from "./ast/mindmap.ts"
 import type { RequirementDiagram, RequirementNode } from "./ast/requirement.ts"
 import type { SequenceDiagram, SequenceNode } from "./ast/sequence.ts"
 
@@ -266,6 +267,7 @@ export type DiagramBody =
   | GanttDiagram
   | JourneyDiagram
   | RequirementDiagram
+  | MindmapDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -351,3 +353,4 @@ export type Node =
   | GanttNode
   | JourneyNode
   | RequirementNode
+  | MindmapTreeNode

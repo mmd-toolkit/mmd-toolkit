@@ -285,6 +285,25 @@ describe("recordSpecFile: the functions that take a text", () => {
     ])
   })
 
+  it("records the text of the parser of the mindmap diagram's jison module", async () => {
+    const recording = await recordSource(
+      [
+        `import { parser as mindmap } from "./parser/mindmap.jison"`,
+        `import { MindmapDB } from "./mindmapDb.js"`,
+        `import { setLogLevel } from "../../diagram-api/diagramAPI.js"`,
+        `it("t", () => {`,
+        `  mindmap.yy = new MindmapDB()`,
+        `  setLogLevel("trace")`,
+        `  mindmap.parse("mindmap\\n  root")`,
+        `  mindmap.yy.getMindmap().descr`,
+        `})`,
+        ``,
+      ].join("\n"),
+      "diagrams/mindmap/mindmap.spec.ts",
+    )
+    expect(textsOf(recording)).toEqual(["mindmap\n  root"])
+  })
+
   it("records the text of mermaidAPI.parse, whether it is the default or the named export", async () => {
     const recording = await recordSource(
       [

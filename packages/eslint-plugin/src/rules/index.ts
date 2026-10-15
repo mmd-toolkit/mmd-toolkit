@@ -40,6 +40,14 @@ import { journeyNoIgnoredText } from "./journey-no-ignored-text.ts"
 import { journeyNoInvalidScore } from "./journey-no-invalid-score.ts"
 import { noIgnoredInitDirective } from "./no-ignored-init-directive.ts"
 import { noUnclosedDirective } from "./no-unclosed-directive.ts"
+import { requirementNoDuplicateDescription } from "./requirement-no-duplicate-description.ts"
+import { requirementNoDuplicateField } from "./requirement-no-duplicate-field.ts"
+import { requirementNoDuplicateName } from "./requirement-no-duplicate-name.ts"
+import { requirementNoDuplicateTitle } from "./requirement-no-duplicate-title.ts"
+import { requirementNoEmptyDescriptionBlock } from "./requirement-no-empty-description-block.ts"
+import { requirementNoIgnoredText } from "./requirement-no-ignored-text.ts"
+import { requirementNoUnclosedDescriptionBlock } from "./requirement-no-unclosed-description-block.ts"
+import { requirementNoUndef } from "./requirement-no-undef.ts"
 import { sequenceNoCreateDestroy } from "./sequence-no-create-destroy.ts"
 import { sequenceNoDuplicateDescription } from "./sequence-no-duplicate-description.ts"
 import { sequenceNoDuplicateTitle } from "./sequence-no-duplicate-title.ts"
@@ -102,6 +110,15 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "journey-no-invalid-score": journeyNoInvalidScore,
   "no-ignored-init-directive": noIgnoredInitDirective,
   "no-unclosed-directive": noUnclosedDirective,
+  "requirement-no-duplicate-description": requirementNoDuplicateDescription,
+  "requirement-no-duplicate-field": requirementNoDuplicateField,
+  "requirement-no-duplicate-name": requirementNoDuplicateName,
+  "requirement-no-duplicate-title": requirementNoDuplicateTitle,
+  "requirement-no-empty-description-block": requirementNoEmptyDescriptionBlock,
+  "requirement-no-ignored-text": requirementNoIgnoredText,
+  "requirement-no-unclosed-description-block":
+    requirementNoUnclosedDescriptionBlock,
+  "requirement-no-undef": requirementNoUndef,
   "sequence-no-create-destroy": sequenceNoCreateDestroy,
   "sequence-no-duplicate-description": sequenceNoDuplicateDescription,
   "sequence-no-duplicate-title": sequenceNoDuplicateTitle,

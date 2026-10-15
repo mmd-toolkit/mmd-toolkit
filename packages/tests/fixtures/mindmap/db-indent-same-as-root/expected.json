@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, parent: a second node as indented as the root has no parent and is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "There can be only one root. No parent could be found for (\"second\")"
+  }
+}

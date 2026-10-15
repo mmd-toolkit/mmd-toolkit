@@ -151,10 +151,10 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
  * defines them: diagrams/sequence.md, Units and contexts; diagrams/state.md,
  * Comments; diagrams/class.md, The statement context; diagrams/er.md,
  * Comments; diagrams/gantt.md, Comments; diagrams/journey.md, Comments;
- * diagrams/requirement.md, Comments. A flowchart, an ER diagram, and the
- * `error` pseudo-diagram have only comment lines, besides the diagram comments
- * that every diagram type has before its header (see
- * {@link MARKS_BEFORE_THE_HEADER}).
+ * diagrams/requirement.md, Comments; diagrams/mindmap.md, Comments. A
+ * flowchart, an ER diagram, and the `error` pseudo-diagram have only comment
+ * lines, besides the diagram comments that every diagram type has before its
+ * header (see {@link MARKS_BEFORE_THE_HEADER}).
  */
 const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   ErrorDiagram: [],
@@ -166,6 +166,7 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   GanttDiagram: ["%%", "%"],
   JourneyDiagram: ["#", "%%", "%"],
   RequirementDiagram: ["#", "%%", "%"],
+  MindmapDiagram: ["%%"],
 }
 
 /**
@@ -198,6 +199,21 @@ function diagramCommentMarkEnd(
 }
 
 /**
+ * parser/docs/tokens.md, Comment: the diagram types whose document ends a
+ * diagram comment at the end of its line segment, where a U+2028 or a U+2029
+ * ends it as a line feed does: the range of the comment ends before it
+ * (diagrams/mindmap.md, Comments).
+ */
+const COMMENT_ENDS_AT_LINE_SEGMENT: ReadonlySet<string> = new Set([
+  "MindmapDiagram",
+])
+
+/** Whether `code` ends a line segment (common.md, Notation): a line terminator, a U+2028, or a U+2029. */
+function isLineSegmentEndCode(code: number): boolean {
+  return isLineTerminatorCode(code) || code === 0x2028 || code === 0x2029
+}
+
+/**
  * parser/docs/tokens.md, Comment, and common.md, Comment lines: where the
  * diagram comment `comment` ends. It ends before the line terminator that ends
  * its line, or at the end of the text, with three exceptions: where a directive
@@ -207,7 +223,9 @@ function diagramCommentMarkEnd(
  * that the line rule ignores and that is the last character of its line is an
  * `IgnoredSemicolon` token after it. No comment ends with a line terminator,
  * and it runs past a line terminator only where a directive in it takes that
- * line terminator.
+ * line terminator. Where the document of the diagram ends a diagram comment at
+ * the end of its line segment ({@link COMMENT_ENDS_AT_LINE_SEGMENT}), a U+2028
+ * or a U+2029 ends it too, and `endsComment` says so.
  */
 function checkDiagramCommentEnd(
   text: string,
@@ -215,12 +233,13 @@ function checkDiagramCommentEnd(
   scan: SourceScan,
   regions: readonly TreeRange[],
   ignoredSemicolonStarts: ReadonlySet<number>,
+  endsComment: (code: number) => boolean,
   problems: Problems,
 ): void {
   const where = label(comment)
   const end = comment.range[1]
   problems.expect(
-    !isLineTerminatorCode(text.charCodeAt(end - 1)),
+    !endsComment(text.charCodeAt(end - 1)),
     where,
     "ends with a line terminator",
   )
@@ -228,7 +247,7 @@ function checkDiagramCommentEnd(
     contains(comment.range, directive.range),
   )
   for (let offset = comment.range[0]; offset < end; offset++) {
-    if (!isLineTerminatorCode(text.charCodeAt(offset))) continue
+    if (!endsComment(text.charCodeAt(offset))) continue
     problems.expect(
       inComment.some(
         (directive) =>
@@ -256,8 +275,7 @@ function checkDiagramCommentEnd(
     return
   }
   const after = ignoredSemicolonStarts.has(end) ? end + 1 : end
-  const atLineEnd =
-    after === text.length || isLineTerminatorCode(text.charCodeAt(after))
+  const atLineEnd = after === text.length || endsComment(text.charCodeAt(after))
   problems.expect(atLineEnd, where, "does not end where its line ends")
   // common.md, Comment lines: the line terminator it ends at is the next one
   // that is not part of a directive, that no directive scan takes.
@@ -339,6 +357,9 @@ function checkComments(
     scan.commentLines.map((line) => [line.commentStart, line]),
   )
   const body = root.body.type
+  const endsComment = COMMENT_ENDS_AT_LINE_SEGMENT.has(body)
+    ? isLineSegmentEndCode
+    : isLineTerminatorCode
   for (const comment of root.comments) {
     const where = label(comment)
     const line = lineStarts.get(comment.range[0])
@@ -386,6 +407,7 @@ function checkComments(
         scan,
         regions,
         ignoredSemicolonStarts,
+        endsComment,
         problems,
       )
     } else {
@@ -422,6 +444,7 @@ function checkComments(
         scan,
         regions,
         ignoredSemicolonStarts,
+        endsComment,
         problems,
       )
     }

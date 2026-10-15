@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Detection: the header may not end the diagram text; the line feed before the directive line follows it, a diagram without nodes."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": null
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, comments: `%%` after the text of a node is part of the text."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root %% c",
+      "level": 0,
+      "descr": "root %% c",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "child",
+          "level": 2,
+          "descr": "child",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, settings: under a securityLevel that is not one of mermaid.js's values with htmlLabels disabled, they are recorded as written."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": false
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "r<b>x<script>y</script>",
+      "level": 0,
+      "descr": "r<b>x<script>y</script>",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a<i>1",
+          "level": 2,
+          "descr": "<u>d</u> & q",
+          "type": 2,
+          "icon": "fa <b>fa-book",
+          "class": "cls<b>1",
+          "children": []
+        }
+      ]
+    }
+  }
+}

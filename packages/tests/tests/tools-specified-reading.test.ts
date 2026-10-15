@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest"
 import {
   specifiedRunOf,
   withoutBarePercentLinesBeforeHeader,
+  withoutBlankLinesAfterHeader,
   withoutFrontmatterTagStarts,
 } from "../../../tools/src/specified-reading.ts"
 import { KNOWN_DIVERGENCES } from "../src/index.ts"
@@ -25,6 +26,9 @@ const REMOVAL_MARKS = [
 
 /** The mark of the divergence about a bare `%%` line before the header. */
 const BARE_PERCENT_MARK = "bare-percent-line-before-header"
+
+/** The mark of the divergence about a blank line after the header or after a comment line in a mindmap. */
+const BLANK_LINES_MARK = "blank-line-after-header-or-comments"
 
 /** The mark of the divergence about the HTML tag that starts in the frontmatter. */
 const HTML_TAG_MARK = "html-tag-in-frontmatter"
@@ -66,12 +70,13 @@ function classIds(run: MermaidRun | undefined): string[] {
 }
 
 describe("the marks", () => {
-  it("are those of the removals, of the frontmatter and of the bare `%%` lines, and the marks without a reading, and no other", () => {
+  it("are those of the removals, of the frontmatter, of the bare `%%` lines and of the blank lines, and the marks without a reading, and no other", () => {
     expect(KNOWN_DIVERGENCES.toSorted()).toEqual(
       [
         ...REMOVAL_MARKS,
         HTML_TAG_MARK,
         BARE_PERCENT_MARK,
+        BLANK_LINES_MARK,
         ...MARKS_WITHOUT_READING,
       ].sort(),
     )
@@ -734,5 +739,124 @@ describe("specifiedRunOf: bare-percent-line-before-header", () => {
       undefined,
     )
     expect(read).toEqual(plain)
+  })
+})
+
+describe("withoutBlankLinesAfterHeader", () => {
+  it("takes out the empty lines and the lines of whitespace only after the header", () => {
+    expect(withoutBlankLinesAfterHeader("mindmap\n\n  root\n")).toBe(
+      "mindmap\n  root\n",
+    )
+    expect(withoutBlankLinesAfterHeader("mindmap\n \t\n  root\n")).toBe(
+      "mindmap\n  root\n",
+    )
+    expect(
+      withoutBlankLinesAfterHeader("mindmap\nroot\n\n   \n  child\n"),
+    ).toBe("mindmap\nroot\n  child\n")
+  })
+
+  it("takes out the whitespace that ends the header line", () => {
+    expect(withoutBlankLinesAfterHeader("mindmap  \nroot\n")).toBe(
+      "mindmap\nroot\n",
+    )
+  })
+
+  it("keeps the comment lines and takes out the blank line after them", () => {
+    expect(withoutBlankLinesAfterHeader("mindmap\n%% c\n\nroot\n")).toBe(
+      "mindmap\n%% c\nroot\n",
+    )
+    expect(withoutBlankLinesAfterHeader("mindmap %% c\n%%\n\nroot\n")).toBe(
+      "mindmap %% c\n%%\nroot\n",
+    )
+  })
+
+  it("keeps the lines before the header, and the node lines as they are", () => {
+    expect(
+      withoutBlankLinesAfterHeader("\n%% c\n  \nmindmap\n\n  root   \n"),
+    ).toBe("\n%% c\n  \nmindmap\n  root   \n")
+  })
+
+  it("moves a directive off a line that is left empty, to a line before the header", () => {
+    expect(
+      withoutBlankLinesAfterHeader("mindmap\n%%{init: {}}%%\n  root\n"),
+    ).toBe("%%{init: {}}%%\nmindmap\n  root\n")
+    expect(withoutBlankLinesAfterHeader("mindmap %%{init: {}}%%\nroot\n")).toBe(
+      "%%{init: {}}%%\nmindmap\nroot\n",
+    )
+  })
+
+  it("moves a directive that stands on a node line to a line before the header", () => {
+    expect(
+      withoutBlankLinesAfterHeader("mindmap\n\n  root%%{init: {}}%%\n"),
+    ).toBe("%%{init: {}}%%\nmindmap\n  root\n")
+  })
+
+  it("puts a line feed before a U+2028 or a U+2029 that ends a comment when a statement follows on the line", () => {
+    expect(withoutBlankLinesAfterHeader("mindmap %% c\u2028root\n")).toBe(
+      "mindmap %% c\n\u2028root\n",
+    )
+    expect(
+      withoutBlankLinesAfterHeader(
+        "mindmap\nroot\n  a[x] %% c\n%%{ }%%\u2029  b\n",
+      ),
+    ).toBe("mindmap\nroot\n  a[x] %% c\n%%{ }%%\n\u2029  b\n")
+  })
+
+  it("leaves out a separator that ends a comment with only whitespace after it, and leaves one in the text of a node", () => {
+    expect(
+      withoutBlankLinesAfterHeader("mindmap\nroot\n  a[x] %% c\u2028\n  b\n"),
+    ).toBe("mindmap\nroot\n  a[x] %% c\n  b\n")
+    expect(withoutBlankLinesAfterHeader("mindmap\n\nroot %% c\u2028 b\n")).toBe(
+      "mindmap\nroot %% c\u2028 b\n",
+    )
+  })
+
+  it("starts after the frontmatter", () => {
+    expect(
+      withoutBlankLinesAfterHeader("---\ntitle: T\n---\nmindmap\n\n  root\n"),
+    ).toBe("---\ntitle: T\n---\nmindmap\n  root\n")
+  })
+
+  it("throws for a line to take out inside the text of a node that is not closed", () => {
+    expect(() =>
+      withoutBlankLinesAfterHeader("mindmap\n  r[a\n\n  b]\n"),
+    ).toThrow("not closed yet")
+  })
+
+  it("gives a text with no line to take out as it is", () => {
+    const text = "mindmap\n  root\n    child\n"
+    expect(withoutBlankLinesAfterHeader(text)).toBe(text)
+  })
+})
+
+describe("specifiedRunOf: blank-line-after-header-or-comments", () => {
+  it("reads the inputs of the divergence as accepted, with the same tree as without the blank line, where mermaid.js rejects them", async () => {
+    const reference = await runMermaidWithEmbeddedData(
+      "mindmap\nroot\n  a\n%%\n  b\n",
+      {},
+    )
+    for (const input of [
+      "mindmap\n\n  root\n",
+      "mindmap  \nroot\n",
+      "mindmap\n%% c\n\nroot\n",
+      "mindmap\n%%{init: {}}%%\n  root\n",
+    ]) {
+      const run = await specifiedRunOf(input, BLANK_LINES_MARK, undefined)
+      expect(run?.outcome.accepted, input).toBe(true)
+    }
+    const read = await specifiedRunOf(
+      "mindmap\nroot\n  a\n%%\n\n  b\n",
+      BLANK_LINES_MARK,
+      undefined,
+    )
+    expect(read?.outcome).toEqual(reference.outcome)
+  })
+
+  it("gives the result of mermaid.js for an input without such a line", async () => {
+    const input = "mindmap\n  root\n    child\n"
+    const plain = await runMermaidWithEmbeddedData(input, {})
+    expect(await specifiedRunOf(input, BLANK_LINES_MARK, undefined)).toEqual(
+      plain,
+    )
   })
 })

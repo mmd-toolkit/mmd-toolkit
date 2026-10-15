@@ -63,6 +63,7 @@ const DIAGRAMS: readonly [string, string][] = [
   ["gantt", "GanttDiagram"],
   ["journey", "JourneyDiagram"],
   ["requirement", "RequirementDiagram"],
+  ["mindmap", "MindmapDiagram"],
 ]
 
 /**
@@ -93,6 +94,9 @@ function textsBesidesTheRow(diagram: string): string[] {
     // `}o`, `o|`, `o{`) among the names of units, which have letters too.
     case "er":
       return ["|o", "}o", "o|", "o{"]
+    // The row names the openers and the closers of a shape by their kind.
+    case "mindmap":
+      return ["))", "(", "((", "[", "]", "{{", "}}", "(-", "-)"]
     default:
       return []
   }

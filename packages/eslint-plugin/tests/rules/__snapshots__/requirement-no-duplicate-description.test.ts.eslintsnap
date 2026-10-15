@@ -1,0 +1,164 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: requirement-no-duplicate-description >> invalid >>> docs/rules/requirement-no-duplicate-description.md incorrect 1
+Filename: requirement-no-duplicate-description-incorrect-1.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   accDescr: first
+  3 |   accDescr { second }
+    |   ^~~~~~~~~~~~~~~~~~~ [1]
+  4 |   requirement r {
+  5 |     id: 1
+  6 |   }
+  7 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-comment-block-between
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-comment-block-between-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr {
+  4 | %% c
+  5 | }
+  6 | accDescr: b
+    | ^~~~~~~~~~~ [1]
+  7 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-line-then-block
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-line-then-block-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr { b }
+    | ^~~~~~~~~~~~~~ [1]
+  4 | requirement r {
+  5 |   id: 1
+  6 | }
+  7 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-mixed-case-second
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-mixed-case-second-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | AccDescr: b
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-mixed-with-empty-block
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-mixed-with-empty-block-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr {}
+  4 | accDescr { b }
+    | ^~~~~~~~~~~~~~ [1]
+  5 | accDescr: c
+    | ^~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[2] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-second-takes-next-line
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-second-takes-next-line-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr:
+    | ^~~~~~~~~\ [1]
+  4 | b
+    | ~ [1]
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-three-times
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-three-times-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr: b
+    | ^~~~~~~~~~~ [1]
+  4 | accDescr { c }
+    | ^~~~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/acc-descr-twice-lines
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/acc-descr-twice-lines-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: a
+  3 | accDescr: b
+    | ^~~~~~~~~~~ [1]
+  4 | requirement r {
+  5 |   id: 1
+  6 | }
+  7 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/db-acc-descr-block-then-line
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/db-acc-descr-block-then-line-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr { b }
+  3 | accDescr: a
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
+Test: requirement-no-duplicate-description >> invalid >>> invalid/requirement/db-acc-title-descr
+Filename: tests/fixtures/rules/requirement-no-duplicate-description/invalid/requirement/db-acc-title-descr-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accTitle:   t1  
+  3 | accTitle: t2
+  4 | accDescr:  d1  
+  5 | accDescr: d2
+    | ^~~~~~~~~~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+---

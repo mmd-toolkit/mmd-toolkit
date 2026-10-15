@@ -321,7 +321,8 @@ mermaid.js の入力の読み方を変える既知の差異の印
 （`c4-keyword-anywhere`、`comment-takes-character`、
 `comment-takes-line-break`、`name-start-reads-unit`、
 `percent-brace-after-unit`、`html-tag-in-frontmatter`、
-`bare-percent-line-before-header`）を持つ fixture は、
+`bare-percent-line-before-header`、`blank-line-after-header-or-comments`）を持つ
+fixture は、
 それを `expected.json` と違うときに、`specified.json` に記録します。
 生成器は、その差異を外して mermaid.js に読ませた結果を取ります
 （`comment-takes-line-break` と `name-start-reads-unit` は、
@@ -391,6 +392,41 @@ title と `embedded` の値は、それらの行に依りません。
 [fixture: class/header-after-empty-braces-then-whitespace-line]
 [fixture: class/header-after-bare-percent-then-tab-line]
 [fixture: class/header-after-bare-percent-then-indented-directive-line]
+`blank-line-after-header-or-comments` では、ヘッダーの後の空行と空白だけの行、
+およびヘッダーの行の終わりの空白を取り除いた入力を mermaid.js に読ませた
+結果です。
+仕様はそれらをどこにあってもトリビアとして読みますが、
+mermaid.js は、改行とそのまわりの空白の行を 1 つのトークンとして読み、
+そのトークンを行の終わりでしか受けないので、
+ヘッダーの後、コメント行の後、ノードの前では拒否します。
+空白だけの行とは、ディレクティブを除いたとき空白しか残らない行です。
+mermaid.js はテキストを読む前にディレクティブを除くからです。
+ヘッダーの後のディレクティブは、title と `embedded` の値が変わらず、
+ディレクティブだけの行も残らないように、ヘッダーの前の独立した行に移します。
+U+2028 か U+2029 がコメントを終え、同じ行に文が続くときは、
+その前に改行を入れます。
+mermaid.js の文法がそこに改行を要り、文の字下げは変わらないからです。
+コメントを終える区切りの後に空白しかないときは、その空白とともに除きます。
+コメント行、ヘッダーの前の行、ノードの行はそのまま残します。
+ノードが閉じていないテキストの途中に、取り除く行があるときは、
+空行がそのテキストの文字なので、生成器が止まります。
+[fixture: mindmap/div-header-trailing-spaces-then-node]
+[fixture: mindmap/div-header-space-directive-then-node]
+[fixture: mindmap/div-tab-line-after-header]
+[fixture: mindmap/div-header-two-comments-then-blank]
+[fixture: mindmap/div-header-line-comment-comment-then-blank]
+[fixture: mindmap/div-comment-line-then-blank-after-header]
+[fixture: mindmap/div-comment-then-blank-between-nodes]
+[fixture: mindmap/div-three-comments-then-blank-between-nodes]
+[fixture: mindmap/div-shape-comment-then-blank]
+[fixture: mindmap/div-icon-comment-then-blank]
+[fixture: mindmap/div-comment-then-blank-then-icon]
+[fixture: mindmap/div-comment-then-blank-then-class]
+[fixture: mindmap/div-class-then-comment-then-blank]
+[fixture: mindmap/div-percent-brace-then-blank-between-nodes]
+[fixture: mindmap/db-blank-line-after-header]
+[fixture: mindmap/db-whitespace-line-after-header]
+[fixture: mindmap/db-directive-between-header-and-first-node]
 ほかの印には、このファイルは要りません。
 仕様が mermaid.js の受理するものを拒否する
 （`directive-as-token-boundary`、

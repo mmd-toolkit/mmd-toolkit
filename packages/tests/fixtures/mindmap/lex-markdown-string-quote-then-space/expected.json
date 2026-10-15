@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md The shape context: a `\"` inside a markdown string, not after a backquote, makes the input rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\nmindmaproot  a[\"`x\" ]\n------------------^"
+  }
+}

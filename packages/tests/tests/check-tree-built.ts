@@ -51,6 +51,8 @@ export interface DiagramOfTrees {
   readonly header: string
   readonly diagramType: string
   readonly bodyType: string
+  /** The fields of the body made from the nodes that a test builds; the nodes are the list `body` where a diagram does not say otherwise. */
+  readonly bodyFields?: (nodes: CheckedNode[]) => Record<string, unknown>
 }
 
 /**
@@ -102,7 +104,7 @@ export function buildTree(
       body: kit.node(
         diagram.bodyType,
         [header.range[0], last?.range[1] ?? header.range[1]],
-        { body },
+        diagram.bodyFields === undefined ? { body } : diagram.bodyFields(body),
       ),
       frontmatter: null,
       comments,

@@ -4,6 +4,7 @@ import type {
   FlowchartNode,
   GanttNode,
   JourneyNode,
+  MindmapTreeNode,
   RequirementNode,
   SequenceNode,
   StateNode,
@@ -262,6 +263,23 @@ export const allRequirementNodeTypes: Readonly<
   RequirementIgnoredText: true,
 }
 
+/**
+ * Every node type of ast/mindmap.md, in the order of that document. Being a
+ * `Record` over the type, this fails to type-check when a node type is
+ * missing here or is not in the type.
+ */
+export const allMindmapNodeTypes: Readonly<
+  Record<MindmapTreeNode["type"], true>
+> = {
+  MindmapDiagram: true,
+  MindmapNode: true,
+  MindmapShape: true,
+  MindmapLabel: true,
+  MindmapIconStatement: true,
+  MindmapClassStatement: true,
+  MindmapLiteral: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -273,6 +291,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allGanttNodeTypes),
   ...Object.keys(allJourneyNodeTypes),
   ...Object.keys(allRequirementNodeTypes),
+  ...Object.keys(allMindmapNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

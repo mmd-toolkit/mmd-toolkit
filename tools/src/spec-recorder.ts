@@ -98,6 +98,8 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/user-journey/journeyDb.js": ["default"],
   "diagrams/requirement/parser/requirementDiagram.jison": ["default"],
   "diagrams/requirement/requirementDb.js": ["RequirementDB"],
+  "diagrams/mindmap/parser/mindmap.jison": ["parser"],
+  "diagrams/mindmap/mindmapDb.js": ["MindmapDB"],
   "config.js": [
     "setConfig",
     "getConfig",
@@ -111,7 +113,7 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "mermaidAPI.js": ["mermaidAPI", "default"],
   "mermaid.js": ["default"],
   "Diagram.js": ["Diagram"],
-  "diagram-api/diagramAPI.js": ["setSiteConfig", "setConfig"],
+  "diagram-api/diagramAPI.js": ["setSiteConfig", "setConfig", "setLogLevel"],
   "diagram-api/diagram-orchestration.js": ["addDiagrams"],
 }
 
@@ -376,6 +378,10 @@ export async function recordSpecFile(
     "diagrams/requirement/parser/requirementDiagram.jison": {
       default: { parser: { parse: record, yy: anything }, parse: record },
     },
+    "diagrams/mindmap/parser/mindmap.jison": {
+      parser: { parse: record, yy: anything },
+    },
+    "diagrams/mindmap/mindmapDb.js": { MindmapDB: anything },
     "diagrams/requirement/requirementDb.js": {
       RequirementDB: new Proxy(anything as object, {
         construct: () => requirementDb as object,
@@ -401,6 +407,7 @@ export async function recordSpecFile(
     "diagram-api/diagramAPI.js": {
       setSiteConfig: anything,
       setConfig: anything,
+      setLogLevel: anything,
     },
     "diagram-api/diagram-orchestration.js": { addDiagrams: () => undefined },
   }

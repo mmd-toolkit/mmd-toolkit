@@ -172,6 +172,14 @@ const VALUE_FIELD_REPORTS: Readonly<
   "Identifier.name": { message: "name is not the texts of its tokens joined" },
   "JourneyIgnoredText.value": { message: "value is not its written text" },
   "JourneyLiteral.value": { message: "value is not its written text" },
+  "MindmapLabel.kind": { message: "the field kind is " },
+  "MindmapLabel.value": { message: "value is not its written text" },
+  "MindmapLiteral.value": { message: "value is not its written text" },
+  "MindmapNode.indent": {
+    message: "the indent, which is the number of whitespace characters ",
+  },
+  "MindmapShape.closer": { message: "the field closer is " },
+  "MindmapShape.opener": { message: "the field opener is " },
   "NumericLiteral.value": {
     message: "value is not the number that its written text writes",
   },

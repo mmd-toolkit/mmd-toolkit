@@ -26,6 +26,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "gantt",
   "journey",
   "requirement",
+  "mindmap",
 ]
 
 /** The file in which a parser records the tree of a fixture it accepts. */

@@ -824,6 +824,35 @@ mermaid.js は、requirement 図の名前や値の一部の空白を持ち、
   mermaid.js は `{` の後に改行を要するので、`{` と `}` を 2 行に置きます。
   [fixture: requirement/bodies/empty-body-on-two-lines]
 
+## 字下げか空行で決まる mindmap の行
+
+mindmap の Db は、ノードの字下げを level として読みます。
+また、仕様が受理しても mermaid.js が拒否する空行があります。
+そのため、整形は Db が読むものを保ち、mermaid.js が拒否するものは直しません。
+[インデント](./mindmap.ja.md#インデント)と
+[空行](./mindmap.ja.md#空行)を参照してください。
+
+- ノードとその子の間の段の幅（文字数）。
+  Db は、ノードの level を字下げから根の字下げを引いた数として読むので、
+  子が 4 文字の `root` と 2 文字の `root` は別の図で、
+  1 つの図の中で段の幅が違ってもかまいません。
+  変えるのは根の字下げと字下げの文字だけです。
+  [fixture: mindmap/indentation/step-widths-kept]
+  [fixture: mindmap/indentation/root-shifted-to-one-level]
+- 行頭のディレクティブの後ろの空白。
+  ノードの字下げに数えられるので、ディレクティブから書かれたまま印字します。
+  [fixture: mindmap/directives/before-a-node-on-its-line]
+- U+2028 か U+2029 で終わる診断コメント。
+  その後ろのテキストは新しい行なので、そこに改行を書きます。
+  [test: U+2028 after a comment after a shape]
+- mermaid.js が拒否する空行
+  （既知の差異
+  [`blank-line-after-header-or-comments`](../../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)）。
+  ヘッダーの後のものは落とすので、出力は受理されます。
+  ノードの間の診断コメントの後のものは、入力と同じく 1 つ残ります。
+  [fixture: mindmap/blank-lines/after-the-header-dropped]
+  [fixture: mindmap/blank-lines/after-a-comment-between-nodes-kept]
+
 ## U+2028 か U+2029 の後のコメント行
 
 mermaid.js は、本文を読む前に、コメント行を取り除きます。

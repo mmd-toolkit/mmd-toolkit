@@ -27,6 +27,7 @@ import {
 } from "./flowchart-layout.ts"
 import { endsWithSpaceOrTab, findWrittenWhitespaceEnd } from "./gap.ts"
 import { expectToken } from "./layout.ts"
+import { narrowPath } from "./paths.ts"
 import { indentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
 import {
@@ -94,9 +95,7 @@ function printDiagram(
 ): Doc {
   const headerEnd = findHeaderEnd(source, diagram)
   const block = printBlock(
-    // AstPath<MermaidAst> takes only field names that every node type of the
-    // union has; the node here is the diagram, which has `body`.
-    path.map(print, "body" as never),
+    narrowPath(path, diagram.type).map(print, "body"),
     source,
     {
       statements: diagram.body,
@@ -132,7 +131,7 @@ function printSubgraph(
   const headerEnd = findSubgraphHeaderEnd(source, subgraph)
   const endKeyword = findEndKeyword(source, subgraph)
   const block = printBlock(
-    path.map(print, "body" as never),
+    narrowPath(path, subgraph.type).map(print, "body"),
     source,
     {
       statements: subgraph.body,

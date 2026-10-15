@@ -130,6 +130,7 @@ const tokenCount = root.tokens.length // 8
 - Gantt チャート: `gantt`（`gantt`）。
 - journey 図: `journey`（`journey`）。
 - 要求図: `requirement`（`requirementDiagram`）。
+- mindmap: `mindmap`（`mindmap`）。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -240,7 +241,8 @@ try {
 [`ast/er.md`](../spec/docs/ast/er.ja.md)、
 [`ast/gantt.md`](../spec/docs/ast/gantt.ja.md)、
 [`ast/journey.md`](../spec/docs/ast/journey.ja.md)、
-[`ast/requirement.md`](../spec/docs/ast/requirement.ja.md) のものです。
+[`ast/requirement.md`](../spec/docs/ast/requirement.ja.md)、
+[`ast/mindmap.md`](../spec/docs/ast/mindmap.ja.md) のものです。
 
 ## 木を辿る
 
@@ -345,6 +347,15 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   （`a - accDescr {} satisfies -> b` など）。
   文の始まりでは、空の説明のブロックは文で、
   要求や要素の本文の行では、本文の項目です。
+  mindmap では、空の icon（`::icon()`）、
+  空の class の行（その行で後に何もない `:::`）、
+  形の中の空の文字列や空の markdown 文字列について、
+  どこにあっても同じです（`a[""x]` など）。
+- mindmap では、空行、空白だけの行、コメントは、
+  ヘッダーの後のどこにあっても何も変えません。
+  mermaid.js は、ヘッダーと最初のノードの間の空行や、
+  2 つのノードの間の `%%` だけの行に続く空行など、その一部を拒否します
+  （[`blank-line-after-header-or-comments`](../spec/docs/known-divergences/blank-line-after-header-or-comments.ja.md)）。
 - シーケンス図では、コメントは `%%` から始まり、
   数の後に `%%` が続いてもかまいません。
   mermaid.js は、そこで規則が始まるときには、
@@ -416,6 +427,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   [`ast/gantt.md`](../spec/docs/ast/gantt.ja.md)（Gantt チャートのノード）、
   [`ast/journey.md`](../spec/docs/ast/journey.ja.md)（journey 図のノード）、
   [`ast/requirement.md`](../spec/docs/ast/requirement.ja.md)（要求図のノード）、
+  [`ast/mindmap.md`](../spec/docs/ast/mindmap.ja.md)（mindmap のノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
   [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、

@@ -10,6 +10,8 @@ import { ganttDbOf } from "./gantt.ts"
 import type { GanttDiagram } from "./gantt-tree.ts"
 import { journeyDbOf } from "./journey.ts"
 import type { JourneyDiagram } from "./journey-tree.ts"
+import { mindmapDbOf } from "./mindmap.ts"
+import type { MindmapDiagram } from "./mindmap-tree.ts"
 import { requirementDbOf } from "./requirement.ts"
 import type { RequirementDiagram } from "./requirement-tree.ts"
 import type { ColorAnswer } from "./sequence.ts"
@@ -34,6 +36,7 @@ export type DiagramBody =
   | FlowchartDiagram
   | GanttDiagram
   | JourneyDiagram
+  | MindmapDiagram
   | RequirementDiagram
   | SequenceDiagram
   | StateDiagram
@@ -77,6 +80,8 @@ export function dbFromTree(
       return ganttDbOf(text, root, root.body, embedded)
     case "JourneyDiagram":
       return journeyDbOf(text, root, root.body, embedded)
+    case "MindmapDiagram":
+      return mindmapDbOf(text, root, root.body, embedded)
     case "RequirementDiagram":
       return requirementDbOf(text, root, root.body, embedded)
     default:

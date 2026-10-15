@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-from-tree/mindmap.md, type: `-)` after an id is the end of the id and a `)` opener, a cloud, whatever the closer."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "r-",
+      "level": 0,
+      "descr": "text",
+      "type": 4,
+      "children": []
+    }
+  }
+}

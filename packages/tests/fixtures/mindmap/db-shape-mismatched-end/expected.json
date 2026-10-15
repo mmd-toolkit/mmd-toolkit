@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, type: the closing delimiter does not have to be that of the opening one for a rectangle."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "r",
+      "level": 0,
+      "descr": "text",
+      "type": 2,
+      "children": []
+    }
+  }
+}

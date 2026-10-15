@@ -31,6 +31,7 @@ import {
 } from "./er-layout.ts"
 import { expectToken, layoutKeywordHeader, toAsciiLowerCase } from "./layout.ts"
 import { indentationOf, printAsWritten } from "./lines.ts"
+import { narrowPath } from "./paths.ts"
 import type { Source } from "./source.ts"
 import { findTokenEndingBefore, findTokenStartingAt } from "./source.ts"
 
@@ -149,9 +150,7 @@ function printDiagram(
     "the header keyword",
   )
   const block = printBlock(
-    // AstPath<MermaidAst> takes only field names that every node type of the
-    // union has; the node here is the diagram, which has `body`.
-    path.map(print, "body" as never),
+    narrowPath(path, diagram.type).map(print, "body"),
     source,
     {
       statements: diagram.body,
@@ -184,7 +183,7 @@ function printSubgraph(
   const headerEnd = findSubgraphHeaderEnd(source, statement)
   const closing = findSubgraphEnd(source, statement)
   const block = printBlock<ErStatement>(
-    path.map(print, "body" as never),
+    narrowPath(path, statement.type).map(print, "body"),
     source,
     {
       statements: statement.body,
@@ -222,7 +221,7 @@ function printAttributeBlock(
 ): Doc {
   const { opening, closing } = findAttributeBraces(source, statement)
   const block = printBlock<ErAttribute | ErIgnoredText>(
-    path.map(print, "attributes" as never),
+    narrowPath(path, statement.type).map(print, "attributes"),
     source,
     {
       statements: statement.attributes ?? [],

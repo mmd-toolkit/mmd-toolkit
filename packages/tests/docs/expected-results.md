@@ -274,9 +274,10 @@ An implementation does not have to run mermaid.js this way to know what the
 specification gives: the fixtures with the mark of a divergence that changes how
 mermaid.js reads an input (`c4-keyword-anywhere`, `comment-takes-character`,
 `comment-takes-line-break`, `name-start-reads-unit`, `percent-brace-after-unit`,
-`html-tag-in-frontmatter` and `bare-percent-line-before-header`) record it in
-`specified.json`, where it differs from `expected.json`. The generator takes it
-from mermaid.js read without the divergence (for `comment-takes-line-break` and
+`html-tag-in-frontmatter`, `bare-percent-line-before-header` and
+`blank-line-after-header-or-comments`) record it in `specified.json`, where it
+differs from `expected.json`. The generator takes it from mermaid.js read
+without the divergence (for `comment-takes-line-break` and
 `name-start-reads-unit`, without both, since both change the class lexer; for
 the three that change the gantt lexer, `comment-takes-character`,
 `comment-takes-line-break` and `percent-brace-after-unit`, without all three,
@@ -333,8 +334,42 @@ state/header-after-empty-braces-no-space] [fixture:
 class/header-after-bare-percent-then-whitespace-line] [fixture:
 class/header-after-empty-braces-then-whitespace-line] [fixture:
 class/header-after-bare-percent-then-tab-line] [fixture:
-class/header-after-bare-percent-then-indented-directive-line] The other marks
-need no such file: the specification rejects what mermaid.js accepts
+class/header-after-bare-percent-then-indented-directive-line] For
+`blank-line-after-header-or-comments` it is mermaid.js reading the input without
+the empty lines and the lines of whitespace only after its header, and without
+the whitespace that ends the header line: the specification reads them as trivia
+wherever they stand, and mermaid.js takes the token of a line break with the
+whitespace lines around it only at the end of a line of its own, so it rejects
+them after the header, after a comment line, and before a node. A line is of
+whitespace only when nothing but whitespace is left of it once the directives
+are taken out, since mermaid.js removes a directive before it reads the text.
+The directives after the header move to lines of their own before it, so that
+the title and the values in `embedded` do not change and no line is left with a
+directive alone. A line feed goes before a U+2028 or a U+2029 that ends a
+comment when a statement follows it on its line, since mermaid.js's grammar
+needs one there and the indentation of the statement stays; a separator that
+ends a comment with only whitespace after it goes with that whitespace. The
+comment lines, the lines before the header, and the node lines stay as they are.
+The generator stops where a line to take out stands inside the text of a node
+that is not closed, since a blank line is then a character of the text.
+[fixture: mindmap/div-header-trailing-spaces-then-node] [fixture:
+mindmap/div-header-space-directive-then-node] [fixture:
+mindmap/div-tab-line-after-header] [fixture:
+mindmap/div-header-two-comments-then-blank] [fixture:
+mindmap/div-header-line-comment-comment-then-blank] [fixture:
+mindmap/div-comment-line-then-blank-after-header] [fixture:
+mindmap/div-comment-then-blank-between-nodes] [fixture:
+mindmap/div-three-comments-then-blank-between-nodes] [fixture:
+mindmap/div-shape-comment-then-blank] [fixture:
+mindmap/div-icon-comment-then-blank] [fixture:
+mindmap/div-comment-then-blank-then-icon] [fixture:
+mindmap/div-comment-then-blank-then-class] [fixture:
+mindmap/div-class-then-comment-then-blank] [fixture:
+mindmap/div-percent-brace-then-blank-between-nodes] [fixture:
+mindmap/db-blank-line-after-header] [fixture:
+mindmap/db-whitespace-line-after-header] [fixture:
+mindmap/db-directive-between-header-and-first-node] The other marks need no such
+file: the specification rejects what mermaid.js accepts
 (`directive-as-token-boundary`, `ignored-semicolon-as-token-boundary`,
 `click-reserved-word`, `tokenless-empty-forms`, `headerless-empty-ending`), or
 accepts what it rejects (`embedded-data-opaque`). None of them has a removal

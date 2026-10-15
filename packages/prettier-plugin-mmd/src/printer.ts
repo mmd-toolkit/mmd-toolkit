@@ -3,6 +3,7 @@ import { visitorKeys } from "@mmd-toolkit/parser"
 import { utils } from "prettier/doc"
 import type { MermaidAst, MermaidDocument } from "./parser.ts"
 import { formatFrontmatterYaml } from "./printers/frontmatter-yaml.ts"
+import { isPathOfType } from "./printers/paths.ts"
 import { printRoot } from "./printers/root.ts"
 
 const { replaceEndOfLine } = utils
@@ -104,15 +105,15 @@ export const mermaidPrinter: Printer<MermaidAst> = {
       )
     }
     if (document.type === "VerbatimDocument") return printVerbatim(options)
-    if (path.node === document) return path.call(print, "root")
+    if (isPathOfType(path, "FormattedDocument")) {
+      return path.call(print, "root")
+    }
     // What stands before the diagram body is the same for every diagram
     // type; the body and the nodes below it go to the diagram printer.
-    if (path.node.type === "Root") {
+    if (isPathOfType(path, "Root")) {
       return printRoot(
         path.node,
-        // AstPath<MermaidAst> takes only field names that every node type of
-        // the union has; the node here is the root, which has `body`.
-        () => path.call(print, "body" as never),
+        () => path.call(print, "body"),
         document.source,
       )
     }

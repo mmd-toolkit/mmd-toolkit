@@ -144,6 +144,7 @@ Dropped:
 | In a Gantt chart, an `accDescr {` block that a `}` written later in a text closes (after `accDescr { first`, the line `title Plan {v2}` gives the description `first` and `title Plan {v2`, and no title)      | No ordinary writing: a gantt statement holds a `}` only in a text, which is rare, and without a later `}` mermaid.js rejects the unclosed block                                                                                                                                                                                                                                                                                                 |
 | In a user journey, the task `Title page: 5: Me` (the title becomes `page: 5: Me`, and there is no task)                                                                                                        | Looks like a mermaid bug: the author writes a correct task, and the keyword `title`, read in any case, takes its line. Searched the issue titles with `journey` and with "journey title", "journey task", "journey keyword": nothing found. After an earlier title, journey-no-duplicate-title reports the line                                                                                                                                 |
 | In a user journey, `title` with no text before the line `Make tea: 5: Me` (the title becomes that line, and there is no task)                                                                                  | The formatter makes it visible: it prints `title   Make tea: 5: Me` on one line                                                                                                                                                                                                                                                                                                                                                                 |
+| In a requirement diagram, `id: 1 %% note` in a body (the id becomes `1 %% note`)                                                                                                                               | Comes from not knowing the syntax: the documentation of mermaid.js says that comments go on a line of their own, as for `subgraph S %% group` in a flowchart                                                                                                                                                                                                                                                                                    |
 
 ### Questions for unclear cases
 
@@ -298,8 +299,16 @@ for (const input of inputs) {
     the line after `%% c` or after `%%{init: {}}%%`);
   - a word that a sentence says is read in any case, written in another case
     (`TITLE`, `Until`), and written without the whitespace after it (`untilb1`);
-  - a third occurrence, where a rule reports from the second one on (two
-    reports);
+  - for a rule that compares a statement with earlier ones, first decide from
+    what mermaid.js keeps and drops which earlier one it is compared with (the
+    first, the first of its kind, or the latest), then write three occurrences
+    that mix the kinds and the forms that the rule tells apart, so that the
+    first statement and the right partner of the third differ (a requirement, an
+    element, and a requirement of one name, where the third is compared with the
+    second; for a rule that compares with the latest, any third, with a value
+    that the rule does not count, such as an empty block, between), and check
+    that the message names that partner; the plain third of one form gives two
+    reports;
   - each kind of value that a rule does not count (an empty block, a block of
     only a comment line, a block of only directives);
   - an input where the rule meets a neighbouring rule (`A: 5:: x` in a user
@@ -529,6 +538,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | er-* (all 7 rules)                      | yes (provisional) |                                                                                                          |
 | gantt-* (all 8 rules)                   | yes (provisional) |                                                                                                          |
 | journey-* (all 6 rules)                 | yes (provisional) |                                                                                                          |
+| requirement-* (all 8 rules)             | yes (provisional) |                                                                                                          |
 
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
@@ -598,6 +608,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | er-* (all 7 rules)                      | None for now (2026-10-14; see the end of this section)         |
 | gantt-* (all 8 rules)                   | None for now (2026-10-14; see the end of this section)         |
 | journey-* (all 6 rules)                 | None for now (2026-10-14; see the end of this section)         |
+| requirement-* (all 8 rules)             | None for now (2026-10-15; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -725,8 +736,8 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
   `2` (run).
 
 `sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and
-`journey-*` (2026-10-14): the rules are implemented without suggestions for now.
-No suggestion had been decided for them or described in their documents, and the
-one planned for the empty block of a sequence diagram rested on generated
-inputs. Whether they get suggestions is decided later, in the form of the
-flowchart rules, with a fixture for each case.
+`journey-*` (2026-10-14), and `requirement-*` (2026-10-15): the rules are
+implemented without suggestions for now. No suggestion had been decided for them
+or described in their documents, and the one planned for the empty block of a
+sequence diagram rested on generated inputs. Whether they get suggestions is
+decided later, in the form of the flowchart rules, with a fixture for each case.

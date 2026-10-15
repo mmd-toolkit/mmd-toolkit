@@ -1,0 +1,17 @@
+{
+  "message": "The icon has no ) before the end of the text",
+  "range": [
+    13,
+    20
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 7
+    }
+  }
+}

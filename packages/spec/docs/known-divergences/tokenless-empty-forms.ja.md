@@ -2,7 +2,7 @@
 
 英語版: [tokenless-empty-forms.md](./tokenless-empty-forms.md)
 
-図種: flowchart、sequence、class、state、er、gantt、requirement。
+図種: flowchart、sequence、class、state、er、gantt、requirement、mindmap。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -59,13 +59,23 @@ requirement では 2 つです。
 空の説明ブロックと、空の文字列 `""` で、
 空の文字列はどこにあってもこの差異に入ります
 （[単位と文脈](../diagrams/requirement.ja.md#単位と文脈) を参照）。
+mindmap では 3 つです。
+`::icon()` である**空の icon**、
+`:::` の後にその行で何もない**空の class の行**、
+形の中の空の文字列 `""` か空の markdown 文字列です。
+3 つとも、どこにあってもこの差異に入ります
+（[空の形](../diagrams/mindmap.ja.md#空の形) を参照）。
 [fixture: er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-backquotes-between-type-and-name] [fixture:
 er/gram-empty-backquotes-between-attributes] [fixture:
 gantt/div-empty-href-before-call] [fixture: gantt/div-empty-call-before-href]
 [fixture: gantt/gram-empty-href-line] [fixture: gantt/gram-empty-call-line]
 [fixture: requirement/div-empty-string-line] [fixture:
-requirement/div-empty-description-block-in-relationship]
+requirement/div-empty-description-block-in-relationship] [fixture:
+mindmap/div-empty-icon-before-root] [fixture:
+mindmap/div-empty-class-before-root] [fixture:
+mindmap/div-empty-string-in-shape] [fixture:
+mindmap/div-empty-markdown-string-in-shape]
 
 それだけの行の空の説明ブロックは、そのふつうの書き方で、
 何も変えない説明ブロックの文です。
@@ -216,7 +226,8 @@ mermaid.js が受理し、この仕様が拒否します。
 [state](../diagrams/state.ja.md#既知の差異)、
 [er](../diagrams/er.ja.md#既知の差異)、
 [gantt](../diagrams/gantt.ja.md#既知の差異)、
-[requirement](../diagrams/requirement.ja.md#既知の差異) です。
+[requirement](../diagrams/requirement.ja.md#既知の差異)、
+[mindmap](../diagrams/mindmap.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 
@@ -292,6 +303,11 @@ requirement は空の説明ブロック
 （[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L23-L24)）と、
 文の文脈と style の文脈の空の文字列の引用符
 （[`requirementDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.jison#L85-L96)）
+を読み飛ばします。
+mindmap は、その行で後に何もない `:::` と、間に何もない `::icon(` と `)`
+（[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L24-L32)）、
+空の文字列の引用符と空の markdown 文字列の区切り
+（[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L45-L50)）
 を読み飛ばします。
 これらの規則はどれも、字句解析器の状態に入るか出るだけで何も返さないので、
 文法はその形を見ません。
@@ -648,6 +664,19 @@ requirement/div-empty-string-in-relationship] [fixture:
 requirement/div-empty-string-before-style] [fixture:
 requirement/gram-empty-description-block-in-body] [fixture:
 requirement/gram-empty-description-block-after-string-value]
+
+mindmap では、空の icon、空の class の行、形の中の空の文字列は、
+ノードの後や根の前の icon と class の行、
+形のテキストの前の空の文字列と空の markdown 文字列を含めて、
+どこにあってもこの差異に入ります。
+mermaid.js が丸ごと捨てる icon や class の行を、木は文として持たず、
+丸ごと捨てる文字列を label として持たないからです
+（flowchart と class と同じ。
+[空の形](../diagrams/mindmap.ja.md#空の形) を参照）。
+[fixture: mindmap/db-icon-empty] [fixture: mindmap/div-empty-icon-before-root]
+[fixture: mindmap/db-class-empty] [fixture: mindmap/div-empty-class-before-root]
+[fixture: mindmap/div-empty-string-in-shape] [fixture:
+mindmap/div-empty-markdown-string-in-shape]
 
 文の最後の単位の後、その区切りの前では、
 state の `click A "u" "t" accDescr {}` のように、ブロックは文です。

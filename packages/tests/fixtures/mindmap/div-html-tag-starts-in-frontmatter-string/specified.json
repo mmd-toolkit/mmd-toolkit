@@ -1,0 +1,7 @@
+{
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nmindmaproot[\"b=\"c\">d\"]\n----------------^\nExpecting 'NODE_DEND', got 'NODE_DESCR'"
+  }
+}

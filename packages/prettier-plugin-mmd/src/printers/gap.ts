@@ -4,6 +4,7 @@ import { utils } from "prettier/doc"
 import { isLastOnItsLine } from "./kept-lines.ts"
 import type { Source, Trivia } from "./source.ts"
 import {
+  findCommentEndingAt,
   findDirectiveEndingAt,
   isCommentLine,
   findTokenStartingAt,
@@ -311,11 +312,14 @@ function readSingleLine(
  *   whitespace after it, the `;` lies inside the comment, and a `;` that was
  *   dropped would make a second formatting differ from the first.
  * - `lineTerminator`: a line feed.
- * - `whitespace`: one whitespace character. `beforeComment` is set for a
+ * - `whitespace`: one whitespace character. `breaksLine` is set for a
  *   U+2028 or U+2029 that the comment line of a region that joins lines
  *   follows on its line (`Source.joiningRegions`): a printed comment must
  *   start a line, because a `%%` after other text on its line is not a
- *   comment.
+ *   comment. It is set too, where the diagram comments end at them
+ *   (`Source.commentsEndAtLineSeparators`), for one that ends the comment before
+ *   it: the text after it is a new line, and printed on the line of the comment
+ *   it would be part of the comment.
  * - `text`: anything else, which belongs to a node.
  *
  * Every scan of the text between printed things reads it with this one
@@ -325,7 +329,7 @@ export type GapElement =
   | { readonly kind: "item"; readonly item: GapItem }
   | { readonly kind: "separator"; readonly token: Token }
   | { readonly kind: "lineTerminator" }
-  | { readonly kind: "whitespace"; readonly beforeComment: boolean }
+  | { readonly kind: "whitespace"; readonly breaksLine: boolean }
   | { readonly kind: "text" }
 
 /** Reads the element that starts at `offset`, and where it ends. */
@@ -342,10 +346,12 @@ export function readGapElement(
     return { element: { kind: "lineTerminator" }, end: offset + 1 }
   }
   if (isWhitespace(character)) {
-    const beforeComment =
+    const breaksLine =
       isLineSeparator(character) &&
-      isFollowedByJoiningRegion(source, offset + 1)
-    return { element: { kind: "whitespace", beforeComment }, end: offset + 1 }
+      (isFollowedByJoiningRegion(source, offset + 1) ||
+        (source.commentsEndAtLineSeparators &&
+          findCommentEndingAt(source, offset) !== undefined))
+    return { element: { kind: "whitespace", breaksLine }, end: offset + 1 }
   }
   const token = findTokenStartingAt(source, offset)
   if (token?.value === ";") {
@@ -455,7 +461,7 @@ function scanLines(
         breakLine(true)
         break
       case "whitespace":
-        if (element.beforeComment) breakLine(false)
+        if (element.breaksLine) breakLine(false)
         else spacePending = true
         break
       default:

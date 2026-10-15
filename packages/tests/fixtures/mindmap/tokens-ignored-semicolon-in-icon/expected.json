@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Directives inside units: the ignored `;` inside an icon text is read through, the icon `style:#xy`."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 2,
+          "descr": "a",
+          "type": 0,
+          "icon": "style:#xy",
+          "children": []
+        }
+      ]
+    }
+  }
+}

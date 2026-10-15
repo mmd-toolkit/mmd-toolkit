@@ -32,6 +32,8 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "RequirementIdentifier",
   "RequirementLiteral",
   "RequirementIgnoredText",
+  "MindmapLabel",
+  "MindmapLiteral",
 ])
 
 /**
@@ -191,6 +193,11 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "RequirementAccTitleStatement",
   "RequirementAccDescrStatement",
   "RequirementAccDescrBlockStatement",
+  "MindmapDiagram",
+  "MindmapNode",
+  "MindmapShape",
+  "MindmapIconStatement",
+  "MindmapClassStatement",
 ])
 
 /** The node types of the data blocks, whose delimiters lie in their range. */

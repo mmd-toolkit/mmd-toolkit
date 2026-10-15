@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/mindmap.md",
+    "line": 170
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "id1",
+      "level": 0,
+      "descr": "**Root** with\na second line\nUnicode works too: 🤓",
+      "type": 2,
+      "children": [
+        {
+          "nodeId": "id2",
+          "level": 2,
+          "descr": "The dog in **the** hog... a *very long text* that wraps to a new line",
+          "type": 2,
+          "children": []
+        },
+        {
+          "nodeId": "id3",
+          "level": 2,
+          "descr": "Regular labels still works",
+          "type": 2,
+          "children": []
+        }
+      ]
+    }
+  }
+}

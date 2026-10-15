@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Icons and classes: an icon may go over lines."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "icon": "x\n  a",
+      "children": []
+    }
+  }
+}

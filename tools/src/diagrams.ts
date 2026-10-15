@@ -23,6 +23,7 @@ export const diagramIds: Readonly<
   gantt: ["gantt"],
   journey: ["journey"],
   requirement: ["requirement"],
+  mindmap: ["mindmap"],
 }
 
 /**

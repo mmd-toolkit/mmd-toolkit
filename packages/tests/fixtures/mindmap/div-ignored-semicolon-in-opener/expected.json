@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Trivia between units: the ignored `;` inside `{{` makes the input rejected here; mermaid.js reads the hexagon."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "style:#x",
+          "level": 2,
+          "descr": "b",
+          "type": 6,
+          "children": []
+        }
+      ]
+    }
+  }
+}

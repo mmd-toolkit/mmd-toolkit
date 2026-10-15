@@ -11,6 +11,7 @@ import {
   printDiagramBlock,
 } from "./blocks.ts"
 import { expectToken } from "./layout.ts"
+import { narrowPath } from "./paths.ts"
 import { indentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
@@ -129,9 +130,7 @@ function printDiagram(
     "the header keyword",
   )
   const block = printBlock(
-    // AstPath<MermaidAst> takes only field names that every node type of the
-    // union has; the node here is the diagram, which has `body`.
-    path.map(print, "body" as never),
+    narrowPath(path, diagram.type).map(print, "body"),
     source,
     {
       statements: diagram.body,
@@ -165,7 +164,7 @@ function printBodyBlock(
 ): Doc {
   const { opening, closing } = findBodyBraces(source, statement)
   const block = printBlock<StateStatement>(
-    path.map(print, "body" as never),
+    narrowPath(path, statement.type).map(print, "body"),
     source,
     {
       statements: statement.body ?? [],

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, text: a shape with no text between the delimiters is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nmindmap  r[]\n-----------^\nExpecting 'NODE_DESCR', got 'NODE_DEND'"
+  }
+}

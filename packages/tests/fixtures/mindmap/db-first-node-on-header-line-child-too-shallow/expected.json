@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, the root: a child indented by the one space after the header is as indented as the root and is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "There can be only one root. No parent could be found for (\"child\")"
+  }
+}

@@ -10,6 +10,7 @@ import { classValueNodeTypes } from "../src/printers/class-layout.ts"
 import { erValueNodeTypes } from "../src/printers/er-layout.ts"
 import { ganttValueNodeTypes } from "../src/printers/gantt-layout.ts"
 import { journeyValueNodeTypes } from "../src/printers/journey-layout.ts"
+import { mindmapValueNodeTypes } from "../src/printers/mindmap-layout.ts"
 import { requirementValueNodeTypes } from "../src/printers/requirement-layout.ts"
 import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
 import { stateValueNodeTypes } from "../src/printers/state-layout.ts"
@@ -125,6 +126,17 @@ const diagrams: readonly DiagramValues[] = [
       // The shared leaf nodes that are no nodes of a requirement diagram:
       // its ids and numbers are the text of a name or a value.
       "Identifier",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Mindmap",
+    values: mindmapValueNodeTypes,
+    notValues: new Set([
+      // The shared leaf nodes are no nodes of a mindmap: its ids, strings,
+      // and numbers are the text of a node, a label, an icon, or a class.
+      "Identifier",
+      "StringLiteral",
       "NumericLiteral",
     ]),
   },

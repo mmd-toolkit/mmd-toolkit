@@ -17,6 +17,9 @@ export type EmptyFormKind =
   | "empty-generic-type"
   | "empty-backquotes"
   | "empty-href"
+  | "empty-markdown-string"
+  | "empty-icon"
+  | "empty-class-line"
 
 /**
  * known-divergences/tokenless-empty-forms.md: the empty forms of each
@@ -30,7 +33,9 @@ export type EmptyFormKind =
  * empty call, of which only the empty description block is a statement
  * where a statement starts; requirement has the empty string and the empty
  * description block, which is a statement where a statement starts and an
- * item of a body on a line of the body.
+ * item of a body on a line of the body; mindmap has the empty string, the
+ * empty markdown string, the empty icon, and the empty class line, which
+ * stand wherever they stand inside no statement.
  */
 export const EMPTY_FORM_KINDS: Readonly<
   Record<
@@ -40,7 +45,8 @@ export const EMPTY_FORM_KINDS: Readonly<
     | "state"
     | "er"
     | "gantt"
-    | "requirement",
+    | "requirement"
+    | "mindmap",
     readonly EmptyFormKind[]
   >
 > = {
@@ -57,6 +63,12 @@ export const EMPTY_FORM_KINDS: Readonly<
   er: ["empty-description-block", "empty-backquotes"],
   gantt: ["empty-description-block", "empty-href", "empty-call"],
   requirement: ["empty-string", "empty-description-block"],
+  mindmap: [
+    "empty-string",
+    "empty-markdown-string",
+    "empty-icon",
+    "empty-class-line",
+  ],
 }
 
 /** One empty form: its kind, its units, and its range, from its first character that is not whitespace to its last. */
@@ -80,12 +92,15 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
   "empty-backquotes":
     "Empty backquotes can only be written between two attributes",
   "empty-href": "An empty href cannot be written here",
+  "empty-markdown-string": "An empty markdown string cannot be written here",
+  "empty-icon": "An empty icon cannot be written here",
+  "empty-class-line": "An empty class line cannot be written here",
 }
 
 /**
  * The empty forms of the kinds `kinds` among `units`, the units of a
  * diagram text, in source order, wherever they lie: each `empty-string`
- * unit (flowchart and requirement, Strings);
+ * unit (flowchart, requirement, and mindmap, Strings);
  * each empty call, a `call` unit followed directly by a `(` and a `)` unit,
  * with only whitespace between them (flowchart, Click and callbacks); and
  * each empty description block, an `accDescr` and a `{` unit followed
@@ -95,7 +110,12 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
  * another (class, Strings, backquoted names, and generic types); in er,
  * each `empty-backquotes` unit (er, The attribute block context); and, in
  * gantt, each empty href, an `href` unit followed directly by two `"`
- * units (gantt, The href context). In flowchart, class, and gantt, a `(`
+ * units (gantt, The href context); and, in mindmap, each
+ * `empty-markdown-string` unit, each empty icon, an `::icon(` unit followed
+ * directly by a `)` unit, and each empty class line, a `:::` unit that no
+ * `class-text` unit follows (mindmap, Empty forms), where a `:::` of the
+ * other diagram types, which no `class-text` unit ever follows, is no form
+ * of the kinds they have. In flowchart, class, and gantt, a `(`
  * after a `call` is always one of the callback name context, which the
  * `call` enters. A diagram whose lexer reads none
  * of these units has none of these forms.
@@ -125,7 +145,19 @@ function allEmptyFormsOf<Unit extends DiagramUnit<string>>(
       forms.push(formOf("empty-backquotes", [unit]))
       return
     }
+    if (unit.name === "empty-markdown-string") {
+      forms.push(formOf("empty-markdown-string", [unit]))
+      return
+    }
     const second = units.at(index + 1)
+    if (unit.name === ":::" && second?.name !== "class-text") {
+      forms.push(formOf("empty-class-line", [unit]))
+      return
+    }
+    if (unit.name === "::icon(" && second?.name === ")") {
+      forms.push(formOf("empty-icon", [unit, second]))
+      return
+    }
     if (unit.name === "~" && second?.name === "~") {
       forms.push(formOf("empty-generic-type", [unit, second]))
       return
