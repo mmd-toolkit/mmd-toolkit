@@ -142,6 +142,9 @@ const SPEC_FILES: Readonly<
   // The other test file of the directory, `xychartDb.spec.ts`, calls the Db's
   // methods with values built in code and passes no text.
   xychart: () => ["diagrams/xychart/parser/xychart.jison.spec.ts"],
+  // The other test file of the directory, `quadrantDb.spec.ts`, calls
+  // `parseStyles()` with values built in code and passes no text.
+  quadrant: () => ["diagrams/quadrant-chart/parser/quadrant.jison.spec.ts"],
 }
 
 /**

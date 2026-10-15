@@ -561,6 +561,22 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: xychart/div-comment-glued-after-range]
   [fixture: xychart/div-comment-takes-hyphen]
   [fixture: xychart/div-comment-takes-one-letter-word]
+- `comment-takes-character`、quadrant の字句解析器
+  （[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)）
+  :
+  `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
+  そうすると、コメントは `%%` から始まる。
+  点の後ろやブロックの閉じ波括弧の後ろでは、
+  `%%` の前の空白やタブは空白として残り、どの文もそれを取らないので、
+  その行は拒否される。
+  [fixture: quadrant/div-quadrant-comment-glued]
+  [fixture: quadrant/div-comment-unit-letters-then-digit]
+  [fixture: quadrant/div-x-axis-comment-unit-dash]
+  [fixture: quadrant/div-name-comment-glued]
+  [fixture: quadrant/div-comment-glued-one-letter-name]
+  [fixture: quadrant/div-comment-glued-digit-in-quadrant-text]
+  [fixture: quadrant/div-acc-descr-block-space-and-comment-after-brace]
+  [fixture: quadrant/div-comment-glued-tab-after-point]
 - `comment-takes-line-break`、class の字句解析器
   （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)）
   :

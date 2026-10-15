@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, settings: under sandbox they are as written."
+  },
+  "config": {
+    "securityLevel": "sandbox"
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "\"T<b>x</b>\"",
+    "accTitle": "A<i>",
+    "accDescr": "",
+    "quadrants": [
+      "q<b>",
+      "q<i>",
+      "q<u>",
+      "q<s>"
+    ],
+    "xAxis": {
+      "left": "X<i>",
+      "right": "Y<u>"
+    },
+    "yAxis": {
+      "bottom": "P<i>",
+      "top": "Q<u>"
+    },
+    "points": [
+      {
+        "text": "p<b>",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  },
+  "embedded": {
+    "title": "FM<b>"
+  }
+}

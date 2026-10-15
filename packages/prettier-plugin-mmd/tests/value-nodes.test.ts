@@ -11,6 +11,7 @@ import { erValueNodeTypes } from "../src/printers/er-layout.ts"
 import { ganttValueNodeTypes } from "../src/printers/gantt-layout.ts"
 import { journeyValueNodeTypes } from "../src/printers/journey-layout.ts"
 import { mindmapValueNodeTypes } from "../src/printers/mindmap-layout.ts"
+import { quadrantValueNodeTypes } from "../src/printers/quadrant-layout.ts"
 import { requirementValueNodeTypes } from "../src/printers/requirement-layout.ts"
 import { sankeyValueNodeTypes } from "../src/printers/sankey-layout.ts"
 import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
@@ -160,6 +161,17 @@ const diagrams: readonly DiagramValues[] = [
       // The shared leaf nodes are no nodes of a timeline: its periods, events,
       // and titles are the text of a TimelineLiteral.
       "Identifier",
+      "StringLiteral",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Quadrant",
+    values: quadrantValueNodeTypes,
+    notValues: new Set([
+      // The shared leaf nodes that are no nodes of a quadrant chart: its
+      // strings and numbers are the text of a QuadrantLabel or a
+      // QuadrantLiteral.
       "StringLiteral",
       "NumericLiteral",
     ]),

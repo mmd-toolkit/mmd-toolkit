@@ -48,8 +48,9 @@ reported, in either form: after `accDescr: d`, the block `accDescr { d }` loses
 nothing. Descriptions are compared as mermaid.js keeps them, without the
 whitespace at their ends and without the whitespace after each line break, so
 the indentation of the lines of a block and the empty lines in it do not count.
-After `accDescr: a` and `accDescr: b`, a third `accDescr: a` is reported,
-because it replaces `b`.
+Every line break (LF, CRLF, or CR) is read as a line feed, so a block written
+with CRLF sets the same description as one written with LF. After `accDescr: a`
+and `accDescr: b`, a third `accDescr: a` is reported, because it replaces `b`.
 
 For each report, the rule suggests removing one of two statements: the reported
 one, or the one before it that sets the description. mermaid.js uses the last

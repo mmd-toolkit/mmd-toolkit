@@ -98,7 +98,11 @@ else, except the whitespace between a `:` and a later `#`, which keeps whether
 it is there (see [Semicolons](./flowchart.md#semicolons)), and the `;` stays as
 written (see [A line that a `;` ends](./compatibility.md#a-line-that-a--ends)).
 When such a line is the line of the header, the statements stay on the header's
-line. [fixture: statements-one-per-line/line-rule-line-kept-together] [fixture:
+line. A `;` that the rule ignores at the end of the line is dropped, and the
+line that is printed has no `;` for the rule to read, so its whitespace is
+formatted as anywhere else. [fixture:
+statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
+[fixture: statements-one-per-line/line-rule-line-kept-together] [fixture:
 statements-one-per-line/line-rule-line-after-the-header-kept-together] [fixture:
 statements-one-per-line/line-rule-line-gap-between-colon-and-hash-touching-kept]
 [fixture:

@@ -276,6 +276,22 @@ export type {
   XychartYAxisStatement,
 } from "./ast/xychart.ts"
 export type {
+  QuadrantAccDescrBlockStatement,
+  QuadrantAccDescrStatement,
+  QuadrantAccTitleStatement,
+  QuadrantAxisStatement,
+  QuadrantClassDefStatement,
+  QuadrantDiagram,
+  QuadrantIdentifier,
+  QuadrantLabel,
+  QuadrantLiteral,
+  QuadrantNode,
+  QuadrantPointStatement,
+  QuadrantQuadrantStatement,
+  QuadrantStatement,
+  QuadrantTitleStatement,
+} from "./ast/quadrant.ts"
+export type {
   RequirementAccDescrBlockStatement,
   RequirementAccDescrStatement,
   RequirementAccTitleStatement,

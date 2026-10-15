@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, line terminators: a U+2028 in the class name of a point."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nquadrantChartA:::a b: [0.3, 0.6]\n------------------^\nExpecting 'point_start', got 'UNICODE_TEXT'"
+  }
+}

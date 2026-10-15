@@ -298,5 +298,20 @@ export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
     "acctitle",
     "accdescr",
   ],
+  // The row `Keyword` of parser/docs/tokens/quadrant.md: the header and the
+  // words that start a statement.
+  QuadrantDiagram: [
+    "quadrantchart",
+    "title",
+    "acctitle",
+    "accdescr",
+    "x-axis",
+    "y-axis",
+    "quadrant-1",
+    "quadrant-2",
+    "quadrant-3",
+    "quadrant-4",
+    "classdef",
+  ],
   ErrorDiagram: [],
 }

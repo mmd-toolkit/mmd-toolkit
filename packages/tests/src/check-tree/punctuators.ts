@@ -6,6 +6,7 @@ import type { Problems } from "./problems.ts"
 import { diagramTokensOf } from "./invariants.ts"
 import type { CheckedRoot } from "./types.ts"
 import { TIMELINE_PUNCTUATORS } from "./timeline.ts"
+import { QUADRANT_PUNCTUATORS, isArrowText } from "./quadrant.ts"
 import { XYCHART_PUNCTUATORS } from "./xychart.ts"
 import { reportCutEntries } from "./tokens.ts"
 import { nodesOf } from "./walk.ts"
@@ -104,6 +105,9 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   SankeyDiagram: [","],
   // The row `Punctuator` of parser/docs/tokens/xychart.md.
   XychartDiagram: XYCHART_PUNCTUATORS,
+  // The row `Punctuator` of parser/docs/tokens/quadrant.md; the arrow is listed
+  // as `-->` and is checked with the other arrows of two dashes or more.
+  QuadrantDiagram: QUADRANT_PUNCTUATORS,
   ErrorDiagram: [],
 }
 
@@ -133,6 +137,7 @@ export function checkPunctuatorsAreWhole(
   const punctuators = diagramTokensOf(root).filter(
     (token) =>
       token.type === "Punctuator" &&
+      !(root.body.type === "QuadrantDiagram" && isArrowText(token.value)) &&
       !arrows.some(
         (arrow) =>
           arrow.range[0] <= token.range[0] && token.range[1] <= arrow.range[1],

@@ -1,7 +1,7 @@
 import type { Token } from "@mmd-toolkit/parser"
 import type { Doc } from "prettier"
 import { utils } from "prettier/doc"
-import { isLastOnItsLine } from "./kept-lines.ts"
+import { isDroppedSemicolon } from "./kept-lines.ts"
 import type { Source, Trivia } from "./source.ts"
 import {
   findCommentEndingAt,
@@ -439,7 +439,10 @@ function scanLines(
     const { element, end: elementEnd } = readGapElement(source, offset)
     switch (element.kind) {
       case "item":
-        if (!keepsSeparators && isDroppedSemicolon(source, element.item)) {
+        if (
+          !keepsSeparators &&
+          isDroppedSemicolon(source, element.item.range[0])
+        ) {
           addPart(element.item, true)
           current.afterLastSeparator = current.parts.length
         } else {
@@ -474,24 +477,6 @@ function scanLines(
   }
   current.spaceAfter = spacePending
   return lines
-}
-
-/**
- * Whether an item of a gap between statements is a `;` that the line rule
- * ignores at the end of its line, which is dropped as a `;` that separates
- * statements is: mermaid.js removes it from the text. Not one right after a
- * comment: with whitespace after it, the `;` lies inside the comment, which
- * is printed as written, and a `;` that was dropped only when it stands
- * outside the comment would make a second formatting differ from the first
- * (ast.md, Comment).
- */
-function isDroppedSemicolon(source: Source, item: GapItem): boolean {
-  const offset = item.range[0]
-  return (
-    source.ignoredSemicolons.has(offset) &&
-    isLastOnItsLine(source, offset) &&
-    !source.root.comments.some((comment) => comment.range[1] === offset)
-  )
 }
 
 /**

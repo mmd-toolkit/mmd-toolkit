@@ -1,0 +1,64 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/quadrantchart.html",
+    "line": 29
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "Analytics and Business Intelligence Platforms",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "Leaders",
+      "Challengers",
+      "Niche",
+      "Visionaries"
+    ],
+    "xAxis": {
+      "left": "Completeness of Vision ❤ ⟶",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "Ability to Execute",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "Incorta",
+        "className": "",
+        "x": "0.20",
+        "y": "0.30"
+      },
+      {
+        "text": "IBM",
+        "className": "",
+        "x": "0.51",
+        "y": "0.40"
+      },
+      {
+        "text": "Salesforce",
+        "className": "",
+        "x": "0.55",
+        "y": "0.60"
+      },
+      {
+        "text": "Microsoft",
+        "className": "",
+        "x": "0.75",
+        "y": "0.75"
+      }
+    ],
+    "classes": []
+  },
+  "embedded": {
+    "config": {
+      "quadrantChart": {
+        "chartWidth": 600,
+        "chartHeight": 600
+      }
+    }
+  }
+}

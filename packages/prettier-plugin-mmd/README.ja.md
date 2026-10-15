@@ -128,6 +128,10 @@ flowchart LR
   `xychart` か `xychart-beta` で始まる図です。
   整形の規則は、
   例とともに [docs/xychart.ja.md](./docs/xychart.ja.md) にあります。
+- 象限チャート。
+  `quadrantChart` で始まる図です。
+  整形の規則は、
+  例とともに [docs/quadrant.ja.md](./docs/quadrant.ja.md) にあります。
 - これらの図の YAML のフロントマター。
   Prettier の YAML 整形で整形します。
 
@@ -156,7 +160,8 @@ flowchart LR
   `A-->|x""|B` のように、トークンの間に空の文字列がある場合もそうです。
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
 - flowchart、sequence、class、state、ER、Gantt、journey、
-  requirement、mindmap、timeline、sankey、XY チャート以外の図種は変えません。
+  requirement、mindmap、timeline、sankey、XY チャート、象限チャート以外の図種は
+  変えません。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
 
@@ -202,6 +207,7 @@ flowchart LR
 - [docs/timeline.ja.md](./docs/timeline.ja.md): timeline の整形の規則。
 - [docs/sankey.ja.md](./docs/sankey.ja.md): sankey 図の整形の規則。
 - [docs/xychart.ja.md](./docs/xychart.ja.md): XY チャートの整形の規則。
+- [docs/quadrant.ja.md](./docs/quadrant.ja.md): 象限チャートの整形の規則。
 - [docs/compatibility.ja.md](./docs/compatibility.ja.md):
   mermaid.js と違う箇所と、その理由。
 - [docs/development.ja.md](./docs/development.ja.md): テストと fixture。

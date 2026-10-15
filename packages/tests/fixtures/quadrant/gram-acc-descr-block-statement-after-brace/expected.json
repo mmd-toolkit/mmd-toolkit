@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, accessibility: a statement after the closing brace on its line with no `;` is rejected: the block is a statement and needs the end of its line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...ChartaccDescr {D} title T\n--------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got 'SPACE'"
+  }
+}

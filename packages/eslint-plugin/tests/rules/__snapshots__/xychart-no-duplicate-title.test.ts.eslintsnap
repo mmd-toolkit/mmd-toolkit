@@ -1,0 +1,164 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: xychart-no-duplicate-title >> invalid >>> docs/rules/xychart-no-duplicate-title.md incorrect 1
+Filename: xychart-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | xychart
+  2 |   title first
+  3 |   title second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   line [1, 2]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: xychart-no-duplicate-title >> invalid >>> docs/rules/xychart-no-duplicate-title.md incorrect 2
+Filename: xychart-no-duplicate-title-incorrect-2.mmd
+
+Code:
+  1 | xychart
+  2 |   accTitle: first
+  3 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   line [1, 2]
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: xychart-no-duplicate-title >> invalid >>> invalid/xychart/acc-title-empty-at-end
+Filename: tests/fixtures/rules/xychart-no-duplicate-title/invalid/xychart/acc-title-empty-at-end-input.mmd
+
+Code:
+  1 | xychart
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: xychart-no-duplicate-title >> invalid >>> invalid/xychart/acc-title-value-after-comment-line
+Filename: tests/fixtures/rules/xychart-no-duplicate-title/invalid/xychart/acc-title-value-after-comment-line-input.mmd
+
+Code:
+  1 | xychart
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |   %% c
+    | ~~~~~~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   line [1]
+  7 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: xychart-no-duplicate-title >> invalid >>> invalid/xychart/acc-title-value-after-directive-line
+Filename: tests/fixtures/rules/xychart-no-duplicate-title/invalid/xychart/acc-title-value-after-directive-line-input.mmd
+
+Code:
+  1 | xychart
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |   %%{init: {}}%%
+    | ~~~~~~~~~~~~~~~~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   line [1]
+  7 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: xychart-no-duplicate-title >> invalid >>> invalid/xychart/acc-title-value-after-empty-line
+Filename: tests/fixtures/rules/xychart-no-duplicate-title/invalid/xychart/acc-title-value-after-empty-line-input.mmd
+
+Code:
+  1 | xychart
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |
+    | ~\ [1]
+  5 |   b
+    | ~~~ [1]
+  6 |   line [1]
+  7 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: xychart-no-duplicate-title >> invalid >>> invalid/xychart/title-back-to-first
+Filename: tests/fixtures/rules/xychart-no-duplicate-title/invalid/xychart/title-back-to-first-input.mmd
+
+Code:
+  1 | xychart
+  2 |   title a
+  3 |   title b
+    |   ^~~~~~~ [1]
+  4 |   title a
+    |   ^~~~~~~ [2]
+  5 |   line [1]
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+---
+
+
+Test: xychart-no-duplicate-title >> invalid >>> invalid/xychart/title-twice-crlf
+Filename: tests/fixtures/rules/xychart-no-duplicate-title/invalid/xychart/title-twice-crlf-input.mmd
+
+Code:
+  1 | xychart
+  2 |   title a
+  3 |   title b
+    |   ^~~~~~~ [1]
+  4 |   line [1]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: xychart-no-duplicate-title >> invalid >>> invalid/xychart/title-twice-same-line
+Filename: tests/fixtures/rules/xychart-no-duplicate-title/invalid/xychart/title-twice-same-line-input.mmd
+
+Code:
+  1 | xychart
+  2 |   title a title b
+    |           ^~~~~~~ [1]
+  3 |   line [1]
+  4 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: xychart-no-duplicate-title >> invalid >>> invalid/xychart/title-upper-case-second
+Filename: tests/fixtures/rules/xychart-no-duplicate-title/invalid/xychart/title-upper-case-second-input.mmd
+
+Code:
+  1 | xychart
+  2 |   title a
+  3 |   TITLE b
+    |   ^~~~~~~ [1]
+  4 |   line [1]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---

@@ -100,6 +100,7 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   timeline: true,
   sankey: true,
   xychart: true,
+  quadrant: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

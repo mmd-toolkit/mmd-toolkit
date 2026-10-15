@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison.spec.ts",
+    "line": 8,
+    "test": "Testing quadrantChart jison file > should be able to parse quadrant4 text"
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: QuadRantChart   \n     QuaDrant-4 Delete    "
+  }
+}

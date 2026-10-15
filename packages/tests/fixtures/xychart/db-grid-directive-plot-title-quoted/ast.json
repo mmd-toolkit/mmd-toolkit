@@ -30,11 +30,11 @@
         "title": {
           "type": "StringLiteral",
           "value": "ab",
-          "raw": "\"a%%{init: {}%%b\"",
+          "raw": "\"a%%{init: {}}%%b\"",
           "closed": true,
           "range": [
             19,
-            36
+            37
           ],
           "loc": {
             "start": {
@@ -43,7 +43,7 @@
             },
             "end": {
               "line": 2,
-              "column": 23
+              "column": 24
             }
           }
         },
@@ -55,40 +55,40 @@
               "value": 1,
               "raw": "1",
               "range": [
-                38,
-                39
+                39,
+                40
               ],
               "loc": {
                 "start": {
                   "line": 2,
-                  "column": 25
+                  "column": 26
                 },
                 "end": {
                   "line": 2,
-                  "column": 26
+                  "column": 27
                 }
               }
             },
             "label": null,
             "range": [
-              38,
-              39
+              39,
+              40
             ],
             "loc": {
               "start": {
                 "line": 2,
-                "column": 25
+                "column": 26
               },
               "end": {
                 "line": 2,
-                "column": 26
+                "column": 27
               }
             }
           }
         ],
         "range": [
           14,
-          40
+          41
         ],
         "loc": {
           "start": {
@@ -97,14 +97,14 @@
           },
           "end": {
             "line": 2,
-            "column": 27
+            "column": 28
           }
         }
       }
     ],
     "range": [
       0,
-      40
+      41
     ],
     "loc": {
       "start": {
@@ -113,7 +113,7 @@
       },
       "end": {
         "line": 2,
-        "column": 27
+        "column": 28
       }
     }
   },
@@ -123,11 +123,11 @@
     {
       "type": "Directive",
       "name": "init",
-      "value": "init: {",
+      "value": "init: {}",
       "closed": true,
       "range": [
         21,
-        34
+        35
       ],
       "loc": {
         "start": {
@@ -136,7 +136,7 @@
         },
         "end": {
           "line": 2,
-          "column": 21
+          "column": 22
         }
       }
     }
@@ -198,10 +198,10 @@
     },
     {
       "type": "Directive",
-      "value": "%%{init: {}%%",
+      "value": "%%{init: {}}%%",
       "range": [
         21,
-        34
+        35
       ],
       "loc": {
         "start": {
@@ -210,7 +210,7 @@
         },
         "end": {
           "line": 2,
-          "column": 21
+          "column": 22
         }
       }
     },
@@ -218,41 +218,23 @@
       "type": "StringFragment",
       "value": "b\"",
       "range": [
-        34,
-        36
+        35,
+        37
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 21
+          "column": 22
         },
         "end": {
           "line": 2,
-          "column": 23
+          "column": 24
         }
       }
     },
     {
       "type": "Punctuator",
       "value": "[",
-      "range": [
-        37,
-        38
-      ],
-      "loc": {
-        "start": {
-          "line": 2,
-          "column": 24
-        },
-        "end": {
-          "line": 2,
-          "column": 25
-        }
-      }
-    },
-    {
-      "type": "Numeric",
-      "value": "1",
       "range": [
         38,
         39
@@ -269,8 +251,8 @@
       }
     },
     {
-      "type": "Punctuator",
-      "value": "]",
+      "type": "Numeric",
+      "value": "1",
       "range": [
         39,
         40
@@ -285,11 +267,29 @@
           "column": 27
         }
       }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        40,
+        41
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 28
+        }
+      }
     }
   ],
   "range": [
     0,
-    41
+    42
   ],
   "loc": {
     "start": {

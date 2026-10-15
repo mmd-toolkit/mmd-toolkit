@@ -376,6 +376,25 @@ describe("recordSpecFile: the functions that take a text", () => {
     expect(textsOf(recording)).toEqual(["xychart\n title T"])
   })
 
+  it("records the text of the parser of the quadrant chart's jison module, whatever the test does with the mock Db", async () => {
+    const recording = await recordSource(
+      [
+        `// @ts-ignore: jison has no types`,
+        `import { parser } from "./quadrant.jison"`,
+        `import { vi } from "vitest"`,
+        `const mockDB = { setDiagramTitle: vi.fn() }`,
+        `it("t", () => {`,
+        `  parser.yy = mockDB`,
+        `  mockDB.setDiagramTitle.mockRestore()`,
+        `  parser.parse("quadrantChart\\n title T")`,
+        `})`,
+        ``,
+      ].join("\n"),
+      "diagrams/quadrant-chart/parser/quadrant.jison.spec.ts",
+    )
+    expect(textsOf(recording)).toEqual(["quadrantChart\n title T"])
+  })
+
   it("records the text of mermaidAPI.parse, whether it is the default or the named export", async () => {
     const recording = await recordSource(
       [

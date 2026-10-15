@@ -57,6 +57,7 @@ export type DiagramType =
   | "timeline"
   | "sankey"
   | "xychart"
+  | "quadrant"
 
 /**
  * Where a fixture input came from.

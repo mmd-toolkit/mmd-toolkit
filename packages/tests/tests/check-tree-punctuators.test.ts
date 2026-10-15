@@ -67,6 +67,7 @@ const DIAGRAMS: readonly [string, string][] = [
   ["timeline", "TimelineDiagram"],
   ["sankey", "SankeyDiagram"],
   ["xychart", "XychartDiagram"],
+  ["quadrant", "QuadrantDiagram"],
 ]
 
 /**
@@ -100,6 +101,9 @@ function textsBesidesTheRow(diagram: string): string[] {
     // The row names the openers and the closers of a shape by their kind.
     case "mindmap":
       return ["))", "(", "((", "[", "]", "{{", "}}", "(-", "-)"]
+    // The row names the arrow, of any length, by its unit.
+    case "quadrant":
+      return ["-->"]
     default:
       return []
   }

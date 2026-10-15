@@ -257,6 +257,21 @@ const VALUE_FIELD_REPORTS: Readonly<
   "SankeyLiteral.value": {
     message: "value is not its written text without the whitespace at its ends",
   },
+  // The first axis statement of the recorded trees has no arrow, so a true
+  // arrow is not what is written after its text.
+  "QuadrantAxisStatement.arrow": { message: "the written text " },
+  "QuadrantAxisStatement.axis": { message: "the axis is " },
+  "QuadrantIdentifier.name": { message: "name is not its written text" },
+  "QuadrantLabel.kind": { message: "the kind is " },
+  "QuadrantLabel.value": {
+    message:
+      "the value is not what the kind of the label makes of its written text",
+  },
+  "QuadrantLiteral.value": { message: "value is not " },
+  // Another number of the four is not the digit of the keyword.
+  "QuadrantQuadrantStatement.quadrant": {
+    message: "the keyword the statement starts with: ",
+  },
   "XychartAccDescrBlockStatement.closed": {
     message: "closed, which is whether it ends with }: ",
   },

@@ -428,6 +428,10 @@ U+2028 か U+2029 の前の無視される `;` がある行です
 `C[style:]   -->   D[#z;y]` は `C[style:] --> D[#z;y]` になります。
 [fixture: semicolons/style-line-space-between-colon-and-hash-kept]
 [fixture: semicolons/style-line-spaces-between-colon-and-hash-become-one]
+行の末尾にある、規則が無視する `;` は落とします。
+印字した行には規則が読む `;` がないので、
+その空白はほかと同じに整えます。
+[fixture: semicolons/style-line-dropped-semicolon-formats-the-gap]
 
 入力
 ([semicolons/removed-input.mmd](../tests/fixtures/flowchart/semicolons/removed-input.mmd)):

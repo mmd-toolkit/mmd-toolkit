@@ -10,6 +10,7 @@ export const BACKSPACE = 0x08
 export const CHARACTER_TABULATION = 0x09
 export const LINE_FEED = 0x0a
 export const LINE_TABULATION = 0x0b
+export const FORM_FEED = 0x0c
 export const CARRIAGE_RETURN = 0x0d
 export const SPACE = 0x20
 export const EXCLAMATION_MARK = 0x21 // !

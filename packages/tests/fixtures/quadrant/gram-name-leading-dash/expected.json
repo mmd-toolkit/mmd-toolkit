@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, names: a name may not start with a dash."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nquadrantChart-A: [0.3, 0.6]\n-------------^\nExpecting 'ALPHA', 'NUM', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', 'CLASSDEF', 'QUADRANT', 'title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'section', 'X-AXIS', 'Y-AXIS', 'QUADRANT_1', 'QUADRANT_2', 'QUADRANT_3', 'QUADRANT_4', 'NEWLINE', 'SEMI', 'EOF', 'STR', 'MD_STR', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'MINUS'"
+  }
+}

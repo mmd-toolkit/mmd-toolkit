@@ -29,11 +29,11 @@
         "value": {
           "type": "StringLiteral",
           "value": "ab",
-          "raw": "\"a%%{init: {}%%b\"",
+          "raw": "\"a%%{init: {}}%%b\"",
           "closed": true,
           "range": [
             20,
-            37
+            38
           ],
           "loc": {
             "start": {
@@ -42,13 +42,13 @@
             },
             "end": {
               "line": 2,
-              "column": 24
+              "column": 25
             }
           }
         },
         "range": [
           14,
-          37
+          38
         ],
         "loc": {
           "start": {
@@ -57,14 +57,14 @@
           },
           "end": {
             "line": 2,
-            "column": 24
+            "column": 25
           }
         }
       }
     ],
     "range": [
       0,
-      37
+      38
     ],
     "loc": {
       "start": {
@@ -73,7 +73,7 @@
       },
       "end": {
         "line": 2,
-        "column": 24
+        "column": 25
       }
     }
   },
@@ -83,11 +83,11 @@
     {
       "type": "Directive",
       "name": "init",
-      "value": "init: {",
+      "value": "init: {}",
       "closed": true,
       "range": [
         22,
-        35
+        36
       ],
       "loc": {
         "start": {
@@ -96,7 +96,7 @@
         },
         "end": {
           "line": 2,
-          "column": 22
+          "column": 23
         }
       }
     }
@@ -158,10 +158,10 @@
     },
     {
       "type": "Directive",
-      "value": "%%{init: {}%%",
+      "value": "%%{init: {}}%%",
       "range": [
         22,
-        35
+        36
       ],
       "loc": {
         "start": {
@@ -170,7 +170,7 @@
         },
         "end": {
           "line": 2,
-          "column": 22
+          "column": 23
         }
       }
     },
@@ -178,24 +178,24 @@
       "type": "StringFragment",
       "value": "b\"",
       "range": [
-        35,
-        37
+        36,
+        38
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 22
+          "column": 23
         },
         "end": {
           "line": 2,
-          "column": 24
+          "column": 25
         }
       }
     }
   ],
   "range": [
     0,
-    38
+    39
   ],
   "loc": {
     "start": {

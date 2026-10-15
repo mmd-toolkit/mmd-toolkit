@@ -6,6 +6,7 @@ import {
   STRUCTURE_NODE_TYPES,
   VALUE_NODE_TYPES,
 } from "../src/check-tree/node-types.ts"
+import { QUADRANT_TRIMMED_TEXT_STATEMENTS } from "../src/check-tree/quadrant.ts"
 import { VALUE_RULES } from "../src/check-tree/values.ts"
 import { XYCHART_ACCESSIBILITY_STATEMENTS } from "../src/check-tree/xychart.ts"
 import { WrittenText } from "../src/check-tree/written-text.ts"
@@ -138,7 +139,8 @@ interface BrokenValueRow {
   /** The node type of `VALUE_RULES` whose value is broken. */
   readonly type: string
   /** What the row breaks, when the type has more than one rule. */
-  readonly variant?: "a style" | "an accessibility text"
+  readonly variant?:
+    "a style" | "an accessibility text" | "a title or an accessibility text"
   /** The fixed start of the message of the rule of the type; the problem is at the node. */
   readonly message: string
 }
@@ -199,6 +201,18 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "RequirementIdentifier", message: "name is not its written text" },
   { type: "RequirementLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RequirementIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "QuadrantIdentifier", message: "name is not its written text" },
+  {
+    type: "QuadrantLabel",
+    message:
+      "the value is not what the kind of the label makes of its written text",
+  },
+  { type: "QuadrantLiteral", message: NOT_WRITTEN_TEXT },
+  {
+    type: "QuadrantLiteral",
+    variant: "a title or an accessibility text",
+    message: "value is not its written text without the whitespace at its ends",
+  },
   { type: "XychartLiteral", message: NOT_TOKENS_JOINED },
   {
     type: "XychartLiteral",
@@ -229,11 +243,14 @@ function stylesIn(tree: CheckedRoot): Set<unknown> {
   return styles
 }
 
-/** The `XychartLiteral` nodes of `tree` that are the text of an accessibility statement. */
+/** The `XychartLiteral` nodes of `tree` that are the text of an accessibility statement, and the `QuadrantLiteral` nodes that are a title or an accessibility text. */
 function accessibilityTextsIn(tree: CheckedRoot): Set<unknown> {
   return new Set(
     nodesOf(tree).flatMap((node) =>
-      XYCHART_ACCESSIBILITY_STATEMENTS.includes(node.type) ? [node.value] : [],
+      XYCHART_ACCESSIBILITY_STATEMENTS.includes(node.type) ||
+      QUADRANT_TRIMMED_TEXT_STATEMENTS.includes(node.type)
+        ? [node.value]
+        : [],
     ),
   )
 }
@@ -251,6 +268,9 @@ function instancesOfRow(tree: CheckedRoot, row: BrokenValueRow): CheckedNode[] {
       (row.type !== "XychartLiteral" ||
         accessibilityTexts.has(node) ===
           (row.variant === "an accessibility text")) &&
+      (row.type !== "QuadrantLiteral" ||
+        accessibilityTexts.has(node) ===
+          (row.variant === "a title or an accessibility text")) &&
       (typeof node[field] === "number" ||
         (typeof node[field] === "string" && node[field] !== "")),
   )
@@ -331,6 +351,40 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "QuadrantLabel",
+    name: "a QuadrantLabel reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "quadrant",
+    fixture: "db-directive-wrap-statement",
+    token: { type: "RawText", value: "A " },
+    side: "end",
+    problems: [
+      {
+        where: "QuadrantLabel at 25-43",
+        message:
+          "the whitespace between RawText at 25-26 and RawText at 41-43, next to a cut, lies in no token",
+      },
+    ],
+  },
+  {
+    type: "QuadrantLiteral",
+    name: "a QuadrantLiteral reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "quadrant",
+    fixture: "db-after-title-directive-word-unclosed",
+    token: { type: "RawText", value: "T " },
+    side: "end",
+    problems: [
+      {
+        where: "QuadrantLiteral at 20-42",
+        message: `${JOINED}: "T-1 U", not "T -1 U"`,
+      },
+      {
+        where: "QuadrantLiteral at 20-42",
+        message:
+          "the whitespace between RawText at 20-21 and RawText at 38-42, next to a cut, lies in no token",
+      },
+    ],
+  },
   {
     type: "StringLiteral",
     name: "a StringLiteral reports the whitespace taken off the end of the StringFragment token before a comment line",
@@ -858,6 +912,12 @@ const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
     fixture: "db-fields-trimmed",
     reason:
       "its token is the field without the whitespace at its ends; only a field of whitespace only has a token of whitespace (ast/sankey.md, SankeyLiteral)",
+  },
+  QuadrantIdentifier: {
+    diagram: "quadrant",
+    fixture: "db-classdef-color",
+    reason:
+      "its token is an Identifier token, which holds no whitespace (parser/docs/tokens/quadrant.md)",
   },
   XychartLiteral: {
     diagram: "xychart",

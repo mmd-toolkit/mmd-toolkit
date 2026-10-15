@@ -6,6 +6,7 @@ import { printFlowchart } from "./flowchart.ts"
 import { printGantt } from "./gantt.ts"
 import { printJourney } from "./journey.ts"
 import { printMindmap } from "./mindmap.ts"
+import { printQuadrant } from "./quadrant.ts"
 import { printRequirement } from "./requirement.ts"
 import { printSankey } from "./sankey.ts"
 import { printSequence } from "./sequence.ts"
@@ -47,6 +48,7 @@ export const diagramPrinters: Readonly<
   GanttDiagram: printGantt,
   JourneyDiagram: printJourney,
   MindmapDiagram: printMindmap,
+  QuadrantDiagram: printQuadrant,
   RequirementDiagram: printRequirement,
   SankeyDiagram: printSankey,
   TimelineDiagram: printTimeline,

@@ -412,6 +412,50 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   too, as `title ""`. [fixture: xychart/gram-title-empty-string] [fixture:
   xychart/div-empty-string-line]
 
+## In a quadrant chart
+
+- Where no rule of the lexer matches, `range` is the character there: a
+  parenthesis, a `|`, and a `"` inside a markdown string. [fixture:
+  quadrant/gram-quadrant-parens] [fixture: quadrant/gram-point-parens] [fixture:
+  quadrant/gram-quadrant-pipe] [fixture:
+  quadrant/gram-markdown-string-quote-inside]
+- When the text ends in a context that may not end there, also with only
+  whitespace after the last character, `range` is what entered that context, and
+  the message says what is not closed: the opening `"` of a string
+  (`The string has no closing " before the end of the text`) and of a markdown
+  string (``The markdown string has no closing `" before the end of the text``),
+  `accTitle` and `accDescr` (`accTitle has no text before the end of the text`,
+  `accDescr has no text before the end of the text`), the `accDescr` of a
+  description block
+  (`The description block has no } before the end of the text`), the `:::` of a
+  class name (`::: has no class name before the end of the text`), and the `[`
+  of a point (`The point has no ] before the end of the text`). [fixture:
+  quadrant/gram-unclosed-axis-quote-at-end] [fixture:
+  quadrant/gram-unclosed-markdown-at-end] [fixture:
+  quadrant/gram-unclosed-acc-title-at-end] [fixture:
+  quadrant/gram-unclosed-acc-descr-at-end] [fixture:
+  quadrant/gram-unclosed-acc-block-after-text] [fixture:
+  quadrant/gram-unclosed-class-marker-at-end] [fixture:
+  quadrant/gram-unclosed-point-after-comma-at-end]
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace, and the empty range at the start of a unit that is all whitespace,
+  a `space` or a `newline` unit, with the message `Unexpected token`; where the
+  text ends before a statement is complete, it is the empty range at the end of
+  the text, with the message `Unexpected end of text`. [fixture:
+  quadrant/header-twice] [fixture: quadrant/gram-name-only] [fixture:
+  quadrant/gram-grid-tab-class-name] [fixture:
+  quadrant/gram-unclosed-class-name-at-end]
+- For the rejection outside the grammar, which the grammar makes once it has
+  read the styles of a point or of a class, `range` is the first style that
+  mermaid.js does not take, with the message
+  `A style must be radius, color, stroke-color, or stroke-width with a value of its form`.
+  [fixture: quadrant/gram-style-radius-word] [fixture:
+  quadrant/gram-style-upper-case-key]
+- An empty string and an empty markdown string are rejected at them, as the
+  known divergence below, also where mermaid.js rejects the input too, as
+  `"": [0.3, 0.6]`. [fixture: quadrant/gram-name-quoted-empty] [fixture:
+  quadrant/div-empty-string-alone]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

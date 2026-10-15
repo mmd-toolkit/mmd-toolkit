@@ -910,6 +910,22 @@ markdown 文字列、つまり引用符の後に逆引用符が続くものは�
 テキストの終わりまで空白しか続かないとき、単位は空です。
 `:` の前には改行も含めて空白を置け、
 その間にコメント行やディレクティブの行があってもかまいません。
+U+00A0、U+2028、U+2029、U+3000、U+FEFF も `:` の前後の空白です。
+[fixture: xychart/db-acc-title-nbsp-before-colon]
+[fixture: xychart/db-acc-title-ideographic-before-colon]
+[fixture: xychart/db-acc-title-bom-before-colon]
+[fixture: xychart/db-acc-title-ls-before-colon]
+[fixture: xychart/db-acc-title-ps-before-colon]
+[fixture: xychart/db-acc-descr-nbsp-before-colon]
+[fixture: xychart/db-acc-descr-ideographic-before-colon]
+[fixture: xychart/db-acc-descr-bom-before-colon]
+[fixture: xychart/db-acc-descr-ls-before-colon]
+[fixture: xychart/db-acc-descr-ps-before-colon]
+[fixture: xychart/db-acc-title-nbsp-after-colon]
+[fixture: xychart/db-acc-title-ideographic-after-colon]
+[fixture: xychart/db-acc-title-bom-after-colon]
+[fixture: xychart/db-acc-title-ls-after-colon]
+[fixture: xychart/db-acc-title-ps-after-colon]
 `accTitle`、コメント行、`: T` はタイトル `T` を持ちます。
 `:`、`;`、`#`、`%%` と、文の文脈の文字は、テキストの文字です。
 [fixture: xychart/db-acc-title] [fixture: xychart/db-acc-descr]
@@ -973,6 +989,12 @@ markdown 文字列、つまり引用符の後に逆引用符が続くものは�
 その中の CRLF と単独の CR は改行文字です。
 `{` の前には改行も含めて空白を置け、
 その間にコメント行やディレクティブの行があってもかまいません。
+U+00A0 など、表記のほかの空白文字もそこに置けます。
+[fixture: xychart/db-acc-descr-nbsp-before-brace]
+[fixture: xychart/db-acc-descr-ideographic-before-brace]
+[fixture: xychart/db-acc-descr-bom-before-brace]
+[fixture: xychart/db-acc-descr-ls-before-brace]
+[fixture: xychart/db-acc-descr-ps-before-brace]
 `}` がなければ、テキストは図のテキストの終わりまで続きます。
 ブロックの後の 2 つ目の `}` と、テキストの中の波括弧は、その一部ではありません。
 `a } b` に `}` が続くと、ブロックは最初の `}` で終わり、

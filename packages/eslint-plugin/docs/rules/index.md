@@ -151,4 +151,16 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [sankey-no-empty-node](./sankey-no-empty-node.md)       | Disallow a source or a target of whitespace only, which makes a node without a name. | ✅  |     |     |
 | [sankey-no-invalid-value](./sankey-no-invalid-value.md) | Disallow a link value that mermaid.js does not read as written.                      | ✅  |     |     |
 
+## xychart
+
+| Rule                                                                                | Description                                                                 | ✅  | 💡  | 🚧  |
+| ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --- | --- | --- |
+| [xychart-no-duplicate-description](./xychart-no-duplicate-description.md)           | Disallow a statement that sets the description of the chart again.          | ✅  |     |     |
+| [xychart-no-duplicate-title](./xychart-no-duplicate-title.md)                       | Disallow a `title` or `accTitle` statement that sets its title again.       | ✅  |     |     |
+| [xychart-no-empty-description-block](./xychart-no-empty-description-block.md)       | Disallow a description block that holds no description.                     | ✅  |     |     |
+| [xychart-no-extra-value](./xychart-no-extra-value.md)                               | Disallow a value of a plot beyond the categories of the x axis.             | ✅  |     |     |
+| [xychart-no-redefined-axis](./xychart-no-redefined-axis.md)                         | Disallow an axis statement that replaces the title or the data of the axis. | ✅  |     |     |
+| [xychart-no-unclosed-description-block](./xychart-no-unclosed-description-block.md) | Disallow a description block that is not closed by `}`.                     | ✅  |     |     |
+| [xychart-no-unread-orientation](./xychart-no-unread-orientation.md)                 | Disallow an orientation that mermaid.js does not read as `horizontal`.      | ✅  |     |     |
+
 <!-- end auto-generated rules list -->

@@ -909,6 +909,59 @@ the Db or the lexer reads stays. See [Text units](./xychart.md#text-units) and
   statements-one-per-line/axis-then-title-with-a-digit-split] [fixture:
   statements-one-per-line/axis-band-then-title-with-a-digit-split]
 
+## Quadrant chart lines that the texts, the quotes, or the lexer decide
+
+The whitespace inside the texts of a quadrant chart is in the Db, so formatting
+leaves the texts as written and changes the whitespace around them. What the Db
+or the lexer reads stays. See
+[Keywords and texts](./quadrant.md#keywords-and-texts) and
+[Quotes](./quadrant.md#quotes).
+
+- The whitespace inside a text without quotes, a name, a title, and an
+  accessibility text: a run of spaces, a tab, and a form feed between two words
+  are characters of the text. A string and the words after it keep the
+  whitespace between them, since `"a" b` and `"a"b` are different texts.
+  [fixture: keywords-and-texts/inner-whitespace-kept] [fixture:
+  keywords-and-texts/string-then-text-whitespace-kept] [fixture:
+  points/name-inner-whitespace-kept] [fixture:
+  titles-and-accessibility-statements/text-inner-whitespace-kept]
+- A word after the keyword `title` or `classDef` with no whitespace between them
+  is a word of its own: `title1: [0.3, 0.6]` is a point named `title1`, and a
+  space would make a title. [fixture:
+  keywords-and-texts/word-after-title-keyword-is-a-point-name]
+- The coordinates of a point, which are texts: `0.30` is not `0.3`. [fixture:
+  points/coordinates-as-written]
+- The arrow of an axis with no second text, which the Db reads as part of the
+  left text. [fixture: axes/arrow-only]
+- A string, with the whitespace and the line breaks in it, and the quotes, which
+  the author chooses: a string can hold what a text without quotes cannot, so
+  the quotes are not removed. [fixture: quotes/strings-as-written] [fixture:
+  quotes/keywords-and-arrows-in-strings] [fixture:
+  multi-line-values/string-with-line-breaks-kept]
+- A `;` inside a title or an accessibility text, which is a character of it, and
+  an empty description block inside a title, which is part of it. [fixture:
+  statements-one-per-line/semicolon-in-a-title-is-text] [fixture:
+  statements-one-per-line/empty-description-block-in-a-title-stays]
+- A line that the line rule of mermaid.js reads, with a `style` or `classDef`, a
+  `:` and a `#` after it with no whitespace between them, and a `;` after that,
+  keeps its statements together with the `;`. [fixture:
+  statements-one-per-line/line-rule-line-kept-together] [fixture:
+  multi-line-statements/semicolon-on-the-last-line-kept]
+- A statement with a comment line or a directive in a line break that it would
+  join, kept as written. [fixture:
+  multi-line-statements/comment-line-inside-kept] [fixture:
+  multi-line-statements/directive-inside-kept]
+- Whether a comment touches the unit before it: mermaid.js reads a `%%` that
+  touches a unit of one character together with that character (the known
+  divergence `comment-takes-character`), and the printer keeps whether the
+  comment touches. [fixture:
+  comments/comment-glued-to-a-one-character-word-kept] [fixture:
+  comments/comment-takes-a-character-kept]
+- U+2028, U+2029, and U+00A0, which are characters of a word in a text, a name,
+  a title, and an accessibility text, and stay where they stand, also in a gap.
+  [test: U+2028 between the words of a text] [test: U+2028 around the arrow of
+  an axis]
+
 ## A comment line after U+2028 or U+2029
 
 mermaid.js removes the comment lines from the text before it reads it. A comment

@@ -3654,3 +3654,2385 @@ Db が持つとおりに保ちます。
   [fixture: xychart/gram-grid-empty-x-title-quoted]
   [fixture: xychart/gram-grid-empty-y-title-bare]
   [fixture: xychart/gram-grid-empty-y-title-quoted]
+
+## quadrant
+
+要約の欄は次のとおりです。
+
+| 欄          | 内容                                                        |
+| ----------- | ----------------------------------------------------------- |
+| `title`     | 図のタイトル。最後の `title` の文、なければフロントマター。 |
+| `accTitle`  | アクセシビリティのタイトル。なければ空のテキスト。          |
+| `accDescr`  | アクセシビリティの説明。なければ空のテキスト。              |
+| `quadrants` | `quadrant-1` から `quadrant-4` のテキスト。この順。         |
+| `xAxis`     | x 軸のテキスト。`left` と `right`。                         |
+| `yAxis`     | y 軸のテキスト。`bottom` と `top`。                         |
+| `points`    | 点。Db が持つ順。                                           |
+| `classes`   | クラス。最初の定義の順。                                    |
+
+点は、`text`、`className`（クラスがなければ空のテキスト）、
+`x` と `y`（字句解析が読んだ 2 つの数のテキスト）、
+テキストが書いたとおりのスタイルを持ちます。
+スタイルは、`radius`（数）、`color`、`strokeColor`、`strokeWidth` です。
+クラスは `name` と、持っているスタイルを持ちます。
+有限でない radius（桁が多すぎて double で持てない数）は、
+JSON にそのような数がないので、
+数のテキスト（`"Infinity"`）になります。
+
+`normalizeQuadrant()`（`src/normalizers/quadrant.ts`）は、
+`quadrantChart` の Db を要約します。
+Db は、構文解析のあいだ、ブラウザーの機能も、時刻も、乱数も読みません。
+Db は、すべての quadrant 図が共有する 1 つのオブジェクトで、
+状態は、自分のメソッドだけが触れる `QuadrantBuilder` にあり、
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L147-L150) が構文解析のたびに初期化します。
+テキストが与えたものを読む方法は、図を配置する
+[`getQuadrantData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L120-L145)
+（
+[`build()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L604-L623)）だけなので、
+要約は、そこに配置が残すもの（象限、軸、
+点のテキスト）を Db が持つとおりに取ります。
+配置は、点のクラス名、書いたとおりの座標、書いたとおりのスタイル、
+クラスを残さないので、
+Db のパッチ（`patchQuadrantDb()`）が、
+[`addPoint()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L95-L106) と
+[`addClass()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L108-L110) が受け取るものを、
+Db が受理した後に記録します。
+スタイルは、書かれたものから
+[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93) が作ったものです。
+Db は 1 つなので、パッチは Db 自体に当てられ、
+`clear()` が記録を最初からやり直します。
+
+配置は、軸のラベルを、空でないテキストの分だけ並べます。
+ラベルが 1 つだけのときは、配置がそれを `left` に置けば軸の最初のテキストで
+（2 つ目のテキストが空のとき）、`center` に置けば 2 つ目のテキストです
+（2 つ目のテキストが空でないとき。
+[`getAxisLabels()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L286-L382)）。
+軸のラベルを隠すサイトの設定があると、Db が持つテキストが失われます。
+そのため、パッチは軸のテキストの setter でテキストが設定したテキストも記録し、
+配置がそれと違うラベルを並べたとき、
+要約は `MermaidEnvironmentError` を投げます。
+
+次のものを、それぞれに書いた理由で捨てます。
+
+- `getQuadrantData()` が作る配置: 図の単位での座標と大きさ、テーマの色、枠線、
+  既定の radius と線の幅、テキストの位置です。
+  サイトの設定（`quadrantChart`、テーマ）で決まり、
+  テキストが言うことには依りません。
+- 点のスタイルとそのクラスのスタイルの併合（`{ ...classStyles, ...point }`）:
+  描画が行うもので、点とクラスのスタイルは、テキストが書いたとおりに保ちます。
+
+値を、欄ごとに述べます。
+テキストは
+[字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L15-L77)と
+[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189)が読み、
+スタイルは
+[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93) が読みます。
+`parseStyles()` は、知らないものを拒否します
+（
+[`validateNumber()` など](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/utils.ts#L8-L18)）。
+
+- ヘッダーは `quadrantChart` です。
+
+  [検出器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)はこの大文字小文字のとおりに読むので、
+  `QUADRANTCHART`、`quadrantchart`、`QuadrantChart` は検出されません。
+  ヘッダーに続けて書いた語、ダッシュと語、数字、ASCII の外の文字は、
+  文が始まらない場所のテキストなので、
+  拒否されます。
+  キーワード（`title`）を続けて書くと、キーワードとして読まれます。
+  2 つ目のヘッダーは、自分の行でも、空白の後ろでも、ヘッダーの行でも、
+  拒否されます。
+  [fixture: quadrant/spec-quadrant-jison-fe2d2340]
+  [fixture: quadrant/header-upper-case]
+  [fixture: quadrant/header-lower-case]
+  [fixture: quadrant/header-capitalized]
+  [fixture: quadrant/header-word-suffix]
+  [fixture: quadrant/header-spaced-word-suffix]
+  [fixture: quadrant/header-dash-suffix]
+  [fixture: quadrant/header-non-ascii-suffix]
+  [fixture: quadrant/header-digit-suffix]
+  [fixture: quadrant/header-title-glued]
+  [fixture: quadrant/header-twice]
+  [fixture: quadrant/header-twice-indented]
+  [fixture: quadrant/header-twice-same-line]
+
+- ヘッダーの前の空白、タブ、空行、空白とタブだけの行、ノーブレークスペース、
+  U+FEFF、
+  全角スペース、U+2028、コメント行、`%%` だけの行、ディレクティブの行、
+  `%%{ }%%` は、何も変えません。
+  フロントマターも、その後ろのコメント行も同じです。
+  ヘッダーの前の `#` で始まる行、`;`、文、コメント行だけのテキストは、
+  検出されません。
+  [fixture: quadrant/header-indented]
+  [fixture: quadrant/header-tab-indented]
+  [fixture: quadrant/header-after-bare-percent-line]
+  [fixture: quadrant/header-after-blank-lines]
+  [fixture: quadrant/header-after-comment-line]
+  [fixture: quadrant/header-after-directive-line]
+  [fixture: quadrant/header-after-empty-braces-line]
+  [fixture: quadrant/header-after-frontmatter]
+  [fixture: quadrant/header-after-frontmatter-and-comment]
+  [fixture: quadrant/header-after-hash-line]
+  [fixture: quadrant/header-after-semicolon-line]
+  [fixture: quadrant/header-after-whitespace-line]
+  [fixture: quadrant/header-bom-before]
+  [fixture: quadrant/header-nbsp-before]
+  [fixture: quadrant/header-ideographic-space-before]
+  [fixture: quadrant/header-ls-before]
+  [fixture: quadrant/header-leading-semicolon]
+  [fixture: quadrant/header-only-comment]
+  [fixture: quadrant/header-statement-first]
+- ヘッダーの後ろでは、空白の後ろにあるコメントも、
+  ヘッダーに続けたコメントも読み飛ばされ、
+  ヘッダーに続けた、またはヘッダーの中のディレクティブは取り除かれ、
+  `%%` だけの行はコメント行です。
+  ヘッダーの行には、空白かタブで区切って文を続けられ、`;` も続けられて、
+  `;` は行を終えます。
+  ヘッダーの後ろの空白とタブは読み飛ばされ、CRLF と CR だけも行を終えます。
+  垂直タブと改ページは空白ですが、
+  ノーブレークスペース、U+2028、U+2029、U+0085 は、
+  文が始まらない場所のテキストなので、拒否されます。
+  [fixture: quadrant/header-comment-on-header-line]
+  [fixture: quadrant/header-comment-glued]
+  [fixture: quadrant/header-directive-glued]
+  [fixture: quadrant/div-directive-inside]
+  [fixture: quadrant/header-bare-percent-line-after-header]
+  [fixture: quadrant/header-statement-on-header-line]
+  [fixture: quadrant/header-statement-on-header-line-tab]
+  [fixture: quadrant/header-semicolon]
+  [fixture: quadrant/header-semicolon-spaced]
+  [fixture: quadrant/header-semicolon-statement]
+  [fixture: quadrant/header-trailing-nbsp]
+  [fixture: quadrant/header-trailing-spaces]
+  [fixture: quadrant/header-trailing-tab]
+  [fixture: quadrant/header-crlf]
+  [fixture: quadrant/header-cr]
+  [fixture: quadrant/header-ls-after]
+  [fixture: quadrant/header-ps-after]
+  [fixture: quadrant/header-vt-after]
+  [fixture: quadrant/header-ff-after]
+  [fixture: quadrant/header-nel-after]
+- 最後の `title` の文が図のタイトルで、フロントマターのタイトルを置き換えます。
+  フロントマターのタイトルは、どの文もタイトルを与えないときのタイトルです。
+  空の `title` の文も、空のテキストで置き換えます。
+  キーワードは大文字小文字を問わず読まれ、テキストとの間は空白かタブで、
+  キーワードの前に空白やタブを置けます。
+  キーワードに続けた語（`titleT`）はキーワードではなく、
+  文が始まらない場所のテキストなので、行は拒否されます。
+  `title` で始まって語として続く語はテキストで、`Titles: [0.3, 0.6]` は点です。
+  一方、テキストの中の語 `title` はキーワードなので、
+  `My title: [0.3, 0.6]` と `x-axis A title T` は拒否されます。
+  改行はタイトルを終え、次の行は文です。
+  [fixture: quadrant/db-title-keyword-capitalized]
+  [fixture: quadrant/db-title-keyword-upper-case]
+  [fixture: quadrant/db-title-keyword-alone]
+  [fixture: quadrant/db-title-keyword-trailing-space]
+  [fixture: quadrant/gram-title-glued-word]
+  [fixture: quadrant/db-title-twice]
+  [fixture: quadrant/db-title-twice-empty-last]
+  [fixture: quadrant/db-title-indented]
+  [fixture: quadrant/db-title-tab-indented]
+  [fixture: quadrant/db-title-tab-separator]
+  [fixture: quadrant/db-title-after-semicolon]
+  [fixture: quadrant/db-title-frontmatter]
+  [fixture: quadrant/db-title-frontmatter-after-statement]
+  [fixture: quadrant/db-title-frontmatter-and-statement]
+  [fixture: quadrant/db-title-prefix-of-name]
+  [fixture: quadrant/gram-title-in-name-middle]
+  [fixture: quadrant/gram-title-lf-ends]
+  [fixture: quadrant/gram-title-after-axis-text]
+- タイトルは行の残りを、両端の空白とタブを除いて取ります。
+  行のどの文字もテキストで、引用符、`;`、`#`、1 つの `%`、`%%` とその後ろ、
+  コロン、ダッシュ、
+  ASCII の外の文字、タグも同じなので、`;` の後ろの文もタイトルの一部です。
+  コメントの規則は適用されません。
+  中のディレクティブは、字句解析がテキストを読む前に取り除かれます。
+  タイトルは点に見えることもあり、`title: [0.3, 0.6]` はタイトルです。
+  数字のタイトルもタイトルで、ほかの文や `;` の後ろでも同じです。
+  [fixture: quadrant/db-title-spaces-trimmed]
+  [fixture: quadrant/db-title-tab-trailing]
+  [fixture: quadrant/db-title-inner-spaces]
+  [fixture: quadrant/db-title-colon]
+  [fixture: quadrant/db-title-quotes-kept]
+  [fixture: quadrant/db-title-semicolon-kept]
+  [fixture: quadrant/db-title-semicolon-then-statement]
+  [fixture: quadrant/db-acc-title-after-semicolon]
+  [fixture: quadrant/db-title-hash-kept]
+  [fixture: quadrant/db-title-leading-dash]
+  [fixture: quadrant/db-title-leading-hash]
+  [fixture: quadrant/db-title-leading-semicolon]
+  [fixture: quadrant/db-title-percent-kept]
+  [fixture: quadrant/db-title-comment-glued-kept]
+  [fixture: quadrant/db-title-comment-kept]
+  [fixture: quadrant/db-title-comment-only]
+  [fixture: quadrant/db-title-directive-removed]
+  [fixture: quadrant/db-title-dash]
+  [fixture: quadrant/db-title-non-ascii]
+  [fixture: quadrant/db-title-html]
+  [fixture: quadrant/db-title-entity]
+  [fixture: quadrant/db-title-keyword-in-text]
+  [fixture: quadrant/db-title-with-colon-point-like]
+  [fixture: quadrant/db-title-digit-after-axis-semicolon]
+  [fixture: quadrant/db-title-digit-after-classdef]
+  [fixture: quadrant/db-title-digit-after-empty-block]
+  [fixture: quadrant/db-title-digit-after-point]
+  [fixture: quadrant/db-title-digit-after-quadrant]
+  [fixture: quadrant/db-title-digit-after-x-axis]
+  [fixture: quadrant/db-title-digit-after-x-axis-arrow]
+  [fixture: quadrant/db-title-digit-alone]
+  [fixture: quadrant/db-title-digits-with-space]
+- `accTitle:` と `accDescr:` がアクセシビリティのタイトルと説明を設定します。
+  キーワードは大文字小文字を問わず読まれ、
+  キーワードとコロンの間には空白かタブを置け、
+  テキストはコロンに空白なしで続けられ、コロンは必要です。
+  テキストは行の残りから両端の空白を除いたもので、最後の文が勝ち、
+  2 つの文は互いに影響しません。
+  キーワードに続けた語はキーワードではありません。
+  フロントマターの `accTitle` と `accDescr` の欄は何も設定しません。
+  [fixture: quadrant/db-acc-title-plain]
+  [fixture: quadrant/db-acc-title-glued-colon]
+  [fixture: quadrant/db-acc-title-space-before-colon]
+  [fixture: quadrant/db-acc-title-tab-before-colon]
+  [fixture: quadrant/gram-acc-title-no-colon]
+  [fixture: quadrant/db-acc-title-upper-case]
+  [fixture: quadrant/db-acc-title-trimmed]
+  [fixture: quadrant/db-acc-title-twice]
+  [fixture: quadrant/db-acc-title-indented]
+  [fixture: quadrant/db-acc-title-frontmatter-like-yaml]
+  [fixture: quadrant/gram-acc-title-glued-word]
+  [fixture: quadrant/db-acc-descr-plain]
+  [fixture: quadrant/db-acc-descr-glued-colon]
+  [fixture: quadrant/db-acc-descr-space-before-colon]
+  [fixture: quadrant/gram-acc-descr-no-colon]
+  [fixture: quadrant/db-acc-descr-upper-case]
+  [fixture: quadrant/db-acc-descr-trimmed]
+  [fixture: quadrant/db-acc-descr-twice]
+  [fixture: quadrant/db-acc-descr-frontmatter-like-yaml]
+  [fixture: quadrant/gram-acc-descr-glued-word]
+  [fixture: quadrant/db-acc-both]
+- アクセシビリティの行のテキストは、タイトルと同じく行の残りです。
+  `;`、`#`、コロン、引用符、`%%` とその後ろはテキストの一部で、
+  中のディレクティブは取り除かれ、
+  キーワードの中のディレクティブも取り除かれるので、キーワードは欠けません。
+  コロンの後ろの空白には改行が含まれるので、テキストのない行は、
+  テキストのある次の行をテキストとし、
+  その行のキーワードはテキストです。
+  テキストの終わりでは、前に別のテキストがあっても拒否されます。
+  [fixture: quadrant/db-acc-title-semicolon-kept]
+  [fixture: quadrant/db-acc-title-semicolon-only]
+  [fixture: quadrant/db-acc-title-semicolon-then-statement]
+  [fixture: quadrant/db-acc-title-hash-kept]
+  [fixture: quadrant/db-acc-title-comment-kept]
+  [fixture: quadrant/db-acc-title-quotes-kept]
+  [fixture: quadrant/db-acc-title-colon-kept]
+  [fixture: quadrant/db-acc-title-directive-removed]
+  [fixture: quadrant/div-acc-title-keyword-inside-directive]
+  [fixture: quadrant/db-acc-descr-semicolon-kept]
+  [fixture: quadrant/db-acc-descr-semicolon-only]
+  [fixture: quadrant/db-acc-descr-comment-kept]
+  [fixture: quadrant/db-acc-descr-hash-kept]
+  [fixture: quadrant/db-acc-descr-directive-removed]
+  [fixture: quadrant/gram-acc-title-empty]
+  [fixture: quadrant/gram-acc-title-spaces-only]
+  [fixture: quadrant/gram-acc-title-twice-empty-last]
+  [fixture: quadrant/gram-acc-descr-empty]
+  [fixture: quadrant/db-acc-title-next-line]
+  [fixture: quadrant/db-acc-title-next-line-after-blank-lines]
+  [fixture: quadrant/db-acc-title-next-line-crlf]
+  [fixture: quadrant/db-acc-title-next-line-indented]
+  [fixture: quadrant/db-acc-title-next-line-keyword]
+  [fixture: quadrant/db-acc-title-next-line-no-line-feed-at-end]
+  [fixture: quadrant/db-acc-descr-next-line]
+  [fixture: quadrant/db-acc-descr-next-line-tab]
+- `accDescr {` はブロックを始め、ブロックは最初の `}` で終わります。
+  説明はブロックのテキストから、両端の空白と改行の後ろの空白を除いたもので、
+  行は 1 つの改行でつながれ、空行とインデントは消えます。
+  波括弧は、キーワードに空白なしで続けても、次の行に置いても、
+  タブの後ろに置いてもよく、
+  ブロックは 1 行でも、改行なしでも書けます。
+  空のブロック、空白だけのブロック、空行だけのブロックは、
+  空のテキストを設定します。
+  ブロックの中では、`;`、`#`、引用符、キーワード、`%%` とその後ろはテキストで、
+  ディレクティブは取り除かれ、CRLF と CR だけは改行です。
+  後のブロックや `accDescr:` の行は、説明を置き換えます。
+  [fixture: quadrant/db-acc-descr-block]
+  [fixture: quadrant/db-acc-descr-block-glued-brace]
+  [fixture: quadrant/db-acc-descr-block-lines]
+  [fixture: quadrant/db-acc-descr-block-indented-lines]
+  [fixture: quadrant/db-acc-descr-block-empty]
+  [fixture: quadrant/db-acc-descr-block-one-line]
+  [fixture: quadrant/db-acc-descr-block-blank-lines]
+  [fixture: quadrant/db-acc-descr-block-semicolon-kept]
+  [fixture: quadrant/db-acc-descr-block-hash-kept]
+  [fixture: quadrant/db-acc-descr-block-comment-kept]
+  [fixture: quadrant/db-acc-descr-block-directive-removed]
+  [fixture: quadrant/db-acc-descr-block-twice]
+  [fixture: quadrant/db-acc-descr-block-then-line]
+  [fixture: quadrant/db-acc-descr-line-then-block]
+  [fixture: quadrant/db-acc-descr-block-crlf]
+  [fixture: quadrant/db-acc-descr-block-cr]
+  [fixture: quadrant/db-acc-descr-block-quotes-kept]
+  [fixture: quadrant/db-acc-descr-block-keyword-inside]
+  [fixture: quadrant/db-acc-descr-block-after-title]
+  [fixture: quadrant/db-acc-descr-block-brace-on-next-line]
+  [fixture: quadrant/db-acc-descr-block-tab-before-brace]
+  [fixture: quadrant/db-acc-descr-block-no-line-feed-after-brace]
+  [fixture: quadrant/db-acc-descr-block-empty-braces]
+  [fixture: quadrant/db-acc-descr-block-spaces-only]
+  [fixture: quadrant/db-acc-descr-block-only-blank-lines]
+- ブロックは文で、閉じ波括弧の直後に行末か `;` を必要とします。
+  `} ;`、波括弧の後ろの空白と `;` 以外の何か、波括弧に続けたテキスト、
+  2 つ目の `}`、
+  閉じ波括弧のないブロックは拒否され、
+  `D}E` のように波括弧の後ろのテキストが文として読まれる場合も拒否されます。
+  波括弧に続けたコメントと、`;` とその後ろの文は、受理されます。
+  [fixture: quadrant/db-acc-descr-block-closing-brace-same-line]
+  [fixture: quadrant/gram-acc-descr-block-braces-inside]
+  [fixture: quadrant/gram-acc-descr-block-unclosed]
+  [fixture: quadrant/gram-acc-descr-block-unclosed-no-line-feed]
+  [fixture: quadrant/gram-acc-descr-block-statement-after-brace]
+  [fixture: quadrant/db-acc-descr-block-statement-after-brace-semicolon]
+  [fixture: quadrant/gram-acc-descr-block-stray-brace]
+  [fixture: quadrant/gram-acc-descr-block-trailing-spaces-before-brace]
+  [fixture: quadrant/gram-acc-descr-block-text-after-brace]
+  [fixture: quadrant/gram-acc-descr-block-semicolon-spaced-after-brace]
+  [fixture: quadrant/db-comment-after-statement-brace]
+- `x-axis` と `y-axis` は、テキストを 1 つか 2 つ取ります。
+  `x-axis L --> R` は x 軸の左と右のテキストを、
+  `y-axis B --> T` は y 軸の下と上のテキストを設定します。
+  矢印のないテキストは最初のテキストだけを設定し、
+  矢印があってその後ろに何もないテキストは、
+  最初のテキストの後ろに ` ⟶` を付けたもの（`L ⟶`）を設定して、
+  2 つ目はそのままです。
+  矢印はダッシュ 2 つ以上と `>` で、周りの空白はあってもなくてもよく、
+  `->`、`-- >`、2 つ目の矢印、前にテキストのない矢印、矢印だけ、
+  キーワードだけは拒否されます。
+  軸の文は、名指したものだけを設定して残りを保ちます。
+  後の `x-axis M` は左のテキストを変えて右のテキストを保ち、
+  後の `x-axis M -->` は左のテキストを矢印付きで設定して右のテキストを保ち、
+  テキストが 2 つある後の文は両方を設定します。
+  [fixture: quadrant/db-x-axis-both]
+  [fixture: quadrant/db-y-axis-both]
+  [fixture: quadrant/db-x-axis-left-only]
+  [fixture: quadrant/db-y-axis-bottom-only]
+  [fixture: quadrant/db-x-axis-left-with-arrow]
+  [fixture: quadrant/db-y-axis-bottom-with-arrow]
+  [fixture: quadrant/gram-x-axis-right-only]
+  [fixture: quadrant/gram-y-axis-top-only]
+  [fixture: quadrant/gram-x-axis-arrow-only]
+  [fixture: quadrant/gram-y-axis-arrow-only]
+  [fixture: quadrant/gram-x-axis-no-text]
+  [fixture: quadrant/gram-y-axis-no-text]
+  [fixture: quadrant/db-x-axis-glued-arrow]
+  [fixture: quadrant/db-y-axis-glued-arrow]
+  [fixture: quadrant/db-x-axis-long-arrow]
+  [fixture: quadrant/db-y-axis-long-arrow]
+  [fixture: quadrant/gram-x-axis-short-arrow]
+  [fixture: quadrant/gram-y-axis-short-arrow]
+  [fixture: quadrant/gram-x-axis-broken-arrow]
+  [fixture: quadrant/gram-y-axis-broken-arrow]
+  [fixture: quadrant/gram-x-axis-two-arrows]
+  [fixture: quadrant/gram-y-axis-two-arrows]
+  [fixture: quadrant/db-x-axis-twice]
+  [fixture: quadrant/db-x-axis-twice-arrow-then-both]
+  [fixture: quadrant/db-x-axis-twice-arrow-without-right]
+  [fixture: quadrant/db-x-axis-twice-both]
+  [fixture: quadrant/db-y-axis-twice]
+  [fixture: quadrant/db-y-axis-twice-arrow-then-both]
+  [fixture: quadrant/db-y-axis-twice-arrow-without-top]
+  [fixture: quadrant/db-y-axis-twice-both]
+  [fixture: quadrant/db-x-axis-right-only-after-left]
+  [fixture: quadrant/db-y-axis-top-only-after-bottom]
+  [fixture: quadrant/db-x-axis-arrow-form-then-both]
+  [fixture: quadrant/db-y-axis-arrow-form-then-both]
+  [fixture: quadrant/db-x-axis-arrow-alone-with-text-after-no-space]
+  [fixture: quadrant/db-y-axis-arrow-alone-with-text-after-no-space]
+  [fixture: quadrant/db-x-axis-dash-before-arrow]
+  [fixture: quadrant/db-y-axis-dash-before-arrow]
+  [fixture: quadrant/db-x-axis-dashes-after-text]
+  [fixture: quadrant/db-y-axis-dashes-after-text]
+- 軸のテキストは、引用符のない形か、引用符で囲んだ形です。
+  引用符のないテキストは、語、ASCII の外の文字、`!?$&=+*_./\',`、
+  バッククォート、`#`、ダッシュを含み、
+  語の間に空白を置けて、ダッシュで始めることはできません。
+  コロン、`;`（文を終え、後ろは別の文です）、角括弧、キーワード（`x-axis`、
+  `y-axis`、`title` など）は含められず、
+  その行は拒否されます。
+  引用符で囲んだテキストはこれらすべてと、矢印、括弧、改行を含められ、
+  引用符を除いたものがテキストです。
+  引用符で囲んだテキストの後ろの引用符なしのテキストは、空白でつながれますが、
+  引用符なしのテキストの後ろの引用符付きのテキスト、
+  続けて並べた 2 つの引用符付きのテキスト、
+  閉じていない引用符は拒否されます。
+  引用符の中のバッククォートはマークダウン文字列で、
+  バッククォートを除いたものがテキストです。
+  改行も含められます。
+  引用符のないバッククォートはテキストの一部で、
+  閉じていないマークダウン文字列は拒否されます。
+  [fixture: quadrant/db-x-axis-quoted-both]
+  [fixture: quadrant/db-y-axis-quoted-both]
+  [fixture: quadrant/db-x-axis-quoted-left-only]
+  [fixture: quadrant/db-y-axis-quoted-bottom-only]
+  [fixture: quadrant/db-x-axis-quoted-arrow]
+  [fixture: quadrant/db-y-axis-quoted-arrow]
+  [fixture: quadrant/db-x-axis-quoted-real-arrow]
+  [fixture: quadrant/db-y-axis-quoted-real-arrow]
+  [fixture: quadrant/db-x-axis-markdown-string]
+  [fixture: quadrant/db-y-axis-markdown-string]
+  [fixture: quadrant/db-x-axis-backticks-without-quotes]
+  [fixture: quadrant/db-y-axis-backticks-without-quotes]
+  [fixture: quadrant/db-x-axis-text-with-dash]
+  [fixture: quadrant/db-y-axis-text-with-dash]
+  [fixture: quadrant/db-x-axis-quoted-brackets]
+  [fixture: quadrant/db-y-axis-quoted-brackets]
+  [fixture: quadrant/db-x-axis-quoted-newline]
+  [fixture: quadrant/db-y-axis-quoted-newline]
+  [fixture: quadrant/db-x-axis-quoted-glued-text]
+  [fixture: quadrant/db-y-axis-quoted-glued-text]
+  [fixture: quadrant/db-x-axis-markdown-multiline]
+  [fixture: quadrant/db-y-axis-markdown-multiline]
+  [fixture: quadrant/db-x-axis-unicode-text]
+  [fixture: quadrant/db-y-axis-unicode-text]
+  [fixture: quadrant/db-x-axis-numeric-text]
+  [fixture: quadrant/db-y-axis-numeric-text]
+  [fixture: quadrant/db-x-axis-space-text-with-punctuation]
+  [fixture: quadrant/db-y-axis-space-text-with-punctuation]
+  [fixture: quadrant/db-x-axis-html]
+  [fixture: quadrant/db-y-axis-html]
+  [fixture: quadrant/db-x-axis-entity]
+  [fixture: quadrant/db-y-axis-entity]
+  [fixture: quadrant/gram-x-axis-text-with-colon]
+  [fixture: quadrant/gram-y-axis-text-with-colon]
+  [fixture: quadrant/gram-x-axis-text-starting-with-dash]
+  [fixture: quadrant/gram-y-axis-text-starting-with-dash]
+  [fixture: quadrant/gram-x-axis-text-with-brackets]
+  [fixture: quadrant/gram-y-axis-text-with-brackets]
+  [fixture: quadrant/gram-x-axis-keyword-in-text]
+  [fixture: quadrant/gram-y-axis-keyword-in-text]
+  [fixture: quadrant/gram-x-axis-semicolon-in-text]
+  [fixture: quadrant/gram-y-axis-semicolon-in-text]
+  [fixture: quadrant/gram-x-axis-quoted-unclosed]
+  [fixture: quadrant/gram-y-axis-quoted-unclosed]
+  [fixture: quadrant/gram-x-axis-text-then-quoted]
+  [fixture: quadrant/gram-y-axis-text-then-quoted]
+  [fixture: quadrant/gram-x-axis-two-quoted]
+  [fixture: quadrant/gram-y-axis-two-quoted]
+  [fixture: quadrant/gram-x-axis-markdown-unclosed]
+  [fixture: quadrant/gram-y-axis-markdown-unclosed]
+- 空の引用符の文字列は、
+  文がそれで始まるとき（`x-axis ""` と `x-axis "" --> R`）は拒否されますが、
+  矢印の後ろでは捨てられ、文はテキストと、その後ろに何もない矢印になります。
+  空白だけの文字列はテキストで、Db は空に切り詰めます。
+  `x-axis "  " --> R` は左のテキストを空のままにして右のテキストを設定し、
+  `x-axis "  "` は空の左のテキストを設定します。
+  [fixture: quadrant/gram-x-axis-empty-string]
+  [fixture: quadrant/gram-y-axis-empty-string]
+  [fixture: quadrant/gram-x-axis-empty-string-with-arrow]
+  [fixture: quadrant/gram-y-axis-empty-string-with-arrow]
+  [fixture: quadrant/div-x-axis-empty-string-after-arrow]
+  [fixture: quadrant/div-y-axis-empty-string-after-arrow]
+  [fixture: quadrant/db-x-axis-spaces-only-string]
+  [fixture: quadrant/db-y-axis-spaces-only-string]
+  [fixture: quadrant/db-x-axis-spaces-only-string-alone]
+  [fixture: quadrant/db-y-axis-spaces-only-string-alone]
+- キーワードは大文字小文字を問わず読まれ、前に空白を置け、
+  テキストを続けて書けます（`x-axisL`）。
+  キーワードの後ろのダッシュ、キーワードとテキストの間のタブ、
+  矢印の周りのタブは拒否されます。
+  テキストと矢印の周りの余分な空白は取り除かれ、
+  矢印の周りのノーブレークスペースはテキストの一部で、Db が切り詰めます。
+  x 軸と y 軸は別々の文で、どちらの順でも書け、
+  `;` は文を終えて次の文を続けられます。
+  [fixture: quadrant/db-x-axis-upper-case]
+  [fixture: quadrant/db-y-axis-upper-case]
+  [fixture: quadrant/db-x-axis-extra-spaces]
+  [fixture: quadrant/db-y-axis-extra-spaces]
+  [fixture: quadrant/db-x-axis-glued-text]
+  [fixture: quadrant/db-y-axis-glued-text]
+  [fixture: quadrant/gram-x-axis-glued-dash]
+  [fixture: quadrant/gram-y-axis-glued-dash]
+  [fixture: quadrant/db-x-axis-indented]
+  [fixture: quadrant/db-y-axis-indented]
+  [fixture: quadrant/gram-x-axis-tab-after-keyword]
+  [fixture: quadrant/gram-y-axis-tab-after-keyword]
+  [fixture: quadrant/gram-x-axis-tab-around-arrow]
+  [fixture: quadrant/gram-y-axis-tab-around-arrow]
+  [fixture: quadrant/db-x-axis-nbsp-around-arrow]
+  [fixture: quadrant/db-y-axis-nbsp-around-arrow]
+  [fixture: quadrant/db-x-axis-then-y-axis]
+  [fixture: quadrant/db-axes-y-then-x]
+  [fixture: quadrant/db-x-axis-semicolon-then-y]
+  [fixture: quadrant/db-axes-semicolon-y-then-x]
+  [fixture: quadrant/db-x-axis-trailing-semicolon]
+  [fixture: quadrant/db-y-axis-trailing-semicolon]
+- 空白の後ろのコメントは読み飛ばされ、ディレクティブも同じで、
+  キーワード、テキスト、矢印の中のディレクティブは取り除かれます。
+  テキストに続けたコメントは、
+  直前の文字が字句解析にとって 1 文字の単位であるときに、その文字を取ります
+  （後の「コメント」を参照）。
+  `x-axis L%% c` はテキストがなく拒否され、
+  `x-axis L --> R%% c` は左のテキストと矢印になります。
+  `x-axis Lm-%% c` はダッシュを、`x-axis L --> Rm1%% c` は数字を失います。
+  2 文字以上の語に続けたコメントは、その語から何も取りません。
+  [fixture: quadrant/db-x-axis-comment-after-text]
+  [fixture: quadrant/db-y-axis-comment-after-text]
+  [fixture: quadrant/div-x-axis-comment-glued-text]
+  [fixture: quadrant/div-y-axis-comment-glued-text]
+  [fixture: quadrant/db-x-axis-comment-glued-text-longer]
+  [fixture: quadrant/db-y-axis-comment-glued-text-longer]
+  [fixture: quadrant/div-x-axis-comment-glued-arrow]
+  [fixture: quadrant/div-y-axis-comment-glued-arrow]
+  [fixture: quadrant/div-x-axis-comment-unit-dash]
+  [fixture: quadrant/div-x-axis-comment-unit-right-digit]
+  [fixture: quadrant/div-y-axis-comment-unit-dash]
+  [fixture: quadrant/div-y-axis-comment-unit-top-digit]
+  [fixture: quadrant/db-x-axis-comment-after-arrow]
+  [fixture: quadrant/db-y-axis-comment-after-arrow]
+  [fixture: quadrant/db-x-axis-directive-in-text]
+  [fixture: quadrant/db-y-axis-directive-in-text]
+  [fixture: quadrant/div-x-axis-directive-in-arrow]
+  [fixture: quadrant/div-y-axis-directive-in-arrow]
+  [fixture: quadrant/div-x-axis-directive-in-keyword]
+  [fixture: quadrant/div-y-axis-directive-in-keyword]
+- `quadrant-1` から `quadrant-4` が 4 つのテキストを設定し、
+  `quadrants` は文の順にかかわらず、番号の順に並べます。
+  文が名指さない象限は空のテキストで、象限ごとに最後の文が勝ち、
+  空白だけの文字列は空のテキストを設定します。
+  キーワードは大文字小文字を問わず読まれ、テキストを続けて書け、
+  `quadrant-10` は `quadrant-1` とテキスト `0 …` です。
+  `quadrant-0`、`quadrant-5`、キーワードだけ、空の文字列は拒否されます。
+  テキストの周りの空白は取り除かれ、中の空白は保たれます。
+  [fixture: quadrant/db-quadrant-all-four]
+  [fixture: quadrant/db-quadrant-reverse-order]
+  [fixture: quadrant/db-quadrant-1-alone]
+  [fixture: quadrant/db-quadrant-2-alone]
+  [fixture: quadrant/db-quadrant-3-alone]
+  [fixture: quadrant/db-quadrant-4-alone]
+  [fixture: quadrant/gram-quadrant-no-text]
+  [fixture: quadrant/gram-quadrant-empty-string]
+  [fixture: quadrant/gram-quadrant-five]
+  [fixture: quadrant/gram-quadrant-zero]
+  [fixture: quadrant/db-quadrant-ten]
+  [fixture: quadrant/db-quadrant-upper-case]
+  [fixture: quadrant/db-quadrant-glued-text]
+  [fixture: quadrant/db-quadrant-twice]
+  [fixture: quadrant/db-quadrant-twice-empty-spaces]
+  [fixture: quadrant/db-quadrant-spaces-trimmed]
+- 象限のテキストも、軸のテキストと同じく、引用符のない形か引用符で囲んだ形で、
+  使える文字も同じです。
+  語、中のダッシュ、`#`、句読点 `!?$&=+*_./\',`、バッククォート、
+  ASCII の外の文字、タブ、ノーブレークスペース、全角スペースが使えます。
+  先頭のダッシュ、コロン、`;`（文を終えます）、各種の括弧、`|`、`@`、`^`、
+  `~` は使えません。
+  矢印 `-->` は矢印と読まれ、この文には矢印がないので、行は拒否されます。
+  引用符の中では、これらすべてと改行がテキストです。
+  引用符の文字列の後ろのテキストは、空白でつながれ、
+  引用符なしのテキストの後ろの文字列は許されず、
+  マークダウン文字列はバッククォートを除いたものがテキストです。
+  テキストの中のキーワード（`quadrant-2`、`title`）はキーワードで、
+  キーワードの後ろの点のような `A: [0.3, 0.6]` は拒否されます。
+  [fixture: quadrant/gram-quadrant-tab-after-keyword]
+  [fixture: quadrant/db-quadrant-tab-inside]
+  [fixture: quadrant/db-quadrant-dash-inside]
+  [fixture: quadrant/gram-quadrant-leading-dash]
+  [fixture: quadrant/gram-quadrant-colon]
+  [fixture: quadrant/db-quadrant-colon-in-quotes]
+  [fixture: quadrant/db-quadrant-quoted]
+  [fixture: quadrant/db-quadrant-quoted-then-bare]
+  [fixture: quadrant/gram-quadrant-bare-then-quoted]
+  [fixture: quadrant/gram-quadrant-two-strings]
+  [fixture: quadrant/gram-quadrant-quoted-unclosed]
+  [fixture: quadrant/db-quadrant-quoted-newline]
+  [fixture: quadrant/db-quadrant-markdown]
+  [fixture: quadrant/db-quadrant-markdown-newline]
+  [fixture: quadrant/gram-quadrant-markdown-unclosed]
+  [fixture: quadrant/db-quadrant-markdown-then-bare]
+  [fixture: quadrant/gram-quadrant-semicolon]
+  [fixture: quadrant/db-quadrant-semicolon-in-quotes]
+  [fixture: quadrant/db-quadrant-hash]
+  [fixture: quadrant/gram-quadrant-brackets]
+  [fixture: quadrant/gram-quadrant-parens]
+  [fixture: quadrant/gram-quadrant-angle]
+  [fixture: quadrant/gram-quadrant-braces]
+  [fixture: quadrant/gram-quadrant-pipe]
+  [fixture: quadrant/gram-quadrant-at]
+  [fixture: quadrant/gram-quadrant-caret]
+  [fixture: quadrant/gram-quadrant-tilde]
+  [fixture: quadrant/db-quadrant-punctuation]
+  [fixture: quadrant/db-quadrant-brackets-in-quotes]
+  [fixture: quadrant/gram-quadrant-arrow-in-text]
+  [fixture: quadrant/db-quadrant-double-dash]
+  [fixture: quadrant/db-quadrant-non-ascii]
+  [fixture: quadrant/db-quadrant-nbsp-inside]
+  [fixture: quadrant/db-quadrant-ideographic-inside]
+  [fixture: quadrant/db-quadrant-ideographic-after-keyword]
+  [fixture: quadrant/db-quadrant-nbsp-after-keyword]
+  [fixture: quadrant/db-quadrant-nbsp-trailing]
+  [fixture: quadrant/db-quadrant-entity]
+  [fixture: quadrant/db-quadrant-html]
+  [fixture: quadrant/gram-quadrant-keyword-in-text]
+  [fixture: quadrant/gram-quadrant-title-in-text]
+  [fixture: quadrant/gram-quadrant-point-like-text]
+  [fixture: quadrant/db-quadrant-proto-text]
+  [fixture: quadrant/db-quadrant-constructor-text]
+  [fixture: quadrant/db-quadrant-trailing-tab]
+  [fixture: quadrant/db-quadrant-markdown-then-title]
+- 空白の後ろのコメントは読み飛ばされ、ディレクティブは、
+  キーワードやテキストの中でも取り除かれます。
+  1 文字の単位に続けたコメントはその文字を取り（後の「コメント」を参照）、
+  それがテキスト全体なら文にテキストが残らなくなりますが、
+  それより長い単位に続けたコメントは何も取りません。
+  `;` は文を終え、周りの空白はあってもなくてもよく、次の文を続けられます。
+  空行、空白だけの行、行末の空白は何も変えず、CRLF と CR だけは文を終えますが、
+  U+2028 と垂直タブは終えません。
+  `;` なしで 1 行に並べた 2 つの文は拒否されます。
+  [fixture: quadrant/db-quadrant-comment-after-space]
+  [fixture: quadrant/div-quadrant-comment-glued]
+  [fixture: quadrant/db-quadrant-comment-glued-longer]
+  [fixture: quadrant/db-quadrant-directive-inside]
+  [fixture: quadrant/div-quadrant-directive-in-keyword]
+  [fixture: quadrant/db-quadrant-semicolon-then-next]
+  [fixture: quadrant/db-quadrant-semicolon-spaced-then-next]
+  [fixture: quadrant/db-quadrant-trailing-semicolon]
+  [fixture: quadrant/db-quadrant-blank-lines-between]
+  [fixture: quadrant/db-quadrant-whitespace-lines-between]
+  [fixture: quadrant/db-quadrant-crlf-between]
+  [fixture: quadrant/db-quadrant-cr-between]
+  [fixture: quadrant/db-quadrant-cr-cr-lf]
+  [fixture: quadrant/gram-quadrant-ls-between]
+  [fixture: quadrant/gram-quadrant-vt-between]
+  [fixture: quadrant/gram-quadrant-keyword-in-text]
+- 点は、名前、コロン、角括弧の中の 2 つの座標で、
+  `A: [0.3, 0.6]` のように書きます。
+  コロンの周り、角括弧の中、コンマの周りの空白、タブ、
+  改行（CRLF も）は空白として扱われ、どれも必須ではありません。
+  座標は `1`、または `0` に小数点 `.` と数字を続けたもので、
+  要約の `x` と `y` は字句解析が読んだテキストなので、
+  `0.30` は `0.30` のままです。
+  小数点の `.` は字句解析では任意の1文字で、`0x5`、`0a5`、`0 3`、`0,3`、`0;3`、
+  `0#3`、
+  引用符、ASCII の外の文字がその位置にあるものも座標で、
+  書いたとおりに保たれます。
+  その位置の改行は座標になりません。
+  1 を超える座標、先頭の 0 がない座標、先頭に 0 が余る座標、負の座標、符号、
+  小数点の後ろに数字がない座標、指数、座標が 1 つか 3 つ、
+  コンマ・角括弧・コロンの欠落、
+  コンマの代わりの `;`、語、空の角括弧、閉じていない角括弧は拒否されます。
+  [fixture: quadrant/db-point-plain]
+  [fixture: quadrant/db-point-glued]
+  [fixture: quadrant/db-point-spaces-everywhere]
+  [fixture: quadrant/db-point-tab-around-colon]
+  [fixture: quadrant/db-point-tab-inside-brackets]
+  [fixture: quadrant/db-point-nbsp-inside-brackets]
+  [fixture: quadrant/db-point-newline-after-bracket]
+  [fixture: quadrant/db-point-newline-after-comma]
+  [fixture: quadrant/db-point-newline-before-bracket]
+  [fixture: quadrant/db-point-newline-before-comma]
+  [fixture: quadrant/gram-point-newline-before-bracket-open]
+  [fixture: quadrant/db-point-crlf-inside]
+  [fixture: quadrant/db-point-both-one]
+  [fixture: quadrant/db-point-both-zero]
+  [fixture: quadrant/db-point-zero-decimals]
+  [fixture: quadrant/db-point-trailing-zero]
+  [fixture: quadrant/db-point-long-fraction]
+  [fixture: quadrant/db-point-one-zero]
+  [fixture: quadrant/gram-point-x-over-one]
+  [fixture: quadrant/gram-point-x-ten]
+  [fixture: quadrant/gram-point-x-two]
+  [fixture: quadrant/gram-point-y-over-one]
+  [fixture: quadrant/gram-point-no-leading-zero]
+  [fixture: quadrant/gram-point-double-zero]
+  [fixture: quadrant/gram-point-leading-zero]
+  [fixture: quadrant/gram-point-negative]
+  [fixture: quadrant/gram-point-plus]
+  [fixture: quadrant/gram-point-trailing-dot]
+  [fixture: quadrant/gram-point-exponent]
+  [fixture: quadrant/gram-point-one-coordinate]
+  [fixture: quadrant/gram-point-three-coordinates]
+  [fixture: quadrant/gram-point-no-comma]
+  [fixture: quadrant/gram-point-semicolon-comma]
+  [fixture: quadrant/gram-point-word-coordinate]
+  [fixture: quadrant/gram-point-word-second]
+  [fixture: quadrant/gram-point-empty-brackets]
+  [fixture: quadrant/gram-point-open-bracket-only]
+  [fixture: quadrant/gram-point-unclosed]
+  [fixture: quadrant/gram-point-double-close]
+  [fixture: quadrant/gram-point-no-brackets]
+  [fixture: quadrant/gram-point-no-colon]
+  [fixture: quadrant/gram-point-parens]
+  [fixture: quadrant/db-point-coordinate-any-char-x]
+  [fixture: quadrant/db-point-coordinate-any-char-x2]
+  [fixture: quadrant/db-point-coordinate-any-char-y]
+  [fixture: quadrant/db-point-coordinate-comma]
+  [fixture: quadrant/db-point-coordinate-hash]
+  [fixture: quadrant/db-point-coordinate-nonascii]
+  [fixture: quadrant/db-point-coordinate-quote]
+  [fixture: quadrant/db-point-coordinate-semicolon]
+  [fixture: quadrant/db-point-coordinate-space-in-x]
+  [fixture: quadrant/db-point-coordinate-tab-in-x]
+  [fixture: quadrant/gram-point-coordinate-line-feed]
+- 点は閉じ角括弧で終わります。
+  その後ろの空白は読み飛ばされ、
+  その後ろのタブは名前のないスタイルとして読まれて拒否されます。
+  `;` は点を終え、その後ろに文を続けられ、文の間の `;;` や `; ;` は空の文です。
+  `;` なしで同じ行に続けた別の点や語は拒否されます。
+  語はスタイルとして読まれ、`x` はスタイルではありません。
+  空白の後ろのコメントも、閉じ角括弧に続けたコメントも読み飛ばされますが、
+  `%` は座標の文字ではないので、角括弧の中のコメントは読み飛ばされません。
+  角括弧の中、コロンと角括弧の間、名前の中のディレクティブは取り除かれます。
+  CRLF と CR だけは点を終えます。
+  [fixture: quadrant/db-point-trailing-space]
+  [fixture: quadrant/gram-point-trailing-tab]
+  [fixture: quadrant/db-point-semicolon]
+  [fixture: quadrant/db-point-semicolon-spaced-next]
+  [fixture: quadrant/db-point-semicolon-twice]
+  [fixture: quadrant/db-point-semicolon-gap]
+  [fixture: quadrant/gram-point-two-on-line]
+  [fixture: quadrant/gram-point-text-after]
+  [fixture: quadrant/gram-point-text-after-spaced]
+  [fixture: quadrant/db-point-comment-after-space]
+  [fixture: quadrant/db-point-comment-glued]
+  [fixture: quadrant/gram-point-comment-inside]
+  [fixture: quadrant/db-point-directive-inside]
+  [fixture: quadrant/db-point-directive-after-colon]
+  [fixture: quadrant/db-point-directive-in-name]
+  [fixture: quadrant/db-point-crlf-between]
+  [fixture: quadrant/db-point-cr-between]
+- `points` は、Db が持つ順に点を並べ、これはテキストの順の逆です。
+  新しい点が先頭に置かれるからです。
+  名前が同じ、位置が同じ、またはその両方が同じ 2 つの点は、2 つの点で、
+  点の間の別の文は点の順を変えません。
+  [fixture: quadrant/db-points-three]
+  [fixture: quadrant/db-points-same-name]
+  [fixture: quadrant/db-points-same-position]
+  [fixture: quadrant/db-points-identical]
+  [fixture: quadrant/db-points-between-statements]
+- 点の名前は、象限のテキストと同じ種類のテキストです。
+  引用符のない形か引用符で囲んだ形で、中の空白は保たれ、周りの空白は取り除かれ、
+  コンマ、`#`、中のダッシュ、数字、ASCII の外の文字は名前の一部です。
+  先頭のダッシュ、コロン、`;`、角括弧は名前に含められず、
+  矢印 `-->` は拒否されます。
+  引用符の中ではコロン、マークダウン文字列、改行、タグが使えます。
+  空白だけの文字列は、Db が空のテキストに切り詰める名前で、
+  空の文字列は拒否されます。
+  `Object.prototype` の名前は普通の名前です。
+  キーワードは名前ではなく、`x-axis: [0.3, 0.6]`、`quadrant-1: [0.3, 0.6]`、
+  `classDef: [0.3, 0.6]`、
+  `quadrantChart: [0.3, 0.6]` は拒否されます。
+  一方 `title: [0.3, 0.6]` はタイトル、
+  `accTitle: [0.3, 0.6]` はアクセシビリティのタイトルで、
+  引用符の中のキーワードは名前で、
+  キーワードで始まって語として続く語（`classDefs`）も名前です。
+  点のない名前は拒否されます。
+  空白の後ろのコメントはその名前の行を終え、次の行の点は拒否されます。
+  名前に続けたコメントは、最後の文字が 1 文字の単位であるとき、
+  その文字と行の残りを取ります。
+  `A1%% c: [0.3, 0.6]` は点がなくなって拒否され、
+  1 文字の名前は行全体がコメントになって受理されます。
+  [fixture: quadrant/db-name-acc-descr-word]
+  [fixture: quadrant/db-name-acc-title-word]
+  [fixture: quadrant/db-name-backticks]
+  [fixture: quadrant/db-name-comma]
+  [fixture: quadrant/div-name-comment-glued]
+  [fixture: quadrant/db-name-constructor]
+  [fixture: quadrant/db-name-dash]
+  [fixture: quadrant/db-name-digits]
+  [fixture: quadrant/db-name-entity]
+  [fixture: quadrant/db-name-has-own-property]
+  [fixture: quadrant/db-name-hash]
+  [fixture: quadrant/db-name-html]
+  [fixture: quadrant/db-name-ideographic]
+  [fixture: quadrant/db-name-indented]
+  [fixture: quadrant/db-name-keyword-in-quotes]
+  [fixture: quadrant/db-name-keyword-prefix]
+  [fixture: quadrant/db-name-long-spaces]
+  [fixture: quadrant/db-name-markdown]
+  [fixture: quadrant/db-name-nbsp]
+  [fixture: quadrant/db-name-non-ascii]
+  [fixture: quadrant/db-name-proto]
+  [fixture: quadrant/db-name-quoted]
+  [fixture: quadrant/db-name-quoted-colon]
+  [fixture: quadrant/db-name-quoted-newline]
+  [fixture: quadrant/db-name-quoted-spaces]
+  [fixture: quadrant/db-name-single-dash]
+  [fixture: quadrant/db-name-spaces]
+  [fixture: quadrant/db-name-spaces-trimmed]
+  [fixture: quadrant/db-name-tab-inside]
+  [fixture: quadrant/db-name-to-string]
+  [fixture: quadrant/gram-name-arrow]
+  [fixture: quadrant/gram-name-bracket]
+  [fixture: quadrant/gram-name-class-def-keyword]
+  [fixture: quadrant/gram-name-colon]
+  [fixture: quadrant/gram-name-comment-after-space]
+  [fixture: quadrant/gram-name-comment-unit-digit]
+  [fixture: quadrant/gram-name-header-word]
+  [fixture: quadrant/gram-name-keyword-word-inside]
+  [fixture: quadrant/gram-name-leading-dash]
+  [fixture: quadrant/gram-name-only]
+  [fixture: quadrant/gram-name-quadrant-keyword]
+  [fixture: quadrant/gram-name-quoted-empty]
+  [fixture: quadrant/gram-name-semicolon]
+  [fixture: quadrant/gram-name-x-axis]
+- 点のスタイルは閉じ角括弧の後ろにコンマで区切って書きます。
+  `radius`（数字だけで、数として保たれ、`007` は 7）、
+  `color` と `stroke-color`（3 桁か 6 桁の 16 進数で、
+  `#` はあってもなくてもよく、書いたとおりに保たれます）、
+  `stroke-width`（数字と `px` で、書いたとおりに保たれます）です。
+  数が無限になるほど桁の多い radius は、クラスの中でも、
+  JSON にそのような数がないので、テキスト `Infinity` です。
+  同じスタイルを 2 回書くと最後の値になります。
+  名前は小文字だけが読まれ、名前、値、コンマの周りの空白は取り除かれ、
+  コロンの前に空白を置けます。
+  値の後ろのコロンは値を終え、その後ろは捨てられます。
+  拒否されるのは、未知の名前、radius の単位、符号、小数、16 進数でない値、
+  `px` のない stroke-width、
+  大文字の `PX`、`px` の前の空白、値やコロンの欠落、空のスタイル、
+  コンマなしで空白だけで並べた 2 つの値、末尾・先頭・連続のコンマ、
+  次の行に続くスタイル、値の中のキーワード、
+  値の中のノーブレークスペースです。
+  [fixture: quadrant/db-style-radius]
+  [fixture: quadrant/db-style-radius-glued]
+  [fixture: quadrant/db-style-radius-spaced-colon]
+  [fixture: quadrant/db-style-radius-zero]
+  [fixture: quadrant/db-style-radius-leading-zeros]
+  [fixture: quadrant/db-style-radius-big]
+  [fixture: quadrant/db-style-radius-overflow]
+  [fixture: quadrant/gram-style-radius-unit]
+  [fixture: quadrant/gram-style-radius-negative]
+  [fixture: quadrant/gram-style-radius-fraction]
+  [fixture: quadrant/gram-style-radius-word]
+  [fixture: quadrant/gram-style-radius-empty]
+  [fixture: quadrant/gram-style-radius-no-colon]
+  [fixture: quadrant/gram-style-radius-two-values]
+  [fixture: quadrant/db-style-radius-trailing-space]
+  [fixture: quadrant/db-style-radius-colon-after]
+  [fixture: quadrant/gram-style-radius-double-colon]
+  [fixture: quadrant/gram-style-radius-leading-colon]
+  [fixture: quadrant/db-style-color]
+  [fixture: quadrant/db-style-color-colon-after]
+  [fixture: quadrant/db-style-color-colon-space-after]
+  [fixture: quadrant/db-style-color-no-hash]
+  [fixture: quadrant/db-style-color-short]
+  [fixture: quadrant/db-style-color-upper]
+  [fixture: quadrant/gram-style-color-four-digits]
+  [fixture: quadrant/gram-style-color-function]
+  [fixture: quadrant/gram-style-color-hash-only]
+  [fixture: quadrant/gram-style-color-name]
+  [fixture: quadrant/gram-style-color-not-hex]
+  [fixture: quadrant/db-style-stroke-color]
+  [fixture: quadrant/db-style-stroke-width]
+  [fixture: quadrant/db-style-stroke-width-big]
+  [fixture: quadrant/db-style-stroke-width-leading-zero]
+  [fixture: quadrant/gram-style-stroke-width-fraction]
+  [fixture: quadrant/gram-style-stroke-width-no-unit]
+  [fixture: quadrant/gram-style-stroke-width-spaced-unit]
+  [fixture: quadrant/gram-style-stroke-width-upper-unit]
+  [fixture: quadrant/db-style-two]
+  [fixture: quadrant/db-style-two-reversed]
+  [fixture: quadrant/db-style-four]
+  [fixture: quadrant/db-style-same-twice]
+  [fixture: quadrant/gram-style-trailing-comma]
+  [fixture: quadrant/gram-style-leading-comma]
+  [fixture: quadrant/gram-style-double-comma]
+  [fixture: quadrant/gram-style-no-comma]
+  [fixture: quadrant/gram-style-upper-case-key]
+  [fixture: quadrant/gram-style-capital-key]
+  [fixture: quadrant/gram-style-unknown-key]
+  [fixture: quadrant/db-style-space-around]
+  [fixture: quadrant/db-style-tab-around]
+  [fixture: quadrant/gram-style-nbsp-in-value]
+  [fixture: quadrant/gram-style-newline-after-comma]
+  [fixture: quadrant/gram-style-newline-in-style]
+  [fixture: quadrant/db-style-semicolon-then-point]
+  [fixture: quadrant/db-style-with-class]
+  [fixture: quadrant/gram-style-keyword-in-value]
+  [fixture: quadrant/gram-style-value-hash]
+  [fixture: quadrant/gram-style-non-ascii-key]
+  [fixture: quadrant/db-style-colon-in-point-name]
+  [fixture: quadrant/db-classdef-with-point-radius-overflow]
+- スタイルの後ろのコメント、ディレクティブ、`;` は、
+  スタイルのない点を終えるのと同じように点を終えます。
+  値の中のディレクティブは取り除かれます。
+  2 桁の数に続けたコメントは何も取りませんが、
+  1 桁の数に続けたコメントはその桁を取り、値のないスタイルが残って拒否されます。
+  [fixture: quadrant/db-style-radius-semicolon]
+  [fixture: quadrant/db-style-radius-comment]
+  [fixture: quadrant/db-style-radius-comment-glued]
+  [fixture: quadrant/div-style-radius-comment-glued-one-digit]
+  [fixture: quadrant/db-style-radius-directive-inside]
+- 名前の後ろの `:::` が点にクラス名を与えます（`A:::c1: [0.3, 0.6]`）。
+  `:::` の前とコロンの前に空白を置け、点の後ろのスタイルも書けます。
+  クラス名は ASCII の単語文字（英字、数字、`_`）で、大文字小文字を保ち、
+  検査されません。
+  どの `classDef` も与えないクラスも、点に残ります。
+  `:::` の後ろの空白、空の名前、ダッシュ、ASCII の外の文字、2 つ目の `:::`、
+  後ろにコロンのない名前、前に名前のないクラスは拒否されます。
+  `Object.prototype` の名前は普通のクラス名で、
+  名前の中のディレクティブは取り除かれます。
+  [fixture: quadrant/db-class-constructor]
+  [fixture: quadrant/db-class-digits]
+  [fixture: quadrant/div-class-directive-inside]
+  [fixture: quadrant/db-class-has-own-property]
+  [fixture: quadrant/db-class-marker-in-bare-name]
+  [fixture: quadrant/db-class-marker-with-comment]
+  [fixture: quadrant/db-class-name-with-trailing-text]
+  [fixture: quadrant/db-class-on-quoted-name]
+  [fixture: quadrant/db-class-plain]
+  [fixture: quadrant/db-class-proto]
+  [fixture: quadrant/db-class-spaces-around]
+  [fixture: quadrant/db-class-undefined]
+  [fixture: quadrant/db-class-underscore]
+  [fixture: quadrant/db-class-upper-case]
+  [fixture: quadrant/gram-class-after-colon-name]
+  [fixture: quadrant/gram-class-dash]
+  [fixture: quadrant/gram-class-empty-name]
+  [fixture: quadrant/gram-class-in-name-position]
+  [fixture: quadrant/gram-class-non-ascii]
+  [fixture: quadrant/gram-class-space-after-marker]
+  [fixture: quadrant/gram-class-two-markers]
+- `classDef 名前 スタイル` はクラスを定義します。
+  名前、空白、点と同じスタイルです。
+  クラスは最後の定義のスタイルだけを持ち、2 つ目の定義は 1 つ目を置き換えて、
+  併合しません。
+  `classes` は最初の定義の順にクラスを並べます。
+  どの点も使わないクラスも並べられ、クラスは使う点の前でも後ろでも定義でき、
+  Db は点のスタイルとそのクラスのスタイルを併合しません。
+  キーワードは大文字小文字を問わず読まれ、キーワードに続けた語、
+  名前の前の 2 つの空白、
+  引用符で囲んだ名前、名前としてのキーワードは拒否され、
+  名前の後ろの 2 つの空白は受理されます。
+  キーワード、名前、値の中のディレクティブは取り除かれます。
+  [fixture: quadrant/db-classdef-color]
+  [fixture: quadrant/db-classdef-two-styles]
+  [fixture: quadrant/db-classdef-all-four]
+  [fixture: quadrant/db-classdef-twice-replaces]
+  [fixture: quadrant/db-classdef-twice-same-style]
+  [fixture: quadrant/db-classdef-two-classes]
+  [fixture: quadrant/db-classdef-redefine-order]
+  [fixture: quadrant/gram-classdef-no-style]
+  [fixture: quadrant/gram-classdef-name-only-space]
+  [fixture: quadrant/gram-classdef-no-name]
+  [fixture: quadrant/gram-classdef-bad-style]
+  [fixture: quadrant/gram-classdef-empty-value]
+  [fixture: quadrant/db-classdef-two-spaces-after-name]
+  [fixture: quadrant/gram-classdef-two-spaces-before-name]
+  [fixture: quadrant/db-classdef-upper-case]
+  [fixture: quadrant/db-classdef-lower-case]
+  [fixture: quadrant/gram-classdef-glued-name]
+  [fixture: quadrant/gram-classdef-quoted-name]
+  [fixture: quadrant/db-classdef-class-used-after]
+  [fixture: quadrant/db-classdef-class-used-before]
+  [fixture: quadrant/db-classdef-point-style-and-class]
+  [fixture: quadrant/db-classdef-unused]
+  [fixture: quadrant/db-classdef-indented]
+  [fixture: quadrant/gram-classdef-keyword-as-class]
+  [fixture: quadrant/gram-classdef-name-keyword-title]
+  [fixture: quadrant/db-classdef-blank-line-between]
+- クラスの名前は、数字、英字、ダッシュ、コロン、コンマ、`&`、`#`、`*`、
+  ASCII の外の文字です。
+  アンダースコア、ドット、空白は使えません（空白は名前を終え、
+  次の語はスタイルとして読まれます）。
+  `__proto__` も使えませんが、`constructor`、`hasOwnProperty`、
+  `toString` は普通の名前です。
+  クラスの行は行末で終わり、`;` では終わりません。
+  `classDef c1 color: #f00;` は拒否され、次の行の頭の `;` は空の文です。
+  スタイルの後ろのコメントは読み飛ばされ、
+  1 桁の数字で終わる色（`#ff0`）に続けたコメントは、
+  その数字を取って色が拒否されますが、
+  `#f00` に続けたものは何も取らず、
+  スタイルの間のタブは値の一部になって拒否されます。
+  [fixture: quadrant/db-classdef-comment-after]
+  [fixture: quadrant/db-classdef-comment-glued]
+  [fixture: quadrant/db-classdef-constructor-name]
+  [fixture: quadrant/db-classdef-dash-name]
+  [fixture: quadrant/db-classdef-digit-name]
+  [fixture: quadrant/db-classdef-has-own-property-name]
+  [fixture: quadrant/db-classdef-name-amp]
+  [fixture: quadrant/db-classdef-name-colon]
+  [fixture: quadrant/db-classdef-name-comma]
+  [fixture: quadrant/db-classdef-name-hash]
+  [fixture: quadrant/db-classdef-name-star]
+  [fixture: quadrant/db-classdef-non-ascii-name]
+  [fixture: quadrant/db-classdef-proto-via-dash]
+  [fixture: quadrant/db-classdef-semicolon-line-start]
+  [fixture: quadrant/db-classdef-to-string-name]
+  [fixture: quadrant/div-classdef-comment-unit-single-digit]
+  [fixture: quadrant/gram-classdef-name-dot]
+  [fixture: quadrant/gram-classdef-proto-name]
+  [fixture: quadrant/gram-classdef-semicolon-end]
+  [fixture: quadrant/gram-classdef-semicolon-separated]
+  [fixture: quadrant/gram-classdef-space-in-name]
+  [fixture: quadrant/gram-classdef-tab-between-styles]
+  [fixture: quadrant/gram-classdef-underscore-name]
+- コメント行は、空白かタブの後ろの `%%` で始まる行で、行末まで続きます。
+  中の `;`、キーワード、`#` はコメントの一部で、
+  `%%` だけの行と `%%%` もコメントです。
+  最初の文の前、文の間、点の間、テキストの終わりのコメント行は、
+  改行があってもなくても何も変えず、
+  CRLF と CR だけはコメントを終え、U+2028 はコメントの一部です。
+  1 つの `%` はコメントを始めず、閉じる `}%%` のない `%%{` もコメントではなく、
+  どちらの行も拒否されます。
+  `}%% c` は、コメントが波括弧を取るので拒否されます。
+  [fixture: quadrant/db-comment-line]
+  [fixture: quadrant/header-bare-percent-line-after-header]
+  [fixture: quadrant/db-comment-line-last]
+  [fixture: quadrant/db-comment-line-no-line-feed]
+  [fixture: quadrant/db-comment-line-indented]
+  [fixture: quadrant/db-comment-line-tab-indented]
+  [fixture: quadrant/db-comment-line-semicolon]
+  [fixture: quadrant/db-comment-line-keyword]
+  [fixture: quadrant/db-comment-line-hash]
+  [fixture: quadrant/db-comment-line-triple]
+  [fixture: quadrant/gram-comment-line-single-percent]
+  [fixture: quadrant/gram-comment-line-brace]
+  [fixture: quadrant/gram-comment-line-after-brace]
+  [fixture: quadrant/db-comment-crlf]
+  [fixture: quadrant/db-comment-cr]
+  [fixture: quadrant/db-comment-ls]
+  [fixture: quadrant/db-comment-two-lines]
+  [fixture: quadrant/db-comment-between-point-lines]
+- `%%` が直前のものに続いているとき、
+  字句解析がその直前の文字を 1 文字の単位として読むなら、
+  コメントはその文字を取ります。
+  字句解析は、英字の並び、数字の並び、ASCII の外の文字の並び、
+  そのほかの 1 文字を、それぞれ単位として読みます。
+  コメントは `ab1` の `1`、`aé` の `é`、`ab,` の `,`、`Lm-` の `-`、
+  `a b` の `b` を取りますが、
+  `ab12` や `a日本` からは何も取りません。
+  取られた文字は、行の残りといっしょに捨てられます。
+  [fixture: quadrant/div-comment-unit-letter-then-non-ascii]
+  [fixture: quadrant/div-comment-unit-letters-then-digit]
+  [fixture: quadrant/db-comment-unit-non-ascii-run]
+  [fixture: quadrant/div-comment-unit-non-ascii-single]
+  [fixture: quadrant/div-comment-unit-punctuation]
+  [fixture: quadrant/db-comment-unit-two-digits]
+  [fixture: quadrant/div-comment-unit-word-after-space]
+- ディレクティブは、テキストが読まれる前に、どこにあっても取り除かれます。
+  自分の行、行の中の文の前、文の後ろ、語に続けた位置、
+  キーワード・名前・数・引用符のテキストの中、
+  `;` で区切った文の間、行をまたいだ位置が含まれます
+  （[Directives](../../spec/docs/common.md#directives)）。
+  図の設定を持つディレクティブは、Db を何も変えません。
+  閉じる `}%%` のないディレクティブはテキストの残りを取るので、
+  その後ろの文は読まれません。
+  テキストの終わりでは、何も取りません。
+  `%%{ c }` も同じです。
+  [fixture: quadrant/db-directive-after-statement]
+  [fixture: quadrant/db-directive-before-statement-same-line]
+  [fixture: quadrant/db-directive-between-statements]
+  [fixture: quadrant/db-directive-config-width]
+  [fixture: quadrant/db-directive-glued-to-statement]
+  [fixture: quadrant/db-directive-in-acc-block]
+  [fixture: quadrant/div-directive-in-class-name]
+  [fixture: quadrant/db-directive-in-header-line]
+  [fixture: quadrant/div-directive-in-keyword-classdef]
+  [fixture: quadrant/div-directive-in-keyword-title]
+  [fixture: quadrant/db-directive-in-point-brackets]
+  [fixture: quadrant/db-directive-in-quotes]
+  [fixture: quadrant/db-directive-in-style-value]
+  [fixture: quadrant/db-directive-line]
+  [fixture: quadrant/db-directive-line-empty]
+  [fixture: quadrant/db-directive-line-spaces]
+  [fixture: quadrant/db-directive-multiline]
+  [fixture: quadrant/db-directive-two-in-text]
+  [fixture: quadrant/db-directive-unclosed]
+  [fixture: quadrant/db-directive-unclosed-last-line]
+  [fixture: quadrant/db-directive-wrap-statement]
+  [fixture: quadrant/db-comment-line-brace-closed-wrong]
+- 引用符の中の `%%` は、マークダウン文字列の中でも、語に続けていても、
+  テキストの一部です。
+  引用符の外の、空白の後ろの `%%` はコメントです。
+  [fixture: quadrant/db-quoted-comment-glued-kept]
+  [fixture: quadrant/db-quoted-comment-mark-kept-axis]
+  [fixture: quadrant/db-quoted-comment-mark-kept-point]
+  [fixture: quadrant/db-quoted-comment-mark-kept-quadrant]
+  [fixture: quadrant/db-quoted-comment-mark-markdown]
+- 文の後ろに何があるかが、文の終わり方を決めます。
+  空白、空白の後ろのコメント、`;`、`;` とコメント、ディレクティブ、CRLF、
+  CR だけは、
+  タイトル、アクセシビリティの行、軸、象限、点、
+  クラスやスタイルのある点を終えます。
+  タイトルとアクセシビリティの行は、コメント、`;`、
+  ディレクティブをテキストとして取ります（ディレクティブは取り除かれます）。
+  `classDef` の行の後ろの `;` は拒否されます。
+  点やクラス付きの点の後ろのタブは、
+  名前のないスタイルとして読まれて拒否されますが、
+  スタイルや `classDef` の行の後ろでは読み飛ばされます。
+  文に続けたコメントは、
+  その文字が 1 文字の単位であるときに最後の文字を取ります。
+  1 文字だけの象限のテキストと 1 桁のスタイルの値が空になって文が拒否され、
+  軸の右のテキストが取られて左のテキストに矢印が付いた形が残ります。
+  点の閉じ角括弧の後ろや、2 文字以上の単位の後ろでは何も取りません。
+  [fixture: quadrant/db-after-acc-descr-cr]
+  [fixture: quadrant/db-after-acc-descr-crlf]
+  [fixture: quadrant/db-after-acc-descr-directive]
+  [fixture: quadrant/db-after-acc-descr-directive-glued]
+  [fixture: quadrant/db-after-acc-descr-glued-comment]
+  [fixture: quadrant/db-after-acc-descr-semicolon]
+  [fixture: quadrant/db-after-acc-descr-semicolon-comment]
+  [fixture: quadrant/db-after-acc-descr-space-comment]
+  [fixture: quadrant/db-after-acc-descr-trailing-spaces]
+  [fixture: quadrant/db-after-acc-descr-trailing-tab]
+  [fixture: quadrant/db-after-acc-title-cr]
+  [fixture: quadrant/db-after-acc-title-crlf]
+  [fixture: quadrant/db-after-acc-title-directive]
+  [fixture: quadrant/db-after-acc-title-directive-glued]
+  [fixture: quadrant/db-after-acc-title-glued-comment]
+  [fixture: quadrant/db-after-acc-title-semicolon]
+  [fixture: quadrant/db-after-acc-title-semicolon-comment]
+  [fixture: quadrant/db-after-acc-title-space-comment]
+  [fixture: quadrant/db-after-acc-title-trailing-spaces]
+  [fixture: quadrant/db-after-acc-title-trailing-tab]
+  [fixture: quadrant/db-after-classdef-cr]
+  [fixture: quadrant/db-after-classdef-crlf]
+  [fixture: quadrant/db-after-classdef-directive]
+  [fixture: quadrant/db-after-classdef-directive-glued]
+  [fixture: quadrant/db-after-classdef-glued-comment]
+  [fixture: quadrant/db-after-classdef-space-comment]
+  [fixture: quadrant/db-after-classdef-trailing-spaces]
+  [fixture: quadrant/db-after-classdef-trailing-tab]
+  [fixture: quadrant/db-after-point-class-cr]
+  [fixture: quadrant/db-after-point-class-crlf]
+  [fixture: quadrant/db-after-point-class-directive]
+  [fixture: quadrant/db-after-point-class-directive-glued]
+  [fixture: quadrant/db-after-point-class-glued-comment]
+  [fixture: quadrant/db-after-point-class-semicolon]
+  [fixture: quadrant/db-after-point-class-semicolon-comment]
+  [fixture: quadrant/db-after-point-class-space-comment]
+  [fixture: quadrant/db-after-point-class-trailing-spaces]
+  [fixture: quadrant/db-after-point-cr]
+  [fixture: quadrant/db-after-point-crlf]
+  [fixture: quadrant/db-after-point-directive]
+  [fixture: quadrant/db-after-point-directive-glued]
+  [fixture: quadrant/db-after-point-glued-comment]
+  [fixture: quadrant/db-after-point-semicolon]
+  [fixture: quadrant/db-after-point-semicolon-comment]
+  [fixture: quadrant/db-after-point-space-comment]
+  [fixture: quadrant/db-after-point-style-cr]
+  [fixture: quadrant/db-after-point-style-crlf]
+  [fixture: quadrant/db-after-point-style-directive]
+  [fixture: quadrant/db-after-point-style-directive-glued]
+  [fixture: quadrant/db-after-point-style-semicolon]
+  [fixture: quadrant/db-after-point-style-semicolon-comment]
+  [fixture: quadrant/db-after-point-style-space-comment]
+  [fixture: quadrant/db-after-point-style-trailing-spaces]
+  [fixture: quadrant/db-after-point-style-trailing-tab]
+  [fixture: quadrant/db-after-point-trailing-spaces]
+  [fixture: quadrant/db-after-quadrant-cr]
+  [fixture: quadrant/db-after-quadrant-crlf]
+  [fixture: quadrant/db-after-quadrant-directive]
+  [fixture: quadrant/db-after-quadrant-directive-glued]
+  [fixture: quadrant/db-after-quadrant-semicolon]
+  [fixture: quadrant/db-after-quadrant-semicolon-comment]
+  [fixture: quadrant/db-after-quadrant-space-comment]
+  [fixture: quadrant/db-after-quadrant-trailing-spaces]
+  [fixture: quadrant/db-after-quadrant-trailing-tab]
+  [fixture: quadrant/db-after-title-cr]
+  [fixture: quadrant/db-after-title-crlf]
+  [fixture: quadrant/db-after-title-directive]
+  [fixture: quadrant/db-after-title-directive-glued]
+  [fixture: quadrant/db-after-title-glued-comment]
+  [fixture: quadrant/db-after-title-semicolon]
+  [fixture: quadrant/db-after-title-semicolon-comment]
+  [fixture: quadrant/db-after-title-space-comment]
+  [fixture: quadrant/db-after-title-trailing-spaces]
+  [fixture: quadrant/db-after-title-trailing-tab]
+  [fixture: quadrant/db-after-x-axis-cr]
+  [fixture: quadrant/db-after-x-axis-crlf]
+  [fixture: quadrant/db-after-x-axis-directive]
+  [fixture: quadrant/db-after-x-axis-directive-glued]
+  [fixture: quadrant/div-after-x-axis-glued-comment]
+  [fixture: quadrant/db-after-x-axis-semicolon]
+  [fixture: quadrant/db-after-x-axis-semicolon-comment]
+  [fixture: quadrant/db-after-x-axis-space-comment]
+  [fixture: quadrant/db-after-x-axis-trailing-spaces]
+  [fixture: quadrant/db-after-x-axis-trailing-tab]
+  [fixture: quadrant/db-after-y-axis-cr]
+  [fixture: quadrant/db-after-y-axis-crlf]
+  [fixture: quadrant/db-after-y-axis-directive]
+  [fixture: quadrant/db-after-y-axis-directive-glued]
+  [fixture: quadrant/div-after-y-axis-glued-comment]
+  [fixture: quadrant/db-after-y-axis-semicolon]
+  [fixture: quadrant/db-after-y-axis-semicolon-comment]
+  [fixture: quadrant/db-after-y-axis-space-comment]
+  [fixture: quadrant/db-after-y-axis-trailing-spaces]
+  [fixture: quadrant/db-after-y-axis-trailing-tab]
+  [fixture: quadrant/gram-after-classdef-semicolon]
+  [fixture: quadrant/gram-after-classdef-semicolon-comment]
+  [fixture: quadrant/gram-after-point-class-trailing-tab]
+  [fixture: quadrant/div-after-point-style-glued-comment]
+  [fixture: quadrant/gram-after-point-trailing-tab]
+  [fixture: quadrant/div-after-quadrant-glued-comment]
+- mermaid.js の `style` と `classDef` の行の規則は、
+  どのテキストにも適用されます。
+  `style:` か `classDef:`、その後ろの `#`、その後ろの `;` を持つ行では、
+  最後の `;` が落とされ、
+  `style:#x;y` は `style:#xy` になります。
+  タイトル、アクセシビリティのテキスト、引用符のテキスト、
+  `classDef` のクラスの名前で見られます。
+  軸や象限の引用符なしのテキストと点の名前はコロンを取らず、
+  点のクラス名は単語文字だけなので、
+  それらの場所では拒否されます。
+  [fixture: quadrant/db-grid-style-acc-descr]
+  [fixture: quadrant/db-grid-style-acc-descr-block]
+  [fixture: quadrant/db-grid-style-acc-title]
+  [fixture: quadrant/div-grid-style-classdef-name]
+  [fixture: quadrant/db-grid-style-point-quoted]
+  [fixture: quadrant/db-grid-style-quadrant-quoted]
+  [fixture: quadrant/db-grid-style-title]
+  [fixture: quadrant/db-grid-style-x-axis-quoted]
+  [fixture: quadrant/db-grid-style-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-style-y-axis-quoted]
+  [fixture: quadrant/db-grid-style-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-style-class-name]
+  [fixture: quadrant/gram-grid-style-point-bare]
+  [fixture: quadrant/gram-grid-style-quadrant-bare]
+  [fixture: quadrant/gram-grid-style-x-axis-bare]
+  [fixture: quadrant/gram-grid-style-x-axis-right-bare]
+  [fixture: quadrant/gram-grid-style-y-axis-bare]
+  [fixture: quadrant/gram-grid-style-y-axis-top-bare]
+- `#35;` のような文字参照は、タイトル、アクセシビリティのテキスト、
+  軸や象限のテキスト（引用符の有無を問わず）、
+  点の名前、`classDef` のクラスの名前では、その代替の文字列（`ﬂ°°35¶ß`、
+  Db が描画のときに戻します）になります。
+  点のクラス名では、代替の文字列が単語文字でないために拒否されます。
+  参照のない `#` は、これらのテキストの文字で、
+  点のクラス名の文字ではありません。
+  参照は `#`、語か数字、`;` で、`#b;` も参照です。
+  `;` のない `#35` は参照ではなく、
+  `&amp;` も参照ではなく書いたとおりに残りますが、`&#35;` の `#35;` は参照です。
+  続けた 2 つの参照は、2 つの代替の文字列になります。
+  [fixture: quadrant/db-grid-entity-acc-descr]
+  [fixture: quadrant/db-grid-entity-acc-descr-block]
+  [fixture: quadrant/db-grid-entity-acc-title]
+  [fixture: quadrant/db-grid-entity-classdef-name]
+  [fixture: quadrant/db-grid-entity-point-quoted]
+  [fixture: quadrant/db-grid-entity-quadrant-bare]
+  [fixture: quadrant/db-grid-entity-quadrant-quoted]
+  [fixture: quadrant/db-grid-entity-x-axis-quoted]
+  [fixture: quadrant/db-grid-entity-x-axis-right-bare]
+  [fixture: quadrant/db-grid-entity-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-entity-y-axis-quoted]
+  [fixture: quadrant/db-grid-entity-y-axis-top-bare]
+  [fixture: quadrant/db-grid-entity-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-entity-class-name]
+  [fixture: quadrant/db-title-entity]
+  [fixture: quadrant/db-x-axis-entity]
+  [fixture: quadrant/db-y-axis-entity]
+  [fixture: quadrant/db-quadrant-entity]
+  [fixture: quadrant/db-name-entity]
+  [fixture: quadrant/db-grid-hash-acc-descr]
+  [fixture: quadrant/db-grid-hash-acc-descr-block]
+  [fixture: quadrant/db-grid-hash-acc-title]
+  [fixture: quadrant/db-grid-hash-classdef-name]
+  [fixture: quadrant/db-grid-hash-point-bare]
+  [fixture: quadrant/db-grid-hash-point-quoted]
+  [fixture: quadrant/db-grid-hash-quadrant-bare]
+  [fixture: quadrant/db-grid-hash-quadrant-quoted]
+  [fixture: quadrant/db-grid-hash-title]
+  [fixture: quadrant/db-grid-hash-x-axis-bare]
+  [fixture: quadrant/db-grid-hash-x-axis-quoted]
+  [fixture: quadrant/db-grid-hash-x-axis-right-bare]
+  [fixture: quadrant/db-grid-hash-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-hash-y-axis-bare]
+  [fixture: quadrant/db-grid-hash-y-axis-quoted]
+  [fixture: quadrant/db-grid-hash-y-axis-top-bare]
+  [fixture: quadrant/db-grid-hash-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-hash-class-name]
+  [fixture: quadrant/db-entity-hash-in-class-name]
+  [fixture: quadrant/db-entity-hash-word-semicolon]
+  [fixture: quadrant/db-entity-html-named]
+  [fixture: quadrant/db-entity-html-numeric]
+  [fixture: quadrant/db-entity-numeric-quadrant-quoted-two]
+  [fixture: quadrant/db-entity-without-semicolon]
+- 同じ文字は、テキストを取るどの場所にも置けます。
+  タブ、U+FEFF、ノーブレークスペース、全角スペース、U+2028、U+2029 は、
+  タイトル、アクセシビリティのテキスト、
+  軸や象限のテキスト（引用符の有無を問わず）、点の名前の文字で、
+  `classDef` のクラスの名前の文字でもあります。
+  ただしタブは名前を終えます。
+  点のクラス名はどれも受け付けません。
+  改行、CR、CRLF は、引用符のない場所では文を終え、
+  次の行が文として読まれて拒否されます。
+  引用符のテキストの中と、アクセシビリティの説明のブロックの中では、
+  テキストの改行です。
+  [fixture: quadrant/db-grid-tab-acc-descr]
+  [fixture: quadrant/db-grid-tab-acc-descr-block]
+  [fixture: quadrant/db-grid-tab-acc-title]
+  [fixture: quadrant/db-grid-tab-point-bare]
+  [fixture: quadrant/db-grid-tab-point-quoted]
+  [fixture: quadrant/db-grid-tab-quadrant-bare]
+  [fixture: quadrant/db-grid-tab-quadrant-quoted]
+  [fixture: quadrant/db-grid-tab-title]
+  [fixture: quadrant/db-grid-tab-x-axis-bare]
+  [fixture: quadrant/db-grid-tab-x-axis-quoted]
+  [fixture: quadrant/db-grid-tab-x-axis-right-bare]
+  [fixture: quadrant/db-grid-tab-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-tab-y-axis-bare]
+  [fixture: quadrant/db-grid-tab-y-axis-quoted]
+  [fixture: quadrant/db-grid-tab-y-axis-top-bare]
+  [fixture: quadrant/db-grid-tab-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-tab-class-name]
+  [fixture: quadrant/gram-grid-tab-classdef-name]
+  [fixture: quadrant/db-grid-bom-acc-descr]
+  [fixture: quadrant/db-grid-bom-acc-descr-block]
+  [fixture: quadrant/db-grid-bom-acc-title]
+  [fixture: quadrant/db-grid-bom-classdef-name]
+  [fixture: quadrant/db-grid-bom-point-bare]
+  [fixture: quadrant/db-grid-bom-point-quoted]
+  [fixture: quadrant/db-grid-bom-quadrant-bare]
+  [fixture: quadrant/db-grid-bom-quadrant-quoted]
+  [fixture: quadrant/db-grid-bom-title]
+  [fixture: quadrant/db-grid-bom-x-axis-bare]
+  [fixture: quadrant/db-grid-bom-x-axis-quoted]
+  [fixture: quadrant/db-grid-bom-x-axis-right-bare]
+  [fixture: quadrant/db-grid-bom-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-bom-y-axis-bare]
+  [fixture: quadrant/db-grid-bom-y-axis-quoted]
+  [fixture: quadrant/db-grid-bom-y-axis-top-bare]
+  [fixture: quadrant/db-grid-bom-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-bom-class-name]
+  [fixture: quadrant/db-grid-nbsp-acc-descr]
+  [fixture: quadrant/db-grid-nbsp-acc-descr-block]
+  [fixture: quadrant/db-grid-nbsp-acc-title]
+  [fixture: quadrant/db-grid-nbsp-classdef-name]
+  [fixture: quadrant/db-grid-nbsp-point-bare]
+  [fixture: quadrant/db-grid-nbsp-point-quoted]
+  [fixture: quadrant/db-grid-nbsp-quadrant-bare]
+  [fixture: quadrant/db-grid-nbsp-quadrant-quoted]
+  [fixture: quadrant/db-grid-nbsp-title]
+  [fixture: quadrant/db-grid-nbsp-x-axis-bare]
+  [fixture: quadrant/db-grid-nbsp-x-axis-quoted]
+  [fixture: quadrant/db-grid-nbsp-x-axis-right-bare]
+  [fixture: quadrant/db-grid-nbsp-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-nbsp-y-axis-bare]
+  [fixture: quadrant/db-grid-nbsp-y-axis-quoted]
+  [fixture: quadrant/db-grid-nbsp-y-axis-top-bare]
+  [fixture: quadrant/db-grid-nbsp-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-nbsp-class-name]
+  [fixture: quadrant/db-grid-ideographic-acc-descr]
+  [fixture: quadrant/db-grid-ideographic-acc-descr-block]
+  [fixture: quadrant/db-grid-ideographic-acc-title]
+  [fixture: quadrant/db-grid-ideographic-classdef-name]
+  [fixture: quadrant/db-grid-ideographic-point-bare]
+  [fixture: quadrant/db-grid-ideographic-point-quoted]
+  [fixture: quadrant/db-grid-ideographic-quadrant-bare]
+  [fixture: quadrant/db-grid-ideographic-quadrant-quoted]
+  [fixture: quadrant/db-grid-ideographic-title]
+  [fixture: quadrant/db-grid-ideographic-x-axis-bare]
+  [fixture: quadrant/db-grid-ideographic-x-axis-quoted]
+  [fixture: quadrant/db-grid-ideographic-x-axis-right-bare]
+  [fixture: quadrant/db-grid-ideographic-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-ideographic-y-axis-bare]
+  [fixture: quadrant/db-grid-ideographic-y-axis-quoted]
+  [fixture: quadrant/db-grid-ideographic-y-axis-top-bare]
+  [fixture: quadrant/db-grid-ideographic-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-ideographic-class-name]
+  [fixture: quadrant/db-grid-ls-acc-descr]
+  [fixture: quadrant/db-grid-ls-acc-descr-block]
+  [fixture: quadrant/db-grid-ls-acc-title]
+  [fixture: quadrant/db-grid-ls-classdef-name]
+  [fixture: quadrant/db-grid-ls-point-bare]
+  [fixture: quadrant/db-grid-ls-point-quoted]
+  [fixture: quadrant/db-grid-ls-quadrant-bare]
+  [fixture: quadrant/db-grid-ls-quadrant-quoted]
+  [fixture: quadrant/db-grid-ls-title]
+  [fixture: quadrant/db-grid-ls-x-axis-bare]
+  [fixture: quadrant/db-grid-ls-x-axis-quoted]
+  [fixture: quadrant/db-grid-ls-x-axis-right-bare]
+  [fixture: quadrant/db-grid-ls-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-ls-y-axis-bare]
+  [fixture: quadrant/db-grid-ls-y-axis-quoted]
+  [fixture: quadrant/db-grid-ls-y-axis-top-bare]
+  [fixture: quadrant/db-grid-ls-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-ls-class-name]
+  [fixture: quadrant/db-grid-ps-acc-descr]
+  [fixture: quadrant/db-grid-ps-acc-descr-block]
+  [fixture: quadrant/db-grid-ps-acc-title]
+  [fixture: quadrant/db-grid-ps-classdef-name]
+  [fixture: quadrant/db-grid-ps-point-bare]
+  [fixture: quadrant/db-grid-ps-point-quoted]
+  [fixture: quadrant/db-grid-ps-quadrant-bare]
+  [fixture: quadrant/db-grid-ps-quadrant-quoted]
+  [fixture: quadrant/db-grid-ps-title]
+  [fixture: quadrant/db-grid-ps-x-axis-bare]
+  [fixture: quadrant/db-grid-ps-x-axis-quoted]
+  [fixture: quadrant/db-grid-ps-x-axis-right-bare]
+  [fixture: quadrant/db-grid-ps-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-ps-y-axis-bare]
+  [fixture: quadrant/db-grid-ps-y-axis-quoted]
+  [fixture: quadrant/db-grid-ps-y-axis-top-bare]
+  [fixture: quadrant/db-grid-ps-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-ps-class-name]
+  [fixture: quadrant/db-grid-lf-acc-descr-block]
+  [fixture: quadrant/db-grid-lf-point-quoted]
+  [fixture: quadrant/db-grid-lf-quadrant-quoted]
+  [fixture: quadrant/db-grid-lf-x-axis-quoted]
+  [fixture: quadrant/db-grid-lf-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-lf-y-axis-quoted]
+  [fixture: quadrant/db-grid-lf-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-lf-acc-descr]
+  [fixture: quadrant/gram-grid-lf-acc-title]
+  [fixture: quadrant/gram-grid-lf-class-name]
+  [fixture: quadrant/gram-grid-lf-classdef-name]
+  [fixture: quadrant/gram-grid-lf-point-bare]
+  [fixture: quadrant/gram-grid-lf-quadrant-bare]
+  [fixture: quadrant/gram-grid-lf-title]
+  [fixture: quadrant/gram-grid-lf-x-axis-bare]
+  [fixture: quadrant/gram-grid-lf-x-axis-right-bare]
+  [fixture: quadrant/gram-grid-lf-y-axis-bare]
+  [fixture: quadrant/gram-grid-lf-y-axis-top-bare]
+  [fixture: quadrant/db-grid-cr-acc-descr-block]
+  [fixture: quadrant/db-grid-cr-point-quoted]
+  [fixture: quadrant/db-grid-cr-quadrant-quoted]
+  [fixture: quadrant/db-grid-cr-x-axis-quoted]
+  [fixture: quadrant/db-grid-cr-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-cr-y-axis-quoted]
+  [fixture: quadrant/db-grid-cr-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-cr-acc-descr]
+  [fixture: quadrant/gram-grid-cr-acc-title]
+  [fixture: quadrant/gram-grid-cr-class-name]
+  [fixture: quadrant/gram-grid-cr-classdef-name]
+  [fixture: quadrant/gram-grid-cr-point-bare]
+  [fixture: quadrant/gram-grid-cr-quadrant-bare]
+  [fixture: quadrant/gram-grid-cr-title]
+  [fixture: quadrant/gram-grid-cr-x-axis-bare]
+  [fixture: quadrant/gram-grid-cr-x-axis-right-bare]
+  [fixture: quadrant/gram-grid-cr-y-axis-bare]
+  [fixture: quadrant/gram-grid-cr-y-axis-top-bare]
+  [fixture: quadrant/db-grid-crlf-acc-descr-block]
+  [fixture: quadrant/db-grid-crlf-point-quoted]
+  [fixture: quadrant/db-grid-crlf-quadrant-quoted]
+  [fixture: quadrant/db-grid-crlf-x-axis-quoted]
+  [fixture: quadrant/db-grid-crlf-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-crlf-y-axis-quoted]
+  [fixture: quadrant/db-grid-crlf-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-crlf-acc-descr]
+  [fixture: quadrant/gram-grid-crlf-acc-title]
+  [fixture: quadrant/gram-grid-crlf-class-name]
+  [fixture: quadrant/gram-grid-crlf-classdef-name]
+  [fixture: quadrant/gram-grid-crlf-point-bare]
+  [fixture: quadrant/gram-grid-crlf-quadrant-bare]
+  [fixture: quadrant/gram-grid-crlf-title]
+  [fixture: quadrant/gram-grid-crlf-x-axis-bare]
+  [fixture: quadrant/gram-grid-crlf-x-axis-right-bare]
+  [fixture: quadrant/gram-grid-crlf-y-axis-bare]
+  [fixture: quadrant/gram-grid-crlf-y-axis-top-bare]
+- テキストの中のディレクティブは、クラス名を含め、どの場所でも取り除かれます。
+  `Object.prototype` の名前は、名前を取るどの場所でも普通の名前ですが、
+  `classDef` のクラスの名前としての `__proto__` は、
+  アンダースコアが許されないので例外です。
+  キーワード `title` は、タイトル、アクセシビリティのテキスト、
+  引用符のテキスト、点のクラス名ではテキストです。
+  軸や象限の引用符なしのテキストと `classDef` のクラスの名前は受け付けず、
+  点の名前としての `title` はタイトルです。
+  [fixture: quadrant/db-grid-directive-acc-descr]
+  [fixture: quadrant/db-grid-directive-acc-descr-block]
+  [fixture: quadrant/db-grid-directive-acc-title]
+  [fixture: quadrant/div-grid-directive-class-name]
+  [fixture: quadrant/div-grid-directive-classdef-name]
+  [fixture: quadrant/db-grid-directive-point-bare]
+  [fixture: quadrant/db-grid-directive-point-quoted]
+  [fixture: quadrant/db-grid-directive-quadrant-bare]
+  [fixture: quadrant/db-grid-directive-quadrant-quoted]
+  [fixture: quadrant/db-grid-directive-title]
+  [fixture: quadrant/db-grid-directive-x-axis-bare]
+  [fixture: quadrant/db-grid-directive-x-axis-quoted]
+  [fixture: quadrant/db-grid-directive-x-axis-right-bare]
+  [fixture: quadrant/db-grid-directive-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-directive-y-axis-bare]
+  [fixture: quadrant/db-grid-directive-y-axis-quoted]
+  [fixture: quadrant/db-grid-directive-y-axis-top-bare]
+  [fixture: quadrant/db-grid-directive-y-axis-top-quoted]
+  [fixture: quadrant/db-grid-proto-acc-descr]
+  [fixture: quadrant/db-grid-proto-acc-descr-block]
+  [fixture: quadrant/db-grid-proto-acc-title]
+  [fixture: quadrant/db-grid-proto-point-quoted]
+  [fixture: quadrant/db-grid-proto-quadrant-bare]
+  [fixture: quadrant/db-grid-proto-quadrant-quoted]
+  [fixture: quadrant/db-grid-proto-title]
+  [fixture: quadrant/db-grid-proto-x-axis-bare]
+  [fixture: quadrant/db-grid-proto-x-axis-quoted]
+  [fixture: quadrant/db-grid-proto-x-axis-right-bare]
+  [fixture: quadrant/db-grid-proto-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-proto-y-axis-bare]
+  [fixture: quadrant/db-grid-proto-y-axis-quoted]
+  [fixture: quadrant/db-grid-proto-y-axis-top-bare]
+  [fixture: quadrant/db-grid-proto-y-axis-top-quoted]
+  [fixture: quadrant/db-grid-constructor-acc-descr]
+  [fixture: quadrant/db-grid-constructor-acc-descr-block]
+  [fixture: quadrant/db-grid-constructor-acc-title]
+  [fixture: quadrant/db-grid-constructor-point-quoted]
+  [fixture: quadrant/db-grid-constructor-quadrant-bare]
+  [fixture: quadrant/db-grid-constructor-quadrant-quoted]
+  [fixture: quadrant/db-grid-constructor-title]
+  [fixture: quadrant/db-grid-constructor-x-axis-bare]
+  [fixture: quadrant/db-grid-constructor-x-axis-quoted]
+  [fixture: quadrant/db-grid-constructor-x-axis-right-bare]
+  [fixture: quadrant/db-grid-constructor-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-constructor-y-axis-bare]
+  [fixture: quadrant/db-grid-constructor-y-axis-quoted]
+  [fixture: quadrant/db-grid-constructor-y-axis-top-bare]
+  [fixture: quadrant/db-grid-constructor-y-axis-top-quoted]
+  [fixture: quadrant/db-class-proto]
+  [fixture: quadrant/db-name-proto]
+  [fixture: quadrant/gram-classdef-proto-name]
+  [fixture: quadrant/db-grid-keyword-acc-descr]
+  [fixture: quadrant/db-grid-keyword-acc-descr-block]
+  [fixture: quadrant/db-grid-keyword-acc-title]
+  [fixture: quadrant/db-grid-keyword-class-name]
+  [fixture: quadrant/db-grid-keyword-point-quoted]
+  [fixture: quadrant/db-grid-keyword-quadrant-quoted]
+  [fixture: quadrant/db-grid-keyword-title]
+  [fixture: quadrant/db-grid-keyword-x-axis-quoted]
+  [fixture: quadrant/db-grid-keyword-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-keyword-y-axis-quoted]
+  [fixture: quadrant/db-grid-keyword-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-keyword-quadrant-bare]
+  [fixture: quadrant/gram-grid-keyword-x-axis-bare]
+  [fixture: quadrant/gram-grid-keyword-x-axis-right-bare]
+  [fixture: quadrant/gram-grid-keyword-y-axis-bare]
+  [fixture: quadrant/gram-grid-keyword-y-axis-top-bare]
+  [fixture: quadrant/gram-classdef-name-keyword-title]
+  [fixture: quadrant/db-title-with-colon-point-like]
+- 空白の後ろの `%%` は、タイトル、アクセシビリティのテキスト、説明のブロック、
+  引用符のテキストではテキストの一部で、
+  それ以外ではコメントです。
+  軸や象限の引用符なしのテキストでは、
+  コメントが読み飛ばされて手前のテキストが残ります。
+  点の名前、点のクラス名、`classDef` のクラスの名前の後ろでは、
+  点やスタイルのない行になって拒否されます。
+  1 文字の単位に続けた `%%` は、その文字を取ります。
+  軸や象限の引用符なしのテキストは空になって拒否され、
+  軸の右のテキストは捨てられ、
+  点の名前は行全体がコメントになって受理され、クラス名は拒否されます。
+  [fixture: quadrant/db-grid-comment-acc-descr]
+  [fixture: quadrant/db-grid-comment-acc-descr-block]
+  [fixture: quadrant/db-grid-comment-acc-title]
+  [fixture: quadrant/db-grid-comment-glued-acc-descr]
+  [fixture: quadrant/db-grid-comment-glued-acc-descr-block]
+  [fixture: quadrant/db-grid-comment-glued-acc-title]
+  [fixture: quadrant/div-grid-comment-glued-point-bare]
+  [fixture: quadrant/db-grid-comment-glued-point-quoted]
+  [fixture: quadrant/db-grid-comment-glued-quadrant-quoted]
+  [fixture: quadrant/db-grid-comment-glued-title]
+  [fixture: quadrant/db-grid-comment-glued-x-axis-quoted]
+  [fixture: quadrant/div-grid-comment-glued-x-axis-right-bare]
+  [fixture: quadrant/db-grid-comment-glued-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-comment-glued-y-axis-quoted]
+  [fixture: quadrant/div-grid-comment-glued-y-axis-top-bare]
+  [fixture: quadrant/db-grid-comment-glued-y-axis-top-quoted]
+  [fixture: quadrant/db-grid-comment-point-quoted]
+  [fixture: quadrant/db-grid-comment-quadrant-bare]
+  [fixture: quadrant/db-grid-comment-quadrant-quoted]
+  [fixture: quadrant/db-grid-comment-title]
+  [fixture: quadrant/db-grid-comment-x-axis-bare]
+  [fixture: quadrant/db-grid-comment-x-axis-quoted]
+  [fixture: quadrant/db-grid-comment-x-axis-right-bare]
+  [fixture: quadrant/db-grid-comment-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-comment-y-axis-bare]
+  [fixture: quadrant/db-grid-comment-y-axis-quoted]
+  [fixture: quadrant/db-grid-comment-y-axis-top-bare]
+  [fixture: quadrant/db-grid-comment-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-comment-class-name]
+  [fixture: quadrant/gram-grid-comment-classdef-name]
+  [fixture: quadrant/gram-grid-comment-glued-class-name]
+  [fixture: quadrant/gram-grid-comment-glued-classdef-name]
+  [fixture: quadrant/div-grid-comment-glued-quadrant-bare]
+  [fixture: quadrant/div-grid-comment-glued-x-axis-bare]
+  [fixture: quadrant/div-grid-comment-glued-y-axis-bare]
+  [fixture: quadrant/gram-grid-comment-point-bare]
+- 句読点とマークアップは、場所ごとの規則に従います。
+  コロン、`;`、角括弧、タグ、矢印などの句読点は、タイトル、
+  アクセシビリティのテキスト、
+  引用符のテキストではテキストです（タグの引用符は `'` として読まれます）。
+  軸や象限の引用符なしのテキストと点の名前は、コロン、`;`、角括弧、タグ、
+  矢印を取りません（軸の矢印は文の矢印です）。
+  クラスの名前は、`classDef` のコロン以外を取りません。
+  引用符の中の `"` は文字列を終えるのでテキストは拒否されますが、
+  タイトルとアクセシビリティのテキストではテキストです。
+  1 つの `%`、バッククォート、ASCII の外の文字は、クラスの名前を除いて、
+  テキストを取るどの場所でもテキストで、
+  クラスの名前はバッククォートも `%` も取りません。
+  空のテキストは、タイトルと説明のブロックでは空のテキストを設定し、
+  テキストが必要なほかの場所では拒否され、軸の右のテキストでは捨てられます。
+  [fixture: quadrant/db-grid-nonascii-acc-descr]
+  [fixture: quadrant/db-grid-nonascii-acc-descr-block]
+  [fixture: quadrant/db-grid-nonascii-acc-title]
+  [fixture: quadrant/db-grid-nonascii-point-quoted]
+  [fixture: quadrant/db-grid-nonascii-quadrant-bare]
+  [fixture: quadrant/db-grid-nonascii-quadrant-quoted]
+  [fixture: quadrant/db-grid-nonascii-x-axis-bare]
+  [fixture: quadrant/db-grid-nonascii-x-axis-quoted]
+  [fixture: quadrant/db-grid-nonascii-x-axis-right-bare]
+  [fixture: quadrant/db-grid-nonascii-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-nonascii-y-axis-bare]
+  [fixture: quadrant/db-grid-nonascii-y-axis-quoted]
+  [fixture: quadrant/db-grid-nonascii-y-axis-top-bare]
+  [fixture: quadrant/db-grid-nonascii-y-axis-top-quoted]
+  [fixture: quadrant/db-grid-html-acc-descr]
+  [fixture: quadrant/db-grid-html-acc-descr-block]
+  [fixture: quadrant/db-grid-html-acc-title]
+  [fixture: quadrant/db-grid-html-point-quoted]
+  [fixture: quadrant/db-grid-html-quadrant-quoted]
+  [fixture: quadrant/db-grid-html-title]
+  [fixture: quadrant/db-grid-html-x-axis-quoted]
+  [fixture: quadrant/db-grid-html-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-html-y-axis-quoted]
+  [fixture: quadrant/db-grid-html-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-html-class-name]
+  [fixture: quadrant/gram-grid-html-classdef-name]
+  [fixture: quadrant/gram-grid-html-point-bare]
+  [fixture: quadrant/gram-grid-html-quadrant-bare]
+  [fixture: quadrant/gram-grid-html-x-axis-bare]
+  [fixture: quadrant/gram-grid-html-x-axis-right-bare]
+  [fixture: quadrant/gram-grid-html-y-axis-bare]
+  [fixture: quadrant/gram-grid-html-y-axis-top-bare]
+  [fixture: quadrant/db-grid-punct-acc-descr]
+  [fixture: quadrant/db-grid-punct-acc-descr-block]
+  [fixture: quadrant/db-grid-punct-acc-title]
+  [fixture: quadrant/db-grid-punct-point-quoted]
+  [fixture: quadrant/db-grid-punct-quadrant-quoted]
+  [fixture: quadrant/db-grid-punct-title]
+  [fixture: quadrant/db-grid-punct-x-axis-quoted]
+  [fixture: quadrant/db-grid-punct-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-punct-y-axis-quoted]
+  [fixture: quadrant/db-grid-punct-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-punct-class-name]
+  [fixture: quadrant/gram-grid-punct-classdef-name]
+  [fixture: quadrant/gram-grid-punct-point-bare]
+  [fixture: quadrant/gram-grid-punct-quadrant-bare]
+  [fixture: quadrant/gram-grid-punct-x-axis-bare]
+  [fixture: quadrant/gram-grid-punct-x-axis-right-bare]
+  [fixture: quadrant/gram-grid-punct-y-axis-bare]
+  [fixture: quadrant/gram-grid-punct-y-axis-top-bare]
+  [fixture: quadrant/db-grid-semicolon-acc-descr]
+  [fixture: quadrant/db-grid-semicolon-acc-descr-block]
+  [fixture: quadrant/db-grid-semicolon-acc-title]
+  [fixture: quadrant/db-grid-semicolon-point-quoted]
+  [fixture: quadrant/db-grid-semicolon-quadrant-quoted]
+  [fixture: quadrant/db-grid-semicolon-title]
+  [fixture: quadrant/db-grid-semicolon-x-axis-quoted]
+  [fixture: quadrant/db-grid-semicolon-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-semicolon-y-axis-quoted]
+  [fixture: quadrant/db-grid-semicolon-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-semicolon-class-name]
+  [fixture: quadrant/gram-grid-semicolon-classdef-name]
+  [fixture: quadrant/gram-grid-semicolon-point-bare]
+  [fixture: quadrant/gram-grid-semicolon-quadrant-bare]
+  [fixture: quadrant/gram-grid-semicolon-x-axis-bare]
+  [fixture: quadrant/gram-grid-semicolon-x-axis-right-bare]
+  [fixture: quadrant/gram-grid-semicolon-y-axis-bare]
+  [fixture: quadrant/gram-grid-semicolon-y-axis-top-bare]
+  [fixture: quadrant/db-grid-colon-acc-descr]
+  [fixture: quadrant/db-grid-colon-acc-descr-block]
+  [fixture: quadrant/db-grid-colon-acc-title]
+  [fixture: quadrant/db-grid-colon-classdef-name]
+  [fixture: quadrant/db-grid-colon-point-quoted]
+  [fixture: quadrant/db-grid-colon-quadrant-quoted]
+  [fixture: quadrant/db-grid-colon-title]
+  [fixture: quadrant/db-grid-colon-x-axis-quoted]
+  [fixture: quadrant/db-grid-colon-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-colon-y-axis-quoted]
+  [fixture: quadrant/db-grid-colon-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-colon-class-name]
+  [fixture: quadrant/gram-grid-colon-point-bare]
+  [fixture: quadrant/gram-grid-colon-quadrant-bare]
+  [fixture: quadrant/gram-grid-colon-x-axis-bare]
+  [fixture: quadrant/gram-grid-colon-x-axis-right-bare]
+  [fixture: quadrant/gram-grid-colon-y-axis-bare]
+  [fixture: quadrant/gram-grid-colon-y-axis-top-bare]
+  [fixture: quadrant/db-grid-arrow-acc-descr]
+  [fixture: quadrant/db-grid-arrow-acc-descr-block]
+  [fixture: quadrant/db-grid-arrow-acc-title]
+  [fixture: quadrant/db-grid-arrow-point-quoted]
+  [fixture: quadrant/db-grid-arrow-quadrant-quoted]
+  [fixture: quadrant/db-grid-arrow-title]
+  [fixture: quadrant/db-grid-arrow-x-axis-bare]
+  [fixture: quadrant/db-grid-arrow-x-axis-quoted]
+  [fixture: quadrant/db-grid-arrow-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-arrow-y-axis-bare]
+  [fixture: quadrant/db-grid-arrow-y-axis-quoted]
+  [fixture: quadrant/db-grid-arrow-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-arrow-class-name]
+  [fixture: quadrant/gram-grid-arrow-classdef-name]
+  [fixture: quadrant/gram-grid-arrow-point-bare]
+  [fixture: quadrant/gram-grid-arrow-quadrant-bare]
+  [fixture: quadrant/gram-grid-arrow-x-axis-right-bare]
+  [fixture: quadrant/gram-grid-arrow-y-axis-top-bare]
+  [fixture: quadrant/db-grid-quote-acc-descr]
+  [fixture: quadrant/db-grid-quote-acc-descr-block]
+  [fixture: quadrant/db-grid-quote-acc-title]
+  [fixture: quadrant/db-grid-quote-title]
+  [fixture: quadrant/gram-grid-quote-class-name]
+  [fixture: quadrant/gram-grid-quote-classdef-name]
+  [fixture: quadrant/gram-grid-quote-point-bare]
+  [fixture: quadrant/gram-grid-quote-point-quoted]
+  [fixture: quadrant/gram-grid-quote-quadrant-bare]
+  [fixture: quadrant/gram-grid-quote-quadrant-quoted]
+  [fixture: quadrant/gram-grid-quote-x-axis-bare]
+  [fixture: quadrant/gram-grid-quote-x-axis-quoted]
+  [fixture: quadrant/gram-grid-quote-x-axis-right-bare]
+  [fixture: quadrant/gram-grid-quote-x-axis-right-quoted]
+  [fixture: quadrant/gram-grid-quote-y-axis-bare]
+  [fixture: quadrant/gram-grid-quote-y-axis-quoted]
+  [fixture: quadrant/gram-grid-quote-y-axis-top-bare]
+  [fixture: quadrant/gram-grid-quote-y-axis-top-quoted]
+  [fixture: quadrant/db-grid-backtick-acc-descr]
+  [fixture: quadrant/db-grid-backtick-acc-descr-block]
+  [fixture: quadrant/db-grid-backtick-acc-title]
+  [fixture: quadrant/db-grid-backtick-point-bare]
+  [fixture: quadrant/db-grid-backtick-point-quoted]
+  [fixture: quadrant/db-grid-backtick-quadrant-bare]
+  [fixture: quadrant/db-grid-backtick-quadrant-quoted]
+  [fixture: quadrant/db-grid-backtick-title]
+  [fixture: quadrant/db-grid-backtick-x-axis-bare]
+  [fixture: quadrant/db-grid-backtick-x-axis-quoted]
+  [fixture: quadrant/db-grid-backtick-x-axis-right-bare]
+  [fixture: quadrant/db-grid-backtick-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-backtick-y-axis-bare]
+  [fixture: quadrant/db-grid-backtick-y-axis-quoted]
+  [fixture: quadrant/db-grid-backtick-y-axis-top-bare]
+  [fixture: quadrant/db-grid-backtick-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-backtick-class-name]
+  [fixture: quadrant/gram-grid-backtick-classdef-name]
+  [fixture: quadrant/db-grid-percent-acc-descr]
+  [fixture: quadrant/db-grid-percent-acc-descr-block]
+  [fixture: quadrant/db-grid-percent-acc-title]
+  [fixture: quadrant/db-grid-percent-point-bare]
+  [fixture: quadrant/db-grid-percent-point-quoted]
+  [fixture: quadrant/db-grid-percent-quadrant-bare]
+  [fixture: quadrant/db-grid-percent-quadrant-quoted]
+  [fixture: quadrant/db-grid-percent-title]
+  [fixture: quadrant/db-grid-percent-x-axis-bare]
+  [fixture: quadrant/db-grid-percent-x-axis-quoted]
+  [fixture: quadrant/db-grid-percent-x-axis-right-bare]
+  [fixture: quadrant/db-grid-percent-x-axis-right-quoted]
+  [fixture: quadrant/db-grid-percent-y-axis-bare]
+  [fixture: quadrant/db-grid-percent-y-axis-quoted]
+  [fixture: quadrant/db-grid-percent-y-axis-top-bare]
+  [fixture: quadrant/db-grid-percent-y-axis-top-quoted]
+  [fixture: quadrant/gram-grid-percent-class-name]
+  [fixture: quadrant/gram-grid-percent-classdef-name]
+  [fixture: quadrant/db-grid-empty-x-axis-right-bare]
+  [fixture: quadrant/db-grid-empty-y-axis-top-bare]
+  [fixture: quadrant/gram-grid-empty-acc-descr]
+  [fixture: quadrant/gram-grid-empty-acc-title]
+  [fixture: quadrant/gram-grid-empty-classdef-name]
+  [fixture: quadrant/gram-grid-empty-point-bare]
+  [fixture: quadrant/gram-grid-empty-quadrant-bare]
+  [fixture: quadrant/gram-grid-empty-quadrant-quoted]
+  [fixture: quadrant/gram-grid-empty-x-axis-bare]
+  [fixture: quadrant/gram-grid-empty-y-axis-bare]
+- フロントマターのタイトルは図のタイトルで、
+  引用符の文字列や数はそのテキストになり、空のタイトルは空のテキストです。
+  区切りの行はインデントでき、行は CRLF で終われます。
+  設定だけでタイトルのないフロントマターは、タイトルを文に任せ、
+  タイトルでない文は、フロントマターのタイトルを保ちます。
+  タイトルの周りの空白は取り除かれ、中の空白は保たれ、
+  YAML の折りたたみ文字列のタイトルは、末尾に改行のある 1 行です。
+  フロントマターの後ろのヘッダーの前の U+FEFF は、何も変えません。
+  YAML として正しくないフロントマターは拒否され、
+  フロントマターの欄で始まって図の中で終わるタグは、
+  1 つのタグとして引用符が置き換えられます。
+  [fixture: quadrant/db-frontmatter-crlf]
+  [fixture: quadrant/div-frontmatter-html-tag-starts-in-field]
+  [fixture: quadrant/db-frontmatter-indented-delimiters]
+  [fixture: quadrant/db-frontmatter-no-title]
+  [fixture: quadrant/db-frontmatter-then-bom-header]
+  [fixture: quadrant/db-frontmatter-title-empty]
+  [fixture: quadrant/db-frontmatter-title-number]
+  [fixture: quadrant/db-frontmatter-title-quoted]
+  [fixture: quadrant/db-frontmatter-title-spaces]
+  [fixture: quadrant/db-frontmatter-title-with-quadrant-statement]
+  [fixture: quadrant/db-frontmatter-title-yaml-multiline]
+  [fixture: quadrant/db-frontmatter-with-quadrant-config]
+  [fixture: quadrant/db-frontmatter-with-theme]
+  [fixture: quadrant/div-frontmatter-invalid-yaml]
+- 図の設定（`quadrantChart`: 幅と高さ、余白とフォントの大きさ、軸の位置、
+  点の半径）、テーマ、
+  テーマの変数は、サイト、フロントマター、ディレクティブのどれが与えても、
+  Db を変えません。
+  点の半径はテキストが与えたもので、半径のない点は半径を持ちません。
+  スキーマに載っていない設定 `showXAxis` と `showYAxis` は、
+  レイアウトのラベルを隠します。
+  要約は軸のテキストをラベルから読むので、サイトがそれを偽にし、
+  テキストがその軸のテキストを設定すると、
+  要約がテキストを失います。
+  そのため `runMermaid()` は `MermaidEnvironmentError` で止まります
+  （ディレクティブとフロントマターは、これらの設定を変えません）。
+  [fixture: quadrant/config-settings-chart]
+  [fixture: quadrant/config-settings-max-text-size]
+  [fixture: quadrant/config-settings-point-radius]
+- securityLevel が mermaid.js の値のどれでもない値（`other`）で、
+  `htmlLabels` が未設定のとき、
+  タイトル、アクセシビリティのタイトル、軸と象限のテキスト、
+  点の名前の文字は置き換えられます。
+  `htmlLabels` が false のとき、`loose` のとき、
+  `sandbox` のときは書いたとおりで、
+  既定の設定ではタグはそのまま保たれます。
+  [fixture: quadrant/config-security-level-default-script]
+  [fixture: quadrant/config-security-level-loose-all]
+  [fixture: quadrant/config-security-level-other-all]
+  [fixture: quadrant/config-security-level-other-flowchart-html-labels-false]
+  [fixture: quadrant/config-security-level-other-html-labels-false]
+  [fixture: quadrant/config-security-level-other-script]
+  [fixture: quadrant/config-security-level-sandbox-all]
+- `style` と `classDef` の行の規則には、ほかの図にあった形があります。
+  別の大文字小文字のキーワード（`Style:#x;y`）、`:` と `#` の間の空白、
+  `#` がない場合は `;` が残り、
+  前に `#` があれば、その `;` は文字参照を終えます。
+  `;` が 2 つあるときは最後が落とされ、最初が残ります。
+  `classDef:` もこの規則のキーワードです。
+  引用符のテキストの別の行の `;` は残り、キーワードのある、引用符の中の行は、
+  独立した行です。
+  文を終えるはずの `;` は落とされるので、
+  `quadrant-1 "style:#a"; quadrant-2 B` と、`;` で区切った 2 つの軸の文は、
+  つながって拒否されます。
+  点を終える `;` は落とされますが、点は行末で終わり、
+  タイトルの `;` も落とされて、タイトルは行の残りを持ちます。
+  [fixture: quadrant/db-style-line-classdef-keyword-acc-title]
+  [fixture: quadrant/db-style-line-classdef-keyword-quadrant-quoted]
+  [fixture: quadrant/db-style-line-classdef-keyword-title]
+  [fixture: quadrant/db-style-line-hash-on-another-line-quoted]
+  [fixture: quadrant/db-style-line-ignored-in-point]
+  [fixture: quadrant/db-style-line-ignored-in-value]
+  [fixture: quadrant/db-style-line-keyword-on-another-line-quoted]
+  [fixture: quadrant/db-style-line-no-hash-acc-title]
+  [fixture: quadrant/db-style-line-no-hash-quadrant-quoted]
+  [fixture: quadrant/db-style-line-no-hash-title]
+  [fixture: quadrant/db-style-line-semicolon-on-another-line-quoted]
+  [fixture: quadrant/db-style-line-semicolon-statement-separator-in-title]
+  [fixture: quadrant/db-style-line-space-after-colon-acc-title]
+  [fixture: quadrant/db-style-line-space-after-colon-quadrant-quoted]
+  [fixture: quadrant/db-style-line-space-after-colon-title]
+  [fixture: quadrant/db-style-line-two-semicolons-acc-title]
+  [fixture: quadrant/db-style-line-two-semicolons-quadrant-quoted]
+  [fixture: quadrant/db-style-line-two-semicolons-title]
+  [fixture: quadrant/db-style-line-upper-case-acc-title]
+  [fixture: quadrant/db-style-line-upper-case-quadrant-quoted]
+  [fixture: quadrant/db-style-line-upper-case-title]
+  [fixture: quadrant/gram-style-line-ignored-between-axis-statements]
+  [fixture: quadrant/gram-style-line-ignored-between-statements]
+- テキストが次の行にあるキーワードは拒否されます。
+  `x-axis`、`y-axis`、`quadrant-1`、`classDef`、`title` で、間に空行、
+  コメント行、ディレクティブの行があってもなくても同じです。
+  テキストが独立した文になるからです。
+  アクセシビリティのキーワードは、次の行をテキストとします。
+  間のコメント行とディレクティブの行は取り除かれ、行の内容は何でもよく、点、
+  象限の文、`classDef` の行、
+  `title` の行でもよく、`title` の行はタイトルを設定しません。
+  [fixture: quadrant/gram-keyword-line-feed-classdef]
+  [fixture: quadrant/gram-keyword-line-feed-quadrant]
+  [fixture: quadrant/gram-keyword-line-feed-title]
+  [fixture: quadrant/gram-keyword-line-feed-x-axis]
+  [fixture: quadrant/gram-keyword-line-feed-y-axis]
+  [fixture: quadrant/gram-keyword-comment-line-classdef]
+  [fixture: quadrant/gram-keyword-comment-line-quadrant]
+  [fixture: quadrant/gram-keyword-comment-line-title]
+  [fixture: quadrant/gram-keyword-comment-line-x-axis]
+  [fixture: quadrant/gram-keyword-comment-line-y-axis]
+  [fixture: quadrant/gram-keyword-directive-line-classdef]
+  [fixture: quadrant/gram-keyword-directive-line-quadrant]
+  [fixture: quadrant/gram-keyword-directive-line-x-axis]
+  [fixture: quadrant/gram-keyword-directive-line-y-axis]
+  [fixture: quadrant/gram-keyword-blank-line-classdef]
+  [fixture: quadrant/gram-keyword-blank-line-quadrant]
+  [fixture: quadrant/gram-keyword-blank-line-x-axis]
+  [fixture: quadrant/gram-keyword-blank-line-y-axis]
+  [fixture: quadrant/db-acc-title-comment-line-before-text]
+  [fixture: quadrant/db-acc-title-directive-line-before-text]
+  [fixture: quadrant/db-acc-title-statement-as-text]
+  [fixture: quadrant/db-acc-title-quadrant-as-text]
+  [fixture: quadrant/db-acc-descr-comment-line-before-text]
+  [fixture: quadrant/db-acc-descr-classdef-as-text]
+  [fixture: quadrant/db-acc-descr-title-text-keeps-title]
+- キーワードに続けて書いたものがどうなるかは次のとおりです。
+  `title` の後ろの ASCII の外の文字とダッシュは、
+  タイトルの始まりで（`titleé` はタイトル `é`）、
+  数字とアンダースコアは語になって行が拒否されます。
+  `accTitle` と `accDescr` はコロンが隣に、`classDef` は空白が必要なので、
+  どの接尾辞も拒否されます。
+  `x-axis`、`y-axis`、`quadrant-1` の後ろにはテキストが続き、ASCII の外の文字、
+  数字、アンダースコアで始められますが、ダッシュでは始められません。
+  ヘッダーの後ろのアンダースコアと U+FEFF は、文が始まらない場所のテキストです。
+  [fixture: quadrant/db-keyword-suffix-quadrant-digit]
+  [fixture: quadrant/db-keyword-suffix-quadrant-non-ascii]
+  [fixture: quadrant/db-keyword-suffix-quadrant-underscore]
+  [fixture: quadrant/db-keyword-suffix-title-dash]
+  [fixture: quadrant/db-keyword-suffix-title-non-ascii]
+  [fixture: quadrant/db-keyword-suffix-x-axis-digit]
+  [fixture: quadrant/db-keyword-suffix-x-axis-non-ascii]
+  [fixture: quadrant/db-keyword-suffix-x-axis-underscore]
+  [fixture: quadrant/db-keyword-suffix-y-axis-digit]
+  [fixture: quadrant/db-keyword-suffix-y-axis-non-ascii]
+  [fixture: quadrant/db-keyword-suffix-y-axis-underscore]
+  [fixture: quadrant/gram-keyword-suffix-acc-descr-dash]
+  [fixture: quadrant/gram-keyword-suffix-acc-descr-digit]
+  [fixture: quadrant/gram-keyword-suffix-acc-descr-non-ascii]
+  [fixture: quadrant/gram-keyword-suffix-acc-descr-underscore]
+  [fixture: quadrant/gram-keyword-suffix-acc-title-dash]
+  [fixture: quadrant/gram-keyword-suffix-acc-title-digit]
+  [fixture: quadrant/gram-keyword-suffix-acc-title-non-ascii]
+  [fixture: quadrant/gram-keyword-suffix-acc-title-underscore]
+  [fixture: quadrant/gram-keyword-suffix-classdef-dash]
+  [fixture: quadrant/gram-keyword-suffix-classdef-digit]
+  [fixture: quadrant/gram-keyword-suffix-classdef-non-ascii]
+  [fixture: quadrant/gram-keyword-suffix-classdef-underscore]
+  [fixture: quadrant/gram-keyword-suffix-quadrant-dash]
+  [fixture: quadrant/gram-keyword-suffix-title-digit]
+  [fixture: quadrant/gram-keyword-suffix-title-underscore]
+  [fixture: quadrant/gram-keyword-suffix-x-axis-dash]
+  [fixture: quadrant/gram-keyword-suffix-y-axis-dash]
+  [fixture: quadrant/header-underscore-suffix]
+  [fixture: quadrant/header-bom-after]
+  [fixture: quadrant/header-bom-after-statement]
+- キーワード `title`、`x-axis`、`classDef` の前には境界が要りません。
+  引用符のない、またはテキストの中や名前の中の `.`、ダッシュ、アンダースコア、
+  数字の後ろにあれば、キーワードであり、行は拒否されます。
+  タイトルの中の `title` はテキストです。
+  引用符なしのテキストの中の語 `quadrantChart` はヘッダーで、
+  行は拒否されますが、タイトルの中ではテキストです。
+  [fixture: quadrant/db-keyword-after-dot-in-title]
+  [fixture: quadrant/gram-keyword-after-dash-in-name]
+  [fixture: quadrant/gram-keyword-after-dash-in-quadrant-text]
+  [fixture: quadrant/gram-keyword-after-digit-in-name]
+  [fixture: quadrant/gram-keyword-after-digit-in-quadrant-text]
+  [fixture: quadrant/gram-keyword-after-dot-in-name]
+  [fixture: quadrant/gram-keyword-after-dot-in-quadrant-text]
+  [fixture: quadrant/gram-keyword-after-underscore-in-name]
+  [fixture: quadrant/gram-keyword-after-underscore-in-quadrant-text]
+  [fixture: quadrant/gram-keyword-axis-after-dot-in-quadrant-text]
+  [fixture: quadrant/gram-keyword-classdef-after-dot-in-name]
+  [fixture: quadrant/db-keyword-header-in-word]
+  [fixture: quadrant/gram-keyword-header-in-quadrant-text]
+- `Object.prototype` の名前は、
+  点の名前としてもクラスの名前としても普通の名前で、
+  `constructor` という名前のクラスも、ほかのクラスと同じように定義して使え、
+  2 つ目の定義は 1 つ目を置き換えます。
+  [fixture: quadrant/db-name-prototype-definegetter]
+  [fixture: quadrant/db-name-prototype-isprototypeof]
+  [fixture: quadrant/db-name-prototype-lookupgetter]
+  [fixture: quadrant/db-name-prototype-propertyisenumerable]
+  [fixture: quadrant/db-name-prototype-tolocalestring]
+  [fixture: quadrant/db-name-prototype-valueof]
+  [fixture: quadrant/db-class-prototype-value-of]
+  [fixture: quadrant/db-classdef-prototype-to-string-redefined]
+  [fixture: quadrant/db-classdef-prototype-twice]
+  [fixture: quadrant/db-classdef-prototype-used]
+- 同じ名前の定義が複数あるときは、
+  3 つのタイトルや象限の 3 つのテキストが、最後の値になります。
+  交互に設定した 2 つの象限は、それぞれの最後のテキストを保ちます。
+  軸では、3 つ目の文が名指したものを設定するので、
+  矢印付きの左のテキストは矢印のないテキストに置き換わり、
+  最初の文の右のテキストは残ります。
+  テキストが 2 つある 3 つ目の文は両方を設定します。
+  クラスの 3 つ目の定義は 2 つ目を置き換え、間に別のクラスがあっても、
+  各クラスは最後のスタイルを保ち、最初の定義の順は変わりません。
+  [fixture: quadrant/db-title-three-times]
+  [fixture: quadrant/db-quadrant-three-times]
+  [fixture: quadrant/db-quadrant-three-times-with-partner]
+  [fixture: quadrant/db-x-axis-three-times-arrow-forms]
+  [fixture: quadrant/db-x-axis-three-times-then-both]
+  [fixture: quadrant/db-y-axis-three-times-arrow-forms]
+  [fixture: quadrant/db-classdef-three-times]
+  [fixture: quadrant/db-classdef-three-times-partner]
+- 空のブロック（`{}`、中に改行、空白、空行、
+  タブがあるもの）は何も設定しないので、
+  その前の行やブロックが設定した説明は残ります。
+  空のブロックが 2 つ続いても同じで、アクセシビリティのタイトルには触れません。
+  テキストの終わりのテキストのない `accDescr:` は、
+  前にテキストがあっても拒否されます。
+  [fixture: quadrant/db-acc-descr-empty-block-keeps-block]
+  [fixture: quadrant/db-acc-descr-empty-block-keeps-line-blank-line]
+  [fixture: quadrant/db-acc-descr-empty-block-keeps-line-braces]
+  [fixture: quadrant/db-acc-descr-empty-block-keeps-line-line-feed]
+  [fixture: quadrant/db-acc-descr-empty-block-keeps-line-space]
+  [fixture: quadrant/db-acc-descr-empty-block-keeps-line-tab]
+  [fixture: quadrant/db-acc-descr-empty-block-twice-keeps]
+  [fixture: quadrant/db-acc-title-then-empty-block]
+  [fixture: quadrant/gram-acc-descr-empty-line-after-text]
+- 文の中の空のブロックは読み飛ばされます。
+  軸や象限のテキストの中、名前の中、点の後ろ、`classDef` の行の中、文の頭、
+  ヘッダーの行で、
+  ヘッダーの行でテキストのあるブロックは説明を設定します。
+  ブロックの周りの空白はテキストに残ります。
+  軸のキーワードの直後では、テキストの前に空白が残って行が拒否され、
+  文の中のテキストのあるブロックは独立した文で、その前の行を終えるので、
+  行は拒否されます。
+  [fixture: quadrant/db-empty-block-after-point]
+  [fixture: quadrant/db-empty-block-before-statement]
+  [fixture: quadrant/div-empty-block-in-classdef]
+  [fixture: quadrant/div-empty-block-in-name]
+  [fixture: quadrant/div-empty-block-in-quadrant-text]
+  [fixture: quadrant/div-empty-block-in-x-axis-text]
+  [fixture: quadrant/db-empty-block-on-header-line]
+  [fixture: quadrant/gram-empty-block-before-x-axis-text]
+  [fixture: quadrant/gram-block-with-text-in-quadrant-text]
+  [fixture: quadrant/db-block-on-header-line]
+- 空の文字列は、どこにあっても捨てられます。
+  文の頭、独立した行、テキスト・語・名前の前後、点やクラスのスタイルの間です。
+  周りの空白は残り、語はつながります。
+  空の文字列だけの文はテキストがなくて拒否され、
+  点のコロンと角括弧の間や、角括弧の中の空の文字列も拒否されます。
+  タイトルの中ではテキストです。
+  [fixture: quadrant/div-empty-string-after-name]
+  [fixture: quadrant/div-empty-string-before-name]
+  [fixture: quadrant/div-empty-string-before-quadrant-text]
+  [fixture: quadrant/div-empty-string-before-statement]
+  [fixture: quadrant/div-empty-string-between-words]
+  [fixture: quadrant/div-empty-string-in-classdef]
+  [fixture: quadrant/div-empty-string-in-point-styles]
+  [fixture: quadrant/div-empty-string-in-quadrant-text]
+  [fixture: quadrant/db-empty-string-in-title]
+  [fixture: quadrant/div-empty-string-inside-word]
+  [fixture: quadrant/div-empty-string-line]
+  [fixture: quadrant/db-empty-string-title-before-statement-line]
+  [fixture: quadrant/gram-empty-string-after-colon]
+  [fixture: quadrant/gram-empty-string-in-brackets]
+  [fixture: quadrant/gram-empty-string-twice-quadrant]
+- 語 `C4Container`、`C4Component`、`C4Dynamic`、
+  `C4Deployment` がテキストのどこかにあると、
+  mermaid.js は C4 図を検出し、その図がテキストを拒否します。
+  タイトル、アクセシビリティのテキスト、象限のテキスト、引用符の名前、
+  クラス名で起きます。
+  `C4Context` はテキストの先頭でだけ検出されるので、
+  名前が `C4Context` であっても名前です。
+  [fixture: quadrant/db-c4-context-in-name]
+  [fixture: quadrant/div-c4-keyword-in-acc-title]
+  [fixture: quadrant/div-c4-keyword-in-class-name]
+  [fixture: quadrant/div-c4-keyword-in-quadrant-text]
+  [fixture: quadrant/div-c4-keyword-in-quoted-name]
+  [fixture: quadrant/div-c4-keyword-in-title]
+- 文の後ろには、CRLF、CR だけ、または改行のないテキストの終わりが来られます。
+  行末やテキストの終わりのタブ、U+FEFF、ノーブレークスペース、全角スペース、
+  U+2028、U+2029は、
+  タイトル、アクセシビリティのテキスト、軸、象限の後ろでは読み飛ばされます。
+  点の後ろでは名前のないスタイルとして読まれて拒否されますが、
+  点のスタイルの後ろのタブは読み飛ばされ、
+  `classDef` の行の後ろでも読み飛ばされるのはタブだけです。
+  文の前のタブは読み飛ばされ、
+  キーワードで始まる文の前の U+FEFF は拒否されますが、
+  U+FEFF で始まる点は、それを名前に含め、切り詰められます。
+  [fixture: quadrant/db-ends-acc-descr-bom-end]
+  [fixture: quadrant/db-ends-acc-descr-bom-end-of-text]
+  [fixture: quadrant/db-ends-acc-descr-cr-end-of-text]
+  [fixture: quadrant/db-ends-acc-descr-crlf-end-of-text]
+  [fixture: quadrant/db-ends-acc-descr-ideographic-end]
+  [fixture: quadrant/db-ends-acc-descr-ideographic-end-of-text]
+  [fixture: quadrant/db-ends-acc-descr-ls-end-of-text]
+  [fixture: quadrant/db-ends-acc-descr-nbsp-end]
+  [fixture: quadrant/db-ends-acc-descr-nbsp-end-of-text]
+  [fixture: quadrant/db-ends-acc-descr-no-line-feed]
+  [fixture: quadrant/db-ends-acc-descr-ps-end-of-text]
+  [fixture: quadrant/db-ends-acc-descr-tab-end]
+  [fixture: quadrant/db-ends-acc-descr-tab-end-of-text]
+  [fixture: quadrant/db-ends-acc-descr-tab-start]
+  [fixture: quadrant/db-ends-acc-title-bom-end]
+  [fixture: quadrant/db-ends-acc-title-bom-end-of-text]
+  [fixture: quadrant/db-ends-acc-title-cr-end-of-text]
+  [fixture: quadrant/db-ends-acc-title-crlf-end-of-text]
+  [fixture: quadrant/db-ends-acc-title-ideographic-end]
+  [fixture: quadrant/db-ends-acc-title-ideographic-end-of-text]
+  [fixture: quadrant/db-ends-acc-title-ls-end-of-text]
+  [fixture: quadrant/db-ends-acc-title-nbsp-end]
+  [fixture: quadrant/db-ends-acc-title-nbsp-end-of-text]
+  [fixture: quadrant/db-ends-acc-title-no-line-feed]
+  [fixture: quadrant/db-ends-acc-title-ps-end-of-text]
+  [fixture: quadrant/db-ends-acc-title-tab-end]
+  [fixture: quadrant/db-ends-acc-title-tab-end-of-text]
+  [fixture: quadrant/db-ends-acc-title-tab-start]
+  [fixture: quadrant/db-ends-classdef-cr-end-of-text]
+  [fixture: quadrant/db-ends-classdef-crlf-end-of-text]
+  [fixture: quadrant/db-ends-classdef-no-line-feed]
+  [fixture: quadrant/db-ends-classdef-tab-end]
+  [fixture: quadrant/db-ends-classdef-tab-end-of-text]
+  [fixture: quadrant/db-ends-classdef-tab-start]
+  [fixture: quadrant/db-ends-point-bom-start]
+  [fixture: quadrant/db-ends-point-class-bom-start]
+  [fixture: quadrant/db-ends-point-class-cr-end-of-text]
+  [fixture: quadrant/db-ends-point-class-crlf-end-of-text]
+  [fixture: quadrant/db-ends-point-class-no-line-feed]
+  [fixture: quadrant/db-ends-point-class-tab-start]
+  [fixture: quadrant/db-ends-point-cr-end-of-text]
+  [fixture: quadrant/db-ends-point-crlf-end-of-text]
+  [fixture: quadrant/db-ends-point-no-line-feed]
+  [fixture: quadrant/db-ends-point-style-bom-start]
+  [fixture: quadrant/db-ends-point-style-cr-end-of-text]
+  [fixture: quadrant/db-ends-point-style-crlf-end-of-text]
+  [fixture: quadrant/db-ends-point-style-no-line-feed]
+  [fixture: quadrant/db-ends-point-style-tab-end]
+  [fixture: quadrant/db-ends-point-style-tab-end-of-text]
+  [fixture: quadrant/db-ends-point-style-tab-start]
+  [fixture: quadrant/db-ends-point-tab-start]
+  [fixture: quadrant/db-ends-quadrant-bom-end]
+  [fixture: quadrant/db-ends-quadrant-bom-end-of-text]
+  [fixture: quadrant/db-ends-quadrant-cr-end-of-text]
+  [fixture: quadrant/db-ends-quadrant-crlf-end-of-text]
+  [fixture: quadrant/db-ends-quadrant-ideographic-end]
+  [fixture: quadrant/db-ends-quadrant-ideographic-end-of-text]
+  [fixture: quadrant/db-ends-quadrant-ls-end-of-text]
+  [fixture: quadrant/db-ends-quadrant-nbsp-end]
+  [fixture: quadrant/db-ends-quadrant-nbsp-end-of-text]
+  [fixture: quadrant/db-ends-quadrant-no-line-feed]
+  [fixture: quadrant/db-ends-quadrant-ps-end-of-text]
+  [fixture: quadrant/db-ends-quadrant-tab-end]
+  [fixture: quadrant/db-ends-quadrant-tab-end-of-text]
+  [fixture: quadrant/db-ends-quadrant-tab-start]
+  [fixture: quadrant/db-ends-title-bom-end]
+  [fixture: quadrant/db-ends-title-bom-end-of-text]
+  [fixture: quadrant/db-ends-title-cr-end-of-text]
+  [fixture: quadrant/db-ends-title-crlf-end-of-text]
+  [fixture: quadrant/db-ends-title-ideographic-end]
+  [fixture: quadrant/db-ends-title-ideographic-end-of-text]
+  [fixture: quadrant/db-ends-title-ls-end-of-text]
+  [fixture: quadrant/db-ends-title-nbsp-end]
+  [fixture: quadrant/db-ends-title-nbsp-end-of-text]
+  [fixture: quadrant/db-ends-title-no-line-feed]
+  [fixture: quadrant/db-ends-title-ps-end-of-text]
+  [fixture: quadrant/db-ends-title-tab-end-of-text]
+  [fixture: quadrant/db-ends-x-axis-bom-end]
+  [fixture: quadrant/db-ends-x-axis-bom-end-of-text]
+  [fixture: quadrant/db-ends-x-axis-cr-end-of-text]
+  [fixture: quadrant/db-ends-x-axis-crlf-end-of-text]
+  [fixture: quadrant/db-ends-x-axis-ideographic-end]
+  [fixture: quadrant/db-ends-x-axis-ideographic-end-of-text]
+  [fixture: quadrant/db-ends-x-axis-ls-end-of-text]
+  [fixture: quadrant/db-ends-x-axis-nbsp-end]
+  [fixture: quadrant/db-ends-x-axis-nbsp-end-of-text]
+  [fixture: quadrant/db-ends-x-axis-no-line-feed]
+  [fixture: quadrant/db-ends-x-axis-ps-end-of-text]
+  [fixture: quadrant/db-ends-x-axis-tab-end]
+  [fixture: quadrant/db-ends-x-axis-tab-end-of-text]
+  [fixture: quadrant/db-ends-x-axis-tab-start]
+  [fixture: quadrant/db-ends-y-axis-bom-end]
+  [fixture: quadrant/db-ends-y-axis-bom-end-of-text]
+  [fixture: quadrant/db-ends-y-axis-cr-end-of-text]
+  [fixture: quadrant/db-ends-y-axis-crlf-end-of-text]
+  [fixture: quadrant/db-ends-y-axis-ideographic-end]
+  [fixture: quadrant/db-ends-y-axis-ideographic-end-of-text]
+  [fixture: quadrant/db-ends-y-axis-ls-end-of-text]
+  [fixture: quadrant/db-ends-y-axis-nbsp-end]
+  [fixture: quadrant/db-ends-y-axis-nbsp-end-of-text]
+  [fixture: quadrant/db-ends-y-axis-no-line-feed]
+  [fixture: quadrant/db-ends-y-axis-ps-end-of-text]
+  [fixture: quadrant/db-ends-y-axis-tab-end]
+  [fixture: quadrant/db-ends-y-axis-tab-end-of-text]
+  [fixture: quadrant/db-ends-y-axis-tab-start]
+  [fixture: quadrant/gram-ends-acc-descr-bom-start]
+  [fixture: quadrant/gram-ends-acc-title-bom-start]
+  [fixture: quadrant/gram-ends-classdef-bom-end]
+  [fixture: quadrant/gram-ends-classdef-bom-end-of-text]
+  [fixture: quadrant/gram-ends-classdef-bom-start]
+  [fixture: quadrant/gram-ends-classdef-ideographic-end]
+  [fixture: quadrant/gram-ends-classdef-ideographic-end-of-text]
+  [fixture: quadrant/gram-ends-classdef-ls-end-of-text]
+  [fixture: quadrant/gram-ends-classdef-nbsp-end]
+  [fixture: quadrant/gram-ends-classdef-nbsp-end-of-text]
+  [fixture: quadrant/gram-ends-classdef-ps-end-of-text]
+  [fixture: quadrant/gram-ends-point-bom-end]
+  [fixture: quadrant/gram-ends-point-bom-end-of-text]
+  [fixture: quadrant/gram-ends-point-class-bom-end]
+  [fixture: quadrant/gram-ends-point-class-bom-end-of-text]
+  [fixture: quadrant/gram-ends-point-class-ideographic-end]
+  [fixture: quadrant/gram-ends-point-class-ideographic-end-of-text]
+  [fixture: quadrant/gram-ends-point-class-ls-end-of-text]
+  [fixture: quadrant/gram-ends-point-class-nbsp-end]
+  [fixture: quadrant/gram-ends-point-class-nbsp-end-of-text]
+  [fixture: quadrant/gram-ends-point-class-ps-end-of-text]
+  [fixture: quadrant/gram-ends-point-class-tab-end]
+  [fixture: quadrant/gram-ends-point-class-tab-end-of-text]
+  [fixture: quadrant/gram-ends-point-ideographic-end]
+  [fixture: quadrant/gram-ends-point-ideographic-end-of-text]
+  [fixture: quadrant/gram-ends-point-ls-end-of-text]
+  [fixture: quadrant/gram-ends-point-nbsp-end]
+  [fixture: quadrant/gram-ends-point-nbsp-end-of-text]
+  [fixture: quadrant/gram-ends-point-ps-end-of-text]
+  [fixture: quadrant/gram-ends-point-style-bom-end]
+  [fixture: quadrant/gram-ends-point-style-bom-end-of-text]
+  [fixture: quadrant/gram-ends-point-style-ideographic-end]
+  [fixture: quadrant/gram-ends-point-style-ideographic-end-of-text]
+  [fixture: quadrant/gram-ends-point-style-ls-end-of-text]
+  [fixture: quadrant/gram-ends-point-style-nbsp-end]
+  [fixture: quadrant/gram-ends-point-style-nbsp-end-of-text]
+  [fixture: quadrant/gram-ends-point-style-ps-end-of-text]
+  [fixture: quadrant/gram-ends-point-tab-end-of-text]
+  [fixture: quadrant/gram-ends-quadrant-bom-start]
+  [fixture: quadrant/gram-ends-title-bom-start]
+  [fixture: quadrant/gram-ends-x-axis-bom-start]
+  [fixture: quadrant/gram-ends-y-axis-bom-start]
+- 空白だけの行は、空白とタブだけなら、最初の文の前、文の間、
+  テキストの終わりに置けます。
+  ノーブレークスペース、全角スペース、U+FEFF、U+2028 の行は、
+  文が始まらない場所のテキストなので、拒否されます。
+  [fixture: quadrant/db-whitespace-line-between-spaces-and-tab]
+  [fixture: quadrant/db-whitespace-line-between-tab]
+  [fixture: quadrant/db-whitespace-line-first-spaces-and-tab]
+  [fixture: quadrant/db-whitespace-line-first-tab]
+  [fixture: quadrant/db-whitespace-line-last-spaces-and-tab]
+  [fixture: quadrant/db-whitespace-line-last-tab]
+  [fixture: quadrant/gram-whitespace-line-between-bom]
+  [fixture: quadrant/gram-whitespace-line-between-ideographic]
+  [fixture: quadrant/gram-whitespace-line-between-ls]
+  [fixture: quadrant/gram-whitespace-line-between-nbsp]
+  [fixture: quadrant/gram-whitespace-line-first-bom]
+  [fixture: quadrant/gram-whitespace-line-first-ideographic]
+  [fixture: quadrant/gram-whitespace-line-first-ls]
+  [fixture: quadrant/gram-whitespace-line-first-nbsp]
+  [fixture: quadrant/gram-whitespace-line-last-bom]
+  [fixture: quadrant/gram-whitespace-line-last-ideographic]
+  [fixture: quadrant/gram-whitespace-line-last-ls]
+  [fixture: quadrant/gram-whitespace-line-last-nbsp]
+- 文の後ろのコメント、`;`、ディレクティブには、
+  ほかの図にあった形がまだあります。
+  空白と `;`、2 つの `;`、空白を挟んだ 2 つの `;`、2 つのディレクティブは、
+  1 つの場合と同じようにどの文も終えます。
+  ただし `classDef` の行の後ろの `;;` は拒否されます。
+  閉じていないディレクティブはテキストの残りを取るので、
+  その後ろの行は読まれません。
+  `%%{init` だけのディレクティブは次の行の頭の語を取り、
+  その行の残りがテキストにつながり（`R U`、`T -1 U`）、
+  スタイルにつながる場合は拒否されます。
+  [fixture: quadrant/db-after-acc-descr-space-semicolon]
+  [fixture: quadrant/db-after-acc-title-space-semicolon]
+  [fixture: quadrant/db-after-classdef-space-semicolon]
+  [fixture: quadrant/db-after-point-class-space-semicolon]
+  [fixture: quadrant/db-after-point-space-semicolon]
+  [fixture: quadrant/db-after-point-style-space-semicolon]
+  [fixture: quadrant/db-after-quadrant-space-semicolon]
+  [fixture: quadrant/db-after-title-space-semicolon]
+  [fixture: quadrant/db-after-x-axis-space-semicolon]
+  [fixture: quadrant/db-after-y-axis-space-semicolon]
+  [fixture: quadrant/db-after-acc-descr-double-semicolon]
+  [fixture: quadrant/db-after-acc-title-double-semicolon]
+  [fixture: quadrant/db-after-point-class-double-semicolon]
+  [fixture: quadrant/db-after-point-double-semicolon]
+  [fixture: quadrant/db-after-point-style-double-semicolon]
+  [fixture: quadrant/db-after-quadrant-double-semicolon]
+  [fixture: quadrant/db-after-title-double-semicolon]
+  [fixture: quadrant/db-after-x-axis-double-semicolon]
+  [fixture: quadrant/db-after-y-axis-double-semicolon]
+  [fixture: quadrant/gram-after-classdef-double-semicolon]
+  [fixture: quadrant/db-after-acc-descr-spaced-semicolons]
+  [fixture: quadrant/db-after-acc-title-spaced-semicolons]
+  [fixture: quadrant/db-after-classdef-spaced-semicolons]
+  [fixture: quadrant/db-after-point-class-spaced-semicolons]
+  [fixture: quadrant/db-after-point-spaced-semicolons]
+  [fixture: quadrant/db-after-point-style-spaced-semicolons]
+  [fixture: quadrant/db-after-quadrant-spaced-semicolons]
+  [fixture: quadrant/db-after-title-spaced-semicolons]
+  [fixture: quadrant/db-after-x-axis-spaced-semicolons]
+  [fixture: quadrant/db-after-y-axis-spaced-semicolons]
+  [fixture: quadrant/db-after-acc-descr-directive-unclosed]
+  [fixture: quadrant/db-after-acc-title-directive-unclosed]
+  [fixture: quadrant/db-after-classdef-directive-unclosed]
+  [fixture: quadrant/db-after-point-class-directive-unclosed]
+  [fixture: quadrant/db-after-point-directive-unclosed]
+  [fixture: quadrant/db-after-point-style-directive-unclosed]
+  [fixture: quadrant/db-after-quadrant-directive-unclosed]
+  [fixture: quadrant/db-after-title-directive-unclosed]
+  [fixture: quadrant/db-after-x-axis-directive-unclosed]
+  [fixture: quadrant/db-after-y-axis-directive-unclosed]
+  [fixture: quadrant/db-after-acc-descr-directive-closed-twice]
+  [fixture: quadrant/db-after-acc-title-directive-closed-twice]
+  [fixture: quadrant/db-after-classdef-directive-closed-twice]
+  [fixture: quadrant/db-after-point-class-directive-closed-twice]
+  [fixture: quadrant/db-after-point-directive-closed-twice]
+  [fixture: quadrant/db-after-point-style-directive-closed-twice]
+  [fixture: quadrant/db-after-quadrant-directive-closed-twice]
+  [fixture: quadrant/db-after-title-directive-closed-twice]
+  [fixture: quadrant/db-after-x-axis-directive-closed-twice]
+  [fixture: quadrant/db-after-y-axis-directive-closed-twice]
+  [fixture: quadrant/db-after-acc-descr-directive-word-unclosed]
+  [fixture: quadrant/db-after-acc-title-directive-word-unclosed]
+  [fixture: quadrant/db-after-quadrant-directive-word-unclosed]
+  [fixture: quadrant/db-after-title-directive-word-unclosed]
+  [fixture: quadrant/db-after-x-axis-directive-word-unclosed]
+  [fixture: quadrant/db-after-y-axis-directive-word-unclosed]
+  [fixture: quadrant/gram-after-classdef-directive-word-unclosed]
+  [fixture: quadrant/gram-after-point-class-directive-word-unclosed]
+  [fixture: quadrant/gram-after-point-directive-word-unclosed]
+  [fixture: quadrant/gram-after-point-style-directive-word-unclosed]
+- 途中で切れたディレクティブは、自分のテキストより多くを取ります。
+  行頭の `%%{init` は次の行の頭の語（キーワード）を取り、
+  その行の残りは拒否されます。
+  `%%{init:` も同じですが、`%%{init: x` は `x` を取って次の行を残し、
+  閉じた `%%{ init }%%` は取り除かれます。
+  ディレクティブは、タイトル、軸や象限のテキスト、名前、クラスのスタイルの頭と、
+  キーワードとテキストの間で取り除かれます。
+  [fixture: quadrant/gram-directive-word-unclosed-takes-keyword]
+  [fixture: quadrant/gram-directive-colon-unclosed-takes-keyword]
+  [fixture: quadrant/db-directive-argument-word-unclosed]
+  [fixture: quadrant/db-directive-name-only-closed]
+  [fixture: quadrant/db-directive-at-start-of-axis-text]
+  [fixture: quadrant/db-directive-at-start-of-classdef-styles]
+  [fixture: quadrant/db-directive-at-start-of-name]
+  [fixture: quadrant/db-directive-at-start-of-quadrant-text]
+  [fixture: quadrant/db-directive-at-start-of-title]
+  [fixture: quadrant/db-directive-glued-before-axis-text]
+  [fixture: quadrant/db-directive-glued-before-quadrant-text]
+  [fixture: quadrant/db-directive-glued-before-title-text]
+  [fixture: quadrant/db-directive-glued-after-classdef]
+- 何行にもまたがる値の中のコメント行とディレクティブの行は、
+  独立した行として取り除かれます。
+  説明のブロック、引用符のテキスト、マークダウン文字列、引用符の点の名前、
+  点の角括弧の中で、
+  それらの前後の行は改行でつながり、ディレクティブの行は空行を残します。
+  引用符の中の、空白の後ろの `%%` はテキストの一部です。
+  [fixture: quadrant/db-comment-line-inside-acc-block]
+  [fixture: quadrant/db-comment-line-inside-brackets]
+  [fixture: quadrant/db-comment-line-inside-markdown]
+  [fixture: quadrant/db-comment-line-inside-quoted-axis]
+  [fixture: quadrant/db-comment-line-inside-quoted-name]
+  [fixture: quadrant/db-comment-line-inside-quoted-text]
+  [fixture: quadrant/db-directive-line-inside-brackets]
+  [fixture: quadrant/db-directive-inside-quoted-multiline]
+  [fixture: quadrant/db-directive-inside-acc-block-line]
+  [fixture: quadrant/db-comment-inline-in-quoted-block]
+- Db がテキストから読む数は、radius の数字だけです。
+  `-0`、`NaN`、`Infinity`、`1e3`、`0x10`、数に続くテキスト、プラス記号、
+  アンダースコア、ASCII の外の数字、全角数字は拒否されます。
+  安全な整数を超える radius は double が持つ数になり、
+  double が持てる 309 桁は数で、310 桁は無限で、
+  要約ではテキスト `Infinity` です。
+  負の stroke-width や、単位の後ろにテキストのあるものは拒否され、
+  `0px` は書いたとおりに保たれます。
+  [fixture: quadrant/db-radius-above-safe-integer]
+  [fixture: quadrant/db-radius-first-infinite]
+  [fixture: quadrant/db-radius-largest-finite]
+  [fixture: quadrant/gram-radius-arabic-digit]
+  [fixture: quadrant/gram-radius-exponent]
+  [fixture: quadrant/gram-radius-fullwidth-digits]
+  [fixture: quadrant/gram-radius-hexadecimal]
+  [fixture: quadrant/gram-radius-infinity]
+  [fixture: quadrant/gram-radius-nan]
+  [fixture: quadrant/gram-radius-negative-zero]
+  [fixture: quadrant/gram-radius-plus]
+  [fixture: quadrant/gram-radius-space-text-after-number]
+  [fixture: quadrant/gram-radius-text-after-number]
+  [fixture: quadrant/gram-radius-underscore]
+  [fixture: quadrant/gram-stroke-width-negative]
+  [fixture: quadrant/gram-stroke-width-text-after-unit]
+  [fixture: quadrant/db-stroke-width-zero]
+- 閉じていない文脈の中で終わるテキストは、
+  その文脈がもっと必要とする場合に拒否されます。
+  閉じ引用符のない名前やテキスト、閉じていないマークダウン文字列、
+  コンマや角括弧で切れた点、
+  点のないクラスの印やクラス名、末尾の `accTitle:` と `accDescr:`、
+  閉じ波括弧のないブロック、
+  コロンで切れた `classDef` です。
+  末尾の矢印は右のテキストのない矢印、末尾の `title` は空のタイトルで、
+  末尾で切れたディレクティブは何も取りません。
+  [fixture: quadrant/db-unclosed-axis-arrow-at-end]
+  [fixture: quadrant/db-unclosed-directive-at-end]
+  [fixture: quadrant/db-unclosed-title-keyword-at-end]
+  [fixture: quadrant/gram-unclosed-acc-block-after-text]
+  [fixture: quadrant/gram-unclosed-acc-descr-at-end]
+  [fixture: quadrant/gram-unclosed-acc-title-at-end]
+  [fixture: quadrant/gram-unclosed-axis-quote-at-end]
+  [fixture: quadrant/gram-unclosed-class-marker-at-end]
+  [fixture: quadrant/gram-unclosed-class-name-at-end]
+  [fixture: quadrant/gram-unclosed-classdef-at-end]
+  [fixture: quadrant/gram-unclosed-markdown-at-end]
+  [fixture: quadrant/gram-unclosed-name-quote-at-end]
+  [fixture: quadrant/gram-unclosed-point-after-comma-at-end]
+  [fixture: quadrant/gram-unclosed-quadrant-quote-at-end]

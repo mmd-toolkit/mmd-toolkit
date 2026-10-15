@@ -2,7 +2,7 @@
 
 英語版: [comment-takes-character.md](./comment-takes-character.md)
 
-図種: sequence、gantt、journey、timeline、xychart。
+図種: sequence、gantt、journey、timeline、xychart、quadrant。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -29,7 +29,8 @@ id の並びかテキストの文字です。
 単独の `%` がコメントを始めるガントチャートでは、
 `a% : 1d` のように、単位の最初の文字（`}` と空白以外の文字）の直後の `%`
 についてのものです。
-ユーザージャーニー図、timeline、XY chart では、`A%%B: 5`、`a%% c`、
+ユーザージャーニー図、timeline、XY chart、quadrant chart では、`A%%B: 5`、
+`a%% c`、
 `title T%% c` のように、
 同じ位置の `%%` についてのものです。
 
@@ -248,6 +249,72 @@ XY chart では、mermaid.js の字句解析器は、
 [fixture: xychart/db-comment-glued-after-semicolon]
 [fixture: xychart/db-comment-glued-after-quote]
 
+quadrant chart では、mermaid.js の字句解析器は、
+ユーザージャーニー図と同じ `%%` の規則を持ちます。
+文字の並び、数字の並び、ASCII 外の文字の並びを一度に読み、
+それ以外の文字は 1 文字ずつ読みます。空白文字もその 1 つで、
+quadrant chart の文法は、説明ブロックの後と点の `]` の後でそれを数えます。
+そのため、コメントが取るのは、単独の文字や数字、`,`、`-`、`#` のような文字、
+単独の ASCII 外の文字、または 1 つの空白文字です。
+`x-axis L%% c`、`quadrant-1 a%%b`、`A: [0.3, 0.6] radius: 1%% c` は、
+mermaid.js では拒否され、ここでは受理されます。
+違いは逆の向きにもあります。
+差異の理由の 2 つ目は、この仕様が違うように読む入力だけでなく、
+拒否する入力も含むからです。
+`A%% c` と `a%%b: [0.3, 0.6]` は、mermaid.js では何もない行として受理され、
+ここでは点のない名前として拒否されます。
+`accDescr {x}` にスペースと `%% c` が続くものと、
+`A: [0.3, 0.6]` にタブと `%% c` が続くものは、
+mermaid.js では空白なしとして受理され、ここでは空白が残って拒否されます。
+`x-axis L --> R%% c` は、mermaid.js では矢印を持つ左のテキストを持って
+右のテキストを持たず、ここではテキスト `L` と `R` を持ちます。
+`quadrant-1 ab,%% c` と `quadrant-1 a b%% c` は、
+mermaid.js ではテキスト `ab` と `a` を、ここでは `ab,` と `a b` を持ちます。
+`quadrant-1 ab12%% c`、`%%` の前の ASCII 外の文字の並び、`x-axis L;%% c`、
+点の `]` のすぐ後の `%%`、ブロックの `}` のすぐ後の `%%` は、
+両方が同じに読みます
+（[コメント](../diagrams/quadrant.ja.md#コメント) を参照）。
+[fixture: quadrant/div-after-x-axis-glued-comment]
+[fixture: quadrant/div-after-y-axis-glued-comment]
+[fixture: quadrant/div-comment-unit-letter-then-non-ascii]
+[fixture: quadrant/div-comment-unit-letters-then-digit]
+[fixture: quadrant/div-comment-unit-non-ascii-single]
+[fixture: quadrant/div-comment-unit-punctuation]
+[fixture: quadrant/div-comment-unit-word-after-space]
+[fixture: quadrant/div-grid-comment-glued-point-bare]
+[fixture: quadrant/div-grid-comment-glued-x-axis-right-bare]
+[fixture: quadrant/div-grid-comment-glued-y-axis-top-bare]
+[fixture: quadrant/div-name-comment-glued]
+[fixture: quadrant/div-x-axis-comment-glued-arrow]
+[fixture: quadrant/div-x-axis-comment-unit-dash]
+[fixture: quadrant/div-x-axis-comment-unit-right-digit]
+[fixture: quadrant/div-y-axis-comment-glued-arrow]
+[fixture: quadrant/div-y-axis-comment-unit-dash]
+[fixture: quadrant/div-y-axis-comment-unit-top-digit]
+[fixture: quadrant/div-acc-descr-block-space-and-comment-after-brace]
+[fixture: quadrant/div-acc-descr-block-tab-and-comment-after-brace]
+[fixture: quadrant/div-comment-glued-digit-in-quadrant-text]
+[fixture: quadrant/div-comment-glued-hash-in-quadrant-text]
+[fixture: quadrant/div-comment-glued-one-letter-name]
+[fixture: quadrant/div-comment-glued-tab-after-point]
+[fixture: quadrant/div-acc-descr-block-empty-block-space-and-comment]
+[fixture: quadrant/div-acc-descr-block-directive-space-and-comment]
+[fixture: quadrant/div-after-point-style-glued-comment]
+[fixture: quadrant/div-after-quadrant-glued-comment]
+[fixture: quadrant/div-classdef-comment-unit-single-digit]
+[fixture: quadrant/div-grid-comment-glued-quadrant-bare]
+[fixture: quadrant/div-grid-comment-glued-x-axis-bare]
+[fixture: quadrant/div-grid-comment-glued-y-axis-bare]
+[fixture: quadrant/div-quadrant-comment-glued]
+[fixture: quadrant/div-style-radius-comment-glued-one-digit]
+[fixture: quadrant/div-x-axis-comment-glued-text]
+[fixture: quadrant/div-y-axis-comment-glued-text]
+[fixture: quadrant/db-comment-unit-two-digits]
+[fixture: quadrant/db-comment-unit-non-ascii-run]
+[fixture: quadrant/db-comment-glued-after-semicolon]
+[fixture: quadrant/db-point-comment-glued]
+[fixture: quadrant/db-comment-after-statement-brace]
+
 ## 書き手にとっての結果
 
 文のすぐ後に空白なしで書いたコメントは、
@@ -279,6 +346,9 @@ timeline の字句解析器も同じ規則を持ち
 xychart の字句解析器も同じ規則を持ち
 （[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)）、
 単位が始まるところの `%%` のコメントの規則を除く、すべての規則より前に試します。
+quadrant の字句解析器も同じ規則を持ち
+（[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)）、
+同じ位置で試します。
 
 ## この仕様の規則と、その理由
 
@@ -287,7 +357,8 @@ xychart の字句解析器も同じ規則を持ち
 gantt の [コメント](../diagrams/gantt.ja.md#コメント)、
 journey の [コメント](../diagrams/journey.ja.md#コメント)、
 timeline の [コメント](../diagrams/timeline.ja.md#コメント)、
-xychart の [コメント](../diagrams/xychart.ja.md#コメント) を参照）。
+xychart の [コメント](../diagrams/xychart.ja.md#コメント)、
+quadrant の [コメント](../diagrams/quadrant.ja.md#コメント) を参照）。
 
 コメントがその前の文字を取ること、
 しかもほかの規則がそこで一致を始める場所でだけ取ることは、

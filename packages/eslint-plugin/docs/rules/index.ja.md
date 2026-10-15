@@ -155,4 +155,16 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [sankey-no-empty-node](./sankey-no-empty-node.ja.md)       | 名前のないノードを作る、空白だけの source や target を禁止する。 | ✅  |     |     |
 | [sankey-no-invalid-value](./sankey-no-invalid-value.ja.md) | mermaid.js が書いたとおりに読まないリンクの値を禁止する。        | ✅  |     |     |
 
+## xychart
+
+| 規則                                                                                   | 説明                                                              | ✅  | 💡  | 🚧  |
+| -------------------------------------------------------------------------------------- | ----------------------------------------------------------------- | --- | --- | --- |
+| [xychart-no-duplicate-description](./xychart-no-duplicate-description.ja.md)           | チャートの説明をもう一度設定する文を禁止する。                    | ✅  |     |     |
+| [xychart-no-duplicate-title](./xychart-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `title` か `accTitle` の文を禁止する。 | ✅  |     |     |
+| [xychart-no-empty-description-block](./xychart-no-empty-description-block.ja.md)       | 説明を持たない説明のブロックを禁止する。                          | ✅  |     |     |
+| [xychart-no-extra-value](./xychart-no-extra-value.ja.md)                               | x 軸のカテゴリーを超えるプロットの値を禁止する。                  | ✅  |     |     |
+| [xychart-no-redefined-axis](./xychart-no-redefined-axis.ja.md)                         | 軸のタイトルやデータを置き換える軸の文を禁止する。                | ✅  |     |     |
+| [xychart-no-unclosed-description-block](./xychart-no-unclosed-description-block.ja.md) | `}` で閉じていない説明のブロックを禁止する。                      | ✅  |     |     |
+| [xychart-no-unread-orientation](./xychart-no-unread-orientation.ja.md)                 | mermaid.js が `horizontal` と読まない向きを禁止する。             | ✅  |     |     |
+
 <!-- end auto-generated rules list -->

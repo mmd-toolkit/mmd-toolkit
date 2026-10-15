@@ -26,6 +26,8 @@ import type { TimelineUnits } from "../../src/diagrams/timeline/index.ts"
 import { lexTimeline } from "../../src/diagrams/timeline/index.ts"
 import type { XychartUnits } from "../../src/diagrams/xychart/index.ts"
 import { lexXychart } from "../../src/diagrams/xychart/index.ts"
+import type { QuadrantUnits } from "../../src/diagrams/quadrant/index.ts"
+import { lexQuadrant } from "../../src/diagrams/quadrant/index.ts"
 import type { UnitName as XychartUnitName } from "../../src/diagrams/xychart/units.ts"
 import type { UnitName as RequirementUnitName } from "../../src/diagrams/requirement/units.ts"
 import type { DiagramUnit } from "../../src/diagram-units.ts"
@@ -444,16 +446,17 @@ export function doublePercentsAfterUnitStarts(text: string): number[] | null {
 
 /**
  * known-divergences/comment-takes-character.md, and the Known divergences
- * of diagrams/xychart.md: the offsets, in source order, of each diagram
- * comment of the XY chart `text` that starts right where a unit of one
- * character ends, a word of one letter, one digit, or one punctuation
- * character, a bracket, a `,`, a `;`, a one-digit number, or the line feed
- * of a `newline` unit: the places where mermaid.js reads that character
- * and the rest of the line as one comment. Null when `text` is no XY chart
- * or its lexer rejects it.
+ * of diagrams/xychart.md and diagrams/quadrant.md: the offsets, in source
+ * order, of each diagram comment of the XY chart or the quadrant chart
+ * `text` that starts right where a unit of one character ends, a word of
+ * one letter, one digit, or one punctuation character, a bracket, a `,`, a
+ * `;`, a one-digit number, a whitespace character of a `space` unit, or
+ * the line feed of a `newline` unit: the places where mermaid.js reads
+ * that character and the rest of the line as one comment. Null when `text`
+ * is neither or its lexer rejects it.
  */
 export function commentsAfterOneCharacterUnits(text: string): number[] | null {
-  const lexing = xychartLexingOf(text)
+  const lexing = xychartLexingOf(text) ?? quadrantLexingOf(text)
   if (lexing === null) return null
   const oneCharacterUnitEnds = new Set(
     lexing.units
@@ -1084,6 +1087,21 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
       removedRangeOf: (form) => form.range,
     }
   }
+  const quadrant = quadrantLexingOf(text)
+  if (quadrant !== null) {
+    return {
+      units: quadrant.units,
+      emptyFormKinds: EMPTY_FORM_KINDS.quadrant,
+      statementStartsAt: (before) => quadrantStatementStartsAfter(before),
+      // diagrams/quadrant.md, Empty description blocks: a block is a
+      // statement where a statement starts and after the last unit of a
+      // statement, before its separator, a line break, a `;`, or the end of
+      // the text.
+      separators: ["newline", ";"],
+      endOfTextSeparates: true,
+      removedRangeOf: (form) => form.range,
+    }
+  }
   const xychart = xychartLexingOf(text)
   if (xychart !== null) {
     return {
@@ -1605,6 +1623,37 @@ function xychartLexingOf(text: string): XychartUnits | null {
     if (error instanceof ParseError) return null
     throw error
   }
+}
+
+/** The units of the quadrant chart `text` as the parser's lexer reads them, with its diagram comments; null when `text` is no quadrant chart or its lexer rejects it. */
+function quadrantLexingOf(text: string): QuadrantUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
+  if (diagramType !== "quadrantChart") return null
+  try {
+    return lexQuadrant(diagramInputOf(opened, detection, diagramType))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/**
+ * diagrams/quadrant.md, Empty description blocks: whether a statement
+ * starts after `before`, the units before an empty description block
+ * without its `space` units: after nothing, the header, a line break, a
+ * `;`, or the `}` of a block before it.
+ */
+function quadrantStatementStartsAfter(before: readonly AnyUnit[]): boolean {
+  const last = before.at(-1)?.name
+  return (
+    last === undefined ||
+    last === "header" ||
+    last === "newline" ||
+    last === ";" ||
+    last === "}"
+  )
 }
 
 /** diagrams/xychart.md, Grammar: the keywords that start a statement that a title, its words, or its data may continue. */

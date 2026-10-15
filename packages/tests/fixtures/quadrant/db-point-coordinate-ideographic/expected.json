@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md The point context: the character after 0 is any character but a line feed, U+2028, and U+2029."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A",
+        "className": "",
+        "x": "0　3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

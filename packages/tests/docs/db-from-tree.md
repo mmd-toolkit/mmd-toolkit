@@ -108,6 +108,11 @@ are read from the tree like this:
   whitespace between the units of a text without quotes is no part of its value
   (the rule is in [db-from-tree/xychart.md](./db-from-tree/xychart.md)).
   [fixture: xychart/db-title-bare-words]
+- **Quadrant texts**: the converted form of the range of a `QuadrantLabel` or of
+  a `QuadrantLiteral`, with the whitespace between the units of a text without
+  quotes, since mermaid.js reads the space units into the text (the rule is in
+  [db-from-tree/quadrant.md](./db-from-tree/quadrant.md)). [fixture:
+  quadrant/db-quadrant-spaces-trimmed]
 - **Mindmap labels**: the converted form of the range of a `MindmapLabel`,
   without the delimiters of a string or a markdown string, which are cut from
   the converted form, one character at each end for a string and two for a
@@ -383,6 +388,11 @@ does not, are:
   the numbers are not reached. [fixture:
   xychart/config-security-level-other-all] [fixture:
   xychart/config-security-level-other-orientation-horizontal]
+- Quadrant: the title, of the frontmatter and of a `title` statement;
+  `accTitle`; `accDescr`, of a line and of a block; the texts of the axes and of
+  the quadrants; and the names of the points. The class names, the coordinates,
+  and the styles are not reached. [fixture:
+  quadrant/config-security-level-other-all]
 
 **Where the order of mermaid.js matters.** Some texts are replaced before
 mermaid.js reads them further, and the builders do the same.

@@ -409,3 +409,57 @@ export function checkStretches(
     )
   }
 }
+
+/** The text that stands for a child node in the layout of a node. */
+export const CHILD = "·"
+
+/**
+ * The tokens that a node writes itself and its child nodes, in source order,
+ * are `expected`, with the child nodes as {@link CHILD} and the keywords in
+ * lower case, and only whitespace lies between two of them in the written text
+ * (parser/docs/positions/<diagram>.md, Ranges). `textOfToken` gives the text
+ * that stands for a token in the layout.
+ */
+export function checkLayout(
+  reading: Reading,
+  node: CheckedNode,
+  own: Own,
+  expected: readonly string[],
+  textOfToken: (token: CheckedToken) => string = (token) =>
+    token.type === "Keyword" ? token.value.toLowerCase() : token.value,
+): void {
+  const parts = [
+    ...own.tokens.map((token) => ({
+      text: textOfToken(token),
+      range: token.range,
+    })),
+    ...childNodesOf(node).map((child) => ({ text: CHILD, range: child.range })),
+  ].sort((a, b) => a.range[0] - b.range[0])
+  const where = label(node)
+  reading.problems.expectEqual(
+    parts.map((part) => part.text),
+    expected,
+    where,
+    "the tokens that the node writes itself and its child nodes, in source order",
+  )
+  for (const [index, part] of parts.entries()) {
+    const next = parts[index + 1]
+    if (next === undefined) continue
+    const gap = between(reading, part.range[1], next.range[0])
+    reading.problems.expect(
+      isBlank(gap),
+      where,
+      `the written text between ${JSON.stringify(part.text)} and ${JSON.stringify(next.text)} is ${JSON.stringify(gap)}, not whitespace only`,
+    )
+  }
+}
+
+/** The layout of the child nodes in the fields `fields` of `node` that are not null: one {@link CHILD} for each, in the order of the fields. */
+export function presentChildren(
+  node: CheckedNode,
+  ...fields: string[]
+): string[] {
+  return fields
+    .filter((field) => childOf(node, field) !== null)
+    .map(() => CHILD)
+}

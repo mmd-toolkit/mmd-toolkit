@@ -3,9 +3,9 @@
 Japanese version:
 [comment-takes-character.ja.md](./comment-takes-character.ja.md)
 
-Diagram types: sequence, gantt, journey, timeline, and xychart. This is one of
-the [known divergences](../known-divergences.md) of this specification from
-mermaid.js.
+Diagram types: sequence, gantt, journey, timeline, xychart, and quadrant. This
+is one of the [known divergences](../known-divergences.md) of this specification
+from mermaid.js.
 
 ## The syntax
 
@@ -28,8 +28,9 @@ after a number, the `%%` starts a comment, and after a character of an id run or
 after the `:` before a text, it is a character of the id run or of the text. In
 a Gantt chart, where a single `%` starts a comment, it is about a `%` right
 after the first character of a unit, a character other than `}` and whitespace,
-as in `a% : 1d`, and in a user journey diagram, a timeline, and an XY chart
-about a `%%` in the same place, as in `A%%B: 5`, `a%% c`, and `title T%% c`.
+as in `a% : 1d`, and in a user journey diagram, a timeline, an XY chart, and a
+quadrant chart about a `%%` in the same place, as in `A%%B: 5`, `a%% c`, and
+`title T%% c`.
 
 ## The difference
 
@@ -227,6 +228,68 @@ xychart/db-comment-glued-after-two-digit-number] [fixture:
 xychart/db-comment-glued-after-semicolon] [fixture:
 xychart/db-comment-glued-after-quote]
 
+In a quadrant chart, the lexer of mermaid.js has the same rule for `%%` as in a
+user journey diagram. It reads a run of letters, a run of digits, and a run of
+characters outside ASCII whole, and any other character alone, a whitespace
+character among them, which the grammar of a quadrant chart counts after a
+description block and after the `]` of a point. So the comment takes a letter or
+a digit that stands alone, a character such as `,`, `-`, or `#`, a character
+outside ASCII that stands alone, or one whitespace character. `x-axis L%% c`,
+`quadrant-1 a%%b`, and `A: [0.3, 0.6] radius: 1%% c` are rejected by mermaid.js
+and accepted here. The difference goes the other way too, as the second reason
+for a divergence allows, which covers inputs that this specification rejects as
+well as inputs that it reads differently: `A%% c` and `a%%b: [0.3, 0.6]` are
+accepted by mermaid.js as lines of nothing and rejected here as names without a
+point, and `accDescr {x}` with a space and `%% c`, and `A: [0.3, 0.6]` with a
+tab and `%% c`, are accepted by mermaid.js without the whitespace and rejected
+here, where the whitespace stays. `x-axis L --> R%% c` has the left text with
+the arrow and no right text in mermaid.js and the texts `L` and `R` here, and
+`quadrant-1 ab,%% c` and `quadrant-1 a b%% c` have the texts `ab` and `a` in
+mermaid.js and `ab,` and `a b` here. `quadrant-1 ab12%% c`, a run of characters
+outside ASCII before `%%`, `x-axis L;%% c`, a `%%` right after the `]` of a
+point, and a `%%` right after the `}` of a block are read the same by both (see
+[Comments](../diagrams/quadrant.md#comments)). [fixture:
+quadrant/div-after-x-axis-glued-comment] [fixture:
+quadrant/div-after-y-axis-glued-comment] [fixture:
+quadrant/div-comment-unit-letter-then-non-ascii] [fixture:
+quadrant/div-comment-unit-letters-then-digit] [fixture:
+quadrant/div-comment-unit-non-ascii-single] [fixture:
+quadrant/div-comment-unit-punctuation] [fixture:
+quadrant/div-comment-unit-word-after-space] [fixture:
+quadrant/div-grid-comment-glued-point-bare] [fixture:
+quadrant/div-grid-comment-glued-x-axis-right-bare] [fixture:
+quadrant/div-grid-comment-glued-y-axis-top-bare] [fixture:
+quadrant/div-name-comment-glued] [fixture:
+quadrant/div-x-axis-comment-glued-arrow] [fixture:
+quadrant/div-x-axis-comment-unit-dash] [fixture:
+quadrant/div-x-axis-comment-unit-right-digit] [fixture:
+quadrant/div-y-axis-comment-glued-arrow] [fixture:
+quadrant/div-y-axis-comment-unit-dash] [fixture:
+quadrant/div-y-axis-comment-unit-top-digit] [fixture:
+quadrant/div-acc-descr-block-space-and-comment-after-brace] [fixture:
+quadrant/div-acc-descr-block-tab-and-comment-after-brace] [fixture:
+quadrant/div-comment-glued-digit-in-quadrant-text] [fixture:
+quadrant/div-comment-glued-hash-in-quadrant-text] [fixture:
+quadrant/div-comment-glued-one-letter-name] [fixture:
+quadrant/div-comment-glued-tab-after-point] [fixture:
+quadrant/div-acc-descr-block-empty-block-space-and-comment] [fixture:
+quadrant/div-acc-descr-block-directive-space-and-comment] [fixture:
+quadrant/div-after-point-style-glued-comment] [fixture:
+quadrant/div-after-quadrant-glued-comment] [fixture:
+quadrant/div-classdef-comment-unit-single-digit] [fixture:
+quadrant/div-grid-comment-glued-quadrant-bare] [fixture:
+quadrant/div-grid-comment-glued-x-axis-bare] [fixture:
+quadrant/div-grid-comment-glued-y-axis-bare] [fixture:
+quadrant/div-quadrant-comment-glued] [fixture:
+quadrant/div-style-radius-comment-glued-one-digit] [fixture:
+quadrant/div-x-axis-comment-glued-text] [fixture:
+quadrant/div-y-axis-comment-glued-text] [fixture:
+quadrant/db-comment-unit-two-digits] [fixture:
+quadrant/db-comment-unit-non-ascii-run] [fixture:
+quadrant/db-comment-glued-after-semicolon] [fixture:
+quadrant/db-point-comment-glued] [fixture:
+quadrant/db-comment-after-statement-brace]
+
 ## What it means for an author
 
 A comment written right after a statement, without a space, can be read by
@@ -255,7 +318,10 @@ and so has the lexer of timeline
 tried before its rules for line feeds, whitespace, keywords, events, and
 periods, and so has the lexer of xychart
 ([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)),
-tried before all its rules but the comment rule for `%%` where a unit starts.
+tried before all its rules but the comment rule for `%%` where a unit starts,
+and so has the lexer of quadrant
+([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)),
+tried in the same place.
 
 ## The rule of this specification, and why
 
@@ -264,8 +330,9 @@ followed by `%%` (see
 [The statement context](../diagrams/sequence.md#the-statement-context),
 [Comments](../diagrams/gantt.md#comments) of gantt,
 [Comments](../diagrams/journey.md#comments) of journey,
-[Comments](../diagrams/timeline.md#comments) of timeline, and
-[Comments](../diagrams/xychart.md#comments) of xychart).
+[Comments](../diagrams/timeline.md#comments) of timeline,
+[Comments](../diagrams/xychart.md#comments) of xychart, and
+[Comments](../diagrams/quadrant.md#comments) of quadrant).
 
 That a comment takes the character before it, and only where another rule would
 start its match there, comes from the order of the rules of the lexer of

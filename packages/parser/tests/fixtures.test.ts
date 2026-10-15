@@ -413,6 +413,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     ...(await loadFixtures("timeline")),
     ...(await loadFixtures("sankey")),
     ...(await loadFixtures("xychart")),
+    ...(await loadFixtures("quadrant")),
   ]
 
   /** The fixtures that carry the mark `knownDivergence`. */
@@ -573,7 +574,8 @@ describe("marked fixtures differ only by their divergence", async () => {
   // number before it; in gantt, a `%` right after the first character of a
   // unit, and in journey and timeline, a `%%` there, is a character of the
   // text here or follows a unit that the grammar does not take, and in an
-  // XY chart a comment starts right after a unit of one character, while
+  // XY chart and a quadrant chart a comment starts right after a unit of one
+  // character, while
   // mermaid.js reads that character and the rest of the line as one
   // comment. Each fixture has such a `%%` or `%`, found by the parser's
   // lexer; the reading of the specification is recorded in the corpus.
@@ -593,7 +595,7 @@ describe("marked fixtures differ only by their divergence", async () => {
           commentsAfterOneCharacterUnits(fixture.input)
         if (places === null) {
           throw new Error(
-            "the input is no sequence diagram, Gantt chart, journey diagram, timeline, or XY chart",
+            "the input is no sequence diagram, Gantt chart, journey diagram, timeline, XY chart, or quadrant chart",
           )
         }
         expect(places.length).toBeGreaterThan(0)

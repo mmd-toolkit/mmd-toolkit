@@ -43,6 +43,7 @@ import {
   overlapOf,
   withRewrites,
 } from "./divergence-removals.ts"
+import { MermaidEnvironmentError } from "./mermaid-environment-error.ts"
 import { dataBlockEffectsOf } from "./normalizers/data-blocks.ts"
 import { getDbPatches, normalizeDb } from "./normalizers/index.ts"
 import { toJsonObject } from "./normalizers/json.ts"
@@ -87,17 +88,7 @@ export type MermaidOutcome =
       readonly error: MermaidError
     }
 
-/**
- * Thrown when mermaid fails because Node lacks something a browser has, as
- * opposed to rejecting the input. Such a failure says nothing about the input,
- * so it must never be recorded as a rejection.
- */
-export class MermaidEnvironmentError extends Error {
-  public constructor(message: string, options?: ErrorOptions) {
-    super(message, options)
-    this.name = "MermaidEnvironmentError"
-  }
-}
+export { MermaidEnvironmentError }
 
 const require = createRequire(import.meta.url)
 const mermaidPackageJsonPath: string = require.resolve("mermaid/package.json")

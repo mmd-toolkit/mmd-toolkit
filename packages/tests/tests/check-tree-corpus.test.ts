@@ -30,6 +30,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "timeline",
   "sankey",
   "xychart",
+  "quadrant",
 ]
 
 /** The recorded trees of the corpus, with the input of each, by fixture name. */

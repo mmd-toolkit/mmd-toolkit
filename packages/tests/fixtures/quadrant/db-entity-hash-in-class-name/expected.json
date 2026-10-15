@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, character references: a reference in the name of a class of `classDef` is its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A",
+        "className": "c1",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": [
+      {
+        "name": "aﬂ°°35¶ßb",
+        "color": "#f00"
+      }
+    ]
+  }
+}

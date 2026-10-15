@@ -6,8 +6,9 @@ import { firstNode, problemsOf, says, setField } from "./check-tree-recorded.ts"
 import type { MutationCase } from "./check-tree-recorded.ts"
 
 // parser/docs/tokens.md, String tokens: the tokens of a StringLiteral, a node
-// type that every diagram type shares, are one `String` token, or
-// `StringFragment` tokens where a directive or an ignored `;` cuts it. The
+// type that every diagram type shares, are one `String` token where nothing
+// cuts it, and `StringFragment` tokens, one more than there are cuts, where a
+// directive, a comment region, or an ignored `;` cuts it. The
 // check is one for every diagram type (`src/check-tree/leaves.ts`); each case
 // here changes the kind of a token of the first string of the recorded tree of
 // a named fixture.
@@ -31,6 +32,13 @@ const CASES: readonly StringCase[] = [
     token: 0,
     to: "RawText",
     named: "RawText",
+  },
+  {
+    diagram: "flowchart",
+    fixture: "click-callback-tooltip",
+    token: 0,
+    to: "StringFragment",
+    named: "StringFragment",
   },
   {
     diagram: "class",

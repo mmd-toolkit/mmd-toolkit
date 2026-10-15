@@ -1185,6 +1185,66 @@ describe("withoutDivergences: xychart", () => {
   })
 })
 
+describe("withoutDivergences: quadrant", () => {
+  /** The Db of an accepted run of `text` with the divergence taken out or not, or `"rejected"`. */
+  async function dbOf(text: string, removed: boolean): Promise<unknown> {
+    const run = await runMermaid(text, {
+      withoutDivergences: removed ? ["comment-takes-character"] : [],
+    })
+    return run.accepted ? run.db : "rejected"
+  }
+
+  it("starts a comment at its `%%`, so that it takes no character before it", async () => {
+    // The lexer reads `L%% c` as a comment, so the axis has no text.
+    expect(await dbOf("quadrantChart\nx-axis L%% c\n", false)).toBe("rejected")
+    expect(await dbOf("quadrantChart\nx-axis L%% c\n", true)).toMatchObject({
+      xAxis: { left: "L", right: "" },
+    })
+    // The comment takes the `1` of `ab1`, the digit that stands alone.
+    expect(
+      await dbOf("quadrantChart\nquadrant-1 ab1%% c\n", false),
+    ).toMatchObject({
+      quadrants: ["ab", "", "", ""],
+    })
+    expect(
+      await dbOf("quadrantChart\nquadrant-1 ab1%% c\n", true),
+    ).toMatchObject({
+      quadrants: ["ab1", "", "", ""],
+    })
+    // The comment takes the `A` of the name and the rest of the line, so
+    // mermaid.js reads an empty statement; read as the specification does, the
+    // name has no point.
+    expect(
+      await dbOf("quadrantChart\nA%% c: [0.3, 0.6]\n", false),
+    ).toMatchObject({ points: [] })
+    expect(await dbOf("quadrantChart\nA%% c: [0.3, 0.6]\n", true)).toBe(
+      "rejected",
+    )
+  })
+
+  it("leaves a space or a tab before the comment after a point or a block, which no statement takes", async () => {
+    for (const text of [
+      "quadrantChart\naccDescr {x} %% c\n",
+      "quadrantChart\naccDescr {x}\t%% c\n",
+      "quadrantChart\nA: [0.3, 0.6]\t%% c\n",
+    ]) {
+      expect(await dbOf(text, false), text).not.toBe("rejected")
+      expect(await dbOf(text, true), text).toBe("rejected")
+    }
+  })
+
+  it("leaves a comment after a space, a comment line, and a comment after a `}` as they are", async () => {
+    for (const same of [
+      "quadrantChart\nx-axis L %% c\n",
+      "quadrantChart\n%% c\nx-axis L\n",
+      "quadrantChart\naccDescr {\nD\n}%% c\n",
+      "quadrantChart\nA: [0.3, 0.6]%% c\n",
+    ]) {
+      expect(await dbOf(same, true), same).toEqual(await dbOf(same, false))
+    }
+  })
+})
+
 describe("withoutDivergences: gantt", () => {
   /** Whether mermaid accepts `text` as it is, and with `removed` taken out. */
   async function acceptedAsIsAndWithout(

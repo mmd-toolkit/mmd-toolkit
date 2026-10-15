@@ -15,13 +15,16 @@ export function titleText(statement: WithText): string {
 
 /**
  * The description that an `accDescr` statement or block sets, as mermaid.js
- * keeps it: the written text without the whitespace at its ends, and without
- * the whitespace after each line break, which takes the indentation of the
- * lines and the empty lines with it. A statement without text sets the empty
- * string.
+ * keeps it: the written text without the whitespace at its ends, with every
+ * line break (LF, CRLF, or CR) read as a line feed, and without the whitespace
+ * after each line break, which takes the indentation of the lines and the empty
+ * lines with it. A statement without text sets the empty string.
  */
 export function accDescrText(statement: WithText): string {
-  const [first = "", ...rest] = (statement.value?.value ?? "").split("\n")
+  const text = (statement.value?.value ?? "")
+    .replaceAll("\r\n", "\n")
+    .replaceAll("\r", "\n")
+  const [first = "", ...rest] = text.split("\n")
   const lines = rest
     .map((line) => line.trimStart())
     .filter((line) => line !== "")

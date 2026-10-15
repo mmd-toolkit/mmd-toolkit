@@ -479,6 +479,20 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   xychart/div-comment-glued-after-range] [fixture:
   xychart/div-comment-takes-hyphen] [fixture:
   xychart/div-comment-takes-one-letter-word]
+- `comment-takes-character`, in the quadrant lexer
+  ([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L17-L17)):
+  the rule that reads a character other than `}` before `%%` together with the
+  comment is taken out, so a comment starts at its `%%`. A space or a tab before
+  the `%%` is then a space that no statement takes after a point or after the
+  closing brace of a block, so such a line is rejected. [fixture:
+  quadrant/div-quadrant-comment-glued] [fixture:
+  quadrant/div-comment-unit-letters-then-digit] [fixture:
+  quadrant/div-x-axis-comment-unit-dash] [fixture:
+  quadrant/div-name-comment-glued] [fixture:
+  quadrant/div-comment-glued-one-letter-name] [fixture:
+  quadrant/div-comment-glued-digit-in-quadrant-text] [fixture:
+  quadrant/div-acc-descr-block-space-and-comment-after-brace] [fixture:
+  quadrant/div-comment-glued-tab-after-point]
 - `comment-takes-line-break`, in the class lexer
   ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
   the rule that reads `%%`, the rest of the line and the line feeds after it

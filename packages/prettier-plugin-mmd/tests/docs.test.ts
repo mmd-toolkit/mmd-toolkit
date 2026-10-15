@@ -86,6 +86,15 @@ const ruleDocuments: readonly {
     rulesInTestCode: ["line-separators", "whitespace-characters"],
   },
   {
+    diagram: "quadrant",
+    rulesWithoutExamples: [
+      "multi-line-statements",
+      "line-separators",
+      "whitespace-characters",
+    ],
+    rulesInTestCode: ["line-separators", "whitespace-characters"],
+  },
+  {
     diagram: "xychart",
     rulesWithoutExamples: [
       "multi-line-statements",
@@ -324,6 +333,7 @@ describe("the test citations in the documents", async () => {
     "docs/sankey.md",
     "docs/timeline.md",
     "docs/xychart.md",
+    "docs/quadrant.md",
     "docs/compatibility.md",
   ]) {
     const text = await readFile(new URL(document, packageRoot), "utf8")

@@ -2,6 +2,7 @@ import type { Range } from "@mmd-toolkit/parser"
 import type { Source } from "./source.ts"
 import {
   findDirectiveEndingAt,
+  findTokenStartingAt,
   findTokensBetween,
   findTriviaBetween,
   isWhitespace,
@@ -31,11 +32,12 @@ export interface KeptLines {
  * is a statement of its own. Such a `;` is in a token, as in `A[x;]`,
  * `accTitle: a;b`, or a directive, or in a comment, or it is a `;` that the
  * line rule ignores (`ignoredSemicolons`), also one that stands after a
- * statement. In a flowchart, a sequence diagram, and an XY chart a `;` token
- * may separate statements (see `semicolonsSeparateStatements`): then only the
- * `;` tokens that the rule ignores and that do not end their line count. In
- * the other diagram types no `;` separates statements (diagrams/class.md,
- * Diagram and statements), so every `;` token counts.
+ * statement. In a flowchart, a sequence diagram, a quadrant chart, and an XY
+ * chart a `;` token may separate statements (see
+ * `semicolonsSeparateStatements`): then only the `;` tokens that the rule
+ * ignores and that do not end their line count. In the other diagram types
+ * no `;` separates statements (diagrams/class.md, Diagram and statements), so
+ * every `;` token counts.
  *
  * The line rule (common.md, `style` and `classDef` lines) ignores the last
  * `;` of a line that matches it, and it reads the text of the line. Removing
@@ -85,15 +87,16 @@ export function findLinesWithOwnSemicolons(
 
 /**
  * Whether a `;` token may separate statements in the diagram of the source:
- * in a flowchart, in a sequence diagram, and in an XY chart. The other
- * diagram types have no such `;`, so every `;` in them is a character of a
- * token or a `;` that the line rule ignores.
+ * in a flowchart, in a sequence diagram, in a quadrant chart, and in an XY
+ * chart. The other diagram types have no such `;`, so every `;` in them is a
+ * character of a token or a `;` that the line rule ignores.
  */
 function semicolonsSeparateStatements(source: Source): boolean {
   const { type } = source.root.body
   return (
     type === "FlowchartDiagram" ||
     type === "SequenceDiagram" ||
+    type === "QuadrantDiagram" ||
     type === "XychartDiagram"
   )
 }
@@ -248,6 +251,22 @@ export function isLastOnItsLine(source: Source, offset: number): boolean {
 }
 
 /**
+ * Whether the `;` at `offset` is one that the line rule ignores at the end of
+ * its line, which is dropped as a `;` that separates statements is: mermaid.js
+ * removes it from the text. Not one right after a comment: with whitespace
+ * after it, the `;` lies inside the comment, which is printed as written, and
+ * a `;` that was dropped only when it stands outside the comment would make a
+ * second formatting differ from the first (ast.md, Comment).
+ */
+export function isDroppedSemicolon(source: Source, offset: number): boolean {
+  return (
+    source.ignoredSemicolons.has(offset) &&
+    isLastOnItsLine(source, offset) &&
+    !source.root.comments.some((comment) => comment.range[1] === offset)
+  )
+}
+
+/**
  * The offset where the line that holds `offset` starts: after the last line
  * feed before it that no comment or directive spans, and that no comment
  * region that joins lines removes (`Source.removedLineFeeds`). A directive, an
@@ -350,6 +369,32 @@ const styleRuleStretchesBySource = new WeakMap<
 >()
 
 /**
+ * The index in `line`, which starts at `start`, of its last `;` that the
+ * printer keeps, or -1. The printer drops the `;` that the line rule ignores
+ * at the end of the line (see `isDroppedSemicolon`), and the `;` tokens that
+ * separate statements on a line that keeps no `;` of its own (see
+ * `findSemicolonLines`); a `;` inside a token or a comment stays. The line
+ * that it prints has the rule only through the `;` that stay, so a stretch is
+ * decided by those, or a second formatting would find none.
+ */
+function findLastKeptSemicolon(
+  source: Source,
+  start: number,
+  line: string,
+): number {
+  const keepsSeparators = findSemicolonLines(source).has(start)
+  for (let index = line.lastIndexOf(";"); index !== -1;) {
+    const offset = start + index
+    const isToken = findTokenStartingAt(source, offset)?.value === ";"
+    if (!isToken || (keepsSeparators && !isDroppedSemicolon(source, offset))) {
+      return index
+    }
+    index = index === 0 ? -1 : line.lastIndexOf(";", index - 1)
+  }
+  return -1
+}
+
+/**
  * The stretch of each line that holds `style` or `classDef`, later a `:`,
  * later a `#`, and later a `;`: from the first `:` after the word to the last
  * `#` before the last `;`. Every pair of a `:` and a later `#` of the line lies
@@ -370,7 +415,10 @@ function findStyleRuleStretches(
       (index) => index !== -1,
     )
     const colon = line.indexOf(":", Math.min(...words))
-    const hash = line.lastIndexOf("#", line.lastIndexOf(";"))
+    const hash = line.lastIndexOf(
+      "#",
+      findLastKeptSemicolon(source, start, line),
+    )
     if (words.length > 0 && colon !== -1 && colon < hash) {
       stretches.push([start + colon, start + hash])
     }

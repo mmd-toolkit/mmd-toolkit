@@ -70,8 +70,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
   every diagram type does, and for no other comment; a gantt diagram has the
   marks `%%` and `%` for its diagram comments, and a journey diagram and a
   requirement diagram the marks `#`, `%%`, and `%`, a timeline diagram the same
-  marks, a mindmap diagram and an xychart diagram the mark `%%`; a fragment
-  without a mark follows a comment region (parser/docs/tokens.md, Comment;
+  marks, a mindmap diagram, an xychart diagram, and a quadrant chart the mark
+  `%%`; a fragment without a mark follows a comment region
+  (parser/docs/tokens.md, Comment;
   [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
@@ -85,9 +86,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
   text). A directive lies in no other token, and a comment lies in none
   (positions.md, Invariants).
 - **Strings.** The tokens of a StringLiteral, a node type that every diagram
-  type shares, are one `String` token, or `StringFragment` tokens where a
-  directive, a comment region, or a `;` that the line rule ignores cuts it
-  (parser/docs/tokens.md, String tokens).
+  type shares, are one `String` token where nothing cuts it, and, where a
+  directive, a comment region, or a `;` that the line rule ignores cuts it,
+  `StringFragment` tokens, one more than there are cuts (parser/docs/tokens.md,
+  String tokens).
 - **Tokens that are not cut.** A directive or a `;` that the line rule ignores
   lies in a `String` (which then is `StringFragment` tokens) or a `RawText`
   token, and in no other token (parser/docs/tokens.md, A token that a directive
@@ -442,6 +444,45 @@ const problems: TreeProblem[] = checkTree(text, tree)
     text have whitespace or a cut between them. The range of the diagram, of a
     statement, and of the nodes below it is the hull of its tokens and child
     nodes (`parser/docs/positions/xychart.md`).
+  - quadrant: the checks read the tree and the text of the source. The child
+    nodes of a field are of the types of its table (`QUADRANT_CHILD_TYPES`,
+    which a test holds to the Type column of ast/quadrant.md), and a `classDef`
+    has a style. The axis of an axis statement is `x` or `y`, and the letter of
+    its keyword in lower case; `end` is null unless `arrow` is true, and the
+    arrow is written between the texts, or after the only text, and is not
+    written otherwise (ast/quadrant.md, QuadrantAxisStatement). The number of a
+    quadrant statement is the digit of its keyword, from 1 to 4
+    (QuadrantQuadrantStatement). The kind of a label is `text`, `string`, or
+    `markdown` (`QUADRANT_AXES` and `QUADRANT_LABEL_KINDS`, which the test holds
+    to the Meaning column), and its value is its written text, or, for a string
+    or a markdown string, its content followed by the written text of the rest
+    (QuadrantLabel). A text without quotes starts with a word, and holds
+    letters, digits, characters outside ASCII, the punctuation `!$%&'*+,./=?\_#`
+    and the backquote, `-`, and spaces; a string is not empty, and what follows
+    it is the rest of a text, which holds no string (diagrams/quadrant.md, The
+    statement context, Texts, Strings, and Empty strings); the characters are
+    those of the converted form of the text, in which an entity is a character
+    outside ASCII (Entities, HTML attribute quotes, and `style` lines). A title
+    is none, or not empty, without whitespace of Notation at its ends and
+    without a line terminator; the text of an accessibility line is not empty,
+    has no whitespace at its ends and no line terminator, and the text of a
+    block no `}` (Accessibility values). A class name of a point is letters of
+    ASCII, digits, and `_` (The class name context); a coordinate is `1`, or `0`
+    optionally followed by one character other than a line feed, U+2028, and
+    U+2029 and by digits (The point context); the name of a class of `classDef`
+    holds, in the converted form, letters, digits, characters outside ASCII,
+    `&`, `#`, `*`, `-`, `,`, and `:`, and no whitespace (Classes); a style holds
+    letters, digits, `:`, `#`, `-`, and spaces, and is a name of
+    `QUADRANT_STYLE_NAMES`, a `:`, and a value of the form of the name (Points
+    and Rejections outside the grammar). Two statements on a line have a `;`
+    between them, unless one is an empty description block; a block with text is
+    followed by nothing but empty description blocks on its line, with nothing
+    between, and its line ends right after, a comment at the end of the line
+    being no part of what follows (Diagram and statements, Titles and
+    accessibility statements). A diagram comment has the mark `%%` (Comments).
+    The tokens of a string label are one `String` token, or `StringFragment`
+    tokens where a directive, a comment region, or an ignored `;` cuts the
+    string, and the `RawText` tokens of the words after it.
 
 The **written text** of a range is its source without the directives, the
 comment regions, and the `;` that the line rule ignores (ast.md, Nodes).
@@ -462,6 +503,12 @@ that says so:
   its ends, which is empty for a field of whitespace only; the node is the field
   without that whitespace, but for a field of whitespace only, whose one
   `RawText` token is the whitespace, and the tokens are the written text.
+- A quadrant chart has the value of its written text in a coordinate, a style,
+  and the name of a class (`QuadrantLiteral` and `QuadrantIdentifier`), and the
+  value of its written text without the whitespace of Notation at its ends in a
+  title, an accessibility text, and the text of a block (`QuadrantLiteral`); a
+  label (`QuadrantLabel`) has a value that follows from its written text and its
+  kind, which the check of the diagram reads.
 - A text of an xychart diagram (`XychartLiteral`) without quotes is a value made
   of units joined, which holds no whitespace; the text of an accessibility
   statement has the value of its written text without the whitespace at its
@@ -567,29 +614,37 @@ way that the sentence distinguishes, with the problem that the check must
 report, and requires the tables of the check to be the Type and the Meaning
 columns of ast/xychart.md. It also breaks the recorded trees of named fixtures
 for the kinds of the tokens, their order, the orientation, the kind of a plot,
-`closed`, and the ranges. `check-tree-string-tokens.test.ts` changes the kind of
-a token of the first string of the recorded tree of a named fixture of the
-flowchart, class, state, ER, and sankey diagrams, and requires the check of the
-tokens of a string to report it. The tests that require a recorded tree for
-every node type or every field leave out the node types whose names start with a
-prefix of `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
-(`tests/check-tree-recorded.ts`), the new diagram types whose trees are not
-recorded yet; the prefix is removed when the trees are recorded, and the list
-stays empty between two diagram types. `tests/check-tree-fields.test.ts` is the
-test of the paragraphs above: it reads the recorded trees once and indexes the
-first tree that has each node type, and the first in which each field is null
-and is not null, and it breaks each field in the tree that the index gives; any
-recorded tree that has the field will do, since the problem that the field must
-cause has the same message in every tree. It has a named case for each field of
-a string that may be null, in each direction, for each rule of `null-fields.ts`,
-and for the two parts of a box text, whose message holds the place of a token (a
-fixture, a type, a field, and the exact message of the problem at the node),
-and, made by hand from the tree of a note with two whitespace characters before
-its `:`, the three notes with one, whose text is null and which the check must
-accept. `tests/check-tree-values.test.ts` is the test of the value rule: for
-every node type with a value, it adds a character to the value at either end and
-drops one from either end, and requires each value so made to be reported at its
-node, with the message of the rule of the type (the written text, or the tokens
+`closed`, and the ranges. `check-tree-quadrant.test.ts` makes, by hand, the
+smallest trees that hold the sentences of the quadrant chart above, with the
+tokens of the kinds and the layout of `parser/docs/tokens/quadrant.md`, breaks
+each in every way that the sentence distinguishes, with the problem that the
+check must report, and requires the tables of the check to be the Type and the
+Meaning columns of ast/quadrant.md. It also breaks the recorded trees of named
+fixtures for the kinds of the tokens, their order, the number of a quadrant, the
+axis, the arrow, the kind of a label, the value of a title, and the ranges.
+`check-tree-string-tokens.test.ts` changes the kind of a token of the first
+string of the recorded tree of a named fixture of the flowchart, class, state,
+ER, and sankey diagrams, and requires the check of the tokens of a string to
+report it. The tests that require a recorded tree for every node type or every
+field leave out the node types whose names start with a prefix of
+`NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES` (`tests/check-tree-recorded.ts`),
+the new diagram types whose trees are not recorded yet; the prefix is removed
+when the trees are recorded, and the list stays empty between two diagram types.
+`tests/check-tree-fields.test.ts` is the test of the paragraphs above: it reads
+the recorded trees once and indexes the first tree that has each node type, and
+the first in which each field is null and is not null, and it breaks each field
+in the tree that the index gives; any recorded tree that has the field will do,
+since the problem that the field must cause has the same message in every tree.
+It has a named case for each field of a string that may be null, in each
+direction, for each rule of `null-fields.ts`, and for the two parts of a box
+text, whose message holds the place of a token (a fixture, a type, a field, and
+the exact message of the problem at the node), and, made by hand from the tree
+of a note with two whitespace characters before its `:`, the three notes with
+one, whose text is null and which the check must accept.
+`tests/check-tree-values.test.ts` is the test of the value rule: for every node
+type with a value, it adds a character to the value at either end and drops one
+from either end, and requires each value so made to be reported at its node,
+with the message of the rule of the type (the written text, or the tokens
 joined; the style of a class diagram or an ER diagram has the second). For each
 node type with a value that has a token with whitespace at an end, it has a
 named case (a fixture, a token, a side, and the exact problems) that takes the

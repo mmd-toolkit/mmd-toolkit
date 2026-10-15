@@ -38,6 +38,9 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "SankeyIdentifier",
   "SankeyLiteral",
   "XychartLiteral",
+  "QuadrantLabel",
+  "QuadrantLiteral",
+  "QuadrantIdentifier",
 ])
 
 /**
@@ -224,6 +227,15 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "XychartAccTitleStatement",
   "XychartAccDescrStatement",
   "XychartAccDescrBlockStatement",
+  "QuadrantDiagram",
+  "QuadrantTitleStatement",
+  "QuadrantAccTitleStatement",
+  "QuadrantAccDescrStatement",
+  "QuadrantAccDescrBlockStatement",
+  "QuadrantAxisStatement",
+  "QuadrantQuadrantStatement",
+  "QuadrantPointStatement",
+  "QuadrantClassDefStatement",
 ])
 
 /** The node types of the data blocks, whose delimiters lie in their range. */

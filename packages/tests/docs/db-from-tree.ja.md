@@ -123,6 +123,12 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   引用符のないテキストの単位の間の空白は値に含まれないためです
   （規則は [db-from-tree/xychart.ja.md](./db-from-tree/xychart.ja.md)）。
   [fixture: xychart/db-title-bare-words]
+- **quadrant のテキスト**: `QuadrantLabel` と `QuadrantLiteral` の
+  範囲の変換した形。
+  引用符のないテキストの単位の間の空白を含みます。
+  mermaid.js が空白の単位もテキストに読み込むためです
+  （規則は [db-from-tree/quadrant.ja.md](./db-from-tree/quadrant.ja.md)）。
+  [fixture: quadrant/db-quadrant-spaces-trimmed]
 - **mindmap のラベル**: `MindmapLabel` の範囲の変換した形から、
   文字列か markdown 文字列の区切りを除いたもの。
   区切りは変換した形から切り落とし、
@@ -417,6 +423,10 @@ HTML ラベルが有効で、`securityLevel` が
   向きと数には届きません。
   [fixture: xychart/config-security-level-other-all]
   [fixture: xychart/config-security-level-other-orientation-horizontal]
+- quadrant: title（フロントマターのものと `title` の文のもの）、`accTitle`、
+  `accDescr`（行のものとブロックのもの）、軸と象限のテキスト、点の名前。
+  クラス名、座標、スタイルには届きません。
+  [fixture: quadrant/config-security-level-other-all]
 
 **mermaid.js の順序が効く所。**
 テキストを読み進める前に置き換える所があり、作り手も同じにします。

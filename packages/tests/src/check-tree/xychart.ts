@@ -4,7 +4,9 @@ import type { FieldTable } from "./field-rules.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import {
+  CHILD,
   between,
+  checkLayout,
   checkOwnKinds,
   checkRangeIsHull,
   checkTokenKinds,
@@ -13,14 +15,15 @@ import {
   isBlank,
   offsetsOf,
   ownOf,
+  presentChildren,
   readingOf,
   restOfLineIsBlank,
   textOf,
 } from "./statement-checks.ts"
-import type { Own, Reading } from "./statement-checks.ts"
+import type { Reading } from "./statement-checks.ts"
 import { checkTokensInValueNodes } from "./tokens.ts"
 import type { CheckedNode, CheckedRoot } from "./types.ts"
-import { childNodesOf, walkNodes } from "./walk.ts"
+import { walkNodes } from "./walk.ts"
 
 // ast/xychart.md and diagrams/xychart.md: what the xychart documents state
 // about the tree beyond the conditions of every tree (ast.md): the fields of
@@ -99,9 +102,6 @@ export const XYCHART_PUNCTUATORS: readonly string[] = [
 
 /** diagrams/xychart.md, Detection: the two headers, in lower case. */
 const HEADERS: readonly string[] = ["xychart", "xychart-beta"]
-
-/** The text that stands for a child node in the layout of a node. */
-const CHILD = "·"
 
 /** The characters of a word of a text without quotes (diagrams/xychart.md, The statement context, rule 6). */
 const WORD_CHARACTERS = /^[\w#&*+\-.=]+$/u
@@ -352,44 +352,6 @@ function checkString(reading: Reading, node: CheckedNode): void {
   )
 }
 
-/**
- * The tokens that a node writes itself and its child nodes, in source order,
- * are `expected`, with the child nodes as {@link CHILD} and the keywords in
- * lower case, and only whitespace lies between two of them in the written text
- * (parser/docs/positions/xychart.md, Ranges; diagrams/xychart.md, Grammar).
- */
-function checkLayout(
-  reading: Reading,
-  node: CheckedNode,
-  own: Own,
-  expected: readonly string[],
-): void {
-  const parts = [
-    ...own.tokens.map((token) => ({
-      text: token.type === "Keyword" ? token.value.toLowerCase() : token.value,
-      range: token.range,
-    })),
-    ...childNodesOf(node).map((child) => ({ text: CHILD, range: child.range })),
-  ].sort((a, b) => a.range[0] - b.range[0])
-  const where = label(node)
-  reading.problems.expectEqual(
-    parts.map((part) => part.text),
-    expected,
-    where,
-    "the tokens that the node writes itself and its child nodes, in source order",
-  )
-  for (const [index, part] of parts.entries()) {
-    const next = parts[index + 1]
-    if (next === undefined) continue
-    const gap = between(reading, part.range[1], next.range[0])
-    reading.problems.expect(
-      isBlank(gap),
-      where,
-      `the written text between ${JSON.stringify(part.text)} and ${JSON.stringify(next.text)} is ${JSON.stringify(gap)}, not whitespace only`,
-    )
-  }
-}
-
 /** The layout of a list of `count` items between brackets: `[`, an item, `,`, an item, `]`. */
 function listLayout(count: number): string[] {
   const items = Array.from({ length: count }, () => CHILD)
@@ -398,13 +360,6 @@ function listLayout(count: number): string[] {
     ...items.flatMap((item, index) => (index === 0 ? [item] : [",", item])),
     "]",
   ]
-}
-
-/** The layout of the child nodes in the fields `fields` of `node` that are not null: one {@link CHILD} for each, in the order of the fields. */
-function presentChildren(node: CheckedNode, ...fields: string[]): string[] {
-  return fields
-    .filter((field) => childOf(node, field) !== null)
-    .map(() => CHILD)
 }
 
 /**

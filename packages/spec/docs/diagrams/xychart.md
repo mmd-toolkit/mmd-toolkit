@@ -783,10 +783,26 @@ line whole, also when it is a statement: `accTitle:` followed by a line
 `line [1]` has the text `line [1]`, which is then no statement. A comment line
 and a directive line between them are no lines of the text. When only whitespace
 follows to the end of the text, the unit is empty. Whitespace may precede the
-`:`, also a line feed, with comment lines and directive lines between:
-`accTitle`, a comment line, and `: T` have the title `T`. The characters `:`,
-`;`, `#`, `%%`, and the characters of the statement context are characters of
-the text. [fixture: xychart/db-acc-title-comment-line-before-colon] [fixture:
+`:`, also a line feed, with comment lines and directive lines between, and
+U+00A0, U+2028, U+2029, U+3000, and U+FEFF are whitespace before and after the
+`:` [fixture: xychart/db-acc-title-nbsp-before-colon] [fixture:
+xychart/db-acc-title-ideographic-before-colon] [fixture:
+xychart/db-acc-title-bom-before-colon] [fixture:
+xychart/db-acc-title-ls-before-colon] [fixture:
+xychart/db-acc-title-ps-before-colon] [fixture:
+xychart/db-acc-descr-nbsp-before-colon] [fixture:
+xychart/db-acc-descr-ideographic-before-colon] [fixture:
+xychart/db-acc-descr-bom-before-colon] [fixture:
+xychart/db-acc-descr-ls-before-colon] [fixture:
+xychart/db-acc-descr-ps-before-colon] [fixture:
+xychart/db-acc-title-nbsp-after-colon] [fixture:
+xychart/db-acc-title-ideographic-after-colon] [fixture:
+xychart/db-acc-title-bom-after-colon] [fixture:
+xychart/db-acc-title-ls-after-colon] [fixture:
+xychart/db-acc-title-ps-after-colon]: `accTitle`, a comment line, and `: T` have
+the title `T`. The characters `:`, `;`, `#`, `%%`, and the characters of the
+statement context are characters of the text. [fixture:
+xychart/db-acc-title-comment-line-before-colon] [fixture:
 xychart/db-acc-descr-comment-line-before-colon] [fixture:
 xychart/db-acc-title-directive-line-before-colon] [fixture:
 xychart/db-acc-descr-directive-line-before-colon] [fixture:
@@ -834,7 +850,13 @@ the whitespace after the `{` and then every character up to the next `}` as a
 `description-block-text` unit, empty when the `}` follows the whitespace, reads
 the `}` as a `}` unit, and leaves. The text may hold line feeds, `#`, `;`, and
 `%%`; a CRLF or a lone CR in it is a line feed. Whitespace may precede the `{`,
-also a line feed, with comment lines and directive lines between. [fixture:
+also a line feed, with comment lines and directive lines between, U+00A0 and the
+other whitespace characters of Notation included. [fixture:
+xychart/db-acc-descr-nbsp-before-brace] [fixture:
+xychart/db-acc-descr-ideographic-before-brace] [fixture:
+xychart/db-acc-descr-bom-before-brace] [fixture:
+xychart/db-acc-descr-ls-before-brace] [fixture:
+xychart/db-acc-descr-ps-before-brace] [fixture:
 xychart/db-acc-descr-comment-line-before-brace] [fixture:
 xychart/db-acc-descr-directive-line-before-brace] Without a `}`, the text runs
 to the end of the text. A second `}` after a block, and a brace inside the text,

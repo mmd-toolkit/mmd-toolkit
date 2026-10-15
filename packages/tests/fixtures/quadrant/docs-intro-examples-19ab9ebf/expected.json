@@ -1,0 +1,68 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/intro/examples.md",
+    "line": 115
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "Reach and engagement of campaigns",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "We should expand",
+      "Need to promote",
+      "Re-evaluate",
+      "May be improved"
+    ],
+    "xAxis": {
+      "left": "Low Reach",
+      "right": "High Reach"
+    },
+    "yAxis": {
+      "bottom": "Low Engagement",
+      "top": "High Engagement"
+    },
+    "points": [
+      {
+        "text": "Campaign F",
+        "className": "",
+        "x": "0.35",
+        "y": "0.78"
+      },
+      {
+        "text": "Campaign E",
+        "className": "",
+        "x": "0.40",
+        "y": "0.34"
+      },
+      {
+        "text": "Campaign D",
+        "className": "",
+        "x": "0.78",
+        "y": "0.34"
+      },
+      {
+        "text": "Campaign C",
+        "className": "",
+        "x": "0.57",
+        "y": "0.69"
+      },
+      {
+        "text": "Campaign B",
+        "className": "",
+        "x": "0.45",
+        "y": "0.23"
+      },
+      {
+        "text": "Campaign A",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

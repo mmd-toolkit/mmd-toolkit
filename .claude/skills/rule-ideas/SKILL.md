@@ -175,6 +175,8 @@ Dropped:
 | In a timeline, `#` in a period (`Sprint #3 : planning`: the period `Sprint `, and the comment `#3 : planning`, so the event is lost)                                                                           | A defect of mermaid.js, for the reasons above: the timeline documentation of mermaid.js calls a period and an event "simple text", names no comment `#`, and shows no other way of writing that keeps it (the entity `#35;` appears in the flowchart documentation only). Fact: [#5356](https://github.com/mermaid-js/mermaid/issues/5356) (closed, Type: Bug / Error) reports that `#` starts a comment                                                                                                                                                                                                                                                                                                                                                                          |
 | In a timeline, an event line after a section with no period of its own (`section B`, then `: y`; `y` goes to the last period of the section before)                                                            | mermaid.js reads it by its grammar and loses nothing; calling it a mistake needs the guess that the event was meant for section B. So for `section 2020 : a`, the section `2020 ` and an event of the period before                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | In a sankey diagram, two records of the same source and target (`a,b,1` and `a,b,2`)                                                                                                                           | The two links are both kept, and nothing is lost: calling the second a pasted copy is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| In an XY chart, a text of several words without quotes (`title Two words`, `x-axis [New York, Paris]`; the spaces between the words are lost, as `Twowords`)                                                   | Comes from not knowing the syntax: the documentation of mermaid.js says that a text of several words is written in `"`, as for `subgraph S %% group` in a flowchart. The formatter prints the words as written                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| In an XY chart, a label on a bar (`bar [1 "a"]`) and an `x-axis` after the plots                                                                                                                               | The documentation of mermaid.js says that a label on a bar is accepted and ignored, so writing one comes from not knowing the syntax. An `x-axis` after the plots does not give them its categories, which [#5291](https://github.com/mermaid-js/mermaid/issues/5291) (open, approved) treats as a defect and [#7798](https://github.com/mermaid-js/mermaid/pull/7798) (open) fixes                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ### Questions for unclear cases
 
@@ -638,6 +640,13 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | timeline-no-empty-description-block       | yes              |                                                                              |
 | sankey-no-invalid-value                   | yes              |                                                                              |
 | sankey-no-empty-node                      | yes              |                                                                              |
+| xychart-no-duplicate-title                | yes              |                                                                              |
+| xychart-no-duplicate-description          | yes              |                                                                              |
+| xychart-no-empty-description-block        | yes              |                                                                              |
+| xychart-no-unclosed-description-block     | yes              |                                                                              |
+| xychart-no-unread-orientation             | yes              |                                                                              |
+| xychart-no-redefined-axis                 | yes              |                                                                              |
+| xychart-no-extra-value                    | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -913,6 +922,31 @@ deleted with its space kept is the slip reported, as for
 journey-no-empty-person; (3) "sankey" in titles; (4) write the name, or remove
 the record.
 
+The XY chart rules have these notes; the searches were "xychart" in titles and
+in the text, and found nothing that changes the readings but what is named.
+
+- xychart-no-duplicate-title, xychart-no-duplicate-description,
+  xychart-no-empty-description-block: the notes of the title, description, and
+  empty block rules above; a title in words is compared as mermaid.js joins it,
+  and an `accTitle:` at the end of the text sets the empty title (run).
+- xychart-no-unclosed-description-block: (1) the block runs to the end of the
+  text, takes the statements after it, and leaves the description empty (run);
+  the rule reports only a block without its `}`, so no description that
+  mermaid.js reads as written is reported; (2) none; (4) close the block.
+- xychart-no-unread-orientation: (1) `Horizontal` and `HORIZONTAL` give a
+  vertical chart, also over the setting `chartOrientation: horizontal` (run);
+  (2) none: `vertical` in any case is not reported; (4) the document names
+  `horizontal` in lower case.
+- xychart-no-redefined-axis: (1) a later statement of an axis replaces the
+  title, with the empty title when it has none, and the data when it has data
+  (run); a statement that only adds what the axis lacked is not reported; (2)
+  none; (4) write one statement for each axis.
+- xychart-no-extra-value: (1) the values beyond the categories are dropped
+  (run); (2) none; (3) [#7798](https://github.com/mermaid-js/mermaid/pull/7798)
+  (open) would give the plots before the last `x-axis` the last x axis, so the
+  rule checks only the plots after it, where the reading is the same now and
+  with that change; (4) write as many values as categories.
+
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
 author meant, and the rule reports the comment there too (criterion 1). Whether
@@ -990,6 +1024,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | timeline-* (all 3 rules)                | None for now (2026-10-15; see the end of this section)         |
 | sankey-no-invalid-value                 | None for now (2026-10-15; see the end of this section)         |
 | sankey-no-empty-node                    | None for now (2026-10-15; see the end of this section)         |
+| xychart-* (all 7 rules)                 | None for now (2026-10-15; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1085,9 +1120,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
   the title `t`, which no-duplicate-title reports; run).
 
 `sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and
-`journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, `timeline-*`, and
-`sankey-*` (2026-10-15): the rules are implemented without suggestions for now.
-No suggestion had been decided for them or described in their documents, and the
-one planned for the empty block of a sequence diagram rested on generated
-inputs. Whether they get suggestions is decided later, in the form of the
-flowchart rules, with a fixture for each case.
+`journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, `timeline-*`,
+`sankey-*`, and `xychart-*` (2026-10-15): the rules are implemented without
+suggestions for now. No suggestion had been decided for them or described in
+their documents, and the one planned for the empty block of a sequence diagram
+rested on generated inputs. Whether they get suggestions is decided later, in
+the form of the flowchart rules, with a fixture for each case.

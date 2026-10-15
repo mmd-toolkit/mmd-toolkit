@@ -1371,6 +1371,169 @@ const xychartWhitespaceExamples: readonly (readonly [
   ],
 ]
 
+/**
+ * Each example is a quadrant chart with U+2028 or U+2029: they are characters
+ * of a word, as U+00A0 is, so a text, a name, a title, and an accessibility
+ * text keep them and a gap that holds one is printed as written; a title drops
+ * them at its ends (docs/quadrant.md, Line separators).
+ */
+const quadrantLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+2028 between the words of a text",
+    "quadrantChart\nquadrant-1 a\u2028b\n",
+    "quadrantChart\n  quadrant-1 a\u2028b\n",
+  ],
+  [
+    "U+2029 between the words of a text",
+    "quadrantChart\nquadrant-1 a\u2029b\n",
+    "quadrantChart\n  quadrant-1 a\u2029b\n",
+  ],
+  [
+    "U+2028 at the end of a text",
+    "quadrantChart\nquadrant-1 A\u2028\n",
+    "quadrantChart\n  quadrant-1 A\u2028\n",
+  ],
+  [
+    "U+2028 between a statement and the next",
+    "quadrantChart\ntitle T\nquadrant-1 A\u2028\nquadrant-2 B\n",
+    "quadrantChart\n  title T\n  quadrant-1 A\u2028\n  quadrant-2 B\n",
+  ],
+  [
+    "U+2028 between the words of a title",
+    "quadrantChart\ntitle T\u2028U\n",
+    "quadrantChart\n  title T\u2028U\n",
+  ],
+  [
+    "U+2028 after a title keyword",
+    "quadrantChart\ntitle\u2028T\n",
+    "quadrantChart\n  title\u2028T\n",
+  ],
+  [
+    "U+2028 at the end of a title",
+    "quadrantChart\ntitle T\u2028\n",
+    "quadrantChart\n  title T\n",
+  ],
+  [
+    "U+2028 in the name of a point",
+    "quadrantChart\nA\u2028B: [0.3, 0.6]\n",
+    "quadrantChart\n  A\u2028B: [0.3, 0.6]\n",
+  ],
+  [
+    "U+2028 in an accessibility text",
+    "quadrantChart\naccTitle: a\u2028b\n",
+    "quadrantChart\n  accTitle: a\u2028b\n",
+  ],
+  [
+    "U+2028 in a string",
+    'quadrantChart\nx-axis "a\u2028b"\n',
+    'quadrantChart\n  x-axis "a\u2028b"\n',
+  ],
+  [
+    "U+2028 around the arrow of an axis",
+    "quadrantChart\nx-axis L\u2028-->\u2028R\n",
+    "quadrantChart\n  x-axis L\u2028 --> \u2028R\n",
+  ],
+  [
+    "U+2028 in the name of a class",
+    "quadrantChart\nclassDef a\u2028b color: #f00\n",
+    "quadrantChart\n  classDef a\u2028b color: #f00\n",
+  ],
+]
+
+/**
+ * Each example is a quadrant chart with a whitespace character other than a
+ * space or a tab: in a text and a name the characters of a word stay, around
+ * the `:`, the brackets, and the comma of a point and the colon and the brace
+ * of an accessibility statement U+00A0 is whitespace and a space is printed,
+ * and a form feed stays inside a text (docs/quadrant.md, Whitespace
+ * characters).
+ */
+const quadrantWhitespaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+00A0 between the words of a text",
+    "quadrantChart\nquadrant-1 a\u00a0b\n",
+    "quadrantChart\n  quadrant-1 a\u00a0b\n",
+  ],
+  [
+    "U+3000 between the words of a text",
+    "quadrantChart\nquadrant-1 a\u3000b\n",
+    "quadrantChart\n  quadrant-1 a\u3000b\n",
+  ],
+  [
+    "U+FEFF between the words of a text",
+    "quadrantChart\nquadrant-1 a\ufeffb\n",
+    "quadrantChart\n  quadrant-1 a\ufeffb\n",
+  ],
+  [
+    "a form feed between the words of a text",
+    "quadrantChart\nquadrant-1 a\fb\n",
+    "quadrantChart\n  quadrant-1 a\fb\n",
+  ],
+  [
+    "U+00A0 at the end of a text",
+    "quadrantChart\nquadrant-1 A\u00a0\n",
+    "quadrantChart\n  quadrant-1 A\u00a0\n",
+  ],
+  [
+    "U+00A0 around the text of a title",
+    "quadrantChart\ntitle\u00a0T\u00a0\n",
+    "quadrantChart\n  title T\n",
+  ],
+  [
+    "U+00A0 before the name of a point",
+    "quadrantChart\n\u00a0A: [0.3, 0.6]\n",
+    "quadrantChart\n  \u00a0A: [0.3, 0.6]\n",
+  ],
+  [
+    "U+00A0 around the colon and the brackets of a point",
+    "quadrantChart\nA\u00a0:\u00a0[0.3,\u00a00.6]\n",
+    "quadrantChart\n  A: [0.3, 0.6]\n",
+  ],
+  [
+    "U+00A0 inside the brackets of a point",
+    "quadrantChart\nA: [\u00a00.3\u00a0,\u00a00.6\u00a0]\n",
+    "quadrantChart\n  A: [0.3, 0.6]\n",
+  ],
+  [
+    "a form feed after the bracket of a point",
+    "quadrantChart\nA: [0.3, 0.6]\f radius: 9\n",
+    "quadrantChart\n  A: [0.3, 0.6] radius: 9\n",
+  ],
+  [
+    "U+00A0 around the colon of accTitle",
+    "quadrantChart\naccTitle\u00a0:\u00a0T\n",
+    "quadrantChart\n  accTitle: T\n",
+  ],
+  [
+    "U+00A0 inside a description block",
+    "quadrantChart\naccDescr\u00a0{\u00a0d\u00a0}\n",
+    "quadrantChart\n  accDescr { d }\n",
+  ],
+  [
+    "U+00A0 inside an empty description block",
+    "quadrantChart\naccDescr {\u00a0}\n",
+    "quadrantChart\n  accDescr { }\n",
+  ],
+  [
+    "U+00A0 around the arrow of an axis",
+    "quadrantChart\nx-axis L\u00a0-->\u00a0R\n",
+    "quadrantChart\n  x-axis L\u00a0 --> \u00a0R\n",
+  ],
+  [
+    "U+00A0 in the name of a class",
+    "quadrantChart\nclassDef a\u00a0b color: #f00\n",
+    "quadrantChart\n  classDef a\u00a0b color: #f00\n",
+  ],
+]
+
 describe("a state diagram with a line separator", () => {
   it.each(examples)("keeps %s as written", async (_name, input, output) => {
     await expectKept(input, output)
@@ -1517,6 +1680,24 @@ describe("an XY chart with a line separator", () => {
 
 describe("an XY chart with a whitespace character that no fixture file holds", () => {
   it.each(xychartWhitespaceExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a quadrant chart with a line separator", () => {
+  it.each(quadrantLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a quadrant chart with a whitespace character that no fixture file holds", () => {
+  it.each(quadrantWhitespaceExamples)(
     "keeps %s",
     async (_name, input, output) => {
       await expectKept(input, output)

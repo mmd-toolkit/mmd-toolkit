@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, accessibility: a space after the closing brace is rejected, even if only spaces follow on the line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...Descr  {    D    }  \n---------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got 'SPACE'"
+  }
+}

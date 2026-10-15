@@ -29,6 +29,7 @@ const DIAGRAMS = [
   "timeline",
   "sankey",
   "xychart",
+  "quadrant",
 ] as const
 
 /** The node types that no `ast/<diagram>.md` defines: `ast.md` defines them. */

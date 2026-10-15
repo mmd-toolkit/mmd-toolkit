@@ -33,11 +33,11 @@
             {
               "type": "StringLiteral",
               "value": "ab",
-              "raw": "\"a%%{init: {}%%b\"",
+              "raw": "\"a%%{init: {}}%%b\"",
               "closed": true,
               "range": [
                 22,
-                39
+                40
               ],
               "loc": {
                 "start": {
@@ -46,7 +46,7 @@
                 },
                 "end": {
                   "line": 2,
-                  "column": 26
+                  "column": 27
                 }
               }
             },
@@ -54,24 +54,24 @@
               "type": "XychartLiteral",
               "value": "b",
               "range": [
-                41,
-                42
+                42,
+                43
               ],
               "loc": {
                 "start": {
                   "line": 2,
-                  "column": 28
+                  "column": 29
                 },
                 "end": {
                   "line": 2,
-                  "column": 29
+                  "column": 30
                 }
               }
             }
           ],
           "range": [
             21,
-            43
+            44
           ],
           "loc": {
             "start": {
@@ -80,13 +80,13 @@
             },
             "end": {
               "line": 2,
-              "column": 30
+              "column": 31
             }
           }
         },
         "range": [
           14,
-          43
+          44
         ],
         "loc": {
           "start": {
@@ -95,14 +95,14 @@
           },
           "end": {
             "line": 2,
-            "column": 30
+            "column": 31
           }
         }
       }
     ],
     "range": [
       0,
-      43
+      44
     ],
     "loc": {
       "start": {
@@ -111,7 +111,7 @@
       },
       "end": {
         "line": 2,
-        "column": 30
+        "column": 31
       }
     }
   },
@@ -121,11 +121,11 @@
     {
       "type": "Directive",
       "name": "init",
-      "value": "init: {",
+      "value": "init: {}",
       "closed": true,
       "range": [
         24,
-        37
+        38
       ],
       "loc": {
         "start": {
@@ -134,7 +134,7 @@
         },
         "end": {
           "line": 2,
-          "column": 24
+          "column": 25
         }
       }
     }
@@ -214,10 +214,10 @@
     },
     {
       "type": "Directive",
-      "value": "%%{init: {}%%",
+      "value": "%%{init: {}}%%",
       "range": [
         24,
-        37
+        38
       ],
       "loc": {
         "start": {
@@ -226,7 +226,7 @@
         },
         "end": {
           "line": 2,
-          "column": 24
+          "column": 25
         }
       }
     },
@@ -234,31 +234,13 @@
       "type": "StringFragment",
       "value": "b\"",
       "range": [
-        37,
-        39
-      ],
-      "loc": {
-        "start": {
-          "line": 2,
-          "column": 24
-        },
-        "end": {
-          "line": 2,
-          "column": 26
-        }
-      }
-    },
-    {
-      "type": "Punctuator",
-      "value": ",",
-      "range": [
-        39,
+        38,
         40
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 26
+          "column": 25
         },
         "end": {
           "line": 2,
@@ -267,26 +249,26 @@
       }
     },
     {
-      "type": "RawText",
-      "value": "b",
+      "type": "Punctuator",
+      "value": ",",
       "range": [
-        41,
-        42
+        40,
+        41
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 28
+          "column": 27
         },
         "end": {
           "line": 2,
-          "column": 29
+          "column": 28
         }
       }
     },
     {
-      "type": "Punctuator",
-      "value": "]",
+      "type": "RawText",
+      "value": "b",
       "range": [
         42,
         43
@@ -301,11 +283,29 @@
           "column": 30
         }
       }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        43,
+        44
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 30
+        },
+        "end": {
+          "line": 2,
+          "column": 31
+        }
+      }
     }
   ],
   "range": [
     0,
-    44
+    45
   ],
   "loc": {
     "start": {

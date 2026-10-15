@@ -68,6 +68,13 @@ import { stateNoUndef } from "./state-no-undef.ts"
 import { timelineNoDuplicateDescription } from "./timeline-no-duplicate-description.ts"
 import { timelineNoDuplicateTitle } from "./timeline-no-duplicate-title.ts"
 import { timelineNoEmptyDescriptionBlock } from "./timeline-no-empty-description-block.ts"
+import { xychartNoDuplicateDescription } from "./xychart-no-duplicate-description.ts"
+import { xychartNoDuplicateTitle } from "./xychart-no-duplicate-title.ts"
+import { xychartNoEmptyDescriptionBlock } from "./xychart-no-empty-description-block.ts"
+import { xychartNoExtraValue } from "./xychart-no-extra-value.ts"
+import { xychartNoRedefinedAxis } from "./xychart-no-redefined-axis.ts"
+import { xychartNoUnclosedDescriptionBlock } from "./xychart-no-unclosed-description-block.ts"
+import { xychartNoUnreadOrientation } from "./xychart-no-unread-orientation.ts"
 
 /**
  * Every rule of the plugin, by its name in the plugin: the name of a rule of
@@ -145,4 +152,11 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "timeline-no-duplicate-description": timelineNoDuplicateDescription,
   "timeline-no-duplicate-title": timelineNoDuplicateTitle,
   "timeline-no-empty-description-block": timelineNoEmptyDescriptionBlock,
+  "xychart-no-duplicate-description": xychartNoDuplicateDescription,
+  "xychart-no-duplicate-title": xychartNoDuplicateTitle,
+  "xychart-no-empty-description-block": xychartNoEmptyDescriptionBlock,
+  "xychart-no-extra-value": xychartNoExtraValue,
+  "xychart-no-redefined-axis": xychartNoRedefinedAxis,
+  "xychart-no-unclosed-description-block": xychartNoUnclosedDescriptionBlock,
+  "xychart-no-unread-orientation": xychartNoUnreadOrientation,
 }

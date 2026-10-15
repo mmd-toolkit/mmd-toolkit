@@ -811,6 +811,52 @@ export const NODE_FIELDS: Readonly<
   Token: {
     value: { shape: "value", valueType: "string" },
   },
+  QuadrantAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  QuadrantAccDescrStatement: {
+    value: { shape: "node" },
+  },
+  QuadrantAccTitleStatement: {
+    value: { shape: "node" },
+  },
+  QuadrantAxisStatement: {
+    axis: { shape: "value", valueType: "string" },
+    start: { shape: "node" },
+    arrow: { shape: "value", valueType: "boolean" },
+    end: { shape: "nodeOrNull" },
+  },
+  QuadrantClassDefStatement: {
+    name: { shape: "node" },
+    styles: { shape: "nodeList" },
+  },
+  QuadrantDiagram: {
+    body: { shape: "nodeList" },
+  },
+  QuadrantIdentifier: {
+    name: { shape: "value", valueType: "string" },
+  },
+  QuadrantLabel: {
+    kind: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+  },
+  QuadrantLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  QuadrantPointStatement: {
+    name: { shape: "node" },
+    className: { shape: "nodeOrNull" },
+    x: { shape: "node" },
+    y: { shape: "node" },
+    styles: { shape: "nodeList" },
+  },
+  QuadrantQuadrantStatement: {
+    quadrant: { shape: "value", valueType: "number" },
+    text: { shape: "node" },
+  },
+  QuadrantTitleStatement: {
+    value: { shape: "nodeOrNull" },
+  },
   XychartAccDescrBlockStatement: {
     value: { shape: "nodeOrNull" },
     closed: { shape: "value", valueType: "boolean" },

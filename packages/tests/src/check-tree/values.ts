@@ -7,6 +7,7 @@ import type { CheckedNode, CheckedRoot } from "./types.ts"
 import { contains } from "./invariants.ts"
 import { nodesOf } from "./walk.ts"
 import { WrittenText } from "./written-text.ts"
+import { QUADRANT_TRIMMED_TEXT_STATEMENTS } from "./quadrant.ts"
 import { XYCHART_ACCESSIBILITY_STATEMENTS } from "./xychart.ts"
 
 // ast.md, Nodes: the value of a node is its written text, or the part of it
@@ -291,6 +292,21 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     kind: "trimmed-text",
     spec: "The field without the whitespace at its ends, as written (ast/sankey.md, SankeyLiteral).",
   },
+  QuadrantIdentifier: {
+    field: "name",
+    kind: "written-text",
+    spec: "Its written text (ast/quadrant.md, QuadrantIdentifier).",
+  },
+  QuadrantLabel: {
+    field: "value",
+    kind: "derived",
+    spec: "For a text that starts without quotes, its written text; for a string or a markdown string, its content followed by the written text of the rest (ast/quadrant.md, QuadrantLabel).",
+  },
+  QuadrantLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its written text (ast/quadrant.md, QuadrantLiteral).",
+  },
   XychartLiteral: {
     field: "value",
     kind: "units-joined",
@@ -303,13 +319,17 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
  * ast/xychart.md, XychartLiteral: the literals of the accessibility
  * statements, whose value is the written text without the whitespace at its
  * ends, the whitespace between its characters being part of it; the other
- * literals are texts without quotes, whose value is the units joined.
+ * literals are texts without quotes, whose value is the units joined. The same
+ * holds for the literals of a title, an accessibility statement, and a block of
+ * a quadrant chart (ast/quadrant.md, QuadrantLiteral), whose other literals are
+ * written text.
  */
 function accessibilityTextsOf(nodes: readonly CheckedNode[]): Set<unknown> {
   const texts = new Set<unknown>()
   for (const node of nodes) {
     if (
-      XYCHART_ACCESSIBILITY_STATEMENTS.includes(node.type) &&
+      (XYCHART_ACCESSIBILITY_STATEMENTS.includes(node.type) ||
+        QUADRANT_TRIMMED_TEXT_STATEMENTS.includes(node.type)) &&
       node.value !== null
     ) {
       texts.add(node.value)

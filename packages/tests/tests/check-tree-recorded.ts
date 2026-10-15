@@ -57,6 +57,7 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "timeline",
   "sankey",
   "xychart",
+  "quadrant",
 ]
 
 /**

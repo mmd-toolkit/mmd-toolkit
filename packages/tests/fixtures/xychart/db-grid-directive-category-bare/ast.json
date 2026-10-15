@@ -35,7 +35,7 @@
               "value": "ab",
               "range": [
                 22,
-                37
+                38
               ],
               "loc": {
                 "start": {
@@ -44,7 +44,7 @@
                 },
                 "end": {
                   "line": 2,
-                  "column": 24
+                  "column": 25
                 }
               }
             },
@@ -52,24 +52,24 @@
               "type": "XychartLiteral",
               "value": "b",
               "range": [
-                39,
-                40
+                40,
+                41
               ],
               "loc": {
                 "start": {
                   "line": 2,
-                  "column": 26
+                  "column": 27
                 },
                 "end": {
                   "line": 2,
-                  "column": 27
+                  "column": 28
                 }
               }
             }
           ],
           "range": [
             21,
-            41
+            42
           ],
           "loc": {
             "start": {
@@ -78,13 +78,13 @@
             },
             "end": {
               "line": 2,
-              "column": 28
+              "column": 29
             }
           }
         },
         "range": [
           14,
-          41
+          42
         ],
         "loc": {
           "start": {
@@ -93,14 +93,14 @@
           },
           "end": {
             "line": 2,
-            "column": 28
+            "column": 29
           }
         }
       }
     ],
     "range": [
       0,
-      41
+      42
     ],
     "loc": {
       "start": {
@@ -109,7 +109,7 @@
       },
       "end": {
         "line": 2,
-        "column": 28
+        "column": 29
       }
     }
   },
@@ -119,11 +119,11 @@
     {
       "type": "Directive",
       "name": "init",
-      "value": "init: {",
+      "value": "init: {}",
       "closed": true,
       "range": [
         23,
-        36
+        37
       ],
       "loc": {
         "start": {
@@ -132,7 +132,7 @@
         },
         "end": {
           "line": 2,
-          "column": 23
+          "column": 24
         }
       }
     }
@@ -212,10 +212,10 @@
     },
     {
       "type": "Directive",
-      "value": "%%{init: {}%%",
+      "value": "%%{init: {}}%%",
       "range": [
         23,
-        36
+        37
       ],
       "loc": {
         "start": {
@@ -224,31 +224,13 @@
         },
         "end": {
           "line": 2,
-          "column": 23
+          "column": 24
         }
       }
     },
     {
       "type": "RawText",
       "value": "b",
-      "range": [
-        36,
-        37
-      ],
-      "loc": {
-        "start": {
-          "line": 2,
-          "column": 23
-        },
-        "end": {
-          "line": 2,
-          "column": 24
-        }
-      }
-    },
-    {
-      "type": "Punctuator",
-      "value": ",",
       "range": [
         37,
         38
@@ -265,26 +247,26 @@
       }
     },
     {
-      "type": "RawText",
-      "value": "b",
+      "type": "Punctuator",
+      "value": ",",
       "range": [
-        39,
-        40
+        38,
+        39
       ],
       "loc": {
         "start": {
           "line": 2,
-          "column": 26
+          "column": 25
         },
         "end": {
           "line": 2,
-          "column": 27
+          "column": 26
         }
       }
     },
     {
-      "type": "Punctuator",
-      "value": "]",
+      "type": "RawText",
+      "value": "b",
       "range": [
         40,
         41
@@ -299,11 +281,29 @@
           "column": 28
         }
       }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        41,
+        42
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 28
+        },
+        "end": {
+          "line": 2,
+          "column": 29
+        }
+      }
     }
   ],
   "range": [
     0,
-    42
+    43
   ],
   "loc": {
     "start": {

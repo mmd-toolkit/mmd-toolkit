@@ -21,7 +21,7 @@ import {
   textOf,
 } from "./statement-checks.ts"
 import type { Reading } from "./statement-checks.ts"
-import { checkTokensInValueNodes } from "./tokens.ts"
+import { checkTokensInValueNodes, nodeTokensIn } from "./tokens.ts"
 import type { CheckedNode, CheckedRoot } from "./types.ts"
 import type { StringDelimitersOf } from "./values.ts"
 import { isNode, nodesOf, walkNodes } from "./walk.ts"
@@ -534,11 +534,21 @@ function checkTokensAndRange(reading: Reading, node: CheckedNode): void {
   if (node.type === "MindmapLiteral" || node.type === "MindmapLabel") {
     const isString =
       textOf(node, "kind") !== "text" && node.type === "MindmapLabel"
-    checkTokenKinds(
-      reading,
-      node,
-      isString ? ["String", "StringFragment"] : ["RawText"],
-      node.type === "MindmapLabel" ? `a ${textOf(node, "kind")}` : "a text",
+    const what =
+      node.type === "MindmapLabel" ? `a ${textOf(node, "kind")}` : "a text"
+    if (!isString) {
+      checkTokenKinds(reading, node, ["RawText"], what)
+      return
+    }
+    const kinds = nodeTokensIn(reading.root, node.range).map(
+      (token) => token.type,
+    )
+    const expected = reading.written.stringTokenKinds(node.range)
+    reading.problems.expect(
+      kinds.length === expected.length &&
+        kinds.every((kind, index) => kind === expected[index]),
+      label(node),
+      `the tokens of ${what} are not all of the kind String or StringFragment, one String token where nothing cuts it and one StringFragment token more than there are cuts: ${kinds.join(", ")}`,
     )
     return
   }

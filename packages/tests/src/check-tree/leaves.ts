@@ -4,6 +4,7 @@ import type { Problems } from "./problems.ts"
 import { nodeTokensIn } from "./tokens.ts"
 import type { CheckedRoot } from "./types.ts"
 import { nodesOf } from "./walk.ts"
+import { WrittenText } from "./written-text.ts"
 
 // The records that every diagram shares, checked once here and not in the
 // check of each diagram: the directive and the root (ast.md, Directive, and
@@ -28,6 +29,7 @@ const DIAGRAM_TYPES_OF_BODY: Readonly<Record<string, readonly string[]>> = {
   TimelineDiagram: ["timeline"],
   SankeyDiagram: ["sankey"],
   XychartDiagram: ["xychart"],
+  QuadrantDiagram: ["quadrantChart"],
 }
 
 /** The name of a directive whose text between the delimiters is `value`: its first word, after the whitespace that may precede it. */
@@ -41,20 +43,26 @@ function directiveNameOf(value: string): string {
 
 /**
  * parser/docs/tokens.md, String tokens: the tokens of a StringLiteral, a node
- * type that every diagram type shares, are one `String` token, or `StringFragment`
- * tokens where a directive, a comment region, or an ignored `;` cuts it.
+ * type that every diagram type shares, are one `String` token where nothing
+ * cuts the string, and where a directive, a comment region, or an ignored `;`
+ * cuts it, `StringFragment` tokens, one more than there are cuts.
  */
-function checkStringTokens(root: CheckedRoot, problems: Problems): void {
+function checkStringTokens(
+  text: string,
+  root: CheckedRoot,
+  problems: Problems,
+): void {
+  const written = new WrittenText(text, root)
   for (const node of nodesOf(root)) {
     if (node.type !== "StringLiteral") continue
     const tokens = nodeTokensIn(root, node.range)
-    const [first] = tokens
+    const expected = written.stringTokenKinds(node.range)
+    const kinds = tokens.map((token) => token.type)
     problems.expect(
-      (tokens.length === 1 && first?.type === "String") ||
-        (tokens.length > 0 &&
-          tokens.every((token) => token.type === "StringFragment")),
+      kinds.length === expected.length &&
+        kinds.every((kind, index) => kind === expected[index]),
       label(node),
-      `the tokens of the string are not one String token or StringFragment tokens: ${tokens.map((token) => token.type).join(", ")}`,
+      `the tokens of the string are not one String token or StringFragment tokens: ${kinds.join(", ")}`,
     )
   }
 }
@@ -64,7 +72,11 @@ function checkStringTokens(root: CheckedRoot, problems: Problems): void {
  * Directive), the diagram type of the root is one of those of its body
  * (ast.md, Root), and the tokens of a string are the tokens of a string.
  */
-export function checkSharedLeaves(root: CheckedRoot, problems: Problems): void {
+export function checkSharedLeaves(
+  text: string,
+  root: CheckedRoot,
+  problems: Problems,
+): void {
   for (const directive of root.directives) {
     problems.expectEqual(
       (directive as { name?: unknown }).name,
@@ -79,5 +91,5 @@ export function checkSharedLeaves(root: CheckedRoot, problems: Problems): void {
     "Root",
     `the diagram type ${root.diagramType} is not one of those of a ${root.body.type}: ${allowed.join(", ")}`,
   )
-  checkStringTokens(root, problems)
+  checkStringTokens(text, root, problems)
 }

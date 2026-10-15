@@ -991,6 +991,60 @@ Db や字句解析器が読むものは変えません。
   [fixture: statements-one-per-line/axis-then-title-with-a-digit-split]
   [fixture: statements-one-per-line/axis-band-then-title-with-a-digit-split]
 
+## テキスト、引用符、字句解析器で決まる象限チャートの行
+
+象限チャートのテキストの中の空白は Db に入るので、
+整形はテキストを書かれたまま残し、その周りの空白を変えます。
+Db や字句解析器が読むものは変えません。
+[キーワードとテキスト](./quadrant.ja.md#キーワードとテキスト)と
+[引用符](./quadrant.ja.md#引用符)を参照してください。
+
+- 引用符なしのテキスト、名前、title、アクセシビリティのテキストの中の空白。
+  2 つの単語の間の空白の連なり、タブ、改ページは、テキストの文字です。
+  文字列とその後の単語は、間の空白を保ちます。
+  `"a" b` と `"a"b` は別のテキストだからです。
+  [fixture: keywords-and-texts/inner-whitespace-kept]
+  [fixture: keywords-and-texts/string-then-text-whitespace-kept]
+  [fixture: points/name-inner-whitespace-kept]
+  [fixture: titles-and-accessibility-statements/text-inner-whitespace-kept]
+- キーワード `title` や `classDef` の後に、空白なしで続く単語は、
+  それ自身が単語です。
+  `title1: [0.3, 0.6]` は名前 `title1` の点で、空白を置くと title になります。
+  [fixture: keywords-and-texts/word-after-title-keyword-is-a-point-name]
+- 点の座標はテキストです。`0.30` は `0.3` ではありません。
+  [fixture: points/coordinates-as-written]
+- 後ろにテキストのない軸の矢印は、Db が左のテキストの一部として読みます。
+  [fixture: axes/arrow-only]
+- 文字列。
+  中の空白と改行は Db に入り、引用符は書き手が選びます。
+  文字列は引用符なしのテキストが持てないものを持てるので、引用符は外しません。
+  [fixture: quotes/strings-as-written]
+  [fixture: quotes/keywords-and-arrows-in-strings]
+  [fixture: multi-line-values/string-with-line-breaks-kept]
+- title とアクセシビリティのテキストの中の `;` はその文字で、
+  title の中の空の説明ブロックは title の一部です。
+  [fixture: statements-one-per-line/semicolon-in-a-title-is-text]
+  [fixture: statements-one-per-line/empty-description-block-in-a-title-stays]
+- mermaid.js の行の規則が読む行は、文を 1 行に残し、`;` も書かれたままです。
+  `style` か `classDef`、その後の `:`、
+  `:` との間に空白のない `#`、その後の `;` を持つ行です。
+  [fixture: statements-one-per-line/line-rule-line-kept-together]
+  [fixture: multi-line-statements/semicolon-on-the-last-line-kept]
+- つなぐ改行にコメント行か指令がある文は、書かれたまま残します。
+  [fixture: multi-line-statements/comment-line-inside-kept]
+  [fixture: multi-line-statements/directive-inside-kept]
+- コメントが前の単位に接しているかどうか。
+  mermaid.js は、1 文字の単位に接した `%%` を、その文字と一緒に読みます
+  （既知の差異 `comment-takes-character`）。
+  印字はコメントが接しているかどうかを保ちます。
+  [fixture: comments/comment-glued-to-a-one-character-word-kept]
+  [fixture: comments/comment-takes-a-character-kept]
+- U+2028、U+2029、U+00A0 は、
+  テキスト、名前、title、アクセシビリティのテキストの中では単語の文字で、
+  隙間にあっても書かれた場所に残ります。
+  [test: U+2028 between the words of a text]
+  [test: U+2028 around the arrow of an axis]
+
 ## U+2028 か U+2029 の後のコメント行
 
 mermaid.js は、本文を読む前に、コメント行を取り除きます。

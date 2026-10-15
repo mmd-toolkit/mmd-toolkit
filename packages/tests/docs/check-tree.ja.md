@@ -76,7 +76,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   gantt 図の図のコメントは、印 `%%` と `%` を持ち、
   journey 図と requirement 図と timeline 図の図のコメントは、
   印 `#`、`%%`、`%` を持ち、
-  mindmap 図と xychart 図の図のコメントは、印 `%%` を持ちます。
+  mindmap 図、xychart 図、quadrant chart の図のコメントは、印 `%%` を持ちます。
   印のない断片は、コメント領域に続きます
   （parser/docs/tokens.md の Comment、
   [common.md](../../spec/docs/common.md#comment-lines) の Comment lines）。
@@ -92,9 +92,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
   ディレクティブはほかのトークンの中になく、コメントもありません
   （positions.md の Invariants）。
 - **文字列。** どの図種も共有するノード型 StringLiteral のトークンは、
-  1 つの `String` トークンか、
+  何も切らなければ 1 つの `String` トークンで、
   ディレクティブ、コメント領域、行の規則が無視する `;` が切れば
-  `StringFragment` トークンです（parser/docs/tokens.md の String tokens）。
+  切れ目の数より 1 つ多い `StringFragment` トークンです
+  （parser/docs/tokens.md の String tokens）。
 - **切られないトークン。** ディレクティブと行の規則が無視する `;` は、
   `String`（そのときは `StringFragment` のトークン）と
   `RawText` のトークンの中にだけあり、
@@ -353,7 +354,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
     テキストの終わりのどれかまで続き、それらを含みません
     （The icon and class contexts）。
     形は、開き記号、ラベル、閉じ記号のとおりに書かれ、ほかには何もありません。
-    開き記号 `-)` は単位の先頭にある形のものなので、その前にノードテキストはなく、
+    開き記号 `-)` は単位の先頭にある形のものなので、
+    その前にノードテキストはなく、
     閉じ記号 `-)` は文字列かマークダウン文字列にだけ続きます
     （The shape context）。
     ラベルは空ではありません。
@@ -531,6 +533,55 @@ const problems: TreeProblem[] = checkTree(text, tree)
     図、文、その下のノードの範囲は、
     トークンと子ノードの最初から最後までです
     （`parser/docs/positions/xychart.md`）。
+  - quadrant: 検査は木とソースのテキストを読みます。
+    欄の子ノードは表の型です
+    （`QUADRANT_CHILD_TYPES`。
+    テストが ast/quadrant.md の Type の列と合わせます）。
+    `classDef` はスタイルを持ちます。
+    軸の文の軸は `x` か `y` で、キーワードの小文字の文字です。
+    `end` は `arrow` が true でなければ null で、
+    矢印はテキストの間か、ただ 1 つのテキストの後ろに書かれ、
+    ほかの場合は書かれません（ast/quadrant.md の QuadrantAxisStatement）。
+    象限の文の番号はキーワードの数字で、1 から 4 です
+    （QuadrantQuadrantStatement）。
+    ラベルの種類は `text`、`string`、`markdown` です
+    （`QUADRANT_AXES` と `QUADRANT_LABEL_KINDS`。
+    テストが Meaning の列と合わせます）。
+    値はその書かれたテキストで、文字列かマークダウン文字列では、
+    内容に残りの書かれたテキストを続けたものです（QuadrantLabel）。
+    引用符のないテキストは語で始まり、英字、数字、ASCII の外の文字、
+    句読点 `!$%&'*+,./=?\_#`、バッククォート、`-`、空白を含みます。
+    文字列は空でなく、その後ろはテキストの残りで、文字列を含みません
+    （diagrams/quadrant.md の The statement context、Texts、Strings、
+    Empty strings）。
+    文字は、テキストを変換した形のものです。
+    その形では、実体は ASCII の外の文字です
+    （Entities, HTML attribute quotes, and `style` lines）。
+    タイトルはないか、空でなく、両端に Notation の空白がなく、
+    行終端のないものです。
+    アクセシビリティの行のテキストは、空でなく、両端に空白がなく、行終端がなく、
+    ブロックのテキストは `}` を含みません（Accessibility values）。
+    点のクラス名は ASCII の英字、数字、`_` で（The class name context）、
+    座標は `1`、または `0` に、
+    改行・U+2028・U+2029 以外の 1 文字と数字を続けたものです
+    （The point context）。
+    `classDef` のクラスの名前は、変換した形で、
+    英字、数字、ASCII の外の文字、`&`、`#`、`*`、
+    `-`、`,`、`:` を含み、空白を含みません（Classes）。
+    スタイルは、英字、数字、`:`、`#`、`-`、空白を含み、
+    `QUADRANT_STYLE_NAMES` の名前、`:`、その名前の形の値です
+    （Points と Rejections outside the grammar）。
+    1 行の 2 つの文の間には、一方が空の説明ブロックでない限り `;` があり、
+    テキストのあるブロックの後ろには、その行に空の説明ブロックだけが、
+    間を空けずに続き、
+    行はその直後で終わります。
+    行末のコメントは、その後ろに続くものに数えません
+    （Diagram and statements、Titles and accessibility statements）。
+    図のコメントは印 `%%` を持ちます（Comments）。
+    文字列のラベルのトークンは、1 つの `String` トークンか、
+    ディレクティブ、コメント領域、無視される `;` が文字列を切った場合の
+    `StringFragment` トークンで、
+    その後ろの語は `RawText` トークンです。
 
 範囲の**書かれたテキスト**は、ディレクティブ、コメント領域、
 行の規則が無視する `;` を除いたソースです（ast.md の Nodes）。
@@ -552,6 +603,13 @@ const problems: TreeProblem[] = checkTree(text, tree)
   ノードは両端の空白を除いた欄ですが、空白だけの欄は例外で、
   そのただ 1 つの `RawText` トークンが空白で、
   トークンは書かれたテキストです。
+- quadrant chart の座標、スタイル、クラスの名前
+  （`QuadrantLiteral` と `QuadrantIdentifier`）の値は、書かれたテキストです。
+  タイトル、アクセシビリティのテキスト、ブロックのテキスト
+  （`QuadrantLiteral`）の値は、書かれたテキストから
+  両端の Notation の空白を除いたものです。
+  ラベル（`QuadrantLabel`）の値は書かれたテキストと種類から決まり、
+  図の検査が読みます。
 - xychart 図の引用符のないテキスト（`XychartLiteral`）の値は、
   単位をつないだ値で、空白を含みません。
   アクセシビリティの文のテキストの値は、
@@ -674,6 +732,12 @@ journey のファイルは 14 本作ります）。
 検査の表が ast/xychart.md の Type と Meaning の列と合うことを求めます。
 また、名前を挙げた fixture の記録した木を壊して、
 トークンの種類、並び、向き、種類、`closed`、範囲の検査を確かめます。
+`check-tree-quadrant.test.ts` は、上の quadrant chart の文を持つ最小の木を、
+`parser/docs/tokens/quadrant.md` の種類と並びのトークンで手で作り、
+文が分ける壊し方のそれぞれで壊して、検査が報告すべき問題を確かめ、
+検査の表が ast/quadrant.md の Type と Meaning の列と合うことを求めます。
+名前を挙げた fixture の記録した木でも、トークンの種類と順序、象限の番号、
+軸、矢印、ラベルの種類、タイトルの値、範囲を壊して確かめます。
 `check-tree-string-tokens.test.ts` は、flowchart、class、state、ER、sankey の
 名前を挙げた fixture の記録した木で、最初の文字列のトークンの種類を変え、
 文字列のトークンの検査がそれを報告することを求めます。

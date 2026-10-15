@@ -18,6 +18,7 @@ import { checkTimelineTree } from "./timeline.ts"
 import { checkPunctuatorsAreWhole } from "./punctuators.ts"
 import { checkStringsAreWhole, checkTokensAreNotCut } from "./tokens.ts"
 import { checkValues, quoteDelimitersOf } from "./values.ts"
+import { checkQuadrantTree } from "./quadrant.ts"
 import { checkXychartTree } from "./xychart.ts"
 import type { StringDelimitersOf } from "./values.ts"
 import type { CheckedRoot, TreeProblem } from "./types.ts"
@@ -50,7 +51,7 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
   // The other checks read a tree of the form of the specification.
   if (!checkShape(root, problems)) return problems.list
   checkInvariants(text, root, problems)
-  checkSharedLeaves(root, problems)
+  checkSharedLeaves(text, root, problems)
   checkNullFields(text, root, problems)
   checkTokensAreNotCut(root, problems)
   checkStringsAreWhole(root, problems)
@@ -99,6 +100,9 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
       break
     case "XychartDiagram":
       checkXychartTree(text, root, problems)
+      break
+    case "QuadrantDiagram":
+      checkQuadrantTree(text, root, problems)
       break
     default:
       problems.report(

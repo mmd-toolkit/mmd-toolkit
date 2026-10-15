@@ -50,9 +50,16 @@ export interface DiagramUnit<Name extends string> {
  * - `"trim-whitespace-but-line-separators"`: the whitespace at the ends is
  *   left out, except U+2028 and U+2029, which count as characters that are
  *   not whitespace.
+ * - `"trim-ascii-whitespace"`: only the whitespace of ASCII at the ends,
+ *   U+0009 to U+000D and U+0020, is left out; U+00A0 and the other
+ *   whitespace outside ASCII count as characters that are not whitespace,
+ *   as in a quadrant chart, where they are characters of a word.
  */
 export type UnitEnds =
-  "trim-whitespace" | "keep-whitespace" | "trim-whitespace-but-line-separators"
+  | "trim-whitespace"
+  | "keep-whitespace"
+  | "trim-whitespace-but-line-separators"
+  | "trim-ascii-whitespace"
 
 /**
  * The unit named `name`, the unit number `index` of the text, that reads
@@ -118,6 +125,8 @@ function isKeptAtEnds(codePoint: number, ends: UnitEnds): boolean {
       return true
     case "trim-whitespace-but-line-separators":
       return !isWhitespace(codePoint) || isLineSegmentSeparator(codePoint)
+    case "trim-ascii-whitespace":
+      return !isWhitespace(codePoint) || codePoint > 0x7f
     default:
       throw new Error(
         `mmd-toolkit parser bug: unknown unit ends ${JSON.stringify(ends satisfies never)}`,

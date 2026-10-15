@@ -411,7 +411,10 @@ whitespace is there, it is printed as one space, as anywhere else, since the
 rule asks only whether some is there and not how much: `A[style: ]-->B[#z;y]`
 stays, and `C[style:]   -->   D[#z;y]` becomes `C[style:] --> D[#z;y]`.
 [fixture: semicolons/style-line-space-between-colon-and-hash-kept] [fixture:
-semicolons/style-line-spaces-between-colon-and-hash-become-one]
+semicolons/style-line-spaces-between-colon-and-hash-become-one] A `;` that the
+rule ignores at the end of the line is dropped, and the line that is printed has
+no `;` for the rule to read, so its whitespace is formatted as anywhere else.
+[fixture: semicolons/style-line-dropped-semicolon-formats-the-gap]
 
 Input
 ([semicolons/removed-input.mmd](../tests/fixtures/flowchart/semicolons/removed-input.mmd)):

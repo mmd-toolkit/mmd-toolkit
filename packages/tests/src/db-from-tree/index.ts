@@ -12,6 +12,8 @@ import { journeyDbOf } from "./journey.ts"
 import type { JourneyDiagram } from "./journey-tree.ts"
 import { mindmapDbOf } from "./mindmap.ts"
 import type { MindmapDiagram } from "./mindmap-tree.ts"
+import { quadrantDbOf } from "./quadrant.ts"
+import type { QuadrantDiagram } from "./quadrant-tree.ts"
 import { requirementDbOf } from "./requirement.ts"
 import type { RequirementDiagram } from "./requirement-tree.ts"
 import { sankeyDbOf } from "./sankey.ts"
@@ -43,6 +45,7 @@ export type DiagramBody =
   | GanttDiagram
   | JourneyDiagram
   | MindmapDiagram
+  | QuadrantDiagram
   | RequirementDiagram
   | SankeyDiagram
   | SequenceDiagram
@@ -99,6 +102,8 @@ export function dbFromTree(
       return sankeyDbOf(text, root, root.body, embedded)
     case "XychartDiagram":
       return xychartDbOf(text, root, root.body, embedded)
+    case "QuadrantDiagram":
+      return quadrantDbOf(text, root, root.body, embedded)
     default:
       throw new Error(`dbFromTree: unknown body type ${bodyType}`)
   }

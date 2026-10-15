@@ -27,6 +27,7 @@ export const diagramIds: Readonly<
   timeline: ["timeline"],
   sankey: ["sankey"],
   xychart: ["xychart"],
+  quadrant: ["quadrantChart"],
 }
 
 /**

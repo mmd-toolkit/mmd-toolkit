@@ -63,6 +63,7 @@ export function isMermaidRunStoreOn(): boolean {
  */
 export const RESULT_FILES: readonly string[] = [
   "divergence-removals.ts",
+  "mermaid-environment-error.ts",
   "mermaid-run-store.ts",
   "mermaid.ts",
   "normalizers/browser-stand-ins.ts",
@@ -76,6 +77,7 @@ export const RESULT_FILES: readonly string[] = [
   "normalizers/journey.ts",
   "normalizers/json.ts",
   "normalizers/mindmap.ts",
+  "normalizers/quadrant.ts",
   "normalizers/requirement.ts",
   "normalizers/sankey.ts",
   "normalizers/sequence.ts",

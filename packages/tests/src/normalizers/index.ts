@@ -5,6 +5,7 @@ import { normalizeFlowchart, patchFlowDb } from "./flowchart.ts"
 import { normalizeGantt, patchGanttDb } from "./gantt.ts"
 import { normalizeJourney } from "./journey.ts"
 import { normalizeMindmap } from "./mindmap.ts"
+import { normalizeQuadrant, patchQuadrantDb } from "./quadrant.ts"
 import { normalizeRequirement } from "./requirement.ts"
 import { normalizeSankey } from "./sankey.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
@@ -44,6 +45,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["sankey", normalizeSankey],
   ["timeline", normalizeTimeline],
   ["xychart", normalizeXyChart],
+  ["quadrantChart", normalizeQuadrant],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])
@@ -102,6 +104,14 @@ const dbPatches: ReadonlyMap<string, DbPatchEntry> = new Map<
   [
     "gantt",
     { sampleText: "gantt\n", patch: patchGanttDb, appliedTo: "object" },
+  ],
+  [
+    "quadrantChart",
+    {
+      sampleText: "quadrantChart\n",
+      patch: patchQuadrantDb,
+      appliedTo: "object",
+    },
   ],
 ])
 

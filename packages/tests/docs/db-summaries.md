@@ -3067,3 +3067,2083 @@ and
   xychart/gram-grid-empty-x-title-quoted] [fixture:
   xychart/gram-grid-empty-y-title-bare] [fixture:
   xychart/gram-grid-empty-y-title-quoted]
+
+## quadrant
+
+The fields of the summary:
+
+| Field       | Content                                                                      |
+| ----------- | ---------------------------------------------------------------------------- |
+| `title`     | The title of the chart: the last `title` statement, or else the frontmatter. |
+| `accTitle`  | The accessibility title, or the empty text.                                  |
+| `accDescr`  | The accessibility description, or the empty text.                            |
+| `quadrants` | The texts of `quadrant-1` to `quadrant-4`, in that order.                    |
+| `xAxis`     | The texts of the x axis: `left` and `right`.                                 |
+| `yAxis`     | The texts of the y axis: `bottom` and `top`.                                 |
+| `points`    | The points, in the order the Db holds them.                                  |
+| `classes`   | The classes, in the order of their first definition.                         |
+
+A point has `text`, `className` (the empty text if the point has no class), `x`
+and `y` (the texts of the two numbers as the lexer read them), and the styles it
+has, as the text wrote them: `radius`, a number, `color`, `strokeColor`, and
+`strokeWidth`. A class has `name` and the styles it has. A radius that is no
+finite number (the digits of one are too many for a double) is the text of the
+number (`"Infinity"`), since JSON has no such number.
+
+`normalizeQuadrant()` (`src/normalizers/quadrant.ts`) summarizes the Db of
+`quadrantChart`. The Db reads no browser feature, no time and no random value
+while it parses. It is one object that every quadrant chart shares, whose state
+is in a `QuadrantBuilder` that only its own methods reach, and
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L147-L150)
+resets it before each parse. The only way to read what the text gave is
+[`getQuadrantData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L120-L145),
+which lays the chart out
+([`build()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L604-L623)),
+so the summary takes from it what the layout keeps as the Db holds it: the texts
+of the quadrants, of the axes, and of the points. The layout does not keep the
+class name of a point, the coordinates as written, the styles as written, or the
+classes, so a patch of the Db (`patchQuadrantDb()`) records what
+[`addPoint()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L95-L106)
+and
+[`addClass()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L108-L110)
+receive, after the Db has accepted it, with the styles that
+[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93)
+makes of the written ones. The patch is applied to the Db itself, since there is
+one Db, and `clear()` starts the recording over.
+
+The layout lists a label of an axis only for a text that is not empty, so a
+single label is the first text of its axis when the layout puts it at `left`,
+which it does where the second text is empty, and the second text when it puts
+it at `center`, which it does where the second text is not empty
+([`getAxisLabels()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantBuilder.ts#L286-L382)).
+A setting of the site that hides the labels of an axis would lose a text that
+the Db holds, so the patch also records, in the setters of the texts of the
+axes, which texts the text set, and the summary throws a
+`MermaidEnvironmentError` where the layout lists others.
+
+It drops the following, each for the reason given:
+
+- The layout that `getQuadrantData()` makes: the coordinates and sizes in the
+  units of the chart, the colours of the theme, the borders, the default radius
+  and stroke width, and the position of a text. They depend on the settings of
+  the site (`quadrantChart`, the theme) and on nothing the text says.
+- The merge of the styles of a point with those of its class
+  (`{ ...classStyles, ...point }`), which the renderer makes: the styles of a
+  point and of its class are kept as the text wrote them.
+
+Values of the summary, by field. The text is read by
+[the lexer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L15-L77)
+and
+[the grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L83-L189),
+and the styles by
+[`parseStyles()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDb.ts#L64-L93),
+which rejects what it does not know
+([`validateNumber()` and the others](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/utils.ts#L8-L18)).
+
+- The header is `quadrantChart`.
+  [The detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/quadrantDetector.ts#L9-L11)
+  reads it with this exact case, so `QUADRANTCHART`, `quadrantchart`, and
+  `QuadrantChart` are not detected. A word, a dash and a word, a digit, or a
+  character outside ASCII glued to the header is a text where no statement
+  starts, so the text is rejected, while a keyword glued to it, `title`, is read
+  as the keyword. A second header, on a line of its own, after spaces, or on the
+  header line, is rejected. [fixture: quadrant/spec-quadrant-jison-fe2d2340]
+  [fixture: quadrant/header-upper-case] [fixture: quadrant/header-lower-case]
+  [fixture: quadrant/header-capitalized] [fixture: quadrant/header-word-suffix]
+  [fixture: quadrant/header-spaced-word-suffix] [fixture:
+  quadrant/header-dash-suffix] [fixture: quadrant/header-non-ascii-suffix]
+  [fixture: quadrant/header-digit-suffix] [fixture: quadrant/header-title-glued]
+  [fixture: quadrant/header-twice] [fixture: quadrant/header-twice-indented]
+  [fixture: quadrant/header-twice-same-line]
+- Spaces, tabs, empty lines, a line of spaces and tabs, a no-break space, a
+  U+FEFF, an ideographic space, a U+2028, a comment line, a line of `%%` alone,
+  a directive line, and `%%{ }%%` before the header change nothing, and neither
+  does a frontmatter, with a comment line after it. A line that starts with `#`,
+  a `;`, a statement, or a text of nothing but a comment line before the header
+  is not detected. [fixture: quadrant/header-indented] [fixture:
+  quadrant/header-tab-indented] [fixture:
+  quadrant/header-after-bare-percent-line] [fixture:
+  quadrant/header-after-blank-lines] [fixture:
+  quadrant/header-after-comment-line] [fixture:
+  quadrant/header-after-directive-line] [fixture:
+  quadrant/header-after-empty-braces-line] [fixture:
+  quadrant/header-after-frontmatter] [fixture:
+  quadrant/header-after-frontmatter-and-comment] [fixture:
+  quadrant/header-after-hash-line] [fixture:
+  quadrant/header-after-semicolon-line] [fixture:
+  quadrant/header-after-whitespace-line] [fixture: quadrant/header-bom-before]
+  [fixture: quadrant/header-nbsp-before] [fixture:
+  quadrant/header-ideographic-space-before] [fixture: quadrant/header-ls-before]
+  [fixture: quadrant/header-leading-semicolon] [fixture:
+  quadrant/header-only-comment] [fixture: quadrant/header-statement-first]
+- After the header, a comment after a space or glued to it is skipped, a
+  directive glued to it or inside it is removed, and a line of `%%` alone is a
+  comment line. A statement can follow the header on its line, separated by a
+  space or a tab, and so can a `;`, which ends the line. Spaces and tabs after
+  the header are skipped; a CRLF or a CR alone ends the line, and so do the line
+  feeds in the other forms; a vertical tab and a form feed are white space,
+  while a no-break space, a U+2028, a U+2029, and a U+0085 are a text where no
+  statement starts, and the text is rejected. [fixture:
+  quadrant/header-comment-on-header-line] [fixture:
+  quadrant/header-comment-glued] [fixture: quadrant/header-directive-glued]
+  [fixture: quadrant/div-directive-inside] [fixture:
+  quadrant/header-bare-percent-line-after-header] [fixture:
+  quadrant/header-statement-on-header-line] [fixture:
+  quadrant/header-statement-on-header-line-tab] [fixture:
+  quadrant/header-semicolon] [fixture: quadrant/header-semicolon-spaced]
+  [fixture: quadrant/header-semicolon-statement] [fixture:
+  quadrant/header-trailing-nbsp] [fixture: quadrant/header-trailing-spaces]
+  [fixture: quadrant/header-trailing-tab] [fixture: quadrant/header-crlf]
+  [fixture: quadrant/header-cr] [fixture: quadrant/header-ls-after] [fixture:
+  quadrant/header-ps-after] [fixture: quadrant/header-vt-after] [fixture:
+  quadrant/header-ff-after] [fixture: quadrant/header-nel-after]
+- The last `title` statement is the title of the chart, and it replaces the
+  title of the frontmatter, which is the title where no statement gives one; an
+  empty `title` statement replaces it with the empty text too. The keyword is
+  read in any case, spaces or a tab can separate it from the text, and spaces or
+  a tab can come before it. A word glued to the keyword, `titleT`, is not the
+  keyword but a text where no statement starts, so the line is rejected; a word
+  that starts with `title` and goes on as a word is a text, `Titles: [0.3, 0.6]`
+  being a point, while the word `title` inside a text is the keyword, so that
+  `My title: [0.3, 0.6]` and `x-axis A title T` are rejected. A line feed ends a
+  title, and the next line is a statement. [fixture:
+  quadrant/db-title-keyword-capitalized] [fixture:
+  quadrant/db-title-keyword-upper-case] [fixture:
+  quadrant/db-title-keyword-alone] [fixture:
+  quadrant/db-title-keyword-trailing-space] [fixture:
+  quadrant/gram-title-glued-word] [fixture: quadrant/db-title-twice] [fixture:
+  quadrant/db-title-twice-empty-last] [fixture: quadrant/db-title-indented]
+  [fixture: quadrant/db-title-tab-indented] [fixture:
+  quadrant/db-title-tab-separator] [fixture: quadrant/db-title-after-semicolon]
+  [fixture: quadrant/db-title-frontmatter] [fixture:
+  quadrant/db-title-frontmatter-after-statement] [fixture:
+  quadrant/db-title-frontmatter-and-statement] [fixture:
+  quadrant/db-title-prefix-of-name] [fixture:
+  quadrant/gram-title-in-name-middle] [fixture: quadrant/gram-title-lf-ends]
+  [fixture: quadrant/gram-title-after-axis-text]
+- A title takes the rest of its line, without the spaces and tabs at its ends:
+  every character of the line is text, the quotes, a `;`, a `#`, a single `%`, a
+  `%%` and what follows it, a colon, a dash, characters outside ASCII, and a
+  tag, so that the statements after a `;` are part of the title. The comment
+  rules do not apply to it. A directive inside it is removed before the lexer
+  reads the text. A title can look like a point: `title: [0.3, 0.6]` is a title.
+  A title of digits is a title, also after another statement or a `;`. [fixture:
+  quadrant/db-title-spaces-trimmed] [fixture: quadrant/db-title-tab-trailing]
+  [fixture: quadrant/db-title-inner-spaces] [fixture: quadrant/db-title-colon]
+  [fixture: quadrant/db-title-quotes-kept] [fixture:
+  quadrant/db-title-semicolon-kept] [fixture:
+  quadrant/db-title-semicolon-then-statement] [fixture:
+  quadrant/db-acc-title-after-semicolon] [fixture: quadrant/db-title-hash-kept]
+  [fixture: quadrant/db-title-leading-dash] [fixture:
+  quadrant/db-title-leading-hash] [fixture: quadrant/db-title-leading-semicolon]
+  [fixture: quadrant/db-title-percent-kept] [fixture:
+  quadrant/db-title-comment-glued-kept] [fixture:
+  quadrant/db-title-comment-kept] [fixture: quadrant/db-title-comment-only]
+  [fixture: quadrant/db-title-directive-removed] [fixture:
+  quadrant/db-title-dash] [fixture: quadrant/db-title-non-ascii] [fixture:
+  quadrant/db-title-html] [fixture: quadrant/db-title-entity] [fixture:
+  quadrant/db-title-keyword-in-text] [fixture:
+  quadrant/db-title-with-colon-point-like] [fixture:
+  quadrant/db-title-digit-after-axis-semicolon] [fixture:
+  quadrant/db-title-digit-after-classdef] [fixture:
+  quadrant/db-title-digit-after-empty-block] [fixture:
+  quadrant/db-title-digit-after-point] [fixture:
+  quadrant/db-title-digit-after-quadrant] [fixture:
+  quadrant/db-title-digit-after-x-axis] [fixture:
+  quadrant/db-title-digit-after-x-axis-arrow] [fixture:
+  quadrant/db-title-digit-alone] [fixture: quadrant/db-title-digits-with-space]
+- `accTitle:` and `accDescr:` set the accessibility title and description. The
+  keyword is read in any case, spaces or a tab can stand between it and the
+  colon, the text can follow the colon with no space, and the colon is needed.
+  The text is the rest of the line without the spaces at its ends, the last
+  statement wins, and the two statements do not touch each other. A word glued
+  to the keyword is not the keyword. The frontmatter fields `accTitle` and
+  `accDescr` set nothing. [fixture: quadrant/db-acc-title-plain] [fixture:
+  quadrant/db-acc-title-glued-colon] [fixture:
+  quadrant/db-acc-title-space-before-colon] [fixture:
+  quadrant/db-acc-title-tab-before-colon] [fixture:
+  quadrant/gram-acc-title-no-colon] [fixture: quadrant/db-acc-title-upper-case]
+  [fixture: quadrant/db-acc-title-trimmed] [fixture:
+  quadrant/db-acc-title-twice] [fixture: quadrant/db-acc-title-indented]
+  [fixture: quadrant/db-acc-title-frontmatter-like-yaml] [fixture:
+  quadrant/gram-acc-title-glued-word] [fixture: quadrant/db-acc-descr-plain]
+  [fixture: quadrant/db-acc-descr-glued-colon] [fixture:
+  quadrant/db-acc-descr-space-before-colon] [fixture:
+  quadrant/gram-acc-descr-no-colon] [fixture: quadrant/db-acc-descr-upper-case]
+  [fixture: quadrant/db-acc-descr-trimmed] [fixture:
+  quadrant/db-acc-descr-twice] [fixture:
+  quadrant/db-acc-descr-frontmatter-like-yaml] [fixture:
+  quadrant/gram-acc-descr-glued-word] [fixture: quadrant/db-acc-both]
+- The text of an accessibility line is, like a title, the rest of its line: a
+  `;`, a `#`, a colon, quotes, and a `%%` with what follows are part of the
+  text, a directive inside it is removed, and a directive inside the keyword is
+  removed so that the keyword is whole. The white space after the colon includes
+  the line feeds, so a line with no text takes the next line that has one as its
+  text, a keyword on it being text, and at the end of the text it is rejected,
+  also after an earlier text. [fixture: quadrant/db-acc-title-semicolon-kept]
+  [fixture: quadrant/db-acc-title-semicolon-only] [fixture:
+  quadrant/db-acc-title-semicolon-then-statement] [fixture:
+  quadrant/db-acc-title-hash-kept] [fixture: quadrant/db-acc-title-comment-kept]
+  [fixture: quadrant/db-acc-title-quotes-kept] [fixture:
+  quadrant/db-acc-title-colon-kept] [fixture:
+  quadrant/db-acc-title-directive-removed] [fixture:
+  quadrant/div-acc-title-keyword-inside-directive] [fixture:
+  quadrant/db-acc-descr-semicolon-kept] [fixture:
+  quadrant/db-acc-descr-semicolon-only] [fixture:
+  quadrant/db-acc-descr-comment-kept] [fixture: quadrant/db-acc-descr-hash-kept]
+  [fixture: quadrant/db-acc-descr-directive-removed] [fixture:
+  quadrant/gram-acc-title-empty] [fixture: quadrant/gram-acc-title-spaces-only]
+  [fixture: quadrant/gram-acc-title-twice-empty-last] [fixture:
+  quadrant/gram-acc-descr-empty] [fixture: quadrant/db-acc-title-next-line]
+  [fixture: quadrant/db-acc-title-next-line-after-blank-lines] [fixture:
+  quadrant/db-acc-title-next-line-crlf] [fixture:
+  quadrant/db-acc-title-next-line-indented] [fixture:
+  quadrant/db-acc-title-next-line-keyword] [fixture:
+  quadrant/db-acc-title-next-line-no-line-feed-at-end] [fixture:
+  quadrant/db-acc-descr-next-line] [fixture:
+  quadrant/db-acc-descr-next-line-tab]
+- `accDescr {` starts a block that ends at the first `}`, and the description is
+  the text of the block without the spaces at its ends and without the white
+  space after a line feed, so that the lines are joined with single line feeds
+  and blank lines and indents go. The brace can follow the keyword with no
+  space, stand on the next line, or follow a tab, and the block can stand on one
+  line or have no line feed; an empty block, a block of spaces, and a block of
+  blank lines set the empty text. Inside a block a `;`, a `#`, quotes, a
+  keyword, and a `%%` with what follows are text, a directive is removed, and a
+  CRLF and a CR alone are line feeds. A later block or `accDescr:` line replaces
+  the description. [fixture: quadrant/db-acc-descr-block] [fixture:
+  quadrant/db-acc-descr-block-glued-brace] [fixture:
+  quadrant/db-acc-descr-block-lines] [fixture:
+  quadrant/db-acc-descr-block-indented-lines] [fixture:
+  quadrant/db-acc-descr-block-empty] [fixture:
+  quadrant/db-acc-descr-block-one-line] [fixture:
+  quadrant/db-acc-descr-block-blank-lines] [fixture:
+  quadrant/db-acc-descr-block-semicolon-kept] [fixture:
+  quadrant/db-acc-descr-block-hash-kept] [fixture:
+  quadrant/db-acc-descr-block-comment-kept] [fixture:
+  quadrant/db-acc-descr-block-directive-removed] [fixture:
+  quadrant/db-acc-descr-block-twice] [fixture:
+  quadrant/db-acc-descr-block-then-line] [fixture:
+  quadrant/db-acc-descr-line-then-block] [fixture:
+  quadrant/db-acc-descr-block-crlf] [fixture: quadrant/db-acc-descr-block-cr]
+  [fixture: quadrant/db-acc-descr-block-quotes-kept] [fixture:
+  quadrant/db-acc-descr-block-keyword-inside] [fixture:
+  quadrant/db-acc-descr-block-after-title] [fixture:
+  quadrant/db-acc-descr-block-brace-on-next-line] [fixture:
+  quadrant/db-acc-descr-block-tab-before-brace] [fixture:
+  quadrant/db-acc-descr-block-no-line-feed-after-brace] [fixture:
+  quadrant/db-acc-descr-block-empty-braces] [fixture:
+  quadrant/db-acc-descr-block-spaces-only] [fixture:
+  quadrant/db-acc-descr-block-only-blank-lines]
+- A block is a statement that needs the end of its line or a `;` right after the
+  closing brace: `} ;`, a space and anything after the brace but a `;`, a text
+  glued to the brace, a second `}`, and a block with no closing brace are
+  rejected, as is text after the brace that is read as statements, such as
+  `D}E`. A comment glued to the brace, and a `;` with a statement after it, are
+  fine. [fixture: quadrant/db-acc-descr-block-closing-brace-same-line] [fixture:
+  quadrant/gram-acc-descr-block-braces-inside] [fixture:
+  quadrant/gram-acc-descr-block-unclosed] [fixture:
+  quadrant/gram-acc-descr-block-unclosed-no-line-feed] [fixture:
+  quadrant/gram-acc-descr-block-statement-after-brace] [fixture:
+  quadrant/db-acc-descr-block-statement-after-brace-semicolon] [fixture:
+  quadrant/gram-acc-descr-block-stray-brace] [fixture:
+  quadrant/gram-acc-descr-block-trailing-spaces-before-brace] [fixture:
+  quadrant/gram-acc-descr-block-text-after-brace] [fixture:
+  quadrant/gram-acc-descr-block-semicolon-spaced-after-brace] [fixture:
+  quadrant/db-comment-after-statement-brace]
+- `x-axis` and `y-axis` take one text or two. `x-axis L --> R` sets the left and
+  the right text of the x axis, and `y-axis B --> T` the bottom and the top text
+  of the y axis. A text with no arrow sets the first text only, and a text with
+  an arrow and nothing after it sets the first text with ` ⟶` after it (`L ⟶`),
+  the second staying as it was. The arrow is two dashes or more and `>`, with or
+  without spaces around it; `->`, `-- >`, a second arrow, an arrow with no text
+  before it, an arrow alone, and the keyword alone are rejected. A statement for
+  an axis sets what it names and keeps the rest: a later `x-axis M` changes the
+  left text and keeps the right one, a later `x-axis M -->` sets the left text
+  with the arrow and keeps the right one, and a later statement with two texts
+  sets both. [fixture: quadrant/db-x-axis-both] [fixture:
+  quadrant/db-y-axis-both] [fixture: quadrant/db-x-axis-left-only] [fixture:
+  quadrant/db-y-axis-bottom-only] [fixture: quadrant/db-x-axis-left-with-arrow]
+  [fixture: quadrant/db-y-axis-bottom-with-arrow] [fixture:
+  quadrant/gram-x-axis-right-only] [fixture: quadrant/gram-y-axis-top-only]
+  [fixture: quadrant/gram-x-axis-arrow-only] [fixture:
+  quadrant/gram-y-axis-arrow-only] [fixture: quadrant/gram-x-axis-no-text]
+  [fixture: quadrant/gram-y-axis-no-text] [fixture:
+  quadrant/db-x-axis-glued-arrow] [fixture: quadrant/db-y-axis-glued-arrow]
+  [fixture: quadrant/db-x-axis-long-arrow] [fixture:
+  quadrant/db-y-axis-long-arrow] [fixture: quadrant/gram-x-axis-short-arrow]
+  [fixture: quadrant/gram-y-axis-short-arrow] [fixture:
+  quadrant/gram-x-axis-broken-arrow] [fixture:
+  quadrant/gram-y-axis-broken-arrow] [fixture: quadrant/gram-x-axis-two-arrows]
+  [fixture: quadrant/gram-y-axis-two-arrows] [fixture: quadrant/db-x-axis-twice]
+  [fixture: quadrant/db-x-axis-twice-arrow-then-both] [fixture:
+  quadrant/db-x-axis-twice-arrow-without-right] [fixture:
+  quadrant/db-x-axis-twice-both] [fixture: quadrant/db-y-axis-twice] [fixture:
+  quadrant/db-y-axis-twice-arrow-then-both] [fixture:
+  quadrant/db-y-axis-twice-arrow-without-top] [fixture:
+  quadrant/db-y-axis-twice-both] [fixture:
+  quadrant/db-x-axis-right-only-after-left] [fixture:
+  quadrant/db-y-axis-top-only-after-bottom] [fixture:
+  quadrant/db-x-axis-arrow-form-then-both] [fixture:
+  quadrant/db-y-axis-arrow-form-then-both] [fixture:
+  quadrant/db-x-axis-arrow-alone-with-text-after-no-space] [fixture:
+  quadrant/db-y-axis-arrow-alone-with-text-after-no-space] [fixture:
+  quadrant/db-x-axis-dash-before-arrow] [fixture:
+  quadrant/db-y-axis-dash-before-arrow] [fixture:
+  quadrant/db-x-axis-dashes-after-text] [fixture:
+  quadrant/db-y-axis-dashes-after-text]
+- A text of an axis is bare or in quotes. A bare text is words, the characters
+  `!?$&=+*_./\',` with the backtick, `#`, and dashes inside, and characters
+  outside ASCII, with spaces between the words, and it may not start with a
+  dash; a colon, a `;` (which ends the statement, and what follows is another
+  statement), a bracket, and the keywords `x-axis`, `y-axis`, `title` and the
+  rest are not part of it, and the line is rejected. A text in quotes holds all
+  of these, an arrow, brackets, and a line feed, and is the text without the
+  quotes; a bare text after a text in quotes is joined to it with a space, while
+  a quoted text after a bare text, two quoted texts in a row, and a quote that
+  is not closed are rejected. Backticks inside the quotes make a markdown
+  string, the text without them, also with a line feed in it, while backticks
+  without quotes are part of the text and an unclosed markdown string is
+  rejected. [fixture: quadrant/db-x-axis-quoted-both] [fixture:
+  quadrant/db-y-axis-quoted-both] [fixture: quadrant/db-x-axis-quoted-left-only]
+  [fixture: quadrant/db-y-axis-quoted-bottom-only] [fixture:
+  quadrant/db-x-axis-quoted-arrow] [fixture: quadrant/db-y-axis-quoted-arrow]
+  [fixture: quadrant/db-x-axis-quoted-real-arrow] [fixture:
+  quadrant/db-y-axis-quoted-real-arrow] [fixture:
+  quadrant/db-x-axis-markdown-string] [fixture:
+  quadrant/db-y-axis-markdown-string] [fixture:
+  quadrant/db-x-axis-backticks-without-quotes] [fixture:
+  quadrant/db-y-axis-backticks-without-quotes] [fixture:
+  quadrant/db-x-axis-text-with-dash] [fixture:
+  quadrant/db-y-axis-text-with-dash] [fixture:
+  quadrant/db-x-axis-quoted-brackets] [fixture:
+  quadrant/db-y-axis-quoted-brackets] [fixture:
+  quadrant/db-x-axis-quoted-newline] [fixture:
+  quadrant/db-y-axis-quoted-newline] [fixture:
+  quadrant/db-x-axis-quoted-glued-text] [fixture:
+  quadrant/db-y-axis-quoted-glued-text] [fixture:
+  quadrant/db-x-axis-markdown-multiline] [fixture:
+  quadrant/db-y-axis-markdown-multiline] [fixture:
+  quadrant/db-x-axis-unicode-text] [fixture: quadrant/db-y-axis-unicode-text]
+  [fixture: quadrant/db-x-axis-numeric-text] [fixture:
+  quadrant/db-y-axis-numeric-text] [fixture:
+  quadrant/db-x-axis-space-text-with-punctuation] [fixture:
+  quadrant/db-y-axis-space-text-with-punctuation] [fixture:
+  quadrant/db-x-axis-html] [fixture: quadrant/db-y-axis-html] [fixture:
+  quadrant/db-x-axis-entity] [fixture: quadrant/db-y-axis-entity] [fixture:
+  quadrant/gram-x-axis-text-with-colon] [fixture:
+  quadrant/gram-y-axis-text-with-colon] [fixture:
+  quadrant/gram-x-axis-text-starting-with-dash] [fixture:
+  quadrant/gram-y-axis-text-starting-with-dash] [fixture:
+  quadrant/gram-x-axis-text-with-brackets] [fixture:
+  quadrant/gram-y-axis-text-with-brackets] [fixture:
+  quadrant/gram-x-axis-keyword-in-text] [fixture:
+  quadrant/gram-y-axis-keyword-in-text] [fixture:
+  quadrant/gram-x-axis-semicolon-in-text] [fixture:
+  quadrant/gram-y-axis-semicolon-in-text] [fixture:
+  quadrant/gram-x-axis-quoted-unclosed] [fixture:
+  quadrant/gram-y-axis-quoted-unclosed] [fixture:
+  quadrant/gram-x-axis-text-then-quoted] [fixture:
+  quadrant/gram-y-axis-text-then-quoted] [fixture:
+  quadrant/gram-x-axis-two-quoted] [fixture: quadrant/gram-y-axis-two-quoted]
+  [fixture: quadrant/gram-x-axis-markdown-unclosed] [fixture:
+  quadrant/gram-y-axis-markdown-unclosed]
+- An empty string in quotes is rejected where the statement starts with it
+  (`x-axis ""` and `x-axis "" --> R`), while after the arrow it is dropped and
+  the statement is the text and the arrow with nothing after them. A string of
+  spaces is a text that the Db trims to nothing: `x-axis "  " --> R` leaves the
+  left text empty and sets the right one, and `x-axis "  "` sets the empty left
+  text. [fixture: quadrant/gram-x-axis-empty-string] [fixture:
+  quadrant/gram-y-axis-empty-string] [fixture:
+  quadrant/gram-x-axis-empty-string-with-arrow] [fixture:
+  quadrant/gram-y-axis-empty-string-with-arrow] [fixture:
+  quadrant/div-x-axis-empty-string-after-arrow] [fixture:
+  quadrant/div-y-axis-empty-string-after-arrow] [fixture:
+  quadrant/db-x-axis-spaces-only-string] [fixture:
+  quadrant/db-y-axis-spaces-only-string] [fixture:
+  quadrant/db-x-axis-spaces-only-string-alone] [fixture:
+  quadrant/db-y-axis-spaces-only-string-alone]
+- The keyword is read in any case, spaces can come before it, and the text can
+  be glued to it (`x-axisL`), while a dash after it, a tab between the keyword
+  and the text, and a tab around the arrow are rejected. Extra spaces around the
+  texts and the arrow are removed; a no-break space around the arrow is part of
+  the text and the Db trims it. The x axis and the y axis are separate
+  statements, in either order, and a `;` ends a statement so that another can
+  follow. [fixture: quadrant/db-x-axis-upper-case] [fixture:
+  quadrant/db-y-axis-upper-case] [fixture: quadrant/db-x-axis-extra-spaces]
+  [fixture: quadrant/db-y-axis-extra-spaces] [fixture:
+  quadrant/db-x-axis-glued-text] [fixture: quadrant/db-y-axis-glued-text]
+  [fixture: quadrant/gram-x-axis-glued-dash] [fixture:
+  quadrant/gram-y-axis-glued-dash] [fixture: quadrant/db-x-axis-indented]
+  [fixture: quadrant/db-y-axis-indented] [fixture:
+  quadrant/gram-x-axis-tab-after-keyword] [fixture:
+  quadrant/gram-y-axis-tab-after-keyword] [fixture:
+  quadrant/gram-x-axis-tab-around-arrow] [fixture:
+  quadrant/gram-y-axis-tab-around-arrow] [fixture:
+  quadrant/db-x-axis-nbsp-around-arrow] [fixture:
+  quadrant/db-y-axis-nbsp-around-arrow] [fixture:
+  quadrant/db-x-axis-then-y-axis] [fixture: quadrant/db-axes-y-then-x] [fixture:
+  quadrant/db-x-axis-semicolon-then-y] [fixture:
+  quadrant/db-axes-semicolon-y-then-x] [fixture:
+  quadrant/db-x-axis-trailing-semicolon] [fixture:
+  quadrant/db-y-axis-trailing-semicolon]
+- A comment after a space is skipped, and so is a directive; a directive inside
+  the keyword, the text, or the arrow is removed. A comment glued to the text
+  takes the character before it where that character is a unit of one character
+  for the lexer (see the comments below): `x-axis L%% c` has no text and is
+  rejected, `x-axis L --> R%% c` is the left text with the arrow,
+  `x-axis Lm-%% c` loses the dash and `x-axis L --> Rm1%% c` the digit, while a
+  comment glued to a word of two characters or more takes nothing of it.
+  [fixture: quadrant/db-x-axis-comment-after-text] [fixture:
+  quadrant/db-y-axis-comment-after-text] [fixture:
+  quadrant/div-x-axis-comment-glued-text] [fixture:
+  quadrant/div-y-axis-comment-glued-text] [fixture:
+  quadrant/db-x-axis-comment-glued-text-longer] [fixture:
+  quadrant/db-y-axis-comment-glued-text-longer] [fixture:
+  quadrant/div-x-axis-comment-glued-arrow] [fixture:
+  quadrant/div-y-axis-comment-glued-arrow] [fixture:
+  quadrant/div-x-axis-comment-unit-dash] [fixture:
+  quadrant/div-x-axis-comment-unit-right-digit] [fixture:
+  quadrant/div-y-axis-comment-unit-dash] [fixture:
+  quadrant/div-y-axis-comment-unit-top-digit] [fixture:
+  quadrant/db-x-axis-comment-after-arrow] [fixture:
+  quadrant/db-y-axis-comment-after-arrow] [fixture:
+  quadrant/db-x-axis-directive-in-text] [fixture:
+  quadrant/db-y-axis-directive-in-text] [fixture:
+  quadrant/div-x-axis-directive-in-arrow] [fixture:
+  quadrant/div-y-axis-directive-in-arrow] [fixture:
+  quadrant/div-x-axis-directive-in-keyword] [fixture:
+  quadrant/div-y-axis-directive-in-keyword]
+- `quadrant-1` to `quadrant-4` set the four texts, and `quadrants` lists them in
+  the order of the numbers whatever the order of the statements; a quadrant that
+  no statement names has the empty text, and the last statement for a quadrant
+  wins, a string of spaces setting the empty text. The keyword is read in any
+  case, the text can be glued to it, and `quadrant-10` is `quadrant-1` with the
+  text `0 …`. `quadrant-0`, `quadrant-5`, the keyword alone, and an empty string
+  are rejected. The spaces around the text are removed, and those inside it are
+  kept. [fixture: quadrant/db-quadrant-all-four] [fixture:
+  quadrant/db-quadrant-reverse-order] [fixture: quadrant/db-quadrant-1-alone]
+  [fixture: quadrant/db-quadrant-2-alone] [fixture:
+  quadrant/db-quadrant-3-alone] [fixture: quadrant/db-quadrant-4-alone]
+  [fixture: quadrant/gram-quadrant-no-text] [fixture:
+  quadrant/gram-quadrant-empty-string] [fixture: quadrant/gram-quadrant-five]
+  [fixture: quadrant/gram-quadrant-zero] [fixture: quadrant/db-quadrant-ten]
+  [fixture: quadrant/db-quadrant-upper-case] [fixture:
+  quadrant/db-quadrant-glued-text] [fixture: quadrant/db-quadrant-twice]
+  [fixture: quadrant/db-quadrant-twice-empty-spaces] [fixture:
+  quadrant/db-quadrant-spaces-trimmed]
+- A text of a quadrant is bare or in quotes, as a text of an axis is, with the
+  same characters: words, `-` inside, `#`, the punctuation `!?$&=+*_./\',` and
+  the backtick, characters outside ASCII, a tab, a no-break space, an
+  ideographic space; no leading dash, no colon, no `;` (it ends the statement),
+  and none of the brackets, parentheses, angle brackets, braces, `|`, `@`, `^`,
+  `~`; an arrow `-->` is the arrow, which the statement does not have, so the
+  line is rejected. Inside quotes all of these are text, with a line feed. A
+  bare text after a string is joined to it, a string after a bare text is not
+  allowed, and markdown strings are the text without the backticks. A keyword
+  inside a text, `quadrant-2`, `title`, is the keyword, and a point-like
+  `A: [0.3, 0.6]` after the keyword is rejected. [fixture:
+  quadrant/gram-quadrant-tab-after-keyword] [fixture:
+  quadrant/db-quadrant-tab-inside] [fixture: quadrant/db-quadrant-dash-inside]
+  [fixture: quadrant/gram-quadrant-leading-dash] [fixture:
+  quadrant/gram-quadrant-colon] [fixture: quadrant/db-quadrant-colon-in-quotes]
+  [fixture: quadrant/db-quadrant-quoted] [fixture:
+  quadrant/db-quadrant-quoted-then-bare] [fixture:
+  quadrant/gram-quadrant-bare-then-quoted] [fixture:
+  quadrant/gram-quadrant-two-strings] [fixture:
+  quadrant/gram-quadrant-quoted-unclosed] [fixture:
+  quadrant/db-quadrant-quoted-newline] [fixture: quadrant/db-quadrant-markdown]
+  [fixture: quadrant/db-quadrant-markdown-newline] [fixture:
+  quadrant/gram-quadrant-markdown-unclosed] [fixture:
+  quadrant/db-quadrant-markdown-then-bare] [fixture:
+  quadrant/gram-quadrant-semicolon] [fixture:
+  quadrant/db-quadrant-semicolon-in-quotes] [fixture: quadrant/db-quadrant-hash]
+  [fixture: quadrant/gram-quadrant-brackets] [fixture:
+  quadrant/gram-quadrant-parens] [fixture: quadrant/gram-quadrant-angle]
+  [fixture: quadrant/gram-quadrant-braces] [fixture:
+  quadrant/gram-quadrant-pipe] [fixture: quadrant/gram-quadrant-at] [fixture:
+  quadrant/gram-quadrant-caret] [fixture: quadrant/gram-quadrant-tilde]
+  [fixture: quadrant/db-quadrant-punctuation] [fixture:
+  quadrant/db-quadrant-brackets-in-quotes] [fixture:
+  quadrant/gram-quadrant-arrow-in-text] [fixture:
+  quadrant/db-quadrant-double-dash] [fixture: quadrant/db-quadrant-non-ascii]
+  [fixture: quadrant/db-quadrant-nbsp-inside] [fixture:
+  quadrant/db-quadrant-ideographic-inside] [fixture:
+  quadrant/db-quadrant-ideographic-after-keyword] [fixture:
+  quadrant/db-quadrant-nbsp-after-keyword] [fixture:
+  quadrant/db-quadrant-nbsp-trailing] [fixture: quadrant/db-quadrant-entity]
+  [fixture: quadrant/db-quadrant-html] [fixture:
+  quadrant/gram-quadrant-keyword-in-text] [fixture:
+  quadrant/gram-quadrant-title-in-text] [fixture:
+  quadrant/gram-quadrant-point-like-text] [fixture:
+  quadrant/db-quadrant-proto-text] [fixture:
+  quadrant/db-quadrant-constructor-text] [fixture:
+  quadrant/db-quadrant-trailing-tab] [fixture:
+  quadrant/db-quadrant-markdown-then-title]
+- A comment after a space is skipped, a directive is removed, also inside the
+  keyword or the text, and a comment glued to a unit of one character takes that
+  character (see the comments below) and leaves the statement with no text where
+  it was the whole text, while one glued to a longer unit takes nothing. A `;`
+  ends the statement, with or without spaces around it, and another statement
+  can follow it. Blank lines, lines of spaces, and trailing spaces change
+  nothing, a CRLF and a CR alone end a statement, and a U+2028 and a vertical
+  tab do not; two statements on a line with no `;` are rejected. [fixture:
+  quadrant/db-quadrant-comment-after-space] [fixture:
+  quadrant/div-quadrant-comment-glued] [fixture:
+  quadrant/db-quadrant-comment-glued-longer] [fixture:
+  quadrant/db-quadrant-directive-inside] [fixture:
+  quadrant/div-quadrant-directive-in-keyword] [fixture:
+  quadrant/db-quadrant-semicolon-then-next] [fixture:
+  quadrant/db-quadrant-semicolon-spaced-then-next] [fixture:
+  quadrant/db-quadrant-trailing-semicolon] [fixture:
+  quadrant/db-quadrant-blank-lines-between] [fixture:
+  quadrant/db-quadrant-whitespace-lines-between] [fixture:
+  quadrant/db-quadrant-crlf-between] [fixture: quadrant/db-quadrant-cr-between]
+  [fixture: quadrant/db-quadrant-cr-cr-lf] [fixture:
+  quadrant/gram-quadrant-ls-between] [fixture:
+  quadrant/gram-quadrant-vt-between] [fixture:
+  quadrant/gram-quadrant-keyword-in-text]
+- A point is a name, a colon, and two coordinates in brackets, `A: [0.3, 0.6]`.
+  The spaces, tabs, and line feeds (a CRLF too) around the colon, inside the
+  brackets, and around the comma are white space, and none of them is needed. A
+  coordinate is `1`, or `0` with a fraction `.` and digits, and the summary
+  holds `x` and `y` as the texts the lexer read, so `0.30` stays `0.30`. The `.`
+  of the fraction is any character in the lexer: `0x5`, `0a5`, `0 3`, `0,3`,
+  `0;3`, `0#3`, a quote, and a character outside ASCII in its place are
+  coordinates, held as written, while a line feed in its place is not. A
+  coordinate over 1, one with no leading zero or with a leading zero, a negative
+  one, a sign, a point with no digit after it, an exponent, one or three
+  coordinates, a missing comma or brackets or colon, a `;` for the comma, a
+  word, and an empty or unclosed pair of brackets are rejected. [fixture:
+  quadrant/db-point-plain] [fixture: quadrant/db-point-glued] [fixture:
+  quadrant/db-point-spaces-everywhere] [fixture:
+  quadrant/db-point-tab-around-colon] [fixture:
+  quadrant/db-point-tab-inside-brackets] [fixture:
+  quadrant/db-point-nbsp-inside-brackets] [fixture:
+  quadrant/db-point-newline-after-bracket] [fixture:
+  quadrant/db-point-newline-after-comma] [fixture:
+  quadrant/db-point-newline-before-bracket] [fixture:
+  quadrant/db-point-newline-before-comma] [fixture:
+  quadrant/gram-point-newline-before-bracket-open] [fixture:
+  quadrant/db-point-crlf-inside] [fixture: quadrant/db-point-both-one] [fixture:
+  quadrant/db-point-both-zero] [fixture: quadrant/db-point-zero-decimals]
+  [fixture: quadrant/db-point-trailing-zero] [fixture:
+  quadrant/db-point-long-fraction] [fixture: quadrant/db-point-one-zero]
+  [fixture: quadrant/gram-point-x-over-one] [fixture: quadrant/gram-point-x-ten]
+  [fixture: quadrant/gram-point-x-two] [fixture: quadrant/gram-point-y-over-one]
+  [fixture: quadrant/gram-point-no-leading-zero] [fixture:
+  quadrant/gram-point-double-zero] [fixture: quadrant/gram-point-leading-zero]
+  [fixture: quadrant/gram-point-negative] [fixture: quadrant/gram-point-plus]
+  [fixture: quadrant/gram-point-trailing-dot] [fixture:
+  quadrant/gram-point-exponent] [fixture: quadrant/gram-point-one-coordinate]
+  [fixture: quadrant/gram-point-three-coordinates] [fixture:
+  quadrant/gram-point-no-comma] [fixture: quadrant/gram-point-semicolon-comma]
+  [fixture: quadrant/gram-point-word-coordinate] [fixture:
+  quadrant/gram-point-word-second] [fixture: quadrant/gram-point-empty-brackets]
+  [fixture: quadrant/gram-point-open-bracket-only] [fixture:
+  quadrant/gram-point-unclosed] [fixture: quadrant/gram-point-double-close]
+  [fixture: quadrant/gram-point-no-brackets] [fixture:
+  quadrant/gram-point-no-colon] [fixture: quadrant/gram-point-parens] [fixture:
+  quadrant/db-point-coordinate-any-char-x] [fixture:
+  quadrant/db-point-coordinate-any-char-x2] [fixture:
+  quadrant/db-point-coordinate-any-char-y] [fixture:
+  quadrant/db-point-coordinate-comma] [fixture:
+  quadrant/db-point-coordinate-hash] [fixture:
+  quadrant/db-point-coordinate-nonascii] [fixture:
+  quadrant/db-point-coordinate-quote] [fixture:
+  quadrant/db-point-coordinate-semicolon] [fixture:
+  quadrant/db-point-coordinate-space-in-x] [fixture:
+  quadrant/db-point-coordinate-tab-in-x] [fixture:
+  quadrant/gram-point-coordinate-line-feed]
+- A point ends at its closing bracket; spaces after it are skipped, and a tab
+  after it is read as a style with no name and rejected. A `;` ends the point,
+  with a statement after it, and `;;` or `; ;` between statements are empty
+  statements. Another point or a word on the same line with no `;` is rejected:
+  a word is read as a style, and `x` is no style. A comment after a space or
+  glued to the closing bracket is skipped, while a comment inside the brackets
+  is not, since `%` is no character of a coordinate; a directive inside the
+  brackets, between the colon and the bracket, or in the name is removed. A CRLF
+  and a CR alone end a point. [fixture: quadrant/db-point-trailing-space]
+  [fixture: quadrant/gram-point-trailing-tab] [fixture:
+  quadrant/db-point-semicolon] [fixture:
+  quadrant/db-point-semicolon-spaced-next] [fixture:
+  quadrant/db-point-semicolon-twice] [fixture: quadrant/db-point-semicolon-gap]
+  [fixture: quadrant/gram-point-two-on-line] [fixture:
+  quadrant/gram-point-text-after] [fixture:
+  quadrant/gram-point-text-after-spaced] [fixture:
+  quadrant/db-point-comment-after-space] [fixture:
+  quadrant/db-point-comment-glued] [fixture: quadrant/gram-point-comment-inside]
+  [fixture: quadrant/db-point-directive-inside] [fixture:
+  quadrant/db-point-directive-after-colon] [fixture:
+  quadrant/db-point-directive-in-name] [fixture: quadrant/db-point-crlf-between]
+  [fixture: quadrant/db-point-cr-between]
+- `points` lists the points in the order the Db holds them, which is the reverse
+  of the order of the text, since each new point is put first. Two points with
+  the same name, the same position, or both are two points, and the other
+  statements between the points change nothing in their order. [fixture:
+  quadrant/db-points-three] [fixture: quadrant/db-points-same-name] [fixture:
+  quadrant/db-points-same-position] [fixture: quadrant/db-points-identical]
+  [fixture: quadrant/db-points-between-statements]
+- The name of a point is a text like those of a quadrant: bare or in quotes,
+  spaces inside it kept and around it removed, a comma, a `#`, a dash inside,
+  digits, and characters outside ASCII are part of it; a leading dash, a colon,
+  a `;`, and a bracket are not, and an arrow `-->` is rejected, while quotes
+  allow a colon, and markdown strings, line feeds, and tags. A string of spaces
+  is a name that the Db trims to the empty text, and an empty string is
+  rejected. The names of `Object.prototype` are plain names. A keyword is not a
+  name, `x-axis: [0.3, 0.6]`, `quadrant-1: [0.3, 0.6]`, `classDef: [0.3, 0.6]`,
+  and `quadrantChart: [0.3, 0.6]` are rejected, while `title: [0.3, 0.6]` is a
+  title and `accTitle: [0.3, 0.6]` an accessibility title, the keyword in quotes
+  is a name, and a word that starts with a keyword and goes on as a word
+  (`classDefs`) is a name. A name with no point is rejected. A comment after a
+  space ends the name's line and the point on the next line is rejected; a
+  comment glued to a name takes its last character when that is a unit of one
+  character, and the rest of the line, so that `A1%% c: [0.3, 0.6]` has no point
+  and is rejected, while a one-character name leaves a line that is all comment
+  and is accepted. [fixture: quadrant/db-name-acc-descr-word] [fixture:
+  quadrant/db-name-acc-title-word] [fixture: quadrant/db-name-backticks]
+  [fixture: quadrant/db-name-comma] [fixture: quadrant/div-name-comment-glued]
+  [fixture: quadrant/db-name-constructor] [fixture: quadrant/db-name-dash]
+  [fixture: quadrant/db-name-digits] [fixture: quadrant/db-name-entity]
+  [fixture: quadrant/db-name-has-own-property] [fixture: quadrant/db-name-hash]
+  [fixture: quadrant/db-name-html] [fixture: quadrant/db-name-ideographic]
+  [fixture: quadrant/db-name-indented] [fixture:
+  quadrant/db-name-keyword-in-quotes] [fixture: quadrant/db-name-keyword-prefix]
+  [fixture: quadrant/db-name-long-spaces] [fixture: quadrant/db-name-markdown]
+  [fixture: quadrant/db-name-nbsp] [fixture: quadrant/db-name-non-ascii]
+  [fixture: quadrant/db-name-proto] [fixture: quadrant/db-name-quoted] [fixture:
+  quadrant/db-name-quoted-colon] [fixture: quadrant/db-name-quoted-newline]
+  [fixture: quadrant/db-name-quoted-spaces] [fixture:
+  quadrant/db-name-single-dash] [fixture: quadrant/db-name-spaces] [fixture:
+  quadrant/db-name-spaces-trimmed] [fixture: quadrant/db-name-tab-inside]
+  [fixture: quadrant/db-name-to-string] [fixture: quadrant/gram-name-arrow]
+  [fixture: quadrant/gram-name-bracket] [fixture:
+  quadrant/gram-name-class-def-keyword] [fixture: quadrant/gram-name-colon]
+  [fixture: quadrant/gram-name-comment-after-space] [fixture:
+  quadrant/gram-name-comment-unit-digit] [fixture:
+  quadrant/gram-name-header-word] [fixture:
+  quadrant/gram-name-keyword-word-inside] [fixture:
+  quadrant/gram-name-leading-dash] [fixture: quadrant/gram-name-only] [fixture:
+  quadrant/gram-name-quadrant-keyword] [fixture:
+  quadrant/gram-name-quoted-empty] [fixture: quadrant/gram-name-semicolon]
+  [fixture: quadrant/gram-name-x-axis]
+- The styles of a point follow its closing bracket, separated by commas:
+  `radius` (digits only, held as a number, so that `007` is 7), `color` and
+  `stroke-color` (a hex code of three or six digits, with or without `#`, held
+  as written), and `stroke-width` (digits and `px`, held as written). A radius
+  with so many digits that the number is infinite, also in a class, is the text
+  `Infinity`, since JSON has no such number. A style given twice has the last
+  value; the names are read in lower case only; spaces around names, values, and
+  commas are removed, and a space may stand before the colon. A colon after the
+  value ends it, and what follows is dropped. Rejected are an unknown name, a
+  unit or a sign or a fraction in a radius, a value that is not a hex code, a
+  stroke width with no `px`, in upper case `PX`, or with a space before it, a
+  missing value or colon, an empty style, two values with a space and no comma,
+  a trailing, leading, or double comma, a style that goes on the next line, a
+  keyword in a value, and a no-break space in a value. [fixture:
+  quadrant/db-style-radius] [fixture: quadrant/db-style-radius-glued] [fixture:
+  quadrant/db-style-radius-spaced-colon] [fixture:
+  quadrant/db-style-radius-zero] [fixture:
+  quadrant/db-style-radius-leading-zeros] [fixture:
+  quadrant/db-style-radius-big] [fixture: quadrant/db-style-radius-overflow]
+  [fixture: quadrant/gram-style-radius-unit] [fixture:
+  quadrant/gram-style-radius-negative] [fixture:
+  quadrant/gram-style-radius-fraction] [fixture:
+  quadrant/gram-style-radius-word] [fixture: quadrant/gram-style-radius-empty]
+  [fixture: quadrant/gram-style-radius-no-colon] [fixture:
+  quadrant/gram-style-radius-two-values] [fixture:
+  quadrant/db-style-radius-trailing-space] [fixture:
+  quadrant/db-style-radius-colon-after] [fixture:
+  quadrant/gram-style-radius-double-colon] [fixture:
+  quadrant/gram-style-radius-leading-colon] [fixture: quadrant/db-style-color]
+  [fixture: quadrant/db-style-color-colon-after] [fixture:
+  quadrant/db-style-color-colon-space-after] [fixture:
+  quadrant/db-style-color-no-hash] [fixture: quadrant/db-style-color-short]
+  [fixture: quadrant/db-style-color-upper] [fixture:
+  quadrant/gram-style-color-four-digits] [fixture:
+  quadrant/gram-style-color-function] [fixture:
+  quadrant/gram-style-color-hash-only] [fixture: quadrant/gram-style-color-name]
+  [fixture: quadrant/gram-style-color-not-hex] [fixture:
+  quadrant/db-style-stroke-color] [fixture: quadrant/db-style-stroke-width]
+  [fixture: quadrant/db-style-stroke-width-big] [fixture:
+  quadrant/db-style-stroke-width-leading-zero] [fixture:
+  quadrant/gram-style-stroke-width-fraction] [fixture:
+  quadrant/gram-style-stroke-width-no-unit] [fixture:
+  quadrant/gram-style-stroke-width-spaced-unit] [fixture:
+  quadrant/gram-style-stroke-width-upper-unit] [fixture: quadrant/db-style-two]
+  [fixture: quadrant/db-style-two-reversed] [fixture: quadrant/db-style-four]
+  [fixture: quadrant/db-style-same-twice] [fixture:
+  quadrant/gram-style-trailing-comma] [fixture:
+  quadrant/gram-style-leading-comma] [fixture: quadrant/gram-style-double-comma]
+  [fixture: quadrant/gram-style-no-comma] [fixture:
+  quadrant/gram-style-upper-case-key] [fixture: quadrant/gram-style-capital-key]
+  [fixture: quadrant/gram-style-unknown-key] [fixture:
+  quadrant/db-style-space-around] [fixture: quadrant/db-style-tab-around]
+  [fixture: quadrant/gram-style-nbsp-in-value] [fixture:
+  quadrant/gram-style-newline-after-comma] [fixture:
+  quadrant/gram-style-newline-in-style] [fixture:
+  quadrant/db-style-semicolon-then-point] [fixture:
+  quadrant/db-style-with-class] [fixture: quadrant/gram-style-keyword-in-value]
+  [fixture: quadrant/gram-style-value-hash] [fixture:
+  quadrant/gram-style-non-ascii-key] [fixture:
+  quadrant/db-style-colon-in-point-name] [fixture:
+  quadrant/db-classdef-with-point-radius-overflow]
+- A comment, a directive, and a `;` after the styles end the point as they end a
+  point with no style, and a directive inside a value is removed; a comment
+  glued to a number of two digits takes nothing of it, while one glued to a
+  number of one digit takes that digit and leaves the style with no value, which
+  is rejected. [fixture: quadrant/db-style-radius-semicolon] [fixture:
+  quadrant/db-style-radius-comment] [fixture:
+  quadrant/db-style-radius-comment-glued] [fixture:
+  quadrant/div-style-radius-comment-glued-one-digit] [fixture:
+  quadrant/db-style-radius-directive-inside]
+- `:::` after the name gives a point a class name, `A:::c1: [0.3, 0.6]`, with
+  spaces allowed before the `:::` and the colon, and styles after the point
+  still allowed. A class name is ASCII word characters (letters, digits, `_`),
+  keeps its case, and is not checked: a class that no `classDef` gives stays on
+  the point. A space after `:::`, an empty name, a dash, a character outside
+  ASCII, a second `:::`, a name with no colon after it, and a class with no name
+  before it are rejected. The names of `Object.prototype` are plain class names,
+  and a directive inside the name is removed. [fixture:
+  quadrant/db-class-constructor] [fixture: quadrant/db-class-digits] [fixture:
+  quadrant/div-class-directive-inside] [fixture:
+  quadrant/db-class-has-own-property] [fixture:
+  quadrant/db-class-marker-in-bare-name] [fixture:
+  quadrant/db-class-marker-with-comment] [fixture:
+  quadrant/db-class-name-with-trailing-text] [fixture:
+  quadrant/db-class-on-quoted-name] [fixture: quadrant/db-class-plain] [fixture:
+  quadrant/db-class-proto] [fixture: quadrant/db-class-spaces-around] [fixture:
+  quadrant/db-class-undefined] [fixture: quadrant/db-class-underscore] [fixture:
+  quadrant/db-class-upper-case] [fixture: quadrant/gram-class-after-colon-name]
+  [fixture: quadrant/gram-class-dash] [fixture: quadrant/gram-class-empty-name]
+  [fixture: quadrant/gram-class-in-name-position] [fixture:
+  quadrant/gram-class-non-ascii] [fixture:
+  quadrant/gram-class-space-after-marker] [fixture:
+  quadrant/gram-class-two-markers]
+- `classDef name styles` defines a class: a name, a space, and the styles of a
+  point. A class has the styles of its last definition only, and a second
+  definition replaces the first with no merge; `classes` lists the classes in
+  the order of their first definition. A class that no point uses is listed, a
+  class may be defined before or after the point that uses it, and the Db does
+  not merge the styles of a point with those of its class. The keyword is read
+  in any case, and a word glued to it, two spaces before the name, a name in
+  quotes, and the keyword as the name are rejected; two spaces after the name
+  are fine. A directive inside the keyword, the name, or a value is removed.
+  [fixture: quadrant/db-classdef-color] [fixture:
+  quadrant/db-classdef-two-styles] [fixture: quadrant/db-classdef-all-four]
+  [fixture: quadrant/db-classdef-twice-replaces] [fixture:
+  quadrant/db-classdef-twice-same-style] [fixture:
+  quadrant/db-classdef-two-classes] [fixture:
+  quadrant/db-classdef-redefine-order] [fixture:
+  quadrant/gram-classdef-no-style] [fixture:
+  quadrant/gram-classdef-name-only-space] [fixture:
+  quadrant/gram-classdef-no-name] [fixture: quadrant/gram-classdef-bad-style]
+  [fixture: quadrant/gram-classdef-empty-value] [fixture:
+  quadrant/db-classdef-two-spaces-after-name] [fixture:
+  quadrant/gram-classdef-two-spaces-before-name] [fixture:
+  quadrant/db-classdef-upper-case] [fixture: quadrant/db-classdef-lower-case]
+  [fixture: quadrant/gram-classdef-glued-name] [fixture:
+  quadrant/gram-classdef-quoted-name] [fixture:
+  quadrant/db-classdef-class-used-after] [fixture:
+  quadrant/db-classdef-class-used-before] [fixture:
+  quadrant/db-classdef-point-style-and-class] [fixture:
+  quadrant/db-classdef-unused] [fixture: quadrant/db-classdef-indented]
+  [fixture: quadrant/gram-classdef-keyword-as-class] [fixture:
+  quadrant/gram-classdef-name-keyword-title] [fixture:
+  quadrant/db-classdef-blank-line-between]
+- The name of a class is digits and letters, a dash, a colon, a comma, an `&`, a
+  `#`, a `*`, and characters outside ASCII; an underscore, a dot, and a space
+  are not allowed (a space ends the name, and the next word is read as a style),
+  and neither is `__proto__`, while `constructor`, `hasOwnProperty`, and
+  `toString` are plain names. The line of a class ends at a line end, with no
+  `;`: `classDef c1 color: #f00;` is rejected, while a `;` at the start of the
+  next line is an empty statement. A comment after the styles is skipped; one
+  glued to a colour that ends in a single digit (`#ff0`) takes the digit, and
+  the colour is rejected, while one glued to `#f00` takes nothing, and a tab
+  between styles belongs to the value, which is rejected. [fixture:
+  quadrant/db-classdef-comment-after] [fixture:
+  quadrant/db-classdef-comment-glued] [fixture:
+  quadrant/db-classdef-constructor-name] [fixture:
+  quadrant/db-classdef-dash-name] [fixture: quadrant/db-classdef-digit-name]
+  [fixture: quadrant/db-classdef-has-own-property-name] [fixture:
+  quadrant/db-classdef-name-amp] [fixture: quadrant/db-classdef-name-colon]
+  [fixture: quadrant/db-classdef-name-comma] [fixture:
+  quadrant/db-classdef-name-hash] [fixture: quadrant/db-classdef-name-star]
+  [fixture: quadrant/db-classdef-non-ascii-name] [fixture:
+  quadrant/db-classdef-proto-via-dash] [fixture:
+  quadrant/db-classdef-semicolon-line-start] [fixture:
+  quadrant/db-classdef-to-string-name] [fixture:
+  quadrant/div-classdef-comment-unit-single-digit] [fixture:
+  quadrant/gram-classdef-name-dot] [fixture: quadrant/gram-classdef-proto-name]
+  [fixture: quadrant/gram-classdef-semicolon-end] [fixture:
+  quadrant/gram-classdef-semicolon-separated] [fixture:
+  quadrant/gram-classdef-space-in-name] [fixture:
+  quadrant/gram-classdef-tab-between-styles] [fixture:
+  quadrant/gram-classdef-underscore-name]
+- A comment line is a line that starts, after spaces or a tab, with `%%`, and it
+  runs to the end of the line: a `;`, a keyword, or a `#` in it is part of it,
+  and a line of `%%` alone and `%%%` are comments too. A comment line before the
+  first statement, between statements, between the points, and at the end of the
+  text, with or without a line feed, changes nothing, and a CRLF or a CR alone
+  ends it, while a U+2028 is part of it. A single `%` starts no comment, and
+  `%%{` with no closing `}%%` is no comment: both lines are rejected; `}%% c` is
+  rejected because the comment would take the brace. [fixture:
+  quadrant/db-comment-line] [fixture:
+  quadrant/header-bare-percent-line-after-header] [fixture:
+  quadrant/db-comment-line-last] [fixture:
+  quadrant/db-comment-line-no-line-feed] [fixture:
+  quadrant/db-comment-line-indented] [fixture:
+  quadrant/db-comment-line-tab-indented] [fixture:
+  quadrant/db-comment-line-semicolon] [fixture:
+  quadrant/db-comment-line-keyword] [fixture: quadrant/db-comment-line-hash]
+  [fixture: quadrant/db-comment-line-triple] [fixture:
+  quadrant/gram-comment-line-single-percent] [fixture:
+  quadrant/gram-comment-line-brace] [fixture:
+  quadrant/gram-comment-line-after-brace] [fixture: quadrant/db-comment-crlf]
+  [fixture: quadrant/db-comment-cr] [fixture: quadrant/db-comment-ls] [fixture:
+  quadrant/db-comment-two-lines] [fixture:
+  quadrant/db-comment-between-point-lines]
+- A `%%` glued to what comes before it takes the character before it where the
+  lexer reads that character as a unit of one character. The lexer reads a run
+  of letters, a run of digits, a run of characters outside ASCII, or any other
+  character alone: the comment takes the `1` of `ab1`, the `é` of `aé`, the `,`
+  of `ab,`, and the `-` of `Lm-`, and the `b` of `a b`, while it takes nothing
+  of `ab12` or `a日本`. What it takes goes with the rest of the line. [fixture:
+  quadrant/div-comment-unit-letter-then-non-ascii] [fixture:
+  quadrant/div-comment-unit-letters-then-digit] [fixture:
+  quadrant/db-comment-unit-non-ascii-run] [fixture:
+  quadrant/div-comment-unit-non-ascii-single] [fixture:
+  quadrant/div-comment-unit-punctuation] [fixture:
+  quadrant/db-comment-unit-two-digits] [fixture:
+  quadrant/div-comment-unit-word-after-space]
+- A directive is removed before the text is read, wherever it stands: on a line
+  of its own, before a statement on its line, after a statement, glued to a
+  word, inside a keyword, a name, a number, or a text in quotes, between the
+  statements of a `;`, and across lines
+  ([Directives](../../spec/docs/common.md#directives)). A directive with
+  settings of the chart changes nothing in the Db. A directive with no closing
+  `}%%` takes the rest of the text, so the statements after it are not read, and
+  at the end of the text it takes nothing; so does `%%{ c }`. [fixture:
+  quadrant/db-directive-after-statement] [fixture:
+  quadrant/db-directive-before-statement-same-line] [fixture:
+  quadrant/db-directive-between-statements] [fixture:
+  quadrant/db-directive-config-width] [fixture:
+  quadrant/db-directive-glued-to-statement] [fixture:
+  quadrant/db-directive-in-acc-block] [fixture:
+  quadrant/div-directive-in-class-name] [fixture:
+  quadrant/db-directive-in-header-line] [fixture:
+  quadrant/div-directive-in-keyword-classdef] [fixture:
+  quadrant/div-directive-in-keyword-title] [fixture:
+  quadrant/db-directive-in-point-brackets] [fixture:
+  quadrant/db-directive-in-quotes] [fixture:
+  quadrant/db-directive-in-style-value] [fixture: quadrant/db-directive-line]
+  [fixture: quadrant/db-directive-line-empty] [fixture:
+  quadrant/db-directive-line-spaces] [fixture: quadrant/db-directive-multiline]
+  [fixture: quadrant/db-directive-two-in-text] [fixture:
+  quadrant/db-directive-unclosed] [fixture:
+  quadrant/db-directive-unclosed-last-line] [fixture:
+  quadrant/db-directive-wrap-statement] [fixture:
+  quadrant/db-comment-line-brace-closed-wrong]
+- A `%%` inside quotes, in a markdown string too, is part of the text, also
+  glued to a word; a `%%` after a space outside quotes is a comment. [fixture:
+  quadrant/db-quoted-comment-glued-kept] [fixture:
+  quadrant/db-quoted-comment-mark-kept-axis] [fixture:
+  quadrant/db-quoted-comment-mark-kept-point] [fixture:
+  quadrant/db-quoted-comment-mark-kept-quadrant] [fixture:
+  quadrant/db-quoted-comment-mark-markdown]
+- What follows a statement on its line decides how it ends. Spaces, a comment
+  after a space, a `;`, a `;` with a comment, a directive, a CRLF, and a CR
+  alone end a title, an accessibility line, an axis, a quadrant, a point, and a
+  point with a class or styles, the title and the accessibility lines taking the
+  comment, the `;`, and the directive as text (a directive is removed), while a
+  `;` after a `classDef` line is rejected, and a tab after a point or a point
+  with a class is read as a style with no name and rejected, while after styles
+  or a `classDef` line it is skipped. A comment glued to the statement takes the
+  last character when that character is a unit of one character: it empties a
+  text of a quadrant that is that one character, and the value of a style of one
+  digit, and rejects the statement, and it takes the right text of an axis when
+  that is one character, which leaves the left text with the arrow; after the
+  closing bracket of a point, or after a unit of two characters or more, it
+  takes nothing. [fixture: quadrant/db-after-acc-descr-cr] [fixture:
+  quadrant/db-after-acc-descr-crlf] [fixture:
+  quadrant/db-after-acc-descr-directive] [fixture:
+  quadrant/db-after-acc-descr-directive-glued] [fixture:
+  quadrant/db-after-acc-descr-glued-comment] [fixture:
+  quadrant/db-after-acc-descr-semicolon] [fixture:
+  quadrant/db-after-acc-descr-semicolon-comment] [fixture:
+  quadrant/db-after-acc-descr-space-comment] [fixture:
+  quadrant/db-after-acc-descr-trailing-spaces] [fixture:
+  quadrant/db-after-acc-descr-trailing-tab] [fixture:
+  quadrant/db-after-acc-title-cr] [fixture: quadrant/db-after-acc-title-crlf]
+  [fixture: quadrant/db-after-acc-title-directive] [fixture:
+  quadrant/db-after-acc-title-directive-glued] [fixture:
+  quadrant/db-after-acc-title-glued-comment] [fixture:
+  quadrant/db-after-acc-title-semicolon] [fixture:
+  quadrant/db-after-acc-title-semicolon-comment] [fixture:
+  quadrant/db-after-acc-title-space-comment] [fixture:
+  quadrant/db-after-acc-title-trailing-spaces] [fixture:
+  quadrant/db-after-acc-title-trailing-tab] [fixture:
+  quadrant/db-after-classdef-cr] [fixture: quadrant/db-after-classdef-crlf]
+  [fixture: quadrant/db-after-classdef-directive] [fixture:
+  quadrant/db-after-classdef-directive-glued] [fixture:
+  quadrant/db-after-classdef-glued-comment] [fixture:
+  quadrant/db-after-classdef-space-comment] [fixture:
+  quadrant/db-after-classdef-trailing-spaces] [fixture:
+  quadrant/db-after-classdef-trailing-tab] [fixture:
+  quadrant/db-after-point-class-cr] [fixture:
+  quadrant/db-after-point-class-crlf] [fixture:
+  quadrant/db-after-point-class-directive] [fixture:
+  quadrant/db-after-point-class-directive-glued] [fixture:
+  quadrant/db-after-point-class-glued-comment] [fixture:
+  quadrant/db-after-point-class-semicolon] [fixture:
+  quadrant/db-after-point-class-semicolon-comment] [fixture:
+  quadrant/db-after-point-class-space-comment] [fixture:
+  quadrant/db-after-point-class-trailing-spaces] [fixture:
+  quadrant/db-after-point-cr] [fixture: quadrant/db-after-point-crlf] [fixture:
+  quadrant/db-after-point-directive] [fixture:
+  quadrant/db-after-point-directive-glued] [fixture:
+  quadrant/db-after-point-glued-comment] [fixture:
+  quadrant/db-after-point-semicolon] [fixture:
+  quadrant/db-after-point-semicolon-comment] [fixture:
+  quadrant/db-after-point-space-comment] [fixture:
+  quadrant/db-after-point-style-cr] [fixture:
+  quadrant/db-after-point-style-crlf] [fixture:
+  quadrant/db-after-point-style-directive] [fixture:
+  quadrant/db-after-point-style-directive-glued] [fixture:
+  quadrant/db-after-point-style-semicolon] [fixture:
+  quadrant/db-after-point-style-semicolon-comment] [fixture:
+  quadrant/db-after-point-style-space-comment] [fixture:
+  quadrant/db-after-point-style-trailing-spaces] [fixture:
+  quadrant/db-after-point-style-trailing-tab] [fixture:
+  quadrant/db-after-point-trailing-spaces] [fixture:
+  quadrant/db-after-quadrant-cr] [fixture: quadrant/db-after-quadrant-crlf]
+  [fixture: quadrant/db-after-quadrant-directive] [fixture:
+  quadrant/db-after-quadrant-directive-glued] [fixture:
+  quadrant/db-after-quadrant-semicolon] [fixture:
+  quadrant/db-after-quadrant-semicolon-comment] [fixture:
+  quadrant/db-after-quadrant-space-comment] [fixture:
+  quadrant/db-after-quadrant-trailing-spaces] [fixture:
+  quadrant/db-after-quadrant-trailing-tab] [fixture: quadrant/db-after-title-cr]
+  [fixture: quadrant/db-after-title-crlf] [fixture:
+  quadrant/db-after-title-directive] [fixture:
+  quadrant/db-after-title-directive-glued] [fixture:
+  quadrant/db-after-title-glued-comment] [fixture:
+  quadrant/db-after-title-semicolon] [fixture:
+  quadrant/db-after-title-semicolon-comment] [fixture:
+  quadrant/db-after-title-space-comment] [fixture:
+  quadrant/db-after-title-trailing-spaces] [fixture:
+  quadrant/db-after-title-trailing-tab] [fixture: quadrant/db-after-x-axis-cr]
+  [fixture: quadrant/db-after-x-axis-crlf] [fixture:
+  quadrant/db-after-x-axis-directive] [fixture:
+  quadrant/db-after-x-axis-directive-glued] [fixture:
+  quadrant/div-after-x-axis-glued-comment] [fixture:
+  quadrant/db-after-x-axis-semicolon] [fixture:
+  quadrant/db-after-x-axis-semicolon-comment] [fixture:
+  quadrant/db-after-x-axis-space-comment] [fixture:
+  quadrant/db-after-x-axis-trailing-spaces] [fixture:
+  quadrant/db-after-x-axis-trailing-tab] [fixture: quadrant/db-after-y-axis-cr]
+  [fixture: quadrant/db-after-y-axis-crlf] [fixture:
+  quadrant/db-after-y-axis-directive] [fixture:
+  quadrant/db-after-y-axis-directive-glued] [fixture:
+  quadrant/div-after-y-axis-glued-comment] [fixture:
+  quadrant/db-after-y-axis-semicolon] [fixture:
+  quadrant/db-after-y-axis-semicolon-comment] [fixture:
+  quadrant/db-after-y-axis-space-comment] [fixture:
+  quadrant/db-after-y-axis-trailing-spaces] [fixture:
+  quadrant/db-after-y-axis-trailing-tab] [fixture:
+  quadrant/gram-after-classdef-semicolon] [fixture:
+  quadrant/gram-after-classdef-semicolon-comment] [fixture:
+  quadrant/gram-after-point-class-trailing-tab] [fixture:
+  quadrant/div-after-point-style-glued-comment] [fixture:
+  quadrant/gram-after-point-trailing-tab] [fixture:
+  quadrant/div-after-quadrant-glued-comment]
+- A style line rule of mermaid.js applies to any text: from a line that has
+  `style:` or `classDef:`, later a `#`, and later a `;`, the last `;` is
+  dropped, so that `style:#x;y` is `style:#xy` in a title, an accessibility
+  text, a text in quotes, and the name of a class of `classDef`. A bare text of
+  an axis or a quadrant and a name of a point do not take the colon, and the
+  class name of a point is word characters only, so those places reject it.
+  [fixture: quadrant/db-grid-style-acc-descr] [fixture:
+  quadrant/db-grid-style-acc-descr-block] [fixture:
+  quadrant/db-grid-style-acc-title] [fixture:
+  quadrant/div-grid-style-classdef-name] [fixture:
+  quadrant/db-grid-style-point-quoted] [fixture:
+  quadrant/db-grid-style-quadrant-quoted] [fixture:
+  quadrant/db-grid-style-title] [fixture: quadrant/db-grid-style-x-axis-quoted]
+  [fixture: quadrant/db-grid-style-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-style-y-axis-quoted] [fixture:
+  quadrant/db-grid-style-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-style-class-name] [fixture:
+  quadrant/gram-grid-style-point-bare] [fixture:
+  quadrant/gram-grid-style-quadrant-bare] [fixture:
+  quadrant/gram-grid-style-x-axis-bare] [fixture:
+  quadrant/gram-grid-style-x-axis-right-bare] [fixture:
+  quadrant/gram-grid-style-y-axis-bare] [fixture:
+  quadrant/gram-grid-style-y-axis-top-bare]
+- A character reference such as `#35;` is its placeholder (`ﬂ°°35¶ß`, which the
+  Db turns back when it draws) in a title, an accessibility text, a text of an
+  axis or a quadrant, bare or in quotes, a name of a point, and the name of a
+  class of `classDef`; in the class name of a point it is rejected, since the
+  placeholder is no word character. A `#` with no reference is a character of
+  every one of these texts and not of the class name of a point. A reference is
+  `#`, a word or digits, and `;`, so `#b;` is one; `#35` with no `;` is none,
+  and `&amp;` is no reference and stays as written, while the `#35;` of `&#35;`
+  is one. Two references in a row are two placeholders. [fixture:
+  quadrant/db-grid-entity-acc-descr] [fixture:
+  quadrant/db-grid-entity-acc-descr-block] [fixture:
+  quadrant/db-grid-entity-acc-title] [fixture:
+  quadrant/db-grid-entity-classdef-name] [fixture:
+  quadrant/db-grid-entity-point-quoted] [fixture:
+  quadrant/db-grid-entity-quadrant-bare] [fixture:
+  quadrant/db-grid-entity-quadrant-quoted] [fixture:
+  quadrant/db-grid-entity-x-axis-quoted] [fixture:
+  quadrant/db-grid-entity-x-axis-right-bare] [fixture:
+  quadrant/db-grid-entity-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-entity-y-axis-quoted] [fixture:
+  quadrant/db-grid-entity-y-axis-top-bare] [fixture:
+  quadrant/db-grid-entity-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-entity-class-name] [fixture: quadrant/db-title-entity]
+  [fixture: quadrant/db-x-axis-entity] [fixture: quadrant/db-y-axis-entity]
+  [fixture: quadrant/db-quadrant-entity] [fixture: quadrant/db-name-entity]
+  [fixture: quadrant/db-grid-hash-acc-descr] [fixture:
+  quadrant/db-grid-hash-acc-descr-block] [fixture:
+  quadrant/db-grid-hash-acc-title] [fixture:
+  quadrant/db-grid-hash-classdef-name] [fixture:
+  quadrant/db-grid-hash-point-bare] [fixture:
+  quadrant/db-grid-hash-point-quoted] [fixture:
+  quadrant/db-grid-hash-quadrant-bare] [fixture:
+  quadrant/db-grid-hash-quadrant-quoted] [fixture: quadrant/db-grid-hash-title]
+  [fixture: quadrant/db-grid-hash-x-axis-bare] [fixture:
+  quadrant/db-grid-hash-x-axis-quoted] [fixture:
+  quadrant/db-grid-hash-x-axis-right-bare] [fixture:
+  quadrant/db-grid-hash-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-hash-y-axis-bare] [fixture:
+  quadrant/db-grid-hash-y-axis-quoted] [fixture:
+  quadrant/db-grid-hash-y-axis-top-bare] [fixture:
+  quadrant/db-grid-hash-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-hash-class-name] [fixture:
+  quadrant/db-entity-hash-in-class-name] [fixture:
+  quadrant/db-entity-hash-word-semicolon] [fixture:
+  quadrant/db-entity-html-named] [fixture: quadrant/db-entity-html-numeric]
+  [fixture: quadrant/db-entity-numeric-quadrant-quoted-two] [fixture:
+  quadrant/db-entity-without-semicolon]
+- The same characters stand in every place that takes a text. A tab, a U+FEFF, a
+  no-break space, an ideographic space, a U+2028, and a U+2029 are characters of
+  a title, an accessibility text, a text of an axis or a quadrant, bare or in
+  quotes, and a name of a point, and of the name of a class of `classDef` but
+  for the tab, which ends the name, and the class name of a point takes none of
+  them. A line feed, a CR, and a CRLF end the statement in the places that are
+  not quoted, and the next line is then read as a statement, which is rejected;
+  in a text in quotes and in the block of an accessibility description they are
+  a line feed of the text. [fixture: quadrant/db-grid-tab-acc-descr] [fixture:
+  quadrant/db-grid-tab-acc-descr-block] [fixture:
+  quadrant/db-grid-tab-acc-title] [fixture: quadrant/db-grid-tab-point-bare]
+  [fixture: quadrant/db-grid-tab-point-quoted] [fixture:
+  quadrant/db-grid-tab-quadrant-bare] [fixture:
+  quadrant/db-grid-tab-quadrant-quoted] [fixture: quadrant/db-grid-tab-title]
+  [fixture: quadrant/db-grid-tab-x-axis-bare] [fixture:
+  quadrant/db-grid-tab-x-axis-quoted] [fixture:
+  quadrant/db-grid-tab-x-axis-right-bare] [fixture:
+  quadrant/db-grid-tab-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-tab-y-axis-bare] [fixture:
+  quadrant/db-grid-tab-y-axis-quoted] [fixture:
+  quadrant/db-grid-tab-y-axis-top-bare] [fixture:
+  quadrant/db-grid-tab-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-tab-class-name] [fixture:
+  quadrant/gram-grid-tab-classdef-name] [fixture:
+  quadrant/db-grid-bom-acc-descr] [fixture:
+  quadrant/db-grid-bom-acc-descr-block] [fixture:
+  quadrant/db-grid-bom-acc-title] [fixture: quadrant/db-grid-bom-classdef-name]
+  [fixture: quadrant/db-grid-bom-point-bare] [fixture:
+  quadrant/db-grid-bom-point-quoted] [fixture:
+  quadrant/db-grid-bom-quadrant-bare] [fixture:
+  quadrant/db-grid-bom-quadrant-quoted] [fixture: quadrant/db-grid-bom-title]
+  [fixture: quadrant/db-grid-bom-x-axis-bare] [fixture:
+  quadrant/db-grid-bom-x-axis-quoted] [fixture:
+  quadrant/db-grid-bom-x-axis-right-bare] [fixture:
+  quadrant/db-grid-bom-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-bom-y-axis-bare] [fixture:
+  quadrant/db-grid-bom-y-axis-quoted] [fixture:
+  quadrant/db-grid-bom-y-axis-top-bare] [fixture:
+  quadrant/db-grid-bom-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-bom-class-name] [fixture: quadrant/db-grid-nbsp-acc-descr]
+  [fixture: quadrant/db-grid-nbsp-acc-descr-block] [fixture:
+  quadrant/db-grid-nbsp-acc-title] [fixture:
+  quadrant/db-grid-nbsp-classdef-name] [fixture:
+  quadrant/db-grid-nbsp-point-bare] [fixture:
+  quadrant/db-grid-nbsp-point-quoted] [fixture:
+  quadrant/db-grid-nbsp-quadrant-bare] [fixture:
+  quadrant/db-grid-nbsp-quadrant-quoted] [fixture: quadrant/db-grid-nbsp-title]
+  [fixture: quadrant/db-grid-nbsp-x-axis-bare] [fixture:
+  quadrant/db-grid-nbsp-x-axis-quoted] [fixture:
+  quadrant/db-grid-nbsp-x-axis-right-bare] [fixture:
+  quadrant/db-grid-nbsp-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-nbsp-y-axis-bare] [fixture:
+  quadrant/db-grid-nbsp-y-axis-quoted] [fixture:
+  quadrant/db-grid-nbsp-y-axis-top-bare] [fixture:
+  quadrant/db-grid-nbsp-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-nbsp-class-name] [fixture:
+  quadrant/db-grid-ideographic-acc-descr] [fixture:
+  quadrant/db-grid-ideographic-acc-descr-block] [fixture:
+  quadrant/db-grid-ideographic-acc-title] [fixture:
+  quadrant/db-grid-ideographic-classdef-name] [fixture:
+  quadrant/db-grid-ideographic-point-bare] [fixture:
+  quadrant/db-grid-ideographic-point-quoted] [fixture:
+  quadrant/db-grid-ideographic-quadrant-bare] [fixture:
+  quadrant/db-grid-ideographic-quadrant-quoted] [fixture:
+  quadrant/db-grid-ideographic-title] [fixture:
+  quadrant/db-grid-ideographic-x-axis-bare] [fixture:
+  quadrant/db-grid-ideographic-x-axis-quoted] [fixture:
+  quadrant/db-grid-ideographic-x-axis-right-bare] [fixture:
+  quadrant/db-grid-ideographic-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-ideographic-y-axis-bare] [fixture:
+  quadrant/db-grid-ideographic-y-axis-quoted] [fixture:
+  quadrant/db-grid-ideographic-y-axis-top-bare] [fixture:
+  quadrant/db-grid-ideographic-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-ideographic-class-name] [fixture:
+  quadrant/db-grid-ls-acc-descr] [fixture: quadrant/db-grid-ls-acc-descr-block]
+  [fixture: quadrant/db-grid-ls-acc-title] [fixture:
+  quadrant/db-grid-ls-classdef-name] [fixture: quadrant/db-grid-ls-point-bare]
+  [fixture: quadrant/db-grid-ls-point-quoted] [fixture:
+  quadrant/db-grid-ls-quadrant-bare] [fixture:
+  quadrant/db-grid-ls-quadrant-quoted] [fixture: quadrant/db-grid-ls-title]
+  [fixture: quadrant/db-grid-ls-x-axis-bare] [fixture:
+  quadrant/db-grid-ls-x-axis-quoted] [fixture:
+  quadrant/db-grid-ls-x-axis-right-bare] [fixture:
+  quadrant/db-grid-ls-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-ls-y-axis-bare] [fixture: quadrant/db-grid-ls-y-axis-quoted]
+  [fixture: quadrant/db-grid-ls-y-axis-top-bare] [fixture:
+  quadrant/db-grid-ls-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-ls-class-name] [fixture: quadrant/db-grid-ps-acc-descr]
+  [fixture: quadrant/db-grid-ps-acc-descr-block] [fixture:
+  quadrant/db-grid-ps-acc-title] [fixture: quadrant/db-grid-ps-classdef-name]
+  [fixture: quadrant/db-grid-ps-point-bare] [fixture:
+  quadrant/db-grid-ps-point-quoted] [fixture: quadrant/db-grid-ps-quadrant-bare]
+  [fixture: quadrant/db-grid-ps-quadrant-quoted] [fixture:
+  quadrant/db-grid-ps-title] [fixture: quadrant/db-grid-ps-x-axis-bare]
+  [fixture: quadrant/db-grid-ps-x-axis-quoted] [fixture:
+  quadrant/db-grid-ps-x-axis-right-bare] [fixture:
+  quadrant/db-grid-ps-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-ps-y-axis-bare] [fixture: quadrant/db-grid-ps-y-axis-quoted]
+  [fixture: quadrant/db-grid-ps-y-axis-top-bare] [fixture:
+  quadrant/db-grid-ps-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-ps-class-name] [fixture:
+  quadrant/db-grid-lf-acc-descr-block] [fixture:
+  quadrant/db-grid-lf-point-quoted] [fixture:
+  quadrant/db-grid-lf-quadrant-quoted] [fixture:
+  quadrant/db-grid-lf-x-axis-quoted] [fixture:
+  quadrant/db-grid-lf-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-lf-y-axis-quoted] [fixture:
+  quadrant/db-grid-lf-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-lf-acc-descr] [fixture: quadrant/gram-grid-lf-acc-title]
+  [fixture: quadrant/gram-grid-lf-class-name] [fixture:
+  quadrant/gram-grid-lf-classdef-name] [fixture:
+  quadrant/gram-grid-lf-point-bare] [fixture:
+  quadrant/gram-grid-lf-quadrant-bare] [fixture: quadrant/gram-grid-lf-title]
+  [fixture: quadrant/gram-grid-lf-x-axis-bare] [fixture:
+  quadrant/gram-grid-lf-x-axis-right-bare] [fixture:
+  quadrant/gram-grid-lf-y-axis-bare] [fixture:
+  quadrant/gram-grid-lf-y-axis-top-bare] [fixture:
+  quadrant/db-grid-cr-acc-descr-block] [fixture:
+  quadrant/db-grid-cr-point-quoted] [fixture:
+  quadrant/db-grid-cr-quadrant-quoted] [fixture:
+  quadrant/db-grid-cr-x-axis-quoted] [fixture:
+  quadrant/db-grid-cr-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-cr-y-axis-quoted] [fixture:
+  quadrant/db-grid-cr-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-cr-acc-descr] [fixture: quadrant/gram-grid-cr-acc-title]
+  [fixture: quadrant/gram-grid-cr-class-name] [fixture:
+  quadrant/gram-grid-cr-classdef-name] [fixture:
+  quadrant/gram-grid-cr-point-bare] [fixture:
+  quadrant/gram-grid-cr-quadrant-bare] [fixture: quadrant/gram-grid-cr-title]
+  [fixture: quadrant/gram-grid-cr-x-axis-bare] [fixture:
+  quadrant/gram-grid-cr-x-axis-right-bare] [fixture:
+  quadrant/gram-grid-cr-y-axis-bare] [fixture:
+  quadrant/gram-grid-cr-y-axis-top-bare] [fixture:
+  quadrant/db-grid-crlf-acc-descr-block] [fixture:
+  quadrant/db-grid-crlf-point-quoted] [fixture:
+  quadrant/db-grid-crlf-quadrant-quoted] [fixture:
+  quadrant/db-grid-crlf-x-axis-quoted] [fixture:
+  quadrant/db-grid-crlf-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-crlf-y-axis-quoted] [fixture:
+  quadrant/db-grid-crlf-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-crlf-acc-descr] [fixture:
+  quadrant/gram-grid-crlf-acc-title] [fixture:
+  quadrant/gram-grid-crlf-class-name] [fixture:
+  quadrant/gram-grid-crlf-classdef-name] [fixture:
+  quadrant/gram-grid-crlf-point-bare] [fixture:
+  quadrant/gram-grid-crlf-quadrant-bare] [fixture:
+  quadrant/gram-grid-crlf-title] [fixture: quadrant/gram-grid-crlf-x-axis-bare]
+  [fixture: quadrant/gram-grid-crlf-x-axis-right-bare] [fixture:
+  quadrant/gram-grid-crlf-y-axis-bare] [fixture:
+  quadrant/gram-grid-crlf-y-axis-top-bare]
+- A directive inside a text is removed in every place, the class names included.
+  The names of `Object.prototype` are plain names in every place that takes a
+  name, but `__proto__` as the name of a class of `classDef`, where the
+  underscore is not allowed. The keyword `title` is text in a title, an
+  accessibility text, a text in quotes, and the class name of a point; a bare
+  text of an axis or a quadrant and the name of a class of `classDef` do not
+  take it, and a name of a point that is `title` is the title. [fixture:
+  quadrant/db-grid-directive-acc-descr] [fixture:
+  quadrant/db-grid-directive-acc-descr-block] [fixture:
+  quadrant/db-grid-directive-acc-title] [fixture:
+  quadrant/div-grid-directive-class-name] [fixture:
+  quadrant/div-grid-directive-classdef-name] [fixture:
+  quadrant/db-grid-directive-point-bare] [fixture:
+  quadrant/db-grid-directive-point-quoted] [fixture:
+  quadrant/db-grid-directive-quadrant-bare] [fixture:
+  quadrant/db-grid-directive-quadrant-quoted] [fixture:
+  quadrant/db-grid-directive-title] [fixture:
+  quadrant/db-grid-directive-x-axis-bare] [fixture:
+  quadrant/db-grid-directive-x-axis-quoted] [fixture:
+  quadrant/db-grid-directive-x-axis-right-bare] [fixture:
+  quadrant/db-grid-directive-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-directive-y-axis-bare] [fixture:
+  quadrant/db-grid-directive-y-axis-quoted] [fixture:
+  quadrant/db-grid-directive-y-axis-top-bare] [fixture:
+  quadrant/db-grid-directive-y-axis-top-quoted] [fixture:
+  quadrant/db-grid-proto-acc-descr] [fixture:
+  quadrant/db-grid-proto-acc-descr-block] [fixture:
+  quadrant/db-grid-proto-acc-title] [fixture:
+  quadrant/db-grid-proto-point-quoted] [fixture:
+  quadrant/db-grid-proto-quadrant-bare] [fixture:
+  quadrant/db-grid-proto-quadrant-quoted] [fixture:
+  quadrant/db-grid-proto-title] [fixture: quadrant/db-grid-proto-x-axis-bare]
+  [fixture: quadrant/db-grid-proto-x-axis-quoted] [fixture:
+  quadrant/db-grid-proto-x-axis-right-bare] [fixture:
+  quadrant/db-grid-proto-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-proto-y-axis-bare] [fixture:
+  quadrant/db-grid-proto-y-axis-quoted] [fixture:
+  quadrant/db-grid-proto-y-axis-top-bare] [fixture:
+  quadrant/db-grid-proto-y-axis-top-quoted] [fixture:
+  quadrant/db-grid-constructor-acc-descr] [fixture:
+  quadrant/db-grid-constructor-acc-descr-block] [fixture:
+  quadrant/db-grid-constructor-acc-title] [fixture:
+  quadrant/db-grid-constructor-point-quoted] [fixture:
+  quadrant/db-grid-constructor-quadrant-bare] [fixture:
+  quadrant/db-grid-constructor-quadrant-quoted] [fixture:
+  quadrant/db-grid-constructor-title] [fixture:
+  quadrant/db-grid-constructor-x-axis-bare] [fixture:
+  quadrant/db-grid-constructor-x-axis-quoted] [fixture:
+  quadrant/db-grid-constructor-x-axis-right-bare] [fixture:
+  quadrant/db-grid-constructor-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-constructor-y-axis-bare] [fixture:
+  quadrant/db-grid-constructor-y-axis-quoted] [fixture:
+  quadrant/db-grid-constructor-y-axis-top-bare] [fixture:
+  quadrant/db-grid-constructor-y-axis-top-quoted] [fixture:
+  quadrant/db-class-proto] [fixture: quadrant/db-name-proto] [fixture:
+  quadrant/gram-classdef-proto-name] [fixture:
+  quadrant/db-grid-keyword-acc-descr] [fixture:
+  quadrant/db-grid-keyword-acc-descr-block] [fixture:
+  quadrant/db-grid-keyword-acc-title] [fixture:
+  quadrant/db-grid-keyword-class-name] [fixture:
+  quadrant/db-grid-keyword-point-quoted] [fixture:
+  quadrant/db-grid-keyword-quadrant-quoted] [fixture:
+  quadrant/db-grid-keyword-title] [fixture:
+  quadrant/db-grid-keyword-x-axis-quoted] [fixture:
+  quadrant/db-grid-keyword-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-keyword-y-axis-quoted] [fixture:
+  quadrant/db-grid-keyword-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-keyword-quadrant-bare] [fixture:
+  quadrant/gram-grid-keyword-x-axis-bare] [fixture:
+  quadrant/gram-grid-keyword-x-axis-right-bare] [fixture:
+  quadrant/gram-grid-keyword-y-axis-bare] [fixture:
+  quadrant/gram-grid-keyword-y-axis-top-bare] [fixture:
+  quadrant/gram-classdef-name-keyword-title] [fixture:
+  quadrant/db-title-with-colon-point-like]
+- A `%%` after a space is part of the text in a title, an accessibility text,
+  the block of a description, and a text in quotes, and a comment outside them:
+  the comment is skipped and the text before it stays in a bare text of an axis
+  or a quadrant, while after the name of a point, the class name of a point, or
+  the name of a class of `classDef` the line has no point or styles and is
+  rejected. A `%%` glued to a unit of one character takes the character: a bare
+  text of an axis or a quadrant is then empty and rejected, the right text of an
+  axis is dropped, a name of a point leaves a line that is all comment and is
+  accepted, and the class names are rejected. [fixture:
+  quadrant/db-grid-comment-acc-descr] [fixture:
+  quadrant/db-grid-comment-acc-descr-block] [fixture:
+  quadrant/db-grid-comment-acc-title] [fixture:
+  quadrant/db-grid-comment-glued-acc-descr] [fixture:
+  quadrant/db-grid-comment-glued-acc-descr-block] [fixture:
+  quadrant/db-grid-comment-glued-acc-title] [fixture:
+  quadrant/div-grid-comment-glued-point-bare] [fixture:
+  quadrant/db-grid-comment-glued-point-quoted] [fixture:
+  quadrant/db-grid-comment-glued-quadrant-quoted] [fixture:
+  quadrant/db-grid-comment-glued-title] [fixture:
+  quadrant/db-grid-comment-glued-x-axis-quoted] [fixture:
+  quadrant/div-grid-comment-glued-x-axis-right-bare] [fixture:
+  quadrant/db-grid-comment-glued-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-comment-glued-y-axis-quoted] [fixture:
+  quadrant/div-grid-comment-glued-y-axis-top-bare] [fixture:
+  quadrant/db-grid-comment-glued-y-axis-top-quoted] [fixture:
+  quadrant/db-grid-comment-point-quoted] [fixture:
+  quadrant/db-grid-comment-quadrant-bare] [fixture:
+  quadrant/db-grid-comment-quadrant-quoted] [fixture:
+  quadrant/db-grid-comment-title] [fixture:
+  quadrant/db-grid-comment-x-axis-bare] [fixture:
+  quadrant/db-grid-comment-x-axis-quoted] [fixture:
+  quadrant/db-grid-comment-x-axis-right-bare] [fixture:
+  quadrant/db-grid-comment-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-comment-y-axis-bare] [fixture:
+  quadrant/db-grid-comment-y-axis-quoted] [fixture:
+  quadrant/db-grid-comment-y-axis-top-bare] [fixture:
+  quadrant/db-grid-comment-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-comment-class-name] [fixture:
+  quadrant/gram-grid-comment-classdef-name] [fixture:
+  quadrant/gram-grid-comment-glued-class-name] [fixture:
+  quadrant/gram-grid-comment-glued-classdef-name] [fixture:
+  quadrant/div-grid-comment-glued-quadrant-bare] [fixture:
+  quadrant/div-grid-comment-glued-x-axis-bare] [fixture:
+  quadrant/div-grid-comment-glued-y-axis-bare] [fixture:
+  quadrant/gram-grid-comment-point-bare]
+- Punctuation and markup follow the rules of each place. A colon, a `;`,
+  brackets, a tag, an arrow, and the other punctuation are text in a title, an
+  accessibility text, and a text in quotes (the quotes of a tag are read as
+  `'`); a bare text of an axis, a quadrant, or a name of a point takes none of
+  the colon, the `;`, the brackets, the tag, and the arrow (the arrow of an axis
+  is the arrow of the statement), and the names of classes take none of them but
+  the colon in `classDef`. A `"` inside quotes ends the string, so that the text
+  is rejected, while it is text in a title and an accessibility text. A single
+  `%`, a backtick, and a character outside ASCII are text in every place that
+  takes text, except the names of classes, which take no backtick and no `%`. An
+  empty text sets the empty text in a title and in the block of a description,
+  is rejected in the other places that need a text, and is dropped as the right
+  text of an axis. [fixture: quadrant/db-grid-nonascii-acc-descr] [fixture:
+  quadrant/db-grid-nonascii-acc-descr-block] [fixture:
+  quadrant/db-grid-nonascii-acc-title] [fixture:
+  quadrant/db-grid-nonascii-point-quoted] [fixture:
+  quadrant/db-grid-nonascii-quadrant-bare] [fixture:
+  quadrant/db-grid-nonascii-quadrant-quoted] [fixture:
+  quadrant/db-grid-nonascii-x-axis-bare] [fixture:
+  quadrant/db-grid-nonascii-x-axis-quoted] [fixture:
+  quadrant/db-grid-nonascii-x-axis-right-bare] [fixture:
+  quadrant/db-grid-nonascii-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-nonascii-y-axis-bare] [fixture:
+  quadrant/db-grid-nonascii-y-axis-quoted] [fixture:
+  quadrant/db-grid-nonascii-y-axis-top-bare] [fixture:
+  quadrant/db-grid-nonascii-y-axis-top-quoted] [fixture:
+  quadrant/db-grid-html-acc-descr] [fixture:
+  quadrant/db-grid-html-acc-descr-block] [fixture:
+  quadrant/db-grid-html-acc-title] [fixture: quadrant/db-grid-html-point-quoted]
+  [fixture: quadrant/db-grid-html-quadrant-quoted] [fixture:
+  quadrant/db-grid-html-title] [fixture: quadrant/db-grid-html-x-axis-quoted]
+  [fixture: quadrant/db-grid-html-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-html-y-axis-quoted] [fixture:
+  quadrant/db-grid-html-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-html-class-name] [fixture:
+  quadrant/gram-grid-html-classdef-name] [fixture:
+  quadrant/gram-grid-html-point-bare] [fixture:
+  quadrant/gram-grid-html-quadrant-bare] [fixture:
+  quadrant/gram-grid-html-x-axis-bare] [fixture:
+  quadrant/gram-grid-html-x-axis-right-bare] [fixture:
+  quadrant/gram-grid-html-y-axis-bare] [fixture:
+  quadrant/gram-grid-html-y-axis-top-bare] [fixture:
+  quadrant/db-grid-punct-acc-descr] [fixture:
+  quadrant/db-grid-punct-acc-descr-block] [fixture:
+  quadrant/db-grid-punct-acc-title] [fixture:
+  quadrant/db-grid-punct-point-quoted] [fixture:
+  quadrant/db-grid-punct-quadrant-quoted] [fixture:
+  quadrant/db-grid-punct-title] [fixture: quadrant/db-grid-punct-x-axis-quoted]
+  [fixture: quadrant/db-grid-punct-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-punct-y-axis-quoted] [fixture:
+  quadrant/db-grid-punct-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-punct-class-name] [fixture:
+  quadrant/gram-grid-punct-classdef-name] [fixture:
+  quadrant/gram-grid-punct-point-bare] [fixture:
+  quadrant/gram-grid-punct-quadrant-bare] [fixture:
+  quadrant/gram-grid-punct-x-axis-bare] [fixture:
+  quadrant/gram-grid-punct-x-axis-right-bare] [fixture:
+  quadrant/gram-grid-punct-y-axis-bare] [fixture:
+  quadrant/gram-grid-punct-y-axis-top-bare] [fixture:
+  quadrant/db-grid-semicolon-acc-descr] [fixture:
+  quadrant/db-grid-semicolon-acc-descr-block] [fixture:
+  quadrant/db-grid-semicolon-acc-title] [fixture:
+  quadrant/db-grid-semicolon-point-quoted] [fixture:
+  quadrant/db-grid-semicolon-quadrant-quoted] [fixture:
+  quadrant/db-grid-semicolon-title] [fixture:
+  quadrant/db-grid-semicolon-x-axis-quoted] [fixture:
+  quadrant/db-grid-semicolon-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-semicolon-y-axis-quoted] [fixture:
+  quadrant/db-grid-semicolon-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-semicolon-class-name] [fixture:
+  quadrant/gram-grid-semicolon-classdef-name] [fixture:
+  quadrant/gram-grid-semicolon-point-bare] [fixture:
+  quadrant/gram-grid-semicolon-quadrant-bare] [fixture:
+  quadrant/gram-grid-semicolon-x-axis-bare] [fixture:
+  quadrant/gram-grid-semicolon-x-axis-right-bare] [fixture:
+  quadrant/gram-grid-semicolon-y-axis-bare] [fixture:
+  quadrant/gram-grid-semicolon-y-axis-top-bare] [fixture:
+  quadrant/db-grid-colon-acc-descr] [fixture:
+  quadrant/db-grid-colon-acc-descr-block] [fixture:
+  quadrant/db-grid-colon-acc-title] [fixture:
+  quadrant/db-grid-colon-classdef-name] [fixture:
+  quadrant/db-grid-colon-point-quoted] [fixture:
+  quadrant/db-grid-colon-quadrant-quoted] [fixture:
+  quadrant/db-grid-colon-title] [fixture: quadrant/db-grid-colon-x-axis-quoted]
+  [fixture: quadrant/db-grid-colon-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-colon-y-axis-quoted] [fixture:
+  quadrant/db-grid-colon-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-colon-class-name] [fixture:
+  quadrant/gram-grid-colon-point-bare] [fixture:
+  quadrant/gram-grid-colon-quadrant-bare] [fixture:
+  quadrant/gram-grid-colon-x-axis-bare] [fixture:
+  quadrant/gram-grid-colon-x-axis-right-bare] [fixture:
+  quadrant/gram-grid-colon-y-axis-bare] [fixture:
+  quadrant/gram-grid-colon-y-axis-top-bare] [fixture:
+  quadrant/db-grid-arrow-acc-descr] [fixture:
+  quadrant/db-grid-arrow-acc-descr-block] [fixture:
+  quadrant/db-grid-arrow-acc-title] [fixture:
+  quadrant/db-grid-arrow-point-quoted] [fixture:
+  quadrant/db-grid-arrow-quadrant-quoted] [fixture:
+  quadrant/db-grid-arrow-title] [fixture: quadrant/db-grid-arrow-x-axis-bare]
+  [fixture: quadrant/db-grid-arrow-x-axis-quoted] [fixture:
+  quadrant/db-grid-arrow-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-arrow-y-axis-bare] [fixture:
+  quadrant/db-grid-arrow-y-axis-quoted] [fixture:
+  quadrant/db-grid-arrow-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-arrow-class-name] [fixture:
+  quadrant/gram-grid-arrow-classdef-name] [fixture:
+  quadrant/gram-grid-arrow-point-bare] [fixture:
+  quadrant/gram-grid-arrow-quadrant-bare] [fixture:
+  quadrant/gram-grid-arrow-x-axis-right-bare] [fixture:
+  quadrant/gram-grid-arrow-y-axis-top-bare] [fixture:
+  quadrant/db-grid-quote-acc-descr] [fixture:
+  quadrant/db-grid-quote-acc-descr-block] [fixture:
+  quadrant/db-grid-quote-acc-title] [fixture: quadrant/db-grid-quote-title]
+  [fixture: quadrant/gram-grid-quote-class-name] [fixture:
+  quadrant/gram-grid-quote-classdef-name] [fixture:
+  quadrant/gram-grid-quote-point-bare] [fixture:
+  quadrant/gram-grid-quote-point-quoted] [fixture:
+  quadrant/gram-grid-quote-quadrant-bare] [fixture:
+  quadrant/gram-grid-quote-quadrant-quoted] [fixture:
+  quadrant/gram-grid-quote-x-axis-bare] [fixture:
+  quadrant/gram-grid-quote-x-axis-quoted] [fixture:
+  quadrant/gram-grid-quote-x-axis-right-bare] [fixture:
+  quadrant/gram-grid-quote-x-axis-right-quoted] [fixture:
+  quadrant/gram-grid-quote-y-axis-bare] [fixture:
+  quadrant/gram-grid-quote-y-axis-quoted] [fixture:
+  quadrant/gram-grid-quote-y-axis-top-bare] [fixture:
+  quadrant/gram-grid-quote-y-axis-top-quoted] [fixture:
+  quadrant/db-grid-backtick-acc-descr] [fixture:
+  quadrant/db-grid-backtick-acc-descr-block] [fixture:
+  quadrant/db-grid-backtick-acc-title] [fixture:
+  quadrant/db-grid-backtick-point-bare] [fixture:
+  quadrant/db-grid-backtick-point-quoted] [fixture:
+  quadrant/db-grid-backtick-quadrant-bare] [fixture:
+  quadrant/db-grid-backtick-quadrant-quoted] [fixture:
+  quadrant/db-grid-backtick-title] [fixture:
+  quadrant/db-grid-backtick-x-axis-bare] [fixture:
+  quadrant/db-grid-backtick-x-axis-quoted] [fixture:
+  quadrant/db-grid-backtick-x-axis-right-bare] [fixture:
+  quadrant/db-grid-backtick-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-backtick-y-axis-bare] [fixture:
+  quadrant/db-grid-backtick-y-axis-quoted] [fixture:
+  quadrant/db-grid-backtick-y-axis-top-bare] [fixture:
+  quadrant/db-grid-backtick-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-backtick-class-name] [fixture:
+  quadrant/gram-grid-backtick-classdef-name] [fixture:
+  quadrant/db-grid-percent-acc-descr] [fixture:
+  quadrant/db-grid-percent-acc-descr-block] [fixture:
+  quadrant/db-grid-percent-acc-title] [fixture:
+  quadrant/db-grid-percent-point-bare] [fixture:
+  quadrant/db-grid-percent-point-quoted] [fixture:
+  quadrant/db-grid-percent-quadrant-bare] [fixture:
+  quadrant/db-grid-percent-quadrant-quoted] [fixture:
+  quadrant/db-grid-percent-title] [fixture:
+  quadrant/db-grid-percent-x-axis-bare] [fixture:
+  quadrant/db-grid-percent-x-axis-quoted] [fixture:
+  quadrant/db-grid-percent-x-axis-right-bare] [fixture:
+  quadrant/db-grid-percent-x-axis-right-quoted] [fixture:
+  quadrant/db-grid-percent-y-axis-bare] [fixture:
+  quadrant/db-grid-percent-y-axis-quoted] [fixture:
+  quadrant/db-grid-percent-y-axis-top-bare] [fixture:
+  quadrant/db-grid-percent-y-axis-top-quoted] [fixture:
+  quadrant/gram-grid-percent-class-name] [fixture:
+  quadrant/gram-grid-percent-classdef-name] [fixture:
+  quadrant/db-grid-empty-x-axis-right-bare] [fixture:
+  quadrant/db-grid-empty-y-axis-top-bare] [fixture:
+  quadrant/gram-grid-empty-acc-descr] [fixture:
+  quadrant/gram-grid-empty-acc-title] [fixture:
+  quadrant/gram-grid-empty-classdef-name] [fixture:
+  quadrant/gram-grid-empty-point-bare] [fixture:
+  quadrant/gram-grid-empty-quadrant-bare] [fixture:
+  quadrant/gram-grid-empty-quadrant-quoted] [fixture:
+  quadrant/gram-grid-empty-x-axis-bare] [fixture:
+  quadrant/gram-grid-empty-y-axis-bare]
+- The title of the frontmatter is the title of the chart, a quoted string or a
+  number being the text, and the empty title being the empty text; the
+  delimiters can be indented, and the lines can end with a CRLF. A frontmatter
+  with settings and no title leaves the title to the statements, and a statement
+  that is not a title keeps the title of the frontmatter. The spaces around the
+  title go and those inside stay, a folded YAML title is one line with a line
+  feed at its end, and a U+FEFF before the header after the frontmatter changes
+  nothing. A frontmatter that is not valid YAML is rejected, and a tag that
+  starts in a field of the frontmatter and ends in the diagram has its quotes
+  changed as one tag. [fixture: quadrant/db-frontmatter-crlf] [fixture:
+  quadrant/div-frontmatter-html-tag-starts-in-field] [fixture:
+  quadrant/db-frontmatter-indented-delimiters] [fixture:
+  quadrant/db-frontmatter-no-title] [fixture:
+  quadrant/db-frontmatter-then-bom-header] [fixture:
+  quadrant/db-frontmatter-title-empty] [fixture:
+  quadrant/db-frontmatter-title-number] [fixture:
+  quadrant/db-frontmatter-title-quoted] [fixture:
+  quadrant/db-frontmatter-title-spaces] [fixture:
+  quadrant/db-frontmatter-title-with-quadrant-statement] [fixture:
+  quadrant/db-frontmatter-title-yaml-multiline] [fixture:
+  quadrant/db-frontmatter-with-quadrant-config] [fixture:
+  quadrant/db-frontmatter-with-theme] [fixture:
+  quadrant/div-frontmatter-invalid-yaml]
+- The settings of the chart (`quadrantChart`: the width and the height, the
+  paddings and font sizes, the position of the axes, the radius of the points),
+  the theme, and its variables change nothing in the Db, whether the site, the
+  frontmatter, or a directive gives them: the radius of a point is the one the
+  text gave, and a point with no radius has none. The settings `showXAxis` and
+  `showYAxis`, which the schema does not list, hide the labels of the layout,
+  and the summary reads the texts of the axes from the labels; where a site sets
+  one of them false and the text sets a text of that axis, the summary would
+  lose the text, so `runMermaid()` stops with a `MermaidEnvironmentError` (a
+  directive and the frontmatter do not change these settings). [fixture:
+  quadrant/config-settings-chart] [fixture:
+  quadrant/config-settings-max-text-size] [fixture:
+  quadrant/config-settings-point-radius]
+- The texts hold the characters replaced under a securityLevel that is not one
+  of mermaid.js's values (`other`) with `htmlLabels` unset, in the title, the
+  accessibility title, the texts of the axes and the quadrants, and the names of
+  the points; with `htmlLabels` false, under `loose`, and under `sandbox` they
+  are as written, and with the default settings a tag is kept as it is.
+  [fixture: quadrant/config-security-level-default-script] [fixture:
+  quadrant/config-security-level-loose-all] [fixture:
+  quadrant/config-security-level-other-all] [fixture:
+  quadrant/config-security-level-other-flowchart-html-labels-false] [fixture:
+  quadrant/config-security-level-other-html-labels-false] [fixture:
+  quadrant/config-security-level-other-script] [fixture:
+  quadrant/config-security-level-sandbox-all]
+- The style line rule has the forms that it had in other diagrams. The keyword
+  in another case (`Style:#x;y`), a space between the `:` and the `#`, and no
+  `#` keep the `;`, which then ends a character reference where a `#` stands
+  before it; with two `;` the last is dropped and the first stays; `classDef:`
+  is a keyword of the rule too. A `;` on another line of a text in quotes is
+  kept, and a line inside quotes with the keyword is a line of its own. The `;`
+  that would end a statement is dropped, so that
+  `quadrant-1 "style:#a"; quadrant-2 B` and two axis statements with a `;`
+  between them are joined and rejected, while the `;` that ends a point is
+  dropped and the point still ends at the end of its line, and a `;` in a title
+  is dropped, so that the title holds the rest of the line. [fixture:
+  quadrant/db-style-line-classdef-keyword-acc-title] [fixture:
+  quadrant/db-style-line-classdef-keyword-quadrant-quoted] [fixture:
+  quadrant/db-style-line-classdef-keyword-title] [fixture:
+  quadrant/db-style-line-hash-on-another-line-quoted] [fixture:
+  quadrant/db-style-line-ignored-in-point] [fixture:
+  quadrant/db-style-line-ignored-in-value] [fixture:
+  quadrant/db-style-line-keyword-on-another-line-quoted] [fixture:
+  quadrant/db-style-line-no-hash-acc-title] [fixture:
+  quadrant/db-style-line-no-hash-quadrant-quoted] [fixture:
+  quadrant/db-style-line-no-hash-title] [fixture:
+  quadrant/db-style-line-semicolon-on-another-line-quoted] [fixture:
+  quadrant/db-style-line-semicolon-statement-separator-in-title] [fixture:
+  quadrant/db-style-line-space-after-colon-acc-title] [fixture:
+  quadrant/db-style-line-space-after-colon-quadrant-quoted] [fixture:
+  quadrant/db-style-line-space-after-colon-title] [fixture:
+  quadrant/db-style-line-two-semicolons-acc-title] [fixture:
+  quadrant/db-style-line-two-semicolons-quadrant-quoted] [fixture:
+  quadrant/db-style-line-two-semicolons-title] [fixture:
+  quadrant/db-style-line-upper-case-acc-title] [fixture:
+  quadrant/db-style-line-upper-case-quadrant-quoted] [fixture:
+  quadrant/db-style-line-upper-case-title] [fixture:
+  quadrant/gram-style-line-ignored-between-axis-statements] [fixture:
+  quadrant/gram-style-line-ignored-between-statements]
+- A keyword with its text on the next line is rejected: `x-axis`, `y-axis`,
+  `quadrant-1`, `classDef`, and `title`, whether a blank line, a comment line,
+  or a directive line stands between, since the text is a statement of its own.
+  The accessibility keywords take the next line as their text: comment lines and
+  directive lines between are removed, and the line may say anything, a point, a
+  quadrant statement, a `classDef` line, or a `title` line, which then sets no
+  title. [fixture: quadrant/gram-keyword-line-feed-classdef] [fixture:
+  quadrant/gram-keyword-line-feed-quadrant] [fixture:
+  quadrant/gram-keyword-line-feed-title] [fixture:
+  quadrant/gram-keyword-line-feed-x-axis] [fixture:
+  quadrant/gram-keyword-line-feed-y-axis] [fixture:
+  quadrant/gram-keyword-comment-line-classdef] [fixture:
+  quadrant/gram-keyword-comment-line-quadrant] [fixture:
+  quadrant/gram-keyword-comment-line-title] [fixture:
+  quadrant/gram-keyword-comment-line-x-axis] [fixture:
+  quadrant/gram-keyword-comment-line-y-axis] [fixture:
+  quadrant/gram-keyword-directive-line-classdef] [fixture:
+  quadrant/gram-keyword-directive-line-quadrant] [fixture:
+  quadrant/gram-keyword-directive-line-x-axis] [fixture:
+  quadrant/gram-keyword-directive-line-y-axis] [fixture:
+  quadrant/gram-keyword-blank-line-classdef] [fixture:
+  quadrant/gram-keyword-blank-line-quadrant] [fixture:
+  quadrant/gram-keyword-blank-line-x-axis] [fixture:
+  quadrant/gram-keyword-blank-line-y-axis] [fixture:
+  quadrant/db-acc-title-comment-line-before-text] [fixture:
+  quadrant/db-acc-title-directive-line-before-text] [fixture:
+  quadrant/db-acc-title-statement-as-text] [fixture:
+  quadrant/db-acc-title-quadrant-as-text] [fixture:
+  quadrant/db-acc-descr-comment-line-before-text] [fixture:
+  quadrant/db-acc-descr-classdef-as-text] [fixture:
+  quadrant/db-acc-descr-title-text-keeps-title]
+- What follows a keyword glued to it: after `title`, a character outside ASCII
+  or a dash is the start of the title (`titleé` is the title `é`), while a digit
+  or an underscore makes a word and the line is rejected; `accTitle` and
+  `accDescr` need the colon next to them, and `classDef` the space, so any
+  suffix is rejected; `x-axis`, `y-axis`, and `quadrant-1` are followed by the
+  text, which may start with a character outside ASCII, a digit, or an
+  underscore, but not with a dash. An underscore or a U+FEFF after the header is
+  a text where no statement starts. [fixture:
+  quadrant/db-keyword-suffix-quadrant-digit] [fixture:
+  quadrant/db-keyword-suffix-quadrant-non-ascii] [fixture:
+  quadrant/db-keyword-suffix-quadrant-underscore] [fixture:
+  quadrant/db-keyword-suffix-title-dash] [fixture:
+  quadrant/db-keyword-suffix-title-non-ascii] [fixture:
+  quadrant/db-keyword-suffix-x-axis-digit] [fixture:
+  quadrant/db-keyword-suffix-x-axis-non-ascii] [fixture:
+  quadrant/db-keyword-suffix-x-axis-underscore] [fixture:
+  quadrant/db-keyword-suffix-y-axis-digit] [fixture:
+  quadrant/db-keyword-suffix-y-axis-non-ascii] [fixture:
+  quadrant/db-keyword-suffix-y-axis-underscore] [fixture:
+  quadrant/gram-keyword-suffix-acc-descr-dash] [fixture:
+  quadrant/gram-keyword-suffix-acc-descr-digit] [fixture:
+  quadrant/gram-keyword-suffix-acc-descr-non-ascii] [fixture:
+  quadrant/gram-keyword-suffix-acc-descr-underscore] [fixture:
+  quadrant/gram-keyword-suffix-acc-title-dash] [fixture:
+  quadrant/gram-keyword-suffix-acc-title-digit] [fixture:
+  quadrant/gram-keyword-suffix-acc-title-non-ascii] [fixture:
+  quadrant/gram-keyword-suffix-acc-title-underscore] [fixture:
+  quadrant/gram-keyword-suffix-classdef-dash] [fixture:
+  quadrant/gram-keyword-suffix-classdef-digit] [fixture:
+  quadrant/gram-keyword-suffix-classdef-non-ascii] [fixture:
+  quadrant/gram-keyword-suffix-classdef-underscore] [fixture:
+  quadrant/gram-keyword-suffix-quadrant-dash] [fixture:
+  quadrant/gram-keyword-suffix-title-digit] [fixture:
+  quadrant/gram-keyword-suffix-title-underscore] [fixture:
+  quadrant/gram-keyword-suffix-x-axis-dash] [fixture:
+  quadrant/gram-keyword-suffix-y-axis-dash] [fixture:
+  quadrant/header-underscore-suffix] [fixture: quadrant/header-bom-after]
+  [fixture: quadrant/header-bom-after-statement]
+- The keywords `title`, `x-axis`, and `classDef` need no boundary before them:
+  after a `.`, a dash, an underscore, or a digit inside a bare text or a name
+  they are the keyword, and the line is rejected, while inside a title `title`
+  is text. The word `quadrantChart` inside a bare text is the header, and the
+  line is rejected, while inside a title it is text. [fixture:
+  quadrant/db-keyword-after-dot-in-title] [fixture:
+  quadrant/gram-keyword-after-dash-in-name] [fixture:
+  quadrant/gram-keyword-after-dash-in-quadrant-text] [fixture:
+  quadrant/gram-keyword-after-digit-in-name] [fixture:
+  quadrant/gram-keyword-after-digit-in-quadrant-text] [fixture:
+  quadrant/gram-keyword-after-dot-in-name] [fixture:
+  quadrant/gram-keyword-after-dot-in-quadrant-text] [fixture:
+  quadrant/gram-keyword-after-underscore-in-name] [fixture:
+  quadrant/gram-keyword-after-underscore-in-quadrant-text] [fixture:
+  quadrant/gram-keyword-axis-after-dot-in-quadrant-text] [fixture:
+  quadrant/gram-keyword-classdef-after-dot-in-name] [fixture:
+  quadrant/db-keyword-header-in-word] [fixture:
+  quadrant/gram-keyword-header-in-quadrant-text]
+- The names of `Object.prototype` are plain names of points and of classes, a
+  class named `constructor` is defined and used like any other, and a second
+  definition replaces the first. [fixture:
+  quadrant/db-name-prototype-definegetter] [fixture:
+  quadrant/db-name-prototype-isprototypeof] [fixture:
+  quadrant/db-name-prototype-lookupgetter] [fixture:
+  quadrant/db-name-prototype-propertyisenumerable] [fixture:
+  quadrant/db-name-prototype-tolocalestring] [fixture:
+  quadrant/db-name-prototype-valueof] [fixture:
+  quadrant/db-class-prototype-value-of] [fixture:
+  quadrant/db-classdef-prototype-to-string-redefined] [fixture:
+  quadrant/db-classdef-prototype-twice] [fixture:
+  quadrant/db-classdef-prototype-used]
+- Several definitions of one name: the last of three titles, or of three texts
+  of a quadrant, is the value; two quadrants set in turn each keep their last
+  text; for an axis, the third statement sets what it names, so that a left text
+  with the arrow is replaced by a text without it and the right text of the
+  first stays, and a third statement with two texts sets both; the third
+  definition of a class replaces the second, and with a partner class in between
+  each class keeps its last styles and the order of first definitions stays.
+  [fixture: quadrant/db-title-three-times] [fixture:
+  quadrant/db-quadrant-three-times] [fixture:
+  quadrant/db-quadrant-three-times-with-partner] [fixture:
+  quadrant/db-x-axis-three-times-arrow-forms] [fixture:
+  quadrant/db-x-axis-three-times-then-both] [fixture:
+  quadrant/db-y-axis-three-times-arrow-forms] [fixture:
+  quadrant/db-classdef-three-times] [fixture:
+  quadrant/db-classdef-three-times-partner]
+- An empty block (`{}`, a line feed, a space, blank lines, or a tab inside it)
+  sets nothing, so the description that a line or a block set before it stays,
+  also after two empty blocks; it does not touch the accessibility title. An
+  `accDescr:` with no text at the end of the text is rejected even after a text.
+  [fixture: quadrant/db-acc-descr-empty-block-keeps-block] [fixture:
+  quadrant/db-acc-descr-empty-block-keeps-line-blank-line] [fixture:
+  quadrant/db-acc-descr-empty-block-keeps-line-braces] [fixture:
+  quadrant/db-acc-descr-empty-block-keeps-line-line-feed] [fixture:
+  quadrant/db-acc-descr-empty-block-keeps-line-space] [fixture:
+  quadrant/db-acc-descr-empty-block-keeps-line-tab] [fixture:
+  quadrant/db-acc-descr-empty-block-twice-keeps] [fixture:
+  quadrant/db-acc-title-then-empty-block] [fixture:
+  quadrant/gram-acc-descr-empty-line-after-text]
+- An empty block inside a statement is skipped: in a text of an axis or a
+  quadrant, in a name, after a point, in a `classDef` line, at the start of a
+  statement, and on the header line, where a block with text sets the
+  description. The spaces around the block stay in the text. Right after the
+  keyword of an axis it leaves a space before the text, and the line is
+  rejected, and a block with text inside a statement is a statement of its own,
+  which ends the line before it, so the line is rejected. [fixture:
+  quadrant/db-empty-block-after-point] [fixture:
+  quadrant/db-empty-block-before-statement] [fixture:
+  quadrant/div-empty-block-in-classdef] [fixture:
+  quadrant/div-empty-block-in-name] [fixture:
+  quadrant/div-empty-block-in-quadrant-text] [fixture:
+  quadrant/div-empty-block-in-x-axis-text] [fixture:
+  quadrant/db-empty-block-on-header-line] [fixture:
+  quadrant/gram-empty-block-before-x-axis-text] [fixture:
+  quadrant/gram-block-with-text-in-quadrant-text] [fixture:
+  quadrant/db-block-on-header-line]
+- An empty string is dropped wherever it stands: at the start of a statement or
+  on a line of its own, after or before a text, a word, or a name (the spaces
+  around it stay and a word is joined), among the styles of a point or a class.
+  A statement of nothing but empty strings has no text and is rejected, and so
+  is an empty string between the colon and the bracket of a point or inside the
+  brackets; in a title it is text. [fixture:
+  quadrant/div-empty-string-after-name] [fixture:
+  quadrant/div-empty-string-before-name] [fixture:
+  quadrant/div-empty-string-before-quadrant-text] [fixture:
+  quadrant/div-empty-string-before-statement] [fixture:
+  quadrant/div-empty-string-between-words] [fixture:
+  quadrant/div-empty-string-in-classdef] [fixture:
+  quadrant/div-empty-string-in-point-styles] [fixture:
+  quadrant/div-empty-string-in-quadrant-text] [fixture:
+  quadrant/db-empty-string-in-title] [fixture:
+  quadrant/div-empty-string-inside-word] [fixture:
+  quadrant/div-empty-string-line] [fixture:
+  quadrant/db-empty-string-title-before-statement-line] [fixture:
+  quadrant/gram-empty-string-after-colon] [fixture:
+  quadrant/gram-empty-string-in-brackets] [fixture:
+  quadrant/gram-empty-string-twice-quadrant]
+- Where the word `C4Container`, `C4Component`, `C4Dynamic`, or `C4Deployment`
+  stands in the text, mermaid.js detects a C4 diagram, which rejects the text:
+  in a title, an accessibility text, a text of a quadrant, a name in quotes, and
+  a class name. `C4Context` is detected only at the start of the text, so a name
+  that is `C4Context` is a name. [fixture: quadrant/db-c4-context-in-name]
+  [fixture: quadrant/div-c4-keyword-in-acc-title] [fixture:
+  quadrant/div-c4-keyword-in-class-name] [fixture:
+  quadrant/div-c4-keyword-in-quadrant-text] [fixture:
+  quadrant/div-c4-keyword-in-quoted-name] [fixture:
+  quadrant/div-c4-keyword-in-title]
+- A statement is followed by a CRLF, a CR alone, or the end of the text with no
+  line feed. A tab, a U+FEFF, a no-break space, an ideographic space, a U+2028,
+  and a U+2029 at the end of the line or of the text are skipped after a title,
+  an accessibility text, an axis, and a quadrant, while after a point they are
+  read as a style with no name and rejected, a tab after the styles of a point
+  being skipped, and after a `classDef` line only a tab is skipped. A tab before
+  a statement is skipped, and a U+FEFF before a statement that starts with a
+  keyword is rejected, while a point that starts with it holds it in its name,
+  trimmed. [fixture: quadrant/db-ends-acc-descr-bom-end] [fixture:
+  quadrant/db-ends-acc-descr-bom-end-of-text] [fixture:
+  quadrant/db-ends-acc-descr-cr-end-of-text] [fixture:
+  quadrant/db-ends-acc-descr-crlf-end-of-text] [fixture:
+  quadrant/db-ends-acc-descr-ideographic-end] [fixture:
+  quadrant/db-ends-acc-descr-ideographic-end-of-text] [fixture:
+  quadrant/db-ends-acc-descr-ls-end-of-text] [fixture:
+  quadrant/db-ends-acc-descr-nbsp-end] [fixture:
+  quadrant/db-ends-acc-descr-nbsp-end-of-text] [fixture:
+  quadrant/db-ends-acc-descr-no-line-feed] [fixture:
+  quadrant/db-ends-acc-descr-ps-end-of-text] [fixture:
+  quadrant/db-ends-acc-descr-tab-end] [fixture:
+  quadrant/db-ends-acc-descr-tab-end-of-text] [fixture:
+  quadrant/db-ends-acc-descr-tab-start] [fixture:
+  quadrant/db-ends-acc-title-bom-end] [fixture:
+  quadrant/db-ends-acc-title-bom-end-of-text] [fixture:
+  quadrant/db-ends-acc-title-cr-end-of-text] [fixture:
+  quadrant/db-ends-acc-title-crlf-end-of-text] [fixture:
+  quadrant/db-ends-acc-title-ideographic-end] [fixture:
+  quadrant/db-ends-acc-title-ideographic-end-of-text] [fixture:
+  quadrant/db-ends-acc-title-ls-end-of-text] [fixture:
+  quadrant/db-ends-acc-title-nbsp-end] [fixture:
+  quadrant/db-ends-acc-title-nbsp-end-of-text] [fixture:
+  quadrant/db-ends-acc-title-no-line-feed] [fixture:
+  quadrant/db-ends-acc-title-ps-end-of-text] [fixture:
+  quadrant/db-ends-acc-title-tab-end] [fixture:
+  quadrant/db-ends-acc-title-tab-end-of-text] [fixture:
+  quadrant/db-ends-acc-title-tab-start] [fixture:
+  quadrant/db-ends-classdef-cr-end-of-text] [fixture:
+  quadrant/db-ends-classdef-crlf-end-of-text] [fixture:
+  quadrant/db-ends-classdef-no-line-feed] [fixture:
+  quadrant/db-ends-classdef-tab-end] [fixture:
+  quadrant/db-ends-classdef-tab-end-of-text] [fixture:
+  quadrant/db-ends-classdef-tab-start] [fixture:
+  quadrant/db-ends-point-bom-start] [fixture:
+  quadrant/db-ends-point-class-bom-start] [fixture:
+  quadrant/db-ends-point-class-cr-end-of-text] [fixture:
+  quadrant/db-ends-point-class-crlf-end-of-text] [fixture:
+  quadrant/db-ends-point-class-no-line-feed] [fixture:
+  quadrant/db-ends-point-class-tab-start] [fixture:
+  quadrant/db-ends-point-cr-end-of-text] [fixture:
+  quadrant/db-ends-point-crlf-end-of-text] [fixture:
+  quadrant/db-ends-point-no-line-feed] [fixture:
+  quadrant/db-ends-point-style-bom-start] [fixture:
+  quadrant/db-ends-point-style-cr-end-of-text] [fixture:
+  quadrant/db-ends-point-style-crlf-end-of-text] [fixture:
+  quadrant/db-ends-point-style-no-line-feed] [fixture:
+  quadrant/db-ends-point-style-tab-end] [fixture:
+  quadrant/db-ends-point-style-tab-end-of-text] [fixture:
+  quadrant/db-ends-point-style-tab-start] [fixture:
+  quadrant/db-ends-point-tab-start] [fixture: quadrant/db-ends-quadrant-bom-end]
+  [fixture: quadrant/db-ends-quadrant-bom-end-of-text] [fixture:
+  quadrant/db-ends-quadrant-cr-end-of-text] [fixture:
+  quadrant/db-ends-quadrant-crlf-end-of-text] [fixture:
+  quadrant/db-ends-quadrant-ideographic-end] [fixture:
+  quadrant/db-ends-quadrant-ideographic-end-of-text] [fixture:
+  quadrant/db-ends-quadrant-ls-end-of-text] [fixture:
+  quadrant/db-ends-quadrant-nbsp-end] [fixture:
+  quadrant/db-ends-quadrant-nbsp-end-of-text] [fixture:
+  quadrant/db-ends-quadrant-no-line-feed] [fixture:
+  quadrant/db-ends-quadrant-ps-end-of-text] [fixture:
+  quadrant/db-ends-quadrant-tab-end] [fixture:
+  quadrant/db-ends-quadrant-tab-end-of-text] [fixture:
+  quadrant/db-ends-quadrant-tab-start] [fixture: quadrant/db-ends-title-bom-end]
+  [fixture: quadrant/db-ends-title-bom-end-of-text] [fixture:
+  quadrant/db-ends-title-cr-end-of-text] [fixture:
+  quadrant/db-ends-title-crlf-end-of-text] [fixture:
+  quadrant/db-ends-title-ideographic-end] [fixture:
+  quadrant/db-ends-title-ideographic-end-of-text] [fixture:
+  quadrant/db-ends-title-ls-end-of-text] [fixture:
+  quadrant/db-ends-title-nbsp-end] [fixture:
+  quadrant/db-ends-title-nbsp-end-of-text] [fixture:
+  quadrant/db-ends-title-no-line-feed] [fixture:
+  quadrant/db-ends-title-ps-end-of-text] [fixture:
+  quadrant/db-ends-title-tab-end-of-text] [fixture:
+  quadrant/db-ends-x-axis-bom-end] [fixture:
+  quadrant/db-ends-x-axis-bom-end-of-text] [fixture:
+  quadrant/db-ends-x-axis-cr-end-of-text] [fixture:
+  quadrant/db-ends-x-axis-crlf-end-of-text] [fixture:
+  quadrant/db-ends-x-axis-ideographic-end] [fixture:
+  quadrant/db-ends-x-axis-ideographic-end-of-text] [fixture:
+  quadrant/db-ends-x-axis-ls-end-of-text] [fixture:
+  quadrant/db-ends-x-axis-nbsp-end] [fixture:
+  quadrant/db-ends-x-axis-nbsp-end-of-text] [fixture:
+  quadrant/db-ends-x-axis-no-line-feed] [fixture:
+  quadrant/db-ends-x-axis-ps-end-of-text] [fixture:
+  quadrant/db-ends-x-axis-tab-end] [fixture:
+  quadrant/db-ends-x-axis-tab-end-of-text] [fixture:
+  quadrant/db-ends-x-axis-tab-start] [fixture: quadrant/db-ends-y-axis-bom-end]
+  [fixture: quadrant/db-ends-y-axis-bom-end-of-text] [fixture:
+  quadrant/db-ends-y-axis-cr-end-of-text] [fixture:
+  quadrant/db-ends-y-axis-crlf-end-of-text] [fixture:
+  quadrant/db-ends-y-axis-ideographic-end] [fixture:
+  quadrant/db-ends-y-axis-ideographic-end-of-text] [fixture:
+  quadrant/db-ends-y-axis-ls-end-of-text] [fixture:
+  quadrant/db-ends-y-axis-nbsp-end] [fixture:
+  quadrant/db-ends-y-axis-nbsp-end-of-text] [fixture:
+  quadrant/db-ends-y-axis-no-line-feed] [fixture:
+  quadrant/db-ends-y-axis-ps-end-of-text] [fixture:
+  quadrant/db-ends-y-axis-tab-end] [fixture:
+  quadrant/db-ends-y-axis-tab-end-of-text] [fixture:
+  quadrant/db-ends-y-axis-tab-start] [fixture:
+  quadrant/gram-ends-acc-descr-bom-start] [fixture:
+  quadrant/gram-ends-acc-title-bom-start] [fixture:
+  quadrant/gram-ends-classdef-bom-end] [fixture:
+  quadrant/gram-ends-classdef-bom-end-of-text] [fixture:
+  quadrant/gram-ends-classdef-bom-start] [fixture:
+  quadrant/gram-ends-classdef-ideographic-end] [fixture:
+  quadrant/gram-ends-classdef-ideographic-end-of-text] [fixture:
+  quadrant/gram-ends-classdef-ls-end-of-text] [fixture:
+  quadrant/gram-ends-classdef-nbsp-end] [fixture:
+  quadrant/gram-ends-classdef-nbsp-end-of-text] [fixture:
+  quadrant/gram-ends-classdef-ps-end-of-text] [fixture:
+  quadrant/gram-ends-point-bom-end] [fixture:
+  quadrant/gram-ends-point-bom-end-of-text] [fixture:
+  quadrant/gram-ends-point-class-bom-end] [fixture:
+  quadrant/gram-ends-point-class-bom-end-of-text] [fixture:
+  quadrant/gram-ends-point-class-ideographic-end] [fixture:
+  quadrant/gram-ends-point-class-ideographic-end-of-text] [fixture:
+  quadrant/gram-ends-point-class-ls-end-of-text] [fixture:
+  quadrant/gram-ends-point-class-nbsp-end] [fixture:
+  quadrant/gram-ends-point-class-nbsp-end-of-text] [fixture:
+  quadrant/gram-ends-point-class-ps-end-of-text] [fixture:
+  quadrant/gram-ends-point-class-tab-end] [fixture:
+  quadrant/gram-ends-point-class-tab-end-of-text] [fixture:
+  quadrant/gram-ends-point-ideographic-end] [fixture:
+  quadrant/gram-ends-point-ideographic-end-of-text] [fixture:
+  quadrant/gram-ends-point-ls-end-of-text] [fixture:
+  quadrant/gram-ends-point-nbsp-end] [fixture:
+  quadrant/gram-ends-point-nbsp-end-of-text] [fixture:
+  quadrant/gram-ends-point-ps-end-of-text] [fixture:
+  quadrant/gram-ends-point-style-bom-end] [fixture:
+  quadrant/gram-ends-point-style-bom-end-of-text] [fixture:
+  quadrant/gram-ends-point-style-ideographic-end] [fixture:
+  quadrant/gram-ends-point-style-ideographic-end-of-text] [fixture:
+  quadrant/gram-ends-point-style-ls-end-of-text] [fixture:
+  quadrant/gram-ends-point-style-nbsp-end] [fixture:
+  quadrant/gram-ends-point-style-nbsp-end-of-text] [fixture:
+  quadrant/gram-ends-point-style-ps-end-of-text] [fixture:
+  quadrant/gram-ends-point-tab-end-of-text] [fixture:
+  quadrant/gram-ends-quadrant-bom-start] [fixture:
+  quadrant/gram-ends-title-bom-start] [fixture:
+  quadrant/gram-ends-x-axis-bom-start] [fixture:
+  quadrant/gram-ends-y-axis-bom-start]
+- A line of nothing but white space stands before the first statement, between
+  statements, and at the end of the text when it is spaces and tabs; a line of a
+  no-break space, an ideographic space, a U+FEFF, or a U+2028 is a text where no
+  statement starts, and the text is rejected. [fixture:
+  quadrant/db-whitespace-line-between-spaces-and-tab] [fixture:
+  quadrant/db-whitespace-line-between-tab] [fixture:
+  quadrant/db-whitespace-line-first-spaces-and-tab] [fixture:
+  quadrant/db-whitespace-line-first-tab] [fixture:
+  quadrant/db-whitespace-line-last-spaces-and-tab] [fixture:
+  quadrant/db-whitespace-line-last-tab] [fixture:
+  quadrant/gram-whitespace-line-between-bom] [fixture:
+  quadrant/gram-whitespace-line-between-ideographic] [fixture:
+  quadrant/gram-whitespace-line-between-ls] [fixture:
+  quadrant/gram-whitespace-line-between-nbsp] [fixture:
+  quadrant/gram-whitespace-line-first-bom] [fixture:
+  quadrant/gram-whitespace-line-first-ideographic] [fixture:
+  quadrant/gram-whitespace-line-first-ls] [fixture:
+  quadrant/gram-whitespace-line-first-nbsp] [fixture:
+  quadrant/gram-whitespace-line-last-bom] [fixture:
+  quadrant/gram-whitespace-line-last-ideographic] [fixture:
+  quadrant/gram-whitespace-line-last-ls] [fixture:
+  quadrant/gram-whitespace-line-last-nbsp]
+- A comment, a `;`, or a directive after a statement has the further forms of
+  the earlier diagrams: a space and a `;`, two `;`, two `;` with spaces, and two
+  directives end every statement as one does, except that `;;` after a
+  `classDef` line is rejected. A directive with no closing takes the rest of the
+  text, so the lines after it are not read, and a directive that is just
+  `%%{init` takes the word at the start of the next line, which joins that
+  line's rest to the text (`R U`, `T -1 U`), or to the styles, which are then
+  rejected. [fixture: quadrant/db-after-acc-descr-space-semicolon] [fixture:
+  quadrant/db-after-acc-title-space-semicolon] [fixture:
+  quadrant/db-after-classdef-space-semicolon] [fixture:
+  quadrant/db-after-point-class-space-semicolon] [fixture:
+  quadrant/db-after-point-space-semicolon] [fixture:
+  quadrant/db-after-point-style-space-semicolon] [fixture:
+  quadrant/db-after-quadrant-space-semicolon] [fixture:
+  quadrant/db-after-title-space-semicolon] [fixture:
+  quadrant/db-after-x-axis-space-semicolon] [fixture:
+  quadrant/db-after-y-axis-space-semicolon] [fixture:
+  quadrant/db-after-acc-descr-double-semicolon] [fixture:
+  quadrant/db-after-acc-title-double-semicolon] [fixture:
+  quadrant/db-after-point-class-double-semicolon] [fixture:
+  quadrant/db-after-point-double-semicolon] [fixture:
+  quadrant/db-after-point-style-double-semicolon] [fixture:
+  quadrant/db-after-quadrant-double-semicolon] [fixture:
+  quadrant/db-after-title-double-semicolon] [fixture:
+  quadrant/db-after-x-axis-double-semicolon] [fixture:
+  quadrant/db-after-y-axis-double-semicolon] [fixture:
+  quadrant/gram-after-classdef-double-semicolon] [fixture:
+  quadrant/db-after-acc-descr-spaced-semicolons] [fixture:
+  quadrant/db-after-acc-title-spaced-semicolons] [fixture:
+  quadrant/db-after-classdef-spaced-semicolons] [fixture:
+  quadrant/db-after-point-class-spaced-semicolons] [fixture:
+  quadrant/db-after-point-spaced-semicolons] [fixture:
+  quadrant/db-after-point-style-spaced-semicolons] [fixture:
+  quadrant/db-after-quadrant-spaced-semicolons] [fixture:
+  quadrant/db-after-title-spaced-semicolons] [fixture:
+  quadrant/db-after-x-axis-spaced-semicolons] [fixture:
+  quadrant/db-after-y-axis-spaced-semicolons] [fixture:
+  quadrant/db-after-acc-descr-directive-unclosed] [fixture:
+  quadrant/db-after-acc-title-directive-unclosed] [fixture:
+  quadrant/db-after-classdef-directive-unclosed] [fixture:
+  quadrant/db-after-point-class-directive-unclosed] [fixture:
+  quadrant/db-after-point-directive-unclosed] [fixture:
+  quadrant/db-after-point-style-directive-unclosed] [fixture:
+  quadrant/db-after-quadrant-directive-unclosed] [fixture:
+  quadrant/db-after-title-directive-unclosed] [fixture:
+  quadrant/db-after-x-axis-directive-unclosed] [fixture:
+  quadrant/db-after-y-axis-directive-unclosed] [fixture:
+  quadrant/db-after-acc-descr-directive-closed-twice] [fixture:
+  quadrant/db-after-acc-title-directive-closed-twice] [fixture:
+  quadrant/db-after-classdef-directive-closed-twice] [fixture:
+  quadrant/db-after-point-class-directive-closed-twice] [fixture:
+  quadrant/db-after-point-directive-closed-twice] [fixture:
+  quadrant/db-after-point-style-directive-closed-twice] [fixture:
+  quadrant/db-after-quadrant-directive-closed-twice] [fixture:
+  quadrant/db-after-title-directive-closed-twice] [fixture:
+  quadrant/db-after-x-axis-directive-closed-twice] [fixture:
+  quadrant/db-after-y-axis-directive-closed-twice] [fixture:
+  quadrant/db-after-acc-descr-directive-word-unclosed] [fixture:
+  quadrant/db-after-acc-title-directive-word-unclosed] [fixture:
+  quadrant/db-after-quadrant-directive-word-unclosed] [fixture:
+  quadrant/db-after-title-directive-word-unclosed] [fixture:
+  quadrant/db-after-x-axis-directive-word-unclosed] [fixture:
+  quadrant/db-after-y-axis-directive-word-unclosed] [fixture:
+  quadrant/gram-after-classdef-directive-word-unclosed] [fixture:
+  quadrant/gram-after-point-class-directive-word-unclosed] [fixture:
+  quadrant/gram-after-point-directive-word-unclosed] [fixture:
+  quadrant/gram-after-point-style-directive-word-unclosed]
+- A directive that is cut off takes more than its own text: `%%{init` at the
+  start of a line takes the word at the start of the next line, which is the
+  keyword, and the rest of that line is rejected; so does `%%{init:`, while
+  `%%{init: x` takes `x` and leaves the next line, and `%%{ init }%%` with its
+  closing is removed. A directive is removed at the start of a title, a text of
+  an axis or a quadrant, a name, and the styles of a class, and between a
+  keyword and its text. [fixture:
+  quadrant/gram-directive-word-unclosed-takes-keyword] [fixture:
+  quadrant/gram-directive-colon-unclosed-takes-keyword] [fixture:
+  quadrant/db-directive-argument-word-unclosed] [fixture:
+  quadrant/db-directive-name-only-closed] [fixture:
+  quadrant/db-directive-at-start-of-axis-text] [fixture:
+  quadrant/db-directive-at-start-of-classdef-styles] [fixture:
+  quadrant/db-directive-at-start-of-name] [fixture:
+  quadrant/db-directive-at-start-of-quadrant-text] [fixture:
+  quadrant/db-directive-at-start-of-title] [fixture:
+  quadrant/db-directive-glued-before-axis-text] [fixture:
+  quadrant/db-directive-glued-before-quadrant-text] [fixture:
+  quadrant/db-directive-glued-before-title-text] [fixture:
+  quadrant/db-directive-glued-after-classdef]
+- A comment line and a directive line inside a value that runs over several
+  lines are removed as lines of their own: inside a block of a description, a
+  text in quotes, a markdown string, the name of a point in quotes, and the
+  brackets of a point, the lines before and after them are joined by a line
+  feed, a directive line leaving an empty line; a `%%` after a space inside
+  quotes is part of the text. [fixture:
+  quadrant/db-comment-line-inside-acc-block] [fixture:
+  quadrant/db-comment-line-inside-brackets] [fixture:
+  quadrant/db-comment-line-inside-markdown] [fixture:
+  quadrant/db-comment-line-inside-quoted-axis] [fixture:
+  quadrant/db-comment-line-inside-quoted-name] [fixture:
+  quadrant/db-comment-line-inside-quoted-text] [fixture:
+  quadrant/db-directive-line-inside-brackets] [fixture:
+  quadrant/db-directive-inside-quoted-multiline] [fixture:
+  quadrant/db-directive-inside-acc-block-line] [fixture:
+  quadrant/db-comment-inline-in-quoted-block]
+- The numbers that the Db reads from text are only the digits of a radius: `-0`,
+  `NaN`, `Infinity`, `1e3`, `0x10`, a number followed by text, a plus sign, an
+  underscore, a digit outside ASCII, and fullwidth digits are rejected; a radius
+  above the safe integers is the number a double holds, 309 digits that a double
+  still holds are a number, and 310 are infinite and the text `Infinity` in the
+  summary. A stroke width that is negative or has text after the unit is
+  rejected, and `0px` is kept as written. [fixture:
+  quadrant/db-radius-above-safe-integer] [fixture:
+  quadrant/db-radius-first-infinite] [fixture:
+  quadrant/db-radius-largest-finite] [fixture:
+  quadrant/gram-radius-arabic-digit] [fixture: quadrant/gram-radius-exponent]
+  [fixture: quadrant/gram-radius-fullwidth-digits] [fixture:
+  quadrant/gram-radius-hexadecimal] [fixture: quadrant/gram-radius-infinity]
+  [fixture: quadrant/gram-radius-nan] [fixture:
+  quadrant/gram-radius-negative-zero] [fixture: quadrant/gram-radius-plus]
+  [fixture: quadrant/gram-radius-space-text-after-number] [fixture:
+  quadrant/gram-radius-text-after-number] [fixture:
+  quadrant/gram-radius-underscore] [fixture:
+  quadrant/gram-stroke-width-negative] [fixture:
+  quadrant/gram-stroke-width-text-after-unit] [fixture:
+  quadrant/db-stroke-width-zero]
+- A text that ends inside a context that is not closed is rejected where the
+  context needs more: a name or a text in quotes with no closing quote, a
+  markdown string with no closing, a point cut after the comma or the bracket, a
+  class marker or a class name with no point, `accTitle:` and `accDescr:` at the
+  end, a block with no closing brace, and `classDef` cut after a colon; an arrow
+  at the end is the arrow with no right text, `title` at the end is the empty
+  title, and a directive cut at the end takes nothing. [fixture:
+  quadrant/db-unclosed-axis-arrow-at-end] [fixture:
+  quadrant/db-unclosed-directive-at-end] [fixture:
+  quadrant/db-unclosed-title-keyword-at-end] [fixture:
+  quadrant/gram-unclosed-acc-block-after-text] [fixture:
+  quadrant/gram-unclosed-acc-descr-at-end] [fixture:
+  quadrant/gram-unclosed-acc-title-at-end] [fixture:
+  quadrant/gram-unclosed-axis-quote-at-end] [fixture:
+  quadrant/gram-unclosed-class-marker-at-end] [fixture:
+  quadrant/gram-unclosed-class-name-at-end] [fixture:
+  quadrant/gram-unclosed-classdef-at-end] [fixture:
+  quadrant/gram-unclosed-markdown-at-end] [fixture:
+  quadrant/gram-unclosed-name-quote-at-end] [fixture:
+  quadrant/gram-unclosed-point-after-comma-at-end] [fixture:
+  quadrant/gram-unclosed-quadrant-quote-at-end]

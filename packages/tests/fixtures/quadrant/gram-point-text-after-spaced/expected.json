@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, points: a spaced word after the point is read as styles too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named x is not supported."
+  }
+}

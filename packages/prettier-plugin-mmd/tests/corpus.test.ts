@@ -73,6 +73,7 @@ const allFixtures = [
   ...(await loadFixtures("timeline")),
   ...(await loadFixtures("sankey")),
   ...(await loadFixtures("xychart")),
+  ...(await loadFixtures("quadrant")),
 ]
 const fixtures = allFixtures.filter(isFormatted)
 const rejectedFixtures = allFixtures.filter(isRejected)

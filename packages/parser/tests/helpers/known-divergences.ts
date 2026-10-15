@@ -268,8 +268,8 @@ function rejectsForEmptyForm(
  * text has a `%%` where the two rules of mermaid.js that the divergence
  * names read otherwise than this specification, the Gantt text a `%`
  * right after the first character of a unit, the journey text a `%%`
- * there, or the XY chart text a comment right after a unit of one
- * character. The divergence goes both ways.
+ * there, or the XY chart or the quadrant chart text a comment right
+ * after a unit of one character. The divergence goes both ways.
  */
 function commentTakesCharacter(text: string): boolean {
   const places =

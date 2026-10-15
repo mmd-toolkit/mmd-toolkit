@@ -109,6 +109,10 @@ mermaid.js の行の規則は、`style` か `classDef`、その後の `:`、
 `;` は書かれたままにします
 （[`;` が終わらせる行](./compatibility.ja.md#-が終わらせる行)を参照）。
 その行がヘッダーの行であるときは、文はヘッダーの行に残ります。
+行の末尾にある、規則が無視する `;` は落とします。
+印字した行には規則が読む `;` がないので、
+その空白はほかと同じに整えます。
+[fixture: statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
 [fixture: statements-one-per-line/line-rule-line-kept-together]
 [fixture: statements-one-per-line/line-rule-line-after-the-header-kept-together]
 [fixture: statements-one-per-line/line-rule-line-gap-between-colon-and-hash-touching-kept]

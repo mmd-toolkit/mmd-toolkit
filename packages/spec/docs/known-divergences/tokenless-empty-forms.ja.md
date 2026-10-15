@@ -3,7 +3,7 @@
 英語版: [tokenless-empty-forms.md](./tokenless-empty-forms.md)
 
 図種: flowchart、sequence、class、state、er、gantt、requirement、mindmap、
-xychart。
+xychart、quadrant。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -71,6 +71,13 @@ xychart では 2 つです。
 空の文字列は、軸やプロットのタイトル全体でも値のラベル全体でもないところで、
 この差異に入ります
 （[空の文字列](../diagrams/xychart.ja.md#空の文字列) を参照）。
+quadrant では 3 つです。
+閉じた空の説明ブロック、空の文字列 `""`、空の markdown 文字列です。
+2 つの文字列は、どこにあってもこの差異に入ります
+（[空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照）。
+[fixture: quadrant/div-empty-string-alone]
+[fixture: quadrant/div-empty-markdown-string-line]
+[fixture: quadrant/div-empty-block-in-quadrant-text]
 [fixture: er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-backquotes-between-type-and-name] [fixture:
 er/gram-empty-backquotes-between-attributes] [fixture:
@@ -236,7 +243,8 @@ mermaid.js が受理し、この仕様が拒否します。
 [gantt](../diagrams/gantt.ja.md#既知の差異)、
 [requirement](../diagrams/requirement.ja.md#既知の差異)、
 [mindmap](../diagrams/mindmap.ja.md#既知の差異)、
-[xychart](../diagrams/xychart.ja.md#既知の差異) です。
+[xychart](../diagrams/xychart.ja.md#既知の差異)、
+[quadrant](../diagrams/quadrant.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 
@@ -322,6 +330,13 @@ xychart は、閉じた空の説明ブロック
 （[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L28-L30)）と、
 空の文字列の引用符
 （[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L54-L56)）
+を読み飛ばします。
+quadrant は、閉じた空の説明ブロック
+（[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L28-L29)）、
+空の markdown 文字列の区切り
+（[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L41-L43)）、
+空の文字列の引用符
+（[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L44-L45)）
 を読み飛ばします。
 これらの規則はどれも、字句解析器の状態に入るか出るだけで何も返さないので、
 文法はその形を見ません。
@@ -730,6 +745,51 @@ class と同じく、Db はそれをタイトルなし、ラベルなしと読�
 [fixture: xychart/db-grid-empty-plot-title-quoted]
 [fixture: xychart/db-empty-string-as-x-axis-title-before-band]
 [fixture: xychart/db-label-empty-string]
+
+quadrant では、文の中の閉じた空の説明ブロックです。
+テキストや名前の中、点の `]` とそのスタイルの間、
+`classDef` のクラスの名前とそのスタイルの間で、
+どの欄も持てません（理由 a と b）。
+文が始まるところと文の最後の単位の後では、説明ブロックの文です。
+また、mermaid.js が受理するところの空の文字列と空の markdown 文字列です。
+それだけの行、文の前、テキストや名前の語の前後、軸の矢印の後、
+点のスタイルの間、`classDef` の行です。
+flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を、
+木は文として持たないからです。
+どのテキストもそれを値全体として持ちません。
+`quadrant-1 ""` は両方が拒否し、
+mermaid.js は `x-axis L --> ""` を、
+矢印を持ち 2 つ目のテキストのない軸の文と読み、
+空の値の 2 つ目のテキストではそうなりません
+（[空の説明ブロック](../diagrams/quadrant.ja.md#空の説明ブロック) と
+[空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照）。
+[fixture: quadrant/div-empty-block-in-classdef]
+[fixture: quadrant/div-empty-block-in-name]
+[fixture: quadrant/div-empty-block-in-quadrant-text]
+[fixture: quadrant/div-empty-block-in-x-axis-text]
+[fixture: quadrant/div-empty-string-after-name]
+[fixture: quadrant/div-empty-string-before-name]
+[fixture: quadrant/div-empty-string-before-quadrant-text]
+[fixture: quadrant/div-empty-string-before-statement]
+[fixture: quadrant/div-empty-string-between-words]
+[fixture: quadrant/div-empty-string-in-classdef]
+[fixture: quadrant/div-empty-string-in-point-styles]
+[fixture: quadrant/div-empty-string-in-quadrant-text]
+[fixture: quadrant/div-empty-string-inside-word]
+[fixture: quadrant/div-empty-string-line]
+[fixture: quadrant/div-x-axis-empty-string-after-arrow]
+[fixture: quadrant/div-y-axis-empty-string-after-arrow]
+[fixture: quadrant/div-empty-block-between-point-and-styles]
+[fixture: quadrant/div-empty-markdown-string-before-statement]
+[fixture: quadrant/div-empty-markdown-string-line]
+[fixture: quadrant/div-empty-string-alone]
+[fixture: quadrant/div-x-axis-empty-markdown-string-after-arrow]
+[fixture: quadrant/gram-quadrant-empty-string]
+[fixture: quadrant/gram-x-axis-empty-string-with-arrow]
+[fixture: quadrant/gram-name-quoted-empty]
+[fixture: quadrant/db-empty-string-in-title]
+[fixture: quadrant/db-empty-block-after-point]
+[fixture: quadrant/db-empty-block-before-statement]
 
 文の最後の単位の後、その区切りの前では、
 state の `click A "u" "t" accDescr {}` のように、ブロックは文です。

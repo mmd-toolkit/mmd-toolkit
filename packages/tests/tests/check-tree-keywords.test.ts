@@ -28,6 +28,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["timeline", "TimelineDiagram"],
   ["sankey", "SankeyDiagram"],
   ["xychart", "XychartDiagram"],
+  ["quadrant", "QuadrantDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -216,6 +217,10 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
     // The header and the orientation units, which the row names by their kind.
     case "xychart":
       return ["xychart", "xychart-beta", "vertical", "horizontal"]
+    // The row names the header by its kind, and the middle two of the four
+    // `quadrant-N` words by the range `quadrant-1` to `quadrant-4`.
+    case "quadrant":
+      return ["quadrantchart", "quadrant-2", "quadrant-3"]
     // The header, and the two values of the `direction` unit.
     case "timeline":
       return ["timeline", "lr", "td"]

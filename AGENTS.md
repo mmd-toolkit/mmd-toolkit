@@ -43,8 +43,9 @@ Correctness is defined by the pinned mermaid.js.
       statement starts in class, an empty href or an empty call in gantt,
       wherever it stands, an empty string in requirement, wherever it stands, an
       empty icon, an empty class line, or an empty string inside a shape in
-      mindmap, and an empty string in xychart where it is not the whole title of
-      an axis or of a plot or the whole label of a value. Such a form is not
+      mindmap, an empty string in xychart where it is not the whole title of an
+      axis or of a plot or the whole label of a value, and an empty string or an
+      empty markdown string in quadrant, wherever it stands. Such a form is not
       held as a statement that changes nothing; the input is rejected as the
       divergence `tokenless-empty-forms`. A fragment that mermaid.js does not
       read after a statement it reads, `state ""` in state, is no such form and

@@ -485,6 +485,58 @@
   [fixture: xychart/gram-title-empty-string]
   [fixture: xychart/div-empty-string-line]
 
+## 四象限チャートの中
+
+- 字句解析器のどの規則も合わない位置では、`range` はそこの文字。
+  括弧、`|`、markdown 文字列の中の `"` がそうである。
+  [fixture: quadrant/gram-quadrant-parens]
+  [fixture: quadrant/gram-point-parens]
+  [fixture: quadrant/gram-quadrant-pipe]
+  [fixture: quadrant/gram-markdown-string-quote-inside]
+- 終わってはいけない文脈でテキストが終わるときは、
+  最後の文字の後に空白しかないときも含めて、
+  `range` はその文脈に入ったもので、メッセージは何が閉じていないかを示す。
+  - 文字列の開きの `"`。
+    メッセージは `The string has no closing " before the end of the text`。
+  - markdown 文字列の開きの `"`。
+    メッセージは
+    ``The markdown string has no closing `" before the end of the text``。
+  - `accTitle` と `accDescr`。
+    メッセージは `accTitle has no text before the end of the text` と
+    `accDescr has no text before the end of the text`。
+  - 説明ブロックの `accDescr`。
+    メッセージは `The description block has no } before the end of the text`。
+  - クラス名の `:::`。
+    メッセージは `::: has no class name before the end of the text`。
+  - 点の `[`。
+    メッセージは `The point has no ] before the end of the text`。
+    [fixture: quadrant/gram-unclosed-axis-quote-at-end]
+    [fixture: quadrant/gram-unclosed-markdown-at-end]
+    [fixture: quadrant/gram-unclosed-acc-title-at-end]
+    [fixture: quadrant/gram-unclosed-acc-descr-at-end]
+    [fixture: quadrant/gram-unclosed-acc-block-after-text]
+    [fixture: quadrant/gram-unclosed-class-marker-at-end]
+    [fixture: quadrant/gram-unclosed-point-after-comma-at-end]
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲で、
+  すべて空白の単位、つまり `space` 単位や `newline` 単位では、
+  その始まりの空の範囲。
+  メッセージは `Unexpected token`。
+  文が揃う前にテキストが終わるときは、テキストの終わりの空の範囲で、
+  メッセージは `Unexpected end of text`。
+  [fixture: quadrant/header-twice]
+  [fixture: quadrant/gram-name-only]
+  [fixture: quadrant/gram-grid-tab-class-name]
+  [fixture: quadrant/gram-unclosed-class-name-at-end]
+- 文法の外の拒否は、文法が点やクラスのスタイルを読み終えたところで行う。
+  `range` は、mermaid.js が取らない最初のスタイルで、メッセージは
+  `A style must be radius, color, stroke-color, or stroke-width with a value of its form`。
+  [fixture: quadrant/gram-style-radius-word]
+  [fixture: quadrant/gram-style-upper-case-key]
+- 空の文字列と空の markdown 文字列は、下の既知の差異と同じくその位置で拒否する。
+  `"": [0.3, 0.6]` のように mermaid.js も拒否する入力でも同じである。
+  [fixture: quadrant/gram-name-quoted-empty]
+  [fixture: quadrant/div-empty-string-alone]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、

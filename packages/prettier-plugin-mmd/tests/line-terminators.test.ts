@@ -100,6 +100,22 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
     "timeline TD\n  title T\n  section S\n    2004 : a\n      : b\n    %%{init: {}}%%\n",
   ],
   [
+    "quadrant",
+    [
+      "quadrantChart",
+      "title Reach",
+      "x-axis Low  -->High",
+      "quadrant-1 We   should expand",
+      "A:[0.3,0.6]radius: 9,color: #f00",
+      "accDescr {",
+      "d",
+      "}",
+      "%% c",
+      "%%{init: {}}%%",
+    ],
+    "quadrantChart\n  title Reach\n  x-axis Low --> High\n  quadrant-1 We   should expand\n  A: [0.3, 0.6] radius: 9, color: #f00\n  accDescr {\nd\n  }\n  %% c\n  %%{init: {}}%%\n",
+  ],
+  [
     "xychart",
     [
       "xychart-beta horizontal",

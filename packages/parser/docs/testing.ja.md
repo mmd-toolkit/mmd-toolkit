@@ -17,7 +17,7 @@ fixture としてコーパスに足します。
 
 `tests/fixtures.test.ts` は、`common/`、`flowchart/`、`sequence/`、
 `class/`、`state/`、`er/`、`gantt/`、`journey/`、`requirement/`、`mindmap/`、
-`timeline/`、`sankey/`、`xychart/` の、
+`timeline/`、`sankey/`、`xychart/`、`quadrant/` の、
 すべての fixture を parse し、
 次を確かめます。
 
