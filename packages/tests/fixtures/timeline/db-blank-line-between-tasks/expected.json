@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, lines: empty lines between tasks change nothing."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a ",
+        "events": [
+          "e"
+        ]
+      },
+      {
+        "section": "",
+        "task": "b",
+        "events": []
+      }
+    ]
+  }
+}

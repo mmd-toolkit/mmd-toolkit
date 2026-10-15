@@ -9,6 +9,7 @@ import { printMindmap } from "./mindmap.ts"
 import { printRequirement } from "./requirement.ts"
 import { printSequence } from "./sequence.ts"
 import { printState } from "./state.ts"
+import { printTimeline } from "./timeline.ts"
 import type { Source } from "./source.ts"
 
 /**
@@ -45,4 +46,5 @@ export const diagramPrinters: Readonly<
   JourneyDiagram: printJourney,
   MindmapDiagram: printMindmap,
   RequirementDiagram: printRequirement,
+  TimelineDiagram: printTimeline,
 }

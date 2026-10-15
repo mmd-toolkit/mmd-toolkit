@@ -246,6 +246,11 @@ const VALUE_FIELD_REPORTS: Readonly<
   "StringLiteral.raw": { message: "raw: " },
   "StringLiteral.closed": { message: "closed: " },
   "Token.value": { message: "value: " },
+  "TimelineDiagram.direction": {
+    message:
+      "the direction of the header is not the token after the header keyword, or null when there is none: ",
+  },
+  "TimelineLiteral.value": { message: "value is not its written text" },
 }
 
 /**
@@ -715,6 +720,24 @@ const STRING_FIELD_CASES: readonly FieldCase[] = [
     set: "Z",
     message:
       'the direction of the header is not the first token of the diagram after the header keyword, or null when that is no direction: "Z", not null',
+  },
+  {
+    diagram: "timeline",
+    fixture: "db-direction-td",
+    type: "TimelineDiagram",
+    field: "direction",
+    set: null,
+    message:
+      'the direction of the header is not the token after the header keyword, or null when there is none: null, not "TD"',
+  },
+  {
+    diagram: "timeline",
+    fixture: "db-header-only",
+    type: "TimelineDiagram",
+    field: "direction",
+    set: "Z",
+    message:
+      'the direction of the header is not the token after the header keyword, or null when there is none: "Z", not null',
   },
   {
     diagram: "sequence",

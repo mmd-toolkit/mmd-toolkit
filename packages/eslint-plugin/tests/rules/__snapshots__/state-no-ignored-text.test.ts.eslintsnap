@@ -28,6 +28,34 @@ Code:
 ---
 
 
+Test: state-no-ignored-text >> invalid >>> invalid/state/direction-then-hash-comment
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/direction-then-hash-comment-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   direction LR # c
+    |                ^~~ [1]
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `# c`.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/direction-then-slashes-comment
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/direction-then-slashes-comment-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   direction LR // c
+    |                ^~~~ [1]
+  3 |   A --> B
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `// c`.
+---
+
+
 Test: state-no-ignored-text >> invalid >>> invalid/state/gram-empty-description-block-before-alias-body-next-line
 Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/gram-empty-description-block-before-alias-body-next-line-input.mmd
 
@@ -166,6 +194,20 @@ Code:
   2 |   note left of A:hi
     |                  ^ [1]
   3 |
+
+[1] mermaid.js does not read `h` and drops it.
+---
+
+
+Test: state-no-ignored-text >> invalid >>> invalid/state/note-colon-without-space
+Filename: tests/fixtures/rules/state-no-ignored-text/invalid/state/note-colon-without-space-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   note left of A:hi
+    |                  ^ [1]
+  4 |
 
 [1] mermaid.js does not read `h` and drops it.
 ---

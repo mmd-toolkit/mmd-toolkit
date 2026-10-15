@@ -7,7 +7,7 @@
 
 <!-- begin auto-generated rule notice -->
 
-✅ `recommended` の設定は、この規則を有効にする。
+`recommended` の設定は、この規則を有効にしない。
 
 <!-- end auto-generated rule notice -->
 

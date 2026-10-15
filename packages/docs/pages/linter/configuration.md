@@ -19,7 +19,7 @@ export default [
     files: ["**/*.mmd", "**/*.mermaid"],
     rules: {
       "@mmd-toolkit/flowchart-no-undef": "warn",
-      "@mmd-toolkit/flowchart-no-bare-comment-marker": "error",
+      "@mmd-toolkit/flowchart-no-unclosed-description-block": "error",
     },
   },
 ]
@@ -32,9 +32,9 @@ matching file extensions.
 
 The final configuration object overrides rules for Mermaid diagrams. Here it
 changes `@mmd-toolkit/flowchart-no-undef` to a warning and enables
-`@mmd-toolkit/flowchart-no-bare-comment-marker`, which the recommended preset
-does not enable. Use `"off"` to disable a rule. Later matching configuration
-objects override earlier rule settings.
+`@mmd-toolkit/flowchart-no-unclosed-description-block`, which the recommended
+preset does not enable. Use `"off"` to disable a rule. Later matching
+configuration objects override earlier rule settings.
 
 In Markdown, this configuration checks code blocks. See
 [Linting Markdown](./markdown.md) for the limitation on also checking the

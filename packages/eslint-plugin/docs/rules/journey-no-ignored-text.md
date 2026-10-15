@@ -11,10 +11,10 @@ Disallow text in the data of a task that mermaid.js does not read.
 
 <!-- end auto-generated rule notice -->
 
-The data of a task is its score and its people, separated by a colon, and the
-people are separated by commas. mermaid.js reads no more than that: from a third
-colon on, it drops the rest of the data without an error. A colon written
-between two people drops the people after it.
+A colon written between two people, as in `Make tea: 5: Me: Cat`, drops the
+people after it: mermaid.js reads the data of a task only up to its third colon
+and drops the rest without an error. The data of a task is its score and its
+people, separated by a colon, and the people are separated by commas.
 
 ## Rule Details
 

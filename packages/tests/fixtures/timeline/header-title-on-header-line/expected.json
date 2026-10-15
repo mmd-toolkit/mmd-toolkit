@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, header: a title after the direction on the header line is the title."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "TD",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

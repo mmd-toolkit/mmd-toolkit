@@ -24,6 +24,7 @@ export const diagramIds: Readonly<
   journey: ["journey"],
   requirement: ["requirement"],
   mindmap: ["mindmap"],
+  timeline: ["timeline"],
 }
 
 /**

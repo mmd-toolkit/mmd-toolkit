@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Lexical structure: an event at the end of the text without a line feed."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a ",
+        "events": [
+          "e"
+        ]
+      }
+    ]
+  }
+}

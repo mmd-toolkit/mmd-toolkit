@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Lexical structure: a title text at the end of the text without a line feed."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

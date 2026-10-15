@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Directives inside units: the space before a directive at the end of a line is a character of the title."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "T ",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a",
+        "events": []
+      }
+    ]
+  }
+}

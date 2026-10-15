@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md The statement context: a title text takes the rest of its line, `:` included."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "T : e",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a ",
+        "events": [
+          "C4Container"
+        ]
+      }
+    ]
+  }
+}

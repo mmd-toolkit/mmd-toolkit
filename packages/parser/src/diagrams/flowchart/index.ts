@@ -9,7 +9,7 @@ import {
 import { FlowchartText } from "./flowchart-text.ts"
 import { FlowchartGrammar } from "./grammar.ts"
 import type { FlowchartLexing } from "./units.ts"
-import { UnitLexer } from "./units.ts"
+import { FlowchartUnitLexer } from "./units.ts"
 
 /** The diagram text of a flowchart and what the lexer read from it. */
 export interface FlowchartUnits extends FlowchartLexing {
@@ -24,7 +24,10 @@ export interface FlowchartUnits extends FlowchartLexing {
  */
 export function lexFlowchart(input: DiagramInput): FlowchartUnits {
   const text = openDiagramText(input)
-  const lexing = new UnitLexer(new FlowchartText(text), input.lexer.lines).lex()
+  const lexing = new FlowchartUnitLexer(
+    new FlowchartText(text),
+    input.lexer.lines,
+  ).lex()
   return { text, ...lexing }
 }
 

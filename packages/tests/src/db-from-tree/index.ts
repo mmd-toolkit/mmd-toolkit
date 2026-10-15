@@ -19,6 +19,8 @@ import { sequenceDbOf } from "./sequence.ts"
 import type { SequenceDiagram } from "./sequence-tree.ts"
 import { stateDbOf } from "./state.ts"
 import type { StateDiagram } from "./state-tree.ts"
+import { timelineDbOf } from "./timeline.ts"
+import type { TimelineDiagram } from "./timeline-tree.ts"
 import type { TreeNode, TreeRoot } from "./tree.ts"
 
 export type { ColorAnswer } from "./sequence.ts"
@@ -40,6 +42,7 @@ export type DiagramBody =
   | RequirementDiagram
   | SequenceDiagram
   | StateDiagram
+  | TimelineDiagram
 
 /** A tree that the Db is built from. */
 export interface DbTreeRoot extends TreeRoot {
@@ -84,6 +87,8 @@ export function dbFromTree(
       return mindmapDbOf(text, root, root.body, embedded)
     case "RequirementDiagram":
       return requirementDbOf(text, root, root.body, embedded)
+    case "TimelineDiagram":
+      return timelineDbOf(text, root, root.body, embedded)
     default:
       throw new Error(`dbFromTree: unknown body type ${bodyType}`)
   }

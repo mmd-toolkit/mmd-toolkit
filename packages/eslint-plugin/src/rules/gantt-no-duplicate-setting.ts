@@ -16,9 +16,11 @@ const SETTING_NAMES = {
  * The rule `gantt-no-duplicate-setting`, described in
  * `docs/rules/gantt-no-duplicate-setting.md`: every statement of `dateFormat`,
  * `axisFormat`, `tickInterval`, `todayMarker`, `weekday`, or `weekend` after the
- * first one of the same setting, also when it repeats the value. `excludes`
- * and `includes` add up, and a second `inclusiveEndDates` changes nothing, so
- * they are not here. ESLint visits the statements in the order of the source.
+ * first one of the same setting, when it sets a value other than the one before
+ * it: the text after the keyword and its space, and the day in lower case for
+ * `weekday` and `weekend`. `excludes` and `includes` add up, and a second
+ * `inclusiveEndDates` changes nothing, so they are not here. ESLint visits the
+ * statements in the order of the source.
  */
 export const ganttNoDuplicateSetting: MermaidRuleDefinition<{
   RuleOptions: []
@@ -38,35 +40,38 @@ export const ganttNoDuplicateSetting: MermaidRuleDefinition<{
     },
   },
   create(context) {
-    /** For each setting, the statement that set it before. */
-    const previous = new Map<string, Node>()
+    /** For each setting, the statement that set it before and the value it set. */
+    const previous = new Map<string, { node: Node; value: string }>()
 
-    /** Reports `node`, a statement of the setting `setting`, when a statement set it before. */
-    function check(node: Node, setting: string): void {
+    /**
+     * Reports `node`, a statement of the setting `setting` that sets `value`,
+     * when a statement set the setting before to another value.
+     */
+    function check(node: Node, setting: string, value: string): void {
       const earlier = previous.get(setting)
-      if (earlier !== undefined) {
+      if (earlier !== undefined && earlier.value !== value) {
         context.report({
           node,
           messageId: "duplicate",
-          data: { setting, line: String(earlier.loc.start.line) },
+          data: { setting, line: String(earlier.node.loc.start.line) },
         })
       }
-      previous.set(setting, node)
+      previous.set(setting, { node, value })
     }
 
     return {
       GanttDateFormatStatement: (node) =>
-        check(node, SETTING_NAMES.GanttDateFormatStatement),
+        check(node, SETTING_NAMES.GanttDateFormatStatement, node.value.value),
       GanttAxisFormatStatement: (node) =>
-        check(node, SETTING_NAMES.GanttAxisFormatStatement),
+        check(node, SETTING_NAMES.GanttAxisFormatStatement, node.value.value),
       GanttTickIntervalStatement: (node) =>
-        check(node, SETTING_NAMES.GanttTickIntervalStatement),
+        check(node, SETTING_NAMES.GanttTickIntervalStatement, node.value.value),
       GanttTodayMarkerStatement: (node) =>
-        check(node, SETTING_NAMES.GanttTodayMarkerStatement),
+        check(node, SETTING_NAMES.GanttTodayMarkerStatement, node.value.value),
       GanttWeekdayStatement: (node) =>
-        check(node, SETTING_NAMES.GanttWeekdayStatement),
+        check(node, SETTING_NAMES.GanttWeekdayStatement, node.day),
       GanttWeekendStatement: (node) =>
-        check(node, SETTING_NAMES.GanttWeekendStatement),
+        check(node, SETTING_NAMES.GanttWeekendStatement, node.day),
     }
   },
 }

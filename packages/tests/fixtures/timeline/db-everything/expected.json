@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, all fields: the direction, the title, the accessibility texts, two sections, and tasks with several events."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "TD",
+    "title": "T",
+    "accTitle": "A",
+    "accDescr": "D",
+    "sections": [
+      "S1",
+      "S2"
+    ],
+    "tasks": [
+      {
+        "section": "S1",
+        "task": "a ",
+        "events": [
+          "e1 ",
+          "e2",
+          "e3"
+        ]
+      },
+      {
+        "section": "S1",
+        "task": "b",
+        "events": []
+      },
+      {
+        "section": "S2",
+        "task": "c ",
+        "events": [
+          "e4"
+        ]
+      }
+    ]
+  }
+}

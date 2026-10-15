@@ -14,6 +14,7 @@ import { mindmapValueNodeTypes } from "../src/printers/mindmap-layout.ts"
 import { requirementValueNodeTypes } from "../src/printers/requirement-layout.ts"
 import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
 import { stateValueNodeTypes } from "../src/printers/state-layout.ts"
+import { timelineValueNodeTypes } from "../src/printers/timeline-layout.ts"
 
 /** The leaf node types that every diagram type shares (ast.md, Shared leaf nodes). */
 const sharedLeafTypes = new Set([
@@ -135,6 +136,17 @@ const diagrams: readonly DiagramValues[] = [
     notValues: new Set([
       // The shared leaf nodes are no nodes of a mindmap: its ids, strings,
       // and numbers are the text of a node, a label, an icon, or a class.
+      "Identifier",
+      "StringLiteral",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Timeline",
+    values: timelineValueNodeTypes,
+    notValues: new Set([
+      // The shared leaf nodes are no nodes of a timeline: its periods, events,
+      // and titles are the text of a TimelineLiteral.
       "Identifier",
       "StringLiteral",
       "NumericLiteral",

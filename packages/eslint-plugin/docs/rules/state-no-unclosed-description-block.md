@@ -7,7 +7,7 @@ Disallow an `accDescr {` block without its closing `}`.
 
 <!-- begin auto-generated rule notice -->
 
-✅ The `recommended` configuration enables this rule.
+The `recommended` configuration does not enable this rule.
 
 <!-- end auto-generated rule notice -->
 

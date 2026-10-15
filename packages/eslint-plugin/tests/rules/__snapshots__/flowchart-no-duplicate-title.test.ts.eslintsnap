@@ -88,6 +88,54 @@ Code:
 ---
 
 
+Test: flowchart-no-duplicate-title >> invalid >>> invalid/flowchart/acc-title-back-to-first
+Filename: tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/acc-title-back-to-first-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accTitle: a
+  4 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  5 |   accTitle: a
+    |   ^~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js replaces the title set on line 3 with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accTitle: a
+          4 |   accTitle: a
+          5 |
+      - Remove the `accTitle` statement on line 3: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accTitle: b
+          4 |   accTitle: a
+          5 |
+[2] mermaid.js replaces the title set on line 4 with the one of this `accTitle`.
+    Suggestions:
+      - Remove this `accTitle` statement: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accTitle: a
+          4 |   accTitle: b
+          5 |
+      - Remove the `accTitle` statement on line 4: mermaid.js uses the last title that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accTitle: a
+          4 |   accTitle: a
+          5 |
+---
+
+
 Test: flowchart-no-duplicate-title >> invalid >>> invalid/flowchart/db-acc-repeated
 Filename: tests/fixtures/rules/flowchart-no-duplicate-title/invalid/flowchart/db-acc-repeated-input.mmd
 

@@ -1,4 +1,9 @@
 import { isWordCharacter } from "../db-from-tree/characters.ts"
+import {
+  checkChildTypes,
+  checkFieldWords,
+  checkListsWithAnEntry,
+} from "./field-rules.ts"
 import { NODE_FIELDS } from "./node-fields.ts"
 import type { Problems } from "./problems.ts"
 import { label } from "./problems.ts"
@@ -420,46 +425,6 @@ function actualPartsOf(node: CheckedNode, own: Own): string[] {
   return parts.sort((a, b) => a.start - b.start).map((part) => part.label)
 }
 
-/** Checks that the node types in the fields of `node` are those that its table gives (see {@link REQUIREMENT_CHILD_TYPES}). */
-function checkChildTypes(reading: Reading, node: CheckedNode): void {
-  for (const [field, allowed] of Object.entries(
-    REQUIREMENT_CHILD_TYPES[node.type] ?? {},
-  )) {
-    const value = node[field]
-    for (const child of Array.isArray(value) ? (value as unknown[]) : [value]) {
-      if (isNode(child)) {
-        reading.problems.expect(
-          allowed.includes(child.type),
-          label(node),
-          `the field ${field} holds a ${child.type}, not a ${allowed.join(" or ")}`,
-        )
-      }
-    }
-  }
-}
-
-/** Checks that each value field of `node` that has a fixed set of words holds one of them. */
-function checkFieldWords(reading: Reading, node: CheckedNode): void {
-  for (const [field, words] of Object.entries(FIELD_WORDS[node.type] ?? {})) {
-    reading.problems.expect(
-      words.includes(textOf(node, field)),
-      label(node),
-      `the field ${field} is ${JSON.stringify(node[field])}, none of ${words.join(", ")}`,
-    )
-  }
-}
-
-/** Checks that the lists of `node` that are never empty have an entry. */
-function checkListsWithAnEntry(reading: Reading, node: CheckedNode): void {
-  for (const field of LISTS_WITH_AN_ENTRY[node.type] ?? []) {
-    reading.problems.expect(
-      entriesOf(node, field).length > 0,
-      label(node),
-      `the list ${field} is empty`,
-    )
-  }
-}
-
 /**
  * ast/requirement.md, RequirementDirectionStatement, and
  * diagrams/requirement.md, The statement context, The direction line: the text
@@ -737,9 +702,9 @@ export function checkRequirementTree(
         "the tokens that the node writes itself and its child nodes, in source order",
       )
     }
-    checkChildTypes(reading, node)
-    checkFieldWords(reading, node)
-    checkListsWithAnEntry(reading, node)
+    checkChildTypes(reading, node, REQUIREMENT_CHILD_TYPES)
+    checkFieldWords(reading, node, FIELD_WORDS)
+    checkListsWithAnEntry(reading, node, LISTS_WITH_AN_ENTRY)
     switch (node.type) {
       case "RequirementDiagram":
         // diagrams/requirement.md, Detection: the detector compares

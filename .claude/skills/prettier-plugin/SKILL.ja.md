@@ -284,6 +284,9 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   - `mindmap*.ts`: `format` と `corpus` を `-t mindmap` で。
     `-t` なしで `line-separators`、`markdown-mindmap`、
     `value-nodes`。
+  - `timeline*.ts`: `format` と `corpus` を `-t timeline` で。
+    `-t` なしで `line-separators`、`markdown-timeline`、
+    `value-nodes`。
   - `statement-rules.ts`、`accessibility-lines.ts`:
     それを使う図種、ER と requirement のテスト。
   - `index.ts`、`parser.ts`、`printer.ts`、`root.ts`、`frontmatter-yaml.ts`:

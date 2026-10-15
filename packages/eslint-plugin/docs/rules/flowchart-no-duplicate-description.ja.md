@@ -24,7 +24,8 @@ mermaid.js はどの `accDescr` の文も受理し、
 
 ## 規則の詳細
 
-この規則は、説明を設定する文のうち、最初のもの以外をすべて報告する。
+この規則は、説明を設定する文のうち、最初のもの以外を、
+前と違う説明を設定するときに報告する。
 対象の図種は `flowchart-v2`、`flowchart-elk`、`swimlane` である。
 
 `accDescr:` は説明を設定する。
@@ -45,6 +46,14 @@ mermaid.js は、その文の値を id としてその subgraph のメンバー�
 と
 [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md)
 が報告する。
+
+図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
+`accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。
+説明は、mermaid.js が持つとおりに、
+両端の空白と、各改行の後の空白を除いて比べる。
+そのため、ブロックの行の字下げと、その中の空行は数えない。
+`accDescr: a` と `accDescr: b` の後の 3 つ目の `accDescr: a` は、
+`b` を置き換えるので報告する。
 
 報告ごとに、規則は 2 つの文のどちらかを消す書き換えを提案する。
 報告した文か、その前で説明を設定する文である。
@@ -89,6 +98,16 @@ flowchart LR
 flowchart LR
   A
   accDescr: first
+```
+
+```mmd
+%% eslint @mmd-toolkit/flowchart-no-duplicate-description: error
+flowchart LR
+  A
+  accDescr: first
+  accDescr {
+    first
+  }
 ```
 
 ## オプション

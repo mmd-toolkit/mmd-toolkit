@@ -16,7 +16,6 @@ import { erNoIgnoredText } from "./er-no-ignored-text.ts"
 import { erNoRedefinedEntity } from "./er-no-redefined-entity.ts"
 import { erNoUnclosedDescriptionBlock } from "./er-no-unclosed-description-block.ts"
 import { erNoUndef } from "./er-no-undef.ts"
-import { flowchartNoBareCommentMarker } from "./flowchart-no-bare-comment-marker.ts"
 import { flowchartNoDuplicateDescription } from "./flowchart-no-duplicate-description.ts"
 import { flowchartNoDuplicateTitle } from "./flowchart-no-duplicate-title.ts"
 import { flowchartNoEmptyDescriptionBlock } from "./flowchart-no-empty-description-block.ts"
@@ -38,6 +37,8 @@ import { journeyNoEmptyDescriptionBlock } from "./journey-no-empty-description-b
 import { journeyNoEmptyPerson } from "./journey-no-empty-person.ts"
 import { journeyNoIgnoredText } from "./journey-no-ignored-text.ts"
 import { journeyNoInvalidScore } from "./journey-no-invalid-score.ts"
+import { mindmapNoDuplicateDecoration } from "./mindmap-no-duplicate-decoration.ts"
+import { mindmapNoMismatchedShape } from "./mindmap-no-mismatched-shape.ts"
 import { noIgnoredInitDirective } from "./no-ignored-init-directive.ts"
 import { noUnclosedDirective } from "./no-unclosed-directive.ts"
 import { requirementNoDuplicateDescription } from "./requirement-no-duplicate-description.ts"
@@ -85,7 +86,6 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "er-no-redefined-entity": erNoRedefinedEntity,
   "er-no-unclosed-description-block": erNoUnclosedDescriptionBlock,
   "er-no-undef": erNoUndef,
-  "flowchart-no-bare-comment-marker": flowchartNoBareCommentMarker,
   "flowchart-no-duplicate-description": flowchartNoDuplicateDescription,
   "flowchart-no-duplicate-title": flowchartNoDuplicateTitle,
   "flowchart-no-empty-description-block": flowchartNoEmptyDescriptionBlock,
@@ -108,6 +108,8 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "journey-no-empty-person": journeyNoEmptyPerson,
   "journey-no-ignored-text": journeyNoIgnoredText,
   "journey-no-invalid-score": journeyNoInvalidScore,
+  "mindmap-no-duplicate-decoration": mindmapNoDuplicateDecoration,
+  "mindmap-no-mismatched-shape": mindmapNoMismatchedShape,
   "no-ignored-init-directive": noIgnoredInitDirective,
   "no-unclosed-directive": noUnclosedDirective,
   "requirement-no-duplicate-description": requirementNoDuplicateDescription,

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Detection: a second header is taken by no rule of the grammar."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\ntimeline  a  timeline\n-------------^\nExpecting 'EOF', 'SPACE', 'NEWLINE', 'title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'section', 'period', 'event', got 'timeline'"
+  }
+}

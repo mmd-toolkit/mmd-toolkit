@@ -333,6 +333,31 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   mindmap/db-indent-same-as-root] [fixture: mindmap/db-icon-before-node]
   [fixture: mindmap/db-class-before-node]
 
+## In a timeline
+
+- Every character starts a unit in some rule of every context, so the lexer
+  rejects an input only at the end of the text.
+- When the text ends in a context that may not end there, `range` is what
+  entered that context, and the message says what is not closed: `accTitle` and
+  `accDescr` (`accTitle has no text before the end of the text`,
+  `accDescr has no text before the end of the text`), and the `accDescr` of a
+  description block
+  (`The description block has no } before the end of the text`). [fixture:
+  timeline/gram-acc-title-empty] [fixture: timeline/gram-acc-descr-empty]
+  [fixture: timeline/gram-acc-descr-block-unclosed]
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace. Only two units can stand there, as the lexer reads the others in
+  the pairs that the grammar takes and rejects a text that ends inside a
+  statement: a `:` that starts no event, and a second header. [fixture:
+  timeline/gram-event-colon-glued-to-event] [fixture:
+  timeline/gram-event-empty-after-colon] [fixture:
+  timeline/gram-header-as-later-line]
+- For the rejection outside the grammar, which the grammar makes where it reads
+  the statement, `range` is the event statement before the first period, from
+  its first colon to its last event, with the message
+  `An event needs a period before it`. [fixture: timeline/gram-event-first]
+  [fixture: timeline/gram-event-after-title]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

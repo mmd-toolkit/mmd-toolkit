@@ -3,7 +3,7 @@
 Japanese version:
 [comment-takes-character.ja.md](./comment-takes-character.ja.md)
 
-Diagram types: sequence, gantt, and journey. This is one of the
+Diagram types: sequence, gantt, journey, and timeline. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -28,8 +28,8 @@ after a number, the `%%` starts a comment, and after a character of an id run or
 after the `:` before a text, it is a character of the id run or of the text. In
 a Gantt chart, where a single `%` starts a comment, it is about a `%` right
 after the first character of a unit, a character other than `}` and whitespace,
-as in `a% : 1d`, and in a user journey diagram about a `%%` in the same place,
-as in `A%%B: 5`.
+as in `a% : 1d`, and in a user journey diagram and a timeline about a `%%` in
+the same place, as in `A%%B: 5` and `a%% c`.
 
 ## The difference
 
@@ -179,6 +179,23 @@ journey/div-comment-after-task-colon] [fixture:
 journey/lex-single-percent-after-character] [fixture:
 journey/lex-brace-before-percent] [fixture: journey/lex-hash-before-percent]
 
+In a timeline, the lexer of mermaid.js has the same rule for `%%` as in a user
+journey diagram. `a%% c`, `;%% c`, and `é%% c` where a period starts, `;%% c`
+right after the header, and `x%%{ }%%` right after a description block are
+comments in mermaid.js and periods in this specification, and `:%% c` is a
+comment in mermaid.js and rejected here, as no whitespace follows the colon. The
+difference goes both ways in timeline too. `}%% c` is a period in both, and a
+`#` before the `%%` makes both read a comment (see
+[Comments](../diagrams/timeline.md#comments)). [fixture:
+timeline/div-comment-after-period-start] [fixture:
+timeline/div-comment-after-semicolon] [fixture:
+timeline/div-comment-after-non-ascii-letter] [fixture:
+timeline/div-comment-after-semicolon-after-header] [fixture:
+timeline/div-comment-after-block-character] [fixture:
+timeline/div-comment-after-colon] [fixture:
+timeline/db-comment-percent-after-closing-brace] [fixture:
+timeline/lex-hash-before-percent]
+
 ## What it means for an author
 
 A comment written right after a statement, without a space, can be read by
@@ -201,15 +218,20 @@ The lexer of gantt has the same comment rule with a single `%`
 tried before its rules for task texts and the colon of task data. The lexer of
 journey has the same comment rule with `%%`
 ([`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)),
-tried before its rules for line feeds, whitespace, task texts, and task data.
+tried before its rules for line feeds, whitespace, task texts, and task data,
+and so has the lexer of timeline
+([`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)),
+tried before its rules for line feeds, whitespace, keywords, events, and
+periods.
 
 ## The rule of this specification, and why
 
 In this specification, a comment starts at its mark, and a number may be
 followed by `%%` (see
 [The statement context](../diagrams/sequence.md#the-statement-context),
-[Comments](../diagrams/gantt.md#comments) of gantt, and
-[Comments](../diagrams/journey.md#comments) of journey).
+[Comments](../diagrams/gantt.md#comments) of gantt,
+[Comments](../diagrams/journey.md#comments) of journey, and
+[Comments](../diagrams/timeline.md#comments) of timeline).
 
 That a comment takes the character before it, and only where another rule would
 start its match there, comes from the order of the rules of the lexer of

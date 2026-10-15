@@ -18,8 +18,9 @@ from pasting a part twice.
 
 ## Rule Details
 
-This rule reports every statement that sets the description after the first one.
-It applies to `stateDiagram`.
+This rule reports every statement that sets the description after the first one,
+when it sets a description other than the one before it. It applies to
+`stateDiagram`.
 
 `accDescr:` sets the description. Without text, it sets the description too: it
 takes the next line that holds text as the description, past empty lines,
@@ -36,6 +37,14 @@ and makes the description empty;
 reports it. Inside a composite state, `accDescr: x` is no `accDescr` statement:
 mermaid.js reads it as a state `accDescr` with the description `x`, and the rule
 does not count it.
+
+A statement that sets the description that the diagram already has is not
+reported, in either form: after `accDescr: d`, the block `accDescr { d }` loses
+nothing. Descriptions are compared as mermaid.js keeps them, without the
+whitespace at their ends and without the whitespace after each line break, so
+the indentation of the lines of a block and the empty lines in it do not count.
+After `accDescr: a` and `accDescr: b`, a third `accDescr: a` is reported,
+because it replaces `b`.
 
 Examples of **incorrect** code for this rule:
 
@@ -62,6 +71,16 @@ Examples of **correct** code for this rule:
 stateDiagram-v2
   accTitle: first
   accDescr: second
+  A --> B
+```
+
+```mmd
+%% eslint @mmd-toolkit/state-no-duplicate-description: error
+stateDiagram-v2
+  accDescr: first
+  accDescr {
+    first
+  }
   A --> B
 ```
 

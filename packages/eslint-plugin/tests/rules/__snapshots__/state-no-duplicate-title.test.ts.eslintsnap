@@ -16,6 +16,24 @@ Code:
 ---
 
 
+Test: state-no-duplicate-title >> invalid >>> invalid/state/acc-title-back-to-first
+Filename: tests/fixtures/rules/state-no-duplicate-title/invalid/state/acc-title-back-to-first-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accTitle: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   A --> B
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `accTitle`.
+[2] mermaid.js replaces the title set on line 3 with the one of this `accTitle`.
+---
+
+
 Test: state-no-duplicate-title >> invalid >>> invalid/state/db-acc-title-empty-replaces
 Filename: tests/fixtures/rules/state-no-duplicate-title/invalid/state/db-acc-title-empty-replaces-input.mmd
 

@@ -518,6 +518,19 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: journey/div-comment-after-task-text-start]
   [fixture: journey/div-comment-after-colon-after-section]
   [fixture: journey/div-comment-after-task-colon]
+- `comment-takes-character`、timeline の字句解析器
+  （[`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)）
+  :
+  `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
+  そうすると、コメントは単位の始まる位置の `%` から始まり、
+  ほかの `%%` は、それを含む単位の一部になる。
+  [fixture: timeline/db-comment-percent-after-period-glued]
+  [fixture: timeline/div-comment-after-period-start]
+  [fixture: timeline/div-comment-after-non-ascii-letter]
+  [fixture: timeline/div-comment-after-colon]
+  [fixture: timeline/div-comment-after-block-character]
+  [fixture: timeline/div-comment-after-semicolon-after-header]
+  [fixture: timeline/div-comment-after-semicolon]
 - `comment-takes-line-break`、class の字句解析器
   （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)）
   :

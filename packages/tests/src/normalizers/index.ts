@@ -8,6 +8,7 @@ import { normalizeMindmap } from "./mindmap.ts"
 import { normalizeRequirement } from "./requirement.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
 import { normalizeState } from "./state.ts"
+import { normalizeTimeline } from "./timeline.ts"
 
 /**
  * Turns a mermaid Db into its summary. Receives the Db right after parsing.
@@ -38,6 +39,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["journey", normalizeJourney],
   ["mindmap", normalizeMindmap],
   ["requirement", normalizeRequirement],
+  ["timeline", normalizeTimeline],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])

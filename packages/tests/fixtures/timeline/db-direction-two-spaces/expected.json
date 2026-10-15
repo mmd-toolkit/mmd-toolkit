@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, direction: more than one space before the direction is accepted."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "TD",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a",
+        "events": []
+      }
+    ]
+  }
+}

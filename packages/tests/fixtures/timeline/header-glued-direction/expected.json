@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, direction: a direction glued to the header is rejected, since the header is not a keyword there."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\ntimelineTD\n^\nExpecting 'timeline', 'timeline_lr', 'timeline_td', got 'period'"
+  }
+}

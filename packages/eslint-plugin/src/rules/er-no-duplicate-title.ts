@@ -1,6 +1,7 @@
 import type { ErAccTitleStatement } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { titleText } from "../utils/acc-text.ts"
 
 /**
  * The rule `er-no-duplicate-title`, described in
@@ -8,6 +9,9 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  * first, also one without text on its line, which takes the next line that
  * holds text, and also one inside a subgraph. ESLint visits the statements in
  * the order of the source, so each one is compared with the one before it.
+ *
+ * A statement is reported only when the value it sets differs from that of the
+ * one before it (`titleText`): setting what the diagram already has loses nothing.
  */
 export const erNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []
@@ -31,7 +35,7 @@ export const erNoDuplicateTitle: MermaidRuleDefinition<{
     let previous: ErAccTitleStatement | null = null
     return {
       ErAccTitleStatement(node) {
-        if (previous !== null) {
+        if (previous !== null && titleText(previous) !== titleText(node)) {
           context.report({
             node,
             messageId: "duplicate",

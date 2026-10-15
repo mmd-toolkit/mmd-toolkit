@@ -4,6 +4,7 @@ import {
   isWordCharacter,
 } from "../db-from-tree/characters.ts"
 import type { TreeRange } from "../db-from-tree/tree.ts"
+import { checkChildTypes, checkFieldWords } from "./field-rules.ts"
 import type { Problems } from "./problems.ts"
 import { label } from "./problems.ts"
 import {
@@ -15,6 +16,7 @@ import {
   childOf,
   ownOf,
   readingOf,
+  nextWrittenCharacter,
   startsWithWhitespace,
   textOf,
 } from "./statement-checks.ts"
@@ -184,14 +186,6 @@ function firstHeld(
   return characters.find((character) => value.includes(character))
 }
 
-/** The first character of the written text at or after `offset`; none at the end of the text. */
-function nextWrittenCharacter(reading: Reading, offset: number): string {
-  for (let at = offset; at < reading.text.length; at++) {
-    if (!reading.written.isLeftOut(at)) return reading.text.charAt(at)
-  }
-  return ""
-}
-
 /** The last `count` characters of the written text before `offset`; fewer at the start of the text. */
 function writtenBefore(
   reading: Reading,
@@ -252,37 +246,6 @@ export function mindmapLabelDelimitersFor(
   }
 }
 
-/** Checks that the node types in the fields of `node` are those that its table gives (see {@link MINDMAP_CHILD_TYPES}). */
-function checkChildTypes(reading: Reading, node: CheckedNode): void {
-  for (const [field, allowed] of Object.entries(
-    MINDMAP_CHILD_TYPES[node.type] ?? {},
-  )) {
-    const value = node[field]
-    for (const child of Array.isArray(value) ? (value as unknown[]) : [value]) {
-      if (isNode(child)) {
-        reading.problems.expect(
-          allowed.includes(child.type),
-          label(node),
-          `the field ${field} holds a ${child.type}, not a ${allowed.join(" or ")}`,
-        )
-      }
-    }
-  }
-}
-
-/** Checks that each value field of `node` that has a fixed set of words holds one of them. */
-function checkFieldWords(reading: Reading, node: CheckedNode): void {
-  for (const [field, words] of Object.entries(
-    MINDMAP_FIELD_WORDS[node.type] ?? {},
-  )) {
-    reading.problems.expect(
-      words.includes(textOf(node, field)),
-      label(node),
-      `the field ${field} is ${JSON.stringify(node[field])}, none of ${words.join(", ")}`,
-    )
-  }
-}
-
 /**
  * ast/mindmap.md, MindmapNode, and diagrams/mindmap.md, Units and contexts,
  * The statement context, and Nodes and shapes: a node is a node text, a node
@@ -328,7 +291,7 @@ function checkNode(reading: Reading, node: CheckedNode): void {
   if (id !== null && shape === null) {
     const next = nextWrittenCharacter(reading, id.range[1])
     reading.problems.expect(
-      next === "" || isLineTerminatorCode(next.charCodeAt(0)),
+      next === undefined || isLineTerminatorCode(next.charCodeAt(0)),
       where,
       `the node text ends before ${JSON.stringify(next)}, which does not end its line: a node text runs to the end of its line or to a shape`,
     )
@@ -490,7 +453,7 @@ function checkClassText(reading: Reading, node: CheckedNode): void {
   )
   const after = nextWrittenCharacter(reading, node.range[1])
   reading.problems.expect(
-    after === "" || CLASS_ENDS.includes(after),
+    after === undefined || CLASS_ENDS.includes(after),
     where,
     `the class ends before ${JSON.stringify(after)}, which does not end its line segment: a class runs to the end of its line segment`,
   )
@@ -707,8 +670,8 @@ export function checkMindmapTree(
   walkNodes(root, (node, parent) => {
     // The root holds the tokens of the frontmatter, which no statement has.
     if (node.type !== "Root") checkTokensAndRange(reading, node)
-    checkChildTypes(reading, node)
-    checkFieldWords(reading, node)
+    checkChildTypes(reading, node, MINDMAP_CHILD_TYPES)
+    checkFieldWords(reading, node, MINDMAP_FIELD_WORDS)
     if (node.type === "MindmapLiteral") {
       checkLiteral(reading, node, parent)
     } else {

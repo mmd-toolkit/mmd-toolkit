@@ -85,6 +85,97 @@ Code:
 ---
 
 
+Test: flowchart-no-duplicate-description >> invalid >>> invalid/flowchart/acc-descr-back-to-first
+Filename: tests/fixtures/rules/flowchart-no-duplicate-description/invalid/flowchart/acc-descr-back-to-first-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accDescr: a
+  4 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  5 |   accDescr: a
+    |   ^~~~~~~~~~~ [2]
+  6 |
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accDescr: a
+          4 |   accDescr: a
+          5 |
+      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accDescr: b
+          4 |   accDescr: a
+          5 |
+[2] mermaid.js replaces the description set on line 4 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accDescr: a
+          4 |   accDescr: b
+          5 |
+      - Remove the statement on line 4 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accDescr: a
+          4 |   accDescr: a
+          5 |
+---
+
+
+Test: flowchart-no-duplicate-description >> invalid >>> invalid/flowchart/acc-descr-trailing-space-inside-block
+Filename: tests/fixtures/rules/flowchart-no-duplicate-description/invalid/flowchart/acc-descr-trailing-space-inside-block-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   A
+  3 |   accDescr {
+  4 |     d
+  5 |     e
+  6 |   }
+  7 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  8 |     d  
+    | ~~~~~~~\ [1]
+  9 |     e
+    | ~~~~~\ [1]
+ 10 |   }
+    | ~~~ [1]
+ 11 |
+
+[1] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+    Suggestions:
+      - Remove this statement: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accDescr {
+          4 |     d
+          5 |     e
+          6 |   }
+          7 |
+      - Remove the statement on line 3 that sets the description: mermaid.js uses the last description that remains.
+        Output:
+          1 | flowchart LR
+          2 |   A
+          3 |   accDescr {
+          4 |     d  
+          5 |     e
+          6 |   }
+          7 |
+---
+
+
 Test: flowchart-no-duplicate-description >> invalid >>> invalid/flowchart/db-acc-descr-block-replaces
 Filename: tests/fixtures/rules/flowchart-no-duplicate-description/invalid/flowchart/db-acc-descr-block-replaces-input.mmd
 

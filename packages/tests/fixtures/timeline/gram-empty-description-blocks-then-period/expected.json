@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Grammar: two empty description blocks and a period on one line."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a",
+        "events": []
+      }
+    ]
+  }
+}

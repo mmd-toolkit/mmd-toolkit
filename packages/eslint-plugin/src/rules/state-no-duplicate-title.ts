@@ -1,6 +1,7 @@
 import type { StateAccTitleStatement } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { titleText } from "../utils/acc-text.ts"
 
 /**
  * The rule `state-no-duplicate-title`, described in
@@ -9,6 +10,9 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  * state, and the tree has no `StateAccTitleStatement` there. ESLint visits the
  * statements in the order of the source, so each one is compared with the one
  * before it.
+ *
+ * A statement is reported only when the value it sets differs from that of the
+ * one before it (`titleText`): setting what the diagram already has loses nothing.
  */
 export const stateNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []
@@ -32,7 +36,7 @@ export const stateNoDuplicateTitle: MermaidRuleDefinition<{
     let previous: StateAccTitleStatement | null = null
     return {
       StateAccTitleStatement(node) {
-        if (previous !== null) {
+        if (previous !== null && titleText(previous) !== titleText(node)) {
           context.report({
             node,
             messageId: "duplicate",

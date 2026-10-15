@@ -5,6 +5,7 @@ import { flowchartVisitorKeys } from "./visitor-keys/flowchart.ts"
 import { ganttVisitorKeys } from "./visitor-keys/gantt.ts"
 import { journeyVisitorKeys } from "./visitor-keys/journey.ts"
 import { mindmapVisitorKeys } from "./visitor-keys/mindmap.ts"
+import { timelineVisitorKeys } from "./visitor-keys/timeline.ts"
 import { requirementVisitorKeys } from "./visitor-keys/requirement.ts"
 import { sequenceVisitorKeys } from "./visitor-keys/sequence.ts"
 import { stateVisitorKeys } from "./visitor-keys/state.ts"
@@ -37,4 +38,5 @@ export const visitorKeys: VisitorKeys = {
   ...journeyVisitorKeys,
   ...requirementVisitorKeys,
   ...mindmapVisitorKeys,
+  ...timelineVisitorKeys,
 }

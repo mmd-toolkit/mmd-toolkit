@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Known divergences: `C4Dynamic` in a title makes mermaid.js detect C4; here it is a timeline."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\ntimeline  title C4D\n^"
+  }
+}

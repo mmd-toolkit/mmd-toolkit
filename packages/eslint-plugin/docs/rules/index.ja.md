@@ -39,13 +39,12 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 
 | 規則                                                                                       | 説明                                                                    | ✅  | 💡  | 🚧  |
 | ------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- | --- | --- | --- |
-| [flowchart-no-bare-comment-marker](./flowchart-no-bare-comment-marker.ja.md)               | `%%` だけの行を禁止する。                                               |     | 💡  |     |
 | [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.ja.md)           | 説明をもう一度設定する `accDescr` の文を禁止する。                      | ✅  | 💡  |     |
 | [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                  | ✅  | 💡  |     |
 | [flowchart-no-empty-description-block](./flowchart-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                        | ✅  | 💡  |     |
 | [flowchart-no-ignored-text](./flowchart-no-ignored-text.ja.md)                             | 方向の行にあって、mermaid.js が読まないテキストを禁止する。             | ✅  | 💡  |     |
 | [flowchart-no-redefined-vertex](./flowchart-no-redefined-vertex.ja.md)                     | 頂点の形やラベルを、後で違うものに書き直すことを禁止する。              | ✅  |     |     |
-| [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                   | ✅  | 💡  |     |
+| [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                   |     | 💡  |     |
 | [flowchart-no-undef](./flowchart-no-undef.ja.md)                                           | 図が定義していない id を指す `style`、`class`、`click` の文を禁止する。 | ✅  |     |     |
 
 ## sequence
@@ -59,7 +58,7 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [sequence-no-ignored-text](./sequence-no-ignored-text.ja.md)                             | mermaid.js が何も読まない行を禁止する。                                       | ✅  |     |     |
 | [sequence-no-invalid-json](./sequence-no-invalid-json.ja.md)                             | テキストが JSON のオブジェクトでない `links` か `properties` の文を禁止する。 | ✅  |     |     |
 | [sequence-no-link-without-separator](./sequence-no-link-without-separator.ja.md)         | ラベルと URL の間に `@` がない `link` の文を禁止する。                        | ✅  |     |     |
-| [sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                         | ✅  |     |     |
+| [sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                         |     |     |     |
 
 ## class
 
@@ -82,7 +81,7 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [state-no-duplicate-title](./state-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                  | ✅  |     |     |
 | [state-no-empty-description-block](./state-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                        | ✅  |     |     |
 | [state-no-ignored-text](./state-no-ignored-text.ja.md)                             | mermaid.js が読まないテキストを禁止する。                               | ✅  |     |     |
-| [state-no-unclosed-description-block](./state-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                   | ✅  |     |     |
+| [state-no-unclosed-description-block](./state-no-unclosed-description-block.ja.md) | 閉じる `}` のない `accDescr {` のブロックを禁止する。                   |     |     |     |
 | [state-no-undef](./state-no-undef.ja.md)                                           | どの状態も名指さない `style`、`class`、`click`、`note` の文を禁止する。 | ✅  |     |     |
 
 ## er
@@ -92,9 +91,9 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [er-no-duplicate-description](./er-no-duplicate-description.ja.md)           | 説明をもう一度設定する `accDescr` の文を禁止する。                        | ✅  |     |     |
 | [er-no-duplicate-title](./er-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                    | ✅  |     |     |
 | [er-no-empty-description-block](./er-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                          | ✅  |     |     |
-| [er-no-ignored-text](./er-no-ignored-text.ja.md)                             | mermaid.js が読まないテキストを禁止する。                                 | ✅  |     |     |
+| [er-no-ignored-text](./er-no-ignored-text.ja.md)                             | mermaid.js が読まないテキストを禁止する。                                 |     |     |     |
 | [er-no-redefined-entity](./er-no-redefined-entity.ja.md)                     | 実体に 2 つ目の別名を与える実体の文を禁止する。                           | ✅  |     |     |
-| [er-no-unclosed-description-block](./er-no-unclosed-description-block.ja.md) | ほかのもののために書いた `}` が閉じる `accDescr {` のブロックを禁止する。 | ✅  |     |     |
+| [er-no-unclosed-description-block](./er-no-unclosed-description-block.ja.md) | ほかのもののために書いた `}` が閉じる `accDescr {` のブロックを禁止する。 |     |     |     |
 | [er-no-undef](./er-no-undef.ja.md)                                           | どの実体も subgraph も名指さない `style` と `class` の文を禁止する。      | ✅  |     |     |
 
 ## journey
@@ -131,7 +130,14 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [requirement-no-duplicate-title](./requirement-no-duplicate-title.ja.md)                       | タイトルをもう一度設定する `accTitle` の文を禁止する。                                    | ✅  |     |     |
 | [requirement-no-empty-description-block](./requirement-no-empty-description-block.ja.md)       | 説明を持たない `accDescr` のブロックを禁止する。                                          | ✅  |     |     |
 | [requirement-no-ignored-text](./requirement-no-ignored-text.ja.md)                             | mermaid.js が読まないテキストを禁止する。                                                 | ✅  |     |     |
-| [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.ja.md) | ほかのもののために書いた `}` が閉じる `accDescr {` のブロックを禁止する。                 | ✅  |     |     |
+| [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.ja.md) | ほかのもののために書いた `}` が閉じる `accDescr {` のブロックを禁止する。                 |     |     |     |
 | [requirement-no-undef](./requirement-no-undef.ja.md)                                           | どの requirement も element も名指さない、`style`、`class`、`:::`、関係の名前を禁止する。 | ✅  |     |     |
+
+## mindmap
+
+| 規則                                                                       | 説明                                                          | ✅  | 💡  | 🚧  |
+| -------------------------------------------------------------------------- | ------------------------------------------------------------- | --- | --- | --- |
+| [mindmap-no-duplicate-decoration](./mindmap-no-duplicate-decoration.ja.md) | 1 つのノードへの、2 つ目の icon の行と class の行を禁止する。 | ✅  |     |     |
+| [mindmap-no-mismatched-shape](./mindmap-no-mismatched-shape.ja.md)         | 開きと合わない閉じを持つ形を禁止する。                        | ✅  |     |     |
 
 <!-- end auto-generated rules list -->

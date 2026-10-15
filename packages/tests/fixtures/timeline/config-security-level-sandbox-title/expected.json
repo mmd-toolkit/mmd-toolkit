@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, settings: under securityLevel sandbox, the title is recorded as written."
+  },
+  "config": {
+    "securityLevel": "sandbox"
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "T<b>x</b> & <i>z",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

@@ -74,7 +74,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
   ヘッダーの前の `%%` だけの行のコメントで、どの図種もそうです。
   それ以外のコメントには持ちません。
   gantt 図の図のコメントは、印 `%%` と `%` を持ち、
-  journey 図と requirement 図の図のコメントは、印 `#`、`%%`、`%` を持ち、
+  journey 図と requirement 図と timeline 図の図のコメントは、
+  印 `#`、`%%`、`%` を持ち、
   mindmap 図の図のコメントは、印 `%%` を持ちます。
   印のない断片は、コメント領域に続きます
   （parser/docs/tokens.md の Comment、
@@ -379,6 +380,62 @@ const problems: TreeProblem[] = checkTree(text, tree)
     （`parser/docs/positions/mindmap.md`）。
     リテラルとラベルの範囲は、トークンの始まりから終わりまでで、
     これはすべての木の検査が読みます。
+  - timeline: 検査は木とソースのテキストを読みます。
+    欄の子ノードの型は、その表の型です
+    （`TIMELINE_CHILD_TYPES`。
+    ast/timeline.md の Type の列と、その `TimelineStatement` の文が挙げる文とに
+    合うことをテストが確かめます）。
+    direction は大文字小文字を問わず `LR` か `TD` で
+    （`TIMELINE_DIRECTIONS`。Meaning の列と合うことをテストが確かめます）、
+    event の文の events は空ではありません。
+    period は空ではなく、空白で始まらず、
+    実体の `#` のほかに `#` を含まず（common.md の Entities）、
+    `:` と行終端子を含まず、
+    `#`、`:`、行終端子、テキストの終わりの前で終わります
+    （diagrams/timeline.md の The statement context、規則 14）。
+    period の始まりから先の、字句解析器が読む書かれたテキスト
+    （ディレクティブとコメント行を除く）は、
+    period の規則より前の規則が読む単位で始まりません。
+    後ろに `{` が続かない `%`、キーワード `timeline`、
+    改行も含む空白文字とその後ろの 1 文字を持つ `title` と `section`、
+    空白（改行も含む）の後ろに `:` か `{` を持つ `accTitle` と `accDescr` です。
+    そのため、period かどうかは period の後ろの行が決めます。
+    event は、`:` と空白 1 文字（改行も含む）の後ろのテキストです。
+    空ではなく、行終端子を含まず、`:` は空白でない文字の前にしか含まず、
+    `:`、行終端子、テキストの終わりの前で終わります。
+    その前の項目との間には、その `:` とその 1 文字のほかに、
+    空白と図のコメントしかありません（規則 13）。
+    title と section の名前は、キーワードと空白 1 文字の後ろから始まり、
+    空ではなく、行終端子を含みません。
+    title は行末まで、section の名前は `:` を含まず、`:` か行末の前で終わります
+    （規則 8 と 12）。
+    アクセシビリティのテキストは、キーワード、`:`（ブロックでは `{`）、
+    改行も含む空白の後ろに続きます（規則 9 から 11、Accessibility values）。
+    空ではなく、両端に空白がありません。
+    行のテキストは行末まで、ブロックのテキストは `}` を含まず、
+    空白と `}` が続きます。
+    テキストのないブロックは、キーワード、`{`、空白、`}` だけです。
+    event の文は、period の文でも event の文でもない文の後ろにあり、
+    その前に period の文があります
+    （ast/timeline.md の TimelineEventStatement）。
+    子の欄はソースの順です
+    （ast.md の Nodes。ast/timeline.md は例外を述べません）。
+    トークンの種類は `parser/docs/tokens/timeline.md` のとおりです。
+    ノードが自分で書くトークンは、
+    `:`、`{`、`}` が `Punctuator`、
+    ヘッダー、direction、キーワードが `Keyword` です。
+    テキストのトークンは `RawText` です。
+    ノードが自分で書くトークンをつないだものは、
+    図では `timeline` と書かれたとおりの direction、
+    period の文と event の文では event ごとの `:`、
+    title と section ではキーワード（大文字小文字を問わない）、
+    アクセシビリティの文ではキーワードと `:`、
+    ブロックではキーワードと波括弧です。
+    `direction` はヘッダーの後ろのトークンで、なければ null です。
+    ノードと文の範囲は、トークンと子ノードの最初から最後までです
+    （`parser/docs/positions/timeline.md`）。
+    リテラルの範囲は、トークンの始まりから終わりまでで、
+    これはすべての木の検査が読みます。
 
 範囲の**書かれたテキスト**は、ディレクティブ、コメント領域、
 行の規則が無視する `;` を除いたソースです（ast.md の Nodes）。
@@ -499,6 +556,10 @@ journey のファイルは 14 本作ります）。
 手作りの木と、名前を挙げた fixture の記録した木でします。
 記録した木は、トークンの種類と範囲についても壊します。
 また、検査の表が ast/mindmap.md の Type と Meaning の列と合うことを求めます。
+`check-tree-timeline.test.ts` は、timeline 図の文について同じことを、
+手作りの木と、名前を挙げた fixture の記録した木でします。
+記録した木は、トークンの種類と範囲についても壊します。
+また、検査の表が ast/timeline.md の Type と Meaning の列と合うことを求めます。
 ノードの型や欄ごとに記録した木を求めるテストは、
 `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
 （`tests/check-tree-recorded.ts`）の接頭辞で始まる名前のノードの型を除きます。

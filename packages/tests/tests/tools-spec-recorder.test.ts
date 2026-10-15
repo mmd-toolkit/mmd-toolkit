@@ -304,6 +304,28 @@ describe("recordSpecFile: the functions that take a text", () => {
     expect(textsOf(recording)).toEqual(["mindmap\n  root"])
   })
 
+  it("records the text of the parser of the timeline diagram's jison module", async () => {
+    const recording = await recordSource(
+      [
+        `import { setLogLevel } from "../../diagram-api/diagramAPI.js"`,
+        `import * as commonDb from "../common/commonDb.js"`,
+        `import { parser as timeline } from "./parser/timeline.jison"`,
+        `import * as timelineDB from "./timelineDb.js"`,
+        `it("t", () => {`,
+        `  timeline.yy = timelineDB`,
+        `  timelineDB.clear()`,
+        `  setLogLevel("trace")`,
+        `  timeline.parse("timeline\\n  title T")`,
+        `  commonDb.getDiagramTitle()`,
+        `  timelineDB.getSections()`,
+        `})`,
+        ``,
+      ].join("\n"),
+      "diagrams/timeline/timeline.spec.js",
+    )
+    expect(textsOf(recording)).toEqual(["timeline\n  title T"])
+  })
+
   it("records the text of mermaidAPI.parse, whether it is the default or the named export", async () => {
     const recording = await recordSource(
       [

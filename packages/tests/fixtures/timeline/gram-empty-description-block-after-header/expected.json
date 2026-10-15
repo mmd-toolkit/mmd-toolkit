@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Empty description blocks: a block right after the header is a statement."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a",
+        "events": []
+      }
+    ]
+  }
+}

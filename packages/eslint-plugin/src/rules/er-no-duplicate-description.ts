@@ -4,6 +4,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { accDescrText } from "../utils/acc-text.ts"
 
 /** A statement that sets the description. */
 type DescriptionStatement = ErAccDescrStatement | ErAccDescrBlockStatement
@@ -16,6 +17,9 @@ type DescriptionStatement = ErAccDescrStatement | ErAccDescrBlockStatement
  * sets nothing. A block is always closed in the tree. ESLint visits the
  * statements in the order of the source, so each one is compared with the one
  * before it.
+ *
+ * A statement is reported only when the value it sets differs from that of the
+ * one before it (`accDescrText`): setting what the diagram already has loses nothing.
  */
 export const erNoDuplicateDescription: MermaidRuleDefinition<{
   RuleOptions: []
@@ -40,7 +44,7 @@ export const erNoDuplicateDescription: MermaidRuleDefinition<{
 
     /** Reports `node` when a statement before it set the description. */
     function check(node: DescriptionStatement): void {
-      if (previous !== null) {
+      if (previous !== null && accDescrText(previous) !== accDescrText(node)) {
         context.report({
           node,
           messageId: "duplicate",

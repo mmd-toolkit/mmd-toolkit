@@ -39,7 +39,7 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 シーケンス図（`sequence`）と、クラス図（`classDiagram`）と、
 状態図（`stateDiagram`）と、ER 図（`er`）と、Gantt チャート（`gantt`）と、
 journey 図（`journey`）と、要求図（`requirement`）と、
-mindmap（`mindmap`）です。
+mindmap（`mindmap`）と、timeline（`timeline`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -53,7 +53,8 @@ mindmap（`mindmap`）です。
 [`diagrams/gantt.md`](../../spec/docs/diagrams/gantt.ja.md)、
 [`diagrams/journey.md`](../../spec/docs/diagrams/journey.ja.md)、
 [`diagrams/requirement.md`](../../spec/docs/diagrams/requirement.ja.md)、
-[`diagrams/mindmap.md`](../../spec/docs/diagrams/mindmap.ja.md)
+[`diagrams/mindmap.md`](../../spec/docs/diagrams/mindmap.ja.md)、
+[`diagrams/timeline.md`](../../spec/docs/diagrams/timeline.ja.md)
 のどれかに従います。
 3 つの部分からなります。
 
@@ -64,6 +65,10 @@ mindmap（`mindmap`）です。
 
 どの図の字句解析器とパーサーも同じように行うことは、それぞれ 1 か所にあります。
 単位とその読み方は `src/diagram-units.ts` にあります。
+字句解析器の文脈のスタック、
+各場所で現在の文脈の最初に合う規則を当てること、
+終わってはいけない文脈でテキストが終わったときのエラーは、
+`src/unit-lexer.ts` の `UnitLexer` にあります。
 単位の読み進め、ノードの位置、値の書かれたテキスト、共通の葉のノード、
 文法の項目のトークンは、`src/unit-grammar.ts` の `UnitGrammar` にあります。
 `tokenless-empty-forms` の空の形は `src/empty-forms.ts` にあります。
@@ -77,7 +82,7 @@ flowchart とクラス図の文字の規則の Unicode の文字は
 クラス図の字句解析器が `%%` を、
 状態図の字句解析器が `#` と `%%` を、
 Gantt チャートの字句解析器が `%` を、
-journey 図と要求図の字句解析器が `#` と `%` を、
+journey 図と要求図と timeline の字句解析器が `#` と `%` を、
 mindmap の字句解析器が `%%` を読むように、
 図のコメントを読む図は、それを共通の部分に渡し、
 共通の部分が `Root.comments` に記録します。
@@ -89,6 +94,7 @@ Gantt チャートでは、`topAxis` の文がノードを作らないので、
 文法がその文を読んだところで 2 つの拒否を行います。
 mindmap では、文法がノードを読むときに字下げで木の中に置くので、
 その行を読んだところで 2 つの拒否を行います。
+timeline では、文法が event の文を読んだところで 1 つの拒否を行います。
 クラス図の字句解析器は、各メンバーの行を、
 [メンバーの行](../../spec/docs/diagrams/class.ja.md#メンバーの行)
 の手順で部分に分けます。

@@ -23,9 +23,10 @@ import type {
   DiagramText,
 } from "../../diagram-text.ts"
 import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
-import { readUnit } from "../../diagram-units.ts"
+import { readUnit, significantRangeOf } from "../../diagram-units.ts"
 import { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"
+import { UnitLexer } from "../../unit-lexer.ts"
 import {
   isCodePointAt,
   matchWholeWordIgnoringCase,
@@ -168,31 +169,14 @@ function endsLineSegment(character: DiagramCharacter): boolean {
  * order; each method that reads a context names the section it follows.
  * Letters of the keywords are compared case-insensitively.
  */
-export class MindmapUnitLexer {
-  private readonly reader: DiagramText
-
-  private readonly lines: LineIndex
-
-  private readonly units: Unit[] = []
-
+export class MindmapUnitLexer extends UnitLexer<Context, UnitName, Unit> {
   private readonly comments: DiagramComment[] = []
-
-  /** The stack of contexts; the last one is the current context. */
-  private readonly contexts: Context[] = ["statement"]
-
-  /** For each context on the stack but the statement context, the unit that entered it, for the error at the end of the text. */
-  private readonly entries: Unit[] = []
-
-  /** The place of the next character to read; null at the end of the text. */
-  private position: DiagramPosition
 
   /** The number of whitespace characters that rule 7 read since the last unit, which the next unit takes (see `Unit.whitespaceBefore`). */
   private whitespaceRead = 0
 
   public constructor(reader: DiagramText, lines: LineIndex) {
-    this.reader = reader
-    this.lines = lines
-    this.position = reader.first()
+    super(reader, lines, "statement", END_OF_TEXT_MESSAGES)
   }
 
   /**
@@ -201,51 +185,43 @@ export class MindmapUnitLexer {
    * the text ends in a context that may not end there.
    */
   public lex(): MindmapLexing {
-    while (this.position !== null) {
-      this.readInContext(this.position, this.currentContext())
-    }
+    this.readToEnd()
     this.checkEndOfText()
     return { units: this.units, comments: this.comments }
   }
 
-  /** The current context: the top of the stack. */
-  private currentContext(): Context {
-    return this.contexts[this.contexts.length - 1]
-  }
-
-  /** Units and contexts: enters `context`, which `entry` entered. */
-  private enter(context: Context, entry: Unit): void {
-    this.contexts.push(context)
-    this.entries.push(entry)
-  }
-
-  /** Units and contexts: leaves the current context. */
-  private leave(): void {
-    this.contexts.pop()
-    this.entries.pop()
-  }
-
   /**
-   * Reads the unit named `name` from `at` up to, and not including, `to`,
-   * whose token leaves out the whitespace at its ends as `ends` says, and
-   * goes on after it.
+   * Adds the unit named `name` that reads the characters from `from` up to,
+   * and not including, `to`, whose token leaves out the whitespace at its
+   * ends as `ends` says, with the whitespace that rule 7 read before it and
+   * the range of its content, `contentRange`, for a string.
    */
-  private read(
+  protected override addUnit(
     name: UnitName,
-    at: DiagramCharacter,
+    from: DiagramCharacter,
     to: DiagramPosition,
     ends: UnitEnds = "trim-whitespace",
     contentRange: Range | null = null,
   ): Unit {
     const unit: Unit = {
-      ...readUnit(this.reader, name, this.units.length, at, to, null, ends),
+      ...readUnit(this.reader, name, this.units.length, from, to, null, ends),
       whitespaceBefore: this.whitespaceRead,
       contentRange,
     }
     this.units.push(unit)
     this.whitespaceRead = 0
-    this.position = to
     return unit
+  }
+
+  /** Reads the string unit named `name` from `at` up to `to`, whose content lies at `contentRange`, and goes on after it. */
+  private readWithContent(
+    name: UnitName,
+    at: DiagramCharacter,
+    to: DiagramPosition,
+    contentRange: Range,
+  ): void {
+    this.addUnit(name, at, to, "trim-whitespace", contentRange)
+    this.position = to
   }
 
   /** The error at the character `at`, with the message `message`. */
@@ -254,20 +230,11 @@ export class MindmapUnitLexer {
     return new ParseError(message, range, this.lines.location(range))
   }
 
-  /**
-   * Units and contexts: throws when the text ends in a context that may
-   * not end there, at the unit that entered it, saying what is not closed.
-   */
-  private checkEndOfText(): void {
-    const message = END_OF_TEXT_MESSAGES[this.currentContext()]
-    const entry = this.entries.at(-1)
-    if (message === null || entry === undefined) return
-    const range: Range = entry.significantRange ?? [entry.start, entry.end]
-    throw new ParseError(message, range, this.lines.location(range))
-  }
-
   /** Applies the first rule of `context` that matches at `at`. */
-  private readInContext(at: DiagramCharacter, context: Context): void {
+  protected override readInContext(
+    at: DiagramCharacter,
+    context: Context,
+  ): void {
     switch (context) {
       case "statement":
         this.readInStatementContext(at)
@@ -302,7 +269,7 @@ export class MindmapUnitLexer {
     ) {
       return
     }
-    throw this.errorAt("Unexpected character", at)
+    throw this.noRuleMatches(at)
   }
 
   /**
@@ -374,7 +341,7 @@ export class MindmapUnitLexer {
     const match = matchWordIgnoringCase(this.reader, at, marker)
     if (match === null) return false
     const unit = this.read(marker, at, match.end)
-    this.enter(context, unit)
+    this.enter(context, significantRangeOf(unit))
     return true
   }
 
@@ -396,7 +363,7 @@ export class MindmapUnitLexer {
       const match = matchWord(this.reader, at, opener)
       if (match !== null) {
         const unit = this.read("opener", at, match.end)
-        this.enter("shape", unit)
+        this.enter("shape", significantRangeOf(unit))
         return true
       }
     }
@@ -451,7 +418,7 @@ export class MindmapUnitLexer {
     }
     if (!isShapeTextCharacter(at)) {
       // A `}` that does not start `}}`.
-      throw this.errorAt("Unexpected character", at)
+      throw this.noRuleMatches(at)
     }
     // Rule 4: a shape text, whose token keeps the whitespace at its ends.
     const end = skipWhile(this.reader, at, isShapeTextCharacter)
@@ -497,13 +464,10 @@ export class MindmapUnitLexer {
     if (samePosition(end, contentStart)) {
       this.read("empty-markdown-string", at, this.reader.after(quote))
     } else {
-      this.read(
-        "markdown-string",
-        at,
-        this.reader.after(quote),
-        "trim-whitespace",
-        [contentStart.start, end.start],
-      )
+      this.readWithContent("markdown-string", at, this.reader.after(quote), [
+        contentStart.start,
+        end.start,
+      ])
     }
     return true
   }
@@ -531,7 +495,7 @@ export class MindmapUnitLexer {
     if (samePosition(closing, contentStart)) {
       this.read("empty-string", at, this.reader.after(closing))
     } else {
-      this.read("string", at, this.reader.after(closing), "trim-whitespace", [
+      this.readWithContent("string", at, this.reader.after(closing), [
         contentStart.start,
         closing.start,
       ])

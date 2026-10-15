@@ -8,6 +8,7 @@ import type {
   RequirementNode,
   SequenceNode,
   StateNode,
+  TimelineNode,
 } from "../../src/index.ts"
 
 /** ast.md, Shared leaf nodes: the node types, as the tests expect them. */
@@ -280,6 +281,25 @@ export const allMindmapNodeTypes: Readonly<
   MindmapLiteral: true,
 }
 
+/**
+ * Every node type of ast/timeline.md, in the order of that document. Being
+ * a `Record` over the type, this fails to type-check when a node type is
+ * missing here or is not in the type.
+ */
+export const allTimelineNodeTypes: Readonly<
+  Record<TimelineNode["type"], true>
+> = {
+  TimelineDiagram: true,
+  TimelinePeriodStatement: true,
+  TimelineEventStatement: true,
+  TimelineTitleStatement: true,
+  TimelineSectionStatement: true,
+  TimelineAccTitleStatement: true,
+  TimelineAccDescrStatement: true,
+  TimelineAccDescrBlockStatement: true,
+  TimelineLiteral: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -292,6 +312,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allJourneyNodeTypes),
   ...Object.keys(allRequirementNodeTypes),
   ...Object.keys(allMindmapNodeTypes),
+  ...Object.keys(allTimelineNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

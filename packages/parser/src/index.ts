@@ -239,6 +239,19 @@ export type {
   MindmapTreeNode,
 } from "./ast/mindmap.ts"
 export type {
+  TimelineAccDescrBlockStatement,
+  TimelineAccDescrStatement,
+  TimelineAccTitleStatement,
+  TimelineDiagram,
+  TimelineEventStatement,
+  TimelineLiteral,
+  TimelineNode,
+  TimelinePeriodStatement,
+  TimelineSectionStatement,
+  TimelineStatement,
+  TimelineTitleStatement,
+} from "./ast/timeline.ts"
+export type {
   RequirementAccDescrBlockStatement,
   RequirementAccDescrStatement,
   RequirementAccTitleStatement,

@@ -15,7 +15,7 @@ the sentence of the specification or of the parser's documents that defines it.
 
 `tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
 `sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, `requirement/`,
-and `mindmap/`, and checks:
+`mindmap/`, and `timeline/`, and checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));
@@ -66,8 +66,8 @@ compares it with the Db built from the recorded tree.
   which the sequence lexer, in the statement context, starts the match of a
   rule, decided on the diagram text; both come from the parser's lexer. A Gantt
   chart has a `%` right after the first character of a unit, a character other
-  than `}` and whitespace, and a journey diagram a `%%` there, found from the
-  parser's units and diagram text.
+  than `}` and whitespace, and a journey diagram and a timeline a `%%` there,
+  found from the parser's units and diagram text.
 - `comment-takes-line-break`: the class diagram has a diagram comment that
   follows a unit on its line, found from the parser's lexer and units. The Gantt
   chart has a comment with the mark `%` that mermaid.js reaches directly, as

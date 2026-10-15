@@ -29,9 +29,15 @@ a string gives each of its characters under its position, `links A: "ab"` gives
 the links `0` and `1`, an array gives each element under its position, and a
 number, `true`, `false`, or `null` gives nothing.
 
-A `#` ends the text of the statement. A URL with a fragment, as in
-`links A: {"Docs": "https://x.example/#top"}`, therefore leaves a text that is
-not JSON, and the statement is reported.
+A `#` ends the text of the statement, and mermaid.js reads the text before it. A
+text that is a JSON object with the `#` and what follows it is not reported:
+`links A: {"Docs": "https://x.example/#top"}`, with a URL with a fragment, is a
+correct JSON object, and mermaid.js gives the participant no link only because
+it cuts the text at the `#`, which looks like a defect of mermaid.js
+([#5419](https://github.com/mermaid-js/mermaid/issues/5419), open, reports that
+a `#` empties the texts of a sequence diagram). A text that is a JSON object
+before the `#`, as in `links A: {"Docs": "https://x.example/"} # note`, gives
+the link, and it is not reported either.
 
 A statement with no text, as in `links A:` or `properties A:`, is reported too:
 it gives the participant nothing.

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Lexical structure: the text may not end in the description block context."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...meline  accDescr {\n---------------------^\nExpecting 'EOF', 'SPACE', 'NEWLINE', 'title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'section', 'period', 'event', got '1'"
+  }
+}

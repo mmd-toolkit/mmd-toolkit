@@ -54,6 +54,7 @@ export type DiagramType =
   | "journey"
   | "requirement"
   | "mindmap"
+  | "timeline"
 
 /**
  * Where a fixture input came from.

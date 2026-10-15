@@ -17,8 +17,8 @@ title is usually left over from rewriting the text or from pasting a part twice.
 
 ## Rule Details
 
-This rule reports every `accTitle` statement after the first one. It applies to
-`stateDiagram`.
+This rule reports every `accTitle` statement after the first one, when it sets a
+title other than the one before it. It applies to `stateDiagram`.
 
 After `accTitle: first` and `accTitle: second`, the title is `second`.
 `accTitle:` with no text sets the title too: it takes the next line that holds
@@ -28,6 +28,12 @@ such line follows, it makes the title empty.
 Inside a composite state, `accTitle: x` is no `accTitle` statement: mermaid.js
 reads it as a state `accTitle` with the description `x`, and the rule does not
 count it.
+
+A statement that sets the title that the diagram already has is not reported:
+after `accTitle: a`, a second `accTitle: a` loses nothing. Titles are compared
+as mermaid.js keeps them, without the whitespace at their ends, so
+`accTitle:  a` sets the same title. After `accTitle: a` and `accTitle: b`, a
+third `accTitle: a` is reported, because it replaces `b`.
 
 Examples of **incorrect** code for this rule:
 
@@ -46,6 +52,14 @@ Examples of **correct** code for this rule:
 stateDiagram-v2
   accTitle: first
   accDescr: second
+  A --> B
+```
+
+```mmd
+%% eslint @mmd-toolkit/state-no-duplicate-title: error
+stateDiagram-v2
+  accTitle: first
+  accTitle: first
   A --> B
 ```
 

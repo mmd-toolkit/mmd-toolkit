@@ -31,6 +31,48 @@ Code:
 ---
 
 
+Test: state-no-duplicate-description >> invalid >>> invalid/state/acc-descr-back-to-first
+Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/acc-descr-back-to-first-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr: a
+  3 |   accDescr: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accDescr: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   A --> B
+  6 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+[2] mermaid.js replaces the description set on line 3 with the one of this `accDescr`.
+---
+
+
+Test: state-no-duplicate-description >> invalid >>> invalid/state/acc-descr-trailing-space-inside-block
+Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/acc-descr-trailing-space-inside-block-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr {
+  3 |     d
+  4 |     e
+  5 |   }
+  6 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  7 |     d  
+    | ~~~~~~~\ [1]
+  8 |     e
+    | ~~~~~\ [1]
+  9 |   }
+    | ~~~ [1]
+ 10 |   A --> B
+ 11 |
+
+[1] mermaid.js replaces the description set on line 2 with the one of this `accDescr`.
+---
+
+
 Test: state-no-duplicate-description >> invalid >>> invalid/state/db-acc-descr-block-replaces
 Filename: tests/fixtures/rules/state-no-duplicate-description/invalid/state/db-acc-descr-block-replaces-input.mmd
 

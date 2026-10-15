@@ -44,7 +44,7 @@ import type {
 } from "../../diagram-text.ts"
 import { lineFeedAfter } from "../../diagram-text.ts"
 import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
-import { readUnit } from "../../diagram-units.ts"
+import { readUnit, significantRangeOf } from "../../diagram-units.ts"
 import { DirectionLineRule } from "../../direction-line.ts"
 import { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"
@@ -59,6 +59,7 @@ import {
   skipWhitespace,
 } from "../../scanning.ts"
 import { isUnicodeLetter } from "../../unicode-letters.ts"
+import { UnitLexer } from "../../unit-lexer.ts"
 import type { MemberLineKind, MemberLineUnitName } from "./member-lines.ts"
 import { divideMemberLine } from "./member-lines.ts"
 
@@ -181,6 +182,29 @@ type Context =
   | "description"
   | "description-block"
 
+/**
+ * Units and contexts: for each context, null when the text may end in it;
+ * otherwise the message of the error when the text ends in it, which says
+ * what is not closed. The text may also end in any context after a
+ * backquoted name that is not closed.
+ */
+const END_OF_TEXT_MESSAGES: Readonly<Record<Context, string | null>> = {
+  statement: null,
+  class: null,
+  member: "The member body has no } before the end of the text",
+  namespace: null,
+  "namespace-body": "The namespace body has no } before the end of the text",
+  generic: "The generic type has no closing ~ before the end of the text",
+  "callback-name":
+    "The callback after call has no ( before the end of the text",
+  "callback-arguments":
+    "The arguments of the callback have no ) before the end of the text",
+  title: "accTitle has no text before the end of the text",
+  description: "accDescr has no text before the end of the text",
+  "description-block":
+    "The description block has no } before the end of the text",
+}
+
 /** diagrams/class.md, Lexical structure: what the lexer reads from the diagram text. */
 export interface ClassLexing {
   readonly units: readonly Unit[]
@@ -279,26 +303,8 @@ function isWordCodePoint(codePoint: number): boolean {
  * are those of the specification, in its order; each method that reads a
  * context names the section it follows. Letters are compared as written.
  */
-export class ClassUnitLexer {
-  private readonly reader: DiagramText
-
-  private readonly lines: LineIndex
-
-  private readonly units: Unit[] = []
-
+export class ClassUnitLexer extends UnitLexer<Context, UnitName, Unit> {
   private readonly comments: DiagramComment[] = []
-
-  /** The stack of contexts; the last one is the current context. */
-  private readonly contexts: Context[] = ["statement"]
-
-  /** For each context on the stack but the statement context, the unit that entered it, for the error at the end of the text. */
-  private readonly entries: Unit[] = []
-
-  /** The place of the next character to read; null at the end of the text. */
-  private position: DiagramPosition
-
-  /** Whether the first unit has been checked to be the header (see `checkHeader`). */
-  private headerChecked = false
 
   /** The statement context, rule 2: whether a unit was read on the current line. */
   private lineHasUnit = false
@@ -310,9 +316,7 @@ export class ClassUnitLexer {
   private readonly directionLine: DirectionLineRule
 
   public constructor(reader: DiagramText, lines: LineIndex) {
-    this.reader = reader
-    this.lines = lines
-    this.position = reader.first()
+    super(reader, lines, "statement", END_OF_TEXT_MESSAGES)
     this.directionLine = new DirectionLineRule(
       reader,
       DIRECTION_LINE_VALUES,
@@ -325,12 +329,8 @@ export class ClassUnitLexer {
    * matches and where the text ends in a context that may not end there.
    */
   public lex(): ClassLexing {
-    while (this.position !== null) {
-      const context = this.currentContext()
-      this.readInContext(this.position, context)
-      if (this.units.length > 0 && !this.headerChecked) this.checkHeader()
-    }
-    this.checkEndOfText()
+    this.readToEnd()
+    if (!this.endsInUnclosedBackquotedName()) this.checkEndOfText()
     return {
       units: this.units,
       comments: this.comments,
@@ -346,11 +346,9 @@ export class ClassUnitLexer {
    * in a context that may not end there, which mermaid.js accepts without a
    * header.
    */
-  private checkHeader(): void {
-    this.headerChecked = true
-    const [first] = this.units
+  private checkHeader(first: Unit): void {
     if (first.name === "header") return
-    const range = first.significantRange ?? [first.start, first.end]
+    const range = significantRangeOf(first)
     throw new ParseError(
       MISSING_HEADER_MESSAGE,
       range,
@@ -358,32 +356,14 @@ export class ClassUnitLexer {
     )
   }
 
-  /** The current context: the top of the stack. */
-  private currentContext(): Context {
-    return this.contexts[this.contexts.length - 1]
-  }
-
-  /** Units and contexts: enters `context`, which the unit `entry` entered. */
-  private enter(context: Context, entry: Unit): void {
-    this.contexts.push(context)
-    this.entries.push(entry)
-  }
-
-  /** Units and contexts: leaves the current context. Leaving the statement context keeps it. */
-  private leave(): void {
-    if (this.contexts.length > 1) {
-      this.contexts.pop()
-      this.entries.pop()
-    }
-  }
-
-  /** The last unit read. */
-  private lastUnit(): Unit {
-    const unit = this.units.at(-1)
-    if (unit === undefined) {
-      throw new Error("mmd-toolkit parser bug: no unit was read")
-    }
-    return unit
+  /** Units and contexts: whether the text ends after a backquoted name that is not closed, where it may end in any context. */
+  private endsInUnclosedBackquotedName(): boolean {
+    const last = this.units.at(-1)
+    return (
+      last !== undefined &&
+      last.name === "backquoted" &&
+      !isClosedBackquotedName(last)
+    )
   }
 
   /**
@@ -391,7 +371,7 @@ export class ClassUnitLexer {
    * and not including, `to`, whose token leaves out the whitespace at its
    * ends as `ends` says.
    */
-  private addUnit(
+  protected override addUnit(
     name: UnitName,
     from: DiagramCharacter,
     to: DiagramPosition,
@@ -402,70 +382,17 @@ export class ClassUnitLexer {
       memberLine: null,
       label: null,
     }
+    if (this.units.length === 0) this.checkHeader(unit)
     this.units.push(unit)
     this.lineHasUnit = name !== "newline"
     return unit
   }
 
-  /** Reads the unit named `name` from `at` up to `to`, as a unit of its own, and goes on after it; `ends` as in {@link ClassUnitLexer.addUnit}. */
-  private read(
-    name: UnitName,
-    at: DiagramCharacter,
-    to: DiagramPosition,
-    ends: UnitEnds = "trim-whitespace",
-  ): Unit {
-    const unit = this.addUnit(name, at, to, ends)
-    this.position = to
-    return unit
-  }
-
-  /** The error for a place where no rule of the current context matches. */
-  private noRuleMatches(at: DiagramCharacter): ParseError {
-    const range: Range = [at.start, at.end]
-    return new ParseError(
-      "Unexpected character",
-      range,
-      this.lines.location(range),
-    )
-  }
-
-  /**
-   * Units and contexts: the text may end only in the statement context, and
-   * after a backquoted name that is not closed. In another context, the
-   * error is at the unit that entered it, and says what is not closed.
-   */
-  private checkEndOfText(): void {
-    const context = this.currentContext()
-    const entry = this.entries.at(-1)
-    if (context === "statement" || entry === undefined) return
-    if (this.lastUnit().name === "backquoted" && this.isUnclosed()) return
-    const messages: Readonly<Partial<Record<Context, string>>> = {
-      member: "The member body has no } before the end of the text",
-      "namespace-body":
-        "The namespace body has no } before the end of the text",
-      generic: "The generic type has no closing ~ before the end of the text",
-      "callback-name":
-        "The callback after call has no ( before the end of the text",
-      "callback-arguments":
-        "The arguments of the callback have no ) before the end of the text",
-      title: "accTitle has no text before the end of the text",
-      description: "accDescr has no text before the end of the text",
-      "description-block":
-        "The description block has no } before the end of the text",
-    }
-    const message = messages[context]
-    if (message === undefined) return
-    const range = entry.significantRange ?? [entry.start, entry.end]
-    throw new ParseError(message, range, this.lines.location(range))
-  }
-
-  /** Strings, backquoted names, and generic types: whether the last unit, a backquoted name, has no closing backquote. */
-  private isUnclosed(): boolean {
-    return !isClosedBackquotedName(this.lastUnit())
-  }
-
   /** Applies the first rule of `context` that matches at `at`. */
-  private readInContext(at: DiagramCharacter, context: Context): void {
+  protected override readInContext(
+    at: DiagramCharacter,
+    context: Context,
+  ): void {
     switch (context) {
       case "statement":
         this.readInStatementContext(at)
@@ -588,7 +515,7 @@ export class ClassUnitLexer {
       this.read(isColon ? ":" : "{", mark, end)
       let context: Context = "description-block"
       if (isColon) context = word === "accTitle" ? "title" : "description"
-      this.enter(context, keyword)
+      this.enter(context, significantRangeOf(keyword))
       return true
     }
     return false
@@ -650,7 +577,7 @@ export class ClassUnitLexer {
     const match = this.wholeWord(at, word)
     if (match === null) return false
     const unit = this.read(name, at, match.end)
-    this.enter(name, unit)
+    this.enter(name, significantRangeOf(unit))
     return true
   }
 
@@ -669,7 +596,7 @@ export class ClassUnitLexer {
     if (!isWhitespace(match.end.codePoint)) return false
     const end = skipWhitespace(this.reader, match.end)
     const unit = this.read("call", at, end)
-    this.enter("callback-name", unit)
+    this.enter("callback-name", significantRangeOf(unit))
     return true
   }
 
@@ -728,7 +655,7 @@ export class ClassUnitLexer {
     }
     if (at.codePoint === TILDE) {
       const unit = this.read("~", at, this.reader.after(at))
-      this.enter("generic", unit)
+      this.enter("generic", significantRangeOf(unit))
       return true
     }
     if (this.readBackquoted(at)) return true
@@ -917,7 +844,7 @@ export class ClassUnitLexer {
     }
     if (at.codePoint === LEFT_CURLY_BRACKET) {
       const unit = this.read("{", at, this.reader.after(at))
-      this.enter("member", unit)
+      this.enter("member", significantRangeOf(unit))
       this.atMemberStart = true
       return
     }
@@ -1052,7 +979,7 @@ export class ClassUnitLexer {
     if (this.skipOtherWhitespace(at)) return
     if (at.codePoint === LEFT_CURLY_BRACKET) {
       const unit = this.read("{", at, this.reader.after(at))
-      this.enter("namespace-body", unit)
+      this.enter("namespace-body", significantRangeOf(unit))
       return
     }
     if (at.codePoint === RIGHT_CURLY_BRACKET) {
@@ -1123,7 +1050,7 @@ export class ClassUnitLexer {
         return
       }
       this.leave()
-      this.enter("callback-arguments", opening)
+      this.enter("callback-arguments", significantRangeOf(opening))
       return
     }
     this.read(

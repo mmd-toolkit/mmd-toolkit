@@ -234,7 +234,8 @@ and each diagram applies it to the texts below.
   gantt/config-security-level-other-html-labels-false] [fixture:
   journey/config-security-level-other-html-labels-false] [fixture:
   requirement/config-security-level-other-html-labels-false] [fixture:
-  mindmap/config-security-level-other-html-labels-false]
+  mindmap/config-security-level-other-html-labels-false] [fixture:
+  timeline/config-security-level-other-html-labels-false]
 
 **What.** The replacement writes each line break tag as `#br#`, then each `<`,
 `>`, and `=` as `&lt;`, `&gt;`, and `&equals;`, and then each `#br#` as `<br/>`,
@@ -362,6 +363,12 @@ does not, are:
 - Mindmap: the id, the description, the icon, and the class of a node, which are
   all the texts of the summary. [fixture:
   mindmap/config-security-level-other-texts]
+- Timeline: the title of a `title` statement; `accTitle`; `accDescr`, of a line
+  and of a block. The title of the frontmatter is not read. The periods, the
+  events, and the section names are not reached. [fixture:
+  timeline/config-security-level-other-title-and-accessibility] [fixture:
+  timeline/config-security-level-other-accessibility-block] [fixture:
+  timeline/config-security-level-other-sections-periods-events]
 
 **Where the order of mermaid.js matters.** Some texts are replaced before
 mermaid.js reads them further, and the builders do the same.

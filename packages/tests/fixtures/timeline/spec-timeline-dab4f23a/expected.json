@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/timeline/timeline.spec.js",
+    "line": 50,
+    "test": "when parsing a timeline  > Timeline > should handle a simple section and only two tasks"
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "abc-123"
+    ],
+    "tasks": [
+      {
+        "section": "abc-123",
+        "task": "task1",
+        "events": []
+      },
+      {
+        "section": "abc-123",
+        "task": "task2",
+        "events": []
+      }
+    ]
+  }
+}

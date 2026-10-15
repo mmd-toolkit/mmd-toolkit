@@ -37,7 +37,11 @@ The rule also reports the other text that mermaid.js drops:
 - A `%%` before the `{` of a body: in `state "d" as %% c {`, the alias has no
   id, and its body holds states of no composite state.
 - The character right after the `:` of a note written on one line:
-  `note left of A:hi` gives the note the text `i`.
+  `note left of A:hi` gives the note the text `i`. The
+  [documentation of mermaid.js](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/stateDiagram.md#L263)
+  writes such a note with a space after the `:`, as
+  `note left of State2 : This is the note to the left.`; written so, as
+  `note left of A : hi`, nothing is dropped.
 - Empty strings that mermaid.js skips, as the `""` of `state x ""`, and empty
   description blocks and a second `state` before the `{` of a body on a later
   line.

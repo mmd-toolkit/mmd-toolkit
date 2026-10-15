@@ -1053,6 +1053,34 @@ describe("withoutDivergences: journey", () => {
   })
 })
 
+describe("withoutDivergences: timeline", () => {
+  /** The periods of the tasks of `text`, with `without` taken out. */
+  async function periodsOf(
+    text: string,
+    without: readonly "comment-takes-character"[],
+  ): Promise<string[]> {
+    const run = await runMermaid(text, { withoutDivergences: without })
+    if (!run.accepted || !run.db) throw new Error("expected a Db")
+    return (run.db.tasks as { task: string }[]).map((task) => task.task)
+  }
+
+  it("starts a comment at its `%%` only where a unit starts", async () => {
+    // The lexer reads `A%%B` as a comment, the first character with it; read
+    // as the specification does, it is the task `A%%B`.
+    const text = "timeline\n  A%%B\n"
+    expect(await periodsOf(text, [])).toEqual([])
+    expect(await periodsOf(text, ["comment-takes-character"])).toEqual(["A%%B"])
+  })
+
+  it("leaves a period of two characters or more, and a `}`, as they are", async () => {
+    for (const text of ["timeline\n  AB%%C\n", "timeline\n  }%%C\n"]) {
+      expect(await periodsOf(text, ["comment-takes-character"])).toEqual(
+        await periodsOf(text, []),
+      )
+    }
+  })
+})
+
 describe("withoutDivergences: gantt", () => {
   /** Whether mermaid accepts `text` as it is, and with `removed` taken out. */
   async function acceptedAsIsAndWithout(

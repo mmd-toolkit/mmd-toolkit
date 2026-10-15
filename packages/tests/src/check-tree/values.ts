@@ -271,6 +271,11 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     kind: "written-text",
     spec: "Its written text (ast/mindmap.md, MindmapLiteral).",
   },
+  TimelineLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its written text (ast/timeline.md, TimelineLiteral).",
+  },
 }
 
 /** The delimiters around the content of the string that `node` starts with; none if it starts with none. */

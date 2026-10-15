@@ -19,7 +19,7 @@ export default [
     files: ["**/*.mmd", "**/*.mermaid"],
     rules: {
       "@mmd-toolkit/flowchart-no-undef": "warn",
-      "@mmd-toolkit/flowchart-no-bare-comment-marker": "error",
+      "@mmd-toolkit/flowchart-no-unclosed-description-block": "error",
     },
   },
 ]
@@ -32,7 +32,7 @@ Markdownのprocessorは、`mmd`・`mermaid`コードブロックを
 
 最後の設定オブジェクトは、Mermaidの図のルール設定を上書きします。
 この例では、`@mmd-toolkit/flowchart-no-undef`を警告に変更し、
-推奨設定に含まれない`@mmd-toolkit/flowchart-no-bare-comment-marker`を
+推奨設定に含まれない`@mmd-toolkit/flowchart-no-unclosed-description-block`を
 有効にします。
 ルールを無効にするには`"off"`を指定します。
 後にある、対象ファイルに一致した設定オブジェクトが、

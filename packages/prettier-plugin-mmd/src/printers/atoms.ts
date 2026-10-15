@@ -53,6 +53,15 @@ export interface AtomLayout {
    * directive: such a statement is laid out as one atom, kept as written.
    */
   readonly lineBreaks: LineBreakRule
+  /**
+   * The starts of the atoms whose gap before them is joined into the line
+   * although the layout keeps its line breaks, as for the text that starts on
+   * the line after the `:` of an event in a timeline, where the line break is
+   * the one whitespace character that the lexer reads after the colon. Such a
+   * gap holds no comment and no directive, as for a layout that joins its line
+   * breaks. Without it, no gap is joined.
+   */
+  readonly joinedBefore?: ReadonlySet<number>
 }
 
 /** Where the lines of a statement start. */
@@ -78,7 +87,8 @@ export interface PrintedAtoms {
  * inside the statement, the line stays broken, and every later line of the
  * statement starts one level deeper, except the lines of the layout's
  * outdented atoms; runs of empty lines become one. When the layout joins
- * line breaks, a line break is printed as whitespace on one line is.
+ * line breaks, or joins the one before an atom (`joinedBefore`), such a line
+ * break is printed as whitespace on one line is.
  */
 export function printAtoms(
   source: Source,
@@ -110,7 +120,11 @@ export function printAtoms(
     const text = source.text.slice(atom.start, atom.end)
     if (previous !== undefined) {
       const gap = readGap(source, previous.end, atom.start, true)
-      if (gap.breaksLine && layout.lineBreaks === "joined") {
+      if (
+        gap.breaksLine &&
+        (layout.lineBreaks === "joined" ||
+          layout.joinedBefore?.has(atom.start) === true)
+      ) {
         if (
           gap.trailing !== null ||
           gap.lines.length > 0 ||

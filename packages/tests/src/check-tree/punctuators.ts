@@ -5,6 +5,7 @@ import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import { diagramTokensOf } from "./invariants.ts"
 import type { CheckedRoot } from "./types.ts"
+import { TIMELINE_PUNCTUATORS } from "./timeline.ts"
 import { reportCutEntries } from "./tokens.ts"
 import { nodesOf } from "./walk.ts"
 
@@ -96,6 +97,8 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   RequirementDiagram: [":", ",", "{", "}", ":::", "-", "->", "<-"],
   // The row `Punctuator` of parser/docs/tokens/mindmap.md.
   MindmapDiagram: MINDMAP_PUNCTUATORS,
+  // The row `Punctuator` of parser/docs/tokens/timeline.md.
+  TimelineDiagram: TIMELINE_PUNCTUATORS,
   ErrorDiagram: [],
 }
 

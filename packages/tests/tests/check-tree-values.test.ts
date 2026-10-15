@@ -181,6 +181,7 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "JourneyIgnoredText", message: NOT_WRITTEN_TEXT },
   { type: "MindmapLabel", message: NOT_WRITTEN_TEXT },
   { type: "MindmapLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "TimelineLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RequirementIdentifier", message: "name is not its written text" },
   { type: "RequirementLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RequirementIgnoredText", message: NOT_WRITTEN_TEXT },
@@ -639,6 +640,59 @@ const VALUE_CASES: readonly ValueCase[] = [
       {
         where: "MindmapLabel at 12-45",
         message: `${JOINED}: "  x ", not "  x  "`,
+      },
+    ],
+  },
+  {
+    type: "TimelineLiteral",
+    name: "a TimelineLiteral reports the whitespace taken off the end of the RawText token of a period",
+    diagram: "timeline",
+    fixture: "db-period-trailing-spaces",
+    token: { type: "RawText", value: "a   " },
+    side: "end",
+    problems: [
+      {
+        where: "TimelineDiagram at 0-15",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "TimelinePeriodStatement at 11-15",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "TimelineLiteral at 11-15",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "Root.body",
+        message:
+          "does not run from its first token to its last: [0,15], not [0,12]",
+      },
+      {
+        where: "TimelineLiteral at 11-15",
+        message: `${JOINED}: "a", not "a   "`,
+      },
+    ],
+  },
+  {
+    type: "TimelineLiteral",
+    name: "a TimelineLiteral reports the whitespace taken off the end of the RawText token before a directive",
+    diagram: "timeline",
+    fixture: "lex-directive-at-end-of-period-line",
+    token: { type: "RawText", value: "a " },
+    side: "end",
+    problems: [
+      {
+        where: "TimelinePeriodStatement at 11-13",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "TimelineLiteral at 11-13",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "TimelineLiteral at 11-13",
+        message: `${JOINED}: "a", not "a "`,
       },
     ],
   },

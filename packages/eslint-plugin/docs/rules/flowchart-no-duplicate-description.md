@@ -22,8 +22,9 @@ counts.
 
 ## Rule Details
 
-This rule reports every statement that sets the description after the first one.
-It applies to `flowchart-v2`, `flowchart-elk`, and `swimlane`.
+This rule reports every statement that sets the description after the first one,
+when it sets a description other than the one before it. It applies to
+`flowchart-v2`, `flowchart-elk`, and `swimlane`.
 
 `accDescr:` sets the description. Without text, it sets the description too: it
 takes the next line that holds text as the description, past empty lines,
@@ -41,6 +42,14 @@ the description empty, are not counted;
 and
 [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.md)
 report them.
+
+A statement that sets the description that the diagram already has is not
+reported, in either form: after `accDescr: d`, the block `accDescr { d }` loses
+nothing. Descriptions are compared as mermaid.js keeps them, without the
+whitespace at their ends and without the whitespace after each line break, so
+the indentation of the lines of a block and the empty lines in it do not count.
+After `accDescr: a` and `accDescr: b`, a third `accDescr: a` is reported,
+because it replaces `b`.
 
 For each report, the rule suggests removing one of two statements: the reported
 one, or the one before it that sets the description. mermaid.js uses the last
@@ -85,6 +94,16 @@ Examples of **correct** code for this rule:
 flowchart LR
   A
   accDescr: first
+```
+
+```mmd
+%% eslint @mmd-toolkit/flowchart-no-duplicate-description: error
+flowchart LR
+  A
+  accDescr: first
+  accDescr {
+    first
+  }
 ```
 
 ## Options

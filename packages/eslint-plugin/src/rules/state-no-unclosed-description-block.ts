@@ -19,7 +19,7 @@ export const stateNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
     type: "problem",
     docs: {
       description: "Disallow an `accDescr {` block without its closing `}`.",
-      recommended: true,
+      recommended: false,
       url: ruleDocsUrl("state-no-unclosed-description-block"),
     },
     schema: [],

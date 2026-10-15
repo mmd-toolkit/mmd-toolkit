@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, title: a title statement is the title where the frontmatter has one too."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  },
+  "embedded": {
+    "title": "FT"
+  }
+}

@@ -167,6 +167,7 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   JourneyDiagram: ["#", "%%", "%"],
   RequirementDiagram: ["#", "%%", "%"],
   MindmapDiagram: ["%%"],
+  TimelineDiagram: ["#", "%%", "%"],
 }
 
 /**

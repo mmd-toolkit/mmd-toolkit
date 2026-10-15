@@ -33,9 +33,17 @@ mermaid.js は、それを書き手の意図どおりには読まないからで
 配列は各要素を位置をキーにして与え、
 数、`true`、`false`、`null` は何も与えない。
 
-`#` は文のテキストを終わらせる。
-そのため、`links A: {"Docs": "https://x.example/#top"}` のように
-フラグメントのある URL は、JSON でないテキストを残し、その文を報告する。
+`#` は文のテキストを終わらせ、mermaid.js はその前のテキストを読む。
+`#` とその後を含めて JSON のオブジェクトであるテキストは、報告しない。
+フラグメントのある URL を持つ
+`links A: {"Docs": "https://x.example/#top"}` は、
+正しい JSON のオブジェクトである。
+mermaid.js が参加者にリンクを与えないのは、テキストを `#` で切るからにすぎず、
+これは mermaid.js の不具合に見える
+（[#5419](https://github.com/mermaid-js/mermaid/issues/5419) は open で、
+`#` が sequence 図のテキストを空にすると報告している）。
+`links A: {"Docs": "https://x.example/"} # note` のように、
+`#` の前が JSON のオブジェクトであるテキストはリンクを与え、これも報告しない。
 
 `links A:` や `properties A:` のようにテキストのない文も報告する。
 その文は参加者に何も与えない。

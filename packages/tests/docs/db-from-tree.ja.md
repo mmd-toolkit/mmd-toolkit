@@ -262,6 +262,7 @@ HTML ラベルが有効で、`securityLevel` が
   [fixture: journey/config-security-level-other-html-labels-false]
   [fixture: requirement/config-security-level-other-html-labels-false]
   [fixture: mindmap/config-security-level-other-html-labels-false]
+  [fixture: timeline/config-security-level-other-html-labels-false]
 
 **何を。**
 置き換えは、改行タグをそれぞれ `#br#` に書き、
@@ -394,6 +395,13 @@ HTML ラベルが有効で、`securityLevel` が
 - mindmap: ノードの id、説明、icon、class。
   要約のテキストは、これですべてです。
   [fixture: mindmap/config-security-level-other-texts]
+- timeline: `title` の文の title、`accTitle`、
+  `accDescr`（行のものとブロックのもの）。
+  フロントマターの title は読みません。
+  period、event、section の名前には届きません。
+  [fixture: timeline/config-security-level-other-title-and-accessibility]
+  [fixture: timeline/config-security-level-other-accessibility-block]
+  [fixture: timeline/config-security-level-other-sections-periods-events]
 
 **mermaid.js の順序が効く所。**
 テキストを読み進める前に置き換える所があり、作り手も同じにします。

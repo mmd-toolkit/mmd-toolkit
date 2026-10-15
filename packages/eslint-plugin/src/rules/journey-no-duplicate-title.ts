@@ -4,6 +4,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { titleText } from "../utils/acc-text.ts"
 
 /**
  * The rule `journey-no-duplicate-title`, described in
@@ -15,6 +16,9 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  * the tree, as in mermaid.js. A `title` statement after the title of the
  * frontmatter is not reported: the frontmatter is no statement. ESLint visits
  * the statements in the order of the source.
+ *
+ * A statement is reported only when the value it sets differs from that of the
+ * one before it (`titleText`): setting what the diagram already has loses nothing.
  */
 export const journeyNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []
@@ -41,7 +45,10 @@ export const journeyNoDuplicateTitle: MermaidRuleDefinition<{
     let previousAccTitle: JourneyAccTitleStatement | null = null
     return {
       JourneyTitleStatement(node) {
-        if (previousTitle !== null) {
+        if (
+          previousTitle !== null &&
+          titleText(previousTitle) !== titleText(node)
+        ) {
           context.report({
             node,
             messageId: "duplicateTitle",
@@ -51,7 +58,10 @@ export const journeyNoDuplicateTitle: MermaidRuleDefinition<{
         previousTitle = node
       },
       JourneyAccTitleStatement(node) {
-        if (previousAccTitle !== null) {
+        if (
+          previousAccTitle !== null &&
+          titleText(previousAccTitle) !== titleText(node)
+        ) {
           context.report({
             node,
             messageId: "duplicateAccTitle",

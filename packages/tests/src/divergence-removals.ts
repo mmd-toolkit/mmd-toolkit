@@ -196,6 +196,21 @@ const REMOVALS: Readonly<Record<DivergenceRemoval, readonly Removal[]>> = {
         },
       ],
     },
+    // The timeline lexer has the same rule for `%%` as the sequence lexer
+    // (`timeline.jison`, line 15 at the pinned commit): a character other than
+    // `}` before `%%` is read together with the comment. Read as the
+    // specification does, a comment starts at a `%` where a unit starts.
+    {
+      diagramType: "timeline",
+      sampleText: "timeline\n",
+      changes: [
+        {
+          kind: "pattern",
+          original: String.raw`^(?:[^\}]%%[^\n]*)`,
+          source: NEVER_MATCHES,
+        },
+      ],
+    },
     // The gantt lexer reads a character other than `}` before `%` together
     // with the comment (`gantt.jison`, line 29 at the pinned commit), so the
     // character is lost. Read as the specification does, a comment starts at

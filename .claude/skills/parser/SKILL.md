@@ -256,9 +256,16 @@ Add them in this order; the flowchart files are the model.
 4. For each context of the Lexical structure, write one method per rule, in the
    order of the specification (in the flowchart, `readInClickContext` and
    `readArrow`). The JSDoc names the section and the rule. A start condition of
-   Jison is a context on a stack. Compare characters with the constants of
-   `src/code-points.ts`, `src/character-classes.ts`, and `src/scanning.ts`; no
-   regular expressions.
+   Jison is a context on a stack. The lexer extends `UnitLexer`
+   (`src/unit-lexer.ts`), which keeps the stack, applies the rules of the
+   current context to the end of the text, and throws when the text ends in a
+   context that may not end there. Each diagram gives its
+   `END_OF_TEXT_MESSAGES`, which `UnitLexer` takes: for each context, the
+   message of that error or null. It also gives its `addUnit` and
+   `readInContext`. Keep in the diagram only what its document says differently,
+   not another way of writing the same thing. Compare characters with the
+   constants of `src/code-points.ts`, `src/character-classes.ts`, and
+   `src/scanning.ts`; no regular expressions.
 5. A unit has the name of the specification. Build it with `readUnit` of
    `src/diagram-units.ts`; the diagram's `Unit` is `DiagramUnit<UnitName>`, with
    fields of its own only where the diagram needs them (in the flowchart, a
@@ -290,8 +297,9 @@ Add them in this order; the flowchart files are the model.
     after the last character), report the end of the text in that context
     instead, at what entered it: in state, `scale 3` was reported as an
     unexpected character with an empty range, at the line feed after the text.
-    Keep the contexts that the text may not end in, with their messages, in one
-    table over all contexts (in state, `END_OF_TEXT_MESSAGES`).
+    Keep the contexts that the text may not end in, with their messages, in the
+    diagram's `END_OF_TEXT_MESSAGES`, the table over all contexts that
+    `UnitLexer` takes (step 4).
 
 ### 4.5 The grammar
 

@@ -4,6 +4,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { titleText } from "../utils/acc-text.ts"
 
 /**
  * The rule `sequence-no-duplicate-title`, described in
@@ -12,6 +13,9 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  * also an `accTitle` without text. The two are separate values, so each kind is
  * compared with the one before it of its own kind. ESLint visits the statements
  * in the order of the source.
+ *
+ * A statement is reported only when the value it sets differs from that of the
+ * one before it (`titleText`): setting what the diagram already has loses nothing.
  */
 export const sequenceNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []
@@ -38,7 +42,10 @@ export const sequenceNoDuplicateTitle: MermaidRuleDefinition<{
     let previousAccTitle: SequenceAccTitleStatement | null = null
     return {
       SequenceTitleStatement(node) {
-        if (previousTitle !== null) {
+        if (
+          previousTitle !== null &&
+          titleText(previousTitle) !== titleText(node)
+        ) {
           context.report({
             node,
             messageId: "duplicateTitle",
@@ -48,7 +55,10 @@ export const sequenceNoDuplicateTitle: MermaidRuleDefinition<{
         previousTitle = node
       },
       SequenceAccTitleStatement(node) {
-        if (previousAccTitle !== null) {
+        if (
+          previousAccTitle !== null &&
+          titleText(previousAccTitle) !== titleText(node)
+        ) {
           context.report({
             node,
             messageId: "duplicateAccTitle",

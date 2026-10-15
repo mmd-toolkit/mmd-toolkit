@@ -13,6 +13,7 @@ import { Problems } from "./problems.ts"
 import { checkShape } from "./shape.ts"
 import { checkSequenceTree } from "./sequence.ts"
 import { checkStateTree } from "./state.ts"
+import { checkTimelineTree } from "./timeline.ts"
 import { checkPunctuatorsAreWhole } from "./punctuators.ts"
 import { checkStringsAreWhole, checkTokensAreNotCut } from "./tokens.ts"
 import { checkValues, quoteDelimitersOf } from "./values.ts"
@@ -87,6 +88,9 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
       break
     case "MindmapDiagram":
       checkMindmapTree(text, root, problems)
+      break
+    case "TimelineDiagram":
+      checkTimelineTree(text, root, problems)
       break
     default:
       problems.report(

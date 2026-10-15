@@ -7,7 +7,7 @@ Disallow an `accDescr {` block without its closing `}`.
 
 <!-- begin auto-generated rule notice -->
 
-✅ The `recommended` configuration enables this rule.
+The `recommended` configuration does not enable this rule.
 
 💡 This rule is manually fixable by
 [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).

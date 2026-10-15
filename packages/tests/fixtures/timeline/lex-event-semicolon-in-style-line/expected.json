@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, events: the line rule drops the last `;` of the line that holds an event."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "2020 ",
+        "events": [
+          "style:#xy"
+        ]
+      }
+    ]
+  }
+}

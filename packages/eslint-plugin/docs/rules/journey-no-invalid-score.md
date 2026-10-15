@@ -11,12 +11,12 @@ Disallow a task score that is not a number from 1 to 5.
 
 <!-- end auto-generated rule notice -->
 
-The score of a task, the text between its first and its second colon, is a
-number from 1 to 5, which places the face of the task on the scale of the
-journey. mermaid.js accepts any text there without an error: a score that is no
-number gives the face no place, and a number outside the scale places it
-outside. A missing colon or a colon in the name of a task moves other text into
-the score.
+A missing colon, as in `Make tea: 5 Me`, or a colon in the name of a task, as in
+`Lunch at 12:30: 4: Me`, moves other text into the score. mermaid.js accepts it
+without an error: a score that is no number gives the face of the task no place,
+and a number outside the scale places it outside. The score of a task, the text
+between its first and its second colon, is a number from 1 to 5, which places
+the face on the scale of the journey.
 
 ## Rule Details
 
@@ -35,6 +35,17 @@ in `A: : x`, is the number 0, and the rule reports the task. Numbers in other
 forms are read as numbers: `3.5` and `0x3` are in the scale and are not
 reported, and `1e2`, `-2`, and `Infinity` are outside it. A comment written in
 the score, as in `a: 5 %% c`, is part of it.
+
+What each report marks in the output:
+
+- A score that is no number, as `5 Me`, is lost: the face has no place, and the
+  people written in the score are lost with it.
+- A number outside the scale, as `7`, `0`, `-2`, `1e2`, or `Infinity`, does not
+  place the face on the scale, which is what a score does: the
+  [documentation of mermaid.js](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/userJourney.md#L22-L24)
+  defines the score as a number from 1 to 5, inclusive, and mermaid.js draws the
+  face outside the scale.
+- An empty score adds a score 0 that was not written, outside the scale too.
 
 Examples of **incorrect** code for this rule:
 

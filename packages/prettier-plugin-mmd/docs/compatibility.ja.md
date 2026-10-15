@@ -853,6 +853,46 @@ mindmap の Db は、ノードの字下げを level として読みます。
   [fixture: mindmap/blank-lines/after-the-header-dropped]
   [fixture: mindmap/blank-lines/after-a-comment-between-nodes-kept]
 
+## 空白で決まる timeline の行
+
+mermaid.js は、timeline の period、event、title、section の名前の空白を保ち、
+いくつかの行を、置かれた場所で読みます。
+そのため、整形はそれらを書かれたまま残します。
+[period と event](./timeline.ja.md#period-と-event)、
+[event の文](./timeline.ja.md#event-の文)、
+[1 行 1 文](./timeline.ja.md#1-行-1-文)を参照してください。
+
+- period と event の `:` の周りの空白。
+  Db は、period の `:` の前の空白と、
+  event の `:` の後ろの 1 文字を除く空白を保ちます。
+  そのため `2004 : a` と `2004: a` は別の period で、
+  `:` をそろえる空白は残ります。
+  行末の空白もテキストの一部です。
+  [fixture: timeline/periods-and-events/period-whitespace-kept]
+  [fixture: timeline/periods-and-events/event-whitespace-kept]
+  [fixture: timeline/periods-and-events/trailing-whitespace-kept]
+- event を書く行。
+  後ろの行の event を period の行に空白 1 つで寄せると、
+  前の event のテキストに空白が加わります。
+  行から event を分けると、前の空白が行末に残ります。
+  [fixture: timeline/periods-and-events/events-on-both]
+- section の同じ行にある event（`section T : Google`）。
+  section の名前は `:` の前の空白を持つので、event は行に残します。
+  空白がなければ（`section T: Google`）、event は自分の行に移します。
+  [fixture:
+  timeline/statements-one-per-line/section-with-trailing-whitespace-keeps-the-event]
+  [fixture:
+  timeline/statements-one-per-line/section-without-trailing-whitespace-moves-the-event]
+- 行に `title` か `section` だけがあって period になるものの後ろの、
+  指令だけの行。
+  指令の前の空白が title や section のテキストになるので、1 列目に置きます。
+  [fixture: timeline/periods-and-events/title-word-then-directive-line]
+- 連結する改行にコメント行、指令、`;` がある文
+  （`title` とそのテキストの間など）は、書かれたまま残します。
+  `;` を含む行は、その行の文をまとめて残します。
+  [fixture: timeline/multi-line-statements/comment-line-inside-kept]
+  [fixture: timeline/statements-one-per-line/ignored-semicolon-line-kept]
+
 ## U+2028 か U+2029 の後のコメント行
 
 mermaid.js は、本文を読む前に、コメント行を取り除きます。

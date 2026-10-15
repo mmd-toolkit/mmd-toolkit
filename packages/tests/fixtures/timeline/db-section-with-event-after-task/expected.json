@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, sections: a section ends before a colon, and the event after it belongs to the last task before it, which lies in the section before."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S "
+    ],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a",
+        "events": [
+          "x"
+        ]
+      },
+      {
+        "section": "S ",
+        "task": "b",
+        "events": []
+      }
+    ]
+  }
+}

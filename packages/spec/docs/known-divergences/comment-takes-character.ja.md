@@ -2,7 +2,7 @@
 
 英語版: [comment-takes-character.md](./comment-takes-character.md)
 
-図種: sequence、gantt、journey。
+図種: sequence、gantt、journey、timeline。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -29,7 +29,7 @@ id の並びかテキストの文字です。
 単独の `%` がコメントを始めるガントチャートでは、
 `a% : 1d` のように、単位の最初の文字（`}` と空白以外の文字）の直後の `%`
 についてのものです。
-ユーザージャーニー図では、`A%%B: 5` のように、
+ユーザージャーニー図と timeline では、`A%%B: 5` や `a%% c` のように、
 同じ位置の `%%` についてのものです。
 
 ## 差異
@@ -194,6 +194,26 @@ journey では差異は両方向です。
 [fixture: journey/lex-brace-before-percent]
 [fixture: journey/lex-hash-before-percent]
 
+timeline では、mermaid.js の字句解析器は
+ユーザージャーニー図と同じ `%%` の規則を持ちます。
+period が始まるところの `a%% c`、`;%% c`、`é%% c`、ヘッダー直後の `;%% c`、
+説明ブロック直後の `x%%{ }%%` は、
+mermaid.js ではコメントで、この仕様では period です。
+`:%% c` は mermaid.js ではコメントで、
+コロンの後に空白がないのでここでは拒否されます。
+timeline でも差異は両方向です。
+`}%% c` はどちらでも period で、
+`%%` の前の `#` はどちらにもコメントを読ませます
+（[コメント](../diagrams/timeline.ja.md#コメント) を参照）。
+[fixture: timeline/div-comment-after-period-start]
+[fixture: timeline/div-comment-after-semicolon]
+[fixture: timeline/div-comment-after-non-ascii-letter]
+[fixture: timeline/div-comment-after-semicolon-after-header]
+[fixture: timeline/div-comment-after-block-character]
+[fixture: timeline/div-comment-after-colon]
+[fixture: timeline/db-comment-percent-after-closing-brace]
+[fixture: timeline/lex-hash-before-percent]
+
 ## 書き手にとっての結果
 
 文のすぐ後に空白なしで書いたコメントは、
@@ -219,13 +239,17 @@ gantt の字句解析器は単独の `%` で同じコメントの規則を持ち
 journey の字句解析器は `%%` で同じコメントの規則を持ち
 （[`journey.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/user-journey/parser/journey.jison#L15-L15)）、
 改行、空白、タスクのテキスト、タスクのデータの規則より前に試します。
+timeline の字句解析器も同じ規則を持ち
+（[`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)）、
+改行、空白、キーワード、event、period の規則より前に試します。
 
 ## この仕様の規則と、その理由
 
 この仕様では、コメントはその印で始まり、数の後には `%%` が続いてもかまいません
 （[文の文脈](../diagrams/sequence.ja.md#文の文脈)、
 gantt の [コメント](../diagrams/gantt.ja.md#コメント)、
-journey の [コメント](../diagrams/journey.ja.md#コメント) を参照）。
+journey の [コメント](../diagrams/journey.ja.md#コメント)、
+timeline の [コメント](../diagrams/timeline.ja.md#コメント) を参照）。
 
 コメントがその前の文字を取ること、
 しかもほかの規則がそこで一致を始める場所でだけ取ることは、

@@ -786,6 +786,7 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
 - `accDescr` は、`accDescr:` の後のテキストか、`accDescr { }` のブロックの
   テキストの前後の空白を取ったもので、どちらの形でも後のものが前のものを
   置き換えます。
+  ただし空のブロックは何も変えず、その前の説明を残します。
   ブロックの行は改行でつなぎ、各行の先頭の空白を除くので、
   空行と空白だけの行は余分な改行を残しません。
   ブロックの中のコメント行とディレクティブの行はテキストではなく、
@@ -794,6 +795,7 @@ Db は、ブラウザーの機能も、時刻も、乱数も読まず、
   [fixture: er/db-acc-descr-block]
   [fixture: er/db-acc-descr-replaces]
   [fixture: er/db-acc-descr-block-comment-line]
+  [fixture: er/db-acc-descr-block-then-empty]
   [fixture: er/db-acc-descr-block-directive-line]
   [fixture: er/db-acc-descr-block-empty-line]
   [fixture: er/db-acc-descr-block-whitespace-line]
@@ -1283,10 +1285,13 @@ Db はブラウザの機能も、時刻も、乱数も読まず、構文にリ�
 - `title` はフロントマターのタイトルです。図にはそのための文がありません。
   `accTitle` と `accDescr` は、
   その種類の最後の文のテキストを trim したものです。
+  ただし空の説明ブロックは何も変えず、その前の説明を残します。
   ブロックの説明のテキストは改行を持ち、各改行の後ろの空白は除かれます。
   [fixture: requirement/db-frontmatter-title]
   [fixture: requirement/db-acc-title-descr]
   [fixture: requirement/db-acc-descr-block]
+  [fixture: requirement/db-empty-description-block-keeps-acc-descr-line]
+  [fixture: requirement/db-empty-description-block-keeps-acc-descr-block]
   [fixture: requirement/spec-requirement-diagram-e5ae8f38]
   [fixture: requirement/spec-requirement-diagram-27be7222]
 - タイトルとアクセシビリティのテキストは `sanitizeText` を通ります。
@@ -1646,3 +1651,524 @@ Db はブラウザの機能も、時刻も、乱数も読まず
   [fixture: mindmap/config-security-level-other-html-labels-false]
 
 値は、空白を含めて Db が持つままで記録します。
+
+## timeline
+
+要約の欄は次のとおりです。
+
+| 欄          | 内容                                                          |
+| ----------- | ------------------------------------------------------------- |
+| `direction` | `LR`。`timeline TD` では `TD`。                               |
+| `title`     | 最後の `title` の文のタイトル。なければ空のテキスト。         |
+| `accTitle`  | アクセシビリティのタイトル。なければ空のテキスト。            |
+| `accDescr`  | アクセシビリティの説明。なければ空のテキスト。                |
+| `sections`  | section のテキスト。`section` の文ごとに 1 つで、ソースの順。 |
+| `tasks`     | タスク。ソースの順。                                          |
+
+タスクは、`section`、`task`、`events` を持ちます。
+
+`normalizeTimeline()`（`src/normalizers/timeline.ts`）は、`timeline` の Db を
+要約します。
+Db は、ブラウザーの機能も、時刻も、乱数も読まず、構文にリンクもありません。
+このため、要約に Db のパッチはいりません。
+Db は、すべての timeline 図が共有する 1 つのモジュールで、
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L12-L19)
+が、構文解析のたびにその状態を初期化します。
+ただしタスクの番号の数え上げは初期化しません。
+[`getTasks()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L38-L50)
+は、呼ぶたびに、タスクを自分の一覧に加えます。
+そのため要約は、一覧を 1 度だけ読み、空に戻します。
+こうして Db は、読む前のままになります。
+次のものを、それぞれに書いた理由で捨てます。
+
+- `tasks[].id`: タスクの番号。
+  `clear()` が初期化しない数え上げから取るので、
+  この図より前に解析した図に依存します。
+  タスクの順は、一覧の順です。
+- `tasks[].type`: section の繰り返し。
+- `tasks[].score`: 常に 0 です。
+  [文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L35)が、どのタスクも score 0 で加えるからです
+  （[`addTask`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L52-L63)）。
+
+値を、欄ごとに述べます。
+
+- `direction` は、ヘッダーの後ろに空白かタブと `TD` が続けば `TD`、
+  そうでなければ `LR` です。
+  方向は大文字小文字を問いません。
+  語はそこで終わらなければならず、`TDx` と `LRx` はタスクの period で、
+  方向は `LR` のままです。
+  ヘッダーと方向を分けるのは空白かタブだけです。
+  ほかの空白は、改行も含めて、方向をタスクの period にします。
+  2 つ目の方向も period です。
+  [fixture: timeline/db-header-only]
+  [fixture: timeline/db-direction-lr]
+  [fixture: timeline/db-direction-td]
+  [fixture: timeline/db-direction-lower-case]
+  [fixture: timeline/db-direction-mixed-case]
+  [fixture: timeline/db-direction-two-spaces]
+  [fixture: timeline/db-direction-tab]
+  [fixture: timeline/db-direction-trailing-space]
+  [fixture: timeline/header-direction-no-break-space]
+  [fixture: timeline/header-direction-ideographic-space]
+  [fixture: timeline/header-direction-line-feed]
+  [fixture: timeline/header-direction-word-suffix]
+  [fixture: timeline/header-direction-word-suffix-lr]
+  [fixture: timeline/header-direction-twice]
+- ヘッダーは小文字だけが検出されます。
+  ヘッダーの行でその後ろにあるものは、行と同じに読みます。
+  period、タイトル、section、アクセシビリティのタイトル、
+  `#` か `%` のコメント、取り除かれるディレクティブです。
+  event は、そこでは task がないので、拒否されます。
+  ヘッダーに続けて書いた語はヘッダーではありません。
+  ヘッダーの後ろのダッシュは period `-x` を始め、
+  コロンは task のない event を始めます。
+  2 つ目のヘッダーは拒否されます。
+  [fixture: timeline/header-without-line-feed]
+  [fixture: timeline/header-trailing-spaces]
+  [fixture: timeline/header-direction-then-colon]
+  [fixture: timeline/header-direction-glued-colon]
+  [fixture: timeline/header-glued-direction]
+  [fixture: timeline/header-word-suffix]
+  [fixture: timeline/header-dash-suffix]
+  [fixture: timeline/header-colon-suffix]
+  [fixture: timeline/header-text-on-header-line]
+  [fixture: timeline/header-period-with-event-on-header-line]
+  [fixture: timeline/header-event-on-header-line]
+  [fixture: timeline/header-title-on-header-line]
+  [fixture: timeline/header-section-on-header-line]
+  [fixture: timeline/header-acc-title-on-header-line]
+  [fixture: timeline/header-indented]
+  [fixture: timeline/header-after-blank-lines]
+  [fixture: timeline/header-after-comment-line]
+  [fixture: timeline/header-after-hash-line]
+  [fixture: timeline/header-upper-case]
+  [fixture: timeline/header-capitalized]
+  [fixture: timeline/header-hash-comment-on-header-line]
+  [fixture: timeline/header-percent-comment-on-header-line]
+  [fixture: timeline/header-single-percent-comment-on-header-line]
+  [fixture: timeline/header-directive-before-direction]
+  [fixture: timeline/header-directive-after-header]
+  [fixture: timeline/header-twice]
+  [fixture: timeline/header-twice-with-directions]
+- `title` は、
+  [`title` の文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L23)の、
+  キーワードと空白 1 文字の後ろから行末までのテキストです。
+  キーワードは大文字小文字を問いません。
+  両端の空白は残ります。
+  空白 2 つの `title  T` のタイトルは ` T` で、末尾の空白も残ります。
+  `:`、`#`、`%%` はタイトルの文字です。
+  `;` もタイトルの文字ですが、`style` の行の行規則が捨てる 1 つは除きます。
+  最後の `title` の文がタイトルです。
+  キーワードの後ろには、どの空白文字も続けられ、タイトルには入りません。
+  改行も含むので、行末の `title` は、次の行をタイトルとします。
+  その行が何を書いていても同じです。
+  [fixture: timeline/db-title-statement]
+  [fixture: timeline/db-title-upper-case]
+  [fixture: timeline/db-title-two-spaces]
+  [fixture: timeline/db-title-three-spaces]
+  [fixture: timeline/db-title-trailing-spaces]
+  [fixture: timeline/db-title-only-space]
+  [fixture: timeline/db-title-colon]
+  [fixture: timeline/db-title-hash]
+  [fixture: timeline/db-title-percent]
+  [fixture: timeline/db-title-semicolon]
+  [fixture: timeline/db-title-twice]
+  [fixture: timeline/db-title-with-tags]
+  [fixture: timeline/lex-title-separator-tab]
+  [fixture: timeline/lex-title-separator-no-break-space]
+  [fixture: timeline/lex-title-separator-ideographic-space]
+  [fixture: timeline/lex-title-separator-line-separator]
+  [fixture: timeline/lex-title-separator-paragraph-separator]
+  [fixture: timeline/lex-title-separator-byte-order-mark]
+  [fixture: timeline/lex-title-separator-line-feed]
+  [fixture: timeline/lex-title-separator-carriage-return]
+  [fixture: timeline/lex-title-line-separator-inside]
+  [fixture: timeline/db-period-title-then-section-lines]
+- title の文には、キーワードの後ろの空白の後ろに、同じ行で 1 文字が要ります。
+  テキストの終わりにあるキーワードだけのもの、
+  空白 1 つと行末が続くものは、タスクの period です。
+  `title` で始まる語も period です。
+  キーワードの直後のコロンは、コロンの後ろに空白が要るので、拒否されます。
+  [fixture: timeline/gram-title-keyword-alone]
+  [fixture: timeline/gram-title-keyword-trailing-space]
+  [fixture: timeline/gram-title-word-suffix]
+  [fixture: timeline/gram-title-colon-glued]
+- フロントマターのタイトルは、図のタイトルではありません。
+  [Diagram](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/Diagram.ts#L52-L54)は、`setDiagramTitle` を持つ Db にだけタイトルを渡し、
+  timeline の Db にはそのメソッドがないからです。
+  `title` の文は、どちらの場合もタイトルです。
+  [fixture: timeline/db-title-frontmatter]
+  [fixture: timeline/db-title-frontmatter-and-statement]
+- `accTitle` と `accDescr` は、`:` の後ろでは、
+  行のテキストを trim したものです。
+  コロンの周りの空白は、改行も含めて、テキストに入りません。
+  このためコロンも、テキストも、次の行に書けます。
+  キーワードは大文字小文字を問いません。
+  `:`、`#`、`%%` はテキストの文字です。
+  `;` もテキストの文字ですが、`style` の行の行規則が捨てる 1 つは除きます。
+  テキストのない文は拒否されます。
+  どちらも最後の文が値で、ブロックの説明と行の説明は互いを置き換えます。
+  ただし空のブロックは何も置き換えません。
+  [fixture: timeline/db-acc-title-statement]
+  [fixture: timeline/db-acc-title-glued]
+  [fixture: timeline/db-acc-title-space-before-colon]
+  [fixture: timeline/db-acc-title-upper-case]
+  [fixture: timeline/db-acc-title-many-spaces]
+  [fixture: timeline/db-acc-title-trailing-spaces]
+  [fixture: timeline/db-acc-title-colon]
+  [fixture: timeline/db-acc-title-hash]
+  [fixture: timeline/db-acc-title-percent]
+  [fixture: timeline/db-acc-title-semicolon]
+  [fixture: timeline/db-acc-title-twice]
+  [fixture: timeline/lex-acc-title-colon-on-next-line]
+  [fixture: timeline/lex-acc-title-value-on-next-line]
+  [fixture: timeline/lex-acc-title-separator-no-break-space]
+  [fixture: timeline/gram-acc-title-empty]
+  [fixture: timeline/gram-acc-title-only-space]
+  [fixture: timeline/gram-acc-descr-empty]
+  [fixture: timeline/lex-acc-title-line-separator-inside]
+  [fixture: timeline/db-acc-descr-statement]
+  [fixture: timeline/db-acc-descr-glued]
+  [fixture: timeline/db-acc-descr-trailing-spaces]
+  [fixture: timeline/db-acc-descr-hash]
+  [fixture: timeline/db-acc-descr-line-then-block]
+  [fixture: timeline/db-acc-descr-block-then-line]
+  [fixture: timeline/lex-acc-descr-line-separator-inside]
+  [fixture: timeline/db-acc-all-statements]
+- ブロックの説明のテキストは最初の `}` までで、
+  [`setAccDescription`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/common/commonDb.ts#L22-L24)が説明を変えます。
+  改行とその後ろの空白は、どの種類の空白でも
+  （タブ、ノーブレークスペース、U+3000、U+2028、U+FEFF）1 つの改行になり、
+  ブロックの中の行のインデントと空の行は除かれます。
+  改行の前の空白は残ります。
+  ブロックは `accDescr` の後ろに空白を要さず、両端の空白はテキストに入りません。
+  空のブロックは何も変えません。
+  その前にある、行のものもブロックのものも含む説明を残し、
+  前になければ説明は空のままです。
+  `}` のないブロックは拒否されます。
+  最初の `}` の後ろは、行として読みます。
+  ブロックの中の `%%` で始まる行は、コメント行で、取り除かれます。
+  [fixture: timeline/db-acc-descr-block]
+  [fixture: timeline/db-acc-descr-block-glued]
+  [fixture: timeline/db-acc-descr-block-spaces]
+  [fixture: timeline/db-acc-descr-block-empty]
+  [fixture: timeline/db-acc-descr-block-braces-only]
+  [fixture: timeline/db-acc-descr-block-then-empty-block]
+  [fixture: timeline/db-acc-descr-line-then-empty-braces]
+  [fixture: timeline/gram-empty-description-block-keeps-description]
+  [fixture: timeline/gram-empty-description-block-directive-only]
+  [fixture: timeline/gram-empty-description-block-comment-line-only]
+  [fixture: timeline/db-acc-descr-block-blank-line]
+  [fixture: timeline/db-acc-descr-block-spaces-before-line-feed]
+  [fixture: timeline/db-acc-descr-block-tab-before-line-feed]
+  [fixture: timeline/db-acc-descr-block-no-break-space-before-line-feed]
+  [fixture: timeline/db-acc-descr-block-ideographic-space-before-line-feed]
+  [fixture: timeline/db-acc-descr-block-tab-after-line-feed]
+  [fixture: timeline/db-acc-descr-block-no-break-space-after-line-feed]
+  [fixture: timeline/db-acc-descr-block-ideographic-space-after-line-feed]
+  [fixture: timeline/db-acc-descr-block-line-separator-after-line-feed]
+  [fixture: timeline/db-acc-descr-block-byte-order-mark-after-line-feed]
+  [fixture: timeline/db-acc-descr-block-hash-and-percent]
+  [fixture: timeline/db-acc-descr-block-percent-line]
+  [fixture: timeline/gram-acc-descr-block-unclosed]
+  [fixture: timeline/db-acc-descr-block-brace-inside]
+  [fixture: timeline/db-acc-descr-block-then-text]
+  [fixture: timeline/lex-acc-descr-block-line-separator-inside]
+- コロンもブレースもない、行の中の `accTitle` と `accDescr` だけのものは、
+  period です。
+  [fixture: timeline/db-period-acc-keywords-alone]
+- `sections` は、
+  [`section` の文](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L31)の、
+  キーワードと空白 1 文字を除いたテキストで、テキストが繰り返されても同じです。
+  テキストは `:` か行末までで、`#` と `%%` はテキストに入ります。
+  両端の空白も入り、空白 1 つのテキストも同じです。
+  キーワードは大文字小文字を問わず、どの空白文字も後ろに続けられ、
+  改行も含むので、その場合は次の行がテキストになります。
+  `:` はテキストを終わらせます。
+  その後ろの event は section の前の最後の task のもので、
+  task がなければ拒否されます。
+  キーワードの直後のコロンも拒否されます。
+  キーワードだけのもの、キーワードと空白 1 つ、
+  `section` で始まる語は period です。
+  [fixture: timeline/db-section-statement]
+  [fixture: timeline/db-section-upper-case]
+  [fixture: timeline/db-section-two-spaces]
+  [fixture: timeline/db-section-trailing-spaces]
+  [fixture: timeline/db-section-only-space]
+  [fixture: timeline/db-section-hash]
+  [fixture: timeline/db-section-percent]
+  [fixture: timeline/db-section-twice-same-name]
+  [fixture: timeline/db-section-with-tags]
+  [fixture: timeline/lex-section-separator-tab]
+  [fixture: timeline/lex-section-separator-ideographic-space]
+  [fixture: timeline/lex-section-separator-line-feed]
+  [fixture: timeline/lex-section-separator-line-separator]
+  [fixture: timeline/lex-section-line-separator-inside]
+  [fixture: timeline/gram-section-keyword-alone]
+  [fixture: timeline/gram-section-keyword-trailing-space]
+  [fixture: timeline/gram-section-word-suffix]
+  [fixture: timeline/gram-section-colon-glued]
+  [fixture: timeline/db-section-with-event-after-task]
+  [fixture: timeline/gram-section-with-event]
+  [fixture: timeline/gram-section-then-event-line]
+- タスクは、その前の section に属し、最初の section の前では `section` が
+  空のテキストです。
+  section とタスクの間の title は、何も変えません。
+  [fixture: timeline/db-section-two-with-tasks]
+  [fixture: timeline/db-section-after-tasks]
+  [fixture: timeline/db-section-then-title]
+- `task` は period で、ほかの文でない行のテキストです。
+  `:` か `#` か行末までです。
+  前の空白はテキストに入らず、後ろの空白は残ります。
+  行は、インデントに関わらずそれぞれタスクで、テキストは繰り返せます。
+  [fixture: timeline/db-period-only]
+  [fixture: timeline/db-period-trailing-spaces]
+  [fixture: timeline/db-period-with-spaces]
+  [fixture: timeline/db-period-leading-whitespace]
+  [fixture: timeline/db-period-leading-ideographic-space]
+  [fixture: timeline/db-period-two-lines]
+  [fixture: timeline/db-period-same-text-twice]
+  [fixture: timeline/db-indentation-does-not-nest]
+  [fixture: timeline/db-tab-indentation]
+  [fixture: timeline/db-names-of-object-prototype]
+  [fixture: timeline/db-period-cjk]
+- [event](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L34)は、`:` と空白 1 文字の後ろのテキストで、その前のタスクのものです。
+  後ろに空白がある次の `:` か、行末までです。
+  後ろに空白のない `:` は event の文字です。
+  後ろに空白のある `:` は、前に何があっても event を終わらせ、
+  同じタスクの次の event を始めます。
+  コロンの前の空白は前のテキストに入り、
+  コロンの後ろの空白は、最初の 1 文字を除いて event に入ります。
+  コロンの後ろには、どの空白文字も続けられます。
+  [fixture: timeline/db-period-and-event]
+  [fixture: timeline/db-period-colon-glued-to-period]
+  [fixture: timeline/db-event-two-spaces]
+  [fixture: timeline/db-event-leading-spaces]
+  [fixture: timeline/db-event-trailing-spaces]
+  [fixture: timeline/db-event-two-on-a-line]
+  [fixture: timeline/db-event-three-on-a-line]
+  [fixture: timeline/db-event-colon-glued-inside]
+  [fixture: timeline/db-event-colon-space-before-glued-after]
+  [fixture: timeline/db-event-colon-glued-before]
+  [fixture: timeline/lex-event-separator-tab]
+  [fixture: timeline/lex-event-separator-no-break-space]
+  [fixture: timeline/lex-event-separator-ideographic-space]
+  [fixture: timeline/lex-event-separator-line-separator]
+  [fixture: timeline/lex-event-separator-paragraph-separator]
+  [fixture: timeline/lex-event-separator-byte-order-mark]
+- period の直後の、後ろに空白のない `:` は拒否されます。
+  後ろに何もない、または空白 1 文字だけがテキストの終わりまで続く `:` も、
+  period の後でも event の後でも拒否されます。
+  [fixture: timeline/gram-event-colon-glued-to-event]
+  [fixture: timeline/gram-event-colon-space-glued]
+  [fixture: timeline/gram-event-empty-after-colon]
+  [fixture: timeline/gram-event-empty-after-colon-space]
+  [fixture: timeline/gram-event-trailing-colon]
+  [fixture: timeline/gram-event-trailing-colon-space]
+  [fixture: timeline/gram-event-colon-at-end-glued]
+- 独立した行の event は、その前の最後のタスクのものです。
+  間にある空の行、空白だけの行、コメント行、ディレクティブの行、
+  title、アクセシビリティのタイトルと説明、section は、タスクを終わらせません。
+  どのタスクよりも前の event は task がなく、Db が `TypeError` を投げるので、
+  入力は拒否されます。
+  [fixture: timeline/db-event-own-line]
+  [fixture: timeline/db-event-own-line-after-event]
+  [fixture: timeline/db-event-own-line-two-tasks]
+  [fixture: timeline/db-event-own-line-after-blank-line]
+  [fixture: timeline/db-event-own-line-after-whitespace-line]
+  [fixture: timeline/db-event-own-line-after-comment-line]
+  [fixture: timeline/db-event-own-line-after-hash-line]
+  [fixture: timeline/db-event-own-line-after-directive-line]
+  [fixture: timeline/db-event-own-line-after-title]
+  [fixture: timeline/db-event-own-line-after-acc-title]
+  [fixture: timeline/db-event-own-line-after-acc-descr-block]
+  [fixture: timeline/db-event-after-section-joins-earlier-task]
+  [fixture: timeline/gram-event-first]
+  [fixture: timeline/gram-event-after-title]
+  [fixture: timeline/gram-event-after-section-only]
+- `:` の後ろの空白は改行を含むので、行末の `:` は、次の行を event とします。
+  インデントも event に入り、`:` だけの行も同じです。
+  その後ろが空の行なら拒否され、空白だけの行ならその空白が event になって、
+  次の行はタスクです。
+  [fixture: timeline/db-event-line-feed-after-colon]
+  [fixture: timeline/db-event-line-feed-after-colon-indented]
+  [fixture: timeline/db-event-line-feed-after-second-colon]
+  [fixture: timeline/db-event-own-line-colon-then-line-feed]
+  [fixture: timeline/gram-event-line-feed-then-empty-line]
+  [fixture: timeline/db-event-line-feed-then-whitespace-line]
+  [fixture: timeline/db-event-colon-only-twice]
+- 引用符、括弧、矢印、マークアップ、リンク、バックスラッシュ、
+  基本多言語面の外の文字は、テキストの文字です。
+  `;` もテキストの文字ですが、`style` の行の行規則が捨てる 1 つは除きます。
+  [fixture: timeline/db-event-semicolons]
+  [fixture: timeline/db-event-links-and-tags]
+  [fixture: timeline/db-event-quotes-and-brackets]
+  [fixture: timeline/db-event-arrows]
+  [fixture: timeline/db-event-backslash-n]
+  [fixture: timeline/db-event-non-bmp]
+- event の中の `#` と `%%`、event が `#` か `%%` だけのこと、
+  event に続けた `%%` は、event の文字です。
+  [fixture: timeline/db-event-hash]
+  [fixture: timeline/db-event-percent]
+  [fixture: timeline/db-event-percent-glued]
+  [fixture: timeline/db-event-only-hash]
+  [fixture: timeline/db-event-only-percent]
+- `#` で始まる行と、後ろに `{` が続かない `%` で始まる行は、コメント行です。
+  `% c`、`%c`、`%`、`%% c` はコメントで、`%{x}` は period です。
+  period や title の中の `%` と、event の最初の `%` は、テキストの文字です。
+  コメント行のインデントは何も変えず、タスクとその event の間にも、
+  ヘッダーの直後にも置けます。
+  period の後ろの `#` は、行末まで続くコメントを始めます。
+  その後ろの event は失われ、`#` の前の空白は period に残ります。
+  [fixture: timeline/db-comment-hash-line]
+  [fixture: timeline/db-comment-percent-line]
+  [fixture: timeline/db-comment-hash-only]
+  [fixture: timeline/db-comment-percent-only]
+  [fixture: timeline/db-comment-hash-line-at-end]
+  [fixture: timeline/db-comment-hash-line-indented]
+  [fixture: timeline/db-comment-before-event-line]
+  [fixture: timeline/db-comment-hash-between-header-and-first-line]
+  [fixture: timeline/db-comment-percent-after-header]
+  [fixture: timeline/db-comment-hash-after-period]
+  [fixture: timeline/db-comment-hash-after-period-hides-event]
+  [fixture: timeline/db-comment-hash-after-period-only]
+  [fixture: timeline/db-comment-single-percent-line]
+  [fixture: timeline/db-comment-single-percent-glued]
+  [fixture: timeline/db-comment-single-percent-only]
+  [fixture: timeline/db-comment-single-percent-between-task-and-event]
+  [fixture: timeline/lex-percent-brace-period]
+  [fixture: timeline/db-period-percent-inside]
+  [fixture: timeline/db-title-single-percent]
+  [fixture: timeline/db-event-single-percent]
+- period と空白の後ろの `%%` は period の文字です。
+  1 文字の period に続けた `%%` は、その 1 文字を取るコメントを始めます。
+  [コメントの規則](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15)が、トークンの先頭で、`}` 以外の 1 文字を
+  `%%` の前に取るからで、タスクは失われます。
+  2 文字以上の後ろや、`}` の後ろでは、period の文字です。
+  [fixture: timeline/db-comment-percent-after-period]
+  [fixture: timeline/db-comment-percent-after-period-glued]
+  [fixture: timeline/db-comment-percent-after-period-glued-no-space]
+  [fixture: timeline/db-comment-percent-glued-after-two-characters]
+  [fixture: timeline/db-comment-percent-after-closing-brace]
+  [fixture: timeline/db-comment-percent-glued-in-event]
+- [`style` 行と `classDef` 行](../../spec/docs/common.ja.md#style-行と-classdef-行)の
+  共通の行規則は、timeline のテキストにも、どの図種とも同じに働きます。
+  小文字の `style` か `classDef`、`:`、空白でない文字、`#`、その後ろの `;` を
+  持つ行では、行の最後の `;` が捨てられます。
+  その前にある `;` は、文字参照を終わらせることがあります。
+  `:` の後ろに `#` がない行、`#` が `:` の前にある行は、`;` がそのまま残ります。
+  大文字の `Style` の行は規則に当たらないので、`;` を捨てません。
+  ただし、`#` と語の文字の後ろの `;` はそこで文字参照を終わらせるので、
+  Db にはプレースホルダが見え、`;` は見えません。
+  規則が届くのは、title、アクセシビリティのテキスト、event です。
+  section と period は、`style` の後ろの、後ろに空白のない `:` で終わるので、
+  その行は拒否されます。
+  [fixture: timeline/lex-title-semicolon-in-style-line]
+  [fixture: timeline/lex-title-semicolon-in-style-line-last-only]
+  [fixture: timeline/lex-title-semicolon-in-classdef-line]
+  [fixture: timeline/lex-title-semicolon-after-text-before-style]
+  [fixture: timeline/lex-title-semicolon-in-style-line-entity]
+  [fixture: timeline/lex-title-semicolon-without-hash]
+  [fixture: timeline/lex-title-semicolon-hash-before-colon]
+  [fixture: timeline/lex-title-semicolon-style-upper-case]
+  [fixture: timeline/lex-acc-title-semicolon-in-style-line]
+  [fixture: timeline/lex-acc-descr-semicolon-in-style-line]
+  [fixture: timeline/lex-acc-descr-block-semicolon-in-style-line]
+  [fixture: timeline/lex-event-semicolon-in-style-line]
+  [fixture: timeline/lex-event-semicolon-in-style-line-second-event]
+  [fixture: timeline/gram-section-style-line]
+  [fixture: timeline/gram-period-style-line]
+- キーワードか行末の `:` が次の行を取るときは、間の行を先に読みます。
+  `%%` のコメント行は取り除かれるので、その後ろの行を取ります。
+  `#` の行は、そこではコメント行ではなく、
+  title や event のテキストとして取られます。
+  ディレクティブの行は取り除かれ、インデントが残ります。
+  インデントがあれば、そのインデントが title、section、event になり、
+  次の行は task です。
+  インデントがなければ空の行が残ります。
+  テキストの中の空の行も同じで、
+  `title` と `section` は period に、`:` は拒否されます。
+  `accTitle:` と `accDescr:` の後ろでは、
+  空白がディレクティブの行と空の行を取るので、テキストは次の行です。
+  [fixture: timeline/lex-title-line-feed-comment-line]
+  [fixture: timeline/lex-title-line-feed-two-comment-lines]
+  [fixture: timeline/lex-title-line-feed-hash-line]
+  [fixture: timeline/lex-title-line-feed-directive-line]
+  [fixture: timeline/lex-title-line-feed-directive-line-unindented]
+  [fixture: timeline/lex-title-line-feed-empty-line]
+  [fixture: timeline/lex-section-line-feed-comment-line]
+  [fixture: timeline/lex-section-line-feed-directive-line]
+  [fixture: timeline/lex-section-line-feed-directive-line-unindented]
+  [fixture: timeline/lex-section-line-feed-empty-line]
+  [fixture: timeline/lex-acc-title-value-after-comment-line]
+  [fixture: timeline/lex-acc-title-value-after-directive-line]
+  [fixture: timeline/lex-acc-descr-value-after-comment-line]
+  [fixture: timeline/lex-acc-descr-value-after-directive-line]
+  [fixture: timeline/lex-event-line-feed-comment-line]
+  [fixture: timeline/lex-event-line-feed-directive-line]
+  [fixture: timeline/lex-event-line-feed-directive-line-unindented]
+  [fixture: timeline/lex-event-own-line-colon-comment-line]
+  [fixture: timeline/lex-event-own-line-colon-directive-line-unindented]
+- ディレクティブは、テキストを読む前に取り除かれ、周りの空白は残ります。
+  そのため、前後の部分がつながります。
+  period、event、title、section、アクセシビリティのテキストで同じです。
+  [fixture: timeline/db-period-directive-before-colon]
+  [fixture: timeline/db-period-directive-glued]
+  [fixture: timeline/db-event-directive]
+  [fixture: timeline/db-title-directive]
+  [fixture: timeline/db-section-directive]
+  [fixture: timeline/db-acc-title-directive]
+  [fixture: timeline/db-acc-descr-block-directive]
+- 値は[変換した形](../../spec/docs/common.ja.md#ソースの読み方)で読むので、
+  文字参照は、どのテキストでもプレースホルダです。
+  参照の `#` はコメントを始めず、参照を始めない `#` は始めます。
+  [fixture: timeline/db-title-entity]
+  [fixture: timeline/db-section-entity]
+  [fixture: timeline/db-event-entity]
+  [fixture: timeline/db-event-entity-named]
+  [fixture: timeline/db-event-entity-hex]
+  [fixture: timeline/db-event-entity-is-no-comment]
+  [fixture: timeline/db-period-unclosed-reference]
+  [fixture: timeline/db-acc-title-entity]
+  [fixture: timeline/db-acc-descr-entity]
+  [fixture: timeline/db-acc-descr-block-entity]
+- CRLF と単独の CR は、改行と同じに行を終わらせます。
+  U+2028 と U+2029 は行を終わらせず、period、event、section、title、
+  アクセシビリティのテキストの文字で、period の前の空白にも入ります。
+  ほかの空白は、ノーブレークスペースと U+3000 も含めて、
+  period の前ではインデントです。
+  period の末尾のノーブレークスペースと U+3000 は period に入ります。
+  [fixture: timeline/db-crlf-line-ends]
+  [fixture: timeline/db-lone-cr-line-ends]
+  [fixture: timeline/db-blank-line-between-tasks]
+  [fixture: timeline/db-whitespace-only-line]
+  [fixture: timeline/db-whitespace-after-last-line]
+  [fixture: timeline/lex-period-line-separator-inside]
+  [fixture: timeline/lex-period-paragraph-separator-inside]
+  [fixture: timeline/lex-event-line-separator-inside]
+  [fixture: timeline/lex-event-paragraph-separator-inside]
+  [fixture: timeline/lex-section-line-separator-inside]
+  [fixture: timeline/lex-line-separator-before-period]
+  [fixture: timeline/lex-line-separator-before-event-colon]
+  [fixture: timeline/lex-line-separator-after-header]
+  [fixture: timeline/lex-ideographic-space-indentation]
+  [fixture: timeline/lex-ideographic-space-at-end-of-period]
+  [fixture: timeline/lex-no-break-space-around-period-and-event]
+- `title`、`accTitle`、`accDescr` は `sanitizeText` を通ります。
+  `securityLevel` が mermaid.js の値のどれでもなく、HTML のラベルが有効なら、
+  文字を置き換えたものを持ちます
+  （[db-from-tree.md](./db-from-tree.md) の文字の置き換えを参照）。
+  section、period、event は変わりません。
+  テーマと timeline の設定は、Db を何も変えません。
+  [fixture: timeline/config-security-level-other-title-and-accessibility]
+  [fixture: timeline/config-security-level-other-accessibility-block]
+  [fixture: timeline/config-security-level-other-html-labels-false]
+  [fixture: timeline/config-security-level-other-flowchart-html-labels-false]
+  [fixture: timeline/config-security-level-other-sections-periods-events]
+  [fixture: timeline/config-security-level-loose-title]
+  [fixture: timeline/config-security-level-sandbox-title]
+  [fixture: timeline/config-theme-and-timeline-settings]
+- すべての欄を一度に。
+  [fixture: timeline/db-everything]
+
+値は、空白も含めて、Db が持つとおりに記録します。

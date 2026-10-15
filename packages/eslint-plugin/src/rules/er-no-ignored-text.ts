@@ -16,7 +16,7 @@ export const erNoIgnoredText: MermaidRuleDefinition<{
     type: "problem",
     docs: {
       description: "Disallow text that mermaid.js does not read.",
-      recommended: true,
+      recommended: false,
       url: ruleDocsUrl("er-no-ignored-text"),
     },
     schema: [],

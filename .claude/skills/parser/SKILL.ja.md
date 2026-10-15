@@ -284,6 +284,14 @@ flowchart のファイルが手本になる。
    （flowchart では `readInClickContext`、`readArrow`）。
    JSDoc で節と規則を名指しする。
    Jison の開始条件は、文脈のスタックにする。
+   字句解析器は `src/unit-lexer.ts` の `UnitLexer` を拡張する。
+   `UnitLexer` はスタックを持ち、テキストの終わりまで現在の文脈の規則を当て、
+   終わってはいけない文脈でテキストが終わるとエラーを投げる。
+   どの図種も、`UnitLexer` が受け取る `END_OF_TEXT_MESSAGES` を与える。
+   これは、文脈ごとにそのエラーのメッセージか null を持つ表である。
+   図種はほかに、`addUnit` と `readInContext` を与える。
+   図種には、その文書が違うと言うことだけを残し、
+   同じことの別の書き方は残さない。
    文字は、`src/code-points.ts` の定数と、
    `src/character-classes.ts`、`src/scanning.ts` で比べる。
    正規表現は使わない。
@@ -327,8 +335,8 @@ flowchart のファイルが手本になる。
     state では、`scale 3` を、テキストの後の改行での空の範囲の
     「予期しない文字」として報告していた。
     テキストが終わってはいけない文脈とそのメッセージは、
-    すべての文脈を並べた 1 つの表にまとめる
-    （state では `END_OF_TEXT_MESSAGES`）。
+    図種の `END_OF_TEXT_MESSAGES` にまとめる。
+    これは、`UnitLexer` が受け取る、すべての文脈を並べた表である（手順 4）。
 
 ### 4.5 文法
 

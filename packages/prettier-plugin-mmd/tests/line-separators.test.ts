@@ -981,6 +981,154 @@ async function expectKept(input: string, output: string): Promise<void> {
   )
 }
 
+/**
+ * Each example is a timeline with U+2028 or U+2029: they are whitespace
+ * between the units, so a gap between statements that holds one is printed as
+ * a line break, while a gap inside a statement that holds one is printed as
+ * written, and in a text they are characters of the text (docs/timeline.md,
+ * Line separators).
+ */
+const timelineLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+2028 between the header and a statement",
+    "timeline\u2028title T\n",
+    "timeline\n  title T\n",
+  ],
+  [
+    "U+2028 between the header and a period",
+    "timeline\u2028a : e\n",
+    "timeline\n  a : e\n",
+  ],
+  [
+    "U+2028 between a description block and a period",
+    "timeline\naccDescr { d }\u2028a : e\n",
+    "timeline\n  accDescr { d }\n  a : e\n",
+  ],
+  [
+    "U+2028 inside a period",
+    "timeline\na\u2028b : e\n",
+    "timeline\n  a\u2028b : e\n",
+  ],
+  [
+    "U+2028 before the colon of an event",
+    "timeline\na\u2028: e\n",
+    "timeline\n  a\u2028: e\n",
+  ],
+  [
+    "U+2028 inside an event",
+    "timeline\na : e\u2028f\n",
+    "timeline\n  a : e\u2028f\n",
+  ],
+  [
+    "U+2028 before the second colon of an event",
+    "timeline\na : e\u2028: f\n",
+    "timeline\n  a : e\u2028: f\n",
+  ],
+  [
+    "U+2028 after the colon of an event",
+    "timeline\na :\u2028e\n",
+    "timeline\n  a :\u2028e\n",
+  ],
+  [
+    "U+2028 after a title keyword",
+    "timeline\ntitle\u2028T\n",
+    "timeline\n  title\u2028T\n",
+  ],
+  [
+    "U+2029 inside a title",
+    "timeline\ntitle a\u2029b\n",
+    "timeline\n  title a\u2029b\n",
+  ],
+  [
+    "U+2028 at the end of a section name",
+    "timeline\nsection S\u2028\na : e\n",
+    "timeline\n  section S\u2028\n    a : e\n",
+  ],
+  [
+    "U+2028 after the colon of an accessibility title",
+    "timeline\naccTitle:\u2028T\n",
+    "timeline\n  accTitle:\u2028T\n",
+  ],
+  [
+    "U+2028 between the header and a direction",
+    "timeline\u2028TD\n",
+    "timeline\n  TD\n",
+  ],
+]
+
+/**
+ * Each example is a timeline with a whitespace character other than a space
+ * or a tab: where a rule reads one whitespace character it is printed as a
+ * space, between statements it is dropped, and in a text, and in the
+ * whitespace before the colon of a period, it stays (docs/timeline.md,
+ * Whitespace characters).
+ */
+const timelineWhitespaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+00A0 as the separator after a title keyword",
+    "timeline\ntitle\u00a0T\n",
+    "timeline\n  title T\n",
+  ],
+  [
+    "U+00A0 as the separator after the colon of an event",
+    "timeline\na :\u00a0e\n",
+    "timeline\n  a : e\n",
+  ],
+  [
+    "U+00A0 after the separator of an event",
+    "timeline\na : \u00a0e\n",
+    "timeline\n  a : \u00a0e\n",
+  ],
+  [
+    "U+00A0 before the colon of a period",
+    "timeline\na\u00a0: e\n",
+    "timeline\n  a\u00a0: e\n",
+  ],
+  [
+    "U+00A0 at the end of an event",
+    "timeline\na : e\u00a0\n",
+    "timeline\n  a : e\u00a0\n",
+  ],
+  [
+    "U+00A0 between the header and a direction",
+    "timeline\u00a0TD\n",
+    "timeline\n  TD\n",
+  ],
+  [
+    "U+00A0 after a description block",
+    "timeline\naccDescr { d }\u00a0a : e\n",
+    "timeline\n  accDescr { d }\n  a : e\n",
+  ],
+  [
+    "U+3000 in the indentation before a period",
+    "timeline\n\u3000a : e\n",
+    "timeline\n  a : e\n",
+  ],
+  [
+    "U+3000 between two events",
+    "timeline\na : e\u3000: f\n",
+    "timeline\n  a : e\u3000: f\n",
+  ],
+  [
+    "U+FEFF between statements",
+    "timeline\ntitle T\n\ufeffa : e\n",
+    "timeline\n  title T\n  a : e\n",
+  ],
+  [
+    "U+00A0 inside a section name",
+    "timeline\nsection S\u00a0T\n",
+    "timeline\n  section S\u00a0T\n",
+  ],
+]
+
 describe("a state diagram with a line separator", () => {
   it.each(examples)("keeps %s as written", async (_name, input, output) => {
     await expectKept(input, output)
@@ -1082,6 +1230,24 @@ describe("a mindmap with a line separator", () => {
 
 describe("a mindmap with a whitespace character that no fixture file holds", () => {
   it.each(mindmapWhitespaceExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a timeline with a line separator", () => {
+  it.each(timelineLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a timeline with a whitespace character that no fixture file holds", () => {
+  it.each(timelineWhitespaceExamples)(
     "keeps %s",
     async (_name, input, output) => {
       await expectKept(input, output)

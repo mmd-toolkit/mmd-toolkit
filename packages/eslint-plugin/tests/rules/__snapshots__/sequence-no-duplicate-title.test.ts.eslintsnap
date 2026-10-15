@@ -31,6 +31,24 @@ Code:
 ---
 
 
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/acc-title-back-to-first
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/acc-title-back-to-first-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accTitle: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   A ->> B: x
+  6 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+---
+
+
 Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/db-acc-title-line-empty-takes-empty-description-block
 Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/db-acc-title-line-empty-takes-empty-description-block-input.mmd
 
@@ -305,4 +323,19 @@ Code:
   7 |
 
 [1] mermaid.js replaces the accessible title set on line 4 with the one of this `accTitle`.
+---
+
+
+Test: sequence-no-duplicate-title >> invalid >>> invalid/sequence/title-extra-space
+Filename: tests/fixtures/rules/sequence-no-duplicate-title/invalid/sequence/title-extra-space-input.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   title T
+  3 |   title  T
+    |   ^~~~~~~~ [1]
+  4 |   A ->> B: x
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
 ---

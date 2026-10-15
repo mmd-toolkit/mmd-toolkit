@@ -127,7 +127,7 @@ export function between(reading: Reading, from: number, to: number): string {
 }
 
 /** The first character at or after `offset` that the written text holds, none at the end of the text. */
-function nextWrittenCharacter(
+export function nextWrittenCharacter(
   reading: Reading,
   offset: number,
 ): string | undefined {

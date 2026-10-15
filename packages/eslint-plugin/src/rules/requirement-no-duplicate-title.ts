@@ -1,6 +1,7 @@
 import type { RequirementAccTitleStatement } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { titleText } from "../utils/acc-text.ts"
 
 /**
  * The rule `requirement-no-duplicate-title`, described in
@@ -9,6 +10,9 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  * that holds text. The title of the frontmatter is another value, and it is
  * not a statement. ESLint visits the statements in the order of the source, so
  * each one is compared with the one before it.
+ *
+ * A statement is reported only when the value it sets differs from that of the
+ * one before it (`titleText`): setting what the diagram already has loses nothing.
  */
 export const requirementNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []
@@ -32,7 +36,7 @@ export const requirementNoDuplicateTitle: MermaidRuleDefinition<{
     let previous: RequirementAccTitleStatement | null = null
     return {
       RequirementAccTitleStatement(node) {
-        if (previous !== null) {
+        if (previous !== null && titleText(previous) !== titleText(node)) {
           context.report({
             node,
             messageId: "duplicate",

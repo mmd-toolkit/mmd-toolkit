@@ -4,6 +4,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { accDescrText } from "../utils/acc-text.ts"
 import { oneOfTwoRemovals } from "../utils/removal.ts"
 
 /** A statement that sets the description. */
@@ -17,6 +18,9 @@ type DescriptionStatement =
  * sets it, also one without text; a block sets it when it is closed and holds
  * a description. ESLint visits the statements in the order of the source, so
  * each one is compared with the one before it.
+ *
+ * A statement is reported only when the value it sets differs from that of the
+ * one before it (`accDescrText`): setting what the diagram already has loses nothing.
  */
 export const flowchartNoDuplicateDescription: MermaidRuleDefinition<{
   RuleOptions: []
@@ -47,7 +51,7 @@ export const flowchartNoDuplicateDescription: MermaidRuleDefinition<{
 
     /** Reports `node` when a statement before it set the description. */
     function check(node: DescriptionStatement): void {
-      if (previous !== null) {
+      if (previous !== null && accDescrText(previous) !== accDescrText(node)) {
         context.report({
           node,
           messageId: "duplicate",

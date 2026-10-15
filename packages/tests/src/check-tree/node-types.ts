@@ -34,6 +34,7 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "RequirementIgnoredText",
   "MindmapLabel",
   "MindmapLiteral",
+  "TimelineLiteral",
 ])
 
 /**
@@ -198,6 +199,14 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "MindmapShape",
   "MindmapIconStatement",
   "MindmapClassStatement",
+  "TimelineDiagram",
+  "TimelinePeriodStatement",
+  "TimelineEventStatement",
+  "TimelineTitleStatement",
+  "TimelineSectionStatement",
+  "TimelineAccTitleStatement",
+  "TimelineAccDescrStatement",
+  "TimelineAccDescrBlockStatement",
 ])
 
 /** The node types of the data blocks, whose delimiters lie in their range. */

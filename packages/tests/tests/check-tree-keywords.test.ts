@@ -25,6 +25,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["journey", "JourneyDiagram"],
   ["requirement", "RequirementDiagram"],
   ["mindmap", "MindmapDiagram"],
+  ["timeline", "TimelineDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -122,6 +123,11 @@ const UNIT_NAMES: ReadonlySet<string> = new Set([
   "day",
 ])
 
+/** The spans of the Keyword row of the table of Tokens of a diagram that name a unit of that diagram, where the same word is a keyword in another diagram (`direction`). */
+const UNIT_NAMES_OF_DIAGRAM: Readonly<Record<string, readonly string[]>> = {
+  timeline: ["direction"],
+}
+
 /** The days that a `day` unit of a gantt diagram is, in lower case (diagrams/gantt.md, The statement context). */
 const DAYS: readonly string[] = [
   "monday",
@@ -201,6 +207,9 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
     // `direction`.
     case "mindmap":
       return ["mindmap"]
+    // The header, and the two values of the `direction` unit.
+    case "timeline":
+      return ["timeline", "lr", "td"]
     case "requirement":
       return [
         "requirementdiagram",
@@ -280,7 +289,11 @@ describe("the table of the texts of Keyword tokens", () => {
       expect(row, diagram).toBeDefined()
       const words = [...(row ?? "").matchAll(/`([^`]+)`/gu)]
         .map((match) => match[1] ?? "")
-        .filter((span) => !UNIT_NAMES.has(span))
+        .filter(
+          (span) =>
+            !UNIT_NAMES.has(span) &&
+            !(UNIT_NAMES_OF_DIAGRAM[diagram] ?? []).includes(span),
+        )
         .map((word) => word.toLowerCase())
       expect(distinct(KEYWORD_TEXTS[body] ?? [])).toEqual(
         distinct([...words, ...textsOfUnitsInTheRow(diagram)]),

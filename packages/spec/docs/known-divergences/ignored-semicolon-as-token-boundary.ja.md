@@ -4,7 +4,7 @@
 [ignored-semicolon-as-token-boundary.md](./ignored-semicolon-as-token-boundary.md)
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
-mindmap。
+mindmap、timeline。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -165,6 +165,14 @@ mermaid.js は `"style:#x" - sati;sfies -> b` を関係 `satisfies` の関係と
 mermaid.js は `style:#x{;{b}}` を六角形の形でテキスト `b` のノードと読み、
 この仕様はそれを拒否します。
 [fixture: mindmap/div-ignored-semicolon-in-opener]
+timeline では、ユーザージャーニー図と同じく、
+`style`、`:`、`#` はその行の文の前の説明ブロックにあり、
+無視される `;` はキーワードの中に置けます。
+mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
+`sec;tion S` と `accTi;tle: T` も同じで、この仕様はそれらを拒否します。
+[fixture: timeline/div-ignored-semicolon-in-title-keyword]
+[fixture: timeline/div-ignored-semicolon-in-section-keyword]
+[fixture: timeline/div-ignored-semicolon-in-acc-title-keyword]
 
 各図の文書は、これがどこに表れるかを、既知の差異の節に挙げています。
 [flowchart](../diagrams/flowchart.ja.md#既知の差異)、
@@ -175,7 +183,8 @@ mermaid.js は `style:#x{;{b}}` を六角形の形でテキスト `b` のノー�
 [gantt](../diagrams/gantt.ja.md#既知の差異)、
 [journey](../diagrams/journey.ja.md#既知の差異)、
 [requirement](../diagrams/requirement.ja.md#既知の差異)、
-[mindmap](../diagrams/mindmap.ja.md#既知の差異) です。
+[mindmap](../diagrams/mindmap.ja.md#既知の差異)、
+[timeline](../diagrams/timeline.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 

@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Lexical structure: an accessibility title is read without U+00A0 at its end."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "t",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

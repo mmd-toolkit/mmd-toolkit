@@ -29,11 +29,12 @@ import type {
   DiagramText,
 } from "../../diagram-text.ts"
 import { lineFeedAfter } from "../../diagram-text.ts"
-import type { DiagramUnit } from "../../diagram-units.ts"
-import { readUnit } from "../../diagram-units.ts"
+import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
+import { readUnit, significantRangeOf } from "../../diagram-units.ts"
 import { DirectionLineRule } from "../../direction-line.ts"
 import { ParseError } from "../../errors.ts"
 import type { LineIndex } from "../../positions.ts"
+import { UnitLexer } from "../../unit-lexer.ts"
 import {
   isCodePointAt,
   isWhitespaceAt,
@@ -210,31 +211,14 @@ function continuesUnquotedText(character: DiagramCharacter): boolean {
  * order; each method that reads a context names the section it follows.
  * Letters of the keywords are compared case-insensitively.
  */
-export class RequirementUnitLexer {
-  private readonly reader: DiagramText
-
-  private readonly lines: LineIndex
-
-  private readonly units: Unit[] = []
-
+export class RequirementUnitLexer extends UnitLexer<Context, UnitName, Unit> {
   private readonly comments: DiagramComment[] = []
-
-  /** The stack of contexts; the last one is the current context. */
-  private readonly contexts: Context[] = ["statement"]
-
-  /** For each context on the stack but the statement context, the unit that entered it, for the error at the end of the text. */
-  private readonly entries: Unit[] = []
-
-  /** The place of the next character to read; null at the end of the text. */
-  private position: DiagramPosition
 
   /** The statement context, rule 5: the direction line, with the values of this diagram, compared case-insensitively. */
   private readonly directionLine: DirectionLineRule
 
   public constructor(reader: DiagramText, lines: LineIndex) {
-    this.reader = reader
-    this.lines = lines
-    this.position = reader.first()
+    super(reader, lines, "statement", END_OF_TEXT_MESSAGES)
     this.directionLine = new DirectionLineRule(
       reader,
       DIRECTION_LINE_VALUES,
@@ -248,80 +232,40 @@ export class RequirementUnitLexer {
    * a context that may not end there.
    */
   public lex(): RequirementLexing {
-    while (this.position !== null) {
-      this.readInContext(this.position, this.currentContext())
-    }
+    this.readToEnd()
     this.checkEndOfText()
     return { units: this.units, comments: this.comments }
-  }
-
-  /** The current context: the top of the stack. */
-  private currentContext(): Context {
-    return this.contexts[this.contexts.length - 1]
-  }
-
-  /** Units and contexts: enters `context`, which `entry` entered. */
-  private enter(context: Context, entry: Unit): void {
-    this.contexts.push(context)
-    this.entries.push(entry)
-  }
-
-  /** Units and contexts: leaves the current context. */
-  private leave(): void {
-    this.contexts.pop()
-    this.entries.pop()
   }
 
   /**
    * Adds the unit named `name` that reads the characters from `from` up to,
    * and not including, `to`, whose token leaves out the whitespace at its
-   * ends.
+   * ends as `ends` says.
    */
-  private addUnit(
+  protected override addUnit(
     name: UnitName,
     from: DiagramCharacter,
     to: DiagramPosition,
+    ends: UnitEnds = "trim-whitespace",
   ): Unit {
-    const unit = readUnit(this.reader, name, this.units.length, from, to, null)
+    const unit = readUnit(
+      this.reader,
+      name,
+      this.units.length,
+      from,
+      to,
+      null,
+      ends,
+    )
     this.units.push(unit)
     return unit
   }
 
-  /** Reads the unit named `name` from `at` up to `to`, and goes on after it. */
-  private read(
-    name: UnitName,
-    at: DiagramCharacter,
-    to: DiagramPosition,
-  ): Unit {
-    const unit = this.addUnit(name, at, to)
-    this.position = to
-    return unit
-  }
-
-  /** The error for a place where no rule of the current context matches: the character there. */
-  private noRuleMatches(at: DiagramCharacter): ParseError {
-    const range: Range = [at.start, at.end]
-    return new ParseError(
-      "Unexpected character",
-      range,
-      this.lines.location(range),
-    )
-  }
-
-  /**
-   * Units and contexts: throws when the text ends in a context that may
-   * not end there, at the unit that entered it, saying what is not closed.
-   */
-  private checkEndOfText(): void {
-    const message = END_OF_TEXT_MESSAGES[this.currentContext()]
-    const entry = this.entries.at(-1)
-    if (message === null || entry === undefined) return
-    const range: Range = entry.significantRange ?? [entry.start, entry.end]
-    throw new ParseError(message, range, this.lines.location(range))
-  }
-
   /** Applies the first rule of `context` that matches at `at`. */
-  private readInContext(at: DiagramCharacter, context: Context): void {
+  protected override readInContext(
+    at: DiagramCharacter,
+    context: Context,
+  ): void {
     switch (context) {
       case "statement":
         this.readInStatementContext(at)
@@ -417,7 +361,7 @@ export class RequirementUnitLexer {
     const afterMark = this.reader.after(markAt)
     this.addUnit(mark === COLON ? ":" : "{", markAt, afterMark)
     this.position = skipWhitespace(this.reader, afterMark)
-    this.enter(context, keywordUnit)
+    this.enter(context, significantRangeOf(keywordUnit))
     return true
   }
 
@@ -537,7 +481,7 @@ export class RequirementUnitLexer {
       const match = matchWholeWordIgnoringCase(this.reader, at, keyword)
       if (match !== null) {
         const unit = this.read(keyword, at, match.end)
-        this.enter("style", unit)
+        this.enter("style", significantRangeOf(unit))
         return true
       }
     }

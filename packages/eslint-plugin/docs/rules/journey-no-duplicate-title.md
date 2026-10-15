@@ -20,7 +20,8 @@ pasting a part twice.
 ## Rule Details
 
 This rule reports every `title` statement after the first one, and every
-`accTitle` statement after the first one. It applies to `journey`.
+`accTitle` statement after the first one, when the statement sets a value other
+than the one before it. It applies to `journey`.
 
 After `title first` and `title second`, the title is `second`, and so for
 `accTitle`. `accTitle:` with no text on its line takes the next line that holds
@@ -37,6 +38,15 @@ Without an earlier title, the line is the only title, and it is not reported.
 A `title` statement also replaces the title of the frontmatter without an error:
 with `title: Frontmatter title` in the frontmatter, `title Statement title`
 gives the title `Statement title`. The rule does not report this.
+
+A statement that sets the title that the diagram already has is not reported:
+after `accTitle: a`, a second `accTitle: a` loses nothing. Titles are compared
+as mermaid.js keeps them, without the whitespace at their ends, so
+`accTitle:  a` sets the same title. After `accTitle: a` and `accTitle: b`, a
+third `accTitle: a` is reported, because it replaces `b`. The same holds for
+`title`, whose text keeps its whitespace: after `title T`, the statement
+`title  T`, with two spaces, sets another title, and it is reported, also where
+the two titles look the same when drawn.
 
 Examples of **incorrect** code for this rule:
 
@@ -65,6 +75,15 @@ Examples of **correct** code for this rule:
 journey
   title first
   accTitle: second
+  section Work
+    Make tea: 5: Me
+```
+
+```mmd
+%% eslint @mmd-toolkit/journey-no-duplicate-title: error
+journey
+  title first
+  title first
   section Work
     Make tea: 5: Me
 ```

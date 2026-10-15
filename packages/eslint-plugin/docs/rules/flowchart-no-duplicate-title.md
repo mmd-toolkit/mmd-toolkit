@@ -21,8 +21,9 @@ and the formatted text does not show which one counts.
 
 ## Rule Details
 
-This rule reports every `accTitle` statement after the first one. It applies to
-`flowchart-v2`, `flowchart-elk`, and `swimlane`.
+This rule reports every `accTitle` statement after the first one, when it sets a
+title other than the one before it. It applies to `flowchart-v2`,
+`flowchart-elk`, and `swimlane`.
 
 After `accTitle: first` and `accTitle: second`, the title is `second`.
 `accTitle:` with no text sets the title too: it takes the next line that holds
@@ -32,6 +33,12 @@ it is lost. A statement inside a subgraph sets the title of the whole diagram
 and is counted too; mermaid.js also adds the value of such a statement to the
 members of the subgraph as an id, so that a vertex or a subgraph with that id
 belongs to the subgraph.
+
+A statement that sets the title that the diagram already has is not reported:
+after `accTitle: a`, a second `accTitle: a` loses nothing. Titles are compared
+as mermaid.js keeps them, without the whitespace at their ends, so
+`accTitle:  a` sets the same title. After `accTitle: a` and `accTitle: b`, a
+third `accTitle: a` is reported, because it replaces `b`.
 
 For each report, the rule suggests removing one of two statements: the reported
 one, or the `accTitle` statement before it. mermaid.js uses the last title that
@@ -76,6 +83,14 @@ Examples of **correct** code for this rule:
 %% eslint @mmd-toolkit/flowchart-no-duplicate-title: error
 flowchart LR
   A
+  accTitle: first
+```
+
+```mmd
+%% eslint @mmd-toolkit/flowchart-no-duplicate-title: error
+flowchart LR
+  A
+  accTitle: first
   accTitle: first
 ```
 

@@ -5,5 +5,12 @@
   },
   "accepted": true,
   "diagramType": "timeline",
-  "db": null
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
 }

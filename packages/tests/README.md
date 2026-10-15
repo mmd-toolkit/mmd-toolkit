@@ -62,8 +62,8 @@ console.log(rejected.accepted, rejected.error.name)
 Each fixture is a directory `fixtures/<diagram>/<name>/` in this package
 (`getFixturesRoot()` gives its absolute path). `<diagram>` is a diagram type
 (`flowchart`, `sequence`, `class`, `state`, `er`, `gantt`, `journey`,
-`requirement`, `mindmap`) or `common`, for syntax that every diagram type shares
-(frontmatter, directives, comments, diagram detection).
+`requirement`, `mindmap`, `timeline`) or `common`, for syntax that every diagram
+type shares (frontmatter, directives, comments, diagram detection).
 
 - `input.mmd`: the text under test, byte for byte.
 - `expected.json`: what mermaid.js did with it.
@@ -137,12 +137,12 @@ Reads the fixtures. It does not load mermaid.js.
 
 - `loadFixtures(diagram)`: the fixtures of `"common"`, `"flowchart"`,
   `"sequence"`, `"class"`, `"state"`, `"er"`, `"gantt"`, `"journey"`,
-  `"requirement"` or `"mindmap"`, sorted by name. Each has `diagram`, `name`,
-  `input` (the text of `input.mmd`), `source`, `config` and `knownDivergence`
-  (when set), and `expected`: either `{ accepted: true, diagramType, db }` or
-  `{ accepted: false, error }`. It reads the files one at a time, so that test
-  files loading the fixtures in parallel workers stay within the system's limit
-  of open files.
+  `"requirement"`, `"mindmap"` or `"timeline"`, sorted by name. Each has
+  `diagram`, `name`, `input` (the text of `input.mmd`), `source`, `config` and
+  `knownDivergence` (when set), and `expected`: either
+  `{ accepted: true, diagramType, db }` or `{ accepted: false, error }`. It
+  reads the files one at a time, so that test files loading the fixtures in
+  parallel workers stay within the system's limit of open files.
 - `KNOWN_DIVERGENCES`: the identifiers a fixture's `knownDivergence` can have.
   Each is defined in the specification:
   - `directive-as-token-boundary`: see

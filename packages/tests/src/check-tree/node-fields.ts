@@ -765,6 +765,35 @@ export const NODE_FIELDS: Readonly<
     raw: { shape: "value", valueType: "string" },
     closed: { shape: "value", valueType: "boolean" },
   },
+  TimelineAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  TimelineAccDescrStatement: {
+    value: { shape: "node" },
+  },
+  TimelineAccTitleStatement: {
+    value: { shape: "node" },
+  },
+  TimelineDiagram: {
+    direction: { shape: "value", valueType: "stringOrNull" },
+    body: { shape: "nodeList" },
+  },
+  TimelineEventStatement: {
+    events: { shape: "nodeList" },
+  },
+  TimelineLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  TimelinePeriodStatement: {
+    period: { shape: "node" },
+    events: { shape: "nodeList" },
+  },
+  TimelineSectionStatement: {
+    name: { shape: "node" },
+  },
+  TimelineTitleStatement: {
+    value: { shape: "node" },
+  },
   Token: {
     value: { shape: "value", valueType: "string" },
   },

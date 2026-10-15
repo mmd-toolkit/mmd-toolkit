@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, sections: a task belongs to the section before it."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S",
+      "T"
+    ],
+    "tasks": [
+      {
+        "section": "S",
+        "task": "a",
+        "events": []
+      },
+      {
+        "section": "T",
+        "task": "b",
+        "events": []
+      }
+    ]
+  }
+}

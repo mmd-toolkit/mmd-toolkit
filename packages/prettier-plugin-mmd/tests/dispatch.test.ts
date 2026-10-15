@@ -83,9 +83,7 @@ describe("dispatch to diagram printers", () => {
   })
 
   it("prints a parsed diagram type without a printer unchanged", async () => {
-    parse.mockImplementation((text: string) =>
-      stubRoot(text, "TimelineDiagram"),
-    )
+    parse.mockImplementation((text: string) => stubRoot(text, "PieDiagram"))
     const input = "erDiagram\n  A ||--o{ B : has  \n\n\n"
     expect(await formatMermaid(input)).toBe(input)
   })
@@ -172,9 +170,7 @@ describe("dispatch to diagram printers", () => {
       "- item\n\n  ```mermaid\n  erDiagram  \n\n    A ||--o{ B : has\t\n  ```\n",
       "> ```mmd\n> erDiagram\n>\n>   A ||--o{ B : has\n> ```\n",
     ])("%j", async (markdown) => {
-      parse.mockImplementation((text: string) =>
-        stubRoot(text, "TimelineDiagram"),
-      )
+      parse.mockImplementation((text: string) => stubRoot(text, "PieDiagram"))
       expect(await formatMarkdown(markdown)).toBe(
         await formatMarkdownWithoutPlugin(markdown),
       )
@@ -188,7 +184,7 @@ describe("dispatch to diagram printers", () => {
     const first = input.indexOf("erDiagram")
     const last = input.indexOf("has") + 3
     parse.mockImplementation((text: string) => ({
-      ...stubRoot(text, "TimelineDiagram"),
+      ...stubRoot(text, "PieDiagram"),
       range: [first, last],
     }))
     expect(await formatMermaid(input)).toBe(input)

@@ -19,27 +19,6 @@ Code:
 ---
 
 
-Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/db-requirement-and-element-same-name
-Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/db-requirement-and-element-same-name-input.mmd
-
-Code:
-  1 | requirementDiagram
-  2 | requirement x {
-  3 |   id: 1
-  4 | }
-  5 | element x {
-    |         ^ [1]
-  6 |   type: t
-  7 | }
-  8 | style x fill:red
-  9 | class x c
- 10 | classDef c fill:blue
- 11 |
-
-[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
----
-
-
 Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/element-again-with-fields
 Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/element-again-with-fields-input.mmd
 
@@ -58,59 +37,23 @@ Code:
 ---
 
 
-Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/element-requirement-requirement
-Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/element-requirement-requirement-input.mmd
-
-Code:
-  1 | requirementDiagram
-  2 | element x {
-  3 | }
-  4 | requirement x {
-    |             ^ [1]
-  5 | }
-  6 | requirement x {
-  7 | }
-  8 |
-
-[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
----
-
-
 Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/element-requirement-requirement-with-field
 Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/element-requirement-requirement-with-field-input.mmd
 
 Code:
   1 | requirementDiagram
-  2 | element x {
-  3 | }
-  4 | requirement x {
-    |             ^ [1]
-  5 | }
-  6 | requirement x {
-    |             ^ [2]
-  7 |   id: 2
-  8 | }
-  9 |
+  2 |   element x {
+  3 |     type: m
+  4 |   }
+  5 |   requirement x {
+  6 |   }
+  7 |   requirement x {
+    |               ^ [1]
+  8 |     id: 2
+  9 |   }
+ 10 |
 
-[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
-[2] mermaid.js keeps the box `x` of line 4 as it is: this statement adds only its classes.
----
-
-
-Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/element-then-requirement-same-name
-Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/element-then-requirement-same-name-input.mmd
-
-Code:
-  1 | requirementDiagram
-  2 | element x {
-  3 | }
-  4 | requirement x {
-    |             ^ [1]
-  5 | }
-  6 | style x fill:red
-  7 |
-
-[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
+[1] mermaid.js keeps the box `x` of line 5 as it is: this statement adds only its classes.
 ---
 
 
@@ -167,24 +110,6 @@ Code:
 ---
 
 
-Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/requirement-element-element-with-class
-Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/requirement-element-element-with-class-input.mmd
-
-Code:
-  1 | requirementDiagram
-  2 | requirement x {
-  3 | }
-  4 | element x {
-    |         ^ [1]
-  5 | }
-  6 | element x:::c {
-  7 | }
-  8 |
-
-[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
----
-
-
 Test: requirement-no-duplicate-name >> invalid >>> invalid/requirement/requirement-element-element-with-field
 Filename: tests/fixtures/rules/requirement-no-duplicate-name/invalid/requirement/requirement-element-element-with-field-input.mmd
 
@@ -193,17 +118,15 @@ Code:
   2 | requirement x {
   3 | }
   4 | element x {
-    |         ^ [1]
   5 |   type: a
   6 | }
   7 | element x {
-    |         ^ [2]
+    |         ^ [1]
   8 |   type: b
   9 | }
  10 |
 
-[1] mermaid.js makes a second box named `x`, besides the one on line 2: `style` and `class` with this name go to the requirement.
-[2] mermaid.js keeps the box `x` of line 4 as it is: this statement adds only its classes.
+[1] mermaid.js keeps the box `x` of line 4 as it is: this statement adds only its classes.
 ---
 
 

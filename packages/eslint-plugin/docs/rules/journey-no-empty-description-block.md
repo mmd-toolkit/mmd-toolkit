@@ -27,7 +27,9 @@ block `accDescr {}` leaves the description `a`.
 A block that holds only comments is not reported. The author who turns the lines
 of a description into comments means the block to do nothing, and mermaid.js
 reads it so. A block that holds a comment line is not reported also when it
-holds directives besides; mermaid.js applies their settings.
+holds directives besides; mermaid.js applies their settings. A block left to be
+filled in later is written with a comment in it, as `accDescr {`, `%% TODO`, and
+`}`, and it is not reported.
 
 An empty block may also stand on the line of another statement: after the
 header, as in `journey accDescr {}`, before a task, as in `accDescr {} A: 5`,

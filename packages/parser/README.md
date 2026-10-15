@@ -130,6 +130,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - User journey diagrams: `journey` (`journey`).
 - Requirement diagrams: `requirement` (`requirementDiagram`).
 - Mindmaps: `mindmap` (`mindmap`).
+- Timelines: `timeline` (`timeline`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -226,8 +227,9 @@ type ids. The names and fields are those of the specification's
 [`ast/er.md`](../spec/docs/ast/er.md),
 [`ast/gantt.md`](../spec/docs/ast/gantt.md),
 [`ast/journey.md`](../spec/docs/ast/journey.md),
-[`ast/requirement.md`](../spec/docs/ast/requirement.md), and
-[`ast/mindmap.md`](../spec/docs/ast/mindmap.md).
+[`ast/requirement.md`](../spec/docs/ast/requirement.md),
+[`ast/mindmap.md`](../spec/docs/ast/mindmap.md), and
+[`ast/timeline.md`](../spec/docs/ast/timeline.md).
 
 ## Walking the tree
 
@@ -339,7 +341,8 @@ these differences:
   and no task in mermaid.js, and `t%itle T` is rejected here. In a journey
   diagram, the same holds for a `%%` right after the first character of a unit:
   `A%%B: 5` is a task here and no task in mermaid.js, and `A: 5;%% c` is
-  rejected here
+  rejected here; and so in a timeline: `a%% c` is a period here and nothing in
+  mermaid.js, and `:%% c` is rejected here
   ([`comment-takes-character`](../spec/docs/known-divergences/comment-takes-character.md)).
 - In a class diagram, a comment after a statement ends at the end of its line,
   while mermaid.js takes the line breaks after it and reads the next line as
@@ -375,7 +378,8 @@ these differences:
   flowchart and of an ER diagram, a line `%%{ }%%` before that of a state
   diagram, and a line of spaces after such a line before that of a class or an
   ER diagram, and every such line, with a line of spaces after it or without,
-  before that of a Gantt chart, a journey diagram, and a requirement diagram
+  before that of a Gantt chart, a journey diagram, a requirement diagram, and a
+  timeline
   ([`bare-percent-line-before-header`](../spec/docs/known-divergences/bare-percent-line-before-header.md)).
 - `parse()` does not know the site configuration, so a flowchart with more edges
   than `maxEdges` (500 by default) is accepted.
@@ -393,7 +397,8 @@ these differences:
   [`ast/journey.md`](../spec/docs/ast/journey.md) (the journey nodes),
   [`ast/requirement.md`](../spec/docs/ast/requirement.md) (the requirement
   nodes), [`ast/mindmap.md`](../spec/docs/ast/mindmap.md) (the mindmap nodes),
-  and [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
+  [`ast/timeline.md`](../spec/docs/ast/timeline.md) (the timeline nodes), and
+  [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of
   nodes, and the invariants of the tree.

@@ -40,8 +40,8 @@ flowchart (`flowchart-v2`, `flowchart-elk`, and `swimlane`), the sequence
 diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
 (`stateDiagram`), the entity relationship diagram (`er`), the Gantt chart
 (`gantt`), the user journey diagram (`journey`), the requirement diagram
-(`requirement`), and the mindmap (`mindmap`). Every other detected type throws
-`UnsupportedDiagramError`.
+(`requirement`), the mindmap (`mindmap`), and the timeline (`timeline`). Every
+other detected type throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -53,8 +53,9 @@ The parser of each diagram follows its document,
 [`diagrams/er.md`](../../spec/docs/diagrams/er.md),
 [`diagrams/gantt.md`](../../spec/docs/diagrams/gantt.md),
 [`diagrams/journey.md`](../../spec/docs/diagrams/journey.md),
-[`diagrams/requirement.md`](../../spec/docs/diagrams/requirement.md), or
-[`diagrams/mindmap.md`](../../spec/docs/diagrams/mindmap.md). It has three
+[`diagrams/requirement.md`](../../spec/docs/diagrams/requirement.md),
+[`diagrams/mindmap.md`](../../spec/docs/diagrams/mindmap.md), or
+[`diagrams/timeline.md`](../../spec/docs/diagrams/timeline.md). It has three
 parts:
 
 - a lexer that divides the diagram text into units, under
@@ -66,26 +67,30 @@ parts:
   units.
 
 What every diagram's lexer and parser do in the same way is in one place each: a
-unit and how it is read (`src/diagram-units.ts`), reading the units, the place
-of a node, the written text of a value, the shared leaf nodes, and the tokens of
-an item of the grammar (`UnitGrammar` in `src/unit-grammar.ts`), and the empty
-forms of `tokenless-empty-forms` (`src/empty-forms.ts`). A rule that two diagram
+unit and how it is read (`src/diagram-units.ts`), the stack of contexts of the
+lexer, with the first rule of the current context at each place and the error
+when the text ends in a context that may not end there (`UnitLexer` in
+`src/unit-lexer.ts`), reading the units, the place of a node, the written text
+of a value, the shared leaf nodes, and the tokens of an item of the grammar
+(`UnitGrammar` in `src/unit-grammar.ts`), and the empty forms of
+`tokenless-empty-forms` (`src/empty-forms.ts`). A rule that two diagram
 documents share is in one place too: the direction line of flowchart, class,
 state, ER, and requirement (`src/direction-line.ts`), whose words state, ER, and
 requirement compare case-insensitively, and the Unicode letters of the letter
 rules of flowchart and class (`src/unicode-letters.ts`). A diagram whose lexer
 reads diagram comments, as the sequence lexer reads `#` and `%`, the class lexer
-`%%`, the state lexer `#` and `%%`, the Gantt lexer `%`, the journey and
-requirement lexers `#` and `%`, and the mindmap lexer `%%`, hands them to the
-common part, which records them in `Root.comments`, cut at the comment regions
-that lie inside them, as tokens are. The rejections that mermaid.js makes while
-it builds the Db are made by the parser after the grammar: `subgraph-members.ts`
-for the flowchart, and `db-rejections.ts` for the sequence diagram, the class
-diagram, and the state diagram; the Gantt grammar makes its two where it reads
-the statement, since a `topAxis` statement makes no node, and the mindmap
-grammar its two where it reads the line, as it places each node in the tree by
-its indentation when it reads it. The class lexer divides each member line into
-its parts with the steps of
+`%%`, the state lexer `#` and `%%`, the Gantt lexer `%`, the journey,
+requirement, and timeline lexers `#` and `%`, and the mindmap lexer `%%`, hands
+them to the common part, which records them in `Root.comments`, cut at the
+comment regions that lie inside them, as tokens are. The rejections that
+mermaid.js makes while it builds the Db are made by the parser after the
+grammar: `subgraph-members.ts` for the flowchart, and `db-rejections.ts` for the
+sequence diagram, the class diagram, and the state diagram; the Gantt grammar
+makes its two where it reads the statement, since a `topAxis` statement makes no
+node, the mindmap grammar its two where it reads the line, as it places each
+node in the tree by its indentation when it reads it, and the timeline grammar
+its one where it reads the event statement. The class lexer divides each member
+line into its parts with the steps of
 [Member lines](../../spec/docs/diagrams/class.md#member-lines)
 (`src/diagrams/class/member-lines.ts`), both in a class body and in the label of
 a member statement, and rejects a method line that cannot be divided.

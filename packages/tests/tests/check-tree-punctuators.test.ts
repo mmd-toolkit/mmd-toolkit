@@ -64,6 +64,7 @@ const DIAGRAMS: readonly [string, string][] = [
   ["journey", "JourneyDiagram"],
   ["requirement", "RequirementDiagram"],
   ["mindmap", "MindmapDiagram"],
+  ["timeline", "TimelineDiagram"],
 ]
 
 /**

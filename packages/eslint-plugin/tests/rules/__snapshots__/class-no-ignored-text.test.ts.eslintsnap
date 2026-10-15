@@ -41,6 +41,34 @@ Code:
 ---
 
 
+Test: class-no-ignored-text >> invalid >>> invalid/class/direction-then-hash-comment
+Filename: tests/fixtures/rules/class-no-ignored-text/invalid/class/direction-then-hash-comment-input.mmd
+
+Code:
+  1 | classDiagram
+  2 |   direction LR # c
+    |                ^~~ [1]
+  3 |   class A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `# c`.
+---
+
+
+Test: class-no-ignored-text >> invalid >>> invalid/class/direction-then-slashes-comment
+Filename: tests/fixtures/rules/class-no-ignored-text/invalid/class/direction-then-slashes-comment-input.mmd
+
+Code:
+  1 | classDiagram
+  2 |   direction LR // c
+    |                ^~~~ [1]
+  3 |   class A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `// c`.
+---
+
+
 Test: class-no-ignored-text >> invalid >>> invalid/class/lex-direction-line-after-empty-description-block
 Filename: tests/fixtures/rules/class-no-ignored-text/invalid/class/lex-direction-line-after-empty-description-block-input.mmd
 

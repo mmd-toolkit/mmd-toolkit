@@ -776,6 +776,45 @@ what the Db reads and does not repair what mermaid.js rejects. See
   [fixture: mindmap/blank-lines/after-the-header-dropped] [fixture:
   mindmap/blank-lines/after-a-comment-between-nodes-kept]
 
+## Timeline lines that the whitespace decides
+
+mermaid.js keeps the whitespace in the periods, events, titles, and section
+names of a timeline, and reads a few lines by the place they stand in, so
+formatting keeps them as they are written. See
+[Periods and events](./timeline.md#periods-and-events),
+[Event statements](./timeline.md#event-statements), and
+[Statements one per line](./timeline.md#statements-one-per-line).
+
+- The whitespace around the colons of a period and its events. The Db keeps the
+  whitespace before the colon of a period and the whitespace of an event beyond
+  the one character after its colon, so `2004 : a` and `2004: a` are different
+  periods, and the padding that aligns the colons stays. The whitespace at the
+  end of a line is part of the text too. [fixture:
+  timeline/periods-and-events/period-whitespace-kept] [fixture:
+  timeline/periods-and-events/event-whitespace-kept] [fixture:
+  timeline/periods-and-events/trailing-whitespace-kept]
+- The line on which an event stands. Joining the event on a later line to the
+  line of the period with a space would add the space to the text of the event
+  before it, and splitting an event off its line would leave the space at the
+  end of the line before it. [fixture:
+  timeline/periods-and-events/events-on-both]
+- An event after a section on its line, as in `section T : Google`. The name of
+  the section keeps the space before its colon, so the event stays on the line;
+  without the space, as in `section T: Google`, it goes to a line of its own.
+  [fixture:
+  timeline/statements-one-per-line/section-with-trailing-whitespace-keeps-the-event]
+  [fixture:
+  timeline/statements-one-per-line/section-without-trailing-whitespace-moves-the-event]
+- A line of only a directive after the word `title` or `section` alone on a
+  line, which is a period: the whitespace before the directive would become the
+  text of a title or a section, so it stands at the first column. [fixture:
+  timeline/periods-and-events/title-word-then-directive-line]
+- A statement with a comment line, a directive, or a `;` in a line break that
+  would be joined, such as the one between `title` and its text: it is kept as
+  written. A line that holds a `;` keeps its statements together. [fixture:
+  timeline/multi-line-statements/comment-line-inside-kept] [fixture:
+  timeline/statements-one-per-line/ignored-semicolon-line-kept]
+
 ## A comment line after U+2028 or U+2029
 
 mermaid.js removes the comment lines from the text before it reads it. A comment

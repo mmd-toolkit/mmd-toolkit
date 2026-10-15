@@ -390,6 +390,34 @@
   [fixture: mindmap/db-icon-before-node]
   [fixture: mindmap/db-class-before-node]
 
+## Timeline の中
+
+- どの文脈でも、どの文字もいずれかの規則で単位を始めるので、
+  字句解析器が入力を拒否するのはテキストの終わりだけ。
+- 終わってはいけない文脈でテキストが終わるときは、
+  `range` はその文脈に入ったもので、メッセージは何が閉じていないかを示す。
+  - `accTitle` と `accDescr`。
+    メッセージは `accTitle has no text before the end of the text` と
+    `accDescr has no text before the end of the text`。
+    [fixture: timeline/gram-acc-title-empty]
+    [fixture: timeline/gram-acc-descr-empty]
+  - 説明ブロックの `accDescr`。
+    メッセージは `The description block has no } before the end of the text`。
+    [fixture: timeline/gram-acc-descr-block-unclosed]
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲。
+  そこに来る単位は、event を始めない `:` と、2 つ目のヘッダーの 2 つだけ。
+  ほかの単位は、字句解析器が文法の取る組で読み、
+  文の中で終わるテキストは字句解析器が拒否するからである。
+  [fixture: timeline/gram-event-colon-glued-to-event]
+  [fixture: timeline/gram-event-empty-after-colon]
+  [fixture: timeline/gram-header-as-later-line]
+- 文法の外の拒否は、文法がその文を読むところで行う。
+  `range` は、最初の period より前の event の文で、
+  最初のコロンから最後の event まで。
+  メッセージは `An event needs a period before it`。
+  [fixture: timeline/gram-event-first]
+  [fixture: timeline/gram-event-after-title]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、

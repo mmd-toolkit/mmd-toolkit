@@ -31,7 +31,10 @@ export interface SectionedDiagram<Statement extends Node> {
   readonly keptLines: (source: Source) => KeptLines
   /** Where the printed text of a statement ends (see `BlockRules`). */
   readonly printedEnd: (source: Source, statement: Statement) => number
-  /** The layout of the line of the header. */
+  /**
+   * The layout of the line of the header: the keyword, and what the header
+   * holds after it, such as a direction.
+   */
   readonly layoutHeader: (source: Source, keyword: Token) => AtomLayout
   /** The layout of a statement, up to `end`. */
   readonly layoutStatement: (
@@ -45,6 +48,13 @@ export interface SectionedDiagram<Statement extends Node> {
    * `BlockRules.oneCharacterIndentation`).
    */
   readonly readsCommentsByWhitespaceBefore: boolean
+  /**
+   * Whether the whitespace before a directive on a line right after the
+   * statement is read as its text (see
+   * `BlockRules.readsDirectiveLineWhitespaceAfter`). Without it, no statement
+   * is.
+   */
+  readonly readsDirectiveLineWhitespaceAfter?: (statement: Statement) => boolean
 }
 
 /**
@@ -78,6 +88,7 @@ export function printSectionedDiagram<Statement extends Node>(
     findTokenStartingAt(source, path.node.range[0]),
     "the header keyword",
   )
+  const headerLayout = diagram.layoutHeader(source, keyword)
   const deeper = findStatementsAfterSection(statements, diagram.isSection)
   const block = printBlock(
     statements.map((statement) =>
@@ -92,18 +103,31 @@ export function printSectionedDiagram<Statement extends Node>(
     source,
     {
       statements,
-      start: keyword.range[1],
+      start: findLayoutEnd(headerLayout),
       end: source.text.length,
       isTopLevel: true,
     },
     statementBlockRules(diagram, source, options, deeper),
   )
   const header = openingLine(
-    printLine(source, options, diagram.layoutHeader(source, keyword), 0),
+    printLine(source, options, headerLayout, 0),
     block,
     false,
   )
   return printDiagramBlock(source, header, block, options)
+}
+
+/**
+ * Where a layout ends: the end of its last atom. The statements of the body
+ * start after the header, which holds more than the keyword where the header
+ * has a direction.
+ */
+function findLayoutEnd(layout: AtomLayout): number {
+  const last = layout.atoms.at(-1)
+  if (last === undefined) {
+    throw new Error("prettier-plugin-mmd: a header layout without atoms")
+  }
+  return last.end
 }
 
 /**
@@ -178,6 +202,8 @@ function statementBlockRules<Statement extends Node>(
     keepsDirectiveLinesUnindented: false,
     extraIndentationOf: (statement) =>
       deeper.has(statement) ? indentationOf(options, 1) : "",
+    readsDirectiveLineWhitespaceAfter:
+      diagram.readsDirectiveLineWhitespaceAfter,
     oneCharacterIndentation: diagram.readsCommentsByWhitespaceBefore
       ? options.useTabs
         ? "\t"

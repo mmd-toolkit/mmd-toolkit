@@ -100,6 +100,14 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
   "diagrams/requirement/requirementDb.js": ["RequirementDB"],
   "diagrams/mindmap/parser/mindmap.jison": ["parser"],
   "diagrams/mindmap/mindmapDb.js": ["MindmapDB"],
+  "diagrams/timeline/parser/timeline.jison": ["parser"],
+  "diagrams/timeline/timelineDb.js": [
+    "clear",
+    "getDirection",
+    "getSections",
+    "getTasks",
+  ],
+  "diagrams/common/commonDb.js": ["getDiagramTitle"],
   "config.js": [
     "setConfig",
     "getConfig",
@@ -382,6 +390,16 @@ export async function recordSpecFile(
       parser: { parse: record, yy: anything },
     },
     "diagrams/mindmap/mindmapDb.js": { MindmapDB: anything },
+    "diagrams/timeline/parser/timeline.jison": {
+      parser: { parse: record, yy: anything },
+    },
+    "diagrams/timeline/timelineDb.js": {
+      clear: anything,
+      getDirection: anything,
+      getSections: anything,
+      getTasks: anything,
+    },
+    "diagrams/common/commonDb.js": { getDiagramTitle: anything },
     "diagrams/requirement/requirementDb.js": {
       RequirementDB: new Proxy(anything as object, {
         construct: () => requirementDb as object,

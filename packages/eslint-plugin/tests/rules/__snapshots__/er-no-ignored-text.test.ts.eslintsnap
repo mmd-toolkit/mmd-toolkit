@@ -57,6 +57,34 @@ Code:
 ---
 
 
+Test: er-no-ignored-text >> invalid >>> invalid/er/direction-then-hash-comment
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/direction-then-hash-comment-input.mmd
+
+Code:
+  1 | erDiagram
+  2 |   direction LR # c
+    |                ^~~ [1]
+  3 |   A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `# c`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/direction-then-slashes-comment
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/direction-then-slashes-comment-input.mmd
+
+Code:
+  1 | erDiagram
+  2 |   direction LR // c
+    |                ^~~~ [1]
+  3 |   A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `// c`.
+---
+
+
 Test: er-no-ignored-text >> invalid >>> invalid/er/empty-description-block-after-direction-value
 Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/empty-description-block-after-direction-value-input.mmd
 

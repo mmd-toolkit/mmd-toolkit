@@ -22,6 +22,8 @@ import { lexRequirement } from "../../src/diagrams/requirement/index.ts"
 import type { MindmapUnits } from "../../src/diagrams/mindmap/index.ts"
 import { lexMindmap } from "../../src/diagrams/mindmap/index.ts"
 import type { Unit as MindmapUnit } from "../../src/diagrams/mindmap/units.ts"
+import type { TimelineUnits } from "../../src/diagrams/timeline/index.ts"
+import { lexTimeline } from "../../src/diagrams/timeline/index.ts"
 import type { UnitName as RequirementUnitName } from "../../src/diagrams/requirement/units.ts"
 import type { DiagramUnit } from "../../src/diagram-units.ts"
 import type { EmptyForm } from "../../src/empty-forms.ts"
@@ -423,17 +425,17 @@ export function percentsAfterUnitStarts(text: string): number[] | null {
 }
 
 /**
- * known-divergences/comment-takes-character.md, and diagrams/journey.md,
- * Known divergences: the offsets, in source order, of each `%%` of the
- * journey diagram `text` that comes right after the first character of a
- * unit, a character other than `}` and whitespace: the places where
- * mermaid.js reads that character and the rest of the line as one comment,
- * while here the `%%` is part of the unit or the character before it is a
- * unit that the grammar does not take. Null when `text` is no journey
- * diagram or its lexer rejects it.
+ * known-divergences/comment-takes-character.md, and the Known divergences
+ * of diagrams/journey.md and diagrams/timeline.md: the offsets, in source
+ * order, of each `%%` of the journey diagram or the timeline `text` that
+ * comes right after the first character of a unit, a character other than
+ * `}` and whitespace: the places where mermaid.js reads that character and
+ * the rest of the line as one comment, while here the `%%` is part of the
+ * unit or the character before it is a unit that the grammar does not
+ * take. Null when `text` is neither or its lexer rejects it.
  */
 export function doublePercentsAfterUnitStarts(text: string): number[] | null {
-  const lexing = journeyLexingOf(text)
+  const lexing = journeyLexingOf(text) ?? timelineLexingOf(text)
   return lexing === null ? null : marksAfterUnitStarts(lexing, "%%")
 }
 
@@ -446,7 +448,7 @@ export function doublePercentsAfterUnitStarts(text: string): number[] | null {
  * directives.
  */
 function marksAfterUnitStarts(
-  lexing: GanttUnits | JourneyUnits,
+  lexing: GanttUnits | JourneyUnits | TimelineUnits,
   mark: "%" | "%%",
 ): number[] {
   const unitStarts = new Set(lexing.units.map((unit) => unit.start))
@@ -1548,6 +1550,20 @@ function mindmapGapRejected(
   }
   if (count % 2 === 1) return blankAfterLastComment
   return count > 0 && followsComment
+}
+
+/** The units of the timeline `text` as the parser's lexer reads them, with its diagram comments; null when `text` is no timeline or its lexer rejects it. */
+function timelineLexingOf(text: string): TimelineUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
+  if (diagramType !== "timeline") return null
+  try {
+    return lexTimeline(diagramInputOf(opened, detection, diagramType))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
 }
 
 /** The units of the Gantt chart `text` as the parser's lexer reads them; null when `text` is no Gantt chart or its lexer rejects it. */

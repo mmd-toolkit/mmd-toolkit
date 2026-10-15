@@ -59,14 +59,38 @@ this document describes how to apply them.
   left unclosed, broken JSON, an id used twice. Each rule is checked by running
   the pinned mermaid.js on an example of ordinary writing, and by formatting the
   example.
+- For each case that a rule reports, the output of mermaid.js loses, replaces,
+  leaves without effect, or adds something, and the case names it: which value
+  or which text. An earlier `accTitle` replaced, text on a direction line
+  dropped, a closer that has no effect on the shape, and a state that no
+  statement writes are such facts. A value outside the range or the words that
+  the documentation of mermaid.js defines, as a score above 5 or an unknown word
+  of `excludes`, has no effect, and that documentation is the ground. Writing
+  that mermaid.js reads by its grammar, with nothing lost, is no rule, also when
+  the author probably meant another syntax: `Write ::icon(fa fa-book)` on the
+  line of a node is the node `Write ::icon` with the label `fa fa-book`, as
+  `X(Foo)` shows `Foo` and not `X`.
 - The package holds no rule of these kinds:
   - A stylistic rule: mermaid.js reads the text as written, and only a later
     edit would break it.
   - A rule for text that is obscure on purpose.
   - A rule for a defect of mermaid.js: the author writes something correct and
     meaningful and mermaid.js misreads it (`subgraph Front end`, CSS in a
-    label). Whether such a thing is reported to mermaid.js is a separate
-    question, which the user decides.
+    label). The author has nothing to fix, and a rule could only tell how to
+    avoid the defect; the rule would rest on a defect of the implementation, not
+    on the definition of the language, so users of a version with the defect
+    fixed would keep getting reports that call correct text a mistake; and the
+    place to fix it is a report to mermaid.js, which a lint rule that absorbs it
+    leaves undone. Whether such a thing is reported to mermaid.js is a separate
+    question, which the user decides. A case is such a defect only where the
+    author has nothing to fix: the text is written as the documentation of
+    mermaid.js shows, and no other way of writing avoids the loss (a URL with a
+    fragment in `links`). Where the documentation shows a form that loses
+    nothing, the case stays a mistake (`note left of A:hi`, which the
+    documentation writes with a space after the `:`). Such a defect is left out
+    of the condition of a kept rule where the tree tells it apart from the
+    mistake; where the tree does not, it stays reported with the mistake, as
+    section 7 says (the text `direction LR` inside a label).
   - A rule whose condition also matches a way of writing that an author means
     (`A[Issue #123; fixed]` has the same form as the entity `#9829;`).
   - A rule for what the formatter of this project already makes visible: when
@@ -89,7 +113,6 @@ Kept (an author's mistake that mermaid accepts silently):
 
 | Input                                                                                                | What mermaid does                                                       | Rule                                                                                                                                                        |
 | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| An empty `%%` line inside lines commented out together                                               | Makes the vertex `%%`                                                   | flowchart-no-bare-comment-marker (could also be read as a mermaid bug, but kept; a borderline case)                                                         |
 | `%%{init: {...}}` (the closing `%%` forgotten)                                                       | The directive runs to the end of the text, and the diagram is empty     | no-unclosed-directive (common)                                                                                                                              |
 | `%%{init: {"flowchart": {"inheritDir": true},}}%%` (a trailing comma)                                | All init configuration is dropped                                       | no-ignored-init-directive (common)                                                                                                                          |
 | `C-->A[End]` after `A[Start]-->B`                                                                    | The label of A becomes End                                              | flowchart-no-redefined-vertex                                                                                                                               |
@@ -104,47 +127,51 @@ Kept (an author's mistake that mermaid accepts silently):
 
 Dropped:
 
-| Input                                                                                                                                                                                                          | Why it was dropped                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `A[ ]`, `style A fill:#f00, `, `click-->B`, `A[ /x/]`, `hasOwnProperty` as the last member                                                                                                                     | Stylistic. mermaid reads them as written, and only a later edit breaks them (`A[ ]` and `A[" "]` are the same empty label)                                                                                                                                                                                                                                                                                                                      |
-| `A%%{init: {}}%%B-->C`, `A[style:#x;]`                                                                                                                                                                         | Happens only in text that is obscure on purpose                                                                                                                                                                                                                                                                                                                                                                                                 |
-| `A&B-->C`                                                                                                                                                                                                      | Cannot be told from an intended way of writing. `R&D-->X` is also the vertex `R&D`, the same form as an id with `&` written on purpose                                                                                                                                                                                                                                                                                                          |
-| `A[Issue #123; fixed]` (becomes `{`)                                                                                                                                                                           | Cannot be told from an intended way of writing. Numeric entities (`#9829;`) are a documented way of writing                                                                                                                                                                                                                                                                                                                                     |
-| `A"Start"-->B` (the `[ ]` forgotten)                                                                                                                                                                           | Comes from not knowing the syntax. Enclosing a label in `[ ]` is defined by the grammar                                                                                                                                                                                                                                                                                                                                                         |
-| `style A fill:red;stroke:blue`                                                                                                                                                                                 | Comes from not knowing the syntax. The grammar defines `,` as the separator of styles                                                                                                                                                                                                                                                                                                                                                           |
-| `direction LR` outside a subgraph                                                                                                                                                                              | Comes from not knowing the syntax. The specification says it changes nothing outside a subgraph                                                                                                                                                                                                                                                                                                                                                 |
-| `subgraph S %% group`, `accTitle: T %% note`                                                                                                                                                                   | Comes from not knowing the syntax. The specification says a `%%` in the middle of a line is no comment                                                                                                                                                                                                                                                                                                                                          |
-| `%%{config: ...}%%`                                                                                                                                                                                            | Comes from not knowing the syntax. `config` is a key of the frontmatter, not the name of a directive                                                                                                                                                                                                                                                                                                                                            |
-| `A---orders` (the arrow `---o` and the vertex `rders`)                                                                                                                                                         | The formatter makes it visible: it prints `A ---o rders`. A rule would be a second thing to maintain beside the formatter                                                                                                                                                                                                                                                                                                                       |
-| `A-->B` on the line after an `accTitle:` left empty (the title becomes `A-->B`)                                                                                                                                | The formatter makes it visible: it indents `A-->B` as the continuation of `accTitle:`                                                                                                                                                                                                                                                                                                                                                           |
-| `A[<span style='color:#f00;font-weight:bold'>x</span>]` (the `;` after the `#` colour is removed, giving `color:#f00font-weight:bold`; the rewriting meant for `style` lines also hits the `style=` attribute) | Looks like a mermaid bug: mermaid's rewriting breaks correct CSS                                                                                                                                                                                                                                                                                                                                                                                |
-| `subgraph Handle click events`, a line break, `A` (in mermaid, the title `Handle eventsA`)                                                                                                                     | A syntax error, so no rule applies: `click` is a reserved word that may only begin a click statement                                                                                                                                                                                                                                                                                                                                            |
-| `A-->""B` (an empty string)                                                                                                                                                                                    | A syntax error, so no rule applies: an empty string is not accepted                                                                                                                                                                                                                                                                                                                                                                             |
-| `accDescr {`, `%% old description`, `}` (the description lines commented out)                                                                                                                                  | Matches an intended way of writing: the author means the block to do nothing, and mermaid reads it so (the earlier description stays)                                                                                                                                                                                                                                                                                                           |
-| `subgraph Front end`, a line break, `A`, a line break, `end` (`A` goes into the name, no members)                                                                                                              | Looks like a mermaid bug: an ordinary name is written correctly, and the word `end` at its end takes the line break after it. Facts: the flowchart docs warn about a lowercase `end` at the top of the page, and [#1444](https://github.com/mermaid-js/mermaid/issues/1444) (closed; Type: Enhancement) calls it a limitation of the markup                                                                                                     |
-| `box red-team` (the box is red, and its name is `-team`)                                                                                                                                                       | Looks like a mermaid bug: the docs allow a name without a colour, and the name is split at the `-`                                                                                                                                                                                                                                                                                                                                              |
-| `link A: Dash@https://x.example` (the label is `Das`)                                                                                                                                                          | Looks like a mermaid bug: one missing space drops the last character of the label. Fact: the docs show the form `<label> @ <url>` only                                                                                                                                                                                                                                                                                                          |
-| `subgraph a ` (whitespace at the end of the line makes the id subGraph0)                                                                                                                                       | Looks like a mermaid bug: invisible whitespace at the end of the line changes the id. Fact: its maintainers approved it as a bug in [#3252](https://github.com/mermaid-js/mermaid/issues/3252) (closed; Type: Bug / Error, Status: Approved, P1), and it still happens in 12.0.0                                                                                                                                                                |
-| `class 1A:::c` (a name that starts with a digit), `style C fill:red` before `class C`, `classDef fo` applied to the CSS class `foo`                                                                            | Outside the scope of this toolkit: whether a CSS class or a style is applied shows only in the drawn diagram, and this toolkit does not draw. Not judged as a mermaid bug, and not reported to mermaid                                                                                                                                                                                                                                          |
-| `` class `a~b` `` (id `a` with the type `b`, drawn as `a<b>`)                                                                                                                                                  | A mermaid bug by its docs: backquotes escape special characters ([syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)), but `~` inside them still starts a generic type. Rare in ordinary writing                                                                                                                           |
-| `note for A~T~ "x"` after `class A~T~` (a note for a class written with its generic type)                                                                                                                      | Looks like a mermaid bug: the note keeps the name `A~T~`, the class is `A`, and the note is drawn without its line. `note for A "x"` finds the class                                                                                                                                                                                                                                                                                            |
-| `+foo(a(b)) int` (in the Db, the method name `foo(a` and the parameters `b)`)                                                                                                                                  | Nothing the user sees: the drawn diagram shows `+foo(a(b)) : int`                                                                                                                                                                                                                                                                                                                                                                               |
-| `A x-->B`, `A o-- t -->B` (a start marker different from the end marker)                                                                                                                                       | A mermaid bug, already recognized: mermaid-js/mermaid#1665 (open, approved) says that arrows with different markers at their ends do not work. `A x-->B` is a longer plain arrow, and `A o-- t -->B` is drawn as a plain arrow                                                                                                                                                                                                                  |
-| `A x-- t x--x B` (the start marker on both the opening and the closing arrow)                                                                                                                                  | Comes from not knowing the syntax. The specification says the edge is `INVALID` (drawn as a plain arrow); `A x-- t --x B` is the way to write it                                                                                                                                                                                                                                                                                                |
-| `style e1 fill:red` with the id `e1` of a link                                                                                                                                                                 | Comes from not knowing the syntax: `style` applies to vertices and subgraphs, and mermaid.js does nothing with it; a link takes a style from `linkStyle` or a class                                                                                                                                                                                                                                                                             |
-| `class A foo` or `click A …` before the vertex `A` is written                                                                                                                                                  | Looks like a mermaid bug: the id is written correctly, and mermaid.js does nothing with it only because of where the statement stands (`style` before the vertex works). Searched with "class before node", "class statement order node", "classes not applied node defined after": no issue found                                                                                                                                              |
-| In a state diagram, `A,B --> C` or `A,B:::e --> C` (states listed with `,` in a transition)                                                                                                                    | Comes from not knowing the syntax: the documentation lists states with `,` only in the `class` statement, and a transition takes one state; mermaid.js draws one state `A,B`. `A,:::e` is no form that a person drawing a diagram writes, and a stray `,` in `A, --> B` is no ordinary slip                                                                                                                                                     |
-| In a state diagram, `[*]` outside a transition (`state [*] {`, `state "Begin" as [*]`, `note right of [*] : done`)                                                                                             | `state [*] {` is not written. `state "Begin" as [*]` comes from not knowing the syntax: the documentation defines `[*]` in transitions only. `note left of [*] : start here` attaches to the start state as meant, and a note meant for the end state also attaches to the start state, which looks like a defect of mermaid.js; searching issues and pull requests (`note "[*]"`, `"start state"`, `"end state"`, `pseudostate`) found nothing |
-| In a state diagram, `state {` on the line after `state "d" as A` (the block becomes the body of A)                                                                                                             | A `state {` without a name is rejected everywhere else (at the start, after a transition, after an empty line); writing it comes from not knowing the syntax, or is a forgotten name, which is no ordinary slip                                                                                                                                                                                                                                 |
-| In a state diagram, `classDef a` without styles on the line before `B --> C` (the next line becomes its style, and the transition is lost)                                                                     | The formatter makes it visible: it prints `classDef a B --> C` on one line                                                                                                                                                                                                                                                                                                                                                                      |
-| In an ER diagram, `class A a b` (the classes written with a space, so `b` becomes an entity)                                                                                                                   | The formatter makes it visible: it prints `class A a` and `b` on separate lines                                                                                                                                                                                                                                                                                                                                                                 |
-| In an ER diagram, `classDef a fill:red stroke:blue` (one style `fill:redstroke:blue`)                                                                                                                          | Comes from not knowing the syntax: the grammar separates styles with `,`, as for `style A fill:red;stroke:blue` in a flowchart                                                                                                                                                                                                                                                                                                                  |
-| In a Gantt chart, `a : 2024-01-01, 1d %% note` (the end of the task becomes `1d %% note`, and the bar has no length)                                                                                           | Comes from not knowing the syntax: the documentation of mermaid.js says that comments go on a line of their own, as for `subgraph S %% group` in a flowchart. Fact: authors do write comments at the end of a line ([#5934](https://github.com/mermaid-js/mermaid/issues/5934), open)                                                                                                                                                           |
-| In a Gantt chart, two tasks on one line, `a : 2024-01-01, 1d b : 2d` (the end of `a` becomes `1d b : 2d`, and there is no task `b`)                                                                            | Not something a person drawing a chart writes: it comes from deleting a line break. A condition on a `:` in the data would also match a time of day, as in `2024-01-01 10:00`                                                                                                                                                                                                                                                                   |
-| In a Gantt chart, an `accDescr {` block that a `}` written later in a text closes (after `accDescr { first`, the line `title Plan {v2}` gives the description `first` and `title Plan {v2`, and no title)      | No ordinary writing: a gantt statement holds a `}` only in a text, which is rare, and without a later `}` mermaid.js rejects the unclosed block                                                                                                                                                                                                                                                                                                 |
-| In a user journey, the task `Title page: 5: Me` (the title becomes `page: 5: Me`, and there is no task)                                                                                                        | Looks like a mermaid bug: the author writes a correct task, and the keyword `title`, read in any case, takes its line. Searched the issue titles with `journey` and with "journey title", "journey task", "journey keyword": nothing found. After an earlier title, journey-no-duplicate-title reports the line                                                                                                                                 |
-| In a user journey, `title` with no text before the line `Make tea: 5: Me` (the title becomes that line, and there is no task)                                                                                  | The formatter makes it visible: it prints `title   Make tea: 5: Me` on one line                                                                                                                                                                                                                                                                                                                                                                 |
-| In a requirement diagram, `id: 1 %% note` in a body (the id becomes `1 %% note`)                                                                                                                               | Comes from not knowing the syntax: the documentation of mermaid.js says that comments go on a line of their own, as for `subgraph S %% group` in a flowchart                                                                                                                                                                                                                                                                                    |
+| Input                                                                                                                                                                                                          | Why it was dropped                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `A[ ]`, `style A fill:#f00, `, `click-->B`, `A[ /x/]`, `hasOwnProperty` as the last member                                                                                                                     | Stylistic. mermaid reads them as written, and only a later edit breaks them (`A[ ]` and `A[" "]` are the same empty label)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `A%%{init: {}}%%B-->C`, `A[style:#x;]`                                                                                                                                                                         | Happens only in text that is obscure on purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `A&B-->C`                                                                                                                                                                                                      | Cannot be told from an intended way of writing. `R&D-->X` is also the vertex `R&D`, the same form as an id with `&` written on purpose                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `A[Issue #123; fixed]` (becomes `{`)                                                                                                                                                                           | Cannot be told from an intended way of writing. Numeric entities (`#9829;`) are a documented way of writing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `A"Start"-->B` (the `[ ]` forgotten)                                                                                                                                                                           | Comes from not knowing the syntax. Enclosing a label in `[ ]` is defined by the grammar                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `style A fill:red;stroke:blue`                                                                                                                                                                                 | Comes from not knowing the syntax. The grammar defines `,` as the separator of styles                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `direction LR` outside a subgraph                                                                                                                                                                              | Comes from not knowing the syntax. The specification says it changes nothing outside a subgraph                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `subgraph S %% group`, `accTitle: T %% note`                                                                                                                                                                   | Comes from not knowing the syntax. The specification says a `%%` in the middle of a line is no comment                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `%%{config: ...}%%`                                                                                                                                                                                            | Comes from not knowing the syntax. `config` is a key of the frontmatter, not the name of a directive                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `A---orders` (the arrow `---o` and the vertex `rders`)                                                                                                                                                         | The formatter makes it visible: it prints `A ---o rders`. A rule would be a second thing to maintain beside the formatter                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `A-->B` on the line after an `accTitle:` left empty (the title becomes `A-->B`)                                                                                                                                | The formatter makes it visible: it indents `A-->B` as the continuation of `accTitle:`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `A[<span style='color:#f00;font-weight:bold'>x</span>]` (the `;` after the `#` colour is removed, giving `color:#f00font-weight:bold`; the rewriting meant for `style` lines also hits the `style=` attribute) | Looks like a mermaid bug: mermaid's rewriting breaks correct CSS                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `subgraph Handle click events`, a line break, `A` (in mermaid, the title `Handle eventsA`)                                                                                                                     | A syntax error, so no rule applies: `click` is a reserved word that may only begin a click statement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `A-->""B` (an empty string)                                                                                                                                                                                    | A syntax error, so no rule applies: an empty string is not accepted                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `accDescr {`, `%% old description`, `}` (the description lines commented out)                                                                                                                                  | Matches an intended way of writing: the author means the block to do nothing, and mermaid reads it so (the earlier description stays)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `subgraph Front end`, a line break, `A`, a line break, `end` (`A` goes into the name, no members)                                                                                                              | Looks like a mermaid bug: an ordinary name is written correctly, and the word `end` at its end takes the line break after it. Facts: the flowchart docs warn about a lowercase `end` at the top of the page, and [#1444](https://github.com/mermaid-js/mermaid/issues/1444) (closed; Type: Enhancement) calls it a limitation of the markup                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `box red-team` (the box is red, and its name is `-team`)                                                                                                                                                       | Looks like a mermaid bug: the docs allow a name without a colour, and the name is split at the `-`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `link A: Dash@https://x.example` (the label is `Das`)                                                                                                                                                          | Looks like a mermaid bug: one missing space drops the last character of the label. Fact: the docs show the form `<label> @ <url>` only                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `subgraph a ` (whitespace at the end of the line makes the id subGraph0)                                                                                                                                       | Looks like a mermaid bug: invisible whitespace at the end of the line changes the id. Fact: its maintainers approved it as a bug in [#3252](https://github.com/mermaid-js/mermaid/issues/3252) (closed; Type: Bug / Error, Status: Approved, P1), and it still happens in 12.0.0                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `class 1A:::c` (a name that starts with a digit), `style C fill:red` before `class C`, `classDef fo` applied to the CSS class `foo`                                                                            | Outside the scope of this toolkit: whether a CSS class or a style is applied shows only in the drawn diagram, and this toolkit does not draw. Not judged as a mermaid bug, and not reported to mermaid                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `` class `a~b` `` (id `a` with the type `b`, drawn as `a<b>`)                                                                                                                                                  | A mermaid bug by its docs: backquotes escape special characters ([syntax/classDiagram.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/classDiagram.md#L161-L168)), but `~` inside them still starts a generic type. Rare in ordinary writing                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `note for A~T~ "x"` after `class A~T~` (a note for a class written with its generic type)                                                                                                                      | Looks like a mermaid bug: the note keeps the name `A~T~`, the class is `A`, and the note is drawn without its line. `note for A "x"` finds the class                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `+foo(a(b)) int` (in the Db, the method name `foo(a` and the parameters `b)`)                                                                                                                                  | Nothing the user sees: the drawn diagram shows `+foo(a(b)) : int`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `A x-->B`, `A o-- t -->B` (a start marker different from the end marker)                                                                                                                                       | A mermaid bug, already recognized: mermaid-js/mermaid#1665 (open, approved) says that arrows with different markers at their ends do not work. `A x-->B` is a longer plain arrow, and `A o-- t -->B` is drawn as a plain arrow                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| `A x-- t x--x B` (the start marker on both the opening and the closing arrow)                                                                                                                                  | Comes from not knowing the syntax. The specification says the edge is `INVALID` (drawn as a plain arrow); `A x-- t --x B` is the way to write it                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `style e1 fill:red` with the id `e1` of a link                                                                                                                                                                 | Comes from not knowing the syntax: `style` applies to vertices and subgraphs, and mermaid.js does nothing with it; a link takes a style from `linkStyle` or a class                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `class A foo` or `click A …` before the vertex `A` is written                                                                                                                                                  | Looks like a mermaid bug: the id is written correctly, and mermaid.js does nothing with it only because of where the statement stands (`style` before the vertex works). Searched with "class before node", "class statement order node", "classes not applied node defined after": no issue found                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| In a state diagram, `A,B --> C` or `A,B:::e --> C` (states listed with `,` in a transition)                                                                                                                    | Comes from not knowing the syntax: the documentation lists states with `,` only in the `class` statement, and a transition takes one state; mermaid.js draws one state `A,B`. `A,:::e` is no form that a person drawing a diagram writes, and a stray `,` in `A, --> B` is no ordinary slip                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| In a state diagram, `[*]` outside a transition (`state [*] {`, `state "Begin" as [*]`, `note right of [*] : done`)                                                                                             | `state [*] {` is not written. `state "Begin" as [*]` comes from not knowing the syntax: the documentation defines `[*]` in transitions only. `note left of [*] : start here` attaches to the start state as meant, and a note meant for the end state also attaches to the start state, which looks like a defect of mermaid.js; searching issues and pull requests (`note "[*]"`, `"start state"`, `"end state"`, `pseudostate`) found nothing                                                                                                                                                                                                                                                                                                                                   |
+| In a state diagram, `state {` on the line after `state "d" as A` (the block becomes the body of A)                                                                                                             | A `state {` without a name is rejected everywhere else (at the start, after a transition, after an empty line); writing it comes from not knowing the syntax, or is a forgotten name, which is no ordinary slip                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In a state diagram, `classDef a` without styles on the line before `B --> C` (the next line becomes its style, and the transition is lost)                                                                     | The formatter makes it visible: it prints `classDef a B --> C` on one line                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| In an ER diagram, `class A a b` (the classes written with a space, so `b` becomes an entity)                                                                                                                   | The formatter makes it visible: it prints `class A a` and `b` on separate lines                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In an ER diagram, `classDef a fill:red stroke:blue` (one style `fill:redstroke:blue`)                                                                                                                          | Comes from not knowing the syntax: the grammar separates styles with `,`, as for `style A fill:red;stroke:blue` in a flowchart                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| In a Gantt chart, `a : 2024-01-01, 1d %% note` (the end of the task becomes `1d %% note`, and the bar has no length)                                                                                           | Comes from not knowing the syntax: the documentation of mermaid.js says that comments go on a line of their own, as for `subgraph S %% group` in a flowchart. Fact: authors do write comments at the end of a line ([#5934](https://github.com/mermaid-js/mermaid/issues/5934), open)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| In a Gantt chart, two tasks on one line, `a : 2024-01-01, 1d b : 2d` (the end of `a` becomes `1d b : 2d`, and there is no task `b`)                                                                            | Not something a person drawing a chart writes: it comes from deleting a line break. A condition on a `:` in the data would also match a time of day, as in `2024-01-01 10:00`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| In a Gantt chart, an `accDescr {` block that a `}` written later in a text closes (after `accDescr { first`, the line `title Plan {v2}` gives the description `first` and `title Plan {v2`, and no title)      | No ordinary writing: a gantt statement holds a `}` only in a text, which is rare, and without a later `}` mermaid.js rejects the unclosed block                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In a user journey, the task `Title page: 5: Me` (the title becomes `page: 5: Me`, and there is no task)                                                                                                        | Looks like a mermaid bug: the author writes a correct task, and the keyword `title`, read in any case, takes its line. Searched the issue titles with `journey` and with "journey title", "journey task", "journey keyword": nothing found. After an earlier title, journey-no-duplicate-title reports the line                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In a user journey, `title` with no text before the line `Make tea: 5: Me` (the title becomes that line, and there is no task)                                                                                  | The formatter makes it visible: it prints `title   Make tea: 5: Me` on one line                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In a requirement diagram, `id: 1 %% note` in a body (the id becomes `1 %% note`)                                                                                                                               | Comes from not knowing the syntax: the documentation of mermaid.js says that comments go on a line of their own, as for `subgraph S %% group` in a flowchart                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| In a mindmap, an icon line less indented than the node written last before it (`root`, `  child`, then `::icon(x)` at the indentation of `root`; the icon goes to `child`)                                     | The formatter makes it visible: it prints the icon line at the indentation of `child`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| In a mindmap, a node indented between earlier levels (`root`, `    a`, `      b`, `     c`; `c` becomes a child of `a`)                                                                                        | The documentation of mermaid.js explains this reading under "Unclear indentation", and the indentation does not tell what the author meant: a rule would also report intended writing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| A line of only `%%` among lines commented out together (the vertex `%%`)                                                                                                                                       | mermaid.js draws the line, without an error, as a vertex with the id `%%`. Read as a comment that the flowchart documentation defines, "the text from the start of the comment to the next line break" ([syntax/flowchart.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1217-L1219)), the vertex is a defect of mermaid.js, for which no rule is kept, for the reasons above ([#7008](https://github.com/mermaid-js/mermaid/pull/7008) is open). Read as writing outside that documentation, `%%` gives the vertex `%%` by the grammar, with nothing lost, and calling it a mistake needs the guess that a comment was meant. On either reading, no fact shows a mistake without a guess |
+| In a mindmap, `Write ::icon(fa fa-book)` or `Write:::urgent` on the line of a node                                                                                                                             | mermaid.js reads both by its grammar and loses nothing: the first is the node `Write ::icon` with the label `fa fa-book`, as `X(Foo)` shows `Foo` and not `X`, and the second is the label `Write:::urgent`. Calling either a mistake rests only on the guess that an icon or a class was meant                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
 ### Questions for unclear cases
 
@@ -309,6 +336,10 @@ for (const input of inputs) {
     that the rule does not count, such as an empty block, between), and check
     that the message names that partner; the plain third of one form gives two
     reports;
+  - for such a rule, a statement that sets the value it replaces, also in
+    another spelling that mermaid.js keeps as the same value (whitespace at the
+    ends, a string and the same text, another case), which loses nothing and is
+    not reported;
   - each kind of value that a rule does not count (an empty block, a block of
     only a comment line, a block of only directives);
   - an input where the rule meets a neighbouring rule (`A: 5:: x` in a user
@@ -510,35 +541,345 @@ together with the text on a direction line). mermaid.js drops that text too, so
 the report is a fact (criterion 1), and the author avoids it by rewriting the
 text (criterion 4); the rule is just not kept for it.
 
+Each rule is judged on its own, against its document, case by case:
+
+1. For criterion 1, each case that the document distinguishes is checked for a
+   reported place that mermaid.js reads as the author meant, also the cases that
+   the document itself names as reported although mermaid.js reads them as
+   written.
+2. For criterion 2, each case is checked with the question of section 2: the
+   report says what the output loses, replaces, leaves without effect, or adds,
+   with no guess about what the author meant, and no way of writing that the
+   documentation of mermaid.js shows is reported. Where an author may write the
+   form on purpose, as an empty block left to be filled in, the note says what
+   the report states then.
+3. For criterion 3, the issues and the pull requests of mermaid.js are searched
+   for each rule, and the words and what they found are recorded.
+4. For criterion 4, the document is checked for what it says to write instead.
+
 The decision is recorded in the table below, with the reason for a rule that is
-not enabled or not enabled yet. The rule file keeps `recommended: false` until
-the rule is implemented; the implementation sets it from this table. A decision
-for a diagram type whose rules are not implemented yet is provisional: it is
-made again, with the same criteria, when the rules of that diagram type are
-implemented.
+not enabled, and the notes after the table give what was checked for each
+criterion. The rule file sets `recommended` from this table. The common rules
+are not enabled for now: their documents describe flowchart, sequence, class,
+and state only, and the decision is made again when they cover every diagram
+type.
 
-Decisions (made on 2026-10-02, with mermaid 12.0.0):
+Decisions (made on 2026-10-15, with mermaid 12.0.0):
 
-| Rule                                    | Enabled           | Reason when not enabled                                                                                  |
-| --------------------------------------- | ----------------- | -------------------------------------------------------------------------------------------------------- |
-| flowchart-no-ignored-text               | yes               |                                                                                                          |
-| flowchart-no-bare-comment-marker        | no                | Criterion 3: [#7008](https://github.com/mermaid-js/mermaid/pull/7008) (open) reads the line as a comment |
-| flowchart-no-unclosed-description-block | yes               |                                                                                                          |
-| flowchart-no-empty-description-block    | yes               |                                                                                                          |
-| flowchart-no-duplicate-description      | yes               |                                                                                                          |
-| flowchart-no-duplicate-title            | yes               |                                                                                                          |
-| flowchart-no-redefined-vertex           | yes               |                                                                                                          |
-| flowchart-no-undef                      | yes               |                                                                                                          |
-| no-unclosed-directive                   | yes (provisional) |                                                                                                          |
-| no-ignored-init-directive               | yes (provisional) |                                                                                                          |
-| sequence-* (all 8 rules)                | yes (provisional) |                                                                                                          |
-| class-no-inline-comment                 | no (provisional)  | Criteria 1 and 3, below                                                                                  |
-| class-* (the other 7 rules)             | yes (provisional) |                                                                                                          |
-| state-* (all 6 rules)                   | yes (provisional) |                                                                                                          |
-| er-* (all 7 rules)                      | yes (provisional) |                                                                                                          |
-| gantt-* (all 8 rules)                   | yes (provisional) |                                                                                                          |
-| journey-* (all 6 rules)                 | yes (provisional) |                                                                                                          |
-| requirement-* (all 8 rules)             | yes (provisional) |                                                                                                          |
+| Rule                                      | Enabled          | Reason when not enabled                                                      |
+| ----------------------------------------- | ---------------- | ---------------------------------------------------------------------------- |
+| flowchart-no-ignored-text                 | yes              |                                                                              |
+| flowchart-no-unclosed-description-block   | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
+| flowchart-no-empty-description-block      | yes              |                                                                              |
+| flowchart-no-duplicate-description        | yes              |                                                                              |
+| flowchart-no-duplicate-title              | yes              |                                                                              |
+| flowchart-no-redefined-vertex             | yes              |                                                                              |
+| flowchart-no-undef                        | yes              |                                                                              |
+| no-unclosed-directive                     | no (provisional) | Their documents cover four diagram types only                                |
+| no-ignored-init-directive                 | no (provisional) | Their documents cover four diagram types only                                |
+| sequence-no-create-destroy                | yes              |                                                                              |
+| sequence-no-duplicate-description         | yes              |                                                                              |
+| sequence-no-duplicate-title               | yes              |                                                                              |
+| sequence-no-empty-description-block       | yes              |                                                                              |
+| sequence-no-ignored-text                  | yes              |                                                                              |
+| sequence-no-invalid-json                  | yes              |                                                                              |
+| sequence-no-link-without-separator        | yes              |                                                                              |
+| sequence-no-unclosed-description-block    | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
+| class-no-bare-class-name                  | yes              |                                                                              |
+| class-no-duplicate-description            | yes              |                                                                              |
+| class-no-duplicate-title                  | yes              |                                                                              |
+| class-no-ignored-text                     | yes              |                                                                              |
+| class-no-inline-comment                   | no               | Criteria 1 and 3                                                             |
+| class-no-redefined-class                  | yes              |                                                                              |
+| class-no-unclosed-backquote               | yes              |                                                                              |
+| class-no-undef                            | yes              |                                                                              |
+| state-no-duplicate-description            | yes              |                                                                              |
+| state-no-duplicate-title                  | yes              |                                                                              |
+| state-no-empty-description-block          | yes              |                                                                              |
+| state-no-ignored-text                     | yes              |                                                                              |
+| state-no-unclosed-description-block       | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
+| state-no-undef                            | yes              |                                                                              |
+| er-no-duplicate-description               | yes              |                                                                              |
+| er-no-duplicate-title                     | yes              |                                                                              |
+| er-no-empty-description-block             | yes              |                                                                              |
+| er-no-ignored-text                        | no               | Criterion 3: [#8364](https://github.com/mermaid-js/mermaid/pull/8364) (open) |
+| er-no-redefined-entity                    | yes              |                                                                              |
+| er-no-unclosed-description-block          | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
+| er-no-undef                               | yes              |                                                                              |
+| gantt-no-duplicate-description            | yes              |                                                                              |
+| gantt-no-duplicate-id                     | yes              |                                                                              |
+| gantt-no-duplicate-setting                | yes              |                                                                              |
+| gantt-no-duplicate-title                  | yes              |                                                                              |
+| gantt-no-empty-description-block          | yes              |                                                                              |
+| gantt-no-undef                            | yes              |                                                                              |
+| gantt-no-unknown-exclude                  | yes              |                                                                              |
+| gantt-no-unread-tag                       | yes              |                                                                              |
+| journey-no-duplicate-description          | yes              |                                                                              |
+| journey-no-duplicate-title                | yes              |                                                                              |
+| journey-no-empty-description-block        | yes              |                                                                              |
+| journey-no-empty-person                   | yes              |                                                                              |
+| journey-no-ignored-text                   | yes              |                                                                              |
+| journey-no-invalid-score                  | yes              |                                                                              |
+| requirement-no-duplicate-description      | yes              |                                                                              |
+| requirement-no-duplicate-field            | yes              |                                                                              |
+| requirement-no-duplicate-name             | yes              |                                                                              |
+| requirement-no-duplicate-title            | yes              |                                                                              |
+| requirement-no-empty-description-block    | yes              |                                                                              |
+| requirement-no-ignored-text               | yes              |                                                                              |
+| requirement-no-unclosed-description-block | no               | Criterion 1: a description that ends with its own `}` after a `{`            |
+| requirement-no-undef                      | yes              |                                                                              |
+| mindmap-no-duplicate-decoration           | yes              |                                                                              |
+| mindmap-no-mismatched-shape               | yes              |                                                                              |
+
+The notes give, for each rule or each group of rules that share their cases,
+what was checked for criteria 1 to 4, in that order. The readings of criterion 1
+are those that the documents state, which were run through mermaid.js when the
+documents were written; "run" marks a reading run again for this decision. The
+searches ran over the issues and the pull requests of mermaid-js/mermaid on
+2026-10-15; the words are quoted, and an item not named found nothing that
+changes the reading.
+
+The title and description rules, `<diagram>-no-duplicate-title` and
+`<diagram>-no-duplicate-description` of flowchart, sequence, class, state, er,
+gantt, journey, and requirement (16 rules):
+
+1. Each reported statement replaces the value set before it: the line form and
+   the block form; `accTitle:` or `accDescr:` with no text, which takes the next
+   line with text (rejected at the end of the text in class and er); a statement
+   inside a subgraph (flowchart, er) or a block (sequence), which sets the value
+   of the whole diagram; in journey, a line meant as a task that starts with
+   `title` in any case (`Title page: 5: Me`). `title` and `accTitle` are counted
+   apart (sequence, gantt, journey); in state, a statement inside a composite
+   state is a state and is not counted. A statement that sets the value that the
+   diagram already has, compared as mermaid.js keeps it, loses nothing and is
+   not reported.
+2. None: a second value written on purpose leaves the first with nothing to do,
+   and a statement inside a subgraph meant for the subgraph is the mistake
+   reported.
+3. "accTitle multiple", "title twice", "accDescr multiple", "accTitle",
+   "accDescr": the items add the statements to other diagram types
+   ([#8437](https://github.com/mermaid-js/mermaid/pull/8437),
+   [#8140](https://github.com/mermaid-js/mermaid/pull/8140)) or concern C4
+   ([#8040](https://github.com/mermaid-js/mermaid/issues/8040)).
+4. Keep one statement; the rules of flowchart suggest removing either.
+
+The empty block rules, `<diagram>-no-empty-description-block` of flowchart,
+sequence, state, er, gantt, journey, and requirement (7 rules):
+
+1. The block has no effect: after a description, the block leaves it, and with
+   no description before it, the description stays empty. A block of only
+   comment lines is not reported.
+2. None: a block left to be filled in later is written with a comment in it, as
+   `accDescr {`, `%% TODO`, and `}`, which the rule does not report, and the
+   documents say so.
+3. "accDescr empty", "empty accDescr", "accDescr empty block", "accDescr".
+4. Write the description, or remove the block.
+
+The unclosed block rules, `<diagram>-no-unclosed-description-block` of
+flowchart, sequence, state, er, and requirement (5 rules):
+
+1. A block that a `}` of a shape, a data block, a body, or JSON closes takes the
+   lines up to it, and a block without a `}` (flowchart, sequence, state) leaves
+   the description empty. A description that holds a `{` and ends with its own
+   `}` on a later line (`accDescr {`, then `a {b }` in flowchart and sequence;
+   `accDescr {`, `uses { here`, and `}` in state, er, and requirement) is
+   reported too, and mermaid.js reads it as written; the documents say so. Not
+   enabled.
+2. The same description.
+3. "accDescr unclosed", "accDescr brace".
+4. Close the block; flowchart suggests where.
+
+The direction line rules, flowchart-no-ignored-text, class-no-ignored-text,
+state-no-ignored-text, er-no-ignored-text, and requirement-no-ignored-text:
+
+1. The statements on a direction line, the text glued to the direction value,
+   and, in state and er, the other texts that the documents name are dropped. In
+   state, the character that mermaid.js drops after the `:` of a note, as in
+   `note left of A:hi`, is reported: the documentation of mermaid.js writes a
+   note with a space after the `:`, and written so, as `note left of A : hi`,
+   nothing is dropped (run) ("state note colon character", "note first character
+   missing", "state note text", "note state" in titles: nothing about it).
+2. None: text after the direction that the author means as a comment in the
+   syntax of another language, as `direction TB // vertical`, is no comment of
+   mermaid.js, and it is dropped (run, in each of the five diagram types); the
+   report states that, with no guess about what the author meant.
+3. "direction subgraph same line", "direction statement ignored", "subgraph
+   direction", "classDiagram direction", "stateDiagram direction", "erDiagram
+   direction", "requirement direction", "direction label", "direction keyword
+   node": the items concern how a direction is laid out, as
+   [#8066](https://github.com/mermaid-js/mermaid/issues/8066). For er,
+   [#8364](https://github.com/mermaid-js/mermaid/pull/8364) (open, "fix(er):
+   parse keywords and numbers as unquoted relationship labels") reads the text
+   after the `:` of a relationship as its role, so that
+   `A ||--o{ B : direction TB`, which makes no relationship now (run), would no
+   longer be a direction line (criterion 3). er-no-ignored-text is decided again
+   when that pull request is closed.
+4. Write the statement on a line of its own; flowchart suggests the split.
+
+sequence-no-ignored-text: (1) the character is dropped; (2) none; (3) "sequence
+message newline parenthesis"; (4) write the end of the message on its line.
+
+journey-no-ignored-text: (1) the people after the third colon are dropped; (2)
+none: people are separated by commas; (3) "journey colon", "journey"; (4)
+separate the people with commas.
+
+flowchart-no-undef: (1) `style` makes a vertex that the author did not write,
+and `class` and `click` do nothing; (2) none; (3) "style undefined node", "class
+nonexistent node", "style node":
+[#7040](https://github.com/mermaid-js/mermaid/issues/7040) (closed, approved)
+asked for an error, and [#7441](https://github.com/mermaid-js/mermaid/pull/7441)
+(merged, in 12.0.0) logs a warning and still makes the vertex; (4) correct the
+id.
+
+class-no-undef: (1) the statement changes nothing, or the note has no line; (2)
+none; (3) "cssClass not applied", "classDiagram style nonexistent", "cssClass",
+"note for class": [#2234](https://github.com/mermaid-js/mermaid/issues/2234)
+(open, "Status: Awaiting PR") asks for an error or for `link` to declare the
+class, and with either a mistyped name stays a mistake; (4) correct the name.
+
+state-no-undef: (1) `style`, `class`, and `click` change nothing, and a note for
+a state that no other statement writes adds that state; (2) none: a note for a
+state sketched with a note only adds a state that no statement writes, and the
+report states that; (3) "state note nonexistent"; (4) correct the name, or write
+the state.
+
+er-no-undef: (1) the statement changes nothing, and an alias is no name; (2)
+none; (3) "erDiagram style class"; (4) use the name of the entity.
+
+gantt-no-undef: (1) no task becomes a link, and the start or the end is today's
+date; (2) none; (3) "gantt after nonexistent", "gantt after today", "after
+gantt": [#8254](https://github.com/mermaid-js/mermaid/pull/8254) (merged) logs a
+warning and keeps today's date,
+[#6376](https://github.com/mermaid-js/mermaid/pull/6376) (open) adds delays to
+`after` and `until`, [#8359](https://github.com/mermaid-js/mermaid/pull/8359)
+(open) stops ids of an earlier chart on the page from being found, and
+[#4424](https://github.com/mermaid-js/mermaid/issues/4424) (open) concerns ids
+written later, which the rule does not report; (4) correct the id.
+
+requirement-no-undef: (1) the statement changes nothing, and a relationship has
+no box at that end; (2) none; (3) "requirement relationship missing",
+"requirement"; (4) correct the name.
+
+flowchart-no-redefined-vertex: (1) a later shape or label replaces the earlier
+one; labels that mermaid.js keeps the same, as two that differ only in their
+line breaks or in the quotes of an HTML attribute, are not reported; (2) none;
+(3) "node label overwritten", "redefine node label", "node label":
+[#3789](https://github.com/mermaid-js/mermaid/issues/3789) (open, Type:
+Enhancement) proposes another statement for labels; (4) use another id, or write
+the label once.
+
+class-no-redefined-class: (1) the earlier label is lost; (2) none; (3) "class
+label redefine"; (4) use another name, or write the label once.
+
+er-no-redefined-entity: (1) the later alias is ignored; (2) none; (3) "entity
+alias", "alias erDiagram"; (4) use another name, or write the alias once.
+
+no-unclosed-directive (provisional): (1) the text after the directive is lost,
+or the word after `%%{wrap`; (2) none: a comment that starts with `%%{` is read
+as a directive, which is the mistake reported; (3) "directive not closed",
+"unclosed directive", "directive": the items concern settings, and the
+documentation of mermaid.js replaces directives with the frontmatter
+([#7989](https://github.com/mermaid-js/mermaid/pull/7989), merged), which keeps
+the reading; (4) close the directive with `}%%`.
+
+no-ignored-init-directive (provisional): (1) every init directive of the text is
+ignored; (2) none; (3) "init trailing comma", "init directive ignored",
+"directive case sensitive", "init json", "json5", "trailing comma init"; (4)
+remove the comma, or write the name in lower case.
+
+class-no-inline-comment: see the paragraph after these notes.
+
+sequence-no-create-destroy: (1) nothing is recorded as destroyed; (2) none; (3)
+"create destroy": [#4833](https://github.com/mermaid-js/mermaid/issues/4833)
+(open) concerns where `create` stands; (4) write `create` and `destroy` as two
+statements.
+
+sequence-no-invalid-json: (1) text that is no JSON object gives nothing, or the
+characters or the elements of a string or an array; a text that is a JSON object
+with the `#` and what follows it, as a URL with a fragment, is not reported,
+since mermaid.js cuts a correct JSON object at the `#`; (2) none: `links A:` and
+`properties A:` give nothing, and no scene keeps them to be filled in; (3)
+"links json", "properties sequence json", "links", "links hash", "links
+fragment", "hash sequence" in titles:
+[#5419](https://github.com/mermaid-js/mermaid/issues/5419) (open, Type: Bug /
+Error) reports that a `#` empties the texts of a sequence diagram; (4) write a
+JSON object.
+
+sequence-no-link-without-separator: (1) the label loses its last two characters,
+and `link A:` gives an empty link; (2) none; (3) "link @ sequence menu", "link
+sequence"; (4) the document names the form `label @ url`.
+
+class-no-bare-class-name: (1) the statement declares nothing; (2) none; (3)
+"classDiagram direction lowercase", "classDiagram title", "class diagram title";
+(4) the document names `class Foo`, a relation, a member, and the frontmatter
+for a title.
+
+class-no-unclosed-backquote: (1) the rest of the text is one name; (2) none; (3)
+"class name backtick", "backtick"; (4) close the backquote.
+
+gantt-no-duplicate-id: (1) the id names the later task; (2) none; (3) "gantt
+duplicate id", "gantt id"; (4) give the task another id.
+
+gantt-no-duplicate-setting: (1) a later value replaces the earlier one for the
+whole chart; a statement that repeats the value, compared as mermaid.js keeps
+it, is not reported; (2) none; (3) "gantt dateFormat twice", "gantt multiple
+dateFormat", "dateFormat"; (4) keep one statement.
+
+gantt-no-unknown-exclude: (1) the word leaves out nothing; (2) none; (3)
+"excludes weekend", "gantt excludes", "excludes weekdays": the items concern the
+end dates of tasks over excluded days, as
+[#7038](https://github.com/mermaid-js/mermaid/pull/7038), and excludes for a
+section ([#5680](https://github.com/mermaid-js/mermaid/issues/5680)); (4) write
+`weekends` or the full name of a day.
+
+gantt-no-unread-tag: (1) the word in the place of the start or the end is read
+as a date, which it is not: the chart is not drawn, or the task has no length
+(run); the id is not checked, since mermaid.js reads any word there as an id;
+(2) none; (3) "gantt tag case", "gantt done crit":
+[#4165](https://github.com/mermaid-js/mermaid/issues/4165) (open) concerns a
+missing comma before the start; (4) the document names the form, in lower case
+at the front, followed by a comma.
+
+journey-no-empty-person: (1) the journey and its legend get a person with an
+empty name; (2) none: `Make tea: 5:`, with the people left to be written, adds a
+person that was not written to the journey and its legend, and a task without
+people is written `Make tea: 5`; (3) "journey actor empty", "journey"; (4)
+remove the comma, or write the name.
+
+journey-no-invalid-score: (1) a score that is no number is lost, with the people
+written in it; a number outside the scale has no effect, since the documentation
+of mermaid.js defines the score as a number from 1 to 5 that places the face on
+the scale; an empty score adds a score 0 that was not written; (2) none: an
+empty score left to be decided, as in `Make tea: : Me`, adds a score 0 that was
+not written, outside the scale; (3) "journey score", "journey":
+[#6262](https://github.com/mermaid-js/mermaid/issues/6262) (open, approved)
+concerns how a face outside the scale is drawn, and
+[#4248](https://github.com/mermaid-js/mermaid/issues/4248) (open, Type:
+Enhancement, Status: Triage) asks for a scale of one's own, with no pull
+request; (4) the document names the score, a number from 1 to 5 between the
+first and the second colon.
+
+requirement-no-duplicate-field: (1) the first value is kept, and a later field
+with the same value, compared as mermaid.js keeps it, is not reported; (2) none:
+a second `text:` meant to continue a long text is the mistake reported; (3)
+"requirement field", "requirement duplicate"; (4) keep one field.
+
+requirement-no-duplicate-name: (1) a later statement of the same kind loses its
+kind or the fields whose values the kept statement does not have; a statement of
+the other kind makes a second box of the name, keeps both, and is not reported
+(run: two nodes `x`); (2) none; (3) "requirement duplicate", "requirement"; (4)
+give one of them another name.
+
+mindmap-no-duplicate-decoration: (1) the last icon line and the last class line
+are kept, and a line with the value that the node already has is not reported;
+(2) none: no author writes a second icon line to replace the first, and two
+class lines for two classes are the mistake reported; (3) "mindmap icon class",
+"mindmap": [#7025](https://github.com/mermaid-js/mermaid/pull/7025) (open) and
+[#7615](https://github.com/mermaid-js/mermaid/issues/7615) (open) concern how
+icons are drawn; (4) the document names one class line, as `:::urgent large`.
+
+mindmap-no-mismatched-shape: (1) the node has the shape of the opener; (2) none;
+(3) "mindmap shape", "mindmap"; (4) write the closer of the opener.
 
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
@@ -548,6 +889,11 @@ mermaid.js will change is not settled: a reply in
 comment at the end of a line should be supported, and
 [#6401](https://github.com/mermaid-js/mermaid/issues/6401) treats the behavior
 as intended (criterion 3).
+
+Changed from the decision of 2026-10-02:
+flowchart-no-unclosed-description-block, from yes to no, for the reports that
+its document names where mermaid.js reads the text as written; that decision
+recorded no check case by case.
 
 ## 8. Suggestions
 
@@ -599,7 +945,6 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | flowchart-no-duplicate-description      | Remove this description; remove the description before it      |
 | flowchart-no-duplicate-title            | Remove this title; remove the title before it                  |
 | flowchart-no-ignored-text               | Split at the `;` so that the direction is on a line of its own |
-| flowchart-no-bare-comment-marker        | Remove the `%%` (in a text that spans lines, the line of `%%`) |
 | flowchart-no-redefined-vertex           | None: criterion 1 (the likely fix is a new id)                 |
 | flowchart-no-undef                      | None: criterion 1 (which id was meant is not known)            |
 | sequence-* (all 8 rules)                | None for now (2026-10-08; see the end of this section)         |
@@ -609,6 +954,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | gantt-* (all 8 rules)                   | None for now (2026-10-14; see the end of this section)         |
 | journey-* (all 6 rules)                 | None for now (2026-10-14; see the end of this section)         |
 | requirement-* (all 8 rules)             | None for now (2026-10-15; see the end of this section)         |
+| mindmap-* (both rules)                  | None for now (2026-10-15; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -701,43 +1047,11 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
   break changes the label (run). May make visible: any other rule, because the
   text becomes statements, and what they hold is what the author wrote
   (`accTitle: a`, then `accTitle: t; direction LR` in a subgraph, split, gives
-  the title `t`, which no-duplicate-title reports; run).
-- Remove the `%%`: the `Identifier` token, with its line when only whitespace
-  remains; a directive on the line stays. Only where the vertex `%%` is the
-  whole statement (`%%` then `A`, `A;` then `%%`, a line in a subgraph): there
-  the result is the same diagram without the vertex (run). At the end of a link
-  no suggestion is offered (criteria 3 and 4): `A -->` then `%%`, and `%%` then
-  `  --> B`, are rejected without it, and `A -->`, `%%`, `  B` gets the link
-  from A to B instead of to `%%` (run). In a text that spans lines (a label, a
-  description, a title, a string, a data block, and the name or the arguments of
-  the function that a `click` statement calls), the line of only `%%` with its
-  line break, except where a directive, or its start or its end, is on that
-  line: the line would take the directive with it, and the rest of a directive
-  that spans lines is then not closed, which mermaid.js rejects (run). Each
-  suggestion removes only the line of its own report, and its message speaks of
-  that line only: where a value holds several lines of only `%%`, removing one
-  leaves the others, so the vertex `%%` stays, a label keeps the other lines,
-  and a data block that they make invalid is still rejected until every line is
-  removed (run). The line is removed only when its value (the text, the name, or
-  the data block) holds something besides lines of only `%%` and whitespace;
-  otherwise the line is all of the value, and removing it gives nothing the
-  author wrote (criteria 2 and 3): after `accTitle:`, `accDescr:`, or `click A`,
-  whose value is the next line (the only statements of a flowchart that take
-  their value from the next line; run), mermaid.js takes the line after it as
-  the value (`accTitle:`, `%%`, `A` gets the title `A` and no vertex `A`;
-  `click A`, `%%`, `cb` gets the name `cb` and no vertex `cb`; `click A`, `%%`
-  at the end of the text is rejected), and a data block of only such lines is
-  left empty, which mermaid.js rejects (run). In `click A call c`, `%%`, `b()`
-  the name holds `c` and `b` too, and the suggestion stays. Not reported: a line
-  in a description block that is not closed (the description is empty). The name
-  and the arguments were checked by recording what mermaid.js passes to
-  `setClickEvent`: `click A call c`, `%%`, `b()` gives the name `c`, `%%`, `b`
-  on three lines, and `call f(1,`, `%%`, `2)` gives the arguments `1,`, `%%`,
-  `2` (run).
-
-`sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and
-`journey-*` (2026-10-14), and `requirement-*` (2026-10-15): the rules are
-implemented without suggestions for now. No suggestion had been decided for them
-or described in their documents, and the one planned for the empty block of a
-sequence diagram rested on generated inputs. Whether they get suggestions is
-decided later, in the form of the flowchart rules, with a fixture for each case.
+  the title `t`, which no-duplicate-title reports; run). `sequence-*`,
+  `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and `journey-*`
+  (2026-10-14), and `requirement-*` and `mindmap-*` (2026-10-15): the rules are
+  implemented without suggestions for now. No suggestion had been decided for
+  them or described in their documents, and the one planned for the empty block
+  of a sequence diagram rested on generated inputs. Whether they get suggestions
+  is decided later, in the form of the flowchart rules, with a fixture for each
+  case.

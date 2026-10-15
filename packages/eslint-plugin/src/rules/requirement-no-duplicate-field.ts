@@ -1,39 +1,15 @@
-import type {
-  RequirementElementStatement,
-  RequirementRequirementStatement,
-} from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
-
-/** A statement that defines a requirement or an element, with a body. */
-type BoxStatement =
-  RequirementRequirementStatement | RequirementElementStatement
-
-/** An item of the body of a requirement or an element. */
-type BodyItem = BoxStatement["body"][number]
-
-/**
- * The field that `item` sets, as the keyword in lower case, or null for an item
- * that sets none (an empty description block).
- */
-function fieldOf(item: BodyItem): string | null {
-  if (
-    item.type === "RequirementValueField" ||
-    item.type === "RequirementElementField"
-  ) {
-    return item.field
-  }
-  if (item.type === "RequirementRiskField") return "risk"
-  if (item.type === "RequirementVerifyMethodField") return "verifymethod"
-  return null
-}
+import { fieldOf } from "../utils/requirement-fields.ts"
+import type { BoxStatement } from "../utils/requirement-fields.ts"
 
 /**
  * The rule `requirement-no-duplicate-field`, described in
  * `docs/rules/requirement-no-duplicate-field.md`: every field of a body after
  * the first one of the same field, in the body of a requirement or of an
- * element. The keywords are read in any case, and an empty description block
- * between two fields changes nothing.
+ * element, when its value is not the value of the first one. The keywords are
+ * read in any case, and an empty description block between two fields changes
+ * nothing.
  */
 export const requirementNoDuplicateField: MermaidRuleDefinition<{
   RuleOptions: []
@@ -54,20 +30,23 @@ export const requirementNoDuplicateField: MermaidRuleDefinition<{
     },
   },
   create(context) {
-    /** Reports each field of the body of `node` that an earlier field of the body sets already. */
+    /** Reports each field of the body of `node` whose value differs from the first field of its name in the body. */
     function check(node: BoxStatement): void {
-      const lines = new Map<string, number>()
+      const firsts = new Map<string, { line: number; value: string }>()
       for (const item of node.body) {
         const field = fieldOf(item)
         if (field === null) continue
-        const earlier = lines.get(field)
-        if (earlier === undefined) {
-          lines.set(field, item.loc.start.line)
-        } else {
+        const first = firsts.get(field.name)
+        if (first === undefined) {
+          firsts.set(field.name, {
+            line: item.loc.start.line,
+            value: field.value,
+          })
+        } else if (first.value !== field.value) {
           context.report({
             node: item,
             messageId: "duplicate",
-            data: { field, line: String(earlier) },
+            data: { field: field.name, line: String(first.line) },
           })
         }
       }

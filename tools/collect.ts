@@ -132,6 +132,8 @@ const SPEC_FILES: Readonly<
   // `mindmapLayout.spec.ts`, build their nodes with the Db's methods in code
   // and pass no text.
   mindmap: () => ["diagrams/mindmap/mindmap.spec.ts"],
+  // The directory has no other spec file; the renderers and the Db have none.
+  timeline: () => ["diagrams/timeline/timeline.spec.js"],
 }
 
 /**

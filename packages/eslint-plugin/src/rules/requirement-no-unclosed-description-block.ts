@@ -19,7 +19,7 @@ export const requirementNoUnclosedDescriptionBlock: MermaidRuleDefinition<{
     docs: {
       description:
         "Disallow an `accDescr {` block that a `}` written for something else closes.",
-      recommended: true,
+      recommended: false,
       url: ruleDocsUrl("requirement-no-unclosed-description-block"),
     },
     schema: [],

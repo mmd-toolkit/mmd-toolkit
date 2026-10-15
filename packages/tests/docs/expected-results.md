@@ -441,6 +441,18 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   journey/div-comment-after-task-text-start] [fixture:
   journey/div-comment-after-colon-after-section] [fixture:
   journey/div-comment-after-task-colon]
+- `comment-takes-character`, in the timeline lexer
+  ([`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)):
+  the rule that reads a character other than `}` before `%%` together with the
+  comment is taken out, so a comment starts at a `%` where a unit starts, and
+  any other `%%` is part of the unit that holds it. [fixture:
+  timeline/db-comment-percent-after-period-glued] [fixture:
+  timeline/div-comment-after-period-start] [fixture:
+  timeline/div-comment-after-non-ascii-letter] [fixture:
+  timeline/div-comment-after-colon] [fixture:
+  timeline/div-comment-after-block-character] [fixture:
+  timeline/div-comment-after-semicolon-after-header] [fixture:
+  timeline/div-comment-after-semicolon]
 - `comment-takes-line-break`, in the class lexer
   ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
   the rule that reads `%%`, the rest of the line and the line feeds after it

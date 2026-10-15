@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/timeline.md",
+    "line": 129
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "TD",
+    "title": "MermaidChart 2023 Timeline",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "2023 Q1 <br> Release Personal Tier",
+      "2023 Q2 <br> Release XYZ Tier"
+    ],
+    "tasks": [
+      {
+        "section": "2023 Q1 <br> Release Personal Tier",
+        "task": "Bullet 1 ",
+        "events": [
+          "sub-point 1a ",
+          "sub-point 1b"
+        ]
+      },
+      {
+        "section": "2023 Q1 <br> Release Personal Tier",
+        "task": "Bullet 2 ",
+        "events": [
+          "sub-point 2a ",
+          "sub-point 2b"
+        ]
+      },
+      {
+        "section": "2023 Q2 <br> Release XYZ Tier",
+        "task": "Bullet 3 ",
+        "events": [
+          "sub-point <br> 3a ",
+          "sub-point 3b"
+        ]
+      },
+      {
+        "section": "2023 Q2 <br> Release XYZ Tier",
+        "task": "Bullet 4 ",
+        "events": [
+          "sub-point 4a ",
+          "sub-point 4b"
+        ]
+      }
+    ]
+  }
+}

@@ -19,7 +19,8 @@ mermaid.js はどの `accTitle` の文も受理し、
 
 ## 規則の詳細
 
-この規則は、`accTitle` の文のうち、最初のもの以外をすべて報告する。
+この規則は、`accTitle` の文のうち、最初のもの以外を、
+前と違うタイトルを設定するときに報告する。
 対象の図種は `classDiagram` である。
 
 `accTitle: first` と `accTitle: second` の後、タイトルは `second` になる。
@@ -27,6 +28,13 @@ mermaid.js はどの `accTitle` の文も受理し、
 空行、コメント行、ディレクティブを飛ばして、
 テキストを持つ次の行をタイトルにする。
 そうした行が後になければ、mermaid.js はそれを拒否する。
+
+図がすでに持つタイトルを設定する文は、報告しない。
+`accTitle: a` の後の 2 つ目の `accTitle: a` は、何も失わない。
+タイトルは、mermaid.js が持つとおりに、両端の空白を除いて比べるので、
+`accTitle:  a` も同じタイトルを設定する。
+`accTitle: a` と `accTitle: b` の後の 3 つ目の `accTitle: a` は、
+`b` を置き換えるので報告する。
 
 この規則に**反する**コードの例:
 
@@ -45,6 +53,13 @@ classDiagram
 classDiagram
   accTitle: x
   accDescr: y
+```
+
+```mmd
+%% eslint @mmd-toolkit/class-no-duplicate-title: error
+classDiagram
+  accTitle: first
+  accTitle: first
 ```
 
 ## オプション

@@ -4,7 +4,7 @@ Japanese version:
 [ignored-semicolon-as-token-boundary.ja.md](./ignored-semicolon-as-token-boundary.ja.md)
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
-requirement, and mindmap. This is one of the
+requirement, mindmap, and timeline. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -148,7 +148,14 @@ requirement/div-ignored-semicolon-in-relationship-keyword] In a mindmap, the
 `style`, the `:`, and the `#` may lie in a node text before the `;`, so the
 ignored `;` can lie inside an opener or a closer: mermaid.js reads
 `style:#x{;{b}}` as a node with the hexagon shape and the text `b`, and this
-specification rejects it. [fixture: mindmap/div-ignored-semicolon-in-opener]
+specification rejects it. [fixture: mindmap/div-ignored-semicolon-in-opener] In
+a timeline, as in a user journey diagram, the `style`, the `:`, and the `#` lie
+in a description block before the statement on its line, and the ignored `;` can
+lie inside a keyword: mermaid.js reads `accDescr { style:#x } ti;tle T` as the
+title `T`, and so with `sec;tion S` and `accTi;tle: T`, and this specification
+rejects them. [fixture: timeline/div-ignored-semicolon-in-title-keyword]
+[fixture: timeline/div-ignored-semicolon-in-section-keyword] [fixture:
+timeline/div-ignored-semicolon-in-acc-title-keyword]
 
 Each diagram document lists where this shows, in its Known divergences section:
 [flowchart](../diagrams/flowchart.md#known-divergences),
@@ -158,8 +165,9 @@ Each diagram document lists where this shows, in its Known divergences section:
 [er](../diagrams/er.md#known-divergences),
 [gantt](../diagrams/gantt.md#known-divergences),
 [journey](../diagrams/journey.md#known-divergences),
-[requirement](../diagrams/requirement.md#known-divergences), and
-[mindmap](../diagrams/mindmap.md#known-divergences).
+[requirement](../diagrams/requirement.md#known-divergences),
+[mindmap](../diagrams/mindmap.md#known-divergences), and
+[timeline](../diagrams/timeline.md#known-divergences).
 
 ## What it means for an author
 

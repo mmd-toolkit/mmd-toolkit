@@ -123,6 +123,21 @@ export interface BlockRules<Statement extends Node> {
    * directive.
    */
   readonly keptIndentationOf?: (statement: Statement) => string
+  /**
+   * Whether the whitespace before a directive on a line of its own, in the
+   * gap after the statement, may be read as text of the statement: the line
+   * right after the statement, or after comment lines only, is empty once
+   * mermaid.js removes the directive and the comment lines before it, and the
+   * whitespace that the printer would put before the directive would be a
+   * character that the lexer takes for the statement. After an empty line
+   * the whitespace is not read, but the printer does not tell the two apart.
+   * In a timeline, a period that is the word `title` or `section` alone is a
+   * period because the line after it is empty; with whitespace before the
+   * directive, the word is a title or a section of that whitespace
+   * (diagrams/timeline.md, Trivia between units). Every line of only
+   * directives in the gap stands at the first column, which is one rule.
+   */
+  readonly readsDirectiveLineWhitespaceAfter?: (statement: Statement) => boolean
 }
 
 /** Where a block of statements lies in the source, and which block it is. */
@@ -248,6 +263,18 @@ export function printBlock<Statement extends Node>(
   }
 
   /**
+   * Whether the whitespace before a directive on a line right after the
+   * statement is read as its text (see
+   * `BlockRules.readsDirectiveLineWhitespaceAfter`).
+   */
+  function readsWhitespaceAfter(statement: Statement | undefined): boolean {
+    return (
+      statement !== undefined &&
+      rules.readsDirectiveLineWhitespaceAfter?.(statement) === true
+    )
+  }
+
+  /**
    * Whether a line of the body has been added: the part of the opening line
    * that is kept as written is a line of the block, but a blank line after
    * it is a blank line after the opening line, which is dropped.
@@ -317,7 +344,8 @@ export function printBlock<Statement extends Node>(
    * Adds the items of a gap: those on the line before it to that line, and
    * those on lines of their own as lines.
    */
-  function addItemLines(gap: Gap): void {
+  function addItemLines(gap: Gap, previous: Statement | undefined): void {
+    const readsWhitespace = readsWhitespaceAfter(previous)
     if (lines.length === 0) headerTrailing = gap.trailing
     else appendTrailing(lines, gap.trailing)
     const keepsWhitespaceLines =
@@ -333,7 +361,7 @@ export function printBlock<Statement extends Node>(
       const indentation =
         percentCommentIndentation(gap, index) ??
         keptIndentation(
-          unindented,
+          unindented || (readsWhitespace && line.directivesOnly),
           keepsWhitespaceLines && line.directivesOnly,
           line.indentation,
         )
@@ -546,7 +574,7 @@ export function printBlock<Statement extends Node>(
         ? Math.max(offset, findContentStart(source, statement.range[0]))
         : statement.range[0]
     const gap = readGap(source, offset, start, false)
-    addItemLines(gap)
+    addItemLines(gap, statements[index - 1])
     if (!startsStretch) {
       pushLine({
         doc: withLeading(gap.leading, docs[index]),
@@ -592,7 +620,7 @@ export function printBlock<Statement extends Node>(
       ? ""
       : (rules.extraIndentationOf?.(lastStatement) ?? "")
   const gap = readGap(source, offset, bounds.end, false, bounds.isTopLevel)
-  addItemLines(gap)
+  addItemLines(gap, lastStatement)
   const closingJoin = findClosingJoin()
   return {
     headerTrailing,
@@ -607,9 +635,9 @@ export function printBlock<Statement extends Node>(
             rules.oneCharacterIndentation,
           )
         : keptIndentation(
-            rules.keepsDirectiveLinesUnindented &&
-              endsAfterBareMarker &&
-              gap.leadingDirectivesOnly,
+            gap.leadingDirectivesOnly &&
+              ((rules.keepsDirectiveLinesUnindented && endsAfterBareMarker) ||
+                readsWhitespaceAfter(lastStatement)),
             endsAfterTakingComment && gap.leadingDirectivesOnly,
             gap.leadingIndentation,
           ),

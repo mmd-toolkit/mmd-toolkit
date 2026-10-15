@@ -4,31 +4,53 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { fieldOf } from "../utils/requirement-fields.ts"
+import type { BoxStatement } from "../utils/requirement-fields.ts"
 import { requirementNameText } from "../utils/requirement-names.ts"
 
-/** A statement that defines a requirement or an element. */
-type BoxStatement =
-  RequirementRequirementStatement | RequirementElementStatement
+/**
+ * The value of each field that the body of `statement` sets, by the keyword of
+ * the field. mermaid.js keeps the first value of a field, so a later field of
+ * the same keyword does not count.
+ */
+function fieldValues(statement: BoxStatement): Map<string, string> {
+  const values = new Map<string, string>()
+  for (const item of statement.body) {
+    const field = fieldOf(item)
+    if (field !== null && !values.has(field.name)) {
+      values.set(field.name, field.value)
+    }
+  }
+  return values
+}
 
-/** Whether `statement` holds a field: its body holds an item other than an empty description block. */
-function holdsField(statement: BoxStatement): boolean {
-  return statement.body.some((item) => item.type !== "RequirementIgnoredText")
+/**
+ * Whether `statement` holds a field that `kept` does not have with the same
+ * value: mermaid.js drops such a field, because it keeps `kept`.
+ */
+function losesField(statement: BoxStatement, kept: BoxStatement): boolean {
+  const keptValues = fieldValues(kept)
+  return [...fieldValues(statement)].some(
+    ([name, value]) => keptValues.get(name) !== value,
+  )
 }
 
 /**
  * The rule `requirement-no-duplicate-name`, described in
- * `docs/rules/requirement-no-duplicate-name.md`: the name of a requirement or
- * an element when an earlier requirement or element has the same name, and the
- * later one holds a field or is of another kind. The earlier box stays as it
- * was; a later statement of the same kind without a field only gives classes.
- * An element and a requirement of one name are two boxes. ESLint visits the
- * statements in the order of the source, and a later statement is compared
+ * `docs/rules/requirement-no-duplicate-name.md`: the name of a requirement
+ * when an earlier requirement has the same name, or the name of an element when
+ * an earlier element has the same name, and the later statement loses
+ * something: it is another kind of requirement, or it holds a field that the
+ * earlier one does not have with the same value. The earlier box stays as it
+ * was; a later statement that loses nothing only gives classes. A requirement
+ * and an element of one name are two boxes and are not compared. ESLint visits
+ * the statements in the order of the source, and a later statement is compared
  * with the first requirement or the first element of its name, whichever is of
  * its own sort.
  */
 export const requirementNoDuplicateName: MermaidRuleDefinition<{
   RuleOptions: []
-  MessageIds: "ignored" | "secondBox"
+  MessageIds: "ignored"
 }> = {
   meta: {
     type: "problem",
@@ -42,8 +64,6 @@ export const requirementNoDuplicateName: MermaidRuleDefinition<{
     messages: {
       ignored:
         "mermaid.js keeps the box `{{name}}` of line {{line}} as it is: this statement adds only its classes.",
-      secondBox:
-        "mermaid.js makes a second box named `{{name}}`, besides the one on line {{line}}: `style` and `class` with this name go to the requirement.",
     },
   },
   create(context) {
@@ -51,18 +71,6 @@ export const requirementNoDuplicateName: MermaidRuleDefinition<{
     // belong to one requirement and to one element, each the first that has it.
     const requirements = new Map<string, RequirementRequirementStatement>()
     const elements = new Map<string, RequirementElementStatement>()
-
-    /** Reports the name of `node` as a second box besides `other`, the first box of the other sort with that name. */
-    function reportSecondBox(node: BoxStatement, other: BoxStatement): void {
-      context.report({
-        node: node.name,
-        messageId: "secondBox",
-        data: {
-          name: requirementNameText(node.name),
-          line: String(other.loc.start.line),
-        },
-      })
-    }
 
     /** Reports the name of `node` as a statement that changes nothing but the classes of `earlier`. */
     function reportIgnored(node: BoxStatement, earlier: BoxStatement): void {
@@ -80,29 +88,23 @@ export const requirementNoDuplicateName: MermaidRuleDefinition<{
       RequirementRequirementStatement(node) {
         const name = requirementNameText(node.name)
         const earlier = requirements.get(name)
-        if (earlier !== undefined) {
-          if (
-            earlier.requirementType !== node.requirementType ||
-            holdsField(node)
-          ) {
-            reportIgnored(node, earlier)
-          }
-          return
+        if (earlier === undefined) {
+          requirements.set(name, node)
+        } else if (
+          earlier.requirementType !== node.requirementType ||
+          losesField(node, earlier)
+        ) {
+          reportIgnored(node, earlier)
         }
-        requirements.set(name, node)
-        const element = elements.get(name)
-        if (element !== undefined) reportSecondBox(node, element)
       },
       RequirementElementStatement(node) {
         const name = requirementNameText(node.name)
         const earlier = elements.get(name)
-        if (earlier !== undefined) {
-          if (holdsField(node)) reportIgnored(node, earlier)
-          return
+        if (earlier === undefined) {
+          elements.set(name, node)
+        } else if (losesField(node, earlier)) {
+          reportIgnored(node, earlier)
         }
-        elements.set(name, node)
-        const requirement = requirements.get(name)
-        if (requirement !== undefined) reportSecondBox(node, requirement)
       },
     }
   },

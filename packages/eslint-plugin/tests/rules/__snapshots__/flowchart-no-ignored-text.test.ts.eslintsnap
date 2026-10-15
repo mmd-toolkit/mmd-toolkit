@@ -86,6 +86,70 @@ Code:
 ---
 
 
+Test: flowchart-no-ignored-text >> invalid >>> invalid/flowchart/direction-then-hash-comment
+Filename: tests/fixtures/rules/flowchart-no-ignored-text/invalid/flowchart/direction-then-hash-comment-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     direction TB # vertical
+    |                  ^~~~~~~~~~ [1]
+  4 |     A --> B
+  5 |   end
+  6 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart-no-ignored-text >> invalid >>> invalid/flowchart/direction-then-semicolon-slashes-comment
+Filename: tests/fixtures/rules/flowchart-no-ignored-text/invalid/flowchart/direction-then-semicolon-slashes-comment-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     direction TB; // vertical
+    |                 ^~~~~~~~~~~~~ [1]
+  4 |     A --> B
+  5 |   end
+  6 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart-no-ignored-text >> invalid >>> invalid/flowchart/direction-then-slashes-comment
+Filename: tests/fixtures/rules/flowchart-no-ignored-text/invalid/flowchart/direction-then-slashes-comment-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     direction TB // vertical
+    |                  ^~~~~~~~~~~ [1]
+  4 |     A --> B
+  5 |   end
+  6 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
+Test: flowchart-no-ignored-text >> invalid >>> invalid/flowchart/direction-then-text-before-slashes
+Filename: tests/fixtures/rules/flowchart-no-ignored-text/invalid/flowchart/direction-then-text-before-slashes-input.mmd
+
+Code:
+  1 | flowchart LR
+  2 |   subgraph S
+  3 |     direction TB; x // vertical
+    |                 ^~~~~~~~~~~~~~~ [1]
+  4 |     A --> B
+  5 |   end
+  6 |
+
+[1] mermaid.js reads this line as a `direction` statement and drops this text.
+---
+
+
 Test: flowchart-no-ignored-text >> invalid >>> invalid/flowchart/gram-ignored-text-empty-description-block-then-direction
 Filename: tests/fixtures/rules/flowchart-no-ignored-text/invalid/flowchart/gram-ignored-text-empty-description-block-then-direction-input.mmd
 

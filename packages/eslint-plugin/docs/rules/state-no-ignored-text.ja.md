@@ -39,6 +39,10 @@ mermaid.js も書き手の意図どおりにそれを捨てる。
   その本体の状態は、どの合成状態にも入らない。
 - 1 行に書いたノートの `:` の直後の 1 文字。
   `note left of A:hi` は、ノートのテキストを `i` にする。
+  [mermaid.js の文書](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/stateDiagram.md#L263)は、
+  `note left of State2 : This is the note to the left.` のように、
+  `:` の後に空白を置いてそうしたノートを書く。
+  `note left of A : hi` のようにそう書けば、何も捨てられない。
 - mermaid.js が飛ばす空の文字列（`state x ""` の `""` など）と、
   後の行の本体の `{` の前にある空の説明のブロックと 2 つ目の `state`。
 

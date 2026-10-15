@@ -79,6 +79,7 @@ export const RESULT_FILES: readonly string[] = [
   "normalizers/requirement.ts",
   "normalizers/sequence.ts",
   "normalizers/state.ts",
+  "normalizers/timeline.ts",
   "rejections.ts",
   "run-mermaid-options.ts",
 ]

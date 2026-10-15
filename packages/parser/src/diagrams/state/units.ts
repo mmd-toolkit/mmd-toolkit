@@ -39,6 +39,7 @@ import {
   skipWhile,
   skipWhitespace,
 } from "../../scanning.ts"
+import { UnitLexer } from "../../unit-lexer.ts"
 
 /** diagrams/state.md, Units and contexts: the names of the units. */
 export type UnitName =
@@ -210,23 +211,8 @@ export interface StateLexing {
  * context names the section it follows. Letters are compared
  * case-insensitively.
  */
-export class StateUnitLexer {
-  private readonly reader: DiagramText
-
-  private readonly lines: LineIndex
-
-  private readonly units: Unit[] = []
-
+export class StateUnitLexer extends UnitLexer<Context, UnitName, Unit> {
   private readonly comments: DiagramComment[] = []
-
-  /** The stack of contexts; the last one is the current context. */
-  private readonly contexts: Context[] = ["statement"]
-
-  /** For each context on the stack but the statement context, where it was entered, for the error at the end of the text. */
-  private readonly entries: Range[] = []
-
-  /** The place of the next character to read; null at the end of the text. */
-  private position: DiagramPosition
 
   /** The state string context: the `"` that opened the string. */
   private stringStart: DiagramCharacter | null = null
@@ -235,9 +221,7 @@ export class StateUnitLexer {
   private readonly directionLine: DirectionLineRule
 
   public constructor(reader: DiagramText, lines: LineIndex) {
-    this.reader = reader
-    this.lines = lines
-    this.position = reader.first()
+    super(reader, lines, "statement", END_OF_TEXT_MESSAGES)
     this.directionLine = new DirectionLineRule(
       reader,
       DIRECTION_LINE_VALUES,
@@ -250,10 +234,7 @@ export class StateUnitLexer {
    * matches and where the text ends in a context that may not end there.
    */
   public lex(): StateLexing {
-    while (this.position !== null) {
-      const context = this.currentContext()
-      this.readInContext(this.position, context)
-    }
+    this.readToEnd()
     this.checkEndOfText()
     return {
       units: this.units,
@@ -261,30 +242,16 @@ export class StateUnitLexer {
     }
   }
 
-  /** The current context: the top of the stack. */
-  private currentContext(): Context {
-    return this.contexts[this.contexts.length - 1]
-  }
-
-  /** Units and contexts: enters `context`, entered at `entry`. */
-  private enter(context: Context, entry: Range): void {
-    this.contexts.push(context)
-    this.entries.push(entry)
-  }
-
-  /** Units and contexts: leaves the current context; leaving the statement context keeps it. */
-  private leave(): void {
-    if (this.contexts.length > 1) {
-      this.contexts.pop()
-      this.entries.pop()
-    }
-  }
-
   /** Leaves the current context and enters `context` in its place, entered where the current one was. */
   private replace(context: Context): void {
-    const entry = this.entries.at(-1)
+    const entry = this.currentEntry()
+    if (entry === null) {
+      throw new Error(
+        "mmd-toolkit parser bug: the statement context is replaced",
+      )
+    }
     this.leave()
-    this.enter(context, entry ?? [0, 0])
+    this.enter(context, entry)
   }
 
   /**
@@ -292,7 +259,7 @@ export class StateUnitLexer {
    * and not including, `to`, whose token leaves out the whitespace at its
    * ends as `ends` says.
    */
-  private addUnit(
+  protected override addUnit(
     name: UnitName,
     from: DiagramCharacter,
     to: DiagramPosition,
@@ -328,55 +295,24 @@ export class StateUnitLexer {
     }
   }
 
-  /** Reads the unit named `name` from `at` up to `to`, and goes on after it. */
-  private read(
-    name: UnitName,
-    at: DiagramCharacter,
-    to: DiagramPosition,
-  ): Unit {
-    const unit = this.addUnit(name, at, to)
-    this.position = to
-    return unit
-  }
-
   /**
    * The error for a place where no rule of the current context matches:
    * the character there, or, when only whitespace follows, so that the
    * text ends in the context, the error of the end of the text.
    */
-  private noRuleMatches(at: DiagramCharacter): ParseError {
+  protected override noRuleMatches(at: DiagramCharacter): ParseError {
     const endOfText = this.endOfTextError()
     if (skipWhitespace(this.reader, at) === null && endOfText !== null) {
       return endOfText
     }
-    const range: Range = [at.start, at.end]
-    return new ParseError(
-      "Unexpected character",
-      range,
-      this.lines.location(range),
-    )
-  }
-
-  /** Units and contexts: throws when the text ends in a context that may not end there. */
-  private checkEndOfText(): void {
-    const error = this.endOfTextError()
-    if (error !== null) throw error
-  }
-
-  /**
-   * Units and contexts: the error when the text ends in the current
-   * context, at what entered it, saying what is not closed; null when the
-   * text may end there.
-   */
-  private endOfTextError(): ParseError | null {
-    const message = END_OF_TEXT_MESSAGES[this.currentContext()]
-    if (message === null) return null
-    const range = this.entries.at(-1) ?? [0, 0]
-    return new ParseError(message, range, this.lines.location(range))
+    return super.noRuleMatches(at)
   }
 
   /** Applies the first rule of `context` that matches at `at`. */
-  private readInContext(at: DiagramCharacter, context: Context): void {
+  protected override readInContext(
+    at: DiagramCharacter,
+    context: Context,
+  ): void {
     switch (context) {
       case "statement":
         this.readInStatementContext(at)
@@ -1128,7 +1064,7 @@ export class StateUnitLexer {
 
   /** Units and contexts: the context that the state context was entered from, the statement or the composite body context. */
   private contextAroundState(): "statement" | "composite" {
-    return this.contexts.at(-2) === "composite" ? "composite" : "statement"
+    return this.outerContext() === "composite" ? "composite" : "statement"
   }
 
   /**

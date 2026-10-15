@@ -4,6 +4,7 @@ import type {
 } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { titleText } from "../utils/acc-text.ts"
 
 /**
  * The rule `gantt-no-duplicate-title`, described in
@@ -14,6 +15,9 @@ import { ruleDocsUrl } from "../rule-docs-url.ts"
  * `title` statement after the title of the frontmatter is not reported: the
  * frontmatter is no statement. ESLint visits the statements in the order of the
  * source.
+ *
+ * A statement is reported only when the value it sets differs from that of the
+ * one before it (`titleText`): setting what the diagram already has loses nothing.
  */
 export const ganttNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []
@@ -40,7 +44,10 @@ export const ganttNoDuplicateTitle: MermaidRuleDefinition<{
     let previousAccTitle: GanttAccTitleStatement | null = null
     return {
       GanttTitleStatement(node) {
-        if (previousTitle !== null) {
+        if (
+          previousTitle !== null &&
+          titleText(previousTitle) !== titleText(node)
+        ) {
           context.report({
             node,
             messageId: "duplicateTitle",
@@ -50,7 +57,10 @@ export const ganttNoDuplicateTitle: MermaidRuleDefinition<{
         previousTitle = node
       },
       GanttAccTitleStatement(node) {
-        if (previousAccTitle !== null) {
+        if (
+          previousAccTitle !== null &&
+          titleText(previousAccTitle) !== titleText(node)
+        ) {
           context.report({
             node,
             messageId: "duplicateAccTitle",

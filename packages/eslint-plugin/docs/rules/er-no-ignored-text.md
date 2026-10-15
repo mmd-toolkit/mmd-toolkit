@@ -6,7 +6,7 @@ Disallow text that mermaid.js does not read.
 
 <!-- begin auto-generated rule notice -->
 
-✅ The `recommended` configuration enables this rule.
+The `recommended` configuration does not enable this rule.
 
 <!-- end auto-generated rule notice -->
 

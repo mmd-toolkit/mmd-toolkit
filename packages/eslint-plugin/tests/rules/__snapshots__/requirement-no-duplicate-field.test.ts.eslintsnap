@@ -33,6 +33,23 @@ Code:
 ---
 
 
+Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-id-back-to-first
+Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-id-back-to-first-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   requirement r {
+  3 |     id: 1
+  4 |     id: 2
+    |     ^~~~~ [1]
+  5 |     id: 1
+  6 |   }
+  7 |
+
+[1] mermaid.js keeps the `id` of line 3: this later one changes nothing.
+---
+
+
 Test: requirement-no-duplicate-field >> invalid >>> invalid/requirement/field-id-mixed-with-other-fields
 Filename: tests/fixtures/rules/requirement-no-duplicate-field/invalid/requirement/field-id-mixed-with-other-fields-input.mmd
 

@@ -11,8 +11,9 @@ Disallow a `style`, `class`, `click`, or `note` statement that names no state.
 <!-- end auto-generated rule notice -->
 
 `style`, `class`, `click`, and a note name a state. When the name is that of no
-state of the diagram, mermaid.js accepts the statement without an error. A
-misspelled name gives no error.
+state of the diagram, as when it is misspelled, mermaid.js gives no error:
+`style` and `class` change nothing, `click` makes no state a link, and a note
+makes a new state of that name, which no other statement writes.
 
 ## Rule Details
 

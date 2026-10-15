@@ -1,0 +1,17 @@
+{
+  "message": "An event needs a period before it",
+  "range": [
+    21,
+    24
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 12
+    },
+    "end": {
+      "line": 2,
+      "column": 15
+    }
+  }
+}

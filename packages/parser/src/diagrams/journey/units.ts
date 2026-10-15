@@ -1,4 +1,3 @@
-import type { Range } from "../../ast.ts"
 import { isWhitespace } from "../../character-classes.ts"
 import {
   COLON,
@@ -18,9 +17,9 @@ import type {
 } from "../../diagram-text.ts"
 import { lineFeedAfter } from "../../diagram-text.ts"
 import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
-import { readUnit } from "../../diagram-units.ts"
-import { ParseError } from "../../errors.ts"
+import { readUnit, significantRangeOf } from "../../diagram-units.ts"
 import type { LineIndex } from "../../positions.ts"
+import { UnitLexer } from "../../unit-lexer.ts"
 import {
   isCodePointAt,
   isWhitespaceAt,
@@ -128,28 +127,11 @@ function isPersonCharacter(character: DiagramCharacter): boolean {
  * order; each method that reads a context names the section it follows.
  * Letters of the keywords are compared case-insensitively.
  */
-export class JourneyUnitLexer {
-  private readonly reader: DiagramText
-
-  private readonly lines: LineIndex
-
-  private readonly units: Unit[] = []
-
+export class JourneyUnitLexer extends UnitLexer<Context, UnitName, Unit> {
   private readonly comments: DiagramComment[] = []
 
-  /** The stack of contexts; the last one is the current context. */
-  private readonly contexts: Context[] = ["statement"]
-
-  /** For each context on the stack but the statement context, the unit that entered it, for the error at the end of the text. */
-  private readonly entries: Unit[] = []
-
-  /** The place of the next character to read; null at the end of the text. */
-  private position: DiagramPosition
-
   public constructor(reader: DiagramText, lines: LineIndex) {
-    this.reader = reader
-    this.lines = lines
-    this.position = reader.first()
+    super(reader, lines, "statement", END_OF_TEXT_MESSAGES)
   }
 
   /**
@@ -160,28 +142,9 @@ export class JourneyUnitLexer {
    * ends in a context that may not end there.
    */
   public lex(): JourneyLexing {
-    while (this.position !== null) {
-      this.readInContext(this.position, this.currentContext())
-    }
+    this.readToEnd()
     this.checkEndOfText()
     return { units: this.units, comments: this.comments }
-  }
-
-  /** The current context: the top of the stack. */
-  private currentContext(): Context {
-    return this.contexts[this.contexts.length - 1]
-  }
-
-  /** Units and contexts: enters `context`, which `entry` entered. */
-  private enter(context: Context, entry: Unit): void {
-    this.contexts.push(context)
-    this.entries.push(entry)
-  }
-
-  /** Units and contexts: leaves the current context. */
-  private leave(): void {
-    this.contexts.pop()
-    this.entries.pop()
   }
 
   /**
@@ -189,7 +152,7 @@ export class JourneyUnitLexer {
    * and not including, `to`, whose token leaves out the whitespace at its
    * ends as `ends` says.
    */
-  private addUnit(
+  protected override addUnit(
     name: UnitName,
     from: DiagramCharacter,
     to: DiagramPosition,
@@ -204,32 +167,11 @@ export class JourneyUnitLexer {
     return unit
   }
 
-  /** Reads the unit named `name` from `at` up to `to`, and goes on after it. */
-  private read(
-    name: UnitName,
-    at: DiagramCharacter,
-    to: DiagramPosition,
-    ends: UnitEnds = "trim-whitespace",
-  ): Unit {
-    const unit = this.addUnit(name, at, to, ends)
-    this.position = to
-    return unit
-  }
-
-  /**
-   * Units and contexts: throws when the text ends in a context that may
-   * not end there, at the unit that entered it, saying what is not closed.
-   */
-  private checkEndOfText(): void {
-    const message = END_OF_TEXT_MESSAGES[this.currentContext()]
-    const entry = this.entries.at(-1)
-    if (message === null || entry === undefined) return
-    const range: Range = entry.significantRange ?? [entry.start, entry.end]
-    throw new ParseError(message, range, this.lines.location(range))
-  }
-
   /** Applies the first rule of `context` that matches at `at`. */
-  private readInContext(at: DiagramCharacter, context: Context): void {
+  protected override readInContext(
+    at: DiagramCharacter,
+    context: Context,
+  ): void {
     switch (context) {
       case "statement":
         this.readInStatementContext(at)
@@ -404,7 +346,7 @@ export class JourneyUnitLexer {
     const afterMark = this.reader.after(markAt)
     this.addUnit(mark === COLON ? ":" : "{", markAt, afterMark)
     this.position = skipWhitespace(this.reader, afterMark)
-    this.enter(context, keywordUnit)
+    this.enter(context, significantRangeOf(keywordUnit))
     return true
   }
 

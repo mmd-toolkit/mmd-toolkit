@@ -23,7 +23,8 @@ mermaid.js はどの `accTitle` の文も受理し、
 
 ## 規則の詳細
 
-この規則は、`accTitle` の文のうち、最初のもの以外をすべて報告する。
+この規則は、`accTitle` の文のうち、最初のもの以外を、
+前と違うタイトルを設定するときに報告する。
 対象の図種は `flowchart-v2`、`flowchart-elk`、`swimlane` である。
 
 `accTitle: first` と `accTitle: second` の後、タイトルは `second` になる。
@@ -35,6 +36,13 @@ mermaid.js はどの `accTitle` の文も受理し、
 subgraph の中の文も、図全体のタイトルを設定するので、数える。
 mermaid.js は、その文の値を id としてその subgraph のメンバーにも加えるので、
 その id の頂点や subgraph は、その subgraph に属する。
+
+図がすでに持つタイトルを設定する文は、報告しない。
+`accTitle: a` の後の 2 つ目の `accTitle: a` は、何も失わない。
+タイトルは、mermaid.js が持つとおりに、両端の空白を除いて比べるので、
+`accTitle:  a` も同じタイトルを設定する。
+`accTitle: a` と `accTitle: b` の後の 3 つ目の `accTitle: a` は、
+`b` を置き換えるので報告する。
 
 報告ごとに、規則は 2 つの文のどちらかを消す書き換えを提案する。
 報告した文か、その前の `accTitle` の文である。
@@ -79,6 +87,14 @@ flowchart LR
 %% eslint @mmd-toolkit/flowchart-no-duplicate-title: error
 flowchart LR
   A
+  accTitle: first
+```
+
+```mmd
+%% eslint @mmd-toolkit/flowchart-no-duplicate-title: error
+flowchart LR
+  A
+  accTitle: first
   accTitle: first
 ```
 

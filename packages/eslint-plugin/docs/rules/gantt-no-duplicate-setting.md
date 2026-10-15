@@ -21,7 +21,8 @@ after it.
 ## Rule Details
 
 This rule reports every statement of these six settings after the first one of
-the same setting. It applies to `gantt`.
+the same setting, when it sets a value other than the one before it. It applies
+to `gantt`.
 
 After `dateFormat DD-MM-YYYY`, `Design :01-02-2024, 3d`,
 `dateFormat YYYY-MM-DD`, and `Build :2024-02-05, 5d`, mermaid.js reads the dates
@@ -29,7 +30,13 @@ of both tasks with `YYYY-MM-DD`: `01-02-2024` is no date of that form, and
 mermaid.js passes it to the `Date` of JavaScript, which reads it as 2 January
 2024 in Node.js, not as 1 February. The other settings are replaced in the same
 way: after `axisFormat %m-%d` and `axisFormat %d`, the axis shows the days only.
-A statement is reported also when it repeats the same value.
+A statement that sets the value that the setting already has is not reported:
+the value stays, and nothing is lost. Values are compared as mermaid.js keeps
+them: the text after the keyword and the space after it, whitespace included,
+and for `weekday` and `weekend` in lower case, so `weekday Monday` after
+`weekday monday` sets the same value. After `dateFormat YYYY-MM-DD` and
+`dateFormat DD-MM-YYYY`, a third `dateFormat YYYY-MM-DD` is reported, because it
+replaces `DD-MM-YYYY`.
 
 `excludes` and `includes` are not reported: mermaid.js adds the items of every
 such statement together. Neither is a second `inclusiveEndDates`, which changes
@@ -63,6 +70,15 @@ gantt
   dateFormat YYYY-MM-DD
   axisFormat %m-%d
   Design :2024-02-01, 3d
+  Build :2024-02-05, 5d
+```
+
+```mmd
+%% eslint @mmd-toolkit/gantt-no-duplicate-setting: error
+gantt
+  dateFormat YYYY-MM-DD
+  Design :2024-02-01, 3d
+  dateFormat YYYY-MM-DD
   Build :2024-02-05, 5d
 ```
 

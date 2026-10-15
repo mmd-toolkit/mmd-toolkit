@@ -19,7 +19,8 @@ mermaid.js は `accDescr` の文をすべて受理し、
 
 ## 規則の詳細
 
-この規則は、説明を設定する文のうち、最初のものより後のものをすべて報告する。
+この規則は、説明を設定する文のうち、最初のものより後のものを、
+前と違う説明を設定するときに報告する。
 対象の図種は `gantt` である。
 
 `accDescr:` と、テキストのある説明のブロックは、どちらも説明を設定し、
@@ -34,6 +35,14 @@ mermaid.js は `accDescr` の文をすべて受理し、
 これは
 [gantt-no-empty-description-block](./gantt-no-empty-description-block.ja.md)
 が報告する。
+
+図がすでに持つ説明を設定する文は、どちらの形でも報告しない。
+`accDescr: d` の後のブロック `accDescr { d }` は、何も失わない。
+説明は、mermaid.js が持つとおりに、
+両端の空白と、各改行の後の空白を除いて比べる。
+そのため、ブロックの行の字下げと、その中の空行は数えない。
+`accDescr: a` と `accDescr: b` の後の 3 つ目の `accDescr: a` は、
+`b` を置き換えるので報告する。
 
 この規則に**反する**コードの例:
 
@@ -52,6 +61,17 @@ gantt
 %% eslint @mmd-toolkit/gantt-no-duplicate-description: error
 gantt
   accDescr: first
+  dateFormat YYYY-MM-DD
+  Design :2024-01-06, 3d
+```
+
+```mmd
+%% eslint @mmd-toolkit/gantt-no-duplicate-description: error
+gantt
+  accDescr: first
+  accDescr {
+    first
+  }
   dateFormat YYYY-MM-DD
   Design :2024-01-06, 3d
 ```

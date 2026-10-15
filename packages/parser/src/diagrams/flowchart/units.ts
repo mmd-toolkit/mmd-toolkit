@@ -66,9 +66,10 @@ import {
   skipWhitespace,
 } from "../../scanning.ts"
 import { isUnicodeLetter } from "../../unicode-letters.ts"
+import { UnitLexer } from "../../unit-lexer.ts"
 import { DirectionLineRule } from "../../direction-line.ts"
 import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
-import { readUnit } from "../../diagram-units.ts"
+import { readUnit, significantRangeOf } from "../../diagram-units.ts"
 
 /**
  * diagrams/flowchart.md, Lexical structure: the names of the units. A unit
@@ -201,6 +202,35 @@ type Context =
   | "thick-link-text"
   | "dotted-link-text"
 
+/**
+ * Click and callbacks: for each context, null when the text may end in it;
+ * otherwise the message of the error when the text ends in it, which says
+ * what is not closed. The text may not end in a callback context; the
+ * error is at the unit that entered it, the `call` for the callback name
+ * context and the `(` that opens the arguments for the callback arguments
+ * context.
+ */
+const END_OF_TEXT_MESSAGES: Readonly<Record<Context, string | null>> = {
+  statement: null,
+  header: null,
+  title: null,
+  description: null,
+  "description-block": null,
+  data: null,
+  "data-string": null,
+  click: null,
+  "callback-name":
+    "The callback after call has no ( before the end of the text",
+  "callback-arguments":
+    "The arguments of the callback have no ) before the end of the text",
+  label: null,
+  slanted: null,
+  ellipse: null,
+  "dash-link-text": null,
+  "thick-link-text": null,
+  "dotted-link-text": null,
+}
+
 /** The keywords of the statement context, rule 7, in the order in which they are tried. */
 const STATEMENT_KEYWORDS = [
   "style",
@@ -322,24 +352,12 @@ function isIdRunCharacter(codePoint: number): boolean {
  * The lexer does not depend on the grammar: a rule alone decides which
  * context is entered or left.
  */
-export class UnitLexer {
-  private readonly reader: DiagramText
-
-  private readonly lines: LineIndex
-
-  private readonly units: Unit[] = []
-
+export class FlowchartUnitLexer extends UnitLexer<Context, UnitName, Unit> {
   /**
    * Click and callbacks: the whitespace characters with which the lexer
    * left a click context, rule 2, in source order. They belong to no unit.
    */
   private readonly clickContextExits: Range[] = []
-
-  /** The stack of contexts; the last one is the current context. */
-  private readonly contexts: Context[] = ["statement"]
-
-  /** The place of the next character to read; null at the end of the text. */
-  private position: DiagramPosition
 
   /** Statement context, rule 10: whether a header keyword was read already. */
   private headerKeywordRead = false
@@ -350,16 +368,14 @@ export class UnitLexer {
   /**
    * Statement context, rule 15: the end of the run from the start where
    * the rule last failed: no edge id starts at a character from that start
-   * up to this place (see {@link UnitLexer.readEdgeId}). The lexer reads on
+   * up to this place (see {@link FlowchartUnitLexer.readEdgeId}). The lexer reads on
    * only forward, so a start before this place is one of those, and nothing
    * undoes it: a start where an edge id is read is not before it.
    */
   private noEdgeIdBefore: DiagramPosition
 
   public constructor(reader: DiagramText, lines: LineIndex) {
-    this.reader = reader
-    this.lines = lines
-    this.position = reader.first()
+    super(reader, lines, "statement", END_OF_TEXT_MESSAGES)
     this.noEdgeIdBefore = reader.first()
     this.directionLine = new DirectionLineRule(
       reader,
@@ -370,49 +386,19 @@ export class UnitLexer {
 
   /** Divides the diagram text into units. Throws `ParseError` where no rule matches. */
   public lex(): FlowchartLexing {
-    while (this.position !== null) {
-      this.readInContext(this.position, this.currentContext())
-    }
-    // Click and callbacks: the text may not end in a callback context. The
-    // error is at the unit that entered the context: the `call` for the
-    // callback name context, and the `(` that opens the arguments for the
-    // callback arguments context.
-    const context = this.currentContext()
-    if (context === "callback-name") {
-      throw this.unclosedAt(
-        this.lastUnitNamed("call"),
-        "The callback after call has no ( before the end of the text",
-      )
-    }
-    if (context === "callback-arguments") {
-      throw this.unclosedAt(
-        this.lastUnitNamed("("),
-        "The arguments of the callback have no ) before the end of the text",
-      )
-    }
+    this.readToEnd()
+    this.checkEndOfText()
     return {
       units: this.units,
       clickContextExits: this.clickContextExits,
     }
   }
 
-  /** The current context: the top of the stack. */
-  private currentContext(): Context {
-    return this.contexts[this.contexts.length - 1]
-  }
-
-  /** Units and contexts: enters `context`, which goes on top of the stack. */
-  private enter(context: Context): void {
-    this.contexts.push(context)
-  }
-
-  /** Units and contexts: leaves the current context. Leaving the statement context keeps it. */
-  private leave(): void {
-    if (this.contexts.length > 1) this.contexts.pop()
-  }
-
   /** Applies the first rule of `context` that matches at `at`. */
-  private readInContext(at: DiagramCharacter, context: Context): void {
+  protected override readInContext(
+    at: DiagramCharacter,
+    context: Context,
+  ): void {
     switch (context) {
       case "statement":
         this.readInStatementContext(at)
@@ -469,27 +455,17 @@ export class UnitLexer {
     }
   }
 
-  /** The error for a place where no rule of the current context matches. */
-  private noRuleMatches(at: DiagramCharacter): ParseError {
-    const range: Range = [at.start, at.end]
-    return new ParseError(
-      "Unexpected character",
-      range,
-      this.lines.location(range),
-    )
-  }
-
   /**
    * Adds the unit named `name` that reads the characters from `from` up to,
    * and not including, `to`. Its text is those characters.
    */
-  private addUnit(
+  protected override addUnit(
     name: UnitName,
     from: DiagramCharacter,
     to: DiagramPosition,
     ends: UnitEnds = "trim-whitespace",
-  ): void {
-    this.addUnitWithText(name, from, to, null, null, ends)
+  ): Unit {
+    return this.addUnitWithText(name, from, to, null, null, ends)
   }
 
   /**
@@ -505,12 +481,14 @@ export class UnitLexer {
     text: string | null,
     content: Range | null,
     ends: UnitEnds = "trim-whitespace",
-  ): void {
-    this.units.push({
+  ): Unit {
+    const unit: Unit = {
       ...readUnit(this.reader, name, this.units.length, from, to, text, ends),
       content,
       arrow: null,
-    })
+    }
+    this.units.push(unit)
+    return unit
   }
 
   /**
@@ -522,13 +500,15 @@ export class UnitLexer {
     from: DiagramCharacter,
     to: DiagramPosition,
     parts: ClosedArrowParts | OpeningArrowParts,
-  ): void {
+  ): Unit {
     const name = parts.form === "closed" ? "arrow" : "opening-arrow"
-    this.units.push({
+    const unit: Unit = {
       ...readUnit(this.reader, name, this.units.length, from, to, null),
       content: null,
       arrow: parts,
-    })
+    }
+    this.units.push(unit)
+    return unit
   }
 
   /** The place after the whitespace at `from`, line feeds included. */
@@ -551,7 +531,7 @@ export class UnitLexer {
    * 26 rules that matches at `at`. At whitespace, where of rules 18 to 26
    * only rule 18, with the whitespace before an arrow, and rules 25 and 26
    * match, the three are read together over the whitespace run (see
-   * {@link UnitLexer.readWhitespaceRun}).
+   * {@link FlowchartUnitLexer.readWhitespaceRun}).
    */
   private readInStatementContext(at: DiagramCharacter): void {
     if (this.readRulesBeforeArrow(at)) return
@@ -608,10 +588,10 @@ export class UnitLexer {
     if (title !== null) {
       const colon = this.afterWhitespace(title.end)
       if (isCodePointAt(colon, COLON)) {
-        this.addUnit("accTitle", at, title.end)
+        const keyword = this.addUnit("accTitle", at, title.end)
         this.addUnit(":", colon, this.reader.after(colon))
         this.position = this.afterWhitespace(this.reader.after(colon))
-        this.enter("title")
+        this.enter("title", significantRangeOf(keyword))
         return true
       }
     }
@@ -619,17 +599,17 @@ export class UnitLexer {
     if (description === null) return false
     const mark = this.afterWhitespace(description.end)
     if (isCodePointAt(mark, COLON)) {
-      this.addUnit("accDescr", at, description.end)
+      const keyword = this.addUnit("accDescr", at, description.end)
       this.addUnit(":", mark, this.reader.after(mark))
       this.position = this.afterWhitespace(this.reader.after(mark))
-      this.enter("description")
+      this.enter("description", significantRangeOf(keyword))
       return true
     }
     if (isCodePointAt(mark, LEFT_CURLY_BRACKET)) {
-      this.addUnit("accDescr", at, description.end)
+      const keyword = this.addUnit("accDescr", at, description.end)
       this.addUnit("{", mark, this.reader.after(mark))
       this.position = this.afterWhitespace(this.reader.after(mark))
-      this.enter("description-block")
+      this.enter("description-block", significantRangeOf(keyword))
       return true
     }
     return false
@@ -639,9 +619,8 @@ export class UnitLexer {
   private readDataStart(at: DiagramCharacter): boolean {
     const match = this.word(at, "@{")
     if (match === null) return false
-    this.addUnit("data-start", at, match.end)
-    this.position = match.end
-    this.enter("data")
+    const start = this.read("data-start", at, match.end)
+    this.enter("data", significantRangeOf(start))
     return true
   }
 
@@ -652,9 +631,9 @@ export class UnitLexer {
   private readCallKeyword(at: DiagramCharacter): boolean {
     const match = this.word(at, "call")
     if (match === null || !isWhitespaceAt(match.end)) return false
-    this.addUnit("call", at, match.end)
+    const call = this.addUnit("call", at, match.end)
     this.position = this.afterWhitespace(match.end)
-    this.enter("callback-name")
+    this.enter("callback-name", significantRangeOf(call))
     return true
   }
 
@@ -666,8 +645,7 @@ export class UnitLexer {
     for (const keyword of STATEMENT_KEYWORDS) {
       const match = this.wholeWord(at, keyword)
       if (match !== null) {
-        this.addUnit(keyword, at, match.end)
-        this.position = match.end
+        this.read(keyword, at, match.end)
         return true
       }
     }
@@ -690,38 +668,20 @@ export class UnitLexer {
   private readClickKeyword(at: DiagramCharacter): boolean {
     const match = this.word(at, "click")
     if (match === null || !isWhitespaceAt(match.end)) return false
-    this.addUnit("click", at, match.end)
+    const click = this.addUnit("click", at, match.end)
     this.position = this.afterWhitespace(match.end)
-    this.enter("click")
+    this.enter("click", significantRangeOf(click))
     // Click and callbacks: the text may not end in the click context before
     // it reads anything. The error is at the `click`.
     if (this.position === null) {
-      throw this.unclosedAt(
-        this.lastUnitNamed("click"),
+      const range = significantRangeOf(click)
+      throw new ParseError(
         "click has no click id before the end of the text",
+        range,
+        this.lines.location(range),
       )
     }
     return true
-  }
-
-  /**
-   * The error for a text that ends in a context that may not end there,
-   * with the message `message`, at `entry`, the unit that entered it.
-   */
-  private unclosedAt(entry: Unit, message: string): ParseError {
-    const range: Range = entry.significantRange ?? [entry.start, entry.end]
-    return new ParseError(message, range, this.lines.location(range))
-  }
-
-  /** The last unit named `name` read so far; the context that the caller asks about was entered by it. */
-  private lastUnitNamed(name: UnitName): Unit {
-    const unit = this.units
-      .filter((candidate) => candidate.name === name)
-      .at(-1)
-    if (unit === undefined) {
-      throw new Error(`mmd-toolkit parser bug: no ${name} unit read`)
-    }
-    return unit
   }
 
   /**
@@ -732,9 +692,10 @@ export class UnitLexer {
     for (const keyword of HEADER_KEYWORDS) {
       const match = this.wholeWord(at, keyword)
       if (match !== null) {
-        this.addUnit("header-keyword", at, match.end)
-        this.position = match.end
-        if (!this.headerKeywordRead) this.enter("header")
+        const unit = this.read("header-keyword", at, match.end)
+        if (!this.headerKeywordRead) {
+          this.enter("header", significantRangeOf(unit))
+        }
         this.headerKeywordRead = true
         return true
       }
@@ -746,8 +707,7 @@ export class UnitLexer {
   private readSubgraphKeyword(at: DiagramCharacter): boolean {
     const match = this.wholeWord(at, "subgraph")
     if (match === null) return false
-    this.addUnit("subgraph", at, match.end)
-    this.position = match.end
+    this.read("subgraph", at, match.end)
     return true
   }
 
@@ -759,8 +719,7 @@ export class UnitLexer {
     const match = this.wholeWord(at, "end")
     if (match === null) return false
     const end = this.afterWhitespace(match.end)
-    this.addUnit("end", at, end)
-    this.position = end
+    this.read("end", at, end)
     return true
   }
 
@@ -769,8 +728,7 @@ export class UnitLexer {
     for (const target of LINK_TARGETS) {
       const match = this.wholeWord(at, target)
       if (match !== null) {
-        this.addUnit("link-target", at, match.end)
-        this.position = match.end
+        this.read("link-target", at, match.end)
         return true
       }
     }
@@ -829,8 +787,7 @@ export class UnitLexer {
       return false
     }
     this.addUnit("edge-id", at, lastAt)
-    this.addUnit("@", lastAt, this.reader.after(lastAt))
-    this.position = this.reader.after(lastAt)
+    this.read("@", lastAt, this.reader.after(lastAt))
     return true
   }
 
@@ -840,8 +797,7 @@ export class UnitLexer {
       isAsciiDigit(character.codePoint),
     )
     if (samePosition(end, at)) return false
-    this.addUnit("number", at, end)
-    this.position = end
+    this.read("number", at, end)
     return true
   }
 
@@ -850,8 +806,7 @@ export class UnitLexer {
     for (const punctuation of STATEMENT_PUNCTUATION) {
       const match = this.word(at, punctuation)
       if (match !== null) {
-        this.addUnit(punctuation, at, match.end)
-        this.position = match.end
+        this.read(punctuation, at, match.end)
         return true
       }
     }
@@ -861,8 +816,8 @@ export class UnitLexer {
   /**
    * Statement context, rule 18, at a character `at` that is not
    * whitespace: the arrow itself at `at` (see
-   * {@link UnitLexer.readArrowFrom}). The whitespace before an
-   * arrow is read by {@link UnitLexer.readWhitespaceRun}.
+   * {@link FlowchartUnitLexer.readArrowFrom}). The whitespace before an
+   * arrow is read by {@link FlowchartUnitLexer.readWhitespaceRun}.
    */
   private readArrow(at: DiagramCharacter): boolean {
     const arrow = matchArrow(this.reader, at)
@@ -879,10 +834,13 @@ export class UnitLexer {
    */
   private readArrowFrom(start: DiagramCharacter, arrow: ArrowMatch): void {
     const end = this.afterWhitespace(arrow.end)
-    this.addArrowUnit(start, end, arrow.parts)
+    const unit = this.addArrowUnit(start, end, arrow.parts)
     this.position = end
     if (arrow.parts.form === "opening") {
-      this.enter(LINK_TEXT_CONTEXTS[arrow.parts.opens])
+      this.enter(
+        LINK_TEXT_CONTEXTS[arrow.parts.opens],
+        significantRangeOf(unit),
+      )
     }
   }
 
@@ -915,8 +873,7 @@ export class UnitLexer {
           isWhitespace(character.codePoint) &&
           (character.codePoint === LINE_FEED) === lineFeeds,
       )
-      this.addUnit(lineFeeds ? "newline" : "space", start, end)
-      this.position = end
+      this.read(lineFeeds ? "newline" : "space", start, end)
       if (!isWhitespaceAt(end) || this.readRulesBeforeArrow(end)) return
       start = end
     }
@@ -931,9 +888,10 @@ export class UnitLexer {
     for (const opener of SHAPE_OPENERS) {
       const match = this.word(at, opener.name)
       if (match !== null) {
-        this.addUnit(opener.name, at, match.end)
-        this.position = match.end
-        if (opener.enters !== null) this.enter(opener.enters)
+        const unit = this.read(opener.name, at, match.end)
+        if (opener.enters !== null) {
+          this.enter(opener.enters, significantRangeOf(unit))
+        }
         return true
       }
     }
@@ -946,8 +904,7 @@ export class UnitLexer {
     if (at.codePoint !== LATIN_SMALL_LETTER_V) return false
     const end = this.reader.after(at)
     if (isWordCharacterAt(end)) return false
-    this.addUnit("v", at, end)
-    this.position = end
+    this.read("v", at, end)
     return true
   }
 
@@ -968,24 +925,21 @@ export class UnitLexer {
       )
     })
     if (samePosition(end, at)) return false
-    this.addUnit("id-run", at, end)
-    this.position = end
+    this.read("id-run", at, end)
     return true
   }
 
   /** Statement context, rule 22: `-` is a `-` unit. */
   private readMinus(at: DiagramCharacter): boolean {
     if (at.codePoint !== HYPHEN_MINUS) return false
-    this.addUnit("-", at, this.reader.after(at))
-    this.position = this.reader.after(at)
+    this.read("-", at, this.reader.after(at))
     return true
   }
 
   /** Statement context, rule 23: a Unicode letter is a `letter` unit of one character. */
   private readLetter(at: DiagramCharacter): boolean {
     if (!isUnicodeLetter(at.codePoint)) return false
-    this.addUnit("letter", at, this.reader.after(at))
-    this.position = this.reader.after(at)
+    this.read("letter", at, this.reader.after(at))
     return true
   }
 
@@ -994,9 +948,8 @@ export class UnitLexer {
     for (const opener of ["|", "(", "[", "{"] as const) {
       const match = this.word(at, opener)
       if (match !== null) {
-        this.addUnit(opener, at, match.end)
-        this.position = match.end
-        this.enter("label")
+        const unit = this.read(opener, at, match.end)
+        this.enter("label", significantRangeOf(unit))
         return true
       }
     }
@@ -1154,8 +1107,7 @@ export class UnitLexer {
     }
     if (lastLineFeed !== null) {
       const afterLastLineFeed = this.reader.after(lastLineFeed)
-      this.addUnit("no-direction", at, afterLastLineFeed)
-      this.position = afterLastLineFeed
+      this.read("no-direction", at, afterLastLineFeed)
       this.leave()
       return
     }
@@ -1163,8 +1115,7 @@ export class UnitLexer {
     for (const word of HEADER_DIRECTION_WORDS) {
       const match = this.wholeWord(direction, word)
       if (match !== null) {
-        this.addUnit("header-direction", direction, match.end)
-        this.position = match.end
+        this.read("header-direction", direction, match.end)
         this.leave()
         return
       }
@@ -1172,8 +1123,7 @@ export class UnitLexer {
     if (
       isOneOf(direction, [LESS_THAN_SIGN, GREATER_THAN_SIGN, CIRCUMFLEX_ACCENT])
     ) {
-      this.addUnit("header-direction", direction, this.reader.after(direction))
-      this.position = this.reader.after(direction)
+      this.read("header-direction", direction, this.reader.after(direction))
       this.leave()
       return
     }
@@ -1198,8 +1148,7 @@ export class UnitLexer {
       at,
       (character) => character.codePoint !== LINE_FEED,
     )
-    this.addUnit(name, at, end)
-    this.position = end
+    this.read(name, at, end)
   }
 
   /**
@@ -1209,8 +1158,7 @@ export class UnitLexer {
    */
   private readInDescriptionBlockContext(at: DiagramCharacter): void {
     if (at.codePoint === RIGHT_CURLY_BRACKET) {
-      this.addUnit("}", at, this.reader.after(at))
-      this.position = this.reader.after(at)
+      this.read("}", at, this.reader.after(at))
       this.leave()
       return
     }
@@ -1219,8 +1167,7 @@ export class UnitLexer {
       at,
       (character) => character.codePoint !== RIGHT_CURLY_BRACKET,
     )
-    this.addUnit("description-block-text", at, end)
-    this.position = end
+    this.read("description-block-text", at, end)
   }
 
   /**
@@ -1232,14 +1179,12 @@ export class UnitLexer {
    */
   private readInDataContext(at: DiagramCharacter): void {
     if (at.codePoint === QUOTATION_MARK) {
-      this.addUnit("data-quote", at, this.reader.after(at))
-      this.position = this.reader.after(at)
-      this.enter("data-string")
+      const quote = this.read("data-quote", at, this.reader.after(at))
+      this.enter("data-string", significantRangeOf(quote))
       return
     }
     if (at.codePoint === RIGHT_CURLY_BRACKET) {
-      this.addUnit("}", at, this.reader.after(at))
-      this.position = this.reader.after(at)
+      this.read("}", at, this.reader.after(at))
       this.leave()
       return
     }
@@ -1254,8 +1199,7 @@ export class UnitLexer {
         ]),
     )
     if (samePosition(end, at)) throw this.noRuleMatches(at)
-    this.addUnit("data-text", at, end, "keep-whitespace")
-    this.position = end
+    this.read("data-text", at, end, "keep-whitespace")
   }
 
   /**
@@ -1265,8 +1209,7 @@ export class UnitLexer {
    */
   private readInDataStringContext(at: DiagramCharacter): void {
     if (at.codePoint === QUOTATION_MARK) {
-      this.addUnit("data-quote", at, this.reader.after(at))
-      this.position = this.reader.after(at)
+      this.read("data-quote", at, this.reader.after(at))
       this.leave()
       return
     }
@@ -1275,8 +1218,7 @@ export class UnitLexer {
       at,
       (character) => character.codePoint !== QUOTATION_MARK,
     )
-    this.addUnit("data-text", at, end, "keep-whitespace")
-    this.position = end
+    this.read("data-text", at, end, "keep-whitespace")
   }
 
   /**
@@ -1337,20 +1279,18 @@ export class UnitLexer {
         at,
         (character) => character.codePoint !== LEFT_PARENTHESIS,
       )
-      this.addUnit("callback-name", at, end, "keep-whitespace")
-      this.position = end
+      this.read("callback-name", at, end, "keep-whitespace")
       return
     }
-    this.addUnit("(", at, this.reader.after(at))
+    const opening = this.addUnit("(", at, this.reader.after(at))
     this.leave()
     const closing = this.afterWhitespace(this.reader.after(at))
     if (isCodePointAt(closing, RIGHT_PARENTHESIS)) {
-      this.addUnit(")", closing, this.reader.after(closing))
-      this.position = this.reader.after(closing)
+      this.read(")", closing, this.reader.after(closing))
       return
     }
     this.position = this.reader.after(at)
-    this.enter("callback-arguments")
+    this.enter("callback-arguments", significantRangeOf(opening))
   }
 
   /**
@@ -1361,8 +1301,7 @@ export class UnitLexer {
    */
   private readInCallbackArgumentsContext(at: DiagramCharacter): void {
     if (at.codePoint === RIGHT_PARENTHESIS) {
-      this.addUnit(")", at, this.reader.after(at))
-      this.position = this.reader.after(at)
+      this.read(")", at, this.reader.after(at))
       this.leave()
       return
     }
@@ -1371,8 +1310,7 @@ export class UnitLexer {
       at,
       (character) => character.codePoint !== RIGHT_PARENTHESIS,
     )
-    this.addUnit("callback-arguments", at, end, "keep-whitespace")
-    this.position = end
+    this.read("callback-arguments", at, end, "keep-whitespace")
   }
 
   /**
@@ -1405,8 +1343,7 @@ export class UnitLexer {
     for (const closer of LABEL_CLOSERS) {
       const match = this.word(at, closer)
       if (match !== null) {
-        this.addUnit(closer, at, match.end)
-        this.position = match.end
+        this.read(closer, at, match.end)
         this.leave()
         return
       }
@@ -1414,9 +1351,8 @@ export class UnitLexer {
     for (const opener of ["(", "{"] as const) {
       const match = this.word(at, opener)
       if (match !== null) {
-        this.addUnit(opener, at, match.end)
-        this.position = match.end
-        this.enter("label")
+        const unit = this.read(opener, at, match.end)
+        this.enter("label", significantRangeOf(unit))
         return
       }
     }
@@ -1436,8 +1372,7 @@ export class UnitLexer {
         ]),
     )
     if (samePosition(end, at)) throw this.noRuleMatches(at)
-    this.addUnit("text-run", at, end)
-    this.position = end
+    this.read("text-run", at, end)
   }
 
   /**
@@ -1464,20 +1399,17 @@ export class UnitLexer {
         RIGHT_PARENTHESIS,
       ])
     ) {
-      this.addUnit("backslash-end", at, this.reader.after(following))
-      this.position = this.reader.after(following)
+      this.read("backslash-end", at, this.reader.after(following))
       this.leave()
       return
     }
     if (closesWithBracket && at.codePoint === SOLIDUS) {
-      this.addUnit("slash-end", at, this.reader.after(following))
-      this.position = this.reader.after(following)
+      this.read("slash-end", at, this.reader.after(following))
       this.leave()
       return
     }
     if (isOneOf(at, [SOLIDUS, REVERSE_SOLIDUS])) {
-      this.addUnit("text-run", at, following)
-      this.position = following
+      this.read("text-run", at, following)
       return
     }
     const end = skipWhile(
@@ -1496,8 +1428,7 @@ export class UnitLexer {
         ]),
     )
     if (samePosition(end, at)) throw this.noRuleMatches(at)
-    this.addUnit("text-run", at, end)
-    this.position = end
+    this.read("text-run", at, end)
   }
 
   /**
@@ -1524,8 +1455,7 @@ export class UnitLexer {
       isOneOf(at, [HYPHEN_MINUS, SOLIDUS, RIGHT_PARENTHESIS]) &&
       isCodePointAt(following, RIGHT_PARENTHESIS)
     ) {
-      this.addUnit("ellipse-end", at, this.reader.after(following))
-      this.position = this.reader.after(following)
+      this.read("ellipse-end", at, this.reader.after(following))
       this.leave()
       return
     }
@@ -1542,8 +1472,7 @@ export class UnitLexer {
       throw this.noRuleMatches(at)
     }
     const end = this.afterOneCharacter(at)
-    this.addUnit("text-run", at, end)
-    this.position = end
+    this.read("text-run", at, end)
   }
 
   /**
@@ -1583,8 +1512,7 @@ export class UnitLexer {
       if (!isLoneDash) throw this.noRuleMatches(at)
     }
     const end = this.afterOneCharacter(at)
-    this.addUnit("link-text-char", at, end)
-    this.position = end
+    this.read("link-text-char", at, end)
   }
 
   /**

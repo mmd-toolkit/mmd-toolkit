@@ -35,13 +35,12 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 
 | Rule                                                                                    | Description                                                                                          | ✅  | 💡  | 🚧  |
 | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | --- | --- | --- |
-| [flowchart-no-bare-comment-marker](./flowchart-no-bare-comment-marker.md)               | Disallow a line that holds only `%%`.                                                                |     | 💡  |     |
 | [flowchart-no-duplicate-description](./flowchart-no-duplicate-description.md)           | Disallow an `accDescr` statement that sets the description again.                                    | ✅  | 💡  |     |
 | [flowchart-no-duplicate-title](./flowchart-no-duplicate-title.md)                       | Disallow an `accTitle` statement that sets the title again.                                          | ✅  | 💡  |     |
 | [flowchart-no-empty-description-block](./flowchart-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                                              | ✅  | 💡  |     |
 | [flowchart-no-ignored-text](./flowchart-no-ignored-text.md)                             | Disallow text on a direction line that mermaid.js does not read.                                     | ✅  | 💡  |     |
 | [flowchart-no-redefined-vertex](./flowchart-no-redefined-vertex.md)                     | Disallow writing the shape or the label of a vertex again, differently.                              | ✅  |     |     |
-| [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.md) | Disallow an `accDescr {` block without its closing `}`.                                              | ✅  | 💡  |     |
+| [flowchart-no-unclosed-description-block](./flowchart-no-unclosed-description-block.md) | Disallow an `accDescr {` block without its closing `}`.                                              |     | 💡  |     |
 | [flowchart-no-undef](./flowchart-no-undef.md)                                           | Disallow a `style`, `class`, or `click` statement that names an id that the diagram does not define. | ✅  |     |     |
 
 ## sequence
@@ -55,7 +54,7 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [sequence-no-ignored-text](./sequence-no-ignored-text.md)                             | Disallow a line that mermaid.js reads as nothing.                             | ✅  |     |     |
 | [sequence-no-invalid-json](./sequence-no-invalid-json.md)                             | Disallow a `links` or `properties` statement whose text is not a JSON object. | ✅  |     |     |
 | [sequence-no-link-without-separator](./sequence-no-link-without-separator.md)         | Disallow a `link` statement without the `@` between its label and its URL.    | ✅  |     |     |
-| [sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.md) | Disallow an `accDescr {` block without its closing `}`.                       | ✅  |     |     |
+| [sequence-no-unclosed-description-block](./sequence-no-unclosed-description-block.md) | Disallow an `accDescr {` block without its closing `}`.                       |     |     |     |
 
 ## class
 
@@ -78,7 +77,7 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [state-no-duplicate-title](./state-no-duplicate-title.md)                       | Disallow an `accTitle` statement that sets the title again.                    | ✅  |     |     |
 | [state-no-empty-description-block](./state-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                        | ✅  |     |     |
 | [state-no-ignored-text](./state-no-ignored-text.md)                             | Disallow text that mermaid.js does not read.                                   | ✅  |     |     |
-| [state-no-unclosed-description-block](./state-no-unclosed-description-block.md) | Disallow an `accDescr {` block without its closing `}`.                        | ✅  |     |     |
+| [state-no-unclosed-description-block](./state-no-unclosed-description-block.md) | Disallow an `accDescr {` block without its closing `}`.                        |     |     |     |
 | [state-no-undef](./state-no-undef.md)                                           | Disallow a `style`, `class`, `click`, or `note` statement that names no state. | ✅  |     |     |
 
 ## er
@@ -88,9 +87,9 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [er-no-duplicate-description](./er-no-duplicate-description.md)           | Disallow an `accDescr` statement that sets the description again.             | ✅  |     |     |
 | [er-no-duplicate-title](./er-no-duplicate-title.md)                       | Disallow an `accTitle` statement that sets the title again.                   | ✅  |     |     |
 | [er-no-empty-description-block](./er-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                       | ✅  |     |     |
-| [er-no-ignored-text](./er-no-ignored-text.md)                             | Disallow text that mermaid.js does not read.                                  | ✅  |     |     |
+| [er-no-ignored-text](./er-no-ignored-text.md)                             | Disallow text that mermaid.js does not read.                                  |     |     |     |
 | [er-no-redefined-entity](./er-no-redefined-entity.md)                     | Disallow an entity statement that gives an entity a second alias.             | ✅  |     |     |
-| [er-no-unclosed-description-block](./er-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for something else closes.  | ✅  |     |     |
+| [er-no-unclosed-description-block](./er-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for something else closes.  |     |     |     |
 | [er-no-undef](./er-no-undef.md)                                           | Disallow a `style` or `class` statement that names no entity and no subgraph. | ✅  |     |     |
 
 ## journey
@@ -127,7 +126,14 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [requirement-no-duplicate-title](./requirement-no-duplicate-title.md)                       | Disallow an `accTitle` statement that sets the title again.                                             | ✅  |     |     |
 | [requirement-no-empty-description-block](./requirement-no-empty-description-block.md)       | Disallow an `accDescr` block that holds no description.                                                 | ✅  |     |     |
 | [requirement-no-ignored-text](./requirement-no-ignored-text.md)                             | Disallow text that mermaid.js does not read.                                                            | ✅  |     |     |
-| [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for something else closes.                            | ✅  |     |     |
+| [requirement-no-unclosed-description-block](./requirement-no-unclosed-description-block.md) | Disallow an `accDescr {` block that a `}` written for something else closes.                            |     |     |     |
 | [requirement-no-undef](./requirement-no-undef.md)                                           | Disallow a name in `style`, `class`, `:::`, or a relationship that names no requirement and no element. | ✅  |     |     |
+
+## mindmap
+
+| Rule                                                                    | Description                                                 | ✅  | 💡  | 🚧  |
+| ----------------------------------------------------------------------- | ----------------------------------------------------------- | --- | --- | --- |
+| [mindmap-no-duplicate-decoration](./mindmap-no-duplicate-decoration.md) | Disallow a second icon or a second class line for one node. | ✅  |     |     |
+| [mindmap-no-mismatched-shape](./mindmap-no-mismatched-shape.md)         | Disallow a shape whose closer does not match its opener.    | ✅  |     |     |
 
 <!-- end auto-generated rules list -->

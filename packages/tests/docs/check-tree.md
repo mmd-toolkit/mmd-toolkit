@@ -69,8 +69,9 @@ const problems: TreeProblem[] = checkTree(text, tree)
   `%%` for a line of `%%` alone before their header, as every diagram type does,
   and for no other comment; a gantt diagram has the marks `%%` and `%` for its
   diagram comments, and a journey diagram and a requirement diagram the marks
-  `#`, `%%`, and `%`, and a mindmap diagram the mark `%%`; a fragment without a
-  mark follows a comment region (parser/docs/tokens.md, Comment;
+  `#`, `%%`, and `%`, a timeline diagram the same marks, and a mindmap diagram
+  the mark `%%`; a fragment without a mark follows a comment region
+  (parser/docs/tokens.md, Comment;
   [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
@@ -320,6 +321,52 @@ const problems: TreeProblem[] = checkTree(text, tree)
     hull of its tokens and child nodes (`parser/docs/positions/mindmap.md`); the
     range of a literal and of a label runs from the start of a token to the end
     of a token, which the checks of every tree read.
+  - timeline: the checks read the tree and the text of the source. The child
+    nodes of a field are of the types of its table (`TIMELINE_CHILD_TYPES`,
+    which a test holds to the Type column of ast/timeline.md, with the
+    statements that its sentence on `TimelineStatement` lists), the direction is
+    `LR` or `TD` in any case (`TIMELINE_DIRECTIONS`, which the test holds to the
+    Meaning column), and the events of an event statement are never none. A
+    period is never empty, starts with no whitespace, holds no `#` but the `#`
+    of an entity (common.md, Entities), no `:`, and no line terminator, and ends
+    before a `#`, a `:`, a line terminator, or the end of the text
+    (diagrams/timeline.md, The statement context, rule 14). The written text
+    from its start on, as the lexer reads it, with the directives and the
+    comment lines left out, starts with none of the units that the rules before
+    its rule read: a `%` that no `{` follows, the keyword `timeline`, `title` or
+    `section` with a whitespace character, a line feed included, and a character
+    after it, and `accTitle` or `accDescr` with its `:` or `{` after whitespace,
+    line feeds included; so it is the lines after a period that decide whether
+    it is one. An event is the text after a `:` and one whitespace character, a
+    line feed included; it is never empty, holds no line terminator, holds a `:`
+    only before a character that is no whitespace, and ends before a `:`, a line
+    terminator, or the end of the text, and nothing but whitespace and diagram
+    comments lies between it and the item before it besides that `:` and that
+    character (rule 13). A title and a section name start after their keyword
+    and one whitespace character, are never empty, and hold no line terminator;
+    a title runs to the end of its line, and a section name holds no `:` and
+    ends before a `:` or the end of its line (rules 8 and 12). An accessibility
+    text follows its keyword, a `:` or, for a block, a `{`, and whitespace, line
+    feeds included (rules 9 to 11, Accessibility values); it is never empty and
+    has no whitespace at its ends; the text of a line runs to the end of its
+    line, the text of a block holds no `}` and is followed by whitespace and the
+    `}`, and a block without text is the keyword, `{`, whitespace, and `}` only.
+    An event statement follows a statement that is neither a period statement
+    nor an event statement, and some period statement lies before it
+    (ast/timeline.md, TimelineEventStatement). The child fields are in source
+    order (ast.md, Nodes; ast/timeline.md states no exception). The kinds of the
+    tokens are those of `parser/docs/tokens/timeline.md`: a token that a node
+    writes itself is `Punctuator` for `:`, `{`, and `}`, and `Keyword` for the
+    header, the direction, and the keywords; the tokens of a text are `RawText`.
+    The tokens that a node writes itself, joined, are `timeline` and the
+    direction as written for the diagram, a `:` for each event of a period
+    statement and of an event statement, the keyword (in any case) for a title
+    and a section, the keyword and `:` for an accessibility statement, and the
+    keyword and the braces for a block; the `direction` is the token after the
+    header, or null where there is none. The range of a node and of a statement
+    is the hull of its tokens and child nodes
+    (`parser/docs/positions/timeline.md`); the range of a literal runs from the
+    start of a token to the end of a token, which the checks of every tree read.
 
 The **written text** of a range is its source without the directives, the
 comment regions, and the `;` that the line rule ignores (ast.md, Nodes).
@@ -421,9 +468,13 @@ and breaks the recorded trees of named fixtures. `check-tree-mindmap.test.ts`
 does the same for the sentences of the mindmap diagram, on hand-made trees and
 on the recorded trees of named fixtures; it breaks the recorded trees for the
 kinds of tokens and the ranges, and requires the tables of the check to be the
-Type and the Meaning columns of ast/mindmap.md. The tests that require a
-recorded tree for every node type or every field leave out the node types whose
-names start with a prefix of `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
+Type and the Meaning columns of ast/mindmap.md. `check-tree-timeline.test.ts`
+does the same for the sentences of the timeline diagram, on hand-made trees and
+on the recorded trees of named fixtures, which it breaks for the kinds of tokens
+and the ranges too, and it requires the tables of the check to be the Type and
+the Meaning columns of ast/timeline.md. The tests that require a recorded tree
+for every node type or every field leave out the node types whose names start
+with a prefix of `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
 (`tests/check-tree-recorded.ts`), the new diagram types whose trees are not
 recorded yet; the prefix is removed when the trees are recorded, and the list
 stays empty between two diagram types. `tests/check-tree-fields.test.ts` is the

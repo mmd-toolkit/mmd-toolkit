@@ -39,8 +39,7 @@ import type {
 } from "../../diagram-text.ts"
 import { lineFeedAfter } from "../../diagram-text.ts"
 import type { DiagramUnit, UnitEnds } from "../../diagram-units.ts"
-import { readUnit } from "../../diagram-units.ts"
-import { ParseError } from "../../errors.ts"
+import { readUnit, significantRangeOf } from "../../diagram-units.ts"
 import type { LineIndex } from "../../positions.ts"
 import type { Match } from "../../scanning.ts"
 import {
@@ -54,6 +53,7 @@ import {
   skipWhile,
   skipWhitespace,
 } from "../../scanning.ts"
+import { UnitLexer } from "../../unit-lexer.ts"
 
 /**
  * diagrams/sequence.md, Lexical structure: the names of the units. A unit
@@ -154,6 +154,23 @@ type Context =
   | "title"
   | "description"
   | "description-block"
+
+/**
+ * Units and contexts: for each context, null when the text may end in it.
+ * The text may end in every context of the sequence diagram, where the
+ * statement context reads a `newline` unit at the end of the text and the
+ * other contexts read nothing (The statement context).
+ */
+const END_OF_TEXT_MESSAGES: Readonly<Record<Context, string | null>> = {
+  statement: null,
+  id: null,
+  alias: null,
+  line: null,
+  data: null,
+  title: null,
+  description: null,
+  "description-block": null,
+}
 
 /** A keyword of the statement context and the context that it enters, if any. */
 interface StatementKeyword {
@@ -416,31 +433,17 @@ function withoutWhitespaceAtEnds(text: string): string {
  * Every rule compares letters case-insensitively, except where the
  * specification says otherwise.
  */
-export class SequenceUnitLexer {
-  private readonly reader: DiagramText
-
-  private readonly lines: LineIndex
-
-  private readonly units: Unit[] = []
-
+export class SequenceUnitLexer extends UnitLexer<Context, UnitName, Unit> {
   private readonly comments: DiagramComment[] = []
 
   private readonly statementMatchStarts: Range[] = []
-
-  /** The stack of contexts; the last one is the current context. */
-  private readonly contexts: Context[] = ["statement"]
-
-  /** The place of the next character to read; null at the end of the text. */
-  private position: DiagramPosition
 
   /** Where the source ends, where the `newline` unit of the end of the text is. */
   private readonly sourceEnd: number
 
   public constructor(reader: DiagramText, lines: LineIndex, sourceEnd: number) {
-    this.reader = reader
-    this.lines = lines
+    super(reader, lines, "statement", END_OF_TEXT_MESSAGES)
     this.sourceEnd = sourceEnd
-    this.position = reader.first()
   }
 
   /**
@@ -452,9 +455,8 @@ export class SequenceUnitLexer {
    * so that `\n` does not stand for this unit.
    */
   public lex(): SequenceLexing {
-    while (this.position !== null) {
-      this.readInContext(this.position, this.currentContext())
-    }
+    this.readToEnd()
+    this.checkEndOfText()
     if (this.currentContext() === "statement") {
       this.units.push({
         name: "newline",
@@ -474,23 +476,11 @@ export class SequenceUnitLexer {
     }
   }
 
-  /** The current context: the top of the stack. */
-  private currentContext(): Context {
-    return this.contexts[this.contexts.length - 1]
-  }
-
-  /** Units and contexts: enters `context`, which goes on top of the stack. */
-  private enter(context: Context): void {
-    this.contexts.push(context)
-  }
-
-  /** Units and contexts: leaves the current context. Leaving the statement context keeps it. */
-  private leave(): void {
-    if (this.contexts.length > 1) this.contexts.pop()
-  }
-
   /** Applies the first rule of `context` that matches at `at`. */
-  private readInContext(at: DiagramCharacter, context: Context): void {
+  protected override readInContext(
+    at: DiagramCharacter,
+    context: Context,
+  ): void {
     switch (context) {
       case "statement":
         this.readInStatementContext(at)
@@ -523,32 +513,25 @@ export class SequenceUnitLexer {
     }
   }
 
-  /** The error for a place where no rule of the current context matches. */
-  private noRuleMatches(at: DiagramCharacter): ParseError {
-    const range: Range = [at.start, at.end]
-    return new ParseError(
-      "Unexpected character",
-      range,
-      this.lines.location(range),
-    )
-  }
-
   /**
    * Adds the unit named `name` that reads the characters from `from` up to,
-   * and not including, `to`. Its text is those characters, or `text` when
-   * it is given.
+   * and not including, `to`, whose token leaves out the whitespace at its
+   * ends as `ends` says. Its text is those characters, or `text` when it is
+   * given.
    */
-  private addUnit(
+  protected override addUnit(
     name: UnitName,
     from: DiagramCharacter,
     to: DiagramPosition,
-    text: string | null = null,
     ends: UnitEnds = "trim-whitespace",
-  ): void {
-    this.units.push({
+    text: string | null = null,
+  ): Unit {
+    const unit: Unit = {
       ...readUnit(this.reader, name, this.units.length, from, to, text, ends),
       arrow: null,
-    })
+    }
+    this.units.push(unit)
+    return unit
   }
 
   /** The characters from `from` up to `to`, in converted form. */
@@ -687,8 +670,7 @@ export class SequenceUnitLexer {
       at,
       (character) => character.codePoint === LINE_FEED,
     )
-    this.addUnit("newline", at, end)
-    this.position = end
+    this.read("newline", at, end)
     return true
   }
 
@@ -746,8 +728,7 @@ export class SequenceUnitLexer {
     if (!samePosition(digitsEnd, at)) ends.push(digitsEnd)
     const end = ends.find((candidate) => this.endsNumber(candidate))
     if (end === undefined) return false
-    this.addUnit("number", at, end)
-    this.position = end
+    this.read("number", at, end)
     return true
   }
 
@@ -769,9 +750,8 @@ export class SequenceUnitLexer {
     for (const { word, unit, enters } of STATEMENT_KEYWORDS) {
       const match = this.keyword(at, word)
       if (match === null) continue
-      this.addUnit(unit, at, match.end)
-      this.position = match.end
-      if (enters !== null) this.enter(enters)
+      const keyword = this.read(unit, at, match.end)
+      if (enters !== null) this.enter(enters, significantRangeOf(keyword))
       return true
     }
     return this.readNotePlacement(at)
@@ -793,8 +773,7 @@ export class SequenceUnitLexer {
       if (words === null) continue
       const [sideWord, ofWord] = words
       this.addUnit(side, sideWord.start, sideWord.end)
-      this.addUnit("of", ofWord.start, ofWord.end)
-      this.position = ofWord.end
+      this.read("of", ofWord.start, ofWord.end)
       return true
     }
     return false
@@ -819,8 +798,7 @@ export class SequenceUnitLexer {
     this.addUnit(colon === null ? "title" : "title:", at, textStart)
     // `docs/tokens/sequence.md`, Tokens: the token of the title text is the whole
     // unit, whose whitespace mermaid.js keeps in the title.
-    this.addUnit("title-text", textStart, textEnd, null, "keep-whitespace")
-    this.position = textEnd
+    this.read("title-text", textStart, textEnd, "keep-whitespace")
     return true
   }
 
@@ -835,10 +813,10 @@ export class SequenceUnitLexer {
     if (title !== null) {
       const colon = skipWhitespace(this.reader, title.end)
       if (isCodePointAt(colon, COLON)) {
-        this.addUnit("accTitle", at, title.end)
+        const keyword = this.addUnit("accTitle", at, title.end)
         this.addUnit(":", colon, this.reader.after(colon))
         this.position = skipWhitespace(this.reader, this.reader.after(colon))
-        this.enter("title")
+        this.enter("title", significantRangeOf(keyword))
         return true
       }
     }
@@ -846,17 +824,17 @@ export class SequenceUnitLexer {
     if (description === null) return false
     const mark = skipWhitespace(this.reader, description.end)
     if (isCodePointAt(mark, COLON)) {
-      this.addUnit("accDescr", at, description.end)
+      const keyword = this.addUnit("accDescr", at, description.end)
       this.addUnit(":", mark, this.reader.after(mark))
       this.position = skipWhitespace(this.reader, this.reader.after(mark))
-      this.enter("description")
+      this.enter("description", significantRangeOf(keyword))
       return true
     }
     if (isCodePointAt(mark, LEFT_CURLY_BRACKET)) {
-      this.addUnit("accDescr", at, description.end)
+      const keyword = this.addUnit("accDescr", at, description.end)
       this.addUnit("{", mark, this.reader.after(mark))
       this.position = skipWhitespace(this.reader, this.reader.after(mark))
-      this.enter("description-block")
+      this.enter("description-block", significantRangeOf(keyword))
       return true
     }
     return false
@@ -867,8 +845,7 @@ export class SequenceUnitLexer {
     for (const word of LATE_STATEMENT_KEYWORDS) {
       const match = this.keyword(at, word)
       if (match === null) continue
-      this.addUnit(word, at, match.end)
-      this.position = match.end
+      this.read(word, at, match.end)
       return true
     }
     return false
@@ -877,16 +854,14 @@ export class SequenceUnitLexer {
   /** The statement context, rule 19: `,`, a `,` unit. */
   private readComma(at: DiagramCharacter): boolean {
     if (at.codePoint !== COMMA) return false
-    this.addUnit(",", at, this.reader.after(at))
-    this.position = this.reader.after(at)
+    this.read(",", at, this.reader.after(at))
     return true
   }
 
   /** The statement context, rule 20: `;`, a `newline` unit. */
   private readSemicolon(at: DiagramCharacter): boolean {
     if (at.codePoint !== SEMICOLON) return false
-    this.addUnit("newline", at, this.reader.after(at))
-    this.position = this.reader.after(at)
+    this.read("newline", at, this.reader.after(at))
     return true
   }
 
@@ -920,6 +895,7 @@ export class SequenceUnitLexer {
       "id",
       at,
       end,
+      "trim-whitespace",
       withoutWhitespaceAtEnds(this.textBetween(at, end)),
     )
     this.position = end
@@ -974,26 +950,22 @@ export class SequenceUnitLexer {
   /** The statement context, rule 24: `+`, `-`, and `()`, a unit named by its text. */
   private readSign(at: DiagramCharacter): boolean {
     if (at.codePoint === PLUS_SIGN) {
-      this.addUnit("+", at, this.reader.after(at))
-      this.position = this.reader.after(at)
+      this.read("+", at, this.reader.after(at))
       return true
     }
     if (at.codePoint === HYPHEN_MINUS) {
-      this.addUnit("-", at, this.reader.after(at))
-      this.position = this.reader.after(at)
+      this.read("-", at, this.reader.after(at))
       return true
     }
     const parentheses = matchWord(this.reader, at, "()")
     if (parentheses === null) return false
-    this.addUnit("()", at, parentheses.end)
-    this.position = parentheses.end
+    this.read("()", at, parentheses.end)
     return true
   }
 
   /** The statement context, rule 25: any other character, an `invalid` unit. */
   private readInvalid(at: DiagramCharacter): boolean {
-    this.addUnit("invalid", at, this.reader.after(at))
-    this.position = this.reader.after(at)
+    this.read("invalid", at, this.reader.after(at))
     return true
   }
 
@@ -1053,9 +1025,8 @@ export class SequenceUnitLexer {
   private readDataStart(at: DiagramCharacter): boolean {
     const match = matchWord(this.reader, at, "@{")
     if (match === null) return false
-    this.addUnit("@{", at, match.end)
-    this.position = match.end
-    this.enter("data")
+    const opening = this.read("@{", at, match.end)
+    this.enter("data", significantRangeOf(opening))
     return true
   }
 
@@ -1074,8 +1045,7 @@ export class SequenceUnitLexer {
     )
     if (samePosition(end, at)) return false
     if (matchWord(this.reader, end, "@{") === null) return false
-    this.addUnit("id", at, end)
-    this.position = end
+    this.read("id", at, end)
     return true
   }
 
@@ -1094,9 +1064,8 @@ export class SequenceUnitLexer {
         !isWhitespace(character.codePoint),
     )
     if (samePosition(end, at) || !this.aliasFollows(end)) return false
-    this.addUnit("id", at, end)
-    this.position = end
-    this.enter("alias")
+    const id = this.read("id", at, end)
+    this.enter("alias", significantRangeOf(id))
     return true
   }
 
@@ -1137,6 +1106,7 @@ export class SequenceUnitLexer {
       "id",
       at,
       end,
+      "trim-whitespace",
       withoutWhitespaceAtEnds(this.textBetween(at, end)),
     )
     this.position = end
@@ -1174,8 +1144,7 @@ export class SequenceUnitLexer {
       at,
       (character) => character.codePoint !== LINE_FEED,
     )
-    this.addUnit("invalid", at, end)
-    this.position = end
+    this.read("invalid", at, end)
     this.leave()
     return true
   }
@@ -1201,11 +1170,10 @@ export class SequenceUnitLexer {
     }
     const match = this.keyword(at, "as")
     if (match === null) throw this.noRuleMatches(at)
-    this.addUnit("as", at, match.end)
-    this.position = match.end
+    const as = this.read("as", at, match.end)
     this.leave()
     this.leave()
-    this.enter("line")
+    this.enter("line", significantRangeOf(as))
   }
 
   /**
@@ -1233,13 +1201,7 @@ export class SequenceUnitLexer {
       // mermaid.js reads, as characters that are not whitespace.
       const end = this.skipNone(at, TEXT_END)
       if (!this.isAllWhitespaceButLineSeparators(at, end)) {
-        this.addUnit(
-          "text",
-          at,
-          end,
-          null,
-          "trim-whitespace-but-line-separators",
-        )
+        this.addUnit("text", at, end, "trim-whitespace-but-line-separators")
       }
       this.position = end
     } else {
@@ -1273,8 +1235,7 @@ export class SequenceUnitLexer {
     }
     if (length === 0) return false
     const end = this.reader.after(characters[length - 1])
-    this.addUnit("color-candidate", at, end)
-    this.position = end
+    this.read("color-candidate", at, end)
     return true
   }
 
@@ -1323,16 +1284,14 @@ export class SequenceUnitLexer {
         at,
         (character) => character.codePoint !== RIGHT_CURLY_BRACKET,
       )
-      this.addUnit("data-text", at, end, null, "keep-whitespace")
-      this.position = end
+      this.read("data-text", at, end, "keep-whitespace")
       return
     }
     const end = this.reader.after(at)
-    this.addUnit("}", at, end)
-    this.position = end
+    const closing = this.read("}", at, end)
     this.leave()
     if (this.aliasFollows(end)) {
-      this.enter("alias")
+      this.enter("alias", significantRangeOf(closing))
     } else {
       this.leave()
     }
@@ -1350,8 +1309,7 @@ export class SequenceUnitLexer {
       at,
       (character) => character.codePoint !== LINE_FEED,
     )
-    this.addUnit(name, at, end)
-    this.position = end
+    this.read(name, at, end)
     this.leave()
   }
 
@@ -1362,8 +1320,7 @@ export class SequenceUnitLexer {
    */
   private readInDescriptionBlockContext(at: DiagramCharacter): void {
     if (at.codePoint === RIGHT_CURLY_BRACKET) {
-      this.addUnit("}", at, this.reader.after(at))
-      this.position = this.reader.after(at)
+      this.read("}", at, this.reader.after(at))
       this.leave()
       return
     }
@@ -1372,7 +1329,6 @@ export class SequenceUnitLexer {
       at,
       (character) => character.codePoint !== RIGHT_CURLY_BRACKET,
     )
-    this.addUnit("description-block-text", at, end)
-    this.position = end
+    this.read("description-block-text", at, end)
   }
 }

@@ -21,7 +21,7 @@ mermaid.js は、どちらかを設定する文をすべて受理し、
 ## 規則の詳細
 
 この規則は、最初のものより後の `title` の文と、
-最初のものより後の `accTitle` の文を、すべて報告する。
+最初のものより後の `accTitle` の文を、前と違う値を設定するときに報告する。
 対象の図種は `journey` である。
 
 `title first` と `title second` の後、タイトルは `second` になり、
@@ -45,6 +45,16 @@ mermaid.js は、どちらかを設定する文をすべて受理し、
 フロントマターに `title: Frontmatter title` があると、
 `title Statement title` はタイトルを `Statement title` にする。
 規則はこれを報告しない。
+
+図がすでに持つタイトルを設定する文は、報告しない。
+`accTitle: a` の後の 2 つ目の `accTitle: a` は、何も失わない。
+タイトルは、mermaid.js が持つとおりに、両端の空白を除いて比べるので、
+`accTitle:  a` も同じタイトルを設定する。
+`accTitle: a` と `accTitle: b` の後の 3 つ目の `accTitle: a` は、
+`b` を置き換えるので報告する。
+`title` も同じであり、そのテキストは空白を保つ。
+`title T` の後の、空白が 2 つの `title  T` は、別のタイトルを設定し、
+描いたときに 2 つのタイトルが同じに見えても報告する。
 
 この規則に**反する**コードの例:
 
@@ -73,6 +83,15 @@ journey
 journey
   title first
   accTitle: second
+  section Work
+    Make tea: 5: Me
+```
+
+```mmd
+%% eslint @mmd-toolkit/journey-no-duplicate-title: error
+journey
+  title first
+  title first
   section Work
     Make tea: 5: Me
 ```

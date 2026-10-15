@@ -1,6 +1,7 @@
 import type { FlowchartAccTitleStatement } from "@mmd-toolkit/parser"
 import type { MermaidRuleDefinition } from "../rule-types.ts"
 import { ruleDocsUrl } from "../rule-docs-url.ts"
+import { titleText } from "../utils/acc-text.ts"
 import { oneOfTwoRemovals } from "../utils/removal.ts"
 
 /**
@@ -9,6 +10,9 @@ import { oneOfTwoRemovals } from "../utils/removal.ts"
  * after the first, also in a subgraph and also one without text. ESLint visits
  * the statements in the order of the source, so each one is compared with the
  * one before it.
+ *
+ * A statement is reported only when the value it sets differs from that of the
+ * one before it (`titleText`): setting what the diagram already has loses nothing.
  */
 export const flowchartNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []
@@ -38,7 +42,7 @@ export const flowchartNoDuplicateTitle: MermaidRuleDefinition<{
     let previous: FlowchartAccTitleStatement | null = null
     return {
       FlowchartAccTitleStatement(node) {
-        if (previous !== null) {
+        if (previous !== null && titleText(previous) !== titleText(node)) {
           context.report({
             node,
             messageId: "duplicate",

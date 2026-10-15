@@ -33,6 +33,25 @@ Code:
 ---
 
 
+Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/acc-title-back-to-first
+Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/acc-title-back-to-first-input.mmd
+
+Code:
+  1 | gantt
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accTitle: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   dateFormat YYYY-MM-DD
+  6 |   a : 2024-01-01, 1d
+  7 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+---
+
+
 Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/acc-title-second-after-comment-line
 Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/acc-title-second-after-comment-line-input.mmd
 
@@ -124,6 +143,22 @@ Code:
   2 | title a
   3 | title b
     | ^~~~~~~ [1]
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: gantt-no-duplicate-title >> invalid >>> invalid/gantt/title-extra-space
+Filename: tests/fixtures/rules/gantt-no-duplicate-title/invalid/gantt/title-extra-space-input.mmd
+
+Code:
+  1 | gantt
+  2 |   title T
+  3 |   title  T
+    |   ^~~~~~~~ [1]
+  4 |   dateFormat YYYY-MM-DD
+  5 |   a : 2024-01-01, 1d
+  6 |
 
 [1] mermaid.js replaces the title set on line 2 with the one of this `title`.
 ---

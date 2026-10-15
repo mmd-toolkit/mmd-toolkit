@@ -18,7 +18,8 @@ mermaid.js はどの `accTitle` の文も受理し、
 
 ## 規則の詳細
 
-この規則は、`accTitle` の文のうち、最初のもの以外をすべて報告する。
+この規則は、`accTitle` の文のうち、最初のもの以外を、
+前と違うタイトルを設定するときに報告する。
 対象の図種は `er` である。
 
 `accTitle: a` と `accTitle: b` の後、タイトルは `b` になる。
@@ -27,6 +28,13 @@ mermaid.js はどの `accTitle` の文も受理し、
 テキストの終わりでは、mermaid.js はそれを拒否する。
 subgraph の中の文も、図全体のタイトルを設定するので、数える。
 mermaid.js は、そのテキストを subgraph の要素にも加える。
+
+図がすでに持つタイトルを設定する文は、報告しない。
+`accTitle: a` の後の 2 つ目の `accTitle: a` は、何も失わない。
+タイトルは、mermaid.js が持つとおりに、両端の空白を除いて比べるので、
+`accTitle:  a` も同じタイトルを設定する。
+`accTitle: a` と `accTitle: b` の後の 3 つ目の `accTitle: a` は、
+`b` を置き換えるので報告する。
 
 この規則に**反する**コードの例:
 
@@ -45,6 +53,14 @@ erDiagram
 erDiagram
   accTitle: first
   accDescr: second
+  A
+```
+
+```mmd
+%% eslint @mmd-toolkit/er-no-duplicate-title: error
+erDiagram
+  accTitle: first
+  accTitle: first
   A
 ```
 

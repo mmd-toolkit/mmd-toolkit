@@ -54,6 +54,7 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "journey",
   "requirement",
   "mindmap",
+  "timeline",
 ]
 
 /**

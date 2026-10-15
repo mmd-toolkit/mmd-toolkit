@@ -24,6 +24,7 @@ export const TREE_DOCUMENT_DIAGRAMS = [
   "journey",
   "requirement",
   "mindmap",
+  "timeline",
 ] as const
 
 /** The fields that every node and every record has, which no table lists. */
