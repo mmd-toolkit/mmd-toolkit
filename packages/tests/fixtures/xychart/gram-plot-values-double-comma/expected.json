@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: two commas are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ychart-beta bar [1,,2]\n----------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'COMMA'"
+  }
+}

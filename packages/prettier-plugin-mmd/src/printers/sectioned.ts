@@ -7,7 +7,7 @@ import { printAtoms } from "./atoms.ts"
 import type { BlockRules } from "./blocks.ts"
 import { openingLine, printBlock, printDiagramBlock } from "./blocks.ts"
 import type { KeptLines } from "./kept-lines.ts"
-import { expectToken } from "./layout.ts"
+import { expectToken, findLayoutEnd } from "./layout.ts"
 import { indentationOf } from "./lines.ts"
 import type { Source } from "./source.ts"
 import { findTokenStartingAt } from "./source.ts"
@@ -115,19 +115,6 @@ export function printSectionedDiagram<Statement extends Node>(
     false,
   )
   return printDiagramBlock(source, header, block, options)
-}
-
-/**
- * Where a layout ends: the end of its last atom. The statements of the body
- * start after the header, which holds more than the keyword where the header
- * has a direction.
- */
-function findLayoutEnd(layout: AtomLayout): number {
-  const last = layout.atoms.at(-1)
-  if (last === undefined) {
-    throw new Error("prettier-plugin-mmd: a header layout without atoms")
-  }
-  return last.end
 }
 
 /**

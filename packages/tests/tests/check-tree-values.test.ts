@@ -7,6 +7,7 @@ import {
   VALUE_NODE_TYPES,
 } from "../src/check-tree/node-types.ts"
 import { VALUE_RULES } from "../src/check-tree/values.ts"
+import { XYCHART_ACCESSIBILITY_STATEMENTS } from "../src/check-tree/xychart.ts"
 import { WrittenText } from "../src/check-tree/written-text.ts"
 import type { CheckedNode, CheckedRoot } from "../src/check-tree/types.ts"
 import { label } from "../src/check-tree/problems.ts"
@@ -52,6 +53,11 @@ function saidInSpecification(
 ): "written-text" | "units-joined" | "otherwise" {
   if (meaning.startsWith("Its written text between")) return "otherwise"
   if (meaning.startsWith("Its written text")) return "written-text"
+  // ast/xychart.md, XychartLiteral: the units joined, but for the texts of the
+  // accessibility statements, which `accessibilityTextsOf()` of `values.ts` lists.
+  if (meaning.startsWith("For a text without quotes, the texts of its units")) {
+    return "units-joined"
+  }
   if (
     meaning.startsWith("The written texts of its units") ||
     meaning.startsWith("The texts of its units")
@@ -132,7 +138,7 @@ interface BrokenValueRow {
   /** The node type of `VALUE_RULES` whose value is broken. */
   readonly type: string
   /** What the row breaks, when the type has more than one rule. */
-  readonly variant?: "a style"
+  readonly variant?: "a style" | "an accessibility text"
   /** The fixed start of the message of the rule of the type; the problem is at the node. */
   readonly message: string
 }
@@ -193,6 +199,12 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "RequirementIdentifier", message: "name is not its written text" },
   { type: "RequirementLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RequirementIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "XychartLiteral", message: NOT_TOKENS_JOINED },
+  {
+    type: "XychartLiteral",
+    variant: "an accessibility text",
+    message: "value is not its written text without the whitespace at its ends",
+  },
 ]
 
 /** The name of a row, for the failures. */
@@ -217,15 +229,28 @@ function stylesIn(tree: CheckedRoot): Set<unknown> {
   return styles
 }
 
+/** The `XychartLiteral` nodes of `tree` that are the text of an accessibility statement. */
+function accessibilityTextsIn(tree: CheckedRoot): Set<unknown> {
+  return new Set(
+    nodesOf(tree).flatMap((node) =>
+      XYCHART_ACCESSIBILITY_STATEMENTS.includes(node.type) ? [node.value] : [],
+    ),
+  )
+}
+
 /** The nodes of `tree` that the row breaks: of its type, of its variant, with a value that an edit changes. */
 function instancesOfRow(tree: CheckedRoot, row: BrokenValueRow): CheckedNode[] {
   const field = VALUE_RULES[row.type]?.field ?? "value"
   const styles = stylesIn(tree)
+  const accessibilityTexts = accessibilityTextsIn(tree)
   return nodesOf(tree).filter(
     (node) =>
       node.type === row.type &&
       (!(row.type === "ClassLiteral" || row.type === "ErLiteral") ||
         styles.has(node) === (row.variant === "a style")) &&
+      (row.type !== "XychartLiteral" ||
+        accessibilityTexts.has(node) ===
+          (row.variant === "an accessibility text")) &&
       (typeof node[field] === "number" ||
         (typeof node[field] === "string" && node[field] !== "")),
   )
@@ -833,6 +858,12 @@ const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
     fixture: "db-fields-trimmed",
     reason:
       "its token is the field without the whitespace at its ends; only a field of whitespace only has a token of whitespace (ast/sankey.md, SankeyLiteral)",
+  },
+  XychartLiteral: {
+    diagram: "xychart",
+    fixture: "db-title-bare-words",
+    reason:
+      "its tokens are words, which hold no whitespace, or the text of an accessibility statement without the whitespace at its ends (parser/docs/tokens/xychart.md)",
   },
 }
 

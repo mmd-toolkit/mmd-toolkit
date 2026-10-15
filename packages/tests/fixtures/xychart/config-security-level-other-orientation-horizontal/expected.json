@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, settings: the orientation setting and the replacement of characters together."
+  },
+  "config": {
+    "securityLevel": "other",
+    "xyChart": {
+      "chartOrientation": "horizontal"
+    }
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "horizontal",
+    "title": "T&lt;b&gt;",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            1
+          ]
+        ]
+      }
+    ]
+  }
+}

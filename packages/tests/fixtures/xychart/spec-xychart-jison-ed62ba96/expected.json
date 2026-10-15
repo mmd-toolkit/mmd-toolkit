@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/xychart/parser/xychart.jison.spec.ts",
+    "line": 8,
+    "test": "Testing xychart jison file > point labels > parse line data with mixed labels and no labels"
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "xAxisName",
+      "min": 1,
+      "max": 3
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "yAxisName",
+      "min": 10,
+      "max": 30
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            10
+          ],
+          [
+            "2",
+            20
+          ],
+          [
+            "3",
+            30
+          ]
+        ],
+        "pointLabels": [
+          "Start",
+          "",
+          "End"
+        ]
+      }
+    ]
+  }
+}

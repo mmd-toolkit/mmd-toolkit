@@ -18,6 +18,7 @@ import { checkTimelineTree } from "./timeline.ts"
 import { checkPunctuatorsAreWhole } from "./punctuators.ts"
 import { checkStringsAreWhole, checkTokensAreNotCut } from "./tokens.ts"
 import { checkValues, quoteDelimitersOf } from "./values.ts"
+import { checkXychartTree } from "./xychart.ts"
 import type { StringDelimitersOf } from "./values.ts"
 import type { CheckedRoot, TreeProblem } from "./types.ts"
 
@@ -95,6 +96,9 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
       break
     case "SankeyDiagram":
       checkSankeyTree(text, root, problems)
+      break
+    case "XychartDiagram":
+      checkXychartTree(text, root, problems)
       break
     default:
       problems.report(

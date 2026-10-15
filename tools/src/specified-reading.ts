@@ -36,13 +36,18 @@ const GANTT_COMMENT_REMOVALS: readonly DivergenceRemoval[] = [
  * make. The two class divergences are taken out together: both change the
  * lexer of the class diagram, and a fixture of one can be read through the
  * rules of the other. `comment-takes-line-break` is also one of the three of
- * gantt, so its fixtures take out all four.
+ * gantt, so its fixtures take out all four. The two divergences of the xychart
+ * lexer are taken out together as well: a title that holds a digit after an
+ * axis statement can stand beside a comment glued to a word.
  */
 const REMOVALS_OF_MARKS: Readonly<
   Record<string, readonly DivergenceRemoval[]>
 > = {
   "c4-keyword-anywhere": ["c4-keyword-anywhere"],
-  "comment-takes-character": GANTT_COMMENT_REMOVALS,
+  "comment-takes-character": [
+    ...GANTT_COMMENT_REMOVALS,
+    "title-digit-after-axis-statement",
+  ],
   "comment-takes-line-break": [
     ...GANTT_COMMENT_REMOVALS,
     "name-start-reads-unit",
@@ -52,6 +57,10 @@ const REMOVALS_OF_MARKS: Readonly<
     "name-start-reads-unit",
   ],
   "percent-brace-after-unit": GANTT_COMMENT_REMOVALS,
+  "title-digit-after-axis-statement": [
+    "comment-takes-character",
+    "title-digit-after-axis-statement",
+  ],
 }
 
 /** The mark of the divergence that mermaid.js reads the frontmatter of differently. */

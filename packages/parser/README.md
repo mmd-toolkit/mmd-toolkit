@@ -132,6 +132,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - Mindmaps: `mindmap` (`mindmap`).
 - Timelines: `timeline` (`timeline`).
 - Sankey diagrams: `sankey` (`sankey` and `sankey-beta`).
+- XY charts: `xychart` (`xychart` and `xychart-beta`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -230,8 +231,9 @@ type ids. The names and fields are those of the specification's
 [`ast/journey.md`](../spec/docs/ast/journey.md),
 [`ast/requirement.md`](../spec/docs/ast/requirement.md),
 [`ast/mindmap.md`](../spec/docs/ast/mindmap.md),
-[`ast/timeline.md`](../spec/docs/ast/timeline.md), and
-[`ast/sankey.md`](../spec/docs/ast/sankey.md).
+[`ast/timeline.md`](../spec/docs/ast/timeline.md),
+[`ast/sankey.md`](../spec/docs/ast/sankey.md), and
+[`ast/xychart.md`](../spec/docs/ast/xychart.md).
 
 ## Walking the tree
 
@@ -400,7 +402,8 @@ these differences:
   [`ast/requirement.md`](../spec/docs/ast/requirement.md) (the requirement
   nodes), [`ast/mindmap.md`](../spec/docs/ast/mindmap.md) (the mindmap nodes),
   [`ast/timeline.md`](../spec/docs/ast/timeline.md) (the timeline nodes),
-  [`ast/sankey.md`](../spec/docs/ast/sankey.md) (the sankey nodes), and
+  [`ast/sankey.md`](../spec/docs/ast/sankey.md) (the sankey nodes),
+  [`ast/xychart.md`](../spec/docs/ast/xychart.md) (the XY chart nodes), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: `NaN` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nxychart-beta bar [NaN]\n------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'ALPHA'"
+  }
+}

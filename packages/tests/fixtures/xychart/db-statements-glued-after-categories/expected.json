@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Diagram and statements: a plot statement right after the `]` of the categories; accepted."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "a"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "a",
+            1
+          ]
+        ]
+      }
+    ]
+  }
+}

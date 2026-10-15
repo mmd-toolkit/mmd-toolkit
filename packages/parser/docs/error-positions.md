@@ -382,6 +382,36 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   after them, or the end of the text: `"",c,1` is rejected at the `,`. [fixture:
   sankey/gram-quoted-empty] [fixture: sankey/gram-quoted-empty-value]
 
+## In an XY chart
+
+- Where no rule of the lexer matches, `range` is the character there: a
+  character that no text without quotes holds, such as `<`, `{` after the
+  header, or a character outside ASCII, and the `#` that starts a complete
+  entity outside a string and an accessibility text. [fixture:
+  xychart/gram-title-bare-angle] [fixture: xychart/gram-header-brace-suffix]
+  [fixture: xychart/gram-grid-nonascii-category-bare] [fixture:
+  xychart/gram-grid-entity-category-bare]
+- When the text ends in a context that may not end there, `range` is what
+  entered that context, and the message says what is not closed: the opening `"`
+  of a string (`The string has no closing " before the end of the text`), and
+  the `[` of the categories
+  (`The categories have no ] before the end of the text`) and of the values
+  (`The values have no ] before the end of the text`). [fixture:
+  xychart/gram-title-quoted-unclosed-at-end] [fixture:
+  xychart/gram-x-axis-band-unclosed] [fixture:
+  xychart/gram-plot-values-unclosed]
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace, and the empty range at the start of a unit that is all whitespace,
+  with the message `Unexpected token`; where the text ends before a statement is
+  complete, it is the empty range at the end of the text, with the message
+  `Unexpected end of text`. [fixture: xychart/gram-plot-values-extra-text]
+  [fixture: xychart/gram-header-after-statement] [fixture:
+  xychart/gram-x-axis-empty] [fixture: xychart/gram-title-keyword-alone-at-end]
+- An empty string that the grammar does not take as a whole text is rejected at
+  it, as the known divergence below, also where mermaid.js rejects the input
+  too, as `title ""`. [fixture: xychart/gram-title-empty-string] [fixture:
+  xychart/div-empty-string-line]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

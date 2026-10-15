@@ -40,6 +40,26 @@ function describe(value: unknown): string {
   return typeof value
 }
 
+/**
+ * Whether `value` is a value of the field `field` of the node type `type` that
+ * the form of a recorded tree allows besides its kind: the `value` of a
+ * NumericLiteral is also `Infinity`, `-Infinity`, or null for a number that a
+ * double cannot hold, since JSON writes the non-finite numbers as null
+ * (tests/docs/maintaining-fixtures.md, The recorded tree is JSON). Which of them is right
+ * for the written text is checked with the value (`values.ts`).
+ */
+function isNonFiniteNumber(
+  type: string,
+  field: string,
+  value: unknown,
+): boolean {
+  return (
+    type === "NumericLiteral" &&
+    field === "value" &&
+    (value === null || value === Infinity || value === -Infinity)
+  )
+}
+
 /** Whether `value` is of the value type `valueType` of a field. */
 function isValueOfType(value: unknown, valueType: string | undefined): boolean {
   switch (valueType) {
@@ -115,7 +135,10 @@ function checkNodeShape(
     }
     switch (spec.shape) {
       case "value":
-        if (!isValueOfType(value, spec.valueType))
+        if (
+          !isValueOfType(value, spec.valueType) &&
+          !isNonFiniteNumber(String(node.type), field, value)
+        )
           reportWrongKind(
             problems,
             here,

@@ -76,7 +76,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   gantt 図の図のコメントは、印 `%%` と `%` を持ち、
   journey 図と requirement 図と timeline 図の図のコメントは、
   印 `#`、`%%`、`%` を持ち、
-  mindmap 図の図のコメントは、印 `%%` を持ちます。
+  mindmap 図と xychart 図の図のコメントは、印 `%%` を持ちます。
   印のない断片は、コメント領域に続きます
   （parser/docs/tokens.md の Comment、
   [common.md](../../spec/docs/common.md#comment-lines) の Comment lines）。
@@ -469,6 +469,68 @@ const problems: TreeProblem[] = checkTree(text, tree)
     図とリンクの範囲は、トークンと子ノードの最初から最後までで、
     欄の範囲は、前後の空白を除いたトークンの範囲です
     （`parser/docs/tokens/sankey.md` と `parser/docs/positions/sankey.md`）。
+  - xychart: 検査は木とソースのテキストを読みます。
+    欄の子ノードは、その表の型です
+    （`XYCHART_CHILD_TYPES`。
+    テストが ast/xychart.md の Type の列と合わせます）。
+    図にはヘッダーが 1 つ以上、band にはカテゴリーが 1 つ以上、
+    プロットには値が 1 つ以上あります。
+    ヘッダーは最初の文より前にあります
+    （ast/xychart.md の XychartDiagram）。
+    ヘッダーの向きは、なしか、
+    大文字小文字を問わず `vertical` か `horizontal` で、
+    プロットの種類は、小文字の `line` か `bar` です
+    （`XYCHART_ORIENTATIONS` と `XYCHART_PLOT_KINDS`。
+    テストが Meaning の列と合わせます）。
+    title は空ではなく、軸の文には title かデータ、またはその両方があり、
+    引用符で空の title の後ろにはデータがあり、
+    カテゴリーは空ではありません
+    （ast/xychart.md の XychartTitleStatement、XychartXAxisStatement、
+    XychartYAxisStatement、XychartBand）。
+    引用符のないテキストは、空ではなく、ASCII の英字と数字と
+    `-`、`_`、`.`、`+`、`=`、`*`、`&`、`#` を含みます
+    （diagrams/xychart.md の The statement context の規則 6）。
+    軸の title には数字がありません。そこでは数字が数を始めるためです
+    （The axis context）。
+    アクセシビリティの文のテキストは空ではなく、
+    行のものは行終端を含まず、ブロックのものは `}` を含みません
+    （Accessibility values）。
+    テキストのない `accTitle:` と `accDescr:` の文は最後の文です。
+    そのテキストは、キーワードの後でテキストのある最初の行だからです
+    （Accessibility values）。
+    閉じないブロックも最後の文です。テキストの終わりまで続くからです
+    （ast/xychart.md の XychartAccDescrBlockStatement）。
+    数の書かれたテキストは、符号がなくてもよく、桁と小数部がなくてもよいか、
+    小数部だけです（The axis context）。
+    文字列は閉じていて、`"` を含みません。
+    ただし、HTML の属性の引用符の `"` は `'` として読みます（Strings）。
+    図のコメントの印は `%%` です（Comments）。
+    トークンの種類は `parser/docs/tokens/xychart.md` のとおりです。
+    ノードが自分で書くトークンは、`[`、`]`、`,`、`;`、`:`、`{`、`}`、`-->` なら
+    `Punctuator`、ヘッダー、向き、キーワードなら `Keyword` です。
+    引用符のないテキストのトークンとアクセシビリティの文のテキストのトークンは
+    `RawText`、数のトークンは `Numeric` です。
+    ノードが自分で書くトークンと子ノードは、間に空白だけを置いて、
+    次の順に並びます。
+    ヘッダーと、あれば向き。
+    `title` とそのテキスト。
+    `x-axis` か `y-axis`、title、データ（title が先）。
+    `[`、2 つごとに `,` を挟んだカテゴリー、`]`。
+    始まり、`-->`、終わり。
+    `line` か `bar`、title、`[`、2 つごとに `,` を挟んだ値、`]`。
+    数とそのラベル。
+    `accTitle` か `accDescr`、`:`、行の終わりまで続くテキスト。
+    `accDescr`、`{`、テキスト、`}`（`}` があるのは `closed` が真のときだけ）。
+    図は、行を終える `;` を自分で書きます。
+    向きは、ヘッダーの 2 つ目のトークンを書かれたとおりに持つか、null です。
+    プロットの種類は、そのキーワードを小文字にしたものです。
+    `closed` は、ブロックの最後のトークンが `}` かどうかで、
+    閉じないブロックは、テキストの後ろに空白しかありません。
+    引用符のないテキストで、間に何もなく続く語は 1 つのトークンなので、
+    そのようなテキストの 2 つのトークンの間には、空白か切れ目があります。
+    図、文、その下のノードの範囲は、
+    トークンと子ノードの最初から最後までです
+    （`parser/docs/positions/xychart.md`）。
 
 範囲の**書かれたテキスト**は、ディレクティブ、コメント領域、
 行の規則が無視する `;` を除いたソースです（ast.md の Nodes）。
@@ -490,6 +552,11 @@ const problems: TreeProblem[] = checkTree(text, tree)
   ノードは両端の空白を除いた欄ですが、空白だけの欄は例外で、
   そのただ 1 つの `RawText` トークンが空白で、
   トークンは書かれたテキストです。
+- xychart 図の引用符のないテキスト（`XychartLiteral`）の値は、
+  単位をつないだ値で、空白を含みません。
+  アクセシビリティの文のテキストの値は、
+  書かれたテキストから両端の空白を除いたもので、
+  文字の間の空白を含み、トークンは書かれたテキストです。
 - 文字列、文字列で始まるラベル、
   文字列かマークダウン文字列である mindmap 図のラベル、データブロックには、
   そのテキストに属する区切りがあります。
@@ -602,6 +669,11 @@ journey のファイルは 14 本作ります）。
 `check-tree-sankey.test.ts` は、sankey 図の上の文を持つ最小の木を手で作り、
 文が分ける壊し方のそれぞれで壊して、検査が報告すべき問題を確かめ、
 検査の表が ast/sankey.md の Type の列と合うことを求めます。
+`check-tree-xychart.test.ts` は、xychart 図の上の文を持つ最小の木を手で作り、
+文が分ける壊し方のそれぞれで壊して、検査が報告すべき問題を確かめ、
+検査の表が ast/xychart.md の Type と Meaning の列と合うことを求めます。
+また、名前を挙げた fixture の記録した木を壊して、
+トークンの種類、並び、向き、種類、`closed`、範囲の検査を確かめます。
 `check-tree-string-tokens.test.ts` は、flowchart、class、state、ER、sankey の
 名前を挙げた fixture の記録した木で、最初の文字列のトークンの種類を変え、
 文字列のトークンの検査がそれを報告することを求めます。

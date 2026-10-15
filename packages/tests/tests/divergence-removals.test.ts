@@ -12,14 +12,24 @@ import {
 } from "../src/divergence-removals.ts"
 
 /**
- * A lexer with the given rules and start states, and a `setInput` that does
- * nothing.
+ * A lexer with the given rules and start states, a `setInput` that does
+ * nothing, and the stack of start states `stack`, of which the last is the one
+ * the lexer is in.
  */
 function fakeLexer(
   rules: RegExp[],
   conditions: JisonLexer["conditions"] = {},
+  stack: string[] = ["INITIAL"],
+  options: JisonLexer["options"] = {},
 ): JisonLexer {
-  return { rules, conditions, setInput: () => undefined }
+  return {
+    rules,
+    conditions,
+    options,
+    setInput: () => undefined,
+    topState: () => stack.at(-1) ?? "INITIAL",
+    popState: () => stack.pop() ?? "INITIAL",
+  }
 }
 
 /**
@@ -136,6 +146,145 @@ describe("try-first", () => {
     expect(findRewrites(fakeLexer([/^q/u]), tryFirstRemoval)).toBe(
       "the example lexer has no start state quoted",
     )
+  })
+})
+
+const leaveStateRemoval = {
+  diagramType: "example",
+  sampleText: "",
+  changes: [
+    { kind: "leave-state", state: "axis", sources: ["^;", "^k"] } as const,
+  ],
+}
+
+describe("leave-state", () => {
+  const conditions = {
+    INITIAL: { rules: [0, 1, 2] },
+    axis: { rules: [0, 1, 2] },
+  }
+
+  it("pops the state when a rule matches while the lexer is in it", async () => {
+    const stack = ["INITIAL", "axis", "axis"]
+    const lexer = fakeLexer([/^a/u, /^;/u, /^k/u], conditions, stack)
+    const rewrite = findRewrites(lexer, leaveStateRemoval)
+    if (typeof rewrite === "string") throw new Error(rewrite)
+    const { result } = await withRewrites(named(rewrite), () => {
+      lexer.setInput("a;k")
+      return Promise.resolve([
+        tryRule(lexer.rules[0], "a"),
+        stack.join(),
+        tryRule(lexer.rules[1], ";"),
+        stack.join(),
+        tryRule(lexer.rules[2], "k"),
+        stack.join(),
+      ])
+    })
+    expect(result).toEqual([
+      "a",
+      "INITIAL,axis,axis",
+      ";",
+      "INITIAL,axis",
+      "k",
+      "INITIAL",
+    ])
+  })
+
+  it("leaves a lexer that is in another state, and a rule that does not match, as they are", async () => {
+    const stack = ["INITIAL", "axis", "data"]
+    const lexer = fakeLexer([/^a/u, /^;/u, /^k/u], conditions, stack)
+    const rewrite = findRewrites(lexer, leaveStateRemoval)
+    if (typeof rewrite === "string") throw new Error(rewrite)
+    const { result } = await withRewrites(named(rewrite), () => {
+      lexer.setInput(";")
+      return Promise.resolve([tryRule(lexer.rules[1], ";"), stack.join()])
+    })
+    expect(result).toEqual([";", "INITIAL,axis,data"])
+    stack.splice(2, 1)
+    await withRewrites(named(rewrite), () => {
+      lexer.setInput("x")
+      return Promise.resolve(tryRule(lexer.rules[1], "x"))
+    })
+    expect(stack).toEqual(["INITIAL", "axis"])
+  })
+
+  it("pops the state of the lexer that was given the text, not of the lexer the rules belong to", async () => {
+    // mermaid.js reads with an object made from its lexer for each parse.
+    const prototype = fakeLexer([/^a/u, /^;/u, /^k/u], conditions, ["INITIAL"])
+    const stack = ["INITIAL", "axis"]
+    const reader = {
+      ...fakeLexer([], {}, stack),
+      setInput: prototype.setInput,
+    }
+    const rewrite = findRewrites(prototype, leaveStateRemoval)
+    if (typeof rewrite === "string") throw new Error(rewrite)
+    await withRewrites(named(rewrite), () => {
+      prototype.setInput.call(reader, ";")
+      tryRule(prototype.rules[1], ";")
+      return Promise.resolve()
+    })
+    expect(stack).toEqual(["INITIAL"])
+  })
+
+  it("refuses a lexer that takes the longest match or may reject a match", () => {
+    for (const options of [{ flex: true }, { backtrack_lexer: true }]) {
+      const lexer = fakeLexer(
+        [/^a/u, /^;/u, /^k/u],
+        conditions,
+        ["INITIAL", "axis"],
+        options,
+      )
+      expect(findRewrites(lexer, leaveStateRemoval)).toBe(
+        "the example lexer does not take the first rule that matches, so leaving a start state at a match is not sound",
+      )
+    }
+  })
+
+  it("reports a rule that matches before the lexer was given a text", async () => {
+    const lexer = fakeLexer([/^a/u, /^;/u, /^k/u], conditions, [
+      "INITIAL",
+      "axis",
+    ])
+    const rewrite = findRewrites(lexer, leaveStateRemoval)
+    if (typeof rewrite === "string") throw new Error(rewrite)
+    const { problem } = await withRewrites(named(rewrite), () => {
+      tryRule(lexer.rules[1], ";")
+      return Promise.resolve()
+    })
+    expect(problem).toMatch(/not given its text/u)
+  })
+
+  it("puts the rules back after the call", async () => {
+    const lexer = fakeLexer([/^a/u, /^;/u, /^k/u], conditions)
+    const rules = [...lexer.rules]
+    const rewrite = findRewrites(lexer, leaveStateRemoval)
+    if (typeof rewrite === "string") throw new Error(rewrite)
+    await withRewrites(named(rewrite), () => Promise.resolve())
+    expect(lexer.rules).toEqual(rules)
+    expect(lexer.rules[1]).toBe(rules[1])
+  })
+
+  it("reports a missing state, and a rule that is missing, twice, or not tried by the state", () => {
+    expect(findRewrites(fakeLexer([/^;/u, /^k/u]), leaveStateRemoval)).toBe(
+      "the example lexer has no start state axis",
+    )
+    expect(
+      findRewrites(
+        fakeLexer([/^;/u], { axis: { rules: [0] } }),
+        leaveStateRemoval,
+      ),
+    ).toBe("the example lexer has 0 rules ^k, not one")
+    expect(
+      findRewrites(
+        fakeLexer([/^;/u, /^;/u, /^k/u], { axis: { rules: [0, 1, 2] } }),
+        leaveStateRemoval,
+      ),
+    ).toBe("the example lexer has 2 rules ^;, not one")
+    expect(
+      findRewrites(
+        fakeLexer([/^;/u, /^k/u], { axis: { rules: [0] } }),
+        leaveStateRemoval,
+      ),
+    ).toBe("the start state axis of the example lexer does not try the rule ^k")
   })
 })
 
@@ -325,7 +474,7 @@ describe("withRewrites: a swap that fails", () => {
           },
         },
       ],
-      position: undefined,
+      call: undefined,
     }
   }
 
@@ -396,7 +545,7 @@ describe("the removal of c4-keyword-anywhere", () => {
 
   it("has one swap, for the detector of c4", () => {
     expect(rewrite.swaps.map((swap) => swap.slot)).toEqual(["detector:c4"])
-    expect(rewrite.position).toBeUndefined()
+    expect(rewrite.call).toBeUndefined()
   })
 
   it("replaces the detector only during the call, also when it fails", async () => {

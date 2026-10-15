@@ -268,6 +268,8 @@ Running tests; this is what belongs to this package):
     `line-separators`, `markdown-timeline`, and `value-nodes`.
   - `sankey*.ts`: `format` and `corpus` with `-t sankey`; and, without `-t`,
     `line-separators`, `markdown-sankey`, and `value-nodes`.
+  - `xychart*.ts`: `format` and `corpus` with `-t xychart`; and, without `-t`,
+    `line-separators`, `markdown-xychart`, and `value-nodes`.
   - `statement-rules.ts`, `accessibility-lines.ts`: the tests of the diagram
     types that use them, ER and requirement.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:

@@ -174,6 +174,7 @@ Dropped:
 | In a mindmap, `Write ::icon(fa fa-book)` or `Write:::urgent` on the line of a node                                                                                                                             | mermaid.js reads both by its grammar and loses nothing: the first is the node `Write ::icon` with the label `fa fa-book`, as `X(Foo)` shows `Foo` and not `X`, and the second is the label `Write:::urgent`. Calling either a mistake rests only on the guess that an icon or a class was meant                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | In a timeline, `#` in a period (`Sprint #3 : planning`: the period `Sprint `, and the comment `#3 : planning`, so the event is lost)                                                                           | A defect of mermaid.js, for the reasons above: the timeline documentation of mermaid.js calls a period and an event "simple text", names no comment `#`, and shows no other way of writing that keeps it (the entity `#35;` appears in the flowchart documentation only). Fact: [#5356](https://github.com/mermaid-js/mermaid/issues/5356) (closed, Type: Bug / Error) reports that `#` starts a comment                                                                                                                                                                                                                                                                                                                                                                          |
 | In a timeline, an event line after a section with no period of its own (`section B`, then `: y`; `y` goes to the last period of the section before)                                                            | mermaid.js reads it by its grammar and loses nothing; calling it a mistake needs the guess that the event was meant for section B. So for `section 2020 : a`, the section `2020 ` and an event of the period before                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a sankey diagram, two records of the same source and target (`a,b,1` and `a,b,2`)                                                                                                                           | The two links are both kept, and nothing is lost: calling the second a pasted copy is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 
 ### Questions for unclear cases
 
@@ -635,6 +636,8 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | timeline-no-duplicate-title               | yes              |                                                                              |
 | timeline-no-duplicate-description         | yes              |                                                                              |
 | timeline-no-empty-description-block       | yes              |                                                                              |
+| sankey-no-invalid-value                   | yes              |                                                                              |
+| sankey-no-empty-node                      | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -894,6 +897,22 @@ at the end of a line, and an empty block before a period or an event (run). The
 searches "timeline title", "timeline section", "timeline accTitle", "timeline
 colon", and "timeline hash" found nothing that changes the reading.
 
+sankey-no-invalid-value: (1) a value with no number at its start is `NaN`, and
+the link has no size; text after the number is dropped, as `"1,234"`, which is 1
+(run); text after the number that starts with `%%` is not reported; (2) none: a
+unit after the number, as in `5 TWh`, is dropped, and the report states that;
+(3) "sankey value", "sankey NaN", "sankey number", "sankey comma", "sankey
+parseFloat", "sankey" in titles:
+[#5995](https://github.com/mermaid-js/mermaid/issues/5995) (open) asks how
+negative values are drawn, which the rule does not report; (4) write the number
+alone, without separators or units.
+
+sankey-no-empty-node: (1) a source or a target of whitespace only, also in
+quotes, adds a node without a name, with the link to it (run); (2) none: a name
+deleted with its space kept is the slip reported, as for
+journey-no-empty-person; (3) "sankey" in titles; (4) write the name, or remove
+the record.
+
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
 author meant, and the rule reports the comment there too (criterion 1). Whether
@@ -969,6 +988,8 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | requirement-* (all 8 rules)             | None for now (2026-10-15; see the end of this section)         |
 | mindmap-* (both rules)                  | None for now (2026-10-15; see the end of this section)         |
 | timeline-* (all 3 rules)                | None for now (2026-10-15; see the end of this section)         |
+| sankey-no-invalid-value                 | None for now (2026-10-15; see the end of this section)         |
+| sankey-no-empty-node                    | None for now (2026-10-15; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1064,9 +1085,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
   the title `t`, which no-duplicate-title reports; run).
 
 `sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and
-`journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, and `timeline-*`
-(2026-10-15): the rules are implemented without suggestions for now. No
-suggestion had been decided for them or described in their documents, and the
+`journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, `timeline-*`, and
+`sankey-*` (2026-10-15): the rules are implemented without suggestions for now.
+No suggestion had been decided for them or described in their documents, and the
 one planned for the empty block of a sequence diagram rested on generated
 inputs. Whether they get suggestions is decided later, in the form of the
 flowchart rules, with a fixture for each case.

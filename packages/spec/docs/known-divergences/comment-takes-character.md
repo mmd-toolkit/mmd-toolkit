@@ -3,8 +3,8 @@
 Japanese version:
 [comment-takes-character.ja.md](./comment-takes-character.ja.md)
 
-Diagram types: sequence, gantt, journey, and timeline. This is one of the
-[known divergences](../known-divergences.md) of this specification from
+Diagram types: sequence, gantt, journey, timeline, and xychart. This is one of
+the [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
 ## The syntax
@@ -28,8 +28,8 @@ after a number, the `%%` starts a comment, and after a character of an id run or
 after the `:` before a text, it is a character of the id run or of the text. In
 a Gantt chart, where a single `%` starts a comment, it is about a `%` right
 after the first character of a unit, a character other than `}` and whitespace,
-as in `a% : 1d`, and in a user journey diagram and a timeline about a `%%` in
-the same place, as in `A%%B: 5` and `a%% c`.
+as in `a% : 1d`, and in a user journey diagram, a timeline, and an XY chart
+about a `%%` in the same place, as in `A%%B: 5`, `a%% c`, and `title T%% c`.
 
 ## The difference
 
@@ -196,6 +196,37 @@ timeline/div-comment-after-colon] [fixture:
 timeline/db-comment-percent-after-closing-brace] [fixture:
 timeline/lex-hash-before-percent]
 
+In an XY chart, the lexer of mermaid.js has the same rule for `%%` as in a user
+journey diagram, and it reads a run of letters, a run of digits, and a number
+whole, so the character that the comment takes is a unit of one character: a
+letter or a digit that stands alone, or a character such as `-`, `]`, or `;`.
+`title T%% c`, `x-axis T%% c`, `line [1]%% c`, `x-axis [a, b]%% c`,
+`bar [1 "a"]%% c`, and `y-axis 0 --> 1%% c` are rejected by mermaid.js and
+accepted here, `title A B%% c` has the title `A` in mermaid.js and `AB` here,
+and `title a-%% c` the title `a` and `a-`. `title AB%% c`,
+`y-axis 0 --> 10%% c`, `title T;%% c`, and a `%%` right after the closing quote
+of a string are read the same by both (see
+[Comments](../diagrams/xychart.md#comments)). The comment also takes the line
+feed before a line that is `%%` alone from its start, which changes no statement
+and counts only for
+[`title-digit-after-axis-statement`](./title-digit-after-axis-statement.md):
+there it takes away no level. [fixture:
+xychart/div-title-digit-after-bare-percent-line-after-axis-and-plot] [fixture:
+xychart/db-title-digit-after-bare-percent-line-and-empty-line] [fixture:
+xychart/header-bare-percent-line-after-header] [fixture:
+xychart/div-comment-glued-after-title-word] [fixture:
+xychart/div-comment-glued-after-axis-title] [fixture:
+xychart/div-comment-glued-after-bracket] [fixture:
+xychart/div-comment-glued-after-categories] [fixture:
+xychart/div-comment-glued-after-label] [fixture:
+xychart/div-comment-glued-after-range] [fixture:
+xychart/div-comment-takes-one-letter-word] [fixture:
+xychart/div-comment-takes-hyphen] [fixture:
+xychart/db-comment-glued-after-two-letter-word] [fixture:
+xychart/db-comment-glued-after-two-digit-number] [fixture:
+xychart/db-comment-glued-after-semicolon] [fixture:
+xychart/db-comment-glued-after-quote]
+
 ## What it means for an author
 
 A comment written right after a statement, without a space, can be read by
@@ -222,7 +253,9 @@ tried before its rules for line feeds, whitespace, task texts, and task data,
 and so has the lexer of timeline
 ([`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)),
 tried before its rules for line feeds, whitespace, keywords, events, and
-periods.
+periods, and so has the lexer of xychart
+([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)),
+tried before all its rules but the comment rule for `%%` where a unit starts.
 
 ## The rule of this specification, and why
 
@@ -230,8 +263,9 @@ In this specification, a comment starts at its mark, and a number may be
 followed by `%%` (see
 [The statement context](../diagrams/sequence.md#the-statement-context),
 [Comments](../diagrams/gantt.md#comments) of gantt,
-[Comments](../diagrams/journey.md#comments) of journey, and
-[Comments](../diagrams/timeline.md#comments) of timeline).
+[Comments](../diagrams/journey.md#comments) of journey,
+[Comments](../diagrams/timeline.md#comments) of timeline, and
+[Comments](../diagrams/xychart.md#comments) of xychart).
 
 That a comment takes the character before it, and only where another rule would
 start its match there, comes from the order of the rules of the lexer of

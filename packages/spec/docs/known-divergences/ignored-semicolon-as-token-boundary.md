@@ -4,7 +4,7 @@ Japanese version:
 [ignored-semicolon-as-token-boundary.ja.md](./ignored-semicolon-as-token-boundary.ja.md)
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
-requirement, mindmap, and timeline. This is one of the
+requirement, mindmap, timeline, and xychart. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -155,7 +155,13 @@ lie inside a keyword: mermaid.js reads `accDescr { style:#x } ti;tle T` as the
 title `T`, and so with `sec;tion S` and `accTi;tle: T`, and this specification
 rejects them. [fixture: timeline/div-ignored-semicolon-in-title-keyword]
 [fixture: timeline/div-ignored-semicolon-in-section-keyword] [fixture:
-timeline/div-ignored-semicolon-in-acc-title-keyword]
+timeline/div-ignored-semicolon-in-acc-title-keyword] In an XY chart, the
+`style`, the `:`, and the `#` may lie in a string before the `;`, such as
+`"style:#a"`, so the ignored `;` can lie inside a value or a keyword: mermaid.js
+reads `line "style:#a" [1;2]` as a line with the value 12, and
+`title "style:#a" li;ne [1]` as a title and a line, and this specification
+rejects them. [fixture: xychart/div-ignored-semicolon-in-value] [fixture:
+xychart/div-ignored-semicolon-in-keyword]
 
 Each diagram document lists where this shows, in its Known divergences section:
 [flowchart](../diagrams/flowchart.md#known-divergences),
@@ -166,8 +172,9 @@ Each diagram document lists where this shows, in its Known divergences section:
 [gantt](../diagrams/gantt.md#known-divergences),
 [journey](../diagrams/journey.md#known-divergences),
 [requirement](../diagrams/requirement.md#known-divergences),
-[mindmap](../diagrams/mindmap.md#known-divergences), and
-[timeline](../diagrams/timeline.md#known-divergences).
+[mindmap](../diagrams/mindmap.md#known-divergences),
+[timeline](../diagrams/timeline.md#known-divergences), and
+[xychart](../diagrams/xychart.md#known-divergences).
 
 ## What it means for an author
 

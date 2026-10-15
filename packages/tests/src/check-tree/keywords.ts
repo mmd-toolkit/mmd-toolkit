@@ -283,5 +283,20 @@ export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
     "acctitle",
     "accdescr",
   ],
+  // The row `Keyword` of parser/docs/tokens/xychart.md: the header and the
+  // orientation, and the words that start a statement.
+  XychartDiagram: [
+    "xychart",
+    "xychart-beta",
+    "vertical",
+    "horizontal",
+    "title",
+    "x-axis",
+    "y-axis",
+    "line",
+    "bar",
+    "acctitle",
+    "accdescr",
+  ],
   ErrorDiagram: [],
 }

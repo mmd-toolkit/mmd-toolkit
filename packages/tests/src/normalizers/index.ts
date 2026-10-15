@@ -10,6 +10,7 @@ import { normalizeSankey } from "./sankey.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
 import { normalizeState } from "./state.ts"
 import { normalizeTimeline } from "./timeline.ts"
+import { normalizeXyChart } from "./xychart.ts"
 
 /**
  * Turns a mermaid Db into its summary. Receives the Db right after parsing.
@@ -42,6 +43,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["requirement", normalizeRequirement],
   ["sankey", normalizeSankey],
   ["timeline", normalizeTimeline],
+  ["xychart", normalizeXyChart],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])

@@ -216,9 +216,13 @@ sequence/db-note-over-two] [fixture: sequence/db-note-left-of]
 **Autonumber.** `autonumber` adds an entry of type 26 whose `message` is
 `visible` true, and `start` and `step` when a number follows: the first number,
 and the second, or else 1; a 0 is a number as any other, so `autonumber 0 0`
-gives `start` 0 and `step` 0, and the step is not 1. `autonumber off` gives
-`visible` false and no numbers. Its `wrap` is false, also when the wrap setting
-of the configuration is true. [fixture: sequence/db-autonumber-bare] [fixture:
+gives `start` 0 and `step` 0, and the step is not 1. A number is the number that
+the converted form of its text writes, and the text `Infinity` or `-Infinity`
+where it is too large for a double, as in the summary. [fixture:
+sequence/db-autonumber-start-overflow] [fixture:
+sequence/db-autonumber-step-overflow] `autonumber off` gives `visible` false and
+no numbers. Its `wrap` is false, also when the wrap setting of the configuration
+is true. [fixture: sequence/db-autonumber-bare] [fixture:
 sequence/db-autonumber-start] [fixture: sequence/db-autonumber-start-step]
 [fixture: sequence/db-autonumber-off] [fixture: sequence/db-autonumber-zero]
 [fixture: sequence/config-wrap-site-autonumber]

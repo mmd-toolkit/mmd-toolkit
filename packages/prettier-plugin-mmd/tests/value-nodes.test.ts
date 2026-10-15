@@ -16,6 +16,7 @@ import { sankeyValueNodeTypes } from "../src/printers/sankey-layout.ts"
 import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
 import { stateValueNodeTypes } from "../src/printers/state-layout.ts"
 import { timelineValueNodeTypes } from "../src/printers/timeline-layout.ts"
+import { xychartValueNodeTypes } from "../src/printers/xychart-layout.ts"
 
 /** The leaf node types that every diagram type shares (ast.md, Shared leaf nodes). */
 const sharedLeafTypes = new Set([
@@ -161,6 +162,21 @@ const diagrams: readonly DiagramValues[] = [
       "Identifier",
       "StringLiteral",
       "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Xychart",
+    values: xychartValueNodeTypes,
+    notValues: new Set([
+      // The header keyword and the orientation, printed as their tokens.
+      "XychartHeader",
+      // A text without quotes has a token for each of its words, printed as
+      // tokens; the text of an accessibility statement is one token, which
+      // the layout of the statement prints as written.
+      "XychartLiteral",
+      // The shared leaf node that is no node of an XY chart: its names are
+      // the text of an XychartLiteral.
+      "Identifier",
     ]),
   },
 ]

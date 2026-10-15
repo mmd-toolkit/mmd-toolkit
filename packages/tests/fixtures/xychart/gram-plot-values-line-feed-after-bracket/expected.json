@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: a line feed after the opening bracket is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nxychart-beta line [1]\n-------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'NEWLINE'"
+  }
+}

@@ -261,7 +261,8 @@ mermaid.js はこれらを
 [`RequirementDiagram`](./ast/requirement.ja.md#requirementdiagram)、
 [`MindmapDiagram`](./ast/mindmap.ja.md#mindmapdiagram)、
 [`TimelineDiagram`](./ast/timeline.ja.md#timelinediagram)、
-[`SankeyDiagram`](./ast/sankey.ja.md#sankeydiagram) のどれかです。
+[`SankeyDiagram`](./ast/sankey.ja.md#sankeydiagram)、
+[`XychartDiagram`](./ast/xychart.ja.md#xychartdiagram) のどれかです。
 
 ## ErrorDiagram
 
@@ -377,7 +378,8 @@ flowchart/tokens-string-literal-comment-line]
 文字列は 2 つ目の引用符で閉じます。
 図がテキストの終わりまで閉じていない文字列を受理するところでは
 （class 図のバッククォートの名前だけです。
-[文字列、バッククォートの名前、ジェネリクスの型](./diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
+[文字列、バッククォートの名前、
+ジェネリクスの型](./diagrams/class.ja.md#文字列バッククォートの名前ジェネリクスの型)
 を参照）、
 その書かれたテキストは、ディレクティブにもコメント領域にも入らない、
 ソースの最後の文字まで続き、
@@ -410,10 +412,10 @@ class/tokens-backquote-unclosed-trailing-whitespace]
 
 数です。
 
-| 欄      | 型     | 意味                               |
-| ------- | ------ | ---------------------------------- |
-| `value` | 数     | その書かれたテキストが書く数。     |
-| `raw`   | 文字列 | 書かれたとおりの数。何も除かない。 |
+| 欄      | 型     | 意味                                               |
+| ------- | ------ | -------------------------------------------------- |
+| `value` | 数     | その書かれたテキストが書く数を倍精度で表したもの。 |
+| `raw`   | 文字列 | 書かれたとおりの数。何も除かない。                 |
 
 `linkStyle 0,1 stroke:red` の最初の数の値は 0 で、`raw` は `0` です。
 [fixture: flowchart/db-linkstyle-shared-fill]
@@ -424,6 +426,26 @@ sequence では小数も取れるので、`autonumber .5` は 2 分の 1 から�
 `autonumber 05` は 5 から始まります。
 [fixture: sequence/db-autonumber-fraction] [fixture:
 sequence/db-autonumber-leading-zero]
+値は書かれた数に最も近い倍精度の数で、書かれた数と違うことがあります。
+XY chart で、`bar [`、20 個の 9、`]` は値が 1 の後に 20 個の 0 が続く数で、
+`line [.`、400 個の 0、`1]` は値が 0 です。
+[fixture: xychart/db-plot-values-large]
+[fixture: xychart/db-plot-values-underflow]
+倍精度に収まらない数は、
+mermaid.js が読むとおり、無限大、`-` があればマイナス無限大です。
+XY chart で、`bar [`、400 個の 9、`]` は値が無限大で、
+`-` の後の同じ数はマイナス無限大です。
+範囲、scale の幅、`autonumber` の始まりと増分、
+linkStyle の番号もそのような数になれ、
+linkStyle の番号では範囲の外です。
+[fixture: xychart/db-plot-values-overflow]
+[fixture: xychart/db-plot-values-negative-overflow]
+[fixture: xychart/db-x-axis-range-overflow]
+[fixture: xychart/db-y-axis-range-negative-overflow]
+[fixture: state/gram-scale-width-overflow]
+[fixture: flowchart/gram-linkstyle-index-overflow]
+[fixture: sequence/db-autonumber-start-overflow]
+[fixture: sequence/db-autonumber-step-overflow]
 
 ## 図ごとのノード
 
@@ -442,6 +464,7 @@ sequence/db-autonumber-leading-zero]
 - [Mindmap](./ast/mindmap.ja.md): 図種 `mindmap`。
 - [Timeline](./ast/timeline.ja.md): 図種 `timeline`。
 - [Sankey](./ast/sankey.ja.md): 図種 `sankey`。
+- [XY chart](./ast/xychart.ja.md): 図種 `xychart`。
 
 図種のノードの型の名前は、`FlowchartVertex` のように、
 どれもその図種の名前で始めます。

@@ -108,6 +108,7 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
     "getTasks",
   ],
   "diagrams/common/commonDb.js": ["getDiagramTitle"],
+  "diagrams/xychart/parser/xychart.jison": ["parser"],
   "diagrams/sankey/parser/sankey.jison": ["default"],
   "diagrams/sankey/sankeyDB.js": ["default"],
   "diagrams/sankey/sankeyUtils.js": ["prepareTextForParsing"],
@@ -406,6 +407,9 @@ export async function recordSpecFile(
       getTasks: anything,
     },
     "diagrams/common/commonDb.js": { getDiagramTitle: anything },
+    "diagrams/xychart/parser/xychart.jison": {
+      parser: { parse: record, yy: anything },
+    },
     "diagrams/sankey/parser/sankey.jison": {
       default: { parser: { parse: record, yy: anything } },
     },

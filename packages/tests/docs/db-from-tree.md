@@ -103,6 +103,11 @@ are read from the tree like this:
   units of a style is no part of its value (the rule is in
   [db-from-tree/requirement.md](./db-from-tree/requirement.md)). [fixture:
   requirement/lex-style-spaces] [fixture: requirement/lex-style-no-comma]
+- **Xychart texts**: the converted forms of the tokens inside an
+  `XychartLiteral` of a title, an axis, a category, or a plot, joined, since the
+  whitespace between the units of a text without quotes is no part of its value
+  (the rule is in [db-from-tree/xychart.md](./db-from-tree/xychart.md)).
+  [fixture: xychart/db-title-bare-words]
 - **Mindmap labels**: the converted form of the range of a `MindmapLabel`,
   without the delimiters of a string or a markdown string, which are cut from
   the converted form, one character at each end for a string and two for a
@@ -372,6 +377,12 @@ does not, are:
 - Sankey: the title of the frontmatter and the id of every node, which is
   replaced after it is read from its field. Nodes whose ids become equal are one
   node. [fixture: sankey/config-security-level-other-title-and-ids]
+- Xychart: the title, of the frontmatter and of a `title` statement; `accTitle`;
+  `accDescr`, of a line and of a block; the titles of the axes; the categories;
+  the titles of the plots; and the labels that a line keeps. The orientation and
+  the numbers are not reached. [fixture:
+  xychart/config-security-level-other-all] [fixture:
+  xychart/config-security-level-other-orientation-horizontal]
 
 **Where the order of mermaid.js matters.** Some texts are replaced before
 mermaid.js reads them further, and the builders do the same.

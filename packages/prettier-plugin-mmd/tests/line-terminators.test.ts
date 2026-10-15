@@ -100,6 +100,21 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
     "timeline TD\n  title T\n  section S\n    2004 : a\n      : b\n    %%{init: {}}%%\n",
   ],
   [
+    "xychart",
+    [
+      "xychart-beta horizontal",
+      "title Two   words",
+      "x-axis [ a ,b ]",
+      'line [1 , 2 "x"]',
+      "accDescr {",
+      "d",
+      "}",
+      "%% c",
+      "%%{init: {}}%%",
+    ],
+    'xychart-beta horizontal\n  title Two words\n  x-axis [a, b]\n  line [1, 2 "x"]\n  accDescr {\nd\n  }\n  %% c\n  %%{init: {}}%%\n',
+  ],
+  [
     "gantt",
     [
       "gantt",

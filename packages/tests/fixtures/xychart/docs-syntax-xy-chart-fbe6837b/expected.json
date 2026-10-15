@@ -1,0 +1,131 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/xyChart.md",
+    "line": 182
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Different Colors in xyChart",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "categoriesX",
+      "categories": [
+        "Category 1",
+        "Category 2",
+        "Category 3",
+        "Category 4"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "valuesY",
+      "min": 0,
+      "max": 50
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "Category 1",
+            10
+          ],
+          [
+            "Category 2",
+            20
+          ],
+          [
+            "Category 3",
+            30
+          ],
+          [
+            "Category 4",
+            40
+          ]
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "Category 1",
+            20
+          ],
+          [
+            "Category 2",
+            30
+          ],
+          [
+            "Category 3",
+            25
+          ],
+          [
+            "Category 4",
+            35
+          ]
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "Category 1",
+            15
+          ],
+          [
+            "Category 2",
+            25
+          ],
+          [
+            "Category 3",
+            20
+          ],
+          [
+            "Category 4",
+            30
+          ]
+        ]
+      },
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "Category 1",
+            5
+          ],
+          [
+            "Category 2",
+            15
+          ],
+          [
+            "Category 3",
+            25
+          ],
+          [
+            "Category 4",
+            35
+          ]
+        ]
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "themeVariables": {
+        "xyChart": {
+          "plotColorPalette": "#000000, #0000FF, #00FF00, #FF0000"
+        }
+      }
+    }
+  }
+}

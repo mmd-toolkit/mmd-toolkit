@@ -256,6 +256,11 @@ sequence/db-message-central-connection-both]
 `start` は 1 つ目の数で、`step` は 2 つ目の数、なければ 1 です。
 0 もほかと同じ数なので、`autonumber 0 0` は `start` 0 と `step` 0 を与え、
 `step` は 1 になりません。
+数は、そのテキストの変換した形が書く数で、
+double に収まらない大きさのときは、要約と同じく、テキスト `Infinity` か
+`-Infinity` です。
+[fixture: sequence/db-autonumber-start-overflow]
+[fixture: sequence/db-autonumber-step-overflow]
 `autonumber off` は、`visible` が偽で、数を持ちません。
 その `wrap` は、設定の折り返しの設定が真のときも偽です。
 [fixture: sequence/db-autonumber-bare] [fixture:

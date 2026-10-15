@@ -17,6 +17,7 @@ import type { JourneyDiagram, JourneyNode } from "./ast/journey.ts"
 import type { MindmapDiagram, MindmapTreeNode } from "./ast/mindmap.ts"
 import type { TimelineDiagram, TimelineNode } from "./ast/timeline.ts"
 import type { SankeyDiagram, SankeyNode } from "./ast/sankey.ts"
+import type { XychartDiagram, XychartNode } from "./ast/xychart.ts"
 import type { RequirementDiagram, RequirementNode } from "./ast/requirement.ts"
 import type { SequenceDiagram, SequenceNode } from "./ast/sequence.ts"
 
@@ -272,6 +273,7 @@ export type DiagramBody =
   | MindmapDiagram
   | TimelineDiagram
   | SankeyDiagram
+  | XychartDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -360,3 +362,4 @@ export type Node =
   | MindmapTreeNode
   | TimelineNode
   | SankeyNode
+  | XychartNode

@@ -27,6 +27,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["mindmap", "MindmapDiagram"],
   ["timeline", "TimelineDiagram"],
   ["sankey", "SankeyDiagram"],
+  ["xychart", "XychartDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -115,6 +116,7 @@ const UNIT_NAMES: ReadonlySet<string> = new Set([
   "header",
   "header-keyword",
   "header-direction",
+  "orientation",
   "direction-value",
   "direction-value",
   "link-target",
@@ -211,6 +213,9 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
     // The row gives the two headers as texts.
     case "sankey":
       return []
+    // The header and the orientation units, which the row names by their kind.
+    case "xychart":
+      return ["xychart", "xychart-beta", "vertical", "horizontal"]
     // The header, and the two values of the `direction` unit.
     case "timeline":
       return ["timeline", "lr", "td"]

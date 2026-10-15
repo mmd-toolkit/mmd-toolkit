@@ -19,6 +19,7 @@ export type DivergenceRemoval =
   | "comment-takes-line-break"
   | "name-start-reads-unit"
   | "percent-brace-after-unit"
+  | "title-digit-after-axis-statement"
 
 /**
  * One change to a lexer. A rule is found by the `source` of the compiled rule
@@ -37,6 +38,11 @@ export type DivergenceRemoval =
  *   after them in their own order. Each is found among the rules that only
  *   that state tries, so that a rule of every state with the same source is
  *   not taken for it. The rules themselves do not change.
+ * - `leave-state`: the rules with the sources `sources` leave the start state
+ *   `state` when one of them matches while the lexer is in that state, before
+ *   its action runs: the state is popped from the stack of the lexer, and the
+ *   action then pushes whatever it pushes. The rules and the text they read
+ *   do not change.
  */
 type LexerChange =
   | {
@@ -52,6 +58,11 @@ type LexerChange =
     }
   | {
       readonly kind: "try-first"
+      readonly state: string
+      readonly sources: readonly string[]
+    }
+  | {
+      readonly kind: "leave-state"
       readonly state: string
       readonly sources: readonly string[]
     }
@@ -211,6 +222,21 @@ const REMOVALS: Readonly<Record<DivergenceRemoval, readonly Removal[]>> = {
         },
       ],
     },
+    // The xychart lexer has the same rule for `%%` as the sequence lexer
+    // (`xychart.jison`, line 16 at the pinned commit): a character other than
+    // `}` before `%%` is read together with the comment. Read as the
+    // specification does, a comment starts at its `%%`.
+    {
+      diagramType: "xychart",
+      sampleText: "xychart-beta\n",
+      changes: [
+        {
+          kind: "pattern",
+          original: String.raw`^(?:[^\}]%%[^\n]*)`,
+          source: NEVER_MATCHES,
+        },
+      ],
+    },
     // The gantt lexer reads a character other than `}` before `%` together
     // with the comment (`gantt.jison`, line 29 at the pinned commit), so the
     // character is lost. Read as the specification does, a comment starts at
@@ -307,6 +333,38 @@ const REMOVALS: Readonly<Record<DivergenceRemoval, readonly Removal[]>> = {
       ],
     },
   ],
+  // The xychart lexer enters the start state `axis_data` at `x-axis` and
+  // `y-axis` and leaves it only at a line break (`xychart.jison`, lines 17 and 36
+  // to 37 at the pinned commit), also when the axis statement is followed by a
+  // `;` or by another statement on its line, and each axis statement pushes
+  // the state again; in it a digit is a number, so an unquoted title that holds
+  // one is rejected. Read as the specification does, the axis context ends at
+  // the end of its statement: the rules for `;` and for the words that start a
+  // statement leave the state first, but for `accDescr` with `{`, which
+  // enters the description block state on top of the axis state, so that the
+  // axis state goes on after the `}` (diagrams/xychart.md, The axis context).
+  "title-digit-after-axis-statement": [
+    {
+      diagramType: "xychart",
+      sampleText: "xychart-beta\n",
+      changes: [
+        {
+          kind: "leave-state",
+          state: "axis_data",
+          sources: [
+            String.raw`^(?:title\b)`,
+            String.raw`^(?:accTitle\s*:\s*)`,
+            String.raw`^(?:accDescr\s*:\s*)`,
+            String.raw`^(?:x-axis\b)`,
+            String.raw`^(?:y-axis\b)`,
+            String.raw`^(?:line\b)`,
+            String.raw`^(?:bar\b)`,
+            String.raw`^(?:;)`,
+          ],
+        },
+      ],
+    },
+  ],
 }
 
 /**
@@ -329,36 +387,62 @@ export function isDetectorRemoval(
 
 /**
  * The part of a jison lexer that a removal changes: its list of rules; its
- * start states, each with the indexes of the rules it tries, in order; and
- * `setInput`, which the parser calls with the whole text before reading it.
+ * start states, each with the indexes of the rules it tries, in order;
+ * `setInput`, which the parser calls with the whole text before reading it; and
+ * the stack of its start states, of which `topState` gives the one the lexer is
+ * in and `popState` leaves it; and its `options`, of which `flex` and
+ * `backtrack_lexer` change which rule the lexer takes.
  */
 export interface JisonLexer {
   rules: RegExp[]
   conditions: Record<string, { rules: number[] } | undefined>
   setInput: (input: string, ...rest: unknown[]) => unknown
+  topState: () => string
+  popState: () => string
+  options: { flex?: boolean; backtrack_lexer?: boolean }
 }
 
 /**
- * Remembers the text the lexer was given, to tell how much of it the lexer
- * has read: the lexer tries a rule on what is left of the text, so what was
- * read is the text without that rest. That holds only while what is left is
- * an end of the text; when it is not, the lexer put back other text, and the
- * problem is kept to stop the run instead of answering wrongly.
+ * What is known of the lexer during one call. mermaid.js reads a text with a
+ * lexer made for the call, from the lexer its parser holds as the prototype,
+ * and calls `setInput` on it, where this learns of both: the lexer that reads
+ * (its stack of start states is its own), and the text it was given.
+ *
+ * The text tells how much of it the lexer has read: the lexer tries a rule on
+ * what is left of the text, so what was read is the text without that rest.
+ * That holds only while what is left is an end of the text; when it is not,
+ * the lexer put back other text, and the problem is kept to stop the run
+ * instead of answering wrongly.
  */
-class ReadPosition {
+class LexerCall {
+  private lexer: JisonLexer | undefined
+
   private input: string | undefined
 
   private problem: string | undefined
 
   /** Starts over for a new call. */
   public reset(): void {
+    this.lexer = undefined
     this.input = undefined
     this.problem = undefined
   }
 
-  /** Remembers the text given to the lexer. */
-  public setInput(input: unknown): void {
+  /** Remembers the lexer that was given a text, and the text. */
+  public setInput(lexer: JisonLexer, input: unknown): void {
+    this.lexer = lexer
     this.input = typeof input === "string" ? input : undefined
+  }
+
+  /**
+   * The lexer that reads the text of the call, or `undefined` when it was not
+   * given a text through `setInput`.
+   */
+  public lexerOfCall(): JisonLexer | undefined {
+    if (this.lexer === undefined) {
+      this.problem ??= "the lexer was not given its text through setInput"
+    }
+    return this.lexer
   }
 
   /**
@@ -376,7 +460,8 @@ class ReadPosition {
   }
 
   /**
-   * Why the read position could not be told during the call, if it could not.
+   * Why the lexer or the read position could not be told during the call, if
+   * they could not.
    */
   public problemOfCall(): string | undefined {
     return this.problem
@@ -394,25 +479,48 @@ class LinePositionRule extends RegExp {
 
   private readonly midLine: RegExp
 
-  private readonly position: ReadPosition
+  private readonly call: LexerCall
 
-  public constructor(
-    lineStart: RegExp,
-    midLine: RegExp,
-    position: ReadPosition,
-  ) {
+  public constructor(lineStart: RegExp, midLine: RegExp, call: LexerCall) {
     super(lineStart.source, lineStart.flags)
     this.lineStart = lineStart
     this.midLine = midLine
-    this.position = position
+    this.call = call
   }
 
   public override [Symbol.match](rest: string): RegExpMatchArray | null {
-    const read = this.position.readOfLine(rest)
+    const read = this.call.readOfLine(rest)
     if (read === undefined) return null
     // `trim` removes exactly the characters the specification calls whitespace.
     const pattern = read.trim() === "" ? this.lineStart : this.midLine
     return pattern[Symbol.match](rest)
+  }
+}
+
+/**
+ * A lexer rule that leaves a start state when it matches while the lexer is in
+ * that state (see `leave-state` in {@link LexerChange}). The lexer takes the
+ * first rule that matches (unless the options `flex` or `backtrack_lexer` are
+ * set, which {@link leaveStateSwaps} refuses), so a rule that matches is the one
+ * whose action runs; the state is popped before that, as the action may push a state. The
+ * stack of start states is that of the lexer that reads the text of the call.
+ */
+class StateLeavingRule extends RegExp {
+  private readonly call: LexerCall
+
+  private readonly state: string
+
+  public constructor(rule: RegExp, state: string, call: LexerCall) {
+    super(rule.source, rule.flags)
+    this.state = state
+    this.call = call
+  }
+
+  public override [Symbol.match](rest: string): RegExpMatchArray | null {
+    const found = super[Symbol.match](rest)
+    const lexer = found === null ? undefined : this.call.lexerOfCall()
+    if (lexer?.topState() === this.state) lexer.popState()
+    return found
   }
 }
 
@@ -430,13 +538,13 @@ export interface Swap {
 
 /**
  * What one removal changes in mermaid.js, found by {@link findRewrites} or
- * {@link findDetectorRewrite}. `position` is what a lexer change reads the
- * position of the lexer from, and `undefined` when the removal changes no
+ * {@link findDetectorRewrite}. `call` is what a lexer change reads the
+ * lexer that reads the text from, and `undefined` when the removal changes no
  * lexer.
  */
 export interface Rewrite {
   readonly swaps: readonly Swap[]
-  readonly position: ReadPosition | undefined
+  readonly call: LexerCall | undefined
 }
 
 /**
@@ -470,15 +578,22 @@ export function findRewrites(
   lexer: JisonLexer,
   removal: LexerRemoval,
 ): Rewrite | string {
-  const position = new ReadPosition()
+  const call = new LexerCall()
   const swaps: Swap[] = []
   const lexerSlot = `lexer:${removal.diagramType}`
-  let readsLinePosition = false
+  let readsLexerCall = false
   for (const change of removal.changes) {
     if (change.kind === "try-first") {
       const swap = tryFirstSwap(lexer, removal.diagramType, change)
       if (typeof swap === "string") return swap
       swaps.push(swap)
+      continue
+    }
+    if (change.kind === "leave-state") {
+      const leaving = leaveStateSwaps(lexer, removal.diagramType, change, call)
+      if (typeof leaving === "string") return leaving
+      readsLexerCall = true
+      swaps.push(...leaving)
       continue
     }
     const found = lexer.rules.flatMap((rule, index) =>
@@ -493,11 +608,11 @@ export function findRewrites(
     if (change.kind === "pattern") {
       replacementRule = new RegExp(change.source, rule.flags)
     } else {
-      readsLinePosition = true
+      readsLexerCall = true
       replacementRule = new LinePositionRule(
         new RegExp(change.lineStart, rule.flags),
         new RegExp(change.midLine, rule.flags),
-        position,
+        call,
       )
     }
     swaps.push(
@@ -509,7 +624,7 @@ export function findRewrites(
       ),
     )
   }
-  if (readsLinePosition) {
+  if (readsLexerCall) {
     const originalSetInput = lexer.setInput
     swaps.push(
       propertySwap(
@@ -521,13 +636,58 @@ export function findRewrites(
           input: string,
           ...rest: unknown[]
         ): unknown {
-          position.setInput(input)
+          call.setInput(this as JisonLexer, input)
           return originalSetInput.call(this, input, ...rest)
         },
       ),
     )
   }
-  return { swaps, position }
+  return { swaps, call }
+}
+
+/**
+ * The swaps that make the rules of a `leave-state` change leave their start
+ * state, or why they cannot be made. Each rule is found among all the rules,
+ * and the start state must try it.
+ */
+function leaveStateSwaps(
+  lexer: JisonLexer,
+  diagramType: string,
+  change: Extract<LexerChange, { kind: "leave-state" }>,
+  call: LexerCall,
+): Swap[] | string {
+  const condition = lexer.conditions[change.state]
+  if (condition === undefined) {
+    return `the ${diagramType} lexer has no start state ${change.state}`
+  }
+  // A rule that matches is taken only if the lexer takes the first rule that
+  // matches: with `flex` it takes the longest match, and with `backtrack_lexer`
+  // it may reject a match, so a rule that matched may not be the one that runs.
+  if (lexer.options.flex === true || lexer.options.backtrack_lexer === true) {
+    return `the ${diagramType} lexer does not take the first rule that matches, so leaving a start state at a match is not sound`
+  }
+  const swaps: Swap[] = []
+  for (const source of change.sources) {
+    const found = lexer.rules.flatMap((rule, index) =>
+      rule.source === source ? [{ rule, index }] : [],
+    )
+    const [match] = found
+    if (found.length !== 1 || match === undefined) {
+      return `the ${diagramType} lexer has ${found.length} rules ${source}, not one`
+    }
+    if (!condition.rules.includes(match.index)) {
+      return `the start state ${change.state} of the ${diagramType} lexer does not try the rule ${source}`
+    }
+    swaps.push(
+      propertySwap(
+        `lexer:${diagramType}:rules[${String(match.index)}]`,
+        lexer.rules as unknown as Record<number, unknown>,
+        match.index,
+        new StateLeavingRule(match.rule, change.state, call),
+      ),
+    )
+  }
+  return swaps
 }
 
 /**
@@ -624,7 +784,7 @@ export function findDetectorRewrite(removal: DetectorRemoval): Rewrite {
         undo: () => registerDetector(diagramType, detector.original),
       },
     ],
-    position: undefined,
+    call: undefined,
   }
 }
 
@@ -658,7 +818,7 @@ export function overlapOf(rewrites: NamedRewrites): string | undefined {
  * Runs `call` with the swaps of every rewrite made, and undoes them
  * afterwards, last made first, also when one of them fails. The rewrites must
  * not overlap (see {@link overlapOf}). Returns the result of the call, and why
- * the read position could not be told during it, if it could not, with the
+ * the lexer or its read position could not be told during it, if they could not, with the
  * removal it concerns (the result is then not to be trusted).
  */
 export async function withRewrites<T>(
@@ -666,7 +826,7 @@ export async function withRewrites<T>(
   call: () => Promise<T>,
 ): Promise<{ readonly result: T; readonly problem: string | undefined }> {
   const swaps = rewrites.flatMap(([, rewrite]) => rewrite.swaps)
-  for (const [, rewrite] of rewrites) rewrite.position?.reset()
+  for (const [, rewrite] of rewrites) rewrite.call?.reset()
   const made: Swap[] = []
   try {
     for (const swap of swaps) {
@@ -681,12 +841,12 @@ export async function withRewrites<T>(
 }
 
 /**
- * The first problem of the read position in `rewrites` during the call, with
+ * The first problem of the lexer call in `rewrites` during the call, with
  * the removal it concerns.
  */
 function problemOfCall(rewrites: NamedRewrites): string | undefined {
   for (const [name, rewrite] of rewrites) {
-    const problem = rewrite.position?.problemOfCall()
+    const problem = rewrite.call?.problemOfCall()
     if (problem !== undefined) return `${name}: ${problem}`
   }
   return undefined

@@ -1,0 +1,169 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: sankey-no-empty-node >> invalid >>> docs/rules/sankey-no-empty-node.md incorrect 1
+Filename: sankey-no-empty-node-incorrect-1.mmd
+
+Code:
+  1 | sankey
+  2 | Electricity grid, ,104.453
+    |                  ^ [1]
+  3 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+---
+
+
+Test: sankey-no-empty-node >> invalid >>> invalid/sankey/db-quoted-line-feeds-only
+Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/db-quoted-line-feeds-only-input.mmd
+
+Code:
+  1 | sankey
+  2 | "
+    | ^\ [1]
+  3 | ",c,1
+    | ~ [1]
+  4 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+---
+
+
+Test: sankey-no-empty-node >> invalid >>> invalid/sankey/db-quoted-space-only
+Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/db-quoted-space-only-input.mmd
+
+Code:
+  1 | sankey
+  2 | " ",c,1
+    | ^~~ [1]
+  3 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+---
+
+
+Test: sankey-no-empty-node >> invalid >>> invalid/sankey/db-spaces-only-source-id-first-record
+Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/db-spaces-only-source-id-first-record-input.mmd
+
+Code:
+  1 | sankey
+  2 |   ,b,1
+    | ^~ [1]
+  3 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+---
+
+
+Test: sankey-no-empty-node >> invalid >>> invalid/sankey/db-spaces-only-source-id
+Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/db-spaces-only-source-id-input.mmd
+
+Code:
+  1 | sankey
+  2 | a,b,1
+  3 |   ,c,2
+    | ^~ [1]
+  4 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+---
+
+
+Test: sankey-no-empty-node >> invalid >>> invalid/sankey/db-spaces-only-target-id
+Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/db-spaces-only-target-id-input.mmd
+
+Code:
+  1 | sankey
+  2 | a, ,1
+    |   ^ [1]
+  3 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+---
+
+
+Test: sankey-no-empty-node >> invalid >>> invalid/sankey/empty-id-directive-and-spaces
+Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/empty-id-directive-and-spaces-input.mmd
+
+Code:
+  1 | sankey
+  2 | a, %%{init: {}}%% ,1
+    |   ^~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+---
+
+
+Test: sankey-no-empty-node >> invalid >>> invalid/sankey/empty-id-ignored-semicolon
+Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/empty-id-ignored-semicolon-input.mmd
+
+Code:
+  1 | sankey
+  2 | style:#x, ;,1
+    |          ^ [1]
+  3 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+---
+
+
+Test: sankey-no-empty-node >> invalid >>> invalid/sankey/empty-id-quoted-comment-line
+Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/empty-id-quoted-comment-line-input.mmd
+
+Code:
+  1 | sankey
+  2 | "
+    | ^\ [1]
+  3 | %% c
+    | ~~~~\ [1]
+  4 | ",b,1
+    | ~ [1]
+  5 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+---
+
+
+Test: sankey-no-empty-node >> invalid >>> invalid/sankey/empty-source-and-target
+Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/empty-source-and-target-input.mmd
+
+Code:
+  1 | sankey
+  2 |   ,  ,1
+    | ^~ [1]
+    |    ^~ [2]
+  3 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+[2] mermaid.js reads this field as the empty name and adds a node without a name.
+---
+
+
+Test: sankey-no-empty-node >> invalid >>> invalid/sankey/empty-target-crlf
+Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/empty-target-crlf-input.mmd
+
+Code:
+  1 | sankey
+  2 | a, ,1
+    |   ^ [1]
+  3 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+---
+
+
+Test: sankey-no-empty-node >> invalid >>> invalid/sankey/empty-target-twice
+Filename: tests/fixtures/rules/sankey-no-empty-node/invalid/sankey/empty-target-twice-input.mmd
+
+Code:
+  1 | sankey
+  2 | a, ,1
+    |   ^ [1]
+  3 | b, ,2
+    |   ^ [2]
+  4 |
+
+[1] mermaid.js reads this field as the empty name and adds a node without a name.
+[2] mermaid.js reads this field as the empty name and adds a node without a name.
+---

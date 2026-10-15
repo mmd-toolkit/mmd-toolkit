@@ -259,6 +259,23 @@ export type {
   SankeyNode,
 } from "./ast/sankey.ts"
 export type {
+  XychartAccDescrBlockStatement,
+  XychartAccDescrStatement,
+  XychartAccTitleStatement,
+  XychartBand,
+  XychartDiagram,
+  XychartHeader,
+  XychartLiteral,
+  XychartNode,
+  XychartPlotStatement,
+  XychartRange,
+  XychartStatement,
+  XychartTitleStatement,
+  XychartValue,
+  XychartXAxisStatement,
+  XychartYAxisStatement,
+} from "./ast/xychart.ts"
+export type {
   RequirementAccDescrBlockStatement,
   RequirementAccDescrStatement,
   RequirementAccTitleStatement,

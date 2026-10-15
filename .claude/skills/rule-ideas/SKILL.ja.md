@@ -184,6 +184,7 @@ description:
 | mindmap の図で、ノードの行の `Write ::icon(fa fa-book)` や `Write:::urgent`                                                                                                               | mermaid.js はどちらも文法どおりに読み、何も失わない。前者は、`X(Foo)` が `X` でなく `Foo` を表示するのと同じく、ラベル `fa fa-book` を持つノード `Write ::icon` であり、後者はラベル `Write:::urgent` である。どちらを誤りと言うにも、icon や class のつもりだったという推定しか根拠がない                                                                                                                                                                                                                                                                                                                                                                  |
 | timeline の図で、年の中の `#`（`Sprint #3 : planning` は年 `Sprint ` とコメント `#3 : planning` になり、出来事が失われる）                                                                | 上の理由による mermaid.js の不具合。mermaid.js の timeline の文書は年と出来事を「simple text」と言い、`#` のコメントを挙げず、それを保つほかの書き方も示していない（実体 `#35;` は flowchart の文書にしかない）。事実: [#5356](https://github.com/mermaid-js/mermaid/issues/5356)（closed、Type: Bug / Error）は、`#` がコメントを始めると報告している                                                                                                                                                                                                                                                                                                      |
 | timeline の図で、自分の年のない section の後の出来事の行（`section B` の後の `: y`。`y` は前の section の最後の年に付く）                                                                 | mermaid.js は文法どおりに読み、何も失わない。誤りと言うには、section B のための出来事だったという推定が要る。`section 2020 : a` も同じで、section `2020 ` と、前の年の出来事になる                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| sankey の図で、同じ source と target の 2 つのレコード（`a,b,1` と `a,b,2`）                                                                                                              | 2 本のリンクはどちらも残り、何も失われない。2 つ目を貼り付けの写しと言うのは推定である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
 ### 迷ったときの問い
 
@@ -643,6 +644,8 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | timeline-no-duplicate-title               | 入れる               |                                                                          |
 | timeline-no-duplicate-description         | 入れる               |                                                                          |
 | timeline-no-empty-description-block       | 入れる               |                                                                          |
+| sankey-no-invalid-value                   | 入れる               |                                                                          |
+| sankey-no-empty-node                      | 入れる               |                                                                          |
 
 注は、規則ごとに、または場合を共有する規則の組ごとに、
 基準 1 から 4 について調べたことを、その順に書く。
@@ -1001,6 +1004,28 @@ timeline-no-duplicate-description、timeline-no-empty-description-block は、
 検索の「timeline title」「timeline section」「timeline accTitle」
 「timeline colon」「timeline hash」は、読み方を変えるものを見つけなかった。
 
+sankey-no-invalid-value:
+(1) 先頭に数のない値は `NaN` で、リンクは大きさを持たない。
+数の後のテキストは捨てられ、`"1,234"` は 1 になる（実行）。
+数の後の `%%` で始まるテキストは報告しない。
+(2) なし。
+`5 TWh` のような数の後の単位は捨てられ、報告はそれを言う。
+(3) 「sankey value」「sankey NaN」「sankey number」「sankey comma」
+「sankey parseFloat」、題名の「sankey」。
+[#5995](https://github.com/mermaid-js/mermaid/issues/5995)（open）は、
+負の値の描き方を求めるもので、
+規則はそれを報告しない。
+(4) 桁区切りや単位を付けずに数だけを書く。
+
+sankey-no-empty-node:
+(1) 引用符の中も含め、空白だけの source や target は、
+名前のないノードを、そこへのリンクとともに加える（実行）。
+(2) なし。
+空白を残して名前を消したものは、
+journey-no-empty-person と同じく、報告する誤りである。
+(3) 題名の「sankey」。
+(4) 名前を書くか、レコードを除く。
+
 class-no-inline-comment:
 コメントの後に空白だけの行があり、その行の後にコメント行がないとき、
 mermaid.js は次の行を書き手のつもりどおりに別に読むが、
@@ -1082,6 +1107,8 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | requirement-*（8 件すべて）             | いまはなし（2026-10-15。この節の終わりを見る）   |
 | mindmap-*（2 件すべて）                 | いまはなし（2026-10-15。この節の終わりを見る）   |
 | timeline-*（3 件すべて）                | いまはなし（2026-10-15。この節の終わりを見る）   |
+| sankey-no-invalid-value                 | いまはなし（2026-10-15。この節の終わりを見る）   |
+| sankey-no-empty-node                    | いまはなし（2026-10-15。この節の終わりを見る）   |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。
@@ -1204,7 +1231,7 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 
 `sequence-*`、`class-*`、`state-*`（2026-10-08）と
 `er-*`、`gantt-*`、`journey-*`（2026-10-14）と
-`requirement-*`、`mindmap-*`、`timeline-*`（2026-10-15）:
+`requirement-*`、`mindmap-*`、`timeline-*`、`sankey-*`（2026-10-15）:
 いまは提案なしで実装する。
 これらの規則の提案は、判定も文書の記述もなく、
 sequence の空のブロックに予定していた提案の根拠は生成した入力だった。

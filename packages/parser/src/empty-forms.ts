@@ -35,7 +35,9 @@ export type EmptyFormKind =
  * description block, which is a statement where a statement starts and an
  * item of a body on a line of the body; mindmap has the empty string, the
  * empty markdown string, the empty icon, and the empty class line, which
- * stand wherever they stand inside no statement.
+ * stand wherever they stand inside no statement; xychart has the empty
+ * string, which is a text where its grammar takes one, and the empty
+ * description block, which is a statement where a statement starts.
  */
 export const EMPTY_FORM_KINDS: Readonly<
   Record<
@@ -46,7 +48,8 @@ export const EMPTY_FORM_KINDS: Readonly<
     | "er"
     | "gantt"
     | "requirement"
-    | "mindmap",
+    | "mindmap"
+    | "xychart",
     readonly EmptyFormKind[]
   >
 > = {
@@ -69,6 +72,7 @@ export const EMPTY_FORM_KINDS: Readonly<
     "empty-icon",
     "empty-class-line",
   ],
+  xychart: ["empty-string", "empty-description-block"],
 }
 
 /** One empty form: its kind, its units, and its range, from its first character that is not whitespace to its last. */
@@ -100,7 +104,9 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
 /**
  * The empty forms of the kinds `kinds` among `units`, the units of a
  * diagram text, in source order, wherever they lie: each `empty-string`
- * unit (flowchart, requirement, and mindmap, Strings);
+ * unit (flowchart, requirement, and mindmap, Strings), and each `string`
+ * unit whose text, what lies between its quotes, is empty (xychart,
+ * Strings);
  * each empty call, a `call` unit followed directly by a `(` and a `)` unit,
  * with only whitespace between them (flowchart, Click and callbacks); and
  * each empty description block, an `accDescr` and a `{` unit followed
@@ -133,7 +139,10 @@ function allEmptyFormsOf<Unit extends DiagramUnit<string>>(
 ): EmptyForm<Unit>[] {
   const forms: EmptyForm<Unit>[] = []
   units.forEach((unit, index) => {
-    if (unit.name === "empty-string") {
+    if (
+      unit.name === "empty-string" ||
+      (unit.name === "string" && unit.text === "")
+    ) {
       forms.push(formOf("empty-string", [unit]))
       return
     }

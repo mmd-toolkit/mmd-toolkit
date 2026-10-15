@@ -19,6 +19,7 @@ import { exceedsMaxEdges } from "@mmd-toolkit/tests"
 import {
   commentsAfterMatchStarts,
   commentsAfterUnits,
+  commentsAfterOneCharacterUnits,
   doublePercentsAfterUnitStarts,
   percentBracesReachedDirectly,
   percentCommentsReachedDirectly,
@@ -266,14 +267,16 @@ function rejectsForEmptyForm(
  * known-divergences/comment-takes-character.md: whether the sequence
  * text has a `%%` where the two rules of mermaid.js that the divergence
  * names read otherwise than this specification, the Gantt text a `%`
- * right after the first character of a unit, or the journey text a `%%`
- * there. The divergence goes both ways.
+ * right after the first character of a unit, the journey text a `%%`
+ * there, or the XY chart text a comment right after a unit of one
+ * character. The divergence goes both ways.
  */
 function commentTakesCharacter(text: string): boolean {
   const places =
     commentsAfterMatchStarts(text) ??
     percentsAfterUnitStarts(text) ??
-    doublePercentsAfterUnitStarts(text)
+    doublePercentsAfterUnitStarts(text) ??
+    commentsAfterOneCharacterUnits(text)
   return (places?.length ?? 0) > 0
 }
 

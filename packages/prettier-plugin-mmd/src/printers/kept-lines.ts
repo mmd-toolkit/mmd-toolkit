@@ -31,11 +31,11 @@ export interface KeptLines {
  * is a statement of its own. Such a `;` is in a token, as in `A[x;]`,
  * `accTitle: a;b`, or a directive, or in a comment, or it is a `;` that the
  * line rule ignores (`ignoredSemicolons`), also one that stands after a
- * statement. In a flowchart and a sequence diagram a `;` token may separate
- * statements (see `semicolonsSeparateStatements`): then only the `;` tokens
- * that the rule ignores and that do not end their line count. In the other
- * diagram types no `;` separates statements (diagrams/class.md, Diagram and
- * statements), so every `;` token counts.
+ * statement. In a flowchart, a sequence diagram, and an XY chart a `;` token
+ * may separate statements (see `semicolonsSeparateStatements`): then only the
+ * `;` tokens that the rule ignores and that do not end their line count. In
+ * the other diagram types no `;` separates statements (diagrams/class.md,
+ * Diagram and statements), so every `;` token counts.
  *
  * The line rule (common.md, `style` and `classDef` lines) ignores the last
  * `;` of a line that matches it, and it reads the text of the line. Removing
@@ -85,13 +85,17 @@ export function findLinesWithOwnSemicolons(
 
 /**
  * Whether a `;` token may separate statements in the diagram of the source:
- * in a flowchart and in a sequence diagram. The other diagram types have no
- * such `;`, so every `;` in them is a character of a token or a `;` that the
- * line rule ignores.
+ * in a flowchart, in a sequence diagram, and in an XY chart. The other
+ * diagram types have no such `;`, so every `;` in them is a character of a
+ * token or a `;` that the line rule ignores.
  */
 function semicolonsSeparateStatements(source: Source): boolean {
   const { type } = source.root.body
-  return type === "FlowchartDiagram" || type === "SequenceDiagram"
+  return (
+    type === "FlowchartDiagram" ||
+    type === "SequenceDiagram" ||
+    type === "XychartDiagram"
+  )
 }
 
 /**

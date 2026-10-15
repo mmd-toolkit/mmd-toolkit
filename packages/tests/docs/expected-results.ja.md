@@ -297,7 +297,7 @@ mermaid@12.0.0 では、次の 2 つです。
 同じ Db を返すものでなければなりません。
 これを使えるのは、`c4-keyword-anywhere`、`comment-takes-character`、
 `comment-takes-line-break`、`name-start-reads-unit`、
-`percent-brace-after-unit` です。
+`percent-brace-after-unit`、`title-digit-after-axis-statement` です。
 ある図種で仕様と mermaid.js の差異が 2 つ以上あるとき、
 仕様と同じに読ませるには、
 1 つの入力でそのいくつかを同時に除く必要があることがあります。
@@ -320,8 +320,9 @@ mermaid@12.0.0 では、次の 2 つです。
 mermaid.js の入力の読み方を変える既知の差異の印
 （`c4-keyword-anywhere`、`comment-takes-character`、
 `comment-takes-line-break`、`name-start-reads-unit`、
-`percent-brace-after-unit`、`html-tag-in-frontmatter`、
-`bare-percent-line-before-header`、`blank-line-after-header-or-comments`）を持つ
+`percent-brace-after-unit`、`title-digit-after-axis-statement`、
+`html-tag-in-frontmatter`、`bare-percent-line-before-header`、
+`blank-line-after-header-or-comments`）を持つ
 fixture は、
 それを `expected.json` と違うときに、`specified.json` に記録します。
 生成器は、その差異を外して mermaid.js に読ませた結果を取ります
@@ -334,6 +335,10 @@ gantt の字句解析器を変える 3 つ、`comment-takes-character`、
 それらを通して `%%{` の規則に届くからです。
 3 つを外して gantt のすべての fixture を読ませると、
 変わるのはその印を持つ fixture だけです。
+xychart の字句解析器を変える 2 つ、`comment-takes-character` と
+`title-digit-after-axis-statement` は、2 つを一緒に外します。
+軸の文の後に数字を含むタイトルがあるテキストに、
+語に続けたコメントがあることがあるからです。
 `c4-keyword-anywhere` は、C4 の検出器を置き換えて、
 そのテキストを先頭の図の図種として読ませます）。
 [fixture: class/div-comment-then-statement-with-backquote-keyword]
@@ -470,6 +475,22 @@ frontmatter、ディレクティブ、コメント行を取り除きます。
 そうした規則は、その開始状態だけが試す規則の中から探します。
 どの開始状態でも試す規則が、同じ形を持つことがあるためです。
 
+規則が開始状態に自分では出ないとき、別の規則が開始状態から出ることもあります。
+挙げた規則のどれかが、字句解析器がその開始状態にいる間にマッチすると、
+その規則の動作が走る前に、開始状態の積み重ねからその状態を取り出します。
+その動作が積むものは、そのあとに積まれます。
+規則そのものは変えず、規則はすべての規則の中から探し、
+その開始状態がその規則を試すものでなければなりません。
+積み重ねは、テキストを読む字句解析器のものです。
+mermaid.js は、パーサーが持つ字句解析器からテキストごとに字句解析器を作り、
+`setInput` でテキストを渡すので、そこで積み重ねを見つけます。
+字句解析器がテキストを渡される前に挙げた規則がマッチすると、
+置けないテキストと同じく、呼び出しは `MermaidEnvironmentError` で止まります。
+この変更は、最初にマッチした規則を取る字句解析器にだけ行います。
+オプション `flex`（最長一致）や `backtrack_lexer`（マッチを退けることがある）
+がある字句解析器では、マッチした規則が実行される規則とは限らないので、
+`runMermaid()` はどの入力よりも前に `MermaidEnvironmentError` で止まります。
+
 図種の検出器を置き換えることもあります。
 置き換えた検出器は、その語をテキストの先頭だけに探します。
 mermaid.js は検出器を、最初に登録された順に持っています。
@@ -531,6 +552,15 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: timeline/div-comment-after-block-character]
   [fixture: timeline/div-comment-after-semicolon-after-header]
   [fixture: timeline/div-comment-after-semicolon]
+- `comment-takes-character`、xychart の字句解析器
+  （[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)）
+  :
+  `}` 以外の 1 文字を `%%` の前から読んでコメントに含める規則を外す。
+  そうすると、コメントは `%%` から始まる。
+  [fixture: xychart/div-comment-glued-after-title-word]
+  [fixture: xychart/div-comment-glued-after-range]
+  [fixture: xychart/div-comment-takes-hyphen]
+  [fixture: xychart/div-comment-takes-one-letter-word]
 - `comment-takes-line-break`、class の字句解析器
   （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)）
   :
@@ -558,6 +588,26 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: gantt/div-percent-brace-after-two-spaces]
   [fixture: gantt/div-percent-brace-after-glued-percent-comment]
   [fixture: gantt/lex-percent-brace-after-tab]
+- `title-digit-after-axis-statement`、xychart の字句解析器
+  （[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L36-L37)）
+  :
+  字句解析器は `x-axis` と `y-axis` のたびに開始状態 `axis_data` に入り、
+  その中でも入り、改行
+  （[17 行目](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L17-L17)）
+  でだけ 1 つずつ出る。
+  そのため、`;`、同じ行の次の文、
+  軸の文に同じ行のプロットの文が続くときの次の行は、
+  数字が数になるその状態で読まれ、数字を含む引用符のないタイトルは拒否される。
+  `;` と文を始める語（`title`、`accTitle:`、`accDescr:`、
+  `x-axis`、`y-axis`、`line`、`bar`）の規則が先に `axis_data` から出るので、
+  軸の文脈はその文の終わりで終わる。
+  `accDescr {` の規則は出ない。
+  字句解析器は `axis_data` の上に説明ブロックの状態を積み、
+  `}` の後でまた `axis_data` にいる。仕様の読みもそうである。
+  [fixture: xychart/div-title-digit-after-axis-semicolon]
+  [fixture: xychart/div-title-digit-next-line-after-axis-and-plot]
+  [fixture: xychart/div-title-digit-next-line-after-two-axes]
+  [fixture: xychart/div-title-digit-after-axis-and-empty-block]
 - `c4-keyword-anywhere`、C4 の検出器
   （[`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10-L10)）
   :

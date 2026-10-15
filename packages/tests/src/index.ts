@@ -56,6 +56,7 @@ export type DiagramType =
   | "mindmap"
   | "timeline"
   | "sankey"
+  | "xychart"
 
 /**
  * Where a fixture input came from.
@@ -224,6 +225,14 @@ export const KNOWN_DIVERGENCES: readonly string[] = [
   // ends the header line before a node. The difference goes one way only: the
   // spec accepts what mermaid.js rejects.
   "blank-line-after-header-or-comments",
+  // In xychart, an unquoted `title` that holds a digit is a title wherever
+  // the statement stands. mermaid's lexer stays in its axis context after an
+  // axis statement until the line ends, through a `;`, the next statement on
+  // the line, and the next line after a plot line that follows the axis
+  // statement on its line, and there it rejects an unquoted title that holds a
+  // digit. The spec ends the axis context at the end of the statement. The
+  // difference goes one way only: the spec accepts what mermaid.js rejects.
+  "title-digit-after-axis-statement",
 ]
 
 /**

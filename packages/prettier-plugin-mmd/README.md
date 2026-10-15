@@ -97,6 +97,8 @@ flowchart LR
   examples, are in [docs/timeline.md](./docs/timeline.md).
 - Sankey diagrams: diagrams that start with `sankey` or `sankey-beta`. The
   formatting rules, with examples, are in [docs/sankey.md](./docs/sankey.md).
+- XY charts: diagrams that start with `xychart` or `xychart-beta`. The
+  formatting rules, with examples, are in [docs/xychart.md](./docs/xychart.md).
 - The YAML frontmatter of these diagrams, with Prettier's YAML formatter.
 
 Other diagram types are not formatted yet (see below).
@@ -119,8 +121,9 @@ Other diagram types are not formatted yet (see below).
   empty string between tokens, as in `A-->|x""|B`, is reported too. The full
   list is in [docs/compatibility.md](./docs/compatibility.md).
 - A diagram type other than flowchart, sequence, class, state, ER, Gantt, user
-  journey, requirement, mindmap, timeline, and sankey is not changed, except
-  that line endings follow `endOfLine`. In Markdown, it is left to Prettier.
+  journey, requirement, mindmap, timeline, sankey, and XY chart is not changed,
+  except that line endings follow `endOfLine`. In Markdown, it is left to
+  Prettier.
 
 ## Guarantees and limitations
 
@@ -161,6 +164,7 @@ The reasons and the details are in
 - [docs/mindmap.md](./docs/mindmap.md): the formatting rules for mindmaps.
 - [docs/timeline.md](./docs/timeline.md): the formatting rules for timelines.
 - [docs/sankey.md](./docs/sankey.md): the formatting rules for sankey diagrams.
+- [docs/xychart.md](./docs/xychart.md): the formatting rules for XY charts.
 - [docs/compatibility.md](./docs/compatibility.md): where the plugin differs
   from mermaid.js, and why.
 - [docs/development.md](./docs/development.md): the tests and the fixtures, for

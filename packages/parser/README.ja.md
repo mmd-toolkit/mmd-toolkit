@@ -133,6 +133,7 @@ const tokenCount = root.tokens.length // 8
 - mindmap: `mindmap`（`mindmap`）。
 - timeline: `timeline`（`timeline`）。
 - sankey 図: `sankey`（`sankey` と `sankey-beta`）。
+- XY チャート: `xychart`（`xychart` と `xychart-beta`）。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -246,7 +247,8 @@ try {
 [`ast/requirement.md`](../spec/docs/ast/requirement.ja.md)、
 [`ast/mindmap.md`](../spec/docs/ast/mindmap.ja.md)、
 [`ast/timeline.md`](../spec/docs/ast/timeline.ja.md)、
-[`ast/sankey.md`](../spec/docs/ast/sankey.ja.md) のものです。
+[`ast/sankey.md`](../spec/docs/ast/sankey.ja.md)、
+[`ast/xychart.md`](../spec/docs/ast/xychart.ja.md) のものです。
 
 ## 木を辿る
 
@@ -438,6 +440,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   [`ast/mindmap.md`](../spec/docs/ast/mindmap.ja.md)（mindmap のノード）、
   [`ast/timeline.md`](../spec/docs/ast/timeline.ja.md)（timeline のノード）、
   [`ast/sankey.md`](../spec/docs/ast/sankey.ja.md)（sankey 図のノード）、
+  [`ast/xychart.md`](../spec/docs/ast/xychart.ja.md)（XY チャートのノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
   [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、

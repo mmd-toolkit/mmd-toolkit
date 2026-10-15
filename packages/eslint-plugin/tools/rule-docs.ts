@@ -241,6 +241,7 @@ export const DIAGRAM_ORDER: readonly string[] = [
   "requirement",
   "mindmap",
   "timeline",
+  "sankey",
 ]
 
 /** The diagram of a rule name (`flowchart-no-ignored-text`), or null for a common rule. */

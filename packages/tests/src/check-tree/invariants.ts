@@ -152,7 +152,7 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
  * Comments; diagrams/class.md, The statement context; diagrams/er.md,
  * Comments; diagrams/gantt.md, Comments; diagrams/journey.md, Comments;
  * diagrams/requirement.md, Comments; diagrams/mindmap.md, Comments;
- * diagrams/sankey.md, Comments. A
+ * diagrams/sankey.md, Comments; diagrams/xychart.md, Comments. A
  * flowchart, an ER diagram, a sankey diagram, and the `error` pseudo-diagram
  * have only comment lines, besides the diagram comments that every diagram type has before its
  * header (see {@link MARKS_BEFORE_THE_HEADER}).
@@ -170,6 +170,7 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   MindmapDiagram: ["%%"],
   TimelineDiagram: ["#", "%%", "%"],
   SankeyDiagram: [],
+  XychartDiagram: ["%%"],
 }
 
 /**

@@ -1,3 +1,4 @@
+import { numberOrText } from "../summary-number.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
 import { cssSupportsColor, withGlobal } from "./browser-stand-ins.ts"
 import {
@@ -72,8 +73,36 @@ export function normalizeSequence(dbValue: unknown): DbSummary {
     })),
     messages: db
       .getMessages()
-      .map((message) => omit(toJsonObject(message), ["id"])),
+      .map((message) => omit(toJsonObject(withFiniteNumbers(message)), ["id"])),
   }
+}
+
+/** The type of the message that `autonumber` adds (`LINETYPE.AUTONUMBER`). */
+const AUTONUMBER = 26
+
+/**
+ * The message `message`, but for the numbers of an `autonumber` that are no
+ * finite number (a number of four hundred digits is `Infinity`): they are the
+ * text of the number, with `-0` as 0, as `numberOrText()` gives them, since a
+ * summary is JSON.
+ */
+function withFiniteNumbers(message: object): object {
+  const { type, message: settings } = message as {
+    type?: unknown
+    message?: unknown
+  }
+  if (
+    type !== AUTONUMBER ||
+    typeof settings !== "object" ||
+    settings === null
+  ) {
+    return message
+  }
+  const numbers = Object.entries(settings).map(([key, value]) => [
+    key,
+    typeof value === "number" ? numberOrText(value) : value,
+  ])
+  return { ...message, message: Object.fromEntries(numbers) }
 }
 
 /**

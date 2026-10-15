@@ -49,6 +49,8 @@ import { requirementNoEmptyDescriptionBlock } from "./requirement-no-empty-descr
 import { requirementNoIgnoredText } from "./requirement-no-ignored-text.ts"
 import { requirementNoUnclosedDescriptionBlock } from "./requirement-no-unclosed-description-block.ts"
 import { requirementNoUndef } from "./requirement-no-undef.ts"
+import { sankeyNoEmptyNode } from "./sankey-no-empty-node.ts"
+import { sankeyNoInvalidValue } from "./sankey-no-invalid-value.ts"
 import { sequenceNoCreateDestroy } from "./sequence-no-create-destroy.ts"
 import { sequenceNoDuplicateDescription } from "./sequence-no-duplicate-description.ts"
 import { sequenceNoDuplicateTitle } from "./sequence-no-duplicate-title.ts"
@@ -124,6 +126,8 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "requirement-no-unclosed-description-block":
     requirementNoUnclosedDescriptionBlock,
   "requirement-no-undef": requirementNoUndef,
+  "sankey-no-empty-node": sankeyNoEmptyNode,
+  "sankey-no-invalid-value": sankeyNoInvalidValue,
   "sequence-no-create-destroy": sequenceNoCreateDestroy,
   "sequence-no-duplicate-description": sequenceNoDuplicateDescription,
   "sequence-no-duplicate-title": sequenceNoDuplicateTitle,

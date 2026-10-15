@@ -24,6 +24,9 @@ import { lexMindmap } from "../../src/diagrams/mindmap/index.ts"
 import type { Unit as MindmapUnit } from "../../src/diagrams/mindmap/units.ts"
 import type { TimelineUnits } from "../../src/diagrams/timeline/index.ts"
 import { lexTimeline } from "../../src/diagrams/timeline/index.ts"
+import type { XychartUnits } from "../../src/diagrams/xychart/index.ts"
+import { lexXychart } from "../../src/diagrams/xychart/index.ts"
+import type { UnitName as XychartUnitName } from "../../src/diagrams/xychart/units.ts"
 import type { UnitName as RequirementUnitName } from "../../src/diagrams/requirement/units.ts"
 import type { DiagramUnit } from "../../src/diagram-units.ts"
 import type { EmptyForm } from "../../src/empty-forms.ts"
@@ -437,6 +440,29 @@ export function percentsAfterUnitStarts(text: string): number[] | null {
 export function doublePercentsAfterUnitStarts(text: string): number[] | null {
   const lexing = journeyLexingOf(text) ?? timelineLexingOf(text)
   return lexing === null ? null : marksAfterUnitStarts(lexing, "%%")
+}
+
+/**
+ * known-divergences/comment-takes-character.md, and the Known divergences
+ * of diagrams/xychart.md: the offsets, in source order, of each diagram
+ * comment of the XY chart `text` that starts right where a unit of one
+ * character ends, a word of one letter, one digit, or one punctuation
+ * character, a bracket, a `,`, a `;`, a one-digit number, or the line feed
+ * of a `newline` unit: the places where mermaid.js reads that character
+ * and the rest of the line as one comment. Null when `text` is no XY chart
+ * or its lexer rejects it.
+ */
+export function commentsAfterOneCharacterUnits(text: string): number[] | null {
+  const lexing = xychartLexingOf(text)
+  if (lexing === null) return null
+  const oneCharacterUnitEnds = new Set(
+    lexing.units
+      .filter((unit) => [...unit.text].length === 1)
+      .map((unit) => unit.end),
+  )
+  return lexing.comments
+    .map((comment) => comment.range[0])
+    .filter((start) => oneCharacterUnitEnds.has(start))
 }
 
 /**
@@ -1058,6 +1084,21 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
       removedRangeOf: (form) => form.range,
     }
   }
+  const xychart = xychartLexingOf(text)
+  if (xychart !== null) {
+    return {
+      units: xychart.units,
+      emptyFormKinds: EMPTY_FORM_KINDS.xychart,
+      statementStartsAt: (before, _block, after) =>
+        xychartBlockStandsAlone(before, after),
+      // diagrams/xychart.md, Diagram and statements: a statement needs
+      // nothing before the next one, so a block is a statement only where
+      // one starts.
+      separators: [],
+      endOfTextSeparates: false,
+      removedRangeOf: (form) => form.range,
+    }
+  }
   const mindmap = mindmapLexingOf(text)
   if (mindmap !== null) {
     return {
@@ -1550,6 +1591,111 @@ function mindmapGapRejected(
   }
   if (count % 2 === 1) return blankAfterLastComment
   return count > 0 && followsComment
+}
+
+/** The units of the XY chart `text` as the parser's lexer reads them, with its diagram comments; null when `text` is no XY chart or its lexer rejects it. */
+function xychartLexingOf(text: string): XychartUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
+  if (diagramType !== "xychart") return null
+  try {
+    return lexXychart(diagramInputOf(opened, detection, diagramType))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/** diagrams/xychart.md, Grammar: the keywords that start a statement that a title, its words, or its data may continue. */
+const XYCHART_TEXT_STATEMENTS: readonly XychartUnitName[] = [
+  "title",
+  "x-axis",
+  "y-axis",
+  "line",
+  "bar",
+]
+
+/**
+ * diagrams/xychart.md, Empty description blocks: whether an empty
+ * description block, with `before` the units before it and `after` the
+ * units after it, in source order, stands where a statement starts rather
+ * than inside a statement. It stands inside one inside the brackets of the
+ * categories or the values; after a statement keyword, `[`, `,`, or `-->`;
+ * after the first number of a range; after the title of a plot, which its
+ * values follow; after the words of a title or of an axis title when a word
+ * follows the block, and after the title of an axis when its data follows;
+ * and after the header when an orientation follows. Everywhere else the
+ * statement before it has ended.
+ */
+function xychartBlockStandsAlone(
+  before: readonly AnyUnit[],
+  after: readonly AnyUnit[],
+): boolean {
+  const last = before.at(-1)
+  if (last === undefined) return true
+  if (xychartInsideBrackets(before)) return false
+  const next = firstAfterEmptyDescriptionBlocks(after)?.name
+  switch (last.name) {
+    case "title":
+    case "x-axis":
+    case "y-axis":
+    case "line":
+    case "bar":
+    case "[":
+    case ",":
+    case "-->":
+      return false
+    case "header":
+      return next !== "orientation"
+    case "number":
+      return before.at(-2)?.name === "-->"
+    case "word":
+    case "string":
+      return !xychartTextGoesOn(before, last.name, next)
+    default:
+      return true
+  }
+}
+
+/** Whether `before`, the units before a place, leave a `[` open there: the place lies inside the categories or the values. */
+function xychartInsideBrackets(before: readonly AnyUnit[]): boolean {
+  for (let index = before.length - 1; index >= 0; index -= 1) {
+    const name = before[index].name
+    if (name === "]") return false
+    if (name === "[") return true
+  }
+  return false
+}
+
+/**
+ * Whether the statement whose title ends with `before`, the last unit of
+ * which is named `last`, a `word` or a `string`, goes on with the unit named
+ * `next`: a title with more words, an axis with its data, and a plot, which
+ * always goes on with its values.
+ */
+function xychartTextGoesOn(
+  before: readonly AnyUnit[],
+  last: string,
+  next: string | undefined,
+): boolean {
+  const keyword = before.findLast((unit) =>
+    XYCHART_TEXT_STATEMENTS.some((name) => name === unit.name),
+  )?.name
+  const moreWords = last === "word" && next === "word"
+  switch (keyword) {
+    case "title":
+      return moreWords
+    case "x-axis":
+      return moreWords || next === "[" || next === "number"
+    case "y-axis":
+      return moreWords || next === "number"
+    case "line":
+    case "bar":
+      return true
+    default:
+      return false
+  }
 }
 
 /** The units of the timeline `text` as the parser's lexer reads them, with its diagram comments; null when `text` is no timeline or its lexer rejects it. */

@@ -87,6 +87,19 @@ fixture のディレクトリにあるほかのファイルはそのまま残し
 ここで足した fixture には、
 parser のテストが走るまでどちらのファイルもありません。
 
+**記録した木は JSON です。**
+JSON が書けない数は、`JSON.stringify` が書くとおり、
+`ast.json` では `null` です。
+double に収まらない数（`Infinity` と `-Infinity`）を持つ
+NumericLiteral の `value` がそうで、ほかの欄はそのような数を持てないので、
+それ以外の欄にはありません。
+ノードの `raw` には書かれたとおりの数があります。
+`checkTree()` は、書かれたテキストがそのような数である NumericLiteral の
+`value` に、`null`、`Infinity`、`-Infinity` を認めます。
+ほかの `value` の `null` は認めません。
+`dbFromTree()` はノードのテキストから数を読むので、変換は要りません。
+[fixture: xychart/db-plot-values-overflow]
+
 ## 道具のための export
 
 入口は、このリポジトリの道具とテストだけが使う関数も export しています。

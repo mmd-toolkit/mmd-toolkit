@@ -22,6 +22,7 @@ const REMOVAL_MARKS = [
   "comment-takes-line-break",
   "name-start-reads-unit",
   "percent-brace-after-unit",
+  "title-digit-after-axis-statement",
 ]
 
 /** The mark of the divergence about a bare `%%` line before the header. */
@@ -425,6 +426,29 @@ describe("specifiedRunOf: marks of lexer rules", () => {
     ]) {
       const run = await specifiedRunOf(text, mark, undefined)
       expect(run?.outcome.accepted, mark).toBe(true)
+    }
+  })
+
+  it("takes both xychart rules out together, for an input that is read as the specification reads it only then", async () => {
+    // The comment takes the `]`, and the title with a digit follows an axis
+    // statement: each rule alone leaves the input rejected.
+    const text = "xychart\nx-axis A; line [1]%% c\ntitle Q1\n"
+    for (const removed of [
+      ["comment-takes-character"],
+      ["title-digit-after-axis-statement"],
+    ] as const) {
+      const alone = await runMermaidWithEmbeddedData(text, {
+        withoutDivergences: removed,
+      })
+      expect(alone.outcome.accepted, removed.join()).toBe(false)
+    }
+    for (const mark of [
+      "comment-takes-character",
+      "title-digit-after-axis-statement",
+    ]) {
+      const run = await specifiedRunOf(text, mark, undefined)
+      expect(run?.outcome.accepted, mark).toBe(true)
+      expect(dbOf(run).title, mark).toBe("Q1")
     }
   })
 

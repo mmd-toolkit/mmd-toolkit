@@ -2,7 +2,7 @@
 
 英語版: [comment-takes-character.md](./comment-takes-character.md)
 
-図種: sequence、gantt、journey、timeline。
+図種: sequence、gantt、journey、timeline、xychart。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -29,7 +29,8 @@ id の並びかテキストの文字です。
 単独の `%` がコメントを始めるガントチャートでは、
 `a% : 1d` のように、単位の最初の文字（`}` と空白以外の文字）の直後の `%`
 についてのものです。
-ユーザージャーニー図と timeline では、`A%%B: 5` や `a%% c` のように、
+ユーザージャーニー図、timeline、XY chart では、`A%%B: 5`、`a%% c`、
+`title T%% c` のように、
 同じ位置の `%%` についてのものです。
 
 ## 差異
@@ -214,6 +215,39 @@ timeline でも差異は両方向です。
 [fixture: timeline/db-comment-percent-after-closing-brace]
 [fixture: timeline/lex-hash-before-percent]
 
+XY chart では、mermaid.js の字句解析器は、
+ユーザージャーニー図と同じ `%%` の規則を持ち、
+文字の並び、数字の並び、数を一度に読みます。
+そのため、コメントが取る文字は 1 文字の単位です。
+単独の文字や数字、または `-`、`]`、`;` のような文字です。
+`title T%% c`、`x-axis T%% c`、`line [1]%% c`、`x-axis [a, b]%% c`、
+`bar [1 "a"]%% c`、`y-axis 0 --> 1%% c` は、mermaid.js では拒否され、
+ここでは受理されます。
+`title A B%% c` は mermaid.js ではタイトル `A` を、ここでは `AB` を持ち、
+`title a-%% c` はタイトル `a` と `a-` を持ちます。
+`title AB%% c`、`y-axis 0 --> 10%% c`、`title T;%% c`、
+文字列の閉じる引用符のすぐ後の `%%` は、両方が同じに読みます
+（[コメント](../diagrams/xychart.ja.md#コメント) を参照）。
+コメントは、行頭から `%%` だけの行の前の改行文字も取ります。
+これはどの文も変えず、
+[`title-digit-after-axis-statement`](./title-digit-after-axis-statement.ja.md)
+でだけ数に入り、そこでは段を降ろしません。
+[fixture: xychart/div-title-digit-after-bare-percent-line-after-axis-and-plot]
+[fixture: xychart/db-title-digit-after-bare-percent-line-and-empty-line]
+[fixture: xychart/header-bare-percent-line-after-header]
+[fixture: xychart/div-comment-glued-after-title-word]
+[fixture: xychart/div-comment-glued-after-axis-title]
+[fixture: xychart/div-comment-glued-after-bracket]
+[fixture: xychart/div-comment-glued-after-categories]
+[fixture: xychart/div-comment-glued-after-label]
+[fixture: xychart/div-comment-glued-after-range]
+[fixture: xychart/div-comment-takes-one-letter-word]
+[fixture: xychart/div-comment-takes-hyphen]
+[fixture: xychart/db-comment-glued-after-two-letter-word]
+[fixture: xychart/db-comment-glued-after-two-digit-number]
+[fixture: xychart/db-comment-glued-after-semicolon]
+[fixture: xychart/db-comment-glued-after-quote]
+
 ## 書き手にとっての結果
 
 文のすぐ後に空白なしで書いたコメントは、
@@ -242,6 +276,9 @@ journey の字句解析器は `%%` で同じコメントの規則を持ち
 timeline の字句解析器も同じ規則を持ち
 （[`timeline.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/parser/timeline.jison#L15-L15)）、
 改行、空白、キーワード、event、period の規則より前に試します。
+xychart の字句解析器も同じ規則を持ち
+（[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)）、
+単位が始まるところの `%%` のコメントの規則を除く、すべての規則より前に試します。
 
 ## この仕様の規則と、その理由
 
@@ -249,7 +286,8 @@ timeline の字句解析器も同じ規則を持ち
 （[文の文脈](../diagrams/sequence.ja.md#文の文脈)、
 gantt の [コメント](../diagrams/gantt.ja.md#コメント)、
 journey の [コメント](../diagrams/journey.ja.md#コメント)、
-timeline の [コメント](../diagrams/timeline.ja.md#コメント) を参照）。
+timeline の [コメント](../diagrams/timeline.ja.md#コメント)、
+xychart の [コメント](../diagrams/xychart.ja.md#コメント) を参照）。
 
 コメントがその前の文字を取ること、
 しかもほかの規則がそこで一致を始める場所でだけ取ることは、

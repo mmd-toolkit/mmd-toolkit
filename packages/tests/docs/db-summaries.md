@@ -156,6 +156,10 @@ Other values of the summary:
   sequence/config-wrap-frontmatter] [fixture:
   sequence/config-sequence-wrap-frontmatter] [fixture:
   sequence/config-wrap-init-directive]
+- The numbers of an `autonumber` (`start` and `step`) are numbers, and the text
+  `"Infinity"` where a number is too large for a double, since JSON has no such
+  number. [fixture: sequence/db-autonumber-start-overflow] [fixture:
+  sequence/db-autonumber-step-overflow]
 - The title is kept as the grammar passes it, with the whitespace after the
   first space following `title` and at the end of the line. A title of only
   whitespace still counts as a title for the renderer, which reserves room for
@@ -2170,3 +2174,896 @@ frontmatter are removed before it, as for every diagram.
 - All the fields at once. [fixture: sankey/db-everything]
 
 Values are recorded as the Db holds them, whitespace included.
+
+## xychart
+
+The fields of the summary:
+
+| Field         | Content                                                                      |
+| ------------- | ---------------------------------------------------------------------------- |
+| `orientation` | `vertical` or `horizontal`.                                                  |
+| `title`       | The title of the chart: the last `title` statement, or else the frontmatter. |
+| `accTitle`    | The accessibility title, or the empty text.                                  |
+| `accDescr`    | The accessibility description, or the empty text.                            |
+| `xAxis`       | The x axis.                                                                  |
+| `yAxis`       | The y axis.                                                                  |
+| `plots`       | The plots, in source order.                                                  |
+
+An axis has `type`, `title`, and, for the type `band`, `categories`, the texts
+of the categories, or, for the type `linear`, `min` and `max`, numbers. A plot
+has `type` (`line` or `bar`), `title`, `data`, and, for a line with a label
+written, `pointLabels`. A number that is no finite number is the text of the
+number (`"Infinity"`, `"-Infinity"`), since JSON has no such number, and `-0` is
+0, since JSON has no -0.
+
+`normalizeXyChart()` (`src/normalizers/xychart.ts`) summarizes the Db of
+`xychart`. The Db reads no browser feature, no time and no random value while it
+parses, so the summary needs no patch of the Db. It is one module that every
+xychart diagram shares, whose state
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L223-L232)
+resets before each parse. The summary reads the title and the accessibility
+texts of the common Db, the orientation of
+[`getChartConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L215-L217),
+and
+[`getXYChartData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L219-L221).
+It drops the following, each for the reason given:
+
+- `plots[].strokeFill`, `plots[].strokeWidth`, and `plots[].fill`: the colour
+  and the width that the renderer uses, taken from the theme by the number of
+  the plot.
+- `getChartThemeConfig()`, and `getChartConfig()` but for `chartOrientation`:
+  the colours of the theme and the settings of the renderer, which the site
+  gives.
+- `getXYChartData().title`: set only when the chart is drawn
+  ([`getDrawableElem()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L203-L209)),
+  so it is the empty text when the text is parsed; the title is that of the
+  common Db.
+
+The ranges of the axes and the x of the pairs of a plot follow from the values
+and the axes, but the Db computes them where each statement is executed
+([`transformDataWithoutCategory()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L125-L164),
+[`setYAxisRangeFromPlotData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L112-L123)),
+from the state at that point, so a statement after a plot does not change what
+the plot made. They are kept as the Db holds them.
+
+Values of the summary, by field. The text is read by
+[the lexer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L15-L75)
+and
+[the grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175).
+
+- The header is `xychart` or `xychart-beta`.
+  [The detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)
+  reads it in lower case only, so that `XYCHART` and `Xychart-Beta` are
+  rejected, while the lexer reads it in any case. A word, a dash and a digit, or
+  a character outside ASCII glued to the header is not the header. A colon, a
+  brace, a `#`, a quote, a digit, a comma, or a bracket after the header is
+  rejected, and a line that starts with `#` before it too: no detector reads the
+  text. A header with no statement after it is accepted: the chart is empty.
+  [fixture: xychart/db-header-beta-only] [fixture: xychart/db-header-plain]
+  [fixture: xychart/header-upper-case] [fixture:
+  xychart/header-beta-capitalized] [fixture: xychart/header-word-suffix]
+  [fixture: xychart/header-plain-word-suffix] [fixture:
+  xychart/header-dash-suffix] [fixture: xychart/header-non-ascii-suffix]
+  [fixture: xychart/header-without-line-feed] [fixture:
+  xychart/gram-header-after-hash-line] [fixture:
+  xychart/gram-header-brace-suffix] [fixture:
+  xychart/gram-header-bracket-suffix] [fixture:
+  xychart/gram-header-colon-suffix] [fixture: xychart/gram-header-comma-suffix]
+  [fixture: xychart/gram-header-digit-suffix] [fixture:
+  xychart/gram-header-hash-suffix] [fixture: xychart/gram-header-quote-suffix]
+- Spaces, tabs, empty lines, a no-break space, a U+FEFF, a comment line, and a
+  directive line before the header change nothing. A directive glued to the
+  header is removed, and a comment after it, with a space or glued, is skipped.
+  A line of `%%` alone, or `%%{ }%%`, before the header or after it is a comment
+  line. [fixture: xychart/header-indented] [fixture:
+  xychart/header-tab-indented] [fixture: xychart/header-after-bare-percent-line]
+  [fixture: xychart/header-after-bare-percent-line-and-whitespace-line]
+  [fixture: xychart/header-after-blank-lines] [fixture:
+  xychart/header-after-comment-line] [fixture:
+  xychart/header-after-directive-line] [fixture:
+  xychart/header-after-empty-braces-line] [fixture: xychart/header-nbsp-before]
+  [fixture: xychart/header-bom-before] [fixture:
+  xychart/header-directive-glued-after-header] [fixture:
+  xychart/header-comment-on-header-line] [fixture:
+  xychart/header-comment-glued-to-header] [fixture:
+  xychart/header-bare-percent-line-after-header]
+- A statement can follow the header on its line, and so can a `;`, which ends
+  the line. A second header, on a line of its own or after the first, is read as
+  a header again. [fixture: xychart/header-statement-on-header-line] [fixture:
+  xychart/header-line-on-header-line] [fixture: xychart/header-semicolon]
+  [fixture: xychart/header-semicolon-only] [fixture:
+  xychart/header-semicolon-spaced] [fixture: xychart/header-leading-semicolon]
+  [fixture: xychart/header-twice] [fixture: xychart/header-twice-same-line]
+- `orientation` is `vertical`, or `horizontal` where the header is followed by
+  the word `horizontal`. The word is read in any case by the lexer, but the Db
+  takes any word other than `horizontal` as vertical: `HORIZONTAL` and
+  `Horizontal` give `vertical`. Spaces or a tab can separate the header and the
+  word, and a statement can follow it on the line. The word is no statement and
+  no text: on the next line, twice, glued to another word, after a statement, or
+  as a title, a category, or the title of an axis, it is rejected; in quotes it
+  is a text. [fixture: xychart/db-orientation-capitalized] [fixture:
+  xychart/db-orientation-horizontal] [fixture: xychart/db-orientation-in-quotes]
+  [fixture: xychart/db-orientation-plain-header] [fixture:
+  xychart/db-orientation-tab] [fixture: xychart/db-orientation-two-spaces]
+  [fixture: xychart/db-orientation-upper-case] [fixture:
+  xychart/db-orientation-vertical] [fixture:
+  xychart/db-orientation-vertical-upper-case] [fixture:
+  xychart/db-orientation-with-statement] [fixture:
+  xychart/gram-orientation-after-statement] [fixture:
+  xychart/gram-orientation-as-axis-title] [fixture:
+  xychart/gram-orientation-as-category] [fixture:
+  xychart/gram-orientation-as-title] [fixture:
+  xychart/gram-orientation-on-next-line] [fixture:
+  xychart/gram-orientation-twice] [fixture:
+  xychart/gram-orientation-word-suffix]
+- Where the header has no orientation word, `orientation` is the setting
+  `xyChart.chartOrientation`, which `vertical` is by default, whether it comes
+  from the site, the frontmatter, or a directive; the word of the header wins
+  over the setting. The other settings of the chart, the theme, and the colours
+  of the palette change nothing in the Db. [fixture:
+  xychart/config-orientation-directive] [fixture:
+  xychart/config-orientation-frontmatter] [fixture:
+  xychart/config-orientation-frontmatter-header-wins] [fixture:
+  xychart/config-orientation-header-wins] [fixture:
+  xychart/config-orientation-setting-horizontal] [fixture:
+  xychart/config-settings-do-not-change-db]
+- A statement ends at a line end, a `;`, or the end of the text; empty lines and
+  empty statements change nothing, and so do spaces, a tab, a vertical tab, a
+  form feed, a no-break space, a U+FEFF, and a U+3000 around a statement. A CRLF
+  and a lone CR end a line as a line feed does. A U+2028 or a U+2029 after a
+  word is whitespace. A statement needs no line feed at the end of the text.
+  [fixture: xychart/db-statement-blank-lines] [fixture:
+  xychart/db-statement-leading-semicolon] [fixture:
+  xychart/db-statement-tab-indented] [fixture:
+  xychart/db-lines-form-feed-before-statement] [fixture:
+  xychart/db-lines-keyword-bom-end] [fixture:
+  xychart/db-lines-nbsp-after-statement] [fixture:
+  xychart/db-lines-no-line-feed-at-end] [fixture:
+  xychart/db-lines-prototype-title] [fixture:
+  xychart/db-lines-statement-on-header-line-crlf] [fixture:
+  xychart/db-lines-statements-after-bom-and-tab] [fixture:
+  xychart/db-lines-trailing-spaces] [fixture: xychart/db-lines-trailing-tab]
+  [fixture: xychart/db-lines-unicode-line-separator-between-statements]
+  [fixture: xychart/db-lines-vertical-tab-before-statement] [fixture:
+  xychart/db-semicolon-after-statement] [fixture:
+  xychart/db-semicolon-line-alone] [fixture: xychart/db-semicolon-spaced]
+  [fixture: xychart/db-semicolon-statements] [fixture:
+  xychart/db-semicolon-twice] [fixture: xychart/db-title-crlf-line-ends]
+  [fixture: xychart/db-title-lone-cr-line-ends] [fixture:
+  xychart/db-title-line-separator-end] [fixture:
+  xychart/db-title-paragraph-separator-end] [fixture:
+  xychart/db-title-bom-after-word] [fixture:
+  xychart/db-title-bom-before-keyword] [fixture:
+  xychart/db-title-form-feed-after-word] [fixture:
+  xychart/db-title-nbsp-before-keyword] [fixture:
+  xychart/db-title-ideographic-space]
+- A title is a text: text in quotes, which is what lies between the quotes,
+  without the spaces at its ends, or words without quotes, which are joined
+  without the spaces between them. A word holds letters, digits, and `-`, `_`,
+  `.`, `+`, `=`, `*`, `&`, `#`; a `#` starts no comment, so `T # c` is the title
+  `T#c`. Text in quotes can hold punctuation, a keyword, a `%%` after a space,
+  markup, characters outside ASCII, backquotes, and line feeds, a CRLF being one
+  line feed. [fixture: xychart/db-title-quoted] [fixture:
+  xychart/db-title-bare-word] [fixture: xychart/db-title-bare-digit] [fixture:
+  xychart/db-title-bare-number] [fixture: xychart/db-title-bare-words] [fixture:
+  xychart/db-title-bare-characters] [fixture:
+  xychart/db-title-quoted-spaces-trimmed] [fixture:
+  xychart/db-title-quoted-special] [fixture: xychart/db-title-quoted-line-feed]
+  [fixture: xychart/db-title-quoted-crlf] [fixture:
+  xychart/db-title-quoted-non-ascii] [fixture: xychart/db-title-quoted-keyword]
+  [fixture: xychart/db-title-quoted-hash-and-semicolon-apart] [fixture:
+  xychart/db-title-quoted-percent] [fixture: xychart/db-title-quoted-html]
+  [fixture: xychart/db-title-md-string] [fixture:
+  xychart/db-title-hash-bare-word] [fixture: xychart/db-title-bare-hash-comment]
+  [fixture: xychart/db-title-bare-percent-comment] [fixture:
+  xychart/db-title-quoted-line-separator] [fixture:
+  xychart/db-title-nbsp-between-words] [fixture:
+  xychart/db-title-quoted-semicolon] [fixture: xychart/db-title-bare-semicolon]
+  [fixture: xychart/db-title-semicolon-empty-statements]
+- The last `title` statement is the title, and it replaces the title of the
+  frontmatter, which is the title where no statement gives one, with the spaces
+  it has. The keyword is read in any case, and a tab can follow it; a word that
+  starts with `title` is a text, while a word glued to the keyword, `titles`,
+  and `title` or `Title` as the text are rejected. [fixture:
+  xychart/db-title-twice] [fixture: xychart/db-title-three-times] [fixture:
+  xychart/db-title-bare-then-quoted] [fixture: xychart/db-title-frontmatter]
+  [fixture: xychart/db-title-frontmatter-and-statement] [fixture:
+  xychart/db-title-frontmatter-spaces] [fixture:
+  xychart/db-title-at-end-of-text] [fixture:
+  xychart/db-title-upper-case-keyword] [fixture:
+  xychart/db-title-capitalized-keyword] [fixture:
+  xychart/db-title-tab-separator] [fixture:
+  xychart/db-title-keyword-prefix-word] [fixture: xychart/gram-title-glued]
+  [fixture: xychart/gram-title-plural] [fixture:
+  xychart/gram-title-keyword-as-text] [fixture:
+  xychart/gram-title-bare-title-keyword]
+- A character reference in a text in quotes or in an accessibility text is its
+  placeholder: `#35;`, and also `#b;` in `a#b;c`; a `#` and a `;` that no word
+  joins are characters of the text. In a title, the title of an axis, a
+  category, and the title of a plot without quotes, a reference is rejected,
+  since its placeholder is outside ASCII. The quotes of an HTML tag are read as
+  `'`. [fixture: xychart/lex-title-entity-in-quotes] [fixture:
+  xychart/gram-title-entity-bare] [fixture:
+  xychart/lex-title-quoted-hash-word-semicolon-entity] [fixture:
+  xychart/lex-acc-descr-block-entity] [fixture: xychart/lex-acc-descr-entity]
+  [fixture: xychart/lex-acc-title-entity] [fixture:
+  xychart/db-title-html-tag-in-quotes]
+- A title with no text, with two quotes and nothing between them, with its text
+  on the next line, or with text after the text in quotes is rejected. So is a
+  quote that is not closed, also at the end of the text. A title without quotes
+  holds none of `,`, `:`, `/`, `(`, `)`, `'`, `<`, `>`, `[`, `]` and no
+  character outside ASCII, and a `%%` glued to a word takes the character before
+  it, so that the title is rejected. [fixture: xychart/gram-title-after-quoted]
+  [fixture: xychart/gram-title-bare-angle] [fixture:
+  xychart/gram-title-bare-apostrophe] [fixture: xychart/gram-title-bare-colon]
+  [fixture: xychart/gram-title-bare-comma] [fixture:
+  xychart/gram-title-bare-non-ascii] [fixture:
+  xychart/gram-title-bare-parenthesis] [fixture:
+  xychart/gram-title-bare-percent-at-end] [fixture:
+  xychart/gram-title-bare-percent-inside] [fixture:
+  xychart/gram-title-bare-slash] [fixture: xychart/gram-title-bare-square]
+  [fixture: xychart/gram-title-comment-line-before-text] [fixture:
+  xychart/gram-title-comment-line-between] [fixture:
+  xychart/gram-title-empty-string] [fixture:
+  xychart/gram-title-keyword-alone-at-end] [fixture: xychart/gram-title-no-text]
+  [fixture: xychart/gram-title-quoted-unclosed] [fixture:
+  xychart/gram-title-quoted-unclosed-at-end] [fixture:
+  xychart/gram-title-text-on-next-line]
+- The line rule of `style` and `classDef` lines drops the last `;` of a line
+  that has `style:` or `classDef:`, later a `#`, and later a `;`, from any text
+  in quotes: a title, the title of an axis, a category, the title of a plot, a
+  label, and an accessibility text. Two `;` leave the first, which ends a
+  character reference; `Style` in another case, no `#`, and whitespace between
+  the `:` and the `#` keep the `;`, and a line inside quotes is a line of its
+  own. [fixture: xychart/lex-title-style-line-semicolon] [fixture:
+  xychart/lex-style-line-classdef] [fixture:
+  xychart/lex-style-line-does-not-cross-lines-in-quotes] [fixture:
+  xychart/lex-style-line-no-hash] [fixture:
+  xychart/lex-style-line-semicolon-in-second-line-of-quotes] [fixture:
+  xychart/lex-style-line-semicolon-two] [fixture:
+  xychart/lex-style-line-space-after-colon] [fixture:
+  xychart/lex-style-line-statement-separator] [fixture:
+  xychart/lex-style-line-upper-case-keyword] [fixture:
+  xychart/db-x-axis-title-quoted-style-line-semicolon] [fixture:
+  xychart/db-y-axis-title-quoted-style-line-semicolon] [fixture:
+  xychart/db-x-axis-band-quoted-style-line-semicolon] [fixture:
+  xychart/db-plot-title-style-line-semicolon] [fixture:
+  xychart/db-label-style-line-semicolon] [fixture:
+  xychart/lex-acc-descr-block-style-line-semicolon] [fixture:
+  xychart/lex-acc-descr-style-line-semicolon] [fixture:
+  xychart/lex-acc-title-style-line-semicolon]
+- A directive is removed before the text is read and the parts around it join:
+  inside a title in quotes, between and after the words of a title, before a
+  keyword, between the categories and inside a word, inside a number, a range,
+  and an arrow, and between a keyword and a bracket. A comment line and a
+  directive line inside a text in quotes are removed with their lines. A
+  directive that is not closed takes nothing at the end of the text, and takes
+  the word at the start of the next line, which is then rejected. [fixture:
+  xychart/db-title-directive-after-bare] [fixture:
+  xychart/db-title-directive-before-keyword] [fixture:
+  xychart/db-title-directive-in-quotes] [fixture:
+  xychart/db-title-quoted-comment-line-inside] [fixture:
+  xychart/db-title-quoted-directive-line-inside] [fixture:
+  xychart/db-directive-after-plot] [fixture: xychart/db-directive-between-label]
+  [fixture: xychart/db-directive-between-title-words] [fixture:
+  xychart/db-directive-glued-to-keyword] [fixture:
+  xychart/db-directive-in-arrow] [fixture: xychart/db-directive-in-range]
+  [fixture: xychart/db-directive-line] [fixture:
+  xychart/db-directive-unclosed-after-categories] [fixture:
+  xychart/db-directive-unclosed-after-header] [fixture:
+  xychart/db-directive-unclosed-after-plot] [fixture:
+  xychart/db-directive-unclosed-at-end] [fixture:
+  xychart/gram-directive-unclosed-next-line] [fixture:
+  xychart/db-x-axis-band-directive] [fixture:
+  xychart/db-x-axis-band-directive-in-word] [fixture:
+  xychart/db-plot-directive-in-number] [fixture:
+  xychart/db-plot-directive-inside]
+- A comment is a `%%` and runs to the end of its line: a comment line, and a
+  comment after a statement, are skipped. A `%%` glued to the character before
+  it takes that character: after the closing bracket of values or categories, a
+  number, or a word, the statement is rejected, while after the closing quote of
+  a text in quotes the comment is skipped and the text is kept, and after a
+  space nothing is taken. A `#` starts no comment, so a line that starts with it
+  is rejected, and neither does a single `%`. [fixture:
+  xychart/db-comment-after-bracket-line] [fixture:
+  xychart/db-comment-after-statement] [fixture: xychart/db-comment-at-end]
+  [fixture: xychart/db-comment-glued-after-quote] [fixture:
+  xychart/db-comment-glued-after-quoted-axis-title] [fixture:
+  xychart/db-comment-indented] [fixture: xychart/db-comment-line] [fixture:
+  xychart/db-comment-line-between] [fixture:
+  xychart/db-comment-spaced-after-range] [fixture:
+  xychart/gram-comment-hash-line] [fixture:
+  xychart/gram-comment-in-label-quotes-closing] [fixture:
+  xychart/gram-comment-percent-single] [fixture:
+  xychart/div-comment-glued-after-axis-title] [fixture:
+  xychart/div-comment-glued-after-bracket] [fixture:
+  xychart/div-comment-glued-after-categories] [fixture:
+  xychart/div-comment-glued-after-label] [fixture:
+  xychart/div-comment-glued-after-range] [fixture:
+  xychart/div-comment-glued-after-title-word] [fixture:
+  xychart/gram-plot-comment-inside] [fixture: xychart/db-plot-comment-after]
+  [fixture: xychart/db-x-axis-band-comment-after]
+- `xAxis` is `{ type: "band", title, categories }` until a statement gives a
+  range. The text after `x-axis` is its title, in quotes or words, and the title
+  is empty where there is none. A later `x-axis` replaces the earlier axis, its
+  title too, so that a statement with no title gives the empty one; two titles
+  in quotes are rejected. A title without quotes holds letters and `_`, `.`,
+  `&`, `=`, `*`, `#`, `+`, `-`, but no digit: a digit starts a number, which is
+  no part of a title, so that `Q1`, `A-1`, `Year 2024`, and `2024` are rejected
+  as the title of an axis, while `"Q1"` is accepted; the title of the chart, of
+  a plot, and a category can hold digits. The text of the statement is on its
+  line: a comment or a line feed between the keyword and the text or the
+  brackets does not join them, and the statement is rejected. The keyword is
+  read in any case; a bracket or a quote can follow it with no space; a letter
+  glued to it is rejected, and `x-axis` alone is rejected. [fixture:
+  xychart/db-x-axis-title-at-end-of-text] [fixture:
+  xychart/db-x-axis-title-bare-characters] [fixture:
+  xychart/db-x-axis-title-bare-hyphen] [fixture:
+  xychart/db-x-axis-title-bare-word] [fixture:
+  xychart/db-x-axis-title-keyword-prefix] [fixture:
+  xychart/db-x-axis-title-quoted] [fixture:
+  xychart/db-x-axis-title-quoted-digit] [fixture: xychart/db-x-axis-title-words]
+  [fixture: xychart/gram-x-axis-title-bare-digit] [fixture:
+  xychart/gram-x-axis-title-bare-digit-before-band] [fixture:
+  xychart/gram-x-axis-title-bare-hyphen-digit] [fixture:
+  xychart/gram-x-axis-title-bare-title-keyword] [fixture:
+  xychart/gram-x-axis-title-bare-underscore-digit] [fixture:
+  xychart/gram-x-axis-title-bare-words-number] [fixture:
+  xychart/db-x-axis-three-times] [fixture: xychart/db-x-axis-twice] [fixture:
+  xychart/db-x-axis-twice-title-cleared] [fixture:
+  xychart/gram-x-axis-keyword-alone-at-end] [fixture:
+  xychart/gram-x-axis-line-feed-before-bracket] [fixture:
+  xychart/gram-x-axis-comment-before-bracket] [fixture:
+  xychart/db-x-axis-upper-case-keyword] [fixture:
+  xychart/db-x-axis-keyword-glued-bracket] [fixture:
+  xychart/db-x-axis-keyword-glued-quote] [fixture:
+  xychart/db-x-axis-prototype-title] [fixture: xychart/gram-x-axis-empty]
+  [fixture: xychart/gram-x-axis-keyword-suffix] [fixture:
+  xychart/gram-x-axis-band-after-string-title] [fixture:
+  xychart/db-x-axis-range-then-band]
+- A range is two numbers and `-->`: `{ type: "linear", title, min, max }`. A
+  number is digits with an optional fraction, or a fraction with no integer
+  part, and an optional sign; leading zeros are read as digits. The first can be
+  greater than the second or equal to it, spaces around the arrow are not
+  needed, `-0` is 0, and a number too large for an exact double is the number
+  the Db holds. An exponent, `->`, a third number, a number with no arrow or
+  with no second or first number, a word, and `1.` are rejected. [fixture:
+  xychart/db-x-axis-range] [fixture: xychart/db-x-axis-range-decimal] [fixture:
+  xychart/db-x-axis-range-equal] [fixture: xychart/db-x-axis-range-large]
+  [fixture: xychart/db-x-axis-range-leading-zeros] [fixture:
+  xychart/db-x-axis-range-negative] [fixture:
+  xychart/db-x-axis-range-negative-zero] [fixture:
+  xychart/db-x-axis-range-no-spaces] [fixture: xychart/db-x-axis-range-plus]
+  [fixture: xychart/db-x-axis-range-title] [fixture:
+  xychart/db-x-axis-range-title-quoted] [fixture:
+  xychart/gram-x-axis-range-exponent] [fixture:
+  xychart/gram-x-axis-range-no-end] [fixture:
+  xychart/gram-x-axis-range-no-start] [fixture:
+  xychart/gram-x-axis-range-one-number] [fixture:
+  xychart/gram-x-axis-range-short-arrow] [fixture:
+  xychart/gram-x-axis-range-text] [fixture: xychart/gram-x-axis-range-third]
+  [fixture: xychart/gram-x-axis-range-trailing-dot]
+- A list of categories is texts between `[` and `]` separated by commas: words,
+  which are joined without the spaces between them, or text in quotes, which
+  holds spaces, commas, and line feeds and loses the spaces at its ends.
+  Numbers, signs, and the names of properties of objects are categories like
+  others; two categories with the same text are two categories; a keyword in
+  quotes is a category, while a keyword without quotes is rejected in any case.
+  A list with a comma before the closing bracket, with nothing, with a space
+  only, with an empty text in quotes, with a line feed between its items, with a
+  character outside ASCII or a single `%` in a word, twice, with text after it,
+  or not closed is rejected. [fixture: xychart/db-x-axis-band] [fixture:
+  xychart/db-x-axis-band-characters] [fixture: xychart/db-x-axis-band-digit]
+  [fixture: xychart/db-x-axis-band-entity] [fixture:
+  xychart/db-x-axis-band-line-separator-inside] [fixture:
+  xychart/db-x-axis-band-nbsp-inside] [fixture: xychart/db-x-axis-band-negative]
+  [fixture: xychart/db-x-axis-band-no-spaces] [fixture:
+  xychart/db-x-axis-band-numbers] [fixture: xychart/db-x-axis-band-one]
+  [fixture: xychart/db-x-axis-band-prototype-names] [fixture:
+  xychart/db-x-axis-band-quoted] [fixture:
+  xychart/db-x-axis-band-quoted-keyword] [fixture:
+  xychart/db-x-axis-band-quoted-line-feed] [fixture:
+  xychart/db-x-axis-band-quoted-spaces] [fixture:
+  xychart/db-x-axis-band-same-category] [fixture:
+  xychart/db-x-axis-band-tab-inside] [fixture: xychart/db-x-axis-band-title]
+  [fixture: xychart/db-x-axis-band-title-quoted] [fixture:
+  xychart/db-x-axis-band-words] [fixture: xychart/gram-x-axis-band-axis-keyword]
+  [fixture: xychart/gram-x-axis-band-empty] [fixture:
+  xychart/gram-x-axis-band-empty-string] [fixture:
+  xychart/gram-x-axis-band-extra-text] [fixture:
+  xychart/gram-x-axis-band-keyword] [fixture:
+  xychart/gram-x-axis-band-keyword-upper-case] [fixture:
+  xychart/gram-x-axis-band-line-feed] [fixture:
+  xychart/gram-x-axis-band-non-ascii] [fixture:
+  xychart/gram-x-axis-band-percent-inside] [fixture:
+  xychart/gram-x-axis-band-spaces-only] [fixture:
+  xychart/gram-x-axis-band-title-keyword] [fixture:
+  xychart/gram-x-axis-band-trailing-comma] [fixture:
+  xychart/gram-x-axis-band-twice] [fixture: xychart/gram-x-axis-band-unclosed]
+  [fixture: xychart/gram-x-axis-band-unclosed-string] [fixture:
+  xychart/db-category-quoted-line-separator] [fixture:
+  xychart/db-title-quoted-crlf-category]
+- `yAxis` is `{ type: "linear", title, min, max }`; the range is `Infinity` and
+  `-Infinity` where no statement gives one and no plot adds values. The text
+  before the range is the title; a later `y-axis` with a range only gives the
+  empty title, and one with a title only changes the title and keeps the range.
+  A range written before or after the plots wins over the one the plots give.
+  Categories, a third number, one number, the brackets around a range, and
+  `y-axis` alone are rejected. [fixture: xychart/db-y-axis-after-plot] [fixture:
+  xychart/db-y-axis-before-plot] [fixture: xychart/db-y-axis-no-range-no-plot]
+  [fixture: xychart/db-y-axis-range] [fixture:
+  xychart/db-y-axis-range-negative-decimal] [fixture:
+  xychart/db-y-axis-range-reversed] [fixture: xychart/db-y-axis-range-title]
+  [fixture: xychart/db-y-axis-title-bare-word] [fixture:
+  xychart/db-y-axis-title-only-then-range] [fixture:
+  xychart/db-y-axis-title-quoted] [fixture: xychart/db-y-axis-twice] [fixture:
+  xychart/db-y-axis-upper-case-keyword] [fixture: xychart/gram-y-axis-band]
+  [fixture: xychart/gram-y-axis-empty] [fixture:
+  xychart/gram-y-axis-glued-bracket] [fixture:
+  xychart/gram-y-axis-keyword-alone-at-end] [fixture:
+  xychart/gram-y-axis-one-number] [fixture: xychart/gram-y-axis-third] [fixture:
+  xychart/gram-y-axis-title-bare-digit] [fixture:
+  xychart/gram-y-axis-title-bare-digit-before-range] [fixture:
+  xychart/gram-y-axis-title-bare-letters-digits] [fixture:
+  xychart/gram-y-axis-title-bare-title-keyword]
+- A plot is `line` or `bar`, an optional title (in quotes, or words), and values
+  between `[` and `]` separated by commas: `{ type, title, data }`. The keyword
+  is read in any case, a bracket can follow it with no space, and a tab can
+  separate them; a word glued to it, values with no brackets, empty brackets,
+  and values on the next line are rejected. The plots are in the order of the
+  text; two plots can have one title. A title that is a letter or a property
+  name of objects is a title. [fixture: xychart/db-line-title-bare] [fixture:
+  xychart/db-line-title-bare-digit] [fixture: xychart/db-line-title-quoted]
+  [fixture: xychart/db-line-title-words] [fixture: xychart/db-line-values]
+  [fixture: xychart/db-bar-title-bare] [fixture:
+  xychart/db-bar-title-bare-number] [fixture: xychart/db-bar-title-quoted]
+  [fixture: xychart/db-bar-values] [fixture:
+  xychart/db-plot-title-bare-hyphen-digit] [fixture:
+  xychart/db-plot-title-entity] [fixture: xychart/db-plot-title-keyword-like]
+  [fixture: xychart/db-plot-title-prototype-name] [fixture:
+  xychart/db-plot-title-quoted-line-feed] [fixture:
+  xychart/db-plot-title-quoted-lone-cr] [fixture:
+  xychart/db-plot-title-quoted-special] [fixture: xychart/db-plot-title-trimmed]
+  [fixture: xychart/db-plot-bar-keyword-glued-bracket] [fixture:
+  xychart/db-plot-capitalized-keyword] [fixture:
+  xychart/db-plot-keyword-glued-bracket] [fixture: xychart/db-plot-tab-keyword]
+  [fixture: xychart/db-plot-upper-case-keyword] [fixture:
+  xychart/db-plot-bar-then-line] [fixture: xychart/db-plot-same-title-twice]
+  [fixture: xychart/gram-line-comment-before-bracket] [fixture:
+  xychart/gram-line-keyword-alone-at-end] [fixture:
+  xychart/gram-line-title-only-at-end] [fixture:
+  xychart/gram-bar-keyword-alone-at-end] [fixture:
+  xychart/gram-bar-title-only-at-end] [fixture:
+  xychart/gram-plot-values-keyword-glued-title] [fixture:
+  xychart/gram-plot-values-bar-keyword-glued] [fixture:
+  xychart/gram-plot-values-no-brackets] [fixture:
+  xychart/gram-plot-values-empty] [fixture:
+  xychart/gram-plot-values-line-feed-before-bracket] [fixture:
+  xychart/gram-plot-values-title-line-feed-before-bracket] [fixture:
+  xychart/gram-plot-values-extra-text]
+- A value is a number as the range of an axis writes it: digits with an optional
+  fraction, or a fraction with no integer part, and an optional sign; `-0` is 0
+  and a number too large for an exact double is the number the Db holds. Spaces,
+  tabs, no-break spaces, U+FEFF, and U+2028 inside the brackets and around the
+  commas change nothing; a line feed or a CRLF does not. An exponent, a word,
+  `NaN`, `Infinity`, `5.`, `1.5.2`, an underscore, two commas, a comma before
+  the first value or the closing bracket, two values with no comma, a line feed
+  inside the brackets, and brackets that are not closed are rejected. [fixture:
+  xychart/db-plot-values-bom-inside] [fixture: xychart/db-plot-values-decimal]
+  [fixture: xychart/db-plot-values-decimal-division] [fixture:
+  xychart/db-plot-values-form-feed-inside] [fixture:
+  xychart/db-plot-values-large] [fixture: xychart/db-plot-values-leading-zeros]
+  [fixture: xychart/db-plot-values-line-separator-inside] [fixture:
+  xychart/db-plot-values-nbsp-inside] [fixture: xychart/db-plot-values-negative]
+  [fixture: xychart/db-plot-values-negative-zero] [fixture:
+  xychart/db-plot-values-no-spaces] [fixture: xychart/db-plot-values-one]
+  [fixture: xychart/db-plot-values-plus] [fixture:
+  xychart/db-plot-values-spaces] [fixture: xychart/db-plot-values-tab-inside]
+  [fixture: xychart/gram-plot-values-crlf-inside] [fixture:
+  xychart/gram-plot-values-double-comma] [fixture:
+  xychart/gram-plot-values-exponent] [fixture:
+  xychart/gram-plot-values-infinity] [fixture:
+  xychart/gram-plot-values-leading-comma] [fixture:
+  xychart/gram-plot-values-line-feed-after-bracket] [fixture:
+  xychart/gram-plot-values-line-feed-before-comma] [fixture:
+  xychart/gram-plot-values-missing-comma] [fixture:
+  xychart/gram-plot-values-nan] [fixture:
+  xychart/gram-plot-values-trailing-comma] [fixture:
+  xychart/gram-plot-values-trailing-dot] [fixture:
+  xychart/gram-plot-values-two-dots] [fixture:
+  xychart/gram-plot-values-unclosed] [fixture:
+  xychart/gram-plot-values-underscore] [fixture: xychart/gram-plot-values-word]
+- A value of a line can be followed by a label, a text in quotes, with or
+  without a space: `pointLabels` lists the label of each value, the empty text
+  for a value with none, and is there only when a label is written. A label that
+  is empty gives no label. A label holds punctuation and line feeds, and loses
+  the spaces at its ends. A label on a bar is accepted and not kept. A label
+  without quotes, before the value, twice, with two quotes inside it, or not
+  closed is rejected. [fixture: xychart/db-label-all] [fixture:
+  xychart/db-label-empty-string] [fixture: xychart/db-label-entity] [fixture:
+  xychart/db-label-last] [fixture: xychart/db-label-line-feed] [fixture:
+  xychart/db-label-no-space] [fixture: xychart/db-label-on-bar] [fixture:
+  xychart/db-label-one] [fixture: xychart/db-label-quoted-crlf] [fixture:
+  xychart/db-label-spaces-trimmed] [fixture: xychart/db-label-special] [fixture:
+  xychart/gram-label-bare] [fixture: xychart/gram-label-before-value] [fixture:
+  xychart/gram-label-doubled-quote] [fixture: xychart/gram-label-twice]
+  [fixture: xychart/gram-label-unclosed]
+- `data` is the list of the pairs `[x, y]` that the Db makes where the plot is
+  added, from the x axis at that point of the text: with a list of categories,
+  one pair for each category, the values beyond the categories dropped and a
+  category with no value having `null`; with a range, or with none, one pair for
+  each value, the x being the text of the number computed by spreading the
+  values evenly over the range, the first at its start. Where no x-axis
+  statement comes before the first plot, the x axis becomes the range from 1 to
+  the number of its values, and a later plot is spread over that range. An x
+  axis written after a plot does not change its pairs. [fixture:
+  xychart/db-data-band-after-plot] [fixture:
+  xychart/db-data-band-after-plot-longer] [fixture: xychart/db-data-band-equal]
+  [fixture: xychart/db-data-band-fewer-values] [fixture:
+  xychart/db-data-band-more-values] [fixture: xychart/db-data-band-two-plots]
+  [fixture: xychart/db-data-longer-second-plot] [fixture:
+  xychart/db-data-shorter-second-plot] [fixture:
+  xychart/db-data-no-axis-bar-and-line] [fixture:
+  xychart/db-data-range-after-plot] [fixture: xychart/db-data-range-equal]
+  [fixture: xychart/db-data-range-fractions] [fixture:
+  xychart/db-data-range-integers] [fixture: xychart/db-data-range-negative]
+  [fixture: xychart/db-data-range-one-value] [fixture:
+  xychart/db-data-range-reversed] [fixture: xychart/db-data-range-three]
+- The range of the y axis that no statement gives is computed from the values of
+  the plots: the smallest and the greatest value of every plot, without the
+  values that a list of categories drops; it is the range of one value for a
+  plot of one value. [fixture: xychart/db-data-y-range-band-truncation]
+  [fixture: xychart/db-data-y-range-from-plots] [fixture:
+  xychart/db-data-y-range-negative-zero] [fixture:
+  xychart/db-data-y-range-single-value]
+- All the fields at once. [fixture: xychart/db-data-everything] [fixture:
+  xychart/db-data-xy-title-and-plots]
+- `accTitle` is the text after `accTitle:` to the end of its line, without the
+  spaces at its ends; `accDescr` is the text after `accDescr:`, or the lines
+  between `accDescr {` and `}`. No space is needed after the colon or before the
+  brace; the colon or the brace can be on the line after the keyword; a colon, a
+  `;`, a `#`, and spaces are characters of the text; the keyword is read in any
+  case, and spaces can precede the colon. Where the line of `accTitle:` or
+  `accDescr:` has no text, the keyword takes the next line that has text, over
+  empty lines, comment lines, and directive lines, whole, as its value, and that
+  line is no statement: a `title` line or a `line` line is then the text; only
+  where no text follows to the end of the text is the value empty. A letter, a
+  dash, a digit, or a space glued to or inside the keyword is rejected, and the
+  keyword alone at the end of the text is rejected. The last statement of each
+  kind is the value. A block that is not closed at the end of the text sets the
+  empty description, an empty block (braces, or spaces between them) sets
+  nothing and keeps the description before it, a description on a line and a
+  block replace each other, and a `}` ends a block, after which the text is read
+  as statements. A CRLF in a block joins the lines with a line feed, and a
+  U+2028 is a character of the text. [fixture: xychart/db-acc-descr] [fixture:
+  xychart/db-acc-descr-blank-lines-then-text] [fixture:
+  xychart/db-acc-descr-block] [fixture:
+  xychart/db-acc-descr-block-comment-line-inside] [fixture:
+  xychart/db-acc-descr-block-cr] [fixture: xychart/db-acc-descr-block-crlf]
+  [fixture: xychart/db-acc-descr-block-directive-inside] [fixture:
+  xychart/db-acc-descr-block-empty] [fixture:
+  xychart/db-acc-descr-block-hash-semicolon] [fixture:
+  xychart/db-acc-descr-block-line-feed-before-brace] [fixture:
+  xychart/db-acc-descr-block-line-separator-inside] [fixture:
+  xychart/db-acc-descr-block-no-space] [fixture:
+  xychart/db-acc-descr-block-percent] [fixture:
+  xychart/db-acc-descr-block-spaces-inside] [fixture:
+  xychart/db-acc-descr-block-then-empty-block] [fixture:
+  xychart/db-acc-descr-block-then-empty-line] [fixture:
+  xychart/db-acc-descr-block-then-line] [fixture:
+  xychart/db-acc-descr-block-then-title-same-line] [fixture:
+  xychart/db-acc-descr-block-twice-same-line] [fixture:
+  xychart/db-acc-descr-block-upper-case] [fixture:
+  xychart/db-acc-descr-colon-on-next-line] [fixture:
+  xychart/db-acc-descr-comment-line-then-text] [fixture:
+  xychart/db-acc-descr-directive-line-then-text] [fixture:
+  xychart/db-acc-descr-empty-block-after-title-same-line] [fixture:
+  xychart/db-acc-descr-empty-block-before-plot] [fixture:
+  xychart/db-acc-descr-empty-block-before-title-same-line] [fixture:
+  xychart/db-acc-descr-line-separator-inside] [fixture:
+  xychart/db-acc-descr-line-then-block] [fixture:
+  xychart/db-acc-descr-line-then-empty-block] [fixture:
+  xychart/db-acc-descr-line-then-empty-braces] [fixture:
+  xychart/db-acc-descr-line-then-empty-line] [fixture:
+  xychart/db-acc-descr-line-then-spaces-block] [fixture:
+  xychart/db-acc-descr-no-space] [fixture:
+  xychart/db-acc-descr-takes-title-line] [fixture:
+  xychart/db-acc-descr-unclosed-block] [fixture: xychart/db-acc-title] [fixture:
+  xychart/db-acc-title-blank-lines-then-text] [fixture:
+  xychart/db-acc-title-colon-inside] [fixture:
+  xychart/db-acc-title-colon-on-next-line] [fixture:
+  xychart/db-acc-title-comment-line-then-text] [fixture:
+  xychart/db-acc-title-directive-line-then-text] [fixture:
+  xychart/db-acc-title-empty] [fixture:
+  xychart/db-acc-title-empty-at-end-after-value] [fixture:
+  xychart/db-acc-title-hash] [fixture:
+  xychart/db-acc-title-leading-ideographic-space] [fixture:
+  xychart/db-acc-title-line-separator-inside] [fixture:
+  xychart/db-acc-title-no-space] [fixture: xychart/db-acc-title-semicolon]
+  [fixture: xychart/db-acc-title-space-before-colon] [fixture:
+  xychart/db-acc-title-spaces-trimmed] [fixture:
+  xychart/db-acc-title-takes-next-line] [fixture:
+  xychart/db-acc-title-then-empty-line] [fixture:
+  xychart/db-acc-title-three-times] [fixture: xychart/db-acc-title-trailing-bom]
+  [fixture: xychart/db-acc-title-trailing-ideographic-space] [fixture:
+  xychart/db-acc-title-trailing-nbsp] [fixture:
+  xychart/db-acc-title-trailing-tab] [fixture: xychart/db-acc-title-twice]
+  [fixture: xychart/db-acc-title-two-colons] [fixture:
+  xychart/db-acc-title-upper-case] [fixture:
+  xychart/gram-acc-descr-block-braces-inside] [fixture:
+  xychart/gram-acc-descr-block-double-close] [fixture:
+  xychart/gram-acc-descr-block-two-blocks] [fixture:
+  xychart/gram-acc-descr-empty-block-before-header] [fixture:
+  xychart/gram-acc-descr-keyword-alone] [fixture:
+  xychart/gram-acc-title-dash-suffix] [fixture:
+  xychart/gram-acc-title-digit-suffix] [fixture:
+  xychart/gram-acc-title-keyword-alone] [fixture:
+  xychart/gram-acc-title-space-in-keyword] [fixture:
+  xychart/gram-acc-title-word-suffix] [fixture:
+  xychart/div-empty-description-block-inside-axis] [fixture:
+  xychart/div-empty-description-block-inside-plot] [fixture:
+  xychart/div-empty-description-block-inside-title-text] [fixture:
+  xychart/div-empty-description-block-inside-values]
+- `title`, `accTitle`, the titles of the axes, the categories, the titles of the
+  plots, and the labels pass through `sanitizeText` and, under a `securityLevel`
+  that is not one of mermaid.js's values with HTML labels enabled, hold the
+  replaced characters (see [db-from-tree.md](./db-from-tree.md), the replacement
+  of characters); the pairs of the plots hold the replaced categories. Under
+  `loose` and `sandbox`, or with `htmlLabels` false at the top of the settings
+  or in `flowchart`, they are as written. [fixture:
+  xychart/config-security-level-loose-all] [fixture:
+  xychart/config-security-level-other-all] [fixture:
+  xychart/config-security-level-other-flowchart-html-labels-false] [fixture:
+  xychart/config-security-level-other-html-labels-false] [fixture:
+  xychart/config-security-level-other-orientation-horizontal] [fixture:
+  xychart/config-security-level-sandbox-all]
+- The places that hold a text are a title, the accessibility title, a
+  description on a line and in braces, the title of the x axis, a category, the
+  title of the y axis, the title of a plot, and a label; all but the
+  accessibility texts and the label hold a text without quotes or in quotes. The
+  same rules hold in every place, but where a following item says otherwise.
+  Whitespace of any kind (a tab, a U+FEFF, a no-break space, a U+3000, a U+2028,
+  a U+2029) separates the words of a text without quotes and is skipped, so that
+  the words join; in quotes and in an accessibility text it is a character of
+  the text. [fixture: xychart/db-grid-tab-acc-descr] [fixture:
+  xychart/db-grid-tab-acc-descr-block] [fixture: xychart/db-grid-tab-acc-title]
+  [fixture: xychart/db-grid-tab-category-bare] [fixture:
+  xychart/db-grid-tab-category-quoted] [fixture: xychart/db-grid-tab-label]
+  [fixture: xychart/db-grid-tab-plot-title-bare] [fixture:
+  xychart/db-grid-tab-plot-title-quoted] [fixture:
+  xychart/db-grid-tab-title-bare] [fixture: xychart/db-grid-tab-title-quoted]
+  [fixture: xychart/db-grid-tab-x-title-bare] [fixture:
+  xychart/db-grid-tab-x-title-quoted] [fixture:
+  xychart/db-grid-tab-y-title-bare] [fixture:
+  xychart/db-grid-tab-y-title-quoted] [fixture: xychart/db-grid-bom-acc-descr]
+  [fixture: xychart/db-grid-bom-acc-descr-block] [fixture:
+  xychart/db-grid-bom-acc-title] [fixture: xychart/db-grid-bom-category-bare]
+  [fixture: xychart/db-grid-bom-category-quoted] [fixture:
+  xychart/db-grid-bom-label] [fixture: xychart/db-grid-bom-plot-title-bare]
+  [fixture: xychart/db-grid-bom-plot-title-quoted] [fixture:
+  xychart/db-grid-bom-title-bare] [fixture: xychart/db-grid-bom-title-quoted]
+  [fixture: xychart/db-grid-bom-x-title-bare] [fixture:
+  xychart/db-grid-bom-x-title-quoted] [fixture:
+  xychart/db-grid-bom-y-title-bare] [fixture:
+  xychart/db-grid-bom-y-title-quoted] [fixture: xychart/db-grid-nbsp-acc-descr]
+  [fixture: xychart/db-grid-nbsp-acc-descr-block] [fixture:
+  xychart/db-grid-nbsp-acc-title] [fixture: xychart/db-grid-nbsp-category-bare]
+  [fixture: xychart/db-grid-nbsp-category-quoted] [fixture:
+  xychart/db-grid-nbsp-label] [fixture: xychart/db-grid-nbsp-plot-title-bare]
+  [fixture: xychart/db-grid-nbsp-plot-title-quoted] [fixture:
+  xychart/db-grid-nbsp-title-quoted] [fixture:
+  xychart/db-grid-nbsp-x-title-bare] [fixture:
+  xychart/db-grid-nbsp-x-title-quoted] [fixture:
+  xychart/db-grid-nbsp-y-title-bare] [fixture:
+  xychart/db-grid-nbsp-y-title-quoted] [fixture:
+  xychart/db-grid-ideographic-acc-descr] [fixture:
+  xychart/db-grid-ideographic-acc-descr-block] [fixture:
+  xychart/db-grid-ideographic-acc-title] [fixture:
+  xychart/db-grid-ideographic-category-bare] [fixture:
+  xychart/db-grid-ideographic-category-quoted] [fixture:
+  xychart/db-grid-ideographic-label] [fixture:
+  xychart/db-grid-ideographic-plot-title-bare] [fixture:
+  xychart/db-grid-ideographic-plot-title-quoted] [fixture:
+  xychart/db-grid-ideographic-title-quoted] [fixture:
+  xychart/db-grid-ideographic-x-title-bare] [fixture:
+  xychart/db-grid-ideographic-x-title-quoted] [fixture:
+  xychart/db-grid-ideographic-y-title-bare] [fixture:
+  xychart/db-grid-ideographic-y-title-quoted] [fixture:
+  xychart/db-grid-ls-acc-descr-block] [fixture:
+  xychart/db-grid-ls-category-bare] [fixture:
+  xychart/db-grid-ls-category-quoted] [fixture: xychart/db-grid-ls-label]
+  [fixture: xychart/db-grid-ls-plot-title-bare] [fixture:
+  xychart/db-grid-ls-plot-title-quoted] [fixture: xychart/db-grid-ls-title-bare]
+  [fixture: xychart/db-grid-ls-x-title-bare] [fixture:
+  xychart/db-grid-ls-x-title-quoted] [fixture: xychart/db-grid-ls-y-title-bare]
+  [fixture: xychart/db-grid-ls-y-title-quoted] [fixture:
+  xychart/db-grid-ps-acc-descr] [fixture: xychart/db-grid-ps-acc-descr-block]
+  [fixture: xychart/db-grid-ps-acc-title] [fixture:
+  xychart/db-grid-ps-category-bare] [fixture:
+  xychart/db-grid-ps-category-quoted] [fixture: xychart/db-grid-ps-label]
+  [fixture: xychart/db-grid-ps-plot-title-bare] [fixture:
+  xychart/db-grid-ps-plot-title-quoted] [fixture: xychart/db-grid-ps-title-bare]
+  [fixture: xychart/db-grid-ps-title-quoted] [fixture:
+  xychart/db-grid-ps-x-title-bare] [fixture: xychart/db-grid-ps-x-title-quoted]
+  [fixture: xychart/db-grid-ps-y-title-bare] [fixture:
+  xychart/db-grid-ps-y-title-quoted]
+- A line feed, a CRLF, and a lone CR inside a text: in quotes and in braces they
+  are one line feed in the text; without quotes and on the line of `accTitle:`
+  or `accDescr:` they end the line, and the rest is read as the next statement,
+  which is rejected. [fixture: xychart/db-grid-crlf-acc-descr-block] [fixture:
+  xychart/db-grid-crlf-category-quoted] [fixture: xychart/db-grid-crlf-label]
+  [fixture: xychart/db-grid-crlf-plot-title-quoted] [fixture:
+  xychart/db-grid-crlf-title-quoted] [fixture:
+  xychart/db-grid-crlf-x-title-quoted] [fixture:
+  xychart/db-grid-crlf-y-title-quoted] [fixture:
+  xychart/gram-grid-crlf-acc-descr] [fixture: xychart/gram-grid-crlf-acc-title]
+  [fixture: xychart/gram-grid-crlf-category-bare] [fixture:
+  xychart/gram-grid-crlf-plot-title-bare] [fixture:
+  xychart/gram-grid-crlf-title-bare] [fixture:
+  xychart/gram-grid-crlf-x-title-bare] [fixture:
+  xychart/gram-grid-crlf-y-title-bare] [fixture:
+  xychart/db-grid-cr-acc-descr-block] [fixture:
+  xychart/db-grid-cr-category-quoted] [fixture: xychart/db-grid-cr-label]
+  [fixture: xychart/db-grid-cr-title-quoted] [fixture:
+  xychart/db-grid-cr-x-title-quoted] [fixture:
+  xychart/db-grid-cr-y-title-quoted] [fixture: xychart/gram-grid-cr-acc-descr]
+  [fixture: xychart/gram-grid-cr-acc-title] [fixture:
+  xychart/gram-grid-cr-category-bare] [fixture:
+  xychart/gram-grid-cr-plot-title-bare] [fixture:
+  xychart/gram-grid-cr-title-bare] [fixture: xychart/gram-grid-cr-x-title-bare]
+  [fixture: xychart/gram-grid-cr-y-title-bare] [fixture:
+  xychart/db-grid-lf-acc-descr-block] [fixture:
+  xychart/db-grid-lf-category-quoted] [fixture:
+  xychart/db-grid-lf-x-title-quoted] [fixture:
+  xychart/db-grid-lf-y-title-quoted] [fixture: xychart/gram-grid-lf-acc-descr]
+  [fixture: xychart/gram-grid-lf-acc-title] [fixture:
+  xychart/gram-grid-lf-category-bare] [fixture:
+  xychart/gram-grid-lf-plot-title-bare] [fixture:
+  xychart/gram-grid-lf-title-bare] [fixture: xychart/gram-grid-lf-x-title-bare]
+  [fixture: xychart/gram-grid-lf-y-title-bare]
+- A directive inside a text is removed in every place and the parts join. A `%%`
+  after a space inside a text is a character of the text in quotes, in the
+  accessibility texts, and in a label; without quotes it starts a comment that
+  ends the text in a title and in the title of an axis, and, since a category
+  and the title of a plot are followed by more of the statement, it is rejected
+  there. [fixture: xychart/db-grid-directive-acc-descr] [fixture:
+  xychart/db-grid-directive-acc-descr-block] [fixture:
+  xychart/db-grid-directive-acc-title] [fixture:
+  xychart/db-grid-directive-category-bare] [fixture:
+  xychart/db-grid-directive-category-quoted] [fixture:
+  xychart/db-grid-directive-label] [fixture:
+  xychart/db-grid-directive-plot-title-bare] [fixture:
+  xychart/db-grid-directive-plot-title-quoted] [fixture:
+  xychart/db-grid-directive-title-bare] [fixture:
+  xychart/db-grid-directive-title-quoted] [fixture:
+  xychart/db-grid-directive-x-title-bare] [fixture:
+  xychart/db-grid-directive-x-title-quoted] [fixture:
+  xychart/db-grid-directive-y-title-bare] [fixture:
+  xychart/db-grid-directive-y-title-quoted] [fixture:
+  xychart/db-grid-comment-acc-descr] [fixture:
+  xychart/db-grid-comment-acc-descr-block] [fixture:
+  xychart/db-grid-comment-acc-title] [fixture:
+  xychart/db-grid-comment-category-quoted] [fixture:
+  xychart/db-grid-comment-label] [fixture:
+  xychart/db-grid-comment-plot-title-quoted] [fixture:
+  xychart/db-grid-comment-title-bare] [fixture:
+  xychart/db-grid-comment-x-title-bare] [fixture:
+  xychart/db-grid-comment-x-title-quoted] [fixture:
+  xychart/db-grid-comment-y-title-bare] [fixture:
+  xychart/db-grid-comment-y-title-quoted] [fixture:
+  xychart/gram-grid-comment-category-bare] [fixture:
+  xychart/gram-grid-comment-plot-title-bare]
+- A `;` that the line rule drops, a character reference, a keyword, a character
+  outside ASCII, an HTML tag, and punctuation are texts in quotes, in the
+  accessibility texts, and in a label (the tag with its attribute quotes read as
+  `'`); without quotes they are rejected, since a text without quotes holds the
+  characters of a word only. [fixture: xychart/db-grid-style-acc-descr]
+  [fixture: xychart/db-grid-style-acc-descr-block] [fixture:
+  xychart/db-grid-style-acc-title] [fixture:
+  xychart/db-grid-style-x-title-quoted] [fixture:
+  xychart/gram-grid-style-category-bare] [fixture:
+  xychart/gram-grid-style-plot-title-bare] [fixture:
+  xychart/gram-grid-style-title-bare] [fixture:
+  xychart/gram-grid-style-x-title-bare] [fixture:
+  xychart/gram-grid-style-y-title-bare] [fixture:
+  xychart/db-grid-entity-acc-descr] [fixture:
+  xychart/db-grid-entity-acc-descr-block] [fixture:
+  xychart/db-grid-entity-acc-title] [fixture:
+  xychart/db-grid-entity-category-quoted] [fixture:
+  xychart/db-grid-entity-plot-title-quoted] [fixture:
+  xychart/db-grid-entity-x-title-quoted] [fixture:
+  xychart/db-grid-entity-y-title-quoted] [fixture:
+  xychart/gram-grid-entity-category-bare] [fixture:
+  xychart/gram-grid-entity-plot-title-bare] [fixture:
+  xychart/gram-grid-entity-x-title-bare] [fixture:
+  xychart/gram-grid-entity-y-title-bare] [fixture:
+  xychart/db-grid-keyword-acc-descr] [fixture:
+  xychart/db-grid-keyword-acc-descr-block] [fixture:
+  xychart/db-grid-keyword-acc-title] [fixture:
+  xychart/db-grid-keyword-category-quoted] [fixture:
+  xychart/db-grid-keyword-label] [fixture:
+  xychart/db-grid-keyword-plot-title-quoted] [fixture:
+  xychart/db-grid-keyword-title-quoted] [fixture:
+  xychart/db-grid-keyword-x-title-quoted] [fixture:
+  xychart/db-grid-keyword-y-title-quoted] [fixture:
+  xychart/gram-grid-keyword-category-bare] [fixture:
+  xychart/gram-grid-keyword-plot-title-bare] [fixture:
+  xychart/gram-grid-keyword-title-bare] [fixture:
+  xychart/gram-grid-keyword-x-title-bare] [fixture:
+  xychart/gram-grid-keyword-y-title-bare] [fixture:
+  xychart/db-grid-nonascii-acc-descr] [fixture:
+  xychart/db-grid-nonascii-acc-descr-block] [fixture:
+  xychart/db-grid-nonascii-acc-title] [fixture:
+  xychart/db-grid-nonascii-category-quoted] [fixture:
+  xychart/db-grid-nonascii-label] [fixture:
+  xychart/db-grid-nonascii-plot-title-quoted] [fixture:
+  xychart/db-grid-nonascii-title-quoted] [fixture:
+  xychart/db-grid-nonascii-x-title-quoted] [fixture:
+  xychart/db-grid-nonascii-y-title-quoted] [fixture:
+  xychart/gram-grid-nonascii-category-bare] [fixture:
+  xychart/gram-grid-nonascii-plot-title-bare] [fixture:
+  xychart/gram-grid-nonascii-x-title-bare] [fixture:
+  xychart/gram-grid-nonascii-y-title-bare] [fixture:
+  xychart/db-grid-html-acc-descr] [fixture:
+  xychart/db-grid-html-acc-descr-block] [fixture:
+  xychart/db-grid-html-acc-title] [fixture:
+  xychart/db-grid-html-category-quoted] [fixture: xychart/db-grid-html-label]
+  [fixture: xychart/db-grid-html-plot-title-quoted] [fixture:
+  xychart/db-grid-html-x-title-quoted] [fixture:
+  xychart/db-grid-html-y-title-quoted] [fixture:
+  xychart/gram-grid-html-category-bare] [fixture:
+  xychart/gram-grid-html-plot-title-bare] [fixture:
+  xychart/gram-grid-html-title-bare] [fixture:
+  xychart/gram-grid-html-x-title-bare] [fixture:
+  xychart/gram-grid-html-y-title-bare] [fixture:
+  xychart/db-grid-punct-acc-descr] [fixture:
+  xychart/db-grid-punct-acc-descr-block] [fixture:
+  xychart/db-grid-punct-acc-title] [fixture:
+  xychart/db-grid-punct-category-quoted] [fixture: xychart/db-grid-punct-label]
+  [fixture: xychart/db-grid-punct-plot-title-quoted] [fixture:
+  xychart/db-grid-punct-title-quoted] [fixture:
+  xychart/db-grid-punct-x-title-quoted] [fixture:
+  xychart/db-grid-punct-y-title-quoted] [fixture:
+  xychart/gram-grid-punct-category-bare] [fixture:
+  xychart/gram-grid-punct-plot-title-bare] [fixture:
+  xychart/gram-grid-punct-title-bare] [fixture:
+  xychart/gram-grid-punct-x-title-bare] [fixture:
+  xychart/gram-grid-punct-y-title-bare]
+- The name `__proto__` and a `#` inside a word are texts in every place. An
+  empty text is rejected as a title, the title of an axis, and a category, in
+  quotes or not; it is the empty text in the accessibility texts and the title
+  of a plot, and no label in a label. [fixture: xychart/db-grid-proto-acc-descr]
+  [fixture: xychart/db-grid-proto-acc-descr-block] [fixture:
+  xychart/db-grid-proto-acc-title] [fixture:
+  xychart/db-grid-proto-category-bare] [fixture:
+  xychart/db-grid-proto-category-quoted] [fixture: xychart/db-grid-proto-label]
+  [fixture: xychart/db-grid-proto-plot-title-quoted] [fixture:
+  xychart/db-grid-proto-title-bare] [fixture:
+  xychart/db-grid-proto-title-quoted] [fixture:
+  xychart/db-grid-proto-x-title-bare] [fixture:
+  xychart/db-grid-proto-x-title-quoted] [fixture:
+  xychart/db-grid-proto-y-title-bare] [fixture:
+  xychart/db-grid-proto-y-title-quoted] [fixture:
+  xychart/db-grid-hash-acc-descr] [fixture:
+  xychart/db-grid-hash-acc-descr-block] [fixture:
+  xychart/db-grid-hash-acc-title] [fixture: xychart/db-grid-hash-category-bare]
+  [fixture: xychart/db-grid-hash-category-quoted] [fixture:
+  xychart/db-grid-hash-label] [fixture: xychart/db-grid-hash-plot-title-bare]
+  [fixture: xychart/db-grid-hash-plot-title-quoted] [fixture:
+  xychart/db-grid-hash-title-bare] [fixture: xychart/db-grid-hash-title-quoted]
+  [fixture: xychart/db-grid-hash-x-title-bare] [fixture:
+  xychart/db-grid-hash-x-title-quoted] [fixture:
+  xychart/db-grid-hash-y-title-bare] [fixture:
+  xychart/db-grid-hash-y-title-quoted] [fixture:
+  xychart/db-grid-empty-acc-descr] [fixture:
+  xychart/db-grid-empty-acc-descr-block] [fixture:
+  xychart/db-grid-empty-acc-title] [fixture:
+  xychart/db-grid-empty-plot-title-bare] [fixture:
+  xychart/db-grid-empty-plot-title-quoted] [fixture:
+  xychart/gram-grid-empty-category-bare] [fixture:
+  xychart/gram-grid-empty-category-quoted] [fixture:
+  xychart/gram-grid-empty-title-bare] [fixture:
+  xychart/gram-grid-empty-x-title-bare] [fixture:
+  xychart/gram-grid-empty-x-title-quoted] [fixture:
+  xychart/gram-grid-empty-y-title-bare] [fixture:
+  xychart/gram-grid-empty-y-title-quoted]

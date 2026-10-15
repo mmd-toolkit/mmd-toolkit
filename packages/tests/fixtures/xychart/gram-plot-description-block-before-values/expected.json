@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md The plot context: a description block between the title of a plot and its values; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...rtline T accDescr {x} [1]\n----------------------^\nExpecting 'SQUARE_BRACES_START', got 'acc_descr_multiline_value'"
+  }
+}

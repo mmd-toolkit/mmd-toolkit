@@ -1179,6 +1179,198 @@ const sankeyWhitespaceExamples: readonly (readonly [string, string, string])[] =
     ],
   ]
 
+/**
+ * Each example is an XY chart with U+2028 or U+2029: they are whitespace
+ * between its units, a line break like any whitespace between statements, and
+ * a gap inside a statement that holds one is printed as written; in a string
+ * and in an accessibility text they are characters of the text
+ * (docs/xychart.md, Line separators).
+ */
+const xychartLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+2028 between the header and a statement",
+    "xychart\u2028title T\n",
+    "xychart\n  title T\n",
+  ],
+  [
+    "U+2028 between two statements",
+    "xychart\ntitle T\u2028line [1]\n",
+    "xychart\n  title T\n  line [1]\n",
+  ],
+  [
+    "U+2028 between the header and the orientation",
+    "xychart\u2028horizontal\nline [1]\n",
+    "xychart\u2028horizontal\n  line [1]\n",
+  ],
+  [
+    "U+2028 between the words of a title",
+    "xychart\ntitle a\u2028b\n",
+    "xychart\n  title a\u2028b\n",
+  ],
+  [
+    "U+2029 between the words of a title",
+    "xychart\ntitle a\u2029b\n",
+    "xychart\n  title a\u2029b\n",
+  ],
+  [
+    "U+2028 after a title keyword",
+    "xychart\ntitle\u2028T\n",
+    "xychart\n  title\u2028T\n",
+  ],
+  [
+    "U+2028 between the words of a category",
+    "xychart\nx-axis [a\u2028b, c]\n",
+    "xychart\n  x-axis [a\u2028b, c]\n",
+  ],
+  [
+    "U+2028 after a comma of the values",
+    "xychart\nline [1,\u20282]\n",
+    "xychart\n  line [1,\u20282]\n",
+  ],
+  [
+    "U+2028 before the bracket of a plot",
+    "xychart\nline\u2028[1]\n",
+    "xychart\n  line\u2028[1]\n",
+  ],
+  [
+    "U+2028 between a value and its label",
+    'xychart\nline [1\u2028"a"]\n',
+    'xychart\n  line [1\u2028"a"]\n',
+  ],
+  [
+    "U+2028 around the arrow of a range",
+    "xychart\nx-axis 0\u2028-->\u20281\n",
+    "xychart\n  x-axis 0\u2028-->\u20281\n",
+  ],
+  [
+    "U+2028 in a string",
+    'xychart\ntitle "a\u2028b"\n',
+    'xychart\n  title "a\u2028b"\n',
+  ],
+  [
+    "U+2028 in an accessibility text",
+    "xychart\naccTitle: a\u2028b\n",
+    "xychart\n  accTitle: a\u2028b\n",
+  ],
+  [
+    "U+2028 after the colon of accTitle",
+    "xychart\naccTitle:\u2028T\n",
+    "xychart\n  accTitle:\u2028T\n",
+  ],
+  [
+    "U+2028 after a description block",
+    "xychart\naccDescr { d }\u2028title T\n",
+    "xychart\n  accDescr { d }\n  title T\n",
+  ],
+  [
+    "U+2028 at the end of a statement",
+    "xychart\ntitle T\u2028\nline [1]\n",
+    "xychart\n  title T\n  line [1]\n",
+  ],
+  [
+    "U+2028 at the end of the text",
+    "xychart\ntitle T\u2028",
+    "xychart\n  title T\n",
+  ],
+]
+
+/**
+ * Each example is an XY chart with a whitespace character other than a space
+ * or a tab: between units a run of them becomes one space, at the ends of a
+ * statement they are dropped, and in a string and in an accessibility text
+ * they stay (docs/xychart.md, Whitespace characters).
+ */
+const xychartWhitespaceExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+00A0 between the words of a title",
+    "xychart\ntitle a\u00a0b\n",
+    "xychart\n  title a b\n",
+  ],
+  [
+    "a form feed between the words of a title",
+    "xychart\ntitle a\fb\n",
+    "xychart\n  title a b\n",
+  ],
+  [
+    "U+00A0 after a title keyword",
+    "xychart\ntitle\u00a0T\n",
+    "xychart\n  title T\n",
+  ],
+  [
+    "U+00A0 around the values of a plot",
+    "xychart\nline [1,\u00a02\u00a0]\n",
+    "xychart\n  line [1, 2]\n",
+  ],
+  [
+    "U+00A0 around the arrow of a range",
+    "xychart\nx-axis 0\u00a0-->\u00a01\n",
+    "xychart\n  x-axis 0 --> 1\n",
+  ],
+  [
+    "U+00A0 between the header and the orientation",
+    "xychart\u00a0horizontal\nline [1]\n",
+    "xychart horizontal\n  line [1]\n",
+  ],
+  [
+    "U+FEFF between the words of a category",
+    "xychart\nx-axis [a\ufeffb]\n",
+    "xychart\n  x-axis [a b]\n",
+  ],
+  [
+    "U+3000 before a statement",
+    "xychart\n\u3000title T\n",
+    "xychart\n  title T\n",
+  ],
+  [
+    "U+FEFF before a statement",
+    "xychart\ntitle T\n\ufeffline [1]\n",
+    "xychart\n  title T\n  line [1]\n",
+  ],
+  [
+    "U+00A0 between two statements",
+    "xychart\ntitle T\u00a0line [1]\n",
+    "xychart\n  title T\n  line [1]\n",
+  ],
+  [
+    "U+00A0 at the end of a statement",
+    "xychart\ntitle T\u00a0\nline [1]\n",
+    "xychart\n  title T\n  line [1]\n",
+  ],
+  [
+    "U+00A0 in a string",
+    'xychart\ntitle "a\u00a0b"\n',
+    'xychart\n  title "a\u00a0b"\n',
+  ],
+  [
+    "U+00A0 in an accessibility text",
+    "xychart\naccTitle: a\u00a0b\n",
+    "xychart\n  accTitle: a\u00a0b\n",
+  ],
+  [
+    "U+3000 around the text of accTitle",
+    "xychart\naccTitle:\u3000T\u3000\n",
+    "xychart\n  accTitle: T\n",
+  ],
+  [
+    "U+00A0 inside a description block",
+    "xychart\naccDescr {\u00a0d\u00a0}\n",
+    "xychart\n  accDescr { d }\n",
+  ],
+  [
+    "U+00A0 inside an empty description block",
+    "xychart\naccDescr {\u00a0}\n",
+    "xychart\n  accDescr { }\n",
+  ],
+]
+
 describe("a state diagram with a line separator", () => {
   it.each(examples)("keeps %s as written", async (_name, input, output) => {
     await expectKept(input, output)
@@ -1307,6 +1499,24 @@ describe("a timeline with a whitespace character that no fixture file holds", ()
 
 describe("a sankey diagram with a whitespace character at the end of the text", () => {
   it.each(sankeyWhitespaceExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("an XY chart with a line separator", () => {
+  it.each(xychartLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("an XY chart with a whitespace character that no fixture file holds", () => {
+  it.each(xychartWhitespaceExamples)(
     "keeps %s",
     async (_name, input, output) => {
       await expectKept(input, output)

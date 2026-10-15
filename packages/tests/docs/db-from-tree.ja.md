@@ -118,6 +118,11 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   [db-from-tree/requirement.ja.md](./db-from-tree/requirement.ja.md)）。
   [fixture: requirement/lex-style-spaces]
   [fixture: requirement/lex-style-no-comma]
+- **xychart のテキスト**: タイトル、軸、カテゴリー、プロットの
+  `XychartLiteral` の中にあるトークンの変換した形をつないだもの。
+  引用符のないテキストの単位の間の空白は値に含まれないためです
+  （規則は [db-from-tree/xychart.ja.md](./db-from-tree/xychart.ja.md)）。
+  [fixture: xychart/db-title-bare-words]
 - **mindmap のラベル**: `MindmapLabel` の範囲の変換した形から、
   文字列か markdown 文字列の区切りを除いたもの。
   区切りは変換した形から切り落とし、
@@ -406,6 +411,12 @@ HTML ラベルが有効で、`securityLevel` が
   id は、欄から読んだあとで置き換えられます。
   id が等しくなったノードは 1 つのノードです。
   [fixture: sankey/config-security-level-other-title-and-ids]
+- xychart: title（フロントマターのものと `title` の文のもの）、`accTitle`、
+  `accDescr`（行のものとブロックのもの）、軸のタイトル、カテゴリー、
+  プロットのタイトル、line が持つラベル。
+  向きと数には届きません。
+  [fixture: xychart/config-security-level-other-all]
+  [fixture: xychart/config-security-level-other-orientation-horizontal]
 
 **mermaid.js の順序が効く所。**
 テキストを読み進める前に置き換える所があり、作り手も同じにします。

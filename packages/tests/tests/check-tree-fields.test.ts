@@ -257,6 +257,20 @@ const VALUE_FIELD_REPORTS: Readonly<
   "SankeyLiteral.value": {
     message: "value is not its written text without the whitespace at its ends",
   },
+  "XychartAccDescrBlockStatement.closed": {
+    message: "closed, which is whether it ends with }: ",
+  },
+  "XychartHeader.orientation": {
+    message:
+      "the orientation of the header is not the token after the header keyword, or null when there is none: ",
+  },
+  // A text without quotes is its units joined, the text of an accessibility
+  // statement its written text without the whitespace at its ends.
+  "XychartLiteral.value": { message: "value is not " },
+  "XychartPlotStatement.kind": {
+    message:
+      "the tokens that the node writes itself and its child nodes, in source order: ",
+  },
 }
 
 /**
@@ -728,6 +742,24 @@ const STRING_FIELD_CASES: readonly FieldCase[] = [
       'the direction of the header is not the first token of the diagram after the header keyword, or null when that is no direction: "Z", not null',
   },
   {
+    diagram: "xychart",
+    fixture: "db-orientation-capitalized",
+    type: "XychartHeader",
+    field: "orientation",
+    set: null,
+    message:
+      'the orientation of the header is not the token after the header keyword, or null when there is none: null, not "Horizontal"',
+  },
+  {
+    diagram: "xychart",
+    fixture: "db-header-plain",
+    type: "XychartHeader",
+    field: "orientation",
+    set: "Z",
+    message:
+      'the orientation of the header is not the token after the header keyword, or null when there is none: "Z", not null',
+  },
+  {
     diagram: "timeline",
     fixture: "db-direction-td",
     type: "TimelineDiagram",
@@ -988,6 +1020,7 @@ describe("a field that may be null, in the tree of a named fixture", () => {
     )
     const expected: string[] = []
     for (const [type, fields] of Object.entries(NODE_FIELDS)) {
+      if (!mayHaveRecordedTrees(type)) continue
       for (const [field, spec] of Object.entries(fields)) {
         if (spec.valueType !== "stringOrNull") continue
         expected.push(`${type}.${field} true`, `${type}.${field} false`)

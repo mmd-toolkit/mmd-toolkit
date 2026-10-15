@@ -1,0 +1,162 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/xychart.html",
+    "line": 40
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 4
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 4,
+      "max": 99
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            23
+          ],
+          [
+            "2",
+            46
+          ],
+          [
+            "3",
+            77
+          ],
+          [
+            "4",
+            34
+          ]
+        ]
+      },
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            45
+          ],
+          [
+            "2",
+            32
+          ],
+          [
+            "3",
+            33
+          ],
+          [
+            "4",
+            12
+          ]
+        ]
+      },
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            87
+          ],
+          [
+            "2",
+            54
+          ],
+          [
+            "3",
+            99
+          ],
+          [
+            "4",
+            85
+          ]
+        ]
+      },
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            78
+          ],
+          [
+            "2",
+            88
+          ],
+          [
+            "3",
+            22
+          ],
+          [
+            "4",
+            4
+          ]
+        ]
+      },
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            22
+          ],
+          [
+            "2",
+            29
+          ],
+          [
+            "3",
+            75
+          ],
+          [
+            "4",
+            33
+          ]
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "1",
+            52
+          ],
+          [
+            "2",
+            96
+          ],
+          [
+            "3",
+            35
+          ],
+          [
+            "4",
+            10
+          ]
+        ]
+      }
+    ]
+  }
+}

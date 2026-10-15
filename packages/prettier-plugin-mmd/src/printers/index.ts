@@ -11,6 +11,7 @@ import { printSankey } from "./sankey.ts"
 import { printSequence } from "./sequence.ts"
 import { printState } from "./state.ts"
 import { printTimeline } from "./timeline.ts"
+import { printXychart } from "./xychart.ts"
 import type { Source } from "./source.ts"
 
 /**
@@ -49,4 +50,5 @@ export const diagramPrinters: Readonly<
   RequirementDiagram: printRequirement,
   SankeyDiagram: printSankey,
   TimelineDiagram: printTimeline,
+  XychartDiagram: printXychart,
 }

@@ -26,6 +26,7 @@ export const diagramIds: Readonly<
   mindmap: ["mindmap"],
   timeline: ["timeline"],
   sankey: ["sankey"],
+  xychart: ["xychart"],
 }
 
 /**

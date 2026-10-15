@@ -4,7 +4,7 @@
 [ignored-semicolon-as-token-boundary.md](./ignored-semicolon-as-token-boundary.md)
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
-mindmap、timeline。
+mindmap、timeline、xychart。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -173,6 +173,14 @@ mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
 [fixture: timeline/div-ignored-semicolon-in-title-keyword]
 [fixture: timeline/div-ignored-semicolon-in-section-keyword]
 [fixture: timeline/div-ignored-semicolon-in-acc-title-keyword]
+XY chart では、`style`、`:`、
+`#` は `"style:#a"` のように `;` の前の文字列の中に置けるので、
+無視される `;` は値やキーワードの中に置けます。
+mermaid.js は `line "style:#a" [1;2]` を値 12 の line として、
+`title "style:#a" li;ne [1]` をタイトルと line として読み、
+この仕様はそれらを拒否します。
+[fixture: xychart/div-ignored-semicolon-in-value]
+[fixture: xychart/div-ignored-semicolon-in-keyword]
 
 各図の文書は、これがどこに表れるかを、既知の差異の節に挙げています。
 [flowchart](../diagrams/flowchart.ja.md#既知の差異)、
@@ -184,7 +192,8 @@ mermaid.js は `accDescr { style:#x } ti;tle T` をタイトル `T` と読み、
 [journey](../diagrams/journey.ja.md#既知の差異)、
 [requirement](../diagrams/requirement.ja.md#既知の差異)、
 [mindmap](../diagrams/mindmap.ja.md#既知の差異)、
-[timeline](../diagrams/timeline.ja.md#既知の差異) です。
+[timeline](../diagrams/timeline.ja.md#既知の差異)、
+[xychart](../diagrams/xychart.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 

@@ -239,8 +239,9 @@ the diagram sections below: a
 [`JourneyDiagram`](./ast/journey.md#journeydiagram), a
 [`RequirementDiagram`](./ast/requirement.md#requirementdiagram), a
 [`MindmapDiagram`](./ast/mindmap.md#mindmapdiagram), a
-[`TimelineDiagram`](./ast/timeline.md#timelinediagram), or a
-[`SankeyDiagram`](./ast/sankey.md#sankeydiagram).
+[`TimelineDiagram`](./ast/timeline.md#timelinediagram), a
+[`SankeyDiagram`](./ast/sankey.md#sankeydiagram), or an
+[`XychartDiagram`](./ast/xychart.md#xychartdiagram).
 
 ## ErrorDiagram
 
@@ -376,10 +377,10 @@ class/tokens-backquote-unclosed-trailing-whitespace]
 
 A number.
 
-| Field   | Type   | Meaning                                       |
-| ------- | ------ | --------------------------------------------- |
-| `value` | number | The number that its written text writes.      |
-| `raw`   | string | The number as written, with nothing left out. |
+| Field   | Type   | Meaning                                               |
+| ------- | ------ | ----------------------------------------------------- |
+| `value` | number | The number that its written text writes, as a double. |
+| `raw`   | string | The number as written, with nothing left out.         |
 
 In `linkStyle 0,1 stroke:red`, the first number has the value zero and the `raw`
 `0`. [fixture: flowchart/db-linkstyle-shared-fill] Which forms a number may take
@@ -387,6 +388,23 @@ is decided by the grammar of its position: in flowchart only digits, so every
 number is an integer; in sequence also a fraction, so `autonumber .5` starts at
 the number one half, with the `raw` `.5`, and `autonumber 05` at five. [fixture:
 sequence/db-autonumber-fraction] [fixture: sequence/db-autonumber-leading-zero]
+The value is the double nearest to the number written, which may differ from it:
+in an XY chart, `bar [` followed by twenty nines and `]` has the value one
+followed by twenty zeros, and `line [.` followed by four hundred zeros and `1]`
+has the value zero. [fixture: xychart/db-plot-values-large] [fixture:
+xychart/db-plot-values-underflow] A number too large for a double is infinity,
+or minus infinity with a `-`, as mermaid.js reads it: in an XY chart, `bar [`
+followed by four hundred nines and `]` has the value infinity, and the same
+number after `-` minus infinity; a range, a scale width, the start and the step
+of `autonumber`, and a link style number may be such a number too, which as a
+link style number is out of range. [fixture: xychart/db-plot-values-overflow]
+[fixture: xychart/db-plot-values-negative-overflow] [fixture:
+xychart/db-x-axis-range-overflow] [fixture:
+xychart/db-y-axis-range-negative-overflow] [fixture:
+state/gram-scale-width-overflow] [fixture:
+flowchart/gram-linkstyle-index-overflow] [fixture:
+sequence/db-autonumber-start-overflow] [fixture:
+sequence/db-autonumber-step-overflow]
 
 ## Diagram nodes
 
@@ -405,6 +423,7 @@ in a document of their own under `ast/`:
 - [Mindmap](./ast/mindmap.md): the diagram type `mindmap`.
 - [Timeline](./ast/timeline.md): the diagram type `timeline`.
 - [Sankey](./ast/sankey.md): the diagram type `sankey`.
+- [XY chart](./ast/xychart.md): the diagram type `xychart`.
 
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of

@@ -144,4 +144,11 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [timeline-no-duplicate-title](./timeline-no-duplicate-title.md)                 | Disallow a `title` or `accTitle` statement that sets its title again. | ✅  |     |     |
 | [timeline-no-empty-description-block](./timeline-no-empty-description-block.md) | Disallow an `accDescr` block that holds no description.               | ✅  |     |     |
 
+## sankey
+
+| Rule                                                    | Description                                                                          | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------ | --- | --- | --- |
+| [sankey-no-empty-node](./sankey-no-empty-node.md)       | Disallow a source or a target of whitespace only, which makes a node without a name. | ✅  |     |     |
+| [sankey-no-invalid-value](./sankey-no-invalid-value.md) | Disallow a link value that mermaid.js does not read as written.                      | ✅  |     |     |
+
 <!-- end auto-generated rules list -->

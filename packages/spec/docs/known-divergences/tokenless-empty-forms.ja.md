@@ -2,7 +2,8 @@
 
 英語版: [tokenless-empty-forms.md](./tokenless-empty-forms.md)
 
-図種: flowchart、sequence、class、state、er、gantt、requirement、mindmap。
+図種: flowchart、sequence、class、state、er、gantt、requirement、mindmap、
+xychart。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -65,6 +66,11 @@ mindmap では 3 つです。
 形の中の空の文字列 `""` か空の markdown 文字列です。
 3 つとも、どこにあってもこの差異に入ります
 （[空の形](../diagrams/mindmap.ja.md#空の形) を参照）。
+xychart では 2 つです。
+閉じた空の説明ブロックと、空の文字列 `""` です。
+空の文字列は、軸やプロットのタイトル全体でも値のラベル全体でもないところで、
+この差異に入ります
+（[空の文字列](../diagrams/xychart.ja.md#空の文字列) を参照）。
 [fixture: er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-backquotes-between-type-and-name] [fixture:
 er/gram-empty-backquotes-between-attributes] [fixture:
@@ -76,6 +82,8 @@ mindmap/div-empty-icon-before-root] [fixture:
 mindmap/div-empty-class-before-root] [fixture:
 mindmap/div-empty-string-in-shape] [fixture:
 mindmap/div-empty-markdown-string-in-shape]
+[fixture: xychart/div-empty-string-line]
+[fixture: xychart/div-empty-description-block-in-categories]
 
 それだけの行の空の説明ブロックは、そのふつうの書き方で、
 何も変えない説明ブロックの文です。
@@ -227,7 +235,8 @@ mermaid.js が受理し、この仕様が拒否します。
 [er](../diagrams/er.ja.md#既知の差異)、
 [gantt](../diagrams/gantt.ja.md#既知の差異)、
 [requirement](../diagrams/requirement.ja.md#既知の差異)、
-[mindmap](../diagrams/mindmap.ja.md#既知の差異) です。
+[mindmap](../diagrams/mindmap.ja.md#既知の差異)、
+[xychart](../diagrams/xychart.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 
@@ -308,6 +317,11 @@ mindmap は、その行で後に何もない `:::` と、間に何もない `::i
 （[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L24-L32)）、
 空の文字列の引用符と空の markdown 文字列の区切り
 （[`mindmap.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/mindmap/parser/mindmap.jison#L45-L50)）
+を読み飛ばします。
+xychart は、閉じた空の説明ブロック
+（[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L28-L30)）と、
+空の文字列の引用符
+（[`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L54-L56)）
 を読み飛ばします。
 これらの規則はどれも、字句解析器の状態に入るか出るだけで何も返さないので、
 文法はその形を見ません。
@@ -677,6 +691,45 @@ mermaid.js が丸ごと捨てる icon や class の行を、木は文として�
 [fixture: mindmap/db-class-empty] [fixture: mindmap/div-empty-class-before-root]
 [fixture: mindmap/div-empty-string-in-shape] [fixture:
 mindmap/div-empty-markdown-string-in-shape]
+
+xychart では、文が始まらないところの閉じた空の説明ブロックです。
+タイトルの語の中、軸やプロットのキーワードの後、分類、値、範囲の中、
+ヘッダーと向きの間で、どの欄も持てません（理由 a と b）。
+また、軸やプロットのタイトル全体でも値のラベル全体でもない空の文字列です。
+それだけの行、文の前後、タイトル、軸、プロットのテキストの前後、
+分類の前後、値の前、ラベルの前後、ヘッダーと向きの間です。
+flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を、
+木は文として持たないからです。
+タイトル全体やラベル全体では、空の文字列は空の値の StringLiteral で、
+class と同じく、Db はそれをタイトルなし、ラベルなしと読みます
+（[空の説明ブロック](../diagrams/xychart.ja.md#空の説明ブロック) と
+[空の文字列](../diagrams/xychart.ja.md#空の文字列) を参照）。
+[fixture: xychart/div-empty-description-block-inside-title-text]
+[fixture: xychart/div-empty-description-block-inside-axis]
+[fixture: xychart/div-empty-description-block-inside-plot]
+[fixture: xychart/div-empty-description-block-inside-values]
+[fixture: xychart/div-empty-description-block-in-categories]
+[fixture: xychart/div-empty-description-block-in-range]
+[fixture: xychart/div-empty-description-block-before-orientation]
+[fixture: xychart/div-empty-string-line]
+[fixture: xychart/div-empty-string-before-statement]
+[fixture: xychart/div-empty-string-after-title]
+[fixture: xychart/div-empty-string-before-title-word]
+[fixture: xychart/div-empty-string-after-quoted-title]
+[fixture: xychart/div-empty-string-before-axis-title]
+[fixture: xychart/div-empty-string-after-axis-title]
+[fixture: xychart/div-empty-string-before-plot-title]
+[fixture: xychart/div-empty-string-after-plot-title]
+[fixture: xychart/div-empty-string-twice-as-plot-title]
+[fixture: xychart/div-empty-string-before-category]
+[fixture: xychart/div-empty-string-after-category]
+[fixture: xychart/div-empty-string-before-value]
+[fixture: xychart/div-empty-string-before-label]
+[fixture: xychart/div-empty-string-after-label]
+[fixture: xychart/div-empty-string-before-orientation]
+[fixture: xychart/db-grid-empty-plot-title-quoted]
+[fixture: xychart/db-empty-string-as-x-axis-title-before-band]
+[fixture: xychart/db-label-empty-string]
 
 文の最後の単位の後、その区切りの前では、
 state の `click A "u" "t" accDescr {}` のように、ブロックは文です。

@@ -82,6 +82,16 @@ depend on the parser: the generator, `add`, `add-many`, `set-divergence`,
 directory as it is. A fixture added here has neither file until the parser's
 tests run.
 
+**The recorded tree is JSON.** A number that JSON cannot write is `null` in
+`ast.json`, as `JSON.stringify` writes it: the `value` of a NumericLiteral for a
+number that a double cannot hold (`Infinity` or `-Infinity`), and no other
+field, since no other field can hold such a number. The `raw` of the node has
+the number as written, and `checkTree()` accepts `null`, `Infinity`, and
+`-Infinity` for the `value` of a NumericLiteral whose written text is such a
+number, and no `null` for any other. `dbFromTree()` reads the number from the
+text of the node, so it needs no conversion. [fixture:
+xychart/db-plot-values-overflow]
+
 ## Exports for the tools
 
 The entry points also export functions that only this repository's tools and

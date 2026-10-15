@@ -811,4 +811,51 @@ export const NODE_FIELDS: Readonly<
   Token: {
     value: { shape: "value", valueType: "string" },
   },
+  XychartAccDescrBlockStatement: {
+    value: { shape: "nodeOrNull" },
+    closed: { shape: "value", valueType: "boolean" },
+  },
+  XychartAccDescrStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  XychartAccTitleStatement: {
+    value: { shape: "nodeOrNull" },
+  },
+  XychartBand: {
+    categories: { shape: "nodeList" },
+  },
+  XychartDiagram: {
+    headers: { shape: "nodeList" },
+    body: { shape: "nodeList" },
+  },
+  XychartHeader: {
+    orientation: { shape: "value", valueType: "stringOrNull" },
+  },
+  XychartLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
+  XychartPlotStatement: {
+    kind: { shape: "value", valueType: "string" },
+    title: { shape: "nodeOrNull" },
+    values: { shape: "nodeList" },
+  },
+  XychartRange: {
+    start: { shape: "node" },
+    end: { shape: "node" },
+  },
+  XychartTitleStatement: {
+    value: { shape: "node" },
+  },
+  XychartValue: {
+    value: { shape: "node" },
+    label: { shape: "nodeOrNull" },
+  },
+  XychartXAxisStatement: {
+    title: { shape: "nodeOrNull" },
+    data: { shape: "nodeOrNull" },
+  },
+  XychartYAxisStatement: {
+    title: { shape: "nodeOrNull" },
+    data: { shape: "nodeOrNull" },
+  },
 }

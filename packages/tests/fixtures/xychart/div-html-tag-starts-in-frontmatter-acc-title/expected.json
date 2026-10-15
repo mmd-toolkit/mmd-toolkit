@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: a tag that starts in the frontmatter makes mermaid.js read the quotes of the accessibility title as `'`; here they stay."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "<a",
+    "accTitle": "b='c'>d",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

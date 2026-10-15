@@ -7,6 +7,7 @@ import type { CheckedNode, CheckedRoot } from "./types.ts"
 import { contains } from "./invariants.ts"
 import { nodesOf } from "./walk.ts"
 import { WrittenText } from "./written-text.ts"
+import { XYCHART_ACCESSIBILITY_STATEMENTS } from "./xychart.ts"
 
 // ast.md, Nodes: the value of a node is its written text, or the part of it
 // that the node type names. The tokens of the node are the units of that
@@ -290,6 +291,31 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     kind: "trimmed-text",
     spec: "The field without the whitespace at its ends, as written (ast/sankey.md, SankeyLiteral).",
   },
+  XychartLiteral: {
+    field: "value",
+    kind: "units-joined",
+    withoutWhitespace: true,
+    spec: "For a text without quotes, the written texts of its units, joined; the whitespace between them is no part of it (ast/xychart.md, XychartLiteral).",
+  },
+}
+
+/**
+ * ast/xychart.md, XychartLiteral: the literals of the accessibility
+ * statements, whose value is the written text without the whitespace at its
+ * ends, the whitespace between its characters being part of it; the other
+ * literals are texts without quotes, whose value is the units joined.
+ */
+function accessibilityTextsOf(nodes: readonly CheckedNode[]): Set<unknown> {
+  const texts = new Set<unknown>()
+  for (const node of nodes) {
+    if (
+      XYCHART_ACCESSIBILITY_STATEMENTS.includes(node.type) &&
+      node.value !== null
+    ) {
+      texts.add(node.value)
+    }
+  }
+  return texts
 }
 
 /** The delimiters around the content of the string that `node` starts with; none if it starts with none. */
@@ -482,6 +508,13 @@ function checkHasOneToken(
   )
 }
 
+/** `value` for a message: the JSON of it, but for a number that JSON cannot write, its name. */
+function shown(value: unknown): string {
+  return typeof value === "number" && !Number.isFinite(value)
+    ? String(value)
+    : (JSON.stringify(value) ?? "undefined")
+}
+
 /**
  * Checks the value of every node that has one against the rule of its type
  * ({@link VALUE_RULES}): the value is made from the written text of the
@@ -499,6 +532,7 @@ export function checkValues(
   const diagramComments = diagramCommentRanges(text, root, written)
   const nodes = nodesOf(root)
   const styles = stylesOf(nodes)
+  const accessibilityTexts = accessibilityTextsOf(nodes)
   const ganttTags = ganttTagsOf(nodes)
   for (const node of nodes) {
     const rule = ganttTags.has(node) ? GANTT_TAG_RULE : VALUE_RULES[node.type]
@@ -515,7 +549,11 @@ export function checkValues(
         ? []
         : delimitersOf(node, rule.delimiters, delimitersOfStrings, problems)
     const joined = joinedTokenTextOf(text, root, node.range, delimiters)
-    const kind = styles.has(node) ? "units-joined" : rule.kind
+    const kind = styles.has(node)
+      ? "units-joined"
+      : accessibilityTexts.has(node)
+        ? "trimmed-text"
+        : rule.kind
     if (kind === "trimmed-text") {
       const writtenText = written.of(node.range)
       problems.expectEqual(
@@ -573,7 +611,7 @@ export function checkValues(
         )
       }
     }
-    if (rule.withoutWhitespace === true) {
+    if (rule.withoutWhitespace === true && !accessibilityTexts.has(node)) {
       problems.expect(
         withoutWhitespace(joined) === joined,
         where,
@@ -583,11 +621,15 @@ export function checkValues(
   }
   for (const node of nodes) {
     if (node.type !== "NumericLiteral") continue
-    problems.expectEqual(
-      node.value,
-      Number(written.of(node.range)),
+    const number = Number(written.of(node.range))
+    // A number that a double cannot hold is `Infinity` or `-Infinity`, and null
+    // in a tree read from JSON, which writes them so; -0 and 0 are equal.
+    const isNumber =
+      node.value === null ? !Number.isFinite(number) : node.value === number
+    problems.expect(
+      isNumber,
       label(node),
-      "value is not the number that its written text writes",
+      `value is not the number that its written text writes: ${shown(node.value)}, not ${shown(number)}`,
     )
   }
 }

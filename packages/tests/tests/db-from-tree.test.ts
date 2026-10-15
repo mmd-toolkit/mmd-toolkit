@@ -29,6 +29,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "mindmap",
   "timeline",
   "sankey",
+  "xychart",
 ]
 
 /** The file in which a parser records the tree of a fixture it accepts. */

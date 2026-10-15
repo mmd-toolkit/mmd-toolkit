@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, x-axis: a word as the end of a range is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...-beta x-axis 1 --> a\n----------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'ALPHA'"
+  }
+}

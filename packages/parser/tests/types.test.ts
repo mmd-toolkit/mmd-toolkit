@@ -28,6 +28,7 @@ import type {
 import type { MindmapDiagram, MindmapTreeNode } from "../src/ast/mindmap.ts"
 import type { TimelineDiagram, TimelineNode } from "../src/ast/timeline.ts"
 import type { SankeyDiagram, SankeyNode } from "../src/ast/sankey.ts"
+import type { XychartDiagram, XychartNode } from "../src/ast/xychart.ts"
 import { ParseError } from "../src/errors.ts"
 
 // The checks on types run in the type checker (`tsc` covers tests/); the
@@ -52,6 +53,7 @@ describe("the types of ast.md", () => {
       | MindmapTreeNode["type"]
       | TimelineNode["type"]
       | SankeyNode["type"]
+      | XychartNode["type"]
     >()
     expectTypeOf<Root["body"]>().toEqualTypeOf<
       | ErrorDiagram
@@ -66,6 +68,7 @@ describe("the types of ast.md", () => {
       | MindmapDiagram
       | TimelineDiagram
       | SankeyDiagram
+      | XychartDiagram
     >()
   })
 

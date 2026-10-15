@@ -497,6 +497,25 @@ describe("sequence summary", () => {
     return outcome.db
   }
 
+  it("keeps the numbers of an autonumber that are no finite number as their text", async () => {
+    const tooLarge = "9".repeat(400)
+    const db = await summary(
+      `sequenceDiagram\n  autonumber ${tooLarge} ${tooLarge}\n  autonumber 5 .5\n`,
+    )
+    expect(db.messages).toEqual([
+      {
+        message: { visible: true, start: "Infinity", step: "Infinity" },
+        wrap: false,
+        type: 26,
+      },
+      {
+        message: { visible: true, start: 5, step: 0.5 },
+        wrap: false,
+        type: 26,
+      },
+    ])
+  })
+
   it("keeps messages without their ids, and notes only as messages", async () => {
     const db = await summary(
       "sequenceDiagram\n  A->>B: hi\n  Note over A,B: n\n",
@@ -1078,6 +1097,91 @@ describe("withoutDivergences: timeline", () => {
         await periodsOf(text, []),
       )
     }
+  })
+})
+
+describe("withoutDivergences: xychart", () => {
+  /** The Db of an accepted run of `text` with `without` taken out, or `"rejected"`. */
+  async function dbOf(
+    text: string,
+    without: readonly (
+      "comment-takes-character" | "title-digit-after-axis-statement"
+    )[],
+  ): Promise<unknown> {
+    const run = await runMermaid(text, { withoutDivergences: without })
+    return run.accepted ? run.db : "rejected"
+  }
+
+  it("starts a comment at its `%%`, also after a character other than a space", async () => {
+    // The lexer reads `T%%` and the rest of the line as a comment, so the
+    // title has no word.
+    const text = "xychart\ntitle T%% c\n"
+    expect(await dbOf(text, [])).toBe("rejected")
+    expect(await dbOf(text, ["comment-takes-character"])).toMatchObject({
+      title: "T",
+    })
+    // After a space, and after a `}`, mermaid.js reads the same comment.
+    for (const same of [
+      "xychart\ntitle T %% c\n",
+      "xychart\ntitle T }%% c\n",
+    ]) {
+      expect(await dbOf(same, ["comment-takes-character"])).toEqual(
+        await dbOf(same, []),
+      )
+    }
+  })
+
+  it("ends the axis context at a `;` and at the word that starts the next statement", async () => {
+    // The lexer stays in the axis context until the line ends, where a digit is
+    // a number, so it rejects an unquoted title that holds one.
+    for (const text of [
+      "xychart\nx-axis A; title Q1\n",
+      "xychart\nx-axis A title Q1\n",
+      "xychart\nx-axis A; line [1]\ntitle Q1\n",
+      "xychart\nx-axis A; y-axis 1 --> 2\ntitle Q1\n",
+      "xychart\nx-axis A; x-axis B\ntitle Q1\n",
+    ]) {
+      expect(await dbOf(text, []), text).toBe("rejected")
+      // The Db is that of the text with each statement on a line of its own.
+      const lines = text
+        .replaceAll("; ", "\n")
+        .replaceAll(" title", "\ntitle")
+        .replaceAll(" line", "\nline")
+      expect(
+        await dbOf(text, ["title-digit-after-axis-statement"]),
+        text,
+      ).toEqual(await dbOf(lines, []))
+    }
+  })
+
+  it("leaves a title that holds no digit, a title on a line of its own, and the numbers of an axis, as they are", async () => {
+    for (const text of [
+      "xychart\nx-axis A; title Q\n",
+      "xychart\nx-axis A\ntitle Q1\n",
+      "xychart\nx-axis 1 --> 2; y-axis 3 --> 4\n",
+      "xychart\nx-axis [a, b] line [1, 2]\n",
+    ]) {
+      expect(
+        await dbOf(text, ["title-digit-after-axis-statement"]),
+        text,
+      ).toEqual(await dbOf(text, []))
+    }
+  })
+
+  it("takes out both rules together", async () => {
+    // Each rule alone leaves the input rejected: one for the `]` that the
+    // comment takes, the other for the digit after the axis statement.
+    const text = "xychart\nx-axis A; line [1]%% c\ntitle Q1\n"
+    const both = [
+      "comment-takes-character",
+      "title-digit-after-axis-statement",
+    ] as const
+    expect(await dbOf(text, [])).toBe("rejected")
+    expect(await dbOf(text, ["comment-takes-character"])).toBe("rejected")
+    expect(await dbOf(text, ["title-digit-after-axis-statement"])).toBe(
+      "rejected",
+    )
+    expect(await dbOf(text, both)).toMatchObject({ title: "Q1" })
   })
 })
 

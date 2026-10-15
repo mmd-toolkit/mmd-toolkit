@@ -6,6 +6,7 @@ import type { Problems } from "./problems.ts"
 import { diagramTokensOf } from "./invariants.ts"
 import type { CheckedRoot } from "./types.ts"
 import { TIMELINE_PUNCTUATORS } from "./timeline.ts"
+import { XYCHART_PUNCTUATORS } from "./xychart.ts"
 import { reportCutEntries } from "./tokens.ts"
 import { nodesOf } from "./walk.ts"
 
@@ -101,6 +102,8 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   TimelineDiagram: TIMELINE_PUNCTUATORS,
   // The row `Punctuator` of parser/docs/tokens/sankey.md.
   SankeyDiagram: [","],
+  // The row `Punctuator` of parser/docs/tokens/xychart.md.
+  XychartDiagram: XYCHART_PUNCTUATORS,
   ErrorDiagram: [],
 }
 

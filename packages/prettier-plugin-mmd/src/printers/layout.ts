@@ -144,6 +144,19 @@ export function keptAsWritten(start: number, end: number): AtomLayout {
   }
 }
 
+/**
+ * Where a layout ends: the end of its last atom. The statements of the body
+ * start after the header, which holds more than the keyword where the header
+ * has a direction or an orientation.
+ */
+export function findLayoutEnd(layout: AtomLayout): number {
+  const last = layout.atoms.at(-1)
+  if (last === undefined) {
+    throw new Error("prettier-plugin-mmd: a header layout without atoms")
+  }
+  return last.end
+}
+
 /** The layout of the line of a header that is a keyword alone. */
 export function layoutKeywordHeader(
   source: Source,
@@ -180,16 +193,20 @@ export function layoutEmptyDescriptionBlock(
 }
 
 /**
- * The layout of an `accDescr { ... }` statement of a diagram type whose
- * description blocks are always closed: the lines of its text are kept as
- * written and its `}` stands at the level of the statement (the rules document
- * of the diagram type, Accessibility statements). A block without text is
- * laid out as `layoutEmptyDescriptionBlock` says. The text is a value of
- * `valueTypes`.
+ * The layout of an `accDescr { ... }` statement: the lines of its text are
+ * kept as written and its `}` stands at the level of the statement (the
+ * rules document of the diagram type, Accessibility statements). A block
+ * without text is laid out as `layoutEmptyDescriptionBlock` says. The text is
+ * a value of `valueTypes`. The block is closed unless the statement says that
+ * it is not, as in an XY chart, where a block that is not closed runs to the
+ * end of the text and is printed without a `}`.
  */
 export function layoutDescriptionBlock(
   source: Source,
-  statement: Node & { readonly value: Node | null },
+  statement: Node & {
+    readonly value: Node | null
+    readonly closed?: boolean
+  },
   end: number,
   valueTypes: ReadonlySet<Node["type"]>,
 ): AtomLayout {
@@ -197,7 +214,11 @@ export function layoutDescriptionBlock(
   if (statement.value === null) {
     return layoutEmptyDescriptionBlock(source, start, end)
   }
-  const block = { range: statement.range, value: statement.value, closed: true }
+  const block = {
+    range: statement.range,
+    value: statement.value,
+    closed: statement.closed ?? true,
+  }
   const closing = findAccDescrBlockClosing(source, block)
   return {
     atoms: collectAtoms(

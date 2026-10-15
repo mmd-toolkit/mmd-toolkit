@@ -449,6 +449,42 @@
   [fixture: sankey/gram-quoted-empty]
   [fixture: sankey/gram-quoted-empty-value]
 
+## XY チャートの中
+
+- 字句解析器のどの規則も合わない位置では、`range` はそこの文字。
+  引用符のないテキストが持たない文字、たとえば `<`、ヘッダーの後の `{`、
+  ASCII の外の文字と、
+  文字列とアクセシビリティのテキストの外で完全な実体を始める `#` がそうである。
+  [fixture: xychart/gram-title-bare-angle]
+  [fixture: xychart/gram-header-brace-suffix]
+  [fixture: xychart/gram-grid-nonascii-category-bare]
+  [fixture: xychart/gram-grid-entity-category-bare]
+- 終わってはいけない文脈でテキストが終わるときは、
+  `range` はその文脈に入ったもので、メッセージは何が閉じていないかを示す。
+  - 文字列の開きの `"`。
+    メッセージは `The string has no closing " before the end of the text`。
+  - カテゴリの `[`。
+    メッセージは `The categories have no ] before the end of the text`。
+  - 値の `[`。
+    メッセージは `The values have no ] before the end of the text`。
+    [fixture: xychart/gram-title-quoted-unclosed-at-end]
+    [fixture: xychart/gram-x-axis-band-unclosed]
+    [fixture: xychart/gram-plot-values-unclosed]
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲で、
+  すべて空白の単位では、その始まりの空の範囲。
+  メッセージは `Unexpected token`。
+  文が揃う前にテキストが終わるときは、テキストの終わりの空の範囲で、
+  メッセージは `Unexpected end of text`。
+  [fixture: xychart/gram-plot-values-extra-text]
+  [fixture: xychart/gram-header-after-statement]
+  [fixture: xychart/gram-x-axis-empty]
+  [fixture: xychart/gram-title-keyword-alone-at-end]
+- 文法がテキストの全体として取らない空の文字列は、
+  下の既知の差異と同じくその位置で拒否する。
+  `title ""` のように mermaid.js も拒否する入力でも同じである。
+  [fixture: xychart/gram-title-empty-string]
+  [fixture: xychart/div-empty-string-line]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、

@@ -855,6 +855,60 @@ See [Indentation](./sankey.md#indentation) and [Commas](./sankey.md#commas).
   which mermaid.js accepts only there, are dropped. [test: U+3000 at the end of
   the text without a line feed]
 
+## XY chart lines that the units, the quotes, or the lexer decide
+
+Most whitespace of an XY chart is not in the Db, so formatting changes it. What
+the Db or the lexer reads stays. See [Text units](./xychart.md#text-units) and
+[Quotes](./xychart.md#quotes).
+
+- Whether two units of a text without quotes touch. A keyword is a keyword only
+  where no character of a word follows it, so `x-axis Title1 --> 5` has the
+  title `Title`, and a space in `Title 1` would make the keyword `Title`, which
+  mermaid.js rejects here; `title ba r` is not the keyword `bar`, and joining
+  the units makes it one. So a run of whitespace becomes one space, and units
+  that touch keep touching. [fixture: text-units/title-then-range-touching-kept]
+  [fixture: text-units/plot-title-digits-touching-kept] [fixture:
+  text-units/category-digits-touching-kept] [fixture:
+  text-units/hyphen-and-number-touching-kept]
+- The case of the orientation. Only `horizontal` in lower case makes the chart
+  horizontal, and `Horizontal` makes it vertical, so the case is in the Db.
+  [fixture: header-and-orientation/orientation-case-kept]
+- A string, with the whitespace and the line breaks in it, which are in the Db,
+  and the quotes, which are the author's: `"a b"` and `a b` are not the same
+  text. [fixture: quotes/strings-as-written] [fixture:
+  multi-line-values/string-with-line-breaks-kept]
+- The digits of a category and of a title, which are text, so `007` and `.5`
+  stay as written, and the numbers of a range and of a plot, which are the
+  author's text as well. [fixture: numbers/categories-are-texts] [fixture:
+  numbers/range-numbers-as-written]
+- A block `accDescr {` that is not closed, which runs to the end of the text:
+  mermaid.js reads no text for it, and a `}` that the printer wrote would make
+  it a description. [fixture:
+  accessibility-statements/block-not-closed-kept-as-written]
+- A line that the line rule of mermaid.js reads, with a `style` or `classDef`, a
+  `:` and a `#` after it with no whitespace between them, and a `;` after that,
+  keeps its statements together with the `;`. [fixture:
+  statements-one-per-line/line-rule-line-kept-together] [fixture:
+  multi-line-statements/semicolon-inside-kept]
+- A statement with a comment line or a directive in a line break that it would
+  join, kept as written. [fixture:
+  multi-line-statements/comment-line-inside-kept] [fixture:
+  multi-line-statements/directive-inside-kept]
+- Whether a comment touches the unit before it: mermaid.js reads a `%%` that
+  touches a unit of one character together with that character (the known
+  divergence `comment-takes-character`), and the printer keeps whether the
+  comment touches. [fixture:
+  comments/comment-glued-to-a-one-character-word-kept] [fixture:
+  comments/comment-takes-a-character-kept]
+- A U+2028 or U+2029 in the gap of a statement, which is printed as written.
+  [test: U+2028 between the words of a title]
+- An input of the known divergence `title-digit-after-axis-statement`, which the
+  specification accepts and mermaid.js rejects, is split into statements on
+  lines of their own, and mermaid.js accepts the result with the Db of the
+  specification. [fixture:
+  statements-one-per-line/axis-then-title-with-a-digit-split] [fixture:
+  statements-one-per-line/axis-band-then-title-with-a-digit-split]
+
 ## A comment line after U+2028 or U+2029
 
 mermaid.js removes the comment lines from the text before it reads it. A comment

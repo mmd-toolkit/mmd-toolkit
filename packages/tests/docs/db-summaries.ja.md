@@ -163,6 +163,11 @@ actor の box は、`boxes` の中の位置で表します。
 
 要約のそのほかの値:
 
+- `autonumber` の数（`start` と `step`）は数で、
+  double に収まらない大きさの数は、JSON にそのような数がないので、
+  テキスト `"Infinity"` です。
+  [fixture: sequence/db-autonumber-start-overflow]
+  [fixture: sequence/db-autonumber-step-overflow]
 - actor、box、メッセージの `wrap` は、`wrap:` と `nowrap:` の接頭辞に従い、
   それがなければ設定に従う。
   設定は、サイト、フロントマター、ディレクティブの `wrap` か `sequence.wrap`。
@@ -2591,3 +2596,1061 @@ Db は、すべての sankey 図が共有する 1 つのモジュールで、
   [fixture: sankey/db-everything]
 
 値は、空白も含めて、Db が持つとおりに記録します。
+
+## xychart
+
+要約の欄は次のとおりです。
+
+| 欄            | 内容                                                        |
+| ------------- | ----------------------------------------------------------- |
+| `orientation` | `vertical` か `horizontal`。                                |
+| `title`       | 図のタイトル。最後の `title` の文、なければフロントマター。 |
+| `accTitle`    | アクセシビリティのタイトル。なければ空のテキスト。          |
+| `accDescr`    | アクセシビリティの説明。なければ空のテキスト。              |
+| `xAxis`       | x 軸。                                                      |
+| `yAxis`       | y 軸。                                                      |
+| `plots`       | プロット。ソースの順。                                      |
+
+軸は、`type`、`title`、
+型が `band` なら カテゴリーのテキストである `categories`、
+型が `linear` なら数である `min` と `max` を持ちます。
+プロットは、`type`（`line` か `bar`）、`title`、`data`、
+ラベルが書かれた line では `pointLabels` を持ちます。
+有限でない数は、JSON にそのような数がないので、数のテキスト（`"Infinity"`、
+`"-Infinity"`）になり、
+`-0` は、JSON に -0 がないので 0 です。
+
+`normalizeXyChart()`（`src/normalizers/xychart.ts`）は、
+`xychart` の Db を要約します。
+Db は、構文解析のあいだ、ブラウザーの機能も、時刻も、乱数も読まないので、
+要約に Db のパッチはいりません。
+Db は、すべての xychart 図が共有する 1 つのモジュールで、
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L223-L232) が、
+構文解析のたびにその状態を初期化します。
+要約は、共通の Db のタイトルとアクセシビリティのテキスト、
+[`getChartConfig()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L215-L217) の向き、
+[`getXYChartData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L219-L221) を読みます。
+次のものを、それぞれに書いた理由で捨てます。
+
+- `plots[].strokeFill`、`plots[].strokeWidth`、`plots[].fill`:
+  描画が使う色と幅で、プロットの番号からテーマで決まります。
+- `getChartThemeConfig()` と、`chartOrientation` を除く `getChartConfig()`:
+  テーマの色と描画の設定で、サイトが与えます。
+- `getXYChartData().title`:
+  図を描くとき（
+  [`getDrawableElem()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L203-L209)）にだけ設定されるので、
+  テキストを解析した時点では空のテキストです。
+  タイトルは共通の Db のものです。
+
+軸の範囲とプロットの組の x は、値と軸から決まりますが、
+Db は各文を実行する場所で、その時点の状態から計算します
+（
+[`transformDataWithoutCategory()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L125-L164)、
+[`setYAxisRangeFromPlotData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDb.ts#L112-L123)）。
+このため、プロットの後ろの文は、プロットがすでに作ったものを変えません。
+Db が持つとおりに保ちます。
+
+値を、欄ごとに述べます。
+テキストは
+[字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L15-L75)と
+[文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L83-L175)が読みます。
+
+- ヘッダーは `xychart` か `xychart-beta` です。
+  [検出器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/xychartDetector.ts#L9-L11)は小文字だけを読むので、
+  `XYCHART` と `Xychart-Beta` は拒否されますが、
+  字句解析は大文字小文字を問わず読みます。
+  ヘッダーに続けて書いた語、ダッシュと数字、ASCII の外の文字は、
+  ヘッダーではありません。
+  ヘッダーの後ろのコロン、波括弧、`#`、引用符、数字、コンマ、カッコは拒否され、
+  ヘッダーの前の `#` で始まる行も拒否されます。
+  どの検出器もそのテキストを読まないからです。
+  ヘッダーの後ろに文がなくても受理され、図は空です。
+  [fixture: xychart/db-header-beta-only]
+  [fixture: xychart/db-header-plain]
+  [fixture: xychart/header-upper-case]
+  [fixture: xychart/header-beta-capitalized]
+  [fixture: xychart/header-word-suffix]
+  [fixture: xychart/header-plain-word-suffix]
+  [fixture: xychart/header-dash-suffix]
+  [fixture: xychart/header-non-ascii-suffix]
+  [fixture: xychart/header-without-line-feed]
+  [fixture: xychart/gram-header-after-hash-line]
+  [fixture: xychart/gram-header-brace-suffix]
+  [fixture: xychart/gram-header-bracket-suffix]
+  [fixture: xychart/gram-header-colon-suffix]
+  [fixture: xychart/gram-header-comma-suffix]
+  [fixture: xychart/gram-header-digit-suffix]
+  [fixture: xychart/gram-header-hash-suffix]
+  [fixture: xychart/gram-header-quote-suffix]
+- ヘッダーの前の空白、タブ、空行、ノーブレークスペース、U+FEFF、コメント行、
+  ディレクティブの行は、何も変えません。
+  ヘッダーに続けて書いたディレクティブは取り除かれ、
+  その後ろのコメントは、空白があってもなくても読み飛ばされます。
+  ヘッダーの前でも後ろでも、`%%` だけの行と `%%{ }%%` の行はコメント行です。
+  [fixture: xychart/header-indented]
+  [fixture: xychart/header-tab-indented]
+  [fixture: xychart/header-after-bare-percent-line]
+  [fixture: xychart/header-after-bare-percent-line-and-whitespace-line]
+  [fixture: xychart/header-after-blank-lines]
+  [fixture: xychart/header-after-comment-line]
+  [fixture: xychart/header-after-directive-line]
+  [fixture: xychart/header-after-empty-braces-line]
+  [fixture: xychart/header-nbsp-before]
+  [fixture: xychart/header-bom-before]
+  [fixture: xychart/header-directive-glued-after-header]
+  [fixture: xychart/header-comment-on-header-line]
+  [fixture: xychart/header-comment-glued-to-header]
+  [fixture: xychart/header-bare-percent-line-after-header]
+- ヘッダーの行に文を続けて書けます。`;` も続けられ、行を終えます。
+  2 つ目のヘッダーは、自分の行でも 1 つ目の後ろでも、
+  もう一度ヘッダーとして読まれます。
+  [fixture: xychart/header-statement-on-header-line]
+  [fixture: xychart/header-line-on-header-line]
+  [fixture: xychart/header-semicolon]
+  [fixture: xychart/header-semicolon-only]
+  [fixture: xychart/header-semicolon-spaced]
+  [fixture: xychart/header-leading-semicolon]
+  [fixture: xychart/header-twice]
+  [fixture: xychart/header-twice-same-line]
+- `orientation` は `vertical` で、
+  ヘッダーの後ろに語 `horizontal` が続くと `horizontal` です。
+  字句解析は語を大文字小文字を問わず読みますが、
+  Db は `horizontal` 以外の語を縦として扱うので、
+  `HORIZONTAL` と `Horizontal` は `vertical` になります。
+  ヘッダーと語は、空白かタブで分けられ、語のあとに文を続けられます。
+  語は文でもテキストでもありません。
+  次の行にある、2 つある、別の語に続けて書く、文の後ろにある、
+  タイトルやカテゴリー、軸のタイトルとして書くと拒否されます。
+  引用符の中ではテキストです。
+  [fixture: xychart/db-orientation-capitalized]
+  [fixture: xychart/db-orientation-horizontal]
+  [fixture: xychart/db-orientation-in-quotes]
+  [fixture: xychart/db-orientation-plain-header]
+  [fixture: xychart/db-orientation-tab]
+  [fixture: xychart/db-orientation-two-spaces]
+  [fixture: xychart/db-orientation-upper-case]
+  [fixture: xychart/db-orientation-vertical]
+  [fixture: xychart/db-orientation-vertical-upper-case]
+  [fixture: xychart/db-orientation-with-statement]
+  [fixture: xychart/gram-orientation-after-statement]
+  [fixture: xychart/gram-orientation-as-axis-title]
+  [fixture: xychart/gram-orientation-as-category]
+  [fixture: xychart/gram-orientation-as-title]
+  [fixture: xychart/gram-orientation-on-next-line]
+  [fixture: xychart/gram-orientation-twice]
+  [fixture: xychart/gram-orientation-word-suffix]
+- ヘッダーに向きの語がなければ、
+  `orientation` は設定 `xyChart.chartOrientation` で、既定は `vertical` です。
+  設定がサイトのものでも、フロントマターのものでも、
+  ディレクティブのものでも同じで、
+  ヘッダーの語が設定に優先します。
+  図のほかの設定、テーマ、パレットの色は、Db を何も変えません。
+  [fixture: xychart/config-orientation-directive]
+  [fixture: xychart/config-orientation-frontmatter]
+  [fixture: xychart/config-orientation-frontmatter-header-wins]
+  [fixture: xychart/config-orientation-header-wins]
+  [fixture: xychart/config-orientation-setting-horizontal]
+  [fixture: xychart/config-settings-do-not-change-db]
+- 文は、行末、`;`、テキストの終わりで終わります。
+  空行と空の文は何も変えず、文の前後の、空白、タブ、垂直タブ、改ページ、
+  ノーブレークスペース、U+FEFF、U+3000 も同じです。
+  CRLF と単独の CR は、改行と同じに行を終えます。
+  語の後ろの U+2028 と U+2029 は空白です。
+  テキストの終わりの文に改行はいりません。
+  [fixture: xychart/db-statement-blank-lines]
+  [fixture: xychart/db-statement-leading-semicolon]
+  [fixture: xychart/db-statement-tab-indented]
+  [fixture: xychart/db-lines-form-feed-before-statement]
+  [fixture: xychart/db-lines-keyword-bom-end]
+  [fixture: xychart/db-lines-nbsp-after-statement]
+  [fixture: xychart/db-lines-no-line-feed-at-end]
+  [fixture: xychart/db-lines-prototype-title]
+  [fixture: xychart/db-lines-statement-on-header-line-crlf]
+  [fixture: xychart/db-lines-statements-after-bom-and-tab]
+  [fixture: xychart/db-lines-trailing-spaces]
+  [fixture: xychart/db-lines-trailing-tab]
+  [fixture: xychart/db-lines-unicode-line-separator-between-statements]
+  [fixture: xychart/db-lines-vertical-tab-before-statement]
+  [fixture: xychart/db-semicolon-after-statement]
+  [fixture: xychart/db-semicolon-line-alone]
+  [fixture: xychart/db-semicolon-spaced]
+  [fixture: xychart/db-semicolon-statements]
+  [fixture: xychart/db-semicolon-twice]
+  [fixture: xychart/db-title-crlf-line-ends]
+  [fixture: xychart/db-title-lone-cr-line-ends]
+  [fixture: xychart/db-title-line-separator-end]
+  [fixture: xychart/db-title-paragraph-separator-end]
+  [fixture: xychart/db-title-bom-after-word]
+  [fixture: xychart/db-title-bom-before-keyword]
+  [fixture: xychart/db-title-form-feed-after-word]
+  [fixture: xychart/db-title-nbsp-before-keyword]
+  [fixture: xychart/db-title-ideographic-space]
+- タイトルはテキストです。
+  引用符のテキストは、引用符の間にあるものから両端の空白を除いたもの、
+  引用符のない語は、語の間の空白を除いてつないだものです。
+  語は、英字、数字、`-`、`_`、`.`、`+`、`=`、`*`、`&`、`#` を含みます。
+  `#` はコメントを始めないので、`T # c` はタイトル `T#c` です。
+  引用符のテキストは、句読点、キーワード、空白の後ろの `%%`、マークアップ、
+  ASCII の外の文字、
+  バッククォート、改行を含められ、CRLF は 1 つの改行になります。
+  [fixture: xychart/db-title-quoted]
+  [fixture: xychart/db-title-bare-word]
+  [fixture: xychart/db-title-bare-digit]
+  [fixture: xychart/db-title-bare-number]
+  [fixture: xychart/db-title-bare-words]
+  [fixture: xychart/db-title-bare-characters]
+  [fixture: xychart/db-title-quoted-spaces-trimmed]
+  [fixture: xychart/db-title-quoted-special]
+  [fixture: xychart/db-title-quoted-line-feed]
+  [fixture: xychart/db-title-quoted-crlf]
+  [fixture: xychart/db-title-quoted-non-ascii]
+  [fixture: xychart/db-title-quoted-keyword]
+  [fixture: xychart/db-title-quoted-hash-and-semicolon-apart]
+  [fixture: xychart/db-title-quoted-percent]
+  [fixture: xychart/db-title-quoted-html]
+  [fixture: xychart/db-title-md-string]
+  [fixture: xychart/db-title-hash-bare-word]
+  [fixture: xychart/db-title-bare-hash-comment]
+  [fixture: xychart/db-title-bare-percent-comment]
+  [fixture: xychart/db-title-quoted-line-separator]
+  [fixture: xychart/db-title-nbsp-between-words]
+  [fixture: xychart/db-title-quoted-semicolon]
+  [fixture: xychart/db-title-bare-semicolon]
+  [fixture: xychart/db-title-semicolon-empty-statements]
+- 最後の `title` の文がタイトルで、フロントマターのタイトルを置き換えます。
+  フロントマターのタイトルは、文がなければタイトルで、空白もそのまま残ります。
+  キーワードは大文字小文字を問わず、後ろにタブを置けます。
+  `title` で始まる語はテキストですが、キーワードに続けて書いた語、`titles`、
+  テキストとしての `title` や `Title` は拒否されます。
+  [fixture: xychart/db-title-twice]
+  [fixture: xychart/db-title-three-times]
+  [fixture: xychart/db-title-bare-then-quoted]
+  [fixture: xychart/db-title-frontmatter]
+  [fixture: xychart/db-title-frontmatter-and-statement]
+  [fixture: xychart/db-title-frontmatter-spaces]
+  [fixture: xychart/db-title-at-end-of-text]
+  [fixture: xychart/db-title-upper-case-keyword]
+  [fixture: xychart/db-title-capitalized-keyword]
+  [fixture: xychart/db-title-tab-separator]
+  [fixture: xychart/db-title-keyword-prefix-word]
+  [fixture: xychart/gram-title-glued]
+  [fixture: xychart/gram-title-plural]
+  [fixture: xychart/gram-title-keyword-as-text]
+  [fixture: xychart/gram-title-bare-title-keyword]
+- 引用符のテキストの中と、アクセシビリティのテキストの中の、
+  文字参照はプレースホルダーになります。
+  `#35;` もそうで、`a#b;c` の `#b;` もそうです。
+  語でつながない `#` と `;` は、テキストの文字です。
+  引用符のないタイトル、軸のタイトル、カテゴリー、プロットのタイトルでは、
+  プレースホルダーが ASCII の外にあるので、文字参照は拒否されます。
+  HTML のタグの引用符は `'` として読まれます。
+  [fixture: xychart/lex-title-entity-in-quotes]
+  [fixture: xychart/gram-title-entity-bare]
+  [fixture: xychart/lex-title-quoted-hash-word-semicolon-entity]
+  [fixture: xychart/lex-acc-descr-block-entity]
+  [fixture: xychart/lex-acc-descr-entity]
+  [fixture: xychart/lex-acc-title-entity]
+  [fixture: xychart/db-title-html-tag-in-quotes]
+- テキストのないタイトル、引用符だけで間に何もないタイトル、
+  テキストが次の行にあるタイトル、
+  引用符のテキストの後ろにテキストがあるタイトルは、拒否されます。
+  閉じない引用符も、テキストの終わりでも、拒否されます。
+  引用符のない語は、`,`、`:`、`/`、`(`、`)`、`'`、`<`、`>`、`[`、
+  `]` と ASCII の外の文字を含められず、
+  語に続けて書いた `%%` はその前の文字を取るので、タイトルは拒否されます。
+  [fixture: xychart/gram-title-after-quoted]
+  [fixture: xychart/gram-title-bare-angle]
+  [fixture: xychart/gram-title-bare-apostrophe]
+  [fixture: xychart/gram-title-bare-colon]
+  [fixture: xychart/gram-title-bare-comma]
+  [fixture: xychart/gram-title-bare-non-ascii]
+  [fixture: xychart/gram-title-bare-parenthesis]
+  [fixture: xychart/gram-title-bare-percent-at-end]
+  [fixture: xychart/gram-title-bare-percent-inside]
+  [fixture: xychart/gram-title-bare-slash]
+  [fixture: xychart/gram-title-bare-square]
+  [fixture: xychart/gram-title-comment-line-before-text]
+  [fixture: xychart/gram-title-comment-line-between]
+  [fixture: xychart/gram-title-empty-string]
+  [fixture: xychart/gram-title-keyword-alone-at-end]
+  [fixture: xychart/gram-title-no-text]
+  [fixture: xychart/gram-title-quoted-unclosed]
+  [fixture: xychart/gram-title-quoted-unclosed-at-end]
+  [fixture: xychart/gram-title-text-on-next-line]
+- `style` 行と `classDef` 行の行の規則は、`style:` か `classDef:`、
+  その後ろの `#`、さらに後ろの `;` を持つ行の最後の `;` を、
+  引用符の中のどのテキストからも落とします。
+  タイトル、軸のタイトル、カテゴリー、プロットのタイトル、ラベル、
+  アクセシビリティのテキストが対象です。
+  `;` が 2 つあれば最初の `;` が残って文字参照を終え、
+  大文字小文字が違う `Style`、`#` がない場合、
+  `:` と `#` の間に空白がある場合は `;` が残り、
+  引用符の中の行はそれだけで 1 つの行です。
+  [fixture: xychart/lex-title-style-line-semicolon]
+  [fixture: xychart/lex-style-line-classdef]
+  [fixture: xychart/lex-style-line-does-not-cross-lines-in-quotes]
+  [fixture: xychart/lex-style-line-no-hash]
+  [fixture: xychart/lex-style-line-semicolon-in-second-line-of-quotes]
+  [fixture: xychart/lex-style-line-semicolon-two]
+  [fixture: xychart/lex-style-line-space-after-colon]
+  [fixture: xychart/lex-style-line-statement-separator]
+  [fixture: xychart/lex-style-line-upper-case-keyword]
+  [fixture: xychart/db-x-axis-title-quoted-style-line-semicolon]
+  [fixture: xychart/db-y-axis-title-quoted-style-line-semicolon]
+  [fixture: xychart/db-x-axis-band-quoted-style-line-semicolon]
+  [fixture: xychart/db-plot-title-style-line-semicolon]
+  [fixture: xychart/db-label-style-line-semicolon]
+  [fixture: xychart/lex-acc-descr-block-style-line-semicolon]
+  [fixture: xychart/lex-acc-descr-style-line-semicolon]
+  [fixture: xychart/lex-acc-title-style-line-semicolon]
+- ディレクティブはテキストを読む前に取り除かれ、前後の部分がつながります。
+  引用符のタイトルの中、タイトルの語の間と後ろ、キーワードの前、
+  カテゴリーの間と語の中、数、範囲、矢印の中、キーワードとカッコの間が対象です。
+  引用符のテキストの中のコメント行とディレクティブの行は、
+  その行ごと取り除かれます。
+  閉じないディレクティブは、テキストの終わりでは何も取らず、
+  次の行の先頭の語を取り、その行は拒否されます。
+  [fixture: xychart/db-title-directive-after-bare]
+  [fixture: xychart/db-title-directive-before-keyword]
+  [fixture: xychart/db-title-directive-in-quotes]
+  [fixture: xychart/db-title-quoted-comment-line-inside]
+  [fixture: xychart/db-title-quoted-directive-line-inside]
+  [fixture: xychart/db-directive-after-plot]
+  [fixture: xychart/db-directive-between-label]
+  [fixture: xychart/db-directive-between-title-words]
+  [fixture: xychart/db-directive-glued-to-keyword]
+  [fixture: xychart/db-directive-in-arrow]
+  [fixture: xychart/db-directive-in-range]
+  [fixture: xychart/db-directive-line]
+  [fixture: xychart/db-directive-unclosed-after-categories]
+  [fixture: xychart/db-directive-unclosed-after-header]
+  [fixture: xychart/db-directive-unclosed-after-plot]
+  [fixture: xychart/db-directive-unclosed-at-end]
+  [fixture: xychart/gram-directive-unclosed-next-line]
+  [fixture: xychart/db-x-axis-band-directive]
+  [fixture: xychart/db-x-axis-band-directive-in-word]
+  [fixture: xychart/db-plot-directive-in-number]
+  [fixture: xychart/db-plot-directive-inside]
+- コメントは `%%` で、行の終わりまでです。
+  コメント行と文の後ろのコメントは読み飛ばされます。
+  直前の文字にくっついた `%%` はその文字を取ります。
+  値やカテゴリーの閉じカッコ、数、語の後ろでは文が拒否され、
+  引用符のテキストの閉じ引用符の後ろではコメントが読み飛ばされてテキストは残り、
+  空白の後ろでは何も取りません。
+  `#` はコメントを始めないので、`#` で始まる行は拒否され、
+  単独の `%` もコメントではありません。
+  [fixture: xychart/db-comment-after-bracket-line]
+  [fixture: xychart/db-comment-after-statement]
+  [fixture: xychart/db-comment-at-end]
+  [fixture: xychart/db-comment-glued-after-quote]
+  [fixture: xychart/db-comment-glued-after-quoted-axis-title]
+  [fixture: xychart/db-comment-indented]
+  [fixture: xychart/db-comment-line]
+  [fixture: xychart/db-comment-line-between]
+  [fixture: xychart/db-comment-spaced-after-range]
+  [fixture: xychart/gram-comment-hash-line]
+  [fixture: xychart/gram-comment-in-label-quotes-closing]
+  [fixture: xychart/gram-comment-percent-single]
+  [fixture: xychart/div-comment-glued-after-axis-title]
+  [fixture: xychart/div-comment-glued-after-bracket]
+  [fixture: xychart/div-comment-glued-after-categories]
+  [fixture: xychart/div-comment-glued-after-label]
+  [fixture: xychart/div-comment-glued-after-range]
+  [fixture: xychart/div-comment-glued-after-title-word]
+  [fixture: xychart/gram-plot-comment-inside]
+  [fixture: xychart/db-plot-comment-after]
+  [fixture: xychart/db-x-axis-band-comment-after]
+- `xAxis` は、
+  範囲を与える文があるまで `{ type: "band", title, categories }` です。
+  `x-axis` の後ろのテキストがタイトルで、引用符でも語でもよく、なければ空です。
+  後の `x-axis` は前の軸を、タイトルも含めて置き換えるので、
+  タイトルのない文は空のタイトルを与えます。
+  引用符のタイトルを 2 つ書くと拒否されます。
+  引用符のないタイトルは、英字と `_`、`.`、`&`、`=`、`*`、`#`、`+`、
+  `-` を含められますが、数字は含められません。
+  数字は数を始め、数はタイトルの一部ではないので、
+  `Q1`、`A-1`、`Year 2024`、`2024` は軸のタイトルとして拒否され、
+  `"Q1"` は受理されます。
+  図のタイトル、プロットのタイトル、カテゴリーは数字を含められます。
+  文のテキストはその行にあり、
+  キーワードとテキストやカッコの間のコメントや改行はそれらをつなぎません。
+  その文は拒否されます。
+  キーワードは大文字小文字を問わず、カッコや引用符を空白なしで続けられます。
+  文字を続けて書くと拒否され、`x-axis` だけも拒否されます。
+  [fixture: xychart/db-x-axis-title-at-end-of-text]
+  [fixture: xychart/db-x-axis-title-bare-characters]
+  [fixture: xychart/db-x-axis-title-bare-hyphen]
+  [fixture: xychart/db-x-axis-title-bare-word]
+  [fixture: xychart/db-x-axis-title-keyword-prefix]
+  [fixture: xychart/db-x-axis-title-quoted]
+  [fixture: xychart/db-x-axis-title-quoted-digit]
+  [fixture: xychart/db-x-axis-title-words]
+  [fixture: xychart/gram-x-axis-title-bare-digit]
+  [fixture: xychart/gram-x-axis-title-bare-digit-before-band]
+  [fixture: xychart/gram-x-axis-title-bare-hyphen-digit]
+  [fixture: xychart/gram-x-axis-title-bare-title-keyword]
+  [fixture: xychart/gram-x-axis-title-bare-underscore-digit]
+  [fixture: xychart/gram-x-axis-title-bare-words-number]
+  [fixture: xychart/db-x-axis-three-times]
+  [fixture: xychart/db-x-axis-twice]
+  [fixture: xychart/db-x-axis-twice-title-cleared]
+  [fixture: xychart/gram-x-axis-keyword-alone-at-end]
+  [fixture: xychart/gram-x-axis-line-feed-before-bracket]
+  [fixture: xychart/gram-x-axis-comment-before-bracket]
+  [fixture: xychart/db-x-axis-upper-case-keyword]
+  [fixture: xychart/db-x-axis-keyword-glued-bracket]
+  [fixture: xychart/db-x-axis-keyword-glued-quote]
+  [fixture: xychart/db-x-axis-prototype-title]
+  [fixture: xychart/gram-x-axis-empty]
+  [fixture: xychart/gram-x-axis-keyword-suffix]
+  [fixture: xychart/gram-x-axis-band-after-string-title]
+  [fixture: xychart/db-x-axis-range-then-band]
+- 範囲は 2 つの数と `-->` で、`{ type: "linear", title, min, max }` になります。
+  数は、数字と省略できる小数部、または整数部のない小数部で、
+  省略できる符号がつきます。
+  先頭の 0 は数字として読まれます。
+  最初の数は 2 つ目より大きくても等しくてもよく、矢印の前後の空白はいらず、
+  `-0` は 0 で、
+  倍精度で正確に表せない大きな数は Db が持つ数です。
+  指数、`->`、3 つ目の数、矢印のない数、前後の数がない矢印、語、
+  `1.` は拒否されます。
+  [fixture: xychart/db-x-axis-range]
+  [fixture: xychart/db-x-axis-range-decimal]
+  [fixture: xychart/db-x-axis-range-equal]
+  [fixture: xychart/db-x-axis-range-large]
+  [fixture: xychart/db-x-axis-range-leading-zeros]
+  [fixture: xychart/db-x-axis-range-negative]
+  [fixture: xychart/db-x-axis-range-negative-zero]
+  [fixture: xychart/db-x-axis-range-no-spaces]
+  [fixture: xychart/db-x-axis-range-plus]
+  [fixture: xychart/db-x-axis-range-title]
+  [fixture: xychart/db-x-axis-range-title-quoted]
+  [fixture: xychart/gram-x-axis-range-exponent]
+  [fixture: xychart/gram-x-axis-range-no-end]
+  [fixture: xychart/gram-x-axis-range-no-start]
+  [fixture: xychart/gram-x-axis-range-one-number]
+  [fixture: xychart/gram-x-axis-range-short-arrow]
+  [fixture: xychart/gram-x-axis-range-text]
+  [fixture: xychart/gram-x-axis-range-third]
+  [fixture: xychart/gram-x-axis-range-trailing-dot]
+- カテゴリーの一覧は、`[` と `]` の間の、コンマで分けたテキストです。
+  語は、語の間の空白を除いてつなぎ、引用符のテキストは、空白、コンマ、
+  改行を含められ、両端の空白が落ちます。
+  数、符号、オブジェクトのプロパティの名前も、ほかと同じカテゴリーです。
+  同じテキストの 2 つのカテゴリーは 2 つのカテゴリーで、
+  引用符の中のキーワードはカテゴリーですが、
+  引用符のないキーワードは大文字小文字を問わず拒否されます。
+  閉じカッコの前にコンマがある一覧、空の一覧、空白だけの一覧、
+  引用符で空のテキスト、
+  項目の間に改行がある一覧、語に ASCII の外の文字や単独の `%` がある一覧、
+  2 つ書いた一覧、
+  後ろにテキストがある一覧、閉じない一覧は拒否されます。
+  [fixture: xychart/db-x-axis-band]
+  [fixture: xychart/db-x-axis-band-characters]
+  [fixture: xychart/db-x-axis-band-digit]
+  [fixture: xychart/db-x-axis-band-entity]
+  [fixture: xychart/db-x-axis-band-line-separator-inside]
+  [fixture: xychart/db-x-axis-band-nbsp-inside]
+  [fixture: xychart/db-x-axis-band-negative]
+  [fixture: xychart/db-x-axis-band-no-spaces]
+  [fixture: xychart/db-x-axis-band-numbers]
+  [fixture: xychart/db-x-axis-band-one]
+  [fixture: xychart/db-x-axis-band-prototype-names]
+  [fixture: xychart/db-x-axis-band-quoted]
+  [fixture: xychart/db-x-axis-band-quoted-keyword]
+  [fixture: xychart/db-x-axis-band-quoted-line-feed]
+  [fixture: xychart/db-x-axis-band-quoted-spaces]
+  [fixture: xychart/db-x-axis-band-same-category]
+  [fixture: xychart/db-x-axis-band-tab-inside]
+  [fixture: xychart/db-x-axis-band-title]
+  [fixture: xychart/db-x-axis-band-title-quoted]
+  [fixture: xychart/db-x-axis-band-words]
+  [fixture: xychart/gram-x-axis-band-axis-keyword]
+  [fixture: xychart/gram-x-axis-band-empty]
+  [fixture: xychart/gram-x-axis-band-empty-string]
+  [fixture: xychart/gram-x-axis-band-extra-text]
+  [fixture: xychart/gram-x-axis-band-keyword]
+  [fixture: xychart/gram-x-axis-band-keyword-upper-case]
+  [fixture: xychart/gram-x-axis-band-line-feed]
+  [fixture: xychart/gram-x-axis-band-non-ascii]
+  [fixture: xychart/gram-x-axis-band-percent-inside]
+  [fixture: xychart/gram-x-axis-band-spaces-only]
+  [fixture: xychart/gram-x-axis-band-title-keyword]
+  [fixture: xychart/gram-x-axis-band-trailing-comma]
+  [fixture: xychart/gram-x-axis-band-twice]
+  [fixture: xychart/gram-x-axis-band-unclosed]
+  [fixture: xychart/gram-x-axis-band-unclosed-string]
+  [fixture: xychart/db-category-quoted-line-separator]
+  [fixture: xychart/db-title-quoted-crlf-category]
+- `yAxis` は `{ type: "linear", title, min, max }` です。
+  範囲を与える文もプロットが加える値もなければ、
+  範囲は `Infinity` と `-Infinity` です。
+  範囲の前のテキストがタイトルで、範囲だけの後の `y-axis` は空のタイトルを与え、
+  タイトルだけの後の `y-axis` はタイトルだけを変えて範囲を残します。
+  プロットの前でも後でも、書いた範囲がプロットの与える範囲に優先します。
+  カテゴリー、3 つ目の数、1 つの数、範囲を囲むカッコ、
+  `y-axis` だけは拒否されます。
+  [fixture: xychart/db-y-axis-after-plot]
+  [fixture: xychart/db-y-axis-before-plot]
+  [fixture: xychart/db-y-axis-no-range-no-plot]
+  [fixture: xychart/db-y-axis-range]
+  [fixture: xychart/db-y-axis-range-negative-decimal]
+  [fixture: xychart/db-y-axis-range-reversed]
+  [fixture: xychart/db-y-axis-range-title]
+  [fixture: xychart/db-y-axis-title-bare-word]
+  [fixture: xychart/db-y-axis-title-only-then-range]
+  [fixture: xychart/db-y-axis-title-quoted]
+  [fixture: xychart/db-y-axis-twice]
+  [fixture: xychart/db-y-axis-upper-case-keyword]
+  [fixture: xychart/gram-y-axis-band]
+  [fixture: xychart/gram-y-axis-empty]
+  [fixture: xychart/gram-y-axis-glued-bracket]
+  [fixture: xychart/gram-y-axis-keyword-alone-at-end]
+  [fixture: xychart/gram-y-axis-one-number]
+  [fixture: xychart/gram-y-axis-third]
+  [fixture: xychart/gram-y-axis-title-bare-digit]
+  [fixture: xychart/gram-y-axis-title-bare-digit-before-range]
+  [fixture: xychart/gram-y-axis-title-bare-letters-digits]
+  [fixture: xychart/gram-y-axis-title-bare-title-keyword]
+- プロットは `line` か `bar`、省略できるタイトル（引用符か語）、
+  `[` と `]` の間のコンマで分けた値で、
+  `{ type, title, data }` になります。
+  キーワードは大文字小文字を問わず、カッコを空白なしで続けられ、
+  タブで分けられます。
+  キーワードに続けて書いた語、カッコのない値、空のカッコ、
+  次の行にある値は拒否されます。
+  プロットはテキストの順で、2 つのプロットが同じタイトルを持てます。
+  1 文字のタイトルやオブジェクトのプロパティ名のタイトルも、タイトルです。
+  [fixture: xychart/db-line-title-bare]
+  [fixture: xychart/db-line-title-bare-digit]
+  [fixture: xychart/db-line-title-quoted]
+  [fixture: xychart/db-line-title-words]
+  [fixture: xychart/db-line-values]
+  [fixture: xychart/db-bar-title-bare]
+  [fixture: xychart/db-bar-title-bare-number]
+  [fixture: xychart/db-bar-title-quoted]
+  [fixture: xychart/db-bar-values]
+  [fixture: xychart/db-plot-title-bare-hyphen-digit]
+  [fixture: xychart/db-plot-title-entity]
+  [fixture: xychart/db-plot-title-keyword-like]
+  [fixture: xychart/db-plot-title-prototype-name]
+  [fixture: xychart/db-plot-title-quoted-line-feed]
+  [fixture: xychart/db-plot-title-quoted-lone-cr]
+  [fixture: xychart/db-plot-title-quoted-special]
+  [fixture: xychart/db-plot-title-trimmed]
+  [fixture: xychart/db-plot-bar-keyword-glued-bracket]
+  [fixture: xychart/db-plot-capitalized-keyword]
+  [fixture: xychart/db-plot-keyword-glued-bracket]
+  [fixture: xychart/db-plot-tab-keyword]
+  [fixture: xychart/db-plot-upper-case-keyword]
+  [fixture: xychart/db-plot-bar-then-line]
+  [fixture: xychart/db-plot-same-title-twice]
+  [fixture: xychart/gram-line-comment-before-bracket]
+  [fixture: xychart/gram-line-keyword-alone-at-end]
+  [fixture: xychart/gram-line-title-only-at-end]
+  [fixture: xychart/gram-bar-keyword-alone-at-end]
+  [fixture: xychart/gram-bar-title-only-at-end]
+  [fixture: xychart/gram-plot-values-keyword-glued-title]
+  [fixture: xychart/gram-plot-values-bar-keyword-glued]
+  [fixture: xychart/gram-plot-values-no-brackets]
+  [fixture: xychart/gram-plot-values-empty]
+  [fixture: xychart/gram-plot-values-line-feed-before-bracket]
+  [fixture: xychart/gram-plot-values-title-line-feed-before-bracket]
+  [fixture: xychart/gram-plot-values-extra-text]
+- 値は、軸の範囲が書くのと同じ数です。
+  数字と省略できる小数部、または整数部のない小数部で、省略できる符号がつきます。
+  `-0` は 0 で、倍精度で正確に表せない大きな数は Db が持つ数です。
+  カッコの中やコンマの前後の、空白、タブ、ノーブレークスペース、U+FEFF、
+  U+2028 は何も変えず、改行や CRLF は拒否されます。
+  指数、語、`NaN`、`Infinity`、`5.`、`1.5.2`、アンダースコア、2 つのコンマ、
+  最初の値や閉じカッコの前のコンマ、コンマのない 2 つの値、カッコの中の改行、
+  閉じないカッコは拒否されます。
+  [fixture: xychart/db-plot-values-bom-inside]
+  [fixture: xychart/db-plot-values-decimal]
+  [fixture: xychart/db-plot-values-decimal-division]
+  [fixture: xychart/db-plot-values-form-feed-inside]
+  [fixture: xychart/db-plot-values-large]
+  [fixture: xychart/db-plot-values-leading-zeros]
+  [fixture: xychart/db-plot-values-line-separator-inside]
+  [fixture: xychart/db-plot-values-nbsp-inside]
+  [fixture: xychart/db-plot-values-negative]
+  [fixture: xychart/db-plot-values-negative-zero]
+  [fixture: xychart/db-plot-values-no-spaces]
+  [fixture: xychart/db-plot-values-one]
+  [fixture: xychart/db-plot-values-plus]
+  [fixture: xychart/db-plot-values-spaces]
+  [fixture: xychart/db-plot-values-tab-inside]
+  [fixture: xychart/gram-plot-values-crlf-inside]
+  [fixture: xychart/gram-plot-values-double-comma]
+  [fixture: xychart/gram-plot-values-exponent]
+  [fixture: xychart/gram-plot-values-infinity]
+  [fixture: xychart/gram-plot-values-leading-comma]
+  [fixture: xychart/gram-plot-values-line-feed-after-bracket]
+  [fixture: xychart/gram-plot-values-line-feed-before-comma]
+  [fixture: xychart/gram-plot-values-missing-comma]
+  [fixture: xychart/gram-plot-values-nan]
+  [fixture: xychart/gram-plot-values-trailing-comma]
+  [fixture: xychart/gram-plot-values-trailing-dot]
+  [fixture: xychart/gram-plot-values-two-dots]
+  [fixture: xychart/gram-plot-values-unclosed]
+  [fixture: xychart/gram-plot-values-underscore]
+  [fixture: xychart/gram-plot-values-word]
+- line の値の後ろに、ラベル（引用符のテキスト）を、
+  空白があってもなくても続けられます。
+  `pointLabels` は各値のラベルの一覧で、ラベルのない値は空のテキストです。
+  ラベルが書かれているときだけあります。
+  空のラベルはラベルを与えません。
+  ラベルは、句読点と改行を含められ、両端の空白が落ちます。
+  bar のラベルは受理され、保たれません。
+  引用符のないラベル、値の前のラベル、2 つのラベル、
+  中に 2 つの引用符があるラベル、閉じないラベルは拒否されます。
+  [fixture: xychart/db-label-all]
+  [fixture: xychart/db-label-empty-string]
+  [fixture: xychart/db-label-entity]
+  [fixture: xychart/db-label-last]
+  [fixture: xychart/db-label-line-feed]
+  [fixture: xychart/db-label-no-space]
+  [fixture: xychart/db-label-on-bar]
+  [fixture: xychart/db-label-one]
+  [fixture: xychart/db-label-quoted-crlf]
+  [fixture: xychart/db-label-spaces-trimmed]
+  [fixture: xychart/db-label-special]
+  [fixture: xychart/gram-label-bare]
+  [fixture: xychart/gram-label-before-value]
+  [fixture: xychart/gram-label-doubled-quote]
+  [fixture: xychart/gram-label-twice]
+  [fixture: xychart/gram-label-unclosed]
+- `data` は、
+  プロットが加えられた時点の x 軸から Db が作る組 `[x, y]` の一覧です。
+  カテゴリーの一覧があれば、カテゴリーごとに 1 組で、
+  カテゴリーを超える値は捨てられ、
+  値のないカテゴリーは `null` です。
+  範囲があるか軸がなければ、値ごとに 1 組で、
+  x は値を範囲に均等に広げて計算した数のテキストで、最初の値が範囲の始まりです。
+  最初のプロットより前に x-axis の文がなければ、
+  x 軸は 1 から値の数までの範囲になり、
+  後のプロットはその範囲に広げられます。
+  プロットの後ろに書いた x 軸は、そのプロットの組を変えません。
+  [fixture: xychart/db-data-band-after-plot]
+  [fixture: xychart/db-data-band-after-plot-longer]
+  [fixture: xychart/db-data-band-equal]
+  [fixture: xychart/db-data-band-fewer-values]
+  [fixture: xychart/db-data-band-more-values]
+  [fixture: xychart/db-data-band-two-plots]
+  [fixture: xychart/db-data-longer-second-plot]
+  [fixture: xychart/db-data-shorter-second-plot]
+  [fixture: xychart/db-data-no-axis-bar-and-line]
+  [fixture: xychart/db-data-range-after-plot]
+  [fixture: xychart/db-data-range-equal]
+  [fixture: xychart/db-data-range-fractions]
+  [fixture: xychart/db-data-range-integers]
+  [fixture: xychart/db-data-range-negative]
+  [fixture: xychart/db-data-range-one-value]
+  [fixture: xychart/db-data-range-reversed]
+  [fixture: xychart/db-data-range-three]
+- どの文も与えない y 軸の範囲は、プロットの値から計算されます。
+  すべてのプロットの最小値と最大値で、カテゴリーの一覧が捨てる値は含みません。
+  値が 1 つのプロットでは、その値だけの範囲です。
+  [fixture: xychart/db-data-y-range-band-truncation]
+  [fixture: xychart/db-data-y-range-from-plots]
+  [fixture: xychart/db-data-y-range-negative-zero]
+  [fixture: xychart/db-data-y-range-single-value]
+- すべての欄を一度に。 [fixture: xychart/db-data-everything]
+  [fixture: xychart/db-data-xy-title-and-plots]
+- `accTitle` は、`accTitle:` の後ろから行末までのテキストで、
+  両端の空白を除いたものです。
+  `accDescr` は、`accDescr:` の後ろのテキスト、
+  または `accDescr {` と `}` の間の行です。
+  コロンの後ろやカッコの前に空白はいらず、
+  コロンや波括弧はキーワードの次の行にも置けます。
+  コロン、`;`、`#`、空白はテキストの文字です。
+  キーワードは大文字小文字を問わず、コロンの前に空白を置けます。
+  `accTitle:` や `accDescr:` の行にテキストがなければ、
+  キーワードは、空行、コメント行、ディレクティブの行を越えて、
+  次のテキストのある行をまるごと値にし、その行は文として読まれません。
+  `title` の行や `line` の行が、そのままテキストになります。
+  入力の終わりまでテキストがないときだけ、値は空です。
+  キーワードに続けて書いた文字、ダッシュ、数字、キーワードの中の空白は拒否され、
+  テキストの終わりにキーワードだけがあるのも拒否されます。
+  各種類の最後の文が値です。
+  テキストの終わりで閉じないブロックは空の説明を設定し、
+  空のブロック（波括弧だけ、
+  または間に空白だけ）は何も設定せずに前の説明を保ちます。
+  行の説明とブロックは互いを置き換え、
+  `}` はブロックを終え、その後ろのテキストは文として読まれます。
+  ブロックの中の CRLF は行を 1 つの改行でつなぎ、U+2028 はテキストの文字です。
+  [fixture: xychart/db-acc-descr]
+  [fixture: xychart/db-acc-descr-blank-lines-then-text]
+  [fixture: xychart/db-acc-descr-block]
+  [fixture: xychart/db-acc-descr-block-comment-line-inside]
+  [fixture: xychart/db-acc-descr-block-cr]
+  [fixture: xychart/db-acc-descr-block-crlf]
+  [fixture: xychart/db-acc-descr-block-directive-inside]
+  [fixture: xychart/db-acc-descr-block-empty]
+  [fixture: xychart/db-acc-descr-block-hash-semicolon]
+  [fixture: xychart/db-acc-descr-block-line-feed-before-brace]
+  [fixture: xychart/db-acc-descr-block-line-separator-inside]
+  [fixture: xychart/db-acc-descr-block-no-space]
+  [fixture: xychart/db-acc-descr-block-percent]
+  [fixture: xychart/db-acc-descr-block-spaces-inside]
+  [fixture: xychart/db-acc-descr-block-then-empty-block]
+  [fixture: xychart/db-acc-descr-block-then-empty-line]
+  [fixture: xychart/db-acc-descr-block-then-line]
+  [fixture: xychart/db-acc-descr-block-then-title-same-line]
+  [fixture: xychart/db-acc-descr-block-twice-same-line]
+  [fixture: xychart/db-acc-descr-block-upper-case]
+  [fixture: xychart/db-acc-descr-colon-on-next-line]
+  [fixture: xychart/db-acc-descr-comment-line-then-text]
+  [fixture: xychart/db-acc-descr-directive-line-then-text]
+  [fixture: xychart/db-acc-descr-empty-block-after-title-same-line]
+  [fixture: xychart/db-acc-descr-empty-block-before-plot]
+  [fixture: xychart/db-acc-descr-empty-block-before-title-same-line]
+  [fixture: xychart/db-acc-descr-line-separator-inside]
+  [fixture: xychart/db-acc-descr-line-then-block]
+  [fixture: xychart/db-acc-descr-line-then-empty-block]
+  [fixture: xychart/db-acc-descr-line-then-empty-braces]
+  [fixture: xychart/db-acc-descr-line-then-empty-line]
+  [fixture: xychart/db-acc-descr-line-then-spaces-block]
+  [fixture: xychart/db-acc-descr-no-space]
+  [fixture: xychart/db-acc-descr-takes-title-line]
+  [fixture: xychart/db-acc-descr-unclosed-block]
+  [fixture: xychart/db-acc-title]
+  [fixture: xychart/db-acc-title-blank-lines-then-text]
+  [fixture: xychart/db-acc-title-colon-inside]
+  [fixture: xychart/db-acc-title-colon-on-next-line]
+  [fixture: xychart/db-acc-title-comment-line-then-text]
+  [fixture: xychart/db-acc-title-directive-line-then-text]
+  [fixture: xychart/db-acc-title-empty]
+  [fixture: xychart/db-acc-title-empty-at-end-after-value]
+  [fixture: xychart/db-acc-title-hash]
+  [fixture: xychart/db-acc-title-leading-ideographic-space]
+  [fixture: xychart/db-acc-title-line-separator-inside]
+  [fixture: xychart/db-acc-title-no-space]
+  [fixture: xychart/db-acc-title-semicolon]
+  [fixture: xychart/db-acc-title-space-before-colon]
+  [fixture: xychart/db-acc-title-spaces-trimmed]
+  [fixture: xychart/db-acc-title-takes-next-line]
+  [fixture: xychart/db-acc-title-then-empty-line]
+  [fixture: xychart/db-acc-title-three-times]
+  [fixture: xychart/db-acc-title-trailing-bom]
+  [fixture: xychart/db-acc-title-trailing-ideographic-space]
+  [fixture: xychart/db-acc-title-trailing-nbsp]
+  [fixture: xychart/db-acc-title-trailing-tab]
+  [fixture: xychart/db-acc-title-twice]
+  [fixture: xychart/db-acc-title-two-colons]
+  [fixture: xychart/db-acc-title-upper-case]
+  [fixture: xychart/gram-acc-descr-block-braces-inside]
+  [fixture: xychart/gram-acc-descr-block-double-close]
+  [fixture: xychart/gram-acc-descr-block-two-blocks]
+  [fixture: xychart/gram-acc-descr-empty-block-before-header]
+  [fixture: xychart/gram-acc-descr-keyword-alone]
+  [fixture: xychart/gram-acc-title-dash-suffix]
+  [fixture: xychart/gram-acc-title-digit-suffix]
+  [fixture: xychart/gram-acc-title-keyword-alone]
+  [fixture: xychart/gram-acc-title-space-in-keyword]
+  [fixture: xychart/gram-acc-title-word-suffix]
+  [fixture: xychart/div-empty-description-block-inside-axis]
+  [fixture: xychart/div-empty-description-block-inside-plot]
+  [fixture: xychart/div-empty-description-block-inside-title-text]
+  [fixture: xychart/div-empty-description-block-inside-values]
+- `title`、`accTitle`、軸のタイトル、カテゴリー、プロットのタイトル、
+  ラベルは `sanitizeText` を通ります。
+  `securityLevel` が mermaid.js の値のどれでもなく、HTML ラベルが有効なら、
+  置き換えられた文字を持ちます
+  （[db-from-tree.md](./db-from-tree.md) の文字の置き換えを参照）。
+  プロットの組は、置き換えられたカテゴリーを持ちます。
+  `loose` と `sandbox` では、また、
+  設定の最上位か `flowchart` の `htmlLabels` が false なら、書いたとおりです。
+  [fixture: xychart/config-security-level-loose-all]
+  [fixture: xychart/config-security-level-other-all]
+  [fixture: xychart/config-security-level-other-flowchart-html-labels-false]
+  [fixture: xychart/config-security-level-other-html-labels-false]
+  [fixture: xychart/config-security-level-other-orientation-horizontal]
+  [fixture: xychart/config-security-level-sandbox-all]
+- テキストを持つ場所は、タイトル、アクセシビリティのタイトル、
+  行の説明と波括弧の説明、x 軸のタイトル、カテゴリー、
+  y 軸のタイトル、プロットのタイトル、ラベルです。
+  アクセシビリティのテキストとラベルを除く場所は、
+  引用符なしでも引用符つきでもテキストを持ちます。
+  次の項目が別に述べるものを除き、どの場所でも同じ規則です。
+  どの種類の空白も
+  （タブ、U+FEFF、ノーブレークスペース、U+3000、U+2028、U+2029）、
+  引用符のないテキストでは語を分けて読み飛ばされ、語がつながります。
+  引用符の中とアクセシビリティのテキストでは、テキストの文字です。
+  [fixture: xychart/db-grid-tab-acc-descr]
+  [fixture: xychart/db-grid-tab-acc-descr-block]
+  [fixture: xychart/db-grid-tab-acc-title]
+  [fixture: xychart/db-grid-tab-category-bare]
+  [fixture: xychart/db-grid-tab-category-quoted]
+  [fixture: xychart/db-grid-tab-label]
+  [fixture: xychart/db-grid-tab-plot-title-bare]
+  [fixture: xychart/db-grid-tab-plot-title-quoted]
+  [fixture: xychart/db-grid-tab-title-bare]
+  [fixture: xychart/db-grid-tab-title-quoted]
+  [fixture: xychart/db-grid-tab-x-title-bare]
+  [fixture: xychart/db-grid-tab-x-title-quoted]
+  [fixture: xychart/db-grid-tab-y-title-bare]
+  [fixture: xychart/db-grid-tab-y-title-quoted]
+  [fixture: xychart/db-grid-bom-acc-descr]
+  [fixture: xychart/db-grid-bom-acc-descr-block]
+  [fixture: xychart/db-grid-bom-acc-title]
+  [fixture: xychart/db-grid-bom-category-bare]
+  [fixture: xychart/db-grid-bom-category-quoted]
+  [fixture: xychart/db-grid-bom-label]
+  [fixture: xychart/db-grid-bom-plot-title-bare]
+  [fixture: xychart/db-grid-bom-plot-title-quoted]
+  [fixture: xychart/db-grid-bom-title-bare]
+  [fixture: xychart/db-grid-bom-title-quoted]
+  [fixture: xychart/db-grid-bom-x-title-bare]
+  [fixture: xychart/db-grid-bom-x-title-quoted]
+  [fixture: xychart/db-grid-bom-y-title-bare]
+  [fixture: xychart/db-grid-bom-y-title-quoted]
+  [fixture: xychart/db-grid-nbsp-acc-descr]
+  [fixture: xychart/db-grid-nbsp-acc-descr-block]
+  [fixture: xychart/db-grid-nbsp-acc-title]
+  [fixture: xychart/db-grid-nbsp-category-bare]
+  [fixture: xychart/db-grid-nbsp-category-quoted]
+  [fixture: xychart/db-grid-nbsp-label]
+  [fixture: xychart/db-grid-nbsp-plot-title-bare]
+  [fixture: xychart/db-grid-nbsp-plot-title-quoted]
+  [fixture: xychart/db-grid-nbsp-title-quoted]
+  [fixture: xychart/db-grid-nbsp-x-title-bare]
+  [fixture: xychart/db-grid-nbsp-x-title-quoted]
+  [fixture: xychart/db-grid-nbsp-y-title-bare]
+  [fixture: xychart/db-grid-nbsp-y-title-quoted]
+  [fixture: xychart/db-grid-ideographic-acc-descr]
+  [fixture: xychart/db-grid-ideographic-acc-descr-block]
+  [fixture: xychart/db-grid-ideographic-acc-title]
+  [fixture: xychart/db-grid-ideographic-category-bare]
+  [fixture: xychart/db-grid-ideographic-category-quoted]
+  [fixture: xychart/db-grid-ideographic-label]
+  [fixture: xychart/db-grid-ideographic-plot-title-bare]
+  [fixture: xychart/db-grid-ideographic-plot-title-quoted]
+  [fixture: xychart/db-grid-ideographic-title-quoted]
+  [fixture: xychart/db-grid-ideographic-x-title-bare]
+  [fixture: xychart/db-grid-ideographic-x-title-quoted]
+  [fixture: xychart/db-grid-ideographic-y-title-bare]
+  [fixture: xychart/db-grid-ideographic-y-title-quoted]
+  [fixture: xychart/db-grid-ls-acc-descr-block]
+  [fixture: xychart/db-grid-ls-category-bare]
+  [fixture: xychart/db-grid-ls-category-quoted]
+  [fixture: xychart/db-grid-ls-label]
+  [fixture: xychart/db-grid-ls-plot-title-bare]
+  [fixture: xychart/db-grid-ls-plot-title-quoted]
+  [fixture: xychart/db-grid-ls-title-bare]
+  [fixture: xychart/db-grid-ls-x-title-bare]
+  [fixture: xychart/db-grid-ls-x-title-quoted]
+  [fixture: xychart/db-grid-ls-y-title-bare]
+  [fixture: xychart/db-grid-ls-y-title-quoted]
+  [fixture: xychart/db-grid-ps-acc-descr]
+  [fixture: xychart/db-grid-ps-acc-descr-block]
+  [fixture: xychart/db-grid-ps-acc-title]
+  [fixture: xychart/db-grid-ps-category-bare]
+  [fixture: xychart/db-grid-ps-category-quoted]
+  [fixture: xychart/db-grid-ps-label]
+  [fixture: xychart/db-grid-ps-plot-title-bare]
+  [fixture: xychart/db-grid-ps-plot-title-quoted]
+  [fixture: xychart/db-grid-ps-title-bare]
+  [fixture: xychart/db-grid-ps-title-quoted]
+  [fixture: xychart/db-grid-ps-x-title-bare]
+  [fixture: xychart/db-grid-ps-x-title-quoted]
+  [fixture: xychart/db-grid-ps-y-title-bare]
+  [fixture: xychart/db-grid-ps-y-title-quoted]
+- テキストの中の改行、CRLF、単独の CR は、引用符の中と波括弧の中では、
+  テキストの 1 つの改行になります。
+  引用符がない場合と `accTitle:`、`accDescr:` の行では、行を終え、
+  残りは次の文として読まれて拒否されます。
+  [fixture: xychart/db-grid-crlf-acc-descr-block]
+  [fixture: xychart/db-grid-crlf-category-quoted]
+  [fixture: xychart/db-grid-crlf-label]
+  [fixture: xychart/db-grid-crlf-plot-title-quoted]
+  [fixture: xychart/db-grid-crlf-title-quoted]
+  [fixture: xychart/db-grid-crlf-x-title-quoted]
+  [fixture: xychart/db-grid-crlf-y-title-quoted]
+  [fixture: xychart/gram-grid-crlf-acc-descr]
+  [fixture: xychart/gram-grid-crlf-acc-title]
+  [fixture: xychart/gram-grid-crlf-category-bare]
+  [fixture: xychart/gram-grid-crlf-plot-title-bare]
+  [fixture: xychart/gram-grid-crlf-title-bare]
+  [fixture: xychart/gram-grid-crlf-x-title-bare]
+  [fixture: xychart/gram-grid-crlf-y-title-bare]
+  [fixture: xychart/db-grid-cr-acc-descr-block]
+  [fixture: xychart/db-grid-cr-category-quoted]
+  [fixture: xychart/db-grid-cr-label]
+  [fixture: xychart/db-grid-cr-title-quoted]
+  [fixture: xychart/db-grid-cr-x-title-quoted]
+  [fixture: xychart/db-grid-cr-y-title-quoted]
+  [fixture: xychart/gram-grid-cr-acc-descr]
+  [fixture: xychart/gram-grid-cr-acc-title]
+  [fixture: xychart/gram-grid-cr-category-bare]
+  [fixture: xychart/gram-grid-cr-plot-title-bare]
+  [fixture: xychart/gram-grid-cr-title-bare]
+  [fixture: xychart/gram-grid-cr-x-title-bare]
+  [fixture: xychart/gram-grid-cr-y-title-bare]
+  [fixture: xychart/db-grid-lf-acc-descr-block]
+  [fixture: xychart/db-grid-lf-category-quoted]
+  [fixture: xychart/db-grid-lf-x-title-quoted]
+  [fixture: xychart/db-grid-lf-y-title-quoted]
+  [fixture: xychart/gram-grid-lf-acc-descr]
+  [fixture: xychart/gram-grid-lf-acc-title]
+  [fixture: xychart/gram-grid-lf-category-bare]
+  [fixture: xychart/gram-grid-lf-plot-title-bare]
+  [fixture: xychart/gram-grid-lf-title-bare]
+  [fixture: xychart/gram-grid-lf-x-title-bare]
+  [fixture: xychart/gram-grid-lf-y-title-bare]
+- テキストの中のディレクティブは、どの場所でも取り除かれ、
+  前後の部分がつながります。
+  テキストの中の、空白の後ろの `%%` は、引用符の中、アクセシビリティのテキスト、
+  ラベルではテキストの文字です。
+  引用符のない場合は、タイトルと軸のタイトルではコメントを始めてテキストを終え、
+  カテゴリーとプロットのタイトルはそのあとに文の続きがあるので、拒否されます。
+  [fixture: xychart/db-grid-directive-acc-descr]
+  [fixture: xychart/db-grid-directive-acc-descr-block]
+  [fixture: xychart/db-grid-directive-acc-title]
+  [fixture: xychart/db-grid-directive-category-bare]
+  [fixture: xychart/db-grid-directive-category-quoted]
+  [fixture: xychart/db-grid-directive-label]
+  [fixture: xychart/db-grid-directive-plot-title-bare]
+  [fixture: xychart/db-grid-directive-plot-title-quoted]
+  [fixture: xychart/db-grid-directive-title-bare]
+  [fixture: xychart/db-grid-directive-title-quoted]
+  [fixture: xychart/db-grid-directive-x-title-bare]
+  [fixture: xychart/db-grid-directive-x-title-quoted]
+  [fixture: xychart/db-grid-directive-y-title-bare]
+  [fixture: xychart/db-grid-directive-y-title-quoted]
+  [fixture: xychart/db-grid-comment-acc-descr]
+  [fixture: xychart/db-grid-comment-acc-descr-block]
+  [fixture: xychart/db-grid-comment-acc-title]
+  [fixture: xychart/db-grid-comment-category-quoted]
+  [fixture: xychart/db-grid-comment-label]
+  [fixture: xychart/db-grid-comment-plot-title-quoted]
+  [fixture: xychart/db-grid-comment-title-bare]
+  [fixture: xychart/db-grid-comment-x-title-bare]
+  [fixture: xychart/db-grid-comment-x-title-quoted]
+  [fixture: xychart/db-grid-comment-y-title-bare]
+  [fixture: xychart/db-grid-comment-y-title-quoted]
+  [fixture: xychart/gram-grid-comment-category-bare]
+  [fixture: xychart/gram-grid-comment-plot-title-bare]
+- 行の規則が落とす `;`、文字参照、キーワード、ASCII の外の文字、HTML のタグ、
+  句読点は、
+  引用符の中、アクセシビリティのテキスト、ラベルではテキストです
+  （タグの属性の引用符は `'` として読まれます）。
+  引用符がなければ、引用符のないテキストは語の文字だけを持つので、拒否されます。
+  [fixture: xychart/db-grid-style-acc-descr]
+  [fixture: xychart/db-grid-style-acc-descr-block]
+  [fixture: xychart/db-grid-style-acc-title]
+  [fixture: xychart/db-grid-style-x-title-quoted]
+  [fixture: xychart/gram-grid-style-category-bare]
+  [fixture: xychart/gram-grid-style-plot-title-bare]
+  [fixture: xychart/gram-grid-style-title-bare]
+  [fixture: xychart/gram-grid-style-x-title-bare]
+  [fixture: xychart/gram-grid-style-y-title-bare]
+  [fixture: xychart/db-grid-entity-acc-descr]
+  [fixture: xychart/db-grid-entity-acc-descr-block]
+  [fixture: xychart/db-grid-entity-acc-title]
+  [fixture: xychart/db-grid-entity-category-quoted]
+  [fixture: xychart/db-grid-entity-plot-title-quoted]
+  [fixture: xychart/db-grid-entity-x-title-quoted]
+  [fixture: xychart/db-grid-entity-y-title-quoted]
+  [fixture: xychart/gram-grid-entity-category-bare]
+  [fixture: xychart/gram-grid-entity-plot-title-bare]
+  [fixture: xychart/gram-grid-entity-x-title-bare]
+  [fixture: xychart/gram-grid-entity-y-title-bare]
+  [fixture: xychart/db-grid-keyword-acc-descr]
+  [fixture: xychart/db-grid-keyword-acc-descr-block]
+  [fixture: xychart/db-grid-keyword-acc-title]
+  [fixture: xychart/db-grid-keyword-category-quoted]
+  [fixture: xychart/db-grid-keyword-label]
+  [fixture: xychart/db-grid-keyword-plot-title-quoted]
+  [fixture: xychart/db-grid-keyword-title-quoted]
+  [fixture: xychart/db-grid-keyword-x-title-quoted]
+  [fixture: xychart/db-grid-keyword-y-title-quoted]
+  [fixture: xychart/gram-grid-keyword-category-bare]
+  [fixture: xychart/gram-grid-keyword-plot-title-bare]
+  [fixture: xychart/gram-grid-keyword-title-bare]
+  [fixture: xychart/gram-grid-keyword-x-title-bare]
+  [fixture: xychart/gram-grid-keyword-y-title-bare]
+  [fixture: xychart/db-grid-nonascii-acc-descr]
+  [fixture: xychart/db-grid-nonascii-acc-descr-block]
+  [fixture: xychart/db-grid-nonascii-acc-title]
+  [fixture: xychart/db-grid-nonascii-category-quoted]
+  [fixture: xychart/db-grid-nonascii-label]
+  [fixture: xychart/db-grid-nonascii-plot-title-quoted]
+  [fixture: xychart/db-grid-nonascii-title-quoted]
+  [fixture: xychart/db-grid-nonascii-x-title-quoted]
+  [fixture: xychart/db-grid-nonascii-y-title-quoted]
+  [fixture: xychart/gram-grid-nonascii-category-bare]
+  [fixture: xychart/gram-grid-nonascii-plot-title-bare]
+  [fixture: xychart/gram-grid-nonascii-x-title-bare]
+  [fixture: xychart/gram-grid-nonascii-y-title-bare]
+  [fixture: xychart/db-grid-html-acc-descr]
+  [fixture: xychart/db-grid-html-acc-descr-block]
+  [fixture: xychart/db-grid-html-acc-title]
+  [fixture: xychart/db-grid-html-category-quoted]
+  [fixture: xychart/db-grid-html-label]
+  [fixture: xychart/db-grid-html-plot-title-quoted]
+  [fixture: xychart/db-grid-html-x-title-quoted]
+  [fixture: xychart/db-grid-html-y-title-quoted]
+  [fixture: xychart/gram-grid-html-category-bare]
+  [fixture: xychart/gram-grid-html-plot-title-bare]
+  [fixture: xychart/gram-grid-html-title-bare]
+  [fixture: xychart/gram-grid-html-x-title-bare]
+  [fixture: xychart/gram-grid-html-y-title-bare]
+  [fixture: xychart/db-grid-punct-acc-descr]
+  [fixture: xychart/db-grid-punct-acc-descr-block]
+  [fixture: xychart/db-grid-punct-acc-title]
+  [fixture: xychart/db-grid-punct-category-quoted]
+  [fixture: xychart/db-grid-punct-label]
+  [fixture: xychart/db-grid-punct-plot-title-quoted]
+  [fixture: xychart/db-grid-punct-title-quoted]
+  [fixture: xychart/db-grid-punct-x-title-quoted]
+  [fixture: xychart/db-grid-punct-y-title-quoted]
+  [fixture: xychart/gram-grid-punct-category-bare]
+  [fixture: xychart/gram-grid-punct-plot-title-bare]
+  [fixture: xychart/gram-grid-punct-title-bare]
+  [fixture: xychart/gram-grid-punct-x-title-bare]
+  [fixture: xychart/gram-grid-punct-y-title-bare]
+- 名前 `__proto__` と語の中の `#` は、どの場所でもテキストです。
+  空のテキストは、タイトル、軸のタイトル、カテゴリーとして、
+  引用符があってもなくても拒否されます。
+  アクセシビリティのテキストとプロットのタイトルでは空のテキストで、
+  ラベルではラベルなしです。
+  [fixture: xychart/db-grid-proto-acc-descr]
+  [fixture: xychart/db-grid-proto-acc-descr-block]
+  [fixture: xychart/db-grid-proto-acc-title]
+  [fixture: xychart/db-grid-proto-category-bare]
+  [fixture: xychart/db-grid-proto-category-quoted]
+  [fixture: xychart/db-grid-proto-label]
+  [fixture: xychart/db-grid-proto-plot-title-quoted]
+  [fixture: xychart/db-grid-proto-title-bare]
+  [fixture: xychart/db-grid-proto-title-quoted]
+  [fixture: xychart/db-grid-proto-x-title-bare]
+  [fixture: xychart/db-grid-proto-x-title-quoted]
+  [fixture: xychart/db-grid-proto-y-title-bare]
+  [fixture: xychart/db-grid-proto-y-title-quoted]
+  [fixture: xychart/db-grid-hash-acc-descr]
+  [fixture: xychart/db-grid-hash-acc-descr-block]
+  [fixture: xychart/db-grid-hash-acc-title]
+  [fixture: xychart/db-grid-hash-category-bare]
+  [fixture: xychart/db-grid-hash-category-quoted]
+  [fixture: xychart/db-grid-hash-label]
+  [fixture: xychart/db-grid-hash-plot-title-bare]
+  [fixture: xychart/db-grid-hash-plot-title-quoted]
+  [fixture: xychart/db-grid-hash-title-bare]
+  [fixture: xychart/db-grid-hash-title-quoted]
+  [fixture: xychart/db-grid-hash-x-title-bare]
+  [fixture: xychart/db-grid-hash-x-title-quoted]
+  [fixture: xychart/db-grid-hash-y-title-bare]
+  [fixture: xychart/db-grid-hash-y-title-quoted]
+  [fixture: xychart/db-grid-empty-acc-descr]
+  [fixture: xychart/db-grid-empty-acc-descr-block]
+  [fixture: xychart/db-grid-empty-acc-title]
+  [fixture: xychart/db-grid-empty-plot-title-bare]
+  [fixture: xychart/db-grid-empty-plot-title-quoted]
+  [fixture: xychart/gram-grid-empty-category-bare]
+  [fixture: xychart/gram-grid-empty-category-quoted]
+  [fixture: xychart/gram-grid-empty-title-bare]
+  [fixture: xychart/gram-grid-empty-x-title-bare]
+  [fixture: xychart/gram-grid-empty-x-title-quoted]
+  [fixture: xychart/gram-grid-empty-y-title-bare]
+  [fixture: xychart/gram-grid-empty-y-title-quoted]

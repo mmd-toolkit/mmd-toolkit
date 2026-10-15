@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: empty brackets are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nxychart-beta line []\n-------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'SQUARE_BRACES_END'"
+  }
+}

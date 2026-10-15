@@ -255,37 +255,41 @@ implementation uses it to check that a difference from mermaid.js on a marked
 input comes from the divergences alone, by comparing itself with mermaid.js read
 this way: it is to accept and reject every input as mermaid.js read this way
 does, and to give it the same Db. This is available for `c4-keyword-anywhere`,
-`comment-takes-character`, `comment-takes-line-break`, `name-start-reads-unit`
-and `percent-brace-after-unit`. Where the specification differs from mermaid.js
-in more than one way for a diagram type, an input may need several of them
-removed at once to be read as the specification does. Each identifier counts
-once, and an empty list runs mermaid.js as it is. The input may be of any
-diagram type; a divergence of a lexer changes only the lexer of the diagram type
-it belongs to, so a divergence of another diagram type changes nothing, and
-`c4-keyword-anywhere` changes only how the detectors treat a text that holds a
-C4 keyword after its start. Two divergences whose changes touch the same rule,
-the same rule order of a start state, the function that gives one lexer its
-text, or the detector of one diagram type cannot be removed together: the call
-throws an error that names both, since the change made last would undo the
-other. Options with a key that is no option make the call throw a `TypeError`,
-so that a misspelled option never runs mermaid.js as it is.
+`comment-takes-character`, `comment-takes-line-break`, `name-start-reads-unit`,
+`percent-brace-after-unit` and `title-digit-after-axis-statement`. Where the
+specification differs from mermaid.js in more than one way for a diagram type,
+an input may need several of them removed at once to be read as the
+specification does. Each identifier counts once, and an empty list runs
+mermaid.js as it is. The input may be of any diagram type; a divergence of a
+lexer changes only the lexer of the diagram type it belongs to, so a divergence
+of another diagram type changes nothing, and `c4-keyword-anywhere` changes only
+how the detectors treat a text that holds a C4 keyword after its start. Two
+divergences whose changes touch the same rule, the same rule order of a start
+state, the function that gives one lexer its text, or the detector of one
+diagram type cannot be removed together: the call throws an error that names
+both, since the change made last would undo the other. Options with a key that
+is no option make the call throw a `TypeError`, so that a misspelled option
+never runs mermaid.js as it is.
 
 An implementation does not have to run mermaid.js this way to know what the
 specification gives: the fixtures with the mark of a divergence that changes how
 mermaid.js reads an input (`c4-keyword-anywhere`, `comment-takes-character`,
 `comment-takes-line-break`, `name-start-reads-unit`, `percent-brace-after-unit`,
-`html-tag-in-frontmatter`, `bare-percent-line-before-header` and
-`blank-line-after-header-or-comments`) record it in `specified.json`, where it
-differs from `expected.json`. The generator takes it from mermaid.js read
-without the divergence (for `comment-takes-line-break` and
-`name-start-reads-unit`, without both, since both change the class lexer; for
-the three that change the gantt lexer, `comment-takes-character`,
-`comment-takes-line-break` and `percent-brace-after-unit`, without all three,
-since a text whose comment takes a character or a line break reaches the rule
-for `%%{` through them, and running every gantt fixture without the three
-changes only the fixtures that carry one of the marks; for
-`c4-keyword-anywhere`, with the detector of C4 replaced, so that the text is
-read as the diagram of its header). [fixture:
+`title-digit-after-axis-statement`, `html-tag-in-frontmatter`,
+`bare-percent-line-before-header` and `blank-line-after-header-or-comments`)
+record it in `specified.json`, where it differs from `expected.json`. The
+generator takes it from mermaid.js read without the divergence (for
+`comment-takes-line-break` and `name-start-reads-unit`, without both, since both
+change the class lexer; for the three that change the gantt lexer,
+`comment-takes-character`, `comment-takes-line-break` and
+`percent-brace-after-unit`, without all three, since a text whose comment takes
+a character or a line break reaches the rule for `%%{` through them, and running
+every gantt fixture without the three changes only the fixtures that carry one
+of the marks; for the two that change the xychart lexer,
+`comment-takes-character` and `title-digit-after-axis-statement`, without both,
+since a text with a title that holds a digit after an axis statement can have a
+comment glued to a word; for `c4-keyword-anywhere`, with the detector of C4
+replaced, so that the text is read as the diagram of its header). [fixture:
 class/div-comment-then-statement-with-backquote-keyword] [fixture:
 class/div-backquote-starts-with-keyword-then-comment] [fixture:
 common/detect-c4-anywhere] [fixture: flowchart/div-c4-keyword-in-label]
@@ -401,6 +405,20 @@ with the rules that read as the specification does first; the rules themselves
 do not change. Such a rule is found among the rules that only that start state
 tries, since a rule that every start state tries can have the same pattern.
 
+A start state of the lexer may also be left by rules that do not leave it
+themselves: when one of the listed rules matches while the lexer is in that
+state, the state is popped from the stack of start states before the action of
+the rule runs, and the action then pushes whatever it pushes. The rules do not
+change, and each is found among all the rules, which the start state must try.
+The stack is that of the lexer that reads the text: mermaid.js makes it from the
+lexer of its parser for each text and hands it the text with `setInput`, which
+is how the stack is found; a listed rule that matches before the lexer was given
+a text stops the call with `MermaidEnvironmentError`, as a text that cannot be
+placed does. The change is made only for a lexer that takes the first rule that
+matches; for one with the option `flex` (the longest match) or `backtrack_lexer`
+(a match may be rejected), a rule that matched need not be the one that runs,
+and `runMermaid()` stops with `MermaidEnvironmentError` before any input.
+
 The detector of a diagram type may be replaced instead, by another that looks
 for its words at the start of the text only. mermaid.js keeps its detectors in
 the order they were first registered, and registering a detector under the id of
@@ -453,6 +471,14 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   timeline/div-comment-after-block-character] [fixture:
   timeline/div-comment-after-semicolon-after-header] [fixture:
   timeline/div-comment-after-semicolon]
+- `comment-takes-character`, in the xychart lexer
+  ([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L16-L16)):
+  the rule that reads a character other than `}` before `%%` together with the
+  comment is taken out, so a comment starts at its `%%`. [fixture:
+  xychart/div-comment-glued-after-title-word] [fixture:
+  xychart/div-comment-glued-after-range] [fixture:
+  xychart/div-comment-takes-hyphen] [fixture:
+  xychart/div-comment-takes-one-letter-word]
 - `comment-takes-line-break`, in the class lexer
   ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L28-L28)):
   the rule that reads `%%`, the rest of the line and the line feeds after it
@@ -478,6 +504,23 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   gantt/div-percent-brace-after-two-spaces] [fixture:
   gantt/div-percent-brace-after-glued-percent-comment] [fixture:
   gantt/lex-percent-brace-after-tab]
+- `title-digit-after-axis-statement`, in the xychart lexer
+  ([`xychart.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L36-L37)):
+  the lexer enters the start state `axis_data` at every `x-axis` and `y-axis`,
+  also inside it, and leaves one at a line break
+  ([line 17](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/xychart/parser/xychart.jison#L17-L17)),
+  so a `;`, the next statement on the line and the next line after a plot line
+  that follows the axis statement on its line are all read in it, where a digit
+  is a number and an unquoted title that holds one is rejected. The rules for
+  `;` and for the words that start a statement (`title`, `accTitle:`,
+  `accDescr:`, `x-axis`, `y-axis`, `line` and `bar`) leave `axis_data` first, so
+  the axis context ends at the end of its statement. The rule for `accDescr {`
+  does not: the lexer enters the description block state on top of `axis_data`,
+  and it is in `axis_data` again after the `}`, which is how the specification
+  reads it. [fixture: xychart/div-title-digit-after-axis-semicolon] [fixture:
+  xychart/div-title-digit-next-line-after-axis-and-plot] [fixture:
+  xychart/div-title-digit-next-line-after-two-axes] [fixture:
+  xychart/div-title-digit-after-axis-and-empty-block]
 - `c4-keyword-anywhere`, in the detector of C4
   ([`c4Detector.ts`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/c4/c4Detector.ts#L10-L10)):
   the detector looks for each of the five keywords, `C4Context`, `C4Container`,

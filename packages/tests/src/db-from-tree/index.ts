@@ -24,6 +24,8 @@ import type { StateDiagram } from "./state-tree.ts"
 import { timelineDbOf } from "./timeline.ts"
 import type { TimelineDiagram } from "./timeline-tree.ts"
 import type { TreeNode, TreeRoot } from "./tree.ts"
+import { xychartDbOf } from "./xychart.ts"
+import type { XychartDiagram } from "./xychart-tree.ts"
 
 export type { ColorAnswer } from "./sequence.ts"
 
@@ -46,6 +48,7 @@ export type DiagramBody =
   | SequenceDiagram
   | StateDiagram
   | TimelineDiagram
+  | XychartDiagram
 
 /** A tree that the Db is built from. */
 export interface DbTreeRoot extends TreeRoot {
@@ -94,6 +97,8 @@ export function dbFromTree(
       return timelineDbOf(text, root, root.body, embedded)
     case "SankeyDiagram":
       return sankeyDbOf(text, root, root.body, embedded)
+    case "XychartDiagram":
+      return xychartDbOf(text, root, root.body, embedded)
     default:
       throw new Error(`dbFromTree: unknown body type ${bodyType}`)
   }

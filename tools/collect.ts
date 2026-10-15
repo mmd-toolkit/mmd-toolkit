@@ -139,6 +139,9 @@ const SPEC_FILES: Readonly<
   // `prepareTextForParsing()`, which the recorder leaves as they are, so that
   // the text recorded is the text that mermaid.js is given.
   sankey: () => ["diagrams/sankey/parser/sankey.spec.ts"],
+  // The other test file of the directory, `xychartDb.spec.ts`, calls the Db's
+  // methods with values built in code and passes no text.
+  xychart: () => ["diagrams/xychart/parser/xychart.jison.spec.ts"],
 }
 
 /**

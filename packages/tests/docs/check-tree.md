@@ -70,8 +70,8 @@ const problems: TreeProblem[] = checkTree(text, tree)
   every diagram type does, and for no other comment; a gantt diagram has the
   marks `%%` and `%` for its diagram comments, and a journey diagram and a
   requirement diagram the marks `#`, `%%`, and `%`, a timeline diagram the same
-  marks, and a mindmap diagram the mark `%%`; a fragment without a mark follows
-  a comment region (parser/docs/tokens.md, Comment;
+  marks, a mindmap diagram and an xychart diagram the mark `%%`; a fragment
+  without a mark follows a comment region (parser/docs/tokens.md, Comment;
   [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
@@ -396,6 +396,52 @@ const problems: TreeProblem[] = checkTree(text, tree)
     nodes, and the range of a field is that of its tokens, without the spaces
     around it (`parser/docs/tokens/sankey.md` and
     `parser/docs/positions/sankey.md`).
+  - xychart: the checks read the tree and the text of the source. The child
+    nodes of a field are of the types of its table (`XYCHART_CHILD_TYPES`, which
+    a test holds to the Type column of ast/xychart.md), and a diagram has a
+    header, a band a category, and a plot a value. The headers come before the
+    first statement (ast/xychart.md, XychartDiagram). The orientation of a
+    header is none, or `vertical` or `horizontal` in any case, and the kind of a
+    plot is `line` or `bar` in lower case (`XYCHART_ORIENTATIONS` and
+    `XYCHART_PLOT_KINDS`, which the test holds to the Meaning column). A title
+    is never empty; an axis statement has a title, its data, or both, and a
+    title in quotes that is empty has data after it; a category is never empty
+    (ast/xychart.md, XychartTitleStatement, XychartXAxisStatement,
+    XychartYAxisStatement, and XychartBand). A text without quotes is not empty
+    and holds letters and digits of ASCII and `-`, `_`, `.`, `+`, `=`, `*`, `&`,
+    and `#` (diagrams/xychart.md, The statement context, rule 6); the title of
+    an axis holds no digit, which starts a number there (The axis context). The
+    text of an accessibility statement is not empty, holds no line terminator in
+    a line, and no `}` in a block (Accessibility values). An `accTitle:` or
+    `accDescr:` statement without a text is the last statement, since its text
+    is the first line after the keyword that has one (Accessibility values), and
+    so is a block that is not closed, which runs to the end of the text
+    (ast/xychart.md, XychartAccDescrBlockStatement). The written text of a
+    number is an optional sign, digits with an optional fraction, or a fraction
+    alone (The axis context), and a string is closed and holds no `"` but the
+    `"` of an HTML attribute quote, which is read as `'` (Strings). A diagram
+    comment has the mark `%%` (Comments). The kinds of the tokens are those of
+    `parser/docs/tokens/xychart.md`: a token that a node writes itself is
+    `Punctuator` for `[`, `]`, `,`, `;`, `:`, `{`, `}`, and `-->`, and `Keyword`
+    for the header, the orientation, and the keywords; the tokens of a text
+    without quotes and of the text of an accessibility statement are `RawText`,
+    those of a number `Numeric`. The tokens that a node writes itself and its
+    child nodes lie in this order, with only whitespace between them: the
+    header, the orientation if there is one; `title` and its text; `x-axis` or
+    `y-axis`, the title, and the data, the title first; `[`, the categories with
+    a `,` between each two, and `]`; the start, `-->`, and the end; `line` or
+    `bar`, the title, and `[`, the values with a `,` between each two, and `]`;
+    a number and its label; `accTitle` or `accDescr`, `:`, and the text, which
+    runs to the end of its line; and `accDescr`, `{`, the text, and `}` (the `}`
+    only when `closed` is true). The diagram writes itself the `;` that end
+    lines. The orientation is the second token of the header as written, or
+    null; the kind of a plot is its keyword in lower case; `closed` is whether
+    the last token of a block is `}`, and a block that is not closed has only
+    whitespace after its text. The words of a text without quotes that follow
+    one another with nothing between them are one token, so two tokens of such a
+    text have whitespace or a cut between them. The range of the diagram, of a
+    statement, and of the nodes below it is the hull of its tokens and child
+    nodes (`parser/docs/positions/xychart.md`).
 
 The **written text** of a range is its source without the directives, the
 comment regions, and the `;` that the line rule ignores (ast.md, Nodes).
@@ -416,6 +462,11 @@ that says so:
   its ends, which is empty for a field of whitespace only; the node is the field
   without that whitespace, but for a field of whitespace only, whose one
   `RawText` token is the whitespace, and the tokens are the written text.
+- A text of an xychart diagram (`XychartLiteral`) without quotes is a value made
+  of units joined, which holds no whitespace; the text of an accessibility
+  statement has the value of its written text without the whitespace at its
+  ends, the whitespace between its characters included, and the tokens are the
+  written text.
 - A string, a label that starts with a string, a label of a mindmap diagram that
   is a string or a markdown string, and a data block have delimiters that belong
   to their own text; the value is the written text without them, with the
@@ -510,29 +561,35 @@ the Meaning columns of ast/timeline.md. `check-tree-sankey.test.ts` makes, by
 hand, the smallest trees that hold the sentences of the sankey diagram above,
 breaks each in every way that the sentence distinguishes, with the problem that
 the check must report, and requires the table of the check to be the Type column
-of ast/sankey.md. `check-tree-string-tokens.test.ts` changes the kind of a token
-of the first string of the recorded tree of a named fixture of the flowchart,
-class, state, ER, and sankey diagrams, and requires the check of the tokens of a
-string to report it. The tests that require a recorded tree for every node type
-or every field leave out the node types whose names start with a prefix of
-`NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES` (`tests/check-tree-recorded.ts`),
-the new diagram types whose trees are not recorded yet; the prefix is removed
-when the trees are recorded, and the list stays empty between two diagram types.
-`tests/check-tree-fields.test.ts` is the test of the paragraphs above: it reads
-the recorded trees once and indexes the first tree that has each node type, and
-the first in which each field is null and is not null, and it breaks each field
-in the tree that the index gives; any recorded tree that has the field will do,
-since the problem that the field must cause has the same message in every tree.
-It has a named case for each field of a string that may be null, in each
-direction, for each rule of `null-fields.ts`, and for the two parts of a box
-text, whose message holds the place of a token (a fixture, a type, a field, and
-the exact message of the problem at the node), and, made by hand from the tree
-of a note with two whitespace characters before its `:`, the three notes with
-one, whose text is null and which the check must accept.
-`tests/check-tree-values.test.ts` is the test of the value rule: for every node
-type with a value, it adds a character to the value at either end and drops one
-from either end, and requires each value so made to be reported at its node,
-with the message of the rule of the type (the written text, or the tokens
+of ast/sankey.md. `check-tree-xychart.test.ts` makes, by hand, the smallest
+trees that hold the sentences of the xychart diagram above, breaks each in every
+way that the sentence distinguishes, with the problem that the check must
+report, and requires the tables of the check to be the Type and the Meaning
+columns of ast/xychart.md. It also breaks the recorded trees of named fixtures
+for the kinds of the tokens, their order, the orientation, the kind of a plot,
+`closed`, and the ranges. `check-tree-string-tokens.test.ts` changes the kind of
+a token of the first string of the recorded tree of a named fixture of the
+flowchart, class, state, ER, and sankey diagrams, and requires the check of the
+tokens of a string to report it. The tests that require a recorded tree for
+every node type or every field leave out the node types whose names start with a
+prefix of `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
+(`tests/check-tree-recorded.ts`), the new diagram types whose trees are not
+recorded yet; the prefix is removed when the trees are recorded, and the list
+stays empty between two diagram types. `tests/check-tree-fields.test.ts` is the
+test of the paragraphs above: it reads the recorded trees once and indexes the
+first tree that has each node type, and the first in which each field is null
+and is not null, and it breaks each field in the tree that the index gives; any
+recorded tree that has the field will do, since the problem that the field must
+cause has the same message in every tree. It has a named case for each field of
+a string that may be null, in each direction, for each rule of `null-fields.ts`,
+and for the two parts of a box text, whose message holds the place of a token (a
+fixture, a type, a field, and the exact message of the problem at the node),
+and, made by hand from the tree of a note with two whitespace characters before
+its `:`, the three notes with one, whose text is null and which the check must
+accept. `tests/check-tree-values.test.ts` is the test of the value rule: for
+every node type with a value, it adds a character to the value at either end and
+drops one from either end, and requires each value so made to be reported at its
+node, with the message of the rule of the type (the written text, or the tokens
 joined; the style of a class diagram or an ER diagram has the second). For each
 node type with a value that has a token with whitespace at an end, it has a
 named case (a fixture, a token, a side, and the exact problems) that takes the

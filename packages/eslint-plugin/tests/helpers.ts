@@ -99,6 +99,7 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   mindmap: true,
   timeline: true,
   sankey: true,
+  xychart: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

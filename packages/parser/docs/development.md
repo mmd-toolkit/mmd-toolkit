@@ -40,9 +40,9 @@ flowchart (`flowchart-v2`, `flowchart-elk`, and `swimlane`), the sequence
 diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
 (`stateDiagram`), the entity relationship diagram (`er`), the Gantt chart
 (`gantt`), the user journey diagram (`journey`), the requirement diagram
-(`requirement`), the mindmap (`mindmap`), the timeline (`timeline`), and the
-sankey diagram (`sankey`). Every other detected type throws
-`UnsupportedDiagramError`.
+(`requirement`), the mindmap (`mindmap`), the timeline (`timeline`), the sankey
+diagram (`sankey`), and the XY chart (`xychart`). Every other detected type
+throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -56,8 +56,10 @@ The parser of each diagram follows its document,
 [`diagrams/journey.md`](../../spec/docs/diagrams/journey.md),
 [`diagrams/requirement.md`](../../spec/docs/diagrams/requirement.md),
 [`diagrams/mindmap.md`](../../spec/docs/diagrams/mindmap.md),
-[`diagrams/timeline.md`](../../spec/docs/diagrams/timeline.md), or
-[`diagrams/sankey.md`](../../spec/docs/diagrams/sankey.md). It has three parts:
+[`diagrams/timeline.md`](../../spec/docs/diagrams/timeline.md),
+[`diagrams/sankey.md`](../../spec/docs/diagrams/sankey.md), or
+[`diagrams/xychart.md`](../../spec/docs/diagrams/xychart.md). It has three
+parts:
 
 - a lexer that divides the diagram text into units, under
   `src/diagrams/<diagram>/units.ts`;

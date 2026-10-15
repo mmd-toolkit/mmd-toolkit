@@ -391,8 +391,11 @@ written here after the tree document of the specification
    apply is written down with its reason, not left out. For every kind, check
    each place of the syntax that holds text (every field, name, string, and
    block, in quotes or not, on the first line and on the later ones) with
-   mermaid.js. The list holds every kind that a review has found so far, with
-   the review that found it:
+   mermaid.js. Take the cases from the fixture names of the earlier diagram
+   types, not from the wording of the list: list the names of the hand-written
+   fixtures of the two nearest diagram types (`ls` the directories), and give
+   each name a counterpart in the new diagram type or a reason. The list holds
+   every kind that a review has found so far, with the review that found it:
    - values that the line rule of `style` and `classDef` lines reaches: the last
      `;` of a line that has `style`, later a `:` and a `#`, dropped from any
      text of the line (timeline review 435, sankey review 441); the keyword in
@@ -400,7 +403,10 @@ written here after the tree document of the specification
      another line, which keep the `;`; two `;`, where the first ends a character
      reference; a line inside quotes, which is a line of its own (441);
    - a comment line, a directive line, and an empty line between a keyword and
-     its value (timeline review 435, remark 1);
+     its value (timeline review 435, remark 1); and, where a keyword whose line
+     has no text takes a later line as its value (the accessibility texts), the
+     line it takes, whatever that line says, such as a statement of the diagram
+     (xychart review 448, `accTitle:` followed by `line [1]`);
    - the keyword in another case, and a letter, a word character, a `-`, or a
      character outside ASCII glued after it, for the header and for the keyword
      of every statement;

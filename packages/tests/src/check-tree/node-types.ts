@@ -37,6 +37,7 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "TimelineLiteral",
   "SankeyIdentifier",
   "SankeyLiteral",
+  "XychartLiteral",
 ])
 
 /**
@@ -211,6 +212,18 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "TimelineAccDescrBlockStatement",
   "SankeyDiagram",
   "SankeyLinkStatement",
+  "XychartDiagram",
+  "XychartHeader",
+  "XychartTitleStatement",
+  "XychartXAxisStatement",
+  "XychartYAxisStatement",
+  "XychartBand",
+  "XychartRange",
+  "XychartPlotStatement",
+  "XychartValue",
+  "XychartAccTitleStatement",
+  "XychartAccDescrStatement",
+  "XychartAccDescrBlockStatement",
 ])
 
 /** The node types of the data blocks, whose delimiters lie in their range. */

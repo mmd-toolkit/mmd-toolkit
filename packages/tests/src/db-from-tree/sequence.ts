@@ -1,4 +1,5 @@
 import type { DataBlockEffect, EmbeddedValues } from "../mermaid.ts"
+import { numberOrText } from "../summary-number.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
 import { ConvertedText, readConvertedCharacters } from "./converted-text.ts"
 import type {
@@ -19,7 +20,7 @@ import type {
 } from "./sequence-tree.ts"
 import type { TextReplacement } from "./text-replacement.ts"
 import { textReplacementOf } from "./text-replacement.ts"
-import type { TreeRoot } from "./tree.ts"
+import type { NumericLiteral, TreeRoot } from "./tree.ts"
 import { descriptionOf, setOwnProperty, trimmed } from "./values.ts"
 
 // docs/db-from-tree/sequence.md: the summary of the Db that a
@@ -301,8 +302,9 @@ class SequenceDbBuilder {
             ? { visible: !statement.off }
             : {
                 visible: true,
-                start: statement.start.value,
-                step: statement.step?.value ?? 1,
+                start: this.numberOf(statement.start),
+                step:
+                  statement.step === null ? 1 : this.numberOf(statement.step),
               }
         this.messages.push({ message, wrap: false, type: 26 })
         return
@@ -677,6 +679,11 @@ class SequenceDbBuilder {
     if (text?.wrap === "wrap") return true
     if (text?.wrap === "nowrap") return false
     return this.wrapSetting
+  }
+
+  /** Autonumber: the number that the converted form of a number writes, or its text where it is no finite number (the summary has no `Infinity`). */
+  private numberOf(literal: NumericLiteral): number | string {
+    return numberOrText(Number(this.text.of(literal.range)))
   }
 
   /**

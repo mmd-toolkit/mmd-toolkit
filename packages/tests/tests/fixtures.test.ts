@@ -30,6 +30,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "mindmap",
   "timeline",
   "sankey",
+  "xychart",
 ]
 
 /** Every fixture, read once for all the tests of this file. */
@@ -208,7 +209,7 @@ describe("fixtures", () => {
   /**
    * The marks of the known divergences whose fixtures hold the reading of the
    * specification in `specified.json` where it differs from `expected.json`:
-   * one changes the detector of C4 of mermaid.js, four change its lexer, and
+   * one changes the detector of C4 of mermaid.js, five change its lexer, and
    * three change the text it reads (the frontmatter, the bare `%%` lines, the
    * blank lines of a mindmap).
    */
@@ -218,6 +219,7 @@ describe("fixtures", () => {
     "comment-takes-line-break",
     "name-start-reads-unit",
     "percent-brace-after-unit",
+    "title-digit-after-axis-statement",
     "html-tag-in-frontmatter",
     "bare-percent-line-before-header",
     "blank-line-after-header-or-comments",

@@ -933,6 +933,64 @@ mermaid.js は sankey 図を CSV として読みます。
   mermaid.js がそこでだけ受理するもので、落とします。
   [test: U+3000 at the end of the text without a line feed]
 
+## 単位、引用符、字句解析器で決まる XY チャートの行
+
+XY チャートの空白の多くは Db に入らないので、整形は空白を変えます。
+Db や字句解析器が読むものは変えません。
+[テキストの単位](./xychart.ja.md#テキストの単位)と
+[引用符](./xychart.ja.md#引用符)を参照してください。
+
+- 引用符なしの文字列の 2 つの単位が接しているかどうか。
+  キーワードは、後ろに単語の文字が続かないときだけキーワードなので、
+  `x-axis Title1 --> 5` の title は `Title` ですが、
+  `Title 1` と空白を置くと `Title` がキーワードになり、
+  mermaid.js はここで拒否します。
+  `title ba r` はキーワード `bar` ではありませんが、
+  単位をつなぐとキーワードになります。
+  そのため、空白の連なりは空白 1 つにし、接している単位は接したままにします。
+  [fixture: text-units/title-then-range-touching-kept]
+  [fixture: text-units/plot-title-digits-touching-kept]
+  [fixture: text-units/category-digits-touching-kept]
+  [fixture: text-units/hyphen-and-number-touching-kept]
+- 向きの語の大文字小文字。
+  小文字の `horizontal` だけが横向きにし、`Horizontal` は縦向きにするので、
+  大文字小文字は Db に入っています。
+  [fixture: header-and-orientation/orientation-case-kept]
+- 文字列。
+  中の空白と改行は Db に入り、引用符は書き手のものです。
+  `"a b"` と `a b` は同じテキストではありません。
+  [fixture: quotes/strings-as-written]
+  [fixture: multi-line-values/string-with-line-breaks-kept]
+- 分類と title の数字はテキストなので、`007` や `.5` は書かれたままです。
+  範囲の数とプロットの値も、書き手のテキストとして残します。
+  [fixture: numbers/categories-are-texts]
+  [fixture: numbers/range-numbers-as-written]
+- 閉じていない `accDescr {` ブロックは、テキストの最後まで続きます。
+  mermaid.js はそのテキストを読まず、
+  印字が `}` を足すとブロックが説明になってしまいます。
+  [fixture: accessibility-statements/block-not-closed-kept-as-written]
+- mermaid.js の行の規則が読む行は、文を 1 行に残し、`;` も書かれたままです。
+  `style` か `classDef`、その後の `:`、
+  `:` との間に空白のない `#`、その後の `;` を持つ行です。
+  [fixture: statements-one-per-line/line-rule-line-kept-together]
+  [fixture: multi-line-statements/semicolon-inside-kept]
+- つなぐ改行にコメント行か指令がある文は、書かれたまま残します。
+  [fixture: multi-line-statements/comment-line-inside-kept]
+  [fixture: multi-line-statements/directive-inside-kept]
+- コメントが前の単位に接しているかどうか。
+  mermaid.js は、1 文字の単位に接した `%%` を、その文字と一緒に読みます
+  （既知の差異 `comment-takes-character`）。
+  印字はコメントが接しているかどうかを保ちます。
+  [fixture: comments/comment-glued-to-a-one-character-word-kept]
+  [fixture: comments/comment-takes-a-character-kept]
+- 文の隙間にある U+2028 と U+2029 は、書かれたまま印字します。
+  [test: U+2028 between the words of a title]
+- 既知の差異 `title-digit-after-axis-statement` の入力は、
+  仕様は受理し、mermaid.js は拒否します。
+  文を別々の行に置くと、mermaid.js が結果を受理し、Db は仕様の読みのままです。
+  [fixture: statements-one-per-line/axis-then-title-with-a-digit-split]
+  [fixture: statements-one-per-line/axis-band-then-title-with-a-digit-split]
+
 ## U+2028 か U+2029 の後のコメント行
 
 mermaid.js は、本文を読む前に、コメント行を取り除きます。

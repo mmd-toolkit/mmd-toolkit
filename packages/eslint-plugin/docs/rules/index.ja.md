@@ -148,4 +148,11 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [timeline-no-duplicate-title](./timeline-no-duplicate-title.ja.md)                 | タイトルをもう一度設定する `title` か `accTitle` の文を禁止する。 | ✅  |     |     |
 | [timeline-no-empty-description-block](./timeline-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。                  | ✅  |     |     |
 
+## sankey
+
+| 規則                                                       | 説明                                                             | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------- | ---------------------------------------------------------------- | --- | --- | --- |
+| [sankey-no-empty-node](./sankey-no-empty-node.ja.md)       | 名前のないノードを作る、空白だけの source や target を禁止する。 | ✅  |     |     |
+| [sankey-no-invalid-value](./sankey-no-invalid-value.ja.md) | mermaid.js が書いたとおりに読まないリンクの値を禁止する。        | ✅  |     |     |
+
 <!-- end auto-generated rules list -->
