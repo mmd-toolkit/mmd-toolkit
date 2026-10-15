@@ -99,6 +99,8 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   MindmapDiagram: MINDMAP_PUNCTUATORS,
   // The row `Punctuator` of parser/docs/tokens/timeline.md.
   TimelineDiagram: TIMELINE_PUNCTUATORS,
+  // The row `Punctuator` of parser/docs/tokens/sankey.md.
+  SankeyDiagram: [","],
   ErrorDiagram: [],
 }
 

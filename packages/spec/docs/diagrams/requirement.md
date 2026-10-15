@@ -826,17 +826,12 @@ requirement-field     = ( "id" | "text" ) ":" field-value
 field-value           = unquoted-text | string
 ```
 
-A requirement statement adds the requirement when the Db has none with its name,
-with its kind and the values of its fields; a second statement with the same
-name adds nothing and changes no field, and of a field written twice the first
-counts. The classes after `:::` are given to the name in every case, as a class
-statement gives them (see [Styles and classes](#styles-and-classes)), so the
-classes of a second statement go to the first requirement. The kinds are read as
-`Requirement`, `Functional Requirement`, and so on, the risks as `Low`,
-`Medium`, and `High`, and the methods as `Analysis`, `Demonstration`,
-`Inspection`, and `Test`, whatever the case in which they are written. A field
-that is not written is the empty string. `__proto__` and `constructor` are names
-like any other. [fixture: requirement/db-requirement-all-fields] [fixture:
+A requirement statement may leave out any field, write a field twice, and repeat
+the name of an earlier requirement with other fields and classes, and
+`__proto__` and `constructor` are names like any other. The kinds, the risks,
+and the methods may be written in any case. How mermaid.js reads the
+requirements, their fields, and their classes into its Db is in the summary of
+the tests package. [fixture: requirement/db-requirement-all-fields] [fixture:
 requirement/db-requirement-defaults] [fixture:
 requirement/db-requirement-name-repeated] [fixture:
 requirement/db-requirement-fields-repeated] [fixture:
@@ -894,12 +889,12 @@ element-line      = empty-description-block* element-field?
 element-field     = ( "type" | "docref" ) ":" field-value
 ```
 
-An element statement adds the element when the Db has none with its name, with
-the values of its fields, and gives its classes to the name as a class statement
-does (see [Styles and classes](#styles-and-classes)); the body is read as the
-body of a requirement. A requirement and an element may have the same name.
-`id: 1` in an element is rejected, a `docref` may be a string with `:` inside
-it, and an unquoted `docref` ends at `-`. [fixture:
+The body of an element statement is read as the body of a requirement, and an
+element statement too may leave out any field, write a field twice, and repeat
+the name of an earlier element; how mermaid.js reads the elements into its Db is
+in the summary of the tests package. A requirement and an element may have the
+same name. `id: 1` in an element is rejected, a `docref` may be a string with
+`:` inside it, and an unquoted `docref` ends at `-`. [fixture:
 requirement/db-element-fields] [fixture: requirement/db-element-defaults]
 [fixture: requirement/db-element-name-repeated] [fixture:
 requirement/db-element-fields-repeated] [fixture:
@@ -918,14 +913,13 @@ relation               = "contains" | "copies" | "derives" | "satisfies"
                        | "verifies" | "refines" | "traces"
 ```
 
-A relationship statement adds the relationship, from the left name to the right
-one for `-` and `->`, and from the right name to the left one for `<-` and `-`;
-the names need not be those of a requirement or an element, and a relationship
-written twice is added twice. The units need no whitespace between them:
-`a-satisfies->b` and `a<-satisfies-b` are relationships. `a - likes -> b`,
-`a - satisfies - > b`, and `- satisfies -> b` are rejected. [fixture:
-requirement/db-relationship-arrows] [fixture:
-requirement/db-relationship-undefined-names] [fixture:
+A relationship statement goes from the left name to the right one for `-` and
+`->`, and from the right name to the left one for `<-` and `-`; the names need
+not be those of a requirement or an element, and the same relationship may be
+written twice. The units need no whitespace between them: `a-satisfies->b` and
+`a<-satisfies-b` are relationships. `a - likes -> b`, `a - satisfies - > b`, and
+`- satisfies -> b` are rejected. [fixture: requirement/db-relationship-arrows]
+[fixture: requirement/db-relationship-undefined-names] [fixture:
 requirement/db-relationships-repeated] [fixture:
 requirement/gram-relationship-glued] [fixture:
 requirement/gram-relationship-backward-glued] [fixture:
@@ -952,9 +946,9 @@ accessibility-statement   = "accTitle" ":" title-text
                           | "accDescr" "{" description-block-text "}"
 ```
 
-- A direction statement sets the direction of the diagram; the last one counts.
-  [fixture: requirement/spec-requirement-diagram-7522200d] [fixture:
-  requirement/spec-requirement-diagram-6d165a76] [fixture:
+- A direction statement sets the direction of the diagram, and may be written
+  more than once. [fixture: requirement/spec-requirement-diagram-7522200d]
+  [fixture: requirement/spec-requirement-diagram-6d165a76] [fixture:
   requirement/spec-requirement-diagram-34fcfcee] [fixture:
   requirement/db-direction-last-wins]
 - In a `style` and a `classDef` statement, the names end at the first unit that
@@ -996,17 +990,9 @@ accessibility-statement   = "accTitle" ":" title-text
   requirement/lex-classdef-without-style] [fixture:
   requirement/lex-style-trailing-comma] [fixture: requirement/lex-style-percent]
   [fixture: requirement/lex-style-string]
-- A `style` statement adds its styles to the requirement of each name, or to the
-  element of that name when there is no requirement, up to the first name that
-  is neither; the names after it get none. A `classDef` statement defines its
-  classes, or adds the styles to a class that is defined, and adds them to every
-  requirement and element that the Db has with the class at that point. Every
-  requirement and element has the class `default` from the start, so
-  `classDef default fill:red` styles those that the Db has at that point.
-  [fixture: requirement/db-style-unknown-name] [fixture:
-  requirement/db-requirement-and-element-same-name] [fixture:
-  requirement/db-class-def] [fixture: requirement/db-class-statement-before-def]
-  [fixture: requirement/db-class-def-default-all]
+- How mermaid.js gives the styles of a `style` or `classDef` statement to the
+  requirements and elements of its Db, the class `default` included, is in the
+  summary of the tests package.
 - A `class` statement is two lists of names separated by `,`: the names of
   requirements or elements, and the classes. The first list ends at the first
   name that no `,` precedes, and the second at a `newline` unit or at a unit
@@ -1021,25 +1007,24 @@ accessibility-statement   = "accTitle" ":" title-text
   requirement/lex-class-second-list-comma-next-line] [fixture:
   requirement/lex-class-second-list-comma-space-next-line] [fixture:
   requirement/lex-class-second-list-string-next-line] [fixture:
-  requirement/lex-class-second-list-after-newline] The statement adds the
-  classes, with the styles that each has at that point, to the requirement of
-  each name, or to the element of that name when there is no requirement; a name
-  that is neither changes nothing. A class shorthand statement, and the classes
-  after `:::` in a requirement or an element statement, do the same for one
-  name. [fixture: requirement/db-class-statement] [fixture:
-  requirement/gram-class-comma-spaces] [fixture:
-  requirement/gram-class-string-class] [fixture: requirement/lex-class-one-list]
-  [fixture: requirement/lex-class-three-lists] [fixture:
-  requirement/lex-class-list-next-line] [fixture:
+  requirement/lex-class-second-list-after-newline] A name may be that of a
+  requirement, of an element, or of neither, and a class shorthand statement and
+  the classes after `:::` in a requirement or an element statement name classes
+  for one name; how mermaid.js gives the classes to the requirements and
+  elements of its Db is in the summary of the tests package. [fixture:
+  requirement/db-class-statement] [fixture: requirement/gram-class-comma-spaces]
+  [fixture: requirement/gram-class-string-class] [fixture:
+  requirement/lex-class-one-list] [fixture: requirement/lex-class-three-lists]
+  [fixture: requirement/lex-class-list-next-line] [fixture:
   requirement/db-class-statement-unknown-name-first] [fixture:
   requirement/db-class-styles-order] [fixture:
   requirement/db-class-styles-order-defined-first] [fixture:
   requirement/db-class-colon-form] [fixture:
   requirement/gram-class-shorthand-spaced] [fixture:
   requirement/db-class-shorthand-requirement-and-element]
-- An accessibility statement sets the title or the description; the last one
-  counts, a description line after a description block as well as a block after
-  a line. An empty description block changes nothing. [fixture:
+- An accessibility statement sets the title or the description, and each may be
+  written more than once, as a line or as a block; how mermaid.js reads them
+  into its Db is in the summary of the tests package. [fixture:
   requirement/db-acc-title-descr] [fixture: requirement/db-acc-descr-block]
   [fixture: requirement/db-acc-descr-block-then-line] [fixture:
   requirement/db-acc-descr-line-then-block]

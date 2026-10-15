@@ -6,6 +6,7 @@ import type {
   JourneyNode,
   MindmapTreeNode,
   RequirementNode,
+  SankeyNode,
   SequenceNode,
   StateNode,
   TimelineNode,
@@ -300,6 +301,18 @@ export const allTimelineNodeTypes: Readonly<
   TimelineLiteral: true,
 }
 
+/**
+ * Every node type of ast/sankey.md, in the order of that document. Being a
+ * `Record` over the type, this fails to type-check when a node type is
+ * missing here or is not in the type.
+ */
+export const allSankeyNodeTypes: Readonly<Record<SankeyNode["type"], true>> = {
+  SankeyDiagram: true,
+  SankeyLinkStatement: true,
+  SankeyIdentifier: true,
+  SankeyLiteral: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -313,6 +326,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allRequirementNodeTypes),
   ...Object.keys(allMindmapNodeTypes),
   ...Object.keys(allTimelineNodeTypes),
+  ...Object.keys(allSankeyNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

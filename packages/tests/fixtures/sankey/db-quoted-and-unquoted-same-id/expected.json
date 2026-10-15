@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, nodes: a quoted id and an unquoted id with the same text are one node."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b",
+      "c"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      },
+      {
+        "source": "a",
+        "target": "c",
+        "value": 2
+      }
+    ]
+  }
+}

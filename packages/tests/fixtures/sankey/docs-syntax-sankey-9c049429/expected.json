@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sankey.md",
+    "line": 107
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "Electricity grid",
+      "Over generation / exports",
+      "Heating and cooling - homes",
+      "H2 conversion"
+    ],
+    "links": [
+      {
+        "source": "Electricity grid",
+        "target": "Over generation / exports",
+        "value": 104.453
+      },
+      {
+        "source": "Electricity grid",
+        "target": "Heating and cooling - homes",
+        "value": 113.726
+      },
+      {
+        "source": "Electricity grid",
+        "target": "H2 conversion",
+        "value": 27.14
+      }
+    ]
+  }
+}

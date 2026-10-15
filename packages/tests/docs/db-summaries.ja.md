@@ -1190,10 +1190,12 @@ Db は、すべての journey 図が共有する 1 つのオブジェクトで�
   `score` は、最初の部分から JavaScript が作る数です。
   そのため、小数、16 進数、指数、負の数は数で、
   数の前後の空白は数に含まれず、空の部分と空白だけの部分は 0 です。
+  `-0` は Db では数 -0 ですが、JSON に -0 はないので、要約は 0 です。
   [fixture: journey/db-task-score-decimal]
   [fixture: journey/db-task-score-hexadecimal]
   [fixture: journey/db-task-score-exponent]
   [fixture: journey/db-task-score-negative]
+  [fixture: journey/db-task-score-negative-zero]
   [fixture: journey/db-task-score-spaces]
   [fixture: journey/db-task-score-empty]
   [fixture: journey/gram-task-data-whitespace-only]
@@ -2170,5 +2172,422 @@ Db は、すべての timeline 図が共有する 1 つのモジュールで、
   [fixture: timeline/config-theme-and-timeline-settings]
 - すべての欄を一度に。
   [fixture: timeline/db-everything]
+
+値は、空白も含めて、Db が持つとおりに記録します。
+
+## sankey
+
+要約の欄は次のとおりです。
+
+| 欄      | 内容                                                       |
+| ------- | ---------------------------------------------------------- |
+| `title` | フロントマターのタイトル。なければ空のテキスト。           |
+| `nodes` | ノードの id。各ノードを 1 度だけ、名前が出た順に並べます。 |
+| `links` | リンク。ソースの順。                                       |
+
+リンクは、ノードの id である `source` と `target`、
+および数である `value` を持ちます。
+有限の数でない値は、その数のテキストになります。
+`"NaN"`、`"Infinity"`、`"-Infinity"` です。
+JSON にそのような数がないからです。
+
+`normalizeSankey()`（`src/normalizers/sankey.ts`）は、`sankey` の Db を
+要約します。
+Db は、ブラウザーの機能も、時刻も、乱数も読まず、
+構文にたどるリンクもありません。
+このため、要約に Db のパッチはいりません。
+Db は、すべての sankey 図が共有する 1 つのモジュールで、
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L20-L25)
+が、構文解析のたびにその状態を初期化します。
+要約は、ノードとリンクを id で並べる
+[`getGraph()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L63-L70)
+と、タイトルを読みます。
+次のものを、それぞれに書いた理由で捨てます。
+
+- `getAccTitle()` と `getAccDescription()`:
+  文法にそれらの文がないので、常に空のテキストです。
+- `getNodes()` の `SankeyNode` と、リンクが持つ `SankeyNode`: id の繰り返し。
+
+値を、欄ごとに述べます。
+テキストは、まず
+[`prepareTextForParsing()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts#L1-L8)
+で整えられます。
+[この関数](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDiagram.ts#L9-L10)
+は、構文解析の前に呼ばれ、
+テキスト全体の両端の空白を取り除き、
+テキストのどこでも、改行と復帰の連なりを 1 つの改行にします。
+コメント行、ディレクティブ、フロントマターは、どの図でも、これより前に
+取り除かれます。
+
+- ヘッダーは `sankey` か `sankey-beta` です。
+  [検出器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L5-L7)は小文字だけを読み、
+  字句解析は `-beta` を大文字小文字を問わず読みます。
+  ヘッダーの前の空白は取り除かれ、
+  その前の空行、コメント行、ディレクティブの行も取り除かれます。
+  ヘッダーに続けて書いた語、ダッシュ、ASCII の外の文字は、
+  ヘッダーではありません。
+  [fixture: sankey/header-non-ascii-suffix]
+  [fixture: sankey/header-beta-non-ascii-suffix]
+  [fixture: sankey/db-header-beta]
+  [fixture: sankey/db-header-beta-upper-case]
+  [fixture: sankey/header-upper-case]
+  [fixture: sankey/header-capitalized]
+  [fixture: sankey/header-word-suffix]
+  [fixture: sankey/header-beta-suffix]
+  [fixture: sankey/header-dash-suffix]
+  [fixture: sankey/header-indented]
+  [fixture: sankey/header-tab-indented]
+  [fixture: sankey/header-nbsp-before]
+- ヘッダーはその行を終えます。
+  字句解析はそこで改行を求めるので、
+  ヘッダーの行でその後ろにある文字、空白、タブ、`%%` は拒否されます。
+  ヘッダーの後ろのコメント行、ディレクティブの行、空行は、取り除かれ、
+  何も変えません。
+  ディレクティブは取り除かれ、あとに残るもので決まります。
+  ヘッダーに続けて書けばヘッダーが残り、空白のあとに書けば空白が残って、
+  拒否されます。
+  [fixture: sankey/header-record-on-header-line]
+  [fixture: sankey/header-trailing-spaces]
+  [fixture: sankey/header-trailing-tab]
+  [fixture: sankey/header-comment-on-header-line]
+  [fixture: sankey/header-after-blank-lines]
+  [fixture: sankey/header-after-comment-line]
+  [fixture: sankey/header-after-directive-line]
+  [fixture: sankey/header-then-directive-line]
+  [fixture: sankey/header-directive-glued-to-header]
+  [fixture: sankey/header-directive-after-space-on-header-line]
+- 図にはレコードが 1 つ以上いります。
+  ヘッダーだけ、またはその後ろが空行やコメント行だけなら、拒否されます。
+  [fixture: sankey/header-only]
+  [fixture: sankey/header-without-line-feed]
+  [fixture: sankey/header-blank-line-only]
+  [fixture: sankey/header-beta-only]
+  [fixture: sankey/header-then-comment-line-only]
+  [fixture: sankey/header-only-after-frontmatter]
+- 各行がレコードで、レコードは、1 つ目の欄から 2 つ目の欄へのリンクで、
+  3 つ目の欄の数を持ちます。
+  リンクはソースの順です。
+  最後の行に改行はいらず、空行は何も変えず、
+  レコードの前後の空白はレコードの一部ではありません。
+  [fixture: sankey/db-link-basic]
+  [fixture: sankey/db-two-links]
+  [fixture: sankey/db-no-line-feed-at-end]
+  [fixture: sankey/db-blank-lines-between]
+  [fixture: sankey/db-indented-records]
+  [fixture: sankey/db-trailing-spaces-line]
+- 空白だけの行は欄になります。
+  そのため、2 つのレコードの間やヘッダーの後ろでは拒否され、
+  テキストの末尾では末尾とともに取り除かれます。
+  [fixture: sankey/gram-whitespace-line-between]
+  [fixture: sankey/gram-whitespace-line-after-header]
+  [fixture: sankey/db-whitespace-line-at-end]
+- CRLF と単独の CR は、改行と同じに行を終えます。
+  U+2028 と U+2029 は行を終えません。
+  レコードの間や最初のレコードの前では拒否され、
+  テキストの末尾では空白として取り除かれます。
+  ノーブレークスペース、U+3000、U+FEFF、タブも同じです。
+  ヘッダーの前の U+FEFF も同じに取り除かれます。
+  レコードの前、欄の中、ヘッダーの後ろ、
+  次のレコードが続く値の後ろでは、
+  ノーブレークスペース、U+FEFF、タブは、欄の文字ではないので拒否されます。
+  [fixture: sankey/db-crlf-line-ends]
+  [fixture: sankey/db-lone-cr-line-ends]
+  [fixture: sankey/db-trailing-nbsp-at-end]
+  [fixture: sankey/db-trailing-line-separator-at-end]
+  [fixture: sankey/db-trailing-ideographic-space-at-end]
+  [fixture: sankey/gram-line-separator-between-records]
+  [fixture: sankey/gram-line-separator-before-first-record]
+  [fixture: sankey/gram-no-break-space-before-record]
+  [fixture: sankey/db-trailing-paragraph-separator-at-end]
+  [fixture: sankey/gram-paragraph-separator-between-records]
+  [fixture: sankey/db-byte-order-mark-at-start]
+  [fixture: sankey/gram-byte-order-mark-after-header]
+  [fixture: sankey/gram-byte-order-mark-before-record]
+  [fixture: sankey/gram-byte-order-mark-in-field]
+  [fixture: sankey/gram-byte-order-mark-between-records]
+  [fixture: sankey/db-byte-order-mark-at-end]
+  [fixture: sankey/db-tab-at-end-of-text]
+  [fixture: sankey/gram-tab-after-value-before-record]
+- 引用符のない欄は、次のコンマか行末までです。
+  欄の前後の空白は欄の一部ではありません。
+  [字句解析](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L25)が許す文字のうち、コンマと引用符以外を含められます。
+  許す文字は、空白と `!` から `~` までの文字です。
+  このため `;`、`#`、`<`、`>`、`&`、`'`、スラッシュ、バックスラッシュ、
+  テキストの中の `%` は欄の文字です。
+  ただし次の項目が落とす `;` は除きます。
+  マークアップは書いたとおりに残り、
+  文字参照を始めない `#` も同じです（`a#35` には `;` がありません）。
+  引用符で始まらない欄の中の引用符は、拒否されます。
+  [fixture: sankey/db-fields-trimmed]
+  [fixture: sankey/db-text-with-spaces]
+  [fixture: sankey/db-text-punctuation]
+  [fixture: sankey/db-text-semicolon-and-hash]
+  [fixture: sankey/db-text-hash-leading]
+  [fixture: sankey/db-text-slashes]
+  [fixture: sankey/db-text-ampersand-and-angle]
+  [fixture: sankey/db-text-html-tags]
+  [fixture: sankey/db-text-apostrophe]
+  [fixture: sankey/db-text-percent-in-field]
+  [fixture: sankey/db-text-percent-in-target]
+  [fixture: sankey/gram-quote-in-unquoted-field]
+  [fixture: sankey/gram-doubled-quote-in-unquoted-field]
+  [fixture: sankey/db-text-reference-without-semicolon]
+  [fixture: sankey/db-text-semicolon-at-end-of-field]
+- `;` は、どの図種にもある
+  [`style` と `classDef` の行の規則](../../spec/docs/common.ja.md#style-行と-classdef-行)
+  で落とされます。
+  テキストの行に、`style`、その後ろの空白でない文字が続く `:` と `#`、
+  さらにその後ろの `;` があれば、その行の最後の `;` が落ちます。
+  そのあと `classDef` でも同じことをします。
+  ここでの行はテキストの行で、引用符の中の行も 1 つの行です。
+  規則は行のすべての欄を引用符の内外を問わず読み、
+  行の最後の `;` を、どこにあっても落とします。
+  [fixture: sankey/lex-style-line-semicolon-source]
+  [fixture: sankey/lex-style-line-semicolon-target]
+  [fixture: sankey/lex-style-line-semicolon-in-quotes]
+  [fixture: sankey/lex-style-line-semicolon-in-second-line-of-quotes]
+  [fixture: sankey/lex-classdef-line-semicolon]
+  [fixture: sankey/lex-style-line-last-semicolon-only]
+  [fixture: sankey/lex-style-line-semicolon-in-other-field]
+  [fixture: sankey/lex-style-line-semicolon-at-end-of-field]
+  [fixture: sankey/lex-style-line-space-before-colon]
+  [fixture: sankey/lex-style-line-text-between-colon-and-hash]
+- この規則はテキストだけで決まり、どの行にも合うわけではありません。
+  `:` の後ろに `#` がないとき、`:` と `#` の間に空白があるとき、
+  語が `Style` や `classdef` のときは、`;` が残ります。
+  `#` と単語文字の後ろの `;` は文字参照を終え、
+  そのプレースホルダーは拒否されます（次の項目）。
+  最初の `;` の後ろにもう 1 つ `;` がある行も、
+  最初の `;` が残るので拒否されます。
+  規則は 1 つの行を読むので、別の行の `;` は残ります。
+  [fixture: sankey/lex-style-line-without-hash-keeps-semicolon]
+  [fixture: sankey/lex-style-line-does-not-cross-lines]
+  [fixture: sankey/lex-style-line-does-not-cross-lines-in-quotes]
+  [fixture: sankey/lex-style-upper-case-entity]
+  [fixture: sankey/lex-classdef-lower-case-entity]
+  [fixture: sankey/lex-style-line-last-semicolon-of-two]
+  [fixture: sankey/lex-style-line-space-after-colon]
+- 引用符の中でも外でも、その文字の集合の文字だけが許されます。
+  ASCII の外の文字、タブ、ノーブレークスペース、U+3000、U+2028、U+2029 は、
+  欄のどこにあっても、レコードや欄の前にあっても、拒否されます。
+  `#35;` や `#amp;` のような文字参照は、構文解析の前にプレースホルダーに
+  置き換えられ、プレースホルダーは ASCII の外にあります。
+  そのため、文字参照を含む欄は拒否されます。
+  [fixture: sankey/gram-non-ascii]
+  [fixture: sankey/gram-cjk]
+  [fixture: sankey/gram-emoji]
+  [fixture: sankey/gram-no-break-space-in-field]
+  [fixture: sankey/gram-ideographic-space-in-field]
+  [fixture: sankey/gram-line-separator-in-field]
+  [fixture: sankey/gram-paragraph-separator-in-field]
+  [fixture: sankey/gram-tab-in-field]
+  [fixture: sankey/gram-tab-before-record]
+  [fixture: sankey/gram-tab-before-second-field]
+  [fixture: sankey/gram-tab-after-first-field]
+  [fixture: sankey/gram-quoted-non-ascii]
+  [fixture: sankey/gram-quoted-line-separator]
+  [fixture: sankey/gram-entity-numeric]
+  [fixture: sankey/gram-entity-named]
+  [fixture: sankey/gram-entity-in-quoted-field]
+  [fixture: sankey/gram-entity-in-quoted-value]
+- 引用符つきの欄は、コンマを含められ、
+  その中の 2 つの引用符は、欄の 1 つの引用符です。
+  文法の
+  [`escaped`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L65)
+  です。
+  欄を囲む引用符は欄の一部ではありません。
+  引用符は左から右へ読まれ、後ろに引用符が続かない引用符が欄を閉じます。
+  このため、文字の後ろの 5 つの引用符は、欄の 2 つの引用符と閉じる引用符です。
+  [fixture: sankey/db-quoted-fields]
+  [fixture: sankey/db-quoted-comma]
+  [fixture: sankey/db-quoted-doubled-quote]
+  [fixture: sankey/db-quoted-four-quotes]
+  [fixture: sankey/db-quoted-doubled-quote-at-end]
+  [fixture: sankey/db-quoted-doubled-quote-at-start]
+  [fixture: sankey/db-quoted-only-quote]
+  [fixture: sankey/db-quoted-two-quotes-at-end]
+  [fixture: sankey/db-id-quote-and-comma]
+  [fixture: sankey/db-quoted-and-unquoted-same-id]
+- 引用符の中の改行は欄の一部です。
+  CRLF、単独の CR、空行の連なりは、そこでは `prepareTextForParsing()` により
+  1 つの改行になります。
+  改行の前後の空白と、空白だけの行は、残ります。
+  [fixture: sankey/db-quoted-line-feed]
+  [fixture: sankey/db-quoted-crlf]
+  [fixture: sankey/db-quoted-cr]
+  [fixture: sankey/db-quoted-blank-line-collapses]
+  [fixture: sankey/db-quoted-crlf-blank-line-collapses]
+  [fixture: sankey/db-quoted-space-line-kept]
+  [fixture: sankey/db-quoted-trailing-spaces-before-line-feed]
+  [fixture: sankey/db-quoted-leading-spaces-after-line-feed]
+- 欄はそのあと、どの欄とも同じに trim されます。
+  このため、引用符つきの欄の両端の空白と改行は、id の一部ではありません。
+  引用符つきの値も trim されます。
+  [fixture: sankey/db-quoted-leading-line-feed]
+  [fixture: sankey/db-quoted-trailing-line-feed]
+  [fixture: sankey/db-quoted-both-line-feed-ids]
+  [fixture: sankey/db-quoted-line-feeds-only]
+  [fixture: sankey/db-quoted-space-only]
+  [fixture: sankey/db-quoted-spaces-trimmed]
+  [fixture: sankey/db-quoted-space-before-value]
+- 空白だけの欄、または引用符の中の空白と改行だけの欄は、空の id で、
+  そのためのノードが作られます。
+  中に何もない欄は、引用符があってもなくても拒否されます。
+  空の id は、空白を 1 つ書いて表します。
+  [fixture: sankey/db-spaces-only-source-id]
+  [fixture: sankey/db-spaces-only-target-id]
+  [fixture: sankey/db-spaces-only-source-id-first-record]
+- 閉じない引用符、開く引用符の前や閉じる引用符の後ろの文字、
+  引用符の前後の空白、空の引用符つきの欄は、拒否されます。
+  [fixture: sankey/gram-quoted-empty]
+  [fixture: sankey/gram-quoted-empty-value]
+  [fixture: sankey/gram-quoted-unclosed]
+  [fixture: sankey/gram-quoted-value-unclosed]
+  [fixture: sankey/gram-text-after-closing-quote]
+  [fixture: sankey/gram-text-before-opening-quote]
+  [fixture: sankey/gram-space-before-opening-quote]
+  [fixture: sankey/gram-space-after-closing-quote]
+  [fixture: sankey/gram-space-before-quoted-second-field]
+  [fixture: sankey/gram-quoted-value-then-text]
+  [fixture: sankey/gram-quote-after-space-in-field]
+  [fixture: sankey/gram-quoted-then-trailing-comma]
+  [fixture: sankey/gram-quoted-unclosed-at-end-of-text]
+- レコードは、ちょうど 3 つの欄を持ちます。
+  [文法](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L51-L58)がそう定めています。
+  それより少ない行、多い行、3 つ目の欄の後ろのコンマ、空の欄は、
+  拒否されます。
+  [fixture: sankey/gram-two-columns]
+  [fixture: sankey/gram-one-column]
+  [fixture: sankey/gram-four-columns]
+  [fixture: sankey/gram-trailing-comma]
+  [fixture: sankey/gram-empty-source]
+  [fixture: sankey/gram-empty-target]
+  [fixture: sankey/gram-empty-value]
+  [fixture: sankey/gram-commas-only]
+  [fixture: sankey/gram-comma-only-line]
+  [fixture: sankey/gram-short-line-after-record]
+  [fixture: sankey/gram-one-field-after-record]
+- `value` は、trim した 3 つ目の欄の
+  [`parseFloat()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L55)
+  です。
+  数はテキストの先頭から読まれます。
+  符号、小数点、指数、先頭の点が読まれ、数の後ろは捨てられます
+  （`1abc`、`1 2`、`1_000`、`1.2.3`。`0x10` は `0` です。
+  数の後ろの `%`、`#`、`;`、空白と `;` も、捨てられるテキストの一部です）。
+  負の値は受け入れられます。
+  `-0` は Db では数 -0 ですが、JSON に -0 はないので、要約は 0 です。
+  [fixture: sankey/db-value-negative]
+  [fixture: sankey/db-value-plus-sign]
+  [fixture: sankey/db-value-zero]
+  [fixture: sankey/db-value-decimal]
+  [fixture: sankey/db-value-leading-dot]
+  [fixture: sankey/db-value-trailing-dot]
+  [fixture: sankey/db-value-exponent]
+  [fixture: sankey/db-value-exponent-negative]
+  [fixture: sankey/db-value-hexadecimal]
+  [fixture: sankey/db-value-text-after-number]
+  [fixture: sankey/db-value-two-numbers]
+  [fixture: sankey/db-value-underscore]
+  [fixture: sankey/db-value-two-dots]
+  [fixture: sankey/db-value-spaces]
+  [fixture: sankey/db-value-percent-after-number]
+  [fixture: sankey/db-value-hash-after-number]
+  [fixture: sankey/db-quoted-value]
+  [fixture: sankey/db-quoted-value-with-comma]
+  [fixture: sankey/db-quoted-value-with-quotes]
+  [fixture: sankey/db-value-negative-zero]
+  [fixture: sankey/db-value-semicolon-after-number]
+  [fixture: sankey/db-value-space-semicolon-after-number]
+  [fixture: sankey/db-value-two-semicolons-after-number]
+- 数で始まらない値は `NaN` で、レコードは受け入れられます。
+  `NaN` はテキスト `"NaN"` として記録します。
+  空白だけの値もそうです。
+  ただしテキストの末尾にあるときは、空白が取り除かれ、
+  レコードは欄の数のために拒否されます。
+  [fixture: sankey/db-value-not-a-number]
+  [fixture: sankey/db-value-number-after-text]
+  [fixture: sankey/db-value-nan-text]
+  [fixture: sankey/db-quoted-value-not-a-number]
+  [fixture: sankey/db-spaces-only-value]
+  [fixture: sankey/gram-spaces-only-value-at-end-of-text]
+- `Infinity` と `-Infinity` はその数として読まれ、
+  倍精度に収まらない大きな数（`1e999`）もそうです。
+  テキスト `"Infinity"` と `"-Infinity"` として記録します。
+  [fixture: sankey/db-value-infinity]
+  [fixture: sankey/db-value-negative-infinity]
+  [fixture: sankey/db-value-overflow]
+- ノードは、trim して 2 つの引用符を 1 つにした id で
+  [探すか作ります](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)。
+  id は大文字小文字を区別し、引用符のあるなしにかかわらず同じテキストは
+  1 つのノードです。
+  ノードは、最初のリンクの source、次に target の順で名前が出ます。
+  ノード自身へのリンク、同じノードの 2 つのリンク、戻るリンクは、
+  どれも受け入れられ、リンクごとに 1 つ加えられます。
+  オブジェクトのプロパティの名前も、ほかと同じ id です。
+  [fixture: sankey/db-self-link]
+  [fixture: sankey/db-duplicate-link]
+  [fixture: sankey/db-reverse-link]
+  [fixture: sankey/db-node-order]
+  [fixture: sankey/db-ids-case-sensitive]
+  [fixture: sankey/db-ids-compared-after-trim]
+  [fixture: sankey/db-ids-of-object-prototype]
+- 字下げのあとに `%%` で始まる行はコメント行で、取り除かれます。
+  引用符の中でも同じで、前後の行は 1 つの欄に改行でつながります。
+  `%%` だけの行はコメント行ではなく、`#` はコメントを始めません。
+  どちらも欄になり、欄の数のために拒否されます。
+  [fixture: sankey/db-comment-line]
+  [fixture: sankey/db-comment-line-between-records]
+  [fixture: sankey/db-comment-line-with-blank-lines]
+  [fixture: sankey/db-comment-line-at-end]
+  [fixture: sankey/db-comment-line-indented]
+  [fixture: sankey/gram-percent-line-alone]
+  [fixture: sankey/gram-hash-line-alone]
+  [fixture: sankey/db-quoted-comment-line]
+  [fixture: sankey/db-quoted-directive-line]
+- ディレクティブは、テキストを読む前に、どこにあっても取り除かれます。
+  このため前後の部分がつながります。
+  欄の中、値の後ろ、レコードの先頭、引用符の中が対象です。
+  図の設定を持つディレクティブは、Db を何も変えません。
+  引用符の中のディレクティブの行も、
+  コメント行と同じに取り除かれます（上を参照）。
+  `}%%` のないディレクティブは、
+  次の行の先頭の語を引数に取ります
+  （[ディレクティブ](../../spec/docs/common.ja.md#ディレクティブ)）。
+  `a,b,1 %%{init` と次の行 `c,d,2` は `a,b,1 ,d,2` になって 4 つの欄を持ち、
+  拒否されます。
+  テキストの末尾なら何も取らず、レコードは残ります。
+  [fixture: sankey/db-directive-in-field]
+  [fixture: sankey/db-directive-at-start-of-record]
+  [fixture: sankey/db-directive-after-value]
+  [fixture: sankey/db-directive-in-quotes]
+  [fixture: sankey/db-directive-sankey-settings]
+  [fixture: sankey/gram-directive-unclosed-takes-next-line]
+  [fixture: sankey/db-directive-unclosed-at-end]
+- `title` はフロントマターのタイトルで、Diagram が `setDiagramTitle` で
+  Db に渡します。
+  タイトルの空白は残ります。
+  文法に `title` の文もアクセシビリティの文もないので、
+  そのような行はレコードとして読まれ、欄の数のために拒否されます。
+  フロントマターの設定は、Db を何も変えません。
+  [fixture: sankey/db-title-frontmatter]
+  [fixture: sankey/db-title-frontmatter-spaces]
+  [fixture: sankey/gram-title-statement]
+  [fixture: sankey/gram-acc-title-statement]
+  [fixture: sankey/db-frontmatter-config]
+- `title` と id は `sanitizeText` を通ります。
+  `securityLevel` が mermaid.js の値のどれでもなく、HTML ラベルが有効なら、
+  置き換えられた文字を持ちます
+  （[db-from-tree.md](./db-from-tree.md) の文字の置き換えを参照）。
+  `loose` と `sandbox` では、また設定の最上位か `flowchart` の `htmlLabels` が
+  false なら、書いたとおりです。
+  テーマと図の設定は、何も変えません。
+  [fixture: sankey/config-security-level-other-title-and-ids]
+  [fixture: sankey/config-security-level-other-html-labels-false]
+  [fixture: sankey/config-security-level-other-flowchart-html-labels-false]
+  [fixture: sankey/config-security-level-loose-ids]
+  [fixture: sankey/config-security-level-sandbox-ids]
+  [fixture: sankey/config-sankey-settings]
+- すべての欄を一度に。
+  [fixture: sankey/db-everything]
 
 値は、空白も含めて、Db が持つとおりに記録します。

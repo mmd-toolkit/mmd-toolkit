@@ -1,0 +1,212 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: timeline-no-empty-description-block >> invalid >>> docs/rules/timeline-no-empty-description-block.md incorrect 1
+Filename: timeline-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   2020 : Launch
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> docs/rules/timeline-no-empty-description-block.md incorrect 2
+Filename: timeline-no-empty-description-block-incorrect-2.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr { }
+    |   ^~~~~~~~~~~~ [1]
+  3 |   2020 : Launch
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/db-acc-descr-block-braces-only
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/db-acc-descr-block-braces-only-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/db-acc-descr-block-empty
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/db-acc-descr-block-empty-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  3 |   }
+    | ~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/empty-block-before-event
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/empty-block-before-event-input.mmd
+
+Code:
+  1 | timeline
+  2 |   2020 : a
+  3 |   accDescr {} : b
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/empty-block-before-period
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/empty-block-before-period-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr {} 2020 : a
+    |   ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/empty-block-crlf
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/empty-block-crlf-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  3 |   }
+    | ~~~ [1]
+  4 |   2020 : a
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/empty-block-spaces
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/empty-block-spaces-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr {   }
+    |   ^~~~~~~~~~~~~~ [1]
+  3 |   2020 : a
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/empty-block-tab
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/empty-block-tab-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr {	}
+    |   ^~~~~~~~~~~~ [1]
+  3 |   2020 : a
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/empty-block-upper-case
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/empty-block-upper-case-input.mmd
+
+Code:
+  1 | timeline
+  2 |   ACCDESCR {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   2020 : a
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/gram-empty-description-block-after-header
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/gram-empty-description-block-after-header-input.mmd
+
+Code:
+  1 | timeline accDescr {} a
+    |          ^~~~~~~~~~~ [1]
+  2 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/gram-empty-description-block-directive-only
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/gram-empty-description-block-directive-only-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr { %%{init: {}}%% }
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/gram-empty-description-block-keeps-description
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/gram-empty-description-block-keeps-description-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr: d
+  3 |   accDescr {
+    |   ^~~~~~~~~~\ [1]
+  4 |   }
+    | ~~~ [1]
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/gram-empty-description-blocks-then-period
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/gram-empty-description-blocks-then-period-input.mmd
+
+Code:
+  1 | timeline
+  2 |   accDescr {}accDescr {} a
+    |   ^~~~~~~~~~~ [1]
+    |              ^~~~~~~~~~~ [2]
+  3 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+[2] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: timeline-no-empty-description-block >> invalid >>> invalid/timeline/gram-event-after-empty-description-block-same-line
+Filename: tests/fixtures/rules/timeline-no-empty-description-block/invalid/timeline/gram-event-after-empty-description-block-same-line-input.mmd
+
+Code:
+  1 | timeline
+  2 |   a : e
+  3 |   accDescr {}  : f
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---

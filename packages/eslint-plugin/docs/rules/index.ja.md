@@ -140,4 +140,12 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [mindmap-no-duplicate-decoration](./mindmap-no-duplicate-decoration.ja.md) | 1 つのノードへの、2 つ目の icon の行と class の行を禁止する。 | ✅  |     |     |
 | [mindmap-no-mismatched-shape](./mindmap-no-mismatched-shape.ja.md)         | 開きと合わない閉じを持つ形を禁止する。                        | ✅  |     |     |
 
+## timeline
+
+| 規則                                                                               | 説明                                                              | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------------- | ----------------------------------------------------------------- | --- | --- | --- |
+| [timeline-no-duplicate-description](./timeline-no-duplicate-description.ja.md)     | 説明をもう一度設定する `accDescr` の文を禁止する。                | ✅  |     |     |
+| [timeline-no-duplicate-title](./timeline-no-duplicate-title.ja.md)                 | タイトルをもう一度設定する `title` か `accTitle` の文を禁止する。 | ✅  |     |     |
+| [timeline-no-empty-description-block](./timeline-no-empty-description-block.ja.md) | 説明を持たない `accDescr` のブロックを禁止する。                  | ✅  |     |     |
+
 <!-- end auto-generated rules list -->

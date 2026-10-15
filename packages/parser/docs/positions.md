@@ -172,11 +172,14 @@ Every tree satisfies these conditions:
   [fixture: state/gram-scale]
 - No token, comment, or directive has an empty range: a value that mermaid.js
   reads as empty has no token, an empty fragment is no token and no comment, and
-  a comment and a directive hold at least their marks. [fixture:
+  a comment and a directive hold at least their marks. The one value read as
+  empty that has a token is a field of spaces only of a sankey diagram, which
+  makes a node: it has the token of its spaces (see
+  [the sankey tokens](./tokens/sankey.md#tokens)). [fixture:
   flowchart/gram-acc-title-empty-at-end] [fixture:
   flowchart/tokens-rawtext-comment-line-then-closing-bracket] [fixture:
   class/lex-bare-percent-line-between-statements] [fixture:
-  common/directive-empty-argument]
+  common/directive-empty-argument] [fixture: sankey/db-spaces-only-target-id]
 
 The second condition is about the source text: `Token.value` and the text of
 every comment, directive, and frontmatter equal the input in their ranges. The

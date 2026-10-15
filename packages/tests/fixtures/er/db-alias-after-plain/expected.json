@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Entities: an alias given after the entity exists; accepted, alias Q."
+    "note": "db-from-tree/er.md Entities, alias: an alias given after the entity exists is added to it; accepted, alias Q."
   },
   "accepted": true,
   "diagramType": "er",

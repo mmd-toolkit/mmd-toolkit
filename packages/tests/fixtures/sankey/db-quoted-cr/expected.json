@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, quotes: a lone CR inside quotes is a line feed in the field."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a\nb",
+      "c"
+    ],
+    "links": [
+      {
+        "source": "a\nb",
+        "target": "c",
+        "value": 1
+      }
+    ]
+  }
+}

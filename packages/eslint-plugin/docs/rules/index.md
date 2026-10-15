@@ -136,4 +136,12 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [mindmap-no-duplicate-decoration](./mindmap-no-duplicate-decoration.md) | Disallow a second icon or a second class line for one node. | ✅  |     |     |
 | [mindmap-no-mismatched-shape](./mindmap-no-mismatched-shape.md)         | Disallow a shape whose closer does not match its opener.    | ✅  |     |     |
 
+## timeline
+
+| Rule                                                                            | Description                                                           | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------------- | --------------------------------------------------------------------- | --- | --- | --- |
+| [timeline-no-duplicate-description](./timeline-no-duplicate-description.md)     | Disallow an `accDescr` statement that sets the description again.     | ✅  |     |     |
+| [timeline-no-duplicate-title](./timeline-no-duplicate-title.md)                 | Disallow a `title` or `accTitle` statement that sets its title again. | ✅  |     |     |
+| [timeline-no-empty-description-block](./timeline-no-empty-description-block.md) | Disallow an `accDescr` block that holds no description.               | ✅  |     |     |
+
 <!-- end auto-generated rules list -->

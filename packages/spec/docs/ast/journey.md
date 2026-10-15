@@ -57,13 +57,11 @@ the colon after the description to a `#`, a `;`, or the end of its line, and the
 colons in it divide it into parts (see [Tasks](../diagrams/journey.md#tasks)):
 the **score part** runs from the first colon to the second colon or the end of
 the data, the **people part** from the second colon to the third colon or the
-end of the data, and from the third colon on, the data is not read. mermaid.js
-reads the score as the number that the score part writes, and a score part of
-whitespace only as the number 0; a score that is no number is accepted. The
-people part is divided by its commas into one more person than there are commas;
-a person that is empty or whitespace only is a null element, which mermaid.js
-reads as an empty name. Without a second colon, `people` is empty; with one, it
-has at least one element.
+end of the data, and from the third colon on, the data is not read. A score that
+is no number is accepted. The people part is divided by its commas into one more
+person than there are commas; a person that is empty or whitespace only is a
+null element. Without a second colon, `people` is empty; with one, it has at
+least one element.
 
 `A: 5` has the score `5` and no people; `A: 3: Me, You ,  Them` the people `Me`,
 `You`, and `Them`; `A: 3: a,,b` the people `a`, null, and `b`; `A: 3: ` and

@@ -1082,7 +1082,7 @@ statement = entity-statement
 2 つの文を区切るものはありません。
 文は同じ行で別の文に続けられ、間の `newline` の単位はそれ自体が 1 つの
 `line` です。
-`A ||--o{ B : x C ||--o{ D : y` は 2 つの関係を持ち、`A B` は 2 つの実体を足し、
+`A ||--o{ B : x C ||--o{ D : y` は 2 つの関係を持ち、`A B` は 2 つの実体の文で、
 `A ||--o{ B : has it` はロール `has` と実体 `it` を持ちます。
 同じように、引用符付きのロール、`}`、`class` の文、`accTitle` の行の始まりの後、
 および区切りの後の `classDef` と `style` の文の後に、同じ行で文が続きます。
@@ -1111,8 +1111,7 @@ class-list       = ":::" name ( "," name )*
 attribute-block  = "{" block-item* "}"
 ```
 
-実体の文は、Db にその名前の実体がなければ実体を足し、
-その別名、クラス、属性を与えます。
+実体の文は、別名、クラス、属性のブロックを持つか持たない実体の名前です。
 `A`、`A[P]`、`A:::c`、`A { … }`、`A[P]:::c { … }`、
 および `"A B"`、`12`、`2.5`、`1` は実体の文です。
 [fixture: er/lex-name-unicode-characters] [fixture: er/gram-alias] [fixture:
@@ -1141,9 +1140,6 @@ er/lex-name-number] [fixture: er/lex-name-decimal] [fixture: er/lex-name-one]
   er/gram-relationship-left-class-right-alias] [fixture:
   er/gram-alias-then-class] [fixture: er/gram-alias-then-block] [fixture:
   er/gram-alias-class-block] [fixture: er/gram-alias-class-empty-block]
-  mermaid.js は実体が最初に得た別名を保ちます。
-  `p[P]` と行 `p[Q]` は別名 `P` を持ち、`p` と行 `p[Q]` は別名 `Q` を持ちます。
-  [fixture: er/db-alias-second-ignored] [fixture: er/db-alias-after-plain]
 - `:::` の後のクラスは `,` で区切った名前で、`:::` と
   `,` の周りに空白があってもなくてもかまいません。
   `A:::c1,c2`、`A ::: c, d`、`A:::é,b-c` は受理され、
@@ -1167,7 +1163,7 @@ er/lex-name-number] [fixture: er/lex-name-decimal] [fixture: er/lex-name-one]
   er/gram-block-one-line] [fixture: er/gram-block-one-line-then-name] [fixture:
   er/gram-block-next-line] [fixture: er/gram-classes-then-block-next-line]
   [fixture: er/gram-block-then-relationship]
-  同じ名前の 2 つ目のブロックは、その属性を最初のものの後に足します。
+  同じ名前は 2 つ目のブロックを持てます。
   [fixture: er/db-block-twice]
 
 ### 属性
@@ -1211,7 +1207,6 @@ er/gram-attributes-keys-comment]
   キーの後の語は拒否されます。
   `int id PK FK`、`int id PK,`、`PK id`、`string PK`、`int a PK b` です。
   `int id,PK` は `id,PK` という名前の属性です。`,` が語の文字だからです。
-  Db は各キーを書かれたとおり、`pk` は `pk` のまま保ちます。
   [fixture: er/gram-keys-comma-space] [fixture: er/gram-keys-comma] [fixture:
   er/lex-keys-space-comma] [fixture: er/gram-keys-three] [fixture:
   er/gram-name-then-key-next-line] [fixture: er/gram-keys-space] [fixture:
@@ -1281,8 +1276,7 @@ relationship-line      = "identifying" | "non-identifying"
 role                   = string | quoted-name | name
 ```
 
-関係の文は、Db にその名前の実体がなければ 2 つの実体を足し、
-ロール付きの関係を足します。
+関係の文は、2 つの実体の参照とその間の関係、`:`、ロールです。
 `A ||--o{ B : has`、`A one or more to zero or one B : has`、
 `A:::c ||--o{ B:::d : x`、`A ||--o{ A : x`、`"A 1" ||--o{ "B 2" : x`、
 `12 ||--o{ 3.5 : x` は関係です。
@@ -1313,9 +1307,8 @@ er/gram-role-string-then-name] [fixture: er/lex-role-string-glued-name]
 関係の 3 つの単位とロールは、最初の実体の後の行には置けません。
 `A`、改行、`||--o{ B : x` と、`A ||--o{ B :`、改行、`x` は拒否されます。
 [fixture: er/lex-relationship-spec-next-line] [fixture: er/lex-role-next-line]
-端の名前を持つ subgraph が文より前に定義されているとき、
-mermaid.js は関係を実体ではなくその subgraph に向けます。
-実体はそれでも足され、文より後のその名前の subgraph は何も変えません。
+端は、文より前か後に定義された subgraph の名前を持てます。
+そのとき mermaid.js が関係をどこに向けるかは、tests パッケージの要約にあります。
 [fixture: er/db-relationship-to-subgraph-after] [fixture:
 er/db-relationship-to-subgraph-before]
 
@@ -1387,20 +1380,9 @@ er/lex-subgraph-title-then-string-glued]
   er/gram-end-twice] [fixture: er/gram-end-alone] [fixture:
   er/lex-end-same-line] [fixture: er/lex-end-end-same-line] [fixture:
   er/lex-subgraph-crlf] [fixture: er/gram-subgraph-after-header-same-line]
-- Db は subgraph に、引用符付きの名前の両端の空白を除いた名前を id として、
-  タイトルがなければタイトルとしても与え、
-  タイトルは描画器が無害化したものを与えます。
-  これはサイトの設定に依存します。
-  また、本体の実体の名前を 1 つずつ、前の subgraph が挙げたものを除いて、
-  本体の subgraph の id、本体のほかのいくつかの文のテキストとともに挙げます
-  （tests の Db の文書を参照）。
-  実体は subgraph の名前を持てます。
+- 実体は subgraph の名前を持てます。
   `subgraph S` の前や後の `S` は実体でもあり subgraph でもあります。
-  [fixture: er/db-subgraph-string-id-trimmed] [fixture:
-  er/db-subgraph-title-html] [fixture: er/db-subgraph-entity-twice] [fixture:
-  er/db-subgraph-same-entity-two-subgraphs] [fixture:
-  er/db-subgraph-nested-entity-in-both] [fixture:
-  er/db-subgraph-same-id-twice] [fixture: er/db-subgraph-id-as-name-after]
+  [fixture: er/db-subgraph-id-as-name-after]
   [fixture: er/db-subgraph-id-as-name-before]
 
 ### 空の説明ブロック
@@ -1520,7 +1502,7 @@ accessibility-statement = "accTitle" ":" title-text
 ```
 
 - 方向の文は図の方向、subgraph の中ではその subgraph の方向を設定し、
-  最後のものが有効です。
+  何度書いてもかまいません。
   テキストの終わりの `direction LR` も方向の文です。
   [fixture: er/gram-direction] [fixture: er/db-direction-twice] [fixture:
   er/gram-direction-in-subgraph] [fixture: er/db-direction-in-subgraph-twice]
@@ -1565,13 +1547,6 @@ accessibility-statement = "accTitle" ":" title-text
   er/lex-style-dash-name] [fixture: er/lex-style-star-name] [fixture:
   er/lex-style-unicode-name] [fixture: er/gram-style-number-name] [fixture:
   er/lex-style-hash-first]
-  すでにある名前への `classDef` はスタイルを足し、
-  `style` の文はその時点で Db にある実体か subgraph にスタイルを足して、
-  ない名前には何も変えません。
-  `style A fill:red` と行 `A` は A にスタイルを与えません。
-  [fixture: er/db-classdef-twice] [fixture: er/db-style-twice] [fixture:
-  er/db-style-before-entity] [fixture: er/db-style-subgraph] [fixture:
-  er/db-classdef-color-style]
 - `class` の文は、`,` で区切った名前の 2 つの一覧で、
   `,` の周りに空白があってもなくてもかまいません。
   実体か subgraph の名前と、クラスです。
@@ -1582,19 +1557,17 @@ accessibility-statement = "accTitle" ":" title-text
   `class A a,b c` は受理されます。
   `class A`、`class A` と行 `B`、`class A, a`、`class 12 a`、`class "A" a`、
   `class A end` は拒否されます。
-  この文はその時点で Db にある実体と subgraph にクラスを足します。
-  `class A a` と行 `A` は A にクラスを与えません。
-  [fixture: er/gram-class] [fixture: er/gram-class-two-lists] [fixture:
-  er/lex-class-list-comma-spaces] [fixture: er/gram-class-then-name] [fixture:
-  er/gram-class-two-lists-then-name] [fixture: er/gram-class-without-classes]
-  [fixture: er/gram-class-names-then-line-feed] [fixture:
-  er/gram-class-trailing-comma] [fixture: er/lex-class-number] [fixture:
-  er/lex-class-string] [fixture: er/lex-class-keyword-end] [fixture:
-  er/db-class-before-entity] [fixture: er/db-class-subgraph] [fixture:
-  er/db-class-twice] [fixture: er/lex-class-unicode]
-- アクセシビリティの文はタイトルか説明を設定し、最後のものが有効で、
-  説明ブロックは説明の行を置き換えます。
-  空の説明ブロックは何も変えません。
+  [fixture: er/gram-class] [fixture: er/gram-class-two-lists]
+  [fixture: er/lex-class-list-comma-spaces] [fixture: er/gram-class-then-name]
+  [fixture: er/gram-class-two-lists-then-name]
+  [fixture: er/gram-class-without-classes]
+  [fixture: er/gram-class-names-then-line-feed]
+  [fixture: er/gram-class-trailing-comma] [fixture: er/lex-class-number]
+  [fixture: er/lex-class-string] [fixture: er/lex-class-keyword-end]
+  [fixture: er/lex-class-unicode]
+- アクセシビリティの文はタイトルか説明を設定し、
+  どちらも、行でもブロックでも、空のブロックでも、何度書いてもかまいません。
+  mermaid.js がそれらを Db にどう読むかは、tests パッケージの要約にあります。
   [fixture: er/gram-acc-title] [fixture: er/gram-acc-descr] [fixture:
   er/gram-acc-descr-block] [fixture: er/db-acc-title-twice] [fixture:
   er/db-acc-descr-twice] [fixture: er/db-acc-descr-then-block] [fixture:

@@ -77,7 +77,7 @@ flowchart では、同じ `%%` の行は、mermaid.js と同じく拒否され�
 そのため、`PARTICIPANT A` と `Note LEFT OF A: x` は、
 `participant A` と `note left of A: x` として読まれます。
 単位のテキストは書かれた大文字小文字を保ち、id は書かれたとおりに比べます。
-`participant A` と `participant a` は、2 つの参加者を加えます。
+`participant A` と `participant a` は、2 つの参加者を挙げます。
 [fixture: sequence/lex-keyword-upper-case] [fixture:
 sequence/lex-keyword-mixed-case] [fixture: sequence/lex-id-case]
 
@@ -340,7 +340,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 
 - `#` と `%` が図のコメントを始めるのは、単位が始まる位置だけです。
   id の並びの中では、`#` はその並びの文字です。
-  `participant A # c` は参加者 `A # c` を加え、
+  `participant A # c` は id `A # c` を持ち、
   `A # c ->>B: x` のメッセージは `A # c` からです。
   テキストの中では、`%%` はテキストの一部で、`#` はテキストを終えます。
   `A->>B: y %% c` のメッセージは `y %% c` で、
@@ -489,19 +489,19 @@ id の文脈には、
    [fixture: sequence/lex-id-context-colon]
 
 規則 6 の並びは `#` を含められ、行が許す最長のものです。
-`participant A # c` は参加者 `A # c` を加えます。
+`participant A # c` は id `A # c` を持ちます。
 並び全体の後に改行が続くからです。
 `participant A # c <x` では、`c` までの並びの後には `<` が続くので、
 並びは `A` で、`# c <x` は文の文脈の図のコメントです。
-`participant A # b # c <x` は `A # b` を加えます。
+`participant A # b # c <x` は id `A # b` を持ちます。
 [fixture: sequence/lex-hash-inside-id] [fixture:
 sequence/lex-id-context-hash-before-invalid] [fixture:
 sequence/lex-id-context-two-hashes-before-invalid]
 
 そのため、`participant` の後の id は、空白、`#`、`=` を含められ、
 行の終わり、`;`、`as` の前で終わります。
-`participant A B` は参加者 `A B` を、`participant A=B` は参加者 `A=B` を加え、
-`activate A B` は `A B` を活性化します。
+`participant A B` は id `A B` を、`participant A=B` は id `A=B` を、
+`activate A B` は id `A B` を持ちます。
 `@{` の前の id は、空白、`-`、`=` を含められません。
 `participant A-B@{ "type": "queue" }` は拒否されます。
 `:` や `<` を含む id は拒否され、行の終わりの `participant` も拒否されます。

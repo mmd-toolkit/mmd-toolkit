@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "gantt.md Tasks: two tasks with the same id; the later one is the one that `click` finds."
+    "note": "db-from-tree/gantt.md Click statements: with two tasks of the same id, the later one is the one that `click` finds."
   },
   "accepted": true,
   "diagramType": "gantt",

@@ -358,6 +358,30 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   `An event needs a period before it`. [fixture: timeline/gram-event-first]
   [fixture: timeline/gram-event-after-title]
 
+## In a sankey diagram
+
+- Where no rule of the lexer matches, `range` is the character there: a tab, a
+  character outside ASCII, both code units of a character outside the Basic
+  Multilingual Plane, and the `#` that starts a complete entity, in a field or
+  in a string. [fixture: sankey/gram-tab-in-field] [fixture:
+  sankey/gram-quoted-non-ascii] [fixture: sankey/gram-emoji] [fixture:
+  sankey/gram-entity-in-quoted-field]
+- When the text ends in a string, `range` is its opening `"`, with the message
+  `The string has no closing " before the end of the text`. [fixture:
+  sankey/gram-quoted-unclosed] [fixture:
+  sankey/gram-quoted-unclosed-at-end-of-text]
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace, and the empty range at the start of a unit that is all whitespace,
+  with the message `Unexpected token`; where the text ends before a record or a
+  field, it is the empty range at the end of the text, with the message
+  `Unexpected end of text`. A field before the header, such as `sankeyx`, is
+  such a unit. [fixture: sankey/gram-four-columns] [fixture:
+  sankey/gram-whitespace-line-between] [fixture: sankey/header-word-suffix]
+  [fixture: sankey/gram-two-columns] [fixture: sankey/header-only]
+- Two quotes with nothing between them read no unit, so `range` is the unit
+  after them, or the end of the text: `"",c,1` is rejected at the `,`. [fixture:
+  sankey/gram-quoted-empty] [fixture: sankey/gram-quoted-empty-value]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

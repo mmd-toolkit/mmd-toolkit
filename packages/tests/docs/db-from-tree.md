@@ -369,6 +369,9 @@ does not, are:
   timeline/config-security-level-other-title-and-accessibility] [fixture:
   timeline/config-security-level-other-accessibility-block] [fixture:
   timeline/config-security-level-other-sections-periods-events]
+- Sankey: the title of the frontmatter and the id of every node, which is
+  replaced after it is read from its field. Nodes whose ids become equal are one
+  node. [fixture: sankey/config-security-level-other-title-and-ids]
 
 **Where the order of mermaid.js matters.** Some texts are replaced before
 mermaid.js reads them further, and the builders do the same.

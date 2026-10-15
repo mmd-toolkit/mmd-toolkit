@@ -66,8 +66,6 @@ mindmap/db-first-node-unindented]
 字下げは、改行以外の空白文字を 1 つずつ数え、タブも U+3000 も 1 つです。
 ディレクティブを除いたテキストで数えます。
 ヘッダーの行にある根では、ヘッダーの後の空白です。
-Db はノードの level を、
-その `indent` から根の `indent` を引いたものとして読みます。
 ノードの子は、
 その前にある最も近い、字下げの小さいノードがこのノードであるノードです
 （[字下げと親](../diagrams/mindmap.ja.md#字下げと親) を参照）。
@@ -77,7 +75,6 @@ a と b が根の子で、c は b の子です。
 icon と class の行で、字下げにはよりません。
 mermaid.js が最後に足したノードにそれらを与えるからです。
 `id` は終わりの空白を保ちます。`a (x)` の id は `a ` です。
-Db は、形だけのノードの id を、その label のテキストとして読みます。
 [fixture: mindmap/db-indent-tab-levels] [fixture:
 mindmap/db-indent-fullwidth-space] [fixture:
 mindmap/lex-indent-around-directive] [fixture:
@@ -100,11 +97,9 @@ mindmap/db-shape-without-id]
 | `label`  | MindmapLabel | その間のテキスト、文字列、markdown 文字列。   |
 
 子の欄: `label`。
-閉じは開きに合わなくてかまいません。`[text)` は長方形です。
-Db は形の種類を開きから、`(` では閉じからも読みます。
-`[` は長方形、`((` は円、`)` は雲、`))` は爆発、`{{` は六角形、
-`(` は `)` とで角の丸い長方形、ほかの閉じとで雲、
-`(-` と `-)` は既定の形です
+閉じは開きに合わなくてかまいません。
+`[text)` は開き `[` と閉じ `)` を持ちます。
+mermaid.js がそれらから形の種類をどう読むかは、tests パッケージの要約にあります
 （[ノードと形](../diagrams/mindmap.ja.md#ノードと形) を参照）。
 [fixture: mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded] [fixture:
 mindmap/db-shape-circle] [fixture: mindmap/db-shape-cloud] [fixture:
@@ -161,7 +156,6 @@ class の行です。`:::big red` です。
 子の欄: `cssClass`。
 テキストは両端の空白を保ちます。
 空の class の行は入力を拒否させるので、空になりません。
-Db はそれを、空白を含めて 1 つの class の文字列として読みます。
 [fixture: mindmap/db-class-line] [fixture: mindmap/db-class-leading-whitespace]
 [fixture: mindmap/db-class-trailing-space] [fixture: mindmap/db-class-empty]
 

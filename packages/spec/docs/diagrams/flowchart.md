@@ -1374,26 +1374,26 @@ shape = "[" label "]"
       | "[|" id-run ":" id-run "|" label "]"
 ```
 
-Each alternative gives the shape its name and the vertex its type in the Db:
+Each alternative gives the shape its name:
 
-| Written                | Name               | Db type         |
-| ---------------------- | ------------------ | --------------- |
-| `[` … `]`              | `rectangle`        | `square`        |
-| `(` … `)`              | `rounded`          | `round`         |
-| `((` … `))`            | `circle`           | `circle`        |
-| `(((` … `)))`          | `double-circle`    | `doublecircle`  |
-| `{` … `}`              | `diamond`          | `diamond`       |
-| `{{` … `}}`            | `hexagon`          | `hexagon`       |
-| `([` … `])`            | `stadium`          | `stadium`       |
-| `[[` … `]]`            | `framed-rectangle` | `subroutine`    |
-| `[(` … `)]`            | `cylinder`         | `cylinder`      |
-| `>` … `]`              | `odd`              | `odd`           |
-| `(-` … `ellipse-end`   | `ellipse`          | `ellipse`       |
-| `[/` … `backslash-end` | `trapezoid-bottom` | `trapezoid`     |
-| `[/` … `slash-end`     | `lean-right`       | `lean_right`    |
-| `[\` … `slash-end`     | `trapezoid-top`    | `inv_trapezoid` |
-| `[\` … `backslash-end` | `lean-left`        | `lean_left`     |
-| `[\|` … `\|` … `]`     | `rectangle`        | `rect`          |
+| Written                | Name               |
+| ---------------------- | ------------------ |
+| `[` … `]`              | `rectangle`        |
+| `(` … `)`              | `rounded`          |
+| `((` … `))`            | `circle`           |
+| `(((` … `)))`          | `double-circle`    |
+| `{` … `}`              | `diamond`          |
+| `{{` … `}}`            | `hexagon`          |
+| `([` … `])`            | `stadium`          |
+| `[[` … `]]`            | `framed-rectangle` |
+| `[(` … `)]`            | `cylinder`         |
+| `>` … `]`              | `odd`              |
+| `(-` … `ellipse-end`   | `ellipse`          |
+| `[/` … `backslash-end` | `trapezoid-bottom` |
+| `[/` … `slash-end`     | `lean-right`       |
+| `[\` … `slash-end`     | `trapezoid-top`    |
+| `[\` … `backslash-end` | `lean-left`        |
+| `[\|` … `\|` … `]`     | `rectangle`        |
 
 The name is a word that mermaid.js accepts for the same shape in a data block,
 `A@{ shape: … }`
@@ -1401,14 +1401,10 @@ The name is a word that mermaid.js accepts for the same shape in a data block,
 of those words, the one that names the shape itself and is not abbreviated, not
 a word for a use, such as `process`, `decision`, or `subroutine`, and not an
 abbreviation, such as `rect`, `diam`, or `fr-rect`. A bracketed shape is drawn
-as the shape of its name in a data block, while its Db type is the word of the
-table, which mermaid.js gives it
-([`getTypeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L973-L1001)):
-`A[x]` and `A@{ shape: rectangle }` are drawn alike, with the Db types `square`
-and `rectangle`. [fixture: flowchart/db-data-block-shape-names] [fixture:
-flowchart/db-bracket-shape-types] The shape `(-` … `-)` has no such word:
-mermaid.js defines no shape `ellipse`, so `A@{ shape: ellipse }` is rejected by
-mermaid.js and accepted here (see
+as the shape of its name in a data block: `A[x]` and `A@{ shape: rectangle }`
+are drawn alike. [fixture: flowchart/db-data-block-shape-names] The shape `(-` …
+`-)` has no such word: mermaid.js defines no shape `ellipse`, so
+`A@{ shape: ellipse }` is rejected by mermaid.js and accepted here (see
 [`embedded-data-opaque`](../known-divergences/embedded-data-opaque.md)), and
 drawing `A(-x-)` fails, which
 [issue #5976](https://github.com/mermaid-js/mermaid/issues/5976) reports, open
@@ -1421,9 +1417,8 @@ together are one delimiter (see
 [Directives inside units](#directives-inside-units)). A rectangle written with
 `[|` carries one property, a name and a value, each a single id run:
 `A[|borders:lt|text]` has the property `borders` with the value `lt`. Its name
-is `rectangle`, as that of `[` … `]`: the property is kept in the Db's `props`
-and changes nothing in how mermaid.js draws the rectangle, and only the Db type,
-`rect`, differs. [fixture: flowchart/gram-circle-gap] [fixture:
+is `rectangle`, as that of `[` … `]`: the property changes nothing in how
+mermaid.js draws the rectangle. [fixture: flowchart/gram-circle-gap] [fixture:
 flowchart/gram-rect-property]
 
 ### Labels

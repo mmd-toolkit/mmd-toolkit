@@ -21,7 +21,8 @@ organized and checked is described in
 The statements after the header stand one level deeper than the header.
 [fixture: indentation/written-indentation-dropped] [fixture:
 indentation/header-v2-kept] The `{` of a namespace stands on the line of its
-name, after one space; the statements of the namespace stand one level deeper
+name, after one space, as the `{` of a member body does and as the documentation
+of mermaid.js writes it; the statements of the namespace stand one level deeper
 than that line, and its `}` stands on a line of its own at the level of that
 line, also when the namespace was written on one line. [fixture:
 indentation/namespaces] [fixture: indentation/namespace-brace-after-one-space]
@@ -29,8 +30,10 @@ indentation/namespaces] [fixture: indentation/namespace-brace-after-one-space]
 member-bodies/in-namespace-indented] A level is what Prettier's `useTabs` and
 `tabWidth` options say: two spaces by default. [fixture: indentation/namespaces]
 [fixture: indentation/tab-width-4] [fixture: indentation/use-tabs] The
-indentation written in the input is not kept: whitespace at the start of a line
-is nothing to mermaid.js. [fixture: indentation/namespaces] [fixture:
+indentation written in the input is not kept. Whitespace at the start of a line
+is nothing to mermaid.js, so the printer chooses the indentation from the
+structure alone, and one rule per level prints the same text whatever the input
+was indented with. [fixture: indentation/namespaces] [fixture:
 indentation/written-indentation-dropped]
 
 Input
@@ -66,10 +69,11 @@ classDiagram
 ### Member bodies
 
 The `{` of a class's member body stays on the line of the class, after one
-space; each member line stands on a line of its own, one level deeper; and the
-`}` stands on a line of its own at the level of the class, unless a directive
-stands before it on its line: `%%{init: {}}%% }` stays as it is written.
-[fixture: member-bodies/directive-on-closing-brace-line-kept] [fixture:
+space, as the documentation of mermaid.js writes it; each member line stands on
+a line of its own, one level deeper; and the `}` stands on a line of its own at
+the level of the class, unless a directive stands before it on its line:
+`%%{init: {}}%% }` stays as it is written. [fixture:
+member-bodies/directive-on-closing-brace-line-kept] [fixture:
 member-bodies/split] [fixture: member-bodies/opening-brace-after-one-space]
 [fixture: member-bodies/in-namespace-indented] A body written on one line, as in
 `class Duck { +swim() }`, is split so: mermaid.js ends a member line at a line
@@ -408,11 +412,11 @@ as mermaid.js's documentation writes it: `A-->B:x` becomes `A --> B : x`, and
 labels/directive-around-colon-kept] A sequence diagram writes the `:` touching
 what comes before it (see [Colons in the sequence rules](./sequence.md#colons));
 each follows the documentation of its diagram type. The `:` after `accTitle` and
-`accDescr` touches the keyword and has one space after it, as in a flowchart.
-[fixture: labels/accessibility-text-kept] [fixture:
-multi-line-statements/joined] [fixture: multi-line-statements/acc-descr-joined]
-The text of a label is kept as written. [fixture: labels/spaced] [fixture:
-labels/accessibility-text-kept]
+`accDescr` touches the keyword and has one space after it, as in the other
+diagram types and in the documentation of mermaid.js. [fixture:
+labels/accessibility-text-kept] [fixture: multi-line-statements/joined]
+[fixture: multi-line-statements/acc-descr-joined] The text of a label is kept as
+written. [fixture: labels/spaced] [fixture: labels/accessibility-text-kept]
 
 Input
 ([labels/spaced-input.mmd](../tests/fixtures/class/labels/spaced-input.mmd)):
@@ -765,9 +769,11 @@ classDiagram
 ### Multi-line values
 
 As in a flowchart: the lines of an `accDescr { ... }` block are kept as written,
-and its `}` stands at the level of its statement. A string, a backquoted name,
-and a generic type written over several lines are kept as written too. [fixture:
-multi-line-values/kept] [fixture:
+and its `}` stands at the level of its statement. Outside a subgraph the columns
+of those lines are not in the Db, so keeping them is a choice, whose reason is
+in a flowchart (see [Multi-line values](./flowchart.md#multi-line-values)). A
+string, a backquoted name, and a generic type written over several lines are
+kept as written too. [fixture: multi-line-values/kept] [fixture:
 multi-line-values/block-text-on-opening-line-spaced] [fixture:
 multi-line-values/block-comment-line-kept] [fixture:
 multi-line-values/block-empty-line-kept] [fixture:
@@ -1011,11 +1017,16 @@ diagram or the input would be rejected:
 - a member line, and a generic type from `~` to `~`;
 - the whitespace after the `:` of a label of only whitespace, and whether
   whitespace follows the `:` of a label on a line that holds a `;`;
-- whether whitespace is written before the `%%` of a comment after a statement,
-  and a line of only whitespace after such a comment, as one space;
+- a line of only whitespace after the comment of a statement, as one space;
 - the text of a direction line before `direction` and after its value;
 - a statement written over several lines with a comment, a directive, or a `;`
   in it;
 - a backquoted name that is not closed, to the end of the text;
 - the spelling of the header, `classDiagram` or `classDiagram-v2`. [fixture:
   indentation/header-v2-kept]
+
+Some text is kept as written by choice, because the Db is the same either way:
+whether whitespace is written before the mark of a comment after a statement. It
+is kept because mermaid.js reads a comment by what touches it in the places of
+the known divergences (`comment-takes-character`, `percent-brace-after-unit`),
+and one rule is simpler than a list of those places.

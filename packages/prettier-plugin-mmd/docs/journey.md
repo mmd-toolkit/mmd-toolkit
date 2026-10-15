@@ -22,16 +22,19 @@ The statements after the header stand one level deeper than the header, and the
 statements after a `section`, up to the next `section`, one level deeper still:
 the tasks, and every other statement. The `section` itself stands at the first
 level. The tree of a user journey is flat, with no block of statements, so the
-level of a statement is decided by its place among the others. [fixture:
-indentation/sections-and-tasks-nested] [fixture:
+level of a statement is decided by its place among the others. The tasks of a
+section stand inside it, as the documentation of mermaid.js writes them, and as
+in a Gantt chart. [fixture: indentation/sections-and-tasks-nested] [fixture:
 indentation/statements-before-the-first-section] [fixture:
 indentation/every-statement-under-a-section] [fixture:
 indentation/consecutive-sections] A level is what Prettier's `useTabs` and
 `tabWidth` options say: two spaces by default. [fixture:
 indentation/tab-width-4] [fixture: indentation/use-tabs] The indentation written
-in the input is not kept: whitespace at the start of a line is nothing to
-mermaid.js. [fixture: indentation/written-indentation-dropped] The header stands
-at the first column, also where whitespace was written before it. [fixture:
+in the input is not kept. Whitespace at the start of a line is nothing to
+mermaid.js, so the printer chooses the indentation from the structure alone, and
+one rule per level prints the same text whatever the input was indented with.
+[fixture: indentation/written-indentation-dropped] The header stands at the
+first column, also where whitespace was written before it. [fixture:
 indentation/header-leading-whitespace] The lines of a text that is kept as
 written, such as the lines of an `accDescr` block, keep their columns, and the
 `}` that closes a block stands at the level of its statement (see
@@ -173,10 +176,11 @@ journey
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the body are dropped. [fixture: blank-lines/collapsed] [fixture:
-blank-lines/body-edges-dropped] The empty lines around comment lines are handled
-in the same way. [fixture: blank-lines/around-comment-lines] Empty lines around
-a `section` are kept, as one, at the level of the lines next to them. [fixture:
+end of the body are dropped, as in the other diagram types. [fixture:
+blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped] The empty lines
+around comment lines are handled in the same way. [fixture:
+blank-lines/around-comment-lines] Empty lines around a `section` are kept, as
+one, at the level of the lines next to them. [fixture:
 blank-lines/around-sections]
 
 Input
@@ -256,7 +260,9 @@ and keywords inside it. [fixture: task-data/special-characters-in-description]
 
 A score or a person stands after one space, after a colon and after a comma
 alike; a colon and a comma touch what is before them. Whitespace around them is
-not in the Db, and is not kept. [fixture: task-data/colon-spacing] [fixture:
+not in the Db, and is not kept. The space is written only before a value, as in
+a Gantt chart, which is the form of most task lines in the documentation of
+mermaid.js. [fixture: task-data/colon-spacing] [fixture:
 task-data/people-comma-spacing] An empty score or an empty person prints
 nothing, so no space stands before it: `A: : Me` is printed `A:: Me`, and
 `A: 3: a, ,b` is printed `A: 3: a,, b`. The empty people stay, since mermaid.js
@@ -264,12 +270,13 @@ reads each as a name. [fixture: task-data/empty-score] [fixture:
 task-data/empty-people] [fixture: task-data/no-people-no-score]
 
 The score and the people are printed as written: the whitespace inside a person
-is part of it, and so is the spelling of a score, which mermaid.js reads as a
-number. [fixture: task-data/people-inner-whitespace-kept] [fixture:
-task-data/score-forms-kept] The whitespace at the end of the data is dropped.
-[fixture: task-data/trailing-whitespace-dropped] The data ends at a `#`, and the
-whitespace before the `#` stays as it is written. [fixture:
-task-data/hash-ends-the-data]
+is part of it in the Db. The spelling of a score is the author's: mermaid.js
+reads it as a number, and `05` and `5` give the same Db. [fixture:
+task-data/people-inner-whitespace-kept] [fixture: task-data/score-forms-kept]
+The whitespace at the end of the data is dropped. [fixture:
+task-data/trailing-whitespace-dropped] The data ends at a `#`, which starts a
+comment: one space stands before it where whitespace was written, and none where
+it touches (see [Comments](#comments)). [fixture: task-data/hash-ends-the-data]
 
 Data of whitespace only is a task with an empty score and no people, and
 mermaid.js needs a character after the colon: `A: ` is a task, and `A:` is
@@ -342,11 +349,12 @@ journey
 
 From the third colon, the data is not read by mermaid.js, and the tree keeps it
 as text. It is printed as written, the colon included, and the colon touches
-what is before it, whatever whitespace was written there. [fixture:
-ignored-data/third-colon-touches] [fixture: ignored-data/text-as-written]
-[fixture: ignored-data/four-colons] The text stands after an empty score or an
-empty person too. [fixture: ignored-data/after-empty-people] The whitespace at
-its end is dropped. [fixture: ignored-data/trailing-whitespace-dropped]
+what is before it, whatever whitespace was written there, like the colons of the
+task data. [fixture: ignored-data/third-colon-touches] [fixture:
+ignored-data/text-as-written] [fixture: ignored-data/four-colons] The text
+stands after an empty score or an empty person too. [fixture:
+ignored-data/after-empty-people] The whitespace at its end is dropped. [fixture:
+ignored-data/trailing-whitespace-dropped]
 
 Input
 ([ignored-data/third-colon-touches-input.mmd](../tests/fixtures/journey/ignored-data/third-colon-touches-input.mmd)):
@@ -390,11 +398,11 @@ journey
 
 `title` and `section` are printed with the value as written, the whitespace at
 its ends included, which the Db keeps, and one space as the separator after the
-keyword, whatever character was written there. [fixture:
-titles-and-sections/value-whitespace-kept] [fixture:
-titles-and-sections/one-space-after-keyword] A value written on a later line is
-printed after the keyword on one line; a comment line between them makes the
-statement printed as written (see
+keyword, whatever character was written there, so that the separator has one
+form, as in a Gantt chart. [fixture: titles-and-sections/value-whitespace-kept]
+[fixture: titles-and-sections/one-space-after-keyword] A value written on a
+later line is printed after the keyword on one line; a comment line between them
+makes the statement printed as written (see
 [Multi-line statements](#multi-line-statements)). [fixture:
 titles-and-sections/value-on-next-line] [fixture:
 titles-and-sections/comment-line-inside-kept] The value holds `:`, `%`, and `%%`
@@ -446,9 +454,10 @@ journey
 
 ### Keyword case
 
-Keywords keep the case in which they are written: mermaid.js reads them in any
-case, and the Db is the same. [fixture: keyword-case/keywords-kept] The header
-`journey` is detected in lower case only.
+Keywords keep the case in which they are written. mermaid.js reads them in any
+case and the Db is the same, so nothing forces the case; it is the author's, and
+the printer does not rewrite it. [fixture: keyword-case/keywords-kept] The
+header `journey` is detected in lower case only.
 
 Input
 ([keyword-case/keywords-kept-input.mmd](../tests/fixtures/journey/keyword-case/keywords-kept-input.mmd)):
@@ -477,7 +486,7 @@ journey
 ### Accessibility statements
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
-it; the text has no whitespace at its ends. [fixture:
+it, as in a Gantt chart; the text has no whitespace at its ends. [fixture:
 accessibility-statements/colon-touches-keyword] [fixture:
 accessibility-statements/text-whitespace-dropped] The text holds `:`, `;`, `%`,
 and `%%` as characters. [fixture:
@@ -486,11 +495,14 @@ line, or a colon written on a later line than the keyword, is printed on one
 line. [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/keyword-and-colon-over-lines-joined]
 
-The lines of an `accDescr { ... }` block are kept as written, and its `}` stands
-at the level of its statement; a text on the line of the `{` has one space
-inside the braces where it was written apart, and the braces that touch their
-text keep touching. [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-text-on-opening-line] [fixture:
+The lines of an `accDescr { ... }` block are kept as written by choice, not by
+need: the whitespace at the start of a line is not in the Db (`a`, a line break,
+and `b` give the same description as with `  b`), and the lines are the text of
+the author, which the printer does not format. Its `}` stands at the level of
+its statement; a text on the line of the `{` has one space inside the braces
+where it was written apart, and the braces that touch their text keep touching.
+[fixture: accessibility-statements/block-lines-kept] [fixture:
+accessibility-statements/block-text-on-opening-line] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] Whitespace inside
 the text is part of it, and stays. [fixture:
 accessibility-statements/block-inner-whitespace-kept] A directive between the
@@ -600,7 +612,8 @@ where the line break is whitespace to the lexer: after `title`, `section`,
 task is never written over several lines. [fixture:
 multi-line-statements/value-on-next-line-joined] A statement with a comment line
 or a directive in it is kept as written, since the comment line would take the
-rest of the line it stands on. [fixture:
+rest of the line it stands on, and the whitespace of a line that holds a
+directive is read with it. [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept]
 
@@ -656,9 +669,11 @@ T
 ### Multi-line values
 
 The lines of an `accDescr` block are kept as written, with the line breaks and
-the whitespace inside, since they are part of the value. [fixture:
-multi-line-values/description-block-lines-kept] A comment inside such a block is
-part of the text. [fixture: multi-line-values/comment-line-inside-block-kept]
+the whitespace inside. The line breaks are in the Db, but the whitespace at the
+start of a line is not, so keeping it is a choice: the text of a value is not
+formatted. [fixture: multi-line-values/description-block-lines-kept] A comment
+inside such a block is part of the text. [fixture:
+multi-line-values/comment-line-inside-block-kept]
 
 Input
 ([multi-line-values/description-block-lines-kept-input.mmd](../tests/fixtures/journey/multi-line-values/description-block-lines-kept-input.mmd)):
@@ -729,11 +744,13 @@ comments/last-in-body]
 
 A comment after a statement, or after the header, stays on the line, as written:
 one space stands before it where whitespace was written, and none where it
-touches. [fixture: comments/after-header] [fixture: comments/after-header-glued]
-[fixture: comments/after-header-percent] [fixture: comments/after-statement]
-[fixture: comments/after-statement-glued] [fixture:
-comments/after-statement-under-a-section] After a `title` or a `section`, the
-whitespace before the `#` is part of the value, and stays (see
+touches. Moving it to a line of its own would change the Db after a `title` or a
+`section`, where the whitespace before the comment is part of the value, so one
+rule keeps it on its line, as in a Gantt chart. [fixture: comments/after-header]
+[fixture: comments/after-header-glued] [fixture: comments/after-header-percent]
+[fixture: comments/after-statement] [fixture: comments/after-statement-glued]
+[fixture: comments/after-statement-under-a-section] After a `title` or a
+`section`, the whitespace before the `#` is part of the value, and stays (see
 [Titles and sections](#titles-and-sections)).
 
 Inside a title, a section, task data, and an accessibility text, `%%` is a

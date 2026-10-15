@@ -24,7 +24,9 @@ it, and its `}` stands on a line of its own at the level of that line. [fixture:
 indentation/composite-states] A level is what Prettier's `useTabs` and
 `tabWidth` options say: two spaces by default. [fixture: indentation/use-tabs]
 [fixture: indentation/tab-width-4] The indentation written in the input is not
-kept: whitespace at the start of a line is nothing to mermaid.js. [fixture:
+kept. Whitespace at the start of a line is nothing to mermaid.js, so the printer
+chooses the indentation from the structure alone, and one rule per level prints
+the same text whatever the input was indented with. [fixture:
 indentation/written-tabs-dropped]
 
 Input
@@ -58,8 +60,8 @@ stateDiagram-v2
 ### Composite states
 
 The `{` of a composite state, and of an alias definition with a body, stands on
-the line of its name, after one space; a `{` written on the next line is moved
-there. [fixture: composite-states/split] [fixture:
+the line of its name, after one space, as in a class diagram; a `{` written on
+the next line is moved there. [fixture: composite-states/split] [fixture:
 composite-states/brace-after-one-space] [fixture:
 composite-states/alias-brace-on-next-line] [fixture:
 composite-states/directive-before-body] [fixture:
@@ -242,11 +244,12 @@ accDescr {}
 
 ### Statements one per line
 
-Each statement stands on a line of its own. Nothing separates statements in a
-state diagram, and statements written on one line, as in `A --> B C --> D`, are
-moved to lines of their own; so is an empty description block after a click
-statement. [corpus fixture: state/gram-click-after-empty-description-block]
-[corpus fixture: state/gram-click-empty-description-block-after] [fixture:
+Each statement stands on a line of its own, as in the other diagram types: two
+statements on one line are hard to read. Nothing separates statements in a state
+diagram, and statements written on one line, as in `A --> B C --> D`, are moved
+to lines of their own; so is an empty description block after a click statement.
+[corpus fixture: state/gram-click-after-empty-description-block] [corpus
+fixture: state/gram-click-empty-description-block-after] [fixture:
 statements-one-per-line/split] [fixture: statements-one-per-line/states]
 [fixture: statements-one-per-line/split-then-comment] [fixture:
 statements-one-per-line/split-with-directive-between] The names after `state`
@@ -356,7 +359,10 @@ stateDiagram-v2
 ### Whitespace between tokens
 
 Within a line, a run of spaces and tabs between two tokens becomes one space,
-and tokens that touch keep touching, as in a flowchart. [fixture:
+and tokens that touch keep touching, as in a flowchart (see
+[Whitespace between tokens](./flowchart.md#whitespace-between-tokens)), except
+the words of an alias definition and a pseudostate mark, which get one space
+(see [Aliases](#aliases) and [Pseudostates](#pseudostates)). [fixture:
 whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/tabs-collapsed] [fixture:
 whitespace-between-tokens/touching-class-kept] This holds for `:::`, the `""`
@@ -367,9 +373,10 @@ whitespace-between-tokens/floating-note-quotes-kept] Whether whitespace is
 written before a `""` is kept: `state x"" {` is the composite state `x""`, and
 `state x "" {` the composite state `x`. [fixture:
 whitespace-between-tokens/quotes-before-brace-kept] Keywords keep the case in
-which they are written: mermaid.js reads them in any case, and the position of a
-note, such as `Left Of`, is part of the diagram as written. [fixture:
-whitespace-between-tokens/keyword-case-kept] [fixture:
+which they are written. mermaid.js reads them in any case and the Db is the
+same, so nothing forces the case; it is the author's, and the printer does not
+rewrite it. The position of a note, such as `Left Of`, is part of the diagram as
+written. [fixture: whitespace-between-tokens/keyword-case-kept] [fixture:
 whitespace-between-tokens/keyword-case-more-kept]
 
 Input
@@ -627,12 +634,13 @@ stateDiagram-v2
 
 The string, the `as`, and the id of an alias definition have one space between
 them, also where they were written touching: mermaid.js reads `"d"as A` as it
-reads `"d" as A`. [fixture: aliases/second-description-kept] [fixture:
-aliases/tabs-between-parts] [fixture: aliases/id-kept] The `""` that it does not
-read before and after the string stand apart from it in the same way. `asA` is
-no `as`, and is rejected. The second description, the text after the `:`, is
-kept as written: mermaid.js reads it with the whitespace at its ends, so
-`:short` and `: short` give different descriptions. [corpus fixture:
+reads `"d" as A`, so the Db is the same, and the words of the statement stand
+apart in one form (`asA` is no `as`). [fixture: aliases/second-description-kept]
+[fixture: aliases/tabs-between-parts] [fixture: aliases/id-kept] The `""` that
+it does not read before and after the string stand apart from it in the same
+way. `asA` is no `as`, and is rejected. The second description, the text after
+the `:`, is kept as written: mermaid.js reads it with the whitespace at its
+ends, so `:short` and `: short` give different descriptions. [corpus fixture:
 state/db-alias-colon-spaces-second] [fixture: aliases/second-description-kept]
 [fixture: aliases/second-description-trailing-whitespace-kept] The whitespace
 before the `:` becomes one space.
@@ -670,9 +678,11 @@ stateDiagram-v2
 A pseudostate mark, `<<fork>>`, `<<join>>`, `<<choice>>`, or the same words in
 `[[ ]]`, has one space before it, also where it was written touching its name:
 mermaid.js reads the name without the whitespace at its end, so
-`state f1<<fork>>` is read as `state f1 <<fork>>`. [corpus fixture:
-state/lex-fork-spaced-id] [corpus fixture: state/lex-choice-square-brackets]
-[fixture: pseudostates/mark-spaced] [fixture: pseudostates/all-marks-spaced]
+`state f1<<fork>>` is read as `state f1 <<fork>>` and the Db is the same; the
+mark stands apart from the name in one form, as the words of an alias definition
+do. [corpus fixture: state/lex-fork-spaced-id] [corpus fixture:
+state/lex-choice-square-brackets] [fixture: pseudostates/mark-spaced] [fixture:
+pseudostates/all-marks-spaced]
 
 Input
 ([pseudostates/mark-spaced-input.mmd](../tests/fixtures/state/pseudostates/mark-spaced-input.mmd)):
@@ -810,8 +820,10 @@ stateDiagram-v2
 ### Multi-line values
 
 As in a flowchart: the lines of an `accDescr { ... }` block are kept as written,
-and its `}` stands at the level of its statement. [fixture:
-multi-line-values/kept] [fixture:
+and its `}` stands at the level of its statement. Outside a subgraph the columns
+of those lines are not in the Db, so keeping them is a choice, whose reason is
+in a flowchart (see [Multi-line values](./flowchart.md#multi-line-values)).
+[fixture: multi-line-values/kept] [fixture:
 multi-line-values/accdescr-block-single-line-kept] [fixture:
 multi-line-values/accdescr-block-empty-and-comment-lines-kept] The text of a
 floating note written over several lines is kept as written too. [fixture:
@@ -1023,8 +1035,7 @@ diagram or the input would be rejected:
   definition, and the whitespace after the `:` of a description of only
   whitespace;
 - the names and the `""` after `state`, on the line of `state`;
-- whether whitespace is written before a `""`, and before the mark of a comment
-  after a statement;
+- whether whitespace is written before a `""`;
 - a `%%` or an empty description block right before a `{`, up to the `{`;
 - the lines of a statement that holds a `{` and follows a `state` name;
 - an arrow and a `:` touching an id that a space would make a keyword;
@@ -1034,6 +1045,12 @@ diagram or the input would be rejected:
 - the text of a direction line before `direction` and after its value; [corpus
   fixture: state/lex-direction-line-same-line-transition] [fixture:
   whitespace-between-tokens/direction-line-text-kept]
-- the case of keywords, and the spelling of the header, `stateDiagram` or
-  `stateDiagram-v2`. [corpus fixture: state/header-v1] [fixture:
-  indentation/header-without-v2-kept]
+- the spelling of the header, `stateDiagram` or `stateDiagram-v2`. [corpus
+  fixture: state/header-v1] [fixture: indentation/header-without-v2-kept]
+
+Some text is kept as written by choice, because the Db is the same either way:
+the case of keywords, which is the author's, and whether whitespace is written
+before the mark of a comment after a statement. The second is kept because
+mermaid.js reads a comment by what touches it in the places of the known
+divergences (`comment-takes-character`, `percent-brace-after-unit`), and one
+rule is simpler than a list of those places.

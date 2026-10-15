@@ -538,6 +538,20 @@ export const NODE_FIELDS: Readonly<
     comments: { shape: "nodeList", record: "Comment" },
     tokens: { shape: "nodeList", record: "Token" },
   },
+  SankeyDiagram: {
+    body: { shape: "nodeList" },
+  },
+  SankeyIdentifier: {
+    name: { shape: "value", valueType: "string" },
+  },
+  SankeyLinkStatement: {
+    source: { shape: "node" },
+    target: { shape: "node" },
+    value: { shape: "node" },
+  },
+  SankeyLiteral: {
+    value: { shape: "value", valueType: "string" },
+  },
   SequenceAccDescrBlockStatement: {
     value: { shape: "nodeOrNull" },
     closed: { shape: "value", valueType: "boolean" },

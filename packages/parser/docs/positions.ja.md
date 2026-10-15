@@ -211,10 +211,14 @@ ESTree の木をたどる道具はこれを前提にします。
   mermaid.js が空として読む値はトークンを持たず、
   空の断片はトークンにもコメントにもならず、
   コメントとディレクティブは少なくともその印を含む。
+  空として読む値でトークンを持つのは、sankey 図の空白だけの欄だけである。
+  これはノードを作るので、その空白のトークンを持つ
+  （[sankey のトークン](./tokens/sankey.ja.md#トークン) を参照）。
   [fixture: flowchart/gram-acc-title-empty-at-end]
   [fixture: flowchart/tokens-rawtext-comment-line-then-closing-bracket]
   [fixture: class/lex-bare-percent-line-between-statements]
   [fixture: common/directive-empty-argument]
+  [fixture: sankey/db-spaces-only-target-id]
 
 2 つ目の条件はソースのテキストについてのものです。
 `Token.value` と、どのコメント、ディレクティブ、フロントマターのテキストも、

@@ -24,7 +24,9 @@ The statements after the header stand one level deeper than the header, and the
 statements after a `section`, up to the next `section`, one level deeper still:
 the periods, and every other statement. The `section` itself stands at the first
 level. The tree of a timeline is flat, with no block of statements, so the level
-of a statement is decided by its place among the others. [fixture:
+of a statement is decided by its place among the others. This is the rule of a
+user journey and a Gantt chart: the periods of a section stand inside it, as the
+documentation of mermaid.js writes them. [fixture:
 indentation/sections-and-periods-nested] [fixture:
 indentation/statements-before-the-first-section] [fixture:
 indentation/every-statement-under-a-section] [fixture:
@@ -32,9 +34,11 @@ indentation/consecutive-sections] A level is what Prettier's `useTabs` and
 `tabWidth` options say: two spaces by default. [fixture:
 indentation/tab-width-4] [fixture: indentation/use-tabs]
 
-The indentation written in the input is not kept: whitespace at the start of a
-line is nothing to mermaid.js, and a period that is indented more than the one
-before it is another period (diagrams/timeline.md, Lexical structure). [fixture:
+The indentation written in the input is not kept. Whitespace at the start of a
+line is nothing to mermaid.js, so the printer chooses the indentation from the
+structure alone, and one rule per level prints the same text whatever the input
+was indented with, and a period that is indented more than the one before it is
+another period (diagrams/timeline.md, Lexical structure). [fixture:
 indentation/written-indentation-dropped] The header stands at the first column,
 also where whitespace was written before it. [fixture:
 indentation/header-leading-whitespace] The lines of a text that is kept as
@@ -223,10 +227,11 @@ timeline
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the body are dropped. [fixture: blank-lines/collapsed] [fixture:
-blank-lines/body-edges-dropped] The empty lines around comment lines are handled
-in the same way. [fixture: blank-lines/around-comment-lines] Empty lines around
-a `section` are kept, as one, at the level of the lines next to them. [fixture:
+end of the body are dropped, as in a user journey. [fixture:
+blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped] The empty lines
+around comment lines are handled in the same way. [fixture:
+blank-lines/around-comment-lines] Empty lines around a `section` are kept, as
+one, at the level of the lines next to them. [fixture:
 blank-lines/around-sections] Empty lines inside a period and its events are
 handled in the same way, and stay inside it. [fixture:
 blank-lines/between-a-period-and-its-events]
@@ -305,8 +310,9 @@ periods-and-events/semicolon-in-a-later-line]
 
 The text of an event stands after one space after its colon. That character is
 the separator that the lexer reads after the colon, whatever it is, and it is
-not in the Db; the whitespace after it is the text. [fixture:
-periods-and-events/separator-tab]
+not in the Db; the whitespace after it is the text. A space is written whatever
+the separator was, as after `title` and `section` (see Titles and sections), so
+that the separator has one form. [fixture: periods-and-events/separator-tab]
 
 An event stays on the line on which it was written: events after the period on
 its line stay on that line, and an event written on a later line, or after a
@@ -321,7 +327,10 @@ periods-and-events/event-on-the-line-after-the-period] [fixture:
 periods-and-events/events-on-both]
 
 The later lines of a period and its events stand one level deeper than its first
-line. [fixture: periods-and-events/later-lines-in-a-section] Comment lines and
+line, as the later lines of a statement do in a flowchart. Aligning each colon
+under that of the period, as the documentation of mermaid.js does by hand, would
+need the width of the period, which a tab or a wide character leaves undefined.
+[fixture: periods-and-events/later-lines-in-a-section] Comment lines and
 directive lines inside it stay inside it, at the level of its later lines, and a
 run of empty lines inside it becomes one. [fixture:
 periods-and-events/comment-lines-inside] [fixture:
@@ -468,7 +477,9 @@ accessibility statement, or an empty description block, is an event statement.
 mermaid.js gives its events to the last period before it, across the statements
 between (diagrams/timeline.md, Periods and events), and the printer does not
 move it: it stays where it was written, on a line of its own, at the level of
-the statements around it. [fixture: event-statements/after-title] [fixture:
+the statements around it. No printer of this project moves a statement past
+another, and what the reader makes of an event that follows a title is not a
+question of formatting. [fixture: event-statements/after-title] [fixture:
 event-statements/after-section] [fixture: event-statements/after-acc-title]
 [fixture: event-statements/after-acc-descr] [fixture:
 event-statements/after-description-block] [fixture:
@@ -532,7 +543,7 @@ timeline
 
 `title` and `section` are printed with the value as written, the whitespace at
 its ends included, which the Db keeps, and one space as the separator after the
-keyword, whatever character was written there. [fixture:
+keyword, whatever character was written there, as in a user journey. [fixture:
 titles-and-sections/value-whitespace-kept] [fixture:
 titles-and-sections/one-space-after-keyword] A value written on a later line is
 printed after the keyword on one line; a comment line between them makes the
@@ -586,8 +597,9 @@ timeline
 
 ### Keyword case
 
-Keywords keep the case in which they are written: mermaid.js reads them in any
-case, and the Db is the same. The header `timeline` is detected in lower case
+Keywords keep the case in which they are written. mermaid.js reads them in any
+case and the Db is the same, so nothing forces the case; it is the author's, and
+the printer does not rewrite it. The header `timeline` is detected in lower case
 only. [fixture: keyword-case/keywords-kept]
 
 Input
@@ -618,8 +630,9 @@ timeline
 
 The header may carry a direction, `LR` or `TD` in any case, after whitespace on
 its line. It is printed on the line of the header after one space, in the case
-in which it was written, and the Db reads it in upper case. [fixture:
-header-and-direction/direction-kept] [fixture:
+in which it was written, and the Db reads it in upper case. The space is the one
+of the whitespace between tokens (see Whitespace between tokens), and the case
+is the author's. [fixture: header-and-direction/direction-kept] [fixture:
 header-and-direction/direction-case-kept] [fixture:
 header-and-direction/spaces-before-the-direction] A second word is a period and
 goes to a line of its own, and so is a direction on a line of its own. [fixture:
@@ -670,11 +683,11 @@ timeline %%{init: {}}%% TD
 ### Accessibility statements
 
 The `:` of `accTitle` and `accDescr` touches the keyword and has one space after
-it; the text has no whitespace at its ends, which the Db does not keep.
-[fixture: accessibility-statements/colon-touches-keyword] [fixture:
-accessibility-statements/text-whitespace-dropped] The text and the colon may
-stand on later lines, and are printed on the line of the keyword. [fixture:
-accessibility-statements/text-on-next-line-joined] [fixture:
+it, as in a user journey; the text has no whitespace at its ends, which the Db
+does not keep. [fixture: accessibility-statements/colon-touches-keyword]
+[fixture: accessibility-statements/text-whitespace-dropped] The text and the
+colon may stand on later lines, and are printed on the line of the keyword.
+[fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/keyword-and-colon-over-lines-joined] The text holds
 `:`, `;`, `#`, `%`, and `%%` as characters. [fixture:
 accessibility-statements/special-characters-in-text]
@@ -877,9 +890,11 @@ T
 ### Multi-line values
 
 The lines of an `accDescr` block are kept as written, with the line breaks and
-the whitespace inside, since they are part of the value. [fixture:
-multi-line-values/description-block-lines-kept] A comment inside such a block is
-part of the text. [fixture: multi-line-values/comment-line-inside-block-kept]
+the whitespace inside. The line breaks are in the Db, but the whitespace at the
+start of a line is not, so keeping it is a choice: the text of a value is not
+formatted. [fixture: multi-line-values/description-block-lines-kept] A comment
+inside such a block is part of the text. [fixture:
+multi-line-values/comment-line-inside-block-kept]
 
 Input
 ([multi-line-values/description-block-lines-kept-input.mmd](../tests/fixtures/timeline/multi-line-values/description-block-lines-kept-input.mmd)):
@@ -938,15 +953,15 @@ timeline
 
 A comment starts with `#`, `%%`, or `%`, where a unit starts, and runs to the
 end of the line. A comment on a line of its own stands at the level of the
-statement after it, and its text and its mark are kept as written: a comment
-before a `section` stands at its level, and one before a period at the level of
-the period; at the end of the text it stands at the level of the last statement.
-[fixture: comments/lines-at-statement-level] [fixture: comments/text-kept]
-[fixture: comments/single-percent-kept] [fixture: comments/bare-percent-lines]
-[fixture: comments/levels-around-sections] A comment line before the header
-stands at the first column, and one at the end of the text stays on a line of
-its own, with the line break added. [fixture: comments/before-header] [fixture:
-comments/last-in-body]
+statement after it, as in a user journey, and its text and its mark are kept as
+written: a comment before a `section` stands at its level, and one before a
+period at the level of the period; at the end of the text it stands at the level
+of the last statement. [fixture: comments/lines-at-statement-level] [fixture:
+comments/text-kept] [fixture: comments/single-percent-kept] [fixture:
+comments/bare-percent-lines] [fixture: comments/levels-around-sections] A
+comment line before the header stands at the first column, and one at the end of
+the text stays on a line of its own, with the line break added. [fixture:
+comments/before-header] [fixture: comments/last-in-body]
 
 A comment after the header or a direction, after the `}` of an accessibility
 block, or after a period stays on the line, as written: one space stands before
@@ -1020,11 +1035,11 @@ timeline
 ### Directives
 
 A directive on a line of its own stands at the level of the statement after it,
-and a directive on the line of a statement keeps whether whitespace is written
-on each side of it: where it is, one space stands there, and where it touches a
-token, it keeps touching. [fixture: directives/kept] [fixture:
-directives/levels-around-sections] [fixture: directives/before-header] [fixture:
-directives/after-header-on-same-line] [fixture:
+as in a user journey, and a directive on the line of a statement keeps whether
+whitespace is written on each side of it: where it is, one space stands there,
+and where it touches a token, it keeps touching. [fixture: directives/kept]
+[fixture: directives/levels-around-sections] [fixture: directives/before-header]
+[fixture: directives/after-header-on-same-line] [fixture:
 directives/after-header-touching-kept] [fixture:
 directives/whitespace-on-both-sides-collapsed] [fixture:
 directives/statement-after-directive-line]

@@ -27,6 +27,7 @@ const DIAGRAMS = [
   "requirement",
   "mindmap",
   "timeline",
+  "sankey",
 ] as const
 
 /** The node types that no `ast/<diagram>.md` defines: `ast.md` defines them. */

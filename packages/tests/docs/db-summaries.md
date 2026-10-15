@@ -1002,10 +1002,12 @@ Values of the summary, by field:
   that JavaScript makes of the first piece, so a decimal, a hexadecimal number,
   an exponent, and a negative number are numbers, the spaces around the number
   are not part of it, and an empty piece and a piece of whitespace only are 0.
-  [fixture: journey/db-task-score-decimal] [fixture:
+  `-0` is the number -0 in the Db, and the summary holds 0, since JSON has no
+  -0. [fixture: journey/db-task-score-decimal] [fixture:
   journey/db-task-score-hexadecimal] [fixture: journey/db-task-score-exponent]
   [fixture: journey/db-task-score-negative] [fixture:
-  journey/db-task-score-spaces] [fixture: journey/db-task-score-empty] [fixture:
+  journey/db-task-score-negative-zero] [fixture: journey/db-task-score-spaces]
+  [fixture: journey/db-task-score-empty] [fixture:
   journey/gram-task-data-whitespace-only] A score that is no finite number is
   recorded as the text of the number, since JSON has no such number: `NaN` for a
   piece that is no number, and `Infinity` or `-Infinity` for the pieces
@@ -1840,5 +1842,331 @@ Values of the summary, by field:
   timeline/config-security-level-sandbox-title] [fixture:
   timeline/config-theme-and-timeline-settings]
 - All the fields at once. [fixture: timeline/db-everything]
+
+Values are recorded as the Db holds them, whitespace included.
+
+## sankey
+
+The fields of the summary:
+
+| Field   | Content                                                                  |
+| ------- | ------------------------------------------------------------------------ |
+| `title` | The title of the frontmatter, or the empty text.                         |
+| `nodes` | The ids of the nodes, each node once, in the order in which it is named. |
+| `links` | The links, in source order.                                              |
+
+A link has `source` and `target`, the ids of its nodes, and `value`, a number. A
+value that is no finite number is the text of the number: `"NaN"`, `"Infinity"`,
+or `"-Infinity"`, since JSON has no such number.
+
+`normalizeSankey()` (`src/normalizers/sankey.ts`) summarizes the Db of `sankey`.
+The Db reads no browser feature, no time and no random value, and the syntax has
+no links to follow, so the summary needs no patch of the Db. It is one module
+that every sankey diagram shares, whose state
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L20-L25)
+resets before each parse. The summary reads
+[`getGraph()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L63-L70),
+which lists the nodes and the links by id, and the title. It drops the
+following, each for the reason given:
+
+- `getAccTitle()` and `getAccDescription()`: the grammar has no statement for
+  them, so they are always the empty text.
+- The `SankeyNode` objects of `getNodes()`, and those that the links hold: the
+  id again.
+
+Values of the summary, by field. The text is first cleaned by
+[`prepareTextForParsing()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyUtils.ts#L1-L8),
+which
+[the diagram](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDiagram.ts#L9-L10)
+calls before the parser: it removes the whitespace at the two ends of the whole
+text, and it replaces every run of line feeds and carriage returns, anywhere in
+the text, by one line feed. The comment lines, the directives, and the
+frontmatter are removed before it, as for every diagram.
+
+- The header is `sankey` or `sankey-beta`.
+  [The detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDetector.ts#L5-L7)
+  reads it in lower case only, and the lexer reads the `-beta` in any case. The
+  whitespace before the header is removed, and so are empty lines, comment
+  lines, and directive lines before it. A word, a dash, or a character outside
+  ASCII glued to the header is not the header. [fixture:
+  sankey/header-non-ascii-suffix] [fixture: sankey/header-beta-non-ascii-suffix]
+  [fixture: sankey/db-header-beta] [fixture: sankey/db-header-beta-upper-case]
+  [fixture: sankey/header-upper-case] [fixture: sankey/header-capitalized]
+  [fixture: sankey/header-word-suffix] [fixture: sankey/header-beta-suffix]
+  [fixture: sankey/header-dash-suffix] [fixture: sankey/header-indented]
+  [fixture: sankey/header-tab-indented] [fixture: sankey/header-nbsp-before]
+- The header ends its line: the lexer then needs a line feed, so that text,
+  spaces, a tab, or a `%%` after the header on its line is rejected. A directive
+  is removed, and what it leaves decides: glued to the header it leaves the
+  header, and after a space it leaves the space, which is rejected. Comment
+  lines, directive lines, and empty lines after the header are removed, and
+  change nothing. [fixture: sankey/header-record-on-header-line] [fixture:
+  sankey/header-trailing-spaces] [fixture: sankey/header-trailing-tab] [fixture:
+  sankey/header-comment-on-header-line] [fixture:
+  sankey/header-after-blank-lines] [fixture: sankey/header-after-comment-line]
+  [fixture: sankey/header-after-directive-line] [fixture:
+  sankey/header-then-directive-line] [fixture:
+  sankey/header-directive-glued-to-header] [fixture:
+  sankey/header-directive-after-space-on-header-line]
+- A diagram needs at least one record: a header with no record, or with only
+  empty lines or comment lines after it, is rejected. [fixture:
+  sankey/header-only] [fixture: sankey/header-without-line-feed] [fixture:
+  sankey/header-blank-line-only] [fixture: sankey/header-beta-only] [fixture:
+  sankey/header-then-comment-line-only] [fixture:
+  sankey/header-only-after-frontmatter]
+- Each line is a record, and a record is a link from the first field to the
+  second with the number of the third. The links are in source order. The last
+  line needs no line feed, empty lines change nothing, and the spaces before and
+  after a record are no part of it. [fixture: sankey/db-link-basic] [fixture:
+  sankey/db-two-links] [fixture: sankey/db-no-line-feed-at-end] [fixture:
+  sankey/db-blank-lines-between] [fixture: sankey/db-indented-records] [fixture:
+  sankey/db-trailing-spaces-line]
+- A line of spaces is a field, so that between two records or after the header
+  it is rejected, and at the end of the text it is removed with the end.
+  [fixture: sankey/gram-whitespace-line-between] [fixture:
+  sankey/gram-whitespace-line-after-header] [fixture:
+  sankey/db-whitespace-line-at-end]
+- A CRLF and a lone CR end a line as a line feed does. A U+2028 and a U+2029 end
+  no line: between records, or before the first record, they are rejected, and
+  at the end of the text they are whitespace and are removed, as are a no-break
+  space, a U+3000, a U+FEFF, and a tab. A U+FEFF before the header is removed in
+  the same way. Before a record, inside a field, after the header, and after a
+  value that another record follows, a no-break space, a U+FEFF, and a tab are
+  rejected, since the lexer takes them as no character of a field. [fixture:
+  sankey/db-crlf-line-ends] [fixture: sankey/db-lone-cr-line-ends] [fixture:
+  sankey/db-trailing-nbsp-at-end] [fixture:
+  sankey/db-trailing-line-separator-at-end] [fixture:
+  sankey/db-trailing-ideographic-space-at-end] [fixture:
+  sankey/gram-line-separator-between-records] [fixture:
+  sankey/gram-line-separator-before-first-record] [fixture:
+  sankey/gram-no-break-space-before-record] [fixture:
+  sankey/db-trailing-paragraph-separator-at-end] [fixture:
+  sankey/gram-paragraph-separator-between-records] [fixture:
+  sankey/db-byte-order-mark-at-start] [fixture:
+  sankey/gram-byte-order-mark-after-header] [fixture:
+  sankey/gram-byte-order-mark-before-record] [fixture:
+  sankey/gram-byte-order-mark-in-field] [fixture:
+  sankey/gram-byte-order-mark-between-records] [fixture:
+  sankey/db-byte-order-mark-at-end] [fixture: sankey/db-tab-at-end-of-text]
+  [fixture: sankey/gram-tab-after-value-before-record]
+- A field that is not in quotes runs to the next comma or line end, and the
+  spaces around it are no part of it. It may hold the characters of
+  [the lexer](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L25)
+  other than the comma and the quote: the space and the characters from `!` to
+  `~`, so that `;`, `#`, `<`, `>`, `&`, `'`, a slash, a backslash, and `%%`
+  inside the text are characters of the field, but for the `;` that the next
+  item drops. Markup is kept as written, and so is a `#` that does not start a
+  character reference (`a#35` has no `;`). A quote inside a field that does not
+  start with one is rejected. [fixture: sankey/db-fields-trimmed] [fixture:
+  sankey/db-text-with-spaces] [fixture: sankey/db-text-punctuation] [fixture:
+  sankey/db-text-semicolon-and-hash] [fixture: sankey/db-text-hash-leading]
+  [fixture: sankey/db-text-slashes] [fixture:
+  sankey/db-text-ampersand-and-angle] [fixture: sankey/db-text-html-tags]
+  [fixture: sankey/db-text-apostrophe] [fixture:
+  sankey/db-text-percent-in-field] [fixture: sankey/db-text-percent-in-target]
+  [fixture: sankey/gram-quote-in-unquoted-field] [fixture:
+  sankey/gram-doubled-quote-in-unquoted-field] [fixture:
+  sankey/db-text-reference-without-semicolon] [fixture:
+  sankey/db-text-semicolon-at-end-of-field]
+- A `;` is dropped by
+  [the line rule of `style` and `classDef` lines](../../spec/docs/common.md#style-and-classdef-lines),
+  which every diagram type has. A line of the text that has `style`, later a `:`
+  followed by characters that are not whitespace and then a `#`, and later a
+  `;`, loses its last `;`; then the same is done with `classDef`. The line is a
+  line of the text, so that a line inside quotes is a line of its own, and the
+  rule reads all the fields of the line, in quotes or not, and drops the last
+  `;` of the line wherever it is. [fixture:
+  sankey/lex-style-line-semicolon-source] [fixture:
+  sankey/lex-style-line-semicolon-target] [fixture:
+  sankey/lex-style-line-semicolon-in-quotes] [fixture:
+  sankey/lex-style-line-semicolon-in-second-line-of-quotes] [fixture:
+  sankey/lex-classdef-line-semicolon] [fixture:
+  sankey/lex-style-line-last-semicolon-only] [fixture:
+  sankey/lex-style-line-semicolon-in-other-field] [fixture:
+  sankey/lex-style-line-semicolon-at-end-of-field] [fixture:
+  sankey/lex-style-line-space-before-colon] [fixture:
+  sankey/lex-style-line-text-between-colon-and-hash] The rule is textual and
+  does not match every line. Where the `:` has no `#` after it, or whitespace
+  stands between the `:` and the `#`, or the keyword is `Style` or `classdef`,
+  the `;` stays, and a `;` that follows a `#` and word characters ends a
+  character reference, whose placeholder is rejected (see the next item); so is
+  a line with a second `;` after the first, since the first stays. The rule
+  reads one line: a `;` on another line stays. [fixture:
+  sankey/lex-style-line-without-hash-keeps-semicolon] [fixture:
+  sankey/lex-style-line-does-not-cross-lines] [fixture:
+  sankey/lex-style-line-does-not-cross-lines-in-quotes] [fixture:
+  sankey/lex-style-upper-case-entity] [fixture:
+  sankey/lex-classdef-lower-case-entity] [fixture:
+  sankey/lex-style-line-last-semicolon-of-two] [fixture:
+  sankey/lex-style-line-space-after-colon]
+- Only the characters of that set are allowed, in or out of quotes: a character
+  outside ASCII, a tab, a no-break space, a U+3000, a U+2028, a U+2029 are
+  rejected, wherever they stand in a field and before a record or a field. A
+  character reference such as `#35;` or `#amp;` is replaced by a placeholder
+  before the parse, and the placeholder is outside ASCII, so a field that holds
+  one is rejected. [fixture: sankey/gram-non-ascii] [fixture: sankey/gram-cjk]
+  [fixture: sankey/gram-emoji] [fixture: sankey/gram-no-break-space-in-field]
+  [fixture: sankey/gram-ideographic-space-in-field] [fixture:
+  sankey/gram-line-separator-in-field] [fixture:
+  sankey/gram-paragraph-separator-in-field] [fixture: sankey/gram-tab-in-field]
+  [fixture: sankey/gram-tab-before-record] [fixture:
+  sankey/gram-tab-before-second-field] [fixture:
+  sankey/gram-tab-after-first-field] [fixture: sankey/gram-quoted-non-ascii]
+  [fixture: sankey/gram-quoted-line-separator] [fixture:
+  sankey/gram-entity-numeric] [fixture: sankey/gram-entity-named] [fixture:
+  sankey/gram-entity-in-quoted-field] [fixture:
+  sankey/gram-entity-in-quoted-value]
+- A field in quotes
+  ([`escaped`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L65))
+  may hold commas, and two quotes in it are one quote of the field. The quotes
+  around it are no part of it. The quotes are read from left to right: a quote
+  that is not followed by a quote closes the field, so that five quotes after a
+  letter are two quotes of the field and the closing quote. [fixture:
+  sankey/db-quoted-fields] [fixture: sankey/db-quoted-comma] [fixture:
+  sankey/db-quoted-doubled-quote] [fixture: sankey/db-quoted-four-quotes]
+  [fixture: sankey/db-quoted-doubled-quote-at-end] [fixture:
+  sankey/db-quoted-doubled-quote-at-start] [fixture:
+  sankey/db-quoted-only-quote] [fixture: sankey/db-quoted-two-quotes-at-end]
+  [fixture: sankey/db-id-quote-and-comma] [fixture:
+  sankey/db-quoted-and-unquoted-same-id]
+- A line feed inside quotes is part of the field. A CRLF, a lone CR, and a run
+  of empty lines are one line feed there, by `prepareTextForParsing()`; the
+  spaces before and after a line feed, and a line of spaces, stay. [fixture:
+  sankey/db-quoted-line-feed] [fixture: sankey/db-quoted-crlf] [fixture:
+  sankey/db-quoted-cr] [fixture: sankey/db-quoted-blank-line-collapses]
+  [fixture: sankey/db-quoted-crlf-blank-line-collapses] [fixture:
+  sankey/db-quoted-space-line-kept] [fixture:
+  sankey/db-quoted-trailing-spaces-before-line-feed] [fixture:
+  sankey/db-quoted-leading-spaces-after-line-feed]
+- The field is then trimmed, as every field is, so that the spaces and line
+  feeds at the ends of a quoted field are no part of the id. A value in quotes
+  is trimmed as well. [fixture: sankey/db-quoted-leading-line-feed] [fixture:
+  sankey/db-quoted-trailing-line-feed] [fixture:
+  sankey/db-quoted-both-line-feed-ids] [fixture:
+  sankey/db-quoted-line-feeds-only] [fixture: sankey/db-quoted-space-only]
+  [fixture: sankey/db-quoted-spaces-trimmed] [fixture:
+  sankey/db-quoted-space-before-value]
+- A field of spaces only, or of spaces and line feeds in quotes, is the empty
+  id, and a node is made for it. A field with nothing in it, with or without
+  quotes, is rejected: the empty id has to be written with a space. [fixture:
+  sankey/db-spaces-only-source-id] [fixture: sankey/db-spaces-only-target-id]
+  [fixture: sankey/db-spaces-only-source-id-first-record]
+- A quote that is not closed, text before the opening quote or after the closing
+  quote, spaces on either side of the quotes, and a quoted field that is empty
+  are rejected. [fixture: sankey/gram-quoted-empty] [fixture:
+  sankey/gram-quoted-empty-value] [fixture: sankey/gram-quoted-unclosed]
+  [fixture: sankey/gram-quoted-value-unclosed] [fixture:
+  sankey/gram-text-after-closing-quote] [fixture:
+  sankey/gram-text-before-opening-quote] [fixture:
+  sankey/gram-space-before-opening-quote] [fixture:
+  sankey/gram-space-after-closing-quote] [fixture:
+  sankey/gram-space-before-quoted-second-field] [fixture:
+  sankey/gram-quoted-value-then-text] [fixture:
+  sankey/gram-quote-after-space-in-field] [fixture:
+  sankey/gram-quoted-then-trailing-comma] [fixture:
+  sankey/gram-quoted-unclosed-at-end-of-text]
+- A record has exactly three fields, as
+  [the grammar](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L51-L58)
+  says: fewer, more, a comma after the third field, and an empty field are
+  rejected. [fixture: sankey/gram-two-columns] [fixture: sankey/gram-one-column]
+  [fixture: sankey/gram-four-columns] [fixture: sankey/gram-trailing-comma]
+  [fixture: sankey/gram-empty-source] [fixture: sankey/gram-empty-target]
+  [fixture: sankey/gram-empty-value] [fixture: sankey/gram-commas-only]
+  [fixture: sankey/gram-comma-only-line] [fixture:
+  sankey/gram-short-line-after-record] [fixture:
+  sankey/gram-one-field-after-record]
+- `value` is
+  [`parseFloat()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/parser/sankey.jison#L55)
+  of the third field, after the trim, so that the number is read as the
+  beginning of the text: a sign, a decimal point, an exponent, and a leading dot
+  are read, and anything after the number is dropped (`1abc`, `1 2`, `1_000`,
+  `1.2.3`, `0x10` is `0`, and a `%%`, a `#`, a `;`, or a space and a `;` after
+  the number is part of the text that is dropped). A negative value is accepted,
+  and `-0` is the number -0 in the Db, and the summary holds 0, since JSON has
+  no -0. [fixture: sankey/db-value-negative] [fixture:
+  sankey/db-value-plus-sign] [fixture: sankey/db-value-zero] [fixture:
+  sankey/db-value-decimal] [fixture: sankey/db-value-leading-dot] [fixture:
+  sankey/db-value-trailing-dot] [fixture: sankey/db-value-exponent] [fixture:
+  sankey/db-value-exponent-negative] [fixture: sankey/db-value-hexadecimal]
+  [fixture: sankey/db-value-text-after-number] [fixture:
+  sankey/db-value-two-numbers] [fixture: sankey/db-value-underscore] [fixture:
+  sankey/db-value-two-dots] [fixture: sankey/db-value-spaces] [fixture:
+  sankey/db-value-percent-after-number] [fixture:
+  sankey/db-value-hash-after-number] [fixture: sankey/db-quoted-value] [fixture:
+  sankey/db-quoted-value-with-comma] [fixture:
+  sankey/db-quoted-value-with-quotes] [fixture: sankey/db-value-negative-zero]
+  [fixture: sankey/db-value-semicolon-after-number] [fixture:
+  sankey/db-value-space-semicolon-after-number] [fixture:
+  sankey/db-value-two-semicolons-after-number]
+- A value that starts with no number is `NaN`, and the record is accepted; `NaN`
+  is recorded as the text `"NaN"`. A value of spaces only is such a value,
+  unless it ends the text, where the spaces are removed and the record is
+  rejected for its columns. [fixture: sankey/db-value-not-a-number] [fixture:
+  sankey/db-value-number-after-text] [fixture: sankey/db-value-nan-text]
+  [fixture: sankey/db-quoted-value-not-a-number] [fixture:
+  sankey/db-spaces-only-value] [fixture:
+  sankey/gram-spaces-only-value-at-end-of-text]
+- `Infinity` and `-Infinity` are read as those numbers, and so is a number too
+  large for a double (`1e999`). They are recorded as the text `"Infinity"` and
+  `"-Infinity"`. [fixture: sankey/db-value-infinity] [fixture:
+  sankey/db-value-negative-infinity] [fixture: sankey/db-value-overflow]
+- A node is
+  [found or created](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/sankey/sankeyDB.ts#L48-L58)
+  by its id after the trim and the replacement of two quotes by one. Ids are
+  case-sensitive, and the same text with quotes or without is one node. A node
+  is first named by the source of its first link, then by the target. A link
+  from a node to itself, two links with the same nodes, and a link back are all
+  accepted, and a link is added for each. The names of the properties of objects
+  are ids like any other. [fixture: sankey/db-self-link] [fixture:
+  sankey/db-duplicate-link] [fixture: sankey/db-reverse-link] [fixture:
+  sankey/db-node-order] [fixture: sankey/db-ids-case-sensitive] [fixture:
+  sankey/db-ids-compared-after-trim] [fixture:
+  sankey/db-ids-of-object-prototype]
+- A line that starts, after its indentation, with `%%` is a comment line and is
+  removed, also inside quotes, so that the lines around it join into one field
+  with a line feed. A line of `%%` alone is no comment line, and a `#` starts no
+  comment: both are fields, and are rejected for their columns. [fixture:
+  sankey/db-comment-line] [fixture: sankey/db-comment-line-between-records]
+  [fixture: sankey/db-comment-line-with-blank-lines] [fixture:
+  sankey/db-comment-line-at-end] [fixture: sankey/db-comment-line-indented]
+  [fixture: sankey/gram-percent-line-alone] [fixture:
+  sankey/gram-hash-line-alone] [fixture: sankey/db-quoted-comment-line]
+  [fixture: sankey/db-quoted-directive-line]
+- A directive is removed before the text is read, wherever it stands, so that
+  the parts around it join: in a field, after the value, at the start of a
+  record, and in quotes. A directive with settings of the diagram changes
+  nothing in the Db. A directive line inside quotes is removed as a comment line
+  is (see above). A directive without `}%%` takes, as its argument, the word at
+  the start of the next line
+  ([Directives](../../spec/docs/common.md#directives)): `a,b,1 %%{init` and the
+  line `c,d,2` leave `a,b,1 ,d,2`, four fields, which is rejected, while at the
+  end of the text it takes nothing and the record stays. [fixture:
+  sankey/db-directive-in-field] [fixture:
+  sankey/db-directive-at-start-of-record] [fixture:
+  sankey/db-directive-after-value] [fixture: sankey/db-directive-in-quotes]
+  [fixture: sankey/db-directive-sankey-settings] [fixture:
+  sankey/gram-directive-unclosed-takes-next-line] [fixture:
+  sankey/db-directive-unclosed-at-end]
+- `title` is the title of the frontmatter, which the Diagram gives to the Db
+  with `setDiagramTitle`; the spaces of the title stay. The grammar has no
+  `title` statement and no accessibility statements, so such a line is read as a
+  record and is rejected for its columns. The settings of the frontmatter change
+  nothing in the Db. [fixture: sankey/db-title-frontmatter] [fixture:
+  sankey/db-title-frontmatter-spaces] [fixture: sankey/gram-title-statement]
+  [fixture: sankey/gram-acc-title-statement] [fixture:
+  sankey/db-frontmatter-config]
+- `title` and the ids pass through `sanitizeText` and, under a `securityLevel`
+  that is not one of mermaid.js's values with HTML labels enabled, hold the
+  replaced characters (see [db-from-tree.md](./db-from-tree.md), the replacement
+  of characters). Under `loose` and `sandbox`, or with `htmlLabels` false at the
+  top of the settings or in `flowchart`, they are as written. The theme and the
+  settings of the diagram change nothing. [fixture:
+  sankey/config-security-level-other-title-and-ids] [fixture:
+  sankey/config-security-level-other-html-labels-false] [fixture:
+  sankey/config-security-level-other-flowchart-html-labels-false] [fixture:
+  sankey/config-security-level-loose-ids] [fixture:
+  sankey/config-security-level-sandbox-ids] [fixture:
+  sankey/config-sankey-settings]
+- All the fields at once. [fixture: sankey/db-everything]
 
 Values are recorded as the Db holds them, whitespace included.

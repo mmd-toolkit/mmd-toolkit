@@ -28,6 +28,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "requirement",
   "mindmap",
   "timeline",
+  "sankey",
 ]
 
 /** The recorded trees of the corpus, with the input of each, by fixture name. */

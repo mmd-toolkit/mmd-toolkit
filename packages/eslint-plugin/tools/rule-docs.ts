@@ -240,6 +240,7 @@ export const DIAGRAM_ORDER: readonly string[] = [
   "gantt",
   "requirement",
   "mindmap",
+  "timeline",
 ]
 
 /** The diagram of a rule name (`flowchart-no-ignored-text`), or null for a common rule. */

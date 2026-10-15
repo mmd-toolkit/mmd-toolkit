@@ -8,6 +8,7 @@ import { checkJourneyTree } from "./journey.ts"
 import { checkMindmapTree, mindmapLabelDelimitersFor } from "./mindmap.ts"
 import { checkNullFields } from "./null-fields.ts"
 import { checkRequirementTree } from "./requirement.ts"
+import { checkSankeyTree } from "./sankey.ts"
 import { checkSharedLeaves } from "./leaves.ts"
 import { Problems } from "./problems.ts"
 import { checkShape } from "./shape.ts"
@@ -91,6 +92,9 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
       break
     case "TimelineDiagram":
       checkTimelineTree(text, root, problems)
+      break
+    case "SankeyDiagram":
+      checkSankeyTree(text, root, problems)
       break
     default:
       problems.report(

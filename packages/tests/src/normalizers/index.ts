@@ -6,6 +6,7 @@ import { normalizeGantt, patchGanttDb } from "./gantt.ts"
 import { normalizeJourney } from "./journey.ts"
 import { normalizeMindmap } from "./mindmap.ts"
 import { normalizeRequirement } from "./requirement.ts"
+import { normalizeSankey } from "./sankey.ts"
 import { normalizeSequence, patchSequenceDb } from "./sequence.ts"
 import { normalizeState } from "./state.ts"
 import { normalizeTimeline } from "./timeline.ts"
@@ -39,6 +40,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["journey", normalizeJourney],
   ["mindmap", normalizeMindmap],
   ["requirement", normalizeRequirement],
+  ["sankey", normalizeSankey],
   ["timeline", normalizeTimeline],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],

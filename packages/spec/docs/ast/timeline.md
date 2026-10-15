@@ -35,9 +35,9 @@ timeline/db-event-quotes-and-brackets]
 
 Child fields: `body`. The header keyword is not a field. The direction is the
 keyword after `timeline` and spaces or tabs on the header line, without
-whitespace, as written: `timeline td` has the direction `td`, which the Db reads
-as `TD`; without one, the Db reads `LR`. [fixture: timeline/db-direction-td]
-[fixture: timeline/db-direction-lower-case] [fixture: timeline/db-header-only]
+whitespace, as written: `timeline td` has the direction `td`; without one, the
+direction is null. [fixture: timeline/db-direction-td] [fixture:
+timeline/db-direction-lower-case] [fixture: timeline/db-header-only]
 
 **TimelineStatement** is a TimelinePeriodStatement, TimelineEventStatement,
 TimelineTitleStatement, TimelineSectionStatement, TimelineAccTitleStatement,
@@ -92,10 +92,10 @@ accessibility statement, or an empty description block.
 
 Child fields: `events`. Its events are those that follow one another with
 nothing between them but whitespace, line breaks, and comments, as for a
-TimelinePeriodStatement. mermaid.js gives them to the last period before them,
-across the statements between: in `a`, `section S`, and `: e` on three lines,
-the event `e` belongs to the period `a`, in the section before `S`, and in
-`section S : x` after a period, `x` belongs to that period. An event statement
+TimelinePeriodStatement. They follow no period statement, so they are a
+statement of their own: in `a`, `section S`, and `: e` on three lines, `: e` is
+an event statement, and so is `: x` in `section S : x`. To which period
+mermaid.js gives them is in the summary of the tests package. An event statement
 before the first period makes the input rejected (see
 [Rejections outside the grammar](../diagrams/timeline.md#rejections-outside-the-grammar)).
 [fixture: timeline/db-event-after-section-joins-earlier-task] [fixture:
@@ -130,11 +130,10 @@ A `section` statement.
 
 Child fields: `name`. The name is a text that may contain whitespace, which
 nothing refers to, so it is a TimelineLiteral; it keeps the whitespace at its
-ends, and a name of whitespace only is a value of that whitespace. The periods
-after a section statement belong to it. [fixture: timeline/db-section-statement]
-[fixture: timeline/db-section-two-spaces] [fixture:
-timeline/db-section-trailing-spaces] [fixture: timeline/db-section-only-space]
-[fixture: timeline/db-section-two-with-tasks]
+ends, and a name of whitespace only is a value of that whitespace. [fixture:
+timeline/db-section-statement] [fixture: timeline/db-section-two-spaces]
+[fixture: timeline/db-section-trailing-spaces] [fixture:
+timeline/db-section-only-space] [fixture: timeline/db-section-two-with-tasks]
 
 ### TimelineAccTitleStatement
 

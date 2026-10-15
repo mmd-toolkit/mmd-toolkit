@@ -71,6 +71,7 @@ const allFixtures = [
   ...(await loadFixtures("requirement")),
   ...(await loadFixtures("mindmap")),
   ...(await loadFixtures("timeline")),
+  ...(await loadFixtures("sankey")),
 ]
 const fixtures = allFixtures.filter(isFormatted)
 const rejectedFixtures = allFixtures.filter(isRejected)

@@ -25,9 +25,11 @@ line of its own, at the level of that line. [fixture:
 indentation/statements-and-bodies] A level is what Prettier's `useTabs` and
 `tabWidth` options say: two spaces by default. [fixture:
 indentation/tab-width-4] [fixture: indentation/use-tabs] The indentation written
-in the input is not kept: whitespace at the start of a line is nothing to
-mermaid.js. [fixture: indentation/written-indentation-dropped] The header stands
-at the first column, also where whitespace was written before it. [fixture:
+in the input is not kept. Whitespace at the start of a line is nothing to
+mermaid.js, so the printer chooses the indentation from the structure alone, and
+one rule per level prints the same text whatever the input was indented with.
+[fixture: indentation/written-indentation-dropped] The header stands at the
+first column, also where whitespace was written before it. [fixture:
 indentation/header-leading-whitespace] The lines of a text that is kept as
 written, such as the lines of an `accDescr` block, keep their columns, and the
 `}` that closes a block stands at the level of its statement. [fixture:
@@ -93,12 +95,14 @@ requirementDiagram
 
 The `{` of a requirement or an element stands on the line of its keyword, name,
 and classes, after one space, however it was written; the fields follow on lines
-of their own, and the `}` closes the body on a line of its own. [fixture:
-bodies/opening-brace-after-one-space] The keyword of a requirement is one of six
-kinds, kept in the case in which it is written. [fixture: bodies/kinds] A
-statement that follows the `}` on its line stands on a line of its own.
-[fixture: bodies/statement-after-closing-brace] [fixture:
-statements-one-per-line/closing-brace-then-statement]
+of their own, and the `}` closes the body on a line of its own. The `{` stands
+after one space as in an ER attribute block, which is how the documentation of
+mermaid.js writes it; where the name is unquoted a space is needed anyway, so
+the statement has one form. [fixture: bodies/opening-brace-after-one-space] The
+keyword of a requirement is one of six kinds, kept in the case in which it is
+written. [fixture: bodies/kinds] A statement that follows the `}` on its line
+stands on a line of its own. [fixture: bodies/statement-after-closing-brace]
+[fixture: statements-one-per-line/closing-brace-then-statement]
 
 mermaid.js needs a line break after the `{`, so a body without fields is the `{`
 and the `}` on two lines, and the empty lines between them are dropped.
@@ -164,21 +168,23 @@ requirementDiagram
 ### Fields
 
 A field is printed on one line: its keyword, the `:` touching it, and its value
-after one space, however it was written. [fixture: fields/colon-touches-keyword]
-[fixture: fields/spaces-around-colon-and-value] [fixture:
-fields/value-after-one-space] The whitespace at the ends of an unquoted value is
-not in the Db and is dropped; the whitespace inside it is, and so is everything
-between the quotes of a string. [fixture: fields/value-outer-whitespace-dropped]
-[fixture: fields/value-inner-whitespace-kept] [fixture:
-fields/string-values-kept] A `#`, a `%`, and a `;` inside an unquoted value are
-characters of the value, not the start of a comment. [fixture:
-fields/special-characters-in-values]
+after one space, however it was written, as the documentation of mermaid.js
+writes the fields and as a user journey puts a value after one space. [fixture:
+fields/colon-touches-keyword] [fixture: fields/spaces-around-colon-and-value]
+[fixture: fields/value-after-one-space] The whitespace at the ends of an
+unquoted value is not in the Db and is dropped; the whitespace inside it is, and
+so is everything between the quotes of a string. [fixture:
+fields/value-outer-whitespace-dropped] [fixture:
+fields/value-inner-whitespace-kept] [fixture: fields/string-values-kept] A `#`,
+a `%`, and a `;` inside an unquoted value are characters of the value, not the
+start of a comment. [fixture: fields/special-characters-in-values]
 
 The fields keep the order in which they are written, also a field that is
 written twice, of which mermaid.js reads the first. [fixture: fields/order-kept]
 [fixture: fields/same-field-twice] The keywords of the fields, the risks, and
-the verification methods keep the case in which they are written: mermaid.js
-reads them in any case, and the Db is the same. [fixture:
+the verification methods keep the case in which they are written. mermaid.js
+reads them in any case and the Db is the same, so nothing forces the case; it is
+the author's, and the printer does not rewrite it. [fixture:
 fields/field-keywords-case-kept] [fixture: fields/keyword-values-case-kept] A
 field written over several lines is printed on one line where the lexer reads
 the line break as whitespace, which it does after whitespace (see
@@ -312,8 +318,11 @@ requirementDiagram
 ### Relationship spacing
 
 A relationship has one space between its units: the left name, the `-` or `<-`,
-the relation, the `->` or `-`, and the right name, however it was written.
-[fixture: relationship-spacing/spaces-and-touching] [fixture:
+the relation, the `->` or `-`, and the right name, however it was written. The
+documentation of mermaid.js writes the units apart, as the relationships of an
+ER diagram have one space between their units, and an unquoted name ends before
+the `-`, so the space does not change the name. [fixture:
+relationship-spacing/spaces-and-touching] [fixture:
 relationship-spacing/one-space-between-units] [fixture:
 relationship-spacing/string-names] The direction of the arrow is kept, since
 `a - copies -> b` and `b <- copies - a` are written differently, and so is the
@@ -370,7 +379,8 @@ requirementDiagram
 The classes after `:::`, in a requirement, in an element, and in a statement of
 a name and its classes, touch the `:::`, and the `,` between them touches the
 classes on both sides: `requirement r ::: a , b {` is printed
-`requirement r:::a,b {`. [fixture: class-lists/in-requirement-and-element]
+`requirement r:::a,b {`, as the classes of an ER diagram and the documentation
+of mermaid.js are written. [fixture: class-lists/in-requirement-and-element]
 [fixture: class-lists/shorthand] A class is a string, or an unquoted text that
 may hold whitespace between its words, which is part of the class. [fixture:
 class-lists/string-classes] [fixture: class-lists/classes-with-spaces] A
@@ -626,11 +636,12 @@ requirementDiagram
 ### Statements one per line
 
 Nothing separates two statements of a requirement diagram, and mermaid.js reads
-statements that follow one another on a line. Each statement is printed on a
-line of its own: a statement after the `}` of a body, an empty description block
-after the header or after a statement that ends with a `}` or with a string, and
-the statement that a string at the end of a `style`, `classDef`, or `class`
-statement starts. [fixture:
+statements that follow one another on a line. A line of two statements is hard
+to read, and the other diagram types print one statement on a line too. Each
+statement is printed on a line of its own: a statement after the `}` of a body,
+an empty description block after the header or after a statement that ends with
+a `}` or with a string, and the statement that a string at the end of a `style`,
+`classDef`, or `class` statement starts. [fixture:
 statements-one-per-line/header-then-empty-description-block] [fixture:
 statements-one-per-line/after-closing-brace] [fixture:
 statements-one-per-line/after-string-name] [fixture:
@@ -740,9 +751,9 @@ requirementDiagram
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the diagram and of a body are dropped. [fixture: blank-lines/collapsed]
-[fixture: blank-lines/between-fields-collapsed] [fixture:
-blank-lines/header-and-end-of-text-dropped] [fixture:
+end of the diagram and of a body are dropped, as in the other diagram types.
+[fixture: blank-lines/collapsed] [fixture: blank-lines/between-fields-collapsed]
+[fixture: blank-lines/header-and-end-of-text-dropped] [fixture:
 blank-lines/body-edges-dropped] The empty lines around comment lines and
 directive lines are handled in the same way. [fixture:
 blank-lines/around-comment-and-directive-lines]
@@ -812,7 +823,9 @@ An empty block, `accDescr {}`, changes nothing. Where a statement starts it is a
 statement of its own, and on a line of the body of a requirement or an element
 it is an item of the body: right after the `{`, before a field, after a field
 whose value is a string or a keyword, before the `}`, and alone. Each stands on
-a line of its own. [fixture: empty-description-blocks/as-statement] [fixture:
+a line of its own, as an ER diagram puts a text that mermaid.js does not read in
+a block, and the fields of a body stand one on each line. [fixture:
+empty-description-blocks/as-statement] [fixture:
 empty-description-blocks/after-header] [fixture:
 empty-description-blocks/in-body-own-lines] [fixture:
 empty-description-blocks/in-body-before-closing-brace] [fixture:
@@ -894,11 +907,13 @@ the statement kept as written. [fixture:
 accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept]
 
-The lines of an `accDescr { ... }` block are kept as written, and its `}` stands
-at the level of its statement; a text on the line of the `{` has one space
-inside the braces where it was written apart. [fixture:
-accessibility-statements/block-lines-kept] [fixture:
-accessibility-statements/block-text-on-opening-line] [fixture:
+The lines of an `accDescr { ... }` block are kept as written by choice, not by
+need: the whitespace at the start of a line is not in the Db (`a`, a line break,
+and `b` give the same description as with `  b`), and the lines are the text of
+the author, which the printer does not format. Its `}` stands at the level of
+its statement; a text on the line of the `{` has one space inside the braces
+where it was written apart. [fixture: accessibility-statements/block-lines-kept]
+[fixture: accessibility-statements/block-text-on-opening-line] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept]
 
 The lexer reads a line as a direction line before it reads the statements that
@@ -999,7 +1014,8 @@ multi-line-statements/direction-value-joined] [fixture:
 multi-line-statements/accessibility-joined] [fixture:
 multi-line-statements/string-continued-joined] A statement with a comment line
 or a directive in it is kept as written, since the comment line would take the
-rest of the line it stands on, and so is one with a `;`, which the line rule
+rest of the line it stands on and the whitespace of a line that holds a
+directive is read with it, and so is one with a `;`, which the line rule
 decides. [fixture: multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/semicolon-kept]
@@ -1118,9 +1134,10 @@ requirementDiagram
 
 ### Keyword case
 
-Keywords keep the case in which they are written: mermaid.js reads them in any
-case, and the Db is the same. [fixture: keyword-case/keywords-kept] The header
-is detected only when it starts with `requirement` in lower case
+Keywords keep the case in which they are written. mermaid.js reads them in any
+case and the Db is the same, so nothing forces the case; it is the author's, and
+the printer does not rewrite it. [fixture: keyword-case/keywords-kept] The
+header is detected only when it starts with `requirement` in lower case
 (diagrams/requirement.md, Detection).
 
 Input

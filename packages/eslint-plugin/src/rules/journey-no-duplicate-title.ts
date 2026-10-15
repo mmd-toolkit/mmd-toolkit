@@ -18,7 +18,8 @@ import { titleText } from "../utils/acc-text.ts"
  * the statements in the order of the source.
  *
  * A statement is reported only when the value it sets differs from that of the
- * one before it (`titleText`): setting what the diagram already has loses nothing.
+ * one before it (`titleText`): setting what the diagram already has loses
+ * nothing.
  */
 export const journeyNoDuplicateTitle: MermaidRuleDefinition<{
   RuleOptions: []

@@ -65,13 +65,13 @@ const problems: TreeProblem[] = checkTree(text, tree)
 - **Comments.** A comment line is where the scan finds it, with the mark `%%`; a
   diagram comment has a mark that its diagram has, and ends where its line ends
   (before a U+2028 or a U+2029 too in a mindmap diagram, whose comments run to
-  the end of their line segment); a flowchart and an ER diagram have the mark
-  `%%` for a line of `%%` alone before their header, as every diagram type does,
-  and for no other comment; a gantt diagram has the marks `%%` and `%` for its
-  diagram comments, and a journey diagram and a requirement diagram the marks
-  `#`, `%%`, and `%`, a timeline diagram the same marks, and a mindmap diagram
-  the mark `%%`; a fragment without a mark follows a comment region
-  (parser/docs/tokens.md, Comment;
+  the end of their line segment); a flowchart, an ER diagram, and a sankey
+  diagram have the mark `%%` for a line of `%%` alone before their header, as
+  every diagram type does, and for no other comment; a gantt diagram has the
+  marks `%%` and `%` for its diagram comments, and a journey diagram and a
+  requirement diagram the marks `#`, `%%`, and `%`, a timeline diagram the same
+  marks, and a mindmap diagram the mark `%%`; a fragment without a mark follows
+  a comment region (parser/docs/tokens.md, Comment;
   [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
 - **Directives.** The directives of the tree are those of the scan, each with
   its `closed` and the range of the match without the whitespace at its end
@@ -84,6 +84,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
   whitespace between the colour candidate and the remainder of a sequence box
   text). A directive lies in no other token, and a comment lies in none
   (positions.md, Invariants).
+- **Strings.** The tokens of a StringLiteral, a node type that every diagram
+  type shares, are one `String` token, or `StringFragment` tokens where a
+  directive, a comment region, or a `;` that the line rule ignores cuts it
+  (parser/docs/tokens.md, String tokens).
 - **Tokens that are not cut.** A directive or a `;` that the line rule ignores
   lies in a `String` (which then is `StringFragment` tokens) or a `RawText`
   token, and in no other token (parser/docs/tokens.md, A token that a directive
@@ -199,17 +203,16 @@ const problems: TreeProblem[] = checkTree(text, tree)
     arguments, which are null where only whitespace lies between the
     parentheses; the kinds of the tokens of the values: those of a
     `GanttLiteral` are `RawText`, those of an id and of an item of a list
-    `Identifier`, those of a tag `RawText` (one for each fragment where a
-    directive cuts it), and those of the URL of a link, one `String` token or
-    `StringFragment` tokens where a cut lies inside it; the range of a statement
-    and of a call part, which runs from the first of the tokens and child nodes
-    of the node to the last, so that a click statement ends at the last part in
-    the source whatever the order of its child fields, and the whitespace after
-    the last token is outside it; the link, which runs from `"` to `"`; where
-    the text of a setting, a title, or a section starts (one whitespace
-    character after the keyword) and ends (the end of its line, or before `#` or
-    `;` where the statement says so); where the value of an accessibility
-    statement starts and ends, which is without the whitespace at its ends;
+    `Identifier`, and those of a tag `RawText` (one for each fragment where a
+    directive cuts it); the range of a statement and of a call part, which runs
+    from the first of the tokens and child nodes of the node to the last, so
+    that a click statement ends at the last part in the source whatever the
+    order of its child fields, and the whitespace after the last token is
+    outside it; the link, which runs from `"` to `"`; where the text of a
+    setting, a title, or a section starts (one whitespace character after the
+    keyword) and ends (the end of its line, or before `#` or `;` where the
+    statement says so); where the value of an accessibility statement starts and
+    ends, which is without the whitespace at its ends;
   - journey: the checks of the tokens that a node writes itself, of their kinds,
     of the range of a statement, of the text of a title and a section, and of
     the value of an accessibility statement are those of a gantt diagram (one
@@ -265,14 +268,14 @@ const problems: TreeProblem[] = checkTree(text, tree)
     text of a description block holds no `}`. The kinds of the tokens are those
     of `parser/docs/tokens/requirement.md`: a token that a node writes itself is
     `Punctuator` for `:`, `,`, `{`, `}`, `:::`, `-`, `->`, and `<-`, and
-    `Keyword` for the rest; the tokens of a text are `RawText`, those of a
-    string `String` or `StringFragment`, those of the text of a direction line
-    `RawText`, and those of an empty description block of a body `Keyword` and
-    `Punctuator`; a name is `Identifier` after `style` and `classDef` and in the
-    names of a `class` statement, `RawText` for a requirement, an element, a
-    relationship, and a shorthand, and `Identifier` or `RawText` for a class of
-    a `class` statement. The range of a statement is the hull of its tokens and
-    child nodes (`parser/docs/positions/requirement.md`).
+    `Keyword` for the rest; the tokens of a text are `RawText`, those of the
+    text of a direction line `RawText`, and those of an empty description block
+    of a body `Keyword` and `Punctuator`; a name is `Identifier` after `style`
+    and `classDef` and in the names of a `class` statement, `RawText` for a
+    requirement, an element, a relationship, and a shorthand, and `Identifier`
+    or `RawText` for a class of a `class` statement. The range of a statement is
+    the hull of its tokens and child nodes
+    (`parser/docs/positions/requirement.md`).
   - mindmap: the checks read the tree and the text of the source. The child
     nodes of a field are of the types of its table (`MINDMAP_CHILD_TYPES`, which
     a test holds to the Type column of ast/mindmap.md), and the opener, the
@@ -367,6 +370,32 @@ const problems: TreeProblem[] = checkTree(text, tree)
     is the hull of its tokens and child nodes
     (`parser/docs/positions/timeline.md`); the range of a literal runs from the
     start of a token to the end of a token, which the checks of every tree read.
+  - sankey: the checks read the tree and the text of the source. The child nodes
+    of a field are of the types of its table (`SANKEY_CHILD_TYPES`, which a test
+    holds to the Type column of ast/sankey.md), and the body of the diagram has
+    a link. The value of a SankeyIdentifier and of a SankeyLiteral has no
+    whitespace at its ends and holds the spaces between its characters and
+    printable characters of ASCII but `"` and `,` (ast/sankey.md,
+    SankeyIdentifier and SankeyLiteral); the value of a StringLiteral is closed,
+    is never empty, holds printable characters of ASCII and line terminators,
+    and has each `"` in a pair of `"` (diagrams/sankey.md, Strings). The `"` of
+    an HTML attribute quote is read as `'` for these conditions
+    (diagrams/sankey.md, Characters). A sankey diagram has no diagram comment
+    after its header (diagrams/sankey.md, Comments). The header, `sankey` or
+    `sankey-beta` in any case, is the one token that the diagram writes itself,
+    a `Keyword` token, and the header and each record lie on lines of their own:
+    only whitespace with a line terminator lies between the header and the first
+    record, and between two records, besides the directives and the comment
+    lines. A link writes two `Punctuator` tokens, the `,`, and its source, its
+    first `,`, its target, its second `,`, and its value follow each other with
+    only whitespace between them. The tokens of a field without quotes are
+    `RawText` tokens, which a directive or an ignored `;` may cut into several,
+    and hold no whitespace at the ends of the field, but for a field of
+    whitespace only, which has one token, its whitespace, and the empty value.
+    The range of the diagram and of a link is the hull of its tokens and child
+    nodes, and the range of a field is that of its tokens, without the spaces
+    around it (`parser/docs/tokens/sankey.md` and
+    `parser/docs/positions/sankey.md`).
 
 The **written text** of a range is its source without the directives, the
 comment regions, and the `;` that the line rule ignores (ast.md, Nodes).
@@ -382,6 +411,11 @@ that says so:
   a style of a class diagram, an ER diagram, or a requirement diagram) leaves
   out the whitespace between its units; the joined tokens are the value. An
   `Identifier` is one token.
+- A field without quotes in a sankey diagram (`SankeyIdentifier`,
+  `SankeyLiteral`) has the value of its written text without the whitespace at
+  its ends, which is empty for a field of whitespace only; the node is the field
+  without that whitespace, but for a field of whitespace only, whose one
+  `RawText` token is the whitespace, and the tokens are the written text.
 - A string, a label that starts with a string, a label of a mindmap diagram that
   is a string or a markdown string, and a data block have delimiters that belong
   to their own text; the value is the written text without them, with the
@@ -472,26 +506,33 @@ Type and the Meaning columns of ast/mindmap.md. `check-tree-timeline.test.ts`
 does the same for the sentences of the timeline diagram, on hand-made trees and
 on the recorded trees of named fixtures, which it breaks for the kinds of tokens
 and the ranges too, and it requires the tables of the check to be the Type and
-the Meaning columns of ast/timeline.md. The tests that require a recorded tree
-for every node type or every field leave out the node types whose names start
-with a prefix of `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
-(`tests/check-tree-recorded.ts`), the new diagram types whose trees are not
-recorded yet; the prefix is removed when the trees are recorded, and the list
-stays empty between two diagram types. `tests/check-tree-fields.test.ts` is the
-test of the paragraphs above: it reads the recorded trees once and indexes the
-first tree that has each node type, and the first in which each field is null
-and is not null, and it breaks each field in the tree that the index gives; any
-recorded tree that has the field will do, since the problem that the field must
-cause has the same message in every tree. It has a named case for each field of
-a string that may be null, in each direction, for each rule of `null-fields.ts`,
-and for the two parts of a box text, whose message holds the place of a token (a
-fixture, a type, a field, and the exact message of the problem at the node),
-and, made by hand from the tree of a note with two whitespace characters before
-its `:`, the three notes with one, whose text is null and which the check must
-accept. `tests/check-tree-values.test.ts` is the test of the value rule: for
-every node type with a value, it adds a character to the value at either end and
-drops one from either end, and requires each value so made to be reported at its
-node, with the message of the rule of the type (the written text, or the tokens
+the Meaning columns of ast/timeline.md. `check-tree-sankey.test.ts` makes, by
+hand, the smallest trees that hold the sentences of the sankey diagram above,
+breaks each in every way that the sentence distinguishes, with the problem that
+the check must report, and requires the table of the check to be the Type column
+of ast/sankey.md. `check-tree-string-tokens.test.ts` changes the kind of a token
+of the first string of the recorded tree of a named fixture of the flowchart,
+class, state, ER, and sankey diagrams, and requires the check of the tokens of a
+string to report it. The tests that require a recorded tree for every node type
+or every field leave out the node types whose names start with a prefix of
+`NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES` (`tests/check-tree-recorded.ts`),
+the new diagram types whose trees are not recorded yet; the prefix is removed
+when the trees are recorded, and the list stays empty between two diagram types.
+`tests/check-tree-fields.test.ts` is the test of the paragraphs above: it reads
+the recorded trees once and indexes the first tree that has each node type, and
+the first in which each field is null and is not null, and it breaks each field
+in the tree that the index gives; any recorded tree that has the field will do,
+since the problem that the field must cause has the same message in every tree.
+It has a named case for each field of a string that may be null, in each
+direction, for each rule of `null-fields.ts`, and for the two parts of a box
+text, whose message holds the place of a token (a fixture, a type, a field, and
+the exact message of the problem at the node), and, made by hand from the tree
+of a note with two whitespace characters before its `:`, the three notes with
+one, whose text is null and which the check must accept.
+`tests/check-tree-values.test.ts` is the test of the value rule: for every node
+type with a value, it adds a character to the value at either end and drops one
+from either end, and requires each value so made to be reported at its node,
+with the message of the rule of the type (the written text, or the tokens
 joined; the style of a class diagram or an ER diagram has the second). For each
 node type with a value that has a token with whitespace at an end, it has a
 named case (a fixture, a token, a side, and the exact problems) that takes the

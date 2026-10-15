@@ -63,6 +63,9 @@ import { stateNoEmptyDescriptionBlock } from "./state-no-empty-description-block
 import { stateNoIgnoredText } from "./state-no-ignored-text.ts"
 import { stateNoUnclosedDescriptionBlock } from "./state-no-unclosed-description-block.ts"
 import { stateNoUndef } from "./state-no-undef.ts"
+import { timelineNoDuplicateDescription } from "./timeline-no-duplicate-description.ts"
+import { timelineNoDuplicateTitle } from "./timeline-no-duplicate-title.ts"
+import { timelineNoEmptyDescriptionBlock } from "./timeline-no-empty-description-block.ts"
 
 /**
  * Every rule of the plugin, by its name in the plugin: the name of a rule of
@@ -135,4 +138,7 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "state-no-ignored-text": stateNoIgnoredText,
   "state-no-unclosed-description-block": stateNoUnclosedDescriptionBlock,
   "state-no-undef": stateNoUndef,
+  "timeline-no-duplicate-description": timelineNoDuplicateDescription,
+  "timeline-no-duplicate-title": timelineNoDuplicateTitle,
+  "timeline-no-empty-description-block": timelineNoEmptyDescriptionBlock,
 }

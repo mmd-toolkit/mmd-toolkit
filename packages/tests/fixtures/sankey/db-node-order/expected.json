@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, nodes: the nodes are in the order of their first mention, a source before its target."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b",
+      "c"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      },
+      {
+        "source": "c",
+        "target": "a",
+        "value": 2
+      }
+    ]
+  }
+}

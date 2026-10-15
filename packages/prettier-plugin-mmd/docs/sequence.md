@@ -26,8 +26,10 @@ that line. [fixture: indentation/blocks] [fixture: indentation/sections]
 [fixture: indentation/other-blocks-kept] A level is what Prettier's `useTabs`
 and `tabWidth` options say: two spaces by default. [fixture:
 indentation/tab-width-4] [fixture: indentation/use-tabs] The indentation written
-in the input is not kept: whitespace at the start of a line is nothing to
-mermaid.js. [fixture: indentation/sections]
+in the input is not kept. Whitespace at the start of a line is nothing to
+mermaid.js, so the printer chooses the indentation from the structure alone, and
+one rule per level prints the same text whatever the input was indented with.
+[fixture: indentation/sections]
 
 Input
 ([indentation/blocks-input.mmd](../tests/fixtures/sequence/indentation/blocks-input.mmd)):
@@ -287,8 +289,10 @@ arrow-spacing/plus-and-minus-kept] [fixture:
 arrow-spacing/parentheses-whitespace-kept] [fixture:
 whitespace-between-tokens/comma-whitespace-kept] [fixture:
 whitespace-between-tokens/wrap-prefix-kept] Keywords keep the case in which they
-are written (`PARTICIPANT A`, `Note LEFT OF A`): mermaid.js reads them in any
-case. [fixture: whitespace-between-tokens/keyword-case-kept]
+are written (`PARTICIPANT A`, `Note LEFT OF A`). mermaid.js reads them in any
+case and the Db is the same, so nothing forces the case; it is the author's, and
+the printer does not rewrite it. [fixture:
+whitespace-between-tokens/keyword-case-kept]
 
 Input
 ([whitespace-between-tokens/collapsed-input.mmd](../tests/fixtures/sequence/whitespace-between-tokens/collapsed-input.mmd)):
@@ -492,15 +496,16 @@ sequenceDiagram
 
 The `:` before the text of a message, a note, and a `links`, `link`,
 `properties`, or `details` statement, and the `:` after `accTitle` and
-`accDescr`, touch what comes before them and have one space after them, except
-next to a directive, where the whitespace written is kept (see
-[Directives](#directives)). [fixture: colons/spaced] [fixture:
-colons/other-statements-spaced] [fixture: colons/directive-around-colon-kept]
-mermaid.js reads the text without the whitespace at its ends. When the text is
-empty, nothing follows the `:`. [fixture: colons/spaced] [fixture:
-colons/empty-text] A line break after the `:` of `accTitle` is whitespace for
-mermaid.js, so the next line is its text: an `accTitle:` with no text cannot
-stand before another statement. [fixture: colons/acc-title-colon-line-break]
+`accDescr`, touch what comes before them and have one space after them, as the
+documentation of mermaid.js writes a sequence diagram, except next to a
+directive, where the whitespace written is kept (see [Directives](#directives)).
+[fixture: colons/spaced] [fixture: colons/other-statements-spaced] [fixture:
+colons/directive-around-colon-kept] mermaid.js reads the text without the
+whitespace at its ends. When the text is empty, nothing follows the `:`.
+[fixture: colons/spaced] [fixture: colons/empty-text] A line break after the `:`
+of `accTitle` is whitespace for mermaid.js, so the next line is its text: an
+`accTitle:` with no text cannot stand before another statement. [fixture:
+colons/acc-title-colon-line-break]
 
 Input
 ([colons/spaced-input.mmd](../tests/fixtures/sequence/colons/spaced-input.mmd)):
@@ -865,13 +870,16 @@ in the [folder](../tests/fixtures/sequence/multi-line-statements)).
 
 As in a flowchart: the lines of an `accDescr { ... }` block and of a data block
 written over several lines are kept as written, and the `}` of an `accDescr`
-block stands at the level of its statement. [fixture: multi-line-values/kept]
-[fixture: multi-line-values/accdescr-block-closing-brace-after-text-kept]
-[fixture: multi-line-values/accdescr-block-blank-and-comment-lines-kept]
-[fixture: multi-line-values/data-block-in-block-kept] A block without text,
-whose lines are only comment lines, holds no value: its comment lines stand one
-level deeper than the `accDescr`, as comment lines inside a statement do, and
-its `}` at the level of the `accDescr`. [fixture:
+block stands at the level of its statement. Outside a subgraph the columns of
+those lines are not in the Db, so keeping them is a choice, whose reason is in a
+flowchart (see [Multi-line values](./flowchart.md#multi-line-values)). [fixture:
+multi-line-values/kept] [fixture:
+multi-line-values/accdescr-block-closing-brace-after-text-kept] [fixture:
+multi-line-values/accdescr-block-blank-and-comment-lines-kept] [fixture:
+multi-line-values/data-block-in-block-kept] A block without text, whose lines
+are only comment lines, holds no value: its comment lines stand one level deeper
+than the `accDescr`, as comment lines inside a statement do, and its `}` at the
+level of the `accDescr`. [fixture:
 multi-line-values/accdescr-block-comment-only] [fixture:
 multi-line-values/accdescr-block-without-text-kept]
 
@@ -943,4 +951,10 @@ diagram or the input would be rejected:
   in it, such as a title with a comment line between its keyword and its text;
 - whether whitespace is written before the mark of a comment after a statement,
   and a U+2028 or U+2029 between a comment and a comment line after it;
-- the arrows, and the case of keywords.
+- the arrows.
+
+Some text is kept as written by choice, because the Db is the same either way:
+the case of keywords, which is the author's. The whitespace before the mark of a
+comment, listed above, decides what mermaid.js reads after some statements, such
+as `autonumber 5`; after the others the Db is the same either way, and it is
+kept as written so that one rule holds.

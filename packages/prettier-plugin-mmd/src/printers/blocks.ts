@@ -667,17 +667,19 @@ export function openingLine(
 
 /**
  * Prints a diagram from its header line: its statements one level deeper,
- * and the end of the text. The statements run to the end of the text, so
- * comments and directives after the last one stand at its level, and what
- * stands on the last line is a line of its own.
+ * or at the level of the header with `bodyDepth` 0 (a sankey diagram, whose
+ * lines cannot be indented), and the end of the text. The statements run to
+ * the end of the text, so comments and directives after the last one stand
+ * at its level, and what stands on the last line is a line of its own.
  */
 export function printDiagramBlock(
   source: Source,
   header: Line,
   block: PrintedBlock,
   options: ParserOptions<MermaidAst>,
+  bodyDepth: 0 | 1 = 1,
 ): Doc {
-  const indentation = indentationOf(options, 1)
+  const indentation = indentationOf(options, bodyDepth)
   const lines =
     block.endLeading === null
       ? block.lines
@@ -700,11 +702,8 @@ export function printDiagramBlock(
   const headerBreak = block.continuesOpeningLine
     ? ""
     : lineBreakBetween(header, lines[0], indentation)
-  return [
-    header.doc,
-    indent([headerBreak, joinLines(lines, indentation)]),
-    endOfText,
-  ]
+  const body = [headerBreak, joinLines(lines, indentation)]
+  return [header.doc, bodyDepth === 0 ? body : indent(body), endOfText]
 }
 
 /**

@@ -61,7 +61,6 @@ StateScaleStatement、StateHideEmptyDescriptionStatement のどれかです。
 
 id だけか、説明とともに書いた状態です。
 `A`、`A : text`、`[*]`、`A:::cls`。
-Db にその id の状態がなければ状態を加え、その説明を加えます。
 
 | 欄            | 型                       | 意味                                                          |
 | ------------- | ------------------------ | ------------------------------------------------------------- |
@@ -91,10 +90,10 @@ state 図の矢印はこの 1 つだけで、端の印がなく、線の種類�
 
 ### StateReference
 
-| 欄         | 型                              | 意味                                                    |
-| ---------- | ------------------------------- | ------------------------------------------------------- |
-| `state`    | Identifier または StateTerminal | 状態の id か `[*]`。Identifier の名前が Db の id です。 |
-| `cssClass` | Identifier または null          | `:::` の後の CSS クラス。なければ null。                |
+| 欄         | 型                              | 意味                                     |
+| ---------- | ------------------------------- | ---------------------------------------- |
+| `state`    | Identifier または StateTerminal | 状態の id か `[*]`。                     |
+| `cssClass` | Identifier または null          | `:::` の後の CSS クラス。なければ null。 |
 
 子の欄: `state`、`cssClass`。
 [fixture: state/gram-style-separator-transition] [fixture:
@@ -105,8 +104,6 @@ state/gram-terminal-style-separator]
 `[*]`。欄はありません。
 始まりか終わりかは、その位置から決まります。
 遷移の矢印の前か、それだけのときは始まり、矢印の後なら終わりです。
-Db でのその id は、それがある合成状態から作られます
-（[diagrams/state.ja.md](../diagrams/state.ja.md) を参照）。
 [fixture: state/gram-terminal-alone]
 
 ### StateCompositeStatement
@@ -151,8 +148,9 @@ state/gram-empty-description-block-after-empty-string-before-body]
 [fixture: state/gram-state-empty-string-after-name] [fixture:
 state/gram-state-empty-string-after-name-body-next-line]
 本体があれば、その文はその id の合成状態を定めます。
-本体がなければ、Db に何も加えません。
-`state A`、2 つのそのような文である `state a b`、`state` だけがそうです。
+本体はなくてもかまいません。
+`state A`、2 つのそのような文である `state a b`、`state` だけの文は、
+本体を持ちません。
 [fixture: state/lex-keyword-upper-case] [fixture:
 state/lex-state-without-body] [fixture: state/lex-state-two-names] [fixture:
 state/lex-state-keyword-alone]
@@ -224,7 +222,7 @@ state/tokens-alias-ignored-semicolon-then-spaces]
 
 子の欄: `id`。
 id は空白を持てます。`state f 1 <<fork>>` は fork `f 1` です。
-`state <<join>>` は id を持たず、Db の id は空です。
+`state <<join>>` は id を持ちません。
 [fixture: state/lex-fork-spaced-id] [fixture: state/lex-join-empty-id]
 [fixture: state/lex-choice-square-brackets]
 
@@ -274,13 +272,13 @@ state/lex-note-colon-then-one-character]
 
 ### StateFloatingNoteStatement
 
-`note "テキスト" as N1`。Db に何も加えません。
+`note "テキスト" as N1`。
 [fixture: state/lex-floating-note]
 
-| 欄     | 型                       | 意味                                                                      |
-| ------ | ------------------------ | ------------------------------------------------------------------------- |
-| `text` | StateLiteral または null | 引用符の間のテキスト。すべて空白なら null。                               |
-| `id`   | StateLiteral または null | `as` の後、行の終わりまでのテキスト。空なら null。Db はそれを読みません。 |
+| 欄     | 型                       | 意味                                               |
+| ------ | ------------------------ | -------------------------------------------------- |
+| `text` | StateLiteral または null | 引用符の間のテキスト。すべて空白なら null。        |
+| `id`   | StateLiteral または null | `as` の後、行の終わりまでのテキスト。空なら null。 |
 
 子の欄: `text`、`id`。
 [fixture: state/lex-floating-note-id-spaces]
@@ -445,7 +443,7 @@ state/header-empty-description-block]
 
 ### StateScaleStatement
 
-`scale 350 width`。Db に何も加えません。
+`scale 350 width`。
 
 | 欄      | 型             | 意味 |
 | ------- | -------------- | ---- |
@@ -456,7 +454,7 @@ state/header-empty-description-block]
 
 ### StateHideEmptyDescriptionStatement
 
-`hide empty description`。欄はありません。Db に何も加えません。
+`hide empty description`。欄はありません。
 [fixture: state/gram-hide-empty-description]
 
 ### StateIgnoredStatement

@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sankey.md",
+    "line": 120
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "Bio-conversion",
+      "Losses",
+      "Solid",
+      "Gas"
+    ],
+    "links": [
+      {
+        "source": "Bio-conversion",
+        "target": "Losses",
+        "value": 26.862
+      },
+      {
+        "source": "Bio-conversion",
+        "target": "Solid",
+        "value": 280.322
+      },
+      {
+        "source": "Bio-conversion",
+        "target": "Gas",
+        "value": 81.144
+      }
+    ]
+  }
+}

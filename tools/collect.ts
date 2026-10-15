@@ -134,6 +134,11 @@ const SPEC_FILES: Readonly<
   mindmap: () => ["diagrams/mindmap/mindmap.spec.ts"],
   // The directory has no other spec file; the renderers and the Db have none.
   timeline: () => ["diagrams/timeline/timeline.spec.js"],
+  // The directory has no other spec file. The spec reads `energy.csv` next to
+  // it, which the recorder gives it, and passes the texts through
+  // `prepareTextForParsing()`, which the recorder leaves as they are, so that
+  // the text recorded is the text that mermaid.js is given.
+  sankey: () => ["diagrams/sankey/parser/sankey.spec.ts"],
 }
 
 /**

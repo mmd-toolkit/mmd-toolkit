@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, settings: with htmlLabels false for the flowchart, the ids are recorded as written."
+  },
+  "config": {
+    "securityLevel": "other",
+    "flowchart": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "A<b>x</b>",
+      "B"
+    ],
+    "links": [
+      {
+        "source": "A<b>x</b>",
+        "target": "B",
+        "value": 1
+      }
+    ]
+  }
+}

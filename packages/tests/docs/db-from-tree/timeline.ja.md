@@ -162,6 +162,7 @@ period の文は、タスクを 1 つ加えます。
   `section` は、その period の前の最後の `section` の文の名前で、
   書かれたとおりです。なければ空のテキストです。
   [fixture: timeline/db-section-two-with-tasks]
+  [fixture: timeline/spec-timeline-8bf1d202]
   [fixture: timeline/db-section-after-tasks]
   [fixture: timeline/db-section-then-title]
 - `events` は、文の event のテキストをソースの順に並べたものです。

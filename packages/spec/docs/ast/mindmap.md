@@ -60,17 +60,15 @@ and class lines that decorate it and the nodes below it: `root`, `a(text)`,
 Child fields: `id`, `shape`, `decorations`, `children`. The indentation counts
 every whitespace character other than a line feed as one, a tab and a U+3000
 included, in the text without its directives; for a root on the line of the
-header, it is the whitespace after the header. The Db reads the level of a node
-as its `indent` minus that of the root. The children of a node are the nodes
-whose nearest earlier node with a smaller indentation is this one (see
+header, it is the whitespace after the header. The children of a node are the
+nodes whose nearest earlier node with a smaller indentation is this one (see
 [Indentation and parents](../diagrams/mindmap.md#indentation-and-parents)): in
 `root`, `    a`, `  b`, `    c` on four lines, a and b are children of the root
 and c a child of b. The decorations of a node are the icon and class lines
 between its line and the next node line, whatever their indentation, because
 mermaid.js gives them to the node it added last. The `id` keeps the whitespace
-at its end: `a (x)` has the id `a `. The Db reads a shape alone with the text of
-its label as the id. [fixture: mindmap/db-indent-tab-levels] [fixture:
-mindmap/db-indent-fullwidth-space] [fixture:
+at its end: `a (x)` has the id `a `. [fixture: mindmap/db-indent-tab-levels]
+[fixture: mindmap/db-indent-fullwidth-space] [fixture:
 mindmap/lex-indent-around-directive] [fixture:
 mindmap/db-first-node-on-header-line] [fixture: mindmap/db-indent-root-offset]
 [fixture: mindmap/gram-indent-between-earlier-levels] [fixture:
@@ -90,11 +88,9 @@ The shape of a node: an opener, a label, and a closer, such as `(text)`,
 | `closer` | string       | `)`, `))`, `]`, `}}`, `(`, `((`, `(-`, or `-)`.    |
 | `label`  | MindmapLabel | The text, string, or markdown string between them. |
 
-Child fields: `label`. The closer need not match the opener: `[text)` is a
-rectangle. The Db reads the type of the shape from the opener, and for `(` from
-the closer: `[` is a rectangle, `((` a circle, `)` a cloud, `))` a bang, `{{` a
-hexagon, `(` with `)` a rounded rectangle and with any other closer a cloud, and
-`(-` and `-)` the default shape (see
+Child fields: `label`. The closer need not match the opener: `[text)` has the
+opener `[` and the closer `)`. How mermaid.js reads the type of the shape from
+them is in the summary of the tests package (see
 [Nodes and shapes](../diagrams/mindmap.md#nodes-and-shapes)). [fixture:
 mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded] [fixture:
 mindmap/db-shape-circle] [fixture: mindmap/db-shape-cloud] [fixture:
@@ -146,10 +142,9 @@ A class line: `:::big red`.
 | `cssClass` | MindmapLiteral | The rest of the line after `:::`. |
 
 Child fields: `cssClass`. The text keeps the whitespace at its ends; it is never
-empty, as an empty class line makes the input rejected. The Db reads it as one
-class string, spaces included. [fixture: mindmap/db-class-line] [fixture:
-mindmap/db-class-leading-whitespace] [fixture: mindmap/db-class-trailing-space]
-[fixture: mindmap/db-class-empty]
+empty, as an empty class line makes the input rejected. [fixture:
+mindmap/db-class-line] [fixture: mindmap/db-class-leading-whitespace] [fixture:
+mindmap/db-class-trailing-space] [fixture: mindmap/db-class-empty]
 
 ### MindmapLiteral
 

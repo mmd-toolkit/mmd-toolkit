@@ -182,6 +182,14 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "MindmapLabel", message: NOT_WRITTEN_TEXT },
   { type: "MindmapLiteral", message: NOT_WRITTEN_TEXT },
   { type: "TimelineLiteral", message: NOT_WRITTEN_TEXT },
+  {
+    type: "SankeyIdentifier",
+    message: "name is not its written text without the whitespace at its ends",
+  },
+  {
+    type: "SankeyLiteral",
+    message: "value is not its written text without the whitespace at its ends",
+  },
   { type: "RequirementIdentifier", message: "name is not its written text" },
   { type: "RequirementLiteral", message: NOT_WRITTEN_TEXT },
   { type: "RequirementIgnoredText", message: NOT_WRITTEN_TEXT },
@@ -813,6 +821,18 @@ const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
     diagram: "er",
     fixture: "lex-direction-line-text-before",
     reason: "its tokens are words and empty backquotes",
+  },
+  SankeyIdentifier: {
+    diagram: "sankey",
+    fixture: "db-fields-trimmed",
+    reason:
+      "its token is the field without the whitespace at its ends; only a field of whitespace only has a token of whitespace (ast/sankey.md, SankeyIdentifier)",
+  },
+  SankeyLiteral: {
+    diagram: "sankey",
+    fixture: "db-fields-trimmed",
+    reason:
+      "its token is the field without the whitespace at its ends; only a field of whitespace only has a token of whitespace (ast/sankey.md, SankeyLiteral)",
   },
 }
 

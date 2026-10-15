@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, comments: a comment line inside quotes is removed, so the field is `a` and `b` on two lines."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a\nb",
+      "x"
+    ],
+    "links": [
+      {
+        "source": "a\nb",
+        "target": "x",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -23,16 +23,20 @@ statements after a `section`, up to the next `section`, one level deeper still:
 the tasks, click statements, settings, and every other statement. The `section`
 itself stands at the first level. The tree of a Gantt chart is flat, with no
 block of statements, so the level of a statement is decided by its place among
-the others. [fixture: indentation/sections-and-tasks-nested] [fixture:
+the others. The tasks of a section stand inside it, as the documentation of
+mermaid.js writes them in a Gantt chart and in a user journey. [fixture:
+indentation/sections-and-tasks-nested] [fixture:
 indentation/statements-before-the-first-section] [fixture:
 indentation/every-statement-under-a-section] [fixture:
 indentation/consecutive-sections] [fixture:
 indentation/click-statement-over-lines-under-a-section] A level is what
 Prettier's `useTabs` and `tabWidth` options say: two spaces by default.
 [fixture: indentation/tab-width-4] [fixture: indentation/use-tabs] The
-indentation written in the input is not kept: whitespace at the start of a line
-is nothing to mermaid.js. [fixture: indentation/written-indentation-dropped] The
-header stands at the first column, also where whitespace was written before it.
+indentation written in the input is not kept. Whitespace at the start of a line
+is nothing to mermaid.js, so the printer chooses the indentation from the
+structure alone, and one rule per level prints the same text whatever the input
+was indented with. [fixture: indentation/written-indentation-dropped] The header
+stands at the first column, also where whitespace was written before it.
 [fixture: indentation/header-leading-whitespace] The lines of a text that is
 kept as written, such as the lines of an `accDescr` block, keep their columns,
 and the `}` that closes a block stands at the level of its statement (see
@@ -91,7 +95,9 @@ Each statement stands on a line of its own. Nothing separates statements in a
 Gantt chart (diagrams/gantt.md, Diagram and statements), and the header,
 `inclusiveEndDates`, a `weekday` or `weekend` statement with its day, an
 `accDescr` block, and a click statement are followed on their line by the next
-statement: the statement after any of them goes to a line of its own. [fixture:
+statement: the statement after any of them goes to a line of its own. Two
+statements on one line are hard to read, and the other diagram types print one
+statement on a line too. [fixture:
 statements-one-per-line/header-then-statement] [fixture:
 statements-one-per-line/header-then-task] [fixture:
 statements-one-per-line/keyword-statements] [fixture:
@@ -221,13 +227,13 @@ gantt
 ### Blank lines
 
 Runs of empty lines become one empty line, and empty lines at the start and the
-end of the body are dropped. [fixture: blank-lines/collapsed] [fixture:
-blank-lines/body-edges-dropped] An empty line between statements is kept, as
-one. [fixture: blank-lines/between-statements-kept-as-one] The empty lines
-around comment lines are handled in the same way. [fixture:
-blank-lines/around-comment-lines] Empty lines around a `section` are kept, as
-one, at the level of the lines next to them. [fixture:
-blank-lines/around-sections]
+end of the body are dropped, as in the other diagram types. [fixture:
+blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped] An empty line
+between statements is kept, as one. [fixture:
+blank-lines/between-statements-kept-as-one] The empty lines around comment lines
+are handled in the same way. [fixture: blank-lines/around-comment-lines] Empty
+lines around a `section` are kept, as one, at the level of the lines next to
+them. [fixture: blank-lines/around-sections]
 
 Input
 ([blank-lines/collapsed-input.mmd](../tests/fixtures/gantt/blank-lines/collapsed-input.mmd)):
@@ -291,10 +297,11 @@ task-data/hash-and-semicolon-descriptions]
 
 The first item touches the colon, and a `,` touches the item before it and is
 followed by one space where an item follows: whitespace around the colon and the
-commas is not in the Db, and is not kept. [fixture:
-task-data/colon-touches-first-item] [fixture: task-data/comma-spacing] [fixture:
-task-data/tab-around-items] The whitespace at the end of the data is dropped.
-[fixture: task-data/trailing-whitespace-dropped]
+commas is not in the Db, and is not kept. This is the form of most task lines in
+the documentation of mermaid.js, and the space stands only before an item.
+[fixture: task-data/colon-touches-first-item] [fixture: task-data/comma-spacing]
+[fixture: task-data/tab-around-items] The whitespace at the end of the data is
+dropped. [fixture: task-data/trailing-whitespace-dropped]
 
 The tags and the items are printed as written. The whitespace inside an item is
 part of it, and so is the case of a tag: `after   a1` is the item as it stands,
@@ -392,9 +399,10 @@ settings/hash-semicolon-percent-in-values]
 
 Only the one whitespace character that separates the keyword from its value is
 formatted: one space stands there, whatever it was written, a tab or a line
-feed. [fixture: settings/one-space-after-keyword] [fixture:
-settings/value-on-next-line] A directive between the keyword and the value stays
-where it is (see [Directives](#directives)). [fixture:
+feed: the character is not in the Db, and the separator has one form. [fixture:
+settings/one-space-after-keyword] [fixture: settings/value-on-next-line] A
+directive between the keyword and the value stays where it is (see
+[Directives](#directives)). [fixture:
 settings/directive-between-keyword-and-value-kept]
 
 Input
@@ -616,8 +624,9 @@ gantt
 
 ### Keyword case
 
-Keywords keep the case in which they are written: mermaid.js reads them in any
-case, and the Db is the same. [fixture: keyword-case/keywords-kept] [fixture:
+Keywords keep the case in which they are written. mermaid.js reads them in any
+case and the Db is the same, so nothing forces the case; it is the author's, and
+the printer does not rewrite it. [fixture: keyword-case/keywords-kept] [fixture:
 keyword-case/click-keywords-kept] The header `gantt` is detected in lower case
 only, and the tags of a task are read in exactly the case of `active`, `done`,
 `crit`, `milestone`, and `vert`, so `Done` is no tag and is not changed.
@@ -777,11 +786,14 @@ line, or a colon written on a later line than the keyword, is printed on one
 line. [fixture: accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/keyword-and-colon-over-lines-joined]
 
-The lines of an `accDescr { ... }` block are kept as written, and its `}` stands
-at the level of its statement; a text on the line of the `{` has one space
-inside the braces where it was written apart, and the braces that touch their
-text keep touching. [fixture: accessibility-statements/block-lines-kept]
-[fixture: accessibility-statements/block-text-on-opening-line] [fixture:
+The lines of an `accDescr { ... }` block are kept as written by choice, not by
+need: the whitespace at the start of a line is not in the Db (`a`, a line break,
+and `b` give the same description as with `  b`), and the lines are the text of
+the author, which the printer does not format. Its `}` stands at the level of
+its statement; a text on the line of the `{` has one space inside the braces
+where it was written apart, and the braces that touch their text keep touching.
+[fixture: accessibility-statements/block-lines-kept] [fixture:
+accessibility-statements/block-text-on-opening-line] [fixture:
 accessibility-statements/block-comment-and-empty-lines-kept] Whitespace inside
 the text is part of it, and stays. [fixture:
 accessibility-statements/block-inner-whitespace-kept] A directive between the
@@ -893,10 +905,10 @@ setting, `weekday`, `weekend`, `includes`, `excludes`, `accTitle:`, and
 multi-line-statements/value-on-next-line-joined] [fixture:
 multi-line-statements/blank-lines-between-keyword-and-day] A statement with a
 comment line, a directive, or a `;` in it is kept as written, since the comment
-line would take the rest of the line it stands on, and a `;` could come to a
-line that matches the line rule. [fixture:
-multi-line-statements/comment-line-inside-kept] [fixture:
-multi-line-statements/directive-inside-kept] [fixture:
+line would take the rest of the line it stands on, the whitespace of a line that
+holds a directive is read with it, and a `;` could come to a line that matches
+the line rule. [fixture: multi-line-statements/comment-line-inside-kept]
+[fixture: multi-line-statements/directive-inside-kept] [fixture:
 multi-line-statements/semicolon-inside-kept]
 
 Input
@@ -956,9 +968,10 @@ monday
 
 ### Multi-line values
 
-The arguments and the name of a call, the string of a link, and the lines of an
-`accDescr` block are kept as written, with the line breaks and the whitespace
-inside, since they are part of the value. [fixture:
+The arguments and the name of a call and the string of a link are kept as
+written, with the line breaks and the whitespace inside, since they are part of
+the value. The lines of an `accDescr` block are kept as written too, by choice:
+the whitespace at the start of a line is not in the Db. [fixture:
 multi-line-values/call-arguments-kept] [fixture:
 multi-line-values/call-name-kept] [fixture: multi-line-values/href-string-kept]
 [fixture: multi-line-values/description-block-lines-kept] A comment line inside

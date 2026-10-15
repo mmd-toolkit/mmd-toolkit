@@ -29,10 +29,12 @@ that line, also in a subgraph. [fixture:
 indentation/attribute-blocks-in-subgraphs] A level is what Prettier's `useTabs`
 and `tabWidth` options say: two spaces by default. [fixture:
 indentation/tab-width-4] [fixture: indentation/use-tabs] The indentation written
-in the input is not kept: whitespace at the start of a line is nothing to
-mermaid.js. [fixture: indentation/written-indentation-dropped] The one exception
-is an `accTitle` or `accDescr` statement that holds a direction, which keeps the
-first column (see [Accessibility statements](#accessibility-statements)).
+in the input is not kept. Whitespace at the start of a line is nothing to
+mermaid.js, so the printer chooses the indentation from the structure alone, and
+one rule per level prints the same text whatever the input was indented with.
+[fixture: indentation/written-indentation-dropped] The one exception is an
+`accTitle` or `accDescr` statement that holds a direction, which keeps the first
+column (see [Accessibility statements](#accessibility-statements)).
 
 Input
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/er/indentation/nested-subgraphs-input.mmd)):
@@ -83,7 +85,8 @@ attribute-blocks/alias-and-classes]
 
 An empty block, with nothing but whitespace between its braces, is printed as
 `{ }` on the line of the entity, however it is written: `{}`, `{   }`, and
-braces on different lines all declare the entity without attributes. [fixture:
+braces on different lines all declare the entity without attributes. The form
+`{ }` is the one of the other diagram types. [fixture:
 attribute-blocks/empty-unified] [corpus fixture: er/gram-block-empty] [corpus
 fixture: er/gram-block-empty-space] [corpus fixture:
 er/gram-block-empty-line-feed] [corpus fixture: er/gram-block-blank-lines] A
@@ -206,7 +209,11 @@ erDiagram
 
 An attribute is printed on one line: its type, its name, its keys, and its
 comment, with one space between them, and a run of spaces or tabs between two
-parts becomes one space. [fixture: attribute-spacing/parts-collapsed] The `?` of
+parts becomes one space. [fixture: attribute-spacing/parts-collapsed] The parts
+are not aligned in columns: aligning would change every line of a block when one
+attribute changes, the width of a name cannot be counted in characters, and the
+examples in the documentation of mermaid.js are not aligned either. The one
+space, and the `?` touching its type, are the form of those examples. The `?` of
 an optional type touches the type, however it was written. [fixture:
 attribute-spacing/optional-touching] The keys are separated by a `,` followed by
 one space, with no space before it, and keep the case in which they are written,
@@ -317,11 +324,13 @@ erDiagram
 ### Statements one per line
 
 Nothing separates two statements of an ER diagram, and mermaid.js reads
-statements that follow one another on a line. Each statement is printed on a
-line of its own: `A B` is the entities A and B, a relationship stands on one
-line and the entity after its role on the next, and a statement that follows the
-`}` of an attribute block, the `end` of a subgraph, or the header stands on the
-line after it. [fixture: statements-one-per-line/entities] [fixture:
+statements that follow one another on a line. A line of two statements is hard
+to read, and a flowchart, a sequence diagram, a class diagram, and a state
+diagram print one statement on a line too. Each statement is printed on a line
+of its own: `A B` is the entities A and B, a relationship stands on one line and
+the entity after its role on the next, and a statement that follows the `}` of
+an attribute block, the `end` of a subgraph, or the header stands on the line
+after it. [fixture: statements-one-per-line/entities] [fixture:
 statements-one-per-line/relationships] [fixture:
 statements-one-per-line/role-then-entity] [fixture:
 statements-one-per-line/subgraph-end-then-entity] [fixture:
@@ -515,8 +524,9 @@ Within a line, a run of spaces and tabs between two tokens becomes one space,
 and tokens that touch keep touching, unless a rule below says otherwise.
 [fixture: whitespace-between-tokens/collapsed] [fixture:
 whitespace-between-tokens/touching-kept] Keywords keep the case in which they
-are written: mermaid.js reads them in any case, and the keys of an attribute
-keep it in the Db. [fixture: whitespace-between-tokens/keyword-case-kept]
+are written. mermaid.js reads them in any case, so the case is the author's and
+the printer does not rewrite it; the keys of an attribute keep it in the Db.
+[fixture: whitespace-between-tokens/keyword-case-kept]
 
 Input
 ([whitespace-between-tokens/touching-kept-input.mmd](../tests/fixtures/er/whitespace-between-tokens/touching-kept-input.mmd)):
@@ -588,8 +598,9 @@ erDiagram
 
 A relationship has one space between the left entity and the relationship,
 between the relationship and the right entity, and on each side of the `:` of
-its role, however it was written. [fixture:
-relationship-spacing/around-units-and-role] [fixture:
+its role, however it was written: this is the form of the documentation of
+mermaid.js, and the role may be a name, a string, or a quoted name alike.
+[fixture: relationship-spacing/around-units-and-role] [fixture:
 relationship-spacing/names-and-classes] [fixture:
 relationship-spacing/role-forms] [corpus fixture: er/lex-relationship-no-spaces]
 [corpus fixture: er/lex-colon-no-space] The classes of an entity touch their
@@ -598,16 +609,18 @@ relationship-spacing/names-and-classes]
 
 The three units of the relationship, the cardinality on each side and the line
 between them, touch each other where both are written with symbols, and are
-separated by one space where either is written with a word: `A || -- o{ B` is
-printed `A ||--o{ B`, and `A ||--only one B` is printed `A ||-- only one B`.
-[fixture: relationship-spacing/symbols-touch] [fixture:
-relationship-spacing/words-spaced] [fixture:
-relationship-spacing/symbols-and-words] [corpus fixture:
+separated by one space where either is written with a word, since the examples
+in the documentation of mermaid.js write symbols touching and words apart, and
+one rule keeps both: `A || -- o{ B` is printed `A ||--o{ B`, and
+`A ||--only one B` is printed `A ||-- only one B`. [fixture:
+relationship-spacing/symbols-touch] [fixture: relationship-spacing/words-spaced]
+[fixture: relationship-spacing/symbols-and-words] [corpus fixture:
 er/lex-relationship-spaces-in-spec] `many(0)`, `many(1)`, `1+`, `0+`, and `u`
 count as symbols: a space inside `many(0)` is rejected. [corpus fixture:
 er/lex-many-space-before-parenthesis] The spelling of a cardinality is kept,
-symbols or words, in the case in which it is written. [fixture:
-relationship-spacing/words-spaced]
+symbols or words, in the case in which it is written: it is the author's choice,
+and a symbol has several words that read the same, so no spelling stands for
+another. [fixture: relationship-spacing/words-spaced]
 
 Three cases keep the whitespace as it is written, since another one would make
 mermaid.js read other units. A right cardinality `u`, which is `md-parent` only
@@ -709,16 +722,16 @@ erDiagram
 
 ### Entities
 
-The alias of an entity touches its name and has nothing inside its brackets:
-`p [ Person ]` is printed `p[Person]`. [fixture: entities/alias-tight] The
-classes after `:::` touch it, and are separated by a `,` that touches the
-classes on both sides: `A ::: c1 , c2` is printed `A:::c1,c2`. [fixture:
-entities/classes-tight] [fixture: entities/alias-and-classes] The `{` of an
-attribute block stands after one space (see
-[Attribute blocks](#attribute-blocks)). The names are kept as written, quoted or
-not, numbers included. [fixture: entities/names-kept] A directive between the
-parts of an entity keeps the whitespace written on each side of it. [fixture:
-entities/directive-between-parts-kept]
+The alias of an entity touches its name and has nothing inside its brackets, as
+in most examples of the documentation of mermaid.js: `p [ Person ]` is printed
+`p[Person]`. [fixture: entities/alias-tight] The classes after `:::` touch it,
+and are separated by a `,` that touches the classes on both sides:
+`A ::: c1 , c2` is printed `A:::c1,c2`. [fixture: entities/classes-tight]
+[fixture: entities/alias-and-classes] The `{` of an attribute block stands after
+one space (see [Attribute blocks](#attribute-blocks)). The names are kept as
+written, quoted or not, numbers included. [fixture: entities/names-kept] A
+directive between the parts of an entity keeps the whitespace written on each
+side of it. [fixture: entities/directive-between-parts-kept]
 
 Input
 ([entities/alias-tight-input.mmd](../tests/fixtures/er/entities/alias-tight-input.mmd)):
@@ -863,12 +876,13 @@ erDiagram
 A direction line is `direction` and its value, with the text that mermaid.js
 does not read before and after them. The text is kept as written. One space
 stands between it and `direction`, where they were written apart, and between
-`direction` and the value; the value is kept in the case in which it is written.
-[fixture: direction/spacing] [fixture: direction/text-kept] [fixture:
-direction/case-kept] A value written on a later line is printed after
-`direction` on one line. [fixture: direction/value-on-next-line-joined] [corpus
-fixture: er/lex-direction-value-next-line] A direction line with a directive or
-a comment line inside is kept as written. [fixture:
+`direction` and the value; the value is kept in the case in which it is written,
+since the case is the author's. [fixture: direction/spacing] [fixture:
+direction/text-kept] [fixture: direction/case-kept] A value written on a later
+line is printed after `direction` on one line. [fixture:
+direction/value-on-next-line-joined] [corpus fixture:
+er/lex-direction-value-next-line] A direction line with a directive or a comment
+line inside is kept as written. [fixture:
 direction/directive-and-comment-line-kept]
 
 Input
@@ -938,7 +952,10 @@ styles-and-classes/over-lines-joined] Whitespace at the end of the last style
 takes the line feed after it, and the next line goes on in the style:
 `classDef a fill:red `, a line break, and `A` define the style `fill:redA` and
 no entity A. So such a statement is kept as written, with the whitespace and the
-line that it takes, and the line stays at the column written. [fixture:
+line that it takes, and the line stays at the column written. Joining the two
+lines (`classDef a fill:red A`) would give the same Db and would show how
+mermaid.js reads them, but it removes the whitespace that the author wrote, and
+the printer does not interpret the statement. [fixture:
 styles-and-classes/trailing-whitespace-takes-next-line] [fixture:
 styles-and-classes/directive-before-next-line] [fixture:
 styles-and-classes/comment-line-inside-kept] [corpus fixture:
@@ -953,7 +970,10 @@ the lines that hold it keep their statements, and the `;` stays. [fixture:
 styles-and-classes/ending-semicolon-kept] [fixture:
 styles-and-classes/ignored-semicolon-kept] [corpus fixture:
 er/lex-classdef-semicolon-line-feed] [corpus fixture:
-er/lex-classdef-ignored-semicolon]
+er/lex-classdef-ignored-semicolon] The rule ignores the `;` only when no
+whitespace lies between the `:` and the `#`, so that whitespace stays as
+written: `style A fill: #f00;` keeps its space. [fixture:
+styles-and-classes/space-after-colon-before-hash-kept]
 
 Input
 ([styles-and-classes/class-def-names-input.mmd](../tests/fixtures/er/styles-and-classes/class-def-names-input.mmd)):
@@ -1030,11 +1050,13 @@ accessibility-statements/text-on-next-line-joined] [fixture:
 accessibility-statements/text-with-comment-line-kept] [corpus fixture:
 er/lex-acc-title-line-feed-after-colon]
 
-The lines of an `accDescr { ... }` block are kept as written, and its `}` stands
-at the level of its statement; a text on the line of the `{` has one space
-inside the braces where it was written apart. [fixture:
-accessibility-statements/block-lines-kept] [fixture:
-accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
+The lines of an `accDescr { ... }` block are kept as written by choice, not by
+need: the whitespace at the start of a line is not in the Db (`a`, a line break,
+and `b` give the same description as with `  b`), and the lines are the text of
+the author, which the printer does not format. Its `}` stands at the level of
+its statement; a text on the line of the `{` has one space inside the braces
+where it was written apart. [fixture: accessibility-statements/block-lines-kept]
+[fixture: accessibility-statements/block-comment-and-empty-lines-kept] [fixture:
 accessibility-statements/block-text-on-opening-line] An empty block, which
 changes nothing, is a statement of its own and follows the rule of whitespace
 between tokens: a run of whitespace in it, line breaks included, becomes one
@@ -1452,7 +1474,8 @@ multi-line-statements/accessibility-text-joined] [fixture:
 multi-line-statements/direction-value-joined] [fixture:
 multi-line-statements/style-over-lines-joined] A statement with a comment line
 or a directive in it is kept as written, since the comment line would take the
-rest of the line it stands on. [fixture:
+rest of the line it stands on, and the whitespace of a line that holds a
+directive is read with it. [fixture:
 multi-line-statements/comment-line-inside-kept] [fixture:
 multi-line-statements/directive-inside-kept]
 

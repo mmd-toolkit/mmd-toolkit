@@ -28,6 +28,8 @@ fixture の置き方と確かめ方は、
 [fixture: indentation/tab-width-4]
 入力に書かれた字下げは保ちません。
 文の行頭の空白は、Mermaid による図の解釈に影響しないためです。
+字下げは構造だけで決められるので、1 つの規則で、
+入力の字下げによらず同じテキストになります。
 [fixture: indentation/written-tabs-dropped]
 
 入力
@@ -62,6 +64,7 @@ stateDiagram-v2
 
 複合状態と、本体を持つ別名の定義の `{` は、空白 1 つの後に、名前の行に置きます。
 次の行に書かれた `{` は、その行に移します。
+`{` の前の空白 1 つは class 図と同じです。
 [fixture: composite-states/split]
 [fixture: composite-states/brace-after-one-space]
 [fixture: composite-states/alias-brace-on-next-line]
@@ -252,6 +255,7 @@ accDescr {}
 ### 1 行に 1 文
 
 各文は 1 行に 1 つ置きます。
+1 行に 2 つの文があると読みにくく、ほかの図種も同じです。
 state 図には文を区切るものがなく、
 `A --> B C --> D` のように 1 行に書かれた文は、それぞれの行に移します。
 click 文の後の空の説明ブロックも同じです。
@@ -373,7 +377,10 @@ stateDiagram-v2
 [fixture: whitespace-between-tokens/collapsed]
 [fixture: whitespace-between-tokens/tabs-collapsed]
 [fixture: whitespace-between-tokens/touching-class-kept]
-flowchart と同じです。
+flowchart と同じです
+（[トークンの間の空白](./flowchart.ja.md#トークンの間の空白)を参照）。
+ただし、別名の定義の語と擬似状態の印は、空白 1 つを置きます
+（[別名](#別名)と[擬似状態](#擬似状態)を参照）。
 `:::`、mermaid.js が読まない `""`、
 スタイルや class 文の `,` も同じです。
 状態に結び付けない独立したノート（`note "..." as ...`）の引用符は、
@@ -659,6 +666,8 @@ stateDiagram-v2
 ### 別名
 
 別名の定義の文字列、`as`、id の間は、接して書かれていても、空白 1 つにします。
+mermaid.js は `"d"as A` を `"d" as A` と同じに読み Db が同じなので、
+文の語を 1 つの形で離します（`asA` は `as` ではありません）。
 mermaid.js は `"d"as A` を `"d" as A` と同じに読むからです。
 [fixture: aliases/second-description-kept]
 [fixture: aliases/tabs-between-parts]
@@ -707,7 +716,8 @@ stateDiagram-v2
 `[[ ]]` で書いた同じ語です。
 その前には、名前に接して書かれていても、空白を 1 つ置きます。
 mermaid.js は名前を末尾の空白を除いて読むので、
-`state f1<<fork>>` は `state f1 <<fork>>` と同じに読まれるからです。
+`state f1<<fork>>` は `state f1 <<fork>>` と同じに読まれ、Db が同じだからです。
+別名の定義の語と同じく、印を名前から 1 つの形で離します。
 [corpus fixture: state/lex-fork-spaced-id]
 [corpus fixture: state/lex-choice-square-brackets]
 [fixture: pseudostates/mark-spaced]
@@ -858,6 +868,9 @@ stateDiagram-v2
 flowchart と同じです。
 `accDescr { ... }` のブロックの行は書かれたまま残し、
 その `}` は文と同じ段に置きます。
+サブグラフの外では、その行の桁は Db に入らないので、残すのは選択で、
+理由は flowchart にあります
+（[複数行の値](./flowchart.ja.md#複数行の値)を参照）。
 [fixture: multi-line-values/kept]
 [fixture: multi-line-values/accdescr-block-single-line-kept]
 [fixture: multi-line-values/accdescr-block-empty-and-comment-lines-kept]
@@ -1088,7 +1101,7 @@ U+2028 か U+2029 の前の無視される `;` がある行です
 - 1 行のノートの id の後、別名の定義の 2 つ目の説明、
   空白だけの説明の `:` の後の空白。
 - `state` の後の名前と `""`。`state` の行に残す。
-- `""` の前と、文の後のコメントの印の前に、空白が書かれているかどうか。
+- `""` の前に、空白が書かれているかどうか。
 - `{` の直前の `%%` と空の説明ブロック。`{` まで。
 - `{` を含み、`state` の名前の後に続く文の行。
 - 空白でキーワードになる id に接した矢印と `:`。
@@ -1097,7 +1110,13 @@ U+2028 か U+2029 の前の無視される `;` がある行です
 - 方向の行の、`direction` の前と値の後のテキスト。
   [corpus fixture: state/lex-direction-line-same-line-transition]
   [fixture: whitespace-between-tokens/direction-line-text-kept]
-- キーワードの大文字小文字と、ヘッダーの綴り。
-  `stateDiagram` か `stateDiagram-v2`。
+- ヘッダーの綴り。`stateDiagram` か `stateDiagram-v2`。
   [corpus fixture: state/header-v1]
   [fixture: indentation/header-without-v2-kept]
+
+次のテキストは、どちらの形でも Db が同じなので、選択として書かれたまま残します。
+キーワードの大文字小文字は作者のものです。
+文の後のコメントの印の前に空白が書かれているかどうかは、
+既知の差異（`comment-takes-character`、`percent-brace-after-unit`）の場所では、
+mermaid.js がコメントを、接するものによって読むからです。
+場所の一覧よりも、1 つの規則のほうが単純です。

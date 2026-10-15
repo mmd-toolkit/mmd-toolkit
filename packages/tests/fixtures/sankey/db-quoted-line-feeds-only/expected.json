@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, quotes: a field of a line feed is the empty id."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "",
+      "c"
+    ],
+    "links": [
+      {
+        "source": "",
+        "target": "c",
+        "value": 1
+      }
+    ]
+  }
+}

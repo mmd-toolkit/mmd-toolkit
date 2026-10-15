@@ -182,7 +182,7 @@ mermaid.js がディレクティブを取り除いた後のテキストを読む
 - `class Fo%%{init: {}}%%o` は `Foo` を、
   `class A%%{init: {}}%%.B` はクラス `A.B` を、
   `namespace Fo%%{init: {}}%%o {` は名前空間 `Foo` を宣言し、
-  `A : +fo%%{init: {}}%%o()` は方法 `foo` を加え、
+  `A : +fo%%{init: {}}%%o()` は方法 `foo` を持ち、
   `A --> B : x%%{init: {}}%%y` はラベル `xy` を持ちます。
   どれも mermaid.js と同じです。
   無視される `;` も同じで、多重度 `"style:#x"` の後の
@@ -1107,7 +1107,7 @@ class/gram-title-not-statement]
 クラスの名前だけの文は、同じ行の前後に
 ディレクティブや空の説明ブロックがあってもかまいません。
 `%%{init: {}}%% Foo`、`accDescr {} Foo`、`Foo accDescr {}` は、
-クラスを足さないクラスの名前だけの文です。
+クラスの名前だけの文です。
 [fixture: class/gram-directive-then-name-alone]
 [fixture: class/gram-empty-description-block-then-name-alone]
 [fixture: class/gram-name-alone-then-empty-description-block]

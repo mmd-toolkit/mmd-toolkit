@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sankey.md Known divergences: `C4Component` in a quoted field makes mermaid.js detect C4; here it is a sankey diagram."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nsankey\"C4Component\"\n^"
+  }
+}

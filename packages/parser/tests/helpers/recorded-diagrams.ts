@@ -13,4 +13,5 @@ export const RECORDED_DIAGRAMS: readonly DiagramType[] = [
   "requirement",
   "mindmap",
   "timeline",
+  "sankey",
 ]

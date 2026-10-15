@@ -25,6 +25,8 @@ period と、そのほかのすべての文です。
 `section` 自身は 1 段目です。
 timeline の木は平らで、文のまとまりを表す block を持たないので、文の段は、
 ほかの文の中での位置で決まります。
+これは journey と Gantt 図の規則で、section の period は、
+mermaid.js の文書の書き方と同じく、section の中に置きます。
 [fixture: indentation/sections-and-periods-nested]
 [fixture: indentation/statements-before-the-first-section]
 [fixture: indentation/every-statement-under-a-section]
@@ -37,6 +39,8 @@ timeline の木は平らで、文のまとまりを表す block を持たない�
 行頭の空白は mermaid.js にとって何の意味も持たず、
 前の period より深く書いた period も別の period です
 （diagrams/timeline.md、Lexical structure）。
+字下げは構造だけで決められるので、1 つの規則で、
+入力の字下げによらず同じテキストになります。
 [fixture: indentation/written-indentation-dropped]
 ヘッダーは、前に空白が書かれていても 1 列目に置きます。
 [fixture: indentation/header-leading-whitespace]
@@ -230,6 +234,7 @@ timeline
 ### 空行
 
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
+journey と同じ規則です。
 [fixture: blank-lines/collapsed]
 [fixture: blank-lines/body-edges-dropped]
 コメント行の周りの空行も同じに扱います。
@@ -316,6 +321,9 @@ event の中の `:`、`#`、`%%` はテキストの文字で、
 event のテキストは、`:` の後ろに空白 1 つを置いて続けます。
 `:` の後ろの 1 文字は字句解析器が読む区切りで、どの文字でも Db に入りません。
 その後ろの空白がテキストです。
+区切りは、書かれた文字が何であっても空白にします。
+`title` と `section` の後ろ（[title と section](#title-と-section)）と同じで、
+区切りの形を 1 つにするためです。
 [fixture: periods-and-events/separator-tab]
 
 event は、書かれた行に残します。
@@ -331,6 +339,10 @@ event が `Facebook` から `Facebook ` になります。
 [fixture: periods-and-events/events-on-both]
 
 period とその event の 2 行目以降は、1 行目より 1 段深く置きます。
+flowchart の文の 2 行目以降と同じ規則です。
+mermaid.js の文書は、各 `:` を period の `:` の下にそろえますが、
+それには period の幅を数える必要があり、
+タブや全角文字ではその幅が決まりません。
 [fixture: periods-and-events/later-lines-in-a-section]
 その間のコメント行と指令の行は、中に残して 2 行目以降の段に置き、
 連続する空行は 1 つにします。
@@ -482,6 +494,8 @@ period でない文（title、section、accessibility の文、
 mermaid.js は、その event を、間の文をまたいで、
 その前の最後の period に付けます（diagrams/timeline.md、Periods and events）。
 印字はそれを動かさず、書かれた場所に、自分の行で、まわりの文と同じ段に置きます。
+このプロジェクトのどの印字も、文を別の文の前後へ動かしません。
+title の後ろの event を読む人がどう読むかは、整形の問題ではありません。
 [fixture: event-statements/after-title]
 [fixture: event-statements/after-section]
 [fixture: event-statements/after-acc-title]
@@ -548,6 +562,7 @@ timeline
 `title` と `section` は、値を書かれたまま印字します。
 両端の空白も Db が持つので残します。
 キーワードの後ろの区切りは、書かれた文字が何であっても空白 1 つにします。
+この形は journey と同じです。
 [fixture: titles-and-sections/value-whitespace-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 後ろの行に書かれた値は、キーワードの後ろに寄せて 1 行にします。
@@ -605,6 +620,7 @@ timeline
 
 キーワードは、書かれた大文字小文字のまま残します。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
+大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
 ヘッダーの `timeline` は、小文字のものだけが検出されます。
 [fixture: keyword-case/keywords-kept]
 
@@ -638,6 +654,9 @@ timeline
 方向 `LR` か `TD` を書けます（大文字小文字は問いません）。
 方向は、ヘッダーの行に空白 1 つの後ろに、書かれた大文字小文字のまま印字します。
 Db は大文字にして読みます。
+空白 1 つは、
+トークンの間の空白（[トークンの間の空白](#トークンの間の空白)）と同じです。
+大文字小文字は作者のものです。
 [fixture: header-and-direction/direction-kept]
 [fixture: header-and-direction/direction-case-kept]
 [fixture: header-and-direction/spaces-before-the-direction]
@@ -692,6 +711,7 @@ timeline %%{init: {}}%% TD
 ### accessibility の文
 
 `accTitle` と `accDescr` の `:` はキーワードに接し、後ろに空白 1 つを置きます。
+journey と同じ形です。
 テキストの両端の空白は Db が持たないので落とします。
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/text-whitespace-dropped]
@@ -900,8 +920,9 @@ T
 
 ### 複数行の値
 
-`accDescr` ブロックの行は、値の一部なので、改行と中の空白も含め、
-書かれたまま残します。
+`accDescr` ブロックの行は、改行と中の空白も含めて書かれたまま残します。
+改行は Db に入りますが、行頭の空白は入らないので、残すのは選択で、
+値のテキストは整形しないからです。
 [fixture: multi-line-values/description-block-lines-kept]
 このようなブロックの中のコメントは、テキストの一部です。
 [fixture: multi-line-values/comment-line-inside-block-kept]
@@ -969,6 +990,7 @@ timeline
 `section` の前のコメントはその段に、
 period の前のコメントは period の段に置きます。
 テキストの末尾にあるときは、最後の文の段に置きます。
+これらは journey と同じ規則です。
 [fixture: comments/lines-at-statement-level]
 [fixture: comments/text-kept]
 [fixture: comments/single-percent-kept]
@@ -1056,6 +1078,7 @@ timeline
 単独の行にある指令は、後ろの文と同じ段に置きます。
 文の行にある指令は、両側に空白が書かれているかを残します。
 空白があればそこに空白 1 つを置き、トークンに接していれば接したままにします。
+journey と同じ規則です。
 [fixture: directives/kept]
 [fixture: directives/levels-around-sections]
 [fixture: directives/before-header]

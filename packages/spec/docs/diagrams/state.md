@@ -311,8 +311,8 @@ of the order:
   state/lex-divider-outside-composite]
 - `;` is a character of an id, not a separator: `A --> B; B --> C` has a
   transition from A to the state `B;`, and then one from B to C. A description
-  ends at `;`, and what follows is read as the next statement: `A : x;y` gives A
-  the description `x` and adds the state `;y`. [fixture:
+  ends at `;`, and what follows is read as the next statement: `A : x;y` is A
+  with the description `x`, followed by the state `;y`. [fixture:
   state/lex-semicolon-after-transition] [fixture:
   state/lex-semicolon-ends-description]
 - A description may hold a single `:`, but no two in a row, and it cannot end
@@ -456,18 +456,18 @@ Some consequences:
   before the mark is allowed too: `state <<join>>` is a join with the empty id.
   A later mark of an earlier kind wins: `state a <<join>> b <<fork>>` is the
   fork `a <<join>> b`. [fixture: state/lex-pseudostate-first-mark-kind] After
-  the mark, the line is read in the statement context: `state x <<choice>> y`
-  adds the choice x and the state y. [fixture: state/lex-fork-spaced-id]
+  the mark, the line is read in the statement context: `state x <<choice>> y` is
+  the choice x followed by the state y. [fixture: state/lex-fork-spaced-id]
   [fixture: state/lex-choice-after-alias] [fixture: state/lex-join-empty-id]
   [fixture: state/lex-choice-then-state] [fixture:
   state/lex-choice-square-brackets] A mark after a U+2028 on the line is not
   found from before it: `state a`, U+2028, and `b <<fork>>` is the state name
   `a` and the fork `b`. [fixture:
   state/lex-pseudostate-mark-after-line-separator]
-- Each `state-name` is a statement of its own, which adds nothing without a body
-  (see [Grammar](#grammar)): `state A` and `state a b` add nothing, and `state`
-  alone is accepted. [fixture: state/lex-state-without-body] [fixture:
-  state/lex-state-two-names] [fixture: state/lex-state-keyword-alone]
+- Each `state-name` is a statement of its own, which may have no body (see
+  [Grammar](#grammar)): `state A`, `state a b`, which is two such statements,
+  and `state` alone are accepted. [fixture: state/lex-state-without-body]
+  [fixture: state/lex-state-two-names] [fixture: state/lex-state-keyword-alone]
 - Rule 7 rejects two or more words before a `{` that is on the line of the last
   of them, also when the whitespace between two words holds line breaks:
   `state a b {`, `state a b c {`, `state a`, a tab, and `b {`, and `state a`, a
@@ -533,19 +533,19 @@ are an `alias-id` unit, without the whitespace at its ends; it ends before the
 first `%%`, also when that is its first character. It leaves the alias id
 context, so the state context reads on, where the `%%` starts a comment unless
 `{` follows. So the id after `as` may hold whitespace and `:`:
-`state "d" as my id` adds the state `my id`, and the id may be empty: before a
-`{`, and before a `%%`, so that `state "d" as %% c` and `state "d" as %%A` are
-alias definitions with the empty id followed by a comment, which add no state.
-[fixture: state/lex-alias-id-spaces] [fixture:
-state/lex-alias-id-trailing-spaces] [fixture: state/lex-alias-without-id]
-[fixture: state/lex-alias-comment-after-id] [fixture:
-state/lex-alias-id-percent-comment] [fixture: state/lex-alias-id-percent-word]
-[fixture: state/lex-alias-id-percent-next-line] When the text starts with `%%`
-and a `{` follows it on its line, the text before the `{`, without the
-whitespace at its end, is an `ignored-text` unit instead, which mermaid.js does
-not read, and there is no `alias-id`: `state "d" as %%{}` and
-`state "d" as %% c {` are alias definitions without an id, with a body.
-[fixture: state/lex-alias-id-ignored-percent-brace] [fixture:
+`state "d" as my id` has the id `my id`, and the id may be empty: before a `{`,
+and before a `%%`, so that `state "d" as %% c` and `state "d" as %%A` are alias
+definitions with the empty id followed by a comment. [fixture:
+state/lex-alias-id-spaces] [fixture: state/lex-alias-id-trailing-spaces]
+[fixture: state/lex-alias-without-id] [fixture:
+state/lex-alias-comment-after-id] [fixture: state/lex-alias-id-percent-comment]
+[fixture: state/lex-alias-id-percent-word] [fixture:
+state/lex-alias-id-percent-next-line] When the text starts with `%%` and a `{`
+follows it on its line, the text before the `{`, without the whitespace at its
+end, is an `ignored-text` unit instead, which mermaid.js does not read, and
+there is no `alias-id`: `state "d" as %%{}` and `state "d" as %% c {` are alias
+definitions without an id, with a body. [fixture:
+state/lex-alias-id-ignored-percent-brace] [fixture:
 state/lex-alias-id-ignored-percent-before-body]
 
 When the alias statement has no body, the lexer divides the `alias-id` at its
@@ -865,8 +865,8 @@ state/lex-class-css-class-percent] [fixture: state/lex-pseudostate-name-percent]
 Within an id, `#` is a character: `A#1` is a state. [fixture:
 state/lex-hash-in-id] An entity is read as its placeholder before the lexer
 reads the text (see [Entities](../common.md#entities)), so `#amp;` starts no
-comment: `A --> B #amp; x` adds the states `ﬂ°amp¶ß` and `x`. [fixture:
-state/lex-entity-in-id]
+comment: `A --> B #amp; x` is a transition followed by the states `#amp;` and
+`x`. [fixture: state/lex-entity-in-id]
 
 The documentation of mermaid.js says, under
 [Comments](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/stateDiagram.md#L307-L320),
@@ -966,11 +966,11 @@ statement  = definition-statement
 
 Nothing separates two statements: a statement may follow another on the same
 line, and a `newline` unit between them is a `line` of its own.
-`A --> B C --> D` has two transitions, and `A B` adds two states. [fixture:
-state/lex-two-transitions-one-line] [fixture: state/lex-two-states-one-line] A
-`;` is no separator but a character of an id (see
-[The statement context](#the-statement-context)). The units `"--"` come only
-from a composite body (see
+`A --> B C --> D` has two transitions, and `A B` is two state statements.
+[fixture: state/lex-two-transitions-one-line] [fixture:
+state/lex-two-states-one-line] A `;` is no separator but a character of an id
+(see [The statement context](#the-statement-context)). The units `"--"` come
+only from a composite body (see
 [The composite body context](#the-composite-body-context)).
 
 ### Empty description blocks before a separator
@@ -1238,9 +1238,7 @@ accessibility-statement = "accTitle" ":" title-text?
 scale-statement         = "scale" number "width"
 ```
 
-`scale` and `hide empty description` are statements that change nothing in the
-Db. [fixture: state/gram-scale] [fixture: state/gram-hide-empty-description] A
-statement starts where the text of a `line` starts and right after each
+A statement starts where the text of a `line` starts and right after each
 statement, also on the same line, because nothing separates two statements. An
 empty description block where a statement starts is a description block
 statement: `accDescr {}` followed by `A`, and `A --> B accDescr {}`,

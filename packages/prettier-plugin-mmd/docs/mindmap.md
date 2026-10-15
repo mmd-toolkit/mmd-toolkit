@@ -40,8 +40,10 @@ indentation/tab-width-4]
 Every whitespace character before a node is one character of its indentation, a
 tab, a U+00A0, and a U+3000 included, and only their number counts. The printer
 writes the character of the options, a space, or a tab with `useTabs`, and keeps
-the number of characters: with `useTabs`, a step of n characters is n tabs.
-[fixture: indentation/use-tabs] [fixture: indentation/characters-replaced]
+the number of characters: with `useTabs`, a step of n characters is n tabs. This
+keeps the indentation of every line to one kind of character, the one that the
+options say. [fixture: indentation/use-tabs] [fixture:
+indentation/characters-replaced]
 
 Input
 ([indentation/step-widths-kept-input.mmd](../tests/fixtures/mindmap/indentation/step-widths-kept-input.mmd)):
@@ -137,7 +139,9 @@ The first node, the root, may stand on the line of the header; its indentation
 is the whitespace after the header, which is none for `mindmap((x))`. It is
 printed on a line of its own, one level deeper than the header, and the nodes
 below it keep their steps beyond the root (see [Indentation](#indentation)): the
-Db is the same. [fixture: root-on-header-line/moved-to-its-own-line] [fixture:
+Db is the same, and the root stands as the statements of the other diagram types
+do after the header, which move to a line of their own too. [fixture:
+root-on-header-line/moved-to-its-own-line] [fixture:
 root-on-header-line/shape-glued-to-the-header] [fixture:
 root-on-header-line/text-after-spaces] [fixture:
 root-on-header-line/after-a-tab] A `%%` after the text of the root is part of
@@ -184,8 +188,9 @@ whatever their indentation, so their indentation is no part of the Db. They are
 printed at the column of the node that they decorate, as the documentation of
 mermaid.js writes them. [fixture: decorations/at-the-column-of-the-node]
 [fixture: decorations/before-and-after-children] A second class line, or a
-second icon line, replaces the first in the Db, and both are kept as written.
-[fixture: decorations/second-class-kept]
+second icon line, replaces the first in the Db, and both are kept as written,
+since the printer drops no text that the author wrote. [fixture:
+decorations/second-class-kept]
 
 The text of an icon keeps the whitespace at its ends and inside, and so does a
 class: the Db keeps them. The whitespace after the closing parenthesis of an
@@ -419,10 +424,10 @@ mindmap
 
 Empty lines, comment lines, and diagram comments change nothing in the Db
 wherever they stand after the header. Runs of empty lines become one empty line,
-and empty lines at the start and the end of the body are dropped. [fixture:
-blank-lines/collapsed] [fixture: blank-lines/body-edges-dropped] [fixture:
-blank-lines/before-a-comment] [fixture:
-blank-lines/around-comment-lines-and-directives]
+and empty lines at the start and the end of the body are dropped, as in the
+other diagram types. [fixture: blank-lines/collapsed] [fixture:
+blank-lines/body-edges-dropped] [fixture: blank-lines/before-a-comment]
+[fixture: blank-lines/around-comment-lines-and-directives]
 
 mermaid.js rejects some inputs that this specification accepts, as its lexer
 reads a diagram comment together with the whitespace before it (known divergence
@@ -519,10 +524,11 @@ A comment line, a line `%%` alone, and a line `%%{ }%%` stand at the level of
 the line after them, and at the end of the body at that of the last line. Their
 indentation is no part of the Db and does not change what mermaid.js accepts,
 and a `%%{` line needs no particular indentation. Their text and mark are kept
-as written. [fixture: comments/lines-at-the-level-of-the-next-line] [fixture:
-comments/at-the-end] [fixture: comments/bare-and-brace-lines] [fixture:
-comments/only-comments] A comment line before the header stands at the first
-column. [fixture: comments/before-the-header]
+as written. This is the rule of the other diagram types. [fixture:
+comments/lines-at-the-level-of-the-next-line] [fixture: comments/at-the-end]
+[fixture: comments/bare-and-brace-lines] [fixture: comments/only-comments] A
+comment line before the header stands at the first column. [fixture:
+comments/before-the-header]
 
 A comment after the header, a shape, or an icon stays on the line, as written:
 one space stands before it where whitespace was written, and none where it
@@ -585,8 +591,8 @@ mindmap
 A directive on a line of its own stands at the level of the line after it. A
 directive on the line of a node keeps whether whitespace is written on each side
 of it: where it is, one space stands there, and where it touches, it keeps
-touching. [fixture: directives/kept] [fixture: directives/between-nodes]
-[fixture: directives/before-the-header] [fixture:
+touching, as in the other diagram types. [fixture: directives/kept] [fixture:
+directives/between-nodes] [fixture: directives/before-the-header] [fixture:
 directives/after-the-header-on-the-same-line] [fixture:
 directives/after-the-header-touching] [fixture: directives/after-a-shape]
 
@@ -649,7 +655,8 @@ mindmap
 ### Keyword case
 
 Keywords keep the case in which they are written: mermaid.js reads `::icon(` in
-any case, and the Db is the same. The header is detected in lower case only.
+any case and the Db is the same, so nothing forces the case; it is the author's,
+and the printer does not rewrite it. The header is detected in lower case only.
 [fixture: keyword-case/icon-keyword]
 
 Input

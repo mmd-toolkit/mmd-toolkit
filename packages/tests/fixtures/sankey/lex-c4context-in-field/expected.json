@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sankey.md Known divergences: `C4Context` in a field is text in both."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "C4Context",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "C4Context",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

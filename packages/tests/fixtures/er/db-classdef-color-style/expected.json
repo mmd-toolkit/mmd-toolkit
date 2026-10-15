@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Other statements: a style with `color`, from which the Db makes a text style; accepted."
+    "note": "db-from-tree/er.md Class definitions: a style with `color`, from which the Db makes a text style; accepted."
   },
   "accepted": true,
   "diagramType": "er",

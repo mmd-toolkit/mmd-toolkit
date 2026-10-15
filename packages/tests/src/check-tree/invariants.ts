@@ -151,9 +151,10 @@ function afterDirectivesAt(scan: SourceScan, offset: number): number {
  * defines them: diagrams/sequence.md, Units and contexts; diagrams/state.md,
  * Comments; diagrams/class.md, The statement context; diagrams/er.md,
  * Comments; diagrams/gantt.md, Comments; diagrams/journey.md, Comments;
- * diagrams/requirement.md, Comments; diagrams/mindmap.md, Comments. A
- * flowchart, an ER diagram, and the `error` pseudo-diagram have only comment
- * lines, besides the diagram comments that every diagram type has before its
+ * diagrams/requirement.md, Comments; diagrams/mindmap.md, Comments;
+ * diagrams/sankey.md, Comments. A
+ * flowchart, an ER diagram, a sankey diagram, and the `error` pseudo-diagram
+ * have only comment lines, besides the diagram comments that every diagram type has before its
  * header (see {@link MARKS_BEFORE_THE_HEADER}).
  */
 const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
@@ -168,17 +169,20 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   RequirementDiagram: ["#", "%%", "%"],
   MindmapDiagram: ["%%"],
   TimelineDiagram: ["#", "%%", "%"],
+  SankeyDiagram: [],
 }
 
 /**
  * The marks that a diagram type has for the diagram comments before its
  * header only: a line of `%%` alone before the header is a diagram comment
  * with the mark `%%` in every diagram type (common.md, Diagram detection),
- * and a flowchart and an ER diagram have no such comment after their header.
+ * and a flowchart, an ER diagram, and a sankey diagram have no such comment
+ * after their header (diagrams/sankey.md, Detection and Comments).
  */
 const MARKS_BEFORE_THE_HEADER: Readonly<Record<string, readonly string[]>> = {
   FlowchartDiagram: ["%%"],
   ErDiagram: ["%%"],
+  SankeyDiagram: ["%%"],
 }
 
 /**

@@ -152,11 +152,10 @@ gantt/lex-task-text-tab-at-end]
 **Entities.** An entity is read as its placeholder before the lexer reads the
 text (see [Entities](../common.md#entities)), and the placeholder is made of
 characters outside ASCII, so its `#` and `;` do not end a setting text or task
-data, and the Db holds the placeholder: `a#amp; : 1d` is a task whose
-description is `a`, the placeholder, and a space; `title #x;` has the
-placeholder as its title; `dateFormat X#y;` has `X` and the placeholder; after
-the placeholder, a `#` or a `;` ends the text as usual. [fixture:
-gantt/entity-placeholder-in-task-text] [fixture:
+data, and the text keeps the entity as written: `a#amp; : 1d` is a task whose
+description is `a#amp; `; `title #x;` has the title `#x;`; `dateFormat X#y;` has
+the format `X#y;`; after the entity, a `#` or a `;` ends the text as usual.
+[fixture: gantt/entity-placeholder-in-task-text] [fixture:
 gantt/entity-placeholder-in-title] [fixture:
 gantt/entity-placeholder-in-href-string] [fixture:
 gantt/entity-placeholder-in-click-id] [fixture:
@@ -1030,41 +1029,33 @@ gantt/gram-task-trailing-comma] [fixture: gantt/gram-task-empty-middle-item]
 
 mermaid.js reads the items as
 [`parseData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L497-L551)
-does, and the tree shows the items as written; the reading is this. First the
-**tags** are taken from the front
+does, and the tree shows the items as written; how mermaid.js reads them is in
+the summary of the tests package. The **tags** are taken from the front
 ([`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)):
 as long as the first remaining item is one of the words `active`, `done`,
 `crit`, `milestone`, and `vert`, in exactly this case, it is a tag and sets its
 flag, also when it repeats; an empty item, a word in another case, and two tag
 words in one item are no tag and end the tags, and a tag word after another item
-is an item. Then the remaining items are counted: with one item, it is the
-**end**, and the **start** is the end of the task before it; with two, the first
-is the start and the second the end; with three, the first is the **id**, the
-second the start, and the third the end; with four or more, mermaid.js reads
-none of them, and the task has no id, no start, and no end. The start may be
-written as `after` and ids, the end as `until` and an id, as a date, or as a
-length, and an id may hold spaces: each is one item as written. A task without
-an id is numbered `task1`, `task2`, … among the tasks without one, and an id
-need not be unique: a later task with the same id is the one a click statement
-finds. [fixture: gantt/gram-task-tag-then-item] [fixture:
-gantt/gram-task-two-tags] [fixture: gantt/gram-task-tag-repeated] [fixture:
-gantt/gram-task-tag-with-spaces] [fixture: gantt/gram-task-tag-tab] [fixture:
-gantt/gram-task-tag-nbsp] [fixture: gantt/lex-task-tag-ideographic-space]
-[fixture: gantt/gram-task-tags-upper-case] [fixture:
-gantt/gram-task-tag-mixed-case] [fixture: gantt/gram-task-two-words-no-tag]
-[fixture: gantt/gram-task-tag-after-item] [fixture:
-gantt/gram-task-tag-empty-then-tag] [fixture: gantt/gram-task-empty-item-first]
-[fixture: gantt/gram-task-tag-then-empty-item] [fixture:
-gantt/gram-task-tag-then-whitespace-item] [fixture: gantt/gram-task-one-item]
-[fixture: gantt/gram-task-two-items] [fixture: gantt/gram-task-three-items]
-[fixture: gantt/gram-task-four-items] [fixture:
+is an item. The items after the tags are the `items` of the task, each as
+written: `after` and ids, `until` and an id, a date, a length, and an id with
+spaces are each one item. An id need not be unique: two tasks may have the same
+id. [fixture: gantt/gram-task-duplicate-id-click] [fixture:
+gantt/gram-task-tag-then-item] [fixture: gantt/gram-task-two-tags] [fixture:
+gantt/gram-task-tag-repeated] [fixture: gantt/gram-task-tag-with-spaces]
+[fixture: gantt/gram-task-tag-tab] [fixture: gantt/gram-task-tag-nbsp] [fixture:
+gantt/lex-task-tag-ideographic-space] [fixture: gantt/gram-task-tags-upper-case]
+[fixture: gantt/gram-task-tag-mixed-case] [fixture:
+gantt/gram-task-two-words-no-tag] [fixture: gantt/gram-task-tag-after-item]
+[fixture: gantt/gram-task-tag-empty-then-tag] [fixture:
+gantt/gram-task-empty-item-first] [fixture: gantt/gram-task-tag-then-empty-item]
+[fixture: gantt/gram-task-tag-then-whitespace-item] [fixture:
+gantt/gram-task-one-item] [fixture: gantt/gram-task-two-items] [fixture:
+gantt/gram-task-three-items] [fixture: gantt/gram-task-four-items] [fixture:
 gantt/gram-task-four-tags-then-items] [fixture: gantt/gram-task-after-ids]
 [fixture: gantt/gram-task-until] [fixture: gantt/gram-task-id-with-spaces]
-[fixture: gantt/gram-task-numbered-ids] [fixture:
-gantt/gram-task-duplicate-id-click] [fixture: gantt/gram-task-milestone]
-[fixture: gantt/gram-task-vert] [fixture: gantt/gram-task-crit] [fixture:
-gantt/gram-task-active] Data of tags only, with no item left, makes the input
-rejected (see
+[fixture: gantt/gram-task-milestone] [fixture: gantt/gram-task-vert] [fixture:
+gantt/gram-task-crit] [fixture: gantt/gram-task-active] Data of tags only, with
+no item left, makes the input rejected (see
 [Rejections outside the grammar](#rejections-outside-the-grammar)). [fixture:
 gantt/gram-task-tags-only] [fixture: gantt/gram-task-tags-only-two]
 
@@ -1145,11 +1136,10 @@ gantt/gram-click-href-then-task-same-line] [fixture:
 gantt/gram-click-call-then-title-same-line] [fixture:
 gantt/gram-click-call-then-line-feed-at-end]
 
-Each part gives the tasks of the ids the class `clickable`, a link replaces the
-link of the same task, and a later click statement for the same id adds to the
-earlier one; the summary records the calls as the grammar makes them and is the
-same under every `securityLevel` (see the summary of the tests package).
-[fixture: gantt/gram-click-two-statements-same-id] [fixture:
+Several click statements may name the same id, with the same part or another;
+how mermaid.js reads the parts into its Db, under every `securityLevel`, is in
+the summary of the tests package. [fixture:
+gantt/gram-click-two-statements-same-id] [fixture:
 gantt/gram-click-href-replaced] [fixture: gantt/db-click-links-order] [fixture:
 gantt/gram-click-security-level-strict] [fixture:
 gantt/config-security-level-loose-click-call] [fixture:
@@ -1173,26 +1163,24 @@ weekday-statement             = "weekday" day
 weekend-statement             = "weekend" day
 ```
 
-`dateFormat`, `axisFormat`, `tickInterval`, and `todayMarker` set their value to
+The value of `dateFormat`, `axisFormat`, `tickInterval`, and `todayMarker` is
 the text of their `setting-text` or `marker-text` unit as written, the
-whitespace at its ends included; a later statement replaces an earlier one.
-`includes` and `excludes` add the `list-item` units of their list text to a list
-of tokens: mermaid.js lowers their case and keeps each token once, at its first
-place, over all statements of the kind; a statement without a `list-item` unit
-adds nothing. `inclusiveEndDates` sets a flag. `weekday` and `weekend` set the
-day of their `day` unit, in lower case whatever its case in the text, and a
-later statement replaces an earlier one. [fixture: gantt/db-date-format]
-[fixture: gantt/db-date-format-extra-spaces] [fixture:
-gantt/lex-dateformat-trailing-spaces] [fixture: gantt/db-date-format-last-wins]
-[fixture: gantt/db-axis-format] [fixture: gantt/db-tick-interval] [fixture:
-gantt/db-today-marker] [fixture: gantt/db-today-marker-off] [fixture:
-gantt/db-includes-tokens] [fixture: gantt/db-excludes-tokens] [fixture:
-gantt/db-excludes-merged-lines] [fixture: gantt/db-excludes-duplicates]
-[fixture: gantt/lex-excludes-upper-case-items] [fixture:
-gantt/lex-excludes-empty-items] [fixture: gantt/db-inclusive-end-dates]
-[fixture: gantt/db-weekday-last-wins] [fixture: gantt/lex-day-mixed-case]
-[fixture: gantt/db-weekend-friday] [fixture: gantt/db-weekend-saturday] A
-`top-axis-statement` makes the input rejected (see
+whitespace at its ends included. The items of `includes` and `excludes` are the
+`list-item` units of their list text, as written, and there may be none. The day
+of `weekday` and `weekend` is that of their `day` unit, in lower case whatever
+its case in the text. Each of these statements may be written more than once;
+how mermaid.js reads them into its Db is in the summary of the tests package.
+[fixture: gantt/db-date-format] [fixture: gantt/db-date-format-extra-spaces]
+[fixture: gantt/lex-dateformat-trailing-spaces] [fixture:
+gantt/db-date-format-last-wins] [fixture: gantt/db-axis-format] [fixture:
+gantt/db-tick-interval] [fixture: gantt/db-today-marker] [fixture:
+gantt/db-today-marker-off] [fixture: gantt/db-includes-tokens] [fixture:
+gantt/db-excludes-tokens] [fixture: gantt/db-excludes-merged-lines] [fixture:
+gantt/db-excludes-duplicates] [fixture: gantt/lex-excludes-upper-case-items]
+[fixture: gantt/lex-excludes-empty-items] [fixture:
+gantt/db-inclusive-end-dates] [fixture: gantt/db-weekday-last-wins] [fixture:
+gantt/lex-day-mixed-case] [fixture: gantt/db-weekend-friday] [fixture:
+gantt/db-weekend-saturday] A `top-axis-statement` makes the input rejected (see
 [Rejections outside the grammar](#rejections-outside-the-grammar)).
 
 ### Titles and sections
@@ -1202,12 +1190,12 @@ title-statement   = "title" title-text
 section-statement = "section" section-text
 ```
 
-A title statement sets the title to the text of its `title-text` unit as
-written, whitespace at its ends included, and replaces the title of the
-frontmatter and of an earlier title statement. A section statement adds a
-section with the text of its `section-text` unit as written, also when the text
-repeats, and the tasks after it belong to it; a task before the first section
-has the empty section. [fixture: gantt/db-title-statement] [fixture:
+The title of a title statement is the text of its `title-text` unit as written,
+whitespace at its ends included, and the name of a section statement the text of
+its `section-text` unit as written; a title and a section name may repeat. How
+mermaid.js reads the titles, the title of the frontmatter, and the sections into
+its Db, and to which section a task belongs, is in the summary of the tests
+package. [fixture: gantt/db-title-statement] [fixture:
 gantt/db-title-frontmatter] [fixture:
 gantt/db-title-statement-after-frontmatter] [fixture: gantt/lex-title-twice]
 [fixture: gantt/lex-title-two-spaces] [fixture: gantt/lex-title-trailing-spaces]
@@ -1225,8 +1213,8 @@ accessibility-statement = "accTitle" ":" acc-title-text
 An accessibility title and an accessibility description are the text of their
 unit without the whitespace at its ends, which mermaid.js trims; the text of a
 block keeps its line breaks, and the whitespace after each of them is left out
-of the Db (see the summary of the tests package). A later description replaces
-an earlier one, from a line or from a block. [fixture: gantt/gram-acc-title]
+of the Db (see the summary of the tests package). A description may be written
+more than once, as a line or as a block. [fixture: gantt/gram-acc-title]
 [fixture: gantt/gram-acc-title-trailing-spaces] [fixture: gantt/gram-acc-descr]
 [fixture: gantt/gram-acc-descr-block] [fixture:
 gantt/gram-acc-descr-block-multiline] [fixture:

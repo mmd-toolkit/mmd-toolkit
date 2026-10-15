@@ -45,6 +45,7 @@ Db は、ノードの level を、
 印字は、字下げの文字をオプションの文字（空白、`useTabs` ならタブ）にし、
 文字数は変えません。
 `useTabs` では、n 文字の段の幅は n 個のタブになります。
+これで、1 行の字下げが、オプションの指定する 1 種類の文字になります。
 [fixture: indentation/use-tabs]
 [fixture: indentation/characters-replaced]
 
@@ -144,6 +145,7 @@ mindmap
 その下のノードは根からの段の幅を保ちます
 （[インデント](#インデント)を参照）。
 Db は同じです。
+根は、他の図種でヘッダーの後の文が自分の行に移るのと同じに置きます。
 [fixture: root-on-header-line/moved-to-its-own-line]
 [fixture: root-on-header-line/shape-glued-to-the-header]
 [fixture: root-on-header-line/text-after-spaces]
@@ -195,6 +197,7 @@ mermaid.js の文書の例の書き方と同じです。
 [fixture: decorations/before-and-after-children]
 2 つ目の class の行（icon の行も同じ）は Db では最初のものに置き換わりますが、
 どちらも書かれたまま残します。
+作者が書いたテキストを、印字は落とさないからです。
 [fixture: decorations/second-class-kept]
 
 icon と class のテキストは、両端と中の空白を Db が持つので残します。
@@ -438,6 +441,7 @@ mindmap
 空行、コメント行、診断コメントは、
 ヘッダーの後のどこにあっても Db に影響しません。
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
+他の図種と同じ規則です。
 [fixture: blank-lines/collapsed]
 [fixture: blank-lines/body-edges-dropped]
 [fixture: blank-lines/before-a-comment]
@@ -541,6 +545,7 @@ mindmap
 字下げは Db に入らず、mermaid.js の受理にも影響しません。
 `%%{` の行に特別な字下げは要りません。
 テキストと印は書かれたまま残します。
+他の図種と同じ規則です。
 [fixture: comments/lines-at-the-level-of-the-next-line]
 [fixture: comments/at-the-end]
 [fixture: comments/bare-and-brace-lines]
@@ -611,6 +616,7 @@ mindmap
 単独の行のディレクティブは、後ろの行と同じ段に置きます。
 ノードの行にあるディレクティブは、両側に空白が書かれているかを残します。
 あれば空白 1 つを置き、接していれば接したままにします。
+他の図種と同じ規則です。
 [fixture: directives/kept]
 [fixture: directives/between-nodes]
 [fixture: directives/before-the-header]
@@ -681,6 +687,7 @@ mindmap
 
 キーワードは、書かれた大文字小文字のまま残します。
 mermaid.js は `::icon(` をどの大文字小文字でも読み、Db は同じです。
+大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
 ヘッダーは小文字でだけ検出されます。
 [fixture: keyword-case/icon-keyword]
 

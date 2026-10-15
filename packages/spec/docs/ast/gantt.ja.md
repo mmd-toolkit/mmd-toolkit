@@ -65,9 +65,6 @@ GanttAccTitleStatement、GanttAccDescrStatement、GanttAccDescrBlockStatement
 コンマより 1 つ多くあります（[タスク](../diagrams/gantt.ja.md#タスク) を参照）。
 タグは、残りの最初の項目がその大文字小文字の 5 つの語のどれかであるかぎり
 前から取った項目で、残りが `items` です。
-mermaid.js は項目を数で読みます。
-1 つなら終わり、2 つなら始まりと終わり、3 つなら id と始まりと終わりで、
-4 つ以上は読まれず、タスクは id も始まりも終わりも持ちません。
 `tags` と `items` を合わせるとすべての項目を持つので、
 `items` が空になるのはデータがタグだけのときだけで、それは入力を拒否させます
 （[文法の外の拒否](../diagrams/gantt.ja.md#文法の外の拒否) を参照）。

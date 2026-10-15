@@ -367,7 +367,7 @@ mermaid.js がディレクティブを除いた後のテキストを読むよう
   `A --> B; B --> C` は、A から状態 `B;` への遷移と、
   B から C への遷移を持ちます。
   説明は `;` で終わり、その後は次の文として読まれます。
-  `A : x;y` は A に説明 `x` を与え、状態 `;y` を加えます。
+  `A : x;y` は説明 `x` を持つ A と、それに続く状態 `;y` です。
   [fixture: state/lex-semicolon-after-transition] [fixture:
   state/lex-semicolon-ends-description]
 - 説明は 1 つの `:` を持てますが、2 つ続けては持てず、`:` で終われません。
@@ -537,16 +537,17 @@ state の文脈には `state` で入ります。
   `state a <<join>> b <<fork>>` は fork `a <<join>> b` です。
   [fixture: state/lex-pseudostate-first-mark-kind]
   印の後では、行は文の文脈で読まれます。
-  `state x <<choice>> y` は choice x と状態 y を加えます。
+  `state x <<choice>> y` は choice x と、それに続く状態 y です。
   [fixture: state/lex-fork-spaced-id] [fixture:
   state/lex-choice-after-alias] [fixture: state/lex-join-empty-id] [fixture:
   state/lex-choice-then-state] [fixture: state/lex-choice-square-brackets]
   行の U+2028 の後の印は、その前からは見つかりません。
   `state a`、U+2028、`b <<fork>>` は、状態名 `a` と fork `b` です。
   [fixture: state/lex-pseudostate-mark-after-line-separator]
-- `state-name` はそれぞれ 1 つの文で、本体がなければ何も加えません
+- `state-name` はそれぞれ 1 つの文で、本体はなくてもかまいません
   （[文法](#文法) を参照）。
-  `state A` と `state a b` は何も加えず、`state` だけでも受理されます。
+  `state A`、2 つのそのような文である `state a b`、`state` だけの文は、
+  受理されます。
   [fixture: state/lex-state-without-body] [fixture: state/lex-state-two-names]
   [fixture: state/lex-state-keyword-alone]
 - 規則 7 は、最後の語の行にある `{` の前の 2 つ以上の語を、
@@ -625,10 +626,10 @@ state/lex-state-name-ending-in-quotes]
 別名の id の文脈を出るので、state の文脈が読み続け、
 そこでは `%%` は、`{` が続かなければコメントを始めます。
 そのため `as` の後の id は空白と `:` を持てます。
-`state "d" as my id` は状態 `my id` を加えます。
+`state "d" as my id` は id `my id` を持ちます。
 id は `{` の前と `%%` の前で空でもかまいません。
 `state "d" as %% c` と `state "d" as %%A` は、
-空の id の別名の定義とその後のコメントで、状態を加えません。
+空の id の別名の定義とその後のコメントです。
 [fixture: state/lex-alias-id-spaces]
 [fixture: state/lex-alias-id-trailing-spaces]
 [fixture: state/lex-alias-without-id]
@@ -1026,7 +1027,7 @@ id の中では、`#` は文字です。`A#1` は状態です。
 その置き換えの文字として読まれるので
 （[エンティティ](../common.ja.md#エンティティ) を参照）、
 `#amp;` はコメントを始めません。
-`A --> B #amp; x` は状態 `ﬂ°amp¶ß` と `x` を加えます。
+`A --> B #amp; x` は遷移と、それに続く状態 `#amp;` と `x` です。
 [fixture: state/lex-entity-in-id]
 
 mermaid.js の文書は、
@@ -1139,7 +1140,7 @@ statement  = definition-statement
 2 つの文を区切るものはありません。
 文は別の文と同じ行に続けられ、
 その間の `newline` の単位はそれだけで 1 つの `line` です。
-`A --> B C --> D` は 2 つの遷移を持ち、`A B` は 2 つの状態を加えます。
+`A --> B C --> D` は 2 つの遷移を持ち、`A B` は 2 つの状態の文です。
 [fixture: state/lex-two-transitions-one-line] [fixture:
 state/lex-two-states-one-line]
 `;` は区切りではなく id の文字です（[文の文脈](#文の文脈) を参照）。
@@ -1431,8 +1432,6 @@ accessibility-statement = "accTitle" ":" title-text?
 scale-statement         = "scale" number "width"
 ```
 
-`scale` と `hide empty description` は、Db を何も変えない文です。
-[fixture: state/gram-scale] [fixture: state/gram-hide-empty-description]
 2 つの文の間には何も要らないので、文は、`line` のテキストの始まりと、
 各文のすぐ後（同じ行でも）で始まります。
 文が始まるところの空の説明ブロックは、説明のブロックの文です。

@@ -51,10 +51,7 @@ fields of every node below are in source order (see [Nodes](../ast.md#nodes)).
 ### RequirementRequirementStatement
 
 A requirement with its body: `requirement r {`, the fields on their lines, and
-`}`; `functionalRequirement "my req":::c {` with its body. It adds the
-requirement, with the values of its fields, when the Db has none with its name,
-and gives its classes to the requirement of that name, also when the Db has one
-already.
+`}`; `functionalRequirement "my req":::c {` with its body.
 
 | Field             | Type                                                                                                           | Meaning                                                                                         |
 | ----------------- | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -117,9 +114,8 @@ A `risk` field: `risk: high`.
 | `risk` | string | `low`, `medium`, or `high`. |
 
 No child fields. The risk is the keyword in lower case, whatever the case in
-which it is written: `risk: High` and `RISK: HIGH` have the risk `high`. The Db
-reads it as `Low`, `Medium`, or `High`. [fixture:
-requirement/db-requirement-all-fields] [fixture:
+which it is written: `risk: High` and `RISK: HIGH` have the risk `high`.
+[fixture: requirement/db-requirement-all-fields] [fixture:
 requirement/lex-risk-method-mixed-case] [fixture:
 requirement/db-keywords-upper-case]
 
@@ -132,18 +128,14 @@ A `verifyMethod` field: `verifyMethod: test`.
 | `verifyMethod` | string | `analysis`, `demonstration`, `inspection`, or `test`. |
 
 No child fields. The method is the keyword in lower case, whatever the case in
-which it is written: `verifymethod: Test` has the method `test`. The Db reads it
-as `Analysis`, `Demonstration`, `Inspection`, or `Test`. [fixture:
+which it is written: `verifymethod: Test` has the method `test`. [fixture:
 requirement/db-requirement-all-fields] [fixture:
 requirement/lex-risk-method-mixed-case] [fixture:
 requirement/spec-requirement-diagram-1e009b06]
 
 ### RequirementElementStatement
 
-An element with its body: `element e {`, the fields on their lines, and `}`. It
-adds the element, with the values of its fields, when the Db has none with its
-name, and gives its classes to the requirement of that name when there is one,
-and to the element otherwise.
+An element with its body: `element e {`, the fields on their lines, and `}`.
 
 | Field        | Type                                                        | Meaning                                                                                         |
 | ------------ | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -177,8 +169,7 @@ requirement/db-keywords-upper-case]
 
 ### RequirementRelationshipStatement
 
-`a - satisfies -> b`, `b <- copies - a`. It adds the relationship; the names
-need not be defined.
+`a - satisfies -> b`, `b <- copies - a`. The names need not be defined.
 
 | Field          | Type                                   | Meaning                                           |
 | -------------- | -------------------------------------- | ------------------------------------------------- |
@@ -190,9 +181,7 @@ need not be defined.
 Child fields: `left`, `right`. The kind is `contains`, `copies`, `derives`,
 `satisfies`, `verifies`, `refines`, or `traces`, in lower case whatever the case
 in which it is written. The fields keep the order in which the names are
-written; the arrow points from the source to the target, so the Db reads the
-left name as the source and the right one as the target of a `forward`
-relationship, and the other way round for a `backward` one: `b <- copies - a` is
+written; the arrow points from the source to the target, so `b <- copies - a` is
 a relationship from a to b. [fixture: requirement/db-relationship-arrows]
 [fixture: requirement/gram-relationship-backward-glued] [fixture:
 requirement/lex-relationship-upper-case] [fixture:

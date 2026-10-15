@@ -69,7 +69,7 @@ The lexer of mermaid.js for this diagram is case-insensitive: every rule
 compares letters case-insensitively (see [Notation](../common.md#notation)), so
 `PARTICIPANT A` and `Note LEFT OF A: x` are read as `participant A` and
 `note left of A: x`. The text of a unit keeps the case in which it is written,
-and an id is compared as written: `participant A` and `participant a` add two
+and an id is compared as written: `participant A` and `participant a` name two
 participants. [fixture: sequence/lex-keyword-upper-case] [fixture:
 sequence/lex-keyword-mixed-case] [fixture: sequence/lex-id-case]
 
@@ -287,13 +287,13 @@ sequence/lex-acc-title-at-end] [fixture: sequence/db-acc-descr-empty-replaces]
 Some consequences of the order:
 
 - A `#` or a `%` starts a diagram comment only where a unit starts. Inside an id
-  run, `#` is a character of the run: `participant A # c` adds the participant
-  `A # c`, and in `A # c ->>B: x` the message comes from `A # c`. Inside a text,
-  `%%` is part of the text and `#` ends it: `A->>B: y %% c` has the message
-  `y %% c`, and `A->>B: x # c` the message `x`. [fixture:
-  sequence/lex-hash-inside-id] [fixture: sequence/lex-hash-inside-id-run]
-  [fixture: sequence/lex-percent-in-text] [fixture: sequence/lex-hash-ends-text]
-  [fixture: sequence/lex-hash-comment-after-unit] [fixture:
+  run, `#` is a character of the run: `participant A # c` has the id `A # c`,
+  and in `A # c ->>B: x` the message comes from `A # c`. Inside a text, `%%` is
+  part of the text and `#` ends it: `A->>B: y %% c` has the message `y %% c`,
+  and `A->>B: x # c` the message `x`. [fixture: sequence/lex-hash-inside-id]
+  [fixture: sequence/lex-hash-inside-id-run] [fixture:
+  sequence/lex-percent-in-text] [fixture: sequence/lex-hash-ends-text] [fixture:
+  sequence/lex-hash-comment-after-unit] [fixture:
   sequence/lex-percent-comment-after-unit]
 - A diagram comment starts at its mark, and the unit before it keeps all its
   characters. A number may be followed by `%%`, so `autonumber 5%% c` starts at
@@ -417,18 +417,18 @@ The id context is entered by `participant`, `actor`, `destroy`, `activate`, and
    context. [fixture: sequence/lex-id-context-colon]
 
 The run of rule 6 may contain `#`, and it is the longest one that the line
-allows: `participant A # c` adds the participant `A # c`, because a line feed
-follows the whole run, while in `participant A # c <x` a run up to `c` is
-followed by `<`, so the run is `A`, and `# c <x` is a diagram comment of the
-statement context; `participant A # b # c <x` adds `A # b`. [fixture:
+allows: `participant A # c` has the id `A # c`, because a line feed follows the
+whole run, while in `participant A # c <x` a run up to `c` is followed by `<`,
+so the run is `A`, and `# c <x` is a diagram comment of the statement context;
+`participant A # b # c <x` has the id `A # b`. [fixture:
 sequence/lex-hash-inside-id] [fixture:
 sequence/lex-id-context-hash-before-invalid] [fixture:
 sequence/lex-id-context-two-hashes-before-invalid]
 
 So an id after `participant` may contain whitespace, `#`, and `=`, and it ends
-at the end of the line, at `;`, or before `as`: `participant A B` adds the
-participant `A B`, `participant A=B` the participant `A=B`, and `activate A B`
-activates `A B`. An id before `@{` cannot contain whitespace, `-`, or `=`:
+at the end of the line, at `;`, or before `as`: `participant A B` has the id
+`A B`, `participant A=B` the id `A=B`, and `activate A B` the id `A B`. An id
+before `@{` cannot contain whitespace, `-`, or `=`:
 `participant A-B@{ "type": "queue" }` is rejected. An id that contains `:` or
 `<` is rejected, and so is `participant` at the end of a line, because no rule
 reads the line feed. [fixture: sequence/lex-id-context-space] [fixture:

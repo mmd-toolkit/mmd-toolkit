@@ -44,8 +44,10 @@ export interface KeptLines {
  * `A[style:#x;];` has the label `style:` with the entity `#x;`, and
  * `A[style:#x;]` the label `style:#x`. So every line that holds such a `;`
  * keeps its statements and its `;`, whether the rule matches it or not. The
- * rule reads only `style`, a `:` before a `#`, and `;`, so whitespace
- * between tokens may change as anywhere else.
+ * rule matches only when no whitespace lies between a `:` and a later `#`, so
+ * the whitespace between those two keeps whether it is there (see
+ * `isInsideStyleRuleStretch`); elsewhere on the line, whitespace between
+ * tokens may change as anywhere else.
  */
 export function findLinesWithOwnSemicolons(
   source: Source,
@@ -313,6 +315,65 @@ export function withJoinedLines(source: Source, kept: KeptLines): KeptLines {
     ...kept,
     verbatim: new Set([...kept.verbatim, ...joinedLines]),
   }
+}
+
+/**
+ * Whether the whitespace between `start` and `end`, which lies between two
+ * pieces of a line, may be what the line rule of mermaid.js reads (common.md,
+ * The `style` and `classDef` lines): the line holds `style` or `classDef`,
+ * later a `:`, later a `#`, and later a `;`, and the whitespace lies after
+ * the first such `:` and before the last such `#`. The rule matches when only
+ * characters that are not whitespace lie between a `:` and a `#`, so dropping
+ * whitespace there, or writing some, decides whether the last `;` of the line
+ * is ignored. Such a gap keeps whether it holds whitespace: it is printed as
+ * one space where it holds some, and as nothing where the tokens touch.
+ * Whitespace elsewhere in the line may change as anywhere else.
+ */
+export function isInsideStyleRuleStretch(
+  source: Source,
+  start: number,
+  end: number,
+): boolean {
+  return findStyleRuleStretches(source).some(
+    ([first, last]) => first < start && end <= last,
+  )
+}
+
+/** The stretches of each source, found once per source. */
+const styleRuleStretchesBySource = new WeakMap<
+  Source,
+  readonly (readonly [number, number])[]
+>()
+
+/**
+ * The stretch of each line that holds `style` or `classDef`, later a `:`,
+ * later a `#`, and later a `;`: from the first `:` after the word to the last
+ * `#` before the last `;`. Every pair of a `:` and a later `#` of the line lies
+ * in it, so the whitespace that may decide the rule lies in it (see
+ * `isInsideStyleRuleStretch`).
+ */
+function findStyleRuleStretches(
+  source: Source,
+): readonly (readonly [number, number])[] {
+  const cached = styleRuleStretchesBySource.get(source)
+  if (cached !== undefined) return cached
+  const stretches: (readonly [number, number])[] = []
+  let start = 0
+  while (start <= source.text.length) {
+    const end = lineEndOf(source, start)
+    const line = source.text.slice(start, end)
+    const words = [line.indexOf("style"), line.indexOf("classDef")].filter(
+      (index) => index !== -1,
+    )
+    const colon = line.indexOf(":", Math.min(...words))
+    const hash = line.lastIndexOf("#", line.lastIndexOf(";"))
+    if (words.length > 0 && colon !== -1 && colon < hash) {
+      stretches.push([start + colon, start + hash])
+    }
+    start = end + 1
+  }
+  styleRuleStretchesBySource.set(source, stretches)
+  return stretches
 }
 
 /**

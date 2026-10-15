@@ -402,6 +402,10 @@ HTML ラベルが有効で、`securityLevel` が
   [fixture: timeline/config-security-level-other-title-and-accessibility]
   [fixture: timeline/config-security-level-other-accessibility-block]
   [fixture: timeline/config-security-level-other-sections-periods-events]
+- sankey: フロントマターの title と、すべてのノードの id。
+  id は、欄から読んだあとで置き換えられます。
+  id が等しくなったノードは 1 つのノードです。
+  [fixture: sankey/config-security-level-other-title-and-ids]
 
 **mermaid.js の順序が効く所。**
 テキストを読み進める前に置き換える所があり、作り手も同じにします。

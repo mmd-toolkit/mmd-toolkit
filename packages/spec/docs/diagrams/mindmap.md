@@ -396,15 +396,14 @@ The first node is the root, whatever its indentation. Every other node is a
 child of the nearest node before it whose indentation is smaller than its own;
 so a node as indented as an earlier one is its sibling, after the nodes below
 that one, and a node may be indented by any number of characters more than its
-parent. The Db reads the level of a node as its indentation minus that of the
-root. In `root`, `    a`, `  b`, `    c` on four lines, a and b are children of
-the root and c a child of b, and a tab counts as one character, so `  b` after a
-line `\ta` is a child of a. A node that is not the first and has no such node,
-because it is as indented as the root or less, makes the input rejected (see
-[Rejections outside the grammar](#rejections-outside-the-grammar)). [fixture:
-mindmap/db-first-node-unindented] [fixture: mindmap/db-indent-root-offset]
-[fixture: mindmap/db-indent-skips-levels] [fixture:
-mindmap/db-indent-parent-is-nearest-shallower] [fixture:
+parent. In `root`, `    a`, `  b`, `    c` on four lines, a and b are children
+of the root and c a child of b, and a tab counts as one character, so `  b`
+after a line `\ta` is a child of a. A node that is not the first and has no such
+node, because it is as indented as the root or less, makes the input rejected
+(see [Rejections outside the grammar](#rejections-outside-the-grammar)).
+[fixture: mindmap/db-first-node-unindented] [fixture:
+mindmap/db-indent-root-offset] [fixture: mindmap/db-indent-skips-levels]
+[fixture: mindmap/db-indent-parent-is-nearest-shallower] [fixture:
 mindmap/db-indent-sibling-after-deeper] [fixture:
 mindmap/gram-indent-between-earlier-levels] [fixture:
 mindmap/gram-indent-tab-then-spaces] [fixture:
@@ -417,22 +416,20 @@ mindmap/db-first-node-on-header-line-child-too-shallow]
 A node is a node text, a node text and a shape, or a shape alone: `root`,
 `a(text)`, `[text]`, and `((text))`. The node text before a shape keeps its
 whitespace: `a (x)` has the id `a `. `a(b)c` is rejected, as text follows the
-shape. The Db reads a shape alone with its text as the id. [fixture:
+shape. A shape alone has no node text. [fixture:
 mindmap/db-first-node-unindented] [fixture: mindmap/db-shape-rounded] [fixture:
 mindmap/db-shape-without-id] [fixture: mindmap/db-shape-without-id-circle]
 [fixture: mindmap/gram-node-text-space-before-shape] [fixture:
 mindmap/db-shape-id-with-parentheses]
 
-The closer need not match the opener. The type of the shape comes from the
-opener, and for `(` from the closer too: `[` gives a rectangle, `((` a circle,
-`)` a cloud, `))` a bang, `{{` a hexagon, `(` with `)` a rounded rectangle and
-with any other closer a cloud, and `(-` and `-)` the default shape. So `[text)`
-is a rectangle, `((x)` a circle, `(x))` and `(x]` clouds, `(-text-)` the default
-shape with the text `text-`, and `-)x(-` the default shape too. A shape needs a
-label: `r[]` is rejected. [fixture: mindmap/db-shape-rect] [fixture:
-mindmap/db-shape-rounded] [fixture: mindmap/db-shape-circle] [fixture:
-mindmap/db-shape-cloud] [fixture: mindmap/db-shape-bang] [fixture:
-mindmap/db-shape-hexagon] [fixture: mindmap/db-shape-mismatched-end] [fixture:
+The closer need not match the opener: `[text)`, `((x)`, `(x))`, `(x]`, and
+`-)x(-` are shapes, and `(-text-)` is the opener `(-`, the text `text-`, and the
+closer `)`. How mermaid.js reads the type of the shape from the opener and the
+closer is in the summary of the tests package. A shape needs a label: `r[]` is
+rejected. [fixture: mindmap/db-shape-rect] [fixture: mindmap/db-shape-rounded]
+[fixture: mindmap/db-shape-circle] [fixture: mindmap/db-shape-cloud] [fixture:
+mindmap/db-shape-bang] [fixture: mindmap/db-shape-hexagon] [fixture:
+mindmap/db-shape-mismatched-end] [fixture:
 mindmap/gram-shape-circle-single-closer] [fixture:
 mindmap/gram-shape-round-double-closer] [fixture:
 mindmap/gram-shape-round-other-closer] [fixture:
@@ -444,12 +441,11 @@ mindmap/gram-shape-parenthesis-closes-rect]
 The label is one unit: a shape text, a string, or a markdown string. After a
 string or a markdown string only a closer may follow, and any closer may:
 `a["x" ]`, `a["x""]`, `a["x""y"]`, and ``a["`x`" ]`` are rejected, and `a["x"))`
-is a rectangle. Strings may stand in every shape: `r{{"x"}}`, `r)"x"(`,
-`r))"x"((`, and `r(-"x"-)` are a hexagon, a cloud, a bang, and the default
-shape. A string and a markdown string may hold line feeds; a CRLF in a string is
-a line feed. [fixture: mindmap/gram-string-then-space] [fixture:
-mindmap/gram-string-then-quote] [fixture: mindmap/gram-two-strings] [fixture:
-mindmap/gram-markdown-string-then-space] [fixture:
+is accepted. Strings may stand in every shape: `r{{"x"}}`, `r)"x"(`, `r))"x"((`,
+and `r(-"x"-)` are accepted. A string and a markdown string may hold line feeds;
+a CRLF in a string is a line feed. [fixture: mindmap/gram-string-then-space]
+[fixture: mindmap/gram-string-then-quote] [fixture: mindmap/gram-two-strings]
+[fixture: mindmap/gram-markdown-string-then-space] [fixture:
 mindmap/gram-string-then-double-closer] [fixture:
 mindmap/gram-strings-in-round-and-circle] [fixture:
 mindmap/gram-string-in-hexagon] [fixture: mindmap/gram-string-in-cloud]
@@ -464,11 +460,11 @@ mindmap/entity-placeholder-in-description]
 
 An icon line gives an icon, and a class line a class, to the node added last,
 which is the node of the nearest node line before it, whatever the indentation
-of the icon or class line; a second icon or class replaces the first. An icon
-line before the line of a child decorates the node before it. The icon keeps the
-whitespace inside its parentheses, and the class the whitespace at its ends; the
-Db reads the class as one string. [fixture: mindmap/db-icon-line] [fixture:
-mindmap/db-icon-twice] [fixture: mindmap/db-icon-and-class-on-child] [fixture:
+of the icon or class line; a node may have more than one icon line and class
+line. An icon line before the line of a child decorates the node before it. The
+icon keeps the whitespace inside its parentheses, and the class the whitespace
+at its ends. [fixture: mindmap/db-icon-line] [fixture: mindmap/db-icon-twice]
+[fixture: mindmap/db-icon-and-class-on-child] [fixture:
 mindmap/db-icon-indent-ignored] [fixture: mindmap/gram-icon-then-child]
 [fixture: mindmap/db-icon-surrounding-whitespace] [fixture:
 mindmap/db-class-line] [fixture: mindmap/db-class-twice] [fixture:

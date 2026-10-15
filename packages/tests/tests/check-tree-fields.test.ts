@@ -251,6 +251,12 @@ const VALUE_FIELD_REPORTS: Readonly<
       "the direction of the header is not the token after the header keyword, or null when there is none: ",
   },
   "TimelineLiteral.value": { message: "value is not its written text" },
+  "SankeyIdentifier.name": {
+    message: "name is not its written text without the whitespace at its ends",
+  },
+  "SankeyLiteral.value": {
+    message: "value is not its written text without the whitespace at its ends",
+  },
 }
 
 /**

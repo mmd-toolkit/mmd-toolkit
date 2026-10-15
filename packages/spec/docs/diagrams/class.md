@@ -159,7 +159,7 @@ class/lex-directive-in-ignored-method-part]
 
 - `class Fo%%{init: {}}%%o` declares `Foo`, `class A%%{init: {}}%%.B` the class
   `A.B`, and `namespace Fo%%{init: {}}%%o {` the namespace `Foo`,
-  `A : +fo%%{init: {}}%%o()` adds the method `foo`, and
+  `A : +fo%%{init: {}}%%o()` has the method `foo`, and
   `A --> B : x%%{init: {}}%%y` has the label `xy`, as in mermaid.js. So it is
   with an ignored `;`: after a cardinality `"style:#x"`, `A "style:#x" --> B;C`
   has a relation to `BC`. [fixture: class/lex-directive-in-name] [fixture:
@@ -967,8 +967,8 @@ class/db-member-statement-blank] [fixture: class/gram-name-alone] [fixture:
 class/gram-title-not-statement] A class name alone may share its line with a
 directive or an empty description block before or after it:
 `%%{init: {}}%% Foo`, `accDescr {} Foo`, and `Foo accDescr {}` are class names
-alone, which add no class. [fixture: class/gram-directive-then-name-alone]
-[fixture: class/gram-empty-description-block-then-name-alone] [fixture:
+alone. [fixture: class/gram-directive-then-name-alone] [fixture:
+class/gram-empty-description-block-then-name-alone] [fixture:
 class/gram-name-alone-then-empty-description-block] A method line has at most
 one `classifier` unit.
 

@@ -464,7 +464,6 @@ mindmap/gram-shape-trailing-whitespace]
 そのため、前のノードと同じだけ字下げしたノードは、
 その下のノードの後に来る、その兄弟で、
 ノードは親より何文字多く字下げしてもかまいません。
-Db はノードの level を、その字下げから根の字下げを引いたものとして読みます。
 `root`、`    a`、`  b`、`    c` の 4 行では、
 a と b が根の子で、c は b の子です。
 タブは 1 文字と数えるので、行 `\ta` の後の `  b` は a の子です。
@@ -489,7 +488,7 @@ mindmap/db-first-node-on-header-line-child-too-shallow]
 形の前のノードのテキストは空白を保ちます。
 `a (x)` は id `a ` を持ちます。
 `a(b)c` は、形の後にテキストが続くので拒否されます。
-Db は、形だけのノードを、そのテキストを id として読みます。
+形だけのノードはノードのテキストを持ちません。
 [fixture:
 mindmap/db-first-node-unindented] [fixture: mindmap/db-shape-rounded] [fixture:
 mindmap/db-shape-without-id] [fixture: mindmap/db-shape-without-id-circle]
@@ -497,13 +496,10 @@ mindmap/db-shape-without-id] [fixture: mindmap/db-shape-without-id-circle]
 mindmap/db-shape-id-with-parentheses]
 
 閉じは開きに合わなくてかまいません。
-形の種類は開きから、`(` では閉じからも決まります。
-`[` は長方形、`((` は円、`)` は雲、`))` は爆発、`{{` は六角形、
-`(` は `)` とで角の丸い長方形、ほかの閉じとで雲、
-`(-` と `-)` は既定の形です。
-そのため、`[text)` は長方形、`((x)` は円、`(x))` と `(x]` は雲、
-`(-text-)` はテキスト `text-` を持つ既定の形で、
-`-)x(-` も既定の形です。
+`[text)`、`((x)`、`(x))`、`(x]`、`-)x(-` は形で、
+`(-text-)` は開き `(-`、テキスト `text-`、閉じ `)` です。
+mermaid.js が開きと閉じから形の種類をどう読むかは、
+tests パッケージの要約にあります。
 形には label が要ります。`r[]` は拒否されます。
 [fixture: mindmap/db-shape-rect] [fixture:
 mindmap/db-shape-rounded] [fixture: mindmap/db-shape-circle] [fixture:
@@ -520,10 +516,9 @@ mindmap/gram-shape-parenthesis-closes-rect]
 label は 1 つの単位で、形のテキスト、文字列、markdown 文字列です。
 文字列か markdown 文字列の後には閉じだけが続けられ、どの閉じでもかまいません。
 `a["x" ]`、`a["x""]`、`a["x""y"]`、``a["`x`" ]`` は拒否され、
-`a["x"))` は長方形です。
+`a["x"))` は受理されます。
 文字列はどの形にも置けます。
-`r{{"x"}}`、`r)"x"(`、`r))"x"((`、`r(-"x"-)` は、
-六角形、雲、爆発、既定の形です。
+`r{{"x"}}`、`r)"x"(`、`r))"x"((`、`r(-"x"-)` は受理されます。
 
 文字列と markdown 文字列は改行を持てます。
 文字列の中の CRLF は改行です。
@@ -546,10 +541,9 @@ mindmap/entity-placeholder-in-description]
 icon の行は icon を、class の行は class を、最後に足されたノードに与えます。
 それは、icon か class の行の字下げにかかわらず、
 その前の最も近いノードの行のノードです。
-2 つ目の icon や class は 1 つ目を置き換えます。
+ノードは icon の行と class の行を 2 つ以上持てます。
 子の行の前の icon の行は、その前のノードを飾ります。
 icon は括弧の中の空白を保ち、class は両端の空白を保ちます。
-Db は class を 1 つの文字列として読みます。
 [fixture: mindmap/db-icon-line] [fixture:
 mindmap/db-icon-twice] [fixture: mindmap/db-icon-and-class-on-child] [fixture:
 mindmap/db-icon-indent-ignored] [fixture: mindmap/gram-icon-then-child]

@@ -55,8 +55,6 @@ RequirementAccDescrStatement、RequirementAccDescrBlockStatement
 本体を持つ要求です。
 `requirement r {`、各行のフィールド、`}` や、
 本体を持つ `functionalRequirement "my req":::c {` です。
-Db にその名前の要求がなければ、フィールドの値とともに要求を足し、
-Db にすでにあるときも、クラスをその名前の要求に与えます。
 
 | 欄                | 型                                                                                                            | 意味                                                                         |
 | ----------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
@@ -125,7 +123,6 @@ requirement/db-keywords-upper-case]
 子の欄はありません。
 リスクは、書かれた大文字小文字によらず、キーワードを小文字にした語です。
 `risk: High` と `RISK: HIGH` のリスクは `high` です。
-Db はそれを `Low`、`Medium`、`High` として読みます。
 [fixture: requirement/db-requirement-all-fields] [fixture:
 requirement/lex-risk-method-mixed-case] [fixture:
 requirement/db-keywords-upper-case]
@@ -141,7 +138,6 @@ requirement/db-keywords-upper-case]
 子の欄はありません。
 方法は、書かれた大文字小文字によらず、キーワードを小文字にした語です。
 `verifymethod: Test` の方法は `test` です。
-Db はそれを `Analysis`、`Demonstration`、`Inspection`、`Test` として読みます。
 [fixture: requirement/db-requirement-all-fields] [fixture:
 requirement/lex-risk-method-mixed-case] [fixture:
 requirement/spec-requirement-diagram-1e009b06]
@@ -149,8 +145,6 @@ requirement/spec-requirement-diagram-1e009b06]
 ### RequirementElementStatement
 
 本体を持つ要素です。`element e {`、各行のフィールド、`}` です。
-Db にその名前の要素がなければ、フィールドの値とともに要素を足し、
-クラスを、その名前の要求があればその要求に、なければ要素に与えます。
 
 | 欄           | 型                                                            | 意味                                                                         |
 | ------------ | ------------------------------------------------------------- | ---------------------------------------------------------------------------- |
@@ -189,7 +183,7 @@ requirement/db-keywords-upper-case]
 ### RequirementRelationshipStatement
 
 `a - satisfies -> b`、`b <- copies - a` です。
-関係を足します。名前は定義されていなくてもかまいません。
+名前は定義されていなくてもかまいません。
 
 | 欄             | 型                                     | 意味                                                |
 | -------------- | -------------------------------------- | --------------------------------------------------- |
@@ -202,9 +196,7 @@ requirement/db-keywords-upper-case]
 種類は `contains`、`copies`、`derives`、`satisfies`、`verifies`、
 `refines`、`traces` のどれかで、書かれた大文字小文字によらず小文字です。
 欄は名前が書かれた順を保ちます。
-矢印は元から先を指すので、Db は、`forward` の関係では左の名前を元、
-右の名前を先として読み、`backward` の関係ではその逆に読みます。
-`b <- copies - a` は a から b への関係です。
+矢印は元から先を指すので、`b <- copies - a` は a から b への関係です。
 [fixture: requirement/db-relationship-arrows] [fixture:
 requirement/gram-relationship-backward-glued] [fixture:
 requirement/lex-relationship-upper-case] [fixture:

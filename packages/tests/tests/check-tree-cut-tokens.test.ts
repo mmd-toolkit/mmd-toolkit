@@ -536,6 +536,11 @@ describe("a String that a cut cuts into String tokens", () => {
       about: ["String token"],
       problems: [
         {
+          where: "StringLiteral at 42-71",
+          message:
+            "the tokens of the string are not one String token or StringFragment tokens: String, String",
+        },
+        {
           where: "String at 42-47",
           message:
             'a String token that a cut is glued to is not closed: "\\"Tool" and String at 61-71 are the fragments of one string',
@@ -555,6 +560,11 @@ describe("a String that a cut cuts into String tokens", () => {
       fragments: "String",
       about: ["String token"],
       problems: [
+        {
+          where: "StringLiteral at 42-58",
+          message:
+            "the tokens of the string are not one String token or StringFragment tokens: String, String",
+        },
         {
           where: "String at 42-47",
           message:

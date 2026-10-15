@@ -24,6 +24,9 @@ fixture の置き方と確かめ方は、
 `section` 自体は最初の段です。
 Gantt 図の木は平らで、文のブロックがないので、
 文の段は、ほかの文の中での位置で決まります。
+section の下のタスクは、mermaid.js の文書の書き方と同じく、
+section の中に置きます。
+journey も同じです。
 [fixture: indentation/sections-and-tasks-nested]
 [fixture: indentation/statements-before-the-first-section]
 [fixture: indentation/every-statement-under-a-section]
@@ -34,6 +37,8 @@ Gantt 図の木は平らで、文のブロックがないので、
 [fixture: indentation/use-tabs]
 入力に書かれたインデントは残しません。
 行頭の空白は mermaid.js にとって無だからです。
+字下げは構造だけで決められるので、1 つの規則で、
+入力の字下げによらず同じテキストになります。
 [fixture: indentation/written-indentation-dropped]
 ヘッダーは、前に空白が書かれていても 1 桁目に置きます。
 [fixture: indentation/header-leading-whitespace]
@@ -96,6 +101,7 @@ Gantt 図には文を区切るものがなく
 ヘッダー、`inclusiveEndDates`、日つきの `weekday` と `weekend`、
 `accDescr` ブロック、click 文の後ろには、同じ行に次の文を続けられます。
 これらの後ろの文は、それぞれの行に移します。
+1 行に 2 つの文があると読みにくく、ほかの図種も 1 行に 1 つの文を印字します。
 [fixture: statements-one-per-line/header-then-statement]
 [fixture: statements-one-per-line/header-then-task]
 [fixture: statements-one-per-line/keyword-statements]
@@ -230,6 +236,7 @@ gantt
 ### 空行
 
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
+他の図種と同じ規則です。
 [fixture: blank-lines/collapsed]
 [fixture: blank-lines/body-edges-dropped]
 文の間の空行は、1 つにして残します。
@@ -302,6 +309,7 @@ gantt
 最初の項目はコロンに接し、`,` は前の項目に接して、
 後ろに項目があれば空白 1 つを置きます。
 コロンと `,` の周りの空白は Db に入らないので、残しません。
+mermaid.js の文書の task 行の多くがこの形で、空白は項目の前にだけ置きます。
 [fixture: task-data/colon-touches-first-item]
 [fixture: task-data/comma-spacing]
 [fixture: task-data/tab-around-items]
@@ -411,6 +419,7 @@ Db は値をそのまま持つので、空白 2 つの `dateFormat  YYYY-MM-DD` 
 
 整形するのは、キーワードと値を区切る空白 1 文字だけです。
 そこには、タブや改行で書かれていても、空白 1 つを置きます。
+その 1 文字は Db に入らないので、区切りの形を 1 つにします。
 [fixture: settings/one-space-after-keyword]
 [fixture: settings/value-on-next-line]
 キーワードと値の間のディレクティブはその位置に残します
@@ -648,6 +657,7 @@ gantt
 
 キーワードは書かれた大文字小文字を保ちます。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
+大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
 [fixture: keyword-case/keywords-kept]
 [fixture: keyword-case/click-keywords-kept]
 ヘッダーの `gantt` は小文字だけが検出され、
@@ -813,7 +823,12 @@ gantt
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/keyword-and-colon-over-lines-joined]
 
-`accDescr { ... }` ブロックの行は書かれたまま残し、`}` は文と同じ段に置きます。
+`accDescr { ... }` ブロックの行は、必要からではなく選択として、
+書かれたまま残します。
+行頭の空白は Db に入らず、
+`a`、改行、`b` と、`b` の前に空白がある形は同じ説明です。
+行は作者のテキストで、印字は整形しないからです。
+`}` は文と同じ段に置きます。
 `{` の行にテキストがあるときは、
 離れて書かれていれば括弧の内側に空白 1 つを置き、
 テキストに接する括弧は接したままにします。
@@ -931,6 +946,7 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/blank-lines-between-keyword-and-day]
 コメント行、ディレクティブ、`;` を持つ文は、書かれたまま印字します。
 コメント行はそれが立つ行の残りを取り、
+ディレクティブのある行の空白は、ディレクティブと一緒に読まれ、
 `;` は行の規則に合う行に移ることがあるからです。
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
@@ -993,8 +1009,10 @@ monday
 
 ### 複数行の値
 
-呼び出しの引数と名前、リンクの文字列、`accDescr` ブロックの行は、
+呼び出しの引数と名前とリンクの文字列は、
 値の一部なので、中の改行と空白も含めて書かれたまま残します。
+`accDescr` ブロックの行も書かれたまま残しますが、これは選択です。
+行頭の空白は Db に入りません。
 [fixture: multi-line-values/call-arguments-kept]
 [fixture: multi-line-values/call-name-kept]
 [fixture: multi-line-values/href-string-kept]

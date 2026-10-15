@@ -52,15 +52,15 @@ The header may carry a **direction**: one or more spaces or tabs after
 `timeline` and then the keyword `LR` or `TD`, compared case-insensitively and
 not followed by a word character. `timeline TD`, `timeline td`, `timeline Lr`,
 `timeline` with a tab and `TD`, and `timeline` with two spaces and `TD` have a
-direction; the Db reads it in upper case, and `LR` when there is none. Other
-whitespace does not join the direction to the header: after a U+00A0, a U+3000,
-a U+2028, or a line feed, `TD` is a period, and so is `TDx` after a space. Only
-one direction is read: in `timeline TD LR` and `timeline LR TD` the second word
-is a period, and `LR` on a line of its own is a period. [fixture:
-timeline/db-direction-td] [fixture: timeline/db-direction-lr] [fixture:
-timeline/db-direction-lower-case] [fixture: timeline/db-direction-mixed-case]
-[fixture: timeline/db-direction-tab] [fixture: timeline/db-direction-two-spaces]
-[fixture: timeline/db-direction-trailing-space] [fixture:
+direction. Other whitespace does not join the direction to the header: after a
+U+00A0, a U+3000, a U+2028, or a line feed, `TD` is a period, and so is `TDx`
+after a space. Only one direction is read: in `timeline TD LR` and
+`timeline LR TD` the second word is a period, and `LR` on a line of its own is a
+period. [fixture: timeline/db-direction-td] [fixture: timeline/db-direction-lr]
+[fixture: timeline/db-direction-lower-case] [fixture:
+timeline/db-direction-mixed-case] [fixture: timeline/db-direction-tab] [fixture:
+timeline/db-direction-two-spaces] [fixture:
+timeline/db-direction-trailing-space] [fixture:
 timeline/header-direction-no-break-space] [fixture:
 timeline/header-direction-ideographic-space] [fixture:
 timeline/header-direction-line-separator] [fixture:
@@ -195,18 +195,17 @@ timeline/db-indentation-does-not-nest]
 **Entities.** An entity is read as its placeholder before the lexer reads the
 text (see [Entities](../common.md#entities)), and the placeholder is made of
 characters outside ASCII, so its `#` and `;` do not end a period and do not
-start a comment, and the Db holds the placeholder: `a #35; b : c #35; d` has the
-period `a `, the placeholder, and `b`, and the event `c`, the placeholder, and
-` d`; the named and the hexadecimal forms are read the same way; `a : #35;` has
-the placeholder as its event; a title, a section, an accessibility title, an
-accessibility description, and a description block may hold one. A `#` that
-starts no entity starts a comment where it ends a period: `a #bogus b` is the
-period `a ` and a comment. [fixture: timeline/db-event-entity] [fixture:
-timeline/db-event-entity-named] [fixture: timeline/db-event-entity-hex]
-[fixture: timeline/db-event-entity-is-no-comment] [fixture:
-timeline/db-title-entity] [fixture: timeline/db-section-entity] [fixture:
-timeline/db-acc-title-entity] [fixture: timeline/db-acc-descr-entity] [fixture:
-timeline/db-acc-descr-block-entity] [fixture:
+start a comment, and the text keeps the entity as written: `a #35; b : c #35; d`
+has the period `a #35; b ` and the event `c #35; d`; the named and the
+hexadecimal forms are read the same way; `a : #35;` has the event `#35;`; a
+title, a section, an accessibility title, an accessibility description, and a
+description block may hold one. A `#` that starts no entity starts a comment
+where it ends a period: `a #bogus b` is the period `a ` and a comment. [fixture:
+timeline/db-event-entity] [fixture: timeline/db-event-entity-named] [fixture:
+timeline/db-event-entity-hex] [fixture: timeline/db-event-entity-is-no-comment]
+[fixture: timeline/db-title-entity] [fixture: timeline/db-section-entity]
+[fixture: timeline/db-acc-title-entity] [fixture: timeline/db-acc-descr-entity]
+[fixture: timeline/db-acc-descr-block-entity] [fixture:
 timeline/db-period-unclosed-reference] The attribute quotes of an HTML tag are
 read as `'` as in every diagram type (see
 [HTML attribute quotes](../common.md#html-attribute-quotes)): `title`
@@ -734,10 +733,9 @@ events, and so has `a` followed by the lines `: e1` and `: e2`, also with an
 empty line, a comment line, a line `# c`, or a bare `%%` line between them. A
 period is the text of its unit as written, the whitespace before the colon, `#`,
 or line feed included, which the Db keeps; the whitespace before it is outside
-it. Two periods of the same text are two periods. [fixture:
-timeline/db-event-two-on-a-line] [fixture: timeline/db-event-own-line] [fixture:
-timeline/gram-event-line-two-events] [fixture:
-timeline/db-event-own-line-after-blank-line] [fixture:
+it. [fixture: timeline/db-event-two-on-a-line] [fixture:
+timeline/db-event-own-line] [fixture: timeline/gram-event-line-two-events]
+[fixture: timeline/db-event-own-line-after-blank-line] [fixture:
 timeline/db-event-own-line-after-comment-line] [fixture:
 timeline/db-event-own-line-after-hash-line] [fixture:
 timeline/gram-event-after-bare-percent-line] [fixture:
@@ -747,14 +745,10 @@ timeline/db-period-same-text-twice]
 
 An event statement is one or more events in the same way, after a statement that
 is not a period statement: after a title, a section, an accessibility statement,
-or an empty description block, also on the same line, as in `section S : x`.
-mermaid.js gives each of its events to the last period before it, across the
-statements between, as
-[`addEvent()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L65-L70)
-finds the period added last: in `a`, `section S`, and `: e` on three lines, the
-event `e` belongs to `a`, and in `a`, `b : e`, `section S`, and `: f`, the event
-`f` belongs to `b`. An event statement before the first period makes the input
-rejected (see
+or an empty description block, also on the same line, as in `section S : x`. In
+`a`, `section S`, and `: e` on three lines, `: e` is an event statement; to
+which period mermaid.js gives its events is in the summary of the tests package.
+An event statement before the first period makes the input rejected (see
 [Rejections outside the grammar](#rejections-outside-the-grammar)). [fixture:
 timeline/db-event-own-line-after-title] [fixture:
 timeline/db-event-own-line-after-acc-title] [fixture:
@@ -765,11 +759,6 @@ timeline/db-event-after-section-joins-earlier-task] [fixture:
 timeline/db-section-with-event-after-task] [fixture:
 timeline/gram-event-after-section-joins-last-period]
 
-A period belongs to the section of the last section statement before it; a
-period before the first section has the empty section. [fixture:
-timeline/db-section-after-tasks] [fixture: timeline/db-section-two-with-tasks]
-[fixture: timeline/spec-timeline-8bf1d202]
-
 ### Titles and sections
 
 ```text
@@ -777,12 +766,11 @@ title-statement   = "title" title-text
 section-statement = "section" section-text
 ```
 
-A title statement sets the title to the text of its `title-text` unit as
-written, whitespace at its ends included, and replaces the title of an earlier
-title statement. The title of the frontmatter is not the title of the Db: an
-input with a frontmatter title and no title statement has no title. A section
-statement adds a section with the text of its `section-text` unit as written,
-also when the text repeats, and the periods after it belong to it. [fixture:
+The title of a title statement is the text of its `title-text` unit as written,
+whitespace at its ends included, and the name of a section statement the text of
+its `section-text` unit as written; a title and a section name may repeat. How
+mermaid.js reads the titles, the title of the frontmatter, and the sections into
+its Db is in the summary of the tests package. [fixture:
 timeline/db-title-statement] [fixture: timeline/db-title-twice] [fixture:
 timeline/db-title-frontmatter] [fixture:
 timeline/db-title-frontmatter-and-statement] [fixture:
@@ -800,9 +788,9 @@ accessibility-statement = "accTitle" ":" acc-title-text
 An accessibility title and an accessibility description are the text of their
 unit without the whitespace at its ends, which mermaid.js trims; the text of a
 block keeps its line breaks, and the whitespace after each of them is left out
-of the Db (see the summary of the tests package). A later title replaces an
-earlier one, and a later description an earlier one, from a line or from a
-block. [fixture: timeline/db-acc-title-statement] [fixture:
+of the Db (see the summary of the tests package). A title and a description may
+be written more than once, a description as a line or as a block. [fixture:
+timeline/db-acc-title-statement] [fixture:
 timeline/db-acc-title-trailing-spaces] [fixture: timeline/db-acc-title-twice]
 [fixture: timeline/db-acc-descr-statement] [fixture:
 timeline/db-acc-descr-block] [fixture: timeline/db-acc-descr-block-blank-line]

@@ -1,4 +1,5 @@
 import type { DbSummary, JsonObject } from "../types.ts"
+import { numberOrText } from "../summary-number.ts"
 import { toJsonObject } from "./json.ts"
 
 /**
@@ -71,6 +72,6 @@ function taskSummary(task: object): JsonObject {
     section,
     task: description,
     people,
-    score: Number.isFinite(score) ? score : String(score),
+    score: numberOrText(score),
   })
 }

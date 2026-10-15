@@ -76,6 +76,11 @@ const ruleDocuments: readonly {
     rulesInTestCode: ["line-separators", "whitespace-characters"],
   },
   {
+    diagram: "sankey",
+    rulesWithoutExamples: ["whitespace-characters"],
+    rulesInTestCode: ["whitespace-characters"],
+  },
+  {
     diagram: "timeline",
     rulesWithoutExamples: ["line-separators", "whitespace-characters"],
     rulesInTestCode: ["line-separators", "whitespace-characters"],
@@ -307,6 +312,7 @@ describe("the test citations in the documents", async () => {
     "docs/journey.md",
     "docs/requirement.md",
     "docs/mindmap.md",
+    "docs/sankey.md",
     "docs/timeline.md",
     "docs/compatibility.md",
   ]) {

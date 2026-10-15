@@ -132,6 +132,7 @@ const tokenCount = root.tokens.length // 8
 - 要求図: `requirement`（`requirementDiagram`）。
 - mindmap: `mindmap`（`mindmap`）。
 - timeline: `timeline`（`timeline`）。
+- sankey 図: `sankey`（`sankey` と `sankey-beta`）。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -244,7 +245,8 @@ try {
 [`ast/journey.md`](../spec/docs/ast/journey.ja.md)、
 [`ast/requirement.md`](../spec/docs/ast/requirement.ja.md)、
 [`ast/mindmap.md`](../spec/docs/ast/mindmap.ja.md)、
-[`ast/timeline.md`](../spec/docs/ast/timeline.ja.md) のものです。
+[`ast/timeline.md`](../spec/docs/ast/timeline.ja.md)、
+[`ast/sankey.md`](../spec/docs/ast/sankey.ja.md) のものです。
 
 ## 木を辿る
 
@@ -414,7 +416,8 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   mermaid.js は、flowchart と ER 図のヘッダーの前のそうした行、
   状態図のヘッダーの前の `%%{ }%%` の行、
   クラス図と ER 図のヘッダーの前でそうした行の後にある空白だけの行、
-  Gantt チャートと journey 図と要求図と timeline のヘッダーの前のそうした行を、
+  Gantt チャートと journey 図と要求図と timeline と sankey 図の
+  ヘッダーの前のそうした行を、
   後に空白だけの行があってもなくても、拒否します
   （[`bare-percent-line-before-header`](../spec/docs/known-divergences/bare-percent-line-before-header.ja.md)）。
 - `parse()` はサイトの設定を知らないので、
@@ -434,6 +437,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   [`ast/requirement.md`](../spec/docs/ast/requirement.ja.md)（要求図のノード）、
   [`ast/mindmap.md`](../spec/docs/ast/mindmap.ja.md)（mindmap のノード）、
   [`ast/timeline.md`](../spec/docs/ast/timeline.ja.md)（timeline のノード）、
+  [`ast/sankey.md`](../spec/docs/ast/sankey.ja.md)（sankey 図のノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
   [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、

@@ -665,6 +665,43 @@ describe("checkTree: the text and the mark of a diagram comment", () => {
     ).toBe(true)
   })
 
+  it("accepts the mark %% of a sankey diagram for a line of %% alone before the header, and fails every mark after the header and the mark # before it", () => {
+    // A sankey diagram has no diagram comment after its header (diagrams/sankey.md, Comments).
+    const before = "%%\nsankey\na,b,1\n"
+    expect(
+      says(
+        checkTree(
+          before,
+          treeWith(before, "SankeyDiagram", [{ mark: "%%", range: [0, 2] }]),
+        ),
+        "is no mark of the comments of a SankeyDiagram",
+      ),
+    ).toBe(false)
+    const after = "sankey\n%%\na,b,1\n"
+    const afterAt = after.indexOf("%%")
+    expect(
+      says(
+        checkTree(
+          after,
+          treeWith(after, "SankeyDiagram", [
+            { mark: "%%", range: [afterAt, afterAt + 2] },
+          ]),
+        ),
+        `Comment at ${afterAt}-${afterAt + 2}: the mark %% is no mark of the comments of a SankeyDiagram`,
+      ),
+    ).toBe(true)
+    const hash = "#\nsankey\na,b,1\n"
+    expect(
+      says(
+        checkTree(
+          hash,
+          treeWith(hash, "SankeyDiagram", [{ mark: "#", range: [0, 1] }]),
+        ),
+        "Comment at 0-1: the mark # is no mark of the comments of a SankeyDiagram",
+      ),
+    ).toBe(true)
+  })
+
   it("fails a fragment that starts with whitespace or has the wrong value", () => {
     const cut = "stateDiagram-v2\nA %% x\u2029%% end\nB\n"
     const x = cut.indexOf("%% x")

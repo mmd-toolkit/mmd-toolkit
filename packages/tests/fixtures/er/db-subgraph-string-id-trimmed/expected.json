@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Subgraphs: the whitespace at the ends of a quoted name is left out of the id; accepted."
+    "note": "db-from-tree/er.md Subgraphs, id: the whitespace at the ends of a quoted name is left out of the id; accepted."
   },
   "accepted": true,
   "diagramType": "er",

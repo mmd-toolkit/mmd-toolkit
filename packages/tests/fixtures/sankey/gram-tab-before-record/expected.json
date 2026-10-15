@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: a tab before a record is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankey\ta,b,1\n------^\nExpecting 'NEWLINE', 'EOF', 'COMMA', got 'NON_ESCAPED_TEXT'"
+  }
+}

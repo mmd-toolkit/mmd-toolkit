@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: so is a quoted value."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankeya,b,\"1ﬂ°°35¶ß\"\n------------^\nExpecting 'DQUOTE', got 'ESCAPED_TEXT'"
+  }
+}

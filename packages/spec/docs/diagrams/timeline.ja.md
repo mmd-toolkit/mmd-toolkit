@@ -57,7 +57,6 @@ timeline/gram-header-as-later-line]
 大文字小文字を区別せずに比べる、語の文字が続かないキーワード `LR` か `TD` です。
 `timeline TD`、`timeline td`、`timeline Lr`、
 `timeline` とタブと `TD`、`timeline` と空白文字 2 つと `TD` は方向を持ちます。
-Db はそれを大文字で読み、ないときは `LR` です。
 ほかの空白は方向をヘッダーにつなぎません。
 U+00A0、U+3000、U+2028、改行の後の `TD` は period で、
 空白文字の後の `TDx` もそうです。
@@ -225,11 +224,10 @@ timeline/db-indentation-does-not-nest]
 （[エンティティ](../common.ja.md#エンティティ) を参照）。
 プレースホルダーは ASCII の外の文字でできているので、
 その `#` と `;` は period を終えずコメントも始めず、
-Db はプレースホルダーを持ちます。
-`a #35; b : c #35; d` は、`a `、プレースホルダー、`b` の period と、
-`c`、プレースホルダー、` d` の event を持ちます。
+テキストはエンティティを書かれたとおりに保ちます。
+`a #35; b : c #35; d` は period `a #35; b ` と event `c #35; d` を持ちます。
 名前の形と 16 進の形も同じに読まれます。
-`a : #35;` はプレースホルダーを event として持ちます。
+`a : #35;` は event `#35;` を持ちます。
 タイトル、section、アクセシビリティのタイトル、アクセシビリティの説明、
 説明ブロックもそれを持てます。
 エンティティを始めない `#` は、period を終えるところでコメントを始めます。
@@ -860,7 +858,6 @@ period の文は、そのように続く event をすべて取ります。
 period は、その単位の書かれたとおりのテキストで、
 Db が保つ、コロン、`#`、改行の前の空白を含みます。
 その前の空白は外にあります。
-同じテキストの 2 つの period は 2 つの period です。
 [fixture:
 timeline/db-event-two-on-a-line] [fixture: timeline/db-event-own-line] [fixture:
 timeline/gram-event-line-two-events] [fixture:
@@ -876,11 +873,9 @@ event の文は、同じように並ぶ 1 つ以上の event で、
 period の文ではない文の後にあります。
 タイトル、section、アクセシビリティの文、空の説明ブロックの後で、
 `section S : x` のように同じ行でもかまいません。
-mermaid.js はその各 event を、間の文を越えて、その前の最後の period に与えます。
-[`addEvent()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/timeline/timelineDb.js#L65-L70)
-が最後に足された period を探すからです。
-3 行の `a`、`section S`、`: e` では event `e` は `a` のもので、
-`a`、`b : e`、`section S`、`: f` では event `f` は `b` のものです。
+3 行の `a`、`section S`、`: e` では `: e` が event の文です。
+mermaid.js がその event をどの period に与えるかは、
+tests パッケージの要約にあります。
 最初の period より前の event の文は入力を拒否させます
 （[文法の外の拒否](#文法の外の拒否) を参照）。
 [fixture: timeline/db-event-own-line-after-title] [fixture:
@@ -892,12 +887,6 @@ timeline/db-event-after-section-joins-earlier-task] [fixture:
 timeline/db-section-with-event-after-task] [fixture:
 timeline/gram-event-after-section-joins-last-period]
 
-period は、その前の最後の section の文の section に属します。
-最初の section より前の period は空の section を持ちます。
-[fixture:
-timeline/db-section-after-tasks] [fixture: timeline/db-section-two-with-tasks]
-[fixture: timeline/spec-timeline-8bf1d202]
-
 ### タイトルと section
 
 ```text
@@ -905,14 +894,12 @@ title-statement   = "title" title-text
 section-statement = "section" section-text
 ```
 
-タイトルの文は、
-タイトルをその `title-text` の単位の書かれたとおりのテキストにし、
-両端の空白も含め、前のタイトルの文のタイトルを置き換えます。
-フロントマターのタイトルは Db のタイトルではありません。
-フロントマターのタイトルがあり、タイトルの文がない入力はタイトルを持ちません。
-section の文は、
-その `section-text` の単位の書かれたとおりのテキストの section を、
-テキストが繰り返されても足し、その後の period はそれに属します。
+タイトルの文のタイトルは、その `title-text` の単位の書かれたとおりのテキストで、
+両端の空白も含みます。
+section の文の名前は、その `section-text` の単位の書かれたとおりのテキストです。
+タイトルと section の名前は繰り返してもかまいません。
+mermaid.js がタイトル、フロントマターのタイトル、section を Db にどう読むかは、
+tests パッケージの要約にあります。
 [fixture:
 timeline/db-title-statement] [fixture: timeline/db-title-twice] [fixture:
 timeline/db-title-frontmatter] [fixture:
@@ -932,8 +919,7 @@ accessibility-statement = "accTitle" ":" acc-title-text
 mermaid.js が取り除く両端の空白を除いた、その単位のテキストです。
 ブロックのテキストは改行を保ち、
 各改行の後の空白は Db から外されます（tests パッケージの要約を参照）。
-後のタイトルは前のものを置き換え、
-後の説明は、行のものでもブロックのものでも、前のものを置き換えます。
+タイトルと説明は何度書いてもかまわず、説明は行でもブロックでもかまいません。
 [fixture: timeline/db-acc-title-statement] [fixture:
 timeline/db-acc-title-trailing-spaces] [fixture: timeline/db-acc-title-twice]
 [fixture: timeline/db-acc-descr-statement] [fixture:

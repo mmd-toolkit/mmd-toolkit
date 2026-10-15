@@ -26,6 +26,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["requirement", "RequirementDiagram"],
   ["mindmap", "MindmapDiagram"],
   ["timeline", "TimelineDiagram"],
+  ["sankey", "SankeyDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -207,6 +208,9 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
     // `direction`.
     case "mindmap":
       return ["mindmap"]
+    // The row gives the two headers as texts.
+    case "sankey":
+      return []
     // The header, and the two values of the `direction` unit.
     case "timeline":
       return ["timeline", "lr", "td"]

@@ -1,5 +1,6 @@
 import { isWhitespace, isWhitespaceAt } from "../db-from-tree/characters.ts"
 import type { TreeRange } from "../db-from-tree/tree.ts"
+import { trimmed } from "../db-from-tree/values.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
 import type { CheckedNode, CheckedRoot } from "./types.ts"
@@ -29,10 +30,13 @@ import { WrittenText } from "./written-text.ts"
  *   tokens joined, also where a directive cuts a unit into fragments, and the
  *   whitespace next to the cut that mermaid.js reads as part of the unit lies
  *   in a fragment.
+ * - `trimmed-text`: the value is the written text without the whitespace at
+ *   its ends, so that it is empty for a text of whitespace only. The tokens of
+ *   the node are the written text, as for `written-text`.
  * - `derived`: the value is not the text but follows from it; another check
  *   reads it.
  */
-type ValueKind = "written-text" | "units-joined" | "derived"
+type ValueKind = "written-text" | "units-joined" | "trimmed-text" | "derived"
 
 /** Where the delimiters that a value leaves out lie in the range of the node. */
 type DelimitersKind = "string" | "data-block"
@@ -276,6 +280,16 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     kind: "written-text",
     spec: "Its written text (ast/timeline.md, TimelineLiteral).",
   },
+  SankeyIdentifier: {
+    field: "name",
+    kind: "trimmed-text",
+    spec: "The field without the whitespace at its ends, as written (ast/sankey.md, SankeyIdentifier).",
+  },
+  SankeyLiteral: {
+    field: "value",
+    kind: "trimmed-text",
+    spec: "The field without the whitespace at its ends, as written (ast/sankey.md, SankeyLiteral).",
+  },
 }
 
 /** The delimiters around the content of the string that `node` starts with; none if it starts with none. */
@@ -502,7 +516,21 @@ export function checkValues(
         : delimitersOf(node, rule.delimiters, delimitersOfStrings, problems)
     const joined = joinedTokenTextOf(text, root, node.range, delimiters)
     const kind = styles.has(node) ? "units-joined" : rule.kind
-    if (kind === "units-joined") {
+    if (kind === "trimmed-text") {
+      const writtenText = written.of(node.range)
+      problems.expectEqual(
+        value,
+        trimmed(writtenText),
+        where,
+        `${rule.field} is not its written text without the whitespace at its ends`,
+      )
+      problems.expectEqual(
+        joined,
+        writtenText,
+        where,
+        "the texts of its tokens joined are not its written text",
+      )
+    } else if (kind === "units-joined") {
       problems.expectEqual(
         value,
         joined,

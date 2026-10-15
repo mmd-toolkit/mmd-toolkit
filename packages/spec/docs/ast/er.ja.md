@@ -55,7 +55,6 @@ ErAccDescrBlockStatement のいずれかです。
 
 名前で書いた実体で、別名、クラス、属性を持つものも持たないものもあります。
 `A`、`p[Person]`、`A:::c1,c2`、`A { string name }`、`p[Person]:::c { … }` です。
-Db にその名前の実体がなければ実体を足し、別名、クラス、属性を与えます。
 
 | 欄           | 型                                                    | 意味                                                                                                   |
 | ------------ | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
@@ -97,11 +96,10 @@ er/gram-empty-backquotes-alone]
 属性の語は、`word` か `tilde-word` の単位では ErIdentifier で、
 `backquoted-word` の単位では StringLiteral で、その
 `value` はバッククォートの間のテキストです。
-`?` は単位でノードではありません。Db は型を `?` を付けて読みます。
+`?` は単位でノードではありません。
 キーは Identifier で、その `name` は `pk` や `PK`
 のように書かれたとおりのキーです。
-コメントは空でもよく、その値は空の文字列で、
-Dbはコメントのない属性をそう読みます。
+コメントは空でもよく、その値は空の文字列です。
 [fixture: er/gram-attribute] [fixture: er/gram-optional-type] [fixture:
 er/lex-tilde-word] [fixture: er/lex-backquote-word] [fixture:
 er/gram-keys-comma-space] [fixture: er/lex-key-lower-case] [fixture:
@@ -111,7 +109,6 @@ er/gram-attributes-keys-comment]
 ### ErRelationshipStatement
 
 `A ||--o{ B : has`、`A:::c one or more to zero or one B:::d : "has many"`。
-Db にその名前の実体がなければ 2 つの実体を足し、関係を足します。
 
 | 欄             | 型                            | 意味               |
 | -------------- | ----------------------------- | ------------------ |
@@ -164,7 +161,6 @@ er/gram-relationship-number-names]
 このノードに `value` はありません。
 単位の間には mermaid.js が読まない空白を置け、
 単位のテキストはトークンにあります。
-Db は左の濃度を `cardB`、右の濃度を `cardA` と名付けます。
 [fixture: er/gram-relationship-symbols] [fixture: er/lex-cardinality-words]
 [fixture: er/lex-cardinality-only-one-optionally-to] [fixture:
 er/lex-md-parent] [fixture: er/lex-relationship-spaces-in-spec] [fixture:
@@ -185,11 +181,8 @@ er/spec-er-diagram-7b5988ee]
 間に空白があってもなくても読み、
 mermaid.js がそのテキストを 1つの空白文字でつなぐからです。
 間の空白は値ではありません（[subgraph](../diagrams/er.ja.md#subgraph) を参照）。
-Db は id を、引用符付きの名前の両端の空白を除いて取り、
-タイトルを描画器が無害化したものとして取ります。これはサイトの設定に依存します。
 [fixture: er/gram-subgraph] [fixture: er/gram-subgraph-title] [fixture:
-er/gram-subgraph-title-string] [fixture: er/gram-subgraph-string-id] [fixture:
-er/db-subgraph-string-id-trimmed] [fixture: er/db-subgraph-title-html]
+er/gram-subgraph-title-string] [fixture: er/gram-subgraph-string-id]
 [fixture: er/gram-subgraph-header-blocks] [fixture: er/gram-subgraph-nested]
 
 ### ErDirectionStatement

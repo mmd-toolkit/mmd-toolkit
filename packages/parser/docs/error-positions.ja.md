@@ -418,6 +418,37 @@
   [fixture: timeline/gram-event-first]
   [fixture: timeline/gram-event-after-title]
 
+## Sankey の中
+
+- 字句解析器のどの規則も合わない位置では、`range` はそこの文字。
+  欄の中でも文字列の中でも、タブ、ASCII の外の文字、
+  基本多言語面の外の文字の 2 つのコード単位、
+  完全な実体を始める `#` がそうである。
+  [fixture: sankey/gram-tab-in-field]
+  [fixture: sankey/gram-quoted-non-ascii]
+  [fixture: sankey/gram-emoji]
+  [fixture: sankey/gram-entity-in-quoted-field]
+- 文字列の中でテキストが終わるときは、`range` はその開きの `"` で、
+  メッセージは `The string has no closing " before the end of the text`。
+  [fixture: sankey/gram-quoted-unclosed]
+  [fixture: sankey/gram-quoted-unclosed-at-end-of-text]
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲で、
+  すべて空白の単位では、その始まりの空の範囲。
+  メッセージは `Unexpected token`。
+  レコードや欄の前でテキストが終わるときは、テキストの終わりの空の範囲で、
+  メッセージは `Unexpected end of text`。
+  `sankeyx` のような、ヘッダーの前の欄も、そうした単位である。
+  [fixture: sankey/gram-four-columns]
+  [fixture: sankey/gram-whitespace-line-between]
+  [fixture: sankey/header-word-suffix]
+  [fixture: sankey/gram-two-columns]
+  [fixture: sankey/header-only]
+- 間に何もない 2 つの引用符は単位を読まないので、
+  `range` はその後の単位か、テキストの終わり。
+  `"",c,1` は `,` で拒否される。
+  [fixture: sankey/gram-quoted-empty]
+  [fixture: sankey/gram-quoted-empty-value]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、

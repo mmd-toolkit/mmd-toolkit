@@ -252,6 +252,13 @@ export type {
   TimelineTitleStatement,
 } from "./ast/timeline.ts"
 export type {
+  SankeyDiagram,
+  SankeyIdentifier,
+  SankeyLinkStatement,
+  SankeyLiteral,
+  SankeyNode,
+} from "./ast/sankey.ts"
+export type {
   RequirementAccDescrBlockStatement,
   RequirementAccDescrStatement,
   RequirementAccTitleStatement,

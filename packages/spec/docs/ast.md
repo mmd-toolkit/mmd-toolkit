@@ -238,8 +238,9 @@ the diagram sections below: a
 [`GanttDiagram`](./ast/gantt.md#ganttdiagram), a
 [`JourneyDiagram`](./ast/journey.md#journeydiagram), a
 [`RequirementDiagram`](./ast/requirement.md#requirementdiagram), a
-[`MindmapDiagram`](./ast/mindmap.md#mindmapdiagram), or a
-[`TimelineDiagram`](./ast/timeline.md#timelinediagram).
+[`MindmapDiagram`](./ast/mindmap.md#mindmapdiagram), a
+[`TimelineDiagram`](./ast/timeline.md#timelinediagram), or a
+[`SankeyDiagram`](./ast/sankey.md#sankeydiagram).
 
 ## ErrorDiagram
 
@@ -403,6 +404,7 @@ in a document of their own under `ast/`:
 - [Requirement](./ast/requirement.md): the diagram type `requirement`.
 - [Mindmap](./ast/mindmap.md): the diagram type `mindmap`.
 - [Timeline](./ast/timeline.md): the diagram type `timeline`.
+- [Sankey](./ast/sankey.md): the diagram type `sankey`.
 
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of

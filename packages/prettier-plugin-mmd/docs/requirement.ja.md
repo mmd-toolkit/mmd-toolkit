@@ -28,6 +28,8 @@ requirement と element のフィールドは、その文の行より 1 段深�
 [fixture: indentation/use-tabs]
 入力に書かれたインデントは残しません。
 行頭の空白は mermaid.js にとって無だからです。
+字下げは構造だけで決められるので、1 つの規則で、
+入力の字下げによらず同じテキストになります。
 [fixture: indentation/written-indentation-dropped]
 ヘッダーは、前に空白が書かれていても 1 桁目に置きます。
 [fixture: indentation/header-leading-whitespace]
@@ -96,6 +98,9 @@ requirementDiagram
 requirement と element の `{` は、種類のキーワード、名前、クラスの行に、
 書かれ方によらず空白 1 つの後に置きます。
 フィールドは次の行から 1 行に 1 つ置き、`}` は行に単独で置きます。
+`{` の前の空白 1 つは、ER の属性ブロックと同じで、
+mermaid.js の文書の書き方でもあります。
+引用符のない名前では空白がどのみち要るので、文の形は 1 つになります。
 [fixture: bodies/opening-brace-after-one-space]
 requirement の種類は 6 つあり、書かれた大文字小文字のまま残します。
 [fixture: bodies/kinds]
@@ -169,6 +174,7 @@ requirementDiagram
 
 フィールドは 1 行に、キーワード、キーワードに接する `:`、
 空白 1 つの後に値を置きます。書かれ方によりません。
+mermaid.js の文書がフィールドをそう書き、journey も値の前に空白 1 つを置きます。
 [fixture: fields/colon-touches-keyword]
 [fixture: fields/spaces-around-colon-and-value]
 [fixture: fields/value-after-one-space]
@@ -188,6 +194,7 @@ requirementDiagram
 フィールド、risk、verifyMethod の値のキーワードは、
 書かれた大文字小文字のまま残します。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
+大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
 [fixture: fields/field-keywords-case-kept]
 [fixture: fields/keyword-values-case-kept]
 複数行に書かれたフィールドは、
@@ -327,6 +334,9 @@ requirementDiagram
 
 関係文は、左の名前、`-` または `<-`、関係、`->` または `-`、右の名前の間を、
 書かれ方によらず空白 1 つにします。
+単位を離す書き方は mermaid.js の文書の形で、
+ER 図の関係文も単位の間は空白 1 つです。
+引用符のない名前は `-` の前で終わるので、空白で名前は変わりません。
 [fixture: relationship-spacing/spaces-and-touching]
 [fixture: relationship-spacing/one-space-between-units]
 [fixture: relationship-spacing/string-names]
@@ -387,6 +397,7 @@ requirementDiagram
 requirement、element、名前とクラスだけの文で、`:::` の後に書くクラスは、
 `:::` に接し、クラスを区切る `,` は両側のクラスに接します。
 `requirement r ::: a , b {` は `requirement r:::a,b {` と印字します。
+これは ER 図のクラスと同じで、mermaid.js の文書の書き方でもあります。
 [fixture: class-lists/in-requirement-and-element]
 [fixture: class-lists/shorthand]
 クラスは、文字列か、語の間に空白を持てる引用符のない文字列です。
@@ -660,6 +671,7 @@ requirementDiagram
 requirement の図には文を区切るものがなく、
 mermaid.js は同じ行に続く文を読みます。
 各文は 1 行に 1 つ置きます。
+1 行に 2 つの文があると読みにくく、ほかの図種も 1 行に 1 つの文を印字します。
 `}` の後ろの文、
 ヘッダーの後ろや `}` か文字列で終わる文の後ろの空の説明ブロック、
 `style`・`classDef`・`class` 文の行末の文字列が始める文が、
@@ -775,6 +787,7 @@ requirementDiagram
 ### 空行
 
 連続する空行は 1 つにし、図の先頭と末尾、本体の先頭と末尾の空行は落とします。
+他の図種と同じ規則です。
 [fixture: blank-lines/collapsed]
 [fixture: blank-lines/between-fields-collapsed]
 [fixture: blank-lines/header-and-end-of-text-dropped]
@@ -849,6 +862,8 @@ requirement と element の本体の行では本体の項目です。
 `{` の直後、フィールドの前、文字列かキーワードの値の後、`}` の前、
 単独の行にあるものがそうです。
 どれも自分の行に置きます。
+ER 図が mermaid.js の読まないテキストをブロックの中の自分の行に置き、
+本体のフィールドが 1 行に 1 つなのと同じです。
 [fixture: empty-description-blocks/as-statement]
 [fixture: empty-description-blocks/after-header]
 [fixture: empty-description-blocks/in-body-own-lines]
@@ -932,7 +947,12 @@ requirementDiagram
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/text-with-comment-line-kept]
 
-`accDescr { ... }` ブロックの行は書かれたまま残し、`}` は文と同じ段に置きます。
+`accDescr { ... }` ブロックの行は、必要からではなく選択として、
+書かれたまま残します。
+行頭の空白は Db に入らず、
+`a`、改行、`b` と、`b` の前に空白がある形は同じ説明です。
+行は作者のテキストで、印字は整形しないからです。
+`}` は文と同じ段に置きます。
 `{` と同じ行にテキストがあるときは、
 離れて書かれていれば波括弧の内側に空白 1 つを置きます。
 [fixture: accessibility-statements/block-lines-kept]
@@ -1038,7 +1058,8 @@ style の文脈の改行の後で続きます。
 [fixture: multi-line-statements/direction-value-joined]
 [fixture: multi-line-statements/accessibility-joined]
 [fixture: multi-line-statements/string-continued-joined]
-コメント行かディレクティブを含む文は、コメント行がその行の残りを取るので、
+コメント行かディレクティブを含む文は、コメント行がその行の残りを取り、
+ディレクティブのある行の空白はディレクティブと一緒に読まれるので、
 書かれたまま残します。
 `;` を含む文も、行の規則が決めるので、書かれたまま残します。
 [fixture: multi-line-statements/comment-line-inside-kept]
@@ -1165,6 +1186,7 @@ requirementDiagram
 
 キーワードは、書かれた大文字小文字のまま残します。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
+大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
 [fixture: keyword-case/keywords-kept]
 ヘッダーは、小文字の `requirement` で始まるときだけ検出されます
 （diagrams/requirement.md、Detection）。

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, directives: a directive without `}%%` takes the word at the start of the next line as its argument, which joins `,d,2` to the line before and gives four fields."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankeya,b,1 ,d,2\n------------^\nExpecting 'NEWLINE', 'EOF', got 'COMMA'"
+  }
+}

@@ -55,8 +55,7 @@ fields of every node below are in source order (see [Nodes](../ast.md#nodes)).
 ### StateDefinitionStatement
 
 A state written by its id, alone or with a description: `A`, `A : text`, `[*]`,
-`A:::cls`. It adds the state when the Db has none with its id, and adds its
-description.
+`A:::cls`.
 
 | Field         | Type                 | Meaning                                                                                     |
 | ------------- | -------------------- | ------------------------------------------------------------------------------------------- |
@@ -84,10 +83,10 @@ state/lex-percent-in-label]
 
 ### StateReference
 
-| Field      | Type                        | Meaning                                                                        |
-| ---------- | --------------------------- | ------------------------------------------------------------------------------ |
-| `state`    | Identifier or StateTerminal | The id of the state, or `[*]`. The name of the Identifier is the id in the Db. |
-| `cssClass` | Identifier or null          | The CSS class after `:::`; null when there is none.                            |
+| Field      | Type                        | Meaning                                             |
+| ---------- | --------------------------- | --------------------------------------------------- |
+| `state`    | Identifier or StateTerminal | The id of the state, or `[*]`.                      |
+| `cssClass` | Identifier or null          | The CSS class after `:::`; null when there is none. |
 
 Child fields: `state`, `cssClass`. [fixture:
 state/gram-style-separator-transition] [fixture:
@@ -97,8 +96,7 @@ state/gram-terminal-style-separator]
 
 `[*]`. No fields. Whether it is the start or the end follows from where it is:
 before the arrow of a transition, or alone, it is a start, and after the arrow,
-an end; its id in the Db is made from the composite state it lies in (see
-[diagrams/state.md](../diagrams/state.md)). [fixture: state/gram-terminal-alone]
+an end. [fixture: state/gram-terminal-alone]
 
 ### StateCompositeStatement
 
@@ -137,11 +135,10 @@ statement and an ignored statement, while `state x ""` followed by a line `{` is
 one composite statement, with the empty string as its `textBeforeBody`.
 [fixture: state/gram-state-empty-string-after-name] [fixture:
 state/gram-state-empty-string-after-name-body-next-line] With a body, the
-statement defines the composite state with the id. Without a body, it adds
-nothing to the Db: `state A`, `state a b`, which is two such statements, and
-`state` alone. [fixture: state/lex-keyword-upper-case] [fixture:
-state/lex-state-without-body] [fixture: state/lex-state-two-names] [fixture:
-state/lex-state-keyword-alone]
+statement defines the composite state with the id. It may have no body:
+`state A`, `state a b`, which is two such statements, and `state` alone.
+[fixture: state/lex-keyword-upper-case] [fixture: state/lex-state-without-body]
+[fixture: state/lex-state-two-names] [fixture: state/lex-state-keyword-alone]
 
 ### StateAliasDefinitionStatement
 
@@ -204,9 +201,8 @@ state/tokens-alias-ignored-semicolon-then-spaces]
 | `kind` | string               | `fork`, `join`, or `choice`.                     |
 
 Child fields: `id`. The id may hold whitespace: `state f 1 <<fork>>` is the fork
-`f 1`. `state <<join>>` has no id, and the Db has the empty id. [fixture:
-state/lex-fork-spaced-id] [fixture: state/lex-join-empty-id] [fixture:
-state/lex-choice-square-brackets]
+`f 1`. `state <<join>>` has no id. [fixture: state/lex-fork-spaced-id] [fixture:
+state/lex-join-empty-id] [fixture: state/lex-choice-square-brackets]
 
 ### StateDividerStatement
 
@@ -251,13 +247,12 @@ state/lex-note-colon-then-one-character]
 
 ### StateFloatingNoteStatement
 
-`note "text" as N1`. It adds nothing to the Db. [fixture:
-state/lex-floating-note]
+`note "text" as N1`. [fixture: state/lex-floating-note]
 
-| Field  | Type                 | Meaning                                                                                         |
-| ------ | -------------------- | ----------------------------------------------------------------------------------------------- |
-| `text` | StateLiteral or null | The text between the quotes; null when it is all whitespace.                                    |
-| `id`   | StateLiteral or null | The text after `as`, up to the end of the line; null when it is empty. The Db does not read it. |
+| Field  | Type                 | Meaning                                                                |
+| ------ | -------------------- | ---------------------------------------------------------------------- |
+| `text` | StateLiteral or null | The text between the quotes; null when it is all whitespace.           |
+| `id`   | StateLiteral or null | The text after `as`, up to the end of the line; null when it is empty. |
 
 Child fields: `text`, `id`. [fixture: state/lex-floating-note-id-spaces] The
 quotes are units of the statement and belong to no field; there may be more than
@@ -408,7 +403,7 @@ state/header-empty-description-block]
 
 ### StateScaleStatement
 
-`scale 350 width`. It adds nothing to the Db.
+`scale 350 width`.
 
 | Field   | Type           | Meaning     |
 | ------- | -------------- | ----------- |
@@ -418,7 +413,7 @@ Child fields: `width`. [fixture: state/gram-scale]
 
 ### StateHideEmptyDescriptionStatement
 
-`hide empty description`. No fields. It adds nothing to the Db. [fixture:
+`hide empty description`. No fields. [fixture:
 state/gram-hide-empty-description]
 
 ### StateIgnoredStatement

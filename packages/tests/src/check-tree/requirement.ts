@@ -26,7 +26,7 @@ import {
   textOf,
 } from "./statement-checks.ts"
 import type { Own, Reading } from "./statement-checks.ts"
-import { checkTokensInValueNodes, nodeTokensIn } from "./tokens.ts"
+import { checkTokensInValueNodes } from "./tokens.ts"
 import type { CheckedNode, CheckedRoot } from "./types.ts"
 import { isNode, walkNodes } from "./walk.ts"
 
@@ -620,9 +620,8 @@ function checkIgnoredText(
 /**
  * ast.md, StringLiteral, and diagrams/requirement.md, Units and contexts: a
  * string is closed (the text may not end inside one), and it is a `string`
- * unit only when a character lies between its quotes, so it is not empty. It
- * is one `String` token, or `StringFragment` tokens where a directive or an
- * ignored `;` cuts it (parser/docs/tokens/requirement.md, Tokens).
+ * unit only when a character lies between its quotes, so it is not empty. The
+ * tokens of a string are checked for every diagram type (`leaves.ts`).
  */
 function checkString(reading: Reading, node: CheckedNode): void {
   const where = label(node)
@@ -632,15 +631,6 @@ function checkString(reading: Reading, node: CheckedNode): void {
     "the string is not closed",
   )
   reading.problems.expect(textOf(node) !== "", where, "the string is empty")
-  const tokens = nodeTokensIn(reading.root, node.range)
-  const [first] = tokens
-  reading.problems.expect(
-    (tokens.length === 1 && first?.type === "String") ||
-      (tokens.length > 0 &&
-        tokens.every((token) => token.type === "StringFragment")),
-    where,
-    `the tokens of the string are not one String token or StringFragment tokens: ${tokens.map((token) => token.type).join(", ")}`,
-  )
 }
 
 /**

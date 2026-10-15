@@ -313,12 +313,14 @@ around it. A subgraph has these values.
   [fixture: er/db-subgraph-nested-same-id]
 - `title` is the texts of the names of the bracket, joined by one space, or the
   text of the id without a bracket; then the replacement of characters (see
-  below), and then the text without the whitespace at its ends. [fixture:
-  er/db-subgraph-title-words] [fixture: er/db-subgraph-title-quoted] [fixture:
-  er/db-subgraph-title-spaces-collapse] [fixture:
-  er/db-subgraph-title-quoted-and-bare] [fixture: er/db-subgraph-title-trimmed]
-  [fixture: er/db-subgraph-title-line-separator] [fixture:
-  er/db-subgraph-no-title] [fixture: er/db-subgraph-id-quoted]
+  below), and then the text without the whitespace at its ends. An HTML tag in
+  the text stays as written: only the replacement of characters changes the
+  title, and the renderer sanitizes a tag later. [fixture:
+  er/db-subgraph-title-html] [fixture: er/db-subgraph-title-words] [fixture:
+  er/db-subgraph-title-quoted] [fixture: er/db-subgraph-title-spaces-collapse]
+  [fixture: er/db-subgraph-title-quoted-and-bare] [fixture:
+  er/db-subgraph-title-trimmed] [fixture: er/db-subgraph-title-line-separator]
+  [fixture: er/db-subgraph-no-title] [fixture: er/db-subgraph-id-quoted]
 - `nodes` are the values that the statements of the body returned, in order,
   without those that are blank and those whose trimmed text equals the trimmed
   text of an earlier value, and then without those that an earlier subgraph

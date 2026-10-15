@@ -815,6 +815,46 @@ formatting keeps them as they are written. See
   timeline/multi-line-statements/comment-line-inside-kept] [fixture:
   timeline/statements-one-per-line/ignored-semicolon-line-kept]
 
+## Sankey lines that the characters or the quotes decide
+
+mermaid.js reads a sankey diagram as CSV: it rejects a tab, a character outside
+ASCII, and a space next to a quote, and it keeps the text of a string and of a
+value. So formatting changes little, and keeps what the Db and the lexer read.
+See [Indentation](./sankey.md#indentation) and [Commas](./sankey.md#commas).
+
+- The first column of every line. A record that starts with a string has no
+  indentation, since a space before a quote is rejected, and a line of only a
+  directive is a line of whitespace once the directive is removed, which is
+  rejected too. So no line is indented, and the options `useTabs` and `tabWidth`
+  have no effect. [fixture:
+  sankey/indentation/quoted-first-record-at-the-first-column] [fixture:
+  sankey/indentation/use-tabs] [fixture:
+  sankey/indentation/directive-lines-at-the-first-column]
+- The commas touch the strings, and no space is added next to a quote. The space
+  before a field after a string is dropped. [fixture:
+  sankey/commas/quoted-fields-touch-commas]
+- Whether there is whitespace between a `:` and a later `#` of a line that holds
+  `style` or `classDef` before the `:` and a `;` after the `#`. The line rule
+  ignores the last `;` of a line only when no whitespace lies between them, so a
+  comma between them keeps whether whitespace is around it, and a line that
+  dropping a `;` would change the end of is printed as written. Where there is
+  whitespace, it is one space. [fixture:
+  sankey/commas/style-line-colon-and-hash-in-two-fields-kept] [fixture:
+  sankey/commas/style-line-spaces-between-colon-and-hash-become-one] [fixture:
+  sankey/commas/semicolon-ends-the-line-kept] [fixture:
+  flowchart/semicolons/style-line-gap-between-colon-and-hash-kept]
+- A field of spaces only, which is a field with an empty text, is printed as one
+  space, and a value of spaces only before another record ends its line with
+  that space. [fixture: sankey/commas/spaces-only-field-is-one-space] [fixture:
+  sankey/commas/spaces-only-value-before-another-record]
+- The text of a string, with its line breaks, the empty lines in it, and the
+  whitespace at the start of a later line, which is part of its value. [fixture:
+  sankey/multi-line-strings/string-over-lines] [fixture:
+  sankey/multi-line-strings/empty-line-in-string]
+- A tab, U+00A0, U+3000, U+2028, U+2029, and U+FEFF at the end of the text,
+  which mermaid.js accepts only there, are dropped. [test: U+3000 at the end of
+  the text without a line feed]
+
 ## A comment line after U+2028 or U+2029
 
 mermaid.js removes the comment lines from the text before it reads it. A comment

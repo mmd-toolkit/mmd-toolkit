@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Other statements: a second `style` statement adds styles; accepted."
+    "note": "db-from-tree/er.md Classes and styles: a second `style` statement adds styles; accepted."
   },
   "accepted": true,
   "diagramType": "er",

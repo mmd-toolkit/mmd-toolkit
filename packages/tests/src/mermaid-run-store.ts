@@ -77,11 +77,13 @@ export const RESULT_FILES: readonly string[] = [
   "normalizers/json.ts",
   "normalizers/mindmap.ts",
   "normalizers/requirement.ts",
+  "normalizers/sankey.ts",
   "normalizers/sequence.ts",
   "normalizers/state.ts",
   "normalizers/timeline.ts",
   "rejections.ts",
   "run-mermaid-options.ts",
+  "summary-number.ts",
 ]
 
 /** The directory of the store, under the root of the repository. */

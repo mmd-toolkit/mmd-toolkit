@@ -20,7 +20,8 @@ type DescriptionStatement =
  * compared with the one before it.
  *
  * A statement is reported only when the value it sets differs from that of the
- * one before it (`accDescrText`): setting what the diagram already has loses nothing.
+ * one before it (`accDescrText`): setting what the diagram already has loses
+ * nothing.
  */
 export const requirementNoDuplicateDescription: MermaidRuleDefinition<{
   RuleOptions: []

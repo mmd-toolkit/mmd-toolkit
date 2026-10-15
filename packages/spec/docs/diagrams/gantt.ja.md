@@ -174,11 +174,10 @@ gantt/lex-task-text-tab-at-end]
 （[エンティティ](../common.ja.md#エンティティ) を参照）、
 プレースホルダーは ASCII の外の文字でできているので、
 その `#` と `;` は設定のテキストやタスクのデータを終えず、
-Db はプレースホルダーを持ちます。
-`a#amp; : 1d` は、説明が `a`、プレースホルダー、空白のタスクで、
-`title #x;` はプレースホルダーをタイトルに持ち、
-`dateFormat X#y;` は `X` とプレースホルダーを持ちます。
-プレースホルダーの後の `#` や `;` は、いつもどおりテキストを終えます。
+テキストはエンティティを書かれたとおりに保ちます。
+`a#amp; : 1d` は説明が `a#amp; ` のタスクで、
+`title #x;` はタイトル `#x;` を、`dateFormat X#y;` は書式 `X#y;` を持ちます。
+エンティティの後の `#` や `;` は、いつもどおりテキストを終えます。
 [fixture: gantt/entity-placeholder-in-task-text] [fixture:
 gantt/entity-placeholder-in-title] [fixture:
 gantt/entity-placeholder-in-href-string] [fixture:
@@ -1133,43 +1132,40 @@ gantt/gram-task-empty-middle-item] [fixture: gantt/gram-task-empty-item-first]
 
 mermaid.js は項目を
 [`parseData()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L497-L551)
-のとおりに読み、木は項目を書かれたとおりに示します。読み方は次です。
-まず**タグ**を前から取ります
+のとおりに読み、木は項目を書かれたとおりに示します。
+mermaid.js がそれをどう読むかは、tests パッケージの要約にあります。
+**タグ**は前から取ります
 （[`getTaskTags()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/gantt/ganttDb.js#L846-L860)）。
 残りの最初の項目が、ちょうどこの大文字小文字の語 `active`、`done`、`crit`、
 `milestone`、`vert` のどれかであるかぎり、それはタグで、
 繰り返しても、そのフラグを立てます。
 空の項目、別の大文字小文字の語、1 つの項目の中の 2 つのタグの語はタグではなく、
 タグを終え、ほかの項目の後のタグの語は項目です。
-次に残りの項目を数えます。
-1 つなら、それは**終わり**で、**始まり**はその前のタスクの終わりです。
-2 つなら、最初が始まり、2 つ目が終わりです。
-3 つなら、最初が **id**、2 つ目が始まり、3 つ目が終わりです。
-4 つ以上なら、mermaid.js はどれも読まず、
-タスクは id も始まりも終わりも持ちません。
-始まりは `after` と id、終わりは `until` と id、日付、長さとして書け、
-id は空白を含められます。それぞれ書かれたとおりの 1 つの項目です。
-id のないタスクは、id のないタスクの中で `task1`、`task2`、… と番号が付き、
-id は一意である必要はありません。
-同じ id の後のタスクが、click の文の見つけるタスクです。
+タグの後の項目がタスクの `items` で、それぞれ書かれたとおりです。
+`after` と id、`until` と id、日付、長さ、空白を含む id は、
+それぞれ 1 つの項目です。
+id は一意である必要はなく、2 つのタスクが同じ id を持ってもかまいません。
+[fixture: gantt/gram-task-duplicate-id-click]
 [fixture: gantt/gram-task-tag-then-item] [fixture: gantt/gram-task-two-tags]
-[fixture: gantt/gram-task-tag-repeated] [fixture:
-gantt/gram-task-tag-with-spaces] [fixture: gantt/gram-task-tag-tab] [fixture:
-gantt/gram-task-tag-nbsp] [fixture: gantt/lex-task-tag-ideographic-space]
-[fixture: gantt/gram-task-tags-upper-case] [fixture:
-gantt/gram-task-tag-mixed-case] [fixture: gantt/gram-task-two-words-no-tag]
-[fixture: gantt/gram-task-tag-after-item] [fixture:
-gantt/gram-task-tag-empty-then-tag] [fixture: gantt/gram-task-empty-item-first]
-[fixture: gantt/gram-task-tag-then-empty-item] [fixture:
-gantt/gram-task-tag-then-whitespace-item] [fixture: gantt/gram-task-one-item]
-[fixture: gantt/gram-task-two-items] [fixture: gantt/gram-task-three-items]
-[fixture: gantt/gram-task-four-items] [fixture:
-gantt/gram-task-four-tags-then-items] [fixture: gantt/gram-task-after-ids]
-[fixture: gantt/gram-task-until] [fixture: gantt/gram-task-id-with-spaces]
-[fixture: gantt/gram-task-numbered-ids] [fixture:
-gantt/gram-task-duplicate-id-click] [fixture: gantt/gram-task-milestone]
-[fixture: gantt/gram-task-vert] [fixture: gantt/gram-task-crit] [fixture:
-gantt/gram-task-active]
+[fixture: gantt/gram-task-tag-repeated]
+[fixture: gantt/gram-task-tag-with-spaces] [fixture: gantt/gram-task-tag-tab]
+[fixture: gantt/gram-task-tag-nbsp]
+[fixture: gantt/lex-task-tag-ideographic-space]
+[fixture: gantt/gram-task-tags-upper-case]
+[fixture: gantt/gram-task-tag-mixed-case]
+[fixture: gantt/gram-task-two-words-no-tag]
+[fixture: gantt/gram-task-tag-after-item]
+[fixture: gantt/gram-task-tag-empty-then-tag]
+[fixture: gantt/gram-task-empty-item-first]
+[fixture: gantt/gram-task-tag-then-empty-item]
+[fixture: gantt/gram-task-tag-then-whitespace-item]
+[fixture: gantt/gram-task-one-item] [fixture: gantt/gram-task-two-items]
+[fixture: gantt/gram-task-three-items] [fixture: gantt/gram-task-four-items]
+[fixture: gantt/gram-task-four-tags-then-items]
+[fixture: gantt/gram-task-after-ids] [fixture: gantt/gram-task-until]
+[fixture: gantt/gram-task-id-with-spaces] [fixture: gantt/gram-task-milestone]
+[fixture: gantt/gram-task-vert] [fixture: gantt/gram-task-crit]
+[fixture: gantt/gram-task-active]
 タグだけのデータは項目を残さず、入力を拒否させます
 （[文法の外の拒否](#文法の外の拒否) を参照）。
 [fixture: gantt/gram-task-tags-only] [fixture: gantt/gram-task-tags-only-two]
@@ -1262,11 +1258,10 @@ gantt/gram-click-href-then-task-same-line] [fixture:
 gantt/gram-click-call-then-title-same-line] [fixture:
 gantt/gram-click-call-then-line-feed-at-end]
 
-各部分は id のタスクにクラス `clickable` を与え、
-リンクは同じタスクのリンクを置き換え、
-同じ id の後の click の文は前のものに加わります。
-要約は call を文法が作ったとおりに記録し、どの `securityLevel` でも同じです
-（tests パッケージの要約を参照）。
+いくつもの click の文が、同じ部分でも別の部分でも、
+同じ id を挙げてかまいません。
+mermaid.js が部分を Db にどう読むかは、どの `securityLevel` でも、
+tests パッケージの要約にあります。
 [fixture: gantt/gram-click-two-statements-same-id] [fixture:
 gantt/gram-click-href-replaced] [fixture: gantt/db-click-links-order] [fixture:
 gantt/gram-click-security-level-strict] [fixture:
@@ -1292,18 +1287,15 @@ weekday-statement             = "weekday" day
 weekend-statement             = "weekend" day
 ```
 
-`dateFormat`、`axisFormat`、`tickInterval`、`todayMarker` は、
-その値を `setting-text` か `marker-text` の単位のテキストに、
-書かれたとおり、両端の空白を含めて設定します。
-後の文が前の文を置き換えます。
-`includes` と `excludes` は、リストのテキストの `list-item` の単位を
-トークンのリストに加えます。
-mermaid.js はその大文字を小文字にし、同じ種類のすべての文にわたって、
-各トークンを最初の場所に 1 回だけ保ちます。
-`list-item` の単位のない文は何も加えません。
-`inclusiveEndDates` はフラグを立てます。
-`weekday` と `weekend` は `day` の単位の曜日を、
-テキストの大文字小文字によらず小文字で設定し、後の文が前の文を置き換えます。
+`dateFormat`、`axisFormat`、`tickInterval`、`todayMarker` の値は、
+`setting-text` か `marker-text` の単位の書かれたとおりのテキストで、
+両端の空白を含みます。
+`includes` と `excludes` の項目は、リストのテキストの `list-item` の単位を
+書かれたとおりに持ったもので、なくてもかまいません。
+`weekday` と `weekend` の曜日は `day` の単位の曜日で、
+テキストの大文字小文字によらず小文字です。
+これらの文はどれも何度書いてもかまいません。
+mermaid.js がそれらを Db にどう読むかは、tests パッケージの要約にあります。
 [fixture: gantt/db-date-format] [fixture: gantt/db-date-format-extra-spaces]
 [fixture: gantt/lex-dateformat-trailing-spaces] [fixture:
 gantt/db-date-format-last-wins] [fixture: gantt/db-axis-format] [fixture:
@@ -1325,12 +1317,12 @@ title-statement   = "title" title-text
 section-statement = "section" section-text
 ```
 
-タイトルの文は、タイトルを `title-text` の単位のテキストに、
-書かれたとおり、両端の空白を含めて設定し、
-フロントマターのタイトルと前のタイトルの文を置き換えます。
-section の文は、`section-text` の単位のテキストを書かれたとおりに持つ
-section を、テキストが繰り返しても加え、その後のタスクはそれに属します。
-最初の section より前のタスクは空の section を持ちます。
+タイトルの文のタイトルは、その `title-text` の単位の書かれたとおりのテキストで、
+両端の空白も含みます。
+section の文の名前は、その `section-text` の単位の書かれたとおりのテキストです。
+タイトルと section の名前は繰り返してもかまいません。
+mermaid.js がタイトル、フロントマターのタイトル、section を Db にどう読むか、
+タスクがどの section に属するかは、tests パッケージの要約にあります。
 [fixture: gantt/db-title-statement] [fixture: gantt/db-title-frontmatter]
 [fixture: gantt/db-title-statement-after-frontmatter] [fixture:
 gantt/lex-title-twice] [fixture: gantt/lex-title-two-spaces] [fixture:
@@ -1350,7 +1342,7 @@ accessibility-statement = "accTitle" ":" acc-title-text
 mermaid.js が切り落とす両端の空白を除いたものです。
 ブロックのテキストは改行を保ち、各改行の後の空白は Db から除かれます
 （tests パッケージの要約を参照）。
-後の説明は、行のものでもブロックのものでも、前の説明を置き換えます。
+説明は、行でもブロックでも、何度書いてもかまいません。
 [fixture: gantt/gram-acc-title] [fixture:
 gantt/gram-acc-title-trailing-spaces] [fixture: gantt/gram-acc-descr] [fixture:
 gantt/gram-acc-descr-block] [fixture: gantt/gram-acc-descr-block-multiline]

@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "gantt.md Tasks: tasks without an id are numbered task1, task2 among themselves."
+    "note": "db-from-tree/gantt.md Tasks: tasks without an id are numbered task1, task2 among themselves."
   },
   "accepted": true,
   "diagramType": "gantt",

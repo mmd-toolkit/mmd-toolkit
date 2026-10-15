@@ -165,12 +165,11 @@ journey/lex-space-then-line-feeds-then-task]
 プレースホルダーは ASCII の外の文字でできているので、
 その `#` と `;` は、タイトルのテキスト、section のテキスト、
 タスクのテキスト、タスクのデータを終えず、
-Db はプレースホルダーを持ちます。
-`a#amp; b: 5` は、説明が `a`、プレースホルダー、` b` のタスクで、
-`title #x;` はプレースホルダーをタイトルに持ち、
-人、アクセシビリティのタイトルと説明、説明ブロックも
-プレースホルダーを持てます。
-プレースホルダーの後の `#` や `;` は、いつもどおりテキストを終えます。
+テキストはエンティティを書かれたとおりに保ちます。
+`a#amp; b: 5` は説明が `a#amp; b` のタスクで、
+`title #x;` はタイトル `#x;` を持ち、
+人、アクセシビリティのタイトルと説明、説明ブロックもエンティティを持てます。
+エンティティの後の `#` や `;` は、いつもどおりテキストを終えます。
 [fixture: journey/entity-placeholder-in-task-text] [fixture:
 journey/entity-placeholder-in-title] [fixture:
 journey/entity-placeholder-in-section] [fixture:
@@ -781,19 +780,11 @@ journey/db-task-description-spaces] [fixture: journey/lex-task-colon-at-end]
   2 つ目のコロンかデータの終わりまでです。
   これは、部分の両端の空白を除いたテキストの `score` の単位で、
   部分が空か空白だけのときは単位がありません。
-  mermaid.js は、部分が書く数を JavaScript の数の読み方でスコアとして読みます。
-  `3.5`、`-2`、`1e2`、`0x10`、`Infinity`、`-Infinity` は数で、
-  `1e400` は無限の数、空白だけの部分は `0` で、
-  `abc` や `5, 6` のように数を書かない部分は、
-  数でないスコアで受理されます。
+  `abc` や `5, 6` のように数を書かない部分も受理されます。
+  mermaid.js がスコアを数としてどう読むかは、tests パッケージの要約にあります。
   [fixture: journey/db-task-score-only] [fixture:
   journey/db-task-score-spaces] [fixture: journey/lex-task-score-nbsp-trimmed]
-  [fixture: journey/db-task-score-decimal] [fixture:
-  journey/db-task-score-negative] [fixture: journey/db-task-score-exponent]
-  [fixture: journey/db-task-score-hexadecimal] [fixture:
-  journey/db-task-score-infinity] [fixture:
-  journey/db-task-score-negative-infinity] [fixture:
-  journey/db-task-score-overflow] [fixture: journey/db-task-score-empty]
+  [fixture: journey/db-task-score-empty]
   [fixture: journey/gram-task-data-whitespace-only] [fixture:
   journey/db-task-score-not-a-number] [fixture:
   journey/gram-task-score-comma]
@@ -806,8 +797,7 @@ journey/db-task-description-spaces] [fixture: journey/lex-task-colon-at-end]
   つまりタスクの人の null の要素です
   （[JourneyTaskStatement](../ast/journey.ja.md#journeytaskstatement)
   を参照）。
-  人はいつもコンマの数より 1 つ多く、
-  mermaid.js は空の人を空の名前として読みます。
+  人はいつもコンマの数より 1 つ多くあります。
   `A: 3: a,,b` は人 `a`、空の人、`b` を持ち、
   `A: 3: ` と `A: 5:` は空の人を 1 つ持ち、
   `A: 3: Me, You ,  Them` は人 `Me`、`You`、`Them` を持ちます。
@@ -839,10 +829,6 @@ journey/db-task-description-spaces] [fixture: journey/lex-task-colon-at-end]
 journey/gram-empty-description-block-in-task-data] [fixture:
 journey/lex-task-data-to-end-of-line]
 
-タスクは、その前の最後の section の文の section に属します。
-最初の section より前のタスクは空の section を持ちます。
-[fixture: journey/db-task-before-section] [fixture: journey/db-sections]
-
 ### タイトルと section
 
 ```text
@@ -850,12 +836,12 @@ title-statement   = "title" title-text
 section-statement = "section" section-text
 ```
 
-タイトルの文は、タイトルをその `title-text` の単位のテキストに、
-両端の空白を含めて書かれたとおりに設定し、
-frontmatter のタイトルと前のタイトルの文を置き換えます。
-section の文は、その `section-text` の単位のテキストを書かれたとおりに持つ
-section を、テキストが繰り返されても足し、
-その後のタスクはそれに属します。
+タイトルの文のタイトルは、その `title-text` の単位の書かれたとおりのテキストで、
+両端の空白も含みます。
+section の文の名前は、その `section-text` の単位の書かれたとおりのテキストです。
+タイトルと section の名前は繰り返してもかまいません。
+mermaid.js がタイトル、フロントマターのタイトル、section を Db にどう読むか、
+タスクがどの section に属するかは、tests パッケージの要約にあります。
 [fixture: journey/db-title-statement] [fixture:
 journey/db-title-frontmatter] [fixture:
 journey/db-title-statement-after-frontmatter] [fixture:
@@ -876,7 +862,7 @@ mermaid.js が取り除く両端の空白を除いたものです。
 ブロックのテキストは改行を保ち、
 それぞれの改行の後の空白は Db から除かれます
 （tests パッケージの要約を参照）。
-後の説明は、行のものでもブロックのものでも、前の説明を置き換えます。
+説明は、行でもブロックでも、何度書いてもかまいません。
 [fixture: journey/db-acc-title] [fixture:
 journey/gram-acc-title-trailing-spaces] [fixture: journey/db-acc-descr]
 [fixture: journey/db-acc-descr-block] [fixture:

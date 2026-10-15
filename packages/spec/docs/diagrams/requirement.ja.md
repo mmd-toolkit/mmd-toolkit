@@ -942,19 +942,12 @@ requirement-field     = ( "id" | "text" ) ":" field-value
 field-value           = unquoted-text | string
 ```
 
-要求の文は、Db にその名前の要求がなければ、
-その種類とフィールドの値とともに要求を足します。
-同じ名前の 2 つ目の文は何も足さず、フィールドも変えず、
-2 回書いたフィールドは最初のものが数えられます。
-`:::` の後のクラスは、どの場合も、class の文と同じくその名前に与えられるので
-（[スタイルとクラス](#スタイルとクラス) を参照）、
-2 つ目の文のクラスは最初の要求に付きます。
-書かれた大文字小文字によらず、種類は `Requirement`、
-`Functional Requirement` などとして、
-リスクは `Low`、`Medium`、`High` として、
-方法は `Analysis`、`Demonstration`、`Inspection`、`Test` として読まれます。
-書かれていないフィールドは空文字列です。
+要求の文は、どのフィールドを省いてもよく、フィールドを 2 回書いてもよく、
+前の要求の名前を、別のフィールドとクラスとともに繰り返してもかまいません。
 `__proto__` と `constructor` は、ほかと同じ名前です。
+種類、リスク、方法は、どの大文字小文字で書いてもかまいません。
+mermaid.js が要求とそのフィールドとクラスを Db にどう読むかは、
+tests パッケージの要約にあります。
 [fixture: requirement/db-requirement-all-fields] [fixture:
 requirement/db-requirement-defaults] [fixture:
 requirement/db-requirement-name-repeated]
@@ -1019,10 +1012,10 @@ element-line      = empty-description-block* element-field?
 element-field     = ( "type" | "docref" ) ":" field-value
 ```
 
-要素の文は、要求の文と同じく、Db にその名前の要素がなければ、
-フィールドの値とともに要素を足し、class の文と同じく、クラスをその名前に与えます
-（[スタイルとクラス](#スタイルとクラス) を参照）。
-本体は要求の本体と同じに読まれます。
+要素の文の本体は要求の本体と同じに読まれ、
+要素の文も、どのフィールドを省いてもよく、フィールドを 2 回書いてもよく、
+前の要素の名前を繰り返してもかまいません。
+mermaid.js が要素を Db にどう読むかは、tests パッケージの要約にあります。
 要求と要素は同じ名前を持てます。
 要素の中の `id: 1` は拒否され、
 `docref` は中に `:` を持つ文字列にでき、
@@ -1047,11 +1040,10 @@ relation               = "contains" | "copies" | "derives" | "satisfies"
                        | "verifies" | "refines" | "traces"
 ```
 
-関係の文は関係を足します。
-`-` と `->` では左の名前から右の名前へ、
+関係の文は、`-` と `->` では左の名前から右の名前へ、
 `<-` と `-` では右の名前から左の名前への関係です。
 名前は要求や要素の名前でなくてもかまわず、
-2 回書いた関係は 2 回足されます。
+同じ関係を 2 回書いてもかまいません。
 単位の間に空白は要りません。
 `a-satisfies->b` と `a<-satisfies-b` は関係です。
 `a - likes -> b`、`a - satisfies - > b`、`- satisfies -> b` は拒否されます。
@@ -1083,7 +1075,7 @@ accessibility-statement   = "accTitle" ":" title-text
                           | "accDescr" "{" description-block-text "}"
 ```
 
-- 方向の文は図の方向を決めます。最後のものが数えられます。
+- 方向の文は図の方向を決め、何度書いてもかまいません。
   [fixture: requirement/spec-requirement-diagram-7522200d] [fixture:
   requirement/spec-requirement-diagram-6d165a76] [fixture:
   requirement/spec-requirement-diagram-34fcfcee] [fixture:
@@ -1131,18 +1123,9 @@ accessibility-statement   = "accTitle" ":" title-text
   requirement/lex-classdef-without-style] [fixture:
   requirement/lex-style-trailing-comma] [fixture:
   requirement/lex-style-percent] [fixture: requirement/lex-style-string]
-- `style` の文は、各名前の要求に、
-  要求がなければその名前の要素に、スタイルを足します。
-  どちらでもない最初の名前までで、その後の名前には足しません。
-  `classDef` の文はクラスを定め、定まっているクラスにはスタイルを足し、
-  その時点で Db にあるそのクラスを持つすべての要求と要素にそれを足します。
-  どの要求と要素も最初からクラス `default` を持つので、
-  `classDef default fill:red` はその時点で Db にあるものにスタイルを付けます。
-  [fixture: requirement/db-style-unknown-name] [fixture:
-  requirement/db-requirement-and-element-same-name] [fixture:
-  requirement/db-class-def] [fixture:
-  requirement/db-class-statement-before-def] [fixture:
-  requirement/db-class-def-default-all]
+- mermaid.js が `style` と `classDef` の文のスタイルを
+  Db の要求と要素にどう与えるかは、クラス `default` も含めて、
+  tests パッケージの要約にあります。
 - `class` の文は、`,` で区切った名前の 2 つのリストです。
   要求や要素の名前と、クラスです。
   最初のリストは `,` が前にない最初の名前で終わり、
@@ -1160,11 +1143,11 @@ accessibility-statement   = "accTitle" ":" title-text
   requirement/lex-class-second-list-comma-space-next-line] [fixture:
   requirement/lex-class-second-list-string-next-line] [fixture:
   requirement/lex-class-second-list-after-newline]
-  文は、それぞれがその時点で持つスタイルとともに、
-  各名前の要求に、要求がなければその名前の要素に、クラスを足します。
-  どちらでもない名前は何も変えません。
+  名前は要求の名前でも、要素の名前でも、どちらでもなくてもかまいません。
   クラスの短縮の文と、要求や要素の文の `:::` の後のクラスは、
-  1 つの名前について同じことをします。
+  1 つの名前についてクラスを書きます。
+  mermaid.js がクラスを Db の要求と要素にどう与えるかは、
+  tests パッケージの要約にあります。
   [fixture: requirement/db-class-statement] [fixture:
   requirement/gram-class-comma-spaces] [fixture:
   requirement/gram-class-string-class] [fixture:
@@ -1177,10 +1160,9 @@ accessibility-statement   = "accTitle" ":" title-text
   [fixture: requirement/db-class-shorthand-requirement-and-element]
   [fixture:
   requirement/gram-class-shorthand-spaced]
-- アクセシビリティの文はタイトルか説明を決めます。
-  最後のものが数えられます。
-  説明ブロックの後の説明の行も、説明の行の後の説明ブロックも同じです。
-  空の説明ブロックは何も変えません。
+- アクセシビリティの文はタイトルか説明を決め、
+  どちらも、行でもブロックでも、何度書いてもかまいません。
+  mermaid.js がそれらを Db にどう読むかは、tests パッケージの要約にあります。
   [fixture: requirement/db-acc-title-descr] [fixture:
   requirement/db-acc-descr-block] [fixture:
   requirement/db-acc-descr-block-then-line] [fixture:

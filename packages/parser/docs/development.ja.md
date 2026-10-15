@@ -39,7 +39,8 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 シーケンス図（`sequence`）と、クラス図（`classDiagram`）と、
 状態図（`stateDiagram`）と、ER 図（`er`）と、Gantt チャート（`gantt`）と、
 journey 図（`journey`）と、要求図（`requirement`）と、
-mindmap（`mindmap`）と、timeline（`timeline`）です。
+mindmap（`mindmap`）と、timeline（`timeline`）と、
+sankey 図（`sankey`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -54,7 +55,8 @@ mindmap（`mindmap`）と、timeline（`timeline`）です。
 [`diagrams/journey.md`](../../spec/docs/diagrams/journey.ja.md)、
 [`diagrams/requirement.md`](../../spec/docs/diagrams/requirement.ja.md)、
 [`diagrams/mindmap.md`](../../spec/docs/diagrams/mindmap.ja.md)、
-[`diagrams/timeline.md`](../../spec/docs/diagrams/timeline.ja.md)
+[`diagrams/timeline.md`](../../spec/docs/diagrams/timeline.ja.md)、
+[`diagrams/sankey.md`](../../spec/docs/diagrams/sankey.ja.md)
 のどれかに従います。
 3 つの部分からなります。
 

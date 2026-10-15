@@ -58,12 +58,9 @@ Child fields: `description`, `tags`, `items`. The items of the data are the
 stretches between the colon, the commas, and the end of the line; there is one
 more than there are commas (see [Tasks](../diagrams/gantt.md#tasks)). The tags
 are the items taken from the front as long as the first remaining item is one of
-the five words in that case; the rest are the `items`. mermaid.js reads the
-items by their number: one is the end; two are the start and the end; three are
-the id, the start, and the end; four or more are not read, and the task has no
-id, no start, and no end. `tags` and `items` together hold every item, so
-`items` is empty only when the data holds tags only, which makes the input
-rejected (see
+the five words in that case; the rest are the `items`. `tags` and `items`
+together hold every item, so `items` is empty only when the data holds tags
+only, which makes the input rejected (see
 [Rejections outside the grammar](../diagrams/gantt.md#rejections-outside-the-grammar)).
 A tag is one `data-item` unit, a text unit, so a directive may lie inside it,
 and its name is the written text without the directive: `do%%{init: {}}%%ne` is

@@ -120,6 +120,10 @@ flowchart LR
   `timeline` で始まる図です。
   整形の規則は、
   例とともに [docs/timeline.ja.md](./docs/timeline.ja.md) にあります。
+- sankey 図。
+  `sankey` か `sankey-beta` で始まる図です。
+  整形の規則は、
+  例とともに [docs/sankey.ja.md](./docs/sankey.ja.md) にあります。
 - これらの図の YAML のフロントマター。
   Prettier の YAML 整形で整形します。
 
@@ -148,7 +152,7 @@ flowchart LR
   `A-->|x""|B` のように、トークンの間に空の文字列がある場合もそうです。
   一覧は [docs/compatibility.ja.md](./docs/compatibility.ja.md) にあります。
 - flowchart、sequence、class、state、ER、Gantt、journey、
-  requirement、mindmap、timeline 以外の図種は変えません。
+  requirement、mindmap、timeline、sankey 以外の図種は変えません。
   ただし、改行コードは `endOfLine` に従います。
   Markdown では、Prettier に任せます。
 
@@ -192,6 +196,7 @@ flowchart LR
   requirement 図の整形の規則。
 - [docs/mindmap.ja.md](./docs/mindmap.ja.md): mindmap の整形の規則。
 - [docs/timeline.ja.md](./docs/timeline.ja.md): timeline の整形の規則。
+- [docs/sankey.ja.md](./docs/sankey.ja.md): sankey 図の整形の規則。
 - [docs/compatibility.ja.md](./docs/compatibility.ja.md):
   mermaid.js と違う箇所と、その理由。
 - [docs/development.ja.md](./docs/development.ja.md): テストと fixture。

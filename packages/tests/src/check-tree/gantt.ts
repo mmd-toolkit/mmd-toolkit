@@ -23,8 +23,8 @@ import {
   textOf,
 } from "./statement-checks.ts"
 import type { Own, Reading, TextAfterKeyword } from "./statement-checks.ts"
-import { checkTokensInValueNodes, nodeTokensIn } from "./tokens.ts"
-import type { CheckedNode, CheckedRoot, CheckedToken } from "./types.ts"
+import { checkTokensInValueNodes } from "./tokens.ts"
+import type { CheckedNode, CheckedRoot } from "./types.ts"
 import { nodesOf } from "./walk.ts"
 
 // ast/gantt.md, diagrams/gantt.md, parser/docs/tokens/gantt.md, and
@@ -102,27 +102,6 @@ const TEXT_AFTER_KEYWORD: Readonly<Record<string, TextAfterKeyword>> = {
   GanttTodayMarkerStatement: { field: "value", endsBefore: [";"] },
   GanttTitleStatement: { field: "value", endsBefore: [] },
   GanttSectionStatement: { field: "name", endsBefore: [] },
-}
-
-/**
- * parser/docs/tokens/gantt.md, Tokens: the tokens of the string of a link part
- * are one `String` token, from the
- * opening quote to the closing one, or `StringFragment` tokens where a
- * directive or an ignored `;` cuts it.
- */
-function checkStringTokens(
-  reading: Reading,
-  tokens: readonly CheckedToken[],
-  where: string,
-): void {
-  const [first] = tokens
-  const isOneString = tokens.length === 1 && first?.type === "String"
-  reading.problems.expect(
-    isOneString ||
-      (tokens.length > 0 && tokens.every((t) => t.type === "StringFragment")),
-    where,
-    `the tokens of the string are not one String token or StringFragment tokens: ${tokens.map((token) => token.type).join(", ")}`,
-  )
 }
 
 /**
@@ -357,11 +336,6 @@ function checkClick(reading: Reading, node: CheckedNode, own: Own): void {
       raw.startsWith('"') && raw.endsWith('"'),
       label(href),
       `the link does not run from \`"\` to \`"\`: ${JSON.stringify(raw)}`,
-    )
-    checkStringTokens(
-      reading,
-      nodeTokensIn(reading.root, href.range),
-      label(href),
     )
   }
 }

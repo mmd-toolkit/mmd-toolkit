@@ -50,8 +50,7 @@ fields of every node below are in source order (see [Nodes](../ast.md#nodes)).
 
 An entity written by its name, with an alias, classes, and attributes or
 without: `A`, `p[Person]`, `A:::c1,c2`, `A { string name }`, and
-`p[Person]:::c { … }`. It adds the entity when the Db has none with its name,
-and gives it its alias, classes, and attributes.
+`p[Person]:::c { … }`.
 
 | Field        | Type                                            | Meaning                                                                                                                              |
 | ------------ | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
@@ -90,20 +89,17 @@ One attribute of an entity: `string name`, `string? middleName`,
 Child fields: `dataType`, `name`, `keys`, `comment`. An attribute word is an
 ErIdentifier for a `word` or a `tilde-word` unit, and a StringLiteral for a
 `backquoted-word` unit, whose `value` is the text between the backquotes. The
-`?` is a unit and no node; the Db reads the type with the `?` appended. A key is
-an Identifier whose `name` is the key as written, `pk` or `PK`. The comment may
-be empty, with the value of the empty string, as the Db reads an attribute
-without a comment. [fixture: er/gram-attribute] [fixture: er/gram-optional-type]
-[fixture: er/lex-tilde-word] [fixture: er/lex-backquote-word] [fixture:
+`?` is a unit and no node. A key is an Identifier whose `name` is the key as
+written, `pk` or `PK`. The comment may be empty, with the value of the empty
+string. [fixture: er/gram-attribute] [fixture: er/gram-optional-type] [fixture:
+er/lex-tilde-word] [fixture: er/lex-backquote-word] [fixture:
 er/gram-keys-comma-space] [fixture: er/lex-key-lower-case] [fixture:
 er/gram-comment] [fixture: er/gram-comment-empty] [fixture:
 er/gram-attributes-keys-comment]
 
 ### ErRelationshipStatement
 
-`A ||--o{ B : has`, `A:::c one or more to zero or one B:::d : "has many"`. It
-adds the two entities when the Db has none with their names, and the
-relationship.
+`A ||--o{ B : has`, `A:::c one or more to zero or one B:::d : "has many"`.
 
 | Field          | Type                          | Meaning                             |
 | -------------- | ----------------------------- | ----------------------------------- |
@@ -149,8 +145,7 @@ No child fields. The cardinality words are `zero-or-one`, `zero-or-more`,
 spelling of the unit: `|o`, `one or zero`, and `zero or one` all give
 `zero-or-one`, and `--` and `to` both give `identifying`. The node has no
 `value`: its units may have whitespace between them, which mermaid.js does not
-read, and the texts of the units are in the tokens. The Db names the left
-cardinality `cardB` and the right one `cardA`. [fixture:
+read, and the texts of the units are in the tokens. [fixture:
 er/gram-relationship-symbols] [fixture: er/lex-cardinality-words] [fixture:
 er/lex-cardinality-only-one-optionally-to] [fixture: er/lex-md-parent] [fixture:
 er/lex-relationship-spaces-in-spec] [fixture: er/spec-er-diagram-7b5988ee]
@@ -168,12 +163,9 @@ er/lex-relationship-spaces-in-spec] [fixture: er/spec-er-diagram-7b5988ee]
 Child fields: `id`, `title`, `body`. The title is a list because the grammar
 reads one or more entity names there, with whitespace between them or not, and
 mermaid.js joins their texts with one space; the whitespace between them is no
-value (see [Subgraphs](../diagrams/er.md#subgraphs)). The Db takes the id with
-the whitespace at the ends of a quoted name left out, and the title as the
-renderer sanitizes it, which depends on the site configuration. [fixture:
+value (see [Subgraphs](../diagrams/er.md#subgraphs)). [fixture:
 er/gram-subgraph] [fixture: er/gram-subgraph-title] [fixture:
 er/gram-subgraph-title-string] [fixture: er/gram-subgraph-string-id] [fixture:
-er/db-subgraph-string-id-trimmed] [fixture: er/db-subgraph-title-html] [fixture:
 er/gram-subgraph-header-blocks] [fixture: er/gram-subgraph-nested]
 
 ### ErDirectionStatement

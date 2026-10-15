@@ -966,11 +966,11 @@ statement = entity-statement
 
 Nothing separates two statements: a statement may follow another on the same
 line, and a `newline` unit between them is a `line` of its own.
-`A ||--o{ B : x C ||--o{ D : y` has two relationships, `A B` adds two entities,
-`A ||--o{ B : has it` has the role `has` and the entity `it`, and so a statement
-follows a role in quotes, a `}`, a `class` statement, an `accTitle` line's
-start, or a `classDef` and `style` statement on the same line only after its
-separator. [fixture: er/gram-two-relationships-one-line] [fixture:
+`A ||--o{ B : x C ||--o{ D : y` has two relationships, `A B` is two entity
+statements, `A ||--o{ B : has it` has the role `has` and the entity `it`, and so
+a statement follows a role in quotes, a `}`, a `class` statement, an `accTitle`
+line's start, or a `classDef` and `style` statement on the same line only after
+its separator. [fixture: er/gram-two-relationships-one-line] [fixture:
 er/lex-two-names-one-line] [fixture: er/lex-role-then-name] [fixture:
 er/gram-role-string-then-name] [fixture: er/lex-role-string-glued-name]
 [fixture: er/gram-block-then-name-one-line] [fixture:
@@ -994,11 +994,11 @@ class-list       = ":::" name ( "," name )*
 attribute-block  = "{" block-item* "}"
 ```
 
-An entity statement adds the entity when the Db has none with its name, and
-gives it its alias, its classes, and its attributes: `A`, `A[P]`, `A:::c`,
-`A { … }`, `A[P]:::c { … }`, and `"A B"`, `12`, `2.5`, and `1` are entity
-statements. [fixture: er/lex-name-unicode-characters] [fixture: er/gram-alias]
-[fixture: er/gram-entity-classes] [fixture: er/gram-attribute] [fixture:
+An entity statement is an entity name, with an alias, classes, and an attribute
+block or without them: `A`, `A[P]`, `A:::c`, `A { … }`, `A[P]:::c { … }`, and
+`"A B"`, `12`, `2.5`, and `1` are entity statements. [fixture:
+er/lex-name-unicode-characters] [fixture: er/gram-alias] [fixture:
+er/gram-entity-classes] [fixture: er/gram-attribute] [fixture:
 er/gram-alias-class-block] [fixture: er/lex-quoted-name] [fixture:
 er/lex-name-number] [fixture: er/lex-name-decimal] [fixture: er/lex-name-one]
 [fixture: er/db-name-twice]
@@ -1021,9 +1021,6 @@ er/lex-name-number] [fixture: er/lex-name-decimal] [fixture: er/lex-name-one]
   er/gram-relationship-left-class-right-alias] [fixture:
   er/gram-alias-then-class] [fixture: er/gram-alias-then-block] [fixture:
   er/gram-alias-class-block] [fixture: er/gram-alias-class-empty-block]
-  mermaid.js keeps the first alias that an entity gets: `p[P]` followed by a
-  line `p[Q]` has the alias `P`, and `p` followed by a line `p[Q]` the alias
-  `Q`. [fixture: er/db-alias-second-ignored] [fixture: er/db-alias-after-plain]
 - The classes after `:::` are names separated by `,`, with whitespace around the
   `:::` and the `,` or not: `A:::c1,c2`, `A ::: c, d`, and `A:::é,b-c` are
   accepted, while `A:::`, `A:::c,`, `A:::12`, `A:::"c"`, and `A:::c:::d` are
@@ -1043,8 +1040,8 @@ er/lex-name-number] [fixture: er/lex-name-decimal] [fixture: er/lex-name-one]
   er/gram-block-blank-lines] [fixture: er/lex-block-no-space] [fixture:
   er/gram-block-one-line] [fixture: er/gram-block-one-line-then-name] [fixture:
   er/gram-block-next-line] [fixture: er/gram-classes-then-block-next-line]
-  [fixture: er/gram-block-then-relationship] A second block for the same name
-  adds its attributes after the first ones. [fixture: er/db-block-twice]
+  [fixture: er/gram-block-then-relationship] The same name may have a second
+  block. [fixture: er/db-block-twice]
 
 ### Attributes
 
@@ -1082,14 +1079,13 @@ er/gram-attributes-keys-comment]
   without `,`, `PK,` with nothing after it, a key where a type or a name is
   expected, and a word after a key are rejected: `int id PK FK`, `int id PK,`,
   `PK id`, `string PK`, and `int a PK b`; `int id,PK` is the attribute named
-  `id,PK`, because `,` is a character of a word. The Db keeps each key as
-  written, `pk` as `pk`. [fixture: er/gram-keys-comma-space] [fixture:
-  er/gram-keys-comma] [fixture: er/lex-keys-space-comma] [fixture:
-  er/gram-keys-three] [fixture: er/gram-name-then-key-next-line] [fixture:
-  er/gram-keys-space] [fixture: er/gram-keys-trailing-comma] [fixture:
-  er/lex-key-as-type] [fixture: er/lex-key-as-name] [fixture:
-  er/gram-key-then-word] [fixture: er/lex-key-glued-to-name] [fixture:
-  er/lex-key-lower-case]
+  `id,PK`, because `,` is a character of a word. [fixture:
+  er/gram-keys-comma-space] [fixture: er/gram-keys-comma] [fixture:
+  er/lex-keys-space-comma] [fixture: er/gram-keys-three] [fixture:
+  er/gram-name-then-key-next-line] [fixture: er/gram-keys-space] [fixture:
+  er/gram-keys-trailing-comma] [fixture: er/lex-key-as-type] [fixture:
+  er/lex-key-as-name] [fixture: er/gram-key-then-word] [fixture:
+  er/lex-key-glued-to-name] [fixture: er/lex-key-lower-case]
 - The comment is one `comment-string` unit after the name or the keys, with
   whitespace before it or not, also on a later line: `string a "c d"`,
   `string a ""`, `string a"c"`, `int a PK"c"`, and `int a PK` followed by a line
@@ -1149,8 +1145,8 @@ relationship-line      = "identifying" | "non-identifying"
 role                   = string | quoted-name | name
 ```
 
-A relationship statement adds the two entities when the Db has none with their
-names, and the relationship with its role: `A ||--o{ B : has`,
+A relationship statement is two entity references with a relationship between
+them, a `:`, and a role: `A ||--o{ B : has`,
 `A one or more to zero or one B : has`, `A:::c ||--o{ B:::d : x`,
 `A ||--o{ A : x`, `"A 1" ||--o{ "B 2" : x`, and `12 ||--o{ 3.5 : x` are
 relationships. The role is required and is one unit: a string, which may be
@@ -1176,10 +1172,9 @@ er/gram-role-string-then-name] [fixture: er/lex-role-string-glued-name]
 role may not be on a line after the first entity: `A`, a line break, and
 `||--o{ B : x`, and `A ||--o{ B :`, a line break, and `x`, are rejected.
 [fixture: er/lex-relationship-spec-next-line] [fixture: er/lex-role-next-line]
-Where a subgraph with the name of an end was defined before the statement,
-mermaid.js refers the relationship to the subgraph instead of an entity; the
-entity is added all the same, and after the statement a subgraph of that name
-changes nothing. [fixture: er/db-relationship-to-subgraph-after] [fixture:
+An end may have the name of a subgraph defined before or after the statement;
+how mermaid.js refers the relationship then is in the summary of the tests
+package. [fixture: er/db-relationship-to-subgraph-after] [fixture:
 er/db-relationship-to-subgraph-before]
 
 ### Subgraphs
@@ -1247,18 +1242,8 @@ er/lex-subgraph-title-then-string-glued]
   [fixture: er/gram-end-alone] [fixture: er/lex-end-same-line] [fixture:
   er/lex-end-end-same-line] [fixture: er/lex-subgraph-crlf] [fixture:
   er/gram-subgraph-after-header-same-line]
-- The Db gives the subgraph its name, with whitespace at the ends of a quoted
-  name left out, as its id and, without a title, as its title, and the title as
-  the renderer sanitizes it, which depends on the site configuration; it lists
-  the names of the entities of the body, each once, without those that an
-  earlier subgraph lists, the ids of the subgraphs in the body, and the texts of
-  some other statements of the body (see the document of the Db of the tests).
-  An entity may have the name of a subgraph: `S` before or after `subgraph S` is
-  an entity and a subgraph. [fixture: er/db-subgraph-string-id-trimmed]
-  [fixture: er/db-subgraph-title-html] [fixture: er/db-subgraph-entity-twice]
-  [fixture: er/db-subgraph-same-entity-two-subgraphs] [fixture:
-  er/db-subgraph-nested-entity-in-both] [fixture: er/db-subgraph-same-id-twice]
-  [fixture: er/db-subgraph-id-as-name-after] [fixture:
+- An entity may have the name of a subgraph: `S` before or after `subgraph S` is
+  an entity and a subgraph. [fixture: er/db-subgraph-id-as-name-after] [fixture:
   er/db-subgraph-id-as-name-before]
 
 ### Empty description blocks
@@ -1374,11 +1359,11 @@ accessibility-statement = "accTitle" ":" title-text
 ```
 
 - A direction statement sets the direction of the diagram, or, in a subgraph, of
-  that subgraph; the last one counts. `direction LR` at the end of the text is
-  one. [fixture: er/gram-direction] [fixture: er/db-direction-twice] [fixture:
-  er/gram-direction-in-subgraph] [fixture: er/db-direction-in-subgraph-twice]
-  [fixture: er/gram-direction-in-nested-subgraph] [fixture:
-  er/lex-direction-at-end]
+  that subgraph, and may be written more than once. `direction LR` at the end of
+  the text is one. [fixture: er/gram-direction] [fixture: er/db-direction-twice]
+  [fixture: er/gram-direction-in-subgraph] [fixture:
+  er/db-direction-in-subgraph-twice] [fixture:
+  er/gram-direction-in-nested-subgraph] [fixture: er/lex-direction-at-end]
 - In a `classDef` and a `style` statement, the names are `style-text` units
   separated by `,`, and they end at the first unit that no `,` precedes; the
   styles then follow, and at least one is needed. The statement ends with a
@@ -1412,36 +1397,28 @@ accessibility-statement = "accTitle" ":" title-text
   er/gram-style] [fixture: er/gram-style-two-names] [fixture:
   er/lex-style-dash-name] [fixture: er/lex-style-star-name] [fixture:
   er/lex-style-unicode-name] [fixture: er/gram-style-number-name] [fixture:
-  er/lex-style-hash-first] A `classDef` for a name that has one adds its styles,
-  and a `style` statement adds its styles to an entity or a subgraph that the Db
-  has at that point and changes nothing for a name it does not have:
-  `style A fill:red` followed by a line `A` gives A no style. [fixture:
-  er/db-classdef-twice] [fixture: er/db-style-twice] [fixture:
-  er/db-style-before-entity] [fixture: er/db-style-subgraph] [fixture:
-  er/db-classdef-color-style]
+  er/lex-style-hash-first]
 - A `class` statement is two lists of names separated by `,`, with whitespace
   around the `,` or not: the names of entities or subgraphs, and the classes.
   The first list ends at the first name that no `,` precedes, and the second at
   the next unit that is no `,` or name: `class A a`, `class A,B a,b`,
   `class A , B a`, `class A a b`, which has the entity `b` after it, and
   `class A a,b c` are accepted. `class A`, `class A` followed by a line `B`,
-  `class A, a`, `class 12 a`, `class "A" a`, and `class A end` are rejected. The
-  statement adds its classes to the entities and subgraphs that the Db has at
-  that point: `class A a` followed by a line `A` gives A no class. [fixture:
-  er/gram-class] [fixture: er/gram-class-two-lists] [fixture:
+  `class A, a`, `class 12 a`, `class "A" a`, and `class A end` are rejected.
+  [fixture: er/gram-class] [fixture: er/gram-class-two-lists] [fixture:
   er/lex-class-list-comma-spaces] [fixture: er/gram-class-then-name] [fixture:
   er/gram-class-two-lists-then-name] [fixture: er/gram-class-without-classes]
   [fixture: er/gram-class-names-then-line-feed] [fixture:
   er/gram-class-trailing-comma] [fixture: er/lex-class-number] [fixture:
   er/lex-class-string] [fixture: er/lex-class-keyword-end] [fixture:
-  er/db-class-before-entity] [fixture: er/db-class-subgraph] [fixture:
-  er/db-class-twice] [fixture: er/lex-class-unicode]
-- An accessibility statement sets the title or the description; the last one
-  counts, and a description block replaces a description line. An empty
-  description block changes nothing. [fixture: er/gram-acc-title] [fixture:
-  er/gram-acc-descr] [fixture: er/gram-acc-descr-block] [fixture:
-  er/db-acc-title-twice] [fixture: er/db-acc-descr-twice] [fixture:
-  er/db-acc-descr-then-block] [fixture: er/db-acc-descr-block-then-empty]
+  er/lex-class-unicode]
+- An accessibility statement sets the title or the description, and each may be
+  written more than once, as a line or as a block, also as an empty block; how
+  mermaid.js reads them into its Db is in the summary of the tests package.
+  [fixture: er/gram-acc-title] [fixture: er/gram-acc-descr] [fixture:
+  er/gram-acc-descr-block] [fixture: er/db-acc-title-twice] [fixture:
+  er/db-acc-descr-twice] [fixture: er/db-acc-descr-then-block] [fixture:
+  er/db-acc-descr-block-then-empty]
 
 ### Rejections outside the grammar
 

@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Other statements: two `class` statements add both classes; accepted."
+    "note": "db-from-tree/er.md Classes and styles: two `class` statements for one entity add both classes; accepted."
   },
   "accepted": true,
   "diagramType": "er",

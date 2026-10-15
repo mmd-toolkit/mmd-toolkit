@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Subgraphs: an entity twice in one subgraph is listed once; accepted."
+    "note": "db-from-tree/er.md Subgraphs, nodes: an entity named twice in one subgraph is listed once; accepted."
   },
   "accepted": true,
   "diagramType": "er",

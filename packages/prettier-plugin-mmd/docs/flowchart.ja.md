@@ -21,9 +21,11 @@ fixture の置き方と確かめ方は、
 subgraph の文はその `subgraph` の行より 1 段深く置き、
 `end` は `subgraph` と同じ段に置きます。
 1 段は Prettier の `useTabs` と `tabWidth` オプションのとおりで、
-既定は空白 2 つです。
+既定は空白 2 つで、Prettier が整形するほかの言語と同じです。
+ヘッダーの後の文を 1 段深くするのは、mermaid.js の文書の書き方です。
 [fixture: indentation/use-tabs]
 入力に書かれた字下げは保ちません。
+字下げは mermaid.js が読むものではないので、構造だけから決めます。
 [fixture: indentation/statements] [fixture: indentation/empty-description-block]
 
 入力
@@ -121,6 +123,7 @@ accDescr: d ; direction LR
 [fixture: statements-one-per-line/compat-empty-description-block-before-separator]
 [fixture: statements-one-per-line/compat-empty-description-block-before-statement]
 1 行に書かれ `;` で区切られた文は、行に分けます。
+`;` は文を区切るだけで、1 行に複数の文があると読みにくいからです。
 [fixture: statements-one-per-line/separated-by-semicolons-meets-others]
 
 ただし、文を区切る `;` 以外の `;` を含む行は、文と `;` を行に残します。
@@ -143,6 +146,8 @@ mermaid.js は、一部の行（`style`、`:`、`#` がこの順に `;` の前�
 そうした行はすべて文をまとめて残します。
 この規則が読むのは `style`、`:`、`#`、`;` だけなので、
 ほかのトークンの間の空白は変えてかまいません。
+ただし、`:` とその後の `#` の間の空白は、
+あるかないかを変えません（[Semicolons](#semicolons)を参照）。
 
 入力
 ([statements-one-per-line/separated-by-semicolons-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
@@ -411,6 +416,18 @@ U+2028 か U+2029 の前の無視される `;` がある行です
 [fixture: statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
 [corpus fixture: flowchart/ignored-semicolon-after-directive-1abc682b]
 [corpus fixture: flowchart/style-line-separator-semicolon-2a0f3253]
+`style` か `classDef` を `:` の前に持ち、`#` の後に `;` がある行で、
+`:` とその後の `#` の間の空白は、あるかないかを保ちます。
+行の規則は、その間に空白がないときだけ、行の最後の `;` を無視するので、
+`A[style:]-->B[# z;y]` の矢印の周りのように、
+そこで空白を落としたり書いたりすると、ラベルが変わるからです。
+[fixture: semicolons/style-line-gap-between-colon-and-hash-kept]
+空白があるところは、ほかの所と同じに空白 1 つで印字します。
+規則が問うのは空白があるかどうかで、いくつあるかではないからです。
+`A[style: ]-->B[#z;y]` はそのままで、
+`C[style:]   -->   D[#z;y]` は `C[style:] --> D[#z;y]` になります。
+[fixture: semicolons/style-line-space-between-colon-and-hash-kept]
+[fixture: semicolons/style-line-spaces-between-colon-and-hash-become-one]
 
 入力
 ([semicolons/removed-input.mmd](../tests/fixtures/flowchart/semicolons/removed-input.mmd)):
@@ -526,6 +543,8 @@ flowchart LR
 ### 空行
 
 連続する空行は 1 つの空行にします。
+Prettier がコードでそうするのと同じで、
+空行は文をまとまりにし、2 つ以上は何も足さないからです。
 [fixture: blank-lines/single-kept] [fixture: blank-lines/whitespace-only-lines]
 [fixture: blank-lines/inside-multi-line-statement]
 [fixture: blank-lines/around-comment-lines]
@@ -578,6 +597,11 @@ flowchart LR
 ### トークンの間の空白
 
 同じ行の中で、2 つのトークンの間にある空白とタブの連続は、空白 1 つにします。
+行を、書いた人によらず 1 つの形にするためです。
+接しているトークンは、下の規則（矢印の空白）がなければ接したままにします。
+mermaid.js には、接しているときだけ読むトークンがあります。
+`A%%{init: {}}%%B-->C` は id `AB` です。
+接するトークンの間に空白を書く規則は、その場所ごとの例外を要するからです。
 [fixture: whitespace-between-tokens/header-and-tabs-collapsed]
 [fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
 値の一部である空白は保ちます。
@@ -1013,6 +1037,10 @@ flowchart LR
 ### 複数行の文
 
 複数行に書かれた文は改行を保ち、2 行目以降を 1 行目より 1 段深く置きます。
+文をどこで折るかは、連鎖や長い行と同じく書き手の選択です。
+トークンの間の改行は、印字が書かない行末の空白を要しません。
+sequence、class、state は、そこでは改行が空白の後でだけ数えられるので、
+行をつなぎます。
 [fixture: multi-line-statements/continuation-in-subgraph]
 [fixture: multi-line-statements/label-over-lines]
 [fixture: multi-line-statements/directive-inside]
@@ -1093,6 +1121,8 @@ cb
 subgraph の中では、
 mermaid.js はそのブロックのテキストを字下げごと
 subgraph のメンバーにも入れるので、字下げを変えられません。
+subgraph の外では、行の桁は Db に入りませんが、同じに残し、
+どのブロックのテキストにも 1 つの規則が当てはまるようにします。
 [fixture: multi-line-values/accdescr-block-comment-only-in-subgraph]
 ブロックの `}` は、それが閉じる `accDescr` と同じ段に置きます。
 [fixture: multi-line-values/accdescr-block-kept]
@@ -1193,6 +1223,7 @@ flowchart LR
 ### コメント
 
 1 行に置かれたコメントは、周りの文と同じ段に置きます。
+コメントはどの文にも属さないので、読む人が探す場所の隣の段にします。
 ヘッダーの前でも同じで、行の先頭に置きます。
 [fixture: comments/only-comment-in-subgraph] [fixture: comments/after-end]
 [fixture: comments/tab-indented-and-consecutive]
@@ -1258,6 +1289,7 @@ flowchart LR
 ### ディレクティブ
 
 1 行に置かれたディレクティブ（`%%{ ... }%%`）は、周りの文と同じ段に置きます。
+コメントと同じ理由です。
 [fixture: directives/own-line-in-subgraph]
 [fixture: directives/several-on-own-line]
 [fixture: directives/multi-line-on-own-line]
@@ -1565,6 +1597,7 @@ mermaid.js がその空白を、
 ### フロントマターの YAML
 
 `---` の行の間の YAML は、Prettier の YAML 整形で整形します。
+パーサーは YAML を読まないので、YAML として整形するのは整形器の仕事です。
 [fixture: frontmatter-yaml/compat-unknown-config-formatted]
 `---` の行は、行末の空白とタブも含めて、書かれたまま残します。
 [fixture: frontmatter-yaml/closing-delimiter-whitespace-kept]

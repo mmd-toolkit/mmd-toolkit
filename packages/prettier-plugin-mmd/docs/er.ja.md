@@ -35,6 +35,8 @@ subgraph の中でも同じです。
 [fixture: indentation/use-tabs]
 入力に書かれた字下げは保ちません。
 行頭の空白は、mermaid.js にとって何でもないためです。
+字下げは構造だけで決められるので、1 つの規則で、
+入力の字下げによらず同じテキストになります。
 [fixture: indentation/written-indentation-dropped]
 例外は、direction を含む `accTitle` と `accDescr` の文で、
 1 桁目を保ちます
@@ -94,6 +96,7 @@ mermaid.js は属性ブロックを改行に関係なく読むので、
 空白しかない空のブロックは、どう書かれていても、
 実体の行に `{ }` として印字します。
 `{}` も `{   }` も、別々の行の波括弧も、属性のない実体を宣言します。
+`{ }` は他の図種と同じ形です。
 [fixture: attribute-blocks/empty-unified]
 [corpus fixture: er/gram-block-empty]
 [corpus fixture: er/gram-block-empty-space]
@@ -234,6 +237,10 @@ erDiagram
 型や名前のテキストは書かれたまま残します。
 チルダの語やバッククォートの語の中の空白は型の一部で、
 コメントのテキストもそうです。
+属性は列にそろえません。
+そろえると、属性を 1 つ変えただけでブロックの全行が変わり、
+名前の幅は文字数で数えられず、mermaid.js の文書の例もそろえていないからです。
+空白 1 つと、型に接する `?` は、その例の形です。
 [fixture: attribute-spacing/tilde-word-kept]
 [fixture: attribute-spacing/backquoted-word-kept]
 
@@ -338,6 +345,8 @@ erDiagram
 ER 図の 2 つの文を区切るものはなく、
 mermaid.js は 1 行に続けて書かれた文も読みます。
 各文は行に単独で置きます。
+1 行に 2 つの文があると読みにくく、
+flowchart、sequence、class、state も 1 行に 1 つの文を印字します。
 `A B` は実体 A と B で、
 関係は 1 行に、その役割の後の実体は次の行に置き、
 属性ブロックの `}`、subgraph の `end`、
@@ -616,6 +625,8 @@ erDiagram
 
 関係は、左の実体と関係の間、関係と右の実体の間、
 役割の `:` の両側に、どう書かれていても空白 1 つを置きます。
+これは mermaid.js の文書の形で、
+役割は名前、文字列、引用符つきの名前のどれでも同じです。
 [fixture: relationship-spacing/around-units-and-role]
 [fixture: relationship-spacing/names-and-classes]
 [fixture: relationship-spacing/role-forms]
@@ -629,6 +640,8 @@ erDiagram
 どちらかが語で書かれているときは空白 1 つで区切ります。
 `A || -- o{ B` は `A ||--o{ B` に、
 `A ||--only one B` は `A ||-- only one B` にします。
+mermaid.js の文書の例は、記号を接し、語の単位を空白で分けているので、
+1 つの規則でどちらも保てるからです。
 [fixture: relationship-spacing/symbols-touch]
 [fixture: relationship-spacing/words-spaced]
 [fixture: relationship-spacing/symbols-and-words]
@@ -637,6 +650,8 @@ erDiagram
 `many(0)` の中に空白を置くと拒否されます。
 [corpus fixture: er/lex-many-space-before-parenthesis]
 カーディナリティの綴りは、記号でも語でも、書かれた大文字小文字のまま残します。
+綴りは作者の選択で、記号には同じに読まれる語が複数あるので、
+どの綴りも別の綴りの代わりにはなりません。
 [fixture: relationship-spacing/words-spaced]
 
 3 つの場合は、空白を書かれたまま残します。
@@ -750,6 +765,7 @@ erDiagram
 `:::` の後のクラスは `:::` に接し、
 両側のクラスに接する `,` で区切ります。
 `A ::: c1 , c2` は `A:::c1,c2` にします。
+別名と `:::` を接する書き方が、mermaid.js の文書の例の多くです。
 [fixture: entities/classes-tight]
 [fixture: entities/alias-and-classes]
 属性ブロックの `{` は空白 1 つの後に置きます
@@ -907,6 +923,7 @@ erDiagram
 テキストは書かれたまま残します。
 テキストと `direction` の間（離して書かれていれば）と、
 `direction` と値の間には空白 1 つを置き、値は書かれた大文字小文字を保ちます。
+大文字小文字は作者のものだからです。
 [fixture: direction/spacing]
 [fixture: direction/text-kept]
 [fixture: direction/case-kept]
@@ -990,6 +1007,10 @@ mermaid.js はスタイルのテキストをつなげて間の空白を捨てる
 スタイル `fill:redA` を定義し、実体 A は作りません。
 そのため、そのような文は、空白と取り込まれる行を含めて、書かれたまま残し、
 その行は書かれた桁のままです。
+2 行を 1 行にする（`classDef a fill:red A`）と、
+Db は同じで mermaid.js の読みも見えますが、
+作者が書いた空白が消えます。
+印字は文を解釈しません。
 [fixture: styles-and-classes/trailing-whitespace-takes-next-line]
 [fixture: styles-and-classes/directive-before-next-line]
 [fixture: styles-and-classes/comment-line-inside-kept]
@@ -1006,6 +1027,10 @@ mermaid.js が読む前にテキストから取り除くので、
 [fixture: styles-and-classes/ignored-semicolon-kept]
 [corpus fixture: er/lex-classdef-semicolon-line-feed]
 [corpus fixture: er/lex-classdef-ignored-semicolon]
+行の規則は、`:` と `#` の間に空白がないときだけ `;` を無視するので、
+その間の空白は書かれたままです。
+`style A fill: #f00;` は空白を保ちます。
+[fixture: styles-and-classes/space-after-colon-before-hash-kept]
 
 入力
 ([styles-and-classes/class-def-names-input.mmd](../tests/fixtures/er/styles-and-classes/class-def-names-input.mmd)):
@@ -1082,7 +1107,11 @@ erDiagram
 [fixture: accessibility-statements/text-with-comment-line-kept]
 [corpus fixture: er/lex-acc-title-line-feed-after-colon]
 
-`accDescr { ... }` ブロックの行は書かれたまま残し、
+`accDescr { ... }` ブロックの行は、必要からではなく選択として、
+書かれたまま残します。
+行頭の空白は Db に入らず、
+`a`、改行、`b` と、`b` の前に空白がある形は同じ説明です。
+行は作者のテキストで、印字は整形しないからです。
 `}` は文と同じ段に置きます。
 `{` の行にあるテキストは、離して書かれていれば、
 波括弧の内側に空白を 1 つ置きます。
@@ -1517,7 +1546,8 @@ mermaid.js が複数行にわたって読む文は、
 [fixture: multi-line-statements/direction-value-joined]
 [fixture: multi-line-statements/style-over-lines-joined]
 コメント行やディレクティブがある文は、書かれたまま残します。
-コメント行は、置かれた行の残りを取り込むからです。
+コメント行は、置かれた行の残りを取り込み、
+ディレクティブのある行の空白は、ディレクティブと一緒に読まれるからです。
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 

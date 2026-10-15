@@ -131,6 +131,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - Requirement diagrams: `requirement` (`requirementDiagram`).
 - Mindmaps: `mindmap` (`mindmap`).
 - Timelines: `timeline` (`timeline`).
+- Sankey diagrams: `sankey` (`sankey` and `sankey-beta`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -228,8 +229,9 @@ type ids. The names and fields are those of the specification's
 [`ast/gantt.md`](../spec/docs/ast/gantt.md),
 [`ast/journey.md`](../spec/docs/ast/journey.md),
 [`ast/requirement.md`](../spec/docs/ast/requirement.md),
-[`ast/mindmap.md`](../spec/docs/ast/mindmap.md), and
-[`ast/timeline.md`](../spec/docs/ast/timeline.md).
+[`ast/mindmap.md`](../spec/docs/ast/mindmap.md),
+[`ast/timeline.md`](../spec/docs/ast/timeline.md), and
+[`ast/sankey.md`](../spec/docs/ast/sankey.md).
 
 ## Walking the tree
 
@@ -378,8 +380,8 @@ these differences:
   flowchart and of an ER diagram, a line `%%{ }%%` before that of a state
   diagram, and a line of spaces after such a line before that of a class or an
   ER diagram, and every such line, with a line of spaces after it or without,
-  before that of a Gantt chart, a journey diagram, a requirement diagram, and a
-  timeline
+  before that of a Gantt chart, a journey diagram, a requirement diagram, a
+  timeline, and a sankey diagram
   ([`bare-percent-line-before-header`](../spec/docs/known-divergences/bare-percent-line-before-header.md)).
 - `parse()` does not know the site configuration, so a flowchart with more edges
   than `maxEdges` (500 by default) is accepted.
@@ -397,7 +399,8 @@ these differences:
   [`ast/journey.md`](../spec/docs/ast/journey.md) (the journey nodes),
   [`ast/requirement.md`](../spec/docs/ast/requirement.md) (the requirement
   nodes), [`ast/mindmap.md`](../spec/docs/ast/mindmap.md) (the mindmap nodes),
-  [`ast/timeline.md`](../spec/docs/ast/timeline.md) (the timeline nodes), and
+  [`ast/timeline.md`](../spec/docs/ast/timeline.md) (the timeline nodes),
+  [`ast/sankey.md`](../spec/docs/ast/sankey.md) (the sankey nodes), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of

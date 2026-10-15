@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Subgraphs: an entity in a subgraph and in its nested subgraph is listed in the nested one; accepted."
+    "note": "db-from-tree/er.md Subgraphs, nodes: an entity in a subgraph and in its nested subgraph is listed in the nested one; accepted."
   },
   "accepted": true,
   "diagramType": "er",

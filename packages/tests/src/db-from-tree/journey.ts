@@ -1,4 +1,5 @@
 import type { EmbeddedValues } from "../mermaid.ts"
+import { numberOrText } from "../summary-number.ts"
 import type { DbSummary, JsonObject } from "../types.ts"
 import { ConvertedText, readConvertedCharacters } from "./converted-text.ts"
 import type {
@@ -111,12 +112,11 @@ class JourneyDbBuilder {
 
 /**
  * Tasks: the score that the text of a score part writes: the number that
- * JavaScript makes of the text, or, for a number that is not finite, the text
- * of the number, since JSON has no such number.
+ * JavaScript makes of the text, as a summary holds it (see
+ * {@link numberOrText}).
  */
 function scoreOf(text: string): number | string {
-  const score = Number(text)
-  return Number.isFinite(score) ? score : String(score)
+  return numberOrText(Number(text))
 }
 
 /**

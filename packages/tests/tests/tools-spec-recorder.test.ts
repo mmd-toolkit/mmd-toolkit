@@ -326,6 +326,37 @@ describe("recordSpecFile: the functions that take a text", () => {
     expect(textsOf(recording)).toEqual(["timeline\n  title T"])
   })
 
+  it("records the text of the parser of the sankey diagram's jison module, with the file the spec reads beside itself", async () => {
+    const checkout = makeCheckout()
+    writeTestFile(checkout, "diagrams/sankey/parser/energy.csv", "a,b,1\n")
+    const file = writeTestFile(
+      checkout,
+      "diagrams/sankey/parser/sankey.spec.ts",
+      [
+        `import sankey from "./sankey.jison"`,
+        `import db from "../sankeyDB.js"`,
+        `import { prepareTextForParsing } from "../sankeyUtils.js"`,
+        `import * as fs from "fs"`,
+        `import * as path from "path"`,
+        `it("t", () => {`,
+        `  sankey.parser.yy = db`,
+        `  sankey.parser.yy.clear()`,
+        `  const data = fs.readFileSync(path.resolve(__dirname, "./energy.csv"), "utf8")`,
+        `  sankey.parser.parse(prepareTextForParsing("sankey-beta\\n\\n " + data))`,
+        `  sankey.parser.parse(prepareTextForParsing("sankey\\n  x,y,2  \\n"))`,
+        `})`,
+        ``,
+      ].join("\n"),
+    )
+    const recording = await recordFile(checkout, file)
+    // The text goes to the parser as the test wrote it: the stub of
+    // `prepareTextForParsing` returns its argument.
+    expect(textsOf(recording)).toEqual([
+      "sankey-beta\n\n a,b,1\n",
+      "sankey\n  x,y,2  \n",
+    ])
+  })
+
   it("records the text of mermaidAPI.parse, whether it is the default or the named export", async () => {
     const recording = await recordSource(
       [

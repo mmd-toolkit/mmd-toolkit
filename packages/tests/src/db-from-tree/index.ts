@@ -14,6 +14,8 @@ import { mindmapDbOf } from "./mindmap.ts"
 import type { MindmapDiagram } from "./mindmap-tree.ts"
 import { requirementDbOf } from "./requirement.ts"
 import type { RequirementDiagram } from "./requirement-tree.ts"
+import { sankeyDbOf } from "./sankey.ts"
+import type { SankeyDiagram } from "./sankey-tree.ts"
 import type { ColorAnswer } from "./sequence.ts"
 import { sequenceDbOf } from "./sequence.ts"
 import type { SequenceDiagram } from "./sequence-tree.ts"
@@ -40,6 +42,7 @@ export type DiagramBody =
   | JourneyDiagram
   | MindmapDiagram
   | RequirementDiagram
+  | SankeyDiagram
   | SequenceDiagram
   | StateDiagram
   | TimelineDiagram
@@ -89,6 +92,8 @@ export function dbFromTree(
       return requirementDbOf(text, root, root.body, embedded)
     case "TimelineDiagram":
       return timelineDbOf(text, root, root.body, embedded)
+    case "SankeyDiagram":
+      return sankeyDbOf(text, root, root.body, embedded)
     default:
       throw new Error(`dbFromTree: unknown body type ${bodyType}`)
   }

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: whitespace between `style` and the `:` does not stop the rule."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "style :#xy",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "style :#xy",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

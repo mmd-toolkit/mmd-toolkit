@@ -83,6 +83,11 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
     "mindmap\n  root\n    a[x] %% c\n      b\n      ::icon(fa)\n      %%{init: {}}%%\n",
   ],
   [
+    "sankey",
+    ["sankey-beta", "a , b , 1", '"c', 'd", e, 2', "%% c", "%%{init: {}}%%"],
+    'sankey-beta\na,b,1\n"c\nd",e,2\n%% c\n%%{init: {}}%%\n',
+  ],
+  [
     "timeline",
     [
       "timeline TD",

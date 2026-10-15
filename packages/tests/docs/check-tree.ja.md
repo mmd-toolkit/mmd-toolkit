@@ -70,7 +70,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
   図のコメントはその図種の印を持ち、行の終わりで終わります
   （mindmap 図のコメントは行の区間の終わりまで走るので、
   U+2028 や U+2029 の前でも終わります）。
-  flowchart と ER 図が印 `%%` を持つのは、
+  flowchart と ER 図と sankey 図が印 `%%` を持つのは、
   ヘッダーの前の `%%` だけの行のコメントで、どの図種もそうです。
   それ以外のコメントには持ちません。
   gantt 図の図のコメントは、印 `%%` と `%` を持ち、
@@ -91,6 +91,10 @@ const problems: TreeProblem[] = checkTree(text, tree)
   （シーケンス図の box のテキストで、色の候補と残りの間の空白）だけです。
   ディレクティブはほかのトークンの中になく、コメントもありません
   （positions.md の Invariants）。
+- **文字列。** どの図種も共有するノード型 StringLiteral のトークンは、
+  1 つの `String` トークンか、
+  ディレクティブ、コメント領域、行の規則が無視する `;` が切れば
+  `StringFragment` トークンです（parser/docs/tokens.md の String tokens）。
 - **切られないトークン。** ディレクティブと行の規則が無視する `;` は、
   `String`（そのときは `StringFragment` のトークン）と
   `RawText` のトークンの中にだけあり、
@@ -232,9 +236,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     値のトークンの種類。
     `GanttLiteral` のトークンは `RawText`、
     id とリストの項目は `Identifier`、
-    タグは `RawText`（ディレクティブが切れば断片ごとに 1 つ）、
-    リンクの URL は、1 つの `String` トークンか、
-    切れ目があれば `StringFragment` トークンです。
+    タグは `RawText`（ディレクティブが切れば断片ごとに 1 つ）です。
     文と call 部分の範囲。
     ノードのトークンと子ノードの最初から最後までで、
     click 文は子の欄の順にかかわらずソース上で最後の部分で終わり、
@@ -310,8 +312,7 @@ const problems: TreeProblem[] = checkTree(text, tree)
     トークンの種類は parser の `docs/tokens/requirement.md` のとおりです。
     ノードが自分で書くトークンは、`:`、`,`、`{`、`}`、`:::`、`-`、`->`、`<-` が
     `Punctuator`、ほかは `Keyword` です。
-    テキストのトークンは `RawText`、文字列のトークンは
-    `String` か `StringFragment`、direction の行のテキストは `RawText`、
+    テキストのトークンは `RawText`、direction の行のテキストは `RawText`、
     本体の空の description ブロックは `Keyword` と `Punctuator` です。
     名前は、`style` と `classDef` の後と `class` の文の names では
     `Identifier`、
@@ -436,6 +437,38 @@ const problems: TreeProblem[] = checkTree(text, tree)
     （`parser/docs/positions/timeline.md`）。
     リテラルの範囲は、トークンの始まりから終わりまでで、
     これはすべての木の検査が読みます。
+  - sankey: 検査は木とソースのテキストを読みます。
+    欄の子ノードは、その表の型です
+    （`SANKEY_CHILD_TYPES`。テストが ast/sankey.md の Type の列と合わせます）。
+    図の body にはリンクが 1 つ以上あります。
+    SankeyIdentifier と SankeyLiteral の値は、
+    両端に空白がなく、文字の間の空白と、`"` と `,` 以外の
+    ASCII の印字可能文字を含みます
+    （ast/sankey.md の SankeyIdentifier と SankeyLiteral）。
+    StringLiteral の値は、閉じていて、空ではなく、
+    ASCII の印字可能文字と行終端を含み、
+    各 `"` は `"` の対の中にあります
+    （diagrams/sankey.md の Strings）。
+    これらの条件では、HTML の属性の引用符の `"` は `'` として読みます
+    （diagrams/sankey.md の Characters）。
+    sankey 図には、ヘッダーの後ろに図のコメントがありません
+    （diagrams/sankey.md の Comments）。
+    ヘッダー（大文字小文字を問わず `sankey` か `sankey-beta`）は、
+    図が自分で書くただ 1 つのトークンで、`Keyword` のトークンです。
+    ヘッダーと各レコードは、それぞれ自分の行にあります。
+    ヘッダーと最初のレコードの間、2 つのレコードの間には、
+    ディレクティブとコメント行を除き、
+    行終端を含む空白だけがあります。
+    リンクは 2 つの `Punctuator` のトークン `,` を書き、
+    source、最初の `,`、target、2 つ目の `,`、value は、
+    間に空白だけを置いてこの順に続きます。
+    引用符のない欄のトークンは `RawText` で、
+    ディレクティブや無視される `;` で複数に切れることがあります。
+    欄の両端の空白は含みませんが、空白だけの欄は例外で、
+    ただ 1 つのトークンがその空白で、値は空です。
+    図とリンクの範囲は、トークンと子ノードの最初から最後までで、
+    欄の範囲は、前後の空白を除いたトークンの範囲です
+    （`parser/docs/tokens/sankey.md` と `parser/docs/positions/sankey.md`）。
 
 範囲の**書かれたテキスト**は、ディレクティブ、コメント領域、
 行の規則が無視する `;` を除いたソースです（ast.md の Nodes）。
@@ -451,6 +484,12 @@ const problems: TreeProblem[] = checkTree(text, tree)
   class 図、ER 図、requirement 図のスタイル）は、
   単位の間の空白を除きます。
   つないだトークンが値です。`Identifier` は 1 つのトークンです。
+- sankey 図の引用符のない欄（`SankeyIdentifier`、`SankeyLiteral`）の値は、
+  書かれたテキストから両端の空白を除いたもので、
+  空白だけの欄では空です。
+  ノードは両端の空白を除いた欄ですが、空白だけの欄は例外で、
+  そのただ 1 つの `RawText` トークンが空白で、
+  トークンは書かれたテキストです。
 - 文字列、文字列で始まるラベル、
   文字列かマークダウン文字列である mindmap 図のラベル、データブロックには、
   そのテキストに属する区切りがあります。
@@ -560,6 +599,12 @@ journey のファイルは 14 本作ります）。
 手作りの木と、名前を挙げた fixture の記録した木でします。
 記録した木は、トークンの種類と範囲についても壊します。
 また、検査の表が ast/timeline.md の Type と Meaning の列と合うことを求めます。
+`check-tree-sankey.test.ts` は、sankey 図の上の文を持つ最小の木を手で作り、
+文が分ける壊し方のそれぞれで壊して、検査が報告すべき問題を確かめ、
+検査の表が ast/sankey.md の Type の列と合うことを求めます。
+`check-tree-string-tokens.test.ts` は、flowchart、class、state、ER、sankey の
+名前を挙げた fixture の記録した木で、最初の文字列のトークンの種類を変え、
+文字列のトークンの検査がそれを報告することを求めます。
 ノードの型や欄ごとに記録した木を求めるテストは、
 `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES`
 （`tests/check-tree-recorded.ts`）の接頭辞で始まる名前のノードの型を除きます。

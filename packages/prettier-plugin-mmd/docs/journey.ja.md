@@ -24,6 +24,9 @@ fixture の置き方と確かめ方は、
 `section` 自体は最初の段です。
 journey の木は平らで、文のブロックがないので、
 文の段は、ほかの文の中での位置で決まります。
+section の下のタスクは、mermaid.js の文書の書き方と同じく、
+section の中に置きます。
+Gantt 図も同じです。
 [fixture: indentation/sections-and-tasks-nested]
 [fixture: indentation/statements-before-the-first-section]
 [fixture: indentation/every-statement-under-a-section]
@@ -33,6 +36,8 @@ journey の木は平らで、文のブロックがないので、
 [fixture: indentation/use-tabs]
 入力に書かれたインデントは残しません。
 行頭の空白は mermaid.js にとって無だからです。
+字下げは構造だけで決められるので、1 つの規則で、
+入力の字下げによらず同じテキストになります。
 [fixture: indentation/written-indentation-dropped]
 ヘッダーは、前に空白が書かれていても 1 桁目に置きます。
 [fixture: indentation/header-leading-whitespace]
@@ -181,6 +186,7 @@ journey
 ### 空行
 
 連続する空行は 1 つにし、本体の先頭と末尾の空行は落とします。
+他の図種と同じ規則です。
 [fixture: blank-lines/collapsed]
 [fixture: blank-lines/body-edges-dropped]
 コメント行の周りの空行も同じに扱います。
@@ -268,6 +274,8 @@ journey
 score と人は、コロンの後でも `,` の後でも、空白 1 つの後に置き、
 コロンと `,` は前の値に接します。
 それらの周りの空白は Db に入らないので、残しません。
+空白は値の前にだけ置きます。Gantt 図と同じ規則で、
+mermaid.js の文書の task 行の多くがこの形です。
 [fixture: task-data/colon-spacing]
 [fixture: task-data/people-comma-spacing]
 空の score や空の人は何も印字しないので、その前に空白を置きません。
@@ -278,13 +286,16 @@ score と人は、コロンの後でも `,` の後でも、空白 1 つの後に
 [fixture: task-data/no-people-no-score]
 
 score と人は書かれたまま印字します。
-人の中の空白は人の一部で、score の書き方もそうです
-（mermaid.js が数として読みます）。
+人の中の空白は人の一部で、Db に入ります。
+score の書き方は作者のもので、mermaid.js は数として読み、
+`05` と `5` は Db が同じです。
 [fixture: task-data/people-inner-whitespace-kept]
 [fixture: task-data/score-forms-kept]
 データの末尾の空白は落とします。
 [fixture: task-data/trailing-whitespace-dropped]
-データは `#` で終わり、`#` の前の空白は書かれたまま残します。
+データは `#` で終わり、`#` はコメントを始めます。
+空白が書かれていれば前に空白 1 つを置き、接していれば接したままにします
+（[コメント](#コメント)を参照）。
 [fixture: task-data/hash-ends-the-data]
 
 空白だけのデータは、空の score で人のいないタスクで、
@@ -413,6 +424,7 @@ journey
 `title` と `section` は、値を、両端の空白も含めて書かれたまま印字します
 （Db が持ちます）。
 キーワードの後の区切りは、書かれた文字によらず空白 1 つです。
+区切りの形を 1 つにするためで、Gantt 図と同じです。
 [fixture: titles-and-sections/value-whitespace-kept]
 [fixture: titles-and-sections/one-space-after-keyword]
 後の行に書かれた値は、キーワードの後に寄せて 1 行にします。
@@ -471,6 +483,7 @@ journey
 
 キーワードは書かれた大文字小文字を保ちます。
 mermaid.js はどの大文字小文字でも読み、Db は同じです。
+大文字小文字は強制されないので、作者が選んだものとして、書き換えません。
 [fixture: keyword-case/keywords-kept]
 ヘッダーの `journey` は小文字だけが検出されます。
 
@@ -502,6 +515,7 @@ journey
 
 `accTitle` と `accDescr` の `:` はキーワードに接し、後ろに空白 1 つを置きます。
 テキストの両端に空白は置きません。
+コロンの形は Gantt 図と同じです。
 [fixture: accessibility-statements/colon-touches-keyword]
 [fixture: accessibility-statements/text-whitespace-dropped]
 テキストは `:`、`;`、`%`、`%%` を文字として含みます。
@@ -511,7 +525,12 @@ journey
 [fixture: accessibility-statements/text-on-next-line-joined]
 [fixture: accessibility-statements/keyword-and-colon-over-lines-joined]
 
-`accDescr { ... }` ブロックの行は書かれたまま残し、`}` は文と同じ段に置きます。
+`accDescr { ... }` ブロックの行は、必要からではなく選択として、
+書かれたまま残します。
+行頭の空白は Db に入らず、
+`a`、改行、`b` と、`b` の前に空白がある形は同じ説明です。
+行は作者のテキストで、印字は整形しないからです。
+`}` は文と同じ段に置きます。
 `{` の行にテキストがあるときは、
 離れて書かれていれば括弧の内側に空白 1 つを置き、
 テキストに接する括弧は接したままにします。
@@ -627,7 +646,8 @@ mermaid.js が複数行にわたって読む文は、
 タスクは複数行に書かれることがありません。
 [fixture: multi-line-statements/value-on-next-line-joined]
 コメント行やディレクティブを持つ文は、書かれたまま印字します。
-コメント行はそれが立つ行の残りを取るからです。
+コメント行はそれが立つ行の残りを取り、
+ディレクティブのある行の空白は、ディレクティブと一緒に読まれるからです。
 [fixture: multi-line-statements/comment-line-inside-kept]
 [fixture: multi-line-statements/directive-inside-kept]
 
@@ -682,8 +702,9 @@ T
 
 ### 複数行の値
 
-`accDescr` ブロックの行は、値の一部なので、
-中の改行と空白も含めて書かれたまま残します。
+`accDescr` ブロックの行は、中の改行と空白も含めて書かれたまま残します。
+改行は Db に入りますが、行頭の空白は入らないので、残すのは選択で、
+値のテキストは整形しないからです。
 [fixture: multi-line-values/description-block-lines-kept]
 そのようなブロックの中のコメントは、テキストの一部です。
 [fixture: multi-line-values/comment-line-inside-block-kept]
@@ -761,6 +782,9 @@ journey
 
 文やヘッダーの後ろのコメントは、書かれたとおり行に残します。
 空白が書かれていれば空白 1 つを置き、接していれば接したままにします。
+行を分けると、`title` と `section` の後では Db が変わります
+（`#` の前の空白が値の一部だからです）。
+そのため、コメントは文の行に残す 1 つの規則にして、Gantt 図と同じにします。
 [fixture: comments/after-header]
 [fixture: comments/after-header-glued]
 [fixture: comments/after-header-percent]

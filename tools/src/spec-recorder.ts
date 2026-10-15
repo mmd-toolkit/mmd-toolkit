@@ -108,6 +108,12 @@ const STUBBED_MODULES: Readonly<Record<string, readonly string[]>> = {
     "getTasks",
   ],
   "diagrams/common/commonDb.js": ["getDiagramTitle"],
+  "diagrams/sankey/parser/sankey.jison": ["default"],
+  "diagrams/sankey/sankeyDB.js": ["default"],
+  "diagrams/sankey/sankeyUtils.js": ["prepareTextForParsing"],
+  // The spec reads the file `energy.csv` next to it.
+  fs: ["readFileSync"],
+  path: ["resolve"],
   "config.js": [
     "setConfig",
     "getConfig",
@@ -400,6 +406,15 @@ export async function recordSpecFile(
       getTasks: anything,
     },
     "diagrams/common/commonDb.js": { getDiagramTitle: anything },
+    "diagrams/sankey/parser/sankey.jison": {
+      default: { parser: { parse: record, yy: anything } },
+    },
+    "diagrams/sankey/sankeyDB.js": { default: anything },
+    "diagrams/sankey/sankeyUtils.js": {
+      prepareTextForParsing: (text: unknown) => text,
+    },
+    fs: { readFileSync: (name: string) => readFileSync(name, "utf8") },
+    path: { resolve: (...parts: string[]) => path.resolve(...parts) },
     "diagrams/requirement/requirementDb.js": {
       RequirementDB: new Proxy(anything as object, {
         construct: () => requirementDb as object,
@@ -432,12 +447,17 @@ export async function recordSpecFile(
 
   // Most test files use vitest's functions as globals, without importing them.
   const saved = Object.fromEntries(
-    [...Object.keys(vitest), STUBS_GLOBAL].map((name) => [
+    [...Object.keys(vitest), STUBS_GLOBAL, "__dirname"].map((name) => [
       name,
       Object.getOwnPropertyDescriptor(globalThis, name),
     ]),
   )
-  Object.assign(globalThis, vitest, { [STUBS_GLOBAL]: stubs })
+  // A spec file that reads a file next to it takes the directory from this
+  // global, as it does under vitest.
+  Object.assign(globalThis, vitest, {
+    [STUBS_GLOBAL]: stubs,
+    __dirname: path.dirname(file),
+  })
   try {
     await import(copyUrl)
     for (const test of tests) {

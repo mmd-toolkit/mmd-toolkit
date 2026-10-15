@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, lines: a line of spaces between records is rejected, since the spaces start a field."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nsankeya,b,1   c,d,2\n--------------^\nExpecting 'COMMA', got 'NEWLINE'"
+  }
+}

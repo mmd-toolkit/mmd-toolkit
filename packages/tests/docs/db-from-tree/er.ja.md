@@ -374,6 +374,10 @@ subgraph は次の値を持ちます。
 - `title` は、角括弧の中の名前のテキストを 1 つの空白でつないだもの、
   角括弧がなければ id のテキストです。
   それに文字の置き換え（下を参照）をして、両端の空白を除きます。
+  テキストの中の HTML のタグは書かれたとおりに残ります。
+  title を変えるのは文字の置き換えだけで、タグはあとで renderer が
+  sanitize します。
+  [fixture: er/db-subgraph-title-html]
   [fixture: er/db-subgraph-title-words] [fixture: er/db-subgraph-title-quoted]
   [fixture: er/db-subgraph-title-spaces-collapse]
   [fixture: er/db-subgraph-title-quoted-and-bare]

@@ -35,6 +35,8 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "MindmapLabel",
   "MindmapLiteral",
   "TimelineLiteral",
+  "SankeyIdentifier",
+  "SankeyLiteral",
 ])
 
 /**
@@ -207,6 +209,8 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "TimelineAccTitleStatement",
   "TimelineAccDescrStatement",
   "TimelineAccDescrBlockStatement",
+  "SankeyDiagram",
+  "SankeyLinkStatement",
 ])
 
 /** The node types of the data blocks, whose delimiters lie in their range. */

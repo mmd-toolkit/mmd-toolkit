@@ -12,6 +12,7 @@ import { ganttValueNodeTypes } from "../src/printers/gantt-layout.ts"
 import { journeyValueNodeTypes } from "../src/printers/journey-layout.ts"
 import { mindmapValueNodeTypes } from "../src/printers/mindmap-layout.ts"
 import { requirementValueNodeTypes } from "../src/printers/requirement-layout.ts"
+import { sankeyValueNodeTypes } from "../src/printers/sankey-layout.ts"
 import { sequenceValueNodeTypes } from "../src/printers/sequence-layout.ts"
 import { stateValueNodeTypes } from "../src/printers/state-layout.ts"
 import { timelineValueNodeTypes } from "../src/printers/timeline-layout.ts"
@@ -138,6 +139,16 @@ const diagrams: readonly DiagramValues[] = [
       // and numbers are the text of a node, a label, an icon, or a class.
       "Identifier",
       "StringLiteral",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Sankey",
+    values: sankeyValueNodeTypes,
+    notValues: new Set([
+      // The shared leaf nodes that are no nodes of a sankey diagram: its ids
+      // and numbers are the text of a SankeyIdentifier or a SankeyLiteral.
+      "Identifier",
       "NumericLiteral",
     ]),
   },

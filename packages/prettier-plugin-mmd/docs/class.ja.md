@@ -24,6 +24,8 @@ fixture の置き方と確かめ方は、
 namespace の `{` は、空白 1 つの後に、その名前の行に置きます。
 namespace の文は、それを開く行より 1 段深く置き、
 その `}` は、その行と同じ段に、行に単独で置きます。
+`{` の前の空白 1 つは、メンバーの本体の `{` と同じで、
+mermaid.js の文書の書き方でもあります。
 namespace が 1 行に書かれていても同じです。
 [fixture: indentation/namespaces]
 [fixture: indentation/namespace-brace-after-one-space]
@@ -35,6 +37,8 @@ namespace が 1 行に書かれていても同じです。
 [fixture: indentation/use-tabs]
 入力に書かれた字下げは保ちません。
 文の行頭の空白は、Mermaid による図の解釈に影響しないためです。
+字下げは構造だけで決められるので、1 つの規則で、
+入力の字下げによらず同じテキストになります。
 [fixture: indentation/namespaces]
 [fixture: indentation/written-indentation-dropped]
 
@@ -73,6 +77,7 @@ classDiagram
 クラスのメンバーの本体の `{` は、空白 1 つの後に、クラスの行に残します。
 メンバーの行は、それぞれ 1 段深く、行に単独で置きます。
 `}` は、クラスと同じ段に、行に単独で置きます。
+`{` の前の空白 1 つは、mermaid.js の文書の書き方です。
 ただし、行の `}` の前にディレクティブがあるときは、書かれたまま残します
 （`%%{init: {}}%% }`）。
 [fixture: member-bodies/directive-on-closing-brace-line-kept]
@@ -429,7 +434,7 @@ mermaid.js のドキュメントの書き方のとおり、空白を 1 つずつ
 sequence 図では `:` を前のものに接して書きます
 （[sequence 図の整形規則のコロン](./sequence.ja.md#コロン)を参照）。
 どちらも、その図種のドキュメントの書き方に従っています。
-`accTitle` と `accDescr` の後の `:` は、flowchart と同じく、
+`accTitle` と `accDescr` の後の `:` は、他の図種と mermaid.js の文書と同じく、
 キーワードに接し、後に空白を 1 つ置きます。
 [fixture: labels/accessibility-text-kept]
 [fixture: multi-line-statements/joined]
@@ -808,6 +813,9 @@ classDiagram
 flowchart と同じです。
 `accDescr { ... }` のブロックの行は書かれたまま残し、
 その `}` は文と同じ段に置きます。
+サブグラフの外では、その行の桁は Db に入らないので、残すのは選択で、
+理由は flowchart にあります
+（[複数行の値](./flowchart.ja.md#複数行の値)を参照）。
 複数行に書かれた文字列、バッククォートの名前、ジェネリック型も、
 書かれたまま残します。
 [fixture: multi-line-values/kept]
@@ -1059,10 +1067,15 @@ mermaid.js はテキストの終わりの空白と改行もその一部として
 - メンバーの行と、`~` から `~` までのジェネリック型。
 - 空白だけのラベルの `:` の後の空白と、
   `;` を含む行のラベルの `:` の後に空白があるかどうか。
-- 文の後のコメントの `%%` の前に空白があるかどうかと、
-  そうしたコメントの後の空白だけの行。後者は空白 1 つにする。
+- 文の後のコメントの後の空白だけの行。空白 1 つにする。
 - 方向の行の、`direction` の前と値の後のテキスト。
 - コメントかディレクティブを含む複数行の文。
 - 閉じていないバッククォートの名前。テキストの終わりまで。
 - ヘッダーの綴り。`classDiagram` か `classDiagram-v2`。
   [fixture: indentation/header-v2-kept]
+
+次のものは、どちらの形でも Db が同じなので、選択として書かれたまま残します。
+文の後のコメントの印の前に空白が書かれているかどうかは、
+既知の差異（`comment-takes-character`、`percent-brace-after-unit`）の場所では、
+mermaid.js がコメントを、接するものによって読むからです。
+場所の一覧よりも、1 つの規則のほうが単純です。

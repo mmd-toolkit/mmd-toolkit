@@ -893,6 +893,46 @@ mermaid.js は、timeline の period、event、title、section の名前の空�
   [fixture: timeline/multi-line-statements/comment-line-inside-kept]
   [fixture: timeline/statements-one-per-line/ignored-semicolon-line-kept]
 
+## 文字や引用符で決まる sankey の行
+
+mermaid.js は sankey 図を CSV として読みます。
+タブ、ASCII 外の文字、引用符の隣の空白を拒否し、文字列と値のテキストを保ちます。
+そのため整形が変えるものは少なく、Db と字句解析器が読むものを保ちます。
+[インデント](./sankey.ja.md#インデント)、
+[コンマ](./sankey.ja.md#コンマ)を参照してください。
+
+- すべての行を 1 列目に置くこと。
+  文字列で始まる記録は、引用符の前の空白が拒否されるので字下げできません。
+  指令だけの行は、指令を取り除くと空白だけの行になり、それも拒否されます。
+  そのためどの行も字下げせず、`useTabs` と `tabWidth` は効きません。
+  [fixture: sankey/indentation/quoted-first-record-at-the-first-column]
+  [fixture: sankey/indentation/use-tabs]
+  [fixture: sankey/indentation/directive-lines-at-the-first-column]
+- コンマは文字列に接し、引用符の隣に空白を足しません。
+  文字列の後の欄の前の空白は落とします。
+  [fixture: sankey/commas/quoted-fields-touch-commas]
+- `style` か `classDef` を `:` の前に持ち、`#` の後に `;` がある行の、
+  `:` とその後の `#` の間に空白があるかどうか。
+  行の規則は、その間に空白がないときだけ行の最後の `;` を無視するので、
+  間にあるコンマの周りに空白があるかどうかを保ち、
+  あるところは空白 1 つにします。
+  `;` を落とすと行の終わりが変わる行は、書かれたまま印字します。
+  [fixture: sankey/commas/style-line-colon-and-hash-in-two-fields-kept]
+  [fixture: sankey/commas/style-line-spaces-between-colon-and-hash-become-one]
+  [fixture: sankey/commas/semicolon-ends-the-line-kept]
+  [fixture: flowchart/semicolons/style-line-gap-between-colon-and-hash-kept]
+- 空白だけの欄は、テキストが空の欄なので、空白 1 つで印字します。
+  別の記録の前にある空白だけの値は、その空白で行が終わります。
+  [fixture: sankey/commas/spaces-only-field-is-one-space]
+  [fixture: sankey/commas/spaces-only-value-before-another-record]
+- 文字列のテキスト。
+  改行、中の空行、後ろの行の行頭の空白（値の一部）を保ちます。
+  [fixture: sankey/multi-line-strings/string-over-lines]
+  [fixture: sankey/multi-line-strings/empty-line-in-string]
+- テキストの末尾にあるタブ、U+00A0、U+3000、U+2028、U+2029、U+FEFF は、
+  mermaid.js がそこでだけ受理するもので、落とします。
+  [test: U+3000 at the end of the text without a line feed]
+
 ## U+2028 か U+2029 の後のコメント行
 
 mermaid.js は、本文を読む前に、コメント行を取り除きます。

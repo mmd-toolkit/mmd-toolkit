@@ -1,7 +1,7 @@
 {
   "source": {
     "kind": "authored",
-    "note": "er.md Subgraphs: a title with an HTML tag, which the renderer sanitizes; accepted."
+    "note": "db-from-tree/er.md Subgraphs, title: a title with an HTML tag keeps the tag as written, and the renderer sanitizes it; accepted."
   },
   "accepted": true,
   "diagramType": "er",

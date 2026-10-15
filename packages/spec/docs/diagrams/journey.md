@@ -139,12 +139,11 @@ journey/lex-newline-runs] [fixture: journey/lex-space-then-line-feeds-then-task]
 **Entities.** An entity is read as its placeholder before the lexer reads the
 text (see [Entities](../common.md#entities)), and the placeholder is made of
 characters outside ASCII, so its `#` and `;` do not end a title text, a section
-text, a task text, or task data, and the Db holds the placeholder: `a#amp; b: 5`
-is a task whose description is `a`, the placeholder, and ` b`; `title #x;` has
-the placeholder as its title; a person, an accessibility title, an accessibility
-description, and a description block may hold one; after the placeholder, a `#`
-or a `;` ends the text as usual. [fixture:
-journey/entity-placeholder-in-task-text] [fixture:
+text, a task text, or task data, and the text keeps the entity as written:
+`a#amp; b: 5` is a task whose description is `a#amp; b`; `title #x;` has the
+title `#x;`; a person, an accessibility title, an accessibility description, and
+a description block may hold one; after the entity, a `#` or a `;` ends the text
+as usual. [fixture: journey/entity-placeholder-in-task-text] [fixture:
 journey/entity-placeholder-in-title] [fixture:
 journey/entity-placeholder-in-section] [fixture:
 journey/entity-placeholder-in-person] [fixture:
@@ -677,21 +676,14 @@ divides it; the first colon of the data is the `:` unit after the description:
 
 - The **score part** runs from the first colon to the second colon or the end of
   the data. It is a `score` unit whose text is the part without the whitespace
-  at its ends, or no unit when the part is empty or holds only whitespace.
-  mermaid.js reads the score as the number that the part writes, in the way of a
-  JavaScript number: `3.5`, `-2`, `1e2`, `0x10`, `Infinity`, and `-Infinity` are
-  numbers, `1e400` is the infinite number, a part of whitespace only is `0`, and
-  a part that writes no number, such as `abc` or `5, 6`, is accepted with a
-  score that is no number. [fixture: journey/db-task-score-only] [fixture:
-  journey/db-task-score-spaces] [fixture: journey/lex-task-score-nbsp-trimmed]
-  [fixture: journey/db-task-score-decimal] [fixture:
-  journey/db-task-score-negative] [fixture: journey/db-task-score-exponent]
-  [fixture: journey/db-task-score-hexadecimal] [fixture:
-  journey/db-task-score-infinity] [fixture:
-  journey/db-task-score-negative-infinity] [fixture:
-  journey/db-task-score-overflow] [fixture: journey/db-task-score-empty]
-  [fixture: journey/gram-task-data-whitespace-only] [fixture:
-  journey/db-task-score-not-a-number] [fixture: journey/gram-task-score-comma]
+  at its ends, or no unit when the part is empty or holds only whitespace. A
+  part that writes no number, such as `abc` or `5, 6`, is accepted; how
+  mermaid.js reads the score as a number is in the summary of the tests package.
+  [fixture: journey/db-task-score-only] [fixture: journey/db-task-score-spaces]
+  [fixture: journey/lex-task-score-nbsp-trimmed] [fixture:
+  journey/db-task-score-empty] [fixture: journey/gram-task-data-whitespace-only]
+  [fixture: journey/db-task-score-not-a-number] [fixture:
+  journey/gram-task-score-comma]
 - The **people part** runs from the second colon, a `:` unit, to the third colon
   or the end of the data. It is divided by its commas into **people**: a `,`
   unit for each `,`, and for each stretch between the colon, the commas, and the
@@ -699,13 +691,12 @@ divides it; the first colon of the data is the `:` unit after the description:
   whitespace at its ends, or no unit when the stretch holds only whitespace,
   which is an **empty person**, a null element of the task's people (see
   [JourneyTaskStatement](../ast/journey.md#journeytaskstatement)). There is
-  always one person more than there are commas, and mermaid.js reads an empty
-  person as an empty name: `A: 3: a,,b` has the people `a`, an empty one, and
-  `b`; `A: 3: ` and `A: 5:` one empty person; `A: 3: Me, You ,  Them` the people
-  `Me`, `You`, and `Them`. Without a second colon, the task has no people.
-  [fixture: journey/db-task-people] [fixture: journey/db-task-people-empty-item]
-  [fixture: journey/db-task-people-blank] [fixture:
-  journey/gram-task-second-colon-at-end] [fixture:
+  always one person more than there are commas: `A: 3: a,,b` has the people `a`,
+  an empty one, and `b`; `A: 3: ` and `A: 5:` one empty person;
+  `A: 3: Me, You ,  Them` the people `Me`, `You`, and `Them`. Without a second
+  colon, the task has no people. [fixture: journey/db-task-people] [fixture:
+  journey/db-task-people-empty-item] [fixture: journey/db-task-people-blank]
+  [fixture: journey/gram-task-second-colon-at-end] [fixture:
   journey/gram-task-people-trailing-comma] [fixture:
   journey/gram-task-people-nbsp-trimmed] [fixture: journey/db-task-score-only]
 - From the third colon, the rest of the data is an `ignored-data` unit, the
@@ -725,10 +716,6 @@ journey/gram-task-then-task-same-line] [fixture:
 journey/gram-empty-description-block-in-task-data] [fixture:
 journey/lex-task-data-to-end-of-line]
 
-A task belongs to the section of the last section statement before it; a task
-before the first section has the empty section. [fixture:
-journey/db-task-before-section] [fixture: journey/db-sections]
-
 ### Titles and sections
 
 ```text
@@ -736,12 +723,13 @@ title-statement   = "title" title-text
 section-statement = "section" section-text
 ```
 
-A title statement sets the title to the text of its `title-text` unit as
-written, whitespace at its ends included, and replaces the title of the
-frontmatter and of an earlier title statement. A section statement adds a
-section with the text of its `section-text` unit as written, also when the text
-repeats, and the tasks after it belong to it. [fixture:
-journey/db-title-statement] [fixture: journey/db-title-frontmatter] [fixture:
+The title of a title statement is the text of its `title-text` unit as written,
+whitespace at its ends included, and the name of a section statement the text of
+its `section-text` unit as written; a title and a section name may repeat. How
+mermaid.js reads the titles, the title of the frontmatter, and the sections into
+its Db, and to which section a task belongs, is in the summary of the tests
+package. [fixture: journey/db-title-statement] [fixture:
+journey/db-title-frontmatter] [fixture:
 journey/db-title-statement-after-frontmatter] [fixture: journey/lex-title-twice]
 [fixture: journey/lex-title-two-spaces] [fixture:
 journey/lex-title-trailing-spaces] [fixture: journey/db-sections] [fixture:
@@ -758,8 +746,8 @@ accessibility-statement = "accTitle" ":" acc-title-text
 An accessibility title and an accessibility description are the text of their
 unit without the whitespace at its ends, which mermaid.js trims; the text of a
 block keeps its line breaks, and the whitespace after each of them is left out
-of the Db (see the summary of the tests package). A later description replaces
-an earlier one, from a line or from a block. [fixture: journey/db-acc-title]
+of the Db (see the summary of the tests package). A description may be written
+more than once, as a line or as a block. [fixture: journey/db-acc-title]
 [fixture: journey/gram-acc-title-trailing-spaces] [fixture:
 journey/db-acc-descr] [fixture: journey/db-acc-descr-block] [fixture:
 journey/gram-acc-descr-block-brace-inside] [fixture:

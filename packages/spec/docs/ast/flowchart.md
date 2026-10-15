@@ -31,8 +31,7 @@ which grammar rule makes which node is in the table of
 
 A flowchart node, one of the boxes of the diagram, is called a **vertex** here,
 as in the Db of mermaid.js, so that it is not confused with a node of the tree.
-A **link** is one arrow with what belongs to it; a link between two vertex
-groups makes a Db edge for each pair of their vertices.
+A **link** is one arrow with what belongs to it.
 
 The child fields of every node below are in source order, except those of a
 [FlowchartLink](#flowchartlink) with text between two arrows (see

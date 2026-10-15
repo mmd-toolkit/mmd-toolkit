@@ -1,0 +1,2636 @@
+{
+  "type": "Root",
+  "diagramType": "sankey",
+  "body": {
+    "type": "SankeyDiagram",
+    "body": [
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Agricultural 'waste'",
+          "range": [
+            18,
+            38
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 6
+            },
+            "end": {
+              "line": 2,
+              "column": 26
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Bio-conversion",
+          "range": [
+            39,
+            53
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 27
+            },
+            "end": {
+              "line": 2,
+              "column": 41
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "124.729",
+          "range": [
+            54,
+            61
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 42
+            },
+            "end": {
+              "line": 2,
+              "column": 49
+            }
+          }
+        },
+        "range": [
+          18,
+          61
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 6
+          },
+          "end": {
+            "line": 2,
+            "column": 49
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Bio-conversion",
+          "range": [
+            68,
+            82
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 6
+            },
+            "end": {
+              "line": 3,
+              "column": 20
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Liquid",
+          "range": [
+            83,
+            89
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 21
+            },
+            "end": {
+              "line": 3,
+              "column": 27
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "0.597",
+          "range": [
+            90,
+            95
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 28
+            },
+            "end": {
+              "line": 3,
+              "column": 33
+            }
+          }
+        },
+        "range": [
+          68,
+          95
+        ],
+        "loc": {
+          "start": {
+            "line": 3,
+            "column": 6
+          },
+          "end": {
+            "line": 3,
+            "column": 33
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Bio-conversion",
+          "range": [
+            102,
+            116
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 6
+            },
+            "end": {
+              "line": 4,
+              "column": 20
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Losses",
+          "range": [
+            117,
+            123
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 21
+            },
+            "end": {
+              "line": 4,
+              "column": 27
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "26.862",
+          "range": [
+            124,
+            130
+          ],
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 28
+            },
+            "end": {
+              "line": 4,
+              "column": 34
+            }
+          }
+        },
+        "range": [
+          102,
+          130
+        ],
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 6
+          },
+          "end": {
+            "line": 4,
+            "column": 34
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Bio-conversion",
+          "range": [
+            137,
+            151
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 6
+            },
+            "end": {
+              "line": 5,
+              "column": 20
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Solid",
+          "range": [
+            152,
+            157
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 21
+            },
+            "end": {
+              "line": 5,
+              "column": 26
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "280.322",
+          "range": [
+            158,
+            165
+          ],
+          "loc": {
+            "start": {
+              "line": 5,
+              "column": 27
+            },
+            "end": {
+              "line": 5,
+              "column": 34
+            }
+          }
+        },
+        "range": [
+          137,
+          165
+        ],
+        "loc": {
+          "start": {
+            "line": 5,
+            "column": 6
+          },
+          "end": {
+            "line": 5,
+            "column": 34
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Bio-conversion",
+          "range": [
+            172,
+            186
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 6
+            },
+            "end": {
+              "line": 6,
+              "column": 20
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Gas",
+          "range": [
+            187,
+            190
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 21
+            },
+            "end": {
+              "line": 6,
+              "column": 24
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "81.144",
+          "range": [
+            191,
+            197
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 25
+            },
+            "end": {
+              "line": 6,
+              "column": 31
+            }
+          }
+        },
+        "range": [
+          172,
+          197
+        ],
+        "loc": {
+          "start": {
+            "line": 6,
+            "column": 6
+          },
+          "end": {
+            "line": 6,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Biofuel imports",
+          "range": [
+            204,
+            219
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 6
+            },
+            "end": {
+              "line": 7,
+              "column": 21
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Liquid",
+          "range": [
+            220,
+            226
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 22
+            },
+            "end": {
+              "line": 7,
+              "column": 28
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "35",
+          "range": [
+            227,
+            229
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 29
+            },
+            "end": {
+              "line": 7,
+              "column": 31
+            }
+          }
+        },
+        "range": [
+          204,
+          229
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 6
+          },
+          "end": {
+            "line": 7,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Biomass imports",
+          "range": [
+            236,
+            251
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 6
+            },
+            "end": {
+              "line": 8,
+              "column": 21
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Solid",
+          "range": [
+            252,
+            257
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 22
+            },
+            "end": {
+              "line": 8,
+              "column": 27
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "35",
+          "range": [
+            258,
+            260
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 28
+            },
+            "end": {
+              "line": 8,
+              "column": 30
+            }
+          }
+        },
+        "range": [
+          236,
+          260
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 6
+          },
+          "end": {
+            "line": 8,
+            "column": 30
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Coal imports",
+          "range": [
+            267,
+            279
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 6
+            },
+            "end": {
+              "line": 9,
+              "column": 18
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Coal",
+          "range": [
+            280,
+            284
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 19
+            },
+            "end": {
+              "line": 9,
+              "column": 23
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "11.606",
+          "range": [
+            285,
+            291
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 24
+            },
+            "end": {
+              "line": 9,
+              "column": 30
+            }
+          }
+        },
+        "range": [
+          267,
+          291
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 6
+          },
+          "end": {
+            "line": 9,
+            "column": 30
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Coal reserves",
+          "range": [
+            298,
+            311
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 6
+            },
+            "end": {
+              "line": 10,
+              "column": 19
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Coal",
+          "range": [
+            312,
+            316
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 20
+            },
+            "end": {
+              "line": 10,
+              "column": 24
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "63.965",
+          "range": [
+            317,
+            323
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 25
+            },
+            "end": {
+              "line": 10,
+              "column": 31
+            }
+          }
+        },
+        "range": [
+          298,
+          323
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 6
+          },
+          "end": {
+            "line": 10,
+            "column": 31
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Coal",
+          "range": [
+            330,
+            334
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 6
+            },
+            "end": {
+              "line": 11,
+              "column": 10
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Solid",
+          "range": [
+            335,
+            340
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 11
+            },
+            "end": {
+              "line": 11,
+              "column": 16
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "75.571",
+          "range": [
+            341,
+            347
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 17
+            },
+            "end": {
+              "line": 11,
+              "column": 23
+            }
+          }
+        },
+        "range": [
+          330,
+          347
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 6
+          },
+          "end": {
+            "line": 11,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "District heating",
+          "range": [
+            354,
+            370
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 6
+            },
+            "end": {
+              "line": 12,
+              "column": 22
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Industry",
+          "range": [
+            371,
+            379
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 23
+            },
+            "end": {
+              "line": 12,
+              "column": 31
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "10.639",
+          "range": [
+            380,
+            386
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 32
+            },
+            "end": {
+              "line": 12,
+              "column": 38
+            }
+          }
+        },
+        "range": [
+          354,
+          386
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 6
+          },
+          "end": {
+            "line": 12,
+            "column": 38
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "District heating",
+          "range": [
+            393,
+            409
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 6
+            },
+            "end": {
+              "line": 13,
+              "column": 22
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Heating and cooling - homes",
+          "range": [
+            410,
+            437
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 23
+            },
+            "end": {
+              "line": 13,
+              "column": 50
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "22.505",
+          "range": [
+            438,
+            444
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 51
+            },
+            "end": {
+              "line": 13,
+              "column": 57
+            }
+          }
+        },
+        "range": [
+          393,
+          444
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 6
+          },
+          "end": {
+            "line": 13,
+            "column": 57
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "District heating",
+          "range": [
+            451,
+            467
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 6
+            },
+            "end": {
+              "line": 14,
+              "column": 22
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Heating and cooling - commercial",
+          "range": [
+            468,
+            500
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 23
+            },
+            "end": {
+              "line": 14,
+              "column": 55
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "46.184",
+          "range": [
+            501,
+            507
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 56
+            },
+            "end": {
+              "line": 14,
+              "column": 62
+            }
+          }
+        },
+        "range": [
+          451,
+          507
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 6
+          },
+          "end": {
+            "line": 14,
+            "column": 62
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Electricity grid",
+          "range": [
+            514,
+            530
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 6
+            },
+            "end": {
+              "line": 15,
+              "column": 22
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Over generation / exports",
+          "range": [
+            531,
+            556
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 23
+            },
+            "end": {
+              "line": 15,
+              "column": 48
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "104.453",
+          "range": [
+            557,
+            564
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 49
+            },
+            "end": {
+              "line": 15,
+              "column": 56
+            }
+          }
+        },
+        "range": [
+          514,
+          564
+        ],
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 6
+          },
+          "end": {
+            "line": 15,
+            "column": 56
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Electricity grid",
+          "range": [
+            571,
+            587
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 6
+            },
+            "end": {
+              "line": 16,
+              "column": 22
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Lighting & appliances - commercial",
+          "range": [
+            588,
+            622
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 23
+            },
+            "end": {
+              "line": 16,
+              "column": 57
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "113.726",
+          "range": [
+            623,
+            630
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 58
+            },
+            "end": {
+              "line": 16,
+              "column": 65
+            }
+          }
+        },
+        "range": [
+          571,
+          630
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 6
+          },
+          "end": {
+            "line": 16,
+            "column": 65
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Electricity grid",
+          "range": [
+            637,
+            653
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 6
+            },
+            "end": {
+              "line": 17,
+              "column": 22
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Lighting & appliances - homes",
+          "range": [
+            654,
+            683
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 23
+            },
+            "end": {
+              "line": 17,
+              "column": 52
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "27.14",
+          "range": [
+            684,
+            689
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 53
+            },
+            "end": {
+              "line": 17,
+              "column": 58
+            }
+          }
+        },
+        "range": [
+          637,
+          689
+        ],
+        "loc": {
+          "start": {
+            "line": 17,
+            "column": 6
+          },
+          "end": {
+            "line": 17,
+            "column": 58
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      689
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 17,
+        "column": 58
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "sankey-beta",
+      "range": [
+        0,
+        11
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Agricultural 'waste'",
+      "range": [
+        18,
+        38
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 6
+        },
+        "end": {
+          "line": 2,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        38,
+        39
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 26
+        },
+        "end": {
+          "line": 2,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Bio-conversion",
+      "range": [
+        39,
+        53
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 27
+        },
+        "end": {
+          "line": 2,
+          "column": 41
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        53,
+        54
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 41
+        },
+        "end": {
+          "line": 2,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "124.729",
+      "range": [
+        54,
+        61
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 42
+        },
+        "end": {
+          "line": 2,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Bio-conversion",
+      "range": [
+        68,
+        82
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 6
+        },
+        "end": {
+          "line": 3,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        82,
+        83
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 20
+        },
+        "end": {
+          "line": 3,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Liquid",
+      "range": [
+        83,
+        89
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 21
+        },
+        "end": {
+          "line": 3,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        89,
+        90
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 27
+        },
+        "end": {
+          "line": 3,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "0.597",
+      "range": [
+        90,
+        95
+      ],
+      "loc": {
+        "start": {
+          "line": 3,
+          "column": 28
+        },
+        "end": {
+          "line": 3,
+          "column": 33
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Bio-conversion",
+      "range": [
+        102,
+        116
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 6
+        },
+        "end": {
+          "line": 4,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        116,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 20
+        },
+        "end": {
+          "line": 4,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Losses",
+      "range": [
+        117,
+        123
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 21
+        },
+        "end": {
+          "line": 4,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        123,
+        124
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 27
+        },
+        "end": {
+          "line": 4,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "26.862",
+      "range": [
+        124,
+        130
+      ],
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 28
+        },
+        "end": {
+          "line": 4,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Bio-conversion",
+      "range": [
+        137,
+        151
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 6
+        },
+        "end": {
+          "line": 5,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        151,
+        152
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 20
+        },
+        "end": {
+          "line": 5,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Solid",
+      "range": [
+        152,
+        157
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 21
+        },
+        "end": {
+          "line": 5,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        157,
+        158
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 26
+        },
+        "end": {
+          "line": 5,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "280.322",
+      "range": [
+        158,
+        165
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 27
+        },
+        "end": {
+          "line": 5,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Bio-conversion",
+      "range": [
+        172,
+        186
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 6
+        },
+        "end": {
+          "line": 6,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        186,
+        187
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 20
+        },
+        "end": {
+          "line": 6,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Gas",
+      "range": [
+        187,
+        190
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 21
+        },
+        "end": {
+          "line": 6,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        190,
+        191
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 24
+        },
+        "end": {
+          "line": 6,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "81.144",
+      "range": [
+        191,
+        197
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 25
+        },
+        "end": {
+          "line": 6,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Biofuel imports",
+      "range": [
+        204,
+        219
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 6
+        },
+        "end": {
+          "line": 7,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        219,
+        220
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 21
+        },
+        "end": {
+          "line": 7,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Liquid",
+      "range": [
+        220,
+        226
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 22
+        },
+        "end": {
+          "line": 7,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        226,
+        227
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 28
+        },
+        "end": {
+          "line": 7,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "35",
+      "range": [
+        227,
+        229
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 29
+        },
+        "end": {
+          "line": 7,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Biomass imports",
+      "range": [
+        236,
+        251
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 6
+        },
+        "end": {
+          "line": 8,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        251,
+        252
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 21
+        },
+        "end": {
+          "line": 8,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Solid",
+      "range": [
+        252,
+        257
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 22
+        },
+        "end": {
+          "line": 8,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        257,
+        258
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 27
+        },
+        "end": {
+          "line": 8,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "35",
+      "range": [
+        258,
+        260
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 28
+        },
+        "end": {
+          "line": 8,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Coal imports",
+      "range": [
+        267,
+        279
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 6
+        },
+        "end": {
+          "line": 9,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        279,
+        280
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 18
+        },
+        "end": {
+          "line": 9,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Coal",
+      "range": [
+        280,
+        284
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 19
+        },
+        "end": {
+          "line": 9,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        284,
+        285
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 23
+        },
+        "end": {
+          "line": 9,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "11.606",
+      "range": [
+        285,
+        291
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 24
+        },
+        "end": {
+          "line": 9,
+          "column": 30
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Coal reserves",
+      "range": [
+        298,
+        311
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 6
+        },
+        "end": {
+          "line": 10,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        311,
+        312
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 19
+        },
+        "end": {
+          "line": 10,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Coal",
+      "range": [
+        312,
+        316
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 20
+        },
+        "end": {
+          "line": 10,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        316,
+        317
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 24
+        },
+        "end": {
+          "line": 10,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "63.965",
+      "range": [
+        317,
+        323
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 25
+        },
+        "end": {
+          "line": 10,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Coal",
+      "range": [
+        330,
+        334
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 6
+        },
+        "end": {
+          "line": 11,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        334,
+        335
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 10
+        },
+        "end": {
+          "line": 11,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Solid",
+      "range": [
+        335,
+        340
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 11
+        },
+        "end": {
+          "line": 11,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        340,
+        341
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 16
+        },
+        "end": {
+          "line": 11,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "75.571",
+      "range": [
+        341,
+        347
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 17
+        },
+        "end": {
+          "line": 11,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "District heating",
+      "range": [
+        354,
+        370
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 6
+        },
+        "end": {
+          "line": 12,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        370,
+        371
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 22
+        },
+        "end": {
+          "line": 12,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Industry",
+      "range": [
+        371,
+        379
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 23
+        },
+        "end": {
+          "line": 12,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        379,
+        380
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 31
+        },
+        "end": {
+          "line": 12,
+          "column": 32
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "10.639",
+      "range": [
+        380,
+        386
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 32
+        },
+        "end": {
+          "line": 12,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "District heating",
+      "range": [
+        393,
+        409
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 6
+        },
+        "end": {
+          "line": 13,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        409,
+        410
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 22
+        },
+        "end": {
+          "line": 13,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Heating and cooling - homes",
+      "range": [
+        410,
+        437
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 23
+        },
+        "end": {
+          "line": 13,
+          "column": 50
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        437,
+        438
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 50
+        },
+        "end": {
+          "line": 13,
+          "column": 51
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "22.505",
+      "range": [
+        438,
+        444
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 51
+        },
+        "end": {
+          "line": 13,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "District heating",
+      "range": [
+        451,
+        467
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 6
+        },
+        "end": {
+          "line": 14,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        467,
+        468
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 22
+        },
+        "end": {
+          "line": 14,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Heating and cooling - commercial",
+      "range": [
+        468,
+        500
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 23
+        },
+        "end": {
+          "line": 14,
+          "column": 55
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        500,
+        501
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 55
+        },
+        "end": {
+          "line": 14,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "46.184",
+      "range": [
+        501,
+        507
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 56
+        },
+        "end": {
+          "line": 14,
+          "column": 62
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Electricity grid",
+      "range": [
+        514,
+        530
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 6
+        },
+        "end": {
+          "line": 15,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        530,
+        531
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 22
+        },
+        "end": {
+          "line": 15,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Over generation / exports",
+      "range": [
+        531,
+        556
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 23
+        },
+        "end": {
+          "line": 15,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        556,
+        557
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 48
+        },
+        "end": {
+          "line": 15,
+          "column": 49
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "104.453",
+      "range": [
+        557,
+        564
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 49
+        },
+        "end": {
+          "line": 15,
+          "column": 56
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Electricity grid",
+      "range": [
+        571,
+        587
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 6
+        },
+        "end": {
+          "line": 16,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        587,
+        588
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 22
+        },
+        "end": {
+          "line": 16,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Lighting & appliances - commercial",
+      "range": [
+        588,
+        622
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 23
+        },
+        "end": {
+          "line": 16,
+          "column": 57
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        622,
+        623
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 57
+        },
+        "end": {
+          "line": 16,
+          "column": 58
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "113.726",
+      "range": [
+        623,
+        630
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 58
+        },
+        "end": {
+          "line": 16,
+          "column": 65
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Electricity grid",
+      "range": [
+        637,
+        653
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 6
+        },
+        "end": {
+          "line": 17,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        653,
+        654
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 22
+        },
+        "end": {
+          "line": 17,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Lighting & appliances - homes",
+      "range": [
+        654,
+        683
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 23
+        },
+        "end": {
+          "line": 17,
+          "column": 52
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        683,
+        684
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 52
+        },
+        "end": {
+          "line": 17,
+          "column": 53
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "27.14",
+      "range": [
+        684,
+        689
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 53
+        },
+        "end": {
+          "line": 17,
+          "column": 58
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    696
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 18,
+      "column": 6
+    }
+  }
+}

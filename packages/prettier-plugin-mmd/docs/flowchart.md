@@ -20,9 +20,12 @@ organized and checked is described in
 The statements after the header stand one level deeper than the header, and the
 statements of a subgraph one level deeper than its `subgraph` line, with `end`
 at the level of `subgraph`. A level is what Prettier's `useTabs` and `tabWidth`
-options say: two spaces by default. [fixture: indentation/use-tabs] The
-indentation written in the input is not kept. [fixture: indentation/statements]
-[fixture: indentation/empty-description-block]
+options say: two spaces by default, as in the other languages that Prettier
+formats. The statements after the header stand one level deeper, as the
+documentation of mermaid.js writes them. [fixture: indentation/use-tabs] The
+indentation written in the input is not kept: it is no part of what mermaid.js
+reads, so the printer chooses it from the structure alone. [fixture:
+indentation/statements] [fixture: indentation/empty-description-block]
 
 Input
 ([indentation/nested-subgraphs-input.mmd](../tests/fixtures/flowchart/indentation/nested-subgraphs-input.mmd)):
@@ -116,8 +119,9 @@ statements-one-per-line/compat-empty-description-block-after-statement]
 statements-one-per-line/compat-empty-description-block-before-separator]
 [fixture:
 statements-one-per-line/compat-empty-description-block-before-statement]
-Statements written on one line and separated by `;` are split into lines.
-[fixture: statements-one-per-line/separated-by-semicolons-meets-others]
+Statements written on one line and separated by `;` are split into lines: a `;`
+only separates them, and a line of several statements is hard to read. [fixture:
+statements-one-per-line/separated-by-semicolons-meets-others]
 
 A line that holds a `;` other than one that separates statements, such as the
 `;` in `A[x;]`, in `accTitle: a;b`, or in a comment, keeps its statements and
@@ -135,7 +139,9 @@ splitting the line, would make it ignore another `;`: `A[style:#x;];` has the
 label `style:` followed by the entity `#x;`, while `A[style:#x;]` has the label
 `style:#x`. Which `;` it ignores is not in the tree, so every such line keeps
 its statements together, whether it contains `style` or not. The rule reads only
-`style`, `:`, `#`, and `;`, so the whitespace between other tokens may change.
+`style`, `:`, `#`, and `;`, so the whitespace between other tokens may change,
+but not the whitespace between a `:` and a later `#` (see
+[Semicolons](#semicolons)).
 
 Input
 ([statements-one-per-line/separated-by-semicolons-input.mmd](../tests/fixtures/flowchart/statements-one-per-line/separated-by-semicolons-input.mmd)):
@@ -395,7 +401,17 @@ flowchart/style-line-separator-semicolon-2a0f3253] [fixture:
 statements-one-per-line/compat-unclosed-directive-semicolon-kept] [fixture:
 statements-one-per-line/compat-ignored-semicolon-next-to-semicolon-kept]
 [fixture: semicolons/kept-after-unclosed-directive] [fixture:
-semicolons/ignored-next-to-another-kept]
+semicolons/ignored-next-to-another-kept] The whitespace between a `:` and a
+later `#` of a line that holds `style` or `classDef` before the `:` and a `;`
+after the `#` keeps whether it is there: the line rule ignores the last `;` of a
+line only when no whitespace lies between them, so dropping or writing
+whitespace there, as around an arrow in `A[style:]-->B[# z;y]`, would change the
+label. [fixture: semicolons/style-line-gap-between-colon-and-hash-kept] Where
+whitespace is there, it is printed as one space, as anywhere else, since the
+rule asks only whether some is there and not how much: `A[style: ]-->B[#z;y]`
+stays, and `C[style:]   -->   D[#z;y]` becomes `C[style:] --> D[#z;y]`.
+[fixture: semicolons/style-line-space-between-colon-and-hash-kept] [fixture:
+semicolons/style-line-spaces-between-colon-and-hash-become-one]
 
 Input
 ([semicolons/removed-input.mmd](../tests/fixtures/flowchart/semicolons/removed-input.mmd)):
@@ -510,8 +526,9 @@ flowchart LR
 
 ### Blank lines
 
-A run of empty lines becomes one empty line. [fixture: blank-lines/single-kept]
-[fixture: blank-lines/whitespace-only-lines] [fixture:
+A run of empty lines becomes one empty line, as Prettier does for code: an empty
+line groups statements, and more than one adds nothing. [fixture:
+blank-lines/single-kept] [fixture: blank-lines/whitespace-only-lines] [fixture:
 blank-lines/inside-multi-line-statement] [fixture:
 blank-lines/around-comment-lines] [fixture: blank-lines/around-directive-lines]
 Empty lines at the start and the end of the text, and at the start and the end
@@ -559,13 +576,18 @@ flowchart LR
 
 ### Whitespace between tokens
 
-Within a line, a run of spaces and tabs between two tokens becomes one space.
-[fixture: whitespace-between-tokens/compat-empty-description-block-own-line]
-[fixture: whitespace-between-tokens/header-and-tabs-collapsed] Whitespace that
-is part of a value is kept: the whitespace around the `,` of a list of styles,
-which mermaid.js keeps in the style, and the whitespace inside the name of a
-subgraph, which becomes its title. The text of a `direction` statement before
-`direction` and after the value is the exception, kept as written (see
+Within a line, a run of spaces and tabs between two tokens becomes one space, so
+that a line has one form whoever wrote it, and tokens that touch keep touching,
+except where a rule below says otherwise (Arrow spacing): mermaid.js reads some
+tokens only when they touch, as `A%%{init: {}}%%B-->C`, which is the id `AB`,
+and a rule that wrote a space between touching tokens would need an exception
+for every such place. [fixture:
+whitespace-between-tokens/compat-empty-description-block-own-line] [fixture:
+whitespace-between-tokens/header-and-tabs-collapsed] Whitespace that is part of
+a value is kept: the whitespace around the `,` of a list of styles, which
+mermaid.js keeps in the style, and the whitespace inside the name of a subgraph,
+which becomes its title. The text of a `direction` statement before `direction`
+and after the value is the exception, kept as written (see
 [Direction](#direction)). [fixture:
 whitespace-between-tokens/style-values-in-class-def-and-link-style-kept]
 [fixture: whitespace-between-tokens/subgraph-quoted-name-kept] In a `style`,
@@ -700,13 +722,14 @@ flowchart LR
 
 ### Arrow spacing
 
-A link has one space before it and one after it. [fixture:
-arrow-spacing/other-link-kinds] [fixture: arrow-spacing/ampersand-spacing-kept]
-[fixture: arrow-spacing/arrow-length-kept] Text written between two arrows has
-one space on each side. [fixture: arrow-spacing/text-between-other-link-kinds]
-[fixture: arrow-spacing/directive-in-text-between-arrows] A label between `|`
-touches the arrow and its `|`, and an edge id touches its `@` and the arrow.
-[fixture: arrow-spacing/pipe-label-other-link-kinds] [fixture:
+A link has one space before it and one after it, as the documentation of
+mermaid.js writes links. [fixture: arrow-spacing/other-link-kinds] [fixture:
+arrow-spacing/ampersand-spacing-kept] [fixture: arrow-spacing/arrow-length-kept]
+Text written between two arrows has one space on each side. [fixture:
+arrow-spacing/text-between-other-link-kinds] [fixture:
+arrow-spacing/directive-in-text-between-arrows] A label between `|` touches the
+arrow and its `|`, and an edge id touches its `@` and the arrow. [fixture:
+arrow-spacing/pipe-label-other-link-kinds] [fixture:
 arrow-spacing/edge-id-with-labels] [fixture:
 arrow-spacing/edge-id-whitespace-before-arrow-dropped]
 
@@ -986,8 +1009,12 @@ flowchart LR
 ### Multi-line statements
 
 A statement written over several lines keeps its line breaks, and each of its
-later lines stands one level deeper than its first. [fixture:
-multi-line-statements/continuation-in-subgraph] [fixture:
+later lines stands one level deeper than its first. Where the author breaks a
+statement is the author's choice, as with chains and long lines, and a line
+break between tokens needs no whitespace at the end of the line, which the
+printer never writes; a sequence diagram, a class diagram, and a state diagram
+join such lines instead, because there a line break counts only after
+whitespace. [fixture: multi-line-statements/continuation-in-subgraph] [fixture:
 multi-line-statements/label-over-lines] [fixture:
 multi-line-statements/directive-inside] Comment lines inside it stay inside it,
 at the level of its later lines. [fixture:
@@ -1064,8 +1091,10 @@ quotes, and the text of an `accDescr { ... }` block when it starts on the line
 after the `{`. [fixture: multi-line-values/markdown-string-kept] Inside a
 subgraph, mermaid.js also lists the text of such a block among the members of
 the subgraph, indentation included, so the indentation cannot be changed.
-[fixture: multi-line-values/accdescr-block-comment-only-in-subgraph] The `}` of
-the block stands at the level of the `accDescr` it closes. [fixture:
+Outside a subgraph the columns of the lines are not in the Db, and the lines are
+kept all the same, so that one rule holds for the text of every block. [fixture:
+multi-line-values/accdescr-block-comment-only-in-subgraph] The `}` of the block
+stands at the level of the `accDescr` it closes. [fixture:
 multi-line-values/accdescr-block-kept] Comment lines inside such a block are
 kept as written too. [fixture:
 multi-line-values/accdescr-block-comment-line-in-subgraph-kept] When the text
@@ -1163,9 +1192,10 @@ flowchart LR
 ### Comments
 
 A comment on a line of its own stands at the level of the statements around it,
-before the header too, where it starts the line. [fixture:
-comments/only-comment-in-subgraph] [fixture: comments/after-end] [fixture:
-comments/tab-indented-and-consecutive] [fixture:
+before the header too, where it starts the line. A comment belongs to no
+statement, so it takes the level of its neighbours, which is where a reader
+looks for it. [fixture: comments/only-comment-in-subgraph] [fixture:
+comments/after-end] [fixture: comments/tab-indented-and-consecutive] [fixture:
 comments/after-frontmatter-before-header] [fixture: comments/before-header]
 [fixture: comments/before-end] [fixture: comments/at-end-of-text] The text of a
 comment is kept as written, including whitespace at its end: mermaid.js does not
@@ -1226,10 +1256,11 @@ flowchart LR
 ### Directives
 
 A directive (`%%{ ... }%%`) on a line of its own stands at the level of the
-statements around it. [fixture: directives/own-line-in-subgraph] [fixture:
-directives/several-on-own-line] [fixture: directives/multi-line-on-own-line]
-[fixture: directives/own-line-between-comment-and-empty-line] A directive on the
-same line as a statement stays on that line. [fixture:
+statements around it, for the same reason as a comment. [fixture:
+directives/own-line-in-subgraph] [fixture: directives/several-on-own-line]
+[fixture: directives/multi-line-on-own-line] [fixture:
+directives/own-line-between-comment-and-empty-line] A directive on the same line
+as a statement stays on that line. [fixture:
 directives/after-header-on-same-line] [fixture:
 directives/after-end-on-same-line] [fixture:
 directives/after-last-statement-without-line-break] Where whitespace was written
@@ -1513,9 +1544,11 @@ in which `\n` is a line break:
 
 ### Frontmatter YAML
 
-The YAML between the `---` lines is formatted with Prettier's YAML formatter.
-[fixture: frontmatter-yaml/compat-unknown-config-formatted] The `---` lines are
-kept as written, with the spaces and tabs at the end of each. [fixture:
+The YAML between the `---` lines is formatted with Prettier's YAML formatter, as
+Prettier does for YAML anywhere: the parser does not read it, and formatting it
+as YAML is the formatter's job. [fixture:
+frontmatter-yaml/compat-unknown-config-formatted] The `---` lines are kept as
+written, with the spaces and tabs at the end of each. [fixture:
 frontmatter-yaml/closing-delimiter-whitespace-kept] The YAML is kept as written
 when Prettier cannot read it, and when the `---` lines are indented: the `---`
 lines are kept as written, and a body at the first column between indented `---`

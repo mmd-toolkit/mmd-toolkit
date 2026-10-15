@@ -53,6 +53,20 @@ function findAttributeQuotes(text: string, from: number): Set<number> {
 }
 
 /**
+ * The text `text` with the `"` of its HTML attribute quotes read as `'`
+ * (common.md, HTML attribute quotes): the form of a written value in which the
+ * quotes that a lexer sees are the ones that delimit a string.
+ */
+export function withAttributeQuotesRead(text: string): string {
+  const quotes = findAttributeQuotes(text, 0)
+  let read = ""
+  for (let offset = 0; offset < text.length; offset++) {
+    read += quotes.has(offset) ? "'" : text.charAt(offset)
+  }
+  return read
+}
+
+/**
  * The offsets that the diagram text leaves out (common.md, Reading a source):
  * the directives (with what their scan takes after them), the comment
  * regions, and the `;` that the line rule ignores. The directives and the

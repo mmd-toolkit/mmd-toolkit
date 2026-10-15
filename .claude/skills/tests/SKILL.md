@@ -384,9 +384,62 @@ written here after the tree document of the specification
 8. Run `fixtures:generate` twice, and check with the hash comparison above that
    the second run changes nothing. Run `fixtures:check`. Run the collection
    again and check that it finds nothing new (the names are stable).
-9. Show as the result the number of fixtures per source (accepted and rejected),
-   the unusual rejections, the fixtures marked, and the time `fixtures:generate`
-   and `fixtures:check` take.
+9. Hand-written inputs. Each input answers one question, in one line of its
+   note. Before writing them, take the kinds of cases that the reviews of the
+   earlier diagram types found missing, and apply each kind to the sentences and
+   the fixtures of the new diagram type first, as a list; a kind that does not
+   apply is written down with its reason, not left out. For every kind, check
+   each place of the syntax that holds text (every field, name, string, and
+   block, in quotes or not, on the first line and on the later ones) with
+   mermaid.js. The list holds every kind that a review has found so far, with
+   the review that found it:
+   - values that the line rule of `style` and `classDef` lines reaches: the last
+     `;` of a line that has `style`, later a `:` and a `#`, dropped from any
+     text of the line (timeline review 435, sankey review 441); the keyword in
+     another case, a space between the `:` and the `#`, no `#`, and a `;` on
+     another line, which keep the `;`; two `;`, where the first ends a character
+     reference; a line inside quotes, which is a line of its own (441);
+   - a comment line, a directive line, and an empty line between a keyword and
+     its value (timeline review 435, remark 1);
+   - the keyword in another case, and a letter, a word character, a `-`, or a
+     character outside ASCII glued after it, for the header and for the keyword
+     of every statement;
+   - the names of `Object.prototype` (`__proto__`, `constructor`) as a name or
+     an id;
+   - a second and a third definition of the same name: which one stays, and
+     whether the other calls of the grammar action work; make the third one meet
+     a partner that is not the first definition (reviews 419 and 420);
+   - an empty description block (or a statement with no text) that keeps the
+     value before it (timeline review 436, also er and requirement);
+   - CRLF, a lone CR, U+2028 and U+2029: as a line end, inside a value or
+     quotes, and at the end of the text;
+   - a tab and a U+FEFF as whitespace, at the start of a line, inside a value,
+     and at the end of a line and of the text (timeline review 436, remark 2,
+     and 437, remark 5);
+   - character references, in every text and in quotes, and the `#` of one,
+     which starts no comment;
+   - values that a directive cuts: a directive inside a value, at its start and
+     its end, inside quotes, on the line of the header, glued to a keyword, and
+     one that is not closed, which takes the word at the start of the next line
+     or the rest of the text (sankey review 441);
+   - a text that ends inside a context that is not closed: after `accTitle:`, in
+     a block with no end, in a quote with no end;
+   - what stands after each form of a statement, at the end of its line: ` ;`,
+     `;`, `;;`, a comment, a directive that is closed, and one that is not;
+   - whitespace at the end of a value, a line, and the text, no-break space and
+     U+3000 included, and lines of whitespace only;
+   - comment lines and directive lines in the middle of a value that runs over
+     several lines;
+   - numbers that the Db reads from text: a sign, `-0` (the Db has -0 and JSON
+     writes 0), `NaN`, `Infinity`, a number too large for a double, and text
+     after the number (journey and sankey, review 441).
+
+   When a review finds a kind that the list lacks, the session of tests adds it
+   here, with the number of the review, in the change that closes that review.
+
+10. Show as the result the number of fixtures per source (accepted and
+    rejected), the unusual rejections, the fixtures marked, and the time
+    `fixtures:generate` and `fixtures:check` take.
 
 ## 6. Langium diagrams
 

@@ -68,6 +68,13 @@ description:
   tests の文書（`packages/tests/docs`）である。
   仕様の文書は、parser のトークンと位置の仕様に言及しない。
   参照は、parser の文書から仕様への一方向である。
+- 仕様の文書は、mermaid.js が入力を Db にどう読むかを書かない。
+  既定値、値がどの項目に付くか、数や型の読み方、文が Db に何を足すか、
+  Db での名前を書かず、tests パッケージの要約
+  （`packages/tests/docs/db-summaries.md`、`packages/tests/docs/db-from-tree.md`）
+  を引く。
+  残すのは、入力を受理するかどうかを決める文、木の型と欄の値とその理由、
+  字句の読みである。
 - 仕様の主張ごとに fixture を用意する。
   fixture の追加は tests パッケージの生成器を使う。
 - 仕様では一文字の記号や略号を導入しない。

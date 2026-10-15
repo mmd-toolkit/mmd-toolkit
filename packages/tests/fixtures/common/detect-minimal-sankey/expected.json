@@ -5,5 +5,18 @@
   },
   "accepted": true,
   "diagramType": "sankey",
-  "db": null
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
 }

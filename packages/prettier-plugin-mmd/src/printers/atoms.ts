@@ -1,6 +1,7 @@
 import type { Doc } from "prettier"
 import { builders } from "prettier/doc"
 import { endsWithSpaceOrTab, readGap } from "./gap.ts"
+import { isInsideStyleRuleStretch } from "./kept-lines.ts"
 import type { Line } from "./lines.ts"
 import {
   lineBreakBetween,
@@ -164,11 +165,23 @@ export function printAtoms(
         // A U+2028 or U+2029 is not whitespace to every rule of mermaid.js,
         // which reads `class A`, U+2028, and ` direction LR` as one name,
         // and the same with a space as a statement and a direction: the gap
-        // stays as written.
+        // stays as written. A gap between a `:` and a `#` of a line that the
+        // line rule may read keeps whether it holds whitespace, which decides
+        // whether the rule ignores a `;` (see `isInsideStyleRuleStretch`): one
+        // space where it holds some, none where the tokens touch.
+        const inStyleRuleStretch = isInsideStyleRuleStretch(
+          source,
+          previous.end,
+          atom.start,
+        )
         current.push(
           written.includes("\u2028") || written.includes("\u2029")
             ? written
-            : spaceFor(layout.rules.get(atom.start), previous, atom),
+            : inStyleRuleStretch
+              ? written === ""
+                ? ""
+                : " "
+              : spaceFor(layout.rules.get(atom.start), previous, atom),
         )
       }
     }

@@ -172,6 +172,8 @@ Dropped:
 | In a mindmap, a node indented between earlier levels (`root`, `    a`, `      b`, `     c`; `c` becomes a child of `a`)                                                                                        | The documentation of mermaid.js explains this reading under "Unclear indentation", and the indentation does not tell what the author meant: a rule would also report intended writing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | A line of only `%%` among lines commented out together (the vertex `%%`)                                                                                                                                       | mermaid.js draws the line, without an error, as a vertex with the id `%%`. Read as a comment that the flowchart documentation defines, "the text from the start of the comment to the next line break" ([syntax/flowchart.md](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/docs/syntax/flowchart.md#L1217-L1219)), the vertex is a defect of mermaid.js, for which no rule is kept, for the reasons above ([#7008](https://github.com/mermaid-js/mermaid/pull/7008) is open). Read as writing outside that documentation, `%%` gives the vertex `%%` by the grammar, with nothing lost, and calling it a mistake needs the guess that a comment was meant. On either reading, no fact shows a mistake without a guess |
 | In a mindmap, `Write ::icon(fa fa-book)` or `Write:::urgent` on the line of a node                                                                                                                             | mermaid.js reads both by its grammar and loses nothing: the first is the node `Write ::icon` with the label `fa fa-book`, as `X(Foo)` shows `Foo` and not `X`, and the second is the label `Write:::urgent`. Calling either a mistake rests only on the guess that an icon or a class was meant                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| In a timeline, `#` in a period (`Sprint #3 : planning`: the period `Sprint `, and the comment `#3 : planning`, so the event is lost)                                                                           | A defect of mermaid.js, for the reasons above: the timeline documentation of mermaid.js calls a period and an event "simple text", names no comment `#`, and shows no other way of writing that keeps it (the entity `#35;` appears in the flowchart documentation only). Fact: [#5356](https://github.com/mermaid-js/mermaid/issues/5356) (closed, Type: Bug / Error) reports that `#` starts a comment                                                                                                                                                                                                                                                                                                                                                                          |
+| In a timeline, an event line after a section with no period of its own (`section B`, then `: y`; `y` goes to the last period of the section before)                                                            | mermaid.js reads it by its grammar and loses nothing; calling it a mistake needs the guess that the event was meant for section B. So for `section 2020 : a`, the section `2020 ` and an event of the period before                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ### Questions for unclear cases
 
@@ -630,6 +632,9 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | requirement-no-undef                      | yes              |                                                                              |
 | mindmap-no-duplicate-decoration           | yes              |                                                                              |
 | mindmap-no-mismatched-shape               | yes              |                                                                              |
+| timeline-no-duplicate-title               | yes              |                                                                              |
+| timeline-no-duplicate-description         | yes              |                                                                              |
+| timeline-no-empty-description-block       | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -881,6 +886,14 @@ icons are drawn; (4) the document names one class line, as `:::urgent large`.
 mindmap-no-mismatched-shape: (1) the node has the shape of the opener; (2) none;
 (3) "mindmap shape", "mindmap"; (4) write the closer of the opener.
 
+The timeline rules, timeline-no-duplicate-title,
+timeline-no-duplicate-description, and timeline-no-empty-description-block, have
+the notes of the title, description, and empty block rules above; their cases
+are those of journey, with a title that takes the whole next line after `title`
+at the end of a line, and an empty block before a period or an event (run). The
+searches "timeline title", "timeline section", "timeline accTitle", "timeline
+colon", and "timeline hash" found nothing that changes the reading.
+
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
 author meant, and the rule reports the comment there too (criterion 1). Whether
@@ -955,6 +968,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | journey-* (all 6 rules)                 | None for now (2026-10-14; see the end of this section)         |
 | requirement-* (all 8 rules)             | None for now (2026-10-15; see the end of this section)         |
 | mindmap-* (both rules)                  | None for now (2026-10-15; see the end of this section)         |
+| timeline-* (all 3 rules)                | None for now (2026-10-15; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1047,11 +1061,12 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
   break changes the label (run). May make visible: any other rule, because the
   text becomes statements, and what they hold is what the author wrote
   (`accTitle: a`, then `accTitle: t; direction LR` in a subgraph, split, gives
-  the title `t`, which no-duplicate-title reports; run). `sequence-*`,
-  `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and `journey-*`
-  (2026-10-14), and `requirement-*` and `mindmap-*` (2026-10-15): the rules are
-  implemented without suggestions for now. No suggestion had been decided for
-  them or described in their documents, and the one planned for the empty block
-  of a sequence diagram rested on generated inputs. Whether they get suggestions
-  is decided later, in the form of the flowchart rules, with a fixture for each
-  case.
+  the title `t`, which no-duplicate-title reports; run).
+
+`sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and
+`journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, and `timeline-*`
+(2026-10-15): the rules are implemented without suggestions for now. No
+suggestion had been decided for them or described in their documents, and the
+one planned for the empty block of a sequence diagram rested on generated
+inputs. Whether they get suggestions is decided later, in the form of the
+flowchart rules, with a fixture for each case.

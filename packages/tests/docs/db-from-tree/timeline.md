@@ -135,7 +135,8 @@ the `task`, and the `events`.
 - `task` is the text of the period, as written. `section` is the name of the
   last `section` statement before the period, as written, or the empty text.
   [fixture: timeline/db-section-two-with-tasks] [fixture:
-  timeline/db-section-after-tasks] [fixture: timeline/db-section-then-title]
+  timeline/spec-timeline-8bf1d202] [fixture: timeline/db-section-after-tasks]
+  [fixture: timeline/db-section-then-title]
 - `events` has the texts of the events of the statement, in source order; it is
   empty when the statement has none. [fixture: timeline/db-period-and-event]
   [fixture: timeline/db-period-only] [fixture: timeline/db-event-two-on-a-line]

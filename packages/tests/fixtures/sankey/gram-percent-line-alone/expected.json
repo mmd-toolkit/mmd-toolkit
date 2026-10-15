@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, comments: a line of `%%` alone is no comment line and is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankey%%a,b,1\n--------^\nExpecting 'COMMA', got 'NEWLINE'"
+  }
+}

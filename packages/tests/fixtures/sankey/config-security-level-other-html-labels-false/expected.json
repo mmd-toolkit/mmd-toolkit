@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, settings: with htmlLabels false, the title and the ids are recorded as written."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": false
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "T<b>x</b> & <i>z",
+    "nodes": [
+      "A<b>x</b>",
+      "B<i>z</i>"
+    ],
+    "links": [
+      {
+        "source": "A<b>x</b>",
+        "target": "B<i>z</i>",
+        "value": 1
+      }
+    ]
+  },
+  "embedded": {
+    "title": "T<b>x</b> & <i>z"
+  }
+}

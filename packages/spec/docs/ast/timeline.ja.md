@@ -41,8 +41,7 @@ timeline/db-event-quotes-and-brackets]
 子の欄: `body`。ヘッダーのキーワードは欄ではありません。
 方向は、ヘッダーの行で `timeline` と空白文字かタブの後にあるキーワードを、
 空白なしで書かれたとおりに持ちます。
-`timeline td` は方向 `td` を持ち、Db はそれを `TD` と読みます。
-方向がないとき、Db は `LR` と読みます。
+`timeline td` は方向 `td` を持ちます。方向がないとき、方向は null です。
 [fixture: timeline/db-direction-td]
 [fixture: timeline/db-direction-lower-case] [fixture: timeline/db-header-only]
 
@@ -105,10 +104,10 @@ period ではない文の後の event です。
 子の欄: `events`。
 その event は、TimelinePeriodStatement と同じく、
 間に空白、改行、コメントしかなく互いに続く event です。
-mermaid.js はそれを、間の文を越えて、その前の最後の period に与えます。
-3 行の `a`、`section S`、`: e` では、
-event `e` は `S` の前の section にある period `a` のものです。
-period の後の `section S : x` では、`x` はその period のものです。
+その event は period の文に続かないので、それだけで 1 つの文になります。
+3 行の `a`、`section S`、`: e` では `: e` が event の文で、
+`section S : x` の `: x` も同じです。
+mermaid.js がそれをどの period に与えるかは、tests パッケージの要約にあります。
 最初の period より前の event の文は、入力を拒否させます
 （[文法の外の拒否](../diagrams/timeline.ja.md#文法の外の拒否) を参照）。
 [fixture: timeline/db-event-after-section-joins-earlier-task] [fixture:
@@ -145,7 +144,6 @@ timeline/db-title-percent]
 子の欄: `name`。
 名前は空白を含みうるテキストで、何もそれを参照しないので TimelineLiteral です。
 両端の空白を保ち、空白だけの名前はその空白の値です。
-section の文の後の period はその section に属します。
 [fixture: timeline/db-section-statement]
 [fixture: timeline/db-section-two-spaces] [fixture:
 timeline/db-section-trailing-spaces] [fixture: timeline/db-section-only-space]

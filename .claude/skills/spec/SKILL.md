@@ -63,6 +63,14 @@ in the skill `conventions`.
   (`packages/tests/docs`). The documents of the specification do not refer to
   the parser's specification of tokens and positions: references run from the
   parser's documents to the specification.
+- The documents of the specification do not write how mermaid.js reads an input
+  into its Db: no defaults, nothing about which entry a value goes to, no
+  reading of a number or a type, nothing that a statement adds to the Db, and no
+  names in the Db. They point to the summary of the tests package
+  (`packages/tests/docs/db-summaries.md`, `packages/tests/docs/db-from-tree.md`)
+  instead. What stays is what decides whether an input is accepted, the node
+  types and the values of the fields of the tree with their reasons, and how the
+  lexer reads the text.
 - Every claim in the specification has a fixture, added through the tests
   package's generator.
 - The specification introduces no single-letter or abbreviated symbols (no "let

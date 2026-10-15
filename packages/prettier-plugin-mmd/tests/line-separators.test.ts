@@ -1129,6 +1129,56 @@ const timelineWhitespaceExamples: readonly (readonly [
   ],
 ]
 
+/**
+ * Each example is a sankey diagram with a whitespace character other than a
+ * space that mermaid.js accepts only at the end of the text, where it is
+ * dropped, and so is it from the output (docs/sankey.md, Whitespace
+ * characters).
+ */
+const sankeyWhitespaceExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "U+00A0 at the end of the text",
+      "sankey\na,b,1\u00a0\n",
+      "sankey\na,b,1\n",
+    ],
+    [
+      "U+3000 at the end of the text without a line feed",
+      "sankey\na,b,1\u3000",
+      "sankey\na,b,1\n",
+    ],
+    [
+      "U+2028 at the end of the text without a line feed",
+      "sankey\na,b,1\u2028",
+      "sankey\na,b,1\n",
+    ],
+    [
+      "U+2029 at the end of the text",
+      "sankey\na,b,1\u2029\n",
+      "sankey\na,b,1\n",
+    ],
+    [
+      "U+FEFF at the end of the text without a line feed",
+      "sankey\na,b,1\ufeff",
+      "sankey\na,b,1\n",
+    ],
+    [
+      "a tab at the end of the text without a line feed",
+      "sankey\na,b,1\t",
+      "sankey\na,b,1\n",
+    ],
+    [
+      "U+00A0 on a line of its own at the end of the text",
+      "sankey\na,b,1\n\u00a0\n",
+      "sankey\na,b,1\n",
+    ],
+    [
+      "U+00A0 at the end of the last comment line of the text",
+      "sankey\na,b,1\n%% c\u00a0",
+      "sankey\na,b,1\n%% c\u00a0\n",
+    ],
+  ]
+
 describe("a state diagram with a line separator", () => {
   it.each(examples)("keeps %s as written", async (_name, input, output) => {
     await expectKept(input, output)
@@ -1248,6 +1298,15 @@ describe("a timeline with a line separator", () => {
 
 describe("a timeline with a whitespace character that no fixture file holds", () => {
   it.each(timelineWhitespaceExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a sankey diagram with a whitespace character at the end of the text", () => {
+  it.each(sankeyWhitespaceExamples)(
     "keeps %s",
     async (_name, input, output) => {
       await expectKept(input, output)

@@ -1592,39 +1592,35 @@ shape = "[" label "]"
       | "[|" id-run ":" id-run "|" label "]"
 ```
 
-各選択肢は、形に名前を、Db の頂点に type を与えます。
+各選択肢は形に名前を与えます。
 
-| 書き方                 | 名前               | Db の type      |
-| ---------------------- | ------------------ | --------------- |
-| `[` … `]`              | `rectangle`        | `square`        |
-| `(` … `)`              | `rounded`          | `round`         |
-| `((` … `))`            | `circle`           | `circle`        |
-| `(((` … `)))`          | `double-circle`    | `doublecircle`  |
-| `{` … `}`              | `diamond`          | `diamond`       |
-| `{{` … `}}`            | `hexagon`          | `hexagon`       |
-| `([` … `])`            | `stadium`          | `stadium`       |
-| `[[` … `]]`            | `framed-rectangle` | `subroutine`    |
-| `[(` … `)]`            | `cylinder`         | `cylinder`      |
-| `>` … `]`              | `odd`              | `odd`           |
-| `(-` … `ellipse-end`   | `ellipse`          | `ellipse`       |
-| `[/` … `backslash-end` | `trapezoid-bottom` | `trapezoid`     |
-| `[/` … `slash-end`     | `lean-right`       | `lean_right`    |
-| `[\` … `slash-end`     | `trapezoid-top`    | `inv_trapezoid` |
-| `[\` … `backslash-end` | `lean-left`        | `lean_left`     |
-| `[\|` … `\|` … `]`     | `rectangle`        | `rect`          |
+| 書き方                 | 名前               |
+| ---------------------- | ------------------ |
+| `[` … `]`              | `rectangle`        |
+| `(` … `)`              | `rounded`          |
+| `((` … `))`            | `circle`           |
+| `(((` … `)))`          | `double-circle`    |
+| `{` … `}`              | `diamond`          |
+| `{{` … `}}`            | `hexagon`          |
+| `([` … `])`            | `stadium`          |
+| `[[` … `]]`            | `framed-rectangle` |
+| `[(` … `)]`            | `cylinder`         |
+| `>` … `]`              | `odd`              |
+| `(-` … `ellipse-end`   | `ellipse`          |
+| `[/` … `backslash-end` | `trapezoid-bottom` |
+| `[/` … `slash-end`     | `lean-right`       |
+| `[\` … `slash-end`     | `trapezoid-top`    |
+| `[\` … `backslash-end` | `lean-left`        |
+| `[\|` … `\|` … `]`     | `rectangle`        |
 
 名前は、mermaid.js がデータブロック `A@{ shape: … }` で同じ形に受け付ける語です
 （[`shapesDefs`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/rendering-util/rendering-elements/shapes.ts#L107-L534)）。
 それらの語のうち、形そのものを表し、省略していない語です。
 `process`、`decision`、`subroutine` のような用途の語や、
 `rect`、`diam`、`fr-rect` のような省略した語は採りません。
-括弧で書いた形は、データブロックでその名前を書いた形として描かれますが、
-その Db の type は表の語で、mermaid.js がそれを与えます
-（[`getTypeFromVertex()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/flowDb.ts#L973-L1001)）。
-`A[x]` と `A@{ shape: rectangle }` は同じに描かれ、
-Db の type は `square` と `rectangle` です。
+括弧で書いた形は、データブロックでその名前を書いた形として描かれます。
+`A[x]` と `A@{ shape: rectangle }` は同じに描かれます。
 [fixture: flowchart/db-data-block-shape-names]
-[fixture: flowchart/db-bracket-shape-types]
 形 `(-` … `-)` にはそのような語がありません。
 mermaid.js は `ellipse` という形を定めていないので、
 `A@{ shape: ellipse }` は mermaid.js が拒否し、ここでは受理されます
@@ -1646,8 +1642,7 @@ mermaid.js は `ellipse` という形を定めていないので、
 どちらも 1 つの id の並びです。
 `A[|borders:lt|text]` は、値 `lt` のプロパティ `borders` を持ちます。
 その名前は `[` … `]` と同じく `rectangle` です。
-プロパティは Db の `props` に残り、mermaid.js が長方形を描く方法を何も変えず、
-違うのは Db の type の `rect` だけです。
+プロパティは、mermaid.js が長方形を描く方法を何も変えません。
 [fixture: flowchart/gram-circle-gap] [fixture: flowchart/gram-rect-property]
 
 ### ラベル

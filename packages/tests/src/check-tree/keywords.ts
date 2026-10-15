@@ -228,6 +228,9 @@ export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
   MindmapDiagram: ["mindmap", "::icon("],
   // The row `Keyword` of parser/docs/tokens/timeline.md: the header, the
   // direction, and the words that start a statement.
+  // The row `Keyword` of parser/docs/tokens/sankey.md: the header, in both
+  // spellings.
+  SankeyDiagram: ["sankey", "sankey-beta"],
   TimelineDiagram: [
     "timeline",
     "lr",
