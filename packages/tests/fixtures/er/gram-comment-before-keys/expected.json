@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Attributes: a key after the comment; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...mA { string a \"c\" PK}\n---------------------^\nExpecting 'BLOCK_STOP', 'ATTRIBUTE_WORD', got 'ATTRIBUTE_KEY'"
+  }
+}

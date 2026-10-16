@@ -1,0 +1,97 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The last region of Y is `generated-region-1` and that of X is `generated-region-2`, because Y comes first in the list of nodes."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "divider-id-2",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "X",
+        "dir": "TB"
+      },
+      {
+        "id": "Y",
+        "shape": "roundedWithTitle",
+        "label": "Y",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-2",
+        "dir": "TB"
+      },
+      {
+        "id": "divider-id-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "Y",
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-1"
+      },
+      {
+        "id": "generated-region-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "Y",
+        "dir": "TB"
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": [],
+        "parentId": "generated-region-1"
+      },
+      {
+        "id": "generated-region-2",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "X",
+        "dir": "TB"
+      },
+      {
+        "id": "D",
+        "shape": "rect",
+        "label": "D",
+        "classes": [],
+        "styles": [],
+        "parentId": "generated-region-2"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

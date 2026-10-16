@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accDescr with no text followed by empty lines only: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 7:\n...scr: daccDescr:\n------------------^\nExpecting 'EOF', got '1'"
+  }
+}

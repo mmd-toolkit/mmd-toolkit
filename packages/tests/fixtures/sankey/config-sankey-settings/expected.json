@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, settings: the settings of the diagram, the theme included, change nothing in the Db."
+  },
+  "config": {
+    "theme": "dark",
+    "sankey": {
+      "showValues": false,
+      "width": 100,
+      "height": 50,
+      "linkColor": "target",
+      "nodeAlignment": "left",
+      "prefix": "$",
+      "suffix": "B",
+      "useMaxWidth": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

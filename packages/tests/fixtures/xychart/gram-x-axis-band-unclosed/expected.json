@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, x-axis: brackets that are not closed are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...t-beta x-axis [a, b\n----------------------^\nExpecting 'SQUARE_BRACES_END', 'COMMA', got 'NEWLINE'"
+  }
+}

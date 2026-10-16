@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "spec: diagrams/state.md, The note contexts: with two or more whitespace characters before the `:` of a note on one line, the `:` is a character of the text; with one whitespace character before it (here a tab), the `:` is the `:` of the note and the text is the rest, which is empty here."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "A",
+        "position": "left of",
+        "text": ""
+      }
+    ],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

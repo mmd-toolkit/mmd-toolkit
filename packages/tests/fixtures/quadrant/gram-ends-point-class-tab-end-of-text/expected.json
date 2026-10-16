@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, statements: a `point-class` statement with a tab at the end of the text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named  is not supported."
+  }
+}

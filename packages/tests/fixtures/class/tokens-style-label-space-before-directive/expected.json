@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/class.md ClassLiteral: the value of a style is the written texts of its units joined; the label unit before the directive keeps the space before it, so the value is `fill: red , color : blue`, and mermaid.js has the styles `fill: red` and ` color : blue`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill: red",
+          " color : blue"
+        ]
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

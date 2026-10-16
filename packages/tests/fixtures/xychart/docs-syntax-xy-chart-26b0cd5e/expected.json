@@ -1,0 +1,150 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/xyChart.md",
+    "line": 10
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Sales Revenue",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "jan",
+        "feb",
+        "mar",
+        "apr",
+        "may",
+        "jun",
+        "jul",
+        "aug",
+        "sep",
+        "oct",
+        "nov",
+        "dec"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "Revenue (in $)",
+      "min": 4000,
+      "max": 11000
+    },
+    "plots": [
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "jan",
+            5000
+          ],
+          [
+            "feb",
+            6000
+          ],
+          [
+            "mar",
+            7500
+          ],
+          [
+            "apr",
+            8200
+          ],
+          [
+            "may",
+            9500
+          ],
+          [
+            "jun",
+            10500
+          ],
+          [
+            "jul",
+            11000
+          ],
+          [
+            "aug",
+            10200
+          ],
+          [
+            "sep",
+            9200
+          ],
+          [
+            "oct",
+            8500
+          ],
+          [
+            "nov",
+            7000
+          ],
+          [
+            "dec",
+            6000
+          ]
+        ]
+      },
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "jan",
+            5000
+          ],
+          [
+            "feb",
+            6000
+          ],
+          [
+            "mar",
+            7500
+          ],
+          [
+            "apr",
+            8200
+          ],
+          [
+            "may",
+            9500
+          ],
+          [
+            "jun",
+            10500
+          ],
+          [
+            "jul",
+            11000
+          ],
+          [
+            "aug",
+            10200
+          ],
+          [
+            "sep",
+            9200
+          ],
+          [
+            "oct",
+            8500
+          ],
+          [
+            "nov",
+            7000
+          ],
+          [
+            "dec",
+            6000
+          ]
+        ]
+      }
+    ]
+  }
+}

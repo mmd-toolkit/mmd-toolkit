@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, statements: the text of `classDef` on the next line is a statement of its own, so the line of the keyword is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...adrantChartclassDefc1 color: #f00\n----------------------^\nExpecting 'SPACE', got 'NEWLINE'"
+  }
+}

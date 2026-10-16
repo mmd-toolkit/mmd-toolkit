@@ -1,0 +1,158 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/classchart.html",
+    "line": 320
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Invoice",
+        "type": "",
+        "label": "Invoice",
+        "text": "Invoice",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "calculate",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "App.Services.Billing"
+      },
+      {
+        "id": "Logger",
+        "type": "",
+        "label": "Logger",
+        "text": "Logger",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "log",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "App.Services"
+      },
+      {
+        "id": "User",
+        "type": "",
+        "label": "User",
+        "text": "User",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "String name"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "App.Models"
+      }
+    ],
+    "relations": [
+      {
+        "id1": "Invoice",
+        "id2": "Logger",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none",
+        "title": "logs to"
+      },
+      {
+        "id1": "Invoice",
+        "id2": "User",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none",
+        "title": "bills"
+      }
+    ],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "App",
+        "label": "App",
+        "classes": [],
+        "notes": [],
+        "children": [
+          "App.Services",
+          "App.Models"
+        ],
+        "explicit": false
+      },
+      {
+        "id": "App.Services",
+        "label": "Services",
+        "classes": [
+          "Logger"
+        ],
+        "notes": [],
+        "children": [
+          "App.Services.Billing"
+        ],
+        "parent": "App",
+        "explicit": true
+      },
+      {
+        "id": "App.Services.Billing",
+        "label": "Billing",
+        "classes": [
+          "Invoice"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "App.Services",
+        "explicit": true
+      },
+      {
+        "id": "App.Models",
+        "label": "Models",
+        "classes": [
+          "User"
+        ],
+        "notes": [],
+        "children": [],
+        "parent": "App",
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

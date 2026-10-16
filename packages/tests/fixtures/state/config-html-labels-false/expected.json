@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The frontmatter sets htmlLabels to false. The summary has the same states, note, transition and link as without it."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "A",
+        "position": "right of",
+        "text": "hi"
+      }
+    ],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "A",
+        "label": "go"
+      }
+    ],
+    "classDefs": [],
+    "links": [
+      {
+        "state": "A",
+        "url": "\"https://example.com\"",
+        "tooltip": "\"tip\""
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "htmlLabels": false
+    }
+  }
+}

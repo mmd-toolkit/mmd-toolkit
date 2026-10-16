@@ -1,0 +1,165 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: requirement-no-ignored-text >> invalid >>> docs/rules/requirement-no-ignored-text.md incorrect 1
+Filename: requirement-no-ignored-text-incorrect-1.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   direction LR x
+    |                ^ [1]
+  3 |   requirement r {
+  4 |     id: 1
+  5 |   }
+  6 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `x`.
+---
+
+
+Test: requirement-no-ignored-text >> invalid >>> docs/rules/requirement-no-ignored-text.md incorrect 2
+Filename: requirement-no-ignored-text-incorrect-2.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   requirement r {
+  3 |     id: 1
+  4 |   }
+  5 |   element e {
+  6 |     type: simulation
+  7 |   }
+  8 |   r - satisfies -> e direction LR
+    |   ^~~~~~~~~~~~~~~~~~ [1]
+  9 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `r - satisfies -> e`.
+---
+
+
+Test: requirement-no-ignored-text >> invalid >>> invalid/requirement/direction-then-slashes-comment
+Filename: tests/fixtures/rules/requirement-no-ignored-text/invalid/requirement/direction-then-slashes-comment-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   direction LR // c
+    |                ^~~~ [1]
+  3 |   requirement r {
+  4 |   }
+  5 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `// c`.
+---
+
+
+Test: requirement-no-ignored-text >> invalid >>> invalid/requirement/hash-comment-before-direction
+Filename: tests/fixtures/rules/requirement-no-ignored-text/invalid/requirement/hash-comment-before-direction-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | # c direction LR
+    | ^~~ [1]
+  3 | requirement r {
+  4 |   id: 1
+  5 | }
+  6 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `# c`.
+---
+
+
+Test: requirement-no-ignored-text >> invalid >>> invalid/requirement/hash-commented-direction
+Filename: tests/fixtures/rules/requirement-no-ignored-text/invalid/requirement/hash-commented-direction-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | # direction LR
+    | ^ [1]
+  3 | requirement r {
+  4 |   id: 1
+  5 | }
+  6 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `#`.
+---
+
+
+Test: requirement-no-ignored-text >> invalid >>> invalid/requirement/lex-direction-in-relationship-line
+Filename: tests/fixtures/rules/requirement-no-ignored-text/invalid/requirement/lex-direction-in-relationship-line-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | a - satisfies -> direction LR
+    | ^~~~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `a - satisfies ->`.
+---
+
+
+Test: requirement-no-ignored-text >> invalid >>> invalid/requirement/lex-direction-line-empty-description-block
+Filename: tests/fixtures/rules/requirement-no-ignored-text/invalid/requirement/lex-direction-line-empty-description-block-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | direction LR accDescr {}
+    |              ^~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `accDescr {}`.
+---
+
+
+Test: requirement-no-ignored-text >> invalid >>> invalid/requirement/lex-direction-line-text-before-and-after
+Filename: tests/fixtures/rules/requirement-no-ignored-text/invalid/requirement/lex-direction-line-text-before-and-after-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | foo direction LR bar
+    | ^~~ [1]          ^~~ [2]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `foo`.
+[2] mermaid.js reads this whole line as a direction statement and drops `bar`.
+---
+
+
+Test: requirement-no-ignored-text >> invalid >>> invalid/requirement/lex-direction-line-word-before
+Filename: tests/fixtures/rules/requirement-no-ignored-text/invalid/requirement/lex-direction-line-word-before-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | mydirection RL
+    | ^~ [1]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `my`.
+---
+
+
+Test: requirement-no-ignored-text >> invalid >>> invalid/requirement/percent-commented-direction
+Filename: tests/fixtures/rules/requirement-no-ignored-text/invalid/requirement/percent-commented-direction-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | % direction LR
+    | ^ [1]
+  3 | requirement r {
+  4 |   id: 1
+  5 | }
+  6 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `%`.
+---
+
+
+Test: requirement-no-ignored-text >> invalid >>> invalid/requirement/tokens-ignored-semicolon-in-direction-text
+Filename: tests/fixtures/rules/requirement-no-ignored-text/invalid/requirement/tokens-ignored-semicolon-in-direction-text-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | direction LR style:#x a;b
+    |              ^~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `style:#x ab`.
+---

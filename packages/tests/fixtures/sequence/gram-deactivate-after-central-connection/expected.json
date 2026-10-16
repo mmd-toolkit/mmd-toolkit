@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar: `()` after an arrow does not activate its target, so `deactivate B` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Trying to inactivate an inactive participant (B)"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, accessibility: `accDescr:` with no text takes a `title` line as its value, and the chart has no title."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "title T",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            1
+          ]
+        ]
+      }
+    ]
+  }
+}

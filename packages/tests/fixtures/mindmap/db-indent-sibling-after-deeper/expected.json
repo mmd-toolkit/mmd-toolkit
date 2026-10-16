@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, parent: a node as indented as an earlier node is its sibling, after the nodes below it."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a",
+          "level": 2,
+          "descr": "a",
+          "type": 0,
+          "children": [
+            {
+              "nodeId": "b",
+              "level": 4,
+              "descr": "b",
+              "type": 0,
+              "children": []
+            }
+          ]
+        },
+        {
+          "nodeId": "c",
+          "level": 2,
+          "descr": "c",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

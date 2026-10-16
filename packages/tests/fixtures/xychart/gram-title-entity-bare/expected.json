@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, entity: a character reference in a title without quotes is rejected, since its placeholder is outside ASCII."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...ychart-beta title aﬂ°°35¶ßb\n----------------------^"
+  }
+}

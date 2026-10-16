@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/mindmap/mindmap.spec.ts",
+    "line": 148,
+    "test": "when parsing a mindmap  > nodes > MMP-12 multiple types (bang)"
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "the root",
+      "type": 5,
+      "children": []
+    }
+  }
+}

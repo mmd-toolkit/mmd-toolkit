@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary, Boxes: a box without participants has empty actorKeys."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [
+      {
+        "name": "a",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": []
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

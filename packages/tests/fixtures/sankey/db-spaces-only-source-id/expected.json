@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: a source of spaces only, after the first line, is the empty id."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b",
+      "",
+      "c"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      },
+      {
+        "source": "",
+        "target": "c",
+        "value": 2
+      }
+    ]
+  }
+}

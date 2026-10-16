@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: `error %% x` followed by a line break is accepted, because detection removes the `%%` run; ast.md ErrorDiagram: its `RawText` tokens are `error`, `%%`, and `x`."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

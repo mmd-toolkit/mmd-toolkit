@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, quotes: an empty line made of CRLF inside quotes is one line feed in the field."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a\nb",
+      "c"
+    ],
+    "links": [
+      {
+        "source": "a\nb",
+        "target": "c",
+        "value": 1
+      }
+    ]
+  }
+}

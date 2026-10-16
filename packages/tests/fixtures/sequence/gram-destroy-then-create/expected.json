@@ -1,0 +1,86 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar, the participant awaiting creation and the participant awaiting destruction: the participant awaiting creation is checked first: the message to C clears it, and the next message comes from D, which awaits destruction."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "C"
+      },
+      {
+        "name": "C",
+        "description": "C",
+        "wrap": false,
+        "prevActor": "B",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "D"
+      },
+      {
+        "name": "D",
+        "description": "D",
+        "wrap": false,
+        "prevActor": "C",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [
+      {
+        "id": "C",
+        "messageIndex": 0
+      }
+    ],
+    "destroyedActors": [
+      {
+        "id": "D",
+        "messageIndex": 0
+      }
+    ],
+    "messages": [
+      {
+        "from": "A",
+        "to": "C",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "D",
+        "to": "A",
+        "message": "y",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

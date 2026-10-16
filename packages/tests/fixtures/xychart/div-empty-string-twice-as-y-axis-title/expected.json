@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: two `\"\"` as the title of a y axis are no whole title; mermaid.js reads no token for them, and the input is rejected here."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 2
+    },
+    "plots": []
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The title of the frontmatter is the title of the diagram."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "Frontmatter title",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  },
+  "embedded": {
+    "title": "Frontmatter title"
+  }
+}

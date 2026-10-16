@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "With the site configuration `wrap` true, the description `x` and a participant without description wrap, `nowrap:y` does not, and `wrap:z` does."
+  },
+  "config": {
+    "wrap": true
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "x",
+        "wrap": true,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "y",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "C"
+      },
+      {
+        "name": "C",
+        "description": "z",
+        "wrap": true,
+        "prevActor": "B",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "D"
+      },
+      {
+        "name": "D",
+        "description": "D",
+        "wrap": true,
+        "prevActor": "C",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

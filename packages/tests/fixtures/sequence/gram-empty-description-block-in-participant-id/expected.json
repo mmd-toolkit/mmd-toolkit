@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty description block in a participant id is read as part of the id."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A accDescr {}",
+        "description": "A accDescr {}",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

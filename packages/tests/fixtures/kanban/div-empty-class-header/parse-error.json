@@ -1,0 +1,17 @@
+{
+  "message": "An empty class line cannot be written here",
+  "range": [
+    6,
+    9
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 6
+    },
+    "end": {
+      "line": 1,
+      "column": 9
+    }
+  }
+}

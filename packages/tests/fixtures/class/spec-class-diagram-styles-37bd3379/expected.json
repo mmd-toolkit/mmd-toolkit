@@ -1,0 +1,65 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram-styles.spec.js",
+    "line": 30,
+    "test": "class diagram,  > when parsing data from a classDiagram it > should be possible to apply a css class to a class directly with struct"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Class1",
+        "type": "",
+        "label": "Class1",
+        "text": "Class1",
+        "shape": "classBox",
+        "cssClasses": "default exClass",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "test",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "foo",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "int : test"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "string : foo"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

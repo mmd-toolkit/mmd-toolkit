@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 10: minimal accepted example of `er`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

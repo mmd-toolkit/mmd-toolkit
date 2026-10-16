@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sankey.md Lexical structure: the attribute quotes of a tag inside a quoted field are read as `'`."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "<b a='x'>t</b>",
+      "y"
+    ],
+    "links": [
+      {
+        "source": "<b a='x'>t</b>",
+        "target": "y",
+        "value": 1
+      }
+    ]
+  }
+}

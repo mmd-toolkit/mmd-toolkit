@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary, Participants: a participant that exists already without a box gets the box, but nothing else changes, so the box's actorKeys stay empty."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "a",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": []
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

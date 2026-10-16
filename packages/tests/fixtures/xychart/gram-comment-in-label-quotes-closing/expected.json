@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, comment: a comment inside the brackets takes the rest of the line, and the brackets are not closed."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...eta line [1 \"a\"%% c]\n----------------------^\nExpecting 'SQUARE_BRACES_END', 'COMMA', got 'NEWLINE'"
+  }
+}

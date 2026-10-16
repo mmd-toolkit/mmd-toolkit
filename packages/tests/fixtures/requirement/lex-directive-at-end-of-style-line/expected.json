@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Directives inside units: a closed directive at the end of a style line."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:red"
+        ],
+        "classes": []
+      }
+    ],
+    "elements": [
+      {
+        "name": "e",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

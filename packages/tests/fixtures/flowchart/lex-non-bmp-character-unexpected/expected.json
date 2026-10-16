@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A character outside the Basic Multilingual Plane where no rule of the lexer matches: the rejected text has two code units there."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nflowchart LRA-->😀\n----------------^"
+  }
+}

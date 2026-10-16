@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, what stands after a statement: trailing nbsp after a space."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "type": "space",
+          "width": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

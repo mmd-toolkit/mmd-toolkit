@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 2767,
+    "test": "sequence db class > participant type parsing > should parse actor with inline alias in config object"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "U",
+        "description": "End User",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "actor",
+        "nextActor": "DB"
+      },
+      {
+        "name": "DB",
+        "description": "User Database",
+        "wrap": false,
+        "prevActor": "U",
+        "links": {},
+        "properties": {},
+        "type": "database"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "U",
+        "to": "DB",
+        "message": "Query",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "DB",
+        "to": "U",
+        "message": "Result",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "U",
+        "set": {
+          "description": "End User"
+        }
+      },
+      {
+        "id": "DB",
+        "set": {
+          "description": "User Database",
+          "type": "database"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/quadrant.md QuadrantAccTitleStatement: U+3000 after the colon is whitespace, so the text is the next line."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "title T",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  }
+}

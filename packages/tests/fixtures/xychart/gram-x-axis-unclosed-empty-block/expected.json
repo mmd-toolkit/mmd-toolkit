@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Empty description blocks: an unclosed empty block after `x-axis` at the end of the text; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tx-axis accDescr {\n---------------------^\nExpecting 'SQUARE_BRACES_START', 'NUMBER_WITH_DECIMAL', 'STR', 'MD_STR', 'AMP', 'NUM', 'ALPHA', 'PLUS', 'EQUALS', 'MULT', 'DOT', 'BRKT', 'MINUS', 'UNDERSCORE', got 'acc_descr_multiline_value'"
+  }
+}

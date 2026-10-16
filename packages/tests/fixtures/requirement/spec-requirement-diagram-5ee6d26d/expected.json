@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.spec.js",
+    "line": 660,
+    "test": "when parsing requirement diagram it... > will accept styling multiple things at once"
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "test_requirement",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [
+          "fill:#f9f",
+          "stroke:#333",
+          "stroke-width:4px"
+        ],
+        "classes": []
+      }
+    ],
+    "elements": [
+      {
+        "name": "test_element",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [
+          "fill:#f9f",
+          "stroke:#333",
+          "stroke-width:4px"
+        ],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Detection: the detector compares the header case-sensitively, so `GANTT` is no gantt diagram; rejected by detection."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: GANTT\ntitle T"
+  }
+}

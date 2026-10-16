@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, labels: a markdown string is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  A[\"`**bold** _italic_`\"]\n----------------^\nExpecting 'STR', got 'MD_STR'"
+  }
+}

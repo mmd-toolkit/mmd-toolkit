@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 17: minimal accepted example of `flowchart-v2`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

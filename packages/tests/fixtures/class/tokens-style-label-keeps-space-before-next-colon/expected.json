@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/class.md ClassLiteral: the value of a style is the written texts of its units joined in order, without the whitespace between two units; the units are `fill`, `: a `, and `: b`, and the label `: a ` keeps the space before the next `:`, so the style is `fill: a : b`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill: a : b"
+        ]
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

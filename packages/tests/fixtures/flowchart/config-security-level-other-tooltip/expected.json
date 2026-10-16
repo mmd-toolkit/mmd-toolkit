@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The tooltip of a click under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): the tooltip is recorded with the characters replaced and the URL as written."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {},
+        "link": "https://example.com"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "a&lt;b&gt;&equals;c<br/>d"
+      }
+    ]
+  }
+}

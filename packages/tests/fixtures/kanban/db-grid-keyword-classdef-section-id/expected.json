@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind keyword-classdef in section-id tests the kanban reading at this text position."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "a classDef c fill:red b",
+        "label": "Column",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "I",
+        "label": "Item",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "a classDef c fill:red b"
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, class: a class on the line of a node is part of the text of the node."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root:::cls",
+      "level": 0,
+      "descr": "root:::cls",
+      "type": 0,
+      "children": []
+    }
+  }
+}

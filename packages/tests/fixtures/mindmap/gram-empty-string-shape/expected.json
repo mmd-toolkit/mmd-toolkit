@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Empty forms: a shape with only an empty string; mermaid.js rejects it too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nmindmaproot  a[\"\"]\n-----------------^\nExpecting 'NODE_DESCR', got 'NODE_DEND'"
+  }
+}

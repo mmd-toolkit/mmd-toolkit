@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click statements: `click B C` is a click statement with the id `B` and the callback name `C`, as in mermaid.js, also where `click` was meant as a vertex."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "B",
+        "name": "C",
+        "args": null
+      }
+    ]
+  }
+}

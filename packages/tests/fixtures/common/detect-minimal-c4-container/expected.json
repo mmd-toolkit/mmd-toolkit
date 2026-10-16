@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md (entry 7): `C4Container` at the start selects c4."
+  },
+  "accepted": true,
+  "diagramType": "c4",
+  "db": null
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): an empty description block before the header is diagram text at the detection point, which no detector matches, so the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: accDescr {}\nflowchart LR\nA-->B\n"
+  }
+}

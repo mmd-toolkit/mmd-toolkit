@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, data: a range x axis after a plot does not change its pairs."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 0,
+      "max": 1
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 0.1,
+      "max": 0.2
+    },
+    "plots": [
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "1",
+            0.1
+          ],
+          [
+            "2",
+            0.2
+          ]
+        ]
+      }
+    ]
+  }
+}

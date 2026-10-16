@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, statements: what follows a `point-style` statement on its line: a directive with a word and no closing, and then a title on the next line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for radius 5 U is invalid, please use a valid number"
+  }
+}

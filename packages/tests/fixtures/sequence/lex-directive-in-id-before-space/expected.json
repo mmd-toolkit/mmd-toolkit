@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/sequence.md SequenceIdentifier: the id is one unit, cut by the directive into two tokens; the space after the directive is inside the unit, so the participant is `A c%%B`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A c%%B",
+        "description": "A c%%B",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

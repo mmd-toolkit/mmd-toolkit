@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The attribute block context, rule 5: a word right after the closing backquote is a unit of its own; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...DiagramA { `a`b c}\n--------------------^\nExpecting 'ATTRIBUTE_WORD', '?', got 'BLOCK_STOP'"
+  }
+}

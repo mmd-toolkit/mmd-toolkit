@@ -1,0 +1,260 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: no-unclosed-directive >> invalid >>> common/directive-unclosed
+Filename: common/directive-unclosed.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A-->B
+  3 | %%{init: {"x": 1}
+    | ^~~~~~~~~~~~~~~~~\ [1]
+  4 | C-->D
+    | ~~~~~ [1]
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> common/directive-unclosed-after-header
+Filename: common/directive-unclosed-after-header.mmd
+
+Code:
+  1 | flowchart LR
+  2 | %%{init: {"theme": "dark"}}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  3 | A-->B
+    | ~~~~~ [1]
+  4 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> common/directive-word-argument-unclosed-next-line
+Filename: common/directive-word-argument-unclosed-next-line.mmd
+
+Code:
+  1 | flowchart LR
+  2 | A-->B
+  3 | %%{wrap
+    | ^~~~~~~\ [1]
+  4 | C-->D
+    | ~ [1]
+  5 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> common/comment-directive-unclosed-line-feed-at-end
+Filename: common/comment-directive-unclosed-line-feed-at-end.mmd
+
+Code:
+  1 | flowchart LR
+  2 | %% %%{init: {}
+    |    ^~~~~~~~~~~ [1]
+  3 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> common/comment-directive-unclosed-trailing-blank-lines
+Filename: common/comment-directive-unclosed-trailing-blank-lines.mmd
+
+Code:
+  1 | flowchart LR
+  2 | %% %%{init: {} 
+    |    ^~~~~~~~~~~ [1]
+  3 |  
+  4 |
+  5 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> common/comment-directive-word-argument-takes-next-lines
+Filename: common/comment-directive-word-argument-takes-next-lines.mmd
+
+Code:
+  1 | flowchart LR
+  2 | X
+  3 | %% %%{wrap
+    |    ^~~~~~~\ [1]
+  4 | A
+    | ~ [1]
+  5 | B --> C
+  6 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> flowchart/ignored-semicolon-after-directive-e2bd2cc0
+Filename: flowchart/ignored-semicolon-after-directive-e2bd2cc0.mmd
+
+Code:
+  1 | flowchart TD
+  2 | A
+  3 | B %%{init: x;
+    |   ^~~~~~~~~~ [1]
+  4 | C
+  5 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> flowchart/ignored-semicolon-after-directive-31a08a0d
+Filename: flowchart/ignored-semicolon-after-directive-31a08a0d.mmd
+
+Code:
+  1 | flowchart LR
+  2 | Z[style:#x]%%{wrap foo;
+    |            ^~~~~~~~~~~ [1]
+  3 | A-->B
+  4 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> sequence/tokens-sequence-hash-comment-style-text-open-directive-ac56ea97
+Filename: sequence/tokens-sequence-hash-comment-style-text-open-directive-ac56ea97.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x #style:#x; %%{init: {}
+    |                     ^~~~~~~~~~~\ [1]
+  3 | C->>D: y
+    | ~~~~~~~~ [1]
+  4 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> sequence/tokens-sequence-hash-comment-style-text-open-directive-869f782d
+Filename: sequence/tokens-sequence-hash-comment-style-text-open-directive-869f782d.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x #style:#x; %%{init: {}
+    |                     ^~~~~~~~~~~\ [1]
+  3 |
+    | ~\ [1]
+  4 | C->>D: y
+    | ~~~~~~~~ [1]
+  5 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> sequence/tokens-ignored-semicolon-separator-unclosed-directive-carriage-return
+Filename: sequence/tokens-ignored-semicolon-separator-unclosed-directive-carriage-return.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   participant A@{ "style": "x:#y" };participant C;participant E%%{init: {};participant D
+    |                                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  3 |   A->>B: y
+    | ~~~~~~~~~~\ [1]
+  4 |
+    | ~~~~~~~~~~ [1]
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> sequence/tokens-sequence-hash-comment-after-message-open-directive-semicolon-98bc590a
+Filename: sequence/tokens-sequence-hash-comment-after-message-open-directive-semicolon-98bc590a.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | A->>B: x #c %%{init: {};
+    |             ^~~~~~~~~~~~\ [1]
+  3 | C->>D: y
+    | ~~~~~~~~ [1]
+  4 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> sequence/tokens-sequence-single-percent-comment-after-autonumber-open-directive-741a95e6
+Filename: sequence/tokens-sequence-single-percent-comment-after-autonumber-open-directive-741a95e6.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 | autonumber % style:#x; %%{init: {};
+    |                        ^~~~~~~~~~~~\ [1]
+  3 | C->>D: y
+    | ~~~~~~~~ [1]
+  4 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> sequence/db-unclosed-directive-in-message-text
+Filename: sequence/db-unclosed-directive-in-message-text.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   A->>B: x %%{init: dark foo}%%
+    |            ^~~~~~~~~~~~~ [1]
+  3 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> sequence/directive-unclosed-between-statements
+Filename: sequence/directive-unclosed-between-statements.mmd
+
+Code:
+  1 | sequenceDiagram
+  2 |   A->>B: one
+  3 |   %%{init: {"theme": "dark"}}
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  4 |   B->>A: two
+    | ~~~~~~~~~~~~ [1]
+  5 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> class/directive-unclosed-between-statements
+Filename: class/directive-unclosed-between-statements.mmd
+
+Code:
+  1 | classDiagram
+  2 |   class A
+  3 |   %%{init: {"theme": "dark"}}
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  4 |   class B
+    | ~~~~~~~~~ [1]
+  5 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---
+
+
+Test: no-unclosed-directive >> invalid >>> state/directive-unclosed-between-statements
+Filename: state/directive-unclosed-between-statements.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   %%{init: {"theme": "dark"}}
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  4 |   B --> C
+    | ~~~~~~~~~ [1]
+  5 |
+
+[1] This directive has no closing `}%%`: mermaid.js ends it where its argument ends and removes it, with what it covers, from the diagram.
+---

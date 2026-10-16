@@ -1,0 +1,264 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: requirement-no-empty-description-block >> invalid >>> docs/rules/requirement-no-empty-description-block.md incorrect 1
+Filename: requirement-no-empty-description-block-incorrect-1.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  3 |   requirement r {
+  4 |     id: 1
+  5 |   }
+  6 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> docs/rules/requirement-no-empty-description-block.md incorrect 2
+Filename: requirement-no-empty-description-block-incorrect-2.mmd
+
+Code:
+  1 | requirementDiagram
+  2 |   requirement r {
+  3 |     accDescr {}
+    |     ^~~~~~~~~~~ [1]
+  4 |     id: 1
+  5 |   }
+  6 |
+
+[1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/db-empty-description-block-keeps-acc-descr-block
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/db-empty-description-block-keeps-acc-descr-block-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr { y }
+  3 | accDescr {  }
+    | ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/db-empty-description-block-keeps-acc-descr-line
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/db-empty-description-block-keeps-acc-descr-line-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr: x
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/gram-acc-descr-block-directive-only
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/gram-acc-descr-block-directive-only-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr {%%{init: {}}%%}
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  3 | requirement r {
+  4 | }
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/gram-acc-descr-block-empty
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/gram-acc-descr-block-empty-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  3 | requirement r {
+  4 | }
+  5 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/gram-empty-description-block-after-close-brace
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/gram-empty-description-block-after-close-brace-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | } accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/gram-empty-description-block-after-keyword-value
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/gram-empty-description-block-after-keyword-value-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | risk: high accDescr {}
+    |            ^~~~~~~~~~~ [1]
+  4 | }
+  5 |
+
+[1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/gram-empty-description-block-after-string-value
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/gram-empty-description-block-after-string-value-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | id: "1" accDescr {}
+    |         ^~~~~~~~~~~ [1]
+  4 | }
+  5 |
+
+[1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/gram-empty-description-block-before-close-brace
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/gram-empty-description-block-before-close-brace-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | accDescr {} }
+    | ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/gram-empty-description-block-before-field
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/gram-empty-description-block-before-field-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | accDescr {} id: 1
+    | ^~~~~~~~~~~ [1]
+  4 | }
+  5 |
+
+[1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/gram-empty-description-block-in-body
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/gram-empty-description-block-in-body-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | id: 1
+  5 | }
+  6 |
+
+[1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/gram-empty-description-block-in-element-body
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/gram-empty-description-block-in-element-body-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | element e {
+  3 | accDescr {}
+    | ^~~~~~~~~~~ [1]
+  4 | type: t
+  5 | }
+  6 |
+
+[1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/gram-empty-description-block-multiline-in-body
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/gram-empty-description-block-multiline-in-body-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | accDescr {
+    | ^~~~~~~~~~\ [1]
+  4 | }
+    | ~ [1]
+  5 | id: 1
+  6 | }
+  7 |
+
+[1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/gram-empty-description-blocks-adjacent-in-body
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/gram-empty-description-blocks-adjacent-in-body-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 | accDescr {} accDescr {}
+    | ^~~~~~~~~~~ ^~~~~~~~~~~
+    | [1]         [2]
+  4 | id: 1
+  5 | }
+  6 |
+
+[1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+[2] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/header-empty-description-block
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/header-empty-description-block-input.mmd
+
+Code:
+  1 | requirementDiagram accDescr {}
+    |                    ^~~~~~~~~~~ [1]
+  2 | requirement r {
+  3 | }
+  4 |
+
+[1] mermaid.js takes no description from this empty `accDescr` block: the description stays as it was before it.
+---
+
+
+Test: requirement-no-empty-description-block >> invalid >>> invalid/requirement/requirement-again-empty-block-only
+Filename: tests/fixtures/rules/requirement-no-empty-description-block/invalid/requirement/requirement-again-empty-block-only-input.mmd
+
+Code:
+  1 | requirementDiagram
+  2 | requirement r {
+  3 |   id: 1
+  4 | }
+  5 | requirement r {
+  6 |   accDescr {}
+    |   ^~~~~~~~~~~ [1]
+  7 | }
+  8 |
+
+[1] mermaid.js reads no description block in the body of a requirement or an element, and drops this empty `accDescr` block.
+---

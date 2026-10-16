@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Known divergences (embedded-data-opaque): mermaid.js joins the two blocks into YAML that it cannot read and rejects the input; this specification does not read the content."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "missed comma between flow collection entries (2:20)\n\n 1 | {\n 2 |  shape: rect  label: x \n------------------------^\n 3 | }"
+  }
+}

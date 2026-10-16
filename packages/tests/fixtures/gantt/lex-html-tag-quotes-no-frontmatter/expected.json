@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Known divergences: without the frontmatter, the string ends at its second quote in both; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...k id1 href \"u=\"v\">w\"\n-----------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

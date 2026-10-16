@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A backquoted name that is the word cssClass: mermaid.js rejects it; the specification accepts it."
+  },
+  "knownDivergence": "name-start-reads-unit",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nclassDiagramclass `cssClass`\n-------------------^\nExpecting 'ALPHA', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'CSSCLASS'"
+  }
+}

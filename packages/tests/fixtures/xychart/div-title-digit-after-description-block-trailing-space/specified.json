@@ -1,0 +1,22 @@
+{
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Q1",
+    "accTitle": "",
+    "accDescr": "d",
+    "xAxis": {
+      "type": "band",
+      "title": "A",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

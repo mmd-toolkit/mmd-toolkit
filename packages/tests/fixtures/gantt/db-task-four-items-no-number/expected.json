@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A task with four items takes no number: the ids of the tasks without an id are numbered among those that have one of one or two items."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "a ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      },
+      {
+        "section": "",
+        "raw": {},
+        "task": "b ",
+        "classes": [],
+        "order": 1
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "c ",
+        "classes": [],
+        "id": "task2",
+        "order": 2
+      }
+    ],
+    "links": []
+  }
+}

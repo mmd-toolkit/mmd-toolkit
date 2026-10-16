@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, accessibility: in a block, the rule acts on the line of `style`, and the `;` of another line stays."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a;b\nstyle:#xy",
+    "sections": [],
+    "tasks": []
+  }
+}

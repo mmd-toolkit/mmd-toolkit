@@ -1,0 +1,17 @@
+{
+  "message": "The markdown string is not closed by `\" at its first ` or \"",
+  "range": [
+    17,
+    18
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 4
+    },
+    "end": {
+      "line": 3,
+      "column": 5
+    }
+  }
+}

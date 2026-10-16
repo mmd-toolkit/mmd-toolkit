@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Tasks: the tag vert; the task takes no order number, and the next task has 0."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "a ",
+        "classes": [],
+        "id": "task1",
+        "vert": true,
+        "order": -1
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task1"
+          },
+          "endTime": {
+            "data": "2d"
+          }
+        },
+        "task": "b ",
+        "classes": [],
+        "id": "task2",
+        "order": 0
+      }
+    ],
+    "links": []
+  }
+}

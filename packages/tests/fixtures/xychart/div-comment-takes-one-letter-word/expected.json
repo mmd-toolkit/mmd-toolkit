@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: mermaid.js's comment takes the one-letter word `B` before `%%`, so the title is `A`; here it is `AB`."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "A",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

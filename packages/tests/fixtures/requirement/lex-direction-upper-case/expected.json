@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: `DIRECTION BT` is a direction line."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "BT",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

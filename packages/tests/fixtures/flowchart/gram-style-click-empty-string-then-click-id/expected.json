@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click and callbacks: after the empty string the click context reads `fill:red` as a click id, so the `click` is not a bare click, and the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...ABstyle A click \"\"fill:red\n---------------------^\nExpecting 'SPACE', 'COLON', 'STYLE', 'NUM', 'NODE_STRING', 'UNIT', 'BRKT', 'PCT', got 'CLICK'"
+  }
+}

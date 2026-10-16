@@ -1,0 +1,17 @@
+{
+  "message": "The backquoted word has no closing ` before the end of the text",
+  "range": [
+    15,
+    16
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 1
+    },
+    "end": {
+      "line": 3,
+      "column": 2
+    }
+  }
+}

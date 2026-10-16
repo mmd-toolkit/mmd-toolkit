@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md (Lexical structure, rule 10): the `call` unit takes all the whitespace after `call`, two spaces here, and the callback name follows."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "f",
+        "args": null
+      }
+    ]
+  }
+}

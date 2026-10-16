@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Known divergences: a tag that starts in the frontmatter changes the quotes of the period in mermaid.js."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "A b='c'>d",
+        "events": []
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

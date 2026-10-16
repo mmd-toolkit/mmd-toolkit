@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The line terminators of a description block are lone CRs: each is one line feed in the description."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a\nb",
+    "sections": [],
+    "tasks": []
+  }
+}

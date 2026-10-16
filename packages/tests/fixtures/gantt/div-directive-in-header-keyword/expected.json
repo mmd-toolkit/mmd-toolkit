@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Known divergences: a directive inside the header keyword; rejected here, mermaid.js reads `gantt` (directive-as-token-boundary)."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, classDef: two spaces between the keyword and the name are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...drantChartclassDef  c1 color: #f00\n----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'DOWN', 'MINUS', 'DEFAULT', 'COMMA', 'COLON', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', got 'SPACE'"
+  }
+}

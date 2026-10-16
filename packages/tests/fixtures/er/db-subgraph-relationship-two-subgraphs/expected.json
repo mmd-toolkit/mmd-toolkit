@@ -1,0 +1,79 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A relationship between two subgraphs defined before it has their ids on both ends; the statement makes two entities S and T."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      },
+      {
+        "id": "entity-S-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "S",
+        "classes": []
+      },
+      {
+        "id": "entity-T-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "T",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "S",
+        "roleA": "r",
+        "entityB": "T",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      },
+      {
+        "id": "T",
+        "nodes": [
+          "B"
+        ],
+        "title": "T",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

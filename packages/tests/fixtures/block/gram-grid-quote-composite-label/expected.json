@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, punctuation: a `\"` in the label of a composite: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...k-beta  block:G[\"a\"b\"]    A  end\n----------------------^"
+  }
+}

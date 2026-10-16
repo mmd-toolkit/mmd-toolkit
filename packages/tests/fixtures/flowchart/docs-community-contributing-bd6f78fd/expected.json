@@ -1,0 +1,231 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/community/contributing.md",
+    "line": 204
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "feature",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "feature",
+        "props": {}
+      },
+      {
+        "id": "slash",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "/",
+        "props": {},
+        "type": "square"
+      },
+      {
+        "id": "bug",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "bug",
+        "props": {}
+      },
+      {
+        "id": "chore",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "chore",
+        "props": {}
+      },
+      {
+        "id": "docs",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "docs",
+        "props": {}
+      },
+      {
+        "id": "2945",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "2945",
+        "props": {}
+      },
+      {
+        "id": "underscore",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "_",
+        "props": {},
+        "type": "square"
+      },
+      {
+        "id": "1123",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "1123",
+        "props": {}
+      },
+      {
+        "id": "short_description_1",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "state-diagram-new-arrow-florbs",
+        "props": {},
+        "type": "square"
+      },
+      {
+        "id": "short_description_2",
+        "labelType": "string",
+        "styles": [],
+        "classes": [],
+        "text": "fix_random_ugly_red_text",
+        "props": {},
+        "type": "square"
+      }
+    ],
+    "edges": [
+      {
+        "start": "feature",
+        "end": "slash",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_feature_slash_0"
+      },
+      {
+        "start": "bug",
+        "end": "slash",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_bug_slash_0"
+      },
+      {
+        "start": "chore",
+        "end": "slash",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_chore_slash_0"
+      },
+      {
+        "start": "docs",
+        "end": "slash",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_docs_slash_0"
+      },
+      {
+        "start": "slash",
+        "end": "2945",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_slash_2945_0"
+      },
+      {
+        "start": "2945",
+        "end": "underscore",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_2945_underscore_0"
+      },
+      {
+        "start": "slash",
+        "end": "1123",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_slash_1123_0"
+      },
+      {
+        "start": "1123",
+        "end": "underscore",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_1123_underscore_0"
+      },
+      {
+        "start": "underscore",
+        "end": "short_description_1",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_underscore_short_description_1_0"
+      },
+      {
+        "start": "underscore",
+        "end": "short_description_2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_underscore_short_description_2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

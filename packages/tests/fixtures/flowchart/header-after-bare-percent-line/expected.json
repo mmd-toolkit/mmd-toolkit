@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Detection: detection leaves out the line `%%`, but the flowchart lexer reads `%%` as diagram text before the header, and the grammar rejects it, as mermaid.js does."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%flowchart LRA-->\n^\nExpecting 'NEWLINE', 'SPACE', 'GRAPH', got 'NODE_STRING'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Entities: an alias on the right of a relationship; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nerDiagramA ||--o{ p[P] : x\n-------------------^\nExpecting 'COLON', 'STYLE_SEPARATOR', got 'SQS'"
+  }
+}

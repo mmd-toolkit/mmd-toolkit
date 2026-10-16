@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 417,
+    "test": "when parsing ER diagram it... > should allow an entity with attribute that is a limited length string"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-BOOK-0",
+        "attributes": [
+          {
+            "type": "character(10)",
+            "name": "isbn",
+            "keys": [
+              "FK"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "varchar(5)",
+            "name": "postal_code",
+            "keys": [],
+            "comment": "Five digits"
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "BOOK",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

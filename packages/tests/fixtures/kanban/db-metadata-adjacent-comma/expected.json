@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M05 (Data context): Adjacent block contents can concatenate to valid YAML."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true,
+        "ticket": "X"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "ticket": "X"
+        }
+      }
+    ]
+  }
+}

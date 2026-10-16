@@ -1,0 +1,17 @@
+{
+  "message": "The message after destroy must come from or go to the destroyed participant",
+  "range": [
+    84,
+    92
+  ],
+  "loc": {
+    "start": {
+      "line": 7,
+      "column": 0
+    },
+    "end": {
+      "line": 7,
+      "column": 8
+    }
+  }
+}

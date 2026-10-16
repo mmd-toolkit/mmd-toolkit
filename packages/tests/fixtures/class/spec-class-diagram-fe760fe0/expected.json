@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 688,
+    "test": "given a basic class diagram,  > when parsing class definition > should elicit error for --|> after NOTE token"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...               note --|>\n-----------------------^\nExpecting 'STR', got 'LINE'"
+  }
+}

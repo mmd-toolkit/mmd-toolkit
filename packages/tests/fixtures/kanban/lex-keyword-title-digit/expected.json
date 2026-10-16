@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "title2 in a node position tests keyword recognition and carryover names."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "title2",
+        "label": "title2",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

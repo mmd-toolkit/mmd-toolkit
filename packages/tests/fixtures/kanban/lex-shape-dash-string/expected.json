@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md S04, S06 (Shape context): Dash closer after string."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "text",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

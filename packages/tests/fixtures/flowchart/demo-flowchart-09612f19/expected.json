@@ -1,0 +1,222 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/flowchart.html",
+    "line": 1493
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br>Line",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br>Line",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "C1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br />Line",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "D1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br />Line",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "E1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br />Line",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "F1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br />Line",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "A2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br>Line",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "B2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br>Line",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "C2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br />Line",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "D2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br />Line",
+        "type": "round",
+        "props": {}
+      },
+      {
+        "id": "E2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br />Line",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "F2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Multi<br />Line",
+        "type": "round",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A1",
+        "end": "B1",
+        "type": "arrow_point",
+        "text": "Multi<br>Line",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A1_B1_0",
+        "style": [
+          "stroke:DarkGray",
+          "stroke-width:2px",
+          "fill:none"
+        ]
+      },
+      {
+        "start": "C1",
+        "end": "D1",
+        "type": "arrow_point",
+        "text": "Multi<br />Line",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C1_D1_0",
+        "style": [
+          "stroke:DarkGray",
+          "stroke-width:2px",
+          "fill:none"
+        ]
+      },
+      {
+        "start": "E1",
+        "end": "F1",
+        "type": "arrow_point",
+        "text": "Multi<br />Line",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_E1_F1_0",
+        "style": [
+          "stroke:DarkGray",
+          "stroke-width:2px",
+          "fill:none"
+        ]
+      },
+      {
+        "start": "A2",
+        "end": "B2",
+        "type": "arrow_point",
+        "text": "Multi<br>Line",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A2_B2_0"
+      },
+      {
+        "start": "C2",
+        "end": "D2",
+        "type": "arrow_point",
+        "text": "Multi<br />Line",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_C2_D2_0"
+      },
+      {
+        "start": "E2",
+        "end": "F2",
+        "type": "arrow_point",
+        "text": "Multi<br />Line",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_E2_F2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

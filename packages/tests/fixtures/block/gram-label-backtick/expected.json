@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, labels: a string with backticks is the markdown form, which the grammar does not accept: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  A[\"`x`\"]\n----------------^\nExpecting 'STR', got 'MD_STR'"
+  }
+}

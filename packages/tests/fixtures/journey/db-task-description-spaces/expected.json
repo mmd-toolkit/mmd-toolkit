@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The description is the text before the colon, with the spaces before it."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "Make tea  ",
+        "people": [
+          "me"
+        ],
+        "score": 3
+      }
+    ]
+  }
+}

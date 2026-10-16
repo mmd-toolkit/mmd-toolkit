@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/mindmap.html",
+    "line": 36
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "A root with a long text that wraps to keep the node size in check",
+      "type": 2,
+      "children": []
+    }
+  }
+}

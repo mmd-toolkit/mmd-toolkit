@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A task before any section has the empty section."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S"
+    ],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "A ",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      },
+      {
+        "section": "S",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task1"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "B ",
+        "classes": [],
+        "id": "task2",
+        "order": 1
+      }
+    ],
+    "links": []
+  }
+}

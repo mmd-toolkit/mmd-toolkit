@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): a line `%%{ }%%`, which is no directive, before the header is a bare `%%` line that detection skips; the state lexer reads its `%%` as ignored text and the grammar does not take the `{`, so the input is rejected, as in mermaid.js."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%{ }%%stateDiagram-v\n--^\nExpecting 'SPACE', 'NL', 'SD', got 'STRUCT_START'"
+  }
+}

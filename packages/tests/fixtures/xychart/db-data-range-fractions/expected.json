@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, data: the positions are the texts of the numbers that the Db computes, rounding included."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 0,
+      "max": 1
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 4
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "0",
+            1
+          ],
+          [
+            "0.3333333333333333",
+            2
+          ],
+          [
+            "0.6666666666666666",
+            3
+          ],
+          [
+            "1",
+            4
+          ]
+        ]
+      }
+    ]
+  }
+}

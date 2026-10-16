@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A state description or label that ends with : and whitespace"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "P",
+        "shape": "roundedWithTitle",
+        "label": "P",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "a: b:",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "P"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

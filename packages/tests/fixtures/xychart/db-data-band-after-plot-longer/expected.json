@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, data: a band axis after a plot does not drop its values."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "a",
+        "b"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 4
+    },
+    "plots": [
+      {
+        "type": "bar",
+        "title": "",
+        "data": [
+          [
+            "1",
+            1
+          ],
+          [
+            "2",
+            2
+          ],
+          [
+            "3",
+            3
+          ],
+          [
+            "4",
+            4
+          ]
+        ]
+      }
+    ]
+  }
+}

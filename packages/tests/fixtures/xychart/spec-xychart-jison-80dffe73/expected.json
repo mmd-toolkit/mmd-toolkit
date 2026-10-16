@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/xychart/parser/xychart.jison.spec.ts",
+    "line": 8,
+    "test": "Testing xychart jison file > should throw error if xychart text is not there"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nxychart-1\n-------^\nExpecting 'XYCHART', 'CHART_ORIENTATION', 'title', 'X_AXIS', 'Y_AXIS', 'LINE', 'BAR', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NEWLINE', 'SEMI', 'EOF', got 'MINUS'"
+  }
+}

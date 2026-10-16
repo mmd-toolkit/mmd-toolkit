@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/headerless-empty-ending.md: without a header, a text that ends with a title that is not empty is rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n...k  accTitle: farm\n--------------------^\nExpecting , got 'EOF'"
+  }
+}

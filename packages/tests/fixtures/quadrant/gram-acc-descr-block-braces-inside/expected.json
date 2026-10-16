@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, accessibility: a `}` ends the block, and the text after it is read as statements, which are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...tChartaccDescr {D}E}\n---------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got 'ALPHA'"
+  }
+}

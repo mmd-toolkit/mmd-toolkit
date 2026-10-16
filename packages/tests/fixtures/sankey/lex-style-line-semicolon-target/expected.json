@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: the rule drops the `;` in the target id too."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "style:#xy"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "style:#xy",
+        "value": 1
+      }
+    ]
+  }
+}

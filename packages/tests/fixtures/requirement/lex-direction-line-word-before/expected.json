@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: `direction` may end a longer word: the direction RL."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "RL",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

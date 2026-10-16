@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, empty forms: `ACCDESCR` is not the keyword: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ck-beta  ACCDESCR {}  A\n----------------------^\nExpecting 'STR', got 'NODE_DEND'"
+  }
+}

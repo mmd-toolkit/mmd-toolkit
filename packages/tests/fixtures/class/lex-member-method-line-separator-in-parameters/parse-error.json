@@ -1,0 +1,17 @@
+{
+  "message": "A method line needs a ( that is not its first character and that a ) follows",
+  "range": [
+    23,
+    34
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 11
+    }
+  }
+}

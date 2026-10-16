@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): a line `%%{ }%%`, which is no directive, before the header is a bare `%%` line that detection skips; the flowchart lexer reads it as diagram text before the header, so the input is rejected, as in mermaid.js."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%{ }%%flowchart LR\n^\nExpecting 'NEWLINE', 'SPACE', 'GRAPH', got 'NODE_STRING'"
+  }
+}

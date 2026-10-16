@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click statements: the click context reads every run of characters other than whitespace as click ids, as mermaid.js does. The click statement on the id `-->` gives the tooltip `tip` to the id `-->`, which names no vertex."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "-->",
+        "text": "tip"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "-->",
+        "name": "cb",
+        "args": null
+      }
+    ]
+  }
+}

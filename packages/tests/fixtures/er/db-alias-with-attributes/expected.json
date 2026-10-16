@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An alias with an attribute block: the first alias is kept, and the attributes of both blocks are added up."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [
+          {
+            "type": "int",
+            "name": "x",
+            "keys": [],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "y",
+            "keys": [],
+            "comment": ""
+          }
+        ],
+        "alias": "alias",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

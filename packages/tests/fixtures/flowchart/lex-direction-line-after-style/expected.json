@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Lexical structure, the direction line: the `style` keyword comes first, and the rest of the line is a direction line, which the grammar rejects after `style`."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nflowchart LRAstyle A direction TB\n------------------^\nExpecting 'SPACE', got 'direction_tb'"
+  }
+}

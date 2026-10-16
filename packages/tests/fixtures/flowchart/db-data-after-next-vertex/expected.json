@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization, data blocks: the block after the first A is applied after the vertex that follows the `&`, so the label is x."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "x",
+        "props": {},
+        "type": "square"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "labelType": "markdown",
+          "text": "x"
+        }
+      }
+    ]
+  }
+}

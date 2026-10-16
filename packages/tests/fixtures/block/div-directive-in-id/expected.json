@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Known divergences: directives: a directive inside an id is removed, and the id is joined."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "AB",
+          "label": "AB",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/xychart/parser/xychart.jison.spec.ts",
+    "line": 8,
+    "test": "Testing xychart jison file > parse multiple bar and line variant 2"
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "horizontal",
+    "title": "Basic xychart",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "this is x axis",
+      "categories": [
+        "category1",
+        "category 2",
+        "category3"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "yaxisText",
+      "min": 10,
+      "max": 150
+    },
+    "plots": [
+      {
+        "type": "bar",
+        "title": "barTitle1",
+        "data": [
+          [
+            "category1",
+            23
+          ],
+          [
+            "category 2",
+            45
+          ],
+          [
+            "category3",
+            56.6
+          ]
+        ]
+      },
+      {
+        "type": "line",
+        "title": "lineTitle1",
+        "data": [
+          [
+            "category1",
+            11
+          ],
+          [
+            "category 2",
+            45.5
+          ],
+          [
+            "category3",
+            67
+          ]
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "barTitle2",
+        "data": [
+          [
+            "category1",
+            13
+          ],
+          [
+            "category 2",
+            42
+          ],
+          [
+            "category3",
+            56.89
+          ]
+        ]
+      },
+      {
+        "type": "line",
+        "title": "lineTitle2",
+        "data": [
+          [
+            "category1",
+            45
+          ],
+          [
+            "category 2",
+            99
+          ],
+          [
+            "category3",
+            12
+          ]
+        ]
+      }
+    ]
+  }
+}

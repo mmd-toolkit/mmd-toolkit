@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md The plot context: a title with a digit after `x-axis A; line [1]` and a space; accepted."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "Q1",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "linear",
+      "title": "A",
+      "min": 1,
+      "max": 1
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": 1,
+      "max": 1
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "",
+        "data": [
+          [
+            "1",
+            1
+          ]
+        ]
+      }
+    ]
+  }
+}

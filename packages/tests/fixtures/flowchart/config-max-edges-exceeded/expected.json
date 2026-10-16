@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Same input as config-max-edges-default with maxEdges 2, a secure key only site configuration can set: FlowDB.addSingleLink throws 'Edge limit exceeded'."
+  },
+  "config": {
+    "maxEdges": 2
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Edge limit exceeded. 2 edges found, but the limit is 2.\n\nInitialize mermaid with maxEdges set to a higher number to allow more edges.\nYou cannot set this config via configuration inside the diagram as it is a secure config.\nYou have to call mermaid.initialize."
+  }
+}

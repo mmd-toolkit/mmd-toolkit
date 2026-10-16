@@ -1,0 +1,86 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/flowchart.md",
+    "line": 987
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "c1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "c1",
+        "props": {}
+      },
+      {
+        "id": "a2",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a2",
+        "props": {}
+      },
+      {
+        "id": "a1",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a1",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "c1",
+        "end": "a2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_c1_a2_0"
+      },
+      {
+        "start": "a1",
+        "end": "a2",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_a1_a2_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "ide1",
+        "nodes": [
+          "a2",
+          "a1"
+        ],
+        "title": "one",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

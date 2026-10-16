@@ -1,0 +1,77 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Under the site setting securityLevel loose FlowDB binds the callbacks and sets haveCallback. The summary has the same clickable classes, tooltip and clickCalls as under the default."
+  },
+  "config": {
+    "securityLevel": "loose"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "B",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "tip"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "cb",
+        "args": "1, \"x\""
+      },
+      {
+        "id": "B",
+        "name": "callback",
+        "args": null
+      }
+    ]
+  }
+}

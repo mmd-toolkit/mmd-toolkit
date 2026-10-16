@@ -1,0 +1,117 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sankey/parser/sankey.spec.ts",
+    "line": 80,
+    "test": "Sankey diagram > when parsing an info graph it > parses the issue #7528 sample with sankey syntax"
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "Agricultural 'waste'",
+      "Bio-conversion",
+      "Liquid",
+      "Losses",
+      "Solid",
+      "Gas",
+      "Biofuel imports",
+      "Biomass imports",
+      "Coal imports",
+      "Coal",
+      "Coal reserves",
+      "District heating",
+      "Industry",
+      "Heating and cooling - homes",
+      "Heating and cooling - commercial",
+      "Electricity grid",
+      "Over generation / exports",
+      "Lighting & appliances - commercial",
+      "Lighting & appliances - homes"
+    ],
+    "links": [
+      {
+        "source": "Agricultural 'waste'",
+        "target": "Bio-conversion",
+        "value": 124.729
+      },
+      {
+        "source": "Bio-conversion",
+        "target": "Liquid",
+        "value": 0.597
+      },
+      {
+        "source": "Bio-conversion",
+        "target": "Losses",
+        "value": 26.862
+      },
+      {
+        "source": "Bio-conversion",
+        "target": "Solid",
+        "value": 280.322
+      },
+      {
+        "source": "Bio-conversion",
+        "target": "Gas",
+        "value": 81.144
+      },
+      {
+        "source": "Biofuel imports",
+        "target": "Liquid",
+        "value": 35
+      },
+      {
+        "source": "Biomass imports",
+        "target": "Solid",
+        "value": 35
+      },
+      {
+        "source": "Coal imports",
+        "target": "Coal",
+        "value": 11.606
+      },
+      {
+        "source": "Coal reserves",
+        "target": "Coal",
+        "value": 63.965
+      },
+      {
+        "source": "Coal",
+        "target": "Solid",
+        "value": 75.571
+      },
+      {
+        "source": "District heating",
+        "target": "Industry",
+        "value": 10.639
+      },
+      {
+        "source": "District heating",
+        "target": "Heating and cooling - homes",
+        "value": 22.505
+      },
+      {
+        "source": "District heating",
+        "target": "Heating and cooling - commercial",
+        "value": 46.184
+      },
+      {
+        "source": "Electricity grid",
+        "target": "Over generation / exports",
+        "value": 104.453
+      },
+      {
+        "source": "Electricity grid",
+        "target": "Lighting & appliances - commercial",
+        "value": 113.726
+      },
+      {
+        "source": "Electricity grid",
+        "target": "Lighting & appliances - homes",
+        "value": 27.14
+      }
+    ]
+  }
+}

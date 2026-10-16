@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Priority mapping keys named __proto__ and constructor remain own properties while non-finite values become text."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S",
+        "priority": {
+          "__proto__": "NaN",
+          "constructor": "Infinity"
+        }
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "priority": {
+            "__proto__": "NaN",
+            "constructor": "Infinity"
+          }
+        }
+      }
+    ]
+  }
+}

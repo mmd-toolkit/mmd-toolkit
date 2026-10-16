@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md E01 (Empty forms): Empty class directly after header."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

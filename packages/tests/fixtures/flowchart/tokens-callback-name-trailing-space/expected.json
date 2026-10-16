@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/flowchart.md FlowchartClickCallbackStatement: the name of the callback after `call` is the `callback-name` unit, which holds the whitespace before `(`; mermaid.js passes `f` and a space on as the name of the function, so the value is `f` and a space."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "A",
+        "name": "f ",
+        "args": "x"
+      }
+    ]
+  }
+}

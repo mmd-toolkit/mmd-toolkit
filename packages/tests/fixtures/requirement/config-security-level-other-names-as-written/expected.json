@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, the names, the ids, the texts, the types, the references, the relationships and the classes under a securityLevel that is not one of mermaid.js's values: they are recorded as written."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r<b>1",
+        "type": "Requirement",
+        "requirementId": "i<b>d",
+        "text": "t<b>x",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [
+      {
+        "name": "e<b>1",
+        "type": "t<b>y",
+        "docRef": "d<b>c",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "type": "traces",
+        "src": "r<b>1",
+        "dst": "e<b>1"
+      }
+    ],
+    "classes": [
+      {
+        "id": "c1",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

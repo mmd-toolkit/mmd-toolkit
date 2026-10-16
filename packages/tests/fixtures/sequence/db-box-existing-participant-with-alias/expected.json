@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary, Participants: a participant that exists already gets the box and, recorded anew with the description X, its id in actorKeys."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "X",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "A",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "a",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": [
+          "A"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

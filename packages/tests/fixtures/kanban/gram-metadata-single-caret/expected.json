@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M02 (Data context): Single quotes do not hide a caret from lexer."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nkanban S@{label: 'a^b'}\n-------------------^"
+  }
+}

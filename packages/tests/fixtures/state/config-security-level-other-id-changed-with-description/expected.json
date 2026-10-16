@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "States whose id the replacement changes, with descriptions under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): the replaced id stays the first description, so the shape has a title, and the label is the replaced id; a second description is added after the first."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "a=b",
+        "shape": "rectWithTitle",
+        "label": "a&equals;b",
+        "description": [
+          "x"
+        ],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "c<d",
+        "shape": "rectWithTitle",
+        "label": "c&lt;d",
+        "description": [
+          "y",
+          "z"
+        ],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "e#br#f",
+        "shape": "rectWithTitle",
+        "label": "e<br/>f",
+        "description": [
+          "u"
+        ],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

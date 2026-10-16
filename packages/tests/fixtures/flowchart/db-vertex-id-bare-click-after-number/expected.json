@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, click-reserved-word: a `click` here does not start a click statement, so this specification rejects the input, which mermaid.js accepts; its reference input, without the comment regions and without the click text of that `click`, gives the same Db in mermaid.js."
+  },
+  "knownDivergence": "click-reserved-word",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "1b",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "1b",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "1b",
+        "end": "C",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_1b_C_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

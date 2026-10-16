@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, the title under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): it is recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "a&lt;b&gt;c & d",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  },
+  "embedded": {
+    "title": "a<b>c & d"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Comments: `%` right after the `;` that ends a setting text; here `;%c` is a task text without data, rejected; accepted by mermaid.js with `dateFormat` X (comment-takes-character)."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "X",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [],
+    "links": []
+  }
+}

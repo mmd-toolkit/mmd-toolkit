@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: rule 10: the one whitespace character may be a line feed: the section `S`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S"
+    ],
+    "tasks": [
+      {
+        "section": "S",
+        "task": "A",
+        "people": [],
+        "score": 1
+      }
+    ]
+  }
+}

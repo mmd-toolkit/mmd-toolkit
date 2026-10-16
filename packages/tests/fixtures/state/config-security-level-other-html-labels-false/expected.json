@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A state diagram with the root htmlLabels false set by the frontmatter, under a securityLevel that is not one of mermaid.js's values: no text is changed, and the label of a state with an id that the replacement would change is that id."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "a<b>=c<br>d",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "a<b>=c<br>d",
+        "description": [],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "a=b",
+        "shape": "rect",
+        "label": "a=b",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "c",
+        "shape": "rect",
+        "label": "c",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "A",
+        "position": "right of",
+        "text": "a<b>=c<br>d"
+      }
+    ],
+    "transitions": [
+      {
+        "start": "a=b",
+        "end": "c",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  },
+  "embedded": {
+    "config": {
+      "htmlLabels": false
+    },
+    "title": "a<b>=c<br>d"
+  }
+}

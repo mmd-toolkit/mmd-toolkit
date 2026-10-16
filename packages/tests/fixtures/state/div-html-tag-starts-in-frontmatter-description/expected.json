@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Known divergences, html-tag-in-frontmatter: the tag that starts in the frontmatter reaches the > of the description in mermaid.js, which reads b='c'>d; this specification reads b=\"c\">d."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "b='c'>d",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

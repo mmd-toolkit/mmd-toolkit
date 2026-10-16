@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A string alone in a namespace body: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...gramnamespace A {\"x\"}\n---------------------^\nExpecting 'NAMESPACE', 'CLASS', 'NOTE_FOR', 'NOTE', got 'STR'"
+  }
+}

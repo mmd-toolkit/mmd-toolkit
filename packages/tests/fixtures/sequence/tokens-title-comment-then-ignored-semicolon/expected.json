@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/sequence.md Tokens: the title-text stops at `#`, so the title is `style:a`; `#b` is a diagram comment, and the `;` that the line rule ignores is an IgnoredSemicolon token."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "style:a",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

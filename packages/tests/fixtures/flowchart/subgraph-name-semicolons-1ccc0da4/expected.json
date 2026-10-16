@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": ";; after a U+2028 or U+2029 at the end of a subgraph name"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "Z",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Z",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "subGraph0",
+        "nodes": [
+          ";",
+          "Z"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

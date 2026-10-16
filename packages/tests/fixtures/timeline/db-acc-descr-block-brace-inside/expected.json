@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, accessibility: the first closing brace ends a block, and the text after it is a task."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "b",
+        "events": []
+      },
+      {
+        "section": "",
+        "task": "}",
+        "events": []
+      }
+    ]
+  }
+}

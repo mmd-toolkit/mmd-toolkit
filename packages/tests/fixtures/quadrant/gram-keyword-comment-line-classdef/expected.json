@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, statements: a comment line between `classDef` and its text does not join them."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...adrantChartclassDefc1 color: #f00\n----------------------^\nExpecting 'SPACE', got 'NEWLINE'"
+  }
+}

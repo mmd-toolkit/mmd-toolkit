@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, x-axis: an exponent is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...chart-beta x-axis 1e3 --> 5\n----------------------^\nExpecting 'ARROW_DELIMITER', got 'ALPHA'"
+  }
+}

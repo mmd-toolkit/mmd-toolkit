@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A comment-only document tests an empty board."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": []
+  }
+}

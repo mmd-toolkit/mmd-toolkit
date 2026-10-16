@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: three ids."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "c"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "c"
+          ]
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "c"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

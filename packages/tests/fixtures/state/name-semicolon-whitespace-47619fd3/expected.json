@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A statement, then note \"x\" as, and an empty block on the next line"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "N1",
+        "shape": "rect",
+        "label": "N1",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "D",
+        "shape": "rect",
+        "label": "D",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "C",
+        "end": "D",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

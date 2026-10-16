@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 832,
+    "test": "given a basic class diagram,  > when parsing class defined in brackets > should handle return types on methods"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Flight",
+        "type": "",
+        "label": "Flight",
+        "text": "Flight",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "getDepartureTime",
+            "parameters": "",
+            "returnType": "datetime"
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "int flightNumber"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "datetime departureTime"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

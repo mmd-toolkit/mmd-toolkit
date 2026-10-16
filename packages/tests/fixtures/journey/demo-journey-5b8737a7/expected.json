@@ -1,0 +1,65 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/journey.html",
+    "line": 18
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "My working day",
+    "accTitle": "Very simple journey demo",
+    "accDescr": "2 main sections: work and home, each with just a few tasks",
+    "sections": [
+      "Go to work",
+      "Go home"
+    ],
+    "tasks": [
+      {
+        "section": "Go to work",
+        "task": "Make tea",
+        "people": [
+          "Me"
+        ],
+        "score": 5
+      },
+      {
+        "section": "Go to work",
+        "task": "Go upstairs",
+        "people": [
+          "Me"
+        ],
+        "score": 3
+      },
+      {
+        "section": "Go to work",
+        "task": "Do work",
+        "people": [
+          "Me",
+          "Cat"
+        ],
+        "score": 1
+      },
+      {
+        "section": "Go home",
+        "task": "Go downstairs",
+        "people": [
+          "Me"
+        ],
+        "score": 5
+      },
+      {
+        "section": "Go home",
+        "task": "Sit down",
+        "people": [
+          "Me"
+        ],
+        "score": 3
+      }
+    ]
+  },
+  "embedded": {
+    "title": "My working day"
+  }
+}

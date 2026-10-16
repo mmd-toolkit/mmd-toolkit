@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The statement context, Keywords and what follows them: `subgraphé` is the keyword and the name `é`; accepted, subgraph é."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "é",
+        "nodes": [
+          "A"
+        ],
+        "title": "é",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

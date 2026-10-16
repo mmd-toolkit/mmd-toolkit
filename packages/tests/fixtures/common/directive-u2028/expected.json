@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Directives (Where a directive is): U+2028 ends the free-form argument, because `.` does not match it, so the rest of the directive is text, detection finds no diagram, and the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: }}\nflowchart LR\nA-->B"
+  }
+}

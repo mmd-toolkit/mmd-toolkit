@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow.spec.js",
+    "line": 46,
+    "test": "parsing a flow chart > should handle node names with \"end\" substring"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "endpoint",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "endpoint",
+        "props": {}
+      },
+      {
+        "id": "sender",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "sender",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "endpoint",
+        "end": "sender",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_endpoint_sender_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

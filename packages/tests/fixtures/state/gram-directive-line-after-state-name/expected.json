@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state: after `state A`, a line that holds a directive: the formatter kept the line as written because the directive holds a `{` (the lines that hold a body `{` are kept); a `{` inside a directive is no body, and the line is formatted as anywhere else"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "B",
+        "end": "C",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

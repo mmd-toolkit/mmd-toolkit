@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Keywords and what follows them: `topAxisé` is the keyword `topAxis` followed by a task, and the `topAxis` statement is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "yy.TopAxis is not a function"
+  }
+}

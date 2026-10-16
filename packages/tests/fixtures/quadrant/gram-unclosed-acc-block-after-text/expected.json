@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, unclosed: a block with text and no closing brace at the end of the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...tChartaccDescr {D\n--------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got 'acc_descr_multiline_value'"
+  }
+}

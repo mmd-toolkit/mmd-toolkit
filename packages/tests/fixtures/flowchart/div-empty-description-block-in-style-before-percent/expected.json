@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokenless-empty-forms: a %% after other text on its line is text in flowchart, so the style is fill:red, two spaces, and %% c, and the block lies inside it; mermaid.js reads no token for it and accepts the input."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "fill:red  %% c"
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

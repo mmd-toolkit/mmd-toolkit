@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-style.spec.js",
+    "line": 100,
+    "test": "ClassDefs and classes when parsing a State diagram > class for a state (classDef) > applying to states in the diagram > can be applied to a state with an id containing _"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "a_a",
+        "shape": "rect",
+        "label": "a_a",
+        "classes": [
+          "exampleStyleClass"
+        ],
+        "styles": []
+      },
+      {
+        "id": "b_b",
+        "shape": "rect",
+        "label": "b_b",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "a_a",
+        "end": "b_b",
+        "label": ""
+      }
+    ],
+    "classDefs": [
+      {
+        "id": "exampleStyleClass",
+        "styles": [
+          "background:#bbb",
+          "border:1px solid red"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

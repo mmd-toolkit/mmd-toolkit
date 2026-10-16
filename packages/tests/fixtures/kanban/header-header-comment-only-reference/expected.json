@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md G05 (Grammar and acceptance): Comment alone supplies an empty board."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": []
+  }
+}

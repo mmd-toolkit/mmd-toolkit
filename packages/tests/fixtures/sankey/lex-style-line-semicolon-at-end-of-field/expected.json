@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: a `;` that ends the field is dropped."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "style:#x",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "style:#x",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

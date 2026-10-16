@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Lexical structure, the statement context: `1` is a number and `end` starts a unit, so it is the keyword; the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nflowchart LRA-->1end\n-----------------^\nExpecting 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'SQS', 'SHAPE_DATA', 'AMP', 'STYLE_SEPARATOR', 'DOUBLECIRCLESTART', 'PS', '(-', 'STADIUMSTART', 'SUBROUTINESTART', 'VERTEX_WITH_PROPS_START', 'COLON', 'CYLINDERSTART', 'DIAMOND_START', 'TAGEND', 'TRAPSTART', 'INVTRAPSTART', 'START_LINK', 'LINK', 'LINK_ID', 'DOWN', 'DEFAULT', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'end'"
+  }
+}

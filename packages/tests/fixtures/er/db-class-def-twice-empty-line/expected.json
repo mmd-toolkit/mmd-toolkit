@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty line between two `classDef` lines of one name: the styles add up."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c1",
+        "styles": [
+          "fill:#f00",
+          "stroke:#00f"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

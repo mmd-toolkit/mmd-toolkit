@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A shape with no id uses its description as its id."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "Todo",
+        "label": "Todo",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "Work",
+        "label": "Work",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "Todo"
+      }
+    ]
+  }
+}

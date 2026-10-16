@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md entry 14: minimal accepted example of `requirement`. The header line alone is accepted."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@mmd-toolkit/spec",
+  "version": "0.0.0",
+  "description": "Syntax specification for the Mermaid diagram syntax (.mmd), derived from the behavior of mermaid.js",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git",
+    "directory": "packages/spec"
+  },
+  "scripts": {
+    "build": "echo \"nothing to build\"",
+    "clean": "echo \"nothing to clean\""
+  }
+}

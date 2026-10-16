@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Accessibility values: the title context reads the rest of the line, `#` and `;` included: `a # b; c`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "a # b; c",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

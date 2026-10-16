@@ -1,0 +1,17 @@
+{
+  "message": "classDef has no styles before the end of the text",
+  "range": [
+    13,
+    21
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 2
+    },
+    "end": {
+      "line": 2,
+      "column": 10
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, tokenless-empty-forms: an empty string as the text of a link, between `--` and the arrow, is rejected by mermaid.js too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nflowchart LRA -- \"\" --> B\n-------------------^\nExpecting 'STR', 'MD_STR', 'UNICODE_TEXT', 'EDGE_TEXT', got 'LINK'"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sankey.md Known divergences: a tag that starts in the frontmatter turns the quotes of the field into `'` in mermaid.js; here the field holds `\"` and the input is rejected."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "<a",
+    "nodes": [
+      "x b='c'>d",
+      "y"
+    ],
+    "links": [
+      {
+        "source": "x b='c'>d",
+        "target": "y",
+        "value": 1
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

@@ -1,0 +1,238 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/classchart.html",
+    "line": 209
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Shape",
+        "type": "",
+        "label": "Shape",
+        "text": "Shape",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": "calculateArea",
+            "parameters": "",
+            "returnType": "double"
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "parent": "Shapes"
+      },
+      {
+        "id": "Circle",
+        "type": "",
+        "label": "Circle",
+        "text": "Circle",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "double radius"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "Shapes"
+      },
+      {
+        "id": "Square",
+        "type": "",
+        "label": "Square",
+        "text": "Square",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "double side"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "Shapes"
+      },
+      {
+        "id": "Vehicle",
+        "type": "",
+        "label": "Vehicle",
+        "text": "Vehicle",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "String brand"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "Vehicles"
+      },
+      {
+        "id": "Car",
+        "type": "",
+        "label": "Car",
+        "text": "Car",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "int horsepower"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "Vehicles"
+      },
+      {
+        "id": "Bike",
+        "type": "",
+        "label": "Bike",
+        "text": "Bike",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "boolean hasGears"
+          }
+        ],
+        "annotations": [],
+        "styles": [],
+        "parent": "Vehicles"
+      }
+    ],
+    "relations": [
+      {
+        "id1": "Shape",
+        "id2": "Circle",
+        "relation": {
+          "type1": 1,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "Shape",
+        "id2": "Square",
+        "relation": {
+          "type1": 1,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "Vehicle",
+        "id2": "Car",
+        "relation": {
+          "type1": 1,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "Vehicle",
+        "id2": "Bike",
+        "relation": {
+          "type1": 1,
+          "type2": "none",
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none"
+      },
+      {
+        "id1": "Car",
+        "id2": "Circle",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none",
+        "title": "\"Logo Shape\""
+      },
+      {
+        "id1": "Bike",
+        "id2": "Square",
+        "relation": {
+          "type1": "none",
+          "type2": 3,
+          "lineType": 0
+        },
+        "relationTitle1": "none",
+        "relationTitle2": "none",
+        "title": "\"Logo Shape\""
+      }
+    ],
+    "notes": [],
+    "namespaces": [
+      {
+        "id": "Shapes",
+        "label": "Shapes",
+        "classes": [
+          "Shape",
+          "Circle",
+          "Square"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      },
+      {
+        "id": "Vehicles",
+        "label": "Vehicles",
+        "classes": [
+          "Vehicle",
+          "Car",
+          "Bike"
+        ],
+        "notes": [],
+        "children": [],
+        "explicit": true
+      }
+    ],
+    "interfaces": []
+  }
+}

@@ -1,0 +1,317 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/gantt.md",
+    "line": 34
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": " YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [
+      "weekends"
+    ],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "      Adding GANTT diagram functionality to mermaid",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "A section",
+      "Critical tasks",
+      "Documentation",
+      "Last section"
+    ],
+    "tasks": [
+      {
+        "section": "A section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-01-06"
+          },
+          "endTime": {
+            "data": "2014-01-08"
+          }
+        },
+        "task": "Completed task            ",
+        "classes": [],
+        "id": "des1",
+        "done": true,
+        "order": 0
+      },
+      {
+        "section": "A section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-01-09"
+          },
+          "endTime": {
+            "data": "3d"
+          }
+        },
+        "task": "Active task               ",
+        "classes": [],
+        "id": "des2",
+        "active": true,
+        "order": 1
+      },
+      {
+        "section": "A section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after des2"
+          },
+          "endTime": {
+            "data": "5d"
+          }
+        },
+        "task": "Future task               ",
+        "classes": [],
+        "id": "des3",
+        "order": 2
+      },
+      {
+        "section": "A section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after des3"
+          },
+          "endTime": {
+            "data": "5d"
+          }
+        },
+        "task": "Future task2              ",
+        "classes": [],
+        "id": "des4",
+        "order": 3
+      },
+      {
+        "section": "Critical tasks",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-01-06"
+          },
+          "endTime": {
+            "data": "24h"
+          }
+        },
+        "task": "Completed task in the critical line ",
+        "classes": [],
+        "id": "task1",
+        "done": true,
+        "crit": true,
+        "order": 4
+      },
+      {
+        "section": "Critical tasks",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after des1"
+          },
+          "endTime": {
+            "data": "2d"
+          }
+        },
+        "task": "Implement parser and jison          ",
+        "classes": [],
+        "id": "task2",
+        "done": true,
+        "crit": true,
+        "order": 5
+      },
+      {
+        "section": "Critical tasks",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task2"
+          },
+          "endTime": {
+            "data": "3d"
+          }
+        },
+        "task": "Create tests for parser             ",
+        "classes": [],
+        "id": "task3",
+        "active": true,
+        "crit": true,
+        "order": 6
+      },
+      {
+        "section": "Critical tasks",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task3"
+          },
+          "endTime": {
+            "data": "5d"
+          }
+        },
+        "task": "Future task in critical line        ",
+        "classes": [],
+        "id": "task4",
+        "crit": true,
+        "order": 7
+      },
+      {
+        "section": "Critical tasks",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task4"
+          },
+          "endTime": {
+            "data": "2d"
+          }
+        },
+        "task": "Create tests for renderer           ",
+        "classes": [],
+        "id": "task5",
+        "order": 8
+      },
+      {
+        "section": "Critical tasks",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task5"
+          },
+          "endTime": {
+            "data": "until isadded"
+          }
+        },
+        "task": "Add to mermaid                      ",
+        "classes": [],
+        "id": "task6",
+        "order": 9
+      },
+      {
+        "section": "Critical tasks",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-01-25"
+          },
+          "endTime": {
+            "data": "0d"
+          }
+        },
+        "task": "Functionality added                 ",
+        "classes": [],
+        "id": "isadded",
+        "milestone": true,
+        "order": 10
+      },
+      {
+        "section": "Documentation",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after des1"
+          },
+          "endTime": {
+            "data": "3d"
+          }
+        },
+        "task": "Describe gantt syntax               ",
+        "classes": [],
+        "id": "a1",
+        "active": true,
+        "order": 11
+      },
+      {
+        "section": "Documentation",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after a1"
+          },
+          "endTime": {
+            "data": "20h"
+          }
+        },
+        "task": "Add gantt diagram to demo page      ",
+        "classes": [],
+        "id": "task7",
+        "order": 12
+      },
+      {
+        "section": "Documentation",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after a1"
+          },
+          "endTime": {
+            "data": "48h"
+          }
+        },
+        "task": "Add another diagram to demo page    ",
+        "classes": [],
+        "id": "doc1",
+        "order": 13
+      },
+      {
+        "section": "Last section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after doc1"
+          },
+          "endTime": {
+            "data": "3d"
+          }
+        },
+        "task": "Describe gantt syntax               ",
+        "classes": [],
+        "id": "task8",
+        "order": 14
+      },
+      {
+        "section": "Last section",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task8"
+          },
+          "endTime": {
+            "data": "20h"
+          }
+        },
+        "task": "Add gantt diagram to demo page      ",
+        "classes": [],
+        "id": "task9",
+        "order": 15
+      },
+      {
+        "section": "Last section",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task9"
+          },
+          "endTime": {
+            "data": "48h"
+          }
+        },
+        "task": "Add another diagram to demo page    ",
+        "classes": [],
+        "id": "task10",
+        "order": 16
+      }
+    ],
+    "links": []
+  }
+}

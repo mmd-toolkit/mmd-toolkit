@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A subgraph with no title takes its name as the title: under a securityLevel that is not one of mermaid.js's values the title has the `#br#` as `<br/>`, and the id stays as written."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "a#br#b",
+        "nodes": [
+          "A"
+        ],
+        "title": "a<br/>b",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

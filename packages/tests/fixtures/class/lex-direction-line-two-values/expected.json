@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The statement context, direction line: `TB` is tried first, so the value is `TB`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

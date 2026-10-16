@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Accessibility statements: a second `}` is a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nganttaccDescr {d}}\n------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

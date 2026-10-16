@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Nodes and shapes: `}` alone is no shape text."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nmindmaproot  a[}]\n-----------------^\nExpecting 'NODE_DEND', got 'NODE_DESCR'"
+  }
+}

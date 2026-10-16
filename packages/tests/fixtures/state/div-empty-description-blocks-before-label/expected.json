@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "tokenless-empty-forms: blocks written one after another are decided by the unit after the last of them; the description after them continues the statement A, so both blocks lie inside it; mermaid.js reads no token for them and accepts the input."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "x",
+        "description": [],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

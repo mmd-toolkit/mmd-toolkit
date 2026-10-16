@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: with no `#` after the `:` the `;` stays."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "style:x;y",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "style:x;y",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

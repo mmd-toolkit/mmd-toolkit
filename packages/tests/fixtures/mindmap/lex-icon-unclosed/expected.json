@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Units and contexts: the text may not end in the icon context."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...ndmaproot::icon(x\n--------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got '1'"
+  }
+}

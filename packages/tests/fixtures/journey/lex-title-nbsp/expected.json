@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: rule 6: U+00A0 is the one whitespace character after `title`: the title `T`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

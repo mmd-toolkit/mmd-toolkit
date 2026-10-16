@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, the style line: `style:#x;y`, which the style line rule of mermaid.js changes in the class name of a point."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...drantChartA:::style:#xy: [0.3, 0.6]\n----------------------^\nExpecting 'point_start', got 'COLON'"
+  }
+}

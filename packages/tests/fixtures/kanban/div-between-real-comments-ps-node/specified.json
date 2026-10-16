@@ -1,0 +1,21 @@
+{
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

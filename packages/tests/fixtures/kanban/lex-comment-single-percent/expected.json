@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "single-percent comments test preprocessing versus lexer comment handling."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Items without section detected, found section (\"% c\")"
+  }
+}

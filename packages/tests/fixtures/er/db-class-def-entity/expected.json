@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity in a style of a class definition is its placeholder."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "aﬂ°amp¶ßb"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

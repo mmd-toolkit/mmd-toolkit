@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Detection: detected as flowchart-elk; the grammar reads the header keyword `flowchart`, and `-elkX` cannot follow it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nflowchart-elkXA\n---------^"
+  }
+}

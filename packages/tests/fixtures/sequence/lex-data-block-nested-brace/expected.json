@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The data context: a data block ends at the first `}`, so the rest of the line is left for the statement context, which rejects it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...t A@{ \"a\": {\"b\": 1} }\n-----------------------^\nExpecting 'NEWLINE', 'AS', got 'ACTOR'"
+  }
+}

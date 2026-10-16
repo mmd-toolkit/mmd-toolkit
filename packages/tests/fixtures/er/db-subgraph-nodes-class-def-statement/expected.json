@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A `classDef` statement in the body adds the node `classDef`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "classDef"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

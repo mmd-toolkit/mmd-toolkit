@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, points: a comment inside the brackets is not skipped, since `%` is no character of a coordinate there, and the point is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...uadrantChartA: [0.3%% c, 0.6]\n----------------------^"
+  }
+}

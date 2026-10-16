@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The ignored semicolon at the end of an accessibility description is not in the description."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "style:#x",
+    "sections": [],
+    "tasks": []
+  }
+}

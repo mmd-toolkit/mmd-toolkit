@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, HTML: an HTML tag `<b>` in the middle of the id of a `style` statement: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nblock-beta  a<b>b  style a<b>b f\n-------------^"
+  }
+}

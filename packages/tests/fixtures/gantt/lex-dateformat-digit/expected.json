@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Keywords and what follows them: `dateFormat2 X` holds no keyword and is a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nganttdateFormat2 X\n------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

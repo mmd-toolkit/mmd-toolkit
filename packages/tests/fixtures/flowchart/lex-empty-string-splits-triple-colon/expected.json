@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, tokenless-empty-forms: mermaid.js reads no token for the empty string and has the vertex `A:::c`; this specification rejects the input. The reference input `A:::c` joins `:` and `::` into `:::`, and mermaid.js reads the vertex `A` with the class `c` from it, so the reference input does not give the same Db."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A:::c",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A:::c",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

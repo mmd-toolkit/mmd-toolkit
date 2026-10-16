@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "No class Z exists. The class A is not changed, and the click call for Z is recorded with the arguments `a`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "Z",
+        "name": "fn",
+        "args": "a"
+      }
+    ]
+  }
+}

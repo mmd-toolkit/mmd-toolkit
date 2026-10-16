@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md A directive is a token boundary: the lexer reads the diagram text `flowchartLR`, in which `flowchart` is not the header keyword, so the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nflowchartLRA-->B\n^\nExpecting 'NEWLINE', 'SPACE', 'GRAPH', got 'NODE_STRING'"
+  }
+}

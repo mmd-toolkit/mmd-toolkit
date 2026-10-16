@@ -1,0 +1,116 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/classDiagram.md",
+    "line": 592
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "RL",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Student",
+        "type": "",
+        "label": "Student",
+        "text": "Student",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "",
+            "id": "idCard : IdCard"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "IdCard",
+        "type": "",
+        "label": "IdCard",
+        "text": "IdCard",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "",
+            "id": "id : int"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "",
+            "id": "name : string"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "Bike",
+        "type": "",
+        "label": "Bike",
+        "text": "Bike",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "",
+            "id": "id : int"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "",
+            "id": "name : string"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [
+      {
+        "id1": "Student",
+        "id2": "IdCard",
+        "relation": {
+          "type1": "none",
+          "type2": 0,
+          "lineType": 0
+        },
+        "relationTitle1": "1",
+        "relationTitle2": "1",
+        "title": "carries"
+      },
+      {
+        "id1": "Student",
+        "id2": "Bike",
+        "relation": {
+          "type1": "none",
+          "type2": 0,
+          "lineType": 0
+        },
+        "relationTitle1": "1",
+        "relationTitle2": "1",
+        "title": "rides"
+      }
+    ],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

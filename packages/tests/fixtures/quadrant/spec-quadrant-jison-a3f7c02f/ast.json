@@ -1,0 +1,189 @@
+{
+  "type": "Root",
+  "diagramType": "quadrantChart",
+  "body": {
+    "type": "QuadrantDiagram",
+    "body": [
+      {
+        "type": "QuadrantAxisStatement",
+        "axis": "y",
+        "start": {
+          "type": "QuadrantLabel",
+          "kind": "string",
+          "value": "Urgent(* +=[❤",
+          "range": [
+            36,
+            51
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 22
+            },
+            "end": {
+              "line": 2,
+              "column": 37
+            }
+          }
+        },
+        "arrow": true,
+        "end": {
+          "type": "QuadrantLabel",
+          "kind": "string",
+          "value": "Not Urgent (* +=[❤",
+          "range": [
+            67,
+            87
+          ],
+          "loc": {
+            "start": {
+              "line": 2,
+              "column": 53
+            },
+            "end": {
+              "line": 2,
+              "column": 73
+            }
+          }
+        },
+        "range": [
+          21,
+          87
+        ],
+        "loc": {
+          "start": {
+            "line": 2,
+            "column": 7
+          },
+          "end": {
+            "line": 2,
+            "column": 73
+          }
+        }
+      }
+    ],
+    "range": [
+      0,
+      87
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 2,
+        "column": 73
+      }
+    }
+  },
+  "frontmatter": null,
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Keyword",
+      "value": "quadrantChart",
+      "range": [
+        0,
+        13
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "Y-AxIs",
+      "range": [
+        21,
+        27
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 7
+        },
+        "end": {
+          "line": 2,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Urgent(* +=[❤\"",
+      "range": [
+        36,
+        51
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 22
+        },
+        "end": {
+          "line": 2,
+          "column": 37
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "-->",
+      "range": [
+        56,
+        59
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 42
+        },
+        "end": {
+          "line": 2,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": "String",
+      "value": "\"Not Urgent (* +=[❤\"",
+      "range": [
+        67,
+        87
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 53
+        },
+        "end": {
+          "line": 2,
+          "column": 73
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    92
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 4
+    }
+  }
+}

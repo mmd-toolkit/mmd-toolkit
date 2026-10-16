@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The alias of the data block replaces the description `Alice` with `Q`, and A is recorded anew: its `prevActor` and `nextActor` are A itself."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "Q",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "A"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "description": "Q",
+          "prevActor": "A",
+          "nextActor": "A"
+        }
+      }
+    ]
+  }
+}

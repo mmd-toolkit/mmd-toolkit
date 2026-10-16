@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: the rule is the same with `classDef`."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "classDef:#xy",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "classDef:#xy",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

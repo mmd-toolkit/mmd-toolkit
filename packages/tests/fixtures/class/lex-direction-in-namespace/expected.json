@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The namespace body context: the direction line is not tried there."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...gramnamespace N { direction LR class \n---------------------^\nExpecting 'NAMESPACE', 'CLASS', 'NOTE_FOR', 'NOTE', got 'ALPHA'"
+  }
+}

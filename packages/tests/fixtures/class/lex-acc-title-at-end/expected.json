@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Lexical structure: the whitespace after `accTitle:` takes the last line feed, and the title context at the end of the text rejects the input."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...sDiagramaccTitle:\n--------------------^\nExpecting 'EOF', got '1'"
+  }
+}

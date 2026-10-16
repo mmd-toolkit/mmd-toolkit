@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md Known divergences (embedded-data-opaque): The delimited embedded content is opaque; Mermaid rejects its content."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: a class A c b. Shape names should be lowercase."
+  }
+}

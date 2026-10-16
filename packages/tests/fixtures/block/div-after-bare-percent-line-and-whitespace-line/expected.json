@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Detection: a line of %% alone and a line of spaces before the header; mermaid.js reads %% as an id."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%  block-beta  A\n^\nExpecting 'BLOCK_DIAGRAM_KEY', got 'NODE_ID'"
+  }
+}

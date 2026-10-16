@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Links and properties: a JSON string gives each UTF-16 code unit under its position from 0."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {
+          "0": "a",
+          "1": "b"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

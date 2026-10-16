@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: rule 6: the text starts after one whitespace character, so the title is ` T`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": " T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

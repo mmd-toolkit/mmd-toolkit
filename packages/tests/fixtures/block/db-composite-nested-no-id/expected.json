@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: composites with no id nest."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "label": "",
+          "type": "composite",
+          "children": [
+            {
+              "label": "",
+              "type": "composite",
+              "children": [
+                {
+                  "id": "A",
+                  "label": "A",
+                  "type": "na",
+                  "widthInColumns": 1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

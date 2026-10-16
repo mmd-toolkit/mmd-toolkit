@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "title-number frontmatter tests preprocessing without a kanban title setter."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "title": "12"
+  }
+}

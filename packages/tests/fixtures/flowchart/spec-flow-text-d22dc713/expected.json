@@ -1,0 +1,57 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-text.spec.js",
+    "line": 373,
+    "test": "[Text] when parsing > it should handle text in vertices,  > should handle edge case for odd vertex with node id ending with minus"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A_node",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A_node",
+        "props": {}
+      },
+      {
+        "id": "odd-",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Vertex Text",
+        "type": "odd",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A_node",
+        "end": "odd-",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_node_odd-_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

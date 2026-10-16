@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A task with four items is found by the id undefined like a task with that id: the later task is the one found."
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "a ",
+        "classes": [],
+        "id": "undefined",
+        "order": 0
+      },
+      {
+        "section": "",
+        "raw": {},
+        "task": "b ",
+        "classes": [
+          "clickable"
+        ],
+        "order": 1
+      }
+    ],
+    "links": [
+      {
+        "id": "undefined",
+        "url": "u"
+      }
+    ]
+  }
+}

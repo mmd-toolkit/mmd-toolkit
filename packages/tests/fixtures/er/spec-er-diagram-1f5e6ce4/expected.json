@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 263,
+    "test": "when parsing ER diagram it... > attribute name > should allow a backtick-escaped attribute name together with a key and comment"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-HOTEL-0",
+        "attributes": [
+          {
+            "type": "string",
+            "name": "geo.accuracy",
+            "keys": [
+              "PK"
+            ],
+            "comment": "the comment"
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "HOTEL",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

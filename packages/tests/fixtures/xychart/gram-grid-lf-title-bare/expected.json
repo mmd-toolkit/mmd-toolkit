@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, text grid: a line feed inside the text in a title without quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...chart-beta title ab\n---------------------^\nExpecting 'XYCHART', 'title', 'X_AXIS', 'Y_AXIS', 'LINE', 'BAR', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NEWLINE', 'SEMI', 'EOF', got 'ALPHA'"
+  }
+}

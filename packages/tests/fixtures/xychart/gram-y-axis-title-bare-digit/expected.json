@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, y-axis: a number is no title of the y axis without quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...rt-beta y-axis 2024\n----------------------^\nExpecting 'ARROW_DELIMITER', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/sequence.md Tokens: the line rule ignores the `;` inside the string of the data block, which cuts the data text into the RawText tokens `\"style\": \"x:#y` and `\"`, with the IgnoredSemicolon token between them."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {}
+      }
+    ]
+  }
+}

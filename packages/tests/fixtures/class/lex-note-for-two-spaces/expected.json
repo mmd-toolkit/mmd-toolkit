@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The shared rules: `note for` needs exactly one space."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...agramclass Anote  for A \"x\"\n---------------------^\nExpecting 'STR', got 'ALPHA'"
+  }
+}

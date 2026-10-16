@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Units and contexts: after a relationship no newline unit is needed."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [
+      {
+        "name": "e",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "type": "satisfies",
+        "src": "a",
+        "dst": "b"
+      }
+    ],
+    "classes": []
+  }
+}

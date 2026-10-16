@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M05 (Data context): One-block reference for concatenated metadata."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S",
+        "ticket": "X",
+        "assigned": "Ada"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "ticket": "X",
+          "assigned": "Ada"
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, spaces: a no-break space before the `:` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  space :2\n------------------^\nExpecting 'EOF', 'BLOCK_DIAGRAM_KEY', 'SPACE_BLOCK', 'COLUMNS', 'id-block', 'end', 'NODE_ID', 'classDef', 'class', 'style', got 'SIZE'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Detection: a statement on the line of the header is rejected, because the header needs a newline unit after it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nrequirementDiagram element e {}\n-------------------^\nExpecting 'NEWLINE', got 'ELEMENT'"
+  }
+}

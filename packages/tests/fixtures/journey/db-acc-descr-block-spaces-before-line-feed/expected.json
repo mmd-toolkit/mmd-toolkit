@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Spaces before a line feed in a description block stay in the description; the whitespace after the line feed does not."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a  \nb",
+    "sections": [],
+    "tasks": []
+  }
+}

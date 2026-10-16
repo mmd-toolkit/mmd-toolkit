@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, style line: a line inside quotes is a line of its own: the rule drops the `;` on the second line of a quoted field."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a\nstyle:#xy",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a\nstyle:#xy",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: a title of a bar with no values at the end of the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nxychart-beta bar T\n------------------^\nExpecting 'SQUARE_BRACES_START', got 'NEWLINE'"
+  }
+}

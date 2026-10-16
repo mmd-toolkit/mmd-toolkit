@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An entity is its placeholder in a text; this shows it for the text of a classDef statement."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "xﬂ°amp¶ßy"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

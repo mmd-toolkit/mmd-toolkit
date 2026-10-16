@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, settings: the setting `pointRadius` does not change the radius of a point in the Db: a point without a radius has none."
+  },
+  "config": {
+    "quadrantChart": {
+      "pointRadius": 20
+    }
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "B",
+        "className": "",
+        "x": "0.1",
+        "y": "0.2",
+        "radius": 3
+      },
+      {
+        "text": "A",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

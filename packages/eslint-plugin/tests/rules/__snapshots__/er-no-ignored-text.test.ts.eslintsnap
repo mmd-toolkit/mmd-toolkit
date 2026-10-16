@@ -1,0 +1,306 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: er-no-ignored-text >> invalid >>> docs/rules/er-no-ignored-text.md incorrect 1
+Filename: er-no-ignored-text-incorrect-1.mmd
+
+Code:
+  1 | erDiagram
+  2 |   A ||--o{ B : x direction LR
+    |   ^~~~~~~~~~~~~~ [1]
+  3 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `A ||--o{ B : x`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> docs/rules/er-no-ignored-text.md incorrect 2
+Filename: er-no-ignored-text-incorrect-2.mmd
+
+Code:
+  1 | erDiagram
+  2 |   direction LR x
+    |                ^ [1]
+  3 |   A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `x`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/direction-after-classdef
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/direction-after-classdef-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | classDef a direction LR
+    | ^~~~~~~~~~ [1]
+  3 | A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `classDef a`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/direction-line-inside-subgraph
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/direction-line-inside-subgraph-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | subgraph S
+  3 | A ||--o{ B : x direction LR
+    | ^~~~~~~~~~~~~~ [1]
+  4 | end
+  5 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `A ||--o{ B : x`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/direction-then-hash-comment
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/direction-then-hash-comment-input.mmd
+
+Code:
+  1 | erDiagram
+  2 |   direction LR # c
+    |                ^~~ [1]
+  3 |   A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `# c`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/direction-then-slashes-comment
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/direction-then-slashes-comment-input.mmd
+
+Code:
+  1 | erDiagram
+  2 |   direction LR // c
+    |                ^~~~ [1]
+  3 |   A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `// c`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/empty-description-block-after-direction-value
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/empty-description-block-after-direction-value-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | direction LR accDescr {}
+    |              ^~~~~~~~~~~ [1]
+  3 | A
+  4 |
+
+[1] mermaid.js reads this whole line as a direction statement and drops `accDescr {}`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/gram-empty-backquotes-after-comment
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/gram-empty-backquotes-after-comment-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A {
+  3 |  int a "c" ``
+    |            ^~ [1]
+  4 | }
+
+[1] mermaid.js skips the empty backquotes in this attribute block.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/gram-empty-backquotes-after-keys
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/gram-empty-backquotes-after-keys-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A {
+  3 |  int a PK ``
+    |           ^~ [1]
+  4 | }
+
+[1] mermaid.js skips the empty backquotes in this attribute block.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/gram-empty-backquotes-after-last
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/gram-empty-backquotes-after-last-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A {
+  3 |  int a ``
+    |        ^~ [1]
+  4 | }
+
+[1] mermaid.js skips the empty backquotes in this attribute block.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/gram-empty-backquotes-alone
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/gram-empty-backquotes-alone-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A { `` }
+    |     ^~ [1]
+
+[1] mermaid.js skips the empty backquotes in this attribute block.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/gram-empty-backquotes-before-first
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/gram-empty-backquotes-before-first-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A {
+  3 |  `` int a
+    |  ^~ [1]
+  4 | }
+
+[1] mermaid.js skips the empty backquotes in this attribute block.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/gram-empty-backquotes-between-attributes
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/gram-empty-backquotes-between-attributes-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A {
+  3 |  int a `` string b
+    |        ^~ [1]
+  4 | }
+
+[1] mermaid.js skips the empty backquotes in this attribute block.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/gram-empty-backquotes-run-across-comment-line
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/gram-empty-backquotes-run-across-comment-line-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A {
+  3 |  int a ``
+    |        ^~\ [1]
+  4 | %% c
+    | ~~~~\ [1]
+  5 | `` string b
+    | ~~ [1]
+  6 | }
+
+[1] mermaid.js skips the empty backquotes in this attribute block.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/gram-empty-backquotes-run-across-directive
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/gram-empty-backquotes-run-across-directive-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A {
+  3 |  int a `` %%{init: {}}%% `` string b
+    |        ^~~~~~~~~~~~~~~~~~~~ [1]
+  4 | }
+
+[1] mermaid.js skips the empty backquotes in this attribute block.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/gram-empty-backquotes-run-across-line-feed
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/gram-empty-backquotes-run-across-line-feed-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A {
+  3 |  int a ``
+    |        ^~\ [1]
+  4 |   `` string b
+    | ~~~~ [1]
+  5 | }
+
+[1] mermaid.js skips the empty backquotes in this attribute block.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/gram-empty-backquotes-twice
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/gram-empty-backquotes-twice-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A {
+  3 |  int a `` `` string b
+    |        ^~~~~ [1]
+  4 | }
+
+[1] mermaid.js skips the empty backquotes in this attribute block.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/lex-direction-line-after-relationship
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/lex-direction-line-after-relationship-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A ||--o{ B : x direction LR
+    | ^~~~~~~~~~~~~~ [1]
+
+[1] mermaid.js reads this whole line as a direction statement and drops `A ||--o{ B : x`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/lex-direction-line-as-role
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/lex-direction-line-as-role-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A ||--o{ B : direction TB
+    | ^~~~~~~~~~~~ [1]
+
+[1] mermaid.js reads this whole line as a direction statement and drops `A ||--o{ B :`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/lex-direction-line-semicolon
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/lex-direction-line-semicolon-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | direction LR;
+    |             ^ [1]
+  3 | A
+
+[1] mermaid.js reads this whole line as a direction statement and drops `;`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/lex-direction-line-text-after
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/lex-direction-line-text-after-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | direction LR x
+    |              ^ [1]
+  3 | A
+
+[1] mermaid.js reads this whole line as a direction statement and drops `x`.
+---
+
+
+Test: er-no-ignored-text >> invalid >>> invalid/er/lex-direction-line-text-before
+Filename: tests/fixtures/rules/er-no-ignored-text/invalid/er/lex-direction-line-text-before-input.mmd
+
+Code:
+  1 | erDiagram
+  2 | A direction LR
+    | ^ [1]
+  3 | B
+
+[1] mermaid.js reads this whole line as a direction statement and drops `A`.
+---

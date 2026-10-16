@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L04 (Common lexical rules): Directive splits two-character closer."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The style context: the line feed leaves the style context and makes no unit, so the classes of `class r` may follow on the next line."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

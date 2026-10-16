@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Frontmatter: an indented opening delimiter with an unindented closing one is not frontmatter; detection ignores the block after removing leading whitespace, and the flowchart grammar rejects the `---` lines."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n---  title: Hello-\n^\nExpecting 'NEWLINE', 'SPACE', 'GRAPH', got 'LINK'"
+  }
+}

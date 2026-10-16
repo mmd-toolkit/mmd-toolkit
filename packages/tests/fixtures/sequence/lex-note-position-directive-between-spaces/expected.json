@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The statement context, rule 11: without the directive, two spaces lie between `left` and `of`, so this is no `left of`, and the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...articipant A  Note left  of A: t\n----------------------^\nExpecting 'over', 'left_of', 'right_of', got 'ACTOR'"
+  }
+}

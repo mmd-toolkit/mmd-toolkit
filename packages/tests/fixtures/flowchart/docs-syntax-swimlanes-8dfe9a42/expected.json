@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/swimlanes.md",
+    "line": 133
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "lead",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Qualify lead",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "quote",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Prepare quote",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "Sales",
+        "nodes": [
+          "lead",
+          "quote"
+        ],
+        "title": "Sales",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

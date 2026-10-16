@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/kanban/kanban.spec.ts",
+    "line": 31,
+    "test": "when parsing a kanban  > hierarchy > KNBN-2 should handle a hierarchical kanban definition"
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "root",
+        "label": "root",
+        "level": 4,
+        "isGroup": true
+      },
+      {
+        "id": "child1",
+        "label": "child1",
+        "level": 6,
+        "isGroup": false,
+        "parentId": "root"
+      },
+      {
+        "id": "child2",
+        "label": "child2",
+        "level": 6,
+        "isGroup": false,
+        "parentId": "root"
+      }
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Known divergences: a directive inside the keyword `section`; rejected here (directive-as-token-boundary)."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S"
+    ],
+    "tasks": [],
+    "links": []
+  }
+}

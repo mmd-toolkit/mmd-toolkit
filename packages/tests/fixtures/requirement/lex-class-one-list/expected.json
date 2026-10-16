@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The style context: a class statement needs names and classes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...ement r {}class r\n--------------------^\nExpecting 'ALPHA', 'COMMA', 'unqString', 'qString', got 'NEWLINE'"
+  }
+}

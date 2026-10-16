@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "priority metadata with infinity-word tests truthiness, conversion, or validation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "Work",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S",
+        "priority": "Infinity"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "priority": "Infinity"
+        }
+      }
+    ]
+  }
+}

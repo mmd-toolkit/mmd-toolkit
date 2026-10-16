@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: a frontmatter that is no valid YAML is accepted here; mermaid.js rejects it."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "unexpected end of the stream within a flow collection (2:1)\n\n 1 | title: [x\n 2 | \n-----^"
+  }
+}

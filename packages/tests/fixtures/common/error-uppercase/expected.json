@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: the error pseudo-diagram is matched case-insensitively, so `ERROR` is accepted."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note contexts, floating note context: rule 1 comes first, so `as` at the start of the text is an `as` unit, the floating note has no text, and the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...eDiagram-v2  note \"assume\" as N\n----------------------^\nExpecting 'NOTE_TEXT', 'left_of', 'right_of', got 'AS'"
+  }
+}

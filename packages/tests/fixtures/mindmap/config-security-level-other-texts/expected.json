@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, settings: under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled), the id, the text, the icon, and the class are recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "r&lt;b&gt;x&lt;script&gt;y&lt;/script&gt;",
+      "level": 0,
+      "descr": "r&lt;b&gt;x&lt;script&gt;y&lt;/script&gt;",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "a&lt;i&gt;1",
+          "level": 2,
+          "descr": "&lt;u&gt;d&lt;/u&gt; & q",
+          "type": 2,
+          "icon": "fa &lt;b&gt;fa-book",
+          "class": "cls&lt;b&gt;1",
+          "children": []
+        }
+      ]
+    }
+  }
+}

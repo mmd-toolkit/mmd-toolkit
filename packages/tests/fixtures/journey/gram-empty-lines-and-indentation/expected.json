@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: empty lines and indentation between statements."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "S"
+    ],
+    "tasks": [
+      {
+        "section": "S",
+        "task": "A",
+        "people": [],
+        "score": 5
+      }
+    ]
+  }
+}

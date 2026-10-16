@@ -1,0 +1,17 @@
+{
+  "message": "The arguments of the callback have no ) before the end of the text",
+  "range": [
+    36,
+    37
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 15
+    },
+    "end": {
+      "line": 3,
+      "column": 16
+    }
+  }
+}

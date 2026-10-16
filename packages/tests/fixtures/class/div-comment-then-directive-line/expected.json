@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "comment-takes-line-break.md: the line that holds only a directive is empty in the text without directives, so mermaid.js's comment rule takes it and joins `class C` to the relation, and rejects the text; here, the relation and the class C."
+  },
+  "knownDivergence": "comment-takes-line-break",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...gramA <|-- B %% cclass C\n--------------------^\nExpecting 'NEWLINE', 'EOF', 'SQS', 'STR', 'DOT', 'GENERICTYPE', 'LABEL', 'STRUCT_START', 'STRUCT_STOP', 'STYLE_SEPARATOR', 'ANNOTATION_START', 'ANNOTATION_END', 'ALPHA', 'AGGREGATION', 'EXTENSION', 'COMPOSITION', 'DEPENDENCY', 'LOLLIPOP', 'LINE', 'DOTTED_LINE', 'CALLBACK_NAME', 'HREF', 'NUM', 'MINUS', 'UNICODE_TEXT', 'BQUOTE_STR', got 'CLASS'"
+  }
+}

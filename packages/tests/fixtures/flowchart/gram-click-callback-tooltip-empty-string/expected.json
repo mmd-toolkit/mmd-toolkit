@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Strings: an empty string is no tooltip of a click statement with a callback; mermaid.js rejects it too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...rt LRAclick A f \"\"\n---------------------^\nExpecting 'STR', got 'NEWLINE'"
+  }
+}

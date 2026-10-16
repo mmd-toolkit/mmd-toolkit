@@ -1,0 +1,50 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 2342,
+    "test": "when rendering a sequenceDiagram with actor mirror activated > should allow constructor as an actor name"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "constructor",
+        "description": "constructor",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "A"
+      },
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "prevActor": "constructor",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "constructor",
+        "to": "A",
+        "message": "Hello, how are you?",
+        "wrap": false,
+        "type": 1,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

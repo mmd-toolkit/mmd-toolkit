@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Accessibility values: the title is the first text after the whitespace, on a later line; accepted, title A."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "A",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, a class statement adds its class names to each requirement or element named, in order; a name that is neither is skipped."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": [
+          "a",
+          "b"
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "name": "e",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": [
+          "a",
+          "b"
+        ]
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

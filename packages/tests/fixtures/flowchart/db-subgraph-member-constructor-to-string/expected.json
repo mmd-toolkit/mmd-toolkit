@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Db normalization, subgraphs: other names are no exception: only the first of each equal member is kept, `constructor` and `toString`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "constructor",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "constructor",
+        "props": {}
+      },
+      {
+        "id": "toString",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "toString",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "constructor",
+          "toString"
+        ],
+        "title": "S",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

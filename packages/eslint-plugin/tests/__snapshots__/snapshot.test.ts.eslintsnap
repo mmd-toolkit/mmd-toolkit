@@ -1,0 +1,1263 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: nodes >> invalid >>> flowchart/spec-swimlanes-diagram-20540af2
+Filename: flowchart/spec-swimlanes-diagram-20540af2.mmd
+
+Code:
+  1 | swimlane-beta TD
+    | ^~~~~~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~~~~~\ [2]
+  2 |   A --> B
+    | ~~~~~~~~~ [1]
+    | ~~~~~~~~~ [2]
+    |   ^~~~~~~ [3]
+    |   ^ [4] ^ [9]
+    |   ^ [5] ^ [10]
+    |   ^ [6] ^ [11]
+    |     ^~~~~ [7]
+    |     ^~~ [8]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartVertexStatement
+[4] FlowchartVertexGroup
+[5] FlowchartVertex
+[6] Identifier
+[7] FlowchartLink
+[8] FlowchartArrow
+[9] FlowchartVertexGroup
+[10] FlowchartVertex
+[11] Identifier
+---
+
+
+Test: nodes >> invalid >>> common/crlf
+Filename: common/crlf.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | A-->B
+    | ~~~~~\ [1]
+    | ~~~~~ [2]
+    | ^~~~~ [3]
+    | ^ [4]
+    | ^ [5]
+    | ^ [6]
+    |  ^~~~ [7]
+    |  ^~~ [8]
+    |     ^ [9]
+    |     ^ [10]
+    |     ^ [11]
+  3 |
+    | ~ [1]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartVertexStatement
+[4] FlowchartVertexGroup
+[5] FlowchartVertex
+[6] Identifier
+[7] FlowchartLink
+[8] FlowchartArrow
+[9] FlowchartVertexGroup
+[10] FlowchartVertex
+[11] Identifier
+---
+
+
+Test: nodes >> invalid >>> common/detect-minimal-flowchart-elk
+Filename: common/detect-minimal-flowchart-elk.mmd
+
+Code:
+  1 | flowchart-elk
+    | ^~~~~~~~~~~~~ [1]
+    | ^~~~~~~~~~~~~ [2]
+
+[1] Root
+[2] FlowchartDiagram
+---
+
+
+Test: nodes >> invalid >>> flowchart/frontmatter-title-crlf
+Filename: flowchart/frontmatter-title-crlf.mmd
+
+Code:
+  1 | ---
+    | ^~~\ [1]
+  2 | title: Windows
+    | ~~~~~~~~~~~~~~\ [1]
+  3 | ---
+    | ~~~\ [1]
+  4 | flowchart LR
+    | ~~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  5 |   A
+    | ~~~\ [1]
+    | ~~~ [2]
+    |   ^ [3]
+    |   ^ [4]
+    |   ^ [5]
+    |   ^ [6]
+  6 |
+    | ~ [1]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartVertexStatement
+[4] FlowchartVertexGroup
+[5] FlowchartVertex
+[6] Identifier
+---
+
+
+Test: nodes >> invalid >>> common/config-directive-in-comment
+Filename: common/config-directive-in-comment.mmd
+
+Code:
+  1 | %% %%{init: {"flowchart": {"inheritDir": true}}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+  2 | flowchart LR
+    | ~~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  3 |   subgraph S
+    | ~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~\ [3]
+    |            ^ [4]
+  4 |     A
+    | ~~~~~\ [1]
+    | ~~~~~\ [2]
+    | ~~~~~\ [3]
+    |     ^ [5]
+    |     ^ [6]
+    |     ^ [7]
+    |     ^ [8]
+  5 |   end
+    | ~~~~~\ [1]
+    | ~~~~~ [2]
+    | ~~~~~ [3]
+  6 |
+    | ~ [1]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartSubgraphStatement
+[4] FlowchartLabel
+[5] FlowchartVertexStatement
+[6] FlowchartVertexGroup
+[7] FlowchartVertex
+[8] Identifier
+---
+
+
+Test: nodes >> invalid >>> common/directive-in-label-text
+Filename: common/directive-in-label-text.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | A[x%%{init: {}}%%y]
+    | ~~~~~~~~~~~~~~~~~~~ [1]
+    | ~~~~~~~~~~~~~~~~~~~ [2]
+    | ^~~~~~~~~~~~~~~~~~~ [3]
+    | ^~~~~~~~~~~~~~~~~~~ [4]
+    | ^~~~~~~~~~~~~~~~~~~ [5]
+    | ^ [6]
+    |  ^~~~~~~~~~~~~~~~~~ [7]
+    |   ^~~~~~~~~~~~~~~~ [8]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartVertexStatement
+[4] FlowchartVertexGroup
+[5] FlowchartVertex
+[6] Identifier
+[7] FlowchartShape
+[8] FlowchartLabel
+---
+
+
+Test: nodes >> invalid >>> flowchart/lex-direction-line-percent-after-value
+Filename: flowchart/lex-direction-line-percent-after-value.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | subgraph S
+    | ~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~\ [3]
+    |          ^ [4]
+  3 | direction TB %% vertical
+    | ~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~\ [3]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~ [5]
+    |              ^~~~~~~~~~~ [6]
+  4 | A-->B
+    | ~~~~~\ [1]
+    | ~~~~~\ [2]
+    | ~~~~~\ [3]
+    | ^~~~~ [7]
+    | ^ [8]
+    | ^ [9]
+    | ^ [10]
+    |  ^~~~ [11]
+    |  ^~~ [12]
+    |     ^ [13]
+    |     ^ [14]
+    |     ^ [15]
+  5 | end
+    | ~~~\ [1]
+    | ~~~ [2]
+    | ~~~ [3]
+  6 |
+    | ~ [1]
+
+[1] Root
+[2] FlowchartDiagram
+[3] FlowchartSubgraphStatement
+[4] FlowchartLabel
+[5] FlowchartDirectionStatement
+[6] FlowchartIgnoredText
+[7] FlowchartVertexStatement
+[8] FlowchartVertexGroup
+[9] FlowchartVertex
+[10] Identifier
+[11] FlowchartLink
+[12] FlowchartArrow
+[13] FlowchartVertexGroup
+[14] FlowchartVertex
+[15] Identifier
+---
+
+
+Test: nodes >> invalid >>> common/error-trailing-comment-line
+Filename: common/error-trailing-comment-line.mmd
+
+Code:
+  1 | error
+    | ^~~~~\ [1]
+    | ^~~~~ [2]
+  2 | %% x
+    | ~~~~ [1]
+
+[1] Root
+[2] ErrorDiagram
+---
+
+
+Test: nodes >> invalid >>> sequence/lex-hash-comment-after-unit
+Filename: sequence/lex-hash-comment-after-unit.mmd
+
+Code:
+  1 | sequenceDiagram
+    | ^~~~~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~~~~\ [2]
+  2 | autonumber # c
+    | ~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~ [3]
+  3 | A->>B: x
+    | ~~~~~~~~\ [1]
+    | ~~~~~~~~ [2]
+    | ^~~~~~~~ [4]
+    | ^ [5]  ^ [8]
+    |  ^~~ [6]
+    |     ^ [7]
+    |        ^ [9]
+  4 |
+    | ~ [1]
+
+[1] Root
+[2] SequenceDiagram
+[3] SequenceAutonumberStatement
+[4] SequenceMessageStatement
+[5] SequenceIdentifier
+[6] SequenceArrow
+[7] SequenceIdentifier
+[8] SequenceText
+[9] SequenceLiteral
+---
+
+
+Test: nodes >> invalid >>> sequence/lex-percent-comment-after-unit
+Filename: sequence/lex-percent-comment-after-unit.mmd
+
+Code:
+  1 | sequenceDiagram
+    | ^~~~~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~~~~\ [2]
+  2 | autonumber %% c
+    | ~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~ [3]
+  3 | A->>B: x
+    | ~~~~~~~~\ [1]
+    | ~~~~~~~~ [2]
+    | ^~~~~~~~ [4]
+    | ^ [5]  ^ [8]
+    |  ^~~ [6]
+    |     ^ [7]
+    |        ^ [9]
+  4 |
+    | ~ [1]
+
+[1] Root
+[2] SequenceDiagram
+[3] SequenceAutonumberStatement
+[4] SequenceMessageStatement
+[5] SequenceIdentifier
+[6] SequenceArrow
+[7] SequenceIdentifier
+[8] SequenceText
+[9] SequenceLiteral
+---
+
+
+Test: nodes >> invalid >>> class/demo-classchart-83b40212
+Filename: class/demo-classchart-83b40212.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | Class01~T~ <|-- AveryLongClass : Cool
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [3]
+    | ^~~~~~~~~~ [4]  ^~~~~~~~~~~~~~ [8]
+    | ^~~~~~~ [5]     ^~~~~~~~~~~~~~ [9]
+    |         ^ [6]                    ^~~~ [10]
+    |            ^~~~ [7]
+  3 | <<interface>> Class01
+    | ~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~ [11]
+    | ^~~~~~~~~~~~~ [12]
+    |   ^~~~~~~~~ [13]
+    |               ^~~~~~~ [14]
+    |               ^~~~~~~ [15]
+  4 | Class03~T~ "0" *-- "0..n" Class04
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [16]
+    | ^~~~~~~~~~ [17]    ^~~~~~ [22]
+    | ^~~~~~~ [18]   ^~~ [21]   ^~~~~~~ [23]
+    |         ^ [19]            ^~~~~~~ [24]
+    |            ^~~ [20]
+  5 | Class05 "1" o-- "many" Class06
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [25]
+    | ^~~~~~~ [26]    ^~~~~~ [30]
+    | ^~~~~~~ [27]           ^~~~~~~ [31]
+    |         ^~~ [28]       ^~~~~~~ [32]
+    |             ^~~ [29]
+  6 | Class07~T~ .. Class08
+    | ~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~ [33]
+    | ^~~~~~~~~~ [34]
+    | ^~~~~~~ [35]  ^~~~~~~ [38]
+    |         ^ [36]
+    |            ^~ [37]
+    |               ^~~~~~~ [39]
+  7 | Class09 "many" --> "1" C2 : Where am i?
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [40]
+    | ^~~~~~~ [41]   ^~~ [44]     ^~~~~~~~~~~ [48]
+    | ^~~~~~~ [42]       ^~~ [45]
+    |         ^~~~~~ [43]    ^~ [46]
+    |                        ^~ [47]
+  8 |   Class09 "0" --* "1..n" C3
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~ [49]
+    |   ^~~~~~~ [50]    ^~~~~~ [54]
+    |   ^~~~~~~ [51]           ^~ [55]
+    |           ^~~ [52]       ^~ [56]
+    |               ^~~ [53]
+  9 |   Class09 --|> Class07
+    | ~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~ [57]
+    |   ^~~~~~~ [58] ^~~~~~~ [61]
+    |   ^~~~~~~ [59] ^~~~~~~ [62]
+    |           ^~~~ [60]
+ 10 |   Class07 : equals()
+    | ~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~ [63]
+    |   ^~~~~~~ [64]
+    |   ^~~~~~~ [65]
+    |             ^~~~~~~~ [66]
+    |             ^~~~~~ [67]
+ 11 |   Class07 : Object[] elementData
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [68]
+    |   ^~~~~~~ [69]
+    |   ^~~~~~~ [70]
+    |             ^~~~~~~~~~~~~~~~~~~~ [71]
+    |             ^~~~~~~~~~~~~~~~~~~~ [72]
+ 12 |   Class01 : #size()
+    | ~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~ [73]
+    |   ^~~~~~~ [74]
+    |   ^~~~~~~ [75]
+    |             ^~~~~~~ [76]
+    |              ^~~~ [77]
+ 13 |   Class01 : -int chimp
+    | ~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~ [78]
+    |   ^~~~~~~ [79]
+    |   ^~~~~~~ [80]
+    |             ^~~~~~~~~~ [81]
+    |              ^~~~~~~~~ [82]
+ 14 |   Class01 : +int gorilla
+    | ~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [83]
+    |   ^~~~~~~ [84]
+    |   ^~~~~~~ [85]
+    |             ^~~~~~~~~~~~ [86]
+    |              ^~~~~~~~~~~ [87]
+ 15 |   Class08 <--> C2: Cool label
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\ [2]
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~ [88]
+    |   ^~~~~~~ [89] ^~ [92]
+    |   ^~~~~~~ [90] ^~ [93]
+    |           ^~~~ [91]
+    |                    ^~~~~~~~~~ [94]
+ 16 |     class Class10 {
+    | ~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~\ [2]
+    |     ^~~~~~~~~~~~~~~\ [95]
+    |           ^~~~~~~ [96]
+    |           ^~~~~~~ [97]
+ 17 |     <<service>>
+    | ~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~~~~~~\ [95]
+    |     ^~~~~~~~~~~ [98]
+    |       ^~~~~~~ [99]
+ 18 |     int id
+    | ~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~\ [95]
+    |     ^~~~~~ [100]
+    |     ^~~~~~ [101]
+ 19 |     size()
+    | ~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~\ [95]
+    |     ^~~~~~ [102]
+    |     ^~~~ [103]
+ 20 |     }
+    | ~~~~~ [1]
+    | ~~~~~ [2]
+    | ~~~~~ [95]
+
+[1] Root
+[2] ClassDiagram
+[3] ClassRelationStatement
+[4] ClassName
+[5] ClassIdentifier
+[6] ClassLiteral
+[7] ClassArrow
+[8] ClassName
+[9] ClassIdentifier
+[10] ClassLiteral
+[11] ClassAnnotationStatement
+[12] ClassAnnotation
+[13] Identifier
+[14] ClassName
+[15] ClassIdentifier
+[16] ClassRelationStatement
+[17] ClassName
+[18] ClassIdentifier
+[19] ClassLiteral
+[20] StringLiteral
+[21] ClassArrow
+[22] StringLiteral
+[23] ClassName
+[24] ClassIdentifier
+[25] ClassRelationStatement
+[26] ClassName
+[27] ClassIdentifier
+[28] StringLiteral
+[29] ClassArrow
+[30] StringLiteral
+[31] ClassName
+[32] ClassIdentifier
+[33] ClassRelationStatement
+[34] ClassName
+[35] ClassIdentifier
+[36] ClassLiteral
+[37] ClassArrow
+[38] ClassName
+[39] ClassIdentifier
+[40] ClassRelationStatement
+[41] ClassName
+[42] ClassIdentifier
+[43] StringLiteral
+[44] ClassArrow
+[45] StringLiteral
+[46] ClassName
+[47] ClassIdentifier
+[48] ClassLiteral
+[49] ClassRelationStatement
+[50] ClassName
+[51] ClassIdentifier
+[52] StringLiteral
+[53] ClassArrow
+[54] StringLiteral
+[55] ClassName
+[56] ClassIdentifier
+[57] ClassRelationStatement
+[58] ClassName
+[59] ClassIdentifier
+[60] ClassArrow
+[61] ClassName
+[62] ClassIdentifier
+[63] ClassMemberStatement
+[64] ClassName
+[65] ClassIdentifier
+[66] ClassMethod
+[67] ClassLiteral
+[68] ClassMemberStatement
+[69] ClassName
+[70] ClassIdentifier
+[71] ClassAttribute
+[72] ClassLiteral
+[73] ClassMemberStatement
+[74] ClassName
+[75] ClassIdentifier
+[76] ClassMethod
+[77] ClassLiteral
+[78] ClassMemberStatement
+[79] ClassName
+[80] ClassIdentifier
+[81] ClassAttribute
+[82] ClassLiteral
+[83] ClassMemberStatement
+[84] ClassName
+[85] ClassIdentifier
+[86] ClassAttribute
+[87] ClassLiteral
+[88] ClassRelationStatement
+[89] ClassName
+[90] ClassIdentifier
+[91] ClassArrow
+[92] ClassName
+[93] ClassIdentifier
+[94] ClassLiteral
+[95] ClassDeclaration
+[96] ClassName
+[97] ClassIdentifier
+[98] ClassAnnotation
+[99] ClassLiteral
+[100] ClassAttribute
+[101] ClassLiteral
+[102] ClassMethod
+[103] ClassLiteral
+---
+
+
+Test: nodes >> invalid >>> class/tokens-method-fields
+Filename: class/tokens-method-fields.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | class A {
+    | ~~~~~~~~~\ [1]
+    | ~~~~~~~~~\ [2]
+    | ^~~~~~~~~\ [3]
+    |       ^ [4]
+    |       ^ [5]
+  3 | +foo(a: int) List~T~$
+    | ~~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~~~~~~~~~~~~\ [3]
+    | ^~~~~~~~~~~~~~~~~~~~~ [6]
+    |  ^~~ [7]     ^~~~~~~ [9]
+    |      ^~~~~~ [8]
+  4 | }
+    | ~\ [1]
+    | ~ [2]
+    | ~ [3]
+  5 |
+    | ~ [1]
+
+[1] Root
+[2] ClassDiagram
+[3] ClassDeclaration
+[4] ClassName
+[5] ClassIdentifier
+[6] ClassMethod
+[7] ClassLiteral
+[8] ClassLiteral
+[9] ClassLiteral
+---
+
+
+Test: nodes >> invalid >>> class/spec-class-abe81127
+Filename: class/spec-class-abe81127.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | namespace `A::B` {
+    | ~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~\ [2]
+    | ^~~~~~~~~~~~~~~~~~\ [3]
+    |           ^~~~~~ [4]
+  3 | 	class `IPC::Sender`
+    | ~~~~~~~~~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~~~~~~~~~\ [2]
+    | ~~~~~~~~~~~~~~~~~~~~\ [3]
+    |  ^~~~~~~~~~~~~~~~~~~ [5]
+    |        ^~~~~~~~~~~~~ [6]
+    |        ^~~~~~~~~~~~~ [7]
+  4 | }
+    | ~ [1]
+    | ~ [2]
+    | ~ [3]
+
+[1] Root
+[2] ClassDiagram
+[3] ClassNamespaceStatement
+[4] StringLiteral
+[5] ClassDeclaration
+[6] ClassName
+[7] StringLiteral
+---
+
+
+Test: nodes >> invalid >>> class/lex-comment-blank-line-after
+Filename: class/lex-comment-blank-line-after.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | A --> B %% c
+    | ~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~\ [2]
+    | ^~~~~~~ [3]
+    | ^ [4] ^ [7]
+    | ^ [5] ^ [8]
+    |   ^~~ [6]
+  3 |   
+    | ~~\ [1]
+    | ~~\ [2]
+  4 | A : +int age
+    | ~~~~~~~~~~~~\ [1]
+    | ~~~~~~~~~~~~ [2]
+    | ^~~~~~~~~~~~ [9]
+    | ^ [10]
+    | ^ [11]
+    |     ^~~~~~~~ [12]
+    |      ^~~~~~~ [13]
+  5 |
+    | ~ [1]
+
+[1] Root
+[2] ClassDiagram
+[3] ClassRelationStatement
+[4] ClassName
+[5] ClassIdentifier
+[6] ClassArrow
+[7] ClassName
+[8] ClassIdentifier
+[9] ClassMemberStatement
+[10] ClassName
+[11] ClassIdentifier
+[12] ClassAttribute
+[13] ClassLiteral
+---
+
+
+Test: nodes >> invalid >>> class/lex-member-percent
+Filename: class/lex-member-percent.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~\ [1]
+    | ^~~~~~~~~~~~\ [2]
+  2 | class A {
+    | ~~~~~~~~~\ [1]
+    | ~~~~~~~~~\ [2]
+    | ^~~~~~~~~\ [3]
+    |       ^ [4]
+    |       ^ [5]
+  3 | +x %% c
+    | ~~~~~~~\ [1]
+    | ~~~~~~~\ [2]
+    | ~~~~~~~\ [3]
+    | ^~~~~~~ [6]
+    |  ^~~~~~ [7]
+  4 | }
+    | ~\ [1]
+    | ~ [2]
+    | ~ [3]
+  5 |
+    | ~ [1]
+
+[1] Root
+[2] ClassDiagram
+[3] ClassDeclaration
+[4] ClassName
+[5] ClassIdentifier
+[6] ClassAttribute
+[7] ClassLiteral
+---
+
+
+Test: tokens >> invalid >>> flowchart/spec-swimlanes-diagram-20540af2
+Filename: flowchart/spec-swimlanes-diagram-20540af2.mmd
+
+Code:
+  1 | swimlane-beta TD
+    | ^~~~~~~~~~~~~ ^~
+    | [1]           [2]
+  2 |   A --> B
+    |   ^ [3] ^ [5]
+    |     ^~~ [4]
+
+[1] Keyword "swimlane-beta"
+[2] Keyword "TD"
+[3] Identifier "A"
+[4] Punctuator "-->"
+[5] Identifier "B"
+---
+
+
+Test: tokens >> invalid >>> common/crlf
+Filename: common/crlf.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~ ^~
+    | [1]       [2]
+  2 | A-->B
+    | ^ [3]
+    |  ^~~ [4]
+    |     ^ [5]
+  3 |
+
+[1] Keyword "flowchart"
+[2] Keyword "LR"
+[3] Identifier "A"
+[4] Punctuator "-->"
+[5] Identifier "B"
+---
+
+
+Test: tokens >> invalid >>> common/detect-minimal-flowchart-elk
+Filename: common/detect-minimal-flowchart-elk.mmd
+
+Code:
+  1 | flowchart-elk
+    | ^~~~~~~~~~~~~ [1]
+
+[1] Keyword "flowchart-elk"
+---
+
+
+Test: tokens >> invalid >>> flowchart/frontmatter-title-crlf
+Filename: flowchart/frontmatter-title-crlf.mmd
+
+Code:
+  1 | ---
+    | ^~~ [1]
+  2 | title: Windows
+    | ^~~~~~~~~~~~~~ [2]
+  3 | ---
+    | ^~~ [3]
+  4 | flowchart LR
+    | ^~~~~~~~~ ^~
+    | [4]       [5]
+  5 |   A
+    |   ^ [6]
+  6 |
+
+[1] Punctuator "---"
+[2] RawText "title: Windows"
+[3] Punctuator "---"
+[4] Keyword "flowchart"
+[5] Keyword "LR"
+[6] Identifier "A"
+---
+
+
+Test: tokens >> invalid >>> common/config-directive-in-comment
+Filename: common/config-directive-in-comment.mmd
+
+Code:
+  1 | %% %%{init: {"flowchart": {"inheritDir": true}}}%%
+    | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  2 | flowchart LR
+    | ^~~~~~~~~ ^~
+    | [2]       [3]
+  3 |   subgraph S
+    |   ^~~~~~~~ ^
+    |   [4]      [5]
+  4 |     A
+    |     ^ [6]
+  5 |   end
+    |   ^~~ [7]
+  6 |
+
+[1] Comment " %%{init: {\"flowchart\": {\"inheritDir\": true}}}%%"
+[2] Keyword "flowchart"
+[3] Keyword "LR"
+[4] Keyword "subgraph"
+[5] RawText "S"
+[6] Identifier "A"
+[7] Keyword "end"
+---
+
+
+Test: tokens >> invalid >>> common/directive-in-label-text
+Filename: common/directive-in-label-text.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~ ^~
+    | [1]       [2]
+  2 | A[x%%{init: {}}%%y]
+    | ^ [3]            ^ [7]
+    |  ^ [4]            ^ [8]
+    |   ^ [5]
+    |    ^~~~~~~~~~~~~~ [6]
+
+[1] Keyword "flowchart"
+[2] Keyword "LR"
+[3] Identifier "A"
+[4] Punctuator "["
+[5] RawText "x"
+[6] Directive "%%{init: {}}%%"
+[7] RawText "y"
+[8] Punctuator "]"
+---
+
+
+Test: tokens >> invalid >>> flowchart/lex-direction-line-percent-after-value
+Filename: flowchart/lex-direction-line-percent-after-value.mmd
+
+Code:
+  1 | flowchart LR
+    | ^~~~~~~~~ ^~
+    | [1]       [2]
+  2 | subgraph S
+    | ^~~~~~~~ ^
+    | [3]      [4]
+  3 | direction TB %% vertical
+    | ^~~~~~~~~ ^~ ^~~~~~~~~~~
+    | [5]      [6] [7]
+  4 | A-->B
+    | ^ [8]
+    |  ^~~ [9]
+    |     ^ [10]
+  5 | end
+    | ^~~ [11]
+  6 |
+
+[1] Keyword "flowchart"
+[2] Keyword "LR"
+[3] Keyword "subgraph"
+[4] RawText "S"
+[5] Keyword "direction"
+[6] Keyword "TB"
+[7] RawText "%% vertical"
+[8] Identifier "A"
+[9] Punctuator "-->"
+[10] Identifier "B"
+[11] Keyword "end"
+---
+
+
+Test: tokens >> invalid >>> common/error-trailing-comment-line
+Filename: common/error-trailing-comment-line.mmd
+
+Code:
+  1 | error
+    | ^~~~~ [1]
+  2 | %% x
+    | ^~~~ [2]
+
+[1] RawText "error"
+[2] Comment " x"
+---
+
+
+Test: tokens >> invalid >>> sequence/lex-hash-comment-after-unit
+Filename: sequence/lex-hash-comment-after-unit.mmd
+
+Code:
+  1 | sequenceDiagram
+    | ^~~~~~~~~~~~~~~ [1]
+  2 | autonumber # c
+    | ^~~~~~~~~~ ^~~
+    | [2]        [3]
+  3 | A->>B: x
+    | ^ [4]  ^ [8]
+    |  ^~~ [5]
+    |     ^ [6]
+    |      ^ [7]
+  4 |
+
+[1] Keyword "sequenceDiagram"
+[2] Keyword "autonumber"
+[3] Comment " c"
+[4] RawText "A"
+[5] Punctuator "->>"
+[6] RawText "B"
+[7] Punctuator ":"
+[8] RawText "x"
+---
+
+
+Test: tokens >> invalid >>> sequence/lex-percent-comment-after-unit
+Filename: sequence/lex-percent-comment-after-unit.mmd
+
+Code:
+  1 | sequenceDiagram
+    | ^~~~~~~~~~~~~~~ [1]
+  2 | autonumber %% c
+    | ^~~~~~~~~~ ^~~~
+    | [2]        [3]
+  3 | A->>B: x
+    | ^ [4]  ^ [8]
+    |  ^~~ [5]
+    |     ^ [6]
+    |      ^ [7]
+  4 |
+
+[1] Keyword "sequenceDiagram"
+[2] Keyword "autonumber"
+[3] Comment " c"
+[4] RawText "A"
+[5] Punctuator "->>"
+[6] RawText "B"
+[7] Punctuator ":"
+[8] RawText "x"
+---
+
+
+Test: tokens >> invalid >>> class/demo-classchart-83b40212
+Filename: class/demo-classchart-83b40212.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~ [1]
+  2 | Class01~T~ <|-- AveryLongClass : Cool
+    | ^~~~~~~ [2]  ^~ [7]            ^ [9]
+    |        ^ [3]    ^~~~~~~~~~~~~~ [8]
+    |         ^ [4]                    ^~~~ [10]
+    |          ^ [5]
+    |            ^~ [6]
+  3 | <<interface>> Class01
+    | ^~ [11]    ^~ [13]
+    |   ^~~~~~~~~ [12]
+    |               ^~~~~~~ [14]
+  4 | Class03~T~ "0" *-- "0..n" Class04
+    | ^~~~~~~ [15]   ^ [20]     ^~~~~~~ [23]
+    |        ^ [16]   ^~ [21]
+    |         ^ [17]     ^~~~~~ [22]
+    |          ^ [18]
+    |            ^~~ [19]
+  5 | Class05 "1" o-- "many" Class06
+    | ^~~~~~~ [24] ^~ [27]   ^~~~~~~ [29]
+    |         ^~~ [25]
+    |             ^ [26]
+    |                 ^~~~~~ [28]
+  6 | Class07~T~ .. Class08
+    | ^~~~~~~ [30]  ^~~~~~~ [35]
+    |        ^ [31]
+    |         ^ [32]
+    |          ^ [33]
+    |            ^~ [34]
+  7 | Class09 "many" --> "1" C2 : Where am i?
+    | ^~~~~~~ [36]   ^~ [38] ^~ [41]
+    |         ^~~~~~ [37]       ^ [42]
+    |                  ^ [39]     ^~~~~~~~~~~ [43]
+    |                    ^~~ [40]
+  8 |   Class09 "0" --* "1..n" C3
+    |   ^~~~~~~ [44]  ^ [47]   ^~ [49]
+    |           ^~~ [45]
+    |               ^~ [46]
+    |                   ^~~~~~ [48]
+  9 |   Class09 --|> Class07
+    |   ^~~~~~~ [50] ^~~~~~~ [53]
+    |           ^~ [51]
+    |             ^~ [52]
+ 10 |   Class07 : equals()
+    |   ^~~~~~~ [54]    ^ [57]
+    |           ^ [55]   ^ [58]
+    |             ^~~~~~ [56]
+ 11 |   Class07 : Object[] elementData
+    |   ^~~~~~~ [59]
+    |           ^ [60]
+    |             ^~~~~~~~~~~~~~~~~~~~ [61]
+ 12 |   Class01 : #size()
+    |   ^~~~~~~ [62]   ^ [66]
+    |           ^ [63]  ^ [67]
+    |             ^ [64]
+    |              ^~~~ [65]
+ 13 |   Class01 : -int chimp
+    |   ^~~~~~~ [68]
+    |           ^ [69]
+    |             ^ [70]
+    |              ^~~~~~~~~ [71]
+ 14 |   Class01 : +int gorilla
+    |   ^~~~~~~ [72]
+    |           ^ [73]
+    |             ^ [74]
+    |              ^~~~~~~~~~~ [75]
+ 15 |   Class08 <--> C2: Cool label
+    |   ^~~~~~~ [76] ^~ [80]
+    |           ^ [77] ^ [81]
+    |            ^~ [78] ^~~~~~~~~~ [82]
+    |              ^ [79]
+ 16 |     class Class10 {
+    |     ^~~~~ ^~~~~~~ ^
+    |     [83]  [84]    [85]
+ 17 |     <<service>>
+    |     ^~ [86]  ^~ [88]
+    |       ^~~~~~~ [87]
+ 18 |     int id
+    |     ^~~~~~ [89]
+ 19 |     size()
+    |     ^~~~ [90]
+    |         ^ [91]
+    |          ^ [92]
+ 20 |     }
+    |     ^ [93]
+
+[1] Keyword "classDiagram"
+[2] RawText "Class01"
+[3] Punctuator "~"
+[4] RawText "T"
+[5] Punctuator "~"
+[6] Punctuator "<|"
+[7] Punctuator "--"
+[8] RawText "AveryLongClass"
+[9] Punctuator ":"
+[10] RawText "Cool"
+[11] Punctuator "<<"
+[12] Identifier "interface"
+[13] Punctuator ">>"
+[14] RawText "Class01"
+[15] RawText "Class03"
+[16] Punctuator "~"
+[17] RawText "T"
+[18] Punctuator "~"
+[19] String "\"0\""
+[20] Punctuator "*"
+[21] Punctuator "--"
+[22] String "\"0..n\""
+[23] RawText "Class04"
+[24] RawText "Class05"
+[25] String "\"1\""
+[26] Punctuator "o"
+[27] Punctuator "--"
+[28] String "\"many\""
+[29] RawText "Class06"
+[30] RawText "Class07"
+[31] Punctuator "~"
+[32] RawText "T"
+[33] Punctuator "~"
+[34] Punctuator ".."
+[35] RawText "Class08"
+[36] RawText "Class09"
+[37] String "\"many\""
+[38] Punctuator "--"
+[39] Punctuator ">"
+[40] String "\"1\""
+[41] RawText "C2"
+[42] Punctuator ":"
+[43] RawText "Where am i?"
+[44] RawText "Class09"
+[45] String "\"0\""
+[46] Punctuator "--"
+[47] Punctuator "*"
+[48] String "\"1..n\""
+[49] RawText "C3"
+[50] RawText "Class09"
+[51] Punctuator "--"
+[52] Punctuator "|>"
+[53] RawText "Class07"
+[54] RawText "Class07"
+[55] Punctuator ":"
+[56] RawText "equals"
+[57] Punctuator "("
+[58] Punctuator ")"
+[59] RawText "Class07"
+[60] Punctuator ":"
+[61] RawText "Object[] elementData"
+[62] RawText "Class01"
+[63] Punctuator ":"
+[64] Punctuator "#"
+[65] RawText "size"
+[66] Punctuator "("
+[67] Punctuator ")"
+[68] RawText "Class01"
+[69] Punctuator ":"
+[70] Punctuator "-"
+[71] RawText "int chimp"
+[72] RawText "Class01"
+[73] Punctuator ":"
+[74] Punctuator "+"
+[75] RawText "int gorilla"
+[76] RawText "Class08"
+[77] Punctuator "<"
+[78] Punctuator "--"
+[79] Punctuator ">"
+[80] RawText "C2"
+[81] Punctuator ":"
+[82] RawText "Cool label"
+[83] Keyword "class"
+[84] RawText "Class10"
+[85] Punctuator "{"
+[86] Punctuator "<<"
+[87] RawText "service"
+[88] Punctuator ">>"
+[89] RawText "int id"
+[90] RawText "size"
+[91] Punctuator "("
+[92] Punctuator ")"
+[93] Punctuator "}"
+---
+
+
+Test: tokens >> invalid >>> class/tokens-method-fields
+Filename: class/tokens-method-fields.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~ [1]
+  2 | class A {
+    | ^~~~~ [2]
+    |       ^ [3]
+    |         ^ [4]
+  3 | +foo(a: int) List~T~$
+    | ^ [5]      ^ [9]    ^ [11]
+    |  ^~~ [6]     ^~~~~~~ [10]
+    |     ^ [7]
+    |      ^~~~~~ [8]
+  4 | }
+    | ^ [12]
+  5 |
+
+[1] Keyword "classDiagram"
+[2] Keyword "class"
+[3] RawText "A"
+[4] Punctuator "{"
+[5] Punctuator "+"
+[6] RawText "foo"
+[7] Punctuator "("
+[8] RawText "a: int"
+[9] Punctuator ")"
+[10] RawText "List~T~"
+[11] Punctuator "$"
+[12] Punctuator "}"
+---
+
+
+Test: tokens >> invalid >>> class/spec-class-abe81127
+Filename: class/spec-class-abe81127.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~ [1]
+  2 | namespace `A::B` {
+    | ^~~~~~~~~ ^~~~~~ ^
+    | [2]       [3]    [4]
+  3 | 	class `IPC::Sender`
+    |  ^~~~~ ^~~~~~~~~~~~~
+    |  [5]   [6]
+  4 | }
+    | ^ [7]
+
+[1] Keyword "classDiagram"
+[2] Keyword "namespace"
+[3] String "`A::B`"
+[4] Punctuator "{"
+[5] Keyword "class"
+[6] String "`IPC::Sender`"
+[7] Punctuator "}"
+---
+
+
+Test: tokens >> invalid >>> class/lex-comment-blank-line-after
+Filename: class/lex-comment-blank-line-after.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~ [1]
+  2 | A --> B %% c
+    | ^ [2] ^ [5]
+    |   ^~ [3]
+    |     ^ [4]
+    |         ^~~~ [6]
+  3 |   
+  4 | A : +int age
+    | ^ [7]
+    |   ^ [8]
+    |     ^ [9]
+    |      ^~~~~~~ [10]
+  5 |
+
+[1] Keyword "classDiagram"
+[2] RawText "A"
+[3] Punctuator "--"
+[4] Punctuator ">"
+[5] RawText "B"
+[6] Comment " c"
+[7] RawText "A"
+[8] Punctuator ":"
+[9] Punctuator "+"
+[10] RawText "int age"
+---
+
+
+Test: tokens >> invalid >>> class/lex-member-percent
+Filename: class/lex-member-percent.mmd
+
+Code:
+  1 | classDiagram
+    | ^~~~~~~~~~~~ [1]
+  2 | class A {
+    | ^~~~~ [2]
+    |       ^ [3]
+    |         ^ [4]
+  3 | +x %% c
+    | ^ [5]
+    |  ^~~~~~ [6]
+  4 | }
+    | ^ [7]
+  5 |
+
+[1] Keyword "classDiagram"
+[2] Keyword "class"
+[3] RawText "A"
+[4] Punctuator "{"
+[5] Punctuator "+"
+[6] RawText "x %% c"
+[7] Punctuator "}"
+---

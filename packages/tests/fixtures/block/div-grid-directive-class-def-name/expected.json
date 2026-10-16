@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Known divergences: directives: a directive in the middle of the name of a class in `classDef`."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "ab",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

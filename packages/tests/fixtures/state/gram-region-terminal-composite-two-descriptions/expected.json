@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Rejections outside the grammar: `state [*] {` in the first region of X is the composite state `divider-id-1_start`, and two alias definitions for that id give it two descriptions."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Group nodes can only have label. Remove the additional description for node [divider-id-1_start]"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/sequence/sequenceDiagram.spec.js",
+    "line": 1147,
+    "test": "when parsing a sequenceDiagram > should handle notes and messages with nowrap or line breaks"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "1",
+        "description": "1",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "2"
+      },
+      {
+        "name": "2",
+        "description": "2",
+        "wrap": false,
+        "prevActor": "1",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "1",
+        "to": "2",
+        "message": "single-line text",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "2",
+        "to": "2",
+        "message": "single-line text",
+        "wrap": false,
+        "type": 2,
+        "placement": 1
+      }
+    ]
+  }
+}

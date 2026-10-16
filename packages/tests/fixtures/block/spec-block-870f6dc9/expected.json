@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/block/parser/block.spec.ts",
+    "line": 444,
+    "test": "Block diagram > prototype properties > should work with a __proto__ property"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A;",
+          "label": "A;",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "__proto__",
+        "styles": [
+          "color:#ffffff",
+          "fill:#000000 class A __proto__"
+        ]
+      }
+    ]
+  }
+}

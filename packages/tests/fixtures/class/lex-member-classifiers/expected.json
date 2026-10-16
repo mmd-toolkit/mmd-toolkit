@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Member lines: a classifier mark right after `)` or at the end of the return type."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "$",
+            "id": "foo",
+            "parameters": "",
+            "returnType": "int"
+          },
+          {
+            "memberType": "method",
+            "visibility": "-",
+            "classifier": "$",
+            "id": "bar",
+            "parameters": "",
+            "returnType": "int"
+          }
+        ],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

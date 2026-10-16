@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-style.spec.js",
+    "line": 52,
+    "test": "ClassDefs and classes when parsing a State diagram > class for a state (classDef) > defining (classDef) > an attribute can have a space in the style"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "exampleStyleClass",
+        "styles": [
+          "background:  #bbb",
+          "border:1.5px solid red"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

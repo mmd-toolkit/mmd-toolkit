@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A quoted id keeps its space and loses its quotes; without a bracket it is also the title, with a bracket the bracket is."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "My Group",
+        "nodes": [
+          "A"
+        ],
+        "title": "My Group",
+        "classes": [],
+        "cssStyles": []
+      },
+      {
+        "id": "Other Group",
+        "nodes": [
+          "B"
+        ],
+        "title": "Title",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

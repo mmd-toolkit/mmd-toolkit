@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, links: two lines with the same nodes are two links."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      },
+      {
+        "source": "a",
+        "target": "b",
+        "value": 2
+      }
+    ]
+  }
+}

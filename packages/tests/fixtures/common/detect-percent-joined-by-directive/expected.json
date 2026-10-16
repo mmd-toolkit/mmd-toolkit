@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: leaving out `%%{a}%%` forms a `%%` with nothing after it, which is no comment; detection removes it with its line break, and the text is the error pseudo-diagram, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L09 (Statement context): Closing square bracket belongs to bare id."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S]x",
+        "label": "S]x",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

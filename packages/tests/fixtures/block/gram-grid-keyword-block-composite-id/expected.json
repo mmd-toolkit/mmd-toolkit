@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, keywords: the word `block` in the middle of the id of a composite: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...lock b    A  end\n-------------------^\nExpecting 'end', got 'EOF'"
+  }
+}

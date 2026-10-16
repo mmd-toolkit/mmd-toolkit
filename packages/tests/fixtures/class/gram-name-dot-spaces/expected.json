@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Class names: a `.` is part of the name, also with whitespace around it."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A.B",
+        "type": "",
+        "label": "A.B",
+        "text": "A.B",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

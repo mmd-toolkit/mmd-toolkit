@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click and callbacks: the `click` before `B` is not a bare click; a click statement has one `click` unit, at its start, so the input is rejected, while `click A,B href \"u\"` is accepted."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...RABclick A click B href \"u\"\n--------------------^\nExpecting 'DIR', 'AMP', 'COLON', 'STR', 'DOWN', 'CALLBACKNAME', 'HREF', 'NUM', 'COMMA', 'NODE_STRING', 'BRKT', 'MINUS', 'MULT', 'UNICODE_TEXT', got 'CLICK'"
+  }
+}

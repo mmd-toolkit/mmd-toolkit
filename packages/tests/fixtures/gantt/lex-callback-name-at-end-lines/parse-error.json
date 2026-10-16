@@ -1,0 +1,17 @@
+{
+  "message": "The callback after call has no ( before the end of the text",
+  "range": [
+    40,
+    44
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 10
+    },
+    "end": {
+      "line": 3,
+      "column": 14
+    }
+  }
+}

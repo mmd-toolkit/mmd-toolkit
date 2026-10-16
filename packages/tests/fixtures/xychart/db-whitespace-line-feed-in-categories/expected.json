@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Line breaks: a line feed after whitespace on its line is whitespace, so a category may stand on the line after a comma and a space; accepted."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": [
+        "a",
+        "b"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

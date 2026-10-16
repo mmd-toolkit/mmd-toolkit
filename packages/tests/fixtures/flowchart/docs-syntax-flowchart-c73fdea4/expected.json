@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/flowchart.md",
+    "line": 67
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "markdown",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "This **is** _Markdown_",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "newLines",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "Line1\n    Line 2\n    Line 3",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "markdown",
+        "end": "newLines",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_markdown_newLines_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "htmlLabels": false
+    }
+  }
+}

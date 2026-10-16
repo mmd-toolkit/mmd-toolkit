@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/user-journey/parser/journey.spec.js",
+    "line": 6,
+    "test": "when parsing a journey diagram it > should handle multiline section titles with different line breaks"
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "Adding gantt diagram functionality to mermaid",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Line1<br>Line2<br/>Line3</br />Line4<br\t/>Line5"
+    ],
+    "tasks": []
+  }
+}

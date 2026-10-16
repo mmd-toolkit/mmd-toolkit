@@ -1,0 +1,84 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/gantt.md",
+    "line": 306
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": " YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "A Gantt Diagram",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Section"
+    ],
+    "tasks": [
+      {
+        "section": "Section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-01-01"
+          },
+          "endTime": {
+            "data": "30d"
+          }
+        },
+        "task": "A task           ",
+        "classes": [],
+        "id": "a1",
+        "order": 0
+      },
+      {
+        "section": "Section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-01-20"
+          },
+          "endTime": {
+            "data": "25d"
+          }
+        },
+        "task": "Another task     ",
+        "classes": [],
+        "id": "a2",
+        "order": 1
+      },
+      {
+        "section": "Section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2014-02-10"
+          },
+          "endTime": {
+            "data": "20d"
+          }
+        },
+        "task": "Another one      ",
+        "classes": [],
+        "id": "a3",
+        "order": 2
+      }
+    ],
+    "links": []
+  },
+  "embedded": {
+    "config": {
+      "gantt": {
+        "displayMode": "compact"
+      }
+    }
+  }
+}

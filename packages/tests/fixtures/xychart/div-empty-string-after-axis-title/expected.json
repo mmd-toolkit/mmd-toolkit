@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: `\"\"` after the title of an axis is no whole title or label; mermaid.js reads no token for it, and the input is rejected here."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "T",
+      "categories": [
+        "a"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

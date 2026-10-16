@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: `classDefc` is not the keyword, and the lexer stops at the text: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...eta  classDefc fill:#f00\n----------------------^"
+  }
+}

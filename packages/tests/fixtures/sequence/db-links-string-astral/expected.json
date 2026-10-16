@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The string has three UTF-16 code units, so the keys are `0`, `1`, and `2`, and the character outside the BMP gives its two surrogates as separate values."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {
+          "0": "a",
+          "1": "\ud83d",
+          "2": "\ude00"
+        },
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

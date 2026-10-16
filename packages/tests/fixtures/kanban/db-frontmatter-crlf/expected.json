@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "CRLF frontmatter and body line ends test shared preprocessing without a kanban title field."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "title": "Board"
+  }
+}

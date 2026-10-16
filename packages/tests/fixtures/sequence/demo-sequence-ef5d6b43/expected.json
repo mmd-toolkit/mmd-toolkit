@@ -1,0 +1,67 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/sequence.html",
+    "line": 244
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "Alice",
+        "description": "Alice",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "Bob"
+      },
+      {
+        "name": "Bob",
+        "description": "Bob",
+        "wrap": false,
+        "prevActor": "Alice",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "Hello!",
+        "wrap": false,
+        "type": 33,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Alice",
+        "to": "Bob",
+        "message": "Wow, we said that at the same time!",
+        "wrap": false,
+        "type": 33,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "Bob",
+        "to": "Alice",
+        "message": "Bidirectional Arrows are so cool",
+        "wrap": false,
+        "type": 34,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

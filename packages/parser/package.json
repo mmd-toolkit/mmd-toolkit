@@ -1,0 +1,45 @@
+{
+  "name": "@mmd-toolkit/parser",
+  "version": "0.0.0",
+  "description": "Lossless, position-aware parser for the Mermaid diagram syntax (.mmd)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmd-toolkit/mmd-toolkit.git",
+    "directory": "packages/parser"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.mts",
+      "default": "./lib/index.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib"
+  ],
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24"
+  },
+  "keywords": [
+    "mermaid",
+    "mmd",
+    "parser",
+    "ast"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "clean": "rimraf lib",
+    "test": "vitest run",
+    "test:update": "vitest run tests/fixtures.test.ts -u",
+    "show-trees": "node --conditions=source tools/show-trees.ts",
+    "diff-trees": "node --conditions=source tools/diff-trees.ts"
+  },
+  "devDependencies": {
+    "@mmd-toolkit/tests": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

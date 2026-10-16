@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, character references: a named character reference `#amp;` in the middle of the id of a `class` statement."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "aﬂ°amp¶ßb",
+          "label": "aﬂ°amp¶ßb",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "a",
+        "type": "na",
+        "classes": [
+          "ﬂ°amp¶ßb c"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

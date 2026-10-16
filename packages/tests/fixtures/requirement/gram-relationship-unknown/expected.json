@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Relationships: the relation is one of seven words."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...uirementDiagrama - likes -> b\n----------------------^\nExpecting 'CONTAINS', 'COPIES', 'DERIVES', 'SATISFIES', 'VERIFIES', 'REFINES', 'TRACES', got 'unqString'"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, settings: with htmlLabels false they are as written."
+  },
+  "config": {
+    "securityLevel": "other",
+    "htmlLabels": false
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "\"T<b>x</b>\"",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "q<b>",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "X<i>",
+      "right": "Y<u>"
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "p<b>",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6"
+      }
+    ],
+    "classes": []
+  }
+}

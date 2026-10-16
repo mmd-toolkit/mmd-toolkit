@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md (entry 7): the comparison is exact, so `c4container` selects no diagram type."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: c4container\nContainer(a, \"A\")\n"
+  }
+}

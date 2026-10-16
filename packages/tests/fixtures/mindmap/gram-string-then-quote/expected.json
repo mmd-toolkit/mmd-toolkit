@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Nodes and shapes: a second string is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...indmaproot  a[\"x\"\"]\n---------------------^\nExpecting 'NODE_DEND', got 'NODE_DESCR'"
+  }
+}

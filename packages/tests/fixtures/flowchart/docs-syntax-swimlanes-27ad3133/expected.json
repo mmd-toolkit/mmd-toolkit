@@ -1,0 +1,184 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/swimlanes.md",
+    "line": 310
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "collect",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Collect request",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "validate",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Validate details",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "review",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Review request",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "decide",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Ready?",
+        "type": "diamond",
+        "props": {}
+      },
+      {
+        "id": "schedule",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Schedule work",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "complete",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Complete work",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "collect",
+        "end": "validate",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_collect_validate_0"
+      },
+      {
+        "start": "validate",
+        "end": "review",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_validate_review_0"
+      },
+      {
+        "start": "review",
+        "end": "decide",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_review_decide_0"
+      },
+      {
+        "start": "decide",
+        "end": "schedule",
+        "type": "arrow_point",
+        "text": "Yes",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_decide_schedule_0"
+      },
+      {
+        "start": "schedule",
+        "end": "complete",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_schedule_complete_0"
+      },
+      {
+        "start": "decide",
+        "end": "collect",
+        "type": "arrow_point",
+        "text": "No",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_decide_collect_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "Intake",
+        "nodes": [
+          "collect",
+          "validate"
+        ],
+        "title": "Intake",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Review",
+        "nodes": [
+          "review",
+          "decide"
+        ],
+        "title": "Review",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Delivery",
+        "nodes": [
+          "schedule",
+          "complete"
+        ],
+        "title": "Delivery",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

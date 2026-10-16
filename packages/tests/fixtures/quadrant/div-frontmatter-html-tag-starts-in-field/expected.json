@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: frontmatter: a tag that starts in a field of the frontmatter and ends in the diagram has its quotes changed as one tag."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "<a",
+    "accTitle": "b='c'>d",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, quotes: five quotes after a letter are two quotes of the field and the closing quote."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a\"\"",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a\"\"",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  }
+}

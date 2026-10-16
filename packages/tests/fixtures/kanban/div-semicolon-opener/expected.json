@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L05 (Common lexical rules): Ignored semicolon splits shape opener."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "style:#x",
+        "label": "b",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

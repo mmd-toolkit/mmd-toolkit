@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Diagram and statements: a header after a statement is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nxycharttitle Txychart\n--------------^\nExpecting 'title', 'X_AXIS', 'Y_AXIS', 'LINE', 'BAR', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NEWLINE', 'SEMI', 'EOF', got 'XYCHART'"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A has the label x and the descriptions y and z, with the shape rectWithTitle."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rectWithTitle",
+        "label": "x",
+        "description": [
+          "y",
+          "z"
+        ],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

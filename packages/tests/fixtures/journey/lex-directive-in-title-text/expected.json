@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Directives inside units: a directive inside a title text: the title `ab`."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "ab",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

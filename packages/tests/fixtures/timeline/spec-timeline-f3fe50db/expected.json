@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/timeline/timeline.spec.js",
+    "line": 17,
+    "test": "when parsing a timeline  > Timeline > should default to LR direction when none is provided"
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "abc-123"
+    ],
+    "tasks": []
+  }
+}

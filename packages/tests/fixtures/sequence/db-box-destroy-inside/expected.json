@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Participants and boxes and Building the summary: a box may hold a destroy statement, which adds nothing to the box."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [
+      {
+        "name": "a",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": []
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [
+      {
+        "id": "A",
+        "messageIndex": 0
+      }
+    ],
+    "messages": [
+      {
+        "from": "B",
+        "to": "A",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

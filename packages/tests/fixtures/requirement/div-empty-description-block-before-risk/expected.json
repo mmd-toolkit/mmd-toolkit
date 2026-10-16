@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Empty description blocks: an empty description block between the `:` of `risk` and its value lies inside a statement and makes the input rejected here; mermaid.js reads no token for it."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "High",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

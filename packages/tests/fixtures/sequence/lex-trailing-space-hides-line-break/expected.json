@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The statement context, rule 2: the whitespace takes the line break after it, so the autonumber statement is not ended."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...iagramautonumber  A->>B: y\n---------------------^\nExpecting 'NEWLINE', 'NUM', 'off', got 'ACTOR'"
+  }
+}

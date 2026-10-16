@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Style, class, and link style statements: the `;` ends the statement: the class `c` has the style `fill:red`, and `stroke:blue` is a vertex."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "stroke:blue",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "stroke:blue",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,13 @@
+sequenceDiagram
+  participant A as a<b>=c<br>d
+  actor B as a<b>=c<br>d
+  A->>B: a<b>=c<br>d
+  Note over A,B: a<b>=c<br>d
+  loop a<b>=c<br>d
+    A->>B: x
+  end
+  alt a<b>=c<br>d
+    A->>B: y
+  else a<b>=c<br>d
+    B->>A: z
+  end

@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: statements: what follows a `y-axis` statement on its line: comment glued to the statement, and then a title on the next line."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "U",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "B ⟶",
+      "top": ""
+    },
+    "points": [],
+    "classes": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: the space between the blocks is whitespace after the direction, which a ; may not follow; rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...Descr {} accDescr {};A\n-----------------------^\nExpecting 'NEWLINE', got 'SEMI'"
+  }
+}

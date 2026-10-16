@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: removing the comment region joins `%%{` and `kanban`, and the second directive scan of detection finds the directive `%%{`, line break, `kanban`, line break, `A`; the detectors then see `-->B` and none matches."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: -->B\n"
+  }
+}

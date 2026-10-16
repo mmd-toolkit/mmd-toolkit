@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Blank lines: two comments after the header and a blank line are accepted here; mermaid.js rejects the input."
+  },
+  "knownDivergence": "blank-line-after-header-or-comments",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\nmindmap %% c%%root\n--------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'NODE_ID'"
+  }
+}

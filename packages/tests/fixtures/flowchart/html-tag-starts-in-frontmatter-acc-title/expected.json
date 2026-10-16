@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md (html-tag-in-frontmatter): in mermaid.js the tag `<a` in the frontmatter reaches the `>` in the accTitle, so accTitle is `b='c'>d`. Here no tag starts in the frontmatter, and accTitle is `b=\"c\">d`. Both accept; only the Db differs."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "<a",
+    "accTitle": "b='c'>d",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

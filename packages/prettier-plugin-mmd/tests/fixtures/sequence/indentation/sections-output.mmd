@@ -1,0 +1,11 @@
+sequenceDiagram
+  par a
+    A ->> B: x
+  and b
+    A ->> C: y
+  end
+  critical c
+    A ->> B: x
+  option o
+    A ->> C: y
+  end

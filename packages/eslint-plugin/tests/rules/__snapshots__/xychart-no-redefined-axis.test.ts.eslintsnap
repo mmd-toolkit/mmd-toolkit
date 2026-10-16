@@ -1,0 +1,133 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: xychart-no-redefined-axis >> invalid >>> docs/rules/xychart-no-redefined-axis.md incorrect 1
+Filename: xychart-no-redefined-axis-incorrect-1.mmd
+
+Code:
+  1 | xychart
+  2 |   x-axis Month [jan, feb]
+  3 |   x-axis Year [2023, 2024]
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   line [1, 2]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 and the data set on line 2 of the `x-axis` with the values of this statement.
+---
+
+
+Test: xychart-no-redefined-axis >> invalid >>> docs/rules/xychart-no-redefined-axis.md incorrect 2
+Filename: xychart-no-redefined-axis-incorrect-2.mmd
+
+Code:
+  1 | xychart
+  2 |   y-axis Revenue
+  3 |   y-axis 0 --> 100
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   line [1, 2]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 of the `y-axis` with the values of this statement.
+---
+
+
+Test: xychart-no-redefined-axis >> invalid >>> invalid/xychart/axis-category-count-changes
+Filename: tests/fixtures/rules/xychart-no-redefined-axis/invalid/xychart/axis-category-count-changes-input.mmd
+
+Code:
+  1 | xychart
+  2 |   x-axis [a]
+  3 |   x-axis [a, b]
+    |   ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the data set on line 2 of the `x-axis` with the values of this statement.
+---
+
+
+Test: xychart-no-redefined-axis >> invalid >>> invalid/xychart/axis-data-survives-title-only
+Filename: tests/fixtures/rules/xychart-no-redefined-axis/invalid/xychart/axis-data-survives-title-only-input.mmd
+
+Code:
+  1 | xychart
+  2 |   x-axis [a]
+  3 |   x-axis T
+  4 |   x-axis T [b]
+    |   ^~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the data set on line 2 of the `x-axis` with the values of this statement.
+---
+
+
+Test: xychart-no-redefined-axis >> invalid >>> invalid/xychart/x-axis-back-to-first
+Filename: tests/fixtures/rules/xychart-no-redefined-axis/invalid/xychart/x-axis-back-to-first-input.mmd
+
+Code:
+  1 | xychart
+  2 |   x-axis A [a]
+  3 |   x-axis B [b]
+    |   ^~~~~~~~~~~~ [1]
+  4 |   x-axis A [a]
+    |   ^~~~~~~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 and the data set on line 2 of the `x-axis` with the values of this statement.
+[2] mermaid.js replaces the title set on line 3 and the data set on line 3 of the `x-axis` with the values of this statement.
+---
+
+
+Test: xychart-no-redefined-axis >> invalid >>> invalid/xychart/x-axis-band-then-range
+Filename: tests/fixtures/rules/xychart-no-redefined-axis/invalid/xychart/x-axis-band-then-range-input.mmd
+
+Code:
+  1 | xychart
+  2 |   x-axis [a, b]
+  3 |   x-axis 0 --> 10
+    |   ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the data set on line 2 of the `x-axis` with the values of this statement.
+---
+
+
+Test: xychart-no-redefined-axis >> invalid >>> invalid/xychart/x-axis-title-then-band
+Filename: tests/fixtures/rules/xychart-no-redefined-axis/invalid/xychart/x-axis-title-then-band-input.mmd
+
+Code:
+  1 | xychart
+  2 |   x-axis Month
+  3 |   x-axis [a, b]
+    |   ^~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the title set on line 2 of the `x-axis` with the values of this statement.
+---
+
+
+Test: xychart-no-redefined-axis >> invalid >>> invalid/xychart/x-axis-upper-case-second
+Filename: tests/fixtures/rules/xychart-no-redefined-axis/invalid/xychart/x-axis-upper-case-second-input.mmd
+
+Code:
+  1 | xychart
+  2 |   x-axis A [a]
+  3 |   X-AXIS B [b]
+    |   ^~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the title set on line 2 and the data set on line 2 of the `x-axis` with the values of this statement.
+---
+
+
+Test: xychart-no-redefined-axis >> invalid >>> invalid/xychart/y-axis-range-twice
+Filename: tests/fixtures/rules/xychart-no-redefined-axis/invalid/xychart/y-axis-range-twice-input.mmd
+
+Code:
+  1 | xychart
+  2 |   y-axis 0 --> 100
+  3 |   y-axis 0 --> 50
+    |   ^~~~~~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the data set on line 2 of the `y-axis` with the values of this statement.
+---

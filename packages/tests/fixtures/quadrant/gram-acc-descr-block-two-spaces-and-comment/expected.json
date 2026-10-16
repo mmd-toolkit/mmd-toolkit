@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Description blocks: whitespace after the brace before a comment."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ntChartaccDescr {x}  %% c\n----------------------^\nExpecting 'NEWLINE', 'SEMI', 'EOF', got 'SPACE'"
+  }
+}

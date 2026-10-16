@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/block/parser/block.spec.ts",
+    "line": 396,
+    "test": "Block diagram > when parsing a block diagram graph it should handle >  > classDef statements applied to a block"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "mc",
+          "label": "Memcache",
+          "type": "square",
+          "widthInColumns": 1,
+          "classes": [
+            "black"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "black",
+        "styles": [
+          "color:#ffffff",
+          "fill:#000000"
+        ]
+      }
+    ]
+  }
+}

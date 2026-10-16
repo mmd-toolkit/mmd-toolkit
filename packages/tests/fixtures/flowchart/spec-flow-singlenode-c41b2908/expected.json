@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/flowchart/parser/flow-singlenode.spec.js",
+    "line": 305,
+    "test": "[Singlenodes] when parsing > should handle nodes ending in call"
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "node_call",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "node_call",
+        "props": {}
+      },
+      {
+        "id": "node.call",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "node.call",
+        "props": {}
+      },
+      {
+        "id": "node-call",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "node-call",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

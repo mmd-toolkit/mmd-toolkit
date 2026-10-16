@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Tasks: data ends at the line feed, and `, 2d` is a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\ngantta : 1d, 2d\n---------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

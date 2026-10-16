@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/requirement/parser/requirementDiagram.spec.js",
+    "line": 343,
+    "test": "when parsing requirement diagram it... > will accept \"medium\" type of risk requirement definition"
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "test_req",
+        "type": "Design Constraint",
+        "requirementId": "test_id",
+        "text": "the test text.",
+        "risk": "Medium",
+        "verifyMethod": "Analysis",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

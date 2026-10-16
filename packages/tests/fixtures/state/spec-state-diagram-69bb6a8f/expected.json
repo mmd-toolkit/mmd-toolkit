@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram.spec.js",
+    "line": 400,
+    "test": "state diagram,  > when parsing an ignored info graph it > should handle if statements"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...gram      [*] --> \"Order Submitted\"  \n---------------------^\nExpecting 'ID', 'EDGE_STATE', got 'STRING'"
+  }
+}

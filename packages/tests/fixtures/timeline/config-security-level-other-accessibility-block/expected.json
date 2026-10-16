@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, settings: the same for a block description."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "D&lt;b&gt;x&lt;/b&gt;\n& &lt;u&gt;",
+    "sections": [],
+    "tasks": []
+  }
+}

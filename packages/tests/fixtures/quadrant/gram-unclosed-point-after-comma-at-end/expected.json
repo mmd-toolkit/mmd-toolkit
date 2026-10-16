@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, unclosed: a point cut after the comma at the end of the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...drantChartA: [0.3,\n---------------------^\nExpecting 'point_y', got '1'"
+  }
+}

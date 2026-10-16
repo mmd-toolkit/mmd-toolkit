@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Line breaks: a line feed before the arrow ends the statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...rantChartx-axis L --> R\n---------------------^\nExpecting 'ALPHA', 'NUM', 'COMMA', 'AMP', 'BRKT', 'MULT', 'UNICODE_TEXT', 'SPACE', 'CLASSDEF', 'QUADRANT', 'title', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'section', 'X-AXIS', 'Y-AXIS', 'QUADRANT_1', 'QUADRANT_2', 'QUADRANT_3', 'QUADRANT_4', 'NEWLINE', 'SEMI', 'EOF', 'STR', 'MD_STR', 'PUNCTUATION', 'PLUS', 'EQUALS', 'DOT', 'UNDERSCORE', got 'AXIS-TEXT-DELIMITER'"
+  }
+}

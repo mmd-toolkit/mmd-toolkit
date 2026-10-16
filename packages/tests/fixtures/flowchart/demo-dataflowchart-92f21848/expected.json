@@ -1,0 +1,90 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/dataflowchart.html",
+    "line": 17
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "A simple linear flowchart.",
+    "accDescr": "A Database has input to a circle System has output to a square Customer.",
+    "vertices": [
+      {
+        "id": "DataStore",
+        "labelType": "markdown",
+        "styles": [],
+        "classes": [],
+        "text": "Datastore",
+        "props": {},
+        "type": "datastore"
+      },
+      {
+        "id": "Process",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "System",
+        "type": "circle",
+        "props": {}
+      },
+      {
+        "id": "Entity",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Customer",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "DataStore",
+        "end": "Process",
+        "type": "arrow_point",
+        "text": "input",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_DataStore_Process_0"
+      },
+      {
+        "start": "Process",
+        "end": "Entity",
+        "type": "arrow_point",
+        "text": "output",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_Process_Entity_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "DataStore",
+        "set": {
+          "labelType": "markdown",
+          "text": "Datastore",
+          "type": "datastore"
+        }
+      }
+    ]
+  }
+}

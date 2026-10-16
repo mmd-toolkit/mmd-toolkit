@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Comments: two tabs after the bracket; one starts a style in both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named  is not supported."
+  }
+}

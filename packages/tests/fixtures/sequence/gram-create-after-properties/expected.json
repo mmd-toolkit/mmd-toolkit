@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A properties line adds the participant C, so creating C after it is rejected: it is not possible to have actors with the same id."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "It is not possible to have actors with the same id, even if one is destroyed before the next is created. Use 'AS' aliases to simulate the behavior"
+  }
+}

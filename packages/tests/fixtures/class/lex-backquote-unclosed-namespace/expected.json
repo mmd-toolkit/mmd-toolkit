@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An unclosed backquote in the name of a namespace, which is no class name: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...agramnamespace `x\n--------------------^\nExpecting 'SQS', 'STRUCT_START', got 'EOF'"
+  }
+}

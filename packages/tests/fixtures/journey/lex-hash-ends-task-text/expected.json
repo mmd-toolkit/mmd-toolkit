@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: `#` ends a task text: `A` without data, then a comment."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\njourney  A#B: 5\n---------------^\nExpecting 'taskData', got 'NEWLINE'"
+  }
+}

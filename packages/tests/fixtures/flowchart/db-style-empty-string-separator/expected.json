@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md, tokenless-empty-forms: this specification rejects the empty string, for which mermaid.js reads no token. mermaid.js accepts the input: the style is the space before `;`, empty in the summary, and `fill:red` is a vertex of the next statement. Without the empty string, mermaid.js rejects the input."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          ""
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "fill:red",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "fill:red",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

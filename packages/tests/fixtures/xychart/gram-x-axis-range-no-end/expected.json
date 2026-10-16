@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, x-axis: an arrow with no second number is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...t-beta x-axis 1 -->\n----------------------^\nExpecting 'NUMBER_WITH_DECIMAL', got 'NEWLINE'"
+  }
+}

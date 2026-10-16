@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md, Comment: a line with only `%%` after the comment region is diagram text, so it begins the fragment after the region: the label has the RawText tokens `a` and `%%`, a line feed, `b`, and the value `a`, a line feed, `%%`, a line feed, `b`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "a\n%%\nb",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

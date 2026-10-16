@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The statement context, Keywords and what follows them: `manyé` is `many` and the name `é`, where a line is expected; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nerDiagramA manyé to one B : x\n---------------^\nExpecting 'NON_IDENTIFYING', 'IDENTIFYING', got 'UNICODE_TEXT'"
+  }
+}

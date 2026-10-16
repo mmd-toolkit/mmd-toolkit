@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: the brackets on the line after the title are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nxychart-beta line T[1]\n-------------------^\nExpecting 'SQUARE_BRACES_START', got 'NEWLINE'"
+  }
+}

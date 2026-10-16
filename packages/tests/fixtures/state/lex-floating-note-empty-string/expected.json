@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note contexts, floating note context: `\"\"` is two `\"` units with no text between them, and the grammar needs a text, so the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...Diagram-v2  note \"\" as N\n----------------------^\nExpecting 'NOTE_TEXT', 'left_of', 'right_of', got 'AS'"
+  }
+}

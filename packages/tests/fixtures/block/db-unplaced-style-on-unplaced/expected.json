@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, the blocks that no list holds: a `style` finds an unplaced block."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [
+      {
+        "id": "A",
+        "type": "na",
+        "classes": [
+          "c"
+        ],
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

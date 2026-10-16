@@ -1,0 +1,209 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: journey-no-duplicate-title >> invalid >>> docs/rules/journey-no-duplicate-title.md incorrect 1
+Filename: journey-no-duplicate-title-incorrect-1.mmd
+
+Code:
+  1 | journey
+  2 |   title first
+  3 |   title second
+    |   ^~~~~~~~~~~~ [1]
+  4 |   section Work
+  5 |     Make tea: 5: Me
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> docs/rules/journey-no-duplicate-title.md incorrect 2
+Filename: journey-no-duplicate-title-incorrect-2.mmd
+
+Code:
+  1 | journey
+  2 |   accTitle: first
+  3 |   accTitle: second
+    |   ^~~~~~~~~~~~~~~~ [1]
+  4 |   section Work
+  5 |     Make tea: 5: Me
+  6 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/acc-title-back-to-first
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/acc-title-back-to-first-input.mmd
+
+Code:
+  1 | journey
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |   accTitle: a
+    |   ^~~~~~~~~~~ [2]
+  5 |   section S
+  6 |     t: 5: Me
+  7 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+[2] mermaid.js replaces the accessible title set on line 3 with the one of this `accTitle`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/acc-title-second-after-comment-line
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/acc-title-second-after-comment-line-input.mmd
+
+Code:
+  1 | journey
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |   %% c
+    | ~~~~~~\ [1]
+  5 |   T
+    | ~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/acc-title-second-after-directive
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/acc-title-second-after-directive-input.mmd
+
+Code:
+  1 | journey
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |   %%{init: {}}%%
+    | ~~~~~~~~~~~~~~~~\ [1]
+  5 |   T
+    | ~~~ [1]
+  6 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/acc-title-second-takes-next-line
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/acc-title-second-takes-next-line-input.mmd
+
+Code:
+  1 | journey
+  2 |   accTitle: a
+  3 |   accTitle:
+    |   ^~~~~~~~~\ [1]
+  4 |   T
+    | ~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/acc-title-twice-crlf
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/acc-title-twice-crlf-input.mmd
+
+Code:
+  1 | journey
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/lex-acc-title-twice
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/lex-acc-title-twice-input.mmd
+
+Code:
+  1 | journey
+  2 |   accTitle: a
+  3 |   accTitle: b
+    |   ^~~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the accessible title set on line 2 with the one of this `accTitle`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/lex-title-twice
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/lex-title-twice-input.mmd
+
+Code:
+  1 | journey
+  2 |   title A
+  3 |   title B
+    |   ^~~~~~~ [1]
+  4 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/title-extra-space
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/title-extra-space-input.mmd
+
+Code:
+  1 | journey
+  2 |   title T
+  3 |   title  T
+    |   ^~~~~~~~ [1]
+  4 |   section S
+  5 |     t: 5: Me
+  6 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/title-three-times
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/title-three-times-input.mmd
+
+Code:
+  1 | journey
+  2 |   title a
+  3 |   title b
+    |   ^~~~~~~ [1]
+  4 |   title c
+    |   ^~~~~~~ [2]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+[2] mermaid.js replaces the title set on line 3 with the one of this `title`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/title-word-task-after-title
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/title-word-task-after-title-input.mmd
+
+Code:
+  1 | journey
+  2 |   title My day
+  3 |   section Work
+  4 |     Title page: 5: Me
+    |     ^~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---
+
+
+Test: journey-no-duplicate-title >> invalid >>> invalid/journey/title-word-upper-case-task-after-title
+Filename: tests/fixtures/rules/journey-no-duplicate-title/invalid/journey/title-word-upper-case-task-after-title-input.mmd
+
+Code:
+  1 | journey
+  2 |   title My day
+  3 |   section Work
+  4 |     TITLE page: 5: Me
+    |     ^~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the title set on line 2 with the one of this `title`.
+---

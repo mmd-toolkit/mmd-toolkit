@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Units and contexts: `click` and whitespace at the end of the text, which the keyword rule reads, so the text ends in the click context; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nganttclick \n-----------^\nExpecting 'callbackname', 'href', got '1'"
+  }
+}

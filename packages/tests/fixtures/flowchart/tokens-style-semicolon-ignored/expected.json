@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md Tokens: the line rule ignores the `;`, which is a `Punctuator` token of its own, like the separator `;` of the fixture tokens-style-semicolon-separator; the tokens do not tell them apart."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [
+          "fill:#f00"
+        ],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

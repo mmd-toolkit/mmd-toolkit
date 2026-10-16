@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Units and contexts, Names: a comment line that holds the closing quote takes it, and the string is not closed; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...iagramA ||--o{ B : \"x\n----------------------^\nExpecting 'UNICODE_TEXT', 'ENTITY_NAME', 'WORD', got '\"'"
+  }
+}

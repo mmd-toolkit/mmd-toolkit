@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, names: the keyword `classDef` is not a name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...adrantChartclassDef: [0.3, 0.6]\n----------------------^\nExpecting 'SPACE', got 'point_start'"
+  }
+}

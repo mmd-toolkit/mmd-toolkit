@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Empty description blocks: an empty block between the bracket and the styles."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6",
+        "radius": 5
+      }
+    ],
+    "classes": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Click and callbacks: the click context reads `B` as a click id, which the grammar does not accept after the callback name, so the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...Aclick A cb click B\n---------------------^\nExpecting 'STR', got 'CLICK'"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "empty-markdown at EOF tests an unfinished or empty lexical context."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "\"``\"",
+        "label": "\"``\"",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

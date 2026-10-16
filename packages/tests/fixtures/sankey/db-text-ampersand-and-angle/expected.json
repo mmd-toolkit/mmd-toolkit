@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: `&`, `<`, and `>` are characters of a field."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a&b",
+      "c<d>"
+    ],
+    "links": [
+      {
+        "source": "a&b",
+        "target": "c<d>",
+        "value": 1
+      }
+    ]
+  }
+}

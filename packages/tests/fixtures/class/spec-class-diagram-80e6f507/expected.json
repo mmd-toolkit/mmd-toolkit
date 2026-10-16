@@ -1,0 +1,98 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 1180,
+    "test": "given a basic class diagram,  > when parsing annotations > should handle the docs example: nested annotation with enumeration"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Shape",
+        "type": "",
+        "label": "Shape",
+        "text": "Shape",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "draw",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "noOfVertices"
+          }
+        ],
+        "annotations": [
+          "interface"
+        ],
+        "styles": []
+      },
+      {
+        "id": "Color",
+        "type": "",
+        "label": "Color",
+        "text": "Color",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "RED"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "BLUE"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "GREEN"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "WHITE"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "BLACK"
+          }
+        ],
+        "annotations": [
+          "enumeration"
+        ],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

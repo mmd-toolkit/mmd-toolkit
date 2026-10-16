@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Attributes, in a body and in a member line under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): the name of each is recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "int a&equals;b"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "",
+            "id": "c&lt;d&gt;"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "~",
+            "classifier": "$",
+            "id": "List~int~ e<br/>f"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "int g&equals;h"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

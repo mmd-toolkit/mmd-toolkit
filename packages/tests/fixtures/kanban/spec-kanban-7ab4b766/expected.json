@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/kanban/kanban.spec.ts",
+    "line": 184,
+    "test": "when parsing a kanban  > decorations > KNBN-14 should be possible to set classes for the node"
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "root",
+        "label": "The root",
+        "level": 4,
+        "isGroup": true
+      }
+    ]
+  }
+}

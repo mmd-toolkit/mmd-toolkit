@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, points: two points on a line with no `;` are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...hartA: [0.3, 0.6] B: [0.1, 0.2]\n----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'MINUS', 'COMMA', 'COLON', 'BRKT', 'UNIT', 'SPACE', 'STYLE', 'PCT', 'NEWLINE', 'SEMI', 'EOF', got 'point_start'"
+  }
+}

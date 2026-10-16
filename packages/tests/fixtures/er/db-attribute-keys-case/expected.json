@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A key is recognized in any case and recorded as written: `pk`, `Pk`, `fK`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [
+          {
+            "type": "int",
+            "name": "a",
+            "keys": [
+              "pk"
+            ],
+            "comment": ""
+          },
+          {
+            "type": "int",
+            "name": "b",
+            "keys": [
+              "Pk",
+              "fK"
+            ],
+            "comment": ""
+          }
+        ],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

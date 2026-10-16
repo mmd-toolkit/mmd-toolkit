@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md StringLiteral: the token of a backquoted name that is not closed ends at the last character that is not whitespace or a line terminator; the Db id keeps the spaces, the line feeds, and the line feed read after the end of the text."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "x  \n\n\n",
+        "type": "",
+        "label": "x  \n\n\n",
+        "text": "x  \n\n\n",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

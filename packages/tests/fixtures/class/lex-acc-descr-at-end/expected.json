@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accDescr line with no text before the end of the text: the statement is not complete, and the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...ssDiagramaccDescr:\n---------------------^\nExpecting 'EOF', got '1'"
+  }
+}

@@ -1,0 +1,176 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: gantt-no-unread-tag >> invalid >>> docs/rules/gantt-no-unread-tag.md incorrect 1
+Filename: gantt-no-unread-tag-incorrect-1.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   Design :2024-01-06, 3d
+  4 |   Build :DONE, 5d
+    |          ^~~~ [1]
+  5 |
+
+[1] mermaid.js does not read `DONE` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> docs/rules/gantt-no-unread-tag.md incorrect 2
+Filename: gantt-no-unread-tag-incorrect-2.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   Design :2024-01-06, 3d
+  4 |   Build :done crit, 5d
+    |          ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js does not read `done` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> docs/rules/gantt-no-unread-tag.md incorrect 3
+Filename: gantt-no-unread-tag-incorrect-3.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   Design :2024-01-06, done
+    |                       ^~~~ [1]
+  4 |
+
+[1] mermaid.js does not read `done` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> invalid/gantt/db-task-tag-case
+Filename: tests/fixtures/rules/gantt-no-unread-tag/invalid/gantt/db-task-tag-case-input.mmd
+
+Code:
+  1 | gantt
+  2 |   A :CRIT, 1d
+    |      ^~~~ [1]
+  3 |
+
+[1] mermaid.js does not read `CRIT` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> invalid/gantt/gram-task-tag-after-item
+Filename: tests/fixtures/rules/gantt-no-unread-tag/invalid/gantt/gram-task-tag-after-item-input.mmd
+
+Code:
+  1 | gantt
+  2 | a : 1d, done
+    |         ^~~~ [1]
+
+[1] mermaid.js does not read `done` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> invalid/gantt/gram-task-tag-empty-then-tag
+Filename: tests/fixtures/rules/gantt-no-unread-tag/invalid/gantt/gram-task-tag-empty-then-tag-input.mmd
+
+Code:
+  1 | gantt
+  2 | a : done,, crit, 1d
+    |            ^~~~ [1]
+
+[1] mermaid.js does not read `crit` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> invalid/gantt/gram-task-tag-mixed-case
+Filename: tests/fixtures/rules/gantt-no-unread-tag/invalid/gantt/gram-task-tag-mixed-case-input.mmd
+
+Code:
+  1 | gantt
+  2 | a : Done, 1d
+    |     ^~~~ [1]
+
+[1] mermaid.js does not read `Done` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> invalid/gantt/gram-task-tags-upper-case
+Filename: tests/fixtures/rules/gantt-no-unread-tag/invalid/gantt/gram-task-tags-upper-case-input.mmd
+
+Code:
+  1 | gantt
+  2 | a : DONE, 1d
+    |     ^~~~ [1]
+
+[1] mermaid.js does not read `DONE` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> invalid/gantt/gram-task-two-words-no-tag
+Filename: tests/fixtures/rules/gantt-no-unread-tag/invalid/gantt/gram-task-two-words-no-tag-input.mmd
+
+Code:
+  1 | gantt
+  2 | a : done active, 1d
+    |     ^~~~~~~~~~~ [1]
+
+[1] mermaid.js does not read `done` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> invalid/gantt/tag-capitalized-only-item
+Filename: tests/fixtures/rules/gantt-no-unread-tag/invalid/gantt/tag-capitalized-only-item-input.mmd
+
+Code:
+  1 | gantt
+  2 | dateFormat YYYY-MM-DD
+  3 | a : 2024-01-01, 1d
+  4 | b : Done
+    |     ^~~~ [1]
+  5 |
+
+[1] mermaid.js does not read `Done` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> invalid/gantt/tag-capitalized-start-of-three
+Filename: tests/fixtures/rules/gantt-no-unread-tag/invalid/gantt/tag-capitalized-start-of-three-input.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   a : x, Crit, 1d
+    |          ^~~~ [1]
+  4 |
+
+[1] mermaid.js does not read `Crit` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> invalid/gantt/tag-end-of-three
+Filename: tests/fixtures/rules/gantt-no-unread-tag/invalid/gantt/tag-end-of-three-input.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   a : x, 2024-01-01, milestone
+    |                      ^~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js does not read `milestone` as a tag here: it takes this as an item of the data.
+---
+
+
+Test: gantt-no-unread-tag >> invalid >>> invalid/gantt/tags-without-comma-start
+Filename: tests/fixtures/rules/gantt-no-unread-tag/invalid/gantt/tags-without-comma-start-input.mmd
+
+Code:
+  1 | gantt
+  2 |   dateFormat YYYY-MM-DD
+  3 |   a : 2024-01-01, 1d
+  4 |   b : done crit, 1d
+    |       ^~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js does not read `done` as a tag here: it takes this as an item of the data.
+---

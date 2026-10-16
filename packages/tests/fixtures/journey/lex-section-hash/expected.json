@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Keywords and what follows them: at a `#` the section text cannot start."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\njourney  section#x\n------------------^\nExpecting 'taskData', got 'NEWLINE'"
+  }
+}

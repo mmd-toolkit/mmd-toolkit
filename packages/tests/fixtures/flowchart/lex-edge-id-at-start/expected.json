@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The statement context, rule 15: an edge id needs at least one character before its `@`, so `@-->` has no edge id, no rule reads the `@`, and the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nflowchart LRA @-->B\n--------------^"
+  }
+}

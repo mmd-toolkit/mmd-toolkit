@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Edge statements: a chain of edges loses the nodes before the last, so style on the middle node throws in the Db."
+  },
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot set properties of undefined (setting 'styles')"
+  }
+}

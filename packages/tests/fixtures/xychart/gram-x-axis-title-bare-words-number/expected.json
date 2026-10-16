@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, x-axis: words and then a number are rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ta x-axis Year 2024\n----------------------^\nExpecting 'ARROW_DELIMITER', got 'NEWLINE'"
+  }
+}

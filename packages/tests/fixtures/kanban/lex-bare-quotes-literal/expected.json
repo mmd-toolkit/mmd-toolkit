@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md S05, E02 (Shape context): Empty-looking quotes inside bare text stay text."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x\"\"",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

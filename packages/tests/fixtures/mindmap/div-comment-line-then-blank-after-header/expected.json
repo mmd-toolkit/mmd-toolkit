@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Blank lines: a comment line is removed with its line feed, so a blank line follows the header; accepted here, rejected by mermaid.js."
+  },
+  "knownDivergence": "blank-line-after-header-or-comments",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nmindmaproot\n-------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'NODE_ID'"
+  }
+}

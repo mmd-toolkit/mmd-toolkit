@@ -1,0 +1,17 @@
+{
+  "message": "An empty markdown string cannot be written here",
+  "range": [
+    14,
+    18
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 0
+    },
+    "end": {
+      "line": 2,
+      "column": 4
+    }
+  }
+}

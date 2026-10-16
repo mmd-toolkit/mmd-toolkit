@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A class definition with five styles keeps all of them in the written order."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:#f00",
+          "stroke:#00f",
+          "stroke-width:2px",
+          "color:#fff",
+          "font-style:italic"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

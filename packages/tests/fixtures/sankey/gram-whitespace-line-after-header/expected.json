@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, lines: a line of spaces after the header is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankey   a,b,1\n---------^\nExpecting 'COMMA', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/kanban/kanban.spec.ts",
+    "line": 296,
+    "test": "when parsing a kanban  > KNBN-20 should be possible to have meaningless empty rows in a kanban abc124"
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "root",
+        "label": "Root",
+        "level": 2,
+        "isGroup": true
+      },
+      {
+        "id": "Child",
+        "label": "Child",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "root"
+      },
+      {
+        "id": "a",
+        "label": "a",
+        "level": 6,
+        "isGroup": false,
+        "parentId": "root"
+      },
+      {
+        "id": "b",
+        "label": "New Stuff",
+        "level": 6,
+        "isGroup": false,
+        "parentId": "root"
+      }
+    ]
+  }
+}

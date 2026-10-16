@@ -1,0 +1,140 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: quadrant-no-redefined-class >> invalid >>> docs/rules/quadrant-no-redefined-class.md incorrect 1
+Filename: quadrant-no-redefined-class-incorrect-1.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A:::c: [0.3, 0.6]
+  3 |   classDef c color: #f00
+  4 |   classDef c radius: 9
+    |   ^~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the styles of the class `c`, set on line 3, with those of this `classDef`.
+---
+
+
+Test: quadrant-no-redefined-class >> invalid >>> invalid/quadrant/classdef-after-point
+Filename: tests/fixtures/rules/quadrant-no-redefined-class/invalid/quadrant/classdef-after-point-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   A:::c: [0.3, 0.6]
+  3 |   classDef c color: #f00
+  4 |   classDef c color: #00f
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |
+
+[1] mermaid.js replaces the styles of the class `c`, set on line 3, with those of this `classDef`.
+---
+
+
+Test: quadrant-no-redefined-class >> invalid >>> invalid/quadrant/classdef-back-to-first
+Filename: tests/fixtures/rules/quadrant-no-redefined-class/invalid/quadrant/classdef-back-to-first-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef c color: #f00
+  3 |   classDef c color: #00f
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   classDef c color: #f00
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [2]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+[2] mermaid.js replaces the styles of the class `c`, set on line 3, with those of this `classDef`.
+---
+
+
+Test: quadrant-no-redefined-class >> invalid >>> invalid/quadrant/classdef-color-case-differs
+Filename: tests/fixtures/rules/quadrant-no-redefined-class/invalid/quadrant/classdef-color-case-differs-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef c color: #f00
+  3 |   classDef c color: #F00
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+---
+
+
+Test: quadrant-no-redefined-class >> invalid >>> invalid/quadrant/classdef-color-changed
+Filename: tests/fixtures/rules/quadrant-no-redefined-class/invalid/quadrant/classdef-color-changed-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef c color: #f00
+  3 |   classDef c color: #00f
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   A:::c: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+---
+
+
+Test: quadrant-no-redefined-class >> invalid >>> invalid/quadrant/classdef-other-class-between
+Filename: tests/fixtures/rules/quadrant-no-redefined-class/invalid/quadrant/classdef-other-class-between-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef c color: #f00
+  3 |   classDef d color: #00f
+  4 |   classDef c color: #00f
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  5 |   A: [0.3, 0.6]
+  6 |
+
+[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+---
+
+
+Test: quadrant-no-redefined-class >> invalid >>> invalid/quadrant/classdef-stroke-width-written-differently
+Filename: tests/fixtures/rules/quadrant-no-redefined-class/invalid/quadrant/classdef-stroke-width-written-differently-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef c stroke-width: 1px
+  3 |   classDef c stroke-width: 01px
+    |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   A:::c: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+---
+
+
+Test: quadrant-no-redefined-class >> invalid >>> invalid/quadrant/classdef-style-lost
+Filename: tests/fixtures/rules/quadrant-no-redefined-class/invalid/quadrant/classdef-style-lost-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef c color: #f00
+  3 |   classDef c radius: 9
+    |   ^~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+---
+
+
+Test: quadrant-no-redefined-class >> invalid >>> invalid/quadrant/classdef-upper-case-keyword
+Filename: tests/fixtures/rules/quadrant-no-redefined-class/invalid/quadrant/classdef-upper-case-keyword-input.mmd
+
+Code:
+  1 | quadrantChart
+  2 |   classDef c color: #f00
+  3 |   CLASSDEF c color: #00f
+    |   ^~~~~~~~~~~~~~~~~~~~~~ [1]
+  4 |   A: [0.3, 0.6]
+  5 |
+
+[1] mermaid.js replaces the styles of the class `c`, set on line 2, with those of this `classDef`.
+---

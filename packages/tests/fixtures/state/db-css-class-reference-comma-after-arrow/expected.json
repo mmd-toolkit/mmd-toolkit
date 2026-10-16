@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Building the summary from the tree, Classes and styles: the `cssClass` of a StateReference in a transition adds its class to the state of each part of the id divided at each `,`; `C --> A,:::e` gives A the class e."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [
+          "e"
+        ],
+        "styles": []
+      },
+      {
+        "id": "C",
+        "shape": "rect",
+        "label": "C",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "A,",
+        "shape": "rect",
+        "label": "A,",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "C",
+        "end": "A,",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

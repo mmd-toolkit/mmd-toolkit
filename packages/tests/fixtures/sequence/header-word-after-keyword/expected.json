@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Detection: detection sees `sequenceDiagram`, and the grammar reads the keyword as a whole word, so `sequenceDiagramX` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nsequenceDiagramXA->\n^\nExpecting 'SPACE', 'NEWLINE', 'SD', got 'ACTOR'"
+  }
+}

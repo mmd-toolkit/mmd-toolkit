@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, html-tag-in-frontmatter: the tag that starts in the frontmatter reaches the member in mermaid.js, which reads `b='c'>d`."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "b='c'>d"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

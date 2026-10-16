@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L01 (Common lexical rules): Written CRLF is preserved in tree; Db has LF."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "a\nb",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

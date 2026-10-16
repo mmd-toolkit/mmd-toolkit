@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The whitespace character after `title:` is the line feed, so the title is the next line with its indentation: two spaces and `x`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "  x",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

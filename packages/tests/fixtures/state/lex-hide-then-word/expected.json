@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Lexical structure, The statement context, rule 21: `hide empty description` is a keyword, so `hide empty descriptionx` is three states."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "hide",
+        "shape": "rect",
+        "label": "hide",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "empty",
+        "shape": "rect",
+        "label": "empty",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "descriptionx",
+        "shape": "rect",
+        "label": "descriptionx",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

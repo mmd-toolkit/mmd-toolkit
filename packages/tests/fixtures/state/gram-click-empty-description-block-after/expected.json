@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md Click statements: the newline that a click statement needs may come after empty description blocks, each a StateAccDescrBlockStatement without text that follows the click statement; mermaid.js reads no token for the block. In 80 generated inputs, ten click statements of the fixtures each followed by six empty and two non-empty forms of the block, mermaid.js accepts the 48 with an empty block whose input it accepts without the block, also after whitespace, and rejects the other 32, as this rule does."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": [
+      {
+        "state": "A",
+        "url": "\"u\"",
+        "tooltip": "\"t\""
+      }
+    ]
+  }
+}

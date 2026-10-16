@@ -1,0 +1,63 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/gantt.md",
+    "line": 152
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "YYYY-MM-DD",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [
+      "weekends"
+    ],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "friday",
+    "title": "A Gantt Diagram Excluding Fri - Sat weekends",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Section"
+    ],
+    "tasks": [
+      {
+        "section": "Section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "30d"
+          }
+        },
+        "task": "A task          ",
+        "classes": [],
+        "id": "a1",
+        "order": 0
+      },
+      {
+        "section": "Section",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after a1"
+          },
+          "endTime": {
+            "data": "20d"
+          }
+        },
+        "task": "Another task    ",
+        "classes": [],
+        "id": "task1",
+        "order": 1
+      }
+    ],
+    "links": []
+  }
+}

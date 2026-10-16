@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, settings: under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled), the title and the accessibility texts are recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "T&lt;b&gt;x&lt;/b&gt;&lt;script&gt;y&lt;/script&gt; & &lt;i&gt;z",
+    "accTitle": "A&lt;b&gt;x&lt;/b&gt; & &lt;u&gt;",
+    "accDescr": "D&lt;b&gt;x&lt;/b&gt; & &lt;u&gt;",
+    "sections": [],
+    "tasks": []
+  }
+}

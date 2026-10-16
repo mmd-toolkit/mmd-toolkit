@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Accessibility values: the text on the next line is the accessibility title `title X`; there is no title."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "title X",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, header: a directive after a space on the header's line leaves the space, which is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nsankey a,b,1\n------^\nExpecting 'NEWLINE', got 'NON_ESCAPED_TEXT'"
+  }
+}

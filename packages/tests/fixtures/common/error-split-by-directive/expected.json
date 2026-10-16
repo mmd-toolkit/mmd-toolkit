@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Diagram detection: the directive is left out, so detection sees `error`, and the input is the error pseudo-diagram, as in mermaid.js; ast.md ErrorDiagram: the directive cuts the run into the tokens `err` and `or`."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

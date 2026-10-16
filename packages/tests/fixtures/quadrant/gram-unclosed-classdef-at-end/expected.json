@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, unclosed: `classDef` cut after a colon at the end of the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for color  is invalid, please use a valid hex code"
+  }
+}

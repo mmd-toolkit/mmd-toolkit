@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, title: the settings of the diagram in the frontmatter change nothing in the Db."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "a",
+      "b"
+    ],
+    "links": [
+      {
+        "source": "a",
+        "target": "b",
+        "value": 1
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "sankey": {
+        "width": 300,
+        "showValues": false
+      }
+    }
+  }
+}

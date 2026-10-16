@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md Case: entry 30 is case-insensitive, so ISHIKAWA selects ishikawa."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": null
+}

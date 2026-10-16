@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/mindmap/mindmap.spec.ts",
+    "line": 298,
+    "test": "when parsing a mindmap  > MMP-21 should be possible to have comments in a mindmap"
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "Root",
+      "type": 1,
+      "children": [
+        {
+          "nodeId": "Child",
+          "level": 2,
+          "descr": "Child",
+          "type": 1,
+          "children": [
+            {
+              "nodeId": "a",
+              "level": 4,
+              "descr": "a",
+              "type": 1,
+              "children": []
+            },
+            {
+              "nodeId": "b",
+              "level": 4,
+              "descr": "New Stuff",
+              "type": 2,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

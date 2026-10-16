@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: a title with a digit after categories on the same line, with nothing between; rejected by mermaid.js."
+  },
+  "knownDivergence": "title-digit-after-axis-statement",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tx-axis [a] title T5\n----------------------^\nExpecting 'title', 'X_AXIS', 'Y_AXIS', 'LINE', 'BAR', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NEWLINE', 'SEMI', 'EOF', got 'NUMBER_WITH_DECIMAL'"
+  }
+}

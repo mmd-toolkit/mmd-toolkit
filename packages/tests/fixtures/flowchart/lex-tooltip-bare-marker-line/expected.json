@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Comment lines: the line with only `%%` is no comment line, so it stays in the string of the tooltip, which is `one`, a line feed, `%%`, a line feed, and `two`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [
+          "clickable"
+        ],
+        "text": "A",
+        "props": {},
+        "link": "https://x.example"
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [
+      {
+        "id": "A",
+        "text": "one\n%%\ntwo"
+      }
+    ]
+  }
+}

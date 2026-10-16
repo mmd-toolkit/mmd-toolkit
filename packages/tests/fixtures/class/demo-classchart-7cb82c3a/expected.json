@@ -1,0 +1,92 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/classchart.html",
+    "line": 79
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Class01",
+        "type": "T",
+        "label": "Class01",
+        "text": "Class01&lt;T&gt;",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "#",
+            "classifier": "",
+            "id": "size",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "",
+            "id": "int chimp"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "int gorilla"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "*",
+            "id": "abstractAttribute string"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "Class10",
+        "type": "T",
+        "label": "Class10",
+        "text": "Class10&lt;T&gt;",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "",
+            "classifier": "",
+            "id": "size",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "int id"
+          }
+        ],
+        "annotations": [
+          "service"
+        ],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

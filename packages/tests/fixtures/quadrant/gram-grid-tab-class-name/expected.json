@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, white space: a tab in the class name of a point."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nquadrantChartA:::a\tb: [0.3, 0.6]\n------------------^\nExpecting 'point_start', got 'SPACE'"
+  }
+}

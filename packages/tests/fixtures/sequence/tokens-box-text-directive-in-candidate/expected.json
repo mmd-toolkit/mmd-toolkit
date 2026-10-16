@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/sequence.md SequenceBoxText: the directive cuts the colour candidate Group into the RawText tokens Gr and oup; the SequenceLiteral of the candidate spans both and the directive; the box is named Group."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "Group",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": [
+          "A"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

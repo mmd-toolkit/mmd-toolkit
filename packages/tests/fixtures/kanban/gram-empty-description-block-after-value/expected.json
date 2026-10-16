@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty accessibility block after a real value tests whether the earlier-diagram no-op statement exists."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 4. Unrecognized text.\n...  A[Work] accDescr {}\n----------------------^"
+  }
+}

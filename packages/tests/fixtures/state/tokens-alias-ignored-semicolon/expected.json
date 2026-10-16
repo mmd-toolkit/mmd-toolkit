@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/state.md Tokens: the ignored `;` after the second description of an alias is a RawText token; the state `A style` has the descriptions `d` and `#x`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A style",
+        "shape": "rectWithTitle",
+        "label": "d",
+        "description": [
+          "#x"
+        ],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

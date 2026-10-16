@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/classDiagram.md",
+    "line": 654
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Shape",
+        "type": "",
+        "label": "Shape",
+        "text": "Shape",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true,
+        "tooltip": "This is a tooltip for a callback"
+      },
+      {
+        "id": "Shape2",
+        "type": "",
+        "label": "Shape2",
+        "text": "Shape2",
+        "shape": "classBox",
+        "cssClasses": "default clickable",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [],
+        "haveCallback": true,
+        "tooltip": "This is a tooltip for a callback"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": [],
+    "clickCalls": [
+      {
+        "id": "Shape",
+        "name": "callbackFunction",
+        "args": null
+      },
+      {
+        "id": "Shape2",
+        "name": "callbackFunction",
+        "args": null
+      }
+    ]
+  }
+}

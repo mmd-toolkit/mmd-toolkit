@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): `%%{`, a line break, and `sequenceDiagram` is a directive that takes the keyword as its name, so no header follows and the input is rejected, as in mermaid.js."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: ->>B: x\n"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Building the summary, notes: placement 0 for `left of` and 1 for `right of`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "A",
+        "message": "x",
+        "wrap": false,
+        "type": 2,
+        "placement": 0
+      },
+      {
+        "from": "A",
+        "to": "A",
+        "message": "y",
+        "wrap": false,
+        "type": 2,
+        "placement": 1
+      }
+    ]
+  }
+}

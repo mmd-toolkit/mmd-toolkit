@@ -1,0 +1,2234 @@
+{
+  "type": "Root",
+  "diagramType": "gantt",
+  "body": {
+    "type": "GanttDiagram",
+    "body": [
+      {
+        "type": "GanttTitleStatement",
+        "value": {
+          "type": "GanttLiteral",
+          "value": "Timeline - Gantt Sampler",
+          "range": [
+            843,
+            867
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 10
+            },
+            "end": {
+              "line": 22,
+              "column": 34
+            }
+          }
+        },
+        "range": [
+          837,
+          867
+        ],
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 4
+          },
+          "end": {
+            "line": 22,
+            "column": 34
+          }
+        }
+      },
+      {
+        "type": "GanttDateFormatStatement",
+        "value": {
+          "type": "GanttLiteral",
+          "value": "YYYY",
+          "range": [
+            883,
+            887
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 15
+            },
+            "end": {
+              "line": 23,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          872,
+          887
+        ],
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 4
+          },
+          "end": {
+            "line": 23,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "GanttAxisFormatStatement",
+        "value": {
+          "type": "GanttLiteral",
+          "value": "%y",
+          "range": [
+            903,
+            905
+          ],
+          "loc": {
+            "start": {
+              "line": 24,
+              "column": 15
+            },
+            "end": {
+              "line": 24,
+              "column": 17
+            }
+          }
+        },
+        "range": [
+          892,
+          905
+        ],
+        "loc": {
+          "start": {
+            "line": 24,
+            "column": 4
+          },
+          "end": {
+            "line": 24,
+            "column": 17
+          }
+        }
+      },
+      {
+        "type": "GanttTickIntervalStatement",
+        "value": {
+          "type": "GanttLiteral",
+          "value": "1decade",
+          "range": [
+            1008,
+            1015
+          ],
+          "loc": {
+            "start": {
+              "line": 26,
+              "column": 17
+            },
+            "end": {
+              "line": 26,
+              "column": 24
+            }
+          }
+        },
+        "range": [
+          995,
+          1015
+        ],
+        "loc": {
+          "start": {
+            "line": 26,
+            "column": 4
+          },
+          "end": {
+            "line": 26,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "GanttSectionStatement",
+        "name": {
+          "type": "GanttLiteral",
+          "value": "Issue19062",
+          "range": [
+            1029,
+            1039
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 12
+            },
+            "end": {
+              "line": 28,
+              "column": 22
+            }
+          }
+        },
+        "range": [
+          1021,
+          1039
+        ],
+        "loc": {
+          "start": {
+            "line": 28,
+            "column": 4
+          },
+          "end": {
+            "line": 28,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "71   ",
+          "range": [
+            1044,
+            1049
+          ],
+          "loc": {
+            "start": {
+              "line": 29,
+              "column": 4
+            },
+            "end": {
+              "line": 29,
+              "column": 9
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "item71",
+            "range": [
+              1062,
+              1068
+            ],
+            "loc": {
+              "start": {
+                "line": 29,
+                "column": 22
+              },
+              "end": {
+                "line": 29,
+                "column": 28
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1900",
+            "range": [
+              1070,
+              1074
+            ],
+            "loc": {
+              "start": {
+                "line": 29,
+                "column": 30
+              },
+              "end": {
+                "line": 29,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1930",
+            "range": [
+              1076,
+              1080
+            ],
+            "loc": {
+              "start": {
+                "line": 29,
+                "column": 36
+              },
+              "end": {
+                "line": 29,
+                "column": 40
+              }
+            }
+          }
+        ],
+        "range": [
+          1044,
+          1080
+        ],
+        "loc": {
+          "start": {
+            "line": 29,
+            "column": 4
+          },
+          "end": {
+            "line": 29,
+            "column": 40
+          }
+        }
+      },
+      {
+        "type": "GanttSectionStatement",
+        "name": {
+          "type": "GanttLiteral",
+          "value": "Issue19401",
+          "range": [
+            1093,
+            1103
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 12
+            },
+            "end": {
+              "line": 30,
+              "column": 22
+            }
+          }
+        },
+        "range": [
+          1085,
+          1103
+        ],
+        "loc": {
+          "start": {
+            "line": 30,
+            "column": 4
+          },
+          "end": {
+            "line": 30,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "36   ",
+          "range": [
+            1108,
+            1113
+          ],
+          "loc": {
+            "start": {
+              "line": 31,
+              "column": 4
+            },
+            "end": {
+              "line": 31,
+              "column": 9
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "item36",
+            "range": [
+              1126,
+              1132
+            ],
+            "loc": {
+              "start": {
+                "line": 31,
+                "column": 22
+              },
+              "end": {
+                "line": 31,
+                "column": 28
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1913",
+            "range": [
+              1134,
+              1138
+            ],
+            "loc": {
+              "start": {
+                "line": 31,
+                "column": 30
+              },
+              "end": {
+                "line": 31,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1935",
+            "range": [
+              1140,
+              1144
+            ],
+            "loc": {
+              "start": {
+                "line": 31,
+                "column": 36
+              },
+              "end": {
+                "line": 31,
+                "column": 40
+              }
+            }
+          }
+        ],
+        "range": [
+          1108,
+          1144
+        ],
+        "loc": {
+          "start": {
+            "line": 31,
+            "column": 4
+          },
+          "end": {
+            "line": 31,
+            "column": 40
+          }
+        }
+      },
+      {
+        "type": "GanttSectionStatement",
+        "name": {
+          "type": "GanttLiteral",
+          "value": "Issue1300",
+          "range": [
+            1157,
+            1166
+          ],
+          "loc": {
+            "start": {
+              "line": 32,
+              "column": 12
+            },
+            "end": {
+              "line": 32,
+              "column": 21
+            }
+          }
+        },
+        "range": [
+          1149,
+          1166
+        ],
+        "loc": {
+          "start": {
+            "line": 32,
+            "column": 4
+          },
+          "end": {
+            "line": 32,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "94   ",
+          "range": [
+            1171,
+            1176
+          ],
+          "loc": {
+            "start": {
+              "line": 33,
+              "column": 4
+            },
+            "end": {
+              "line": 33,
+              "column": 9
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "item94",
+            "range": [
+              1189,
+              1195
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 22
+              },
+              "end": {
+                "line": 33,
+                "column": 28
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1910",
+            "range": [
+              1197,
+              1201
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 30
+              },
+              "end": {
+                "line": 33,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1915",
+            "range": [
+              1203,
+              1207
+            ],
+            "loc": {
+              "start": {
+                "line": 33,
+                "column": 36
+              },
+              "end": {
+                "line": 33,
+                "column": 40
+              }
+            }
+          }
+        ],
+        "range": [
+          1171,
+          1207
+        ],
+        "loc": {
+          "start": {
+            "line": 33,
+            "column": 4
+          },
+          "end": {
+            "line": 33,
+            "column": 40
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "5    ",
+          "range": [
+            1212,
+            1217
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 4
+            },
+            "end": {
+              "line": 34,
+              "column": 9
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "item5",
+            "range": [
+              1230,
+              1235
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 22
+              },
+              "end": {
+                "line": 34,
+                "column": 27
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1920",
+            "range": [
+              1238,
+              1242
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 30
+              },
+              "end": {
+                "line": 34,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1925",
+            "range": [
+              1244,
+              1248
+            ],
+            "loc": {
+              "start": {
+                "line": 34,
+                "column": 36
+              },
+              "end": {
+                "line": 34,
+                "column": 40
+              }
+            }
+          }
+        ],
+        "range": [
+          1212,
+          1248
+        ],
+        "loc": {
+          "start": {
+            "line": 34,
+            "column": 4
+          },
+          "end": {
+            "line": 34,
+            "column": 40
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "0    ",
+          "range": [
+            1253,
+            1258
+          ],
+          "loc": {
+            "start": {
+              "line": 35,
+              "column": 4
+            },
+            "end": {
+              "line": 35,
+              "column": 9
+            }
+          }
+        },
+        "tags": [
+          {
+            "type": "Identifier",
+            "name": "milestone",
+            "range": [
+              1260,
+              1269
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 11
+              },
+              "end": {
+                "line": 35,
+                "column": 20
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "item0",
+            "range": [
+              1271,
+              1276
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 22
+              },
+              "end": {
+                "line": 35,
+                "column": 27
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1918",
+            "range": [
+              1279,
+              1283
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 30
+              },
+              "end": {
+                "line": 35,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1s",
+            "range": [
+              1285,
+              1287
+            ],
+            "loc": {
+              "start": {
+                "line": 35,
+                "column": 36
+              },
+              "end": {
+                "line": 35,
+                "column": 38
+              }
+            }
+          }
+        ],
+        "range": [
+          1253,
+          1287
+        ],
+        "loc": {
+          "start": {
+            "line": 35,
+            "column": 4
+          },
+          "end": {
+            "line": 35,
+            "column": 38
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "9    ",
+          "range": [
+            1292,
+            1297
+          ],
+          "loc": {
+            "start": {
+              "line": 36,
+              "column": 4
+            },
+            "end": {
+              "line": 36,
+              "column": 9
+            }
+          }
+        },
+        "tags": [
+          {
+            "type": "Identifier",
+            "name": "vert",
+            "range": [
+              1299,
+              1303
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 11
+              },
+              "end": {
+                "line": 36,
+                "column": 15
+              }
+            }
+          }
+        ],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "1906",
+            "range": [
+              1318,
+              1322
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 30
+              },
+              "end": {
+                "line": 36,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1s   %% not yet official",
+            "range": [
+              1324,
+              1348
+            ],
+            "loc": {
+              "start": {
+                "line": 36,
+                "column": 36
+              },
+              "end": {
+                "line": 36,
+                "column": 60
+              }
+            }
+          }
+        ],
+        "range": [
+          1292,
+          1348
+        ],
+        "loc": {
+          "start": {
+            "line": 36,
+            "column": 4
+          },
+          "end": {
+            "line": 36,
+            "column": 60
+          }
+        }
+      },
+      {
+        "type": "GanttTaskStatement",
+        "description": {
+          "type": "GanttLiteral",
+          "value": "64   ",
+          "range": [
+            1353,
+            1358
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 4
+            },
+            "end": {
+              "line": 37,
+              "column": 9
+            }
+          }
+        },
+        "tags": [],
+        "items": [
+          {
+            "type": "GanttLiteral",
+            "value": "workaround",
+            "range": [
+              1360,
+              1370
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 11
+              },
+              "end": {
+                "line": 37,
+                "column": 21
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1923",
+            "range": [
+              1379,
+              1383
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 30
+              },
+              "end": {
+                "line": 37,
+                "column": 34
+              }
+            }
+          },
+          {
+            "type": "GanttLiteral",
+            "value": "1s   %% custom CSS object https://github.com/mermaid-js/mermaid/issues/3250",
+            "range": [
+              1385,
+              1460
+            ],
+            "loc": {
+              "start": {
+                "line": 37,
+                "column": 36
+              },
+              "end": {
+                "line": 37,
+                "column": 111
+              }
+            }
+          }
+        ],
+        "range": [
+          1353,
+          1460
+        ],
+        "loc": {
+          "start": {
+            "line": 37,
+            "column": 4
+          },
+          "end": {
+            "line": 37,
+            "column": 111
+          }
+        }
+      }
+    ],
+    "range": [
+      827,
+      1460
+    ],
+    "loc": {
+      "start": {
+        "line": 21,
+        "column": 0
+      },
+      "end": {
+        "line": 37,
+        "column": 111
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "    # Frontmatter config, YAML comments\n    title: Ignored if specified in chart\n    displayMode: compact     #gantt specific setting but works at this level too\n    config:\n#        theme: forest\n#        themeCSS: \" #item36 { fill: CadetBlue } \"\n        themeCSS: \" // YAML supports multiline strings using a newline markers: \\n\n            #item36 { fill: CadetBlue }       \\n\n\n            // Custom marker workaround CSS from forum (below)    \\n\n            rect[id^=workaround] { height: calc(100% - 50px) ; transform: translate(9px, 25px); y: 0; width: 1.5px; stroke: none; fill: red; }   \\n\n            text[id^=workaround] { fill: red; y: 100%; font-size: 15px;}\n        \"\n        gantt:\n            useWidth: 400\n            rightPadding: 0\n            topAxis: true  #false\n            numberSectionStyles: 2",
+    "valueRange": [
+      4,
+      822
+    ],
+    "range": [
+      0,
+      826
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 20,
+        "column": 3
+      }
+    }
+  },
+  "comments": [
+    {
+      "type": "Comment",
+      "mark": "%%",
+      "value": " this next line doesn't recognise 'decade' or 'year', but will silently ignore",
+      "range": [
+        910,
+        990
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 4
+        },
+        "end": {
+          "line": 25,
+          "column": 84
+        }
+      }
+    }
+  ],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "# Frontmatter config, YAML comments\n    title: Ignored if specified in chart\n    displayMode: compact     #gantt specific setting but works at this level too\n    config:\n#        theme: forest\n#        themeCSS: \" #item36 { fill: CadetBlue } \"\n        themeCSS: \" // YAML supports multiline strings using a newline markers: \\n\n            #item36 { fill: CadetBlue }       \\n\n\n            // Custom marker workaround CSS from forum (below)    \\n\n            rect[id^=workaround] { height: calc(100% - 50px) ; transform: translate(9px, 25px); y: 0; width: 1.5px; stroke: none; fill: red; }   \\n\n            text[id^=workaround] { fill: red; y: 100%; font-size: 15px;}\n        \"\n        gantt:\n            useWidth: 400\n            rightPadding: 0\n            topAxis: true  #false\n            numberSectionStyles: 2",
+      "range": [
+        8,
+        822
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 4
+        },
+        "end": {
+          "line": 19,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        823,
+        826
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 0
+        },
+        "end": {
+          "line": 20,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "gantt",
+      "range": [
+        827,
+        832
+      ],
+      "loc": {
+        "start": {
+          "line": 21,
+          "column": 0
+        },
+        "end": {
+          "line": 21,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "title",
+      "range": [
+        837,
+        842
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 4
+        },
+        "end": {
+          "line": 22,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Timeline - Gantt Sampler",
+      "range": [
+        843,
+        867
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 10
+        },
+        "end": {
+          "line": 22,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "dateFormat",
+      "range": [
+        872,
+        882
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 4
+        },
+        "end": {
+          "line": 23,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "YYYY",
+      "range": [
+        883,
+        887
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 15
+        },
+        "end": {
+          "line": 23,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "axisFormat",
+      "range": [
+        892,
+        902
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 4
+        },
+        "end": {
+          "line": 24,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "%y",
+      "range": [
+        903,
+        905
+      ],
+      "loc": {
+        "start": {
+          "line": 24,
+          "column": 15
+        },
+        "end": {
+          "line": 24,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "tickInterval",
+      "range": [
+        995,
+        1007
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 4
+        },
+        "end": {
+          "line": 26,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1decade",
+      "range": [
+        1008,
+        1015
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 17
+        },
+        "end": {
+          "line": 26,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        1021,
+        1028
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 4
+        },
+        "end": {
+          "line": 28,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Issue19062",
+      "range": [
+        1029,
+        1039
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 12
+        },
+        "end": {
+          "line": 28,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "71   ",
+      "range": [
+        1044,
+        1049
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 4
+        },
+        "end": {
+          "line": 29,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        1049,
+        1050
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 9
+        },
+        "end": {
+          "line": 29,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "item71",
+      "range": [
+        1062,
+        1068
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 22
+        },
+        "end": {
+          "line": 29,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1068,
+        1069
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 28
+        },
+        "end": {
+          "line": 29,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1900",
+      "range": [
+        1070,
+        1074
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 30
+        },
+        "end": {
+          "line": 29,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1074,
+        1075
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 34
+        },
+        "end": {
+          "line": 29,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1930",
+      "range": [
+        1076,
+        1080
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 36
+        },
+        "end": {
+          "line": 29,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        1085,
+        1092
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 4
+        },
+        "end": {
+          "line": 30,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Issue19401",
+      "range": [
+        1093,
+        1103
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 12
+        },
+        "end": {
+          "line": 30,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "36   ",
+      "range": [
+        1108,
+        1113
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 4
+        },
+        "end": {
+          "line": 31,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        1113,
+        1114
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 9
+        },
+        "end": {
+          "line": 31,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "item36",
+      "range": [
+        1126,
+        1132
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 22
+        },
+        "end": {
+          "line": 31,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1132,
+        1133
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 28
+        },
+        "end": {
+          "line": 31,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1913",
+      "range": [
+        1134,
+        1138
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 30
+        },
+        "end": {
+          "line": 31,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1138,
+        1139
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 34
+        },
+        "end": {
+          "line": 31,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1935",
+      "range": [
+        1140,
+        1144
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 36
+        },
+        "end": {
+          "line": 31,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "section",
+      "range": [
+        1149,
+        1156
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 4
+        },
+        "end": {
+          "line": 32,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Issue1300",
+      "range": [
+        1157,
+        1166
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 12
+        },
+        "end": {
+          "line": 32,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "94   ",
+      "range": [
+        1171,
+        1176
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 4
+        },
+        "end": {
+          "line": 33,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        1176,
+        1177
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 9
+        },
+        "end": {
+          "line": 33,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "item94",
+      "range": [
+        1189,
+        1195
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 22
+        },
+        "end": {
+          "line": 33,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1195,
+        1196
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 28
+        },
+        "end": {
+          "line": 33,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1910",
+      "range": [
+        1197,
+        1201
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 30
+        },
+        "end": {
+          "line": 33,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1201,
+        1202
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 34
+        },
+        "end": {
+          "line": 33,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1915",
+      "range": [
+        1203,
+        1207
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 36
+        },
+        "end": {
+          "line": 33,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "5    ",
+      "range": [
+        1212,
+        1217
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 4
+        },
+        "end": {
+          "line": 34,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        1217,
+        1218
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 9
+        },
+        "end": {
+          "line": 34,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "item5",
+      "range": [
+        1230,
+        1235
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 22
+        },
+        "end": {
+          "line": 34,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1235,
+        1236
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 27
+        },
+        "end": {
+          "line": 34,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1920",
+      "range": [
+        1238,
+        1242
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 30
+        },
+        "end": {
+          "line": 34,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1242,
+        1243
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 34
+        },
+        "end": {
+          "line": 34,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1925",
+      "range": [
+        1244,
+        1248
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 36
+        },
+        "end": {
+          "line": 34,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "0    ",
+      "range": [
+        1253,
+        1258
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 4
+        },
+        "end": {
+          "line": 35,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        1258,
+        1259
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 9
+        },
+        "end": {
+          "line": 35,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "milestone",
+      "range": [
+        1260,
+        1269
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 11
+        },
+        "end": {
+          "line": 35,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1269,
+        1270
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 20
+        },
+        "end": {
+          "line": 35,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "item0",
+      "range": [
+        1271,
+        1276
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 22
+        },
+        "end": {
+          "line": 35,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1276,
+        1277
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 27
+        },
+        "end": {
+          "line": 35,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1918",
+      "range": [
+        1279,
+        1283
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 30
+        },
+        "end": {
+          "line": 35,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1283,
+        1284
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 34
+        },
+        "end": {
+          "line": 35,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1s",
+      "range": [
+        1285,
+        1287
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 36
+        },
+        "end": {
+          "line": 35,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "9    ",
+      "range": [
+        1292,
+        1297
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 4
+        },
+        "end": {
+          "line": 36,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        1297,
+        1298
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 9
+        },
+        "end": {
+          "line": 36,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "vert",
+      "range": [
+        1299,
+        1303
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 11
+        },
+        "end": {
+          "line": 36,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1303,
+        1304
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 15
+        },
+        "end": {
+          "line": 36,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1906",
+      "range": [
+        1318,
+        1322
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 30
+        },
+        "end": {
+          "line": 36,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1322,
+        1323
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 34
+        },
+        "end": {
+          "line": 36,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1s   %% not yet official",
+      "range": [
+        1324,
+        1348
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 36
+        },
+        "end": {
+          "line": 36,
+          "column": 60
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "64   ",
+      "range": [
+        1353,
+        1358
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 4
+        },
+        "end": {
+          "line": 37,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ":",
+      "range": [
+        1358,
+        1359
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 9
+        },
+        "end": {
+          "line": 37,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "workaround",
+      "range": [
+        1360,
+        1370
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 11
+        },
+        "end": {
+          "line": 37,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1370,
+        1371
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 21
+        },
+        "end": {
+          "line": 37,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1923",
+      "range": [
+        1379,
+        1383
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 30
+        },
+        "end": {
+          "line": 37,
+          "column": 34
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        1383,
+        1384
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 34
+        },
+        "end": {
+          "line": 37,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "1s   %% custom CSS object https://github.com/mermaid-js/mermaid/issues/3250",
+      "range": [
+        1385,
+        1460
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 36
+        },
+        "end": {
+          "line": 37,
+          "column": 111
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    1461
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 38,
+      "column": 0
+    }
+  }
+}

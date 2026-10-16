@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, label: a label without quotes is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...chart-beta line [1 abc]\n----------------------^\nExpecting 'SQUARE_BRACES_END', 'COMMA', 'STR', got 'ALPHA'"
+  }
+}

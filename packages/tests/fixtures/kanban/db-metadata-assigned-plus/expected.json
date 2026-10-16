@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "assigned metadata with plus tests truthiness, conversion, or validation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "Work",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S",
+        "assigned": "2"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "assigned": "2"
+        }
+      }
+    ]
+  }
+}

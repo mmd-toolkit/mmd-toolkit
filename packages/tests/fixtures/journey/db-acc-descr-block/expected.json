@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The accessibility description in a block keeps its line break, and the whitespace after it is left out."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "line one\nline two",
+    "sections": [],
+    "tasks": []
+  }
+}

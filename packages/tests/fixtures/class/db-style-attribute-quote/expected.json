@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Building the summary from the tree: each value is read in converted form, so the attribute quotes in a style are `'`: the styles are `fill:#f00` and `x:<a b='c'>y</a>`."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": [
+          "fill:#f00",
+          "x:<a b='c'>y</a>"
+        ]
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

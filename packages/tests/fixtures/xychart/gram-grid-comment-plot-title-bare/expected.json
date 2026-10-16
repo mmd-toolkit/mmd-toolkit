@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, text grid: a `%%` comment inside the text (`a %% b`) in the title of a plot without quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...eta line a %% b [1]\n----------------------^\nExpecting 'SQUARE_BRACES_START', got 'NEWLINE'"
+  }
+}

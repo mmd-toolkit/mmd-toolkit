@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The style context: a class statement that ends with a string stays in the style context, where `accDescr` is a style word, which no rule of the grammar takes there."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...t r {}class r \"c\" accDescr {}\n---------------------^\nExpecting 'NEWLINE', 'EOF', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'direction_tb', 'direction_bt', 'direction_rl', 'direction_lr', 'REQUIREMENT', 'FUNCTIONAL_REQUIREMENT', 'INTERFACE_REQUIREMENT', 'PERFORMANCE_REQUIREMENT', 'PHYSICAL_REQUIREMENT', 'DESIGN_CONSTRAINT', 'ELEMENT', 'CLASSDEF', 'CLASS', 'COMMA', 'STYLE', 'unqString', 'qString', got 'ALPHA'"
+  }
+}

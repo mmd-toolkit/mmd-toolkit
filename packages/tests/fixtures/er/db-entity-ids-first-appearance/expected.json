@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The entities are numbered in the order of their first appearance, wherever it is: B is 0, A is 1 (made by the first relationship), C is 2. The second relationship refers to the ids of A and C."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-B-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      },
+      {
+        "id": "entity-A-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      },
+      {
+        "id": "entity-C-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "C",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-B-0",
+        "roleA": "r",
+        "entityB": "entity-A-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-A-1",
+        "roleA": "q",
+        "entityB": "entity-C-2",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A name of only spaces is an entity but not a node: S has only the node A."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-   -0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "   ",
+        "classes": []
+      },
+      {
+        "id": "entity-A-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

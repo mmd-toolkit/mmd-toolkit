@@ -1,0 +1,93 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/gantt.md",
+    "line": 173
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "HH:mm",
+    "axisFormat": "%H:%M",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "17:49"
+          },
+          "endTime": {
+            "data": "2m"
+          }
+        },
+        "task": "Initial milestone ",
+        "classes": [],
+        "id": "m1",
+        "milestone": true,
+        "order": 0
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "m1"
+          },
+          "endTime": {
+            "data": "10m"
+          }
+        },
+        "task": "Task A ",
+        "classes": [],
+        "id": "task1",
+        "order": 1
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task1"
+          },
+          "endTime": {
+            "data": "5m"
+          }
+        },
+        "task": "Task B ",
+        "classes": [],
+        "id": "task2",
+        "order": 2
+      },
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "18:08"
+          },
+          "endTime": {
+            "data": "4m"
+          }
+        },
+        "task": "Final milestone ",
+        "classes": [],
+        "id": "m2",
+        "milestone": true,
+        "order": 3
+      }
+    ],
+    "links": []
+  }
+}

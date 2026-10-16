@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The summary under antiscript is the same as under loose."
+  },
+  "config": {
+    "securityLevel": "antiscript"
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "",
+    "axisFormat": "",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2024-01-01"
+          },
+          "endTime": {
+            "data": "1d"
+          }
+        },
+        "task": "A ",
+        "classes": [
+          "clickable",
+          "clickable"
+        ],
+        "id": "a",
+        "order": 0
+      }
+    ],
+    "links": [
+      {
+        "id": "a",
+        "url": "javascript:alert(1)"
+      }
+    ],
+    "clickCalls": [
+      {
+        "id": "a",
+        "name": "cb",
+        "args": "1"
+      }
+    ]
+  }
+}

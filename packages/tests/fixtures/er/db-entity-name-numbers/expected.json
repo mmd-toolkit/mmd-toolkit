@@ -1,0 +1,76 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Names made of digits are entities: `1`, `2`, `12`, `1.5`, and `3.0`; the second relationship refers to the entity `1` of the first."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-1-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "1",
+        "classes": []
+      },
+      {
+        "id": "entity-2-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "2",
+        "classes": []
+      },
+      {
+        "id": "entity-12-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "12",
+        "classes": []
+      },
+      {
+        "id": "entity-1.5-3",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "1.5",
+        "classes": []
+      },
+      {
+        "id": "entity-3.0-4",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "3.0",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-1-0",
+        "roleA": "r",
+        "entityB": "entity-2-1",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      },
+      {
+        "entityA": "entity-3.0-4",
+        "roleA": "r",
+        "entityB": "entity-1-0",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

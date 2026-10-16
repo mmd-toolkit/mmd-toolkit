@@ -1,0 +1,56 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/parser/state-parser.spec.js",
+    "line": 152,
+    "test": "state parser can parse... > groups (clusters/containers) > group has a state with stateID AS \"state name\" and state2ID: \"another state name\""
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "bigState1",
+        "shape": "roundedWithTitle",
+        "label": "Big State 1",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "inner1",
+        "shape": "rect",
+        "label": "inner state 1",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "bigState1"
+      },
+      {
+        "id": "inner2",
+        "shape": "rect",
+        "label": "inner state 2",
+        "description": [],
+        "classes": [],
+        "styles": [],
+        "parentId": "bigState1"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "inner1",
+        "end": "inner2",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

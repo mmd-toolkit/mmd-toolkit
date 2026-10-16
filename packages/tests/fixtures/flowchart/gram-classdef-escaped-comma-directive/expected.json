@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Style, class, and link style statements: the directive is not diagram text, so the `,` follows `\\` there, and the tree has one style; the class has the style `fill:x,y`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:x,y"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sankey.md Detection: a bare `%%` line and a line of whitespace before the header are a comment and nothing here; mermaid.js rejects the input."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%  sankeya,b,1\n^\nExpecting 'SANKEY', got 'NON_ESCAPED_TEXT'"
+  }
+}

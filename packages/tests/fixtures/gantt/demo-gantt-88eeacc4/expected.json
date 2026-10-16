@@ -1,0 +1,119 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/gantt.html",
+    "line": 48
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": "YYYY-MM-DD",
+    "axisFormat": "%m-%d %a",
+    "todayMarker": "",
+    "includes": [
+      "2021-10-09"
+    ],
+    "excludes": [
+      "weekends",
+      "2021-10-01",
+      "2021-10-04",
+      "2021-10-05",
+      "2021-10-06",
+      "2021-10-07"
+    ],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "Airworks roadmap",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "Airworks 3.4.1",
+      "Airworks 3.4.2"
+    ],
+    "tasks": [
+      {
+        "section": "Airworks 3.4.1",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2021-10-07"
+          },
+          "endTime": {
+            "data": "5d"
+          }
+        },
+        "task": "开发\t",
+        "classes": [],
+        "id": "b",
+        "order": 0
+      },
+      {
+        "section": "Airworks 3.4.1",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after b"
+          },
+          "endTime": {
+            "data": "4d"
+          }
+        },
+        "task": "测试\t",
+        "classes": [],
+        "id": "task1",
+        "order": 1
+      },
+      {
+        "section": "Airworks 3.4.1",
+        "raw": {
+          "startTime": {
+            "type": "prevTaskEnd",
+            "id": "task1"
+          },
+          "endTime": {
+            "data": "milestore"
+          }
+        },
+        "task": "OK  ",
+        "classes": [],
+        "id": "task2",
+        "order": 2
+      },
+      {
+        "section": "Airworks 3.4.2",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "2021-10-09"
+          },
+          "endTime": {
+            "data": "4d"
+          }
+        },
+        "task": "开发\t",
+        "classes": [],
+        "id": "a",
+        "order": 3
+      },
+      {
+        "section": "Airworks 3.4.2",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "after a"
+          },
+          "endTime": {
+            "data": "4d"
+          }
+        },
+        "task": "测试\t",
+        "classes": [],
+        "id": "task3",
+        "order": 4
+      }
+    ],
+    "links": []
+  }
+}

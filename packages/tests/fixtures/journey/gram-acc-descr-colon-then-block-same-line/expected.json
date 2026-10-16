@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Accessibility statements: the text of `accDescr:` takes the rest of its line, the block included."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a accDescr { b }",
+    "sections": [],
+    "tasks": []
+  }
+}

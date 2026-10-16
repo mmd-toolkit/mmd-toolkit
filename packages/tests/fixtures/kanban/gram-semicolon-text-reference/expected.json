@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L05 (Common lexical rules): Reference without ignored semicolon."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "style:#x",
+        "label": "b",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

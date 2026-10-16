@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, tags: a tag with a quoted attribute in the name of a class."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...drantChartclassDef <a b='c'>d color: #f\n----------------------^"
+  }
+}

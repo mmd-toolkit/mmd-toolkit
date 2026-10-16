@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L05 (Common lexical rules): Semicolon on another line is not removed."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "style:#x",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "::ic;on",
+        "label": "x",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

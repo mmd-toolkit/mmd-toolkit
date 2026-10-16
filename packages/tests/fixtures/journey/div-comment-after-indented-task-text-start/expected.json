@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: after indentation too, mermaid.js reads `A%%B: 5` as a comment; here it is the task `A%%B`."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

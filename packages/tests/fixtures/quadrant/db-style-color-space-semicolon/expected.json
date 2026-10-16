@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Points: a space before the ; keeps it a separator."
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "xAxis": {
+      "left": "",
+      "right": ""
+    },
+    "yAxis": {
+      "bottom": "",
+      "top": ""
+    },
+    "points": [
+      {
+        "text": "A",
+        "className": "",
+        "x": "0.3",
+        "y": "0.6",
+        "color": "#f00"
+      }
+    ],
+    "classes": []
+  }
+}

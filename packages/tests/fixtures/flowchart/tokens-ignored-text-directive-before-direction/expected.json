@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast.md Nodes: the written text of a node of text that mermaid.js does not read is the source text of its range without directives, comment regions, comments, and the ignored `;`; the text before `direction` is `A-->B a`, two spaces, and `b`."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

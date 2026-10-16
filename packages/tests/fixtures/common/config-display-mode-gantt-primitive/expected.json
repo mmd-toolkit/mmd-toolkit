@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Configuration (reference) > Frontmatter configuration: `displayMode` cannot be set on a number `gantt`, so the input is rejected with a TypeError."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "TypeError",
+    "message": "Cannot create property 'displayMode' on number '5'"
+  }
+}

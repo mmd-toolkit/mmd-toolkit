@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quote at EOF tests an unfinished or empty lexical context."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\nkanban S[\"Work\n--------------^\nExpecting 'NODE_DEND', got '1'"
+  }
+}

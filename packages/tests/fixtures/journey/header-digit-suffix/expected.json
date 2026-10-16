@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Detection: the lexer reads `journey` only where no word character follows, so `journey2` is a task text without data."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\njourney2\n^\nExpecting 'journey', got 'taskName'"
+  }
+}

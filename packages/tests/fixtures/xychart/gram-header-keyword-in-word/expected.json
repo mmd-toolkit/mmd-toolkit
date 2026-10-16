@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md The statement context: `xychart` after `-` inside a word is the header keyword, and the input is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nxycharttitle a-xychart\n---------------^\nExpecting 'title', 'X_AXIS', 'Y_AXIS', 'LINE', 'BAR', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'SQUARE_BRACES_START', 'SQUARE_BRACES_END', 'COMMA', 'NUMBER_WITH_DECIMAL', 'NEWLINE', 'SEMI', 'EOF', 'AMP', 'NUM', 'ALPHA', 'PLUS', 'EQUALS', 'MULT', 'DOT', 'BRKT', 'MINUS', 'UNDERSCORE', got 'XYCHART'"
+  }
+}

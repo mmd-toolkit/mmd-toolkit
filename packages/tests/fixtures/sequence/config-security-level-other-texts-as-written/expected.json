@@ -1,0 +1,120 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A participant description, a message, a note, and the texts of blocks under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): mermaid.js does not replace the characters of them, and they are recorded as written."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "a<b>=c<br>d",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B"
+      },
+      {
+        "name": "B",
+        "description": "a<b>=c<br>d",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "actor"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "B",
+        "message": "a<b>=c<br>d",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "a<b>=c<br>d",
+        "wrap": false,
+        "type": 2,
+        "placement": 2
+      },
+      {
+        "message": "a<b>=c<br>d",
+        "wrap": false,
+        "type": 10,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "x",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 11,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "a<b>=c<br>d",
+        "wrap": false,
+        "type": 12,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "y",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "a<b>=c<br>d",
+        "wrap": false,
+        "type": 13,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "B",
+        "to": "A",
+        "message": "z",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "message": "",
+        "wrap": false,
+        "type": 14,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

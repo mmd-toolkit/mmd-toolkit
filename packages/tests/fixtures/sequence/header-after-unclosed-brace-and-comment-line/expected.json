@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Diagram detection): with the comment line left out, `%%{`, whitespace, and `sequenceDiagram` form a directive that the directive rule finds once more in the diagram text; detection skips it, so no header follows and the input is rejected, as in mermaid.js, whose second directive scan finds the same directive."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: ->>B: x\n"
+  }
+}

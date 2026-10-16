@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, comments: the indentation of a comment line does not change the levels around it."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "child",
+          "level": 2,
+          "descr": "child",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

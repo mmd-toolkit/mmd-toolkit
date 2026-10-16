@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, text: a colon, a hash, and spaces are characters of the text."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "a: b # c",
+      "level": 0,
+      "descr": "a: b # c",
+      "type": 0,
+      "children": []
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 550,
+    "test": "when parsing ER diagram it... > accessible title and description > parses a multi line description (accDescr)"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "graph title",
+    "accDescr": "this graph is\nabout\nstuff",
+    "entities": [
+      {
+        "id": "entity-TEACHER-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "TEACHER",
+        "classes": []
+      },
+      {
+        "id": "entity-STUDENT-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "STUDENT",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-TEACHER-0",
+        "roleA": "is teacher of",
+        "entityB": "entity-STUDENT-1",
+        "cardA": "ZERO_OR_MORE",
+        "cardB": "ZERO_OR_MORE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [],
+    "subGraphs": []
+  }
+}

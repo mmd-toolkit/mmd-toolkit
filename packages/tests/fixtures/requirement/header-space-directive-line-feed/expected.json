@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Detection: without the directive, the space after the header takes the line feed, so no newline unit follows the header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nrequirementDiagram requirement r {}\n-------------------^\nExpecting 'NEWLINE', got 'REQUIREMENT'"
+  }
+}

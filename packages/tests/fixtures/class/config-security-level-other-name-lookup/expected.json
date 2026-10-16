@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Statements that name a class whose id the replacement changes under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): the id of the name is the replaced one, so each of them finds the class."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "a&equals;b",
+        "type": "",
+        "label": "a&equals;b",
+        "text": "a&equals;b",
+        "shape": "classBox",
+        "cssClasses": "default x clickable",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "y"
+          }
+        ],
+        "annotations": [
+          "interface"
+        ],
+        "styles": [],
+        "link": "https://example.com",
+        "linkTarget": "_blank",
+        "tooltip": "t"
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

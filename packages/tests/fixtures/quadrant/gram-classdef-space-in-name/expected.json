@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, classDef: a name of two words is rejected: the second word starts the styles."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named 1 color is not supported."
+  }
+}

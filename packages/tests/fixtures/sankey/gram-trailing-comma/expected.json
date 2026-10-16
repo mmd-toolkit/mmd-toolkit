@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, columns: a comma after the third field is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankeya,b,1,\n-----------^\nExpecting 'NEWLINE', 'EOF', got 'COMMA'"
+  }
+}

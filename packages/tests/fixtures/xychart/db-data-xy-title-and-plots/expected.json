@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, all fields: orientation, title, both axes, and two plots."
+  },
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "X",
+      "categories": [
+        "a",
+        "b"
+      ]
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "Y",
+      "min": 0,
+      "max": 10
+    },
+    "plots": [
+      {
+        "type": "line",
+        "title": "L",
+        "data": [
+          [
+            "a",
+            1
+          ],
+          [
+            "b",
+            2
+          ]
+        ]
+      },
+      {
+        "type": "bar",
+        "title": "B",
+        "data": [
+          [
+            "a",
+            3
+          ],
+          [
+            "b",
+            4
+          ]
+        ]
+      }
+    ]
+  }
+}

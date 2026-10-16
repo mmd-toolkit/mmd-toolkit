@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Detection: spaces after the header at the end of the text take the line feed read after the last character."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...equirementDiagram  \n----------------------^\nExpecting 'NEWLINE', got 'EOF'"
+  }
+}

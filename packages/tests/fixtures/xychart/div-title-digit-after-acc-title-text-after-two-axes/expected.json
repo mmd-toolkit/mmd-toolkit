@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: an accessibility title after two axis statements; the line feed after its text takes away one level; a title with a digit is rejected by mermaid.js."
+  },
+  "knownDivergence": "title-digit-after-axis-statement",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n... accTitle: Ttitle Q1\n----------------------^\nExpecting 'title', 'X_AXIS', 'Y_AXIS', 'LINE', 'BAR', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NEWLINE', 'SEMI', 'EOF', got 'NUMBER_WITH_DECIMAL'"
+  }
+}

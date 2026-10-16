@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md The attribute block context, rule 5: the text ends in the backquote context; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\nerDiagramA { `a\n---------------^\nExpecting 'ATTRIBUTE_WORD', '?', got '1'"
+  }
+}

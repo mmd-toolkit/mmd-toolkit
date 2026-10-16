@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The styles are `ab;c` and `de;f`: each part loses its own first `;`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [
+      {
+        "id": "c",
+        "styles": [
+          "ab;c",
+          "de;f"
+        ]
+      }
+    ],
+    "links": []
+  }
+}

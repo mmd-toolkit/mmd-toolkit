@@ -1,0 +1,223 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: class-no-undef >> invalid >>> docs/rules/class-no-undef.md incorrect 1
+Filename: class-no-undef-incorrect-1.mmd
+
+Code:
+  1 | classDiagram
+  2 |   class A
+  3 |   cssClass "C" c
+    |            ^~~ [1]
+  4 |
+
+[1] mermaid.js does nothing with `C` in this `cssClass` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> docs/rules/class-no-undef.md incorrect 2
+Filename: class-no-undef-incorrect-2.mmd
+
+Code:
+  1 | classDiagram
+  2 |   class A
+  3 |   click C href "https://x.example"
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `C` in this `click` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> docs/rules/class-no-undef.md incorrect 3
+Filename: class-no-undef-incorrect-3.mmd
+
+Code:
+  1 | classDiagram
+  2 |   note for Z "x"
+    |            ^ [1]
+  3 |
+
+[1] mermaid.js keeps this note and draws it without a line to a class: no class of the diagram has the id `Z`.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/click-decoded-name-differs-from-definition
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/click-decoded-name-differs-from-definition-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class `A#B`
+  3 | click `A#35;B` href "u"
+    |       ^~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js does nothing with `A#35;B` in this `click` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/click-space-after-comma
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/click-space-after-comma-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A
+  3 | class B
+  4 | click `A, B` href "u"
+    |       ^~~~~~ [1]
+  5 |
+
+[1] mermaid.js does nothing with ` B` in this `click` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/db-callback-names-comma-one-undefined
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/db-callback-names-comma-one-undefined-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A
+  3 | callback `A,Z` "fn"
+    |          ^~~~~ [1]
+
+[1] mermaid.js does nothing with `Z` in this `callback` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/db-callback-undefined-class
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/db-callback-undefined-class-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A
+  3 | callback C "f"
+    |          ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `C` in this `callback` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/db-click-undefined-class
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/db-click-undefined-class-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A
+  3 | click C href "https://x.example"
+    |       ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `C` in this `click` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/db-css-class-ids-space-before-comma
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/db-css-class-ids-space-before-comma-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A
+  3 | class B
+  4 | cssClass "A ,B" c
+    |          ^~~~~~ [1]
+
+[1] mermaid.js does nothing with `A ` in this `cssClass` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/db-css-class-list-space
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/db-css-class-list-space-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A
+  3 | class B
+  4 | cssClass "A, B" c
+    |          ^~~~~~ [1]
+  5 |
+
+[1] mermaid.js does nothing with ` B` in this `cssClass` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/db-css-class-undefined-class
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/db-css-class-undefined-class-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A
+  3 | cssClass "C" c
+    |          ^~~ [1]
+  4 |
+
+[1] mermaid.js does nothing with `C` in this `cssClass` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/db-link-undefined-class
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/db-link-undefined-class-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | link Z "u"
+    |      ^ [1]
+  3 |
+
+[1] mermaid.js does nothing with `Z` in this `link` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/db-note-for-undefined-class
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/db-note-for-undefined-class-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | note for Z "x"
+    |          ^ [1]
+  3 |
+
+[1] mermaid.js keeps this note and draws it without a line to a class: no class of the diagram has the id `Z`.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/db-style-undefined-class
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/db-style-undefined-class-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | style Z fill:#f00
+    |       ^ [1]
+  3 |
+
+[1] mermaid.js does nothing with `Z` in this `style` statement: no class of the diagram has this id.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/note-name-containing-comma
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/note-name-containing-comma-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | class A
+  3 | class B
+  4 | note for `A,B` "n"
+    |          ^~~~~ [1]
+  5 |
+
+[1] mermaid.js keeps this note and draws it without a line to a class: no class of the diagram has the id `A,B`.
+---
+
+
+Test: class-no-undef >> invalid >>> invalid/class/style-lollipop-interface-name
+Filename: tests/fixtures/rules/class-no-undef/invalid/class/style-lollipop-interface-name-input.mmd
+
+Code:
+  1 | classDiagram
+  2 | bar ()-- foo
+  3 | style bar fill:#f00
+    |       ^~~ [1]
+  4 |
+
+[1] mermaid.js does nothing with `bar` in this `style` statement: no class of the diagram has this id.
+---

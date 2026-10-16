@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md Case: only ASCII letters change case, so U+212A in place of K is not detected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: ISHIKAWA\nProblem\n  Cause"
+  }
+}

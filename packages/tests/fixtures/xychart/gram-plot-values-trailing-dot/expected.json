@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, plot: `5.` is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nxychart-beta bar [5.]\n-------------------^\nExpecting 'SQUARE_BRACES_END', 'COMMA', 'STR', got 'DOT'"
+  }
+}

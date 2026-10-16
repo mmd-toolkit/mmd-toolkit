@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Composites: a node inside a composite with an edge statement after block: is a block; contrast of the nodes of the edge statement."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "label": "",
+          "type": "composite",
+          "children": [
+            {
+              "id": "C",
+              "label": "C",
+              "type": "na",
+              "widthInColumns": 1,
+              "styles": [
+                "fill:red"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

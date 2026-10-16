@@ -1,0 +1,89 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The end state of the last region is `generated-region-1_end`, in the nodes and in the transition."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "divider-id-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "X",
+        "dir": "TB"
+      },
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "A",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-1"
+      },
+      {
+        "id": "divider-id-1_end",
+        "shape": "stateEnd",
+        "label": "divider-id-1_end",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-1"
+      },
+      {
+        "id": "generated-region-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "X",
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "generated-region-1"
+      },
+      {
+        "id": "generated-region-1_end",
+        "shape": "stateEnd",
+        "label": "generated-region-1_end",
+        "classes": [],
+        "styles": [],
+        "parentId": "generated-region-1"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "A",
+        "end": "divider-id-1_end",
+        "label": ""
+      },
+      {
+        "start": "B",
+        "end": "generated-region-1_end",
+        "label": ""
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

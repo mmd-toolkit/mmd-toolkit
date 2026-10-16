@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "parser/docs/tokens.md Comment, and ast.md Nodes: the diagram comment `%% c` that the comment line after the U+2028 cuts ends before the line terminator that ends the line of its fragment `[*]`; here that line terminator is a lone CR, so the textBeforeBody of X is `\"\"`, a space, the CR, two spaces, and `accDescr {}`, as in the same input with a line feed."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "X",
+        "shape": "roundedWithTitle",
+        "label": "X",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "B",
+        "shape": "rect",
+        "label": "B",
+        "classes": [],
+        "styles": [],
+        "parentId": "X"
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

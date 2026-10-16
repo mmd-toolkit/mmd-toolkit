@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The statement context: `directionLR` is no direction line, but a name."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tDiagramdirectionLR\n----------------------^\nExpecting 'STYLE_SEPARATOR', 'END_ARROW_L', 'LINE', got 'NEWLINE'"
+  }
+}

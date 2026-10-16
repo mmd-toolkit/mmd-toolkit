@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A generic type that starts with the keyword href: mermaid.js reads the keyword as a unit of its own and rejects the text; the specified reading is the class A with the type \"href x\"."
+  },
+  "knownDivergence": "name-start-reads-unit",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ssDiagram  class A~href x~\n----------------------^\nExpecting 'NEWLINE', 'EOF', 'SQS', 'STRUCT_START', 'STRUCT_STOP', 'STYLE_SEPARATOR', 'ANNOTATION_START', got 'HREF'"
+  }
+}

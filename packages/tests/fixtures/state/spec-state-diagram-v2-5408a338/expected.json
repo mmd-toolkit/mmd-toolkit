@@ -1,0 +1,188 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/state/stateDiagram-v2.spec.js",
+    "line": 309,
+    "test": "state diagram V2,  > when parsing an info graph it > should handle concurrent state"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "root_start",
+        "shape": "stateStart",
+        "label": "root_start",
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "Active",
+        "shape": "roundedWithTitle",
+        "label": "Active",
+        "classes": [],
+        "styles": [],
+        "dir": "TB"
+      },
+      {
+        "id": "divider-id-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "Active",
+        "dir": "TB"
+      },
+      {
+        "id": "divider-id-1_start",
+        "shape": "stateStart",
+        "label": "divider-id-1_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-1"
+      },
+      {
+        "id": "NumLockOff",
+        "shape": "rect",
+        "label": "NumLockOff",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-1"
+      },
+      {
+        "id": "NumLockOn",
+        "shape": "rect",
+        "label": "NumLockOn",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-1"
+      },
+      {
+        "id": "divider-id-2",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "Active",
+        "dir": "TB"
+      },
+      {
+        "id": "divider-id-2_start",
+        "shape": "stateStart",
+        "label": "divider-id-2_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-2"
+      },
+      {
+        "id": "CapsLockOff",
+        "shape": "rect",
+        "label": "CapsLockOff",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-2"
+      },
+      {
+        "id": "CapsLockOn",
+        "shape": "rect",
+        "label": "CapsLockOn",
+        "classes": [],
+        "styles": [],
+        "parentId": "divider-id-2"
+      },
+      {
+        "id": "generated-region-1",
+        "shape": "divider",
+        "label": "",
+        "classes": [],
+        "styles": [],
+        "parentId": "Active",
+        "dir": "TB"
+      },
+      {
+        "id": "generated-region-1_start",
+        "shape": "stateStart",
+        "label": "generated-region-1_start",
+        "classes": [],
+        "styles": [],
+        "parentId": "generated-region-1"
+      },
+      {
+        "id": "ScrollLockOff",
+        "shape": "rect",
+        "label": "ScrollLockOff",
+        "classes": [],
+        "styles": [],
+        "parentId": "generated-region-1"
+      },
+      {
+        "id": "ScrollLockOn",
+        "shape": "rect",
+        "label": "ScrollLockOn",
+        "classes": [],
+        "styles": [],
+        "parentId": "generated-region-1"
+      }
+    ],
+    "notes": [],
+    "transitions": [
+      {
+        "start": "root_start",
+        "end": "Active",
+        "label": ""
+      },
+      {
+        "start": "divider-id-1_start",
+        "end": "NumLockOff",
+        "label": ""
+      },
+      {
+        "start": "NumLockOff",
+        "end": "NumLockOn",
+        "label": "EvNumLockPressed"
+      },
+      {
+        "start": "NumLockOn",
+        "end": "NumLockOff",
+        "label": "EvNumLockPressed"
+      },
+      {
+        "start": "divider-id-2_start",
+        "end": "CapsLockOff",
+        "label": ""
+      },
+      {
+        "start": "CapsLockOff",
+        "end": "CapsLockOn",
+        "label": "EvCapsLockPressed"
+      },
+      {
+        "start": "CapsLockOn",
+        "end": "CapsLockOff",
+        "label": "EvCapsLockPressed"
+      },
+      {
+        "start": "generated-region-1_start",
+        "end": "ScrollLockOff",
+        "label": ""
+      },
+      {
+        "start": "ScrollLockOff",
+        "end": "ScrollLockOn",
+        "label": "EvCapsLockPressed"
+      },
+      {
+        "start": "ScrollLockOn",
+        "end": "ScrollLockOff",
+        "label": "EvCapsLockPressed"
+      }
+    ],
+    "classDefs": [],
+    "links": []
+  }
+}

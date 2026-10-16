@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md `style` and `classDef` lines: the line rule is case-sensitive, so it does not ignore the `;` of `linkStyle 0 stroke:#f00;`, `#f00;` is an entity, and flowchart rejects the line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...linkStyle 0 stroke:ﬂ°f00¶ß\n----------------------^\nExpecting 'SEMI', 'NEWLINE', 'SPACE', 'EOF', 'COLON', 'STYLE', 'NUM', 'COMMA', 'NODE_STRING', 'UNIT', 'BRKT', 'PCT', got 'UNICODE_TEXT'"
+  }
+}

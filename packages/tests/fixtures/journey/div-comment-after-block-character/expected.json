@@ -1,0 +1,16 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Comments: rejected here, as `a%% c` is a task text without data; mermaid.js reads it as a comment."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "x",
+    "sections": [],
+    "tasks": []
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Multiline metadata tests YAML without the inline braces wrapper."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "Work",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S",
+        "ticket": "TASK-1",
+        "priority": "High",
+        "assigned": "Ada",
+        "icon": "star"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "label": "Work",
+          "ticket": "TASK-1",
+          "priority": "High",
+          "assigned": "Ada",
+          "icon": "star"
+        }
+      }
+    ]
+  }
+}

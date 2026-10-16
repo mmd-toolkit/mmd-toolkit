@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Other statements: the URL of a link is a string that is not empty."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...amclass Alink A \"\"\n---------------------^\nExpecting 'STR', got 'NEWLINE'"
+  }
+}

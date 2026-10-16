@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md A non-word character or the end: swimlane-beta must not be followed by a word character, so swimlane-betaX is not detected and no other detector matches."
+  },
+  "accepted": false,
+  "error": {
+    "name": "UnknownDiagramError",
+    "message": "No diagram type detected matching given configuration for text: swimlane-betaX LR\nA-->B"
+  }
+}

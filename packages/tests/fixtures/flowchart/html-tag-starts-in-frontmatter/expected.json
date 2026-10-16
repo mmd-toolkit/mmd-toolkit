@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences.md (html-tag-in-frontmatter): in mermaid.js `title: <a` in the frontmatter starts a tag whose attribute part reaches the `>` in the label, so `=\"c\"` is read as `='c'` and the label is `b='c'>d`. Here tags are found only in the text after the frontmatter, the `\"` stays, and the flowchart grammar rejects the label."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "<a",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "b='c'>d",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "quadrant.md Known divergences: classDef: a comment glued to the single digit that ends a colour takes it, and the colour is rejected."
+  },
+  "knownDivergence": "comment-takes-character",
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for color #ff is invalid, please use a valid hex code"
+  }
+}

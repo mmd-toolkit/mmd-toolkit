@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The node of an accDescr block is its text trimmed, with the line feed and the spaces inside kept; the description of the diagram has the whitespace after the line feed removed."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "a\nb",
+    "entities": [],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "a\n        b"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, quotes: two quotes after the opening quote are one quote at the start of the field."
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "\"a",
+      "c"
+    ],
+    "links": [
+      {
+        "source": "\"a",
+        "target": "c",
+        "value": 1
+      }
+    ]
+  }
+}

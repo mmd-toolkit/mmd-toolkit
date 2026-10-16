@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/er/parser/erDiagram.spec.js",
+    "line": 64,
+    "test": "when parsing ER diagram it... > entity name > has non A-Za-z0-9_- chars > \"Bloªªrf\" repeated occurrence"
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-Bloªªrf-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "Bloªªrf",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": []
+  }
+}

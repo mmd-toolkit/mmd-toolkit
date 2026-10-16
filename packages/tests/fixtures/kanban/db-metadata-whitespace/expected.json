@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M01, M04 (Data context): Whitespace-only metadata keeps the spaces."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {}
+      }
+    ]
+  }
+}

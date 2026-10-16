@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "embedded-data-opaque: the line with only `%%` is no comment line, so it stays in the data block, and mermaid.js rejects its content as YAML; this specification does not read the content and accepts the input."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "directives end mark is expected (3:1)\n\n 1 | \n 2 | %%\n 3 | shape: circle\n-----^\n 4 | "
+  }
+}

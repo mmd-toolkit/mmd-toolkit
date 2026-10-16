@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Subgraphs: a name after an empty description block on the header's line; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...graph S accDescr {} xAend\n-----------------------^\nExpecting 'EOF', 'NEWLINE', 'SQS', 'SEMI', got 'UNICODE_TEXT'"
+  }
+}

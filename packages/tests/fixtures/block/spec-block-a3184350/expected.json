@@ -1,0 +1,47 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/block/parser/block.spec.ts",
+    "line": 292,
+    "test": "Block diagram > when parsing a block diagram graph it should handle >  > blocks mixed with compound blocks"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": 1,
+      "children": [
+        {
+          "id": "block1",
+          "label": "Block 1",
+          "type": "square",
+          "widthInColumns": 1
+        },
+        {
+          "label": "",
+          "type": "composite",
+          "columns": 2,
+          "children": [
+            {
+              "id": "block2",
+              "label": "Block 2",
+              "type": "square",
+              "widthInColumns": 1
+            },
+            {
+              "id": "block3",
+              "label": "Block 3",
+              "type": "square",
+              "widthInColumns": 1
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

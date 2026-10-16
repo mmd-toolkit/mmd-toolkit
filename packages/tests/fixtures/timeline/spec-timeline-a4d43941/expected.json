@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/timeline/timeline.spec.js",
+    "line": 25,
+    "test": "when parsing a timeline  > Timeline > should parse TD direction"
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "TD",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "abc-123"
+    ],
+    "tasks": []
+  }
+}

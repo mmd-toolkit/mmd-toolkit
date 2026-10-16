@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, numbers: a radius of `-0` is rejected: a sign is no digit."
+  },
+  "accepted": false,
+  "error": {
+    "name": "InvalidStyleError",
+    "message": "value for radius -0 is invalid, please use a valid number"
+  }
+}

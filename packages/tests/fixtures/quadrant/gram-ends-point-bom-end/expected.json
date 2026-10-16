@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, statements: a `point` statement with a U+FEFF at the end of its line."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tChartA: [0.3, 0.6]﻿\n----------------------^\nExpecting 'ALPHA', 'NUM', 'NODE_STRING', 'MINUS', 'COLON', 'BRKT', 'UNIT', 'SPACE', 'STYLE', 'PCT', 'NEWLINE', 'SEMI', 'EOF', got 'UNICODE_TEXT'"
+  }
+}

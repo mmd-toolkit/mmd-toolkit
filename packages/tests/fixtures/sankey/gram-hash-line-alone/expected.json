@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, comments: a `#` starts no comment: the line is one field and is rejected for its columns."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankey# ca,b,1\n---------^\nExpecting 'COMMA', got 'NEWLINE'"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The name of the nested subgraph is all whitespace and it has a title, so its id is the empty text. O does not have it as a member."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "C",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "C",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "",
+        "nodes": [
+          "A"
+        ],
+        "title": "t",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "O",
+        "nodes": [
+          "B",
+          "C"
+        ],
+        "title": "O",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

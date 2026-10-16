@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Nodes and shapes: a string in a hexagon, closed by `}}`."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "r",
+          "level": 2,
+          "descr": "x",
+          "type": 6,
+          "children": []
+        }
+      ]
+    }
+  }
+}

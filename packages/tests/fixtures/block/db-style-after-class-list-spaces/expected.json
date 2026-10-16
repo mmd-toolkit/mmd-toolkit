@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Rejections outside the grammar: class makes a block for an id after a , and whitespace, read without the whitespace, so a later style B is accepted."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "c"
+          ]
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "B",
+        "type": "na",
+        "classes": [
+          "c"
+        ],
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

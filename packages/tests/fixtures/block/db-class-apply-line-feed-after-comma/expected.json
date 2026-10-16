@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Classes and styles: the whitespace after a , of the class ids may be a line feed; the tree has the ids A and B, and mermaid.js looks up the part with the line feed, finds no block, and makes a block B outside the diagram, as for class A, B c."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "c"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "B",
+        "type": "na",
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

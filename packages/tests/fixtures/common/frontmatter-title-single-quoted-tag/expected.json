@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md embedded-data-opaque: mermaid.js changes `=\"c\"` in the tag to `='c'`, which breaks the single-quoted YAML scalar, and rejects the input; this specification does not read the body and accepts it."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "YAMLException",
+    "message": "bad indentation of a mapping entry (1:15)\n\n 1 | title: '<a b='c'>'\n-------------------^"
+  }
+}

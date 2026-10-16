@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The statement context: `click` followed by `;` is no keyword; `click;A` is the vertex `click` and the vertex `A`, accepted by both."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "click",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "click",
+        "props": {}
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

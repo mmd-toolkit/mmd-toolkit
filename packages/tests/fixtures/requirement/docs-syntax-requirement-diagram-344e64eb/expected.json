@@ -1,0 +1,60 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/requirementDiagram.md",
+    "line": 35
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "checkout_req",
+        "type": "Requirement",
+        "requirementId": "1",
+        "text": "Orders must be payable online.",
+        "risk": "High",
+        "verifyMethod": "Test",
+        "cssStyles": [],
+        "classes": []
+      },
+      {
+        "name": "payment_req",
+        "type": "Functional Requirement",
+        "requirementId": "1.1",
+        "text": "Card payments must be authorised.",
+        "risk": "High",
+        "verifyMethod": "Test",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [
+      {
+        "name": "checkout_service",
+        "type": "service",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "type": "contains",
+        "src": "checkout_req",
+        "dst": "payment_req"
+      },
+      {
+        "type": "satisfies",
+        "src": "checkout_service",
+        "dst": "payment_req"
+      }
+    ],
+    "classes": []
+  }
+}

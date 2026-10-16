@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Style, class definitions, and classes: a name that both a requirement and an element have gives its classes to the requirement only."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "elements": [
+      {
+        "name": "r",
+        "type": "",
+        "docRef": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": []
+  }
+}

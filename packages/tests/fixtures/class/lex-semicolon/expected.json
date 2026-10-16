@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md The statement context: `;` matches no rule; statements are separated by line breaks only."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nclassDiagramclass A; class B\n-------------------^"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Nodes and shapes: `-)` that starts a node is an opener: type 0."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "root",
+      "type": 0,
+      "children": [
+        {
+          "nodeId": "x",
+          "level": 2,
+          "descr": "x",
+          "type": 0,
+          "children": []
+        }
+      ]
+    }
+  }
+}

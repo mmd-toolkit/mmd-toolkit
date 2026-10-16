@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Style, class, and link style statements: in a classDef statement, the `,` right after `\\` does not separate styles, so the tree has the styles `font-family:x\\,y` and `color:red`, and the Db reads `\\,` as `,`: font-family:x,y and color:red."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "a",
+        "styles": [
+          "font-family:x,y",
+          "color:red"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A second `classDef` of a name adds its styles to the first and does not move the class: `c1` has two styles and stays before `c2`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c1",
+        "styles": [
+          "fill:#f00",
+          "stroke-width:2px"
+        ]
+      },
+      {
+        "id": "c2",
+        "styles": [
+          "stroke:blue"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

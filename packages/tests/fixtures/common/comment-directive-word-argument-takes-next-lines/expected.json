@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md Comment lines: the directive takes A and the line feed after it, so the comment runs on to the end of the line B --> C, which mermaid.js does not read; the only vertex is X."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "X",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "X",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  },
+  "embedded": {
+    "config": {
+      "wrap": true
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/sequence.md SequenceBoxText: the space after a directive between the colour candidate red and the remainder text is in the value of the box text and in neither part; the box has the fill red and the name text."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 0
+      }
+    ],
+    "boxes": [
+      {
+        "name": "text",
+        "wrap": false,
+        "fill": "red",
+        "actorKeys": [
+          "A"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

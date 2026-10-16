@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md xychart, text grid: punctuation (`a, b [c]: d`) in a category without quotes."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...-beta x-axis [a, b [c]: d, b]\n----------------------^\nExpecting 'SQUARE_BRACES_END', 'COMMA', got 'SQUARE_BRACES_START'"
+  }
+}

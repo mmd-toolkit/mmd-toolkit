@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The statement has `as Bob`, so A is recorded anew, and the data block then sets the type `queue`."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "Bob",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "queue",
+        "nextActor": "A"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "type": "queue"
+        }
+      }
+    ]
+  }
+}

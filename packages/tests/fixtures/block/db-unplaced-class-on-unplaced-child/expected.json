@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, the blocks that no list holds: a `class` finds a block of a dropped composite."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "B",
+        "label": "B",
+        "type": "na",
+        "widthInColumns": 1,
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

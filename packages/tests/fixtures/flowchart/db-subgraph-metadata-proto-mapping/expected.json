@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Same as db-subgraph-metadata-proto-null with a mapping as the value (a multi-line data block, since the block ends at its first }): the metadata is {\"__proto__\": {\"key\": \"val\"}} as an own property."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "S",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "S",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "S",
+        "nodes": [],
+        "title": "S",
+        "classes": [],
+        "labelType": "text",
+        "metadata": {
+          "__proto__": {
+            "key": "val"
+          }
+        }
+      }
+    ],
+    "tooltips": []
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "metadata": {
+            "__proto__": {
+              "key": "val"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

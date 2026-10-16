@@ -1,0 +1,54 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A class diagram under securityLevel loose, one of mermaid.js's values: no text is changed, the id of a class included."
+  },
+  "config": {
+    "securityLevel": "loose"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "a=b",
+        "type": "",
+        "label": "a=b",
+        "text": "a=b",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "A",
+        "type": "",
+        "label": "a<b>=c<br>d",
+        "text": "a<b>=c<br>d",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "+",
+            "classifier": "",
+            "id": "x=y"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

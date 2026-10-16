@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A last shallower node tests delayed validation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 4,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "level": 2,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "message": "The categories have no ] before the end of the text",
+  "range": [
+    21,
+    22
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 8
+    },
+    "end": {
+      "line": 2,
+      "column": 9
+    }
+  }
+}

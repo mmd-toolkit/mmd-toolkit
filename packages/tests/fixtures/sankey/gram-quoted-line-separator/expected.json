@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: a U+2028 inside quotes is rejected, as outside ASCII."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankey\"a b\",c,1\n--------^\nExpecting 'DQUOTE', got 'ESCAPED_TEXT'"
+  }
+}

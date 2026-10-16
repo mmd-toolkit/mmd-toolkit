@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "timeline.md Directives inside units: after a block that holds `style:#x`, the ignored `;` inside a period is read through, the period `ab`."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "style:#x",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "ab",
+        "events": []
+      }
+    ]
+  }
+}

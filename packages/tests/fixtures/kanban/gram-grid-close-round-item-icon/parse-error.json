@@ -1,0 +1,17 @@
+{
+  "message": "The shape has no closer before the end of the text",
+  "range": [
+    26,
+    27
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 11
+    },
+    "end": {
+      "line": 4,
+      "column": 12
+    }
+  }
+}

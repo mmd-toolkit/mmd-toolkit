@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An overflowing plain YAML number remains a string under JSON_SCHEMA."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S",
+        "priority": "1e400"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "priority": "1e400"
+        }
+      }
+    ]
+  }
+}

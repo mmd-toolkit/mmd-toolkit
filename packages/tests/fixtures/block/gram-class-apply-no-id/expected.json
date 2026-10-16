@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: `class` alone is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\nblock-beta  class\n-----------------^\nExpecting 'CLASSENTITY_IDS', got '1'"
+  }
+}

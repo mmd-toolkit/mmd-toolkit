@@ -1,0 +1,289 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: state-no-undef >> invalid >>> docs/rules/state-no-undef.md incorrect 1
+Filename: state-no-undef-incorrect-1.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   style Z fill:#f00
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Z` in this `style` statement: no state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> docs/rules/state-no-undef.md incorrect 2
+Filename: state-no-undef-incorrect-2.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   note left of Z : x
+    |                ^ [1]
+  4 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/class-after-note-makes-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/class-after-note-makes-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | classDef c fill:#f00
+  3 | A
+  4 | note left of Z : x
+    |              ^ [1]
+  5 | class Z c
+  6 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/class-state-created-by-note
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/class-state-created-by-note-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | classDef c fill:#f00
+  3 | A
+  4 | note left of Z : x
+    |              ^ [1]
+  5 | class Z c
+  6 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/click-after-note-makes-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/click-after-note-makes-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A
+  3 | note left of Z : x
+    |              ^ [1]
+  4 | click Z href "u"
+  5 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/click-state-created-by-note
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/click-state-created-by-note-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A
+  3 | note left of Z : x
+    |              ^ [1]
+  4 | click Z href "u"
+  5 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/click-undefined
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/click-undefined-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   click Z href "https://example.com"
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Z` in this `click` statement: no state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/db-class-undefined-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/db-class-undefined-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   classDef c fill:#f00
+  3 |   A --> B
+  4 |   class Z c
+    |         ^ [1]
+  5 |
+
+[1] mermaid.js does nothing with `Z` in this `class` statement: no state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/db-click-undefined-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/db-click-undefined-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   click Z href "https://x.example"
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Z` in this `click` statement: no state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/db-style-list-undefined-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/db-style-list-undefined-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A --> B
+  3 | style A,Z fill:#f00
+    |         ^ [1]
+  4 |
+
+[1] mermaid.js does nothing with `Z` in this `style` statement: no state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/note-in-composite-state-and-note-outside-name-same-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/note-in-composite-state-and-note-outside-name-same-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A
+  3 | state P {
+  4 | note left of Z : x
+    |              ^ [1]
+  5 | }
+  6 | note right of Z : y
+  7 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/note-makes-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/note-makes-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   note left of Z : x
+    |                ^ [1]
+  4 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/note-makes-state-then-style
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/note-makes-state-then-style-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   note left of Z : x
+    |                ^ [1]
+  4 |   style Z fill:#f00
+  5 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/notes-in-two-composite-states-name-same-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/notes-in-two-composite-states-name-same-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | state S {
+  3 | B
+  4 | note left of Z : x
+    |              ^ [1]
+  5 | }
+  6 | state T {
+  7 | C
+  8 | note left of Z : y
+  9 | }
+ 10 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/style-after-note-makes-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/style-after-note-makes-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A
+  3 | note left of Z : x
+    |              ^ [1]
+  4 | style Z fill:#f00
+  5 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/style-before-note-makes-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/style-before-note-makes-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A
+  3 | style Z fill:#f00
+  4 | note left of Z : x
+    |              ^ [1]
+  5 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/style-before-state-created-by-note
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/style-before-state-created-by-note-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A
+  3 | style Z fill:#f00
+  4 | note left of Z : x
+    |              ^ [1]
+  5 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/style-state-created-by-note
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/style-state-created-by-note-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A
+  3 | note left of Z : x
+    |              ^ [1]
+  4 | style Z fill:#f00
+  5 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---
+
+
+Test: state-no-undef >> invalid >>> invalid/state/two-notes-name-same-state
+Filename: tests/fixtures/rules/state-no-undef/invalid/state/two-notes-name-same-state-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | A
+  3 | note left of Z : x
+    |              ^ [1]
+  4 | note right of Z : y
+  5 |
+
+[1] mermaid.js makes a new state `Z` for this note: no other state of the diagram has this id.
+---

@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md Accessibility values: the text runs to the end of its line, `#` and `;` included."
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "",
+    "accTitle": "a; b #c",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  }
+}

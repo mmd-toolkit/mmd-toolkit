@@ -1,0 +1,150 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/swimlanes.md",
+    "line": 27
+  },
+  "accepted": true,
+  "diagramType": "swimlane",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "Browse",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Browse catalogue",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "Pay",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Pay",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "Pick",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Pick items",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "Ship",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Ship order",
+        "type": "square",
+        "props": {}
+      },
+      {
+        "id": "Invoice",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "Raise invoice",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "Browse",
+        "end": "Pay",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_Browse_Pay_0"
+      },
+      {
+        "start": "Pay",
+        "end": "Pick",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_Pay_Pick_0"
+      },
+      {
+        "start": "Pick",
+        "end": "Ship",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_Pick_Ship_0"
+      },
+      {
+        "start": "Pay",
+        "end": "Invoice",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_Pay_Invoice_0"
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [
+      {
+        "id": "Customer",
+        "nodes": [
+          "Browse",
+          "Pay"
+        ],
+        "title": "Customer",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Warehouse",
+        "nodes": [
+          "Pick",
+          "Ship"
+        ],
+        "title": "Warehouse",
+        "classes": [],
+        "labelType": "text"
+      },
+      {
+        "id": "Finance",
+        "nodes": [
+          "Invoice"
+        ],
+        "title": "Finance",
+        "classes": [],
+        "labelType": "text"
+      }
+    ],
+    "tooltips": []
+  }
+}

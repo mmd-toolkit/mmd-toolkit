@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A `classDef` with a list of names defines each with the same styles."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c3",
+        "styles": [
+          "fill:red"
+        ]
+      },
+      {
+        "id": "c4",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subGraphs": []
+  }
+}

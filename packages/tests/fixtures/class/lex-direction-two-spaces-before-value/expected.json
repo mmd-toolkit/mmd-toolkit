@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "known-divergences/tokenless-empty-forms.md What it means for an author: the input of class/div-empty-description-block-between-direction-and-value without its block; the line is a direction line, so the direction is LR, not TB."
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "A",
+        "type": "",
+        "label": "A",
+        "text": "A",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

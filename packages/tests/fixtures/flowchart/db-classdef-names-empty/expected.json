@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/flowchart.md FlowchartClassDefStatement: the class names `a`, an empty part (null in the tree), and `b` define three classes, the second with the empty name."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [
+      {
+        "id": "a",
+        "styles": [
+          "fill:red"
+        ]
+      },
+      {
+        "id": "",
+        "styles": [
+          "fill:red"
+        ]
+      },
+      {
+        "id": "b",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

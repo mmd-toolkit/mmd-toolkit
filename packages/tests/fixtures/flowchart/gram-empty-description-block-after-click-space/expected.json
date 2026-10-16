@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: the space after the URL is a `space` unit, which the click statement takes only before a tooltip or a target, so the input is rejected; mermaid.js reads no token for the block and rejects it too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...href \"u\" accDescr {}\n-----------------------^\nExpecting 'STR', 'LINK_TARGET', got 'NEWLINE'"
+  }
+}

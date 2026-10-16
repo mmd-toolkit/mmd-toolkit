@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An empty string where a node starts tests whether quotes are ordinary bare-id characters."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "\"\"",
+        "label": "\"\"",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

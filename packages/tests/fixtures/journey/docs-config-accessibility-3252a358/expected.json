@@ -1,0 +1,62 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/config/accessibility.md",
+    "line": 276
+  },
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "My working day",
+    "accTitle": "My User Journey Diagram",
+    "accDescr": "My User Journey Diagram Description",
+    "sections": [
+      "Go to work",
+      "Go home"
+    ],
+    "tasks": [
+      {
+        "section": "Go to work",
+        "task": "Make tea",
+        "people": [
+          "Me"
+        ],
+        "score": 5
+      },
+      {
+        "section": "Go to work",
+        "task": "Go upstairs",
+        "people": [
+          "Me"
+        ],
+        "score": 3
+      },
+      {
+        "section": "Go to work",
+        "task": "Do work",
+        "people": [
+          "Me",
+          "Cat"
+        ],
+        "score": 1
+      },
+      {
+        "section": "Go home",
+        "task": "Go downstairs",
+        "people": [
+          "Me"
+        ],
+        "score": 5
+      },
+      {
+        "section": "Go home",
+        "task": "Sit down",
+        "people": [
+          "Me"
+        ],
+        "score": 5
+      }
+    ]
+  }
+}

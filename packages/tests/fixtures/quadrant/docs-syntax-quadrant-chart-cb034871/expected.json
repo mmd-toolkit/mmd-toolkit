@@ -1,0 +1,96 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/quadrantChart.md",
+    "line": 191
+  },
+  "accepted": true,
+  "diagramType": "quadrantChart",
+  "db": {
+    "title": "Reach and engagement of campaigns",
+    "accTitle": "",
+    "accDescr": "",
+    "quadrants": [
+      "We should expand",
+      "Need to promote",
+      "Re-evaluate",
+      "May be improved"
+    ],
+    "xAxis": {
+      "left": "Low Reach",
+      "right": "High Reach"
+    },
+    "yAxis": {
+      "bottom": "Low Engagement",
+      "top": "High Engagement"
+    },
+    "points": [
+      {
+        "text": "Campaign F",
+        "className": "class3",
+        "x": "0.4",
+        "y": "0.5",
+        "color": "#0000ff"
+      },
+      {
+        "text": "Campaign E",
+        "className": "class2",
+        "x": "0.5",
+        "y": "0.4"
+      },
+      {
+        "text": "Campaign D",
+        "className": "",
+        "x": "0.6",
+        "y": "0.3",
+        "radius": 15,
+        "strokeColor": "#00ff0f",
+        "strokeWidth": "5px",
+        "color": "#ff33f0"
+      },
+      {
+        "text": "Campaign C",
+        "className": "",
+        "x": "0.7",
+        "y": "0.2",
+        "radius": 25,
+        "color": "#00ff33",
+        "strokeColor": "#10f0f0"
+      },
+      {
+        "text": "Campaign B",
+        "className": "class1",
+        "x": "0.8",
+        "y": "0.1",
+        "color": "#ff3300",
+        "radius": 10
+      },
+      {
+        "text": "Campaign A",
+        "className": "",
+        "x": "0.9",
+        "y": "0.0",
+        "radius": 12
+      }
+    ],
+    "classes": [
+      {
+        "name": "class1",
+        "color": "#109060"
+      },
+      {
+        "name": "class2",
+        "color": "#908342",
+        "radius": 10,
+        "strokeColor": "#310085",
+        "strokeWidth": "10px"
+      },
+      {
+        "name": "class3",
+        "color": "#f00fff",
+        "radius": 10
+      }
+    ]
+  }
+}

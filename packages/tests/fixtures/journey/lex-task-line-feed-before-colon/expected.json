@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "journey.md The statement context: a line feed between a task text and its colon is a `newline` unit inside the statement."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\njourney  a  : 5\n----------^\nExpecting 'taskData', got 'NEWLINE'"
+  }
+}

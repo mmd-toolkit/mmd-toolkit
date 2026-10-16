@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/mindmap/mindmap.spec.ts",
+    "line": 244,
+    "test": "when parsing a mindmap  > descriptions > MMP-18 should be possible to use node syntax in the descriptions in children"
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "String containing []",
+      "type": 2,
+      "children": [
+        {
+          "nodeId": "child1",
+          "level": 2,
+          "descr": "String containing ()",
+          "type": 2,
+          "children": []
+        }
+      ]
+    }
+  }
+}

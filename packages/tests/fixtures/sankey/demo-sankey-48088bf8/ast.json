@@ -1,0 +1,2067 @@
+{
+  "type": "Root",
+  "diagramType": "sankey",
+  "body": {
+    "type": "SankeyDiagram",
+    "body": [
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "iPhone",
+          "range": [
+            517,
+            523
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 0
+            },
+            "end": {
+              "line": 28,
+              "column": 6
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Products",
+          "range": [
+            524,
+            532
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 7
+            },
+            "end": {
+              "line": 28,
+              "column": 15
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "205",
+          "range": [
+            533,
+            536
+          ],
+          "loc": {
+            "start": {
+              "line": 28,
+              "column": 16
+            },
+            "end": {
+              "line": 28,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          517,
+          536
+        ],
+        "loc": {
+          "start": {
+            "line": 28,
+            "column": 0
+          },
+          "end": {
+            "line": 28,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Mac",
+          "range": [
+            537,
+            540
+          ],
+          "loc": {
+            "start": {
+              "line": 29,
+              "column": 0
+            },
+            "end": {
+              "line": 29,
+              "column": 3
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Products",
+          "range": [
+            541,
+            549
+          ],
+          "loc": {
+            "start": {
+              "line": 29,
+              "column": 4
+            },
+            "end": {
+              "line": 29,
+              "column": 12
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "40",
+          "range": [
+            550,
+            552
+          ],
+          "loc": {
+            "start": {
+              "line": 29,
+              "column": 13
+            },
+            "end": {
+              "line": 29,
+              "column": 15
+            }
+          }
+        },
+        "range": [
+          537,
+          552
+        ],
+        "loc": {
+          "start": {
+            "line": 29,
+            "column": 0
+          },
+          "end": {
+            "line": 29,
+            "column": 15
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "iPad",
+          "range": [
+            553,
+            557
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 0
+            },
+            "end": {
+              "line": 30,
+              "column": 4
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Products",
+          "range": [
+            558,
+            566
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 5
+            },
+            "end": {
+              "line": 30,
+              "column": 13
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "29",
+          "range": [
+            567,
+            569
+          ],
+          "loc": {
+            "start": {
+              "line": 30,
+              "column": 14
+            },
+            "end": {
+              "line": 30,
+              "column": 16
+            }
+          }
+        },
+        "range": [
+          553,
+          569
+        ],
+        "loc": {
+          "start": {
+            "line": 30,
+            "column": 0
+          },
+          "end": {
+            "line": 30,
+            "column": 16
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Wearables",
+          "range": [
+            570,
+            579
+          ],
+          "loc": {
+            "start": {
+              "line": 31,
+              "column": 0
+            },
+            "end": {
+              "line": 31,
+              "column": 9
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Products",
+          "range": [
+            580,
+            588
+          ],
+          "loc": {
+            "start": {
+              "line": 31,
+              "column": 10
+            },
+            "end": {
+              "line": 31,
+              "column": 18
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "41",
+          "range": [
+            589,
+            591
+          ],
+          "loc": {
+            "start": {
+              "line": 31,
+              "column": 19
+            },
+            "end": {
+              "line": 31,
+              "column": 21
+            }
+          }
+        },
+        "range": [
+          570,
+          591
+        ],
+        "loc": {
+          "start": {
+            "line": 31,
+            "column": 0
+          },
+          "end": {
+            "line": 31,
+            "column": 21
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Products",
+          "range": [
+            592,
+            600
+          ],
+          "loc": {
+            "start": {
+              "line": 32,
+              "column": 0
+            },
+            "end": {
+              "line": 32,
+              "column": 8
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Revenue",
+          "range": [
+            601,
+            608
+          ],
+          "loc": {
+            "start": {
+              "line": 32,
+              "column": 9
+            },
+            "end": {
+              "line": 32,
+              "column": 16
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "315",
+          "range": [
+            609,
+            612
+          ],
+          "loc": {
+            "start": {
+              "line": 32,
+              "column": 17
+            },
+            "end": {
+              "line": 32,
+              "column": 20
+            }
+          }
+        },
+        "range": [
+          592,
+          612
+        ],
+        "loc": {
+          "start": {
+            "line": 32,
+            "column": 0
+          },
+          "end": {
+            "line": 32,
+            "column": 20
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Services",
+          "range": [
+            613,
+            621
+          ],
+          "loc": {
+            "start": {
+              "line": 33,
+              "column": 0
+            },
+            "end": {
+              "line": 33,
+              "column": 8
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Revenue",
+          "range": [
+            622,
+            629
+          ],
+          "loc": {
+            "start": {
+              "line": 33,
+              "column": 9
+            },
+            "end": {
+              "line": 33,
+              "column": 16
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "78",
+          "range": [
+            630,
+            632
+          ],
+          "loc": {
+            "start": {
+              "line": 33,
+              "column": 17
+            },
+            "end": {
+              "line": 33,
+              "column": 19
+            }
+          }
+        },
+        "range": [
+          613,
+          632
+        ],
+        "loc": {
+          "start": {
+            "line": 33,
+            "column": 0
+          },
+          "end": {
+            "line": 33,
+            "column": 19
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Revenue",
+          "range": [
+            633,
+            640
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 0
+            },
+            "end": {
+              "line": 34,
+              "column": 7
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Cost of Revenue",
+          "range": [
+            641,
+            656
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 8
+            },
+            "end": {
+              "line": 34,
+              "column": 23
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "223",
+          "range": [
+            657,
+            660
+          ],
+          "loc": {
+            "start": {
+              "line": 34,
+              "column": 24
+            },
+            "end": {
+              "line": 34,
+              "column": 27
+            }
+          }
+        },
+        "range": [
+          633,
+          660
+        ],
+        "loc": {
+          "start": {
+            "line": 34,
+            "column": 0
+          },
+          "end": {
+            "line": 34,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Revenue",
+          "range": [
+            661,
+            668
+          ],
+          "loc": {
+            "start": {
+              "line": 35,
+              "column": 0
+            },
+            "end": {
+              "line": 35,
+              "column": 7
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Gross Profit",
+          "range": [
+            669,
+            681
+          ],
+          "loc": {
+            "start": {
+              "line": 35,
+              "column": 8
+            },
+            "end": {
+              "line": 35,
+              "column": 20
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "170",
+          "range": [
+            682,
+            685
+          ],
+          "loc": {
+            "start": {
+              "line": 35,
+              "column": 21
+            },
+            "end": {
+              "line": 35,
+              "column": 24
+            }
+          }
+        },
+        "range": [
+          661,
+          685
+        ],
+        "loc": {
+          "start": {
+            "line": 35,
+            "column": 0
+          },
+          "end": {
+            "line": 35,
+            "column": 24
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Gross Profit",
+          "range": [
+            686,
+            698
+          ],
+          "loc": {
+            "start": {
+              "line": 36,
+              "column": 0
+            },
+            "end": {
+              "line": 36,
+              "column": 12
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Op Expenses",
+          "range": [
+            699,
+            710
+          ],
+          "loc": {
+            "start": {
+              "line": 36,
+              "column": 13
+            },
+            "end": {
+              "line": 36,
+              "column": 24
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "51",
+          "range": [
+            711,
+            713
+          ],
+          "loc": {
+            "start": {
+              "line": 36,
+              "column": 25
+            },
+            "end": {
+              "line": 36,
+              "column": 27
+            }
+          }
+        },
+        "range": [
+          686,
+          713
+        ],
+        "loc": {
+          "start": {
+            "line": 36,
+            "column": 0
+          },
+          "end": {
+            "line": 36,
+            "column": 27
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Gross Profit",
+          "range": [
+            714,
+            726
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 0
+            },
+            "end": {
+              "line": 37,
+              "column": 12
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Op Profit",
+          "range": [
+            727,
+            736
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 13
+            },
+            "end": {
+              "line": 37,
+              "column": 22
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "119",
+          "range": [
+            737,
+            740
+          ],
+          "loc": {
+            "start": {
+              "line": 37,
+              "column": 23
+            },
+            "end": {
+              "line": 37,
+              "column": 26
+            }
+          }
+        },
+        "range": [
+          714,
+          740
+        ],
+        "loc": {
+          "start": {
+            "line": 37,
+            "column": 0
+          },
+          "end": {
+            "line": 37,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Op Profit",
+          "range": [
+            741,
+            750
+          ],
+          "loc": {
+            "start": {
+              "line": 38,
+              "column": 0
+            },
+            "end": {
+              "line": 38,
+              "column": 9
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Tax",
+          "range": [
+            751,
+            754
+          ],
+          "loc": {
+            "start": {
+              "line": 38,
+              "column": 10
+            },
+            "end": {
+              "line": 38,
+              "column": 13
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "19",
+          "range": [
+            755,
+            757
+          ],
+          "loc": {
+            "start": {
+              "line": 38,
+              "column": 14
+            },
+            "end": {
+              "line": 38,
+              "column": 16
+            }
+          }
+        },
+        "range": [
+          741,
+          757
+        ],
+        "loc": {
+          "start": {
+            "line": 38,
+            "column": 0
+          },
+          "end": {
+            "line": 38,
+            "column": 16
+          }
+        }
+      },
+      {
+        "type": "SankeyLinkStatement",
+        "source": {
+          "type": "SankeyIdentifier",
+          "name": "Op Profit",
+          "range": [
+            758,
+            767
+          ],
+          "loc": {
+            "start": {
+              "line": 39,
+              "column": 0
+            },
+            "end": {
+              "line": 39,
+              "column": 9
+            }
+          }
+        },
+        "target": {
+          "type": "SankeyIdentifier",
+          "name": "Net Profit",
+          "range": [
+            768,
+            778
+          ],
+          "loc": {
+            "start": {
+              "line": 39,
+              "column": 10
+            },
+            "end": {
+              "line": 39,
+              "column": 20
+            }
+          }
+        },
+        "value": {
+          "type": "SankeyLiteral",
+          "value": "100",
+          "range": [
+            779,
+            782
+          ],
+          "loc": {
+            "start": {
+              "line": 39,
+              "column": 21
+            },
+            "end": {
+              "line": 39,
+              "column": 24
+            }
+          }
+        },
+        "range": [
+          758,
+          782
+        ],
+        "loc": {
+          "start": {
+            "line": 39,
+            "column": 0
+          },
+          "end": {
+            "line": 39,
+            "column": 24
+          }
+        }
+      }
+    ],
+    "range": [
+      509,
+      782
+    ],
+    "loc": {
+      "start": {
+        "line": 26,
+        "column": 0
+      },
+      "end": {
+        "line": 39,
+        "column": 24
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "config:\n  sankey:\n    showValues: true\n    prefix: $\n    suffix: B\n    width: 800\n    height: 500\n    nodeAlignment: left\n    labelStyle: default\n    nodeColors:\n      iPhone: \"#6e6e73\"\n      Mac: \"#6e6e73\"\n      iPad: \"#6e6e73\"\n      Wearables: \"#6e6e73\"\n      Products: \"#6e6e73\"\n      Services: \"#6e6e73\"\n      Revenue: \"#424245\"\n      Cost of Revenue: \"#ff3b30\"\n      Gross Profit: \"#34c759\"\n      Op Expenses: \"#ff3b30\"\n      Op Profit: \"#34c759\"\n      Tax: \"#ff3b30\"\n      Net Profit: \"#34c759\"",
+    "valueRange": [
+      4,
+      504
+    ],
+    "range": [
+      0,
+      508
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 25,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "config:\n  sankey:\n    showValues: true\n    prefix: $\n    suffix: B\n    width: 800\n    height: 500\n    nodeAlignment: left\n    labelStyle: default\n    nodeColors:\n      iPhone: \"#6e6e73\"\n      Mac: \"#6e6e73\"\n      iPad: \"#6e6e73\"\n      Wearables: \"#6e6e73\"\n      Products: \"#6e6e73\"\n      Services: \"#6e6e73\"\n      Revenue: \"#424245\"\n      Cost of Revenue: \"#ff3b30\"\n      Gross Profit: \"#34c759\"\n      Op Expenses: \"#ff3b30\"\n      Op Profit: \"#34c759\"\n      Tax: \"#ff3b30\"\n      Net Profit: \"#34c759\"",
+      "range": [
+        4,
+        504
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 24,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        505,
+        508
+      ],
+      "loc": {
+        "start": {
+          "line": 25,
+          "column": 0
+        },
+        "end": {
+          "line": 25,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "sankey",
+      "range": [
+        509,
+        515
+      ],
+      "loc": {
+        "start": {
+          "line": 26,
+          "column": 0
+        },
+        "end": {
+          "line": 26,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "iPhone",
+      "range": [
+        517,
+        523
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 0
+        },
+        "end": {
+          "line": 28,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        523,
+        524
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 6
+        },
+        "end": {
+          "line": 28,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Products",
+      "range": [
+        524,
+        532
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 7
+        },
+        "end": {
+          "line": 28,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        532,
+        533
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 15
+        },
+        "end": {
+          "line": 28,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "205",
+      "range": [
+        533,
+        536
+      ],
+      "loc": {
+        "start": {
+          "line": 28,
+          "column": 16
+        },
+        "end": {
+          "line": 28,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Mac",
+      "range": [
+        537,
+        540
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        540,
+        541
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 3
+        },
+        "end": {
+          "line": 29,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Products",
+      "range": [
+        541,
+        549
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 4
+        },
+        "end": {
+          "line": 29,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        549,
+        550
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 12
+        },
+        "end": {
+          "line": 29,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "40",
+      "range": [
+        550,
+        552
+      ],
+      "loc": {
+        "start": {
+          "line": 29,
+          "column": 13
+        },
+        "end": {
+          "line": 29,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "iPad",
+      "range": [
+        553,
+        557
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 0
+        },
+        "end": {
+          "line": 30,
+          "column": 4
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        557,
+        558
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 4
+        },
+        "end": {
+          "line": 30,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Products",
+      "range": [
+        558,
+        566
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 5
+        },
+        "end": {
+          "line": 30,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        566,
+        567
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 13
+        },
+        "end": {
+          "line": 30,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "29",
+      "range": [
+        567,
+        569
+      ],
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 14
+        },
+        "end": {
+          "line": 30,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Wearables",
+      "range": [
+        570,
+        579
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 0
+        },
+        "end": {
+          "line": 31,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        579,
+        580
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 9
+        },
+        "end": {
+          "line": 31,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Products",
+      "range": [
+        580,
+        588
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 10
+        },
+        "end": {
+          "line": 31,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        588,
+        589
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 18
+        },
+        "end": {
+          "line": 31,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "41",
+      "range": [
+        589,
+        591
+      ],
+      "loc": {
+        "start": {
+          "line": 31,
+          "column": 19
+        },
+        "end": {
+          "line": 31,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Products",
+      "range": [
+        592,
+        600
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 0
+        },
+        "end": {
+          "line": 32,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        600,
+        601
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 8
+        },
+        "end": {
+          "line": 32,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Revenue",
+      "range": [
+        601,
+        608
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 9
+        },
+        "end": {
+          "line": 32,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        608,
+        609
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 16
+        },
+        "end": {
+          "line": 32,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "315",
+      "range": [
+        609,
+        612
+      ],
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 17
+        },
+        "end": {
+          "line": 32,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Services",
+      "range": [
+        613,
+        621
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 0
+        },
+        "end": {
+          "line": 33,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        621,
+        622
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 8
+        },
+        "end": {
+          "line": 33,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Revenue",
+      "range": [
+        622,
+        629
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 9
+        },
+        "end": {
+          "line": 33,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        629,
+        630
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 16
+        },
+        "end": {
+          "line": 33,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "78",
+      "range": [
+        630,
+        632
+      ],
+      "loc": {
+        "start": {
+          "line": 33,
+          "column": 17
+        },
+        "end": {
+          "line": 33,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Revenue",
+      "range": [
+        633,
+        640
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 0
+        },
+        "end": {
+          "line": 34,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        640,
+        641
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 7
+        },
+        "end": {
+          "line": 34,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Cost of Revenue",
+      "range": [
+        641,
+        656
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 8
+        },
+        "end": {
+          "line": 34,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        656,
+        657
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 23
+        },
+        "end": {
+          "line": 34,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "223",
+      "range": [
+        657,
+        660
+      ],
+      "loc": {
+        "start": {
+          "line": 34,
+          "column": 24
+        },
+        "end": {
+          "line": 34,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Revenue",
+      "range": [
+        661,
+        668
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 0
+        },
+        "end": {
+          "line": 35,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        668,
+        669
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 7
+        },
+        "end": {
+          "line": 35,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Gross Profit",
+      "range": [
+        669,
+        681
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 8
+        },
+        "end": {
+          "line": 35,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        681,
+        682
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 20
+        },
+        "end": {
+          "line": 35,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "170",
+      "range": [
+        682,
+        685
+      ],
+      "loc": {
+        "start": {
+          "line": 35,
+          "column": 21
+        },
+        "end": {
+          "line": 35,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Gross Profit",
+      "range": [
+        686,
+        698
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 0
+        },
+        "end": {
+          "line": 36,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        698,
+        699
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 12
+        },
+        "end": {
+          "line": 36,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Op Expenses",
+      "range": [
+        699,
+        710
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 13
+        },
+        "end": {
+          "line": 36,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        710,
+        711
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 24
+        },
+        "end": {
+          "line": 36,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "51",
+      "range": [
+        711,
+        713
+      ],
+      "loc": {
+        "start": {
+          "line": 36,
+          "column": 25
+        },
+        "end": {
+          "line": 36,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Gross Profit",
+      "range": [
+        714,
+        726
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 0
+        },
+        "end": {
+          "line": 37,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        726,
+        727
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 12
+        },
+        "end": {
+          "line": 37,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Op Profit",
+      "range": [
+        727,
+        736
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 13
+        },
+        "end": {
+          "line": 37,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        736,
+        737
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 22
+        },
+        "end": {
+          "line": 37,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "119",
+      "range": [
+        737,
+        740
+      ],
+      "loc": {
+        "start": {
+          "line": 37,
+          "column": 23
+        },
+        "end": {
+          "line": 37,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Op Profit",
+      "range": [
+        741,
+        750
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 0
+        },
+        "end": {
+          "line": 38,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        750,
+        751
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 9
+        },
+        "end": {
+          "line": 38,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Tax",
+      "range": [
+        751,
+        754
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 10
+        },
+        "end": {
+          "line": 38,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        754,
+        755
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 13
+        },
+        "end": {
+          "line": 38,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "19",
+      "range": [
+        755,
+        757
+      ],
+      "loc": {
+        "start": {
+          "line": 38,
+          "column": 14
+        },
+        "end": {
+          "line": 38,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Op Profit",
+      "range": [
+        758,
+        767
+      ],
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 0
+        },
+        "end": {
+          "line": 39,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        767,
+        768
+      ],
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 9
+        },
+        "end": {
+          "line": 39,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Net Profit",
+      "range": [
+        768,
+        778
+      ],
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 10
+        },
+        "end": {
+          "line": 39,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": ",",
+      "range": [
+        778,
+        779
+      ],
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 20
+        },
+        "end": {
+          "line": 39,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "100",
+      "range": [
+        779,
+        782
+      ],
+      "loc": {
+        "start": {
+          "line": 39,
+          "column": 21
+        },
+        "end": {
+          "line": 39,
+          "column": 24
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    782
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 39,
+      "column": 24
+    }
+  }
+}

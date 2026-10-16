@@ -1,0 +1,293 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/gantt.html",
+    "line": 184
+  },
+  "accepted": true,
+  "diagramType": "gantt",
+  "db": {
+    "dateFormat": " HH:mm:ss",
+    "axisFormat": " %Hh%M",
+    "todayMarker": "",
+    "includes": [],
+    "excludes": [],
+    "inclusiveEndDates": false,
+    "weekday": "sunday",
+    "weekend": "saturday",
+    "title": "GANTT compact",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [
+      "DB Clean",
+      "Sessions"
+    ],
+    "tasks": [
+      {
+        "section": "DB Clean",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "12:00:00"
+          },
+          "endTime": {
+            "data": "10m"
+          }
+        },
+        "task": "Clean",
+        "classes": [],
+        "id": "task1",
+        "order": 0
+      },
+      {
+        "section": "DB Clean",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "12:30:00"
+          },
+          "endTime": {
+            "data": "12m"
+          }
+        },
+        "task": "Clean",
+        "classes": [],
+        "id": "task2",
+        "order": 1
+      },
+      {
+        "section": "DB Clean",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "13:00:00"
+          },
+          "endTime": {
+            "data": "8m"
+          }
+        },
+        "task": "Clean",
+        "classes": [],
+        "id": "task3",
+        "order": 2
+      },
+      {
+        "section": "DB Clean",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "13:30:00"
+          },
+          "endTime": {
+            "data": "9m"
+          }
+        },
+        "task": "Clean",
+        "classes": [],
+        "id": "task4",
+        "order": 3
+      },
+      {
+        "section": "DB Clean",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "14:00:00"
+          },
+          "endTime": {
+            "data": "13m"
+          }
+        },
+        "task": "Clean",
+        "classes": [],
+        "id": "task5",
+        "order": 4
+      },
+      {
+        "section": "DB Clean",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "14:30:00"
+          },
+          "endTime": {
+            "data": "10m"
+          }
+        },
+        "task": "Clean",
+        "classes": [],
+        "id": "task6",
+        "order": 5
+      },
+      {
+        "section": "DB Clean",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "15:00:00"
+          },
+          "endTime": {
+            "data": "11m"
+          }
+        },
+        "task": "Clean",
+        "classes": [],
+        "id": "task7",
+        "order": 6
+      },
+      {
+        "section": "Sessions",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "12:00:00"
+          },
+          "endTime": {
+            "data": "63m"
+          }
+        },
+        "task": "A",
+        "classes": [],
+        "id": "task8",
+        "order": 7
+      },
+      {
+        "section": "Sessions",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "12:30:00"
+          },
+          "endTime": {
+            "data": "12m"
+          }
+        },
+        "task": "B",
+        "classes": [],
+        "id": "task9",
+        "order": 8
+      },
+      {
+        "section": "Sessions",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "13:05:00"
+          },
+          "endTime": {
+            "data": "12m"
+          }
+        },
+        "task": "C",
+        "classes": [],
+        "id": "task10",
+        "order": 9
+      },
+      {
+        "section": "Sessions",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "13:06:00"
+          },
+          "endTime": {
+            "data": "33m"
+          }
+        },
+        "task": "D",
+        "classes": [],
+        "id": "task11",
+        "order": 10
+      },
+      {
+        "section": "Sessions",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "13:15:00"
+          },
+          "endTime": {
+            "data": "55m"
+          }
+        },
+        "task": "E",
+        "classes": [],
+        "id": "task12",
+        "order": 11
+      },
+      {
+        "section": "Sessions",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "13:20:00"
+          },
+          "endTime": {
+            "data": "12m"
+          }
+        },
+        "task": "F",
+        "classes": [],
+        "id": "task13",
+        "order": 12
+      },
+      {
+        "section": "Sessions",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "13:32:00"
+          },
+          "endTime": {
+            "data": "18m"
+          }
+        },
+        "task": "G",
+        "classes": [],
+        "id": "task14",
+        "order": 13
+      },
+      {
+        "section": "Sessions",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "13:50:00"
+          },
+          "endTime": {
+            "data": "20m"
+          }
+        },
+        "task": "H",
+        "classes": [],
+        "id": "task15",
+        "order": 14
+      },
+      {
+        "section": "Sessions",
+        "raw": {
+          "startTime": {
+            "type": "getStartDate",
+            "startData": "14:10:00"
+          },
+          "endTime": {
+            "data": "10m"
+          }
+        },
+        "task": "I",
+        "classes": [],
+        "id": "task16",
+        "order": 15
+      }
+    ],
+    "links": []
+  },
+  "embedded": {
+    "config": {
+      "gantt": {
+        "displayMode": "compact"
+      }
+    }
+  }
+}

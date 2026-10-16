@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/block.md BlockLiteral: the whitespace after the last , is at the end of the rest of the line, so the last part is empty, null in the tree."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "styles": [
+            "fill:#f00",
+            ""
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

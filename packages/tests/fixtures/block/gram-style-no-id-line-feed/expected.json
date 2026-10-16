@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Classes and styles: style with no ids, followed by a line feed and the end of the text, is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n...k-beta  A  style\n-------------------^\nExpecting 'STYLE_ENTITY_IDS', got '1'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Tasks: data ends before `#`, and `#` is a task text without data; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\ngantta : 1d#b : 2d\n------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

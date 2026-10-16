@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md Rejections outside the grammar: after `create destroy A`, as after `create participant A`, the next message must go to A; mermaid.js rejects."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "The created participant undefined does not have an associated creating message after its declaration. Please check the sequence diagram."
+  }
+}

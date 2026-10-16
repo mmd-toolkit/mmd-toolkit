@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "parser/docs/tokens.md Comment, and ast.md Nodes: the diagram comment `%% c` that the comment line after the U+2028 cuts ends at the end of the text when no line terminator follows the fragment `[*]`, so nothing follows `state X \"\"`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

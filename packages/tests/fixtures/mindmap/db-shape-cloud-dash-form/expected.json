@@ -1,0 +1,17 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md mindmap, type: the form `(-text-)` gives the type 0 and the text `text-`."
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "r",
+      "level": 0,
+      "descr": "text-",
+      "type": 0,
+      "children": []
+    }
+  }
+}

@@ -1,0 +1,119 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/sequenceDiagram.md",
+    "line": 316
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "J",
+        "box": 0
+      },
+      {
+        "name": "J",
+        "description": "J",
+        "wrap": false,
+        "prevActor": "A",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "B",
+        "box": 0
+      },
+      {
+        "name": "B",
+        "description": "B",
+        "wrap": false,
+        "prevActor": "J",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "nextActor": "C",
+        "box": 1
+      },
+      {
+        "name": "C",
+        "description": "C",
+        "wrap": false,
+        "prevActor": "B",
+        "links": {},
+        "properties": {},
+        "type": "participant",
+        "box": 1
+      }
+    ],
+    "boxes": [
+      {
+        "name": "Alice & John",
+        "wrap": false,
+        "fill": "Purple",
+        "actorKeys": [
+          "A",
+          "J"
+        ]
+      },
+      {
+        "name": "Another Group",
+        "wrap": false,
+        "fill": "transparent",
+        "actorKeys": [
+          "B",
+          "C"
+        ]
+      }
+    ],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "J",
+        "message": "Hello John, how are you?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "J",
+        "to": "A",
+        "message": "Great!",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "A",
+        "to": "B",
+        "message": "Hello Bob, how is Charley?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      },
+      {
+        "from": "B",
+        "to": "C",
+        "message": "Hello Charley, how are you?",
+        "wrap": false,
+        "type": 0,
+        "activate": false,
+        "centralConnection": 0
+      }
+    ]
+  }
+}

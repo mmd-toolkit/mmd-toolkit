@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Empty description blocks before a separator: a description block with text may not come before the line break of the header; rejected by both."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n...ssDiagram accDescr {x}class A\n-----------------------^\nExpecting 'NEWLINE', got 'acc_descr_multiline_value'"
+  }
+}

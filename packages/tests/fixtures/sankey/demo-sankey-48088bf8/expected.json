@@ -1,0 +1,117 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/sankey.html",
+    "line": 19
+  },
+  "accepted": true,
+  "diagramType": "sankey",
+  "db": {
+    "title": "",
+    "nodes": [
+      "iPhone",
+      "Products",
+      "Mac",
+      "iPad",
+      "Wearables",
+      "Revenue",
+      "Services",
+      "Cost of Revenue",
+      "Gross Profit",
+      "Op Expenses",
+      "Op Profit",
+      "Tax",
+      "Net Profit"
+    ],
+    "links": [
+      {
+        "source": "iPhone",
+        "target": "Products",
+        "value": 205
+      },
+      {
+        "source": "Mac",
+        "target": "Products",
+        "value": 40
+      },
+      {
+        "source": "iPad",
+        "target": "Products",
+        "value": 29
+      },
+      {
+        "source": "Wearables",
+        "target": "Products",
+        "value": 41
+      },
+      {
+        "source": "Products",
+        "target": "Revenue",
+        "value": 315
+      },
+      {
+        "source": "Services",
+        "target": "Revenue",
+        "value": 78
+      },
+      {
+        "source": "Revenue",
+        "target": "Cost of Revenue",
+        "value": 223
+      },
+      {
+        "source": "Revenue",
+        "target": "Gross Profit",
+        "value": 170
+      },
+      {
+        "source": "Gross Profit",
+        "target": "Op Expenses",
+        "value": 51
+      },
+      {
+        "source": "Gross Profit",
+        "target": "Op Profit",
+        "value": 119
+      },
+      {
+        "source": "Op Profit",
+        "target": "Tax",
+        "value": 19
+      },
+      {
+        "source": "Op Profit",
+        "target": "Net Profit",
+        "value": 100
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "sankey": {
+        "width": 800,
+        "height": 500,
+        "nodeAlignment": "left",
+        "prefix": "$",
+        "suffix": "B",
+        "labelStyle": "default",
+        "nodeColors": {
+          "iPhone": "#6e6e73",
+          "Mac": "#6e6e73",
+          "iPad": "#6e6e73",
+          "Wearables": "#6e6e73",
+          "Products": "#6e6e73",
+          "Services": "#6e6e73",
+          "Revenue": "#424245",
+          "Cost of Revenue": "#ff3b30",
+          "Gross Profit": "#34c759",
+          "Op Expenses": "#ff3b30",
+          "Op Profit": "#34c759",
+          "Tax": "#ff3b30",
+          "Net Profit": "#34c759"
+        }
+      }
+    }
+  }
+}

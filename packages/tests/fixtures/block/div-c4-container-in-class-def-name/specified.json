@@ -1,0 +1,21 @@
+{
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "C4Container",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ]
+  }
+}

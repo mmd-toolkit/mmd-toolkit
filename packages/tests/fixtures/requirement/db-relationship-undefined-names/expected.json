@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md requirement, a relationship names a requirement or an element that need not be defined."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": []
+      }
+    ],
+    "elements": [],
+    "relationships": [
+      {
+        "type": "satisfies",
+        "src": "r",
+        "dst": "nothing"
+      }
+    ],
+    "classes": []
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "detection.md Notes (A non-word character or the end): `é` after `ishikawa` is not a word character, so the text is detected as ishikawa and accepted."
+  },
+  "accepted": true,
+  "diagramType": "ishikawa",
+  "db": null
+}

@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "state.md The note contexts: with two or more whitespace characters before the `:`, mermaid.js drops two of them and the whitespace at the ends, and the `:` is part of the text; the text is `:hi`."
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "label": "A",
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [
+      {
+        "state": "A",
+        "position": "left of",
+        "text": ":hi"
+      }
+    ],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

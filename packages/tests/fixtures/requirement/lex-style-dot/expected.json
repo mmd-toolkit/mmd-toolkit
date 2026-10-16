@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md The style context: `.` is read by no rule of the style context."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 4. Unrecognized text.\n...}style r opacity:0.5\n---------------------^"
+  }
+}

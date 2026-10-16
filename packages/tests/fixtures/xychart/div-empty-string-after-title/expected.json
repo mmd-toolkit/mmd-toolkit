@@ -1,0 +1,27 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: `\"\"` after a title without quotes is no whole title or label; mermaid.js reads no token for it, and the input is rejected here."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "xychart",
+  "db": {
+    "orientation": "vertical",
+    "title": "T",
+    "accTitle": "",
+    "accDescr": "",
+    "xAxis": {
+      "type": "band",
+      "title": "",
+      "categories": []
+    },
+    "yAxis": {
+      "type": "linear",
+      "title": "",
+      "min": "Infinity",
+      "max": "-Infinity"
+    },
+    "plots": []
+  }
+}

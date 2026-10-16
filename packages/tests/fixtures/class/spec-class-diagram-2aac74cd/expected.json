@@ -1,0 +1,182 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/class/classDiagram.spec.ts",
+    "line": 370,
+    "test": "given a basic class diagram,  > when parsing class definition > should handle parsing of separators"
+  },
+  "accepted": true,
+  "diagramType": "classDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "classes": [
+      {
+        "id": "Foo1",
+        "type": "",
+        "label": "Foo1",
+        "text": "Foo1",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "You can use"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "several lines"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": ".."
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "as you want"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "and group"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "=="
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "things together."
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "__"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "You can have as many groups"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "as you want"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "",
+            "id": "-"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "End of class"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      },
+      {
+        "id": "User",
+        "type": "",
+        "label": "User",
+        "text": "User",
+        "shape": "classBox",
+        "cssClasses": "default",
+        "methods": [
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": " getName",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": " getAddress",
+            "parameters": "",
+            "returnType": ""
+          },
+          {
+            "memberType": "method",
+            "visibility": "+",
+            "classifier": "",
+            "id": " setName",
+            "parameters": "",
+            "returnType": ""
+          }
+        ],
+        "members": [
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": ".. Simple Getter .."
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": ".. Some setter .."
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "__ private data __"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "int age"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "-",
+            "classifier": "",
+            "id": "- encrypted --"
+          },
+          {
+            "memberType": "attribute",
+            "visibility": "",
+            "classifier": "",
+            "id": "String password"
+          }
+        ],
+        "annotations": [],
+        "styles": []
+      }
+    ],
+    "relations": [],
+    "notes": [],
+    "namespaces": [],
+    "interfaces": []
+  }
+}

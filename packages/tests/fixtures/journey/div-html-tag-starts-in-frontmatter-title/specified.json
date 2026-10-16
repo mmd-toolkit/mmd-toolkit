@@ -1,0 +1,14 @@
+{
+  "accepted": true,
+  "diagramType": "journey",
+  "db": {
+    "title": "b=\"c\">d",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": []
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

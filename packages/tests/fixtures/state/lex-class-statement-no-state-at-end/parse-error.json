@@ -1,0 +1,17 @@
+{
+  "message": "class has no state before the end of the text",
+  "range": [
+    18,
+    23
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 0
+    },
+    "end": {
+      "line": 3,
+      "column": 5
+    }
+  }
+}

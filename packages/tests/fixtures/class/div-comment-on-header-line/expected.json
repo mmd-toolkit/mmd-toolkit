@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "class.md Known divergences, comment-takes-line-break: a comment on the header line takes the line feed after the header in mermaid.js."
+  },
+  "knownDivergence": "comment-takes-line-break",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nclassDiagram %% cclass A\n-----------------^\nExpecting 'NEWLINE', got 'CLASS'"
+  }
+}

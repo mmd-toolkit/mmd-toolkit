@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, title: a `title` line is rejected: the diagram has no statement for it."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankeytitle Ta,b,1\n-------------^\nExpecting 'COMMA', got 'NEWLINE'"
+  }
+}

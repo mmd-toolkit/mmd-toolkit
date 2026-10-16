@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Shapes and known-divergences.md, embedded-data-opaque: `ellipse` is the name of the shape `(-…-)` but no word of a data block, so mermaid.js rejects the block with no such shape; the tree does not read the block, and the input is accepted here."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: ellipse."
+  }
+}

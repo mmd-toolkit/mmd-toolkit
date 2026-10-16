@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Trivia between units: the ignored `;` inside an unquoted class on the next line keeps the reading of mermaid.js: the classes `style:#x` and `cd`."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [
+      {
+        "name": "r",
+        "type": "Requirement",
+        "requirementId": "",
+        "text": "",
+        "risk": "",
+        "verifyMethod": "",
+        "cssStyles": [],
+        "classes": [
+          "style:#x",
+          "cd"
+        ]
+      }
+    ],
+    "elements": [],
+    "relationships": [],
+    "classes": []
+  }
+}

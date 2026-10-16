@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md The statement context: a `todayMarker` text ends before `;`; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...tttodayMarker off;x\n----------------------^\nExpecting 'taskData', got 'NL'"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md The direction line: the line is a direction line, so neither the label nor the link is read: there are no vertices and no edges."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

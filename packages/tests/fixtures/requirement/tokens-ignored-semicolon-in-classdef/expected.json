@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "requirement.md Trivia between units: on a `classDef` line the last `;` is ignored: `fill:#f00`."
+  },
+  "accepted": true,
+  "diagramType": "requirement",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "requirements": [],
+    "elements": [],
+    "relationships": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:#f00"
+        ]
+      }
+    ]
+  }
+}

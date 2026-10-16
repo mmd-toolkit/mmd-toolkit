@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md sankey, fields: a quoted field that holds a character reference is rejected too."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nsankey\"aﬂ°°35¶ßb\",c,1\n--------^\nExpecting 'DQUOTE', got 'ESCAPED_TEXT'"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Units and contexts: the text may not end in the shape context."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 6:\n...maproot  a[x  b\n------------------^\nExpecting 'NODE_DEND', got '1'"
+  }
+}

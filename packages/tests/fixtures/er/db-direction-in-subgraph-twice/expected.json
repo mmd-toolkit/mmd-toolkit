@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "er.md Other statements: the last direction statement in a subgraph counts; accepted, BT."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "A",
+        "classes": []
+      }
+    ],
+    "relationships": [],
+    "classes": [],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": [],
+        "dir": "BT"
+      }
+    ]
+  }
+}

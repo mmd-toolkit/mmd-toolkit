@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "sequence.md The statement context, rule 11: a directive between the space and `of` lies between two units; the note is left of A, as in mermaid.js."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [
+      {
+        "name": "A",
+        "description": "A",
+        "wrap": false,
+        "links": {},
+        "properties": {},
+        "type": "participant"
+      }
+    ],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": [
+      {
+        "from": "A",
+        "to": "A",
+        "message": "t",
+        "wrap": false,
+        "type": 2,
+        "placement": 0
+      }
+    ]
+  }
+}

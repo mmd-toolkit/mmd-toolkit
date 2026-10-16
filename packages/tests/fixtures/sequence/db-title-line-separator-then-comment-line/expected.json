@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The next line is part of the title, so the title is `x`, the U+2028, and `A->>B: y`, and there is no message."
+  },
+  "accepted": true,
+  "diagramType": "sequence",
+  "db": {
+    "title": "x A->>B: y",
+    "accTitle": "",
+    "accDescr": "",
+    "actors": [],
+    "boxes": [],
+    "createdActors": [],
+    "destroyedActors": [],
+    "messages": []
+  }
+}

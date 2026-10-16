@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, statements: ids that hold keywords."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "mycolumns",
+          "label": "mycolumns",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "blockade",
+          "label": "blockade",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "classy",
+          "label": "classy",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "styled",
+          "label": "styled",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

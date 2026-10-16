@@ -1,0 +1,138 @@
+# eslint-snapshot-rule-tester format: v1
+
+
+Test: state-no-unclosed-description-block >> invalid >>> docs/rules/state-no-unclosed-description-block.md incorrect 1
+Filename: state-no-unclosed-description-block-incorrect-1.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   accDescr { x
+    |   ^~~~~~~~~~ [1]
+  4 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: state-no-unclosed-description-block >> invalid >>> docs/rules/state-no-unclosed-description-block.md incorrect 2
+Filename: state-no-unclosed-description-block-incorrect-2.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr { x
+    |   ^~~~~~~~~~ [1]
+  3 |   state B {
+  4 |     C
+  5 |   }
+  6 |   D --> E
+  7 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: state-no-unclosed-description-block >> invalid >>> invalid/state/db-acc-descr-block-closed-by-composite-body
+Filename: tests/fixtures/rules/state-no-unclosed-description-block/invalid/state/db-acc-descr-block-closed-by-composite-body-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | accDescr { x
+    | ^~~~~~~~~~ [1]
+  3 | state B {
+  4 | C
+  5 | }
+  6 | D --> E
+  7 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: state-no-unclosed-description-block >> invalid >>> invalid/state/db-acc-descr-block-closed-by-nested-composite-body
+Filename: tests/fixtures/rules/state-no-unclosed-description-block/invalid/state/db-acc-descr-block-closed-by-nested-composite-body-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | accDescr { x
+    | ^~~~~~~~~~ [1]
+  3 | state B {
+  4 | state C {
+  5 | D
+  6 | }
+  7 | }
+  8 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: state-no-unclosed-description-block >> invalid >>> invalid/state/db-acc-descr-block-own-brace-later-line
+Filename: tests/fixtures/rules/state-no-unclosed-description-block/invalid/state/db-acc-descr-block-own-brace-later-line-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 | accDescr {
+    | ^~~~~~~~~~ [1]
+  3 | uses { here
+  4 | }
+  5 | A --> B
+  6 |
+
+[1] mermaid.js closes this `accDescr {` block at the `}` of a later `{`, and reads the lines up to it as the description.
+---
+
+
+Test: state-no-unclosed-description-block >> invalid >>> invalid/state/db-acc-descr-block-unclosed-takes-lines
+Filename: tests/fixtures/rules/state-no-unclosed-description-block/invalid/state/db-acc-descr-block-unclosed-takes-lines-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   A --> B
+  3 |   accDescr {
+    |   ^~~~~~~~~~ [1]
+  4 |   never
+  5 |   C --> D
+  6 |
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: state-no-unclosed-description-block >> invalid >>> invalid/state/db-acc-descr-unclosed-keeps-title
+Filename: tests/fixtures/rules/state-no-unclosed-description-block/invalid/state/db-acc-descr-unclosed-keeps-title-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accTitle: t
+  3 |   accDescr { x
+    |   ^~~~~~~~~~ [1]
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: state-no-unclosed-description-block >> invalid >>> invalid/state/db-acc-descr-unclosed-replaces
+Filename: tests/fixtures/rules/state-no-unclosed-description-block/invalid/state/db-acc-descr-unclosed-replaces-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr: d
+  3 |   accDescr {
+    |   ^~~~~~~~~~ [1]
+  4 |   x
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---
+
+
+Test: state-no-unclosed-description-block >> invalid >>> invalid/state/lex-acc-descr-block-unclosed
+Filename: tests/fixtures/rules/state-no-unclosed-description-block/invalid/state/lex-acc-descr-block-unclosed-input.mmd
+
+Code:
+  1 | stateDiagram-v2
+  2 |   accDescr {
+    |   ^~~~~~~~~~ [1]
+
+[1] mermaid.js reads the rest of the diagram as the text of this unclosed `accDescr {` block, and sets an empty description.
+---

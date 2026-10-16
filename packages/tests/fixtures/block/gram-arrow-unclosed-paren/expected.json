@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, block arrows: a direction list that is not closed is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...a  A<[\"x\"]>(right\n--------------------^\nExpecting 'DIR', 'BLOCK_ARROW_END', got '1'"
+  }
+}

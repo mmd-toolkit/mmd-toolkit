@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "blank-line inside metadata tests preprocessing before tokenization."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "a<br/>b",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "label": "a<br/>b"
+        }
+      }
+    ]
+  }
+}

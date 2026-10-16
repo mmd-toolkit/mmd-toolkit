@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Detection: `mindmapx` is detected and is a node text, not the header."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nmindmapxroot\n^\nExpecting 'SPACELINE', 'MINDMAP', got 'NODE_ID'"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "xychart.md Known divergences: an empty line after `x-axis A` and a space, then a title with a digit; rejected by mermaid.js."
+  },
+  "knownDivergence": "title-digit-after-axis-statement",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...tx-axis A title Q1\n--------------------^\nExpecting 'title', 'X_AXIS', 'Y_AXIS', 'LINE', 'BAR', 'acc_title', 'acc_descr', 'acc_descr_multiline_value', 'NEWLINE', 'SEMI', 'EOF', got 'NUMBER_WITH_DECIMAL'"
+  }
+}

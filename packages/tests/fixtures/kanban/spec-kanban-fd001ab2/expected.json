@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/kanban/kanban.spec.ts",
+    "line": 103,
+    "test": "when parsing a kanban  > hierarchy > KNBN-6 real root in wrong place"
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Items without section detected, found section (\"fakeRoot\")"
+  }
+}

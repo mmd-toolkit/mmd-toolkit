@@ -1,0 +1,9 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "common.md (Frontmatter): a `---` block after a comment line is no frontmatter; mermaid.js removes the comment line and finds the block as frontmatter when it detects the type, and accepts the text as `error`."
+  },
+  "accepted": true,
+  "diagramType": "error",
+  "db": {}
+}

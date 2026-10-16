@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "mindmap.md Units and contexts: the text may not end in a string."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n...ndmaproot  a[\"x]\n-------------------^\nExpecting 'NODE_DEND', got '1'"
+  }
+}

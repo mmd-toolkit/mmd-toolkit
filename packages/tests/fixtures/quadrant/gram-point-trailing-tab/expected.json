@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md quadrant, points: a tab after the point is not skipped but read as a style without a name, so the point is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "style named  is not supported."
+  }
+}

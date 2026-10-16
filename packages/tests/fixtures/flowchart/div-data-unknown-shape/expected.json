@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Known divergences (embedded-data-opaque): mermaid.js rejects the unknown shape; this specification does not read the content."
+  },
+  "knownDivergence": "embedded-data-opaque",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "No such shape: nope."
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The descriptions of states under a securityLevel that is not one of mermaid.js's values, with htmlLabels unset (enabled): the label of a state with one description, and each description of a state with two, are recorded with the characters replaced."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "stateDiagram",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "states": [
+      {
+        "id": "A",
+        "shape": "rect",
+        "label": "a&lt;b&gt;&equals;c<br/>d",
+        "description": [],
+        "classes": [],
+        "styles": []
+      },
+      {
+        "id": "B",
+        "shape": "rectWithTitle",
+        "label": "x",
+        "description": [
+          "a&lt;b&gt;&equals;c<br/>d"
+        ],
+        "classes": [],
+        "styles": []
+      }
+    ],
+    "notes": [],
+    "transitions": [],
+    "classDefs": [],
+    "links": []
+  }
+}

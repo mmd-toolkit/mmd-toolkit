@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "gantt.md Tasks: a `:` at the end of a line, with data on the next line; rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\ngantta :b : 1d\n-------^\nExpecting 'taskData', got ':'"
+  }
+}

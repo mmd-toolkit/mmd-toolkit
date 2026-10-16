@@ -1,0 +1,58 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Empty description blocks before a separator: the spaces on the two sides of the block are two `space` units, as mermaid.js reads two whitespace tokens: the first ends the interpolate name, and the second is a style that is all whitespace, so the edge gets the interpolate `basis` and the styles `` and `fill:none`; `linkStyle 0 interpolate basis`, two spaces, and `;` is rejected (flowchart/gram-interpolate-trailing-space)."
+  },
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "A",
+        "props": {}
+      },
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "type": "arrow_point",
+        "text": "",
+        "labelType": "text",
+        "classes": [],
+        "isUserDefinedId": false,
+        "interpolate": "basis",
+        "stroke": "normal",
+        "length": 1,
+        "id": "L_A_B_0",
+        "style": [
+          "",
+          "fill:none"
+        ]
+      }
+    ],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": []
+  }
+}

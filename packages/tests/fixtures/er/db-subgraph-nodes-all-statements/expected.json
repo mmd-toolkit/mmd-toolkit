@@ -1,0 +1,82 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The nodes are the values of the statements of the body in order: A, B, `class`, `classDef`, `style`, t, d, e, then C; the direction statement adds none and sets `dir`."
+  },
+  "accepted": true,
+  "diagramType": "er",
+  "db": {
+    "direction": "TB",
+    "title": "",
+    "accTitle": "t",
+    "accDescr": "e",
+    "entities": [
+      {
+        "id": "entity-A-0",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [
+          "fill:red"
+        ],
+        "name": "A",
+        "classes": [
+          "c"
+        ]
+      },
+      {
+        "id": "entity-B-1",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "B",
+        "classes": []
+      },
+      {
+        "id": "entity-C-2",
+        "attributes": [],
+        "alias": "",
+        "cssStyles": [],
+        "name": "C",
+        "classes": []
+      }
+    ],
+    "relationships": [
+      {
+        "entityA": "entity-A-0",
+        "roleA": "r",
+        "entityB": "entity-B-1",
+        "cardA": "ONLY_ONE",
+        "cardB": "ONLY_ONE",
+        "relType": "IDENTIFYING"
+      }
+    ],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:red"
+        ]
+      }
+    ],
+    "subGraphs": [
+      {
+        "id": "S",
+        "nodes": [
+          "A",
+          "B",
+          "class",
+          "classDef",
+          "style",
+          "t",
+          "d",
+          "e",
+          "C"
+        ],
+        "title": "S",
+        "classes": [],
+        "cssStyles": [],
+        "dir": "LR"
+      }
+    ]
+  }
+}

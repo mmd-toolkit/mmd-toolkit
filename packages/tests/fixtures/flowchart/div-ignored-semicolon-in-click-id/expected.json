@@ -1,0 +1,49 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "flowchart.md Known divergences (ignored-semicolon-as-token-boundary): the line matches the `style` rule, and mermaid.js reads it without the `;`, with the click id `Bb`; here the ignored `;` lies inside the click id, a name, and the input is rejected."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "flowchart-v2",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "vertices": [
+      {
+        "id": "B",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "B",
+        "props": {}
+      },
+      {
+        "id": "A",
+        "labelType": "text",
+        "styles": [],
+        "classes": [],
+        "text": "style:#x",
+        "type": "square",
+        "props": {}
+      }
+    ],
+    "edges": [],
+    "edgeDefaults": {
+      "interpolate": null,
+      "style": null
+    },
+    "classDefs": [],
+    "subgraphs": [],
+    "tooltips": [],
+    "clickCalls": [
+      {
+        "id": "Bb",
+        "name": "cb",
+        "args": null
+      }
+    ]
+  }
+}

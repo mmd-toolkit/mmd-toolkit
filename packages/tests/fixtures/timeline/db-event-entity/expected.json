@@ -1,0 +1,24 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md timeline, events: a character reference is recorded as its placeholder in a period and in an event."
+  },
+  "accepted": true,
+  "diagramType": "timeline",
+  "db": {
+    "direction": "LR",
+    "title": "",
+    "accTitle": "",
+    "accDescr": "",
+    "sections": [],
+    "tasks": [
+      {
+        "section": "",
+        "task": "a ﬂ°°35¶ß b ",
+        "events": [
+          "c ﬂ°°35¶ß d"
+        ]
+      }
+    ]
+  }
+}

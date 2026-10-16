@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/mindmap/mindmap.spec.ts",
+    "line": 189,
+    "test": "when parsing a mindmap  > decorations > MMP-14 should be possible to set classes for the node"
+  },
+  "accepted": true,
+  "diagramType": "mindmap",
+  "db": {
+    "root": {
+      "nodeId": "root",
+      "level": 0,
+      "descr": "The root",
+      "type": 2,
+      "class": "m-4 p-8",
+      "children": []
+    }
+  }
+}
