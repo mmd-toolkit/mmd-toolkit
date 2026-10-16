@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: a class applied to an id that no statement defines makes a block outside the diagram."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [
+      {
+        "id": "X",
+        "type": "na",
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

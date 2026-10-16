@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, the blocks that no list holds: the block of `class X c` keeps its place in the table when `X` is defined later, before the blocks of the dropped composite."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "X",
+        "type": "na",
+        "classes": [
+          "c"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "type": "na",
+        "widthInColumns": 1
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

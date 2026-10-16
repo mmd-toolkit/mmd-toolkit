@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Classes and styles: class with no ids before the end of the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...ck-beta  A  class\n--------------------^\nExpecting 'CLASSENTITY_IDS', got '1'"
+  }
+}

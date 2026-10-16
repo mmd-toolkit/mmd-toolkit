@@ -228,7 +228,9 @@ function hasSuggestions(rule: RuleDefinition): boolean {
  * order of the diagram families in the sidebar of the documentation site
  * (`diagramOrder` in `packages/docs/.vitepress/documents.js`, which follows
  * the order of the documentation of mermaid.js). A diagram with rules is added
- * here at its place in that order.
+ * here at its place in that order. The names are the prefixes of the rule
+ * names; where the site names the diagram otherwise, `SITE_DIAGRAM_IDS` says
+ * how.
  */
 export const DIAGRAM_ORDER: readonly string[] = [
   "flowchart",
@@ -238,12 +240,26 @@ export const DIAGRAM_ORDER: readonly string[] = [
   "er",
   "journey",
   "gantt",
+  "quadrant",
   "requirement",
   "mindmap",
   "timeline",
   "sankey",
   "xychart",
 ]
+
+/**
+ * The diagrams whose name in `diagramOrder` of the documentation site is not
+ * their prefix in the rule names.
+ */
+const SITE_DIAGRAM_IDS: Readonly<Record<string, string>> = {
+  quadrant: "quadrantChart",
+}
+
+/** The name of `diagram` in `diagramOrder` of the documentation site. */
+export function siteDiagramId(diagram: string): string {
+  return SITE_DIAGRAM_IDS[diagram] ?? diagram
+}
 
 /** The diagram of a rule name (`flowchart-no-ignored-text`), or null for a common rule. */
 function diagramOf(name: string): string | null {

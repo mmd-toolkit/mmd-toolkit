@@ -1,0 +1,48 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/block/blockColorIndex.spec.ts",
+    "line": 50,
+    "test": "block colour slots > gives no slot to a simple block"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "a",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "b",
+          "label": "b",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "group",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {
+              "id": "c",
+              "label": "c",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

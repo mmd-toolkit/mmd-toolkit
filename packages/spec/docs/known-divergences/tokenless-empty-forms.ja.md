@@ -3,7 +3,7 @@
 英語版: [tokenless-empty-forms.md](./tokenless-empty-forms.md)
 
 図種: flowchart、sequence、class、state、er、gantt、requirement、mindmap、
-xychart、quadrant。
+xychart、quadrant、block。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -75,6 +75,11 @@ quadrant では 3 つです。
 閉じた空の説明ブロック、空の文字列 `""`、空の markdown 文字列です。
 2 つの文字列は、どこにあってもこの差異に入ります
 （[空の文字列](../diagrams/quadrant.ja.md#空の文字列) を参照）。
+block でも同じ 3 つで、2 つの文字列はどこにあってもこの差異に入ります
+（[空の文字列](../diagrams/block.ja.md#空の文字列) を参照）。
+[fixture: block/div-empty-string-line]
+[fixture: block/div-empty-markdown-line]
+[fixture: block/div-empty-block-in-edge]
 [fixture: quadrant/div-empty-string-alone]
 [fixture: quadrant/div-empty-markdown-string-line]
 [fixture: quadrant/div-empty-block-in-quadrant-text]
@@ -244,7 +249,8 @@ mermaid.js が受理し、この仕様が拒否します。
 [requirement](../diagrams/requirement.ja.md#既知の差異)、
 [mindmap](../diagrams/mindmap.ja.md#既知の差異)、
 [xychart](../diagrams/xychart.ja.md#既知の差異)、
-[quadrant](../diagrams/quadrant.ja.md#既知の差異) です。
+[quadrant](../diagrams/quadrant.ja.md#既知の差異)、
+[block](../diagrams/block.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 
@@ -337,6 +343,13 @@ quadrant は、閉じた空の説明ブロック
 （[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L41-L43)）、
 空の文字列の引用符
 （[`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L44-L45)）
+を読み飛ばします。
+block は、閉じた空の説明ブロック
+（[`block.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/parser/block.jison#L79-L80)）、
+空の markdown 文字列の区切り
+（[`block.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/parser/block.jison#L50-L52)）、
+空の文字列の引用符
+（[`block.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/parser/block.jison#L53-L54)）
 を読み飛ばします。
 これらの規則はどれも、字句解析器の状態に入るか出るだけで何も返さないので、
 文法はその形を見ません。
@@ -790,6 +803,39 @@ mermaid.js は `x-axis L --> ""` を、
 [fixture: quadrant/db-empty-string-in-title]
 [fixture: quadrant/db-empty-block-after-point]
 [fixture: quadrant/db-empty-block-before-statement]
+
+アクセシビリティの文のない block では、文の中の閉じた空の説明ブロックです。
+矢印とそれが行き着くノードの間などで、どの欄も持てません（理由 a と b）。
+文が始まるところでは、欄のない説明ブロックの文です。
+また、mermaid.js が受理するところの空の文字列と空の markdown 文字列です。
+それだけの行、id、辺、形、幅、`end` の前後、入れ子のブロックの前と中、
+`columns` とその数の間です。
+flowchart と class と同じく、mermaid.js が丸ごと捨てる文字列を、
+木は文として持たないからです。
+どのラベルもそれを値全体として持たず、
+`A[""]` と `A -- "" --> B` は両方が拒否し、id にくっついた `""` は id の一部です
+（[空の説明ブロック](../diagrams/block.ja.md#空の説明ブロック) と
+[空の文字列](../diagrams/block.ja.md#空の文字列) を参照）。
+[fixture: block/div-empty-block-in-edge]
+[fixture: block/div-empty-markdown-between]
+[fixture: block/div-empty-markdown-line]
+[fixture: block/div-empty-string-after-edge]
+[fixture: block/div-empty-string-after-id]
+[fixture: block/div-empty-string-before-block-key]
+[fixture: block/div-empty-string-before-columns-number]
+[fixture: block/div-empty-string-before-edge]
+[fixture: block/div-empty-string-before-end]
+[fixture: block/div-empty-string-before-shape]
+[fixture: block/div-empty-string-before-width]
+[fixture: block/div-empty-string-between]
+[fixture: block/div-empty-string-first-in-line]
+[fixture: block/div-empty-string-in-composite]
+[fixture: block/div-empty-string-line]
+[fixture: block/div-empty-strings-two]
+[fixture: block/db-empty-block-line]
+[fixture: block/db-empty-block-between]
+[fixture: block/db-empty-string-glued-to-id]
+[fixture: block/gram-empty-block-only]
 
 文の最後の単位の後、その区切りの前では、
 state の `click A "u" "t" accDescr {}` のように、ブロックは文です。

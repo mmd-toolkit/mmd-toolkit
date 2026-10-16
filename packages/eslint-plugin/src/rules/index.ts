@@ -41,6 +41,15 @@ import { mindmapNoDuplicateDecoration } from "./mindmap-no-duplicate-decoration.
 import { mindmapNoMismatchedShape } from "./mindmap-no-mismatched-shape.ts"
 import { noIgnoredInitDirective } from "./no-ignored-init-directive.ts"
 import { noUnclosedDirective } from "./no-unclosed-directive.ts"
+import { quadrantNoDuplicateDescription } from "./quadrant-no-duplicate-description.ts"
+import { quadrantNoDuplicateStyle } from "./quadrant-no-duplicate-style.ts"
+import { quadrantNoDuplicateTitle } from "./quadrant-no-duplicate-title.ts"
+import { quadrantNoEmptyDescriptionBlock } from "./quadrant-no-empty-description-block.ts"
+import { quadrantNoInvalidCoordinate } from "./quadrant-no-invalid-coordinate.ts"
+import { quadrantNoRedefinedAxis } from "./quadrant-no-redefined-axis.ts"
+import { quadrantNoRedefinedClass } from "./quadrant-no-redefined-class.ts"
+import { quadrantNoRedefinedQuadrant } from "./quadrant-no-redefined-quadrant.ts"
+import { quadrantNoUndef } from "./quadrant-no-undef.ts"
 import { requirementNoDuplicateDescription } from "./requirement-no-duplicate-description.ts"
 import { requirementNoDuplicateField } from "./requirement-no-duplicate-field.ts"
 import { requirementNoDuplicateName } from "./requirement-no-duplicate-name.ts"
@@ -124,6 +133,15 @@ export const rules: NonNullable<ESLint.Plugin["rules"]> = {
   "mindmap-no-mismatched-shape": mindmapNoMismatchedShape,
   "no-ignored-init-directive": noIgnoredInitDirective,
   "no-unclosed-directive": noUnclosedDirective,
+  "quadrant-no-duplicate-description": quadrantNoDuplicateDescription,
+  "quadrant-no-duplicate-style": quadrantNoDuplicateStyle,
+  "quadrant-no-duplicate-title": quadrantNoDuplicateTitle,
+  "quadrant-no-empty-description-block": quadrantNoEmptyDescriptionBlock,
+  "quadrant-no-invalid-coordinate": quadrantNoInvalidCoordinate,
+  "quadrant-no-redefined-axis": quadrantNoRedefinedAxis,
+  "quadrant-no-redefined-class": quadrantNoRedefinedClass,
+  "quadrant-no-redefined-quadrant": quadrantNoRedefinedQuadrant,
+  "quadrant-no-undef": quadrantNoUndef,
   "requirement-no-duplicate-description": requirementNoDuplicateDescription,
   "requirement-no-duplicate-field": requirementNoDuplicateField,
   "requirement-no-duplicate-name": requirementNoDuplicateName,

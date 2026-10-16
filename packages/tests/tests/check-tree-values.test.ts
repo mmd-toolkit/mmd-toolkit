@@ -213,6 +213,9 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
     variant: "a title or an accessibility text",
     message: "value is not its written text without the whitespace at its ends",
   },
+  { type: "BlockLiteral", message: NOT_WRITTEN_TEXT },
+  { type: "BlockArrow", message: NOT_WRITTEN_TEXT },
+  { type: "BlockOpeningArrow", message: NOT_WRITTEN_TEXT },
   { type: "XychartLiteral", message: NOT_TOKENS_JOINED },
   {
     type: "XychartLiteral",
@@ -351,6 +354,29 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "BlockLiteral",
+    name: "a BlockLiteral reports the whitespace taken off the start of the RawText token of a style after a comma",
+    diagram: "block",
+    fixture: "db-style-spaces",
+    token: { type: "RawText", value: " stroke:#333" },
+    side: "start",
+    problems: [
+      {
+        where: "BlockLiteral at 36-48",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "BlockLiteral at 36-48",
+        message: `${JOINED}: "stroke:#333", not " stroke:#333"`,
+      },
+      {
+        where: "BlockLiteral at 36-48",
+        message:
+          "the range of the value from its first token to its last: [36,48], not [37,48]",
+      },
+    ],
+  },
   {
     type: "QuadrantLabel",
     name: "a QuadrantLabel reports the whitespace taken off the end of the RawText token before a directive",
@@ -918,6 +944,16 @@ const TYPES_WITHOUT_TOKEN_WHITESPACE: Readonly<
     fixture: "db-classdef-color",
     reason:
       "its token is an Identifier token, which holds no whitespace (parser/docs/tokens/quadrant.md)",
+  },
+  BlockArrow: {
+    diagram: "block",
+    fixture: "db-edge-arrow",
+    reason: "its token is an arrow (parser/docs/tokens/block.md)",
+  },
+  BlockOpeningArrow: {
+    diagram: "block",
+    fixture: "db-edge-label",
+    reason: "its token is an arrow (parser/docs/tokens/block.md)",
   },
   XychartLiteral: {
     diagram: "xychart",

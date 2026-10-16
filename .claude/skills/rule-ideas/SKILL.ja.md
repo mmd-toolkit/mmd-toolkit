@@ -187,6 +187,12 @@ description:
 | sankey の図で、同じ source と target の 2 つのレコード（`a,b,1` と `a,b,2`）                                                                                                              | 2 本のリンクはどちらも残り、何も失われない。2 つ目を貼り付けの写しと言うのは推定である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | XY チャートで、引用符のない複数の語のテキスト（`title Two words`、`x-axis [New York, Paris]`。語の間の空白が失われ、`Twowords` になる）                                                   | 構文を知らないことから起きる。mermaid.js の文書は、複数の語のテキストは `"` の中に書くと言う。flowchart の `subgraph S %% group` と同じである。フォーマッターは語を書いたとおりに印字する                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | XY チャートで、bar のラベル（`bar [1 "a"]`）と、プロットの後の `x-axis`                                                                                                                   | mermaid.js の文書は bar のラベルを受理して無視すると書いており、それを書くのは構文を知らないことから起きる。プロットの後の `x-axis` はプロットにそのカテゴリーを与えず、[#5291](https://github.com/mermaid-js/mermaid/issues/5291)（open、approved）はそれを不具合とし、[#7798](https://github.com/mermaid-js/mermaid/pull/7798)（open）が直す                                                                                                                                                                                                                                                                                                              |
+| 四象限チャートで、`quadrant-10 A`（1 つ目の象限で、テキストは `0 A`）                                                                                                                     | 構文を知らないことから起きる。mermaid.js の文書は `quadrant-1` から `quadrant-4` だけを挙げ、`quadrant-0` と `quadrant-5` は拒否される。前に `quadrant-1` があれば、quadrant-no-redefined-quadrant がその行を報告する                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 四象限チャートで、矢印があり 2 つ目のテキストがない軸（`x-axis Low -->`。左のテキストは `Low ⟶`）                                                                                         | mermaid.js は文法どおりに読み、何も失わない。矢印はテキストの後に描かれる。2 つ目のテキストの書き忘れと言うのは推定である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| 四象限チャートで、`stroke-width` のない `stroke-color`（枠は幅 `0px` で描かれる）                                                                                                         | mermaid.js の文書は、幅がなければ色は役に立たないと書くが、その例自身がそう書いている（`Point C`、`Campaign C`）。規則は、文書が示す書き方を報告することになる                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| 四象限チャートで、`#` のない色（`color: f00`。書いたとおりに持つ）                                                                                                                        | 上の `classDef fo` と同じく、このツールキットの範囲の外である。色が描かれるかは、描いたチャートにしか表れない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 四象限チャートで、同じ名前か同じ位置の 2 つの点と、どの点も使わない `classDef`                                                                                                            | 何も失われない。点は両方残り、クラスは一覧にある。どちらも誤りと言うのは推定である                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| 四象限チャートで、タイトルの行の `;` の後の文（`title Sales; x-axis Low --> High`。タイトルが行の残りを持つ）                                                                             | チャートを描く人が書くものではない。タイトルは 1 行に書き、mermaid.js の文書は `;` を示さない                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ### 迷ったときの問い
 
@@ -655,6 +661,15 @@ mermaid.js はそのテキストも捨てるので、報告は事実であり（
 | xychart-no-unread-orientation             | 入れる               |                                                                          |
 | xychart-no-redefined-axis                 | 入れる               |                                                                          |
 | xychart-no-extra-value                    | 入れる               |                                                                          |
+| quadrant-no-duplicate-title               | 入れる               |                                                                          |
+| quadrant-no-duplicate-description         | 入れる               |                                                                          |
+| quadrant-no-empty-description-block       | 入れる               |                                                                          |
+| quadrant-no-redefined-axis                | 入れる               |                                                                          |
+| quadrant-no-redefined-quadrant            | 入れる               |                                                                          |
+| quadrant-no-redefined-class               | 入れる               |                                                                          |
+| quadrant-no-undef                         | 入れる               |                                                                          |
+| quadrant-no-duplicate-style               | 入れる               |                                                                          |
+| quadrant-no-invalid-coordinate            | 入れる               |                                                                          |
 
 注は、規則ごとに、または場合を共有する規則の組ごとに、
 基準 1 から 4 について調べたことを、その順に書く。
@@ -1072,6 +1087,51 @@ XY チャートの規則の注は次のとおりである。
   その後のプロットだけを調べる。
   (4) カテゴリーと同じ数の値を書く。
 
+四象限チャートの規則の注は次のとおりである。
+検索は題名と本文の「quadrant」と「quadrantChart」で、
+point、classDef、coordinates、x-axis、range、lexer、comma、number、NaN、hex、
+radius の語も添えた。
+読み方を変えるものはなかった。
+open の [#8084](https://github.com/mermaid-js/mermaid/pull/8084) は、
+描くときのテキストの折り返しだけを変え、
+[#7608](https://github.com/mermaid-js/mermaid/issues/7608)（open）は、
+軸のほかの範囲を求めている。
+
+- quadrant-no-duplicate-title、quadrant-no-duplicate-description、
+  quadrant-no-empty-description-block:
+  上のタイトル、説明、空のブロックの規則の注を持つ。
+  タイトルは引用符と行の残りを持ち、
+  閉じていない説明のブロックは拒否されるので、それを報告する規則はない（実行）。
+- quadrant-no-redefined-axis、quadrant-no-redefined-quadrant:
+  (1) 後の文は、設定するそれぞれのテキストを置き換える（実行）。
+  空だったテキストは、失われたと数えない。
+  (2) なし。
+  (4) 軸ごと、象限ごとに 1 つの文を書く。
+- quadrant-no-redefined-class:
+  (1) クラスは、併合なしに、最後の定義のスタイルだけを持つ（実行）。
+  (2) なし。
+  (4) スタイルを 1 つの定義に書く。
+- quadrant-no-undef:
+  (1) クラス名は点に残り、その名前のクラスは定義されない（実行）。
+  配置はそのクラスを見つけず、
+  描いた点はその名前の CSS クラスを持たない（読んだ）。
+  (2) なし。
+  (4) クラスを定義するか、名前を直す。
+- quadrant-no-duplicate-style:
+  (1) スタイルの後の値が前の値を置き換える（実行）。
+  (2) なし。点のスタイルとそのクラスのスタイルは比べない。
+  (4) スタイルをそれぞれ 1 度だけ与える。
+- quadrant-no-invalid-coordinate:
+  (1) 座標は書いたとおりに持たれ（実行）、
+  配置は d3 の線形の尺度でそれを変換する。
+  尺度は `0,3` に数を与えず、`0x5` に 5 を与える（d3-scale 4.0.2 で実行）。
+  規則は、数でない座標と 0 から 1 の外の数の座標だけを報告するので、
+  その位置に描かれる `0e5`（0）と `0b1`（1）は報告しない。
+  数のない円は `cx` も `cy` も持たない（読んだ）。
+  (2) なし。mermaid.js の文書は、座標を小数点のある 0 から 1 の数で書く。
+  (3) #7608 はほかの範囲を求めているが、それで `0,3` が数になることはない。
+  (4) 小数点を書く。
+
 class-no-inline-comment:
 コメントの後に空白だけの行があり、その行の後にコメント行がないとき、
 mermaid.js は次の行を書き手のつもりどおりに別に読むが、
@@ -1156,6 +1216,7 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 | sankey-no-invalid-value                 | いまはなし（2026-10-15。この節の終わりを見る）   |
 | sankey-no-empty-node                    | いまはなし（2026-10-15。この節の終わりを見る）   |
 | xychart-*（7 件すべて）                 | いまはなし（2026-10-15。この節の終わりを見る）   |
+| quadrant-*（9 件すべて）                | いまはなし（2026-10-16。この節の終わりを見る）   |
 
 - この行の終わりで閉じる:
   `{` のある行の終わりに ` }` を足す。
@@ -1278,7 +1339,8 @@ mermaid.js がそれをつもりどおりに読むときだけである。
 
 `sequence-*`、`class-*`、`state-*`（2026-10-08）と
 `er-*`、`gantt-*`、`journey-*`（2026-10-14）と
-`requirement-*`、`mindmap-*`、`timeline-*`、`sankey-*`、`xychart-*`（2026-10-15）:
+`requirement-*`、`mindmap-*`、`timeline-*`、`sankey-*`、`xychart-*`（2026-10-15）と
+`quadrant-*`（2026-10-16）:
 いまは提案なしで実装する。
 これらの規則の提案は、判定も文書の記述もなく、
 sequence の空のブロックに予定していた提案の根拠は生成した入力だった。

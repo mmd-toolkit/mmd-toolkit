@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Known divergences: header: `%%{ }%%` before the header is no directive (a directive names a word), so the lexer reads it as a node before the header: rejected."
+  },
+  "knownDivergence": "bare-percent-line-before-header",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n%%{ }%%block-beta \n^\nExpecting 'BLOCK_DIAGRAM_KEY', got 'NODE_ID'"
+  }
+}

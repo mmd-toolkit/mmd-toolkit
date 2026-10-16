@@ -1,3 +1,4 @@
+import { checkBlockTree } from "./block.ts"
 import { checkClassTree } from "./class.ts"
 import { checkErTree } from "./er.ts"
 import { checkErrorDiagramTokens } from "./error-diagram.ts"
@@ -100,6 +101,9 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
       break
     case "XychartDiagram":
       checkXychartTree(text, root, problems)
+      break
+    case "BlockDiagram":
+      checkBlockTree(text, root, problems)
       break
     case "QuadrantDiagram":
       checkQuadrantTree(text, root, problems)

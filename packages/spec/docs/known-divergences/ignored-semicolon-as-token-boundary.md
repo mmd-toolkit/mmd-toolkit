@@ -4,7 +4,7 @@ Japanese version:
 [ignored-semicolon-as-token-boundary.ja.md](./ignored-semicolon-as-token-boundary.ja.md)
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
-requirement, mindmap, timeline, xychart, and quadrant. This is one of the
+requirement, mindmap, timeline, xychart, quadrant, and block. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -165,7 +165,13 @@ xychart/div-ignored-semicolon-in-keyword] In a quadrant chart, the `style` or
 `classDef`, the `:`, and the `#` may lie in the name of a class of `classDef`,
 which is a name, so the ignored `;` lies inside the name: mermaid.js reads
 `classDef style:#x;y color: #f00` as the class `style:#xy`, and this
-specification rejects it. [fixture: quadrant/div-grid-style-classdef-name]
+specification rejects it. [fixture: quadrant/div-grid-style-classdef-name] In a
+block diagram, the `style`, the `:`, and the `#` may lie in a string before the
+`;`, such as the label `"style:#a"`, so the ignored `;` can lie inside an id or
+a keyword: mermaid.js reads `A["style:#a"] B;C` with the id `BC` and
+`A["style:#a"] col;umns 2` with `columns 2`, and this specification rejects
+them. [fixture: block/div-ignored-semicolon-in-id] [fixture:
+block/div-ignored-semicolon-in-keyword]
 
 Each diagram document lists where this shows, in its Known divergences section:
 [flowchart](../diagrams/flowchart.md#known-divergences),
@@ -178,8 +184,9 @@ Each diagram document lists where this shows, in its Known divergences section:
 [requirement](../diagrams/requirement.md#known-divergences),
 [mindmap](../diagrams/mindmap.md#known-divergences),
 [timeline](../diagrams/timeline.md#known-divergences),
-[xychart](../diagrams/xychart.md#known-divergences), and
-[quadrant](../diagrams/quadrant.md#known-divergences).
+[xychart](../diagrams/xychart.md#known-divergences),
+[quadrant](../diagrams/quadrant.md#known-divergences), and
+[block](../diagrams/block.md#known-divergences).
 
 ## What it means for an author
 

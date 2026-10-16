@@ -6036,3 +6036,3394 @@ Db は 1 つなので、パッチは Db 自体に当てられ、
   [fixture: quadrant/gram-unclosed-name-quote-at-end]
   [fixture: quadrant/gram-unclosed-point-after-comma-at-end]
   [fixture: quadrant/gram-unclosed-quadrant-quote-at-end]
+
+## block
+
+要約の欄です。
+
+| 欄         | 内容                                                                                                                                                |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `root`     | 図を持つブロックです。`columns`（テキストの最上位に `columns` がないとき `-1`）と、`children`（図のブロックをテキストの順に並べたもの）を持ちます。 |
+| `unplaced` | Db が表に持ち、どの子の並びにも入っていないブロックです。                                                                                           |
+| `edges`    | 辺で、テキストの順です。                                                                                                                            |
+| `classes`  | `classDef` のクラスで、最初の定義の順です。                                                                                                         |
+
+`normalizeBlock()`（`src/normalizers/block.ts`）が `block` の Db を要約します。
+Db は、すべての block 図が共有する 1 つのオブジェクトで、
+状態はモジュールの変数にあり、
+構文解析のたびに
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L197-L209) がそれを初期状態に戻します。
+構文解析のあいだ、ブラウザの機能も時刻も読みません。
+文法は文の並びを作り、テキスト全体を読み終えたときに初めて、
+[`setHierarchy()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L305-L309) が
+[`populateBlockDatabase()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L105-L192) を呼びます。
+これは並びをテキストの順に、子の並びを 1 つずつたどって Db を埋めます。
+id ごとのブロックの表、辺の並び、クラスです。
+要約は、それが終わったときの Db から読みます。
+
+ブロックは `{ id, label, type, ... }` で、Db が持つ欄だけを、
+Db が持つとおりに持ちます。
+`widthInColumns` は node の `:N` で、辺の端の node にはありません。
+`width` は `space` の幅です。
+`directions` は block arrow の方向で、字句解析器が読んだとおりです。
+`columns` は composite の中の最後の `columns` です。
+`classes` は `class` が与えたクラス名で、文の順です。
+`styles` は、そのブロックへの最後の `style` の文のスタイルで、
+`,` で分けたものです。
+composite は `children` を持ちます。
+自分の並びのブロックで、テキストの順です。
+`id` のない `block` と `space` ごとに、Db は
+[`generateId()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L300-L303) で id を作ります。
+これは乱数を含むので、要約はそのようなブロックに `id` を持たず、
+`space` に `label` も持ちません（`space` の label は Db が作った id です）。
+図を持つブロックは `root` で、`id` を除けば他のブロックと同じ形です。
+
+`root.columns` は、テキストの最上位に `columns` がないとき `-1` です。
+`unplaced` は、Db が表に持ち、どの子の並びにも入っていないブロックを、
+表の順に並べます。
+`class` が、まだどの文も定義していない id、
+または前に空白があってブロックが見つからない id
+（`class A, B c`）に作ったブロック
+（その id の表の項目の場所に入ります。
+あとからその id が定義されると、そのブロックが使われ、図の外に残ります）と、
+Db がすでに持つ id の composite の中のブロックです
+（Db は id の最初のブロックを残し、新しいブロックを子の並びごと捨てます）。
+ほかの載せたブロックの `children` が持つブロックは、そこにだけ載せます。
+辺は
+`{ start, end, label, thickness, pattern, arrowTypeStart, arrowTypeEnd }`
+で、
+端のブロックが block arrow のときは `directions` も持ちます。
+辺はテキストの順で、composite の中の辺も含みます。
+クラスは `{ id, styles }` で、
+その id のすべての `classDef` のスタイルを順に並べたものです。
+
+次のものは、理由があって要約から除きます。
+
+- composite の `colorIndex`。描画のためのパレットの番号で、
+  composite の順に数えます。
+- クラスの `textStyles`。色を指すスタイルを描画のために書き直したもので、
+  スタイルから決まります。
+- 辺の `id` と `type`。`id` は同じ 2 つの id の間の辺の通し番号と 2 つの id で、
+  `type` は常に `edge` です。
+- composite でなくて子を持たないブロックの `children`（`[]`）、
+  `space` の `label`（Db が作った id）、
+  `space` の文が表に作る項目です（幅の分のブロックが幅を持ち、
+  `space:0` はブロックを作りません）。
+- `block:` の後ろに辺の文が続く composite の欄 `0`、`1`、`2`。
+  Db は文の 3 つのブロックの並びを composite に展開し、その欄は何も読みません。
+- 描画が埋める配置（`size`、`intersect`、`node`）。構文解析のあいだ、
+  Db は持ちません。
+- `getColumns()`。`columns` のない、または `0` のブロックには子の数を返します。
+  残す欄から決まります。
+
+Db のパッチ（`patchBlockDb()`）は `generateId()` が作る id を記録し、
+要約がそれをテキストの id と区別できるようにします。`clear()` はそれを忘れます。
+Db は 1 つなので、パッチは Db そのものに当てます。
+要約は、mermaid.js のどの `securityLevel` でも、サイトのどの設定でも同じです。
+ただし、その値のどれでもない `securityLevel` では、
+ラベルの文字が置き換わります。
+
+要約の値を欄ごとに示します。
+
+- 見出しは `block-beta` か `block` です。
+  [検出器](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDetector.ts#L6-L6)は、空白のあとに `block` で始まるテキストを、この大文字小文字のとおりに読みます。
+  そのため、`Block-beta`、`BLOCK-BETA`、`Block` は検出されません。
+  `block-Beta` と `block-BETA` は、見出し `block` の後ろに、
+  どの規則も読めないテキストが続く形です。
+  見出しに単語の文字が続くと見出しでなく node になります。
+  `blockx`、`block_beta`、`block2`、`block-betax`、
+  `block-alpha` は拒否されます。
+  ASCII の外の文字は単語の文字でないので、`blocké` は見出しと node `é` です。
+  見出しだけのテキストは、改行があってもなくても拒否されます。
+  [fixture: block/header-block-beta]
+  [fixture: block/header-block]
+  [fixture: block/header-only-block-beta]
+  [fixture: block/header-only-block]
+  [fixture: block/header-only-block-beta-no-line-break]
+  [fixture: block/header-capitalized]
+  [fixture: block/header-upper-case]
+  [fixture: block/header-capitalized-block]
+  [fixture: block/header-word-suffix]
+  [fixture: block/header-dash-suffix]
+  [fixture: block/header-alpha-suffix]
+  [fixture: block/header-underscore-suffix]
+  [fixture: block/header-digit-suffix]
+  [fixture: block/header-non-ascii-suffix]
+  [fixture: block/header-beta-capital]
+  [fixture: block/header-beta-upper]
+- 見出しと同じ行に、空白かタブを挟んで文を続けられます。`columns` も同じです。
+  そこでは、`;` と `%%` とその後ろのテキストは node であり、
+  区切りでもコメントでもありません。
+  2 つ目の見出しは composite を開き、`end` で閉じなければなりません。
+  1 行だけの見出し、見出しの行の後ろ、`block` の形のどれでも同じです。
+  [fixture: block/header-spaced-word-suffix]
+  [fixture: block/header-statement-on-header-line]
+  [fixture: block/header-statement-on-header-line-tab]
+  [fixture: block/header-columns-on-header-line]
+  [fixture: block/header-semicolon]
+  [fixture: block/header-semicolon-spaced]
+  [fixture: block/header-comment-on-header-line]
+  [fixture: block/header-comment-glued]
+  [fixture: block/header-twice]
+  [fixture: block/header-twice-closed]
+  [fixture: block/header-twice-same-line]
+  [fixture: block/header-twice-block]
+  [fixture: block/header-keyword-header-in-text]
+- 見出しの前の空白、タブ、空行、U+00A0、U+3000、U+FEFF、
+  U+2028 は何も変えません。
+  フロントマター、コメント行、ディレクティブ行も同じで、
+  タイトルと設定を要約は残しません。
+  見出しの前の `#` で始まる行、`;`、文は検出されません。
+  見出しの前の `%%` だけの行と `%%{ }%%` は取り除かれず、
+  字句解析器は見出しの前の node として読み、拒否されます。
+  [fixture: block/header-indented]
+  [fixture: block/header-tab-indented]
+  [fixture: block/header-blank-lines-before]
+  [fixture: block/header-nbsp-before]
+  [fixture: block/header-ideographic-space-before]
+  [fixture: block/header-bom-before]
+  [fixture: block/header-ls-before]
+  [fixture: block/header-after-comment-line]
+  [fixture: block/header-after-directive-line]
+  [fixture: block/header-after-whitespace-line]
+  [fixture: block/header-after-frontmatter]
+  [fixture: block/header-after-frontmatter-and-comment]
+  [fixture: block/header-after-hash-line]
+  [fixture: block/header-after-semicolon-line]
+  [fixture: block/header-leading-semicolon]
+  [fixture: block/header-statement-first]
+  [fixture: block/div-after-bare-percent-line]
+  [fixture: block/div-after-bare-percent-line-and-whitespace-line]
+  [fixture: block/div-after-empty-braces-line]
+- 見出しの後ろの空白、タブ、U+00A0、U+FEFF、U+3000、U+2028、U+2029、垂直タブ、
+  改ページは空白です。
+  単独の CR と CRLF は行を終わらせ、
+  見出しに付いたディレクティブは取り除かれます。
+  U+0085 は字句解析器にとって空白でなく、後ろの id とつながります。
+  [fixture: block/header-trailing-spaces]
+  [fixture: block/header-trailing-tab]
+  [fixture: block/header-trailing-nbsp]
+  [fixture: block/header-bom-after]
+  [fixture: block/header-ls-after]
+  [fixture: block/header-ps-after]
+  [fixture: block/header-nel-after]
+  [fixture: block/header-vt-after]
+  [fixture: block/header-ff-after]
+  [fixture: block/header-cr]
+  [fixture: block/header-crlf]
+  [fixture: block/header-directive-glued]
+- `columns N` は、
+  それが書かれたブロック（root か composite）の columns を決めます。
+  ブロックの中のどこに書いても、そのブロックの最後の `columns` が columns です。
+  数は 10 進数として読むので、`007` は 7 で、`0` と `00` は 0 です。
+  `columns auto` は `-1` で、`columns` のないブロックの値と同じです。
+  桁が多くて倍精度が無限になる数は、テキスト `Infinity` で記録します。
+  Db は数をそのまま持ち、`0` は `0` として保存します（`getColumns()` は、
+  その場合に子の数を返します）。
+  [fixture: block/db-columns-plain]
+  [fixture: block/db-columns-auto]
+  [fixture: block/db-columns-zero]
+  [fixture: block/db-columns-double-zero]
+  [fixture: block/db-columns-leading-zeros]
+  [fixture: block/db-columns-one]
+  [fixture: block/db-columns-large]
+  [fixture: block/db-columns-overflow]
+  [fixture: block/db-columns-twice]
+  [fixture: block/db-columns-twice-auto-last]
+  [fixture: block/db-columns-twice-number-last]
+  [fixture: block/db-definitions-columns-three]
+  [fixture: block/db-columns-after-nodes]
+  [fixture: block/db-columns-between-nodes]
+  [fixture: block/db-columns-only]
+  [fixture: block/db-columns-only-auto]
+  [fixture: block/db-columns-after-block]
+  [fixture: block/db-columns-after-end]
+- composite は、root や外側の composite とは別の columns を持ちます。
+  id のある composite、id のない composite、
+  入れ子の composite の中の `columns` は、
+  いちばん内側の composite の columns を決めます。
+  `columns` だけを持つ composite は子を持ちません。
+  composite の行で id の後ろに書いた `columns` は、その composite の文です。
+  [fixture: block/db-columns-in-block]
+  [fixture: block/db-columns-in-block-and-root]
+  [fixture: block/db-columns-in-block-auto]
+  [fixture: block/db-columns-in-block-only]
+  [fixture: block/db-columns-in-anonymous-block]
+  [fixture: block/db-columns-in-nested-block]
+  [fixture: block/db-columns-in-block-header-line]
+  [fixture: block/db-composite-width-and-columns]
+- `columns` の後ろの、数でないものは数になりません。
+  符号（`+2`、`-1`）、小数点、指数、16 進の接頭辞、ASCII の外の数字は、
+  数を終えるか、数が始まらないようにします。
+  残りは node として読みます（`columns 2.5` は columns 2 と node `.5` です）。
+  `columns -1` と `columns 2:3` は拒否されます。
+  `columns` の後ろの単語、`AUTO`、`auto2` は node で、
+  `columns` 自身も node です。
+  `Columns 2`、`COLUMNS 2`、`columns2`、`columnsauto` も同じで、
+  キーワードは小文字で、空白が続くときに読みます。
+  [fixture: block/db-columns-plus]
+  [fixture: block/gram-columns-negative]
+  [fixture: block/db-columns-decimal]
+  [fixture: block/db-columns-exponent]
+  [fixture: block/db-columns-hexadecimal]
+  [fixture: block/db-columns-fullwidth-digit]
+  [fixture: block/db-columns-arabic-digit]
+  [fixture: block/gram-columns-colon-number]
+  [fixture: block/db-columns-no-number]
+  [fixture: block/db-columns-no-number-last]
+  [fixture: block/db-columns-word]
+  [fixture: block/db-columns-auto-upper]
+  [fixture: block/db-columns-auto-suffix]
+  [fixture: block/db-columns-auto-glued]
+  [fixture: block/db-columns-glued-number]
+  [fixture: block/db-columns-upper-case]
+  [fixture: block/db-columns-upper-case-all]
+  [fixture: block/db-columns-two-numbers]
+- `columns` と数の間は、字句解析器の空白ならなんでもよく、改行と空行も含みます。
+  数の後ろに同じ行で node を続けられます。数の後ろの `;` は node です。
+  node の幅は columns によらず保たれ、columns より広い幅も変わりません。
+  [fixture: block/db-columns-tab]
+  [fixture: block/db-columns-line-feed]
+  [fixture: block/db-columns-blank-line]
+  [fixture: block/db-columns-nbsp]
+  [fixture: block/db-columns-ideographic]
+  [fixture: block/db-columns-ls]
+  [fixture: block/db-columns-bom]
+  [fixture: block/db-columns-crlf]
+  [fixture: block/db-columns-two-spaces]
+  [fixture: block/db-columns-trailing]
+  [fixture: block/db-columns-then-word]
+  [fixture: block/db-columns-semicolon]
+  [fixture: block/db-columns-with-width]
+  [fixture: block/db-columns-width-exceeds-zero]
+  [fixture: block/db-columns-auto-then-width]
+- 単語は node で、id と label はその単語です。
+  1 行に、空白で区切って何個でも書けます。
+  単語には、空白と `(`、`)`、`[`、`{`、`}`、`<`、`>`、`:`、`=`、
+  `-` 以外のどの文字も入ります。
+  この文字は単語を終えます。
+  `_`、`.`、`/`、`,`、`|`、`#`、`&`、`%`、`$`、`*`、`+`、`~`、`^`、`@`、`!`、
+  `?`、
+  バッククォート、バックスラッシュ、`;`、引用符、`]`、すべての文字、CJK の文字、
+  絵文字は id の一部です。
+  単語の中の `%%` も id の一部です。
+  id は数字、`%`、`#`、`;`、`_` で始められます。
+  id は大文字小文字を区別し、もう一度使った id は同じブロックで、
+  最初の位置にあります。
+  [fixture: block/db-name-two]
+  [fixture: block/db-name-three-lines]
+  [fixture: block/db-name-digits]
+  [fixture: block/db-name-digits-and-letters]
+  [fixture: block/db-name-underscore]
+  [fixture: block/db-name-underscore-first]
+  [fixture: block/db-name-dot]
+  [fixture: block/db-name-slash]
+  [fixture: block/db-name-comma]
+  [fixture: block/db-name-pipe]
+  [fixture: block/db-name-hash]
+  [fixture: block/db-name-ampersand]
+  [fixture: block/db-name-percent]
+  [fixture: block/db-name-percent-percent]
+  [fixture: block/db-name-dollar]
+  [fixture: block/db-name-asterisk]
+  [fixture: block/db-name-plus]
+  [fixture: block/db-name-tilde]
+  [fixture: block/db-name-caret]
+  [fixture: block/db-name-at]
+  [fixture: block/db-name-exclamation]
+  [fixture: block/db-name-question]
+  [fixture: block/db-name-backtick]
+  [fixture: block/db-name-backslash]
+  [fixture: block/db-name-semicolon]
+  [fixture: block/db-name-quote]
+  [fixture: block/db-name-single-quote]
+  [fixture: block/db-name-brackets-in-id]
+  [fixture: block/db-name-non-ascii]
+  [fixture: block/db-name-cjk]
+  [fixture: block/db-name-emoji]
+  [fixture: block/db-name-long]
+  [fixture: block/db-name-same-twice]
+  [fixture: block/db-name-same-three]
+  [fixture: block/db-name-case]
+  [fixture: block/db-name-leading-digits]
+  [fixture: block/db-name-percent-first]
+  [fixture: block/db-name-hash-first]
+  [fixture: block/db-name-semicolon-first]
+  [fixture: block/gram-name-dash]
+  [fixture: block/gram-name-dash-first]
+  [fixture: block/gram-name-colon]
+  [fixture: block/gram-name-equals]
+  [fixture: block/gram-name-less-than]
+  [fixture: block/gram-name-greater-than]
+  [fixture: block/gram-name-brace]
+  [fixture: block/gram-name-close-paren]
+- タブ、垂直タブ、改ページ、CR、CRLF、U+00A0、U+3000、U+FEFF、U+2028、
+  U+2029 は 2 つの id を分けます。
+  U+0085 は分けず、2 つの単語を 1 つの id につなげます。
+  node の後ろの空白、行のインデント、空行、最後の改行がないことは、
+  何も変えません。
+  [fixture: block/db-name-tab-between]
+  [fixture: block/db-name-nbsp-between]
+  [fixture: block/db-name-ideographic-between]
+  [fixture: block/db-name-bom-between]
+  [fixture: block/db-name-ls-between]
+  [fixture: block/db-name-ps-between]
+  [fixture: block/db-name-nel-between]
+  [fixture: block/db-name-vt-between]
+  [fixture: block/db-name-ff-between]
+  [fixture: block/db-name-cr-between]
+  [fixture: block/db-name-crlf-between]
+  [fixture: block/db-name-ls-around]
+  [fixture: block/db-name-trailing-spaces]
+  [fixture: block/db-name-indented-more]
+  [fixture: block/db-name-blank-lines]
+  [fixture: block/db-name-no-final-line-feed]
+- id の後ろ、shape の後ろ、block arrow の方向の後ろの `:N` は、
+  node の幅（列の数）です。
+  `:N` のない node の幅は 1 です。
+  数は 10 進数として読むので、`:007` は 7、`:0` は 0 です。
+  桁が多くて倍精度が無限になる数は、テキスト `Infinity` です。
+  `:` の前の空白は、改行も含めて許されます。
+  `:` の後ろの空白、数のない `:`、符号、文字、ASCII の外の数字、
+  2 つの幅は拒否されます。
+  数の後ろは別に読みます。
+  `A:2.5` は幅 2 と node `.5` で、`A:3B`、`A:3,B`、`A:3#`、
+  `A:3;` は node A と別の node です。
+  [fixture: block/db-width-plain]
+  [fixture: block/db-width-one]
+  [fixture: block/db-width-zero]
+  [fixture: block/db-width-leading-zeros]
+  [fixture: block/db-width-large]
+  [fixture: block/db-width-overflow]
+  [fixture: block/db-width-space-before]
+  [fixture: block/db-width-tab-before]
+  [fixture: block/db-width-line-feed-before]
+  [fixture: block/gram-width-space-after]
+  [fixture: block/gram-width-colon-only]
+  [fixture: block/gram-width-negative]
+  [fixture: block/db-width-decimal]
+  [fixture: block/gram-width-letters]
+  [fixture: block/gram-width-twice]
+  [fixture: block/gram-width-fullwidth-digit]
+  [fixture: block/db-width-glued-node]
+  [fixture: block/db-width-comma]
+  [fixture: block/db-width-hash]
+  [fixture: block/db-width-semicolon]
+  [fixture: block/db-width-on-two-nodes]
+  [fixture: block/db-width-with-label]
+  [fixture: block/db-width-label-then-space]
+  [fixture: block/db-width-with-block-arrow]
+- もう一度使った node は、最初に使ったときの幅を保ちます。
+  最初に幅を与えたかどうかによりません。
+  辺の始まりの node は Db では幅を持たず、辺の終わりの node は幅を持てません。
+  始まりの幅は失われ、終わりの幅は拒否されます。
+  辺より前に定義した node は幅を保ちます。
+  [fixture: block/db-width-redefine]
+  [fixture: block/db-width-redefine-without]
+  [fixture: block/db-width-redefine-first]
+  [fixture: block/db-width-on-edge-source]
+  [fixture: block/gram-width-on-edge-target]
+  [fixture: block/db-width-before-edge]
+  [fixture: block/db-edge-keeps-width]
+  [fixture: block/db-definitions-three-widths]
+- id の後ろの shape は node の type を決め、
+  引用符の間のテキストが label になります。
+  `[ ]` は `square`、`( )` は `round`、`(( ))` は `circle`、
+  `((( )))` は `doublecircle`、
+  `([ ])` は `stadium`、`[[ ]]` は `subroutine`、`[( )]` は `cylinder`、
+  `{ }` は `diamond`、`{{ }}` は `hexagon`、`> ]` は `rect_left_inv_arrow`、
+  `[/ /]` は `lean_right`、`[\ \]` は `lean_left`、`[/ \]` は `trapezoid`、
+  `[\ /]` は `inv_trapezoid`、`<[ ]>( )` は `block_arrow` です。
+  shape のない node の type は `na` です。
+  [fixture: block/db-shape-square]
+  [fixture: block/db-shape-round]
+  [fixture: block/db-shape-circle]
+  [fixture: block/db-shape-doublecircle]
+  [fixture: block/db-shape-stadium]
+  [fixture: block/db-shape-subroutine]
+  [fixture: block/db-shape-cylinder]
+  [fixture: block/db-shape-diamond]
+  [fixture: block/db-shape-hexagon]
+  [fixture: block/db-shape-rect-left-inv-arrow]
+  [fixture: block/db-shape-lean-right]
+  [fixture: block/db-shape-lean-left]
+  [fixture: block/db-shape-trapezoid]
+  [fixture: block/db-shape-inv-trapezoid]
+  [fixture: block/db-shape-block-arrow]
+- 開きと閉じの文字の組がこれらのどれでもなければ type を持ちません。
+  Db は `na` を与え、label は残ります。
+  `) (`、`)) ((`、`(- -)`、`-) (-`、
+  `( ]`、`[ )`、`> }`、`{ ]`、`(( )` のような合わない組、余分な `]` がそうです。
+  `[| |]` と `[[[ ]]]` は shape でなく、拒否されます。
+  id と shape の間に空白や改行を置けます。id のない shape は拒否されます。
+  [fixture: block/db-shape-odd-left]
+  [fixture: block/db-shape-odd-double]
+  [fixture: block/db-shape-minus-round]
+  [fixture: block/db-shape-minus-reverse]
+  [fixture: block/db-shape-mixed-round-square]
+  [fixture: block/db-shape-mixed-square-round]
+  [fixture: block/db-shape-mixed-arrow-brace]
+  [fixture: block/db-shape-mixed-brace-square]
+  [fixture: block/db-shape-mixed-double]
+  [fixture: block/db-shape-mixed-circle-stadium]
+  [fixture: block/db-shape-extra-close]
+  [fixture: block/gram-shape-pipe]
+  [fixture: block/gram-shape-triple-square]
+  [fixture: block/db-shape-space-before]
+  [fixture: block/db-shape-line-feed-before]
+  [fixture: block/gram-shape-shape-only]
+  [fixture: block/gram-shape-shape-only-round]
+  [fixture: block/db-shape-two-defs-line]
+  [fixture: block/db-shape-no-space-between]
+- node を定義し直すと、Db は新しい定義に type があればそれを取ります
+  （type のない shape や shape のない使い方は type を変えません）。
+  label は id と違うときに取ります。
+  最初の幅と最初の方向は保たれ、node は最初の位置に残ります。
+  id と同じ label は、label を置き換えません。
+  3 回目の定義は 2 回目の結果と出会い、
+  shape のない使い方が 2 つの定義の間にあっても何も変えません。
+  [fixture: block/db-shape-redefine-shape]
+  [fixture: block/db-shape-redefine-to-na]
+  [fixture: block/db-shape-redefine-from-na]
+  [fixture: block/db-shape-redefine-same-label]
+  [fixture: block/db-shape-redefine-to-odd]
+  [fixture: block/db-shape-redefine-width]
+  [fixture: block/db-shape-redefine-label-only]
+  [fixture: block/db-definitions-three-shapes]
+  [fixture: block/db-definitions-three-labels-first-equal]
+  [fixture: block/db-definitions-three-na-in-the-middle]
+  [fixture: block/db-definitions-three-edge-ends]
+  [fixture: block/db-definitions-three-edge-and-node]
+  [fixture: block/db-edge-redefine-by-edge]
+  [fixture: block/db-edge-keeps-shape]
+- label は引用符の間のテキストです。空にはできず、`""` は拒否されます。
+  空白だけの文字列は、その空白を持つ label です。
+  テキストの前後の空白は残ります。
+  単一引用符、引用符のないテキスト、
+  閉じていない文字列（閉じていない shape も）は拒否されます。
+  文字列の中の `"` も、前にバックスラッシュがあってもなくても拒否されます。
+  文字列の中の `"` 以外の文字は label の一部です。
+  括弧、`<` と `>`、矢印、`:`、`;`、`#`、`%`、`%%`、アポストロフィ、
+  バッククォート、バックスラッシュ、
+  ASCII の外の文字、絵文字、`end` や `columns 2` のようなキーワード、
+  `__proto__` です。
+  バッククォートで始まる文字列（markdown 文字列）は拒否されます。
+  [fixture: block/db-label-plain]
+  [fixture: block/gram-label-empty]
+  [fixture: block/db-label-spaces]
+  [fixture: block/db-label-padded]
+  [fixture: block/gram-label-single-quote]
+  [fixture: block/gram-label-unquoted]
+  [fixture: block/gram-label-unquoted-space]
+  [fixture: block/gram-label-unclosed]
+  [fixture: block/gram-label-unclosed-shape]
+  [fixture: block/gram-label-quote-inside]
+  [fixture: block/gram-label-backslash-quote]
+  [fixture: block/db-label-backslash]
+  [fixture: block/db-label-escaped-n]
+  [fixture: block/db-label-single-quote-inside]
+  [fixture: block/gram-label-backtick]
+  [fixture: block/db-label-backtick-inside]
+  [fixture: block/gram-label-backtick-start]
+  [fixture: block/db-label-backtick-end]
+  [fixture: block/gram-label-markdown]
+  [fixture: block/db-label-round-brackets]
+  [fixture: block/db-label-square-brackets]
+  [fixture: block/db-label-braces]
+  [fixture: block/db-label-angle]
+  [fixture: block/db-label-arrow]
+  [fixture: block/db-label-colon]
+  [fixture: block/db-label-semicolon]
+  [fixture: block/db-label-hash]
+  [fixture: block/db-label-percent]
+  [fixture: block/db-label-comment]
+  [fixture: block/db-label-non-ascii]
+  [fixture: block/db-label-emoji]
+  [fixture: block/db-label-long]
+  [fixture: block/db-label-keyword]
+  [fixture: block/db-label-keyword-columns]
+  [fixture: block/db-label-proto]
+  [fixture: block/db-label-constructor]
+  [fixture: block/db-label-equals-id]
+- 文字列の中の改行、タブ、U+2028、U+2029、U+00A0、U+3000、U+FEFF、
+  U+0085 は label の一部です。
+  ただし、単独の CR と CRLF は改行になります。
+  文字列の中のコメント行は、その改行ごと取り除かれます。
+  文字列の中のディレクティブは取り除かれ、行を単独で占めるディレクティブは、
+  その前後の改行を残します。
+  文字参照はその代替の文字列として読み、
+  `;` のない `#` と数字は文字参照ではありません。
+  HTML タグの属性の引用符の `"` は `'` として読むので、文字列を終えません。
+  HTML タグ、`<br>`、`&amp;` はそのまま残ります。
+  [fixture: block/db-label-line-feed]
+  [fixture: block/db-label-crlf]
+  [fixture: block/db-label-cr]
+  [fixture: block/db-label-tab]
+  [fixture: block/db-label-ls]
+  [fixture: block/db-label-ps]
+  [fixture: block/db-label-nbsp]
+  [fixture: block/db-label-ideographic]
+  [fixture: block/db-label-bom]
+  [fixture: block/db-label-nel]
+  [fixture: block/db-label-comment-line]
+  [fixture: block/db-label-comment-line-spaced]
+  [fixture: block/db-label-directive]
+  [fixture: block/db-label-directive-line]
+  [fixture: block/db-label-entity-numeric]
+  [fixture: block/db-label-entity-named]
+  [fixture: block/db-label-entity-no-semicolon]
+  [fixture: block/db-label-html-tag]
+  [fixture: block/db-label-html-br]
+  [fixture: block/db-label-html-br-slash]
+  [fixture: block/db-label-html-script]
+  [fixture: block/db-label-html-attribute]
+  [fixture: block/db-label-html-attribute-double]
+  [fixture: block/db-label-ampersand]
+  [fixture: block/db-label-after-string]
+  [fixture: block/db-label-after-string-glued]
+  [fixture: block/gram-label-string-only]
+  [fixture: block/db-label-string-after-id]
+  [fixture: block/gram-label-string-after-space]
+- block arrow `<[ "text" ]>( 方向 )` は、`]>` の後ろに方向を持ちます。
+  間に空白か改行を置けます。
+  方向は `right`、`left`、`up`、`down`、`x`、`y` の小文字で、コンマで区切り、
+  順に 1 つずつ残します。
+  同じ方向を繰り返しても、そのとおりに残ります。
+  方向のテキストは、後ろに続く空白を含みます。
+  `right  ,  down` は `right  ` と `down`、`right down` は `right ` と `down`、
+  `( right)` は ` right` です。
+  一方、コンマの後ろの空白は捨てられ、最初の方向の前のコンマも捨てられます。
+  最初の方向の前にコンマがなければ、その前の空白は方向に残ります。
+  `( right , down)` は、前後に空白のある `right` と `down` です。
+  `(` と最初の方向の間のコメント行やディレクティブは方向のテキストから除かれ、
+  その周りの空白が残ります。
+  方向の後の CR、ディレクティブ、LF は 2 つの行終端で、2 つの改行として読み、
+  CRLF は 1 つです。
+  `rightx`、`xright`、`updown` のように方向でできた単語は、
+  中の方向として読みます。
+  知らない単語、大文字、方向がないもの、末尾のコンマ、続くコンマ、キーワード、
+  `>` のない閉じ、
+  閉じていない並び、引用符のないラベル、ラベルのないものは拒否されます。
+  ラベルは空白 1 つや `&nbsp;` でもかまいません。
+  [fixture: block/db-shape-block-arrow]
+  [fixture: block/db-arrow-left]
+  [fixture: block/db-arrow-up]
+  [fixture: block/db-arrow-down]
+  [fixture: block/db-arrow-x]
+  [fixture: block/db-arrow-y]
+  [fixture: block/db-arrow-two]
+  [fixture: block/db-arrow-all]
+  [fixture: block/db-arrow-no-space]
+  [fixture: block/db-arrow-spaces]
+  [fixture: block/db-arrow-spaces-around-comma]
+  [fixture: block/db-arrow-spaces-around-first]
+  [fixture: block/db-arrow-comment-line-before-first]
+  [fixture: block/db-arrow-directive-before-first]
+  [fixture: block/db-arrow-cr-directive-lf]
+  [fixture: block/db-arrow-trailing-space]
+  [fixture: block/db-arrow-leading-space]
+  [fixture: block/db-arrow-tab]
+  [fixture: block/db-arrow-line-feed]
+  [fixture: block/db-arrow-twice]
+  [fixture: block/db-arrow-leading-comma]
+  [fixture: block/db-arrow-glued-words]
+  [fixture: block/db-arrow-word-suffix]
+  [fixture: block/db-arrow-word-prefix]
+  [fixture: block/db-arrow-up-down]
+  [fixture: block/db-arrow-space-before-paren]
+  [fixture: block/db-arrow-line-feed-before-paren]
+  [fixture: block/gram-arrow-trailing-comma]
+  [fixture: block/gram-arrow-double-comma]
+  [fixture: block/gram-arrow-empty]
+  [fixture: block/gram-arrow-unknown]
+  [fixture: block/gram-arrow-upper-case]
+  [fixture: block/gram-arrow-dir-keywords]
+  [fixture: block/gram-arrow-no-paren]
+  [fixture: block/gram-arrow-unclosed-paren]
+  [fixture: block/gram-arrow-unquoted-label]
+  [fixture: block/gram-arrow-empty-label]
+  [fixture: block/gram-arrow-markdown-label]
+  [fixture: block/gram-arrow-closing-wrong]
+  [fixture: block/gram-arrow-closing-square]
+  [fixture: block/db-arrow-spaces-label]
+  [fixture: block/db-arrow-nbsp-label]
+  [fixture: block/db-arrow-with-width]
+  [fixture: block/db-arrow-two-lines]
+  [fixture: block/db-arrow-class]
+  [fixture: block/db-arrow-proto]
+- block arrow を定義し直すと、最初の方向を保ち、新しい label を取ります。
+  別の shape の node に block arrow を与えると type が `block_arrow` になり、
+  方向はありません。
+  block arrow に shape を与えると shape の type になり、方向は残ります。
+  辺の終わりの block arrow は方向を辺にも与え、
+  始まりの block arrow は与えません。
+  [fixture: block/db-arrow-redefine]
+  [fixture: block/db-arrow-redefine-from-square]
+  [fixture: block/db-arrow-redefine-to-square]
+  [fixture: block/db-definitions-three-arrows]
+  [fixture: block/db-edge-to-block-arrow]
+  [fixture: block/db-edge-from-block-arrow]
+  [fixture: block/db-arrow-after-edge]
+- `space` はキーワードで id ではなく、type が `space`、
+  幅が 1 の `space` ブロックを作ります。
+  `space:N` は N 個のブロックを作り、それぞれの幅は N です。
+  要約は N 個の項目として並べます。
+  `space:0` はブロックを作りません。数の先頭の 0 は 10 進数として読みます。
+  数のそばの空白やコロンは別のテキストを作ります。
+  `space :2` と `space: 2` は拒否され、数のない `space:`、符号、文字、
+  ASCII の外の数字、2 つの幅も拒否されます。
+  `space:2.5` は `space:2` と node `.5`、
+  `space:2A` は `space:2` と node A です。
+  `Space` と `SPACE:2` は node です。
+  `space` に単語の文字が付いた単語は node です（`spaceship`、`space1`、
+  `space_a`、`aspace`）。
+  `space.a`、`space;`、`space#` は `space` ブロックと node です。
+  `space` は辺の始まりにも終わりにもなれず、shape も持てず、
+  `class` や `style` の文で名前を指すこともできません。
+  `class space c` は、図に載らない id `space` のブロックを作ります。
+  [fixture: block/db-space-plain]
+  [fixture: block/db-space-width]
+  [fixture: block/db-space-width-one]
+  [fixture: block/db-space-width-zero]
+  [fixture: block/db-space-zero-before-node]
+  [fixture: block/db-space-leading-zeros]
+  [fixture: block/gram-space-space-before-colon]
+  [fixture: block/gram-space-space-after-colon]
+  [fixture: block/gram-space-no-number]
+  [fixture: block/gram-space-letters]
+  [fixture: block/gram-space-negative]
+  [fixture: block/db-space-decimal]
+  [fixture: block/gram-space-twice-width]
+  [fixture: block/gram-space-fullwidth-digit]
+  [fixture: block/gram-space-nbsp-colon]
+  [fixture: block/db-space-width-suffix]
+  [fixture: block/db-space-upper-case]
+  [fixture: block/db-space-upper-case-all]
+  [fixture: block/db-space-suffix]
+  [fixture: block/db-space-digit-suffix]
+  [fixture: block/db-space-underscore-suffix]
+  [fixture: block/db-space-prefix]
+  [fixture: block/db-space-dot-suffix]
+  [fixture: block/db-space-semicolon]
+  [fixture: block/db-space-hash]
+  [fixture: block/gram-space-dash-suffix]
+  [fixture: block/gram-space-edge-start]
+  [fixture: block/gram-edge-to-space]
+  [fixture: block/gram-space-shape]
+  [fixture: block/gram-space-quoted]
+  [fixture: block/db-space-class]
+- `space` ブロックはほかのブロックの間にテキストの順に並びます。
+  node の前、間、後ろ、2 つ続き、それぞれの幅、columns のある行、
+  composite の中のどれでも同じです。
+  [fixture: block/db-space-then-node]
+  [fixture: block/db-space-node-then]
+  [fixture: block/db-space-between]
+  [fixture: block/db-space-two]
+  [fixture: block/db-space-two-widths]
+  [fixture: block/db-space-with-columns]
+  [fixture: block/db-space-in-composite]
+  [fixture: block/db-space-in-named-composite]
+  [fixture: block/db-space-label-in-line]
+  [fixture: block/db-space-crlf]
+  [fixture: block/db-definitions-space-three]
+- `block:G` は id `G` の composite を開き、`end` が閉じます。
+  id のない `block` と `block-beta` は、id のない composite を開きます。
+  composite は type が `composite`、label が `""`、
+  そして `children` を持ちます。
+  id の後ろに幅（`block:G:2`）と、
+  label のある shape（`block:G["text"]`）を置けます。
+  label は残りますが shape と type は残らず、type は `composite` のままです。
+  composite は何段にも入れ子にでき、続けて置けて、1 行に他の文と並べられます。
+  block arrow の label を付けた composite は、方向を持ちます。
+  [fixture: block/db-composite-plain]
+  [fixture: block/db-composite-no-id]
+  [fixture: block/db-composite-no-id-beta]
+  [fixture: block/db-composite-width]
+  [fixture: block/db-composite-width-zero]
+  [fixture: block/db-composite-label]
+  [fixture: block/db-composite-label-shapes]
+  [fixture: block/db-composite-label-and-width]
+  [fixture: block/db-composite-block-arrow]
+  [fixture: block/db-composite-nested]
+  [fixture: block/db-composite-nested-no-id]
+  [fixture: block/db-composite-nested-three]
+  [fixture: block/db-composite-siblings]
+  [fixture: block/db-composite-siblings-no-id]
+  [fixture: block/db-composite-end-in-line]
+  [fixture: block/db-composite-two-statements-line]
+  [fixture: block/db-composite-composite-in-line-with-node]
+  [fixture: block/db-composite-many-composites]
+  [fixture: block/db-composite-colors]
+  [fixture: block/db-composite-child-width-in]
+  [fixture: block/db-composite-columns-id]
+  [fixture: block/db-composite-proto-id]
+  [fixture: block/db-composite-constructor-id]
+- composite にはブロックを作る文が要り、`end` で閉じなければなりません。
+  空の composite、閉じていない composite、閉じる対象のない `end`、先頭の `end`、
+  id としての `end` は拒否されます。
+  `columns`、`classDef`、`class`、
+  `style` だけを持つ composite は子を持ちません。
+  `end` は小文字で、単独の単語として読みます。
+  `END`、`End`、`endx`、`end_`、`end:2` は拒否されます。
+  `end.x`、`end#`、`end;`、node が続く `end` は、キーワードと node です。
+  label の中の `end` はテキストで、
+  `end` の単語の中のディレクティブは取り除かれます。
+  [fixture: block/gram-composite-empty]
+  [fixture: block/gram-composite-empty-no-id]
+  [fixture: block/gram-composite-not-closed]
+  [fixture: block/gram-composite-not-closed-nested]
+  [fixture: block/gram-composite-extra-end]
+  [fixture: block/gram-composite-end-first]
+  [fixture: block/gram-composite-end-as-id]
+  [fixture: block/gram-composite-end-as-node-in-block]
+  [fixture: block/db-composite-only-columns]
+  [fixture: block/db-composite-only-class-def]
+  [fixture: block/db-composite-only-class]
+  [fixture: block/db-composite-only-style]
+  [fixture: block/gram-composite-end-upper-case]
+  [fixture: block/gram-composite-end-capital]
+  [fixture: block/gram-composite-end-suffix]
+  [fixture: block/gram-composite-end-underscore]
+  [fixture: block/gram-composite-end-width]
+  [fixture: block/db-composite-end-dot]
+  [fixture: block/db-composite-end-hash]
+  [fixture: block/db-composite-end-semicolon]
+  [fixture: block/db-composite-end-then-node]
+  [fixture: block/db-composite-end-comment]
+  [fixture: block/db-composite-end-in-label]
+  [fixture: block/db-composite-end-glued]
+  [fixture: block/db-composite-end-tab]
+  [fixture: block/db-composite-end-crlf]
+  [fixture: block/db-composite-end-nbsp]
+  [fixture: block/div-directive-inside-end]
+- `block:` の後ろの id は node の id と同じ単語で、前に空白を置けます。
+  `block: G` は `block:G` です。
+  引用符のある id、id のないもの、コロンの前の空白、ダッシュ、`Block:G`、
+  id としての `space` は拒否されます。
+  `columns` は id になれます。
+  `blockx`、`block2`、`block_a` は node で、`block-a`、`block-betax`、
+  `blockx:G` は拒否されます。
+  [fixture: block/db-composite-space-after-colon]
+  [fixture: block/gram-composite-id-quoted]
+  [fixture: block/gram-composite-no-id-after-colon]
+  [fixture: block/gram-composite-space-before-colon]
+  [fixture: block/gram-composite-id-with-dash]
+  [fixture: block/gram-composite-upper-case]
+  [fixture: block/gram-composite-space-id]
+  [fixture: block/db-composite-suffix]
+  [fixture: block/db-composite-digit-suffix]
+  [fixture: block/db-composite-underscore-suffix]
+  [fixture: block/gram-composite-dash-suffix]
+  [fixture: block/gram-composite-beta-suffix]
+  [fixture: block/gram-composite-colon-suffix]
+- Db がすでに持つブロックの id を持つ composite は、新しいブロックを作りません。
+  古いブロックは type が `composite`、label が `""` になり、位置と幅を保ち、
+  子を持ちません。
+  新しい composite の中のブロックは `unplaced` に別に載ります。
+  composite の id を持つ node は composite を保ちます。ただし shape があれば、
+  ブロックは shape の type と label になり、子は残ります。
+  自分の composite の id を持つ node は、その composite です。
+  composite の中で再び使った node は、最初の位置、つまり外に残ります。
+  [fixture: block/db-composite-id-same-as-node-before]
+  [fixture: block/db-composite-id-same-as-node-after]
+  [fixture: block/db-composite-id-same-as-node-after-shape]
+  [fixture: block/db-composite-id-same-composite]
+  [fixture: block/db-composite-id-same-nested]
+  [fixture: block/db-composite-id-same-as-child]
+  [fixture: block/db-composite-id-same-child-defined-in-inner]
+  [fixture: block/db-composite-child-first-then-composite]
+  [fixture: block/db-definitions-three-composites]
+  [fixture: block/db-definitions-composite-then-shape-then-composite]
+  [fixture: block/db-definitions-shape-then-composite-then-shape]
+  [fixture: block/db-composite-root-id]
+- `block:` の後ろの辺の文は、id でなく composite の文として読まれます。
+  composite は文の 3 つのブロックを欄として持ち、id を持ちません。
+  要約は欄を除きます。
+  辺が、その場で開いた composite で終わることはできません。
+  その文の最初か最後の node への `style` は、
+  文がそれらのブロックを作らないため、Db が例外を投げます。
+  composite の中の node への `style` も、
+  それを作る文より前にあれば同じで、後なら受理されます。
+  [fixture: block/db-composite-edge-header]
+  [fixture: block/db-composite-edge-header-width]
+  [fixture: block/db-composite-shape-edge-header]
+  [fixture: block/gram-composite-in-edge]
+  [fixture: block/gram-style-on-composite-edge-head-start]
+  [fixture: block/gram-style-on-composite-edge-head-end]
+  [fixture: block/gram-style-in-composite-edge-head-before-child]
+  [fixture: block/db-style-on-composite-edge-head-child]
+  [fixture: block/db-style-in-composite-edge-head-after-child]
+- 辺は 2 つの node を結ぶ線です。
+  `-->` は終わりに矢印（`arrow_point`）のある通常の実線、`---` は矢印なし、
+  `==>` と `===` は太線、`-.->` と `-.-` は点線です。
+  `--x` は終わりが × （`arrow_cross`）、`--o` は終わりが円（`arrow_circle`）、
+  `<-->` は両端が矢印です。
+  ダッシュ、等号、ドットを増やしても同じ辺です。
+  辺は `{ start, end }` で、label がなければ `""` です。
+  端のブロックは、幅のない node として、テキストの順に作られます。
+  `<--` だけ、`--` だけ、`-`、始まりや終わりのない辺、矢印だけは拒否されます。
+  `~~~` は node で、`A~~~B` は 1 つの id です。
+  `<~~~` は、空白があっても連なっていても拒否されます。
+  見えない線に始点の印は付きません。
+  矢印の前に付いた `x` と `o` は node なので、
+  `A x--x B` は node A と `x` からの辺です。
+  辺の周りに空白は要らず、`A-->B`、`A--xB`、`A--oB` も辺です。
+  周りのタブ、複数の空白、改行は空白です。
+  [fixture: block/db-edge-arrow]
+  [fixture: block/db-edge-open]
+  [fixture: block/db-edge-thick]
+  [fixture: block/db-edge-thick-open]
+  [fixture: block/db-edge-dotted]
+  [fixture: block/db-edge-dotted-open]
+  [fixture: block/db-edge-dotted-long]
+  [fixture: block/db-edge-cross]
+  [fixture: block/db-edge-circle]
+  [fixture: block/db-edge-bidirectional]
+  [fixture: block/db-edge-long]
+  [fixture: block/db-edge-long-open]
+  [fixture: block/db-edge-thick-long]
+  [fixture: block/db-edge-start-cross]
+  [fixture: block/db-edge-start-cross-spaced]
+  [fixture: block/db-edge-start-circle]
+  [fixture: block/gram-edge-reverse]
+  [fixture: block/gram-edge-two-dashes]
+  [fixture: block/gram-edge-one-dash]
+  [fixture: block/db-edge-tilde]
+  [fixture: block/db-edge-tilde-glued]
+  [fixture: block/db-edge-glued]
+  [fixture: block/db-edge-glued-x]
+  [fixture: block/db-edge-glued-o]
+  [fixture: block/db-edge-spaces]
+  [fixture: block/db-edge-tab]
+  [fixture: block/db-edge-line-feed-before]
+  [fixture: block/db-edge-line-feed-after]
+  [fixture: block/db-edge-line-feed-both]
+  [fixture: block/db-edge-blank-line-after]
+  [fixture: block/gram-edge-no-end]
+  [fixture: block/gram-edge-no-start]
+  [fixture: block/gram-edge-only-arrow]
+  [fixture: block/db-edge-crlf]
+  [fixture: block/db-edge-nbsp]
+  [fixture: block/db-edge-ideographic]
+  [fixture: block/db-edge-ls]
+  [fixture: block/db-edge-digit]
+  [fixture: block/db-edge-unicode]
+  [fixture: block/db-edge-same-line-statements]
+  [fixture: block/db-edge-then-columns]
+  [fixture: block/db-edge-spaces-in-id]
+- 辺は label を持てます。`-- "text" -->` で、太線は `==`、
+  点線は `-.` を使います。
+  引用符はダッシュに接してもかまいません。
+  label は node の label と同じ文字列で、空にはできず、markdown もありません。
+  中のコメント行、ディレクティブ、文字参照、HTML は label と同じに読みます。
+  矢印、太さ、線の種類は辺の終わりが決め、始まりがどうであっても変わりません。
+  `-- "t" ==> B` は太線、`-. "t" --> B` は実線、
+  `<-- "t" -->` は始まりに矢印がありません。
+  辺の終わりのない label、引用符のない label、
+  合わない終わりが続く始まりは拒否されます。
+  `-->|text|` は label でなく、`|text|` が辺の終わりの node で、
+  B は別の node です。
+  [fixture: block/db-edge-label]
+  [fixture: block/db-edge-label-open]
+  [fixture: block/db-edge-label-thick]
+  [fixture: block/db-edge-label-dotted]
+  [fixture: block/db-edge-label-glued]
+  [fixture: block/gram-edge-label-empty]
+  [fixture: block/db-edge-label-spaces]
+  [fixture: block/gram-edge-label-unquoted]
+  [fixture: block/db-edge-label-pipe]
+  [fixture: block/db-edge-label-pipe-spaced]
+  [fixture: block/gram-edge-label-markdown]
+  [fixture: block/db-edge-label-line-feed]
+  [fixture: block/db-edge-label-comment-line]
+  [fixture: block/db-edge-label-directive]
+  [fixture: block/db-edge-label-html]
+  [fixture: block/db-edge-label-entity]
+  [fixture: block/gram-edge-label-start-without-end]
+  [fixture: block/gram-edge-label-wrong-end]
+  [fixture: block/db-edge-label-mismatched]
+  [fixture: block/db-edge-label-mismatched-dotted]
+  [fixture: block/db-edge-label-cross]
+  [fixture: block/db-edge-label-bidirectional]
+  [fixture: block/db-edge-label-start-cross]
+- 辺はテキストの順に並び、composite の中の辺は composite の位置に並びます。
+  同じ辺を 2 回書くと 2 本の辺です。
+  辺は、2 つの composite の node、composite と node、node 自身、`__proto__`、
+  `constructor`、`root` を結べます。
+  端のブロックは、先の定義が与えたもの（shape、label、幅）を保ちます。
+  どちらの端の shape も、node と同じようにブロックを定義します。
+  `A --> end`、`A --> space`、`A --> block:G` は拒否されます。
+  `A --> columns` は `columns` という名前の node への辺です。
+  [fixture: block/db-edge-twice]
+  [fixture: block/db-edge-opposite]
+  [fixture: block/db-edge-self]
+  [fixture: block/db-edge-different-kinds]
+  [fixture: block/db-edge-defined-before]
+  [fixture: block/db-edge-new-shape]
+  [fixture: block/db-edge-start-shape]
+  [fixture: block/db-edge-both-shapes]
+  [fixture: block/db-edge-to-composite]
+  [fixture: block/db-edge-from-composite-child]
+  [fixture: block/db-edge-inside-composite]
+  [fixture: block/db-edge-across-composites]
+  [fixture: block/db-edge-edge-in-composite-order]
+  [fixture: block/db-edge-proto]
+  [fixture: block/db-edge-root]
+  [fixture: block/db-edge-to-columns]
+  [fixture: block/gram-edge-to-end]
+  [fixture: block/gram-edge-start-lt-invisible]
+  [fixture: block/gram-edge-start-lt-invisible-glued]
+  [fixture: block/db-definitions-edges-three]
+  [fixture: block/db-proto-proto-edge]
+  [fixture: block/db-proto-root-edge-end]
+- 辺の連鎖 `A --> B --> C` は誤って読まれます。
+  文法は最初の辺を次の辺の始まりに使うので、始まりには `id` がありません。
+  そのため Db は欄のないブロックと、`start` のない辺と、
+  最後の node `C` だけを持ちます。
+  その前の node は、その間の辺ごと失われます。
+  最後の辺の label と矢印は残ります。
+  2 つの連鎖は、欄のない 1 つのブロックになります。
+  連鎖のあとに使った node は別のブロックです。
+  連鎖の途中の node への `style` も例外になります。
+  要約はそのブロックを `{}`、辺を `start` のないものとして示します。
+  [fixture: block/db-edge-chain]
+  [fixture: block/db-edge-chain-open]
+  [fixture: block/db-edge-chain-four]
+  [fixture: block/db-edge-chain-labels]
+  [fixture: block/db-edge-chain-twice]
+  [fixture: block/db-edge-chain-then-node]
+  [fixture: block/db-edge-chain-in-block]
+  [fixture: block/gram-style-on-chain]
+  [fixture: block/gram-style-on-chain-middle]
+  [fixture: block/db-style-on-undefined-chain-end]
+- `classDef 名前 スタイル` はクラスを定義します。
+  名前は単語の文字（ASCII の英字、数字、`_`）の 1 文字以上で、
+  スタイルは行の残りを `,` で分け、それぞれ前後の空白を除いたものです。
+  `default`、`class`、`end`、`__proto__`、`constructor` は他の名前と同じです。
+  `DEFAULT`、`-` や `:` を含む名前、ASCII の外の文字を含む名前は拒否されます。
+  名前のない `classDef`、スタイルのないもの、別の大文字小文字のもの、
+  単語に付いたものも拒否されます。
+  キーワードの後ろにはタブと改行を置け、
+  スタイルは次の行から始めてもかまいません。
+  先頭や末尾の `,` は空のスタイルを残します。
+  クラスを離れた位置で定義し直しても、すべての定義のスタイルを順に残し、
+  クラスの順では最初の位置に残ります。
+  同じスタイルを 2 回書けば 2 つ残ります。
+  クラスは、`classDef` がどこにあっても図全体で同じです。
+  composite の中でも同じです。
+  [fixture: block/db-class-def-and-apply]
+  [fixture: block/db-class-def-two-styles]
+  [fixture: block/db-class-def-spaces-around-styles]
+  [fixture: block/db-class-def-directive-before-comma]
+  [fixture: block/db-class-def-empty-style]
+  [fixture: block/db-class-def-leading-comma]
+  [fixture: block/gram-class-def-no-style]
+  [fixture: block/gram-class-def-spaces-only]
+  [fixture: block/gram-class-def-no-name]
+  [fixture: block/db-class-def-twice]
+  [fixture: block/db-class-def-twice-same]
+  [fixture: block/db-class-def-three]
+  [fixture: block/db-class-def-color]
+  [fixture: block/db-class-def-color-fill]
+  [fixture: block/db-class-def-default]
+  [fixture: block/gram-class-def-default-upper]
+  [fixture: block/db-class-def-digits]
+  [fixture: block/db-class-def-underscore]
+  [fixture: block/gram-class-def-dash]
+  [fixture: block/gram-class-def-non-ascii]
+  [fixture: block/db-class-def-proto]
+  [fixture: block/db-class-def-constructor]
+  [fixture: block/db-class-def-keyword-names]
+  [fixture: block/db-class-def-keyword-end]
+  [fixture: block/gram-class-def-name-colon]
+  [fixture: block/gram-class-def-upper-case]
+  [fixture: block/gram-class-def-lower-case]
+  [fixture: block/db-class-def-tab]
+  [fixture: block/db-class-def-line-feed-after-keyword]
+  [fixture: block/db-class-def-line-feed-after-name]
+  [fixture: block/gram-class-def-glued]
+  [fixture: block/db-class-def-in-block]
+  [fixture: block/db-class-def-after-use]
+  [fixture: block/db-class-def-undefined-use]
+  [fixture: block/db-definitions-class-def-three]
+  [fixture: block/db-definitions-class-def-three-others]
+  [fixture: block/db-proto-proto-class-def]
+  [fixture: block/db-proto-proto-class-twice]
+  [fixture: block/db-proto-constructor-class-def]
+- `classDef` のスタイルの中の `#`、引用符、HTML、`%%` はテキストです。
+  ディレクティブは取り除かれ、文字参照はその代替の文字列として読みます。
+  Db は、各スタイルの最初の `;` を取り除きます。
+  mermaid.js の行の規則は、
+  `:` と `#` のある行の最後の `;` を落とし
+  （`style:#x;y` は `style:#xy` になります）、
+  字句解析器が読む前の行に働きます。
+  そのため `fill:#f00;` の末尾の `;` はなくなり、
+  2 つのスタイルの間の `;` は 2 つをつなげます。
+  `fill:#f00;,stroke:#000` は 2 つのスタイルのままで、
+  末尾の空白と `;` は落とされます。
+  `#f00` の後ろの 2 つ目の `;` は文字参照の終わりとして読まれます。
+  [fixture: block/db-class-def-semicolon-end]
+  [fixture: block/db-class-def-semicolon-middle]
+  [fixture: block/db-class-def-semicolon-comma]
+  [fixture: block/db-class-def-two-semicolons]
+  [fixture: block/db-class-def-space-semicolon]
+  [fixture: block/db-class-def-hash]
+  [fixture: block/db-class-def-comment]
+  [fixture: block/db-class-def-directive]
+  [fixture: block/db-class-def-quotes]
+  [fixture: block/db-class-def-html]
+  [fixture: block/db-class-def-entity]
+  [fixture: block/db-class-def-colon-hash-semicolon]
+  [fixture: block/db-class-def-nbsp]
+  [fixture: block/db-semicolon-in-class-def]
+  [fixture: block/db-semicolon-class-def-then-node]
+- `class ids 名前` は、クラスを id の node に適用します。
+  id は単語の文字の 1 文字以上で、`,` で分け、コンマの前に空白は置きません。
+  クラス名は各 node の `classes` に、文の順に残ります。
+  繰り返しても残り、`classDef` が定義していなくても残ります。
+  行の残りを前後の空白を除いたものが、1 つのテキストとしてのクラス名です。
+  そのため `c,d` と `c d` は 1 つの名前で、名前は `;`、`#`、`%%` を含められ、
+  名前のない `class A` は空の名前を与えます。
+  id と名前は同じ行に書き、キーワードの後ろにタブと改行を置けます。
+  別の大文字小文字のものや、単語に付いたものはキーワードでなく、
+  `class` だけは拒否されます。
+  `__proto__` と `constructor` は他の名前と同じです。
+  [fixture: block/db-class-apply-two]
+  [fixture: block/db-class-apply-same-twice]
+  [fixture: block/db-class-apply-names-list]
+  [fixture: block/db-class-apply-names-spaces]
+  [fixture: block/db-class-apply-no-name]
+  [fixture: block/db-class-apply-no-name-spaces]
+  [fixture: block/gram-class-apply-no-id]
+  [fixture: block/db-class-apply-name-upper]
+  [fixture: block/db-class-apply-proto-class]
+  [fixture: block/db-class-apply-constructor-class]
+  [fixture: block/db-class-apply-semicolon]
+  [fixture: block/db-class-apply-hash]
+  [fixture: block/db-class-apply-comment]
+  [fixture: block/db-class-apply-directive]
+  [fixture: block/db-class-apply-trailing-spaces]
+  [fixture: block/db-class-apply-nbsp]
+  [fixture: block/db-class-apply-tab]
+  [fixture: block/db-class-apply-line-feed-after-keyword]
+  [fixture: block/db-class-apply-line-feed-after-ids]
+  [fixture: block/db-class-apply-upper-case-keyword]
+  [fixture: block/db-class-apply-glued]
+  [fixture: block/db-class-apply-lower-keyword-id]
+  [fixture: block/db-class-apply-space-shape]
+  [fixture: block/db-class-apply-edge]
+  [fixture: block/db-definitions-class-three]
+  [fixture: block/db-definitions-class-three-ids]
+  [fixture: block/db-proto-to-string-class]
+  [fixture: block/db-proto-proto-directions]
+- `class` の文の id は、コンマごとに分けられ、
+  そのまま（空白を除かずに）探されます。
+  `class A,B c` と `class A,B,C c` は各 node にクラスを適用します。
+  `class A, B c` は ` B` を探してブロックが見つからず、
+  id `B` の新しいブロックを作ります。
+  それは表の項目 `B` の場所に入り、図には載りません。
+  図の中の B にクラスは付かず、
+  あとの `style B` や `B` の shape は新しいブロックを見つけます。
+  コンマの前の空白は id を終え、
+  `class A ,B c` は A にクラス `,B c` を適用します。
+  id の中の `;` や `-` は id を終えます。
+  大文字小文字の違う id は別の id です。
+  コンマの後ろの空白は改行でもよく、
+  id のない `class` が、テキストの終わりの前にあれば拒否されます。
+  コンマの後ろのコメント行やディレクティブは id から除かれ、
+  その前の空白が残ります。
+  id `root` は図を持つブロックで、
+  composite や composite の中の node へのクラスは、そこに残ります。
+  別の composite の中の文からでも同じです。
+  [fixture: block/db-class-apply-list]
+  [fixture: block/db-class-apply-list-spaces]
+  [fixture: block/db-class-apply-list-space-before-comma]
+  [fixture: block/db-class-apply-list-three]
+  [fixture: block/db-class-apply-list-trailing-comma]
+  [fixture: block/db-class-apply-list-spaces-then-style]
+  [fixture: block/db-class-apply-list-spaces-then-edge]
+  [fixture: block/db-class-apply-list-spaces-then-shape]
+  [fixture: block/gram-class-apply-no-id-end]
+  [fixture: block/db-class-apply-line-feed-after-comma]
+  [fixture: block/db-class-apply-comment-line-after-comma]
+  [fixture: block/db-class-apply-directive-after-comma]
+  [fixture: block/db-class-apply-id-semicolon]
+  [fixture: block/db-class-apply-id-dash]
+  [fixture: block/db-class-apply-id-case]
+  [fixture: block/db-class-apply-proto-id]
+  [fixture: block/db-class-apply-root]
+  [fixture: block/db-composite-class-on]
+  [fixture: block/db-composite-class-inside]
+  [fixture: block/db-class-apply-in-block]
+  [fixture: block/db-class-apply-in-block-outer]
+- まだどの文も定義していない id への `class` の文は、
+  type が `na` のその id のブロックを作ります。
+  要約はそれを `unplaced` に載せます。
+  あとからその id を定義しても（node、shape、辺、composite）、
+  ブロックは子の並びに加わらず、type と label が変わるだけです。
+  そのため node は図の外に残り、幅は失われます。
+  そのような id への 2 つのクラスは順に残り、
+  そのような 2 つの id への `class` は 2 つのブロックを作ります。
+  順は id の順です。
+  前に定義した node への `class` は図の中に残ります。
+  composite の中でも同じです。
+  composite の中の、あとで定義する node への `class` は、
+  図の外に残るブロックを作ります。
+  [fixture: block/db-class-apply-undefined-id]
+  [fixture: block/db-class-apply-before-node]
+  [fixture: block/db-class-apply-before-node-shape]
+  [fixture: block/db-class-apply-before-node-width]
+  [fixture: block/db-class-apply-before-edge]
+  [fixture: block/db-class-apply-before-block]
+  [fixture: block/db-class-apply-undefined-twice]
+  [fixture: block/db-class-apply-undefined-list]
+  [fixture: block/db-class-apply-mixed-list]
+  [fixture: block/db-class-apply-in-block-later]
+  [fixture: block/db-definitions-composite-then-shape-then-composite]
+- `style id スタイル` は node `id` のスタイルを決めます。
+  スタイルは行の残りを `,` で分けたもので、前後の空白は除かないので、
+  コンマの周りの空白はスタイルに残ります。
+  空白で始まるスタイルは、
+  `color:` で始まるスタイルとは別のものとして描画に渡されます
+  （[`getStylesFromArray()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L443-L459)）。
+  `style` はその node への前の `style` のスタイルを置き換えます。
+  スタイルのない `style` や空白だけの `style` は何も変えず、
+  `,` だけは空のスタイルを 2 つ与えます。
+  行の残りの両端の空白は捨てられるので、
+  最初の `,` の前と最後の `,` の後ろが空白だけなら、その部分は空です。
+  2 つの `,` の間の空白だけの部分は、その空白のスタイルで、
+  `classDef` ではそれが空のスタイルに切り詰められます。
+  `,` の前のディレクティブはスタイルから除かれ、両側の空白が残ります。
+  id は単語の文字の 1 文字以上で、
+  前の文がまだ定義していない id への `style` は拒否されます。
+  Db がブロックを見つけられず、`TypeError` を投げるからです。
+  コンマで分けない id の並び、どの文も定義しないブロック、
+  連鎖で失われたブロックの id、`space` もそうです。
+  `class` が作ったブロック、composite、id `root`、
+  composite の中から外の node への `style` は受理されます。
+  キーワードの後ろにタブと改行を置けますが、
+  スタイルは id と同じ行に書かなければなりません。
+  大文字のものや単語に付いたものはキーワードではありません。
+  id のない `style` が、テキストの終わりの前にあれば拒否されます。
+  [fixture: block/db-style-plain]
+  [fixture: block/db-style-two]
+  [fixture: block/db-style-spaces]
+  [fixture: block/db-style-spaces-at-line-ends]
+  [fixture: block/db-style-whitespace-only-between-commas]
+  [fixture: block/db-style-tab-only-between-commas]
+  [fixture: block/db-style-whitespace-only-first]
+  [fixture: block/db-style-whitespace-only-last]
+  [fixture: block/db-style-directive-before-comma]
+  [fixture: block/db-class-def-whitespace-only-between-commas]
+  [fixture: block/db-style-leading-space]
+  [fixture: block/db-style-trailing-space]
+  [fixture: block/db-style-none]
+  [fixture: block/db-style-spaces-only]
+  [fixture: block/db-style-only-comma]
+  [fixture: block/db-style-twice]
+  [fixture: block/db-style-then-none]
+  [fixture: block/db-definitions-style-three]
+  [fixture: block/db-definitions-style-three-empty-middle]
+  [fixture: block/gram-style-undefined]
+  [fixture: block/gram-style-defined-after]
+  [fixture: block/gram-style-list]
+  [fixture: block/gram-style-list-spaces]
+  [fixture: block/gram-style-list-undefined]
+  [fixture: block/gram-style-space]
+  [fixture: block/gram-style-no-id]
+  [fixture: block/gram-style-no-id-line-feed]
+  [fixture: block/db-style-class-made]
+  [fixture: block/db-style-after-class-undefined]
+  [fixture: block/db-style-after-class-list-spaces]
+  [fixture: block/db-style-composite]
+  [fixture: block/db-style-root]
+  [fixture: block/db-style-in-composite]
+  [fixture: block/db-composite-style-on]
+  [fixture: block/db-composite-style-inside]
+  [fixture: block/db-composite-style-outer-inside]
+  [fixture: block/gram-composite-style-later-outer]
+  [fixture: block/db-style-before-edge]
+  [fixture: block/db-style-proto-id]
+  [fixture: block/db-style-constructor-id]
+  [fixture: block/db-proto-proto-style-id]
+  [fixture: block/db-style-name-only]
+  [fixture: block/db-style-tab]
+  [fixture: block/db-style-line-feed-after-keyword]
+  [fixture: block/gram-style-line-feed-after-id]
+  [fixture: block/gram-style-upper-case]
+  [fixture: block/gram-style-glued]
+- `style` のスタイルの中の、単語の付いた `#`、引用符、HTML、
+  `%%` はテキストです。
+  ディレクティブは取り除かれ、文字参照はその代替の文字列として読みます。
+  行の規則は、`:` と `#` のある行の最後の `;` を落とします。
+  そのため `fill:#f00;` は `fill:#f00`、
+  `fill:#f00;stroke:#333` は 1 つのスタイル、
+  `fill:#f00;,stroke:#333` は 2 つのスタイルで、
+  末尾の空白と `;` は落とされます。
+  `#` のない行は `;` を残します。
+  [fixture: block/db-style-semicolon-end]
+  [fixture: block/db-style-semicolon-middle]
+  [fixture: block/db-style-semicolon-comma]
+  [fixture: block/db-style-empty-style]
+  [fixture: block/db-style-line-rule-hash]
+  [fixture: block/db-style-entity]
+  [fixture: block/db-style-comment]
+  [fixture: block/db-style-directive]
+  [fixture: block/db-style-quotes]
+  [fixture: block/db-style-nbsp]
+  [fixture: block/db-semicolon-in-style]
+- id `root` は図を持つブロックの id なので、その id への文は、
+  そのブロックに働きます。
+  node `root`、幅のある `root`、composite の中の `root` は何も変えません。
+  `root["x"]` は、図を持つブロックに label `x` と shape の type を与え、
+  `columns` と子は保たれます。
+  `block:root` はそのブロックに label `""` を与え、
+  composite のブロックを `unplaced` に別に載せます。
+  `class root c` はクラスを、`style root` はスタイルを与えます。
+  辺は `root` から始めても、`root` で終えてもかまいません。
+  [fixture: block/db-proto-root]
+  [fixture: block/db-proto-root-twice]
+  [fixture: block/db-proto-root-width]
+  [fixture: block/db-proto-root-label]
+  [fixture: block/db-proto-root-columns]
+  [fixture: block/db-proto-root-composite-child]
+  [fixture: block/db-composite-root-id]
+  [fixture: block/db-class-apply-root]
+  [fixture: block/db-proto-root-style]
+  [fixture: block/db-edge-root]
+  [fixture: block/db-proto-root-edge-end]
+- `Object.prototype` の名前は、他の id と同じ id です。
+  `__proto__`、`constructor`、`toString`、`hasOwnProperty`、`valueOf` を、
+  node の id（shape、幅、クラス付きでも）、composite の id、辺の端、label、
+  クラスの名前、`class` の名前、`style` に使えます。
+  Db はブロックとクラスを `Map` に持つので、どれも prototype に働きません。
+  [fixture: block/db-proto-proto]
+  [fixture: block/db-proto-constructor]
+  [fixture: block/db-proto-to-string]
+  [fixture: block/db-proto-has-own-property]
+  [fixture: block/db-proto-value-of]
+  [fixture: block/db-proto-proto-twice]
+  [fixture: block/db-proto-proto-shape]
+  [fixture: block/db-proto-proto-width]
+  [fixture: block/db-proto-proto-composite-child]
+  [fixture: block/db-proto-proto-edge-label]
+  [fixture: block/db-proto-proto-undefined-class]
+  [fixture: block/db-label-proto]
+  [fixture: block/db-label-constructor]
+  [fixture: block/db-composite-proto-id]
+  [fixture: block/db-composite-constructor-id]
+  [fixture: block/db-arrow-proto]
+  [fixture: block/db-class-apply-proto-id]
+  [fixture: block/db-class-apply-proto-class]
+  [fixture: block/db-class-apply-constructor-class]
+  [fixture: block/db-style-proto-id]
+  [fixture: block/db-style-constructor-id]
+  [fixture: block/db-class-def-proto]
+  [fixture: block/db-class-def-constructor]
+  [fixture: block/db-edge-proto]
+- コメント行は、あらゆる種類の空白（U+FEFF、U+00A0、U+3000、
+  U+2028 も含む）のあとに `%%` とその後ろの 1 文字以上で始まります。
+  改行ごと取り除かれ、どこに書いてもそうです。
+  見出しの前後、テキストの終わり、composite の中、辺や文の部品の間、
+  文字列の中がその例です。
+  改行、CRLF、単独の CR で終わり、U+2028、U+2029、U+0085 では終わりません。
+  `%%` だけ、`%` と単語、`#` と単語はコメントでなく、node です。
+  コメント行の中は読まれず、中の引用符、矢印、キーワードは何もしません。
+  [fixture: block/db-comment-line]
+  [fixture: block/db-comment-line-indented]
+  [fixture: block/db-comment-line-tab]
+  [fixture: block/db-comment-line-glued]
+  [fixture: block/db-comment-line-bare]
+  [fixture: block/db-comment-line-bare-spaces]
+  [fixture: block/db-comment-line-single-percent]
+  [fixture: block/db-comment-line-hash]
+  [fixture: block/db-comment-line-triple]
+  [fixture: block/db-comment-line-first]
+  [fixture: block/db-comment-line-last]
+  [fixture: block/db-comment-line-last-no-line-feed]
+  [fixture: block/gram-comment-line-only]
+  [fixture: block/db-comment-lines-two]
+  [fixture: block/db-comment-before-header-and-after]
+  [fixture: block/db-comment-inside-composite]
+  [fixture: block/db-comment-between-composite-lines]
+  [fixture: block/db-comment-between-edge-parts]
+  [fixture: block/db-comment-between-id-and-width]
+  [fixture: block/db-comment-crlf]
+  [fixture: block/db-comment-cr]
+  [fixture: block/db-comment-ls-inside]
+  [fixture: block/db-comment-ps-inside]
+  [fixture: block/db-comment-nel-inside]
+  [fixture: block/db-comment-bom-before]
+  [fixture: block/db-comment-nbsp-before]
+  [fixture: block/db-comment-ideographic-before]
+  [fixture: block/db-comment-ls-before]
+  [fixture: block/db-comment-directive-like]
+  [fixture: block/db-comment-proto]
+  [fixture: block/db-comment-long]
+  [fixture: block/db-comment-unicode]
+  [fixture: block/db-comment-markers-inside]
+  [fixture: block/db-comment-quote-unclosed-inside]
+  [fixture: block/db-label-comment-line]
+  [fixture: block/db-label-comment-line-spaced]
+  [fixture: block/db-edge-label-comment-line]
+- 行の初めにない `%%` はコメントでありません。
+  node、辺、`columns`、`end` の後ろでは node で、
+  その後ろのテキストも node です。
+  単語に付くとその id の一部で、文字列の中では label の一部です。
+  `class`、`style`、`classDef` では、クラス名かスタイルの一部です。
+  [fixture: block/db-comment-after-node]
+  [fixture: block/db-comment-after-node-glued]
+  [fixture: block/db-comment-after-edge]
+  [fixture: block/db-comment-after-columns]
+  [fixture: block/db-composite-end-comment]
+  [fixture: block/db-comment-inside-string-start]
+  [fixture: block/db-label-comment]
+  [fixture: block/db-comment-after-style]
+  [fixture: block/db-class-apply-comment]
+  [fixture: block/db-class-def-comment]
+  [fixture: block/db-style-comment]
+  [fixture: block/db-name-percent-percent]
+  [fixture: block/db-tail-node-comment]
+  [fixture: block/db-tail-columns-comment]
+  [fixture: block/db-tail-space-comment]
+  [fixture: block/db-tail-class-comment]
+  [fixture: block/db-tail-class-def-comment]
+  [fixture: block/db-tail-style-comment]
+- `;` は区切りでなく、`#` はコメントを始めません。
+  `;` は、触れている id の一部です。
+  空白、shape、幅、block arrow、`columns`、`space`、`end` の後ろでは、
+  単独の node になります。
+  クラス名とスタイルの中では、それらの一部で、`#` も同じです。
+  行の残りを取る文（`class`、`style`、`classDef`）は、
+  その行の後ろのものを保ちます。
+  空白と `;`、2 つの `;`、`%%`、`#` は、クラス名かスタイルの一部です。
+  ただし、行の規則や Db が取り除く `;` は別です。
+  行の規則はその `;` を id やキーワードの中でも落とします。
+  `A["style:#a"] B;C` の id は `BC` で、
+  `A["style:#a"] col;umns 2` は `columns 2` です。
+  [fixture: block/db-semicolon-after-node]
+  [fixture: block/db-semicolon-between]
+  [fixture: block/db-semicolon-space-before]
+  [fixture: block/db-semicolon-alone]
+  [fixture: block/db-semicolon-double]
+  [fixture: block/db-semicolon-after-width]
+  [fixture: block/db-semicolon-after-shape]
+  [fixture: block/db-semicolon-after-edge]
+  [fixture: block/db-semicolon-separates-statements-line]
+  [fixture: block/db-tail-node-semicolon]
+  [fixture: block/div-ignored-semicolon-in-id]
+  [fixture: block/div-ignored-semicolon-in-keyword]
+  [fixture: block/db-tail-node-space-semicolon]
+  [fixture: block/db-tail-node-hash]
+  [fixture: block/db-tail-node-shape-space-semicolon]
+  [fixture: block/db-tail-node-shape-two-semicolons]
+  [fixture: block/db-tail-node-width-space-semicolon]
+  [fixture: block/db-tail-node-width-two-semicolons]
+  [fixture: block/db-tail-edge-space-semicolon]
+  [fixture: block/db-tail-edge-two-semicolons]
+  [fixture: block/db-tail-edge-hash]
+  [fixture: block/db-tail-block-arrow-semicolon]
+  [fixture: block/db-tail-block-arrow-space-semicolon]
+  [fixture: block/db-tail-block-arrow-two-semicolons]
+  [fixture: block/db-tail-columns-semicolon]
+  [fixture: block/db-tail-columns-space-semicolon]
+  [fixture: block/db-tail-columns-two-semicolons]
+  [fixture: block/db-tail-columns-hash]
+  [fixture: block/db-tail-space-space-semicolon]
+  [fixture: block/db-tail-space-two-semicolons]
+  [fixture: block/db-tail-space-hash]
+  [fixture: block/db-tail-space-width-semicolon]
+  [fixture: block/db-tail-class-space-semicolon]
+  [fixture: block/db-tail-class-two-semicolons]
+  [fixture: block/db-tail-class-hash]
+  [fixture: block/db-tail-style-semicolon]
+  [fixture: block/db-tail-style-space-semicolon]
+  [fixture: block/db-tail-style-two-semicolons]
+  [fixture: block/db-tail-style-hash]
+  [fixture: block/db-tail-class-def-semicolon]
+  [fixture: block/db-tail-class-def-space-semicolon]
+  [fixture: block/db-tail-class-def-two-semicolons]
+  [fixture: block/db-tail-class-def-hash]
+  [fixture: block/db-tail-composite-end-space-semicolon]
+  [fixture: block/db-tail-composite-end-two-semicolons]
+  [fixture: block/db-tail-composite-end-hash]
+  [fixture: block/db-tail-composite-end-keyword-semicolon]
+  [fixture: block/db-tail-composite-end-keyword-hash]
+  [fixture: block/gram-tail-composite-line-semicolon]
+- ディレクティブ `%%{...}%%` は、どこにあっても取り除かれ、
+  両側の部分がつながります。
+  id の中、文字列の中、見出しの中、ブロック矢印の方向の中、
+  キーワード `columns`、`class`、`end` の中、
+  id と幅や shape の間、幅の `:` や `space:` と数の間、
+  shape やブロック矢印のラベルの前後、文の末尾がその例です。
+  どの名前のディレクティブも取り除かれ、複数行にわたっても、
+  2 つ続いても同じです。
+  単語を持たない `%%{}%%` はディレクティブでなく、中を読めず拒否されます。
+  閉じていないディレクティブは、テキストの残りごと取り除きます。
+  テキストの終わりでは他を取らず、文の前にあると図に文が残らず、拒否されます。
+  文字列の中で行を単独で占めるディレクティブは、前後の改行を残します。
+  見出しの後ろがディレクティブだけのテキストは拒否されます。
+  [fixture: block/db-directive-init-line]
+  [fixture: block/db-directive-init-before-header]
+  [fixture: block/db-directive-init-block-config]
+  [fixture: block/db-directive-wrap]
+  [fixture: block/db-directive-not-init]
+  [fixture: block/db-directive-multi-line]
+  [fixture: block/db-directive-two]
+  [fixture: block/div-directive-in-id]
+  [fixture: block/db-directive-between-ids]
+  [fixture: block/db-directive-at-end-of-line]
+  [fixture: block/db-directive-inside-string]
+  [fixture: block/div-directive-inside-keyword]
+  [fixture: block/div-directive-inside-class-keyword]
+  [fixture: block/div-directive-inside-header]
+  [fixture: block/div-directive-inside-direction]
+  [fixture: block/db-directive-inside-shape]
+  [fixture: block/db-directive-after-shape-label]
+  [fixture: block/db-directive-before-block-arrow-label]
+  [fixture: block/db-directive-after-block-arrow-label]
+  [fixture: block/db-directive-between-colon-and-width]
+  [fixture: block/db-directive-between-space-colon-and-width]
+  [fixture: block/db-directive-glued-to-id]
+  [fixture: block/db-directive-glued-to-width]
+  [fixture: block/db-directive-glued-to-edge]
+  [fixture: block/db-directive-line-feed-inside-id]
+  [fixture: block/db-directive-spaces-around]
+  [fixture: block/db-directive-class-def-line]
+  [fixture: block/db-directive-after-end-of-text]
+  [fixture: block/gram-directive-unclosed]
+  [fixture: block/db-directive-unclosed-end-of-text]
+  [fixture: block/gram-directive-unclosed-word-next-line]
+  [fixture: block/gram-directive-empty]
+  [fixture: block/gram-directive-only]
+  [fixture: block/db-label-directive]
+  [fixture: block/db-label-directive-line]
+  [fixture: block/db-edge-label-directive]
+  [fixture: block/db-tail-node-directive]
+  [fixture: block/db-tail-node-directive-unclosed]
+  [fixture: block/db-tail-node-shape-directive]
+  [fixture: block/db-tail-node-width-directive]
+  [fixture: block/db-tail-edge-directive]
+  [fixture: block/db-tail-edge-label-directive]
+  [fixture: block/db-tail-block-arrow-directive]
+  [fixture: block/db-tail-columns-directive]
+  [fixture: block/db-tail-space-directive]
+  [fixture: block/db-tail-class-directive]
+  [fixture: block/db-tail-style-directive]
+  [fixture: block/db-tail-class-def-directive-unclosed]
+  [fixture: block/db-tail-composite-end-directive]
+  [fixture: block/db-tail-composite-end-keyword-directive]
+- 見出しの前のフロントマターは取り除かれます。
+  Db にタイトルがないので `title` は残らず、
+  `block` を含む設定も要約を変えません。
+  空のもの、閉じていないもの、インデントされたもの、コメントのあとのもの、
+  見出しの後ろのものはフロントマターでなく、拒否されます。
+  [fixture: block/db-frontmatter-config-block]
+  [fixture: block/db-frontmatter-look]
+  [fixture: block/db-frontmatter-html-in-title]
+  [fixture: block/db-frontmatter-crlf]
+  [fixture: block/header-after-frontmatter]
+  [fixture: block/header-after-frontmatter-and-comment]
+  [fixture: block/gram-frontmatter-empty]
+  [fixture: block/gram-frontmatter-unclosed]
+  [fixture: block/gram-frontmatter-indented]
+  [fixture: block/gram-frontmatter-comment-before]
+  [fixture: block/gram-frontmatter-after-header]
+- `accTitle:`、`accDescr:`、`accDescr {` は block 図の文でなく、
+  字句解析器はそれをキーワードとして読みますが、文法に規則がなく、拒否されます。
+  `accTitle` だけは node、`title t` は node `title` と `t`、
+  `title: t` は拒否されます。
+  [fixture: block/gram-acc-acc-title]
+  [fixture: block/gram-acc-acc-descr]
+  [fixture: block/gram-acc-acc-descr-block]
+  [fixture: block/db-acc-acc-title-word]
+  [fixture: block/gram-acc-acc-title-space]
+  [fixture: block/gram-acc-acc-title-upper]
+  [fixture: block/gram-acc-acc-title-glued]
+  [fixture: block/db-acc-title-word]
+  [fixture: block/gram-acc-title-colon]
+- 文は、空白だけを挟んで続きます。
+  1 行に、node、辺、`columns`、`space` ブロック、composite を、
+  何個でもどの順でも置けます。
+  `class`、`style`、`classDef` は行の残りを取るので、
+  その行の後ろのものはそれらの一部です。
+  インデントに意味はなく、行は空でも空白だけでもよく、
+  テキストの終わりも同じです。
+  キーワードを含む単語は node です（`friend`、`endless`、`mycolumns`、
+  `blockade`、`classy`、`styled`）。
+  `columns:2` は幅 2 の node `columns` で、制御文字と DEL は id の一部です。
+  [fixture: block/db-statement-many-line]
+  [fixture: block/db-statement-mixed-line]
+  [fixture: block/db-statement-columns-between]
+  [fixture: block/db-statement-statements-then-class]
+  [fixture: block/db-statement-statements-then-style]
+  [fixture: block/db-statement-statements-then-class-def]
+  [fixture: block/db-statement-edge-then-class]
+  [fixture: block/db-statement-class-then-node]
+  [fixture: block/db-statement-order-class-def-last]
+  [fixture: block/db-statement-long-diagram]
+  [fixture: block/db-statement-tab-indent]
+  [fixture: block/db-statement-no-indent]
+  [fixture: block/db-statement-deep-indent]
+  [fixture: block/db-statement-trailing-whitespace-lines]
+  [fixture: block/db-statement-final-spaces]
+  [fixture: block/db-statement-final-lines]
+  [fixture: block/db-statement-leading-blank-lines]
+  [fixture: block/db-statement-control]
+  [fixture: block/db-statement-delete]
+  [fixture: block/db-statement-keywords-as-ids]
+  [fixture: block/gram-statement-block-as-node]
+  [fixture: block/db-statement-end-keyword-inside-id]
+  [fixture: block/db-statement-end-prefix-id]
+  [fixture: block/db-statement-keywords-inside-ids]
+- node の id の中の空白は、タブ、改行、CR、CRLF、U+00A0、U+3000、U+FEFF、
+  U+2028、U+2029、改ページ、垂直タブ、空白で、2 つの id を分けます。
+  U+0085 は分けず、2 つの単語を 1 つの id につなげます。
+  composite の id の中では、空白が id を終え、
+  残りは composite の中の node です。
+  [fixture: block/db-grid-tab-id]
+  [fixture: block/db-grid-tab-composite-id]
+  [fixture: block/db-grid-lf-id]
+  [fixture: block/db-grid-lf-composite-id]
+  [fixture: block/db-grid-cr-id]
+  [fixture: block/db-grid-cr-composite-id]
+  [fixture: block/db-grid-crlf-id]
+  [fixture: block/db-grid-crlf-composite-id]
+  [fixture: block/db-grid-ls-id]
+  [fixture: block/db-grid-ls-composite-id]
+  [fixture: block/db-grid-ps-id]
+  [fixture: block/db-grid-ps-composite-id]
+  [fixture: block/db-grid-nbsp-id]
+  [fixture: block/db-grid-nbsp-composite-id]
+  [fixture: block/db-grid-bom-id]
+  [fixture: block/db-grid-bom-composite-id]
+  [fixture: block/db-grid-ideographic-id]
+  [fixture: block/db-grid-ideographic-composite-id]
+  [fixture: block/db-grid-ff-id]
+  [fixture: block/db-grid-ff-composite-id]
+  [fixture: block/db-grid-vt-id]
+  [fixture: block/db-grid-vt-composite-id]
+  [fixture: block/db-grid-spaces-id]
+  [fixture: block/db-grid-spaces-composite-id]
+  [fixture: block/db-grid-nel-id]
+  [fixture: block/db-grid-nel-composite-id]
+- 文字列（node、block arrow、辺、
+  composite の label）の中の空白はテキストの一部です。
+  ただし、単独の CR と CRLF は改行になります。
+  `;`、`#`、`%`、`:`、`,`、`-`、`|`、`'`、バッククォート、バックスラッシュ、
+  括弧、波括弧、`<`、`>`、`=`、
+  続く句読点、矢印、`%%`、HTML タグ、`&amp;`、キーワード、`__proto__`、
+  `constructor`、`root`、
+  ASCII の外の文字、絵文字、数字もテキストの一部です。
+  ただし `"` は文字列を終え、その文字列は拒否されます。
+  文字列の中のコメント行と、ディレクティブは取り除かれます。
+  行を単独で占めるディレクティブは前後の改行を残します。
+  文字参照は代替の文字列として読み、HTML の属性の引用符は `'` として読みます。
+  行の規則は `style:#x;y` と `classDef:#x;y` の最後の `;` を落とします。
+  [fixture: block/db-label-tab]
+  [fixture: block/db-grid-tab-block-arrow-label]
+  [fixture: block/db-grid-tab-edge-label]
+  [fixture: block/db-grid-tab-composite-label]
+  [fixture: block/db-label-line-feed]
+  [fixture: block/db-grid-lf-block-arrow-label]
+  [fixture: block/db-edge-label-line-feed]
+  [fixture: block/db-grid-lf-composite-label]
+  [fixture: block/db-label-cr]
+  [fixture: block/db-grid-cr-block-arrow-label]
+  [fixture: block/db-grid-cr-edge-label]
+  [fixture: block/db-grid-cr-composite-label]
+  [fixture: block/db-label-crlf]
+  [fixture: block/db-grid-crlf-block-arrow-label]
+  [fixture: block/db-grid-crlf-edge-label]
+  [fixture: block/db-grid-crlf-composite-label]
+  [fixture: block/db-label-ls]
+  [fixture: block/db-grid-ls-block-arrow-label]
+  [fixture: block/db-grid-ls-edge-label]
+  [fixture: block/db-grid-ls-composite-label]
+  [fixture: block/db-label-ps]
+  [fixture: block/db-grid-ps-block-arrow-label]
+  [fixture: block/db-grid-ps-edge-label]
+  [fixture: block/db-grid-ps-composite-label]
+  [fixture: block/db-label-nbsp]
+  [fixture: block/db-grid-nbsp-block-arrow-label]
+  [fixture: block/db-grid-nbsp-edge-label]
+  [fixture: block/db-grid-nbsp-composite-label]
+  [fixture: block/db-grid-bom-label]
+  [fixture: block/db-grid-bom-block-arrow-label]
+  [fixture: block/db-grid-bom-edge-label]
+  [fixture: block/db-grid-bom-composite-label]
+  [fixture: block/db-label-ideographic]
+  [fixture: block/db-grid-ideographic-block-arrow-label]
+  [fixture: block/db-grid-ideographic-edge-label]
+  [fixture: block/db-grid-ideographic-composite-label]
+  [fixture: block/db-grid-ff-label]
+  [fixture: block/db-grid-ff-block-arrow-label]
+  [fixture: block/db-grid-ff-edge-label]
+  [fixture: block/db-grid-ff-composite-label]
+  [fixture: block/db-grid-vt-label]
+  [fixture: block/db-grid-vt-block-arrow-label]
+  [fixture: block/db-grid-vt-edge-label]
+  [fixture: block/db-grid-vt-composite-label]
+  [fixture: block/db-grid-spaces-label]
+  [fixture: block/db-grid-spaces-block-arrow-label]
+  [fixture: block/db-grid-spaces-edge-label]
+  [fixture: block/db-grid-spaces-composite-label]
+  [fixture: block/db-label-nel]
+  [fixture: block/db-grid-nel-block-arrow-label]
+  [fixture: block/db-grid-nel-edge-label]
+  [fixture: block/db-grid-nel-composite-label]
+  [fixture: block/db-label-semicolon]
+  [fixture: block/db-grid-semicolon-block-arrow-label]
+  [fixture: block/db-grid-semicolon-edge-label]
+  [fixture: block/db-grid-semicolon-composite-label]
+  [fixture: block/db-label-hash]
+  [fixture: block/db-grid-hash-block-arrow-label]
+  [fixture: block/db-grid-hash-edge-label]
+  [fixture: block/db-grid-hash-composite-label]
+  [fixture: block/db-label-percent]
+  [fixture: block/db-grid-percent-block-arrow-label]
+  [fixture: block/db-grid-percent-edge-label]
+  [fixture: block/db-grid-percent-composite-label]
+  [fixture: block/db-label-colon]
+  [fixture: block/db-grid-colon-block-arrow-label]
+  [fixture: block/db-grid-colon-edge-label]
+  [fixture: block/db-grid-colon-composite-label]
+  [fixture: block/db-grid-comma-label]
+  [fixture: block/db-grid-comma-block-arrow-label]
+  [fixture: block/db-grid-comma-edge-label]
+  [fixture: block/db-grid-comma-composite-label]
+  [fixture: block/db-grid-dash-label]
+  [fixture: block/db-grid-dash-block-arrow-label]
+  [fixture: block/db-grid-dash-edge-label]
+  [fixture: block/db-grid-dash-composite-label]
+  [fixture: block/db-grid-pipe-label]
+  [fixture: block/db-grid-pipe-block-arrow-label]
+  [fixture: block/db-grid-pipe-edge-label]
+  [fixture: block/db-grid-pipe-composite-label]
+  [fixture: block/gram-label-quote-inside]
+  [fixture: block/gram-grid-quote-block-arrow-label]
+  [fixture: block/gram-grid-quote-edge-label]
+  [fixture: block/gram-grid-quote-composite-label]
+  [fixture: block/db-label-single-quote-inside]
+  [fixture: block/db-grid-single-quote-block-arrow-label]
+  [fixture: block/db-grid-single-quote-edge-label]
+  [fixture: block/db-grid-single-quote-composite-label]
+  [fixture: block/db-label-backtick-inside]
+  [fixture: block/db-grid-backtick-block-arrow-label]
+  [fixture: block/db-grid-backtick-edge-label]
+  [fixture: block/db-grid-backtick-composite-label]
+  [fixture: block/db-label-backslash]
+  [fixture: block/db-grid-backslash-block-arrow-label]
+  [fixture: block/db-grid-backslash-edge-label]
+  [fixture: block/db-grid-backslash-composite-label]
+  [fixture: block/db-grid-open-square-label]
+  [fixture: block/db-grid-open-square-block-arrow-label]
+  [fixture: block/db-grid-open-square-edge-label]
+  [fixture: block/db-grid-open-square-composite-label]
+  [fixture: block/db-grid-close-square-label]
+  [fixture: block/db-grid-close-square-block-arrow-label]
+  [fixture: block/db-grid-close-square-edge-label]
+  [fixture: block/db-grid-close-square-composite-label]
+  [fixture: block/db-grid-open-round-label]
+  [fixture: block/db-grid-open-round-block-arrow-label]
+  [fixture: block/db-grid-open-round-edge-label]
+  [fixture: block/db-grid-open-round-composite-label]
+  [fixture: block/db-grid-close-round-label]
+  [fixture: block/db-grid-close-round-block-arrow-label]
+  [fixture: block/db-grid-close-round-edge-label]
+  [fixture: block/db-grid-close-round-composite-label]
+  [fixture: block/db-grid-open-brace-label]
+  [fixture: block/db-grid-open-brace-block-arrow-label]
+  [fixture: block/db-grid-open-brace-edge-label]
+  [fixture: block/db-grid-open-brace-composite-label]
+  [fixture: block/db-grid-close-brace-label]
+  [fixture: block/db-grid-close-brace-block-arrow-label]
+  [fixture: block/db-grid-close-brace-edge-label]
+  [fixture: block/db-grid-close-brace-composite-label]
+  [fixture: block/db-grid-less-than-label]
+  [fixture: block/db-grid-less-than-block-arrow-label]
+  [fixture: block/db-grid-less-than-edge-label]
+  [fixture: block/db-grid-less-than-composite-label]
+  [fixture: block/db-grid-greater-than-label]
+  [fixture: block/db-grid-greater-than-block-arrow-label]
+  [fixture: block/db-grid-greater-than-edge-label]
+  [fixture: block/db-grid-greater-than-composite-label]
+  [fixture: block/db-grid-equals-label]
+  [fixture: block/db-grid-equals-block-arrow-label]
+  [fixture: block/db-grid-equals-edge-label]
+  [fixture: block/db-grid-equals-composite-label]
+  [fixture: block/db-grid-punct-label]
+  [fixture: block/db-grid-punct-block-arrow-label]
+  [fixture: block/db-grid-punct-edge-label]
+  [fixture: block/db-grid-punct-composite-label]
+  [fixture: block/db-grid-arrow-label]
+  [fixture: block/db-grid-arrow-block-arrow-label]
+  [fixture: block/db-grid-arrow-edge-label]
+  [fixture: block/db-grid-arrow-composite-label]
+  [fixture: block/db-label-arrow]
+  [fixture: block/db-grid-arrow-spaced-block-arrow-label]
+  [fixture: block/db-grid-arrow-spaced-edge-label]
+  [fixture: block/db-grid-arrow-spaced-composite-label]
+  [fixture: block/db-grid-comment-label]
+  [fixture: block/db-grid-comment-block-arrow-label]
+  [fixture: block/db-grid-comment-edge-label]
+  [fixture: block/db-grid-comment-composite-label]
+  [fixture: block/db-grid-comment-line-label]
+  [fixture: block/db-grid-comment-line-block-arrow-label]
+  [fixture: block/db-grid-comment-line-edge-label]
+  [fixture: block/db-grid-comment-line-composite-label]
+  [fixture: block/db-label-directive]
+  [fixture: block/db-grid-directive-block-arrow-label]
+  [fixture: block/db-edge-label-directive]
+  [fixture: block/db-grid-directive-composite-label]
+  [fixture: block/db-label-directive-line]
+  [fixture: block/db-grid-directive-line-block-arrow-label]
+  [fixture: block/db-grid-directive-line-edge-label]
+  [fixture: block/db-grid-directive-line-composite-label]
+  [fixture: block/db-label-entity-numeric]
+  [fixture: block/db-grid-entity-block-arrow-label]
+  [fixture: block/db-edge-label-entity]
+  [fixture: block/db-grid-entity-composite-label]
+  [fixture: block/db-label-entity-named]
+  [fixture: block/db-grid-entity-named-block-arrow-label]
+  [fixture: block/db-grid-entity-named-edge-label]
+  [fixture: block/db-grid-entity-named-composite-label]
+  [fixture: block/db-grid-html-label]
+  [fixture: block/db-grid-html-block-arrow-label]
+  [fixture: block/db-grid-html-edge-label]
+  [fixture: block/db-grid-html-composite-label]
+  [fixture: block/db-label-html-br-slash]
+  [fixture: block/db-grid-html-br-block-arrow-label]
+  [fixture: block/db-grid-html-br-edge-label]
+  [fixture: block/db-grid-html-br-composite-label]
+  [fixture: block/db-grid-html-attribute-label]
+  [fixture: block/db-grid-html-attribute-block-arrow-label]
+  [fixture: block/db-grid-html-attribute-edge-label]
+  [fixture: block/db-grid-html-attribute-composite-label]
+  [fixture: block/db-grid-ampersand-entity-label]
+  [fixture: block/db-grid-ampersand-entity-block-arrow-label]
+  [fixture: block/db-grid-ampersand-entity-edge-label]
+  [fixture: block/db-grid-ampersand-entity-composite-label]
+  [fixture: block/db-grid-keyword-end-label]
+  [fixture: block/db-grid-keyword-end-block-arrow-label]
+  [fixture: block/db-grid-keyword-end-edge-label]
+  [fixture: block/db-grid-keyword-end-composite-label]
+  [fixture: block/db-grid-keyword-block-label]
+  [fixture: block/db-grid-keyword-block-block-arrow-label]
+  [fixture: block/db-grid-keyword-block-edge-label]
+  [fixture: block/db-grid-keyword-block-composite-label]
+  [fixture: block/db-grid-keyword-columns-label]
+  [fixture: block/db-grid-keyword-columns-block-arrow-label]
+  [fixture: block/db-grid-keyword-columns-edge-label]
+  [fixture: block/db-grid-keyword-columns-composite-label]
+  [fixture: block/db-grid-keyword-space-label]
+  [fixture: block/db-grid-keyword-space-block-arrow-label]
+  [fixture: block/db-grid-keyword-space-edge-label]
+  [fixture: block/db-grid-keyword-space-composite-label]
+  [fixture: block/db-grid-keyword-class-label]
+  [fixture: block/db-grid-keyword-class-block-arrow-label]
+  [fixture: block/db-grid-keyword-class-edge-label]
+  [fixture: block/db-grid-keyword-class-composite-label]
+  [fixture: block/db-grid-keyword-style-label]
+  [fixture: block/db-grid-keyword-style-block-arrow-label]
+  [fixture: block/db-grid-keyword-style-edge-label]
+  [fixture: block/db-grid-keyword-style-composite-label]
+  [fixture: block/db-grid-keyword-classdef-label]
+  [fixture: block/db-grid-keyword-classdef-block-arrow-label]
+  [fixture: block/db-grid-keyword-classdef-edge-label]
+  [fixture: block/db-grid-keyword-classdef-composite-label]
+  [fixture: block/db-grid-keyword-header-label]
+  [fixture: block/db-grid-keyword-header-block-arrow-label]
+  [fixture: block/db-grid-keyword-header-edge-label]
+  [fixture: block/db-grid-keyword-header-composite-label]
+  [fixture: block/db-grid-proto-label]
+  [fixture: block/db-grid-proto-block-arrow-label]
+  [fixture: block/db-grid-proto-edge-label]
+  [fixture: block/db-grid-proto-composite-label]
+  [fixture: block/db-grid-constructor-label]
+  [fixture: block/db-grid-constructor-block-arrow-label]
+  [fixture: block/db-grid-constructor-edge-label]
+  [fixture: block/db-grid-constructor-composite-label]
+  [fixture: block/db-grid-root-label]
+  [fixture: block/db-grid-root-block-arrow-label]
+  [fixture: block/db-grid-root-edge-label]
+  [fixture: block/db-grid-root-composite-label]
+  [fixture: block/db-grid-nonascii-label]
+  [fixture: block/db-grid-nonascii-block-arrow-label]
+  [fixture: block/db-grid-nonascii-edge-label]
+  [fixture: block/db-grid-nonascii-composite-label]
+  [fixture: block/db-grid-emoji-label]
+  [fixture: block/db-grid-emoji-block-arrow-label]
+  [fixture: block/db-grid-emoji-edge-label]
+  [fixture: block/db-grid-emoji-composite-label]
+  [fixture: block/db-grid-digits-label]
+  [fixture: block/db-grid-digits-block-arrow-label]
+  [fixture: block/db-grid-digits-edge-label]
+  [fixture: block/db-grid-digits-composite-label]
+  [fixture: block/db-grid-empty-label]
+  [fixture: block/db-grid-empty-block-arrow-label]
+  [fixture: block/db-grid-empty-edge-label]
+  [fixture: block/db-grid-empty-composite-label]
+  [fixture: block/db-grid-style-rule-label]
+  [fixture: block/db-grid-style-rule-block-arrow-label]
+  [fixture: block/db-grid-style-rule-edge-label]
+  [fixture: block/db-grid-style-rule-composite-label]
+  [fixture: block/db-grid-classdef-rule-label]
+  [fixture: block/db-grid-classdef-rule-block-arrow-label]
+  [fixture: block/db-grid-classdef-rule-edge-label]
+  [fixture: block/db-grid-classdef-rule-composite-label]
+- node の id の中の `;`、`#`、`%`、`,`、`|`、`'`、`"`、バッククォート、
+  バックスラッシュ、`]`、`%%`、文字参照、`&amp;`、
+  `__proto__`、`constructor`、`root`、ASCII の外の文字、絵文字、数字、
+  何もないものは、id の一部です。
+  中のディレクティブは取り除かれ、コメント行は id を終えます。
+  `[`、`(`、`{`、矢印でない `-`、`:`、`=`、`<`、`>`、`}`、`)`、続く句読点、
+  HTML、行の規則は拒否されます。
+  `a-->b` は辺です。
+  id の後ろの `end` と `block-beta` は composite を開いたり閉じたりし、
+  拒否されます。
+  `columns 2`、`space`、`class A c`、`classDef c fill:red` は文で、
+  `style A fill:red` は存在しない id への `style` です。
+  [fixture: block/db-name-semicolon]
+  [fixture: block/db-name-hash]
+  [fixture: block/db-name-percent]
+  [fixture: block/gram-name-colon]
+  [fixture: block/db-name-comma]
+  [fixture: block/gram-name-dash]
+  [fixture: block/db-name-pipe]
+  [fixture: block/db-name-quote]
+  [fixture: block/db-name-single-quote]
+  [fixture: block/db-name-backtick]
+  [fixture: block/db-name-backslash]
+  [fixture: block/gram-grid-open-square-id]
+  [fixture: block/db-name-brackets-in-id]
+  [fixture: block/gram-grid-open-round-id]
+  [fixture: block/gram-name-close-paren]
+  [fixture: block/gram-grid-open-brace-id]
+  [fixture: block/gram-name-brace]
+  [fixture: block/gram-name-less-than]
+  [fixture: block/gram-name-greater-than]
+  [fixture: block/gram-name-equals]
+  [fixture: block/gram-grid-punct-id]
+  [fixture: block/db-grid-arrow-id]
+  [fixture: block/db-grid-arrow-spaced-id]
+  [fixture: block/db-grid-comment-id]
+  [fixture: block/db-grid-comment-line-id]
+  [fixture: block/div-grid-directive-id]
+  [fixture: block/db-grid-directive-line-id]
+  [fixture: block/db-grid-entity-id]
+  [fixture: block/db-grid-entity-named-id]
+  [fixture: block/gram-grid-html-id]
+  [fixture: block/gram-grid-html-br-id]
+  [fixture: block/gram-grid-html-attribute-id]
+  [fixture: block/db-grid-ampersand-entity-id]
+  [fixture: block/gram-grid-keyword-end-id]
+  [fixture: block/gram-grid-keyword-block-id]
+  [fixture: block/db-grid-keyword-columns-id]
+  [fixture: block/db-grid-keyword-space-id]
+  [fixture: block/db-grid-keyword-class-id]
+  [fixture: block/gram-grid-keyword-style-id]
+  [fixture: block/db-grid-keyword-classdef-id]
+  [fixture: block/gram-grid-keyword-header-id]
+  [fixture: block/db-grid-proto-id]
+  [fixture: block/db-grid-constructor-id]
+  [fixture: block/db-grid-root-id]
+  [fixture: block/db-grid-nonascii-id]
+  [fixture: block/db-grid-emoji-id]
+  [fixture: block/db-grid-digits-id]
+  [fixture: block/db-grid-empty-id]
+  [fixture: block/gram-grid-style-rule-id]
+  [fixture: block/gram-grid-classdef-rule-id]
+- `class` や `style` の文の id、クラス名、
+  `classDef` の名前にこれらの文字があるとき。
+  `classDef` の名前は単語の文字の 1 文字以上で、空白は名前を終え、
+  残りが最初のスタイルになります。
+  ほかの文字、句読点、ASCII の外の文字、コメント、文字参照は、
+  そのテキストを拒否させます。
+  `__proto__`、`constructor`、`root`、数字、何もないものは単語の文字か、
+  文字がないことです。
+  `class` と `style` の id も単語の文字なので、そうでない文字は id を終え、
+  残りがクラス名やスタイルになります。
+  存在しない id への `style` は拒否されます。
+  [fixture: block/db-grid-tab-class-def-name]
+  [fixture: block/db-grid-tab-class-apply-id]
+  [fixture: block/db-grid-tab-style-id]
+  [fixture: block/db-grid-lf-class-def-name]
+  [fixture: block/db-grid-lf-class-apply-id]
+  [fixture: block/gram-grid-lf-style-id]
+  [fixture: block/db-grid-cr-class-def-name]
+  [fixture: block/db-grid-cr-class-apply-id]
+  [fixture: block/gram-grid-cr-style-id]
+  [fixture: block/db-grid-crlf-class-def-name]
+  [fixture: block/db-grid-crlf-class-apply-id]
+  [fixture: block/gram-grid-crlf-style-id]
+  [fixture: block/db-grid-ls-class-def-name]
+  [fixture: block/db-grid-ls-class-apply-id]
+  [fixture: block/db-grid-ls-style-id]
+  [fixture: block/db-grid-ps-class-def-name]
+  [fixture: block/db-grid-ps-class-apply-id]
+  [fixture: block/db-grid-ps-style-id]
+  [fixture: block/db-grid-nbsp-class-def-name]
+  [fixture: block/db-grid-nbsp-class-apply-id]
+  [fixture: block/db-grid-nbsp-style-id]
+  [fixture: block/db-grid-bom-class-def-name]
+  [fixture: block/db-grid-bom-class-apply-id]
+  [fixture: block/db-grid-bom-style-id]
+  [fixture: block/db-grid-ideographic-class-def-name]
+  [fixture: block/db-grid-ideographic-class-apply-id]
+  [fixture: block/db-grid-ideographic-style-id]
+  [fixture: block/db-grid-ff-class-def-name]
+  [fixture: block/db-grid-ff-class-apply-id]
+  [fixture: block/db-grid-ff-style-id]
+  [fixture: block/db-grid-vt-class-def-name]
+  [fixture: block/db-grid-vt-class-apply-id]
+  [fixture: block/db-grid-vt-style-id]
+  [fixture: block/db-grid-spaces-class-def-name]
+  [fixture: block/db-grid-spaces-class-apply-id]
+  [fixture: block/db-grid-spaces-style-id]
+  [fixture: block/gram-grid-nel-class-def-name]
+  [fixture: block/db-grid-nel-class-apply-id]
+  [fixture: block/gram-grid-nel-style-id]
+  [fixture: block/gram-grid-semicolon-class-def-name]
+  [fixture: block/db-grid-semicolon-class-apply-id]
+  [fixture: block/gram-grid-semicolon-style-id]
+  [fixture: block/gram-grid-hash-class-def-name]
+  [fixture: block/db-grid-hash-class-apply-id]
+  [fixture: block/gram-grid-hash-style-id]
+  [fixture: block/gram-grid-percent-class-def-name]
+  [fixture: block/db-grid-percent-class-apply-id]
+  [fixture: block/gram-grid-percent-style-id]
+  [fixture: block/gram-grid-colon-class-def-name]
+  [fixture: block/gram-grid-colon-class-apply-id]
+  [fixture: block/gram-grid-colon-style-id]
+  [fixture: block/gram-grid-comma-class-def-name]
+  [fixture: block/db-grid-comma-class-apply-id]
+  [fixture: block/db-grid-comma-style-id]
+  [fixture: block/gram-grid-dash-class-def-name]
+  [fixture: block/gram-grid-dash-class-apply-id]
+  [fixture: block/gram-grid-dash-style-id]
+  [fixture: block/gram-grid-pipe-class-def-name]
+  [fixture: block/db-grid-pipe-class-apply-id]
+  [fixture: block/gram-grid-pipe-style-id]
+  [fixture: block/gram-grid-quote-class-def-name]
+  [fixture: block/db-grid-quote-class-apply-id]
+  [fixture: block/gram-grid-quote-style-id]
+  [fixture: block/gram-grid-single-quote-class-def-name]
+  [fixture: block/db-grid-single-quote-class-apply-id]
+  [fixture: block/gram-grid-single-quote-style-id]
+  [fixture: block/gram-grid-backtick-class-def-name]
+  [fixture: block/db-grid-backtick-class-apply-id]
+  [fixture: block/gram-grid-backtick-style-id]
+  [fixture: block/gram-grid-backslash-class-def-name]
+  [fixture: block/db-grid-backslash-class-apply-id]
+  [fixture: block/gram-grid-backslash-style-id]
+  [fixture: block/gram-grid-open-square-class-def-name]
+  [fixture: block/gram-grid-open-square-class-apply-id]
+  [fixture: block/gram-grid-open-square-style-id]
+  [fixture: block/gram-grid-close-square-class-def-name]
+  [fixture: block/db-grid-close-square-class-apply-id]
+  [fixture: block/gram-grid-close-square-style-id]
+  [fixture: block/gram-grid-open-round-class-def-name]
+  [fixture: block/gram-grid-open-round-class-apply-id]
+  [fixture: block/gram-grid-open-round-style-id]
+  [fixture: block/gram-grid-close-round-class-def-name]
+  [fixture: block/gram-grid-close-round-class-apply-id]
+  [fixture: block/gram-grid-close-round-style-id]
+  [fixture: block/gram-grid-open-brace-class-def-name]
+  [fixture: block/gram-grid-open-brace-class-apply-id]
+  [fixture: block/gram-grid-open-brace-style-id]
+  [fixture: block/gram-grid-close-brace-class-def-name]
+  [fixture: block/gram-grid-close-brace-class-apply-id]
+  [fixture: block/gram-grid-close-brace-style-id]
+  [fixture: block/gram-grid-less-than-class-def-name]
+  [fixture: block/gram-grid-less-than-class-apply-id]
+  [fixture: block/gram-grid-less-than-style-id]
+  [fixture: block/gram-grid-greater-than-class-def-name]
+  [fixture: block/gram-grid-greater-than-class-apply-id]
+  [fixture: block/gram-grid-greater-than-style-id]
+  [fixture: block/gram-grid-equals-class-def-name]
+  [fixture: block/gram-grid-equals-class-apply-id]
+  [fixture: block/gram-grid-equals-style-id]
+  [fixture: block/gram-grid-punct-class-def-name]
+  [fixture: block/gram-grid-punct-class-apply-id]
+  [fixture: block/gram-grid-punct-style-id]
+  [fixture: block/gram-grid-arrow-class-def-name]
+  [fixture: block/db-grid-arrow-class-apply-id]
+  [fixture: block/db-grid-arrow-style-id]
+  [fixture: block/db-grid-arrow-spaced-class-def-name]
+  [fixture: block/db-grid-arrow-spaced-class-apply-id]
+  [fixture: block/db-grid-arrow-spaced-style-id]
+  [fixture: block/gram-grid-comment-class-def-name]
+  [fixture: block/db-grid-comment-class-apply-id]
+  [fixture: block/gram-grid-comment-style-id]
+  [fixture: block/db-grid-comment-line-class-def-name]
+  [fixture: block/db-grid-comment-line-class-apply-id]
+  [fixture: block/gram-grid-comment-line-style-id]
+  [fixture: block/div-grid-directive-class-def-name]
+  [fixture: block/div-grid-directive-class-apply-id]
+  [fixture: block/div-grid-directive-style-id]
+  [fixture: block/db-grid-directive-line-class-def-name]
+  [fixture: block/db-grid-directive-line-class-apply-id]
+  [fixture: block/gram-grid-directive-line-style-id]
+  [fixture: block/gram-grid-entity-class-def-name]
+  [fixture: block/db-grid-entity-class-apply-id]
+  [fixture: block/gram-grid-entity-style-id]
+  [fixture: block/gram-grid-entity-named-class-def-name]
+  [fixture: block/db-grid-entity-named-class-apply-id]
+  [fixture: block/gram-grid-entity-named-style-id]
+  [fixture: block/gram-grid-html-class-def-name]
+  [fixture: block/gram-grid-html-class-apply-id]
+  [fixture: block/gram-grid-html-style-id]
+  [fixture: block/gram-grid-html-br-class-def-name]
+  [fixture: block/gram-grid-html-br-class-apply-id]
+  [fixture: block/gram-grid-html-br-style-id]
+  [fixture: block/gram-grid-html-attribute-class-def-name]
+  [fixture: block/gram-grid-html-attribute-class-apply-id]
+  [fixture: block/gram-grid-html-attribute-style-id]
+  [fixture: block/gram-grid-ampersand-entity-class-def-name]
+  [fixture: block/db-grid-ampersand-entity-class-apply-id]
+  [fixture: block/gram-grid-ampersand-entity-style-id]
+  [fixture: block/db-grid-keyword-end-class-def-name]
+  [fixture: block/gram-grid-keyword-end-class-apply-id]
+  [fixture: block/gram-grid-keyword-end-style-id]
+  [fixture: block/db-grid-keyword-block-class-def-name]
+  [fixture: block/gram-grid-keyword-block-class-apply-id]
+  [fixture: block/gram-grid-keyword-block-style-id]
+  [fixture: block/db-grid-keyword-columns-class-def-name]
+  [fixture: block/db-grid-keyword-columns-class-apply-id]
+  [fixture: block/db-grid-keyword-columns-style-id]
+  [fixture: block/db-grid-keyword-space-class-def-name]
+  [fixture: block/db-grid-keyword-space-class-apply-id]
+  [fixture: block/db-grid-keyword-space-style-id]
+  [fixture: block/db-grid-keyword-class-class-def-name]
+  [fixture: block/db-grid-keyword-class-class-apply-id]
+  [fixture: block/db-grid-keyword-class-style-id]
+  [fixture: block/db-grid-keyword-style-class-def-name]
+  [fixture: block/gram-grid-keyword-style-class-apply-id]
+  [fixture: block/gram-grid-keyword-style-style-id]
+  [fixture: block/db-grid-keyword-classdef-class-def-name]
+  [fixture: block/db-grid-keyword-classdef-class-apply-id]
+  [fixture: block/db-grid-keyword-classdef-style-id]
+  [fixture: block/db-grid-keyword-header-class-def-name]
+  [fixture: block/gram-grid-keyword-header-class-apply-id]
+  [fixture: block/gram-grid-keyword-header-style-id]
+  [fixture: block/db-grid-proto-class-def-name]
+  [fixture: block/db-grid-proto-class-apply-id]
+  [fixture: block/db-grid-proto-style-id]
+  [fixture: block/db-grid-constructor-class-def-name]
+  [fixture: block/db-grid-constructor-class-apply-id]
+  [fixture: block/db-grid-constructor-style-id]
+  [fixture: block/db-grid-root-class-def-name]
+  [fixture: block/db-grid-root-class-apply-id]
+  [fixture: block/db-grid-root-style-id]
+  [fixture: block/gram-grid-nonascii-class-def-name]
+  [fixture: block/db-grid-nonascii-class-apply-id]
+  [fixture: block/gram-grid-nonascii-style-id]
+  [fixture: block/gram-grid-emoji-class-def-name]
+  [fixture: block/db-grid-emoji-class-apply-id]
+  [fixture: block/gram-grid-emoji-style-id]
+  [fixture: block/db-grid-digits-class-def-name]
+  [fixture: block/db-grid-digits-class-apply-id]
+  [fixture: block/db-grid-digits-style-id]
+  [fixture: block/db-grid-empty-class-def-name]
+  [fixture: block/db-grid-empty-class-apply-id]
+  [fixture: block/db-grid-empty-style-id]
+  [fixture: block/gram-grid-style-rule-class-def-name]
+  [fixture: block/gram-grid-style-rule-class-apply-id]
+  [fixture: block/gram-grid-style-rule-style-id]
+  [fixture: block/gram-grid-classdef-rule-class-def-name]
+  [fixture: block/gram-grid-classdef-rule-class-apply-id]
+  [fixture: block/gram-grid-classdef-rule-style-id]
+- `classDef` と `style` のスタイルと、`class` のクラス名の中では、
+  改行以外の空白はテキストの一部で、改行はテキストを終え、
+  残りは文として読まれます。
+  ほかの文字もテキストの一部です。
+  Db は `classDef` のスタイルの最初の `;` を落とし、
+  行の規則は `:` と `#` のある行の最後の `;` を落とします。
+  コメント行と、ディレクティブは取り除かれます。
+  U+0085 はテキストの一部です。
+  [fixture: block/db-grid-tab-class-def-style]
+  [fixture: block/db-grid-tab-class-apply-name]
+  [fixture: block/db-grid-tab-style-text]
+  [fixture: block/db-grid-lf-class-def-style]
+  [fixture: block/db-grid-lf-class-apply-name]
+  [fixture: block/db-grid-lf-style-text]
+  [fixture: block/db-grid-cr-class-def-style]
+  [fixture: block/db-grid-cr-class-apply-name]
+  [fixture: block/db-grid-cr-style-text]
+  [fixture: block/db-grid-crlf-class-def-style]
+  [fixture: block/db-grid-crlf-class-apply-name]
+  [fixture: block/db-grid-crlf-style-text]
+  [fixture: block/db-grid-ls-class-def-style]
+  [fixture: block/db-grid-ls-class-apply-name]
+  [fixture: block/db-grid-ls-style-text]
+  [fixture: block/db-grid-ps-class-def-style]
+  [fixture: block/db-grid-ps-class-apply-name]
+  [fixture: block/db-grid-ps-style-text]
+  [fixture: block/db-grid-nbsp-class-def-style]
+  [fixture: block/db-grid-nbsp-class-apply-name]
+  [fixture: block/db-grid-nbsp-style-text]
+  [fixture: block/db-grid-bom-class-def-style]
+  [fixture: block/db-grid-bom-class-apply-name]
+  [fixture: block/db-grid-bom-style-text]
+  [fixture: block/db-grid-ideographic-class-def-style]
+  [fixture: block/db-grid-ideographic-class-apply-name]
+  [fixture: block/db-grid-ideographic-style-text]
+  [fixture: block/db-grid-ff-class-def-style]
+  [fixture: block/db-grid-ff-class-apply-name]
+  [fixture: block/db-grid-ff-style-text]
+  [fixture: block/db-grid-vt-class-def-style]
+  [fixture: block/db-grid-vt-class-apply-name]
+  [fixture: block/db-grid-vt-style-text]
+  [fixture: block/db-grid-spaces-class-def-style]
+  [fixture: block/db-grid-spaces-class-apply-name]
+  [fixture: block/db-grid-spaces-style-text]
+  [fixture: block/db-grid-nel-class-def-style]
+  [fixture: block/db-grid-nel-class-apply-name]
+  [fixture: block/db-grid-nel-style-text]
+  [fixture: block/db-grid-semicolon-class-def-style]
+  [fixture: block/db-grid-semicolon-class-apply-name]
+  [fixture: block/db-grid-semicolon-style-text]
+  [fixture: block/db-grid-hash-class-def-style]
+  [fixture: block/db-grid-hash-class-apply-name]
+  [fixture: block/db-grid-hash-style-text]
+  [fixture: block/db-grid-percent-class-def-style]
+  [fixture: block/db-grid-percent-class-apply-name]
+  [fixture: block/db-grid-percent-style-text]
+  [fixture: block/db-grid-colon-class-def-style]
+  [fixture: block/db-grid-colon-class-apply-name]
+  [fixture: block/db-grid-colon-style-text]
+  [fixture: block/db-grid-comma-class-def-style]
+  [fixture: block/db-grid-comma-class-apply-name]
+  [fixture: block/db-grid-comma-style-text]
+  [fixture: block/db-grid-dash-class-def-style]
+  [fixture: block/db-grid-dash-class-apply-name]
+  [fixture: block/db-grid-dash-style-text]
+  [fixture: block/db-grid-pipe-class-def-style]
+  [fixture: block/db-grid-pipe-class-apply-name]
+  [fixture: block/db-grid-pipe-style-text]
+  [fixture: block/db-grid-quote-class-def-style]
+  [fixture: block/db-grid-quote-class-apply-name]
+  [fixture: block/db-grid-quote-style-text]
+  [fixture: block/db-grid-single-quote-class-def-style]
+  [fixture: block/db-grid-single-quote-class-apply-name]
+  [fixture: block/db-grid-single-quote-style-text]
+  [fixture: block/db-grid-backtick-class-def-style]
+  [fixture: block/db-grid-backtick-class-apply-name]
+  [fixture: block/db-grid-backtick-style-text]
+  [fixture: block/db-grid-backslash-class-def-style]
+  [fixture: block/db-grid-backslash-class-apply-name]
+  [fixture: block/db-grid-backslash-style-text]
+  [fixture: block/db-grid-open-square-class-def-style]
+  [fixture: block/db-grid-open-square-class-apply-name]
+  [fixture: block/db-grid-open-square-style-text]
+  [fixture: block/db-grid-close-square-class-def-style]
+  [fixture: block/db-grid-close-square-class-apply-name]
+  [fixture: block/db-grid-close-square-style-text]
+  [fixture: block/db-grid-open-round-class-def-style]
+  [fixture: block/db-grid-open-round-class-apply-name]
+  [fixture: block/db-grid-open-round-style-text]
+  [fixture: block/db-grid-close-round-class-def-style]
+  [fixture: block/db-grid-close-round-class-apply-name]
+  [fixture: block/db-grid-close-round-style-text]
+  [fixture: block/db-grid-open-brace-class-def-style]
+  [fixture: block/db-grid-open-brace-class-apply-name]
+  [fixture: block/db-grid-open-brace-style-text]
+  [fixture: block/db-grid-close-brace-class-def-style]
+  [fixture: block/db-grid-close-brace-class-apply-name]
+  [fixture: block/db-grid-close-brace-style-text]
+  [fixture: block/db-grid-less-than-class-def-style]
+  [fixture: block/db-grid-less-than-class-apply-name]
+  [fixture: block/db-grid-less-than-style-text]
+  [fixture: block/db-grid-greater-than-class-def-style]
+  [fixture: block/db-grid-greater-than-class-apply-name]
+  [fixture: block/db-grid-greater-than-style-text]
+  [fixture: block/db-grid-equals-class-def-style]
+  [fixture: block/db-grid-equals-class-apply-name]
+  [fixture: block/db-grid-equals-style-text]
+  [fixture: block/db-grid-punct-class-def-style]
+  [fixture: block/db-grid-punct-class-apply-name]
+  [fixture: block/db-grid-punct-style-text]
+  [fixture: block/db-grid-arrow-class-def-style]
+  [fixture: block/db-grid-arrow-class-apply-name]
+  [fixture: block/db-grid-arrow-style-text]
+  [fixture: block/db-grid-arrow-spaced-class-def-style]
+  [fixture: block/db-grid-arrow-spaced-class-apply-name]
+  [fixture: block/db-grid-arrow-spaced-style-text]
+  [fixture: block/db-grid-comment-class-def-style]
+  [fixture: block/db-grid-comment-class-apply-name]
+  [fixture: block/db-grid-comment-style-text]
+  [fixture: block/db-grid-comment-line-class-def-style]
+  [fixture: block/db-grid-comment-line-class-apply-name]
+  [fixture: block/db-grid-comment-line-style-text]
+  [fixture: block/db-grid-directive-class-def-style]
+  [fixture: block/db-grid-directive-class-apply-name]
+  [fixture: block/db-grid-directive-style-text]
+  [fixture: block/db-grid-directive-line-class-def-style]
+  [fixture: block/db-grid-directive-line-class-apply-name]
+  [fixture: block/db-grid-directive-line-style-text]
+  [fixture: block/db-grid-entity-class-def-style]
+  [fixture: block/db-grid-entity-class-apply-name]
+  [fixture: block/db-grid-entity-style-text]
+  [fixture: block/db-grid-entity-named-class-def-style]
+  [fixture: block/db-grid-entity-named-class-apply-name]
+  [fixture: block/db-grid-entity-named-style-text]
+  [fixture: block/db-grid-html-class-def-style]
+  [fixture: block/db-grid-html-class-apply-name]
+  [fixture: block/db-grid-html-style-text]
+  [fixture: block/db-grid-html-br-class-def-style]
+  [fixture: block/db-grid-html-br-class-apply-name]
+  [fixture: block/db-grid-html-br-style-text]
+  [fixture: block/db-grid-html-attribute-class-def-style]
+  [fixture: block/db-grid-html-attribute-class-apply-name]
+  [fixture: block/db-grid-html-attribute-style-text]
+  [fixture: block/db-grid-ampersand-entity-class-def-style]
+  [fixture: block/db-grid-ampersand-entity-class-apply-name]
+  [fixture: block/db-grid-ampersand-entity-style-text]
+  [fixture: block/db-grid-keyword-end-class-def-style]
+  [fixture: block/db-grid-keyword-end-class-apply-name]
+  [fixture: block/db-grid-keyword-end-style-text]
+  [fixture: block/db-grid-keyword-block-class-def-style]
+  [fixture: block/db-grid-keyword-block-class-apply-name]
+  [fixture: block/db-grid-keyword-block-style-text]
+  [fixture: block/db-grid-keyword-columns-class-def-style]
+  [fixture: block/db-grid-keyword-columns-class-apply-name]
+  [fixture: block/db-grid-keyword-columns-style-text]
+  [fixture: block/db-grid-keyword-space-class-def-style]
+  [fixture: block/db-grid-keyword-space-class-apply-name]
+  [fixture: block/db-grid-keyword-space-style-text]
+  [fixture: block/db-grid-keyword-class-class-def-style]
+  [fixture: block/db-grid-keyword-class-class-apply-name]
+  [fixture: block/db-grid-keyword-class-style-text]
+  [fixture: block/db-grid-keyword-style-class-def-style]
+  [fixture: block/db-grid-keyword-style-class-apply-name]
+  [fixture: block/db-grid-keyword-style-style-text]
+  [fixture: block/db-grid-keyword-classdef-class-def-style]
+  [fixture: block/db-grid-keyword-classdef-class-apply-name]
+  [fixture: block/db-grid-keyword-classdef-style-text]
+  [fixture: block/db-grid-keyword-header-class-def-style]
+  [fixture: block/db-grid-keyword-header-class-apply-name]
+  [fixture: block/db-grid-keyword-header-style-text]
+  [fixture: block/db-grid-proto-class-def-style]
+  [fixture: block/db-grid-proto-class-apply-name]
+  [fixture: block/db-grid-proto-style-text]
+  [fixture: block/db-grid-constructor-class-def-style]
+  [fixture: block/db-grid-constructor-class-apply-name]
+  [fixture: block/db-grid-constructor-style-text]
+  [fixture: block/db-grid-root-class-def-style]
+  [fixture: block/db-grid-root-class-apply-name]
+  [fixture: block/db-grid-root-style-text]
+  [fixture: block/db-grid-nonascii-class-def-style]
+  [fixture: block/db-grid-nonascii-class-apply-name]
+  [fixture: block/db-grid-nonascii-style-text]
+  [fixture: block/db-grid-emoji-class-def-style]
+  [fixture: block/db-grid-emoji-class-apply-name]
+  [fixture: block/db-grid-emoji-style-text]
+  [fixture: block/db-grid-digits-class-def-style]
+  [fixture: block/db-grid-digits-class-apply-name]
+  [fixture: block/db-grid-digits-style-text]
+  [fixture: block/db-grid-empty-class-def-style]
+  [fixture: block/db-grid-empty-class-apply-name]
+  [fixture: block/db-grid-empty-style-text]
+  [fixture: block/db-grid-style-rule-class-def-style]
+  [fixture: block/db-grid-style-rule-class-apply-name]
+  [fixture: block/db-grid-style-rule-style-text]
+  [fixture: block/db-grid-classdef-rule-class-def-style]
+  [fixture: block/db-grid-classdef-rule-class-apply-name]
+  [fixture: block/db-grid-classdef-rule-style-text]
+- `columns` の後ろでは、数字だけが columns の数を作ります。
+  ほかの文字は `columns` を node にし、その文字が作るものが続くか、
+  テキストが拒否されます。
+  node や `space` の幅には、数字だけが幅になります。
+  block arrow の方向の間では、空白はその前の方向の一部で、
+  コメント行とディレクティブは取り除かれ、何もない場合は 2 つの方向が続きます。
+  ほかの文字は拒否されます。
+  見出しの同じ行に付いた空白、`;`、`#`、`%`、`,`、`|`、`'`、バッククォート、
+  バックスラッシュ、`]`、コメント、文字参照、`&amp;`、ASCII の外の文字は、
+  その文字で始まる node を作ります。
+  キーワードはその文を始めます。
+  [fixture: block/db-grid-tab-columns]
+  [fixture: block/gram-grid-tab-width]
+  [fixture: block/gram-grid-tab-space-width]
+  [fixture: block/db-grid-tab-directions]
+  [fixture: block/header-statement-on-header-line-tab]
+  [fixture: block/db-grid-lf-columns]
+  [fixture: block/gram-grid-lf-width]
+  [fixture: block/gram-grid-lf-space-width]
+  [fixture: block/db-grid-lf-directions]
+  [fixture: block/db-grid-lf-header-line]
+  [fixture: block/db-grid-cr-columns]
+  [fixture: block/gram-grid-cr-width]
+  [fixture: block/gram-grid-cr-space-width]
+  [fixture: block/db-grid-cr-directions]
+  [fixture: block/db-grid-cr-header-line]
+  [fixture: block/db-grid-crlf-columns]
+  [fixture: block/gram-grid-crlf-width]
+  [fixture: block/gram-grid-crlf-space-width]
+  [fixture: block/db-grid-crlf-directions]
+  [fixture: block/db-grid-crlf-header-line]
+  [fixture: block/db-grid-ls-columns]
+  [fixture: block/gram-grid-ls-width]
+  [fixture: block/gram-grid-ls-space-width]
+  [fixture: block/db-grid-ls-directions]
+  [fixture: block/header-ls-after]
+  [fixture: block/db-grid-ps-columns]
+  [fixture: block/gram-grid-ps-width]
+  [fixture: block/gram-grid-ps-space-width]
+  [fixture: block/db-grid-ps-directions]
+  [fixture: block/header-ps-after]
+  [fixture: block/db-grid-nbsp-columns]
+  [fixture: block/gram-grid-nbsp-width]
+  [fixture: block/gram-grid-nbsp-space-width]
+  [fixture: block/db-grid-nbsp-directions]
+  [fixture: block/db-grid-nbsp-header-line]
+  [fixture: block/db-grid-bom-columns]
+  [fixture: block/gram-grid-bom-width]
+  [fixture: block/gram-grid-bom-space-width]
+  [fixture: block/db-grid-bom-directions]
+  [fixture: block/db-grid-bom-header-line]
+  [fixture: block/db-grid-ideographic-columns]
+  [fixture: block/gram-grid-ideographic-width]
+  [fixture: block/gram-grid-ideographic-space-width]
+  [fixture: block/db-grid-ideographic-directions]
+  [fixture: block/db-grid-ideographic-header-line]
+  [fixture: block/db-grid-ff-columns]
+  [fixture: block/gram-grid-ff-width]
+  [fixture: block/gram-grid-ff-space-width]
+  [fixture: block/db-grid-ff-directions]
+  [fixture: block/header-ff-after]
+  [fixture: block/db-grid-vt-columns]
+  [fixture: block/gram-grid-vt-width]
+  [fixture: block/gram-grid-vt-space-width]
+  [fixture: block/db-grid-vt-directions]
+  [fixture: block/header-vt-after]
+  [fixture: block/db-grid-spaces-columns]
+  [fixture: block/gram-grid-spaces-width]
+  [fixture: block/gram-grid-spaces-space-width]
+  [fixture: block/db-grid-spaces-directions]
+  [fixture: block/db-grid-spaces-header-line]
+  [fixture: block/db-grid-nel-columns]
+  [fixture: block/gram-grid-nel-width]
+  [fixture: block/gram-grid-nel-space-width]
+  [fixture: block/gram-grid-nel-directions]
+  [fixture: block/header-nel-after]
+  [fixture: block/db-grid-semicolon-columns]
+  [fixture: block/gram-grid-semicolon-width]
+  [fixture: block/gram-grid-semicolon-space-width]
+  [fixture: block/gram-grid-semicolon-directions]
+  [fixture: block/db-grid-semicolon-header-line]
+  [fixture: block/db-grid-hash-columns]
+  [fixture: block/gram-grid-hash-width]
+  [fixture: block/gram-grid-hash-space-width]
+  [fixture: block/gram-grid-hash-directions]
+  [fixture: block/db-grid-hash-header-line]
+  [fixture: block/db-grid-percent-columns]
+  [fixture: block/gram-grid-percent-width]
+  [fixture: block/gram-grid-percent-space-width]
+  [fixture: block/gram-grid-percent-directions]
+  [fixture: block/db-grid-percent-header-line]
+  [fixture: block/gram-grid-colon-columns]
+  [fixture: block/gram-grid-colon-width]
+  [fixture: block/gram-grid-colon-space-width]
+  [fixture: block/gram-grid-colon-directions]
+  [fixture: block/gram-grid-colon-header-line]
+  [fixture: block/db-grid-comma-columns]
+  [fixture: block/gram-grid-comma-width]
+  [fixture: block/gram-grid-comma-space-width]
+  [fixture: block/db-arrow-no-space]
+  [fixture: block/db-grid-comma-header-line]
+  [fixture: block/gram-grid-dash-columns]
+  [fixture: block/gram-grid-dash-width]
+  [fixture: block/gram-grid-dash-space-width]
+  [fixture: block/gram-grid-dash-directions]
+  [fixture: block/gram-grid-dash-header-line]
+  [fixture: block/db-grid-pipe-columns]
+  [fixture: block/gram-grid-pipe-width]
+  [fixture: block/gram-grid-pipe-space-width]
+  [fixture: block/gram-grid-pipe-directions]
+  [fixture: block/db-grid-pipe-header-line]
+  [fixture: block/gram-grid-quote-columns]
+  [fixture: block/gram-grid-quote-width]
+  [fixture: block/gram-grid-quote-space-width]
+  [fixture: block/gram-grid-quote-directions]
+  [fixture: block/gram-grid-quote-header-line]
+  [fixture: block/db-grid-single-quote-columns]
+  [fixture: block/gram-grid-single-quote-width]
+  [fixture: block/gram-grid-single-quote-space-width]
+  [fixture: block/gram-grid-single-quote-directions]
+  [fixture: block/db-grid-single-quote-header-line]
+  [fixture: block/db-grid-backtick-columns]
+  [fixture: block/gram-grid-backtick-width]
+  [fixture: block/gram-grid-backtick-space-width]
+  [fixture: block/gram-grid-backtick-directions]
+  [fixture: block/db-grid-backtick-header-line]
+  [fixture: block/db-grid-backslash-columns]
+  [fixture: block/gram-grid-backslash-width]
+  [fixture: block/gram-grid-backslash-space-width]
+  [fixture: block/gram-grid-backslash-directions]
+  [fixture: block/db-grid-backslash-header-line]
+  [fixture: block/gram-grid-open-square-columns]
+  [fixture: block/gram-grid-open-square-width]
+  [fixture: block/gram-grid-open-square-space-width]
+  [fixture: block/gram-grid-open-square-directions]
+  [fixture: block/gram-grid-open-square-header-line]
+  [fixture: block/db-grid-close-square-columns]
+  [fixture: block/gram-grid-close-square-width]
+  [fixture: block/gram-grid-close-square-space-width]
+  [fixture: block/gram-grid-close-square-directions]
+  [fixture: block/db-grid-close-square-header-line]
+  [fixture: block/gram-grid-open-round-columns]
+  [fixture: block/gram-grid-open-round-width]
+  [fixture: block/gram-grid-open-round-space-width]
+  [fixture: block/gram-grid-open-round-directions]
+  [fixture: block/gram-grid-open-round-header-line]
+  [fixture: block/gram-grid-close-round-columns]
+  [fixture: block/gram-grid-close-round-width]
+  [fixture: block/gram-grid-close-round-space-width]
+  [fixture: block/gram-grid-close-round-directions]
+  [fixture: block/gram-grid-close-round-header-line]
+  [fixture: block/gram-grid-open-brace-columns]
+  [fixture: block/gram-grid-open-brace-width]
+  [fixture: block/gram-grid-open-brace-space-width]
+  [fixture: block/gram-grid-open-brace-directions]
+  [fixture: block/gram-grid-open-brace-header-line]
+  [fixture: block/gram-grid-close-brace-columns]
+  [fixture: block/gram-grid-close-brace-width]
+  [fixture: block/gram-grid-close-brace-space-width]
+  [fixture: block/gram-grid-close-brace-directions]
+  [fixture: block/gram-grid-close-brace-header-line]
+  [fixture: block/gram-grid-less-than-columns]
+  [fixture: block/gram-grid-less-than-width]
+  [fixture: block/gram-grid-less-than-space-width]
+  [fixture: block/gram-grid-less-than-directions]
+  [fixture: block/gram-grid-less-than-header-line]
+  [fixture: block/gram-grid-greater-than-columns]
+  [fixture: block/gram-grid-greater-than-width]
+  [fixture: block/gram-grid-greater-than-space-width]
+  [fixture: block/gram-grid-greater-than-directions]
+  [fixture: block/gram-grid-greater-than-header-line]
+  [fixture: block/gram-grid-equals-columns]
+  [fixture: block/gram-grid-equals-width]
+  [fixture: block/gram-grid-equals-space-width]
+  [fixture: block/gram-grid-equals-directions]
+  [fixture: block/gram-grid-equals-header-line]
+  [fixture: block/gram-grid-punct-columns]
+  [fixture: block/gram-grid-punct-width]
+  [fixture: block/gram-grid-punct-space-width]
+  [fixture: block/gram-grid-punct-directions]
+  [fixture: block/gram-grid-punct-header-line]
+  [fixture: block/db-grid-arrow-columns]
+  [fixture: block/gram-grid-arrow-width]
+  [fixture: block/gram-grid-arrow-space-width]
+  [fixture: block/gram-grid-arrow-directions]
+  [fixture: block/gram-grid-arrow-header-line]
+  [fixture: block/db-grid-arrow-spaced-columns]
+  [fixture: block/gram-grid-arrow-spaced-width]
+  [fixture: block/gram-grid-arrow-spaced-space-width]
+  [fixture: block/gram-grid-arrow-spaced-directions]
+  [fixture: block/gram-grid-arrow-spaced-header-line]
+  [fixture: block/db-grid-comment-columns]
+  [fixture: block/gram-grid-comment-width]
+  [fixture: block/gram-grid-comment-space-width]
+  [fixture: block/gram-grid-comment-directions]
+  [fixture: block/db-grid-comment-header-line]
+  [fixture: block/db-grid-comment-line-columns]
+  [fixture: block/gram-grid-comment-line-width]
+  [fixture: block/gram-grid-comment-line-space-width]
+  [fixture: block/db-grid-comment-line-directions]
+  [fixture: block/db-comment-line-first]
+  [fixture: block/db-grid-directive-columns]
+  [fixture: block/gram-grid-directive-width]
+  [fixture: block/gram-grid-directive-space-width]
+  [fixture: block/db-grid-directive-directions]
+  [fixture: block/gram-grid-directive-header-line]
+  [fixture: block/db-grid-directive-line-columns]
+  [fixture: block/gram-grid-directive-line-width]
+  [fixture: block/gram-grid-directive-line-space-width]
+  [fixture: block/db-grid-directive-line-directions]
+  [fixture: block/db-grid-directive-line-header-line]
+  [fixture: block/db-grid-entity-columns]
+  [fixture: block/gram-grid-entity-width]
+  [fixture: block/gram-grid-entity-space-width]
+  [fixture: block/gram-grid-entity-directions]
+  [fixture: block/db-grid-entity-header-line]
+  [fixture: block/db-grid-entity-named-columns]
+  [fixture: block/gram-grid-entity-named-width]
+  [fixture: block/gram-grid-entity-named-space-width]
+  [fixture: block/gram-grid-entity-named-directions]
+  [fixture: block/db-grid-entity-named-header-line]
+  [fixture: block/gram-grid-html-columns]
+  [fixture: block/gram-grid-html-width]
+  [fixture: block/gram-grid-html-space-width]
+  [fixture: block/gram-grid-html-directions]
+  [fixture: block/gram-grid-html-header-line]
+  [fixture: block/gram-grid-html-br-columns]
+  [fixture: block/gram-grid-html-br-width]
+  [fixture: block/gram-grid-html-br-space-width]
+  [fixture: block/gram-grid-html-br-directions]
+  [fixture: block/gram-grid-html-br-header-line]
+  [fixture: block/gram-grid-html-attribute-columns]
+  [fixture: block/gram-grid-html-attribute-width]
+  [fixture: block/gram-grid-html-attribute-space-width]
+  [fixture: block/gram-grid-html-attribute-directions]
+  [fixture: block/gram-grid-html-attribute-header-line]
+  [fixture: block/db-grid-ampersand-entity-columns]
+  [fixture: block/gram-grid-ampersand-entity-width]
+  [fixture: block/gram-grid-ampersand-entity-space-width]
+  [fixture: block/gram-grid-ampersand-entity-directions]
+  [fixture: block/db-grid-ampersand-entity-header-line]
+  [fixture: block/gram-grid-keyword-end-columns]
+  [fixture: block/gram-grid-keyword-end-width]
+  [fixture: block/gram-grid-keyword-end-space-width]
+  [fixture: block/gram-grid-keyword-end-directions]
+  [fixture: block/gram-grid-keyword-end-header-line]
+  [fixture: block/gram-grid-keyword-block-columns]
+  [fixture: block/gram-grid-keyword-block-width]
+  [fixture: block/gram-grid-keyword-block-space-width]
+  [fixture: block/gram-grid-keyword-block-directions]
+  [fixture: block/gram-grid-keyword-block-header-line]
+  [fixture: block/db-grid-keyword-columns-columns]
+  [fixture: block/gram-grid-keyword-columns-width]
+  [fixture: block/gram-grid-keyword-columns-space-width]
+  [fixture: block/gram-grid-keyword-columns-directions]
+  [fixture: block/db-grid-keyword-columns-header-line]
+  [fixture: block/db-grid-keyword-space-columns]
+  [fixture: block/gram-grid-keyword-space-width]
+  [fixture: block/gram-grid-keyword-space-space-width]
+  [fixture: block/gram-grid-keyword-space-directions]
+  [fixture: block/db-grid-keyword-space-header-line]
+  [fixture: block/db-grid-keyword-class-columns]
+  [fixture: block/gram-grid-keyword-class-width]
+  [fixture: block/gram-grid-keyword-class-space-width]
+  [fixture: block/gram-grid-keyword-class-directions]
+  [fixture: block/db-grid-keyword-class-header-line]
+  [fixture: block/gram-grid-keyword-style-columns]
+  [fixture: block/gram-grid-keyword-style-width]
+  [fixture: block/gram-grid-keyword-style-space-width]
+  [fixture: block/gram-grid-keyword-style-directions]
+  [fixture: block/gram-grid-keyword-style-header-line]
+  [fixture: block/db-grid-keyword-classdef-columns]
+  [fixture: block/gram-grid-keyword-classdef-width]
+  [fixture: block/gram-grid-keyword-classdef-space-width]
+  [fixture: block/gram-grid-keyword-classdef-directions]
+  [fixture: block/db-grid-keyword-classdef-header-line]
+  [fixture: block/gram-grid-keyword-header-columns]
+  [fixture: block/gram-grid-keyword-header-width]
+  [fixture: block/gram-grid-keyword-header-space-width]
+  [fixture: block/gram-grid-keyword-header-directions]
+  [fixture: block/gram-grid-keyword-header-header-line]
+  [fixture: block/db-grid-proto-columns]
+  [fixture: block/gram-grid-proto-width]
+  [fixture: block/gram-grid-proto-space-width]
+  [fixture: block/gram-grid-proto-directions]
+  [fixture: block/gram-grid-proto-header-line]
+  [fixture: block/db-grid-constructor-columns]
+  [fixture: block/gram-grid-constructor-width]
+  [fixture: block/gram-grid-constructor-space-width]
+  [fixture: block/gram-grid-constructor-directions]
+  [fixture: block/gram-grid-constructor-header-line]
+  [fixture: block/db-grid-root-columns]
+  [fixture: block/gram-grid-root-width]
+  [fixture: block/gram-grid-root-space-width]
+  [fixture: block/gram-grid-root-directions]
+  [fixture: block/gram-grid-root-header-line]
+  [fixture: block/db-grid-nonascii-columns]
+  [fixture: block/gram-grid-nonascii-width]
+  [fixture: block/gram-grid-nonascii-space-width]
+  [fixture: block/gram-grid-nonascii-directions]
+  [fixture: block/db-grid-nonascii-header-line]
+  [fixture: block/db-grid-emoji-columns]
+  [fixture: block/gram-grid-emoji-width]
+  [fixture: block/gram-grid-emoji-space-width]
+  [fixture: block/gram-grid-emoji-directions]
+  [fixture: block/db-grid-emoji-header-line]
+  [fixture: block/db-grid-digits-columns]
+  [fixture: block/db-grid-digits-width]
+  [fixture: block/db-grid-digits-space-width]
+  [fixture: block/gram-grid-digits-directions]
+  [fixture: block/gram-grid-digits-header-line]
+  [fixture: block/db-grid-empty-columns]
+  [fixture: block/gram-width-colon-only]
+  [fixture: block/gram-space-no-number]
+  [fixture: block/db-grid-empty-directions]
+  [fixture: block/gram-grid-empty-header-line]
+  [fixture: block/gram-grid-style-rule-columns]
+  [fixture: block/gram-grid-style-rule-width]
+  [fixture: block/gram-grid-style-rule-space-width]
+  [fixture: block/gram-grid-style-rule-directions]
+  [fixture: block/gram-grid-style-rule-header-line]
+  [fixture: block/gram-grid-classdef-rule-columns]
+  [fixture: block/gram-grid-classdef-rule-width]
+  [fixture: block/gram-grid-classdef-rule-space-width]
+  [fixture: block/gram-grid-classdef-rule-directions]
+  [fixture: block/gram-grid-classdef-rule-header-line]
+- 文の中の空白とコメント。
+  字句解析器が空白で分ける文の部品の間（`columns` と数、
+  `classDef` と名前やスタイル、`class` と id、`style` と id、`block:` と id、
+  node と幅や shape や方向、辺と終わり）には、
+  改行、空行、コメント行、ディレクティブ行を置けます。
+  Db はそれらがないものとして読みます。
+  例外は、`class` と `style` の id とクラス名・スタイルの間です。
+  `class A` の後ろの改行は文を終え、名前は空になります。
+  `style A` の後ろでは、スタイルが同じ行になければならず、拒否されます。
+  [fixture: block/db-between-columns-comment-line]
+  [fixture: block/db-between-columns-directive-line]
+  [fixture: block/db-between-columns-empty-line]
+  [fixture: block/db-between-columns-spaces-line]
+  [fixture: block/db-between-class-def-name-comment-line]
+  [fixture: block/db-between-class-def-name-directive-line]
+  [fixture: block/db-between-class-def-name-empty-line]
+  [fixture: block/db-between-class-def-name-spaces-line]
+  [fixture: block/db-between-class-def-style-comment-line]
+  [fixture: block/db-between-class-def-style-directive-line]
+  [fixture: block/db-between-class-def-style-empty-line]
+  [fixture: block/db-between-class-def-style-spaces-line]
+  [fixture: block/db-between-class-ids-comment-line]
+  [fixture: block/db-between-class-ids-directive-line]
+  [fixture: block/db-between-class-ids-empty-line]
+  [fixture: block/db-between-class-ids-spaces-line]
+  [fixture: block/db-between-class-name-comment-line]
+  [fixture: block/db-between-class-name-directive-line]
+  [fixture: block/db-between-class-name-empty-line]
+  [fixture: block/db-between-class-name-spaces-line]
+  [fixture: block/db-between-style-ids-comment-line]
+  [fixture: block/db-between-style-ids-directive-line]
+  [fixture: block/db-between-style-ids-empty-line]
+  [fixture: block/db-between-style-ids-spaces-line]
+  [fixture: block/gram-between-style-text-comment-line]
+  [fixture: block/gram-between-style-text-directive-line]
+  [fixture: block/gram-between-style-text-empty-line]
+  [fixture: block/gram-between-style-text-spaces-line]
+  [fixture: block/db-between-composite-id-comment-line]
+  [fixture: block/db-between-composite-id-directive-line]
+  [fixture: block/db-between-composite-id-empty-line]
+  [fixture: block/db-between-composite-id-spaces-line]
+  [fixture: block/db-comment-between-id-and-width]
+  [fixture: block/db-between-width-directive-line]
+  [fixture: block/db-between-width-empty-line]
+  [fixture: block/db-between-width-spaces-line]
+  [fixture: block/db-between-edge-comment-line]
+  [fixture: block/db-between-edge-directive-line]
+  [fixture: block/db-between-edge-empty-line]
+  [fixture: block/db-between-edge-spaces-line]
+  [fixture: block/db-between-edge-end-comment-line]
+  [fixture: block/db-between-edge-end-directive-line]
+  [fixture: block/db-between-edge-end-empty-line]
+  [fixture: block/db-between-edge-end-spaces-line]
+  [fixture: block/db-between-shape-comment-line]
+  [fixture: block/db-between-shape-directive-line]
+  [fixture: block/db-between-shape-empty-line]
+  [fixture: block/db-between-shape-spaces-line]
+  [fixture: block/db-between-directions-comment-line]
+  [fixture: block/db-between-directions-directive-line]
+  [fixture: block/db-between-directions-empty-line]
+  [fixture: block/db-between-directions-spaces-line]
+- 文の行末に続くもの。
+  `;`、空白と `;`、2 つの `;`、`%%` のコメント、ディレクティブ、
+  閉じていないディレクティブ、末尾の空白、タブ、U+00A0、`# c` です。
+  node、shape、幅、block arrow、`columns`、`space`、`end`、辺の後ろでは、
+  空白の後ろの `;`、`%%`、`#` とその後ろのテキストは node です。
+  id（node や辺の終わり）に付いた `;` は id の一部です。
+  ディレクティブと末尾の空白は読まれません。
+  `class`、`style`、`classDef` の後ろでは、クラス名やスタイルの一部です。
+  ただし、行の規則と Db が取り除くものは別です。
+
+  [fixture: block/db-tail-node-semicolon]
+  [fixture: block/db-tail-node-space-semicolon]
+  [fixture: block/db-semicolon-double]
+  [fixture: block/db-tail-node-comment]
+  [fixture: block/db-tail-node-comment-glued]
+  [fixture: block/db-tail-node-directive]
+  [fixture: block/db-directive-glued-to-id]
+  [fixture: block/db-tail-node-directive-unclosed]
+  [fixture: block/db-name-trailing-spaces]
+  [fixture: block/db-tail-node-trailing-tab]
+  [fixture: block/db-tail-node-trailing-nbsp]
+  [fixture: block/db-tail-node-hash]
+  [fixture: block/db-semicolon-after-shape]
+  [fixture: block/db-tail-node-shape-space-semicolon]
+  [fixture: block/db-tail-node-shape-two-semicolons]
+  [fixture: block/db-tail-node-shape-comment]
+  [fixture: block/db-tail-node-shape-comment-glued]
+  [fixture: block/db-tail-node-shape-directive]
+  [fixture: block/db-tail-node-shape-directive-glued]
+  [fixture: block/db-tail-node-shape-directive-unclosed]
+  [fixture: block/db-tail-node-shape-trailing-spaces]
+  [fixture: block/db-tail-node-shape-trailing-tab]
+  [fixture: block/db-tail-node-shape-trailing-nbsp]
+  [fixture: block/db-tail-node-shape-hash]
+  [fixture: block/db-semicolon-after-width]
+  [fixture: block/db-tail-node-width-space-semicolon]
+  [fixture: block/db-tail-node-width-two-semicolons]
+  [fixture: block/db-tail-node-width-comment]
+  [fixture: block/db-tail-node-width-comment-glued]
+  [fixture: block/db-tail-node-width-directive]
+  [fixture: block/db-tail-node-width-directive-glued]
+  [fixture: block/db-tail-node-width-directive-unclosed]
+  [fixture: block/db-tail-node-width-trailing-spaces]
+  [fixture: block/db-tail-node-width-trailing-tab]
+  [fixture: block/db-tail-node-width-trailing-nbsp]
+  [fixture: block/db-tail-node-width-hash]
+  [fixture: block/db-semicolon-after-edge]
+  [fixture: block/db-tail-edge-space-semicolon]
+  [fixture: block/db-tail-edge-two-semicolons]
+  [fixture: block/db-comment-after-edge]
+  [fixture: block/db-tail-edge-comment-glued]
+  [fixture: block/db-tail-edge-directive]
+  [fixture: block/db-tail-edge-directive-glued]
+  [fixture: block/db-tail-edge-directive-unclosed]
+  [fixture: block/db-tail-edge-trailing-spaces]
+  [fixture: block/db-tail-edge-trailing-tab]
+  [fixture: block/db-tail-edge-trailing-nbsp]
+  [fixture: block/db-tail-edge-hash]
+  [fixture: block/db-tail-edge-label-semicolon]
+  [fixture: block/db-tail-edge-label-space-semicolon]
+  [fixture: block/db-tail-edge-label-two-semicolons]
+  [fixture: block/db-tail-edge-label-comment]
+  [fixture: block/db-tail-edge-label-comment-glued]
+  [fixture: block/db-tail-edge-label-directive]
+  [fixture: block/db-tail-edge-label-directive-glued]
+  [fixture: block/db-tail-edge-label-directive-unclosed]
+  [fixture: block/db-tail-edge-label-trailing-spaces]
+  [fixture: block/db-tail-edge-label-trailing-tab]
+  [fixture: block/db-tail-edge-label-trailing-nbsp]
+  [fixture: block/db-tail-edge-label-hash]
+  [fixture: block/db-tail-block-arrow-semicolon]
+  [fixture: block/db-tail-block-arrow-space-semicolon]
+  [fixture: block/db-tail-block-arrow-two-semicolons]
+  [fixture: block/db-tail-block-arrow-comment]
+  [fixture: block/db-tail-block-arrow-comment-glued]
+  [fixture: block/db-tail-block-arrow-directive]
+  [fixture: block/db-tail-block-arrow-directive-glued]
+  [fixture: block/db-tail-block-arrow-directive-unclosed]
+  [fixture: block/db-tail-block-arrow-trailing-spaces]
+  [fixture: block/db-tail-block-arrow-trailing-tab]
+  [fixture: block/db-tail-block-arrow-trailing-nbsp]
+  [fixture: block/db-tail-block-arrow-hash]
+  [fixture: block/db-tail-columns-semicolon]
+  [fixture: block/db-tail-columns-space-semicolon]
+  [fixture: block/db-tail-columns-two-semicolons]
+  [fixture: block/db-tail-columns-comment]
+  [fixture: block/db-tail-columns-comment-glued]
+  [fixture: block/db-tail-columns-directive]
+  [fixture: block/db-tail-columns-directive-glued]
+  [fixture: block/db-tail-columns-directive-unclosed]
+  [fixture: block/db-tail-columns-trailing-spaces]
+  [fixture: block/db-tail-columns-trailing-tab]
+  [fixture: block/db-tail-columns-trailing-nbsp]
+  [fixture: block/db-tail-columns-hash]
+  [fixture: block/db-space-semicolon]
+  [fixture: block/db-tail-space-space-semicolon]
+  [fixture: block/db-tail-space-two-semicolons]
+  [fixture: block/db-tail-space-comment]
+  [fixture: block/db-tail-space-comment-glued]
+  [fixture: block/db-tail-space-directive]
+  [fixture: block/db-tail-space-directive-glued]
+  [fixture: block/db-tail-space-directive-unclosed]
+  [fixture: block/db-tail-space-trailing-spaces]
+  [fixture: block/db-tail-space-trailing-tab]
+  [fixture: block/db-tail-space-trailing-nbsp]
+  [fixture: block/db-tail-space-hash]
+  [fixture: block/db-tail-space-width-semicolon]
+  [fixture: block/db-tail-space-width-space-semicolon]
+  [fixture: block/db-tail-space-width-two-semicolons]
+  [fixture: block/db-tail-space-width-comment]
+  [fixture: block/db-tail-space-width-comment-glued]
+  [fixture: block/db-tail-space-width-directive]
+  [fixture: block/db-tail-space-width-directive-glued]
+  [fixture: block/db-tail-space-width-directive-unclosed]
+  [fixture: block/db-tail-space-width-trailing-spaces]
+  [fixture: block/db-tail-space-width-trailing-tab]
+  [fixture: block/db-tail-space-width-trailing-nbsp]
+  [fixture: block/db-tail-space-width-hash]
+  [fixture: block/db-class-apply-semicolon]
+  [fixture: block/db-tail-class-space-semicolon]
+  [fixture: block/db-tail-class-two-semicolons]
+  [fixture: block/db-tail-class-comment]
+  [fixture: block/db-tail-class-comment-glued]
+  [fixture: block/db-tail-class-directive]
+  [fixture: block/db-class-apply-directive]
+  [fixture: block/db-tail-class-directive-unclosed]
+  [fixture: block/db-class-apply-trailing-spaces]
+  [fixture: block/db-tail-class-trailing-tab]
+  [fixture: block/db-class-apply-nbsp]
+  [fixture: block/db-tail-class-hash]
+  [fixture: block/db-tail-style-semicolon]
+  [fixture: block/db-tail-style-space-semicolon]
+  [fixture: block/db-tail-style-two-semicolons]
+  [fixture: block/db-tail-style-comment]
+  [fixture: block/db-tail-style-comment-glued]
+  [fixture: block/db-tail-style-directive]
+  [fixture: block/db-tail-style-directive-glued]
+  [fixture: block/db-tail-style-directive-unclosed]
+  [fixture: block/db-tail-style-trailing-spaces]
+  [fixture: block/db-tail-style-trailing-tab]
+  [fixture: block/db-tail-style-trailing-nbsp]
+  [fixture: block/db-tail-style-hash]
+  [fixture: block/db-tail-class-def-semicolon]
+  [fixture: block/db-tail-class-def-space-semicolon]
+  [fixture: block/db-tail-class-def-two-semicolons]
+  [fixture: block/db-tail-class-def-comment]
+  [fixture: block/db-tail-class-def-comment-glued]
+  [fixture: block/db-directive-class-def-line]
+  [fixture: block/db-tail-class-def-directive-glued]
+  [fixture: block/db-tail-class-def-directive-unclosed]
+  [fixture: block/db-tail-class-def-trailing-spaces]
+  [fixture: block/db-tail-class-def-trailing-tab]
+  [fixture: block/db-tail-class-def-trailing-nbsp]
+  [fixture: block/db-tail-class-def-hash]
+  [fixture: block/db-composite-end-semicolon]
+  [fixture: block/db-tail-composite-end-space-semicolon]
+  [fixture: block/db-tail-composite-end-two-semicolons]
+  [fixture: block/db-composite-end-comment]
+  [fixture: block/db-tail-composite-end-comment-glued]
+  [fixture: block/db-tail-composite-end-directive]
+  [fixture: block/db-tail-composite-end-directive-glued]
+  [fixture: block/db-tail-composite-end-directive-unclosed]
+  [fixture: block/db-tail-composite-end-trailing-spaces]
+  [fixture: block/db-composite-end-tab]
+  [fixture: block/db-composite-end-nbsp]
+  [fixture: block/db-tail-composite-end-hash]
+  [fixture: block/db-tail-composite-end-keyword-semicolon]
+  [fixture: block/db-tail-composite-end-keyword-space-semicolon]
+  [fixture: block/db-tail-composite-end-keyword-two-semicolons]
+  [fixture: block/db-tail-composite-end-keyword-comment]
+  [fixture: block/db-tail-composite-end-keyword-comment-glued]
+  [fixture: block/db-tail-composite-end-keyword-directive]
+  [fixture: block/db-tail-composite-end-keyword-directive-glued]
+  [fixture: block/db-tail-composite-end-keyword-directive-unclosed]
+  [fixture: block/db-tail-composite-end-keyword-trailing-spaces]
+  [fixture: block/db-tail-composite-end-keyword-trailing-tab]
+  [fixture: block/db-tail-composite-end-keyword-trailing-nbsp]
+  [fixture: block/db-tail-composite-end-keyword-hash]
+
+- 要約は、mermaid.js のどの `securityLevel`（`strict`、`loose`、`antiscript`、
+  `sandbox`）でも同じです。
+  サイトの設定（`block` の設定 `padding` と `useMaxWidth`、テーマ、look、
+  `htmlLabels`、`flowchart.htmlLabels`、`maxTextSize`、
+  `deterministicIds`）でも同じで、これらは描画に働き、Db には働きません。
+  その値のどれでもない `securityLevel` では、Db が無害化するテキスト、
+  つまり node、block arrow、composite、辺の label に、置き換えた文字が入ります。
+  `<` は `&lt;`、`>` は `&gt;`、`<br>` は `<br/>` で、id、スタイル、クラス、
+  方向は書かれたとおりです。
+  [fixture: block/config-block-padding]
+  [fixture: block/config-block-use-max-width]
+  [fixture: block/config-deterministic-ids]
+  [fixture: block/config-flowchart-html-labels-false]
+  [fixture: block/config-html-labels-false]
+  [fixture: block/config-look-neo]
+  [fixture: block/config-max-text-size-small]
+  [fixture: block/config-security-level-antiscript-all]
+  [fixture: block/config-security-level-loose-all]
+  [fixture: block/config-security-level-other-all]
+  [fixture: block/config-security-level-other-ampersand]
+  [fixture: block/config-security-level-other-block-arrow-label]
+  [fixture: block/config-security-level-other-br]
+  [fixture: block/config-security-level-other-class-style]
+  [fixture: block/config-security-level-other-composite-label]
+  [fixture: block/config-security-level-other-directions]
+  [fixture: block/config-security-level-other-edge-label]
+  [fixture: block/config-security-level-other-empty-label-space]
+  [fixture: block/config-security-level-other-label]
+  [fixture: block/config-security-level-other-style]
+  [fixture: block/config-security-level-sandbox-all]
+  [fixture: block/config-security-level-strict-all]
+  [fixture: block/config-theme-dark]
+- `block:` の後ろの id では、空白以外の文字は node の id と同じに読みます。
+  `;`、`#`、`%`、`,`、`|`、`'`、`"`、バッククォート、バックスラッシュ、`]`、
+  `%%`、文字参照、`&amp;`、
+  `__proto__`、`constructor`、`root`、ASCII の外の文字、絵文字、
+  数字は id の一部です。
+  中のディレクティブは取り除かれ、コメント行は id を終えます。
+  中の矢印は文を辺の文にし、composite は id を持ちません。
+  id の後ろの `columns 2`、`space`、`class A c`、
+  `classDef c fill:red` は composite の文です。
+  `style A fill:red` は拒否され、`[`、`(`、`{`、`)`、`}`、`<`、`>`、`=`、`:`、
+  HTML、続く句読点、行の規則、`end`、`block`、`block-beta` も拒否されます。
+  [fixture: block/db-grid-semicolon-composite-id]
+  [fixture: block/db-grid-hash-composite-id]
+  [fixture: block/db-grid-percent-composite-id]
+  [fixture: block/gram-grid-colon-composite-id]
+  [fixture: block/db-grid-comma-composite-id]
+  [fixture: block/gram-composite-id-with-dash]
+  [fixture: block/db-grid-pipe-composite-id]
+  [fixture: block/db-grid-quote-composite-id]
+  [fixture: block/db-grid-single-quote-composite-id]
+  [fixture: block/db-grid-backtick-composite-id]
+  [fixture: block/db-grid-backslash-composite-id]
+  [fixture: block/gram-grid-open-square-composite-id]
+  [fixture: block/db-grid-close-square-composite-id]
+  [fixture: block/gram-grid-open-round-composite-id]
+  [fixture: block/gram-grid-close-round-composite-id]
+  [fixture: block/gram-grid-open-brace-composite-id]
+  [fixture: block/gram-grid-close-brace-composite-id]
+  [fixture: block/gram-grid-less-than-composite-id]
+  [fixture: block/gram-grid-greater-than-composite-id]
+  [fixture: block/gram-grid-equals-composite-id]
+  [fixture: block/gram-grid-punct-composite-id]
+  [fixture: block/db-grid-arrow-composite-id]
+  [fixture: block/db-grid-arrow-spaced-composite-id]
+  [fixture: block/db-grid-comment-composite-id]
+  [fixture: block/db-grid-comment-line-composite-id]
+  [fixture: block/div-grid-directive-composite-id]
+  [fixture: block/db-grid-directive-line-composite-id]
+  [fixture: block/db-grid-entity-composite-id]
+  [fixture: block/db-grid-entity-named-composite-id]
+  [fixture: block/gram-grid-html-composite-id]
+  [fixture: block/gram-grid-html-br-composite-id]
+  [fixture: block/gram-grid-html-attribute-composite-id]
+  [fixture: block/db-grid-ampersand-entity-composite-id]
+  [fixture: block/gram-grid-keyword-end-composite-id]
+  [fixture: block/gram-grid-keyword-block-composite-id]
+  [fixture: block/db-grid-keyword-columns-composite-id]
+  [fixture: block/db-grid-keyword-space-composite-id]
+  [fixture: block/db-grid-keyword-class-composite-id]
+  [fixture: block/gram-grid-keyword-style-composite-id]
+  [fixture: block/db-grid-keyword-classdef-composite-id]
+  [fixture: block/gram-grid-keyword-header-composite-id]
+  [fixture: block/db-grid-proto-composite-id]
+  [fixture: block/db-grid-constructor-composite-id]
+  [fixture: block/db-grid-root-composite-id]
+  [fixture: block/db-grid-nonascii-composite-id]
+  [fixture: block/db-grid-emoji-composite-id]
+  [fixture: block/db-grid-digits-composite-id]
+  [fixture: block/db-grid-empty-composite-id]
+  [fixture: block/gram-grid-style-rule-composite-id]
+  [fixture: block/gram-grid-classdef-rule-composite-id]
+- node のある行で開いて `end` で閉じない composite は、node の後ろに `;`、
+  コメント、ディレクティブ、`#`、末尾の空白があっても、
+  なくても同じように拒否されます。
+  [fixture: block/gram-tail-composite-line-comment]
+  [fixture: block/gram-tail-composite-line-comment-glued]
+  [fixture: block/gram-tail-composite-line-directive]
+  [fixture: block/gram-tail-composite-line-directive-glued]
+  [fixture: block/gram-tail-composite-line-directive-unclosed]
+  [fixture: block/gram-tail-composite-line-hash]
+  [fixture: block/gram-tail-composite-line-semicolon]
+  [fixture: block/gram-tail-composite-line-space-semicolon]
+  [fixture: block/gram-tail-composite-line-trailing-nbsp]
+  [fixture: block/gram-tail-composite-line-trailing-spaces]
+  [fixture: block/gram-tail-composite-line-trailing-tab]
+  [fixture: block/gram-tail-composite-line-two-semicolons]
+- mermaid.js のテスト、ドキュメント、デモの入力は、どれも受理されます。
+  書き手が使う形を示しています。
+  node、幅、shape、block arrow、`space`、`columns` のある composite、
+  label のある辺、クラスとスタイルです。
+  [fixture: block/demo-block-0f7b1b81]
+  [fixture: block/demo-block-2472aba6]
+  [fixture: block/demo-block-44d70be5]
+  [fixture: block/demo-block-7d24edf7]
+  [fixture: block/demo-block-8b6e7c41]
+  [fixture: block/demo-block-a8323c64]
+  [fixture: block/demo-block-b3231b02]
+  [fixture: block/demo-block-b4d9a28a]
+  [fixture: block/demo-block-ca540acf]
+  [fixture: block/demo-block-f71819c7]
+  [fixture: block/demo-block-fbbaee87]
+  [fixture: block/docs-syntax-block-0c75f481]
+  [fixture: block/docs-syntax-block-0eeed10a]
+  [fixture: block/docs-syntax-block-1493c734]
+  [fixture: block/docs-syntax-block-1d2ef9d1]
+  [fixture: block/docs-syntax-block-24e2536f]
+  [fixture: block/docs-syntax-block-2a2aedc0]
+  [fixture: block/docs-syntax-block-3eeec690]
+  [fixture: block/docs-syntax-block-50dc2ed1]
+  [fixture: block/docs-syntax-block-668adabd]
+  [fixture: block/docs-syntax-block-66fde579]
+  [fixture: block/docs-syntax-block-6a5c5e67]
+  [fixture: block/docs-syntax-block-6dd28f68]
+  [fixture: block/docs-syntax-block-6fbaef0c]
+  [fixture: block/docs-syntax-block-7134441c]
+  [fixture: block/docs-syntax-block-715f1762]
+  [fixture: block/docs-syntax-block-78e30a8a]
+  [fixture: block/docs-syntax-block-7c6756e8]
+  [fixture: block/docs-syntax-block-7ddc4030]
+  [fixture: block/docs-syntax-block-8c1f8d53]
+  [fixture: block/docs-syntax-block-a5a467c8]
+  [fixture: block/docs-syntax-block-ab04e715]
+  [fixture: block/docs-syntax-block-b6eebb8c]
+  [fixture: block/docs-syntax-block-bd54fe8a]
+  [fixture: block/docs-syntax-block-c1690d0b]
+  [fixture: block/docs-syntax-block-c574652d]
+  [fixture: block/docs-syntax-block-e29ee1ca]
+  [fixture: block/docs-syntax-block-f3c3e654]
+  [fixture: block/docs-syntax-block-f8418640]
+  [fixture: block/docs-syntax-block-fd481f6b]
+  [fixture: block/docs-syntax-block-fddacaac]
+  [fixture: block/spec-block-0365699a]
+  [fixture: block/spec-block-12f308cf]
+  [fixture: block/spec-block-17e824ed]
+  [fixture: block/spec-block-1b677ef0]
+  [fixture: block/spec-block-256830d9]
+  [fixture: block/spec-block-269adfec]
+  [fixture: block/spec-block-324a07d6]
+  [fixture: block/spec-block-39bb98c0]
+  [fixture: block/spec-block-48aaf41f]
+  [fixture: block/spec-block-52e0ec56]
+  [fixture: block/spec-block-6382a25a]
+  [fixture: block/spec-block-855ca1c9]
+  [fixture: block/spec-block-870f6dc9]
+  [fixture: block/spec-block-946762fc]
+  [fixture: block/spec-block-9a645429]
+  [fixture: block/spec-block-a3184350]
+  [fixture: block/spec-block-ae4c1db0]
+  [fixture: block/spec-block-be5706bf]
+  [fixture: block/spec-block-cc1ee20b]
+  [fixture: block/spec-block-cd0ecd2d]
+  [fixture: block/spec-block-cf4d00b8]
+  [fixture: block/spec-block-color-index-29ce8f4b]
+  [fixture: block/spec-block-color-index-7228003b]
+  [fixture: block/spec-block-color-index-9a40ae65]
+  [fixture: block/spec-block-color-index-dd469c8d]
+  [fixture: block/spec-block-d0ba877e]
+  [fixture: block/spec-block-d1395cc6]
+  [fixture: block/spec-block-ee611de8]
+  [fixture: block/spec-block-f4c30090]
+  [fixture: block/spec-block-f6ceb4d8]
+  [fixture: block/spec-block-fd3dd910]
+  [fixture: block/spec-block-ff426370]
+- C4 図の検出器は、`C4Container`、`C4Component`、`C4Dynamic`、
+  `C4Deployment` をテキストのどこにあっても読み、
+  他の検出器は C4 の検出器のあとで読みます。
+  そのため、これらのどれかを含むテキストは、
+  どこにあっても block 図として検出されず、C4 図の字句解析器に拒否されます。
+  どこにあってもとは、id、label、辺の label、composite の id や label、
+  クラスの名前やスタイル、クラス名、スタイル、見出しの前です。
+  `C4Context` はテキストの先頭でだけ検出されるので、block 図では id です。
+  コメント行、ディレクティブ、フロントマターは検出器が読む前に取り除かれ、
+  その中の語は何もしません。
+  語はこの大文字小文字のとおりに読みます。
+  [fixture: block/div-c4-component-in-id]
+  [fixture: block/div-c4-container-after-node]
+  [fixture: block/gram-c4-container-before-header]
+  [fixture: block/div-c4-container-in-class-def-name]
+  [fixture: block/div-c4-container-in-class-def-style]
+  [fixture: block/div-c4-container-in-class-name]
+  [fixture: block/db-c4-container-in-comment-line]
+  [fixture: block/div-c4-container-in-composite-id]
+  [fixture: block/div-c4-container-in-composite-label]
+  [fixture: block/db-c4-container-in-directive]
+  [fixture: block/div-c4-container-in-edge-label]
+  [fixture: block/db-c4-container-in-frontmatter]
+  [fixture: block/div-c4-container-in-id]
+  [fixture: block/div-c4-container-in-label]
+  [fixture: block/div-c4-container-in-style]
+  [fixture: block/db-c4-container-lower-case]
+  [fixture: block/div-c4-container-with-context]
+  [fixture: block/db-c4-context-in-id]
+  [fixture: block/db-c4-context-lower-case]
+  [fixture: block/div-c4-deployment-in-id]
+  [fixture: block/div-c4-dynamic-in-id]
+- `default`、`linkStyle`、`interpolate` は字句解析器の語で、
+  block 図のどの文もこれを受け付けません。
+  id として、node の後ろで、`linkStyle` の文として使うと拒否されます。
+  `DEFAULT`、`defaultx`、`linkStylex`、`interpolatex` は id で、
+  3 つの語は label、クラス名、スタイルの中ではテキストです。
+  `default` は `classDef` ではクラスの名前になれます。
+  [fixture: block/gram-name-reserved-default]
+  [fixture: block/gram-name-reserved-default-after-node]
+  [fixture: block/db-name-reserved-default-in-class-def]
+  [fixture: block/db-name-reserved-default-in-label]
+  [fixture: block/db-name-reserved-default-in-style]
+  [fixture: block/db-name-reserved-default-prefix]
+  [fixture: block/db-name-reserved-default-upper]
+  [fixture: block/gram-name-reserved-interpolate]
+  [fixture: block/gram-name-reserved-interpolate-after-node]
+  [fixture: block/db-name-reserved-interpolate-prefix]
+  [fixture: block/gram-name-reserved-link-style]
+  [fixture: block/db-name-reserved-link-style-in-class]
+  [fixture: block/db-name-reserved-link-style-in-label]
+  [fixture: block/db-name-reserved-link-style-prefix]
+  [fixture: block/gram-name-reserved-link-style-statement]
+- 空の文字列 `""` と空の markdown 文字列 `"``"` は字句を作らないので、
+  文のどこに置いても読み飛ばされます。
+  文の間、id・辺・shape・幅・`end` の前後、composite の前、
+  composite の中がその例で、2 つ続いても読み飛ばされます。
+  id に付いた `""` は id の一部です。
+  これだけのテキストは拒否され、3 つ続く引用符（空の文字列と引用符）、
+  空白 1 つの markdown 文字列、
+  辺の label を始める空の label の後ろの 2 つ目の文字列も拒否されます。
+  `columns` と数の間の空の文字列は読み飛ばされますが、
+  その両側の空白が `columns` を node にし、数を別の node にします。
+  [fixture: block/div-empty-string-after-edge]
+  [fixture: block/div-empty-string-after-id]
+  [fixture: block/div-empty-string-before-block-key]
+  [fixture: block/div-empty-string-before-columns-number]
+  [fixture: block/div-empty-string-before-edge]
+  [fixture: block/div-empty-string-before-end]
+  [fixture: block/div-empty-string-before-shape]
+  [fixture: block/div-empty-string-before-width]
+  [fixture: block/div-empty-string-between]
+  [fixture: block/gram-empty-string-between-edge-parts]
+  [fixture: block/div-empty-string-first-in-line]
+  [fixture: block/db-empty-string-glued-to-id]
+  [fixture: block/div-empty-string-in-composite]
+  [fixture: block/div-empty-string-line]
+  [fixture: block/gram-empty-string-only]
+  [fixture: block/gram-empty-string-three-quotes]
+  [fixture: block/div-empty-strings-two]
+  [fixture: block/div-empty-markdown-between]
+  [fixture: block/div-empty-markdown-line]
+  [fixture: block/gram-empty-markdown-only]
+  [fixture: block/gram-empty-markdown-spaces]
+- 空の `accDescr` ブロック `accDescr {}` も字句を作りません。
+  中に空白、改行、コメント行があっても、波括弧の前に空白がなくても同じです。
+  文の間、2 つの id の間、辺の後ろ、`columns` の前、composite の中、
+  `end` の前で読み飛ばされ、2 つ続いても読み飛ばされます。
+  ただし、それだけを持つ composite は文を持たず、
+  それだけのテキストは拒否されます。
+  テキストのあるブロック、`ACCDESCR {}`、`accDescr: {}`、
+  閉じていないブロックは拒否されます。
+  文字列の中の `accDescr {}` はテキストです。
+  見出しの行では読み飛ばされ、テキストのあるブロックは拒否されます。
+  `columns` と数の間では読み飛ばされ、
+  その周りの空白が `columns` を node にします。
+  [fixture: block/gram-empty-block-as-only-statement-in-composite]
+  [fixture: block/db-empty-block-before-columns]
+  [fixture: block/db-empty-block-before-end]
+  [fixture: block/db-empty-block-between]
+  [fixture: block/db-empty-block-between-columns-and-number]
+  [fixture: block/db-empty-block-glued-brace]
+  [fixture: block/db-empty-block-glued-to-id]
+  [fixture: block/db-empty-block-in-composite]
+  [fixture: block/div-empty-block-in-edge]
+  [fixture: block/db-empty-block-in-label]
+  [fixture: block/db-empty-block-line]
+  [fixture: block/db-empty-block-line-feed]
+  [fixture: block/gram-empty-block-only]
+  [fixture: block/db-empty-block-spaces]
+  [fixture: block/gram-empty-block-then-colon]
+  [fixture: block/db-empty-block-twice]
+  [fixture: block/gram-empty-block-unclosed]
+  [fixture: block/gram-empty-block-upper-case]
+  [fixture: block/db-empty-block-with-comment-line]
+  [fixture: block/db-empty-block-on-header-line]
+  [fixture: block/gram-description-block-on-header-line]
+  [fixture: block/gram-empty-block-with-text]
+- shape は、括弧の中に空白を許しません。
+  `A[ "x" ]`、`A[ "x"]`、`A["x" ]`、括弧の中の改行、`A<[ "x" ]>(right)`、
+  2 つの文字列は拒否されます。
+  shape の前の空白は許され（`A ("x")`）、方向の括弧の中の空白も許されます。
+  方向の括弧の中の空白と改行は方向のテキストの一部です。
+  `[|` と終わり `]` の組は type を持たず、
+  `)))` は `))` と `)` として読まれて拒否され、知らない方向は拒否されます。
+  [fixture: block/db-spec-bracket-pipe]
+  [fixture: block/gram-spec-triple-round-start]
+  [fixture: block/db-spec-space-before-round]
+  [fixture: block/gram-spec-spaces-inside-square]
+  [fixture: block/gram-spec-space-before-string]
+  [fixture: block/gram-spec-space-after-string]
+  [fixture: block/gram-spec-line-feed-inside-square]
+  [fixture: block/gram-spec-two-strings]
+  [fixture: block/gram-spec-spaces-inside-block-arrow]
+  [fixture: block/db-spec-spaces-around-directions]
+  [fixture: block/db-spec-directions-line-feeds]
+  [fixture: block/gram-spec-directions-unknown]
+- `->` は辺でなく、`A --> block` は composite を開いて拒否されます。
+  `:::`、`::`、`A:::` の後ろのクラス名も拒否されます。
+  字句解析器が `:` で止まるからです。
+  ディレクティブは、矢印の中、`<` の後ろ、矢じりの前、
+  label を始めるダッシュの中で取り除かれ、部分がつながります。
+  `--` の 2 つのダッシュの間のものは `A -- B` を残し、拒否されます。
+  辺の label の周りの空白は何も変えず、label の中の 2 つの文字列は拒否されます。
+  [fixture: block/gram-spec-single-dash-arrow]
+  [fixture: block/gram-spec-edge-to-block-keyword]
+  [fixture: block/gram-spec-colon-colon-colon]
+  [fixture: block/gram-spec-colon-colon]
+  [fixture: block/gram-spec-colon-colon-colon-two]
+  [fixture: block/div-spec-edge-directive-in-arrow]
+  [fixture: block/div-spec-edge-directive-before-head]
+  [fixture: block/gram-spec-edge-directive-in-dashes]
+  [fixture: block/div-spec-edge-directive-in-start]
+  [fixture: block/div-spec-edge-directive-in-label-start]
+  [fixture: block/db-spec-edge-label-spaces-around]
+  [fixture: block/gram-spec-edge-label-two-strings]
+- `block:` の後ろの id は、次の行にあってもかまいません。
+  `block:` の後ろの空白が改行を含むからです。
+  `classDef` のスタイルも、同じ理由で名前の次の行に置けます。
+  そのとき、その行は文であってもスタイルです。
+  `classDef c` の次の行の `class A c` は、
+  クラス `c` のスタイル `class A c` になります。
+  id の中の引用符はその一部で、引用符の後ろの空白が id を終えます。
+  `%%` と `%` は、付いていれば id の一部です。
+  [fixture: block/db-spec-composite-lf-id]
+  [fixture: block/db-spec-class-def-next-line-styles]
+  [fixture: block/db-spec-class-def-next-line-two]
+  [fixture: block/db-spec-class-def-name-only-then-class]
+  [fixture: block/db-spec-id-with-quoted-part]
+  [fixture: block/db-spec-id-comment-glued]
+  [fixture: block/db-spec-percent-id]
+- Db がブロックを集める手順です。
+  テキスト全体を構文解析し終えたあとで、Db は文をテキストの順に、
+  子の並びを 1 つずつたどり、composite は出会った時点でその中に入ります。
+  composite はまず表に入り、次にその子が順に入り（composite は自分の子より先、
+  子は並びの次のブロックより先）、そのあとに次のブロックが入ります。
+  Db がすでに表に持つブロックを定義する文（node、shape、composite、
+  辺の終わり）は、新しいブロックを作りません。
+  古いブロックを更新します。
+  type は、新しい定義の type が `na` でなければそれになり、
+  label は id と違えば新しい label になります。
+  幅、方向、`columns`、クラス、スタイル、子は、そのまま残ります。
+  新しいブロックは捨てられ、composite の子の並びも捨てられます。
+  辺は、たどるときに辺の並びに加わります。composite の中でも同じで、
+  端のブロックが何であっても同じです。
+  composite の中でも外でも使ったブロックは、最初に使った場所に残ります。
+  [fixture: block/db-collecting-child-first-then-outer]
+  [fixture: block/db-collecting-columns-per-composite]
+  [fixture: block/db-collecting-composite-then-node-shape-width]
+  [fixture: block/db-collecting-depth-first]
+  [fixture: block/db-collecting-edge-order-in-composite]
+  [fixture: block/db-collecting-edge-then-redefine]
+  [fixture: block/db-collecting-redefine-keeps-directions]
+  [fixture: block/db-collecting-redefine-label-equal-id]
+  [fixture: block/db-collecting-redefine-label-only-odd]
+  [fixture: block/db-collecting-redefine-type-na-keeps]
+  [fixture: block/db-collecting-two-composites-share-child]
+  [fixture: block/db-shape-redefine-from-na]
+  [fixture: block/db-shape-redefine-label-only]
+  [fixture: block/db-shape-redefine-same-label]
+  [fixture: block/db-shape-redefine-shape]
+  [fixture: block/db-shape-redefine-to-na]
+  [fixture: block/db-shape-redefine-to-odd]
+  [fixture: block/db-shape-redefine-width]
+  [fixture: block/db-definitions-class-def-three]
+  [fixture: block/db-definitions-class-def-three-others]
+  [fixture: block/db-definitions-class-three]
+  [fixture: block/db-definitions-class-three-ids]
+  [fixture: block/db-definitions-columns-three]
+  [fixture: block/db-definitions-composite-then-shape-then-composite]
+  [fixture: block/db-definitions-edges-three]
+  [fixture: block/db-definitions-shape-then-composite-then-shape]
+  [fixture: block/db-definitions-space-three]
+  [fixture: block/db-definitions-style-three]
+  [fixture: block/db-definitions-style-three-empty-middle]
+  [fixture: block/db-definitions-three-arrows]
+  [fixture: block/db-definitions-three-composites]
+  [fixture: block/db-definitions-three-edge-and-node]
+  [fixture: block/db-definitions-three-edge-ends]
+  [fixture: block/db-definitions-three-labels-first-equal]
+  [fixture: block/db-definitions-three-na-in-the-middle]
+  [fixture: block/db-definitions-three-shapes]
+  [fixture: block/db-definitions-three-widths]
+  [fixture: block/db-composite-id-same-as-node-before]
+  [fixture: block/db-composite-id-same-as-node-after]
+  [fixture: block/db-composite-id-same-as-node-after-shape]
+  [fixture: block/db-composite-id-same-composite]
+  [fixture: block/db-composite-id-same-nested]
+  [fixture: block/db-composite-id-same-as-child]
+  [fixture: block/db-composite-id-same-child-defined-in-inner]
+  [fixture: block/db-width-redefine]
+  [fixture: block/db-width-redefine-without]
+  [fixture: block/db-width-redefine-first]
+  [fixture: block/db-arrow-redefine]
+  [fixture: block/db-arrow-redefine-from-square]
+  [fixture: block/db-arrow-redefine-to-square]
+  [fixture: block/db-edge-keeps-shape]
+  [fixture: block/db-edge-keeps-width]
+  [fixture: block/db-edge-redefine-by-edge]
+  [fixture: block/db-edge-edge-in-composite-order]
+- ブロックの表は、ブロックを入れた順に持ち、図を持つブロックが最初です。
+  `unplaced` は、図を持つブロックから子の並びをたどって届かない表の項目を、
+  表の順に並べます。
+  `space` の文の項目は除きます
+  （`space` の文の項目は type が `space` で、id は Db が作ったものです。
+  幅は幅の分のブロックが持ち、`space:0` はブロックを作りません）。
+  ほかの載せたブロックの `children` が持つブロックは、そこにだけ載せます。
+  そのため、捨てられた composite は子と一緒に載り、子は重ねて載りません。
+  捨てられた composite のブロック、
+  まだ定義のない id、または見つからなかった id（`class A, B c`）に
+  `class` が作ったブロック、
+  その id の後の定義が更新したブロックは `unplaced` です。
+  辺、`class`、`style` は、それをほかのブロックと同じように見つけます。
+  捨てられた composite と一緒に失われるのは `columns` と幅で、
+  古いブロックは取りません。
+  [fixture: block/db-unplaced-class-on-unplaced-child]
+  [fixture: block/db-unplaced-columns-in-dropped]
+  [fixture: block/db-unplaced-dropped-with-label]
+  [fixture: block/db-unplaced-dropped-with-width]
+  [fixture: block/db-unplaced-edge-into-dropped]
+  [fixture: block/db-unplaced-nested-composite]
+  [fixture: block/db-unplaced-order]
+  [fixture: block/db-unplaced-order-defined-later]
+  [fixture: block/db-unplaced-space]
+  [fixture: block/db-unplaced-style-on-unplaced]
+  [fixture: block/db-class-apply-undefined-id]
+  [fixture: block/db-class-apply-before-node]
+  [fixture: block/db-class-apply-before-node-shape]
+  [fixture: block/db-class-apply-before-node-width]
+  [fixture: block/db-class-apply-before-edge]
+  [fixture: block/db-class-apply-before-block]
+  [fixture: block/db-class-apply-undefined-twice]
+  [fixture: block/db-class-apply-undefined-list]
+  [fixture: block/db-class-apply-mixed-list]
+  [fixture: block/db-class-apply-in-block-later]
+  [fixture: block/db-style-class-made]
+  [fixture: block/db-composite-id-same-as-node-before]
+  [fixture: block/db-composite-id-same-composite]
+  [fixture: block/db-composite-id-same-nested]
+  [fixture: block/db-space-class]
+  [fixture: block/db-space-width-zero]
+  [fixture: block/db-space-in-composite]
+- shape の type は、それを開く文字列と閉じる文字列の組で決まります。
+  字句解析器がこの 2 つを別々に読みます。
+  開きは規則の順に、`-)`、`(-`、`))`、`)`、`(((`、`((`、`{{`、`{`、`>`、`([`、
+  `(`、`[[`、`[|`、`[(`、`)))`、`[\`、`[/`、`[` のどれかです。
+  閉じは、`(((`、`)))`、`))`、`}}`、`}`、`(-`、`-)`、`((`、`]]`、`(`、`])`、
+  `\]`、`/]`、`)]`、`)`、`]>`、`]` のうち、最初に合うものです。
+  `[` と `]`、`(` と `)`、`((` と `))`、`(((` と `)))`、`([` と `])`、
+  `[[` と `]]`、`[(` と `)]`、`{` と `}`、`{{` と `}}`、`>` と `]`、
+  `[/` と `/]`、`[\` と `\]`、`[/` と `\]`、
+  `[\` と `/]` の組が type を持ちます。
+  それ以外の組は、どの閉じの字句で終わっても type を持たず（`na`）、
+  label は残ります。
+  方向のない `]>` で閉じた shape は block arrow でなく、
+  `<[` を普通の `]` で閉じると拒否されます。
+  [fixture: block/db-closer-arrow-open-with-bracket]
+  [fixture: block/db-closer-backslash-open-with-bracket]
+  [fixture: block/gram-closer-block-arrow-open-with-bracket]
+  [fixture: block/db-closer-brace-brace-pair]
+  [fixture: block/db-closer-circle-then-triple-close]
+  [fixture: block/db-closer-double-circle-then-double-close]
+  [fixture: block/db-closer-hexagon-single-close]
+  [fixture: block/db-closer-round-then-paren-bracket]
+  [fixture: block/db-closer-slash-open-with-bracket]
+  [fixture: block/db-closer-square-then-arrow-close]
+  [fixture: block/db-closer-square-then-backslash-bracket]
+  [fixture: block/db-closer-square-then-brace]
+  [fixture: block/db-closer-square-then-double-brace]
+  [fixture: block/db-closer-square-then-double-open]
+  [fixture: block/db-closer-square-then-double-paren-close]
+  [fixture: block/db-closer-square-then-minus-close]
+  [fixture: block/db-closer-square-then-minus-open]
+  [fixture: block/db-closer-square-then-paren-bracket]
+  [fixture: block/db-closer-square-then-paren-close-bracket]
+  [fixture: block/db-closer-square-then-round-open]
+  [fixture: block/db-closer-square-then-slash-bracket]
+  [fixture: block/db-closer-square-then-triple-close]
+  [fixture: block/db-closer-square-then-triple-open]
+  [fixture: block/db-shape-odd-left]
+  [fixture: block/db-shape-odd-double]
+  [fixture: block/db-shape-minus-round]
+  [fixture: block/db-shape-minus-reverse]
+  [fixture: block/db-shape-mixed-round-square]
+  [fixture: block/db-shape-mixed-square-round]
+  [fixture: block/db-shape-mixed-arrow-brace]
+  [fixture: block/db-shape-mixed-brace-square]
+  [fixture: block/db-shape-mixed-double]
+  [fixture: block/db-shape-mixed-circle-stadium]
+  [fixture: block/db-shape-extra-close]
+  [fixture: block/db-shape-square]
+  [fixture: block/db-shape-round]
+  [fixture: block/db-shape-circle]
+  [fixture: block/db-shape-doublecircle]
+  [fixture: block/db-shape-stadium]
+  [fixture: block/db-shape-subroutine]
+  [fixture: block/db-shape-cylinder]
+  [fixture: block/db-shape-diamond]
+  [fixture: block/db-shape-hexagon]
+  [fixture: block/db-shape-rect-left-inv-arrow]
+  [fixture: block/db-shape-lean-right]
+  [fixture: block/db-shape-lean-left]
+  [fixture: block/db-shape-trapezoid]
+  [fixture: block/db-shape-inv-trapezoid]
+  [fixture: block/db-shape-block-arrow]

@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, shapes and edges: a quote inside an id is part of it, and the white space after it ends the id: the rest is a node."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A\"x",
+          "label": "A\"x",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "y\"",
+          "label": "y\"",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

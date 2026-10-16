@@ -1,0 +1,17 @@
+{
+  "message": "The shape has no closing before the end of the text",
+  "range": [
+    14,
+    15
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 3
+    },
+    "end": {
+      "line": 2,
+      "column": 4
+    }
+  }
+}

@@ -18,6 +18,60 @@ import type { FieldSpec } from "./field-spec.ts"
 export const NODE_FIELDS: Readonly<
   Record<string, Readonly<Record<string, FieldSpec>>>
 > = {
+  BlockDiagram: { body: { shape: "nodeList" } },
+  BlockNodeStatement: {
+    node: { shape: "node" },
+    width: { shape: "nodeOrNull" },
+    links: { shape: "nodeList" },
+  },
+  BlockNode: { id: { shape: "node" }, shape: { shape: "nodeOrNull" } },
+  BlockShape: {
+    open: { shape: "value", valueType: "string" },
+    close: { shape: "value", valueType: "string" },
+    label: { shape: "node" },
+  },
+  BlockArrowShape: {
+    label: { shape: "node" },
+    directions: { shape: "nodeList" },
+  },
+  BlockLink: {
+    opening: { shape: "nodeOrNull" },
+    label: { shape: "nodeOrNull" },
+    arrow: { shape: "node" },
+    target: { shape: "node" },
+  },
+  BlockArrow: {
+    value: { shape: "value", valueType: "string" },
+    startMarker: { shape: "value", valueType: "string" },
+    line: { shape: "value", valueType: "string" },
+    length: { shape: "value", valueType: "number" },
+    endMarker: { shape: "value", valueType: "string" },
+  },
+  BlockOpeningArrow: {
+    value: { shape: "value", valueType: "string" },
+    startMarker: { shape: "value", valueType: "string" },
+    line: { shape: "value", valueType: "string" },
+  },
+  BlockSpaceStatement: { width: { shape: "nodeOrNull" } },
+  BlockColumnsStatement: { count: { shape: "nodeOrNull" } },
+  BlockCompositeStatement: {
+    head: { shape: "nodeOrNull" },
+    body: { shape: "nodeList" },
+  },
+  BlockClassDefStatement: {
+    name: { shape: "node" },
+    styles: { shape: "nodeListWithNull" },
+  },
+  BlockClassStatement: {
+    ids: { shape: "nodeList" },
+    cssClass: { shape: "nodeOrNull" },
+  },
+  BlockStyleStatement: {
+    id: { shape: "node" },
+    styles: { shape: "nodeListWithNull" },
+  },
+  BlockAccDescrBlockStatement: {},
+  BlockLiteral: { value: { shape: "value", valueType: "string" } },
   ClassAccDescrBlockStatement: {
     value: { shape: "nodeOrNull" },
   },

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, header: `block_beta` is detected, and the lexer reads it as a node, so the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\nblock_beta  A\n^\nExpecting 'BLOCK_DIAGRAM_KEY', got 'NODE_ID'"
+  }
+}

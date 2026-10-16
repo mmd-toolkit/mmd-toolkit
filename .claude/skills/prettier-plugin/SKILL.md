@@ -120,11 +120,12 @@ How it is built (under `src/printers/`):
   kept); the layout of its statements and block headers, with the gap rules of
   its decided items (`<diagram>-layout.ts`); and its kept lines
   (`<diagram>-kept-lines.ts`). `BlockRules` takes the statement type of the
-  diagram type, so that its functions need no cast. When the statements of a
-  diagram type fall into kinds (blocks with one body, blocks of sections,
-  statements that hold no other), decide the kinds in one function whose switch
-  lists every statement type, checks each case against the type of its kind, and
-  ends with a `satisfies` check that fails when a statement type is not listed
+  diagram type, or a unit that groups statements which stay on one line (a block
+  diagram), so that its functions need no cast. When the statements of a diagram
+  type fall into kinds (blocks with one body, blocks of sections, statements
+  that hold no other), decide the kinds in one function whose switch lists every
+  statement type, checks each case against the type of its kind, and ends with a
+  `satisfies` check that fails when a statement type is not listed
   (`classifySequenceStatement` in `sequence-layout.ts`); everything else asks
   that function, rather than keeping its own list of types.
 - Value nodes (`Identifier`, `StringLiteral`, labels, and so on) are printed as
@@ -272,6 +273,8 @@ Running tests; this is what belongs to this package):
     `line-separators`, `markdown-xychart`, and `value-nodes`.
   - `quadrant*.ts`: `format` and `corpus` with `-t quadrant`; and, without `-t`,
     `line-separators`, `markdown-quadrant`, and `value-nodes`.
+  - `block.ts`, `block-*.ts`: `format` and `corpus` with `-t block`; and,
+    without `-t`, `line-separators`, `markdown-block`, and `value-nodes`.
   - `statement-rules.ts`, `accessibility-lines.ts`: the tests of the diagram
     types that use them, ER and requirement.
   - `index.ts`, `parser.ts`, `printer.ts`, `root.ts`, `frontmatter-yaml.ts`:

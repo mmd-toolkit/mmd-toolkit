@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, punctuation: a run of punctuation in the label of a composite."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "G",
+          "label": "a!$&*+.,/=?^_~@b",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {
+              "id": "A",
+              "label": "A",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

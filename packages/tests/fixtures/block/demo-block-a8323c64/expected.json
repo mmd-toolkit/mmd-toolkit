@@ -1,0 +1,78 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "demos/block.html",
+    "line": 82
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": 4,
+      "children": [
+        {
+          "id": "a",
+          "label": "a",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "b",
+          "label": "b",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "c",
+          "label": "c",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "d",
+          "label": "d",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "e",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 4,
+          "columns": 2,
+          "children": [
+            {
+              "id": "f",
+              "label": "f",
+              "type": "na",
+              "widthInColumns": 1
+            },
+            {
+              "id": "g",
+              "label": "g",
+              "type": "na",
+              "widthInColumns": 1
+            },
+            {
+              "id": "h",
+              "label": "h",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        },
+        {
+          "id": "i",
+          "label": "i",
+          "type": "na",
+          "widthInColumns": 4
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

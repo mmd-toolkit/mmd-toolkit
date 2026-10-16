@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, columns: `columns N` sets the number of columns of the block it stands in; the root keeps it."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": 3,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

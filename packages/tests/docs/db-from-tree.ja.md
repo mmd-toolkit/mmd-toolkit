@@ -129,6 +129,13 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   mermaid.js が空白の単位もテキストに読み込むためです
   （規則は [db-from-tree/quadrant.ja.md](./db-from-tree/quadrant.ja.md)）。
   [fixture: quadrant/db-quadrant-spaces-trimmed]
+- **block の方向、クラス、スタイル**: 方向、クラスの id、スタイルは、
+  それぞれのリテラルの変換形で、
+  カンマの前後の空白を持ちます
+  （規則は [db-from-tree/block.md](./db-from-tree/block.md)）。
+  [fixture: block/db-arrow-spaces]
+  [fixture: block/db-class-apply-list-spaces]
+  [fixture: block/db-style-spaces]
 - **mindmap のラベル**: `MindmapLabel` の範囲の変換した形から、
   文字列か markdown 文字列の区切りを除いたもの。
   区切りは変換した形から切り落とし、
@@ -427,6 +434,9 @@ HTML ラベルが有効で、`securityLevel` が
   `accDescr`（行のものとブロックのもの）、軸と象限のテキスト、点の名前。
   クラス名、座標、スタイルには届きません。
   [fixture: quadrant/config-security-level-other-all]
+- block: ノード、ブロック矢印、複合ブロック、辺のラベル。
+  id、クラス、スタイル、方向には届きません。
+  [fixture: block/config-security-level-other-all]
 
 **mermaid.js の順序が効く所。**
 テキストを読み進める前に置き換える所があり、作り手も同じにします。

@@ -173,6 +173,7 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   SankeyDiagram: [],
   XychartDiagram: ["%%"],
   QuadrantDiagram: ["%%"],
+  BlockDiagram: [],
 }
 
 /**
@@ -183,6 +184,7 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
  * after their header (diagrams/sankey.md, Detection and Comments).
  */
 const MARKS_BEFORE_THE_HEADER: Readonly<Record<string, readonly string[]>> = {
+  BlockDiagram: ["%%"],
   FlowchartDiagram: ["%%"],
   ErDiagram: ["%%"],
   SankeyDiagram: ["%%"],

@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, styles: the id `root` is the root block: the style is kept there."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "styles": [
+        "fill:#f00"
+      ],
+      "children": []
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

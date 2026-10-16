@@ -29,6 +29,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["sankey", "SankeyDiagram"],
   ["xychart", "XychartDiagram"],
   ["quadrant", "QuadrantDiagram"],
+  ["block", "BlockDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -130,6 +131,9 @@ const UNIT_NAMES: ReadonlySet<string> = new Set([
 /** The spans of the Keyword row of the table of Tokens of a diagram that name a unit of that diagram, where the same word is a keyword in another diagram (`direction`). */
 const UNIT_NAMES_OF_DIAGRAM: Readonly<Record<string, readonly string[]>> = {
   timeline: ["direction"],
+  // The colon in the explanation of block: and space: belongs to those
+  // keywords, and is not a Keyword token of its own.
+  block: [":"],
 }
 
 /** The days that a `day` unit of a gantt diagram is, in lower case (diagrams/gantt.md, The statement context). */
@@ -219,6 +223,8 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
       return ["xychart", "xychart-beta", "vertical", "horizontal"]
     // The row names the header by its kind, and the middle two of the four
     // `quadrant-N` words by the range `quadrant-1` to `quadrant-4`.
+    case "block":
+      return ["right", "left", "up", "down", "x", "y"]
     case "quadrant":
       return ["quadrantchart", "quadrant-2", "quadrant-3"]
     // The header, and the two values of the `direction` unit.

@@ -1,0 +1,77 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, settings: under a `securityLevel` that is not one of mermaid.js's values, the labels hold the replaced characters."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "&lt;b&gt;x&lt;/b&gt; & &lt;i&gt;y&lt;/i&gt;",
+          "type": "square",
+          "widthInColumns": 1,
+          "styles": [
+            "fill:<i>"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "&lt;u&gt;z&lt;/u&gt;",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "right"
+          ]
+        },
+        {
+          "id": "G",
+          "label": "&lt;s&gt;g&lt;/s&gt;",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {
+              "id": "C",
+              "label": "C",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        },
+        {
+          "id": "D",
+          "label": "a<br/>b",
+          "type": "square",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": "&lt;b&gt;e&lt;/b&gt;",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:<b>"
+        ]
+      }
+    ]
+  }
+}

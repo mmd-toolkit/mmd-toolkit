@@ -13,6 +13,7 @@ import { readChildFields, readFieldTables } from "./spec-field-tables.ts"
 
 /** The node types that their documents describe with no field table. */
 const TYPES_WITHOUT_FIELD_TABLE: ReadonlySet<string> = new Set([
+  "BlockAccDescrBlockStatement",
   "ErrorDiagram",
   "FlowchartEmptyStatement",
   "GanttInclusiveEndDatesStatement",

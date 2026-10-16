@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: an `end` with nothing to close is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 5:\n...ock:G    A  end  end\n--------------------^\nExpecting 'EOF', got 'end'"
+  }
+}

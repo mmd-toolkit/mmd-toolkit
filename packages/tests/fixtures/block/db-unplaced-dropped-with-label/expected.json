@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, the blocks that no list holds: the label of the composite takes the place of the label of the old block."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "x",
+          "type": "composite",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "B",
+        "label": "B",
+        "type": "na",
+        "widthInColumns": 1
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

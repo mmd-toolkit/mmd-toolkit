@@ -456,6 +456,55 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   `"": [0.3, 0.6]`. [fixture: quadrant/gram-name-quoted-empty] [fixture:
   quadrant/div-empty-string-alone]
 
+## In a block diagram
+
+- Where no rule of the lexer matches, `range` is the character there: a label
+  without quotes, a `-` inside an id, whitespace inside the brackets of a shape,
+  and an unknown direction. [fixture: block/gram-label-unquoted] [fixture:
+  block/gram-name-dash] [fixture: block/gram-spec-space-before-string] [fixture:
+  block/gram-arrow-unknown]
+- When the text ends in a context that may not end there, also with only
+  whitespace after the last character, `range` is what entered that context, and
+  the message says what is not closed: the opening `"` of a string
+  (`The string has no closing " before the end of the text`) and of a markdown
+  string (``The markdown string has no closing `" before the end of the text``),
+  the opening of a shape
+  (`The shape has no closing before the end of the text`), the `]>` of a block
+  arrow (`The block arrow has no directions before the end of the text`), the
+  `(` before its directions
+  (`The directions have no ) before the end of the text`), an opening arrow
+  (`The edge label has no arrow before the end of the text`), the `accDescr` of
+  a description block
+  (`The description block has no } before the end of the text`), `classDef`
+  (`classDef has no styles before the end of the text`), and `class` and `style`
+  (`class has no ids before the end of the text`,
+  `style has no ids before the end of the text`). [fixture:
+  block/gram-label-unclosed] [fixture: block/gram-label-backtick-start]
+  [fixture: block/gram-label-unclosed-shape] [fixture:
+  block/gram-arrow-no-paren] [fixture: block/gram-arrow-unclosed-paren]
+  [fixture: block/gram-edge-label-start-without-end] [fixture:
+  block/gram-empty-block-unclosed] [fixture: block/gram-class-def-no-name]
+  [fixture: block/gram-class-def-no-style] [fixture:
+  block/gram-class-apply-no-id]
+- Where the grammar cannot read a unit, `range` is that unit without its
+  whitespace, with the message `Unexpected token`; where the text ends before a
+  statement or a composite is complete, it is the empty range at the end of the
+  text, with the message `Unexpected end of text`. The name `DEFAULT` of
+  `classDef` is such a unit. [fixture: block/header-only-block-beta] [fixture:
+  block/gram-composite-not-closed] [fixture: block/gram-composite-extra-end]
+  [fixture: block/gram-edge-to-space] [fixture:
+  block/gram-class-def-default-upper]
+- For the rejection outside the grammar, which the grammar makes when it reads
+  the id of a `style` statement, `range` is that id, commas included, with the
+  message `style names no block made before it`. [fixture:
+  block/gram-style-undefined] [fixture: block/gram-style-list] [fixture:
+  block/gram-style-on-chain]
+- An empty string and an empty markdown string are rejected at them, and so is
+  an empty description block inside a statement, as the known divergence below,
+  also where mermaid.js rejects the input too, as `A[""]`. [fixture:
+  block/gram-label-empty] [fixture: block/div-empty-string-line] [fixture:
+  block/div-empty-markdown-line] [fixture: block/div-empty-block-in-edge]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

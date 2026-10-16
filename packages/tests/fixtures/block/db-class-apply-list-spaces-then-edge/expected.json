@@ -1,0 +1,52 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes and styles: after `class A, B c`, an edge to B ends at the id B, and the placed B and the new block are both kept as they were."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "c"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "B",
+        "type": "na",
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "start": "A",
+        "end": "B",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

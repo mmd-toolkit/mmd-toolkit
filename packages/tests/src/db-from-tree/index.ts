@@ -1,5 +1,7 @@
 import type { EmbeddedValues } from "../mermaid.ts"
 import type { DbSummary } from "../types.ts"
+import { blockDbOf } from "./block.ts"
+import type { BlockDiagram } from "./block-tree.ts"
 import { classDbOf } from "./class.ts"
 import type { ClassDiagram } from "./class-tree.ts"
 import { erDbOf } from "./er.ts"
@@ -38,6 +40,7 @@ export interface ErrorDiagram extends TreeNode {
 
 /** The body of a tree, by diagram type. */
 export type DiagramBody =
+  | BlockDiagram
   | ClassDiagram
   | ErDiagram
   | ErrorDiagram
@@ -102,6 +105,8 @@ export function dbFromTree(
       return sankeyDbOf(text, root, root.body, embedded)
     case "XychartDiagram":
       return xychartDbOf(text, root, root.body, embedded)
+    case "BlockDiagram":
+      return blockDbOf(text, root, root.body, embedded)
     case "QuadrantDiagram":
       return quadrantDbOf(text, root, root.body, embedded)
     default:

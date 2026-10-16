@@ -3,7 +3,7 @@
 Japanese version: [tokenless-empty-forms.ja.md](./tokenless-empty-forms.ja.md)
 
 Diagram types: flowchart, sequence, class, state, er, gantt, requirement,
-mindmap, xychart, and quadrant. This is one of the
+mindmap, xychart, quadrant, and block. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -61,9 +61,12 @@ of a plot or the whole label of a value (see
 [Empty strings](../diagrams/xychart.md#empty-strings)). In quadrant there are
 three: the closed empty description block, the empty string, `""`, and the empty
 markdown string; the two strings are part of this divergence wherever they stand
-(see [Empty strings](../diagrams/quadrant.md#empty-strings)). [fixture:
-quadrant/div-empty-string-alone] [fixture:
-quadrant/div-empty-markdown-string-line] [fixture:
+(see [Empty strings](../diagrams/quadrant.md#empty-strings)). In block there are
+the same three, and the two strings are part of this divergence wherever they
+stand (see [Empty strings](../diagrams/block.md#empty-strings)). [fixture:
+block/div-empty-string-line] [fixture: block/div-empty-markdown-line] [fixture:
+block/div-empty-block-in-edge] [fixture: quadrant/div-empty-string-alone]
+[fixture: quadrant/div-empty-markdown-string-line] [fixture:
 quadrant/div-empty-block-in-quadrant-text] [fixture:
 er/div-empty-description-block-in-relationship] [fixture:
 er/div-empty-backquotes-between-type-and-name] [fixture:
@@ -220,8 +223,9 @@ divergences sections: [flowchart](../diagrams/flowchart.md#known-divergences),
 [gantt](../diagrams/gantt.md#known-divergences),
 [requirement](../diagrams/requirement.md#known-divergences),
 [mindmap](../diagrams/mindmap.md#known-divergences),
-[xychart](../diagrams/xychart.md#known-divergences), and
-[quadrant](../diagrams/quadrant.md#known-divergences).
+[xychart](../diagrams/xychart.md#known-divergences),
+[quadrant](../diagrams/quadrant.md#known-divergences), and
+[block](../diagrams/block.md#known-divergences).
 
 ## What it means for an author
 
@@ -306,6 +310,12 @@ over the delimiters of an empty markdown string
 ([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L41-L43)),
 and over the quotes of an empty string
 ([`quadrant.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/quadrant-chart/parser/quadrant.jison#L44-L45)).
+Block passes over a closed empty description block
+([`block.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/parser/block.jison#L79-L80)),
+over the delimiters of an empty markdown string
+([`block.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/parser/block.jison#L50-L52)),
+and over the quotes of an empty string
+([`block.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/parser/block.jison#L53-L54)).
 Each of these rules enters or leaves a state of the lexer and returns nothing,
 so the grammar never sees the form.
 
@@ -732,6 +742,32 @@ quadrant/gram-x-axis-empty-string-with-arrow] [fixture:
 quadrant/gram-name-quoted-empty] [fixture: quadrant/db-empty-string-in-title]
 [fixture: quadrant/db-empty-block-after-point] [fixture:
 quadrant/db-empty-block-before-statement]
+
+In block, which has no accessibility statement, a closed empty description block
+inside a statement, such as between an arrow and the node it leads to, where no
+field can hold it (reasons a and b), while where a statement starts it is a
+description block statement with no fields; and an empty string or an empty
+markdown string wherever mermaid.js accepts it: on a line of its own, before or
+after an id, an edge, a shape, a width, or `end`, before and inside a composite,
+and between `columns` and its number, because the tree holds no statement for a
+string that mermaid.js discards whole, as in flowchart and class. No label holds
+it as its whole value: `A[""]` and `A -- "" --> B` are rejected by both, and
+glued to an id, `""` is part of the id (see
+[Empty description blocks](../diagrams/block.md#empty-description-blocks) and
+[Empty strings](../diagrams/block.md#empty-strings)). [fixture:
+block/div-empty-block-in-edge] [fixture: block/div-empty-markdown-between]
+[fixture: block/div-empty-markdown-line] [fixture:
+block/div-empty-string-after-edge] [fixture: block/div-empty-string-after-id]
+[fixture: block/div-empty-string-before-block-key] [fixture:
+block/div-empty-string-before-columns-number] [fixture:
+block/div-empty-string-before-edge] [fixture: block/div-empty-string-before-end]
+[fixture: block/div-empty-string-before-shape] [fixture:
+block/div-empty-string-before-width] [fixture: block/div-empty-string-between]
+[fixture: block/div-empty-string-first-in-line] [fixture:
+block/div-empty-string-in-composite] [fixture: block/div-empty-string-line]
+[fixture: block/div-empty-strings-two] [fixture: block/db-empty-block-line]
+[fixture: block/db-empty-block-between] [fixture:
+block/db-empty-string-glued-to-id] [fixture: block/gram-empty-block-only]
 
 After the last unit of a statement, before its separator, the block is a
 statement, as in `click A "u" "t" accDescr {}` of state. An accepted input has

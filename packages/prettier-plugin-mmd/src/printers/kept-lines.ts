@@ -251,15 +251,19 @@ export function isLastOnItsLine(source: Source, offset: number): boolean {
 }
 
 /**
- * Whether the `;` at `offset` is one that the line rule ignores at the end of
- * its line, which is dropped as a `;` that separates statements is: mermaid.js
- * removes it from the text. Not one right after a comment: with whitespace
- * after it, the `;` lies inside the comment, which is printed as written, and
- * a `;` that was dropped only when it stands outside the comment would make a
- * second formatting differ from the first (ast.md, Comment).
+ * Whether the printer drops the `;` at `offset`: one that the line rule
+ * ignores at the end of its line, which is dropped as a `;` that separates
+ * statements is, since mermaid.js removes it from the text. Not one right
+ * after a comment: with whitespace after it, the `;` lies inside the comment,
+ * which is printed as written, and a `;` that was dropped only when it stands
+ * outside the comment would make a second formatting differ from the first
+ * (ast.md, Comment). Not one in a diagram type where no `;` separates
+ * statements (see `semicolonsSeparateStatements`): there the line that holds
+ * it is kept as written, with the `;`.
  */
 export function isDroppedSemicolon(source: Source, offset: number): boolean {
   return (
+    semicolonsSeparateStatements(source) &&
     source.ignoredSemicolons.has(offset) &&
     isLastOnItsLine(source, offset) &&
     !source.root.comments.some((comment) => comment.range[1] === offset)

@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, columns: `COLUMNS 2` is two nodes."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "COLUMNS",
+          "label": "COLUMNS",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "2",
+          "label": "2",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

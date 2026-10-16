@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, frontmatter: a comment before the frontmatter is not allowed: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 1:\n---title: T---blo\n^\nExpecting 'BLOCK_DIAGRAM_KEY', got 'LINK'"
+  }
+}

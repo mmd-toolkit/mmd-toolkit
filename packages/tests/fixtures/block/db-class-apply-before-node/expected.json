@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: a class applied before the node: the node is defined later, and stays outside the diagram."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [
+      {
+        "id": "A",
+        "type": "na",
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

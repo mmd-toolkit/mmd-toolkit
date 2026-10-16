@@ -88,6 +88,19 @@ const REQUIREMENT_PARTS =
 const VALUE_FIELD_REPORTS: Readonly<
   Record<string, { readonly message: string; readonly where?: string }>
 > = {
+  "BlockArrow.endMarker": { message: "the endMarker of the arrow: " },
+  "BlockArrow.length": { message: "the length of the arrow: " },
+  "BlockArrow.line": { message: "the line of the arrow: " },
+  "BlockArrow.startMarker": { message: "the startMarker of the arrow: " },
+  "BlockArrow.value": { message: "value is not its written text" },
+  "BlockLiteral.value": { message: "value is not its written text" },
+  "BlockOpeningArrow.line": { message: "the line of the arrow: " },
+  "BlockOpeningArrow.startMarker": {
+    message: "the startMarker of the arrow: ",
+  },
+  "BlockOpeningArrow.value": { message: "value is not its written text" },
+  "BlockShape.close": { message: "the shape closing " },
+  "BlockShape.open": { message: "the shape opening " },
   "ClassArrow.value": {
     message: "value is not the texts of its tokens joined",
   },
@@ -308,6 +321,7 @@ const WANTED_BY_SHAPE: Readonly<Record<string, string>> = {
  * holds, so that it lies in a place where a punctuator of the diagram is none.
  */
 const PUNCTUATOR_FIELDS: ReadonlySet<string> = new Set([
+  "BlockLink.opening",
   "FlowchartLink.opening",
 ])
 

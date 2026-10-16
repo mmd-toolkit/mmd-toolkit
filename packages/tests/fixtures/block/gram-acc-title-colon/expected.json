@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, accessibility and titles: `title: t` is rejected: `title` is a node and `:` starts a width."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nblock-beta  title: t\n-----------------^"
+  }
+}

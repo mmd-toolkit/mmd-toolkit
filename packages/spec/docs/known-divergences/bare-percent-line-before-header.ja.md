@@ -4,7 +4,7 @@
 [bare-percent-line-before-header.md](./bare-percent-line-before-header.md)
 
 図種: flowchart、class、state、er、gantt、journey、requirement、timeline、
-sankey。
+sankey、block。
 この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 対象の構文
@@ -34,7 +34,7 @@ mermaid.js は同じ入力を違って読みます。
 その字句解析器がこの行をコメントとして読むところ
 （sequence・class・state の字句解析器は `%%` だけの行をそう読みます）では、
 両者が入力を受理します。
-そうでないところ（er と sankey の字句解析器はどの行もそう読まず、
+そうでないところ（er、sankey、block の字句解析器はどの行もそう読まず、
 gantt、journey、requirement、timeline の字句解析器は
 ヘッダーの前ではそう読みません）では
 mermaid.js が入力を拒否し、この仕様は受理します。
@@ -133,6 +133,15 @@ mermaid.js が入力を拒否し、この仕様は受理します。
     a,b,1
     ```
 
+13. block のヘッダーの前の、`%%` だけの行、`%%{ }%%` の行、
+    `%%` だけの行と空白 2 つの行:
+
+    ```mmd
+    %%
+    block-beta
+      A
+    ```
+
 | 例  | mermaid.js                                              | この仕様                            |
 | --- | ------------------------------------------------------- | ----------------------------------- |
 | 1   | 拒否。`%%` はヘッダーの前の id                          | A から B への辺を持つ flowchart     |
@@ -147,6 +156,7 @@ mermaid.js が入力を拒否し、この仕様は受理します。
 | 10  | 拒否。改行は `newline` の単位                           | 要求 r を持つ要求図                 |
 | 11  | 拒否。改行は `newline` の単位                           | period a を持つ timeline            |
 | 12  | 拒否。`%%` はヘッダーの前の欄                           | a から b へのリンクを持つ sankey 図 |
+| 13  | 拒否。`%%` はヘッダーの前の id                          | ブロック A を持つ block 図          |
 
 [fixture: flowchart/header-after-bare-percent-line] [fixture:
 flowchart/header-after-empty-braces-line] [fixture:
@@ -171,6 +181,9 @@ timeline/header-after-bare-percent-line-and-whitespace-line] [fixture:
 sankey/header-after-bare-percent-line] [fixture:
 sankey/header-after-empty-braces-line] [fixture:
 sankey/header-after-bare-percent-line-and-whitespace-line]
+[fixture: block/div-after-bare-percent-line]
+[fixture: block/div-after-empty-braces-line]
+[fixture: block/div-after-bare-percent-line-and-whitespace-line]
 
 隣の形も同じに読まれます。
 flowchart と state では、ディレクティブの始まらない `%%{-x}%%` や `%%{}` の行は
@@ -212,7 +225,7 @@ mermaid.js がここで受理する入力を拒否することはありません
 このツールキットはどの図種でもコメントとして読み、
 mermaid.js は sequence・class・state でだけそう読み
 （class では、その後に空白の行があると読みません）、
-er、gantt、journey、requirement、timeline、sankey では読みません。
+er、gantt、journey、requirement、timeline、sankey、block では読みません。
 両者が同じに読む図を書くには、ヘッダーの前のコメントは `%%` の後に 1 文字以上
 置いたコメント行にし、ヘッダーとの間に空白だけの行を置かないことです。
 
@@ -235,6 +248,8 @@ class の字句解析器は空白だけの行を `newline` の単位として読
 文法はヘッダーの前でそれを取りません。
 er の字句解析器には `%` の規則がまったくありません。
 sankey の字句解析器は `%%` を欄として読み、
+文法はヘッダーの前でそれを取りません。
+block の字句解析器は `%%` を id として読み、
 文法はヘッダーの前でそれを取りません。
 gantt、journey、requirement、timeline の字句解析器は
 `%%` をコメントとして読みますが、

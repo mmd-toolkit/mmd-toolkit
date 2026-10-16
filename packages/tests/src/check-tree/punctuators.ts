@@ -1,3 +1,4 @@
+import { BLOCK_PUNCTUATORS } from "./block.ts"
 import { CLASS_CLASSIFIER_MARKS, CLASS_VISIBILITY_MARKS } from "./class.ts"
 import { FLOWCHART_SHAPES } from "./flowchart-shapes.ts"
 import { MINDMAP_PUNCTUATORS } from "./mindmap.ts"
@@ -108,11 +109,14 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   // The row `Punctuator` of parser/docs/tokens/quadrant.md; the arrow is listed
   // as `-->` and is checked with the other arrows of two dashes or more.
   QuadrantDiagram: QUADRANT_PUNCTUATORS,
+  BlockDiagram: BLOCK_PUNCTUATORS,
   ErrorDiagram: [],
 }
 
 /** The node types whose range holds the tokens of an arrow, which the check of the node reads. */
 const ARROW_NODE_TYPES: ReadonlySet<string> = new Set([
+  "BlockArrow",
+  "BlockOpeningArrow",
   "FlowchartArrow",
   "FlowchartOpeningArrow",
   "SequenceArrow",

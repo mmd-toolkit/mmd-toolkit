@@ -1,0 +1,65 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, how the blocks are collected: the table is filled in the order of the text, a composite before its children and its children before the next block."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "G",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {
+              "id": "B",
+              "label": "B",
+              "type": "na",
+              "widthInColumns": 1
+            },
+            {
+              "id": "H",
+              "label": "",
+              "type": "composite",
+              "widthInColumns": 1,
+              "children": [
+                {
+                  "id": "C",
+                  "label": "C",
+                  "type": "na",
+                  "widthInColumns": 1
+                }
+              ]
+            },
+            {
+              "id": "D",
+              "label": "D",
+              "type": "na",
+              "widthInColumns": 1
+            }
+          ]
+        },
+        {
+          "id": "E",
+          "label": "E",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

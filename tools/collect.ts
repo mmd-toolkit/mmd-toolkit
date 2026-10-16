@@ -145,6 +145,13 @@ const SPEC_FILES: Readonly<
   // The other test file of the directory, `quadrantDb.spec.ts`, calls
   // `parseStyles()` with values built in code and passes no text.
   quadrant: () => ["diagrams/quadrant-chart/parser/quadrant.jison.spec.ts"],
+  // The other test files of the directory pass no text: `blockDB.spec.ts` and
+  // `layout.spec.ts` call the Db's methods and the layout with values built in
+  // code.
+  block: () => [
+    "diagrams/block/parser/block.spec.ts",
+    "diagrams/block/blockColorIndex.spec.ts",
+  ],
 }
 
 /**

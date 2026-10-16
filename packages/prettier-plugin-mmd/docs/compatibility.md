@@ -271,6 +271,32 @@ flowchart/lex-direction-line-semicolon-before-value] [corpus fixture:
 flowchart/lex-call-keyword-semicolon] See
 [Statements one per line](./flowchart.md#statements-one-per-line).
 
+Whether the printer drops the `;` that ends such a line decides which `;` the
+rule ignores in the printed line, so the printer asks one question for both the
+printing of the `;` and the whitespace between the `:` and the `#`, which it
+keeps as touching or as one space. Where a `;` separates statements (a
+flowchart, a sequence diagram, a quadrant chart, an XY chart), the ignored `;`
+at the end of the line is dropped, and the whitespace of the line before it is
+formatted as usual. Where it does not (a class diagram, a state diagram, a block
+diagram, and the others), the line is kept with its `;`, and the gap stays.
+[fixture: flowchart/semicolons/style-line-dropped-semicolon-formats-the-gap]
+[fixture:
+xychart/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
+[fixture:
+quadrant/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
+[fixture:
+class/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-touching-kept]
+[fixture:
+class/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-becomes-one-space]
+[fixture:
+state/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-touching-kept]
+[fixture:
+state/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-becomes-one-space]
+[fixture:
+block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
+[fixture: block/multi-line-statements/line-rule-semicolon-after-an-id-kept]
+[fixture: block/multi-line-statements/semicolon-after-spaced-arrow-is-an-id]
+
 ## Whitespace at the end of a style
 
 Whitespace at the end of a `style`, `classDef`, or `linkStyle` statement is
@@ -961,6 +987,46 @@ or the lexer reads stays. See
   a title, and an accessibility text, and stay where they stand, also in a gap.
   [test: U+2028 between the words of a text] [test: U+2028 around the arrow of
   an axis]
+
+## Block diagram lines that the whitespace or the lexer decide
+
+Most whitespace of a block diagram is not in the Db, so formatting changes it.
+What the Db or the lexer reads stays. See [Rows](./block.md#rows),
+[Shapes](./block.md#shapes), [Styles](./block.md#styles), and
+[Multi-line statements](./block.md#multi-line-statements).
+
+- The whitespace inside the parentheses of a block arrow, which is in the Db:
+  `(right down)` has the direction `right `, and `( up)` has ` up`. [fixture:
+  shapes/block-arrow-directions-as-written] [fixture:
+  shapes/block-arrow-directions-whitespace-kept]
+- The whitespace of `style` and `class`: of a style after a `,`, of the ids of
+  `class`, and of its class name. [fixture: styles/style-commas-as-written]
+  [fixture: styles/class-ids-as-written] [fixture: styles/class-name-as-written]
+  [fixture: styles/class-name-with-a-comma-as-written]
+- A statement that starts with `%%`: mermaid.js reads `%%x` after a node as an
+  id and a line that starts with `%%x` as a comment line, so the line that holds
+  such a statement stays on one line. [fixture:
+  rows/percent-id-stays-in-its-row] [fixture:
+  rows/percent-id-keeps-columns-with-it] [fixture:
+  rows/percent-id-after-end-not-moved] [fixture:
+  rows/percent-id-after-the-header-stays-on-the-line] [fixture:
+  comments/percent-in-a-line-is-an-id]
+- A chain of links, `A --> B --> C`, which mermaid.js reads badly (its Db loses
+  the nodes before the last) and which splitting would read otherwise, stays one
+  statement on one line. [fixture: edges/chain-on-one-line]
+- A line that the line rule of mermaid.js reads, with a `style` or `classDef`, a
+  `:` and a `#` after it with no whitespace between them, and a `;` after that,
+  keeps its statements together with the `;`. [fixture:
+  multi-line-statements/line-rule-line-kept] [fixture:
+  multi-line-statements/line-rule-line-kept-with-columns] [fixture:
+  multi-line-statements/line-rule-line-kept-with-composite]
+- A statement with a comment line or a directive in a line break that it would
+  join, kept as written. [fixture:
+  multi-line-statements/comment-line-inside-kept] [fixture:
+  multi-line-statements/directive-inside-kept]
+- U+0085, which mermaid.js does not read as whitespace: it is a character of an
+  id. A U+2028 or U+2029 in the gap of a statement is printed as written. [test:
+  U+0085 inside an id] [test: U+2028 between two statements of a row]
 
 ## A comment line after U+2028 or U+2029
 

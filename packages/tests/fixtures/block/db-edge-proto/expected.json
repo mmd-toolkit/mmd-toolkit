@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: `__proto__` and `constructor` as the ends of an edge."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "__proto__",
+          "label": "__proto__",
+          "type": "na"
+        },
+        {
+          "id": "constructor",
+          "label": "constructor",
+          "type": "na"
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "__proto__",
+        "end": "constructor",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

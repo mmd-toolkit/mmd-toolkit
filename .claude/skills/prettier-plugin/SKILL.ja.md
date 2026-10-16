@@ -122,7 +122,9 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
   コメントの後の空白だけの行を残すかどうかを伝える。
   文とブロックの見出しの配置と、決まった項目の隙間の規則は
   `<図種>-layout.ts` に、保つ行は `<図種>-kept-lines.ts` に置く。
-  `BlockRules` は図種の文の型をとるので、その関数にキャストは要らない。
+  `BlockRules` は図種の文の型か、
+  1 行に残る文をまとめた単位（ブロック図）をとるので、
+  その関数にキャストは要らない。
   図種の文に種類があるときは、その種類を 1 つの関数で決める。
   種類とは、1 つの本体を持つブロック、節を持つブロック、
   ほかの文を持たない文などである。
@@ -295,6 +297,9 @@ printer を書く前に、選択肢の一覧を作り、決定を求める。
     `value-nodes`。
   - `quadrant*.ts`: `format` と `corpus` を `-t quadrant` で。
     `-t` なしで `line-separators`、`markdown-quadrant`、
+    `value-nodes`。
+  - `block-*.ts`、`block.ts`: `format` と `corpus` を `-t block` で。
+    `-t` なしで `line-separators`、`markdown-block`、
     `value-nodes`。
   - `statement-rules.ts`、`accessibility-lines.ts`:
     それを使う図種、ER と requirement のテスト。

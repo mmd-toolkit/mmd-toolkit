@@ -5147,3 +5147,2613 @@ which rejects what it does not know
   quadrant/gram-unclosed-name-quote-at-end] [fixture:
   quadrant/gram-unclosed-point-after-comma-at-end] [fixture:
   quadrant/gram-unclosed-quadrant-quote-at-end]
+
+## block
+
+The fields of the summary:
+
+| Field      | Content                                                                                                                                                                                  |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `root`     | The block that holds the diagram: its `columns`, which is `-1` where the text has no `columns` at its top level, and its `children`, the blocks of the diagram in the order of the text. |
+| `unplaced` | The blocks that the Db holds in its table and that no list of children holds.                                                                                                            |
+| `edges`    | The edges, in the order of the text.                                                                                                                                                     |
+| `classes`  | The classes of `classDef`, in the order of their first definition.                                                                                                                       |
+
+`normalizeBlock()` (`src/normalizers/block.ts`) summarizes the Db of `block`.
+The Db is one object that every block diagram shares, with its state in module
+variables, and
+[`clear()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L197-L209)
+resets it before each parse. It reads no browser feature and no time while it
+parses. The grammar builds a list of statements, and only when the whole text is
+parsed does
+[`setHierarchy()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L305-L309)
+call
+[`populateBlockDatabase()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L105-L192),
+which walks the list in the order of the text, one list of children at a time,
+and fills the Db: a table of blocks by id, the lists of edges, and the classes.
+The summary is read from the Db when that is done.
+
+A block is `{ id, label, type, ... }` with the fields it has, as the Db holds
+them. `widthInColumns` is the `:N` of a node, which a node at an end of an edge
+does not get; `width` is the width of a `space`; `directions` are the directions
+of a block arrow, as the lexer read them; `columns` is the last `columns` inside
+a composite; `classes` are the class names that `class` gave it, in the order of
+the statements; `styles` are the styles of the last `style` statement for it,
+split at each `,`; and a composite has `children`, the blocks of its own list in
+the order of the text. The Db makes up an id for a `block` with no id and for
+each `space`, with
+[`generateId()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDB.ts#L300-L303),
+which holds a random part, so the summary has no `id` for such a block, and no
+`label` for a `space`, whose label is the id the Db made up. The block that
+holds the diagram is `root`, a block like the others but for its `id`.
+
+`root.columns` is `-1` where the text has no `columns` at its top level.
+`unplaced` lists the blocks that the Db holds in its table and that no list of
+children holds, in the order of the table: the block that `class` made for an id
+that no statement had defined yet, or for an id with white space before it that
+finds no block (`class A, B c`), which takes the place of the entry of that id
+in the table (the later definition of the id takes it, and it stays out of the
+diagram), and the blocks inside a composite whose id the Db already had (the Db
+keeps the first block of an id and drops the new one, with its list of
+children). A block that another listed block holds in its `children` is listed
+there only. An edge is
+`{ start, end, label, thickness, pattern, arrowTypeStart, arrowTypeEnd }`, with
+`directions` where the block at its end is a block arrow, and the edges are in
+the order of the text, those inside a composite included. A class is
+`{ id, styles }`, with the styles of every `classDef` of that id one after the
+other.
+
+It drops the following, each for the reason given:
+
+- `colorIndex` of a composite: the slot of the palette for the renderer, counted
+  in the order of the composites.
+- `textStyles` of a class: the styles that name a colour, written again for the
+  renderer. They follow from the styles.
+- `id` and `type` of an edge: the id is the number of the edge between the same
+  two ids, with the two ids, and the type is always `edge`.
+- `children` of a block that is not a composite and holds none (`[]`), `label`
+  of a `space` (the id the Db made up), and the entry that each `space`
+  statement makes in the table of blocks (the blocks of its width hold the
+  width; `space:0` makes no block).
+- The fields `0`, `1`, and `2` of a composite whose `block:` is followed by an
+  edge statement: the Db spreads the list of three blocks of the statement into
+  the composite, and nothing reads the fields.
+- The layout that the renderer fills in (`size`, `intersect`, `node`), which the
+  Db does not hold while it parses.
+- `getColumns()`, which gives the number of children for a block that has no
+  `columns` or has `0`: it follows from the fields that are kept.
+
+The patch of the Db (`patchBlockDb()`) records the ids that `generateId()`
+makes, so that the summary can tell them from the ids of the text, and `clear()`
+forgets them. It is applied to the Db itself, since there is one Db. The summary
+is the same under every `securityLevel` that mermaid.js has and under the
+settings of the site, but for the replaced characters of the labels under a
+`securityLevel` that is none of its values.
+
+Values of the summary, by field.
+
+- The header is `block-beta` or `block`.
+  [The detector](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/block/blockDetector.ts#L6-L6)
+  reads any text that starts, after white space, with `block`, in this exact
+  case, so `Block-beta`, `BLOCK-BETA`, and `Block` are not detected, and
+  `block-Beta` and `block-BETA` are the header `block` followed by text that no
+  rule reads. A word character glued to the header makes a node and not the
+  header, so `blockx`, `block_beta`, `block2`, `block-betax`, and `block-alpha`
+  are rejected, while a character outside ASCII is no word character, so
+  `blocké` is the header and the node `é`. A header and nothing else is
+  rejected, with or without a line feed. [fixture: block/header-block-beta]
+  [fixture: block/header-block] [fixture: block/header-only-block-beta]
+  [fixture: block/header-only-block] [fixture:
+  block/header-only-block-beta-no-line-break] [fixture:
+  block/header-capitalized] [fixture: block/header-upper-case] [fixture:
+  block/header-capitalized-block] [fixture: block/header-word-suffix] [fixture:
+  block/header-dash-suffix] [fixture: block/header-alpha-suffix] [fixture:
+  block/header-underscore-suffix] [fixture: block/header-digit-suffix] [fixture:
+  block/header-non-ascii-suffix] [fixture: block/header-beta-capital] [fixture:
+  block/header-beta-upper]
+- A statement may follow the header on its line, separated by a space or a tab,
+  and so may `columns`. A `;` and a `%%` with the text after it are nodes there,
+  not a separator or a comment. A second header opens a composite, which `end`
+  must close: on a line of its own, after the header line, or as `block`.
+  [fixture: block/header-spaced-word-suffix] [fixture:
+  block/header-statement-on-header-line] [fixture:
+  block/header-statement-on-header-line-tab] [fixture:
+  block/header-columns-on-header-line] [fixture: block/header-semicolon]
+  [fixture: block/header-semicolon-spaced] [fixture:
+  block/header-comment-on-header-line] [fixture: block/header-comment-glued]
+  [fixture: block/header-twice] [fixture: block/header-twice-closed] [fixture:
+  block/header-twice-same-line] [fixture: block/header-twice-block] [fixture:
+  block/header-keyword-header-in-text]
+- Spaces, tabs, blank lines, a no-break space, a U+3000, a U+FEFF, and a U+2028
+  before the header change nothing, and neither does a frontmatter, a comment
+  line, or a directive line, whose title and configuration the summary does not
+  keep. A line that starts with `#`, a `;`, or a statement before the header is
+  not detected. A line of `%%` alone or `%%{ }%%` before the header is not
+  removed, and the lexer reads it as a node before the header: rejected.
+  [fixture: block/header-indented] [fixture: block/header-tab-indented]
+  [fixture: block/header-blank-lines-before] [fixture: block/header-nbsp-before]
+  [fixture: block/header-ideographic-space-before] [fixture:
+  block/header-bom-before] [fixture: block/header-ls-before] [fixture:
+  block/header-after-comment-line] [fixture: block/header-after-directive-line]
+  [fixture: block/header-after-whitespace-line] [fixture:
+  block/header-after-frontmatter] [fixture:
+  block/header-after-frontmatter-and-comment] [fixture:
+  block/header-after-hash-line] [fixture: block/header-after-semicolon-line]
+  [fixture: block/header-leading-semicolon] [fixture:
+  block/header-statement-first] [fixture: block/div-after-bare-percent-line]
+  [fixture: block/div-after-bare-percent-line-and-whitespace-line] [fixture:
+  block/div-after-empty-braces-line]
+- After the header, spaces and tabs and a no-break space, a U+FEFF, an
+  ideographic space, a U+2028, a U+2029, a vertical tab, and a form feed are
+  white space, a CR alone and a CRLF end the line, and a directive glued to the
+  header is removed. A U+0085 is no white space for the lexer: it joins the id
+  after it. [fixture: block/header-trailing-spaces] [fixture:
+  block/header-trailing-tab] [fixture: block/header-trailing-nbsp] [fixture:
+  block/header-bom-after] [fixture: block/header-ls-after] [fixture:
+  block/header-ps-after] [fixture: block/header-nel-after] [fixture:
+  block/header-vt-after] [fixture: block/header-ff-after] [fixture:
+  block/header-cr] [fixture: block/header-crlf] [fixture:
+  block/header-directive-glued]
+- `columns N` sets the columns of the block it stands in, the root or a
+  composite, and the last `columns` of a block is its columns, wherever in the
+  block it stands. The number is read as a decimal number, so `007` is 7, and
+  `0` and `00` are 0; `columns auto` is `-1`, the value of a block that has no
+  `columns`, and a number of so many digits that the double is infinite is
+  recorded as the text `Infinity`. The Db keeps the number as it is: `0` is
+  stored as `0`, while `getColumns()` gives the number of children for it.
+  [fixture: block/db-columns-plain] [fixture: block/db-columns-auto] [fixture:
+  block/db-columns-zero] [fixture: block/db-columns-double-zero] [fixture:
+  block/db-columns-leading-zeros] [fixture: block/db-columns-one] [fixture:
+  block/db-columns-large] [fixture: block/db-columns-overflow] [fixture:
+  block/db-columns-twice] [fixture: block/db-columns-twice-auto-last] [fixture:
+  block/db-columns-twice-number-last] [fixture:
+  block/db-definitions-columns-three] [fixture: block/db-columns-after-nodes]
+  [fixture: block/db-columns-between-nodes] [fixture: block/db-columns-only]
+  [fixture: block/db-columns-only-auto] [fixture: block/db-columns-after-block]
+  [fixture: block/db-columns-after-end]
+- A composite has its own columns, apart from those of the root and of the
+  composite around it: `columns` inside a composite with an id, with none, or
+  inside a nested one sets the columns of the innermost composite, and a
+  composite that holds only `columns` has no children. A `columns` after the id
+  of a composite on its line is a statement of the composite. [fixture:
+  block/db-columns-in-block] [fixture: block/db-columns-in-block-and-root]
+  [fixture: block/db-columns-in-block-auto] [fixture:
+  block/db-columns-in-block-only] [fixture: block/db-columns-in-anonymous-block]
+  [fixture: block/db-columns-in-nested-block] [fixture:
+  block/db-columns-in-block-header-line] [fixture:
+  block/db-composite-width-and-columns]
+- What is not a number after `columns` does not make one: a sign (`+2`, `-1`), a
+  decimal point, an exponent, a hexadecimal prefix, and a digit outside ASCII
+  end the number or stop it from starting, and the rest is read as nodes
+  (`columns 2.5` is the columns 2 and the node `.5`), while `columns -1` and
+  `columns 2:3` are rejected. A word after `columns`, `AUTO`, and `auto2` are
+  nodes with `columns` itself a node, and so are `Columns 2`, `COLUMNS 2`,
+  `columns2`, and `columnsauto`: the keyword is read in lower case, followed by
+  white space. [fixture: block/db-columns-plus] [fixture:
+  block/gram-columns-negative] [fixture: block/db-columns-decimal] [fixture:
+  block/db-columns-exponent] [fixture: block/db-columns-hexadecimal] [fixture:
+  block/db-columns-fullwidth-digit] [fixture: block/db-columns-arabic-digit]
+  [fixture: block/gram-columns-colon-number] [fixture:
+  block/db-columns-no-number] [fixture: block/db-columns-no-number-last]
+  [fixture: block/db-columns-word] [fixture: block/db-columns-auto-upper]
+  [fixture: block/db-columns-auto-suffix] [fixture: block/db-columns-auto-glued]
+  [fixture: block/db-columns-glued-number] [fixture:
+  block/db-columns-upper-case] [fixture: block/db-columns-upper-case-all]
+  [fixture: block/db-columns-two-numbers]
+- The white space between `columns` and its number is any white space of the
+  lexer, a line feed and blank lines included, and a node may follow the number
+  on its line. A `;` after the number is a node. The width of a node is kept
+  whatever the columns: a wider one than `columns` is not changed. [fixture:
+  block/db-columns-tab] [fixture: block/db-columns-line-feed] [fixture:
+  block/db-columns-blank-line] [fixture: block/db-columns-nbsp] [fixture:
+  block/db-columns-ideographic] [fixture: block/db-columns-ls] [fixture:
+  block/db-columns-bom] [fixture: block/db-columns-crlf] [fixture:
+  block/db-columns-two-spaces] [fixture: block/db-columns-trailing] [fixture:
+  block/db-columns-then-word] [fixture: block/db-columns-semicolon] [fixture:
+  block/db-columns-with-width] [fixture: block/db-columns-width-exceeds-zero]
+  [fixture: block/db-columns-auto-then-width]
+- A word is a node, whose id and label are the word, and a line may hold any
+  number of them, separated by white space. The word holds any character but
+  white space and `(`, `)`, `[`, `{`, `}`, `<`, `>`, `:`, `=`, and `-`, which
+  end it: `_`, `.`, `/`, `,`, `|`, `#`, `&`, `%`, `$`, `*`, `+`, `~`, `^`, `@`,
+  `!`, `?`, a backtick, a backslash, a `;`, a quote, a `]`, and any letter, CJK
+  character, or emoji are part of an id, `%%` inside a word is part of it, and
+  an id may start with a digit, `%`, `#`, `;`, or `_`. Ids keep their case, and
+  an id that is used again is the same block, in the place of the first.
+  [fixture: block/db-name-two] [fixture: block/db-name-three-lines] [fixture:
+  block/db-name-digits] [fixture: block/db-name-digits-and-letters] [fixture:
+  block/db-name-underscore] [fixture: block/db-name-underscore-first] [fixture:
+  block/db-name-dot] [fixture: block/db-name-slash] [fixture:
+  block/db-name-comma] [fixture: block/db-name-pipe] [fixture:
+  block/db-name-hash] [fixture: block/db-name-ampersand] [fixture:
+  block/db-name-percent] [fixture: block/db-name-percent-percent] [fixture:
+  block/db-name-dollar] [fixture: block/db-name-asterisk] [fixture:
+  block/db-name-plus] [fixture: block/db-name-tilde] [fixture:
+  block/db-name-caret] [fixture: block/db-name-at] [fixture:
+  block/db-name-exclamation] [fixture: block/db-name-question] [fixture:
+  block/db-name-backtick] [fixture: block/db-name-backslash] [fixture:
+  block/db-name-semicolon] [fixture: block/db-name-quote] [fixture:
+  block/db-name-single-quote] [fixture: block/db-name-brackets-in-id] [fixture:
+  block/db-name-non-ascii] [fixture: block/db-name-cjk] [fixture:
+  block/db-name-emoji] [fixture: block/db-name-long] [fixture:
+  block/db-name-same-twice] [fixture: block/db-name-same-three] [fixture:
+  block/db-name-case] [fixture: block/db-name-leading-digits] [fixture:
+  block/db-name-percent-first] [fixture: block/db-name-hash-first] [fixture:
+  block/db-name-semicolon-first] [fixture: block/gram-name-dash] [fixture:
+  block/gram-name-dash-first] [fixture: block/gram-name-colon] [fixture:
+  block/gram-name-equals] [fixture: block/gram-name-less-than] [fixture:
+  block/gram-name-greater-than] [fixture: block/gram-name-brace] [fixture:
+  block/gram-name-close-paren]
+- Tabs, vertical tabs, form feeds, CRs, CRLFs, no-break spaces, U+3000, U+FEFF,
+  U+2028, and U+2029 separate two ids, while a U+0085 does not, and joins the
+  two words into one id. Spaces after a node, the indentation of a line, blank
+  lines, and a missing final line feed change nothing. [fixture:
+  block/db-name-tab-between] [fixture: block/db-name-nbsp-between] [fixture:
+  block/db-name-ideographic-between] [fixture: block/db-name-bom-between]
+  [fixture: block/db-name-ls-between] [fixture: block/db-name-ps-between]
+  [fixture: block/db-name-nel-between] [fixture: block/db-name-vt-between]
+  [fixture: block/db-name-ff-between] [fixture: block/db-name-cr-between]
+  [fixture: block/db-name-crlf-between] [fixture: block/db-name-ls-around]
+  [fixture: block/db-name-trailing-spaces] [fixture:
+  block/db-name-indented-more] [fixture: block/db-name-blank-lines] [fixture:
+  block/db-name-no-final-line-feed]
+- `:N` after an id, after a shape, or after the directions of a block arrow is
+  the width of the node in columns, and a node with no `:N` has the width 1. The
+  number is read as a decimal number, so `:007` is 7 and `:0` is 0, and a number
+  of so many digits that the double is infinite is the text `Infinity`. White
+  space before the `:`, a line feed included, is allowed. A space after the `:`,
+  a `:` with no number, a sign, a letter, a digit outside ASCII, and two widths
+  are rejected. What follows a number is read on its own: `A:2.5` is the width 2
+  and the node `.5`, and `A:3B`, `A:3,B`, `A:3#`, and `A:3;` are the node A and
+  another node. [fixture: block/db-width-plain] [fixture: block/db-width-one]
+  [fixture: block/db-width-zero] [fixture: block/db-width-leading-zeros]
+  [fixture: block/db-width-large] [fixture: block/db-width-overflow] [fixture:
+  block/db-width-space-before] [fixture: block/db-width-tab-before] [fixture:
+  block/db-width-line-feed-before] [fixture: block/gram-width-space-after]
+  [fixture: block/gram-width-colon-only] [fixture: block/gram-width-negative]
+  [fixture: block/db-width-decimal] [fixture: block/gram-width-letters]
+  [fixture: block/gram-width-twice] [fixture: block/gram-width-fullwidth-digit]
+  [fixture: block/db-width-glued-node] [fixture: block/db-width-comma] [fixture:
+  block/db-width-hash] [fixture: block/db-width-semicolon] [fixture:
+  block/db-width-on-two-nodes] [fixture: block/db-width-with-label] [fixture:
+  block/db-width-label-then-space] [fixture: block/db-width-with-block-arrow]
+- A node that is used again keeps the width of its first use, whether that use
+  gave a width or not. The node at the start of an edge has no width in the Db,
+  and the node at its end cannot have one: the width of the start is lost, and a
+  width at the end is rejected, but a node defined before the edge keeps its
+  width. [fixture: block/db-width-redefine] [fixture:
+  block/db-width-redefine-without] [fixture: block/db-width-redefine-first]
+  [fixture: block/db-width-on-edge-source] [fixture:
+  block/gram-width-on-edge-target] [fixture: block/db-width-before-edge]
+  [fixture: block/db-edge-keeps-width] [fixture:
+  block/db-definitions-three-widths]
+- A shape after an id gives the node its type, and its text between the quotes
+  the label: `[ ]` is `square`, `( )` is `round`, `(( ))` is `circle`, `((( )))`
+  is `doublecircle`, `([ ])` is `stadium`, `[[ ]]` is `subroutine`, `[( )]` is
+  `cylinder`, `{ }` is `diamond`, `{{ }}` is `hexagon`, `> ]` is
+  `rect_left_inv_arrow`, `[/ /]` is `lean_right`, `[\ \]` is `lean_left`,
+  `[/ \]` is `trapezoid`, `[\ /]` is `inv_trapezoid`, and `<[ ]>( )` is
+  `block_arrow`. A node with no shape has the type `na`. [fixture:
+  block/db-shape-square] [fixture: block/db-shape-round] [fixture:
+  block/db-shape-circle] [fixture: block/db-shape-doublecircle] [fixture:
+  block/db-shape-stadium] [fixture: block/db-shape-subroutine] [fixture:
+  block/db-shape-cylinder] [fixture: block/db-shape-diamond] [fixture:
+  block/db-shape-hexagon] [fixture: block/db-shape-rect-left-inv-arrow]
+  [fixture: block/db-shape-lean-right] [fixture: block/db-shape-lean-left]
+  [fixture: block/db-shape-trapezoid] [fixture: block/db-shape-inv-trapezoid]
+  [fixture: block/db-shape-block-arrow]
+- A pair of opening and closing characters that is none of these has no type:
+  the Db gives `na`, and the label stays. This is so for `) (`, `)) ((`,
+  `(- -)`, `-) (-`, a mismatched pair such as `( ]`, `[ )`, `> }`, `{ ]`, and
+  `(( )`, and an extra `]`. `[| |]` and `[[[ ]]]` are not shapes: rejected. A
+  space or a line feed may stand between the id and the shape, and a shape with
+  no id is rejected. [fixture: block/db-shape-odd-left] [fixture:
+  block/db-shape-odd-double] [fixture: block/db-shape-minus-round] [fixture:
+  block/db-shape-minus-reverse] [fixture: block/db-shape-mixed-round-square]
+  [fixture: block/db-shape-mixed-square-round] [fixture:
+  block/db-shape-mixed-arrow-brace] [fixture: block/db-shape-mixed-brace-square]
+  [fixture: block/db-shape-mixed-double] [fixture:
+  block/db-shape-mixed-circle-stadium] [fixture: block/db-shape-extra-close]
+  [fixture: block/gram-shape-pipe] [fixture: block/gram-shape-triple-square]
+  [fixture: block/db-shape-space-before] [fixture:
+  block/db-shape-line-feed-before] [fixture: block/gram-shape-shape-only]
+  [fixture: block/gram-shape-shape-only-round] [fixture:
+  block/db-shape-two-defs-line] [fixture: block/db-shape-no-space-between]
+- When a node is defined again, the Db takes the type of the new definition if
+  it has one (a shape with no type, or no shape, leaves the type), and the label
+  if it differs from the id, but it keeps the first width and the first
+  directions, and the node stays in the place of the first. A label that equals
+  the id does not replace a label. A third definition meets the second, and a
+  use with no shape between two with shapes changes nothing. [fixture:
+  block/db-shape-redefine-shape] [fixture: block/db-shape-redefine-to-na]
+  [fixture: block/db-shape-redefine-from-na] [fixture:
+  block/db-shape-redefine-same-label] [fixture: block/db-shape-redefine-to-odd]
+  [fixture: block/db-shape-redefine-width] [fixture:
+  block/db-shape-redefine-label-only] [fixture:
+  block/db-definitions-three-shapes] [fixture:
+  block/db-definitions-three-labels-first-equal] [fixture:
+  block/db-definitions-three-na-in-the-middle] [fixture:
+  block/db-definitions-three-edge-ends] [fixture:
+  block/db-definitions-three-edge-and-node] [fixture:
+  block/db-edge-redefine-by-edge] [fixture: block/db-edge-keeps-shape]
+- The label is the text between the quotes. It is not empty: `""` is rejected. A
+  string of spaces is a label with its spaces, and the spaces around a text
+  stay. Single quotes, a text without quotes, and a string that is not closed
+  (or a shape that is not) are rejected, and so is a `"` inside a string, with
+  or without a backslash before it. The characters other than `"` in a string
+  are part of the label: brackets and braces, `<` and `>`, an arrow, `:`, `;`,
+  `#`, `%`, `%%`, an apostrophe, a backtick or a backslash, a letter outside
+  ASCII, an emoji, keywords such as `end` and `columns 2`, and `__proto__`. A
+  string that starts with a backtick (a markdown string) is rejected. [fixture:
+  block/db-label-plain] [fixture: block/gram-label-empty] [fixture:
+  block/db-label-spaces] [fixture: block/db-label-padded] [fixture:
+  block/gram-label-single-quote] [fixture: block/gram-label-unquoted] [fixture:
+  block/gram-label-unquoted-space] [fixture: block/gram-label-unclosed]
+  [fixture: block/gram-label-unclosed-shape] [fixture:
+  block/gram-label-quote-inside] [fixture: block/gram-label-backslash-quote]
+  [fixture: block/db-label-backslash] [fixture: block/db-label-escaped-n]
+  [fixture: block/db-label-single-quote-inside] [fixture:
+  block/gram-label-backtick] [fixture: block/db-label-backtick-inside] [fixture:
+  block/gram-label-backtick-start] [fixture: block/db-label-backtick-end]
+  [fixture: block/gram-label-markdown] [fixture: block/db-label-round-brackets]
+  [fixture: block/db-label-square-brackets] [fixture: block/db-label-braces]
+  [fixture: block/db-label-angle] [fixture: block/db-label-arrow] [fixture:
+  block/db-label-colon] [fixture: block/db-label-semicolon] [fixture:
+  block/db-label-hash] [fixture: block/db-label-percent] [fixture:
+  block/db-label-comment] [fixture: block/db-label-non-ascii] [fixture:
+  block/db-label-emoji] [fixture: block/db-label-long] [fixture:
+  block/db-label-keyword] [fixture: block/db-label-keyword-columns] [fixture:
+  block/db-label-proto] [fixture: block/db-label-constructor] [fixture:
+  block/db-label-equals-id]
+- A line feed, a tab, a U+2028, a U+2029, a no-break space, an ideographic
+  space, a U+FEFF, and a U+0085 in a string are part of the label, but a CR
+  alone and a CRLF become a line feed. A comment line inside a string is removed
+  with its line feed, a directive inside a string is removed, and a directive on
+  a line of its own inside a string leaves the line breaks around it. A
+  character reference is read as its placeholder, a `#` and digits without a `;`
+  are not one, and a `"` that is the quote of an attribute of an HTML tag is
+  read as `'`, so it does not end the string. HTML tags, `<br>`, and `&amp;` are
+  kept as they are. [fixture: block/db-label-line-feed] [fixture:
+  block/db-label-crlf] [fixture: block/db-label-cr] [fixture:
+  block/db-label-tab] [fixture: block/db-label-ls] [fixture: block/db-label-ps]
+  [fixture: block/db-label-nbsp] [fixture: block/db-label-ideographic] [fixture:
+  block/db-label-bom] [fixture: block/db-label-nel] [fixture:
+  block/db-label-comment-line] [fixture: block/db-label-comment-line-spaced]
+  [fixture: block/db-label-directive] [fixture: block/db-label-directive-line]
+  [fixture: block/db-label-entity-numeric] [fixture:
+  block/db-label-entity-named] [fixture: block/db-label-entity-no-semicolon]
+  [fixture: block/db-label-html-tag] [fixture: block/db-label-html-br] [fixture:
+  block/db-label-html-br-slash] [fixture: block/db-label-html-script] [fixture:
+  block/db-label-html-attribute] [fixture: block/db-label-html-attribute-double]
+  [fixture: block/db-label-ampersand] [fixture: block/db-label-after-string]
+  [fixture: block/db-label-after-string-glued] [fixture:
+  block/gram-label-string-only] [fixture: block/db-label-string-after-id]
+  [fixture: block/gram-label-string-after-space]
+- A block arrow `<[ "text" ]>( directions )` has the directions after the `]>`,
+  a space or a line feed between them being allowed. A direction is `right`,
+  `left`, `up`, `down`, `x`, or `y`, in lower case, separated by commas, and the
+  directions are kept in order, one entry for each, also when a direction is
+  repeated. The text of a direction holds the white space that follows it:
+  `right  ,  down` is `right  ` and `down`, `right down` is `right ` and `down`,
+  and `( right)` is ` right`, while the white space after a comma is dropped,
+  and a comma before the first direction is dropped too. A space before the
+  first direction stays in it when no comma stands before: `( right , down)` is
+  `right` with a space before and after it, and `down`. A comment line or a
+  directive between the `(` and the first direction is left out of its text,
+  which keeps the white space around it. A CR, a directive, and a LF after a
+  direction are two line terminators, read as two line feeds, while a CRLF is
+  one. A word that is made of directions, such as `rightx`, `xright`, and
+  `updown`, is read as the directions in it. An unknown word, upper case, no
+  directions, a comma at the end or two in a row, a keyword, a closing without
+  `>`, a list that is not closed, and a label without quotes or with none are
+  rejected. The label may be a space or `&nbsp;`. [fixture:
+  block/db-shape-block-arrow] [fixture: block/db-arrow-left] [fixture:
+  block/db-arrow-up] [fixture: block/db-arrow-down] [fixture: block/db-arrow-x]
+  [fixture: block/db-arrow-y] [fixture: block/db-arrow-two] [fixture:
+  block/db-arrow-all] [fixture: block/db-arrow-no-space] [fixture:
+  block/db-arrow-spaces] [fixture: block/db-arrow-spaces-around-comma] [fixture:
+  block/db-arrow-spaces-around-first] [fixture:
+  block/db-arrow-comment-line-before-first] [fixture:
+  block/db-arrow-directive-before-first] [fixture:
+  block/db-arrow-cr-directive-lf] [fixture: block/db-arrow-trailing-space]
+  [fixture: block/db-arrow-leading-space] [fixture: block/db-arrow-tab]
+  [fixture: block/db-arrow-line-feed] [fixture: block/db-arrow-twice] [fixture:
+  block/db-arrow-leading-comma] [fixture: block/db-arrow-glued-words] [fixture:
+  block/db-arrow-word-suffix] [fixture: block/db-arrow-word-prefix] [fixture:
+  block/db-arrow-up-down] [fixture: block/db-arrow-space-before-paren] [fixture:
+  block/db-arrow-line-feed-before-paren] [fixture:
+  block/gram-arrow-trailing-comma] [fixture: block/gram-arrow-double-comma]
+  [fixture: block/gram-arrow-empty] [fixture: block/gram-arrow-unknown]
+  [fixture: block/gram-arrow-upper-case] [fixture:
+  block/gram-arrow-dir-keywords] [fixture: block/gram-arrow-no-paren] [fixture:
+  block/gram-arrow-unclosed-paren] [fixture: block/gram-arrow-unquoted-label]
+  [fixture: block/gram-arrow-empty-label] [fixture:
+  block/gram-arrow-markdown-label] [fixture: block/gram-arrow-closing-wrong]
+  [fixture: block/gram-arrow-closing-square] [fixture:
+  block/db-arrow-spaces-label] [fixture: block/db-arrow-nbsp-label] [fixture:
+  block/db-arrow-with-width] [fixture: block/db-arrow-two-lines] [fixture:
+  block/db-arrow-class] [fixture: block/db-arrow-proto]
+- A block arrow defined again keeps its first directions and takes the new
+  label, a block arrow given to a node with another shape takes the type
+  `block_arrow` and has no directions, and a shape given to a block arrow takes
+  the type of the shape and keeps the directions. A block arrow at the end of an
+  edge gives the directions to the edge too, while one at its start does not.
+  [fixture: block/db-arrow-redefine] [fixture:
+  block/db-arrow-redefine-from-square] [fixture:
+  block/db-arrow-redefine-to-square] [fixture:
+  block/db-definitions-three-arrows] [fixture: block/db-edge-to-block-arrow]
+  [fixture: block/db-edge-from-block-arrow] [fixture: block/db-arrow-after-edge]
+- `space` is a keyword and not an id: it makes `space` blocks, with the type
+  `space` and the width 1, and `space:N` makes N of them, each with the width N,
+  which the summary lists as N entries. `space:0` makes none, and the leading
+  zeros of the number are read as a decimal number. A space or a colon next to
+  the number makes a different text: `space :2` and `space: 2` are rejected,
+  `space:` with no number, a sign, a letter, a digit outside ASCII, and two
+  widths are rejected, and `space:2.5` is `space:2` and the node `.5`, and
+  `space:2A` is `space:2` and the node A. `Space` and `SPACE:2` are nodes. A
+  word that holds `space` and a word character is a node (`spaceship`, `space1`,
+  `space_a`, `aspace`), while `space.a`, `space;`, and `space#` are a `space`
+  block and a node. A `space` cannot start or end an edge, take a shape, or be
+  named by a `class` or `style` statement: `class space c` makes a block of the
+  id `space` that is not in the diagram. [fixture: block/db-space-plain]
+  [fixture: block/db-space-width] [fixture: block/db-space-width-one] [fixture:
+  block/db-space-width-zero] [fixture: block/db-space-zero-before-node]
+  [fixture: block/db-space-leading-zeros] [fixture:
+  block/gram-space-space-before-colon] [fixture:
+  block/gram-space-space-after-colon] [fixture: block/gram-space-no-number]
+  [fixture: block/gram-space-letters] [fixture: block/gram-space-negative]
+  [fixture: block/db-space-decimal] [fixture: block/gram-space-twice-width]
+  [fixture: block/gram-space-fullwidth-digit] [fixture:
+  block/gram-space-nbsp-colon] [fixture: block/db-space-width-suffix] [fixture:
+  block/db-space-upper-case] [fixture: block/db-space-upper-case-all] [fixture:
+  block/db-space-suffix] [fixture: block/db-space-digit-suffix] [fixture:
+  block/db-space-underscore-suffix] [fixture: block/db-space-prefix] [fixture:
+  block/db-space-dot-suffix] [fixture: block/db-space-semicolon] [fixture:
+  block/db-space-hash] [fixture: block/gram-space-dash-suffix] [fixture:
+  block/gram-space-edge-start] [fixture: block/gram-edge-to-space] [fixture:
+  block/gram-space-shape] [fixture: block/gram-space-quoted] [fixture:
+  block/db-space-class]
+- `space` blocks stand among the other blocks in the order of the text: before,
+  between, and after nodes, two in a row, with a width of their own, in a row of
+  columns, and inside a composite. [fixture: block/db-space-then-node] [fixture:
+  block/db-space-node-then] [fixture: block/db-space-between] [fixture:
+  block/db-space-two] [fixture: block/db-space-two-widths] [fixture:
+  block/db-space-with-columns] [fixture: block/db-space-in-composite] [fixture:
+  block/db-space-in-named-composite] [fixture: block/db-space-label-in-line]
+  [fixture: block/db-space-crlf] [fixture: block/db-definitions-space-three]
+- `block:G` opens a composite with the id `G`, which `end` closes, and `block`
+  or `block-beta` with no id opens one that has no id. A composite has the type
+  `composite`, the label `""`, and its `children`, and its id may be followed by
+  a width (`block:G:2`) and by a shape with a label (`block:G["text"]`), whose
+  label is kept while its shape and its type are not: the type stays
+  `composite`. Composites nest to any depth, follow one another, and may stand
+  on a line with other statements. A composite with the label of a block arrow
+  keeps the directions. [fixture: block/db-composite-plain] [fixture:
+  block/db-composite-no-id] [fixture: block/db-composite-no-id-beta] [fixture:
+  block/db-composite-width] [fixture: block/db-composite-width-zero] [fixture:
+  block/db-composite-label] [fixture: block/db-composite-label-shapes] [fixture:
+  block/db-composite-label-and-width] [fixture: block/db-composite-block-arrow]
+  [fixture: block/db-composite-nested] [fixture:
+  block/db-composite-nested-no-id] [fixture: block/db-composite-nested-three]
+  [fixture: block/db-composite-siblings] [fixture:
+  block/db-composite-siblings-no-id] [fixture: block/db-composite-end-in-line]
+  [fixture: block/db-composite-two-statements-line] [fixture:
+  block/db-composite-composite-in-line-with-node] [fixture:
+  block/db-composite-many-composites] [fixture: block/db-composite-colors]
+  [fixture: block/db-composite-child-width-in] [fixture:
+  block/db-composite-columns-id] [fixture: block/db-composite-proto-id]
+  [fixture: block/db-composite-constructor-id]
+- A composite needs a statement that makes a block, and `end` must close it: an
+  empty composite, a composite that is not closed, an `end` with nothing to
+  close, an `end` at the start, and an `end` as an id are rejected, while a
+  composite that holds only `columns`, `classDef`, `class`, or `style` has no
+  children. `end` is read in lower case, and as a word of its own: `END`, `End`,
+  `endx`, `end_`, and `end:2` are rejected, and `end.x`, `end#`, `end;`, and
+  `end` followed by a node are the keyword and a node. `end` inside a label is
+  text, and a directive inside the word `end` is removed. [fixture:
+  block/gram-composite-empty] [fixture: block/gram-composite-empty-no-id]
+  [fixture: block/gram-composite-not-closed] [fixture:
+  block/gram-composite-not-closed-nested] [fixture:
+  block/gram-composite-extra-end] [fixture: block/gram-composite-end-first]
+  [fixture: block/gram-composite-end-as-id] [fixture:
+  block/gram-composite-end-as-node-in-block] [fixture:
+  block/db-composite-only-columns] [fixture: block/db-composite-only-class-def]
+  [fixture: block/db-composite-only-class] [fixture:
+  block/db-composite-only-style] [fixture: block/gram-composite-end-upper-case]
+  [fixture: block/gram-composite-end-capital] [fixture:
+  block/gram-composite-end-suffix] [fixture:
+  block/gram-composite-end-underscore] [fixture: block/gram-composite-end-width]
+  [fixture: block/db-composite-end-dot] [fixture: block/db-composite-end-hash]
+  [fixture: block/db-composite-end-semicolon] [fixture:
+  block/db-composite-end-then-node] [fixture: block/db-composite-end-comment]
+  [fixture: block/db-composite-end-in-label] [fixture:
+  block/db-composite-end-glued] [fixture: block/db-composite-end-tab] [fixture:
+  block/db-composite-end-crlf] [fixture: block/db-composite-end-nbsp] [fixture:
+  block/div-directive-inside-end]
+- The id after `block:` is a word as an id of a node is, with the white space
+  before it allowed: `block: G` is `block:G`. A quoted id, no id, a space before
+  the colon, a dash, `Block:G`, and `space` as the id are rejected, while
+  `columns` is an id. `blockx`, `block2`, and `block_a` are nodes, and
+  `block-a`, `block-betax`, and `blockx:G` are rejected. [fixture:
+  block/db-composite-space-after-colon] [fixture:
+  block/gram-composite-id-quoted] [fixture:
+  block/gram-composite-no-id-after-colon] [fixture:
+  block/gram-composite-space-before-colon] [fixture:
+  block/gram-composite-id-with-dash] [fixture: block/gram-composite-upper-case]
+  [fixture: block/gram-composite-space-id] [fixture: block/db-composite-suffix]
+  [fixture: block/db-composite-digit-suffix] [fixture:
+  block/db-composite-underscore-suffix] [fixture:
+  block/gram-composite-dash-suffix] [fixture: block/gram-composite-beta-suffix]
+  [fixture: block/gram-composite-colon-suffix]
+- A composite whose id is that of a block the Db already has does not make a new
+  block: the old block takes the type `composite` and the label `""`, it keeps
+  its place, its width, and no children, and the blocks inside the new composite
+  are held apart in `unplaced`. A node with the id of a composite keeps the
+  composite, unless it has a shape, which gives the block the shape's type and
+  label, and the children stay. A node with the id of its own composite is the
+  composite. A node used again inside a composite stays in its first place,
+  outside it. [fixture: block/db-composite-id-same-as-node-before] [fixture:
+  block/db-composite-id-same-as-node-after] [fixture:
+  block/db-composite-id-same-as-node-after-shape] [fixture:
+  block/db-composite-id-same-composite] [fixture:
+  block/db-composite-id-same-nested] [fixture:
+  block/db-composite-id-same-as-child] [fixture:
+  block/db-composite-id-same-child-defined-in-inner] [fixture:
+  block/db-composite-child-first-then-composite] [fixture:
+  block/db-definitions-three-composites] [fixture:
+  block/db-definitions-composite-then-shape-then-composite] [fixture:
+  block/db-definitions-shape-then-composite-then-shape] [fixture:
+  block/db-composite-root-id]
+- An edge statement after `block:` is a statement of the composite and not of
+  its id: the composite takes the three blocks of the statement as fields and
+  has no id, which the summary leaves out. An edge cannot end at a composite
+  that is opened on the edge. A `style` on the first or the last node of that
+  statement throws in the Db, since the statement makes no block for them, and
+  so does a `style` on a node inside the composite that stands before the
+  statement that makes it; after it the `style` is accepted. [fixture:
+  block/db-composite-edge-header] [fixture:
+  block/db-composite-edge-header-width] [fixture:
+  block/db-composite-shape-edge-header] [fixture: block/gram-composite-in-edge]
+  [fixture: block/gram-style-on-composite-edge-head-start] [fixture:
+  block/gram-style-on-composite-edge-head-end] [fixture:
+  block/gram-style-in-composite-edge-head-before-child] [fixture:
+  block/db-style-on-composite-edge-head-child] [fixture:
+  block/db-style-in-composite-edge-head-after-child]
+- An edge is a link between two nodes. `-->` is a normal solid edge with an
+  arrow at its end (`arrow_point`), `---` has none, `==>` and `===` are thick,
+  `-.->` and `-.-` are dotted, `--x` ends with a cross (`arrow_cross`), `--o`
+  with a circle (`arrow_circle`), and `<-->` has an arrow at both ends. More
+  dashes, equal signs, or dots make the same edge. An edge is `{ start, end }`
+  and has the label `""` when it has none. The blocks at its ends are made in
+  the order of the text as nodes with no width. `<--` alone, `--` alone, `-`, an
+  edge with no start or no end, and an arrow alone are rejected, `~~~` is a
+  node, and `A~~~B` is one id. `<~~~` is rejected, with a space or glued: an
+  invisible line takes no start marker. `x` and `o` glued before an arrow are
+  nodes, so `A x--x B` is the node A and an edge from `x`. The edge needs no
+  space around it: `A-->B`, `A--xB`, and `A--oB` are edges, and tabs, several
+  spaces, and line feeds around it are white space. [fixture:
+  block/db-edge-arrow] [fixture: block/db-edge-open] [fixture:
+  block/db-edge-thick] [fixture: block/db-edge-thick-open] [fixture:
+  block/db-edge-dotted] [fixture: block/db-edge-dotted-open] [fixture:
+  block/db-edge-dotted-long] [fixture: block/db-edge-cross] [fixture:
+  block/db-edge-circle] [fixture: block/db-edge-bidirectional] [fixture:
+  block/db-edge-long] [fixture: block/db-edge-long-open] [fixture:
+  block/db-edge-thick-long] [fixture: block/db-edge-start-cross] [fixture:
+  block/db-edge-start-cross-spaced] [fixture: block/db-edge-start-circle]
+  [fixture: block/gram-edge-reverse] [fixture: block/gram-edge-two-dashes]
+  [fixture: block/gram-edge-one-dash] [fixture: block/db-edge-tilde] [fixture:
+  block/db-edge-tilde-glued] [fixture: block/db-edge-glued] [fixture:
+  block/db-edge-glued-x] [fixture: block/db-edge-glued-o] [fixture:
+  block/db-edge-spaces] [fixture: block/db-edge-tab] [fixture:
+  block/db-edge-line-feed-before] [fixture: block/db-edge-line-feed-after]
+  [fixture: block/db-edge-line-feed-both] [fixture:
+  block/db-edge-blank-line-after] [fixture: block/gram-edge-no-end] [fixture:
+  block/gram-edge-no-start] [fixture: block/gram-edge-only-arrow] [fixture:
+  block/db-edge-crlf] [fixture: block/db-edge-nbsp] [fixture:
+  block/db-edge-ideographic] [fixture: block/db-edge-ls] [fixture:
+  block/db-edge-digit] [fixture: block/db-edge-unicode] [fixture:
+  block/db-edge-same-line-statements] [fixture: block/db-edge-then-columns]
+  [fixture: block/db-edge-spaces-in-id]
+- An edge may carry a label, `-- "text" -->`, with `==` for a thick edge and
+  `-.` for a dotted one, and the quotes may touch the dashes. The label is a
+  string like that of a node: it is not empty, it has no markdown, and a comment
+  line, a directive, a character reference, and HTML in it are read as in a
+  label. The end of the edge gives its arrows, its thickness, and its pattern,
+  whatever the start was, so `-- "t" ==> B` is thick, `-. "t" --> B` is solid,
+  and `<-- "t" -->` has no arrow at the start. A label with no end of the edge,
+  a label without quotes, and a start followed by a wrong end are rejected.
+  `-->|text|` is no label: `|text|` is the node at the end of the edge, and B is
+  another node. [fixture: block/db-edge-label] [fixture:
+  block/db-edge-label-open] [fixture: block/db-edge-label-thick] [fixture:
+  block/db-edge-label-dotted] [fixture: block/db-edge-label-glued] [fixture:
+  block/gram-edge-label-empty] [fixture: block/db-edge-label-spaces] [fixture:
+  block/gram-edge-label-unquoted] [fixture: block/db-edge-label-pipe] [fixture:
+  block/db-edge-label-pipe-spaced] [fixture: block/gram-edge-label-markdown]
+  [fixture: block/db-edge-label-line-feed] [fixture:
+  block/db-edge-label-comment-line] [fixture: block/db-edge-label-directive]
+  [fixture: block/db-edge-label-html] [fixture: block/db-edge-label-entity]
+  [fixture: block/gram-edge-label-start-without-end] [fixture:
+  block/gram-edge-label-wrong-end] [fixture: block/db-edge-label-mismatched]
+  [fixture: block/db-edge-label-mismatched-dotted] [fixture:
+  block/db-edge-label-cross] [fixture: block/db-edge-label-bidirectional]
+  [fixture: block/db-edge-label-start-cross]
+- Edges are listed in the order of the text, those inside a composite at the
+  place of the composite, and the same edge twice is two edges. An edge may join
+  nodes of two composites, a composite and a node, a node and itself, and the
+  ids `__proto__`, `constructor`, and `root`. The blocks at its ends keep what
+  an earlier definition gave them (shape, label, width), and a shape at either
+  end defines the block as a node does. `A --> end`, `A --> space`, and
+  `A --> block:G` are rejected, while `A --> columns` is an edge to a node named
+  `columns`. [fixture: block/db-edge-twice] [fixture: block/db-edge-opposite]
+  [fixture: block/db-edge-self] [fixture: block/db-edge-different-kinds]
+  [fixture: block/db-edge-defined-before] [fixture: block/db-edge-new-shape]
+  [fixture: block/db-edge-start-shape] [fixture: block/db-edge-both-shapes]
+  [fixture: block/db-edge-to-composite] [fixture:
+  block/db-edge-from-composite-child] [fixture: block/db-edge-inside-composite]
+  [fixture: block/db-edge-across-composites] [fixture:
+  block/db-edge-edge-in-composite-order] [fixture: block/db-edge-proto]
+  [fixture: block/db-edge-root] [fixture: block/db-edge-to-columns] [fixture:
+  block/gram-edge-to-end] [fixture: block/gram-edge-start-lt-invisible]
+  [fixture: block/gram-edge-start-lt-invisible-glued] [fixture:
+  block/db-definitions-edges-three] [fixture: block/db-proto-proto-edge]
+  [fixture: block/db-proto-root-edge-end]
+- A chain of edges, `A --> B --> C`, is read badly: the grammar takes the first
+  edge as the start of the next, which has no `id`, so the Db keeps a block with
+  no field, no start for the edge, and only the last node `C`. The nodes before
+  it are lost, with the edges between them. The label and the arrows of the last
+  edge are kept, two chains give one block with no field, and a node used after
+  a chain is a block of its own. A `style` on the middle of a chain throws, too.
+  The summary shows the block as `{}` and the edge with no `start`. [fixture:
+  block/db-edge-chain] [fixture: block/db-edge-chain-open] [fixture:
+  block/db-edge-chain-four] [fixture: block/db-edge-chain-labels] [fixture:
+  block/db-edge-chain-twice] [fixture: block/db-edge-chain-then-node] [fixture:
+  block/db-edge-chain-in-block] [fixture: block/gram-style-on-chain] [fixture:
+  block/gram-style-on-chain-middle] [fixture:
+  block/db-style-on-undefined-chain-end]
+- `classDef name styles` defines a class: the name is one or more word
+  characters (ASCII letters, digits, and `_`), and the styles are the rest of
+  the line, split at each `,`, each trimmed. `default`, `class`, `end`,
+  `__proto__`, and `constructor` are names like another, while `DEFAULT`, a name
+  with `-` or `:`, or with a letter outside ASCII, is rejected, and so are a
+  `classDef` with no name or no styles, in another case, or glued to a word. The
+  keyword may be followed by tabs and line feeds, and the styles may start on
+  the next line. A `,` at the end or at the start leaves an empty style. A class
+  defined again, at any distance, keeps the styles of every definition in order,
+  and keeps its place in the order of the classes; the same style twice is kept
+  twice. A class is the same for the whole diagram, wherever its `classDef`
+  stands, also in a composite. [fixture: block/db-class-def-and-apply] [fixture:
+  block/db-class-def-two-styles] [fixture:
+  block/db-class-def-spaces-around-styles] [fixture:
+  block/db-class-def-directive-before-comma] [fixture:
+  block/db-class-def-empty-style] [fixture: block/db-class-def-leading-comma]
+  [fixture: block/gram-class-def-no-style] [fixture:
+  block/gram-class-def-spaces-only] [fixture: block/gram-class-def-no-name]
+  [fixture: block/db-class-def-twice] [fixture: block/db-class-def-twice-same]
+  [fixture: block/db-class-def-three] [fixture: block/db-class-def-color]
+  [fixture: block/db-class-def-color-fill] [fixture: block/db-class-def-default]
+  [fixture: block/gram-class-def-default-upper] [fixture:
+  block/db-class-def-digits] [fixture: block/db-class-def-underscore] [fixture:
+  block/gram-class-def-dash] [fixture: block/gram-class-def-non-ascii] [fixture:
+  block/db-class-def-proto] [fixture: block/db-class-def-constructor] [fixture:
+  block/db-class-def-keyword-names] [fixture: block/db-class-def-keyword-end]
+  [fixture: block/gram-class-def-name-colon] [fixture:
+  block/gram-class-def-upper-case] [fixture: block/gram-class-def-lower-case]
+  [fixture: block/db-class-def-tab] [fixture:
+  block/db-class-def-line-feed-after-keyword] [fixture:
+  block/db-class-def-line-feed-after-name] [fixture: block/gram-class-def-glued]
+  [fixture: block/db-class-def-in-block] [fixture: block/db-class-def-after-use]
+  [fixture: block/db-class-def-undefined-use] [fixture:
+  block/db-definitions-class-def-three] [fixture:
+  block/db-definitions-class-def-three-others] [fixture:
+  block/db-proto-proto-class-def] [fixture: block/db-proto-proto-class-twice]
+  [fixture: block/db-proto-constructor-class-def]
+- In the styles of a `classDef`, a `#`, quotes, HTML, and `%%` are text, a
+  directive is removed, and a character reference is read as its placeholder.
+  The Db removes the first `;` of each style. The line rule of mermaid.js, which
+  drops the last `;` of a line that has a `:` and a `#` (`style:#x;y` becomes
+  `style:#xy`), acts on the line before the lexer reads it, so the `;` at the
+  end of `fill:#f00;` is gone, the `;` between two styles joins them,
+  `fill:#f00;,stroke:#000` stays two styles, a space and a `;` at the end are
+  dropped, and a second `;` after `#f00` is read as the end of a character
+  reference. [fixture: block/db-class-def-semicolon-end] [fixture:
+  block/db-class-def-semicolon-middle] [fixture:
+  block/db-class-def-semicolon-comma] [fixture:
+  block/db-class-def-two-semicolons] [fixture:
+  block/db-class-def-space-semicolon] [fixture: block/db-class-def-hash]
+  [fixture: block/db-class-def-comment] [fixture: block/db-class-def-directive]
+  [fixture: block/db-class-def-quotes] [fixture: block/db-class-def-html]
+  [fixture: block/db-class-def-entity] [fixture:
+  block/db-class-def-colon-hash-semicolon] [fixture: block/db-class-def-nbsp]
+  [fixture: block/db-semicolon-in-class-def] [fixture:
+  block/db-semicolon-class-def-then-node]
+- `class ids name` applies a class to the nodes of the ids, which are one or
+  more word characters, split at each `,` with no space before the comma: the
+  class name is kept in the `classes` of each node, in the order of the
+  statements, also when it repeats, and also when no `classDef` defines it, and
+  the rest of the line, trimmed, is the class name as one text, so `c,d` and
+  `c d` are one name, a name may hold `;`, `#`, and `%%`, and a `class A` with
+  no name gives the empty name. The ids and the name are read on the same line,
+  and the keyword may be followed by tabs and line feeds; in another case, or
+  glued to a word, it is not the keyword, and `class` alone is rejected. A name
+  that is `__proto__` or `constructor` is a name like another. [fixture:
+  block/db-class-apply-two] [fixture: block/db-class-apply-same-twice] [fixture:
+  block/db-class-apply-names-list] [fixture: block/db-class-apply-names-spaces]
+  [fixture: block/db-class-apply-no-name] [fixture:
+  block/db-class-apply-no-name-spaces] [fixture: block/gram-class-apply-no-id]
+  [fixture: block/db-class-apply-name-upper] [fixture:
+  block/db-class-apply-proto-class] [fixture:
+  block/db-class-apply-constructor-class] [fixture:
+  block/db-class-apply-semicolon] [fixture: block/db-class-apply-hash] [fixture:
+  block/db-class-apply-comment] [fixture: block/db-class-apply-directive]
+  [fixture: block/db-class-apply-trailing-spaces] [fixture:
+  block/db-class-apply-nbsp] [fixture: block/db-class-apply-tab] [fixture:
+  block/db-class-apply-line-feed-after-keyword] [fixture:
+  block/db-class-apply-line-feed-after-ids] [fixture:
+  block/db-class-apply-upper-case-keyword] [fixture: block/db-class-apply-glued]
+  [fixture: block/db-class-apply-lower-keyword-id] [fixture:
+  block/db-class-apply-space-shape] [fixture: block/db-class-apply-edge]
+  [fixture: block/db-definitions-class-three] [fixture:
+  block/db-definitions-class-three-ids] [fixture:
+  block/db-proto-to-string-class] [fixture: block/db-proto-proto-directions]
+- The ids of a `class` statement are split at each comma and looked up as they
+  are, with no trimming: `class A,B c` and `class A,B,C c` apply the class to
+  each, while `class A, B c` looks up ` B`, finds no block, and makes a new
+  block with the id `B`, which takes the place of the entry `B` of the table and
+  is not in the diagram: the B of the diagram gets no class, and a later
+  `style B` or shape for `B` finds the new block. A space before the comma ends
+  the ids: `class A ,B c` applies the class `,B c` to A. A `;` or a `-` in an id
+  ends it. An id of another case is another id. A line feed may follow the comma
+  as a space does, and a `class` with no ids before the end of the text is
+  rejected. A comment line or a directive after the comma is left out of the id,
+  which keeps the white space before it. The id `root` is the block that holds
+  the diagram, and a class on a composite or on a node inside a composite is
+  kept there, also from a statement inside another composite. [fixture:
+  block/db-class-apply-list] [fixture: block/db-class-apply-list-spaces]
+  [fixture: block/db-class-apply-list-space-before-comma] [fixture:
+  block/db-class-apply-list-three] [fixture:
+  block/db-class-apply-list-trailing-comma] [fixture:
+  block/db-class-apply-list-spaces-then-style] [fixture:
+  block/db-class-apply-list-spaces-then-edge] [fixture:
+  block/db-class-apply-list-spaces-then-shape] [fixture:
+  block/gram-class-apply-no-id-end] [fixture:
+  block/db-class-apply-line-feed-after-comma] [fixture:
+  block/db-class-apply-comment-line-after-comma] [fixture:
+  block/db-class-apply-directive-after-comma] [fixture:
+  block/db-class-apply-id-semicolon] [fixture: block/db-class-apply-id-dash]
+  [fixture: block/db-class-apply-id-case] [fixture:
+  block/db-class-apply-proto-id] [fixture: block/db-class-apply-root] [fixture:
+  block/db-composite-class-on] [fixture: block/db-composite-class-inside]
+  [fixture: block/db-class-apply-in-block] [fixture:
+  block/db-class-apply-in-block-outer]
+- A `class` statement for an id that no statement has defined yet makes a block
+  of that id with the type `na`, which the summary lists in `unplaced`: the
+  later definition of the id (a node, a shape, an edge, or a composite) does not
+  add the block to its list of children, and only changes its type and its
+  label, so the node stays out of the diagram, and its width is lost. Two
+  classes on such an id are kept in order, and a `class` for two such ids makes
+  two blocks, in the order of the ids. A `class` for a node defined before it is
+  in the diagram, also inside a composite, while a `class` inside a composite
+  for a node defined after it makes a block that stays out. [fixture:
+  block/db-class-apply-undefined-id] [fixture: block/db-class-apply-before-node]
+  [fixture: block/db-class-apply-before-node-shape] [fixture:
+  block/db-class-apply-before-node-width] [fixture:
+  block/db-class-apply-before-edge] [fixture: block/db-class-apply-before-block]
+  [fixture: block/db-class-apply-undefined-twice] [fixture:
+  block/db-class-apply-undefined-list] [fixture:
+  block/db-class-apply-mixed-list] [fixture:
+  block/db-class-apply-in-block-later] [fixture:
+  block/db-definitions-composite-then-shape-then-composite]
+- `style id styles` sets the styles of the node `id`: the styles are the rest of
+  the line, split at each `,` and not trimmed, so the spaces around a comma stay
+  in the styles, and a style that starts with a space is another style for the
+  renderer than one that starts with `color:`
+  ([`getStylesFromArray()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/utils.ts#L443-L459)).
+  A `style` replaces the styles of an earlier `style` for the node, a `style`
+  with no styles or with spaces only changes nothing, and a `,` alone gives two
+  empty styles. The white space at the two ends of the rest of the line is
+  dropped, so that a part before the first `,` or after the last `,` that is
+  white space only is empty, while a part between two `,` that is white space
+  only is a style of that white space, which `classDef` trims to an empty style.
+  A directive before a `,` is left out of the style, which keeps the white space
+  on both sides of it. The id is one or more word characters, and a `style` for
+  an id that no earlier statement defined is rejected: the Db finds no block,
+  and throws a `TypeError`. That is so for a list of ids, which the Db does not
+  split at the comma, for a block that no statement defines, for the id of a
+  block lost in a chain, and for `space`. A `style` for a block that a `class`
+  made, for a composite, for the id `root`, and from inside a composite for a
+  node outside it is accepted. The keyword may be followed by tabs and line
+  feeds, and the styles must be on the line of the id; in upper case or glued to
+  a word it is not the keyword. A `style` with no id before the end of the text
+  is rejected. [fixture: block/db-style-plain] [fixture: block/db-style-two]
+  [fixture: block/db-style-spaces] [fixture: block/db-style-spaces-at-line-ends]
+  [fixture: block/db-style-whitespace-only-between-commas] [fixture:
+  block/db-style-tab-only-between-commas] [fixture:
+  block/db-style-whitespace-only-first] [fixture:
+  block/db-style-whitespace-only-last] [fixture:
+  block/db-style-directive-before-comma] [fixture:
+  block/db-class-def-whitespace-only-between-commas] [fixture:
+  block/db-style-leading-space] [fixture: block/db-style-trailing-space]
+  [fixture: block/db-style-none] [fixture: block/db-style-spaces-only] [fixture:
+  block/db-style-only-comma] [fixture: block/db-style-twice] [fixture:
+  block/db-style-then-none] [fixture: block/db-definitions-style-three]
+  [fixture: block/db-definitions-style-three-empty-middle] [fixture:
+  block/gram-style-undefined] [fixture: block/gram-style-defined-after]
+  [fixture: block/gram-style-list] [fixture: block/gram-style-list-spaces]
+  [fixture: block/gram-style-list-undefined] [fixture: block/gram-style-space]
+  [fixture: block/gram-style-no-id] [fixture: block/gram-style-no-id-line-feed]
+  [fixture: block/db-style-class-made] [fixture:
+  block/db-style-after-class-undefined] [fixture:
+  block/db-style-after-class-list-spaces] [fixture: block/db-style-composite]
+  [fixture: block/db-style-root] [fixture: block/db-style-in-composite]
+  [fixture: block/db-composite-style-on] [fixture:
+  block/db-composite-style-inside] [fixture:
+  block/db-composite-style-outer-inside] [fixture:
+  block/gram-composite-style-later-outer] [fixture: block/db-style-before-edge]
+  [fixture: block/db-style-proto-id] [fixture: block/db-style-constructor-id]
+  [fixture: block/db-proto-proto-style-id] [fixture: block/db-style-name-only]
+  [fixture: block/db-style-tab] [fixture:
+  block/db-style-line-feed-after-keyword] [fixture:
+  block/gram-style-line-feed-after-id] [fixture: block/gram-style-upper-case]
+  [fixture: block/gram-style-glued]
+- In the styles of a `style`, a `#` with a word, quotes, HTML, and `%%` are
+  text, a directive is removed, and a character reference is read as its
+  placeholder. The line rule drops the last `;` of the line that has a `:` and a
+  `#`, so `fill:#f00;` is `fill:#f00`, `fill:#f00;stroke:#333` is one style,
+  `fill:#f00;,stroke:#333` is two, a space and a `;` at the end are dropped, and
+  a line with no `#` keeps its `;`. [fixture: block/db-style-semicolon-end]
+  [fixture: block/db-style-semicolon-middle] [fixture:
+  block/db-style-semicolon-comma] [fixture: block/db-style-empty-style]
+  [fixture: block/db-style-line-rule-hash] [fixture: block/db-style-entity]
+  [fixture: block/db-style-comment] [fixture: block/db-style-directive]
+  [fixture: block/db-style-quotes] [fixture: block/db-style-nbsp] [fixture:
+  block/db-semicolon-in-style]
+- The id `root` is the id of the block that holds the diagram, so a statement
+  for that id acts on it. A node `root`, with a width, or inside a composite
+  changes nothing; `root["x"]` gives the block that holds the diagram the label
+  `x` and the type of the shape, and it keeps its `columns` and its children;
+  `block:root` gives it the label `""` and holds the blocks of the composite
+  apart in `unplaced`; `class root c` gives it the class, `style root` the
+  styles; and an edge may start or end at `root`. [fixture: block/db-proto-root]
+  [fixture: block/db-proto-root-twice] [fixture: block/db-proto-root-width]
+  [fixture: block/db-proto-root-label] [fixture: block/db-proto-root-columns]
+  [fixture: block/db-proto-root-composite-child] [fixture:
+  block/db-composite-root-id] [fixture: block/db-class-apply-root] [fixture:
+  block/db-proto-root-style] [fixture: block/db-edge-root] [fixture:
+  block/db-proto-root-edge-end]
+- The names of `Object.prototype` are ids like any other: `__proto__`,
+  `constructor`, `toString`, `hasOwnProperty`, and `valueOf` as the id of a
+  node, with a shape, a width, or a class, as the id of a composite, as an end
+  of an edge, in a label, as the name of a class and the name in `class`, and in
+  a `style`. The Db keeps its blocks and classes in `Map`s, so none of them acts
+  on a prototype. [fixture: block/db-proto-proto] [fixture:
+  block/db-proto-constructor] [fixture: block/db-proto-to-string] [fixture:
+  block/db-proto-has-own-property] [fixture: block/db-proto-value-of] [fixture:
+  block/db-proto-proto-twice] [fixture: block/db-proto-proto-shape] [fixture:
+  block/db-proto-proto-width] [fixture: block/db-proto-proto-composite-child]
+  [fixture: block/db-proto-proto-edge-label] [fixture:
+  block/db-proto-proto-undefined-class] [fixture: block/db-label-proto]
+  [fixture: block/db-label-constructor] [fixture: block/db-composite-proto-id]
+  [fixture: block/db-composite-constructor-id] [fixture: block/db-arrow-proto]
+  [fixture: block/db-class-apply-proto-id] [fixture:
+  block/db-class-apply-proto-class] [fixture:
+  block/db-class-apply-constructor-class] [fixture: block/db-style-proto-id]
+  [fixture: block/db-style-constructor-id] [fixture: block/db-class-def-proto]
+  [fixture: block/db-class-def-constructor] [fixture: block/db-edge-proto]
+- A comment line starts, after white space of any kind (a U+FEFF, a no-break
+  space, an ideographic space, and a U+2028 included), with `%%` and at least
+  one character after it, and it is removed with its line feed wherever it
+  stands: before and after the header, at the end of the text, inside a
+  composite, between the parts of an edge or of a statement, and inside a
+  string. It ends at a line feed, a CRLF, or a CR; a U+2028, a U+2029, and a
+  U+0085 do not end it. `%%` alone, `%` and a word, and `#` and a word are not
+  comments: they are nodes. What a comment line holds is not read: quotes,
+  arrows, and keywords in it do nothing. [fixture: block/db-comment-line]
+  [fixture: block/db-comment-line-indented] [fixture: block/db-comment-line-tab]
+  [fixture: block/db-comment-line-glued] [fixture: block/db-comment-line-bare]
+  [fixture: block/db-comment-line-bare-spaces] [fixture:
+  block/db-comment-line-single-percent] [fixture: block/db-comment-line-hash]
+  [fixture: block/db-comment-line-triple] [fixture: block/db-comment-line-first]
+  [fixture: block/db-comment-line-last] [fixture:
+  block/db-comment-line-last-no-line-feed] [fixture:
+  block/gram-comment-line-only] [fixture: block/db-comment-lines-two] [fixture:
+  block/db-comment-before-header-and-after] [fixture:
+  block/db-comment-inside-composite] [fixture:
+  block/db-comment-between-composite-lines] [fixture:
+  block/db-comment-between-edge-parts] [fixture:
+  block/db-comment-between-id-and-width] [fixture: block/db-comment-crlf]
+  [fixture: block/db-comment-cr] [fixture: block/db-comment-ls-inside] [fixture:
+  block/db-comment-ps-inside] [fixture: block/db-comment-nel-inside] [fixture:
+  block/db-comment-bom-before] [fixture: block/db-comment-nbsp-before] [fixture:
+  block/db-comment-ideographic-before] [fixture: block/db-comment-ls-before]
+  [fixture: block/db-comment-directive-like] [fixture: block/db-comment-proto]
+  [fixture: block/db-comment-long] [fixture: block/db-comment-unicode] [fixture:
+  block/db-comment-markers-inside] [fixture:
+  block/db-comment-quote-unclosed-inside] [fixture: block/db-label-comment-line]
+  [fixture: block/db-label-comment-line-spaced] [fixture:
+  block/db-edge-label-comment-line]
+- A `%%` that does not start a line is not a comment: after a node, an edge,
+  `columns`, or `end` it is a node, with the text after it, glued to a word it
+  is part of the id, and inside a string it is part of the label. After `class`
+  and `style` and in `classDef` it is part of the class name or the styles.
+  [fixture: block/db-comment-after-node] [fixture:
+  block/db-comment-after-node-glued] [fixture: block/db-comment-after-edge]
+  [fixture: block/db-comment-after-columns] [fixture:
+  block/db-composite-end-comment] [fixture:
+  block/db-comment-inside-string-start] [fixture: block/db-label-comment]
+  [fixture: block/db-comment-after-style] [fixture:
+  block/db-class-apply-comment] [fixture: block/db-class-def-comment] [fixture:
+  block/db-style-comment] [fixture: block/db-name-percent-percent] [fixture:
+  block/db-tail-node-comment] [fixture: block/db-tail-columns-comment] [fixture:
+  block/db-tail-space-comment] [fixture: block/db-tail-class-comment] [fixture:
+  block/db-tail-class-def-comment] [fixture: block/db-tail-style-comment]
+- A `;` is not a separator, and a `#` starts no comment: a `;` is part of the id
+  it touches, a node of its own after a space, a shape, a width, a block arrow,
+  `columns`, `space`, or `end`, and part of a class name or a style, and so is a
+  `#`. The statements that take the rest of their line (`class`, `style`,
+  `classDef`) keep what follows them on the line: a space and a `;`, two `;`, a
+  `%%`, and a `#` are part of the class name or the styles, apart from the `;`
+  that the line rule or the Db removes. The line rule drops that `;` also inside
+  an id or a keyword: `A["style:#a"] B;C` has the id `BC`, and
+  `A["style:#a"] col;umns 2` is `columns 2`. [fixture:
+  block/db-semicolon-after-node] [fixture: block/db-semicolon-between] [fixture:
+  block/db-semicolon-space-before] [fixture: block/db-semicolon-alone] [fixture:
+  block/db-semicolon-double] [fixture: block/db-semicolon-after-width] [fixture:
+  block/db-semicolon-after-shape] [fixture: block/db-semicolon-after-edge]
+  [fixture: block/db-semicolon-separates-statements-line] [fixture:
+  block/db-tail-node-semicolon] [fixture: block/div-ignored-semicolon-in-id]
+  [fixture: block/div-ignored-semicolon-in-keyword] [fixture:
+  block/db-tail-node-space-semicolon] [fixture: block/db-tail-node-hash]
+  [fixture: block/db-tail-node-shape-space-semicolon] [fixture:
+  block/db-tail-node-shape-two-semicolons] [fixture:
+  block/db-tail-node-width-space-semicolon] [fixture:
+  block/db-tail-node-width-two-semicolons] [fixture:
+  block/db-tail-edge-space-semicolon] [fixture:
+  block/db-tail-edge-two-semicolons] [fixture: block/db-tail-edge-hash]
+  [fixture: block/db-tail-block-arrow-semicolon] [fixture:
+  block/db-tail-block-arrow-space-semicolon] [fixture:
+  block/db-tail-block-arrow-two-semicolons] [fixture:
+  block/db-tail-columns-semicolon] [fixture:
+  block/db-tail-columns-space-semicolon] [fixture:
+  block/db-tail-columns-two-semicolons] [fixture: block/db-tail-columns-hash]
+  [fixture: block/db-tail-space-space-semicolon] [fixture:
+  block/db-tail-space-two-semicolons] [fixture: block/db-tail-space-hash]
+  [fixture: block/db-tail-space-width-semicolon] [fixture:
+  block/db-tail-class-space-semicolon] [fixture:
+  block/db-tail-class-two-semicolons] [fixture: block/db-tail-class-hash]
+  [fixture: block/db-tail-style-semicolon] [fixture:
+  block/db-tail-style-space-semicolon] [fixture:
+  block/db-tail-style-two-semicolons] [fixture: block/db-tail-style-hash]
+  [fixture: block/db-tail-class-def-semicolon] [fixture:
+  block/db-tail-class-def-space-semicolon] [fixture:
+  block/db-tail-class-def-two-semicolons] [fixture:
+  block/db-tail-class-def-hash] [fixture:
+  block/db-tail-composite-end-space-semicolon] [fixture:
+  block/db-tail-composite-end-two-semicolons] [fixture:
+  block/db-tail-composite-end-hash] [fixture:
+  block/db-tail-composite-end-keyword-semicolon] [fixture:
+  block/db-tail-composite-end-keyword-hash] [fixture:
+  block/gram-tail-composite-line-semicolon]
+- A directive `%%{...}%%` is removed wherever it stands, and the pieces on its
+  two sides join: inside an id, a string, the header, and the keywords
+  `columns`, `class`, and `end`, a direction of a block arrow, between an id and
+  its width or its shape, between `:` or `space:` and the number of a width,
+  around the label of a shape or of a block arrow, and at the end of a
+  statement. A directive of any name is removed, over several lines too, and so
+  are two in a row. `%%{}%%`, which names no word, is no directive, and its text
+  cannot be read: rejected. A directive that is not closed takes the rest of the
+  text with it: at the end of the text it takes nothing else, and before a
+  statement it leaves no statement in the diagram, which is rejected. A
+  directive on a line of its own inside a string leaves the line breaks around
+  it. A text of only a directive after the header is rejected. [fixture:
+  block/db-directive-init-line] [fixture: block/db-directive-init-before-header]
+  [fixture: block/db-directive-init-block-config] [fixture:
+  block/db-directive-wrap] [fixture: block/db-directive-not-init] [fixture:
+  block/db-directive-multi-line] [fixture: block/db-directive-two] [fixture:
+  block/div-directive-in-id] [fixture: block/db-directive-between-ids] [fixture:
+  block/db-directive-at-end-of-line] [fixture: block/db-directive-inside-string]
+  [fixture: block/div-directive-inside-keyword] [fixture:
+  block/div-directive-inside-class-keyword] [fixture:
+  block/div-directive-inside-header] [fixture:
+  block/div-directive-inside-direction] [fixture:
+  block/db-directive-inside-shape] [fixture:
+  block/db-directive-after-shape-label] [fixture:
+  block/db-directive-before-block-arrow-label] [fixture:
+  block/db-directive-after-block-arrow-label] [fixture:
+  block/db-directive-between-colon-and-width] [fixture:
+  block/db-directive-between-space-colon-and-width] [fixture:
+  block/db-directive-glued-to-id] [fixture: block/db-directive-glued-to-width]
+  [fixture: block/db-directive-glued-to-edge] [fixture:
+  block/db-directive-line-feed-inside-id] [fixture:
+  block/db-directive-spaces-around] [fixture: block/db-directive-class-def-line]
+  [fixture: block/db-directive-after-end-of-text] [fixture:
+  block/gram-directive-unclosed] [fixture:
+  block/db-directive-unclosed-end-of-text] [fixture:
+  block/gram-directive-unclosed-word-next-line] [fixture:
+  block/gram-directive-empty] [fixture: block/gram-directive-only] [fixture:
+  block/db-label-directive] [fixture: block/db-label-directive-line] [fixture:
+  block/db-edge-label-directive] [fixture: block/db-tail-node-directive]
+  [fixture: block/db-tail-node-directive-unclosed] [fixture:
+  block/db-tail-node-shape-directive] [fixture:
+  block/db-tail-node-width-directive] [fixture: block/db-tail-edge-directive]
+  [fixture: block/db-tail-edge-label-directive] [fixture:
+  block/db-tail-block-arrow-directive] [fixture:
+  block/db-tail-columns-directive] [fixture: block/db-tail-space-directive]
+  [fixture: block/db-tail-class-directive] [fixture:
+  block/db-tail-style-directive] [fixture:
+  block/db-tail-class-def-directive-unclosed] [fixture:
+  block/db-tail-composite-end-directive] [fixture:
+  block/db-tail-composite-end-keyword-directive]
+- A frontmatter before the header is removed: its `title` is not kept, since the
+  Db has no title, and its configuration, `block` included, changes nothing in
+  the summary. A frontmatter that is empty, not closed, indented, after a
+  comment, or after the header is no frontmatter, and the text is rejected.
+  [fixture: block/db-frontmatter-config-block] [fixture:
+  block/db-frontmatter-look] [fixture: block/db-frontmatter-html-in-title]
+  [fixture: block/db-frontmatter-crlf] [fixture: block/header-after-frontmatter]
+  [fixture: block/header-after-frontmatter-and-comment] [fixture:
+  block/gram-frontmatter-empty] [fixture: block/gram-frontmatter-unclosed]
+  [fixture: block/gram-frontmatter-indented] [fixture:
+  block/gram-frontmatter-comment-before] [fixture:
+  block/gram-frontmatter-after-header]
+- `accTitle:`, `accDescr:`, and `accDescr {` are not statements of a block
+  diagram: the lexer reads them as keywords for which the grammar has no rule,
+  and the text is rejected. `accTitle` alone is a node, `title t` is the nodes
+  `title` and `t`, and `title: t` is rejected. [fixture:
+  block/gram-acc-acc-title] [fixture: block/gram-acc-acc-descr] [fixture:
+  block/gram-acc-acc-descr-block] [fixture: block/db-acc-acc-title-word]
+  [fixture: block/gram-acc-acc-title-space] [fixture:
+  block/gram-acc-acc-title-upper] [fixture: block/gram-acc-acc-title-glued]
+  [fixture: block/db-acc-title-word] [fixture: block/gram-acc-title-colon]
+- Statements follow one another with nothing between them but white space: any
+  number of nodes, edges, `columns`, `space` blocks, and composites on a line,
+  in any order, and `class`, `style`, and `classDef` take the rest of their
+  line, so what follows them on it is part of them. Indentation is not
+  significant, a line may be empty or white space only, and so may the end of
+  the text. A word that holds a keyword is a node (`friend`, `endless`,
+  `mycolumns`, `blockade`, `classy`, `styled`), `columns:2` is a node `columns`
+  of width 2, and a control character or a delete character is part of an id.
+  [fixture: block/db-statement-many-line] [fixture:
+  block/db-statement-mixed-line] [fixture: block/db-statement-columns-between]
+  [fixture: block/db-statement-statements-then-class] [fixture:
+  block/db-statement-statements-then-style] [fixture:
+  block/db-statement-statements-then-class-def] [fixture:
+  block/db-statement-edge-then-class] [fixture:
+  block/db-statement-class-then-node] [fixture:
+  block/db-statement-order-class-def-last] [fixture:
+  block/db-statement-long-diagram] [fixture: block/db-statement-tab-indent]
+  [fixture: block/db-statement-no-indent] [fixture:
+  block/db-statement-deep-indent] [fixture:
+  block/db-statement-trailing-whitespace-lines] [fixture:
+  block/db-statement-final-spaces] [fixture: block/db-statement-final-lines]
+  [fixture: block/db-statement-leading-blank-lines] [fixture:
+  block/db-statement-control] [fixture: block/db-statement-delete] [fixture:
+  block/db-statement-keywords-as-ids] [fixture:
+  block/gram-statement-block-as-node] [fixture:
+  block/db-statement-end-keyword-inside-id] [fixture:
+  block/db-statement-end-prefix-id] [fixture:
+  block/db-statement-keywords-inside-ids]
+- White space in the id of a node: a tab, a line feed, a CR, a CRLF, a no-break
+  space, an ideographic space, a U+FEFF, a U+2028, a U+2029, a form feed, a
+  vertical tab, and spaces separate two ids, while a U+0085 does not, and joins
+  the two words into one id. In the id of a composite, white space ends the id,
+  and the rest is a node inside the composite. [fixture: block/db-grid-tab-id]
+  [fixture: block/db-grid-tab-composite-id] [fixture: block/db-grid-lf-id]
+  [fixture: block/db-grid-lf-composite-id] [fixture: block/db-grid-cr-id]
+  [fixture: block/db-grid-cr-composite-id] [fixture: block/db-grid-crlf-id]
+  [fixture: block/db-grid-crlf-composite-id] [fixture: block/db-grid-ls-id]
+  [fixture: block/db-grid-ls-composite-id] [fixture: block/db-grid-ps-id]
+  [fixture: block/db-grid-ps-composite-id] [fixture: block/db-grid-nbsp-id]
+  [fixture: block/db-grid-nbsp-composite-id] [fixture: block/db-grid-bom-id]
+  [fixture: block/db-grid-bom-composite-id] [fixture:
+  block/db-grid-ideographic-id] [fixture:
+  block/db-grid-ideographic-composite-id] [fixture: block/db-grid-ff-id]
+  [fixture: block/db-grid-ff-composite-id] [fixture: block/db-grid-vt-id]
+  [fixture: block/db-grid-vt-composite-id] [fixture: block/db-grid-spaces-id]
+  [fixture: block/db-grid-spaces-composite-id] [fixture: block/db-grid-nel-id]
+  [fixture: block/db-grid-nel-composite-id]
+- White space in a string, in the label of a node, of a block arrow, of an edge,
+  or of a composite, is part of the text, but a CR alone and a CRLF become a
+  line feed. A `;`, a `#`, a `%`, a `:`, a `,`, a `-`, a `|`, a `'`, a backtick,
+  a backslash, brackets, braces, `<`, `>`, `=`, a run of punctuation, an arrow,
+  `%%`, HTML tags, `&amp;`, keywords, `__proto__`, `constructor`, `root`, a
+  letter outside ASCII, an emoji, and digits are part of the text too, but a `"`
+  ends the string, and the string is then rejected. A comment line inside a
+  string is removed, a directive is removed, a directive on a line of its own
+  leaves the line breaks around it, a character reference is read as its
+  placeholder, the quote of an HTML attribute is read as `'`, and the line rule
+  drops the last `;` of `style:#x;y` and of `classDef:#x;y`. [fixture:
+  block/db-label-tab] [fixture: block/db-grid-tab-block-arrow-label] [fixture:
+  block/db-grid-tab-edge-label] [fixture: block/db-grid-tab-composite-label]
+  [fixture: block/db-label-line-feed] [fixture:
+  block/db-grid-lf-block-arrow-label] [fixture: block/db-edge-label-line-feed]
+  [fixture: block/db-grid-lf-composite-label] [fixture: block/db-label-cr]
+  [fixture: block/db-grid-cr-block-arrow-label] [fixture:
+  block/db-grid-cr-edge-label] [fixture: block/db-grid-cr-composite-label]
+  [fixture: block/db-label-crlf] [fixture: block/db-grid-crlf-block-arrow-label]
+  [fixture: block/db-grid-crlf-edge-label] [fixture:
+  block/db-grid-crlf-composite-label] [fixture: block/db-label-ls] [fixture:
+  block/db-grid-ls-block-arrow-label] [fixture: block/db-grid-ls-edge-label]
+  [fixture: block/db-grid-ls-composite-label] [fixture: block/db-label-ps]
+  [fixture: block/db-grid-ps-block-arrow-label] [fixture:
+  block/db-grid-ps-edge-label] [fixture: block/db-grid-ps-composite-label]
+  [fixture: block/db-label-nbsp] [fixture: block/db-grid-nbsp-block-arrow-label]
+  [fixture: block/db-grid-nbsp-edge-label] [fixture:
+  block/db-grid-nbsp-composite-label] [fixture: block/db-grid-bom-label]
+  [fixture: block/db-grid-bom-block-arrow-label] [fixture:
+  block/db-grid-bom-edge-label] [fixture: block/db-grid-bom-composite-label]
+  [fixture: block/db-label-ideographic] [fixture:
+  block/db-grid-ideographic-block-arrow-label] [fixture:
+  block/db-grid-ideographic-edge-label] [fixture:
+  block/db-grid-ideographic-composite-label] [fixture: block/db-grid-ff-label]
+  [fixture: block/db-grid-ff-block-arrow-label] [fixture:
+  block/db-grid-ff-edge-label] [fixture: block/db-grid-ff-composite-label]
+  [fixture: block/db-grid-vt-label] [fixture:
+  block/db-grid-vt-block-arrow-label] [fixture: block/db-grid-vt-edge-label]
+  [fixture: block/db-grid-vt-composite-label] [fixture:
+  block/db-grid-spaces-label] [fixture: block/db-grid-spaces-block-arrow-label]
+  [fixture: block/db-grid-spaces-edge-label] [fixture:
+  block/db-grid-spaces-composite-label] [fixture: block/db-label-nel] [fixture:
+  block/db-grid-nel-block-arrow-label] [fixture: block/db-grid-nel-edge-label]
+  [fixture: block/db-grid-nel-composite-label] [fixture:
+  block/db-label-semicolon] [fixture: block/db-grid-semicolon-block-arrow-label]
+  [fixture: block/db-grid-semicolon-edge-label] [fixture:
+  block/db-grid-semicolon-composite-label] [fixture: block/db-label-hash]
+  [fixture: block/db-grid-hash-block-arrow-label] [fixture:
+  block/db-grid-hash-edge-label] [fixture: block/db-grid-hash-composite-label]
+  [fixture: block/db-label-percent] [fixture:
+  block/db-grid-percent-block-arrow-label] [fixture:
+  block/db-grid-percent-edge-label] [fixture:
+  block/db-grid-percent-composite-label] [fixture: block/db-label-colon]
+  [fixture: block/db-grid-colon-block-arrow-label] [fixture:
+  block/db-grid-colon-edge-label] [fixture: block/db-grid-colon-composite-label]
+  [fixture: block/db-grid-comma-label] [fixture:
+  block/db-grid-comma-block-arrow-label] [fixture:
+  block/db-grid-comma-edge-label] [fixture: block/db-grid-comma-composite-label]
+  [fixture: block/db-grid-dash-label] [fixture:
+  block/db-grid-dash-block-arrow-label] [fixture: block/db-grid-dash-edge-label]
+  [fixture: block/db-grid-dash-composite-label] [fixture:
+  block/db-grid-pipe-label] [fixture: block/db-grid-pipe-block-arrow-label]
+  [fixture: block/db-grid-pipe-edge-label] [fixture:
+  block/db-grid-pipe-composite-label] [fixture: block/gram-label-quote-inside]
+  [fixture: block/gram-grid-quote-block-arrow-label] [fixture:
+  block/gram-grid-quote-edge-label] [fixture:
+  block/gram-grid-quote-composite-label] [fixture:
+  block/db-label-single-quote-inside] [fixture:
+  block/db-grid-single-quote-block-arrow-label] [fixture:
+  block/db-grid-single-quote-edge-label] [fixture:
+  block/db-grid-single-quote-composite-label] [fixture:
+  block/db-label-backtick-inside] [fixture:
+  block/db-grid-backtick-block-arrow-label] [fixture:
+  block/db-grid-backtick-edge-label] [fixture:
+  block/db-grid-backtick-composite-label] [fixture: block/db-label-backslash]
+  [fixture: block/db-grid-backslash-block-arrow-label] [fixture:
+  block/db-grid-backslash-edge-label] [fixture:
+  block/db-grid-backslash-composite-label] [fixture:
+  block/db-grid-open-square-label] [fixture:
+  block/db-grid-open-square-block-arrow-label] [fixture:
+  block/db-grid-open-square-edge-label] [fixture:
+  block/db-grid-open-square-composite-label] [fixture:
+  block/db-grid-close-square-label] [fixture:
+  block/db-grid-close-square-block-arrow-label] [fixture:
+  block/db-grid-close-square-edge-label] [fixture:
+  block/db-grid-close-square-composite-label] [fixture:
+  block/db-grid-open-round-label] [fixture:
+  block/db-grid-open-round-block-arrow-label] [fixture:
+  block/db-grid-open-round-edge-label] [fixture:
+  block/db-grid-open-round-composite-label] [fixture:
+  block/db-grid-close-round-label] [fixture:
+  block/db-grid-close-round-block-arrow-label] [fixture:
+  block/db-grid-close-round-edge-label] [fixture:
+  block/db-grid-close-round-composite-label] [fixture:
+  block/db-grid-open-brace-label] [fixture:
+  block/db-grid-open-brace-block-arrow-label] [fixture:
+  block/db-grid-open-brace-edge-label] [fixture:
+  block/db-grid-open-brace-composite-label] [fixture:
+  block/db-grid-close-brace-label] [fixture:
+  block/db-grid-close-brace-block-arrow-label] [fixture:
+  block/db-grid-close-brace-edge-label] [fixture:
+  block/db-grid-close-brace-composite-label] [fixture:
+  block/db-grid-less-than-label] [fixture:
+  block/db-grid-less-than-block-arrow-label] [fixture:
+  block/db-grid-less-than-edge-label] [fixture:
+  block/db-grid-less-than-composite-label] [fixture:
+  block/db-grid-greater-than-label] [fixture:
+  block/db-grid-greater-than-block-arrow-label] [fixture:
+  block/db-grid-greater-than-edge-label] [fixture:
+  block/db-grid-greater-than-composite-label] [fixture:
+  block/db-grid-equals-label] [fixture: block/db-grid-equals-block-arrow-label]
+  [fixture: block/db-grid-equals-edge-label] [fixture:
+  block/db-grid-equals-composite-label] [fixture: block/db-grid-punct-label]
+  [fixture: block/db-grid-punct-block-arrow-label] [fixture:
+  block/db-grid-punct-edge-label] [fixture: block/db-grid-punct-composite-label]
+  [fixture: block/db-grid-arrow-label] [fixture:
+  block/db-grid-arrow-block-arrow-label] [fixture:
+  block/db-grid-arrow-edge-label] [fixture: block/db-grid-arrow-composite-label]
+  [fixture: block/db-label-arrow] [fixture:
+  block/db-grid-arrow-spaced-block-arrow-label] [fixture:
+  block/db-grid-arrow-spaced-edge-label] [fixture:
+  block/db-grid-arrow-spaced-composite-label] [fixture:
+  block/db-grid-comment-label] [fixture:
+  block/db-grid-comment-block-arrow-label] [fixture:
+  block/db-grid-comment-edge-label] [fixture:
+  block/db-grid-comment-composite-label] [fixture:
+  block/db-grid-comment-line-label] [fixture:
+  block/db-grid-comment-line-block-arrow-label] [fixture:
+  block/db-grid-comment-line-edge-label] [fixture:
+  block/db-grid-comment-line-composite-label] [fixture:
+  block/db-label-directive] [fixture: block/db-grid-directive-block-arrow-label]
+  [fixture: block/db-edge-label-directive] [fixture:
+  block/db-grid-directive-composite-label] [fixture:
+  block/db-label-directive-line] [fixture:
+  block/db-grid-directive-line-block-arrow-label] [fixture:
+  block/db-grid-directive-line-edge-label] [fixture:
+  block/db-grid-directive-line-composite-label] [fixture:
+  block/db-label-entity-numeric] [fixture:
+  block/db-grid-entity-block-arrow-label] [fixture: block/db-edge-label-entity]
+  [fixture: block/db-grid-entity-composite-label] [fixture:
+  block/db-label-entity-named] [fixture:
+  block/db-grid-entity-named-block-arrow-label] [fixture:
+  block/db-grid-entity-named-edge-label] [fixture:
+  block/db-grid-entity-named-composite-label] [fixture:
+  block/db-grid-html-label] [fixture: block/db-grid-html-block-arrow-label]
+  [fixture: block/db-grid-html-edge-label] [fixture:
+  block/db-grid-html-composite-label] [fixture: block/db-label-html-br-slash]
+  [fixture: block/db-grid-html-br-block-arrow-label] [fixture:
+  block/db-grid-html-br-edge-label] [fixture:
+  block/db-grid-html-br-composite-label] [fixture:
+  block/db-grid-html-attribute-label] [fixture:
+  block/db-grid-html-attribute-block-arrow-label] [fixture:
+  block/db-grid-html-attribute-edge-label] [fixture:
+  block/db-grid-html-attribute-composite-label] [fixture:
+  block/db-grid-ampersand-entity-label] [fixture:
+  block/db-grid-ampersand-entity-block-arrow-label] [fixture:
+  block/db-grid-ampersand-entity-edge-label] [fixture:
+  block/db-grid-ampersand-entity-composite-label] [fixture:
+  block/db-grid-keyword-end-label] [fixture:
+  block/db-grid-keyword-end-block-arrow-label] [fixture:
+  block/db-grid-keyword-end-edge-label] [fixture:
+  block/db-grid-keyword-end-composite-label] [fixture:
+  block/db-grid-keyword-block-label] [fixture:
+  block/db-grid-keyword-block-block-arrow-label] [fixture:
+  block/db-grid-keyword-block-edge-label] [fixture:
+  block/db-grid-keyword-block-composite-label] [fixture:
+  block/db-grid-keyword-columns-label] [fixture:
+  block/db-grid-keyword-columns-block-arrow-label] [fixture:
+  block/db-grid-keyword-columns-edge-label] [fixture:
+  block/db-grid-keyword-columns-composite-label] [fixture:
+  block/db-grid-keyword-space-label] [fixture:
+  block/db-grid-keyword-space-block-arrow-label] [fixture:
+  block/db-grid-keyword-space-edge-label] [fixture:
+  block/db-grid-keyword-space-composite-label] [fixture:
+  block/db-grid-keyword-class-label] [fixture:
+  block/db-grid-keyword-class-block-arrow-label] [fixture:
+  block/db-grid-keyword-class-edge-label] [fixture:
+  block/db-grid-keyword-class-composite-label] [fixture:
+  block/db-grid-keyword-style-label] [fixture:
+  block/db-grid-keyword-style-block-arrow-label] [fixture:
+  block/db-grid-keyword-style-edge-label] [fixture:
+  block/db-grid-keyword-style-composite-label] [fixture:
+  block/db-grid-keyword-classdef-label] [fixture:
+  block/db-grid-keyword-classdef-block-arrow-label] [fixture:
+  block/db-grid-keyword-classdef-edge-label] [fixture:
+  block/db-grid-keyword-classdef-composite-label] [fixture:
+  block/db-grid-keyword-header-label] [fixture:
+  block/db-grid-keyword-header-block-arrow-label] [fixture:
+  block/db-grid-keyword-header-edge-label] [fixture:
+  block/db-grid-keyword-header-composite-label] [fixture:
+  block/db-grid-proto-label] [fixture: block/db-grid-proto-block-arrow-label]
+  [fixture: block/db-grid-proto-edge-label] [fixture:
+  block/db-grid-proto-composite-label] [fixture:
+  block/db-grid-constructor-label] [fixture:
+  block/db-grid-constructor-block-arrow-label] [fixture:
+  block/db-grid-constructor-edge-label] [fixture:
+  block/db-grid-constructor-composite-label] [fixture: block/db-grid-root-label]
+  [fixture: block/db-grid-root-block-arrow-label] [fixture:
+  block/db-grid-root-edge-label] [fixture: block/db-grid-root-composite-label]
+  [fixture: block/db-grid-nonascii-label] [fixture:
+  block/db-grid-nonascii-block-arrow-label] [fixture:
+  block/db-grid-nonascii-edge-label] [fixture:
+  block/db-grid-nonascii-composite-label] [fixture: block/db-grid-emoji-label]
+  [fixture: block/db-grid-emoji-block-arrow-label] [fixture:
+  block/db-grid-emoji-edge-label] [fixture: block/db-grid-emoji-composite-label]
+  [fixture: block/db-grid-digits-label] [fixture:
+  block/db-grid-digits-block-arrow-label] [fixture:
+  block/db-grid-digits-edge-label] [fixture:
+  block/db-grid-digits-composite-label] [fixture: block/db-grid-empty-label]
+  [fixture: block/db-grid-empty-block-arrow-label] [fixture:
+  block/db-grid-empty-edge-label] [fixture: block/db-grid-empty-composite-label]
+  [fixture: block/db-grid-style-rule-label] [fixture:
+  block/db-grid-style-rule-block-arrow-label] [fixture:
+  block/db-grid-style-rule-edge-label] [fixture:
+  block/db-grid-style-rule-composite-label] [fixture:
+  block/db-grid-classdef-rule-label] [fixture:
+  block/db-grid-classdef-rule-block-arrow-label] [fixture:
+  block/db-grid-classdef-rule-edge-label] [fixture:
+  block/db-grid-classdef-rule-composite-label]
+- In the id of a node, a `;`, a `#`, a `%`, a `,`, a `|`, a `'`, a `"`, a
+  backtick, a backslash, a `]`, `%%`, a character reference, `&amp;`,
+  `__proto__`, `constructor`, `root`, a letter outside ASCII, an emoji, digits,
+  and nothing are part of the id, a directive in it is removed, and a comment
+  line in it ends the id. A `[`, a `(`, a `{`, a `-` that is not an arrow, a
+  `:`, a `=`, a `<`, a `>`, a `}`, a `)`, a run of punctuation, HTML, and the
+  line rule are rejected, `a-->b` is an edge, `end` and `block-beta` after the
+  id open or close composites and are rejected, and `columns 2`, `space`,
+  `class A c`, and `classDef c fill:red` are statements, while
+  `style A fill:red` makes a `style` of an id that is not there. [fixture:
+  block/db-name-semicolon] [fixture: block/db-name-hash] [fixture:
+  block/db-name-percent] [fixture: block/gram-name-colon] [fixture:
+  block/db-name-comma] [fixture: block/gram-name-dash] [fixture:
+  block/db-name-pipe] [fixture: block/db-name-quote] [fixture:
+  block/db-name-single-quote] [fixture: block/db-name-backtick] [fixture:
+  block/db-name-backslash] [fixture: block/gram-grid-open-square-id] [fixture:
+  block/db-name-brackets-in-id] [fixture: block/gram-grid-open-round-id]
+  [fixture: block/gram-name-close-paren] [fixture:
+  block/gram-grid-open-brace-id] [fixture: block/gram-name-brace] [fixture:
+  block/gram-name-less-than] [fixture: block/gram-name-greater-than] [fixture:
+  block/gram-name-equals] [fixture: block/gram-grid-punct-id] [fixture:
+  block/db-grid-arrow-id] [fixture: block/db-grid-arrow-spaced-id] [fixture:
+  block/db-grid-comment-id] [fixture: block/db-grid-comment-line-id] [fixture:
+  block/div-grid-directive-id] [fixture: block/db-grid-directive-line-id]
+  [fixture: block/db-grid-entity-id] [fixture: block/db-grid-entity-named-id]
+  [fixture: block/gram-grid-html-id] [fixture: block/gram-grid-html-br-id]
+  [fixture: block/gram-grid-html-attribute-id] [fixture:
+  block/db-grid-ampersand-entity-id] [fixture: block/gram-grid-keyword-end-id]
+  [fixture: block/gram-grid-keyword-block-id] [fixture:
+  block/db-grid-keyword-columns-id] [fixture: block/db-grid-keyword-space-id]
+  [fixture: block/db-grid-keyword-class-id] [fixture:
+  block/gram-grid-keyword-style-id] [fixture: block/db-grid-keyword-classdef-id]
+  [fixture: block/gram-grid-keyword-header-id] [fixture: block/db-grid-proto-id]
+  [fixture: block/db-grid-constructor-id] [fixture: block/db-grid-root-id]
+  [fixture: block/db-grid-nonascii-id] [fixture: block/db-grid-emoji-id]
+  [fixture: block/db-grid-digits-id] [fixture: block/db-grid-empty-id] [fixture:
+  block/gram-grid-style-rule-id] [fixture: block/gram-grid-classdef-rule-id]
+- Where an id of a `class` or `style` statement, the name of a class, or the
+  name of a `classDef` holds one of these characters: in `classDef`, the name is
+  one or more word characters, and white space ends it, so the rest is the first
+  style; the other characters, punctuation, a non-ASCII letter, a comment, and
+  an entity make the text rejected, and `__proto__`, `constructor`, `root`,
+  digits, and nothing are word characters or no character. The ids of `class`
+  and `style` are word characters too, so a character that is none ends the id
+  and the rest is the class name or the styles; a `style` for an id that is not
+  there is rejected. [fixture: block/db-grid-tab-class-def-name] [fixture:
+  block/db-grid-tab-class-apply-id] [fixture: block/db-grid-tab-style-id]
+  [fixture: block/db-grid-lf-class-def-name] [fixture:
+  block/db-grid-lf-class-apply-id] [fixture: block/gram-grid-lf-style-id]
+  [fixture: block/db-grid-cr-class-def-name] [fixture:
+  block/db-grid-cr-class-apply-id] [fixture: block/gram-grid-cr-style-id]
+  [fixture: block/db-grid-crlf-class-def-name] [fixture:
+  block/db-grid-crlf-class-apply-id] [fixture: block/gram-grid-crlf-style-id]
+  [fixture: block/db-grid-ls-class-def-name] [fixture:
+  block/db-grid-ls-class-apply-id] [fixture: block/db-grid-ls-style-id]
+  [fixture: block/db-grid-ps-class-def-name] [fixture:
+  block/db-grid-ps-class-apply-id] [fixture: block/db-grid-ps-style-id]
+  [fixture: block/db-grid-nbsp-class-def-name] [fixture:
+  block/db-grid-nbsp-class-apply-id] [fixture: block/db-grid-nbsp-style-id]
+  [fixture: block/db-grid-bom-class-def-name] [fixture:
+  block/db-grid-bom-class-apply-id] [fixture: block/db-grid-bom-style-id]
+  [fixture: block/db-grid-ideographic-class-def-name] [fixture:
+  block/db-grid-ideographic-class-apply-id] [fixture:
+  block/db-grid-ideographic-style-id] [fixture: block/db-grid-ff-class-def-name]
+  [fixture: block/db-grid-ff-class-apply-id] [fixture:
+  block/db-grid-ff-style-id] [fixture: block/db-grid-vt-class-def-name]
+  [fixture: block/db-grid-vt-class-apply-id] [fixture:
+  block/db-grid-vt-style-id] [fixture: block/db-grid-spaces-class-def-name]
+  [fixture: block/db-grid-spaces-class-apply-id] [fixture:
+  block/db-grid-spaces-style-id] [fixture: block/gram-grid-nel-class-def-name]
+  [fixture: block/db-grid-nel-class-apply-id] [fixture:
+  block/gram-grid-nel-style-id] [fixture:
+  block/gram-grid-semicolon-class-def-name] [fixture:
+  block/db-grid-semicolon-class-apply-id] [fixture:
+  block/gram-grid-semicolon-style-id] [fixture:
+  block/gram-grid-hash-class-def-name] [fixture:
+  block/db-grid-hash-class-apply-id] [fixture: block/gram-grid-hash-style-id]
+  [fixture: block/gram-grid-percent-class-def-name] [fixture:
+  block/db-grid-percent-class-apply-id] [fixture:
+  block/gram-grid-percent-style-id] [fixture:
+  block/gram-grid-colon-class-def-name] [fixture:
+  block/gram-grid-colon-class-apply-id] [fixture:
+  block/gram-grid-colon-style-id] [fixture:
+  block/gram-grid-comma-class-def-name] [fixture:
+  block/db-grid-comma-class-apply-id] [fixture: block/db-grid-comma-style-id]
+  [fixture: block/gram-grid-dash-class-def-name] [fixture:
+  block/gram-grid-dash-class-apply-id] [fixture: block/gram-grid-dash-style-id]
+  [fixture: block/gram-grid-pipe-class-def-name] [fixture:
+  block/db-grid-pipe-class-apply-id] [fixture: block/gram-grid-pipe-style-id]
+  [fixture: block/gram-grid-quote-class-def-name] [fixture:
+  block/db-grid-quote-class-apply-id] [fixture: block/gram-grid-quote-style-id]
+  [fixture: block/gram-grid-single-quote-class-def-name] [fixture:
+  block/db-grid-single-quote-class-apply-id] [fixture:
+  block/gram-grid-single-quote-style-id] [fixture:
+  block/gram-grid-backtick-class-def-name] [fixture:
+  block/db-grid-backtick-class-apply-id] [fixture:
+  block/gram-grid-backtick-style-id] [fixture:
+  block/gram-grid-backslash-class-def-name] [fixture:
+  block/db-grid-backslash-class-apply-id] [fixture:
+  block/gram-grid-backslash-style-id] [fixture:
+  block/gram-grid-open-square-class-def-name] [fixture:
+  block/gram-grid-open-square-class-apply-id] [fixture:
+  block/gram-grid-open-square-style-id] [fixture:
+  block/gram-grid-close-square-class-def-name] [fixture:
+  block/db-grid-close-square-class-apply-id] [fixture:
+  block/gram-grid-close-square-style-id] [fixture:
+  block/gram-grid-open-round-class-def-name] [fixture:
+  block/gram-grid-open-round-class-apply-id] [fixture:
+  block/gram-grid-open-round-style-id] [fixture:
+  block/gram-grid-close-round-class-def-name] [fixture:
+  block/gram-grid-close-round-class-apply-id] [fixture:
+  block/gram-grid-close-round-style-id] [fixture:
+  block/gram-grid-open-brace-class-def-name] [fixture:
+  block/gram-grid-open-brace-class-apply-id] [fixture:
+  block/gram-grid-open-brace-style-id] [fixture:
+  block/gram-grid-close-brace-class-def-name] [fixture:
+  block/gram-grid-close-brace-class-apply-id] [fixture:
+  block/gram-grid-close-brace-style-id] [fixture:
+  block/gram-grid-less-than-class-def-name] [fixture:
+  block/gram-grid-less-than-class-apply-id] [fixture:
+  block/gram-grid-less-than-style-id] [fixture:
+  block/gram-grid-greater-than-class-def-name] [fixture:
+  block/gram-grid-greater-than-class-apply-id] [fixture:
+  block/gram-grid-greater-than-style-id] [fixture:
+  block/gram-grid-equals-class-def-name] [fixture:
+  block/gram-grid-equals-class-apply-id] [fixture:
+  block/gram-grid-equals-style-id] [fixture:
+  block/gram-grid-punct-class-def-name] [fixture:
+  block/gram-grid-punct-class-apply-id] [fixture:
+  block/gram-grid-punct-style-id] [fixture:
+  block/gram-grid-arrow-class-def-name] [fixture:
+  block/db-grid-arrow-class-apply-id] [fixture: block/db-grid-arrow-style-id]
+  [fixture: block/db-grid-arrow-spaced-class-def-name] [fixture:
+  block/db-grid-arrow-spaced-class-apply-id] [fixture:
+  block/db-grid-arrow-spaced-style-id] [fixture:
+  block/gram-grid-comment-class-def-name] [fixture:
+  block/db-grid-comment-class-apply-id] [fixture:
+  block/gram-grid-comment-style-id] [fixture:
+  block/db-grid-comment-line-class-def-name] [fixture:
+  block/db-grid-comment-line-class-apply-id] [fixture:
+  block/gram-grid-comment-line-style-id] [fixture:
+  block/div-grid-directive-class-def-name] [fixture:
+  block/div-grid-directive-class-apply-id] [fixture:
+  block/div-grid-directive-style-id] [fixture:
+  block/db-grid-directive-line-class-def-name] [fixture:
+  block/db-grid-directive-line-class-apply-id] [fixture:
+  block/gram-grid-directive-line-style-id] [fixture:
+  block/gram-grid-entity-class-def-name] [fixture:
+  block/db-grid-entity-class-apply-id] [fixture:
+  block/gram-grid-entity-style-id] [fixture:
+  block/gram-grid-entity-named-class-def-name] [fixture:
+  block/db-grid-entity-named-class-apply-id] [fixture:
+  block/gram-grid-entity-named-style-id] [fixture:
+  block/gram-grid-html-class-def-name] [fixture:
+  block/gram-grid-html-class-apply-id] [fixture: block/gram-grid-html-style-id]
+  [fixture: block/gram-grid-html-br-class-def-name] [fixture:
+  block/gram-grid-html-br-class-apply-id] [fixture:
+  block/gram-grid-html-br-style-id] [fixture:
+  block/gram-grid-html-attribute-class-def-name] [fixture:
+  block/gram-grid-html-attribute-class-apply-id] [fixture:
+  block/gram-grid-html-attribute-style-id] [fixture:
+  block/gram-grid-ampersand-entity-class-def-name] [fixture:
+  block/db-grid-ampersand-entity-class-apply-id] [fixture:
+  block/gram-grid-ampersand-entity-style-id] [fixture:
+  block/db-grid-keyword-end-class-def-name] [fixture:
+  block/gram-grid-keyword-end-class-apply-id] [fixture:
+  block/gram-grid-keyword-end-style-id] [fixture:
+  block/db-grid-keyword-block-class-def-name] [fixture:
+  block/gram-grid-keyword-block-class-apply-id] [fixture:
+  block/gram-grid-keyword-block-style-id] [fixture:
+  block/db-grid-keyword-columns-class-def-name] [fixture:
+  block/db-grid-keyword-columns-class-apply-id] [fixture:
+  block/db-grid-keyword-columns-style-id] [fixture:
+  block/db-grid-keyword-space-class-def-name] [fixture:
+  block/db-grid-keyword-space-class-apply-id] [fixture:
+  block/db-grid-keyword-space-style-id] [fixture:
+  block/db-grid-keyword-class-class-def-name] [fixture:
+  block/db-grid-keyword-class-class-apply-id] [fixture:
+  block/db-grid-keyword-class-style-id] [fixture:
+  block/db-grid-keyword-style-class-def-name] [fixture:
+  block/gram-grid-keyword-style-class-apply-id] [fixture:
+  block/gram-grid-keyword-style-style-id] [fixture:
+  block/db-grid-keyword-classdef-class-def-name] [fixture:
+  block/db-grid-keyword-classdef-class-apply-id] [fixture:
+  block/db-grid-keyword-classdef-style-id] [fixture:
+  block/db-grid-keyword-header-class-def-name] [fixture:
+  block/gram-grid-keyword-header-class-apply-id] [fixture:
+  block/gram-grid-keyword-header-style-id] [fixture:
+  block/db-grid-proto-class-def-name] [fixture:
+  block/db-grid-proto-class-apply-id] [fixture: block/db-grid-proto-style-id]
+  [fixture: block/db-grid-constructor-class-def-name] [fixture:
+  block/db-grid-constructor-class-apply-id] [fixture:
+  block/db-grid-constructor-style-id] [fixture:
+  block/db-grid-root-class-def-name] [fixture:
+  block/db-grid-root-class-apply-id] [fixture: block/db-grid-root-style-id]
+  [fixture: block/gram-grid-nonascii-class-def-name] [fixture:
+  block/db-grid-nonascii-class-apply-id] [fixture:
+  block/gram-grid-nonascii-style-id] [fixture:
+  block/gram-grid-emoji-class-def-name] [fixture:
+  block/db-grid-emoji-class-apply-id] [fixture: block/gram-grid-emoji-style-id]
+  [fixture: block/db-grid-digits-class-def-name] [fixture:
+  block/db-grid-digits-class-apply-id] [fixture: block/db-grid-digits-style-id]
+  [fixture: block/db-grid-empty-class-def-name] [fixture:
+  block/db-grid-empty-class-apply-id] [fixture: block/db-grid-empty-style-id]
+  [fixture: block/gram-grid-style-rule-class-def-name] [fixture:
+  block/gram-grid-style-rule-class-apply-id] [fixture:
+  block/gram-grid-style-rule-style-id] [fixture:
+  block/gram-grid-classdef-rule-class-def-name] [fixture:
+  block/gram-grid-classdef-rule-class-apply-id] [fixture:
+  block/gram-grid-classdef-rule-style-id]
+- In the styles of `classDef` and `style` and in the name of a class of `class`,
+  white space other than a line terminator is part of the text, and a line
+  terminator ends it, so the rest of the text is read as statements; the other
+  characters are part of the text, the Db drops the first `;` of a style of
+  `classDef`, the line rule drops the last `;` of a line that has a `:` and a
+  `#`, a comment line is removed, and a directive is removed. A U+0085 is part
+  of the text. [fixture: block/db-grid-tab-class-def-style] [fixture:
+  block/db-grid-tab-class-apply-name] [fixture: block/db-grid-tab-style-text]
+  [fixture: block/db-grid-lf-class-def-style] [fixture:
+  block/db-grid-lf-class-apply-name] [fixture: block/db-grid-lf-style-text]
+  [fixture: block/db-grid-cr-class-def-style] [fixture:
+  block/db-grid-cr-class-apply-name] [fixture: block/db-grid-cr-style-text]
+  [fixture: block/db-grid-crlf-class-def-style] [fixture:
+  block/db-grid-crlf-class-apply-name] [fixture: block/db-grid-crlf-style-text]
+  [fixture: block/db-grid-ls-class-def-style] [fixture:
+  block/db-grid-ls-class-apply-name] [fixture: block/db-grid-ls-style-text]
+  [fixture: block/db-grid-ps-class-def-style] [fixture:
+  block/db-grid-ps-class-apply-name] [fixture: block/db-grid-ps-style-text]
+  [fixture: block/db-grid-nbsp-class-def-style] [fixture:
+  block/db-grid-nbsp-class-apply-name] [fixture: block/db-grid-nbsp-style-text]
+  [fixture: block/db-grid-bom-class-def-style] [fixture:
+  block/db-grid-bom-class-apply-name] [fixture: block/db-grid-bom-style-text]
+  [fixture: block/db-grid-ideographic-class-def-style] [fixture:
+  block/db-grid-ideographic-class-apply-name] [fixture:
+  block/db-grid-ideographic-style-text] [fixture:
+  block/db-grid-ff-class-def-style] [fixture: block/db-grid-ff-class-apply-name]
+  [fixture: block/db-grid-ff-style-text] [fixture:
+  block/db-grid-vt-class-def-style] [fixture: block/db-grid-vt-class-apply-name]
+  [fixture: block/db-grid-vt-style-text] [fixture:
+  block/db-grid-spaces-class-def-style] [fixture:
+  block/db-grid-spaces-class-apply-name] [fixture:
+  block/db-grid-spaces-style-text] [fixture: block/db-grid-nel-class-def-style]
+  [fixture: block/db-grid-nel-class-apply-name] [fixture:
+  block/db-grid-nel-style-text] [fixture:
+  block/db-grid-semicolon-class-def-style] [fixture:
+  block/db-grid-semicolon-class-apply-name] [fixture:
+  block/db-grid-semicolon-style-text] [fixture:
+  block/db-grid-hash-class-def-style] [fixture:
+  block/db-grid-hash-class-apply-name] [fixture: block/db-grid-hash-style-text]
+  [fixture: block/db-grid-percent-class-def-style] [fixture:
+  block/db-grid-percent-class-apply-name] [fixture:
+  block/db-grid-percent-style-text] [fixture:
+  block/db-grid-colon-class-def-style] [fixture:
+  block/db-grid-colon-class-apply-name] [fixture:
+  block/db-grid-colon-style-text] [fixture: block/db-grid-comma-class-def-style]
+  [fixture: block/db-grid-comma-class-apply-name] [fixture:
+  block/db-grid-comma-style-text] [fixture: block/db-grid-dash-class-def-style]
+  [fixture: block/db-grid-dash-class-apply-name] [fixture:
+  block/db-grid-dash-style-text] [fixture: block/db-grid-pipe-class-def-style]
+  [fixture: block/db-grid-pipe-class-apply-name] [fixture:
+  block/db-grid-pipe-style-text] [fixture: block/db-grid-quote-class-def-style]
+  [fixture: block/db-grid-quote-class-apply-name] [fixture:
+  block/db-grid-quote-style-text] [fixture:
+  block/db-grid-single-quote-class-def-style] [fixture:
+  block/db-grid-single-quote-class-apply-name] [fixture:
+  block/db-grid-single-quote-style-text] [fixture:
+  block/db-grid-backtick-class-def-style] [fixture:
+  block/db-grid-backtick-class-apply-name] [fixture:
+  block/db-grid-backtick-style-text] [fixture:
+  block/db-grid-backslash-class-def-style] [fixture:
+  block/db-grid-backslash-class-apply-name] [fixture:
+  block/db-grid-backslash-style-text] [fixture:
+  block/db-grid-open-square-class-def-style] [fixture:
+  block/db-grid-open-square-class-apply-name] [fixture:
+  block/db-grid-open-square-style-text] [fixture:
+  block/db-grid-close-square-class-def-style] [fixture:
+  block/db-grid-close-square-class-apply-name] [fixture:
+  block/db-grid-close-square-style-text] [fixture:
+  block/db-grid-open-round-class-def-style] [fixture:
+  block/db-grid-open-round-class-apply-name] [fixture:
+  block/db-grid-open-round-style-text] [fixture:
+  block/db-grid-close-round-class-def-style] [fixture:
+  block/db-grid-close-round-class-apply-name] [fixture:
+  block/db-grid-close-round-style-text] [fixture:
+  block/db-grid-open-brace-class-def-style] [fixture:
+  block/db-grid-open-brace-class-apply-name] [fixture:
+  block/db-grid-open-brace-style-text] [fixture:
+  block/db-grid-close-brace-class-def-style] [fixture:
+  block/db-grid-close-brace-class-apply-name] [fixture:
+  block/db-grid-close-brace-style-text] [fixture:
+  block/db-grid-less-than-class-def-style] [fixture:
+  block/db-grid-less-than-class-apply-name] [fixture:
+  block/db-grid-less-than-style-text] [fixture:
+  block/db-grid-greater-than-class-def-style] [fixture:
+  block/db-grid-greater-than-class-apply-name] [fixture:
+  block/db-grid-greater-than-style-text] [fixture:
+  block/db-grid-equals-class-def-style] [fixture:
+  block/db-grid-equals-class-apply-name] [fixture:
+  block/db-grid-equals-style-text] [fixture:
+  block/db-grid-punct-class-def-style] [fixture:
+  block/db-grid-punct-class-apply-name] [fixture:
+  block/db-grid-punct-style-text] [fixture: block/db-grid-arrow-class-def-style]
+  [fixture: block/db-grid-arrow-class-apply-name] [fixture:
+  block/db-grid-arrow-style-text] [fixture:
+  block/db-grid-arrow-spaced-class-def-style] [fixture:
+  block/db-grid-arrow-spaced-class-apply-name] [fixture:
+  block/db-grid-arrow-spaced-style-text] [fixture:
+  block/db-grid-comment-class-def-style] [fixture:
+  block/db-grid-comment-class-apply-name] [fixture:
+  block/db-grid-comment-style-text] [fixture:
+  block/db-grid-comment-line-class-def-style] [fixture:
+  block/db-grid-comment-line-class-apply-name] [fixture:
+  block/db-grid-comment-line-style-text] [fixture:
+  block/db-grid-directive-class-def-style] [fixture:
+  block/db-grid-directive-class-apply-name] [fixture:
+  block/db-grid-directive-style-text] [fixture:
+  block/db-grid-directive-line-class-def-style] [fixture:
+  block/db-grid-directive-line-class-apply-name] [fixture:
+  block/db-grid-directive-line-style-text] [fixture:
+  block/db-grid-entity-class-def-style] [fixture:
+  block/db-grid-entity-class-apply-name] [fixture:
+  block/db-grid-entity-style-text] [fixture:
+  block/db-grid-entity-named-class-def-style] [fixture:
+  block/db-grid-entity-named-class-apply-name] [fixture:
+  block/db-grid-entity-named-style-text] [fixture:
+  block/db-grid-html-class-def-style] [fixture:
+  block/db-grid-html-class-apply-name] [fixture: block/db-grid-html-style-text]
+  [fixture: block/db-grid-html-br-class-def-style] [fixture:
+  block/db-grid-html-br-class-apply-name] [fixture:
+  block/db-grid-html-br-style-text] [fixture:
+  block/db-grid-html-attribute-class-def-style] [fixture:
+  block/db-grid-html-attribute-class-apply-name] [fixture:
+  block/db-grid-html-attribute-style-text] [fixture:
+  block/db-grid-ampersand-entity-class-def-style] [fixture:
+  block/db-grid-ampersand-entity-class-apply-name] [fixture:
+  block/db-grid-ampersand-entity-style-text] [fixture:
+  block/db-grid-keyword-end-class-def-style] [fixture:
+  block/db-grid-keyword-end-class-apply-name] [fixture:
+  block/db-grid-keyword-end-style-text] [fixture:
+  block/db-grid-keyword-block-class-def-style] [fixture:
+  block/db-grid-keyword-block-class-apply-name] [fixture:
+  block/db-grid-keyword-block-style-text] [fixture:
+  block/db-grid-keyword-columns-class-def-style] [fixture:
+  block/db-grid-keyword-columns-class-apply-name] [fixture:
+  block/db-grid-keyword-columns-style-text] [fixture:
+  block/db-grid-keyword-space-class-def-style] [fixture:
+  block/db-grid-keyword-space-class-apply-name] [fixture:
+  block/db-grid-keyword-space-style-text] [fixture:
+  block/db-grid-keyword-class-class-def-style] [fixture:
+  block/db-grid-keyword-class-class-apply-name] [fixture:
+  block/db-grid-keyword-class-style-text] [fixture:
+  block/db-grid-keyword-style-class-def-style] [fixture:
+  block/db-grid-keyword-style-class-apply-name] [fixture:
+  block/db-grid-keyword-style-style-text] [fixture:
+  block/db-grid-keyword-classdef-class-def-style] [fixture:
+  block/db-grid-keyword-classdef-class-apply-name] [fixture:
+  block/db-grid-keyword-classdef-style-text] [fixture:
+  block/db-grid-keyword-header-class-def-style] [fixture:
+  block/db-grid-keyword-header-class-apply-name] [fixture:
+  block/db-grid-keyword-header-style-text] [fixture:
+  block/db-grid-proto-class-def-style] [fixture:
+  block/db-grid-proto-class-apply-name] [fixture:
+  block/db-grid-proto-style-text] [fixture:
+  block/db-grid-constructor-class-def-style] [fixture:
+  block/db-grid-constructor-class-apply-name] [fixture:
+  block/db-grid-constructor-style-text] [fixture:
+  block/db-grid-root-class-def-style] [fixture:
+  block/db-grid-root-class-apply-name] [fixture: block/db-grid-root-style-text]
+  [fixture: block/db-grid-nonascii-class-def-style] [fixture:
+  block/db-grid-nonascii-class-apply-name] [fixture:
+  block/db-grid-nonascii-style-text] [fixture:
+  block/db-grid-emoji-class-def-style] [fixture:
+  block/db-grid-emoji-class-apply-name] [fixture:
+  block/db-grid-emoji-style-text] [fixture:
+  block/db-grid-digits-class-def-style] [fixture:
+  block/db-grid-digits-class-apply-name] [fixture:
+  block/db-grid-digits-style-text] [fixture:
+  block/db-grid-empty-class-def-style] [fixture:
+  block/db-grid-empty-class-apply-name] [fixture:
+  block/db-grid-empty-style-text] [fixture:
+  block/db-grid-style-rule-class-def-style] [fixture:
+  block/db-grid-style-rule-class-apply-name] [fixture:
+  block/db-grid-style-rule-style-text] [fixture:
+  block/db-grid-classdef-rule-class-def-style] [fixture:
+  block/db-grid-classdef-rule-class-apply-name] [fixture:
+  block/db-grid-classdef-rule-style-text]
+- After `columns`, only digits make the number of columns; every other character
+  makes `columns` a node, followed by what the character makes, or makes the
+  text rejected. As the width of a node or of a `space`, only digits make a
+  width. Between the directions of a block arrow, white space is part of the
+  direction before it, a comment line and a directive are removed, and nothing
+  makes two directions, while any other character is rejected. Glued to the
+  header on its line, white space, a `;`, a `#`, a `%`, a `,`, a `|`, a `'`, a
+  backtick, a backslash, a `]`, a comment, a character reference, `&amp;`, and a
+  non-ASCII letter make a node that starts with the character, and keywords make
+  the statement they start. [fixture: block/db-grid-tab-columns] [fixture:
+  block/gram-grid-tab-width] [fixture: block/gram-grid-tab-space-width]
+  [fixture: block/db-grid-tab-directions] [fixture:
+  block/header-statement-on-header-line-tab] [fixture: block/db-grid-lf-columns]
+  [fixture: block/gram-grid-lf-width] [fixture: block/gram-grid-lf-space-width]
+  [fixture: block/db-grid-lf-directions] [fixture: block/db-grid-lf-header-line]
+  [fixture: block/db-grid-cr-columns] [fixture: block/gram-grid-cr-width]
+  [fixture: block/gram-grid-cr-space-width] [fixture:
+  block/db-grid-cr-directions] [fixture: block/db-grid-cr-header-line] [fixture:
+  block/db-grid-crlf-columns] [fixture: block/gram-grid-crlf-width] [fixture:
+  block/gram-grid-crlf-space-width] [fixture: block/db-grid-crlf-directions]
+  [fixture: block/db-grid-crlf-header-line] [fixture: block/db-grid-ls-columns]
+  [fixture: block/gram-grid-ls-width] [fixture: block/gram-grid-ls-space-width]
+  [fixture: block/db-grid-ls-directions] [fixture: block/header-ls-after]
+  [fixture: block/db-grid-ps-columns] [fixture: block/gram-grid-ps-width]
+  [fixture: block/gram-grid-ps-space-width] [fixture:
+  block/db-grid-ps-directions] [fixture: block/header-ps-after] [fixture:
+  block/db-grid-nbsp-columns] [fixture: block/gram-grid-nbsp-width] [fixture:
+  block/gram-grid-nbsp-space-width] [fixture: block/db-grid-nbsp-directions]
+  [fixture: block/db-grid-nbsp-header-line] [fixture: block/db-grid-bom-columns]
+  [fixture: block/gram-grid-bom-width] [fixture:
+  block/gram-grid-bom-space-width] [fixture: block/db-grid-bom-directions]
+  [fixture: block/db-grid-bom-header-line] [fixture:
+  block/db-grid-ideographic-columns] [fixture:
+  block/gram-grid-ideographic-width] [fixture:
+  block/gram-grid-ideographic-space-width] [fixture:
+  block/db-grid-ideographic-directions] [fixture:
+  block/db-grid-ideographic-header-line] [fixture: block/db-grid-ff-columns]
+  [fixture: block/gram-grid-ff-width] [fixture: block/gram-grid-ff-space-width]
+  [fixture: block/db-grid-ff-directions] [fixture: block/header-ff-after]
+  [fixture: block/db-grid-vt-columns] [fixture: block/gram-grid-vt-width]
+  [fixture: block/gram-grid-vt-space-width] [fixture:
+  block/db-grid-vt-directions] [fixture: block/header-vt-after] [fixture:
+  block/db-grid-spaces-columns] [fixture: block/gram-grid-spaces-width]
+  [fixture: block/gram-grid-spaces-space-width] [fixture:
+  block/db-grid-spaces-directions] [fixture: block/db-grid-spaces-header-line]
+  [fixture: block/db-grid-nel-columns] [fixture: block/gram-grid-nel-width]
+  [fixture: block/gram-grid-nel-space-width] [fixture:
+  block/gram-grid-nel-directions] [fixture: block/header-nel-after] [fixture:
+  block/db-grid-semicolon-columns] [fixture: block/gram-grid-semicolon-width]
+  [fixture: block/gram-grid-semicolon-space-width] [fixture:
+  block/gram-grid-semicolon-directions] [fixture:
+  block/db-grid-semicolon-header-line] [fixture: block/db-grid-hash-columns]
+  [fixture: block/gram-grid-hash-width] [fixture:
+  block/gram-grid-hash-space-width] [fixture: block/gram-grid-hash-directions]
+  [fixture: block/db-grid-hash-header-line] [fixture:
+  block/db-grid-percent-columns] [fixture: block/gram-grid-percent-width]
+  [fixture: block/gram-grid-percent-space-width] [fixture:
+  block/gram-grid-percent-directions] [fixture:
+  block/db-grid-percent-header-line] [fixture: block/gram-grid-colon-columns]
+  [fixture: block/gram-grid-colon-width] [fixture:
+  block/gram-grid-colon-space-width] [fixture: block/gram-grid-colon-directions]
+  [fixture: block/gram-grid-colon-header-line] [fixture:
+  block/db-grid-comma-columns] [fixture: block/gram-grid-comma-width] [fixture:
+  block/gram-grid-comma-space-width] [fixture: block/db-arrow-no-space]
+  [fixture: block/db-grid-comma-header-line] [fixture:
+  block/gram-grid-dash-columns] [fixture: block/gram-grid-dash-width] [fixture:
+  block/gram-grid-dash-space-width] [fixture: block/gram-grid-dash-directions]
+  [fixture: block/gram-grid-dash-header-line] [fixture:
+  block/db-grid-pipe-columns] [fixture: block/gram-grid-pipe-width] [fixture:
+  block/gram-grid-pipe-space-width] [fixture: block/gram-grid-pipe-directions]
+  [fixture: block/db-grid-pipe-header-line] [fixture:
+  block/gram-grid-quote-columns] [fixture: block/gram-grid-quote-width]
+  [fixture: block/gram-grid-quote-space-width] [fixture:
+  block/gram-grid-quote-directions] [fixture: block/gram-grid-quote-header-line]
+  [fixture: block/db-grid-single-quote-columns] [fixture:
+  block/gram-grid-single-quote-width] [fixture:
+  block/gram-grid-single-quote-space-width] [fixture:
+  block/gram-grid-single-quote-directions] [fixture:
+  block/db-grid-single-quote-header-line] [fixture:
+  block/db-grid-backtick-columns] [fixture: block/gram-grid-backtick-width]
+  [fixture: block/gram-grid-backtick-space-width] [fixture:
+  block/gram-grid-backtick-directions] [fixture:
+  block/db-grid-backtick-header-line] [fixture: block/db-grid-backslash-columns]
+  [fixture: block/gram-grid-backslash-width] [fixture:
+  block/gram-grid-backslash-space-width] [fixture:
+  block/gram-grid-backslash-directions] [fixture:
+  block/db-grid-backslash-header-line] [fixture:
+  block/gram-grid-open-square-columns] [fixture:
+  block/gram-grid-open-square-width] [fixture:
+  block/gram-grid-open-square-space-width] [fixture:
+  block/gram-grid-open-square-directions] [fixture:
+  block/gram-grid-open-square-header-line] [fixture:
+  block/db-grid-close-square-columns] [fixture:
+  block/gram-grid-close-square-width] [fixture:
+  block/gram-grid-close-square-space-width] [fixture:
+  block/gram-grid-close-square-directions] [fixture:
+  block/db-grid-close-square-header-line] [fixture:
+  block/gram-grid-open-round-columns] [fixture:
+  block/gram-grid-open-round-width] [fixture:
+  block/gram-grid-open-round-space-width] [fixture:
+  block/gram-grid-open-round-directions] [fixture:
+  block/gram-grid-open-round-header-line] [fixture:
+  block/gram-grid-close-round-columns] [fixture:
+  block/gram-grid-close-round-width] [fixture:
+  block/gram-grid-close-round-space-width] [fixture:
+  block/gram-grid-close-round-directions] [fixture:
+  block/gram-grid-close-round-header-line] [fixture:
+  block/gram-grid-open-brace-columns] [fixture:
+  block/gram-grid-open-brace-width] [fixture:
+  block/gram-grid-open-brace-space-width] [fixture:
+  block/gram-grid-open-brace-directions] [fixture:
+  block/gram-grid-open-brace-header-line] [fixture:
+  block/gram-grid-close-brace-columns] [fixture:
+  block/gram-grid-close-brace-width] [fixture:
+  block/gram-grid-close-brace-space-width] [fixture:
+  block/gram-grid-close-brace-directions] [fixture:
+  block/gram-grid-close-brace-header-line] [fixture:
+  block/gram-grid-less-than-columns] [fixture: block/gram-grid-less-than-width]
+  [fixture: block/gram-grid-less-than-space-width] [fixture:
+  block/gram-grid-less-than-directions] [fixture:
+  block/gram-grid-less-than-header-line] [fixture:
+  block/gram-grid-greater-than-columns] [fixture:
+  block/gram-grid-greater-than-width] [fixture:
+  block/gram-grid-greater-than-space-width] [fixture:
+  block/gram-grid-greater-than-directions] [fixture:
+  block/gram-grid-greater-than-header-line] [fixture:
+  block/gram-grid-equals-columns] [fixture: block/gram-grid-equals-width]
+  [fixture: block/gram-grid-equals-space-width] [fixture:
+  block/gram-grid-equals-directions] [fixture:
+  block/gram-grid-equals-header-line] [fixture: block/gram-grid-punct-columns]
+  [fixture: block/gram-grid-punct-width] [fixture:
+  block/gram-grid-punct-space-width] [fixture: block/gram-grid-punct-directions]
+  [fixture: block/gram-grid-punct-header-line] [fixture:
+  block/db-grid-arrow-columns] [fixture: block/gram-grid-arrow-width] [fixture:
+  block/gram-grid-arrow-space-width] [fixture: block/gram-grid-arrow-directions]
+  [fixture: block/gram-grid-arrow-header-line] [fixture:
+  block/db-grid-arrow-spaced-columns] [fixture:
+  block/gram-grid-arrow-spaced-width] [fixture:
+  block/gram-grid-arrow-spaced-space-width] [fixture:
+  block/gram-grid-arrow-spaced-directions] [fixture:
+  block/gram-grid-arrow-spaced-header-line] [fixture:
+  block/db-grid-comment-columns] [fixture: block/gram-grid-comment-width]
+  [fixture: block/gram-grid-comment-space-width] [fixture:
+  block/gram-grid-comment-directions] [fixture:
+  block/db-grid-comment-header-line] [fixture:
+  block/db-grid-comment-line-columns] [fixture:
+  block/gram-grid-comment-line-width] [fixture:
+  block/gram-grid-comment-line-space-width] [fixture:
+  block/db-grid-comment-line-directions] [fixture: block/db-comment-line-first]
+  [fixture: block/db-grid-directive-columns] [fixture:
+  block/gram-grid-directive-width] [fixture:
+  block/gram-grid-directive-space-width] [fixture:
+  block/db-grid-directive-directions] [fixture:
+  block/gram-grid-directive-header-line] [fixture:
+  block/db-grid-directive-line-columns] [fixture:
+  block/gram-grid-directive-line-width] [fixture:
+  block/gram-grid-directive-line-space-width] [fixture:
+  block/db-grid-directive-line-directions] [fixture:
+  block/db-grid-directive-line-header-line] [fixture:
+  block/db-grid-entity-columns] [fixture: block/gram-grid-entity-width]
+  [fixture: block/gram-grid-entity-space-width] [fixture:
+  block/gram-grid-entity-directions] [fixture: block/db-grid-entity-header-line]
+  [fixture: block/db-grid-entity-named-columns] [fixture:
+  block/gram-grid-entity-named-width] [fixture:
+  block/gram-grid-entity-named-space-width] [fixture:
+  block/gram-grid-entity-named-directions] [fixture:
+  block/db-grid-entity-named-header-line] [fixture:
+  block/gram-grid-html-columns] [fixture: block/gram-grid-html-width] [fixture:
+  block/gram-grid-html-space-width] [fixture: block/gram-grid-html-directions]
+  [fixture: block/gram-grid-html-header-line] [fixture:
+  block/gram-grid-html-br-columns] [fixture: block/gram-grid-html-br-width]
+  [fixture: block/gram-grid-html-br-space-width] [fixture:
+  block/gram-grid-html-br-directions] [fixture:
+  block/gram-grid-html-br-header-line] [fixture:
+  block/gram-grid-html-attribute-columns] [fixture:
+  block/gram-grid-html-attribute-width] [fixture:
+  block/gram-grid-html-attribute-space-width] [fixture:
+  block/gram-grid-html-attribute-directions] [fixture:
+  block/gram-grid-html-attribute-header-line] [fixture:
+  block/db-grid-ampersand-entity-columns] [fixture:
+  block/gram-grid-ampersand-entity-width] [fixture:
+  block/gram-grid-ampersand-entity-space-width] [fixture:
+  block/gram-grid-ampersand-entity-directions] [fixture:
+  block/db-grid-ampersand-entity-header-line] [fixture:
+  block/gram-grid-keyword-end-columns] [fixture:
+  block/gram-grid-keyword-end-width] [fixture:
+  block/gram-grid-keyword-end-space-width] [fixture:
+  block/gram-grid-keyword-end-directions] [fixture:
+  block/gram-grid-keyword-end-header-line] [fixture:
+  block/gram-grid-keyword-block-columns] [fixture:
+  block/gram-grid-keyword-block-width] [fixture:
+  block/gram-grid-keyword-block-space-width] [fixture:
+  block/gram-grid-keyword-block-directions] [fixture:
+  block/gram-grid-keyword-block-header-line] [fixture:
+  block/db-grid-keyword-columns-columns] [fixture:
+  block/gram-grid-keyword-columns-width] [fixture:
+  block/gram-grid-keyword-columns-space-width] [fixture:
+  block/gram-grid-keyword-columns-directions] [fixture:
+  block/db-grid-keyword-columns-header-line] [fixture:
+  block/db-grid-keyword-space-columns] [fixture:
+  block/gram-grid-keyword-space-width] [fixture:
+  block/gram-grid-keyword-space-space-width] [fixture:
+  block/gram-grid-keyword-space-directions] [fixture:
+  block/db-grid-keyword-space-header-line] [fixture:
+  block/db-grid-keyword-class-columns] [fixture:
+  block/gram-grid-keyword-class-width] [fixture:
+  block/gram-grid-keyword-class-space-width] [fixture:
+  block/gram-grid-keyword-class-directions] [fixture:
+  block/db-grid-keyword-class-header-line] [fixture:
+  block/gram-grid-keyword-style-columns] [fixture:
+  block/gram-grid-keyword-style-width] [fixture:
+  block/gram-grid-keyword-style-space-width] [fixture:
+  block/gram-grid-keyword-style-directions] [fixture:
+  block/gram-grid-keyword-style-header-line] [fixture:
+  block/db-grid-keyword-classdef-columns] [fixture:
+  block/gram-grid-keyword-classdef-width] [fixture:
+  block/gram-grid-keyword-classdef-space-width] [fixture:
+  block/gram-grid-keyword-classdef-directions] [fixture:
+  block/db-grid-keyword-classdef-header-line] [fixture:
+  block/gram-grid-keyword-header-columns] [fixture:
+  block/gram-grid-keyword-header-width] [fixture:
+  block/gram-grid-keyword-header-space-width] [fixture:
+  block/gram-grid-keyword-header-directions] [fixture:
+  block/gram-grid-keyword-header-header-line] [fixture:
+  block/db-grid-proto-columns] [fixture: block/gram-grid-proto-width] [fixture:
+  block/gram-grid-proto-space-width] [fixture: block/gram-grid-proto-directions]
+  [fixture: block/gram-grid-proto-header-line] [fixture:
+  block/db-grid-constructor-columns] [fixture:
+  block/gram-grid-constructor-width] [fixture:
+  block/gram-grid-constructor-space-width] [fixture:
+  block/gram-grid-constructor-directions] [fixture:
+  block/gram-grid-constructor-header-line] [fixture: block/db-grid-root-columns]
+  [fixture: block/gram-grid-root-width] [fixture:
+  block/gram-grid-root-space-width] [fixture: block/gram-grid-root-directions]
+  [fixture: block/gram-grid-root-header-line] [fixture:
+  block/db-grid-nonascii-columns] [fixture: block/gram-grid-nonascii-width]
+  [fixture: block/gram-grid-nonascii-space-width] [fixture:
+  block/gram-grid-nonascii-directions] [fixture:
+  block/db-grid-nonascii-header-line] [fixture: block/db-grid-emoji-columns]
+  [fixture: block/gram-grid-emoji-width] [fixture:
+  block/gram-grid-emoji-space-width] [fixture: block/gram-grid-emoji-directions]
+  [fixture: block/db-grid-emoji-header-line] [fixture:
+  block/db-grid-digits-columns] [fixture: block/db-grid-digits-width] [fixture:
+  block/db-grid-digits-space-width] [fixture: block/gram-grid-digits-directions]
+  [fixture: block/gram-grid-digits-header-line] [fixture:
+  block/db-grid-empty-columns] [fixture: block/gram-width-colon-only] [fixture:
+  block/gram-space-no-number] [fixture: block/db-grid-empty-directions]
+  [fixture: block/gram-grid-empty-header-line] [fixture:
+  block/gram-grid-style-rule-columns] [fixture:
+  block/gram-grid-style-rule-width] [fixture:
+  block/gram-grid-style-rule-space-width] [fixture:
+  block/gram-grid-style-rule-directions] [fixture:
+  block/gram-grid-style-rule-header-line] [fixture:
+  block/gram-grid-classdef-rule-columns] [fixture:
+  block/gram-grid-classdef-rule-width] [fixture:
+  block/gram-grid-classdef-rule-space-width] [fixture:
+  block/gram-grid-classdef-rule-directions] [fixture:
+  block/gram-grid-classdef-rule-header-line]
+- White space and comments inside a statement: a statement whose parts are
+  separated by white space in the lexer (`columns` and its number, `classDef`
+  and its name or its styles, `class` and its ids, `style` and its ids, `block:`
+  and its id, a node and its width, its shape, or its directions, an edge and
+  its end) may have a line feed, a blank line, a comment line, or a directive
+  line between the parts, and the Db reads them as if they were not there. The
+  exceptions are the ids of `class` and `style` from their styles or class name:
+  after the class ids `class A` a line feed ends the statement, and the name is
+  empty, and after `style A` the styles must be on its line: rejected. [fixture:
+  block/db-between-columns-comment-line] [fixture:
+  block/db-between-columns-directive-line] [fixture:
+  block/db-between-columns-empty-line] [fixture:
+  block/db-between-columns-spaces-line] [fixture:
+  block/db-between-class-def-name-comment-line] [fixture:
+  block/db-between-class-def-name-directive-line] [fixture:
+  block/db-between-class-def-name-empty-line] [fixture:
+  block/db-between-class-def-name-spaces-line] [fixture:
+  block/db-between-class-def-style-comment-line] [fixture:
+  block/db-between-class-def-style-directive-line] [fixture:
+  block/db-between-class-def-style-empty-line] [fixture:
+  block/db-between-class-def-style-spaces-line] [fixture:
+  block/db-between-class-ids-comment-line] [fixture:
+  block/db-between-class-ids-directive-line] [fixture:
+  block/db-between-class-ids-empty-line] [fixture:
+  block/db-between-class-ids-spaces-line] [fixture:
+  block/db-between-class-name-comment-line] [fixture:
+  block/db-between-class-name-directive-line] [fixture:
+  block/db-between-class-name-empty-line] [fixture:
+  block/db-between-class-name-spaces-line] [fixture:
+  block/db-between-style-ids-comment-line] [fixture:
+  block/db-between-style-ids-directive-line] [fixture:
+  block/db-between-style-ids-empty-line] [fixture:
+  block/db-between-style-ids-spaces-line] [fixture:
+  block/gram-between-style-text-comment-line] [fixture:
+  block/gram-between-style-text-directive-line] [fixture:
+  block/gram-between-style-text-empty-line] [fixture:
+  block/gram-between-style-text-spaces-line] [fixture:
+  block/db-between-composite-id-comment-line] [fixture:
+  block/db-between-composite-id-directive-line] [fixture:
+  block/db-between-composite-id-empty-line] [fixture:
+  block/db-between-composite-id-spaces-line] [fixture:
+  block/db-comment-between-id-and-width] [fixture:
+  block/db-between-width-directive-line] [fixture:
+  block/db-between-width-empty-line] [fixture:
+  block/db-between-width-spaces-line] [fixture:
+  block/db-between-edge-comment-line] [fixture:
+  block/db-between-edge-directive-line] [fixture:
+  block/db-between-edge-empty-line] [fixture: block/db-between-edge-spaces-line]
+  [fixture: block/db-between-edge-end-comment-line] [fixture:
+  block/db-between-edge-end-directive-line] [fixture:
+  block/db-between-edge-end-empty-line] [fixture:
+  block/db-between-edge-end-spaces-line] [fixture:
+  block/db-between-shape-comment-line] [fixture:
+  block/db-between-shape-directive-line] [fixture:
+  block/db-between-shape-empty-line] [fixture:
+  block/db-between-shape-spaces-line] [fixture:
+  block/db-between-directions-comment-line] [fixture:
+  block/db-between-directions-directive-line] [fixture:
+  block/db-between-directions-empty-line] [fixture:
+  block/db-between-directions-spaces-line]
+- What stands after a statement at the end of its line: a `;`, a space and a
+  `;`, two `;`, a `%%` comment, a directive, a directive that is not closed,
+  trailing spaces, a tab, a no-break space, and `# c`. After a node, a shape, a
+  width, a block arrow, `columns`, `space`, `end`, or an edge, a `;` after a
+  space, the `%%`, and the `#` with their text are nodes, a `;` glued to an id
+  (a node, or the end of an edge) is part of the id, and the directive and the
+  trailing white space are not read. After `class`, `style`, and `classDef` they
+  are part of the class name or the styles, except the ones that the line rule
+  and the Db remove. [fixture: block/db-tail-node-semicolon] [fixture:
+  block/db-tail-node-space-semicolon] [fixture: block/db-semicolon-double]
+  [fixture: block/db-tail-node-comment] [fixture:
+  block/db-tail-node-comment-glued] [fixture: block/db-tail-node-directive]
+  [fixture: block/db-directive-glued-to-id] [fixture:
+  block/db-tail-node-directive-unclosed] [fixture:
+  block/db-name-trailing-spaces] [fixture: block/db-tail-node-trailing-tab]
+  [fixture: block/db-tail-node-trailing-nbsp] [fixture: block/db-tail-node-hash]
+  [fixture: block/db-semicolon-after-shape] [fixture:
+  block/db-tail-node-shape-space-semicolon] [fixture:
+  block/db-tail-node-shape-two-semicolons] [fixture:
+  block/db-tail-node-shape-comment] [fixture:
+  block/db-tail-node-shape-comment-glued] [fixture:
+  block/db-tail-node-shape-directive] [fixture:
+  block/db-tail-node-shape-directive-glued] [fixture:
+  block/db-tail-node-shape-directive-unclosed] [fixture:
+  block/db-tail-node-shape-trailing-spaces] [fixture:
+  block/db-tail-node-shape-trailing-tab] [fixture:
+  block/db-tail-node-shape-trailing-nbsp] [fixture:
+  block/db-tail-node-shape-hash] [fixture: block/db-semicolon-after-width]
+  [fixture: block/db-tail-node-width-space-semicolon] [fixture:
+  block/db-tail-node-width-two-semicolons] [fixture:
+  block/db-tail-node-width-comment] [fixture:
+  block/db-tail-node-width-comment-glued] [fixture:
+  block/db-tail-node-width-directive] [fixture:
+  block/db-tail-node-width-directive-glued] [fixture:
+  block/db-tail-node-width-directive-unclosed] [fixture:
+  block/db-tail-node-width-trailing-spaces] [fixture:
+  block/db-tail-node-width-trailing-tab] [fixture:
+  block/db-tail-node-width-trailing-nbsp] [fixture:
+  block/db-tail-node-width-hash] [fixture: block/db-semicolon-after-edge]
+  [fixture: block/db-tail-edge-space-semicolon] [fixture:
+  block/db-tail-edge-two-semicolons] [fixture: block/db-comment-after-edge]
+  [fixture: block/db-tail-edge-comment-glued] [fixture:
+  block/db-tail-edge-directive] [fixture: block/db-tail-edge-directive-glued]
+  [fixture: block/db-tail-edge-directive-unclosed] [fixture:
+  block/db-tail-edge-trailing-spaces] [fixture: block/db-tail-edge-trailing-tab]
+  [fixture: block/db-tail-edge-trailing-nbsp] [fixture: block/db-tail-edge-hash]
+  [fixture: block/db-tail-edge-label-semicolon] [fixture:
+  block/db-tail-edge-label-space-semicolon] [fixture:
+  block/db-tail-edge-label-two-semicolons] [fixture:
+  block/db-tail-edge-label-comment] [fixture:
+  block/db-tail-edge-label-comment-glued] [fixture:
+  block/db-tail-edge-label-directive] [fixture:
+  block/db-tail-edge-label-directive-glued] [fixture:
+  block/db-tail-edge-label-directive-unclosed] [fixture:
+  block/db-tail-edge-label-trailing-spaces] [fixture:
+  block/db-tail-edge-label-trailing-tab] [fixture:
+  block/db-tail-edge-label-trailing-nbsp] [fixture:
+  block/db-tail-edge-label-hash] [fixture: block/db-tail-block-arrow-semicolon]
+  [fixture: block/db-tail-block-arrow-space-semicolon] [fixture:
+  block/db-tail-block-arrow-two-semicolons] [fixture:
+  block/db-tail-block-arrow-comment] [fixture:
+  block/db-tail-block-arrow-comment-glued] [fixture:
+  block/db-tail-block-arrow-directive] [fixture:
+  block/db-tail-block-arrow-directive-glued] [fixture:
+  block/db-tail-block-arrow-directive-unclosed] [fixture:
+  block/db-tail-block-arrow-trailing-spaces] [fixture:
+  block/db-tail-block-arrow-trailing-tab] [fixture:
+  block/db-tail-block-arrow-trailing-nbsp] [fixture:
+  block/db-tail-block-arrow-hash] [fixture: block/db-tail-columns-semicolon]
+  [fixture: block/db-tail-columns-space-semicolon] [fixture:
+  block/db-tail-columns-two-semicolons] [fixture: block/db-tail-columns-comment]
+  [fixture: block/db-tail-columns-comment-glued] [fixture:
+  block/db-tail-columns-directive] [fixture:
+  block/db-tail-columns-directive-glued] [fixture:
+  block/db-tail-columns-directive-unclosed] [fixture:
+  block/db-tail-columns-trailing-spaces] [fixture:
+  block/db-tail-columns-trailing-tab] [fixture:
+  block/db-tail-columns-trailing-nbsp] [fixture: block/db-tail-columns-hash]
+  [fixture: block/db-space-semicolon] [fixture:
+  block/db-tail-space-space-semicolon] [fixture:
+  block/db-tail-space-two-semicolons] [fixture: block/db-tail-space-comment]
+  [fixture: block/db-tail-space-comment-glued] [fixture:
+  block/db-tail-space-directive] [fixture: block/db-tail-space-directive-glued]
+  [fixture: block/db-tail-space-directive-unclosed] [fixture:
+  block/db-tail-space-trailing-spaces] [fixture:
+  block/db-tail-space-trailing-tab] [fixture: block/db-tail-space-trailing-nbsp]
+  [fixture: block/db-tail-space-hash] [fixture:
+  block/db-tail-space-width-semicolon] [fixture:
+  block/db-tail-space-width-space-semicolon] [fixture:
+  block/db-tail-space-width-two-semicolons] [fixture:
+  block/db-tail-space-width-comment] [fixture:
+  block/db-tail-space-width-comment-glued] [fixture:
+  block/db-tail-space-width-directive] [fixture:
+  block/db-tail-space-width-directive-glued] [fixture:
+  block/db-tail-space-width-directive-unclosed] [fixture:
+  block/db-tail-space-width-trailing-spaces] [fixture:
+  block/db-tail-space-width-trailing-tab] [fixture:
+  block/db-tail-space-width-trailing-nbsp] [fixture:
+  block/db-tail-space-width-hash] [fixture: block/db-class-apply-semicolon]
+  [fixture: block/db-tail-class-space-semicolon] [fixture:
+  block/db-tail-class-two-semicolons] [fixture: block/db-tail-class-comment]
+  [fixture: block/db-tail-class-comment-glued] [fixture:
+  block/db-tail-class-directive] [fixture: block/db-class-apply-directive]
+  [fixture: block/db-tail-class-directive-unclosed] [fixture:
+  block/db-class-apply-trailing-spaces] [fixture:
+  block/db-tail-class-trailing-tab] [fixture: block/db-class-apply-nbsp]
+  [fixture: block/db-tail-class-hash] [fixture: block/db-tail-style-semicolon]
+  [fixture: block/db-tail-style-space-semicolon] [fixture:
+  block/db-tail-style-two-semicolons] [fixture: block/db-tail-style-comment]
+  [fixture: block/db-tail-style-comment-glued] [fixture:
+  block/db-tail-style-directive] [fixture: block/db-tail-style-directive-glued]
+  [fixture: block/db-tail-style-directive-unclosed] [fixture:
+  block/db-tail-style-trailing-spaces] [fixture:
+  block/db-tail-style-trailing-tab] [fixture: block/db-tail-style-trailing-nbsp]
+  [fixture: block/db-tail-style-hash] [fixture:
+  block/db-tail-class-def-semicolon] [fixture:
+  block/db-tail-class-def-space-semicolon] [fixture:
+  block/db-tail-class-def-two-semicolons] [fixture:
+  block/db-tail-class-def-comment] [fixture:
+  block/db-tail-class-def-comment-glued] [fixture:
+  block/db-directive-class-def-line] [fixture:
+  block/db-tail-class-def-directive-glued] [fixture:
+  block/db-tail-class-def-directive-unclosed] [fixture:
+  block/db-tail-class-def-trailing-spaces] [fixture:
+  block/db-tail-class-def-trailing-tab] [fixture:
+  block/db-tail-class-def-trailing-nbsp] [fixture: block/db-tail-class-def-hash]
+  [fixture: block/db-composite-end-semicolon] [fixture:
+  block/db-tail-composite-end-space-semicolon] [fixture:
+  block/db-tail-composite-end-two-semicolons] [fixture:
+  block/db-composite-end-comment] [fixture:
+  block/db-tail-composite-end-comment-glued] [fixture:
+  block/db-tail-composite-end-directive] [fixture:
+  block/db-tail-composite-end-directive-glued] [fixture:
+  block/db-tail-composite-end-directive-unclosed] [fixture:
+  block/db-tail-composite-end-trailing-spaces] [fixture:
+  block/db-composite-end-tab] [fixture: block/db-composite-end-nbsp] [fixture:
+  block/db-tail-composite-end-hash] [fixture:
+  block/db-tail-composite-end-keyword-semicolon] [fixture:
+  block/db-tail-composite-end-keyword-space-semicolon] [fixture:
+  block/db-tail-composite-end-keyword-two-semicolons] [fixture:
+  block/db-tail-composite-end-keyword-comment] [fixture:
+  block/db-tail-composite-end-keyword-comment-glued] [fixture:
+  block/db-tail-composite-end-keyword-directive] [fixture:
+  block/db-tail-composite-end-keyword-directive-glued] [fixture:
+  block/db-tail-composite-end-keyword-directive-unclosed] [fixture:
+  block/db-tail-composite-end-keyword-trailing-spaces] [fixture:
+  block/db-tail-composite-end-keyword-trailing-tab] [fixture:
+  block/db-tail-composite-end-keyword-trailing-nbsp] [fixture:
+  block/db-tail-composite-end-keyword-hash]
+- The summary is the same under every `securityLevel` that mermaid.js has
+  (`strict`, `loose`, `antiscript`, and `sandbox`), and under the settings of
+  the site (the `block` settings `padding` and `useMaxWidth`, the theme, the
+  look, `htmlLabels`, `flowchart.htmlLabels`, `maxTextSize`, and
+  `deterministicIds`), which affect the drawing and not the Db. Under a
+  `securityLevel` that is none of its values, the texts the Db sanitizes, the
+  labels of the nodes, of the block arrows, of the composites, and of the edges,
+  hold the replaced characters (`<` as `&lt;`, `>` as `&gt;`, and `<br>` as
+  `<br/>`), while the ids, the styles, the classes, and the directions are as
+  written. [fixture: block/config-block-padding] [fixture:
+  block/config-block-use-max-width] [fixture: block/config-deterministic-ids]
+  [fixture: block/config-flowchart-html-labels-false] [fixture:
+  block/config-html-labels-false] [fixture: block/config-look-neo] [fixture:
+  block/config-max-text-size-small] [fixture:
+  block/config-security-level-antiscript-all] [fixture:
+  block/config-security-level-loose-all] [fixture:
+  block/config-security-level-other-all] [fixture:
+  block/config-security-level-other-ampersand] [fixture:
+  block/config-security-level-other-block-arrow-label] [fixture:
+  block/config-security-level-other-br] [fixture:
+  block/config-security-level-other-class-style] [fixture:
+  block/config-security-level-other-composite-label] [fixture:
+  block/config-security-level-other-directions] [fixture:
+  block/config-security-level-other-edge-label] [fixture:
+  block/config-security-level-other-empty-label-space] [fixture:
+  block/config-security-level-other-label] [fixture:
+  block/config-security-level-other-style] [fixture:
+  block/config-security-level-sandbox-all] [fixture:
+  block/config-security-level-strict-all] [fixture: block/config-theme-dark]
+- In the id after `block:`, the characters other than white space are read as in
+  the id of a node: a `;`, a `#`, a `%`, a `,`, a `|`, a `'`, a `"`, a backtick,
+  a backslash, a `]`, `%%`, a character reference, `&amp;`, `__proto__`,
+  `constructor`, `root`, a letter outside ASCII, an emoji, and digits are part
+  of the id, a directive in it is removed, and a comment line ends it. An arrow
+  in it makes the statement an edge statement, so the composite has no id.
+  `columns 2`, `space`, `class A c`, and `classDef c fill:red` after the id are
+  statements of the composite, and `style A fill:red` is rejected, as are `[`,
+  `(`, `{`, `)`, `}`, `<`, `>`, `=`, `:`, HTML, a run of punctuation, the line
+  rule, `end`, `block`, and `block-beta`. [fixture:
+  block/db-grid-semicolon-composite-id] [fixture:
+  block/db-grid-hash-composite-id] [fixture: block/db-grid-percent-composite-id]
+  [fixture: block/gram-grid-colon-composite-id] [fixture:
+  block/db-grid-comma-composite-id] [fixture: block/gram-composite-id-with-dash]
+  [fixture: block/db-grid-pipe-composite-id] [fixture:
+  block/db-grid-quote-composite-id] [fixture:
+  block/db-grid-single-quote-composite-id] [fixture:
+  block/db-grid-backtick-composite-id] [fixture:
+  block/db-grid-backslash-composite-id] [fixture:
+  block/gram-grid-open-square-composite-id] [fixture:
+  block/db-grid-close-square-composite-id] [fixture:
+  block/gram-grid-open-round-composite-id] [fixture:
+  block/gram-grid-close-round-composite-id] [fixture:
+  block/gram-grid-open-brace-composite-id] [fixture:
+  block/gram-grid-close-brace-composite-id] [fixture:
+  block/gram-grid-less-than-composite-id] [fixture:
+  block/gram-grid-greater-than-composite-id] [fixture:
+  block/gram-grid-equals-composite-id] [fixture:
+  block/gram-grid-punct-composite-id] [fixture:
+  block/db-grid-arrow-composite-id] [fixture:
+  block/db-grid-arrow-spaced-composite-id] [fixture:
+  block/db-grid-comment-composite-id] [fixture:
+  block/db-grid-comment-line-composite-id] [fixture:
+  block/div-grid-directive-composite-id] [fixture:
+  block/db-grid-directive-line-composite-id] [fixture:
+  block/db-grid-entity-composite-id] [fixture:
+  block/db-grid-entity-named-composite-id] [fixture:
+  block/gram-grid-html-composite-id] [fixture:
+  block/gram-grid-html-br-composite-id] [fixture:
+  block/gram-grid-html-attribute-composite-id] [fixture:
+  block/db-grid-ampersand-entity-composite-id] [fixture:
+  block/gram-grid-keyword-end-composite-id] [fixture:
+  block/gram-grid-keyword-block-composite-id] [fixture:
+  block/db-grid-keyword-columns-composite-id] [fixture:
+  block/db-grid-keyword-space-composite-id] [fixture:
+  block/db-grid-keyword-class-composite-id] [fixture:
+  block/gram-grid-keyword-style-composite-id] [fixture:
+  block/db-grid-keyword-classdef-composite-id] [fixture:
+  block/gram-grid-keyword-header-composite-id] [fixture:
+  block/db-grid-proto-composite-id] [fixture:
+  block/db-grid-constructor-composite-id] [fixture:
+  block/db-grid-root-composite-id] [fixture:
+  block/db-grid-nonascii-composite-id] [fixture:
+  block/db-grid-emoji-composite-id] [fixture: block/db-grid-digits-composite-id]
+  [fixture: block/db-grid-empty-composite-id] [fixture:
+  block/gram-grid-style-rule-composite-id] [fixture:
+  block/gram-grid-classdef-rule-composite-id]
+- A composite opened on a line with a node and not closed with `end`, with a
+  `;`, a comment, a directive, a `#`, or trailing white space after the node, is
+  rejected like one without them. [fixture:
+  block/gram-tail-composite-line-comment] [fixture:
+  block/gram-tail-composite-line-comment-glued] [fixture:
+  block/gram-tail-composite-line-directive] [fixture:
+  block/gram-tail-composite-line-directive-glued] [fixture:
+  block/gram-tail-composite-line-directive-unclosed] [fixture:
+  block/gram-tail-composite-line-hash] [fixture:
+  block/gram-tail-composite-line-semicolon] [fixture:
+  block/gram-tail-composite-line-space-semicolon] [fixture:
+  block/gram-tail-composite-line-trailing-nbsp] [fixture:
+  block/gram-tail-composite-line-trailing-spaces] [fixture:
+  block/gram-tail-composite-line-trailing-tab] [fixture:
+  block/gram-tail-composite-line-two-semicolons]
+- The inputs of the tests, the documentation, and the demos of mermaid.js are
+  accepted. They show the forms that its authors write: nodes, widths, the
+  shapes, block arrows, `space`, composites with `columns`, edges with labels,
+  and the classes and styles. [fixture: block/demo-block-0f7b1b81] [fixture:
+  block/demo-block-2472aba6] [fixture: block/demo-block-44d70be5] [fixture:
+  block/demo-block-7d24edf7] [fixture: block/demo-block-8b6e7c41] [fixture:
+  block/demo-block-a8323c64] [fixture: block/demo-block-b3231b02] [fixture:
+  block/demo-block-b4d9a28a] [fixture: block/demo-block-ca540acf] [fixture:
+  block/demo-block-f71819c7] [fixture: block/demo-block-fbbaee87] [fixture:
+  block/docs-syntax-block-0c75f481] [fixture: block/docs-syntax-block-0eeed10a]
+  [fixture: block/docs-syntax-block-1493c734] [fixture:
+  block/docs-syntax-block-1d2ef9d1] [fixture: block/docs-syntax-block-24e2536f]
+  [fixture: block/docs-syntax-block-2a2aedc0] [fixture:
+  block/docs-syntax-block-3eeec690] [fixture: block/docs-syntax-block-50dc2ed1]
+  [fixture: block/docs-syntax-block-668adabd] [fixture:
+  block/docs-syntax-block-66fde579] [fixture: block/docs-syntax-block-6a5c5e67]
+  [fixture: block/docs-syntax-block-6dd28f68] [fixture:
+  block/docs-syntax-block-6fbaef0c] [fixture: block/docs-syntax-block-7134441c]
+  [fixture: block/docs-syntax-block-715f1762] [fixture:
+  block/docs-syntax-block-78e30a8a] [fixture: block/docs-syntax-block-7c6756e8]
+  [fixture: block/docs-syntax-block-7ddc4030] [fixture:
+  block/docs-syntax-block-8c1f8d53] [fixture: block/docs-syntax-block-a5a467c8]
+  [fixture: block/docs-syntax-block-ab04e715] [fixture:
+  block/docs-syntax-block-b6eebb8c] [fixture: block/docs-syntax-block-bd54fe8a]
+  [fixture: block/docs-syntax-block-c1690d0b] [fixture:
+  block/docs-syntax-block-c574652d] [fixture: block/docs-syntax-block-e29ee1ca]
+  [fixture: block/docs-syntax-block-f3c3e654] [fixture:
+  block/docs-syntax-block-f8418640] [fixture: block/docs-syntax-block-fd481f6b]
+  [fixture: block/docs-syntax-block-fddacaac] [fixture:
+  block/spec-block-0365699a] [fixture: block/spec-block-12f308cf] [fixture:
+  block/spec-block-17e824ed] [fixture: block/spec-block-1b677ef0] [fixture:
+  block/spec-block-256830d9] [fixture: block/spec-block-269adfec] [fixture:
+  block/spec-block-324a07d6] [fixture: block/spec-block-39bb98c0] [fixture:
+  block/spec-block-48aaf41f] [fixture: block/spec-block-52e0ec56] [fixture:
+  block/spec-block-6382a25a] [fixture: block/spec-block-855ca1c9] [fixture:
+  block/spec-block-870f6dc9] [fixture: block/spec-block-946762fc] [fixture:
+  block/spec-block-9a645429] [fixture: block/spec-block-a3184350] [fixture:
+  block/spec-block-ae4c1db0] [fixture: block/spec-block-be5706bf] [fixture:
+  block/spec-block-cc1ee20b] [fixture: block/spec-block-cd0ecd2d] [fixture:
+  block/spec-block-cf4d00b8] [fixture: block/spec-block-color-index-29ce8f4b]
+  [fixture: block/spec-block-color-index-7228003b] [fixture:
+  block/spec-block-color-index-9a40ae65] [fixture:
+  block/spec-block-color-index-dd469c8d] [fixture: block/spec-block-d0ba877e]
+  [fixture: block/spec-block-d1395cc6] [fixture: block/spec-block-ee611de8]
+  [fixture: block/spec-block-f4c30090] [fixture: block/spec-block-f6ceb4d8]
+  [fixture: block/spec-block-fd3dd910] [fixture: block/spec-block-ff426370]
+- The detector of the C4 diagrams reads `C4Container`, `C4Component`,
+  `C4Dynamic`, and `C4Deployment` anywhere in the text, and the other detectors
+  read the text only after the C4 one, so a text that holds one of them
+  anywhere, in an id, a label, the label of an edge, the id or label of a
+  composite, the name or styles of a class, a class name, a style, or before the
+  header, is not detected as a block diagram and is rejected by the lexer of the
+  C4 diagrams. `C4Context` is detected only at the start of the text, so it is
+  an id in a block diagram. A comment line, a directive, and a frontmatter are
+  removed before the detectors read the text, so the words in them do nothing,
+  and the words are read in this exact case. [fixture:
+  block/div-c4-component-in-id] [fixture: block/div-c4-container-after-node]
+  [fixture: block/gram-c4-container-before-header] [fixture:
+  block/div-c4-container-in-class-def-name] [fixture:
+  block/div-c4-container-in-class-def-style] [fixture:
+  block/div-c4-container-in-class-name] [fixture:
+  block/db-c4-container-in-comment-line] [fixture:
+  block/div-c4-container-in-composite-id] [fixture:
+  block/div-c4-container-in-composite-label] [fixture:
+  block/db-c4-container-in-directive] [fixture:
+  block/div-c4-container-in-edge-label] [fixture:
+  block/db-c4-container-in-frontmatter] [fixture: block/div-c4-container-in-id]
+  [fixture: block/div-c4-container-in-label] [fixture:
+  block/div-c4-container-in-style] [fixture: block/db-c4-container-lower-case]
+  [fixture: block/div-c4-container-with-context] [fixture:
+  block/db-c4-context-in-id] [fixture: block/db-c4-context-lower-case] [fixture:
+  block/div-c4-deployment-in-id] [fixture: block/div-c4-dynamic-in-id]
+- `default`, `linkStyle`, and `interpolate` are words of the lexer that no
+  statement of a block diagram accepts: as an id, after a node, and as a
+  `linkStyle` statement, they are rejected, while `DEFAULT`, `defaultx`,
+  `linkStylex`, and `interpolatex` are ids, and the three words are text inside
+  a label, a class name, and a style. `default` is a name of a class in
+  `classDef`. [fixture: block/gram-name-reserved-default] [fixture:
+  block/gram-name-reserved-default-after-node] [fixture:
+  block/db-name-reserved-default-in-class-def] [fixture:
+  block/db-name-reserved-default-in-label] [fixture:
+  block/db-name-reserved-default-in-style] [fixture:
+  block/db-name-reserved-default-prefix] [fixture:
+  block/db-name-reserved-default-upper] [fixture:
+  block/gram-name-reserved-interpolate] [fixture:
+  block/gram-name-reserved-interpolate-after-node] [fixture:
+  block/db-name-reserved-interpolate-prefix] [fixture:
+  block/gram-name-reserved-link-style] [fixture:
+  block/db-name-reserved-link-style-in-class] [fixture:
+  block/db-name-reserved-link-style-in-label] [fixture:
+  block/db-name-reserved-link-style-prefix] [fixture:
+  block/gram-name-reserved-link-style-statement]
+- An empty string `""` and an empty markdown string `"``"` read no token, so
+  they are skipped wherever a statement may stand: between statements, before
+  and after an id, an edge, a shape, a width, or `end`, before a composite, and
+  inside a composite, and two in a row are skipped too. Glued to an id, `""` is
+  part of the id. A text of nothing but one is rejected, as are three quotes in
+  a row (an empty string and a quote), a markdown string of a space, and a
+  second string after the empty label that starts an edge label. Between
+  `columns` and its number, an empty string is skipped, but the white space
+  around it makes `columns` a node and the number another. [fixture:
+  block/div-empty-string-after-edge] [fixture: block/div-empty-string-after-id]
+  [fixture: block/div-empty-string-before-block-key] [fixture:
+  block/div-empty-string-before-columns-number] [fixture:
+  block/div-empty-string-before-edge] [fixture:
+  block/div-empty-string-before-end] [fixture:
+  block/div-empty-string-before-shape] [fixture:
+  block/div-empty-string-before-width] [fixture: block/div-empty-string-between]
+  [fixture: block/gram-empty-string-between-edge-parts] [fixture:
+  block/div-empty-string-first-in-line] [fixture:
+  block/db-empty-string-glued-to-id] [fixture:
+  block/div-empty-string-in-composite] [fixture: block/div-empty-string-line]
+  [fixture: block/gram-empty-string-only] [fixture:
+  block/gram-empty-string-three-quotes] [fixture: block/div-empty-strings-two]
+  [fixture: block/div-empty-markdown-between] [fixture:
+  block/div-empty-markdown-line] [fixture: block/gram-empty-markdown-only]
+  [fixture: block/gram-empty-markdown-spaces]
+- An empty `accDescr` block, `accDescr {}`, with spaces, a line feed, or a
+  comment line inside, or with no space before the brace, reads no token either:
+  it is skipped between statements, between two ids, after an edge, before
+  `columns`, inside a composite, and before `end`, and two in a row are skipped,
+  while a composite that holds only one has no statement, and a text of only one
+  is rejected. A block with text, `ACCDESCR {}`, `accDescr: {}`, and a block
+  that is not closed are rejected, and `accDescr {}` inside a string is text. On
+  the line of the header it is skipped, and a block with text is rejected.
+  Between `columns` and its number it is skipped, and the white space around it
+  makes `columns` a node. [fixture:
+  block/gram-empty-block-as-only-statement-in-composite] [fixture:
+  block/db-empty-block-before-columns] [fixture:
+  block/db-empty-block-before-end] [fixture: block/db-empty-block-between]
+  [fixture: block/db-empty-block-between-columns-and-number] [fixture:
+  block/db-empty-block-glued-brace] [fixture: block/db-empty-block-glued-to-id]
+  [fixture: block/db-empty-block-in-composite] [fixture:
+  block/div-empty-block-in-edge] [fixture: block/db-empty-block-in-label]
+  [fixture: block/db-empty-block-line] [fixture: block/db-empty-block-line-feed]
+  [fixture: block/gram-empty-block-only] [fixture: block/db-empty-block-spaces]
+  [fixture: block/gram-empty-block-then-colon] [fixture:
+  block/db-empty-block-twice] [fixture: block/gram-empty-block-unclosed]
+  [fixture: block/gram-empty-block-upper-case] [fixture:
+  block/db-empty-block-with-comment-line] [fixture:
+  block/db-empty-block-on-header-line] [fixture:
+  block/gram-description-block-on-header-line] [fixture:
+  block/gram-empty-block-with-text]
+- A shape takes no white space inside its brackets: `A[ "x" ]`, `A[ "x"]`,
+  `A["x" ]`, a line feed inside the brackets, `A<[ "x" ]>(right)`, and two
+  strings are rejected, while a space before the shape is allowed (`A ("x")`),
+  and so is a space inside the parentheses of the directions, which is part of
+  the texts of the directions, with a line feed. `[|` with the end `]` has no
+  type, `)))` is read as `))` and `)` and rejected, and an unknown direction is
+  rejected. [fixture: block/db-spec-bracket-pipe] [fixture:
+  block/gram-spec-triple-round-start] [fixture:
+  block/db-spec-space-before-round] [fixture:
+  block/gram-spec-spaces-inside-square] [fixture:
+  block/gram-spec-space-before-string] [fixture:
+  block/gram-spec-space-after-string] [fixture:
+  block/gram-spec-line-feed-inside-square] [fixture:
+  block/gram-spec-two-strings] [fixture:
+  block/gram-spec-spaces-inside-block-arrow] [fixture:
+  block/db-spec-spaces-around-directions] [fixture:
+  block/db-spec-directions-line-feeds] [fixture:
+  block/gram-spec-directions-unknown]
+- `->` is not an edge, `A --> block` opens a composite and is rejected, and
+  `:::`, `::`, and a class name after `A:::` are rejected: the lexer stops at
+  the `:`. A directive is removed inside an arrow, after the `<`, before the
+  head, inside the dashes that start a label, and the pieces join, while one
+  between the two dashes of `--` leaves `A -- B`, which is rejected. The spaces
+  around the label of an edge change nothing, and two strings in the label are
+  rejected. [fixture: block/gram-spec-single-dash-arrow] [fixture:
+  block/gram-spec-edge-to-block-keyword] [fixture:
+  block/gram-spec-colon-colon-colon] [fixture: block/gram-spec-colon-colon]
+  [fixture: block/gram-spec-colon-colon-colon-two] [fixture:
+  block/div-spec-edge-directive-in-arrow] [fixture:
+  block/div-spec-edge-directive-before-head] [fixture:
+  block/gram-spec-edge-directive-in-dashes] [fixture:
+  block/div-spec-edge-directive-in-start] [fixture:
+  block/div-spec-edge-directive-in-label-start] [fixture:
+  block/db-spec-edge-label-spaces-around] [fixture:
+  block/gram-spec-edge-label-two-strings]
+- The id after `block:` may be on the next line, since the white space after
+  `block:` includes the line feed. The styles of a `classDef` may be on the line
+  after its name for the same reason, and when they are, the line is the styles
+  even if it is a statement: `classDef c` and `class A c` on the next line make
+  the class `c` with the style `class A c`. A quote inside an id is part of it
+  and the white space after the quote ends the id, `%%` and `%` are part of an
+  id when glued to it. [fixture: block/db-spec-composite-lf-id] [fixture:
+  block/db-spec-class-def-next-line-styles] [fixture:
+  block/db-spec-class-def-next-line-two] [fixture:
+  block/db-spec-class-def-name-only-then-class] [fixture:
+  block/db-spec-id-with-quoted-part] [fixture: block/db-spec-id-comment-glued]
+  [fixture: block/db-spec-percent-id]
+- How the Db collects the blocks. After the whole text is parsed, the Db walks
+  the statements in the order of the text, one list of children at a time, and
+  it enters a composite when it meets it: a composite is put in the table of
+  blocks first, then its children one after another (each composite before its
+  own children, and its children before the next block of the list), then the
+  next block. A statement that defines a block that the table already holds, a
+  node, a shape, a composite, or the end of an edge, does not make a new block.
+  It updates the old one: the type becomes the type of the new definition when
+  that is not `na`, the label becomes the new label when it differs from the id,
+  and the width, the directions, the `columns`, the classes, the styles, and the
+  children stay as they were. The new block is dropped, and so is the list of
+  children of a composite. An edge is added to the list of edges when the walk
+  meets it, also inside a composite, whatever the blocks at its ends are. A
+  block used inside a composite and again outside stays where it was first used.
+  [fixture: block/db-collecting-child-first-then-outer] [fixture:
+  block/db-collecting-columns-per-composite] [fixture:
+  block/db-collecting-composite-then-node-shape-width] [fixture:
+  block/db-collecting-depth-first] [fixture:
+  block/db-collecting-edge-order-in-composite] [fixture:
+  block/db-collecting-edge-then-redefine] [fixture:
+  block/db-collecting-redefine-keeps-directions] [fixture:
+  block/db-collecting-redefine-label-equal-id] [fixture:
+  block/db-collecting-redefine-label-only-odd] [fixture:
+  block/db-collecting-redefine-type-na-keeps] [fixture:
+  block/db-collecting-two-composites-share-child] [fixture:
+  block/db-shape-redefine-from-na] [fixture: block/db-shape-redefine-label-only]
+  [fixture: block/db-shape-redefine-same-label] [fixture:
+  block/db-shape-redefine-shape] [fixture: block/db-shape-redefine-to-na]
+  [fixture: block/db-shape-redefine-to-odd] [fixture:
+  block/db-shape-redefine-width] [fixture: block/db-definitions-class-def-three]
+  [fixture: block/db-definitions-class-def-three-others] [fixture:
+  block/db-definitions-class-three] [fixture:
+  block/db-definitions-class-three-ids] [fixture:
+  block/db-definitions-columns-three] [fixture:
+  block/db-definitions-composite-then-shape-then-composite] [fixture:
+  block/db-definitions-edges-three] [fixture:
+  block/db-definitions-shape-then-composite-then-shape] [fixture:
+  block/db-definitions-space-three] [fixture: block/db-definitions-style-three]
+  [fixture: block/db-definitions-style-three-empty-middle] [fixture:
+  block/db-definitions-three-arrows] [fixture:
+  block/db-definitions-three-composites] [fixture:
+  block/db-definitions-three-edge-and-node] [fixture:
+  block/db-definitions-three-edge-ends] [fixture:
+  block/db-definitions-three-labels-first-equal] [fixture:
+  block/db-definitions-three-na-in-the-middle] [fixture:
+  block/db-definitions-three-shapes] [fixture:
+  block/db-definitions-three-widths] [fixture:
+  block/db-composite-id-same-as-node-before] [fixture:
+  block/db-composite-id-same-as-node-after] [fixture:
+  block/db-composite-id-same-as-node-after-shape] [fixture:
+  block/db-composite-id-same-composite] [fixture:
+  block/db-composite-id-same-nested] [fixture:
+  block/db-composite-id-same-as-child] [fixture:
+  block/db-composite-id-same-child-defined-in-inner] [fixture:
+  block/db-width-redefine] [fixture: block/db-width-redefine-without] [fixture:
+  block/db-width-redefine-first] [fixture: block/db-arrow-redefine] [fixture:
+  block/db-arrow-redefine-from-square] [fixture:
+  block/db-arrow-redefine-to-square] [fixture: block/db-edge-keeps-shape]
+  [fixture: block/db-edge-keeps-width] [fixture: block/db-edge-redefine-by-edge]
+  [fixture: block/db-edge-edge-in-composite-order]
+- The table of blocks holds the blocks in the order they were put in it, the
+  block of the diagram first. `unplaced` lists the entries of the table that the
+  walk from the block of the diagram does not reach through lists of children,
+  in the order of the table, with the entries of `space` statements left out
+  (the entry of a `space` statement, whose type is `space` and whose id the Db
+  made up, holds a width that the blocks of its width hold, and `space:0` makes
+  no block). A block that another listed block holds in its `children` is listed
+  there only, so a dropped composite is listed with its children, and not again.
+  The blocks of a dropped composite, the block that a `class` made for an id
+  that no statement had defined or that it did not find (`class A, B c`), and
+  the block a later definition of that id updated are unplaced; an edge, a
+  `class`, and a `style` find them as they find any block. What is lost with a
+  dropped composite is its `columns` and its width, which the old block does not
+  take. [fixture: block/db-unplaced-class-on-unplaced-child] [fixture:
+  block/db-unplaced-columns-in-dropped] [fixture:
+  block/db-unplaced-dropped-with-label] [fixture:
+  block/db-unplaced-dropped-with-width] [fixture:
+  block/db-unplaced-edge-into-dropped] [fixture:
+  block/db-unplaced-nested-composite] [fixture: block/db-unplaced-order]
+  [fixture: block/db-unplaced-order-defined-later] [fixture:
+  block/db-unplaced-space] [fixture: block/db-unplaced-style-on-unplaced]
+  [fixture: block/db-class-apply-undefined-id] [fixture:
+  block/db-class-apply-before-node] [fixture:
+  block/db-class-apply-before-node-shape] [fixture:
+  block/db-class-apply-before-node-width] [fixture:
+  block/db-class-apply-before-edge] [fixture: block/db-class-apply-before-block]
+  [fixture: block/db-class-apply-undefined-twice] [fixture:
+  block/db-class-apply-undefined-list] [fixture:
+  block/db-class-apply-mixed-list] [fixture:
+  block/db-class-apply-in-block-later] [fixture: block/db-style-class-made]
+  [fixture: block/db-composite-id-same-as-node-before] [fixture:
+  block/db-composite-id-same-composite] [fixture:
+  block/db-composite-id-same-nested] [fixture: block/db-space-class] [fixture:
+  block/db-space-width-zero] [fixture: block/db-space-in-composite]
+- The type of a shape is decided by the pair of the text that opens it and the
+  text that closes it, which the lexer reads one after the other: the opening is
+  one of `(((`... in the order of its rules (`-)`, `(-`, `))`, `)`, `(((`, `((`,
+  `{{`, `{`, `>`, `([`, `(`, `[[`, `[|`, `[(`, `)))`, `[\`, `[/`, `[`), and the
+  closing is the first of `(((`, `)))`, `))`, `}}`, `}`, `(-`, `-)`, `((`, `]]`,
+  `(`, `])`, `\]`, `/]`, `)]`, `)`, `]>`, and `]` that fits. The pair `[` and
+  `]`, `(` and `)`, `((` and `))`, `(((` and `)))`, `([` and `])`, `[[` and
+  `]]`, `[(` and `)]`, `{` and `}`, `{{` and `}}`, `>` and `]`, `[/` and `/]`,
+  `[\` and `\]`, `[/` and `\]`, `[\` and `/]` have a type, and any other pair
+  has none (`na`), whichever closing token it ends with, while the label stays.
+  A shape that is closed by `]>` with no directions after it is not a block
+  arrow, and `<[` closed by a plain `]` is rejected. [fixture:
+  block/db-closer-arrow-open-with-bracket] [fixture:
+  block/db-closer-backslash-open-with-bracket] [fixture:
+  block/gram-closer-block-arrow-open-with-bracket] [fixture:
+  block/db-closer-brace-brace-pair] [fixture:
+  block/db-closer-circle-then-triple-close] [fixture:
+  block/db-closer-double-circle-then-double-close] [fixture:
+  block/db-closer-hexagon-single-close] [fixture:
+  block/db-closer-round-then-paren-bracket] [fixture:
+  block/db-closer-slash-open-with-bracket] [fixture:
+  block/db-closer-square-then-arrow-close] [fixture:
+  block/db-closer-square-then-backslash-bracket] [fixture:
+  block/db-closer-square-then-brace] [fixture:
+  block/db-closer-square-then-double-brace] [fixture:
+  block/db-closer-square-then-double-open] [fixture:
+  block/db-closer-square-then-double-paren-close] [fixture:
+  block/db-closer-square-then-minus-close] [fixture:
+  block/db-closer-square-then-minus-open] [fixture:
+  block/db-closer-square-then-paren-bracket] [fixture:
+  block/db-closer-square-then-paren-close-bracket] [fixture:
+  block/db-closer-square-then-round-open] [fixture:
+  block/db-closer-square-then-slash-bracket] [fixture:
+  block/db-closer-square-then-triple-close] [fixture:
+  block/db-closer-square-then-triple-open] [fixture: block/db-shape-odd-left]
+  [fixture: block/db-shape-odd-double] [fixture: block/db-shape-minus-round]
+  [fixture: block/db-shape-minus-reverse] [fixture:
+  block/db-shape-mixed-round-square] [fixture:
+  block/db-shape-mixed-square-round] [fixture: block/db-shape-mixed-arrow-brace]
+  [fixture: block/db-shape-mixed-brace-square] [fixture:
+  block/db-shape-mixed-double] [fixture: block/db-shape-mixed-circle-stadium]
+  [fixture: block/db-shape-extra-close] [fixture: block/db-shape-square]
+  [fixture: block/db-shape-round] [fixture: block/db-shape-circle] [fixture:
+  block/db-shape-doublecircle] [fixture: block/db-shape-stadium] [fixture:
+  block/db-shape-subroutine] [fixture: block/db-shape-cylinder] [fixture:
+  block/db-shape-diamond] [fixture: block/db-shape-hexagon] [fixture:
+  block/db-shape-rect-left-inv-arrow] [fixture: block/db-shape-lean-right]
+  [fixture: block/db-shape-lean-left] [fixture: block/db-shape-trapezoid]
+  [fixture: block/db-shape-inv-trapezoid] [fixture: block/db-shape-block-arrow]

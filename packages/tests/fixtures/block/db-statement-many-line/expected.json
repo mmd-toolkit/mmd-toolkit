@@ -1,0 +1,55 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, statements: many nodes on a line."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "C",
+          "label": "C",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "D",
+          "label": "D",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "E",
+          "label": "E",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "F",
+          "label": "F",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

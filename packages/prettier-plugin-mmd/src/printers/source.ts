@@ -505,10 +505,12 @@ export function findStructuralTokenEndingBefore(
  * diagram text that is not a `Directive` token, which may lie between any
  * two tokens, as in `A%%{init: {}}%%-->B`, and not a `;`, which separates
  * statements or is ignored within one, and may also lie between any two
- * tokens, as in `A[style:#x] e;@-->B` (ast.md, Tokens). The tokens of the
- * frontmatter are not of the diagram text: its delimiters are `---`
- * punctuators, as an arrow of a flowchart link may be, so they are told
- * apart by the range of the frontmatter, not by their kind or value.
+ * tokens, as in `A[style:#x] e;@-->B` (ast.md, Tokens). An `Identifier`
+ * token of the text `;` is neither: in a block diagram a `;` is a character
+ * of an id, and `;` alone is an id. The tokens of the frontmatter are not of
+ * the diagram text: its delimiters are `---` punctuators, as an arrow of a
+ * flowchart link may be, so they are told apart by the range of the
+ * frontmatter, not by their kind or value.
  */
 export function isStructural(source: Source, token: Token): boolean {
   const { frontmatter } = source.root
@@ -516,7 +518,11 @@ export function isStructural(source: Source, token: Token): boolean {
     frontmatter !== null &&
     frontmatter.range[0] <= token.range[0] &&
     token.range[1] <= frontmatter.range[1]
-  return !inFrontmatter && token.type !== "Directive" && token.value !== ";"
+  return (
+    !inFrontmatter &&
+    token.type !== "Directive" &&
+    (token.value !== ";" || token.type === "Identifier")
+  )
 }
 
 /**

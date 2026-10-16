@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Rejections outside the grammar: a style after the statement that makes its block, inside a composite; contrast of the style before it."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "label": "",
+          "type": "composite",
+          "children": [
+            {
+              "id": "C",
+              "label": "C",
+              "type": "na",
+              "widthInColumns": 1,
+              "styles": [
+                "fill:red"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

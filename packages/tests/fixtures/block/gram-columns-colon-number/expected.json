@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, columns: `columns 2:3` is rejected: the width `:3` has no node to belong to."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...ock-beta  columns 2:3  A\n----------------------^\nExpecting 'EOF', 'BLOCK_DIAGRAM_KEY', 'SPACE_BLOCK', 'COLUMNS', 'id-block', 'end', 'NODE_ID', 'classDef', 'class', 'style', got 'SIZE'"
+  }
+}

@@ -177,6 +177,12 @@ Dropped:
 | In a sankey diagram, two records of the same source and target (`a,b,1` and `a,b,2`)                                                                                                                           | The two links are both kept, and nothing is lost: calling the second a pasted copy is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | In an XY chart, a text of several words without quotes (`title Two words`, `x-axis [New York, Paris]`; the spaces between the words are lost, as `Twowords`)                                                   | Comes from not knowing the syntax: the documentation of mermaid.js says that a text of several words is written in `"`, as for `subgraph S %% group` in a flowchart. The formatter prints the words as written                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | In an XY chart, a label on a bar (`bar [1 "a"]`) and an `x-axis` after the plots                                                                                                                               | The documentation of mermaid.js says that a label on a bar is accepted and ignored, so writing one comes from not knowing the syntax. An `x-axis` after the plots does not give them its categories, which [#5291](https://github.com/mermaid-js/mermaid/issues/5291) (open, approved) treats as a defect and [#7798](https://github.com/mermaid-js/mermaid/pull/7798) (open) fixes                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a quadrant chart, `quadrant-10 A` (the first quadrant, with the text `0 A`)                                                                                                                                 | Comes from not knowing the syntax: the documentation of mermaid.js names `quadrant-1` to `quadrant-4` only, and `quadrant-0` and `quadrant-5` are rejected. After an earlier `quadrant-1`, quadrant-no-redefined-quadrant reports the line                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| In a quadrant chart, an axis with an arrow and no second text (`x-axis Low -->`; the left text `Low ⟶`)                                                                                                        | mermaid.js reads it by its grammar and loses nothing: the arrow is drawn after the text. Calling it a forgotten second text is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| In a quadrant chart, `stroke-color` without `stroke-width` (the border is drawn with the width `0px`)                                                                                                          | The documentation of mermaid.js calls the colour useless without a width, but its own examples write it so (`Point C`, `Campaign C`): a rule would report a way of writing that the documentation shows                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| In a quadrant chart, a colour without `#` (`color: f00`, kept as written)                                                                                                                                      | Outside the scope of this toolkit, as for `classDef fo` above: whether the colour is drawn shows only in the drawn chart                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| In a quadrant chart, two points of one name or one position, and a `classDef` that no point uses                                                                                                               | Nothing is lost: both points are kept, and the class is listed. Calling either a mistake is a guess                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| In a quadrant chart, a statement after a `;` on the line of a title (`title Sales; x-axis Low --> High`; the title holds the rest of the line)                                                                 | Not something a person drawing a chart writes: a title is written on a line of its own, and the documentation of mermaid.js shows no `;`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ### Questions for unclear cases
 
@@ -647,6 +653,15 @@ Decisions (made on 2026-10-15, with mermaid 12.0.0):
 | xychart-no-unread-orientation             | yes              |                                                                              |
 | xychart-no-redefined-axis                 | yes              |                                                                              |
 | xychart-no-extra-value                    | yes              |                                                                              |
+| quadrant-no-duplicate-title               | yes              |                                                                              |
+| quadrant-no-duplicate-description         | yes              |                                                                              |
+| quadrant-no-empty-description-block       | yes              |                                                                              |
+| quadrant-no-redefined-axis                | yes              |                                                                              |
+| quadrant-no-redefined-quadrant            | yes              |                                                                              |
+| quadrant-no-redefined-class               | yes              |                                                                              |
+| quadrant-no-undef                         | yes              |                                                                              |
+| quadrant-no-duplicate-style               | yes              |                                                                              |
+| quadrant-no-invalid-coordinate            | yes              |                                                                              |
 
 The notes give, for each rule or each group of rules that share their cases,
 what was checked for criteria 1 to 4, in that order. The readings of criterion 1
@@ -947,6 +962,44 @@ in the text, and found nothing that changes the readings but what is named.
   rule checks only the plots after it, where the reading is the same now and
   with that change; (4) write as many values as categories.
 
+The quadrant chart rules have these notes; the searches were "quadrant" and
+"quadrantChart" in titles and in the text, also with the words point, classDef,
+coordinates, x-axis, range, lexer, comma, number, NaN, hex, and radius, and
+found nothing that changes the readings: the open
+[#8084](https://github.com/mermaid-js/mermaid/pull/8084) changes only how the
+texts are wrapped when drawn, and
+[#7608](https://github.com/mermaid-js/mermaid/issues/7608) (open) asks for other
+ranges of the axes.
+
+- quadrant-no-duplicate-title, quadrant-no-duplicate-description,
+  quadrant-no-empty-description-block: the notes of the title, description, and
+  empty block rules above; a title keeps its quotes and the rest of its line,
+  and a description block that is not closed is rejected, so no rule reports it
+  (run).
+- quadrant-no-redefined-axis, quadrant-no-redefined-quadrant: (1) a later
+  statement replaces each text that it sets (run); a text that was empty is not
+  counted as lost; (2) none; (4) write one statement for each axis and each
+  quadrant.
+- quadrant-no-redefined-class: (1) the class has the styles of its last
+  definition only, with no merge (run); (2) none; (4) write the styles in one
+  definition.
+- quadrant-no-undef: (1) the class name stays on the point and no class of that
+  name is defined (run); the layout finds no class for it, and the drawn point
+  has no CSS class of that name (read); (2) none; (4) define the class, or
+  correct its name.
+- quadrant-no-duplicate-style: (1) the later value of a style replaces the
+  earlier one (run); (2) none: a style of a point and one of its class are not
+  compared; (4) give each style once.
+- quadrant-no-invalid-coordinate: (1) the coordinate is kept as written (run),
+  and the layout converts it with the linear scale of d3, which gives no number
+  for `0,3` and 5 for `0x5` (run on d3-scale 4.0.2); the rule reports only a
+  coordinate that is no number or a number outside 0 to 1, so `0e5` (0) and
+  `0b1` (1), drawn at their place, are not reported; a circle without a number
+  gets no `cx` or `cy` (read); (2) none: the documentation of mermaid.js writes
+  the coordinates as numbers from 0 to 1 with a decimal point; (3) #7608 asks
+  for other ranges, which would not make `0,3` a number; (4) write the decimal
+  point.
+
 class-no-inline-comment: when a line of only whitespace follows the comment and
 no comment line follows that line, mermaid.js reads the next line apart, as the
 author meant, and the rule reports the comment there too (criterion 1). Whether
@@ -1025,6 +1078,7 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 | sankey-no-invalid-value                 | None for now (2026-10-15; see the end of this section)         |
 | sankey-no-empty-node                    | None for now (2026-10-15; see the end of this section)         |
 | xychart-* (all 7 rules)                 | None for now (2026-10-15; see the end of this section)         |
+| quadrant-* (all 9 rules)                | None for now (2026-10-16; see the end of this section)         |
 
 - Close at the end of this line: ` }` at the end of the line of the `{`, only
   when text that is not whitespace follows the `{` on that line. Close at the
@@ -1121,8 +1175,9 @@ Decisions (made on 2026-10-02, with mermaid 12.0.0):
 
 `sequence-*`, `class-*`, and `state-*` (2026-10-08), and `er-*`, `gantt-*`, and
 `journey-*` (2026-10-14), and `requirement-*`, `mindmap-*`, `timeline-*`,
-`sankey-*`, and `xychart-*` (2026-10-15): the rules are implemented without
-suggestions for now. No suggestion had been decided for them or described in
-their documents, and the one planned for the empty block of a sequence diagram
-rested on generated inputs. Whether they get suggestions is decided later, in
-the form of the flowchart rules, with a fixture for each case.
+`sankey-*`, and `xychart-*` (2026-10-15), and `quadrant-*` (2026-10-16): the
+rules are implemented without suggestions for now. No suggestion had been
+decided for them or described in their documents, and the one planned for the
+empty block of a sequence diagram rested on generated inputs. Whether they get
+suggestions is decided later, in the form of the flowchart rules, with a fixture
+for each case.

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: `space` is the keyword of a `space` block, not an id: it cannot end an edge, and the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  A --> space\n------------------^\nExpecting 'NODE_ID', got 'SPACE_BLOCK'"
+  }
+}

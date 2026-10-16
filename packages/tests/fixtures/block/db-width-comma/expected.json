@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, widths: `A:3,B` is the node A of width 3 and the node `,B`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 3
+        },
+        {
+          "id": ",B",
+          "label": ",B",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

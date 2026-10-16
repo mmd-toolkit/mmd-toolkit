@@ -16,4 +16,5 @@ export const RECORDED_DIAGRAMS: readonly DiagramType[] = [
   "sankey",
   "xychart",
   "quadrant",
+  "block",
 ]

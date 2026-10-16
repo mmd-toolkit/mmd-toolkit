@@ -1,6 +1,6 @@
 import type { Doc, ParserOptions } from "prettier"
 import { builders } from "prettier/doc"
-import type { Node } from "@mmd-toolkit/parser"
+import type { Range } from "@mmd-toolkit/parser"
 import type { MermaidAst } from "../parser.ts"
 import type { Gap, ItemRun } from "./gap.ts"
 import { endsWithSpaceOrTab, readGap } from "./gap.ts"
@@ -35,13 +35,22 @@ import {
 const { indent } = builders
 
 /**
+ * What the printing of a block needs of a statement: where it lies in the
+ * source. A statement of the tree has it, and so has a unit that a diagram
+ * printer makes of several statements that stay on one line.
+ */
+export interface Positioned {
+  readonly range: Range
+}
+
+/**
  * What a diagram printer tells the printing of its blocks about its
  * statements. Everything else about a block is the same for every diagram
  * type: each statement on a line of its own, the comments and directives
  * between them, the `;` that separate them, and the empty lines. `Statement`
  * is the statement type of the diagram type.
  */
-export interface BlockRules<Statement extends Node> {
+export interface BlockRules<Statement extends Positioned> {
   /** The lines whose statements stay together (see `KeptLines`). */
   readonly kept: KeptLines
   /**
@@ -141,7 +150,7 @@ export interface BlockRules<Statement extends Node> {
 }
 
 /** Where a block of statements lies in the source, and which block it is. */
-export interface BlockBounds<Statement extends Node> {
+export interface BlockBounds<Statement extends Positioned> {
   readonly statements: readonly Statement[]
   /** The end of the line that opens the block. */
   readonly start: number
@@ -222,7 +231,7 @@ function percentBraceIndentation(gaps: number, one: string): string {
  * printed as written as a whole, only when its last line is kept; its other
  * lines are its own.
  */
-export function printBlock<Statement extends Node>(
+export function printBlock<Statement extends Positioned>(
   docs: readonly Doc[],
   source: Source,
   bounds: BlockBounds<Statement>,

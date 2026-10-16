@@ -16,6 +16,7 @@ import {
   mmdCodeBlocks,
   RULE_DOCS_DIR,
   ruleDocumentPath,
+  siteDiagramId,
 } from "../tools/rule-docs.ts"
 
 /**
@@ -44,7 +45,9 @@ describe("the order of the diagrams in the list of the rules", () => {
   it("is the order of the sidebar of the documentation site", () => {
     const site = siteDiagramOrder()
     expect(site.length).toBeGreaterThan(0)
-    const positions = DIAGRAM_ORDER.map((diagram) => site.indexOf(diagram))
+    const positions = DIAGRAM_ORDER.map((diagram) =>
+      site.indexOf(siteDiagramId(diagram)),
+    )
     expect(positions.every((position) => position >= 0)).toBe(true)
     expect(positions).toEqual([...positions].sort((a, b) => a - b))
   })

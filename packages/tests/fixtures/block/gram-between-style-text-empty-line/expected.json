@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, white space and comments inside a statement: an empty line between the id of `style` and its styles: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 5. Unrecognized text.\n...  A  style Afill:red\n-------------------^"
+  }
+}

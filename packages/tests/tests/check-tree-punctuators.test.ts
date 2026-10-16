@@ -2,6 +2,10 @@ import { readFileSync } from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
+import {
+  BLOCK_SHAPE_OPENINGS,
+  BLOCK_SHAPE_CLOSINGS,
+} from "../src/check-tree/block.ts"
 import { checkTree } from "../src/check-tree/index.ts"
 import { FLOWCHART_SHAPES } from "../src/check-tree/flowchart-shapes.ts"
 import { PUNCTUATOR_TEXTS } from "../src/check-tree/punctuators.ts"
@@ -68,6 +72,7 @@ const DIAGRAMS: readonly [string, string][] = [
   ["sankey", "SankeyDiagram"],
   ["xychart", "XychartDiagram"],
   ["quadrant", "QuadrantDiagram"],
+  ["block", "BlockDiagram"],
 ]
 
 /**
@@ -102,6 +107,8 @@ function textsBesidesTheRow(diagram: string): string[] {
     case "mindmap":
       return ["))", "(", "((", "[", "]", "{{", "}}", "(-", "-)"]
     // The row names the arrow, of any length, by its unit.
+    case "block":
+      return [...BLOCK_SHAPE_OPENINGS, ...BLOCK_SHAPE_CLOSINGS]
     case "quadrant":
       return ["-->"]
     default:

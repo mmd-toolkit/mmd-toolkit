@@ -1534,6 +1534,138 @@ const quadrantWhitespaceExamples: readonly (readonly [
   ],
 ]
 
+/**
+ * Each example is a block diagram with U+2028 or U+2029: they are whitespace between the units of a statement and between statements, as a space is, so a gap that holds one on a line is printed as written, and they are characters inside a label (docs/block.md, Line separators).
+ */
+const blockLineSeparatorExamples: readonly (readonly [
+  string,
+  string,
+  string,
+])[] = [
+  [
+    "U+2028 between two statements of a row",
+    "block-beta\na\u2028b\n",
+    "block-beta\n  a\u2028b\n",
+  ],
+  [
+    "U+2029 between two statements of a row",
+    "block-beta\na\u2029b\nc\n",
+    "block-beta\n  a\u2029b\n  c\n",
+  ],
+  [
+    "U+2028 around the arrow of an edge",
+    "block-beta\nA\u2028-->\u2028B\n",
+    "block-beta\n  A\u2028-->\u2028B\n",
+  ],
+  [
+    "U+2028 between an id and its shape",
+    'block-beta\nA\u2028("x")\n',
+    'block-beta\n  A\u2028("x")\n',
+  ],
+  [
+    "U+2028 before the colon of a width",
+    "block-beta\nA\u2028:3\n",
+    "block-beta\n  A\u2028:3\n",
+  ],
+  [
+    "U+2028 after columns",
+    "block-beta\ncolumns\u20283\n",
+    "block-beta\n  columns\u20283\n",
+  ],
+  [
+    "U+2028 in a label",
+    'block-beta\nA["a\u2028b"]\n',
+    'block-beta\n  A["a\u2028b"]\n',
+  ],
+  [
+    "U+2028 at the end of a statement of a row",
+    "block-beta\nA\u2028\n",
+    "block-beta\n  A\n",
+  ],
+  [
+    "U+2028 before a comment line that joins lines",
+    "block-beta\ncolumns\u2028\n%% c\nA\n",
+    "block-beta\n  columns\u2028\n%% c\nA\n",
+  ],
+  [
+    "U+2029 before comment lines that join lines",
+    "block-beta\na\u2029\n%% c\n%% d\nb\nc\n",
+    "block-beta\n  a\u2029\n%% c\n%% d\nb\n  c\n",
+  ],
+  [
+    "U+2028 between a composite head and its body",
+    "block-beta\nblock:G\u2028a\u2028end\n",
+    "block-beta\n  block:G\n    a\n  end\n",
+  ],
+]
+
+/**
+ * Each example is a block diagram with a whitespace character other than a space or a line feed: where the printer chooses the whitespace it prints a space and drops them at the ends of a line, and U+0085 is no whitespace but a character of an id (docs/block.md, Whitespace characters).
+ */
+const blockWhitespaceExamples: readonly (readonly [string, string, string])[] =
+  [
+    [
+      "U+00A0 between two statements of a row",
+      "block-beta\na\u00a0b\n",
+      "block-beta\n  a b\n",
+    ],
+    [
+      "U+00A0 at the ends of a line",
+      "block-beta\n\u00a0a\u00a0\n",
+      "block-beta\n  a\n",
+    ],
+    [
+      "a tab, a vertical tab, a form feed, U+3000, and U+FEFF between units",
+      "block-beta\ncolumns\t3\u3000a\ufeffb\fc\u000bd\n",
+      "block-beta\n  columns 3\n  a b c d\n",
+    ],
+    [
+      "U+00A0 around the arrow of an edge",
+      "block-beta\nA\u00a0-->\u00a0B\n",
+      "block-beta\n  A --> B\n",
+    ],
+    [
+      "U+00A0 between an id and its shape",
+      'block-beta\nA\u00a0("x")\n',
+      'block-beta\n  A("x")\n',
+    ],
+    [
+      "U+00A0 before the directions of a block arrow",
+      'block-beta\nA<["z"]>\u00a0(right)\n',
+      'block-beta\n  A<["z"]>(right)\n',
+    ],
+    [
+      "U+00A0 in a label",
+      'block-beta\nA["a\u00a0b"]\n',
+      'block-beta\n  A["a\u00a0b"]\n',
+    ],
+    [
+      "U+00A0 in a class definition",
+      "block-beta\nclassDef\u00a0c1\u00a0fill:#f00\u00a0\n",
+      "block-beta\n  classDef c1 fill:#f00\n",
+    ],
+    [
+      "U+00A0 in a style",
+      "block-beta\nA\nstyle\u00a0A\u00a0fill:#f00\u00a0\n",
+      "block-beta\n  A\n  style A fill:#f00\n",
+    ],
+    [
+      "U+00A0 inside an empty description block",
+      "block-beta\naccDescr\u00a0{\u00a0}\u00a0a\n",
+      "block-beta\n  accDescr { }\n  a\n",
+    ],
+    [
+      "U+00A0 in a composite head",
+      "block-beta\nblock:\u00a0G\u00a0a\u00a0end\n",
+      "block-beta\n  block:G\n    a\n  end\n",
+    ],
+    [
+      "U+0085 inside an id",
+      "block-beta\na\u0085b\n",
+      "block-beta\n  a\u0085b\n",
+    ],
+  ]
+
 describe("a state diagram with a line separator", () => {
   it.each(examples)("keeps %s as written", async (_name, input, output) => {
     await expectKept(input, output)
@@ -1703,4 +1835,19 @@ describe("a quadrant chart with a whitespace character that no fixture file hold
       await expectKept(input, output)
     },
   )
+})
+
+describe("a block diagram with a line separator", () => {
+  it.each(blockLineSeparatorExamples)(
+    "keeps %s",
+    async (_name, input, output) => {
+      await expectKept(input, output)
+    },
+  )
+})
+
+describe("a block diagram with a whitespace character that no fixture file holds", () => {
+  it.each(blockWhitespaceExamples)("keeps %s", async (_name, input, output) => {
+    await expectKept(input, output)
+  })
 })

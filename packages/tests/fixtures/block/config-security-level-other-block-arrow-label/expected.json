@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, settings: under another `securityLevel` the label of a block arrow holds the replaced characters."
+  },
+  "config": {
+    "securityLevel": "other"
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "&lt;b&gt;x&lt;/b&gt;",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "right"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

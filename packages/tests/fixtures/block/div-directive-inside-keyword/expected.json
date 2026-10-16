@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Known divergences: directives: a directive inside the keyword `columns` is removed, so the keyword is whole."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": 2,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

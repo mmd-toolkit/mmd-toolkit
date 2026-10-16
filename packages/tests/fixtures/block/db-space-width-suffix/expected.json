@@ -1,0 +1,33 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, spaces: `space:2A` is `space:2` and the node A."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "type": "space",
+          "width": 2
+        },
+        {
+          "type": "space",
+          "width": 2
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

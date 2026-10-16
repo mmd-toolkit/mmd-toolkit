@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: `End` is not the keyword: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...lock:G    A  End\n-------------------^\nExpecting 'end', got 'EOF'"
+  }
+}

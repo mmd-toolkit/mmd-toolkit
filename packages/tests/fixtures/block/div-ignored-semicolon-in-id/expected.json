@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Known divergences: the line rule ignores the ; inside the id B;C; mermaid.js reads the id BC."
+  },
+  "knownDivergence": "ignored-semicolon-as-token-boundary",
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "style:#a",
+          "type": "square",
+          "widthInColumns": 1
+        },
+        {
+          "id": "BC",
+          "label": "BC",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

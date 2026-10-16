@@ -4,7 +4,7 @@
 [ignored-semicolon-as-token-boundary.md](./ignored-semicolon-as-token-boundary.md)
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
-mindmap、timeline、xychart、quadrant。
+mindmap、timeline、xychart、quadrant、block。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -187,6 +187,13 @@ quadrant chart では、`style` か `classDef`、`:`、`#` は、
 mermaid.js は `classDef style:#x;y color: #f00` をクラス `style:#xy` と読み、
 この仕様はそれを拒否します。
 [fixture: quadrant/div-grid-style-classdef-name]
+block diagram では、`style`、`:`、`#` は、ラベル `"style:#a"` のように
+`;` の前の文字列の中に置けるので、
+無視される `;` は id やキーワードの中に置けます。
+mermaid.js は `A["style:#a"] B;C` を id `BC` で、
+`A["style:#a"] col;umns 2` を `columns 2` で読み、この仕様はそれらを拒否します。
+[fixture: block/div-ignored-semicolon-in-id]
+[fixture: block/div-ignored-semicolon-in-keyword]
 
 各図の文書は、これがどこに表れるかを、既知の差異の節に挙げています。
 [flowchart](../diagrams/flowchart.ja.md#既知の差異)、
@@ -200,7 +207,8 @@ mermaid.js は `classDef style:#x;y color: #f00` をクラス `style:#xy` と読
 [mindmap](../diagrams/mindmap.ja.md#既知の差異)、
 [timeline](../diagrams/timeline.ja.md#既知の差異)、
 [xychart](../diagrams/xychart.ja.md#既知の差異)、
-[quadrant](../diagrams/quadrant.ja.md#既知の差異) です。
+[quadrant](../diagrams/quadrant.ja.md#既知の差異)、
+[block](../diagrams/block.ja.md#既知の差異) です。
 
 ## 書き手にとっての結果
 

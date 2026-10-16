@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ast/block.md BlockLiteral: a style of classDef of two spaces between two , is a literal of that whitespace, as in style; the Db steps trim it."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "c"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": [
+      {
+        "id": "c",
+        "styles": [
+          "fill:red",
+          "",
+          "stroke:#333"
+        ]
+      }
+    ]
+  }
+}

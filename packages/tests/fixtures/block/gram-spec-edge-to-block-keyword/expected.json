@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, shapes and edges: `block` at the end of an edge opens a composite that is not closed: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  A --> block\n------------------^\nExpecting 'NODE_ID', got 'BLOCK_DIAGRAM_KEY'"
+  }
+}

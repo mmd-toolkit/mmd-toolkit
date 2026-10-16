@@ -9,6 +9,7 @@ import { timelineVisitorKeys } from "./visitor-keys/timeline.ts"
 import { sankeyVisitorKeys } from "./visitor-keys/sankey.ts"
 import { xychartVisitorKeys } from "./visitor-keys/xychart.ts"
 import { quadrantVisitorKeys } from "./visitor-keys/quadrant.ts"
+import { blockVisitorKeys } from "./visitor-keys/block.ts"
 import { requirementVisitorKeys } from "./visitor-keys/requirement.ts"
 import { sequenceVisitorKeys } from "./visitor-keys/sequence.ts"
 import { stateVisitorKeys } from "./visitor-keys/state.ts"
@@ -45,4 +46,5 @@ export const visitorKeys: VisitorKeys = {
   ...sankeyVisitorKeys,
   ...xychartVisitorKeys,
   ...quadrantVisitorKeys,
+  ...blockVisitorKeys,
 }

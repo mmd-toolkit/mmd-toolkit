@@ -1,0 +1,40 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, white space: a CR alone in the middle of the id of a `class` statement."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "a",
+          "label": "a",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            ""
+          ]
+        },
+        {
+          "id": "b",
+          "label": "b",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "c",
+          "label": "c",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

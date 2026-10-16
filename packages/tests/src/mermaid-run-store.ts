@@ -66,6 +66,7 @@ export const RESULT_FILES: readonly string[] = [
   "mermaid-environment-error.ts",
   "mermaid-run-store.ts",
   "mermaid.ts",
+  "normalizers/block.ts",
   "normalizers/browser-stand-ins.ts",
   "normalizers/class.ts",
   "normalizers/click-calls.ts",

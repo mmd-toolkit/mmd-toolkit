@@ -537,6 +537,72 @@
   [fixture: quadrant/gram-name-quoted-empty]
   [fixture: quadrant/div-empty-string-alone]
 
+## ブロック図の中
+
+- 字句解析器のどの規則も合わない位置では、`range` はそこの文字。
+  引用符のないラベル、id の中の `-`、形の括弧の中の空白、
+  未知の方向がそうである。
+  [fixture: block/gram-label-unquoted]
+  [fixture: block/gram-name-dash]
+  [fixture: block/gram-spec-space-before-string]
+  [fixture: block/gram-arrow-unknown]
+- 終わってはいけない文脈でテキストが終わるときは、
+  最後の文字の後に空白しかないときも含めて、
+  `range` はその文脈に入ったもので、メッセージは何が閉じていないかを示す。
+  - 文字列の開きの `"`。
+    メッセージは `The string has no closing " before the end of the text`。
+  - markdown 文字列の開きの `"`。
+    メッセージは
+    ``The markdown string has no closing `" before the end of the text``。
+  - 形の開き。
+    メッセージは `The shape has no closing before the end of the text`。
+  - ブロック矢印の `]>`。メッセージは
+    `The block arrow has no directions before the end of the text`。
+  - 方向の前の `(`。
+    メッセージは `The directions have no ) before the end of the text`。
+  - 開きの矢印。
+    メッセージは `The edge label has no arrow before the end of the text`。
+  - 説明ブロックの `accDescr`。
+    メッセージは `The description block has no } before the end of the text`。
+  - `classDef`。
+    メッセージは `classDef has no styles before the end of the text`。
+  - `class` と `style`。
+    メッセージは `class has no ids before the end of the text` と
+    `style has no ids before the end of the text`。
+    [fixture: block/gram-label-unclosed]
+    [fixture: block/gram-label-backtick-start]
+    [fixture: block/gram-label-unclosed-shape]
+    [fixture: block/gram-arrow-no-paren]
+    [fixture: block/gram-arrow-unclosed-paren]
+    [fixture: block/gram-edge-label-start-without-end]
+    [fixture: block/gram-empty-block-unclosed]
+    [fixture: block/gram-class-def-no-name]
+    [fixture: block/gram-class-def-no-style]
+    [fixture: block/gram-class-apply-no-id]
+- 文法が単位を読めない位置では、`range` はその単位から空白を除いた範囲で、
+  メッセージは `Unexpected token`。
+  文や入れ子のブロックが揃う前にテキストが終わるときは、
+  テキストの終わりの空の範囲で、メッセージは `Unexpected end of text`。
+  `classDef` の名前 `DEFAULT` も、そのような単位である。
+  [fixture: block/header-only-block-beta]
+  [fixture: block/gram-composite-not-closed]
+  [fixture: block/gram-composite-extra-end]
+  [fixture: block/gram-edge-to-space]
+  [fixture: block/gram-class-def-default-upper]
+- 文法の外の拒否は、文法が `style` の文の id を読んだところで行う。
+  `range` は `,` を含めたその id で、
+  メッセージは `style names no block made before it`。
+  [fixture: block/gram-style-undefined]
+  [fixture: block/gram-style-list]
+  [fixture: block/gram-style-on-chain]
+- 空の文字列と空の markdown 文字列、文の中の空の説明ブロックは、
+  下の既知の差異と同じくその位置で拒否する。
+  `A[""]` のように mermaid.js も拒否する入力でも同じである。
+  [fixture: block/gram-label-empty]
+  [fixture: block/div-empty-string-line]
+  [fixture: block/div-empty-markdown-line]
+  [fixture: block/div-empty-block-in-edge]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、

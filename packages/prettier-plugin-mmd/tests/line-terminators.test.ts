@@ -131,6 +131,19 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
     'xychart-beta horizontal\n  title Two words\n  x-axis [a, b]\n  line [1, 2 "x"]\n  accDescr {\nd\n  }\n  %% c\n  %%{init: {}}%%\n',
   ],
   [
+    "block",
+    [
+      "block-beta",
+      "columns   3 a   b",
+      "block:G",
+      "c --> d",
+      "end",
+      "%% c",
+      "%%{init: {}}%%",
+    ],
+    "block-beta\n  columns 3\n  a b\n  block:G\n    c --> d\n  end\n  %% c\n  %%{init: {}}%%\n",
+  ],
+  [
     "gantt",
     [
       "gantt",

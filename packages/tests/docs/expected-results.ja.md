@@ -347,6 +347,7 @@ xychart の字句解析器を変える 2 つ、`comment-takes-character` と
 [fixture: flowchart/div-c4-keyword-in-label]
 [fixture: class/div-c4-keyword-as-class-name]
 [fixture: state/div-c4-keyword-as-state-id]
+[fixture: block/div-c4-container-in-label]
 `html-tag-in-frontmatter` では、フロントマターの `<` を `(` にして
 HTML タグが始まらないようにした入力を mermaid.js に読ませた結果です。
 タグは `title` に限らず、フロントマターのどのキーでも始まりえます。
@@ -379,7 +380,9 @@ mermaid.js が `(` にした入力を拒否するときは、仕様どおりの�
 mermaid.js は、flowchart（`%%` だけの行、`%%{ }%%`、`%%{}`、`%%{-x}%%`）、
 state（`%%` 以外の同じ行）、
 class（そのような行の後の、タブを含む空白だけの行や、
-空白に挟まれたディレクティブ）では、それらを読めません。
+空白に挟まれたディレクティブ）、
+block（`%%` だけの行、`%%{ }%%`。字句解析器は id として読みます）
+では、それらを読めません。
 間にあるコメント行とディレクティブは残ります。
 ディレクティブは、跨ぐ行とともに、その行にある前後の空白を除いて残ります。
 空白を残すと、mermaid.js では、ディレクティブを除いた行が
@@ -397,6 +400,9 @@ title と `embedded` の値は、それらの行に依りません。
 [fixture: class/header-after-empty-braces-then-whitespace-line]
 [fixture: class/header-after-bare-percent-then-tab-line]
 [fixture: class/header-after-bare-percent-then-indented-directive-line]
+[fixture: block/div-after-bare-percent-line]
+[fixture: block/div-after-bare-percent-line-and-whitespace-line]
+[fixture: block/div-after-empty-braces-line]
 `blank-line-after-header-or-comments` では、ヘッダーの後の空行と空白だけの行、
 およびヘッダーの行の終わりの空白を取り除いた入力を mermaid.js に読ませた
 結果です。
@@ -639,6 +645,7 @@ mermaid.js は検出器を、最初に登録された順に持っています。
   [fixture: flowchart/div-c4-keyword-in-label]
   [fixture: class/div-c4-keyword-as-class-name]
   [fixture: state/div-c4-keyword-as-state-id]
+  [fixture: block/div-c4-container-in-label]
 - `name-start-reads-unit`、class の字句解析器
   （[`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)）
   :

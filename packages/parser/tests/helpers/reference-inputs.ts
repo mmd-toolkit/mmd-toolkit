@@ -28,6 +28,8 @@ import type { XychartUnits } from "../../src/diagrams/xychart/index.ts"
 import { lexXychart } from "../../src/diagrams/xychart/index.ts"
 import type { QuadrantUnits } from "../../src/diagrams/quadrant/index.ts"
 import { lexQuadrant } from "../../src/diagrams/quadrant/index.ts"
+import type { BlockUnits } from "../../src/diagrams/block/index.ts"
+import { lexBlock } from "../../src/diagrams/block/index.ts"
 import type { UnitName as XychartUnitName } from "../../src/diagrams/xychart/units.ts"
 import type { UnitName as RequirementUnitName } from "../../src/diagrams/requirement/units.ts"
 import type { DiagramUnit } from "../../src/diagram-units.ts"
@@ -1102,6 +1104,20 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
       removedRangeOf: (form) => form.range,
     }
   }
+  const block = blockLexingOf(text)
+  if (block !== null) {
+    return {
+      units: block.units,
+      emptyFormKinds: EMPTY_FORM_KINDS.block,
+      statementStartsAt: (before, _block, after) =>
+        blockDiagramBlockStandsAlone(before, after),
+      // diagrams/block.md, Diagram and statements: nothing separates two
+      // statements, so a block is a statement only where one starts.
+      separators: [],
+      endOfTextSeparates: false,
+      removedRangeOf: (form) => form.range,
+    }
+  }
   const xychart = xychartLexingOf(text)
   if (xychart !== null) {
     return {
@@ -1623,6 +1639,42 @@ function xychartLexingOf(text: string): XychartUnits | null {
     if (error instanceof ParseError) return null
     throw error
   }
+}
+
+/** The units of the block diagram `text` as the parser's lexer reads them; null when `text` is no block diagram or its lexer rejects it. */
+function blockLexingOf(text: string): BlockUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
+  if (diagramType !== "block") return null
+  try {
+    return lexBlock(diagramInputOf(opened, detection, diagramType))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
+/**
+ * diagrams/block.md, Empty description blocks: whether an empty
+ * description block, with `before` the units before it and `after` the
+ * units after it, in source order, stands where a statement starts rather
+ * than inside a statement. It stands inside one after an arrow and after
+ * `block:`, which a node must follow; before a width or a link, which go
+ * on with the node before the block; and between an id and the opening of
+ * its shape or block arrow.
+ */
+function blockDiagramBlockStandsAlone(
+  before: readonly AnyUnit[],
+  after: readonly AnyUnit[],
+): boolean {
+  const last = before.at(-1)?.name
+  if (last === "arrow" || last === "block:") return false
+  const next = firstAfterEmptyDescriptionBlocks(after)?.name
+  if (next === ":" || next === "arrow" || next === "opening-arrow") {
+    return false
+  }
+  return !(last === "id" && (next === "shape-open" || next === "<["))
 }
 
 /** The units of the quadrant chart `text` as the parser's lexer reads them, with its diagram comments; null when `text` is no quadrant chart or its lexer rejects it. */

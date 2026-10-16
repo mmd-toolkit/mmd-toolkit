@@ -304,6 +304,25 @@ mermaid.js は、`accTitle`、`accDescr`、`direction`、`click`、`call`、
 [corpus fixture: flowchart/lex-call-keyword-semicolon]
 [1 行に 1 文](./flowchart.ja.md#1-行に-1-文)を参照してください。
 
+そのような行の最後の `;` を印字が落とすかどうかは、
+印字した行で規則が無視する `;` がどれかを決めます。
+そのため、`;` の印字と、`:` と `#` の間の空白
+（接するか、空白 1 つ）は、同じ 1 つの答えで決めます。
+`;` が文を区切る図種（flowchart、sequence 図、象限チャート、XY チャート）では、
+行末の無視される `;` を落とし、その前の空白は通常どおり整形します。
+そうでない図種（class 図、state 図、ブロック図など）では、
+行を `;` とともに残し、隙間もそのままです。
+[fixture: flowchart/semicolons/style-line-dropped-semicolon-formats-the-gap]
+[fixture: xychart/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
+[fixture: quadrant/statements-one-per-line/line-rule-line-with-a-dropped-semicolon-formats-the-gap]
+[fixture: class/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-touching-kept]
+[fixture: class/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-becomes-one-space]
+[fixture: state/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-touching-kept]
+[fixture: state/whitespace-between-tokens/line-rule-line-gap-between-colon-and-hash-becomes-one-space]
+[fixture: block/multi-line-statements/line-rule-semicolon-after-touching-arrow-kept]
+[fixture: block/multi-line-statements/line-rule-semicolon-after-an-id-kept]
+[fixture: block/multi-line-statements/semicolon-after-spaced-arrow-is-an-id]
+
 ## スタイルの末尾の空白
 
 `style`、`classDef`、`linkStyle` の文の末尾の空白は取り除きます。
@@ -1044,6 +1063,51 @@ Db や字句解析器が読むものは変えません。
   隙間にあっても書かれた場所に残ります。
   [test: U+2028 between the words of a text]
   [test: U+2028 around the arrow of an axis]
+
+## 空白や字句解析器で決まるブロック図の行
+
+ブロック図の空白の多くは Db に入らないので、整形はそれを変えます。
+Db や字句解析器が読むものは変えません。
+[行](./block.ja.md#行)、[形](./block.ja.md#形)、
+[スタイル](./block.ja.md#スタイル)、
+[複数行の文](./block.ja.md#複数行の文)を参照してください。
+
+- ブロック矢印の括弧の中の空白は Db に入ります。
+  `(right down)` の向きは `right ` で、`( up)` の向きは ` up` です。
+  [fixture: shapes/block-arrow-directions-as-written]
+  [fixture: shapes/block-arrow-directions-whitespace-kept]
+- `style` と `class` の空白。
+  `,` の後のスタイル、`class` の id、クラス名の空白です。
+  [fixture: styles/style-commas-as-written]
+  [fixture: styles/class-ids-as-written]
+  [fixture: styles/class-name-as-written]
+  [fixture: styles/class-name-with-a-comma-as-written]
+- `%%` で始まる文。
+  mermaid.js は node の後の `%%x` を id として読み、
+  `%%x` で始まる行をコメント行として読むので、
+  そのような文がある行は 1 行のまま残します。
+  [fixture: rows/percent-id-stays-in-its-row]
+  [fixture: rows/percent-id-keeps-columns-with-it]
+  [fixture: rows/percent-id-after-end-not-moved]
+  [fixture: rows/percent-id-after-the-header-stays-on-the-line]
+  [fixture: comments/percent-in-a-line-is-an-id]
+- 辺の連鎖 `A --> B --> C` は、1 つの文のまま 1 行に残します。
+  mermaid.js はそれを正しく読まず（Db が最後の前の node を落とします）、
+  分けると別の読みになります。
+  [fixture: edges/chain-on-one-line]
+- mermaid.js の行の規則が読む行は、文を 1 行に残し、`;` も書かれたままです。
+  `style` か `classDef`、その後の `:`、
+  `:` との間に空白のない `#`、その後の `;` を持つ行です。
+  [fixture: multi-line-statements/line-rule-line-kept]
+  [fixture: multi-line-statements/line-rule-line-kept-with-columns]
+  [fixture: multi-line-statements/line-rule-line-kept-with-composite]
+- つなぐ改行にコメント行か指令がある文は、書かれたまま残します。
+  [fixture: multi-line-statements/comment-line-inside-kept]
+  [fixture: multi-line-statements/directive-inside-kept]
+- U+0085 は mermaid.js が空白として読まず、id の文字です。
+  文の隙間にある U+2028 と U+2029 は、書かれたまま印字します。
+  [test: U+0085 inside an id]
+  [test: U+2028 between two statements of a row]
 
 ## U+2028 か U+2029 の後のコメント行
 

@@ -1,0 +1,31 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, spaces: a `space` block has no id that a statement can name: `class space c` makes a block of the id `space` that is not in the diagram."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "type": "space",
+          "width": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "space",
+        "type": "na",
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

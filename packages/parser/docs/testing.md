@@ -15,7 +15,8 @@ the sentence of the specification or of the parser's documents that defines it.
 
 `tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
 `sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, `requirement/`,
-`mindmap/`, `timeline/`, `sankey/`, `xychart/`, and `quadrant/`, and checks:
+`mindmap/`, `timeline/`, `sankey/`, `xychart/`, `quadrant/`, and `block/`, and
+checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));

@@ -1,0 +1,17 @@
+{
+  "message": "The edge label has no arrow before the end of the text",
+  "range": [
+    15,
+    17
+  ],
+  "loc": {
+    "start": {
+      "line": 2,
+      "column": 4
+    },
+    "end": {
+      "line": 2,
+      "column": 6
+    }
+  }
+}

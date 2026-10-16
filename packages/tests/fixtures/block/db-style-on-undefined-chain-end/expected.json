@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, styles: a style on the last node of a chain."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {},
+        {
+          "id": "C",
+          "label": "C",
+          "type": "na",
+          "styles": [
+            "fill:#f00"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "end": "C",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

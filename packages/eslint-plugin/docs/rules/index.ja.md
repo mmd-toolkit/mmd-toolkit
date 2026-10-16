@@ -120,6 +120,20 @@ Mermaid の図のテキストのための ESLint の言語プラグインで、
 | [gantt-no-unknown-exclude](./gantt-no-unknown-exclude.ja.md)                 | `weekends` でも曜日の名前でもない `excludes` の語を禁止する。             | ✅  |     |     |
 | [gantt-no-unread-tag](./gantt-no-unread-tag.ja.md)                           | タスクのデータの中で、mermaid.js がタグとして読まないタグを禁止する。     | ✅  |     |     |
 
+## quadrant
+
+| 規則                                                                               | 説明                                                              | ✅  | 💡  | 🚧  |
+| ---------------------------------------------------------------------------------- | ----------------------------------------------------------------- | --- | --- | --- |
+| [quadrant-no-duplicate-description](./quadrant-no-duplicate-description.ja.md)     | チャートの説明をもう一度設定する文を禁止する。                    | ✅  |     |     |
+| [quadrant-no-duplicate-style](./quadrant-no-duplicate-style.ja.md)                 | 点やクラスがもう一度与えるスタイルを禁止する。                    | ✅  |     |     |
+| [quadrant-no-duplicate-title](./quadrant-no-duplicate-title.ja.md)                 | タイトルをもう一度設定する `title` か `accTitle` の文を禁止する。 | ✅  |     |     |
+| [quadrant-no-empty-description-block](./quadrant-no-empty-description-block.ja.md) | 説明を持たない説明のブロックを禁止する。                          | ✅  |     |     |
+| [quadrant-no-invalid-coordinate](./quadrant-no-invalid-coordinate.ja.md)           | 0 から 1 の数でない点の座標を禁止する。                           | ✅  |     |     |
+| [quadrant-no-redefined-axis](./quadrant-no-redefined-axis.ja.md)                   | 軸のテキストを置き換える軸の文を禁止する。                        | ✅  |     |     |
+| [quadrant-no-redefined-class](./quadrant-no-redefined-class.ja.md)                 | クラスのスタイルを置き換える `classDef` の文を禁止する。          | ✅  |     |     |
+| [quadrant-no-redefined-quadrant](./quadrant-no-redefined-quadrant.ja.md)           | 象限のテキストを置き換える象限の文を禁止する。                    | ✅  |     |     |
+| [quadrant-no-undef](./quadrant-no-undef.ja.md)                                     | どの `classDef` も定義しない点のクラスを禁止する。                | ✅  |     |     |
+
 ## requirement
 
 | 規則                                                                                           | 説明                                                                                      | ✅  | 💡  | 🚧  |

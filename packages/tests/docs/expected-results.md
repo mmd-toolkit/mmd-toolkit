@@ -294,11 +294,12 @@ class/div-comment-then-statement-with-backquote-keyword] [fixture:
 class/div-backquote-starts-with-keyword-then-comment] [fixture:
 common/detect-c4-anywhere] [fixture: flowchart/div-c4-keyword-in-label]
 [fixture: class/div-c4-keyword-as-class-name] [fixture:
-state/div-c4-keyword-as-state-id] For `html-tag-in-frontmatter` it is mermaid.js
-reading the input whose frontmatter has `(` where it has `<`, so that no HTML
-tag starts in it. The tag may start in any key of the frontmatter, not only in
-`title`; the frontmatter is found as mermaid.js finds it, which includes a
-closing `---` line with blanks after it and CRLF line breaks. [fixture:
+state/div-c4-keyword-as-state-id] [fixture: block/div-c4-container-in-label] For
+`html-tag-in-frontmatter` it is mermaid.js reading the input whose frontmatter
+has `(` where it has `<`, so that no HTML tag starts in it. The tag may start in
+any key of the frontmatter, not only in `title`; the frontmatter is found as
+mermaid.js finds it, which includes a closing `---` line with blanks after it
+and CRLF line breaks. [fixture:
 flowchart/html-tag-starts-in-frontmatter-other-key] [fixture:
 flowchart/html-tag-starts-in-frontmatter-crlf] [fixture:
 flowchart/html-tag-starts-in-frontmatter-closing-line-blank] The title of the Db
@@ -322,13 +323,14 @@ reading the input without the bare `%%` lines before its header and the lines of
 whitespace only among them: the specification reads them as trivia in every
 diagram type, and mermaid.js hands them to the lexer of the diagram type, which
 does not read them so in flowchart (a line `%%` alone, `%%{ }%%`, `%%{}`, or
-`%%{-x}%%`), in state (the same lines but `%%`), and in class (a line of
-whitespace only, a tab included, or a directive with whitespace around it, after
-such a line). A comment line and a directive among them stay, a directive with
-the lines it spans and without the whitespace around it on its line, which
-mermaid.js would leave as a line of whitespace only; the frontmatter is passed
-over. The title and the values in `embedded` do not depend on those lines.
-[fixture: flowchart/header-after-bare-percent-line] [fixture:
+`%%{-x}%%`), in state (the same lines but `%%`), in class (a line of whitespace
+only, a tab included, or a directive with whitespace around it, after such a
+line), and in block (a line `%%` alone or `%%{ }%%`, which the lexer reads as an
+id). A comment line and a directive among them stay, a directive with the lines
+it spans and without the whitespace around it on its line, which mermaid.js
+would leave as a line of whitespace only; the frontmatter is passed over. The
+title and the values in `embedded` do not depend on those lines. [fixture:
+flowchart/header-after-bare-percent-line] [fixture:
 flowchart/header-after-empty-braces-line] [fixture:
 flowchart/header-after-non-word-brace-line] [fixture:
 flowchart/header-after-empty-braces-no-space] [fixture:
@@ -338,25 +340,28 @@ state/header-after-empty-braces-no-space] [fixture:
 class/header-after-bare-percent-then-whitespace-line] [fixture:
 class/header-after-empty-braces-then-whitespace-line] [fixture:
 class/header-after-bare-percent-then-tab-line] [fixture:
-class/header-after-bare-percent-then-indented-directive-line] For
-`blank-line-after-header-or-comments` it is mermaid.js reading the input without
-the empty lines and the lines of whitespace only after its header, and without
-the whitespace that ends the header line: the specification reads them as trivia
-wherever they stand, and mermaid.js takes the token of a line break with the
-whitespace lines around it only at the end of a line of its own, so it rejects
-them after the header, after a comment line, and before a node. A line is of
-whitespace only when nothing but whitespace is left of it once the directives
-are taken out, since mermaid.js removes a directive before it reads the text.
-The directives after the header move to lines of their own before it, so that
-the title and the values in `embedded` do not change and no line is left with a
-directive alone. A line feed goes before a U+2028 or a U+2029 that ends a
-comment when a statement follows it on its line, since mermaid.js's grammar
-needs one there and the indentation of the statement stays; a separator that
-ends a comment with only whitespace after it goes with that whitespace. The
-comment lines, the lines before the header, and the node lines stay as they are.
-The generator stops where a line to take out stands inside the text of a node
-that is not closed, since a blank line is then a character of the text.
-[fixture: mindmap/div-header-trailing-spaces-then-node] [fixture:
+class/header-after-bare-percent-then-indented-directive-line] [fixture:
+block/div-after-bare-percent-line] [fixture:
+block/div-after-bare-percent-line-and-whitespace-line] [fixture:
+block/div-after-empty-braces-line] For `blank-line-after-header-or-comments` it
+is mermaid.js reading the input without the empty lines and the lines of
+whitespace only after its header, and without the whitespace that ends the
+header line: the specification reads them as trivia wherever they stand, and
+mermaid.js takes the token of a line break with the whitespace lines around it
+only at the end of a line of its own, so it rejects them after the header, after
+a comment line, and before a node. A line is of whitespace only when nothing but
+whitespace is left of it once the directives are taken out, since mermaid.js
+removes a directive before it reads the text. The directives after the header
+move to lines of their own before it, so that the title and the values in
+`embedded` do not change and no line is left with a directive alone. A line feed
+goes before a U+2028 or a U+2029 that ends a comment when a statement follows it
+on its line, since mermaid.js's grammar needs one there and the indentation of
+the statement stays; a separator that ends a comment with only whitespace after
+it goes with that whitespace. The comment lines, the lines before the header,
+and the node lines stay as they are. The generator stops where a line to take
+out stands inside the text of a node that is not closed, since a blank line is
+then a character of the text. [fixture:
+mindmap/div-header-trailing-spaces-then-node] [fixture:
 mindmap/div-header-space-directive-then-node] [fixture:
 mindmap/div-tab-line-after-header] [fixture:
 mindmap/div-header-two-comments-then-blank] [fixture:
@@ -546,7 +551,7 @@ it. [fixture: common/detect-c4-anywhere] [fixture: common/detect-minimal-c4]
   before. [fixture: common/detect-c4-anywhere] [fixture:
   common/detect-minimal-c4] [fixture: flowchart/div-c4-keyword-in-label]
   [fixture: class/div-c4-keyword-as-class-name] [fixture:
-  state/div-c4-keyword-as-state-id]
+  state/div-c4-keyword-as-state-id] [fixture: block/div-c4-container-in-label]
 - `name-start-reads-unit`, in the class lexer
   ([`classDiagram.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/class/parser/classDiagram.jison#L106-L112)):
   inside a backquoted name and a generic type, the rule that closes it and the

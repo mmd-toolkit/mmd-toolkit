@@ -31,6 +31,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "sankey",
   "xychart",
   "quadrant",
+  "block",
 ]
 
 /** The file in which a parser records the tree of a fixture it accepts. */

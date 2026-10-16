@@ -1,0 +1,51 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: `| text |` is not read as a label either."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na"
+        },
+        {
+          "id": "|",
+          "label": "|",
+          "type": "na"
+        },
+        {
+          "id": "text",
+          "label": "text",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "A",
+        "end": "|",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

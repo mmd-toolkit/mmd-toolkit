@@ -1,0 +1,43 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes and styles: after `class A, B c`, a later shape for B updates the new block, and the placed B keeps its type and label."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1,
+          "classes": [
+            "c"
+          ]
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "B",
+        "label": "x",
+        "type": "square",
+        "classes": [
+          "c"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

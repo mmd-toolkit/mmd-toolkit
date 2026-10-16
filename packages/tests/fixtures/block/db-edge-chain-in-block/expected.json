@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: a chain inside a composite."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "G",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1,
+          "children": [
+            {},
+            {
+              "id": "C",
+              "label": "C",
+              "type": "na"
+            }
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "end": "C",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

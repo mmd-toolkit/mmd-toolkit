@@ -41,8 +41,9 @@ diagram (`sequence`), the class diagram (`classDiagram`), the state diagram
 (`stateDiagram`), the entity relationship diagram (`er`), the Gantt chart
 (`gantt`), the user journey diagram (`journey`), the requirement diagram
 (`requirement`), the mindmap (`mindmap`), the timeline (`timeline`), the sankey
-diagram (`sankey`), the XY chart (`xychart`), and the quadrant chart
-(`quadrantChart`). Every other detected type throws `UnsupportedDiagramError`.
+diagram (`sankey`), the XY chart (`xychart`), the quadrant chart
+(`quadrantChart`), and the block diagram (`block`). Every other detected type
+throws `UnsupportedDiagramError`.
 
 ## How a diagram's parser is built
 
@@ -58,9 +59,9 @@ The parser of each diagram follows its document,
 [`diagrams/mindmap.md`](../../spec/docs/diagrams/mindmap.md),
 [`diagrams/timeline.md`](../../spec/docs/diagrams/timeline.md),
 [`diagrams/sankey.md`](../../spec/docs/diagrams/sankey.md),
-[`diagrams/xychart.md`](../../spec/docs/diagrams/xychart.md), or
-[`diagrams/quadrant.md`](../../spec/docs/diagrams/quadrant.md). It has three
-parts:
+[`diagrams/xychart.md`](../../spec/docs/diagrams/xychart.md),
+[`diagrams/quadrant.md`](../../spec/docs/diagrams/quadrant.md), or
+[`diagrams/block.md`](../../spec/docs/diagrams/block.md). It has three parts:
 
 - a lexer that divides the diagram text into units, under
   `src/diagrams/<diagram>/units.ts`;

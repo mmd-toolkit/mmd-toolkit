@@ -1,0 +1,37 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, columns: the word `auto` is read in lower case only: `columns AUTO` is two nodes."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "columns",
+          "label": "columns",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "AUTO",
+          "label": "AUTO",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

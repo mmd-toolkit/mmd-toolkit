@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: `space` after `block:` is the keyword, and the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nblock-beta  block:space    A  end\n------------------^\nExpecting 'NODE_ID', got 'SPACE_BLOCK'"
+  }
+}

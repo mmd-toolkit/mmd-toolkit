@@ -1,0 +1,59 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/block.md",
+    "line": 384
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "id1",
+          "label": "Start",
+          "type": "round",
+          "widthInColumns": 1,
+          "styles": [
+            "fill:#636",
+            "stroke:#333",
+            "stroke-width:4px"
+          ]
+        },
+        {
+          "type": "space",
+          "width": 1
+        },
+        {
+          "id": "id2",
+          "label": "Stop",
+          "type": "round",
+          "widthInColumns": 1,
+          "styles": [
+            "fill:#bbf",
+            "stroke:#f66",
+            "stroke-width:2px",
+            "color:#fff",
+            "stroke-dasharray: 5 5"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "id1",
+        "end": "id2",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_point"
+      }
+    ],
+    "classes": []
+  }
+}

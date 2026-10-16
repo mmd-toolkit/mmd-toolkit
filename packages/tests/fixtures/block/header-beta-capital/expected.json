@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, header: the lexer reads `block-beta` in lower case only, so `block-Beta` is the header `block` followed by `-Beta`, which no rule reads: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nblock-Beta  A\n-----^"
+  }
+}

@@ -41,7 +41,7 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 journey 図（`journey`）と、要求図（`requirement`）と、
 mindmap（`mindmap`）と、timeline（`timeline`）と、
 sankey 図（`sankey`）と、XY チャート（`xychart`）と、
-四象限チャート（`quadrantChart`）です。
+四象限チャート（`quadrantChart`）と、ブロック図（`block`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -59,7 +59,8 @@ sankey 図（`sankey`）と、XY チャート（`xychart`）と、
 [`diagrams/timeline.md`](../../spec/docs/diagrams/timeline.ja.md)、
 [`diagrams/sankey.md`](../../spec/docs/diagrams/sankey.ja.md)、
 [`diagrams/xychart.md`](../../spec/docs/diagrams/xychart.ja.md)、
-[`diagrams/quadrant.md`](../../spec/docs/diagrams/quadrant.ja.md)
+[`diagrams/quadrant.md`](../../spec/docs/diagrams/quadrant.ja.md)、
+[`diagrams/block.md`](../../spec/docs/diagrams/block.ja.md)
 のどれかに従います。
 3 つの部分からなります。
 

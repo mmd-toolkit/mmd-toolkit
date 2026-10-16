@@ -58,6 +58,7 @@ export type DiagramType =
   | "sankey"
   | "xychart"
   | "quadrant"
+  | "block"
 
 /**
  * Where a fixture input came from.

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, composite blocks: `end_` is an id, so the composite is not closed: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...ock:G    A  end_\n-------------------^\nExpecting 'end', got 'EOF'"
+  }
+}

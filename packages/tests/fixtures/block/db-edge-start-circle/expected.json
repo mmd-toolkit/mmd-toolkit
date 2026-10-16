@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, edges: `o--o`: the first `o` is read as a node."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "A",
+          "type": "na",
+          "widthInColumns": 1
+        },
+        {
+          "id": "o",
+          "label": "o",
+          "type": "na"
+        },
+        {
+          "id": "B",
+          "label": "B",
+          "type": "na"
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [
+      {
+        "start": "o",
+        "end": "B",
+        "label": "",
+        "thickness": "normal",
+        "pattern": "solid",
+        "arrowTypeStart": "arrow_open",
+        "arrowTypeEnd": "arrow_circle"
+      }
+    ],
+    "classes": []
+  }
+}

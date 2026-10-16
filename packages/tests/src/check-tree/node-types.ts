@@ -41,6 +41,7 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "QuadrantLabel",
   "QuadrantLiteral",
   "QuadrantIdentifier",
+  "BlockLiteral",
 ])
 
 /**
@@ -227,6 +228,21 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "XychartAccTitleStatement",
   "XychartAccDescrStatement",
   "XychartAccDescrBlockStatement",
+  "BlockDiagram",
+  "BlockNodeStatement",
+  "BlockNode",
+  "BlockShape",
+  "BlockArrowShape",
+  "BlockLink",
+  "BlockArrow",
+  "BlockOpeningArrow",
+  "BlockSpaceStatement",
+  "BlockColumnsStatement",
+  "BlockCompositeStatement",
+  "BlockClassDefStatement",
+  "BlockClassStatement",
+  "BlockStyleStatement",
+  "BlockAccDescrBlockStatement",
   "QuadrantDiagram",
   "QuadrantTitleStatement",
   "QuadrantAccTitleStatement",
@@ -252,9 +268,13 @@ export const DATA_BLOCK_NODE_TYPES: ReadonlySet<string> = new Set([
  * the empty description blocks in a body, whose units are a keyword and
  * punctuation, next to the text of a direction line. There is no table of
  * Tokens of the requirement diagram yet, so the kinds of those units are not
- * held to a document of the parser.
+ * held to a document of the parser. ast/block.md, BlockLiteral: a direction of
+ * a block arrow holds the `Keyword` token of its word; the kinds of the tokens
+ * of each BlockLiteral are held to parser/docs/tokens/block.md by
+ * `checkBlockTree()` itself.
  */
 export const NODE_TYPES_WITH_TOKENS_OF_ANY_KIND: ReadonlySet<string> = new Set([
   "StateIgnoredText",
   "RequirementIgnoredText",
+  "BlockLiteral",
 ])

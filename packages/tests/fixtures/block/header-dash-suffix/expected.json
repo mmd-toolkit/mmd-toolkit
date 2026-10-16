@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, header: `block-beta` followed by a letter is detected as a block diagram, and the lexer does not read it as the header: rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nblock-betax  A\n-----^"
+  }
+}

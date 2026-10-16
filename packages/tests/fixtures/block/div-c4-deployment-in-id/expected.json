@@ -1,0 +1,12 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Known divergences: detection: `C4Deployment` anywhere in the text makes the text a C4 diagram: rejected."
+  },
+  "knownDivergence": "c4-keyword-anywhere",
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 1. Unrecognized text.\nblock-beta  C4Deplo\n^"
+  }
+}

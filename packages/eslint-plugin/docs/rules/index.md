@@ -116,6 +116,20 @@ diagram type has the id `@mmd-toolkit/<diagram>-<name>`. The rules of
 | [gantt-no-unknown-exclude](./gantt-no-unknown-exclude.md)                 | Disallow a word in `excludes` that is neither `weekends` nor the name of a day. | ✅  |     |     |
 | [gantt-no-unread-tag](./gantt-no-unread-tag.md)                           | Disallow a tag in the data of a task that mermaid.js does not read as a tag.    | ✅  |     |     |
 
+## quadrant
+
+| Rule                                                                            | Description                                                            | ✅  | 💡  | 🚧  |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | --- | --- | --- |
+| [quadrant-no-duplicate-description](./quadrant-no-duplicate-description.md)     | Disallow a statement that sets the description of the chart again.     | ✅  |     |     |
+| [quadrant-no-duplicate-style](./quadrant-no-duplicate-style.md)                 | Disallow a style that a point or a class gives again.                  | ✅  |     |     |
+| [quadrant-no-duplicate-title](./quadrant-no-duplicate-title.md)                 | Disallow a `title` or `accTitle` statement that sets its title again.  | ✅  |     |     |
+| [quadrant-no-empty-description-block](./quadrant-no-empty-description-block.md) | Disallow a description block that holds no description.                | ✅  |     |     |
+| [quadrant-no-invalid-coordinate](./quadrant-no-invalid-coordinate.md)           | Disallow a coordinate of a point that is not a number from 0 to 1.     | ✅  |     |     |
+| [quadrant-no-redefined-axis](./quadrant-no-redefined-axis.md)                   | Disallow an axis statement that replaces a text of the axis.           | ✅  |     |     |
+| [quadrant-no-redefined-class](./quadrant-no-redefined-class.md)                 | Disallow a `classDef` statement that replaces the styles of its class. | ✅  |     |     |
+| [quadrant-no-redefined-quadrant](./quadrant-no-redefined-quadrant.md)           | Disallow a quadrant statement that replaces the text of its quadrant.  | ✅  |     |     |
+| [quadrant-no-undef](./quadrant-no-undef.md)                                     | Disallow a class of a point that no `classDef` defines.                | ✅  |     |     |
+
 ## requirement
 
 | Rule                                                                                        | Description                                                                                             | ✅  | 💡  | 🚧  |

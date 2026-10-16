@@ -1,0 +1,29 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "block.md Directives inside units: a directive inside a direction of a block arrow makes the input rejected, while mermaid.js joins the parts into right."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "x",
+          "type": "block_arrow",
+          "widthInColumns": 1,
+          "directions": [
+            "right"
+          ]
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

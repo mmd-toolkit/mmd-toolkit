@@ -6,6 +6,7 @@
 import { visitorKeys } from "@mmd-toolkit/parser"
 import { describe, expect, it } from "vitest"
 import { valueNodeTypes } from "../src/printers/flowchart-layout.ts"
+import { blockValueNodeTypes } from "../src/printers/block-layout.ts"
 import { classValueNodeTypes } from "../src/printers/class-layout.ts"
 import { erValueNodeTypes } from "../src/printers/er-layout.ts"
 import { ganttValueNodeTypes } from "../src/printers/gantt-layout.ts"
@@ -174,6 +175,17 @@ const diagrams: readonly DiagramValues[] = [
       // QuadrantLiteral.
       "StringLiteral",
       "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Block",
+    values: blockValueNodeTypes,
+    notValues: new Set([
+      // Arrows, whose range is the range of one token, printed as the token.
+      "BlockArrow",
+      "BlockOpeningArrow",
+      // An empty description block, laid out as a whole.
+      "BlockAccDescrBlockStatement",
     ]),
   },
   {

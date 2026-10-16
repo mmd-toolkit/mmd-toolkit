@@ -113,6 +113,12 @@ are read from the tree like this:
   quotes, since mermaid.js reads the space units into the text (the rule is in
   [db-from-tree/quadrant.md](./db-from-tree/quadrant.md)). [fixture:
   quadrant/db-quadrant-spaces-trimmed]
+- **Block directions, classes, and styles**: directions, class ids, and styles
+  are the converted texts of their literals, which hold the whitespace around
+  the commas (the rules are in
+  [db-from-tree/block.md](./db-from-tree/block.md)). [fixture:
+  block/db-arrow-spaces] [fixture: block/db-class-apply-list-spaces] [fixture:
+  block/db-style-spaces]
 - **Mindmap labels**: the converted form of the range of a `MindmapLabel`,
   without the delimiters of a string or a markdown string, which are cut from
   the converted form, one character at each end for a string and two for a
@@ -393,6 +399,9 @@ does not, are:
   the quadrants; and the names of the points. The class names, the coordinates,
   and the styles are not reached. [fixture:
   quadrant/config-security-level-other-all]
+- Block: the labels of nodes, block arrows, composites, and edges; ids, classes,
+  styles, and directions are not reached. [fixture:
+  block/config-security-level-other-all]
 
 **Where the order of mermaid.js matters.** Some texts are replaced before
 mermaid.js reads them further, and the builders do the same.

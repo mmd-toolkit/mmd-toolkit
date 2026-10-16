@@ -28,6 +28,7 @@ export const diagramIds: Readonly<
   sankey: ["sankey"],
   xychart: ["xychart"],
   quadrant: ["quadrantChart"],
+  block: ["block"],
 }
 
 /**

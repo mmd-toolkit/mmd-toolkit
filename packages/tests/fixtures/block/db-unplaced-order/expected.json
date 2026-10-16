@@ -1,0 +1,46 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, the blocks that no list holds: the unplaced blocks are in the order of the table: the block of a `class`, then the blocks of a dropped composite, then the next block of a `class`."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "id": "A",
+          "label": "",
+          "type": "composite",
+          "widthInColumns": 1
+        }
+      ]
+    },
+    "unplaced": [
+      {
+        "id": "X",
+        "type": "na",
+        "classes": [
+          "c"
+        ]
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "type": "na",
+        "widthInColumns": 1
+      },
+      {
+        "id": "Y",
+        "type": "na",
+        "classes": [
+          "d"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

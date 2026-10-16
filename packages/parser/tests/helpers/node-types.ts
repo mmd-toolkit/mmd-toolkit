@@ -12,6 +12,7 @@ import type {
   TimelineNode,
   XychartNode,
   QuadrantNode,
+  BlockTreeNode,
 } from "../../src/index.ts"
 
 /** ast.md, Shared leaf nodes: the node types, as the tests expect them. */
@@ -359,6 +360,31 @@ export const allQuadrantNodeTypes: Readonly<
   QuadrantIdentifier: true,
 }
 
+/**
+ * Every node type of ast/block.md, in the order of that document. Being a
+ * `Record` over the type, this fails to type-check when a node type is
+ * missing here or is not in the type.
+ */
+export const allBlockNodeTypes: Readonly<Record<BlockTreeNode["type"], true>> =
+  {
+    BlockDiagram: true,
+    BlockNodeStatement: true,
+    BlockNode: true,
+    BlockShape: true,
+    BlockArrowShape: true,
+    BlockLink: true,
+    BlockArrow: true,
+    BlockOpeningArrow: true,
+    BlockSpaceStatement: true,
+    BlockColumnsStatement: true,
+    BlockCompositeStatement: true,
+    BlockClassDefStatement: true,
+    BlockClassStatement: true,
+    BlockStyleStatement: true,
+    BlockAccDescrBlockStatement: true,
+    BlockLiteral: true,
+  }
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -375,6 +401,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allSankeyNodeTypes),
   ...Object.keys(allXychartNodeTypes),
   ...Object.keys(allQuadrantNodeTypes),
+  ...Object.keys(allBlockNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

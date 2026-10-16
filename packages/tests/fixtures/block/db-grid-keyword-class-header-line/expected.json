@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, keywords: the words `class A c` after the header on its line."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": []
+    },
+    "unplaced": [
+      {
+        "id": "A",
+        "type": "na",
+        "classes": [
+          "c A"
+        ]
+      }
+    ],
+    "edges": [],
+    "classes": []
+  }
+}

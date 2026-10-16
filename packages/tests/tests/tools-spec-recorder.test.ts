@@ -395,6 +395,26 @@ describe("recordSpecFile: the functions that take a text", () => {
     expect(textsOf(recording)).toEqual(["quadrantChart\n title T"])
   })
 
+  it("records the text that the spec of the block diagram passes to the default export of its jison module, with the Db and the styles module stubbed", async () => {
+    const recording = await recordSource(
+      [
+        `// @ts-ignore: jison has no types`,
+        `import block from "./block.jison"`,
+        `import db from "../blockDB.js"`,
+        `import getStyles from "../styles.js"`,
+        `it("t", () => {`,
+        `  block.parser.yy = db`,
+        `  block.parser.yy.clear()`,
+        `  getStyles({})`,
+        `  block.parse("block-beta\\n  A")`,
+        `})`,
+        ``,
+      ].join("\n"),
+      "diagrams/block/parser/block.spec.ts",
+    )
+    expect(textsOf(recording)).toEqual(["block-beta\n  A"])
+  })
+
   it("records the text of mermaidAPI.parse, whether it is the default or the named export", async () => {
     const recording = await recordSource(
       [

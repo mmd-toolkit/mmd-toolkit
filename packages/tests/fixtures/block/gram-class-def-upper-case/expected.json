@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, classes: `CLASSDEF` is not the keyword: the words are nodes, and the text is rejected."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\n...ta  CLASSDEF c fill:#f00\n----------------------^"
+  }
+}

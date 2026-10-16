@@ -40,7 +40,9 @@ export type EmptyFormKind =
  * description block, which is a statement where a statement starts;
  * quadrant has the empty string, the empty markdown string, and the empty
  * description block, of which only the empty description block is a
- * statement, where a statement starts and after the last unit of one.
+ * statement, where a statement starts and after the last unit of one;
+ * block has the same three, of which only the empty description block is
+ * a statement, where a statement starts.
  */
 export const EMPTY_FORM_KINDS: Readonly<
   Record<
@@ -53,7 +55,8 @@ export const EMPTY_FORM_KINDS: Readonly<
     | "requirement"
     | "mindmap"
     | "xychart"
-    | "quadrant",
+    | "quadrant"
+    | "block",
     readonly EmptyFormKind[]
   >
 > = {
@@ -82,6 +85,7 @@ export const EMPTY_FORM_KINDS: Readonly<
     "empty-markdown-string",
     "empty-description-block",
   ],
+  block: ["empty-string", "empty-markdown-string", "empty-description-block"],
 }
 
 /** One empty form: its kind, its units, and its range, from its first character that is not whitespace to its last. */
@@ -114,8 +118,8 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
  * The empty forms of the kinds `kinds` among `units`, the units of a
  * diagram text, in source order, wherever they lie: each `empty-string`
  * unit (flowchart, requirement, and mindmap, Strings), and each `string`
- * unit whose text, what lies between its quotes, is empty (xychart and
- * quadrant, Strings);
+ * unit whose text, what lies between its quotes, is empty (xychart,
+ * quadrant, and block, Strings);
  * each empty call, a `call` unit followed directly by a `(` and a `)` unit,
  * with only whitespace between them (flowchart, Click and callbacks); and
  * each empty description block, an `accDescr` and a `{` unit followed
@@ -126,8 +130,8 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
  * each `empty-backquotes` unit (er, The attribute block context); and, in
  * gantt, each empty href, an `href` unit followed directly by two `"`
  * units (gantt, The href context); and, in mindmap, each
- * `empty-markdown-string` unit and, in quadrant, each `markdown-string`
- * unit whose text is empty, each empty icon, an `::icon(` unit followed
+ * `empty-markdown-string` unit and, in quadrant and block, each
+ * `markdown-string` unit whose text is empty, each empty icon, an `::icon(` unit followed
  * directly by a `)` unit, and each empty class line, a `:::` unit that no
  * `class-text` unit follows (mindmap, Empty forms), where a `:::` of the
  * other diagram types, which no `class-text` unit ever follows, is no form

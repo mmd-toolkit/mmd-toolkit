@@ -32,6 +32,7 @@ const DIAGRAMS: readonly DiagramType[] = [
   "sankey",
   "xychart",
   "quadrant",
+  "block",
 ]
 
 /** Every fixture, read once for all the tests of this file. */

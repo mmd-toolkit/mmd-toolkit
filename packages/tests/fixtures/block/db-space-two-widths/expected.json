@@ -1,0 +1,39 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "db-summaries.md block, spaces: two `space` blocks of different widths."
+  },
+  "accepted": true,
+  "diagramType": "block",
+  "db": {
+    "root": {
+      "type": "composite",
+      "columns": -1,
+      "children": [
+        {
+          "type": "space",
+          "width": 2
+        },
+        {
+          "type": "space",
+          "width": 2
+        },
+        {
+          "type": "space",
+          "width": 3
+        },
+        {
+          "type": "space",
+          "width": 3
+        },
+        {
+          "type": "space",
+          "width": 3
+        }
+      ]
+    },
+    "unplaced": [],
+    "edges": [],
+    "classes": []
+  }
+}

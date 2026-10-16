@@ -15,6 +15,7 @@ import { parseTimelineDiagram } from "./diagrams/timeline/index.ts"
 import { parseSankeyDiagram } from "./diagrams/sankey/index.ts"
 import { parseXychartDiagram } from "./diagrams/xychart/index.ts"
 import { parseQuadrantDiagram } from "./diagrams/quadrant/index.ts"
+import { parseBlockDiagram } from "./diagrams/block/index.ts"
 import { parseRequirementDiagram } from "./diagrams/requirement/index.ts"
 import { ParseError, UnsupportedDiagramError } from "./errors.ts"
 import { readFrontmatterTrivia } from "./frontmatter.ts"
@@ -139,6 +140,8 @@ export function parse(text: string): Root {
       return parseXychartDiagram(input)
     case "quadrantChart":
       return parseQuadrantDiagram(input)
+    case "block":
+      return parseBlockDiagram(input)
     default:
       throw new UnsupportedDiagramError(detected)
   }

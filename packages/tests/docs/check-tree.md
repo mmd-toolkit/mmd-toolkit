@@ -65,13 +65,13 @@ const problems: TreeProblem[] = checkTree(text, tree)
 - **Comments.** A comment line is where the scan finds it, with the mark `%%`; a
   diagram comment has a mark that its diagram has, and ends where its line ends
   (before a U+2028 or a U+2029 too in a mindmap diagram, whose comments run to
-  the end of their line segment); a flowchart, an ER diagram, and a sankey
-  diagram have the mark `%%` for a line of `%%` alone before their header, as
-  every diagram type does, and for no other comment; a gantt diagram has the
-  marks `%%` and `%` for its diagram comments, and a journey diagram and a
-  requirement diagram the marks `#`, `%%`, and `%`, a timeline diagram the same
-  marks, a mindmap diagram, an xychart diagram, and a quadrant chart the mark
-  `%%`; a fragment without a mark follows a comment region
+  the end of their line segment); a flowchart, an ER diagram, a sankey diagram,
+  and a block diagram have the mark `%%` for a line of `%%` alone before their
+  header, as every diagram type does, and for no other comment; a gantt diagram
+  has the marks `%%` and `%` for its diagram comments, and a journey diagram and
+  a requirement diagram the marks `#`, `%%`, and `%`, a timeline diagram the
+  same marks, a mindmap diagram, an xychart diagram, and a quadrant chart the
+  mark `%%`; a fragment without a mark follows a comment region
   (parser/docs/tokens.md, Comment;
   [common.md](../../spec/docs/common.md#comment-lines), Comment lines).
 - **Directives.** The directives of the tree are those of the scan, each with
@@ -483,6 +483,44 @@ const problems: TreeProblem[] = checkTree(text, tree)
     The tokens of a string label are one `String` token, or `StringFragment`
     tokens where a directive, a comment region, or an ignored `;` cuts the
     string, and the `RawText` tokens of the words after it.
+  - block: child types follow `BLOCK_CHILD_TYPES`, checked against ast/block.md;
+    diagram and composite bodies, class ids, and style slot lists are nonempty,
+    and a body cannot consist only of empty description blocks. The fields that
+    may be null agree with the written forms: widths follow their colons without
+    whitespace, `space:` includes its colon, `columns auto` has no count, a
+    named composite has a head after `block:`, and a link has both an opening
+    arrow and a label or neither. Shapes have the written opening and closing
+    independently, including mismatched pairs, with no whitespace inside the
+    brackets. A block arrow has a nonempty list of the directions `right`,
+    `left`, `up`, `down`, `x`, and `y`, in written order, each a BlockLiteral of
+    its word and the whitespace written after it and, for the first where no
+    comma stands before it, the whitespace written after the `(`, with optional
+    commas before directions and no final or consecutive commas. A direction is
+    the `Keyword` token of its word between the `RawText` tokens of its
+    whitespace (cut where a directive or a comment line cuts it), and the
+    whitespace after a comma is in no direction and no token. Arrow fields agree
+    with the written markers, line, and length, and each arrow is one
+    punctuator; opening and closing lines may differ. Labels are closed,
+    nonempty StringLiterals, without markdown; widths and counts are decimal
+    digits. Node ids hold the characters of an id, while the id of `style` and
+    the name of `classDef` hold ASCII word characters (commas separate nonempty
+    words of the one style id). An id of `class` is a BlockLiteral of a word
+    and, after a comma, the whitespace written after the comma, which is
+    `RawText` tokens before the `Identifier` token of the word. Class names have
+    no whitespace at their ends and stay on their line. A style keeps the
+    whitespace between it and a comma, so that the first starts and the last
+    ends at a character that is not whitespace; a part of whitespace only
+    between two commas is a literal of that whitespace, and a part with nothing
+    in it is null. The layouts of statements, including token kinds, child
+    order, gaps, and ranges, follow statement-checks.ts and
+    parser/docs/tokens/block.md and positions/block.md. BlockLiteral values are
+    written text, identifiers are their tokens joined, strings are their
+    contents, and numbers are checked against their written digits. Comments are
+    comment lines with `%%`; block has no diagram comment after its header.
+    Whether two units touch is judged on the written text, so a directive
+    between them leaves them touching (a shape's delimiter and its string, a `:`
+    and its number). `check-tree-block.test.ts` checks hand-made trees and the
+    recorded trees.
 
 The **written text** of a range is its source without the directives, the
 comment regions, and the `;` that the line rule ignores (ast.md, Nodes).

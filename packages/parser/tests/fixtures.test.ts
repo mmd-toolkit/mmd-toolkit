@@ -414,6 +414,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     ...(await loadFixtures("sankey")),
     ...(await loadFixtures("xychart")),
     ...(await loadFixtures("quadrant")),
+    ...(await loadFixtures("block")),
   ]
 
   /** The fixtures that carry the mark `knownDivergence`. */

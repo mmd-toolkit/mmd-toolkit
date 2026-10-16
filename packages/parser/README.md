@@ -134,6 +134,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - Sankey diagrams: `sankey` (`sankey` and `sankey-beta`).
 - XY charts: `xychart` (`xychart` and `xychart-beta`).
 - Quadrant charts: `quadrantChart` (`quadrantChart`).
+- Block diagrams: `block` (`block-beta` and `block`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -234,8 +235,9 @@ type ids. The names and fields are those of the specification's
 [`ast/mindmap.md`](../spec/docs/ast/mindmap.md),
 [`ast/timeline.md`](../spec/docs/ast/timeline.md),
 [`ast/sankey.md`](../spec/docs/ast/sankey.md),
-[`ast/xychart.md`](../spec/docs/ast/xychart.md), and
-[`ast/quadrant.md`](../spec/docs/ast/quadrant.md).
+[`ast/xychart.md`](../spec/docs/ast/xychart.md),
+[`ast/quadrant.md`](../spec/docs/ast/quadrant.md), and
+[`ast/block.md`](../spec/docs/ast/block.md).
 
 ## Walking the tree
 
@@ -407,7 +409,8 @@ these differences:
   [`ast/sankey.md`](../spec/docs/ast/sankey.md) (the sankey nodes),
   [`ast/xychart.md`](../spec/docs/ast/xychart.md) (the XY chart nodes),
   [`ast/quadrant.md`](../spec/docs/ast/quadrant.md) (the quadrant chart nodes),
-  and [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
+  [`ast/block.md`](../spec/docs/ast/block.md) (the block diagram nodes), and
+  [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of
   nodes, and the invariants of the tree.
