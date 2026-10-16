@@ -415,6 +415,21 @@ describe("recordSpecFile: the functions that take a text", () => {
     expect(textsOf(recording)).toEqual(["block-beta\n  A"])
   })
 
+  it("records the kanban parser with its Db and diagram API stubbed", async () => {
+    const recording = await recordSource(
+      [
+        `import { parser as kanban } from "./parser/kanban.jison"`,
+        `import db from "./kanbanDb.js"`,
+        `import { setLogLevel } from "../../diagram-api/diagramAPI.js"`,
+        `beforeEach(() => { kanban.yy = db; kanban.yy.clear(); setLogLevel("trace") })`,
+        `it("t", () => { kanban.parse("kanban\\n S\\n   A") })`,
+        ``,
+      ].join("\n"),
+      "diagrams/kanban/kanban.spec.ts",
+    )
+    expect(textsOf(recording)).toEqual(["kanban\n S\n   A"])
+  })
+
   it("records the text of mermaidAPI.parse, whether it is the default or the named export", async () => {
     const recording = await recordSource(
       [

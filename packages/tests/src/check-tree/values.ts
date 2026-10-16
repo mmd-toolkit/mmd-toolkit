@@ -266,6 +266,23 @@ export const VALUE_RULES: Readonly<Record<string, ValueRule>> = {
     gaps: true,
     spec: "Its written text is the source text of its range without the directives, the comment regions, and the ignored `;`; the whitespace between its units is part of it, and no diagram comment lies inside it (ast/requirement.md, RequirementIgnoredText).",
   },
+  KanbanLiteral: {
+    field: "value",
+    kind: "written-text",
+    spec: "Its written text (ast/kanban.md, KanbanLiteral).",
+  },
+  KanbanLabel: {
+    field: "value",
+    kind: "written-text",
+    delimiters: "string",
+    spec: "The written text, without string delimiters (ast/kanban.md, KanbanLabel).",
+  },
+  KanbanDataBlock: {
+    field: "value",
+    kind: "written-text",
+    delimiters: "data-block",
+    spec: "The whole written interior of `@{ ... }` (ast/kanban.md, KanbanDataBlock).",
+  },
   MindmapLabel: {
     field: "value",
     kind: "written-text",

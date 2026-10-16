@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L09 (Statement context): At sign cannot occur in a bare node."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 3. Unrecognized text.\nkanban S   a@b\n------------^"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "hexagon delimiters test labels and the shape type used only for omitted padding."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "Todo",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "Work",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

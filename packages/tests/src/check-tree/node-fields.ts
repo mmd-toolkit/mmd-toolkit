@@ -479,6 +479,27 @@ export const NODE_FIELDS: Readonly<
   JourneyTitleStatement: {
     value: { shape: "node" },
   },
+  KanbanDiagram: { body: { shape: "nodeList" } },
+  KanbanNode: {
+    indent: { shape: "value", valueType: "number" },
+    id: { shape: "nodeOrNull" },
+    shape: { shape: "nodeOrNull" },
+    data: { shape: "nodeList" },
+    decorations: { shape: "nodeList" },
+  },
+  KanbanShape: {
+    opener: { shape: "value", valueType: "string" },
+    closer: { shape: "value", valueType: "string" },
+    label: { shape: "node" },
+  },
+  KanbanLabel: {
+    kind: { shape: "value", valueType: "string" },
+    value: { shape: "value", valueType: "string" },
+  },
+  KanbanIconStatement: { icon: { shape: "node" } },
+  KanbanClassStatement: { cssClass: { shape: "node" } },
+  KanbanDataBlock: { value: { shape: "value", valueType: "string" } },
+  KanbanLiteral: { value: { shape: "value", valueType: "string" } },
   MindmapClassStatement: {
     cssClass: { shape: "node" },
   },

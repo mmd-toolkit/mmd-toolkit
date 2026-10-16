@@ -483,6 +483,26 @@ const problems: TreeProblem[] = checkTree(text, tree)
     The tokens of a string label are one `String` token, or `StringFragment`
     tokens where a directive, a comment region, or an ignored `;` cuts the
     string, and the `RawText` tokens of the words after it.
+  - kanban: child types and value words follow the tables of ast/kanban.md; the
+    body is flat and may be empty, as may data and decoration lists. A node has
+    a text, a shape, or both, with nonnegative integer indentation matching its
+    written whitespace. Text keeps trailing whitespace; a shape holds one
+    nonempty label of kind text, string, or markdown, and independent written
+    delimiters. Adjacent data blocks touch their node and one another and keep
+    opaque interiors, including empty ones; no YAML validation is performed.
+    Nonempty icon and class text keep their whitespace, and decoration lines
+    stay with the preceding row. Layout, touching, and ranges use
+    statement-checks.ts; comments use `%%` and end at a line segment. Token
+    kinds and keyword and punctuation tables follow
+    `parser/docs/tokens/kanban.md`: node text, bare labels, icon and class text,
+    and whole data interiors use `RawText`; quoted labels use one `String` or
+    `StringFragment` tokens when cut by directives, comment regions, or ignored
+    semicolons. Data delimiters are separate `Punctuator` tokens, and an empty
+    interior has no token. Ranges are the hull of each node's tokens and
+    children (`parser/docs/positions/kanban.md`). `check-tree-kanban.test.ts`
+    checks hand-made trees and breaks the recorded trees of named fixtures. The
+    corpus checks include every recorded kanban tree and the common detection
+    fixture; kanban has no recorded-tree exclusion.
   - block: child types follow `BLOCK_CHILD_TYPES`, checked against ast/block.md;
     diagram and composite bodies, class ids, and style slot lists are nonempty,
     and a body cannot consist only of empty description blocks. The fields that
@@ -660,11 +680,14 @@ check must report, and requires the tables of the check to be the Type and the
 Meaning columns of ast/quadrant.md. It also breaks the recorded trees of named
 fixtures for the kinds of the tokens, their order, the number of a quadrant, the
 axis, the arrow, the kind of a label, the value of a title, and the ranges.
-`check-tree-string-tokens.test.ts` changes the kind of a token of the first
-string of the recorded tree of a named fixture of the flowchart, class, state,
-ER, and sankey diagrams, and requires the check of the tokens of a string to
-report it. The tests that require a recorded tree for every node type or every
-field leave out the node types whose names start with a prefix of
+`check-tree-kanban.test.ts` also breaks named recorded trees for token kinds,
+cut string and data fragments, indentation, a missing text or shape, shape
+closers, label kinds, retained whitespace, the order of adjacent data blocks,
+and node ranges. `check-tree-string-tokens.test.ts` changes the kind of a token
+of the first string of the recorded tree of a named fixture of the flowchart,
+class, state, ER, and sankey diagrams, and requires the check of the tokens of a
+string to report it. The tests that require a recorded tree for every node type
+or every field leave out the node types whose names start with a prefix of
 `NODE_TYPE_PREFIXES_WITHOUT_RECORDED_TREES` (`tests/check-tree-recorded.ts`),
 the new diagram types whose trees are not recorded yet; the prefix is removed
 when the trees are recorded, and the list stays empty between two diagram types.

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M05 (Data context): Whitespace interrupts consecutive SHAPE_DATA."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\nkanban S@{} @{}\n-----------^\nExpecting 'SPACELINE', 'NL', 'EOF', 'SHAPE_DATA', got 'SPACELIST'"
+  }
+}

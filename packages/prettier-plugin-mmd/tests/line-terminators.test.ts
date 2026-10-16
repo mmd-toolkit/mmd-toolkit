@@ -131,6 +131,17 @@ const diagrams: readonly (readonly [string, readonly string[], string])[] = [
     'xychart-beta horizontal\n  title Two words\n  x-axis [a, b]\n  line [1, 2 "x"]\n  accDescr {\nd\n  }\n  %% c\n  %%{init: {}}%%\n',
   ],
   [
+    "kanban",
+    [
+      "kanban   S[x]",
+      "     A@{ticket: X}",
+      " ::icon(fa)",
+      "%% c",
+      "%%{init: {}}%%",
+    ],
+    "kanban\n   S[x]\n     A@{ticket: X}\n     ::icon(fa)\n     %% c\n     %%{init: {}}%%\n",
+  ],
+  [
     "block",
     [
       "block-beta",

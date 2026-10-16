@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind semicolon in section-id tests the kanban reading at this text position."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "a;b",
+        "label": "Column",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "I",
+        "label": "Item",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "a;b"
+      }
+    ]
+  }
+}

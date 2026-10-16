@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M03, E03 (Data context): Empty quoted metadata is embedded data, not tokenless syntax."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {}
+      }
+    ]
+  }
+}

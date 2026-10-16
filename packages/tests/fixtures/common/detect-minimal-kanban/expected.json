@@ -5,5 +5,14 @@
   },
   "accepted": true,
   "diagramType": "kanban",
-  "db": null
+  "db": {
+    "nodes": [
+      {
+        "id": "todo",
+        "label": "todo",
+        "level": 0,
+        "isGroup": true
+      }
+    ]
+  }
 }

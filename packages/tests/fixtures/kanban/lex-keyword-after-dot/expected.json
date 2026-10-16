@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md D03, L08 (Detection): Header word inside bare text is not re-tried."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "a.kanban",
+        "label": "a.kanban",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

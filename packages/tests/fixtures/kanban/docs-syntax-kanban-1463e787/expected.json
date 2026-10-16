@@ -1,0 +1,176 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/docs/syntax/kanban.md",
+    "line": 84
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "Todo",
+        "label": "Todo",
+        "level": 2,
+        "isGroup": true
+      },
+      {
+        "id": "Create Documentation",
+        "label": "Create Documentation",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "Todo"
+      },
+      {
+        "id": "docs",
+        "label": "Create Blog about the new diagram",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "Todo"
+      },
+      {
+        "id": "In progress",
+        "label": "In progress",
+        "level": 2,
+        "isGroup": true
+      },
+      {
+        "id": "id6",
+        "label": "Create renderer so that it works in all cases. We also add some extra text here for testing purposes. And some more just for the extra flare.",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "In progress"
+      },
+      {
+        "id": "id9",
+        "label": "Ready for deploy",
+        "level": 2,
+        "isGroup": true
+      },
+      {
+        "id": "id8",
+        "label": "Design grammar",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "id9",
+        "assigned": "knsv"
+      },
+      {
+        "id": "id10",
+        "label": "Ready for test",
+        "level": 2,
+        "isGroup": true
+      },
+      {
+        "id": "id4",
+        "label": "Create parsing tests",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "id10",
+        "ticket": "MC-2038",
+        "priority": "High",
+        "assigned": "K.Sveidqvist"
+      },
+      {
+        "id": "id66",
+        "label": "last item",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "id10",
+        "priority": "Very Low",
+        "assigned": "knsv"
+      },
+      {
+        "id": "id11",
+        "label": "Done",
+        "level": 2,
+        "isGroup": true
+      },
+      {
+        "id": "id5",
+        "label": "define getData",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "id11"
+      },
+      {
+        "id": "id2",
+        "label": "Title of diagram is more than 100 chars when user duplicates diagram with 100 char",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "id11",
+        "ticket": "MC-2036",
+        "priority": "Very High"
+      },
+      {
+        "id": "id3",
+        "label": "Update DB function",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "id11",
+        "ticket": "MC-2037",
+        "priority": "High",
+        "assigned": "knsv"
+      },
+      {
+        "id": "id12",
+        "label": "Can't reproduce",
+        "level": 2,
+        "isGroup": true
+      },
+      {
+        "id": "id3",
+        "label": "Weird flickering in Firefox",
+        "level": 4,
+        "isGroup": false,
+        "parentId": "id12"
+      }
+    ]
+  },
+  "embedded": {
+    "config": {
+      "kanban": {
+        "ticketBaseUrl": "https://mermaidchart.atlassian.net/browse/#TICKET#"
+      }
+    },
+    "dataBlockEffects": [
+      {
+        "id": "id8",
+        "set": {
+          "assigned": "knsv"
+        }
+      },
+      {
+        "id": "id4",
+        "set": {
+          "ticket": "MC-2038",
+          "priority": "High",
+          "assigned": "K.Sveidqvist"
+        }
+      },
+      {
+        "id": "id66",
+        "set": {
+          "priority": "Very Low",
+          "assigned": "knsv"
+        }
+      },
+      {
+        "id": "id2",
+        "set": {
+          "ticket": "MC-2036",
+          "priority": "Very High"
+        }
+      },
+      {
+        "id": "id3",
+        "set": {
+          "ticket": "MC-2037",
+          "priority": "High",
+          "assigned": "knsv"
+        }
+      }
+    ]
+  }
+}

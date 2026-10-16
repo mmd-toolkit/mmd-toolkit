@@ -135,6 +135,7 @@ The eight tokens are `flowchart`, `LR`, `A`, `[`, `Start`, `]`, `-->`, and `B`.
 - XY charts: `xychart` (`xychart` and `xychart-beta`).
 - Quadrant charts: `quadrantChart` (`quadrantChart`).
 - Block diagrams: `block` (`block-beta` and `block`).
+- Kanban diagrams: `kanban` (`kanban`).
 - The `error` pseudo-diagram of mermaid.js.
 
 `parse()` recognizes every other diagram type of mermaid.js 12.0.0, and throws
@@ -236,8 +237,9 @@ type ids. The names and fields are those of the specification's
 [`ast/timeline.md`](../spec/docs/ast/timeline.md),
 [`ast/sankey.md`](../spec/docs/ast/sankey.md),
 [`ast/xychart.md`](../spec/docs/ast/xychart.md),
-[`ast/quadrant.md`](../spec/docs/ast/quadrant.md), and
-[`ast/block.md`](../spec/docs/ast/block.md).
+[`ast/quadrant.md`](../spec/docs/ast/quadrant.md),
+[`ast/block.md`](../spec/docs/ast/block.md), and
+[`ast/kanban.md`](../spec/docs/ast/kanban.md).
 
 ## Walking the tree
 
@@ -330,14 +332,14 @@ these differences:
   line `""` or `id: "" 1`, and for the empty description block inside a
   statement, as in `a - accDescr {} satisfies -> b`; where a statement starts,
   an empty description block is a statement, and on a line of the body of a
-  requirement or an element, an item of the body. In a mindmap, it holds for an
-  empty icon (`::icon()`), an empty class line (`:::` with nothing after it on
-  its line), and an empty string or empty markdown string in a shape, wherever
-  they stand, as in `a[""x]`.
-- In a mindmap, empty lines, lines of whitespace, and comments change nothing
-  wherever they stand after the header, while mermaid.js rejects some of them,
-  as an empty line between the header and the first node, or a line `%%` alone
-  followed by an empty line between two nodes
+  requirement or an element, an item of the body. In a mindmap or kanban
+  diagram, it holds for an empty icon (`::icon()`), an empty class line (`:::`
+  with nothing after it on its line), and an empty string or empty markdown
+  string in a shape, wherever they stand, as in `a[""x]`.
+- In a mindmap or kanban diagram, empty lines, lines of whitespace, and comments
+  change nothing wherever they stand after the header, while mermaid.js rejects
+  some of them, as an empty line between the header and the first node, or a
+  line `%%` alone followed by an empty line between two nodes
   ([`blank-line-after-header-or-comments`](../spec/docs/known-divergences/blank-line-after-header-or-comments.md)).
 - In a sequence diagram, a comment starts at its `%%`, and a number may be
   followed by `%%`, while mermaid.js takes the character before the `%%` into
@@ -409,7 +411,8 @@ these differences:
   [`ast/sankey.md`](../spec/docs/ast/sankey.md) (the sankey nodes),
   [`ast/xychart.md`](../spec/docs/ast/xychart.md) (the XY chart nodes),
   [`ast/quadrant.md`](../spec/docs/ast/quadrant.md) (the quadrant chart nodes),
-  [`ast/block.md`](../spec/docs/ast/block.md) (the block diagram nodes), and
+  [`ast/block.md`](../spec/docs/ast/block.md) (the block diagram nodes),
+  [`ast/kanban.md`](../spec/docs/ast/kanban.md) (the kanban nodes), and
   [`common.md`](../spec/docs/common.md) (the rules shared by every diagram).
 - [`docs/tokens.md`](./docs/tokens.md): the tokens and the lists of the root,
   and [`docs/positions.md`](./docs/positions.md): positions, the ranges of

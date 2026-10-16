@@ -13,6 +13,7 @@ import type {
   XychartNode,
   QuadrantNode,
   BlockTreeNode,
+  KanbanTreeNode,
 } from "../../src/index.ts"
 
 /** ast.md, Shared leaf nodes: the node types, as the tests expect them. */
@@ -385,6 +386,20 @@ export const allBlockNodeTypes: Readonly<Record<BlockTreeNode["type"], true>> =
     BlockLiteral: true,
   }
 
+/** Every node type of ast/kanban.md, in the order of that document. */
+export const allKanbanNodeTypes: Readonly<
+  Record<KanbanTreeNode["type"], true>
+> = {
+  KanbanDiagram: true,
+  KanbanNode: true,
+  KanbanShape: true,
+  KanbanLabel: true,
+  KanbanIconStatement: true,
+  KanbanClassStatement: true,
+  KanbanDataBlock: true,
+  KanbanLiteral: true,
+}
+
 /** Every node type, of ast.md and of each diagram type. */
 export const allNodeTypes: readonly string[] = [
   ...commonNodeTypes,
@@ -402,6 +417,7 @@ export const allNodeTypes: readonly string[] = [
   ...Object.keys(allXychartNodeTypes),
   ...Object.keys(allQuadrantNodeTypes),
   ...Object.keys(allBlockNodeTypes),
+  ...Object.keys(allKanbanNodeTypes),
 ]
 
 /** Whether `value` is a node, or a list that holds one. */

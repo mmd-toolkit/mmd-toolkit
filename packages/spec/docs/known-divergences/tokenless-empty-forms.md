@@ -3,7 +3,7 @@
 Japanese version: [tokenless-empty-forms.ja.md](./tokenless-empty-forms.ja.md)
 
 Diagram types: flowchart, sequence, class, state, er, gantt, requirement,
-mindmap, xychart, quadrant, and block. This is one of the
+mindmap, xychart, quadrant, block, and kanban. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -95,6 +95,28 @@ flowchart LR
 
 This document is about these forms where the tree of this specification has no
 place for them: inside a statement, or next to other text in a value.
+
+In kanban, an empty icon `::icon()` and an empty class line `:::` are rejected
+wherever recognized, including before the first node and after a completed
+shape, as in mindmap. [fixture: kanban/db-decoration-empty-class] [fixture:
+kanban/db-decoration-empty-icon] [fixture: kanban/div-empty-icon-before-first]
+[fixture: kanban/div-empty-icon-header] [fixture: kanban/div-empty-class-header]
+[fixture: kanban/div-class-before-first-unindented-empty] [fixture:
+kanban/div-class-end-empty] [fixture: kanban/div-empty-icon-after-shape]
+[fixture: kanban/div-empty-class-after-shape] An empty string or markdown string
+inside a shape is also rejected, including before or after a nonempty label (see
+[Empty forms](../diagrams/kanban.md#empty-forms)). [fixture:
+kanban/div-empty-string-before-label] [fixture:
+kanban/div-empty-markdown-before-label] [fixture:
+kanban/div-empty-string-after-label] [fixture:
+kanban/div-empty-markdown-after-label] [fixture:
+kanban/div-string-before-string] [fixture:
+kanban/div-empty-markdown-before-string]
+
+Bare `""` and empty markdown strings outside a shape are node text. [fixture:
+kanban/db-empty-string-node] [fixture: kanban/db-empty-markdown-node] An empty
+`@{}` is a data block. [fixture: kanban/db-metadata-empty] None of these is a
+discarded empty form.
 
 ## The difference
 
@@ -809,3 +831,11 @@ state/header-empty-description-block] [fixture:
 er/header-empty-description-block] [fixture:
 gantt/gram-empty-description-block-after-header] [fixture:
 requirement/header-empty-description-block]
+
+Empty kanban decorations and shape strings have their own meaning. mermaid.js
+discards them whole. The empty-form exception applies to them. The tree holds no
+statement or label that changes nothing for these forms, and the input is
+rejected. [fixture: kanban/db-decoration-empty-icon] [fixture:
+kanban/db-decoration-empty-class] [fixture:
+kanban/div-empty-string-before-label] [fixture:
+kanban/div-empty-markdown-before-label]

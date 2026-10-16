@@ -28,6 +28,23 @@ and that hold one of the four keywords after it. mermaid.js tries the detector
 of mindmap before that of C4, so a mindmap has no such texts: `C4Container` is a
 node text in both. [fixture: mindmap/lex-c4-keyword-as-node-text]
 
+In kanban, the four words in a node id, a label, or data content are read in
+their kanban positions. mermaid.js selects C4 and rejects the input. [fixture:
+kanban/lex-c4-c4component-id] [fixture: kanban/lex-c4-c4component-label]
+[fixture: kanban/lex-c4-c4component-metadata] [fixture:
+kanban/lex-c4-c4container-id] [fixture: kanban/lex-c4-c4container-label]
+[fixture: kanban/lex-c4-c4container-metadata] [fixture:
+kanban/lex-c4-c4deployment-id] [fixture: kanban/lex-c4-c4deployment-label]
+[fixture: kanban/lex-c4-c4deployment-metadata] [fixture:
+kanban/lex-c4-c4dynamic-id] [fixture: kanban/lex-c4-c4dynamic-label] [fixture:
+kanban/lex-c4-c4dynamic-metadata]
+
+A kanban node named `C4Context` changes no detection in either reading.
+[fixture: kanban/lex-c4-c4context-id] `C4Container` inside a removed comment or
+frontmatter changes no detection in either reading. [fixture:
+kanban/lex-c4-c4container-comment] [fixture:
+kanban/lex-c4-c4container-frontmatter]
+
 ## The difference
 
 Each example is a whole diagram.

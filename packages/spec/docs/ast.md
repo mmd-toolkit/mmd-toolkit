@@ -242,8 +242,9 @@ the diagram sections below: a
 [`TimelineDiagram`](./ast/timeline.md#timelinediagram), a
 [`SankeyDiagram`](./ast/sankey.md#sankeydiagram), an
 [`XychartDiagram`](./ast/xychart.md#xychartdiagram), a
-[`QuadrantDiagram`](./ast/quadrant.md#quadrantdiagram), or a
-[`BlockDiagram`](./ast/block.md#blockdiagram).
+[`QuadrantDiagram`](./ast/quadrant.md#quadrantdiagram), a
+[`BlockDiagram`](./ast/block.md#blockdiagram), or a
+[`KanbanDiagram`](./ast/kanban.md#kanbandiagram).
 
 ## ErrorDiagram
 
@@ -428,6 +429,7 @@ in a document of their own under `ast/`:
 - [XY chart](./ast/xychart.md): the diagram type `xychart`.
 - [Quadrant chart](./ast/quadrant.md): the diagram type `quadrantChart`.
 - [Block diagram](./ast/block.md): the diagram type `block`.
+- [Kanban](./ast/kanban.md): the diagram type `kanban`.
 
 The name of every node type of a diagram type starts with the name of the
 diagram type, such as `FlowchartVertex`, because node types share one set of

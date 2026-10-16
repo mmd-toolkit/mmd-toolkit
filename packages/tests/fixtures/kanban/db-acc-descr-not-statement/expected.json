@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "An accessibility-looking description tests an ordinary bare node."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "accDescr: First",
+        "label": "accDescr: First",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

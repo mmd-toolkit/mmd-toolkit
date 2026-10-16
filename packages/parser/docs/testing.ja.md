@@ -17,7 +17,7 @@ fixture としてコーパスに足します。
 
 `tests/fixtures.test.ts` は、`common/`、`flowchart/`、`sequence/`、
 `class/`、`state/`、`er/`、`gantt/`、`journey/`、`requirement/`、`mindmap/`、
-`timeline/`、`sankey/`、`xychart/`、`quadrant/`、`block/` の、
+`timeline/`、`sankey/`、`xychart/`、`quadrant/`、`block/`、`kanban/` の、
 すべての fixture を parse し、
 次を確かめます。
 
@@ -32,6 +32,14 @@ fixture としてコーパスに足します。
 （`check-tree-corpus.test.ts`。[木の検査](#木の検査)を参照）、
 その木から Db を組んで、fixture が記録した Db と比べます
 （`db-from-tree.test.ts`）。
+
+kanban の fixture は `tests/kanban.test.ts` が検査します。
+全 2,870 入力について、宣言された差異と、存在すれば `specified.json` を適用し、
+記録された受理判定と比べます。
+受理した木では、トークンとコメントによる文字被覆と、
+トークンの正確なテキストも検査します。
+共通の kanban 検出 fixture を含む解析結果の記録は、
+`tests/fixtures.test.ts` が比べます。
 
 ## 既知の差異
 
@@ -92,7 +100,8 @@ fixture としてコーパスに足します。
   mermaid.js が直接たどり着くものを持つ Gantt チャートであること。
   同じように求めます。
 - `blank-line-after-header-or-comments`: 入力が、ヘッダーの後か 2 つの文の間に、
-  差異の 4 つの場合のどれかの空行と図のコメントを持つ mindmap であること。
+  差異の 4 つの場合のどれかの空行と図のコメントを持つ、
+  mindmap または kanban 図であること。
   パーサーの単位と図のコメントの行から求めます。
   `newline` 単位は行を終え、n 個の改行の単位は n 行を終えます。
   文字のない単位は、U+2028 や U+2029 で終わる図のコメントの行を終えます。

@@ -5,6 +5,7 @@ import { checkErrorDiagramTokens } from "./error-diagram.ts"
 import { checkFlowchartTree, stringDelimitersOf } from "./flowchart.ts"
 import { checkGanttTree } from "./gantt.ts"
 import { checkInvariants } from "./invariants.ts"
+import { checkKanbanTree } from "./kanban.ts"
 import { checkJourneyTree } from "./journey.ts"
 import { checkMindmapTree, mindmapLabelDelimitersFor } from "./mindmap.ts"
 import { checkNullFields } from "./null-fields.ts"
@@ -34,6 +35,7 @@ function stringDelimitersFor(
   switch (root.body.type) {
     case "FlowchartDiagram":
       return stringDelimitersOf(text, root)
+    case "KanbanDiagram":
     case "MindmapDiagram":
       return mindmapLabelDelimitersFor(text, root)
     default:
@@ -89,6 +91,9 @@ export function checkTree(text: string, root: CheckedRoot): TreeProblem[] {
       break
     case "RequirementDiagram":
       checkRequirementTree(text, root, problems)
+      break
+    case "KanbanDiagram":
+      checkKanbanTree(text, root, problems)
       break
     case "MindmapDiagram":
       checkMindmapTree(text, root, problems)

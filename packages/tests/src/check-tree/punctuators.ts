@@ -1,6 +1,7 @@
 import { BLOCK_PUNCTUATORS } from "./block.ts"
 import { CLASS_CLASSIFIER_MARKS, CLASS_VISIBILITY_MARKS } from "./class.ts"
 import { FLOWCHART_SHAPES } from "./flowchart-shapes.ts"
+import { KANBAN_PUNCTUATORS } from "./kanban.ts"
 import { MINDMAP_PUNCTUATORS } from "./mindmap.ts"
 import { label } from "./problems.ts"
 import type { Problems } from "./problems.ts"
@@ -98,6 +99,8 @@ export const PUNCTUATOR_TEXTS: Readonly<Record<string, readonly string[]>> = {
   JourneyDiagram: [":", ",", "{", "}"],
   // The row `Punctuator` of parser/docs/tokens/requirement.md.
   RequirementDiagram: [":", ",", "{", "}", ":::", "-", "->", "<-"],
+  // The row `Punctuator` of parser/docs/tokens/kanban.md.
+  KanbanDiagram: KANBAN_PUNCTUATORS,
   // The row `Punctuator` of parser/docs/tokens/mindmap.md.
   MindmapDiagram: MINDMAP_PUNCTUATORS,
   // The row `Punctuator` of parser/docs/tokens/timeline.md.

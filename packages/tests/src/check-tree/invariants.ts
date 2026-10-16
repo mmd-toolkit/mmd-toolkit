@@ -169,6 +169,7 @@ const DIAGRAM_COMMENT_MARKS: Readonly<Record<string, readonly string[]>> = {
   JourneyDiagram: ["#", "%%", "%"],
   RequirementDiagram: ["#", "%%", "%"],
   MindmapDiagram: ["%%"],
+  KanbanDiagram: ["%%"],
   TimelineDiagram: ["#", "%%", "%"],
   SankeyDiagram: [],
   XychartDiagram: ["%%"],
@@ -212,10 +213,11 @@ function diagramCommentMarkEnd(
  * parser/docs/tokens.md, Comment: the diagram types whose document ends a
  * diagram comment at the end of its line segment, where a U+2028 or a U+2029
  * ends it as a line feed does: the range of the comment ends before it
- * (diagrams/mindmap.md, Comments).
+ * (diagrams/mindmap.md and diagrams/kanban.md, Comments).
  */
 const COMMENT_ENDS_AT_LINE_SEGMENT: ReadonlySet<string> = new Set([
   "MindmapDiagram",
+  "KanbanDiagram",
 ])
 
 /** Whether `code` ends a line segment (common.md, Notation): a line terminator, a U+2028, or a U+2029. */

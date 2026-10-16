@@ -5,6 +5,7 @@ import { normalizeEr } from "./er.ts"
 import { normalizeFlowchart, patchFlowDb } from "./flowchart.ts"
 import { normalizeGantt, patchGanttDb } from "./gantt.ts"
 import { normalizeJourney } from "./journey.ts"
+import { normalizeKanban, patchKanbanDb } from "./kanban.ts"
 import { normalizeMindmap } from "./mindmap.ts"
 import { normalizeQuadrant, patchQuadrantDb } from "./quadrant.ts"
 import { normalizeRequirement } from "./requirement.ts"
@@ -48,6 +49,7 @@ const normalizers: ReadonlyMap<string, Normalizer> = new Map<
   ["xychart", normalizeXyChart],
   ["quadrantChart", normalizeQuadrant],
   ["block", normalizeBlock],
+  ["kanban", normalizeKanban],
   // The pseudo diagram whose whole text is `error`: its Db holds nothing.
   ["error", () => ({})],
 ])
@@ -120,6 +122,14 @@ const dbPatches: ReadonlyMap<string, DbPatchEntry> = new Map<
     {
       sampleText: "block-beta\n  A\n",
       patch: patchBlockDb,
+      appliedTo: "object",
+    },
+  ],
+  [
+    "kanban",
+    {
+      sampleText: "kanban\n",
+      patch: patchKanbanDb,
       appliedTo: "object",
     },
   ],

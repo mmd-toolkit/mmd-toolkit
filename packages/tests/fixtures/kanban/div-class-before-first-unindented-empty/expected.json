@@ -1,0 +1,19 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md G09, E01 (Grammar and acceptance): Empty class before node without indentation."
+  },
+  "knownDivergence": "tokenless-empty-forms",
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

@@ -19,6 +19,9 @@ import type { JourneyUnits } from "../../src/diagrams/journey/index.ts"
 import { lexJourney } from "../../src/diagrams/journey/index.ts"
 import type { RequirementUnits } from "../../src/diagrams/requirement/index.ts"
 import { lexRequirement } from "../../src/diagrams/requirement/index.ts"
+import type { KanbanUnits } from "../../src/diagrams/kanban/index.ts"
+import { lexKanban } from "../../src/diagrams/kanban/index.ts"
+import type { Unit as KanbanUnit } from "../../src/diagrams/kanban/units.ts"
 import type { MindmapUnits } from "../../src/diagrams/mindmap/index.ts"
 import { lexMindmap } from "../../src/diagrams/mindmap/index.ts"
 import type { Unit as MindmapUnit } from "../../src/diagrams/mindmap/units.ts"
@@ -1133,6 +1136,18 @@ function diagramUnitsOf(text: string): DiagramUnits | null {
       removedRangeOf: (form) => form.range,
     }
   }
+  const kanban = kanbanLexingOf(text)
+  if (kanban !== null) {
+    return {
+      units: kanban.units,
+      emptyFormKinds: EMPTY_FORM_KINDS.kanban,
+      // diagrams/kanban.md, Empty forms: as in mindmap, none is a statement.
+      statementStartsAt: () => false,
+      separators: [],
+      endOfTextSeparates: false,
+      removedRangeOf: (form) => form.range,
+    }
+  }
   const mindmap = mindmapLexingOf(text)
   if (mindmap !== null) {
     return {
@@ -1478,6 +1493,20 @@ function requirementNameEndsStatement(
   return false
 }
 
+/** The units of kanban `text`; null when detection or lexing does not give kanban units. */
+function kanbanLexingOf(text: string): KanbanUnits | null {
+  const opened = openSource(text)
+  const detection = detectDiagram(opened.lexer)
+  const diagramType = detection.detected
+  if (diagramType !== "kanban") return null
+  try {
+    return lexKanban(diagramInputOf(opened, detection, diagramType))
+  } catch (error) {
+    if (error instanceof ParseError) return null
+    throw error
+  }
+}
+
 /** The units of the mindmap `text` as the parser's lexer reads them, with its diagram comments; null when `text` is no mindmap or its lexer rejects it. */
 function mindmapLexingOf(text: string): MindmapUnits | null {
   const opened = openSource(text)
@@ -1494,14 +1523,14 @@ function mindmapLexingOf(text: string): MindmapUnits | null {
 
 /**
  * known-divergences/blank-line-after-header-or-comments.md: one line of a
- * mindmap, between two line breaks of its diagram text, as the parser's
+ * mindmap or kanban diagram, between two line breaks of its diagram text, as the parser's
  * lexer reads it: a line feed, or the end of a diagram comment that a
  * U+2028 or a U+2029 ends, is a line break (diagrams/mindmap.md, Whitespace
  * and lines).
  */
-interface MindmapLine {
+interface IndentedLine {
   /** The units on the line, the `newline` units left out. */
-  readonly units: readonly MindmapUnit[]
+  readonly units: readonly (MindmapUnit | KanbanUnit)[]
   /** The number of diagram comments on the line: one at most, as a comment runs to the end of its line. */
   readonly comments: number
   /** Whether the line starts at the U+2028 or the U+2029 that ended a diagram comment. */
@@ -1510,10 +1539,10 @@ interface MindmapLine {
   readonly endsWithWhitespace: boolean
 }
 
-/** The lines of the mindmap `lexing`, in source order (see {@link MindmapLine}). */
-function mindmapLinesOf(lexing: MindmapUnits): MindmapLine[] {
-  const lines: MindmapLine[] = []
-  let units: MindmapUnit[] = []
+/** The lines of mindmap or kanban `lexing`, in source order (see {@link IndentedLine}). */
+function indentedLinesOf(lexing: MindmapUnits | KanbanUnits): IndentedLine[] {
+  const lines: IndentedLine[] = []
+  let units: (MindmapUnit | KanbanUnit)[] = []
   let afterSeparator = false
   // The comments are in source order; those before a line break are on the
   // line it ends.
@@ -1558,24 +1587,24 @@ function mindmapLinesOf(lexing: MindmapUnits): MindmapLine[] {
 
 /**
  * known-divergences/blank-line-after-header-or-comments.md: the offsets, in
- * source order, of the statements of the mindmap `text` before which
+ * source order, of the statements of mindmap or kanban `text` before which
  * mermaid.js rejects the blank lines and the diagram comments that stand
  * there, in the four cases of the divergence, and of the first node in
  * case 1 and 2. A statement is a node line, an icon line, or a class line;
  * the header line with a node on it is a statement line. The lines come
- * from the parser's lexer (see {@link MindmapLine}); a line with no unit
- * and no comment is a blank line. Null when `text` is no mindmap or its
- * lexer rejects it.
+ * from the parser's lexer (see {@link IndentedLine}); a line with no unit
+ * and no comment is a blank line. Null when `text` is neither mindmap nor
+ * kanban, or its lexer rejects it.
  */
-export function mindmapBlankLinesRejectedByMermaid(
+export function indentationBlankLinesRejectedByMermaid(
   text: string,
 ): number[] | null {
-  const lexing = mindmapLexingOf(text)
+  const lexing = mindmapLexingOf(text) ?? kanbanLexingOf(text)
   if (lexing === null) return null
-  const lines = mindmapLinesOf(lexing)
+  const lines = indentedLinesOf(lexing)
   const offsets: number[] = []
-  let anchor: MindmapLine | null = null
-  let gap: MindmapLine[] = []
+  let anchor: IndentedLine | null = null
+  let gap: IndentedLine[] = []
   for (const line of lines) {
     if (line.units.length === 0) {
       if (anchor !== null) gap.push(line)
@@ -1583,7 +1612,7 @@ export function mindmapBlankLinesRejectedByMermaid(
     }
     const next = line.units[0].name === "header" ? line.units[1] : line.units[0]
     if (anchor !== null && next !== undefined) {
-      if (mindmapGapRejected(anchor, gap, line)) offsets.push(next.start)
+      if (indentedGapRejected(anchor, gap, line)) offsets.push(next.start)
     }
     anchor = line
     gap = []
@@ -1598,10 +1627,10 @@ export function mindmapBlankLinesRejectedByMermaid(
  * comments takes in the one on the line of `anchor`. Cases 1 and 2 hold
  * after a header line without a node, cases 3 and 4 after a statement.
  */
-function mindmapGapRejected(
-  anchor: MindmapLine,
-  gap: readonly MindmapLine[],
-  next: MindmapLine,
+function indentedGapRejected(
+  anchor: IndentedLine,
+  gap: readonly IndentedLine[],
+  next: IndentedLine,
 ): boolean {
   const count =
     anchor.comments + gap.reduce((sum, line) => sum + line.comments, 0)

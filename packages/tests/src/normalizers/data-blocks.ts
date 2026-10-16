@@ -13,6 +13,14 @@ const effects: WeakMap<object, DataBlockEffect[]> = new WeakMap()
 const problems: WeakMap<object, string> = new WeakMap()
 
 /**
+ * Forgets the effects and problems of a shared Db when its `clear()` runs.
+ */
+export function forgetDataBlockEffects(db: object): void {
+  effects.delete(db)
+  problems.delete(db)
+}
+
+/**
  * Records the effect of the next data block of `db`.
  */
 export function recordDataBlockEffect(

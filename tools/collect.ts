@@ -152,6 +152,8 @@ const SPEC_FILES: Readonly<
     "diagrams/block/parser/block.spec.ts",
     "diagrams/block/blockColorIndex.spec.ts",
   ],
+  // The directory has just this spec file, which passes texts to its parser.
+  kanban: () => ["diagrams/kanban/kanban.spec.ts"],
 }
 
 /**

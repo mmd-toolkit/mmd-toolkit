@@ -3,7 +3,7 @@
 英語版: [tokenless-empty-forms.md](./tokenless-empty-forms.md)
 
 図種: flowchart、sequence、class、state、er、gantt、requirement、mindmap、
-xychart、quadrant、block。
+xychart、quadrant、block、kanban。
 これは、この仕様の mermaid.js との
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -110,6 +110,35 @@ flowchart LR
 
 この文書は、この仕様の木にそれらの場所がないところ、
 つまり文の中や、値の中のほかのテキストの隣にある、これらの形についてのものです。
+
+kanban では mindmap と同様、
+空の icon `::icon()` と空の class 行 `:::` は認識するどこでも拒否します。
+最初のノードの前と形の直後も含みます。
+[fixture: kanban/db-decoration-empty-class]
+[fixture: kanban/db-decoration-empty-icon]
+[fixture: kanban/div-empty-icon-before-first]
+[fixture: kanban/div-empty-icon-header]
+[fixture: kanban/div-empty-class-header]
+[fixture: kanban/div-class-before-first-unindented-empty]
+[fixture: kanban/div-class-end-empty]
+[fixture: kanban/div-empty-icon-after-shape]
+[fixture: kanban/div-empty-class-after-shape]
+形の中の空の文字列と markdown 文字列も、
+空でないラベルの前後を含めて拒否します
+（[空の形](../diagrams/kanban.ja.md#空の形) を参照）。
+[fixture: kanban/div-empty-string-before-label]
+[fixture: kanban/div-empty-markdown-before-label]
+[fixture: kanban/div-empty-string-after-label]
+[fixture: kanban/div-empty-markdown-after-label]
+[fixture: kanban/div-string-before-string]
+[fixture: kanban/div-empty-markdown-before-string]
+
+形の外の裸の `""` と空の markdown 文字列はノード本文です。
+[fixture: kanban/db-empty-string-node]
+[fixture: kanban/db-empty-markdown-node]
+空の `@{}` はデータブロックです。
+[fixture: kanban/db-metadata-empty]
+どれも捨てられる空の形ではありません。
 
 ## 差異
 
@@ -874,3 +903,13 @@ state/header-empty-description-block] [fixture:
 er/header-empty-description-block] [fixture:
 gantt/gram-empty-description-block-after-header] [fixture:
 requirement/header-empty-description-block]
+
+kanban の空の装飾と形の文字列はそれ自体の意味を持ちます。
+mermaid.js はそれらを丸ごと捨てます。
+空の形の例外を適用します。
+木はそれらを何も変えない文やラベルとしては持たず、
+入力を拒否します。
+[fixture: kanban/db-decoration-empty-icon]
+[fixture: kanban/db-decoration-empty-class]
+[fixture: kanban/div-empty-string-before-label]
+[fixture: kanban/div-empty-markdown-before-label]

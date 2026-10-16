@@ -34,6 +34,33 @@ common/config-font-family-string] [fixture: flowchart/gram-data-shape-known]
 各図種の文書のデータブロックを参照）。
 この文書は、それらが何を持つかについてのものです。
 
+kanban ではフロントマターと `@{ ... }` の中身は解析しません。
+境界が正しければ、
+不正な YAML と重複キーは入力を拒否させません。
+[fixture: kanban/gram-frontmatter-invalid-yaml]
+[fixture: kanban/gram-metadata-bad-yaml]
+[fixture: kanban/gram-metadata-ticket-duplicate]
+空の複数行ブロックは受理します。
+[fixture: kanban/gram-metadata-empty-multiline]
+メタデータの型と形名の綴りは検査しません
+（[データブロック](../diagrams/kanban.ja.md#データブロック) を参照）。
+[fixture: kanban/gram-metadata-shape-number]
+[fixture: kanban/gram-metadata-shape-camel]
+[fixture: kanban/gram-metadata-shape-underscore]
+
+kanban の隣り合うデータブロックは別々のノードに保ちます。
+[fixture: kanban/db-metadata-two-items]
+[fixture: kanban/db-metadata-one-item-reference]
+連結した埋め込みデータの中身だけによる拒否もこの差異です。
+[fixture: kanban/gram-metadata-two-blocks]
+
+二重引用符の外の `^`、閉じないデータブロック、
+入れ子のマッピングがブロックを閉じた後に残る波括弧は構文エラーです。
+この差異には当たりません。
+[fixture: kanban/gram-metadata-caret]
+[fixture: kanban/gram-metadata-unclosed]
+[fixture: kanban/gram-metadata-assigned-mapping]
+
 ## 差異
 
 どの例も、図の全体です。

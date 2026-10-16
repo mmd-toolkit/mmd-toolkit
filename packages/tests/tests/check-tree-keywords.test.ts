@@ -30,6 +30,7 @@ const DIAGRAMS: readonly [DiagramType, string][] = [
   ["xychart", "XychartDiagram"],
   ["quadrant", "QuadrantDiagram"],
   ["block", "BlockDiagram"],
+  ["kanban", "KanbanDiagram"],
 ]
 
 /** The messages of the problems of the check of cut tokens, for the tree of the text of the `Keyword` tokens `fragments` with a directive between each two, in the body of the type `body`. */
@@ -55,6 +56,10 @@ function cutProblems(body: string, ...fragments: string[]): string[] {
 }
 
 describe("the check of the cut Keyword tokens", () => {
+  it("reports a cut kanban header", () => {
+    expect(cutProblems("KanbanDiagram", "kan", "ban")).toHaveLength(1)
+  })
+
   it("reports two Keyword tokens whose texts joined are a keyword of the diagram", () => {
     expect(cutProblems("FlowchartDiagram", "sub", "graph")).toHaveLength(1)
     expect(cutProblems("StateDiagram", "state", "diagram")).toHaveLength(1)
@@ -215,6 +220,8 @@ function textsOfUnitsInTheRow(diagram: string): string[] {
     // `direction`.
     case "mindmap":
       return ["mindmap"]
+    case "kanban":
+      return ["kanban"]
     // The row gives the two headers as texts.
     case "sankey":
       return []

@@ -12,6 +12,8 @@ const { replaceEndOfLine } = utils
 /** One printed line. */
 export interface Line {
   readonly doc: Doc
+  /** An exact source gap before this line, overriding an ordinary line break. */
+  readonly writtenBreakBefore?: Doc
   /** Whether an empty line comes before it. */
   readonly blankBefore: boolean
   /**
@@ -66,6 +68,7 @@ export function lineBreakBetween(
   previous: Line,
   next: Pick<
     Line,
+    | "writtenBreakBefore"
     | "blankBefore"
     | "writtenIndentation"
     | "spaceLineBefore"
@@ -73,6 +76,7 @@ export function lineBreakBetween(
   >,
   indentation: string,
 ): Doc {
+  if (next.writtenBreakBefore !== undefined) return next.writtenBreakBefore
   const deeper = next.extraIndentation ?? ""
   if (next.spaceLineBefore === true) {
     // Literal lines keep the end of the previous line and the space of the

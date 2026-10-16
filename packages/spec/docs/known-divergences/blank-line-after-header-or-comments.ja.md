@@ -3,7 +3,7 @@
 英語版:
 [blank-line-after-header-or-comments.md](./blank-line-after-header-or-comments.md)
 
-図種: mindmap。
+図種: mindmap、kanban。
 この仕様と mermaid.js の [既知の差異](../known-divergences.ja.md) の 1 つです。
 
 ## 対象の構文
@@ -46,6 +46,54 @@ mermaid.js は次の場合に入力を拒否し、この仕様は受理します
 ヘッダーの後の奇数の数とそれに続く空行、
 2 つの文の間の偶数の数とそれに続く空行、
 テキストの終わりの空行です。
+
+kanban も同じ空行の規則と上の 4 つの場合に従います。
+ノード、icon、class の行が文です。
+データ接尾部はノードの行に属します。
+最初のノードの前のヘッダー末尾の空白と空行は受理します。
+[fixture: kanban/gram-grid-comment-line-header-line]
+[fixture: kanban/gram-grid-directive-line-header-line]
+[fixture: kanban/gram-grid-lf-header-line]
+[fixture: kanban/gram-grid-spaces-header-line]
+[fixture: kanban/header-bom-trailing]
+[fixture: kanban/header-crlf-trailing]
+[fixture: kanban/header-ff-trailing]
+[fixture: kanban/header-ideographic-trailing]
+[fixture: kanban/header-ls-trailing]
+[fixture: kanban/header-nbsp-trailing]
+[fixture: kanban/header-ps-trailing]
+[fixture: kanban/header-tab-trailing]
+[fixture: kanban/header-vt-trailing]
+[fixture: kanban/lex-bom-whitespace-first]
+[fixture: kanban/lex-cr-whitespace-first]
+[fixture: kanban/lex-crlf-whitespace-first]
+[fixture: kanban/lex-ideographic-whitespace-first]
+[fixture: kanban/lex-ls-whitespace-first]
+[fixture: kanban/lex-nbsp-whitespace-first]
+[fixture: kanban/lex-ps-whitespace-first]
+[fixture: kanban/lex-tab-whitespace-first]
+[fixture: kanban/div-header-space-node]
+ノードや装飾の前のコメントとその後の空行は受理します。
+[fixture: kanban/div-header-comments-blank]
+[fixture: kanban/div-between-comment-blank]
+[fixture: kanban/div-comment-blank-before-icon]
+[fixture: kanban/div-comment-blank-before-class]
+次の文の前で U+2028 と U+2029 に終わるコメントは受理します。
+mermaid.js はこれらの入力を拒否します
+（[空行](../diagrams/kanban.ja.md#空行) を参照）。
+[fixture: kanban/div-header-comment-ls-node]
+[fixture: kanban/div-header-comment-ps-node]
+[fixture: kanban/div-between-real-comments-ls-node]
+[fixture: kanban/div-between-real-comments-ps-node]
+
+kanban ではヘッダー後の 1 つの図のコメントは両者で受理します。
+[fixture: kanban/header-header-comment-blank]
+ノード間の 2 つの図のコメントは両者で受理します。
+[fixture: kanban/gram-between-comments-blank]
+icon 前の空行は両者で受理します。
+[fixture: kanban/gram-blank-before-icon]
+末尾の空行は両者で受理します。
+[fixture: kanban/gram-shallower-then-empty]
 
 ## 差異
 
@@ -189,6 +237,42 @@ mindmap/div-header-trailing-spaces-then-node]
 文として残った `SPACELINE` は次のノードの前に終わりを要しますが、
 次の行のノードはそれを与えません。
 ヘッダーの後には文が続くので、そこでは組み方が逆から始まります。
+
+kanban の字句規則と文法も空白と文を同じように組にします
+（[`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L48-L138)
+を参照）。
+その組分けは木が持つものを変えません。
+同じ直接の規則を適用します。
+[fixture: kanban/gram-grid-comment-line-header-line]
+[fixture: kanban/gram-grid-directive-line-header-line]
+[fixture: kanban/gram-grid-lf-header-line]
+[fixture: kanban/gram-grid-spaces-header-line]
+[fixture: kanban/header-bom-trailing]
+[fixture: kanban/header-crlf-trailing]
+[fixture: kanban/header-ff-trailing]
+[fixture: kanban/header-ideographic-trailing]
+[fixture: kanban/header-ls-trailing]
+[fixture: kanban/header-nbsp-trailing]
+[fixture: kanban/header-ps-trailing]
+[fixture: kanban/header-tab-trailing]
+[fixture: kanban/header-vt-trailing]
+[fixture: kanban/lex-bom-whitespace-first]
+[fixture: kanban/lex-cr-whitespace-first]
+[fixture: kanban/lex-crlf-whitespace-first]
+[fixture: kanban/lex-ideographic-whitespace-first]
+[fixture: kanban/lex-ls-whitespace-first]
+[fixture: kanban/lex-nbsp-whitespace-first]
+[fixture: kanban/lex-ps-whitespace-first]
+[fixture: kanban/lex-tab-whitespace-first]
+[fixture: kanban/div-header-space-node]
+[fixture: kanban/div-header-comments-blank]
+[fixture: kanban/div-between-comment-blank]
+[fixture: kanban/div-header-comment-ls-node]
+[fixture: kanban/div-header-comment-ps-node]
+[fixture: kanban/div-comment-blank-before-icon]
+[fixture: kanban/div-comment-blank-before-class]
+[fixture: kanban/div-between-real-comments-ls-node]
+[fixture: kanban/div-between-real-comments-ps-node]
 
 ## この仕様の規則とその理由
 

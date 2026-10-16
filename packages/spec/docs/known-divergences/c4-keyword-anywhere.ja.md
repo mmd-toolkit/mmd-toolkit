@@ -31,6 +31,29 @@ mermaid.js は mindmap の検出器を C4 のものより先に試すので、
 `C4Container` は、どちらでもノードのテキストです。
 [fixture: mindmap/lex-c4-keyword-as-node-text]
 
+kanban ではノードの id、ラベル、データ本文の 4 つの語は、
+kanban の位置で読みます。
+mermaid.js は C4 を選び入力を拒否します。
+[fixture: kanban/lex-c4-c4component-id]
+[fixture: kanban/lex-c4-c4component-label]
+[fixture: kanban/lex-c4-c4component-metadata]
+[fixture: kanban/lex-c4-c4container-id]
+[fixture: kanban/lex-c4-c4container-label]
+[fixture: kanban/lex-c4-c4container-metadata]
+[fixture: kanban/lex-c4-c4deployment-id]
+[fixture: kanban/lex-c4-c4deployment-label]
+[fixture: kanban/lex-c4-c4deployment-metadata]
+[fixture: kanban/lex-c4-c4dynamic-id]
+[fixture: kanban/lex-c4-c4dynamic-label]
+[fixture: kanban/lex-c4-c4dynamic-metadata]
+
+kanban のノード名 `C4Context` は両者で検出を変えません。
+[fixture: kanban/lex-c4-c4context-id]
+除かれるコメントとフロントマターの中の `C4Container` は、
+両者で検出を変えません。
+[fixture: kanban/lex-c4-c4container-comment]
+[fixture: kanban/lex-c4-c4container-frontmatter]
+
 ## 差異
 
 どの例も、それぞれが図全体です。

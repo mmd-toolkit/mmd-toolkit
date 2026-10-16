@@ -187,6 +187,9 @@ const BROKEN_VALUE_ROWS: readonly BrokenValueRow[] = [
   { type: "GanttLiteral", message: NOT_WRITTEN_TEXT },
   { type: "JourneyLiteral", message: NOT_WRITTEN_TEXT },
   { type: "JourneyIgnoredText", message: NOT_WRITTEN_TEXT },
+  { type: "KanbanDataBlock", message: NOT_WRITTEN_TEXT },
+  { type: "KanbanLabel", message: NOT_WRITTEN_TEXT },
+  { type: "KanbanLiteral", message: NOT_WRITTEN_TEXT },
   { type: "MindmapLabel", message: NOT_WRITTEN_TEXT },
   { type: "MindmapLiteral", message: NOT_WRITTEN_TEXT },
   { type: "TimelineLiteral", message: NOT_WRITTEN_TEXT },
@@ -354,6 +357,70 @@ const JOINED = "the texts of its tokens joined are not its written text"
 const LINE_SEPARATOR = String.fromCodePoint(0x2028)
 
 const VALUE_CASES: readonly ValueCase[] = [
+  {
+    type: "KanbanLiteral",
+    name: "a KanbanLiteral reports trailing node-text whitespace taken off its RawText token",
+    diagram: "kanban",
+    fixture: "db-name-trailing-space",
+    token: { type: "RawText", value: "S  " },
+    side: "end",
+    problems: [
+      {
+        where: "KanbanNode at 8-11",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "KanbanLiteral at 8-11",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "KanbanLiteral at 8-11",
+        message: `${JOINED}: "S", not "S  "`,
+      },
+      {
+        where: "KanbanLiteral at 8-11",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [8,11], not [8,9]",
+      },
+    ],
+  },
+  {
+    type: "KanbanLabel",
+    name: "a KanbanLabel reports leading bare-label whitespace taken off its RawText token",
+    diagram: "kanban",
+    fixture: "gram-whitespace-bare-shape",
+    token: { type: "RawText", value: "  " },
+    side: "start",
+    problems: [
+      {
+        where: "KanbanLabel at 10-12",
+        message: "does not run from the start of a token to the end of a token",
+      },
+      {
+        where: "KanbanLabel at 10-12",
+        message: `${JOINED}: " ", not "  "`,
+      },
+      {
+        where: "KanbanLabel at 10-12",
+        message:
+          "the range, which runs from the first of its tokens and child nodes to the last: [10,12], not [11,12]",
+      },
+    ],
+  },
+  {
+    type: "KanbanDataBlock",
+    name: "a KanbanDataBlock reports interior whitespace taken off its RawText token",
+    diagram: "kanban",
+    fixture: "db-metadata-spaces",
+    token: { type: "RawText", value: "   " },
+    side: "start",
+    problems: [
+      {
+        where: "KanbanDataBlock at 14-20",
+        message: `${JOINED}: " ", not "   "`,
+      },
+    ],
+  },
   {
     type: "BlockLiteral",
     name: "a BlockLiteral reports the whitespace taken off the start of the RawText token of a style after a comma",

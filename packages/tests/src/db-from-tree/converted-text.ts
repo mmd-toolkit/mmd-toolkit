@@ -67,23 +67,27 @@ export function withAttributeQuotesRead(text: string): string {
 }
 
 /**
- * The offsets that the diagram text leaves out (common.md, Reading a source):
- * the directives (with what their scan takes after them), the comment
- * regions, and the `;` that the line rule ignores. The directives and the
- * comment lines are found in the text (`scanSource()`); the `;` that the line
- * rule ignores are the `IgnoredSemicolon` tokens of the tree.
+ * The offsets that the common source scan leaves out (common.md, Reading a
+ * source): the directives, with what their scan takes after them, and the
+ * comment regions. Ignored semicolons are supplied by each caller's tree.
  */
-function findLeftOut(
-  text: string,
-  root: TreeRoot,
-  textStart: number,
-): Uint8Array {
+function sourceLeftOut(text: string, textStart: number): Uint8Array {
   const leftOut = new Uint8Array(text.length)
   const scan = scanSource(text, textStart)
   for (const directive of scan.directives) {
     mark(leftOut, [directive.range[0], directive.scanEnd])
   }
   for (const commentLine of scan.commentLines) mark(leftOut, commentLine.region)
+  return leftOut
+}
+
+/** The shared source cuts, with the ignored semicolons supplied by the recorded tree. */
+function findLeftOut(
+  text: string,
+  root: TreeRoot,
+  textStart: number,
+): Uint8Array {
+  const leftOut = sourceLeftOut(text, textStart)
   for (const token of root.tokens) {
     if (token.type === "IgnoredSemicolon") mark(leftOut, token.range)
   }
@@ -135,6 +139,18 @@ export function readConvertedCharacters(
     if (visible.length === 0 && isWhitespace(text.charCodeAt(offset))) continue
     visible.push(offset)
   }
+  const characters = convertVisibleCharacters(text, visible, quotes, leftOut)
+  characters.push({ start: text.length, codePoint: LINE_FEED })
+  return characters
+}
+
+/** The common character conversions, keeping the supplied source offsets and cuts. */
+function convertVisibleCharacters(
+  text: string,
+  visible: readonly number[],
+  quotes: ReadonlySet<number>,
+  leftOut: Uint8Array,
+): ConvertedCharacter[] {
   const characters: ConvertedCharacter[] = []
   for (let index = 0; index < visible.length; index++) {
     const offset = visible[index] ?? 0
@@ -182,8 +198,58 @@ export function readConvertedCharacters(
     // The second half of a surrogate pair is visible too, and is not a character of its own.
     if (codePoint > 0xffff) index++
   }
-  characters.push({ start: text.length, codePoint: LINE_FEED })
   return characters
+}
+
+/**
+ * The converted text of one kanban leaf's range, using its written value to
+ * identify semicolons that the tree has already left out. The scan is confined
+ * to that range. A value starts inside a unit, so the prefix supplies that
+ * context to the shared scan without reading the preceding source character.
+ * Keeping original offsets distinguishes CR/directive/LF from a CRLF.
+ */
+export function convertedValueOf(
+  source: string,
+  range: TreeRange,
+  value: string,
+  delimiterLength = 0,
+): string {
+  const text = `x${source.slice(...range)}`
+  const leftOut = sourceLeftOut(text, 0)
+  const written: number[] = []
+  for (let offset = 1; offset < text.length; offset++) {
+    if (leftOut[offset] !== 1) written.push(offset)
+  }
+  const content =
+    delimiterLength === 0
+      ? written
+      : written.slice(delimiterLength, -delimiterLength)
+  const visible: number[] = []
+  let at = 0
+  for (const offset of content) {
+    if (text.charAt(offset) === value.charAt(at) && at < value.length) {
+      visible.push(offset)
+      at++
+    } else if (text.charAt(offset) === ";") {
+      leftOut[offset] = 1
+    } else {
+      throw new Error(
+        "kanban Db: the written value does not match its node range",
+      )
+    }
+  }
+  if (at !== value.length)
+    throw new Error(
+      "kanban Db: the written value does not match its node range",
+    )
+  return convertVisibleCharacters(
+    text,
+    visible,
+    findAttributeQuotes(text, 1),
+    leftOut,
+  )
+    .map(({ codePoint }) => String.fromCodePoint(codePoint))
+    .join("")
 }
 
 /**

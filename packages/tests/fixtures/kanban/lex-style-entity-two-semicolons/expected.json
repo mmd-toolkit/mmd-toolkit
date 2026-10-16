@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The style line rule and an entity terminator test which semicolon survives."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "style:ﬂ°°35¶ß",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

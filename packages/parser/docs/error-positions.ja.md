@@ -603,6 +603,62 @@
   [fixture: block/div-empty-markdown-line]
   [fixture: block/div-empty-block-in-edge]
 
+## kanban 図の中
+
+- 字句解析のどの規則も合わないところでは、`range` はその文字で、
+  メッセージは `Unexpected character` です。
+  単独の `@`、形の外の波括弧、ラベルの中の単独の `}`、
+  引用符で囲まれないデータのキャレットが該当します。
+  [fixture: kanban/gram-node-at]
+  [fixture: kanban/gram-grid-open-brace-item-id]
+  [fixture: kanban/gram-shape-single-brace-middle]
+  [fixture: kanban/gram-metadata-caret]
+- 閉じない文字列と markdown 文字列は、開始の引用符で報告します。
+  メッセージは `The string has no closing " before the end of the text` と、
+  ``The markdown string has no closing `" before the end of the text`` です。
+  閉じる組でない引用符やバッククォートで終わる markdown 文字列も、
+  開始の引用符で報告します。
+  メッセージは
+  ``The markdown string is not closed by `" at its first ` or "`` です。
+  [fixture: kanban/gram-unclosed-quote] [fixture: kanban/gram-unclosed-markdown]
+  [fixture: kanban/gram-markdown-quote]
+  [fixture: kanban/gram-markdown-extra-backtick]
+- ほかの閉じない文脈では、その文脈に入れたものを報告します。
+  形の開始（`The shape has no closer before the end of the text`）、
+  `::icon(`（`The icon has no ) before the end of the text`）、
+  `@{`（`The data block has no } before the end of the text`）、
+  引用符付きデータの開始の引用符です。
+  最後のメッセージは
+  `The data string has no closing " before the end of the text` です。
+  [fixture: kanban/gram-unclosed-shape] [fixture: kanban/gram-unclosed-icon]
+  [fixture: kanban/gram-metadata-unclosed]
+  [fixture: kanban/gram-metadata-unclosed-quote]
+- テキストを終えるヘッダーは、キーワードで報告します。
+  メッセージは `The header cannot end the text` です。
+  [fixture: kanban/header-only] [fixture: kanban/header-header-directive-only]
+- 文法が単位を読めないところでは、そのトークンの範囲を報告します。
+  メッセージは `Unexpected token` です。
+  空白だけの単位なら、開始の空の範囲です。
+  テキストの終わりなら、そこでの空の範囲で、
+  メッセージは `Unexpected end of text` です。
+  [fixture: kanban/gram-empty-label] [fixture: kanban/gram-string-plus-space]
+  [fixture: kanban/gram-two-shapes-on-line]
+  [fixture: kanban/gram-metadata-adjacent-space]
+- 文法外の 2 つの拒否では、最初より浅いノードの次に来たノードを、
+  データ接尾辞まで報告します。
+  メッセージは `A node cannot follow a node less indented than the first` です。
+  最初のノードの前の装飾は全体を報告し、
+  メッセージは `An icon or a class line needs a node before it` です。
+  [fixture: kanban/gram-indent-shallower-followed]
+  [fixture: kanban/gram-decoration-before-node]
+  [fixture: kanban/gram-decoration-class-before-node]
+- 空の文字列、markdown 文字列、icon、class の行は、認識するどこでも、
+  その形全体を、後述する共通の空の形のメッセージで報告します。
+  [fixture: kanban/gram-empty-quoted-label]
+  [fixture: kanban/gram-empty-markdown-shape]
+  [fixture: kanban/div-empty-icon-after-shape]
+  [fixture: kanban/div-empty-class-after-shape]
+
 ## 既知の差異
 
 [既知の差異](../../spec/docs/known-divergences.ja.md)で入力を拒否するときは、

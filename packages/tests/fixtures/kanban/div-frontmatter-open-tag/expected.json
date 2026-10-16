@@ -1,0 +1,22 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L06 (Common lexical rules): HTML tag spanning frontmatter changes quote conversion."
+  },
+  "knownDivergence": "html-tag-in-frontmatter",
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "b='c'>d",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "title": "<a"
+  }
+}

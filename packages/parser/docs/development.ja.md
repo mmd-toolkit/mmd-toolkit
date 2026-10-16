@@ -41,7 +41,8 @@ flowchart（`flowchart-v2`、`flowchart-elk`、`swimlane`）と、
 journey 図（`journey`）と、要求図（`requirement`）と、
 mindmap（`mindmap`）と、timeline（`timeline`）と、
 sankey 図（`sankey`）と、XY チャート（`xychart`）と、
-四象限チャート（`quadrantChart`）と、ブロック図（`block`）です。
+四象限チャート（`quadrantChart`）と、ブロック図（`block`）と、
+kanban 図（`kanban`）です。
 ほかの図種を検出すると `UnsupportedDiagramError` を投げます。
 
 ## 図のパーサーの作り
@@ -60,7 +61,8 @@ sankey 図（`sankey`）と、XY チャート（`xychart`）と、
 [`diagrams/sankey.md`](../../spec/docs/diagrams/sankey.ja.md)、
 [`diagrams/xychart.md`](../../spec/docs/diagrams/xychart.ja.md)、
 [`diagrams/quadrant.md`](../../spec/docs/diagrams/quadrant.ja.md)、
-[`diagrams/block.md`](../../spec/docs/diagrams/block.ja.md)
+[`diagrams/block.md`](../../spec/docs/diagrams/block.ja.md)、
+[`diagrams/kanban.md`](../../spec/docs/diagrams/kanban.ja.md)
 のどれかに従います。
 3 つの部分からなります。
 
@@ -89,7 +91,7 @@ flowchart とクラス図の文字の規則の Unicode の文字は
 状態図の字句解析器が `#` と `%%` を、
 Gantt チャートの字句解析器が `%` を、
 journey 図と要求図と timeline の字句解析器が `#` と `%` を、
-mindmap の字句解析器が `%%` を読むように、
+mindmap と kanban 図の字句解析器が `%%` を読むように、
 図のコメントを読む図は、それを共通の部分に渡し、
 共通の部分が `Root.comments` に記録します。
 中にコメント領域があれば、トークンと同じく、そこで切ります。
@@ -100,6 +102,8 @@ Gantt チャートでは、`topAxis` の文がノードを作らないので、
 文法がその文を読んだところで 2 つの拒否を行います。
 mindmap では、文法がノードを読むときに字下げで木の中に置くので、
 その行を読んだところで 2 つの拒否を行います。
+kanban 図の文法は、平坦なノードの行の並びを保ちつつ、
+行を読んだところで 2 つの拒否を行います。
 timeline では、文法が event の文を読んだところで 1 つの拒否を行います。
 クラス図の字句解析器は、各メンバーの行を、
 [メンバーの行](../../spec/docs/diagrams/class.ja.md#メンバーの行)

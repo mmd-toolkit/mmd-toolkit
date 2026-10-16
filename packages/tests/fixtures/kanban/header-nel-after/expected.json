@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "nel after the header tests preprocessing and the lexical boundary."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": " S",
+        "label": " S",
+        "level": 0,
+        "isGroup": true
+      }
+    ]
+  }
+}

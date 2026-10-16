@@ -113,6 +113,11 @@ are read from the tree like this:
   quotes, since mermaid.js reads the space units into the text (the rule is in
   [db-from-tree/quadrant.md](./db-from-tree/quadrant.md)). [fixture:
   quadrant/db-quadrant-spaces-trimmed]
+- **Kanban rows**: ids, labels, and icons use only their node ranges and written
+  values; the flat body determines membership, and each adjacent data suffix
+  consumes one embedded effect (the steps are in
+  [db-from-tree/kanban.md](./db-from-tree/kanban.md)). [fixture:
+  kanban/db-sections-items] [fixture: kanban/db-metadata-two-items]
 - **Block directions, classes, and styles**: directions, class ids, and styles
   are the converted texts of their literals, which hold the whitespace around
   the commas (the rules are in

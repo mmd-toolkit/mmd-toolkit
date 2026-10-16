@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L11, S05 (Statement context): U+2028 is part of shape text."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "a b",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

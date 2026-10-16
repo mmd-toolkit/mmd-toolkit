@@ -1,0 +1,35 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/kanban/kanban.spec.ts",
+    "line": 394,
+    "test": "when parsing a kanban  > KNBN-25 Handle rows above the kanban declarations, no space"
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "root",
+        "label": "root",
+        "level": 0,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "level": 1,
+        "isGroup": false,
+        "parentId": "root"
+      },
+      {
+        "id": "B",
+        "label": "B",
+        "level": 1,
+        "isGroup": false,
+        "parentId": "root"
+      }
+    ]
+  }
+}

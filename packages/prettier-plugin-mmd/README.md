@@ -101,6 +101,9 @@ flowchart LR
   formatting rules, with examples, are in [docs/xychart.md](./docs/xychart.md).
 - Quadrant charts: diagrams that start with `quadrantChart`. The formatting
   rules, with examples, are in [docs/quadrant.md](./docs/quadrant.md).
+- Kanban boards: diagrams that start with `kanban`. Absolute indentation counts
+  are preserved. The formatting rules, with examples, are in
+  [docs/kanban.md](./docs/kanban.md).
 - Block diagrams: diagrams that start with `block-beta` or `block`. The
   formatting rules, with examples, are in [docs/block.md](./docs/block.md).
 - The YAML frontmatter of these diagrams, with Prettier's YAML formatter.
@@ -125,9 +128,9 @@ Other diagram types are not formatted yet (see below).
   empty string between tokens, as in `A-->|x""|B`, is reported too. The full
   list is in [docs/compatibility.md](./docs/compatibility.md).
 - A diagram type other than flowchart, sequence, class, state, ER, Gantt, user
-  journey, requirement, mindmap, timeline, sankey, XY chart, quadrant chart, and
-  block diagram is not changed, except that line endings follow `endOfLine`. In
-  Markdown, it is left to Prettier.
+  journey, requirement, mindmap, timeline, sankey, XY chart, quadrant chart,
+  kanban, and block diagram is not changed, except that line endings follow
+  `endOfLine`. In Markdown, it is left to Prettier.
 
 ## Guarantees and limitations
 
@@ -171,6 +174,7 @@ The reasons and the details are in
 - [docs/xychart.md](./docs/xychart.md): the formatting rules for XY charts.
 - [docs/quadrant.md](./docs/quadrant.md): the formatting rules for quadrant
   charts.
+- [docs/kanban.md](./docs/kanban.md): the formatting rules for kanban boards.
 - [docs/block.md](./docs/block.md): the formatting rules for block diagrams.
 - [docs/compatibility.md](./docs/compatibility.md): where the plugin differs
   from mermaid.js, and why.

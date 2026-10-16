@@ -75,6 +75,7 @@ const allFixtures = [
   ...(await loadFixtures("xychart")),
   ...(await loadFixtures("quadrant")),
   ...(await loadFixtures("block")),
+  ...(await loadFixtures("kanban")),
 ]
 const fixtures = allFixtures.filter(isFormatted)
 const rejectedFixtures = allFixtures.filter(isRejected)

@@ -583,6 +583,32 @@ const problems: TreeProblem[] = checkTree(text, tree)
     `StringFragment` トークンで、
     その後ろの語は `RawText` トークンです。
 
+  - kanban: 子の型と欄の語は ast/kanban.md の表に従います。
+    body は平坦で、data と decorations のリストと同じく空でも構いません。
+    ノードはテキスト、形、または両方を持ち、
+    字下げは書かれた空白と等しい非負の整数です。
+    テキストは末尾の空白を保ち、形は text、string、markdown の
+    空でないラベルを一つと、独立した書かれた区切りを持ちます。
+    隣接するデータブロックはノードと互いに接し、空を含む不透明な内部を保ちます。
+    YAML は検証しません。
+    空でないアイコンとクラスのテキストは空白を保ち、装飾行は直前の行に属します。
+    配置、接触、範囲には statement-checks.ts を使い、
+    コメントは `%%` で行区間の終わりまでです。
+    トークンの種類とキーワード・句読点の表は
+    `parser/docs/tokens/kanban.md` に従います。
+    ノードのテキスト、裸のラベル、アイコンとクラスのテキスト、
+    データ内部全体は `RawText` です。
+    引用されたラベルは一つの `String` か、
+    ディレクティブ、コメント領域、無視されるセミコロンで切られた
+    `StringFragment` トークンです。
+    データの区切りは別々の `Punctuator` トークンで、
+    空の内部にトークンはありません。
+    範囲は各ノードのトークンと子の外包です
+    （`parser/docs/positions/kanban.md`）。
+    `check-tree-kanban.test.ts` は手作りの木を検査し、
+    名前を指定したフィクスチャの記録済みの木を壊します。
+    コーパスの検査は kanban の記録済みの木すべてと common の検出例を含み、
+    kanban を記録済みの木の検査から除外しません。
   - block: 子の型は `BLOCK_CHILD_TYPES` に従い、
     ast/block.md と合わせます。
     図と複合ブロックの本体、class の id、スタイルの区間リストは空にできず、
@@ -782,6 +808,10 @@ journey のファイルは 14 本作ります）。
 検査の表が ast/quadrant.md の Type と Meaning の列と合うことを求めます。
 名前を挙げた fixture の記録した木でも、トークンの種類と順序、象限の番号、
 軸、矢印、ラベルの種類、タイトルの値、範囲を壊して確かめます。
+`check-tree-kanban.test.ts` も名前を挙げた記録済みの木を壊して、
+トークンの種類、切られた文字列とデータの断片、字下げ、
+テキストと形の欠落、形の終わり、ラベルの種類、保たれる空白、
+隣接するデータブロックの順序、ノードの範囲を確かめます。
 `check-tree-string-tokens.test.ts` は、flowchart、class、state、ER、sankey の
 名前を挙げた fixture の記録した木で、最初の文字列のトークンの種類を変え、
 文字列のトークンの検査がそれを報告することを求めます。

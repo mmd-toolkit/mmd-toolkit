@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A YAML comment tests multiline embedded data."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S",
+        "ticket": "TASK-1",
+        "assigned": "Ada"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "ticket": "TASK-1",
+          "assigned": "Ada"
+        }
+      }
+    ]
+  }
+}

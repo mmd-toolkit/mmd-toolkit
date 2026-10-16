@@ -11,6 +11,7 @@ import { classValueNodeTypes } from "../src/printers/class-layout.ts"
 import { erValueNodeTypes } from "../src/printers/er-layout.ts"
 import { ganttValueNodeTypes } from "../src/printers/gantt-layout.ts"
 import { journeyValueNodeTypes } from "../src/printers/journey-layout.ts"
+import { kanbanValueNodeTypes } from "../src/printers/kanban-layout.ts"
 import { mindmapValueNodeTypes } from "../src/printers/mindmap-layout.ts"
 import { quadrantValueNodeTypes } from "../src/printers/quadrant-layout.ts"
 import { requirementValueNodeTypes } from "../src/printers/requirement-layout.ts"
@@ -131,6 +132,16 @@ const diagrams: readonly DiagramValues[] = [
       // The shared leaf nodes that are no nodes of a requirement diagram:
       // its ids and numbers are the text of a name or a value.
       "Identifier",
+      "NumericLiteral",
+    ]),
+  },
+  {
+    prefix: "Kanban",
+    values: kanbanValueNodeTypes,
+    notValues: new Set([
+      // Kanban values use KanbanLiteral and KanbanLabel, not shared leaves.
+      "Identifier",
+      "StringLiteral",
       "NumericLiteral",
     ]),
   },

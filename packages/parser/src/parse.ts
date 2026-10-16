@@ -16,6 +16,7 @@ import { parseSankeyDiagram } from "./diagrams/sankey/index.ts"
 import { parseXychartDiagram } from "./diagrams/xychart/index.ts"
 import { parseQuadrantDiagram } from "./diagrams/quadrant/index.ts"
 import { parseBlockDiagram } from "./diagrams/block/index.ts"
+import { parseKanbanDiagram } from "./diagrams/kanban/index.ts"
 import { parseRequirementDiagram } from "./diagrams/requirement/index.ts"
 import { ParseError, UnsupportedDiagramError } from "./errors.ts"
 import { readFrontmatterTrivia } from "./frontmatter.ts"
@@ -142,6 +143,8 @@ export function parse(text: string): Root {
       return parseQuadrantDiagram(input)
     case "block":
       return parseBlockDiagram(input)
+    case "kanban":
+      return parseKanbanDiagram(input)
     default:
       throw new UnsupportedDiagramError(detected)
   }

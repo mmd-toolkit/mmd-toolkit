@@ -33,6 +33,26 @@ it. Where each starts and ends is part of the syntax (see
 and the data blocks in the documents of the diagram types). This document is
 about what they contain.
 
+In kanban, frontmatter and `@{ ... }` contents are opaque. Invalid YAML and
+duplicate keys do not reject a well-delimited diagram. [fixture:
+kanban/gram-frontmatter-invalid-yaml] [fixture: kanban/gram-metadata-bad-yaml]
+[fixture: kanban/gram-metadata-ticket-duplicate] An empty multiline block is
+accepted. [fixture: kanban/gram-metadata-empty-multiline] Metadata types and
+shape spellings are not validated (see
+[Data blocks](../diagrams/kanban.md#data-blocks)). [fixture:
+kanban/gram-metadata-shape-number] [fixture: kanban/gram-metadata-shape-camel]
+[fixture: kanban/gram-metadata-shape-underscore]
+
+Adjacent kanban data blocks stay separate nodes. [fixture:
+kanban/db-metadata-two-items] [fixture: kanban/db-metadata-one-item-reference] A
+rejection caused only by their combined embedded content is this divergence as
+well. [fixture: kanban/gram-metadata-two-blocks]
+
+An unquoted caret, an unclosed data block, and a brace left after a nested
+mapping closes the block are syntax errors. They are not this divergence.
+[fixture: kanban/gram-metadata-caret] [fixture: kanban/gram-metadata-unclosed]
+[fixture: kanban/gram-metadata-assigned-mapping]
+
 ## The difference
 
 Each example is a whole diagram.

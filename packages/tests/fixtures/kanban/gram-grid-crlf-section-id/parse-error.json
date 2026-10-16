@@ -1,0 +1,17 @@
+{
+  "message": "A node cannot follow a node less indented than the first",
+  "range": [
+    24,
+    31
+  ],
+  "loc": {
+    "start": {
+      "line": 4,
+      "column": 3
+    },
+    "end": {
+      "line": 4,
+      "column": 10
+    }
+  }
+}

@@ -68,7 +68,7 @@ import {
   commentsAfterUnits,
   doublePercentsAfterUnitStarts,
   percentBracesReachedDirectly,
-  mindmapBlankLinesRejectedByMermaid,
+  indentationBlankLinesRejectedByMermaid,
   percentCommentsReachedDirectly,
   percentsAfterUnitStarts,
   frontmatterChangesAttributeQuotes,
@@ -246,6 +246,13 @@ function checkAcceptance(fixture: Fixture, outcome: Outcome): void {
     // The parser never rejects for what embedded data contains.
     expect(expected.accepted).toBe(false)
     expect(outcome.kind).not.toBe("reject")
+  } else if (knownDivergence === "blank-line-after-header-or-comments") {
+    // This divergence accepts the blank lines that mermaid.js rejects.
+    expect(expected.accepted).toBe(false)
+    expect(outcome.kind).toBe("tree")
+    if (outcome.kind === "tree") {
+      expect(outcome.root.diagramType).toBe(fixture.diagram)
+    }
   } else if (outcome.kind === "unsupported") {
     // The divergence shows in the diagram's own grammar, which this
     // parser does not have yet; only the detected type can be checked.
@@ -415,6 +422,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     ...(await loadFixtures("xychart")),
     ...(await loadFixtures("quadrant")),
     ...(await loadFixtures("block")),
+    ...(await loadFixtures("kanban")),
   ]
 
   /** The fixtures that carry the mark `knownDivergence`. */
@@ -650,7 +658,7 @@ describe("marked fixtures differ only by their divergence", async () => {
     }
   })
 
-  // known-divergences/blank-line-after-header-or-comments.md: in mindmap,
+  // known-divergences/blank-line-after-header-or-comments.md: in mindmap and kanban,
   // blank lines and diagram comments change nothing here wherever they
   // stand after the header, while mermaid.js rejects them in the four
   // cases of the divergence. Each fixture has such a place, found from the
@@ -665,8 +673,9 @@ describe("marked fixtures differ only by their divergence", async () => {
 
     for (const fixture of fixturesWithMark) {
       it(`${fixture.diagram}/${fixture.name}`, () => {
-        const places = mindmapBlankLinesRejectedByMermaid(fixture.input)
-        if (places === null) throw new Error("the input is no mindmap")
+        const places = indentationBlankLinesRejectedByMermaid(fixture.input)
+        if (places === null)
+          throw new Error("the input is neither mindmap nor kanban")
         expect(places.length).toBeGreaterThan(0)
       })
     }

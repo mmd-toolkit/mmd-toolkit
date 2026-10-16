@@ -223,6 +223,9 @@ export const KEYWORD_TEXTS: Readonly<Record<string, readonly string[]>> = {
   // The row `Keyword` of parser/docs/tokens/journey.md names the header unit,
   // which is `journey`, and the words that start a statement.
   JourneyDiagram: ["journey", "title", "section", "acctitle", "accdescr"],
+  // The row `Keyword` of parser/docs/tokens/kanban.md: the header and the
+  // `::icon(` that starts an icon line.
+  KanbanDiagram: ["kanban", "::icon("],
   // The row `Keyword` of parser/docs/tokens/mindmap.md: the header and the
   // `::icon(` that starts an icon line.
   MindmapDiagram: ["mindmap", "::icon("],

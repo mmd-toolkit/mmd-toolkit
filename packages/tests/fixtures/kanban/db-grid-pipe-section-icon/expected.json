@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind pipe in section-icon tests the kanban reading at this text position."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "I",
+        "label": "I",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

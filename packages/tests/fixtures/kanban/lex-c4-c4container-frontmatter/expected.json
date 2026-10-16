@@ -1,0 +1,21 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The C4 detector word C4Container in frontmatter tests detection before the kanban lexer without marking a divergence."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "title": "C4Container"
+  }
+}

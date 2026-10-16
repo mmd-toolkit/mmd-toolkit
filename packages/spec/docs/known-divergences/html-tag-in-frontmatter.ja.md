@@ -111,6 +111,13 @@ mermaid.js の flowchart の文法はそれを受理します。
 フロントマターの中で始まって終わるタグは、差異を生みません。
 差異は両方向にあり、受理も Db も変わることがあります。
 
+kanban ではフロントマターに `title: <a` があるとき、
+mermaid.js は `S["b="c">d"]` の内側の属性引用符を変換して入力を受理します。
+この仕様はラベルの文字列を 2 つ目の引用符で終えて入力を拒否します。
+[fixture: kanban/div-frontmatter-open-tag]
+フロントマターに `<a` がなければ両者で拒否します。
+[fixture: kanban/gram-frontmatter-no-tag-reference]
+
 ## 書き手にとっての結果
 
 `title: <a` のように、`<` と語の後に `>` のないタイトルを持つフロントマターは、

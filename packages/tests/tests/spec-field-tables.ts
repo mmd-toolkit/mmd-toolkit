@@ -29,6 +29,7 @@ export const TREE_DOCUMENT_DIAGRAMS = [
   "xychart",
   "quadrant",
   "block",
+  "kanban",
 ] as const
 
 /** The fields that every node and every record has, which no table lists. */

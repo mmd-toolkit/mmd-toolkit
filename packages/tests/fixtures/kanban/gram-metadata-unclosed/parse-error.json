@@ -1,0 +1,17 @@
+{
+  "message": "The data block has no } before the end of the text",
+  "range": [
+    14,
+    16
+  ],
+  "loc": {
+    "start": {
+      "line": 3,
+      "column": 4
+    },
+    "end": {
+      "line": 3,
+      "column": 6
+    }
+  }
+}

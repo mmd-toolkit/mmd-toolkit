@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M02 (Data context): Single quotes do not hide a brace."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 2:\n...anban S@{label: 'a}b'}\n----------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', 'SHAPE_DATA', got 'NODE_ID'"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "nbsp at line-end tests whitespace, token boundaries, and indentation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S    A ",
+        "label": "S    A ",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

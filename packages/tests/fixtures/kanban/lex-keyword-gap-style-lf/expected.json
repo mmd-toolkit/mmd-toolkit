@@ -1,0 +1,32 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "lf between style and a node tests whether an earlier-diagram keyword takes a later line."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "style",
+        "label": "style",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "A",
+        "label": "Work",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

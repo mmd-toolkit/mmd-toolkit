@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "style-rule inside id tests preprocessing before tokenization."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "astyle:#xyb",
+        "label": "astyle:#xyb",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

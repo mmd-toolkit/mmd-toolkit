@@ -20,6 +20,7 @@ import type { SankeyDiagram, SankeyNode } from "./ast/sankey.ts"
 import type { XychartDiagram, XychartNode } from "./ast/xychart.ts"
 import type { QuadrantDiagram, QuadrantNode } from "./ast/quadrant.ts"
 import type { BlockDiagram, BlockTreeNode } from "./ast/block.ts"
+import type { KanbanDiagram, KanbanTreeNode } from "./ast/kanban.ts"
 import type { RequirementDiagram, RequirementNode } from "./ast/requirement.ts"
 import type { SequenceDiagram, SequenceNode } from "./ast/sequence.ts"
 
@@ -278,6 +279,7 @@ export type DiagramBody =
   | XychartDiagram
   | QuadrantDiagram
   | BlockDiagram
+  | KanbanDiagram
 
 /**
  * ast.md, Root: DiagramType. The 38 diagram type ids, in the order in which
@@ -369,3 +371,4 @@ export type Node =
   | XychartNode
   | QuadrantNode
   | BlockTreeNode
+  | KanbanTreeNode

@@ -42,7 +42,8 @@ export type EmptyFormKind =
  * description block, of which only the empty description block is a
  * statement, where a statement starts and after the last unit of one;
  * block has the same three, of which only the empty description block is
- * a statement, where a statement starts.
+ * a statement, where a statement starts. Kanban has the same empty forms
+ * as mindmap.
  */
 export const EMPTY_FORM_KINDS: Readonly<
   Record<
@@ -56,7 +57,8 @@ export const EMPTY_FORM_KINDS: Readonly<
     | "mindmap"
     | "xychart"
     | "quadrant"
-    | "block",
+    | "block"
+    | "kanban",
     readonly EmptyFormKind[]
   >
 > = {
@@ -86,6 +88,12 @@ export const EMPTY_FORM_KINDS: Readonly<
     "empty-description-block",
   ],
   block: ["empty-string", "empty-markdown-string", "empty-description-block"],
+  kanban: [
+    "empty-string",
+    "empty-markdown-string",
+    "empty-icon",
+    "empty-class-line",
+  ],
 }
 
 /** One empty form: its kind, its units, and its range, from its first character that is not whitespace to its last. */
@@ -117,7 +125,7 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
 /**
  * The empty forms of the kinds `kinds` among `units`, the units of a
  * diagram text, in source order, wherever they lie: each `empty-string`
- * unit (flowchart, requirement, and mindmap, Strings), and each `string`
+ * unit (flowchart, requirement, mindmap, and kanban, Strings), and each `string`
  * unit whose text, what lies between its quotes, is empty (xychart,
  * quadrant, and block, Strings);
  * each empty call, a `call` unit followed directly by a `(` and a `)` unit,
@@ -129,11 +137,11 @@ const EMPTY_FORM_MESSAGES: Readonly<Record<EmptyFormKind, string>> = {
  * another (class, Strings, backquoted names, and generic types); in er,
  * each `empty-backquotes` unit (er, The attribute block context); and, in
  * gantt, each empty href, an `href` unit followed directly by two `"`
- * units (gantt, The href context); and, in mindmap, each
+ * units (gantt, The href context); and, in mindmap and kanban, each
  * `empty-markdown-string` unit and, in quadrant and block, each
  * `markdown-string` unit whose text is empty, each empty icon, an `::icon(` unit followed
  * directly by a `)` unit, and each empty class line, a `:::` unit that no
- * `class-text` unit follows (mindmap, Empty forms), where a `:::` of the
+ * `class-text` unit follows (mindmap and kanban, Empty forms), where a `:::` of the
  * other diagram types, which no `class-text` unit ever follows, is no form
  * of the kinds they have. In flowchart, class, and gantt, a `(`
  * after a `call` is always one of the callback name context, which the

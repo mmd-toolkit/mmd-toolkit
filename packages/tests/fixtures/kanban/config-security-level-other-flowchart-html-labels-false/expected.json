@@ -1,0 +1,42 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The site configuration changes character replacement in kanban labels through sanitizeText."
+  },
+  "config": {
+    "securityLevel": "other",
+    "flowchart": {
+      "htmlLabels": false
+    }
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "<b>S</b>",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "<i>A</i><br>",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S",
+        "ticket": "<u>T</u>"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "A",
+        "set": {
+          "ticket": "<u>T</u>"
+        }
+      }
+    ]
+  }
+}

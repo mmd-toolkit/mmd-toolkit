@@ -1,0 +1,36 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block carryover kind style-rule in metadata-icon-bare tests the kanban reading at this text position."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "I",
+        "label": "I",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S",
+        "icon": "astyle:#xyb"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "I",
+        "set": {
+          "icon": "astyle:#xyb"
+        }
+      }
+    ]
+  }
+}

@@ -8,6 +8,7 @@ import {
 } from "../src/check-tree/block.ts"
 import { checkTree } from "../src/check-tree/index.ts"
 import { FLOWCHART_SHAPES } from "../src/check-tree/flowchart-shapes.ts"
+import { KANBAN_OPENERS, KANBAN_CLOSERS } from "../src/check-tree/kanban.ts"
 import { PUNCTUATOR_TEXTS } from "../src/check-tree/punctuators.ts"
 import type { TreeProblem } from "../src/check-tree/types.ts"
 import { handMadeRoot } from "./check-tree-trees.ts"
@@ -73,6 +74,7 @@ const DIAGRAMS: readonly [string, string][] = [
   ["xychart", "XychartDiagram"],
   ["quadrant", "QuadrantDiagram"],
   ["block", "BlockDiagram"],
+  ["kanban", "KanbanDiagram"],
 ]
 
 /**
@@ -106,6 +108,8 @@ function textsBesidesTheRow(diagram: string): string[] {
     // The row names the openers and the closers of a shape by their kind.
     case "mindmap":
       return ["))", "(", "((", "[", "]", "{{", "}}", "(-", "-)"]
+    case "kanban":
+      return [...KANBAN_OPENERS, ...KANBAN_CLOSERS]
     // The row names the arrow, of any length, by its unit.
     case "block":
       return [...BLOCK_SHAPE_OPENINGS, ...BLOCK_SHAPE_CLOSINGS]
@@ -122,6 +126,10 @@ function distinct(texts: readonly string[]): string[] {
 }
 
 describe("the table of the texts of Punctuator tokens", () => {
+  it("reports punctuation that kanban does not have", () => {
+    expect(textProblems("KanbanDiagram", ":")).toHaveLength(1)
+  })
+
   for (const [diagram, body] of DIAGRAMS) {
     it(`is the texts of the Punctuator row of the ${diagram} tokens and those that the row does not give as texts, and no others`, () => {
       expect(distinct(PUNCTUATOR_TEXTS[body] ?? [])).toEqual(

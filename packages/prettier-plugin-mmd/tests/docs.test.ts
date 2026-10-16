@@ -95,6 +95,51 @@ const ruleDocuments: readonly {
     rulesInTestCode: ["line-separators", "whitespace-characters"],
   },
   {
+    diagram: "kanban",
+    rulesWithoutExamples: [
+      "trailing-whitespace",
+      "line-terminators",
+      "whitespace-characters",
+    ],
+    rulesInTestCode: ["line-terminators", "whitespace-characters"],
+  },
+  {
+    diagram: "kanban",
+    rulesWithoutExamples: [
+      "trailing-whitespace",
+      "line-terminators",
+      "whitespace-characters",
+    ],
+    rulesInTestCode: ["line-terminators", "whitespace-characters"],
+  },
+  {
+    diagram: "kanban",
+    rulesWithoutExamples: [
+      "trailing-whitespace",
+      "line-terminators",
+      "whitespace-characters",
+    ],
+    rulesInTestCode: ["line-terminators", "whitespace-characters"],
+  },
+  {
+    diagram: "kanban",
+    rulesWithoutExamples: [
+      "trailing-whitespace",
+      "line-terminators",
+      "whitespace-characters",
+    ],
+    rulesInTestCode: ["line-terminators", "whitespace-characters"],
+  },
+  {
+    diagram: "kanban",
+    rulesWithoutExamples: [
+      "trailing-whitespace",
+      "line-terminators",
+      "whitespace-characters",
+    ],
+    rulesInTestCode: ["line-terminators", "whitespace-characters"],
+  },
+  {
     diagram: "block",
     rulesWithoutExamples: [
       "multi-line-statements",
@@ -312,10 +357,26 @@ async function readCitedTestTitles(): Promise<string[]> {
     )
     for (const line of text.split("\n")) {
       const trimmed = line.trim()
-      if (!trimmed.startsWith('"') || !trimmed.endsWith('",')) continue
-      const title = trimmed.slice(1, -2)
+      const literal = trimmed.startsWith("[")
+        ? trimmed.slice(1).trimStart()
+        : trimmed
+      if (!literal.startsWith('"')) continue
+      let end = 1
+      while (end < literal.length) {
+        if (literal[end] === "\\") end += 2
+        else if (literal[end] === '"') break
+        else end++
+      }
+      if (literal[end + 1] !== ",") continue
+      const title = JSON.parse(literal.slice(0, end + 1)) as string
       if (title.includes("%s")) {
-        for (const diagram of ["flowchart", "sequence", "class", "state"]) {
+        for (const diagram of [
+          "flowchart",
+          "sequence",
+          "class",
+          "state",
+          "kanban",
+        ]) {
           titles.push(title.replaceAll("%s", diagram))
         }
       } else {
@@ -344,6 +405,11 @@ describe("the test citations in the documents", async () => {
     "docs/xychart.md",
     "docs/quadrant.md",
     "docs/block.md",
+    "docs/kanban.md",
+    "docs/kanban.md",
+    "docs/kanban.md",
+    "docs/kanban.md",
+    "docs/kanban.md",
     "docs/compatibility.md",
   ]) {
     const text = await readFile(new URL(document, packageRoot), "utf8")

@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "mermaid",
+    "ref": "mermaid@12.0.0",
+    "path": "packages/mermaid/src/diagrams/kanban/kanban.spec.ts",
+    "line": 253,
+    "test": "when parsing a kanban  > descriptions > KNBN-18 should be possible to use node syntax in the descriptions in children"
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "root",
+        "label": "String containing []",
+        "level": 4,
+        "isGroup": true
+      },
+      {
+        "id": "child1",
+        "label": "String containing ()",
+        "level": 6,
+        "isGroup": false,
+        "parentId": "root"
+      }
+    ]
+  }
+}

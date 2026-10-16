@@ -59,6 +59,7 @@ export type DiagramType =
   | "xychart"
   | "quadrant"
   | "block"
+  | "kanban"
 
 /**
  * Where a fixture input came from.

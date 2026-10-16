@@ -1,0 +1,28 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M02 (Data context): Reference for forbidden caret."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "a",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "label": "a"
+        }
+      }
+    ]
+  }
+}

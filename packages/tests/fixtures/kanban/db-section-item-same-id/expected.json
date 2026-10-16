@@ -1,0 +1,38 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Shared section and item ids test parent membership."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "S",
+        "label": "Item",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "T",
+        "label": "T",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "S",
+        "label": "Other item",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "T"
+      }
+    ]
+  }
+}

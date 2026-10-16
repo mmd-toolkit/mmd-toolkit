@@ -315,6 +315,19 @@ export type {
   BlockTreeNode,
 } from "./ast/block.ts"
 export type {
+  KanbanClassStatement,
+  KanbanCloser,
+  KanbanDataBlock,
+  KanbanDiagram,
+  KanbanIconStatement,
+  KanbanLabel,
+  KanbanLiteral,
+  KanbanNode,
+  KanbanOpener,
+  KanbanShape,
+  KanbanTreeNode,
+} from "./ast/kanban.ts"
+export type {
   RequirementAccDescrBlockStatement,
   RequirementAccDescrStatement,
   RequirementAccTitleStatement,

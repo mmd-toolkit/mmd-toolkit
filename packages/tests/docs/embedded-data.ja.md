@@ -89,6 +89,15 @@ flowchart では、`A@{ ... }@{ ... }` のように間を空けずに続くブ�
 文法がそれらの中身を連結して、1 回の呼び出しで渡すためです
 （[`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L396-L401)）。
 
+kanban の 1 つのノードに隣り合う `@{ ... }` ブロックは、
+中身を連結した 1 つの接尾部として読み、
+そのグループに 1 つの効果を記録します。
+[fixture: kanban/db-metadata-adjacent-comma]
+[fixture: kanban/db-metadata-adjacent-empty]
+[fixture: kanban/db-metadata-two-items]
+[fixture: kanban/gram-metadata-two-blocks]
+[fixture: kanban/db-metadata-all]
+
 要素は `{ id, set }` です。
 
 - `id` は、ブロックの直前に書いた id。
@@ -125,8 +134,23 @@ sequence の Db のパッチは、
 2 回の実行で違う欄が、ブロックの効果です。
 ブロックの中身も、それについての mermaid.js の規則も読みません。
 
+kanban の Db のパッチは
+[`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165)
+を包みます。
+文法はノードを追加する同じ呼び出しにブロックを渡します
+（[`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L126-L133)）。
+その呼び出しをブロックなしとありで実行した後のノードの要約を比べます。
+共有 Db の状態はモジュール変数にあるため、
+Db を消去し、元のノード追加と装飾の呼び出しでそれまでの状態を復元します。
+次の解析の前に Db の `clear()` とともに記録した効果と問題も消します。
+[fixture: kanban/db-metadata-all]
+[fixture: kanban/db-metadata-repeated-id]
+[fixture: kanban/db-decoration-icon-twice]
+[fixture: kanban/header-only-lf]
+
 ブロックが要素を作ったり消したり、2 つ以上の要素を変えたりしたとき、
-またブロックなしでは参加者を足せないときは、推測せずに実行を失敗させます。
+またブロックなしでは参加者や kanban のノードを足せないときは、
+推測せずに実行を失敗させます。
 mermaid.js の解析中にパッチが例外を投げると、
 `mermaid.parse()` はそれを入力の拒否として報告してしまうので、
 パッチは問題を記録しておき、
@@ -143,6 +167,17 @@ subgraph の `metadata` です。
 sequence 図には、そのような欄はありません。
 ブロックは actor の `type` と説明を決めますが、
 それはキーワード（`participant`、`actor`）と別名でも決まります。
+
+kanban の `ticket`、`priority`、`assigned` はブロックだけが設定し、
+`label` はノードの説明でも決まり、`icon` はアイコン装飾でも設定できます。
+ノードの要約が公開する欄だけが効果に加わるため、
+列の `assigned`、`priority`、`icon` と固定の `shape` は何も加えません。
+[fixture: kanban/db-metadata-all]
+[fixture: kanban/db-metadata-section-assigned]
+[fixture: kanban/db-metadata-section-priority]
+[fixture: kanban/db-metadata-section-icon]
+[fixture: kanban/db-metadata-shape-lower]
+[fixture: kanban/db-decoration-icon-twice]
 
 ### それと比べて確かめられること
 

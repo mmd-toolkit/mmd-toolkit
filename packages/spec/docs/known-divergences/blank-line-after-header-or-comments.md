@@ -3,7 +3,7 @@
 Japanese version:
 [blank-line-after-header-or-comments.ja.md](./blank-line-after-header-or-comments.ja.md)
 
-Diagram types: mindmap. This is one of the
+Diagram types: mindmap, kanban. This is one of the
 [known divergences](../known-divergences.md) of this specification from
 mermaid.js.
 
@@ -43,6 +43,41 @@ no part of the count and change nothing. Everywhere else, both read blank lines
 and comments as nothing: blank lines between two statements without comments, an
 odd count after the header followed by a blank line, an even count between two
 statements followed by a blank line, and blank lines at the end of the text.
+
+Kanban uses the same blank-line rule and the four cases above. Node, icon, and
+class lines are statements. Data suffixes belong to their node lines. Header
+whitespace or blank lines before the first node are accepted. [fixture:
+kanban/gram-grid-comment-line-header-line] [fixture:
+kanban/gram-grid-directive-line-header-line] [fixture:
+kanban/gram-grid-lf-header-line] [fixture: kanban/gram-grid-spaces-header-line]
+[fixture: kanban/header-bom-trailing] [fixture: kanban/header-crlf-trailing]
+[fixture: kanban/header-ff-trailing] [fixture:
+kanban/header-ideographic-trailing] [fixture: kanban/header-ls-trailing]
+[fixture: kanban/header-nbsp-trailing] [fixture: kanban/header-ps-trailing]
+[fixture: kanban/header-tab-trailing] [fixture: kanban/header-vt-trailing]
+[fixture: kanban/lex-bom-whitespace-first] [fixture:
+kanban/lex-cr-whitespace-first] [fixture: kanban/lex-crlf-whitespace-first]
+[fixture: kanban/lex-ideographic-whitespace-first] [fixture:
+kanban/lex-ls-whitespace-first] [fixture: kanban/lex-nbsp-whitespace-first]
+[fixture: kanban/lex-ps-whitespace-first] [fixture:
+kanban/lex-tab-whitespace-first] [fixture: kanban/div-header-space-node]
+Comments followed by blank lines before nodes or decorations are accepted.
+[fixture: kanban/div-header-comments-blank] [fixture:
+kanban/div-between-comment-blank] [fixture:
+kanban/div-comment-blank-before-icon] [fixture:
+kanban/div-comment-blank-before-class] Comments ending at U+2028 or U+2029
+before the next statement are accepted. mermaid.js rejects these inputs (see
+[Blank lines](../diagrams/kanban.md#blank-lines)). [fixture:
+kanban/div-header-comment-ls-node] [fixture: kanban/div-header-comment-ps-node]
+[fixture: kanban/div-between-real-comments-ls-node] [fixture:
+kanban/div-between-real-comments-ps-node]
+
+In kanban, one diagram comment after the header is accepted by both. [fixture:
+kanban/header-header-comment-blank] Two diagram comments between nodes are
+accepted by both. [fixture: kanban/gram-between-comments-blank] A blank line
+before an icon is accepted by both. [fixture: kanban/gram-blank-before-icon]
+Blank lines at the end are accepted by both. [fixture:
+kanban/gram-shallower-then-empty]
 
 ## The difference
 
@@ -177,6 +212,32 @@ statement pair up as an end and a statement in turn, and a `SPACELINE` that is
 left as a statement needs an end before the next node, which a node on the next
 line does not give. The header is followed by a statement, so there the pairing
 starts the other way round.
+
+The kanban lexical rules and grammar pair whitespace and statements in the same
+way
+([`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L48-L138)).
+The pairing changes nothing held by the tree. The same direct rule applies.
+[fixture: kanban/gram-grid-comment-line-header-line] [fixture:
+kanban/gram-grid-directive-line-header-line] [fixture:
+kanban/gram-grid-lf-header-line] [fixture: kanban/gram-grid-spaces-header-line]
+[fixture: kanban/header-bom-trailing] [fixture: kanban/header-crlf-trailing]
+[fixture: kanban/header-ff-trailing] [fixture:
+kanban/header-ideographic-trailing] [fixture: kanban/header-ls-trailing]
+[fixture: kanban/header-nbsp-trailing] [fixture: kanban/header-ps-trailing]
+[fixture: kanban/header-tab-trailing] [fixture: kanban/header-vt-trailing]
+[fixture: kanban/lex-bom-whitespace-first] [fixture:
+kanban/lex-cr-whitespace-first] [fixture: kanban/lex-crlf-whitespace-first]
+[fixture: kanban/lex-ideographic-whitespace-first] [fixture:
+kanban/lex-ls-whitespace-first] [fixture: kanban/lex-nbsp-whitespace-first]
+[fixture: kanban/lex-ps-whitespace-first] [fixture:
+kanban/lex-tab-whitespace-first] [fixture: kanban/div-header-space-node]
+[fixture: kanban/div-header-comments-blank] [fixture:
+kanban/div-between-comment-blank] [fixture: kanban/div-header-comment-ls-node]
+[fixture: kanban/div-header-comment-ps-node] [fixture:
+kanban/div-comment-blank-before-icon] [fixture:
+kanban/div-comment-blank-before-class] [fixture:
+kanban/div-between-real-comments-ls-node] [fixture:
+kanban/div-between-real-comments-ps-node]
 
 ## The rule of this specification, and why
 

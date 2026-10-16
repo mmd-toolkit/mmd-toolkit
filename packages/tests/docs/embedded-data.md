@@ -80,6 +80,12 @@ In a flowchart, blocks written one right after another, as in
 them in one call
 ([`flow.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/flowchart/parser/flow.jison#L396-L401)).
 
+Adjacent `@{ ... }` blocks of one kanban node are read as one suffix whose
+contents are concatenated, and one effect is recorded for the group. [fixture:
+kanban/db-metadata-adjacent-comma] [fixture: kanban/db-metadata-adjacent-empty]
+[fixture: kanban/db-metadata-two-items] [fixture:
+kanban/gram-metadata-two-blocks] [fixture: kanban/db-metadata-all]
+
 Each entry is `{ id, set }`:
 
 - `id` is the id written right before the block;
@@ -114,9 +120,21 @@ actors and boxes, puts the Db's lists back as they were, and runs the call as
 mermaid.js made it. The fields that differ between the two runs are the block's
 effect. It reads neither the block nor mermaid.js's rules for it.
 
+The kanban Db patch wraps
+[`addNode()`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/kanbanDb.ts#L99-L165),
+which also receives the block in the call that adds the node
+([`kanban.jison`](https://github.com/mermaid-js/mermaid/blob/98a0945418c76238f15df2afaddbba4272656c3b/packages/mermaid/src/diagrams/kanban/parser/kanban.jison#L126-L133)).
+It compares the node summaries after that call without and with the block;
+because the shared Db keeps its state in module variables, it restores the
+prefix by clearing the Db and replaying the original node and decoration calls.
+The recorded effects and problems are reset with the Db's `clear()` before the
+next parse. [fixture: kanban/db-metadata-all] [fixture:
+kanban/db-metadata-repeated-id] [fixture: kanban/db-decoration-icon-twice]
+[fixture: kanban/header-only-lf]
+
 If a block creates or removes an element, or changes more than one, or the
-participant cannot be added without its block, the run fails instead of
-guessing. The patch cannot throw while mermaid.js parses, since
+participant or kanban node cannot be added without its block, the run fails
+instead of guessing. The patch cannot throw while mermaid.js parses, since
 `mermaid.parse()` would report the error as a rejection of the input; it records
 the problem, and reading the effects of that Db throws it
 (`src/normalizers/data-blocks.ts`).
@@ -130,6 +148,15 @@ implementation that does not read data blocks gets them only through
 `dataBlockEffects`, so they are checked on mermaid.js's side alone. A sequence
 diagram has none: a block sets an actor's `type` and description, which the
 keyword (`participant`, `actor`) and the alias also set.
+
+In kanban, `ticket` and `priority` are set only by blocks, as is `assigned`;
+`label` also comes from the node description, and an icon decoration can set
+`icon`. Only fields exposed in the node summary contribute to the effect: column
+`assigned`, `priority`, and `icon`, and the fixed `shape`, contribute nothing.
+[fixture: kanban/db-metadata-all] [fixture: kanban/db-metadata-section-assigned]
+[fixture: kanban/db-metadata-section-priority] [fixture:
+kanban/db-metadata-section-icon] [fixture: kanban/db-metadata-shape-lower]
+[fixture: kanban/db-decoration-icon-twice]
 
 ### What comparing with them checks
 

@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "icon metadata with mapping tests truthiness, conversion, or validation."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 3:\n...Work]@{ icon: {a: b} }\n-----------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', 'SHAPE_DATA', got 'SPACELIST'"
+  }
+}

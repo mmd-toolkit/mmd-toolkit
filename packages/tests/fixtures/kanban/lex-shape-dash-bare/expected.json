@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md S06 (Shape context): Bare text greedily consumes the dash before the closer."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "text-",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

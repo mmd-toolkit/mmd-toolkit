@@ -1,0 +1,106 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Three definitions of a section id test duplication and association with an intervening section."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "First",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "One",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "C",
+        "label": "Three",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "D",
+        "label": "Four",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "T",
+        "label": "Other",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "B",
+        "label": "Two",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "T"
+      },
+      {
+        "id": "S",
+        "label": "Second",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "One",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "C",
+        "label": "Three",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "D",
+        "label": "Four",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "S",
+        "label": "Third",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "One",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "C",
+        "label": "Three",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      },
+      {
+        "id": "D",
+        "label": "Four",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

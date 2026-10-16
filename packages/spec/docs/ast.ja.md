@@ -264,7 +264,8 @@ mermaid.js はこれらを
 [`SankeyDiagram`](./ast/sankey.ja.md#sankeydiagram)、
 [`XychartDiagram`](./ast/xychart.ja.md#xychartdiagram)、
 [`QuadrantDiagram`](./ast/quadrant.ja.md#quadrantdiagram)、
-[`BlockDiagram`](./ast/block.ja.md#blockdiagram) のどれかです。
+[`BlockDiagram`](./ast/block.ja.md#blockdiagram)、
+[`KanbanDiagram`](./ast/kanban.ja.md#kanbandiagram) のどれかです。
 
 ## ErrorDiagram
 
@@ -469,6 +470,7 @@ linkStyle の番号では範囲の外です。
 - [XY chart](./ast/xychart.ja.md): 図種 `xychart`。
 - [Quadrant chart](./ast/quadrant.ja.md): 図種 `quadrantChart`。
 - [Block diagram](./ast/block.ja.md): 図種 `block`。
+- [Kanban](./ast/kanban.ja.md): 図種 `kanban`。
 
 図種のノードの型の名前は、`FlowchartVertex` のように、
 どれもその図種の名前で始めます。

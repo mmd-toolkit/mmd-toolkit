@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "double-semicolon after icon tests text, trivia, or rejected extra tokens."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Parse error on line 4:\n...S   A ::icon(star);;\n---------------------^\nExpecting 'SPACELINE', 'NL', 'EOF', got 'NODE_ID'"
+  }
+}

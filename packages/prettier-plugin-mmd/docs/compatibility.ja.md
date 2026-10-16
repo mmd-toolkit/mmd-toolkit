@@ -1220,3 +1220,40 @@ Prettier はすべての行の末尾の空白を取り除きます。
 変わりうるのは改行コードだけで、
 他の言語と同じく Prettier の `endOfLine` オプションに従います。
 Markdown では、コードブロックを Prettier に任せます。
+
+## Kanban の level、不透明な末尾、保持行
+
+kanban は最初の列も含め、字下げの絶対文字数を保ちます。
+通常の字下げだけ、1 文字を 1 文字に置き換えます。
+裸の id・ラベル・icon・class の空白は値として残します。
+装飾はノードの列に揃え、インラインディレクティブの行は字下げと隙間を保ちます。
+[kanban の規則](./kanban.ja.md)を参照してください。
+[fixture: kanban/indentation/absolute-counts]
+[fixture: kanban/icons-and-classes/aligned]
+[fixture: kanban/directives/leading-directive-kept]
+[fixture: kanban/trailing-whitespace/trailing-bare-id-trim]
+
+データブロックは、中身と付着位置、
+隣接するブロックや間のディレクティブも保ちます。
+YAML 整形は、保護条件付きのフロントマターだけです。
+図のコメント後の空行・コメントの隙間は、末尾も含め、
+`blank-line-after-header-or-comments` のもとで全体を保ちます。
+素の mermaid.js が拒否する入力に素の Db はなく、
+コーパスは仕様の読み方を確かめます。
+[fixture: kanban/data-blocks/adjacent]
+[fixture: kanban/data-blocks/data-adjacent-directive]
+[fixture: kanban/blank-lines/div-between-comment-blank]
+[fixture: kanban/blank-lines/comment-blank-trailing]
+
+共通の `style`・`classDef` の行規則で保持する行は、
+区間全体、空白、コメント、ディレクティブを保ちます。
+無視するセミコロンも含め `;` を残し、文の区切りとは扱いません。
+削除やインラインコメントの移動で、最後に選ばれるセミコロンが変わり得るためです。
+Unicode の区間境界とコメントの終わりは文字として残し、
+CR・LF の変換は他図種と共通の設定に従います。
+[fixture: kanban/line-rule-and-kept-lines/line-rule-comment-to-own-line]
+[fixture: kanban/line-rule-and-kept-lines/line-rule-classdef-and-style]
+[fixture: kanban/semicolons/values]
+[test: kanban: line-rule-ls-segment]
+[test: kanban: comment-ls-split-count]
+[test: a kanban diagram with other line endings]

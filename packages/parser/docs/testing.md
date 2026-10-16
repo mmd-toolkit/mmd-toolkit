@@ -15,8 +15,8 @@ the sentence of the specification or of the parser's documents that defines it.
 
 `tests/fixtures.test.ts` parses every fixture in `common/`, `flowchart/`,
 `sequence/`, `class/`, `state/`, `er/`, `gantt/`, `journey/`, `requirement/`,
-`mindmap/`, `timeline/`, `sankey/`, `xychart/`, `quadrant/`, and `block/`, and
-checks:
+`mindmap/`, `timeline/`, `sankey/`, `xychart/`, `quadrant/`, `block/`, and
+`kanban/`, and checks:
 
 - the parse result against the one that the fixture records for the parser (see
   [Recorded parse results](#recorded-parse-results));
@@ -28,6 +28,12 @@ Neither the tree nor the Db is checked here: `@mmd-toolkit/tests` checks each
 recorded tree (`check-tree-corpus.test.ts`; see
 [The tree check](#the-tree-check)) and builds its Db and compares it with the Db
 that the fixture records (`db-from-tree.test.ts`).
+
+Kanban fixtures are checked by `tests/kanban.test.ts`: all 2,870 inputs are
+compared with their recorded acceptance, applying the declared divergences and
+`specified.json` where present. Accepted trees also check token/comment coverage
+and exact token text. The parse records, including the common kanban detection
+fixture, are compared by `tests/fixtures.test.ts`.
 
 ## Known divergences
 
@@ -77,12 +83,12 @@ compares it with the Db built from the recorded tree.
   `newline` unit counted as whitespace before the `%`.
 - `percent-brace-after-unit`: the Gantt chart has a `%%{` that starts no
   directive and that mermaid.js reaches directly, found in the same way.
-- `blank-line-after-header-or-comments`: the mindmap has, after the header or
-  between two statements, blank lines and diagram comments in one of the four
-  cases of the divergence, found from the lines of the parser's units and
-  diagram comments: a `newline` unit ends a line, one of n line feeds ends n
-  lines, and one with no characters ends the line of a diagram comment at a
-  U+2028 or a U+2029.
+- `blank-line-after-header-or-comments`: the mindmap or kanban diagram has,
+  after the header or between two statements, blank lines and diagram comments
+  in one of the four cases of the divergence, found from the lines of the
+  parser's units and diagram comments: a `newline` unit ends a line, one of n
+  line feeds ends n lines, and one with no characters ends the line of a diagram
+  comment at a U+2028 or a U+2029.
 - `name-start-reads-unit`: the class diagram has a backquoted name or a generic
   type whose text starts with `"`, `~` (in a backquoted name), `<<`, `>>`, or
   one of the keywords that the divergence names, found from the parser's

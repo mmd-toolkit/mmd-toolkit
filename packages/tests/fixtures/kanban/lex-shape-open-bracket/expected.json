@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md S05 (Shape context): Opening bracket is bare shape text."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x[y",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

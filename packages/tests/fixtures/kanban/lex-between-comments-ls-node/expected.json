@@ -1,0 +1,18 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md G04 (Grammar and acceptance): Bare percent followed by U+2028 and text becomes a common comment line and removes that suffix."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "x",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  }
+}

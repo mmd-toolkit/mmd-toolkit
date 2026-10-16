@@ -4,7 +4,7 @@
 [ignored-semicolon-as-token-boundary.md](./ignored-semicolon-as-token-boundary.md)
 
 図種: flowchart、sequence、class、state、er、gantt、journey、requirement、
-mindmap、timeline、xychart、quadrant、block。
+mindmap、timeline、xychart、quadrant、block、kanban。
 この仕様の mermaid.js からの
 [既知の差異](../known-divergences.ja.md) の 1 つです。
 
@@ -209,6 +209,27 @@ mermaid.js は `A["style:#a"] B;C` を id `BC` で、
 [xychart](../diagrams/xychart.ja.md#既知の差異)、
 [quadrant](../diagrams/quadrant.ja.md#既知の差異)、
 [block](../diagrams/block.ja.md#既知の差異) です。
+
+kanban では開きと閉じの中で選ばれたセミコロンは区切りを分断し、
+入力を拒否させます。
+mermaid.js は `style:#x{;{b}}` と `style:#x{{b};}` を、
+`style:#x{{b}}` と同じ形として受理します。
+[fixture: kanban/div-semicolon-opener]
+[fixture: kanban/div-semicolon-closer]
+[fixture: kanban/gram-semicolon-text-reference]
+
+ノード本文、ラベル本文、文字列、データ本文の中では、
+選ばれたセミコロンを無視します。
+[fixture: kanban/lex-id-style-rule]
+[fixture: kanban/lex-id-classdef-rule]
+[fixture: kanban/lex-label-style-rule]
+[fixture: kanban/lex-metadata-style-rule]
+次の行のセミコロンは選びません。
+`style:#x` の行の後の `::ic;on` はノード本文です
+（[単位の中のディレクティブ](../diagrams/kanban.ja.md#単位の中のディレクティブ)
+を参照）。
+[fixture: kanban/lex-label-style-rule-other-line]
+[fixture: kanban/lex-semicolon-icon-marker]
 
 ## 書き手にとっての結果
 

@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "ls at whitespace-between tests whitespace, token boundaries, and indentation."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "A",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

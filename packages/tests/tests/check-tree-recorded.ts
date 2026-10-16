@@ -59,6 +59,7 @@ const CORPUS_DIAGRAMS: readonly DiagramType[] = [
   "xychart",
   "quadrant",
   "block",
+  "kanban",
 ]
 
 /**

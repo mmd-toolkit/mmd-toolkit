@@ -1,0 +1,30 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md L04 (Common lexical rules): Directive splits data opener."
+  },
+  "knownDivergence": "directive-as-token-boundary",
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true,
+        "ticket": "X"
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {
+          "ticket": "X"
+        }
+      }
+    ]
+  }
+}

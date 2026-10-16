@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md M05 (Data context): Two adjacent empty blocks concatenate to an empty document."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": true
+      }
+    ]
+  },
+  "embedded": {
+    "dataBlockEffects": [
+      {
+        "id": "S",
+        "set": {}
+      }
+    ]
+  }
+}

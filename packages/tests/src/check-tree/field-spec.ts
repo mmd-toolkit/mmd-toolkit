@@ -95,7 +95,11 @@ export function fieldSpecOf(typeCell: string): FieldSpec {
     .trim()
   if (cell === "string") return { shape: "value", valueType: "string" }
   if (cell === "boolean") return { shape: "value", valueType: "boolean" }
-  if (cell === "integer" || cell === "number") {
+  if (
+    cell === "integer" ||
+    cell === "number" ||
+    cell === "nonnegative integer"
+  ) {
     return { shape: "value", valueType: "number" }
   }
   if (cell === "offset pair") return { shape: "value", valueType: "range" }

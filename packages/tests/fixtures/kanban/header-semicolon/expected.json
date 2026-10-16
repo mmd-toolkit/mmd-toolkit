@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A glued semicolon tests header delimiting."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": ";",
+        "label": ";",
+        "level": 0,
+        "isGroup": true
+      },
+      {
+        "id": "S",
+        "label": "S",
+        "level": 1,
+        "isGroup": false,
+        "parentId": ";"
+      }
+    ]
+  }
+}

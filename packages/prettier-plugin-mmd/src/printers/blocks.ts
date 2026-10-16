@@ -54,6 +54,18 @@ export interface BlockRules<Statement extends Positioned> {
   /** The lines whose statements stay together (see `KeptLines`). */
   readonly kept: KeptLines
   /**
+   * Whether a complete gap keeps its source text, including line boundaries
+   * and the following indentation (docs/kanban.md, Blank lines). Absent for
+   * diagrams whose gaps use the ordinary comment and blank-line rules.
+   */
+  readonly keepsGap?: (start: number, end: number) => boolean
+  /**
+   * Written indentation of an ordinary statement line, when its inline
+   * directives make all surrounding whitespace significant. Gap items still
+   * use `extraIndentationOf` (docs/kanban.md, Directives).
+   */
+  readonly writtenIndentationOf?: (statement: Statement) => string | undefined
+  /**
    * Where the printed text of a statement ends: at its last token, or after
    * the whitespace after it that belongs to it.
    */
@@ -163,6 +175,8 @@ export interface BlockBounds<Statement extends Positioned> {
 export interface PrintedBlock {
   /** Items on the line that opens the block. */
   readonly headerTrailing: ItemRun | null
+  /** An exact terminal gap, including its final newline, when protected. */
+  readonly writtenEnd?: Doc
   /**
    * Whether the first line continues the line that opens the block (see
    * `KeptLines`).
@@ -582,11 +596,18 @@ export function printBlock<Statement extends Positioned>(
       startsStretch && isKept(statement.range[0])
         ? Math.max(offset, findContentStart(source, statement.range[0]))
         : statement.range[0]
-    const gap = readGap(source, offset, start, false)
+    const keepsGap = rules.keepsGap?.(offset, start) === true
+    const writtenBreak = keepsGap
+      ? { writtenBreakBefore: printAsWritten(source, offset, start) }
+      : {}
+    const gap = readGap(source, keepsGap ? start : offset, start, false)
     addItemLines(gap, statements[index - 1])
     if (!startsStretch) {
+      const writtenIndentation = rules.writtenIndentationOf?.(statement)
       pushLine({
         doc: withLeading(gap.leading, docs[index]),
+        ...writtenBreak,
+        ...(writtenIndentation === undefined ? {} : { writtenIndentation }),
         blankBefore: hasBodyLines() && gap.blankAfter,
         endsWithWhitespace: endsWithSpaceOrTab(
           source.text.slice(statement.range[0], end),
@@ -607,6 +628,7 @@ export function printBlock<Statement extends Positioned>(
       gap.leading === null
     pushLine({
       ...line,
+      ...writtenBreak,
       doc: withLeading(gap.leading, line.doc),
       blankBefore: hasBodyLines() && gap.blankAfter,
       ...(keepsIndentation
@@ -628,11 +650,29 @@ export function printBlock<Statement extends Positioned>(
     lastStatement === undefined
       ? ""
       : (rules.extraIndentationOf?.(lastStatement) ?? "")
-  const gap = readGap(source, offset, bounds.end, false, bounds.isTopLevel)
+  const keepsEnd =
+    bounds.isTopLevel && rules.keepsGap?.(offset, bounds.end) === true
+  const gap = readGap(
+    source,
+    keepsEnd ? bounds.end : offset,
+    bounds.end,
+    false,
+    bounds.isTopLevel,
+  )
   addItemLines(gap, lastStatement)
   const closingJoin = findClosingJoin()
   return {
     headerTrailing,
+    ...(keepsEnd
+      ? {
+          writtenEnd: [
+            printAsWritten(source, offset, bounds.end),
+            source.text.endsWith("\n") || endsInsideOpenText(source)
+              ? ""
+              : builders.literalline,
+          ],
+        }
+      : {}),
     continuesOpeningLine,
     lines,
     endLeading: gap.leading,
@@ -706,7 +746,8 @@ export function printDiagramBlock(
           },
         ]
   const last = lines.at(-1) ?? header
-  const endOfText = endsInsideOpenText(source) ? "" : breakAfter(last, "")
+  const endOfText =
+    block.writtenEnd ?? (endsInsideOpenText(source) ? "" : breakAfter(last, ""))
   if (lines.length === 0) return [header.doc, endOfText]
   const headerBreak = block.continuesOpeningLine
     ? ""

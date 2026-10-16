@@ -505,6 +505,52 @@ follows. The `index` of a `ParseError` is always the start of its `range`.
   block/gram-label-empty] [fixture: block/div-empty-string-line] [fixture:
   block/div-empty-markdown-line] [fixture: block/div-empty-block-in-edge]
 
+## In a kanban diagram
+
+- Where no lexer rule matches, `range` is the character there, with
+  `Unexpected character`: a lone `@`, a brace outside a shape, a lone `}` inside
+  a label, or an unquoted data caret. [fixture: kanban/gram-node-at] [fixture:
+  kanban/gram-grid-open-brace-item-id] [fixture:
+  kanban/gram-shape-single-brace-middle] [fixture: kanban/gram-metadata-caret]
+- An unclosed string or markdown string is reported at its opening quote. The
+  messages are `The string has no closing " before the end of the text` and
+  ``The markdown string has no closing `" before the end of the text``. A
+  markdown string ending at a quote or backtick without its closing pair is also
+  reported at its opening quote, with
+  ``The markdown string is not closed by `" at its first ` or "``. [fixture:
+  kanban/gram-unclosed-quote] [fixture: kanban/gram-unclosed-markdown] [fixture:
+  kanban/gram-markdown-quote] [fixture: kanban/gram-markdown-extra-backtick]
+- Other unclosed contexts report what entered them: the shape opener
+  (`The shape has no closer before the end of the text`), `::icon(`
+  (`The icon has no ) before the end of the text`), `@{`
+  (`The data block has no } before the end of the text`), or the opening quote
+  of quoted data
+  (`The data string has no closing " before the end of the text`). [fixture:
+  kanban/gram-unclosed-shape] [fixture: kanban/gram-unclosed-icon] [fixture:
+  kanban/gram-metadata-unclosed] [fixture: kanban/gram-metadata-unclosed-quote]
+- A header that ends the text is reported at the keyword, with
+  `The header cannot end the text`. [fixture: kanban/header-only] [fixture:
+  kanban/header-header-directive-only]
+- Where the grammar cannot read a unit, `range` is its token range, with
+  `Unexpected token`, or the empty range at the start of an all-whitespace unit.
+  At the end of the text it is the empty range there, with
+  `Unexpected end of text`. [fixture: kanban/gram-empty-label] [fixture:
+  kanban/gram-string-plus-space] [fixture: kanban/gram-two-shapes-on-line]
+  [fixture: kanban/gram-metadata-adjacent-space]
+- The two rejections outside the grammar report the subsequent node that follows
+  a node shallower than the first, through its data suffix, with
+  `A node cannot follow a node less indented than the first`, and the whole
+  decoration before the first node, with
+  `An icon or a class line needs a node before it`. [fixture:
+  kanban/gram-indent-shallower-followed] [fixture:
+  kanban/gram-decoration-before-node] [fixture:
+  kanban/gram-decoration-class-before-node]
+- Empty strings, markdown strings, icons, and class lines report their whole
+  form with the shared empty-form messages below, wherever recognized. [fixture:
+  kanban/gram-empty-quoted-label] [fixture: kanban/gram-empty-markdown-shape]
+  [fixture: kanban/div-empty-icon-after-shape] [fixture:
+  kanban/div-empty-class-after-shape]
+
 ## Known divergences
 
 Where a [known divergence](../../spec/docs/known-divergences.md) makes the input

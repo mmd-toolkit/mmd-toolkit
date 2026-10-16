@@ -32,6 +32,9 @@ export const VALUE_NODE_TYPES: ReadonlySet<string> = new Set([
   "RequirementIdentifier",
   "RequirementLiteral",
   "RequirementIgnoredText",
+  "KanbanLabel",
+  "KanbanLiteral",
+  "KanbanDataBlock",
   "MindmapLabel",
   "MindmapLiteral",
   "TimelineLiteral",
@@ -201,6 +204,11 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
   "RequirementAccTitleStatement",
   "RequirementAccDescrStatement",
   "RequirementAccDescrBlockStatement",
+  "KanbanDiagram",
+  "KanbanNode",
+  "KanbanShape",
+  "KanbanIconStatement",
+  "KanbanClassStatement",
   "MindmapDiagram",
   "MindmapNode",
   "MindmapShape",
@@ -256,6 +264,7 @@ export const STRUCTURE_NODE_TYPES: ReadonlySet<string> = new Set([
 
 /** The node types of the data blocks, whose delimiters lie in their range. */
 export const DATA_BLOCK_NODE_TYPES: ReadonlySet<string> = new Set([
+  "KanbanDataBlock",
   "FlowchartDataBlock",
   "SequenceDataBlock",
 ])

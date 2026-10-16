@@ -136,6 +136,7 @@ const tokenCount = root.tokens.length // 8
 - XY チャート: `xychart`（`xychart` と `xychart-beta`）。
 - 四象限チャート: `quadrantChart`（`quadrantChart`）。
 - ブロック図: `block`（`block-beta` と `block`）。
+- kanban 図: `kanban`（`kanban`）。
 - mermaid.js の `error` 疑似図種。
 
 `parse()` は、mermaid.js 12.0.0 のほかの図種も見分けますが、
@@ -252,7 +253,8 @@ try {
 [`ast/sankey.md`](../spec/docs/ast/sankey.ja.md)、
 [`ast/xychart.md`](../spec/docs/ast/xychart.ja.md)、
 [`ast/quadrant.md`](../spec/docs/ast/quadrant.ja.md)、
-[`ast/block.md`](../spec/docs/ast/block.ja.md) のものです。
+[`ast/block.md`](../spec/docs/ast/block.ja.md)、
+[`ast/kanban.md`](../spec/docs/ast/kanban.ja.md) のものです。
 
 ## 木を辿る
 
@@ -357,11 +359,11 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   （`a - accDescr {} satisfies -> b` など）。
   文の始まりでは、空の説明のブロックは文で、
   要求や要素の本文の行では、本文の項目です。
-  mindmap では、空の icon（`::icon()`）、
+  mindmap と kanban 図では、空の icon（`::icon()`）、
   空の class の行（その行で後に何もない `:::`）、
   形の中の空の文字列や空の markdown 文字列について、
   どこにあっても同じです（`a[""x]` など）。
-- mindmap では、空行、空白だけの行、コメントは、
+- mindmap と kanban 図では、空行、空白だけの行、コメントは、
   ヘッダーの後のどこにあっても何も変えません。
   mermaid.js は、ヘッダーと最初のノードの間の空行や、
   2 つのノードの間の `%%` だけの行に続く空行など、その一部を拒否します
@@ -448,6 +450,7 @@ const childFieldsOfRoot = visitorKeys.Root // ["body"]
   [`ast/quadrant.md`](../spec/docs/ast/quadrant.ja.md)
   （四象限チャートのノード）、
   [`ast/block.md`](../spec/docs/ast/block.ja.md)（ブロック図のノード）、
+  [`ast/kanban.md`](../spec/docs/ast/kanban.ja.md)（kanban 図のノード）、
   [`common.md`](../spec/docs/common.ja.md)（すべての図に共通の規則）。
 - [`docs/tokens.ja.md`](./docs/tokens.ja.md): トークンと根の一覧。
   [`docs/positions.ja.md`](./docs/positions.ja.md): 位置、ノードの範囲、

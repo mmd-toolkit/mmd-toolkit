@@ -1,0 +1,25 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Bare and quoted descriptions test multiline labels."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "S",
+        "label": "First\nsecond",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "A",
+        "label": "Line\nnext",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "S"
+      }
+    ]
+  }
+}

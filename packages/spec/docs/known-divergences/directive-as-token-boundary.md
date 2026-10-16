@@ -41,6 +41,23 @@ er/lex-directive-in-tilde-word] [fixture: gantt/div-directive-in-click-id]
 [fixture: gantt/lex-directive-in-task-text] [fixture:
 requirement/lex-directive-in-name]
 
+In kanban, a directive inside `kanban`, a shape opener or closer, `::icon(`,
+`:::`, or the data opener `@{` is rejected. mermaid.js joins the two parts and
+accepts the input. [fixture: kanban/header-directive-inside] [fixture:
+kanban/div-directive-opener] [fixture: kanban/div-directive-closer] [fixture:
+kanban/div-directive-icon-marker] [fixture: kanban/div-directive-class-marker]
+[fixture: kanban/div-directive-data-marker]
+
+Node text, shape text, icon text, class text, strings, and data content may
+contain a directive. [fixture: kanban/db-grid-directive-item-id] [fixture:
+kanban/db-grid-directive-item-label-bare] [fixture:
+kanban/db-grid-directive-item-icon] [fixture:
+kanban/db-grid-directive-item-class] [fixture: kanban/lex-label-directive-line]
+[fixture: kanban/db-metadata-directive] A directive between complete data blocks
+is allowed (see
+[Directives inside units](../diagrams/kanban.md#directives-inside-units)).
+[fixture: kanban/db-metadata-adjacent-directive]
+
 ## The difference
 
 Each example is a whole diagram.

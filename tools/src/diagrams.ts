@@ -29,6 +29,7 @@ export const diagramIds: Readonly<
   xychart: ["xychart"],
   quadrant: ["quadrantChart"],
   block: ["block"],
+  kanban: ["kanban"],
 }
 
 /**

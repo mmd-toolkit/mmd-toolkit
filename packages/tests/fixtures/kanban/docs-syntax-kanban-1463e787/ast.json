@@ -1,0 +1,2707 @@
+{
+  "type": "Root",
+  "diagramType": "kanban",
+  "body": {
+    "type": "KanbanDiagram",
+    "body": [
+      {
+        "type": "KanbanNode",
+        "indent": 2,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "Todo",
+          "range": [
+            107,
+            111
+          ],
+          "loc": {
+            "start": {
+              "line": 7,
+              "column": 2
+            },
+            "end": {
+              "line": 7,
+              "column": 6
+            }
+          }
+        },
+        "shape": null,
+        "data": [],
+        "decorations": [],
+        "range": [
+          107,
+          111
+        ],
+        "loc": {
+          "start": {
+            "line": 7,
+            "column": 2
+          },
+          "end": {
+            "line": 7,
+            "column": 6
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 4,
+        "id": null,
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Create Documentation",
+            "range": [
+              117,
+              137
+            ],
+            "loc": {
+              "start": {
+                "line": 8,
+                "column": 5
+              },
+              "end": {
+                "line": 8,
+                "column": 25
+              }
+            }
+          },
+          "range": [
+            116,
+            138
+          ],
+          "loc": {
+            "start": {
+              "line": 8,
+              "column": 4
+            },
+            "end": {
+              "line": 8,
+              "column": 26
+            }
+          }
+        },
+        "data": [],
+        "decorations": [],
+        "range": [
+          116,
+          138
+        ],
+        "loc": {
+          "start": {
+            "line": 8,
+            "column": 4
+          },
+          "end": {
+            "line": 8,
+            "column": 26
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 4,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "docs",
+          "range": [
+            143,
+            147
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 4
+            },
+            "end": {
+              "line": 9,
+              "column": 8
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Create Blog about the new diagram",
+            "range": [
+              148,
+              181
+            ],
+            "loc": {
+              "start": {
+                "line": 9,
+                "column": 9
+              },
+              "end": {
+                "line": 9,
+                "column": 42
+              }
+            }
+          },
+          "range": [
+            147,
+            182
+          ],
+          "loc": {
+            "start": {
+              "line": 9,
+              "column": 8
+            },
+            "end": {
+              "line": 9,
+              "column": 43
+            }
+          }
+        },
+        "data": [],
+        "decorations": [],
+        "range": [
+          143,
+          182
+        ],
+        "loc": {
+          "start": {
+            "line": 9,
+            "column": 4
+          },
+          "end": {
+            "line": 9,
+            "column": 43
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 2,
+        "id": null,
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "In progress",
+            "range": [
+              186,
+              197
+            ],
+            "loc": {
+              "start": {
+                "line": 10,
+                "column": 3
+              },
+              "end": {
+                "line": 10,
+                "column": 14
+              }
+            }
+          },
+          "range": [
+            185,
+            198
+          ],
+          "loc": {
+            "start": {
+              "line": 10,
+              "column": 2
+            },
+            "end": {
+              "line": 10,
+              "column": 15
+            }
+          }
+        },
+        "data": [],
+        "decorations": [],
+        "range": [
+          185,
+          198
+        ],
+        "loc": {
+          "start": {
+            "line": 10,
+            "column": 2
+          },
+          "end": {
+            "line": 10,
+            "column": 15
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 4,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id6",
+          "range": [
+            203,
+            206
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 4
+            },
+            "end": {
+              "line": 11,
+              "column": 7
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Create renderer so that it works in all cases. We also add some extra text here for testing purposes. And some more just for the extra flare.",
+            "range": [
+              207,
+              348
+            ],
+            "loc": {
+              "start": {
+                "line": 11,
+                "column": 8
+              },
+              "end": {
+                "line": 11,
+                "column": 149
+              }
+            }
+          },
+          "range": [
+            206,
+            349
+          ],
+          "loc": {
+            "start": {
+              "line": 11,
+              "column": 7
+            },
+            "end": {
+              "line": 11,
+              "column": 150
+            }
+          }
+        },
+        "data": [],
+        "decorations": [],
+        "range": [
+          203,
+          349
+        ],
+        "loc": {
+          "start": {
+            "line": 11,
+            "column": 4
+          },
+          "end": {
+            "line": 11,
+            "column": 150
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 2,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id9",
+          "range": [
+            352,
+            355
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 2
+            },
+            "end": {
+              "line": 12,
+              "column": 5
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Ready for deploy",
+            "range": [
+              356,
+              372
+            ],
+            "loc": {
+              "start": {
+                "line": 12,
+                "column": 6
+              },
+              "end": {
+                "line": 12,
+                "column": 22
+              }
+            }
+          },
+          "range": [
+            355,
+            373
+          ],
+          "loc": {
+            "start": {
+              "line": 12,
+              "column": 5
+            },
+            "end": {
+              "line": 12,
+              "column": 23
+            }
+          }
+        },
+        "data": [],
+        "decorations": [],
+        "range": [
+          352,
+          373
+        ],
+        "loc": {
+          "start": {
+            "line": 12,
+            "column": 2
+          },
+          "end": {
+            "line": 12,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 4,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id8",
+          "range": [
+            378,
+            381
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 4
+            },
+            "end": {
+              "line": 13,
+              "column": 7
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Design grammar",
+            "range": [
+              382,
+              396
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 8
+              },
+              "end": {
+                "line": 13,
+                "column": 22
+              }
+            }
+          },
+          "range": [
+            381,
+            397
+          ],
+          "loc": {
+            "start": {
+              "line": 13,
+              "column": 7
+            },
+            "end": {
+              "line": 13,
+              "column": 23
+            }
+          }
+        },
+        "data": [
+          {
+            "type": "KanbanDataBlock",
+            "value": " assigned: 'knsv' ",
+            "range": [
+              397,
+              418
+            ],
+            "loc": {
+              "start": {
+                "line": 13,
+                "column": 23
+              },
+              "end": {
+                "line": 13,
+                "column": 44
+              }
+            }
+          }
+        ],
+        "decorations": [],
+        "range": [
+          378,
+          418
+        ],
+        "loc": {
+          "start": {
+            "line": 13,
+            "column": 4
+          },
+          "end": {
+            "line": 13,
+            "column": 44
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 2,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id10",
+          "range": [
+            421,
+            425
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 2
+            },
+            "end": {
+              "line": 14,
+              "column": 6
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Ready for test",
+            "range": [
+              426,
+              440
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 7
+              },
+              "end": {
+                "line": 14,
+                "column": 21
+              }
+            }
+          },
+          "range": [
+            425,
+            441
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 6
+            },
+            "end": {
+              "line": 14,
+              "column": 22
+            }
+          }
+        },
+        "data": [],
+        "decorations": [],
+        "range": [
+          421,
+          441
+        ],
+        "loc": {
+          "start": {
+            "line": 14,
+            "column": 2
+          },
+          "end": {
+            "line": 14,
+            "column": 22
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 4,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id4",
+          "range": [
+            446,
+            449
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 4
+            },
+            "end": {
+              "line": 15,
+              "column": 7
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Create parsing tests",
+            "range": [
+              450,
+              470
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 8
+              },
+              "end": {
+                "line": 15,
+                "column": 28
+              }
+            }
+          },
+          "range": [
+            449,
+            471
+          ],
+          "loc": {
+            "start": {
+              "line": 15,
+              "column": 7
+            },
+            "end": {
+              "line": 15,
+              "column": 29
+            }
+          }
+        },
+        "data": [
+          {
+            "type": "KanbanDataBlock",
+            "value": " ticket: MC-2038, assigned: 'K.Sveidqvist', priority: 'High' ",
+            "range": [
+              471,
+              535
+            ],
+            "loc": {
+              "start": {
+                "line": 15,
+                "column": 29
+              },
+              "end": {
+                "line": 15,
+                "column": 93
+              }
+            }
+          }
+        ],
+        "decorations": [],
+        "range": [
+          446,
+          535
+        ],
+        "loc": {
+          "start": {
+            "line": 15,
+            "column": 4
+          },
+          "end": {
+            "line": 15,
+            "column": 93
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 4,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id66",
+          "range": [
+            540,
+            544
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 4
+            },
+            "end": {
+              "line": 16,
+              "column": 8
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "last item",
+            "range": [
+              545,
+              554
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 9
+              },
+              "end": {
+                "line": 16,
+                "column": 18
+              }
+            }
+          },
+          "range": [
+            544,
+            555
+          ],
+          "loc": {
+            "start": {
+              "line": 16,
+              "column": 8
+            },
+            "end": {
+              "line": 16,
+              "column": 19
+            }
+          }
+        },
+        "data": [
+          {
+            "type": "KanbanDataBlock",
+            "value": " priority: 'Very Low', assigned: 'knsv' ",
+            "range": [
+              555,
+              598
+            ],
+            "loc": {
+              "start": {
+                "line": 16,
+                "column": 19
+              },
+              "end": {
+                "line": 16,
+                "column": 62
+              }
+            }
+          }
+        ],
+        "decorations": [],
+        "range": [
+          540,
+          598
+        ],
+        "loc": {
+          "start": {
+            "line": 16,
+            "column": 4
+          },
+          "end": {
+            "line": 16,
+            "column": 62
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 2,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id11",
+          "range": [
+            601,
+            605
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 2
+            },
+            "end": {
+              "line": 17,
+              "column": 6
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Done",
+            "range": [
+              606,
+              610
+            ],
+            "loc": {
+              "start": {
+                "line": 17,
+                "column": 7
+              },
+              "end": {
+                "line": 17,
+                "column": 11
+              }
+            }
+          },
+          "range": [
+            605,
+            611
+          ],
+          "loc": {
+            "start": {
+              "line": 17,
+              "column": 6
+            },
+            "end": {
+              "line": 17,
+              "column": 12
+            }
+          }
+        },
+        "data": [],
+        "decorations": [],
+        "range": [
+          601,
+          611
+        ],
+        "loc": {
+          "start": {
+            "line": 17,
+            "column": 2
+          },
+          "end": {
+            "line": 17,
+            "column": 12
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 4,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id5",
+          "range": [
+            616,
+            619
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 4
+            },
+            "end": {
+              "line": 18,
+              "column": 7
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "define getData",
+            "range": [
+              620,
+              634
+            ],
+            "loc": {
+              "start": {
+                "line": 18,
+                "column": 8
+              },
+              "end": {
+                "line": 18,
+                "column": 22
+              }
+            }
+          },
+          "range": [
+            619,
+            635
+          ],
+          "loc": {
+            "start": {
+              "line": 18,
+              "column": 7
+            },
+            "end": {
+              "line": 18,
+              "column": 23
+            }
+          }
+        },
+        "data": [],
+        "decorations": [],
+        "range": [
+          616,
+          635
+        ],
+        "loc": {
+          "start": {
+            "line": 18,
+            "column": 4
+          },
+          "end": {
+            "line": 18,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 4,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id2",
+          "range": [
+            640,
+            643
+          ],
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 4
+            },
+            "end": {
+              "line": 19,
+              "column": 7
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Title of diagram is more than 100 chars when user duplicates diagram with 100 char",
+            "range": [
+              644,
+              726
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 8
+              },
+              "end": {
+                "line": 19,
+                "column": 90
+              }
+            }
+          },
+          "range": [
+            643,
+            727
+          ],
+          "loc": {
+            "start": {
+              "line": 19,
+              "column": 7
+            },
+            "end": {
+              "line": 19,
+              "column": 91
+            }
+          }
+        },
+        "data": [
+          {
+            "type": "KanbanDataBlock",
+            "value": " ticket: MC-2036, priority: 'Very High'",
+            "range": [
+              727,
+              769
+            ],
+            "loc": {
+              "start": {
+                "line": 19,
+                "column": 91
+              },
+              "end": {
+                "line": 19,
+                "column": 133
+              }
+            }
+          }
+        ],
+        "decorations": [],
+        "range": [
+          640,
+          769
+        ],
+        "loc": {
+          "start": {
+            "line": 19,
+            "column": 4
+          },
+          "end": {
+            "line": 19,
+            "column": 133
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 4,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id3",
+          "range": [
+            774,
+            777
+          ],
+          "loc": {
+            "start": {
+              "line": 20,
+              "column": 4
+            },
+            "end": {
+              "line": 20,
+              "column": 7
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Update DB function",
+            "range": [
+              778,
+              796
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 8
+              },
+              "end": {
+                "line": 20,
+                "column": 26
+              }
+            }
+          },
+          "range": [
+            777,
+            797
+          ],
+          "loc": {
+            "start": {
+              "line": 20,
+              "column": 7
+            },
+            "end": {
+              "line": 20,
+              "column": 27
+            }
+          }
+        },
+        "data": [
+          {
+            "type": "KanbanDataBlock",
+            "value": " ticket: MC-2037, assigned: knsv, priority: 'High' ",
+            "range": [
+              797,
+              851
+            ],
+            "loc": {
+              "start": {
+                "line": 20,
+                "column": 27
+              },
+              "end": {
+                "line": 20,
+                "column": 81
+              }
+            }
+          }
+        ],
+        "decorations": [],
+        "range": [
+          774,
+          851
+        ],
+        "loc": {
+          "start": {
+            "line": 20,
+            "column": 4
+          },
+          "end": {
+            "line": 20,
+            "column": 81
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 2,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id12",
+          "range": [
+            855,
+            859
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 2
+            },
+            "end": {
+              "line": 22,
+              "column": 6
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Can't reproduce",
+            "range": [
+              860,
+              875
+            ],
+            "loc": {
+              "start": {
+                "line": 22,
+                "column": 7
+              },
+              "end": {
+                "line": 22,
+                "column": 22
+              }
+            }
+          },
+          "range": [
+            859,
+            876
+          ],
+          "loc": {
+            "start": {
+              "line": 22,
+              "column": 6
+            },
+            "end": {
+              "line": 22,
+              "column": 23
+            }
+          }
+        },
+        "data": [],
+        "decorations": [],
+        "range": [
+          855,
+          876
+        ],
+        "loc": {
+          "start": {
+            "line": 22,
+            "column": 2
+          },
+          "end": {
+            "line": 22,
+            "column": 23
+          }
+        }
+      },
+      {
+        "type": "KanbanNode",
+        "indent": 4,
+        "id": {
+          "type": "KanbanLiteral",
+          "value": "id3",
+          "range": [
+            881,
+            884
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 4
+            },
+            "end": {
+              "line": 23,
+              "column": 7
+            }
+          }
+        },
+        "shape": {
+          "type": "KanbanShape",
+          "opener": "[",
+          "closer": "]",
+          "label": {
+            "type": "KanbanLabel",
+            "kind": "text",
+            "value": "Weird flickering in Firefox",
+            "range": [
+              885,
+              912
+            ],
+            "loc": {
+              "start": {
+                "line": 23,
+                "column": 8
+              },
+              "end": {
+                "line": 23,
+                "column": 35
+              }
+            }
+          },
+          "range": [
+            884,
+            913
+          ],
+          "loc": {
+            "start": {
+              "line": 23,
+              "column": 7
+            },
+            "end": {
+              "line": 23,
+              "column": 36
+            }
+          }
+        },
+        "data": [],
+        "decorations": [],
+        "range": [
+          881,
+          913
+        ],
+        "loc": {
+          "start": {
+            "line": 23,
+            "column": 4
+          },
+          "end": {
+            "line": 23,
+            "column": 36
+          }
+        }
+      }
+    ],
+    "range": [
+      98,
+      913
+    ],
+    "loc": {
+      "start": {
+        "line": 6,
+        "column": 0
+      },
+      "end": {
+        "line": 23,
+        "column": 36
+      }
+    }
+  },
+  "frontmatter": {
+    "type": "Frontmatter",
+    "value": "config:\n  kanban:\n    ticketBaseUrl: 'https://mermaidchart.atlassian.net/browse/#TICKET#'",
+    "valueRange": [
+      4,
+      93
+    ],
+    "range": [
+      0,
+      97
+    ],
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 5,
+        "column": 3
+      }
+    }
+  },
+  "comments": [],
+  "directives": [],
+  "tokens": [
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        0,
+        3
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "config:\n  kanban:\n    ticketBaseUrl: 'https://mermaidchart.atlassian.net/browse/#TICKET#'",
+      "range": [
+        4,
+        93
+      ],
+      "loc": {
+        "start": {
+          "line": 2,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 71
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "---",
+      "range": [
+        94,
+        97
+      ],
+      "loc": {
+        "start": {
+          "line": 5,
+          "column": 0
+        },
+        "end": {
+          "line": 5,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "Keyword",
+      "value": "kanban",
+      "range": [
+        98,
+        104
+      ],
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Todo",
+      "range": [
+        107,
+        111
+      ],
+      "loc": {
+        "start": {
+          "line": 7,
+          "column": 2
+        },
+        "end": {
+          "line": 7,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        116,
+        117
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 4
+        },
+        "end": {
+          "line": 8,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Create Documentation",
+      "range": [
+        117,
+        137
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 5
+        },
+        "end": {
+          "line": 8,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        137,
+        138
+      ],
+      "loc": {
+        "start": {
+          "line": 8,
+          "column": 25
+        },
+        "end": {
+          "line": 8,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "docs",
+      "range": [
+        143,
+        147
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 4
+        },
+        "end": {
+          "line": 9,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        147,
+        148
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 8
+        },
+        "end": {
+          "line": 9,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Create Blog about the new diagram",
+      "range": [
+        148,
+        181
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 9
+        },
+        "end": {
+          "line": 9,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        181,
+        182
+      ],
+      "loc": {
+        "start": {
+          "line": 9,
+          "column": 42
+        },
+        "end": {
+          "line": 9,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        185,
+        186
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 2
+        },
+        "end": {
+          "line": 10,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "In progress",
+      "range": [
+        186,
+        197
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 3
+        },
+        "end": {
+          "line": 10,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        197,
+        198
+      ],
+      "loc": {
+        "start": {
+          "line": 10,
+          "column": 14
+        },
+        "end": {
+          "line": 10,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id6",
+      "range": [
+        203,
+        206
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 4
+        },
+        "end": {
+          "line": 11,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        206,
+        207
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 7
+        },
+        "end": {
+          "line": 11,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Create renderer so that it works in all cases. We also add some extra text here for testing purposes. And some more just for the extra flare.",
+      "range": [
+        207,
+        348
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 8
+        },
+        "end": {
+          "line": 11,
+          "column": 149
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        348,
+        349
+      ],
+      "loc": {
+        "start": {
+          "line": 11,
+          "column": 149
+        },
+        "end": {
+          "line": 11,
+          "column": 150
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id9",
+      "range": [
+        352,
+        355
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 2
+        },
+        "end": {
+          "line": 12,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        355,
+        356
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 5
+        },
+        "end": {
+          "line": 12,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Ready for deploy",
+      "range": [
+        356,
+        372
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 6
+        },
+        "end": {
+          "line": 12,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        372,
+        373
+      ],
+      "loc": {
+        "start": {
+          "line": 12,
+          "column": 22
+        },
+        "end": {
+          "line": 12,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id8",
+      "range": [
+        378,
+        381
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 4
+        },
+        "end": {
+          "line": 13,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        381,
+        382
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 7
+        },
+        "end": {
+          "line": 13,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Design grammar",
+      "range": [
+        382,
+        396
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 8
+        },
+        "end": {
+          "line": 13,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        396,
+        397
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 22
+        },
+        "end": {
+          "line": 13,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        397,
+        399
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 23
+        },
+        "end": {
+          "line": 13,
+          "column": 25
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " assigned: 'knsv' ",
+      "range": [
+        399,
+        417
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 25
+        },
+        "end": {
+          "line": 13,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        417,
+        418
+      ],
+      "loc": {
+        "start": {
+          "line": 13,
+          "column": 43
+        },
+        "end": {
+          "line": 13,
+          "column": 44
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id10",
+      "range": [
+        421,
+        425
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 2
+        },
+        "end": {
+          "line": 14,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        425,
+        426
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 6
+        },
+        "end": {
+          "line": 14,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Ready for test",
+      "range": [
+        426,
+        440
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 7
+        },
+        "end": {
+          "line": 14,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        440,
+        441
+      ],
+      "loc": {
+        "start": {
+          "line": 14,
+          "column": 21
+        },
+        "end": {
+          "line": 14,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id4",
+      "range": [
+        446,
+        449
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 4
+        },
+        "end": {
+          "line": 15,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        449,
+        450
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 7
+        },
+        "end": {
+          "line": 15,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Create parsing tests",
+      "range": [
+        450,
+        470
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 8
+        },
+        "end": {
+          "line": 15,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        470,
+        471
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 28
+        },
+        "end": {
+          "line": 15,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        471,
+        473
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 29
+        },
+        "end": {
+          "line": 15,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " ticket: MC-2038, assigned: 'K.Sveidqvist', priority: 'High' ",
+      "range": [
+        473,
+        534
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 31
+        },
+        "end": {
+          "line": 15,
+          "column": 92
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        534,
+        535
+      ],
+      "loc": {
+        "start": {
+          "line": 15,
+          "column": 92
+        },
+        "end": {
+          "line": 15,
+          "column": 93
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id66",
+      "range": [
+        540,
+        544
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 4
+        },
+        "end": {
+          "line": 16,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        544,
+        545
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 8
+        },
+        "end": {
+          "line": 16,
+          "column": 9
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "last item",
+      "range": [
+        545,
+        554
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 9
+        },
+        "end": {
+          "line": 16,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        554,
+        555
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 18
+        },
+        "end": {
+          "line": 16,
+          "column": 19
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        555,
+        557
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 19
+        },
+        "end": {
+          "line": 16,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " priority: 'Very Low', assigned: 'knsv' ",
+      "range": [
+        557,
+        597
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 21
+        },
+        "end": {
+          "line": 16,
+          "column": 61
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        597,
+        598
+      ],
+      "loc": {
+        "start": {
+          "line": 16,
+          "column": 61
+        },
+        "end": {
+          "line": 16,
+          "column": 62
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id11",
+      "range": [
+        601,
+        605
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 2
+        },
+        "end": {
+          "line": 17,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        605,
+        606
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 6
+        },
+        "end": {
+          "line": 17,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Done",
+      "range": [
+        606,
+        610
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 7
+        },
+        "end": {
+          "line": 17,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        610,
+        611
+      ],
+      "loc": {
+        "start": {
+          "line": 17,
+          "column": 11
+        },
+        "end": {
+          "line": 17,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id5",
+      "range": [
+        616,
+        619
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 4
+        },
+        "end": {
+          "line": 18,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        619,
+        620
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 7
+        },
+        "end": {
+          "line": 18,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "define getData",
+      "range": [
+        620,
+        634
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 8
+        },
+        "end": {
+          "line": 18,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        634,
+        635
+      ],
+      "loc": {
+        "start": {
+          "line": 18,
+          "column": 22
+        },
+        "end": {
+          "line": 18,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id2",
+      "range": [
+        640,
+        643
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 4
+        },
+        "end": {
+          "line": 19,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        643,
+        644
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 7
+        },
+        "end": {
+          "line": 19,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Title of diagram is more than 100 chars when user duplicates diagram with 100 char",
+      "range": [
+        644,
+        726
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 8
+        },
+        "end": {
+          "line": 19,
+          "column": 90
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        726,
+        727
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 90
+        },
+        "end": {
+          "line": 19,
+          "column": 91
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        727,
+        729
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 91
+        },
+        "end": {
+          "line": 19,
+          "column": 93
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " ticket: MC-2036, priority: 'Very High'",
+      "range": [
+        729,
+        768
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 93
+        },
+        "end": {
+          "line": 19,
+          "column": 132
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        768,
+        769
+      ],
+      "loc": {
+        "start": {
+          "line": 19,
+          "column": 132
+        },
+        "end": {
+          "line": 19,
+          "column": 133
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id3",
+      "range": [
+        774,
+        777
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 4
+        },
+        "end": {
+          "line": 20,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        777,
+        778
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 7
+        },
+        "end": {
+          "line": 20,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Update DB function",
+      "range": [
+        778,
+        796
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 8
+        },
+        "end": {
+          "line": 20,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        796,
+        797
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 26
+        },
+        "end": {
+          "line": 20,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "@{",
+      "range": [
+        797,
+        799
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 27
+        },
+        "end": {
+          "line": 20,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": " ticket: MC-2037, assigned: knsv, priority: 'High' ",
+      "range": [
+        799,
+        850
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 29
+        },
+        "end": {
+          "line": 20,
+          "column": 80
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "}",
+      "range": [
+        850,
+        851
+      ],
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 80
+        },
+        "end": {
+          "line": 20,
+          "column": 81
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id12",
+      "range": [
+        855,
+        859
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 2
+        },
+        "end": {
+          "line": 22,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        859,
+        860
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 6
+        },
+        "end": {
+          "line": 22,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Can't reproduce",
+      "range": [
+        860,
+        875
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 7
+        },
+        "end": {
+          "line": 22,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        875,
+        876
+      ],
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 22
+        },
+        "end": {
+          "line": 22,
+          "column": 23
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "id3",
+      "range": [
+        881,
+        884
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 4
+        },
+        "end": {
+          "line": 23,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "[",
+      "range": [
+        884,
+        885
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 7
+        },
+        "end": {
+          "line": 23,
+          "column": 8
+        }
+      }
+    },
+    {
+      "type": "RawText",
+      "value": "Weird flickering in Firefox",
+      "range": [
+        885,
+        912
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 8
+        },
+        "end": {
+          "line": 23,
+          "column": 35
+        }
+      }
+    },
+    {
+      "type": "Punctuator",
+      "value": "]",
+      "range": [
+        912,
+        913
+      ],
+      "loc": {
+        "start": {
+          "line": 23,
+          "column": 35
+        },
+        "end": {
+          "line": 23,
+          "column": 36
+        }
+      }
+    }
+  ],
+  "range": [
+    0,
+    914
+  ],
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 24,
+      "column": 0
+    }
+  }
+}

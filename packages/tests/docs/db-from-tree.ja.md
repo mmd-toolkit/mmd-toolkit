@@ -136,6 +136,12 @@ Db の値のうち、ノードが直接は与えない範囲のテキストを�
   [fixture: block/db-arrow-spaces]
   [fixture: block/db-class-apply-list-spaces]
   [fixture: block/db-style-spaces]
+- **kanban の行**: id、ラベル、アイコンは、
+  ノードの範囲と書かれた値だけから読みます。
+  平坦な body が所属を定め、
+  隣接するデータ接尾辞ごとに埋め込み効果を一つ消費します。
+  手順は [db-from-tree/kanban.md](./db-from-tree/kanban.ja.md) にあります。
+  [fixture: kanban/db-sections-items] [fixture: kanban/db-metadata-two-items]
 - **mindmap のラベル**: `MindmapLabel` の範囲の変換した形から、
   文字列か markdown 文字列の区切りを除いたもの。
   区切りは変換した形から切り落とし、

@@ -4,9 +4,9 @@ Japanese version:
 [ignored-semicolon-as-token-boundary.ja.md](./ignored-semicolon-as-token-boundary.ja.md)
 
 Diagram types: flowchart, sequence, class, state, er, gantt, journey,
-requirement, mindmap, timeline, xychart, quadrant, and block. This is one of the
-[known divergences](../known-divergences.md) of this specification from
-mermaid.js.
+requirement, mindmap, timeline, xychart, quadrant, block, and kanban. This is
+one of the [known divergences](../known-divergences.md) of this specification
+from mermaid.js.
 
 ## The syntax
 
@@ -187,6 +187,21 @@ Each diagram document lists where this shows, in its Known divergences section:
 [xychart](../diagrams/xychart.md#known-divergences),
 [quadrant](../diagrams/quadrant.md#known-divergences), and
 [block](../diagrams/block.md#known-divergences).
+
+In kanban, the selected semicolon inside an opener or closer splits the
+delimiter and is rejected. mermaid.js accepts `style:#x{;{b}}` and
+`style:#x{{b};}` as the same shape as `style:#x{{b}}`. [fixture:
+kanban/div-semicolon-opener] [fixture: kanban/div-semicolon-closer] [fixture:
+kanban/gram-semicolon-text-reference]
+
+Inside node text, label text, a string, or data content, the selected semicolon
+is ignored. [fixture: kanban/lex-id-style-rule] [fixture:
+kanban/lex-id-classdef-rule] [fixture: kanban/lex-label-style-rule] [fixture:
+kanban/lex-metadata-style-rule] A semicolon on the next line is not selected:
+`::ic;on` after a line holding `style:#x` is node text (see
+[Directives inside units](../diagrams/kanban.md#directives-inside-units)).
+[fixture: kanban/lex-label-style-rule-other-line] [fixture:
+kanban/lex-semicolon-icon-marker]
 
 ## What it means for an author
 

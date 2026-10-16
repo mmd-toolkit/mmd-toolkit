@@ -102,6 +102,7 @@ const CORPUS_DIAGRAMS: Record<DiagramType, true> = {
   xychart: true,
   quadrant: true,
   block: true,
+  kanban: true,
 }
 
 /** Every fixture of the conformance corpus, of every diagram type. */

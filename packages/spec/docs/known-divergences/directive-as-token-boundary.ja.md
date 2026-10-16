@@ -48,6 +48,29 @@ sequence 図の参加者の id、クラスの名前、
 [fixture: gantt/lex-directive-in-task-text]
 [fixture: requirement/lex-directive-in-name]
 
+kanban では `kanban`、形の開きと閉じ、`::icon(`、`:::`、
+データの開き `@{` の中のディレクティブは拒否します。
+mermaid.js は前後をつないで受理します。
+[fixture: kanban/header-directive-inside]
+[fixture: kanban/div-directive-opener]
+[fixture: kanban/div-directive-closer]
+[fixture: kanban/div-directive-icon-marker]
+[fixture: kanban/div-directive-class-marker]
+[fixture: kanban/div-directive-data-marker]
+
+ノード本文、形の本文、icon 本文、class 本文、文字列、データ本文には、
+ディレクティブを置けます。
+[fixture: kanban/db-grid-directive-item-id]
+[fixture: kanban/db-grid-directive-item-label-bare]
+[fixture: kanban/db-grid-directive-item-icon]
+[fixture: kanban/db-grid-directive-item-class]
+[fixture: kanban/lex-label-directive-line]
+[fixture: kanban/db-metadata-directive]
+完全なデータブロックの間にはディレクティブを置けます
+（[単位の中のディレクティブ](../diagrams/kanban.ja.md#単位の中のディレクティブ)
+を参照）。
+[fixture: kanban/db-metadata-adjacent-directive]
+
 ## 差異
 
 どの例も、図の全体です。

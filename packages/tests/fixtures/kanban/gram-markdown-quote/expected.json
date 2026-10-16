@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "kanban.md S02 (Shape context): Markdown opening cannot fall back to normal string."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nkanban S[\"`x\"]\n------------^"
+  }
+}

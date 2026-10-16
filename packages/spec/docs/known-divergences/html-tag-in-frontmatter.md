@@ -108,6 +108,12 @@ frontmatter. A tag that starts and ends inside the frontmatter makes no
 difference. The difference goes both ways, and it can change acceptance or the
 Db.
 
+In kanban, with `title: <a` in frontmatter, mermaid.js converts the inner
+attribute quotes of `S["b="c">d"]` and accepts the input. This specification
+ends the label string at its second quote and rejects the input. [fixture:
+kanban/div-frontmatter-open-tag] Without `<a` in frontmatter, both reject it.
+[fixture: kanban/gram-frontmatter-no-tag-reference]
+
 ## What it means for an author
 
 A frontmatter whose title has a `<` followed by a word and no `>` after it, such

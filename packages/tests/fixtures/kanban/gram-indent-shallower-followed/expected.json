@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "A following node detects an earlier shallower node."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Items without section detected, found section (\"A\")"
+  }
+}

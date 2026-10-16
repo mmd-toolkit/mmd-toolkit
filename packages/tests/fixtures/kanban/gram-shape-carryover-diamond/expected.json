@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "The block diagram diamond shape tests kanban delimiter recognition rather than assuming shared shape syntax."
+  },
+  "accepted": false,
+  "error": {
+    "name": "Error",
+    "message": "Lexical error on line 2. Unrecognized text.\nkanban S{Work}\n--------^"
+  }
+}

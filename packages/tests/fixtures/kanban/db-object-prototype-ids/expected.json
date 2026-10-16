@@ -1,0 +1,45 @@
+{
+  "source": {
+    "kind": "authored",
+    "note": "Object.prototype names test array-backed id handling."
+  },
+  "accepted": true,
+  "diagramType": "kanban",
+  "db": {
+    "nodes": [
+      {
+        "id": "__proto__",
+        "label": "__proto__",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "constructor",
+        "label": "constructor",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "__proto__"
+      },
+      {
+        "id": "toString",
+        "label": "toString",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "__proto__"
+      },
+      {
+        "id": "hasOwnProperty",
+        "label": "hasOwnProperty",
+        "level": 1,
+        "isGroup": true
+      },
+      {
+        "id": "__proto__",
+        "label": "__proto__",
+        "level": 3,
+        "isGroup": false,
+        "parentId": "hasOwnProperty"
+      }
+    ]
+  }
+}

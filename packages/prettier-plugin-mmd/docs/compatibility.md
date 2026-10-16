@@ -1125,3 +1125,35 @@ A diagram type that the plugin does not format yet is printed as written in a
 standalone file. Only the line endings may change: they follow Prettier's
 `endOfLine` option, as for every other language. In Markdown, the code block is
 left to Prettier.
+
+## Kanban levels, opaque suffixes, and kept lines
+
+Kanban keeps absolute indentation counts, including the first section, replacing
+ordinary indentation one character for one character. Bare-id, label, icon, and
+class whitespace remains value text. Decorations align with their node;
+inline-directive lines keep their written indentation and gaps. See the
+[kanban rules](./kanban.md). [fixture: kanban/indentation/absolute-counts]
+[fixture: kanban/icons-and-classes/aligned] [fixture:
+kanban/directives/leading-directive-kept] [fixture:
+kanban/trailing-whitespace/trailing-bare-id-trim]
+
+Data blocks keep their interiors and attachment, including touching adjacent
+blocks and intervening directives; YAML formatting applies only to guarded
+frontmatter. Complete blank/comment gaps after diagram comments, terminal gaps
+included, stay as written under `blank-line-after-header-or-comments`. A raw
+rejection has no raw Db; the corpus checks the specified reading. [fixture:
+kanban/data-blocks/adjacent] [fixture:
+kanban/data-blocks/data-adjacent-directive] [fixture:
+kanban/blank-lines/div-between-comment-blank] [fixture:
+kanban/blank-lines/comment-blank-trailing]
+
+Lines kept because of the shared `style`/`classDef` line rule retain their
+complete segments, whitespace, comments, and directives. Kanban keeps `;`,
+including ignored semicolons: none is a statement separator. Removing a
+semicolon or moving its inline comment can select a different last semicolon.
+Unicode segment boundaries and comment endings remain characters; configured
+CR/LF conversion is shared with the other diagrams. [fixture:
+kanban/line-rule-and-kept-lines/line-rule-comment-to-own-line] [fixture:
+kanban/line-rule-and-kept-lines/line-rule-classdef-and-style] [fixture:
+kanban/semicolons/values] [test: kanban: line-rule-ls-segment] [test: kanban:
+comment-ls-split-count] [test: a kanban diagram with other line endings]
